@@ -1,0 +1,85 @@
+/*******************************************************************************
+
+    Author ......... Jimmy Conner
+    Contact ........ jimmy@sqmail.org
+    Home Site ...... http://cactiusers.org
+    Program ........ Syslog Plugin for Cacti
+    Version ........ 0.5
+    Purpose ........ Sylog viewer for cacti
+    Originally released as aloe by: sidewinder <sidewinder@shitworks.com> 
+    Modified by: Harlequin harlequin@cyberonic.com> as h.aloe
+
+*******************************************************************************/
+
+
+----[ Purpose
+	A modified version of the H.aloe plugin, which allows you to view syslog messages stored in a database. 
+	This version allows you to add alerts and remove different messages you don't want to "save" in the log 
+
+    
+----[ Features
+	Message filter
+	Message search
+	Output to screen or file
+	Date time picker
+	Event Alerter
+	Event Removal (for Events you don't want to see)
+
+
+----[ Installation
+
+	Install just like any other plugin, just throw it in the plugin directory,
+	in a folder called syslog.
+	Edit your includes/config.php and add it to your $plugins list, and you are rolling
+
+----[ Possible Bugs?
+
+	If you find a problem, let me know!!! http://cactiusers.org/bugs/
+
+
+----[ Future Changes
+
+	Got any ideas or complaints, please e-mail me!
+
+----[ Changelog
+
+	--- SVN ---
+		#0000046 - Event text colors (black) when setup a event color in black
+		#0000047 - Change the Priority and Levels to be in Ascending order
+		Fixes for errors when using removal rules
+		Minor fix for error that would sometimes cause Syslog to not be processed
+		Update SQL to include indexes
+		Modified Message retrieval function to better make use of indexes, which greatly speeds it up
+		When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
+		Fix pagination of Alerts and Removal Rules
+		Lots of code / html cleanup for faster pages loads (use a little CSS also)
+		Alert email now uses the Alert Name in the subject
+		Add ability to create Reports
+		Fix for improper display of html entities in the syslog message (thanks dagonet)
+		Allow access for the guest account
+		Change name to syslog, from haloe
+		
+
+	--- 0.4 ---
+		#0000034 - Fix for shadow.gif file error in httpd logs.
+		#0000036 - Syslog plugin causes duplicates if multiple log processors are running at once
+		#0000037 - Option for max time to save syslog events
+		Removed some debugging code
+
+	--- 0.3 ---
+		Fixed an issue with "message" being hard coded
+		Fixed a typo in the removal code
+		Move Processing code to its own file
+		Add Debugging to the Processing Code (/debug)
+
+
+	--- 0.2 ---
+		Fixed a minor error that caused the graphs page to not refresh
+		Modified SQL query in syslog processor to speed things up greatly
+		#0000010 Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
+		#0000013 - Fix issues with database names with uncommon characters by enclosing in back-ticks
+
+
+	--- 0.1 ---
+		Initial release
+     
