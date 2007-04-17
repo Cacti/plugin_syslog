@@ -1,7 +1,5 @@
 <?php
 
-$guest_account = true;
-
 chdir('../../');
 
 include("./include/auth.php");
