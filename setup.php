@@ -34,6 +34,13 @@ function syslog_version () {
 			);
 }
 
+function syslog_check_dependencies() {
+	global $plugins;
+	if (in_array('settings', $plugins))
+		return true;
+	return false;
+}
+
 function syslog_poller_bottom () {
 	global $config;
 

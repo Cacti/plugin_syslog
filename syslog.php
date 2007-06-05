@@ -34,6 +34,14 @@ include("./include/auth.php");
 include('plugins/syslog/config.php');
 include_once('plugins/syslog/functions.php');
 
+
+if (!syslog_check_dependencies()) {
+	include_once("./include/top_graph_header.php");
+	cacti_log("SYSLOG: You are missing a required dependency, please install the '<a href='http://cactiusers.org/'>Settings'</a> plugin.", true, "POLLER");
+	print "<br><br><center><font color=red>You are missing a dependency for Syslog, please install the '<a href='http://cactiusers.org'>Settings</a>' plugin.</font></color>";
+	exit;
+}
+
 /* Check to ensure that our settings are setup properly */
 $r = read_config_option("syslog_refresh");
 $sql = "select * from settings where name='syslog_refresh'";
