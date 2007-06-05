@@ -58,6 +58,8 @@
 		Fix for improper display of html entities in the syslog message (thanks dagonet)
 		Allow access for the guest account
 		Change name to syslog, from haloe
+		Use mailer options from the Settings Plugin
+		Add option for From Email address and From Display Name
 		
 
 	--- 0.4 ---

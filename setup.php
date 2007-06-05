@@ -81,6 +81,19 @@ function syslog_config_settings () {
 			"method" => "textbox",
 			"max_length" => 3,
 			),
+		"syslog_email" => array(
+			"friendly_name" => "From Email Address",
+			"description" => "This is the email address that syslog alerts will appear from.",
+			"method" => "textbox",
+			"max_length" => 128,
+			),
+		"syslog_emailname" => array(
+			"friendly_name" => "From Display Name",
+			"description" => "This is the display name that syslog alerts will appear from.",
+			"method" => "textbox",
+			"max_length" => 128,
+			),
+
 	);
 
 	if (isset($settings["misc"]))

@@ -36,6 +36,18 @@
 
 	$retention = read_config_option("syslog_retention");
 
+	$email = read_config_option("syslog_email");
+	$emailname = read_config_option("syslog_emailname");
+	$from = '';
+	if ($email != '') {
+		if ($emailname != '') {
+			$from = "\"$emailname\" ($email)";
+		} else {
+			$from = $email;
+		}
+	}
+
+
 	/* DELETE ALL OLD ITEMS FROM THE SYSLOG TABLE */
 	if ($retention > 0) {
 		mysql_query("DELETE FROM " . $syslog_config["syslogTable"] . " WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date");
@@ -89,36 +101,24 @@
 			
 			while ($a = mysql_fetch_array($at, MYSQL_ASSOC)) {
 
-				$a['message'] = str_replace('  ', '<br>', $a['message']);
-				while (substr($a['message'], -4) == '<br>') {
-					$a['message'] = substr($a['message'], 0, -4);
+				$a['message'] = str_replace('  ', "\n", $a['message']);
+				while (substr($a['message'], -1) == "\n") {
+					$a['message'] = substr($a['message'], 0, -1);
 				}
 
-				$alertm .= "<table cellpadding=1 cellspacing=0 border=0 bgcolor='#000000' width=500><tr><td><table width='100%' cellpadding=1 cellspacing=0 border=0 bgcolor='#FFFFFF'>\n";
-				$alertm .= '<tr bgcolor="#dedede"><td>Hostname</td><td>: ' . $a['host'] . "</td></tr>\n";
-				$alertm .= '<tr bgcolor="#dedede"><td>Date</td><td>: ' . $a['date'] . ' ' . $a['time'] . "</td></tr>\n";
-				$alertm .= '<tr bgcolor="#dedede"><td>Severity</td><td>: ' . $a['priority'] . "</td></tr>\n";
-				$alertm .= '<tr bgcolor="#000000"><td colspan=2 height=1>' . "</td></tr>\n";
-				$alertm .= '<tr><td colspan=2>' . $a['message'] . "\n</td></tr>";
-				$alertm .= "</table></td></tr></table><br><br>\n";
+				$alertm .= "-----------------------------------------------\n";
+				$alertm .= 'Hostname : ' . $a['host'] . "\n";
+				$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
+				$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
+				$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
+				$alertm .= "-----------------------------------------------\n\n";
+
+
 				if ($debug)
 					print "   Alert Rule '" . $alert['name'] . "' has been activated\n";
 			}
 		}
 		if ($alertm != '') {
-			$css = '<style type="text/css">
-					body {
-					 font-family: verdana, arial, "ms sans serif", sans-serif;
-					 font-size: 10px;
-					 }
-					td { 
-					 font-family: verdana, arial, "ms sans serif", sans-serif; 
-					 font-size: 10px;
-					 color: #333333;
-					 }
-					</style>';
-
-			$alertm = "<html><head>$css</head><body>" . $alertm . '</body></hmtl>';
 			syslog_sendemail($alert['email'], '', 'Event Alert - ' . $alert['name'], $alertm);
 		}
 	}
