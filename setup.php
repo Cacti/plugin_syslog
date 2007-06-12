@@ -57,6 +57,9 @@ function syslog_poller_bottom () {
 function syslog_config_settings () {
 	global $tabs, $settings;
 
+	if (isset($_SERVER['PHP_SELF']) && basename($_SERVER['PHP_SELF']) != 'settings.php')
+		return;
+
 	$settings["visual"]["syslog_header"] = array(
 		"friendly_name" => "Syslog Events",
 		"method" => "spacer"
