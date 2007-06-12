@@ -1,15 +1,18 @@
 <?php
 $no_http_headers = true;
 
-
-chdir('../../');
-
-include("./include/config.php");
+// PHP5 uses a different base path apparently
+if (file_exists('include/config.php') && file_exists('include/auth.php')) {
+	require(dirname(__FILE__) . '/../../include/config.php');
+} else {
+	chdir('../../');
+	require(dirname(__FILE__) . '/../../include/config.php');
+}
 
 $sli = read_config_option("syslog_last_incoming");
 $slt = read_config_option("syslog_last_total");
 
-include('plugins/syslog/config.php');
+require($config['base_path'] . '/plugins/syslog/config.php');
 $link = mysql_connect($syslogdb_hostname, $syslogdb_username, $syslogdb_password) or die('');
 mysql_select_db($syslogdb_default) or die('');
 
