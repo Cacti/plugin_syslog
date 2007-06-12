@@ -60,7 +60,8 @@
 		Change name to syslog, from haloe
 		Use mailer options from the Settings Plugin
 		Add option for From Email address and From Display Name
-		
+		Use new "api_user_realm_auth" from Plugin Architecture
+
 
 	--- 0.4 ---
 		#0000034 - Fix for shadow.gif file error in httpd logs.

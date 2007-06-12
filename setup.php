@@ -126,20 +126,10 @@ function syslog_top_graph_refresh ($refresh) {
 }
 
 function syslog_show_tab () {
-	global $config, $user_auth_realms, $user_auth_realm_filenames;
-	$realm_id2 = 0;
-
-	if (isset($user_auth_realm_filenames{basename('syslog.php')})) {
-		$realm_id2 = $user_auth_realm_filenames{basename('syslog.php')};
-	}
-	if ((db_fetch_assoc("select user_auth_realm.realm_id
-		from user_auth_realm where user_auth_realm.user_id='" . $_SESSION["sess_user_id"] . "'
-		and user_auth_realm.realm_id='$realm_id2'")) || (empty($realm_id2))) {
-
+	global $config;
+	if (api_user_realm_auth('syslog.php')) {
 		print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog.gif" alt="syslog" align="absmiddle" border="0"></a>';
-
 	}
-
 	syslog_setup_table();
 }
 
