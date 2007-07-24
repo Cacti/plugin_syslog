@@ -16,7 +16,7 @@ CREATE TABLE syslog (
   KEY `time` (`time`),
   KEY host (host),
   KEY `priority` (`priority`),
-  KEY `facility` (`facility`),
+  KEY `facility` (`facility`)
 ) TYPE=MyISAM;
 
 
