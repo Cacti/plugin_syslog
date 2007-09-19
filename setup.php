@@ -195,4 +195,8 @@ return;
 	}
 }
 
-?>
+
+if (!function_exists('api_user_realm_auth')) {
+	include_once($config['base_path'] . '/plugins/syslog/compatibility.php');
+}
+

@@ -31,98 +31,11 @@ function syslog_sendemail($to, $from, $subject, $message) {
 	if (syslog_check_dependencies()) {
 		if ($debug)
 			print "      Sending Alert email to '" . $to . "'\n";
-		syslog_send_mail($to, $subject, $message);
+		send_mail($to, $from, $subject, $message);
 	} else {
 		if ($debug)
 			print "      Could not send alert, you are missing the Settings plugin\n";
 	}
-}
-
-function syslog_send_mail($to, $subject, $message) {
-	global $config;
-	include_once($config["base_path"] . "/plugins/settings/include/class.phpmailer.php");
-	$mail = new PHPMailer();
-	$mail->SetLanguage("en",'plugins/settings/language/');
-	// Add config option for this!
-
-	$how = read_config_option("settings_how");
-	if ($how < 0 && $how > 2)
-		$how = 0;
-	if ($how == 0) {
-		$mail->IsMail();                                      // set mailer to use PHPs Mailer Class
-	} else if ($how == 1) {
-		$mail->IsSendmail();                                  // set mailer to use Sendmail
-		$sendmail = read_config_option("settings_sendmail_path");
-		if ($sendmail != '') {
-			$mail->Sendmail = $sendmail;
-		}
-	} else if ($how == 2) {
-		$mail->IsSMTP();                                      // set mailer to use SMTP
-		$smtp_host = read_config_option("settings_smtp_host");
-		$smtp_port = read_config_option("settings_smtp_port");
-		$smtp_username = read_config_option("settings_smtp_username");
-		$smtp_password = read_config_option("settings_smtp_password");
-		if ($smtp_username != '' && $smtp_password != '') {
-			$mail->SMTPAuth = true;
-			$mail->Username = $smtp_username;
-			$mail->Password = $smtp_password;
-		} else {
-			$mail->SMTPAuth = false;
-		}
-		$mail->Host = $smtp_host;
-		$mail->Port = $smtp_port;
-	}
-
-	if ($from == '') {
-		$from = read_config_option("syslog_email");
-		$fromname = read_config_option("syslog_emailname");
-		if ($from == "") {
-			if (isset($_SERVER['HOSTNAME'])) {
-				$from = "Cacti@" . $_SERVER['HOSTNAME'];
-			} else {
-				$from = "Cacti@cactiusers.org";
-			}
-		}
-		if ($fromname == "")
-			$fromname = "Cacti";
-
-		$mail->From = $from;
-		$mail->FromName = $fromname;
-	} else {
-		$mail->From = $from;
-		$mail->FromName = "Cacti";
-	}
-
-	if ($to == '')
-		return "Mailer Error: No <b>TO</b> address set!!<br>If using the <i>Test Mail</i> link, please set the <b>Test e-mail</b> setting.";
-	$to = explode(',',$to);
-
-	foreach($to as $t) {
-		$mail->AddAddress($t);
-	}
-
-	$wordwrap = read_config_option("settings_wordwrap");
-	if ($wordwrap == '')
-		$wordwrap = 120;
-	if ($wordwrap > 9999)
-		$wordwrap = 9999;
-	if ($wordwrap < 0)
-		$wordwrap = 0;
-
-	$mail->WordWrap = $wordwrap;
-	$mail->Subject = $subject;
-
-	$mail->CreateHeader();
-	$mail->IsHTML(false);
-	$mail->Body    = $message;
-
-	if(!$mail->Send()) {
-		return $mail->ErrorInfo;
-	}
-
-	if ($mail->ErrorInfo != '')
-		return $mail->ErrorInfo;
-	return '';
 }
 
 function syslog_remove_items($table, $rule = '') {

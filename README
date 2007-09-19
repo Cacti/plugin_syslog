@@ -43,7 +43,7 @@
 
 ----[ Changelog
 
-	--- SVN ---
+	--- 0.5 ---
 		#0000046 - Event text colors (black) when setup a event color in black
 		#0000047 - Change the Priority and Levels to be in Ascending order
 		Fixes for errors when using removal rules
@@ -61,7 +61,6 @@
 		Use mailer options from the Settings Plugin
 		Add option for From Email address and From Display Name
 		Use new "api_user_realm_auth" from Plugin Architecture
-
 
 	--- 0.4 ---
 		#0000034 - Fix for shadow.gif file error in httpd logs.

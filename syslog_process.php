@@ -22,6 +22,10 @@
  +-------------------------------------------------------------------------+
 */
 
+	/* Let it run for an hour if it has to, to clear up any big bursts of incoming syslog events */
+	ini_set('max_execution_time', 3600);
+	ini_set('memory_limit', '64M');
+
 	global $debug;
 	$debug = 0;
 
