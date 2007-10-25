@@ -40,7 +40,11 @@
 
 	$no_http_headers = true;
 	chdir('../../');
-	include(dirname(__FILE__) . "/../../include/config.php");
+	if (file_exists(dirname(__FILE__) . "/../../include/global.php")) {
+		include(dirname(__FILE__) . "/../../include/global.php");
+	} else {
+		include(dirname(__FILE__) . "/../../include/config.php");
+	}
 	include_once($config["library_path"] . "/functions.php");
 
 	include($config["base_path"] . '/plugins/syslog/config.php');

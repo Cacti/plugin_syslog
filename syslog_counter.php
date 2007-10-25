@@ -25,11 +25,19 @@
 $no_http_headers = true;
 
 // PHP5 uses a different base path apparently
-if (file_exists('include/config.php') && file_exists('include/auth.php')) {
-	require(dirname(__FILE__) . '/../../include/config.php');
+if (file_exists('include/auth.php')) {
+	if (file_exists(dirname(__FILE__) . '/../../include/global.php')) {
+		require(dirname(__FILE__) . '/../../include/global.php');
+	} else {
+		require(dirname(__FILE__) . '/../../include/config.php');
+	}
 } else {
 	chdir('../../');
-	require(dirname(__FILE__) . '/../../include/config.php');
+	if (file_exists(dirname(__FILE__) . '/../../include/global.php')) {
+		require(dirname(__FILE__) . '/../../include/global.php');
+	} else {
+		require(dirname(__FILE__) . '/../../include/config.php');
+	}
 }
 
 $sli = read_config_option("syslog_last_incoming");

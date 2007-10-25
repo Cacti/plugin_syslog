@@ -61,6 +61,7 @@
 		Use mailer options from the Settings Plugin
 		Add option for From Email address and From Display Name
 		Use new "api_user_realm_auth" from Plugin Architecture
+		Fix Cacti 0.8.7 compatibility
 
 	--- 0.4 ---
 		#0000034 - Fix for shadow.gif file error in httpd logs.
