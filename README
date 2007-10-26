@@ -4,7 +4,6 @@
     Contact ........ jimmy@sqmail.org
     Home Site ...... http://cactiusers.org
     Program ........ Syslog Plugin for Cacti
-    Version ........ 0.5
     Purpose ........ Sylog viewer for cacti
     Originally released as aloe by: sidewinder <sidewinder@shitworks.com> 
     Modified by: Harlequin harlequin@cyberonic.com> as h.aloe
@@ -42,6 +41,9 @@
 	Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+
+	--- 0.5.1 ---
+		More 0.8.7 Compatibility fixes
 
 	--- 0.5 ---
 		#0000046 - Event text colors (black) when setup a event color in black

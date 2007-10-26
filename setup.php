@@ -25,7 +25,7 @@ function plugin_init_syslog() {
 
 function syslog_version () {
 	return array( 'name' 	=> 'syslog',
-			'version' 	=> '0.5',
+			'version' 	=> '0.5.1',
 			'longname'	=> 'Syslog Monitoring',
 			'author'	=> 'Jimmy Conner',
 			'homepage'	=> 'http://cactiusers.org',
