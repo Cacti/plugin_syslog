@@ -146,7 +146,11 @@ function disyplay_edit($text) {
 
 function display_reports () {
 	global $colors, $sql_where, $hostfilter, $config, $types, $freqs;
-	include("./include/config_arrays.php");
+	if (file_exists("./include/global_arrays.php")) {
+		include("./include/global_arrays.php");
+	} else {
+		include("./include/config_arrays.php");
+	}
 	include('plugins/syslog/config.php');
 
 	$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
