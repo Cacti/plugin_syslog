@@ -41,6 +41,9 @@
 	Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+	
+	--- 0.5.2 ---
+		Fixes to make syslog work properly when using the Superlinks plugin
 
 	--- 0.5.1 ---
 		More 0.8.7 Compatibility fixes
