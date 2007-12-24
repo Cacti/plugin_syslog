@@ -161,7 +161,7 @@ function display_reports () {
 
 						<center><h1>Syslog Reports</h1><br><table width="50%" cellspacing="0" cellpadding="0">
 							<tr>
-								<td bgcolor="#ffffff" height="8" style="background-image: url(images/shadow.gif); background-repeat: repeat-x;">
+								<td bgcolor="#ffffff" height="8" style="background-image: url(<?php echo $config['url_path']; ?>images/shadow.gif); background-repeat: repeat-x;">
 								</td>
 							</tr>
 							<tr>

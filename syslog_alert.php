@@ -129,7 +129,7 @@ function display_alertss () {
 
 						<center><h1>Syslog Alerts</h1>All items in this table will be alerted on.<br><table width="50%" cellspacing="0" cellpadding="0">
 							<tr>
-								<td bgcolor="#ffffff" height="8" style="background-image: url(images/shadow.gif); background-repeat: repeat-x;">
+								<td bgcolor="#ffffff" height="8" style="background-image: url(<?php echo $config['url_path']; ?>images/shadow.gif); background-repeat: repeat-x;">
 								</td>
 							</tr>
 							<tr>

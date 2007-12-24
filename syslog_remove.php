@@ -126,7 +126,7 @@ function display_removals () {
 
 						<center><h1>Syslog Removal</h1>All items in this table will be removed from database.<br><table width="50%" cellspacing="0" cellpadding="0">
 							<tr>
-								<td bgcolor="#ffffff" height="8" style="background-image: url(images/shadow.gif); background-repeat: repeat-x;">
+								<td bgcolor="#ffffff" height="8" style="background-image: url(<?php echo $config['url_path']; ?>images/shadow.gif); background-repeat: repeat-x;">
 								</td>
 							</tr>
 							<tr>
