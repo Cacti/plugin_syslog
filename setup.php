@@ -25,12 +25,12 @@ function plugin_init_syslog() {
 
 function syslog_version () {
 	return array( 'name' 	=> 'syslog',
-			'version' 	=> '0.5.1',
+			'version' 	=> '0.5.2',
 			'longname'	=> 'Syslog Monitoring',
 			'author'	=> 'Jimmy Conner',
 			'homepage'	=> 'http://cactiusers.org',
 			'email'	=> 'jimmy@sqmail.org',
-			'url'		=> 'http://cactiusers.org/cacti/versions.php'
+			'url'		=> 'http://versions.cactiusers.org/'
 			);
 }
 

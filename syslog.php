@@ -282,7 +282,7 @@ function syslog_messages() {
 						html_start_box("<strong>Rules</strong>", "100%", $colors["header"], "3", "center", "");
 						print "<tr bgcolor='#" . $colors["panel"] . "'><td class='textHeader'>";
 						print "<a href='syslog_alert.php'>Alerts</a><br><a href='syslog_remove.php'>Removals</a><br>";
-						print "<a href='syslog_reports.php'>Reports</a>";
+						//print "<a href='syslog_reports.php'>Reports</a>";
 						print "</td></tr>";
 						html_end_box(false);
 						print "</td></tr></table>";

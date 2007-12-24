@@ -44,6 +44,7 @@
 	
 	--- 0.5.2 ---
 		Fixes to make syslog work properly when using the Superlinks plugin
+		Fix a few image errors
 
 	--- 0.5.1 ---
 		More 0.8.7 Compatibility fixes
