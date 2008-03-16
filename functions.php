@@ -108,12 +108,12 @@ function sql_hosts_where() {
 		if ($_REQUEST["host"][$x] != "0") {
 			while ($x < count($_REQUEST["host"])) {
 				if (!empty($hostfilter)) {
-					$hostfilter .= " or " . $syslog_config["hostField"] . "='" . $_REQUEST["host"][$x] . "'";
-				} else {
+					$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
+				}else{
 					if (!empty($sql_where)) {
-						$hostfilter .= " and " . $syslog_config["hostField"] . "='" . $_REQUEST["host"][$x] . "'";
+						$hostfilter .= " AND " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
 					} else {
-						$hostfilter .= "  (" . $syslog_config["hostField"] . "='" . $_REQUEST["host"][$x] . "'";
+						$hostfilter .= " " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
 					}
 				}
 				$x++;
@@ -133,39 +133,73 @@ function get_syslog_messages() {
 	if (!empty($_REQUEST["host"])) {
 		sql_hosts_where();
 		if (!empty($hostfilter)) {
-			$sql_where .=  "where " . $hostfilter;
+			$sql_where .=  "WHERE " . $hostfilter;
 		}
 	}
 
 	if (!empty($_REQUEST["date1"])) {
 		if (!empty($sql_where)) {
-			$sql_where .= " and concat(DATE_FORMAT(" . $syslog_config["dateField"] . ",'%Y-%m-%d'),' ',TIME_FORMAT(" . $syslog_config["timeField"] . ",'%H:%i:%s')) BETWEEN '". $_REQUEST["date1"] . "' AND '" . $_REQUEST["date2"] . "'";
+			$sql_where .= " AND CONCAT(DATE_FORMAT("  . $syslog_config["dateField"] . ",'%Y-%m-%d'),' ',TIME_FORMAT(" . $syslog_config["timeField"] . ",'%H:%i:%s')) BETWEEN '". $_REQUEST["date1"] . "' AND '" . $_REQUEST["date2"] . "'";
 		} else {
-			$sql_where .= " where concat(DATE_FORMAT(" . $syslog_config["dateField"] . ",'%Y-%m-%d'),' ',TIME_FORMAT(" . $syslog_config["timeField"] . ",'%H:%i:%s')) BETWEEN '". $_REQUEST["date1"] . "' AND '" . $_REQUEST["date2"] . "'";
+			$sql_where .= "WHERE CONCAT(DATE_FORMAT(" . $syslog_config["dateField"] . ",'%Y-%m-%d'),' ',TIME_FORMAT(" . $syslog_config["timeField"] . ",'%H:%i:%s')) BETWEEN '". $_REQUEST["date1"] . "' AND '" . $_REQUEST["date2"] . "'";
 		}
 	}
 
 	if (!empty($_REQUEST["filter"])) {
 		if (!empty($sql_where)) {
-			$sql_where .= " and " . $syslog_config["textField"] . " like '%%" . $_REQUEST["filter"] . "%%'";
+			$sql_where .= " AND " . $syslog_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";
 		} else {
-			$sql_where .= " where " . $syslog_config["textField"] . " like '%%" . $_REQUEST["filter"] . "%%'";
+			$sql_where .= "WHERE " . $syslog_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";
 		}
 	}
 
 	if (!empty($_REQUEST["efacility"])) {
 		if (!empty($sql_where)) {
-			$sql_where .= " and " . $syslog_config["facilityField"] . " ='" . $_REQUEST["efacility"] . "'";
+			$sql_where .= " AND "  . $syslog_config["facilityField"] . "='" . $_REQUEST["efacility"] . "'";
 		} else {
-			$sql_where .= " where " . $syslog_config["facilityField"] . " ='" . $_REQUEST["efacility"] . "'";
+			$sql_where .= "WHERE " . $syslog_config["facilityField"] . "='" . $_REQUEST["efacility"] . "'";
 		}
 	}
 
-	if (!empty($_REQUEST["elevel"])) {
+	if (!empty($_REQUEST["elevel"])) {		switch($_REQUEST["elevel"]) {		case 1:
+			$mysql_in = "IN('emer')";
+
+			break;
+		case 2:
+			$mysql_in = "IN('emer', 'alert')";
+
+			break;
+		case 3:
+			$mysql_in = "IN('emer', 'alert', 'crit')";
+
+			break;
+		case 4:
+			$mysql_in = "IN('emer', 'alert', 'crit', 'err')";
+
+			break;
+		case 5:
+			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn')";
+
+			break;
+		case 6:
+			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn', 'notice')";
+
+			break;
+		case 7:
+			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn', 'notice', 'info')";
+
+			break;
+		case 8:
+			$mysql_in = "IN('debug')";
+
+			break;
+		default:
+		}
+
 		if (!empty($sql_where)) {
-			$sql_where .= " and " . $syslog_config["priorityField"] . " ='" . $_REQUEST["elevel"] . "'";
+			$sql_where .= " AND "  . $syslog_config["priorityField"] . " " . $mysql_in;
 		} else {
-			$sql_where .= " where " . $syslog_config["priorityField"] . " ='" . $_REQUEST["elevel"] . "'";
+			$sql_where .= "WHERE " . $syslog_config["priorityField"] . " " . $mysql_in;
 		}
 	}
 
@@ -176,16 +210,16 @@ function get_syslog_messages() {
 	}
 
 	$query = mysql_query("SELECT " .
-				$syslog_config["hostField"] . "," .
-				$syslog_config["priorityField"] . "," .
-				$syslog_config["facilityField"] . "," .
-				$syslog_config["dateField"] . "," .
-				$syslog_config["timeField"] . "," .
-				$syslog_config["id"] . "," .
-				$syslog_config["textField"] .
-				" FROM " . $syslog_config["syslogTable"] . " " .
-				$sql_where . " " .
-				" ORDER BY " . $syslog_config["dateField"] . " DESC," . $syslog_config["timeField"] . " DESC," . $syslog_config["hostField"] . " DESC" . $limit);
+		$syslog_config["hostField"] . "," .
+		$syslog_config["priorityField"] . "," .
+		$syslog_config["facilityField"] . "," .
+		$syslog_config["dateField"] . "," .
+		$syslog_config["timeField"] . "," .
+		$syslog_config["id"] . "," .
+		$syslog_config["textField"] .
+		" FROM " . $syslog_config["syslogTable"] . " " .
+		$sql_where . " " .
+		" ORDER BY " . $syslog_config["dateField"] . " DESC," . $syslog_config["timeField"] . " DESC," . $syslog_config["hostField"] . " DESC" . $limit);
 
 	while ($syslog_messages[] = mysql_fetch_assoc($query));
 	array_pop($syslog_messages);

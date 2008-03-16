@@ -101,7 +101,7 @@ if (isset($_POST['ename']) && isset($_POST['etext']) && $_POST['ename'] != '' &&
 function disyplay_edit($text) {
 	global $colors, $config, $types;
 	print "<form action=syslog_alert.php method=post><a name=edit></a><center><h3>Add an Alert Rule</h3><table cellspacing=0 cellpadding=1 bgcolor='#" . $colors["header"] . "'><tr><td><table bgcolor='#" . $colors["header_panel"] . "'>
-		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Name: </td><td><input type=text name=ename size=23></td></tr>
+		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Name: </td><td><input type=text name=ename size=96></td></tr>
 		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Type: </td><td><select name=etype>";
 
 		foreach ($types as $ty => $t) {
@@ -110,8 +110,8 @@ function disyplay_edit($text) {
 
 	print "</select>
 		</td></tr>
-		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Text: </td><td><input type=text name=etext size=23 value='$text'></td></tr>
-		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Email: </td><td><input type=text name=eemail size=23></td></tr>
+		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Text: </td><td><input type=text name=etext size=96 value='$text'></td></tr>
+		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark'>Email: </td><td><input type=text name=eemail size=96></td></tr>
 		<tr bgcolor='#" . $colors["header_panel"] . "'><td class='textSubHeaderDark' colspan=2><center><input type=image name=submit src='" . $config['url_path'] . "images/button_save.gif'></center></td></tr>
 		</table></td></tr></table></center>\n";
 }

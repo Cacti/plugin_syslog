@@ -6,71 +6,79 @@
     Home Site ...... http://cactiusers.org
     Program ........ Syslog Plugin for Cacti
     Purpose ........ Sylog viewer for cacti
-    Originally released as aloe by: sidewinder <sidewinder@shitworks.com> 
+    Originally released as aloe by: sidewinder <sidewinder@shitworks.com>
     Modified by: Harlequin harlequin@cyberonic.com> as h.aloe
 
 *******************************************************************************/
 
 function plugin_init_syslog() {
 	global $plugin_hooks;
-	$plugin_hooks['top_header_tabs']['syslog'] = 'syslog_show_tab';
+
+	$plugin_hooks['top_header_tabs']['syslog']       = 'syslog_show_tab';
 	$plugin_hooks['top_graph_header_tabs']['syslog'] = 'syslog_show_tab';
-	$plugin_hooks['config_arrays']['syslog'] = 'syslog_config_arrays';
-	$plugin_hooks['draw_navigation_text']['syslog'] = 'syslog_draw_navigation_text';
-	$plugin_hooks['config_form']['syslog'] = 'syslog_config_form';
-	$plugin_hooks['top_graph_refresh']['syslog'] = 'syslog_top_graph_refresh';
-	$plugin_hooks['config_settings']['syslog'] = 'syslog_config_settings';
-	$plugin_hooks['poller_bottom']['syslog'] = 'syslog_poller_bottom';
+	$plugin_hooks['config_arrays']['syslog']         = 'syslog_config_arrays';
+	$plugin_hooks['draw_navigation_text']['syslog']  = 'syslog_draw_navigation_text';
+	$plugin_hooks['config_form']['syslog']           = 'syslog_config_form';
+	$plugin_hooks['top_graph_refresh']['syslog']     = 'syslog_top_graph_refresh';
+	$plugin_hooks['config_settings']['syslog']       = 'syslog_config_settings';
+	$plugin_hooks['poller_bottom']['syslog']         = 'syslog_poller_bottom';
 }
 
 function syslog_version () {
-	return array( 'name' 	=> 'syslog',
-			'version' 	=> '0.5.2',
-			'longname'	=> 'Syslog Monitoring',
-			'author'	=> 'Jimmy Conner',
-			'homepage'	=> 'http://cactiusers.org',
-			'email'	=> 'jimmy@sqmail.org',
-			'url'		=> 'http://versions.cactiusers.org/'
-			);
+	return array(
+		'name' 	=> 'syslog',
+		'version' 	=> '0.5.3',
+		'longname'	=> 'Syslog Monitoring',
+		'author'	=> 'Jimmy Conner',
+		'homepage'	=> 'http://cactiusers.org',
+		'email'	=> 'jimmy@sqmail.org',
+		'url'		=> 'http://versions.cactiusers.org/'
+	);
 }
 
 function syslog_check_dependencies() {
 	global $plugins;
-	if (in_array('settings', $plugins))
+
+	if (in_array('settings', $plugins)) {
 		return true;
+	}
+
 	return false;
 }
 
 function syslog_poller_bottom () {
 	global $config;
 
-	$p = dirname(__FILE__);
+	$p              = dirname(__FILE__);
 	$command_string = read_config_option("path_php_binary");
+
 	if ($config["cacti_server_os"] == "unix") {
 		$extra_args = "-q " . $p . "/syslog_process.php";
 	} else {
 		$extra_args = "-q " . strtolower($p . "/syslog_process.php");
 	}
+
 	exec_background($command_string, $extra_args);
 }
 
 function syslog_config_settings () {
 	global $tabs, $settings;
 
-	if (isset($_SERVER['PHP_SELF']) && basename($_SERVER['PHP_SELF']) != 'settings.php')
+	if (isset($_SERVER['PHP_SELF']) && basename($_SERVER['PHP_SELF']) != 'settings.php') {
 		return;
+	}
 
 	$settings["visual"]["syslog_header"] = array(
 		"friendly_name" => "Syslog Events",
 		"method" => "spacer"
-		);
+	);
 	$settings["visual"]["num_rows_syslog"] = array(
 		"friendly_name" => "Rows Per Page",
 		"description" => "The number of rows to display on a single page for viewing Syslog Events.",
 		"method" => "textbox",
 		"default" => "30",
 		"max_length" => "3"
-		);
+	);
 
 	$tabs["misc"] = "Misc";
 
@@ -78,88 +86,104 @@ function syslog_config_settings () {
 		"syslog_header" => array(
 			"friendly_name" => "Syslog Events",
 			"method" => "spacer",
-			),
+		),
 		"syslog_refresh" => array(
 			"friendly_name" => "Refresh Interval",
 			"description" => "This is the time in seconds before the page refreshes.  (1 - 300)",
 			"method" => "textbox",
 			"max_length" => 3,
-			),
+		),
 		"syslog_retention" => array(
 			"friendly_name" => "Syslog Retention",
 			"description" => "This is the number of days to keep events.  (0 - 365, 0 = unlimited)",
 			"method" => "textbox",
 			"max_length" => 3,
-			),
+		),
 		"syslog_email" => array(
 			"friendly_name" => "From Email Address",
 			"description" => "This is the email address that syslog alerts will appear from.",
 			"method" => "textbox",
 			"max_length" => 128,
-			),
+		),
 		"syslog_emailname" => array(
 			"friendly_name" => "From Display Name",
 			"description" => "This is the display name that syslog alerts will appear from.",
 			"method" => "textbox",
 			"max_length" => 128,
-			),
-
+		),
 	);
 
-	if (isset($settings["misc"]))
+	if (isset($settings["misc"])) {
 		$settings["misc"] = array_merge($settings["misc"], $temp);
-	else
-		$settings["misc"]=$temp;
+	}else{
+		$settings["misc"] = $temp;
+	}
 }
 
 function syslog_top_graph_refresh ($refresh) {
-	if (basename($_SERVER["PHP_SELF"]) == "syslog_remove.php")
+	if (basename($_SERVER["PHP_SELF"]) == "syslog_remove.php") {
 		return 99999;
-	if (basename($_SERVER["PHP_SELF"]) == "syslog_alert.php")
+	}
+
+	if (basename($_SERVER["PHP_SELF"]) == "syslog_alert.php") {
 		return 99999;
-	if (basename($_SERVER["PHP_SELF"]) != "syslog.php")
+	}
+
+	if (basename($_SERVER["PHP_SELF"]) != "syslog.php") {
 		return $refresh;
+	}
+
 	$r = read_config_option("syslog_refresh");
-	if ($r == '' or $r < 1)
+
+	if ($r == '' or $r < 1) {
 		return $refresh;
+	}
+
 	return $r;
 }
 
 function syslog_show_tab () {
 	global $config;
+
 	if (api_user_realm_auth('syslog.php')) {
-		print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog.gif" alt="syslog" align="absmiddle" border="0"></a>';
+		if (substr_count($_SERVER["REQUEST_URI"], "syslog")) {
+			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog_down.gif" alt="syslog" align="absmiddle" border="0"></a>';
+		}else{			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog.gif" alt="syslog" align="absmiddle" border="0"></a>';
+		}
 	}
+
 	syslog_setup_table();
 }
 
 function syslog_config_arrays () {
 	global $user_auth_realms, $user_auth_realm_filenames;
-	$user_auth_realms[37]='View Syslog';
+
+	$user_auth_realms[37] = 'View Syslog';
 	$user_auth_realm_filenames['syslog.php'] = 37;
 
-	$user_auth_realms[38]='Configure Syslog Alerts / Reports';
-	$user_auth_realm_filenames['syslog_alert.php'] = 38;
-	$user_auth_realm_filenames['syslog_remove.php'] = 38;
+	$user_auth_realms[38] = 'Configure Syslog Alerts / Reports';
+	$user_auth_realm_filenames['syslog_alert.php']   = 38;
+	$user_auth_realm_filenames['syslog_remove.php']  = 38;
 	$user_auth_realm_filenames['syslog_reports.php'] = 38;
 }
 
-function syslog_draw_navigation_text ($nav) {
-   $nav["syslog.php:"] = array("title" => "Syslog", "mapping" => "index.php:", "url" => "syslog.php", "level" => "1");
-   $nav["syslog_remove.php:"] = array("title" => "Syslog Removals", "mapping" => "index.php:", "url" => "syslog_remove.php", "level" => "1");
-   $nav["syslog_alert.php:"] = array("title" => "Syslog Alerts", "mapping" => "index.php:", "url" => "syslog_alert.php", "level" => "1");
-   $nav["syslog_reports.php:"] = array("title" => "Syslog Reports", "mapping" => "index.php:", "url" => "syslog_reports.php", "level" => "1");
-   $nav["syslog.php:actions"] = array("title" => "Syslog", "mapping" => "index.php:", "url" => "syslog.php", "level" => "1");
-   return $nav;
+function syslog_draw_navigation_text ($nav) {	global $config;
+
+	$nav["syslog.php:"]         = array("title" => "Syslog", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
+	$nav["syslog_remove.php:"]  = array("title" => "Syslog Removals", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_remove.php", "level" => "1");
+	$nav["syslog_alert.php:"]   = array("title" => "Syslog Alerts", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_alert.php", "level" => "1");
+	$nav["syslog_reports.php:"] = array("title" => "Syslog Reports", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_reports.php", "level" => "1");
+	$nav["syslog.php:actions"]  = array("title" => "Syslog", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
+
+	return $nav;
 }
 
 function syslog_setup_table () {
-// Return for now until I fix the seperate database issue
-return;
 	global $config, $database_default;
+
 	include_once($config["library_path"] . "/database.php");
-	$sql = "show tables from `" . $database_default . "`";
-	
+	$sql    = "show tables from `" . $database_default . "`";
+
 	$result = db_fetch_assoc($sql) or die (mysql_error());
 
 	$tables = array();
@@ -169,6 +193,9 @@ return;
 			$tables[] = $t;
 		}
 	}
+
+	// Return for now until I fix the seperate database issue
+	return;
 
 	if (!in_array('syslog_logs', $tables)) {
 		$sql = "CREATE TABLE syslog_logs (
@@ -195,6 +222,35 @@ return;
 	}
 }
 
+function syslog_graph_buttons ($graph_elements = array()) {
+	global $config, $timespan, $graph_timeshifts;
+
+	if ($_REQUEST["action"] == "view") return;
+
+	if (isset($_REQUEST["graph_end"]) && strlen($_REQUEST["graph_end"])) {
+		$date1 = date("Y-m-d H:i:s", $_REQUEST["graph_start"]);
+		$date2 = date("Y-m-d H:i:s", $_REQUEST["graph_end"]);
+	}else{
+		$date1 = $timespan["current_value_date1"];
+		$date2 = $timespan["current_value_date2"];
+	}
+
+	if (isset($graph_elements[1]["local_graph_id"])) {
+		$graph_local = db_fetch_row("SELECT * FROM graph_local WHERE id='" . $graph_elements[1]["local_graph_id"] . "'");
+
+		if (isset($graph_local["host_id"])) {
+			$host = db_fetch_row("SELECT * FROM host WHERE id='" . $graph_local["host_id"] . "'");
+
+			if (sizeof($host)) {
+				$syslog_host = db_fetch_row("SELECT host FROM syslog WHERE host='" . $host["hostname"] . "' LIMIT 1");
+
+				if (sizeof($syslog_host)) {
+					print "<a href='" . $config["url_path"] . "plugins/syslog/grid_bjobs.php?action=viewlist&query=1&clusterid=" . $host["clusterid"] . "&jobs_status=-1&jobs_ex_host=" . $host["hostname"] . "&jobs_hgroup=-1&date1=" . $date1 . "&date2=" . $date2 . "'><img src='" . $config['url_path'] . "plugins/grid/images/grid_jobs.gif' border='0' alt='Display Jobs in Range' title='Display Jobs in Range' style='padding: 3px;'></a>";
+				}
+			}
+		}
+	}
+}
 
 if (!function_exists('api_user_realm_auth')) {
 	include_once($config['base_path'] . '/plugins/syslog/compatibility.php');

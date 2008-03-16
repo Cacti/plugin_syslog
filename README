@@ -42,6 +42,15 @@
 
 ----[ Changelog
 	
+	--- 0.5.3 ---
+		Add default double click for hosts
+		Add rows selector to code
+		Clean up images
+		Resolve some, not all image anomalies
+		Provide a red tab for syslog
+		Make menu's dynamic all the time
+		Make Levels so that they are level++ by default
+
 	--- 0.5.2 ---
 		Fixes to make syslog work properly when using the Superlinks plugin
 		Fix a few image errors
