@@ -22,6 +22,9 @@ function plugin_init_syslog() {
 	$plugin_hooks['top_graph_refresh']['syslog']     = 'syslog_top_graph_refresh';
 	$plugin_hooks['config_settings']['syslog']       = 'syslog_config_settings';
 	$plugin_hooks['poller_bottom']['syslog']         = 'syslog_poller_bottom';
+
+	/* add graph button that allows users to zoom to syslog messages */
+	$plugin_hooks['graph_buttons']['syslog']         = 'syslog_graph_buttons';
 }
 
 function syslog_version () {
@@ -242,10 +245,8 @@ function syslog_graph_buttons ($graph_elements = array()) {
 			$host = db_fetch_row("SELECT * FROM host WHERE id='" . $graph_local["host_id"] . "'");
 
 			if (sizeof($host)) {
-				$syslog_host = db_fetch_row("SELECT host FROM syslog WHERE host='" . $host["hostname"] . "' LIMIT 1");
-
-				if (sizeof($syslog_host)) {
-					print "<a href='" . $config["url_path"] . "plugins/syslog/grid_bjobs.php?action=viewlist&query=1&clusterid=" . $host["clusterid"] . "&jobs_status=-1&jobs_ex_host=" . $host["hostname"] . "&jobs_hgroup=-1&date1=" . $date1 . "&date2=" . $date2 . "'><img src='" . $config['url_path'] . "plugins/grid/images/grid_jobs.gif' border='0' alt='Display Jobs in Range' title='Display Jobs in Range' style='padding: 3px;'></a>";
+				if (sizeof(db_fetch_row("SELECT host FROM syslog.syslog WHERE host LIKE '%%" . $host["hostname"] . "%%'"))) {
+					print "<a href='" . $config["url_path"] . "plugins/syslog/syslog.php?host=" . $host["hostname"] . "&date1=" . $date1 . "&date2=" . $date2 . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a>";
 				}
 			}
 		}

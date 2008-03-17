@@ -103,22 +103,29 @@ function sql_hosts_where() {
 	global $hostfilter, $syslog_config;
 
 	if (!empty($_REQUEST["host"])) {
-		$hostfilter  = "";
-		$x=0;
-		if ($_REQUEST["host"][$x] != "0") {
-			while ($x < count($_REQUEST["host"])) {
-				if (!empty($hostfilter)) {
-					$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
-				}else{
-					if (!empty($sql_where)) {
-						$hostfilter .= " AND " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
-					} else {
-						$hostfilter .= " " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+		if (is_array($_REQUEST["host"])) {
+			$hostfilter  = "";
+			$x=0;
+			if ($_REQUEST["host"][$x] != "0") {
+				while ($x < count($_REQUEST["host"])) {
+					if (!empty($hostfilter)) {
+						$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
+					}else{
+						if (!empty($sql_where)) {
+							$hostfilter .= " AND " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+						} else {
+							$hostfilter .= " " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+						}
 					}
+					$x++;
 				}
-				$x++;
+				$hostfilter .= ")";
 			}
-			$hostfilter .= ")";
+		}else{			if (!empty($sql_where)) {
+				$hostfilter .= " AND " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
+			} else {
+				$hostfilter .= " " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
+			}
 		}
 	}
 }
@@ -126,7 +133,11 @@ function sql_hosts_where() {
 function get_syslog_messages() {
 	global $sql_where, $hostfilter, $syslog_config;
 
-	$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
+	if (isset($_REQUEST["rows"])) {
+		$syslog_config["rows_per_page"] = $_REQUEST["rows"];
+	}else{
+		$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
+	}
 
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
@@ -204,7 +215,7 @@ function get_syslog_messages() {
 	}
 
 	if ($_REQUEST["output"] != "file") {
-		$limit = " LIMIT " . ($syslog_config["rows_per_page"]*($_REQUEST["page"]-1)) . "," . $syslog_config["rows_per_page"];
+		$limit = " LIMIT " . ($_REQUEST["rows"]*($_REQUEST["page"]-1)) . "," . $syslog_config["rows_per_page"];
 	} else {
 		$limit = "";
 	}
@@ -258,7 +269,11 @@ function syslog_page_select($total_rows) {  /* list of each page #, so the user 
 	global $syslog_config;
 	$url_page_select = "";
 
-	$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
+	if (isset($_REQUEST["rows"])) {
+		$syslog_config["rows_per_page"] = $_REQUEST["rows"];
+	}else{
+		$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
+	}
 
 	if ($total_rows > $syslog_config["rows_per_page"]) {
 		$total_pages = ceil($total_rows / $syslog_config["rows_per_page"]);
@@ -304,7 +319,6 @@ function syslog_page_select($total_rows) {  /* list of each page #, so the user 
 				}
 			}
 		}
-		$url_page_select = "page " . $url_page_select;
 
 		return $url_page_select;
 	}

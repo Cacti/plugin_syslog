@@ -52,10 +52,13 @@ $r = read_config_option("num_rows_syslog");
 if ($r == '' or $r < 0 or $r > 100) {
 	db_execute("REPLACE INTO settings VALUES ('num_rows_syslog','30')");
 	kill_session_var("sess_config_array");
+}
 
-	$config['rows_per_page'] = 30;
+if (isset($_REQUEST["rows"])) {
+	$config['rows_per_page'] = $_REQUEST["rows"];
 } else {
 	$config['rows_per_page'] = $r;
+	$_REQUEST["rows"]        = $r;
 }
 
 $r = read_config_option("syslog_retention");
@@ -75,9 +78,9 @@ if ((isset($_REQUEST["syslog_pdt_change"])) &&
 	$_SERVER["REQUEST_URI"] = get_query_edited_url($_SERVER["REQUEST_URI"], 'predefined_timespan', $_REQUEST["predefined_timespan"]);
 
 	if ($syslog_config["graphtime"]) {
-		unset($_SESSION["sess_current_date1"], $_POST["date1"]);
+		unset($_SESSION["sess_current_date1"], $_REQUEST["date1"]);
 	} else {
-		unset($_SESSION["sess_syslog_array"]["sess_current_date1"], $_POST["date1"]);
+		unset($_SESSION["sess_syslog_array"]["sess_current_date1"], $_REQUEST["date1"]);
 	}
 
 	$_GET["predefined_timespan"] = $_REQUEST["predefined_timespan"];
@@ -189,7 +192,10 @@ function syslog_messages() {
 
 	include('plugins/syslog/config.php');
 
-	$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
+	if (isset($_REQUEST["rows"])) {		$syslog_config["rows_per_page"] = $_REQUEST["rows"];
+	}else{
+		$syslog_config["rows_per_page"] = read_config_option("num_rows_syslog");
+	}
 
 	print "<style type='text/css'>\n";
 	foreach ($syslog_colors as $type => $color) {
@@ -271,7 +277,7 @@ function syslog_messages() {
 										<tr>
 											<td>
 												<select name="host[]" multiple size="25" width="100%" style="width: 100%" onDblClick="javascript:document.getElementById('syslog_form').submit();">
-													<option value="0"<?php if ($_REQUEST["host"][0] == "0") {?> selected<?php }?>>show all hosts &nbsp;&nbsp;</option>
+													<option value="0"<?php if ((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
 													<?php
 													$query = mysql_query("SELECT DISTINCT " . $syslog_config["hostField"] . " FROM " . $syslog_config["syslogTable"] . " ORDER BY " . $syslog_config["hostField"] . " ASC");
 
@@ -280,12 +286,15 @@ function syslog_messages() {
 													if (sizeof($hosts) > 0) {
 														foreach ($hosts as $host) {
 															print "<option value=" . $host[$syslog_config["hostField"]];
-															foreach ($_REQUEST["host"] as $rh) {
-																if ($rh == $host[$syslog_config["hostField"]]) {
-																	print " selected ";
-																	break;
+															if (is_array($_REQUEST["host"])) {
+																foreach ($_REQUEST["host"] as $rh) {
+																	if ($rh == $host[$syslog_config["hostField"]]) {
+																		print " selected ";
+																		break;
+																	}
 																}
-															}
+															}else{																if ($host[$syslog_config["hostField"]] == $_REQUEST["host"]) {																	print " selected ";
+																}															}
 															print ">";
 															print $host[$syslog_config["hostField"]] . "</option>\n";
 														}
@@ -315,9 +324,13 @@ function syslog_messages() {
 
 									html_start_box("", "100%", $colors["header"], "3", "center", "");
 										$hostarray = "";
-										foreach ($_REQUEST["host"] as $h) {
-											$hostarray .= "host[]=$h&";
+										if (is_array($_REQUEST["host"])) {
+											foreach ($_REQUEST["host"] as $h) {
+												$hostarray .= "host[]=$h&";
+											}
+										}else{											$hostarray .= "host[]=" . $_REQUEST["host"] . "&";
 										}
+
 										$nav = "<tr bgcolor='#" . $colors["header"] . "'>
 											<td colspan='9'>
 												<table width='100%' cellspacing='0' cellpadding='0' border='0'>
@@ -334,11 +347,11 @@ function syslog_messages() {
 															$nav .= "</strong>
 														</td>\n
 														<td align='center' class='textHeaderDark'>
-															Showing Rows " . (($syslog_config["rows_per_page"]*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $syslog_config["rows_per_page"]) || ($total_rows < ($syslog_config["rows_per_page"]*$_REQUEST["page"]))) ? $total_rows : ($syslog_config["rows_per_page"]*$_REQUEST["page"])) . " of $total_rows [" . syslog_page_select($total_rows) . "]
+															Showing Rows " . (($syslog_config["rows_per_page"]*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $syslog_config["rows_per_page"]) || ($total_rows < ($syslog_config["rows_per_page"]*$_REQUEST["page"]))) ? $total_rows : ($syslog_config["rows_per_page"]*$_REQUEST["page"])) . " of $total_rows [ " . trim(syslog_page_select($total_rows)) . " ]
 														</td>\n
 														<td align='right' class='textHeaderDark'><strong>";
 															if (isset($_REQUEST["page"]) && ($_REQUEST["page"] * $syslog_config["rows_per_page"]) < $total_rows) {
-																$nav .= "<a class='linkOverDark' href='" . get_query_edited_url($url_curr_page, 'Page', ($_REQUEST["page"]+1)) . "'>";
+																$nav .= "<a class='linkOverDark' href='" . get_query_edited_url($url_curr_page, 'page', ($_REQUEST["page"]+1)) . "'>";
 															}
 															$nav .= "Next";
 															if (($_REQUEST["page"] * $syslog_config["rows_per_page"]) < $total_rows) {
