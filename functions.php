@@ -173,31 +173,31 @@ function get_syslog_messages() {
 	}
 
 	if (!empty($_REQUEST["elevel"])) {		switch($_REQUEST["elevel"]) {		case 1:
-			$mysql_in = "IN('emer')";
+			$mysql_in = "IN('emerg')";
 
 			break;
 		case 2:
-			$mysql_in = "IN('emer', 'alert')";
+			$mysql_in = "IN('emerg', 'alert')";
 
 			break;
 		case 3:
-			$mysql_in = "IN('emer', 'alert', 'crit')";
+			$mysql_in = "IN('emerg', 'alert', 'crit')";
 
 			break;
 		case 4:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err')";
+			$mysql_in = "IN('emerg', 'alert', 'crit', 'err')";
 
 			break;
 		case 5:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn')";
+			$mysql_in = "IN('emerg', 'alert', 'crit', 'err', 'warn')";
 
 			break;
 		case 6:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn', 'notice')";
+			$mysql_in = "IN('emerg', 'alert', 'crit', 'err', 'warn', 'notice')";
 
 			break;
 		case 7:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn', 'notice', 'info')";
+			$mysql_in = "IN('emerg', 'alert', 'crit', 'err', 'warn', 'notice', 'info')";
 
 			break;
 		case 8:
