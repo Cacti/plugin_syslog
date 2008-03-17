@@ -283,20 +283,24 @@ function syslog_messages() {
 
 													while ($hosts[] = mysql_fetch_assoc($query));
 													array_pop($hosts);
-													if (sizeof($hosts) > 0) {
-														foreach ($hosts as $host) {
-															print "<option value=" . $host[$syslog_config["hostField"]];
+													if (sizeof($hosts) > 0) {														foreach($hosts as $host) {
+															$new_hosts[] = $host[$syslog_config["hostField"]];
+														}
+														$hosts = natsort($new_hosts);
+
+														foreach ($new_hosts as $host) {
+															print "<option value=" . $host;
 															if (is_array($_REQUEST["host"])) {
 																foreach ($_REQUEST["host"] as $rh) {
-																	if ($rh == $host[$syslog_config["hostField"]]) {
+																	if ($rh == $host) {
 																		print " selected ";
 																		break;
 																	}
 																}
-															}else{																if ($host[$syslog_config["hostField"]] == $_REQUEST["host"]) {																	print " selected ";
+															}else{																if ($host == $_REQUEST["host"]) {																	print " selected ";
 																}															}
 															print ">";
-															print $host[$syslog_config["hostField"]] . "</option>\n";
+															print $host . "</option>\n";
 														}
 													}
 													?>

@@ -43,6 +43,7 @@
 ----[ Changelog
 	
 	--- 0.5.3 ---
+		Use the natural sort for hosts in the syslog host list
 		Add default double click for hosts
 		Add rows selector to code
 		Clean up images
