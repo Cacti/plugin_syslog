@@ -235,10 +235,10 @@ function syslog_messages() {
 					<td colspan="2" style="background-color: #EFEFEF; padding: 0px 5px 5px 0px;">
 						<?php
 						print "<table width='100%' cellpadding=0 cellspacing=0><tr><td width='100%'>";
-						html_start_box("<strong>Syslog Message Filters:</strong>&nbsp;&nbsp;[<font size=1> " . preg_replace("/concat.*BETWEEN /", 'Date/Time BETWEEN ', $sql_where) . " </font>]", "99%", $colors["header"], "3", "center", "");
+						html_start_box("<strong>Syslog Message Filter</strong>", "99%", $colors["header"], "3", "center", "");
 						?>
 						<tr bgcolor="#<?php print $colors["panel"];?>">
-							<td class='textEditTitle'>
+							<td style='padding-bottom: 5px;' class='textEditTitle'>
 						<?php
 							if ($syslog_config["graphtime"] || $syslog_config["timespan_sel"]) {
 								include("plugins/syslog/html/syslog_timespan_selector.php");

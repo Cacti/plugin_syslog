@@ -1,7 +1,6 @@
-	<nobr>
-						&nbsp;Search&nbsp;text:&nbsp;
-						<input type="text" name="filter" size="40" value="<?php print $_REQUEST["filter"];?>">
-						&nbsp;Facility:&nbsp;
+	<nobr style='padding-bottom: 5px;'>
+						&nbsp;Search:&nbsp;
+						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
 						<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();">
 							<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 							<?php
@@ -15,7 +14,6 @@
 							}
 							?>
 						</select>
-						&nbsp;Level:&nbsp;
 						<select name="elevel" onChange="javascript:document.getElementById('syslog_form').submit();">
 							<option value="0"<?php if ($_REQUEST["elevel"] == "0") {?> selected<?php }?>>All Priorities</option>
 							<option value="1"<?php if ($_REQUEST["elevel"] == "1") {?> selected<?php }?>>Emergency</option>
@@ -27,7 +25,6 @@
 							<option value="7"<?php if ($_REQUEST["elevel"] == "7") {?> selected<?php }?>>Info++</option>
 							<option value="8"<?php if ($_REQUEST["elevel"] == "8") {?> selected<?php }?>>Debug</option>
 						</select>
-						&nbsp;Rows:&nbsp;
 						<select name="rows" onChange="javascript:document.getElementById('syslog_form').submit();">
 							<option value="10"<?php if ($_REQUEST["rows"] == "10") {?> selected<?php }?>>10</option>
 							<option value="15"<?php if ($_REQUEST["rows"] == "15") {?> selected<?php }?>>15</option>

@@ -50,7 +50,7 @@
 		document.syslog_timespan_selector.submit();
 	}
 </script>
-	<nobr>
+	<nobr style='padding-bottom: 5px;'>
 						&nbsp;Presets:
 						<select name='predefined_timespan' onChange="reLoadIt();">
 							<?php
