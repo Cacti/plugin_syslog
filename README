@@ -41,6 +41,10 @@
 	Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+
+	--- 0.5.4 ---
+		Fix an issue with it not properly using the From address set
+		Fix an issue with emails being sent in plain text instead of HTML
 	
 	--- 0.5.3 ---
 		Use the natural sort for hosts in the syslog host list

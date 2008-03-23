@@ -31,7 +31,7 @@ function syslog_sendemail($to, $from, $subject, $message) {
 	if (syslog_check_dependencies()) {
 		if ($debug)
 			print "      Sending Alert email to '" . $to . "'\n";
-		send_mail($to, $from, $subject, $message);
+		send_mail($to, $from, $subject, $message, ' ');
 	} else {
 		if ($debug)
 			print "      Could not send alert, you are missing the Settings plugin\n";

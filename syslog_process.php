@@ -149,7 +149,7 @@
 			}
 		}
 		if ($alertm != '') {
-			syslog_sendemail($alert['email'], '', 'Event Alert - ' . $alert['name'], $alertm);
+			syslog_sendemail($alert['email'], $from, 'Event Alert - ' . $alert['name'], $alertm);
 		}
 	}
 
@@ -258,7 +258,7 @@
 
 					$reptext .= "</table>\n";
 				// Send mail
-					syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $reptext);
+					syslog_sendemail($syslog_report['email'], $from, 'Event Report - ' . $syslog_report['name'], $reptext);
 				}
 			}
 		} else {
