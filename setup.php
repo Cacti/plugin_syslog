@@ -27,10 +27,62 @@ function plugin_init_syslog() {
 	$plugin_hooks['graph_buttons']['syslog']         = 'syslog_graph_buttons';
 }
 
+
+function plugin_syslog_install () {
+	api_plugin_register_hook('syslog', 'top_header_tabs', 'syslog_show_tab', 'setup.php');
+	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab', 'setup.php');
+	api_plugin_register_hook('syslog', 'config_arrays', 'syslog_config_arrays', 'setup.php');
+	api_plugin_register_hook('syslog', 'draw_navigation_text', 'syslog_draw_navigation_text', 'setup.php');
+	api_plugin_register_hook('syslog', 'config_form', 'syslog_config_form', 'setup.php');
+	api_plugin_register_hook('syslog', 'top_graph_refresh', 'syslog_top_graph_refresh', 'setup.php');
+	api_plugin_register_hook('syslog', 'config_settings', 'syslog_config_settings', 'setup.php');
+	api_plugin_register_hook('syslog', 'poller_bottom', 'syslog_poller_bottom', 'setup.php');
+
+	/* add graph button that allows users to zoom to syslog messages */
+	api_plugin_register_hook('syslog', 'graph_buttons', 'syslog_graph_buttons', 'setup.php');
+
+	api_plugin_register_realm('syslog', 'syslog.php', 'View Syslog', 1);
+	api_plugin_register_realm('syslog', 'syslog_alert.php,syslog_remove.php,syslog_reports.php', 'Configure Syslog Alerts / Reports', 1);
+
+}
+
+function plugin_syslog_uninstall () {
+	// Do any extra Uninstall stuff here
+}
+
+function plugin_syslog_check_config () {
+	// Here we will check to ensure everything is configured
+	syslog_check_upgrade ();
+	return true;
+}
+
+function plugin_syslog_upgrade () {
+	// Here we will upgrade to the newest version
+	syslog_check_upgrade ();
+	return false;
+}
+
 function syslog_version () {
+	return plugin_syslog_version();
+}
+
+function syslog_check_upgrade () {
+
+	$current = plugin_syslog_version ();
+	$current = $current['version'];
+	$old = read_config_option('plugin_syslog_version');
+	if ($current != $old)
+		syslog_setup_table ();
+
+	// Set the new version
+	db_execute("REPLACE INTO settings (name, value) VALUES ('plugin_syslog_version', '$current')");
+}
+
+
+function plugin_syslog_version () {
 	return array(
 		'name' 	=> 'syslog',
-		'version' 	=> '0.5.3',
+		'version' 	=> '0.5.4',
 		'longname'	=> 'Syslog Monitoring',
 		'author'	=> 'Jimmy Conner',
 		'homepage'	=> 'http://cactiusers.org',
@@ -151,7 +203,8 @@ function syslog_show_tab () {
 	if (api_user_realm_auth('syslog.php')) {
 		if (substr_count($_SERVER["REQUEST_URI"], "syslog")) {
 			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog_down.gif" alt="syslog" align="absmiddle" border="0"></a>';
-		}else{			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog.gif" alt="syslog" align="absmiddle" border="0"></a>';
+		}else{
+			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog.gif" alt="syslog" align="absmiddle" border="0"></a>';
 		}
 	}
 
@@ -170,7 +223,8 @@ function syslog_config_arrays () {
 	$user_auth_realm_filenames['syslog_reports.php'] = 38;
 }
 
-function syslog_draw_navigation_text ($nav) {	global $config;
+function syslog_draw_navigation_text ($nav) {
+	global $config;
 
 	$nav["syslog.php:"]         = array("title" => "Syslog", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
 	$nav["syslog_remove.php:"]  = array("title" => "Syslog Removals", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_remove.php", "level" => "1");
@@ -184,6 +238,9 @@ function syslog_draw_navigation_text ($nav) {	global $config;
 function syslog_setup_table () {
 	global $config, $database_default;
 
+	// Return for now until I fix the seperate database issue
+	return;
+
 	include_once($config["library_path"] . "/database.php");
 	$sql    = "show tables from `" . $database_default . "`";
 
@@ -196,9 +253,6 @@ function syslog_setup_table () {
 			$tables[] = $t;
 		}
 	}
-
-	// Return for now until I fix the seperate database issue
-	return;
 
 	if (!in_array('syslog_logs', $tables)) {
 		$sql = "CREATE TABLE syslog_logs (
