@@ -5,17 +5,17 @@
     Home Site ...... http://cactiusers.org
     Program ........ Syslog Plugin for Cacti
     Purpose ........ Sylog viewer for cacti
-    Originally released as aloe by: sidewinder <sidewinder@shitworks.com> 
+    Originally released as aloe by: sidewinder <sidewinder@shitworks.com>
     Modified by: Harlequin harlequin@cyberonic.com> as h.aloe
 
 *******************************************************************************/
 
 
 ----[ Purpose
-	A modified version of the H.aloe plugin, which allows you to view syslog messages stored in a database. 
-	This version allows you to add alerts and remove different messages you don't want to "save" in the log 
+	A modified version of the H.aloe plugin, which allows you to view syslog messages stored in a database.
+	This version allows you to add alerts and remove different messages you don't want to "save" in the log
 
-    
+
 ----[ Features
 	Message filter
 	Message search
@@ -42,19 +42,19 @@
 
 ----[ Changelog
 
-	--- 0.5.4 ---
-		Fix an issue with it not properly using the From address set
-		Fix an issue with emails being sent in plain text instead of HTML
-	
-	--- 0.5.3 ---
-		Use the natural sort for hosts in the syslog host list
-		Add default double click for hosts
-		Add rows selector to code
-		Clean up images
-		Resolve some, not all image anomalies
-		Provide a red tab for syslog
-		Make menu's dynamic all the time
-		Make Levels so that they are level++ by default
+	--- 0.6 ---
+		General rewrite of several functions
+		Move Altering and Removal menu's to the Console
+		Allow specification of foreground/background colors from UI
+		Add Walter Zorn's tooltip to syslog messages (www.walterzorn.com)
+		Allow the syslog page to be sorted
+		Priorities are now >= behavior from syslog interface
+		Add additional indexes to syslog tables for performance reasons
+		Allow Removal rules to simply move to lower priority table
+		Allow Removal rules to be "On/Off" from user interface
+		Use more Javascript on the Syslog page
+		When sorting by simply time, it spans multiple dates allowing correlation by time
+
 
 	--- 0.5.2 ---
 		Fixes to make syslog work properly when using the Superlinks plugin
@@ -105,4 +105,3 @@
 
 	--- 0.1 ---
 		Initial release
-     

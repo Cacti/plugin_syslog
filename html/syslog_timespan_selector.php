@@ -50,8 +50,11 @@
 		document.syslog_timespan_selector.submit();
 	}
 </script>
-	<nobr style='padding-bottom: 5px;'>
-						&nbsp;Presets:
+
+
+
+	<nobr>
+						<strong>&nbsp;Presets:</strong>
 						<select name='predefined_timespan' onChange="reLoadIt();">
 							<?php
 							if ($syslog_config["graphtime"] ? $_SESSION["custom"] : $_SESSION["sess_syslog_array"]["custom"]) {
@@ -74,20 +77,20 @@
 							}
 							?>
 						</select>
-						&nbsp;From:
+						<strong>&nbsp;From:</strong>
 						<?php
 						if ($syslog_config["graphtime"]) { ?>
 							<input type='text' name='date1' id='date1' size='14' value='<?php print (isset($_SESSION["sess_current_date1"]) ? $_SESSION["sess_current_date1"] : "");?>'>
-							&nbsp;<input style='padding-bottom:4px;' type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='Start date selector' border='0' align='absmiddle' onclick="return showCalendar('date1');">&nbsp;
-							To:
+							&nbsp;<input type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='Start date selector' border='0' align='absmiddle' onclick="return showCalendar('date1');">&nbsp;
+							<strong>To:</strong>
 							<input type='text' name='date2' id='date2' size='14' value='<?php print (isset($_SESSION["sess_current_date2"]) ? $_SESSION["sess_current_date2"] : "");?>'>
-							&nbsp;<input style='padding-bottom:4px;' type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='End date selector' border='0' align='absmiddle' onclick="return showCalendar('date2');">
+							&nbsp;<input type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='End date selector' border='0' align='absmiddle' onclick="return showCalendar('date2');">
 						<?php
 						} elseif ($syslog_config["timespan_sel"]) { ?>
 							<input type='text' name='date1' id='date1' size='14' value='<?php print (isset($_SESSION["sess_syslog_array"]["sess_current_date1"]) ? $_SESSION["sess_syslog_array"]["sess_current_date1"] : "");?>'>
-							&nbsp;<input style='padding-bottom:4px;' type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='Start date selector' border='0' align='absmiddle' onclick="return showCalendar('date1');">&nbsp;
-							To:
+							&nbsp;<input type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='Start date selector' border='0' align='absmiddle' onclick="return showCalendar('date1');">&nbsp;
+							<strong>To:</strong>
 							<input type='text' name='date2' id='date2' size='14' value='<?php print (isset($_SESSION["sess_syslog_array"]["sess_current_date2"]) ? $_SESSION["sess_syslog_array"]["sess_current_date2"] : "");?>'>
-							&nbsp;<input style='padding-bottom:4px;' type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='End date selector' border='0' align='absmiddle' onclick="return showCalendar('date2');">
+							&nbsp;<input type='image' src='<?php print $config['url_path']; ?>images/calendar.gif' alt='End date selector' border='0' align='absmiddle' onclick="return showCalendar('date2');">
 						<?php } ?>
 	</nobr>

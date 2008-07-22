@@ -19,3 +19,4 @@ function api_user_realm_auth ($filename = '') {
 	}
 	return FALSE;
 }
+?>

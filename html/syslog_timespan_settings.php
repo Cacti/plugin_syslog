@@ -1,8 +1,8 @@
 <?php
 /*
+ ex: set tabstop=4 shiftwidth=4 autoindent:
  +-------------------------------------------------------------------------+
- | Copyright (C) 2005 Electric Sheep Studios                               |
- | Originally by Ian Berry, 2004                                           |
+ | Copyright (C) 2004-2008 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -14,48 +14,60 @@
  | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
  | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
- | cacti: a php-based graphing solution                                    |
+ | Cacti: The Complete RRDTool-based Graphing Solution                     |
  +-------------------------------------------------------------------------+
- | Most of this code has been designed, written and is maintained by       |
- | Ian Berry. See about.php for specific developer credit. Any questions   |
- | or comments regarding this code should be directed to:                  |
- | - iberry@raxnet.net                                                     |
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
  +-------------------------------------------------------------------------+
- | - raXnet - http://www.raxnet.net/                                       |
- +-------------------------------------------------------------------------+
- | Originally released as inc_timespan_settings.php                        |
- | Modified Nov 2005 by: Harlequin <harlequin@cyberonic.com>               |
- | for use with h.aloe plugin                                              |
+ | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
+
 global $syslog_config;
+
+/* ================= input validation ================= */
+input_validate_input_number(get_request_var_request("predefined_timespan"));
+input_validate_input_number(get_request_var_request("predefined_timeshift"));
+/* ==================================================== */
+
+/* clean up date1 string */
+if (isset($_REQUEST["date1"])) {
+	$_REQUEST["date1"] = sanitize_search_string(get_request_var("date1"));
+}
+
+/* clean up date2 string */
+if (isset($_REQUEST["date2"])) {
+	$_REQUEST["date2"] = sanitize_search_string(get_request_var("date2"));
+}
+
+include_once("./lib/time.php");
+
 /* initialize the timespan array */
 $timespan = array();
 
 /* set variables for first time use */
 initialize_timespan($timespan);
+$timeshift = set_timeshift();
 
-/* if the user does not want to see timespan selectors */
-if (!$syslog_config["timespan_sel"]) {
-	set_preset_timespan($timespan);
-/* the user does want to see them */
-}else {
-	process_html_variables();
-	process_user_input($timespan);
-}
-/* save session variables */
+/* set variables for first time use */
+initialize_timespan($timespan);
+
+process_html_variables();
+process_user_input($timespan, $timeshift);
+
 finalize_timespan($timespan);
 
 /* initialize the timespan selector for first use */
 function initialize_timespan(&$timespan) {
 	/* initialize the default timespan if not set */
-	if ((!isset($_SESSION["sess_syslog_array"]["sess_current_timespan"])) || (isset($_POST["button_clear_x"]))) {
-		$_SESSION["sess_syslog_array"]["sess_current_timespan"] = read_graph_config_option("default_timespan");
-		$_SESSION["sess_syslog_array"]["custom"] = 0;
+	if ((!isset($_SESSION["sess_current_timespan"])) || (isset($_POST["button_clear_x"]))) {
+		$_SESSION["sess_current_timespan"] = read_graph_config_option("default_timespan");
+		$_REQUEST["predefined_timespan"] = read_graph_config_option("default_timespan");
+		$_SESSION["custom"] = 0;
 	}
 
 	/* initialize the date sessions if not set */
-	if (!isset($_SESSION["sess_syslog_array"]["sess_current_date1"])) {
+	if (!isset($_SESSION["sess_current_date1"])) {
 		set_preset_timespan($timespan);
 	}
 }
@@ -64,62 +76,85 @@ function initialize_timespan(&$timespan) {
 function process_html_variables() {
 	if (isset($_REQUEST["predefined_timespan"])) {
 		if (!is_numeric($_REQUEST["predefined_timespan"])) {
-			if (isset($_SESSION["sess_syslog_array"]["sess_current_timespan"])) {
-				if ($_SESSION["sess_syslog_array"]["custom"]) {
+			if (isset($_SESSION["sess_current_timespan"])) {
+				if ($_SESSION["custom"]) {
 					$_REQUEST["predefined_timespan"] = GT_CUSTOM;
-					$_SESSION["sess_syslog_array"]["sess_current_timespan"] = GT_CUSTOM;
+					$_SESSION["sess_current_timespan"] = GT_CUSTOM;
 				}else {
-					$_REQUEST["predefined_timespan"] = $_SESSION["sess_syslog_array"]["sess_current_timespan"];
+					$_REQUEST["predefined_timespan"] = $_SESSION["sess_current_timespan"];
 				}
 			}else {
 				$_REQUEST["predefined_timespan"] = read_graph_config_option("default_timespan");
-				$_SESSION["sess_syslog_array"]["sess_current_timespan"] = read_graph_config_option("default_timespan");
+				$_SESSION["sess_current_timespan"] = read_graph_config_option("default_timespan");
 			}
 		}
 	} else {
-		if (isset($_SESSION["sess_syslog_array"]["sess_current_timespan"])) {
-			$_REQUEST["predefined_timespan"] = $_SESSION["sess_syslog_array"]["sess_current_timespan"];
+		if (isset($_SESSION["sess_current_timespan"])) {
+			$_REQUEST["predefined_timespan"] = $_SESSION["sess_current_timespan"];
 		}else {
 			$_REQUEST["predefined_timespan"] = read_graph_config_option("default_timespan");
-			$_SESSION["sess_syslog_array"]["sess_current_timespan"] = read_graph_config_option("default_timespan");
+			$_SESSION["sess_current_timespan"] = read_graph_config_option("default_timespan");
 		}
 	}
-	/* load_current_session_value("predefined_timespan", "sess_current_timespan", read_graph_config_option("default_timespan")); */
-	if (isset($_REQUEST["predefined_timespan"])) {
-		$_SESSION["sess_syslog_array"]["sess_current_timespan"] = $_REQUEST["predefined_timespan"];
-	}elseif (isset($_SESSION["sess_syslog_array"]["sess_current_timespan"])) {
-		$_REQUEST["predefined_timespan"] = $_SESSION["sess_syslog_array"]["sess_current_timespan"];
-	}else{
-		$_REQUEST["predefined_timespan"] = read_graph_config_option("default_timespan");
+	load_current_session_value("predefined_timespan", "sess_current_timespan", read_graph_config_option("default_timespan"));
+
+	# process timeshift
+	if (isset($_REQUEST["predefined_timeshift"])) {
+		if (!is_numeric($_REQUEST["predefined_timeshift"])) {
+			if (isset($_SESSION["sess_current_timeshift"])) {
+				$_REQUEST["predefined_timeshift"] = $_SESSION["sess_current_timeshift"];
+			}else {
+				$_REQUEST["predefined_timeshift"] = read_graph_config_option("default_timeshift");
+				$_SESSION["sess_current_timeshift"] = read_graph_config_option("default_timeshift");
+			}
+		}
+	} else {
+		if (isset($_SESSION["sess_current_timeshift"])) {
+			$_REQUEST["predefined_timeshift"] = $_SESSION["sess_current_timeshift"];
+		}else {
+			$_REQUEST["predefined_timeshift"] = read_graph_config_option("default_timeshift");
+			$_SESSION["sess_current_timeshift"] = read_graph_config_option("default_timeshift");
+		}
 	}
+	load_current_session_value("predefined_timeshift", "sess_current_timeshift", read_graph_config_option("default_timeshift"));
 }
 
 /* when a span time preselection has been defined update the span time fields */
 /* someone hit a button and not a dropdown */
-function process_user_input(&$timespan) {
+function process_user_input(&$timespan, $timeshift) {
 	if (isset($_POST["date1"])) {
 		/* the dates have changed, therefore, I am now custom */
-		if (($_SESSION["sess_syslog_array"]["sess_current_date1"] != $_POST["date1"]) || ($_SESSION["sess_syslog_array"]["sess_current_date2"] != $_POST["date2"])) {
+		if (($_SESSION["sess_current_date1"] != $_POST["date1"]) || ($_SESSION["sess_current_date2"] != $_POST["date2"])) {
 			$timespan["current_value_date1"] = $_POST["date1"];
 			$timespan["begin_now"] =strtotime($timespan["current_value_date1"]);
 			$timespan["current_value_date2"] = $_POST["date2"];
 			$timespan["end_now"]=strtotime($timespan["current_value_date2"]);
-			$_SESSION["sess_syslog_array"]["sess_current_timespan"] = GT_CUSTOM;
-			$_SESSION["sess_syslog_array"]["custom"] = 1;
+			$_SESSION["sess_current_timespan"] = GT_CUSTOM;
+			$_SESSION["custom"] = 1;
 			$_POST["predefined_timespan"] = GT_CUSTOM;
 		}else {
 			/* the default button wasn't pushed */
 			if (!isset($_POST["button_clear_x"])) {
-				$timespan["current_value_date2"] = $_POST["date1"];
+				$timespan["current_value_date1"] = $_POST["date1"];
 				$timespan["current_value_date2"] = $_POST["date2"];
-				$timespan["begin_now"] = $_SESSION["sess_syslog_array"]["sess_current_timespan_begin_now"];
-				$timespan["end_now"] = $_SESSION["sess_syslog_array"]["sess_current_timespan_end_now"];
+				$timespan["begin_now"] = $_SESSION["sess_current_timespan_begin_now"];
+				$timespan["end_now"] = $_SESSION["sess_current_timespan_end_now"];
+
+				/* time shifter: shift left */
+				if (isset($_POST["move_left_x"])) {
+					shift_time($timespan, "-", $timeshift);
+				}
+				/* time shifter: shift right */
+				if (isset($_POST["move_right_x"])) {
+					shift_time($timespan, "+", $timeshift);
+				}
+
 				/* custom display refresh */
-				if ($_SESSION["sess_syslog_array"]["custom"]) {
-					$_SESSION["sess_syslog_array"]["sess_current_timespan"] = GT_CUSTOM;
+				if ($_SESSION["custom"]) {
+					$_SESSION["sess_current_timespan"] = GT_CUSTOM;
 				/* refresh the display */
 				}else {
-					$_SESSION["sess_syslog_array"]["custom"] = 0;
+					$_SESSION["custom"] = 0;
 				}
 			} else {
 				/* first time in */
@@ -128,18 +163,19 @@ function process_user_input(&$timespan) {
 		}
 	}else {
 		if ((isset($_GET["predefined_timespan"]) && ($_GET["predefined_timespan"] != GT_CUSTOM)) ||
-			(!isset($_GET["predefined_timespan"]) && ($_SESSION["sess_syslog_array"]["custom"] == 0)) ||
-			(!isset($_SESSION["sess_syslog_array"]["sess_current_date1"]))) {
+			(!isset($_SESSION["custom"])) ||
+			(!isset($_GET["predefined_timespan"]) && ($_SESSION["custom"] == 0)) ||
+			(!isset($_SESSION["sess_current_date1"]))) {
 			set_preset_timespan($timespan);
 		}else {
-			$timespan["current_value_date1"] = $_SESSION["sess_syslog_array"]["sess_current_date1"];
-			$timespan["current_value_date2"] = $_SESSION["sess_syslog_array"]["sess_current_date2"];
+			$timespan["current_value_date1"] = $_SESSION["sess_current_date1"];
+			$timespan["current_value_date2"] = $_SESSION["sess_current_date2"];
 
-			$timespan["begin_now"] = $_SESSION["sess_syslog_array"]["sess_current_timespan_begin_now"];
-			$timespan["end_now"] = $_SESSION["sess_syslog_array"]["sess_current_timespan_end_now"];
+			$timespan["begin_now"] = $_SESSION["sess_current_timespan_begin_now"];
+			$timespan["end_now"] = $_SESSION["sess_current_timespan_end_now"];
 				/* custom display refresh */
-			if ($_SESSION["sess_syslog_array"]["custom"]) {
-				$_SESSION["sess_syslog_array"]["sess_current_timespan"] = GT_CUSTOM;
+			if ($_SESSION["custom"]) {
+				$_SESSION["sess_current_timespan"] = GT_CUSTOM;
 			}
 		}
 	}
@@ -147,126 +183,75 @@ function process_user_input(&$timespan) {
 
 /* establish graph timespan from either a user select or the default */
 function set_preset_timespan(&$timespan) {
-global $syslog_config;
-	$timespan["end_now"] = time();
-	$end_year = date("Y",$timespan["end_now"]);
-	$end_month = date("m",$timespan["end_now"]);
-	$end_day = date("d",$timespan["end_now"]);
-	$end_hour = date("H",$timespan["end_now"]);
-	$end_min = date("i",$timespan["end_now"]);
-	$end_sec = 00;
-
-	if ((!isset($_SESSION["sess_syslog_array"]["sess_current_timespan"])) || (!$syslog_config["timespan_sel"])) {
-		$_SESSION["sess_syslog_array"]["sess_current_timespan"] = read_graph_config_option("default_timespan");
+	# no current timespan: get default timespan
+	if ((!isset($_SESSION["sess_current_timespan"])) || (read_graph_config_option("timespan_sel") == "")) {
+		$_SESSION["sess_current_timespan"] = read_graph_config_option("default_timespan");
 	}
 
-	switch ($_SESSION["sess_syslog_array"]["sess_current_timespan"])  {
-		case GT_LAST_HALF_HOUR:
-			$timespan["begin_now"] = $timespan["end_now"] - 60*30;
-			break;
-		case GT_LAST_HOUR:
-			$timespan["begin_now"] = $timespan["end_now"] - 60*60;
-			break;
-		case GT_LAST_2_HOURS:
-			$timespan["begin_now"] = $timespan["end_now"] - 2*60*60;
-			break;
-		case GT_LAST_4_HOURS:
-			$timespan["begin_now"] = $timespan["end_now"] - 4*60*60;
-			break;
-		case GT_LAST_6_HOURS:
-			$timespan["begin_now"] = $timespan["end_now"] - 6*60*60;
-			break;
-		case GT_LAST_12_HOURS:
-			$timespan["begin_now"] = $timespan["end_now"] - 12*60*60;
-			break;
-		case GT_LAST_DAY:
-			$timespan["begin_now"] = $timespan["end_now"] - 24*60*60;
-			break;
-		case GT_LAST_2_DAYS:
-			$timespan["begin_now"] = $timespan["end_now"] - 2*24*60*60;
-			break;
-		case GT_LAST_3_DAYS:
-			$timespan["begin_now"] = $timespan["end_now"] - 3*24*60*60;
-			break;
-		case GT_LAST_4_DAYS:
-			$timespan["begin_now"] = $timespan["end_now"] - 4*24*60*60;
-			break;
-		case GT_LAST_WEEK:
-			$timespan["begin_now"] = $timespan["end_now"] - 7*24*60*60;
-			break;
-		case GT_LAST_2_WEEKS:
-			$timespan["begin_now"] = $timespan["end_now"] - 2*7*24*60*60;
-			break;
-		case GT_LAST_MONTH:
-			$timespan["begin_now"] = strtotime("-1 month");
-			break;
-		case GT_LAST_2_MONTHS:
-			$timespan["begin_now"] = strtotime("-2 months");
-			break;
-		case GT_LAST_3_MONTHS:
-			$timespan["begin_now"] = strtotime("-3 months");
-			break;
-		case GT_LAST_4_MONTHS:
-			$timespan["begin_now"] = strtotime("-4 months");
-			break;
-		case GT_LAST_6_MONTHS:
-			$timespan["begin_now"] = strtotime("-6 months");
-			break;
-		case GT_LAST_YEAR:
-			$timespan["begin_now"] = strtotime("-1 year");
-			break;
-		case GT_LAST_2_YEARS:
-			$timespan["begin_now"] = strtotime("-2 years");
-			break;
-		default:
-			$timespan["begin_now"] = $timespan["end_now"] - DEFAULT_TIMESPAN;
-			break;
-	}
+	# get config option for first-day-of-the-week
+	$first_weekdayid = read_graph_config_option("first_weekdayid");
+	# get start/end time-since-epoch for actual time (now()) and given current-session-timespan
+	get_timespan( $timespan, time(),$_SESSION["sess_current_timespan"] , $first_weekdayid);
 
-	$start_year = date("Y",$timespan["begin_now"]);
-	$start_month = date("m",$timespan["begin_now"]);
-	$start_day = date("d",$timespan["begin_now"]);
-	$start_hour = date("H",$timespan["begin_now"]);
-	$start_min = date("i",$timespan["begin_now"]);
-	$start_sec = 00;
-
-	$timespan["current_value_date1"] = $start_year . "-" . $start_month . "-" . $start_day . " " . $start_hour . ":" . $start_min;
-	$timespan["current_value_date2"] = $end_year . "-" . $end_month . "-".$end_day . " ".$end_hour . ":" . $end_min;
-
-	$_SESSION["sess_syslog_array"]["custom"] = 0;
+	$_SESSION["custom"] = 0;
 }
 
 function finalize_timespan(&$timespan) {
 	if (!isset($timespan["current_value_date1"])) {
 		/* Default end date is now default time span */
-		$timespan["current_value_date1"] = date("Y", $timespan["begin_now"]) . "-" . date("m", $timespan["begin_now"]) . "-" . date("d", $timespan["begin_now"]) . " " . date("H", $timespan["begin_now"]) . ":".date("i", $timespan["begin_now"]);
+		$timespan["current_value_date1"] = date("Y-m-d H:i", $timespan["begin_now"]);
 	}
 
 	if (!isset($timespan["current_value_date2"])) {
 		/* Default end date is now */
-		$timespan["current_value_date2"] = date("Y", $timespan["end_now"]) . "-" . date("m", $timespan["end_now"]) . "-" . date("d", $timespan["end_now"]) . " " . date("H", $timespan["end_now"]) . ":" . date("i", $timespan["end_now"]);
+		$timespan["current_value_date2"] = date("Y-m-d H:i", $timespan["end_now"]);
 	}
 
 	/* correct bad dates on calendar */
 	if ($timespan["end_now"] < $timespan["begin_now"]) {
 		set_preset_timespan($timespan);
-		$_SESSION["sess_syslog_array"]["sess_current_timespan"] = read_graph_config_option("default_timespan");
+		$_SESSION["sess_current_timespan"] = read_graph_config_option("default_timespan");
 
-		$timespan["current_value_date1"] = date("Y", $timespan["begin_now"]) . "-" . date("m", $timespan["begin_now"]) . "-" . date("d", $timespan["begin_now"]) . " " . date("H", $timespan["begin_now"]) . ":".date("i", $timespan["begin_now"]);
-		$timespan["current_value_date2"] = date("Y", $timespan["end_now"]) . "-" . date("m", $timespan["end_now"]) . "-" . date("d", $timespan["end_now"]) . " " . date("H", $timespan["end_now"]) . ":" . date("i", $timespan["end_now"]);
+		$timespan["current_value_date1"] = date("Y-m-d H:i", $timespan["begin_now"]);
+		$timespan["current_value_date2"] = date("Y-m-d H:i", $timespan["end_now"]);
 	}
 
-	$_SESSION["sess_syslog_array"]["sess_current_timespan_end_now"] = $timespan["end_now"];
-	$_SESSION["sess_syslog_array"]["sess_current_timespan_begin_now"] = $timespan["begin_now"];
-	$_SESSION["sess_syslog_array"]["sess_current_date1"] = $timespan["current_value_date1"];
-	$_SESSION["sess_syslog_array"]["sess_current_date2"] = $timespan["current_value_date2"];
+	/* if moved to future although not allow by settings, stop at current time */
+	if ( ($timespan["end_now"] > time()) && (read_graph_config_option("allow_graph_dates_in_future") == "") ) {
+		$timespan["end_now"] = time();			
+		# convert end time to human readable format
+		$timespan["current_value_date2"] = date("Y-m-d H:i", $timespan["end_now"]);
+	}
+
+	$_SESSION["sess_current_timespan_end_now"] = $timespan["end_now"];
+	$_SESSION["sess_current_timespan_begin_now"] = $timespan["begin_now"];
+	$_SESSION["sess_current_date1"] = $timespan["current_value_date1"];
+	$_SESSION["sess_current_date2"] = $timespan["current_value_date2"];
 
 	$timespan_sel_pos = strpos(get_browser_query_string(),"&predefined_timespan");
 	if ($timespan_sel_pos) {
-		$_SESSION["sess_syslog_array"]["urlval"] = substr(get_browser_query_string(),0,$timespan_sel_pos);
+		$_SESSION["urlval"] = substr(get_browser_query_string(),0,$timespan_sel_pos);
 	}else {
-		$_SESSION["sess_syslog_array"]["urlval"] = get_browser_query_string();
+		$_SESSION["urlval"] = get_browser_query_string();
 	}
+}
+
+/* establish graph timeshift from either a user select or the default */
+function set_timeshift() {
+	global $config;
+	include($config["include_path"] . "/global_arrays.php");
+
+	# no current timeshift: get default timeshift
+	if ((!isset($_SESSION["sess_current_timeshift"])) ||
+		(read_graph_config_option("timespan_sel") == "") ||
+		(isset($_POST["button_clear_x"]))
+		) {
+		$_SESSION["sess_current_timeshift"] = read_graph_config_option("default_timeshift");
+		$_REQUEST["predefined_timeshift"] = read_graph_config_option("default_timeshift");
+		$_SESSION["custom"] = 0;
+	}
+
+	return $timeshift = $graph_timeshifts[$_SESSION["sess_current_timeshift"]];
 }
 
 ?>
