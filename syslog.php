@@ -226,8 +226,8 @@ function syslog_request_validation() {
 	load_current_session_value("efacility", "sess_syslog_efacility", "0");
 	load_current_session_value("elevel", "sess_syslog_elevel", "0");
 	load_current_session_value("hosts", "sess_syslog_hosts", array());
-	load_current_session_value("sort_column", "sess_syslog_sort_column", "host");
-	load_current_session_value("sort_direction", "sess_syslog_sort_direction", "ASC");
+	load_current_session_value("sort_column", "sess_syslog_sort_column", "time");
+	load_current_session_value("sort_direction", "sess_syslog_sort_direction", "DESC");
 
 	include("./plugins/syslog/config.php");
 	include("./plugins/syslog/html/syslog_timespan_settings.php");
