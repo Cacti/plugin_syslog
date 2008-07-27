@@ -53,7 +53,7 @@ function syslog_check_dependencies() {
 function syslog_poller_bottom() {
 	global $config;
 
-	$p              = dirname(__FILE__);
+	$p = dirname(__FILE__);
 	$command_string = read_config_option("path_php_binary");
 
 	if ($config["cacti_server_os"] == "unix") {
