@@ -483,7 +483,7 @@ function syslog_draw_navigation_text ($nav) {
 }
 
 function syslog_setup_table() {
-	global $config, $database_default, $database_hostname, $database_username;
+	global $config, $syslog_config, $database_default, $database_hostname, $database_username;
 
 	/* database connection information, must be loaded always */
 	include($config["base_path"] . '/plugins/syslog/config.php');
@@ -560,6 +560,19 @@ function syslog_setup_table() {
 			$result = mysql_query($sql) or die (mysql_error());
 		}
 	}
+	/* create the soft removal table */
+	if (!in_array($syslog_config['facilityTable'], $tables)) {
+		$sql = "CREATE TABLE  `". $syslogdb_default . "`.`" . $syslog_config['facilityTable'] . "` (
+			`host` varchar(128) NOT NULL,
+			`facility` varchar(10) NOT NULL,
+			PRIMARY KEY  (`host`,`facility`)) ENGINE=MyISAM;";
+
+		if ($cacti_route) {
+			db_execute($sql);
+		}else{
+			$result = mysql_query($sql) or die (mysql_error());
+		}
+	}
 
 	/* create the host reference table */
 	if (!in_array('syslog_hosts', $tables)) {
@@ -627,7 +640,7 @@ function syslog_setup_table() {
 	}
 
 	if (!in_array("enabled", $columns)) {
-		$sql = "alter table syslog_remove add column enabled char(2) default 'on' after type;";
+		$sql = "ALTER TABLE " . $syslog_config['removeTable'] . " ADD COLUMN enabled char(2) DEFAULT 'on' AFTER type;";
 
 		if ($cacti_route) {
 			db_execute($sql);
@@ -637,7 +650,7 @@ function syslog_setup_table() {
 	}
 
 	if (!in_array("method", $columns)) {
-		$sql = "alter table syslog_remove add column method char(5) default 'del' after enabled;";
+		$sql = "ALTER TABLE " . $syslog_config['removeTable'] . " ADD COLUMN method char(5) DEFAULT 'del' AFTER enabled;";
 
 		if ($cacti_route) {
 			db_execute($sql);

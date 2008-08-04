@@ -57,8 +57,6 @@ function syslog_remove_items($table, $rule = '') {
 		" Removal Rule" . (mysql_affected_rows() == 1 ? "" : "s" ) .
 		" to process");
 
-
-
 	while ($remove = mysql_fetch_array($query, MYSQL_ASSOC)) {
 		$sql  = "";
 		$sql1 = "";

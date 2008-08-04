@@ -25,8 +25,8 @@
 $syslogdb_type     = 'mysql';
 $syslogdb_default  = 'syslog';
 $syslogdb_hostname = 'localhost';
-$syslogdb_username = 'cacti';
-$syslogdb_password = 'Bgtg@4c@s01';
+$syslogdb_username = 'cactiuser';
+$syslogdb_password = 'cactiuser';
 
 //  Field Mappings, adjust to match the syslog table columns in use
 $syslog_config['syslogTable']        = 'syslog';
@@ -36,6 +36,7 @@ $syslog_config['removeTable']        = 'syslog_remove';
 $syslog_config['alertTable']         = 'syslog_alert';
 $syslog_config['reportTable']        = 'syslog_reports';
 $syslog_config['hostTable']          = 'syslog_hosts';
+$syslog_config['facilityTable']      = 'syslog_facilities';
 
 /* field in the incomming table */
 $syslog_config['dateField']          = 'date';

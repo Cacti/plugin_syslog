@@ -33,7 +33,6 @@ $show_console_tab = true;
 define("OPER_MODE_NATIVE", 0);
 define("OPER_MODE_RESKIN", 1);
 
-
 $oper_mode = api_plugin_hook_function('top_header', OPER_MODE_NATIVE);
 if ($oper_mode == OPER_MODE_RESKIN) {
 	return;

@@ -99,13 +99,13 @@ if ($email != '') {
 if ($retention > 0) {
 	/* delete from the main syslog table first */
 	mysql_query("DELETE FROM " . $syslog_config["syslogTable"] . "
-		WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date");
+		WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date()");
 
 	$syslog_deleted = mysql_affected_rows();
 
 	/* now delete from the syslog removed table */
 	mysql_query("DELETE FROM " . $syslog_config["syslogRemovedTable"] . "
-		WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date");
+		WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date()");
 
 	$syslog_deleted += mysql_affected_rows();
 
@@ -204,21 +204,21 @@ while ($alert = mysql_fetch_array($query, MYSQL_ASSOC)) {
 
 /* MOVE ALL FLAGGED MESSAGES TO THE SYSLOG TABLE */
 mysql_query('INSERT INTO ' .
-	$syslog_config["syslogTable"] . ' (`' .
-	$syslog_config["dateField"] . '`, `' .
-	$syslog_config["timeField"] . '`, ' .
-       	$syslog_config["priorityField"] . ', ' .
-       	$syslog_config["facilityField"] . ', ' .
-       	$syslog_config["hostField"] . ', ' .
-       	$syslog_config["textField"] . ') ' .
-       	'SELECT `' .
-       	$syslog_config["dateField"] . '`, `' .
-       	$syslog_config["timeField"] . '`, ' .
-       	$syslog_config["priorityField"] . ', ' .
-       	$syslog_config["facilityField"] . ', ' .
-       	$syslog_config["hostField"] . ', ' .
-       	$syslog_config["textField"] .
-       	' FROM ' . $syslog_config["incomingTable"] . ' WHERE status=' . $uniqueID);
+	$syslog_config["syslogTable"]   . ' (`' .
+	$syslog_config["dateField"]     . '`, `' .
+	$syslog_config["timeField"]     . '`, ' .
+	$syslog_config["priorityField"] . ', ' .
+	$syslog_config["facilityField"] . ', ' .
+	$syslog_config["hostField"]     . ', ' .
+	$syslog_config["textField"]     . ') ' .
+	'SELECT `' .
+	$syslog_config["dateField"]     . '`, `' .
+	$syslog_config["timeField"]     . '`, ' .
+	$syslog_config["priorityField"] . ', ' .
+	$syslog_config["facilityField"] . ', ' .
+	$syslog_config["hostField"] . ' , ' .
+	$syslog_config["textField"] .
+	' FROM ' . $syslog_config["incomingTable"] . ' WHERE status=' . $uniqueID);
 
 
 $moved = mysql_affected_rows();

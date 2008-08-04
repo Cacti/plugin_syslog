@@ -139,7 +139,7 @@
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 													<?php
 													$efacilities = db_fetch_assoc("SELECT DISTINCT " . $syslog_config["facilityField"] . "
-														FROM " . $syslog_config["syslogTable"] . $where_hostfilter . "
+														FROM " . $syslog_config["facilityTable"] . $hostfilter . "
 														ORDER BY " . $syslog_config["facilityField"]);
 
 													if (sizeof($efacilities) > 0) {
@@ -182,7 +182,7 @@
 													<option value="500"<?php if ($_REQUEST["rows"] == "500") {?> selected<?php }?>>500</option>
 												</select>
 											</td>
-											<td style='padding-right:2px;'>
+											<td nowrap style='white-space:nowrap;padding-right:2px;'>
 												<input type="image" name='button_refresh' src="<?php print $config['url_path']; ?>images/button_go.gif" alt="Go" border="0" align="absmiddle" action='submit'>
 												<input type='image' name='button_clear' src='<?php print $config["url_path"];?>images/button_clear.gif' alt='Return to the default time span' border='0' align='absmiddle' action='submit'>
 												<input type='image' name='export' src='<?php print $config['url_path']; ?>images/button_export.gif' alt='Reset fields to defaults' border='0' align='absmiddle' action='submit'>
