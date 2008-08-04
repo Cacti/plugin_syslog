@@ -46,10 +46,15 @@ if (isset($_SERVER["argv"][1])) {
 
 $no_http_headers = true;
 
-chdir('../../');
+$dir = dirname(__FILE__);
+chdir($dir);
+
+if (strpos($dir, 'plugins') !== false) {
+	chdir('../../');
+}
 if (file_exists("./include/global.php")) {
 	include("./include/global.php");
-}else{
+} else {
 	include("./include/config.php");
 }
 
@@ -337,5 +342,3 @@ while ($syslog_report = mysql_fetch_array($syslog_reports, MYSQL_ASSOC)) {
 }
 
 syslog_debug("Finished processing Reports...");
-
-?>
