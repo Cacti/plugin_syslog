@@ -55,13 +55,7 @@ function syslog_poller_bottom() {
 
 	$p = dirname(__FILE__);
 	$command_string = read_config_option("path_php_binary");
-
-	if ($config["cacti_server_os"] == "unix") {
-		$extra_args = "-q " . $p . "/syslog_process.php";
-	} else {
-		$extra_args = "-q " . strtolower($p . "/syslog_process.php");
-	}
-
+	$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
 	exec_background($command_string, $extra_args);
 }
 
