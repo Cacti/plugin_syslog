@@ -85,12 +85,14 @@ function syslog_config_settings() {
 			"friendly_name" => "Refresh Interval",
 			"description" => "This is the time in seconds before the page refreshes.  (1 - 300)",
 			"method" => "textbox",
+			"default" => "300",
 			"max_length" => 3,
 		),
 		"syslog_retention" => array(
 			"friendly_name" => "Syslog Retention",
 			"description" => "This is the number of days to keep events.  (0 - 365, 0 = unlimited)",
 			"method" => "textbox",
+			"default" => "30",
 			"max_length" => 3,
 		),
 		"syslog_hosts" => array(

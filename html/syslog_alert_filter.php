@@ -46,6 +46,5 @@
 				</tr>
 			</table>
 		</td>
-		<input type='hidden' name='page' value='1'>
 		</form>
 	</tr>

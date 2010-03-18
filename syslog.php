@@ -200,10 +200,12 @@ function syslog_request_validation() {
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
 		$changed += syslog_check_changed("hosts", "sess_syslog_hosts");
+		$changed += syslog_check_changed("predefined_timespan", "sess_current_timespan");
+		$changed += syslog_check_changed("date1", "sess_current_date1");
+		$changed += syslog_check_changed("date2", "sess_current_date2");
 		$changed += syslog_check_changed("rows", "sess_syslog_rows");
 		$changed += syslog_check_changed("removal", "sess_syslog_removal");
 		$changed += syslog_check_changed("refresh", "sess_syslog_refresh");
-		$changed += syslog_check_changed("page", "sess_syslog_page");
 		$changed += syslog_check_changed("filter", "sess_syslog_filter");
 		$changed += syslog_check_changed("efacility", "sess_syslog_efacility");
 		$changed += syslog_check_changed("elevel", "sess_syslog_elevel");
@@ -225,7 +227,7 @@ function syslog_request_validation() {
 	load_current_session_value("filter", "sess_syslog_filter", "");
 	load_current_session_value("efacility", "sess_syslog_efacility", "0");
 	load_current_session_value("elevel", "sess_syslog_elevel", "0");
-	load_current_session_value("hosts", "sess_syslog_hosts", array());
+	load_current_session_value("hosts", "sess_syslog_hosts", "localhost");
 	load_current_session_value("sort_column", "sess_syslog_sort_column", "time");
 	load_current_session_value("sort_direction", "sess_syslog_sort_direction", "DESC");
 

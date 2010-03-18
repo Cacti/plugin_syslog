@@ -338,7 +338,12 @@ function get_syslog_messages() {
 		}
 	}
 
-	$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . "CONCAT(DATE_FORMAT("  . $syslog_config["dateField"] . ",'%Y-%m-%d'),' ',TIME_FORMAT(" . $syslog_config["timeField"] . ",'%H:%i:%s')) BETWEEN '". $_SESSION["sess_current_date1"] . "' AND '" . $_SESSION["sess_current_date2"] . "'";
+	$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . 
+		$syslog_config["dateField"] . ">='" . 
+		date("Y-m-d", strtotime($_SESSION["sess_current_date1"])) . 
+		"' AND " . $syslog_config["timeField"] .  ">='" . 
+		date("H:i:s", strtotime($_SESSION["sess_current_date1"])) . 
+		"'";
 
 	if (!empty($_REQUEST["filter"])) {
 		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";

@@ -83,6 +83,7 @@ if ($r == '' or $r < 0 or $r > 365) {
 }
 
 $retention = read_config_option("syslog_retention");
+$retention = date("Y-m-d", time() - (86400 * $retention));
 $email     = read_config_option("syslog_email");
 $emailname = read_config_option("syslog_emailname");
 $from      = '';
@@ -99,13 +100,16 @@ if ($email != '') {
 if ($retention > 0) {
 	/* delete from the main syslog table first */
 	mysql_query("DELETE FROM " . $syslog_config["syslogTable"] . "
-		WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date()");
+		WHERE date < '$retention'");
 
 	$syslog_deleted = mysql_affected_rows();
 
 	/* now delete from the syslog removed table */
 	mysql_query("DELETE FROM " . $syslog_config["syslogRemovedTable"] . "
-		WHERE DATE_SUB(CURDATE(),INTERVAL $retention DAY) > date()");
+		WHERE date < '$retention'");
+
+	/* remove old hosts */
+	mysql_query("DELETE FROM syslog_hosts WHERE UNIX_TIMESTAMP(last_updated)<UNIX_TIMESTAMP()-3600");
 
 	$syslog_deleted += mysql_affected_rows();
 
