@@ -1,8 +1,7 @@
 <?php
 /*
- ex: set tabstop=4 shiftwidth=4 autoindent:
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007 The Cacti Group                                      |
+ | Copyright (C) 2007-2010 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -473,7 +472,7 @@ function syslog_report() {
 
 	/* remember these search fields in session vars so we don't have to keep passing them around */
 	load_current_session_value("page", "sess_syslog_report_paage", "1");
-	load_current_session_value("rows", "sess_syslog_report_rows", "20");
+	load_current_session_value("rows", "sess_syslog_report_rows", "-1");
 	load_current_session_value("enabled", "sess_syslog_report_enabled", "-1");
 	load_current_session_value("filter", "sess_syslog_report_filter", "");
 	load_current_session_value("sort_column", "sess_syslog_report_sort_column", "name");
@@ -488,10 +487,21 @@ function syslog_report() {
 	html_start_box("", "100%", $colors["header"], "3", "center", "");
 
 	$sql_where = "";
+
+	if ($_REQUEST["rows"] == -1) {
+		$row_limit = read_config_option("num_rows_syslog");
+	}elseif ($_REQUEST["rows"] == -2) {
+		$row_limit = 999999;
+	}else{
+		$row_limit = $_REQUEST["rows"];
+	}
+
 	$reports   = syslog_get_report_records($sql_where);
+
 	$rows_query_string = "SELECT COUNT(*)
 		FROM syslog_reports
 		$sql_where";
+
 	$total_rows = db_fetch_cell($rows_query_string, '', true, $syslog_cnn);
 
 	?>
@@ -510,23 +520,37 @@ function syslog_report() {
 	/* generate page list */
 	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog_reports.php");
 
-	$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
-				<td colspan='16'>
-					<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-						<tr>
-							<td align='left' class='textHeaderDark'>
-								<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='" . $config['url_path'] . "plugins/syslog/syslog_reports.php?page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
-							</td>\n
-							<td align='center' class='textHeaderDark'>
-								Showing Rows " . (($_REQUEST["rows"]*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $_REQUEST["rows"]) || ($total_rows < ($_REQUEST["rows"]*$_REQUEST["page"]))) ? $total_rows : ($_REQUEST["rows"]*$_REQUEST["page"])) . " of $total_rows [$url_page_select]
-							</td>\n
-							<td align='right' class='textHeaderDark'>
-								<strong>"; if (($_REQUEST["page"] * $_REQUEST["rows"]) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . $config['url_path'] . "plugins/syslog/syslog_reports.php?page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $_REQUEST["rows"]) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
-							</td>\n
-						</tr>
-					</table>
-				</td>
-			</tr>\n";
+	if ($total_rows > 0) {
+		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
+					<td colspan='13'>
+						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
+							<tr>
+								<td align='left' class='textHeaderDark'>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog_reports.php.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+								</td>\n
+								<td align='center' class='textHeaderDark'>
+									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
+								</td>\n
+								<td align='right' class='textHeaderDark'>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog_reports.php.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+								</td>\n
+							</tr>
+						</table>
+					</td>
+				</tr>\n";
+	}else{
+		$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
+					<td colspan='22'>
+						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
+							<tr>
+								<td align='center' class='textHeaderDark'>
+									No Rows Found
+								</td>\n
+							</tr>
+						</table>
+					</td>
+				</tr>\n";
+	}
 
 	print $nav;
 

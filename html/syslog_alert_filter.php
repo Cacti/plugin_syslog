@@ -13,11 +13,12 @@
 						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
 						</select>
 					</td>
-					<td width="55">
-						&nbsp;Records:&nbsp;
+					<td width="45">
+						&nbsp;Rows:&nbsp;
 					</td>
 					<td width="1">
 						<select name="rows" onChange="applyChange(document.alert)">
+						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
 						<?php
 							if (sizeof($item_rows) > 0) {
 							foreach ($item_rows as $key => $value) {
