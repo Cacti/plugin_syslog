@@ -350,14 +350,6 @@ function syslog_action_edit() {
 	form_save_button("syslog_removal.php", "", "id");
 }
 
-function check_changed($request, $session) {
-	if ((isset($_REQUEST[$request])) && (isset($_SESSION[$session]))) {
-		if ($_REQUEST[$request] != $_SESSION[$session]) {
-			return 1;
-		}
-	}
-}
-
 function syslog_removal() {
 	global $colors, $syslog_actions, $message_types, $item_rows, $config;
 

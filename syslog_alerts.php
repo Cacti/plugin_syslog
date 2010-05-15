@@ -340,14 +340,6 @@ function syslog_action_edit() {
 	form_save_button("syslog_alerts.php", "", "id");
 }
 
-function check_changed($request, $session) {
-	if ((isset($_REQUEST[$request])) && (isset($_SESSION[$session]))) {
-		if ($_REQUEST[$request] != $_SESSION[$session]) {
-			return 1;
-		}
-	}
-}
-
 function syslog_alerts() {
 	global $colors, $syslog_actions, $item_rows, $config, $message_types;
 

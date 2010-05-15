@@ -28,10 +28,10 @@
 						</select>
 					</td>
 					<td>
-						&nbsp;<input type="image" src="<?php echo $config['url_path']; ?>images/button_go.gif" alt="Go" border="0" align="absmiddle">
+						&nbsp;<input type="submit" value="Go">
 					</td>
 					<td>
-						&nbsp;<input type="image" src="<?php echo $config['url_path']; ?>images/button_clear.gif" name="clear" alt="Clear" border="0" align="absmiddle">
+						&nbsp;<input type="submit" name="clear_x" value="Clear">
 					</td>
 				</tr>
 			</table>

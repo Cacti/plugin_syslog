@@ -25,7 +25,7 @@ function plugin_syslog_install () {
 	api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
-	api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
 	syslog_setup_table_new();
 }

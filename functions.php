@@ -27,14 +27,6 @@
  +-------------------------------------------------------------------------+
 */
 
-function syslog_check_changed($request, $session) {
-	if ((isset($_REQUEST[$request])) && (isset($_SESSION[$session]))) {
-		if ($_REQUEST[$request] != $_SESSION[$session]) {
-			return 1;
-		}
-	}
-}
-
 function syslog_sendemail($to, $from, $subject, $message) {
 	if (syslog_check_dependencies()) {
 		syslog_debug("Sending Alert email to '" . $to . "'");

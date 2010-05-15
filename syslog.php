@@ -199,18 +199,18 @@ function syslog_request_validation() {
 	}else{
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
-		$changed += syslog_check_changed("hosts", "sess_syslog_hosts");
-		$changed += syslog_check_changed("predefined_timespan", "sess_current_timespan");
-		$changed += syslog_check_changed("date1", "sess_current_date1");
-		$changed += syslog_check_changed("date2", "sess_current_date2");
-		$changed += syslog_check_changed("rows", "sess_syslog_rows");
-		$changed += syslog_check_changed("removal", "sess_syslog_removal");
-		$changed += syslog_check_changed("refresh", "sess_syslog_refresh");
-		$changed += syslog_check_changed("filter", "sess_syslog_filter");
-		$changed += syslog_check_changed("efacility", "sess_syslog_efacility");
-		$changed += syslog_check_changed("elevel", "sess_syslog_elevel");
-		$changed += syslog_check_changed("sort_column", "sess_syslog_sort_column");
-		$changed += syslog_check_changed("sort_direction", "sess_syslog_sort_direction");
+		$changed += check_changed("hosts", "sess_syslog_hosts");
+		$changed += check_changed("predefined_timespan", "sess_current_timespan");
+		$changed += check_changed("date1", "sess_current_date1");
+		$changed += check_changed("date2", "sess_current_date2");
+		$changed += check_changed("rows", "sess_syslog_rows");
+		$changed += check_changed("removal", "sess_syslog_removal");
+		$changed += check_changed("refresh", "sess_syslog_refresh");
+		$changed += check_changed("filter", "sess_syslog_filter");
+		$changed += check_changed("efacility", "sess_syslog_efacility");
+		$changed += check_changed("elevel", "sess_syslog_elevel");
+		$changed += check_changed("sort_column", "sess_syslog_sort_column");
+		$changed += check_changed("sort_direction", "sess_syslog_sort_direction");
 
 		if ($changed) {
 			$_REQUEST["page"] = "1";
