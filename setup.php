@@ -139,7 +139,7 @@ function syslog_check_upgrade() {
 					tag varchar(10) default NULL,
 					logtime timestamp NOT NULL default '0000-00-00 00:00:00',
 					program varchar(15) default NULL,
-					msg text,
+					msg varchar(1024) default NULL,
 					seq int(10) unsigned NOT NULL auto_increment,
 					PRIMARY KEY (seq),
 					KEY host (host),
@@ -240,7 +240,7 @@ function syslog_setup_table_new() {
 		priority varchar(10) default NULL,
 		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(128) default NULL,
-		message VARCHAR(1024) NOT NULL default '',
+		message varchar(1024) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY (seq),
 		KEY logtime (logtime),
@@ -253,11 +253,11 @@ function syslog_setup_table_new() {
 		name varchar(255) NOT NULL default '',
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
-		message VARCHAR(1024) NOT NULL default '',
+		message VARCHAR(128) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
-		email text NOT NULL,
-		notes text NOT NULL,
+		email varchar(255) default NULL NOT NULL,
+		notes varchar(255) default NULL NOT NULL,
 		PRIMARY KEY (id)) TYPE=MyISAM;", true, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_incoming` (
@@ -266,7 +266,7 @@ function syslog_setup_table_new() {
 		`date` date default NULL,
 		`time` time default NULL,
 		host varchar(128) default NULL,
-		message VARCHAR(1024) NOT NULL DEFAULT '',
+		message varchar(1024) NOT NULL DEFAULT '',
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
@@ -278,10 +278,10 @@ function syslog_setup_table_new() {
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
 		method CHAR(5) DEFAULT 'del',
-		message VARCHAR(1024) NOT NULL default '',
+		message VARCHAR(128) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
-		notes text NOT NULL,
+		notes varchar(255) default NULL,
 		PRIMARY KEY (id)) TYPE=MyISAM;", true, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
@@ -292,11 +292,12 @@ function syslog_setup_table_new() {
 		lastsent int(16) NOT NULL default '0',
 		hour int(6) NOT NULL default '0',
 		min int(6) NOT NULL default '0',
-		message text NOT NULL,
+		body varchar(1024) default NULL,
+		message varchar(128) default NULL,
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
-		email text NOT NULL,
-		notes text NOT NULL,
+		email varchar(255) default NULL,
+		notes varchar(255) default NULL,
 		PRIMARY KEY (id)) TYPE=MyISAM;", false, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
@@ -580,7 +581,7 @@ function syslog_show_tab() {
 
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types;
-	global $syslog_levels;
+	global $syslog_levels, $syslog_freqs, $syslog_times;
 
 	$syslog_actions = array(
 		1 => "Delete",
@@ -605,6 +606,25 @@ function syslog_config_arrays () {
 		'messagee' => 'Ends with',
 		'host'     => 'Hostname is',
 		'facility' => 'Facility is');
+
+	$syslog_freqs = array('86400' => 'Last Day', '604800' => 'Last Week');
+
+	for ($i = 0; $i <= 86400; $i+=1800) {
+		$minute = $i % 3600;
+		if ($minute > 0) {
+			$minute = "30";
+		}else{
+			$minute = "00";
+		}
+
+		if ($i > 0) {
+			$hour = strrev(substr(strrev("00" . intval($i/3600)),0,2));
+		}else{
+			$hour = "00";
+		}
+
+		$syslog_times[$i] = $hour . ":" . $minute;
+	}
 
 	$menu2 = array ();
 	foreach ($menu as $temp => $temp2 ) {

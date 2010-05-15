@@ -148,7 +148,7 @@ function form_actions() {
 					</td>
 				</tr>\n";
 
-			$title = "Delete Syslog Removal Rule";
+			$title = "Delete Syslog Removal Rule(s)";
 		}else if ($_POST["drp_action"] == "2") { /* disable */
 			print "	<tr>
 					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
@@ -158,7 +158,7 @@ function form_actions() {
 					</td>
 				</tr>\n";
 
-			$title = "Disable Syslog Removal Rule";
+			$title = "Disable Syslog Removal Rule(s)";
 		}else if ($_POST["drp_action"] == "3") { /* enable */
 			print "	<tr>
 					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
@@ -168,7 +168,7 @@ function form_actions() {
 					</td>
 				</tr>\n";
 
-			$title = "Enable Syslog Removal Rule";
+			$title = "Enable Syslog Removal Rule(s)";
 		}
 
 		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title";
@@ -246,25 +246,6 @@ function api_syslog_removal_enable($id) {
 /* ---------------------
     Removal Functions
    --------------------- */
-
-function syslog_removal_remove() {
-	global $config, $syslog_cnn;
-
-	/* ================= input validation ================= */
-	input_validate_input_number(get_request_var("id"));
-	/* ==================================================== */
-
-	if (!isset($_GET["confirm"])) {
-		include("./include/top_header.php");
-		form_confirm("Are You Sure?", "Are you sure you want to delete the syslog removal rule(s)?<strong>'" . db_fetch_cell("SELECT name FROM syslog_remove WHERE id=" . $_GET["id"], '', true, $syslog_cnn) . "'</strong>?", "syslog_removal.php", "syslog_removal.php?action=remove&id=" . $_GET["id"]);
-		include_once($config['base_path'] . "/include/bottom_footer.php");
-		exit;
-	}
-
-	if (isset($_GET["confirm"])) {
-		api_syslog_removal_remove($_GET["clusterid"]);
-	}
-}
 
 function syslog_get_removal_records() {
 	global $syslog_cnn;

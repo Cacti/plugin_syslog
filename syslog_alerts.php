@@ -154,6 +154,8 @@ function form_actions() {
 						print "</td></tr>
 					</td>
 				</tr>\n";
+
+			$title = "Delete Syslog Alert Rule(s)";
 		}else if ($_POST["drp_action"] == "2") { /* disable */
 			print "	<tr>
 					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
@@ -162,6 +164,8 @@ function form_actions() {
 						print "</td></tr>
 					</td>
 				</tr>\n";
+
+			$title = "Disable Syslog Alert Rule(s)";
 		}else if ($_POST["drp_action"] == "3") { /* enable */
 			print "	<tr>
 					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
@@ -170,6 +174,8 @@ function form_actions() {
 						print "</td></tr>
 					</td>
 				</tr>\n";
+
+			$title = "Enable Syslog Alert Rule(s)";
 		}
 
 		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title";
@@ -242,30 +248,6 @@ function api_syslog_alert_enable($id) {
 /* ---------------------
     Alert Functions
    --------------------- */
-
-function syslog_alert_remove() {
-	global $config, $syslog_cnn;
-
-	/* ================= input validation ================= */
-	input_validate_input_number(get_request_var("id"));
-	/* ==================================================== */
-
-	include('plugins/syslog/config.php');
-
-	/* connect to syslog instead of Cacti */
-	db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type);
-
-	if (!isset($_GET["confirm"])) {
-		include("./include/top_header.php");
-		form_confirm("Are You Sure?", "Are you sure you want to delete the syslog alert<strong>'" . db_fetch_cell("SELECT name FORM syslog_alert WHERE id=" . $_GET["id"], '', true, $syslog_cnn) . "'</strong>?", "syslog_alerts.php", "syslog_alerts.php?action=remove&id=" . $_GET["id"]);
-		include_once($config['base_path'] . "/include/bottom_footer.php");
-		exit;
-	}
-
-	if (isset($_GET["confirm"])) {
-		api_syslog_alert_remove($_GET["id"]);
-	}
-}
 
 function syslog_get_alert_records() {
 	global $syslog_cnn;
