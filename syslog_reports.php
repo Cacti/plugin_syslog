@@ -64,7 +64,8 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_report"])) && (empty($_POST["add_dq_y"]))) {
 		$reportid = api_syslog_report_save($_POST["id"], $_POST["name"], $_POST["type"],
-			$_POST["message"], $_POST["method"], $_POST["notes"], $_POST["enabled"]);
+			$_POST["message"], $_POST["timespan"], $_POST["timepart"], $_POST["body"],
+			$_POST["email"], $_POST["notes"], $_POST["enabled"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_reports.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
@@ -192,7 +193,8 @@ function form_actions() {
 	include_once($config['base_path'] . "/include/bottom_footer.php");
 }
 
-function api_syslog_report_save($id, $name, $type, $message, $method, $notes, $enabled) {
+function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
+	$email, $nodes, $enabled) {
 	global $config, $syslog_cnn;
 
 	/* get the username */
@@ -204,14 +206,17 @@ function api_syslog_report_save($id, $name, $type, $message, $method, $notes, $e
 		$save["id"] = "";
 	}
 
-	$save["name"]    = form_input_validate($name,    "name",    "", false, 3);
-	$save["type"]    = form_input_validate($type,    "type",    "", false, 3);
-	$save["message"] = form_input_validate($message, "message", "", false, 3);
-	$save["method"]  = form_input_validate($method,  "method",  "", false, 3);
-	$save["notes"]   = form_input_validate($notes,   "notes",   "", true, 3);
-	$save["enabled"] = form_input_validate($enabled, "enabled", "", false, 3);
-	$save["date"]    = time();
-	$save["user"]    = $username;
+	$save["name"]     = form_input_validate($name,     "name",     "", false, 3);
+	$save["type"]     = form_input_validate($type,     "type",     "", false, 3);
+	$save["message"]  = form_input_validate($message,  "message",  "", false, 3);
+	$save["timespan"] = form_input_validate($timespan, "timespan", "", false, 3);
+	$save["timepart"] = form_input_validate($timepart, "timepart", "", false, 3);
+	$save["body"]     = form_input_validate($body,     "body",     "", false, 3);
+	$save["email"]    = form_input_validate($email,    "email",    "", true, 3);
+	$save["notes"]    = form_input_validate($notes,    "notes",    "", true, 3);
+	$save["enabled"]  = form_input_validate($enabled,  "enabled",  "", false, 3);
+	$save["date"]     = time();
+	$save["user"]     = $username;
 
 	$id = 0;
 	$id = sql_save($save, "syslog_reports", "id", true, $syslog_cnn);
@@ -334,6 +339,7 @@ function syslog_action_edit() {
 		"friendly_name" => "Syslog Message Match String",
 		"description" => "The matching component of the syslog message.",
 		"method" => "textbox",
+		"max_length" => "255",
 		"value" => "|arg1:message|",
 		"default" => "",
 		),
@@ -349,7 +355,7 @@ function syslog_action_edit() {
 		),
 	"email" => array(
 		"friendly_name" => "Report e-mail Addresses",
-		"textarea_rows" => "5",
+		"textarea_rows" => "3",
 		"textarea_cols" => "60",
 		"description" => "Comma delimited list of e-mail addresses to send the report to.",
 		"method" => "textarea",
@@ -359,7 +365,7 @@ function syslog_action_edit() {
 		),
 	"notes" => array(
 		"friendly_name" => "Report Notes",
-		"textarea_rows" => "5",
+		"textarea_rows" => "3",
 		"textarea_cols" => "60",
 		"description" => "Space for Notes on the Removal rule",
 		"method" => "textarea",
@@ -392,7 +398,7 @@ function syslog_action_edit() {
 }
 
 function syslog_report() {
-	global $colors, $syslog_cnn, $syslog_actions, $message_types, $item_rows, $config;
+	global $colors, $syslog_cnn, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $item_rows, $config;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
@@ -512,7 +518,9 @@ function syslog_report() {
 		"enabled" => array("<br>Enabled", "ASC"),
 		"type" => array("Match<br>Type", "ASC"),
 		"message" => array("Search<br>String", "ASC"),
-		"method" => array("<br>Method", "DESC"),
+		"timespan" => array("<br>Frequency", "ASC"),
+		"timepart" => array("Send<br>Time", "ASC"),
+		"lastsent" => array("Last<br>Sent", "ASC"),
 		"date" => array("Last<br>Modified", "ASC"),
 		"user" => array("By<br>User", "DESC"));
 
@@ -526,7 +534,9 @@ function syslog_report() {
 			form_selectable_cell((($report["enabled"] == "on") ? "Yes" : ""), $report["id"]);
 			form_selectable_cell($message_types[$report["type"]], $report["id"]);
 			form_selectable_cell($report["message"], $report["id"]);
-			form_selectable_cell((($report["method"] == "del") ? "Deletion" : "Transfer"), $report["id"]);
+			form_selectable_cell($syslog_freqs[$report["timespan"]], $report["id"]);
+			form_selectable_cell($syslog_times[$report["timepart"]], $report["id"]);
+			form_selectable_cell(($report["lastsent"] == 0 ? "Never": date("Y-m-d H:i:s", $report["lastsent"])), $report["id"]);
 			form_selectable_cell(date("Y-m-d H:i:s", $report["date"]), $report["id"]);
 			form_selectable_cell($report["user"], $report["id"]);
 			form_checkbox_cell($report["name"], $report["id"]);
