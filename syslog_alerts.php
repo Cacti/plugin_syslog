@@ -249,12 +249,32 @@ function api_syslog_alert_enable($id) {
     Alert Functions
    --------------------- */
 
-function syslog_get_alert_records() {
+function syslog_get_alert_records(&$sql_where) {
 	global $syslog_cnn;
+
+	if (get_request_var_request("filter") != "") {
+		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+			"(message LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
+			"email LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
+			"notes LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
+			"name LIKE '%%" . get_request_var_request("filter") . "%%')";
+	}
+
+	if (get_request_var_request("enabled") == "-1") {
+		// Display all status'
+	}elseif (get_request_var_request("enabled") == "1") {
+		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+			"enabled='on'";
+	}else{
+		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+			"enabled=''";
+	}
 
 	$query_string = "SELECT *
 		FROM syslog_alert
-		ORDER BY " . $_REQUEST["sort_column"] . " " . $_REQUEST["sort_direction"];
+		$sql_where
+		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
+		" LIMIT " . (get_request_var_request("rows")*(get_request_var_request("page")-1)) . "," . get_request_var_request("rows");
 
 	return db_fetch_assoc($query_string, true, $syslog_cnn);
 }
@@ -367,7 +387,7 @@ function syslog_alerts() {
 	input_validate_input_number(get_request_var_request("id"));
 	input_validate_input_number(get_request_var_request("page"));
 	input_validate_input_number(get_request_var_request("enabled"));
-	input_validate_input_number(get_request_var_request("rows_selector"));
+	input_validate_input_number(get_request_var_request("rows"));
 	/* ==================================================== */
 
 	include('plugins/syslog/config.php');
@@ -393,7 +413,7 @@ function syslog_alerts() {
 	/* if the user pushed the 'clear' button */
 	if (isset($_REQUEST["clear_x"])) {
 		kill_session_var("sess_syslog_alerts_page");
-		kill_session_var("sess_syslog_alerts_rows_selector");
+		kill_session_var("sess_syslog_alerts_rows");
 		kill_session_var("sess_syslog_alerts_filter");
 		kill_session_var("sess_syslog_alerts_enabled");
 		kill_session_var("sess_syslog_alerts_sort_column");
@@ -402,7 +422,7 @@ function syslog_alerts() {
 		$_REQUEST["page"] = 1;
 		unset($_REQUEST["filter"]);
 		unset($_REQUEST["enabled"]);
-		unset($_REQUEST["rows_selector"]);
+		unset($_REQUEST["rows"]);
 		unset($_REQUEST["sort_column"]);
 		unset($_REQUEST["sort_direction"]);
 	}else{
@@ -410,7 +430,7 @@ function syslog_alerts() {
 		$changed = 0;
 		$changed += check_changed("filter", "sess_syslog_alerts_filter");
 		$changed += check_changed("enabled", "sess_syslog_alerts_enabled");
-		$changed += check_changed("rows_selector", "sess_syslog_alerts_rows_selector");
+		$changed += check_changed("rows", "sess_syslog_alerts_rows");
 		$changed += check_changed("sort_column", "sess_syslog_alerts_sort_column");
 		$changed += check_changed("sort_direction", "sess_syslog_alerts_sort_direction");
 
@@ -421,7 +441,7 @@ function syslog_alerts() {
 
 	/* remember these search fields in session vars so we don't have to keep passing them around */
 	load_current_session_value("page", "sess_syslog_alerts_paage", "1");
-	load_current_session_value("rows_selector", "sess_syslog_alerts_rows_selector", "20");
+	load_current_session_value("rows", "sess_syslog_alerts_rows", "20");
 	load_current_session_value("enabled", "sess_syslog_alerts_enabled", "-1");
 	load_current_session_value("filter", "sess_syslog_alerts_filter", "");
 	load_current_session_value("sort_column", "sess_syslog_alerts_sort_column", "name");
@@ -436,13 +456,10 @@ function syslog_alerts() {
 	html_start_box("", "100%", $colors["header"], "3", "center", "");
 
 	$sql_where = "";
-
 	$alerts = syslog_get_alert_records($sql_where);
-
 	$rows_query_string = "SELECT COUNT(*)
 		FROM syslog_alert
 		$sql_where";
-
 	$total_rows = db_fetch_cell($rows_query_string);
 
 	?>
@@ -451,7 +468,7 @@ function syslog_alerts() {
 	function applyChange(objForm) {
 		strURL = '?enabled=' + objForm.enabled.value;
 		strURL = strURL + '&filter=' + objForm.filter.value;
-		strURL = strURL + '&rows_selector=' + objForm.rows_selector.value;
+		strURL = strURL + '&rows=' + objForm.rows.value;
 		document.location = strURL;
 	}
 	-->
@@ -459,7 +476,7 @@ function syslog_alerts() {
 	<?php
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows_selector"], $total_rows, "syslog_alerts.php");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog_alerts.php");
 
 	$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
 				<td colspan='16'>
@@ -469,10 +486,10 @@ function syslog_alerts() {
 								<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
 							</td>\n
 							<td align='center' class='textHeaderDark'>
-								Showing Rows " . (($_REQUEST["rows_selector"]*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $_REQUEST["rows_selector"]) || ($total_rows < ($_REQUEST["rows_selector"]*$_REQUEST["page"]))) ? $total_rows : ($_REQUEST["rows_selector"]*$_REQUEST["page"])) . " of $total_rows [$url_page_select]
+								Showing Rows " . (($_REQUEST["rows"]*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $_REQUEST["rows"]) || ($total_rows < ($_REQUEST["rows"]*$_REQUEST["page"]))) ? $total_rows : ($_REQUEST["rows"]*$_REQUEST["page"])) . " of $total_rows [$url_page_select]
 							</td>\n
 							<td align='right' class='textHeaderDark'>
-								<strong>"; if (($_REQUEST["page"] * $_REQUEST["rows_selector"]) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $_REQUEST["rows_selector"]) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+								<strong>"; if (($_REQUEST["page"] * $_REQUEST["rows"]) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $_REQUEST["rows"]) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
 							</td>\n
 						</tr>
 					</table>

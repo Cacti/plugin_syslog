@@ -137,7 +137,7 @@ function generate_syslog_cssjs() {
  *  like to create issues with Cacti.
 */
 function syslog_request_validation() {
-	global $title, $colors, $rows_selector, $config, $reset_multi;
+	global $title, $colors, $rows, $config, $reset_multi;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("rows"));

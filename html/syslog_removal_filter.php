@@ -17,11 +17,11 @@
 						&nbsp;Records:&nbsp;
 					</td>
 					<td width="1">
-						<select name="rows_selector" onChange="applyChange(document.removal)">
+						<select name="rows" onChange="applyChange(document.removal)">
 						<?php
 							if (sizeof($item_rows) > 0) {
 							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if ($_REQUEST["rows_selector"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
 							}
 							}
 						?>

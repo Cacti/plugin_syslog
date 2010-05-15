@@ -7,7 +7,7 @@
 						Enabled:&nbsp;
 					</td>
 					<td width="1">
-						<select name="enabled" onChange="applyChange(document.removal)">
+						<select name="enabled" onChange="applyChange(document.reports)">
 						<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
 						<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
 						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
@@ -17,11 +17,11 @@
 						&nbsp;Records:&nbsp;
 					</td>
 					<td width="1">
-						<select name="rows_selector" onChange="applyChange(document.removal)">
+						<select name="rows" onChange="applyChange(document.reports)">
 						<?php
 							if (sizeof($item_rows) > 0) {
 							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if ($_REQUEST["rows_selector"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
 							}
 							}
 						?>
