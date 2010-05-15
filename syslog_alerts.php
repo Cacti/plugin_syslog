@@ -296,31 +296,24 @@ function syslog_get_alert_records() {
 }
 
 function syslog_action_edit() {
-	global $colors, $fields_syslog_alert_edit;
+	global $colors, $syslog_cnn, $fields_syslog_alert_edit;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var("id"));
 	input_validate_input_number(get_request_var("type"));
 	/* ==================================================== */
 
-	include('plugins/syslog/config.php');
-
-	/* connect to syslog instead of Cacti */
-	db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type);
-
-	display_output_messages();
-
 	if ((!isset($_REQUEST["type"])) ||
 		(($_REQUEST["type"] == 1) && (isset($_RQUEST["id"])))) {
 		$alert = db_fetch_row("SELECT *
 			FROM syslog_alert
-			WHERE id=" . $_REQUEST["id"]);
+			WHERE id=" . $_REQUEST["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $alert["name"] . "]";
 	}else{
 		if (isset($_REQUEST["id"])) {
 			$alert = db_fetch_row("SELECT *
 				FROM syslog
-				WHERE " . $syslog_incoming_config['id'] . "=" . $_REQUEST["id"]);
+				WHERE " . $syslog_incoming_config['id'] . "=" . $_REQUEST["id"], true, $syslog_cnn);
 		}
 
 		$header_label = "[new]";

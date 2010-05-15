@@ -546,7 +546,7 @@ function syslog_config_settings() {
 }
 
 function syslog_config_form () {
-	global $fields_syslog_alert_edit, $fields_reports_edit, $fields_syslog_removal_edit;
+	global $fields_syslog_alert_edit, $fields_reports_edit;
 	global $message_types;
 
 	/* file: syslog_alerts.php, action: edit */
@@ -615,73 +615,6 @@ function syslog_config_form () {
 		"value" => "|arg1:id|"
 		),
 	"save_component_alert" => array(
-		"method" => "hidden",
-		"value" => "1"
-		)
-	);
-
-	/* file: syslog_removal.php, action: edit */
-	$fields_syslog_removal_edit = array(
-	"spacer0" => array(
-		"method" => "spacer",
-		"friendly_name" => "Removel Rule Details"
-		),
-	"name" => array(
-		"method" => "textbox",
-		"friendly_name" => "Removal Rule Name",
-		"description" => "Please describe this Removal Rule.",
-		"value" => "|arg1:name|",
-		"max_length" => "250"
-		),
-	"enabled" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Enabled?",
-		"description" => "Is this Removal Rule Enabled?",
-		"value" => "|arg1:enabled|",
-		"array" => array("on" => "Enabled", "" => "Disabled"),
-		"default" => "on"
-		),
-	"type" => array(
-		"method" => "drop_array",
-		"friendly_name" => "String Match Type",
-		"description" => "Define how you would like this string matched.",
-		"value" => "|arg1:type|",
-		"array" => $message_types,
-		"default" => "matchesc"
-		),
-	"message" => array(
-		"method" => "textbox",
-		"friendly_name" => "Syslog Message Match String",
-		"description" => "The matching component of the syslog message.",
-		"value" => "|arg1:message|",
-		"default" => "",
-		"max_length" => "255"
-		),
-	"method" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Method of Removal",
-		"value" => "|arg1:method|",
-		"array" => array("del" => "Deletion", "trans" => "Transferal"),
-		"default" => "del"
-		),
-	"notes" => array(
-		"friendly_name" => "Removal Rule Notes",
-		"textarea_rows" => "5",
-		"textarea_cols" => "60",
-		"description" => "Space for Notes on the Removal rule",
-		"method" => "textarea",
-		"value" => "|arg1:notes|",
-		"default" => "",
-		),
-	"id" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:id|"
-		),
-	"_id" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:id|"
-		),
-	"save_component_removal" => array(
 		"method" => "hidden",
 		"value" => "1"
 		)
