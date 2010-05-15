@@ -284,19 +284,12 @@ function syslog_action_edit() {
 	input_validate_input_number(get_request_var("type"));
 	/* ==================================================== */
 
-	if ((!isset($_REQUEST["type"])) ||
-		(($_REQUEST["type"] == 1) && (isset($_RQUEST["id"])))) {
+	if (isset($_GET["id"])) {
 		$removal = db_fetch_row("SELECT *
 			FROM syslog_remove
 			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $removal["name"] . "]";
 	}else{
-		if (isset($_REQUEST["id"])) {
-			$removal = db_fetch_row("SELECT *
-				FROM syslog
-				WHERE " . $syslog_incoming_config['id'] . "=" . $_REQUEST["id"], true, $syslog_cnn);
-		}
-
 		$header_label = "[new]";
 
 		$removal["name"] = "New Removal Record";

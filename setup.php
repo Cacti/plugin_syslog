@@ -19,7 +19,6 @@ function plugin_syslog_install () {
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
 	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
 	api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
-	api_plugin_register_hook('syslog', 'config_form',           'syslog_config_form',          'setup.php');
 	api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'setup.php');
 	api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'setup.php');
 	api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
@@ -543,82 +542,6 @@ function syslog_config_settings() {
 	}else{
 		$settings["syslog"] = $temp;
 	}
-}
-
-function syslog_config_form () {
-	global $fields_syslog_alert_edit, $fields_reports_edit;
-	global $message_types;
-
-	/* file: syslog_alerts.php, action: edit */
-	$fields_syslog_alert_edit = array(
-	"spacer0" => array(
-		"method" => "spacer",
-		"friendly_name" => "Alert Details"
-		),
-	"name" => array(
-		"method" => "textbox",
-		"friendly_name" => "Alert Name",
-		"description" => "Please describe this Alert.",
-		"value" => "|arg1:name|",
-		"max_length" => "250",
-		"size" => 80
-		),
-	"enabled" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Enabled?",
-		"description" => "Is this Alert Enabled?",
-		"value" => "|arg1:enabled|",
-		"array" => array("on" => "Enabled", "" => "Disabled"),
-		"default" => "on"
-		),
-	"type" => array(
-		"method" => "drop_array",
-		"friendly_name" => "String Match Type",
-		"description" => "Define how you would like this string matched.",
-		"value" => "|arg1:type|",
-		"array" => $message_types,
-		"default" => "matchesc"
-		),
-	"message" => array(
-		"method" => "textbox",
-		"friendly_name" => "Syslog Message Match String",
-		"description" => "The matching component of the syslog message.",
-		"value" => "|arg1:message|",
-		"default" => "",
-		"max_length" => "255",
-		"size" => 80
-		),
-	"email" => array(
-		"method" => "textarea",
-		"friendly_name" => "E-Mails to Notify",
-		"textarea_rows" => "5",
-		"textarea_cols" => "60",
-		"description" => "Please enter a comma delimited list of e-mail addresses to inform.",
-		"value" => "|arg1:email|",
-		"max_length" => "255"
-		),
-	"notes" => array(
-		"friendly_name" => "Alert Notes",
-		"textarea_rows" => "5",
-		"textarea_cols" => "60",
-		"description" => "Space for Notes on the Alert",
-		"method" => "textarea",
-		"value" => "|arg1:notes|",
-		"default" => "",
-		),
-	"id" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:id|"
-		),
-	"_id" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:id|"
-		),
-	"save_component_alert" => array(
-		"method" => "hidden",
-		"value" => "1"
-		)
-	);
 }
 
 function syslog_top_graph_refresh($refresh) {

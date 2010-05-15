@@ -86,7 +86,7 @@ function form_save() {
    ------------------------ */
 
 function form_actions() {
-	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
+	global $colors, $config, $syslog_cnn, $syslog_actions, $fields_syslog_action_edit;
 
 	/* if we are to save this form, instead of display it */
 	if (isset($_POST["selected_items"])) {
@@ -129,13 +129,8 @@ function form_actions() {
 
 	print "<form action='syslog_alerts.php' method='post'>\n";
 
-	include('plugins/syslog/config.php');
-
-	/* connect to syslog instead of Cacti */
-	db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type);
-
 	/* setup some variables */
-	$alert_list = ""; $i = 0;
+	$alert_array = array(); $alert_list = "";
 
 	/* loop through each of the clusters selected on the previous page and get more info about them */
 	while (list($var,$val) = each($_POST)) {
@@ -144,60 +139,53 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$alert_info = db_fetch_cell("SELECT name FROM syslog_alert WHERE id=" . $matches[1]);
-			$alert_list .= "<li>" . $alert_info . "<br>";
-			$alert_array[$i] = $matches[1];
+			$alert_info = db_fetch_cell("SELECT name FROM syslog_alert WHERE id=" . $matches[1], '', true, $syslog_cnn);
+			$alert_list .= "<li>" . $alert_info . "</li>";
+			$alert_array[] = $matches[1];
+		}
+	}
+
+	if (sizeof($alert_array)) {
+		if ($_POST["drp_action"] == "1") { /* delete */
+			print "	<tr>
+					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+						<p>If you click 'Continue', the following Syslog Alert Rule(s) will be deleted</p>
+						<ul>$alert_list</ul>";
+						print "</td></tr>
+					</td>
+				</tr>\n";
+		}else if ($_POST["drp_action"] == "2") { /* disable */
+			print "	<tr>
+					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+						<p>If you click 'Continue', the following Syslog Alert Rule(s) will be disabled</p>
+						<ul>$alert_list</ul>";
+						print "</td></tr>
+					</td>
+				</tr>\n";
+		}else if ($_POST["drp_action"] == "3") { /* enable */
+			print "	<tr>
+					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+						<p>If you click 'Continue', the following Syslog Alert Rule(s) will be enabled</p>
+						<ul>$alert_list</ul>";
+						print "</td></tr>
+					</td>
+				</tr>\n";
 		}
 
-		$i++;
-	}
-
-	if ($_POST["drp_action"] == "1") { /* delete */
-		print "	<tr>
-				<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
-					<p>Are you sure you want to delete the following syslog alert?</p>
-					<p>$alert_list</p>";
-					print "</td></tr>
-				</td>
-			</tr>\n
-			";
-	}else if ($_POST["drp_action"] == "2") { /* disable */
-		print "	<tr>
-				<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
-					<p>Are you sure you want to disable polling of the following syslog alert?</p>
-					<p>$alert_list</p>";
-					print "</td></tr>
-				</td>
-			</tr>\n
-			";
-	}else if ($_POST["drp_action"] == "3") { /* enable */
-		print "	<tr>
-				<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
-					<p>Are you sure you want to enable the following syslog alert?</p>
-					<p>$alert_list</p>";
-					print "</td></tr>
-				</td>
-			</tr>\n
-			";
-	}
-
-	if (!isset($alert_array)) {
-		print "<tr><td bgcolor='#" . $colors["form_alternate1"]. "'><span class='textError'>You must select at least one alert.</span></td></tr>\n";
-		$save_html = "";
+		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title";
 	}else{
-		$save_html = "<input type='image' src='" . $config['url_path'] . "images/button_yes.gif' alt='Save' align='absmiddle'>";
+		print "<tr><td bgcolor='#" . $colors["form_alternate1"]. "'><span class='textError'>You must select at least one Syslog Alert Rule.</span></td></tr>\n";
+		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";
 	}
 
 	print "	<tr>
-			<td colspan='2' align='right' bgcolor='#eaeaea'>
+			<td align='right' bgcolor='#eaeaea'>
 				<input type='hidden' name='action' value='actions'>
-				<input type='hidden' name='selected_items' value='" . (isset($cluster_array) ? serialize($cluster_array) : '') . "'>
+				<input type='hidden' name='selected_items' value='" . (isset($alert_array) ? serialize($alert_array) : '') . "'>
 				<input type='hidden' name='drp_action' value='" . $_POST["drp_action"] . "'>
-				<a href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php'><img src='" . $config['url_path'] . "images/button_no.gif' alt='Cancel' align='absmiddle' border='0'></a>
 				$save_html
 			</td>
-		</tr>
-		";
+		</tr>";
 
 	html_end_box();
 
@@ -205,7 +193,7 @@ function form_actions() {
 }
 
 function api_syslog_alert_save($id, $name, $type, $message, $email, $notes, $enabled) {
-	include('plugins/syslog/config.php');
+	global $syslog_cnn;
 
 	/* get the username */
 	$username = db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);
@@ -226,32 +214,29 @@ function api_syslog_alert_save($id, $name, $type, $message, $email, $notes, $ena
 	$save["user"]    = $username;
 
 	$id = 0;
-	if (!is_error_message()) {
-		/* connect to syslog instead of Cacti */
-		db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type);
-
-		$id = sql_save($save, "syslog_alert");
-
-		if ($id) {
-			raise_message(1);
-		}else{
-			raise_message(2);
-		}
+	$id = sql_save($save, "syslog_alert", "id", true, $syslog_cnn);
+	if ($id) {
+		raise_message(1);
+	}else{
+		raise_message(2);
 	}
 
 	return $id;
 }
 
 function api_syslog_alert_remove($id) {
-	db_execute("DELETE FROM syslog_alert WHERE id='" . $id . "'");
+	global $syslog_cnn;
+	db_execute("DELETE FROM syslog_alert WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_alert_disable($id) {
-	db_execute("UPDATE syslog_alert SET enabled='' WHERE id='" . $id . "'");
+	global $syslog_cnn;
+	db_execute("UPDATE syslog_alert SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_alert_enable($id) {
-	db_execute("UPDATE syslog_alert SET enabled='on' WHERE id='" . $id . "'");
+	global $syslog_cnn;
+	db_execute("UPDATE syslog_alert SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 /* ---------------------
@@ -259,7 +244,7 @@ function api_syslog_alert_enable($id) {
    --------------------- */
 
 function syslog_alert_remove() {
-	global $config;
+	global $config, $syslog_cnn;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var("id"));
@@ -272,7 +257,7 @@ function syslog_alert_remove() {
 
 	if (!isset($_GET["confirm"])) {
 		include("./include/top_header.php");
-		form_confirm("Are You Sure?", "Are you sure you want to delete the syslog alert<strong>'" . db_fetch_cell("SELECT name FORM syslog_alert WHERE id=" . $_GET["id"]) . "'</strong>?", "syslog_alerts.php", "syslog_alerts.php?action=remove&id=" . $_GET["id"]);
+		form_confirm("Are You Sure?", "Are you sure you want to delete the syslog alert<strong>'" . db_fetch_cell("SELECT name FORM syslog_alert WHERE id=" . $_GET["id"], '', true, $syslog_cnn) . "'</strong>?", "syslog_alerts.php", "syslog_alerts.php?action=remove&id=" . $_GET["id"]);
 		include_once($config['base_path'] . "/include/bottom_footer.php");
 		exit;
 	}
@@ -283,45 +268,105 @@ function syslog_alert_remove() {
 }
 
 function syslog_get_alert_records() {
-	include('plugins/syslog/config.php');
-
-	/* connect to syslog instead of Cacti */
-	db_connect_real($syslogdb_hostname,$syslogdb_username,$syslogdb_password,$syslogdb_default, $syslogdb_type);
+	global $syslog_cnn;
 
 	$query_string = "SELECT *
 		FROM syslog_alert
 		ORDER BY " . $_REQUEST["sort_column"] . " " . $_REQUEST["sort_direction"];
 
-	return db_fetch_assoc($query_string);
+	return db_fetch_assoc($query_string, true, $syslog_cnn);
 }
 
 function syslog_action_edit() {
-	global $colors, $syslog_cnn, $fields_syslog_alert_edit;
+	global $colors, $syslog_cnn, $message_types;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var("id"));
 	input_validate_input_number(get_request_var("type"));
 	/* ==================================================== */
 
-	if ((!isset($_REQUEST["type"])) ||
-		(($_REQUEST["type"] == 1) && (isset($_RQUEST["id"])))) {
+	if (isset($_GET["id"])) {
 		$alert = db_fetch_row("SELECT *
 			FROM syslog_alert
-			WHERE id=" . $_REQUEST["id"], true, $syslog_cnn);
+			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $alert["name"] . "]";
 	}else{
-		if (isset($_REQUEST["id"])) {
-			$alert = db_fetch_row("SELECT *
-				FROM syslog
-				WHERE " . $syslog_incoming_config['id'] . "=" . $_REQUEST["id"], true, $syslog_cnn);
-		}
-
 		$header_label = "[new]";
 
 		$alert["name"] = "New Alert Rule";
 	}
 
 	html_start_box("<strong>Alert Edit</strong> $header_label", "100%", $colors["header"], "3", "center", "");
+
+	$fields_syslog_alert_edit = array(
+	"spacer0" => array(
+		"method" => "spacer",
+		"friendly_name" => "Alert Details"
+		),
+	"name" => array(
+		"method" => "textbox",
+		"friendly_name" => "Alert Name",
+		"description" => "Please describe this Alert.",
+		"value" => "|arg1:name|",
+		"max_length" => "250",
+		"size" => 80
+		),
+	"enabled" => array(
+		"method" => "drop_array",
+		"friendly_name" => "Enabled?",
+		"description" => "Is this Alert Enabled?",
+		"value" => "|arg1:enabled|",
+		"array" => array("on" => "Enabled", "" => "Disabled"),
+		"default" => "on"
+		),
+	"type" => array(
+		"method" => "drop_array",
+		"friendly_name" => "String Match Type",
+		"description" => "Define how you would like this string matched.",
+		"value" => "|arg1:type|",
+		"array" => $message_types,
+		"default" => "matchesc"
+		),
+	"message" => array(
+		"method" => "textbox",
+		"friendly_name" => "Syslog Message Match String",
+		"description" => "The matching component of the syslog message.",
+		"value" => "|arg1:message|",
+		"default" => "",
+		"max_length" => "255",
+		"size" => 80
+		),
+	"email" => array(
+		"method" => "textarea",
+		"friendly_name" => "E-Mails to Notify",
+		"textarea_rows" => "5",
+		"textarea_cols" => "60",
+		"description" => "Please enter a comma delimited list of e-mail addresses to inform.",
+		"value" => "|arg1:email|",
+		"max_length" => "255"
+		),
+	"notes" => array(
+		"friendly_name" => "Alert Notes",
+		"textarea_rows" => "5",
+		"textarea_cols" => "60",
+		"description" => "Space for Notes on the Alert",
+		"method" => "textarea",
+		"value" => "|arg1:notes|",
+		"default" => "",
+		),
+	"id" => array(
+		"method" => "hidden_zero",
+		"value" => "|arg1:id|"
+		),
+	"_id" => array(
+		"method" => "hidden_zero",
+		"value" => "|arg1:id|"
+		),
+	"save_component_alert" => array(
+		"method" => "hidden",
+		"value" => "1"
+		)
+	);
 
 	draw_edit_form(array(
 		"config" => array("form_name" => "chk"),
