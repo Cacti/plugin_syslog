@@ -330,7 +330,7 @@ function syslog_action_edit() {
 		if (isset($_REQUEST["id"])) {
 			$removal = db_fetch_row("SELECT *
 				FROM syslog
-				WHERE " . $syslog_config['id'] . "=" . $_REQUEST["id"]);
+				WHERE " . $syslog_incoming_config['id'] . "=" . $_REQUEST["id"]);
 		}
 
 		$header_label = "[new]";

@@ -50,7 +50,7 @@ if (isset($_GET['remove']) && $_GET['remove'] > 0) {
 	db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type);
 
 	/* remove the report from the database */
-	db_execute("DELETE FROM " . $syslog_config['reportTable'] . " WHERE id = $remove");
+	db_execute("DELETE FROM syslog_reports WHERE id = $remove");
 
 	Header("Location:syslog_reports.php\n");
 	exit;
@@ -149,7 +149,7 @@ function display_reports () {
 	/* no more cacti database calls from this point on */
 	db_connect_real($syslogdb_hostname,$syslogdb_username,$syslogdb_password,$syslogdb_default, $syslogdb_type);
 
-	$syslog_reports = db_fetch_assoc("SELECT * FROM " . $syslog_config["reportTable"] . ' LIMIT ' . $syslog_config["rows_per_page"]*($_REQUEST["page"]-1) . ', ' . $syslog_config["rows_per_page"]);
+	$syslog_reports = db_fetch_assoc("SELECT * FROM syslog_reports LIMIT " . $syslog_config["rows_per_page"]*($_REQUEST["page"]-1) . ', ' . $syslog_config["rows_per_page"]);
 
 	?>
 
@@ -161,7 +161,7 @@ function display_reports () {
 							<tr>
 								<td width="100%" valign="top" style="padding: 5px;">
 									<?php
-									$total_rows = db_fetch_cell("SELECT count(*) from " . $syslog_config["reportTable"]);
+									$total_rows = db_fetch_cell("SELECT count(*) from syslog_reports");
 									html_start_box("", "98%", $colors["header"], "3", "center", "");
 
 										$nav = "<tr bgcolor='#" . $colors["header"] . "'>
@@ -258,7 +258,7 @@ function display_reports () {
 
 	$text = '';
 	if ($id > 0) {
-		$text = db_fetch_cell("SELECT " . $syslog_config["textField"] . " FROM " . $syslog_config["syslogTable"] . " where " . $syslog_config["id"] . "=" . $id);
+		$text = db_fetch_cell("SELECT " . $syslog_incoming_config["textField"] . " FROM syslog where " . $syslog_incoming_config["id"] . "=" . $id);
 		$x = strpos($text, ':');
 		$y = strpos($text, ' ', $x + 2);
 		$text = substr($text, 0, $y);

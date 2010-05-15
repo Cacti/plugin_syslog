@@ -1,61 +1,18 @@
-	<script type='text/javascript'>
-		// Initialize the calendar
-		calendar=null;
-
-		// This function displays the calendar associated to the input field 'id'
-		function showCalendar(id) {
-			var el = document.getElementById(id);
-			if (calendar != null) {
-				// we already have some calendar created
-				calendar.hide();  // so we hide it first.
-			} else {
-				// first-time call, create the calendar.
-				var cal = new Calendar(true, null, selected, closeHandler);
-				cal.weekNumbers = false;  // Do not display the week number
-				cal.showsTime = true;     // Display the time
-				cal.time24 = true;        // Hours have a 24 hours format
-				cal.showsOtherMonths = false;    // Just the current month is displayed
-				calendar = cal;                  // remember it in the global var
-				cal.setRange(1900, 2070);        // min/max year allowed.
-				cal.create();
-			}
-
-			calendar.setDateFormat('%Y-%m-%d %H:%M');    // set the specified date format
-			calendar.parseDate(el.value);                // try to parse the text in field
-			calendar.sel = el;                           // inform it what input field we use
-
-			// Display the calendar below the input field
-			calendar.showAtElement(el, "Br");        // show the calendar
-
-			return false;
-		}
-
-		// This function update the date in the input field when selected
-		function selected(cal, date) {
-			cal.sel.value = date;      // just update the date in the input field.
-		}
-
-		// This function gets called when the end-user clicks on the 'Close' button.
-		// It just hides the calendar without destroying it.
-		function closeHandler(cal) {
-			cal.hide();                        // hide the calendar
-			calendar = null;
-		}
-	</script>
+	<?php global $syslog_cnn;?>
 	<script type="text/javascript">
-		<!--
-		function applyTimespanFilterChange(objForm) {
-			strURL = '?predefined_timespan=' + objForm.predefined_timespan.value;
-			strURL = strURL + '&predefined_timeshift=' + objForm.predefined_timeshift.value;
-			document.location = strURL;
-		}
-		-->
+	<!--
+	function applyTimespanFilterChange(objForm) {
+		strURL = '?predefined_timespan=' + objForm.predefined_timespan.value;
+		strURL = strURL + '&predefined_timeshift=' + objForm.predefined_timeshift.value;
+		document.location = strURL;
+	}
+	-->
 	</script>
-	<form id="syslog_form" name="syslog_timespan_selector" method="post" action="syslog.php">
+	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_timespan_selector" method="post" action="syslog.php">
 	<table width="100%" cellspacing="1" cellpadding="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
-				<table width='100%' cellpadding=0 cellspacing=0>
+				<table cellpadding=0 cellspacing=0>
 					<tr>
 						<td width='100%'>
 							<?php
@@ -138,13 +95,13 @@
 												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();">
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 													<?php
-													$efacilities = db_fetch_assoc("SELECT DISTINCT " . $syslog_config["facilityField"] . "
-														FROM " . $syslog_config["facilityTable"] . (strlen($hostfilter) ? " WHERE ":"") . $hostfilter . "
-														ORDER BY " . $syslog_config["facilityField"]);
+													$efacilities = db_fetch_assoc("SELECT DISTINCT " . $syslog_incoming_config["facilityField"] . "
+														FROM syslog_facilities " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
+														ORDER BY " . $syslog_incoming_config["facilityField"]);
 
 													if (sizeof($efacilities) > 0) {
 													foreach ($efacilities as $efacility) {
-														print "<option value=" . $efacility[$syslog_config["facilityField"]]; if ($_REQUEST["efacility"] == $efacility[$syslog_config["facilityField"]]) { print " selected"; } print ">" . ucfirst($efacility[$syslog_config["facilityField"]]) . "</option>\n";
+														print "<option value=" . $efacility[$syslog_incoming_config["facilityField"]]; if ($_REQUEST["efacility"] == $efacility[$syslog_incoming_config["facilityField"]]) { print " selected"; } print ">" . ucfirst($efacility[$syslog_incoming_config["facilityField"]]) . "</option>\n";
 													}
 													}
 													?>
@@ -183,9 +140,9 @@
 												</select>
 											</td>
 											<td nowrap style='white-space:nowrap;padding-right:2px;'>
-												<input type="image" name='button_refresh' src="<?php print $config['url_path']; ?>images/button_go.gif" alt="Go" border="0" align="absmiddle" action='submit'>
-												<input type='image' name='button_clear' src='<?php print $config["url_path"];?>images/button_clear.gif' alt='Return to the default time span' border='0' align='absmiddle' action='submit'>
-												<input type='image' name='export' src='<?php print $config['url_path']; ?>images/button_export.gif' alt='Reset fields to defaults' border='0' align='absmiddle' action='submit'>
+												<input type="submit" value='Go' name='button_refresh_x' title="Go">
+												<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
+												<input type='submit' value='Export' name='export_x' title='Reset fields to defaults'>
 												<input type='hidden' name='action' value='actions'>
 												<input type='hidden' name='syslog_pdt_change' value='false'>
 											</td>
@@ -228,14 +185,10 @@
 									<select name="host[]" multiple size="<?php print read_config_option("syslog_hosts");?>" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
 										<option value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
 										<?php
-										$query = mysql_query("SELECT " . $syslog_config["hostField"] . " FROM " . $syslog_config["hostTable"]);
-
-										while ($hosts[] = mysql_fetch_assoc($query));
-
-										array_pop($hosts);
-										if (sizeof($hosts) > 0) {
+										$hosts = db_fetch_assoc("SELECT " . $syslog_incoming_config["hostField"] . " FROM syslog_hosts", true, $syslog_cnn);
+										if (sizeof($hosts)) {
 											foreach($hosts as $host) {
-												$new_hosts[] = $host[$syslog_config["hostField"]];
+												$new_hosts[] = $host[$syslog_incoming_config["hostField"]];
 											}
 											$hosts = natsort($new_hosts);
 											foreach ($new_hosts as $host) {
@@ -272,9 +225,7 @@
 					<tr>
 						<td width="100%" valign="top"><?php display_output_messages();?>
 							<?php
-							$total_rows = mysql_fetch_array(mysql_query("SELECT count(*) from " . $syslog_config["syslogTable"] . " " . $sql_where));
-							$total_rows = $total_rows[0];
-
+							$total_rows = db_fetch_cell("SELECT count(*) from syslog " . $sql_where, '', true, $syslog_cnn);
 							html_start_box("", "100%", $colors["header"], "3", "center", "");
 							$hostarray = "";
 							if (is_array($_REQUEST["host"])) {

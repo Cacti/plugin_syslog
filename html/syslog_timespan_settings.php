@@ -23,7 +23,7 @@
  +-------------------------------------------------------------------------+
 */
 
-global $syslog_config;
+global $syslog_incoming_config;
 
 /* ================= input validation ================= */
 input_validate_input_number(get_request_var_request("predefined_timespan"));
@@ -218,7 +218,7 @@ function finalize_timespan(&$timespan) {
 
 	/* if moved to future although not allow by settings, stop at current time */
 	if ( ($timespan["end_now"] > time()) && (read_graph_config_option("allow_graph_dates_in_future") == "") ) {
-		$timespan["end_now"] = time();			
+		$timespan["end_now"] = time();
 		# convert end time to human readable format
 		$timespan["current_value_date2"] = date("Y-m-d H:i", $timespan["end_now"]);
 	}

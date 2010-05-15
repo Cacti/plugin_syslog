@@ -26,54 +26,37 @@ $no_http_headers = true;
 
 // PHP5 uses a different base path apparently
 if (file_exists('include/auth.php')) {
-	if (file_exists(dirname(__FILE__) . '/../../include/global.php')) {
-		require(dirname(__FILE__) . '/../../include/global.php');
-	} else {
-		require(dirname(__FILE__) . '/../../include/config.php');
-	}
+	include(dirname(__FILE__) . '/../../include/global.php');
 } else {
 	chdir('../../');
-	if (file_exists(dirname(__FILE__) . '/../../include/global.php')) {
-		require(dirname(__FILE__) . '/../../include/global.php');
-	} else {
-		require(dirname(__FILE__) . '/../../include/config.php');
-	}
+	include(dirname(__FILE__) . '/../../include/global.php');
 }
 
 $sli = read_config_option("syslog_last_incoming");
 $slt = read_config_option("syslog_last_total");
 
-require($config['base_path'] . '/plugins/syslog/config.php');
-$link = mysql_connect($syslogdb_hostname, $syslogdb_username, $syslogdb_password) or die('');
-mysql_select_db($syslogdb_default) or die('');
-
-$result = mysql_query("SHOW TABLE STATUS LIKE '" . $syslog_config["incomingTable"] . "'") or die('');
-$line = mysql_fetch_array($result, MYSQL_ASSOC);
+$line = db_fetch_row("SHOW TABLE STATUS LIKE 'syslog_incoming'", true, $syslog_cnn);
 $i_rows = $line['Auto_increment'];
 
-$result = mysql_query("SHOW TABLE STATUS LIKE '" . $syslog_config["syslogTable"] . "'") or die('');
-$line = mysql_fetch_array($result, MYSQL_ASSOC);
+$line = db_fetch_row("SHOW TABLE STATUS LIKE 'syslog'", true, $syslog_cnn);
 $total_rows = $line['Auto_increment'];
 
+if ($sli == "") {
+	$sql = "INSERT INTO settings VALUES ('syslog_last_incoming','$i_rows')";
+}else{
+	$sql = "UPDATE settings SET value='$i_rows' WHERE name='syslog_last_incoming'";
+}
+db_execute($sql);
 
-if ($sli == "")
-	$sql = "insert into settings values ('syslog_last_incoming','$i_rows')";
-else
-	$sql = "update settings set value = '$i_rows' where name = 'syslog_last_incoming'";
-$result = db_execute($sql) or die (mysql_error());
+if ($slt == "") {
+	$sql = "INSERT INTO settings VALUES ('syslog_last_total','$total_rows')";
+}else{
+	$sql = "UPDATE settings SET value='$total_rows' WHERE name='syslog_last_total'";
+}
+db_execute($sql);
 
-if ($slt == "")
-	$sql = "insert into settings values ('syslog_last_total','$total_rows')";
-else
-	$sql = "update settings set value = '$total_rows' where name = 'syslog_last_total'";
-$result = db_execute($sql);
-
-
-if ($sli == '')
-	$sli = 0;
-
-if ($slt == '')
-	$slt = 0;
+if ($sli == '') $sli = 0;
+if ($slt == '') $slt = 0;
 
 print "total:" . ($total_rows-$slt) . " incoming:" . ($i_rows-$sli);
 

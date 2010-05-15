@@ -73,7 +73,7 @@ if (isset($_REQUEST["export_x"])) {
  *  CSS generation code as well as the current methodology.
 */
 function generate_syslog_cssjs() {
-	global $colors, $syslog_colors, $syslog_config, $syslog_text_colors, $config, $syslog_levels;
+	global $colors, $syslog_colors, $syslog_incoming_config, $syslog_text_colors, $config, $syslog_levels;
 
 	/* legacy css for syslog backgrounds */
 	print "\n\t\t\t<style type='text/css'>\n";
@@ -228,7 +228,7 @@ function syslog_request_validation() {
 	load_current_session_value("efacility", "sess_syslog_efacility", "0");
 	load_current_session_value("elevel", "sess_syslog_elevel", "0");
 	load_current_session_value("hosts", "sess_syslog_hosts", "localhost");
-	load_current_session_value("sort_column", "sess_syslog_sort_column", "time");
+	load_current_session_value("sort_column", "sess_syslog_sort_column", "logtime");
 	load_current_session_value("sort_direction", "sess_syslog_sort_direction", "DESC");
 
 	include("./plugins/syslog/config.php");
@@ -249,7 +249,7 @@ function syslog_request_validation() {
 */
 function syslog_messages() {
 	global $colors, $sql_where, $hostfilter;
-	global $config, $syslog_config, $reset_multi, $syslog_levels;
+	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 
 	/* cacti 0.8.7/0.8.6 compatibility */
 	if (file_exists("./include/global_arrays.php")) {
@@ -308,12 +308,11 @@ function syslog_messages() {
 	print $nav;
 
 	$display_text = array(
-		$syslog_config["hostField"] => array("Host", "ASC"),
-		$syslog_config["dateField"] => array("Date", "ASC"),
-		$syslog_config["timeField"] => array("Time", "ASC"),
-		$syslog_config["textField"] => array("Message", "ASC"),
-		$syslog_config["facilityField"] => array("Facility", "ASC"),
-		$syslog_config["priorityField"] => array("Level", "ASC"),
+		$syslog_incoming_config["hostField"] => array("Host", "ASC"),
+		"logtime" => array("Date", "ASC"),
+		$syslog_incoming_config["textField"] => array("Message", "ASC"),
+		$syslog_incoming_config["facilityField"] => array("Facility", "ASC"),
+		$syslog_incoming_config["priorityField"] => array("Level", "ASC"),
 		"nosortt" => array("Options", "ASC"));
 
 	html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
@@ -321,20 +320,19 @@ function syslog_messages() {
 	$i = 0;
 	if (sizeof($syslog_messages) > 0) {
 		foreach ($syslog_messages as $syslog_message) {
-			$title   = "'" . $syslog_message[$syslog_config["textField"]] . "'";
+			$title   = "'" . $syslog_message[$syslog_incoming_config["textField"]] . "'";
 			$tip_options = "CLICKCLOSE, 'true', WIDTH, '40', DELAY, '500', FOLLOWMOUSE, 'true', FADEIN, 450, FADEOUT, 450, BGCOLOR, '#F9FDAF', STICKY, 'true', SHADOWCOLOR, '#797C6E', TITLE, 'Message'";
 
-			syslog_row_color($colors["alternate"], $colors["light"], $i, $syslog_message[$syslog_config["priorityField"]], $title);
+			syslog_row_color($colors["alternate"], $colors["light"], $i, $syslog_message[$syslog_incoming_config["priorityField"]], $title);
 			$i++;
 
-			print "<td>" . $syslog_message[$syslog_config["hostField"]] . "</td>\n";
-			print "<td>" . $syslog_message[$syslog_config["dateField"]] . "</td>\n";
-			print "<td>" . $syslog_message[$syslog_config["timeField"]] . "</td>\n";
-			print "<td>" . eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_config["textField"]], 70)) . "</td>\n";
-			print "<td>" . ucfirst($syslog_message[$syslog_config["facilityField"]]) . "</td>\n";
-			print "<td>" . ucfirst($syslog_message[$syslog_config["priorityField"]]) . "</td>\n";
+			print "<td>" . $syslog_message[$syslog_incoming_config["hostField"]] . "</td>\n";
+			print "<td>" . $syslog_message["logtime"] . "</td>\n";
+			print "<td>" . eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)) . "</td>\n";
+			print "<td>" . ucfirst($syslog_message[$syslog_incoming_config["facilityField"]]) . "</td>\n";
+			print "<td>" . ucfirst($syslog_message[$syslog_incoming_config["priorityField"]]) . "</td>\n";
 			print '<td nowrap valign=top>';
-			print "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_config["id"]] . "&action=edit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_config["id"]] . "&action=edit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>";
+			print "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>";
 		}
 	}else{
 		print "<tr><td><em>No Messages</em></td></tr>";

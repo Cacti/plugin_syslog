@@ -26,7 +26,7 @@
  * bursts of incoming syslog events
  */
 ini_set('max_execution_time', 3600);
-ini_set('memory_limit', '64M');
+ini_set('memory_limit', '256M');
 
 global $syslog_debug;
 
@@ -52,19 +52,11 @@ chdir($dir);
 if (strpos($dir, 'plugins') !== false) {
 	chdir('../../');
 }
-if (file_exists("./include/global.php")) {
-	include("./include/global.php");
-} else {
-	include("./include/config.php");
-}
+include("./include/global.php");
 
 include_once($config["library_path"] . "/functions.php");
 include_once($config["base_path"] . '/plugins/syslog/config.php');
 include_once($config["base_path"] . '/plugins/syslog/functions.php');
-
-/* Connect to the Syslog Database */
-$link = mysql_connect($syslogdb_hostname, $syslogdb_username, $syslogdb_password) or die('Could not connect to the database!');
-mysql_select_db($syslogdb_default) or die('');
 
 /* Initialization Section */
 $r = read_config_option("syslog_retention");
@@ -72,9 +64,7 @@ if ($r == '' or $r < 0 or $r > 365) {
 	if ($r == '') {
 		$sql = "REPLACE INTO settings VALUES ('syslog_retention','30')";
 	}else{
-		$sql = "UPDATE settings
-			SET value='30'
-			WHERE name='syslog_retention'";
+		$sql = "UPDATE settings SET value='30' WHERE name='syslog_retention'";
 	}
 
 	$result = db_execute($sql);
@@ -99,19 +89,17 @@ if ($email != '') {
 /* delete old syslog and syslog soft messages */
 if ($retention > 0) {
 	/* delete from the main syslog table first */
-	mysql_query("DELETE FROM " . $syslog_config["syslogTable"] . "
-		WHERE date < '$retention'");
+	db_execute("DELETE FROM syslog WHERE date < '$retention'", true, $syslog_cnn);
 
-	$syslog_deleted = mysql_affected_rows();
+	$syslog_deleted = $syslog_cnn->Affected_Rows();
 
 	/* now delete from the syslog removed table */
-	mysql_query("DELETE FROM " . $syslog_config["syslogRemovedTable"] . "
-		WHERE date < '$retention'");
+	db_execute("DELETE FROM syslog_removed WHERE date < '$retention'", true, $syslog_cnn);
 
 	/* remove old hosts */
-	mysql_query("DELETE FROM syslog_hosts WHERE UNIX_TIMESTAMP(last_updated)<UNIX_TIMESTAMP()-3600");
+	db_execute("DELETE FROM syslog_hosts WHERE UNIX_TIMESTAMP(last_updated)<UNIX_TIMESTAMP()-3600", true, $syslog_cnn);
 
-	$syslog_deleted += mysql_affected_rows();
+	$syslog_deleted += $syslog_cnn->Affected_Rows();
 
 	syslog_debug("Deleted " . $syslog_deleted .
 		" Syslog Message" . ($syslog_deleted == 1 ? "" : "s" ) .
@@ -121,11 +109,9 @@ if ($retention > 0) {
 /* get a uniqueID to allow moving of records to done table */
 while (1) {
 	$uniqueID = rand(1, 127);
-	$query    = mysql_query("SELECT *
-		FROM " . $syslog_config["incomingTable"] . "
-		WHERE status=" . $uniqueID);
+	$count    = db_fetch_cell("SELECT count(*) FROM syslog_incoming WHERE status=" . $uniqueID, true, $syslog_cnn);
 
-	if (mysql_affected_rows() == 0) {
+	if ($count == 0) {
 		break;
 	}
 }
@@ -133,57 +119,57 @@ while (1) {
 syslog_debug("Unique ID = " . $uniqueID);
 
 /* flag all records with the uniqueID prior to moving */
-mysql_query("UPDATE " . $syslog_config["incomingTable"] . "
-	SET status=" . $uniqueID . "
-	WHERE status=0");
+db_execute("UPDATE syslog_incoming SET status=" . $uniqueID . " WHERE status=0", true, $syslog_cnn);
 
-syslog_debug("Found " . mysql_affected_rows() .
-	" new Message" . (mysql_affected_rows() == 1 ? "" : "s" ) .
+syslog_debug("Found " . $syslog_cnn->Affected_Rows() .
+	" new Message" . ($syslog_cnn->Affected_Rows() == 1 ? "" : "s" ) .
 	" to process");
 
 /* remote records that don't need to to be transferred */
-syslog_remove_items($syslog_config["incomingTable"]);
+syslog_remove_items("syslog_incoming");
 
 /* send out the alerts */
-$query = mysql_query("SELECT * FROM " . $syslog_config["alertTable"]);
+$query = db_fetch_assoc("SELECT * FROM syslog_alert", true, $syslog_cnn);
 
-syslog_debug("Found " . mysql_affected_rows() .
-	" Alert Rule" . (mysql_affected_rows() == 1 ? "" : "s" ) .
+syslog_debug("Found " . $syslog_cnn->Affected_Rows() .
+	" Alert Rule" . ($syslog_cnn->Affected_Rows() == 1 ? "" : "s" ) .
 	" to process");
 
-while ($alert = mysql_fetch_array($query, MYSQL_ASSOC)) {
+if (sizeof($query)) {
+foreach($query as $alert) {
 	$sql    = '';
 	$alertm = '';
 
 	if ($alert['type'] == 'facility') {
-		$sql = 'SELECT * FROM ' . $syslog_config["incomingTable"] . "
-			WHERE " . $syslog_config["facilityField"] . "='" . $alert['message'] . "'
+		$sql = "SELECT * FROM syslog_incoming
+			WHERE " . $syslog_incoming_config["facilityField"] . "='" . $alert['message'] . "'
 			AND status=" . $uniqueID;
 	} else if ($alert['type'] == 'messageb') {
-		$sql = 'SELECT * FROM ' . $syslog_config["incomingTable"] . "
-			WHERE " . $syslog_config["textField"] . "
+		$sql = "SELECT * FROM syslog_incoming
+			WHERE " . $syslog_incoming_config["textField"] . "
 			LIKE '" . $alert['message'] . "%'
 			AND status=" . $uniqueID;
 	} else if ($alert['type'] == 'messagec') {
-		$sql = 'SELECT * FROM ' . $syslog_config["incomingTable"] . "
-			WHERE " . $syslog_config["textField"] . "
+		$sql = "SELECT * FROM syslog_incoming
+			WHERE " . $syslog_incoming_config["textField"] . "
 			LIKE '%" . $alert['message'] . "%'
 			AND status=" . $uniqueID;
 	} else if ($alert['type'] == 'messagee') {
-		$sql = 'SELECT * FROM ' . $syslog_config["incomingTable"] . "
-			WHERE " . $syslog_config["textField"] . "
+		$sql = "SELECT * FROM syslog_incoming
+			WHERE " . $syslog_incoming_config["textField"] . "
 			LIKE '%" . $alert['message'] . "'
 			AND status=" . $uniqueID;
 	} else if ($alert['type'] == 'host') {
-		$sql = 'SELECT * FROM ' . $syslog_config["incomingTable"] . "
-			WHERE " . $syslog_config["hostField"] . "='" . $alert['message'] . "'
+		$sql = "SELECT * FROM syslog_incoming
+			WHERE " . $syslog_incoming_config["hostField"] . "='" . $alert['message'] . "'
 			AND status=" . $uniqueID;
 	}
 
 	if ($sql != '') {
-		$at = mysql_query($sql);
+		$at = db_fetch_assoc($sql, true, $syslog_cnn);
 
-		while ($a = mysql_fetch_array($at, MYSQL_ASSOC)) {
+		if (sizeof($at)) {
+		foreach($at as $a) {
 			$a['message'] = str_replace('  ', "\n", $a['message']);
 			while (substr($a['message'], -1) == "\n") {
 				$a['message'] = substr($a['message'], 0, -1);
@@ -199,73 +185,62 @@ while ($alert = mysql_fetch_array($query, MYSQL_ASSOC)) {
 			syslog_debug("Alert Rule '" . $alert['name'] . "
 				' has been activated");
 		}
+		}
 	}
 
 	if ($alertm != '') {
 		syslog_sendemail($alert['email'], '', 'Event Alert - ' . $alert['name'], $alertm);
 	}
 }
+}
 
 /* MOVE ALL FLAGGED MESSAGES TO THE SYSLOG TABLE */
-mysql_query('INSERT INTO ' .
-	$syslog_config["syslogTable"]   . ' (`' .
-	$syslog_config["dateField"]     . '`, `' .
-	$syslog_config["timeField"]     . '`, ' .
-	$syslog_config["priorityField"] . ', ' .
-	$syslog_config["facilityField"] . ', ' .
-	$syslog_config["hostField"]     . ', ' .
-	$syslog_config["textField"]     . ') ' .
-	'SELECT `' .
-	$syslog_config["dateField"]     . '`, `' .
-	$syslog_config["timeField"]     . '`, ' .
-	$syslog_config["priorityField"] . ', ' .
-	$syslog_config["facilityField"] . ', ' .
-	$syslog_config["hostField"] . ' , ' .
-	$syslog_config["textField"] .
-	' FROM ' . $syslog_config["incomingTable"] . ' WHERE status=' . $uniqueID);
+db_execute('INSERT INTO syslog (logtime, ' .
+	$syslog_incoming_config["priorityField"] . ', ' .
+	$syslog_incoming_config["facilityField"] . ', ' .
+	$syslog_incoming_config["hostField"]     . ', ' .
+	$syslog_incoming_config["textField"]     . ') ' .
+	'SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config["timeField"]     . '`), ' .
+	$syslog_incoming_config["priorityField"] . ', ' .
+	$syslog_incoming_config["facilityField"] . ', ' .
+	$syslog_incoming_config["hostField"] . ' , ' .
+	$syslog_incoming_config["textField"] .
+	' FROM syslog_incoming WHERE status=' . $uniqueID, true, $syslog_cnn);
 
-
-$moved = mysql_affected_rows();
+$moved = $syslog_cnn->Affected_Rows();
 
 syslog_debug("Moved " . $moved .
 	" Message" . ($moved == 1 ? "" : "s" ) .
-	" to the '" . $syslog_config["syslogTable"] . "' table");
+	" to the 'syslog' table");
 
 /* DELETE ALL FLAGGED ITEMS FROM THE INCOMING TABLE */
-mysql_query("DELETE FROM " . $syslog_config["incomingTable"] . "
-	WHERE status=" . $uniqueID);
+db_execute("DELETE FROM syslog_incoming WHERE status=" . $uniqueID, true, $syslog_cnn);
 
-syslog_debug("Deleted " . mysql_affected_rows() .
+syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() .
 	" already processed Messages from incoming");
 
 /* Add the unique hosts to the syslog_hosts table */
-$sql = "INSERT INTO syslog_hosts (host)
-        (SELECT DISTINCT host
-        FROM " . $syslog_config["syslogTable"] . ")
-        ON DUPLICATE KEY UPDATE host=VALUES(host)";
+$sql = "INSERT INTO syslog_hosts (host) (SELECT DISTINCT host FROM syslog) ON DUPLICATE KEY UPDATE host=VALUES(host)";
 
-mysql_query($sql);
+db_execute($sql, true, $syslog_cnn);
 
-syslog_debug("Updated " . mysql_affected_rows() .
+syslog_debug("Updated " . $syslog_cnn->Affected_Rows() .
 	" hosts in the syslog hosts table");
 
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date("G") == 0 && date("i") < 5) {
-	db_execute("OPTIMIZE TABLE " .
-		$syslog_config["incomingTable"] . ", " .
-		$syslog_config["syslogTable"]   . ", " .
-		$syslog_config["removeTable"]   . ", " .
-		$syslog_config["alertTable"]);
+	db_execute("OPTIMIZE TABLE syslog_incoming, syslog, syslog_remove, syslog_alert");
 }
 
 syslog_debug("Processing Reports...");
 
 /* Lets run the reports */
-$syslog_reports = mysql_query("SELECT * FROM " . $syslog_config["reportTable"]);
+$syslog_reports = db_fetch_assoc("SELECT * FROM syslog_reports", true, $syslog_cnn);
 
-syslog_debug("We have " . mysql_affected_rows() . " Reports in the database");
+syslog_debug("We have " . $syslog_cnn->Affected_Rows() . " Reports in the database");
 
-while ($syslog_report = mysql_fetch_array($syslog_reports, MYSQL_ASSOC)) {
+if (sizeof($syslog_reports)) {
+foreach($syslog_reports as $syslog_report) {
 	print '   Report: ' . $syslog_report['name'] . "\n";
 	if ($syslog_report['min'] < 10)
 		$syslog_report['min'] = '0' . $syslog_report['min'];
@@ -296,39 +271,41 @@ while ($syslog_report = mysql_fetch_array($syslog_reports, MYSQL_ASSOC)) {
 		$sql     = '';
 		$reptext = '';
 		if ($syslog_report['type'] == 'messageb') {
-			$sql = 'SELECT * FROM ' . $syslog_config["syslogTable"] . "
-				WHERE " . $syslog_config["textField"] . "
+			$sql = "SELECT * FROM syslog
+				WHERE " . $syslog_incoming_config["textField"] . "
 				LIKE '" . $syslog_report['message'] . "%'";
 		}
 
 		if ($syslog_report['type'] == 'messagec') {
-			$sql = 'SELECT * FROM ' . $syslog_config["syslogTable"] . "
-				WHERE " . $syslog_config["textField"] . "
+			$sql = "SELECT * FROM syslog
+				WHERE " . $syslog_incoming_config["textField"] . "
 				LIKE '%" . $syslog_report['message'] . "%'";
 		}
 
 		if ($syslog_report['type'] == 'messagee') {
-			$sql = 'SELECT * FROM ' . $syslog_config["syslogTable"] . "
-				WHERE " . $syslog_config["textField"] . "
+			$sql = "SELECT * FROM syslog
+				WHERE " . $syslog_incoming_config["textField"] . "
 				LIKE '%" . $syslog_report['message'] . "'";
 		}
 
 		if ($syslog_report['type'] == 'host') {
-			$sql = 'SELECT * FROM ' . $syslog_config["syslogTable"] . "
-				WHERE " . $syslog_config["hostField"] . "='" . $syslog_report['message'] . "'";
+			$sql = "SELECT * FROM syslog
+				WHERE " . $syslog_incoming_config["hostField"] . "='" . $syslog_report['message'] . "'";
 		}
 
 		if ($sql != '') {
 			$date2 = date("Y-m-d H:i:s", time());
 			$date1 = date("Y-m-d H:i:s", time() - 86400);
-			$sql  .= " AND concat(DATE_FORMAT(" . $syslog_config["dateField"] . ",'%Y-%m-%d'),' ',TIME_FORMAT(" . $syslog_config["timeField"] . ",'%H:%i:%s')) BETWEEN '". $date1 . "' AND '" . $date2 . "'";
-			$sql  .= " ORDER BY " . $syslog_config["dateField"] . " DESC," . $syslog_config["timeField"] . " DESC";
-			$items = mysql_query($sql);
+			$sql  .= " AND logtime BETWEEN '". $date1 . "' AND '" . $date2 . "'";
+			$sql  .= " ORDER BY logtime DESC";
+			$items = db_fetch_assoc($sql, true, $syslog_cnn);
 
-			syslog_debug("We have " . mysql_affected_rows() . " items for the Report");
+			syslog_debug("We have " . $syslog_cnn->Affected_Rows() . " items for the Report");
 
-			while ($item = mysql_fetch_array($items, MYSQL_ASSOC)) {
+			if (sizeof($items)) {
+			foreach($items as $item) {
 				$reptext .= "<tr>" . $item['date'] . "</td><td>" . $item['time'] . "</td><td>" . $item['message'] . "</td></tr>\n";
+			}
 			}
 
 			if ($reptext != '') {
@@ -343,6 +320,7 @@ while ($syslog_report = mysql_fetch_array($syslog_reports, MYSQL_ASSOC)) {
 	} else {
 		print '       Next Send: ' . date("F j, Y, g:i a", $next_run_time) . "\n";
 	}
+}
 }
 
 syslog_debug("Finished processing Reports...");

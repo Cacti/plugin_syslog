@@ -46,57 +46,54 @@ function syslog_sendemail($to, $from, $subject, $message) {
 }
 
 function syslog_remove_items($table, $rule = '') {
-	global $config, $syslog_config;
+	global $config, $syslog_cnn, $syslog_incoming_config;
 
 	include($config["base_path"] . '/plugins/syslog/config.php');
 
 	/* REMOVE ALL THE THINGS WE DONT WANT TO SEE */
-	$query = mysql_query("SELECT * FROM " . $syslog_config["removeTable"]);
+	$rows = db_fetch_assoc("SELECT * FROM syslog_remove", true, $syslog_cnn);
 
-	syslog_debug("Found " . mysql_affected_rows() .
-		" Removal Rule" . (mysql_affected_rows() == 1 ? "" : "s" ) .
+	syslog_debug("Found " . sizeof($rows) .
+		" Removal Rule" . (sizeof($rows) == 1 ? "" : "s" ) .
 		" to process");
 
-	while ($remove = mysql_fetch_array($query, MYSQL_ASSOC)) {
+	if (sizeof($rows)) {
+	foreach($rows as $remove) {
 		$sql  = "";
 		$sql1 = "";
 		if ($remove['type'] == 'facility') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO " . $syslog_config["syslogRemovedTable"] . " (`" .
-						$syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] . ') ' .
-					" SELECT `" . $syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] .
+				$sql1 = "INSERT INTO syslog_removed (logtime, " .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] . ') ' .
+					" SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . '`, `' .
+						$syslog_incoming_config["timeField"] . ')`, ' .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] .
 					" FROM " . $table . "
-					WHERE " . $syslog_config["facilityField"] . "='" . $remove['message'] . "'";
+					WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "'";
 			}
 
 			$sql = "DELETE
 				FROM " . $table . "
-				WHERE " . $syslog_config["facilityField"] . "='" . $remove['message'] . "'";
+				WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "'";
 		}else if ($remove['type'] == 'host') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO " . $syslog_config["syslogRemovedTable"] . " (`" .
-						$syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] . ') ' .
-					" SELECT `" . $syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] .
+				$sql1 = "INSERT INTO syslog_removed (logtime, " .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] . ') ' .
+					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
+						$syslog_incoming_config["timeField"] . '`), ' .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] .
 					" FROM " . $table . "
 					WHERE host='" . $remove['message'] . "'";
 			}
@@ -106,19 +103,17 @@ function syslog_remove_items($table, $rule = '') {
 				WHERE host='" . $remove['message'] . "'";
 		} else if ($remove['type'] == 'messageb') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO " . $syslog_config["syslogRemovedTable"] . " (`" .
-						$syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] . ') ' .
-					" SELECT `" . $syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] .
+				$sql1 = "INSERT INTO syslog_removed (logtime, " .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] . ') ' .
+					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
+						$syslog_incoming_config["timeField"] . '`), ' .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] .
 					" FROM " . $table . "
 					WHERE message LIKE '" . $remove['message'] . "%'";
 			}
@@ -128,19 +123,17 @@ function syslog_remove_items($table, $rule = '') {
 				WHERE message LIKE '" . $remove['message'] . "%'";
 		} else if ($remove['type'] == 'messagec') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO " . $syslog_config["syslogRemovedTable"] . " (`" .
-						$syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] . ') ' .
-					" SELECT `" . $syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] .
+				$sql1 = "INSERT INTO syslog_removed (logtime, " .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] . ') ' .
+					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
+						$syslog_incoming_config["timeField"] . '`), ' .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] .
 					" FROM " . $table . "
 					WHERE message LIKE '%" . $remove['message'] . "%'";
 			}
@@ -150,19 +143,17 @@ function syslog_remove_items($table, $rule = '') {
 				WHERE message LIKE '%" . $remove['message'] . "%'";
 		} else if ($remove['type'] == 'messagee') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO " . $syslog_config["syslogRemovedTable"] . " (`" .
-						$syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] . ') ' .
-					" SELECT `" . $syslog_config["dateField"] . '`, `' .
-						$syslog_config["timeField"] . '`, ' .
-						$syslog_config["priorityField"] . ', ' .
-						$syslog_config["facilityField"] . ', ' .
-						$syslog_config["hostField"] . ', ' .
-						$syslog_config["textField"] .
+				$sql1 = "INSERT INTO syslog_removed (logtime, " .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] . ') ' .
+					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
+						$syslog_incoming_config["timeField"] . '`), ' .
+						$syslog_incoming_config["priorityField"] . ', ' .
+						$syslog_incoming_config["facilityField"] . ', ' .
+						$syslog_incoming_config["hostField"] . ', ' .
+						$syslog_incoming_config["textField"] .
 					" FROM " . $table . "
 					WHERE message LIKE '%" . $remove['message'] . "'";
 			}
@@ -176,18 +167,19 @@ function syslog_remove_items($table, $rule = '') {
 			$debugm = '';
 			if ($sql1 != '') {
 				/* move rows first */
-				mysql_query($sql1);
-				$messages_moved = mysql_affected_rows();
+				db_execute($sql1, true, $syslog_cnn);
+				$messages_moved = $syslog_cnn->Affected_Rows();
 				$debugm = "Moved " . $messages_moved . ", ";
 			}
 
 			/* now delete the remainder that match */
-			mysql_query($sql);
+			db_execute($sql, true, $syslog_cnn);
 
-			syslog_debug($debugm . "Deleted " . mysql_affected_rows() .
-					" Message" . ((mysql_affected_rows()) == 1 ? "" : "s" ) .
+			syslog_debug($debugm . "Deleted " . $syslog_cnn->Affected_rows() .
+					" Message" . ($syslog_cnn->Affected_rows() == 1 ? "" : "s" ) .
 					" for removal rule '" . $remove['name'] . "'");
 		}
+	}
 	}
 }
 
@@ -293,7 +285,7 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 }
 
 function sql_hosts_where() {
-	global $hostfilter, $syslog_config;
+	global $hostfilter, $syslog_incoming_config;
 
 	if (!empty($_REQUEST["host"])) {
 		if (is_array($_REQUEST["host"])) {
@@ -305,9 +297,9 @@ function sql_hosts_where() {
 						$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
 					}else{
 						if (!empty($sql_where)) {
-							$hostfilter .= " AND " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+							$hostfilter .= " AND " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
 						} else {
-							$hostfilter .= " " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+							$hostfilter .= " " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
 						}
 					}
 
@@ -318,16 +310,16 @@ function sql_hosts_where() {
 			}
 		}else{
 			if (!empty($sql_where)) {
-				$hostfilter .= " AND " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
+				$hostfilter .= " AND " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
 			} else {
-				$hostfilter .= " " . $syslog_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
+				$hostfilter .= " " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
 			}
 		}
 	}
 }
 
 function get_syslog_messages() {
-	global $sql_where, $hostfilter, $syslog_config;
+	global $sql_where, $syslog_cnn, $hostfilter, $syslog_incoming_config;
 
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
@@ -338,19 +330,15 @@ function get_syslog_messages() {
 		}
 	}
 
-	$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . 
-		$syslog_config["dateField"] . ">='" . 
-		date("Y-m-d", strtotime($_SESSION["sess_current_date1"])) . 
-		"' AND " . $syslog_config["timeField"] .  ">='" . 
-		date("H:i:s", strtotime($_SESSION["sess_current_date1"])) . 
-		"'";
+	$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
+		"logtime>='" . date("Y-m-d", strtotime($_SESSION["sess_current_date1"])) . "'";
 
 	if (!empty($_REQUEST["filter"])) {
-		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_incoming_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";
 	}
 
 	if (!empty($_REQUEST["efacility"])) {
-		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_config["facilityField"] . "='" . $_REQUEST["efacility"] . "'";
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_incoming_config["facilityField"] . "='" . $_REQUEST["efacility"] . "'";
 	}
 
 	if (!empty($_REQUEST["elevel"])) {
@@ -390,7 +378,7 @@ function get_syslog_messages() {
 		default:
 		}
 
-		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . $syslog_config["priorityField"] . " " . $mysql_in;
+		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . $syslog_incoming_config["priorityField"] . " " . $mysql_in;
 	}
 
 	if (!isset($_REQUEST["export_x"])) {
@@ -407,16 +395,16 @@ function get_syslog_messages() {
 
 	if ($_REQUEST["removal"] == "-1") {
 		$query_sql = "SELECT *
-			FROM " . $syslog_config["syslogTable"] . " " .
+			FROM syslog " .
 			$sql_where . "
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
 	}else{
 		$query_sql = "(SELECT *
-			FROM " . $syslog_config["syslogTable"] . " " .
+			FROM syslog " .
 			$sql_where . "
 			) UNION (SELECT *
-			FROM " . $syslog_config["syslogRemovedTable"] . " " .
+			FROM syslog_removed " .
 			$sql_where . ")
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
@@ -424,19 +412,11 @@ function get_syslog_messages() {
 
 	//echo $query_sql;
 
-	$query = mysql_query($query_sql);
-
-	$syslog_messages = array();
-	if (is_resource($query)) {
-		while ($syslog_messages[] = mysql_fetch_assoc($query));
-		array_pop($syslog_messages);
-	}
-
-	return($syslog_messages);
+	return db_fetch_assoc($query_sql, true, $syslog_cnn);
 }
 
 function syslog_export () {
-	global $syslog_config;
+	global $syslog_incoming_config;
 
 	header("Content-type: text/plain");
 	header("Content-Disposition: attachment; filename=log_view-" . date("Y-m-d",time()) . ".log");
@@ -450,12 +430,11 @@ function syslog_export () {
 	if (sizeof($syslog_messages) > 0) {
 		foreach ($syslog_messages as $syslog_message) {
 			print
-				$syslog_message[$syslog_config["hostField"]]     . "," .
-				$syslog_message[$syslog_config["facilityField"]] . "," .
-				$syslog_message[$syslog_config["priorityField"]] . "," .
-				$syslog_message[$syslog_config["dateField"]]     . "," .
-				$syslog_message[$syslog_config["timeField"]]     . "," .
-				$syslog_message[$syslog_config["textField"]]     . "\r\n";
+				$syslog_message[$syslog_incoming_config["hostField"]]     . "," .
+				$syslog_message[$syslog_incoming_config["facilityField"]] . "," .
+				$syslog_message[$syslog_incoming_config["priorityField"]] . "," .
+				$syslog_message["logtime"]     . "," .
+				$syslog_message[$syslog_incoming_config["textField"]]     . "\r\n";
 		}
 	}
 }
@@ -472,7 +451,7 @@ function strip_timespan () {
 }
 
 function syslog_page_select($total_rows) {
-	global $config, $syslog_config;
+	global $config, $syslog_incoming_config;
 
 	$url_page_select = "";
 
