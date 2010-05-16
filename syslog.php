@@ -73,15 +73,14 @@ if (isset($_REQUEST["export_x"])) {
  *  CSS generation code as well as the current methodology.
 */
 function generate_syslog_cssjs() {
-	global $colors, $syslog_colors, $syslog_incoming_config, $syslog_text_colors, $config, $syslog_levels;
+	global $colors, $config, $syslog_incoming_config;
+	global $syslog_colors, $syslog_text_colors, $syslog_levels;
 
 	/* legacy css for syslog backgrounds */
 	print "\n\t\t\t<style type='text/css'>\n";
 	if (sizeof($syslog_colors)) {
 	foreach ($syslog_colors as $type => $color) {
-		if (($color != "") ||
-			(isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] != '')) {
-
+		if ((isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] > 0)) {
 			print "\t\t\t.syslog_$type {\n";
 			if ($color != '') {
 				print "\t\t\t\tbackground-color:#$color;\n";
@@ -93,41 +92,28 @@ function generate_syslog_cssjs() {
 		}
 	}
 	}
-
-	/* new css for syslog backgrounds */
-	if (sizeof($syslog_levels)) {
-	foreach ($syslog_levels as $key => $level) {
-		print "\t\t\t.syslog_n_$level {\n";
-
-		$clrs = syslog_get_colors($level);
-
-		print "\t\t\t\tbackground-color:#" . $clrs["bg"] . ";\n";
-		print "\t\t\t\tcolor:#" . $clrs["fg"] . ";\n";
-		print "\t\t\t}\n";
-	}
-	}
 	print "\t\t\t</style>\n";
 
 	/* this section of javascript keeps nasty calendar popups from
 	 * appearing when you hit return.
 	 */
 	?>
-			<script type="text/javascript">
-			<!--
+	<script type="text/javascript">
+	<!--
 
-			function forceReturn(evt) {
-				var evt  = (evt) ? evt : ((event) ? event : null);
-				var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+	function forceReturn(evt) {
+		var evt  = (evt) ? evt : ((event) ? event : null);
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
 
-				if ((evt.keyCode == 13) && (node.type=="text")) {
-					document.getElementById('syslog_form').submit();
-					return false;
-				}
-			}
-			document.onkeypress = forceReturn;
+		if ((evt.keyCode == 13) && (node.type=="text")) {
+			document.getElementById('syslog_form').submit();
+			return false;
+		}
+	}
+	document.onkeypress = forceReturn;
 
-			-->
-			</script>
+	-->
+	</script>
 	<?php
 }
 

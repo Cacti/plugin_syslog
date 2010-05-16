@@ -175,23 +175,6 @@ function syslog_remove_items($table, $rule = '') {
 	}
 }
 
-function syslog_get_colors($level) {
-	global $syslog_level_colors;
-
-	if (!is_array($syslog_level_colors)) {
-		$syslog_level_colors = array();
-	}
-
-	if (!isset($syslog_level_colors[$level])) {
-		$bg = db_fetch_cell("SELECT hex FROM colors WHERE id='" . read_config_option("syslog_" . $level . "_bg", TRUE) . "'");
-		$fg = db_fetch_cell("SELECT hex FROM colors WHERE id='" . read_config_option("syslog_" . $level . "_fg", TRUE) . "'");
-
-		$syslog_level_colors[$level] = array("bg" => $bg, "fg" => $fg);
-	}
-
-	return $syslog_level_colors[$level];
-}
-
 /** function syslog_row_color()
  *  This function set's the CSS for each row of the syslog table as it is displayed
  *  it supports both the legacy as well as the new approach to controlling these
@@ -265,14 +248,10 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 
 	$tip_options = "CLICKCLOSE, 'true', WIDTH, '40', DELAY, '300', FOLLOWMOUSE, 'true', FADEIN, 250, FADEOUT, 250, BGCOLOR, '#FEFEFE', STICKY, 'true', SHADOWCOLOR, '#797C6E'";
 
-	if ($legacy) {
-		if (isset($syslog_colors[$level]) && $syslog_colors[$level] != '') {
-			print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" class='syslog_$level'>\n";
-		} else {
-			print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" bgcolor='#$current_color' class='syslog_$level'>\n";
-		}
-	}else{
-		print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" class='syslog_n_$bglevel'>\n";
+	if (isset($syslog_colors[$level]) && $syslog_colors[$level] != '') {
+		print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" class='syslog_$level'>\n";
+	} else {
+		print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" bgcolor='#$current_color' class='syslog_$level'>\n";
 	}
 }
 

@@ -433,49 +433,49 @@ function syslog_config_settings() {
 		"syslog_crit_bg" => array(
 			"friendly_name" => "Critical",
 			"description" => "",
-			"default" => "9",
+			"default" => "42",
 			"method" => "drop_color"
 		),
 		"syslog_alert_bg" => array(
 			"friendly_name" => "Alert",
 			"description" => "",
-			"default" => "9",
+			"default" => "39",
 			"method" => "drop_color"
 		),
 		"syslog_err_bg" => array(
 			"friendly_name" => "Error",
 			"description" => "",
-			"default" => "9",
+			"default" => "29",
 			"method" => "drop_color"
 		),
 		"syslog_warn_bg" => array(
 			"friendly_name" => "Warning",
 			"description" => "",
-			"default" => "9",
+			"default" => "25",
 			"method" => "drop_color"
 		),
 		"syslog_notice_bg" => array(
 			"friendly_name" => "Notice",
 			"description" => "",
-			"default" => "9",
+			"default" => "63",
 			"method" => "drop_color"
 		),
 		"syslog_info_bg" => array(
 			"friendly_name" => "Info",
 			"description" => "",
-			"default" => "9",
+			"default" => "97",
 			"method" => "drop_color"
 		),
 		"syslog_debug_bg" => array(
 			"friendly_name" => "Debug",
 			"description" => "",
-			"default" => "9",
+			"default" => "50",
 			"method" => "drop_color"
 		),
 		"syslog_other_bg" => array(
 			"friendly_name" => "Other",
 			"description" => "",
-			"default" => "9",
+			"default" => "80",
 			"method" => "drop_color"
 		),
 		"syslog_fgcolors_header" => array(
@@ -485,55 +485,55 @@ function syslog_config_settings() {
 		"syslog_emer_fg" => array(
 			"friendly_name" => "Emergency",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_crit_fg" => array(
 			"friendly_name" => "Critical",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_alert_fg" => array(
 			"friendly_name" => "Alert",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_err_fg" => array(
 			"friendly_name" => "Error",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_warn_fg" => array(
 			"friendly_name" => "Warning",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_notice_fg" => array(
 			"friendly_name" => "Notice",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_info_fg" => array(
 			"friendly_name" => "Info",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_debug_fg" => array(
 			"friendly_name" => "Debug",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		),
 		"syslog_other_fg" => array(
 			"friendly_name" => "Other",
 			"description" => "",
-			"default" => "0",
+			"default" => "1",
 			"method" => "drop_color"
 		)
 	);
@@ -582,6 +582,7 @@ function syslog_show_tab() {
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types;
 	global $syslog_levels, $syslog_freqs, $syslog_times;
+	global $syslog_colors, $syslog_text_colors;
 
 	$syslog_actions = array(
 		1 => "Delete",
@@ -597,8 +598,22 @@ function syslog_config_arrays () {
 		5 => 'warn',
 		6 => 'notice',
 		7 => 'info',
-		8 => 'debug'
+		8 => 'debug',
+		9 => 'other'
 		);
+
+	if (!isset($_SESSION["syslog_colors"])) {
+		foreach($syslog_levels as $level) {
+			$syslog_colors[$level] = db_fetch_cell("SELECT hex FROM colors WHERE id=" . read_config_option("syslog_" . $level . "_bg"));
+			$syslog_text_colors[$level] = db_fetch_cell("SELECT hex FROM colors WHERE id=" . read_config_option("syslog_" . $level . "_fg"));
+		}
+
+		$_SESSION["syslog_colors"] = $syslog_colors;
+		$_SESSION["syslog_text_colors"] = $syslog_text_colors;
+	}else{
+		$syslog_colors = $_SESSION["syslog_colors"];
+		$syslot_text_colors = $_SESSION["syslog_text_colors"];
+	}
 
 	$message_types = array(
 		'messageb' => 'Begins with',
