@@ -295,12 +295,9 @@ function syslog_export () {
 
 	header("Content-type: text/plain");
 	header("Content-Disposition: attachment; filename=log_view-" . date("Y-m-d",time()) . ".log");
-	include('plugins/syslog/config.php');
 
-	/* no more cacti calls beyond this point */
-	db_connect_real($syslogdb_hostname,$syslogdb_username,$syslogdb_password,$syslogdb_default, $syslogdb_type);
-
-	$syslog_messages = get_syslog_messages();
+	$sql_where = "";
+	$syslog_messages = get_syslog_messages($sql_where);
 
 	if (sizeof($syslog_messages) > 0) {
 		foreach ($syslog_messages as $syslog_message) {
