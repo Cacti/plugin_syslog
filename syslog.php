@@ -326,7 +326,7 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 }
 
 function syslog_filter($sql_where) {
-	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts;
+	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts, $reset_multi;
 
 	include("./plugins/syslog/syslog_timespan_settings.php");
 
@@ -470,11 +470,12 @@ function syslog_filter($sql_where) {
 												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();">
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 													<?php
+													if (!isset($hostfilter)) $hostfilter = "";
 													$efacilities = db_fetch_assoc("SELECT DISTINCT " . $syslog_incoming_config["facilityField"] . "
 														FROM syslog_facilities " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
 														ORDER BY " . $syslog_incoming_config["facilityField"]);
 
-													if (sizeof($efacilities) > 0) {
+													if (sizeof($efacilities)) {
 													foreach ($efacilities as $efacility) {
 														print "<option value=" . $efacility[$syslog_incoming_config["facilityField"]]; if ($_REQUEST["efacility"] == $efacility[$syslog_incoming_config["facilityField"]]) { print " selected"; } print ">" . ucfirst($efacility[$syslog_incoming_config["facilityField"]]) . "</option>\n";
 													}

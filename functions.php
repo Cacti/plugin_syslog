@@ -202,6 +202,8 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 	}else if (substr_count($bglevel, "debug")) {
 		$current_color = read_config_option("syslog_debug_bg");
 	}else{
+		$legacy = true;
+
 		if (($row_value % 2) == 1) {
 			$current_color = $row_color1;
 		}else{
@@ -274,8 +276,8 @@ function sql_hosts_where() {
 function syslog_export () {
 	global $syslog_incoming_config;
 
-	header("Content-type: text/plain");
-	header("Content-Disposition: attachment; filename=log_view-" . date("Y-m-d",time()) . ".log");
+	header("Content-type: application/excel");
+	header("Content-Disposition: attachment; filename=log_view-" . date("Y-m-d",time()) . ".csv");
 
 	$sql_where = "";
 	$syslog_messages = get_syslog_messages($sql_where, "10000");
