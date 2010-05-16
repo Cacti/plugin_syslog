@@ -251,7 +251,7 @@ function api_syslog_report_enable($id) {
     Reports Functions
    --------------------- */
 
-function syslog_get_report_records(&$sql_where) {
+function syslog_get_report_records(&$sql_where, $row_limit) {
 	global $syslog_cnn;
 
 	if (get_request_var_request("filter") != "") {
@@ -276,7 +276,7 @@ function syslog_get_report_records(&$sql_where) {
 		FROM syslog_reports
 		$sql_where
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
-		" LIMIT " . (get_request_var_request("rows")*(get_request_var_request("page")-1)) . "," . get_request_var_request("rows");
+		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
 
 	return db_fetch_assoc($query_string, true, $syslog_cnn);
 }
@@ -553,7 +553,7 @@ function syslog_report() {
 		$row_limit = $_REQUEST["rows"];
 	}
 
-	$reports   = syslog_get_report_records($sql_where);
+	$reports   = syslog_get_report_records($sql_where, $row_limit);
 
 	$rows_query_string = "SELECT COUNT(*)
 		FROM syslog_reports

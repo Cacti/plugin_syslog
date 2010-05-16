@@ -248,7 +248,7 @@ function api_syslog_alert_enable($id) {
     Alert Functions
    --------------------- */
 
-function syslog_get_alert_records(&$sql_where) {
+function syslog_get_alert_records(&$sql_where, $row_limit) {
 	global $syslog_cnn;
 
 	if (get_request_var_request("filter") != "") {
@@ -273,7 +273,7 @@ function syslog_get_alert_records(&$sql_where) {
 		FROM syslog_alert
 		$sql_where
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
-		" LIMIT " . (get_request_var_request("rows")*(get_request_var_request("page")-1)) . "," . get_request_var_request("rows");
+		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
 
 	return db_fetch_assoc($query_string, true, $syslog_cnn);
 }
@@ -380,7 +380,7 @@ function syslog_action_edit() {
 }
 
 function syslog_filter() {
-	global $colors, $config;
+	global $colors, $config, $item_rows;
 
 	?>
 	<tr bgcolor="<?php print $colors["panel"];?>">
@@ -438,7 +438,7 @@ function syslog_filter() {
 }
 
 function syslog_alerts() {
-	global $colors, $syslog_actions, $item_rows, $config, $message_types;
+	global $colors, $syslog_actions, $config, $message_types;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
@@ -509,7 +509,7 @@ function syslog_alerts() {
 
 	$sql_where = "";
 
-	if ($_REQUEST["rows"] == -1) {
+	if ($_REQUEST["rows"] == "-1") {
 		$row_limit = read_config_option("num_rows_syslog");
 	}elseif ($_REQUEST["rows"] == -2) {
 		$row_limit = 999999;
@@ -517,7 +517,7 @@ function syslog_alerts() {
 		$row_limit = $_REQUEST["rows"];
 	}
 
-	$alerts = syslog_get_alert_records($sql_where);
+	$alerts = syslog_get_alert_records($sql_where, $row_limit);
 
 	$rows_query_string = "SELECT COUNT(*)
 		FROM syslog_alert

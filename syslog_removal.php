@@ -246,7 +246,7 @@ function api_syslog_removal_enable($id) {
     Removal Functions
    --------------------- */
 
-function syslog_get_removal_records(&$sql_where) {
+function syslog_get_removal_records(&$sql_where, $row_limit) {
 	global $syslog_cnn;
 
 	if (get_request_var_request("filter") != "") {
@@ -270,7 +270,7 @@ function syslog_get_removal_records(&$sql_where) {
 		FROM syslog_remove
 		$sql_where
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
-		" LIMIT " . (get_request_var_request("rows")*(get_request_var_request("page")-1)) . "," . get_request_var_request("rows");
+		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
 
 	return db_fetch_assoc($query_string, true, $syslog_cnn);
 }
@@ -373,7 +373,7 @@ function syslog_action_edit() {
 }
 
 function syslog_filter() {
-	global $colors, $config;
+	global $colors, $config, $item_rows;
 	?>
 	<tr bgcolor="<?php print $colors["panel"];?>">
 		<form name="removal">
@@ -430,7 +430,7 @@ function syslog_filter() {
 }
 
 function syslog_removal() {
-	global $colors, $syslog_cnn, $syslog_actions, $message_types, $item_rows, $config;
+	global $colors, $syslog_cnn, $syslog_actions, $message_types, $config;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
@@ -509,7 +509,7 @@ function syslog_removal() {
 		$row_limit = $_REQUEST["rows"];
 	}
 
-	$removals = syslog_get_removal_records($sql_where);
+	$removals = syslog_get_removal_records($sql_where, $row_limit);
 
 	$rows_query_string = "SELECT COUNT(*)
 		FROM syslog_remove
