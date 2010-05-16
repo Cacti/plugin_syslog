@@ -22,6 +22,11 @@
  +-------------------------------------------------------------------------+
 */
 
+/* do NOT run this script through a web browser */
+if (!isset($_SERVER["argv"][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
+	die("<br><strong>This script is only meant to run at the command line.</strong>");
+}
+
 /* Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events
  */
@@ -53,10 +58,28 @@ if (strpos($dir, 'plugins') !== false) {
 	chdir('../../');
 }
 include("./include/global.php");
-
 include_once($config["library_path"] . "/functions.php");
 include_once($config["base_path"] . '/plugins/syslog/config.php');
 include_once($config["base_path"] . '/plugins/syslog/functions.php');
+
+/* If Syslog Collection is Disabled, Exit Here */
+if (read_config_option("syslog_enabled") == '') {
+	print "NOTE: Syslog record transferral and alerting/reporting is disabled.  Exiting\n";
+	exit -1;
+}
+
+/* Connect to the Syslog Database */
+if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
+	($database_default == $syslogdb_default)) {
+	/* move on, using Cacti */
+	$syslog_cnn = $cnn_id;
+}else{
+	if (!isset($syslogdb_port)) {
+		$syslogdb_port = "3306";
+	}
+
+	$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
+}
 
 /* Initialization Section */
 $r = read_config_option("syslog_retention");
@@ -109,7 +132,7 @@ if ($retention > 0) {
 /* get a uniqueID to allow moving of records to done table */
 while (1) {
 	$uniqueID = rand(1, 127);
-	$count    = db_fetch_cell("SELECT count(*) FROM syslog_incoming WHERE status=" . $uniqueID, true, $syslog_cnn);
+	$count    = db_fetch_cell("SELECT count(*) FROM syslog_incoming WHERE status=" . $uniqueID, '', true, $syslog_cnn);
 
 	if ($count == 0) {
 		break;

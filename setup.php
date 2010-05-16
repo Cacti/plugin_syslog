@@ -13,6 +13,9 @@
 *******************************************************************************/
 
 function plugin_syslog_install () {
+	/* properly upgrade old PIA instances */
+	syslog_check_upgrade();
+
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
@@ -33,8 +36,8 @@ function plugin_syslog_uninstall () {
 	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
 	/* database connection information, must be loaded always */
-	include($config["base_path"] . '/plugins/syslog/config.php');
-	include_once($config["base_path"] . '/plugins/syslog/functions.php');
+	include(dirname(__FILE__) . '/config.php');
+	include_once(dirname(__FILE__) . '/functions.php');
 
 	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`", true, $syslog_cnn);
@@ -74,13 +77,40 @@ function syslog_check_upgrade() {
 		return;
 	}
 
+	include(dirname(__FILE__) . "/config.php");
+	include_once(dirname(__FILE__) . "/functions.php");
+
+	/* Connect to the Syslog Database */
+	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
+		($database_default == $syslogdb_default)) {
+		/* move on, using Cacti */
+		$syslog_cnn = $cnn_id;
+	}else{
+		if (!isset($syslogdb_port)) {
+			$syslogdb_port = "3306";
+		}
+
+		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
+	}
+
+	$present = db_fetch_row("SHOW TABLES LIKE 'syslog'");
+	$old_pia = false;
+	if (sizeof($present)) {
+		$old_table = db_fetch_row("SHOW COLUMNS FROM syslog LIKE 'time'");
+		if (sizeof($old_table)) {
+			$old_pia = true;
+		}
+	}
+
+	/* don't let this script timeout */
+	ini_set("max_execution_time", 0);
+
 	$current = syslog_version();
 	$current = $current['version'];
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
-
-	if ($current != $old) {
+	if ($current != $old || $old_pia) {
 		/* update realms for old versions */
-		if ($old < "1.0" || $old = '') {
+		if ($old < "1.0" || $old = '' || $old_pia) {
 			api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 			api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
 
@@ -115,6 +145,9 @@ function syslog_check_upgrade() {
 				}
 				}
 			}
+
+			/* disable collection for a bit */
+			db_execute("REPLACE INTO settings (name, value) VALUES ('syslog_enabled', '')");
 
 			/* change the structure of the syslog table for performance sake */
 			$mysqlVersion = getMySQLVersion("syslog");
@@ -186,7 +219,7 @@ function syslog_check_upgrade() {
 
 			if (sizeof($array)) {
 			foreach ($array as $row) {
-				$columns[] = $array["Field"];
+				$columns[] = $row["Field"];
 			}
 			}
 
@@ -201,7 +234,7 @@ function syslog_check_upgrade() {
 
 			if (sizeof($array)) {
 			foreach ($array as $row) {
-				$columns[] = $array["Field"];
+				$columns[] = $row["Field"];
 			}
 			}
 
@@ -212,6 +245,9 @@ function syslog_check_upgrade() {
 			if (!in_array("method", $columns)) {
 				db_execute("ALTER TABLE syslog_remove ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;", true, $syslog_cnn);
 			}
+
+			/* reenable syslog xferral */
+			db_execute("REPLACE INTO settings (name, value) VAULES ('syslog_enabled', 'on')");
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -237,8 +273,8 @@ function syslog_setup_table_new() {
 	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
 	/* database connection information, must be loaded always */
-	include_once($config["base_path"] . '/plugins/syslog/config.php');
-	include_once($config["base_path"] . '/plugins/syslog/functions.php');
+	include(dirname(__FILE__) . '/config.php');
+	include_once(dirname(__FILE__) . '/functions.php');
 
 	$tables  = array();
 
@@ -409,19 +445,31 @@ function syslog_config_settings() {
 			"friendly_name" => "General Settings",
 			"method" => "spacer",
 		),
+		"syslog_enabled" => array(
+			"friendly_name" => "Syslog Enabled",
+			"description" => "If this checkbox is set, records will be transferred from the Syslog Incoming table to the
+			main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled
+			log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng
+			process.",
+			"method" => "checkbox",
+			"default" => "on"
+		),
 		"syslog_refresh" => array(
 			"friendly_name" => "Refresh Interval",
-			"description" => "This is the time in seconds before the page refreshes.  (1 - 300)",
-			"method" => "textbox",
+			"description" => "This is the time in seconds before the page refreshes.",
+			"method" => "drop_array",
 			"default" => "300",
+			"array" => array(9999999 => "Never", "60" => "1 Minute", "120" => "2 Minutes", "300" => "5 Minutes", "600" => "10 Minutes"),
 			"max_length" => 3,
 		),
 		"syslog_retention" => array(
 			"friendly_name" => "Syslog Retention",
-			"description" => "This is the number of days to keep events.  (0 - 365, 0 = unlimited)",
-			"method" => "textbox",
+			"description" => "This is the number of days to keep events.",
+			"method" => "drop_array",
 			"default" => "30",
-			"max_length" => 3,
+			"array" => array("0" => "Indefinate", "1" => "1 Day", "2" => "2 Days", "3" => "3 Days",
+				"4" => "4 Days", "5" => "5 Days", "6" => "6 Days", "7" => "1 Week", "14" => "2 Weeks", "30" => "1 Month", "60" => "2 Months",
+				"183" => "6 Months", "365" => "1 Year")
 		),
 		"syslog_email" => array(
 			"friendly_name" => "From Email Address",
@@ -675,11 +723,14 @@ function syslog_draw_navigation_text ($nav) {
 	$nav["syslog_removal.php:"]        = array("title" => "Syslog Removals", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_removal.php", "level" => "1");
 	$nav["syslog_removal.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
 	$nav["syslog_removal.php:actions"] = array("title" => "(Actions)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
+
 	$nav["syslog_alerts.php:"]         = array("title" => "Syslog Alerts", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_alerts.php", "level" => "1");
 	$nav["syslog_alerts.php:edit"]     = array("title" => "(Edit)", "mapping" => "index.php:,syslog_alerts.php:", "url" => "syslog_alerts.php", "level" => "2");
 	$nav["syslog_alerts.php:actions"]  = array("title" => "(Actions)", "mapping" => "index.php:,syslog_alerts.php:", "url" => "syslog_alerts.php", "level" => "2");
+
 	$nav["syslog_reports.php:"]        = array("title" => "Syslog Reports", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_reports.php", "level" => "1");
-	$nav["syslog_reports.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_alerts.php:", "url" => "syslog_alerts.php", "level" => "2");
+	$nav["syslog_reports.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_reports.php:", "url" => "syslog_reports.php", "level" => "2");
+	$nav["syslog_reports.php:actions"]  = array("title" => "(Actions)", "mapping" => "index.php:,syslog_reports.php:", "url" => "syslog_reports.php", "level" => "2");
 	$nav["syslog.php:actions"]         = array("title" => "Syslog", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
 
 	return $nav;
@@ -689,8 +740,8 @@ function syslog_config_insert() {
 	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
 	/* database connection information, must be loaded always */
-	include($config["base_path"] . '/plugins/syslog/config.php');
-	include_once($config["base_path"] . '/plugins/syslog/functions.php');
+	include(dirname(__FILE__) . '/config.php');
+	include_once(dirname(__FILE__) . '/functions.php');
 
 	/* Connect to the Syslog Database */
 	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
