@@ -401,13 +401,6 @@ function syslog_config_settings() {
 			"default" => "30",
 			"max_length" => 3,
 		),
-		"syslog_hosts" => array(
-			"friendly_name" => "Host Dropdown Rows",
-			"description" => "The number of Host rows to display on the main syslog page.",
-			"method" => "textbox",
-			"max_length" => 3,
-			"default" => 25
-		),
 		"syslog_email" => array(
 			"friendly_name" => "From Email Address",
 			"description" => "This is the email address that syslog alerts will appear from.",

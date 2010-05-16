@@ -238,8 +238,10 @@ function get_syslog_messages(&$sql_where) {
 		}
 	}
 
-	$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
-		"logtime>='" . date("Y-m-d", strtotime($_SESSION["sess_current_date1"])) . "'";
+	if (isset($_SESSION["sess_current_date1"])) {
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
+			"logtime>='" . date("Y-m-d", strtotime($_SESSION["sess_current_date1"])) . "'";
+	}
 
 	if (!empty($_REQUEST["filter"])) {
 		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_incoming_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";
@@ -385,7 +387,7 @@ function syslog_filter($sql_where) {
 	<table width="100%" cellspacing="1" cellpadding="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
-				<table cellpadding=0 cellspacing=0>
+				<table width='100%' cellpadding=0 cellspacing=0>
 					<tr>
 						<td width='100%'>
 							<?php
@@ -524,7 +526,7 @@ function syslog_filter($sql_where) {
 								</td>
 							</tr>
 							<?php html_end_box(false);?>
-						</td>
+						</td><?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
 						<td valign='top' style='padding-left:5px; background-color:#FFFFFF;'>
 							<?php html_start_box("<strong>Rules</strong>", "100%", $colors["header"], "3", "center", "");?>
 							<tr bgcolor='#<?php print $colors["panel"];?>'>
@@ -537,7 +539,7 @@ function syslog_filter($sql_where) {
 								</td>
 							</tr>
 							<?php html_end_box(false);?>
-						</td>
+						</td><?php }?>
 					</tr>
 				</table>
 			</td>
@@ -555,8 +557,8 @@ function syslog_filter($sql_where) {
 							</tr>
 							<tr>
 								<td>
-									<select name="host[]" multiple size="<?php print read_config_option("syslog_hosts");?>" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
-										<option value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
+									<select id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
+										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
 										<?php
 										$hosts = db_fetch_assoc("SELECT " . $syslog_incoming_config["hostField"] . " FROM syslog_hosts", true, $syslog_cnn);
 										if (sizeof($hosts)) {
@@ -710,6 +712,42 @@ function syslog_messages() {
 				</tr>
 			</table>
 			</form>
+			<script type='text/javascript'>
+			function syslogFindPos(obj) {
+				var curleft = curtop = 0;
+
+				if (obj.offsetParent) {
+					curleft = obj.offsetLeft;
+					curtop  = obj.offsetTop;
+
+					while (obj = obj.offsetParent) {
+						curleft += obj.offsetLeft;
+						curtop  += obj.offsetTop;
+					}
+				}
+
+				return [curleft,curtop];
+			}
+
+			function setHostMultiSelect() {
+				selectPos = syslogFindPos(document.getElementById("host_select"));
+				textSize  = document.getElementById("host_all").clientHeight;
+
+				if (window.innerHeight) {
+					height = window.innerHeight;
+				}else{
+					height = document.body.clientHeight;
+				}
+				//alert("Height:"+height+", YPos:"+selectPos[1]+", TextSize:"+textSize);
+
+				/* the full window size of the multi-select */
+				size = parseInt((height-selectPos[1]-5)/textSize);
+				document.getElementById("host_select").size=size;
+			}
+
+			window.onresize = setHostMultiSelect;
+			window.onload   = setHostMultiSelect;
+			</script>
 <?php
 }
 ?>
