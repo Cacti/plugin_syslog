@@ -78,7 +78,7 @@ function generate_syslog_cssjs() {
 
 	/* legacy css for syslog backgrounds */
 	print "\n\t\t\t<style type='text/css'>\n";
-	if (sizeof($syslog_colors) > 0) {
+	if (sizeof($syslog_colors)) {
 	foreach ($syslog_colors as $type => $color) {
 		if ((isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] != '')) {
 			print "\t\t\t.syslog_$type {\n";

@@ -59,8 +59,8 @@ if (strpos($dir, 'plugins') !== false) {
 }
 include("./include/global.php");
 include_once($config["library_path"] . "/functions.php");
-include_once($config["base_path"] . '/plugins/syslog/config.php');
-include_once($config["base_path"] . '/plugins/syslog/functions.php');
+include(dirname(__FILE__) . '/config.php');
+include_once(dirname(__FILE__) . '/functions.php');
 
 /* If Syslog Collection is Disabled, Exit Here */
 if (read_config_option("syslog_enabled") == '') {
