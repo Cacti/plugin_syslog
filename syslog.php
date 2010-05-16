@@ -693,7 +693,7 @@ function syslog_messages() {
 	$i = 0;
 	if (sizeof($syslog_messages) > 0) {
 		foreach ($syslog_messages as $syslog_message) {
-			$title   = "'" . $syslog_message[$syslog_incoming_config["textField"]] . "'";
+			$title   = "'" . str_replace("\"", "", str_replace("'", "", $syslog_message[$syslog_incoming_config["textField"]])) . "'";
 			$tip_options = "CLICKCLOSE, 'true', WIDTH, '40', DELAY, '500', FOLLOWMOUSE, 'true', FADEIN, 450, FADEOUT, 450, BGCOLOR, '#F9FDAF', STICKY, 'true', SHADOWCOLOR, '#797C6E', TITLE, 'Message'";
 
 			syslog_row_color($colors["alternate"], $colors["light"], $i, $syslog_message[$syslog_incoming_config["priorityField"]], $title);
@@ -701,11 +701,11 @@ function syslog_messages() {
 
 			print "<td>" . $syslog_message[$syslog_incoming_config["hostField"]] . "</td>\n";
 			print "<td>" . $syslog_message["logtime"] . "</td>\n";
-			print "<td>" . eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)) . "</td>\n";
+			print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)):title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)) . "</td>\n";
 			print "<td>" . ucfirst($syslog_message[$syslog_incoming_config["facilityField"]]) . "</td>\n";
 			print "<td>" . ucfirst($syslog_message[$syslog_incoming_config["priorityField"]]) . "</td>\n";
 			print '<td nowrap valign=top>';
-			print "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>";
+			print "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>\n";
 		}
 	}else{
 		print "<tr><td><em>No Messages</em></td></tr>";
