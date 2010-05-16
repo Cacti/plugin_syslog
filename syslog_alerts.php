@@ -379,6 +379,64 @@ function syslog_action_edit() {
 	form_save_button("syslog_alerts.php", "", "id");
 }
 
+function syslog_filter() {
+	global $colors, $config;
+
+	?>
+	<tr bgcolor="<?php print $colors["panel"];?>">
+		<form name="alert">
+		<td>
+			<table cellpadding="1" cellspacing="0">
+				<tr>
+					<td width="70">
+						Enabled:&nbsp;
+					</td>
+					<td width="1">
+						<select name="enabled" onChange="applyChange(document.alert)">
+						<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
+						<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
+						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
+						</select>
+					</td>
+					<td width="45">
+						&nbsp;Rows:&nbsp;
+					</td>
+					<td width="1">
+						<select name="rows" onChange="applyChange(document.alert)">
+						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
+						<?php
+							if (sizeof($item_rows) > 0) {
+							foreach ($item_rows as $key => $value) {
+								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+							}
+							}
+						?>
+						</select>
+					</td>
+					<td>
+						&nbsp;<input type="submit" value="Go">
+					</td>
+					<td>
+						&nbsp;<input type="submit" name="clear_x" value="Clear">
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="1" cellspacing="0">
+				<tr>
+					<td width="70">
+						Search:&nbsp;
+					</td>
+					<td width="1">
+						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
+					</td>
+				</tr>
+			</table>
+		</td>
+		</form>
+	</tr>
+	<?php
+}
+
 function syslog_alerts() {
 	global $colors, $syslog_actions, $item_rows, $config, $message_types;
 
@@ -388,11 +446,6 @@ function syslog_alerts() {
 	input_validate_input_number(get_request_var_request("enabled"));
 	input_validate_input_number(get_request_var_request("rows"));
 	/* ==================================================== */
-
-	include('plugins/syslog/config.php');
-
-	/* connect to syslog instead of Cacti */
-	db_connect_real($syslogdb_hostname,$syslogdb_username,$syslogdb_password,$syslogdb_default, $syslogdb_type);
 
 	/* clean up filter */
 	if (isset($_REQUEST["filter"])) {
@@ -448,7 +501,7 @@ function syslog_alerts() {
 
 	html_start_box("<strong>Syslog Alert Filters</strong>", "100%", $colors["header"], "3", "center", "syslog_alerts.php?action=edit");
 
-	include("plugins/syslog/html/syslog_alert_filter.php");
+	syslog_filter();
 
 	html_end_box();
 

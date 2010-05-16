@@ -386,7 +386,7 @@ function syslog_action_edit() {
 		"friendly_name" => "Report Notes",
 		"textarea_rows" => "3",
 		"textarea_cols" => "60",
-		"description" => "Space for Notes on the Removal rule",
+		"description" => "Space for Notes on the Report",
 		"method" => "textarea",
 		"class" => "textAreaNotes",
 		"value" => "|arg1:notes|",
@@ -414,6 +414,63 @@ function syslog_action_edit() {
 	html_end_box();
 
 	form_save_button("syslog_reports.php", "", "id");
+}
+
+function syslog_filter() {
+	global $colors, $config;
+	?>
+	<tr bgcolor="<?php print $colors["panel"];?>">
+		<form name="reports">
+		<td>
+			<table cellpadding="1" cellspacing="0">
+				<tr>
+					<td width="70">
+						Enabled:&nbsp;
+					</td>
+					<td width="1">
+						<select name="enabled" onChange="applyChange(document.reports)">
+						<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
+						<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
+						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
+						</select>
+					</td>
+					<td width="45">
+						&nbsp;Rows:&nbsp;
+					</td>
+					<td width="1">
+						<select name="rows" onChange="applyChange(document.reports)">
+						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
+						<?php
+							if (sizeof($item_rows) > 0) {
+							foreach ($item_rows as $key => $value) {
+								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+							}
+							}
+						?>
+						</select>
+					</td>
+					<td>
+						&nbsp;<input type="submit" value="Go" border="0" align="absmiddle">
+					</td>
+					<td>
+						&nbsp;<input type="submit" name="clear_x" value="Clear">
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="1" cellspacing="0">
+				<tr>
+					<td width="70">
+						Search:&nbsp;
+					</td>
+					<td width="1">
+						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
+					</td>
+				</tr>
+			</table>
+		</td>
+		</form>
+	</tr>
+	<?php
 }
 
 function syslog_report() {
@@ -478,9 +535,9 @@ function syslog_report() {
 	load_current_session_value("sort_column", "sess_syslog_report_sort_column", "name");
 	load_current_session_value("sort_direction", "sess_syslog_report_sort_direction", "ASC");
 
-	html_start_box("<strong>Syslog Removal Rule Filters</strong>", "100%", $colors["header"], "3", "center", "syslog_reports.php?action=edit&type=1");
+	html_start_box("<strong>Syslog Report Filters</strong>", "100%", $colors["header"], "3", "center", "syslog_reports.php?action=edit&type=1");
 
-	include("plugins/syslog/html/syslog_report_filter.php");
+	syslog_filter();
 
 	html_end_box();
 
@@ -555,7 +612,7 @@ function syslog_report() {
 	print $nav;
 
 	$display_text = array(
-		"name" => array("Removal<br>Name", "ASC"),
+		"name" => array("Report<br>Name", "ASC"),
 		"enabled" => array("<br>Enabled", "ASC"),
 		"type" => array("Match<br>Type", "ASC"),
 		"message" => array("Search<br>String", "ASC"),
@@ -584,7 +641,7 @@ function syslog_report() {
 			form_end_row();
 		}
 	}else{
-		print "<tr><td colspan='4'><em>No Syslog Removal Rules Defined</em></td></tr>";
+		print "<tr><td colspan='4'><em>No Syslog Reports Defined</em></td></tr>";
 	}
 	html_end_box(false);
 
