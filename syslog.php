@@ -731,7 +731,8 @@ function syslog_messages() {
 
 			function setHostMultiSelect() {
 				selectPos = syslogFindPos(document.getElementById("host_select"));
-				textSize  = document.getElementById("host_all").clientHeight;
+				textSize  = document.getElementById("host_all").scrollHeight;
+				if (textSize == 0) textSize = 16;
 
 				if (window.innerHeight) {
 					height = window.innerHeight;
