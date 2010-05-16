@@ -112,12 +112,12 @@ if ($email != '') {
 /* delete old syslog and syslog soft messages */
 if ($retention > 0) {
 	/* delete from the main syslog table first */
-	db_execute("DELETE FROM syslog WHERE date < '$retention'", true, $syslog_cnn);
+	db_execute("DELETE FROM syslog WHERE logtime < '$retention'", true, $syslog_cnn);
 
 	$syslog_deleted = $syslog_cnn->Affected_Rows();
 
 	/* now delete from the syslog removed table */
-	db_execute("DELETE FROM syslog_removed WHERE date < '$retention'", true, $syslog_cnn);
+	db_execute("DELETE FROM syslog_removed WHERE logtime < '$retention'", true, $syslog_cnn);
 
 	/* remove old hosts */
 	db_execute("DELETE FROM syslog_hosts WHERE UNIX_TIMESTAMP(last_updated)<UNIX_TIMESTAMP()-3600", true, $syslog_cnn);
