@@ -117,7 +117,12 @@ function syslog_check_upgrade() {
 			}
 
 			/* change the structure of the syslog table for performance sake */
-			db_execute("ALTER TABLE syslog ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority, ADD INDEX logtime(logtime);", true, $syslog_cnn);
+			$mysqlVersion = getMySQLVersion("syslog");
+			if ($mysqlVersion > 5) {
+				db_execute("ALTER TABLE syslog MODIFY COLUMN message varchar(1024) DEFAULT NULL, ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority, ADD INDEX logtime(logtime);", true, $syslog_cnn);
+			}else{
+				db_execute("ALTER TABLE syslog ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority, ADD INDEX logtime(logtime);", true, $syslog_cnn);
+			}
 			db_execute("UPDATE syslog SET logtime=TIMESTAMP(`date`, `time`)", true, $syslog_cnn);
 			db_execute("ALTER TABLE syslog DROP COLUMN `date`, DROP COLUMN `time`", true, $syslog_cnn);
 
@@ -139,7 +144,7 @@ function syslog_check_upgrade() {
 					tag varchar(10) default NULL,
 					logtime timestamp NOT NULL default '0000-00-00 00:00:00',
 					program varchar(15) default NULL,
-					msg varchar(1024) default NULL,
+					msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 					seq int(10) unsigned NOT NULL auto_increment,
 					PRIMARY KEY (seq),
 					KEY host (host),
@@ -186,7 +191,7 @@ function syslog_check_upgrade() {
 			}
 
 			if (!in_array("enabled", $columns)) {
-				db_execute("ALTER TABLE syslog_alert ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+				db_execute("ALTER TABLE syslog_alert MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
 			}
 
 			/* check upgrade of syslog_alert */
@@ -201,7 +206,7 @@ function syslog_check_upgrade() {
 			}
 
 			if (!in_array("enabled", $columns)) {
-				db_execute("ALTER TABLE syslog_remove ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+				db_execute("ALTER TABLE syslog_remove MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
 			}
 
 			if (!in_array("method", $columns)) {
@@ -211,6 +216,21 @@ function syslog_check_upgrade() {
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
 	}
+}
+
+function getMySQLVersion($db = "cacti") {
+	global $syslog_cnn;
+
+	if ($db == "cacti") {
+		$dbInfo = db_fetch_cell("SHOW GLOBAL VARIABLES LIKE 'version'");
+	}else{
+		$dbInfo = db_fetch_cell("SHOW GLOBAL VARIABLES LIKE 'version'", '', true, $syslog_cnn);
+	}
+
+	if (sizeof($dbInfo)) {
+		return floatval($dbInfo["Value"]);
+	}
+	return "";
 }
 
 function syslog_setup_table_new() {
@@ -235,12 +255,14 @@ function syslog_setup_table_new() {
 		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
 	}
 
+	$mysqlVersion = getMySQLVersion("syslog");
+
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
 		facility varchar(10) default NULL,
 		priority varchar(10) default NULL,
 		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(128) default NULL,
-		message varchar(1024) NOT NULL default '',
+		message " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY (seq),
 		KEY logtime (logtime),
@@ -256,8 +278,8 @@ function syslog_setup_table_new() {
 		message VARCHAR(128) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
-		email varchar(255) default NULL NOT NULL,
-		notes varchar(255) default NULL NOT NULL,
+		email varchar(255) default NULL,
+		notes varchar(255) default NULL,
 		PRIMARY KEY (id)) TYPE=MyISAM;", true, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_incoming` (
@@ -266,7 +288,7 @@ function syslog_setup_table_new() {
 		`date` date default NULL,
 		`time` time default NULL,
 		host varchar(128) default NULL,
-		message varchar(1024) NOT NULL DEFAULT '',
+		message " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " NOT NULL DEFAULT '',
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
@@ -292,7 +314,7 @@ function syslog_setup_table_new() {
 		timespan int(16) NOT NULL default '0',
 		timepart char(5) NOT NULL default '00:00',
 		lastsent int(16) NOT NULL default '0',
-		body varchar(1024) default NULL,
+		body " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 		message varchar(128) default NULL,
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
@@ -323,7 +345,7 @@ function syslog_setup_table_new() {
 		tag varchar(10) default NULL,
 		logtime timestamp NOT NULL default '0000-00-00 00:00:00',
 		program varchar(15) default NULL,
-		msg varchar(1024) default NULL,
+		msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY (seq),
 		KEY host (host),
