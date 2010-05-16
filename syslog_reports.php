@@ -417,7 +417,7 @@ function syslog_action_edit() {
 }
 
 function syslog_filter() {
-	global $colors, $config;
+	global $colors, $config, $item_rows;
 	?>
 	<tr bgcolor="<?php print $colors["panel"];?>">
 		<form name="reports">
@@ -474,7 +474,7 @@ function syslog_filter() {
 }
 
 function syslog_report() {
-	global $colors, $syslog_cnn, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $item_rows, $config;
+	global $colors, $syslog_cnn, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
