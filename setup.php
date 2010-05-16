@@ -675,7 +675,7 @@ function syslog_config_arrays () {
 		$_SESSION["syslog_text_colors"] = $syslog_text_colors;
 	}else{
 		$syslog_colors = $_SESSION["syslog_colors"];
-		$syslot_text_colors = $_SESSION["syslog_text_colors"];
+		$syslog_text_colors = $_SESSION["syslog_text_colors"];
 	}
 
 	$message_types = array(

@@ -78,9 +78,9 @@ function generate_syslog_cssjs() {
 
 	/* legacy css for syslog backgrounds */
 	print "\n\t\t\t<style type='text/css'>\n";
-	if (sizeof($syslog_colors)) {
+	if (sizeof($syslog_colors) > 0) {
 	foreach ($syslog_colors as $type => $color) {
-		if ((isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] > 0)) {
+		if ((isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] != '')) {
 			print "\t\t\t.syslog_$type {\n";
 			if ($color != '') {
 				print "\t\t\t\tbackground-color:#$color;\n";
@@ -226,7 +226,7 @@ function syslog_request_validation() {
 	}
 }
 
-function get_syslog_messages(&$sql_where) {
+function get_syslog_messages(&$sql_where, $row_limit) {
 	global $sql_where, $syslog_cnn, $hostfilter, $syslog_incoming_config;
 
 	$sql_where = "";
@@ -292,7 +292,7 @@ function get_syslog_messages(&$sql_where) {
 	}
 
 	if (!isset($_REQUEST["export_x"])) {
-		$limit = " LIMIT " . ($_REQUEST["rows"]*($_REQUEST["page"]-1)) . "," . $_REQUEST["rows"];
+		$limit = " LIMIT " . ($row_limit*($_REQUEST["page"]-1)) . "," . $row_limit;
 	} else {
 		$limit = " LIMIT 10000";
 	}
@@ -631,7 +631,15 @@ function syslog_messages() {
 
 	$sql_where = "";
 
-	$syslog_messages = get_syslog_messages($sql_where);
+	if ($_REQUEST["rows"] == -1) {
+		$row_limit = read_config_option("num_rows_syslog");
+	}elseif ($_REQUEST["rows"] == -2) {
+		$row_limit = 999999;
+	}else{
+		$row_limit = $_REQUEST["rows"];
+	}
+
+	$syslog_messages = get_syslog_messages($sql_where, $row_limit);
 
 	$total_rows = syslog_filter($sql_where);
 
