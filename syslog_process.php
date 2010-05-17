@@ -77,8 +77,7 @@ if (strpos($dir, 'plugins') !== false) {
 	chdir('../../');
 }
 include("./include/global.php");
-include(dirname(__FILE__) . '/config.php');
-include_once(dirname(__FILE__) . '/functions.php');
+include("./plugins/syslog/config.php");
 
 /* If Syslog Collection is Disabled, Exit Here */
 if (read_config_option("syslog_enabled") == '') {
@@ -87,17 +86,7 @@ if (read_config_option("syslog_enabled") == '') {
 }
 
 /* Connect to the Syslog Database */
-if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-	($database_default == $syslogdb_default)) {
-	/* move on, using Cacti */
-	$syslog_cnn = $cnn_id;
-}else{
-	if (!isset($syslogdb_port)) {
-		$syslogdb_port = "3306";
-	}
-
-	$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
-}
+syslog_connect();
 
 /* Initialization Section */
 $r = read_config_option("syslog_retention");

@@ -12,11 +12,37 @@
 
 *******************************************************************************/
 
-function plugin_syslog_install () {
-	/* properly upgrade old PIA instances */
-	syslog_check_upgrade();
+function plugin_syslog_install () {	global $config, $syslog_cnn;
 
-	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
+	syslog_connect();
+
+	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn));
+
+	if (isset($_GET["cancel"])) {		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog");
+		exit;
+	}elseif (isset($_GET["return"])) {		db_execute("DELETE FROM plugin_config WHERE directory='syslog'");
+		db_execute("DELETE FROM plugin_realms WHERE plugin='syslog'");
+		db_execute("DELETE FROM plugin_db_changes WHERE plugin='syslog'");
+		db_execute("DELETE FROM plugin_hooks WHERE name='syslog'");
+	}elseif (isset($_GET["upgrade"])) {		if (!$syslog_exists) {
+			syslog_execute_update();
+		}elseif ($_GET["upgrade_type"] == "truncacte") {			syslog_execute_update(true);
+		}elseif ($_GET["upgrade_type"] == "background") {			syslog_check_upgrade();
+			syslog_execute_update();
+//			$p = dirname(__FILE__);
+//			$command_string = read_config_option("path_php_binary");
+//			$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php';
+//			exec_background($command_string, $extra_args);
+		}else{
+			syslog_check_upgrade();
+			syslog_execute_update();
+		}
+	}else{		syslog_install_advisor($syslog_exists);
+		exit;
+	}
+}
+
+function syslog_execute_update() {	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
@@ -66,19 +92,38 @@ function plugin_syslog_version() {
 	return syslog_version();
 }
 
-function syslog_check_upgrade() {
-	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default;
-	include_once($config["library_path"] . "/database.php");
-	include_once($config["library_path"] . "/functions.php");
-
-	// Let's only run this check if we are on a page that actually needs the data
-	$files = array('plugins.php', 'syslog.php', 'slslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
-	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
-		return;
-	}
+function syslog_connect() {	global $config, $cnn_id, $syslog_cnn, $database_default;
 
 	include(dirname(__FILE__) . "/config.php");
 	include_once(dirname(__FILE__) . "/functions.php");
+
+	/* Connect to the Syslog Database */
+	if (!empty($syslog_cnn)) {
+		if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
+			($database_default == $syslogdb_default)) {
+			/* move on, using Cacti */
+			$syslog_cnn = $cnn_id;
+		}else{
+			if (!isset($syslogdb_port)) {
+				$syslogdb_port = "3306";
+			}
+			$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
+		}
+	}
+}
+
+function syslog_check_upgrade($background = false) {
+	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	// Let's only run this check if we are on a page that actually needs the data
+	if (!$background) {
+		$files = array('plugins.php', 'syslog.php', 'slslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
+		if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
+			return;
+		}
+	}
 
 	$syslog_levels = array(
 		1 => 'emer',
@@ -92,23 +137,10 @@ function syslog_check_upgrade() {
 		9 => 'other'
 		);
 
-	/* Connect to the Syslog Database */
-	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-		($database_default == $syslogdb_default)) {
-		/* move on, using Cacti */
-		$syslog_cnn = $cnn_id;
-	}else{
-		if (!isset($syslogdb_port)) {
-			$syslogdb_port = "3306";
-		}
-
-		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
-	}
-
-	$present = db_fetch_row("SHOW TABLES LIKE 'syslog'");
+	$present = db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn);
 	$old_pia = false;
 	if (sizeof($present)) {
-		$old_table = db_fetch_row("SHOW COLUMNS FROM syslog LIKE 'time'");
+		$old_table = db_fetch_row("SHOW COLUMNS FROM syslog LIKE 'time'", true, $syslog_cnn);
 		if (sizeof($old_table)) {
 			$old_pia = true;
 		}
@@ -388,24 +420,11 @@ function getMySQLVersion($db = "cacti") {
 function syslog_setup_table_new($truncate = false) {
 	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
-	/* database connection information, must be loaded always */
-	include(dirname(__FILE__) . '/config.php');
-	include_once(dirname(__FILE__) . '/functions.php');
+	include(dirname(__FILE__) . "/config.php");
 
 	$tables  = array();
 
-	/* Connect to the Syslog Database */
-	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-		($database_default == $syslogdb_default)) {
-		/* move on, using Cacti */
-		$syslog_cnn = $cnn_id;
-	}else{
-		if (!isset($syslogdb_port)) {
-			$syslogdb_port = "3306";
-		}
-
-		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
-	}
+	syslog_connect();
 
 	$mysqlVersion = getMySQLVersion("syslog");
 
@@ -569,9 +588,9 @@ function syslog_poller_bottom() {
 	exec_background($command_string, $extra_args);
 }
 
-function syslog_upgrade_advisor() {	global $config, $colors;
+function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 
-	include($config["include_path"] . "top_header.php");
+	include($config["include_path"] . "/top_header.php");
 
 	$fields_syslog_update = array(
 		"upgrade_type" => array(
@@ -582,7 +601,7 @@ function syslog_upgrade_advisor() {	global $config, $colors;
 			of this upgrade, or background, which will create a background process to bring your old syslog data
 			from a backup table to the new syslog format.  Again this process can take several hours.",
 			"value" => "30",
-			"array" => array("truncate" => "Truncate Syslog Table", "inline" => "Inline Upgrade", "background" => "Background Upgrade"),
+			"array" => array("truncate" => "Truncate Syslog Table", "inline" => "Inline Upgrade", "background" => "Background Upgrade (not functional)"),
 		),
 		"db_type" => array(
 			"method" => "drop_array",
@@ -590,14 +609,24 @@ function syslog_upgrade_advisor() {	global $config, $colors;
 			"description" => "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this
 			release, you only have the traditional table structure available.",
 			"value" => "trad",
-			"array" => array("trad" => "Traditional Table", "part" => "Partitioined Table"),
+			"array" => array("trad" => "Traditional Table", "part" => "Partitioined Table (not functional)"),
+		),
+		"engine" => array(
+			"method" => "drop_array",
+			"friendly_name" => "Database Architecutre",
+			"description" => "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this
+			release, you only have the traditional table structure available.",
+			"value" => "myisam",
+			"array" => array("myisam" => "MyISAM Storage", "innodb" => "InnoDB Storage"),
 		),
 		"days" => array(
 			"method" => "drop_array",
 			"friendly_name" => "Syslog Days to Retain",
 			"description" => "Choose how many days of Syslog values you wish to maintain in the database.",
 			"value" => "30",
-			"array" => $input_types,
+			"array" => array("1" => "1 Day", "2" => "2 Days", "3" => "3 Days",
+				"4" => "4 Days", "5" => "5 Days", "6" => "6 Days", "7" => "1 Week", "14" => "2 Weeks", "30" => "1 Month", "60" => "2 Months",
+				"183" => "6 Months", "365" => "1 Year")
 		),
 		"mode" => array(
 			"method" => "hidden",
@@ -609,16 +638,67 @@ function syslog_upgrade_advisor() {	global $config, $colors;
 		)
 	);
 
-	html_start_box("<strong>Syslog Upgrade Advisor</strong>", "60%", $colors["header_panel"], "3", "center", "");
+	if ($syslog_exists) {		$type = "Upgrade";
+	}else{		$type = "Install";
+	}
+
+	print "<table align='center' width='60%'><tr><td>\n";
+	html_start_box("<strong>Syslog " . $type . " Advisor</strong>", "100%", $colors["header"], "3", "center", "");
+	print "<tr><td bgcolor='#FFFFFF'>\n";
+	if ($syslog_exists) {
+		print "<h2 style='color:red;'>WARNING: Syslog Upgrade is Time Consuming!!!</h2>\n";
+		print "<p>The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended
+			that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p>
+			<p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will
+			be created.  Then, an upgrade process will be launched in the background.  Again, this background process can
+			quite a bit of time to complete.  However, your data will be preserved</p>
+			<p>Regardless of your choice,
+			all existing removal and alert rules will be maintained during the upgrade process.</p>
+			<p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu.</p>
+			</td></tr>";
+	}else{		unset($fields_syslog_update["upgrade_type"]);
+		print "<p>You have several options to choose from when installing Syslog.  The first is the Database Architecture.
+			Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables
+			from becomming excessive thus slowing queries.</p>
+			<p>You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties,
+			it is strongly recommended that you utilize the MyISAM storage engine.</p>
+			<p>Can can also select the retention duration.  Please keeep in mind that if you have several hosts logging
+			to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size
+			smaller.
+			</td></tr>";
+	}
+	html_end_box();
+
+	print "<form action='plugins.php' method='get'>\n";
+
+	html_start_box("<strong>Syslog " . $type . " Settings</strong>", "100%", $colors["header"], "3", "center", "");
 
 	draw_edit_form(array(
 		"config" => array(),
-		"fields" => array())
-	);
+		"fields" => inject_form_variables($fields_syslog_update, array()))
+		);
 
 	html_end_box();
 
-	form_save_button("cdef.php");
+	syslog_install_button("plugins.php", $syslog_exists);
+
+	print "</td></tr></table>\n";
+
+	exit;
+}
+
+function syslog_install_button($cancel_url, $syslog_exists) {
+	?>
+	<table align='center' width='100%' style='background-color: #ffffff; border: 1px solid #bbbbbb;'>
+		<tr>
+			<td bgcolor="#f5f5f5" align="right">
+				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='Cancel'>
+				<input name='upgrade' type='submit' value='<?php print ($syslog_exists ? 'Upgrade':'Install');?>>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<?php
 }
 
 function syslog_config_settings() {
@@ -935,30 +1015,13 @@ function syslog_draw_navigation_text ($nav) {
 }
 
 function syslog_config_insert() {
-	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username, $syslog_cnn;
-
-	/* database connection information, must be loaded always */
-	include(dirname(__FILE__) . '/config.php');
-	include_once(dirname(__FILE__) . '/functions.php');
-
-	/* Connect to the Syslog Database */
-	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-		($database_default == $syslogdb_default)) {
-		/* move on, using Cacti */
-		$syslog_cnn = $cnn_id;
-	}else{
-		if (!isset($syslogdb_port)) {
-			$syslogdb_port = "3306";
-		}
-
-		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
-	}
+	syslog_connect();
 }
 
 function syslog_graph_buttons($graph_elements = array()) {
 	global $config, $timespan, $graph_timeshifts;
 
-	include("./plugins/syslog/config.php");
+	include(dirname(__FILE__) . "/config.php");
 
 	if ($_REQUEST["action"] == "view") return;
 
