@@ -12,12 +12,12 @@
 
 *******************************************************************************/
 
-function plugin_syslog_install () {	global $config, $syslog_cnn;
+function plugin_syslog_install () {	global $config, $syslog_cnn, $syslog_upgrade;
 
 	syslog_connect();
 
 	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn));
-
+	//print "<pre>";print_r($_GET);print "</pre>";
 	if (isset($_GET["cancel"])) {		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog");
 		exit;
 	}elseif (isset($_GET["return"])) {		db_execute("DELETE FROM plugin_config WHERE directory='syslog'");
@@ -26,8 +26,10 @@ function plugin_syslog_install () {	global $config, $syslog_cnn;
 		db_execute("DELETE FROM plugin_hooks WHERE name='syslog'");
 	}elseif (isset($_GET["upgrade"])) {		if (!$syslog_exists) {
 			syslog_execute_update();
-		}elseif ($_GET["upgrade_type"] == "truncacte") {			syslog_execute_update(true);
-		}elseif ($_GET["upgrade_type"] == "background") {			syslog_check_upgrade();
+		}elseif ($_GET["upgrade_type"] == "truncate") {			syslog_execute_update(true);
+		}elseif ($_GET["upgrade_type"] == "background") {			$syslog_upgrade = true;
+
+			syslog_check_upgrade();
 			syslog_execute_update();
 //			$p = dirname(__FILE__);
 //			$command_string = read_config_option("path_php_binary");
@@ -42,7 +44,7 @@ function plugin_syslog_install () {	global $config, $syslog_cnn;
 	}
 }
 
-function syslog_execute_update() {	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
+function syslog_execute_update($truncate = false) {	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
@@ -55,7 +57,7 @@ function syslog_execute_update() {	api_plugin_register_hook('syslog', 'config_a
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
-	syslog_setup_table_new();
+	syslog_setup_table_new($truncate);
 }
 
 function plugin_syslog_uninstall () {
@@ -113,9 +115,11 @@ function syslog_connect() {	global $config, $cnn_id, $syslog_cnn, $database_def
 }
 
 function syslog_check_upgrade($background = false) {
-	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default;
+	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default, $syslog_upgrade;
 
 	include(dirname(__FILE__) . "/config.php");
+
+	if (isset($_GET["upgrade_type"]) && $_GET["upgrade_type"] == "truncate") return;
 
 	// Let's only run this check if we are on a page that actually needs the data
 	if (!$background) {
@@ -424,6 +428,18 @@ function syslog_setup_table_new($truncate = false) {
 
 	$tables  = array();
 
+	$syslog_levels = array(
+		1 => 'emer',
+		2 => 'crit',
+		3 => 'alert',
+		4 => 'err',
+		5 => 'warn',
+		6 => 'notice',
+		7 => 'info',
+		8 => 'debug',
+		9 => 'other'
+		);
+
 	syslog_connect();
 
 	$mysqlVersion = getMySQLVersion("syslog");
@@ -600,7 +616,7 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 			concerned about archive data, you can choose either Inline, which will freeze your browser for the period
 			of this upgrade, or background, which will create a background process to bring your old syslog data
 			from a backup table to the new syslog format.  Again this process can take several hours.",
-			"value" => "30",
+			"value" => "truncate",
 			"array" => array("truncate" => "Truncate Syslog Table", "inline" => "Inline Upgrade", "background" => "Background Upgrade (not functional)"),
 		),
 		"db_type" => array(
@@ -613,7 +629,7 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 		),
 		"engine" => array(
 			"method" => "drop_array",
-			"friendly_name" => "Database Architecutre",
+			"friendly_name" => "Database Storage Engine",
 			"description" => "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this
 			release, you only have the traditional table structure available.",
 			"value" => "myisam",
@@ -642,7 +658,7 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 	}else{		$type = "Install";
 	}
 
-	print "<table align='center' width='60%'><tr><td>\n";
+	print "<table align='center' width='80%'><tr><td>\n";
 	html_start_box("<strong>Syslog " . $type . " Advisor</strong>", "100%", $colors["header"], "3", "center", "");
 	print "<tr><td bgcolor='#FFFFFF'>\n";
 	if ($syslog_exists) {
