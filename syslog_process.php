@@ -26,6 +26,7 @@
 if (!isset($_SERVER["argv"][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
 	die("<br><strong>This script is only meant to run at the command line.</strong>");
 }
+$no_http_headers = true;
 
 /* Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events
@@ -37,19 +38,37 @@ global $syslog_debug;
 
 $syslog_debug = false;
 
-if (isset($_SERVER["argv"][1])) {
-	$commands    = $_SERVER["argv"];
-	$commands[0] = "";
-	if (in_array('/debug', $commands)) {
-		$syslog_debug = 1;
-	}
+/* process calling arguments */
+$parms = $_SERVER["argv"];
+array_shift($parms);
 
-	if (in_array('-d', $commands)) {
-		$syslog_debug = 1;
+if (sizeof($parms)) {
+	foreach($parms as $parameter) {
+		@list($arg, $value) = @explode("=", $parameter);
+
+		switch ($arg) {
+		case "--debug":
+		case "-d":
+			$syslog_debug = true;
+
+			break;
+		case "--version":
+		case "-V":
+		case "-H":
+		case "--help":
+			display_help();
+			exit(0);
+		default:
+			echo "ERROR: Invalid Argument: ($arg)\n\n";
+			display_help();
+			exit(1);
+		}
 	}
 }
 
-$no_http_headers = true;
+/* record the start time */
+list($micro,$seconds) = split(" ", microtime());
+$start_time = $seconds + $micro;
 
 $dir = dirname(__FILE__);
 chdir($dir);
@@ -58,7 +77,6 @@ if (strpos($dir, 'plugins') !== false) {
 	chdir('../../');
 }
 include("./include/global.php");
-include_once($config["library_path"] . "/functions.php");
 include(dirname(__FILE__) . '/config.php');
 include_once(dirname(__FILE__) . '/functions.php');
 
@@ -119,9 +137,6 @@ if ($retention > 0) {
 	/* now delete from the syslog removed table */
 	db_execute("DELETE FROM syslog_removed WHERE logtime < '$retention'", true, $syslog_cnn);
 
-	/* remove old hosts */
-	db_execute("DELETE FROM syslog_hosts WHERE UNIX_TIMESTAMP(last_updated)<UNIX_TIMESTAMP()-3600", true, $syslog_cnn);
-
 	$syslog_deleted += $syslog_cnn->Affected_Rows();
 
 	syslog_debug("Deleted " . $syslog_deleted .
@@ -144,20 +159,40 @@ syslog_debug("Unique ID = " . $uniqueID);
 /* flag all records with the uniqueID prior to moving */
 db_execute("UPDATE syslog_incoming SET status=" . $uniqueID . " WHERE status=0", true, $syslog_cnn);
 
-syslog_debug("Found " . $syslog_cnn->Affected_Rows() .
-	" new Message" . ($syslog_cnn->Affected_Rows() == 1 ? "" : "s" ) .
+$syslog_incoming = $syslog_cnn->Affected_Rows();
+
+syslog_debug("Found   " . $syslog_incoming .
+	" new Message" . ($syslog_incoming == 1 ? "" : "s" ) .
 	" to process");
 
+/* update the hosts, facilities, and priorities tables */
+db_execute("INSERT INTO syslog_facilities (facility) SELECT DISTINCT facility FROM syslog_incoming ON DUPLICATE KEY UPDATE facility=VALUES(facility)");
+db_execute("INSERT INTO syslog_priorities (priority) SELECT DISTINCT priority FROM syslog_incoming ON DUPLICATE KEY UPDATE priority=VALUES(priority)");
+db_execute("INSERT INTO syslog_hosts (host) SELECT DISTINCT host FROM syslog_incoming ON DUPLICATE KEY UPDATE host=VALUES(host)");
+db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
+	(host_id, facility_id)
+	SELECT host_id, facility_id
+	FROM ((SELECT DISTINCT host, facility
+		FROM `" . $syslogdb_default . "`.`syslog_incoming`) AS s
+		INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+		ON s.host=sh.host
+		INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+		ON sf.facility=s.facility)", true, $syslog_cnn);
+
 /* remote records that don't need to to be transferred */
-syslog_remove_items("syslog_incoming");
+$syslog_items   = syslog_remove_items("syslog_incoming");
+$syslog_removed = $syslog_items["removed"];
+$syslog_xferred = $syslog_items["xferred"];
 
 /* send out the alerts */
 $query = db_fetch_assoc("SELECT * FROM syslog_alert", true, $syslog_cnn);
+$syslog_alerts  = sizeof($query);
 
-syslog_debug("Found " . $syslog_cnn->Affected_Rows() .
-	" Alert Rule" . ($syslog_cnn->Affected_Rows() == 1 ? "" : "s" ) .
+syslog_debug("Found   " . $syslog_alerts .
+	" Alert Rule" . ($syslog_alerts == 1 ? "" : "s" ) .
 	" to process");
 
+$syslog_alarms = 0;
 if (sizeof($query)) {
 foreach($query as $alert) {
 	$sql    = '';
@@ -207,6 +242,8 @@ foreach($query as $alert) {
 
 			syslog_debug("Alert Rule '" . $alert['name'] . "
 				' has been activated");
+
+			$syslog_alarms++;
 		}
 		}
 	}
@@ -218,32 +255,30 @@ foreach($query as $alert) {
 }
 
 /* MOVE ALL FLAGGED MESSAGES TO THE SYSLOG TABLE */
-db_execute('INSERT INTO syslog (logtime, ' .
-	$syslog_incoming_config["priorityField"] . ', ' .
-	$syslog_incoming_config["facilityField"] . ', ' .
-	$syslog_incoming_config["hostField"]     . ', ' .
-	$syslog_incoming_config["textField"]     . ') ' .
-	'SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config["timeField"]     . '`), ' .
-	$syslog_incoming_config["priorityField"] . ', ' .
-	$syslog_incoming_config["facilityField"] . ', ' .
-	$syslog_incoming_config["hostField"] . ' , ' .
-	$syslog_incoming_config["textField"] .
-	' FROM syslog_incoming WHERE status=' . $uniqueID, true, $syslog_cnn);
+db_execute('INSERT INTO syslog (logtime, priority_id, facility_id, host_id, message)
+	SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config["timeField"]     . '`),
+	priority_id, facility_id, host_id, message
+	FROM (SELECT date, time, priority_id, facility_id, host_id, message
+		FROM syslog_incoming AS si
+		INNER JOIN syslog_facilities AS sf
+		ON sf.facility=si.facility
+		INNER JOIN syslog_priorities AS sp
+		ON sp.priority=si.priority
+		INNER JOIN syslog_hosts AS sh
+		ON sh.host=si.host
+		WHERE status=' . $uniqueID . ") AS merge", true, $syslog_cnn);
 
 $moved = $syslog_cnn->Affected_Rows();
 
-syslog_debug("Moved " . $moved .
-	" Message" . ($moved == 1 ? "" : "s" ) .
-	" to the 'syslog' table");
+syslog_debug("Moved   " . $moved . " Message" . ($moved == 1 ? "" : "s" ) . " to the 'syslog' table");
 
 /* DELETE ALL FLAGGED ITEMS FROM THE INCOMING TABLE */
 db_execute("DELETE FROM syslog_incoming WHERE status=" . $uniqueID, true, $syslog_cnn);
 
-syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() .
-	" already processed Messages from incoming");
+syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . " already processed Messages from incoming");
 
 /* Add the unique hosts to the syslog_hosts table */
-$sql = "INSERT INTO syslog_hosts (host) (SELECT DISTINCT host FROM syslog) ON DUPLICATE KEY UPDATE host=VALUES(host)";
+$sql = "INSERT INTO syslog_hosts (host) (SELECT DISTINCT host FROM syslog_incoming) ON DUPLICATE KEY UPDATE host=VALUES(host)";
 
 db_execute($sql, true, $syslog_cnn);
 
@@ -258,12 +293,13 @@ if (date("G") == 0 && date("i") < 5) {
 syslog_debug("Processing Reports...");
 
 /* Lets run the reports */
-$syslog_reports = db_fetch_assoc("SELECT * FROM syslog_reports", true, $syslog_cnn);
+$reports = db_fetch_assoc("SELECT * FROM syslog_reports", true, $syslog_cnn);
+$syslog_reports = sizeof($reports);
 
-syslog_debug("We have " . $syslog_cnn->Affected_Rows() . " Reports in the database");
+syslog_debug("We have " . $syslog_reports . " Reports in the database");
 
-if (sizeof($syslog_reports)) {
-foreach($syslog_reports as $syslog_report) {
+if (sizeof($reports)) {
+foreach($reports as $syslog_report) {
 	print '   Report: ' . $syslog_report['name'] . "\n";
 	if ($syslog_report['min'] < 10)
 		$syslog_report['min'] = '0' . $syslog_report['min'];
@@ -276,7 +312,7 @@ foreach($syslog_reports as $syslog_report) {
 			/* if timer expired within a polling interval, then poll */
 			if (($current_time - 300) < strtotime($base_start_time)) {
 				$next_run_time = strtotime(date("Y-m-d") . " " . $base_start_time);
-    			}else{
+			}else{
 				$next_run_time = strtotime(date("Y-m-d") . " " . $base_start_time) + 3600*24;
 			}
 		}else{
@@ -347,3 +383,20 @@ foreach($syslog_reports as $syslog_report) {
 }
 
 syslog_debug("Finished processing Reports...");
+
+syslog_process_log($start_time, $syslog_deleted, $syslog_incoming, $syslog_removed, $syslog_xferred, $syslog_alerts, $syslog_alarms, $syslog_reports);
+
+function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {	/* record the end time */
+	list($micro,$seconds) = split(" ", microtime());
+	$end_time = $seconds + $micro;
+
+	cacti_log("SYSLOG STATS:Time:" . round($end_time-$start_time,2) . ", Deletes:" . $deleted . ", Incoming:" . $incoming . ", Removes:" . $removed . ", XFers:" . $xferred . ", Alerts:" . $alerts . ", Alarms:" . $alarms . ", Reports:" . $reports, true, "SYSTEM");
+
+	set_config_option("syslog_stats", "time:" . round($end_time-$start_time,2) . "deletes:" . $deleted . " incoming:" . $incoming . " removes:" . $removed . " xfers:" . $xferred . " alerts:" . $alerts . " alarms:" . $alarms . " reports:" . $reports);
+}
+
+function display_help() {
+	echo "Syslog Poller Process 1.0, Copyright 2004-2010 - The Cacti Group\n\n";
+	echo "The main Syslog poller process script for Cacti Syslogging.\n\n";
+	echo "usage: syslog_process.php [--debug|-d]\n\n";
+}

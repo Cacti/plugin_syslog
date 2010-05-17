@@ -45,9 +45,12 @@ function syslog_remove_items($table, $rule = '') {
 	/* REMOVE ALL THE THINGS WE DONT WANT TO SEE */
 	$rows = db_fetch_assoc("SELECT * FROM syslog_remove", true, $syslog_cnn);
 
-	syslog_debug("Found " . sizeof($rows) .
+	syslog_debug("Found   " . sizeof($rows) .
 		" Removal Rule" . (sizeof($rows) == 1 ? "" : "s" ) .
 		" to process");
+
+	$removed = 0;
+	$xferred = 0;
 
 	if (sizeof($rows)) {
 	foreach($rows as $remove) {
@@ -161,18 +164,22 @@ function syslog_remove_items($table, $rule = '') {
 				/* move rows first */
 				db_execute($sql1, true, $syslog_cnn);
 				$messages_moved = $syslog_cnn->Affected_Rows();
-				$debugm = "Moved " . $messages_moved . ", ";
+				$debugm   = "Moved   " . $messages_moved . ", ";
+				$xferred += $messages_moved;
+			}else{
+				/* now delete the remainder that match */
+				db_execute($sql, true, $syslog_cnn);
+				$removed += $syslog_cnn->Affected_Rows();
+				$debugm   = "Deleted " . $removed . ", ";
 			}
 
-			/* now delete the remainder that match */
-			db_execute($sql, true, $syslog_cnn);
-
-			syslog_debug($debugm . "Deleted " . $syslog_cnn->Affected_rows() .
-					" Message" . ($syslog_cnn->Affected_rows() == 1 ? "" : "s" ) .
+			syslog_debug($debugm . " Message" . ($syslog_cnn->Affected_rows() == 1 ? "" : "s" ) .
 					" for removal rule '" . $remove['name'] . "'");
 		}
 	}
 	}
+
+	return array("removed" => $removed, "xferred" => $xferred);
 }
 
 /** function syslog_row_color()
@@ -251,9 +258,9 @@ function sql_hosts_where() {
 						$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
 					}else{
 						if (!empty($sql_where)) {
-							$hostfilter .= " AND " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+							$hostfilter .= " AND host_id IN('" . $_REQUEST["host"][$x] . "'";
 						} else {
-							$hostfilter .= " " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"][$x] . "'";
+							$hostfilter .= " host_id IN('" . $_REQUEST["host"][$x] . "'";
 						}
 					}
 
@@ -264,14 +271,13 @@ function sql_hosts_where() {
 			}
 		}else{
 			if (!empty($sql_where)) {
-				$hostfilter .= " AND " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
+				$hostfilter .= " AND host_id IN('" . $_REQUEST["host"] . "')";
 			} else {
-				$hostfilter .= " " . $syslog_incoming_config["hostField"] . " IN('" . $_REQUEST["host"] . "')";
+				$hostfilter .= " host_id IN('" . $_REQUEST["host"] . "')";
 			}
 		}
 	}
 }
-
 
 function syslog_export () {
 	global $syslog_incoming_config;

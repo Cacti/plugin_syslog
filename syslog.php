@@ -76,6 +76,7 @@ function generate_syslog_cssjs() {
 	global $colors, $config, $syslog_incoming_config;
 	global $syslog_colors, $syslog_text_colors, $syslog_levels;
 
+	//print "<pre>";print_r($syslog_colors);print("</pre>");exit;
 	/* legacy css for syslog backgrounds */
 	print "\n\t\t\t<style type='text/css'>\n";
 	if (sizeof($syslog_colors)) {
@@ -244,51 +245,15 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 	}
 
 	if (!empty($_REQUEST["filter"])) {
-		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_incoming_config["textField"] . " LIKE '%%" . $_REQUEST["filter"] . "%%'";
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . "message LIKE '%%" . $_REQUEST["filter"] . "%%'";
 	}
 
 	if (!empty($_REQUEST["efacility"])) {
-		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . $syslog_incoming_config["facilityField"] . "='" . $_REQUEST["efacility"] . "'";
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . "facility_id='" . $_REQUEST["efacility"] . "'";
 	}
 
 	if (!empty($_REQUEST["elevel"])) {
-		switch($_REQUEST["elevel"]) {
-		case 1:
-			$mysql_in = "IN('emer')";
-
-			break;
-		case 2:
-			$mysql_in = "IN('emer', 'alert')";
-
-			break;
-		case 3:
-			$mysql_in = "IN('emer', 'alert', 'crit')";
-
-			break;
-		case 4:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err')";
-
-			break;
-		case 5:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn')";
-
-			break;
-		case 6:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn', 'notice')";
-
-			break;
-		case 7:
-			$mysql_in = "IN('emer', 'alert', 'crit', 'err', 'warn', 'notice', 'info')";
-
-			break;
-		case 8:
-			$mysql_in = "IN('debug')";
-
-			break;
-		default:
-		}
-
-		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . $syslog_incoming_config["priorityField"] . " " . $mysql_in;
+		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id <=" . $_REQUEST["elevel"];
 	}
 
 	if (!isset($_REQUEST["export_x"])) {
@@ -471,13 +436,15 @@ function syslog_filter($sql_where) {
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 													<?php
 													if (!isset($hostfilter)) $hostfilter = "";
-													$efacilities = db_fetch_assoc("SELECT DISTINCT " . $syslog_incoming_config["facilityField"] . "
-														FROM syslog_facilities " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
-														ORDER BY " . $syslog_incoming_config["facilityField"]);
+													$efacilities = db_fetch_assoc("SELECT f.facility_id, f.facility
+														FROM syslog_host_facilities AS fh
+														INNER JOIN syslog_facilities AS f
+														ON f.facility_id=fh.facility_id " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
+														ORDER BY facility");
 
 													if (sizeof($efacilities)) {
 													foreach ($efacilities as $efacility) {
-														print "<option value=" . $efacility[$syslog_incoming_config["facilityField"]]; if ($_REQUEST["efacility"] == $efacility[$syslog_incoming_config["facilityField"]]) { print " selected"; } print ">" . ucfirst($efacility[$syslog_incoming_config["facilityField"]]) . "</option>\n";
+														print "<option value=" . $efacility["facility_id"]; if ($_REQUEST["efacility"] == $efacility["facility_id"]) { print " selected"; } print ">" . ucfirst($efacility["facility"]) . "</option>\n";
 													}
 													}
 													?>
@@ -561,30 +528,26 @@ function syslog_filter($sql_where) {
 									<select id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
 										<?php
-										$hosts = db_fetch_assoc("SELECT " . $syslog_incoming_config["hostField"] . " FROM syslog_hosts", true, $syslog_cnn);
+										$hosts = db_fetch_assoc("SELECT * FROM syslog_hosts ORDER BY host", true, $syslog_cnn);
 										if (sizeof($hosts)) {
-											foreach($hosts as $host) {
-												$new_hosts[] = $host[$syslog_incoming_config["hostField"]];
-											}
-											$hosts = natsort($new_hosts);
-											foreach ($new_hosts as $host) {
-												print "<option value=" . $host;
+											foreach ($hosts as $host) {
+												print "<option value=" . $host["host_id"];
 												if (sizeof($_REQUEST["host"])) {
 													foreach ($_REQUEST["host"] as $rh) {
-														if (($rh == $host) &&
+														if (($rh == $host["host_id"]) &&
 															(!$reset_multi)) {
 															print " selected";
 															break;
 														}
 													}
 												}else{
-													if (($host == $_REQUEST["host"]) &&
+													if (($host["host_id"] == $_REQUEST["host"]) &&
 														(!$reset_multi)) {
 														print " selected";
 													}
 												}
 												print ">";
-												print $host . "</option>\n";
+												print $host["host"] . "</option>\n";
 											}
 										}
 										?>
@@ -682,29 +645,32 @@ function syslog_messages() {
 	print $nav;
 
 	$display_text = array(
-		$syslog_incoming_config["hostField"] => array("Host", "ASC"),
+		"host_id" => array("Host", "ASC"),
 		"logtime" => array("Date", "ASC"),
-		$syslog_incoming_config["textField"] => array("Message", "ASC"),
-		$syslog_incoming_config["facilityField"] => array("Facility", "ASC"),
-		$syslog_incoming_config["priorityField"] => array("Level", "ASC"),
+		"message" => array("Message", "ASC"),
+		"facility_id" => array("Facility", "ASC"),
+		"priority_id" => array("Level", "ASC"),
 		"nosortt" => array("Options", "ASC"));
 
 	html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
+	$hosts      = array_rekey(db_fetch_assoc("SELECT host_id, host FROM syslog_hosts"), "host_id", "host");
+	$facilities = array_rekey(db_fetch_assoc("SELECT facility_id, facility FROM syslog_facilities"), "facility_id", "facility");
+	$priorities = array_rekey(db_fetch_assoc("SELECT priority_id, priority FROM syslog_priorities"), "priority_id", "priority");
+
 	$i = 0;
 	if (sizeof($syslog_messages) > 0) {
 		foreach ($syslog_messages as $syslog_message) {
-			$title   = "'" . str_replace("\"", "", str_replace("'", "", $syslog_message[$syslog_incoming_config["textField"]])) . "'";
+			$title   = "'" . str_replace("\"", "", str_replace("'", "", $syslog_message["message"])) . "'";
 			$tip_options = "CLICKCLOSE, 'true', WIDTH, '40', DELAY, '500', FOLLOWMOUSE, 'true', FADEIN, 450, FADEOUT, 450, BGCOLOR, '#F9FDAF', STICKY, 'true', SHADOWCOLOR, '#797C6E', TITLE, 'Message'";
 
-			syslog_row_color($colors["alternate"], $colors["light"], $i, $syslog_message[$syslog_incoming_config["priorityField"]], $title);
-			$i++;
+			syslog_row_color($colors["alternate"], $colors["light"], $i, $priorities[$syslog_message["priority_id"]], $title);$i++;
 
-			print "<td>" . $syslog_message[$syslog_incoming_config["hostField"]] . "</td>\n";
+			print "<td>" . $hosts[$syslog_message["host_id"]] . "</td>\n";
 			print "<td>" . $syslog_message["logtime"] . "</td>\n";
 			print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)):title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)) . "</td>\n";
-			print "<td>" . ucfirst($syslog_message[$syslog_incoming_config["facilityField"]]) . "</td>\n";
-			print "<td>" . ucfirst($syslog_message[$syslog_incoming_config["priorityField"]]) . "</td>\n";
+			print "<td>" . ucfirst($facilities[$syslog_message["facility_id"]]) . "</td>\n";
+			print "<td>" . ucfirst($priorities[$syslog_message["priority_id"]]) . "</td>\n";
 			print '<td nowrap valign=top>';
 			print "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>\n";
 		}
