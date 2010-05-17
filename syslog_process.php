@@ -375,7 +375,8 @@ syslog_debug("Finished processing Reports...");
 
 syslog_process_log($start_time, $syslog_deleted, $syslog_incoming, $syslog_removed, $syslog_xferred, $syslog_alerts, $syslog_alarms, $syslog_reports);
 
-function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {	/* record the end time */
+function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {
+	/* record the end time */
 	list($micro,$seconds) = split(" ", microtime());
 	$end_time = $seconds + $micro;
 
