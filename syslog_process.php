@@ -78,15 +78,28 @@ if (strpos($dir, 'plugins') !== false) {
 }
 include("./include/global.php");
 include("./plugins/syslog/config.php");
+include_once(dirname(__FILE__) . "/functions.php");
+
+/* Connect to the Syslog Database */
+global $syslog_cnn;
+if (empty($syslog_cnn)) {
+	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
+		($database_default == $syslogdb_default)) {
+		/* move on, using Cacti */
+		$syslog_cnn = $cnn_id;
+	}else{
+		if (!isset($syslogdb_port)) {
+			$syslogdb_port = "3306";
+		}
+		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
+	}
+}
 
 /* If Syslog Collection is Disabled, Exit Here */
 if (read_config_option("syslog_enabled") == '') {
 	print "NOTE: Syslog record transferral and alerting/reporting is disabled.  Exiting\n";
 	exit -1;
 }
-
-/* Connect to the Syslog Database */
-syslog_connect();
 
 /* Initialization Section */
 $r = read_config_option("syslog_retention");
@@ -166,7 +179,8 @@ db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
 		INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 		ON s.host=sh.host
 		INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-		ON sf.facility=s.facility)", true, $syslog_cnn);
+		ON sf.facility=s.facility)
+	ON DUPLICATE KEY UPDATE host_id=VALUES(host_id)", true, $syslog_cnn);
 
 /* remote records that don't need to to be transferred */
 $syslog_items   = syslog_remove_items("syslog_incoming");
@@ -375,12 +389,11 @@ syslog_debug("Finished processing Reports...");
 
 syslog_process_log($start_time, $syslog_deleted, $syslog_incoming, $syslog_removed, $syslog_xferred, $syslog_alerts, $syslog_alarms, $syslog_reports);
 
-function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {
-	/* record the end time */
+function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {	/* record the end time */
 	list($micro,$seconds) = split(" ", microtime());
 	$end_time = $seconds + $micro;
 
-	cacti_log("SYSLOG STATS:Time:" . round($end_time-$start_time,2) . ", Deletes:" . $deleted . ", Incoming:" . $incoming . ", Removes:" . $removed . ", XFers:" . $xferred . ", Alerts:" . $alerts . ", Alarms:" . $alarms . ", Reports:" . $reports, true, "SYSTEM");
+	cacti_log("SYSLOG STATS:Time:" . round($end_time-$start_time,2) . " Deletes:" . $deleted . " Incoming:" . $incoming . " Removes:" . $removed . " XFers:" . $xferred . " Alerts:" . $alerts . " Alarms:" . $alarms . " Reports:" . $reports, true, "SYSTEM");
 
 	set_config_option("syslog_stats", "time:" . round($end_time-$start_time,2) . "deletes:" . $deleted . " incoming:" . $incoming . " removes:" . $removed . " xfers:" . $xferred . " alerts:" . $alerts . " alarms:" . $alarms . " reports:" . $reports);
 }

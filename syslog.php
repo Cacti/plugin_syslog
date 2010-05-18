@@ -150,12 +150,12 @@ function syslog_request_validation() {
 
 	/* clean up sort solumn */
 	if (isset($_REQUEST["sort_column"])) {
-		$_REQUEST["sort_column"] = sanitize_search_string(get_request_var("sort_column"));
+		$_REQUEST["sort_column"] = sanitize_search_string(get_request_var_request("sort_column"));
 	}
 
 	/* clean up sort direction */
 	if (isset($_REQUEST["sort_direction"])) {
-		$_REQUEST["sort_direction"] = sanitize_search_string(get_request_var("sort_direction"));
+		$_REQUEST["sort_direction"] = sanitize_search_string(get_request_var_request("sort_direction"));
 	}
 
 	/* if the user pushed the 'clear' button */
@@ -241,7 +241,8 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 
 	if (isset($_SESSION["sess_current_date1"])) {
 		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
-			"logtime>='" . date("Y-m-d", strtotime($_SESSION["sess_current_date1"])) . "'";
+			"logtime BETWEEN '" . $_SESSION["sess_current_date1"] . "'
+				AND '" . $_SESSION["sess_current_date2"] . "'";
 	}
 
 	if (!empty($_REQUEST["filter"])) {
@@ -285,15 +286,13 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 			$limit;
 	}
 
-	//echo $query_sql;
+	echo $query_sql;
 
 	return db_fetch_assoc($query_sql, true, $syslog_cnn);
 }
 
 function syslog_filter($sql_where) {
 	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts, $reset_multi;
-
-	include("./plugins/syslog/syslog_timespan_settings.php");
 
 	?>
 	<script type="text/javascript">
@@ -348,7 +347,7 @@ function syslog_filter($sql_where) {
 	}
 	-->
 	</script>
-	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_timespan_selector" method="post" action="syslog.php">
+	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="post" action="syslog.php">
 	<table width="100%" cellspacing="1" cellpadding="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
@@ -365,7 +364,7 @@ function syslog_filter($sql_where) {
 												&nbsp;<strong>Presets:</strong>&nbsp;
 											</td>
 											<td nowrap style='white-space: nowrap;' width='130'>
-												<select name='predefined_timespan' onChange="applyTimespanFilterChange(document.syslog_timespan_selector)">
+												<select name='predefined_timespan' onChange="applyTimespanFilterChange(document.syslog_form)">
 													<?php
 													if ($_SESSION["custom"]) {
 														$graph_timespans[GT_CUSTOM] = "Custom";
@@ -404,7 +403,7 @@ function syslog_filter($sql_where) {
 											</td>
 											<td width='130' nowrap style='white-space: nowrap;'>
 												&nbsp;&nbsp;<input style='padding-bottom: 4px;' type='image' name='move_left' src='<?php print $config["url_path"];?>images/move_left.gif' alt='Left' border='0' align='absmiddle' title='Shift Left'>
-												<select name='predefined_timeshift' title='Define Shifting Interval' onChange="applyTimespanFilterChange(document.syslog_timespan_selector)">
+												<select name='predefined_timeshift' title='Define Shifting Interval' onChange="applyTimespanFilterChange(document.syslog_form)">
 													<?php
 													$start_val = 1;
 													$end_val = sizeof($graph_timeshifts)+1;
@@ -588,6 +587,10 @@ function syslog_messages() {
 
 	include("./include/global_arrays.php");
 
+	include("./lib/timespan_settings.php");
+
+	//print "<pre>";print_r($_REQUEST);print "</pre>";
+	//print "<pre>";print_r($_SESSION);print "</pre>";
 	/* create the custom css and javascript for the page */
 	generate_syslog_cssjs();
 
