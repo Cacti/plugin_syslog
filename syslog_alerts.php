@@ -69,8 +69,8 @@ switch ($_REQUEST["action"]) {
 
 function form_save() {
 	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
-		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["type"],
-			$_POST["message"], $_POST["email"], $_POST["notes"], $_POST["enabled"]);
+		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
+			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"], $_POST["notes"], $_POST["enabled"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_alerts.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
@@ -197,7 +197,7 @@ function form_actions() {
 	include_once($config['base_path'] . "/include/bottom_footer.php");
 }
 
-function api_syslog_alert_save($id, $name, $type, $message, $email, $notes, $enabled) {
+function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes, $enabled) {
 	global $syslog_cnn;
 
 	/* get the username */
@@ -210,6 +210,8 @@ function api_syslog_alert_save($id, $name, $type, $message, $email, $notes, $ena
 	}
 
 	$save["name"]    = form_input_validate($name,    "name",    "", false, 3);
+	$save["method"]  = form_input_validate($method,  "method",  "", false, 3);
+	$save["num"]     = form_input_validate($num,     "num",     "", false, 3);
 	$save["type"]    = form_input_validate($type,    "type",    "", false, 3);
 	$save["message"] = form_input_validate($message, "message", "", false, 3);
 	$save["email"]   = form_input_validate($email,   "email",   "", false, 3);
@@ -319,6 +321,24 @@ function syslog_action_edit() {
 		"value" => "|arg1:enabled|",
 		"array" => array("on" => "Enabled", "" => "Disabled"),
 		"default" => "on"
+		),
+	"method" => array(
+		"method" => "drop_array",
+		"friendly_name" => "Reporting Method",
+		"description" => "Define how to Alert on the syslog messages.",
+		"value" => "|arg1:method|",
+		"array" => array("0" => "Instance", "1" => "Number of Instances"),
+		"default" => "0"
+		),
+	"num" => array(
+		"method" => "textbox",
+		"friendly_name" => "Number of Instances",
+		"description" => "For the 'Number of Instances' method, If the number seen is above this value
+		an Alert will be triggered.",
+		"value" => "|arg1:num|",
+		"size" => "4",
+		"max_length" => "10",
+		"default" => "1"
 		),
 	"type" => array(
 		"method" => "drop_array",

@@ -379,6 +379,11 @@ function syslog_check_upgrade($background = false) {
 				db_execute("ALTER TABLE syslog_alert MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
 			}
 
+			if (!in_array("method", $columns)) {
+				db_execute("ALTER TABLE syslog_alert ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name");
+				db_execute("ALTER TABLE syslog_alert ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method");
+			}
+
 			/* check upgrade of syslog_alert */
 			$sql     = "DESCRIBE syslog_remove";
 			$columns = array();
@@ -462,6 +467,8 @@ function syslog_setup_table_new($truncate = false) {
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL default '',
+		`method` int(10) unsigned NOT NULL default '0',
+		`num` int(10) unsigned NOT NULL default '1',
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
 		message VARCHAR(128) NOT NULL default '',
