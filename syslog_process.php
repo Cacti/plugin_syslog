@@ -200,6 +200,7 @@ if (sizeof($query)) {
 foreach($query as $alert) {
 	$sql    = '';
 	$alertm = '';
+	$th_sql = ''
 
 	if ($alert['type'] == 'facility') {
 		$sql = "SELECT * FROM syslog_incoming
@@ -227,27 +228,41 @@ foreach($query as $alert) {
 	}
 
 	if ($sql != '') {
-		$at = db_fetch_assoc($sql, true, $syslog_cnn);
-
-		if (sizeof($at)) {
-		foreach($at as $a) {
-			$a['message'] = str_replace('  ', "\n", $a['message']);
-			while (substr($a['message'], -1) == "\n") {
-				$a['message'] = substr($a['message'], 0, -1);
-			}
-
-			$alertm .= "-----------------------------------------------\n";
-			$alertm .= 'Hostname : ' . $a['host'] . "\n";
-			$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
-			$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
-			$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
-			$alertm .= "-----------------------------------------------\n\n";
-
-			syslog_debug("Alert Rule '" . $alert['name'] . "
-				' has been activated");
-
-			$syslog_alarms++;
+		if ($alert['method'] == "1") {
+			$th_sql = str_replace("*", "count(*)", $sql);
+			$count = db_fetch_assoc($th_sql, true, $syslog_cnn);
 		}
+
+		if (($alert['method'] == "1" && $count > 0) || ($alert["method"] == "0"))
+			$at = db_fetch_assoc($sql, true, $syslog_cnn);
+
+			if (sizeof($at)) {
+				if ($alert['method'] == "1") {
+					$alertm .= "-----------------------------------------------\n";
+					$alertm .= "A Number of Instances Alert has Been Triggered\n";
+					$alertm .= "Alert    : " . $a['name'] . "\n";
+					$alertm .= "Count    : " . $count . "\n";
+				}
+
+				foreach($at as $a) {
+					$a['message'] = str_replace('  ', "\n", $a['message']);
+					while (substr($a['message'], -1) == "\n") {
+						$a['message'] = substr($a['message'], 0, -1);
+					}
+
+					$alertm .= "-----------------------------------------------\n";
+					$alertm .= 'Hostname : ' . $a['host'] . "\n";
+					$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
+					$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
+					$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
+					$alertm .= "-----------------------------------------------\n\n";
+
+					syslog_debug("Alert Rule '" . $alert['name'] . "
+						' has been activated");
+
+					$syslog_alarms++;
+				}
+			}
 		}
 	}
 
