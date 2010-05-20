@@ -255,13 +255,13 @@ foreach($query as $alert) {
 					$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
 					$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
 					$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
-					$alertm .= "-----------------------------------------------\n\n";
-
-					syslog_debug("Alert Rule '" . $alert['name'] . "
-						' has been activated");
 
 					$syslog_alarms++;
 				}
+
+				syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
+
+				$alertm .= "-----------------------------------------------\n\n";
 			}
 		}
 	}
