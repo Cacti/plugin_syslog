@@ -131,6 +131,7 @@ function syslog_request_validation() {
 	input_validate_input_number(get_request_var_request("removal"));
 	input_validate_input_number(get_request_var_request("refresh"));
 	input_validate_input_number(get_request_var_request("page"));
+	input_validate_input_number(get_request_var_request("trimval"));
 	/* ==================================================== */
 
 	/* clean up filter string */
@@ -162,6 +163,7 @@ function syslog_request_validation() {
 	if (isset($_REQUEST["button_clear_x"])) {
 		kill_session_var("sess_syslog_hosts");
 		kill_session_var("sess_syslog_rows");
+		kill_session_var("sess_syslog_trimval");
 		kill_session_var("sess_syslog_removal");
 		kill_session_var("sess_syslog_refresh");
 		kill_session_var("sess_syslog_page");
@@ -174,6 +176,7 @@ function syslog_request_validation() {
 		$_REQUEST["page"] = 1;
 		unset($_REQUEST["hosts"]);
 		unset($_REQUEST["rows"]);
+		unset($_REQUEST["trimval"]);
 		unset($_REQUEST["removal"]);
 		unset($_REQUEST["refresh"]);
 		unset($_REQUEST["page"]);
@@ -209,6 +212,7 @@ function syslog_request_validation() {
 	/* remember search fields in session vars */
 	load_current_session_value("page", "sess_syslog_page", "1");
 	load_current_session_value("rows", "sess_syslog_rows", read_config_option("num_rows_syslog"));
+	load_current_session_value("trimval", "sess_syslog_trimval", "75");
 	load_current_session_value("refresh", "sess_syslog_refresh", read_config_option("syslog_refresh"));
 	load_current_session_value("removal", "sess_syslog_removal", "-1");
 	load_current_session_value("filter", "sess_syslog_filter", "");
@@ -435,7 +439,7 @@ function syslog_filter($sql_where) {
 												<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
 											</td>
 											<td style='padding-right:2px;'>
-												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();">
+												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();" title="Facilities">
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 													<?php
 													if (!isset($hostfilter)) $hostfilter = "";
@@ -454,7 +458,7 @@ function syslog_filter($sql_where) {
 												</select>
 											</td>
 											<td style='padding-right:2px;'>
-												<select name="elevel" onChange="javascript:document.getElementById('syslog_form').submit();">
+												<select name="elevel" onChange="javascript:document.getElementById('syslog_form').submit();" title="Priority Levels">
 													<option value="0"<?php if ($_REQUEST["elevel"] == "0") {?> selected<?php }?>>All Priorities</option>
 													<option value="1"<?php if ($_REQUEST["elevel"] == "1") {?> selected<?php }?>>Emergency</option>
 													<option value="2"<?php if ($_REQUEST["elevel"] == "2") {?> selected<?php }?>>Alert++</option>
@@ -467,13 +471,13 @@ function syslog_filter($sql_where) {
 												</select>
 											</td>
 											<td style='padding-right:2px;'>
-												<select name="removal" onChange="javascript:document.getElementById('syslog_form').submit();">
+												<select name="removal" onChange="javascript:document.getElementById('syslog_form').submit();" title="Removal Handling">
 													<option value="-1"<?php if ($_REQUEST["removal"] == "-1") {?> selected<?php }?>>Exclude Removed</option>
 													<option value="1"<?php if ($_REQUEST["removal"] == "1") {?> selected<?php }?>>Include Removed</option>
 												</select>
 											</td>
 											<td style='padding-right:2px;'>
-												<select name="rows" onChange="javascript:document.getElementById('syslog_form').submit();">
+												<select name="rows" onChange="javascript:document.getElementById('syslog_form').submit();" title="Display Rows">
 													<option value="10"<?php if ($_REQUEST["rows"] == "10") {?> selected<?php }?>>10</option>
 													<option value="15"<?php if ($_REQUEST["rows"] == "15") {?> selected<?php }?>>15</option>
 													<option value="20"<?php if ($_REQUEST["rows"] == "20") {?> selected<?php }?>>20</option>
@@ -483,6 +487,17 @@ function syslog_filter($sql_where) {
 													<option value="100"<?php if ($_REQUEST["rows"] == "100") {?> selected<?php }?>>100</option>
 													<option value="200"<?php if ($_REQUEST["rows"] == "200") {?> selected<?php }?>>200</option>
 													<option value="500"<?php if ($_REQUEST["rows"] == "500") {?> selected<?php }?>>500</option>
+												</select>
+											</td>
+											<td style='padding-right:2px;'>
+												<select name="trimval" onChange="javascript:document.getElementById('syslog_form').submit();" title="Message Trim">
+													<option value="1024"<?php if ($_REQUEST["trimval"] == "1024") {?> selected<?php }?>>All Text</option>
+													<option value="30"<?php if ($_REQUEST["trimval"] == "30") {?> selected<?php }?>>30 Chars</option>
+													<option value="50"<?php if ($_REQUEST["trimval"] == "50") {?> selected<?php }?>>50 Chars</option>
+													<option value="75"<?php if ($_REQUEST["trimval"] == "75") {?> selected<?php }?>>75 Chars</option>
+													<option value="100"<?php if ($_REQUEST["trimval"] == "100") {?> selected<?php }?>>100 Chars</option>
+													<option value="150"<?php if ($_REQUEST["trimval"] == "150") {?> selected<?php }?>>150 Chars</option>
+													<option value="300"<?php if ($_REQUEST["trimval"] == "300") {?> selected<?php }?>>300 Chars</option>
 												</select>
 											</td>
 											<td nowrap style='white-space:nowrap;padding-right:2px;'>
@@ -528,7 +543,7 @@ function syslog_filter($sql_where) {
 							</tr>
 							<tr>
 								<td>
-									<select id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
+									<select title="Host Filters" id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
 										<?php
 										$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host", true, $syslog_cnn);
@@ -615,7 +630,7 @@ function syslog_messages() {
 	$total_rows = syslog_filter($sql_where);
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog.php");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog.php?view=true");
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
@@ -623,13 +638,13 @@ function syslog_messages() {
 						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 							<tr>
 								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
 								</td>\n
 								<td align='center' class='textHeaderDark'>
 									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
 								</td>\n
 								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
 								</td>\n
 							</tr>
 						</table>
@@ -675,7 +690,7 @@ function syslog_messages() {
 
 			print "<td>" . $hosts[$syslog_message["host_id"]] . "</td>\n";
 			print "<td>" . $syslog_message["logtime"] . "</td>\n";
-			print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)):title_trim($syslog_message[$syslog_incoming_config["textField"]], 70)) . "</td>\n";
+			print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))):title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))) . "</td>\n";
 			print "<td>" . ucfirst($facilities[$syslog_message["facility_id"]]) . "</td>\n";
 			print "<td>" . ucfirst($priorities[$syslog_message["priority_id"]]) . "</td>\n";
 			print '<td nowrap valign=top>';
