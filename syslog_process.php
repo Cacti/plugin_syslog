@@ -229,9 +229,9 @@ syslog_debug("Found   " . $syslog_incoming .
 	" to process");
 
 /* update the hosts, facilities, and priorities tables */
-db_execute("INSERT INTO syslog_facilities (facility) SELECT DISTINCT facility FROM syslog_incoming ON DUPLICATE KEY UPDATE facility=VALUES(facility)", true, $syslog_cnn);
-db_execute("INSERT INTO syslog_priorities (priority) SELECT DISTINCT priority FROM syslog_incoming ON DUPLICATE KEY UPDATE priority=VALUES(priority)", true, $syslog_cnn);
-db_execute("INSERT INTO syslog_hosts (host) SELECT DISTINCT host FROM syslog_incoming ON DUPLICATE KEY UPDATE host=VALUES(host)", true, $syslog_cnn);
+db_execute("INSERT INTO syslog_facilities (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility)", true, $syslog_cnn);
+db_execute("INSERT INTO syslog_priorities (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority)", true, $syslog_cnn);
+db_execute("INSERT INTO syslog_hosts (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE host=VALUES(host)", true, $syslog_cnn);
 db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
 	(host_id, facility_id)
 	SELECT host_id, facility_id
