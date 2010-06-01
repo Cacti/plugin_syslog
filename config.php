@@ -22,7 +22,8 @@
  +-------------------------------------------------------------------------+
 */
 
-global $config;
+global $config, $database_type, $database_default, $database_hostname;
+global $database_username, $database_password, $database_port;
 
 /* revert if you dont use the Cacti database */
 //$syslogdb_type     = 'mysql';

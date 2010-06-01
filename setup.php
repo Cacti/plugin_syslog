@@ -12,52 +12,52 @@
 
 *******************************************************************************/
 
-function plugin_syslog_install () {	global $config, $syslog_cnn, $syslog_upgrade;
+function plugin_syslog_install() {
+	global $config, $syslog_cnn, $syslog_upgrade;
 
 	syslog_connect();
 
 	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn));
-	//print "<pre>";print_r($_GET);print "</pre>";
-	if (isset($_GET["cancel"])) {		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog");
-		exit;
-	}elseif (isset($_GET["return"])) {		db_execute("DELETE FROM plugin_config WHERE directory='syslog'");
-		db_execute("DELETE FROM plugin_realms WHERE plugin='syslog'");
-		db_execute("DELETE FROM plugin_db_changes WHERE plugin='syslog'");
-		db_execute("DELETE FROM plugin_hooks WHERE name='syslog'");
-	}elseif (isset($_GET["upgrade"])) {		if (!$syslog_exists) {
-			syslog_execute_update();
-		}elseif ($_GET["upgrade_type"] == "truncate") {			syslog_execute_update(true);
-		}elseif ($_GET["upgrade_type"] == "background") {			$syslog_upgrade = true;
+	$db_version    = syslog_get_mysql_version("syslog");
 
-			syslog_check_upgrade();
-			syslog_execute_update();
-//			$p = dirname(__FILE__);
-//			$command_string = read_config_option("path_php_binary");
-//			$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php';
-//			exec_background($command_string, $extra_args);
-		}else{
-			syslog_check_upgrade();
-			syslog_execute_update();
-		}
-	}else{		syslog_install_advisor($syslog_exists);
+	//print "<pre>";print_r($_GET);print "</pre>";
+	if (!isset($_GET["install"]) && !isset($_GET["return"]) && !isset($_GET["install"])) {
+		syslog_install_advisor($syslog_exists, $db_version);
 		exit;
+	}else{
+		syslog_execute_update($syslog_exists, $_GET);
 	}
 }
 
-function syslog_execute_update($truncate = false) {	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
-	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
-	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
-	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
-	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
-	api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
-	api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'setup.php');
-	api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'setup.php');
-	api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
+function syslog_execute_update($syslog_exists, $options) {
+	if (isset($options["cancel"])) {
+		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog");
+		exit;
+	}elseif (isset($options["return"])) {
+		db_execute("DELETE FROM plugin_config WHERE directory='syslog'");
+		db_execute("DELETE FROM plugin_realms WHERE plugin='syslog'");
+		db_execute("DELETE FROM plugin_db_changes WHERE plugin='syslog'");
+		db_execute("DELETE FROM plugin_hooks WHERE name='syslog'");
+	}elseif (isset($options["upgrade_type"])) {
+		if ($options["upgrade_type"] == "truncate") {
+			api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
+			api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
+			api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
+			api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
+			api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
+			api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
+			api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'setup.php');
+			api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'setup.php');
+			api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
 
-	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
+			api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
+			api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
-	syslog_setup_table_new($truncate);
+			syslog_setup_table_new($options);
+		}else{
+			syslog_upgrade_pre_oneoh_tables($options);
+		}
+	}
 }
 
 function plugin_syslog_uninstall () {
@@ -67,18 +67,34 @@ function plugin_syslog_uninstall () {
 	include(dirname(__FILE__) . '/config.php');
 	include_once(dirname(__FILE__) . '/functions.php');
 
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_logs`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`", true, $syslog_cnn);
-	db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
+	if (isset($_GET["cancel"]) || isset($_GET["return"])) {
+		header("Location:" . $config["url_path"] . "plugins.php");
+		exit;
+	}elseif (isset($_GET["uninstall"])) {
+		if ($_GET["uninstall_method"] == "all") {
+			/* do the big tables first */
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`", true, $syslog_cnn);
+
+			/* do the settings tables last */
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_logs`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
+		}else{
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`", true, $syslog_cnn);
+		}
+	}else{
+		syslog_uninstall_advisor();
+		exit;
+	}
 }
 
-function plugin_syslog_check_config () {
+function plugin_syslog_check_config() {
 	/* Here we will check to ensure everything is configured */
 	syslog_check_upgrade();
 	return true;
@@ -94,7 +110,8 @@ function plugin_syslog_version() {
 	return syslog_version();
 }
 
-function syslog_connect() {	global $config, $cnn_id, $syslog_cnn, $database_default;
+function syslog_connect() {
+	global $config, $cnn_id, $syslog_cnn, $database_default;
 
 	include(dirname(__FILE__) . "/config.php");
 	include_once(dirname(__FILE__) . "/functions.php");
@@ -114,32 +131,18 @@ function syslog_connect() {	global $config, $cnn_id, $syslog_cnn, $database_def
 	}
 }
 
-function syslog_check_upgrade($background = false) {
+function syslog_check_upgrade() {
 	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default, $syslog_upgrade;
 
 	include(dirname(__FILE__) . "/config.php");
 
-	if (isset($_GET["upgrade_type"]) && $_GET["upgrade_type"] == "truncate") return;
+	syslog_connect();
 
 	// Let's only run this check if we are on a page that actually needs the data
-	if (!$background) {
-		$files = array('plugins.php', 'syslog.php', 'slslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
-		if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
-			return;
-		}
+	$files = array('plugins.php', 'syslog.php', 'slslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
+	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
+		return;
 	}
-
-	$syslog_levels = array(
-		1 => 'emer',
-		2 => 'crit',
-		3 => 'alert',
-		4 => 'err',
-		5 => 'warn',
-		6 => 'notice',
-		7 => 'info',
-		8 => 'debug',
-		9 => 'other'
-		);
 
 	$present = db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn);
 	$old_pia = false;
@@ -159,265 +162,310 @@ function syslog_check_upgrade($background = false) {
 	if ($current != $old || $old_pia) {
 		/* update realms for old versions */
 		if ($old < "1.0" || $old = '' || $old_pia) {
-			api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
-			api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
-
-			/* get the realm id's and change from old to new */
-			$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'");
-			$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'");
-
-			if ($user >  0) {
-				$users = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=37");
-				if (sizeof($users)) {
-				foreach($users as $u) {
-					db_execute("INSERT INTO user_auth_realm
-						(realm_id, user_id) VALUES ($user, " . $u["user_id"] . ")
-						ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
-					db_execute("DELETE FROM user_auth_realm
-						WHERE user_id=" . $u["user_id"] . "
-						AND realm_id=$user");
-				}
-				}
-			}
-
-			if ($admin > 0) {
-				$admins = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=38");
-				if (sizeof($admins)) {
-				foreach($admins as $user) {
-					db_execute("INSERT INTO user_auth_realm
-						(realm_id, user_id) VALUES ($admin, " . $user["user_id"] . ")
-						ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
-					db_execute("DELETE FROM user_auth_realm
-						WHERE user_id=" . $user["user_id"] . "
-						AND realm_id=$admin");
-				}
-				}
-			}
-
-			/* disable collection for a bit */
-			set_config_option('syslog_enabled', '');
-
-			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
-			db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
-				`host_id` int(10) unsigned NOT NULL auto_increment,
-				`host` VARCHAR(128) NOT NULL,
-				`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-				PRIMARY KEY (`host`),
-				KEY host_id (`host_id`),
-				KEY last_updated (`last_updated`)) TYPE=MyISAM
-				COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
-
-			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
-			db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_facilities` (
-				`facility_id` int(10) unsigned NOT NULL auto_increment,
-				`facility` varchar(10) NOT NULL,
-				`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-				PRIMARY KEY (`facility`),
-				KEY facility_id (`facility_id`)) ENGINE=MyISAM;", true, $syslog_cnn);
-
-			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn);
-			db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
-				`priority_id` int(10) unsigned NOT NULL auto_increment,
-				`priority` varchar(10) NOT NULL,
-				`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-				PRIMARY KEY  (`priority`),
-				KEY priority_id (`priority_id`)) ENGINE=MyISAM;", true, $syslog_cnn);
-
-			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_host_facilities`", true, $syslog_cnn);
-			db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
-				`host_id` int(10) unsigned NOT NULL,
-				`facility_id` int(10) unsigned NOT NULL,
-				`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-				PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=MyISAM;", true, $syslog_cnn);
-
-			/* populate the tables */
-			db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-			db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-			foreach($syslog_levels as $id => $priority) {				db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')", true, $syslog_cnn);
-			}
-
-			/* a bit more horsepower please */
-			db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
-				(host_id, facility_id)
-				SELECT host_id, facility_id
-				FROM ((SELECT DISTINCT host, facility
-					FROM `" . $syslogdb_default . "`.`syslog`) AS s
-					INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-					ON s.host=sh.host
-					INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-					ON sf.facility=s.facility)", true, $syslog_cnn);
-
-			/* change the structure of the syslog table for performance sake */
-			$mysqlVersion = getMySQLVersion("syslog");
-			if ($mysqlVersion > 5) {
-				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
-					MODIFY COLUMN message varchar(1024) DEFAULT NULL,
-					ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER facility,
-					ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
-					ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
-					ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
-					ADD INDEX facility_id (facility_id),
-					ADD INDEX priority_id (priority_id),
-					ADD INDEX host_id (host_id),
-					ADD INDEX logtime(logtime);", true, $syslog_cnn);
-			}else{
-				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
-					ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER host,
-					ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
-					ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
-					ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
-					ADD INDEX facility_id (facility_id),
-					ADD INDEX priority_id (priority_id),
-					ADD INDEX host_id (host_id),
-					ADD INDEX logtime(logtime);", true, $syslog_cnn);
-			}
-
-			/* convert dates and times to timestamp */
-			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog` SET logtime=TIMESTAMP(`date`, `time`)", true, $syslog_cnn);
-
-			/* update the host_ids */
-			$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
-			if (sizeof($hosts)) {			foreach($hosts as $host) {				db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
-					SET host_id=" . $host["host_id"] . "
-					WHERE host='" . $host["host"] . "'", true, $syslog_cnn);
-			}
-			}
-
-			/* update the priority_ids */
-			$priorities = $syslog_levels;
-			if (sizeof($priorities)) {
-			foreach($priorities as $id => $priority) {
-				db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
-					SET priority_id=" . $id . "
-					WHERE priority='" . $priority . "'", true, $syslog_cnn);
-			}
-			}
-
-			/* update the facility_ids */
-			$fac = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
-			if (sizeof($fac)) {
-			foreach($fac as $f) {
-				db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
-					SET facility_id=" . $f["facility_id"] . "
-					WHERE facility='" . $f["facility"] . "'", true, $syslog_cnn);
-			}
-			}
-
-			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
-				DROP COLUMN `date`,
-				DROP COLUMN `time`,
-				DROP COLUMN `host`,
-				DROP COLUMN `facility`,
-				DROP COLUMN `priority`", true, $syslog_cnn);
-
-			/* get the database table names */
-			$rows = db_fetch_assoc("SHOW TABLES FROM `" . $syslogdb_default . "`", false, $syslog_cnn);
-			if (sizeof($rows)) {
-			foreach($rows as $row) {
-				$tables[] = $row["Tables_in_" . $syslogdb_default];
-			}
-			}
-
-			/* create the reports table */
-			if (!in_array('syslog_logs', $tables)) {
-				db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_logs` (
-					host varchar(32) default NULL,
-					facility varchar(10) default NULL,
-					priority varchar(10) default NULL,
-					level varchar(10) default NULL,
-					tag varchar(10) default NULL,
-					logtime timestamp NOT NULL default '0000-00-00 00:00:00',
-					program varchar(15) default NULL,
-					msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
-					seq int(10) unsigned NOT NULL auto_increment,
-					PRIMARY KEY (seq),
-					KEY host (host),
-					KEY seq (seq),
-					KEY program (program),
-					KEY logtime (logtime),
-					KEY priority (priority),
-					KEY facility (facility)) TYPE=MyISAM;", true, $syslog_cnn);
-			}
-
-			/* create the soft removal table */
-			if (!in_array("syslog_removed", $tables)) {
-				db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `syslog`", true, $syslog_cnn);
-			}
-
-			/* create the soft removal table */
-			if (!in_array("syslog_facilities", $tables)) {
-				db_execute("CREATE TABLE  `". $syslogdb_default . "`.`syslog_host_facilities` (
-					`host_id` int(10) UNSIGNED NULL,
-					`facility_id` int(10) UNSIGNED NULL,
-					PRIMARY KEY  (`host`,`facility`)) ENGINE=MyISAM;", true, $syslog_cnn);
-			}
-
-			/* create the host reference table */
-			if (!in_array('syslog_hosts', $tables)) {
-				db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_hosts` (
-					`id` int(10) unsigned NOT NULL auto_increment,
-					`host` VARCHAR(128) NOT NULL,
-					`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-					PRIMARY KEY (`host`),
-					KEY last_updated (`last_updated`)
-					) TYPE=MyISAM
-					COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
-			}
-
-			/* check upgrade of syslog_alert */
-			$sql     = "DESCRIBE syslog_alert";
-			$columns = array();
-			$array = db_fetch_assoc($sql, true, $syslog_cnn);
-
-			if (sizeof($array)) {
-			foreach ($array as $row) {
-				$columns[] = $row["Field"];
-			}
-			}
-
-			if (!in_array("enabled", $columns)) {
-				db_execute("ALTER TABLE syslog_alert MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
-			}
-
-			if (!in_array("method", $columns)) {
-				db_execute("ALTER TABLE syslog_alert ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name");
-				db_execute("ALTER TABLE syslog_alert ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method");
-			}
-
-			/* check upgrade of syslog_alert */
-			$sql     = "DESCRIBE syslog_remove";
-			$columns = array();
-			$array = db_fetch_assoc($sql, true, $syslog_cnn);
-
-			if (sizeof($array)) {
-			foreach ($array as $row) {
-				$columns[] = $row["Field"];
-			}
-			}
-
-			if (!in_array("enabled", $columns)) {
-				db_execute("ALTER TABLE syslog_remove MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
-			}
-
-			if (!in_array("method", $columns)) {
-				db_execute("ALTER TABLE syslog_remove ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;", true, $syslog_cnn);
-			}
-
-			/* reenable syslog xferral */
-			set_config_option('syslog_enabled', 'on');
+			plugin_syslog_install();
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
 	}
 }
 
-function getMySQLVersion($db = "cacti") {
+function syslog_upgrade_pre_oneoh_tables($options = false) {
+	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default, $syslog_upgrade;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	$syslog_levels = array(
+		1 => 'emer',
+		2 => 'crit',
+		3 => 'alert',
+		4 => 'err',
+		5 => 'warn',
+		6 => 'notice',
+		7 => 'info',
+		8 => 'debug',
+		9 => 'other'
+		);
+
+	/* validate some simple information */
+	$mysqlVersion = syslog_get_mysql_version("syslog");
+	$truncate     = ((isset($options["upgrade_type"]) && $options["upgrade_type"] == "truncate") ? true:false);
+	$upgrade_type = (isset($options["upgrade_type"]) ? $options["upgrade_type"]:"inline");
+	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
+	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
+	$syslogexists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", $syslog_cnn));
+
+	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
+	api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
+
+	/* get the realm id's and change from old to new */
+	$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'");
+	$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'");
+
+	if ($user >  0) {
+		$users = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=37");
+		if (sizeof($users)) {
+		foreach($users as $u) {
+			db_execute("INSERT INTO user_auth_realm
+				(realm_id, user_id) VALUES ($user, " . $u["user_id"] . ")
+				ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
+			db_execute("DELETE FROM user_auth_realm
+				WHERE user_id=" . $u["user_id"] . "
+				AND realm_id=$user");
+		}
+		}
+	}
+
+	if ($admin > 0) {
+		$admins = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=38");
+		if (sizeof($admins)) {
+		foreach($admins as $user) {
+			db_execute("INSERT INTO user_auth_realm
+				(realm_id, user_id) VALUES ($admin, " . $user["user_id"] . ")
+				ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
+			db_execute("DELETE FROM user_auth_realm
+				WHERE user_id=" . $user["user_id"] . "
+				AND realm_id=$admin");
+		}
+		}
+	}
+
+	/* disable collection for a bit */
+	set_config_option('syslog_enabled', '');
+
+	if ($upgrade_type == "truncate") return;
+
+	if ($upgrade_type == "inline") {
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
+			`host_id` int(10) unsigned NOT NULL auto_increment,
+			`host` VARCHAR(128) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY (`host`),
+			KEY host_id (`host_id`),
+			KEY last_updated (`last_updated`)) TYPE=$engine
+			COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
+
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_facilities` (
+			`facility_id` int(10) unsigned NOT NULL auto_increment,
+			`facility` varchar(10) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY (`facility`),
+			KEY facility_id (`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
+
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
+			`priority_id` int(10) unsigned NOT NULL auto_increment,
+			`priority` varchar(10) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY  (`priority`),
+			KEY priority_id (`priority_id`)) ENGINE=$engine;", true, $syslog_cnn);
+
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_host_facilities`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
+			`host_id` int(10) unsigned NOT NULL,
+			`facility_id` int(10) unsigned NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
+
+		/* populate the tables */
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
+		foreach($syslog_levels as $id => $priority) {
+			db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')", true, $syslog_cnn);
+		}
+
+		/* a bit more horsepower please */
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
+			(host_id, facility_id)
+			SELECT host_id, facility_id
+			FROM ((SELECT DISTINCT host, facility
+				FROM `" . $syslogdb_default . "`.`syslog`) AS s
+				INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+				ON s.host=sh.host
+				INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+				ON sf.facility=s.facility)", true, $syslog_cnn);
+
+		/* change the structure of the syslog table for performance sake */
+		$mysqlVersion = syslog_get_mysql_version("syslog");
+		if ($mysqlVersion >= 5) {
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
+				MODIFY COLUMN message varchar(1024) DEFAULT NULL,
+				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER facility,
+				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
+				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
+				ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
+				ADD INDEX facility_id (facility_id),
+				ADD INDEX priority_id (priority_id),
+				ADD INDEX host_id (host_id),
+				ADD INDEX logtime(logtime);", true, $syslog_cnn);
+		}else{
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
+				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER host,
+				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
+				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
+				ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
+				ADD INDEX facility_id (facility_id),
+				ADD INDEX priority_id (priority_id),
+				ADD INDEX host_id (host_id),
+				ADD INDEX logtime(logtime);", true, $syslog_cnn);
+		}
+
+		/* convert dates and times to timestamp */
+		db_execute("UPDATE `" . $syslogdb_default . "`.`syslog` SET logtime=TIMESTAMP(`date`, `time`)", true, $syslog_cnn);
+
+		/* update the host_ids */
+		$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
+		if (sizeof($hosts)) {
+		foreach($hosts as $host) {
+			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
+				SET host_id=" . $host["host_id"] . "
+				WHERE host='" . $host["host"] . "'", true, $syslog_cnn);
+		}
+		}
+
+		/* update the priority_ids */
+		$priorities = $syslog_levels;
+		if (sizeof($priorities)) {
+		foreach($priorities as $id => $priority) {
+			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
+				SET priority_id=" . $id . "
+				WHERE priority='" . $priority . "'", true, $syslog_cnn);
+		}
+		}
+
+		/* update the facility_ids */
+		$fac = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
+		if (sizeof($fac)) {
+		foreach($fac as $f) {
+			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
+				SET facility_id=" . $f["facility_id"] . "
+				WHERE facility='" . $f["facility"] . "'", true, $syslog_cnn);
+		}
+		}
+
+		db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
+			DROP COLUMN `date`,
+			DROP COLUMN `time`,
+			DROP COLUMN `host`,
+			DROP COLUMN `facility`,
+			DROP COLUMN `priority`", true, $syslog_cnn);
+
+		/* get the database table names */
+		$rows = db_fetch_assoc("SHOW TABLES FROM `" . $syslogdb_default . "`", false, $syslog_cnn);
+		if (sizeof($rows)) {
+		foreach($rows as $row) {
+			$tables[] = $row["Tables_in_" . $syslogdb_default];
+		}
+		}
+
+		/* create the reports table */
+		if (!in_array('syslog_logs', $tables)) {
+			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_logs` (
+				host varchar(32) default NULL,
+				facility varchar(10) default NULL,
+				priority varchar(10) default NULL,
+				level varchar(10) default NULL,
+				tag varchar(10) default NULL,
+				logtime timestamp NOT NULL default '0000-00-00 00:00:00',
+				program varchar(15) default NULL,
+				msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
+				seq int(10) unsigned NOT NULL auto_increment,
+				PRIMARY KEY (seq),
+				KEY host (host),
+				KEY seq (seq),
+				KEY program (program),
+				KEY logtime (logtime),
+				KEY priority (priority),
+				KEY facility (facility)) TYPE=MyISAM;", true, $syslog_cnn);
+		}
+
+		/* create the soft removal table */
+		if (!in_array("syslog_removed", $tables)) {
+			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `syslog`", true, $syslog_cnn);
+		}
+
+		/* create the soft removal table */
+		if (!in_array("syslog_facilities", $tables)) {
+			db_execute("CREATE TABLE  `". $syslogdb_default . "`.`syslog_host_facilities` (
+				`host_id` int(10) UNSIGNED NULL,
+				`facility_id` int(10) UNSIGNED NULL,
+				PRIMARY KEY  (`host`,`facility`)) ENGINE=MyISAM;", true, $syslog_cnn);
+		}
+
+		/* create the host reference table */
+		if (!in_array('syslog_hosts', $tables)) {
+			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_hosts` (
+				`id` int(10) unsigned NOT NULL auto_increment,
+				`host` VARCHAR(128) NOT NULL,
+				`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+				PRIMARY KEY (`host`),
+				KEY last_updated (`last_updated`)
+				) TYPE=MyISAM
+				COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
+		}
+
+		/* check upgrade of syslog_alert */
+		$sql     = "DESCRIBE syslog_alert";
+		$columns = array();
+		$array = db_fetch_assoc($sql, true, $syslog_cnn);
+
+		if (sizeof($array)) {
+		foreach ($array as $row) {
+			$columns[] = $row["Field"];
+		}
+		}
+
+		if (!in_array("enabled", $columns)) {
+			db_execute("ALTER TABLE syslog_alert MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+		}
+
+		if (!in_array("method", $columns)) {
+			db_execute("ALTER TABLE syslog_alert ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name");
+			db_execute("ALTER TABLE syslog_alert ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method");
+		}
+
+		/* check upgrade of syslog_alert */
+		$sql     = "DESCRIBE syslog_remove";
+		$columns = array();
+		$array = db_fetch_assoc($sql, true, $syslog_cnn);
+
+		if (sizeof($array)) {
+		foreach ($array as $row) {
+			$columns[] = $row["Field"];
+		}
+		}
+
+		if (!in_array("enabled", $columns)) {
+			db_execute("ALTER TABLE syslog_remove MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+		}
+
+		if (!in_array("method", $columns)) {
+			db_execute("ALTER TABLE syslog_remove ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;", true, $syslog_cnn);
+		}
+
+		syslog_setup_table_new($options);
+	}else{
+		include_once($config['base_path'] . "/lib/poller.php");
+		$p = dirname(__FILE__);
+		$command_string = read_config_option("path_php_binary");
+		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php --type=' . $options["db_type"] . ' --engine=' . $engine . ' --days=' . $options["days"];
+		cacti_log($extra_args, false);
+		exec_background($command_string, $extra_args);
+		header("Location: plugins.php");
+	}
+
+	/* reenable syslog xferral */
+	set_config_option('syslog_enabled', 'on');
+}
+
+function syslog_get_mysql_version($db = "cacti") {
 	global $syslog_cnn;
 
 	if ($db == "cacti") {
-		$dbInfo = db_fetch_cell("SHOW GLOBAL VARIABLES LIKE 'version'");
+		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 	}else{
-		$dbInfo = db_fetch_cell("SHOW GLOBAL VARIABLES LIKE 'version'", '', true, $syslog_cnn);
+		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'", $syslog_cnn);
 	}
 
 	if (sizeof($dbInfo)) {
@@ -426,7 +474,7 @@ function getMySQLVersion($db = "cacti") {
 	return "";
 }
 
-function syslog_setup_table_new($truncate = false) {
+function syslog_setup_table_new($options) {
 	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
 	include(dirname(__FILE__) . "/config.php");
@@ -447,9 +495,14 @@ function syslog_setup_table_new($truncate = false) {
 
 	syslog_connect();
 
-	$mysqlVersion = getMySQLVersion("syslog");
+	/* validate some simple information */
+	$mysqlVersion = syslog_get_mysql_version("syslog");
+	$truncate     = ((isset($options["upgrade_type"]) && $options["upgrade_type"] == "truncate") ? true:false);
+	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
+	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
+	$syslogexists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", $syslog_cnn));
 
-	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
+	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
 		facility_id int(10) default NULL,
 		priority_id int(10) default NULL,
@@ -461,9 +514,9 @@ function syslog_setup_table_new($truncate = false) {
 		KEY logtime (logtime),
 		KEY host_id (host_id),
 		KEY priority_id (priority_id),
-		KEY facility_id (facility_id)) TYPE=MyISAM;", true, $syslog_cnn);
+		KEY facility_id (facility_id)) ENGINE=$engine;", true, $syslog_cnn);
 
-	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
+	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL default '',
@@ -476,9 +529,9 @@ function syslog_setup_table_new($truncate = false) {
 		`date` int(16) NOT NULL default '0',
 		email varchar(255) default NULL,
 		notes varchar(255) default NULL,
-		PRIMARY KEY (id)) TYPE=MyISAM;", true, $syslog_cnn);
+		PRIMARY KEY (id)) ENGINE=$engine;", true, $syslog_cnn);
 
-	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`", true, $syslog_cnn);
+	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_incoming` (
 		facility varchar(10) default NULL,
 		priority varchar(10) default NULL,
@@ -489,9 +542,9 @@ function syslog_setup_table_new($truncate = false) {
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
-		KEY `status` (`status`)) TYPE=MyISAM;", true, $syslog_cnn);
+		KEY `status` (`status`)) ENGINE=$engine;", true, $syslog_cnn);
 
-	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`", true, $syslog_cnn);
+	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_remove` (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL default '',
@@ -502,9 +555,9 @@ function syslog_setup_table_new($truncate = false) {
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		notes varchar(255) default NULL,
-		PRIMARY KEY (id)) TYPE=MyISAM;", true, $syslog_cnn);
+		PRIMARY KEY (id)) ENGINE=$engine;", true, $syslog_cnn);
 
-	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
+	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL default '',
@@ -519,7 +572,7 @@ function syslog_setup_table_new($truncate = false) {
 		`date` int(16) NOT NULL default '0',
 		email varchar(255) default NULL,
 		notes varchar(255) default NULL,
-		PRIMARY KEY (id)) TYPE=MyISAM;", false, $syslog_cnn);
+		PRIMARY KEY (id)) ENGINE=$engine;", false, $syslog_cnn);
 
 	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
@@ -528,7 +581,7 @@ function syslog_setup_table_new($truncate = false) {
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 		PRIMARY KEY (`host`),
 		KEY host_id (`host_id`),
-		KEY last_updated (`last_updated`)) TYPE=MyISAM
+		KEY last_updated (`last_updated`)) ENGINE=$engine
 		COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
 
 	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
@@ -538,7 +591,7 @@ function syslog_setup_table_new($truncate = false) {
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 		PRIMARY KEY  (`facility`),
 		KEY facility_id (`facility_id`),
-		KEY last_updates (`last_updated`)) ENGINE=MyISAM;", true, $syslog_cnn);
+		KEY last_updates (`last_updated`)) ENGINE=$engine;", true, $syslog_cnn);
 
 	if ($truncate ) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
@@ -547,13 +600,13 @@ function syslog_setup_table_new($truncate = false) {
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 		PRIMARY KEY (`priority`),
 		KEY priority_id (`priority_id`),
-		KEY last_updated (`last_updated`)) ENGINE=MyISAM;", true, $syslog_cnn);
+		KEY last_updated (`last_updated`)) ENGINE=$engine;", true, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
 		`host_id` int(10) unsigned NOT NULL,
 		`facility_id` int(10) unsigned NOT NULL,
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-		PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=MyISAM;", true, $syslog_cnn);
+		PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_removed` LIKE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 
@@ -573,7 +626,7 @@ function syslog_setup_table_new($truncate = false) {
 		KEY program (program),
 		KEY logtime (logtime),
 		KEY priority (priority),
-		KEY facility (facility)) TYPE=MyISAM;", true, $syslog_cnn);
+		KEY facility (facility)) ENGINE=$engine;", true, $syslog_cnn);
 
 	foreach($syslog_levels as $id => $priority) {
 		db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')", true, $syslog_cnn);
@@ -611,7 +664,8 @@ function syslog_poller_bottom() {
 	exec_background($command_string, $extra_args);
 }
 
-function syslog_install_advisor($syslog_exists) {	global $config, $colors;
+function syslog_install_advisor($syslog_exists, $db_version) {
+	global $config, $colors;
 
 	include($config["include_path"] . "/top_header.php");
 
@@ -624,15 +678,7 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 			of this upgrade, or background, which will create a background process to bring your old syslog data
 			from a backup table to the new syslog format.  Again this process can take several hours.",
 			"value" => "truncate",
-			"array" => array("truncate" => "Truncate Syslog Table", "inline" => "Inline Upgrade", "background" => "Background Upgrade (not functional)"),
-		),
-		"db_type" => array(
-			"method" => "drop_array",
-			"friendly_name" => "Database Architecutre",
-			"description" => "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this
-			release, you only have the traditional table structure available.",
-			"value" => "trad",
-			"array" => array("trad" => "Traditional Table", "part" => "Partitioined Table (not functional)"),
+			"array" => array("truncate" => "Truncate Syslog Table", "inline" => "Inline Upgrade", "background" => "Background Upgrade"),
 		),
 		"engine" => array(
 			"method" => "drop_array",
@@ -642,9 +688,18 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 			"value" => "myisam",
 			"array" => array("myisam" => "MyISAM Storage", "innodb" => "InnoDB Storage"),
 		),
+		"db_type" => array(
+			"method" => "drop_array",
+			"friendly_name" => "Database Architecutre",
+			"description" => "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.
+				In MySQL 5.5 and above, you can create multiple partitions per day.
+				Prior to MySQL 5.1.6, you only have the traditional table structure available.",
+			"value" => "trad",
+			"array" => ($db_version >= "5.1" ? array("trad" => "Traditional Table", "part" => "Partitioined Table"): array("trad" => "Traditional Table")),
+		),
 		"days" => array(
 			"method" => "drop_array",
-			"friendly_name" => "Syslog Days to Retain",
+			"friendly_name" => "Retention Policy",
 			"description" => "Choose how many days of Syslog values you wish to maintain in the database.",
 			"value" => "30",
 			"array" => array("1" => "1 Day", "2" => "2 Days", "3" => "3 Days",
@@ -661,8 +716,21 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 		)
 	);
 
-	if ($syslog_exists) {		$type = "Upgrade";
-	}else{		$type = "Install";
+	if ($db_version >= 5.5) {
+		$fields_syslog_update["dayparts"] = array(
+			"method" => "drop_array",
+			"friendly_name" => "Partitions per Day",
+			"description" => "Select the number of partitions per day that you wish to create.",
+			"value" => "1",
+			"array" => array("1" => "1 Per Day", "2" => "2 Per Day", "4" => "4 Per Day",
+				"6" => "6 Per Day", "12" => "12 Per Day")
+		);
+	}
+
+	if ($syslog_exists) {
+		$type = "Upgrade";
+	}else{
+		$type = "Install";
 	}
 
 	print "<table align='center' width='80%'><tr><td>\n";
@@ -679,7 +747,8 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 			all existing removal and alert rules will be maintained during the upgrade process.</p>
 			<p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu.</p>
 			</td></tr>";
-	}else{		unset($fields_syslog_update["upgrade_type"]);
+	}else{
+		unset($fields_syslog_update["upgrade_type"]);
 		print "<p>You have several options to choose from when installing Syslog.  The first is the Database Architecture.
 			Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables
 			from becomming excessive thus slowing queries.</p>
@@ -691,32 +760,72 @@ function syslog_install_advisor($syslog_exists) {	global $config, $colors;
 			</td></tr>";
 	}
 	html_end_box();
-
 	print "<form action='plugins.php' method='get'>\n";
-
 	html_start_box("<strong>Syslog " . $type . " Settings</strong>", "100%", $colors["header"], "3", "center", "");
-
 	draw_edit_form(array(
 		"config" => array(),
 		"fields" => inject_form_variables($fields_syslog_update, array()))
 		);
-
 	html_end_box();
-
-	syslog_install_button("plugins.php", $syslog_exists);
-
+	syslog_confirm_button("install", "plugins.php", $syslog_exists);
 	print "</td></tr></table>\n";
-
 	exit;
 }
 
-function syslog_install_button($cancel_url, $syslog_exists) {
+function syslog_uninstall_advisor() {
+	global $config, $colors;
+
+	include($config["include_path"] . "/top_header.php");
+
+	$fields_syslog_update = array(
+		"uninstall_method" => array(
+			"method" => "drop_array",
+			"friendly_name" => "What uninstall method do you want to use?",
+			"description" => "When uninstalling syslog, you can remove everything, or only components, just in
+			case you plan on re-installing in the future.",
+			"value" => "all",
+			"array" => array("all" => "Remove Everything (Logs, Tables, Settings)", "syslog" => "Syslog Data Only"),
+		),
+		"mode" => array(
+			"method" => "hidden",
+			"value" => "uninstall"
+		),
+		"id" => array(
+			"method" => "hidden",
+			"value" => "syslog"
+		)
+	);
+
+	print "<form action='plugins.php' method='get'>\n";
+	print "<table align='center' width='80%'><tr><td>\n";
+	html_start_box("<strong>Syslog Uninstall Preferences</strong>", "100%", $colors["header"], "3", "center", "");
+	draw_edit_form(array(
+		"config" => array(),
+		"fields" => inject_form_variables($fields_syslog_update, array()))
+		);
+	html_end_box();
+	syslog_confirm_button("uninstall", "plugins.php", $syslog_exists);
+	print "</td></tr></table>\n";
+	exit;
+}
+
+function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
+	if ($action == 'install' ) {
+		if ($syslog_exists) {
+			$value = 'Upgrade';
+		}else{
+			$value = 'Install';
+		}
+	}else{
+		$value = 'Uninstall';
+	}
+
 	?>
 	<table align='center' width='100%' style='background-color: #ffffff; border: 1px solid #bbbbbb;'>
 		<tr>
 			<td bgcolor="#f5f5f5" align="right">
 				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='Cancel'>
-				<input name='upgrade' type='submit' value='<?php print ($syslog_exists ? 'Upgrade':'Install');?>>
+				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>>
 			</td>
 		</tr>
 	</table>
@@ -1039,6 +1148,8 @@ function syslog_draw_navigation_text ($nav) {
 
 function syslog_config_insert() {
 	syslog_connect();
+
+	syslog_check_upgrade();
 }
 
 function syslog_graph_buttons($graph_elements = array()) {

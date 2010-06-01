@@ -286,7 +286,7 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 			$limit;
 	}
 
-	echo $query_sql;
+	//echo $query_sql;
 
 	return db_fetch_assoc($query_sql, true, $syslog_cnn);
 }
