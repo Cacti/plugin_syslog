@@ -131,19 +131,80 @@ if ($email != '') {
 
 /* delete old syslog and syslog soft messages */
 if ($retention > 0) {
-	/* delete from the main syslog table first */
-	db_execute("DELETE FROM syslog WHERE logtime < '$retention'", true, $syslog_cnn);
+	$syntax = db_fetch_row("SHOW CREATE TABLE syslog", $syslog_cnn);
+	if (substr_count($syntax["Create Table"], "PARTITION")) {
+		$partitioned = true;
+	}else{
+		$partitioned = false;
+	}
 
-	$syslog_deleted = $syslog_cnn->Affected_Rows();
+	if (!$partitioned) {
+		syslog_debug("Syslog Table is NOT Partitioned");
 
-	/* now delete from the syslog removed table */
-	db_execute("DELETE FROM syslog_removed WHERE logtime < '$retention'", true, $syslog_cnn);
+		/* delete from the main syslog table first */
+		db_execute("DELETE FROM syslog WHERE logtime < '$retention'", true, $syslog_cnn);
 
-	$syslog_deleted += $syslog_cnn->Affected_Rows();
+		$syslog_deleted = $syslog_cnn->Affected_Rows();
 
-	syslog_debug("Deleted " . $syslog_deleted .
-		" Syslog Message" . ($syslog_deleted == 1 ? "" : "s" ) .
-		" (older than $retention days)");
+		/* now delete from the syslog removed table */
+		db_execute("DELETE FROM syslog_removed WHERE logtime < '$retention'", true, $syslog_cnn);
+
+		$syslog_deleted += $syslog_cnn->Affected_Rows();
+
+		syslog_debug("Deleted " . $syslog_deleted .
+			" Syslog Message" . ($syslog_deleted == 1 ? "" : "s" ) .
+			" (older than $retention days)");
+	}else{
+		syslog_debug("Syslog Table IS Partitioned");
+
+		$syslog_deleted = 0;
+		$number_of_partitions = db_fetch_assoc("SELECT * FROM `information_schema`.`partitions` WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog' ORDER BY partition_ordinal_position", $syslog_cnn);
+
+		syslog_debug("There are currently " . sizeof($number_of_partitions) . " Syslog Partitions");
+
+		$time     = time();
+		$now      = date('Y-m-d', $time);
+		$format   = date('Ymd', $time);
+		$cur_day  = db_fetch_row("SELECT TO_DAYS('$now') AS today", $syslog_cnn);
+		$cur_day  = $cur_day["today"];
+
+		$lday_ts  = read_config_option("syslog_lastday_timestamp");
+		$lnow     = date('Y-m-d', $lday_ts);
+		$lformat  = date('Ymd', $lday_ts);
+		$last_day = db_fetch_row("SELECT TO_DAYS('$lnow') AS today", $syslog_cnn);
+		$last_day = $last_day["today"];
+
+		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
+
+		if ($cur_day != $last_day) {
+			db_execute("REPLACE INTO settings SET name='syslog_lastday_timestamp', value='$time'");
+
+			if ($lday_ts != '') {
+				syslog_debug("Creating new partition 'd" . $lformat . "'");
+				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` REORGANIZE PARTITION dMaxValue INTO (
+					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+
+				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` REORGANIZE PARTITION dMaxValue INTO (
+					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+
+				$user_partitions = sizeof($number_of_partitions) - 1;
+				if ($user_partitions >= $days) {
+					$i = 0;
+					while ($user_partitions > $days) {
+						$oldest = $number_of_partitions[$i];
+						syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
+						db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"], $syslog_cnn);
+						db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"], $syslog_cnn);
+						$i++;
+						$user_partitions--;
+						$syslog_deleted++;
+					}
+				}
+			}
+		}
+	}
 }
 
 /* get a uniqueID to allow moving of records to done table */
@@ -197,79 +258,79 @@ syslog_debug("Found   " . $syslog_alerts .
 
 $syslog_alarms = 0;
 if (sizeof($query)) {
-foreach($query as $alert) {
-	$sql    = '';
-	$alertm = '';
-	$th_sql = ''
+	foreach($query as $alert) {
+		$sql    = '';
+		$alertm = '';
+		$th_sql = '';
 
-	if ($alert['type'] == 'facility') {
-		$sql = "SELECT * FROM syslog_incoming
-			WHERE " . $syslog_incoming_config["facilityField"] . "='" . $alert['message'] . "'
-			AND status=" . $uniqueID;
-	} else if ($alert['type'] == 'messageb') {
-		$sql = "SELECT * FROM syslog_incoming
-			WHERE " . $syslog_incoming_config["textField"] . "
-			LIKE '" . $alert['message'] . "%'
-			AND status=" . $uniqueID;
-	} else if ($alert['type'] == 'messagec') {
-		$sql = "SELECT * FROM syslog_incoming
-			WHERE " . $syslog_incoming_config["textField"] . "
-			LIKE '%" . $alert['message'] . "%'
-			AND status=" . $uniqueID;
-	} else if ($alert['type'] == 'messagee') {
-		$sql = "SELECT * FROM syslog_incoming
-			WHERE " . $syslog_incoming_config["textField"] . "
-			LIKE '%" . $alert['message'] . "'
-			AND status=" . $uniqueID;
-	} else if ($alert['type'] == 'host') {
-		$sql = "SELECT * FROM syslog_incoming
-			WHERE " . $syslog_incoming_config["hostField"] . "='" . $alert['message'] . "'
-			AND status=" . $uniqueID;
-	}
-
-	if ($sql != '') {
-		if ($alert['method'] == "1") {
-			$th_sql = str_replace("*", "count(*)", $sql);
-			$count = db_fetch_assoc($th_sql, true, $syslog_cnn);
+		if ($alert['type'] == 'facility') {
+			$sql = "SELECT * FROM syslog_incoming
+				WHERE " . $syslog_incoming_config["facilityField"] . "='" . $alert['message'] . "'
+				AND status=" . $uniqueID;
+		} else if ($alert['type'] == 'messageb') {
+			$sql = "SELECT * FROM syslog_incoming
+				WHERE " . $syslog_incoming_config["textField"] . "
+				LIKE '" . $alert['message'] . "%'
+				AND status=" . $uniqueID;
+		} else if ($alert['type'] == 'messagec') {
+			$sql = "SELECT * FROM syslog_incoming
+				WHERE " . $syslog_incoming_config["textField"] . "
+				LIKE '%" . $alert['message'] . "%'
+				AND status=" . $uniqueID;
+		} else if ($alert['type'] == 'messagee') {
+			$sql = "SELECT * FROM syslog_incoming
+				WHERE " . $syslog_incoming_config["textField"] . "
+				LIKE '%" . $alert['message'] . "'
+				AND status=" . $uniqueID;
+		} else if ($alert['type'] == 'host') {
+			$sql = "SELECT * FROM syslog_incoming
+				WHERE " . $syslog_incoming_config["hostField"] . "='" . $alert['message'] . "'
+				AND status=" . $uniqueID;
 		}
 
-		if (($alert['method'] == "1" && $count > 0) || ($alert["method"] == "0"))
-			$at = db_fetch_assoc($sql, true, $syslog_cnn);
+		if ($sql != '') {
+			if ($alert['method'] == "1") {
+				$th_sql = str_replace("*", "count(*)", $sql);
+				$count = db_fetch_assoc($th_sql, true, $syslog_cnn);
+			}
 
-			if (sizeof($at)) {
-				if ($alert['method'] == "1") {
-					$alertm .= "-----------------------------------------------\n";
-					$alertm .= "A Number of Instances Alert has Been Triggered\n";
-					$alertm .= "Alert    : " . $a['name'] . "\n";
-					$alertm .= "Count    : " . $count . "\n";
-				}
+			if (($alert['method'] == "1" && $count > 0) || ($alert["method"] == "0")) {
+				$at = db_fetch_assoc($sql, true, $syslog_cnn);
 
-				foreach($at as $a) {
-					$a['message'] = str_replace('  ', "\n", $a['message']);
-					while (substr($a['message'], -1) == "\n") {
-						$a['message'] = substr($a['message'], 0, -1);
+				if (sizeof($at)) {
+					if ($alert['method'] == "1") {
+						$alertm .= "-----------------------------------------------\n";
+						$alertm .= "A Number of Instances Alert has Been Triggered\n";
+						$alertm .= "Alert    : " . $a['name'] . "\n";
+						$alertm .= "Count    : " . $count . "\n";
 					}
 
-					$alertm .= "-----------------------------------------------\n";
-					$alertm .= 'Hostname : ' . $a['host'] . "\n";
-					$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
-					$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
-					$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
+					foreach($at as $a) {
+						$a['message'] = str_replace('  ', "\n", $a['message']);
+						while (substr($a['message'], -1) == "\n") {
+							$a['message'] = substr($a['message'], 0, -1);
+						}
 
-					$syslog_alarms++;
+						$alertm .= "-----------------------------------------------\n";
+						$alertm .= 'Hostname : ' . $a['host'] . "\n";
+						$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
+						$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
+						$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
+
+						$syslog_alarms++;
+					}
+
+					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
+
+					$alertm .= "-----------------------------------------------\n\n";
 				}
-
-				syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
-
-				$alertm .= "-----------------------------------------------\n\n";
 			}
 		}
-	}
 
-	if ($alertm != '') {
-		syslog_sendemail($alert['email'], '', 'Event Alert - ' . $alert['name'], $alertm);
+		if ($alertm != '') {
+			syslog_sendemail($alert['email'], '', 'Event Alert - ' . $alert['name'], $alertm);
+		}
 	}
-}
 }
 
 /* MOVE ALL FLAGGED MESSAGES TO THE SYSLOG TABLE */
