@@ -296,6 +296,8 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 function syslog_filter($sql_where) {
 	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts, $reset_multi;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	?>
 	<script type="text/javascript">
 	<!--
@@ -588,8 +590,8 @@ function syslog_messages() {
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 
 	include("./include/global_arrays.php");
-
 	include("./lib/timespan_settings.php");
+	include(dirname(__FILE__) . "/config.php");
 
 	//print "<pre>";print_r($_REQUEST);print "</pre>";
 	//print "<pre>";print_r($_SESSION);print "</pre>";

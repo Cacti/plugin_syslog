@@ -16,6 +16,8 @@ function plugin_syslog_install() {
 	global $config, $syslog_cnn, $syslog_upgrade;
 	static $bg_inprocess = false;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	syslog_connect();
 
 	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
