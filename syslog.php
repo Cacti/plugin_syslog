@@ -230,6 +230,8 @@ function syslog_request_validation() {
 function get_syslog_messages(&$sql_where, $row_limit) {
 	global $sql_where, $syslog_cnn, $hostfilter, $syslog_incoming_config;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
 	if (!empty($_REQUEST["host"])) {
