@@ -57,6 +57,8 @@ function syslog_execute_update($syslog_exists, $options) {
 		}else{
 			syslog_upgrade_pre_oneoh_tables($options);
 		}
+	}else{
+		syslog_setup_table_new($options);
 	}
 }
 
@@ -295,7 +297,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER facility,
 				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
 				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
-				ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
+				ADD COLUMN logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
 				ADD INDEX facility_id (facility_id),
 				ADD INDEX priority_id (priority_id),
 				ADD INDEX host_id (host_id),
@@ -305,7 +307,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER host,
 				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
 				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
-				ADD COLUMN logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
+				ADD COLUMN logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
 				ADD INDEX facility_id (facility_id),
 				ADD INDEX priority_id (priority_id),
 				ADD INDEX host_id (host_id),
@@ -368,7 +370,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 				priority varchar(10) default NULL,
 				level varchar(10) default NULL,
 				tag varchar(10) default NULL,
-				logtime timestamp NOT NULL default '0000-00-00 00:00:00',
+				logtime TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
 				program varchar(15) default NULL,
 				msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 				seq int(10) unsigned NOT NULL auto_increment,
@@ -475,6 +477,39 @@ function syslog_get_mysql_version($db = "cacti") {
 	return "";
 }
 
+function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) {
+	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username, $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	$sql = "CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
+			facility_id int(10) default NULL,
+			priority_id int(10) default NULL,
+			host_id int(10) default NULL,
+			logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+			message " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " NOT NULL default '',
+			seq bigint unsigned NOT NULL auto_increment,
+			KEY (seq),
+			KEY logtime (logtime),
+			KEY host_id (host_id),
+			KEY priority_id (priority_id),
+			KEY facility_id (facility_id)) ENGINE=$engine
+			PARTITION BY RANGE (TO_DAYS(logtime))\n";
+
+	$now = time();
+
+	$parts = "";
+	for($i = $days; $i > 0; $i--) {
+		$timestamp = $now - ($i * 86400);
+		$date     = date('Y-m-d', $timestamp);
+		$format   = date("Ymd", $timestamp);
+		$parts .= ($parts != "" ? ",\n":"(") . " PARTITION d" . $format . " VALUES LESS THAN (TO_DAYS('" . $date . "'))";
+	}
+	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
+
+	cacti_log($sql . $parts);
+}
+
 function syslog_setup_table_new($options) {
 	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
@@ -504,18 +539,22 @@ function syslog_setup_table_new($options) {
 	$syslogexists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", $syslog_cnn));
 
 	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
-		facility_id int(10) default NULL,
-		priority_id int(10) default NULL,
-		host_id int(10) default NULL,
-		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
-		message " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " NOT NULL default '',
-		seq bigint unsigned NOT NULL auto_increment,
-		PRIMARY KEY (seq),
-		KEY logtime (logtime),
-		KEY host_id (host_id),
-		KEY priority_id (priority_id),
-		KEY facility_id (facility_id)) ENGINE=$engine;", true, $syslog_cnn);
+	if (!$partitioned) {
+		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
+			facility_id int(10) default NULL,
+			priority_id int(10) default NULL,
+			host_id int(10) default NULL,
+			logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+			message " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " NOT NULL default '',
+			seq bigint unsigned NOT NULL auto_increment,
+			PRIMARY KEY (seq),
+			KEY logtime (logtime),
+			KEY host_id (host_id),
+			KEY priority_id (priority_id),
+			KEY facility_id (facility_id)) ENGINE=$engine;", true, $syslog_cnn);
+	}else{
+		syslog_create_partitioned_syslog_table($engine, $options["days"]);
+	}
 
 	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
@@ -617,7 +656,7 @@ function syslog_setup_table_new($options) {
 		priority varchar(10) default NULL,
 		level varchar(10) default NULL,
 		tag varchar(10) default NULL,
-		logtime timestamp NOT NULL default '0000-00-00 00:00:00',
+		logtime TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
 		program varchar(15) default NULL,
 		msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 		seq bigint unsigned NOT NULL auto_increment,
