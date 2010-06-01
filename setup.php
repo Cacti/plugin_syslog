@@ -14,10 +14,11 @@
 
 function plugin_syslog_install() {
 	global $config, $syslog_cnn, $syslog_upgrade;
+	static $bg_inprocess = false;
 
 	syslog_connect();
 
-	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn));
+	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
 	$db_version    = syslog_get_mysql_version("syslog");
 
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
@@ -35,7 +36,10 @@ function plugin_syslog_install() {
 
 	//print "<pre>";print_r($_GET);print "</pre>";
 	if (isset($_GET["install"]) || isset($_GET["return"]) || isset($_GET["cancel"])) {
-		syslog_execute_update($syslog_exists, $_GET);
+		if (!$bg_inprocess) {
+			syslog_execute_update($syslog_exists, $_GET);
+			$bg_inprocess = true;
+		}
 	}else{
 		syslog_install_advisor($syslog_exists, $db_version);
 		exit;
@@ -147,10 +151,10 @@ function syslog_check_upgrade() {
 		return;
 	}
 
-	$present = db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn);
+	$present = db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn);
 	$old_pia = false;
 	if (sizeof($present)) {
-		$old_table = db_fetch_row("SHOW COLUMNS FROM syslog LIKE 'time'", true, $syslog_cnn);
+		$old_table = db_fetch_row("SHOW COLUMNS FROM `" . $syslogdb_default . "`.`syslog` LIKE 'time'", true, $syslog_cnn);
 		if (sizeof($old_table)) {
 			$old_pia = true;
 		}
@@ -195,7 +199,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 	$upgrade_type = (isset($options["upgrade_type"]) ? $options["upgrade_type"]:"inline");
 	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
 	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
-	$syslogexists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", $syslog_cnn));
+	$syslogexists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 	api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
@@ -424,8 +428,8 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 		}
 
 		if (!in_array("method", $columns)) {
-			db_execute("ALTER TABLE syslog_alert ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name");
-			db_execute("ALTER TABLE syslog_alert ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method");
+			db_execute("ALTER TABLE syslog_alert ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name", true, $syslog_cnn);
+			db_execute("ALTER TABLE syslog_alert ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method", true, $syslog_cnn);
 		}
 
 		/* check upgrade of syslog_alert */
@@ -455,7 +459,6 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php --type=' . $options["db_type"] . ' --engine=' . $engine . ' --days=' . $options["days"];
 		cacti_log($extra_args, false);
 		exec_background($command_string, $extra_args);
-		header("Location: plugins.php");
 	}
 
 	/* reenable syslog xferral */
@@ -468,7 +471,7 @@ function syslog_get_mysql_version($db = "cacti") {
 	if ($db == "cacti") {
 		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 	}else{
-		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'", $syslog_cnn);
+		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'", true, $syslog_cnn);
 	}
 
 	if (sizeof($dbInfo)) {
@@ -507,7 +510,7 @@ function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) 
 	}
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
 
-	cacti_log($sql . $parts);
+	db_execute($sql . $parts, true, $syslog_cnn);
 }
 
 function syslog_setup_table_new($options) {
@@ -536,7 +539,7 @@ function syslog_setup_table_new($options) {
 	$truncate     = ((isset($options["upgrade_type"]) && $options["upgrade_type"] == "truncate") ? true:false);
 	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
 	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
-	$syslogexists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", $syslog_cnn));
+	$syslogexists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
 
 	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 	if (!$partitioned) {

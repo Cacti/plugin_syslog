@@ -271,16 +271,16 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 
 	if ($_REQUEST["removal"] == "-1") {
 		$query_sql = "SELECT *
-			FROM syslog " .
+			FROM `" . $syslogdb_default . "`.`syslog` " .
 			$sql_where . "
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
 	}else{
 		$query_sql = "(SELECT *
-			FROM syslog " .
+			FROM `" . $syslogdb_default . "`.`syslog` " .
 			$sql_where . "
 			) UNION (SELECT *
-			FROM syslog_removed " .
+			FROM `" . $syslogdb_default . "`.`syslog_removed` " .
 			$sql_where . ")
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
@@ -436,10 +436,10 @@ function syslog_filter($sql_where) {
 													<?php
 													if (!isset($hostfilter)) $hostfilter = "";
 													$efacilities = db_fetch_assoc("SELECT f.facility_id, f.facility
-														FROM syslog_host_facilities AS fh
-														INNER JOIN syslog_facilities AS f
+														FROM `" . $syslogdb_default . "`.`syslog_host_facilities` AS fh
+														INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS f
 														ON f.facility_id=fh.facility_id " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
-														ORDER BY facility");
+														ORDER BY facility", true, $syslog_cnn);
 
 													if (sizeof($efacilities)) {
 													foreach ($efacilities as $efacility) {
@@ -527,7 +527,7 @@ function syslog_filter($sql_where) {
 									<select id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
 										<?php
-										$hosts = db_fetch_assoc("SELECT * FROM syslog_hosts ORDER BY host", true, $syslog_cnn);
+										$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host", true, $syslog_cnn);
 										if (sizeof($hosts)) {
 											foreach ($hosts as $host) {
 												print "<option value=" . $host["host_id"];
@@ -563,7 +563,7 @@ function syslog_filter($sql_where) {
 					<tr>
 						<td width="100%" valign="top"><?php display_output_messages();?>
 							<?php
-							$total_rows = db_fetch_cell("SELECT count(*) from syslog " . $sql_where, '', true, $syslog_cnn);
+							$total_rows = db_fetch_cell("SELECT count(*) from `" . $syslogdb_default . "`.`syslog` " . $sql_where, '', true, $syslog_cnn);
 							html_start_box("", "100%", $colors["header"], "3", "center", "");
 							$hostarray = "";
 							if (is_array($_REQUEST["host"])) {
@@ -657,9 +657,9 @@ function syslog_messages() {
 
 	html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
-	$hosts      = array_rekey(db_fetch_assoc("SELECT host_id, host FROM syslog_hosts"), "host_id", "host");
-	$facilities = array_rekey(db_fetch_assoc("SELECT facility_id, facility FROM syslog_facilities"), "facility_id", "facility");
-	$priorities = array_rekey(db_fetch_assoc("SELECT priority_id, priority FROM syslog_priorities"), "priority_id", "priority");
+	$hosts      = array_rekey(db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn), "host_id", "host");
+	$facilities = array_rekey(db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn), "facility_id", "facility");
+	$priorities = array_rekey(db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn), "priority_id", "priority");
 
 	$i = 0;
 	if (sizeof($syslog_messages) > 0) {

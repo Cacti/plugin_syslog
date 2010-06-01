@@ -132,8 +132,8 @@ if (empty($syslog_cnn)) {
 }
 
 
-if (sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", $syslog_cnn))) {
-	db_execute("RENAME TABLE syslog TO syslog_pre_upgrade", $syslog_cnn);
+if (sizeof(db_fetch_row("SHOW TABLES IN " . $syslogdb_default . " LIKE 'syslog'", true, $syslog_cnn))) {
+	db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog`TO `" . $syslogdb_default . "`.`syslog_pre_upgrade`", true, $syslog_cnn);
 }
 
 syslog_setup_table_new($options);
@@ -231,16 +231,16 @@ db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_pre_upgrade`
 	DROP COLUMN `priority`", true, $syslog_cnn);
 
 while ( true ) {
-	$sequence = db_fetch_cell("SELECT max(seq) FROM (SELECT seq FROM syslog_pre_upgrade ORDER BY seq LIMIT $fetch_size) AS preupgrade", '', false, $syslog_cnn);
+	$sequence = db_fetch_cell("SELECT max(seq) FROM (SELECT seq FROM `" . $syslogdb_default . "`.`syslog_pre_upgrade` ORDER BY seq LIMIT $fetch_size) AS preupgrade", '', false, $syslog_cnn);
 
 	if ($sequence > 0 && $sequence != '') {
-		db_execute("INSERT INTO syslog (facility_id, priority_id, host_id, logtime, message)
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog` (facility_id, priority_id, host_id, logtime, message)
 			SELECT facility_id, priority_id, host_id, logtime, message
-			FROM syslog_pre_upgrade
-			WHERE seq<$sequence");
-		db_execute("DELETE FROM syslog_pre_upgrade WHERE seq<=$sequence");
+			FROM `" . $syslogdb_default . "`.`syslog_pre_upgrade`
+			WHERE seq<$sequence", true, $syslog_cnn);
+		db_execute("DELETE FROM syslog_pre_upgrade WHERE seq<=$sequence", true, $syslog_cnn);
 	}else{
-		db_execute("DROP TABLE syslog_pre_upgrade", $syslog_cnn);
+		db_execute("DROP TABLE `" . $syslogdb_default . "`.`syslog_pre_upgrade`", true, $syslog_cnn);
 		break;
 	}
 }
