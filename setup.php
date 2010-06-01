@@ -20,18 +20,31 @@ function plugin_syslog_install() {
 	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES LIKE 'syslog'", true, $syslog_cnn));
 	$db_version    = syslog_get_mysql_version("syslog");
 
+	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
+	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
+	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
+	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
+	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
+	api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
+	api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'setup.php');
+	api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'setup.php');
+	api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
+
+	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
+
 	//print "<pre>";print_r($_GET);print "</pre>";
-	if (!isset($_GET["install"]) && !isset($_GET["return"]) && !isset($_GET["install"])) {
+	if (isset($_GET["install"]) || isset($_GET["return"]) || isset($_GET["cancel"])) {
+		syslog_execute_update($syslog_exists, $_GET);
+	}else{
 		syslog_install_advisor($syslog_exists, $db_version);
 		exit;
-	}else{
-		syslog_execute_update($syslog_exists, $_GET);
 	}
 }
 
 function syslog_execute_update($syslog_exists, $options) {
 	if (isset($options["cancel"])) {
-		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog");
+		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all");
 		exit;
 	}elseif (isset($options["return"])) {
 		db_execute("DELETE FROM plugin_config WHERE directory='syslog'");
@@ -40,19 +53,6 @@ function syslog_execute_update($syslog_exists, $options) {
 		db_execute("DELETE FROM plugin_hooks WHERE name='syslog'");
 	}elseif (isset($options["upgrade_type"])) {
 		if ($options["upgrade_type"] == "truncate") {
-			api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
-			api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
-			api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
-			api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
-			api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
-			api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
-			api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'setup.php');
-			api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'setup.php');
-			api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
-
-			api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
-			api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
-
 			syslog_setup_table_new($options);
 		}else{
 			syslog_upgrade_pre_oneoh_tables($options);
@@ -67,6 +67,7 @@ function plugin_syslog_uninstall () {
 	include(dirname(__FILE__) . '/config.php');
 	include_once(dirname(__FILE__) . '/functions.php');
 
+	//print "<pre>";print_r($_GET);print "</pre>";
 	if (isset($_GET["cancel"]) || isset($_GET["return"])) {
 		header("Location:" . $config["url_path"] . "plugins.php");
 		exit;
