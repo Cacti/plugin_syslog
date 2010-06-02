@@ -205,6 +205,9 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 		$save["id"] = "";
 	}
 
+	$hour   = intval($timepart / 60);
+	$minute = $timepart % 60;
+
 	$save["name"]     = form_input_validate($name,     "name",     "", false, 3);
 	$save["type"]     = form_input_validate($type,     "type",     "", false, 3);
 	$save["message"]  = form_input_validate($message,  "message",  "", false, 3);

@@ -23,6 +23,10 @@ function plugin_syslog_install() {
 	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
 	$db_version    = syslog_get_mysql_version("syslog");
 
+	/* ================= input validation ================= */
+	input_validate_input_number(get_request_var("days"));
+	/* ==================================================== */
+
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
@@ -49,6 +53,8 @@ function plugin_syslog_install() {
 }
 
 function syslog_execute_update($syslog_exists, $options) {
+	global $config;
+
 	if (isset($options["cancel"])) {
 		header("Location:" . $config["url_path"] . "plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all");
 		exit;
@@ -66,6 +72,8 @@ function syslog_execute_update($syslog_exists, $options) {
 	}else{
 		syslog_setup_table_new($options);
 	}
+
+	db_execute("REPLACE INTO settings SET name='syslog_retention', value='" . $options["days"] . "'");
 }
 
 function plugin_syslog_uninstall () {
@@ -626,7 +634,8 @@ function syslog_setup_table_new($options) {
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id)) ENGINE=$engine;", true, $syslog_cnn);
 
-	if ($truncate) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
+	$newreport = sizeof(db_fetch_row("SHOW COLUMNS FROM `" . $syslogdb_default . "`.`syslog_reports` LIKE 'body'", true, $syslog_cnn));
+	if ($truncate || !$newreport) db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL default '',
@@ -734,9 +743,11 @@ function syslog_poller_bottom() {
 }
 
 function syslog_install_advisor($syslog_exists, $db_version) {
-	global $config, $colors;
+	global $config, $colors, $syslog_retentions;
 
 	include($config["include_path"] . "/top_header.php");
+
+	syslog_config_arrays();
 
 	$fields_syslog_update = array(
 		"upgrade_type" => array(
@@ -771,9 +782,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 			"friendly_name" => "Retention Policy",
 			"description" => "Choose how many days of Syslog values you wish to maintain in the database.",
 			"value" => "30",
-			"array" => array("1" => "1 Day", "2" => "2 Days", "3" => "3 Days",
-				"4" => "4 Days", "5" => "5 Days", "6" => "6 Days", "7" => "1 Week", "14" => "2 Weeks", "30" => "1 Month", "60" => "2 Months",
-				"183" => "6 Months", "365" => "1 Year")
+			"array" => $syslog_retentions
 		),
 		"mode" => array(
 			"method" => "hidden",
@@ -907,7 +916,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 }
 
 function syslog_config_settings() {
-	global $tabs, $settings;
+	global $tabs, $settings, $syslog_retentions;
 
 	$settings["visual"]["syslog_header"] = array(
 		"friendly_name" => "Syslog Settings",
@@ -950,9 +959,7 @@ function syslog_config_settings() {
 			"description" => "This is the number of days to keep events.",
 			"method" => "drop_array",
 			"default" => "30",
-			"array" => array("0" => "Indefinate", "1" => "1 Day", "2" => "2 Days", "3" => "3 Days",
-				"4" => "4 Days", "5" => "5 Days", "6" => "6 Days", "7" => "1 Week", "14" => "2 Weeks", "30" => "1 Month", "60" => "2 Months",
-				"183" => "6 Months", "365" => "1 Year")
+			"array" => $syslog_retentions
 		),
 		"syslog_email" => array(
 			"friendly_name" => "From Email Address",
@@ -1128,7 +1135,7 @@ function syslog_show_tab() {
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types;
 	global $syslog_levels, $syslog_freqs, $syslog_times;
-	global $syslog_colors, $syslog_text_colors;
+	global $syslog_colors, $syslog_text_colors, $syslog_retentions;
 
 	$syslog_actions = array(
 		1 => "Delete",
@@ -1146,6 +1153,25 @@ function syslog_config_arrays () {
 		7 => 'info',
 		8 => 'debug',
 		9 => 'other'
+		);
+
+	$syslog_retentions = array(
+		"0" => "Indefinate",
+		"1" => "1 Day",
+		"2" => "2 Days",
+		"3" => "3 Days",
+		"4" => "4 Days",
+		"5" => "5 Days",
+		"6" => "6 Days",
+		"7" => "1 Week",
+		"14" => "2 Weeks",
+		"30" => "1 Month",
+		"60" => "2 Months",
+		"90" => "3 Months",
+		"120" => "4 Months",
+		"160" => "5 Months",
+		"183" => "6 Months",
+		"365" => "1 Year"
 		);
 
 	if (!isset($_SESSION["syslog_colors"])) {

@@ -129,14 +129,15 @@ if ($email != '') {
 	}
 }
 
+if (substr_count($syntax["Create Table"], "PARTITION")) {
+	$partitioned = true;
+}else{
+	$partitioned = false;
+}
+
 /* delete old syslog and syslog soft messages */
-if ($retention > 0) {
+if ($retention > 0 || $partitioned) {
 	$syntax = db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-	if (substr_count($syntax["Create Table"], "PARTITION")) {
-		$partitioned = true;
-	}else{
-		$partitioned = false;
-	}
 
 	if (!$partitioned) {
 		syslog_debug("Syslog Table is NOT Partitioned");
@@ -189,17 +190,19 @@ if ($retention > 0) {
 					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", true, $syslog_cnn);
 
-				$user_partitions = sizeof($number_of_partitions) - 1;
-				if ($user_partitions >= $days) {
-					$i = 0;
-					while ($user_partitions > $days) {
-						$oldest = $number_of_partitions[$i];
-						syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
-						db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
-						db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
-						$i++;
-						$user_partitions--;
-						$syslog_deleted++;
+				if ($retention > 0) {
+					$user_partitions = sizeof($number_of_partitions) - 1;
+					if ($user_partitions >= $days) {
+						$i = 0;
+						while ($user_partitions > $days) {
+							$oldest = $number_of_partitions[$i];
+							syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
+							db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
+							db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
+							$i++;
+							$user_partitions--;
+							$syslog_deleted++;
+						}
 					}
 				}
 			}
