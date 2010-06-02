@@ -178,7 +178,7 @@ function syslog_check_upgrade() {
 	}
 }
 
-function syslog_upgrade_pre_oneoh_tables($options = false) {
+function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false) {
 	global $config, $cnn_id, $syslog_cnn, $syslog_levels, $database_default, $syslog_upgrade;
 
 	include(dirname(__FILE__) . "/config.php");
@@ -195,170 +195,63 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 		9 => 'other'
 		);
 
+	if ($isbackground) {
+		$table = 'syslog_pre_upgrade';
+	}else{
+		$table = 'syslog';
+	}
+
 	/* validate some simple information */
 	$mysqlVersion = syslog_get_mysql_version("syslog");
 	$truncate     = ((isset($options["upgrade_type"]) && $options["upgrade_type"] == "truncate") ? true:false);
 	$upgrade_type = (isset($options["upgrade_type"]) ? $options["upgrade_type"]:"inline");
 	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
 	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
-	$syslogexists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
-
-	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
-	api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
-
-	/* get the realm id's and change from old to new */
-	$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'");
-	$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'");
-
-	if ($user >  0) {
-		$users = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=37");
-		if (sizeof($users)) {
-		foreach($users as $u) {
-			db_execute("INSERT INTO user_auth_realm
-				(realm_id, user_id) VALUES ($user, " . $u["user_id"] . ")
-				ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
-			db_execute("DELETE FROM user_auth_realm
-				WHERE user_id=" . $u["user_id"] . "
-				AND realm_id=$user");
-		}
-		}
-	}
-
-	if ($admin > 0) {
-		$admins = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=38");
-		if (sizeof($admins)) {
-		foreach($admins as $user) {
-			db_execute("INSERT INTO user_auth_realm
-				(realm_id, user_id) VALUES ($admin, " . $user["user_id"] . ")
-				ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
-			db_execute("DELETE FROM user_auth_realm
-				WHERE user_id=" . $user["user_id"] . "
-				AND realm_id=$admin");
-		}
-		}
-	}
+	$syslogexists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE '$table'", true, $syslog_cnn));
 
 	/* disable collection for a bit */
 	set_config_option('syslog_enabled', '');
 
 	if ($upgrade_type == "truncate") return;
 
-	if ($upgrade_type == "inline") {
-		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
-		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
-			`host_id` int(10) unsigned NOT NULL auto_increment,
-			`host` VARCHAR(128) NOT NULL,
-			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-			PRIMARY KEY (`host`),
-			KEY host_id (`host_id`),
-			KEY last_updated (`last_updated`)) TYPE=$engine
-			COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
 
-		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
-		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_facilities` (
-			`facility_id` int(10) unsigned NOT NULL auto_increment,
-			`facility` varchar(10) NOT NULL,
-			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-			PRIMARY KEY (`facility`),
-			KEY facility_id (`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
+	if ($upgrade_type == "inline" || $isbackground) {
+		syslog_setup_table_new($options);
 
-		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn);
-		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
-			`priority_id` int(10) unsigned NOT NULL auto_increment,
-			`priority` varchar(10) NOT NULL,
-			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-			PRIMARY KEY  (`priority`),
-			KEY priority_id (`priority_id`)) ENGINE=$engine;", true, $syslog_cnn);
+		api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
+		api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
 
-		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_host_facilities`", true, $syslog_cnn);
-		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
-			`host_id` int(10) unsigned NOT NULL,
-			`facility_id` int(10) unsigned NOT NULL,
-			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-			PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
+		/* get the realm id's and change from old to new */
+		$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'");
+		$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'");
 
-		/* populate the tables */
-		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-		foreach($syslog_levels as $id => $priority) {
-			db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')", true, $syslog_cnn);
+		if ($user >  0) {
+			$users = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=37");
+			if (sizeof($users)) {
+			foreach($users as $u) {
+				db_execute("INSERT INTO user_auth_realm
+					(realm_id, user_id) VALUES ($user, " . $u["user_id"] . ")
+					ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
+				db_execute("DELETE FROM user_auth_realm
+					WHERE user_id=" . $u["user_id"] . "
+					AND realm_id=$user");
+			}
+			}
 		}
 
-		/* a bit more horsepower please */
-		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
-			(host_id, facility_id)
-			SELECT host_id, facility_id
-			FROM ((SELECT DISTINCT host, facility
-				FROM `" . $syslogdb_default . "`.`syslog`) AS s
-				INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-				ON s.host=sh.host
-				INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-				ON sf.facility=s.facility)", true, $syslog_cnn);
-
-		/* change the structure of the syslog table for performance sake */
-		$mysqlVersion = syslog_get_mysql_version("syslog");
-		if ($mysqlVersion >= 5) {
-			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
-				MODIFY COLUMN message varchar(1024) DEFAULT NULL,
-				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER facility,
-				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
-				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
-				ADD COLUMN logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
-				ADD INDEX facility_id (facility_id),
-				ADD INDEX priority_id (priority_id),
-				ADD INDEX host_id (host_id),
-				ADD INDEX logtime(logtime);", true, $syslog_cnn);
-		}else{
-			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
-				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER host,
-				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
-				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
-				ADD COLUMN logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
-				ADD INDEX facility_id (facility_id),
-				ADD INDEX priority_id (priority_id),
-				ADD INDEX host_id (host_id),
-				ADD INDEX logtime(logtime);", true, $syslog_cnn);
+		if ($admin > 0) {
+			$admins = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=38");
+			if (sizeof($admins)) {
+			foreach($admins as $user) {
+				db_execute("INSERT INTO user_auth_realm
+					(realm_id, user_id) VALUES ($admin, " . $user["user_id"] . ")
+					ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
+				db_execute("DELETE FROM user_auth_realm
+					WHERE user_id=" . $user["user_id"] . "
+					AND realm_id=$admin");
+			}
+			}
 		}
-
-		/* convert dates and times to timestamp */
-		db_execute("UPDATE `" . $syslogdb_default . "`.`syslog` SET logtime=TIMESTAMP(`date`, `time`)", true, $syslog_cnn);
-
-		/* update the host_ids */
-		$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
-		if (sizeof($hosts)) {
-		foreach($hosts as $host) {
-			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
-				SET host_id=" . $host["host_id"] . "
-				WHERE host='" . $host["host"] . "'", true, $syslog_cnn);
-		}
-		}
-
-		/* update the priority_ids */
-		$priorities = $syslog_levels;
-		if (sizeof($priorities)) {
-		foreach($priorities as $id => $priority) {
-			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
-				SET priority_id=" . $id . "
-				WHERE priority='" . $priority . "'", true, $syslog_cnn);
-		}
-		}
-
-		/* update the facility_ids */
-		$fac = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
-		if (sizeof($fac)) {
-		foreach($fac as $f) {
-			db_execute("UPDATE `" . $syslogdb_default . "`.`syslog`
-				SET facility_id=" . $f["facility_id"] . "
-				WHERE facility='" . $f["facility"] . "'", true, $syslog_cnn);
-		}
-		}
-
-		db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog`
-			DROP COLUMN `date`,
-			DROP COLUMN `time`,
-			DROP COLUMN `host`,
-			DROP COLUMN `facility`,
-			DROP COLUMN `priority`", true, $syslog_cnn);
 
 		/* get the database table names */
 		$rows = db_fetch_assoc("SHOW TABLES FROM `" . $syslogdb_default . "`", false, $syslog_cnn);
@@ -453,7 +346,138 @@ function syslog_upgrade_pre_oneoh_tables($options = false) {
 			db_execute("ALTER TABLE syslog_remove ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;", true, $syslog_cnn);
 		}
 
-		syslog_setup_table_new($options);
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
+			`host_id` int(10) unsigned NOT NULL auto_increment,
+			`host` VARCHAR(128) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY (`host`),
+			KEY host_id (`host_id`),
+			KEY last_updated (`last_updated`)) TYPE=$engine
+			COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
+
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_facilities` (
+			`facility_id` int(10) unsigned NOT NULL auto_increment,
+			`facility` varchar(10) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY (`facility`),
+			KEY facility_id (`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
+
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
+			`priority_id` int(10) unsigned NOT NULL auto_increment,
+			`priority` varchar(10) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY  (`priority`),
+			KEY priority_id (`priority_id`)) ENGINE=$engine;", true, $syslog_cnn);
+
+		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_host_facilities`", true, $syslog_cnn);
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
+			`host_id` int(10) unsigned NOT NULL,
+			`facility_id` int(10) unsigned NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
+
+		/* populate the tables */
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`$table`", true, $syslog_cnn);
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`$table`", true, $syslog_cnn);
+		foreach($syslog_levels as $id => $priority) {
+			db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')", true, $syslog_cnn);
+		}
+
+		/* a bit more horsepower please */
+		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
+			(host_id, facility_id)
+			SELECT host_id, facility_id
+			FROM ((SELECT DISTINCT host, facility
+				FROM `" . $syslogdb_default . "`.`$table`) AS s
+				INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+				ON s.host=sh.host
+				INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+				ON sf.facility=s.facility)", true, $syslog_cnn);
+
+		/* change the structure of the syslog table for performance sake */
+		$mysqlVersion = syslog_get_mysql_version("syslog");
+		if ($mysqlVersion >= 5) {
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table`
+				MODIFY COLUMN message varchar(1024) DEFAULT NULL,
+				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER facility,
+				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
+				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
+				ADD COLUMN logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
+				ADD INDEX facility_id (facility_id),
+				ADD INDEX priority_id (priority_id),
+				ADD INDEX host_id (host_id),
+				ADD INDEX logtime(logtime);", true, $syslog_cnn);
+		}else{
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table`
+				ADD COLUMN facility_id int(10) UNSIGNED NULL AFTER host,
+				ADD COLUMN priority_id int(10) UNSIGNED NULL AFTER facility_id,
+				ADD COLUMN host_id int(10) UNSIGNED NULL AFTER priority_id,
+				ADD COLUMN logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' AFTER priority,
+				ADD INDEX facility_id (facility_id),
+				ADD INDEX priority_id (priority_id),
+				ADD INDEX host_id (host_id),
+				ADD INDEX logtime(logtime);", true, $syslog_cnn);
+		}
+
+		/* convert dates and times to timestamp */
+		db_execute("UPDATE `" . $syslogdb_default . "`.`$table` SET logtime=TIMESTAMP(`date`, `time`)", true, $syslog_cnn);
+
+		/* update the host_ids */
+		$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
+		if (sizeof($hosts)) {
+		foreach($hosts as $host) {
+			db_execute("UPDATE `" . $syslogdb_default . "`.`$table`
+				SET host_id=" . $host["host_id"] . "
+				WHERE host='" . $host["host"] . "'", true, $syslog_cnn);
+		}
+		}
+
+		/* update the priority_ids */
+		$priorities = $syslog_levels;
+		if (sizeof($priorities)) {
+		foreach($priorities as $id => $priority) {
+			db_execute("UPDATE `" . $syslogdb_default . "`.`$table`
+				SET priority_id=" . $id . "
+				WHERE priority='" . $priority . "'", true, $syslog_cnn);
+		}
+		}
+
+		/* update the facility_ids */
+		$fac = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
+		if (sizeof($fac)) {
+		foreach($fac as $f) {
+			db_execute("UPDATE `" . $syslogdb_default . "`.`$table`
+				SET facility_id=" . $f["facility_id"] . "
+				WHERE facility='" . $f["facility"] . "'", true, $syslog_cnn);
+		}
+		}
+
+		if (!$isbackground) {
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table`
+				DROP COLUMN `date`,
+				DROP COLUMN `time`,
+				DROP COLUMN `host`,
+				DROP COLUMN `facility`,
+				DROP COLUMN `priority`", true, $syslog_cnn);
+		}else{
+			while ( true ) {
+				$sequence = db_fetch_cell("SELECT max(seq) FROM (SELECT seq FROM `" . $syslogdb_default . "`.`$table` ORDER BY seq LIMIT $fetch_size) AS preupgrade", '', false, $syslog_cnn);
+
+				if ($sequence > 0 && $sequence != '') {
+					db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog` (facility_id, priority_id, host_id, logtime, message)
+						SELECT facility_id, priority_id, host_id, logtime, message
+						FROM `" . $syslogdb_default . "`.`$table`
+						WHERE seq<$sequence", true, $syslog_cnn);
+					db_execute("DELETE FROM $table WHERE seq<=$sequence", true, $syslog_cnn);
+				}else{
+					db_execute("DROP TABLE `" . $syslogdb_default . "`.`$table`", true, $syslog_cnn);
+					break;
+				}
+			}
+		}
 	}else{
 		include_once($config['base_path'] . "/lib/poller.php");
 		$p = dirname(__FILE__);
@@ -818,7 +842,11 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 }
 
 function syslog_uninstall_advisor() {
-	global $config, $colors;
+	global $config, $colors, $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	$syslog_exists = sizeof(db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'", true, $syslog_cnn));
 
 	include($config["include_path"] . "/top_header.php");
 

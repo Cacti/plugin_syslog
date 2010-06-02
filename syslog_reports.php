@@ -193,7 +193,7 @@ function form_actions() {
 }
 
 function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
-	$email, $nodes, $enabled) {
+	$email, $notes, $enabled) {
 	global $config, $syslog_cnn;
 
 	/* get the username */
