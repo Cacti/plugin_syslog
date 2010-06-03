@@ -302,7 +302,7 @@ if (sizeof($query)) {
 				$count = db_fetch_cell($th_sql, '', true, $syslog_cnn);
 			}
 
-			if (($alert['method'] == "1" && $count > 0) || ($alert["method"] == "0")) {
+			if (($alert['method'] == "1" && $count >= $alert["num"]) || ($alert["method"] == "0")) {
 				$at = db_fetch_assoc($sql, true, $syslog_cnn);
 
 				if (sizeof($at)) {
@@ -316,15 +316,19 @@ if (sizeof($query)) {
 						if (!$html) {
 							$alertm .= "-----------------------------------------------\n";
 							$alertm .= "WARNING: A Number of Instances Alert has Been Triggered". "\n";
-							$alertm .= "Name: " . $alert['name'] . "\n";
-							$alertm .= "Count: " . $count . "\n";
+							$alertm .= "Name: " . $alert['name']     . "\n";
+							$alertm .= "Threshold: " . $alert['num'] . "\n";
+							$alertm .= "Count: " . sizeof($at)       . "\n";
 						}else{
 							$alertm .= "<body><h1>Cacti Syslog Plugin Instance Count Alert '" . $alert['name'] . "'</h1>";
 							$alertm .= "<table cellspacing='0' cellpadding='3' border='1'>";
-							$alertm .= "<tr><th>Alert Name</th><th>Count</th></tr>";
+							$alertm .= "<tr><th>Alert Name</th><th>Threshold</th><th>Count</th></tr>";
 							$alertm .= "<tr><td>" . $alert['name'] . "</td>\n";
-							$alertm .= "<td>"     . $count         . "</td></tr></table><br>\n";
+							$alertm .= "<tr><td>" . $alert['num']  . "</td>\n";
+							$alertm .= "<td>"     . sizeof($at)    . "</td></tr></table><br>\n";
 						}
+
+						syslog_log_alert($alert["id"], $alert["name"], $at[0], sizeof($at));
 					}else{
 						if ($html) {
 							$alertm .= "<body><h1>Cacti Syslog Plugin Alert '" . $alert['name'] . "'</h1>";
@@ -355,7 +359,9 @@ if (sizeof($query)) {
 
 						$syslog_alarms++;
 
-						syslog_log_alert($alert["id"], $alert["name"], $a);
+						if ($alert['method'] != "1") {
+							syslog_log_alert($alert["id"], $alert["name"], $a);
+						}
 					}
 
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
