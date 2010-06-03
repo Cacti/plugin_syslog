@@ -246,7 +246,7 @@ db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
 	ON DUPLICATE KEY UPDATE host_id=VALUES(host_id)", true, $syslog_cnn);
 
 /* remote records that don't need to to be transferred */
-$syslog_items   = syslog_remove_items("syslog_incoming");
+$syslog_items   = syslog_remove_items("syslog_incoming", $uniqueID);
 $syslog_removed = $syslog_items["removed"];
 $syslog_xferred = $syslog_items["xferred"];
 

@@ -962,6 +962,13 @@ function syslog_config_settings() {
 			"default" => "30",
 			"array" => $syslog_retentions
 		),
+		"syslog_html" => array(
+			"friendly_name" => "HTML e-mail",
+			"description" => "If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be
+			sent in plain text.",
+			"method" => "checkbox",
+			"default" => ""
+		),
 		"syslog_email" => array(
 			"friendly_name" => "From Email Address",
 			"description" => "This is the email address that syslog alerts will appear from.",

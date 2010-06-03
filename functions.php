@@ -37,7 +37,7 @@ function syslog_sendemail($to, $from, $subject, $message) {
 	}
 }
 
-function syslog_remove_items($table, $rule = '') {
+function syslog_remove_items($table, $uniqueID) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
 	include($config["base_path"] . '/plugins/syslog/config.php');
@@ -52,126 +52,123 @@ function syslog_remove_items($table, $rule = '') {
 	$removed = 0;
 	$xferred = 0;
 
+
 	if (sizeof($rows)) {
 	foreach($rows as $remove) {
 		$sql  = "";
 		$sql1 = "";
 		if ($remove['type'] == 'facility') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO syslog_removed (logtime, " .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] . ') ' .
-					" SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . '`, `' .
-						$syslog_incoming_config["timeField"] . ')`, ' .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] .
-					" FROM " . $table . "
-					WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "'";
+				$sql1 = "INSERT INTO syslog_removed (logtime, priority_id, facility_id, host_id, message)
+					SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"]     . "`),
+					priority_id, facility_id, host_id, message
+					FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						FROM syslog_incoming AS si
+						INNER JOIN syslog_facilities AS sf
+						ON sf.facility=si.facility
+						INNER JOIN syslog_priorities AS sp
+						ON sp.priority=si.priority
+						INNER JOIN syslog_hosts AS sh
+						ON sh.host=si.host
+						WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "' AND status=" . $uniqueID . ") AS merge";
 			}
 
 			$sql = "DELETE
 				FROM " . $table . "
-				WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "'";
+				WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 		}else if ($remove['type'] == 'host') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO syslog_removed (logtime, " .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] . ') ' .
-					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
-						$syslog_incoming_config["timeField"] . '`), ' .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] .
-					" FROM " . $table . "
-					WHERE host='" . $remove['message'] . "'";
+				$sql1 = "INSERT INTO syslog_removed (logtime, priority_id, facility_id, host_id, message)
+					SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"]     . "`),
+					priority_id, facility_id, host_id, message
+					FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						FROM syslog_incoming AS si
+						INNER JOIN syslog_facilities AS sf
+						ON sf.facility=si.facility
+						INNER JOIN syslog_priorities AS sp
+						ON sp.priority=si.priority
+						INNER JOIN syslog_hosts AS sh
+						ON sh.host=si.host
+						WHERE host='" . $remove['message'] . "' AND status=" . $uniqueID . ") AS merge";
 			}
 
 			$sql = "DELETE
 				FROM " . $table . "
-				WHERE host='" . $remove['message'] . "'";
+				WHERE host='" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 		} else if ($remove['type'] == 'messageb') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO syslog_removed (logtime, " .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] . ') ' .
-					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
-						$syslog_incoming_config["timeField"] . '`), ' .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] .
-					" FROM " . $table . "
-					WHERE message LIKE '" . $remove['message'] . "%'";
+				$sql1 = "INSERT INTO syslog_removed (logtime, priority_id, facility_id, host_id, message)
+					SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+					priority_id, facility_id, host_id, message
+					FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						FROM syslog_incoming AS si
+						INNER JOIN syslog_facilities AS sf
+						ON sf.facility=si.facility
+						INNER JOIN syslog_priorities AS sp
+						ON sp.priority=si.priority
+						INNER JOIN syslog_hosts AS sh
+						ON sh.host=si.host
+						WHERE message LIKE '" . $remove['message'] . "%' AND status=" . $uniqueID . ") AS merge";
 			}
 
 			$sql = "DELETE
 				FROM " . $table . "
-				WHERE message LIKE '" . $remove['message'] . "%'";
+				WHERE message LIKE '" . $remove['message'] . "%' AND status='" . $uniqueID . "'";
 		} else if ($remove['type'] == 'messagec') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO syslog_removed (logtime, " .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] . ') ' .
-					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
-						$syslog_incoming_config["timeField"] . '`), ' .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] .
-					" FROM " . $table . "
-					WHERE message LIKE '%" . $remove['message'] . "%'";
+				$sql1 = "INSERT INTO syslog_removed (logtime, priority_id, facility_id, host_id, message)
+					SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+					priority_id, facility_id, host_id, message
+					FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						FROM syslog_incoming AS si
+						INNER JOIN syslog_facilities AS sf
+						ON sf.facility=si.facility
+						INNER JOIN syslog_priorities AS sp
+						ON sp.priority=si.priority
+						INNER JOIN syslog_hosts AS sh
+						ON sh.host=si.host
+						WHERE message LIKE '%" . $remove['message'] . "%' AND status=" . $uniqueID . ") AS merge";
 			}
 
 			$sql = "DELETE
 				FROM " . $table . "
-				WHERE message LIKE '%" . $remove['message'] . "%'";
+				WHERE message LIKE '%" . $remove['message'] . "%' AND status='" . $uniqueID . "'";
 		} else if ($remove['type'] == 'messagee') {
 			if ($remove['method'] != 'del') {
-				$sql1 = "INSERT INTO syslog_removed (logtime, " .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] . ') ' .
-					" SELECT TIMESTAMP(`" . $syslog_incoming_config["dateField"] . '`, `' .
-						$syslog_incoming_config["timeField"] . '`), ' .
-						$syslog_incoming_config["priorityField"] . ', ' .
-						$syslog_incoming_config["facilityField"] . ', ' .
-						$syslog_incoming_config["hostField"] . ', ' .
-						$syslog_incoming_config["textField"] .
-					" FROM " . $table . "
-					WHERE message LIKE '%" . $remove['message'] . "'";
+				$sql1 = "INSERT INTO syslog_removed (logtime, priority_id, facility_id, host_id, message)
+					SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+					priority_id, facility_id, host_id, message
+					FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						FROM syslog_incoming AS si
+						INNER JOIN syslog_facilities AS sf
+						ON sf.facility=si.facility
+						INNER JOIN syslog_priorities AS sp
+						ON sp.priority=si.priority
+						INNER JOIN syslog_hosts AS sh
+						ON sh.host=si.host
+						WHERE message LIKE '%" . $remove['message'] . "' AND status=" . $uniqueID . ") AS merge";
 			}
 
 			$sql = "DELETE
 				FROM " . $table . "
-				WHERE message LIKE '%" . $remove['message'] . "'";
+				WHERE message LIKE '%" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 		}
 
-		if (($sql != '' || $sql1 != '') && ($rule == '' || $remove['id'] == $rule)) {
+		if ($sql != '' || $sql1 != '') {
 			$debugm = '';
+			/* process the removal rule first */
 			if ($sql1 != '') {
 				/* move rows first */
 				db_execute($sql1, true, $syslog_cnn);
 				$messages_moved = $syslog_cnn->Affected_Rows();
 				$debugm   = "Moved   " . $messages_moved . ", ";
 				$xferred += $messages_moved;
-			}else{
-				/* now delete the remainder that match */
-				db_execute($sql, true, $syslog_cnn);
-				$removed += $syslog_cnn->Affected_Rows();
-				$debugm   = "Deleted " . $removed . ", ";
 			}
+
+			/* now delete the remainder that match */
+			db_execute($sql, true, $syslog_cnn);
+			$removed += $syslog_cnn->Affected_Rows();
+			$debugm   = "Deleted " . $removed . ", ";
 
 			syslog_debug($debugm . " Message" . ($syslog_cnn->Affected_rows() == 1 ? "" : "s" ) .
 					" for removal rule '" . $remove['name'] . "'");
