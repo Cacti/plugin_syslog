@@ -281,13 +281,19 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 			$sql_where . "
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
-	}else{
+	}elseif ($_REQUEST["removal"] == "1") {
 		$query_sql = "(SELECT *
 			FROM `" . $syslogdb_default . "`.`syslog` " .
 			$sql_where . "
 			) UNION (SELECT *
 			FROM `" . $syslogdb_default . "`.`syslog_removed` " .
 			$sql_where . ")
+			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
+			$limit;
+	}else{
+		$query_sql = "SELECT *
+			FROM `" . $syslogdb_default . "`.`syslog_removed` " .
+			$sql_where . "
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
 	}
@@ -472,8 +478,9 @@ function syslog_filter($sql_where) {
 											</td>
 											<td style='padding-right:2px;'>
 												<select name="removal" onChange="javascript:document.getElementById('syslog_form').submit();" title="Removal Handling">
-													<option value="-1"<?php if ($_REQUEST["removal"] == "-1") {?> selected<?php }?>>Exclude Removed</option>
-													<option value="1"<?php if ($_REQUEST["removal"] == "1") {?> selected<?php }?>>Include Removed</option>
+													<option value="1"<?php if ($_REQUEST["removal"] == "1") {?> selected<?php }?>>All Records</option>
+													<option value="-1"<?php if ($_REQUEST["removal"] == "-1") {?> selected<?php }?>>Main Records</option>
+													<option value="2"<?php if ($_REQUEST["removal"] == "2") {?> selected<?php }?>>Removed Records</option>
 												</select>
 											</td>
 											<td style='padding-right:2px;'>
@@ -582,7 +589,19 @@ function syslog_filter($sql_where) {
 					<tr>
 						<td width="100%" valign="top"><?php display_output_messages();?>
 							<?php
-							$total_rows = db_fetch_cell("SELECT count(*) from `" . $syslogdb_default . "`.`syslog` " . $sql_where, '', true, $syslog_cnn);
+							if ($_REQUEST["removal"] == 1) {
+								$total_rows = db_fetch_cell("SELECT SUM(totals)
+										FROM (
+										SELECT count(*) AS totals
+										FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where . "
+										UNION
+										SELECT count(*) AS totals
+										FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where . ") AS rowcount", '', true, $syslog_cnn);
+							}elseif ($_REQUEST["removal"] == -1){
+								$total_rows = db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where, '', true, $syslog_cnn);
+							}else{
+								$total_rows = db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where, '', true, $syslog_cnn);
+							}
 							html_start_box("", "100%", $colors["header"], "3", "center", "");
 							$hostarray = "";
 							if (is_array($_REQUEST["host"])) {
