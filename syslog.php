@@ -276,22 +276,22 @@ function get_syslog_messages(&$sql_where, $row_limit) {
 	}
 
 	if ($_REQUEST["removal"] == "-1") {
-		$query_sql = "SELECT *
+		$query_sql = "SELECT *, 'main' AS mtype
 			FROM `" . $syslogdb_default . "`.`syslog` " .
 			$sql_where . "
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
 	}elseif ($_REQUEST["removal"] == "1") {
-		$query_sql = "(SELECT *
+		$query_sql = "(SELECT *, 'main' AS mtype
 			FROM `" . $syslogdb_default . "`.`syslog` " .
 			$sql_where . "
-			) UNION (SELECT *
+			) UNION (SELECT *, 'remove' AS mtype
 			FROM `" . $syslogdb_default . "`.`syslog_removed` " .
 			$sql_where . ")
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
 			$limit;
 	}else{
-		$query_sql = "SELECT *
+		$query_sql = "SELECT *, 'remove' AS mtype
 			FROM `" . $syslogdb_default . "`.`syslog_removed` " .
 			$sql_where . "
 			ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
@@ -657,13 +657,13 @@ function syslog_messages() {
 						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 							<tr>
 								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php?page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
 								</td>\n
 								<td align='center' class='textHeaderDark'>
 									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
 								</td>\n
 								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php?page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
 								</td>\n
 							</tr>
 						</table>
@@ -713,7 +713,7 @@ function syslog_messages() {
 			print "<td>" . ucfirst($facilities[$syslog_message["facility_id"]]) . "</td>\n";
 			print "<td>" . ucfirst($priorities[$syslog_message["priority_id"]]) . "</td>\n";
 			print '<td nowrap valign=top>';
-			print "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=edit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>\n";
+			print ($syslog_message['mtype'] == 'main' ? "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>\n":"");
 		}
 	}else{
 		print "<tr><td><em>No Messages</em></td></tr>";

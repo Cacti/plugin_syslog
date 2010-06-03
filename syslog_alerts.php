@@ -41,12 +41,6 @@ switch ($_REQUEST["action"]) {
 
 		break;
 	case 'edit':
-		include_once($config['base_path'] . "/include/top_header.php");
-
-		syslog_action_edit();
-
-		include_once($config['base_path'] . "/include/bottom_footer.php");
-		break;
 	case 'newedit':
 		include_once($config['base_path'] . "/include/top_header.php");
 
@@ -283,16 +277,26 @@ function syslog_get_alert_records(&$sql_where, $row_limit) {
 function syslog_action_edit() {
 	global $colors, $syslog_cnn, $message_types;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var("id"));
 	input_validate_input_number(get_request_var("type"));
 	/* ==================================================== */
 
-	if (isset($_GET["id"])) {
+	if (isset($_GET["id"]) && $_GET["action"] == "edit") {
 		$alert = db_fetch_row("SELECT *
 			FROM syslog_alert
 			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $alert["name"] . "]";
+	}else if (isset($_GET["id"]) && $_GET["action"] == "newedit") {
+		$syslog_rec = db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . $_GET["id"] . " AND logtime='" . $_GET["date"] . "'", true, $syslog_cnn);
+
+		$header_label = "[new]";
+		if (sizeof($syslog_rec)) {
+			$alert["message"] = $syslog_rec["message"];
+		}
+		$alert["name"]    = "New Alert Rule";
 	}else{
 		$header_label = "[new]";
 
@@ -363,6 +367,7 @@ function syslog_action_edit() {
 		"textarea_rows" => "5",
 		"textarea_cols" => "60",
 		"description" => "Please enter a comma delimited list of e-mail addresses to inform.",
+		"class" => "textAreaNotes",
 		"value" => "|arg1:email|",
 		"max_length" => "255"
 		),
@@ -372,6 +377,7 @@ function syslog_action_edit() {
 		"textarea_cols" => "60",
 		"description" => "Space for Notes on the Alert",
 		"method" => "textarea",
+		"class" => "textAreaNotes",
 		"value" => "|arg1:notes|",
 		"default" => "",
 		),
@@ -597,6 +603,8 @@ function syslog_alerts() {
 
 	$display_text = array(
 		"name" => array("Alert<br>Name", "ASC"),
+		"method" => array("<br>Method", "ASC"),
+		"num" => array("Instance<br>Count", "ASC"),
 		"enabled" => array("<br>Enabled", "ASC"),
 		"type" => array("Match<br>Type", "ASC"),
 		"message" => array("Search<br>String", "ASC"),
@@ -610,6 +618,8 @@ function syslog_alerts() {
 		foreach ($alerts as $alert) {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $alert["id"]); $i++;
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?action=edit&id=" . $alert["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($data_source["name_cache"]), read_config_option("max_title_data_source"))) : htmlentities($alert["name"])) . "</a>", $alert["id"]);
+			form_selectable_cell(($alert["method"] == 1 ? "Number of Instances":"By Instance"), $alert["id"]);
+			form_selectable_cell(($alert["method"] == 1 ? $alert["num"]:"N/A"), $alert["id"]);
 			form_selectable_cell((($alert["enabled"] == "on") ? "Yes" : ""), $alert["id"]);
 			form_selectable_cell($message_types[$alert["type"]], $alert["id"]);
 			form_selectable_cell(title_trim($alert["message"],60), $alert["id"]);

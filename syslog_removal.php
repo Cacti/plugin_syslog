@@ -41,6 +41,7 @@ switch ($_REQUEST["action"]) {
 
 		break;
 	case 'edit':
+	case 'newedit':
 		include_once($config['base_path'] . "/include/top_header.php");
 
 		syslog_action_edit();
@@ -278,16 +279,26 @@ function syslog_get_removal_records(&$sql_where, $row_limit) {
 function syslog_action_edit() {
 	global $colors, $syslog_cnn, $message_types;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var("id"));
 	input_validate_input_number(get_request_var("type"));
 	/* ==================================================== */
 
-	if (isset($_GET["id"])) {
+	if (isset($_GET["id"]) && $_GET["action"] == "edit") {
 		$removal = db_fetch_row("SELECT *
 			FROM syslog_remove
 			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $removal["name"] . "]";
+	}else if (isset($_GET["id"]) && $_GET["action"] == "newedit") {
+		$syslog_rec = db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . $_GET["id"] . " AND logtime='" . $_GET["date"] . "'", true, $syslog_cnn);
+
+		$header_label = "[new]";
+		if (sizeof($syslog_rec)) {
+			$removal["message"] = $syslog_rec["message"];
+		}
+		$removal["name"]    = "New Alert Rule";
 	}else{
 		$header_label = "[new]";
 
@@ -306,7 +317,8 @@ function syslog_action_edit() {
 		"friendly_name" => "Removal Rule Name",
 		"description" => "Please describe this Removal Rule.",
 		"value" => "|arg1:name|",
-		"max_length" => "250"
+		"max_length" => "250",
+		"size" => 80
 		),
 	"enabled" => array(
 		"method" => "drop_array",
@@ -330,7 +342,8 @@ function syslog_action_edit() {
 		"description" => "The matching component of the syslog message.",
 		"value" => "|arg1:message|",
 		"default" => "",
-		"max_length" => "255"
+		"max_length" => "255",
+		"size" => 80
 		),
 	"method" => array(
 		"method" => "drop_array",
@@ -345,6 +358,7 @@ function syslog_action_edit() {
 		"textarea_cols" => "60",
 		"description" => "Space for Notes on the Removal rule",
 		"method" => "textarea",
+		"class" => "textAreaNotes",
 		"value" => "|arg1:notes|",
 		"default" => "",
 		),
