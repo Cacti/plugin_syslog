@@ -1107,25 +1107,7 @@ function syslog_config_settings() {
 }
 
 function syslog_top_graph_refresh($refresh) {
-	if (basename($_SERVER["PHP_SELF"]) == "syslog_removal.php") {
-		return 99999;
-	}
-
-	if (basename($_SERVER["PHP_SELF"]) == "syslog_alerts.php") {
-		return 99999;
-	}
-
-	if (basename($_SERVER["PHP_SELF"]) != "syslog.php") {
-		return $refresh;
-	}
-
-	$r = read_config_option("syslog_refresh");
-
-	if ($r == '' or $r < 1) {
-		return $refresh;
-	}
-
-	return $r;
+	return $refresh;
 }
 
 function syslog_show_tab() {
@@ -1262,7 +1244,7 @@ function syslog_config_insert() {
 }
 
 function syslog_graph_buttons($graph_elements = array()) {
-	global $config, $timespan, $graph_timeshifts;
+	global $config, $timespan, $graph_timeshifts, $syslog_cnn;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -1283,10 +1265,10 @@ function syslog_graph_buttons($graph_elements = array()) {
 			$host = db_fetch_row("SELECT * FROM host WHERE id='" . $graph_local["host_id"] . "'");
 
 			if (sizeof($host)) {
-				$sql = "SELECT host FROM `" . $syslogdb_default . "`.`syslog_hosts` WHERE host LIKE '%%" . $host["hostname"] . "%%'";
+				$host = db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` WHERE host LIKE '%%" . $host["hostname"] . "%%'", true, $syslog_cnn);
 
-				if (sizeof(db_fetch_row($sql))) {
-					print "<a href='" . $config["url_path"] . "plugins/syslog/syslog.php?host%5B%5D=" . $host["hostname"] . "&date1=" . $date1 . "&date2=" . $date2 . "&efacility=0&elevel=0'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
+				if (sizeof($host)) {
+					print "<a href='" . $config["url_path"] . "plugins/syslog/syslog.php?host_select%5B%5D=" . $host["host_id"] . "&date1=" . $date1 . "&date2=" . $date2 . "&efacility=0&elevel=0'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
 				}
 			}
 		}
