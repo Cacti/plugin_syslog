@@ -277,7 +277,9 @@ function sql_hosts_where() {
 }
 
 function syslog_export () {
-	global $syslog_incoming_config;
+	global $syslog_incoming_config, $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
 
 	header("Content-type: application/excel");
 	header("Content-Disposition: attachment; filename=log_view-" . date("Y-m-d",time()) . ".csv");
@@ -285,14 +287,20 @@ function syslog_export () {
 	$sql_where = "";
 	$syslog_messages = get_syslog_messages($sql_where, "10000");
 
+	$hosts      = array_rekey(db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn), "host_id", "host");
+	$facilities = array_rekey(db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn), "facility_id", "facility");
+	$priorities = array_rekey(db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn), "priority_id", "priority");
+
 	if (sizeof($syslog_messages) > 0) {
+		print 'host, facility, priority, date, message' . "\r\n";
+
 		foreach ($syslog_messages as $syslog_message) {
 			print
-				$syslog_message[$syslog_incoming_config["hostField"]]     . "," .
-				$syslog_message[$syslog_incoming_config["facilityField"]] . "," .
-				$syslog_message[$syslog_incoming_config["priorityField"]] . "," .
-				$syslog_message["logtime"]     . "," .
-				$syslog_message[$syslog_incoming_config["textField"]]     . "\r\n";
+				'"' . $hosts[$syslog_message["host_id"]]              . '","' .
+				ucfirst($facilities[$syslog_message["facility_id"]])  . '","' .
+				ucfirst($priorities[$syslog_message["priority_id"]])  . '","' .
+				$syslog_message["logtime"]                            . '","' .
+				$syslog_message[$syslog_incoming_config["textField"]] . '"' . "\r\n";
 		}
 	}
 }
