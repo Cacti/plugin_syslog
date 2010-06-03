@@ -129,6 +129,7 @@ if ($email != '') {
 	}
 }
 
+$syntax = db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 if (substr_count($syntax["Create Table"], "PARTITION")) {
 	$partitioned = true;
 }else{
@@ -137,8 +138,6 @@ if (substr_count($syntax["Create Table"], "PARTITION")) {
 
 /* delete old syslog and syslog soft messages */
 if ($retention > 0 || $partitioned) {
-	$syntax = db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
-
 	if (!$partitioned) {
 		syslog_debug("Syslog Table is NOT Partitioned");
 

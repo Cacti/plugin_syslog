@@ -291,11 +291,6 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		}
 
 		/* create the soft removal table */
-		if (!in_array("syslog_removed", $tables)) {
-			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `syslog`", true, $syslog_cnn);
-		}
-
-		/* create the soft removal table */
 		if (!in_array("syslog_facilities", $tables)) {
 			db_execute("CREATE TABLE  `". $syslogdb_default . "`.`syslog_host_facilities` (
 				`host_id` int(10) UNSIGNED NULL,
@@ -472,7 +467,8 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 				DROP COLUMN `priority`", true, $syslog_cnn);
 		}else{
 			while ( true ) {
-				$sequence = db_fetch_cell("SELECT max(seq) FROM (SELECT seq FROM `" . $syslogdb_default . "`.`$table` ORDER BY seq LIMIT $fetch_size) AS preupgrade", '', false, $syslog_cnn);
+				$fetch_size = '10000';
+				$sequence   = db_fetch_cell("SELECT max(seq) FROM (SELECT seq FROM `" . $syslogdb_default . "`.`$table` ORDER BY seq LIMIT $fetch_size) AS preupgrade", '', false, $syslog_cnn);
 
 				if ($sequence > 0 && $sequence != '') {
 					db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog` (facility_id, priority_id, host_id, logtime, message)
@@ -486,12 +482,17 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 				}
 			}
 		}
+
+		/* create the soft removal table */
+		if (!in_array("syslog_removed", $tables)) {
+			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `syslog`", true, $syslog_cnn);
+		}
 	}else{
 		include_once($config['base_path'] . "/lib/poller.php");
 		$p = dirname(__FILE__);
 		$command_string = read_config_option("path_php_binary");
 		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php --type=' . $options["db_type"] . ' --engine=' . $engine . ' --days=' . $options["days"];
-		cacti_log($extra_args, false);
+		cacti_log("NOTE: Launching Background Syslog Database Upgrade Process", false, "SYSLOG");
 		exec_background($command_string, $extra_args);
 	}
 

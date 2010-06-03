@@ -31,8 +31,6 @@ $no_http_headers = true;
 ini_set('max_execution_time', "0");
 ini_set('memory_limit', '256M');
 
-$fetch_size = '10000';
-
 global $syslog_debug;
 
 $syslog_debug = false;
