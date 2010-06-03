@@ -31,7 +31,11 @@ function syslog_sendemail($to, $from, $subject, $message) {
 	if (syslog_check_dependencies()) {
 		syslog_debug("Sending Alert email to '" . $to . "'");
 
-		send_mail($to, $from, $subject, $message);
+		if (read_config_option("syslog_html") == "on") {
+			send_mail($to, $from, $subject, $message, 'html_please');
+		}else{
+			send_mail($to, $from, $subject, $message);
+		}
 	} else {
 		syslog_debug("Could not send alert, you are missing the Settings plugin");
 	}
@@ -311,5 +315,19 @@ function syslog_debug($message) {
 	if ($syslog_debug) {
 		echo "SYSLOG: " . $message . "\n";
 	}
+}
+
+function syslog_log_alert($alert_id, $alert_name, $msg) {
+	global $config, $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_logs`
+		(alert_id, logseq, logtime, logmsg, host, facility, priority) VALUES
+		($alert_id, " .
+		$msg["seq"]  . ",'"  . $msg["date"] . " " . $msg["time"] . "','" . $msg["message"] . "','" .
+		$msg["host"] . "','" . $msg["facility"] . "','" . $msg["priority"] . "')", true, $syslog_cnn);
+
+	cacti_log("WARNING: The Syslog Alert '$alert_name' Has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "'", false, "SYSLOG");
 }
 

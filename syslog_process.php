@@ -254,6 +254,12 @@ $syslog_xferred = $syslog_items["xferred"];
 $query = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
 $syslog_alerts  = sizeof($query);
 
+if (read_config_option("syslog_html") == "on") {
+	$html = true;
+}else{
+	$html = false;
+}
+
 syslog_debug("Found   " . $syslog_alerts .
 	" Alert Rule" . ($syslog_alerts == 1 ? "" : "s" ) .
 	" to process");
@@ -293,19 +299,40 @@ if (sizeof($query)) {
 		if ($sql != '') {
 			if ($alert['method'] == "1") {
 				$th_sql = str_replace("*", "count(*)", $sql);
-				$count = db_fetch_assoc($th_sql, true, $syslog_cnn);
+				$count = db_fetch_cell($th_sql, '', true, $syslog_cnn);
 			}
 
 			if (($alert['method'] == "1" && $count > 0) || ($alert["method"] == "0")) {
 				$at = db_fetch_assoc($sql, true, $syslog_cnn);
 
 				if (sizeof($at)) {
-					if ($alert['method'] == "1") {
-						$alertm .= "-----------------------------------------------\n";
-						$alertm .= "A Number of Instances Alert has Been Triggered\n";
-						$alertm .= "Alert    : " . $a['name'] . "\n";
-						$alertm .= "Count    : " . $count . "\n";
+					if ($html) {
+						$alertm .= "<html><head><style type='text/css'>";
+						$alertm .= file_get_contents($config['base_path'] . "/plugins/syslog/syslog.css");
+						$alertm .= "</style></head>";
 					}
+
+					if ($alert['method'] == "1") {
+						if (!$html) {
+							$alertm .= "-----------------------------------------------\n";
+							$alertm .= "WARNING: A Number of Instances Alert has Been Triggered". "\n";
+							$alertm .= "Name: " . $alert['name'] . "\n";
+							$alertm .= "Count: " . $count . "\n";
+						}else{
+							$alertm .= "<body><h1>Cacti Syslog Plugin Instance Count Alert '" . $alert['name'] . "'</h1>";
+							$alertm .= "<table cellspacing='0' cellpadding='3' border='1'>";
+							$alertm .= "<tr><th>Alert Name</th><th>Count</th></tr>";
+							$alertm .= "<tr><td>" . $alert['name'] . "</td>\n";
+							$alertm .= "<td>"     . $count         . "</td></tr></table><br>\n";
+						}
+					}else{
+						if ($html) {
+							$alertm .= "<body><h1>Cacti Syslog Plugin Alert '" . $alert['name'] . "'</h1>";
+						}
+					}
+
+					if ($html) $alertm .= "<table cellspacing='0' cellpadding='3' border='1'>";
+					if ($html) $alertm .= "<tr><th>Hostname</th><th>Date</th><th>Severity</th><th>Message</th></tr>";
 
 					foreach($at as $a) {
 						$a['message'] = str_replace('  ', "\n", $a['message']);
@@ -313,18 +340,31 @@ if (sizeof($query)) {
 							$a['message'] = substr($a['message'], 0, -1);
 						}
 
-						$alertm .= "-----------------------------------------------\n";
-						$alertm .= 'Hostname : ' . $a['host'] . "\n";
-						$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
-						$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
-						$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
+						if (!$html) {
+							$alertm .= "-----------------------------------------------\n";
+							$alertm .= 'Hostname : ' . $a['host'] . "\n";
+							$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
+							$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
+							$alertm .= 'Message  :' . ($html ? "":"\n") . $a['message'] . "\n";
+						}else{
+							$alertm .= "<tr><td>" . $a['host']                    . "</td>"      . "\n";
+							$alertm .= "<td>"     . $a['date'] . ' ' . $a['time'] . "</td>"      . "\n";
+							$alertm .= "<td>"     . $a['priority']                . "</td>"      . "\n";
+							$alertm .= "<td>"     . $a['message']                 . "</td></tr>" . "\n";
+						}
 
 						$syslog_alarms++;
+
+						syslog_log_alert($alert["id"], $alert["name"], $a);
 					}
 
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
 
-					$alertm .= "-----------------------------------------------\n\n";
+					if ($html) {
+						$alertm .= "</table></body></html>";
+					}else{
+						$alertm .= "-----------------------------------------------\n\n";
+					}
 				}
 			}
 		}

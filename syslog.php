@@ -50,21 +50,54 @@ if (!syslog_check_dependencies()) {
 	exit;
 }
 
-/* validate the syslog post/get/request information */;
-syslog_request_validation();
+include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
 
-/* display the main page */
-if (isset($_REQUEST["export_x"])) {
-	syslog_export();
+/* present a tabbed interface */
+$tabs_syslog = array(
+	"syslog" => "Syslogs",
+	"alerts" => "Alert Log");
 
-	/* clear output so reloads wont re-download */
-	unset($_REQUEST["output"]);
+/* set the default tab */
+load_current_session_value("tab", "sess_syslog_tab", "syslog");
+$current_tab = $_REQUEST["tab"];
+
+/* draw the tabs */
+print "<table class='tabs' width='100%' cellspacing='0' cellpadding='3' border='0' align='center'><tr>\n";
+
+if (sizeof($tabs_syslog) > 0) {
+foreach (array_keys($tabs_syslog) as $tab_short_name) {
+	print "<td style='padding:3px 10px 2px 5px;background-color:" . (($tab_short_name == $current_tab) ? "silver;" : "#DFDFDF;") .
+		"white-space:nowrap;'" .
+		" nowrap width='1%'" .
+		"' align='center' class='tab'>
+		<span class='textHeader'><a href='" . $config['url_path'] .
+		"plugins/syslog/syslog.php?" .
+		"tab=" . $tab_short_name .
+		"'>$tabs_syslog[$tab_short_name]</a></span>
+	</td>\n
+	<td width='1'></td>\n";
+}
+}
+print "<td></td>\n</tr></table>\n";
+
+if ($current_tab == 'syslog') {
+	/* validate the syslog post/get/request information */;
+	syslog_request_validation();
+
+	/* display the main page */
+	if (isset($_REQUEST["export_x"])) {
+		syslog_export();
+		/* clear output so reloads wont re-download */
+		unset($_REQUEST["output"]);
+	}else{
+		syslog_messages();
+		include_once("./include/bottom_footer.php");
+	}
 }else{
-	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
+	syslog_alert_log();
+}
 
-	syslog_messages();
-
-	include_once("./include/bottom_footer.php");
+function syslog_alert_log() {
 }
 
 /** function generate_syslog_cssjs()
@@ -362,17 +395,17 @@ function syslog_filter($sql_where) {
 	-->
 	</script>
 	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="post" action="syslog.php">
-	<table width="100%" cellspacing="1" cellpadding="0">
+	<table width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
-				<table width='100%' cellpadding=0 cellspacing=0>
+				<table width='100%' cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td width='100%'>
 							<?php
 							html_start_box("<strong>Syslog Message Filter</strong>", "100%", $colors["header"], "1", "center", "");?>
 							<tr bgcolor="<?php print $colors["panel"];?>" class="noprint">
 								<td class="noprint">
-									<table cellpadding="0" cellspacing="0">
+									<table cellpadding="0" cellspacing="0" border="0">
 										<tr>
 											<td nowrap style='white-space: nowrap;' width='60'>
 												&nbsp;<strong>Presets:</strong>&nbsp;
@@ -432,7 +465,12 @@ function syslog_filter($sql_where) {
 											</td>
 										</tr>
 									</table>
-								</td>
+								</td><?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
+								<td align='right'>
+									<input type='button' value='Alerts' title='View Syslog Alert Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
+									<input type='button' value='Removals' title='View Syslog Removal Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
+									<input type='button' value='Reports' title='View Syslog Reports' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>&nbsp;
+								</td><?php }?>
 							</tr>
 							<tr bgcolor="<?php print $colors["panel"];?>" class="noprint">
 								<td>
@@ -490,6 +528,9 @@ function syslog_filter($sql_where) {
 													<option value="20"<?php if ($_REQUEST["rows"] == "20") {?> selected<?php }?>>20</option>
 													<option value="25"<?php if ($_REQUEST["rows"] == "25") {?> selected<?php }?>>25</option>
 													<option value="30"<?php if ($_REQUEST["rows"] == "30") {?> selected<?php }?>>30</option>
+													<option value="35"<?php if ($_REQUEST["rows"] == "35") {?> selected<?php }?>>35</option>
+													<option value="40"<?php if ($_REQUEST["rows"] == "40") {?> selected<?php }?>>40</option>
+													<option value="45"<?php if ($_REQUEST["rows"] == "45") {?> selected<?php }?>>45</option>
 													<option value="50"<?php if ($_REQUEST["rows"] == "50") {?> selected<?php }?>>50</option>
 													<option value="100"<?php if ($_REQUEST["rows"] == "100") {?> selected<?php }?>>100</option>
 													<option value="200"<?php if ($_REQUEST["rows"] == "200") {?> selected<?php }?>>200</option>
@@ -510,7 +551,7 @@ function syslog_filter($sql_where) {
 											<td nowrap style='white-space:nowrap;padding-right:2px;'>
 												<input type="submit" value='Go' name='button_refresh_x' title="Go">
 												<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
-												<input type='submit' value='Export' name='export_x' title='Reset fields to defaults'>
+												<input type='submit' value='Export' name='export_x' title='Export Records to CSV'>
 												<input type='hidden' name='action' value='actions'>
 												<input type='hidden' name='syslog_pdt_change' value='false'>
 											</td>
@@ -519,27 +560,13 @@ function syslog_filter($sql_where) {
 								</td>
 							</tr>
 							<?php html_end_box(false);?>
-						</td><?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
-						<td valign='top' style='padding-left:5px; background-color:#FFFFFF;'>
-							<?php html_start_box("<strong>Rules</strong>", "100%", $colors["header"], "3", "center", "");?>
-							<tr bgcolor='#<?php print $colors["panel"];?>'>
-								<td class='textHeader'>
-									<a href='syslog_alerts.php'>Alerts</a>
-									<br>
-									<a href='syslog_removal.php'>Removals</a>
-									<br>
-									<a href='syslog_reports.php'>Reports</a>
-								</td>
-							</tr>
-							<?php html_end_box(false);?>
-						</td><?php }?>
 					</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
 			<td valign="top" style="border-right: #aaaaaa 1px solid;" bgcolor='#efefef'>
-				<table align="center" cellpadding=0 cellspacing=0 border=0>
+				<table align="center" cellpadding="1" cellspacing="0" border="0">
 					<tr>
 						<td>
 							<?php html_start_box("", "", $colors["header"], "3", "center", ""); ?>

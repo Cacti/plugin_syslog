@@ -270,45 +270,38 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		}
 
 		/* create the reports table */
-		if (!in_array('syslog_logs', $tables)) {
-			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_logs` (
-				host varchar(32) default NULL,
-				facility varchar(10) default NULL,
-				priority varchar(10) default NULL,
-				level varchar(10) default NULL,
-				tag varchar(10) default NULL,
-				logtime TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
-				program varchar(15) default NULL,
-				msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
-				seq int(10) unsigned NOT NULL auto_increment,
-				PRIMARY KEY (seq),
-				KEY host (host),
-				KEY seq (seq),
-				KEY program (program),
-				KEY logtime (logtime),
-				KEY priority (priority),
-				KEY facility (facility)) TYPE=MyISAM;", true, $syslog_cnn);
-		}
+		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_logs` (
+			alert_id integer unsigned not null default '0',
+			logseq bigint unsigned NOT NULL,
+			logtime TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
+			logmsg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
+			host varchar(32) default NULL,
+			facility varchar(10) default NULL,
+			priority varchar(10) default NULL,
+			seq bigint unsigned NOT NULL auto_increment,
+			PRIMARY KEY (seq),
+			KEY logseq (logseq),
+			KEY alert_id (alert_id),
+			KEY host (host),
+			KEY seq (seq),
+			KEY logtime (logtime),
+			KEY priority (priority),
+			KEY facility (facility)) ENGINE=$engine;", true, $syslog_cnn);
 
 		/* create the soft removal table */
-		if (!in_array("syslog_facilities", $tables)) {
-			db_execute("CREATE TABLE  `". $syslogdb_default . "`.`syslog_host_facilities` (
-				`host_id` int(10) UNSIGNED NULL,
-				`facility_id` int(10) UNSIGNED NULL,
-				PRIMARY KEY  (`host`,`facility`)) ENGINE=MyISAM;", true, $syslog_cnn);
-		}
+		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
+			`host_id` int(10) UNSIGNED NULL,
+			`facility_id` int(10) UNSIGNED NULL,
+			PRIMARY KEY  (`host`,`facility`)) ENGINE=$engine;", true, $syslog_cnn);
 
 		/* create the host reference table */
-		if (!in_array('syslog_hosts', $tables)) {
-			db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_hosts` (
-				`id` int(10) unsigned NOT NULL auto_increment,
-				`host` VARCHAR(128) NOT NULL,
-				`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
-				PRIMARY KEY (`host`),
-				KEY last_updated (`last_updated`)
-				) TYPE=MyISAM
-				COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
-		}
+		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
+			`id` int(10) unsigned NOT NULL auto_increment,
+			`host` VARCHAR(128) NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY (`host`),
+			KEY last_updated (`last_updated`)) ENGINE=$engine
+			COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
 
 		/* check upgrade of syslog_alert */
 		$sql     = "DESCRIBE syslog_alert";
@@ -690,19 +683,19 @@ function syslog_setup_table_new($options) {
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_removed` LIKE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_logs` (
+		alert_id integer unsigned not null default '0',
+		logseq bigint unsigned NOT NULL,
+		logtime TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
+		logmsg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 		host varchar(32) default NULL,
 		facility varchar(10) default NULL,
 		priority varchar(10) default NULL,
-		level varchar(10) default NULL,
-		tag varchar(10) default NULL,
-		logtime TIMESTAMP NOT NULL default '0000-00-00 00:00:00',
-		program varchar(15) default NULL,
-		msg " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY (seq),
+		KEY logseq (logseq),
+		KEY alert_id (alert_id),
 		KEY host (host),
 		KEY seq (seq),
-		KEY program (program),
 		KEY logtime (logtime),
 		KEY priority (priority),
 		KEY facility (facility)) ENGINE=$engine;", true, $syslog_cnn);
@@ -963,7 +956,7 @@ function syslog_config_settings() {
 			"array" => $syslog_retentions
 		),
 		"syslog_html" => array(
-			"friendly_name" => "HTML e-mail",
+			"friendly_name" => "HTML Based e-Mail",
 			"description" => "If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be
 			sent in plain text.",
 			"method" => "checkbox",
