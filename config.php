@@ -26,18 +26,23 @@ global $config, $database_type, $database_default, $database_hostname;
 global $database_username, $database_password, $database_port;
 
 /* revert if you dont use the Cacti database */
-//$syslogdb_type     = 'mysql';
-//$syslogdb_default  = 'syslog';
-//$syslogdb_hostname = 'localhost';
-//$syslogdb_username = 'cactiuser';
-//$syslogdb_password = 'cactiuser';
+$use_cacti_db = true;
 
-$syslogdb_type     = $database_type;
-$syslogdb_default  = $database_default;
-$syslogdb_hostname = $database_hostname;
-$syslogdb_username = $database_username;
-$syslogdb_password = $database_password;
-$syslogdb_port     = $database_port;
+if (!$use_cacti_db) {
+	$syslogdb_type     = 'mysql';
+	$syslogdb_default  = 'syslog';
+	$syslogdb_hostname = 'localhost';
+	$syslogdb_username = 'cactiuser';
+	$syslogdb_password = 'cactiuser';
+	$syslogdb_port     = 3306;
+}else{
+	$syslogdb_type     = $database_type;
+	$syslogdb_default  = $database_default;
+	$syslogdb_hostname = $database_hostname;
+	$syslogdb_username = $database_username;
+	$syslogdb_password = $database_password;
+	$syslogdb_port     = $database_port;
+}
 
 /* field in the incomming table */
 $syslog_incoming_config['dateField']          = 'date';
