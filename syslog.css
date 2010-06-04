@@ -1,9 +1,9 @@
-body {
+.body {
 	font-size:12pt;
 	font-family:Verdana,Arial,Helvetica,sans-serif;
 }
 
-table {
+.table {
 	align:center;
 	border-color:#00438c;
 	border-style:solid;
@@ -11,23 +11,27 @@ table {
 	width:100%;
 }
 
-th {
+.th {
 	background-color:#00438c;
 	color:white;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
 	text-align:left;
 }
 
-td {
+.td {
 	color:black;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
 	text-align:left;
 }
 
-h1 {
+.h1 {
 	text-align:center;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
 	font-size:16pt;
 }
 
-p {
+.p {
 	text-align:left;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
 	font-size:12pt;
 }

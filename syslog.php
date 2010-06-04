@@ -61,6 +61,7 @@ $current_tab = $_REQUEST["tab"];
 
 /* if they were redirected to the page, let's set that up */
 if (isset($_REQUEST["id"])) {
+	syslog_view_alarm();
 }
 
 /* draw the tabs */
@@ -93,6 +94,20 @@ if (isset($_REQUEST["export_x"])) {
 }else{
 	syslog_messages($current_tab);
 	include_once("./include/bottom_footer.php");
+}
+
+function syslog_view_alarm() {
+	global $config, $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
+
+	$html = db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"], '', true, $syslog_cnn);
+	echo $html;
+
+	include_once("./include/bottom_footer.php");
+	exit;
 }
 
 /** function generate_syslog_cssjs()
@@ -176,11 +191,6 @@ function syslog_request_validation() {
 	/* clean up priority string */
 	if (isset($_REQUEST["elevel"])) {
 		$_REQUEST["elevel"] = sanitize_search_string(get_request_var_request("elevel"));
-	}
-
-	/* clean up logdate */
-	if (isset($_REQUEST["logdate"])) {
-		$_REQUEST["logdate"] = sanitize_search_string(get_request_var_request("logdate"));
 	}
 
 	/* clean up sort solumn */
@@ -696,12 +706,6 @@ function syslog_messages($tab="syslog") {
 	include("./lib/timespan_settings.php");
 	include(dirname(__FILE__) . "/config.php");
 
-	/* fake out the session values if this is a log sms query */
-	if (isset($_REQUEST["logdate"])) {
-		$_SESSION["sess_current_date1"] = $_REQUEST["logdate"];
-		$_SESSION["sess_current_date2"] = date("Y-m-d H:i:s", strtotime($_REQUEST["logdate"])+300);
-	}
-
 	//print "<pre>";print_r($_REQUEST);print "</pre>";
 	//print "<pre>";print_r($_SESSION);print "</pre>";
 	/* create the custom css and javascript for the page */
@@ -827,7 +831,7 @@ function syslog_messages($tab="syslog") {
 				}
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
-				print "<td>" . $log["name"] . "</td>\n";
+				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "'>" . $log["name"] . "</a></td>\n";
 				print "<td>" . $severities[$log["severity"]] . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
@@ -839,11 +843,6 @@ function syslog_messages($tab="syslog") {
 		}else{
 			print "<tr><td><em>No Messages</em></td></tr>";
 		}
-	}
-
-	if (isset($_REQUEST["id"])) {
-		form_hidden_box("id", $_REQUEST["id"], "");
-		form_hidden_box("logdate", $_REQUEST["logdate"], "");
 	}
 
 	/* put the nav bar on the bottom as well */

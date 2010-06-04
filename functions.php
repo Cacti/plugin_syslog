@@ -365,25 +365,47 @@ function syslog_debug($message) {
 	}
 }
 
-function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1) {
+function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html) {
 	global $config, $syslog_cnn, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
 	if ($count == 0) {
-		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_logs`
-			(alert_id, logseq, logtime, logmsg, host, facility, priority, count) VALUES
-			($alert_id, " .
-			$msg["seq"]  . ",'"  . $msg["date"] . " " . $msg["time"] . "','" . $msg["message"] . "','" .
-			$msg["host"] . "','" . $msg["facility"] . "','" . $msg["priority"] . "',1)", true, $syslog_cnn);
+		$save["seq"]      = "";
+		$save["alert_id"] = $alert_id;
+		$save["logseq"]   = $msg["seq"];
+		$save["logtime"]  = $msg["date"] . " " . $msg["time"];
+		$save["logmsg"]   = $msg["message"];
+		$save["host"]     = $msg["host"];
+		$save["facility"] = $msg["facility"];
+		$save["priority"] = $msg["priority"];
+		$save["count"]    = 1;
+		$save["html"]     = $html;
+
+		$id = 0;
+		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq", true, $syslog_cnn);
+
 		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "'", false, "SYSLOG");
+
+		return $id;
 	}else{
-		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_logs`
-			(alert_id, logseq, logtime, logmsg, host, facility, priority, count) VALUES
-			($alert_id, " .
-			"0"  . ",'"  . date("Y-m-d H:i:s") . "','" . $alert_name . "','" .
-			"N/A" . "','" . $msg["facility"] . "','" . $msg["priority"] . "',$count)", true, $syslog_cnn);
+		$save["seq"]      = "";
+		$save["alert_id"] = $alert_id;
+		$save["logseq"]   = 0;
+		$save["logtime"]  = date("Y-m-d H:i:s");
+		$save["logmsg"]   = $alert_name;
+		$save["host"]     = "N/A";
+		$save["facility"] = $msg["facility"];
+		$save["priority"] = $msg["priority"];
+		$save["count"]    = $count;
+		$save["html"]     = $html;
+
+		$id = 0;
+		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq", true, $syslog_cnn);
+
 		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "'", false, "SYSLOG");
+
+		return $id;
 	}
 }
 
