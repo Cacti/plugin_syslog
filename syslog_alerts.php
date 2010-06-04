@@ -209,7 +209,7 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	$save["num"]      = form_input_validate($num,      "num",      "", false, 3);
 	$save["type"]     = form_input_validate($type,     "type",     "", false, 3);
 	$save["message"]  = form_input_validate($message,  "message",  "", false, 3);
-	$save["email"]    = form_input_validate($email,    "email",    "", false, 3);
+	$save["email"]    = form_input_validate(trim($email),    "email",    "", false, 3);
 	$save["notes"]    = form_input_validate($notes,    "notes",    "", true, 3);
 	$save["enabled"]  = form_input_validate($enabled,  "enabled",  "", false, 3);
 	$save["date"]     = time();

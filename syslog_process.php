@@ -364,7 +364,7 @@ if (sizeof($query)) {
 						$syslog_alarms++;
 
 						if ($alert['method'] != "1") {
-							syslog_log_alert($alert["id"], $alert["name"], $alert["severity"] $a);
+							syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a);
 						}
 					}
 
@@ -380,7 +380,7 @@ if (sizeof($query)) {
 		}
 
 		if ($alertm != '') {
-			syslog_sendemail($alert['email'], '', 'Event Alert - ' . $alert['name'], $alertm);
+			syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], $alertm);
 		}
 	}
 }
