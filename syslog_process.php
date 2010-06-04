@@ -332,7 +332,7 @@ if (sizeof($query)) {
 							$alertm .= "<td>"     . htmlspecialchars($alert['message']) . "</td></tr></table><br>\n";
 						}
 
-						$smsalert = "Alert:" . $alert["name"] . ", Sev:" . $severities[$alert["severity"]] . ", Link:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?tab=alerts&logtime=" . $at[0]["date"] . " " . $at[0]["time"] . "&id=" . $alert["id"]);
+						$smsalert = "Sev: " . $severities[$alert["severity"]] . ", URL: " . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?tab=alerts&logtime=" . $at[0]["date"] . " " . $at[0]["time"] . "&id=" . $alert["id"]);
 
 						syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at));
 					}else{

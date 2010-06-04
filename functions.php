@@ -51,7 +51,7 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 		}
 
 		if (strlen($sms)) {
-			send_mail($sms, $from, $subject, $smsmessage);
+			send_mail($sms, $from, "Syslog Alert", $smsmessage);
 		}
 
 		if (strlen($nonsms)) {
