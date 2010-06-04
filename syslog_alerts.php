@@ -28,6 +28,8 @@ include_once('plugins/syslog/functions.php');
 
 define("MAX_DISPLAY_PAGES", 21);
 
+$severities = array("0" => "Notice", "1" => "Warning", "2" => "Critical");
+
 /* set default action */
 if (!isset($_REQUEST["action"])) { $_REQUEST["action"] = ""; }
 
@@ -64,7 +66,7 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
 		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
-			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"], $_POST["notes"], $_POST["enabled"]);
+			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"], $_POST["notes"], $_POST["enabled"], $_POST["severity"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_alerts.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
@@ -191,7 +193,7 @@ function form_actions() {
 	include_once($config['base_path'] . "/include/bottom_footer.php");
 }
 
-function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes, $enabled) {
+function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes, $enabled, $severity) {
 	global $syslog_cnn;
 
 	/* get the username */
@@ -203,16 +205,17 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 		$save["id"] = "";
 	}
 
-	$save["name"]    = form_input_validate($name,    "name",    "", false, 3);
-	$save["method"]  = form_input_validate($method,  "method",  "", false, 3);
-	$save["num"]     = form_input_validate($num,     "num",     "", false, 3);
-	$save["type"]    = form_input_validate($type,    "type",    "", false, 3);
-	$save["message"] = form_input_validate($message, "message", "", false, 3);
-	$save["email"]   = form_input_validate($email,   "email",   "", false, 3);
-	$save["notes"]   = form_input_validate($notes,   "notes",   "", true, 3);
-	$save["enabled"] = form_input_validate($enabled, "enabled", "", false, 3);
-	$save["date"]    = time();
-	$save["user"]    = $username;
+	$save["name"]     = form_input_validate($name,     "name",     "", false, 3);
+	$save["severity"] = form_input_validate($severity, "severity", "", false, 3);
+	$save["method"]   = form_input_validate($method,   "method",   "", false, 3);
+	$save["num"]      = form_input_validate($num,      "num",      "", false, 3);
+	$save["type"]     = form_input_validate($type,     "type",     "", false, 3);
+	$save["message"]  = form_input_validate($message,  "message",  "", false, 3);
+	$save["email"]    = form_input_validate($email,    "email",    "", false, 3);
+	$save["notes"]    = form_input_validate($notes,    "notes",    "", true, 3);
+	$save["enabled"]  = form_input_validate($enabled,  "enabled",  "", false, 3);
+	$save["date"]     = time();
+	$save["user"]     = $username;
 
 	$id = 0;
 	$id = sql_save($save, "syslog_alert", "id", true, $syslog_cnn);
@@ -275,7 +278,7 @@ function syslog_get_alert_records(&$sql_where, $row_limit) {
 }
 
 function syslog_action_edit() {
-	global $colors, $syslog_cnn, $message_types;
+	global $colors, $syslog_cnn, $message_types, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -318,13 +321,13 @@ function syslog_action_edit() {
 		"max_length" => "250",
 		"size" => 80
 		),
-	"enabled" => array(
+	"severity" => array(
 		"method" => "drop_array",
-		"friendly_name" => "Enabled?",
-		"description" => "Is this Alert Enabled?",
-		"value" => "|arg1:enabled|",
-		"array" => array("on" => "Enabled", "" => "Disabled"),
-		"default" => "on"
+		"friendly_name" => "Severity",
+		"description" => "What is the Severity Level of this Alert?",
+		"value" => "|arg1:severity|",
+		"array" => $severities,
+		"default" => "1"
 		),
 	"method" => array(
 		"method" => "drop_array",
@@ -360,6 +363,14 @@ function syslog_action_edit() {
 		"default" => "",
 		"max_length" => "255",
 		"size" => 80
+		),
+	"enabled" => array(
+		"method" => "drop_array",
+		"friendly_name" => "Enabled?",
+		"description" => "Is this Alert Enabled?",
+		"value" => "|arg1:enabled|",
+		"array" => array("on" => "Enabled", "" => "Disabled"),
+		"default" => "on"
 		),
 	"email" => array(
 		"method" => "textarea",

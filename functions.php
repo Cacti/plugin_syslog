@@ -246,7 +246,7 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 	print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" class='syslog_$level'>\n";
 }
 
-function sql_hosts_where() {
+function sql_hosts_where($tab) {
 	global $hostfilter, $syslog_incoming_config;
 
 	if (!empty($_REQUEST["host"])) {
@@ -258,10 +258,18 @@ function sql_hosts_where() {
 					if (!empty($hostfilter)) {
 						$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
 					}else{
-						if (!empty($sql_where)) {
-							$hostfilter .= " AND host_id IN('" . $_REQUEST["host"][$x] . "'";
-						} else {
-							$hostfilter .= " host_id IN('" . $_REQUEST["host"][$x] . "'";
+						if ($tab == "syslog") {
+							if (!empty($sql_where)) {
+								$hostfilter .= " AND host_id IN('" . $_REQUEST["host"][$x] . "'";
+							} else {
+								$hostfilter .= " host_id IN('" . $_REQUEST["host"][$x] . "'";
+							}
+						}else{
+							if (!empty($sql_where)) {
+								$hostfilter .= " AND host IN('" . $_REQUEST["host"][$x] . "'";
+							} else {
+								$hostfilter .= " host IN('" . $_REQUEST["host"][$x] . "'";
+							}
 						}
 					}
 
@@ -271,10 +279,18 @@ function sql_hosts_where() {
 				$hostfilter .= ")";
 			}
 		}else{
-			if (!empty($sql_where)) {
-				$hostfilter .= " AND host_id IN('" . $_REQUEST["host"] . "')";
-			} else {
-				$hostfilter .= " host_id IN('" . $_REQUEST["host"] . "')";
+			if ($tab == "syslog") {
+				if (!empty($sql_where)) {
+					$hostfilter .= " AND host_id IN('" . $_REQUEST["host"] . "')";
+				} else {
+					$hostfilter .= " host_id IN('" . $_REQUEST["host"] . "')";
+				}
+			}else{
+				if (!empty($sql_where)) {
+					$hostfilter .= " AND host IN('" . $_REQUEST["host"] . "')";
+				} else {
+					$hostfilter .= " host IN('" . $_REQUEST["host"] . "')";
+				}
 			}
 		}
 	}

@@ -592,6 +592,7 @@ function syslog_setup_table_new($options) {
 	db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
 		id int(10) NOT NULL auto_increment,
 		name varchar(255) NOT NULL default '',
+		`severity` INTEGER UNSIGNED NOT NULL default '0',
 		`method` int(10) unsigned NOT NULL default '0',
 		`num` int(10) unsigned NOT NULL default '1',
 		`type` varchar(16) NOT NULL default '',
