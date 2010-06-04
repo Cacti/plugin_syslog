@@ -105,7 +105,7 @@ if (read_config_option("syslog_enabled") == '') {
 $r = read_config_option("syslog_retention");
 if ($r == '' or $r < 0 or $r > 365) {
 	if ($r == '') {
-		$sql = "REPLACE INTO settings VALUES ('syslog_retention','30')";
+		$sql = "REPLACE INTO settings (name, value) VALUES ('syslog_retention','30')";
 	}else{
 		$sql = "UPDATE settings SET value='30' WHERE name='syslog_retention'";
 	}
@@ -142,12 +142,12 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("Syslog Table is NOT Partitioned");
 
 		/* delete from the main syslog table first */
-		db_execute("DELETE FROM syslog WHERE logtime < '$retention'", true, $syslog_cnn);
+		db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog` WHERE logtime < '$retention'", true, $syslog_cnn);
 
 		$syslog_deleted = $syslog_cnn->Affected_Rows();
 
 		/* now delete from the syslog removed table */
-		db_execute("DELETE FROM syslog_removed WHERE logtime < '$retention'", true, $syslog_cnn);
+		db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_removed` WHERE logtime < '$retention'", true, $syslog_cnn);
 
 		$syslog_deleted += $syslog_cnn->Affected_Rows();
 
@@ -177,7 +177,7 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
 
 		if ($cur_day != $last_day) {
-			db_execute("REPLACE INTO settings SET name='syslog_lastday_timestamp', value='$time'", true, $syslog_cnn);
+			db_execute("REPLACE INTO settings SET name='syslog_lastday_timestamp', value='$time'");
 
 			if ($lday_ts != '') {
 				syslog_debug("Creating new partition 'd" . $lformat . "'");
@@ -406,7 +406,7 @@ $moved = $syslog_cnn->Affected_Rows();
 syslog_debug("Moved   " . $moved . " Message" . ($moved == 1 ? "" : "s" ) . " to the 'syslog' table");
 
 /* DELETE ALL FLAGGED ITEMS FROM THE INCOMING TABLE */
-db_execute("DELETE FROM syslog_incoming WHERE status=" . $uniqueID, true, $syslog_cnn);
+db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID, true, $syslog_cnn);
 
 syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . " already processed Messages from incoming");
 
@@ -536,13 +536,15 @@ syslog_debug("Finished processing Reports...");
 syslog_process_log($start_time, $syslog_deleted, $syslog_incoming, $syslog_removed, $syslog_xferred, $syslog_alerts, $syslog_alarms, $syslog_reports);
 
 function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {
+	global $database_default;
+
 	/* record the end time */
 	list($micro,$seconds) = split(" ", microtime());
 	$end_time = $seconds + $micro;
 
 	cacti_log("SYSLOG STATS:Time:" . round($end_time-$start_time,2) . " Deletes:" . $deleted . " Incoming:" . $incoming . " Removes:" . $removed . " XFers:" . $xferred . " Alerts:" . $alerts . " Alarms:" . $alarms . " Reports:" . $reports, true, "SYSTEM");
 
-	set_config_option("syslog_stats", "time:" . round($end_time-$start_time,2) . "deletes:" . $deleted . " incoming:" . $incoming . " removes:" . $removed . " xfers:" . $xferred . " alerts:" . $alerts . " alarms:" . $alarms . " reports:" . $reports);
+	db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_stats', value='time:" . round($end_time-$start_time,2) . " deletes:" . $deleted . " incoming:" . $incoming . " removes:" . $removed . " xfers:" . $xferred . " alerts:" . $alerts . " alarms:" . $alarms . " reports:" . $reports . "'");
 }
 
 function display_help() {
