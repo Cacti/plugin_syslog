@@ -513,16 +513,20 @@ foreach($reports as $syslog_report) {
 			}
 
 			if ($reptext != '') {
-				$reptext = '<html><body><center><h2>' . $syslog_report['name'] . "</h2></center><table>\n" .
-					    "<tr><td>Date</td><td>Time</td><td>Message</td></tr>\n" . $reptext;
+				$headtext .= "<html><head><style type='text/css'>";
+				$headtext .= file_get_contents($config['base_path'] . "/plugins/syslog/syslog.css");
+				$headtext .= "</style></head>";
 
-				$reptext .= "</table>\n";
+				$headtext .= '<body><h1>' . $syslog_report['name'] . "</h1><table>\n" .
+					    "<tr><th>Date</th><th>Time</th><th>Message</th></tr>\n" . $reptext;
+
+				$headtext .= "</table>\n";
 				// Send mail
-				syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $reptext);
+				syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $headtext);
 			}
 		}
 	} else {
-		print '       Next Send: ' . date("F j, Y, g:i a", $next_run_time) . "\n";
+		print '       Next Send: ' . date("Y-m-d H:i:s", $next_run_time) . "\n";
 	}
 }
 }

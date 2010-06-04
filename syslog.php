@@ -83,7 +83,7 @@ syslog_request_validation();
 
 /* display the main page */
 if (isset($_REQUEST["export_x"])) {
-	syslog_export();
+	syslog_export($current_tab);
 	/* clear output so reloads wont re-download */
 	unset($_REQUEST["output"]);
 }else{

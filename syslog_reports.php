@@ -81,6 +81,8 @@ function form_save() {
 function form_actions() {
 	global $colors, $syslog_cnn, $config, $syslog_actions, $fields_syslog_action_edit;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* if we are to save this form, instead of display it */
 	if (isset($_POST["selected_items"])) {
 		$selected_items = unserialize(stripslashes($_POST["selected_items"]));
@@ -132,7 +134,7 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$report_info = db_fetch_cell("SELECT name FROM syslog_reports WHERE id=" . $matches[1], '', true, $syslog_cnn);
+			$report_info = db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id=" . $matches[1], '', true, $syslog_cnn);
 			$report_list  .= "<li>" . $report_info . "<br>";
 			$report_array[] = $matches[1];
 		}
@@ -196,6 +198,8 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$email, $notes, $enabled) {
 	global $config, $syslog_cnn;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* get the username */
 	$username = db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);
 
@@ -234,20 +238,20 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 function api_syslog_report_remove($id) {
 	global $syslog_cnn;
-
-	db_execute("DELETE FROM syslog_reports WHERE id='" . $id . "'", true, $syslog_cnn);
+	include(dirname(__FILE__) . "/config.php");
+	db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_report_disable($id) {
 	global $syslog_cnn;
-
-	db_execute("UPDATE syslog_reports SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
+	include(dirname(__FILE__) . "/config.php");
+	db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_report_enable($id) {
 	global $syslog_cnn;
-
-	db_execute("UPDATE syslog_reports SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
+	include(dirname(__FILE__) . "/config.php");
+	db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 /* ---------------------
@@ -256,6 +260,8 @@ function api_syslog_report_enable($id) {
 
 function syslog_get_report_records(&$sql_where, $row_limit) {
 	global $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
 
 	if (get_request_var_request("filter") != "") {
 		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
@@ -276,7 +282,7 @@ function syslog_get_report_records(&$sql_where, $row_limit) {
 	}
 
 	$query_string = "SELECT *
-		FROM syslog_reports
+		FROM `" . $syslogdb_default . "`.`syslog_reports`
 		$sql_where
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
 		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
@@ -287,6 +293,8 @@ function syslog_get_report_records(&$sql_where, $row_limit) {
 function syslog_action_edit() {
 	global $colors, $syslog_cnn, $message_types, $syslog_freqs, $syslog_times;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var("id"));
 	input_validate_input_number(get_request_var("type"));
@@ -294,7 +302,7 @@ function syslog_action_edit() {
 
 	if (isset($_GET["id"])) {
 		$report = db_fetch_row("SELECT *
-			FROM syslog_reports
+			FROM `" . $syslogdb_default . "`.`syslog_reports`
 			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $report["name"] . "]";
 	}else{
@@ -479,6 +487,8 @@ function syslog_filter() {
 function syslog_report() {
 	global $colors, $syslog_cnn, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
 	input_validate_input_number(get_request_var_request("page"));
@@ -559,7 +569,7 @@ function syslog_report() {
 	$reports   = syslog_get_report_records($sql_where, $row_limit);
 
 	$rows_query_string = "SELECT COUNT(*)
-		FROM syslog_reports
+		FROM `" . $syslogdb_default . "`.`syslog_reports`
 		$sql_where";
 
 	$total_rows = db_fetch_cell($rows_query_string, '', true, $syslog_cnn);

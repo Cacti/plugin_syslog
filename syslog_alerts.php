@@ -81,6 +81,8 @@ function form_save() {
 function form_actions() {
 	global $colors, $config, $syslog_cnn, $syslog_actions, $fields_syslog_action_edit;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* if we are to save this form, instead of display it */
 	if (isset($_POST["selected_items"])) {
 		$selected_items = unserialize(stripslashes($_POST["selected_items"]));
@@ -132,7 +134,7 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$alert_info = db_fetch_cell("SELECT name FROM syslog_alert WHERE id=" . $matches[1], '', true, $syslog_cnn);
+			$alert_info = db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id=" . $matches[1], '', true, $syslog_cnn);
 			$alert_list .= "<li>" . $alert_info . "</li>";
 			$alert_array[] = $matches[1];
 		}
@@ -194,6 +196,8 @@ function form_actions() {
 function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes, $enabled, $severity) {
 	global $syslog_cnn;
 
+	include(dirname(__FILE__) . "/config.php");
+
 	/* get the username */
 	$username = db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);
 
@@ -216,7 +220,7 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	$save["user"]     = $username;
 
 	$id = 0;
-	$id = sql_save($save, "syslog_alert", "id", true, $syslog_cnn);
+	$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id", true, $syslog_cnn);
 	if ($id) {
 		raise_message(1);
 	}else{
@@ -228,17 +232,20 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 
 function api_syslog_alert_remove($id) {
 	global $syslog_cnn;
-	db_execute("DELETE FROM syslog_alert WHERE id='" . $id . "'", true, $syslog_cnn);
+	include(dirname(__FILE__) . "/config.php");
+	db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_alert_disable($id) {
 	global $syslog_cnn;
-	db_execute("UPDATE syslog_alert SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
+	include(dirname(__FILE__) . "/config.php");
+	db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_alert_enable($id) {
 	global $syslog_cnn;
-	db_execute("UPDATE syslog_alert SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
+	include(dirname(__FILE__) . "/config.php");
+	db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 /* ---------------------
@@ -247,6 +254,8 @@ function api_syslog_alert_enable($id) {
 
 function syslog_get_alert_records(&$sql_where, $row_limit) {
 	global $syslog_cnn;
+
+	include(dirname(__FILE__) . "/config.php");
 
 	if (get_request_var_request("filter") != "") {
 		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
@@ -267,7 +276,7 @@ function syslog_get_alert_records(&$sql_where, $row_limit) {
 	}
 
 	$query_string = "SELECT *
-		FROM syslog_alert
+		FROM `" . $syslogdb_default . "`.`syslog_alert`
 		$sql_where
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
 		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
@@ -287,7 +296,7 @@ function syslog_action_edit() {
 
 	if (isset($_GET["id"]) && $_GET["action"] == "edit") {
 		$alert = db_fetch_row("SELECT *
-			FROM syslog_alert
+			FROM `" . $syslogdb_default . "`.`syslog_alert`
 			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $alert["name"] . "]";
 	}else if (isset($_GET["id"]) && $_GET["action"] == "newedit") {
@@ -473,7 +482,9 @@ function syslog_filter() {
 }
 
 function syslog_alerts() {
-	global $colors, $syslog_actions, $config, $message_types, $severities;
+	global $colors, $syslog_actions, $syslog_cnn, $config, $message_types, $severities;
+
+	include(dirname(__FILE__) . "/config.php");
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
@@ -555,10 +566,10 @@ function syslog_alerts() {
 	$alerts = syslog_get_alert_records($sql_where, $row_limit);
 
 	$rows_query_string = "SELECT COUNT(*)
-		FROM syslog_alert
+		FROM `" . $syslogdb_default . "`.`syslog_alert`
 		$sql_where";
 
-	$total_rows = db_fetch_cell($rows_query_string);
+	$total_rows = db_fetch_cell($rows_query_string, '', true, $syslog_cnn);
 
 	?>
 	<script type="text/javascript">

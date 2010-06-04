@@ -316,7 +316,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		}
 
 		if (!in_array("enabled", $columns)) {
-			db_execute("ALTER TABLE `" . $syslogdb_default . "`.syslog_alert` MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
 		}
 
 		if (!in_array("method", $columns)) {
