@@ -333,8 +333,8 @@ function syslog_debug($message) {
 	}
 }
 
-function syslog_log_alert($alert_id, $alert_name, $msg, $count = 0) {
-	global $config, $syslog_cnn;
+function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 0) {
+	global $config, $syslog_cnn, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -344,14 +344,14 @@ function syslog_log_alert($alert_id, $alert_name, $msg, $count = 0) {
 			($alert_id, " .
 			$msg["seq"]  . ",'"  . $msg["date"] . " " . $msg["time"] . "','" . $msg["message"] . "','" .
 			$msg["host"] . "','" . $msg["facility"] . "','" . $msg["priority"] . "',1)", true, $syslog_cnn);
-		cacti_log("WARNING: The Syslog Alert '$alert_name' Has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "'", false, "SYSLOG");
+		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "'", false, "SYSLOG");
 	}else{
 		db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_logs`
 			(alert_id, logseq, logtime, logmsg, host, facility, priority, count) VALUES
 			($alert_id, " .
 			"0"  . ",'"  . date("Y-m-d H:i:s") . "','" . $alert_name . "','" .
 			"N/A" . "','" . $msg["facility"] . "','" . $msg["priority"] . "',$count)", true, $syslog_cnn);
-		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' Has been Triggered on Host '" . $msg["host"] . "'.  Count was '" . $count . "'", false, "SYSLOG");
+		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "'", false, "SYSLOG");
 	}
 
 }

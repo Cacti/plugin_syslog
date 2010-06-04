@@ -28,8 +28,6 @@ include_once('plugins/syslog/functions.php');
 
 define("MAX_DISPLAY_PAGES", 21);
 
-$severities = array("0" => "Notice", "1" => "Warning", "2" => "Critical");
-
 /* set default action */
 if (!isset($_REQUEST["action"])) { $_REQUEST["action"] = ""; }
 
@@ -475,7 +473,7 @@ function syslog_filter() {
 }
 
 function syslog_alerts() {
-	global $colors, $syslog_actions, $config, $message_types;
+	global $colors, $syslog_actions, $config, $message_types, $severities;
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
@@ -614,6 +612,7 @@ function syslog_alerts() {
 
 	$display_text = array(
 		"name" => array("Alert<br>Name", "ASC"),
+		"severity" => array("<br>Severity", "ASC"),
 		"method" => array("<br>Method", "ASC"),
 		"num" => array("Instance<br>Count", "ASC"),
 		"enabled" => array("<br>Enabled", "ASC"),
@@ -629,12 +628,13 @@ function syslog_alerts() {
 		foreach ($alerts as $alert) {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $alert["id"]); $i++;
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?action=edit&id=" . $alert["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($data_source["name_cache"]), read_config_option("max_title_data_source"))) : htmlentities($alert["name"])) . "</a>", $alert["id"]);
+			form_selectable_cell($severities[$alert["severity"]], $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? "Number of Instances":"By Instance"), $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? $alert["num"]:"N/A"), $alert["id"]);
 			form_selectable_cell((($alert["enabled"] == "on") ? "Yes" : ""), $alert["id"]);
 			form_selectable_cell($message_types[$alert["type"]], $alert["id"]);
 			form_selectable_cell(title_trim($alert["message"],60), $alert["id"]);
-			form_selectable_cell(str_replace(",",",<br>", $alert["email"]), $alert["id"]);
+			form_selectable_cell((substr_count($alert["email"], ",") ? "Multiple":$alert["email"]), $alert["id"]);
 			form_selectable_cell(date("Y-m-d H:i:s", $alert["date"]), $alert["id"]);
 			form_selectable_cell($alert["user"], $alert["id"]);
 			form_checkbox_cell($alert["name"], $alert["id"]);

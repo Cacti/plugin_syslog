@@ -317,18 +317,20 @@ if (sizeof($query)) {
 							$alertm .= "-----------------------------------------------\n";
 							$alertm .= "WARNING: A Number of Instances Alert has Been Triggered". "\n";
 							$alertm .= "Name: " . $alert['name']     . "\n";
+							$alertm .= "Severity: " . $severities[$alert['severity']] . "\n";
 							$alertm .= "Threshold: " . $alert['num'] . "\n";
 							$alertm .= "Count: " . sizeof($at)       . "\n";
 						}else{
 							$alertm .= "<body><h1>Cacti Syslog Plugin Instance Count Alert '" . $alert['name'] . "'</h1>";
 							$alertm .= "<table cellspacing='0' cellpadding='3' border='1'>";
-							$alertm .= "<tr><th>Alert Name</th><th>Threshold</th><th>Count</th></tr>";
+							$alertm .= "<tr><th>Alert Name</th><th>Severity</th><th>Threshold</th><th>Count</th></tr>";
 							$alertm .= "<tr><td>" . $alert['name'] . "</td>\n";
+							$alertm .= "<tr><td>" . $severities[$alert['severity']]  . "</td>\n";
 							$alertm .= "<tr><td>" . $alert['num']  . "</td>\n";
 							$alertm .= "<td>"     . sizeof($at)    . "</td></tr></table><br>\n";
 						}
 
-						syslog_log_alert($alert["id"], $alert["name"], $at[0], sizeof($at));
+						syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $at[0], sizeof($at));
 					}else{
 						if ($html) {
 							$alertm .= "<body><h1>Cacti Syslog Plugin Alert '" . $alert['name'] . "'</h1>";
@@ -336,7 +338,7 @@ if (sizeof($query)) {
 					}
 
 					if ($html) $alertm .= "<table cellspacing='0' cellpadding='3' border='1'>";
-					if ($html) $alertm .= "<tr><th>Hostname</th><th>Date</th><th>Severity</th><th>Message</th></tr>";
+					if ($html) $alertm .= "<tr><th>Hostname</th><th>Date</th><th>Severity</th><th>Priotity</th><th>Message</th></tr>";
 
 					foreach($at as $a) {
 						$a['message'] = str_replace('  ', "\n", $a['message']);
@@ -348,19 +350,21 @@ if (sizeof($query)) {
 							$alertm .= "-----------------------------------------------\n";
 							$alertm .= 'Hostname : ' . $a['host'] . "\n";
 							$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
-							$alertm .= 'Severity : ' . $a['priority'] . "\n\n";
-							$alertm .= 'Message  :' . ($html ? "":"\n") . $a['message'] . "\n";
+							$alertm .= 'Severity : ' . $severities[$alert['severity']] . "\n\n";
+							$alertm .= 'Priority : ' . $a['priority'] . "\n\n";
+							$alertm .= 'Message  :' . "\n" . $a['message'] . "\n";
 						}else{
-							$alertm .= "<tr><td>" . $a['host']                    . "</td>"      . "\n";
-							$alertm .= "<td>"     . $a['date'] . ' ' . $a['time'] . "</td>"      . "\n";
-							$alertm .= "<td>"     . $a['priority']                . "</td>"      . "\n";
-							$alertm .= "<td>"     . $a['message']                 . "</td></tr>" . "\n";
+							$alertm .= "<tr><td>" . $a['host']                      . "</td>"      . "\n";
+							$alertm .= "<td>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
+							$alertm .= "<td>"     . $severities[$alert['severity']] . "</td>"      . "\n";
+							$alertm .= "<td>"     . $a['priority']                  . "</td>"      . "\n";
+							$alertm .= "<td>"     . $a['message']                   . "</td></tr>" . "\n";
 						}
 
 						$syslog_alarms++;
 
 						if ($alert['method'] != "1") {
-							syslog_log_alert($alert["id"], $alert["name"], $a);
+							syslog_log_alert($alert["id"], $alert["name"], $alert["severity"] $a);
 						}
 					}
 

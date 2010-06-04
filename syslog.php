@@ -325,7 +325,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 				$limit;
 		}
 	}else{
-		$query_sql = "SELECT *, sa.name
+		$query_sql = "SELECT *, sa.name, sa.severity
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS sl
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
 			ON sl.facility=sf.facility
@@ -666,7 +666,7 @@ function syslog_filter($sql_where, $tab) {
  *  syslog messages that are relevant to Syslog.
 */
 function syslog_messages($tab="syslog") {
-	global $colors, $sql_where, $syslog_cnn, $hostfilter;
+	global $colors, $sql_where, $syslog_cnn, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 
 	include("./include/global_arrays.php");
@@ -767,6 +767,7 @@ function syslog_messages($tab="syslog") {
 	}else{
 		$display_text = array(
 			"name" => array("Alert Name", "ASC"),
+			"severity" => array("Severity", "ASC"),
 			"count" => array("Count", "ASC"),
 			"logtime" => array("Message", "ASC"),
 			"logmsg" => array("Message", "ASC"),
@@ -781,9 +782,24 @@ function syslog_messages($tab="syslog") {
 			foreach ($syslog_messages as $log) {
 				$title   = "'" . str_replace("\"", "", str_replace("'", "", $log["logmsg"])) . "'";
 				$tip_options = "CLICKCLOSE, 'true', WIDTH, '40', DELAY, '500', FOLLOWMOUSE, 'true', FADEIN, 450, FADEOUT, 450, BGCOLOR, '#F9FDAF', STICKY, 'true', SHADOWCOLOR, '#797C6E', TITLE, 'Message'";
+				switch ($log['severity']) {
+				case "0":
+					$color = "notice";
+					break;
+				case "1":
+					$color = "warn";
+					break;
+				case "2":
+					$color = "crit";
+					break;
+				default:
+					$color = "info";
+					break;
+				}
 
-				syslog_row_color($colors["alternate"], $colors["light"], $i, $log["priority"], $title);$i++;
+				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
 				print "<td>" . $log["name"] . "</td>\n";
+				print "<td>" . $severities[$log["severity"]] . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
 				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($log["logmsg"], get_request_var_request("trimval"))):title_trim($log["logmsg"], get_request_var_request("trimval"))) . "</td>\n";

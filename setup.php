@@ -1119,7 +1119,7 @@ function syslog_show_tab() {
 }
 
 function syslog_config_arrays () {
-	global $syslog_actions, $menu, $message_types;
+	global $syslog_actions, $menu, $message_types, $severities;
 	global $syslog_levels, $syslog_freqs, $syslog_times;
 	global $syslog_colors, $syslog_text_colors, $syslog_retentions;
 
@@ -1159,6 +1159,12 @@ function syslog_config_arrays () {
 		"183" => "6 Months",
 		"365" => "1 Year"
 		);
+
+	$severities = array(
+		"0" => "Notice",
+		"1" => "Warning",
+		"2" => "Critical"
+	);
 
 	if (!isset($_SESSION["syslog_colors"])) {
 		foreach($syslog_levels as $level) {
