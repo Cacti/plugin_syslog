@@ -305,7 +305,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 			COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
 
 		/* check upgrade of syslog_alert */
-		$sql     = "DESCRIBE syslog_alert";
+		$sql     = "DESCRIBE `" . $syslogdb_default . "`.`syslog_alert`";
 		$columns = array();
 		$array = db_fetch_assoc($sql, true, $syslog_cnn);
 
@@ -316,12 +316,13 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		}
 
 		if (!in_array("enabled", $columns)) {
-			db_execute("ALTER TABLE syslog_alert MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.syslog_alert` MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
 		}
 
 		if (!in_array("method", $columns)) {
-			db_execute("ALTER TABLE syslog_alert ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name", true, $syslog_cnn);
-			db_execute("ALTER TABLE syslog_alert ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN severity INTEGER UNSIGNED NOT NULL default '0' AFTER name", true, $syslog_cnn);
 		}
 
 		/* check upgrade of syslog_alert */
@@ -336,11 +337,11 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		}
 
 		if (!in_array("enabled", $columns)) {
-			db_execute("ALTER TABLE syslog_remove MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_remove` MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;", true, $syslog_cnn);
 		}
 
 		if (!in_array("method", $columns)) {
-			db_execute("ALTER TABLE syslog_remove ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;", true, $syslog_cnn);
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_remove` ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;", true, $syslog_cnn);
 		}
 
 		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
