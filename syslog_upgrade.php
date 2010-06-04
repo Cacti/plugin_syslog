@@ -116,19 +116,7 @@ include_once(dirname(__FILE__) . "/functions.php");
 
 /* Connect to the Syslog Database */
 global $syslog_cnn;
-if (empty($syslog_cnn)) {
-	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-		($database_default == $syslogdb_default)) {
-		/* move on, using Cacti */
-		$syslog_cnn = $cnn_id;
-	}else{
-		if (!isset($syslogdb_port)) {
-			$syslogdb_port = "3306";
-		}
-		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
-	}
-}
-
+syslog_connect();
 
 if (sizeof(db_fetch_row("SHOW TABLES IN " . $syslogdb_default . " LIKE 'syslog'", true, $syslog_cnn))) {
 	db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog`TO `" . $syslogdb_default . "`.`syslog_pre_upgrade`", true, $syslog_cnn);
@@ -136,6 +124,8 @@ if (sizeof(db_fetch_row("SHOW TABLES IN " . $syslogdb_default . " LIKE 'syslog'"
 
 /* perform the upgrade */
 syslog_upgrade_pre_oneoh_tables($options, true);
+
+cacti_log("SYSLOG NOTE: Background Syslog Database Upgrade Process Completed", false, "SYSTEM");
 
 function display_help() {
 	echo "Syslog Database Upgrade, Copyright 2004-2010 - The Cacti Group\n\n";

@@ -43,7 +43,7 @@ $title = "Syslog Viewer";
 /* make sure syslog is setup correctly */
 if (!syslog_check_dependencies()) {
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
-	cacti_log("SYSLOG: You are missing a required dependency, please install the '<a href='http://cactiusers.org/'>Settings'</a> plugin.", true, "POLLER");
+	cacti_log("SYSLOG: You are missing a required dependency, please install the '<a href='http://cactiusers.org/'>Settings'</a> plugin.", true, "SYSTEM");
 	print "<br><br><center><font color=red>You are missing a dependency for Syslog, please install the '<a href='http://cactiusers.org'>Settings</a>' plugin.</font></color>";
 	exit;
 }

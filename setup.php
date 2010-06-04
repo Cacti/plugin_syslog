@@ -99,6 +99,8 @@ function plugin_syslog_uninstall () {
 			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`", true, $syslog_cnn);
 			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
 			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_host_facilities`", true, $syslog_cnn);
+			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn);
 			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_logs`", true, $syslog_cnn);
 			db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn);
 		}else{
@@ -291,16 +293,18 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 
 		/* create the soft removal table */
 		db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
-			`host_id` int(10) UNSIGNED NULL,
-			`facility_id` int(10) UNSIGNED NULL,
-			PRIMARY KEY  (`host`,`facility`)) ENGINE=$engine;", true, $syslog_cnn);
+			`host_id` int(10) unsigned NOT NULL,
+			`facility_id` int(10) unsigned NOT NULL,
+			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+			PRIMARY KEY  (`host_id`,`facility_id`)) ENGINE=$engine;", true, $syslog_cnn);
 
 		/* create the host reference table */
 		db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
-			`id` int(10) unsigned NOT NULL auto_increment,
+			`host_id` int(10) unsigned NOT NULL auto_increment,
 			`host` VARCHAR(128) NOT NULL,
 			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 			PRIMARY KEY (`host`),
+			KEY host_id (`host_id`),
 			KEY last_updated (`last_updated`)) ENGINE=$engine
 			COMMENT='Contains all hosts currently in the syslog table'", true, $syslog_cnn);
 
@@ -326,7 +330,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		}
 
 		/* check upgrade of syslog_alert */
-		$sql     = "DESCRIBE syslog_remove";
+		$sql     = "DESCRIBE `" . $syslogdb_default . "`.`syslog_remove`";
 		$columns = array();
 		$array = db_fetch_assoc($sql, true, $syslog_cnn);
 
@@ -470,7 +474,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 						SELECT facility_id, priority_id, host_id, logtime, message
 						FROM `" . $syslogdb_default . "`.`$table`
 						WHERE seq<$sequence", true, $syslog_cnn);
-					db_execute("DELETE FROM $table WHERE seq<=$sequence", true, $syslog_cnn);
+					db_execute("DELETE FROM `" . $syslogdb_default . "`.`$table` WHERE seq<=$sequence", true, $syslog_cnn);
 				}else{
 					db_execute("DROP TABLE `" . $syslogdb_default . "`.`$table`", true, $syslog_cnn);
 					break;
@@ -480,13 +484,13 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 
 		/* create the soft removal table */
 		db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`", true, $syslog_cnn);
-		db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `syslog`", true, $syslog_cnn);
+		db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 	}else{
 		include_once($config['base_path'] . "/lib/poller.php");
 		$p = dirname(__FILE__);
 		$command_string = read_config_option("path_php_binary");
 		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php --type=' . $options["db_type"] . ' --engine=' . $engine . ' --days=' . $options["days"];
-		cacti_log("NOTE: Launching Background Syslog Database Upgrade Process", false, "SYSLOG");
+		cacti_log("SYSLOG NOTE: Launching Background Syslog Database Upgrade Process", false, "SYSTEM");
 		exec_background($command_string, $extra_args);
 	}
 

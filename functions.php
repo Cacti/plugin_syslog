@@ -44,7 +44,7 @@ function syslog_sendemail($to, $from, $subject, $message) {
 function syslog_remove_items($table, $uniqueID) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
-	include($config["base_path"] . '/plugins/syslog/config.php');
+	include(dirname(__FILE__) . "/config.php");
 
 	/* REMOVE ALL THE THINGS WE DONT WANT TO SEE */
 	$rows = db_fetch_assoc("SELECT * FROM syslog_remove", true, $syslog_cnn);
@@ -55,7 +55,6 @@ function syslog_remove_items($table, $uniqueID) {
 
 	$removed = 0;
 	$xferred = 0;
-
 
 	if (sizeof($rows)) {
 	foreach($rows as $remove) {
@@ -78,7 +77,7 @@ function syslog_remove_items($table, $uniqueID) {
 			}
 
 			$sql = "DELETE
-				FROM " . $table . "
+				FROM `" . $syslogdb_default . "`.`" . $table . "`
 				WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 		}else if ($remove['type'] == 'host') {
 			if ($remove['method'] != 'del') {
@@ -97,7 +96,7 @@ function syslog_remove_items($table, $uniqueID) {
 			}
 
 			$sql = "DELETE
-				FROM " . $table . "
+				FROM `" . $syslogdb_default . "`.`" . $table . "`
 				WHERE host='" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 		} else if ($remove['type'] == 'messageb') {
 			if ($remove['method'] != 'del') {
@@ -116,7 +115,7 @@ function syslog_remove_items($table, $uniqueID) {
 			}
 
 			$sql = "DELETE
-				FROM " . $table . "
+				FROM `" . $syslogdb_default . "`.`" . $table . "`
 				WHERE message LIKE '" . $remove['message'] . "%' AND status='" . $uniqueID . "'";
 		} else if ($remove['type'] == 'messagec') {
 			if ($remove['method'] != 'del') {
@@ -135,7 +134,7 @@ function syslog_remove_items($table, $uniqueID) {
 			}
 
 			$sql = "DELETE
-				FROM " . $table . "
+				FROM `" . $syslogdb_default . "`.`" . $table . "`
 				WHERE message LIKE '%" . $remove['message'] . "%' AND status='" . $uniqueID . "'";
 		} else if ($remove['type'] == 'messagee') {
 			if ($remove['method'] != 'del') {
@@ -154,7 +153,7 @@ function syslog_remove_items($table, $uniqueID) {
 			}
 
 			$sql = "DELETE
-				FROM " . $table . "
+				FROM `" . $syslogdb_default . "`.`" . $table . "`
 				WHERE message LIKE '%" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 		}
 

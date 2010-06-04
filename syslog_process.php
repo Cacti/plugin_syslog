@@ -81,7 +81,7 @@ include("./plugins/syslog/config.php");
 include_once(dirname(__FILE__) . "/functions.php");
 
 /* Connect to the Syslog Database */
-global $syslog_cnn;
+global $syslog_cnn, $database_default;
 if (empty($syslog_cnn)) {
 	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
 		($database_default == $syslogdb_default)) {
@@ -105,9 +105,9 @@ if (read_config_option("syslog_enabled") == '') {
 $r = read_config_option("syslog_retention");
 if ($r == '' or $r < 0 or $r > 365) {
 	if ($r == '') {
-		$sql = "REPLACE INTO settings (name, value) VALUES ('syslog_retention','30')";
+		$sql = "REPLACE INTO `" . $database_default . "`.`settings` (name, value) VALUES ('syslog_retention','30')";
 	}else{
-		$sql = "UPDATE settings SET value='30' WHERE name='syslog_retention'";
+		$sql = "UPDATE `" . $database_default . "`.`settings` SET value='30' WHERE name='syslog_retention'";
 	}
 
 	$result = db_execute($sql);
@@ -177,7 +177,7 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
 
 		if ($cur_day != $last_day) {
-			db_execute("REPLACE INTO settings SET name='syslog_lastday_timestamp', value='$time'");
+			db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
 
 			if ($lday_ts != '') {
 				syslog_debug("Creating new partition 'd" . $lformat . "'");
@@ -222,7 +222,7 @@ while (1) {
 syslog_debug("Unique ID = " . $uniqueID);
 
 /* flag all records with the uniqueID prior to moving */
-db_execute("UPDATE syslog_incoming SET status=" . $uniqueID . " WHERE status=0", true, $syslog_cnn);
+db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET status=" . $uniqueID . " WHERE status=0", true, $syslog_cnn);
 
 $syslog_incoming = $syslog_cnn->Affected_Rows();
 
