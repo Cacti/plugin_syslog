@@ -27,14 +27,39 @@
  +-------------------------------------------------------------------------+
 */
 
-function syslog_sendemail($to, $from, $subject, $message) {
+function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 	if (syslog_check_dependencies()) {
 		syslog_debug("Sending Alert email to '" . $to . "'");
 
-		if (read_config_option("syslog_html") == "on") {
-			send_mail($to, $from, $subject, $message, 'html_please');
+		$sms = "";
+		$nonsms = "";
+		/* if there are SMS emails, process separately */
+		if (substr_count($to, "sms@")) {
+			$emails = explode(",", $to);
+
+			if (sizeof($emails)) {
+			foreach($emails as $email) {
+				if (substr_count($email, "sms@")) {
+					$sms .= (strlen($sms) ? ", ":"") . str_replace("sms@", "", trim($email));
+				}else{
+					$nonsms .= (strlen($nonsms) ? ", ":"") . trim($email);
+				}
+			}
+			}
 		}else{
-			send_mail($to, $from, $subject, $message);
+			$nonsms = $to;
+		}
+
+		if (strlen($sms)) {
+			send_mail($sms, $from, $subject, $smsmessage);
+		}
+
+		if (strlen($nonsms)) {
+			if (read_config_option("syslog_html") == "on") {
+				send_mail($nonsms, $from, $subject, $message, 'html_please');
+			}else{
+				send_mail($nonsms, $from, $subject, $message);
+			}
 		}
 	} else {
 		syslog_debug("Could not send alert, you are missing the Settings plugin");
@@ -340,7 +365,7 @@ function syslog_debug($message) {
 	}
 }
 
-function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 0) {
+function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1) {
 	global $config, $syslog_cnn, $severities;
 
 	include(dirname(__FILE__) . "/config.php");

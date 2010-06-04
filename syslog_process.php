@@ -315,7 +315,7 @@ if (sizeof($query)) {
 					if ($alert['method'] == "1") {
 						if (!$html) {
 							$alertm .= "-----------------------------------------------\n";
-							$alertm .= "WARNING: A Number of Instances Alert has Been Triggered". "\n";
+							$alertm .= "WARNING: A Syslog Plugin Istance Count Alert has Been Triggered". "\n";
 							$alertm .= "Name: " . $alert['name']     . "\n";
 							$alertm .= "Severity: " . $severities[$alert['severity']] . "\n";
 							$alertm .= "Threshold: " . $alert['num'] . "\n";
@@ -331,6 +331,8 @@ if (sizeof($query)) {
 							$alertm .= "<td>"     . sizeof($at)       . "</td>\n";
 							$alertm .= "<td>"     . htmlspecialchars($alert['message']) . "</td></tr></table><br>\n";
 						}
+
+						$smsalert = "Alert:" . $alert["name"] . ", Sev:" . $severities[$alert["severity"]] . ", Link:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?tab=alerts&logtime=" . $at[0]["date"] . " " . $at[0]["time"] . "&id=" . $alert["id"]);
 
 						syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at));
 					}else{
@@ -366,7 +368,8 @@ if (sizeof($query)) {
 						$syslog_alarms++;
 
 						if ($alert['method'] != "1") {
-							syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a);
+							$smsalert = "Syslog Alert:" . $alert["name"] . ", Link:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?logtime=" . $at[0]["date"] . " " . $at[0]["time"] . "&id=" . $alert["id"]);
+							syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a, 1);
 						}
 					}
 
@@ -382,7 +385,7 @@ if (sizeof($query)) {
 		}
 
 		if ($alertm != '') {
-			syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], $alertm);
+			syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], $alertm, $smsalert);
 		}
 	}
 }
@@ -521,8 +524,9 @@ foreach($reports as $syslog_report) {
 					    "<tr><th>Date</th><th>Time</th><th>Message</th></tr>\n" . $reptext;
 
 				$headtext .= "</table>\n";
+				$smsalert  = $headtext;
 				// Send mail
-				syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $headtext);
+				syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $headtext, $smsalert);
 			}
 		}
 	} else {

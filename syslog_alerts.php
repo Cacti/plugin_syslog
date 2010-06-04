@@ -384,7 +384,10 @@ function syslog_action_edit() {
 		"friendly_name" => "E-Mails to Notify",
 		"textarea_rows" => "5",
 		"textarea_cols" => "60",
-		"description" => "Please enter a comma delimited list of e-mail addresses to inform.",
+		"description" => "Please enter a comma delimited list of e-mail addresses to inform.  If you
+		wish to send out e-mail to a recipient in SMS format, please prefix that recipient's e-mail address
+		with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would
+		enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message.",
 		"class" => "textAreaNotes",
 		"value" => "|arg1:email|",
 		"max_length" => "255"

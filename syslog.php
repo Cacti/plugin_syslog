@@ -59,6 +59,10 @@ $tabs_syslog = array(
 load_current_session_value("tab", "sess_syslog_tab", "syslog");
 $current_tab = $_REQUEST["tab"];
 
+/* if they were redirected to the page, let's set that up */
+if (isset($_REQUEST["id"])) {
+}
+
 /* draw the tabs */
 print "<table class='tabs' width='100%' cellspacing='0' cellpadding='3' border='0' align='center'><tr>\n";
 
@@ -156,6 +160,7 @@ function syslog_request_validation() {
 	input_validate_input_number(get_request_var_request("refresh"));
 	input_validate_input_number(get_request_var_request("page"));
 	input_validate_input_number(get_request_var_request("trimval"));
+	input_validate_input_number(get_request_var_request("id"));
 	/* ==================================================== */
 
 	/* clean up filter string */
@@ -171,6 +176,11 @@ function syslog_request_validation() {
 	/* clean up priority string */
 	if (isset($_REQUEST["elevel"])) {
 		$_REQUEST["elevel"] = sanitize_search_string(get_request_var_request("elevel"));
+	}
+
+	/* clean up logdate */
+	if (isset($_REQUEST["logdate"])) {
+		$_REQUEST["logdate"] = sanitize_search_string(get_request_var_request("logdate"));
 	}
 
 	/* clean up sort solumn */
@@ -277,6 +287,11 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
 			"logtime BETWEEN '" . $_SESSION["sess_current_date1"] . "'
 				AND '" . $_SESSION["sess_current_date2"] . "'";
+	}
+
+	if (isset($_REQUEST["id"])) {
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
+			"sa.id=" . $_REQUEST["id"];
 	}
 
 	if (!empty($_REQUEST["filter"])) {
@@ -681,6 +696,12 @@ function syslog_messages($tab="syslog") {
 	include("./lib/timespan_settings.php");
 	include(dirname(__FILE__) . "/config.php");
 
+	/* fake out the session values if this is a log sms query */
+	if (isset($_REQUEST["logdate"])) {
+		$_SESSION["sess_current_date1"] = $_REQUEST["logdate"];
+		$_SESSION["sess_current_date2"] = date("Y-m-d H:i:s", strtotime($_REQUEST["logdate"])+300);
+	}
+
 	//print "<pre>";print_r($_REQUEST);print "</pre>";
 	//print "<pre>";print_r($_SESSION);print "</pre>";
 	/* create the custom css and javascript for the page */
@@ -818,6 +839,11 @@ function syslog_messages($tab="syslog") {
 		}else{
 			print "<tr><td><em>No Messages</em></td></tr>";
 		}
+	}
+
+	if (isset($_REQUEST["id"])) {
+		form_hidden_box("id", $_REQUEST["id"], "");
+		form_hidden_box("logdate", $_REQUEST["logdate"], "");
 	}
 
 	/* put the nav bar on the bottom as well */
