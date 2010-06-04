@@ -320,17 +320,19 @@ if (sizeof($query)) {
 							$alertm .= "Severity: " . $severities[$alert['severity']] . "\n";
 							$alertm .= "Threshold: " . $alert['num'] . "\n";
 							$alertm .= "Count: " . sizeof($at)       . "\n";
+							$alertm .= "Message String: " . $alert['message'] . "\n";
 						}else{
 							$alertm .= "<body><h1>Cacti Syslog Plugin Instance Count Alert '" . $alert['name'] . "'</h1>";
 							$alertm .= "<table cellspacing='0' cellpadding='3' border='1'>";
-							$alertm .= "<tr><th>Alert Name</th><th>Severity</th><th>Threshold</th><th>Count</th></tr>";
-							$alertm .= "<tr><td>" . $alert['name'] . "</td>\n";
-							$alertm .= "<tr><td>" . $severities[$alert['severity']]  . "</td>\n";
-							$alertm .= "<tr><td>" . $alert['num']  . "</td>\n";
-							$alertm .= "<td>"     . sizeof($at)    . "</td></tr></table><br>\n";
+							$alertm .= "<tr><th>Alert Name</th><th>Severity</th><th>Threshold</th><th>Count</th><th>Match String</th></tr>";
+							$alertm .= "<tr><td>" . $alert['name']    . "</td>\n";
+							$alertm .= "<td>" . $severities[$alert['severity']]  . "</td>\n";
+							$alertm .= "<td>" . $alert['num']     . "</td>\n";
+							$alertm .= "<td>"     . sizeof($at)       . "</td>\n";
+							$alertm .= "<td>"     . htmlspecialchars($alert['message']) . "</td></tr></table><br>\n";
 						}
 
-						syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $at[0], sizeof($at));
+						syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at));
 					}else{
 						if ($html) {
 							$alertm .= "<body><h1>Cacti Syslog Plugin Alert '" . $alert['name'] . "'</h1>";

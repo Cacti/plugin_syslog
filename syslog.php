@@ -1,9 +1,7 @@
 <?php
 /*
- ex: set tabstop=4 shiftwidth=4 autoindent:
  +-------------------------------------------------------------------------+
- | Copyright (C) 2005 Electric Sheep Studios                               |
- | Originally by Shitworks, 2004                                           |
+ | Copyright (C) 2007-2010 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -15,15 +13,15 @@
  | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
  | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
- | h.aloe: a syslog monitoring addon for Ian Berry's Cacti                 |
+ | Cacti: The Complete RRDTool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
  +-------------------------------------------------------------------------+
  | Originally released as aloe by: sidewinder at shitworks.com             |
  | Modified by: Harlequin <harlequin@cyberonic.com>                        |
- | 2005-11-10 -- ver 0.1.1 beta                                            |
- |   - renamed to h.aloe                                                   |
- |   - updated to work with Cacti 8.6g                                     |
- |   - included Cacti time selector                                        |
- |   - various other modifications                                         |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
 
@@ -264,10 +262,14 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
-	if (!empty($_REQUEST["host"])) {
-		sql_hosts_where($tab);
-		if (strlen($hostfilter)) {
-			$sql_where .=  "WHERE " . $hostfilter;
+	if ($_REQUEST["host"][0] == -1) {
+		$sql_where .=  "WHERE sl.host='N/A'";
+	}else{
+		if (!empty($_REQUEST["host"])) {
+			sql_hosts_where($tab);
+			if (strlen($hostfilter)) {
+				$sql_where .=  "WHERE " . $hostfilter;
+			}
 		}
 	}
 
@@ -325,12 +327,14 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 				$limit;
 		}
 	}else{
-		$query_sql = "SELECT *, sa.name, sa.severity
+		$query_sql = "SELECT sl.*, sa.name, sa.severity
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS sl
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
 			ON sl.facility=sf.facility
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
 			ON sl.priority=sp.priority
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+			ON sl.host=sh.host
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
 			ON sl.alert_id=sa.id " .
 			$sql_where . "
@@ -585,7 +589,9 @@ function syslog_filter($sql_where, $tab) {
 							<tr>
 								<td>
 									<select title="Host Filters" id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
-										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts&nbsp;&nbsp;</option>
+										<?php if ($tab == "syslog") { ?><option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts</option><?php }else{?>
+										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
+										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1")) || ($reset_multi)) {?> selected<?php }?>>Instance Based Logs</option><?php }?>
 										<?php
 										$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host", true, $syslog_cnn);
 										if (sizeof($hosts)) {
@@ -644,6 +650,8 @@ function syslog_filter($sql_where, $tab) {
 									ON sl.facility=sf.facility
 									LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
 									ON sl.priority=sp.priority
+									LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+									ON sl.host=sh.host
 									LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
 									ON sl.alert_id=sa.id " .
 									$sql_where, '', true, $syslog_cnn);
@@ -771,7 +779,7 @@ function syslog_messages($tab="syslog") {
 			"count" => array("Count", "ASC"),
 			"logtime" => array("Message", "ASC"),
 			"logmsg" => array("Message", "ASC"),
-			"host" => array("Host", "ASC"),
+			"slhost" => array("Host", "ASC"),
 			"facility" => array("Facility", "ASC"),
 			"priority" => array("Level", "ASC"));
 

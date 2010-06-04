@@ -10,11 +10,9 @@
 
 *******************************************************************************/
 
-
 ----[ Purpose
 	A modified version of the H.aloe plugin, which allows you to view syslog messages stored in a database.
 	This version allows you to add alerts and remove different messages you don't want to "save" in the log
-
 
 ----[ Features
 	Message filter
@@ -23,7 +21,6 @@
 	Date time picker
 	Event Alerter
 	Event Removal (for Events you don't want to see)
-
 
 ----[ Installation
 
@@ -35,73 +32,75 @@
 
 	If you find a problem, let me know!!! http://cactiusers.org/bugs/
 
-
 ----[ Future Changes
 
 	Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
 
-	--- 0.6 ---
-		General rewrite of several functions
-		Move Altering and Removal menu's to the Console
-		Allow specification of foreground/background colors from UI
-		Add Walter Zorn's tooltip to syslog messages (www.walterzorn.com)
-		Allow the syslog page to be sorted
-		Priorities are now >= behavior from syslog interface
-		Add additional indexes to syslog tables for performance reasons
-		Allow Removal rules to simply move to lower priority table
-		Allow Removal rules to be "On/Off" from user interface
-		Use more Javascript on the Syslog page
-		When sorting by simply time, it spans multiple dates allowing correlation by time
-
+	--- 1.0 ---
+    feature: Support MySQL partitioning for MySQL 5.1 and above for performance reasons
+		feature: Normalize the syslog table for performance reasons
+    feature: Allow editing of Alerts, Removal Rules and Reports
+		feature: Priorities are now >= behavior from syslog interface
+		feature: Move Altering and Removal menu's to the Console
+		feature: Allow specification of foreground/background colors from UI
+		feature: Add Walter Zorn's tooltip to syslog messages (www.walterzorn.com)
+		feature: Allow the syslog page to be sorted
+		feature: Add Removal Rules to simply move log messages to a lower priority table
+		feature: Use more Javascript on the Syslog page
+		feature: Add HTML e-Mail capability with CSS
+    feature: Display Alert Log history from the UI
+		feature: Allow Removal Rules to be filtered from the UI
+    feature: Add Reporting capability
+    feature: Add Instance Count Alarms
+    feature: Add Alert Severity to Alarms
+    feature: Turn images to buttons
 
 	--- 0.5.2 ---
-		Fixes to make syslog work properly when using the Superlinks plugin
-		Fix a few image errors
+		bug: Fixes to make syslog work properly when using the Superlinks plugin
+		bug: Fix a few image errors
 
 	--- 0.5.1 ---
-		More 0.8.7 Compatibility fixes
+		bug: More 0.8.7 Compatibility fixes
 
 	--- 0.5 ---
-		#0000046 - Event text colors (black) when setup a event color in black
-		#0000047 - Change the Priority and Levels to be in Ascending order
-		Fixes for errors when using removal rules
-		Minor fix for error that would sometimes cause Syslog to not be processed
-		Update SQL to include indexes
-		Modified Message retrieval function to better make use of indexes, which greatly speeds it up
-		When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
-		Fix pagination of Alerts and Removal Rules
-		Lots of code / html cleanup for faster pages loads (use a little CSS also)
-		Alert email now uses the Alert Name in the subject
-		Add ability to create Reports
-		Fix for improper display of html entities in the syslog message (thanks dagonet)
-		Allow access for the guest account
-		Change name to syslog, from haloe
-		Use mailer options from the Settings Plugin
-		Add option for From Email address and From Display Name
-		Use new "api_user_realm_auth" from Plugin Architecture
-		Fix Cacti 0.8.7 compatibility
+		feature: Modified Message retrieval function to better make use of indexes, which greatly speeds it up
+		feature: When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
+		feature: Alert email now uses the Alert Name in the subject
+		feature: Add ability to create Reports
+		feature: Allow access for the guest account
+		feature: Change name to syslog, from haloe
+		feature: Use mailer options from the Settings Plugin
+		feature: Add option for From Email address and From Display Name
+		feature: Use new "api_user_realm_auth" from Plugin Architecture
+		bug#0000046 - Event text colors (black) when setup a event color in black
+		bug#0000047 - Change the Priority and Levels to be in Ascending order
+		bug: Fixes for errors when using removal rules
+		bug: Minor fix for error that would sometimes cause Syslog to not be processed
+		bug: Update SQL to include indexes
+		bug: Fix pagination of Alerts and Removal Rules
+		bug: Lots of code / html cleanup for faster pages loads (use a little CSS also)
+		bug: Fix for improper display of html entities in the syslog message (thanks dagonet)
+		bug: Fix Cacti 0.8.7 compatibility
 
 	--- 0.4 ---
-		#0000034 - Fix for shadow.gif file error in httpd logs.
-		#0000036 - Syslog plugin causes duplicates if multiple log processors are running at once
-		#0000037 - Option for max time to save syslog events
-		Removed some debugging code
+		bug#0000034 - Fix for shadow.gif file error in httpd logs.
+		bug#0000036 - Syslog plugin causes duplicates if multiple log processors are running at once
+		bug#0000037 - Option for max time to save syslog events
+		bug: Removed some debugging code
 
 	--- 0.3 ---
-		Fixed an issue with "message" being hard coded
-		Fixed a typo in the removal code
-		Move Processing code to its own file
-		Add Debugging to the Processing Code (/debug)
-
+		feature: Move Processing code to its own file
+		feature: Add Debugging to the Processing Code (/debug)
+		bug: Fixed an issue with "message" being hard coded
+		bug: Fixed a typo in the removal code
 
 	--- 0.2 ---
-		Fixed a minor error that caused the graphs page to not refresh
-		Modified SQL query in syslog processor to speed things up greatly
-		#0000010 Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
-		#0000013 - Fix issues with database names with uncommon characters by enclosing in back-ticks
-
+		bug#0000010 Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
+		bug#0000013 - Fix issues with database names with uncommon characters by enclosing in back-ticks
+		bug: Fixed a minor error that caused the graphs page to not refresh
+		bug: Modified SQL query in syslog processor to speed things up greatly
 
 	--- 0.1 ---
 		Initial release

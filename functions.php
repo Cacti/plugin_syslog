@@ -258,18 +258,10 @@ function sql_hosts_where($tab) {
 					if (!empty($hostfilter)) {
 						$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
 					}else{
-						if ($tab == "syslog") {
-							if (!empty($sql_where)) {
-								$hostfilter .= " AND host_id IN('" . $_REQUEST["host"][$x] . "'";
-							} else {
-								$hostfilter .= " host_id IN('" . $_REQUEST["host"][$x] . "'";
-							}
-						}else{
-							if (!empty($sql_where)) {
-								$hostfilter .= " AND host IN('" . $_REQUEST["host"][$x] . "'";
-							} else {
-								$hostfilter .= " host IN('" . $_REQUEST["host"][$x] . "'";
-							}
+						if (!empty($sql_where)) {
+							$hostfilter .= " AND host_id IN('" . $_REQUEST["host"][$x] . "'";
+						} else {
+							$hostfilter .= " host_id IN('" . $_REQUEST["host"][$x] . "'";
 						}
 					}
 
@@ -279,18 +271,10 @@ function sql_hosts_where($tab) {
 				$hostfilter .= ")";
 			}
 		}else{
-			if ($tab == "syslog") {
-				if (!empty($sql_where)) {
-					$hostfilter .= " AND host_id IN('" . $_REQUEST["host"] . "')";
-				} else {
-					$hostfilter .= " host_id IN('" . $_REQUEST["host"] . "')";
-				}
-			}else{
-				if (!empty($sql_where)) {
-					$hostfilter .= " AND host IN('" . $_REQUEST["host"] . "')";
-				} else {
-					$hostfilter .= " host IN('" . $_REQUEST["host"] . "')";
-				}
+			if (!empty($sql_where)) {
+				$hostfilter .= " AND host_id IN('" . $_REQUEST["host"] . "')";
+			} else {
+				$hostfilter .= " host_id IN('" . $_REQUEST["host"] . "')";
 			}
 		}
 	}
