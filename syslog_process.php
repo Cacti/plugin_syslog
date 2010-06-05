@@ -309,7 +309,7 @@ if (sizeof($query)) {
 
 				if (sizeof($at)) {
 					$htmlm .= "<html><head><style type='text/css'>";
-					$htmlm .= file_get_contents($config['base_path'] . "/plugins/syslog/syslog.css");
+					$htmlm .= file_get_contents($config['base_path'] . "plugins/syslog/syslog.css");
 					$htmlm .= "</style></head>";
 
 					if ($alert['method'] == "1") {
@@ -329,8 +329,6 @@ if (sizeof($query)) {
 						$htmlm  .= "<td class='td'>" . $alert['num']     . "</td>\n";
 						$htmlm  .= "<td class='td'>"     . sizeof($at)       . "</td>\n";
 						$htmlm  .= "<td class='td'>"     . htmlspecialchars($alert['message']) . "</td></tr></table><br>\n";
-
-						$smsalert = "Sev: " . $severities[$alert["severity"]] . ", URL: " . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 					}else{
 						$htmlm .= "<body class='body'><h1 class='h1'>Cacti Syslog Plugin Alert '" . $alert['name'] . "'</h1>";
 					}
@@ -366,10 +364,10 @@ if (sizeof($query)) {
 						}
 					}
 
-					if ($alert['method'] == "1") {
+					if ($alert["method"] == 1) {
 						$sequence = syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at), $htmlm);
+						$smsalert = "Sev: " . $severities[$alert["severity"]] . ", URL: " . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 					}
-
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
 
 					$htmlm  .= "</table></body></html>";
