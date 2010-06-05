@@ -60,8 +60,13 @@ load_current_session_value("tab", "sess_syslog_tab", "syslog");
 $current_tab = $_REQUEST["tab"];
 
 /* if they were redirected to the page, let's set that up */
-if (isset($_REQUEST["id"])) {
-	syslog_view_alarm();
+if ($_REQUEST["id"] > "0" || $current_tab == "current") {
+	$current_tab = "current";
+}
+
+load_current_session_value("id", "sess_syslog_id", "0");
+if ($_REQUEST["id"] > "0" || $current_tab == "current") {
+	$tabs_syslog["current"] = "Selected Alert";
 }
 
 /* draw the tabs */
@@ -86,6 +91,11 @@ print "<td></td>\n</tr></table>\n";
 /* validate the syslog post/get/request information */;
 syslog_request_validation($current_tab);
 
+if ($current_tab == "current") {
+	syslog_view_alarm();
+}
+
+/* draw the tabs */
 /* display the main page */
 if (isset($_REQUEST["export_x"])) {
 	syslog_export($current_tab);
@@ -97,14 +107,19 @@ if (isset($_REQUEST["export_x"])) {
 }
 
 function syslog_view_alarm() {
-	global $config, $syslog_cnn;
+	global $config, $colors, $syslog_cnn;
 
 	include(dirname(__FILE__) . "/config.php");
-
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
+
+	echo "<table cellpadding='3' cellspacing='0' align='center' style='width:100%;border:1px solid #" . $colors["header"] . ";'>";
+	echo "<tr><td style='color:#FFFFFF;background-color:#" . $colors["header"] . ";'><strong>Syslog Alert View</strong></td></tr>"; 
+	echo "<tr><td style='background-color:#FFFFFF;'>";
 
 	$html = db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"], '', true, $syslog_cnn);
 	echo $html;
+
+	echo "</td></tr></table>";
 
 	include_once("./include/bottom_footer.php");
 	exit;
@@ -219,6 +234,7 @@ function syslog_request_validation($current_tab) {
 		kill_session_var("sess_syslog_filter");
 		kill_session_var("sess_syslog_efacility");
 		kill_session_var("sess_syslog_elevel");
+		kill_session_var("sess_syslog_id");
 		kill_session_var("sess_syslog_sort_column");
 		kill_session_var("sess_syslog_sort_direction");
 
@@ -232,6 +248,7 @@ function syslog_request_validation($current_tab) {
 		unset($_REQUEST["filter"]);
 		unset($_REQUEST["efacility"]);
 		unset($_REQUEST["elevel"]);
+		unset($_REQUEST["id"]);
 		unset($_REQUEST["sort_column"]);
 		unset($_REQUEST["sort_direction"]);
 		$reset_multi = true;
@@ -281,7 +298,7 @@ function syslog_request_validation($current_tab) {
 }
 
 function get_syslog_messages(&$sql_where, $row_limit, $tab) {
-	global $sql_where, $syslog_cnn, $hostfilter, $syslog_incoming_config;
+	global $sql_where, $syslog_cnn, $hostfilter, $current_tab, $syslog_incoming_config;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -304,7 +321,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 				AND '" . $_SESSION["sess_current_date2"] . "'";
 	}
 
-	if (isset($_REQUEST["id"])) {
+	if (isset($_REQUEST["id"]) && $current_tab == "current") {
 		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") .
 			"sa.id=" . $_REQUEST["id"];
 	}

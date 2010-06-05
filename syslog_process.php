@@ -309,7 +309,7 @@ if (sizeof($query)) {
 
 				if (sizeof($at)) {
 					$htmlm .= "<html><head><style type='text/css'>";
-					$htmlm .= file_get_contents($config['base_path'] . "plugins/syslog/syslog.css");
+					$htmlm .= file_get_contents($config['base_path'] . "/plugins/syslog/syslog.css");
 					$htmlm .= "</style></head>";
 
 					if ($alert['method'] == "1") {
