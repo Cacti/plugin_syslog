@@ -385,7 +385,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$id = 0;
 		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq", true, $syslog_cnn);
 
-		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "'", false, "SYSLOG");
+		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "', and Sequence '$id'", false, "SYSLOG");
 
 		return $id;
 	}else{
@@ -403,7 +403,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$id = 0;
 		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq", true, $syslog_cnn);
 
-		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "'", false, "SYSLOG");
+		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, "SYSLOG");
 
 		return $id;
 	}

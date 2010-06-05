@@ -1227,7 +1227,7 @@ function syslog_config_arrays () {
 function syslog_draw_navigation_text ($nav) {
 	global $config;
 
-	$nav["syslog.php:"]                = array("title" => "Syslog", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
+	$nav["syslog.php:"]                = array("title" => "Syslog", "mapping" => "", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
 	$nav["syslog_removal.php:"]        = array("title" => "Syslog Removals", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_removal.php", "level" => "1");
 	$nav["syslog_removal.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
 	$nav["syslog_removal.php:newedit"] = array("title" => "(Edit)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
@@ -1241,7 +1241,7 @@ function syslog_draw_navigation_text ($nav) {
 	$nav["syslog_reports.php:"]        = array("title" => "Syslog Reports", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_reports.php", "level" => "1");
 	$nav["syslog_reports.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_reports.php:", "url" => "syslog_reports.php", "level" => "2");
 	$nav["syslog_reports.php:actions"]  = array("title" => "(Actions)", "mapping" => "index.php:,syslog_reports.php:", "url" => "syslog_reports.php", "level" => "2");
-	$nav["syslog.php:actions"]         = array("title" => "Syslog", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
+	$nav["syslog.php:actions"]         = array("title" => "Syslog", "mapping" => "", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
 
 	return $nav;
 }

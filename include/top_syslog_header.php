@@ -116,10 +116,10 @@ if (read_config_option("auth_method") != 0) {
 			<table width="100%">
 				<tr>
 					<td>
-						<?php draw_navigation_text();?>
+						<?php echo draw_navigation_text();?>
 					</td>
 					<td align="right">
-						<?php if (read_config_option("auth_method") != 0) { ?>
+						<?php if ((isset($_SESSION["sess_user_id"])) && ($using_guest_account == false)) { ?>
 						Logged in as <strong><?php print db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);?></strong> (<a href="<?php echo $config['url_path']; ?>logout.php">Logout</a>)&nbsp;
 						<?php } ?>
 					</td>
