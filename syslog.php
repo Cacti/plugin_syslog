@@ -84,7 +84,7 @@ foreach (array_keys($tabs_syslog) as $tab_short_name) {
 print "<td></td>\n</tr></table>\n";
 
 /* validate the syslog post/get/request information */;
-syslog_request_validation();
+syslog_request_validation($current_tab);
 
 /* display the main page */
 if (isset($_REQUEST["export_x"])) {
@@ -166,7 +166,7 @@ function generate_syslog_cssjs() {
  *  we have a good request.  We want to protect against people who
  *  like to create issues with Cacti.
 */
-function syslog_request_validation() {
+function syslog_request_validation($current_tab) {
 	global $title, $colors, $rows, $config, $reset_multi;
 
 	/* ================= input validation ================= */
@@ -201,6 +201,11 @@ function syslog_request_validation() {
 	/* clean up sort direction */
 	if (isset($_REQUEST["sort_direction"])) {
 		$_REQUEST["sort_direction"] = sanitize_search_string(get_request_var_request("sort_direction"));
+	}
+
+	if ($current_tab != "alerts" && isset($_REQUEST["host"]) && $_REQUEST["host"][0] == -1) {
+		kill_session_var("sess_syslog_hosts");
+		unset($_REQUEST["host"]);
 	}
 
 	/* if the user pushed the 'clear' button */
@@ -262,7 +267,7 @@ function syslog_request_validation() {
 	load_current_session_value("filter", "sess_syslog_filter", "");
 	load_current_session_value("efacility", "sess_syslog_efacility", "0");
 	load_current_session_value("elevel", "sess_syslog_elevel", "0");
-	load_current_session_value("hosts", "sess_syslog_hosts", "localhost");
+	load_current_session_value("hosts", "sess_syslog_hosts", "0");
 	load_current_session_value("sort_column", "sess_syslog_sort_column", "logtime");
 	load_current_session_value("sort_direction", "sess_syslog_sort_direction", "DESC");
 

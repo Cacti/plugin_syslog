@@ -362,7 +362,7 @@ if (sizeof($query)) {
 						if ($alert['method'] != "1") {
 							$htmlm  .= "</table></body></html>";
 							$sequence = syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a, 1, $htmlm);
-							$smsalert = "Syslog Alert:" . $alert["name"] . ", Link:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
+							$smsalert = "Sev:" . $severities[$alert["severity"]] . ", URL:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 						}
 					}
 
