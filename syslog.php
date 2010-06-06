@@ -638,7 +638,7 @@ function syslog_filter($sql_where, $tab) {
 									<select title="Host Filters" id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
 										<?php if ($tab == "syslog") { ?><option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts</option><?php }else{?>
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
-										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Instance Based Logs</option><?php }?>
+										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Threshold Logs</option><?php }?>
 										<?php
 										$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host", true, $syslog_cnn);
 										if (sizeof($hosts)) {

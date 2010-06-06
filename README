@@ -54,7 +54,7 @@
     feature: Display Alert Log history from the UI
     feature: Allow Removal Rules to be filtered from the UI
     feature: Add Reporting capability
-    feature: Add Instance Count Alarms
+    feature: Add Threshold Alarms
     feature: Add Alert Severity to Alarms
     feature: Turn images to buttons
 

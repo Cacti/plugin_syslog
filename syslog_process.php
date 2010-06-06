@@ -328,7 +328,7 @@ if (sizeof($query)) {
 						$alertm .= "Count: " . sizeof($at)       . "\n";
 						$alertm .= "Message String: " . $alert['message'] . "\n";
 
-						$htmlm  .= "<body class='body'><h1 class='h1'>Cacti Syslog Plugin Instance Count Alert '" . $alert['name'] . "'</h1>";
+						$htmlm  .= "<body class='body'><h1 class='h1'>Cacti Syslog Plugin Threshold Alert '" . $alert['name'] . "'</h1>";
 						$htmlm  .= "<table class='table' cellspacing='0' cellpadding='3' border='1'>";
 						$htmlm  .= "<tr><th class='th'>Alert Name</th><th class='th'>Severity</th><th class='th'>Threshold</th><th class='th'>Count</th><th class='th'>Match String</th></tr>";
 						$htmlm  .= "<tr><td class='td'>" . $alert['name']    . "</td>\n";

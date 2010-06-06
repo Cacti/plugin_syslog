@@ -341,13 +341,13 @@ function syslog_action_edit() {
 		"friendly_name" => "Reporting Method",
 		"description" => "Define how to Alert on the syslog messages.",
 		"value" => "|arg1:method|",
-		"array" => array("0" => "Instance", "1" => "Number of Instances"),
+		"array" => array("0" => "Individual", "1" => "Threshold"),
 		"default" => "0"
 		),
 	"num" => array(
 		"method" => "textbox",
-		"friendly_name" => "Number of Instances",
-		"description" => "For the 'Number of Instances' method, If the number seen is above this value
+		"friendly_name" => "Threshold",
+		"description" => "For the 'Threshold' method, If the number seen is above this value
 		an Alert will be triggered.",
 		"value" => "|arg1:num|",
 		"size" => "4",
@@ -628,7 +628,7 @@ function syslog_alerts() {
 		"name" => array("Alert<br>Name", "ASC"),
 		"severity" => array("<br>Severity", "ASC"),
 		"method" => array("<br>Method", "ASC"),
-		"num" => array("Instance<br>Count", "ASC"),
+		"num" => array("Threshold<br>Count", "ASC"),
 		"enabled" => array("<br>Enabled", "ASC"),
 		"type" => array("Match<br>Type", "ASC"),
 		"message" => array("Search<br>String", "ASC"),
@@ -643,7 +643,7 @@ function syslog_alerts() {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $alert["id"]); $i++;
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?action=edit&id=" . $alert["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($data_source["name_cache"]), read_config_option("max_title_data_source"))) : htmlentities($alert["name"])) . "</a>", $alert["id"]);
 			form_selectable_cell($severities[$alert["severity"]], $alert["id"]);
-			form_selectable_cell(($alert["method"] == 1 ? "Number of Instances":"By Instance"), $alert["id"]);
+			form_selectable_cell(($alert["method"] == 1 ? "Threshold":"Individual"), $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? $alert["num"]:"N/A"), $alert["id"]);
 			form_selectable_cell((($alert["enabled"] == "on") ? "Yes" : ""), $alert["id"]);
 			form_selectable_cell($message_types[$alert["type"]], $alert["id"]);
