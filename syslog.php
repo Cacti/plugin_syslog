@@ -638,7 +638,7 @@ function syslog_filter($sql_where, $tab) {
 									<select title="Host Filters" id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
 										<?php if ($tab == "syslog") { ?><option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts</option><?php }else{?>
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
-										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1")) || ($reset_multi)) {?> selected<?php }?>>Instance Based Logs</option><?php }?>
+										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Instance Based Logs</option><?php }?>
 										<?php
 										$hosts = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host", true, $syslog_cnn);
 										if (sizeof($hosts)) {
@@ -714,6 +714,76 @@ function syslog_filter($sql_where, $tab) {
 							}
 
 	return $total_rows;
+}
+
+/** function syslog_syslog_legend()
+ *  This function displays the foreground and background colors for the syslog syslog legend
+*/
+function syslog_syslog_legend() {
+	global $colors, $disabled_color, $notmon_color, $database_default;
+
+	html_start_box("", "100%", $colors["header"], "3", "center", "");
+	print "<tr>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Emergency</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Alert</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Critical</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_err_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_err_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Error</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Warning</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Notice</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Info</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_debug_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_debug_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Debug</b></td>";
+
+	print "</tr>";
+	html_end_box(false);
+}
+
+/** function syslog_log_legend()
+ *  This function displays the foreground and background colors for the syslog log legend
+*/
+function syslog_log_legend() {
+	global $colors, $disabled_color, $notmon_color, $database_default;
+
+	html_start_box("", "100%", $colors["header"], "3", "center", "");
+	print "<tr>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Critical</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Warning</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Notice</b></td>";
+
+	print "</tr>";
+	html_end_box(false);
 }
 
 /** function syslog_messages()
@@ -819,6 +889,11 @@ function syslog_messages($tab="syslog") {
 		}else{
 			print "<tr><td><em>No Messages</em></td></tr>";
 		}
+
+		print $nav;
+		html_end_box(false);
+
+		syslog_syslog_legend();
 	}else{
 		$display_text = array(
 			"name" => array("Alert Name", "ASC"),
@@ -865,11 +940,14 @@ function syslog_messages($tab="syslog") {
 		}else{
 			print "<tr><td><em>No Messages</em></td></tr>";
 		}
+
+		print $nav;
+		html_end_box(false);
+
+		syslog_log_legend();
 	}
 
 	/* put the nav bar on the bottom as well */
-	print $nav;
-	html_end_box(false);
 									?>
 
 								</td>

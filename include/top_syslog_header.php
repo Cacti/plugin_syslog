@@ -25,7 +25,7 @@
  +-------------------------------------------------------------------------+
 */
 
-global $colors, $config, $grid_menu, $grid_down;
+global $colors, $config;
 
 $using_guest_account = false;
 $show_console_tab = true;
@@ -35,17 +35,8 @@ if ($oper_mode == OPER_MODE_RESKIN) {
 	return;
 }
 
-/* set the console status */
-if (isset($_REQUEST["close_console_x"])) {
-	$_REQUEST["grid_console_open"] = FALSE;
-}
-if (isset($_REQUEST["open_console_x"])) {
-	$_REQUEST["grid_console_open"] = TRUE;
-}
-load_current_session_value("grid_console_open", "sess_grid_console_open", TRUE);
-
 if (read_config_option("auth_method") != 0) {
-	global $colors, $config, $grid_menu;
+	global $colors, $config;
 
 	/* at this point this user is good to go... so get some setting about this
 	user and put them into variables to save excess SQL in the future */
