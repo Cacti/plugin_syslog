@@ -857,12 +857,12 @@ function syslog_messages($tab="syslog") {
 
 	if ($tab == "syslog") {
 		$display_text = array(
+			"nosortt" => array("Actions", "ASC"),
 			"host_id" => array("Host", "ASC"),
 			"logtime" => array("Date", "ASC"),
 			"message" => array("Message", "ASC"),
 			"facility_id" => array("Facility", "ASC"),
-			"priority_id" => array("Level", "ASC"),
-			"nosortt" => array("Options", "ASC"));
+			"priority_id" => array("Level", "ASC"));
 
 		html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
@@ -878,13 +878,16 @@ function syslog_messages($tab="syslog") {
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $priorities[$syslog_message["priority_id"]], $title);$i++;
 
+				print "<td style='whitspace-nowrap;width:1%;'>";
+				if ($syslog_message['mtype'] == 'main') {					print "<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>
+						<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>\n";
+				}
+				print "</td>\n";
 				print "<td>" . $hosts[$syslog_message["host_id"]] . "</td>\n";
 				print "<td>" . $syslog_message["logtime"] . "</td>\n";
 				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))):title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))) . "</td>\n";
 				print "<td>" . ucfirst($facilities[$syslog_message["facility_id"]]) . "</td>\n";
 				print "<td>" . ucfirst($priorities[$syslog_message["priority_id"]]) . "</td>\n";
-				print '<td nowrap valign=top>';
-				print ($syslog_message['mtype'] == 'main' ? "<center><a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' border=0></a>&nbsp;<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' border=0></a></center></td></tr>\n":"");
 			}
 		}else{
 			print "<tr><td><em>No Messages</em></td></tr>";
