@@ -177,7 +177,7 @@ if ($retention > 0 || $partitioned) {
 		$days     = read_config_option("syslog_retention");
 
 		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
-		cacti_log("SYSLOG: There are currently '" . sizeof($number_of_partitions) . "' Partitions, We will keep '$days' of them.", false, "SYSTEM");
+		//cacti_log("SYSLOG: There are currently '" . sizeof($number_of_partitions) . "' Partitions, We will keep '$days' of them.", false, "SYSTEM");
 
 		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
 
