@@ -60,12 +60,12 @@ load_current_session_value("tab", "sess_syslog_tab", "syslog");
 $current_tab = $_REQUEST["tab"];
 
 /* if they were redirected to the page, let's set that up */
-if ($_REQUEST["id"] > "0" || $current_tab == "current") {
+if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
 	$current_tab = "current";
 }
 
 load_current_session_value("id", "sess_syslog_id", "0");
-if ($_REQUEST["id"] > "0" || $current_tab == "current") {
+if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
 	$tabs_syslog["current"] = "Selected Alert";
 }
 
