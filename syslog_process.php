@@ -343,26 +343,30 @@ if (sizeof($query)) {
 					$htmlm .= "<table  class='table' cellspacing='0' cellpadding='3' border='1'>";
 					$htmlm .= "<tr><th class='th'>Hostname</th><th class='th'>Date</th><th class='th'>Severity</th><th class='th'>Priotity</th><th class='th'>Message</th></tr>";
 
+					$max_alerts  = read_config_option("syslog_maxrecords");
+					$alert_count = 0;
 					foreach($at as $a) {
 						$a['message'] = str_replace('  ', "\n", $a['message']);
 						while (substr($a['message'], -1) == "\n") {
 							$a['message'] = substr($a['message'], 0, -1);
 						}
 
-						$alertm .= "-----------------------------------------------\n";
-						$alertm .= 'Hostname : ' . $a['host'] . "\n";
-						$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
-						$alertm .= 'Severity : ' . $severities[$alert['severity']] . "\n\n";
-						$alertm .= 'Priority : ' . $a['priority'] . "\n\n";
-						$alertm .= 'Message  :'  . "\n" . $a['message'] . "\n";
+						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {							$alertm .= "-----------------------------------------------\n";
+							$alertm .= 'Hostname : ' . $a['host'] . "\n";
+							$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
+							$alertm .= 'Severity : ' . $severities[$alert['severity']] . "\n\n";
+							$alertm .= 'Priority : ' . $a['priority'] . "\n\n";
+							$alertm .= 'Message  :'  . "\n" . $a['message'] . "\n";
 
-						$htmlm  .= "<tr><td class='td'>" . $a['host']                      . "</td>"      . "\n";
-						$htmlm  .= "<td class='td'>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
-						$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']] . "</td>"      . "\n";
-						$htmlm  .= "<td class='td'>"     . $a['priority']                  . "</td>"      . "\n";
-						$htmlm  .= "<td class='td'>"     . $a['message']                   . "</td></tr>" . "\n";
+							$htmlm  .= "<tr><td class='td'>" . $a['host']                      . "</td>"      . "\n";
+							$htmlm  .= "<td class='td'>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
+							$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']] . "</td>"      . "\n";
+							$htmlm  .= "<td class='td'>"     . $a['priority']                  . "</td>"      . "\n";
+							$htmlm  .= "<td class='td'>"     . $a['message']                   . "</td></tr>" . "\n";
+						}
 
 						$syslog_alarms++;
+						$alert_count++;
 
 						if ($alert['method'] != "1") {
 							$htmlm  .= "</table></body></html>";

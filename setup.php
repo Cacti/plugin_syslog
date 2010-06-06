@@ -958,6 +958,14 @@ function syslog_config_settings() {
 			"array" => array(9999999 => "Never", "60" => "1 Minute", "120" => "2 Minutes", "300" => "5 Minutes", "600" => "10 Minutes"),
 			"max_length" => 3,
 		),
+		"syslog_maxrecords" => array(
+			"friendly_name" => "Max Report Records",
+			"description" => "For Threshold based Alerts, what is the maxiumum number that you wish to
+			show in the report.  This is used to limit the size of the html log and e-mail.",
+			"method" => "drop_array",
+			"default" => "100",
+			"array" => array("20" => "20 Records", "40" => "40 Records", "60" => "60 Records", "100" => "100 Records", "200" => "200 Records", "400" => "400 Records")
+		),
 		"syslog_retention" => array(
 			"friendly_name" => "Syslog Retention",
 			"description" => "This is the number of days to keep events.",
