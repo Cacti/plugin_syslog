@@ -113,7 +113,7 @@ function syslog_view_alarm() {
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
 
 	echo "<table cellpadding='3' cellspacing='0' align='center' style='width:100%;border:1px solid #" . $colors["header"] . ";'>";
-	echo "<tr><td style='color:#FFFFFF;background-color:#" . $colors["header"] . ";'><strong>Syslog Alert View</strong></td></tr>"; 
+	echo "<tr><td class='textHeaderDark' style='background-color:#" . $colors["header"] . ";'><strong>Syslog Alert View</strong></td></tr>";
 	echo "<tr><td style='background-color:#FFFFFF;'>";
 
 	$html = db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"], '', true, $syslog_cnn);
