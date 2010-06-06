@@ -158,9 +158,10 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("Syslog Table IS Partitioned");
 
 		$syslog_deleted = 0;
-		$number_of_partitions = db_fetch_assoc("SELECT * FROM `information_schema`.`partitions` WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog' ORDER BY partition_ordinal_position", true, $syslog_cnn);
-
-		syslog_debug("There are currently " . sizeof($number_of_partitions) . " Syslog Partitions");
+		$number_of_partitions = db_fetch_assoc("SELECT *
+			FROM `information_schema`.`partitions`
+			WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
+			ORDER BY partition_ordinal_position", true, $syslog_cnn);
 
 		$time     = time();
 		$now      = date('Y-m-d', $time);
@@ -173,6 +174,10 @@ if ($retention > 0 || $partitioned) {
 		$lformat  = date('Ymd', $lday_ts);
 		$last_day = db_fetch_row("SELECT TO_DAYS('$lnow') AS today", true, $syslog_cnn);
 		$last_day = $last_day["today"];
+		$days     = read_config_option("syslog_retention");
+
+		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
+		cacti_log("SYSLOG: There are currently '" . sizeof($number_of_partitions) . "' Partitions, We will keep '$days' of them.", false, "SYSTEM");
 
 		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
 
@@ -180,6 +185,7 @@ if ($retention > 0 || $partitioned) {
 			db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
 
 			if ($lday_ts != '') {
+				cacti_log("SYSLOG: Creating new partition 'd" . $lformat . "'", false, "SYSTEM");
 				syslog_debug("Creating new partition 'd" . $lformat . "'");
 				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
@@ -189,12 +195,13 @@ if ($retention > 0 || $partitioned) {
 					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", true, $syslog_cnn);
 
-				if ($retention > 0) {
+				if ($days > 0) {
 					$user_partitions = sizeof($number_of_partitions) - 1;
 					if ($user_partitions >= $days) {
 						$i = 0;
 						while ($user_partitions > $days) {
 							$oldest = $number_of_partitions[$i];
+							cacti_log("SYSLOG: Removing old partition 'd" . $oldest["PARTITION_NAME"] . "'", false, "SYSTEM");
 							syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
 							db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
 							db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
