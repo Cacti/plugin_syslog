@@ -1199,7 +1199,8 @@ function syslog_config_arrays () {
 		'messagec' => 'Contains',
 		'messagee' => 'Ends with',
 		'host'     => 'Hostname is',
-		'facility' => 'Facility is');
+		'facility' => 'Facility is',
+		'sql'      => 'SQL Expression');
 
 	$syslog_freqs = array('86400' => 'Last Day', '604800' => 'Last Week');
 

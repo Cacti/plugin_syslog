@@ -303,6 +303,10 @@ if (sizeof($query)) {
 			$sql = "SELECT * FROM `" . $syslogdb_default . "`.`syslog_incoming`
 				WHERE " . $syslog_incoming_config["hostField"] . "='" . $alert['message'] . "'
 				AND status=" . $uniqueID;
+		} else if ($alert['type'] == 'sql') {
+			$sql = "SELECT * FROM `" . $syslogdb_default . "`.`syslog_incoming`
+				WHERE (" . $alert['message'] . ")
+				AND status=" . $uniqueID;
 		}
 
 		if ($sql != '') {

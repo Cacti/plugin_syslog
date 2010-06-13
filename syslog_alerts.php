@@ -357,9 +357,11 @@ function syslog_action_edit() {
 	"type" => array(
 		"method" => "drop_array",
 		"friendly_name" => "String Match Type",
-		"description" => "Define how you would like this string matched.",
+		"description" => "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression
+		to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'.",
 		"value" => "|arg1:type|",
 		"array" => $message_types,
+		"on_change" => "changeTypes()",
 		"default" => "matchesc"
 		),
 	"message" => array(
@@ -420,6 +422,21 @@ function syslog_action_edit() {
 		"config" => array("form_name" => "chk"),
 		"fields" => inject_form_variables($fields_syslog_alert_edit, (isset($alert) ? $alert : array()))
 		));
+
+	?>
+	<script type='text/javascript'>
+	function changeTypes() {
+		mValue = document.getElementById('message').value;
+		if (document.getElementById('type').value == 'sql') {
+			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><textarea cols='60' rows='5' id='message' name='message'>"+mValue+"</textarea></td>";
+			document.getElementById('row_message').innerHTML = row_message_html;
+		}else{
+			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><input type='text' id='message' name='message' size='80' maxlength='255' value='"+mValue+"'></td>";
+			document.getElementById('row_message').innerHTML = row_message_html;
+		}
+	}
+	</script>
+	<?php
 
 	html_end_box();
 
