@@ -64,7 +64,8 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
 		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
-			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"], $_POST["notes"], $_POST["enabled"], $_POST["severity"]);
+			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"],
+			$_POST["notes"], $_POST["enabled"], $_POST["severity"], $_POST["command"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_alerts.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
@@ -193,7 +194,8 @@ function form_actions() {
 	include_once($config['base_path'] . "/include/bottom_footer.php");
 }
 
-function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes, $enabled, $severity) {
+function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
+	$enabled, $severity, $command) {
 	global $syslog_cnn;
 
 	include(dirname(__FILE__) . "/config.php");
@@ -214,6 +216,7 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	$save["type"]     = form_input_validate($type,     "type",     "", false, 3);
 	$save["message"]  = form_input_validate($message,  "message",  "", false, 3);
 	$save["email"]    = form_input_validate(trim($email),    "email",    "", false, 3);
+	$save["command"]  = form_input_validate($command,  "command",  "", true, 3);
 	$save["notes"]    = form_input_validate($notes,    "notes",    "", true, 3);
 	$save["enabled"]  = form_input_validate($enabled,  "enabled",  "", false, 3);
 	$save["date"]     = time();
@@ -381,6 +384,20 @@ function syslog_action_edit() {
 		"array" => array("on" => "Enabled", "" => "Disabled"),
 		"default" => "on"
 		),
+	"notes" => array(
+		"friendly_name" => "Alert Notes",
+		"textarea_rows" => "5",
+		"textarea_cols" => "60",
+		"description" => "Space for Notes on the Alert",
+		"method" => "textarea",
+		"class" => "textAreaNotes",
+		"value" => "|arg1:notes|",
+		"default" => "",
+		),
+	"spacer1" => array(
+		"method" => "spacer",
+		"friendly_name" => "Alert Actions"
+		),
 	"email" => array(
 		"method" => "textarea",
 		"friendly_name" => "E-Mails to Notify",
@@ -394,14 +411,15 @@ function syslog_action_edit() {
 		"value" => "|arg1:email|",
 		"max_length" => "255"
 		),
-	"notes" => array(
-		"friendly_name" => "Alert Notes",
+	"command" => array(
+		"friendly_name" => "Alert Command",
 		"textarea_rows" => "5",
 		"textarea_cols" => "60",
-		"description" => "Space for Notes on the Alert",
+		"description" => "When an Alert is triggered, run the following command.  The following replacement variables
+		are available '<HOSTNAME>', '<ALERTID>', '<MESSAGE>', '<FACILITY>', '<PRIORITY>'.",
 		"method" => "textarea",
 		"class" => "textAreaNotes",
-		"value" => "|arg1:notes|",
+		"value" => "|arg1:command|",
 		"default" => "",
 		),
 	"id" => array(

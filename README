@@ -38,6 +38,11 @@
 
 ----[ Changelog
 
+    --- 1.01 ---
+    feature: Add alert commands by popular demand
+    bug#0001788: missing closing quote in syslog_alerts.php
+    bug#0001785: revision 1086 can not save reports when using seperate syslog mysql database
+
     --- 1.0 ---
     feature: Support SMS e-mail messages
     feature: Support MySQL partitioning for MySQL 5.1 and above for performance reasons

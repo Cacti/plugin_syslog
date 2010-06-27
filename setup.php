@@ -182,6 +182,7 @@ function syslog_check_upgrade() {
 		/* update realms for old versions */
 		if ($old < "1.0" || $old = '' || $old_pia) {
 			plugin_syslog_install();
+		}elseif ($old < "1.01") {			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -223,7 +224,6 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 	set_config_option('syslog_enabled', '');
 
 	if ($upgrade_type == "truncate") return;
-
 
 	if ($upgrade_type == "inline" || $isbackground) {
 		syslog_setup_table_new($options);
@@ -328,6 +328,10 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name", true, $syslog_cnn);
 			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method", true, $syslog_cnn);
 			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN severity INTEGER UNSIGNED NOT NULL default '0' AFTER name", true, $syslog_cnn);
+		}
+
+		if (!in_array("command", $columns)) {
+			db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
 		}
 
 		/* check upgrade of syslog_alert */
@@ -606,6 +610,7 @@ function syslog_setup_table_new($options) {
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		email varchar(255) default NULL,
+		command varchar(255) default NULL,
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id)) ENGINE=$engine;", true, $syslog_cnn);
 
@@ -718,7 +723,7 @@ function syslog_setup_table_new($options) {
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.0',
+		'version'  => '1.01',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',

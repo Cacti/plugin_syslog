@@ -201,7 +201,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	include(dirname(__FILE__) . "/config.php");
 
 	/* get the username */
-	$username = db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);
+	$username = db_fetch_cell("SELECT username FROM user_auth WHERE id=" . $_SESSION["sess_user_id"]);
 
 	if ($id) {
 		$save["id"] = $id;
@@ -225,7 +225,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save["user"]     = $username;
 
 	$id = 0;
-	$id = sql_save($save, "syslog_reports", "id", true, $syslog_cnn);
+	$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_reports`", "id", true, $syslog_cnn);
 
 	if ($id) {
 		raise_message(1);
