@@ -77,6 +77,7 @@ if (strpos($dir, 'plugins') !== false) {
 	chdir('../../');
 }
 include("./include/global.php");
+include_once("./lib/poller.php");
 include("./plugins/syslog/config.php");
 include_once(dirname(__FILE__) . "/functions.php");
 
@@ -377,6 +378,11 @@ if (sizeof($query)) {
 							$sequence = syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a, 1, $htmlm);
 							$smsalert = "Sev:" . $severities[$alert["severity"]] . ", URL:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 						}
+
+						if (trim($alert['command']) != "") {							$command = alert_replace_variables($alert, $a);
+							cacti_log("SYSLOG NOTICE: Executing '$command'", true, "SYSTEM");
+							exec_background($command);
+						}
 					}
 
 					if ($alert["method"] == 1) {
@@ -562,4 +568,18 @@ function display_help() {
 	echo "Syslog Poller Process 1.0, Copyright 2004-2010 - The Cacti Group\n\n";
 	echo "The main Syslog poller process script for Cacti Syslogging.\n\n";
 	echo "usage: syslog_process.php [--debug|-d]\n\n";
+}
+
+function alert_replace_variables($alert, $a) {	global $severities;
+
+	$command = $alert["command"];
+
+	$command = str_replace("<ALERTID>", $a["id"], $command);
+	$command = str_replace("<HOSTNAME>", $a["hostname"], $command);
+	$command = str_replace("<PRIORITY>", $a["priority"], $command);
+	$command = str_replace("<FACILITY>", $a["facility"], $command);
+	$command = str_replace("<MESSAGE>", $a["message"], $command);
+	$command = str_replace("<SEVERITY>", $severities[$a["severity"]], $command);
+
+	return $command;
 }
