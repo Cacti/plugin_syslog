@@ -416,8 +416,9 @@ function syslog_action_edit() {
 		"textarea_rows" => "5",
 		"textarea_cols" => "60",
 		"description" => "When an Alert is triggered, run the following command.  The following replacement variables
-		are available '<HOSTNAME>', '<ALERTID>', '<MESSAGE>', '<FACILITY>', '<PRIORITY>', '<SEVERITY>'.  Please
-		note that '<HOSTNAME>' is only available on individual thresholds.",
+		are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>,
+		<b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please
+		note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.",
 		"method" => "textarea",
 		"class" => "textAreaNotes",
 		"value" => "|arg1:command|",
