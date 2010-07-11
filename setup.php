@@ -916,7 +916,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 		<tr>
 			<td bgcolor="#f5f5f5" align="right">
 				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='Cancel'>
-				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>>
+				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>'>
 			</td>
 		</tr>
 	</table>
