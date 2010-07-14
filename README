@@ -38,6 +38,9 @@
 
 ----[ Changelog
 
+    --- 1.02 ---
+    feature: Add syslog database functions to mitigate issues with same system installs
+
     --- 1.01 ---
     feature: Add alert commands by popular demand
     bug#0001788: missing closing quote in syslog_alerts.php

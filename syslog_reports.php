@@ -134,7 +134,7 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$report_info = db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id=" . $matches[1], '', true, $syslog_cnn);
+			$report_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id=" . $matches[1], '', true, $syslog_cnn);
 			$report_list  .= "<li>" . $report_info . "<br>";
 			$report_array[] = $matches[1];
 		}
@@ -239,19 +239,19 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 function api_syslog_report_remove($id) {
 	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_report_disable($id) {
 	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 function api_syslog_report_enable($id) {
 	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
 }
 
 /* ---------------------
@@ -287,7 +287,7 @@ function syslog_get_report_records(&$sql_where, $row_limit) {
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
 		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
 
-	return db_fetch_assoc($query_string, true, $syslog_cnn);
+	return syslog_db_fetch_assoc($query_string, true, $syslog_cnn);
 }
 
 function syslog_action_edit() {
@@ -301,7 +301,7 @@ function syslog_action_edit() {
 	/* ==================================================== */
 
 	if (isset($_GET["id"])) {
-		$report = db_fetch_row("SELECT *
+		$report = syslog_db_fetch_row("SELECT *
 			FROM `" . $syslogdb_default . "`.`syslog_reports`
 			WHERE id=" . $_GET["id"], true, $syslog_cnn);
 		$header_label = "[edit: " . $report["name"] . "]";
@@ -572,7 +572,7 @@ function syslog_report() {
 		FROM `" . $syslogdb_default . "`.`syslog_reports`
 		$sql_where";
 
-	$total_rows = db_fetch_cell($rows_query_string, '', true, $syslog_cnn);
+	$total_rows = syslog_db_fetch_cell($rows_query_string, '', true, $syslog_cnn);
 
 	?>
 	<script type="text/javascript">

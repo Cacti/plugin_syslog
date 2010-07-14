@@ -66,13 +66,79 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 	}
 }
 
+function syslog_set_syslogdb() {	global $config, $database_default, $database_hostname, $database_type;
+
+	include_once($config["base_path"] . "/plugins/syslog/config.php");
+
+	if (($database_hostname == $syslogdb_hostname) &&
+		($database_type == $syslogdb_type) &&
+		($syslogdb_default != $database_default)) {
+		db_execute("USE $syslogdb_default");
+	}
+}
+
+function syslog_set_cactidb() {	global $config, $database_default, $database_hostname, $database_type;
+
+	include_once($config["base_path"] . "/plugins/syslog/config.php");
+
+	if (($database_hostname == $syslogdb_hostname) &&
+		($database_type == $syslogdb_type) &&
+		($syslogdb_default != $database_default)) {
+		db_execute("USE $database_default");
+	}
+}
+
+function syslog_db_execute($sql, $log, $cnn) {	syslog_set_syslogdb();
+
+	$result = db_execute($sql, $log, $cnn);
+
+	syslog_set_cactidb();
+
+	return $result;
+}
+
+function syslog_db_fetch_assoc($sql, $log, $cnn) {
+	syslog_set_syslogdb();
+
+	$result = db_fetch_assoc($sql, $log, $cnn);
+
+	syslog_set_cactidb();
+
+	return $result;
+}
+
+function syslog_db_fetch_row($sql, $log, $cnn) {
+	syslog_set_syslogdb();
+
+	$result = db_fetch_row($sql, $log, $cnn);
+
+	syslog_set_cactidb();
+
+	return $result;
+}
+
+function syslog_db_fetch_cell($sql, $primary = '', $log = true, $cnn = '') {
+	global $cnn_id;
+
+	if ($cnn == '') {		$cnn = $cnn_id;
+	}
+
+	syslog_set_syslogdb();
+
+	$result = db_fetch_cell($sql, $primary, $log, $cnn);
+
+	syslog_set_cactidb();
+
+	return $result;
+}
+
 function syslog_remove_items($table, $uniqueID) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
 	include(dirname(__FILE__) . "/config.php");
 
 	/* REMOVE ALL THE THINGS WE DONT WANT TO SEE */
-	$rows = db_fetch_assoc("SELECT * FROM syslog_remove", true, $syslog_cnn);
+	$rows = syslog_db_fetch_assoc("SELECT * FROM syslog_remove", true, $syslog_cnn);
 
 	syslog_debug("Found   " . sizeof($rows) .
 		" Removal Rule" . (sizeof($rows) == 1 ? "" : "s" ) .
@@ -187,14 +253,14 @@ function syslog_remove_items($table, $uniqueID) {
 			/* process the removal rule first */
 			if ($sql1 != '') {
 				/* move rows first */
-				db_execute($sql1, true, $syslog_cnn);
+				syslog_db_execute($sql1, true, $syslog_cnn);
 				$messages_moved = $syslog_cnn->Affected_Rows();
 				$debugm   = "Moved   " . $messages_moved . ", ";
 				$xferred += $messages_moved;
 			}
 
 			/* now delete the remainder that match */
-			db_execute($sql, true, $syslog_cnn);
+			syslog_db_execute($sql, true, $syslog_cnn);
 			$removed += $syslog_cnn->Affected_Rows();
 			$debugm   = "Deleted " . $removed . ", ";
 
@@ -316,9 +382,9 @@ function syslog_export($tab) {
 		$sql_where = "";
 		$syslog_messages = get_syslog_messages($sql_where, "10000", $tab);
 
-		$hosts      = array_rekey(db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn), "host_id", "host");
-		$facilities = array_rekey(db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn), "facility_id", "facility");
-		$priorities = array_rekey(db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn), "priority_id", "priority");
+		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn), "host_id", "host");
+		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn), "facility_id", "facility");
+		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn), "priority_id", "priority");
 
 		if (sizeof($syslog_messages) > 0) {
 			print 'host, facility, priority, date, message' . "\r\n";

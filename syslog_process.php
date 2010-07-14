@@ -130,7 +130,7 @@ if ($email != '') {
 	}
 }
 
-$syntax = db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
+$syntax = syslog_db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`", true, $syslog_cnn);
 if (substr_count($syntax["Create Table"], "PARTITION")) {
 	$partitioned = true;
 }else{
@@ -143,12 +143,12 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("Syslog Table is NOT Partitioned");
 
 		/* delete from the main syslog table first */
-		db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog` WHERE logtime < '$retention'", true, $syslog_cnn);
+		syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog` WHERE logtime < '$retention'", true, $syslog_cnn);
 
 		$syslog_deleted = $syslog_cnn->Affected_Rows();
 
 		/* now delete from the syslog removed table */
-		db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_removed` WHERE logtime < '$retention'", true, $syslog_cnn);
+		syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_removed` WHERE logtime < '$retention'", true, $syslog_cnn);
 
 		$syslog_deleted += $syslog_cnn->Affected_Rows();
 
@@ -159,7 +159,7 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("Syslog Table IS Partitioned");
 
 		$syslog_deleted = 0;
-		$number_of_partitions = db_fetch_assoc("SELECT *
+		$number_of_partitions = syslog_db_fetch_assoc("SELECT *
 			FROM `information_schema`.`partitions`
 			WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
 			ORDER BY partition_ordinal_position", true, $syslog_cnn);
@@ -167,13 +167,13 @@ if ($retention > 0 || $partitioned) {
 		$time     = time();
 		$now      = date('Y-m-d', $time);
 		$format   = date('Ymd', $time);
-		$cur_day  = db_fetch_row("SELECT TO_DAYS('$now') AS today", true, $syslog_cnn);
+		$cur_day  = syslog_db_fetch_row("SELECT TO_DAYS('$now') AS today", true, $syslog_cnn);
 		$cur_day  = $cur_day["today"];
 
 		$lday_ts  = read_config_option("syslog_lastday_timestamp");
 		$lnow     = date('Y-m-d', $lday_ts);
 		$lformat  = date('Ymd', $lday_ts);
-		$last_day = db_fetch_row("SELECT TO_DAYS('$lnow') AS today", true, $syslog_cnn);
+		$last_day = syslog_db_fetch_row("SELECT TO_DAYS('$lnow') AS today", true, $syslog_cnn);
 		$last_day = $last_day["today"];
 		$days     = read_config_option("syslog_retention");
 
@@ -183,16 +183,16 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
 
 		if ($cur_day != $last_day) {
-			db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
+			syslog_db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
 
 			if ($lday_ts != '') {
 				cacti_log("SYSLOG: Creating new partition 'd" . $lformat . "'", false, "SYSTEM");
 				syslog_debug("Creating new partition 'd" . $lformat . "'");
-				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` REORGANIZE PARTITION dMaxValue INTO (
+				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", true, $syslog_cnn);
 
-				db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` REORGANIZE PARTITION dMaxValue INTO (
+				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", true, $syslog_cnn);
 
@@ -204,8 +204,8 @@ if ($retention > 0 || $partitioned) {
 							$oldest = $number_of_partitions[$i];
 							cacti_log("SYSLOG: Removing old partition 'd" . $oldest["PARTITION_NAME"] . "'", false, "SYSTEM");
 							syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
-							db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
-							db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
+							syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
+							syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"], true, $syslog_cnn);
 							$i++;
 							$user_partitions--;
 							$syslog_deleted++;
@@ -220,7 +220,7 @@ if ($retention > 0 || $partitioned) {
 /* get a uniqueID to allow moving of records to done table */
 while (1) {
 	$uniqueID = rand(1, 127);
-	$count    = db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID, '', true, $syslog_cnn);
+	$count    = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID, '', true, $syslog_cnn);
 
 	if ($count == 0) {
 		break;
@@ -230,7 +230,7 @@ while (1) {
 syslog_debug("Unique ID = " . $uniqueID);
 
 /* flag all records with the uniqueID prior to moving */
-db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET status=" . $uniqueID . " WHERE status=0", true, $syslog_cnn);
+syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET status=" . $uniqueID . " WHERE status=0", true, $syslog_cnn);
 
 $syslog_incoming = $syslog_cnn->Affected_Rows();
 
@@ -239,10 +239,10 @@ syslog_debug("Found   " . $syslog_incoming .
 	" to process");
 
 /* update the hosts, facilities, and priorities tables */
-db_execute("INSERT INTO syslog_facilities (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility)", true, $syslog_cnn);
-db_execute("INSERT INTO syslog_priorities (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority)", true, $syslog_cnn);
-db_execute("INSERT INTO syslog_hosts (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE host=VALUES(host)", true, $syslog_cnn);
-db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility)", true, $syslog_cnn);
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority)", true, $syslog_cnn);
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE host=VALUES(host)", true, $syslog_cnn);
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
 	(host_id, facility_id)
 	SELECT host_id, facility_id
 	FROM ((SELECT DISTINCT host, facility
@@ -259,7 +259,7 @@ $syslog_removed = $syslog_items["removed"];
 $syslog_xferred = $syslog_items["xferred"];
 
 /* send out the alerts */
-$query = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
+$query = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
 $syslog_alerts  = sizeof($query);
 
 if (read_config_option("syslog_html") == "on") {
@@ -313,11 +313,11 @@ if (sizeof($query)) {
 		if ($sql != '') {
 			if ($alert['method'] == "1") {
 				$th_sql = str_replace("*", "count(*)", $sql);
-				$count = db_fetch_cell($th_sql, '', true, $syslog_cnn);
+				$count = syslog_db_fetch_cell($th_sql, '', true, $syslog_cnn);
 			}
 
 			if (($alert['method'] == "1" && $count >= $alert["num"]) || ($alert["method"] == "0")) {
-				$at = db_fetch_assoc($sql, true, $syslog_cnn);
+				$at = syslog_db_fetch_assoc($sql, true, $syslog_cnn);
 
 				if (sizeof($at)) {
 					$htmlm .= "<html><head><style type='text/css'>";
@@ -404,7 +404,7 @@ if (sizeof($query)) {
 }
 
 /* MOVE ALL FLAGGED MESSAGES TO THE SYSLOG TABLE */
-db_execute('INSERT INTO syslog (logtime, priority_id, facility_id, host_id, message)
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, priority_id, facility_id, host_id, message)
 	SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config["timeField"]     . '`),
 	priority_id, facility_id, host_id, message
 	FROM (SELECT date, time, priority_id, facility_id, host_id, message
@@ -422,14 +422,16 @@ $moved = $syslog_cnn->Affected_Rows();
 syslog_debug("Moved   " . $moved . " Message" . ($moved == 1 ? "" : "s" ) . " to the 'syslog' table");
 
 /* DELETE ALL FLAGGED ITEMS FROM THE INCOMING TABLE */
-db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID, true, $syslog_cnn);
+syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID, true, $syslog_cnn);
 
 syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . " already processed Messages from incoming");
 
 /* Add the unique hosts to the syslog_hosts table */
-$sql = "INSERT INTO syslog_hosts (host) (SELECT DISTINCT host FROM syslog_incoming) ON DUPLICATE KEY UPDATE host=VALUES(host)";
+$sql = "INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host)
+	(SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming`)
+	ON DUPLICATE KEY UPDATE host=VALUES(host)";
 
-db_execute($sql, true, $syslog_cnn);
+syslog_db_execute($sql, true, $syslog_cnn);
 
 syslog_debug("Updated " . $syslog_cnn->Affected_Rows() .
 	" hosts in the syslog hosts table");
@@ -437,14 +439,14 @@ syslog_debug("Updated " . $syslog_cnn->Affected_Rows() .
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date("G") == 0 && date("i") < 5) {
 	if (!$partitioned) {
-		db_execute("OPTIMIZE TABLE
+		syslog_db_execute("OPTIMIZE TABLE
 			`" . $syslogdb_default . "`.`syslog_incoming`,
 			`" . $syslogdb_default . "`.`syslog`,
 			`" . $syslogdb_default . "`.`syslog_remove`,
 			`" . $syslogdb_default . "`.`syslog_removed`,
 			`" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
 	}else{
-		db_execute("OPTIMIZE TABLE
+		syslog_db_execute("OPTIMIZE TABLE
 			`" . $syslogdb_default . "`.`syslog_incoming`,
 			`" . $syslogdb_default . "`.`syslog_remove`,
 			`" . $syslogdb_default . "`.`syslog_alert`", true, $syslog_cnn);
@@ -454,7 +456,7 @@ if (date("G") == 0 && date("i") < 5) {
 syslog_debug("Processing Reports...");
 
 /* Lets run the reports */
-$reports = db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
+$reports = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
 $syslog_reports = sizeof($reports);
 
 syslog_debug("We have " . $syslog_reports . " Reports in the database");
@@ -518,7 +520,7 @@ foreach($reports as $syslog_report) {
 			$date1 = date("Y-m-d H:i:s", time() - 86400);
 			$sql  .= " AND logtime BETWEEN '". $date1 . "' AND '" . $date2 . "'";
 			$sql  .= " ORDER BY logtime DESC";
-			$items = db_fetch_assoc($sql, true, $syslog_cnn);
+			$items = syslog_db_fetch_assoc($sql, true, $syslog_cnn);
 
 			syslog_debug("We have " . $syslog_cnn->Affected_Rows() . " items for the Report");
 
