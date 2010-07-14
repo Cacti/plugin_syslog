@@ -68,7 +68,7 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 
 function syslog_set_syslogdb() {	global $config, $database_default, $database_hostname, $database_type;
 
-	include_once($config["base_path"] . "/plugins/syslog/config.php");
+	include($config["base_path"] . "/plugins/syslog/config.php");
 
 	if (($database_hostname == $syslogdb_hostname) &&
 		($database_type == $syslogdb_type) &&
@@ -77,15 +77,17 @@ function syslog_set_syslogdb() {	global $config, $database_default, $database_h
 	}
 }
 
-function syslog_set_cactidb() {	global $config, $database_default, $database_hostname, $database_type;
+function syslog_set_cactidb() {	global $config, $cnn_id, $database_default, $database_hostname, $database_type;
 
-	include_once($config["base_path"] . "/plugins/syslog/config.php");
+	include($config["base_path"] . "/plugins/syslog/config.php");
 
 	if (($database_hostname == $syslogdb_hostname) &&
 		($database_type == $syslogdb_type) &&
 		($syslogdb_default != $database_default)) {
 		db_execute("USE $database_default");
 	}
+
+	$cnn_id->DefaultDatabase = $database_default;
 }
 
 function syslog_db_execute($sql, $log, $cnn) {	syslog_set_syslogdb();
