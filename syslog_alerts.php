@@ -209,18 +209,20 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 		$save["id"] = "";
 	}
 
-	$save["name"]     = form_input_validate($name,     "name",     "", false, 3);
-	$save["severity"] = form_input_validate($severity, "severity", "", false, 3);
-	$save["method"]   = form_input_validate($method,   "method",   "", false, 3);
-	$save["num"]      = form_input_validate($num,      "num",      "", false, 3);
-	$save["type"]     = form_input_validate($type,     "type",     "", false, 3);
-	$save["message"]  = form_input_validate($message,  "message",  "", false, 3);
-	$save["email"]    = form_input_validate(trim($email),    "email",    "", false, 3);
-	$save["command"]  = form_input_validate($command,  "command",  "", true, 3);
-	$save["notes"]    = form_input_validate($notes,    "notes",    "", true, 3);
-	$save["enabled"]  = form_input_validate($enabled,  "enabled",  "", false, 3);
-	$save["date"]     = time();
+	$save["name"]     = form_input_validate($name,        "name",     "", false, 3);
+	$save["num"]      = form_input_validate($num,         "num",      "", false, 3);
+	$save["message"]  = form_input_validate($message,     "message",  "", false, 3);
+	$save["email"]    = form_input_validate(trim($email), "email",    "", true, 3);
+	$save["command"]  = form_input_validate($command,     "command",  "", true, 3);
+	$save["notes"]    = form_input_validate($notes,       "notes",    "", true, 3);
+	$save["type"]     = $type;
+	$save["severity"] = $severity;
+	$save["method"]   = $method;
+	$save["enabled"]  = $enabled;
 	$save["user"]     = $username;
+	$save["date"]     = time();
+
+	//print "<pre>";print_r($save);print "</pre>";exit;
 
 	$id = 0;
 	$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id", true, $syslog_cnn);
@@ -448,12 +450,14 @@ function syslog_action_edit() {
 	function changeTypes() {
 		mValue = document.getElementById('message').value;
 		if (document.getElementById('type').value == 'sql') {
-			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><textarea cols='60' rows='5' id='message' name='message'>"+mValue+"</textarea></td>";
+			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><textarea cols='60' class='textAreaNotes' rows='5' id='message' name='message'>"+mValue+"</textarea></td>";
 			document.getElementById('row_message').innerHTML = row_message_html;
 		}else{
 			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><input type='text' id='message' name='message' size='80' maxlength='255' value='"+mValue+"'></td>";
 			document.getElementById('row_message').innerHTML = row_message_html;
+			document.getElementById('message').value = mValue;
 		}
+		document.getElementById('message').value = mValue;
 	}
 	</script>
 	<?php
@@ -678,7 +682,7 @@ function syslog_alerts() {
 	if (sizeof($alerts) > 0) {
 		foreach ($alerts as $alert) {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $alert["id"]); $i++;
-			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?action=edit&id=" . $alert["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($data_source["name_cache"]), read_config_option("max_title_data_source"))) : htmlentities($alert["name"])) . "</a>", $alert["id"]);
+			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?action=edit&id=" . $alert["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", $alert["name"]) : $alert["name"]) . "</a>", $alert["id"]);
 			form_selectable_cell($severities[$alert["severity"]], $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? "Threshold":"Individual"), $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? $alert["num"]:"N/A"), $alert["id"]);
