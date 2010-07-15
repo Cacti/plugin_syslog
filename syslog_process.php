@@ -350,19 +350,23 @@ if (sizeof($query)) {
 
 					$max_alerts  = read_config_option("syslog_maxrecords");
 					$alert_count = 0;
+					$htmlh       = $htmlm;
+					$alerth      = $alertm;
 					foreach($at as $a) {
 						$a['message'] = str_replace('  ', "\n", $a['message']);
 						while (substr($a['message'], -1) == "\n") {
 							$a['message'] = substr($a['message'], 0, -1);
 						}
 
-						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {							$alertm .= "-----------------------------------------------\n";
+						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {							if ($alert["method"] == 0) $alertm  = $alerth;
+							$alertm .= "-----------------------------------------------\n";
 							$alertm .= 'Hostname : ' . $a['host'] . "\n";
 							$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
 							$alertm .= 'Severity : ' . $severities[$alert['severity']] . "\n\n";
 							$alertm .= 'Priority : ' . $a['priority'] . "\n\n";
 							$alertm .= 'Message  :'  . "\n" . $a['message'] . "\n";
 
+							if ($alert["method"] == 0) $htmlm   = $htmlh;
 							$htmlm  .= "<tr><td class='td'>" . $a['host']                      . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']] . "</td>"      . "\n";
@@ -385,14 +389,14 @@ if (sizeof($query)) {
 						}
 					}
 
+					$htmlm  .= "</table></body></html>";
+					$alertm .= "-----------------------------------------------\n\n";
+
 					if ($alert["method"] == 1) {
 						$sequence = syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at), $htmlm);
 						$smsalert = "Sev: " . $severities[$alert["severity"]] . ", URL: " . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 					}
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
-
-					$htmlm  .= "</table></body></html>";
-					$alertm .= "-----------------------------------------------\n\n";
 				}
 			}
 		}

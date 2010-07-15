@@ -931,7 +931,7 @@ function syslog_messages($tab="syslog") {
 				}
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
-				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "'>" . $log["name"] . "</a></td>\n";
+				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
 				print "<td>" . $severities[$log["severity"]] . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
