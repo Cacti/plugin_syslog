@@ -64,7 +64,7 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
 		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
-			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"],
+			$_POST["num"], $_POST["type"], $_POST["_message"], $_POST["email"],
 			$_POST["notes"], $_POST["enabled"], $_POST["severity"], $_POST["command"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
@@ -434,16 +434,27 @@ function syslog_action_edit() {
 		"method" => "hidden_zero",
 		"value" => "|arg1:id|"
 		),
+	"_message" => array(
+		"method" => "hidden_zero",
+		"value" => "|arg1:message|"
+		),
 	"save_component_alert" => array(
 		"method" => "hidden",
 		"value" => "1"
 		)
 	);
 
+	echo "<form method='post' autocomplete='off' onsubmit='changeTypes()' action='syslog_alerts.php' name='chk'>";
+
 	draw_edit_form(array(
-		"config" => array("form_name" => "chk"),
+		"config" => array("no_form_tag" => true),
 		"fields" => inject_form_variables($fields_syslog_alert_edit, (isset($alert) ? $alert : array()))
 		));
+
+
+	html_end_box();
+
+	form_save_button("syslog_alerts.php", "", "id");
 
 	?>
 	<script type='text/javascript'>
@@ -457,14 +468,10 @@ function syslog_action_edit() {
 			document.getElementById('row_message').innerHTML = row_message_html;
 			document.getElementById('message').value = mValue;
 		}
-		document.getElementById('message').value = mValue;
+		document.getElementById('_message').value = mValue;
 	}
 	</script>
 	<?php
-
-	html_end_box();
-
-	form_save_button("syslog_alerts.php", "", "id");
 }
 
 function syslog_filter() {

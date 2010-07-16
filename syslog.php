@@ -524,12 +524,14 @@ function syslog_filter($sql_where, $tab) {
 										</tr>
 									</table>
 								</td><?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
-								<td align='right'>
+								<td colspan='3' align='right' style='white-space:nowrap;'>
 									<input type='button' value='Alerts' title='View Syslog Alert Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
 									<input type='button' value='Removals' title='View Syslog Removal Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
 									<input type='button' value='Reports' title='View Syslog Reports' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>&nbsp;
 								</td><?php }?>
 							</tr>
+						</table>
+						<table width="100%" cellpadding="0" cellspacing="0" border="0">
 							<tr bgcolor="<?php print $colors["panel"];?>" class="noprint">
 								<td>
 									<table cellpadding="0" cellspacing="0">
@@ -879,8 +881,8 @@ function syslog_messages($tab="syslog") {
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $priorities[$syslog_message["priority_id"]], $title);$i++;
 
 				print "<td style='whitspace-nowrap;width:1%;'>";
-				if ($syslog_message['mtype'] == 'main') {					print "<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>
-						<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>\n";
+				if ($syslog_message['mtype'] == 'main') {					print "<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>
+					<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
 				}
 				print "</td>\n";
 				print "<td>" . $hosts[$syslog_message["host_id"]] . "</td>\n";
