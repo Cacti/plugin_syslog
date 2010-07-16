@@ -438,7 +438,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 
 	include(dirname(__FILE__) . "/config.php");
 
-	if ($count == 0) {
+	if ($count <= 1) {
 		$save["seq"]      = "";
 		$save["alert_id"] = $alert_id;
 		$save["logseq"]   = $msg["seq"];
