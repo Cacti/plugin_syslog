@@ -524,7 +524,7 @@ function syslog_filter($sql_where, $tab) {
 										</tr>
 									</table>
 								</td><?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
-								<td colspan='3' align='right' style='white-space:nowrap;'>
+								<td align='right' style='white-space:nowrap;'>
 									<input type='button' value='Alerts' title='View Syslog Alert Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
 									<input type='button' value='Removals' title='View Syslog Removal Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
 									<input type='button' value='Reports' title='View Syslog Reports' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>&nbsp;

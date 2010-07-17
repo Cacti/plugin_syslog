@@ -143,7 +143,7 @@ function syslog_remove_items($table, $uniqueID) {
 	$rows = syslog_db_fetch_assoc("SELECT * FROM syslog_remove", true, $syslog_cnn);
 
 	syslog_debug("Found   " . sizeof($rows) .
-		" Removal Rule" . (sizeof($rows) == 1 ? "" : "s" ) .
+		",  Removal Rule(s)" .
 		" to process");
 
 	$removed = 0;

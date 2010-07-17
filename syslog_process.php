@@ -153,7 +153,7 @@ if ($retention > 0 || $partitioned) {
 		$syslog_deleted += $syslog_cnn->Affected_Rows();
 
 		syslog_debug("Deleted " . $syslog_deleted .
-			" Syslog Message" . ($syslog_deleted == 1 ? "" : "s" ) .
+			",  Syslog Message(s)" .
 			" (older than $retention days)");
 	}else{
 		syslog_debug("Syslog Table IS Partitioned");
@@ -235,7 +235,7 @@ syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET stat
 $syslog_incoming = $syslog_cnn->Affected_Rows();
 
 syslog_debug("Found   " . $syslog_incoming .
-	" new Message" . ($syslog_incoming == 1 ? "" : "s" ) .
+	",  New Message(s)" .
 	" to process");
 
 /* update the hosts, facilities, and priorities tables */
@@ -269,7 +269,7 @@ if (read_config_option("syslog_html") == "on") {
 }
 
 syslog_debug("Found   " . $syslog_alerts .
-	" Alert Rule" . ($syslog_alerts == 1 ? "" : "s" ) .
+	",  Alert Rule" . ($syslog_alerts == 1 ? "" : "s" ) .
 	" to process");
 
 $syslog_alarms = 0;
@@ -423,12 +423,12 @@ syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, pr
 
 $moved = $syslog_cnn->Affected_Rows();
 
-syslog_debug("Moved   " . $moved . " Message" . ($moved == 1 ? "" : "s" ) . " to the 'syslog' table");
+syslog_debug("Moved   " . $moved . ",  Message(s) to the 'syslog' table");
 
 /* DELETE ALL FLAGGED ITEMS FROM THE INCOMING TABLE */
 syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID, true, $syslog_cnn);
 
-syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . " already processed Messages from incoming");
+syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Already Processed Message(s) from incoming");
 
 /* Add the unique hosts to the syslog_hosts table */
 $sql = "INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host)
@@ -438,7 +438,7 @@ $sql = "INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host)
 syslog_db_execute($sql, true, $syslog_cnn);
 
 syslog_debug("Updated " . $syslog_cnn->Affected_Rows() .
-	" hosts in the syslog hosts table");
+	",  Hosts in the syslog hosts table");
 
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date("G") == 0 && date("i") < 5) {
