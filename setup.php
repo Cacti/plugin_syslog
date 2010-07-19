@@ -723,7 +723,7 @@ function syslog_setup_table_new($options) {
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.02',
+		'version'  => '1.03',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',

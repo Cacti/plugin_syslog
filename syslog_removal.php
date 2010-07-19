@@ -64,7 +64,7 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_removal"])) && (empty($_POST["add_dq_y"]))) {
 		$removalid = api_syslog_removal_save($_POST["id"], $_POST["name"], $_POST["type"],
-			$_POST["message"], $_POST["method"], $_POST["notes"], $_POST["enabled"]);
+			$_POST["_message"], $_POST["method"], $_POST["notes"], $_POST["enabled"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_removal.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));

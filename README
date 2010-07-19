@@ -38,6 +38,12 @@
 
 ----[ Changelog
 
+    --- 1.03 ---
+    feature: Add alarm host and counts to sms messages
+    bug: Fix issue with individual syslog html messages
+    bug: Fix creating alarms and removals from the syslog tab
+    bug: Fix syslog removal UI with respect to rule type's
+
     --- 1.02 ---
     feature: Add syslog database functions to mitigate issues with same system installs
 
