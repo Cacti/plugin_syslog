@@ -380,7 +380,7 @@ if (sizeof($query)) {
 						if ($alert['method'] != "1") {
 							$htmlm  .= "</table></body></html>";
 							$sequence = syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a, 1, $htmlm);
-							$smsalert = "Sev:" . $severities[$alert["severity"]] . ", URL:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
+							$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Host:" . $a["host"] . ", URL:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 						}
 
 						if (trim($alert['command']) != "") {							$command = alert_replace_variables($alert, $a);
@@ -394,7 +394,7 @@ if (sizeof($query)) {
 
 					if ($alert["method"] == 1) {
 						$sequence = syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at), $htmlm);
-						$smsalert = "Sev: " . $severities[$alert["severity"]] . ", URL: " . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
+						$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Count:" . sizeof($at) . ", URL:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 					}
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
 				}
@@ -580,11 +580,11 @@ function alert_replace_variables($alert, $a) {	global $severities;
 
 	$command = $alert["command"];
 
-	$command = str_replace("<ALERTID>", $a["id"], $command);
+	$command = str_replace("<ALERTID>",  $a["id"], $command);
 	$command = str_replace("<HOSTNAME>", $a["hostname"], $command);
 	$command = str_replace("<PRIORITY>", $a["priority"], $command);
 	$command = str_replace("<FACILITY>", $a["facility"], $command);
-	$command = str_replace("<MESSAGE>", $a["message"], $command);
+	$command = str_replace("<MESSAGE>",  $a["message"], $command);
 	$command = str_replace("<SEVERITY>", $severities[$a["severity"]], $command);
 
 	return $command;
