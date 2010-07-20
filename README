@@ -38,6 +38,9 @@
 
 ----[ Changelog
 
+    --- SVN ---
+    bug: Exporting to CSV not working properly
+
     --- 1.03 ---
     feature: Add alarm host and counts to sms messages
     bug: Fix issue with individual syslog html messages

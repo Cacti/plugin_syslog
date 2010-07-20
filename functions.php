@@ -373,7 +373,7 @@ function sql_hosts_where($tab) {
 }
 
 function syslog_export($tab) {
-	global $syslog_incoming_config, $syslog_cnn;
+	global $syslog_incoming_config, $syslog_cnn, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -412,14 +412,15 @@ function syslog_export($tab) {
 
 			foreach ($syslog_messages as $log) {
 				print
-					'"' . $log["name"]          . '","' .
-					$syslog_message["severity"] . '","' .
-					$syslog_message["logtime"]  . '","' .
-					$syslog_message["logmsg"]   . '","' .
-					$syslog_message["host"]     . '","' .
-					ucfirst($log["facility"])   . '","' .
-					ucfirst($log["priority"])   . '","' .
-					$log["count"]               . '"' . "\r\n";
+					'"' .
+					$log["name"]                  . '","' .
+					$severities[$log["severity"]] . '","' .
+					$log["logtime"]               . '","' .
+					$log["logmsg"]                . '","' .
+					$log["host"]                  . '","' .
+					ucfirst($log["facility"])     . '","' .
+					ucfirst($log["priority"])     . '","' .
+					$log["count"]                 . '"' . "\r\n";
 			}
 		}
 	}

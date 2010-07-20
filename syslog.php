@@ -48,52 +48,8 @@ if (!syslog_check_dependencies()) {
 	exit;
 }
 
-include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
-
-/* present a tabbed interface */
-$tabs_syslog = array(
-	"syslog" => "Syslogs",
-	"alerts" => "Alert Log");
-
-/* set the default tab */
-load_current_session_value("tab", "sess_syslog_tab", "syslog");
-$current_tab = $_REQUEST["tab"];
-
-/* if they were redirected to the page, let's set that up */
-if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
-	$current_tab = "current";
-}
-
-load_current_session_value("id", "sess_syslog_id", "0");
-if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
-	$tabs_syslog["current"] = "Selected Alert";
-}
-
-/* draw the tabs */
-print "<table class='tabs' width='100%' cellspacing='0' cellpadding='3' border='0' align='center'><tr>\n";
-
-if (sizeof($tabs_syslog) > 0) {
-foreach (array_keys($tabs_syslog) as $tab_short_name) {
-	print "<td style='padding:3px 10px 2px 5px;background-color:" . (($tab_short_name == $current_tab) ? "silver;" : "#DFDFDF;") .
-		"white-space:nowrap;'" .
-		" nowrap width='1%'" .
-		"' align='center' class='tab'>
-		<span class='textHeader'><a href='" . $config['url_path'] .
-		"plugins/syslog/syslog.php?" .
-		"tab=" . $tab_short_name .
-		"'>$tabs_syslog[$tab_short_name]</a></span>
-	</td>\n
-	<td width='1'></td>\n";
-}
-}
-print "<td></td>\n</tr></table>\n";
-
 /* validate the syslog post/get/request information */;
 syslog_request_validation($current_tab);
-
-if ($current_tab == "current") {
-	syslog_view_alarm();
-}
 
 /* draw the tabs */
 /* display the main page */
@@ -102,8 +58,55 @@ if (isset($_REQUEST["export_x"])) {
 	/* clear output so reloads wont re-download */
 	unset($_REQUEST["output"]);
 }else{
-	syslog_messages($current_tab);
+	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
+
+	if ($current_tab == "current") {
+		syslog_view_alarm();
+	}else{
+		syslog_messages($current_tab);
+	}
+
 	include_once("./include/bottom_footer.php");
+}
+
+function syslog_display_tabs() {
+	/* present a tabbed interface */
+	$tabs_syslog = array(
+		"syslog" => "Syslogs",
+		"alerts" => "Alert Log");
+
+	/* set the default tab */
+	load_current_session_value("tab", "sess_syslog_tab", "syslog");
+	$current_tab = $_REQUEST["tab"];
+
+	/* if they were redirected to the page, let's set that up */
+	if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
+		$current_tab = "current";
+	}
+
+	load_current_session_value("id", "sess_syslog_id", "0");
+	if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
+		$tabs_syslog["current"] = "Selected Alert";
+	}
+
+	/* draw the tabs */
+	print "<table class='tabs' width='100%' cellspacing='0' cellpadding='3' border='0' align='center'><tr>\n";
+
+	if (sizeof($tabs_syslog) > 0) {
+	foreach (array_keys($tabs_syslog) as $tab_short_name) {
+		print "<td style='padding:3px 10px 2px 5px;background-color:" . (($tab_short_name == $current_tab) ? "silver;" : "#DFDFDF;") .
+			"white-space:nowrap;'" .
+			" nowrap width='1%'" .
+			"' align='center' class='tab'>
+			<span class='textHeader'><a href='" . $config['url_path'] .
+			"plugins/syslog/syslog.php?" .
+			"tab=" . $tab_short_name .
+			"'>$tabs_syslog[$tab_short_name]</a></span>
+		</td>\n
+		<td width='1'></td>\n";
+	}
+	}
+	print "<td></td>\n</tr></table>\n";
 }
 
 function syslog_view_alarm() {
