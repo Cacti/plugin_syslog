@@ -60,6 +60,8 @@ if (isset($_REQUEST["export_x"])) {
 }else{
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
 
+	syslog_display_tabs();
+
 	if ($current_tab == "current") {
 		syslog_view_alarm();
 	}else{
