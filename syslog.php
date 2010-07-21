@@ -75,7 +75,8 @@ if (isset($_REQUEST["export_x"])) {
 	include_once("./include/bottom_footer.php");
 }
 
-function syslog_display_tabs() {
+function syslog_display_tabs($current_tab) {	global $config;
+
 	/* present a tabbed interface */
 	$tabs_syslog = array(
 		"syslog" => "Syslogs",
