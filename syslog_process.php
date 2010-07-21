@@ -326,7 +326,7 @@ if (sizeof($query)) {
 
 					if ($alert['method'] == "1") {
 						$alertm .= "-----------------------------------------------\n";
-						$alertm .= "WARNING: A Syslog Plugin Istance Count Alert has Been Triggered". "\n";
+						$alertm .= "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered". "\n";
 						$alertm .= "Name: " . $alert['name']     . "\n";
 						$alertm .= "Severity: " . $severities[$alert['severity']] . "\n";
 						$alertm .= "Threshold: " . $alert['num'] . "\n";
