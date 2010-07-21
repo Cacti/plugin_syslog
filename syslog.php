@@ -48,6 +48,10 @@ if (!syslog_check_dependencies()) {
 	exit;
 }
 
+/* set the default tab */
+load_current_session_value("tab", "sess_syslog_tab", "syslog");
+$current_tab = $_REQUEST["tab"];
+
 /* validate the syslog post/get/request information */;
 syslog_request_validation($current_tab);
 
@@ -60,7 +64,7 @@ if (isset($_REQUEST["export_x"])) {
 }else{
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
 
-	syslog_display_tabs();
+	syslog_display_tabs($current_tab);
 
 	if ($current_tab == "current") {
 		syslog_view_alarm();
@@ -76,10 +80,6 @@ function syslog_display_tabs() {
 	$tabs_syslog = array(
 		"syslog" => "Syslogs",
 		"alerts" => "Alert Log");
-
-	/* set the default tab */
-	load_current_session_value("tab", "sess_syslog_tab", "syslog");
-	$current_tab = $_REQUEST["tab"];
 
 	/* if they were redirected to the page, let's set that up */
 	if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {
