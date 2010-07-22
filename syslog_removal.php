@@ -64,7 +64,7 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_removal"])) && (empty($_POST["add_dq_y"]))) {
 		$removalid = api_syslog_removal_save($_POST["id"], $_POST["name"], $_POST["type"],
-			$_POST["_message"], $_POST["method"], $_POST["notes"], $_POST["enabled"]);
+			$_POST["message"], $_POST["method"], $_POST["notes"], $_POST["enabled"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_removal.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
@@ -345,13 +345,14 @@ function syslog_action_edit() {
 		"default" => "matchesc"
 		),
 	"message" => array(
-		"method" => "textbox",
 		"friendly_name" => "Syslog Message Match String",
 		"description" => "The matching component of the syslog message.",
+		"method" => "textarea",
+		"textarea_rows" => "2",
+		"textarea_cols" => "70",
+		"class" => "textAreaNotes",
 		"value" => "|arg1:message|",
 		"default" => "",
-		"max_length" => "255",
-		"size" => 80
 		),
 	"method" => array(
 		"method" => "drop_array",
@@ -363,7 +364,7 @@ function syslog_action_edit() {
 	"notes" => array(
 		"friendly_name" => "Removal Rule Notes",
 		"textarea_rows" => "5",
-		"textarea_cols" => "60",
+		"textarea_cols" => "70",
 		"description" => "Space for Notes on the Removal rule",
 		"method" => "textarea",
 		"class" => "textAreaNotes",
@@ -377,10 +378,6 @@ function syslog_action_edit() {
 	"_id" => array(
 		"method" => "hidden_zero",
 		"value" => "|arg1:id|"
-		),
-	"_message" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:message|"
 		),
 	"save_component_removal" => array(
 		"method" => "hidden",
@@ -402,16 +399,11 @@ function syslog_action_edit() {
 	?>
 	<script type='text/javascript'>
 	function changeTypes() {
-		mValue = document.getElementById('message').value;
 		if (document.getElementById('type').value == 'sql') {
-			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><textarea cols='60' class='textAreaNotes' rows='5' id='message' name='message'>"+mValue+"</textarea></td>";
-			document.getElementById('row_message').innerHTML = row_message_html;
+			document.getElementById('message').rows = 5;
 		}else{
-			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><input type='text' id='message' name='message' size='80' maxlength='255' value='"+mValue+"'></td>";
-			document.getElementById('row_message').innerHTML = row_message_html;
-			document.getElementById('message').value = mValue;
+			document.getElementById('message').rows = 2;
 		}
-		document.getElementById('_message').value = mValue;
 	}
 	</script>
 	<?php

@@ -64,7 +64,7 @@ switch ($_REQUEST["action"]) {
 function form_save() {
 	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
 		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
-			$_POST["num"], $_POST["type"], $_POST["_message"], $_POST["email"],
+			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"],
 			$_POST["notes"], $_POST["enabled"], $_POST["severity"], $_POST["command"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
@@ -370,13 +370,14 @@ function syslog_action_edit() {
 		"default" => "matchesc"
 		),
 	"message" => array(
-		"method" => "textbox",
 		"friendly_name" => "Syslog Message Match String",
 		"description" => "The matching component of the syslog message.",
+		"textarea_rows" => "2",
+		"textarea_cols" => "70",
+		"method" => "textarea",
+		"class" => "textAreaNotes",
 		"value" => "|arg1:message|",
-		"default" => "",
-		"max_length" => "255",
-		"size" => 80
+		"default" => ""
 		),
 	"enabled" => array(
 		"method" => "drop_array",
@@ -389,7 +390,7 @@ function syslog_action_edit() {
 	"notes" => array(
 		"friendly_name" => "Alert Notes",
 		"textarea_rows" => "5",
-		"textarea_cols" => "60",
+		"textarea_cols" => "70",
 		"description" => "Space for Notes on the Alert",
 		"method" => "textarea",
 		"class" => "textAreaNotes",
@@ -404,7 +405,7 @@ function syslog_action_edit() {
 		"method" => "textarea",
 		"friendly_name" => "E-Mails to Notify",
 		"textarea_rows" => "5",
-		"textarea_cols" => "60",
+		"textarea_cols" => "70",
 		"description" => "Please enter a comma delimited list of e-mail addresses to inform.  If you
 		wish to send out e-mail to a recipient in SMS format, please prefix that recipient's e-mail address
 		with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would
@@ -416,7 +417,7 @@ function syslog_action_edit() {
 	"command" => array(
 		"friendly_name" => "Alert Command",
 		"textarea_rows" => "5",
-		"textarea_cols" => "60",
+		"textarea_cols" => "70",
 		"description" => "When an Alert is triggered, run the following command.  The following replacement variables
 		are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>,
 		<b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please
@@ -433,10 +434,6 @@ function syslog_action_edit() {
 	"_id" => array(
 		"method" => "hidden_zero",
 		"value" => "|arg1:id|"
-		),
-	"_message" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:message|"
 		),
 	"save_component_alert" => array(
 		"method" => "hidden",
@@ -459,16 +456,11 @@ function syslog_action_edit() {
 	?>
 	<script type='text/javascript'>
 	function changeTypes() {
-		mValue = document.getElementById('message').value;
 		if (document.getElementById('type').value == 'sql') {
-			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><textarea cols='60' class='textAreaNotes' rows='5' id='message' name='message'>"+mValue+"</textarea></td>";
-			document.getElementById('row_message').innerHTML = row_message_html;
+			document.getElementById('message').rows = 6;
 		}else{
-			row_message_html = "<td width='50%'><font class='textEditTitle'>Syslog Message Match String</font><br>The matching component of the syslog message.</td><td><input type='text' id='message' name='message' size='80' maxlength='255' value='"+mValue+"'></td>";
-			document.getElementById('row_message').innerHTML = row_message_html;
-			document.getElementById('message').value = mValue;
+			document.getElementById('message').rows = 2;
 		}
-		document.getElementById('_message').value = mValue;
 	}
 	</script>
 	<?php
