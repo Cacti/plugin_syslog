@@ -224,13 +224,15 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save["date"]     = time();
 	$save["user"]     = $username;
 
-	$id = 0;
-	$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_reports`", "id", true, $syslog_cnn);
+	if (!is_error_message()) {
+		$id = 0;
+		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_reports`", "id", true, $syslog_cnn);
 
-	if ($id) {
-		raise_message(1);
-	}else{
-		raise_message(2);
+		if ($id) {
+			raise_message(1);
+		}else{
+			raise_message(2);
+		}
 	}
 
 	return $id;
@@ -588,7 +590,7 @@ function syslog_report() {
 	<?php
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog_reports.php");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_reports.php");
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>

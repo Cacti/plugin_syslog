@@ -155,6 +155,8 @@ function syslog_check_upgrade() {
 
 	include(dirname(__FILE__) . "/config.php");
 
+	syslog_connect();
+
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = array('plugins.php', 'syslog.php', 'slslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
 	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
