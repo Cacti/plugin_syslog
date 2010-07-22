@@ -155,8 +155,6 @@ function syslog_check_upgrade() {
 
 	include(dirname(__FILE__) . "/config.php");
 
-	syslog_connect();
-
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = array('plugins.php', 'syslog.php', 'slslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
 	if (isset($_SERVER['PHP_SELF']) && !in_array(basename($_SERVER['PHP_SELF']), $files)) {
@@ -180,9 +178,10 @@ function syslog_check_upgrade() {
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 	if ($current != $old || $old_pia) {
 		/* update realms for old versions */
-		if ($old < "1.0" || $old = '' || $old_pia) {
+		if ($old < 1.0 || $old = '' || $old_pia) {
 			plugin_syslog_install();
-		}elseif ($old < "1.01") {			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
+		}elseif ($old < 1.01) {
+			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");

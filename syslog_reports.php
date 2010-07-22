@@ -24,7 +24,7 @@
 
 chdir('../../');
 include("./include/auth.php");
-include_once('plugins/syslog/functions.php');
+include_once('./plugins/syslog/functions.php');
 
 define("MAX_DISPLAY_PAGES", 21);
 
@@ -173,7 +173,7 @@ function form_actions() {
 			$title = "Enable Syslog Report(s)";
 		}
 
-		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title";
+		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title'";
 	}else{
 		print "<tr><td bgcolor='#" . $colors["form_alternate1"]. "'><span class='textError'>You must select at least one Syslog Report.</span></td></tr>\n";
 		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";

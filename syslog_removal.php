@@ -388,7 +388,7 @@ function syslog_action_edit() {
 		)
 	);
 
-	echo "<form method='post' autocomplete='off' onsubmit='changeTypes()' action='syslog_alerts.php' name='chk'>";
+	echo "<form method='post' autocomplete='off' onsubmit='changeTypes()' action='syslog_removal.php' name='chk'>";
 
 	draw_edit_form(array(
 		"config" => array("no_form_tag" => true),
