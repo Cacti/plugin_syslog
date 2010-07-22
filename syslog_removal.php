@@ -173,7 +173,7 @@ function form_actions() {
 			$title = "Enable Syslog Removal Rule(s)";
 		}
 
-		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title";
+		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title'";
 	}else{
 		print "<tr><td bgcolor='#" . $colors["form_alternate1"]. "'><span class='textError'>You must select at least one Syslog Removal Rule.</span></td></tr>\n";
 		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";
@@ -217,13 +217,15 @@ function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $
 	$save["date"]    = time();
 	$save["user"]    = $username;
 
-	$id = 0;
-	$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_remove`", "id", true, $syslog_cnn);
+	if (!is_error_message()) {
+		$id = 0;
+		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_remove`", "id", true, $syslog_cnn);
 
-	if ($id) {
-		raise_message(1);
-	}else{
-		raise_message(2);
+		if ($id) {
+			raise_message(1);
+		}else{
+			raise_message(2);
+		}
 	}
 
 	return $id;
@@ -531,9 +533,7 @@ function syslog_removal() {
 	load_current_session_value("sort_direction", "sess_syslog_removal_sort_direction", "ASC");
 
 	html_start_box("<strong>Syslog Removal Rule Filters</strong>", "100%", $colors["header"], "3", "center", "syslog_removal.php?action=edit&type=1");
-
 	syslog_filter();
-
 	html_end_box();
 
 	html_start_box("", "100%", $colors["header"], "3", "center", "");
@@ -570,7 +570,7 @@ function syslog_removal() {
 	<?php
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog_removal.php");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_removal.php");
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>

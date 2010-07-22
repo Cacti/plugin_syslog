@@ -790,6 +790,10 @@ function syslog_log_legend() {
 	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_fg") . "'");
 	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Notice</b></td>";
 
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Informational</b></td>";
+
 	print "</tr>";
 	html_end_box(false);
 }
@@ -827,7 +831,7 @@ function syslog_messages($tab="syslog") {
 	$total_rows      = syslog_filter($sql_where, $tab);
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog.php?tab=$tab");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog.php?tab=$tab");
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
@@ -940,7 +944,7 @@ function syslog_messages($tab="syslog") {
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
 				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
-				print "<td>" . $severities[$log["severity"]] . "</td>\n";
+				print "<td>" . (isset($severities[$log["severity"]]) ? $severities[$log["severity"]]:"Unknown") . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
 				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($log["logmsg"], get_request_var_request("trimval"))):title_trim($log["logmsg"], get_request_var_request("trimval"))) . "</td>\n";

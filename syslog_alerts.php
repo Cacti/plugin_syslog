@@ -224,12 +224,14 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 
 	//print "<pre>";print_r($save);print "</pre>";exit;
 
-	$id = 0;
-	$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id", true, $syslog_cnn);
-	if ($id) {
-		raise_message(1);
-	}else{
-		raise_message(2);
+	if (!is_error_message()) {
+		$id = 0;
+		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id", true, $syslog_cnn);
+		if ($id) {
+			raise_message(1);
+		}else{
+			raise_message(2);
+		}
 	}
 
 	return $id;
@@ -628,7 +630,7 @@ function syslog_alerts() {
 	<?php
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $_REQUEST["rows"], $total_rows, "syslog_alerts.php");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_alerts.php");
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
