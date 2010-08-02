@@ -358,7 +358,8 @@ if (sizeof($query)) {
 							$a['message'] = substr($a['message'], 0, -1);
 						}
 
-						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {							if ($alert["method"] == 0) $alertm  = $alerth;
+						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {
+							if ($alert["method"] == 0) $alertm  = $alerth;
 							$alertm .= "-----------------------------------------------\n";
 							$alertm .= 'Hostname : ' . $a['host'] . "\n";
 							$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
@@ -383,7 +384,8 @@ if (sizeof($query)) {
 							$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Host:" . $a["host"] . ", URL:" . htmlspecialchars(read_config_option("alert_base_url") . "/plugins/syslog/syslog.php?id=" . $sequence);
 						}
 
-						if (trim($alert['command']) != "") {							$command = alert_replace_variables($alert, $a);
+						if (trim($alert['command']) != "") {
+							$command = alert_replace_variables($alert, $a);
 							cacti_log("SYSLOG NOTICE: Executing '$command'", true, "SYSTEM");
 							exec_background($command);
 						}
@@ -576,7 +578,8 @@ function display_help() {
 	echo "usage: syslog_process.php [--debug|-d]\n\n";
 }
 
-function alert_replace_variables($alert, $a) {	global $severities;
+function alert_replace_variables($alert, $a) {
+	global $severities;
 
 	$command = $alert["command"];
 

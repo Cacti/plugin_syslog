@@ -66,7 +66,8 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 	}
 }
 
-function syslog_set_syslogdb() {	global $config, $database_default, $database_hostname, $database_type;
+function syslog_set_syslogdb() {
+	global $config, $database_default, $database_hostname, $database_type;
 
 	include($config["base_path"] . "/plugins/syslog/config.php");
 
@@ -77,7 +78,8 @@ function syslog_set_syslogdb() {	global $config, $database_default, $database_h
 	}
 }
 
-function syslog_set_cactidb() {	global $config, $cnn_id, $database_default, $database_hostname, $database_type;
+function syslog_set_cactidb() {
+	global $config, $cnn_id, $database_default, $database_hostname, $database_type;
 
 	include($config["base_path"] . "/plugins/syslog/config.php");
 
@@ -90,7 +92,8 @@ function syslog_set_cactidb() {	global $config, $cnn_id, $database_default, $da
 	$cnn_id->DefaultDatabase = $database_default;
 }
 
-function syslog_db_execute($sql, $log, $cnn) {	syslog_set_syslogdb();
+function syslog_db_execute($sql, $log, $cnn) {
+	syslog_set_syslogdb();
 
 	$result = db_execute($sql, $log, $cnn);
 
@@ -122,7 +125,8 @@ function syslog_db_fetch_row($sql, $log, $cnn) {
 function syslog_db_fetch_cell($sql, $primary = '', $log = true, $cnn = '') {
 	global $cnn_id;
 
-	if ($cnn == '') {		$cnn = $cnn_id;
+	if ($cnn == '') {
+		$cnn = $cnn_id;
 	}
 
 	syslog_set_syslogdb();
