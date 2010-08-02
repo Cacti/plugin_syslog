@@ -17,7 +17,7 @@ CREATE TABLE syslog (
   KEY host (host),
   KEY `priority` (`priority`),
   KEY `facility` (`facility`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 -- --------------------------------------------------------
@@ -36,7 +36,7 @@ CREATE TABLE syslog_alert (
   email text NOT NULL,
   notes text NOT NULL,
   PRIMARY KEY  (id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -56,7 +56,7 @@ CREATE TABLE syslog_incoming (
   `status` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (seq),
   KEY `status` (`status`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE syslog_remove (
   `date` int(16) NOT NULL default '0',
   notes text NOT NULL,
   PRIMARY KEY  (id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 --
 -- Table structure for table `syslog_reports`
@@ -95,4 +95,4 @@ CREATE TABLE syslog_reports (
   email text NOT NULL,
   notes text NOT NULL,
   PRIMARY KEY  (id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

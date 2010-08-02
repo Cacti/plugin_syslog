@@ -38,7 +38,9 @@
 
 ----[ Changelog
 
-    --- SVN ---
+    --- 1.04 ---
+    bug: Link on Alarm Log does not properly redirect to 'current' tab
+    bug: Unselecting all hosts results in SQL error
     bug: Exporting to CSV not working properly
 
     --- 1.03 ---

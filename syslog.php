@@ -75,7 +75,8 @@ if (isset($_REQUEST["export_x"])) {
 	include_once("./include/bottom_footer.php");
 }
 
-function syslog_display_tabs($current_tab) {	global $config;
+function syslog_display_tabs($current_tab) {
+	global $config;
 
 	/* present a tabbed interface */
 	$tabs_syslog = array(
@@ -311,7 +312,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
 	if ($_REQUEST["host"][0] == -1) {
-		$sql_where .=  "WHERE sl.host='N/A'";
+		$sql_where .=  "WHERE sl.host_id='0'";
 	}else{
 		if (!empty($_REQUEST["host"])) {
 			sql_hosts_where($tab);
@@ -891,7 +892,8 @@ function syslog_messages($tab="syslog") {
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $priorities[$syslog_message["priority_id"]], $title);$i++;
 
 				print "<td style='whitspace-nowrap;width:1%;'>";
-				if ($syslog_message['mtype'] == 'main') {					print "<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>
+				if ($syslog_message['mtype'] == 'main') {
+					print "<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>
 					<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
 				}
 				print "</td>\n";
@@ -943,7 +945,7 @@ function syslog_messages($tab="syslog") {
 				}
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
-				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
+				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "&tab=current'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
 				print "<td>" . (isset($severities[$log["severity"]]) ? $severities[$log["severity"]]:"Unknown") . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
