@@ -119,7 +119,7 @@ global $syslog_cnn;
 syslog_connect();
 
 if (sizeof(syslog_db_fetch_row("SHOW TABLES IN " . $syslogdb_default . " LIKE 'syslog'", true, $syslog_cnn))) {
-	syslog_db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog`TO `" . $syslogdb_default . "`.`syslog_pre_upgrade`", true, $syslog_cnn);
+	syslog_db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog` TO `" . $syslogdb_default . "`.`syslog_pre_upgrade`", true, $syslog_cnn);
 }
 
 /* perform the upgrade */
