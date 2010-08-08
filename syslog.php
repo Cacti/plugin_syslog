@@ -57,7 +57,7 @@ syslog_request_validation($current_tab);
 
 /* draw the tabs */
 /* display the main page */
-if (isset($_REQUEST["export_x"])) {
+if (isset($_REQUEST["export"])) {
 	syslog_export($current_tab);
 	/* clear output so reloads wont re-download */
 	unset($_REQUEST["output"]);
@@ -231,7 +231,7 @@ function syslog_request_validation($current_tab) {
 	}
 
 	/* if the user pushed the 'clear' button */
-	if (isset($_REQUEST["button_clear_x"])) {
+	if (isset($_REQUEST["clear"])) {
 		kill_session_var("sess_syslog_hosts");
 		kill_session_var("sess_syslog_rows");
 		kill_session_var("sess_syslog_trimval");
@@ -312,7 +312,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
 	if ($_REQUEST["host"][0] == -1) {
-		$sql_where .=  "WHERE sl.host_id='0'";
+		$sql_where .=  "WHERE sl.host='N/A'";
 	}else{
 		if (!empty($_REQUEST["host"])) {
 			sql_hosts_where($tab);
@@ -349,7 +349,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id <=" . $_REQUEST["elevel"];
 	}
 
-	if (!isset($_REQUEST["export_x"])) {
+	if (!isset($_REQUEST["export"])) {
 		$limit = " LIMIT " . ($row_limit*($_REQUEST["page"]-1)) . "," . $row_limit;
 	} else {
 		$limit = " LIMIT 10000";
@@ -581,6 +581,7 @@ function syslog_filter($sql_where, $tab) {
 													<option value="8"<?php if ($_REQUEST["elevel"] == "8") {?> selected<?php }?>>Debug</option>
 												</select>
 											</td>
+											<?php if ($_REQUEST["tab"] == "syslog") {?>
 											<td style='padding-right:2px;'>
 												<select name="removal" onChange="javascript:document.getElementById('syslog_form').submit();" title="Removal Handling">
 													<option value="1"<?php if ($_REQUEST["removal"] == "1") {?> selected<?php }?>>All Records</option>
@@ -588,6 +589,7 @@ function syslog_filter($sql_where, $tab) {
 													<option value="2"<?php if ($_REQUEST["removal"] == "2") {?> selected<?php }?>>Removed Records</option>
 												</select>
 											</td>
+											<?php }?>
 											<td style='padding-right:2px;'>
 												<select name="rows" onChange="javascript:document.getElementById('syslog_form').submit();" title="Display Rows">
 													<option value="10"<?php if ($_REQUEST["rows"] == "10") {?> selected<?php }?>>10</option>
@@ -616,9 +618,9 @@ function syslog_filter($sql_where, $tab) {
 												</select>
 											</td>
 											<td nowrap style='white-space:nowrap;padding-right:2px;'>
-												<input type="submit" value='Go' name='button_refresh_x' title="Go">
-												<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
-												<input type='submit' value='Export' name='export_x' title='Export Records to CSV'>
+												<input type="submit" value='Go' name='go' title="Go">
+												<input type='submit' value='Clear' name='clear' title='Return to the default time span'>
+												<input type='submit' value='Export' name='export' title='Export Records to CSV'>
 												<input type='hidden' name='action' value='actions'>
 												<input type='hidden' name='syslog_pdt_change' value='false'>
 											</td>

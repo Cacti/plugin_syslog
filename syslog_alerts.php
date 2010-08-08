@@ -506,7 +506,7 @@ function syslog_filter() {
 						&nbsp;<input type="submit" value="Go">
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="clear_x" value="Clear">
+						&nbsp;<input type="submit" name="clear" value="Clear">
 					</td>
 				</tr>
 			</table>
@@ -554,7 +554,7 @@ function syslog_alerts() {
 	}
 
 	/* if the user pushed the 'clear' button */
-	if (isset($_REQUEST["clear_x"])) {
+	if (isset($_REQUEST["clear"])) {
 		kill_session_var("sess_syslog_alerts_page");
 		kill_session_var("sess_syslog_alerts_rows");
 		kill_session_var("sess_syslog_alerts_filter");
