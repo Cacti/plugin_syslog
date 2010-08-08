@@ -463,10 +463,10 @@ function syslog_filter() {
 						</select>
 					</td>
 					<td>
-						&nbsp;<input type="submit" value="Go" border="0" align="absmiddle">
+						&nbsp;<input type="submit" name="go" value="Go" title="Search">
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="clear_x" value="Clear">
+						&nbsp;<input type="submit" name="clear" value="Clear">
 					</td>
 				</tr>
 			</table>
@@ -514,7 +514,7 @@ function syslog_report() {
 	}
 
 	/* if the user pushed the 'clear' button */
-	if (isset($_REQUEST["clear_x"])) {
+	if (isset($_REQUEST["clear"])) {
 		kill_session_var("sess_syslog_report_page");
 		kill_session_var("sess_syslog_report_rows");
 		kill_session_var("sess_syslog_report_filter");
