@@ -1292,7 +1292,7 @@ function syslog_graph_buttons($graph_elements = array()) {
 				$host = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` WHERE host LIKE '%%" . $host["hostname"] . "%%'", true, $syslog_cnn);
 
 				if (sizeof($host)) {
-					print "<a href='" . $config["url_path"] . "plugins/syslog/syslog.php?host_select%5B%5D=" . $host["host_id"] . "&date1=" . $date1 . "&date2=" . $date2 . "&efacility=0&elevel=0'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
+					print "<a href='" . $config["url_path"] . "plugins/syslog/syslog.php?tab=syslog&host%5B%5D=" . $host["host_id"] . "&date1=" . $date1 . "&date2=" . $date2 . "&efacility=0&elevel=0'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
 				}
 			}
 		}

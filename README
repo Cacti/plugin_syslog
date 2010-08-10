@@ -39,6 +39,7 @@
 ----[ Changelog
 
     --- 1.04 ---
+    bug#0001824: Syslog icon is not shown in graph view 
     bug: Link on Alarm Log does not properly redirect to 'current' tab
     bug: Unselecting all hosts results in SQL error
     bug: Exporting to CSV not working properly
