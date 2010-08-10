@@ -100,7 +100,7 @@ $options["days"]         = $days;
 $options["upgrade_type"] = "background";
 
 /* record the start time */
-list($micro,$seconds) = split(" ", microtime());
+list($micro,$seconds) = explode(" ", microtime());
 $start_time = $seconds + $micro;
 
 $dir = dirname(__FILE__);

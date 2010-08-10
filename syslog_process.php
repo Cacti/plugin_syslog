@@ -67,7 +67,7 @@ if (sizeof($parms)) {
 }
 
 /* record the start time */
-list($micro,$seconds) = split(" ", microtime());
+list($micro,$seconds) = explode(" ", microtime());
 $start_time = $seconds + $micro;
 
 $dir = dirname(__FILE__);
@@ -564,7 +564,7 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 	global $database_default;
 
 	/* record the end time */
-	list($micro,$seconds) = split(" ", microtime());
+	list($micro,$seconds) = explode(" ", microtime());
 	$end_time = $seconds + $micro;
 
 	cacti_log("SYSLOG STATS:Time:" . round($end_time-$start_time,2) . " Deletes:" . $deleted . " Incoming:" . $incoming . " Removes:" . $removed . " XFers:" . $xferred . " Alerts:" . $alerts . " Alarms:" . $alarms . " Reports:" . $reports, true, "SYSTEM");
