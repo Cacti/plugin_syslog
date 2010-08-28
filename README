@@ -38,6 +38,12 @@
 
 ----[ Changelog
 
+   --- 1.05 ---
+   bug: Remove poorly defined security settings
+   bug: Don't show actions if you don't have permissions
+   bug: Fix page refresh dropdown bug
+   feature: Re-add refresh settings to syslog
+
     --- 1.04 ---
     bug#0001824: Syslog icon is not shown in graph view 
     bug: Link on Alarm Log does not properly redirect to 'current' tab

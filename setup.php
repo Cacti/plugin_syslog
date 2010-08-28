@@ -184,6 +184,14 @@ function syslog_check_upgrade() {
 			plugin_syslog_install();
 		}elseif ($old < 1.01) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
+		}elseif ($old < 1.05) {
+			$realms = db_fetch_assoc("SELECT * FROM plugin_realms WHERE file='Array'");
+			if (sizeof($realms)) {
+			foreach($realms as $realm) {
+				db_execute("DELETE FROM plugin_realms WHERE id=" . $realm["id"]);
+				db_execute("DELETE FROM auto_auth_realm WHERE realm_id=" . ($realm["id"]+100));
+			}
+			}
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -230,7 +238,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		syslog_setup_table_new($options);
 
 		api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
-		api_plugin_register_realm('syslog', array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'), 'Plugin -> Syslog Administration', 1);
+		api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
 		/* get the realm id's and change from old to new */
 		$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'");
@@ -724,7 +732,7 @@ function syslog_setup_table_new($options) {
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.04',
+		'version'  => '1.05',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',
@@ -926,7 +934,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 }
 
 function syslog_config_settings() {
-	global $tabs, $settings, $syslog_retentions;
+	global $tabs, $settings, $syslog_retentions, $syslog_refresh;
 
 	$settings["visual"]["syslog_header"] = array(
 		"friendly_name" => "Syslog Settings",
@@ -961,8 +969,7 @@ function syslog_config_settings() {
 			"description" => "This is the time in seconds before the page refreshes.",
 			"method" => "drop_array",
 			"default" => "300",
-			"array" => array(9999999 => "Never", "60" => "1 Minute", "120" => "2 Minutes", "300" => "5 Minutes", "600" => "10 Minutes"),
-			"max_length" => 3,
+			"array" => $syslog_refresh
 		),
 		"syslog_maxrecords" => array(
 			"friendly_name" => "Max Report Records",
@@ -1141,7 +1148,7 @@ function syslog_show_tab() {
 
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types, $severities;
-	global $syslog_levels, $syslog_freqs, $syslog_times;
+	global $syslog_levels, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_colors, $syslog_text_colors, $syslog_retentions;
 
 	$syslog_actions = array(
@@ -1179,6 +1186,14 @@ function syslog_config_arrays () {
 		"160" => "5 Months",
 		"183" => "6 Months",
 		"365" => "1 Year"
+		);
+
+	$syslog_refresh = array(
+		9999999 => "Never",
+		"60" => "1 Minute",
+		"120" => "2 Minutes",
+		"300" => "5 Minutes",
+		"600" => "10 Minutes"
 		);
 
 	$severities = array(

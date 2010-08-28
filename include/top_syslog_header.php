@@ -62,8 +62,8 @@ if (read_config_option("auth_method") != 0) {
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/lang/calendar-en.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/calendar-setup.js"></script>
-	<?php if (isset($refresh)) {
-	print "<meta http-equiv=refresh content='" . $refresh["seconds"] . "'; url='" . $refresh["page"] . "'>";
+	<?php if (isset($_REQUEST["refresh"])) {
+	print "<meta http-equiv=refresh content='" . $_REQUEST["refresh"] . "'; url='" . $config["url_path"] . "plugins/syslog/syslog.php'>";
 	}
 	api_plugin_hook('page_head'); ?>
 </head>

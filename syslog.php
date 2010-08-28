@@ -402,7 +402,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts, $reset_multi;
+	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -459,7 +459,7 @@ function syslog_filter($sql_where, $tab) {
 	}
 	-->
 	</script>
-	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="post" action="syslog.php">
+	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="get" action="syslog.php">
 	<table width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
@@ -615,6 +615,15 @@ function syslog_filter($sql_where, $tab) {
 													<option value="100"<?php if ($_REQUEST["trimval"] == "100") {?> selected<?php }?>>100 Chars</option>
 													<option value="150"<?php if ($_REQUEST["trimval"] == "150") {?> selected<?php }?>>150 Chars</option>
 													<option value="300"<?php if ($_REQUEST["trimval"] == "300") {?> selected<?php }?>>300 Chars</option>
+												</select>
+											</td>
+											<td width="1">
+												<select name="refresh" onChange="javascript:document.getElementById('syslog_form').submit();">
+													<?php
+													foreach($page_refresh_interval AS $seconds => $display_text) {
+														print "<option value='" . $seconds . "'"; if ($_REQUEST["refresh"] == $seconds) { print " selected"; } print ">" . $display_text . "</option>\n";
+													}
+													?>
 												</select>
 											</td>
 											<td nowrap style='white-space:nowrap;padding-right:2px;'>
@@ -871,13 +880,22 @@ function syslog_messages($tab="syslog") {
 	print $nav;
 
 	if ($tab == "syslog") {
-		$display_text = array(
-			"nosortt" => array("Actions", "ASC"),
-			"host_id" => array("Host", "ASC"),
-			"logtime" => array("Date", "ASC"),
-			"message" => array("Message", "ASC"),
-			"facility_id" => array("Facility", "ASC"),
-			"priority_id" => array("Level", "ASC"));
+		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
+			$display_text = array(
+				"nosortt" => array("Actions", "ASC"),
+				"host_id" => array("Host", "ASC"),
+				"logtime" => array("Date", "ASC"),
+				"message" => array("Message", "ASC"),
+				"facility_id" => array("Facility", "ASC"),
+				"priority_id" => array("Level", "ASC"));
+		}else{
+			$display_text = array(
+				"host_id" => array("Host", "ASC"),
+				"logtime" => array("Date", "ASC"),
+				"message" => array("Message", "ASC"),
+				"facility_id" => array("Facility", "ASC"),
+				"priority_id" => array("Level", "ASC"));
+		}
 
 		html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
@@ -893,12 +911,14 @@ function syslog_messages($tab="syslog") {
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $priorities[$syslog_message["priority_id"]], $title);$i++;
 
-				print "<td style='whitspace-nowrap;width:1%;'>";
-				if ($syslog_message['mtype'] == 'main') {
-					print "<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>
-					<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
+				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
+					print "<td style='whitspace-nowrap;width:1%;'>";
+					if ($syslog_message['mtype'] == 'main') {
+						print "<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>
+						<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
+					}
+					print "</td>\n";
 				}
-				print "</td>\n";
 				print "<td>" . $hosts[$syslog_message["host_id"]] . "</td>\n";
 				print "<td>" . $syslog_message["logtime"] . "</td>\n";
 				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))):title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))) . "</td>\n";
