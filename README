@@ -37,6 +37,8 @@
     Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+   --- SVN ---
+   bug#0001854: Error found in Cacti Log
 
    --- 1.05 ---
    bug: Remove poorly defined security settings

@@ -47,14 +47,14 @@ $line = syslog_db_fetch_row("SHOW TABLE STATUS LIKE 'syslog'", true, $syslog_cnn
 $total_rows = $line['Auto_increment'];
 
 if ($sli == "") {
-	$sql = "INSERT INTO settings VALUES ('syslog_last_incoming','$i_rows')";
+	$sql = "REPLACE INTO settings VALUES ('syslog_last_incoming','$i_rows')";
 }else{
 	$sql = "UPDATE settings SET value='$i_rows' WHERE name='syslog_last_incoming'";
 }
 db_execute($sql);
 
 if ($slt == "") {
-	$sql = "INSERT INTO settings VALUES ('syslog_last_total','$total_rows')";
+	$sql = "REPLACE INTO settings VALUES ('syslog_last_total','$total_rows')";
 }else{
 	$sql = "UPDATE settings SET value='$total_rows' WHERE name='syslog_last_total'";
 }
