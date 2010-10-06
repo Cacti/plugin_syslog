@@ -125,7 +125,7 @@ function syslog_db_fetch_row($sql, $log, $cnn) {
 function syslog_db_fetch_cell($sql, $primary = '', $log = true, $cnn = '') {
 	global $cnn_id;
 
-	if ($cnn == '') {
+	if (!is_object($cnn)) {
 		$cnn = $cnn_id;
 	}
 
