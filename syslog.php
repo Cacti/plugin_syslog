@@ -554,7 +554,7 @@ function syslog_filter($sql_where, $tab) {
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
 													<?php
 													if (!isset($hostfilter)) $hostfilter = "";
-													$efacilities = syslog_db_fetch_assoc("SELECT f.facility_id, f.facility
+													$efacilities = syslog_db_fetch_assoc("SELECT DISTINCT f.facility_id, f.facility
 														FROM `" . $syslogdb_default . "`.`syslog_host_facilities` AS fh
 														INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS f
 														ON f.facility_id=fh.facility_id " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "

@@ -39,6 +39,7 @@
 ----[ Changelog
    --- SVN ---
    bug#0001854: Error found in Cacti Log
+   bug: Only show one facility in the dropdown
 
    --- 1.05 ---
    bug: Remove poorly defined security settings
