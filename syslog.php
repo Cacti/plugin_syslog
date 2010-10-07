@@ -572,8 +572,8 @@ function syslog_filter($sql_where, $tab) {
 												<select name="elevel" onChange="javascript:document.getElementById('syslog_form').submit();" title="Priority Levels">
 													<option value="0"<?php if ($_REQUEST["elevel"] == "0") {?> selected<?php }?>>All Priorities</option>
 													<option value="1"<?php if ($_REQUEST["elevel"] == "1") {?> selected<?php }?>>Emergency</option>
-													<option value="2"<?php if ($_REQUEST["elevel"] == "2") {?> selected<?php }?>>Alert++</option>
-													<option value="3"<?php if ($_REQUEST["elevel"] == "3") {?> selected<?php }?>>Critical++</option>
+													<option value="2"<?php if ($_REQUEST["elevel"] == "2") {?> selected<?php }?>>Critical++</option>
+													<option value="3"<?php if ($_REQUEST["elevel"] == "3") {?> selected<?php }?>>Alert++</option>
 													<option value="4"<?php if ($_REQUEST["elevel"] == "4") {?> selected<?php }?>>Error++</option>
 													<option value="5"<?php if ($_REQUEST["elevel"] == "5") {?> selected<?php }?>>Warning++</option>
 													<option value="6"<?php if ($_REQUEST["elevel"] == "6") {?> selected<?php }?>>Notice++</option>
