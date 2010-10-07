@@ -346,7 +346,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 	}
 
 	if (!empty($_REQUEST["elevel"])) {
-		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id <=" . $_REQUEST["elevel"];
+		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id " . (substr_count($_REQUEST["elevel"], "o") ? "<":"") . "=" . str_replace("o","",$_REQUEST["elevel"]);
 	}
 
 	if (!isset($_REQUEST["export"])) {
@@ -573,11 +573,17 @@ function syslog_filter($sql_where, $tab) {
 													<option value="0"<?php if ($_REQUEST["elevel"] == "0") {?> selected<?php }?>>All Priorities</option>
 													<option value="1"<?php if ($_REQUEST["elevel"] == "1") {?> selected<?php }?>>Emergency</option>
 													<option value="2"<?php if ($_REQUEST["elevel"] == "2") {?> selected<?php }?>>Critical++</option>
+													<option value="2o"<?php if ($_REQUEST["elevel"] == "2o") {?> selected<?php }?>>Critical (Only)</option>
 													<option value="3"<?php if ($_REQUEST["elevel"] == "3") {?> selected<?php }?>>Alert++</option>
+													<option value="3o"<?php if ($_REQUEST["elevel"] == "3o") {?> selected<?php }?>>Alert (Only)</option>
 													<option value="4"<?php if ($_REQUEST["elevel"] == "4") {?> selected<?php }?>>Error++</option>
+													<option value="4o"<?php if ($_REQUEST["elevel"] == "4o") {?> selected<?php }?>>Error (Only)</option>
 													<option value="5"<?php if ($_REQUEST["elevel"] == "5") {?> selected<?php }?>>Warning++</option>
+													<option value="5o"<?php if ($_REQUEST["elevel"] == "5o") {?> selected<?php }?>>Warning (Only)</option>
 													<option value="6"<?php if ($_REQUEST["elevel"] == "6") {?> selected<?php }?>>Notice++</option>
+													<option value="6o"<?php if ($_REQUEST["elevel"] == "6o") {?> selected<?php }?>>Notice (Only)</option>
 													<option value="7"<?php if ($_REQUEST["elevel"] == "7") {?> selected<?php }?>>Info++</option>
+													<option value="7o"<?php if ($_REQUEST["elevel"] == "7o") {?> selected<?php }?>>Info (Only)</option>
 													<option value="8"<?php if ($_REQUEST["elevel"] == "8") {?> selected<?php }?>>Debug</option>
 												</select>
 											</td>

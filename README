@@ -40,6 +40,7 @@
    --- SVN ---
    bug#0001854: Error found in Cacti Log
    bug#0001871: Priority dropdown labels in syslog.php for "All Priorities" set to incorrect priority id 
+   bug#0001872: Priorities drop drown to show specific value
    bug: Only show one facility in the dropdown
 
    --- 1.05 ---
