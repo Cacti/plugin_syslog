@@ -244,7 +244,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'")+100;
 		$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'")+100;
 
-		if ($user >  0) {
+		if ($user > 100) {
 			$users = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=37");
 			if (sizeof($users)) {
 			foreach($users as $u) {
@@ -253,12 +253,12 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 					ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
 				db_execute("DELETE FROM user_auth_realm
 					WHERE user_id=" . $u["user_id"] . "
-					AND realm_id=$user");
+					AND realm_id=37");
 			}
 			}
 		}
 
-		if ($admin > 0) {
+		if ($admin > 100) {
 			$admins = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=38");
 			if (sizeof($admins)) {
 			foreach($admins as $user) {
@@ -267,7 +267,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 					ON DUPLICATE KEY UPDATE realm_id=VALUES(realm_id)");
 				db_execute("DELETE FROM user_auth_realm
 					WHERE user_id=" . $user["user_id"] . "
-					AND realm_id=$admin");
+					AND realm_id=38");
 			}
 			}
 		}
