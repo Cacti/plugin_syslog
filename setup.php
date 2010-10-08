@@ -241,8 +241,8 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
 		/* get the realm id's and change from old to new */
-		$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'");
-		$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'");
+		$user  = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog.php'")+100;
+		$admin = db_fetch_cell("SELECT id FROM plugin_realms WHERE file='syslog_alerts.php'")+100;
 
 		if ($user >  0) {
 			$users = db_fetch_assoc("SELECT user_id FROM user_auth_realm WHERE realm_id=37");
