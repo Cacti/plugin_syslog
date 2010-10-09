@@ -346,7 +346,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 	}
 
 	if (!empty($_REQUEST["elevel"])) {
-		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id " . (substr_count($_REQUEST["elevel"], "o") ? "<":"") . "=" . str_replace("o","",$_REQUEST["elevel"]);
+		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id " . (substr_count($_REQUEST["elevel"], "o") ? "":"<") . "=" . str_replace("o","",$_REQUEST["elevel"]);
 	}
 
 	if (!isset($_REQUEST["export"])) {
