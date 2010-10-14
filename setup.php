@@ -184,7 +184,7 @@ function syslog_check_upgrade() {
 			plugin_syslog_install();
 		}elseif ($old < 1.01) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
-		}elseif ($old < 1.05) {
+		}elseif ($old < 1.06) {
 			$realms = db_fetch_assoc("SELECT * FROM plugin_realms WHERE file='Array'");
 			if (sizeof($realms)) {
 			foreach($realms as $realm) {
@@ -561,7 +561,7 @@ function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) 
 }
 
 function syslog_setup_table_new($options) {
-	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username, $syslog_cnn;
+	global $config, $cnn_id, $settings, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username, $syslog_cnn;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -649,7 +649,12 @@ function syslog_setup_table_new($options) {
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id)) ENGINE=$engine;", true, $syslog_cnn);
 
-	$newreport = sizeof(syslog_db_fetch_row("SHOW COLUMNS FROM `" . $syslogdb_default . "`.`syslog_reports` LIKE 'body'", true, $syslog_cnn));
+	$present = syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog_reports'", true, $syslog_cnn);
+	if (sizeof($present)) {
+		$newreport = sizeof(syslog_db_fetch_row("SHOW COLUMNS FROM `" . $syslogdb_default . "`.`syslog_reports` LIKE 'body'", true, $syslog_cnn));
+	}else{
+		$newreport = true;
+	}
 	if ($truncate || !$newreport) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`", true, $syslog_cnn);
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
@@ -727,12 +732,22 @@ function syslog_setup_table_new($options) {
 	foreach($syslog_levels as $id => $priority) {
 		syslog_db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')", true, $syslog_cnn);
 	}
+
+	if (!isset($settings["syslog"])) {
+		syslog_config_settings();
+	}
+
+	foreach($settings["syslog"] AS $name => $values) {
+		if (isset($values["default"])) {
+			db_execute("REPLACE INTO `" . $database_default . "`.`settings` (name, value) VALUES ('$name', '" . $values["default"] . "')");
+		}
+	}
 }
 
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.05',
+		'version'  => '1.06',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',
