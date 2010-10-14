@@ -184,7 +184,7 @@ function syslog_check_upgrade() {
 			plugin_syslog_install();
 		}elseif ($old < 1.01) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;", true, $syslog_cnn);
-		}elseif ($old < 1.06) {
+		}elseif ($old < 1.05) {
 			$realms = db_fetch_assoc("SELECT * FROM plugin_realms WHERE file='Array'");
 			if (sizeof($realms)) {
 			foreach($realms as $realm) {
