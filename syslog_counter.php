@@ -40,10 +40,10 @@ if (file_exists('include/auth.php')) {
 $sli = read_config_option("syslog_last_incoming");
 $slt = read_config_option("syslog_last_total");
 
-$line = syslog_db_fetch_row("SHOW TABLE STATUS LIKE 'syslog_incoming'", true, $syslog_cnn);
+$line = syslog_db_fetch_row("SHOW TABLE STATUS LIKE 'syslog_incoming'");
 $i_rows = $line['Auto_increment'];
 
-$line = syslog_db_fetch_row("SHOW TABLE STATUS LIKE 'syslog'", true, $syslog_cnn);
+$line = syslog_db_fetch_row("SHOW TABLE STATUS LIKE 'syslog'");
 $total_rows = $line['Auto_increment'];
 
 if ($sli == "") {

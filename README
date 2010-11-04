@@ -37,6 +37,12 @@
     Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+   --- 1.07 ---
+   bug: Rearchitect to improve support mutliple databases
+   bug: Don't process a report if it's not enabled.
+   bug: Don't process an alert if it's not enabled.
+   bug: Don't process a removal rule if it's not enabled.
+
    --- 1.06 ---
    bug#0001854: Error found in Cacti Log
    bug#0001871: Priority dropdown labels in syslog.php for "All Priorities" set to incorrect priority id 

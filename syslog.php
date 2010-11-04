@@ -114,7 +114,7 @@ function syslog_display_tabs($current_tab) {
 }
 
 function syslog_view_alarm() {
-	global $config, $colors, $syslog_cnn;
+	global $config, $colors;
 
 	include(dirname(__FILE__) . "/config.php");
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
@@ -123,7 +123,7 @@ function syslog_view_alarm() {
 	echo "<tr><td class='textHeaderDark' style='background-color:#" . $colors["header"] . ";'><strong>Syslog Alert View</strong></td></tr>";
 	echo "<tr><td style='background-color:#FFFFFF;'>";
 
-	$html = syslog_db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"], '', true, $syslog_cnn);
+	$html = syslog_db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"]);
 	echo $html;
 
 	echo "</td></tr></table>";
@@ -305,7 +305,7 @@ function syslog_request_validation($current_tab) {
 }
 
 function get_syslog_messages(&$sql_where, $row_limit, $tab) {
-	global $sql_where, $syslog_cnn, $hostfilter, $current_tab, $syslog_incoming_config;
+	global $sql_where, $hostfilter, $current_tab, $syslog_incoming_config;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -398,11 +398,11 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 
 	//echo $query_sql;
 
-	return syslog_db_fetch_assoc($query_sql, true, $syslog_cnn);
+	return syslog_db_fetch_assoc($query_sql);
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $colors, $config, $syslog_cnn, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval;
+	global $colors, $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -558,7 +558,7 @@ function syslog_filter($sql_where, $tab) {
 														FROM `" . $syslogdb_default . "`.`syslog_host_facilities` AS fh
 														INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS f
 														ON f.facility_id=fh.facility_id " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
-														ORDER BY facility", true, $syslog_cnn);
+														ORDER BY facility");
 
 													if (sizeof($efacilities)) {
 													foreach ($efacilities as $efacility) {
@@ -666,7 +666,7 @@ function syslog_filter($sql_where, $tab) {
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
 										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Threshold Logs</option><?php }?>
 										<?php
-										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host", true, $syslog_cnn);
+										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host");
 										if (sizeof($hosts)) {
 											foreach ($hosts as $host) {
 												print "<option value=" . $host["host_id"];
@@ -710,11 +710,11 @@ function syslog_filter($sql_where, $tab) {
 											FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where . "
 											UNION
 											SELECT count(*) AS totals
-											FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where . ") AS rowcount", '', true, $syslog_cnn);
+											FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where . ") AS rowcount");
 								}elseif ($_REQUEST["removal"] == -1){
-									$total_rows = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where, '', true, $syslog_cnn);
+									$total_rows = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where);
 								}else{
-									$total_rows = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where, '', true, $syslog_cnn);
+									$total_rows = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where);
 								}
 							}else{
 								$total_rows = syslog_db_fetch_cell("SELECT count(*)
@@ -727,7 +727,7 @@ function syslog_filter($sql_where, $tab) {
 									ON sl.host=sh.host
 									LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
 									ON sl.alert_id=sa.id " .
-									$sql_where, '', true, $syslog_cnn);
+									$sql_where);
 							}
 							html_start_box("", "100%", $colors["header"], "3", "center", "");
 							$hostarray = "";
@@ -821,7 +821,7 @@ function syslog_log_legend() {
  *  syslog messages that are relevant to Syslog.
 */
 function syslog_messages($tab="syslog") {
-	global $colors, $sql_where, $syslog_cnn, $hostfilter, $severities;
+	global $colors, $sql_where, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 
 	include("./include/global_arrays.php");
@@ -905,9 +905,9 @@ function syslog_messages($tab="syslog") {
 
 		html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
-		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn), "host_id", "host");
-		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn), "facility_id", "facility");
-		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn), "priority_id", "priority");
+		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`"), "host_id", "host");
+		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`"), "facility_id", "facility");
+		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`"), "priority_id", "priority");
 
 		$i = 0;
 		if (sizeof($syslog_messages) > 0) {

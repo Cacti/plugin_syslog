@@ -79,7 +79,7 @@ function form_save() {
    ------------------------ */
 
 function form_actions() {
-	global $colors, $syslog_cnn, $config, $syslog_actions, $fields_syslog_action_edit;
+	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -134,7 +134,7 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$report_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id=" . $matches[1], '', true, $syslog_cnn);
+			$report_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id=" . $matches[1]);
 			$report_list  .= "<li>" . $report_info . "<br>";
 			$report_array[] = $matches[1];
 		}
@@ -196,7 +196,7 @@ function form_actions() {
 
 function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
 	$email, $notes, $enabled) {
-	global $config, $syslog_cnn;
+	global $config;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -226,7 +226,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 	if (!is_error_message()) {
 		$id = 0;
-		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_reports`", "id", true, $syslog_cnn);
+		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_reports`", "id");
 
 		if ($id) {
 			raise_message(1);
@@ -239,21 +239,18 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 }
 
 function api_syslog_report_remove($id) {
-	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id='" . $id . "'");
 }
 
 function api_syslog_report_disable($id) {
-	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='' WHERE id='" . $id . "'");
 }
 
 function api_syslog_report_enable($id) {
-	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id='" . $id . "'");
 }
 
 /* ---------------------
@@ -261,8 +258,6 @@ function api_syslog_report_enable($id) {
    --------------------- */
 
 function syslog_get_report_records(&$sql_where, $row_limit) {
-	global $syslog_cnn;
-
 	include(dirname(__FILE__) . "/config.php");
 
 	if (get_request_var_request("filter") != "") {
@@ -289,11 +284,11 @@ function syslog_get_report_records(&$sql_where, $row_limit) {
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
 		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
 
-	return syslog_db_fetch_assoc($query_string, true, $syslog_cnn);
+	return syslog_db_fetch_assoc($query_string);
 }
 
 function syslog_action_edit() {
-	global $colors, $syslog_cnn, $message_types, $syslog_freqs, $syslog_times;
+	global $colors, $message_types, $syslog_freqs, $syslog_times;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -305,7 +300,7 @@ function syslog_action_edit() {
 	if (isset($_GET["id"])) {
 		$report = syslog_db_fetch_row("SELECT *
 			FROM `" . $syslogdb_default . "`.`syslog_reports`
-			WHERE id=" . $_GET["id"], true, $syslog_cnn);
+			WHERE id=" . $_GET["id"]);
 		$header_label = "[edit: " . $report["name"] . "]";
 	}else{
 		$header_label = "[new]";
@@ -487,7 +482,7 @@ function syslog_filter() {
 }
 
 function syslog_report() {
-	global $colors, $syslog_cnn, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
+	global $colors, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -574,7 +569,7 @@ function syslog_report() {
 		FROM `" . $syslogdb_default . "`.`syslog_reports`
 		$sql_where";
 
-	$total_rows = syslog_db_fetch_cell($rows_query_string, '', true, $syslog_cnn);
+	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
 	?>
 	<script type="text/javascript">

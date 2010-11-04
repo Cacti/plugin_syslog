@@ -92,59 +92,13 @@ function syslog_set_cactidb() {
 	$cnn_id->DefaultDatabase = $database_default;
 }
 
-function syslog_db_execute($sql, $log, $cnn) {
-	syslog_set_syslogdb();
-
-	$result = db_execute($sql, $log, $cnn);
-
-	syslog_set_cactidb();
-
-	return $result;
-}
-
-function syslog_db_fetch_assoc($sql, $log, $cnn) {
-	syslog_set_syslogdb();
-
-	$result = db_fetch_assoc($sql, $log, $cnn);
-
-	syslog_set_cactidb();
-
-	return $result;
-}
-
-function syslog_db_fetch_row($sql, $log, $cnn) {
-	syslog_set_syslogdb();
-
-	$result = db_fetch_row($sql, $log, $cnn);
-
-	syslog_set_cactidb();
-
-	return $result;
-}
-
-function syslog_db_fetch_cell($sql, $primary = '', $log = true, $cnn = '') {
-	global $cnn_id;
-
-	if (!is_object($cnn)) {
-		$cnn = $cnn_id;
-	}
-
-	syslog_set_syslogdb();
-
-	$result = db_fetch_cell($sql, $primary, $log, $cnn);
-
-	syslog_set_cactidb();
-
-	return $result;
-}
-
 function syslog_remove_items($table, $uniqueID) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
 	include(dirname(__FILE__) . "/config.php");
 
 	/* REMOVE ALL THE THINGS WE DONT WANT TO SEE */
-	$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove`", true, $syslog_cnn);
+	$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
 
 	syslog_debug("Found   " . sizeof($rows) .
 		",  Removal Rule(s)" .
@@ -264,14 +218,14 @@ function syslog_remove_items($table, $uniqueID) {
 			/* process the removal rule first */
 			if ($sql1 != '') {
 				/* move rows first */
-				syslog_db_execute($sql1, true, $syslog_cnn);
+				syslog_db_execute($sql1);
 				$messages_moved = $syslog_cnn->Affected_Rows();
 				$debugm   = "Moved   " . $messages_moved . ", ";
 				$xferred += $messages_moved;
 			}
 
 			/* now delete the remainder that match */
-			syslog_db_execute($sql, true, $syslog_cnn);
+			syslog_db_execute($sql);
 			$removed += $syslog_cnn->Affected_Rows();
 			$debugm   = "Deleted " . $removed . ", ";
 
@@ -382,7 +336,7 @@ function sql_hosts_where($tab) {
 }
 
 function syslog_export($tab) {
-	global $syslog_incoming_config, $syslog_cnn, $severities;
+	global $syslog_incoming_config, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -393,9 +347,9 @@ function syslog_export($tab) {
 		$sql_where = "";
 		$syslog_messages = get_syslog_messages($sql_where, "10000", $tab);
 
-		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`", true, $syslog_cnn), "host_id", "host");
-		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`", true, $syslog_cnn), "facility_id", "facility");
-		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`", true, $syslog_cnn), "priority_id", "priority");
+		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`"), "host_id", "host");
+		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`"), "facility_id", "facility");
+		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`"), "priority_id", "priority");
 
 		if (sizeof($syslog_messages) > 0) {
 			print 'host, facility, priority, date, message' . "\r\n";
@@ -444,7 +398,7 @@ function syslog_debug($message) {
 }
 
 function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html) {
-	global $config, $syslog_cnn, $severities;
+	global $config, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -461,7 +415,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save["html"]     = $html;
 
 		$id = 0;
-		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq", true, $syslog_cnn);
+		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq");
 
 		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "'.  Message was '" . $msg["message"] . "', and Sequence '$id'", false, "SYSLOG");
 
@@ -479,7 +433,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save["html"]     = $html;
 
 		$id = 0;
-		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq", true, $syslog_cnn);
+		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq");
 
 		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, "SYSLOG");
 

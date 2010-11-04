@@ -115,11 +115,10 @@ include(dirname(__FILE__) . "/config.php");
 include_once(dirname(__FILE__) . "/functions.php");
 
 /* Connect to the Syslog Database */
-global $syslog_cnn;
 syslog_connect();
 
-if (sizeof(syslog_db_fetch_row("SHOW TABLES IN " . $syslogdb_default . " LIKE 'syslog'", true, $syslog_cnn))) {
-	syslog_db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog` TO `" . $syslogdb_default . "`.`syslog_pre_upgrade`", true, $syslog_cnn);
+if (sizeof(syslog_db_fetch_row("SHOW TABLES IN " . $syslogdb_default . " LIKE 'syslog'"))) {
+	syslog_db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog` TO `" . $syslogdb_default . "`.`syslog_pre_upgrade`");
 }
 
 /* perform the upgrade */

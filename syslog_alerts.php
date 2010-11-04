@@ -80,7 +80,7 @@ function form_save() {
    ------------------------ */
 
 function form_actions() {
-	global $colors, $config, $syslog_cnn, $syslog_actions, $fields_syslog_action_edit;
+	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -135,7 +135,7 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$alert_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id=" . $matches[1], '', true, $syslog_cnn);
+			$alert_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id=" . $matches[1]);
 			$alert_list .= "<li>" . $alert_info . "</li>";
 			$alert_array[] = $matches[1];
 		}
@@ -196,8 +196,6 @@ function form_actions() {
 
 function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
 	$enabled, $severity, $command) {
-	global $syslog_cnn;
-
 	include(dirname(__FILE__) . "/config.php");
 
 	/* get the username */
@@ -226,7 +224,7 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 
 	if (!is_error_message()) {
 		$id = 0;
-		$id = sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id", true, $syslog_cnn);
+		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id");
 		if ($id) {
 			raise_message(1);
 		}else{
@@ -238,21 +236,18 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 }
 
 function api_syslog_alert_remove($id) {
-	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id='" . $id . "'");
 }
 
 function api_syslog_alert_disable($id) {
-	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='' WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='' WHERE id='" . $id . "'");
 }
 
 function api_syslog_alert_enable($id) {
-	global $syslog_cnn;
 	include(dirname(__FILE__) . "/config.php");
-	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='on' WHERE id='" . $id . "'", true, $syslog_cnn);
+	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='on' WHERE id='" . $id . "'");
 }
 
 /* ---------------------
@@ -260,8 +255,6 @@ function api_syslog_alert_enable($id) {
    --------------------- */
 
 function syslog_get_alert_records(&$sql_where, $row_limit) {
-	global $syslog_cnn;
-
 	include(dirname(__FILE__) . "/config.php");
 
 	if (get_request_var_request("filter") != "") {
@@ -288,11 +281,11 @@ function syslog_get_alert_records(&$sql_where, $row_limit) {
 		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
 		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
 
-	return syslog_db_fetch_assoc($query_string, true, $syslog_cnn);
+	return syslog_db_fetch_assoc($query_string);
 }
 
 function syslog_action_edit() {
-	global $colors, $syslog_cnn, $message_types, $severities;
+	global $colors, $message_types, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -304,10 +297,10 @@ function syslog_action_edit() {
 	if (isset($_GET["id"]) && $_GET["action"] == "edit") {
 		$alert = syslog_db_fetch_row("SELECT *
 			FROM `" . $syslogdb_default . "`.`syslog_alert`
-			WHERE id=" . $_GET["id"], true, $syslog_cnn);
+			WHERE id=" . $_GET["id"]);
 		$header_label = "[edit: " . $alert["name"] . "]";
 	}else if (isset($_GET["id"]) && $_GET["action"] == "newedit") {
-		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . $_GET["id"] . " AND logtime='" . $_GET["date"] . "'", true, $syslog_cnn);
+		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . $_GET["id"] . " AND logtime='" . $_GET["date"] . "'");
 
 		$header_label = "[new]";
 		if (sizeof($syslog_rec)) {
@@ -527,7 +520,7 @@ function syslog_filter() {
 }
 
 function syslog_alerts() {
-	global $colors, $syslog_actions, $syslog_cnn, $config, $message_types, $severities;
+	global $colors, $syslog_actions, $config, $message_types, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
 
@@ -614,7 +607,7 @@ function syslog_alerts() {
 		FROM `" . $syslogdb_default . "`.`syslog_alert`
 		$sql_where";
 
-	$total_rows = syslog_db_fetch_cell($rows_query_string, '', true, $syslog_cnn);
+	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
 	?>
 	<script type="text/javascript">
