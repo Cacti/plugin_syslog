@@ -508,11 +508,11 @@ function syslog_removal() {
 	}else{
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
-		$changed += check_changed("filter", "sess_syslog_removal_filter");
-		$changed += check_changed("enabled", "sess_syslog_removal_enabled");
-		$changed += check_changed("rows", "sess_syslog_removal_rows");
-		$changed += check_changed("sort_column", "sess_syslog_removal_sort_column");
-		$changed += check_changed("sort_direction", "sess_syslog_removal_sort_direction");
+		$changed += syslog_check_changed("filter", "sess_syslog_removal_filter");
+		$changed += syslog_check_changed("enabled", "sess_syslog_removal_enabled");
+		$changed += syslog_check_changed("rows", "sess_syslog_removal_rows");
+		$changed += syslog_check_changed("sort_column", "sess_syslog_removal_sort_column");
+		$changed += syslog_check_changed("sort_direction", "sess_syslog_removal_sort_direction");
 
 		if ($changed) {
 			$_REQUEST["page"] = "1";

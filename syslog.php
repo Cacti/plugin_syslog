@@ -262,18 +262,18 @@ function syslog_request_validation($current_tab) {
 	}else{
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
-		$changed += check_changed("hosts", "sess_syslog_hosts");
-		$changed += check_changed("predefined_timespan", "sess_current_timespan");
-		$changed += check_changed("date1", "sess_current_date1");
-		$changed += check_changed("date2", "sess_current_date2");
-		$changed += check_changed("rows", "sess_syslog_rows");
-		$changed += check_changed("removal", "sess_syslog_removal");
-		$changed += check_changed("refresh", "sess_syslog_refresh");
-		$changed += check_changed("filter", "sess_syslog_filter");
-		$changed += check_changed("efacility", "sess_syslog_efacility");
-		$changed += check_changed("elevel", "sess_syslog_elevel");
-		$changed += check_changed("sort_column", "sess_syslog_sort_column");
-		$changed += check_changed("sort_direction", "sess_syslog_sort_direction");
+		$changed += syslog_check_changed("hosts", "sess_syslog_hosts");
+		$changed += syslog_check_changed("predefined_timespan", "sess_current_timespan");
+		$changed += syslog_check_changed("date1", "sess_current_date1");
+		$changed += syslog_check_changed("date2", "sess_current_date2");
+		$changed += syslog_check_changed("rows", "sess_syslog_rows");
+		$changed += syslog_check_changed("removal", "sess_syslog_removal");
+		$changed += syslog_check_changed("refresh", "sess_syslog_refresh");
+		$changed += syslog_check_changed("filter", "sess_syslog_filter");
+		$changed += syslog_check_changed("efacility", "sess_syslog_efacility");
+		$changed += syslog_check_changed("elevel", "sess_syslog_elevel");
+		$changed += syslog_check_changed("sort_column", "sess_syslog_sort_column");
+		$changed += syslog_check_changed("sort_direction", "sess_syslog_sort_direction");
 
 		if ($changed) {
 			$_REQUEST["page"] = "1";
@@ -755,13 +755,13 @@ function syslog_syslog_legend() {
 	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_fg") . "'");
 	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Emergency</b></td>";
 
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Alert</b></td>";
-
 	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");
 	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_fg") . "'");
 	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Critical</b></td>";
+
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_fg") . "'");
+	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Alert</b></td>";
 
 	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_err_bg") . "'");
 	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_err_fg") . "'");

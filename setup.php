@@ -983,6 +983,15 @@ function syslog_config_settings() {
 			"method" => "checkbox",
 			"default" => "on"
 		),
+		"syslog_domains" => array(
+			"friendly_name" => "Strip Domains",
+			"description" => "A comma delimited list of domains that you wish to remove from the syslog hostname,
+			Examples would be 'mydomain.com, otherdomain.com'",
+			"method" => "textbox",
+			"default" => "",
+			"size" => 80,
+			"max_length" => 255,
+		),
 		"syslog_refresh" => array(
 			"friendly_name" => "Refresh Interval",
 			"description" => "This is the time in seconds before the page refreshes.",

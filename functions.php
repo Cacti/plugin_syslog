@@ -92,6 +92,14 @@ function syslog_set_cactidb() {
 	$cnn_id->DefaultDatabase = $database_default;
 }
 
+function syslog_check_changed($request, $session) {
+	if ((isset($_REQUEST[$request])) && (isset($_SESSION[$session]))) {
+		if ($_REQUEST[$request] != $_SESSION[$session]) {
+			return 1;
+		}
+	}
+}
+
 function syslog_remove_items($table, $uniqueID) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 

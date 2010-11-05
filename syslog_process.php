@@ -183,7 +183,7 @@ if ($retention > 0 || $partitioned) {
 		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
 
 		if ($cur_day != $last_day) {
-			syslog_db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
+			db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
 
 			if ($lday_ts != '') {
 				cacti_log("SYSLOG: Creating new partition 'd" . $lformat . "'", false, "SYSTEM");
@@ -237,6 +237,18 @@ $syslog_incoming = $syslog_cnn->Affected_Rows();
 syslog_debug("Found   " . $syslog_incoming .
 	",  New Message(s)" .
 	" to process");
+
+/* strip domains if we have requested to do so */
+$syslog_domains = read_config_option("syslog_domains");
+if ($syslog_domains != "") {
+	$domains = explode(",", trim($syslog_domains));
+
+	foreach($domains as $domain) {
+		syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` 
+			SET host=SUBSTRING_INDEX(host,'.',1) 
+			WHERE host LIKE '%$domain'");
+	}
+}
 
 /* update the hosts, facilities, and priorities tables */
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility)");
