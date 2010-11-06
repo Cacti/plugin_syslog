@@ -311,7 +311,7 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 
 	$sql_where = "";
 	/* form the 'where' clause for our main sql query */
-	if ($_REQUEST["host"][0] == -1) {
+	if ($_REQUEST["host"][0] == -1 && $tab != "syslog") {
 		$sql_where .=  "WHERE sl.host='N/A'";
 	}else{
 		if (!empty($_REQUEST["host"])) {

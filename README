@@ -42,6 +42,7 @@
    feature: Make compatible with earlier versions of Cacti.
    bug: Minor issue with wrong db function being called.
    bug: Legend had Critical and Alert reversed.
+   bug: Syslog filter can cause SQL errors
 
    --- 1.07 ---
    bug: Rearchitect to improve support mutliple databases
