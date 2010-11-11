@@ -43,6 +43,7 @@
    bug: Minor issue with wrong db function being called.
    bug: Legend had Critical and Alert reversed.
    bug: Syslog filter can cause SQL errors
+   bug: Wrong page redirect links.
 
    --- 1.07 ---
    bug: Rearchitect to improve support mutliple databases

@@ -825,7 +825,12 @@ function syslog_messages($tab="syslog") {
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 
 	include("./include/global_arrays.php");
-	include("./lib/timespan_settings.php");
+
+	if (file_exists("./lib/timespan_settings.php")) {
+		include("./lib/timespan_settings.php");
+	}else{
+		include("./include/html/inc_timespan_settings.php");
+	}
 	include(dirname(__FILE__) . "/config.php");
 
 	//print "<pre>";print_r($_REQUEST);print "</pre>";

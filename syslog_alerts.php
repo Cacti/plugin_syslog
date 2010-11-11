@@ -564,11 +564,11 @@ function syslog_alerts() {
 	}else{
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
-		$changed += check_changed("filter", "sess_syslog_alerts_filter");
-		$changed += check_changed("enabled", "sess_syslog_alerts_enabled");
-		$changed += check_changed("rows", "sess_syslog_alerts_rows");
-		$changed += check_changed("sort_column", "sess_syslog_alerts_sort_column");
-		$changed += check_changed("sort_direction", "sess_syslog_alerts_sort_direction");
+		$changed += syslog_check_changed("filter", "sess_syslog_alerts_filter");
+		$changed += syslog_check_changed("enabled", "sess_syslog_alerts_enabled");
+		$changed += syslog_check_changed("rows", "sess_syslog_alerts_rows");
+		$changed += syslog_check_changed("sort_column", "sess_syslog_alerts_sort_column");
+		$changed += syslog_check_changed("sort_direction", "sess_syslog_alerts_sort_direction");
 
 		if ($changed) {
 			$_REQUEST["page"] = "1";
@@ -623,7 +623,7 @@ function syslog_alerts() {
 	<?php
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_alerts.php");
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_alerts.php?filter=". $_REQUEST["filter"]);
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
@@ -631,13 +631,13 @@ function syslog_alerts() {
 						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 							<tr>
 								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog_alerts.php.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog_alerts.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
 								</td>\n
 								<td align='center' class='textHeaderDark'>
 									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
 								</td>\n
 								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog_alerts.php.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog_alerts.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
 								</td>\n
 							</tr>
 						</table>
