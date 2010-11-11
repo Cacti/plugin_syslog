@@ -171,7 +171,7 @@ if ($retention > 0 || $partitioned) {
 		$cur_day  = $cur_day["today"];
 
 		$lday_ts  = read_config_option("syslog_lastday_timestamp");
-		$lnow     = date('Y-m-d', $lday_ts);
+		$lnow     = date('Y-m-d', $lday_ts+86400);
 		$lformat  = date('Ymd', $lday_ts);
 		$last_day = syslog_db_fetch_row("SELECT TO_DAYS('$lnow') AS today");
 		$last_day = $last_day["today"];
