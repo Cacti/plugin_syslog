@@ -164,6 +164,13 @@ if ($retention > 0 || $partitioned) {
 			WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
 			ORDER BY partition_ordinal_position");
 
+		/* find date of last partition */
+		$last_part = syslog_db_fetch_cell("SELECT PARTITION_NAME 
+			FROM `information_schema`.`partitions` 
+			WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog' 
+			ORDER BY partition_ordinal_position DESC 
+			LIMIT 1,1;");
+
 		$time     = time();
 		$now      = date('Y-m-d', $time);
 		$format   = date('Ymd', $time);
@@ -171,7 +178,7 @@ if ($retention > 0 || $partitioned) {
 		$cur_day  = $cur_day["today"];
 
 		$lday_ts  = read_config_option("syslog_lastday_timestamp");
-		$lnow     = date('Y-m-d', $lday_ts+86400);
+		$lnow     = date('Y-m-d', $lday_ts);
 		$lformat  = date('Ymd', $lday_ts);
 		$last_day = syslog_db_fetch_row("SELECT TO_DAYS('$lnow') AS today");
 		$last_day = $last_day["today"];
@@ -185,7 +192,7 @@ if ($retention > 0 || $partitioned) {
 		if ($cur_day != $last_day) {
 			db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
 
-			if ($lday_ts != '') {
+			if ($last_part != "d" . $lformat) {
 				cacti_log("SYSLOG: Creating new partition 'd" . $lformat . "'", false, "SYSTEM");
 				syslog_debug("Creating new partition 'd" . $lformat . "'");
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` REORGANIZE PARTITION dMaxValue INTO (
