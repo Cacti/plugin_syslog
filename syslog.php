@@ -515,7 +515,7 @@ function syslog_filter($sql_where, $tab) {
 												<input type='text' name='date2' id='date2' title='Graph End Timestamp' size='14' value='<?php print (isset($_SESSION["sess_current_date2"]) ? $_SESSION["sess_current_date2"] : "");?>'>
 												&nbsp;<input style='padding-bottom: 4px;' type='image' src='<?php print $config["url_path"];?>images/calendar.gif' alt='End date selector' title='End date selector' border='0' align='absmiddle' onclick="return showCalendar('date2');">
 											</td>
-											<td width='130' nowrap style='white-space: nowrap;'>
+											<td width='125' nowrap style='white-space: nowrap;'>
 												&nbsp;&nbsp;<input style='padding-bottom: 4px;' type='image' name='move_left' src='<?php print $config["url_path"];?>images/move_left.gif' alt='Left' border='0' align='absmiddle' title='Shift Left'>
 												<select name='predefined_timeshift' title='Define Shifting Interval' onChange="applyTimespanFilterChange(document.syslog_form)">
 													<?php
@@ -529,6 +529,19 @@ function syslog_filter($sql_where, $tab) {
 													?>
 												</select>
 												<input style='padding-bottom: 4px;' type='image' name='move_right' src='<?php print $config["url_path"];?>images/move_right.gif' alt='Right' border='0' align='absmiddle' title='Shift Right'>
+											</td>
+											<td>
+												&nbsp;<input type="submit" value='Go' name='go' title="Go">
+											</td>
+											<td>
+												&nbsp;<input type='submit' value='Clear' name='clear' title='Return to the default time span'>
+											</td>
+											<td>
+												&nbsp;<input type='submit' value='Export' name='export' title='Export Records to CSV'>
+											</td>
+											<td>
+												<input type='hidden' name='action' value='actions'>
+												<input type='hidden' name='syslog_pdt_change' value='false'>
 											</td>
 										</tr>
 									</table>
@@ -551,7 +564,7 @@ function syslog_filter($sql_where, $tab) {
 											<td style='padding-right:2px;'>
 												<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
 											</td>
-											<?php print api_plugin_hook('syslog_extend_filter');?>
+											<?php api_plugin_hook('syslog_extend_filter');?>
 											<td style='padding-right:2px;'>
 												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();" title="Facilities">
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
@@ -634,13 +647,6 @@ function syslog_filter($sql_where, $tab) {
 													}
 													?>
 												</select>
-											</td>
-											<td nowrap style='white-space:nowrap;padding-right:2px;'>
-												<input type="submit" value='Go' name='go' title="Go">
-												<input type='submit' value='Clear' name='clear' title='Return to the default time span'>
-												<input type='submit' value='Export' name='export' title='Export Records to CSV'>
-												<input type='hidden' name='action' value='actions'>
-												<input type='hidden' name='syslog_pdt_change' value='false'>
 											</td>
 										</tr>
 									</table>
