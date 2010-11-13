@@ -675,7 +675,9 @@ function syslog_filter($sql_where, $tab) {
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
 										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Threshold Logs</option><?php }?>
 										<?php
-										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host");
+										$hosts_where = "";
+										$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
+										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` $hosts_where ORDER BY host");
 										if (sizeof($hosts)) {
 											foreach ($hosts as $host) {
 												print "<option value=" . $host["host_id"];

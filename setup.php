@@ -85,6 +85,8 @@ function plugin_syslog_uninstall () {
 	include(dirname(__FILE__) . '/config.php');
 	include_once(dirname(__FILE__) . '/functions.php');
 
+	syslog_connect();
+
 	//print "<pre>";print_r($_GET);print "</pre>";
 	if (isset($_GET["cancel"]) || isset($_GET["return"])) {
 		header("Location:" . $config["url_path"] . "plugins.php");
@@ -553,10 +555,10 @@ function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) 
 	$now = time();
 
 	$parts = "";
-	for($i = $days; $i > 0; $i--) {
+	for($i = $days; $i >= -1; $i--) {
 		$timestamp = $now - ($i * 86400);
 		$date     = date('Y-m-d', $timestamp);
-		$format   = date("Ymd", $timestamp);
+		$format   = date("Ymd", $timestamp - 86400);
 		$parts .= ($parts != "" ? ",\n":"(") . " PARTITION d" . $format . " VALUES LESS THAN (TO_DAYS('" . $date . "'))";
 	}
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
@@ -891,6 +893,8 @@ function syslog_uninstall_advisor() {
 	global $config, $colors;
 
 	include(dirname(__FILE__) . "/config.php");
+
+	syslog_connect();
 
 	$syslog_exists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
 
