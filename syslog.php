@@ -349,6 +349,8 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "priority_id " . (substr_count($_REQUEST["elevel"], "o") ? "":"<") . "=" . str_replace("o","",$_REQUEST["elevel"]);
 	}
 
+	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);
+
 	if (!isset($_REQUEST["export"])) {
 		$limit = " LIMIT " . ($row_limit*($_REQUEST["page"]-1)) . "," . $row_limit;
 	} else {
@@ -549,6 +551,7 @@ function syslog_filter($sql_where, $tab) {
 											<td style='padding-right:2px;'>
 												<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
 											</td>
+											<?php print api_plugin_hook('syslog_extend_filter');?>
 											<td style='padding-right:2px;'>
 												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();" title="Facilities">
 													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>

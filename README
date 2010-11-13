@@ -40,6 +40,7 @@
    --- SVN  ---
    feature: Allow Syslog to Strip Domains Suffix's.
    feature: Make compatible with earlier versions of Cacti.
+   feature: Allow Plugins to extend filtering
    bug: Minor issue with wrong db function being called.
    bug: Legend had Critical and Alert reversed.
    bug: Syslog filter can cause SQL errors
