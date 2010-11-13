@@ -110,6 +110,8 @@ function syslog_traditional_manage() {
  * This function will manage a partitioned table by checking for time to create
  */
 function syslog_partition_manage() {
+	$syslog_deleted = 0;
+
 	if (syslog_partition_check('syslog')) {
 		syslog_partition_create('syslog');
 		$syslog_deleted = syslog_partition_remove('syslog');
