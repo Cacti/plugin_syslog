@@ -67,7 +67,12 @@ function syslog_db_close($syslog_cnn) {
    @arg $log - whether to log error messages, defaults to true
    @returns - '1' for success, '0' for error */
 function syslog_db_execute($sql, $log = TRUE) {
-	global $syslog_cnn;
+	global $syslog_cnn, $cnn_id;
+
+	/* use cacti function if using Cacti db */
+	if ($syslog_cnn == $cnn_id) {
+		db_execute($sql, $log);
+	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
 
@@ -106,7 +111,12 @@ function syslog_db_execute($sql, $log = TRUE) {
    @arg $col_name - use this column name instead of the first one
    @returns - (bool) the output of the sql query as a single variable */
 function syslog_db_fetch_cell($sql, $col_name = '') {
-	global $syslog_cnn;
+	global $syslog_cnn, $cnn_id;
+
+	/* use cacti function if using Cacti db */
+	if ($syslog_cnn == $cnn_id) {
+		db_fetch_cell($sql, $col_name);
+	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
 
@@ -144,7 +154,12 @@ function syslog_db_fetch_cell($sql, $col_name = '') {
    @arg $log - whether to log error messages, defaults to true
    @returns - the first row of the result as a hash */
 function syslog_db_fetch_row($sql, $log = TRUE) {
-	global $syslog_cnn;
+	global $syslog_cnn, $cnn_id;
+
+	/* use cacti function if using Cacti db */
+	if ($syslog_cnn == $cnn_id) {
+		db_fetch_row($sql, $log);
+	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
 
@@ -173,7 +188,12 @@ function syslog_db_fetch_row($sql, $log = TRUE) {
    @arg $log - whether to log error messages, defaults to true
    @returns - the entire result set as a multi-dimensional hash */
 function syslog_db_fetch_assoc($sql, $log = TRUE) {
-	global $syslog_cnn;
+	global $syslog_cnn, $cnn_id;
+
+	/* use cacti function if using Cacti db */
+	if ($syslog_cnn == $cnn_id) {
+		db_fetch_assoc($sql, $log);
+	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
 
@@ -213,7 +233,12 @@ function syslog_db_fetch_insert_id($syslog_cnn) {
    @arg $autoQuote - whether to use intelligent quoting or not
    @returns - the auto incriment id column (if applicable) */
 function syslog_db_replace($table_name, $array_items, $keyCols) {
-	global $syslog_cnn;
+	global $syslog_cnn, $cnn_id;
+
+	/* use cacti function if using Cacti db */
+	if ($syslog_cnn == $cnn_id) {
+		db_replace($table_name, $array_items, $keyCols);
+	}
 
 	$syslog_cnn->Replace($table_name, $array_items, $keyCols);
 
@@ -226,7 +251,12 @@ function syslog_db_replace($table_name, $array_items, $keyCols) {
    @arg $key_cols - the primary key(s)
    @returns - the auto incriment id column (if applicable) */
 function syslog_sql_save($array_items, $table_name, $key_cols = "id", $autoinc = true) {
-	global $syslog_cnn;
+	global $syslog_cnn, $cnn_id;
+
+	/* use cacti function if using Cacti db */
+	if ($syslog_cnn == $cnn_id) {
+		sql_save($array_items, $table_name, $key_cols, $autoinc);
+	}
 
 	while (list ($key, $value) = each ($array_items)) {
 		$array_items[$key] = "\"" . sql_sanitize($value) . "\"";
