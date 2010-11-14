@@ -118,8 +118,8 @@ function syslog_partition_manage() {
 	}
 
 	if (syslog_partition_check('syslog_removed')) {
-		syslog_partition_create('syslog');
-		$syslog_deleted += syslog_partition_remove('syslog');
+		syslog_partition_create('syslog_removed');
+		$syslog_deleted += syslog_partition_remove('syslog_removed');
 	}
 
 	return $syslog_deleted;
