@@ -230,6 +230,8 @@ function syslog_request_validation($current_tab) {
 		unset($_REQUEST["host"]);
 	}
 
+	api_plugin_hook_function('syslog_request_val');
+
 	/* if the user pushed the 'clear' button */
 	if (isset($_REQUEST["clear"])) {
 		kill_session_var("sess_syslog_hosts");
