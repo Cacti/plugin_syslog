@@ -200,6 +200,13 @@ function syslog_check_upgrade() {
 				db_execute("DELETE FROM auto_auth_realm WHERE realm_id=" . ($realm["id"]+100));
 			}
 			}
+		}elseif ($old < 1.10) {
+			$emerg = db_fetch_cell("SELECT priority_id FROM syslog_priorities WHERE priority='emerg'");
+			if ($emerg) {
+				db_execute("UPDATE syslog SET priority_id=1 WHERE priority_id=$emerg");
+				db_execute("DELETE FROM syslog_priorities WHERE priority_id=$emerg");
+			}
+			db_execute("UPDATE syslog_priorities SET priority='emerg' WHERE priority='emer'");
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -212,7 +219,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 	include(dirname(__FILE__) . "/config.php");
 
 	$syslog_levels = array(
-		1 => 'emer',
+		1 => 'emerg',
 		2 => 'crit',
 		3 => 'alert',
 		4 => 'err',
@@ -574,7 +581,7 @@ function syslog_setup_table_new($options) {
 	$tables  = array();
 
 	$syslog_levels = array(
-		1 => 'emer',
+		1 => 'emerg',
 		2 => 'crit',
 		3 => 'alert',
 		4 => 'err',
@@ -1190,7 +1197,7 @@ function syslog_config_arrays () {
 		);
 
 	$syslog_levels = array(
-		1 => 'emer',
+		1 => 'emerg',
 		2 => 'crit',
 		3 => 'alert',
 		4 => 'err',

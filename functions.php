@@ -82,7 +82,7 @@ function syslog_is_partitioned() {
  * This function will manage old data for non-partitioned tables
  */
 function syslog_traditional_manage() {
-	global $syslogdb_default;
+	global $syslogdb_default, $syslog_cnn;
 
 	/* determine the oldest date to retain */
 	if (read_config_option("syslog_retention") > 0) {
@@ -324,6 +324,26 @@ function syslog_remove_items($table, $uniqueID) {
 				$sql = "DELETE
 					FROM `" . $syslogdb_default . "`.`" . $table . "`
 					WHERE message LIKE '%" . $remove['message'] . "' AND status='" . $uniqueID . "'";
+			}else if ($remove['type'] == 'sql') {
+				if ($remove['method'] != 'del') {
+					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
+						(logtime, priority_id, facility_id, host_id, message)
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+						priority_id, facility_id, host_id, message
+						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+							ON sf.facility=si.facility
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
+							ON sp.priority=si.priority
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+							ON sh.host=si.host
+							WHERE (" . $remove['message'] . ") AND status=" . $uniqueID . ") AS merge";
+				}
+
+				$sql = "DELETE
+					FROM `" . $syslogdb_default . "`.`" . $table . "`
+					WHERE message (" . $remove['message'] . ") AND status='" . $uniqueID . "'";
 			}
 
 			if ($sql != '' || $sql1 != '') {
@@ -363,7 +383,7 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 
 	$bglevel = strtolower($level);
 
-	if (substr_count($bglevel, "emer")) {
+	if (substr_count($bglevel, "emerg")) {
 		$current_color = read_config_option("syslog_emer_bg");
 	}else if (substr_count($bglevel, "alert")) {
 		$current_color = read_config_option("syslog_alert_bg");
@@ -391,7 +411,7 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 
 	$fglevel = strtolower($level);
 
-	if (substr_count($fglevel, "emer")) {
+	if (substr_count($fglevel, "emerg")) {
 		$current_color = read_config_option("syslog_emer_bg");
 	}else if (substr_count($fglevel, "alert")) {
 		$current_color = read_config_option("syslog_alert_bg");

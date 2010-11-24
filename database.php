@@ -115,7 +115,7 @@ function syslog_db_fetch_cell($sql, $col_name = '') {
 
 	/* use cacti function if using Cacti db */
 	if ($syslog_cnn == $cnn_id) {
-		db_fetch_cell($sql, $col_name);
+		return db_fetch_cell($sql, $col_name);
 	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
@@ -158,7 +158,7 @@ function syslog_db_fetch_row($sql, $log = TRUE) {
 
 	/* use cacti function if using Cacti db */
 	if ($syslog_cnn == $cnn_id) {
-		db_fetch_row($sql, $log);
+		return db_fetch_row($sql, $log);
 	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
@@ -192,7 +192,7 @@ function syslog_db_fetch_assoc($sql, $log = TRUE) {
 
 	/* use cacti function if using Cacti db */
 	if ($syslog_cnn == $cnn_id) {
-		db_fetch_assoc($sql, $log);
+		return db_fetch_assoc($sql, $log);
 	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
@@ -237,7 +237,7 @@ function syslog_db_replace($table_name, $array_items, $keyCols) {
 
 	/* use cacti function if using Cacti db */
 	if ($syslog_cnn == $cnn_id) {
-		db_replace($table_name, $array_items, $keyCols);
+		return db_replace($table_name, $array_items, $keyCols);
 	}
 
 	$syslog_cnn->Replace($table_name, $array_items, $keyCols);
@@ -255,7 +255,7 @@ function syslog_sql_save($array_items, $table_name, $key_cols = "id", $autoinc =
 
 	/* use cacti function if using Cacti db */
 	if ($syslog_cnn == $cnn_id) {
-		sql_save($array_items, $table_name, $key_cols, $autoinc);
+		return sql_save($array_items, $table_name, $key_cols, $autoinc);
 	}
 
 	while (list ($key, $value) = each ($array_items)) {

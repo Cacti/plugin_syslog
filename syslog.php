@@ -463,7 +463,7 @@ function syslog_filter($sql_where, $tab) {
 	}
 	-->
 	</script>
-	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="get" action="syslog.php">
+	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="post" action="syslog.php">
 	<table width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
@@ -536,7 +536,7 @@ function syslog_filter($sql_where, $tab) {
 												&nbsp;<input type="submit" value='Go' name='go' title="Go">
 											</td>
 											<td>
-												&nbsp;<input type='submit' value='Clear' name='clear' title='Return to the default time span'>
+												&nbsp;<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
 											</td>
 											<td>
 												&nbsp;<input type='submit' value='Export' name='export' title='Export Records to CSV'>
