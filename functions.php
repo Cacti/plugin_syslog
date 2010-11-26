@@ -384,7 +384,7 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 	$bglevel = strtolower($level);
 
 	if (substr_count($bglevel, "emerg")) {
-		$current_color = read_config_option("syslog_emer_bg");
+		$current_color = read_config_option("syslog_emerg_bg");
 	}else if (substr_count($bglevel, "alert")) {
 		$current_color = read_config_option("syslog_alert_bg");
 	}else if (substr_count($bglevel, "crit")) {
@@ -412,7 +412,7 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 	$fglevel = strtolower($level);
 
 	if (substr_count($fglevel, "emerg")) {
-		$current_color = read_config_option("syslog_emer_bg");
+		$current_color = read_config_option("syslog_emerg_bg");
 	}else if (substr_count($fglevel, "alert")) {
 		$current_color = read_config_option("syslog_alert_bg");
 	}else if (substr_count($fglevel, "crit")) {

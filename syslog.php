@@ -764,8 +764,8 @@ function syslog_syslog_legend() {
 	html_start_box("", "100%", $colors["header"], "3", "center", "");
 	print "<tr>";
 
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_fg") . "'");
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emerg_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emerg_fg") . "'");
 	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Emergency</b></td>";
 
 	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");

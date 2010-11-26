@@ -1048,7 +1048,7 @@ function syslog_config_settings() {
 			"friendly_name" => "Event Background Colors",
 			"method" => "spacer",
 		),
-		"syslog_emer_bg" => array(
+		"syslog_emerg_bg" => array(
 			"friendly_name" => "Emergency",
 			"description" => "",
 			"default" => "9",
@@ -1106,7 +1106,7 @@ function syslog_config_settings() {
 			"friendly_name" => "Event Text Colors",
 			"method" => "spacer",
 		),
-		"syslog_emer_fg" => array(
+		"syslog_emerg_fg" => array(
 			"friendly_name" => "Emergency",
 			"description" => "",
 			"default" => "1",
