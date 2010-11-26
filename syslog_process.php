@@ -102,7 +102,7 @@ if (read_config_option("syslog_enabled") == '') {
 	exit -1;
 }
 
-/* Initialization Section */
+/* initialize some uninitialized variables */
 $r = read_config_option("syslog_retention");
 if ($r == '' or $r < 0 or $r > 365) {
 	if ($r == '') {
@@ -116,12 +116,11 @@ if ($r == '' or $r < 0 or $r > 365) {
 	kill_session_var("sess_config_array");
 }
 
-$retention = read_config_option("syslog_retention");
-$retention = date("Y-m-d", time() - (86400 * $retention));
+
+/* setup e-mail defaults */
 $email     = read_config_option("syslog_email");
 $emailname = read_config_option("syslog_emailname");
 $from      = '';
-
 if ($email != '') {
 	if ($emailname != '') {
 		$from = "\"$emailname\" ($email)";
@@ -130,98 +129,13 @@ if ($email != '') {
 	}
 }
 
-$syntax = syslog_db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`");
-if (substr_count($syntax["Create Table"], "PARTITION")) {
-	$partitioned = true;
-}else{
-	$partitioned = false;
-}
-
 /* delete old syslog and syslog soft messages */
-if ($retention > 0 || $partitioned) {
-	if (!$partitioned) {
-		syslog_debug("Syslog Table is NOT Partitioned");
-
-		/* delete from the main syslog table first */
-		syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog` WHERE logtime < '$retention'");
-
-		$syslog_deleted = $syslog_cnn->Affected_Rows();
-
-		/* now delete from the syslog removed table */
-		syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_removed` WHERE logtime < '$retention'");
-
-		$syslog_deleted += $syslog_cnn->Affected_Rows();
-
-		syslog_debug("Deleted " . $syslog_deleted .
-			",  Syslog Message(s)" .
-			" (older than $retention days)");
-	}else{
-		syslog_debug("Syslog Table IS Partitioned");
-
-		$syslog_deleted = 0;
-		$number_of_partitions = syslog_db_fetch_assoc("SELECT *
-			FROM `information_schema`.`partitions`
-			WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
-			ORDER BY partition_ordinal_position");
-
-		/* find date of last partition */
-		$last_part = syslog_db_fetch_cell("SELECT PARTITION_NAME 
-			FROM `information_schema`.`partitions` 
-			WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog' 
-			ORDER BY partition_ordinal_position DESC 
-			LIMIT 1,1;");
-
-		$time     = time();
-		$now      = date('Y-m-d', $time);
-		$format   = date('Ymd', $time);
-		$cur_day  = syslog_db_fetch_row("SELECT TO_DAYS('$now') AS today");
-		$cur_day  = $cur_day["today"];
-
-		$lday_ts  = read_config_option("syslog_lastday_timestamp");
-		$lnow     = date('Y-m-d', $lday_ts);
-		$lformat  = date('Ymd', $lday_ts);
-		$last_day = syslog_db_fetch_row("SELECT TO_DAYS('$lnow') AS today");
-		$last_day = $last_day["today"];
-		$days     = read_config_option("syslog_retention");
-
-		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
-		//cacti_log("SYSLOG: There are currently '" . sizeof($number_of_partitions) . "' Partitions, We will keep '$days' of them.", false, "SYSTEM");
-
-		syslog_debug("The current day is '$cur_day', the last day is '$last_day'");
-
-		if ($cur_day != $last_day) {
-			db_execute("REPLACE INTO `" . $database_default . "`.`settings` SET name='syslog_lastday_timestamp', value='$time'");
-
-			if ($last_part != "d" . $lformat) {
-				cacti_log("SYSLOG: Creating new partition 'd" . $lformat . "'", false, "SYSTEM");
-				syslog_debug("Creating new partition 'd" . $lformat . "'");
-				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` REORGANIZE PARTITION dMaxValue INTO (
-					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
-					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
-
-				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` REORGANIZE PARTITION dMaxValue INTO (
-					PARTITION d" . $lformat . " VALUES LESS THAN (TO_DAYS('$lnow')),
-					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
-
-				if ($days > 0) {
-					$user_partitions = sizeof($number_of_partitions) - 1;
-					if ($user_partitions >= $days) {
-						$i = 0;
-						while ($user_partitions > $days) {
-							$oldest = $number_of_partitions[$i];
-							cacti_log("SYSLOG: Removing old partition 'd" . $oldest["PARTITION_NAME"] . "'", false, "SYSTEM");
-							syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
-							syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog` DROP PARTITION " . $oldest["PARTITION_NAME"]);
-							syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_removed` DROP PARTITION " . $oldest["PARTITION_NAME"]);
-							$i++;
-							$user_partitions--;
-							$syslog_deleted++;
-						}
-					}
-				}
-			}
-		}
-	}
+if (!syslog_is_partitioned()) {
+	syslog_debug("Syslog Table is NOT Partitioned");
+	$syslog_deleted = syslog_traditional_manage();
+}else{
+	syslog_debug("Syslog Table IS Partitioned");
+	$syslog_deleted = syslog_partition_manage();
 }
 
 /* get a uniqueID to allow moving of records to done table */
@@ -251,8 +165,8 @@ if ($syslog_domains != "") {
 	$domains = explode(",", trim($syslog_domains));
 
 	foreach($domains as $domain) {
-		syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` 
-			SET host=SUBSTRING_INDEX(host,'.',1) 
+		syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming`
+			SET host=SUBSTRING_INDEX(host,'.',1)
 			WHERE host LIKE '%$domain'");
 	}
 }
@@ -463,7 +377,8 @@ syslog_debug("Updated " . $syslog_cnn->Affected_Rows() .
 
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date("G") == 0 && date("i") < 5) {
-	if (!$partitioned) {
+	syslog_debug("Optimizing Tables");
+	if (!syslog_is_partitioned()) {
 		syslog_db_execute("OPTIMIZE TABLE
 			`" . $syslogdb_default . "`.`syslog_incoming`,
 			`" . $syslogdb_default . "`.`syslog`,

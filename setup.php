@@ -85,6 +85,8 @@ function plugin_syslog_uninstall () {
 	include(dirname(__FILE__) . '/config.php');
 	include_once(dirname(__FILE__) . '/functions.php');
 
+	syslog_connect();
+
 	//print "<pre>";print_r($_GET);print "</pre>";
 	if (isset($_GET["cancel"]) || isset($_GET["return"])) {
 		header("Location:" . $config["url_path"] . "plugins.php");
@@ -198,6 +200,13 @@ function syslog_check_upgrade() {
 				db_execute("DELETE FROM auto_auth_realm WHERE realm_id=" . ($realm["id"]+100));
 			}
 			}
+		}elseif ($old < 1.10) {
+			$emerg = db_fetch_cell("SELECT priority_id FROM syslog_priorities WHERE priority='emerg'");
+			if ($emerg) {
+				db_execute("UPDATE syslog SET priority_id=1 WHERE priority_id=$emerg");
+				db_execute("DELETE FROM syslog_priorities WHERE priority_id=$emerg");
+			}
+			db_execute("UPDATE syslog_priorities SET priority='emerg' WHERE priority='emer'");
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -210,7 +219,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 	include(dirname(__FILE__) . "/config.php");
 
 	$syslog_levels = array(
-		1 => 'emer',
+		1 => 'emerg',
 		2 => 'crit',
 		3 => 'alert',
 		4 => 'err',
@@ -553,10 +562,10 @@ function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) 
 	$now = time();
 
 	$parts = "";
-	for($i = $days; $i > 0; $i--) {
+	for($i = $days; $i >= -1; $i--) {
 		$timestamp = $now - ($i * 86400);
 		$date     = date('Y-m-d', $timestamp);
-		$format   = date("Ymd", $timestamp);
+		$format   = date("Ymd", $timestamp - 86400);
 		$parts .= ($parts != "" ? ",\n":"(") . " PARTITION d" . $format . " VALUES LESS THAN (TO_DAYS('" . $date . "'))";
 	}
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
@@ -572,7 +581,7 @@ function syslog_setup_table_new($options) {
 	$tables  = array();
 
 	$syslog_levels = array(
-		1 => 'emer',
+		1 => 'emerg',
 		2 => 'crit',
 		3 => 'alert',
 		4 => 'err',
@@ -892,6 +901,8 @@ function syslog_uninstall_advisor() {
 
 	include(dirname(__FILE__) . "/config.php");
 
+	syslog_connect();
+
 	$syslog_exists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
 
 	include($config["include_path"] . "/top_header.php");
@@ -1037,7 +1048,7 @@ function syslog_config_settings() {
 			"friendly_name" => "Event Background Colors",
 			"method" => "spacer",
 		),
-		"syslog_emer_bg" => array(
+		"syslog_emerg_bg" => array(
 			"friendly_name" => "Emergency",
 			"description" => "",
 			"default" => "9",
@@ -1095,7 +1106,7 @@ function syslog_config_settings() {
 			"friendly_name" => "Event Text Colors",
 			"method" => "spacer",
 		),
-		"syslog_emer_fg" => array(
+		"syslog_emerg_fg" => array(
 			"friendly_name" => "Emergency",
 			"description" => "",
 			"default" => "1",
@@ -1186,7 +1197,7 @@ function syslog_config_arrays () {
 		);
 
 	$syslog_levels = array(
-		1 => 'emer',
+		1 => 'emerg',
 		2 => 'crit',
 		3 => 'alert',
 		4 => 'err',

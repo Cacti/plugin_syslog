@@ -46,6 +46,7 @@
    bug: Syslog filter can cause SQL errors
    bug: Wrong page redirect links.
    bug: Partitioning was writing always to the dMaxValue partition
+   bug: Emergency Logs were not being highlighted correctly
 
    --- 1.07 ---
    bug: Rearchitect to improve support mutliple databases

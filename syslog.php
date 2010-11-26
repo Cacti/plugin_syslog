@@ -230,6 +230,8 @@ function syslog_request_validation($current_tab) {
 		unset($_REQUEST["host"]);
 	}
 
+	api_plugin_hook_function('syslog_request_val');
+
 	/* if the user pushed the 'clear' button */
 	if (isset($_REQUEST["clear"])) {
 		kill_session_var("sess_syslog_hosts");
@@ -461,7 +463,7 @@ function syslog_filter($sql_where, $tab) {
 	}
 	-->
 	</script>
-	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="get" action="syslog.php">
+	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="post" action="syslog.php">
 	<table width="100%" cellspacing="0" cellpadding="0" border="0">
 		<tr>
 			<td colspan="2" style="background-color:#EFEFEF;">
@@ -534,7 +536,7 @@ function syslog_filter($sql_where, $tab) {
 												&nbsp;<input type="submit" value='Go' name='go' title="Go">
 											</td>
 											<td>
-												&nbsp;<input type='submit' value='Clear' name='clear' title='Return to the default time span'>
+												&nbsp;<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
 											</td>
 											<td>
 												&nbsp;<input type='submit' value='Export' name='export' title='Export Records to CSV'>
@@ -675,7 +677,9 @@ function syslog_filter($sql_where, $tab) {
 										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
 										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Threshold Logs</option><?php }?>
 										<?php
-										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` ORDER BY host");
+										$hosts_where = "";
+										$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
+										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` $hosts_where ORDER BY host");
 										if (sizeof($hosts)) {
 											foreach ($hosts as $host) {
 												print "<option value=" . $host["host_id"];
@@ -760,8 +764,8 @@ function syslog_syslog_legend() {
 	html_start_box("", "100%", $colors["header"], "3", "center", "");
 	print "<tr>";
 
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emer_fg") . "'");
+	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emerg_bg") . "'");
+	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emerg_fg") . "'");
 	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Emergency</b></td>";
 
 	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");
