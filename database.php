@@ -71,7 +71,7 @@ function syslog_db_execute($sql, $log = TRUE) {
 
 	/* use cacti function if using Cacti db */
 	if ($syslog_cnn == $cnn_id) {
-		db_execute($sql, $log);
+		return db_execute($sql, $log);
 	}
 
 	$sql = str_replace("  ", " ", str_replace("\n", "", str_replace("\r", "", str_replace("\t", " ", $sql))));
