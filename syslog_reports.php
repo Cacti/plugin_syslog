@@ -220,7 +220,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save["body"]     = form_input_validate($body,     "body",     "", false, 3);
 	$save["email"]    = form_input_validate($email,    "email",    "", true, 3);
 	$save["notes"]    = form_input_validate($notes,    "notes",    "", true, 3);
-	$save["enabled"]  = form_input_validate($enabled,  "enabled",  "", false, 3);
+	$save["enabled"]  = ($enabled == "on" ? "on":"");
 	$save["date"]     = time();
 	$save["user"]     = $username;
 
@@ -526,11 +526,11 @@ function syslog_report() {
 	}else{
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
-		$changed += check_changed("filter", "sess_syslog_report_filter");
-		$changed += check_changed("enabled", "sess_syslog_report_enabled");
-		$changed += check_changed("rows", "sess_syslog_report_rows");
-		$changed += check_changed("sort_column", "sess_syslog_report_sort_column");
-		$changed += check_changed("sort_direction", "sess_syslog_report_sort_direction");
+		$changed += syslog_check_changed("filter", "sess_syslog_report_filter");
+		$changed += syslog_check_changed("enabled", "sess_syslog_report_enabled");
+		$changed += syslog_check_changed("rows", "sess_syslog_report_rows");
+		$changed += syslog_check_changed("sort_column", "sess_syslog_report_sort_column");
+		$changed += syslog_check_changed("sort_direction", "sess_syslog_report_sort_direction");
 
 		if ($changed) {
 			$_REQUEST["page"] = "1";
@@ -639,7 +639,7 @@ function syslog_report() {
 		foreach ($reports as $report) {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $report["id"]); $i++;
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_reports.php?action=edit&id=" . $report["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($report["name"]), read_config_option("max_title_data_source"))) : htmlentities($report["name"])) . "</a>", $report["id"]);
-			form_selectable_cell((($report["enabled"] == "on") ? "Yes" : ""), $report["id"]);
+			form_selectable_cell((($report["enabled"] == "on") ? "Yes" : "No"), $report["id"]);
 			form_selectable_cell($message_types[$report["type"]], $report["id"]);
 			form_selectable_cell($report["message"], $report["id"]);
 			form_selectable_cell($syslog_freqs[$report["timespan"]], $report["id"]);
