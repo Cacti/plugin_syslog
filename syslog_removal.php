@@ -213,7 +213,7 @@ function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $
 	$save["message"] = form_input_validate($message, "message", "", false, 3);
 	$save["method"]  = form_input_validate($method,  "method",  "", false, 3);
 	$save["notes"]   = form_input_validate($notes,   "notes",   "", true, 3);
-	$save["enabled"] = form_input_validate($enabled, "enabled", "", false, 3);
+	$save["enabled"] = ($enabled == "on" ? "on":"");
 	$save["date"]    = time();
 	$save["user"]    = $username;
 
@@ -617,7 +617,7 @@ function syslog_removal() {
 		foreach ($removals as $removal) {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $removal["id"]); $i++;
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_removal.php?action=edit&id=" . $removal["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($removal["name"]), read_config_option("max_title_data_source"))) : htmlentities($removal["name"])) . "</a>", $removal["id"]);
-			form_selectable_cell((($removal["enabled"] == "on") ? "Yes" : ""), $removal["id"]);
+			form_selectable_cell((($removal["enabled"] == "on") ? "Yes" : "No"), $removal["id"]);
 			form_selectable_cell($message_types[$removal["type"]], $removal["id"]);
 			form_selectable_cell($removal["message"], $removal["id"]);
 			form_selectable_cell((($removal["method"] == "del") ? "Deletion" : "Transfer"), $removal["id"]);

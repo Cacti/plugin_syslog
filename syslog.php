@@ -233,7 +233,7 @@ function syslog_request_validation($current_tab) {
 	api_plugin_hook_function('syslog_request_val');
 
 	/* if the user pushed the 'clear' button */
-	if (isset($_REQUEST["clear"])) {
+	if (isset($_REQUEST["button_clear_x"])) {
 		kill_session_var("sess_syslog_hosts");
 		kill_session_var("sess_syslog_rows");
 		kill_session_var("sess_syslog_trimval");
@@ -911,14 +911,14 @@ function syslog_messages($tab="syslog") {
 				"logtime" => array("Date", "ASC"),
 				"message" => array("Message", "ASC"),
 				"facility_id" => array("Facility", "ASC"),
-				"priority_id" => array("Level", "ASC"));
+				"priority_id" => array("Priority", "ASC"));
 		}else{
 			$display_text = array(
 				"host_id" => array("Host", "ASC"),
 				"logtime" => array("Date", "ASC"),
 				"message" => array("Message", "ASC"),
 				"facility_id" => array("Facility", "ASC"),
-				"priority_id" => array("Level", "ASC"));
+				"priority_id" => array("Priority", "ASC"));
 		}
 
 		html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
@@ -962,11 +962,11 @@ function syslog_messages($tab="syslog") {
 			"name" => array("Alert Name", "ASC"),
 			"severity" => array("Severity", "ASC"),
 			"count" => array("Count", "ASC"),
-			"logtime" => array("Message", "ASC"),
+			"logtime" => array("Date", "ASC"),
 			"logmsg" => array("Message", "ASC"),
 			"slhost" => array("Host", "ASC"),
 			"facility" => array("Facility", "ASC"),
-			"priority" => array("Level", "ASC"));
+			"priority" => array("Priority", "ASC"));
 
 		html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 

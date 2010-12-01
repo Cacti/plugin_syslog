@@ -213,10 +213,10 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	$save["email"]    = form_input_validate(trim($email), "email",    "", true, 3);
 	$save["command"]  = form_input_validate($command,     "command",  "", true, 3);
 	$save["notes"]    = form_input_validate($notes,       "notes",    "", true, 3);
+	$save["enabled"]  = ($enabled == "on" ? "on":"");
 	$save["type"]     = $type;
 	$save["severity"] = $severity;
 	$save["method"]   = $method;
-	$save["enabled"]  = $enabled;
 	$save["user"]     = $username;
 	$save["date"]     = time();
 
@@ -680,7 +680,7 @@ function syslog_alerts() {
 			form_selectable_cell($severities[$alert["severity"]], $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? "Threshold":"Individual"), $alert["id"]);
 			form_selectable_cell(($alert["method"] == 1 ? $alert["num"]:"N/A"), $alert["id"]);
-			form_selectable_cell((($alert["enabled"] == "on") ? "Yes" : ""), $alert["id"]);
+			form_selectable_cell((($alert["enabled"] == "on") ? "Yes" : "No"), $alert["id"]);
 			form_selectable_cell($message_types[$alert["type"]], $alert["id"]);
 			form_selectable_cell(title_trim($alert["message"],60), $alert["id"]);
 			form_selectable_cell((substr_count($alert["email"], ",") ? "Multiple":$alert["email"]), $alert["id"]);
