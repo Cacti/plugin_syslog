@@ -37,6 +37,9 @@
     Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+   --- SVN ---
+   feature: Provide host based statistics tab
+
    --- 1.10  ---
    feature: Allow Syslog to Strip Domains Suffix's.
    feature: Make compatible with earlier versions of Cacti.

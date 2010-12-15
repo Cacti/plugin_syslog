@@ -172,9 +172,9 @@ if ($syslog_domains != "") {
 }
 
 /* update the hosts, facilities, and priorities tables */
-syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility)");
-syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority)");
-syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE host=VALUES(host)");
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()");
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority), last_updated=NOW()");
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()");
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
 	(host_id, facility_id)
 	SELECT host_id, facility_id
@@ -184,7 +184,26 @@ syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_faciliti
 		ON s.host=sh.host
 		INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
 		ON sf.facility=s.facility)
-	ON DUPLICATE KEY UPDATE host_id=VALUES(host_id)");
+	ON DUPLICATE KEY UPDATE host_id=VALUES(host_id), last_updated=NOW()");
+
+/* tally statistics for this interval */
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics` (host_id, facility_id, priority_id, insert_time, records)
+	SELECT host_id, facility_id, priority_id, NOW(), sum(records) AS records
+	FROM (SELECT host_id, facility_id, priority_id, count(*) AS records
+		FROM syslog_incoming AS si
+		INNER JOIN syslog_facilities AS sf
+		ON sf.facility=si.facility
+		INNER JOIN syslog_priorities AS sp
+		ON sp.priority=si.priority
+		INNER JOIN syslog_hosts AS sh
+		ON sh.host=si.host
+		WHERE status=' . $uniqueID . "
+		GROUP BY host_id, priority_id, facility_id) AS merge
+	GROUP BY host_id, priority_id, facility_id");
+
+$stats = $syslog_cnn->Affected_Rows();
+
+syslog_debug("Stats   " . $stats . ",  Record(s) to the 'syslog_statistics' table");
 
 /* remote records that don't need to to be transferred */
 $syslog_items   = syslog_remove_items("syslog_incoming", $uniqueID);
@@ -365,10 +384,17 @@ syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHE
 
 syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Already Processed Message(s) from incoming");
 
+/* remove stats messages */
+if (read_config_option("syslog_retention") > 0) {
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_statistics` 
+		WHERE insert_time<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_retention")*86400)) . "'");
+	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Statistics Record(s)");
+}
+
 /* Add the unique hosts to the syslog_hosts table */
 $sql = "INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host)
 	(SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming`)
-	ON DUPLICATE KEY UPDATE host=VALUES(host)";
+	ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()";
 
 syslog_db_execute($sql);
 

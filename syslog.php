@@ -53,7 +53,9 @@ load_current_session_value("tab", "sess_syslog_tab", "syslog");
 $current_tab = $_REQUEST["tab"];
 
 /* validate the syslog post/get/request information */;
-syslog_request_validation($current_tab);
+if ($current_tab != "stats") {
+	syslog_request_validation($current_tab);
+}
 
 /* draw the tabs */
 /* display the main page */
@@ -68,6 +70,8 @@ if (isset($_REQUEST["export"])) {
 
 	if ($current_tab == "current") {
 		syslog_view_alarm();
+	}elseif ($current_tab == "stats") {
+		syslog_statistics();
 	}else{
 		syslog_messages($current_tab);
 	}
@@ -81,6 +85,7 @@ function syslog_display_tabs($current_tab) {
 	/* present a tabbed interface */
 	$tabs_syslog = array(
 		"syslog" => "Syslogs",
+		"stats"  => "Statistics",
 		"alerts" => "Alert Log");
 
 	/* if they were redirected to the page, let's set that up */
@@ -180,6 +185,340 @@ function generate_syslog_cssjs() {
 
 	-->
 	</script>
+	<?php
+}
+
+/** function syslog_statistics()
+ *  This function paints a table of summary statistics for syslog
+ *  messages by host, facility, priority, and time range.
+*/
+function syslog_statistics() {
+	global $title, $colors, $rows, $config;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	/* ================= input validation ================= */
+	input_validate_input_number(get_request_var_request("rows"));
+	input_validate_input_number(get_request_var_request("refresh"));
+	input_validate_input_number(get_request_var_request("page"));
+	input_validate_input_number(get_request_var_request("timespan"));
+	/* ==================================================== */
+
+	/* clean up filter string */
+	if (isset($_REQUEST["filter"])) {
+		$_REQUEST["filter"] = sanitize_search_string(get_request_var_request("filter"));
+	}
+
+	/* clean up facility string */
+	if (isset($_REQUEST["facility"])) {
+		$_REQUEST["facility"] = sanitize_search_string(get_request_var_request("facility"));
+	}
+
+	/* clean up priority string */
+	if (isset($_REQUEST["priority"])) {
+		$_REQUEST["priority"] = sanitize_search_string(get_request_var_request("priority"));
+	}
+
+	/* clean up sort solumn */
+	if (isset($_REQUEST["sort_column"])) {
+		$_REQUEST["sort_column"] = sanitize_search_string(get_request_var_request("sort_column"));
+	}
+
+	/* clean up sort direction */
+	if (isset($_REQUEST["sort_direction"])) {
+		$_REQUEST["sort_direction"] = sanitize_search_string(get_request_var_request("sort_direction"));
+	}
+
+	/* if the user pushed the 'clear' button */
+	if (isset($_REQUEST["clear"])) {
+		kill_session_var("sess_syslog_stats_timespan");
+		kill_session_var("sess_syslog_stats_rows");
+		kill_session_var("sess_syslog_stats_refresh");
+		kill_session_var("sess_syslog_stats_page");
+		kill_session_var("sess_syslog_stats_filter");
+		kill_session_var("sess_syslog_stats_facility");
+		kill_session_var("sess_syslog_stats_priority");
+		kill_session_var("sess_syslog_stats_sort_column");
+		kill_session_var("sess_syslog_stats_sort_direction");
+
+		$_REQUEST["page"] = 1;
+		unset($_REQUEST["rows"]);
+		unset($_REQUEST["timespan"]);
+		unset($_REQUEST["refresh"]);
+		unset($_REQUEST["page"]);
+		unset($_REQUEST["filter"]);
+		unset($_REQUEST["facility"]);
+		unset($_REQUEST["priority"]);
+		unset($_REQUEST["sort_column"]);
+		unset($_REQUEST["sort_direction"]);
+		$reset_multi = true;
+	}else{
+		/* if any of the settings changed, reset the page number */
+		$changed = 0;
+		$changed += syslog_check_changed("timespan",       "sess_syslog_stats_timespan");
+		$changed += syslog_check_changed("rows",           "sess_syslog_stats_rows");
+		$changed += syslog_check_changed("refresh",        "sess_syslog_stats_refresh");
+		$changed += syslog_check_changed("filter",         "sess_syslog_stats_filter");
+		$changed += syslog_check_changed("facility",       "sess_syslog_stats_facility");
+		$changed += syslog_check_changed("priority",       "sess_syslog_stats_priority");
+		$changed += syslog_check_changed("sort_column",    "sess_syslog_stats_sort_column");
+		$changed += syslog_check_changed("sort_direction", "sess_syslog_stats_sort_direction");
+
+		if ($changed) {
+			$_REQUEST["page"] = "1";
+		}
+
+		$reset_multi = false;
+	}
+
+	/* remember search fields in session vars */
+	load_current_session_value("page",           "sess_syslog_stats_page", "1");
+	load_current_session_value("rows",           "sess_syslog_stats_rows", read_config_option("num_rows_syslog"));
+	load_current_session_value("refresh",        "sess_syslog_stats_refresh", read_config_option("syslog_refresh"));
+	load_current_session_value("filter",         "sess_syslog_stats_filter", "");
+	load_current_session_value("facility",       "sess_syslog_stats_facility", "-1");
+	load_current_session_value("priority",       "sess_syslog_stats_priority", "-1");
+	load_current_session_value("sort_column",    "sess_syslog_stats_sort_column", "host");
+	load_current_session_value("sort_direction", "sess_syslog_stats_sort_direction", "DESC");
+
+	html_start_box("<strong>Syslog Statistics Filter</strong>", "100%", $colors["header"], "3", "center", "syslog.php?tab=stats");
+	syslog_stats_filter();
+	html_end_box();
+
+	html_start_box("", "100%", $colors["header"], "3", "center", "");
+
+	$sql_where = "";
+
+	if ($_REQUEST["rows"] == -1) {
+		$row_limit = read_config_option("num_rows_syslog");
+	}elseif ($_REQUEST["rows"] == -2) {
+		$row_limit = 999999;
+	}else{
+		$row_limit = $_REQUEST["rows"];
+	}
+
+	$records = get_stats_records($sql_where, $sql_groupby, $row_limit);
+
+	$rows_query_string = "SELECT COUNT(*)
+		FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+		ON ss.facility_id=sf.facility_id
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
+		ON ss.priority_id=sp.priority_id
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+		ON ss.host_id=sh.host_id
+		$sql_where
+		$sql_groupby";
+
+	$total_rows = syslog_db_fetch_cell($rows_query_string);
+
+	?>
+	<script type="text/javascript">
+	<!--
+	function applyChange(objForm) {
+		strURL = '?facility=' + objForm.facility.value;
+		strURL = strURL + '&priority=' + objForm.priority.value;
+		strURL = strURL + '&filter=' + objForm.filter.value;
+		strURL = strURL + '&rows=' + objForm.rows.value;
+		document.location = strURL;
+	}
+	-->
+	</script>
+	<?php
+
+	/* generate page list */
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog.php?tab=stats&filter=" . $_REQUEST["filtr"]);
+
+	if ($total_rows > 0) {
+		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
+					<td colspan='13'>
+						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
+							<tr>
+								<td align='left' class='textHeaderDark'>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php?tab=stats&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+								</td>\n
+								<td align='center' class='textHeaderDark'>
+									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
+								</td>\n
+								<td align='right' class='textHeaderDark'>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php?tab=stats&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+								</td>\n
+							</tr>
+						</table>
+					</td>
+				</tr>\n";
+	}else{
+		$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
+					<td colspan='22'>
+						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
+							<tr>
+								<td align='center' class='textHeaderDark'>
+									No Rows Found
+								</td>\n
+							</tr>
+						</table>
+					</td>
+				</tr>\n";
+	}
+
+	print $nav;
+
+	$display_text = array(
+		"host" => array("Host Name", "ASC"),
+		"facility" => array("Facility", "ASC"),
+		"priority" => array("Priority", "ASC"),
+		"records" => array("Records", "DESC"));
+
+	html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
+
+	$i = 0;
+	if (sizeof($records)) {
+		foreach ($records as $r) {
+			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $removal["id"]); $i++;
+			echo "<td>" . $r["host"] . "</td>";
+			echo "<td>" . ($_REQUEST["facility"] != "-2" ? ucfirst($r["facility"]):"-") . "</td>";
+			echo "<td>" . ($_REQUEST["priority"] != "-2" ? ucfirst($r["priority"]):"-") . "</td>";
+			echo "<td>" . $r["records"] . "</td>";
+			form_end_row();
+		}
+	}else{
+		print "<tr><td colspan='4'><em>No Syslog Statistics Found</em></td></tr>";
+	}
+
+	html_end_box(false);
+}
+
+function get_stats_records(&$sql_where, $sql_groupby, $row_limit) {
+	include(dirname(__FILE__) . "/config.php");
+
+	$sql_where   = "";
+	$sql_groupby = "GROUP BY sh.host";
+
+	/* form the 'where' clause for our main sql query */
+	if (!empty($_REQUEST["filter"])) {
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . "sh.host LIKE '%%" . $_REQUEST["filter"] . "%%'";
+	}
+
+	if ($_REQUEST["facility"] == "-2") {
+		// Do nothing	
+	}elseif ($_REQUEST["facility"] != "-1") {
+		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . "ss.facility_id=" . $_REQUEST["facility"];
+		$sql_groupby .= ", sf.facility";
+	}else{
+		$sql_groupby .= ", sf.facility";
+	}
+
+	if ($_REQUEST["priority"] == "-2") {
+		// Do nothing
+	}elseif ($_REQUEST["priority"] != "-1") {
+		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "ss.priority_id=" . $_REQUEST["level"];
+		$sql_groupby .= ", sp.priority";
+	}else{
+		$sql_groupby .= ", sp.priority";
+	}
+
+	if (!isset($_REQUEST["export"])) {
+		$limit = " LIMIT " . ($row_limit*($_REQUEST["page"]-1)) . "," . $row_limit;
+	} else {
+		$limit = " LIMIT 10000";
+	}
+
+	$sort = $_REQUEST["sort_column"];
+
+	$query_sql = "SELECT sh.host, sf.facility, sp.priority, sum(ss.records) AS records
+		FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+		ON ss.facility_id=sf.facility_id
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
+		ON ss.priority_id=sp.priority_id
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+		ON ss.host_id=sh.host_id
+		$sql_where
+		$sql_groupby
+		ORDER BY " . $sort . " " . $_REQUEST["sort_direction"] .
+		$limit;
+
+	return syslog_db_fetch_assoc($query_sql);
+}
+
+function syslog_stats_filter() {
+	global $colors, $config, $item_rows;
+	?>
+	<tr bgcolor="<?php print $colors["panel"];?>">
+		<form name="stats">
+		<td>
+			<table cellpadding="1" cellspacing="0">
+				<tr>
+					<td width="70">
+						&nbsp;Facility:&nbsp;
+					</td>
+					<td width="1">
+						<select name="facility" onChange="applyChange(document.stats)">
+						<option value="-1"<?php if ($_REQUEST["facility"] == "-1") {?> selected<?php }?>>All</option>
+						<option value="-2"<?php if ($_REQUEST["facility"] == "-2") {?> selected<?php }?>>None</option>
+						<?php
+							$facilities = syslog_db_fetch_assoc("SELECT facility_id, facility FROM syslog_facilities ORDER BY facility");
+							if (sizeof($facilities)) {
+							foreach ($facilities as $r) {
+								print '<option value="' . $r["facility_id"] . '"'; if ($_REQUEST["facility"] == $r["facility_id"]) { print " selected"; } print ">" . ucfirst($r["facility"]) . "</option>\n";
+							}
+							}
+						?>
+						</select>
+					</td>
+					<td width="70">
+						&nbsp;Priority:&nbsp;
+					</td>
+					<td width="1">
+						<select name="priority" onChange="applyChange(document.stats)">
+						<option value="-1"<?php if ($_REQUEST["priority"] == "-1") {?> selected<?php }?>>All</option>
+						<option value="-2"<?php if ($_REQUEST["priority"] == "-2") {?> selected<?php }?>>None</option>
+						<?php
+							$priorities = syslog_db_fetch_assoc("SELECT priority_id, priority FROM syslog_priorities ORDER BY priority");
+							if (sizeof($priorities)) {
+							foreach ($priorities as $r) {
+								print '<option value="' . $r["priority_id"] . '"'; if ($_REQUEST["priority"] == $r["priority_id"]) { print " selected"; } print ">" . ucfirst($r["priority"]) . "</option>\n";
+							}
+							}
+						?>
+						</select>
+					</td>
+					<td width="45">
+						&nbsp;Rows:&nbsp;
+					</td>
+					<td width="1">
+						<select name="rows" onChange="applyChange(document.stats)">
+						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
+						<?php
+							if (sizeof($item_rows) > 0) {
+							foreach ($item_rows as $key => $value) {
+								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+							}
+							}
+						?>
+						</select>
+					</td>
+					<td>
+						&nbsp;<input type="submit" name="go" value="Go" title="Search">
+					</td>
+					<td>
+						&nbsp;<input type="submit" name="clear" value="Clear">
+					</td>
+				</tr>
+			</table>
+			<table cellpadding="1" cellspacing="0">
+				<tr>
+					<td width="70">
+						&nbsp;Search:&nbsp;
+					</td>
+					<td width="1">
+						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
+					</td>
+				</tr>
+			</table>
+		</td>
+		</form>
+	</tr>
 	<?php
 }
 
@@ -962,7 +1301,7 @@ function syslog_messages($tab="syslog") {
 			"name" => array("Alert Name", "ASC"),
 			"severity" => array("Severity", "ASC"),
 			"count" => array("Count", "ASC"),
-			"logtime" => array("Date", "ASC"),
+			"logtime" => array("Message", "ASC"),
 			"logmsg" => array("Message", "ASC"),
 			"slhost" => array("Host", "ASC"),
 			"facility" => array("Facility", "ASC"),

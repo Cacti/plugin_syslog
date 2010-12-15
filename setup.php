@@ -103,6 +103,7 @@ function plugin_syslog_uninstall () {
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`");
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`");
+			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_statistics`");
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_host_facilities`");
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`");
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_logs`");
@@ -201,12 +202,26 @@ function syslog_check_upgrade() {
 			}
 			}
 		}elseif ($old < 1.10) {
-			$emerg = db_fetch_cell("SELECT priority_id FROM syslog_priorities WHERE priority='emerg'");
+			$emerg = syslog_db_fetch_cell("SELECT priority_id FROM `" . $syslogdb_default . "`.`syslog_priorities` WHERE priority='emerg'");
 			if ($emerg) {
-				db_execute("UPDATE syslog SET priority_id=1 WHERE priority_id=$emerg");
-				db_execute("DELETE FROM syslog_priorities WHERE priority_id=$emerg");
+				syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog` SET priority_id=1 WHERE priority_id=$emerg");
+				syslog_db_execute("DELETE FROM syslog_priorities WHERE priority_id=$emerg");
 			}
-			db_execute("UPDATE syslog_priorities SET priority='emerg' WHERE priority='emer'");
+			syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_priorities` SET priority='emerg' WHERE priority='emer'");
+		}elseif ($old < 1.20) {
+			syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_statistics` (
+				`host_id` INTEGER UNSIGNED NOT NULL,
+				`facility_id` INTEGER UNSIGNED NOT NULL,
+				`priority_id` INTEGER UNSIGNED NOT NULL,
+				`insert_time` TIMESTAMP NOT NULL,
+				`records` INTEGER UNSIGNED NOT NULL,
+				PRIMARY KEY (`host_id`, `facility_id`, `priority_id`, `insert_time`),
+				INDEX `host_id`(`host_id`),
+				INDEX `facility_id`(`facility_id`),
+				INDEX `priority_id`(`priority_id`),
+				INDEX `insert_time`(`insert_time`))
+				ENGINE = MyISAM
+				COMMENT = 'Maintains High Level Statistics';"); 
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -742,6 +757,20 @@ function syslog_setup_table_new($options) {
 		KEY priority (priority),
 		KEY facility (facility)) ENGINE=$engine;");
 
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_statistics` (
+		`host_id` INTEGER UNSIGNED NOT NULL,
+		`facility_id` INTEGER UNSIGNED NOT NULL,
+		`priority_id` INTEGER UNSIGNED NOT NULL,
+		`insert_time` TIMESTAMP NOT NULL,
+		`records` INTEGER UNSIGNED NOT NULL,
+		PRIMARY KEY (`host_id`, `facility_id`, `priority_id`, `insert_time`),
+		INDEX `host_id`(`host_id`),
+		INDEX `facility_id`(`facility_id`),
+		INDEX `priority_id`(`priority_id`),
+		INDEX `insert_time`(`insert_time`))
+		ENGINE = MyISAM
+		COMMENT = 'Maintains High Level Statistics';"); 
+
 	foreach($syslog_levels as $id => $priority) {
 		syslog_db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')");
 	}
@@ -760,7 +789,7 @@ function syslog_setup_table_new($options) {
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.10',
+		'version'  => '1.20',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',
