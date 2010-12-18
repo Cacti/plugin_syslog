@@ -84,7 +84,7 @@ if (read_config_option("auth_method") != 0) {
 		<td valign="bottom" colspan="3" nowrap>
 			<table width="100%" cellspacing="0" cellpadding="0">
 				<tr style="background: transparent url('<?php print $config['url_path'];?>images/cacti_backdrop2.gif') no-repeat center right;">
-					<td valign="bottom" nowrap>
+					<td id="tabs" valign="bottom" nowrap>
 						&nbsp;<?php if ($show_console_tab == true) {?><a href="<?php echo $config['url_path']; ?>index.php"><img src="<?php echo $config['url_path']; ?>images/tab_console.gif" alt="Console" align="absmiddle" border="0"></a><?php
 							 }?><a href="<?php echo $config['url_path']; ?>graph_view.php"><img src="<?php echo $config['url_path']; ?>images/tab_graphs.gif" alt="Graphs" align="absmiddle" border="0"></a><?php
 					api_plugin_hook("top_graph_header_tabs");
