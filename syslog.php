@@ -287,7 +287,8 @@ function syslog_statistics() {
 
 	html_start_box("", "100%", $colors["header"], "3", "center", "");
 
-	$sql_where = "";
+	$sql_where   = "";
+	$sql_groupby = "";
 
 	if ($_REQUEST["rows"] == -1) {
 		$row_limit = read_config_option("num_rows_syslog");
@@ -327,7 +328,7 @@ function syslog_statistics() {
 	<?php
 
 	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog.php?tab=stats&filter=" . $_REQUEST["filtr"]);
+	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog.php?tab=stats&filter=" . $_REQUEST["filter"]);
 
 	if ($total_rows > 0) {
 		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
@@ -374,7 +375,7 @@ function syslog_statistics() {
 	$i = 0;
 	if (sizeof($records)) {
 		foreach ($records as $r) {
-			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $removal["id"]); $i++;
+			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $r["id"]); $i++;
 			echo "<td>" . $r["host"] . "</td>";
 			echo "<td>" . ($_REQUEST["facility"] != "-2" ? ucfirst($r["facility"]):"-") . "</td>";
 			echo "<td>" . ($_REQUEST["priority"] != "-2" ? ucfirst($r["priority"]):"-") . "</td>";
@@ -388,7 +389,7 @@ function syslog_statistics() {
 	html_end_box(false);
 }
 
-function get_stats_records(&$sql_where, $sql_groupby, $row_limit) {
+function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 	include(dirname(__FILE__) . "/config.php");
 
 	$sql_where   = "";
