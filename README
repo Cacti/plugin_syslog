@@ -39,6 +39,8 @@
 ----[ Changelog
    --- SVN ---
    feature: Provide host based statistics tab
+   bug: sort fields interfering with one another between syslog and alarm tabs
+   bug: Message column was date column
 
    --- 1.10  ---
    feature: Allow Syslog to Strip Domains Suffix's.

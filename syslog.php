@@ -566,7 +566,7 @@ function syslog_request_validation($current_tab) {
 	}
 
 	if ($current_tab != "alerts" && isset($_REQUEST["host"]) && $_REQUEST["host"][0] == -1) {
-		kill_session_var("sess_syslog_hosts");
+		kill_session_var("sess_syslog_" . $current_tab . "_hosts");
 		unset($_REQUEST["host"]);
 	}
 
@@ -574,18 +574,18 @@ function syslog_request_validation($current_tab) {
 
 	/* if the user pushed the 'clear' button */
 	if (isset($_REQUEST["button_clear_x"])) {
-		kill_session_var("sess_syslog_hosts");
-		kill_session_var("sess_syslog_rows");
-		kill_session_var("sess_syslog_trimval");
-		kill_session_var("sess_syslog_removal");
-		kill_session_var("sess_syslog_refresh");
-		kill_session_var("sess_syslog_page");
-		kill_session_var("sess_syslog_filter");
-		kill_session_var("sess_syslog_efacility");
-		kill_session_var("sess_syslog_elevel");
-		kill_session_var("sess_syslog_id");
-		kill_session_var("sess_syslog_sort_column");
-		kill_session_var("sess_syslog_sort_direction");
+		kill_session_var("sess_syslog_" . $current_tab . "_hosts");
+		kill_session_var("sess_syslog_" . $current_tab . "_rows");
+		kill_session_var("sess_syslog_" . $current_tab . "_trimval");
+		kill_session_var("sess_syslog_" . $current_tab . "_removal");
+		kill_session_var("sess_syslog_" . $current_tab . "_refresh");
+		kill_session_var("sess_syslog_" . $current_tab . "_page");
+		kill_session_var("sess_syslog_" . $current_tab . "_filter");
+		kill_session_var("sess_syslog_" . $current_tab . "_efacility");
+		kill_session_var("sess_syslog_" . $current_tab . "_elevel");
+		kill_session_var("sess_syslog__id");
+		kill_session_var("sess_syslog_" . $current_tab . "_sort_column");
+		kill_session_var("sess_syslog_" . $current_tab . "_sort_direction");
 
 		$_REQUEST["page"] = 1;
 		unset($_REQUEST["hosts"]);
@@ -604,18 +604,18 @@ function syslog_request_validation($current_tab) {
 	}else{
 		/* if any of the settings changed, reset the page number */
 		$changed = 0;
-		$changed += syslog_check_changed("hosts", "sess_syslog_hosts");
+		$changed += syslog_check_changed("hosts", "sess_syslog_" . $current_tab . "_hosts");
 		$changed += syslog_check_changed("predefined_timespan", "sess_current_timespan");
 		$changed += syslog_check_changed("date1", "sess_current_date1");
 		$changed += syslog_check_changed("date2", "sess_current_date2");
-		$changed += syslog_check_changed("rows", "sess_syslog_rows");
-		$changed += syslog_check_changed("removal", "sess_syslog_removal");
-		$changed += syslog_check_changed("refresh", "sess_syslog_refresh");
-		$changed += syslog_check_changed("filter", "sess_syslog_filter");
-		$changed += syslog_check_changed("efacility", "sess_syslog_efacility");
-		$changed += syslog_check_changed("elevel", "sess_syslog_elevel");
-		$changed += syslog_check_changed("sort_column", "sess_syslog_sort_column");
-		$changed += syslog_check_changed("sort_direction", "sess_syslog_sort_direction");
+		$changed += syslog_check_changed("rows", "sess_syslog_" . $current_tab . "_rows");
+		$changed += syslog_check_changed("removal", "sess_syslog_" . $current_tab . "_removal");
+		$changed += syslog_check_changed("refresh", "sess_syslog_" . $current_tab . "_refresh");
+		$changed += syslog_check_changed("filter", "sess_syslog_" . $current_tab . "_filter");
+		$changed += syslog_check_changed("efacility", "sess_syslog_" . $current_tab . "_efacility");
+		$changed += syslog_check_changed("elevel", "sess_syslog_" . $current_tab . "_elevel");
+		$changed += syslog_check_changed("sort_column", "sess_syslog_" . $current_tab . "_sort_column");
+		$changed += syslog_check_changed("sort_direction", "sess_syslog_" . $current_tab . "_sort_direction");
 
 		if ($changed) {
 			$_REQUEST["page"] = "1";
@@ -625,22 +625,22 @@ function syslog_request_validation($current_tab) {
 	}
 
 	/* remember search fields in session vars */
-	load_current_session_value("page", "sess_syslog_page", "1");
-	load_current_session_value("rows", "sess_syslog_rows", read_config_option("num_rows_syslog"));
-	load_current_session_value("trimval", "sess_syslog_trimval", "75");
-	load_current_session_value("refresh", "sess_syslog_refresh", read_config_option("syslog_refresh"));
-	load_current_session_value("removal", "sess_syslog_removal", "-1");
-	load_current_session_value("filter", "sess_syslog_filter", "");
-	load_current_session_value("efacility", "sess_syslog_efacility", "0");
-	load_current_session_value("elevel", "sess_syslog_elevel", "0");
-	load_current_session_value("hosts", "sess_syslog_hosts", "0");
-	load_current_session_value("sort_column", "sess_syslog_sort_column", "logtime");
-	load_current_session_value("sort_direction", "sess_syslog_sort_direction", "DESC");
+	load_current_session_value("page", "sess_syslog_" . $current_tab . "_page", "1");
+	load_current_session_value("rows", "sess_syslog_" . $current_tab . "_rows", read_config_option("num_rows_syslog"));
+	load_current_session_value("trimval", "sess_syslog_" . $current_tab . "_trimval", "75");
+	load_current_session_value("refresh", "sess_syslog_" . $current_tab . "_refresh", read_config_option("syslog_refresh"));
+	load_current_session_value("removal", "sess_syslog_" . $current_tab . "_removal", "-1");
+	load_current_session_value("filter", "sess_syslog_" . $current_tab . "_filter", "");
+	load_current_session_value("efacility", "sess_syslog_" . $current_tab . "_efacility", "0");
+	load_current_session_value("elevel", "sess_syslog_" . $current_tab . "_elevel", "0");
+	load_current_session_value("hosts", "sess_syslog_" . $current_tab . "_hosts", "0");
+	load_current_session_value("sort_column", "sess_syslog_" . $current_tab . "_sort_column", "logtime");
+	load_current_session_value("sort_direction", "sess_syslog_" . $current_tab . "_sort_direction", "DESC");
 
 	if (isset($_REQUEST["host"])) {
-		$_SESSION["sess_syslog_hosts"] = $_REQUEST["host"];
-	} else if (isset($_SESSION["sess_syslog_hosts"])) {
-		$_REQUEST["host"] = $_SESSION["sess_syslog_hosts"];
+		$_SESSION["sess_syslog_" . $current_tab . "_hosts"] = $_REQUEST["host"];
+	} else if (isset($_SESSION["sess_syslog_" . $current_tab . "_hosts"])) {
+		$_REQUEST["host"] = $_SESSION["sess_syslog_" . $current_tab . "_hosts"];
 	} else {
 		$_REQUEST["host"][0] = "0"; /* default value */
 	}
@@ -1302,7 +1302,7 @@ function syslog_messages($tab="syslog") {
 			"name" => array("Alert Name", "ASC"),
 			"severity" => array("Severity", "ASC"),
 			"count" => array("Count", "ASC"),
-			"logtime" => array("Message", "ASC"),
+			"logtime" => array("Date", "ASC"),
 			"logmsg" => array("Message", "ASC"),
 			"slhost" => array("Host", "ASC"),
 			"facility" => array("Facility", "ASC"),
