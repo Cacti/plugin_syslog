@@ -65,7 +65,8 @@ function form_save() {
 	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
 		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
 			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"],
-			$_POST["notes"], $_POST["enabled"], $_POST["severity"], $_POST["command"]);
+			$_POST["notes"], $_POST["enabled"], $_POST["severity"], $_POST["command"],
+			$_POST["repeat_alert"], $_POST["open_ticket"]);
 
 		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
 			header("Location: syslog_alerts.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
@@ -195,7 +196,7 @@ function form_actions() {
 }
 
 function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
-	$enabled, $severity, $command) {
+	$enabled, $severity, $command, $repeat_alert, $open_ticket) {
 	include(dirname(__FILE__) . "/config.php");
 
 	/* get the username */
@@ -207,18 +208,20 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 		$save["id"] = "";
 	}
 
-	$save["name"]     = form_input_validate($name,        "name",     "", false, 3);
-	$save["num"]      = form_input_validate($num,         "num",      "", false, 3);
-	$save["message"]  = form_input_validate($message,     "message",  "", false, 3);
-	$save["email"]    = form_input_validate(trim($email), "email",    "", true, 3);
-	$save["command"]  = form_input_validate($command,     "command",  "", true, 3);
-	$save["notes"]    = form_input_validate($notes,       "notes",    "", true, 3);
-	$save["enabled"]  = ($enabled == "on" ? "on":"");
-	$save["type"]     = $type;
-	$save["severity"] = $severity;
-	$save["method"]   = $method;
-	$save["user"]     = $username;
-	$save["date"]     = time();
+	$save["name"]            = form_input_validate($name,            "name",     "", false, 3);
+	$save["num"]             = form_input_validate($num,             "num",      "", false, 3);
+	$save["message"]         = form_input_validate($message,         "message",  "", false, 3);
+	$save["email"]           = form_input_validate(trim($email),     "email",    "", true, 3);
+	$save["command"]         = form_input_validate($command,         "command",  "", true, 3);
+	$save["notes"]           = form_input_validate($notes,           "notes",    "", true, 3);
+	$save["enabled"]         = ($enabled == "on" ? "on":"");
+	$save["repeat_alert"]    = form_input_validate($repeat_alert,    "repeat_alert", "", true, 3);
+	$save["open_ticket"]     = ($open_ticket == "on" ? "on":"");
+	$save["type"]            = $type;
+	$save["severity"]        = $severity;
+	$save["method"]          = $method;
+	$save["user"]            = $username;
+	$save["date"]            = time();
 
 	//print "<pre>";print_r($save);print "</pre>";exit;
 
@@ -313,6 +316,27 @@ function syslog_action_edit() {
 		$alert["name"] = "New Alert Rule";
 	}
 
+	$repeatarray = array(
+		0 => 'Not Set', 
+		1 => '5 Minutes', 
+		2 => '10 Minutes', 
+		3 => '15 Minutes', 
+		4 => '20 Minutes', 
+		6 => '30 Minutes', 
+		8 => '45 Minutes', 
+		12 => '1 Hour', 
+		24 => '2 Hours', 
+		36 => '3 Hours', 
+		48 => '4 Hours', 
+		72 => '6 Hours', 
+		96 => '8 Hours', 
+		144 => '12 Hours', 
+		288 => '1 Day', 
+		576 => '2 Days', 
+		2016 => '1 Week', 
+		4032 => '2 Weeks', 
+		8640 => 'Month');
+
 	html_start_box("<strong>Alert Edit</strong> $header_label", "100%", $colors["header"], "3", "center", "");
 
 	$fields_syslog_alert_edit = array(
@@ -376,11 +400,20 @@ function syslog_action_edit() {
 		),
 	"enabled" => array(
 		"method" => "drop_array",
-		"friendly_name" => "Enabled?",
+		"friendly_name" => "Alert Enabled",
 		"description" => "Is this Alert Enabled?",
 		"value" => "|arg1:enabled|",
 		"array" => array("on" => "Enabled", "" => "Disabled"),
 		"default" => "on"
+		),
+	"repeat_alert" => array(
+		"friendly_name" => "Re-Alert Cycle",
+		"method" => "drop_array",
+		"array" => $repeatarray,
+		"default" => "0",
+ 		"description" => "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold
+		based alarms, this applies to all hosts.",
+		"value" => "|arg1:repeat_alert|"
 		),
 	"notes" => array(
 		"friendly_name" => "Alert Notes",
@@ -395,6 +428,14 @@ function syslog_action_edit() {
 	"spacer1" => array(
 		"method" => "spacer",
 		"friendly_name" => "Alert Actions"
+		),
+	"open_ticket" => array(
+		"method" => "drop_array",
+		"friendly_name" => "Open Ticket",
+		"description" => "Should a Help Desk Ticket be opened for this Alert",
+		"value" => "|arg1:open_ticket|",
+		"array" => array("on" => "Yes", "" => "No"),
+		"default" => ""
 		),
 	"email" => array(
 		"method" => "textarea",

@@ -222,6 +222,9 @@ function syslog_check_upgrade() {
 				INDEX `insert_time`(`insert_time`))
 				ENGINE = MyISAM
 				COMMENT = 'Maintains High Level Statistics';"); 
+
+			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN repeat_alert int(10) unsigned NOT NULL DEFAULT '0' AFTER `enabled`");
+			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN open_ticket char(2) NOT NULL DEFAULT '' AFTER `repeat_alert`");
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -636,19 +639,21 @@ function syslog_setup_table_new($options) {
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
-		id int(10) NOT NULL auto_increment,
-		name varchar(255) NOT NULL default '',
+		`id` int(10) NOT NULL auto_increment,
+		`name` varchar(255) NOT NULL default '',
 		`severity` INTEGER UNSIGNED NOT NULL default '0',
 		`method` int(10) unsigned NOT NULL default '0',
 		`num` int(10) unsigned NOT NULL default '1',
 		`type` varchar(16) NOT NULL default '',
-		enabled CHAR(2) DEFAULT 'on',
-		message VARCHAR(128) NOT NULL default '',
+		`enabled` CHAR(2) default 'on',
+		`repeat_alert` int(10) unsigned NOT NULL default '0',
+		`open_ticket` CHAR(2) default '',
+		`message` VARCHAR(128) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
-		email varchar(255) default NULL,
-		command varchar(255) default NULL,
-		notes varchar(255) default NULL,
+		`email` varchar(255) default NULL,
+		`command` varchar(255) default NULL,
+		`notes` varchar(255) default NULL,
 		PRIMARY KEY (id)) ENGINE=$engine;");
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`");
@@ -1060,6 +1065,15 @@ function syslog_config_settings() {
 			sent in plain text.",
 			"method" => "checkbox",
 			"default" => ""
+		),
+		"syslog_ticket_command" => array(
+			"friendly_name" => "Command for Opening Tickets",
+			"description" => "This command will be executed for opening Help Desk Tickets.  The command will be required to
+			parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  
+			The hostlist will be a comma delimited list of hosts impacted by the alert.",
+			"method" => "textbox",
+			"max_length" => 255,
+			"size" => 80
 		),
 		"syslog_email" => array(
 			"friendly_name" => "From Email Address",

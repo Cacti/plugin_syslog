@@ -304,11 +304,15 @@ if (sizeof($query)) {
 					$alert_count = 0;
 					$htmlh       = $htmlm;
 					$alerth      = $alertm;
+					$hostlist    = array();
 					foreach($at as $a) {
 						$a['message'] = str_replace('  ', "\n", $a['message']);
 						while (substr($a['message'], -1) == "\n") {
 							$a['message'] = substr($a['message'], 0, -1);
 						}
+
+						/* get a list of hosts impacted */
+						$hostlist[] = $a['host'];
 
 						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {
 							if ($alert["method"] == 0) $alertm  = $alerth;
@@ -356,7 +360,38 @@ if (sizeof($query)) {
 		}
 
 		if ($alertm != '') {
-			syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], ($html ? $htmlm:$alertm), $smsalert);
+			$resend = true;
+			if ($alert['repeat_alert'] > 0) {
+				$date = date("Y-m-d H:i:s", time() - ($alert['repeat_alert'] * 300));
+				if (sizeof($hostlist) > 1) {
+					$found = syslog_db_fetch_cell("SELECT count(*) 
+						FROM syslog_alert 
+						WHERE alert_id=" . $alert['id'] . " 
+						AND logtime>'$date'");
+				}else{
+					$found = syslog_db_fetch_cell("SELECT count(*) 
+						FROM syslog_alert 
+						WHERE alert_id=" . $alert['id'] . " 
+						AND logtime>'$date' 
+						AND host='" . $hostlist[0] . "'");
+				}
+
+				if ($found) $resend = false;
+			}
+
+			if ($resend) {
+				syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], ($html ? $htmlm:$alertm), $smsalert);
+
+				if ($alert['open_ticket'] == 'on' && strlen(read_config_option("syslog_ticket_command"))) {
+					if (is_executable(read_config_option("syslog_ticket_command"))) {
+						exec(read_config_option("syslog_ticket_command") . 
+							" --alert-name='" . clean_up_name($alert['name']) . "'" . 
+							" --severity='"   . $alert['severity'] . "'" .
+							" --hostlist='"   . implode(",",$hostlist) . "'" .
+							" --message='"    . $alert['message'] . "'"); 
+					}
+				}
+			}
 		}
 	}
 }

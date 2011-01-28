@@ -39,6 +39,8 @@
 ----[ Changelog
    --- SVN ---
    feature: Provide host based statistics tab
+   feature: Support generic help desk integration.  Requires customer script
+   feature: Support re-alert cycles for certain alarm types
    bug: sort fields interfering with one another between syslog and alarm tabs
    bug: Message column was date column
 
