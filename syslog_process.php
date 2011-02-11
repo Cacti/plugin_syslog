@@ -153,6 +153,8 @@ syslog_debug("Unique ID = " . $uniqueID);
 /* flag all records with the uniqueID prior to moving */
 syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET status=" . $uniqueID . " WHERE status=0");
 
+api_plugin_hook('plugin_syslog_before_processing');
+
 $syslog_incoming = $syslog_cnn->Affected_Rows();
 
 syslog_debug("Found   " . $syslog_incoming .
@@ -395,6 +397,8 @@ if (sizeof($query)) {
 		}
 	}
 }
+
+api_plugin_hook('plugin_syslog_after_processing');
 
 /* move syslog records to the syslog table */
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, priority_id, facility_id, host_id, message)
