@@ -221,10 +221,18 @@ function syslog_check_upgrade() {
 				INDEX `priority_id`(`priority_id`),
 				INDEX `insert_time`(`insert_time`))
 				ENGINE = MyISAM
-				COMMENT = 'Maintains High Level Statistics';"); 
+				COMMENT = 'Maintains High Level Statistics';");
 
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN repeat_alert int(10) unsigned NOT NULL DEFAULT '0' AFTER `enabled`");
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN open_ticket char(2) NOT NULL DEFAULT '' AFTER `repeat_alert`");
+
+			syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alarm_log` (
+				`alert_id` int(10) unsigned NOT NULL DEFAULT '0',
+				`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+				`logmsg` varchar(1024) DEFAULT NULL,
+				`host` varchar(32) DEFAULT NULL,
+				`seq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+				PRIMARY KEY (`seq`)) ENGINE=$engine;");
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -774,7 +782,15 @@ function syslog_setup_table_new($options) {
 		INDEX `priority_id`(`priority_id`),
 		INDEX `insert_time`(`insert_time`))
 		ENGINE = MyISAM
-		COMMENT = 'Maintains High Level Statistics';"); 
+		COMMENT = 'Maintains High Level Statistics';");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alarm_log` (
+		`alert_id` int(10) unsigned NOT NULL DEFAULT '0',
+		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+		`logmsg` varchar(1024) DEFAULT NULL,
+		`host` varchar(32) DEFAULT NULL,
+		`seq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+		PRIMARY KEY (`seq`)) ENGINE=$engine;");
 
 	foreach($syslog_levels as $id => $priority) {
 		syslog_db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')");
@@ -1069,7 +1085,7 @@ function syslog_config_settings() {
 		"syslog_ticket_command" => array(
 			"friendly_name" => "Command for Opening Tickets",
 			"description" => "This command will be executed for opening Help Desk Tickets.  The command will be required to
-			parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  
+			parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.
 			The hostlist will be a comma delimited list of hosts impacted by the alert.",
 			"method" => "textbox",
 			"max_length" => 255,

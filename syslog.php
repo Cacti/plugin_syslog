@@ -375,7 +375,7 @@ function syslog_statistics() {
 	$i = 0;
 	if (sizeof($records)) {
 		foreach ($records as $r) {
-			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $i); $i++;
+			form_alternate_row_color($colors["alternate"], $colors["light"], $i); $i++;
 			echo "<td>" . $r["host"] . "</td>";
 			echo "<td>" . ($_REQUEST["facility"] != "-2" ? ucfirst($r["facility"]):"-") . "</td>";
 			echo "<td>" . ($_REQUEST["priority"] != "-2" ? ucfirst($r["priority"]):"-") . "</td>";

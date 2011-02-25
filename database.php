@@ -110,7 +110,7 @@ function syslog_db_execute($sql, $log = TRUE) {
    @arg $log - whether to log error messages, defaults to true
    @arg $col_name - use this column name instead of the first one
    @returns - (bool) the output of the sql query as a single variable */
-function syslog_db_fetch_cell($sql, $col_name = '') {
+function syslog_db_fetch_cell($sql, $col_name = '', $log = TRUE) {
 	global $syslog_cnn, $cnn_id;
 
 	/* use cacti function if using Cacti db */

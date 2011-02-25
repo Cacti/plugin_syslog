@@ -365,14 +365,14 @@ if (sizeof($query)) {
 			$resend = true;
 			if ($alert['repeat_alert'] > 0) {
 				$date = date("Y-m-d H:i:s", time() - ($alert['repeat_alert'] * 300));
-				if (sizeof($hostlist) > 1) {
+				if ($alert['method'] == "1") {
 					$found = syslog_db_fetch_cell("SELECT count(*) 
-						FROM syslog_alert 
+						FROM syslog_alarm_log 
 						WHERE alert_id=" . $alert['id'] . " 
 						AND logtime>'$date'");
 				}else{
 					$found = syslog_db_fetch_cell("SELECT count(*) 
-						FROM syslog_alert 
+						FROM syslog_alarm_log
 						WHERE alert_id=" . $alert['id'] . " 
 						AND logtime>'$date' 
 						AND host='" . $hostlist[0] . "'");
@@ -383,6 +383,11 @@ if (sizeof($query)) {
 
 			if ($resend) {
 				syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], ($html ? $htmlm:$alertm), $smsalert);
+				if ($alert['method'] != "1") {
+					$sequence = syslog_log_alarm($alert["id"], $alert["name"], $alert["email"], $a, 1);
+				} else {
+					$sequence = syslog_log_alarm($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["email"], $at[0], sizeof($at));
+				}
 
 				if ($alert['open_ticket'] == 'on' && strlen(read_config_option("syslog_ticket_command"))) {
 					if (is_executable(read_config_option("syslog_ticket_command"))) {

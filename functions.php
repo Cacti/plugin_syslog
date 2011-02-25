@@ -576,3 +576,39 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 	}
 }
 
+function syslog_log_alarm($alert_id, $alert_name, $alert_email, $msg, $count = 1) {
+	global $config, $severities;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	if ($count <= 1) {
+		$save["seq"]      = "";
+		$save["alert_id"] = $alert_id;
+		$save["logtime"]  = $msg["date"] . " " . $msg["time"];
+		$save["logmsg"]   = $msg["message"];
+		$save["host"]     = $msg["host"];
+
+		$id = 0;
+		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_alarm_log`", "seq");
+
+
+		cacti_log("WARNING: The Syslog Alert '$alert_name' has been sent to '$alert_email'.  Message was '" . $msg["message"] . "', and Sequence '$id'", false, "SYSLOG");
+
+		return $id;
+	}else{
+		$save["seq"]      = "";
+		$save["alert_id"] = $alert_id;
+		$save["logtime"]  = date("Y-m-d H:i:s");
+		$save["logmsg"]   = $alert_name;
+		$save["host"]     = "N/A";
+
+		$id = 0;
+		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_alarm_log`", "seq");
+
+
+		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' has been sent to '$alert_email'; Sequence '$id'", false, "SYSLOG");
+
+		return $id;
+	}
+}
+
