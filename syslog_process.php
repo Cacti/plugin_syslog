@@ -116,6 +116,18 @@ if ($r == '' or $r < 0 or $r > 365) {
 	kill_session_var("sess_config_array");
 }
 
+$alert_retention = read_config_option("syslog_alert_retention");
+if ($alert_retention == '' || $alert_retention < 0 || $alert_retention > 365) {
+	if ($alert_retention == '') {
+		$sql = "REPLACE INTO `" . $database_default . "`.`settings` (name, value) VALUES ('syslog_alert_retention','30')";
+	}else{
+		$sql = "UPDATE `" . $database_default . "`.`settings` SET value='30' WHERE name='syslog_alert_retention'";
+	}
+
+	$result = db_execute($sql);
+
+	kill_session_var("sess_config_array");
+}
 
 /* setup e-mail defaults */
 $email     = read_config_option("syslog_email");
@@ -434,6 +446,14 @@ if (read_config_option("syslog_retention") > 0) {
 		WHERE insert_time<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_retention")*86400)) . "'");
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Statistics Record(s)");
 }
+
+/* remove alert log messages */
+if (read_config_option("syslog_alert_retention") > 0) {
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alarm_log` 
+		WHERE logtime<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
+	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
+}
+
 
 /* Add the unique hosts to the syslog_hosts table */
 $sql = "INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host)

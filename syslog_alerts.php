@@ -316,6 +316,11 @@ function syslog_action_edit() {
 		$alert["name"] = "New Alert Rule";
 	}
 
+	$alert_retention = read_config_option("syslog_alert_retention");
+	if ($alert_retention != '' && $alert_retention > 0 && $alert_retention < 365) {
+		$repeat_end = ($alert_retention * 24 * 60) / 5;
+	}
+
 	$repeatarray = array(
 		0 => 'Not Set', 
 		1 => '5 Minutes', 
@@ -336,6 +341,14 @@ function syslog_action_edit() {
 		2016 => '1 Week', 
 		4032 => '2 Weeks', 
 		8640 => 'Month');
+
+	if ($repeat_end) {
+		foreach ($repeatarray as $i => $value) {
+			if ($i > $repeat_end) {
+				unset($repeatarray[$i]);
+			}
+		}
+	}
 
 	html_start_box("<strong>Alert Edit</strong> $header_label", "100%", $colors["header"], "3", "center", "");
 

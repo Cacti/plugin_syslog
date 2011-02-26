@@ -1014,7 +1014,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 }
 
 function syslog_config_settings() {
-	global $tabs, $settings, $syslog_retentions, $syslog_refresh;
+	global $tabs, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
 
 	$settings["visual"]["syslog_header"] = array(
 		"friendly_name" => "Syslog Settings",
@@ -1074,6 +1074,13 @@ function syslog_config_settings() {
 			"method" => "drop_array",
 			"default" => "30",
 			"array" => $syslog_retentions
+		),
+		"syslog_alert_retention" => array(
+			"friendly_name" => "Syslog Alert Retention",
+			"description" => "This is the number of days to keep alert logs.",
+			"method" => "drop_array",
+			"default" => "30",
+			"array" => $syslog_alert_retentions
 		),
 		"syslog_html" => array(
 			"friendly_name" => "HTML Based e-Mail",
@@ -1247,7 +1254,7 @@ function syslog_show_tab() {
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types, $severities;
 	global $syslog_levels, $syslog_freqs, $syslog_times, $syslog_refresh;
-	global $syslog_colors, $syslog_text_colors, $syslog_retentions;
+	global $syslog_colors, $syslog_text_colors, $syslog_retentions, $syslog_alert_retentions;
 
 	$syslog_actions = array(
 		1 => "Delete",
@@ -1268,6 +1275,25 @@ function syslog_config_arrays () {
 		);
 
 	$syslog_retentions = array(
+		"0" => "Indefinate",
+		"1" => "1 Day",
+		"2" => "2 Days",
+		"3" => "3 Days",
+		"4" => "4 Days",
+		"5" => "5 Days",
+		"6" => "6 Days",
+		"7" => "1 Week",
+		"14" => "2 Weeks",
+		"30" => "1 Month",
+		"60" => "2 Months",
+		"90" => "3 Months",
+		"120" => "4 Months",
+		"160" => "5 Months",
+		"183" => "6 Months",
+		"365" => "1 Year"
+		);
+
+	$syslog_alert_retentions = array(
 		"0" => "Indefinate",
 		"1" => "1 Day",
 		"2" => "2 Days",

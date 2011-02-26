@@ -1179,6 +1179,12 @@ function syslog_messages($tab="syslog") {
 
 	include("./include/global_arrays.php");
 
+	/* force the initial timespan to be 30 minutes for performance reasons */
+	if (!isset($_SESSION["sess_syslog_init"])) {
+		$_SESSION["sess_current_timespan"] = 1;
+		$_SESSION["sess_syslog_init"] = 1;
+	}
+
 	if (file_exists("./lib/timespan_settings.php")) {
 		include("./lib/timespan_settings.php");
 	}else{
