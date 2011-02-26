@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2010 The Cacti Group                                 |
+ | Copyright (C) 2007-2011 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -127,7 +127,7 @@ syslog_upgrade_pre_oneoh_tables($options, true);
 cacti_log("SYSLOG NOTE: Background Syslog Database Upgrade Process Completed", false, "SYSTEM");
 
 function display_help() {
-	echo "Syslog Database Upgrade, Copyright 2004-2010 - The Cacti Group\n\n";
+	echo "Syslog Database Upgrade, Copyright 2004-2011 - The Cacti Group\n\n";
 	echo "Syslog Database Upgrade script for Cacti Syslogging.\n\n";
 	echo "usage: syslog_upgrade.php --type=trad|part --engine=MyISAM|InnoDB --days=N [--debug|-d]\n\n";
 }

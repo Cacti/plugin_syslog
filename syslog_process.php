@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2010 The Cacti Group                                 |
+ | Copyright (C) 2007-2011 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -597,7 +597,7 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 }
 
 function display_help() {
-	echo "Syslog Poller Process 1.0, Copyright 2004-2010 - The Cacti Group\n\n";
+	echo "Syslog Poller Process 1.0, Copyright 2004-2011 - The Cacti Group\n\n";
 	echo "The main Syslog poller process script for Cacti Syslogging.\n\n";
 	echo "usage: syslog_process.php [--debug|-d]\n\n";
 }
