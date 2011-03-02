@@ -612,3 +612,150 @@ function syslog_log_alarm($alert_id, $alert_name, $alert_email, $msg, $count = 1
 	}
 }
 
+
+
+function syslog_manage_items($from_table, $to_table) {
+	global $config, $syslog_cnn, $syslog_incoming_config;
+
+	include(dirname(__FILE__) . "/config.php");
+
+	/* Select filters to work on */
+	$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
+	//$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on' AND message like 'last message repeated %'");
+
+	syslog_debug("Found   " . sizeof($rows) .  ",  Removal Rule(s)" .  " to process");
+
+	$removed = 0;
+	$xferred = 0;
+	$total   = 0;
+
+	if (sizeof($rows)) {
+		foreach($rows as $remove) {
+			syslog_debug("Processing Rule  - " . $remove['message']);
+
+			$sql_sel = "";
+			$sql_dlt = "";
+
+            if ($remove['type'] == 'facility') {
+				if ($remove['method'] != 'del') {
+					$sql_sel = "SELECT seq
+								FROM `" . $syslogdb_default . "`. $from_table
+								WHERE facility_id in
+									(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
+										WHERE facility ='". $remove['message']."')";
+				} else {
+					$sql_dlt = "DELETE
+								FROM `" . $syslogdb_default . "`. $from_table 
+								WHERE facility_id in
+									(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
+										WHERE facility ='". $remove['message']."')";
+				}
+
+			} else if ($remove['type'] == 'host') {
+				if ($remove['method'] != 'del') {
+					$sql_sel = "SELECT seq
+								FROM `" . $syslogdb_default . "`. $from_table
+								WHERE host_id in
+									(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
+										WHERE host ='". $remove['message']."')";
+				} else {
+					$sql_dlt = "DELETE
+								FROM `" . $syslogdb_default . "`. $from_table 
+								WHERE host_id in
+									(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
+										WHERE host ='". $remove['message']."')";
+				}
+			} else if ($remove['type'] == 'messageb') {
+				if ($remove['method'] != 'del') {
+					$sql_sel = "SELECT seq
+								FROM `" . $syslogdb_default . "`. $from_table
+								WHERE message LIKE '" . $remove['message'] . "%' ";
+				} else {
+					$sql_dlt = "DELETE
+								FROM `" . $syslogdb_default . "`. $from_table 
+								WHERE message LIKE '" . $remove['message'] . "%' ";
+				}
+
+			} else if ($remove['type'] == 'messagec') {
+				if ($remove['method'] != 'del') {
+					$sql_sel = "SELECT seq
+								FROM `" . $syslogdb_default . "`. $from_table
+								WHERE message LIKE '%" . $remove['message'] . "%' ";
+				} else {
+					$sql_dlt = "DELETE
+								FROM `" . $syslogdb_default . "`. $from_table 
+								WHERE message LIKE '%" . $remove['message'] . "%' ";
+				}
+			} else if ($remove['type'] == 'messagee') {
+				if ($remove['method'] != 'del') {
+					$sql_sel = "SELECT seq
+								FROM `" . $syslogdb_default . "`. $from_table
+								WHERE message LIKE '%" . $remove['message'] . "' ";
+				} else {
+					$sql_dlt = "DELETE
+								FROM `" . $syslogdb_default . "`. $from_table 
+								WHERE message LIKE '%" . $remove['message'] . "' ";
+				}
+			} else if ($remove['type'] == 'sql') {
+				if ($remove['method'] != 'del') {
+					$sql_sel = "SELECT seq
+								FROM `" . $syslogdb_default . "`. $from_table
+								WHERE message (" . $remove['message'] . ") ";
+				} else {
+					$sql_dlt = "DELETE
+								FROM `" . $syslogdb_default . "`. $from_table 
+								WHERE message (" . $remove['message'] . ") ";
+				}
+			} 
+
+
+			if ($sql_sel != '' || $sql_dlt != '') {
+				$debugm = '';
+				/* process the removal rule first */
+				if ($sql_sel != '') {
+					$move_count = 0;
+					/* first insert, then delete */
+					$move_records = syslog_db_fetch_assoc($sql_sel);
+					syslog_debug("Found   ". sizeof($move_records) . " Message(s)");
+
+					if (sizeof($move_records)) {
+						$all_seq = '';
+						$messages_moved = 0;
+						foreach($move_records as $move_record) {
+							$all_seq = $all_seq . ", " . $move_record['seq'];
+						}
+
+						$all_seq = eregi_replace('^,', '', $all_seq);
+						syslog_db_execute("INSERT INTO `". $syslogdb_default . "`.`". $to_table ."` 
+												(facility_id, priority_id, host_id, logtime, message)
+												(SELECT facility_id, priority_id, host_id, logtime, message 
+													FROM `". $syslogdb_default . "`.". $from_table ."
+													WHERE seq in (" . $all_seq ."))");
+						$messages_moved = $syslog_cnn->Affected_Rows();
+
+						if ($messages_moved > 0) {
+							syslog_db_execute("DELETE FROM `". $syslogdb_default . "`.`" . $from_table ."` 
+													WHERE seq in (" . $all_seq .")" ); 
+						}
+
+						$xferred += $messages_moved;
+						$move_count = $messages_moved;
+					} 
+					$debugm   = "Moved   " . $move_count . " Message(s)";
+				}
+
+				if ($sql_dlt != '') {
+					/* now delete the remainder that match */
+					syslog_db_execute($sql_dlt);
+					$removed += $syslog_cnn->Affected_Rows();
+					$debugm   = "Deleted " . $removed . " Message(s)";
+				}
+					
+				syslog_debug($debugm);
+			}
+		}
+	}
+
+	return array("removed" => $removed, "xferred" => $xferred);
+}
+
