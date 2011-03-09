@@ -37,6 +37,10 @@
     Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+   --- 1.21 ---
+   bug: Fix timespan selector
+   bug: Reintroduce Filter time range view
+
    --- 1.20 ---
    feature: Provide host based statistics tab
    feature: Support generic help desk integration.  Requires customer script

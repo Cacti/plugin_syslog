@@ -146,7 +146,6 @@ function generate_syslog_cssjs() {
 	global $colors, $config, $syslog_incoming_config;
 	global $syslog_colors, $syslog_text_colors, $syslog_levels;
 
-	//print "<pre>";print_r($syslog_colors);print("</pre>");exit;
 	/* legacy css for syslog backgrounds */
 	print "\n\t\t\t<style type='text/css'>\n";
 	if (sizeof($syslog_colors)) {
@@ -401,7 +400,7 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 	}
 
 	if ($_REQUEST["facility"] == "-2") {
-		// Do nothing	
+		// Do nothing
 	}elseif ($_REQUEST["facility"] != "-1") {
 		$sql_where .= (!strlen($sql_where) ? "WHERE " : " AND ") . "ss.facility_id=" . $_REQUEST["facility"];
 		$sql_groupby .= ", sf.facility";
@@ -750,6 +749,12 @@ function syslog_filter($sql_where, $tab) {
 
 	include(dirname(__FILE__) . "/config.php");
 
+	if (isset($_SESSION["sess_current_date1"])) {
+		$filter_text = "</strong> [ Start: '" . $_SESSION["sess_current_date1"] . "' to End: '" . $_SESSION["sess_current_date2"] . "' ]";
+	}else{
+		$filter_text = "</strong>";
+	}
+
 	?>
 	<script type="text/javascript">
 	<!--
@@ -811,7 +816,7 @@ function syslog_filter($sql_where, $tab) {
 					<tr>
 						<td width='100%'>
 							<?php
-							html_start_box("<strong>Syslog Message Filter</strong>", "100%", $colors["header"], "1", "center", "");?>
+							html_start_box("<strong>Syslog Message Filter$filter_text", "100%", $colors["header"], "1", "center", "");?>
 							<tr bgcolor="<?php print $colors["panel"];?>" class="noprint">
 								<td class="noprint">
 									<table cellpadding="0" cellspacing="0" border="0">
@@ -824,6 +829,7 @@ function syslog_filter($sql_where, $tab) {
 													<?php
 													if ($_SESSION["custom"]) {
 														$graph_timespans[GT_CUSTOM] = "Custom";
+														$_REQUEST["predefined_timespan"] = GT_CUSTOM;
 														$start_val = 0;
 														$end_val = sizeof($graph_timespans);
 													} else {
@@ -837,7 +843,7 @@ function syslog_filter($sql_where, $tab) {
 
 													if (sizeof($graph_timespans) > 0) {
 														for ($value=$start_val; $value < $end_val; $value++) {
-															print "<option value='$value'"; if ($_SESSION["sess_current_timespan"] == $value) { print " selected"; } print ">" . title_trim($graph_timespans[$value], 40) . "</option>\n";
+															print "<option value='$value'"; if ($_REQUEST["predefined_timespan"] == $value) { print " selected"; } print ">" . title_trim($graph_timespans[$value], 40) . "</option>\n";
 														}
 													}
 													?>
@@ -865,7 +871,7 @@ function syslog_filter($sql_where, $tab) {
 													$end_val = sizeof($graph_timeshifts)+1;
 													if (sizeof($graph_timeshifts) > 0) {
 														for ($shift_value=$start_val; $shift_value < $end_val; $shift_value++) {
-															print "<option value='$shift_value'"; if ($_SESSION["sess_current_timeshift"] == $shift_value) { print " selected"; } print ">" . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
+															print "<option value='$shift_value'"; if ($_REQUEST["predefined_timeshift"] == $shift_value) { print " selected"; } print ">" . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
 														}
 													}
 													?>
@@ -1192,8 +1198,6 @@ function syslog_messages($tab="syslog") {
 	}
 	include(dirname(__FILE__) . "/config.php");
 
-	//print "<pre>";print_r($_REQUEST);print "</pre>";
-	//print "<pre>";print_r($_SESSION);print "</pre>";
 	/* create the custom css and javascript for the page */
 	generate_syslog_cssjs();
 
