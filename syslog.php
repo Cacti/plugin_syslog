@@ -280,7 +280,7 @@ function syslog_statistics() {
 	load_current_session_value("sort_column",    "sess_syslog_stats_sort_column", "host");
 	load_current_session_value("sort_direction", "sess_syslog_stats_sort_direction", "DESC");
 
-	html_start_box("<strong>Syslog Statistics Filter</strong>", "100%", $colors["header"], "3", "center", "syslog.php?tab=stats");
+	html_start_box("<strong>Syslog Statistics Filter</strong>", "100%", $colors["header"], "3", "center", "");
 	syslog_stats_filter();
 	html_end_box();
 
@@ -310,7 +310,7 @@ function syslog_statistics() {
 		$sql_where
 		$sql_groupby";
 
-	$total_rows = syslog_db_fetch_cell($rows_query_string);
+	$total_rows = sizeof(syslog_db_fetch_cell($rows_query_string));
 
 	?>
 	<script type="text/javascript">
@@ -411,7 +411,7 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 	if ($_REQUEST["priority"] == "-2") {
 		// Do nothing
 	}elseif ($_REQUEST["priority"] != "-1") {
-		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "ss.priority_id=" . $_REQUEST["level"];
+		$sql_where .= (!strlen($sql_where) ? "WHERE ": " AND ") . "ss.priority_id=" . $_REQUEST["priority"];
 		$sql_groupby .= ", sp.priority";
 	}else{
 		$sql_groupby .= ", sp.priority";
@@ -457,7 +457,11 @@ function syslog_stats_filter() {
 						<option value="-1"<?php if ($_REQUEST["facility"] == "-1") {?> selected<?php }?>>All</option>
 						<option value="-2"<?php if ($_REQUEST["facility"] == "-2") {?> selected<?php }?>>None</option>
 						<?php
-							$facilities = syslog_db_fetch_assoc("SELECT facility_id, facility FROM syslog_facilities ORDER BY facility");
+							$facilities = syslog_db_fetch_assoc("SELECT DISTINCT facility_id, facility 
+								FROM syslog_facilities AS sf
+								WHERE facility_id IN (SELECT DISTINCT facility_id FROM syslog_statistics)
+								ORDER BY facility");
+
 							if (sizeof($facilities)) {
 							foreach ($facilities as $r) {
 								print '<option value="' . $r["facility_id"] . '"'; if ($_REQUEST["facility"] == $r["facility_id"]) { print " selected"; } print ">" . ucfirst($r["facility"]) . "</option>\n";
@@ -474,7 +478,11 @@ function syslog_stats_filter() {
 						<option value="-1"<?php if ($_REQUEST["priority"] == "-1") {?> selected<?php }?>>All</option>
 						<option value="-2"<?php if ($_REQUEST["priority"] == "-2") {?> selected<?php }?>>None</option>
 						<?php
-							$priorities = syslog_db_fetch_assoc("SELECT priority_id, priority FROM syslog_priorities ORDER BY priority");
+							$priorities = syslog_db_fetch_assoc("SELECT DISTINCT priority_id, priority 
+								FROM syslog_priorities AS sp
+								WHERE priority_id IN (SELECT DISTINCT priority_id FROM syslog_statistics)
+								ORDER BY priority");
+
 							if (sizeof($priorities)) {
 							foreach ($priorities as $r) {
 								print '<option value="' . $r["priority_id"] . '"'; if ($_REQUEST["priority"] == $r["priority_id"]) { print " selected"; } print ">" . ucfirst($r["priority"]) . "</option>\n";

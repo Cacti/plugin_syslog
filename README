@@ -40,6 +40,7 @@
    --- 1.21 ---
    bug: Fix timespan selector
    bug: Reintroduce Filter time range view
+   bug: Syslog Statistics Row Counter Invalid
 
    --- 1.20 ---
    feature: Provide host based statistics tab
