@@ -41,6 +41,7 @@
    bug: Fix timespan selector
    bug: Reintroduce Filter time range view
    bug: Syslog Statistics Row Counter Invalid
+   feature: Provide option to tag invalid hosts
 
    --- 1.20 ---
    feature: Provide host based statistics tab

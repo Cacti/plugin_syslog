@@ -185,6 +185,16 @@ if ($syslog_domains != "") {
 	}
 }
 
+/* correct for invalid hosts */
+if (read_config_option("syslog_validate_hostname") == "on") {
+	$hosts = syslog_db_fetch_assoc("SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming`");
+	foreach($hosts as $host) {
+		if ($host["host"] == gethostbyname($host["host"])) {
+			syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET host='invalid_host' WHERE host='" . $host["host"] . "'");
+		}
+	}
+}	
+
 /* update the hosts, facilities, and priorities tables */
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()");
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority), last_updated=NOW()");

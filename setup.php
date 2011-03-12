@@ -1053,6 +1053,14 @@ function syslog_config_settings() {
 			"size" => 80,
 			"max_length" => 255,
 		),
+		"syslog_validate_hostname" => array(
+			"friendly_name" => "Validate Hostnames",
+			"description" => "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned
+			to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this
+			setting should only be used when other means are not in place to prevent this from happening.",
+			"method" => "checkbox",
+			"default" => ""
+		),
 		"syslog_refresh" => array(
 			"friendly_name" => "Refresh Interval",
 			"description" => "This is the time in seconds before the page refreshes.",
