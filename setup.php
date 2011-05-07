@@ -191,7 +191,7 @@ function syslog_check_upgrade() {
 		/* update realms for old versions */
 		if ($old < 1.0 || $old = '' || $old_pia) {
 			plugin_syslog_install();
-		}else
+		}else{
 			if ($old < 1.01) {
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;");
 			}
