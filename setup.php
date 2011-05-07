@@ -191,48 +191,56 @@ function syslog_check_upgrade() {
 		/* update realms for old versions */
 		if ($old < 1.0 || $old = '' || $old_pia) {
 			plugin_syslog_install();
-		}elseif ($old < 1.01) {
-			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;");
-		}elseif ($old < 1.05) {
-			$realms = db_fetch_assoc("SELECT * FROM plugin_realms WHERE file='Array'");
-			if (sizeof($realms)) {
-			foreach($realms as $realm) {
-				db_execute("DELETE FROM plugin_realms WHERE id=" . $realm["id"]);
-				db_execute("DELETE FROM auto_auth_realm WHERE realm_id=" . ($realm["id"]+100));
+		}else
+			if ($old < 1.01) {
+				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;");
 			}
-			}
-		}elseif ($old < 1.10) {
-			$emerg = syslog_db_fetch_cell("SELECT priority_id FROM `" . $syslogdb_default . "`.`syslog_priorities` WHERE priority='emerg'");
-			if ($emerg) {
-				syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog` SET priority_id=1 WHERE priority_id=$emerg");
-				syslog_db_execute("DELETE FROM syslog_priorities WHERE priority_id=$emerg");
-			}
-			syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_priorities` SET priority='emerg' WHERE priority='emer'");
-		}elseif ($old < 1.20) {
-			syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_statistics` (
-				`host_id` INTEGER UNSIGNED NOT NULL,
-				`facility_id` INTEGER UNSIGNED NOT NULL,
-				`priority_id` INTEGER UNSIGNED NOT NULL,
-				`insert_time` TIMESTAMP NOT NULL,
-				`records` INTEGER UNSIGNED NOT NULL,
-				PRIMARY KEY (`host_id`, `facility_id`, `priority_id`, `insert_time`),
-				INDEX `host_id`(`host_id`),
-				INDEX `facility_id`(`facility_id`),
-				INDEX `priority_id`(`priority_id`),
-				INDEX `insert_time`(`insert_time`))
-				ENGINE = MyISAM
-				COMMENT = 'Maintains High Level Statistics';");
 
-			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN repeat_alert int(10) unsigned NOT NULL DEFAULT '0' AFTER `enabled`");
-			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN open_ticket char(2) NOT NULL DEFAULT '' AFTER `repeat_alert`");
+			if ($old < 1.05) {
+				$realms = db_fetch_assoc("SELECT * FROM plugin_realms WHERE file='Array'");
+				if (sizeof($realms)) {
+				foreach($realms as $realm) {
+					db_execute("DELETE FROM plugin_realms WHERE id=" . $realm["id"]);
+					db_execute("DELETE FROM auto_auth_realm WHERE realm_id=" . ($realm["id"]+100));
+				}
+				}
+			}
 
-			syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alarm_log` (
-				`alert_id` int(10) unsigned NOT NULL DEFAULT '0',
-				`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-				`logmsg` varchar(1024) DEFAULT NULL,
-				`host` varchar(32) DEFAULT NULL,
-				`seq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				PRIMARY KEY (`seq`)) ENGINE=$engine;");
+			if ($old < 1.10) {
+				$emerg = syslog_db_fetch_cell("SELECT priority_id FROM `" . $syslogdb_default . "`.`syslog_priorities` WHERE priority='emerg'");
+				if ($emerg) {
+					syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog` SET priority_id=1 WHERE priority_id=$emerg");
+					syslog_db_execute("DELETE FROM syslog_priorities WHERE priority_id=$emerg");
+				}
+				syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_priorities` SET priority='emerg' WHERE priority='emer'");
+			}
+
+			if ($old < 1.20) {
+				syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_statistics` (
+					`host_id` INTEGER UNSIGNED NOT NULL,
+					`facility_id` INTEGER UNSIGNED NOT NULL,
+					`priority_id` INTEGER UNSIGNED NOT NULL,
+					`insert_time` TIMESTAMP NOT NULL,
+					`records` INTEGER UNSIGNED NOT NULL,
+					PRIMARY KEY (`host_id`, `facility_id`, `priority_id`, `insert_time`),
+					INDEX `host_id`(`host_id`),
+					INDEX `facility_id`(`facility_id`),
+					INDEX `priority_id`(`priority_id`),
+					INDEX `insert_time`(`insert_time`))
+					ENGINE = MyISAM
+					COMMENT = 'Maintains High Level Statistics';");
+
+				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN repeat_alert int(10) unsigned NOT NULL DEFAULT '0' AFTER `enabled`");
+				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN open_ticket char(2) NOT NULL DEFAULT '' AFTER `repeat_alert`");
+
+				syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alarm_log` (
+					`alert_id` int(10) unsigned NOT NULL DEFAULT '0',
+					`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+					`logmsg` varchar(1024) DEFAULT NULL,
+					`host` varchar(32) DEFAULT NULL,
+					`seq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+					PRIMARY KEY (`seq`)) ENGINE=$engine;");
+			}
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
