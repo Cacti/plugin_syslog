@@ -39,6 +39,7 @@
 ----[ Changelog
    --- SVN  ---
    bug: Upgrade script does not properly handle all conditions
+   bug: Strip domain does not always work as expected
 
    --- 1.21 ---
    bug: Fix timespan selector

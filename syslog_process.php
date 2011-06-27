@@ -198,12 +198,12 @@ if (read_config_option("syslog_validate_hostname") == "on") {
 /* update the hosts, facilities, and priorities tables */
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()");
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority) SELECT DISTINCT priority FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority), last_updated=NOW()");
-syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()");
+syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host) SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID . " ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()");
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_facilities`
 	(host_id, facility_id)
 	SELECT host_id, facility_id
 	FROM ((SELECT DISTINCT host, facility
-		FROM `" . $syslogdb_default . "`.`syslog_incoming`) AS s
+		FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=$uniqueID) AS s
 		INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 		ON s.host=sh.host
 		INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
