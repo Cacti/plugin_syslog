@@ -1409,7 +1409,9 @@ function syslog_messages($tab="syslog") {
 
 				/* the full window size of the multi-select */
 				size = parseInt((height-selectPos[1]-5)/textSize);
+				window.onresize = null;
 				document.getElementById("host_select").size=size;
+				window.onresize = this;
 			}
 
 			window.onresize = setHostMultiSelect;
