@@ -464,17 +464,6 @@ if (read_config_option("syslog_alert_retention") > 0) {
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
 }
 
-
-/* Add the unique hosts to the syslog_hosts table */
-$sql = "INSERT INTO `" . $syslogdb_default . "`.`syslog_hosts` (host)
-	(SELECT DISTINCT host FROM `" . $syslogdb_default . "`.`syslog_incoming`)
-	ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()";
-
-syslog_db_execute($sql);
-
-syslog_debug("Updated " . $syslog_cnn->Affected_Rows() .
-	",  Hosts in the syslog hosts table");
-
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date("G") == 0 && date("i") < 5) {
 	syslog_debug("Optimizing Tables");
