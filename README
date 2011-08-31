@@ -37,7 +37,7 @@
     Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
-   --- SVN  ---
+   --- 1.22  ---
    bug: Upgrade script does not properly handle all conditions
    bug: Strip domain does not always work as expected
    bug: Resizing a page on IE6 caused a loop on the syslog page
