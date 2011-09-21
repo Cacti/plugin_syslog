@@ -232,14 +232,6 @@ function syslog_check_upgrade() {
 
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN repeat_alert int(10) unsigned NOT NULL DEFAULT '0' AFTER `enabled`");
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN open_ticket char(2) NOT NULL DEFAULT '' AFTER `repeat_alert`");
-
-				syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alarm_log` (
-					`alert_id` int(10) unsigned NOT NULL DEFAULT '0',
-					`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-					`logmsg` varchar(1024) DEFAULT NULL,
-					`host` varchar(32) DEFAULT NULL,
-					`seq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-					PRIMARY KEY (`seq`)) ENGINE=$engine;");
 			}
 		}
 
@@ -791,14 +783,6 @@ function syslog_setup_table_new($options) {
 		INDEX `insert_time`(`insert_time`))
 		ENGINE = MyISAM
 		COMMENT = 'Maintains High Level Statistics';");
-
-	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alarm_log` (
-		`alert_id` int(10) unsigned NOT NULL DEFAULT '0',
-		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-		`logmsg` varchar(1024) DEFAULT NULL,
-		`host` varchar(32) DEFAULT NULL,
-		`seq` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-		PRIMARY KEY (`seq`)) ENGINE=$engine;");
 
 	foreach($syslog_levels as $id => $priority) {
 		syslog_db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')");

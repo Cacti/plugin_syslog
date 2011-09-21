@@ -295,6 +295,11 @@ if (sizeof($query)) {
 			if (($alert['method'] == "1" && $count >= $alert["num"]) || ($alert["method"] == "0")) {
 				$at = syslog_db_fetch_assoc($sql);
 
+				/* get a date for the repeat alert */
+				if ($alert['repeat_alert']) {
+					$date = date("Y-m-d H:i:s", time() - ($alert['repeat_alert'] * read_config_option("poller_interval")));
+				}
+
 				if (sizeof($at)) {
 					$htmlm .= "<html><head><style type='text/css'>";
 					$htmlm .= file_get_contents($config['base_path'] . "/plugins/syslog/syslog.css");
@@ -331,12 +336,7 @@ if (sizeof($query)) {
 					$hostlist    = array();
 					foreach($at as $a) {
 						$a['message'] = str_replace('  ', "\n", $a['message']);
-						while (substr($a['message'], -1) == "\n") {
-							$a['message'] = substr($a['message'], 0, -1);
-						}
-
-						/* get a list of hosts impacted */
-						$hostlist[] = $a['host'];
+						$a['message'] = trim($a['message']);
 
 						if (($alert["method"] == 1 && $alert_count < $max_alerts) || $alert["method"] == 0) {
 							if ($alert["method"] == 0) $alertm  = $alerth;
@@ -358,16 +358,43 @@ if (sizeof($query)) {
 						$syslog_alarms++;
 						$alert_count++;
 
+						$ignore = false;
 						if ($alert['method'] != "1") {
-							$htmlm  .= "</table></body></html>";
-							$sequence = syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a, 1, $htmlm);
-							$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Host:" . $a["host"] . ", URL:" . read_config_option("alert_base_url") . "plugins/syslog/syslog.php?tab=current&id=" . $sequence;
+							if ($alert['repeat_alert'] > 0) {
+								$ignore = syslog_db_fetch_cell("SELECT count(*) 
+									FROM syslog_logs
+									WHERE alert_id=" . $alert['id'] . " 
+									AND logtime>'$date' 
+									AND host='" . $a['host'] . "'");
+							}
+
+							if (!$ignore) {
+								$hostlist[] = $a['host'];
+								$htmlm  .= "</table></body></html>";
+								$sequence = syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $a, 1, $htmlm);
+								$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Host:" . $a["host"] . ", URL:" . read_config_option("alert_base_url") . "plugins/syslog/syslog.php?tab=current&id=" . $sequence;
+
+								syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], ($html ? $htmlm:$alertm), $smsalert);
+
+								if ($alert['open_ticket'] == 'on' && strlen(read_config_option("syslog_ticket_command"))) {
+									if (is_executable(read_config_option("syslog_ticket_command"))) {
+										exec(read_config_option("syslog_ticket_command") . 
+											" --alert-name='" . clean_up_name($alert['name']) . "'" . 
+											" --severity='"   . $alert['severity'] . "'" .
+											" --hostlist='"   . implode(",",$hostlist) . "'" .
+											" --message='"    . $alert['message'] . "'"); 
+									}
+								}
+							}
+						}else{
+							/* get a list of hosts impacted */
+							$hostlist[] = $a['host'];
 						}
 
-						if (trim($alert['command']) != "") {
+						if (trim($alert['command']) != "" && !$ignore) {
 							$command = alert_replace_variables($alert, $a);
 							cacti_log("SYSLOG NOTICE: Executing '$command'", true, "SYSTEM");
-							exec_background($command);
+							exec_background("/bin/sh", $command);
 						}
 					}
 
@@ -378,39 +405,25 @@ if (sizeof($query)) {
 						$sequence = syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at), $htmlm);
 						$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Count:" . sizeof($at) . ", URL:" . read_config_option("alert_base_url") . "plugins/syslog/syslog.php?tab=current&id=" . $sequence;
 					}
+
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
 				}
 			}
 		}
 
-		if ($alertm != '') {
+		if ($alertm != '' && $alert['method'] == 1) {
 			$resend = true;
 			if ($alert['repeat_alert'] > 0) {
-				$date = date("Y-m-d H:i:s", time() - ($alert['repeat_alert'] * 300));
-				if ($alert['method'] == "1") {
-					$found = syslog_db_fetch_cell("SELECT count(*) 
-						FROM syslog_alarm_log 
-						WHERE alert_id=" . $alert['id'] . " 
-						AND logtime>'$date'");
-				}else{
-					$found = syslog_db_fetch_cell("SELECT count(*) 
-						FROM syslog_alarm_log
-						WHERE alert_id=" . $alert['id'] . " 
-						AND logtime>'$date' 
-						AND host='" . $hostlist[0] . "'");
-				}
+				$found = syslog_db_fetch_cell("SELECT count(*) 
+					FROM syslog_logs 
+					WHERE alert_id=" . $alert['id'] . " 
+					AND logtime>'$date'");
 
 				if ($found) $resend = false;
 			}
 
 			if ($resend) {
 				syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], ($html ? $htmlm:$alertm), $smsalert);
-				if ($alert['method'] != "1") {
-					$sequence = syslog_log_alarm($alert["id"], $alert["name"], $alert["email"], $a, 1);
-				} else {
-					$sequence = syslog_log_alarm($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["email"], $at[0], sizeof($at));
-				}
-
 				if ($alert['open_ticket'] == 'on' && strlen(read_config_option("syslog_ticket_command"))) {
 					if (is_executable(read_config_option("syslog_ticket_command"))) {
 						exec(read_config_option("syslog_ticket_command") . 
@@ -459,7 +472,7 @@ if (read_config_option("syslog_retention") > 0) {
 
 /* remove alert log messages */
 if (read_config_option("syslog_alert_retention") > 0) {
-	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alarm_log` 
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_logs` 
 		WHERE logtime<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
 }
@@ -606,12 +619,12 @@ function alert_replace_variables($alert, $a) {
 
 	$command = $alert["command"];
 
-	$command = str_replace("<ALERTID>",  $a["id"], $command);
-	$command = str_replace("<HOSTNAME>", $a["hostname"], $command);
+	$command = str_replace("<ALERTID>",  $alert["id"], $command);
+	$command = str_replace("<HOSTNAME>", $a["host"], $command);
 	$command = str_replace("<PRIORITY>", $a["priority"], $command);
 	$command = str_replace("<FACILITY>", $a["facility"], $command);
 	$command = str_replace("<MESSAGE>",  $a["message"], $command);
-	$command = str_replace("<SEVERITY>", $severities[$a["severity"]], $command);
+	$command = str_replace("<SEVERITY>", $severities[$alert["severity"]], $command);
 
 	return $command;
 }
