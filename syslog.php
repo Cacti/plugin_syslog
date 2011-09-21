@@ -1349,7 +1349,7 @@ function syslog_messages($tab="syslog") {
 				}
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
-				print "<td><a href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "&tab=current'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
+				print "<td><a class='linkEditMain' href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "&tab=current'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
 				print "<td>" . (isset($severities[$log["severity"]]) ? $severities[$log["severity"]]:"Unknown") . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
