@@ -51,19 +51,20 @@ if (read_config_option("auth_method") != 0) {
 	}
 }
 ?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<title><?php print (isset($title) ? $title : "Syslog Viewer");?></title>
 	<link href="<?php echo $config['url_path'];?>include/main.css" rel="stylesheet">
-	<link href="<?php echo $config['url_path'];?>plugins/syslog/images/favicon.ico" rel="shortcut icon"/>
+	<link href="<?php echo $config['url_path'];?>plugins/syslog/images/favicon.ico" rel="shortcut icon">
+	<?php if (isset($_REQUEST["refresh"])) {
+	print "<meta http-equiv=refresh content=\"" . $_REQUEST["refresh"] . "; url='" . $config["url_path"] . "plugins/syslog/syslog.php'\">";
+	}?>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/layout.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/lang/calendar-en.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/calendar-setup.js"></script>
-	<?php if (isset($_REQUEST["refresh"])) {
-	print "<meta http-equiv=refresh content='" . $_REQUEST["refresh"] . "'; url='" . $config["url_path"] . "plugins/syslog/syslog.php'>";
-	}
-	api_plugin_hook('page_head'); ?>
+	<?php api_plugin_hook('page_head'); ?>
 </head>
 
 <?php if ($oper_mode == OPER_MODE_NATIVE) {?>
@@ -118,8 +119,8 @@ if (read_config_option("auth_method") != 0) {
 		</td>
 	</tr>
 	<tr>
-		<td width="100%" colspan="2" valign="top" style="padding: 5px; border-right: #aaaaaa 1px solid;"><?php display_output_messages();?>
+		<td width="100%" colspan="2" valign="top" style="padding: 5px; border-right: #aaaaaa 1px solid;"><div style='position:relative;' id='main'><?php display_output_messages();?>
 <?php }else{ ?>
 	<tr>
-		<td width="100%" valign="top"><?php display_output_messages();?>
+		<td width="100%" valign="top"><div style='position:relative;' id='main'><?php display_output_messages();?>
 <?php } } ?>

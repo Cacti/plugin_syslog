@@ -106,7 +106,7 @@ function syslog_display_tabs($current_tab) {
 		print "<td style='padding:3px 10px 2px 5px;background-color:" . (($tab_short_name == $current_tab) ? "silver;" : "#DFDFDF;") .
 			"white-space:nowrap;'" .
 			" nowrap width='1%'" .
-			"' align='center' class='tab'>
+			" align='center' class='tab'>
 			<span class='textHeader'><a href='" . $config['url_path'] .
 			"plugins/syslog/syslog.php?" .
 			"tab=" . $tab_short_name .
