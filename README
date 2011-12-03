@@ -41,6 +41,7 @@
    bug: Upgrade script does not properly handle all conditions
    bug: Strip domain does not always work as expected
    bug: Resizing a page on IE6 caused a loop on the syslog page
+   bug: Correct issue where 'warning' is used instead of 'warn' on log insert
 
    --- 1.21 ---
    bug: Fix timespan selector

@@ -165,6 +165,9 @@ syslog_debug("Unique ID = " . $uniqueID);
 /* flag all records with the uniqueID prior to moving */
 syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET status=" . $uniqueID . " WHERE status=0");
 
+/* fix warn vs. warning issues */
+syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET priority='warn' WHERE priority='warning'");
+
 api_plugin_hook('plugin_syslog_before_processing');
 
 $syslog_incoming = $syslog_cnn->Affected_Rows();
@@ -193,7 +196,7 @@ if (read_config_option("syslog_validate_hostname") == "on") {
 			syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET host='invalid_host' WHERE host='" . $host["host"] . "'");
 		}
 	}
-}	
+}
 
 /* update the hosts, facilities, and priorities tables */
 syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `" . $syslogdb_default . "`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()");
@@ -361,10 +364,10 @@ if (sizeof($query)) {
 						$ignore = false;
 						if ($alert['method'] != "1") {
 							if ($alert['repeat_alert'] > 0) {
-								$ignore = syslog_db_fetch_cell("SELECT count(*) 
+								$ignore = syslog_db_fetch_cell("SELECT count(*)
 									FROM syslog_logs
-									WHERE alert_id=" . $alert['id'] . " 
-									AND logtime>'$date' 
+									WHERE alert_id=" . $alert['id'] . "
+									AND logtime>'$date'
 									AND host='" . $a['host'] . "'");
 							}
 
@@ -378,11 +381,11 @@ if (sizeof($query)) {
 
 								if ($alert['open_ticket'] == 'on' && strlen(read_config_option("syslog_ticket_command"))) {
 									if (is_executable(read_config_option("syslog_ticket_command"))) {
-										exec(read_config_option("syslog_ticket_command") . 
-											" --alert-name='" . clean_up_name($alert['name']) . "'" . 
+										exec(read_config_option("syslog_ticket_command") .
+											" --alert-name='" . clean_up_name($alert['name']) . "'" .
 											" --severity='"   . $alert['severity'] . "'" .
 											" --hostlist='"   . implode(",",$hostlist) . "'" .
-											" --message='"    . $alert['message'] . "'"); 
+											" --message='"    . $alert['message'] . "'");
 									}
 								}
 							}
@@ -414,9 +417,9 @@ if (sizeof($query)) {
 		if ($alertm != '' && $alert['method'] == 1) {
 			$resend = true;
 			if ($alert['repeat_alert'] > 0) {
-				$found = syslog_db_fetch_cell("SELECT count(*) 
-					FROM syslog_logs 
-					WHERE alert_id=" . $alert['id'] . " 
+				$found = syslog_db_fetch_cell("SELECT count(*)
+					FROM syslog_logs
+					WHERE alert_id=" . $alert['id'] . "
 					AND logtime>'$date'");
 
 				if ($found) $resend = false;
@@ -426,11 +429,11 @@ if (sizeof($query)) {
 				syslog_sendemail(trim($alert['email']), '', 'Event Alert - ' . $alert['name'], ($html ? $htmlm:$alertm), $smsalert);
 				if ($alert['open_ticket'] == 'on' && strlen(read_config_option("syslog_ticket_command"))) {
 					if (is_executable(read_config_option("syslog_ticket_command"))) {
-						exec(read_config_option("syslog_ticket_command") . 
-							" --alert-name='" . clean_up_name($alert['name']) . "'" . 
+						exec(read_config_option("syslog_ticket_command") .
+							" --alert-name='" . clean_up_name($alert['name']) . "'" .
 							" --severity='"   . $alert['severity'] . "'" .
 							" --hostlist='"   . implode(",",$hostlist) . "'" .
-							" --message='"    . $alert['message'] . "'"); 
+							" --message='"    . $alert['message'] . "'");
 					}
 				}
 			}
@@ -465,14 +468,14 @@ syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Already Processed M
 
 /* remove stats messages */
 if (read_config_option("syslog_retention") > 0) {
-	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_statistics` 
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_statistics`
 		WHERE insert_time<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_retention")*86400)) . "'");
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Statistics Record(s)");
 }
 
 /* remove alert log messages */
 if (read_config_option("syslog_alert_retention") > 0) {
-	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_logs` 
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_logs`
 		WHERE logtime<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
 }
