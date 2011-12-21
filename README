@@ -42,6 +42,7 @@
    bug: Strip domain does not always work as expected
    bug: Resizing a page on IE6 caused a loop on the syslog page
    bug: Correct issue where 'warning' is used instead of 'warn' on log insert
+   bug: Issue with Plugin Realm naming
 
    --- 1.21 ---
    bug: Fix timespan selector
