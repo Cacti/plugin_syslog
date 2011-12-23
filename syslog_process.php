@@ -214,23 +214,25 @@ syslog_db_execute("INSERT INTO `" . $syslogdb_default . "`.`syslog_host_faciliti
 	ON DUPLICATE KEY UPDATE host_id=VALUES(host_id), last_updated=NOW()");
 
 /* tally statistics for this interval */
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics` (host_id, facility_id, priority_id, insert_time, records)
-	SELECT host_id, facility_id, priority_id, NOW(), sum(records) AS records
-	FROM (SELECT host_id, facility_id, priority_id, count(*) AS records
-		FROM syslog_incoming AS si
-		INNER JOIN syslog_facilities AS sf
-		ON sf.facility=si.facility
-		INNER JOIN syslog_priorities AS sp
-		ON sp.priority=si.priority
-		INNER JOIN syslog_hosts AS sh
-		ON sh.host=si.host
-		WHERE status=' . $uniqueID . "
-		GROUP BY host_id, priority_id, facility_id) AS merge
-	GROUP BY host_id, priority_id, facility_id");
+if (read_config_option("syslog_statistics") == "on") {
+	syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics` (host_id, facility_id, priority_id, insert_time, records)
+		SELECT host_id, facility_id, priority_id, NOW(), sum(records) AS records
+		FROM (SELECT host_id, facility_id, priority_id, count(*) AS records
+			FROM syslog_incoming AS si
+			INNER JOIN syslog_facilities AS sf
+			ON sf.facility=si.facility
+			INNER JOIN syslog_priorities AS sp
+			ON sp.priority=si.priority
+			INNER JOIN syslog_hosts AS sh
+			ON sh.host=si.host
+			WHERE status=' . $uniqueID . "
+			GROUP BY host_id, priority_id, facility_id) AS merge
+		GROUP BY host_id, priority_id, facility_id");
 
-$stats = $syslog_cnn->Affected_Rows();
+	$stats = $syslog_cnn->Affected_Rows();
 
-syslog_debug("Stats   " . $stats . ",  Record(s) to the 'syslog_statistics' table");
+	syslog_debug("Stats   " . $stats . ",  Record(s) to the 'syslog_statistics' table");
+}
 
 /* remote records that don't need to to be transferred */
 $syslog_items   = syslog_remove_items("syslog_incoming", $uniqueID);
@@ -467,10 +469,14 @@ syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHE
 syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Already Processed Message(s) from incoming");
 
 /* remove stats messages */
-if (read_config_option("syslog_retention") > 0) {
-	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_statistics`
-		WHERE insert_time<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_retention")*86400)) . "'");
-	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Statistics Record(s)");
+if (read_config_option("syslog_statistics") == "on") {
+	if (read_config_option("syslog_retention") > 0) {
+		syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_statistics`
+			WHERE insert_time<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_retention")*86400)) . "'");
+		syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Statistics Record(s)");
+	}
+}else{
+	syslog_db_execute("TRUNCATE `" . $syslogdb_default . "`.`syslog_statistics`");
 }
 
 /* remove alert log messages */

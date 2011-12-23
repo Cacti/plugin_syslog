@@ -83,10 +83,11 @@ function syslog_display_tabs($current_tab) {
 	global $config;
 
 	/* present a tabbed interface */
-	$tabs_syslog = array(
-		"syslog" => "Syslogs",
-		"stats"  => "Statistics",
-		"alerts" => "Alert Log");
+	$tabs_syslog["syslog"] = "Syslogs";
+	if (read_config_option("syslog_statistics") == "on") {
+		$tabs_syslog["stats"]  = "Statistics";
+	}
+	$tabs_syslog["alerts"] = "Alert Log";
 
 	/* if they were redirected to the page, let's set that up */
 	if ((isset($_REQUEST["id"]) && $_REQUEST["id"] > "0") || $current_tab == "current") {

@@ -1036,6 +1036,13 @@ function syslog_config_settings() {
 			"method" => "checkbox",
 			"default" => "on"
 		),
+		"syslog_statistics" => array(
+			"friendly_name" => "Enable Statistics Gathering",
+			"description" => "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.
+			This statistical information can be used to render things such as heat maps.",
+			"method" => "checkbox",
+			"default" => ""
+		),
 		"syslog_domains" => array(
 			"friendly_name" => "Strip Domains",
 			"description" => "A comma delimited list of domains that you wish to remove from the syslog hostname,

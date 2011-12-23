@@ -37,6 +37,10 @@
     Got any ideas or complaints, please e-mail me!
 
 ----[ Changelog
+
+   --- SVN ---
+   feature: Allow Statistics to be disabled
+
    --- 1.22  ---
    bug: Upgrade script does not properly handle all conditions
    bug: Strip domain does not always work as expected
