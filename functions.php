@@ -149,6 +149,7 @@ function syslog_partition_create($table) {
 function syslog_partition_remove($table) {
 	global $syslogdb_default;
 
+	$syslog_deleted = 0;
 	$number_of_partitions = syslog_db_fetch_assoc("SELECT *
 		FROM `information_schema`.`partitions`
 		WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
