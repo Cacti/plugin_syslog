@@ -1,37 +1,39 @@
 <?php
 /*
- ex: set tabstop=4 shiftwidth=4 autoindent:
  +-------------------------------------------------------------------------+
- | Copyright (C) 2006 Platform Computing, Inc.                             |
- | Portions Copyright (C) 2004-2006 The Cacti Group                        |
+ | Copyright (C) 2007-2013 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
- | modify it under the terms of the GNU Lesser General Public              |
- | License as published by the Free Software Foundation; either            |
- | version 2.1 of the License, or (at your option) any later version.      |
+ | modify it under the terms of the GNU General Public License             |
+ | as published by the Free Software Foundation; either version 2          |
+ | of the License, or (at your option) any later version.                  |
  |                                                                         |
  | This program is distributed in the hope that it will be useful,         |
  | but WITHOUT ANY WARRANTY; without even the implied warranty of          |
  | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
- | GNU Lesser General Public License for more details.                     |
- |                                                                         |
- | You should have received a copy of the GNU Lesser General Public        |
- | License along with this library; if not, write to the Free Software     |
- | Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA           |
- | 02110-1301, USA                                                         |
+ | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
- | - Platform - http://www.platform.com/                                   |
- | - Cacti - http://www.cacti.net/                                         |
+ | Cacti: The Complete RRDTool-based Graphing Solution                     |
+ +-------------------------------------------------------------------------+
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | Originally released as aloe by: sidewinder at shitworks.com             |
+ | Modified by: Harlequin <harlequin@cyberonic.com>                        |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
 
-global $colors, $config;
+global $colors, $config, $refresh;
 
 $using_guest_account = false;
 $show_console_tab = true;
 
 $oper_mode = api_plugin_hook_function('general_header', OPER_MODE_NATIVE);
-if ($oper_mode != OPER_MODE_RESKIN) {
+if ($oper_mode == OPER_MODE_RESKIN) {
+	return;
+}
 
 if (read_config_option("auth_method") != 0) {
 	global $colors, $config;
@@ -54,17 +56,24 @@ if (read_config_option("auth_method") != 0) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8">
 	<title><?php print (isset($title) ? $title : "Syslog Viewer");?></title>
 	<link href="<?php echo $config['url_path'];?>include/main.css" rel="stylesheet">
-	<link href="<?php echo $config['url_path'];?>plugins/syslog/images/favicon.ico" rel="shortcut icon">
-	<?php if (isset($_REQUEST["refresh"])) {
-	print "<meta http-equiv=refresh content=\"" . $_REQUEST["refresh"] . "; url='" . $config["url_path"] . "plugins/syslog/syslog.php'\">";
-	}?>
+	<link href="<?php echo $config['url_path'];?>plugins/syslog/images/favicon.ico" rel="shortcut icon"/>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/layout.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/lang/calendar-en.js"></script>
 	<script type="text/javascript" src="<?php echo $config['url_path']; ?>include/jscalendar/calendar-setup.js"></script>
-	<?php api_plugin_hook('page_head'); ?>
+	<?php
+	if (isset($refresh)) {
+		if (is_array($refresh)) {
+			print "<meta http-equiv=refresh content=\"" . $refresh["seconds"] . "; url='" . $refresh["page"] . "'\">\r\n";
+		}else{
+			print "<meta http-equiv=refresh content='" . $refresh . "'>\r\n";
+		}
+	}
+	api_plugin_hook('page_head');
+	?>
 </head>
 
 <?php if ($oper_mode == OPER_MODE_NATIVE) {?>
@@ -119,8 +128,8 @@ if (read_config_option("auth_method") != 0) {
 		</td>
 	</tr>
 	<tr>
-		<td width="100%" colspan="2" valign="top" style="padding: 5px; border-right: #aaaaaa 1px solid;"><div style='position:relative;' id='main'><?php display_output_messages();?>
+		<td width="100%" colspan="2" valign="top" style="padding: 5px; border-right: #aaaaaa 1px solid;"><?php display_output_messages();?>
 <?php }else{ ?>
 	<tr>
 		<td width="100%" valign="top"><div style='position:relative;' id='main'><?php display_output_messages();?>
-<?php } } ?>
+<?php } ?>

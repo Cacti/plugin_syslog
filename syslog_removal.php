@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2011 The Cacti Group                                 |
+ | Copyright (C) 2007-2013 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -23,15 +23,23 @@
 */
 
 chdir('../../');
-include("./include/auth.php");
+include('./include/auth.php');
 include_once('plugins/syslog/functions.php');
 
-define("MAX_DISPLAY_PAGES", 21);
+define('MAX_DISPLAY_PAGES', 21);
+
+/* redefine the syslog actions for removal rules */
+$syslog_actions = array(
+	1 => 'Delete',
+	2 => 'Disable',
+	3 => 'Enable',
+	4 => 'Reprocess'
+);
 
 /* set default action */
-if (!isset($_REQUEST["action"])) { $_REQUEST["action"] = ""; }
+if (!isset($_REQUEST['action'])) { $_REQUEST['action'] = ''; }
 
-switch ($_REQUEST["action"]) {
+switch ($_REQUEST['action']) {
 	case 'save':
 		form_save();
 
@@ -42,18 +50,18 @@ switch ($_REQUEST["action"]) {
 		break;
 	case 'edit':
 	case 'newedit':
-		include_once($config['base_path'] . "/include/top_header.php");
+		include_once($config['base_path'] . '/include/top_header.php');
 
 		syslog_action_edit();
 
-		include_once($config['base_path'] . "/include/bottom_footer.php");
+		include_once($config['base_path'] . '/include/bottom_footer.php');
 		break;
 	default:
-		include_once($config['base_path'] . "/include/top_header.php");
+		include_once($config['base_path'] . '/include/top_header.php');
 
 		syslog_removal();
 
-		include_once($config['base_path'] . "/include/bottom_footer.php");
+		include_once($config['base_path'] . '/include/bottom_footer.php');
 		break;
 }
 
@@ -62,32 +70,32 @@ switch ($_REQUEST["action"]) {
    -------------------------- */
 
 function form_save() {
-	if ((isset($_POST["save_component_removal"])) && (empty($_POST["add_dq_y"]))) {
-		$removalid = api_syslog_removal_save($_POST["id"], $_POST["name"], $_POST["type"],
-			$_POST["message"], $_POST["method"], $_POST["notes"], $_POST["enabled"]);
+	if ((isset($_POST['save_component_removal'])) && (empty($_POST['add_dq_y']))) {
+		$removalid = api_syslog_removal_save($_POST['id'], $_POST['name'], $_POST['type'],
+			$_POST['message'], $_POST['method'], $_POST['notes'], $_POST['enabled']);
 
-		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
-			header("Location: syslog_removal.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
+		if ((is_error_message()) || ($_POST['id'] != $_POST['_id'])) {
+			header('Location: syslog_removal.php?action=edit&id=' . (empty($id) ? $_POST['id'] : $id));
 		}else{
-			header("Location: syslog_removal.php");
+			header('Location: syslog_removal.php');
 		}
 	}
 }
 
 /* ------------------------
-    The "actions" function
+    The 'actions' function
    ------------------------ */
 
 function form_actions() {
 	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	/* if we are to save this form, instead of display it */
-	if (isset($_POST["selected_items"])) {
-		$selected_items = unserialize(stripslashes($_POST["selected_items"]));
+	if (isset($_POST['selected_items'])) {
+		$selected_items = unserialize(stripslashes($_POST['selected_items']));
 
-		if ($_POST["drp_action"] == "1") { /* delete */
+		if ($_POST['drp_action'] == '1') { /* delete */
 			for ($i=0; $i<count($selected_items); $i++) {
 				/* ================= input validation ================= */
 				input_validate_input_number($selected_items[$i]);
@@ -95,7 +103,7 @@ function form_actions() {
 
 				api_syslog_removal_remove($selected_items[$i]);
 			}
-		}else if ($_POST["drp_action"] == "2") { /* disable */
+		}else if ($_POST['drp_action'] == '2') { /* disable */
 			for ($i=0; $i<count($selected_items); $i++) {
 				/* ================= input validation ================= */
 				input_validate_input_number($selected_items[$i]);
@@ -103,7 +111,7 @@ function form_actions() {
 
 				api_syslog_removal_disable($selected_items[$i]);
 			}
-		}else if ($_POST["drp_action"] == "3") { /* enable */
+		}else if ($_POST['drp_action'] == '3') { /* enable */
 			for ($i=0; $i<count($selected_items); $i++) {
 				/* ================= input validation ================= */
 				input_validate_input_number($selected_items[$i]);
@@ -111,71 +119,89 @@ function form_actions() {
 
 				api_syslog_removal_enable($selected_items[$i]);
 			}
+		}else if ($_POST['drp_action'] == '4') { /* reprocess */
+			for ($i=0; $i<count($selected_items); $i++) {
+				/* ================= input validation ================= */
+				input_validate_input_number($selected_items[$i]);
+				/* ==================================================== */
+
+				api_syslog_removal_reprocess($selected_items[$i]);
+			}
 		}
 
-		header("Location: syslog_removal.php");
+		header('Location: syslog_removal.php');
 
 		exit;
 	}
 
-	include_once($config['base_path'] . "/include/top_header.php");
+	include_once($config['base_path'] . '/include/top_header.php');
 
-	html_start_box("<strong>" . $syslog_actions{$_POST["drp_action"]} . "</strong>", "60%", $colors["header_panel"], "3", "center", "");
+	html_start_box('<strong>' . $syslog_actions{$_POST['drp_action']} . '</strong>', '60%', $colors['header_panel'], '3', 'center', '');
 
 	print "<form action='syslog_removal.php' method='post'>\n";
 
 	/* setup some variables */
-	$removal_array = array(); $removal_list = "";
+	$removal_array = array(); $removal_list = '';
 
 	/* loop through each of the clusters selected on the previous page and get more info about them */
 	while (list($var,$val) = each($_POST)) {
-		if (ereg("^chk_([0-9]+)$", $var, $matches)) {
+		if (ereg('^chk_([0-9]+)$', $var, $matches)) {
 			/* ================= input validation ================= */
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
 			$removal_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE id=" . $matches[1]);
-			$removal_list  .= "<li>" . $removal_info . "<br>";
+			$removal_list  .= '<li>' . $removal_info . '<br>';
 			$removal_array[] = $matches[1];
 		}
 	}
 
 	if (sizeof($removal_array)) {
-		if ($_POST["drp_action"] == "1") { /* delete */
+		if ($_POST['drp_action'] == '1') { /* delete */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be deleted</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
 					</td>
 				</tr>\n";
 
-			$title = "Delete Syslog Removal Rule(s)";
-		}else if ($_POST["drp_action"] == "2") { /* disable */
+			$title = 'Delete Syslog Removal Rule(s)';
+		}else if ($_POST['drp_action'] == '2') { /* disable */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be disabled</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
 					</td>
 				</tr>\n";
 
-			$title = "Disable Syslog Removal Rule(s)";
-		}else if ($_POST["drp_action"] == "3") { /* enable */
+			$title = 'Disable Syslog Removal Rule(s)';
+		}else if ($_POST['drp_action'] == '3') { /* enable */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be enabled</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
 					</td>
 				</tr>\n";
 
-			$title = "Enable Syslog Removal Rule(s)";
+			$title = 'Enable Syslog Removal Rule(s)';
+		}else if ($_POST['drp_action'] == '4') { /* reprocess */
+			print "	<tr>
+					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
+						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be processed retroactively on the main syslog tables</p>
+						<ul>$removal_list</ul>";
+						print "</td></tr>
+					</td>
+				</tr>\n";
+
+			$title = 'Retroactively Process Syslog Removal Rule(s)';
 		}
 
 		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title'";
 	}else{
-		print "<tr><td bgcolor='#" . $colors["form_alternate1"]. "'><span class='textError'>You must select at least one Syslog Removal Rule.</span></td></tr>\n";
+		print "<tr><td bgcolor='#" . $colors['form_alternate1']. "'><span class='textError'>You must select at least one Syslog Removal Rule.</span></td></tr>\n";
 		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";
 	}
 
@@ -183,7 +209,7 @@ function form_actions() {
 			<td align='right' bgcolor='#eaeaea'>
 				<input type='hidden' name='action' value='actions'>
 				<input type='hidden' name='selected_items' value='" . (isset($removal_array) ? serialize($removal_array) : '') . "'>
-				<input type='hidden' name='drp_action' value='" . $_POST["drp_action"] . "'>
+				<input type='hidden' name='drp_action' value='" . $_POST['drp_action'] . "'>
 				$save_html
 			</td>
 		</tr>
@@ -191,35 +217,35 @@ function form_actions() {
 
 	html_end_box();
 
-	include_once($config['base_path'] . "/include/bottom_footer.php");
+	include_once($config['base_path'] . '/include/bottom_footer.php');
 }
 
 function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $enabled) {
 	global $config;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	/* get the username */
-	$username = db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);
+	$username = db_fetch_cell('SELECT username FROM user_auth WHERE id=' . $_SESSION['sess_user_id']);
 
 	if ($id) {
-		$save["id"] = $id;
+		$save['id'] = $id;
 	}else{
-		$save["id"] = "";
+		$save['id'] = '';
 	}
 
-	$save["name"]    = form_input_validate($name,    "name",    "", false, 3);
-	$save["type"]    = form_input_validate($type,    "type",    "", false, 3);
-	$save["message"] = form_input_validate($message, "message", "", false, 3);
-	$save["method"]  = form_input_validate($method,  "method",  "", false, 3);
-	$save["notes"]   = form_input_validate($notes,   "notes",   "", true, 3);
-	$save["enabled"] = ($enabled == "on" ? "on":"");
-	$save["date"]    = time();
-	$save["user"]    = $username;
+	$save['name']    = form_input_validate($name,    'name',    '', false, 3);
+	$save['type']    = form_input_validate($type,    'type',    '', false, 3);
+	$save['message'] = form_input_validate($message, 'message', '', false, 3);
+	$save['method']  = form_input_validate($method,  'method',  '', false, 3);
+	$save['notes']   = form_input_validate($notes,   'notes',   '', true, 3);
+	$save['enabled'] = ($enabled == 'on' ? 'on':'');
+	$save['date']    = time();
+	$save['user']    = $username;
 
 	if (!is_error_message()) {
 		$id = 0;
-		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_remove`", "id");
+		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_remove`', 'id');
 
 		if ($id) {
 			raise_message(1);
@@ -232,18 +258,29 @@ function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $
 }
 
 function api_syslog_removal_remove($id) {
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE id='" . $id . "'");
 }
 
 function api_syslog_removal_disable($id) {
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_remove` SET enabled='' WHERE id='" . $id . "'");
 }
 
 function api_syslog_removal_enable($id) {
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_remove` SET enabled='on' WHERE id='" . $id . "'");
+}
+
+function api_syslog_removal_reprocess() {
+	/* remove records retroactively */
+	$syslog_items   = syslog_remove_items('syslog', $uniqueID);
+	$syslog_removed = $syslog_items['removed'];
+	$syslog_xferred = $syslog_items['xferred'];
+
+	$_SESSION['syslog_info'] = "There were $syslog_removed messages removed, and $syslog_xferred messages transferred";
+
+	raise_message('syslog_info');
 }
 
 /* ---------------------
@@ -251,30 +288,30 @@ function api_syslog_removal_enable($id) {
    --------------------- */
 
 function syslog_get_removal_records(&$sql_where, $row_limit) {
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
-	if (get_request_var_request("filter") != "") {
-		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
-			"(message LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
-			"notes LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
-			"name LIKE '%%" . get_request_var_request("filter") . "%%')";
+	if (get_request_var_request('filter') != '') {
+		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
+			"(message LIKE '%%" . get_request_var_request('filter') . "%%' OR " .
+			"notes LIKE '%%" . get_request_var_request('filter') . "%%' OR " .
+			"name LIKE '%%" . get_request_var_request('filter') . "%%')";
 	}
 
-	if (get_request_var_request("enabled") == "-1") {
+	if (get_request_var_request('enabled') == '-1') {
 		// Display all status'
-	}elseif (get_request_var_request("enabled") == "1") {
-		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+	}elseif (get_request_var_request('enabled') == '1') {
+		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
 			"enabled='on'";
 	}else{
-		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
 			"enabled=''";
 	}
 
 	$query_string = "SELECT *
 		FROM `" . $syslogdb_default . "`.`syslog_remove`
 		$sql_where
-		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
-		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
+		ORDER BY ". get_request_var_request('sort_column') . ' ' . get_request_var_request('sort_direction') .
+		' LIMIT ' . ($row_limit*(get_request_var_request('page')-1)) . ',' . $row_limit;
 
 	return syslog_db_fetch_assoc($query_string);
 }
@@ -282,33 +319,33 @@ function syslog_get_removal_records(&$sql_where, $row_limit) {
 function syslog_action_edit() {
 	global $colors, $message_types;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	/* ================= input validation ================= */
-	input_validate_input_number(get_request_var("id"));
-	input_validate_input_number(get_request_var("type"));
+	input_validate_input_number(get_request_var('id'));
+	input_validate_input_number(get_request_var('type'));
 	/* ==================================================== */
 
-	if (isset($_GET["id"]) && $_GET["action"] == "edit") {
-		$removal = syslog_db_fetch_row("SELECT *
-			FROM `" . $syslogdb_default . "`.`syslog_remove`
-			WHERE id=" . $_GET["id"]);
-		$header_label = "[edit: " . $removal["name"] . "]";
-	}else if (isset($_GET["id"]) && $_GET["action"] == "newedit") {
-		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . $_GET["id"] . " AND logtime='" . $_GET["date"] . "'");
+	if (isset($_GET['id']) && $_GET['action'] == 'edit') {
+		$removal = syslog_db_fetch_row('SELECT *
+			FROM `' . $syslogdb_default . '`.`syslog_remove`
+			WHERE id=' . $_GET['id']);
+		$header_label = '[edit: ' . $removal['name'] . ']';
+	}else if (isset($_GET['id']) && $_GET['action'] == 'newedit') {
+		$syslog_rec = syslog_db_fetch_row('SELECT * FROM `' . $syslogdb_default . '`.`syslog` WHERE seq=' . $_GET['id'] . " AND logtime='" . $_GET['date'] . "'");
 
-		$header_label = "[new]";
+		$header_label = '[new]';
 		if (sizeof($syslog_rec)) {
-			$removal["message"] = $syslog_rec["message"];
+			$removal['message'] = $syslog_rec['message'];
 		}
-		$removal["name"]    = "New Removal Rule";
+		$removal['name']    = 'New Removal Rule';
 	}else{
-		$header_label = "[new]";
+		$header_label = '[new]';
 
-		$removal["name"] = "New Removal Record";
+		$removal['name'] = 'New Removal Record';
 	}
 
-	html_start_box("<strong>Removal Rule Edit</strong> $header_label", "100%", $colors["header"], "3", "center", "");
+	html_start_box("<strong>Removal Rule Edit</strong> $header_label", '100%', $colors['header'], '3', 'center', '');
 
 	$fields_syslog_removal_edit = array(
 	"spacer0" => array(
@@ -343,7 +380,7 @@ function syslog_action_edit() {
 		),
 	"message" => array(
 		"friendly_name" => "Syslog Message Match String",
-		"description" => "The matching component of the syslog message.",
+		"description" => "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.",
 		"method" => "textarea",
 		"textarea_rows" => "2",
 		"textarea_cols" => "70",
@@ -409,51 +446,51 @@ function syslog_action_edit() {
 function syslog_filter() {
 	global $colors, $config, $item_rows;
 	?>
-	<tr bgcolor="<?php print $colors["panel"];?>">
-		<form name="removal">
+	<tr bgcolor='<?php print $colors['panel'];?>'>
+		<form name='removal'>
 		<td>
-			<table cellpadding="1" cellspacing="0">
+			<table cellpadding='2' cellspacing='0'>
 				<tr>
-					<td width="70">
-						Enabled:&nbsp;
+					<td width='70'>
+						Enabled:
 					</td>
-					<td width="1">
-						<select name="enabled" onChange="applyChange(document.removal)">
-						<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
-						<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
-						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
+					<td width='1'>
+						<select name='enabled' onChange='applyChange(document.removal)'>
+						<option value='-1'<?php if ($_REQUEST['enabled'] == '-1') {?> selected<?php }?>>All</option>
+						<option value='1'<?php if ($_REQUEST['enabled'] == '1') {?> selected<?php }?>>Yes</option>
+						<option value='0'<?php if ($_REQUEST['enabled'] == '0') {?> selected<?php }?>>No</option>
 						</select>
 					</td>
-					<td width="45">
-						&nbsp;Rows:&nbsp;
+					<td width='45'>
+						Rows:
 					</td>
-					<td width="1">
-						<select name="rows" onChange="applyChange(document.removal)">
-						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
+					<td width='1'>
+						<select name='rows' onChange='applyChange(document.removal)'>
+						<option value='-1'<?php if ($_REQUEST['rows'] == '-1') {?> selected<?php }?>>Default</option>
 						<?php
 							if (sizeof($item_rows) > 0) {
 							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+								print '<option value="' . $key . '"'; if ($_REQUEST['rows'] == $key) { print ' selected'; } print '>' . $value . "</option>\n";
 							}
 							}
 						?>
 						</select>
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="go" value="Go" title="Search">
+						<input type='submit' name='go' value='Go' title='Search'>
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="clear" value="Clear">
+						<input type='submit' name='clear' value='Clear'>
 					</td>
 				</tr>
 			</table>
-			<table cellpadding="1" cellspacing="0">
+			<table cellpadding='1' cellspacing='0'>
 				<tr>
-					<td width="70">
-						Search:&nbsp;
+					<td width='70'>
+						Search:
 					</td>
-					<td width="1">
-						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
+					<td width='1'>
+						<input type='text' name='filter' size='30' value='<?php print $_REQUEST['filter'];?>'>
 					</td>
 				</tr>
 			</table>
@@ -466,7 +503,7 @@ function syslog_filter() {
 function syslog_removal() {
 	global $colors, $syslog_actions, $message_types, $config;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	/* ================= input validation ================= */
 	input_validate_input_number(get_request_var_request("id"));
@@ -602,28 +639,29 @@ function syslog_removal() {
 	print $nav;
 
 	$display_text = array(
-		"name" => array("Removal<br>Name", "ASC"),
-		"enabled" => array("<br>Enabled", "ASC"),
-		"type" => array("Match<br>Type", "ASC"),
-		"message" => array("Search<br>String", "ASC"),
-		"method" => array("<br>Method", "DESC"),
-		"date" => array("Last<br>Modified", "ASC"),
-		"user" => array("By<br>User", "DESC"));
+		"name"    => array("Removal Name", "ASC"),
+		"enabled" => array("Enabled", "ASC"),
+		"type"    => array("Match Type", "ASC"),
+		"message" => array("Search String", "ASC"),
+		"method"  => array("Method", "DESC"),
+		"date"    => array("Last Modified", "ASC"),
+		"user"    => array("By User", "DESC")
+	);
 
 	html_header_sort_checkbox($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
 	$i = 0;
 	if (sizeof($removals) > 0) {
 		foreach ($removals as $removal) {
-			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $removal["id"]); $i++;
-			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_removal.php?action=edit&id=" . $removal["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($removal["name"]), read_config_option("max_title_data_source"))) : htmlentities($removal["name"])) . "</a>", $removal["id"]);
-			form_selectable_cell((($removal["enabled"] == "on") ? "Yes" : "No"), $removal["id"]);
-			form_selectable_cell($message_types[$removal["type"]], $removal["id"]);
-			form_selectable_cell($removal["message"], $removal["id"]);
-			form_selectable_cell((($removal["method"] == "del") ? "Deletion" : "Transfer"), $removal["id"]);
-			form_selectable_cell(date("Y-m-d H:i:s", $removal["date"]), $removal["id"]);
-			form_selectable_cell($removal["user"], $removal["id"]);
-			form_checkbox_cell($removal["name"], $removal["id"]);
+			form_alternate_row_color($colors['alternate'], $colors['light'], $i, 'line' . $removal['id']); $i++;
+			form_selectable_cell("<a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']) . "'>" . (($_REQUEST['filter'] != '') ? eregi_replace('(' . preg_quote($_REQUEST['filter']) . ')', "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($removal['name']), read_config_option('max_title_data_source'))) : htmlentities($removal['name'])) . '</a>', $removal['id']);
+			form_selectable_cell((($removal['enabled'] == 'on') ? 'Yes' : 'No'), $removal['id']);
+			form_selectable_cell($message_types[$removal['type']], $removal['id']);
+			form_selectable_cell($removal['message'], $removal['id']);
+			form_selectable_cell((($removal['method'] == 'del') ? 'Deletion' : 'Transfer'), $removal['id']);
+			form_selectable_cell(date('Y-m-d H:i:s', $removal['date']), $removal['id']);
+			form_selectable_cell($removal['user'], $removal['id']);
+			form_checkbox_cell($removal['name'], $removal['id']);
 			form_end_row();
 		}
 	}else{

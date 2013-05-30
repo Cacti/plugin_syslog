@@ -30,7 +30,7 @@
 
 ----[ Possible Bugs?
 
-    If you find a problem, let me know!!! http://cactiusers.org/bugs/
+    If you find a problem, let me know!!! http://bugs.cacti.net
 
 ----[ Future Changes
 
@@ -38,8 +38,12 @@
 
 ----[ Changelog
 
-   --- SVN ---
+   --- 1.30 ---
    feature: Allow Statistics to be disabled
+   feature: Allow Processing of Removal Rules on Main Syslog Table
+   feature: Cleanup UI irregularities
+   feature: Allow purging of old host entries
+   bug: Remove syslog 'message' from Log message to prvent deadlock on cacti log syslog processing
 
    --- 1.22  ---
    bug: Upgrade script does not properly handle all conditions

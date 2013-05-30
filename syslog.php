@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2011 The Cacti Group                                 |
+ | Copyright (C) 2007-2013 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -79,6 +79,7 @@ if (isset($_REQUEST["export"])) {
 	include_once("./include/bottom_footer.php");
 }
 
+$_SESSION["sess_nav_level_cache"] = '';
 function syslog_display_tabs($current_tab) {
 	global $config;
 
@@ -108,9 +109,9 @@ function syslog_display_tabs($current_tab) {
 			"white-space:nowrap;'" .
 			" nowrap width='1%'" .
 			" align='center' class='tab'>
-			<span class='textHeader'><a href='" . $config['url_path'] .
+			<span class='textHeader'><a href='" . htmlspecialchars($config['url_path'] .
 			"plugins/syslog/syslog.php?" .
-			"tab=" . $tab_short_name .
+			"tab=" . $tab_short_name) .
 			"'>$tabs_syslog[$tab_short_name]</a></span>
 		</td>\n
 		<td width='1'></td>\n";
@@ -126,7 +127,7 @@ function syslog_view_alarm() {
 	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
 
 	echo "<table cellpadding='3' cellspacing='0' align='center' style='width:100%;border:1px solid #" . $colors["header"] . ";'>";
-	echo "<tr><td class='textHeaderDark' style='background-color:#" . $colors["header"] . ";'><strong>Syslog Alert View</strong></td></tr>";
+	echo "<tr><td class='textHeaderDark' style='background-color:#" . $colors["header"] . ";'>Syslog Alert View</td></tr>";
 	echo "<tr><td style='background-color:#FFFFFF;'>";
 
 	$html = syslog_db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"]);
@@ -281,7 +282,7 @@ function syslog_statistics() {
 	load_current_session_value("sort_column",    "sess_syslog_stats_sort_column", "host");
 	load_current_session_value("sort_direction", "sess_syslog_stats_sort_direction", "DESC");
 
-	html_start_box("<strong>Syslog Statistics Filter</strong>", "100%", $colors["header"], "3", "center", "");
+	html_start_box("Syslog Statistics Filter", "100%", $colors["header"], "3", "center", "");
 	syslog_stats_filter();
 	html_end_box();
 
@@ -311,7 +312,7 @@ function syslog_statistics() {
 		$sql_where
 		$sql_groupby";
 
-	$total_rows = sizeof(syslog_db_fetch_cell($rows_query_string));
+	$total_rows = syslog_db_fetch_cell("SELECT COUNT(*) FROM (". $rows_query_string .") as temp");
 
 	?>
 	<script type="text/javascript">
@@ -336,13 +337,13 @@ function syslog_statistics() {
 						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 							<tr>
 								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php?tab=stats&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=stats&page=" . ($_REQUEST["page"]-1)) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
 								</td>\n
 								<td align='center' class='textHeaderDark'>
 									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
 								</td>\n
 								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php?tab=stats&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=stats&page=" . ($_REQUEST["page"]+1)) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
 								</td>\n
 							</tr>
 						</table>
@@ -445,13 +446,13 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 function syslog_stats_filter() {
 	global $colors, $config, $item_rows;
 	?>
-	<tr bgcolor="<?php print $colors["panel"];?>">
+	<tr bgcolor="#<?php print $colors["panel"];?>">
 		<form name="stats">
 		<td>
-			<table cellpadding="1" cellspacing="0">
+			<table cellpadding="2" cellspacing="0">
 				<tr>
 					<td width="70">
-						&nbsp;Facility:&nbsp;
+						Facility:
 					</td>
 					<td width="1">
 						<select name="facility" onChange="applyChange(document.stats)">
@@ -472,7 +473,7 @@ function syslog_stats_filter() {
 						</select>
 					</td>
 					<td width="70">
-						&nbsp;Priority:&nbsp;
+						Priority:
 					</td>
 					<td width="1">
 						<select name="priority" onChange="applyChange(document.stats)">
@@ -493,7 +494,7 @@ function syslog_stats_filter() {
 						</select>
 					</td>
 					<td width="45">
-						&nbsp;Rows:&nbsp;
+						Rows:
 					</td>
 					<td width="1">
 						<select name="rows" onChange="applyChange(document.stats)">
@@ -508,17 +509,17 @@ function syslog_stats_filter() {
 						</select>
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="go" value="Go" title="Search">
+						<input type="submit" name="go" value="Go" title="Search">
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="clear" value="Clear">
+						<input type="submit" name="clear" value="Clear">
 					</td>
 				</tr>
 			</table>
 			<table cellpadding="1" cellspacing="0">
 				<tr>
 					<td width="70">
-						&nbsp;Search:&nbsp;
+						Search:
 					</td>
 					<td width="1">
 						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
@@ -766,7 +767,6 @@ function syslog_filter($sql_where, $tab) {
 
 	?>
 	<script type="text/javascript">
-	<!--
 	// Initialize the calendar
 	calendar=null;
 
@@ -815,30 +815,34 @@ function syslog_filter($sql_where, $tab) {
 		strURL = strURL + '&predefined_timeshift=' + objForm.predefined_timeshift.value;
 		document.location = strURL;
 	}
-	-->
+
+	function syslogFilterChange() {
+		document.getElementById('syslog_form').submit();
+	}
+
 	</script>
-	<form style='margin:0px;padding:0px;' id="syslog_form" name="syslog_form" method="post" action="syslog.php">
-	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+	<form style='margin:0px;padding:0px;' id='syslog_form' name='syslog_form' method='post' action='syslog.php'>
+	<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 		<tr>
-			<td colspan="2" style="background-color:#EFEFEF;">
-				<table width='100%' cellpadding="0" cellspacing="0" border="0">
+			<td colspan='2' style='background-color:#EFEFEF;'>
+				<table width='100%' cellpadding='0' cellspacing='0' border='0'>
 					<tr>
-						<td width='100%'>
+						<td>
 							<?php
-							html_start_box("<strong>Syslog Message Filter$filter_text", "100%", $colors["header"], "1", "center", "");?>
-							<tr bgcolor="<?php print $colors["panel"];?>" class="noprint">
-								<td class="noprint">
-									<table cellpadding="0" cellspacing="0" border="0">
+							html_start_box("<strong>Syslog Message Filter$filter_text", '100%', $colors['header'], '3', 'center', '');?>
+							<tr bgcolor='#<?php print $colors['panel'];?>' class='noprint'>
+								<td class='noprint'>
+									<table cellpadding='2' cellspacing='0' border='0'>
 										<tr>
-											<td nowrap style='white-space: nowrap;' width='60'>
-												&nbsp;<strong>Presets:</strong>&nbsp;
+											<td width='50'>
+												Presets:
 											</td>
-											<td nowrap style='white-space: nowrap;' width='130'>
-												<select name='predefined_timespan' onChange="applyTimespanFilterChange(document.syslog_form)">
+											<td>
+												<select name='predefined_timespan' onChange='applyTimespanFilterChange(document.syslog_form)'>
 													<?php
-													if ($_SESSION["custom"]) {
-														$graph_timespans[GT_CUSTOM] = "Custom";
-														$_REQUEST["predefined_timespan"] = GT_CUSTOM;
+													if ($_SESSION['custom']) {
+														$graph_timespans[GT_CUSTOM] = 'Custom';
+														$_REQUEST['predefined_timespan'] = GT_CUSTOM;
 														$start_val = 0;
 														$end_val = sizeof($graph_timespans);
 													} else {
@@ -852,155 +856,163 @@ function syslog_filter($sql_where, $tab) {
 
 													if (sizeof($graph_timespans) > 0) {
 														for ($value=$start_val; $value < $end_val; $value++) {
-															print "<option value='$value'"; if ($_REQUEST["predefined_timespan"] == $value) { print " selected"; } print ">" . title_trim($graph_timespans[$value], 40) . "</option>\n";
+															print "<option value='$value'"; if ($_REQUEST['predefined_timespan'] == $value) { print ' selected'; } print '>' . title_trim($graph_timespans[$value], 40) . "</option>\n";
 														}
 													}
 													?>
 												</select>
 											</td>
-											<td nowrap style='white-space: nowrap;' width='30'>
-												&nbsp;<strong>From:</strong>&nbsp;
+											<td>
+												From:
 											</td>
-											<td width='150' nowrap style='white-space: nowrap;'>
-												<input type='text' name='date1' id='date1' title='Graph Begin Timestamp' size='14' value='<?php print (isset($_SESSION["sess_current_date1"]) ? $_SESSION["sess_current_date1"] : "");?>'>
-												&nbsp;<input style='padding-bottom: 4px;' type='image' src='<?php print $config["url_path"];?>images/calendar.gif' alt='Start date selector' title='Start date selector' border='0' align='absmiddle' onclick="return showCalendar('date1');">&nbsp;
+											<td>
+												<input type='text' name='date1' id='date1' title='Graph Begin Timestamp' size='14' value='<?php print (isset($_SESSION['sess_current_date1']) ? $_SESSION['sess_current_date1'] : '');?>'>
 											</td>
-											<td nowrap style='white-space: nowrap;' width='20'>
-												&nbsp;<strong>To:</strong>&nbsp;
+											<td>
+												<input style='padding-bottom: 4px;' type='image' src='<?php print $config['url_path'];?>images/calendar.gif' alt='Start date selector' title='Start date selector' align='absmiddle' onclick='return showCalendar("date1");'>
 											</td>
-											<td width='150' nowrap style='white-space: nowrap;'>
-												<input type='text' name='date2' id='date2' title='Graph End Timestamp' size='14' value='<?php print (isset($_SESSION["sess_current_date2"]) ? $_SESSION["sess_current_date2"] : "");?>'>
-												&nbsp;<input style='padding-bottom: 4px;' type='image' src='<?php print $config["url_path"];?>images/calendar.gif' alt='End date selector' title='End date selector' border='0' align='absmiddle' onclick="return showCalendar('date2');">
+											<td>
+												To:
 											</td>
-											<td width='125' nowrap style='white-space: nowrap;'>
-												&nbsp;&nbsp;<input style='padding-bottom: 4px;' type='image' name='move_left' src='<?php print $config["url_path"];?>images/move_left.gif' alt='Left' border='0' align='absmiddle' title='Shift Left'>
-												<select name='predefined_timeshift' title='Define Shifting Interval' onChange="applyTimespanFilterChange(document.syslog_form)">
+											<td>
+												<input type='text' name='date2' id='date2' title='Graph End Timestamp' size='14' value='<?php print (isset($_SESSION['sess_current_date2']) ? $_SESSION['sess_current_date2'] : '');?>'>
+											</td>
+											<td>
+												<input style='padding-bottom: 4px;' type='image' src='<?php print $config['url_path'];?>images/calendar.gif' alt='End date selector' title='End date selector' align='absmiddle' onclick='return showCalendar("date2");'>
+											</td>
+											<td>
+												<input style='padding-bottom: 4px;' type='image' name='move_left' src='<?php print $config['url_path'];?>images/move_left.gif' alt='Left' align='absmiddle' title='Shift Left'>
+											</td>
+											<td>
+												<select name='predefined_timeshift' title='Define Shifting Interval' onChange='applyTimespanFilterChange(document.syslog_form)'>
 													<?php
 													$start_val = 1;
 													$end_val = sizeof($graph_timeshifts)+1;
 													if (sizeof($graph_timeshifts) > 0) {
 														for ($shift_value=$start_val; $shift_value < $end_val; $shift_value++) {
-															print "<option value='$shift_value'"; if ($_REQUEST["predefined_timeshift"] == $shift_value) { print " selected"; } print ">" . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
+															print "<option value='$shift_value'"; if ($_REQUEST['predefined_timeshift'] == $shift_value) { print ' selected'; } print '>' . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
 														}
 													}
 													?>
 												</select>
-												<input style='padding-bottom: 4px;' type='image' name='move_right' src='<?php print $config["url_path"];?>images/move_right.gif' alt='Right' border='0' align='absmiddle' title='Shift Right'>
 											</td>
 											<td>
-												&nbsp;<input type="submit" value='Go' name='go' title="Go">
+												<input style='padding-bottom: 4px;' type='image' name='move_right' src='<?php print $config['url_path'];?>images/move_right.gif' alt='Right' align='absmiddle' title='Shift Right'>
 											</td>
 											<td>
-												&nbsp;<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
+												<input type='submit' value='Go' name='go' title='Go'>
 											</td>
 											<td>
-												&nbsp;<input type='submit' value='Export' name='export' title='Export Records to CSV'>
+												<input type='submit' value='Clear' name='button_clear_x' title='Return to the default time span'>
 											</td>
+											<td>
+												<input type='submit' value='Export' name='export' title='Export Records to CSV'>
+											</td>
+											<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
+											<td align='right' style='white-space:nowrap;'>
+												<input type='button' value='Alerts' title='View Syslog Alert Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
+											</td>
+											<td>
+												<input type='button' value='Removals' title='View Syslog Removal Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
+											</td>
+											<td>
+												<input type='button' value='Reports' title='View Syslog Reports' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>
+											</td>
+											<?php }?>
 											<td>
 												<input type='hidden' name='action' value='actions'>
 												<input type='hidden' name='syslog_pdt_change' value='false'>
 											</td>
 										</tr>
 									</table>
-								</td><?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
-								<td align='right' style='white-space:nowrap;'>
-									<input type='button' value='Alerts' title='View Syslog Alert Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
-									<input type='button' value='Removals' title='View Syslog Removal Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
-									<input type='button' value='Reports' title='View Syslog Reports' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>&nbsp;
-								</td><?php }?>
-							</tr>
-						</table>
-						<table width="100%" cellpadding="0" cellspacing="0" border="0">
-							<tr bgcolor="<?php print $colors["panel"];?>" class="noprint">
-								<td>
-									<table cellpadding="0" cellspacing="0">
+									<table cellpadding='2' cellspacing='0' border='0'>
 										<tr>
-											<td nowrap style='white-space: nowrap;' width='60'>
-												&nbsp;<strong>Search:</strong>
+											<td width='50'>
+												Search:
 											</td>
-											<td style='padding-right:2px;'>
-												<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
+											<td>
+												<input type='text' name='filter' size='30' value='<?php print $_REQUEST['filter'];?>'>
 											</td>
 											<?php api_plugin_hook('syslog_extend_filter');?>
-											<td style='padding-right:2px;'>
-												<select name="efacility" onChange="javascript:document.getElementById('syslog_form').submit();" title="Facilities">
-													<option value="0"<?php if ($_REQUEST["efacility"] == "0") {?> selected<?php }?>>All Facilities</option>
+											<td>
+												<select name='efacility' onChange='syslogFilterChange()' title='Facilities'>
+													<option value='0'<?php if ($_REQUEST['efacility'] == '0') {?> selected<?php }?>>All Facilities</option>
 													<?php
-													if (!isset($hostfilter)) $hostfilter = "";
-													$efacilities = syslog_db_fetch_assoc("SELECT DISTINCT f.facility_id, f.facility
-														FROM `" . $syslogdb_default . "`.`syslog_host_facilities` AS fh
-														INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS f
-														ON f.facility_id=fh.facility_id " . (strlen($hostfilter) ? "WHERE ":"") . $hostfilter . "
-														ORDER BY facility");
+													if (!isset($hostfilter)) $hostfilter = '';
+													$efacilities = syslog_db_fetch_assoc('SELECT DISTINCT f.facility_id, f.facility
+														FROM `' . $syslogdb_default . '`.`syslog_host_facilities` AS fh
+														INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS f
+														ON f.facility_id=fh.facility_id ' . (strlen($hostfilter) ? 'WHERE ':'') . $hostfilter . '
+														ORDER BY facility');
 
 													if (sizeof($efacilities)) {
 													foreach ($efacilities as $efacility) {
-														print "<option value=" . $efacility["facility_id"]; if ($_REQUEST["efacility"] == $efacility["facility_id"]) { print " selected"; } print ">" . ucfirst($efacility["facility"]) . "</option>\n";
+														print "<option value='" . $efacility['facility_id'] . "'"; if ($_REQUEST['efacility'] == $efacility['facility_id']) { print ' selected'; } print '>' . ucfirst($efacility['facility']) . "</option>\n";
 													}
 													}
 													?>
 												</select>
 											</td>
-											<td style='padding-right:2px;'>
-												<select name="elevel" onChange="javascript:document.getElementById('syslog_form').submit();" title="Priority Levels">
-													<option value="0"<?php if ($_REQUEST["elevel"] == "0") {?> selected<?php }?>>All Priorities</option>
-													<option value="1"<?php if ($_REQUEST["elevel"] == "1") {?> selected<?php }?>>Emergency</option>
-													<option value="2"<?php if ($_REQUEST["elevel"] == "2") {?> selected<?php }?>>Critical++</option>
-													<option value="2o"<?php if ($_REQUEST["elevel"] == "2o") {?> selected<?php }?>>Critical</option>
-													<option value="3"<?php if ($_REQUEST["elevel"] == "3") {?> selected<?php }?>>Alert++</option>
-													<option value="3o"<?php if ($_REQUEST["elevel"] == "3o") {?> selected<?php }?>>Alert</option>
-													<option value="4"<?php if ($_REQUEST["elevel"] == "4") {?> selected<?php }?>>Error++</option>
-													<option value="4o"<?php if ($_REQUEST["elevel"] == "4o") {?> selected<?php }?>>Error</option>
-													<option value="5"<?php if ($_REQUEST["elevel"] == "5") {?> selected<?php }?>>Warning++</option>
-													<option value="5o"<?php if ($_REQUEST["elevel"] == "5o") {?> selected<?php }?>>Warning</option>
-													<option value="6"<?php if ($_REQUEST["elevel"] == "6") {?> selected<?php }?>>Notice++</option>
-													<option value="6o"<?php if ($_REQUEST["elevel"] == "6o") {?> selected<?php }?>>Notice</option>
-													<option value="7"<?php if ($_REQUEST["elevel"] == "7") {?> selected<?php }?>>Info++</option>
-													<option value="7o"<?php if ($_REQUEST["elevel"] == "7o") {?> selected<?php }?>>Info</option>
-													<option value="8"<?php if ($_REQUEST["elevel"] == "8") {?> selected<?php }?>>Debug</option>
+											<td>
+												<select name='elevel' onChange='syslogFilterChange()' title='Priority Levels'>
+													<option value='0'<?php if ($_REQUEST['elevel'] == '0') {?> selected<?php }?>>All Priorities</option>
+													<option value='1'<?php if ($_REQUEST['elevel'] == '1') {?> selected<?php }?>>Emergency</option>
+													<option value='2'<?php if ($_REQUEST['elevel'] == '2') {?> selected<?php }?>>Critical++</option>
+													<option value='2o'<?php if ($_REQUEST['elevel'] == '2o') {?> selected<?php }?>>Critical</option>
+													<option value='3'<?php if ($_REQUEST['elevel'] == '3') {?> selected<?php }?>>Alert++</option>
+													<option value='3o'<?php if ($_REQUEST['elevel'] == '3o') {?> selected<?php }?>>Alert</option>
+													<option value='4'<?php if ($_REQUEST['elevel'] == '4') {?> selected<?php }?>>Error++</option>
+													<option value='4o'<?php if ($_REQUEST['elevel'] == '4o') {?> selected<?php }?>>Error</option>
+													<option value='5'<?php if ($_REQUEST['elevel'] == '5') {?> selected<?php }?>>Warning++</option>
+													<option value='5o'<?php if ($_REQUEST['elevel'] == '5o') {?> selected<?php }?>>Warning</option>
+													<option value='6'<?php if ($_REQUEST['elevel'] == '6') {?> selected<?php }?>>Notice++</option>
+													<option value='6o'<?php if ($_REQUEST['elevel'] == '6o') {?> selected<?php }?>>Notice</option>
+													<option value='7'<?php if ($_REQUEST['elevel'] == '7') {?> selected<?php }?>>Info++</option>
+													<option value='7o'<?php if ($_REQUEST['elevel'] == '7o') {?> selected<?php }?>>Info</option>
+													<option value='8'<?php if ($_REQUEST['elevel'] == '8') {?> selected<?php }?>>Debug</option>
 												</select>
 											</td>
-											<?php if ($_REQUEST["tab"] == "syslog") {?>
-											<td style='padding-right:2px;'>
-												<select name="removal" onChange="javascript:document.getElementById('syslog_form').submit();" title="Removal Handling">
-													<option value="1"<?php if ($_REQUEST["removal"] == "1") {?> selected<?php }?>>All Records</option>
-													<option value="-1"<?php if ($_REQUEST["removal"] == "-1") {?> selected<?php }?>>Main Records</option>
-													<option value="2"<?php if ($_REQUEST["removal"] == "2") {?> selected<?php }?>>Removed Records</option>
+											<?php if ($_REQUEST['tab'] == 'syslog') {?>
+											<td>
+												<select name='removal' onChange='syslogFilterChange()' title='Removal Handling'>
+													<option value='1'<?php if ($_REQUEST['removal'] == '1') {?> selected<?php }?>>All Records</option>
+													<option value='-1'<?php if ($_REQUEST['removal'] == '-1') {?> selected<?php }?>>Main Records</option>
+													<option value='2'<?php if ($_REQUEST['removal'] == '2') {?> selected<?php }?>>Removed Records</option>
 												</select>
 											</td>
 											<?php }?>
-											<td style='padding-right:2px;'>
-												<select name="rows" onChange="javascript:document.getElementById('syslog_form').submit();" title="Display Rows">
-													<option value="10"<?php if ($_REQUEST["rows"] == "10") {?> selected<?php }?>>10</option>
-													<option value="15"<?php if ($_REQUEST["rows"] == "15") {?> selected<?php }?>>15</option>
-													<option value="20"<?php if ($_REQUEST["rows"] == "20") {?> selected<?php }?>>20</option>
-													<option value="25"<?php if ($_REQUEST["rows"] == "25") {?> selected<?php }?>>25</option>
-													<option value="30"<?php if ($_REQUEST["rows"] == "30") {?> selected<?php }?>>30</option>
-													<option value="35"<?php if ($_REQUEST["rows"] == "35") {?> selected<?php }?>>35</option>
-													<option value="40"<?php if ($_REQUEST["rows"] == "40") {?> selected<?php }?>>40</option>
-													<option value="45"<?php if ($_REQUEST["rows"] == "45") {?> selected<?php }?>>45</option>
-													<option value="50"<?php if ($_REQUEST["rows"] == "50") {?> selected<?php }?>>50</option>
-													<option value="100"<?php if ($_REQUEST["rows"] == "100") {?> selected<?php }?>>100</option>
-													<option value="200"<?php if ($_REQUEST["rows"] == "200") {?> selected<?php }?>>200</option>
-													<option value="500"<?php if ($_REQUEST["rows"] == "500") {?> selected<?php }?>>500</option>
+											<td>
+												<select name='rows' onChange='syslogFilterChange()' title='Display Rows'>
+													<option value='10'<?php if ($_REQUEST['rows'] == '10') {?> selected<?php }?>>10</option>
+													<option value='15'<?php if ($_REQUEST['rows'] == '15') {?> selected<?php }?>>15</option>
+													<option value='20'<?php if ($_REQUEST['rows'] == '20') {?> selected<?php }?>>20</option>
+													<option value='25'<?php if ($_REQUEST['rows'] == '25') {?> selected<?php }?>>25</option>
+													<option value='30'<?php if ($_REQUEST['rows'] == '30') {?> selected<?php }?>>30</option>
+													<option value='35'<?php if ($_REQUEST['rows'] == '35') {?> selected<?php }?>>35</option>
+													<option value='40'<?php if ($_REQUEST['rows'] == '40') {?> selected<?php }?>>40</option>
+													<option value='45'<?php if ($_REQUEST['rows'] == '45') {?> selected<?php }?>>45</option>
+													<option value='50'<?php if ($_REQUEST['rows'] == '50') {?> selected<?php }?>>50</option>
+													<option value='100'<?php if ($_REQUEST['rows'] == '100') {?> selected<?php }?>>100</option>
+													<option value='200'<?php if ($_REQUEST['rows'] == '200') {?> selected<?php }?>>200</option>
+													<option value='500'<?php if ($_REQUEST['rows'] == '500') {?> selected<?php }?>>500</option>
 												</select>
 											</td>
-											<td style='padding-right:2px;'>
-												<select name="trimval" onChange="javascript:document.getElementById('syslog_form').submit();" title="Message Trim">
-													<option value="1024"<?php if ($_REQUEST["trimval"] == "1024") {?> selected<?php }?>>All Text</option>
-													<option value="30"<?php if ($_REQUEST["trimval"] == "30") {?> selected<?php }?>>30 Chars</option>
-													<option value="50"<?php if ($_REQUEST["trimval"] == "50") {?> selected<?php }?>>50 Chars</option>
-													<option value="75"<?php if ($_REQUEST["trimval"] == "75") {?> selected<?php }?>>75 Chars</option>
-													<option value="100"<?php if ($_REQUEST["trimval"] == "100") {?> selected<?php }?>>100 Chars</option>
-													<option value="150"<?php if ($_REQUEST["trimval"] == "150") {?> selected<?php }?>>150 Chars</option>
-													<option value="300"<?php if ($_REQUEST["trimval"] == "300") {?> selected<?php }?>>300 Chars</option>
+											<td>
+												<select name='trimval' onChange='syslogFilterChange()' title='Message Trim'>
+													<option value='1024'<?php if ($_REQUEST['trimval'] == '1024') {?> selected<?php }?>>All Text</option>
+													<option value='30'<?php if ($_REQUEST['trimval'] == '30') {?> selected<?php }?>>30 Chars</option>
+													<option value='50'<?php if ($_REQUEST['trimval'] == '50') {?> selected<?php }?>>50 Chars</option>
+													<option value='75'<?php if ($_REQUEST['trimval'] == '75') {?> selected<?php }?>>75 Chars</option>
+													<option value='100'<?php if ($_REQUEST['trimval'] == '100') {?> selected<?php }?>>100 Chars</option>
+													<option value='150'<?php if ($_REQUEST['trimval'] == '150') {?> selected<?php }?>>150 Chars</option>
+													<option value='300'<?php if ($_REQUEST['trimval'] == '300') {?> selected<?php }?>>300 Chars</option>
 												</select>
 											</td>
-											<td width="1">
-												<select name="refresh" onChange="javascript:document.getElementById('syslog_form').submit();">
+											<td width='1'>
+												<select name='refresh' onChange='syslogFilterChange()'>
 													<?php
 													foreach($page_refresh_interval AS $seconds => $display_text) {
-														print "<option value='" . $seconds . "'"; if ($_REQUEST["refresh"] == $seconds) { print " selected"; } print ">" . $display_text . "</option>\n";
+														print "<option value='" . $seconds . "'"; if ($_REQUEST['refresh'] == $seconds) { print ' selected'; } print '>' . $display_text . "</option>\n";
 													}
 													?>
 												</select>
@@ -1010,50 +1022,46 @@ function syslog_filter($sql_where, $tab) {
 								</td>
 							</tr>
 							<?php html_end_box(false);?>
+						</td>
 					</tr>
 				</table>
 			</td>
 		</tr>
 		<tr>
-			<td valign="top" style="border-right: #aaaaaa 1px solid;" bgcolor='#efefef'>
-				<table align="center" cellpadding="1" cellspacing="0" border="0">
+			<td valign='top'>
+				<table align='center' cellpadding='1' cellspacing='0' border='0'>
 					<tr>
 						<td>
-							<?php html_start_box("", "", $colors["header"], "3", "center", ""); ?>
-							<tr>
-								<td class="textHeader" nowrap>
-									Select Host(s):&nbsp;
-								</td>
-							</tr>
+							<?php html_start_box('<strong>Select Host(s)</strong>', '100%', $colors['header'], '3', 'center', ''); ?>
 							<tr>
 								<td>
-									<select title="Host Filters" id="host_select" name="host[]" multiple size="20" style="width: 150px; overflow: scroll; height: auto;" onChange="javascript:document.getElementById('syslog_form').submit();">
-										<?php if ($tab == "syslog") { ?><option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts</option><?php }else{?>
-										<option id="host_all" value="0"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "0")) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
-										<option id="host_none" value="-1"<?php if (((is_array($_REQUEST["host"])) && ($_REQUEST["host"][0] == "-1"))) {?> selected<?php }?>>Threshold Logs</option><?php }?>
+									<select title='Host Filters' id='host_select' name='host[]' multiple size='20' style='width: 150px; overflow: scroll; height: auto;' onChange='syslogFilterChange()'>
+										<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (((is_array($_REQUEST['host'])) && ($_REQUEST['host'][0] == '0')) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts</option><?php }else{?>
+										<option id='host_all' value='0'<?php if (((is_array($_REQUEST['host'])) && ($_REQUEST['host'][0] == '0')) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
+										<option id='host_none' value='-1'<?php if (((is_array($_REQUEST['host'])) && ($_REQUEST['host'][0] == '-1'))) {?> selected<?php }?>>Threshold Logs</option><?php }?>
 										<?php
-										$hosts_where = "";
+										$hosts_where = '';
 										$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
 										$hosts = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` $hosts_where ORDER BY host");
 										if (sizeof($hosts)) {
 											foreach ($hosts as $host) {
-												print "<option value=" . $host["host_id"];
-												if (sizeof($_REQUEST["host"])) {
-													foreach ($_REQUEST["host"] as $rh) {
-														if (($rh == $host["host_id"]) &&
+												print "<option value='" . $host["host_id"] . "'";
+												if (sizeof($_REQUEST['host'])) {
+													foreach ($_REQUEST['host'] as $rh) {
+														if (($rh == $host['host_id']) &&
 															(!$reset_multi)) {
-															print " selected";
+															print ' selected';
 															break;
 														}
 													}
 												}else{
-													if (($host["host_id"] == $_REQUEST["host"]) &&
+													if (($host['host_id'] == $_REQUEST['host']) &&
 														(!$reset_multi)) {
-														print " selected";
+														print ' selected';
 													}
 												}
-												print ">";
-												print $host["host"] . "</option>\n";
+												print '>';
+												print $host['host'] . "</option>\n";
 											}
 										}
 										?>
@@ -1065,13 +1073,13 @@ function syslog_filter($sql_where, $tab) {
 					</tr>
 				</table>
 			</td>
-			<td width="100%" valign="top" style="padding: 0px;">
-				<table width="100%" cellspacing="0" cellpadding="1">
+			<td width='100%' class='auto-expand' valign='top' style='padding: 0px;'>
+				<table width='100%' cellspacing='0' cellpadding='1' border='0'>
 					<tr>
-						<td width="100%" valign="top"><?php display_output_messages();?>
+						<td width='100%' valign='top'>
 							<?php
-							if ($tab == "syslog") {
-								if ($_REQUEST["removal"] == 1) {
+							if ($tab == 'syslog') {
+								if ($_REQUEST['removal'] == 1) {
 									$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
 											FROM (
 											SELECT count(*) AS totals
@@ -1097,14 +1105,14 @@ function syslog_filter($sql_where, $tab) {
 									ON sl.alert_id=sa.id " .
 									$sql_where);
 							}
-							html_start_box("", "100%", $colors["header"], "3", "center", "");
-							$hostarray = "";
-							if (is_array($_REQUEST["host"])) {
-								foreach ($_REQUEST["host"] as $h) {
+							html_start_box('', '100%', $colors['header'], '3', 'center', '');
+							$hostarray = '';
+							if (is_array($_REQUEST['host'])) {
+								foreach ($_REQUEST['host'] as $h) {
 									$hostarray .= "host[]=$h&";
 								}
 							}else{
-								$hostarray .= "host[]=" . $_REQUEST["host"] . "&";
+								$hostarray .= 'host[]=' . $_REQUEST['host'] . '&';
 							}
 
 	return $total_rows;
@@ -1234,13 +1242,13 @@ function syslog_messages($tab="syslog") {
 						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 							<tr>
 								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog.php?tab=$tab&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
+									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=$tab&page=" . ($_REQUEST["page"]-1)) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
 								</td>\n
 								<td align='center' class='textHeaderDark'>
 									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
 								</td>\n
 								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog.php?tab=$tab&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
+									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=$tab&page=" . ($_REQUEST["page"]+1)) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
 								</td>\n
 							</tr>
 						</table>
@@ -1297,8 +1305,8 @@ function syslog_messages($tab="syslog") {
 				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 					print "<td style='whitspace-nowrap;width:1%;'>";
 					if ($syslog_message['mtype'] == 'main') {
-						print "<a href='syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=0'><img src='images/green.gif' align='absmiddle' border=0></a>
-						<a href='syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&date=" . $syslog_message["logtime"] . "&action=newedit&type=new&type=0'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
+						print "<a href='" . htmlspecialchars("syslog_alerts.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=newedit&type=0") . "'><img src='images/green.gif' align='absmiddle' border=0></a>
+						<a href='" . htmlspecialchars("syslog_removal.php?id=" . $syslog_message[$syslog_incoming_config["id"]] . "&action=newedit&type=new&type=0") . "'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
 					}
 					print "</td>\n";
 				}
@@ -1323,7 +1331,7 @@ function syslog_messages($tab="syslog") {
 			"count" => array("Count", "ASC"),
 			"logtime" => array("Date", "ASC"),
 			"logmsg" => array("Message", "ASC"),
-			"slhost" => array("Host", "ASC"),
+			"host" => array("Host", "ASC"),
 			"facility" => array("Facility", "ASC"),
 			"priority" => array("Priority", "ASC"));
 
@@ -1350,7 +1358,7 @@ function syslog_messages($tab="syslog") {
 				}
 
 				syslog_row_color($colors["alternate"], $colors["light"], $i, $color, $title);$i++;
-				print "<td><a class='linkEditMain' href='" . $config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "&tab=current'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
+				print "<td><a class='linkEditMain' href='" . htmlspecialchars($config["url_path"] . "plugins/syslog/syslog.php?id=" . $log["seq"] . "&tab=current") . "'>" . (strlen($log["name"]) ? $log["name"]:"Alert Removed") . "</a></td>\n";
 				print "<td>" . (isset($severities[$log["severity"]]) ? $severities[$log["severity"]]:"Unknown") . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";

@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2011 The Cacti Group                                 |
+ | Copyright (C) 2007-2013 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -403,7 +403,7 @@ function syslog_action_edit() {
 		),
 	"message" => array(
 		"friendly_name" => "Syslog Message Match String",
-		"description" => "The matching component of the syslog message.",
+		"description" => "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.",
 		"textarea_rows" => "2",
 		"textarea_cols" => "70",
 		"method" => "textarea",

@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2011 The Cacti Group                                 |
+ | Copyright (C) 2007-2013 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -249,9 +249,7 @@ if (read_config_option("syslog_html") == "on") {
 	$html = false;
 }
 
-syslog_debug("Found   " . $syslog_alerts .
-	",  Alert Rule" . ($syslog_alerts == 1 ? "" : "s" ) .
-	" to process");
+syslog_debug("Found   " . $syslog_alerts . ",  Alert Rule" . ($syslog_alerts == 1 ? "" : "s" ) . " to process");
 
 $syslog_alarms = 0;
 if (sizeof($query)) {
@@ -407,7 +405,7 @@ if (sizeof($query)) {
 					$alertm .= "-----------------------------------------------\n\n";
 
 					if ($alert["method"] == 1) {
-						$sequence = syslog_log_alert($alert["id"], $alert["name"] . " [" . $alert["message"] . "]", $alert["severity"], $at[0], sizeof($at), $htmlm);
+						$sequence = syslog_log_alert($alert["id"], $alert["name"], $alert["severity"], $at[0], sizeof($at), $htmlm, $hostlist);
 						$smsalert = "Sev:" . $severities[$alert["severity"]] . ", Count:" . sizeof($at) . ", URL:" . read_config_option("alert_base_url") . "plugins/syslog/syslog.php?tab=current&id=" . $sequence;
 					}
 
@@ -481,8 +479,11 @@ if (read_config_option("syslog_statistics") == "on") {
 
 /* remove alert log messages */
 if (read_config_option("syslog_alert_retention") > 0) {
+	$delete_time=date("Y-m-d H:i:s",time()-(read_config_option("syslog_alert_retention")*86400));
+	api_plugin_hook_function('syslog_delete_hostsalarm', $delete_time);
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_logs`
 		WHERE logtime<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
+
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
 }
 
@@ -591,6 +592,7 @@ foreach($reports as $syslog_report) {
 
 				$headtext .= "</table>\n";
 				$smsalert  = $headtext;
+
 				// Send mail
 				syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $headtext, $smsalert);
 			}

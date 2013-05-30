@@ -38,6 +38,8 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'setup.php');
 	api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'setup.php');
 	api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'setup.php');
+	api_plugin_register_hook('syslog', 'utilities_list',        'syslog_utilities_list',       'setup.php');
+	api_plugin_register_hook('syslog', 'utilities_action',      'syslog_utilities_action',     'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
@@ -233,6 +235,13 @@ function syslog_check_upgrade() {
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN repeat_alert int(10) unsigned NOT NULL DEFAULT '0' AFTER `enabled`");
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN open_ticket char(2) NOT NULL DEFAULT '' AFTER `repeat_alert`");
 			}
+
+			if ($old < 1.3) {
+				api_plugin_register_hook('syslog', 'utilities_list',        'syslog_utilities_list',       'setup.php');
+				api_plugin_register_hook('syslog', 'utilities_action',      'syslog_utilities_action',     'setup.php');
+
+				db_execute("UPDATE plugin_hooks SET status=1 WHERE name='syslog' AND hook LIKE 'utilities%'");
+			}
 		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
@@ -263,19 +272,19 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 	}
 
 	/* validate some simple information */
-	$mysqlVersion = syslog_get_mysql_version("syslog");
-	$truncate     = ((isset($options["upgrade_type"]) && $options["upgrade_type"] == "truncate") ? true:false);
-	$upgrade_type = (isset($options["upgrade_type"]) ? $options["upgrade_type"]:"inline");
-	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
-	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
+	$mysqlVersion = syslog_get_mysql_version('syslog');
+	$truncate     = ((isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate') ? true:false);
+	$upgrade_type = (isset($options['upgrade_type']) ? $options['upgrade_type']:'inline');
+	$engine       = ((isset($options['engine']) && $options['engine'] == 'innodb') ? 'InnoDB':'MyISAM');
+	$partitioned  = ((isset($options['db_type']) && $options['db_type'] == 'part') ? true:false);
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE '$table'"));
 
 	/* disable collection for a bit */
 	set_config_option('syslog_enabled', '');
 
-	if ($upgrade_type == "truncate") return;
+	if ($upgrade_type == 'truncate') return;
 
-	if ($upgrade_type == "inline" || $isbackground) {
+	if ($upgrade_type == 'inline' || $isbackground) {
 		syslog_setup_table_new($options);
 
 		api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
@@ -366,21 +375,27 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 
 		if (sizeof($array)) {
 		foreach ($array as $row) {
-			$columns[] = $row["Field"];
+			$columns[] = $row['Field'];
 		}
 		}
 
-		if (!in_array("enabled", $columns)) {
+		if (!in_array('enabled', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;");
 		}
 
-		if (!in_array("method", $columns)) {
+		if (!in_array('method', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN method int(10) unsigned NOT NULL default '0' AFTER name");
+		}
+
+		if (!in_array('num', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN num int(10) unsigned NOT NULL default '1' AFTER method");
+		}
+
+		if (!in_array('severity', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN severity INTEGER UNSIGNED NOT NULL default '0' AFTER name");
 		}
 
-		if (!in_array("command", $columns)) {
+		if (!in_array('command', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_alert` ADD COLUMN command varchar(255) DEFAULT NULL AFTER email;");
 		}
 
@@ -391,15 +406,15 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 
 		if (sizeof($array)) {
 		foreach ($array as $row) {
-			$columns[] = $row["Field"];
+			$columns[] = $row['Field'];
 		}
 		}
 
-		if (!in_array("enabled", $columns)) {
+		if (!in_array('enabled', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_remove` MODIFY COLUMN message varchar(128) DEFAULT NULL, ADD COLUMN enabled CHAR(2) DEFAULT 'on' AFTER type;");
 		}
 
-		if (!in_array("method", $columns)) {
+		if (!in_array('method', $columns)) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`syslog_remove` ADD COLUMN method CHAR(5) DEFAULT 'del' AFTER enabled;");
 		}
 
@@ -410,7 +425,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 			`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 			PRIMARY KEY (`host`),
 			KEY host_id (`host_id`),
-			KEY last_updated (`last_updated`)) TYPE=$engine
+			KEY last_updated (`last_updated`)) ENGINE=$engine
 			COMMENT='Contains all hosts currently in the syslog table'");
 
 		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`");
@@ -541,11 +556,11 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`");
 		syslog_db_execute("CREATE TABLE `" . $syslogdb_default . "`.`syslog_removed` LIKE `" . $syslogdb_default . "`.`syslog`");
 	}else{
-		include_once($config['base_path'] . "/lib/poller.php");
+		include_once($config['base_path'] . '/lib/poller.php');
 		$p = dirname(__FILE__);
-		$command_string = read_config_option("path_php_binary");
-		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php --type=' . $options["db_type"] . ' --engine=' . $engine . ' --days=' . $options["days"];
-		cacti_log("SYSLOG NOTE: Launching Background Syslog Database Upgrade Process", false, "SYSTEM");
+		$command_string = read_config_option('path_php_binary');
+		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_upgrade.php --type=' . $options['db_type'] . ' --engine=' . $engine . ' --days=' . $options['days'];
+		cacti_log('SYSLOG NOTE: Launching Background Syslog Database Upgrade Process', false, 'SYSTEM');
 		exec_background($command_string, $extra_args);
 	}
 
@@ -553,23 +568,23 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 	set_config_option('syslog_enabled', 'on');
 }
 
-function syslog_get_mysql_version($db = "cacti") {
-	if ($db == "cacti") {
+function syslog_get_mysql_version($db = 'cacti') {
+	if ($db == 'cacti') {
 		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 	}else{
 		$dbInfo = syslog_db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 	}
 
 	if (sizeof($dbInfo)) {
-		return floatval($dbInfo["Value"]);
+		return floatval($dbInfo['Value']);
 	}
-	return "";
+	return '';
 }
 
-function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) {
+function syslog_create_partitioned_syslog_table($engine = 'MyISAM', $days = 30) {
 	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	$sql = "CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
 			facility_id int(10) default NULL,
@@ -587,12 +602,12 @@ function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) 
 
 	$now = time();
 
-	$parts = "";
+	$parts = '';
 	for($i = $days; $i >= -1; $i--) {
 		$timestamp = $now - ($i * 86400);
 		$date     = date('Y-m-d', $timestamp);
-		$format   = date("Ymd", $timestamp - 86400);
-		$parts .= ($parts != "" ? ",\n":"(") . " PARTITION d" . $format . " VALUES LESS THAN (TO_DAYS('" . $date . "'))";
+		$format   = date('Ymd', $timestamp - 86400);
+		$parts .= ($parts != '' ? ",\n":"(") . " PARTITION d" . $format . " VALUES LESS THAN (TO_DAYS('" . $date . "'))";
 	}
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
 
@@ -602,7 +617,7 @@ function syslog_create_partitioned_syslog_table($engine = "MyISAM", $days = 30) 
 function syslog_setup_table_new($options) {
 	global $config, $cnn_id, $settings, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	$tables  = array();
 
@@ -621,10 +636,10 @@ function syslog_setup_table_new($options) {
 	syslog_connect();
 
 	/* validate some simple information */
-	$mysqlVersion = syslog_get_mysql_version("syslog");
-	$truncate     = ((isset($options["upgrade_type"]) && $options["upgrade_type"] == "truncate") ? true:false);
-	$engine       = ((isset($options["engine"]) && $options["engine"] == "innodb") ? "InnoDB":"MyISAM");
-	$partitioned  = ((isset($options["db_type"]) && $options["db_type"] == "part") ? true:false);
+	$mysqlVersion = syslog_get_mysql_version('syslog');
+	$truncate     = ((isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate') ? true:false);
+	$engine       = ((isset($options['engine']) && $options['engine'] == 'innodb') ? 'InnoDB':'MyISAM');
+	$partitioned  = ((isset($options['db_type']) && $options['db_type'] == 'part') ? true:false);
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`");
@@ -788,12 +803,12 @@ function syslog_setup_table_new($options) {
 		syslog_db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')");
 	}
 
-	if (!isset($settings["syslog"])) {
+	if (!isset($settings['syslog'])) {
 		syslog_config_settings();
 	}
 
-	foreach($settings["syslog"] AS $name => $values) {
-		if (isset($values["default"])) {
+	foreach($settings['syslog'] AS $name => $values) {
+		if (isset($values['default'])) {
 			db_execute("REPLACE INTO `" . $database_default . "`.`settings` (name, value) VALUES ('$name', '" . $values["default"] . "')");
 		}
 	}
@@ -802,7 +817,7 @@ function syslog_setup_table_new($options) {
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.22',
+		'version'  => '1.3',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',
@@ -995,7 +1010,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 	?>
 	<table align='center' width='100%' style='background-color: #ffffff; border: 1px solid #bbbbbb;'>
 		<tr>
-			<td bgcolor="#f5f5f5" align="right">
+			<td bgcolor='#F5F5F5' align='right'>
 				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='Cancel'>
 				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>'>
 			</td>
@@ -1259,15 +1274,15 @@ function syslog_show_tab() {
 }
 
 function syslog_config_arrays () {
-	global $syslog_actions, $menu, $message_types, $severities;
+	global $syslog_actions, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_colors, $syslog_text_colors, $syslog_retentions, $syslog_alert_retentions;
 
 	$syslog_actions = array(
-		1 => "Delete",
-		2 => "Disable",
-		3 => "Enable"
-		);
+		1 => 'Delete',
+		2 => 'Disable',
+		3 => 'Enable'
+	);
 
 	$syslog_levels = array(
 		1 => 'emerg',
@@ -1279,71 +1294,71 @@ function syslog_config_arrays () {
 		7 => 'info',
 		8 => 'debug',
 		9 => 'other'
-		);
-
-	$syslog_retentions = array(
-		"0" => "Indefinate",
-		"1" => "1 Day",
-		"2" => "2 Days",
-		"3" => "3 Days",
-		"4" => "4 Days",
-		"5" => "5 Days",
-		"6" => "6 Days",
-		"7" => "1 Week",
-		"14" => "2 Weeks",
-		"30" => "1 Month",
-		"60" => "2 Months",
-		"90" => "3 Months",
-		"120" => "4 Months",
-		"160" => "5 Months",
-		"183" => "6 Months",
-		"365" => "1 Year"
-		);
-
-	$syslog_alert_retentions = array(
-		"0" => "Indefinate",
-		"1" => "1 Day",
-		"2" => "2 Days",
-		"3" => "3 Days",
-		"4" => "4 Days",
-		"5" => "5 Days",
-		"6" => "6 Days",
-		"7" => "1 Week",
-		"14" => "2 Weeks",
-		"30" => "1 Month",
-		"60" => "2 Months",
-		"90" => "3 Months",
-		"120" => "4 Months",
-		"160" => "5 Months",
-		"183" => "6 Months",
-		"365" => "1 Year"
-		);
-
-	$syslog_refresh = array(
-		9999999 => "Never",
-		"60" => "1 Minute",
-		"120" => "2 Minutes",
-		"300" => "5 Minutes",
-		"600" => "10 Minutes"
-		);
-
-	$severities = array(
-		"0" => "Notice",
-		"1" => "Warning",
-		"2" => "Critical"
 	);
 
-	if (!isset($_SESSION["syslog_colors"])) {
+	$syslog_retentions = array(
+		'0'   => 'Indefinate',
+		'1'   => '1 Day',
+		'2'   => '2 Days',
+		'3'   => '3 Days',
+		'4'   => '4 Days',
+		'5'   => '5 Days',
+		'6'   => '6 Days',
+		'7'   => '1 Week',
+		'14'  => '2 Weeks',
+		'30'  => '1 Month',
+		'60'  => '2 Months',
+		'90'  => '3 Months',
+		'120' => '4 Months',
+		'160' => '5 Months',
+		'183' => '6 Months',
+		'365' => '1 Year'
+	);
+
+	$syslog_alert_retentions = array(
+		'0'   => 'Indefinate',
+		'1'   => '1 Day',
+		'2'   => '2 Days',
+		'3'   => '3 Days',
+		'4'   => '4 Days',
+		'5'   => '5 Days',
+		'6'   => '6 Days',
+		'7'   => '1 Week',
+		'14'  => '2 Weeks',
+		'30'  => '1 Month',
+		'60'  => '2 Months',
+		'90'  => '3 Months',
+		'120' => '4 Months',
+		'160' => '5 Months',
+		'183' => '6 Months',
+		'365' => '1 Year'
+	);
+
+	$syslog_refresh = array(
+		9999999 => 'Never',
+		'60'    => '1 Minute',
+		'120'   => '2 Minutes',
+		'300'   => '5 Minutes',
+		'600'   => '10 Minutes'
+	);
+
+	$severities = array(
+		'0' => 'Notice',
+		'1' => 'Warning',
+		'2' => 'Critical'
+	);
+
+	if (!isset($_SESSION['syslog_colors'])) {
 		foreach($syslog_levels as $level) {
-			$syslog_colors[$level] = db_fetch_cell("SELECT hex FROM colors WHERE id=" . read_config_option("syslog_" . $level . "_bg"));
-			$syslog_text_colors[$level] = db_fetch_cell("SELECT hex FROM colors WHERE id=" . read_config_option("syslog_" . $level . "_fg"));
+			$syslog_colors[$level] = db_fetch_cell('SELECT hex FROM colors WHERE id=' . read_config_option('syslog_' . $level . '_bg'));
+			$syslog_text_colors[$level] = db_fetch_cell('SELECT hex FROM colors WHERE id=' . read_config_option('syslog_' . $level . '_fg'));
 		}
 
-		$_SESSION["syslog_colors"] = $syslog_colors;
-		$_SESSION["syslog_text_colors"] = $syslog_text_colors;
+		$_SESSION['syslog_colors'] = $syslog_colors;
+		$_SESSION['syslog_text_colors'] = $syslog_text_colors;
 	}else{
-		$syslog_colors = $_SESSION["syslog_colors"];
-		$syslog_text_colors = $_SESSION["syslog_text_colors"];
+		$syslog_colors = $_SESSION['syslog_colors'];
+		$syslog_text_colors = $_SESSION['syslog_text_colors'];
 	}
 
 	$message_types = array(
@@ -1359,50 +1374,58 @@ function syslog_config_arrays () {
 	for ($i = 0; $i <= 86400; $i+=1800) {
 		$minute = $i % 3600;
 		if ($minute > 0) {
-			$minute = "30";
+			$minute = '30';
 		}else{
-			$minute = "00";
+			$minute = '00';
 		}
 
 		if ($i > 0) {
-			$hour = strrev(substr(strrev("00" . intval($i/3600)),0,2));
+			$hour = strrev(substr(strrev('00' . intval($i/3600)),0,2));
 		}else{
-			$hour = "00";
+			$hour = '00';
 		}
 
-		$syslog_times[$i] = $hour . ":" . $minute;
+		$syslog_times[$i] = $hour . ':' . $minute;
 	}
 
 	$menu2 = array ();
 	foreach ($menu as $temp => $temp2 ) {
 		$menu2[$temp] = $temp2;
 		if ($temp == 'Import/Export') {
-			$menu2["Syslog Settings"]['plugins/syslog/syslog_alerts.php'] = "Alert Rules";
-			$menu2["Syslog Settings"]['plugins/syslog/syslog_removal.php'] = "Removal Rules";
-			$menu2["Syslog Settings"]['plugins/syslog/syslog_reports.php'] = "Report Rules";
+			$menu2['Syslog Settings']['plugins/syslog/syslog_alerts.php'] = 'Alert Rules';
+			$menu2['Syslog Settings']['plugins/syslog/syslog_removal.php'] = 'Removal Rules';
+			$menu2['Syslog Settings']['plugins/syslog/syslog_reports.php'] = 'Report Rules';
 		}
 	}
 	$menu = $menu2;
+
+	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
+		$messages['syslog_info'] = array('message' => $_SESSION['syslog_info'], 'type' => 'info');
+	}
+
+	if (isset($_SESSION['syslog_error']) && $_SESSION['syslog_error'] != '') {
+		$messages['syslog_error'] = array('message' => $_SESSION['syslog_error'], 'type' => 'error');
+	}
 }
 
 function syslog_draw_navigation_text ($nav) {
 	global $config;
 
-	$nav["syslog.php:"]                = array("title" => "Syslog", "mapping" => "", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
-	$nav["syslog_removal.php:"]        = array("title" => "Syslog Removals", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_removal.php", "level" => "1");
-	$nav["syslog_removal.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
-	$nav["syslog_removal.php:newedit"] = array("title" => "(Edit)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
-	$nav["syslog_removal.php:actions"] = array("title" => "(Actions)", "mapping" => "index.php:,syslog_removal.php:", "url" => "syslog_removal.php", "level" => "2");
+	$nav['syslog.php:']                = array('title' => 'Syslog', 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1');
+	$nav['syslog_removal.php:']        = array('title' => 'Syslog Removals', 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_removal.php', 'level' => '1');
+	$nav['syslog_removal.php:edit']    = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
+	$nav['syslog_removal.php:newedit'] = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
+	$nav['syslog_removal.php:actions'] = array('title' => '(Actions)', 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
 
-	$nav["syslog_alerts.php:"]         = array("title" => "Syslog Alerts", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_alerts.php", "level" => "1");
-	$nav["syslog_alerts.php:edit"]     = array("title" => "(Edit)", "mapping" => "index.php:,syslog_alerts.php:", "url" => "syslog_alerts.php", "level" => "2");
-	$nav["syslog_alerts.php:newedit"]  = array("title" => "(Edit)", "mapping" => "index.php:,syslog_alerts.php:", "url" => "syslog_alerts.php", "level" => "2");
-	$nav["syslog_alerts.php:actions"]  = array("title" => "(Actions)", "mapping" => "index.php:,syslog_alerts.php:", "url" => "syslog_alerts.php", "level" => "2");
+	$nav['syslog_alerts.php:']         = array('title' => 'Syslog Alerts', 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_alerts.php', 'level' => '1');
+	$nav['syslog_alerts.php:edit']     = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
+	$nav['syslog_alerts.php:newedit']  = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
+	$nav['syslog_alerts.php:actions']  = array('title' => '(Actions)', 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
 
-	$nav["syslog_reports.php:"]        = array("title" => "Syslog Reports", "mapping" => "index.php:", "url" => $config['url_path'] . "plugins/syslog/syslog_reports.php", "level" => "1");
-	$nav["syslog_reports.php:edit"]    = array("title" => "(Edit)", "mapping" => "index.php:,syslog_reports.php:", "url" => "syslog_reports.php", "level" => "2");
-	$nav["syslog_reports.php:actions"]  = array("title" => "(Actions)", "mapping" => "index.php:,syslog_reports.php:", "url" => "syslog_reports.php", "level" => "2");
-	$nav["syslog.php:actions"]         = array("title" => "Syslog", "mapping" => "", "url" => $config['url_path'] . "plugins/syslog/syslog.php", "level" => "1");
+	$nav['syslog_reports.php:']        = array('title' => 'Syslog Reports', 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1');
+	$nav['syslog_reports.php:edit']    = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2');
+	$nav['syslog_reports.php:actions'] = array('title' => '(Actions)', 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2');
+	$nav['syslog.php:actions']         = array('title' => 'Syslog', 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1');
 
 	return $nav;
 }
@@ -1416,33 +1439,75 @@ function syslog_config_insert() {
 function syslog_graph_buttons($graph_elements = array()) {
 	global $config, $timespan, $graph_timeshifts;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
-	if ($_REQUEST["action"] == "view") return;
+	if ($_REQUEST['action'] == 'view') return;
 
-	if (isset($_REQUEST["graph_end"]) && strlen($_REQUEST["graph_end"])) {
-		$date1 = date("Y-m-d H:i:s", $_REQUEST["graph_start"]);
-		$date2 = date("Y-m-d H:i:s", $_REQUEST["graph_end"]);
+	if (isset($_REQUEST['graph_end']) && strlen($_REQUEST['graph_end'])) {
+		$date1 = date('Y-m-d H:i:s', $_REQUEST['graph_start']);
+		$date2 = date('Y-m-d H:i:s', $_REQUEST['graph_end']);
 	}else{
-		$date1 = $timespan["current_value_date1"];
-		$date2 = $timespan["current_value_date2"];
+		$date1 = $timespan['current_value_date1'];
+		$date2 = $timespan['current_value_date2'];
 	}
 
-	if (isset($graph_elements[1]["local_graph_id"])) {
-		$graph_local = db_fetch_row("SELECT * FROM graph_local WHERE id='" . $graph_elements[1]["local_graph_id"] . "'");
+	if (isset($graph_elements[1]['local_graph_id'])) {
+		$graph_local = db_fetch_row("SELECT * FROM graph_local WHERE id='" . $graph_elements[1]['local_graph_id'] . "'");
 
-		if (isset($graph_local["host_id"])) {
-			$host = db_fetch_row("SELECT * FROM host WHERE id='" . $graph_local["host_id"] . "'");
+		if (isset($graph_local['host_id'])) {
+			$host = db_fetch_row("SELECT * FROM host WHERE id='" . $graph_local['host_id'] . "'");
 
 			if (sizeof($host)) {
-				$host = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` WHERE host LIKE '%%" . $host["hostname"] . "%%'");
+				$host = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` WHERE host LIKE '%%" . $host['hostname'] . "%%'");
 
 				if (sizeof($host)) {
-					print "<a href='" . $config["url_path"] . "plugins/syslog/syslog.php?tab=syslog&host%5B%5D=" . $host["host_id"] . "&date1=" . $date1 . "&date2=" . $date2 . "&efacility=0&elevel=0'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
+					print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&host%5B%5D=' . $host['host_id'] . '&date1=' . $date1 . '&date2=' . $date2 . '&efacility=0&elevel=0') . "><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
 				}
 			}
 		}
 	}
+}
+
+function syslog_utilities_action($action) {
+	global $config, $colors, $refresh, $syslog_cnn;
+
+	if ($action == 'purge_syslog_hosts') {
+		$records = 0;
+
+		syslog_db_execute('DELETE FROM syslog_hosts WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
+		$records += $syslog_cnn->Affected_Rows();
+
+		syslog_db_execute('DELETE FROM syslog_host_facilities WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
+		$records += $syslog_cnn->Affected_Rows();
+
+		syslog_db_execute('DELETE FROM syslog_statistics WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
+		$records += $syslog_cnn->Affected_Rows();
+
+		$_SESSION['syslog_info'] = "<b>There were $records host records removed from the Syslog database";
+
+		raise_message('syslog_info');
+
+		header('Location: utilities.php');
+		exit;
+	}
+
+	return $action;
+}
+
+function syslog_utilities_list() {
+	global $config, $colors;
+
+	html_header(array('Syslog Utilities'), 2); ?>
+
+	<tr bgcolor='#<?php print $colors['form_alternate1'];?>'>
+		<td class='textArea'>
+			<a href='utilities.php?action=purge_syslog_hosts'>Purge Syslog Hosts</a>
+		</td>
+		<td class='textArea'>
+			This menu pick provides a means to remove hosts that are no longer reporting into the syslog facility to be purged from the system
+		</td>
+	</tr>
+	<?php
 }
 
 ?>
