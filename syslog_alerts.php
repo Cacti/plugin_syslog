@@ -83,6 +83,10 @@ function form_save() {
 function form_actions() {
 	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
 
+	/* ================= input validation ================= */
+	input_validate_input_number(get_request_var_post('drp_action'));
+	/* ==================================================== */
+
 	include(dirname(__FILE__) . "/config.php");
 
 	/* if we are to save this form, instead of display it */
