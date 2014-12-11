@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2013 The Cacti Group                                 |
+ | Copyright (C) 2007-2014 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -50,18 +50,18 @@ switch ($_REQUEST['action']) {
 		break;
 	case 'edit':
 	case 'newedit':
-		include_once($config['base_path'] . '/include/top_header.php');
+		top_header();
 
 		syslog_action_edit();
 
-		include_once($config['base_path'] . '/include/bottom_footer.php');
+		bottom_footer();
 		break;
 	default:
-		include_once($config['base_path'] . '/include/top_header.php');
+		top_header();
 
 		syslog_removal();
 
-		include_once($config['base_path'] . '/include/bottom_footer.php');
+		bottom_footer();
 		break;
 }
 
@@ -134,7 +134,7 @@ function form_actions() {
 		exit;
 	}
 
-	include_once($config['base_path'] . '/include/top_header.php');
+	top_header();
 
 	html_start_box('<strong>' . $syslog_actions{$_POST['drp_action']} . '</strong>', '60%', $colors['header_panel'], '3', 'center', '');
 
@@ -151,7 +151,7 @@ function form_actions() {
 			/* ==================================================== */
 
 			$removal_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE id=" . $matches[1]);
-			$removal_list  .= '<li>' . $removal_info . '<br>';
+			$removal_list  .= '<li>' . $removal_info . '</li>';
 			$removal_array[] = $matches[1];
 		}
 	}
@@ -159,7 +159,7 @@ function form_actions() {
 	if (sizeof($removal_array)) {
 		if ($_POST['drp_action'] == '1') { /* delete */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be deleted</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
@@ -169,7 +169,7 @@ function form_actions() {
 			$title = 'Delete Syslog Removal Rule(s)';
 		}else if ($_POST['drp_action'] == '2') { /* disable */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be disabled</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
@@ -179,7 +179,7 @@ function form_actions() {
 			$title = 'Disable Syslog Removal Rule(s)';
 		}else if ($_POST['drp_action'] == '3') { /* enable */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be enabled</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
@@ -189,7 +189,7 @@ function form_actions() {
 			$title = 'Enable Syslog Removal Rule(s)';
 		}else if ($_POST['drp_action'] == '4') { /* reprocess */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors['form_alternate1']. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Removal Rule(s) will be processed retroactively on the main syslog tables</p>
 						<ul>$removal_list</ul>";
 						print "</td></tr>
@@ -201,12 +201,12 @@ function form_actions() {
 
 		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title'";
 	}else{
-		print "<tr><td bgcolor='#" . $colors['form_alternate1']. "'><span class='textError'>You must select at least one Syslog Removal Rule.</span></td></tr>\n";
+		print "<tr><td class='even'><span class='textError'>You must select at least one Syslog Removal Rule.</span></td></tr>\n";
 		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";
 	}
 
 	print "	<tr>
-			<td align='right' bgcolor='#eaeaea'>
+			<td align='right' class='saveRow'>
 				<input type='hidden' name='action' value='actions'>
 				<input type='hidden' name='selected_items' value='" . (isset($removal_array) ? serialize($removal_array) : '') . "'>
 				<input type='hidden' name='drp_action' value='" . $_POST['drp_action'] . "'>
@@ -217,7 +217,7 @@ function form_actions() {
 
 	html_end_box();
 
-	include_once($config['base_path'] . '/include/bottom_footer.php');
+	bottom_footer();
 }
 
 function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $enabled) {
@@ -272,9 +272,9 @@ function api_syslog_removal_enable($id) {
 	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_remove` SET enabled='on' WHERE id='" . $id . "'");
 }
 
-function api_syslog_removal_reprocess() {
+function api_syslog_removal_reprocess($id) {
 	/* remove records retroactively */
-	$syslog_items   = syslog_remove_items('syslog', $uniqueID);
+	$syslog_items   = syslog_remove_items('syslog', $id);
 	$syslog_removed = $syslog_items['removed'];
 	$syslog_xferred = $syslog_items['xferred'];
 
@@ -332,7 +332,7 @@ function syslog_action_edit() {
 			WHERE id=' . $_GET['id']);
 		$header_label = '[edit: ' . $removal['name'] . ']';
 	}else if (isset($_GET['id']) && $_GET['action'] == 'newedit') {
-		$syslog_rec = syslog_db_fetch_row('SELECT * FROM `' . $syslogdb_default . '`.`syslog` WHERE seq=' . $_GET['id'] . " AND logtime='" . $_GET['date'] . "'");
+		$syslog_rec = syslog_db_fetch_row('SELECT * FROM `' . $syslogdb_default . '`.`syslog` WHERE seq=' . $_GET['id'] . (isset($_GET['date']) ? " AND logtime='" . $_GET['date'] . "'":""));
 
 		$header_label = '[new]';
 		if (sizeof($syslog_rec)) {
@@ -446,25 +446,25 @@ function syslog_action_edit() {
 function syslog_filter() {
 	global $colors, $config, $item_rows;
 	?>
-	<tr bgcolor='<?php print $colors['panel'];?>'>
+	<tr class='even'>
 		<form name='removal'>
 		<td>
 			<table cellpadding='2' cellspacing='0'>
 				<tr>
-					<td width='70'>
+					<td width='55'>
 						Enabled:
 					</td>
-					<td width='1'>
+					<td>
 						<select name='enabled' onChange='applyChange(document.removal)'>
 						<option value='-1'<?php if ($_REQUEST['enabled'] == '-1') {?> selected<?php }?>>All</option>
 						<option value='1'<?php if ($_REQUEST['enabled'] == '1') {?> selected<?php }?>>Yes</option>
 						<option value='0'<?php if ($_REQUEST['enabled'] == '0') {?> selected<?php }?>>No</option>
 						</select>
 					</td>
-					<td width='45'>
+					<td>
 						Rows:
 					</td>
-					<td width='1'>
+					<td>
 						<select name='rows' onChange='applyChange(document.removal)'>
 						<option value='-1'<?php if ($_REQUEST['rows'] == '-1') {?> selected<?php }?>>Default</option>
 						<?php
@@ -484,12 +484,12 @@ function syslog_filter() {
 					</td>
 				</tr>
 			</table>
-			<table cellpadding='1' cellspacing='0'>
+			<table cellpadding='2' cellspacing='0'>
 				<tr>
-					<td width='70'>
+					<td width='55'>
 						Search:
 					</td>
-					<td width='1'>
+					<td>
 						<input type='text' name='filter' size='30' value='<?php print $_REQUEST['filter'];?>'>
 					</td>
 				</tr>
@@ -601,40 +601,7 @@ function syslog_removal() {
 	</script>
 	<?php
 
-	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_removal.php?filter=" . $_REQUEST["filter"]);
-
-	if ($total_rows > 0) {
-		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
-					<td colspan='13'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog_removal.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
-								</td>\n
-								<td align='center' class='textHeaderDark'>
-									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
-								</td>\n
-								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog_removal.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}else{
-		$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
-					<td colspan='22'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='center' class='textHeaderDark'>
-									No Rows Found
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}
+	$nav = html_nav_bar("syslog_removal.php?filter=" . $_REQUEST["filter"], MAX_DISPLAY_PAGES, get_request_var_request("page"), $row_limit, $total_rows, 13, 'Removal Rules');
 
 	print $nav;
 
@@ -654,7 +621,7 @@ function syslog_removal() {
 	if (sizeof($removals) > 0) {
 		foreach ($removals as $removal) {
 			form_alternate_row_color($colors['alternate'], $colors['light'], $i, 'line' . $removal['id']); $i++;
-			form_selectable_cell("<a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']) . "'>" . (($_REQUEST['filter'] != '') ? eregi_replace('(' . preg_quote($_REQUEST['filter']) . ')', "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($removal['name']), read_config_option('max_title_data_source'))) : htmlentities($removal['name'])) . '</a>', $removal['id']);
+			form_selectable_cell("<a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']) . "'>" . (($_REQUEST['filter'] != '') ? eregi_replace('(' . preg_quote($_REQUEST['filter']) . ')', "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($removal['name']), read_config_option('max_title_length'))) : htmlentities($removal['name'])) . '</a>', $removal['id']);
 			form_selectable_cell((($removal['enabled'] == 'on') ? 'Yes' : 'No'), $removal['id']);
 			form_selectable_cell($message_types[$removal['type']], $removal['id']);
 			form_selectable_cell($removal['message'], $removal['id']);

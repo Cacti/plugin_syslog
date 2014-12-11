@@ -15,7 +15,7 @@
  | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
  | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
- | h.aloe: a syslog monitoring addon for Ian Berry's Cacti	           |
+ | h.aloe: a syslog monitoring addon for Ian Berry's Cacti	               |
  +-------------------------------------------------------------------------+
  | Originally released as aloe by: sidewinder at shitworks.com             |
  | Modified by: Harlequin <harlequin@cyberonic.com>                        |
@@ -210,8 +210,11 @@ function syslog_remove_items($table, $uniqueID) {
 
 	include(dirname(__FILE__) . '/config.php');
 
-	/* REMOVE ALL THE THINGS WE DONT WANT TO SEE */
-	$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
+	if ($table == 'syslog') {
+		$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on' AND id=$uniqueID");
+	}else{
+		$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
+	}
 
 	syslog_debug("Found   " . sizeof($rows) . ",  Removal Rule(s) to process");
 
@@ -448,7 +451,7 @@ function syslog_remove_items($table, $uniqueID) {
 			$debugm = '';
 			/* process the removal rule first */
 			if ($sql1 != '') {
-				/* move rows first */
+				/* now delete the remainder that match */
 				syslog_db_execute($sql1);
 			}
 
@@ -457,8 +460,8 @@ function syslog_remove_items($table, $uniqueID) {
 			$removed += $syslog_cnn->Affected_Rows();
 			$debugm   = "Deleted " . $removed . ", ";
 			if ($sql1 != '') {
-				$debugm   = "Moved   " . $messages_moved . ", ";
 				$xferred += $syslog_cnn->Affected_Rows();
+				$debugm   = "Moved   " . $xferred . ", ";
 			}
 
 			syslog_debug($debugm . " Message" . ($syslog_cnn->Affected_rows() == 1 ? "" : "s" ) .
@@ -631,7 +634,7 @@ function syslog_debug($message) {
 	}
 }
 
-function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html, $hosts) {
+function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html) {
 	global $config, $severities;
 
 	include(dirname(__FILE__) . "/config.php");
@@ -650,10 +653,6 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 
 		$id = 0;
 		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq");
-		$save["seq"]=$id;	
-		$save["alert_name"]= $alert_name;	
-                //insert trigged record into grid_host_alarm
-		api_plugin_hook_function('syslog_update_hostsalarm', $save);
 
 		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "', and Sequence '$id'", false, "SYSLOG");
 
@@ -672,14 +671,6 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 
 		$id = 0;
 		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq");
-		$save["seq"]=$id;
-		$save["alert_name"]=$alert_name;
-	
-		foreach($hosts as $host){
-		
-			$save["host"] = $host;
-			api_plugin_hook_function('syslog_update_hostsalarm', $save);
-		}
 
 		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, "SYSLOG");
 
@@ -694,7 +685,6 @@ function syslog_manage_items($from_table, $to_table) {
 
 	/* Select filters to work on */
 	$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
-	//$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on' AND message like 'last message repeated %'");
 
 	syslog_debug("Found   " . sizeof($rows) .  ",  Removal Rule(s)" .  " to process");
 
@@ -709,7 +699,7 @@ function syslog_manage_items($from_table, $to_table) {
 			$sql_sel = "";
 			$sql_dlt = "";
 
-            if ($remove['type'] == 'facility') {
+			if ($remove['type'] == 'facility') {
 				if ($remove['method'] != 'del') {
 					$sql_sel = "SELECT seq
 								FROM `" . $syslogdb_default . "`. $from_table

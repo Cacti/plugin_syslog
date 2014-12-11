@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2013 The Cacti Group                                 |
+ | Copyright (C) 2007-2014 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -42,9 +42,10 @@ $title = "Syslog Viewer";
 
 /* make sure syslog is setup correctly */
 if (!syslog_check_dependencies()) {
-	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
+	general_header();
 	cacti_log("SYSLOG: You are missing a required dependency, please install the '<a href='http://cactiusers.org/'>Settings'</a> plugin.", true, "SYSTEM");
 	print "<br><br><center><font color=red>You are missing a dependency for Syslog, please install the '<a href='http://cactiusers.org'>Settings</a>' plugin.</font></color>";
+	bottom_footer();
 	exit;
 }
 
@@ -64,7 +65,7 @@ if (isset($_REQUEST["export"])) {
 	/* clear output so reloads wont re-download */
 	unset($_REQUEST["output"]);
 }else{
-	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
+	general_header();
 
 	syslog_display_tabs($current_tab);
 
@@ -76,10 +77,11 @@ if (isset($_REQUEST["export"])) {
 		syslog_messages($current_tab);
 	}
 
-	include_once("./include/bottom_footer.php");
+	bottom_footer();
 }
 
 $_SESSION["sess_nav_level_cache"] = '';
+
 function syslog_display_tabs($current_tab) {
 	global $config;
 
@@ -101,41 +103,33 @@ function syslog_display_tabs($current_tab) {
 	}
 
 	/* draw the tabs */
-	print "<table class='tabs' width='100%' cellspacing='0' cellpadding='3' border='0' align='center'><tr>\n";
+	print "<div class='tabs'><nav><ul>\n";
 
 	if (sizeof($tabs_syslog) > 0) {
 	foreach (array_keys($tabs_syslog) as $tab_short_name) {
-		print "<td style='padding:3px 10px 2px 5px;background-color:" . (($tab_short_name == $current_tab) ? "silver;" : "#DFDFDF;") .
-			"white-space:nowrap;'" .
-			" nowrap width='1%'" .
-			" align='center' class='tab'>
-			<span class='textHeader'><a href='" . htmlspecialchars($config['url_path'] .
+		print "<li><a " . (($tab_short_name == $current_tab) ? "class='selected'":"") . " href='" . htmlspecialchars($config['url_path'] .
 			"plugins/syslog/syslog.php?" .
 			"tab=" . $tab_short_name) .
-			"'>$tabs_syslog[$tab_short_name]</a></span>
-		</td>\n
-		<td width='1'></td>\n";
+			"'>$tabs_syslog[$tab_short_name]</a></li>\n";
 	}
 	}
-	print "<td></td>\n</tr></table>\n";
+	print "</ul></nav></div>\n";
 }
 
 function syslog_view_alarm() {
 	global $config, $colors;
 
 	include(dirname(__FILE__) . "/config.php");
-	include_once(dirname(__FILE__) . "/include/top_syslog_header.php");
 
-	echo "<table cellpadding='3' cellspacing='0' align='center' style='width:100%;border:1px solid #" . $colors["header"] . ";'>";
-	echo "<tr><td class='textHeaderDark' style='background-color:#" . $colors["header"] . ";'>Syslog Alert View</td></tr>";
-	echo "<tr><td style='background-color:#FFFFFF;'>";
+	echo "<table class='cactiTableTitle' cellpadding='3' cellspacing='0' align='center' width='100%'>";
+	echo "<tr class='tableHeader'><td class='textHeaderDark'><strong>Syslog Alert View</strong></td></tr>";
+	echo "<tr><td class='odd'>\n";
 
 	$html = syslog_db_fetch_cell("SELECT html FROM `" . $syslogdb_default . "`.`syslog_logs` WHERE seq=" . $_REQUEST["id"]);
 	echo $html;
 
 	echo "</td></tr></table>";
 
-	include_once("./include/bottom_footer.php");
 	exit;
 }
 
@@ -328,40 +322,7 @@ function syslog_statistics() {
 	</script>
 	<?php
 
-	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog.php?tab=stats&filter=" . $_REQUEST["filter"]);
-
-	if ($total_rows > 0) {
-		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
-					<td colspan='13'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=stats&page=" . ($_REQUEST["page"]-1)) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
-								</td>\n
-								<td align='center' class='textHeaderDark'>
-									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
-								</td>\n
-								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=stats&page=" . ($_REQUEST["page"]+1)) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}else{
-		$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
-					<td colspan='22'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='center' class='textHeaderDark'>
-									No Rows Found
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}
+	$nav = html_nav_bar("syslog.php?tab=stats&filter=" . get_request_var_request("filter"), MAX_DISPLAY_PAGES, get_request_var_request("page"), $row_limit, $total_rows, 4, 'Messages', 'page', 'main');
 
 	print $nav;
 
@@ -446,7 +407,7 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 function syslog_stats_filter() {
 	global $colors, $config, $item_rows;
 	?>
-	<tr bgcolor="#<?php print $colors["panel"];?>">
+	<tr class='even'>
 		<form name="stats">
 		<td>
 			<table cellpadding="2" cellspacing="0">
@@ -824,13 +785,13 @@ function syslog_filter($sql_where, $tab) {
 	<form style='margin:0px;padding:0px;' id='syslog_form' name='syslog_form' method='post' action='syslog.php'>
 	<table width='100%' cellspacing='0' cellpadding='0' border='0'>
 		<tr>
-			<td colspan='2' style='background-color:#EFEFEF;'>
+			<td colspan='2'>
 				<table width='100%' cellpadding='0' cellspacing='0' border='0'>
 					<tr>
 						<td>
 							<?php
 							html_start_box("<strong>Syslog Message Filter$filter_text", '100%', $colors['header'], '3', 'center', '');?>
-							<tr bgcolor='#<?php print $colors['panel'];?>' class='noprint'>
+							<tr class='even noprint'>
 								<td class='noprint'>
 									<table cellpadding='2' cellspacing='0' border='0'>
 										<tr>
@@ -1034,7 +995,7 @@ function syslog_filter($sql_where, $tab) {
 						<td>
 							<?php html_start_box('<strong>Select Host(s)</strong>', '100%', $colors['header'], '3', 'center', ''); ?>
 							<tr>
-								<td>
+								<td class='even'>
 									<select title='Host Filters' id='host_select' name='host[]' multiple size='20' style='width: 150px; overflow: scroll; height: auto;' onChange='syslogFilterChange()'>
 										<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (((is_array($_REQUEST['host'])) && ($_REQUEST['host'][0] == '0')) || ($reset_multi)) {?> selected<?php }?>>Show All Hosts</option><?php }else{?>
 										<option id='host_all' value='0'<?php if (((is_array($_REQUEST['host'])) && ($_REQUEST['host'][0] == '0')) || ($reset_multi)) {?> selected<?php }?>>Show All Logs</option>
@@ -1233,44 +1194,9 @@ function syslog_messages($tab="syslog") {
 	$syslog_messages = get_syslog_messages($sql_where, $row_limit, $tab);
 	$total_rows      = syslog_filter($sql_where, $tab);
 
-	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog.php?tab=$tab");
-
-	if ($total_rows > 0) {
-		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
-					<td colspan='13'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=$tab&page=" . ($_REQUEST["page"]-1)) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
-								</td>\n
-								<td align='center' class='textHeaderDark'>
-									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
-								</td>\n
-								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='" . htmlspecialchars("syslog.php?tab=$tab&page=" . ($_REQUEST["page"]+1)) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}else{
-		$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
-					<td colspan='22'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='center' class='textHeaderDark'>
-									No Rows Found
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}
-
-	print $nav;
-
 	if ($tab == "syslog") {
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request("page"), $row_limit, $total_rows, 6, 'Messages', 'page', 'main');
+
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
 				"nosortt" => array("Actions", "ASC"),
@@ -1287,6 +1213,8 @@ function syslog_messages($tab="syslog") {
 				"facility_id" => array("Facility", "ASC"),
 				"priority_id" => array("Priority", "ASC"));
 		}
+
+		print $nav;
 
 		html_header_sort($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
@@ -1312,12 +1240,12 @@ function syslog_messages($tab="syslog") {
 				}
 				print "<td>" . $hosts[$syslog_message["host_id"]] . "</td>\n";
 				print "<td>" . $syslog_message["logtime"] . "</td>\n";
-				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))):title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))) . "</td>\n";
+				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span class='filteredValue'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))):title_trim($syslog_message[$syslog_incoming_config["textField"]], get_request_var_request("trimval"))) . "</td>\n";
 				print "<td>" . ucfirst($facilities[$syslog_message["facility_id"]]) . "</td>\n";
 				print "<td>" . ucfirst($priorities[$syslog_message["priority_id"]]) . "</td>\n";
 			}
 		}else{
-			print "<tr><td><em>No Messages</em></td></tr>";
+			print "<tr><td colspan='11'><em>No Syslog Messages</em></td></tr>";
 		}
 
 		print $nav;
@@ -1325,6 +1253,10 @@ function syslog_messages($tab="syslog") {
 
 		syslog_syslog_legend();
 	}else{
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request("page"), $row_limit, $total_rows, 8, 'Alert Log Rows', 'page', 'main');
+
+		print $nav;
+
 		$display_text = array(
 			"name" => array("Alert Name", "ASC"),
 			"severity" => array("Severity", "ASC"),
@@ -1362,13 +1294,13 @@ function syslog_messages($tab="syslog") {
 				print "<td>" . (isset($severities[$log["severity"]]) ? $severities[$log["severity"]]:"Unknown") . "</td>\n";
 				print "<td>" . $log["count"] . "</td>\n";
 				print "<td>" . $log["logtime"] . "</td>\n";
-				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim($log["logmsg"], get_request_var_request("trimval"))):title_trim($log["logmsg"], get_request_var_request("trimval"))) . "</td>\n";
+				print "<td>" . (strlen($_REQUEST["filter"]) ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span class='filteredValue'>\\1</span>", title_trim($log["logmsg"], get_request_var_request("trimval"))):title_trim($log["logmsg"], get_request_var_request("trimval"))) . "</td>\n";
 				print "<td>" . $log["host"] . "</td>\n";
 				print "<td>" . ucfirst($log["facility"]) . "</td>\n";
 				print "<td>" . ucfirst($log["priority"]) . "</td>\n";
 			}
 		}else{
-			print "<tr><td><em>No Messages</em></td></tr>";
+			print "<tr><td colspan='11'><em>No Alert Log Messages</em></td></tr>";
 		}
 
 		print $nav;

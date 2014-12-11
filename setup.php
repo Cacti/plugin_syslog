@@ -817,7 +817,7 @@ function syslog_setup_table_new($options) {
 function syslog_version () {
 	return array(
 		'name'     => 'syslog',
-		'version'  => '1.3',
+		'version'  => '1.4',
 		'longname' => 'Syslog Monitoring',
 		'author'   => 'Jimmy Conner',
 		'homepage' => 'http://cactiusers.org',
@@ -848,7 +848,7 @@ function syslog_poller_bottom() {
 function syslog_install_advisor($syslog_exists, $db_version) {
 	global $config, $colors, $syslog_retentions;
 
-	include($config["include_path"] . "/top_header.php");
+	top_header();
 
 	syslog_config_arrays();
 
@@ -916,7 +916,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 
 	print "<table align='center' width='80%'><tr><td>\n";
 	html_start_box("<strong>Syslog " . $type . " Advisor</strong>", "100%", $colors["header"], "3", "center", "");
-	print "<tr><td bgcolor='#FFFFFF'>\n";
+	print "<tr><td>\n";
 	if ($syslog_exists) {
 		print "<h2 style='color:red;'>WARNING: Syslog Upgrade is Time Consuming!!!</h2>\n";
 		print "<p>The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended
@@ -950,6 +950,8 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 	html_end_box();
 	syslog_confirm_button("install", "plugins.php", $syslog_exists);
 	print "</td></tr></table>\n";
+
+	bottom_footer();
 	exit;
 }
 
@@ -962,7 +964,7 @@ function syslog_uninstall_advisor() {
 
 	$syslog_exists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
 
-	include($config["include_path"] . "/top_header.php");
+	top_header();
 
 	$fields_syslog_update = array(
 		"uninstall_method" => array(
@@ -993,6 +995,8 @@ function syslog_uninstall_advisor() {
 	html_end_box();
 	syslog_confirm_button("uninstall", "plugins.php", $syslog_exists);
 	print "</td></tr></table>\n";
+
+	bottom_footer();
 	exit;
 }
 
@@ -1008,9 +1012,9 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 	}
 
 	?>
-	<table align='center' width='100%' style='background-color: #ffffff; border: 1px solid #bbbbbb;'>
+	<table align='center' width='100%'>
 		<tr>
-			<td bgcolor='#F5F5F5' align='right'>
+			<td class='saveRow' align='right'>
 				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='Cancel'>
 				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>'>
 			</td>
@@ -1499,7 +1503,7 @@ function syslog_utilities_list() {
 
 	html_header(array('Syslog Utilities'), 2); ?>
 
-	<tr bgcolor='#<?php print $colors['form_alternate1'];?>'>
+	<tr class='even'>
 		<td class='textArea'>
 			<a href='utilities.php?action=purge_syslog_hosts'>Purge Syslog Hosts</a>
 		</td>

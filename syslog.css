@@ -5,17 +5,25 @@
 
 .table {
 	align:center;
-	border-color:#00438c;
-	border-style:solid;
-	border-width:2px;
 	width:100%;
 }
 
+.table tr th.th {
+    background: rgba(138,179,105,1);
+    background: -moz-linear-gradient(top, rgba(138,179,105,1) 0%, rgba(63,117,15,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(138,179,105,1)), color-stop(100%, rgba(63,117,15,1)));
+    background: -webkit-linear-gradient(top, rgba(138,179,105,1) 0%, rgba(63,117,15,1) 100%);
+    background: -o-linear-gradient(top, rgba(138,179,105,1) 0%, rgba(63,117,15,1) 100%);
+    background: -ms-linear-gradient(top, rgba(138,179,105,1) 0%, rgba(63,117,15,1) 100%);
+    background: linear-gradient(to bottom, rgba(138,179,105,1) 0%, rgba(63,117,15,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8ab369', endColorstr='#3f750f', GradientType=0 );
+}
+
 .th {
-	background-color:#00438c;
-	color:white;
-	font-family:Verdana,Arial,Helvetica,sans-serif;
-	text-align:left;
+    color: snow;
+    font-weight:bold;
+    vertical-align:bottom;
+    text-align:left;
 }
 
 .td {

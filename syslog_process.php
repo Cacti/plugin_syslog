@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2013 The Cacti Group                                 |
+ | Copyright (C) 2007-2014 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -485,6 +485,16 @@ if (read_config_option("syslog_alert_retention") > 0) {
 		WHERE logtime<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
 
 	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
+
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_hosts`
+		WHERE last_updated<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
+
+	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Host Record(s)");
+
+	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_host_facilities`
+		WHERE last_updated<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
+
+	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Host/Facility Record(s)");
 }
 
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */

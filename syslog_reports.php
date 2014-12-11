@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2013 The Cacti Group                                 |
+ | Copyright (C) 2007-2014 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -41,18 +41,18 @@ switch ($_REQUEST["action"]) {
 
 		break;
 	case 'edit':
-		include_once($config['base_path'] . "/include/top_header.php");
+		top_header();
 
 		syslog_action_edit();
 
-		include_once($config['base_path'] . "/include/bottom_footer.php");
+		bottom_footer();
 		break;
 	default:
-		include_once($config['base_path'] . "/include/top_header.php");
+		top_header();
 
 		syslog_report();
 
-		include_once($config['base_path'] . "/include/bottom_footer.php");
+		bottom_footer();
 		break;
 }
 
@@ -122,7 +122,7 @@ function form_actions() {
 		exit;
 	}
 
-	include_once($config['base_path'] . "/include/top_header.php");
+	top_header();
 
 	html_start_box("<strong>" . $syslog_actions{$_POST["drp_action"]} . "</strong>", "60%", $colors["header_panel"], "3", "center", "");
 
@@ -139,7 +139,7 @@ function form_actions() {
 			/* ==================================================== */
 
 			$report_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_reports` WHERE id=" . $matches[1]);
-			$report_list  .= "<li>" . $report_info . "<br>";
+			$report_list  .= "<li>" . $report_info . "</li>";
 			$report_array[] = $matches[1];
 		}
 	}
@@ -147,7 +147,7 @@ function form_actions() {
 	if (sizeof($report_array)) {
 		if ($_POST["drp_action"] == "1") { /* delete */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Report(s) will be deleted</p>
 						<ul>$report_list</ul>";
 						print "</td></tr>
@@ -157,7 +157,7 @@ function form_actions() {
 			$title = "Delete Syslog Report(s)";
 		}else if ($_POST["drp_action"] == "2") { /* disable */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Report(s) will be disabled</p>
 						<ul>$report_list</ul>";
 						print "</td></tr>
@@ -167,7 +167,7 @@ function form_actions() {
 			$title = "Disable Syslog Report(s)";
 		}else if ($_POST["drp_action"] == "3") { /* enable */
 			print "	<tr>
-					<td class='textArea' bgcolor='#" . $colors["form_alternate1"]. "'>
+					<td class='textArea'>
 						<p>If you click 'Continue', the following Syslog Report(s) will be enabled</p>
 						<ul>$report_list</ul>";
 						print "</td></tr>
@@ -179,12 +179,12 @@ function form_actions() {
 
 		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title'";
 	}else{
-		print "<tr><td bgcolor='#" . $colors["form_alternate1"]. "'><span class='textError'>You must select at least one Syslog Report.</span></td></tr>\n";
+		print "<tr><td class='odd'><span class='textError'>You must select at least one Syslog Report.</span></td></tr>\n";
 		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";
 	}
 
 	print "	<tr>
-			<td align='right' bgcolor='#eaeaea'>
+			<td align='right' class='saveRow'>
 				<input type='hidden' name='action' value='actions'>
 				<input type='hidden' name='selected_items' value='" . (isset($report_array) ? serialize($report_array) : '') . "'>
 				<input type='hidden' name='drp_action' value='" . $_POST["drp_action"] . "'>
@@ -195,7 +195,7 @@ function form_actions() {
 
 	html_end_box();
 
-	include_once($config['base_path'] . "/include/bottom_footer.php");
+	bottom_footer();
 }
 
 function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
@@ -431,50 +431,50 @@ function syslog_action_edit() {
 function syslog_filter() {
 	global $colors, $config, $item_rows;
 	?>
-	<tr bgcolor="<?php print $colors["panel"];?>">
+	<tr class='even'>
 		<form name="reports">
 		<td>
-			<table cellpadding="1" cellspacing="0">
+			<table cellpadding="2" cellspacing="0">
 				<tr>
-					<td width="70">
-						Enabled:&nbsp;
+					<td width="55">
+						Enabled:
 					</td>
-					<td width="1">
+					<td>
 						<select name="enabled" onChange="applyChange(document.reports)">
-						<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
-						<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
-						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
+							<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
+							<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
+							<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
 						</select>
 					</td>
-					<td width="45">
-						&nbsp;Rows:&nbsp;
+					<td>
+						Rows:
 					</td>
-					<td width="1">
+					<td>
 						<select name="rows" onChange="applyChange(document.reports)">
-						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
-						<?php
-							if (sizeof($item_rows) > 0) {
-							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
-							}
-							}
-						?>
+							<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
+							<?php
+								if (sizeof($item_rows) > 0) {
+								foreach ($item_rows as $key => $value) {
+									print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+								}
+								}
+							?>
 						</select>
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="go" value="Go" title="Search">
+						<input type="submit" name="go" value="Go" title="Search">
 					</td>
 					<td>
-						&nbsp;<input type="submit" name="clear" value="Clear">
+						<input type="submit" name="clear" value="Clear">
 					</td>
 				</tr>
 			</table>
-			<table cellpadding="1" cellspacing="0">
+			<table cellpadding="2" cellspacing="0">
 				<tr>
-					<td width="70">
-						Search:&nbsp;
+					<td width="55">
+						Search:
 					</td>
-					<td width="1">
+					<td>
 						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
 					</td>
 				</tr>
@@ -588,53 +588,20 @@ function syslog_report() {
 	</script>
 	<?php
 
-	/* generate page list */
-	$url_page_select = get_page_list($_REQUEST["page"], MAX_DISPLAY_PAGES, $row_limit, $total_rows, "syslog_reports.php?filter=" . $_REQUEST["filter"]);
-
-	if ($total_rows > 0) {
-		$nav = "<tr bgcolor='#" . $colors["header"] . "'>
-					<td colspan='13'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='left' class='textHeaderDark'>
-									<strong>&lt;&lt; "; if ($_REQUEST["page"] > 1) { $nav .= "<a class='linkOverDark' href='syslog_reports.php?report=arp&page=" . ($_REQUEST["page"]-1) . "'>"; } $nav .= "Previous"; if ($_REQUEST["page"] > 1) { $nav .= "</a>"; } $nav .= "</strong>
-								</td>\n
-								<td align='center' class='textHeaderDark'>
-									Showing Rows " . ($total_rows == 0 ? "None" : (($row_limit*($_REQUEST["page"]-1))+1) . " to " . ((($total_rows < $row_limit) || ($total_rows < ($row_limit*$_REQUEST["page"]))) ? $total_rows : ($row_limit*$_REQUEST["page"])) . " of $total_rows [$url_page_select]") . "
-								</td>\n
-								<td align='right' class='textHeaderDark'>
-									<strong>"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "<a class='linkOverDark' href='syslog_reports.php?report=arp&page=" . ($_REQUEST["page"]+1) . "'>"; } $nav .= "Next"; if (($_REQUEST["page"] * $row_limit) < $total_rows) { $nav .= "</a>"; } $nav .= " &gt;&gt;</strong>
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}else{
-		$nav = "<tr bgcolor='#" . $colors["header"] . "' class='noprint'>
-					<td colspan='22'>
-						<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-							<tr>
-								<td align='center' class='textHeaderDark'>
-									No Rows Found
-								</td>\n
-							</tr>
-						</table>
-					</td>
-				</tr>\n";
-	}
+	$nav = html_nav_bar("syslog_reports.php?filter=" . $_REQUEST["filter"], MAX_DISPLAY_PAGES, get_request_var_request("page"), $row_limit, $total_rows, 10, 'Reports');
 
 	print $nav;
 
 	$display_text = array(
-		"name" => array("Report<br>Name", "ASC"),
-		"enabled" => array("<br>Enabled", "ASC"),
-		"type" => array("Match<br>Type", "ASC"),
-		"message" => array("Search<br>String", "ASC"),
-		"timespan" => array("<br>Frequency", "ASC"),
-		"timepart" => array("Send<br>Time", "ASC"),
-		"lastsent" => array("Last<br>Sent", "ASC"),
-		"date" => array("Last<br>Modified", "ASC"),
-		"user" => array("By<br>User", "DESC"));
+		"name" => array("Report Name", "ASC"),
+		"enabled" => array("Enabled", "ASC"),
+		"type" => array("Match Type", "ASC"),
+		"message" => array("Search String", "ASC"),
+		"timespan" => array("Frequency", "ASC"),
+		"timepart" => array("Send Time", "ASC"),
+		"lastsent" => array("Last Sent", "ASC"),
+		"date" => array("Last Modified", "ASC"),
+		"user" => array("By User", "DESC"));
 
 	html_header_sort_checkbox($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
 
@@ -642,7 +609,7 @@ function syslog_report() {
 	if (sizeof($reports) > 0) {
 		foreach ($reports as $report) {
 			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $report["id"]); $i++;
-			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_reports.php?action=edit&id=" . $report["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($report["name"]), read_config_option("max_title_data_source"))) : htmlentities($report["name"])) . "</a>", $report["id"]);
+			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_reports.php?action=edit&id=" . $report["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($report["name"]), read_config_option("max_title_length"))) : htmlentities($report["name"])) . "</a>", $report["id"]);
 			form_selectable_cell((($report["enabled"] == "on") ? "Yes" : "No"), $report["id"]);
 			form_selectable_cell($message_types[$report["type"]], $report["id"]);
 			form_selectable_cell($report["message"], $report["id"]);
