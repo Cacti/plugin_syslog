@@ -190,7 +190,7 @@ function syslog_check_upgrade() {
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 	if ($current != $old || $old_pia) {
 		/* update realms for old versions */
-		if ($old < 1.0 || $old = '' || $old_pia) {
+		if ($old < 1.0 || $old == '' || $old_pia) {
 			plugin_syslog_install();
 		}else{
 			if ($old < 1.01) {
