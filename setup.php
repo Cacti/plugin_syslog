@@ -152,8 +152,7 @@ function syslog_connect() {
 			if (!isset($syslogdb_port)) {
 				$syslogdb_port = "3306";
 			}
-			$cnn_str = "mysqli://$syslogdb_username:$syslogdb_password@$syslogdb_hostname/$syslogdb_default?persist=0&port=$syslogdb_port";
-			$syslog_cnn = NewADOConnection($cnn_str);
+			$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
 			if ($syslog_cnn == false) {
 					echo "Can not connect\n";exit;
 			}
@@ -827,12 +826,6 @@ function syslog_version () {
 }
 
 function syslog_check_dependencies() {
-	global $plugins;
-
-	if (db_fetch_cell("SELECT directory FROM plugin_config WHERE directory='settings' AND status='1'") == '') {
-		return false;
-	}
-
 	return true;
 }
 
