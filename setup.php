@@ -1472,13 +1472,13 @@ function syslog_utilities_action($action) {
 		$records = 0;
 
 		syslog_db_execute('DELETE FROM syslog_hosts WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
-		$records += $syslog_cnn->Affected_Rows();
+		$records += db_affected_rows($syslog_cnn);
 
 		syslog_db_execute('DELETE FROM syslog_host_facilities WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
-		$records += $syslog_cnn->Affected_Rows();
+		$records += db_affected_rows($syslog_cnn);
 
 		syslog_db_execute('DELETE FROM syslog_statistics WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
-		$records += $syslog_cnn->Affected_Rows();
+		$records += db_affected_rows($syslog_cnn);
 
 		$_SESSION['syslog_info'] = "<b>There were $records host records removed from the Syslog database";
 

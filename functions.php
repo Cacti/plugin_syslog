@@ -92,12 +92,12 @@ function syslog_traditional_manage() {
 	/* delete from the main syslog table first */
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog` WHERE logtime < '$retention'");
 
-	$syslog_deleted = $syslog_cnn->Affected_Rows();
+	$syslog_deleted = db_affected_rows($syslog_cnn);
 
 	/* now delete from the syslog removed table */
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_removed` WHERE logtime < '$retention'");
 
-	$syslog_deleted += $syslog_cnn->Affected_Rows();
+	$syslog_deleted += db_affected_rows($syslog_cnn);
 
 	syslog_debug("Deleted " . $syslog_deleted .
 		",  Syslog Message(s)" .
@@ -457,14 +457,14 @@ function syslog_remove_items($table, $uniqueID) {
 
 			/* now delete the remainder that match */
 			syslog_db_execute($sql);
-			$removed += $syslog_cnn->Affected_Rows();
+			$removed += db_affected_rows($syslog_cnn);
 			$debugm   = "Deleted " . $removed . ", ";
 			if ($sql1 != '') {
-				$xferred += $syslog_cnn->Affected_Rows();
+				$xferred += db_affected_rows($syslog_cnn);
 				$debugm   = "Moved   " . $xferred . ", ";
 			}
 
-			syslog_debug($debugm . " Message" . ($syslog_cnn->Affected_rows() == 1 ? "" : "s" ) .
+			syslog_debug($debugm . " Message" . (db_affected_rows($syslog_cnn) == 1 ? "" : "s" ) .
 					" for removal rule '" . $remove['name'] . "'");
 		}
 	}
@@ -794,7 +794,7 @@ function syslog_manage_items($from_table, $to_table) {
 												(SELECT facility_id, priority_id, host_id, logtime, message 
 													FROM `". $syslogdb_default . "`.". $from_table ."
 													WHERE seq in (" . $all_seq ."))");
-						$messages_moved = $syslog_cnn->Affected_Rows();
+						$messages_moved = db_affected_rows($syslog_cnn);
 
 						if ($messages_moved > 0) {
 							syslog_db_execute("DELETE FROM `". $syslogdb_default . "`.`" . $from_table ."` 
@@ -810,7 +810,7 @@ function syslog_manage_items($from_table, $to_table) {
 				if ($sql_dlt != '') {
 					/* now delete the remainder that match */
 					syslog_db_execute($sql_dlt);
-					$removed += $syslog_cnn->Affected_Rows();
+					$removed += db_affected_rows($syslog_cnn);
 					$debugm   = "Deleted " . $removed . " Message(s)";
 				}
 					

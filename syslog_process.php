@@ -170,7 +170,7 @@ syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_incoming` SET prio
 
 api_plugin_hook('plugin_syslog_before_processing');
 
-$syslog_incoming = $syslog_cnn->Affected_Rows();
+$syslog_incoming = db_affected_rows($syslog_cnn);
 
 syslog_debug("Found   " . $syslog_incoming .
 	",  New Message(s)" .
@@ -229,7 +229,7 @@ if (read_config_option("syslog_statistics") == "on") {
 			GROUP BY host_id, priority_id, facility_id) AS merge
 		GROUP BY host_id, priority_id, facility_id");
 
-	$stats = $syslog_cnn->Affected_Rows();
+	$stats = db_affected_rows($syslog_cnn);
 
 	syslog_debug("Stats   " . $stats . ",  Record(s) to the 'syslog_statistics' table");
 }
@@ -457,21 +457,21 @@ syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, pr
 		ON sh.host=si.host
 		WHERE status=' . $uniqueID . ") AS merge");
 
-$moved = $syslog_cnn->Affected_Rows();
+$moved = db_affected_rows($syslog_cnn);
 
 syslog_debug("Moved   " . $moved . ",  Message(s) to the 'syslog' table");
 
 /* remove flagged messages */
 syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_incoming` WHERE status=" . $uniqueID);
 
-syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Already Processed Message(s) from incoming");
+syslog_debug("Deleted " . db_affected_rows($syslog_cnn) . ",  Already Processed Message(s) from incoming");
 
 /* remove stats messages */
 if (read_config_option("syslog_statistics") == "on") {
 	if (read_config_option("syslog_retention") > 0) {
 		syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_statistics`
 			WHERE insert_time<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_retention")*86400)) . "'");
-		syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog Statistics Record(s)");
+		syslog_debug("Deleted " . db_affected_rows($syslog_cnn) . ",  Syslog Statistics Record(s)");
 	}
 }else{
 	syslog_db_execute("TRUNCATE `" . $syslogdb_default . "`.`syslog_statistics`");
@@ -484,7 +484,7 @@ if (read_config_option("syslog_alert_retention") > 0) {
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_logs`
 		WHERE logtime<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
 
-	syslog_debug("Deleted " . $syslog_cnn->Affected_Rows() . ",  Syslog alarm log Record(s)");
+	syslog_debug("Deleted " . db_affected_rows($syslog_cnn) . ",  Syslog alarm log Record(s)");
 
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_hosts`
 		WHERE last_updated<'" . date("Y-m-d H:i:s", time()-(read_config_option("syslog_alert_retention")*86400)) . "'");
@@ -584,7 +584,7 @@ foreach($reports as $syslog_report) {
 			$sql  .= " ORDER BY logtime DESC";
 			$items = syslog_db_fetch_assoc($sql);
 
-			syslog_debug("We have " . $syslog_cnn->Affected_Rows() . " items for the Report");
+			syslog_debug("We have " . db_affected_rows($syslog_cnn) . " items for the Report");
 
 			if (sizeof($items)) {
 			foreach($items as $item) {
