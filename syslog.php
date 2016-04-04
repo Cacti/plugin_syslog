@@ -827,7 +827,7 @@ function syslog_filter($sql_where, $tab) {
 		};
 
 		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(new_href, json).done(function(data) {
+		$.post(href, json).done(function(data) {
 			$('#main').html(data);
 			applySkin();
 		});
@@ -845,7 +845,7 @@ function syslog_filter($sql_where, $tab) {
 		};
 	
 		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(new_href, json).done(function(data) {
+		$.post(href, json).done(function(data) {
 			$('#main').html(data);
 			applySkin();
 		});
@@ -863,7 +863,7 @@ function syslog_filter($sql_where, $tab) {
 		};
 	
 		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(new_href, json).done(function(data) {
+		$.post(href, json).done(function(data) {
 			$('#main').html(data);
 			applySkin();
 		});
@@ -880,7 +880,7 @@ function syslog_filter($sql_where, $tab) {
 		};
 	
 		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(new_href, json).done(function(data) {
+		$.post(href, json).done(function(data) {
 			$('#main').html(data);
 			applySkin();
 		});
