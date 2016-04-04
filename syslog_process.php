@@ -34,7 +34,7 @@ $no_http_headers = true;
 ini_set('max_execution_time', 3600);
 ini_set('memory_limit', '256M');
 
-global $syslog_debug;
+global $syslog_debug, $syslog_facilities, $syslog_levels;
 
 $syslog_debug = false;
 
@@ -198,9 +198,36 @@ if (read_config_option('syslog_validate_hostname') == 'on') {
 }
 
 /* update the hosts, facilities, and priorities tables */
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_facilities` (facility) SELECT DISTINCT facility FROM `' . $syslogdb_default . '`.`syslog_incoming` ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()');
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_priorities` (priority) SELECT DISTINCT priority FROM `' . $syslogdb_default . '`.`syslog_incoming` ON DUPLICATE KEY UPDATE priority=VALUES(priority), last_updated=NOW()');
+$facilities = syslog_db_fetch_assoc('SELECT DISTINCT facility FROM `' . $syslogdb_default . '`.`syslog_incoming`');
+if (sizeof($facilities)) {
+	foreach($facility as $f) {
+		if (is_numeric($f['facility'])) {
+			$facility = $syslog_facilities[$f['facility']];
+			syslog_db_exec('UPDATE IGNORE `' . $syslogdb_default . "`.`syslog_facilities` SET facility='$facility' WHERE facility=" . $f['facility']);
+		}else{
+			$facility = $f['facility'];
+		}
+
+		syslog_db_execute('INSERT INTO `' . $syslogdb_default . "`.`syslog_facilities` (facility) VALUES ($facility) ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()");
+	}
+}
+
+$priorities = syslog_db_fetch_assoc('SELECT DISTINCT priority FROM `' . $syslogdb_default . '`.`syslog_incoming`');
+if (sizeof($priorities)) {
+	foreach($priorities as $p) {
+		if (is_numeric($p['priority'])) {
+			$priority = $syslog_levels[$p['priority']];
+			syslog_db_exec('UPDATE IGNORE `' . $syslogdb_default . "`.`syslog_priorities` SET priority='$priority' WHERE priority=" . $p['priority']);
+		}else{
+			$priority = $p['priority'];
+		}
+
+		syslog_db_execute('INSERT INTO `' . $syslogdb_default . "`.`syslog_priority` (priority) VALUES ($priority) ON DUPLICATE KEY UPDATE priority=VALUES(priority), last_updated=NOW()");
+	}
+}
+
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_hosts` (host) SELECT DISTINCT host FROM `' . $syslogdb_default . '`.`syslog_incoming` WHERE status=' . $uniqueID . ' ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()');
+
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_host_facilities`
 	(host_id, facility_id)
 	SELECT host_id, facility_id

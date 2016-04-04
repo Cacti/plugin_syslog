@@ -434,9 +434,6 @@ function syslog_stats_filter() {
 					<td>
 						<input id='clear' type='button' value='Clear'>
 					</td>
-					<td>
-						<input id='save' type='button' value='Save'>
-					</td>
 				</tr>
 			</table>
 			<table class='filterTable'>
@@ -755,7 +752,7 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function applyFilter() {
-		strURL = 'syslog.php?header=false&date1='+$('#date1').val()+'&date2='+$('#date2').val()+'&host='+$('#host').val()+'&filter='+$('#filter').val()+'&efacility='+$('#efacility').val()+'&elevel='+$('#elevel').val()+'&row='+$('#rows').val()+'&trimval='+$('#trimval').val()+'&removal='+$('#removal').val();
+		strURL = 'syslog.php?header=false&date1='+$('#date1').val()+'&date2='+$('#date2').val()+'&host='+$('#host').val()+'&filter='+$('#filter').val()+'&efacility='+$('#efacility').val()+'&elevel='+$('#elevel').val()+'&rows='+$('#rows').val()+'&trimval='+$('#trimval').val()+'&removal='+$('#removal').val();
 		loadPageNoHeader(strURL);
 	}
 
@@ -912,6 +909,9 @@ function syslog_filter($sql_where, $tab) {
 						<td>
 							<input id='export' type='button' value='Export' title='Export Records to CSV'>
 						</td>
+						<td>
+							<input id='save' type='button' value='Save' title='Save Default Settings'>
+						</td>
 						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) {?>
 						<td align='right' style='white-space:nowrap;'>
 							<input type='button' value='Alerts' title='View Syslog Alert Rules' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
@@ -984,6 +984,8 @@ function syslog_filter($sql_where, $tab) {
 								<option value='2'<?php if (get_request_var('removal') == '2') {?> selected<?php }?>>Removed Records</option>
 							</select>
 						</td>
+						<?php }else{?>
+						<input type='hidden' id='removal' value='<?php print get_request_var('removal');?>'>
 						<?php }?>
 						<td>
 							<select id='rows' onChange='applyFilter()' title='Display Rows'>

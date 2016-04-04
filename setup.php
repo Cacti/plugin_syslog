@@ -1272,7 +1272,7 @@ function syslog_show_tab() {
 
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types, $severities, $messages;
-	global $syslog_levels, $syslog_freqs, $syslog_times, $syslog_refresh;
+	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_colors, $syslog_text_colors, $syslog_retentions, $syslog_alert_retentions;
 
 	$syslog_actions = array(
@@ -1282,15 +1282,42 @@ function syslog_config_arrays () {
 	);
 
 	$syslog_levels = array(
-		1 => 'emerg',
-		2 => 'crit',
-		3 => 'alert',
-		4 => 'err',
-		5 => 'warn',
-		6 => 'notice',
-		7 => 'info',
-		8 => 'debug',
-		9 => 'other'
+		0 => 'emerg',
+		1 => 'crit',
+		2 => 'alert',
+		3 => 'err',
+		4 => 'warn',
+		5 => 'notice',
+		6 => 'info',
+		7 => 'debug',
+		8 => 'other'
+	);
+
+	$syslog_facilities = array(
+		0 => 'kernel',
+		1 => 'user',
+		2 => 'mail',
+		3 => 'daemon',
+		4 => 'auth',
+		5 => 'syslog',
+		6 => 'lpr',
+		7 => 'news',
+		8 => 'uucp',
+		9 => 'clock',
+		10 => 'authpriv',
+		11 => 'ftp',
+		12 => 'ntp',
+		13 => 'log audit',
+		14 => 'log alert',
+		15 => 'cron',
+		16 => 'local0',
+		17 => 'local1',
+		18 => 'local2',
+		19 => 'local3',
+		20 => 'local4',
+		21 => 'local5',
+		22 => 'local6',
+		23 => 'local7'
 	);
 
 	$syslog_retentions = array(
