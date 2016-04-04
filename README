@@ -38,6 +38,9 @@
 
 ----[ Changelog
 
+   --- 2.0  ---
+   feature: Compatibility with Cacti 1.0
+
    --- 1.30 ---
    feature: Allow Statistics to be disabled
    feature: Allow Processing of Removal Rules on Main Syslog Table

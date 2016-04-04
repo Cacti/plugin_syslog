@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2014 The Cacti Group                                 |
+ | Copyright (C) 2007-2016 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -31,7 +31,7 @@
    @arg $db_type - the type of database server to connect to, only 'mysql' is currently supported
    @arg $retries - the number a time the server should attempt to connect before failing
    @returns - (object) connection_id for success, (bool) '0' for error */
-function syslog_db_connect_real($host, $user, $pass, $db_name, $db_type, $port = "3306", $retries = 20) {
+function syslog_db_connect_real($host, $user, $pass, $db_name, $db_type, $port = '3306', $retries = 20) {
 	return db_connect_real($host, $user, $pass, $db_name, $db_type, $port, $retries);
 }
 
@@ -103,7 +103,7 @@ function syslog_db_replace($table_name, $array_items, $keyCols) {
    @arg $table_name - the name of the table to make the replacement in
    @arg $key_cols - the primary key(s)
    @returns - the auto incriment id column (if applicable) */
-function syslog_sql_save($array_items, $table_name, $key_cols = "id", $autoinc = true) {
+function syslog_sql_save($array_items, $table_name, $key_cols = 'id', $autoinc = true) {
 	return sql_save($array_items, $table_name, $key_cols, $autoinc);
 }
 

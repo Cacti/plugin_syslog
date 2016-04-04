@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2014 The Cacti Group                                 |
+ | Copyright (C) 2007-2016 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -23,15 +23,12 @@
 */
 
 chdir('../../');
-include("./include/auth.php");
+include('./include/auth.php');
 include_once('plugins/syslog/functions.php');
 
-define("MAX_DISPLAY_PAGES", 21);
+set_default_action();
 
-/* set default action */
-if (!isset($_REQUEST["action"])) { $_REQUEST["action"] = ""; }
-
-switch ($_REQUEST["action"]) {
+switch (get_request_var('action')) {
 	case 'save':
 		form_save();
 
@@ -62,176 +59,169 @@ switch ($_REQUEST["action"]) {
    -------------------------- */
 
 function form_save() {
-	if ((isset($_POST["save_component_alert"])) && (empty($_POST["add_dq_y"]))) {
-		$alertid = api_syslog_alert_save($_POST["id"], $_POST["name"], $_POST["method"],
-			$_POST["num"], $_POST["type"], $_POST["message"], $_POST["email"],
-			$_POST["notes"], $_POST["enabled"], $_POST["severity"], $_POST["command"],
-			$_POST["repeat_alert"], $_POST["open_ticket"]);
+	if ((isset_request_var('save_component_alert')) && (isempty_request_var('add_dq_y'))) {
+		$alertid = api_syslog_alert_save(get_nfilter_request_var('id'), get_nfilter_request_var('name'), 
+			get_nfilter_request_var('report_method'), get_nfilter_request_var('num'), 
+			get_nfilter_request_var('type'), get_nfilter_request_var('message'), 
+			get_nfilter_request_var('email'), get_nfilter_request_var('notes'), 
+			get_nfilter_request_var('enabled'), get_nfilter_request_var('severity'), 
+			get_nfilter_request_var('command'), get_nfilter_request_var('repeat_alert'), 
+			get_nfilter_request_var('open_ticket'));
 
-		if ((is_error_message()) || ($_POST["id"] != $_POST["_id"])) {
-			header("Location: syslog_alerts.php?action=edit&id=" . (empty($id) ? $_POST["id"] : $id));
+		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
+			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($id) ? get_filter_request_var('id') : $id));
 		}else{
-			header("Location: syslog_alerts.php");
+			header('Location: syslog_alerts.php?header=false');
 		}
 	}
 }
 
 /* ------------------------
-    The "actions" function
+    The 'actions' function
    ------------------------ */
 
 function form_actions() {
-	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
+	global $config, $syslog_actions, $fields_syslog_action_edit;
 
-	/* ================= input validation ================= */
-	input_validate_input_number(get_request_var_post('drp_action'));
-	/* ==================================================== */
+	include(dirname(__FILE__) . '/config.php');
 
-	include(dirname(__FILE__) . "/config.php");
+	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP,
+		 array('options' => array('regexp' => '/^([a-zA-Z0-9_]+)$/')));
 
 	/* if we are to save this form, instead of display it */
-	if (isset($_POST["selected_items"])) {
-		$selected_items = unserialize(stripslashes($_POST["selected_items"]));
+	if (isset_request_var('selected_items')) {
+		$selected_items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
 
-		if ($_POST["drp_action"] == "1") { /* delete */
-			for ($i=0; $i<count($selected_items); $i++) {
-				/* ================= input validation ================= */
-				input_validate_input_number($selected_items[$i]);
-				/* ==================================================== */
-
-				api_syslog_alert_remove($selected_items[$i]);
-			}
-		}else if ($_POST["drp_action"] == "2") { /* disable */
-			for ($i=0; $i<count($selected_items); $i++) {
-				/* ================= input validation ================= */
-				input_validate_input_number($selected_items[$i]);
-				/* ==================================================== */
-
-				api_syslog_alert_disable($selected_items[$i]);
-			}
-		}else if ($_POST["drp_action"] == "3") { /* enable */
-			for ($i=0; $i<count($selected_items); $i++) {
-				/* ================= input validation ================= */
-				input_validate_input_number($selected_items[$i]);
-				/* ==================================================== */
-
-				api_syslog_alert_enable($selected_items[$i]);
+		if ($selected_items != false) {
+			if (get_request_var('drp_action') == '1') { /* delete */
+				for ($i=0; $i<count($selected_items); $i++) {
+					api_syslog_alert_remove($selected_items[$i]);
+				}
+			}else if (get_request_var('drp_action') == '2') { /* disable */
+				for ($i=0; $i<count($selected_items); $i++) {
+					api_syslog_alert_disable($selected_items[$i]);
+				}
+			}else if (get_request_var('drp_action') == '3') { /* enable */
+				for ($i=0; $i<count($selected_items); $i++) {
+					api_syslog_alert_enable($selected_items[$i]);
+				}
 			}
 		}
 
-		header("Location: syslog_alerts.php");
+		header('Location: syslog_alerts.php?header=false');
 
 		exit;
 	}
 
 	top_header();
 
-	html_start_box("<strong>" . $syslog_actions{$_POST["drp_action"]} . "</strong>", "60%", $colors["header_panel"], "3", "center", "");
+	form_start('syslog_alerts.php');
 
-	print "<form action='syslog_alerts.php' method='post'>\n";
+	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
 
 	/* setup some variables */
-	$alert_array = array(); $alert_list = "";
+	$alert_array = array(); $alert_list = '';
 
 	/* loop through each of the clusters selected on the previous page and get more info about them */
 	while (list($var,$val) = each($_POST)) {
-		if (ereg("^chk_([0-9]+)$", $var, $matches)) {
+		if (preg_match('/^chk_([0-9]+)$/', $var, $matches)) {
 			/* ================= input validation ================= */
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$alert_info = syslog_db_fetch_cell("SELECT name FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id=" . $matches[1]);
-			$alert_list .= "<li>" . $alert_info . "</li>";
+			$alert_info = syslog_db_fetch_cell('SELECT name FROM `' . $syslogdb_default . '`.`syslog_alert` WHERE id=' . $matches[1]);
+			$alert_list .= '<li>' . $alert_info . '</li>';
 			$alert_array[] = $matches[1];
 		}
 	}
 
 	if (sizeof($alert_array)) {
-		if ($_POST["drp_action"] == "1") { /* delete */
-			print "	<tr>
-					<td class='textArea'>
-						<p>If you click 'Continue', the following Syslog Alert Rule(s) will be deleted</p>
-						<ul>$alert_list</ul>";
-						print "</td></tr>
-					</td>
-				</tr>\n";
+		if (get_request_var('drp_action') == '1') { /* delete */
+			print "<tr>
+				<td class='textArea'>
+					<p>Click 'Continue' to Delete the following Syslog Alert Rule(s).</p>
+					<ul>$alert_list</ul>";
+					print "</td></tr>
+				</td>
+			</tr>\n";
 
-			$title = "Delete Syslog Alert Rule(s)";
-		}else if ($_POST["drp_action"] == "2") { /* disable */
-			print "	<tr>
-					<td class='textArea'>
-						<p>If you click 'Continue', the following Syslog Alert Rule(s) will be disabled</p>
-						<ul>$alert_list</ul>";
-						print "</td></tr>
-					</td>
-				</tr>\n";
+			$title = 'Delete Syslog Alert Rule(s)';
+		}else if (get_request_var('drp_action') == '2') { /* disable */
+			print "<tr>
+				<td class='textArea'>
+					<p>Click 'Continue' to Disable  the following Syslog Alert Rule(s).</p>
+					<ul>$alert_list</ul>";
+					print "</td></tr>
+				</td>
+			</tr>\n";
 
-			$title = "Disable Syslog Alert Rule(s)";
-		}else if ($_POST["drp_action"] == "3") { /* enable */
-			print "	<tr>
-					<td class='textArea'>
-						<p>If you click 'Continue', the following Syslog Alert Rule(s) will be enabled</p>
-						<ul>$alert_list</ul>";
-						print "</td></tr>
-					</td>
-				</tr>\n";
+			$title = 'Disable Syslog Alert Rule(s)';
+		}else if (get_request_var('drp_action') == '3') { /* enable */
+			print "<tr>
+				<td class='textArea'>
+					<p>Click 'Continue' to Enable the following Syslog Alert Rule(s).</p>
+					<ul>$alert_list</ul>";
+					print "</td></tr>
+				</td>
+			</tr>\n";
 
-			$title = "Enable Syslog Alert Rule(s)";
+			$title = 'Enable Syslog Alert Rule(s)';
 		}
 
-		$save_html = "<input type='button' value='Cancel' onClick='window.history.back()'>&nbsp;<input type='submit' value='Continue' title='$title'";
+		$save_html = "<input type='button' value='Cancel' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='Continue' title='$title'";
 	}else{
 		print "<tr><td class='even'><span class='textError'>You must select at least one Syslog Alert Rule.</span></td></tr>\n";
-		$save_html = "<input type='button' value='Return' onClick='window.history.back()'>";
+		$save_html = "<input type='button' value='Return' onClick='cactiReturnTo()'>";
 	}
 
-	print "	<tr>
-			<td align='right' class='saveRow'>
-				<input type='hidden' name='action' value='actions'>
-				<input type='hidden' name='selected_items' value='" . (isset($alert_array) ? serialize($alert_array) : '') . "'>
-				<input type='hidden' name='drp_action' value='" . $_POST["drp_action"] . "'>
-				$save_html
-			</td>
-		</tr>";
+	print "<tr>
+		<td align='right' class='saveRow'>
+			<input type='hidden' name='action' value='actions'>
+			<input type='hidden' name='selected_items' value='" . (isset($alert_array) ? serialize($alert_array) : '') . "'>
+			<input type='hidden' name='drp_action' value='" . get_request_var('drp_action') . "'>
+			$save_html
+		</td>
+	</tr>";
 
 	html_end_box();
+
+	form_end();
 
 	bottom_footer();
 }
 
 function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
 	$enabled, $severity, $command, $repeat_alert, $open_ticket) {
-	include(dirname(__FILE__) . "/config.php");
+
+	include(dirname(__FILE__) . '/config.php');
 
 	/* get the username */
-	$username = db_fetch_cell("select username from user_auth where id=" . $_SESSION["sess_user_id"]);
+	$username = db_fetch_cell('SELECT username FROM user_auth WHERE id=' . $_SESSION['sess_user_id']);
 
 	if ($id) {
-		$save["id"] = $id;
+		$save['id'] = $id;
 	}else{
-		$save["id"] = "";
+		$save['id'] = '';
 	}
 
-	$save["name"]            = form_input_validate($name,            "name",     "", false, 3);
-	$save["num"]             = form_input_validate($num,             "num",      "", false, 3);
-	$save["message"]         = form_input_validate($message,         "message",  "", false, 3);
-	$save["email"]           = form_input_validate(trim($email),     "email",    "", true, 3);
-	$save["command"]         = form_input_validate($command,         "command",  "", true, 3);
-	$save["notes"]           = form_input_validate($notes,           "notes",    "", true, 3);
-	$save["enabled"]         = ($enabled == "on" ? "on":"");
-	$save["repeat_alert"]    = form_input_validate($repeat_alert,    "repeat_alert", "", true, 3);
-	$save["open_ticket"]     = ($open_ticket == "on" ? "on":"");
-	$save["type"]            = $type;
-	$save["severity"]        = $severity;
-	$save["method"]          = $method;
-	$save["user"]            = $username;
-	$save["date"]            = time();
-
-	//print "<pre>";print_r($save);print "</pre>";exit;
+	$save['name']         = form_input_validate($name,         'name',     '', false, 3);
+	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
+	$save['message']      = form_input_validate($message,      'message',  '', false, 3);
+	$save['email']        = form_input_validate(trim($email),  'email',    '', true, 3);
+	$save['command']      = form_input_validate($command,      'command',  '', true, 3);
+	$save['notes']        = form_input_validate($notes,        'notes',    '', true, 3);
+	$save['enabled']      = ($enabled == 'on' ? 'on':'');
+	$save['repeat_alert'] = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
+	$save['open_ticket']  = ($open_ticket == 'on' ? 'on':'');
+	$save['type']         = $type;
+	$save['severity']     = $severity;
+	$save['method']       = $method;
+	$save['user']         = $username;
+	$save['date']         = time();
 
 	if (!is_error_message()) {
 		$id = 0;
-		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_alert`", "id");
+		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_alert`', 'id');
 		if ($id) {
 			raise_message(1);
 		}else{
@@ -243,7 +233,7 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 }
 
 function api_syslog_alert_remove($id) {
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id='" . $id . "'");
 }
 
@@ -262,65 +252,71 @@ function api_syslog_alert_enable($id) {
    --------------------- */
 
 function syslog_get_alert_records(&$sql_where, $row_limit) {
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
-	if (get_request_var_request("filter") != "") {
-		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
-			"(message LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
-			"email LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
-			"notes LIKE '%%" . get_request_var_request("filter") . "%%' OR " .
-			"name LIKE '%%" . get_request_var_request("filter") . "%%')";
+	if (get_request_var('filter') != '') {
+		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
+			"(message LIKE '%%" . get_request_var('filter') . "%%' OR " .
+			"email LIKE '%%" . get_request_var('filter') . "%%' OR " .
+			"notes LIKE '%%" . get_request_var('filter') . "%%' OR " .
+			"name LIKE '%%" . get_request_var('filter') . "%%')";
 	}
 
-	if (get_request_var_request("enabled") == "-1") {
+	if (get_request_var('enabled') == '-1') {
 		// Display all status'
-	}elseif (get_request_var_request("enabled") == "1") {
-		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+	}elseif (get_request_var('enabled') == '1') {
+		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
 			"enabled='on'";
 	}else{
-		$sql_where .= (strlen($sql_where) ? " AND ":"WHERE ") .
+		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
 			"enabled=''";
 	}
 
 	$query_string = "SELECT *
 		FROM `" . $syslogdb_default . "`.`syslog_alert`
 		$sql_where
-		ORDER BY ". get_request_var_request("sort_column") . " " . get_request_var_request("sort_direction") .
-		" LIMIT " . ($row_limit*(get_request_var_request("page")-1)) . "," . $row_limit;
+		ORDER BY ". get_request_var('sort_column') . ' ' . get_request_var('sort_direction') .
+		' LIMIT ' . ($row_limit*(get_request_var('page')-1)) . ',' . $row_limit;
 
 	return syslog_db_fetch_assoc($query_string);
 }
 
 function syslog_action_edit() {
-	global $colors, $message_types, $severities;
+	global $message_types, $severities;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	/* ================= input validation ================= */
-	input_validate_input_number(get_request_var("id"));
-	input_validate_input_number(get_request_var("type"));
+	get_filter_request_var('id');
+	get_filter_request_var('type');
+	get_filter_request_var('date');
 	/* ==================================================== */
 
-	if (isset($_GET["id"]) && $_GET["action"] == "edit") {
-		$alert = syslog_db_fetch_row("SELECT *
-			FROM `" . $syslogdb_default . "`.`syslog_alert`
-			WHERE id=" . $_GET["id"]);
-		$header_label = "[edit: " . $alert["name"] . "]";
-	}else if (isset($_GET["id"]) && $_GET["action"] == "newedit") {
-		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . $_GET["id"] . (isset($_GET['date']) ? " AND logtime='" . $_GET["date"] . "'":""));
+	if (!isempty_request_var('id') && get_nfilter_request_var('action') == 'edit') {
+		$alert = syslog_db_fetch_row('SELECT *
+			FROM `' . $syslogdb_default . '`.`syslog_alert`
+			WHERE id=' . get_request_var('id'));
 
-		$header_label = "[new]";
-		if (sizeof($syslog_rec)) {
-			$alert["message"] = $syslog_rec["message"];
+		if (sizeof($alert)) {
+			$header_label = '[edit: ' . $alert['name'] . ']';
+		}else{
+			$header_label = '[new:]';
 		}
-		$alert["name"]    = "New Alert Rule";
-	}else{
-		$header_label = "[new]";
+	}else if (isset_request_var('id') && get_nfilter_request_var('action') == 'newedit') {
+		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . get_request_var("id") . (isset_request_var('date') ? " AND logtime='" . get_request_var("date") . "'":""));
 
-		$alert["name"] = "New Alert Rule";
+		$header_label = '[new]';
+		if (sizeof($syslog_rec)) {
+			$alert['message'] = $syslog_rec['message'];
+		}
+		$alert['name']    = 'New Alert Rule';
+	}else{
+		$header_label = '[new]';
+
+		$alert['name'] = 'New Alert Rule';
 	}
 
-	$alert_retention = read_config_option("syslog_alert_retention");
+	$alert_retention = read_config_option('syslog_alert_retention');
 	if ($alert_retention != '' && $alert_retention > 0 && $alert_retention < 365) {
 		$repeat_end = ($alert_retention * 24 * 60) / 5;
 	}
@@ -354,165 +350,166 @@ function syslog_action_edit() {
 		}
 	}
 
-	html_start_box("<strong>Alert Edit</strong> $header_label", "100%", $colors["header"], "3", "center", "");
-
 	$fields_syslog_alert_edit = array(
-	"spacer0" => array(
-		"method" => "spacer",
-		"friendly_name" => "Alert Details"
+		'spacer0' => array(
+			'method' => 'spacer',
+			'friendly_name' => 'Alert Details'
 		),
-	"name" => array(
-		"method" => "textbox",
-		"friendly_name" => "Alert Name",
-		"description" => "Please describe this Alert.",
-		"value" => "|arg1:name|",
-		"max_length" => "250",
-		"size" => 80
+		'name' => array(
+			'method' => 'textbox',
+			'friendly_name' => 'Alert Name',
+			'description' => 'Please describe this Alert.',
+			'value' => '|arg1:name|',
+			'max_length' => '250',
+			'size' => 80
 		),
-	"severity" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Severity",
-		"description" => "What is the Severity Level of this Alert?",
-		"value" => "|arg1:severity|",
-		"array" => $severities,
-		"default" => "1"
+		'severity' => array(
+			'method' => 'drop_array',
+			'friendly_name' => 'Severity',
+			'description' => 'What is the Severity Level of this Alert?',
+			'value' => '|arg1:severity|',
+			'array' => $severities,
+			'default' => '1'
 		),
-	"method" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Reporting Method",
-		"description" => "Define how to Alert on the syslog messages.",
-		"value" => "|arg1:method|",
-		"array" => array("0" => "Individual", "1" => "Threshold"),
-		"default" => "0"
+		'report_method' => array(
+			'method' => 'drop_array',
+			'friendly_name' => 'Reporting Method',
+			'description' => 'Define how to Alert on the syslog messages.',
+			'value' => '|arg1:method|',
+			'array' => array('0' => 'Individual', '1' => 'Threshold'),
+			'default' => '0'
 		),
-	"num" => array(
-		"method" => "textbox",
-		"friendly_name" => "Threshold",
-		"description" => "For the 'Threshold' method, If the number seen is above this value
-		an Alert will be triggered.",
-		"value" => "|arg1:num|",
-		"size" => "4",
-		"max_length" => "10",
-		"default" => "1"
+		'num' => array(
+			'method' => 'textbox',
+			'friendly_name' => 'Threshold',
+			'description' => "For the 'Threshold' method, If the number seen is above this value
+			an Alert will be triggered.",
+			'value' => '|arg1:num|',
+			'size' => '4',
+			'max_length' => '10',
+			'default' => '1'
 		),
-	"type" => array(
-		"method" => "drop_array",
-		"friendly_name" => "String Match Type",
-		"description" => "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression
-		to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'.",
-		"value" => "|arg1:type|",
-		"array" => $message_types,
-		"on_change" => "changeTypes()",
-		"default" => "matchesc"
+		'type' => array(
+			'method' => 'drop_array',
+			'friendly_name' => 'String Match Type',
+			'description' => "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression
+			to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'.",
+			'value' => '|arg1:type|',
+			'array' => $message_types,
+			'on_change' => 'changeTypes()',
+			'default' => 'matchesc'
 		),
-	"message" => array(
-		"friendly_name" => "Syslog Message Match String",
-		"description" => "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.",
-		"textarea_rows" => "2",
-		"textarea_cols" => "70",
-		"method" => "textarea",
-		"class" => "textAreaNotes",
-		"value" => "|arg1:message|",
-		"default" => ""
+		'message' => array(
+			'friendly_name' => 'Syslog Message Match String',
+			'description' => 'Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.',
+			'textarea_rows' => '2',
+			'textarea_cols' => '70',
+			'method' => 'textarea',
+			'class' => 'textAreaNotes',
+			'value' => '|arg1:message|',
+			'default' => ''
 		),
-	"enabled" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Alert Enabled",
-		"description" => "Is this Alert Enabled?",
-		"value" => "|arg1:enabled|",
-		"array" => array("on" => "Enabled", "" => "Disabled"),
-		"default" => "on"
+		'enabled' => array(
+			'method' => 'drop_array',
+			'friendly_name' => 'Alert Enabled',
+			'description' => 'Is this Alert Enabled?',
+			'value' => '|arg1:enabled|',
+			'array' => array('on' => 'Enabled', '' => 'Disabled'),
+			'default' => 'on'
 		),
-	"repeat_alert" => array(
-		"friendly_name" => "Re-Alert Cycle",
-		"method" => "drop_array",
-		"array" => $repeatarray,
-		"default" => "0",
- 		"description" => "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold
-		based alarms, this applies to all hosts.",
-		"value" => "|arg1:repeat_alert|"
+		'repeat_alert' => array(
+			'friendly_name' => 'Re-Alert Cycle',
+			'method' => 'drop_array',
+			'array' => $repeatarray,
+			'default' => '0',
+ 			'description' => 'Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold
+			based alarms, this applies to all hosts.',
+			'value' => '|arg1:repeat_alert|'
 		),
-	"notes" => array(
-		"friendly_name" => "Alert Notes",
-		"textarea_rows" => "5",
-		"textarea_cols" => "70",
-		"description" => "Space for Notes on the Alert",
-		"method" => "textarea",
-		"class" => "textAreaNotes",
-		"value" => "|arg1:notes|",
-		"default" => "",
+		'notes' => array(
+			'friendly_name' => 'Alert Notes',
+			'textarea_rows' => '5',
+			'textarea_cols' => '70',
+			'description' => 'Space for Notes on the Alert',
+			'method' => 'textarea',
+			'class' => 'textAreaNotes',
+			'value' => '|arg1:notes|',
+			'default' => '',
 		),
-	"spacer1" => array(
-		"method" => "spacer",
-		"friendly_name" => "Alert Actions"
+		'spacer1' => array(
+			'method' => 'spacer',
+			'friendly_name' => 'Alert Actions'
 		),
-	"open_ticket" => array(
-		"method" => "drop_array",
-		"friendly_name" => "Open Ticket",
-		"description" => "Should a Help Desk Ticket be opened for this Alert",
-		"value" => "|arg1:open_ticket|",
-		"array" => array("on" => "Yes", "" => "No"),
-		"default" => ""
+		'open_ticket' => array(
+			'method' => 'drop_array',
+			'friendly_name' => 'Open Ticket',
+			'description' => 'Should a Help Desk Ticket be opened for this Alert',
+			'value' => '|arg1:open_ticket|',
+			'array' => array('on' => 'Yes', '' => 'No'),
+			'default' => ''
 		),
-	"email" => array(
-		"method" => "textarea",
-		"friendly_name" => "E-Mails to Notify",
-		"textarea_rows" => "5",
-		"textarea_cols" => "70",
-		"description" => "Please enter a comma delimited list of e-mail addresses to inform.  If you
-		wish to send out e-mail to a recipient in SMS format, please prefix that recipient's e-mail address
-		with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would
-		enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message.",
-		"class" => "textAreaNotes",
-		"value" => "|arg1:email|",
-		"max_length" => "255"
+		'email' => array(
+			'method' => 'textarea',
+			'friendly_name' => 'E-Mails to Notify',
+			'textarea_rows' => '5',
+			'textarea_cols' => '70',
+			'description' => "Please enter a comma delimited list of e-mail addresses to inform.  If you
+			wish to send out e-mail to a recipient in SMS format, please prefix that recipient's e-mail address
+			with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would
+			enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message.",
+			'class' => 'textAreaNotes',
+			'value' => '|arg1:email|',
+			'max_length' => '255'
 		),
-	"command" => array(
-		"friendly_name" => "Alert Command",
-		"textarea_rows" => "5",
-		"textarea_cols" => "70",
-		"description" => "When an Alert is triggered, run the following command.  The following replacement variables
-		are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>,
-		<b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please
-		note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.",
-		"method" => "textarea",
-		"class" => "textAreaNotes",
-		"value" => "|arg1:command|",
-		"default" => "",
+		'command' => array(
+			'friendly_name' => 'Alert Command',
+			'textarea_rows' => '5',
+			'textarea_cols' => '70',
+			'description' => "When an Alert is triggered, run the following command.  The following replacement variables
+			are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>,
+			<b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please
+			note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.",
+			'method' => 'textarea',
+			'class' => 'textAreaNotes',
+			'value' => '|arg1:command|',
+			'default' => '',
 		),
-	"id" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:id|"
+		'id' => array(
+			'method' => 'hidden_zero',
+			'value' => '|arg1:id|'
 		),
-	"_id" => array(
-		"method" => "hidden_zero",
-		"value" => "|arg1:id|"
+		'_id' => array(
+			'method' => 'hidden_zero',
+			'value' => '|arg1:id|'
 		),
-	"save_component_alert" => array(
-		"method" => "hidden",
-		"value" => "1"
+		'save_component_alert' => array(
+			'method' => 'hidden',
+			'value' => '1'
 		)
 	);
 
-	echo "<form method='post' autocomplete='off' onsubmit='changeTypes()' action='syslog_alerts.php' name='chk'>";
+	form_start('syslog_alerts.php', 'syslog_edit');
+
+	html_start_box('Alert Edit ' . $header_label, '100%', '', '3', 'center', '');
 
 	draw_edit_form(array(
-		"config" => array("no_form_tag" => true),
-		"fields" => inject_form_variables($fields_syslog_alert_edit, (isset($alert) ? $alert : array()))
-		));
-
+		'config' => array('no_form_tag' => true),
+		'fields' => inject_form_variables($fields_syslog_alert_edit, (sizeof($alert) ? $alert : array()))
+	));
 
 	html_end_box();
 
-	form_save_button("syslog_alerts.php", "", "id");
+	form_save_button('syslog_alerts.php', '', 'id');
 
 	?>
 	<script type='text/javascript'>
 	function changeTypes() {
-		if (document.getElementById('type').value == 'sql') {
-			document.getElementById('message').rows = 6;
+		if ($('#type').val() == 'sql') {
+			$('#message').prep('rows', 6);
+			//document.getElementById('message').rows = 6;
 		}else{
-			document.getElementById('message').rows = 2;
+			$('#message').prep('rows', 2);
+			//document.getElementById('message').rows = 2;
 		}
 	}
 	</script>
@@ -520,143 +517,152 @@ function syslog_action_edit() {
 }
 
 function syslog_filter() {
-	global $colors, $config, $item_rows;
+	global $config, $item_rows;
 
 	?>
 	<tr class='even'>
-		<form name="alert">
 		<td>
-			<table cellpadding="2" cellspacing="0">
+		<form id='alert' action='syslog_alerts.php' method='get'>
+			<table class='filterTable'>
 				<tr>
-					<td width="55">
-						Enabled:
+					<td>
+						Search
 					</td>
 					<td>
-						<select name="enabled" onChange="applyChange(document.alert)">
-						<option value="-1"<?php if ($_REQUEST["enabled"] == "-1") {?> selected<?php }?>>All</option>
-						<option value="1"<?php if ($_REQUEST["enabled"] == "1") {?> selected<?php }?>>Yes</option>
-						<option value="0"<?php if ($_REQUEST["enabled"] == "0") {?> selected<?php }?>>No</option>
+						<input type='text' id='filter' size='25' value='<?php print get_request_var('filter');?>'>
+					</td>
+					<td>
+						Enabled
+					</td>
+					<td>
+						<select id='enabled' onChange='applyFilter()'>
+							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>>All</option>
+							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>>Yes</option>
+							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>>No</option>
 						</select>
 					</td>
 					<td>
-						Rows:
+						Rows
 					</td>
 					<td>
-						<select name="rows" onChange="applyChange(document.alert)">
-						<option value="-1"<?php if ($_REQUEST["rows"] == "-1") {?> selected<?php }?>>Default</option>
-						<?php
-							if (sizeof($item_rows) > 0) {
+						<select id='rows' onChange='applyFilter()'>
+							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>>Default</option>
+							<?php
+							if (sizeof($item_rows)) {
 							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if ($_REQUEST["rows"] == $key) { print " selected"; } print ">" . $value . "</option>\n";
+								print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
 							}
 							}
-						?>
+							?>
 						</select>
 					</td>
 					<td>
-						<input type="submit" value="Go">
+						<input id='refresh' type='button' value='Go'>
 					</td>
 					<td>
-						<input type="submit" name="clear" value="Clear">
+						<input id='clear' type='button' value='Clear'>
 					</td>
 				</tr>
 			</table>
-			<table cellpadding="2" cellspacing="0">
-				<tr>
-					<td width="55">
-						Search:
-					</td>
-					<td>
-						<input type="text" name="filter" size="30" value="<?php print $_REQUEST["filter"];?>">
-					</td>
-				</tr>
-			</table>
-		</td>
+			<input type='hidden' id='page' value='<?php print get_filter_request_var('page');?>'>
 		</form>
+		<script type='text/javascript'>
+
+		function applyFilter() {
+			strURL = 'syslog_alerts.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+			loadPageNoHeader(strURL);
+		}
+
+		function clearFilter() {
+			strURL = 'syslog_alerts.php?clear=1&header=false';
+			loadPageNoHeader(strURL);
+		}
+
+		$(function() {
+			$('#refresh').click(function() {
+                    applyFilter();
+			});
+
+			$('#clear').click(function() {
+                    clearFilter();
+			});
+
+			$('#alert').submit(function(event) {
+				event.preventDefault();
+				applyFilter();
+			});
+		});
+
+		</script>
+		</td>
 	</tr>
 	<?php
 }
 
 function syslog_alerts() {
-	global $colors, $syslog_actions, $config, $message_types, $severities;
+	global $syslog_actions, $config, $message_types, $severities;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
-	/* ================= input validation ================= */
-	input_validate_input_number(get_request_var_request("id"));
-	input_validate_input_number(get_request_var_request("page"));
-	input_validate_input_number(get_request_var_request("enabled"));
-	input_validate_input_number(get_request_var_request("rows"));
-	/* ==================================================== */
+    /* ================= input validation and session storage ================= */
+    $filters = array(
+        'rows' => array(
+            'filter' => FILTER_VALIDATE_INT,
+            'pageset' => true,
+            'default' => '-1',
+            ),
+        'page' => array(
+            'filter' => FILTER_VALIDATE_INT,
+            'default' => '1'
+            ),
+        'id' => array(
+            'filter' => FILTER_VALIDATE_INT,
+            'default' => '1'
+            ),
+        'enabled' => array(
+            'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+            'default' => '-1'
+			),
+        'filter' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => '',
+            'options' => array('options' => 'sanitize_search_string')
+            ),
+        'sort_column' => array(
+            'filter' => FILTER_CALLBACK,
+            'default' => 'name',
+            'options' => array('options' => 'sanitize_search_string')
+            ),
+        'sort_direction' => array(
+            'filter' => FILTER_CALLBACK,
+            'default' => 'ASC',
+            'options' => array('options' => 'sanitize_search_string')
+            )
+    );
 
-	/* clean up filter */
-	if (isset($_REQUEST["filter"])) {
-		$_REQUEST["filter"] = sanitize_search_string(get_request_var("filter"));
-	}
+    validate_store_request_vars($filters, 'sess_sysloga');
+    /* ================= input validation ================= */
 
-	/* clean up sort_column */
-	if (isset($_REQUEST["sort_column"])) {
-		$_REQUEST["sort_column"] = sanitize_search_string(get_request_var("sort_column"));
-	}
-
-	/* clean up sort direction */
-	if (isset($_REQUEST["sort_direction"])) {
-		$_REQUEST["sort_direction"] = sanitize_search_string(get_request_var("sort_direction"));
-	}
-
-	/* if the user pushed the 'clear' button */
-	if (isset($_REQUEST["clear"])) {
-		kill_session_var("sess_syslog_alerts_page");
-		kill_session_var("sess_syslog_alerts_rows");
-		kill_session_var("sess_syslog_alerts_filter");
-		kill_session_var("sess_syslog_alerts_enabled");
-		kill_session_var("sess_syslog_alerts_sort_column");
-		kill_session_var("sess_syslog_alerts_sort_direction");
-
-		$_REQUEST["page"] = 1;
-		unset($_REQUEST["filter"]);
-		unset($_REQUEST["enabled"]);
-		unset($_REQUEST["rows"]);
-		unset($_REQUEST["sort_column"]);
-		unset($_REQUEST["sort_direction"]);
-	}else{
-		/* if any of the settings changed, reset the page number */
-		$changed = 0;
-		$changed += syslog_check_changed("filter", "sess_syslog_alerts_filter");
-		$changed += syslog_check_changed("enabled", "sess_syslog_alerts_enabled");
-		$changed += syslog_check_changed("rows", "sess_syslog_alerts_rows");
-		$changed += syslog_check_changed("sort_column", "sess_syslog_alerts_sort_column");
-		$changed += syslog_check_changed("sort_direction", "sess_syslog_alerts_sort_direction");
-
-		if ($changed) {
-			$_REQUEST["page"] = "1";
-		}
-	}
-
-	/* remember these search fields in session vars so we don't have to keep passing them around */
-	load_current_session_value("page", "sess_syslog_alerts_paage", "1");
-	load_current_session_value("rows", "sess_syslog_alerts_rows", "-1");
-	load_current_session_value("enabled", "sess_syslog_alerts_enabled", "-1");
-	load_current_session_value("filter", "sess_syslog_alerts_filter", "");
-	load_current_session_value("sort_column", "sess_syslog_alerts_sort_column", "name");
-	load_current_session_value("sort_direction", "sess_syslog_alerts_sort_direction", "ASC");
-
-	html_start_box("<strong>Syslog Alert Filters</strong>", "100%", $colors["header"], "3", "center", "syslog_alerts.php?action=edit");
+	html_start_box('Syslog Alert Filters', '100%', '', '3', 'center', 'syslog_alerts.php?action=edit');
 
 	syslog_filter();
 
 	html_end_box();
 
-	html_start_box("", "100%", $colors["header"], "3", "center", "");
+	form_start('syslog_alerts.php', 'chk');
 
-	$sql_where = "";
+	html_start_box('', '100%', '', '3', 'center', '');
 
-	if ($_REQUEST["rows"] == "-1") {
-		$row_limit = read_config_option("num_rows_syslog");
-	}elseif ($_REQUEST["rows"] == -2) {
+	$sql_where = '';
+
+	if (get_request_var('rows') == '-1') {
+		$row_limit = read_config_option('num_rows_table');
+	}elseif (get_request_var('rows') == -2) {
 		$row_limit = 999999;
 	}else{
-		$row_limit = $_REQUEST["rows"];
+		$row_limit = get_request_var('rows');
 	}
 
 	$alerts = syslog_get_alert_records($sql_where, $row_limit);
@@ -667,60 +673,50 @@ function syslog_alerts() {
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
-	?>
-	<script type="text/javascript">
-	<!--
-	function applyChange(objForm) {
-		strURL = '?enabled=' + objForm.enabled.value;
-		strURL = strURL + '&filter=' + objForm.filter.value;
-		strURL = strURL + '&rows=' + objForm.rows.value;
-		document.location = strURL;
-	}
-	-->
-	</script>
-	<?php
-
-	$nav = html_nav_bar("syslog_alerts.php?filter=" . $_REQUEST["filter"], MAX_DISPLAY_PAGES, get_request_var_request("page"), $row_limit, $total_rows, 13, 'Alerts');
+	$nav = html_nav_bar('syslog_alerts.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 13, 'Alerts');
 
 	print $nav;
 
 	$display_text = array(
-		"name" => array("Alert Name", "ASC"),
-		"severity" => array("Severity", "ASC"),
-		"method" => array("Method", "ASC"),
-		"num" => array("Threshold Count", "ASC"),
-		"enabled" => array("Enabled", "ASC"),
-		"type" => array("Match Type", "ASC"),
-		"message" => array("Search String", "ASC"),
-		"email" => array("E-Mail Addresses", "DESC"),
-		"date" => array("Last Modified", "ASC"),
-		"user" => array("By User", "DESC"));
+		'name'     => array('Alert Name', 'ASC'),
+		'severity' => array('Severity', 'ASC'),
+		'method'   => array('Method', 'ASC'),
+		'num'      => array('Threshold Count', 'ASC'),
+		'enabled'  => array('Enabled', 'ASC'),
+		'type'     => array('Match Type', 'ASC'),
+		'message'  => array('Search String', 'ASC'),
+		'email'    => array('E-Mail Addresses', 'DESC'),
+		'date'     => array('Last Modified', 'ASC'),
+		'user'     => array('By User', 'DESC')
+	);
 
-	html_header_sort_checkbox($display_text, $_REQUEST["sort_column"], $_REQUEST["sort_direction"]);
-	$i = 0;
-	if (sizeof($alerts) > 0) {
+	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
+
+	if (sizeof($alerts)) {
 		foreach ($alerts as $alert) {
-			form_alternate_row_color($colors["alternate"], $colors["light"], $i, 'line' . $alert["id"]); $i++;
-			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . "plugins/syslog/syslog_alerts.php?action=edit&id=" . $alert["id"] . "'>" . (($_REQUEST["filter"] != "") ? eregi_replace("(" . preg_quote($_REQUEST["filter"]) . ")", "<span style='background-color: #F8D93D;'>\\1</span>", $alert["name"]) : $alert["name"]) . "</a>", $alert["id"]);
-			form_selectable_cell($severities[$alert["severity"]], $alert["id"]);
-			form_selectable_cell(($alert["method"] == 1 ? "Threshold":"Individual"), $alert["id"]);
-			form_selectable_cell(($alert["method"] == 1 ? $alert["num"]:"N/A"), $alert["id"]);
-			form_selectable_cell((($alert["enabled"] == "on") ? "Yes" : "No"), $alert["id"]);
-			form_selectable_cell($message_types[$alert["type"]], $alert["id"]);
-			form_selectable_cell(title_trim($alert["message"],60), $alert["id"]);
-			form_selectable_cell((substr_count($alert["email"], ",") ? "Multiple":$alert["email"]), $alert["id"]);
-			form_selectable_cell(date("Y-m-d H:i:s", $alert["date"]), $alert["id"]);
-			form_selectable_cell($alert["user"], $alert["id"]);
-			form_checkbox_cell($alert["name"], $alert["id"]);
+			form_alternate_row('line' . $alert['id'], true);
+			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . 'plugins/syslog/syslog_alerts.php?action=edit&id=' . $alert['id'] . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", $alert['name']) : $alert['name']) . '</a>', $alert['id']);
+			form_selectable_cell($severities[$alert['severity']], $alert['id']);
+			form_selectable_cell(($alert['method'] == 1 ? 'Threshold':'Individual'), $alert['id']);
+			form_selectable_cell(($alert['method'] == 1 ? $alert['num']:'N/A'), $alert['id']);
+			form_selectable_cell((($alert['enabled'] == 'on') ? 'Yes' : 'No'), $alert['id']);
+			form_selectable_cell($message_types[$alert['type']], $alert['id']);
+			form_selectable_cell(title_trim($alert['message'],60), $alert['id']);
+			form_selectable_cell((substr_count($alert['email'], ',') ? 'Multiple':$alert['email']), $alert['id']);
+			form_selectable_cell(date('Y-m-d H:i:s', $alert['date']), $alert['id']);
+			form_selectable_cell($alert['user'], $alert['id']);
+			form_checkbox_cell($alert['name'], $alert['id']);
 			form_end_row();
 		}
 	}else{
 		print "<tr><td colspan='4'><em>No Syslog Alerts Defined</em></td></tr>";
 	}
+
 	html_end_box(false);
 
-	/* draw the dropdown containing a list of available actions for this form */
 	draw_actions_dropdown($syslog_actions);
+
+	form_end();
 }
 
 ?>

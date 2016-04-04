@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2014 The Cacti Group                                 |
+ | Copyright (C) 2007-2016 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -23,8 +23,8 @@
 */
 
 /* do NOT run this script through a web browser */
-if (!isset($_SERVER["argv"][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-	die("<br><strong>This script is only meant to run at the command line.</strong>");
+if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
+	die('<br><strong>This script is only meant to run at the command line.</strong>');
 }
 
 $no_http_headers = true;
@@ -37,8 +37,8 @@ if (file_exists('include/auth.php')) {
 	include(dirname(__FILE__) . '/../../include/global.php');
 }
 
-$sli = read_config_option("syslog_last_incoming");
-$slt = read_config_option("syslog_last_total");
+$sli = read_config_option('syslog_last_incoming');
+$slt = read_config_option('syslog_last_total');
 
 $line = syslog_db_fetch_row("SHOW TABLE STATUS LIKE 'syslog_incoming'");
 $i_rows = $line['Auto_increment'];
@@ -63,6 +63,4 @@ db_execute($sql);
 if ($sli == '') $sli = 0;
 if ($slt == '') $slt = 0;
 
-print "total:" . ($total_rows-$slt) . " incoming:" . ($i_rows-$sli);
-
-?>
+print 'total:' . ($total_rows-$slt) . ' incoming:' . ($i_rows-$sli);

@@ -44,10 +44,9 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
-	//print "<pre>";print_r($_GET);print "</pre>";
-	if (isset($_GET["install"]) || isset($_GET["return"]) || isset($_GET["cancel"])) {
+	if (isset_request_var("install") || isset_request_var("return") || isset_request_var("cancel")) {
 		if (!$bg_inprocess) {
-			syslog_execute_update($syslog_exists, $_GET);
+			syslog_execute_update($syslog_exists, $_REQUEST);
 			$bg_inprocess = true;
 		}
 	}else{
@@ -89,12 +88,11 @@ function plugin_syslog_uninstall () {
 
 	syslog_connect();
 
-	//print "<pre>";print_r($_GET);print "</pre>";
-	if (isset($_GET["cancel"]) || isset($_GET["return"])) {
+	if (isset_request_var("cancel") || isset_request_var("return")) {
 		header("Location:" . $config["url_path"] . "plugins.php");
 		exit;
-	}elseif (isset($_GET["uninstall"])) {
-		if ($_GET["uninstall_method"] == "all") {
+	}elseif (isset_request_var("uninstall")) {
+		if (get_filter_request_var("uninstall_method") == "all") {
 			/* do the big tables first */
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`");
@@ -188,6 +186,7 @@ function syslog_check_upgrade() {
 	$current = syslog_version();
 	$current = $current['version'];
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
+
 	if ($current != $old || $old_pia) {
 		/* update realms for old versions */
 		if ($old < 1.0 || $old == '' || $old_pia) {
@@ -469,7 +468,7 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 				ON sf.facility=s.facility)");
 
 		/* change the structure of the syslog table for performance sake */
-		$mysqlVersion = syslog_get_mysql_version("syslog");
+		$mysqlVersion = syslog_get_mysql_version('syslog');
 		if ($mysqlVersion >= 5) {
 			syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table`
 				MODIFY COLUMN message varchar(1024) DEFAULT NULL,
@@ -501,8 +500,8 @@ function syslog_upgrade_pre_oneoh_tables($options = false, $isbackground = false
 		if (sizeof($hosts)) {
 		foreach($hosts as $host) {
 			syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`$table`
-				SET host_id=" . $host["host_id"] . "
-				WHERE host='" . $host["host"] . "'");
+				SET host_id=" . $host['host_id'] . "
+				WHERE host='" . $host['host'] . "'");
 		}
 		}
 
@@ -572,6 +571,7 @@ function syslog_get_mysql_version($db = 'cacti') {
 		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 	}else{
 		$dbInfo = syslog_db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
+
 	}
 
 	if (sizeof($dbInfo)) {
@@ -1438,12 +1438,13 @@ function syslog_graph_buttons($graph_elements = array()) {
 
 	include(dirname(__FILE__) . '/config.php');
 
-	if ($_REQUEST['action'] == 'view') return;
+	if (get_nfilter_request_var('action') == 'view') return;
 
-	if (isset($_REQUEST['graph_end']) && strlen($_REQUEST['graph_end'])) {
-		$date1 = date('Y-m-d H:i:s', $_REQUEST['graph_start']);
-		$date2 = date('Y-m-d H:i:s', $_REQUEST['graph_end']);
+	if (isset_request_var('graph_end') && strlen(get_filter_request_var('graph_end'))) {
+		$date1 = date('Y-m-d H:i:s', get_filter_request_var('graph_start'));
+		$date2 = date('Y-m-d H:i:s', get_filter_request_var('graph_end'));
 	}else{
+
 		$date1 = $timespan['current_value_date1'];
 		$date2 = $timespan['current_value_date2'];
 	}

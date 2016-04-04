@@ -31,18 +31,18 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 	if (syslog_check_dependencies()) {
 		syslog_debug("Sending Alert email to '" . $to . "'");
 
-		$sms = "";
-		$nonsms = "";
+		$sms    = '';
+		$nonsms = '';
 		/* if there are SMS emails, process separately */
-		if (substr_count($to, "sms@")) {
-			$emails = explode(",", $to);
+		if (substr_count($to, 'sms@')) {
+			$emails = explode(',', $to);
 
 			if (sizeof($emails)) {
 			foreach($emails as $email) {
-				if (substr_count($email, "sms@")) {
-					$sms .= (strlen($sms) ? ", ":"") . str_replace("sms@", "", trim($email));
+				if (substr_count($email, 'sms@')) {
+					$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
 				}else{
-					$nonsms .= (strlen($nonsms) ? ", ":"") . trim($email);
+					$nonsms .= (strlen($nonsms) ? ', ':'') . trim($email);
 				}
 			}
 			}
@@ -55,14 +55,14 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 		}
 
 		if (strlen($nonsms)) {
-			if (read_config_option("syslog_html") == "on") {
+			if (read_config_option('syslog_html') == 'on') {
 				send_mail($nonsms, $from, $subject, $message, 'html_please');
 			}else{
 				send_mail($nonsms, $from, $subject, $message);
 			}
 		}
 	} else {
-		syslog_debug("Could not send alert, you are missing the Settings plugin");
+		syslog_debug('Could not send alert, you are missing the Settings plugin');
 	}
 }
 
@@ -71,7 +71,7 @@ function syslog_is_partitioned() {
 
 	/* see if the table is partitioned */
 	$syntax = syslog_db_fetch_row("SHOW CREATE TABLE `" . $syslogdb_default . "`.`syslog`");
-	if (substr_count($syntax["Create Table"], "PARTITION")) {
+	if (substr_count($syntax['Create Table'], 'PARTITION')) {
 		return true;
 	}else{
 		return false;
@@ -85,8 +85,8 @@ function syslog_traditional_manage() {
 	global $syslogdb_default, $syslog_cnn;
 
 	/* determine the oldest date to retain */
-	if (read_config_option("syslog_retention") > 0) {
-		$retention = date("Y-m-d", time() - (86400 * read_config_option("syslog_retention")));
+	if (read_config_option('syslog_retention') > 0) {
+		$retention = date('Y-m-d', time() - (86400 * read_config_option('syslog_retention')));
 	}
 
 	/* delete from the main syslog table first */
@@ -133,10 +133,10 @@ function syslog_partition_create($table) {
 
 	/* determine the format of the table name */
 	$time    = time();
-	$cformat = "d" . date("Ymd", $time);
+	$cformat = 'd' . date('Ymd', $time);
 	$lnow    = date('Y-m-d', $time+86400);
 
-	cacti_log("SYSLOG: Creating new partition '$cformat'", false, "SYSTEM");
+	cacti_log("SYSLOG: Creating new partition '$cformat'", false, 'SYSTEM');
 	syslog_debug("Creating new partition '$cformat'");
 	syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table` REORGANIZE PARTITION dMaxValue INTO (
 		PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
@@ -155,7 +155,7 @@ function syslog_partition_remove($table) {
 		WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
 		ORDER BY partition_ordinal_position");
 
-	$days     = read_config_option("syslog_retention");
+	$days     = read_config_option('syslog_retention');
 	syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
 
 	if ($days > 0) {
@@ -164,9 +164,9 @@ function syslog_partition_remove($table) {
 			$i = 0;
 			while ($user_partitions > $days) {
 				$oldest = $number_of_partitions[$i];
-				cacti_log("SYSLOG: Removing old partition 'd" . $oldest["PARTITION_NAME"] . "'", false, "SYSTEM");
-				syslog_debug("Removing partition '" . $oldest["PARTITION_NAME"] . "'");
-				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table` DROP PARTITION " . $oldest["PARTITION_NAME"]);
+				cacti_log("SYSLOG: Removing old partition 'd" . $oldest['PARTITION_NAME'] . "'", false, 'SYSTEM');
+				syslog_debug("Removing partition '" . $oldest['PARTITION_NAME'] . "'");
+				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table` DROP PARTITION " . $oldest['PARTITION_NAME']);
 				$i++;
 				$user_partitions--;
 				$syslog_deleted++;
@@ -187,7 +187,7 @@ function syslog_partition_check($table) {
 		ORDER BY partition_ordinal_position DESC
 		LIMIT 1,1;");
 
-	$lformat   = str_replace("d", "", $last_part);
+	$lformat   = str_replace('d', '', $last_part);
 	$cformat   = date('Ymd');
 
 	if ($cformat > $lformat) {
@@ -198,8 +198,8 @@ function syslog_partition_check($table) {
 }
 
 function syslog_check_changed($request, $session) {
-	if ((isset($_REQUEST[$request])) && (isset($_SESSION[$session]))) {
-		if ($_REQUEST[$request] != $_SESSION[$session]) {
+	if ((isset_request_var($request)) && (isset($_SESSION[$session]))) {
+		if (get_request_var($request) != $_SESSION[$session]) {
 			return 1;
 		}
 	}
@@ -472,7 +472,7 @@ function syslog_remove_items($table, $uniqueID) {
 
 	if ($removed == 0) $xferred = $total;
 
-	return array("removed" => $removed, "xferred" => $xferred);
+	return array('removed' => $removed, 'xferred' => $xferred);
 }
 
 /** function syslog_row_color()
@@ -485,22 +485,22 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 
 	$bglevel = strtolower($level);
 
-	if (substr_count($bglevel, "emerg")) {
-		$current_color = read_config_option("syslog_emerg_bg");
-	}else if (substr_count($bglevel, "alert")) {
-		$current_color = read_config_option("syslog_alert_bg");
-	}else if (substr_count($bglevel, "crit")) {
-		$current_color = read_config_option("syslog_crit_bg");
-	}else if (substr_count($bglevel, "err")) {
-		$current_color = read_config_option("syslog_err_bg");
-	}else if (substr_count($bglevel, "warn")) {
-		$current_color = read_config_option("syslog_warn_bg");
-	}else if (substr_count($bglevel, "notice")) {
-		$current_color = read_config_option("syslog_notice_bg");
-	}else if (substr_count($bglevel, "info")) {
-		$current_color = read_config_option("syslog_info_bg");
-	}else if (substr_count($bglevel, "debug")) {
-		$current_color = read_config_option("syslog_debug_bg");
+	if (substr_count($bglevel, 'emerg')) {
+		$current_color = read_config_option('syslog_emerg_bg');
+	}else if (substr_count($bglevel, 'alert')) {
+		$current_color = read_config_option('syslog_alert_bg');
+	}else if (substr_count($bglevel, 'crit')) {
+		$current_color = read_config_option('syslog_crit_bg');
+	}else if (substr_count($bglevel, 'err')) {
+		$current_color = read_config_option('syslog_err_bg');
+	}else if (substr_count($bglevel, 'warn')) {
+		$current_color = read_config_option('syslog_warn_bg');
+	}else if (substr_count($bglevel, 'notice')) {
+		$current_color = read_config_option('syslog_notice_bg');
+	}else if (substr_count($bglevel, 'info')) {
+		$current_color = read_config_option('syslog_info_bg');
+	}else if (substr_count($bglevel, 'debug')) {
+		$current_color = read_config_option('syslog_debug_bg');
 	}else{
 		$legacy = true;
 
@@ -513,61 +513,42 @@ function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_tit
 
 	$fglevel = strtolower($level);
 
-	if (substr_count($fglevel, "emerg")) {
-		$current_color = read_config_option("syslog_emerg_bg");
-	}else if (substr_count($fglevel, "alert")) {
-		$current_color = read_config_option("syslog_alert_bg");
-	}else if (substr_count($fglevel, "crit")) {
-		$current_color = read_config_option("syslog_crit_bg");
-	}else if (substr_count($fglevel, "err")) {
-		$current_color = read_config_option("syslog_err_bg");
-	}else if (substr_count($fglevel, "warn")) {
-		$current_color = read_config_option("syslog_warn_bg");
-	}else if (substr_count($fglevel, "notice")) {
-		$current_color = read_config_option("syslog_notice_bg");
-	}else if (substr_count($fglevel, "info")) {
-		$current_color = read_config_option("syslog_info_bg");
-	}else if (substr_count($fglevel, "debug")) {
-		$current_color = read_config_option("syslog_debug_bg");
+	if (substr_count($fglevel, 'emerg')) {
+		$current_color = read_config_option('syslog_emerg_bg');
+	}else if (substr_count($fglevel, 'alert')) {
+		$current_color = read_config_option('syslog_alert_bg');
+	}else if (substr_count($fglevel, 'crit')) {
+		$current_color = read_config_option('syslog_crit_bg');
+	}else if (substr_count($fglevel, 'err')) {
+		$current_color = read_config_option('syslog_err_bg');
+	}else if (substr_count($fglevel, 'warn')) {
+		$current_color = read_config_option('syslog_warn_bg');
+	}else if (substr_count($fglevel, 'notice')) {
+		$current_color = read_config_option('syslog_notice_bg');
+	}else if (substr_count($fglevel, 'info')) {
+		$current_color = read_config_option('syslog_info_bg');
+	}else if (substr_count($fglevel, 'debug')) {
+		$current_color = read_config_option('syslog_debug_bg');
 	}else{
 		$current_text_color = 'ffffff';
 	}
 
-	$tip_options = "CLICKCLOSE, 'true', WIDTH, '40', DELAY, '300', FOLLOWMOUSE, 'true', FADEIN, 250, FADEOUT, 250, BGCOLOR, '#FEFEFE', STICKY, 'true', SHADOWCOLOR, '#797C6E'";
-
-	print "<tr onmouseout=\"UnTip()\" onmouseover=\"Tip(" . $tip_title . ", " . $tip_options . ")\" class='syslog_$level'>\n";
+	print "<tr style='background-color:#$current_color' class='syslog_$level'>\n";
 }
 
 function sql_hosts_where($tab) {
 	global $hostfilter, $syslog_incoming_config;
 
-	if (!empty($_REQUEST["host"])) {
-		if (is_array($_REQUEST["host"])) {
-			$hostfilter  = "";
-			$x=0;
-			if ($_REQUEST["host"][$x] != "0") {
-				while ($x < count($_REQUEST["host"])) {
-					if (!empty($hostfilter)) {
-						$hostfilter .= ", '" . $_REQUEST["host"][$x] . "'";
-					}else{
-						if (!empty($sql_where)) {
-							$hostfilter .= " AND host_id IN('" . $_REQUEST["host"][$x] . "'";
-						} else {
-							$hostfilter .= " host_id IN('" . $_REQUEST["host"][$x] . "'";
-						}
-					}
+	$hostfilter  = '';
 
-					$x++;
-				}
+	if (!isempty_request_var('host') && get_request_var('host') != 'null') {
+		$hostarray = explode(',', get_request_var('host'));
+		if ($hostarray[0] != '0') {
+			foreach($hostarray as $host_id) {
+				input_validate_input_number($host_id);
+			}
 
-				$hostfilter .= ")";
-			}
-		}else{
-			if (!empty($sql_where)) {
-				$hostfilter .= " AND host_id IN('" . $_REQUEST["host"] . "')";
-			} else {
-				$hostfilter .= " host_id IN('" . $_REQUEST["host"] . "')";
-			}
+			$hostfilter .= (strlen($hostfilter) ? ' AND ':'') . ' host_id IN(' . implode(',', $hostarray) . ')';
 		}
 	}
 }
@@ -575,37 +556,37 @@ function sql_hosts_where($tab) {
 function syslog_export($tab) {
 	global $syslog_incoming_config, $severities;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
-	if ($tab == "syslog") {
-		header("Content-type: application/excel");
-		header("Content-Disposition: attachment; filename=syslog_view-" . date("Y-m-d",time()) . ".csv");
+	if ($tab == 'syslog') {
+		header('Content-type: application/excel');
+		header('Content-Disposition: attachment; filename=syslog_view-' . date('Y-m-d',time()) . '.csv');
 
-		$sql_where = "";
-		$syslog_messages = get_syslog_messages($sql_where, "10000", $tab);
+		$sql_where = '';
+		$syslog_messages = get_syslog_messages($sql_where, '10000', $tab);
 
-		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`"), "host_id", "host");
-		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`"), "facility_id", "facility");
-		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`"), "priority_id", "priority");
+		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`"), 'host_id', 'host');
+		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`"), 'facility_id', 'facility');
+		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`"), 'priority_id', 'priority');
 
 		if (sizeof($syslog_messages) > 0) {
 			print 'host, facility, priority, date, message' . "\r\n";
 
 			foreach ($syslog_messages as $syslog_message) {
 				print
-					'"' . $hosts[$syslog_message["host_id"]]              . '","' .
-					ucfirst($facilities[$syslog_message["facility_id"]])  . '","' .
-					ucfirst($priorities[$syslog_message["priority_id"]])  . '","' .
-					$syslog_message["logtime"]                            . '","' .
-					$syslog_message[$syslog_incoming_config["textField"]] . '"' . "\r\n";
+					'"' . $hosts[$syslog_message['host_id']]              . '","' .
+					ucfirst($facilities[$syslog_message['facility_id']])  . '","' .
+					ucfirst($priorities[$syslog_message['priority_id']])  . '","' .
+					$syslog_message['logtime']                            . '","' .
+					$syslog_message[$syslog_incoming_config['textField']] . '"' . "\r\n";
 			}
 		}
 	}else{
-		header("Content-type: application/excel");
-		header("Content-Disposition: attachment; filename=alert_log_view-" . date("Y-m-d",time()) . ".csv");
+		header('Content-type: application/excel');
+		header('Content-Disposition: attachment; filename=alert_log_view-' . date('Y-m-d',time()) . '.csv');
 
-		$sql_where = "";
-		$syslog_messages = get_syslog_messages($sql_where, "10000");
+		$sql_where = '';
+		$syslog_messages = get_syslog_messages($sql_where, '10000');
 
 		if (sizeof($syslog_messages) > 0) {
 			print 'name, severity, date, message, host, facility, priority, count' . "\r\n";
@@ -613,14 +594,14 @@ function syslog_export($tab) {
 			foreach ($syslog_messages as $log) {
 				print
 					'"' .
-					$log["name"]                  . '","' .
-					$severities[$log["severity"]] . '","' .
-					$log["logtime"]               . '","' .
-					$log["logmsg"]                . '","' .
-					$log["host"]                  . '","' .
-					ucfirst($log["facility"])     . '","' .
-					ucfirst($log["priority"])     . '","' .
-					$log["count"]                 . '"' . "\r\n";
+					$log['name']                  . '","' .
+					$severities[$log['severity']] . '","' .
+					$log['logtime']               . '","' .
+					$log['logmsg']                . '","' .
+					$log['host']                  . '","' .
+					ucfirst($log['facility'])     . '","' .
+					ucfirst($log['priority'])     . '","' .
+					$log['count']                 . '"' . "\r\n";
 			}
 		}
 	}
@@ -630,14 +611,14 @@ function syslog_debug($message) {
 	global $syslog_debug;
 
 	if ($syslog_debug) {
-		echo "SYSLOG: " . $message . "\n";
+		echo 'SYSLOG: ' . $message . "\n";
 	}
 }
 
 function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html) {
 	global $config, $severities;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	if ($count <= 1) {
 		$save["seq"]      = "";
@@ -819,6 +800,6 @@ function syslog_manage_items($from_table, $to_table) {
 		}
 	}
 
-	return array("removed" => $removed, "xferred" => $xferred);
+	return array('removed' => $removed, 'xferred' => $xferred);
 }
 

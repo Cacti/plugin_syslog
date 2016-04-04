@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2014 The Cacti Group                                 |
+ | Copyright (C) 2007-2016 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -23,8 +23,8 @@
 */
 
 /* do NOT run this script through a web browser */
-if (!isset($_SERVER["argv"][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-	die("<br><strong>This script is only meant to run at the command line.</strong>");
+if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
+	die('<br><strong>This script is only meant to run at the command line.</strong>');
 }
 
 $no_http_headers = true;
@@ -35,8 +35,8 @@ include(dirname(__FILE__) . '/../../include/global.php');
 echo "NOTE: Fixing Warning vs. Warn Errors\n";
 $found = syslog_db_fetch_row("SELECT * FROM syslog_priorities WHERE priority='warning' LIMIT 1");
 if (sizeof($found)) {
-	syslog_db_execute("UPDATE syslog SET priority_id=5 WHERE priority_id=" . $found["priority_id"]);
-	syslog_db_execute("UPDATE syslog_statistics SET priority_id=5 WHERE priority_id=" . $found["priority_id"]);
+	syslog_db_execute("UPDATE syslog SET priority_id=5 WHERE priority_id=" . $found['priority_id']);
+	syslog_db_execute("UPDATE syslog_statistics SET priority_id=5 WHERE priority_id=" . $found['priority_id']);
 	syslog_db_execute("DELETE FROM syslog_priorities WHERE priority='warning'");
 }
 echo "NOTE: Finished\n";
