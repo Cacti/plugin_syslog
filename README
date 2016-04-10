@@ -28,6 +28,11 @@
     Install just like any other plugin, just throw it in the plugin directory,
     in a folder called syslog, and install from the Plugin Management menu.
 
+	If you are upgrading to 2.0, you much rename, or truncate your syslog and
+	syslog_removal tables as there has been a change in format.  You may rename
+	these tables, but remapping their data to new facility_id and priority_id
+	is not handled automatically.
+
 ----[ Possible Bugs?
 
     If you find a problem, let me know!!! http://bugs.cacti.net

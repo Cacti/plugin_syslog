@@ -737,7 +737,12 @@ function syslog_setup_table_new($options) {
 		KEY last_updated (`last_updated`)) ENGINE=$engine
 		COMMENT='Contains all hosts currently in the syslog table'");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`");
+	$present = syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog_facilities'");
+	if ($present) {
+		syslog_db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog_facilities` TO `" . $syslogdb_default . "`.`syslog_facilities_old`");
+	}
+
+	syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_facilities` (
 		`facility_id` int(10) unsigned NOT NULL auto_increment,
 		`facility` varchar(10) NOT NULL,
@@ -746,7 +751,18 @@ function syslog_setup_table_new($options) {
 		KEY facility_id (`facility_id`),
 		KEY last_updates (`last_updated`)) ENGINE=$engine;");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`");
+	syslog_db_execute("INSERT INTO `" .  $syslogdb_default . "`.`syslog_facilities` (facility_id, facility) VALUES 
+		(0,'kern'), (1,'user'), (2,'mail'), (3,'daemon'), (4,'auth'), (5,'syslog'), (6,'lpd'), (7,'news'), 
+		(8,'uucp'), (9,'clock'), (10,'authpriv'), (11,'ftpd'), (12,'ntpd'), (13,'logaudit'), (14,'logalert'), 
+		(15,'cron'), (16,'local0'), (17,'local1'), (18,'local2'), (19,'local3'), (20,'local4'), (21,'local5'), 
+		(22,'local6'), (23,'local7');");
+
+	$present = syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog_priorities'");
+	if ($present) {
+		syslog_db_execute("RENAME TABLE `" . $syslogdb_default . "`.`syslog_priorities` TO `" . $syslogdb_default . "`.`syslog_priorities_old`");
+	}
+
+	syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
 		`priority_id` int(10) unsigned NOT NULL auto_increment,
 		`priority` varchar(10) NOT NULL,
@@ -754,6 +770,9 @@ function syslog_setup_table_new($options) {
 		PRIMARY KEY (`priority`),
 		KEY priority_id (`priority_id`),
 		KEY last_updated (`last_updated`)) ENGINE=$engine;");
+
+	syslog_db_execute("INSERT INTO `" .  $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES 
+		(0,'emerg'), (1,'alert'), (2,'crit'), (3,'err'), (4,'warning'), (5,'notice'), (6,'info'), (7,'debug'), (8,'other');");
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_host_facilities` (
 		`host_id` int(10) unsigned NOT NULL,
@@ -797,10 +816,6 @@ function syslog_setup_table_new($options) {
 		INDEX `insert_time`(`insert_time`))
 		ENGINE = MyISAM
 		COMMENT = 'Maintains High Level Statistics';");
-
-	foreach($syslog_levels as $id => $priority) {
-		syslog_db_execute("REPLACE INTO `" . $syslogdb_default . "`.`syslog_priorities` (priority_id, priority) VALUES ($id, '$priority')");
-	}
 
 	if (!isset($settings['syslog'])) {
 		syslog_config_settings();
@@ -1303,7 +1318,7 @@ function syslog_config_arrays () {
 		6 => 'lpr',
 		7 => 'news',
 		8 => 'uucp',
-		9 => 'clock',
+		9 => 'cron',
 		10 => 'authpriv',
 		11 => 'ftp',
 		12 => 'ntp',
