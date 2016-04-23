@@ -5,6 +5,7 @@
     Home Site ...... http://cactiusers.org
     Program ........ Syslog Plugin for Cacti
     Purpose ........ Sylog viewer for cacti
+
     Originally released as aloe by: sidewinder <sidewinder@shitworks.com>
     Modified by: Harlequin harlequin@cyberonic.com> as h.aloe
 
@@ -28,10 +29,32 @@
     Install just like any other plugin, just throw it in the plugin directory,
     in a folder called syslog, and install from the Plugin Management menu.
 
-	If you are upgrading to 2.0, you much rename, or truncate your syslog and
-	syslog_removal tables as there has been a change in format.  You may rename
-	these tables, but remapping their data to new facility_id and priority_id
-	is not handled automatically.
+	If you are upgrading to 2.0 from a prior install, you must first uninstall
+	syslog and insure both the syslog, syslog_removal,  and syslog_incoming tables 
+	are removed, and recreated at install time.
+
+	In addtion, the rsyslog configuration has changed in 2.0.  So, for example,
+	to configure modern rsyslog for Cacti, you must create a file called cacti.conf
+	in the /etc/rsyslog.d/ directory that includes the following:
+
+	--------------------- start /etc/rsyslog.d/cacti.conf ---------------------
+
+	$ModLoad imudp
+	$UDPServerRun 514
+	$ModLoad ommysql
+
+	$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, date, time, host, message) values (%syslogfacility%, %syslogpriority%, '%programname%', '%timereported:::date-mysql%', '%timereported:::date-mysql%', '%HOSTNAME%', TRIM(REPLACE(REPLACE(REPLACE(REPLACE('%msg%','(',''),')',''),'[','',']',''))))", SQL
+
+	*.* >localhost,my_database,my_user,my_password;cacti_syslog
+
+	--------------------- end /etc/rsyslog.d/cacti.conf ---------------------
+
+	Insure you restart rsyslog after these changes are completed.
+
+	We are using the pure integer values that rsyslog provides to both the priority
+	and facility in this version, which makes the data collection must less costly
+	for the database.  We have also started including the program for searching and
+	storage and alert generation.
 
 ----[ Possible Bugs?
 

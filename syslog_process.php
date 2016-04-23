@@ -166,9 +166,6 @@ syslog_debug('Unique ID = ' . $uniqueID);
 /* flag all records with the uniqueID prior to moving */
 syslog_db_execute('UPDATE `' . $syslogdb_default . '`.`syslog_incoming` SET status=' . $uniqueID . ' WHERE status=0');
 
-/* fix warn vs. warning issues */
-syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_incoming` SET priority='warn' WHERE priority='warning'");
-
 api_plugin_hook('plugin_syslog_before_processing');
 
 $syslog_incoming = db_affected_rows($syslog_cnn);
@@ -197,63 +194,32 @@ if (read_config_option('syslog_validate_hostname') == 'on') {
 	}
 }
 
-/* update the hosts, facilities, and priorities tables */
-$facilities = syslog_db_fetch_assoc('SELECT DISTINCT facility FROM `' . $syslogdb_default . '`.`syslog_incoming`');
-if (sizeof($facilities)) {
-	foreach($facility as $f) {
-		if (is_numeric($f['facility'])) {
-			$facility = $syslog_facilities[$f['facility']];
-			syslog_db_exec('UPDATE IGNORE `' . $syslogdb_default . "`.`syslog_facilities` SET facility='$facility' WHERE facility=" . $f['facility']);
-		}else{
-			$facility = $f['facility'];
-		}
-
-		syslog_db_execute('INSERT INTO `' . $syslogdb_default . "`.`syslog_facilities` (facility) VALUES ($facility) ON DUPLICATE KEY UPDATE facility=VALUES(facility), last_updated=NOW()");
-	}
-}
-
-$priorities = syslog_db_fetch_assoc('SELECT DISTINCT priority FROM `' . $syslogdb_default . '`.`syslog_incoming`');
-if (sizeof($priorities)) {
-	foreach($priorities as $p) {
-		if (is_numeric($p['priority'])) {
-			$priority = $syslog_levels[$p['priority']];
-			syslog_db_exec('UPDATE IGNORE `' . $syslogdb_default . "`.`syslog_priorities` SET priority='$priority' WHERE priority=" . $p['priority']);
-		}else{
-			$priority = $p['priority'];
-		}
-
-		syslog_db_execute('INSERT INTO `' . $syslogdb_default . "`.`syslog_priority` (priority) VALUES ($priority) ON DUPLICATE KEY UPDATE priority=VALUES(priority), last_updated=NOW()");
-	}
-}
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_programs` (program) SELECT DISTINCT program FROM `' . $syslogdb_default . '`.`syslog_incoming` WHERE status=' . $uniqueID . ' ON DUPLICATE KEY UPDATE program=VALUES(program), last_updated=NOW()');
 
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_hosts` (host) SELECT DISTINCT host FROM `' . $syslogdb_default . '`.`syslog_incoming` WHERE status=' . $uniqueID . ' ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()');
 
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_host_facilities`
 	(host_id, facility_id)
 	SELECT host_id, facility_id
-	FROM ((SELECT DISTINCT host, facility
+	FROM ((SELECT DISTINCT host, facility_id
 		FROM `' . $syslogdb_default . "`.`syslog_incoming` WHERE status=$uniqueID) AS s
 		INNER JOIN `" . $syslogdb_default . '`.`syslog_hosts` AS sh
-		ON s.host=sh.host
-		INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
-		ON sf.facility=s.facility)
+		ON s.host=sh.host)
 	ON DUPLICATE KEY UPDATE host_id=VALUES(host_id), last_updated=NOW()');
 
 /* tally statistics for this interval */
 if (read_config_option('syslog_statistics') == 'on') {
-	syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics` (host_id, facility_id, priority_id, insert_time, records)
-		SELECT host_id, facility_id, priority_id, NOW(), sum(records) AS records
-		FROM (SELECT host_id, facility_id, priority_id, count(*) AS records
+	syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics` (host_id, facility_id, priority_id, program_id, insert_time, records)
+		SELECT host_id, facility_id, priority_id, program_id, NOW(), SUM(records) AS records
+		FROM (SELECT host_id, facility_id, priority_id, program_id, COUNT(*) AS records
 			FROM syslog_incoming AS si
-			INNER JOIN syslog_facilities AS sf
-			ON sf.facility=si.facility
-			INNER JOIN syslog_priorities AS sp
-			ON sp.priority=si.priority
 			INNER JOIN syslog_hosts AS sh
 			ON sh.host=si.host
+			INNER JOIN syslog_programs AS sp
+			ON sp.program=si.program
 			WHERE status=' . $uniqueID . '
-			GROUP BY host_id, priority_id, facility_id) AS merge
-		GROUP BY host_id, priority_id, facility_id');
+			GROUP BY host_id, priority_id, facility_id, program_id) AS merge
+		GROUP BY host_id, priority_id, facility_id, program_id');
 
 	$stats = db_affected_rows($syslog_cnn);
 
@@ -470,17 +436,15 @@ if (sizeof($query)) {
 api_plugin_hook('plugin_syslog_after_processing');
 
 /* move syslog records to the syslog table */
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, priority_id, facility_id, host_id, message)
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, priority_id, facility_id, program_id, host_id, message)
 	SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config['timeField']     . '`),
-	priority_id, facility_id, host_id, message
-	FROM (SELECT date, time, priority_id, facility_id, host_id, message
+	priority_id, facility_id, program_id, host_id, message
+	FROM (SELECT date, time, priority_id, facility_id, program_id, host_id, message
 		FROM syslog_incoming AS si
-		INNER JOIN syslog_facilities AS sf
-		ON sf.facility=si.facility
-		INNER JOIN syslog_priorities AS sp
-		ON sp.priority=si.priority
 		INNER JOIN syslog_hosts AS sh
 		ON sh.host=si.host
+		INNER JOIN syslog_programs AS sp
+		ON sp.program=si.program
 		WHERE status=' . $uniqueID . ') AS merge');
 
 $moved = db_affected_rows($syslog_cnn);
@@ -513,6 +477,9 @@ if (read_config_option('syslog_alert_retention') > 0) {
 	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Syslog alarm log Record(s)');
 
 	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_hosts`
+		WHERE last_updated<'" . date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400)) . "'");
+
+	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_programs`
 		WHERE last_updated<'" . date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400)) . "'");
 
 	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Syslog Host Record(s)');

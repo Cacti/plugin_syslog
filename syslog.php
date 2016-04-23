@@ -38,7 +38,19 @@ include_once('./plugins/syslog/functions.php');
 
 $title = 'Syslog Viewer';
 
+$trimvals = array(
+	'1024' => 'All Text',
+	'30'   => '30 Chars',
+	'50'   => '50 Chars',
+	'75'   => '75 Chars',
+	'100'  => '100 Chars',
+	'150'  => '150 Chars',
+	'300'  => '300 Chars'
+);
+
 /* set the default tab */
+get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => '/^([a-zA-Z]+)$/')));
+
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
@@ -107,7 +119,7 @@ function syslog_display_tabs($current_tab) {
 }
 
 function syslog_view_alarm() {
-	global $config, $colors;
+	global $config;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -123,60 +135,12 @@ function syslog_view_alarm() {
 	exit;
 }
 
-/** function generate_syslog_cssjs()
- *  This function generates the page css and javascript which controls
- *  the appearance of the syslog main page.  It supports both the legacy
- *  CSS generation code as well as the current methodology.
-*/
-function generate_syslog_cssjs() {
-	global $colors, $config, $syslog_incoming_config;
-	global $syslog_colors, $syslog_text_colors, $syslog_levels;
-
-	/* legacy css for syslog backgrounds */
-	print "\n\t\t\t<style type='text/css'>\n";
-	if (sizeof($syslog_colors)) {
-		foreach ($syslog_colors as $type => $color) {
-			if ((isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] != '')) {
-				print "\t\t\t.syslog_$type {\n";
-				if ($color != '') {
-					print "\t\t\t\tbackground-color:#$color;\n";
-				}
-				if (isset($syslog_text_colors[$type]) && $syslog_text_colors[$type] != '') {
-					print "\t\t\t\tcolor:#" . $syslog_text_colors[$type] . ";\n";
-				}
-				print "\t\t\t}\n";
-			}
-		}
-	}
-	print "\t\t\t</style>\n";
-
-	/* this section of javascript keeps nasty calendar popups from
-	 * appearing when you hit return.
-	 */
-	?>
-	<script type='text/javascript'>
-
-	function forceReturn(evt) {
-		var evt  = (evt) ? evt : ((event) ? event : null);
-		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-
-		if ((evt.keyCode == 13) && (node.type=='text')) {
-			document.getElementById('syslog_form').submit();
-			return false;
-		}
-	}
-	document.onkeypress = forceReturn;
-
-	</script>
-	<?php
-}
-
 /** function syslog_statistics()
  *  This function paints a table of summary statistics for syslog
  *  messages by host, facility, priority, and time range.
 */
 function syslog_statistics() {
-	global $title, $colors, $rows, $config;
+	global $title, $rows, $config;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -206,13 +170,13 @@ function syslog_statistics() {
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
-        'facility' => array(
+        'efacility' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
-        'priority' => array(
+        'epriority' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
             'default' => '',
@@ -233,13 +197,13 @@ function syslog_statistics() {
     validate_store_request_vars($filters, 'sess_syslogs');
     /* ================= input validation ================= */
 
-	html_start_box('Syslog Statistics Filter', '100%', $colors['header'], '3', 'center', '');
+	html_start_box('Syslog Statistics Filter', '100%', '', '3', 'center', '');
 
 	syslog_stats_filter();
 
 	html_end_box();
 
-	html_start_box('', '100%', $colors['header'], '3', 'center', '');
+	html_start_box('', '100%', '', '3', 'center', '');
 
 	$sql_where   = '';
 	$sql_groupby = '';
@@ -278,6 +242,17 @@ function syslog_statistics() {
 		loadPageNoHeader(strURL);
 	}
 
+	function forceReturn(evt) {
+		var evt  = (evt) ? evt : ((event) ? event : null);
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+
+		if ((evt.keyCode == 13) && (node.type=='text')) {
+			document.getElementById('syslog_form').submit();
+			return false;
+		}
+	}
+	document.onkeypress = forceReturn;
+
 	</script>
 	<?php
 
@@ -293,10 +268,9 @@ function syslog_statistics() {
 
 	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-	$i = 0;
 	if (sizeof($records)) {
 		foreach ($records as $r) {
-			form_alternate_row_color($colors['alternate'], $colors['light'], $i); $i++;
+			form_alternate_row();
 			echo '<td>' . $r['host'] . '</td>';
 			echo '<td>' . (get_request_var('facility') != '-2' ? ucfirst($r['facility']):'-') . '</td>';
 			echo '<td>' . (get_request_var('priority') != '-2' ? ucfirst($r['priority']):'-') . '</td>';
@@ -364,7 +338,7 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 }
 
 function syslog_stats_filter() {
-	global $colors, $config, $item_rows;
+	global $config, $item_rows;
 	?>
 	<tr class='even'>
 		<td>
@@ -429,7 +403,7 @@ function syslog_stats_filter() {
 						</select>
 					</td>
 					<td>
-						<input id='refresh' type='button' value='Go'>
+						<input id='go' type='button' value='Go'>
 					</td>
 					<td>
 						<input id='clear' type='button' value='Clear'>
@@ -462,7 +436,7 @@ function syslog_stats_filter() {
 		}
 
 		$(function() {
-			$('#refresh').click(function() {
+			$('#go').click(function() {
 				applyFilter();
 			});
 
@@ -476,6 +450,17 @@ function syslog_stats_filter() {
 			});
 		});
 
+		function forceReturn(evt) {
+			var evt  = (evt) ? evt : ((event) ? event : null);
+			var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+
+			if ((evt.keyCode == 13) && (node.type=='text')) {
+				document.getElementById('syslog_form').submit();
+				return false;
+			}
+		}
+		document.onkeypress = forceReturn;
+
 		</script>
 	</tr>
 	<?php
@@ -486,12 +471,12 @@ function syslog_stats_filter() {
  *  we have a good request.  We want to protect against people who
  *  like to create issues with Cacti.
 */
-function syslog_request_validation($current_tab) {
-	global $title, $colors, $rows, $config, $reset_multi;
+function syslog_request_validation($current_tab, $force = false) {
+	global $title, $rows, $config, $reset_multi;
 
 	include_once('./lib/timespan_settings.php');
 
-	if ($current_tab != 'alerts' && isset_request_var('host') && get_request_var('host') == -1) {
+	if ($current_tab != 'alerts' && isset_request_var('host') && get_nfilter_request_var('host') == -1) {
 		kill_session_var('sess_syslog_' . $current_tab . '_hosts');
 		unset_request_var('host');
 	}
@@ -501,7 +486,7 @@ function syslog_request_validation($current_tab) {
         'rows' => array(
             'filter' => FILTER_VALIDATE_INT,
             'pageset' => true,
-            'default' => '-1',
+            'default' => read_user_setting('syslog_rows', '-1', $force)
             ),
         'page' => array(
             'filter' => FILTER_VALIDATE_INT,
@@ -513,31 +498,43 @@ function syslog_request_validation($current_tab) {
             ),
         'removal' => array(
             'filter' => FILTER_VALIDATE_INT,
-            'default' => '1'
+            'default' => read_user_setting('syslog_removal', '1', $force)
             ),
         'refresh' => array(
             'filter' => FILTER_VALIDATE_INT,
-            'default' => read_config_option('syslog_refresh') 
+            'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force) 
             ),
         'trimval' => array(
             'filter' => FILTER_VALIDATE_INT,
-            'default' => '75'
+            'default' => read_user_setting('syslog_trimval', '75', $force)
             ),
         'enabled' => array(
             'filter' => FILTER_VALIDATE_INT,
 			'pageset' => true,
             'default' => '-1'
 			),
-        'efacility' => array(
+        'host' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
-        'elevel' => array(
+        'efacility' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
-            'default' => '',
+            'default' => read_user_setting('syslog_efacility', '-1', $force),
+            'options' => array('options' => 'sanitize_search_string')
+            ),
+        'epriority' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => read_user_setting('syslog_epriority', '-1', $force),
+            'options' => array('options' => 'sanitize_search_string')
+            ),
+        'eprogram' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => read_user_setting('syslog_eprogram', '-1', $force),
             'options' => array('options' => 'sanitize_search_string')
             ),
         'filter' => array(
@@ -609,71 +606,63 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 		}
 	}
 
-	if (!isempty_request_var('efacility')) {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "facility_id='" . get_request_var('efacility') . "'";
+	if (get_request_var('eprogram') != '-1') {
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "syslog.program_id='" . get_request_var('eprogram') . "'";
 	}
-	if (isset_request_var('elevel') && get_request_var('elevel') != '-1') {
-		$levels = '';
 
-		switch(get_request_var('elevel')) {
+	if (get_request_var('efacility') != '-1') {
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "syslog.facility_id='" . get_request_var('efacility') . "'";
+	}
+
+	if (isset_request_var('epriority') && get_request_var('epriority') != '-1') {
+		$priorities = '';
+
+		switch(get_request_var('epriority')) {
 		case '0':
-			$levels = "'emerg'";
+			$priorities = "=0";
 			break;
 		case '1o':
-			$levels = "'alert'";
+			$priorities = "=1";
 			break;
 		case '1':
-			$levels = "'emerg', 'alert'";
+			$priorities = "<1";
 			break;
 		case '2o':
-			$levels = "'crit'";
+			$priorities = "=2";
 			break;
 		case '2':
-			$levels = "'emerg','alert','crit'";
+			$priorities = "<=2";
 			break;
 		case '3o':
-			$levels = "'err'";
+			$priorities = "=3";
 			break;
 		case '3':
-			$levels = "'emerg','alert','crit','err'";
+			$priorities = "<=3";
 			break;
 		case '4o':
-			$levels = "'warning'";
+			$priorities = "=4";
 			break;
 		case '4':
-			$levels = "'emerg','alert','crit','err','warning'";
+			$priorities = "<=4";
 			break;
 		case '5o':
-			$levels = "'notice'";
+			$priorities = "=5";
 			break;
 		case '5':
-			$levels = "'emerg','alert','crit','err','warning','notice'";
+			$priorities = "<=5";
 			break;
 		case '6o':
-			$levels = "'info'";
+			$priorities = "=6";
 			break;
 		case '6':
-			$levels = "'emerg','alert','crit','err','warning','notice','info'";
-			break;
-		case '7o':
-			$levels = "'debug'";
+			$priorities = "<=6";
 			break;
 		case '7':
-			$levels = "'emerg','alert','crit','err','warning','notice','info','debug'";
+			$priorities = "=7";
 			break;
 		}
 
-		$priority_ids = '';
-		if ($levels != '') {
-			$priority_ids = implode(',', array_rekey(syslog_db_fetch_assoc('SELECT priority_id FROM `' . $syslogdb_default . '`.`syslog_priorities` WHERE priority IN(' . $levels . ')'), 'priority_id', 'priority_id'));
-
-		}
-
-		//cacti_log('Levels: ' . $levels . ', Priority ID: ' . $priority_ids);
-
-		if ($priority_ids != '') {
-			$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'priority_id IN (' . $priority_ids . ')';
-		}
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'syslog.priority_id ' . $priorities;
 	}
 
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);
@@ -688,29 +677,37 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 
 	if ($tab == 'syslog') {
 		if (get_request_var('removal') == '-1') {
-			$query_sql = "SELECT *, 'main' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog` " .
+			$query_sql = "SELECT syslog.*, syslog_programs.program, 'main' AS mtype
+				FROM `" . $syslogdb_default . "`.`syslog` 
+				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
+				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				ORDER BY " . $sort . " " . get_request_var('sort_direction') .
 				$limit;
 		}elseif (get_request_var('removal') == '1') {
-			$query_sql = "(SELECT *, 'main' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog` " .
+			$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
+				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
+				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
-				) UNION (SELECT *, 'remove' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog_removed` " .
+				) UNION (SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
+				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
+				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . ")
 				ORDER BY " . $sort . " " . get_request_var('sort_direction') .
 				$limit;
 		}else{
-			$query_sql = "SELECT *, 'remove' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog_removed` " .
+			$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
+				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` AS syslog
+				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				ORDER BY " . $sort . " " . get_request_var('sort_direction') .
 				$limit;
 		}
 	}else{
-		$query_sql = "SELECT sl.*, sa.name, sa.severity
+		$query_sql = "SELECT sl.*, spr.program, sa.name, sa.severity
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS sl
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
 			ON sl.facility=sf.facility
@@ -719,7 +716,9 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 			ON sl.host=sh.host
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
-			ON sl.alert_id=sa.id " .
+			ON sl.alert_id=sa.id 
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
+			ON sl.program_id=spr.program_id " .
 			$sql_where . "
 			ORDER BY " . $sort . " " . get_request_var('sort_direction') .
 			$limit;
@@ -731,14 +730,16 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $colors, $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval;
+	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals;
 
 	include(dirname(__FILE__) . '/config.php');
 
+	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `" . $syslogdb_default . "`.`syslog_incoming`");
+
 	if (isset($_SESSION['sess_current_date1'])) {
-		$filter_text = " [ Start: '" . $_SESSION['sess_current_date1'] . "' to End: '" . $_SESSION['sess_current_date2'] . "' ]";
+		$filter_text = " [ Start: '" . $_SESSION['sess_current_date1'] . "' to End: '" . $_SESSION['sess_current_date2'] . "', Unprocessed Messages: " . $unprocessed . ' ]';
 	}else{
-		$filter_text = '';
+		$filter_text = '[ Unprocessed Messages: ' . $unprocessed . ' ]';
 	}
 
 	?>
@@ -748,7 +749,9 @@ function syslog_filter($sql_where, $tab) {
 	var date2Open = false;
 
 	$(function() {
-		$('#refresh').click(function() {
+		$('#host').multiselect().multiselectfilter({label: 'Search', width: '150'});
+
+		$('#go').click(function() {
 			applyFilter();
 		});
 
@@ -811,7 +814,19 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function applyFilter() {
-		strURL = 'syslog.php?header=false&date1='+$('#date1').val()+'&date2='+$('#date2').val()+'&host='+$('#host').val()+'&filter='+$('#filter').val()+'&efacility='+$('#efacility').val()+'&elevel='+$('#elevel').val()+'&rows='+$('#rows').val()+'&trimval='+$('#trimval').val()+'&removal='+$('#removal').val();
+		strURL = 'syslog.php?header=false'+
+			'&date1='+$('#date1').val()+
+			'&date2='+$('#date2').val()+
+			'&host='+$('#host').val()+
+			'&filter='+$('#filter').val()+
+			'&efacility='+$('#efacility').val()+
+			'&epriority='+$('#epriority').val()+
+			'&eprogram='+$('#eprogram').val()+
+			'&rows='+$('#rows').val()+
+			'&trimval='+$('#trimval').val()+
+			'&removal='+$('#removal').val()+
+			'&refresh='+$('#refresh').val();
+
 		loadPageNoHeader(strURL);
 	}
 
@@ -886,17 +901,26 @@ function syslog_filter($sql_where, $tab) {
 		});
 	}
 
+	function forceReturn(evt) {
+		var evt  = (evt) ? evt : ((event) ? event : null);
+		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+
+		if ((evt.keyCode == 13) && (node.type=='text')) {
+			document.getElementById('syslog_form').submit();
+			return false;
+		}
+	}
+	document.onkeypress = forceReturn;
+
 	</script>
-	<form style='margin:0px;padding:0px;' id='syslog_form' method='post' action='syslog.php'>
 	<?php
-	html_start_box("Syslog Message Filter$filter_text", '100%', $colors['header'], '3', 'center', '');?>
+
+	html_start_box('Syslog Message Filter ' . $filter_text, '100%', '', '3', 'center', '');?>
 		<tr class='even noprint'>
 			<td class='noprint'>
+			<form style='margin:0px;padding:0px;' id='syslog_form' method='post' action='syslog.php'>
 				<table class='filterTable'>
 					<tr>
-						<td>
-							Presets
-						</td>
 						<td>
 							<select id='predefined_timespan' onChange='applyTimespan()'>
 								<?php
@@ -926,7 +950,7 @@ function syslog_filter($sql_where, $tab) {
 							From
 						</td>
 						<td>
-							<input type='text' id='date1' size='14' value='<?php print (isset($_SESSION['sess_current_date1']) ? $_SESSION['sess_current_date1'] : '');?>'>
+							<input type='text' id='date1' size='15' value='<?php print (isset($_SESSION['sess_current_date1']) ? $_SESSION['sess_current_date1'] : '');?>'>
 						</td>
 						<td>
 							<i title='Start Date Selector' class='calendar fa fa-calendar' id='startDate'></i>
@@ -935,7 +959,7 @@ function syslog_filter($sql_where, $tab) {
 							To
 						</td>
 						<td>
-							<input type='text' id='date2' size='14' value='<?php print (isset($_SESSION['sess_current_date2']) ? $_SESSION['sess_current_date2'] : '');?>'>
+							<input type='text' id='date2' size='15' value='<?php print (isset($_SESSION['sess_current_date2']) ? $_SESSION['sess_current_date2'] : '');?>'>
 						</td>
 						<td>
 							<i title='End Date Selector' class='calendar fa fa-calendar' id='endDate'></i>
@@ -957,10 +981,10 @@ function syslog_filter($sql_where, $tab) {
 							</select>
 						</td>
 						<td>
-							<i title="Shift Time Backward" onclick="timeshiftFilterRight()" class="shiftArrow fa fa-forward"></i>
+							<i title="Shift Time Forward" onclick="timeshiftFilterRight()" class="shiftArrow fa fa-forward"></i>
 						</td>
 						<td>
-							<input id='refresh' type='button' value='Go'>
+							<input id='go' type='button' value='Go'>
 						</td>
 						<td>
 							<input id='clear' type='button' value='Clear' title='Return to the default time span'>
@@ -991,111 +1015,10 @@ function syslog_filter($sql_where, $tab) {
 				<table class='filterTable'>
 					<tr>
 						<td>
-							Search
-						</td>
-						<td>
 							<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>'>
 						</td>
-						<?php api_plugin_hook('syslog_extend_filter');?>
-						<td>
-							<select id='efacility' onChange='applyFilter()' title='Facilities'>
-								<option value='0'<?php if (get_request_var('efacility') == '0') { ?> selected<?php } ?>>All Facilities</option>
-								<?php
-								if (!isset($hostfilter)) $hostfilter = '';
-								$efacilities = syslog_db_fetch_assoc('SELECT DISTINCT f.facility_id, f.facility
-									FROM `' . $syslogdb_default . '`.`syslog_host_facilities` AS fh
-									INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS f
-									ON f.facility_id=fh.facility_id ' . (strlen($hostfilter) ? 'WHERE ':'') . $hostfilter . '
-									ORDER BY facility');
-
-								if (sizeof($efacilities)) {
-								foreach ($efacilities as $efacility) {
-									print "<option value='" . $efacility['facility_id'] . "'"; if (get_request_var('efacility') == $efacility['facility_id']) { print ' selected'; } print '>' . ucfirst($efacility['facility']) . "</option>\n";
-								}
-								}
-								?>
-							</select>
-						</td>
-						<td>
-							<select id='elevel' onChange='applyFilter()' title='Priority Levels'>
-								<option value='-1'<?php if (get_request_var('elevel') == '-1') { ?> selected<?php } ?>>All Priorities</option>
-								<option value='0'<?php if (get_request_var('elevel') == '0') { ?> selected<?php } ?>>Emergency</option>
-								<option value='1'<?php if (get_request_var('elevel') == '1') { ?> selected<?php } ?>>Critical++</option>
-								<option value='1o'<?php if (get_request_var('elevel') == '1o') { ?> selected<?php } ?>>Critical</option>
-								<option value='2'<?php if (get_request_var('elevel') == '2') { ?> selected<?php } ?>>Alert++</option>
-								<option value='2o'<?php if (get_request_var('elevel') == '2o') { ?> selected<?php } ?>>Alert</option>
-								<option value='3'<?php if (get_request_var('elevel') == '3') { ?> selected<?php } ?>>Error++</option>
-								<option value='3o'<?php if (get_request_var('elevel') == '3o') { ?> selected<?php } ?>>Error</option>
-								<option value='4'<?php if (get_request_var('elevel') == '4') { ?> selected<?php } ?>>Warning++</option>
-								<option value='4o'<?php if (get_request_var('elevel') == '4o') { ?> selected<?php } ?>>Warning</option>
-								<option value='5'<?php if (get_request_var('elevel') == '5') { ?> selected<?php } ?>>Notice++</option>
-								<option value='5o'<?php if (get_request_var('elevel') == '5o') { ?> selected<?php } ?>>Notice</option>
-								<option value='6'<?php if (get_request_var('elevel') == '6') { ?> selected<?php } ?>>Info++</option>
-								<option value='6o'<?php if (get_request_var('elevel') == '6o') { ?> selected<?php } ?>>Info</option>
-								<option value='7'<?php if (get_request_var('elevel') == '7') { ?> selected<?php } ?>>Debug</option>
-							</select>
-						</td>
-						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
-						<td>
-							<select id='removal' onChange='applyFilter()' title='Removal Handling'>
-								<option value='1'<?php if (get_request_var('removal') == '1') { ?> selected<?php } ?>>All Records</option>
-								<option value='-1'<?php if (get_request_var('removal') == '-1') { ?> selected<?php } ?>>Main Records</option>
-								<option value='2'<?php if (get_request_var('removal') == '2') { ?> selected<?php } ?>>Removed Records</option>
-							</select>
-						</td>
-						<?php }else{ ?>
-						<input type='hidden' id='removal' value='<?php print get_request_var('removal');?>'>
-						<?php } ?>
-						<td>
-							<select id='rows' onChange='applyFilter()' title='Display Rows'>
-								<option value='10'<?php if (get_request_var('rows') == '10') { ?> selected<?php } ?>>10</option>
-								<option value='15'<?php if (get_request_var('rows') == '15') { ?> selected<?php } ?>>15</option>
-								<option value='20'<?php if (get_request_var('rows') == '20') { ?> selected<?php } ?>>20</option>
-								<option value='25'<?php if (get_request_var('rows') == '25') { ?> selected<?php } ?>>25</option>
-								<option value='30'<?php if (get_request_var('rows') == '30') { ?> selected<?php } ?>>30</option>
-								<option value='35'<?php if (get_request_var('rows') == '35') { ?> selected<?php } ?>>35</option>
-								<option value='40'<?php if (get_request_var('rows') == '40') { ?> selected<?php } ?>>40</option>
-								<option value='45'<?php if (get_request_var('rows') == '45') { ?> selected<?php } ?>>45</option>
-								<option value='50'<?php if (get_request_var('rows') == '50') { ?> selected<?php } ?>>50</option>
-								<option value='100'<?php if (get_request_var('rows') == '100') { ?> selected<?php } ?>>100</option>
-								<option value='200'<?php if (get_request_var('rows') == '200') { ?> selected<?php } ?>>200</option>
-								<option value='500'<?php if (get_request_var('rows') == '500') { ?> selected<?php } ?>>500</option>
-							</select>
-						</td>
-						<td>
-							<select id='trimval' onChange='applyFilter()' title='Message Trim'>
-								<option value='1024'<?php if (get_request_var('trimval') == '1024') { ?> selected<?php } ?>>All Text</option>
-								<option value='30'<?php if (get_request_var('trimval') == '30') { ?> selected<?php } ?>>30 Chars</option>
-								<option value='50'<?php if (get_request_var('trimval') == '50') { ?> selected<?php } ?>>50 Chars</option>
-								<option value='75'<?php if (get_request_var('trimval') == '75') { ?> selected<?php } ?>>75 Chars</option>
-								<option value='100'<?php if (get_request_var('trimval') == '100') { ?> selected<?php } ?>>100 Chars</option>
-								<option value='150'<?php if (get_request_var('trimval') == '150') { ?> selected<?php } ?>>150 Chars</option>
-								<option value='300'<?php if (get_request_var('trimval') == '300') { ?> selected<?php } ?>>300 Chars</option>
-							</select>
-						</td>
-						<td>
-							<select id='refresh' onChange='applyFilter()'>
-								<?php
-								foreach($page_refresh_interval AS $seconds => $display_text) {
-									print "<option value='" . $seconds . "'"; if (get_request_var('refresh') == $seconds) { print ' selected'; } print '>' . $display_text . "</option>\n";
-								}
-								?>
-							</select>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	<?php html_end_box(false);?>
-	<?php html_start_box('', '100%', '', '3', 'center', '');?>
-		<tr>
-			<td valign='top'>
-				<script type='text/javascript'>$(function() {$('#host').tooltip({ closed: true }).on('focus', function() { $('#host').tooltip('close') }).on('click', function() { $(this).tooltip('close'); }) });</script>
-
-				<?php html_start_box('Select Host(s)', '100%', $colors['header'], '3', 'center', ''); ?>
-					<tr>
 						<td class='even'>
-							<select title='Select hosts to filter on using the Shift and Control keys and then Click the Go button to filter' id='host' multiple style='width: 150px; overflow: scroll;'>
+							<select id='host' multiple style='width: 150px; overflow: scroll;'>
 								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>>Show All Hosts</option><?php }else{ ?>
 								<option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == 0 || $reset_multi) { ?> selected<?php } ?>>Show All Logs</option>
 								<option id='host_none' value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>>Threshold Logs</option><?php } ?>
@@ -1122,96 +1045,129 @@ function syslog_filter($sql_where, $tab) {
 								?>
 							</select>
 						</td>
+						<td>
+							<select id='rows' onChange='applyFilter()' title='Display Rows'>
+								<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>>Default Messages</option>
+								<?php
+								foreach($item_rows AS $rows => $display_text) {
+									print "<option value='" . $rows . "'"; if (get_request_var('rows') == $rows) { print ' selected'; } print '>' . $display_text . " Messages</option>\n";
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='trimval' onChange='applyFilter()' title='Message Trim'>
+								<?php
+								foreach($trimvals AS $seconds => $display_text) {
+									print "<option value='" . $seconds . "'"; if (get_request_var('trimval') == $seconds) { print ' selected'; } print '>' . $display_text . "</option>\n";
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='refresh' onChange='applyFilter()'>
+								<?php
+								foreach($page_refresh_interval AS $seconds => $display_text) {
+									print "<option value='" . $seconds . "'"; if (get_request_var('refresh') == $seconds) { print ' selected'; } print '>' . $display_text . "</option>\n";
+								}
+								?>
+							</select>
+						</td>
 					</tr>
-				<?php html_end_box(false); ?>
-			</td>
-			<td width='100%' class='auto-expand' valign='top' style='padding: 0px;'>
-				<?php html_start_box('', '100%', '', '3', 'center', ''); ?>
+				</table>
+				<table class='filterTable'>
 					<tr>
-						<td width='100%' valign='top'>
-							<?php
-							if ($tab == 'syslog') {
-								if (get_request_var('removal') == 1) {
-									$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
-										FROM (
-										SELECT count(*) AS totals
-										FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where . "
-										UNION
-										SELECT count(*) AS totals
-										FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where . ") AS rowcount");
-								}elseif (get_request_var("removal") == -1){
-									$total_rows = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog` " . $sql_where);
-								}else{
-									$total_rows = syslog_db_fetch_cell("SELECT count(*) FROM `" . $syslogdb_default . "`.`syslog_removed` " . $sql_where);
-								}
-							}else{
-								$total_rows = syslog_db_fetch_cell("SELECT count(*)
-									FROM `" . $syslogdb_default . "`.`syslog_logs` AS sl
-									LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-									ON sl.facility=sf.facility
-									LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-									ON sl.priority=sp.priority
-									LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-									ON sl.host=sh.host
-									LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
-									ON sl.alert_id=sa.id " .
-									$sql_where);
-							}
-							html_start_box('', '100%', $colors['header'], '3', 'center', '');
-							$hostarray = '';
-							if (is_array(get_request_var('host'))) {
-								$hosts = get_request_var('host');
-								foreach ($hosts as $h) {
-									$hostarray .= "host[]=$h&";
-								}
-							}else{
-								$hostarray .= 'host[]=' . get_request_var('host') . '&';
-							}
+						<?php api_plugin_hook('syslog_extend_filter');?>
+						<td>
+							<select id='eprogram' onChange='applyFilter()' title='Programs to filter on'>
+								<option value='-1'<?php if (get_request_var('eprogram') == '-1') { ?> selected<?php } ?>>All Programs</option>
+								<?php
+								$eprograms = syslog_db_fetch_assoc('SELECT program_id, program
+									FROM `' . $syslogdb_default . '`.`syslog_programs` AS fh
+									ORDER BY program');
 
-	return $total_rows;
+								if (sizeof($eprograms)) {
+								foreach ($eprograms as $eprogram) {
+									if (trim($eprogram['program']) == '') $eprogram['program'] = 'unspecified';
+									print "<option value='" . $eprogram['program_id'] . "'"; if (get_request_var('eprogram') == $eprogram['program_id']) { print ' selected'; } print '>' . $eprogram['program'] . "</option>\n";
+								}
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='efacility' onChange='applyFilter()' title='Facilities to filter on'>
+								<option value='-1'<?php if (get_request_var('efacility') == '0') { ?> selected<?php } ?>>All Facilities</option>
+								<?php
+								if (!isset($hostfilter)) $hostfilter = '';
+								$efacilities = syslog_db_fetch_assoc('SELECT DISTINCT f.facility_id, f.facility
+									FROM `' . $syslogdb_default . '`.`syslog_host_facilities` AS fh
+									INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS f
+									ON f.facility_id=fh.facility_id ' . (strlen($hostfilter) ? 'WHERE ':'') . $hostfilter . '
+									ORDER BY facility');
+
+								if (sizeof($efacilities)) {
+								foreach ($efacilities as $efacility) {
+									print "<option value='" . $efacility['facility_id'] . "'"; if (get_request_var('efacility') == $efacility['facility_id']) { print ' selected'; } print '>' . ucfirst($efacility['facility']) . "</option>\n";
+								}
+								}
+								?>
+							</select>
+						</td>
+						<td>
+							<select id='epriority' onChange='applyFilter()' title='Priority Levels'>
+								<option value='-1'<?php if (get_request_var('epriority') == '-1') { ?> selected<?php } ?>>All Priorities</option>
+								<option value='0'<?php if (get_request_var('epriority') == '0') { ?> selected<?php } ?>>Emergency</option>
+								<option value='1'<?php if (get_request_var('epriority') == '1') { ?> selected<?php } ?>>Critical++</option>
+								<option value='1o'<?php if (get_request_var('epriority') == '1o') { ?> selected<?php } ?>>Critical</option>
+								<option value='2'<?php if (get_request_var('epriority') == '2') { ?> selected<?php } ?>>Alert++</option>
+								<option value='2o'<?php if (get_request_var('epriority') == '2o') { ?> selected<?php } ?>>Alert</option>
+								<option value='3'<?php if (get_request_var('epriority') == '3') { ?> selected<?php } ?>>Error++</option>
+								<option value='3o'<?php if (get_request_var('epriority') == '3o') { ?> selected<?php } ?>>Error</option>
+								<option value='4'<?php if (get_request_var('epriority') == '4') { ?> selected<?php } ?>>Warning++</option>
+								<option value='4o'<?php if (get_request_var('epriority') == '4o') { ?> selected<?php } ?>>Warning</option>
+								<option value='5'<?php if (get_request_var('epriority') == '5') { ?> selected<?php } ?>>Notice++</option>
+								<option value='5o'<?php if (get_request_var('epriority') == '5o') { ?> selected<?php } ?>>Notice</option>
+								<option value='6'<?php if (get_request_var('epriority') == '6') { ?> selected<?php } ?>>Info++</option>
+								<option value='6o'<?php if (get_request_var('epriority') == '6o') { ?> selected<?php } ?>>Info</option>
+								<option value='7'<?php if (get_request_var('epriority') == '7') { ?> selected<?php } ?>>Debug</option>
+							</select>
+						</td>
+						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
+						<td>
+							<select id='removal' onChange='applyFilter()' title='Removal Handling'>
+								<option value='1'<?php if (get_request_var('removal') == '1') { ?> selected<?php } ?>>All Records</option>
+								<option value='-1'<?php if (get_request_var('removal') == '-1') { ?> selected<?php } ?>>Main Records</option>
+								<option value='2'<?php if (get_request_var('removal') == '2') { ?> selected<?php } ?>>Removed Records</option>
+							</select>
+						</td>
+						<?php }else{ ?>
+						<input type='hidden' id='removal' value='<?php print get_request_var('removal');?>'>
+						<?php } ?>
+					</tr>
+				</table>
+			</form>
+			</td>
+		</tr>
+	<?php html_end_box(false);
 }
 
 /** function syslog_syslog_legend()
  *  This function displays the foreground and background colors for the syslog syslog legend
 */
 function syslog_syslog_legend() {
-	global $colors, $disabled_color, $notmon_color, $database_default;
+	global $disabled_color, $notmon_color, $database_default;
 
-	html_start_box("", "100%", $colors["header"], "3", "center", "");
+	html_start_box("", "100%", '', "3", "center", "");
 	print "<tr>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emerg_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_emerg_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Emergency</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Critical</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_alert_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Alert</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_err_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_err_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Error</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Warning</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Notice</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Info</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_debug_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_debug_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Debug</b></td>";
-
+	print "<td width='10%' class='logEmergency'>Emergency</td>";
+	print "<td width='10%' class='logCritical'>Critical</td>";
+	print "<td width='10%' class='logAlert'>Alert</td>";
+	print "<td width='10%' class='logError'>Error</td>";
+	print "<td width='10%' class='logWarning'>Warning</td>";
+	print "<td width='10%' class='logNotice'>Notice</td>";
+	print "<td width='10%' class='logInfo'>Info</td>";
+	print "<td width='10%' class='logDebug'>Debug</td>";
 	print "</tr>";
 	html_end_box(false);
 }
@@ -1220,27 +1176,14 @@ function syslog_syslog_legend() {
  *  This function displays the foreground and background colors for the syslog log legend
 */
 function syslog_log_legend() {
-	global $colors, $disabled_color, $notmon_color, $database_default;
+	global $disabled_color, $notmon_color, $database_default;
 
-	html_start_box("", "100%", $colors["header"], "3", "center", "");
+	html_start_box("", "100%", '', "3", "center", "");
 	print "<tr>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_crit_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Critical</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_warn_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Warning</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_notice_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Notice</b></td>";
-
-	$bg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_bg") . "'");
-	$fg_color = db_fetch_cell("SELECT hex from `$database_default`.`colors` WHERE id='" . read_config_option("syslog_info_fg") . "'");
-	print "<td width='10%' style='text-align:center;color:#$fg_color;background-color:#$bg_color;'><b>Informational</b></td>";
-
+	print "<td width='10%' class='logCritical'>Critical</td>";
+	print "<td width='10%' class='logWarning'>Warning</td>";
+	print "<td width='10%' class='logNotice'>Notice</td>";
+	print "<td width='10%' class='logInfo'>Informational</td>";
 	print "</tr>";
 	html_end_box(false);
 }
@@ -1250,7 +1193,7 @@ function syslog_log_legend() {
  *  syslog messages that are relevant to Syslog.
 */
 function syslog_messages($tab="syslog") {
-	global $colors, $sql_where, $hostfilter, $severities;
+	global $sql_where, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 
 	include(dirname(__FILE__) . '/config.php');
@@ -1261,9 +1204,6 @@ function syslog_messages($tab="syslog") {
 		$_SESSION['sess_current_timespan'] = 1;
 		$_SESSION['sess_syslog_init'] = 1;
 	}
-
-	/* create the custom css and javascript for the page */
-	generate_syslog_cssjs();
 
 	$url_curr_page = get_browser_query_string();
 
@@ -1278,16 +1218,57 @@ function syslog_messages($tab="syslog") {
 	}
 
 	$syslog_messages = get_syslog_messages($sql_where, $row_limit, $tab);
-	$total_rows      = syslog_filter($sql_where, $tab);
+
+	syslog_filter($sql_where, $tab);
 
 	if ($tab == 'syslog') {
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 6, 'Messages', 'page', 'main');
+		if (get_request_var('removal') == 1) {
+			$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
+				FROM (
+					SELECT count(*) AS totals
+					FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+					$sql_where
+					UNION
+					SELECT count(*) AS totals
+					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+					$sql_where
+				) AS rowcount");
+		}elseif (get_request_var("removal") == -1){
+			$total_rows = syslog_db_fetch_cell("SELECT count(*) 
+				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+				$sql_where");
+		}else{
+			$total_rows = syslog_db_fetch_cell("SELECT count(*) 
+				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+				$sql_where");
+		}
+	}else{
+		$total_rows = syslog_db_fetch_cell("SELECT count(*)
+			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
+			ON syslog.facility_id=sf.facility_id
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
+			ON syslog.priority_id=sp.priority_id
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+			ON syslog.host_id=sh.host_id
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
+			ON syslog.alert_id=sa.id 
+			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
+			ON syslog.program_id=spr.program_id " .
+			$sql_where);
+	}
+
+	html_start_box('', '100%', '', '3', 'center', '');
+
+	if ($tab == 'syslog') {
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 7, 'Messages', 'page', 'main');
 
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
 				'nosortt'     => array('Actions', 'ASC'),
 				'host_id'     => array('Host', 'ASC'),
 				'logtime'     => array('Date', 'ASC'),
+				'program'     => array('Program', 'ASC'),
 				'message'     => array('Message', 'ASC'),
 				'facility_id' => array('Facility', 'ASC'),
 				'priority_id' => array('Priority', 'ASC'));
@@ -1295,6 +1276,7 @@ function syslog_messages($tab="syslog") {
 			$display_text = array(
 				'host_id'     => array('Host', 'ASC'),
 				'logtime'     => array('Date', 'ASC'),
+				'program'     => array('Program', 'ASC'),
 				'message'     => array('Message', 'ASC'),
 				'facility_id' => array('Facility', 'ASC'),
 				'priority_id' => array('Priority', 'ASC'));
@@ -1308,29 +1290,29 @@ function syslog_messages($tab="syslog") {
 		$facilities = array_rekey(syslog_db_fetch_assoc('SELECT facility_id, facility FROM `' . $syslogdb_default . '`.`syslog_facilities`'), 'facility_id', 'facility');
 		$priorities = array_rekey(syslog_db_fetch_assoc('SELECT priority_id, priority FROM `' . $syslogdb_default . '`.`syslog_priorities`'), 'priority_id', 'priority');
 
-		$i = 0;
-		if (sizeof($syslog_messages) > 0) {
+		if (sizeof($syslog_messages)) {
 			foreach ($syslog_messages as $syslog_message) {
 				$title   = htmlspecialchars($syslog_message['message'], ENT_QUOTES);
 
-				syslog_row_color($colors['alternate'], $colors['light'], $i, $priorities[$syslog_message['priority_id']], $title);$i++;
+				syslog_row_color($syslog_message['priority_id'], $title);
 
 				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
-					print "<td style='whitspace-nowrap;width:1%;'>";
+					print "<td class='nowrap left' style='width:1%:padding:1px !important;'>";
 					if ($syslog_message['mtype'] == 'main') {
-						print "<a href='" . htmlspecialchars('syslog_alerts.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='images/green.gif' align='absmiddle' border=0></a>
-						<a href='" . htmlspecialchars('syslog_removal.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='images/red.gif' align='absmiddle' border=0></a>\n";
+						print "<a style='padding:1px' href='" . htmlspecialchars('syslog_alerts.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='images/add.png' border='0'></a>
+						<a style='padding:1px' href='" . htmlspecialchars('syslog_removal.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='images/delete.png' border='0'></a>\n";
 					}
 					print "</td>\n";
 				}
-				print '<td>' . $hosts[$syslog_message['host_id']] . "</td>\n";
-				print '<td>' . $syslog_message['logtime'] . "</td>\n";
-				print '<td class="syslogMessage" title="' . $title . '">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))):title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))) . "</td>\n";
-				print '<td>' . ucfirst($facilities[$syslog_message['facility_id']]) . "</td>\n";
-				print '<td>' . ucfirst($priorities[$syslog_message['priority_id']]) . "</td>\n";
+				print '<td class="left nowrap">' . $hosts[$syslog_message['host_id']] . "</td>\n";
+				print '<td class="left nowrap">' . $syslog_message['logtime'] . "</td>\n";
+				print '<td class="left nowrap">' . $syslog_message['program'] . "</td>\n";
+				print '<td class="left syslogMessage" title="' . $title . '">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))):title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))) . "</td>\n";
+				print '<td class="left nowrap">' . ucfirst($facilities[$syslog_message['facility_id']]) . "</td>\n";
+				print '<td class="left nowrap">' . ucfirst($priorities[$syslog_message['priority_id']]) . "</td>\n";
 			}
 		}else{
-			print "<tr><td colspan='11'><em>No Syslog Messages</em></td></tr>";
+			print "<tr><td class='center' colspan='7'><em>No Syslog Messages</em></td></tr>";
 		}
 
 		print $nav;
@@ -1338,52 +1320,39 @@ function syslog_messages($tab="syslog") {
 
 		syslog_syslog_legend();
 
-		print "<script type='text/javascript'>$(function() { $('.syslogMessage').tooltip(); })</script>\n";
+		print "<script type='text/javascript'>$(function() { $('.syslogMessage, button').tooltip({ closed: true }).on('focus', function() { $('#filter').tooltip('close') }).on('click', function() { $(this).tooltip('close'); }); })</script>\n";
 	}else{
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 8, 'Alert Log Rows', 'page', 'main');
 
 		print $nav;
 
 		$display_text = array(
-			'name'     => array('Alert Name', 'ASC'),
-			'severity' => array('Severity', 'ASC'),
-			'count'    => array('Count', 'ASC'),
-			'logtime'  => array('Date', 'ASC'),
-			'logmsg'   => array('Message', 'ASC'),
-			'host'     => array('Host', 'ASC'),
-			'facility' => array('Facility', 'ASC'),
-			'priority' => array('Priority', 'ASC'));
+			'name'        => array('Alert Name', 'ASC'),
+			'severity'    => array('Severity', 'ASC'),
+			'count'       => array('Count', 'ASC'),
+			'logtime'     => array('Date', 'ASC'),
+			'logmsg'      => array('Message', 'ASC'),
+			'host'        => array('Host', 'ASC'),
+			'facility_id' => array('Facility', 'ASC'),
+			'priority_id' => array('Priority', 'ASC'));
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-		$i = 0;
-		if (sizeof($syslog_messages) > 0) {
+		if (sizeof($syslog_messages)) {
 			foreach ($syslog_messages as $log) {
 				$title   = htmlspecialchars($log['logmsg'], ENT_QUOTES);
-				switch ($log['severity']) {
-				case '0':
-					$color = 'notice';
-					break;
-				case '1':
-					$color = 'warn';
-					break;
-				case '2':
-					$color = 'crit';
-					break;
-				default:
-					$color = 'info';
-					break;
-				}
 
-				syslog_row_color($colors['alternate'], $colors['light'], $i, $color, $title);$i++;
+				syslog_row_color($log['severity'], $title);
+
 				print "<td><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:'Alert Removed') . "</a></td>\n";
-				print '<td>' . (isset($severities[$log['severity']]) ? $severities[$log['severity']]:'Unknown') . "</td>\n";
-				print '<td>' . $log['count'] . "</td>\n";
-				print '<td>' . $log['logtime'] . "</td>\n";
+				print '<td class="left nowrap">' . (isset($severities[$log['severity']]) ? $severities[$log['severity']]:'Unknown') . "</td>\n";
+				print '<td class="left nowrap">' . $log['count'] . "</td>\n";
+				print '<td class="left nowrap">' . $log['logtime'] . "</td>\n";
 				print '<td class="syslogMessage" title="' . $title . '">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($log['logmsg'], get_request_var_request('trimval'))):title_trim($log['logmsg'], get_request_var_request('trimval'))) . "</td>\n";
-				print '<td>' . $log['host'] . "</td>\n";
-				print '<td>' . ucfirst($log['facility']) . "</td>\n";
-				print '<td>' . ucfirst($log['priority']) . "</td>\n";
+				print '<td class="left nowrap">' . $log['host'] . "</td>\n";
+				print '<td class="left nowrap">' . ucfirst($log['facility']) . "</td>\n";
+				print '<td class="left nowrap">' . ucfirst($log['priority']) . "</td>\n";
+				print "</tr>\n";
 			}
 		}else{
 			print "<tr><td colspan='11'><em>No Alert Log Messages</em></td></tr>";
@@ -1396,17 +1365,6 @@ function syslog_messages($tab="syslog") {
 
 		print "<script type='text/javascript'>$(function() { $('.syslogMessage').tooltip(); })</script>\n";
 	}
-
-	/* put the nav bar on the bottom as well */
-									?>
-
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-			</form>
-<?php
 }
+
 ?>

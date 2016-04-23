@@ -480,60 +480,37 @@ function syslog_remove_items($table, $uniqueID) {
  *  it supports both the legacy as well as the new approach to controlling these
  *  colors.
 */
-function syslog_row_color($row_color1, $row_color2, $row_value, $level, $tip_title) {
+function syslog_row_color($priority, $tip_title) {
 	global $config, $syslog_colors, $syslog_text_colors;
 
-	$bglevel = strtolower($level);
-
-	if (substr_count($bglevel, 'emerg')) {
-		$current_color = read_config_option('syslog_emerg_bg');
-	}else if (substr_count($bglevel, 'alert')) {
-		$current_color = read_config_option('syslog_alert_bg');
-	}else if (substr_count($bglevel, 'crit')) {
-		$current_color = read_config_option('syslog_crit_bg');
-	}else if (substr_count($bglevel, 'err')) {
-		$current_color = read_config_option('syslog_err_bg');
-	}else if (substr_count($bglevel, 'warn')) {
-		$current_color = read_config_option('syslog_warn_bg');
-	}else if (substr_count($bglevel, 'notice')) {
-		$current_color = read_config_option('syslog_notice_bg');
-	}else if (substr_count($bglevel, 'info')) {
-		$current_color = read_config_option('syslog_info_bg');
-	}else if (substr_count($bglevel, 'debug')) {
-		$current_color = read_config_option('syslog_debug_bg');
-	}else{
-		$legacy = true;
-
-		if (($row_value % 2) == 1) {
-			$current_color = $row_color1;
-		}else{
-			$current_color = $row_color2;
-		}
+	switch($priority) {
+	case '0':
+		$class = 'logEmerg';
+		break;
+	case '1':
+		$class = 'logAlert';
+		break;
+	case '2':
+		$class = 'logCrit';
+		break;
+	case '3':
+		$class = 'logError';
+		break;
+	case '4':
+		$class = 'logWarning';
+		break;
+	case '5':
+		$class = 'logNotice';
+		break;
+	case '6':
+		$class = 'logInfo';
+		break;
+	case '7':
+		$class = 'logDebug';
+		break;
 	}
 
-	$fglevel = strtolower($level);
-
-	if (substr_count($fglevel, 'emerg')) {
-		$current_color = read_config_option('syslog_emerg_bg');
-	}else if (substr_count($fglevel, 'alert')) {
-		$current_color = read_config_option('syslog_alert_bg');
-	}else if (substr_count($fglevel, 'crit')) {
-		$current_color = read_config_option('syslog_crit_bg');
-	}else if (substr_count($fglevel, 'err')) {
-		$current_color = read_config_option('syslog_err_bg');
-	}else if (substr_count($fglevel, 'warn')) {
-		$current_color = read_config_option('syslog_warn_bg');
-	}else if (substr_count($fglevel, 'notice')) {
-		$current_color = read_config_option('syslog_notice_bg');
-	}else if (substr_count($fglevel, 'info')) {
-		$current_color = read_config_option('syslog_info_bg');
-	}else if (substr_count($fglevel, 'debug')) {
-		$current_color = read_config_option('syslog_debug_bg');
-	}else{
-		$current_text_color = 'ffffff';
-	}
-
-	print "<tr style='background-color:#$current_color' class='syslog_$level'>\n";
+	print "<tr class='$class'>\n";
 }
 
 function sql_hosts_where($tab) {
@@ -542,7 +519,7 @@ function sql_hosts_where($tab) {
 	$hostfilter  = '';
 
 	if (!isempty_request_var('host') && get_request_var('host') != 'null') {
-		$hostarray = explode(',', get_request_var('host'));
+		$hostarray = explode(' ', get_request_var('host'));
 		if ($hostarray[0] != '0') {
 			foreach($hostarray as $host_id) {
 				input_validate_input_number($host_id);

@@ -124,7 +124,7 @@ function form_actions() {
 
 	top_header();
 
-	form_start('syslog_removal');
+	form_start('syslog_removal.php');
 
 	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
 
@@ -581,12 +581,12 @@ function syslog_removal() {
 
 	$sql_where = '';
 
-	if ($_REQUEST['rows'] == -1) {
+	if (get_request_var('rows') == -1) {
 		$row_limit = read_config_option('num_rows_table');
-	}elseif ($_REQUEST['rows'] == -2) {
+	}elseif (get_request_var('rows') == -2) {
 		$row_limit = 999999;
 	}else{
-		$row_limit = $_REQUEST['rows'];
+		$row_limit = get_request_var('rows');
 	}
 
 	$removals = syslog_get_removal_records($sql_where, $row_limit);
@@ -597,7 +597,7 @@ function syslog_removal() {
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
-	$nav = html_nav_bar('syslog_removal.php?filter=' . $_REQUEST['filter'], MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 13, 'Rules', 'page', 'main');
+	$nav = html_nav_bar('syslog_removal.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 13, 'Rules', 'page', 'main');
 
 	print $nav;
 
@@ -611,12 +611,12 @@ function syslog_removal() {
 		'user'    => array('By User', 'DESC')
 	);
 
-	html_header_sort_checkbox($display_text, $_REQUEST['sort_column'], $_REQUEST['sort_direction']);
+	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
 	if (sizeof($removals)) {
 		foreach ($removals as $removal) {
 			form_alternate_row('line' . $removal['id'], true);
-			form_selectable_cell("<a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']) . "'>" . (($_REQUEST['filter'] != '') ? eregi_replace('(' . preg_quote($_REQUEST['filter']) . ')', "<span style='background-color: #F8D93D;'>\\1</span>", title_trim(htmlentities($removal['name']), read_config_option('max_title_length'))) : htmlentities($removal['name'])) . '</a>', $removal['id']);
+			form_selectable_cell("<a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']) . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", title_trim(htmlentities($removal['name']), read_config_option('max_title_length'))) : htmlentities($removal['name'])) . '</a>', $removal['id']);
 			form_selectable_cell((($removal['enabled'] == 'on') ? 'Yes' : 'No'), $removal['id']);
 			form_selectable_cell($message_types[$removal['type']], $removal['id']);
 			form_selectable_cell($removal['message'], $removal['id']);

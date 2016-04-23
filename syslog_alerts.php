@@ -503,16 +503,16 @@ function syslog_action_edit() {
 
 	?>
 	<script type='text/javascript'>
+
 	function changeTypes() {
 		if ($('#type').val() == 'sql') {
 			$('#message').prep('rows', 6);
-			//document.getElementById('message').rows = 6;
 		}else{
 			$('#message').prep('rows', 2);
-			//document.getElementById('message').rows = 2;
 		}
 	}
 	</script>
+
 	<?php
 }
 
