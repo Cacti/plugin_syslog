@@ -36,6 +36,8 @@ include('./include/auth.php');
 include('./plugins/syslog/config.php');
 include_once('./plugins/syslog/functions.php');
 
+set_default_action();
+
 $title = 'Syslog Viewer';
 
 $trimvals = array(
@@ -53,6 +55,11 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, array('options' => array('
 
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
+
+if (get_request_var('action') == 'save') {
+	save_settings();
+	exit;
+}
 
 /* validate the syslog post/get/request information */;
 if ($current_tab != 'stats') {
@@ -88,11 +95,11 @@ function syslog_display_tabs($current_tab) {
 	global $config;
 
 	/* present a tabbed interface */
-	$tabs_syslog['syslog'] = 'Syslogs';
+	$tabs_syslog['syslog'] = 'System Logs';
 	if (read_config_option('syslog_statistics') == 'on') {
 		$tabs_syslog['stats']  = 'Statistics';
 	}
-	$tabs_syslog['alerts'] = 'Alert Log';
+	$tabs_syslog['alerts'] = 'Alert Logs';
 
 	/* if they were redirected to the page, let's set that up */
 	if (!isempty_request_var('id') || $current_tab == 'current') {
@@ -109,7 +116,7 @@ function syslog_display_tabs($current_tab) {
 
 	if (sizeof($tabs_syslog)) {
 		foreach (array_keys($tabs_syslog) as $tab_short_name) {
-			print '<li><a ' . (($tab_short_name == $current_tab) ? "class='selected'":'') . " href='" . htmlspecialchars($config['url_path'] .
+			print '<li><a class="tab ' . (($tab_short_name == $current_tab) ? 'selected"':'"') . " href='" . htmlspecialchars($config['url_path'] .
 				'plugins/syslog/syslog.php?' .
 				'tab=' . $tab_short_name) .
 				"'>" . $tabs_syslog[$tab_short_name] . "</a></li>\n";
@@ -516,7 +523,7 @@ function syslog_request_validation($current_tab, $force = false) {
         'host' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
-            'default' => '',
+            'default' => '0',
             'options' => array('options' => 'sanitize_search_string')
             ),
         'efacility' => array(
@@ -707,18 +714,16 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 				$limit;
 		}
 	}else{
-		$query_sql = "SELECT sl.*, spr.program, sa.name, sa.severity
-			FROM `" . $syslogdb_default . "`.`syslog_logs` AS sl
+		$query_sql = "SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
+			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-			ON sl.facility=sf.facility
+			ON syslog.facility_id=sf.facility_id 
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-			ON sl.priority=sp.priority
-			LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-			ON sl.host=sh.host
+			ON syslog.priority_id=sp.priority_id 
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
-			ON sl.alert_id=sa.id 
+			ON syslog.alert_id=sa.id 
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
-			ON sl.program_id=spr.program_id " .
+			ON syslog.program_id=spr.program_id " .
 			$sql_where . "
 			ORDER BY " . $sort . " " . get_request_var('sort_direction') .
 			$limit;
@@ -749,10 +754,60 @@ function syslog_filter($sql_where, $tab) {
 	var date2Open = false;
 
 	$(function() {
-		$('#host').multiselect().multiselectfilter({label: 'Search', width: '150'});
+		$('#host').multiselect({
+			noneSelectedText: 'Select Device(s)', 
+			selectedText: function(numChecked, numTotal, checkedItems) {
+				myReturn = numChecked + ' Devices Selected';
+				$.each(checkedItems, function(index, value) {
+					if (value.value == '0') {
+						myReturn='All Devices Selected';
+						return false;
+					}
+				});
+				return myReturn;
+			},
+			checkAllText: 'All', 
+			uncheckAllText: 'None',
+			uncheckall: function() {
+				$(this).multiselect('widget').find(':checkbox:first').each(function() {
+					$(this).prop('checked', true);
+				});
+			},
+			click: function(event, ui) {
+				checked=$(this).multiselect('widget').find('input:checked').length;
+
+				if (ui.value == '0') {
+					if (ui.checked == true) {
+						$('#host').multiselect('uncheckAll');
+						$(this).multiselect('widget').find(':checkbox:first').each(function() {
+							$(this).prop('checked', true);
+						});
+					}
+				}else if (checked == 0) {
+					$(this).multiselect('widget').find(':checkbox:first').each(function() {
+						$(this).click();
+					});
+				}else if ($(this).multiselect('widget').find('input:checked:first').val() == '0') {
+					if (checked > 0) {
+						$(this).multiselect('widget').find(':checkbox:first').each(function() {
+							$(this).click();
+							$(this).prop('disable', true);
+						});
+					}
+				}
+			}
+			}).multiselectfilter({label: 'Search', width: '150'});
+
+		$('#save').click(function() {
+			saveSettings();
+		});
 
 		$('#go').click(function() {
 			applyFilter();
+		});
+
+		$('#clear').click(function() {
+			clearFilter();
 		});
 
 		$('#startDate').click(function() {
@@ -828,6 +883,27 @@ function syslog_filter($sql_where, $tab) {
 			'&refresh='+$('#refresh').val();
 
 		loadPageNoHeader(strURL);
+	}
+
+	function clearFilter() {
+		strURL = 'syslog.php?header=false&clear=true';
+
+		loadPageNoHeader(strURL);
+	}
+
+	function saveSettings() {
+		strURL = 'syslog.php?action=save'+
+			'&trimval='+$('#trimval').val()+
+			'&rows='+$('#rows').val()+
+			'&removal='+$('#removal').val()+
+			'&refresh='+$('#refresh').val()+
+			'&efacility='+$('#efacility').val()+
+			'&epriority='+$('#epriority').val()+
+			'&eprogram='+$('#eprogram').val();
+
+		$.get(strURL, function() {
+			$('#text').show().text('Filter Settings Saved').fadeOut(2000);
+		});
 	}
 
 	function refreshTimespanFilter() {
@@ -987,7 +1063,7 @@ function syslog_filter($sql_where, $tab) {
 							<input id='go' type='button' value='Go'>
 						</td>
 						<td>
-							<input id='clear' type='button' value='Clear' title='Return to the default time span'>
+							<input id='clear' type='button' value='Clear' title='Return filter values to their user defined defaults'>
 						</td>
 						<td>
 							<input id='export' type='button' value='Export' title='Export Records to CSV'>
@@ -1007,6 +1083,7 @@ function syslog_filter($sql_where, $tab) {
 						</td>
 						<?php } ?>
 						<td>
+							<span id='text'></span>
 							<input type='hidden' name='action' value='actions'>
 							<input type='hidden' name='syslog_pdt_change' value='false'>
 						</td>
@@ -1025,17 +1102,14 @@ function syslog_filter($sql_where, $tab) {
 								<?php
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
-								$hosts       = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` $hosts_where ORDER BY host");
-								$selected    = explode(',', get_request_var('host'));
+								$hosts       = syslog_db_fetch_assoc("SELECT host_id, SUBSTRING_INDEX(host,'.',1) AS host FROM `" . $syslogdb_default . "`.`syslog_hosts` $hosts_where ORDER BY host");
+								$selected    = explode(' ', get_request_var('host'));
 								if (sizeof($hosts)) {
 									foreach ($hosts as $host) {
 										print "<option value='" . $host["host_id"] . "'";
-										if (!isempty_request_var('host') && get_request_var('host') != 'null') {
-											foreach ($selected as $rh) {
-												if (($rh == $host['host_id']) && (!$reset_multi)) {
-													print ' selected';
-													break;
-												}
+										if (sizeof($selected)) {
+											if (in_array($host['host_id'], $selected)) {
+												print ' selected';
 											}
 										}
 										print '>';
@@ -1246,11 +1320,9 @@ function syslog_messages($tab="syslog") {
 		$total_rows = syslog_db_fetch_cell("SELECT count(*)
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-			ON syslog.facility_id=sf.facility_id
+			ON syslog.facility_id=sf.facility_id 
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-			ON syslog.priority_id=sp.priority_id
-			LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-			ON syslog.host_id=sh.host_id
+			ON syslog.priority_id=sp.priority_id 
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
 			ON syslog.alert_id=sa.id 
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
@@ -1367,4 +1439,39 @@ function syslog_messages($tab="syslog") {
 	}
 }
 
+function save_settings() {
+	global $current_tab;
+
+	syslog_request_validation($current_tab);
+
+	if (sizeof($_REQUEST)) {
+		foreach($_REQUEST as $var => $value) {
+			switch($var) {
+			case 'rows':
+				set_user_setting('syslog_rows', get_request_var('rows'));
+				break;
+			case 'refresh':
+				set_user_setting('syslog_refresh', get_request_var('refresh'));
+				break;
+			case 'removal':
+				set_user_setting('syslog_removal', get_request_var('removal'));
+				break;
+			case 'trimval':
+				set_user_setting('syslog_trimval', get_request_var('trimval'));
+				break;
+			case 'efacility':
+				set_user_setting('syslog_efacility', get_request_var('efacility'));
+				break;
+			case 'epriority':
+				set_user_setting('syslog_epriority', get_request_var('epriority'));
+				break;
+			case 'eprogram':
+				set_user_setting('syslog_eprogram', get_request_var('eprogram'));
+				break;
+			}
+		}
+	}
+
+	syslog_request_validation($current_tab, $force);
+}
 ?>

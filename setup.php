@@ -1007,26 +1007,54 @@ function syslog_graph_buttons($graph_elements = array()) {
 		$date1 = date('Y-m-d H:i:s', get_filter_request_var('graph_start'));
 		$date2 = date('Y-m-d H:i:s', get_filter_request_var('graph_end'));
 	}else{
-
 		$date1 = $timespan['current_value_date1'];
 		$date2 = $timespan['current_value_date2'];
 	}
 
 	if (isset($graph_elements[1]['local_graph_id'])) {
-		$graph_local = db_fetch_row("SELECT * FROM graph_local WHERE id='" . $graph_elements[1]['local_graph_id'] . "'");
+		$graph_local = db_fetch_row("SELECT host_id FROM graph_local WHERE id='" . $graph_elements[1]['local_graph_id'] . "'");
+		$sql_where   = '';
 
 		if (isset($graph_local['host_id'])) {
-			$host = db_fetch_row("SELECT * FROM host WHERE id='" . $graph_local['host_id'] . "'");
+			$host  = db_fetch_row("SELECT description, hostname FROM host WHERE id='" . $graph_local['host_id'] . "'");
+			if (!is_ipv4_address($host['description']) && strpos($host['description'], '.') !== false) {
+				$parts = explode('.', $host['description']);
+				$sql_where = "WHERE host LIKE '" . $parts[0] . ".%'";
+			}else{
+				$sql_where = "WHERE host='" . $host['description'] . "'";
+			}
 
-			if (sizeof($host)) {
-				$host = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog_hosts` WHERE host LIKE '%%" . $host['hostname'] . "%%'");
+			if (!is_ipv4_address($host['hostname']) && strpos($host['hostname'], '.') !== false) {
+				$parts = explode('.', $host['hostname']);
+				$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host LIKE '" . $parts[0] . ".%'";
+			}else{
+				$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host='" . $host['hostname'] . "'";
+			}
 
-				if (sizeof($host)) {
-					print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&host%5B%5D=' . $host['host_id'] . '&date1=' . $date1 . '&date2=' . $date2 . '&efacility=0&elevel=0') . "><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.gif' border='0' alt='Display Syslog in Range' title='Display Syslog in Range' style='padding: 3px;'></a><br>";
+			if ($sql_where != '') {
+				$host = syslog_db_fetch_cell("SELECT host_id FROM `" . $syslogdb_default . "`.`syslog_hosts` $sql_where");
+
+				if (!empty($host)) {
+					print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host['host_id'] . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='Display Syslog in Range'></a><br>";
 				}
 			}
 		}
 	}
+}
+
+function is_ipv4_address($value) {
+	$varr = explode('.', $value);
+	if (sizeof($varr) == 4) {
+		foreach($varr as $number) {
+			if ($number < 0 || $number > 255) {
+				return false;
+			}
+		}
+	}else{
+		return false;
+	}
+
+	return true;
 }
 
 function syslog_utilities_action($action) {
