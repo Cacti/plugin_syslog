@@ -754,6 +754,11 @@ function syslog_filter($sql_where, $tab) {
 	var date2Open = false;
 
 	$(function() {
+		$('#syslog_form').submit(function(event) {
+			event.preventDefault();
+			applyFilter();
+		});
+
 		$('#host').multiselect({
 			noneSelectedText: 'Select Device(s)', 
 			selectedText: function(numChecked, numTotal, checkedItems) {
@@ -796,7 +801,9 @@ function syslog_filter($sql_where, $tab) {
 					}
 				}
 			}
-			}).multiselectfilter({label: 'Search', width: '150'});
+		}).multiselectfilter( {
+			label: 'Search', width: '150'
+		});
 
 		$('#save').click(function() {
 			saveSettings();
@@ -906,24 +913,6 @@ function syslog_filter($sql_where, $tab) {
 		});
 	}
 
-	function refreshTimespanFilter() {
-		var json = { 
-			custom: 1, 
-			button_refresh_x: 1, 
-			date1: $('#date1').val(), 
-			date2: $('#date2').val(), 
-			predefined_timespan: $('#predefined_timespan').val(), 
-			predefined_timeshift: $('#predefined_timeshift').val(),
-			__csrf_magic: csrfMagicToken
-		};
-
-		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(href, json).done(function(data) {
-			$('#main').html(data);
-			applySkin();
-		});
-	}
-
 	function timeshiftFilterLeft() {
 		var json = { 
 			move_left_x: 1, 
@@ -960,41 +949,13 @@ function syslog_filter($sql_where, $tab) {
 		});
 	}
 
-	function clearTimespanFilter() {
-		var json = { 
-			button_clear: 1, 
-			date1: $('#date1').val(), 
-			date2: $('#date2').val(), 
-			predefined_timespan: $('#predefined_timespan').val(), 
-			predefined_timeshift: $('#predefined_timeshift').val(),
-			__csrf_magic: csrfMagicToken
-		};
-	
-		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(href, json).done(function(data) {
-			$('#main').html(data);
-			applySkin();
-		});
-	}
-
-	function forceReturn(evt) {
-		var evt  = (evt) ? evt : ((event) ? event : null);
-		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-
-		if ((evt.keyCode == 13) && (node.type=='text')) {
-			document.getElementById('syslog_form').submit();
-			return false;
-		}
-	}
-	document.onkeypress = forceReturn;
-
 	</script>
 	<?php
 
 	html_start_box('Syslog Message Filter ' . $filter_text, '100%', '', '3', 'center', '');?>
 		<tr class='even noprint'>
 			<td class='noprint'>
-			<form style='margin:0px;padding:0px;' id='syslog_form' method='post' action='syslog.php'>
+			<form id='syslog_form' action='syslog.php'>
 				<table class='filterTable'>
 					<tr>
 						<td>
@@ -1092,7 +1053,7 @@ function syslog_filter($sql_where, $tab) {
 				<table class='filterTable'>
 					<tr>
 						<td>
-							<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>'>
+							<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
 						</td>
 						<td class='even'>
 							<select id='host' multiple style='width: 150px; overflow: scroll;'>
