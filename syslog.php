@@ -66,6 +66,10 @@ if ($current_tab != 'stats') {
 	syslog_request_validation($current_tab);
 }
 
+global $refresh;
+$refresh['seconds'] = get_request_var('refresh');
+$refresh['page']    = $config['url_path'] . 'plugins/syslog/syslog.php?header=false';
+
 /* draw the tabs */
 /* display the main page */
 if (isset_request_var('export')) {
@@ -1299,16 +1303,16 @@ function syslog_messages($tab="syslog") {
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
 				'nosortt'     => array('Actions', 'ASC'),
-				'host_id'     => array('Host', 'ASC'),
 				'logtime'     => array('Date', 'ASC'),
+				'host_id'     => array('Host', 'ASC'),
 				'program'     => array('Program', 'ASC'),
 				'message'     => array('Message', 'ASC'),
 				'facility_id' => array('Facility', 'ASC'),
 				'priority_id' => array('Priority', 'ASC'));
 		}else{
 			$display_text = array(
-				'host_id'     => array('Host', 'ASC'),
 				'logtime'     => array('Date', 'ASC'),
+				'host_id'     => array('Host', 'ASC'),
 				'program'     => array('Program', 'ASC'),
 				'message'     => array('Message', 'ASC'),
 				'facility_id' => array('Facility', 'ASC'),
@@ -1337,10 +1341,10 @@ function syslog_messages($tab="syslog") {
 					}
 					print "</td>\n";
 				}
-				print '<td class="left nowrap">' . $hosts[$syslog_message['host_id']] . "</td>\n";
 				print '<td class="left nowrap">' . $syslog_message['logtime'] . "</td>\n";
+				print '<td class="left nowrap">' . $hosts[$syslog_message['host_id']] . "</td>\n";
 				print '<td class="left nowrap">' . $syslog_message['program'] . "</td>\n";
-				print '<td class="left syslogMessage" title="' . $title . '">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))):title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))) . "</td>\n";
+				print '<td class="left syslogMessage">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))):title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))) . "</td>\n";
 				print '<td class="left nowrap">' . ucfirst($facilities[$syslog_message['facility_id']]) . "</td>\n";
 				print '<td class="left nowrap">' . ucfirst($priorities[$syslog_message['priority_id']]) . "</td>\n";
 			}
@@ -1353,7 +1357,7 @@ function syslog_messages($tab="syslog") {
 
 		syslog_syslog_legend();
 
-		print "<script type='text/javascript'>$(function() { $('.syslogMessage, button').tooltip({ closed: true }).on('focus', function() { $('#filter').tooltip('close') }).on('click', function() { $(this).tooltip('close'); }); })</script>\n";
+		print "<script type='text/javascript'>$(function() { $('button').tooltip({ closed: true }).on('focus', function() { $('#filter').tooltip('close') }).on('click', function() { $(this).tooltip('close'); }); })</script>\n";
 	}else{
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 8, 'Alert Log Rows', 'page', 'main');
 
