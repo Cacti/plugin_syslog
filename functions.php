@@ -491,7 +491,7 @@ function syslog_row_color($priority, $tip_title) {
 		$class = 'logAlert';
 		break;
 	case '2':
-		$class = 'logCrit';
+		$class = 'logCritical';
 		break;
 	case '3':
 		$class = 'logError';
@@ -598,39 +598,39 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 	include(dirname(__FILE__) . '/config.php');
 
 	if ($count <= 1) {
-		$save["seq"]      = "";
-		$save["alert_id"] = $alert_id;
-		$save["logseq"]   = $msg["seq"];
-		$save["logtime"]  = $msg["date"] . " " . $msg["time"];
-		$save["logmsg"]   = $msg["message"];
-		$save["host"]     = $msg["host"];
-		$save["facility"] = $msg["facility"];
-		$save["priority"] = $msg["priority"];
-		$save["count"]    = 1;
-		$save["html"]     = $html;
+		$save['seq']         = '';
+		$save['alert_id']    = $alert_id;
+		$save['logseq']      = $msg['seq'];
+		$save['logtime']     = $msg['date'] . ' ' . $msg['time'];
+		$save['logmsg']      = $msg['message'];
+		$save['host']        = $msg['host'];
+		$save['facility_id'] = $msg['facility_id'];
+		$save['priority_id'] = $msg['priority_id'];
+		$save['count']       = 1;
+		$save['html']        = $html;
 
 		$id = 0;
-		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq");
+		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_logs`', 'seq');
 
-		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg["host"] . "', and Sequence '$id'", false, "SYSLOG");
+		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg['host'] . "', and Sequence '$id'", false, 'SYSLOG');
 
 		return $id;
 	}else{
-		$save["seq"]      = "";
-		$save["alert_id"] = $alert_id;
-		$save["logseq"]   = 0;
-		$save["logtime"]  = date("Y-m-d H:i:s");
-		$save["logmsg"]   = $alert_name;
-		$save["host"]     = "N/A";
-		$save["facility"] = $msg["facility"];
-		$save["priority"] = $msg["priority"];
-		$save["count"]    = $count;
-		$save["html"]     = $html;
+		$save['seq']         = '';
+		$save['alert_id']    = $alert_id;
+		$save['logseq']      = 0;
+		$save['logtime']     = date('Y-m-d H:i:s');
+		$save['logmsg']      = $alert_name;
+		$save['host']        = 'N/A';
+		$save['facility_id'] = $msg['facility_id'];
+		$save['priority_id'] = $msg['priority_id'];
+		$save['count']       = $count;
+		$save['html']        = $html;
 
 		$id = 0;
-		$id = syslog_sql_save($save, "`" . $syslogdb_default . "`.`syslog_logs`", "seq");
+		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_logs`', 'seq');
 
-		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, "SYSLOG");
+		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, 'SYSLOG');
 
 		return $id;
 	}
@@ -639,12 +639,12 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 function syslog_manage_items($from_table, $to_table) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
-	include(dirname(__FILE__) . "/config.php");
+	include(dirname(__FILE__) . '/config.php');
 
 	/* Select filters to work on */
-	$rows = syslog_db_fetch_assoc("SELECT * FROM `" . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
+	$rows = syslog_db_fetch_assoc('SELECT * FROM `' . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");
 
-	syslog_debug("Found   " . sizeof($rows) .  ",  Removal Rule(s)" .  " to process");
+	syslog_debug('Found   ' . sizeof($rows) .  ',  Removal Rule(s)' .  ' to process');
 
 	$removed = 0;
 	$xferred = 0;
@@ -652,10 +652,10 @@ function syslog_manage_items($from_table, $to_table) {
 
 	if (sizeof($rows)) {
 		foreach($rows as $remove) {
-			syslog_debug("Processing Rule  - " . $remove['message']);
+			syslog_debug('Processing Rule  - ' . $remove['message']);
 
-			$sql_sel = "";
-			$sql_dlt = "";
+			$sql_sel = '';
+			$sql_dlt = '';
 
 			if ($remove['type'] == 'facility') {
 				if ($remove['method'] != 'del') {

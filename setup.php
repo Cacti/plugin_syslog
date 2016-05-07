@@ -700,6 +700,13 @@ function syslog_config_settings() {
 			'method' => 'checkbox',
 			'default' => 'on'
 		),
+		'syslog_html' => array(
+			'friendly_name' => 'HTML Based e-Mail',
+			'description' => 'If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be
+			sent in plain text.',
+			'method' => 'checkbox',
+			'default' => 'on'
+		),
 		'syslog_statistics' => array(
 			'friendly_name' => 'Enable Statistics Gathering',
 			'description' => 'If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.
@@ -752,13 +759,6 @@ function syslog_config_settings() {
 			'method' => 'drop_array',
 			'default' => '30',
 			'array' => $syslog_alert_retentions
-		),
-		'syslog_html' => array(
-			'friendly_name' => 'HTML Based e-Mail',
-			'description' => 'If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be
-			sent in plain text.',
-			'method' => 'checkbox',
-			'default' => ''
 		),
 		'syslog_ticket_command' => array(
 			'friendly_name' => 'Command for Opening Tickets',

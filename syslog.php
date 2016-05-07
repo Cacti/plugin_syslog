@@ -1437,6 +1437,7 @@ function save_settings() {
 		}
 	}
 
-	syslog_request_validation($current_tab, $force);
+	syslog_request_validation($current_tab, true);
 }
+
 ?>
