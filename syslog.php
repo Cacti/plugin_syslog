@@ -1364,14 +1364,15 @@ function syslog_messages($tab="syslog") {
 		print $nav;
 
 		$display_text = array(
-			'name'        => array('Alert Name', 'ASC'),
-			'severity'    => array('Severity', 'ASC'),
-			'count'       => array('Count', 'ASC'),
-			'logtime'     => array('Date', 'ASC'),
-			'logmsg'      => array('Message', 'ASC'),
-			'host'        => array('Host', 'ASC'),
-			'facility_id' => array('Facility', 'ASC'),
-			'priority_id' => array('Priority', 'ASC'));
+			'name'        => array('display' => 'Alert Name', 'sort' => 'ASC', 'align' => 'left'),
+			'severity'    => array('display' => 'Severity',   'sort' => 'ASC', 'align' => 'left'),
+			'logtime'     => array('display' => 'Date',       'sort' => 'ASC', 'align' => 'left'),
+			'logmsg'      => array('display' => 'Message',    'sort' => 'ASC', 'align' => 'left'),
+			'count'       => array('display' => 'Count',      'sort' => 'ASC', 'align' => 'right'),
+			'host'        => array('display' => 'Host',       'sort' => 'ASC', 'align' => 'right'),
+			'facility_id' => array('display' => 'Facility',   'sort' => 'ASC', 'align' => 'right'),
+			'priority_id' => array('display' => 'Priority',   'sort' => 'ASC', 'align' => 'right')
+		);
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -1381,14 +1382,14 @@ function syslog_messages($tab="syslog") {
 
 				syslog_row_color($log['severity'], $title);
 
-				print "<td><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:'Alert Removed') . "</a></td>\n";
+				print "<td class='left'><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:'Alert Removed') . "</a></td>\n";
 				print '<td class="left nowrap">' . (isset($severities[$log['severity']]) ? $severities[$log['severity']]:'Unknown') . "</td>\n";
-				print '<td class="left nowrap">' . $log['count'] . "</td>\n";
 				print '<td class="left nowrap">' . $log['logtime'] . "</td>\n";
-				print '<td class="syslogMessage" title="' . $title . '">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($log['logmsg'], get_request_var_request('trimval'))):title_trim($log['logmsg'], get_request_var_request('trimval'))) . "</td>\n";
-				print '<td class="left nowrap">' . $log['host'] . "</td>\n";
-				print '<td class="left nowrap">' . ucfirst($log['facility']) . "</td>\n";
-				print '<td class="left nowrap">' . ucfirst($log['priority']) . "</td>\n";
+				print '<td class="left syslogMessage">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($log['logmsg'], get_request_var_request('trimval'))):title_trim($log['logmsg'], get_request_var_request('trimval'))) . "</td>\n";
+				print '<td class="right nowrap">' . $log['count'] . "</td>\n";
+				print '<td class="right nowrap">' . $log['host'] . "</td>\n";
+				print '<td class="right nowrap">' . ucfirst($log['facility']) . "</td>\n";
+				print '<td class="right nowrap">' . ucfirst($log['priority']) . "</td>\n";
 				print "</tr>\n";
 			}
 		}else{
