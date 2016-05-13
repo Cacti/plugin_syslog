@@ -1090,10 +1090,10 @@ function syslog_utilities_list() {
 
 	<tr class='even'>
 		<td class='textArea'>
-			<a href='utilities.php?action=purge_syslog_hosts'>Purge Syslog Hosts</a>
+			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'>Purge Syslog Devices</a>
 		</td>
 		<td class='textArea'>
-			This menu pick provides a means to remove hosts that are no longer reporting into the syslog facility to be purged from the system
+			This menu pick provides a means to remove Devices that are no longer reporting into Cactis syslog server
 		</td>
 	</tr>
 	<?php
