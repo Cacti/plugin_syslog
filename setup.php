@@ -128,10 +128,6 @@ function plugin_syslog_upgrade() {
 	return false;
 }
 
-function plugin_syslog_version() {
-	return syslog_version();
-}
-
 function syslog_connect() {
 	global $config, $cnn_id, $syslog_cnn, $database_default;
 
@@ -182,7 +178,7 @@ function syslog_check_upgrade() {
 	/* don't let this script timeout */
 	ini_set('max_execution_time', 0);
 
-	$current = syslog_version();
+	$current = plugin_syslog_version();
 	$current = $current['version'];
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 
@@ -465,7 +461,7 @@ function syslog_setup_table_new($options) {
 	}
 }
 
-function syslog_version () {
+function plugin_syslog_version () {
 	return array(
 		'name'     => 'syslog',
 		'version'  => '2.0',
