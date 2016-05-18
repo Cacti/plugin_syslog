@@ -805,7 +805,7 @@ function syslog_show_tab() {
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
-	global $syslog_colors, $syslog_text_colors, $syslog_retentions, $syslog_alert_retentions;
+	global $syslog_retentions, $syslog_alert_retentions;
 
 	$syslog_actions = array(
 		1 => 'Delete',
@@ -903,19 +903,6 @@ function syslog_config_arrays () {
 		'1' => 'Warning',
 		'2' => 'Critical'
 	);
-
-	if (!isset($_SESSION['syslog_colors'])) {
-		foreach($syslog_levels as $level) {
-			$syslog_colors[$level] = db_fetch_cell('SELECT hex FROM colors WHERE id=' . read_config_option('syslog_' . $level . '_bg'));
-			$syslog_text_colors[$level] = db_fetch_cell('SELECT hex FROM colors WHERE id=' . read_config_option('syslog_' . $level . '_fg'));
-		}
-
-		$_SESSION['syslog_colors'] = $syslog_colors;
-		$_SESSION['syslog_text_colors'] = $syslog_text_colors;
-	}else{
-		$syslog_colors = $_SESSION['syslog_colors'];
-		$syslog_text_colors = $_SESSION['syslog_text_colors'];
-	}
 
 	$message_types = array(
 		'messageb' => 'Begins with',

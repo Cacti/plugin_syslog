@@ -481,8 +481,6 @@ function syslog_remove_items($table, $uniqueID) {
  *  colors.
 */
 function syslog_row_color($priority, $tip_title) {
-	global $config, $syslog_colors, $syslog_text_colors;
-
 	switch($priority) {
 	case '0':
 		$class = 'logEmerg';
