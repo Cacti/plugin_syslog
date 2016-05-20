@@ -236,7 +236,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 						(logtime, priority_id, facility_id, host_id, message)
-						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"]     . "`),
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField']     . "`),
 						priority_id, facility_id, host_id, message
 						FROM (SELECT date, time, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
@@ -251,7 +251,7 @@ function syslog_remove_items($table, $uniqueID) {
 
 				$sql = "DELETE
 					FROM `" . $syslogdb_default . "`.`syslog_incoming`
-					WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "' AND status='" . $uniqueID . "'";
+					WHERE " . $syslog_incoming_config['facilityField'] . "='" . $remove['message'] . "' AND status='" . $uniqueID . "'";
 			}else{
 				$facility_id = syslog_db_fetch_cell("SELECT facility_id FROM `" . $syslogdb_default . "`.`syslog_facilities` WHERE facility='" . $remove['message'] . "'");
 
@@ -273,7 +273,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 						(logtime, priority_id, facility_id, host_id, message)
-						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"]     . "`),
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField']     . "`),
 						priority_id, facility_id, host_id, message
 						FROM (SELECT date, time, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
@@ -310,7 +310,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 						(logtime, priority_id, facility_id, host_id, message)
-						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
 						priority_id, facility_id, host_id, message
 						FROM (SELECT date, time, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
@@ -345,7 +345,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 						(logtime, priority_id, facility_id, host_id, message)
-						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
 						priority_id, facility_id, host_id, message
 						FROM (SELECT date, time, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
@@ -380,7 +380,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 						(logtime, priority_id, facility_id, host_id, message)
-						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
 						priority_id, facility_id, host_id, message
 						FROM (SELECT date, time, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
@@ -415,7 +415,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 						(logtime, priority_id, facility_id, host_id, message)
-						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config["timeField"] . "`),
+						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
 						priority_id, facility_id, host_id, message
 						FROM (SELECT date, time, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
@@ -458,13 +458,13 @@ function syslog_remove_items($table, $uniqueID) {
 			/* now delete the remainder that match */
 			syslog_db_execute($sql);
 			$removed += db_affected_rows($syslog_cnn);
-			$debugm   = "Deleted " . $removed . ", ";
+			$debugm   = 'Deleted ' . $removed . ', ';
 			if ($sql1 != '') {
 				$xferred += db_affected_rows($syslog_cnn);
-				$debugm   = "Moved   " . $xferred . ", ";
+				$debugm   = 'Moved   ' . $xferred . ', ';
 			}
 
-			syslog_debug($debugm . " Message" . (db_affected_rows($syslog_cnn) == 1 ? "" : "s" ) .
+			syslog_debug($debugm . ' Message' . (db_affected_rows($syslog_cnn) == 1 ? '' : 's' ) .
 					" for removal rule '" . $remove['name'] . "'");
 		}
 	}
@@ -540,9 +540,9 @@ function syslog_export($tab) {
 		$sql_where = '';
 		$syslog_messages = get_syslog_messages($sql_where, '10000', $tab);
 
-		$hosts      = array_rekey(syslog_db_fetch_assoc("SELECT host_id, host FROM `" . $syslogdb_default . "`.`syslog_hosts`"), 'host_id', 'host');
-		$facilities = array_rekey(syslog_db_fetch_assoc("SELECT facility_id, facility FROM `" . $syslogdb_default . "`.`syslog_facilities`"), 'facility_id', 'facility');
-		$priorities = array_rekey(syslog_db_fetch_assoc("SELECT priority_id, priority FROM `" . $syslogdb_default . "`.`syslog_priorities`"), 'priority_id', 'priority');
+		$hosts      = array_rekey(syslog_db_fetch_assoc('SELECT host_id, host FROM `' . $syslogdb_default . '`.`syslog_hosts`'), 'host_id', 'host');
+		$facilities = array_rekey(syslog_db_fetch_assoc('SELECT facility_id, facility FROM `' . $syslogdb_default . '`.`syslog_facilities`'), 'facility_id', 'facility');
+		$priorities = array_rekey(syslog_db_fetch_assoc('SELECT priority_id, priority FROM `' . $syslogdb_default . '`.`syslog_priorities`'), 'priority_id', 'priority');
 
 		if (sizeof($syslog_messages) > 0) {
 			print 'host, facility, priority, date, message' . "\r\n";
@@ -600,12 +600,12 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save['alert_id']    = $alert_id;
 		$save['logseq']      = $msg['seq'];
 		$save['logtime']     = $msg['date'] . ' ' . $msg['time'];
-		$save['logmsg']      = $msg['message'];
+		$save['logmsg']      = db_qstr($msg['message']);
 		$save['host']        = $msg['host'];
 		$save['facility_id'] = $msg['facility_id'];
 		$save['priority_id'] = $msg['priority_id'];
 		$save['count']       = 1;
-		$save['html']        = $html;
+		$save['html']        = db_qstr($html);
 
 		$id = 0;
 		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_logs`', 'seq');
@@ -618,12 +618,12 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save['alert_id']    = $alert_id;
 		$save['logseq']      = 0;
 		$save['logtime']     = date('Y-m-d H:i:s');
-		$save['logmsg']      = $alert_name;
+		$save['logmsg']      = db_qstr($alert_name);
 		$save['host']        = 'N/A';
 		$save['facility_id'] = $msg['facility_id'];
 		$save['priority_id'] = $msg['priority_id'];
 		$save['count']       = $count;
-		$save['html']        = $html;
+		$save['html']        = db_qstr($html);
 
 		$id = 0;
 		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_logs`', 'seq');
@@ -657,76 +657,64 @@ function syslog_manage_items($from_table, $to_table) {
 
 			if ($remove['type'] == 'facility') {
 				if ($remove['method'] != 'del') {
-					$sql_sel = "SELECT seq
-								FROM `" . $syslogdb_default . "`. $from_table
-								WHERE facility_id in
-									(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
-										WHERE facility ='". $remove['message']."')";
+					$sql_sel = "SELECT seq FROM `" . $syslogdb_default . "`. $from_table
+						WHERE facility_id IN
+							(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
+							WHERE facility ='". $remove['message']."')";
 				} else {
-					$sql_dlt = "DELETE
-								FROM `" . $syslogdb_default . "`. $from_table 
-								WHERE facility_id in
-									(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
-										WHERE facility ='". $remove['message']."')";
+					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table 
+						WHERE facility_id IN
+							(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
+							WHERE facility ='". $remove['message']."')";
 				}
 
 			} else if ($remove['type'] == 'host') {
 				if ($remove['method'] != 'del') {
 					$sql_sel = "SELECT seq
-								FROM `" . $syslogdb_default . "`. $from_table
-								WHERE host_id in
-									(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
-										WHERE host ='". $remove['message']."')";
+						FROM `" . $syslogdb_default . "`. $from_table
+						WHERE host_id in
+							(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
+							WHERE host ='". $remove['message']."')";
 				} else {
-					$sql_dlt = "DELETE
-								FROM `" . $syslogdb_default . "`. $from_table 
-								WHERE host_id in
-									(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
-										WHERE host ='". $remove['message']."')";
+					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table 
+						WHERE host_id in
+							(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
+							WHERE host ='". $remove['message']."')";
 				}
 			} else if ($remove['type'] == 'messageb') {
 				if ($remove['method'] != 'del') {
-					$sql_sel = "SELECT seq
-								FROM `" . $syslogdb_default . "`. $from_table
-								WHERE message LIKE '" . $remove['message'] . "%' ";
+					$sql_sel = "SELECT seq FROM `" . $syslogdb_default . "`. $from_table
+						WHERE message LIKE '" . $remove['message'] . "%' ";
 				} else {
-					$sql_dlt = "DELETE
-								FROM `" . $syslogdb_default . "`. $from_table 
-								WHERE message LIKE '" . $remove['message'] . "%' ";
+					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table 
+						WHERE message LIKE '" . $remove['message'] . "%' ";
 				}
 
 			} else if ($remove['type'] == 'messagec') {
 				if ($remove['method'] != 'del') {
-					$sql_sel = "SELECT seq
-								FROM `" . $syslogdb_default . "`. $from_table
-								WHERE message LIKE '%" . $remove['message'] . "%' ";
+					$sql_sel = "SELECT seq FROM `" . $syslogdb_default . "`. $from_table
+						WHERE message LIKE '%" . $remove['message'] . "%' ";
 				} else {
-					$sql_dlt = "DELETE
-								FROM `" . $syslogdb_default . "`. $from_table 
-								WHERE message LIKE '%" . $remove['message'] . "%' ";
+					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table 
+						WHERE message LIKE '%" . $remove['message'] . "%' ";
 				}
 			} else if ($remove['type'] == 'messagee') {
 				if ($remove['method'] != 'del') {
-					$sql_sel = "SELECT seq
-								FROM `" . $syslogdb_default . "`. $from_table
-								WHERE message LIKE '%" . $remove['message'] . "' ";
+					$sql_sel = "SELECT seq FROM `" . $syslogdb_default . "`. $from_table
+						WHERE message LIKE '%" . $remove['message'] . "' ";
 				} else {
-					$sql_dlt = "DELETE
-								FROM `" . $syslogdb_default . "`. $from_table 
-								WHERE message LIKE '%" . $remove['message'] . "' ";
+					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table 
+						WHERE message LIKE '%" . $remove['message'] . "' ";
 				}
 			} else if ($remove['type'] == 'sql') {
 				if ($remove['method'] != 'del') {
-					$sql_sel = "SELECT seq
-								FROM `" . $syslogdb_default . "`. $from_table
-								WHERE message (" . $remove['message'] . ") ";
+					$sql_sel = "SELECT seq FROM `" . $syslogdb_default . "`. $from_table
+						WHERE message (" . $remove['message'] . ") ";
 				} else {
-					$sql_dlt = "DELETE
-								FROM `" . $syslogdb_default . "`. $from_table 
-								WHERE message (" . $remove['message'] . ") ";
+					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table 
+						WHERE message (" . $remove['message'] . ") ";
 				}
 			} 
-
 
 			if ($sql_sel != '' || $sql_dlt != '') {
 				$debugm = '';
@@ -746,15 +734,16 @@ function syslog_manage_items($from_table, $to_table) {
 
 						$all_seq = eregi_replace('^,', '', $all_seq);
 						syslog_db_execute("INSERT INTO `". $syslogdb_default . "`.`". $to_table ."` 
-												(facility_id, priority_id, host_id, logtime, message)
-												(SELECT facility_id, priority_id, host_id, logtime, message 
-													FROM `". $syslogdb_default . "`.". $from_table ."
-													WHERE seq in (" . $all_seq ."))");
+							(facility_id, priority_id, host_id, logtime, message)
+							(SELECT facility_id, priority_id, host_id, logtime, message 
+							FROM `". $syslogdb_default . "`.". $from_table ."
+							WHERE seq in (" . $all_seq ."))");
+
 						$messages_moved = db_affected_rows($syslog_cnn);
 
 						if ($messages_moved > 0) {
 							syslog_db_execute("DELETE FROM `". $syslogdb_default . "`.`" . $from_table ."` 
-													WHERE seq in (" . $all_seq .")" ); 
+								WHERE seq in (" . $all_seq .")" ); 
 						}
 
 						$xferred += $messages_moved;
