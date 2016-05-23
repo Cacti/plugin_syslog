@@ -1400,8 +1400,6 @@ function syslog_messages($tab="syslog") {
 		html_end_box(false);
 
 		syslog_log_legend();
-
-		print "<script type='text/javascript'>$(function() { $('.syslogMessage').tooltip(); })</script>\n";
 	}
 }
 
