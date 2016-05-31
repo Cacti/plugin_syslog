@@ -183,8 +183,7 @@ function syslog_check_upgrade() {
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 
 	if ($current != $old || $old_pia) {
-		echo "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Intalling.  Migration is 
-			possible, but you must plan this in advance.  No automatic migration is supported.\n";
+		echo __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Intalling.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.') . "\n";
 		exit;
 	}
 }
@@ -203,7 +202,7 @@ function syslog_get_mysql_version($db = 'cacti') {
 	return '';
 }
 
-function syslog_create_partitioned_syslog_table($engine = 'MyISAM', $days = 30) {
+function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
 	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
 	include(dirname(__FILE__) . '/config.php');
@@ -496,35 +495,35 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 	$fields_syslog_update = array(
 		'upgrade_type' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'What upgrade/install type do you wish to use',
-			'description' => 'When you have very large tables, performing a Truncate will be much quicker.  If you are
+			'friendly_name' => __('What upgrade/install type do you wish to use'),
+			'description' => __('When you have very large tables, performing a Truncate will be much quicker.  If you are
 			concerned about archive data, you can choose either Inline, which will freeze your browser for the period
 			of this upgrade, or background, which will create a background process to bring your old syslog data
-			from a backup table to the new syslog format.  Again this process can take several hours.',
+			from a backup table to the new syslog format.  Again this process can take several hours.'),
 			'value' => 'truncate',
-			'array' => array('truncate' => 'Truncate Syslog Table', 'inline' => 'Inline Upgrade', 'background' => 'Background Upgrade'),
+			'array' => array('truncate' => __('Truncate Syslog Table'), 'inline' => __('Inline Upgrade'), 'background' => __('Background Upgrade')),
 		),
 		'engine' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Database Storage Engine',
-			'description' => 'In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this
-			release, you only have the traditional table structure available.',
+			'friendly_name' => __('Database Storage Engine'),
+			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this
+			release, you only have the traditional table structure available.'),
 			'value' => 'myisam',
-			'array' => array('myisam' => 'MyISAM Storage', 'innodb' => 'InnoDB Storage'),
+			'array' => array('myisam' => __('MyISAM Storage'), 'innodb' => __('InnoDB Storage')),
 		),
 		'db_type' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Database Architecutre',
-			'description' => 'In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.
+			'friendly_name' => __('Database Architecutre'),
+			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.
 				In MySQL 5.5 and above, you can create multiple partitions per day.
-				Prior to MySQL 5.1.6, you only have the traditional table structure available.',
+				Prior to MySQL 5.1.6, you only have the traditional table structure available.'),
 			'value' => 'trad',
-			'array' => ($db_version >= '5.1' ? array('trad' => 'Traditional Table', 'part' => 'Partitioined Table'): array('trad' => 'Traditional Table')),
+			'array' => ($db_version >= '5.1' ? array('trad' => __('Traditional Table'), 'part' => __('Partitioined Table')): array('trad' => __('Traditional Table'))),
 		),
 		'days' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Retention Policy',
-			'description' => 'Choose how many days of Syslog values you wish to maintain in the database.',
+			'friendly_name' => __('Retention Policy'),
+			'description' => __('Choose how many days of Syslog values you wish to maintain in the database.'),
 			'value' => '30',
 			'array' => $syslog_retentions
 		),
@@ -541,49 +540,54 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 	if ($db_version >= 5.5) {
 		$fields_syslog_update['dayparts'] = array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Partitions per Day',
-			'description' => 'Select the number of partitions per day that you wish to create.',
+			'friendly_name' => __('Partitions per Day'),
+			'description' => __('Select the number of partitions per day that you wish to create.'),
 			'value' => '1',
-			'array' => array('1' => '1 Per Day', '2' => '2 Per Day', '4' => '4 Per Day',
-				'6' => '6 Per Day', '12' => '12 Per Day')
+			'array' => array(
+				'1'  => __('%d Per Day', 1), 
+				'2'  => __('%d Per Day', 2), 
+				'4'  => __('%d Per Day', 4),
+				'6'  => __('%d Per Day', 6), 
+				'12' => __('%d Per Day', 12)
+			)
 		);
 	}
 
 	if ($syslog_exists) {
-		$type = 'Upgrade';
+		$type = __('Upgrade');
 	}else{
-		$type = 'Install';
+		$type = __('Install');
 	}
 
 	print "<table align='center' width='80%'><tr><td>\n";
-	html_start_box('Syslog ' . $type . ' Advisor<', '100%', $colors['header'], '3', 'center', '');
+	html_start_box(__('Syslog %s Advisor', $type) . '<', '100%', $colors['header'], '3', 'center', '');
 	print "<tr><td>\n";
 	if ($syslog_exists) {
-		print "<h2 style='color:red;'>WARNING: Syslog Upgrade is Time Consuming!!!</h2>\n";
-		print "<p>The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended
+		print "<h2 style='color:red;'>" . __('WARNING: Syslog Upgrade is Time Consuming!!!') . "</h2>\n";
+		print "<p>" . __('The upgrade of the \'main\' syslog table can be a very time consuming process.  As such, it is recommended
 			that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p>
 			<p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will
 			be created.  Then, an upgrade process will be launched in the background.  Again, this background process can
 			quite a bit of time to complete.  However, your data will be preserved</p>
 			<p>Regardless of your choice,
 			all existing removal and alert rules will be maintained during the upgrade process.</p>
-			<p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu.</p>
+			<p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.') . "</p>
 			</td></tr>";
 	}else{
 		unset($fields_syslog_update['upgrade_type']);
-		print "<p>You have several options to choose from when installing Syslog.  The first is the Database Architecture.
+		print "<p>" . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.
 			Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables
-			from becomming excessive thus slowing queries.</p>
-			<p>You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties,
-			it is strongly recommended that you utilize the MyISAM storage engine.</p>
-			<p>Can can also select the retention duration.  Please keeep in mind that if you have several hosts logging
+			from becomming excessive thus slowing queries.') ."</p>
+			<p>" . __('You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties,
+			it is strongly recommended that you utilize the MyISAM storage engine.') . "</p>
+			<p>" . __('Can can also select the retention duration.  Please keeep in mind that if you have several hosts logging
 			to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size
-			smaller.
+			smaller.') . "</p>
 			</td></tr>";
 	}
 	html_end_box();
 	print "<form action='plugins.php' method='get'>\n";
-	html_start_box('Syslog ' . $type . ' Settings', '100%', $colors['header'], '3', 'center', '');
+	html_start_box(__('Syslog %s Settings', $type), '100%', $colors['header'], '3', 'center', '');
 	draw_edit_form(array(
 		'config' => array(),
 		'fields' => inject_form_variables($fields_syslog_update, array()))
@@ -610,11 +614,10 @@ function syslog_uninstall_advisor() {
 	$fields_syslog_update = array(
 		'uninstall_method' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'What uninstall method do you want to use?',
-			'description' => 'When uninstalling syslog, you can remove everything, or only components, just in
-			case you plan on re-installing in the future.',
+			'friendly_name' => __('What uninstall method do you want to use?'),
+			'description' => __('When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future.'),
 			'value' => 'all',
-			'array' => array('all' => 'Remove Everything (Logs, Tables, Settings)', 'syslog' => 'Syslog Data Only'),
+			'array' => array('all' => __('Remove Everything (Logs, Tables, Settings)'), 'syslog' => __('Syslog Data Only')),
 		),
 		'mode' => array(
 			'method' => 'hidden',
@@ -628,7 +631,7 @@ function syslog_uninstall_advisor() {
 
 	print "<form action='plugins.php' method='get'>\n";
 	print "<table align='center' width='80%'><tr><td>\n";
-	html_start_box('Syslog Uninstall Preferences', '100%', $colors['header'], '3', 'center', '');
+	html_start_box(__('Syslog Uninstall Preferences'), '100%', $colors['header'], '3', 'center', '');
 	draw_edit_form(array(
 		'config' => array(),
 		'fields' => inject_form_variables($fields_syslog_update, array()))
@@ -656,7 +659,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 	<table align='center' width='100%'>
 		<tr>
 			<td class='saveRow' align='right'>
-				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='Cancel'>
+				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='<?php print __('Cancel');?>'>
 				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>'>
 			</td>
 		</tr>
@@ -668,112 +671,104 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 function syslog_config_settings() {
 	global $tabs, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
 
-	$settings['visual']['syslog_header'] = array(
-		'friendly_name' => 'Syslog Settings',
-		'method' => 'spacer'
-	);
-	$settings['visual']['num_rows_syslog'] = array(
-		'friendly_name' => 'Rows Per Page',
-		'description' => 'The number of rows to display on a single page for viewing Syslog Events.',
-		'method' => 'textbox',
-		'default' => '30',
-		'max_length' => '3'
-	);
-
-	$tabs['syslog'] = 'Syslog';
+	$tabs['syslog'] = __('Syslog');
 
 	$temp = array(
 		'syslog_header' => array(
-			'friendly_name' => 'General Settings',
+			'friendly_name' => __('General Settings'),
 			'method' => 'spacer',
 		),
 		'syslog_enabled' => array(
-			'friendly_name' => 'Syslog Enabled',
-			'description' => 'If this checkbox is set, records will be transferred from the Syslog Incoming table to the
-			main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled
-			log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng
-			process.',
+			'friendly_name' => __('Syslog Enabled'),
+			'description' => __('If this checkbox is set, records will be transferred from the Syslog Incoming table to the
+				main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled
+				log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process.'),
 			'method' => 'checkbox',
 			'default' => 'on'
 		),
 		'syslog_html' => array(
-			'friendly_name' => 'HTML Based e-Mail',
-			'description' => 'If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be
-			sent in plain text.',
+			'friendly_name' => __('HTML Based e-Mail'),
+			'description' => __('If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be sent in plain text.'),
 			'method' => 'checkbox',
 			'default' => 'on'
 		),
 		'syslog_statistics' => array(
-			'friendly_name' => 'Enable Statistics Gathering',
-			'description' => 'If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.
-			This statistical information can be used to render things such as heat maps.',
+			'friendly_name' => __('Enable Statistics Gathering'),
+			'description' => __('If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.
+			This statistical information can be used to render things such as heat maps.'),
 			'method' => 'checkbox',
 			'default' => ''
 		),
 		'syslog_domains' => array(
-			'friendly_name' => 'Strip Domains',
-			'description' => "A comma delimited list of domains that you wish to remove from the syslog hostname,
-			Examples would be 'mydomain.com, otherdomain.com'",
+			'friendly_name' => __('Strip Domains'),
+			'description' => __('A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be \'mydomain.com, otherdomain.com\''),
 			'method' => 'textbox',
 			'default' => '',
 			'size' => 80,
 			'max_length' => 255,
 		),
 		'syslog_validate_hostname' => array(
-			'friendly_name' => 'Validate Hostnames',
-			'description' => "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned
-			to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this
-			setting should only be used when other means are not in place to prevent this from happening.",
+			'friendly_name' => __('Validate Hostnames'),
+			'description' => __('If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned
+			to a special host called \'invalidhost\'.  This setting can impact syslog processing time on large systems.  Therefore, use of this
+			setting should only be used when other means are not in place to prevent this from happening.'),
 			'method' => 'checkbox',
 			'default' => ''
 		),
 		'syslog_refresh' => array(
-			'friendly_name' => 'Refresh Interval',
-			'description' => 'This is the time in seconds before the page refreshes.',
+			'friendly_name' => __('Refresh Interval'),
+			'description' => __('This is the time in seconds before the page refreshes.'),
 			'method' => 'drop_array',
 			'default' => '300',
 			'array' => $syslog_refresh
 		),
 		'syslog_maxrecords' => array(
-			'friendly_name' => 'Max Report Records',
-			'description' => 'For Threshold based Alerts, what is the maxiumum number that you wish to
-			show in the report.  This is used to limit the size of the html log and e-mail.',
+			'friendly_name' => __('Max Report Records'),
+			'description' => __('For Threshold based Alerts, what is the maxiumum number that you wish to
+			show in the report.  This is used to limit the size of the html log and e-mail.'),
 			'method' => 'drop_array',
 			'default' => '100',
-			'array' => array('20' => '20 Records', '40' => '40 Records', '60' => '60 Records', '100' => '100 Records', '200' => '200 Records', '400' => '400 Records')
+			'array' => array(
+				20  => __('%d Records', 20), 
+				40  => __('%d Records', 40), 
+				60  => __('%d Records', 60), 
+				100 => __('%d Records', 100), 
+				200 => __('%d Records', 200), 
+				400 => __('%d Records', 400)
+			)
 		),
 		'syslog_retention' => array(
-			'friendly_name' => 'Syslog Retention',
-			'description' => 'This is the number of days to keep events.',
+			'friendly_name' => __('Syslog Retention'),
+			'description' => __('This is the number of days to keep events.'),
 			'method' => 'drop_array',
 			'default' => '30',
 			'array' => $syslog_retentions
 		),
 		'syslog_alert_retention' => array(
-			'friendly_name' => 'Syslog Alert Retention',
-			'description' => 'This is the number of days to keep alert logs.',
+			'friendly_name' => __('Syslog Alert Retention'),
+			'description' => __('This is the number of days to keep alert logs.'),
 			'method' => 'drop_array',
 			'default' => '30',
 			'array' => $syslog_alert_retentions
 		),
 		'syslog_ticket_command' => array(
-			'friendly_name' => 'Command for Opening Tickets',
-			'description' => 'This command will be executed for opening Help Desk Tickets.  The command will be required to
+			'friendly_name' => __('Command for Opening Tickets'),
+			'description' => __('This command will be executed for opening Help Desk Tickets.  The command will be required to
 			parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.
-			The hostlist will be a comma delimited list of hosts impacted by the alert.',
+			The hostlist will be a comma delimited list of hosts impacted by the alert.'),
 			'method' => 'textbox',
 			'max_length' => 255,
 			'size' => 80
 		),
 		'syslog_email' => array(
-			'friendly_name' => 'From Email Address',
-			'description' => 'This is the email address that syslog alerts will appear from.',
+			'friendly_name' => __('From Email Address'),
+			'description' => __('This is the email address that syslog alerts will appear from.'),
 			'method' => 'textbox',
 			'max_length' => 128,
 		),
 		'syslog_emailname' => array(
-			'friendly_name' => 'From Display Name',
-			'description' => 'This is the display name that syslog alerts will appear from.',
+			'friendly_name' => __('From Display Name'),
+			'description' => __('This is the display name that syslog alerts will appear from.'),
 			'method' => 'textbox',
 			'max_length' => 128,
 		)
@@ -808,9 +803,9 @@ function syslog_config_arrays () {
 	global $syslog_retentions, $syslog_alert_retentions;
 
 	$syslog_actions = array(
-		1 => 'Delete',
-		2 => 'Disable',
-		3 => 'Enable'
+		1 => __('Delete'),
+		2 => __('Disable'),
+		3 => __('Enable')
 	);
 
 	$syslog_levels = array(
@@ -853,66 +848,69 @@ function syslog_config_arrays () {
 	);
 
 	$syslog_retentions = array(
-		'0'   => 'Indefinate',
-		'1'   => '1 Day',
-		'2'   => '2 Days',
-		'3'   => '3 Days',
-		'4'   => '4 Days',
-		'5'   => '5 Days',
-		'6'   => '6 Days',
-		'7'   => '1 Week',
-		'14'  => '2 Weeks',
-		'30'  => '1 Month',
-		'60'  => '2 Months',
-		'90'  => '3 Months',
-		'120' => '4 Months',
-		'160' => '5 Months',
-		'183' => '6 Months',
-		'365' => '1 Year'
+		'0'   => __('Indefinate'),
+		'1'   => __('%d Day', 1),
+		'2'   => __('%d Days', 2),
+		'3'   => __('%d Days', 3),
+		'4'   => __('%d Days', 4),
+		'5'   => __('%d Days', 5),
+		'6'   => __('%d Days', 6),
+		'7'   => __('%d Week', 1),
+		'14'  => __('%d Weeks', 2),
+		'30'  => __('%d Month', 1),
+		'60'  => __('%d Months', 2),
+		'90'  => __('%d Months', 3),
+		'120' => __('%d Months', 4),
+		'160' => __('%d Months', 5),
+		'183' => __('%d Months', 6),
+		'365' => __('%d Year', 1)
 	);
 
 	$syslog_alert_retentions = array(
-		'0'   => 'Indefinate',
-		'1'   => '1 Day',
-		'2'   => '2 Days',
-		'3'   => '3 Days',
-		'4'   => '4 Days',
-		'5'   => '5 Days',
-		'6'   => '6 Days',
-		'7'   => '1 Week',
-		'14'  => '2 Weeks',
-		'30'  => '1 Month',
-		'60'  => '2 Months',
-		'90'  => '3 Months',
-		'120' => '4 Months',
-		'160' => '5 Months',
-		'183' => '6 Months',
-		'365' => '1 Year'
+		'0'   => __('Indefinate'),
+		'1'   => __('%d Day', 1),
+		'2'   => __('%d Days', 2),
+		'3'   => __('%d Days', 3),
+		'4'   => __('%d Days', 4),
+		'5'   => __('%d Days', 5),
+		'6'   => __('%d Days', 6),
+		'7'   => __('%d Week', 1),
+		'14'  => __('%d Weeks', 2),
+		'30'  => __('%d Month', 1),
+		'60'  => __('%d Months', 2),
+		'90'  => __('%d Months', 3),
+		'120' => __('%d Months', 4),
+		'160' => __('%d Months', 5),
+		'183' => __('%d Months', 6),
+		'365' => __('%d Year', 1)
 	);
 
 	$syslog_refresh = array(
-		9999999 => 'Never',
-		'60'    => '1 Minute',
-		'120'   => '2 Minutes',
-		'300'   => '5 Minutes',
-		'600'   => '10 Minutes'
+		9999999 => __('Never'),
+		'60'    => __('%d Minute', 1),
+		'120'   => __('%d Minutes', 2),
+		'300'   => __('%d Minutes', 5),
+		'600'   => __('%d Minutes', 10)
 	);
 
 	$severities = array(
-		'0' => 'Notice',
-		'1' => 'Warning',
-		'2' => 'Critical'
+		'0' => __('Notice'),
+		'1' => __('Warning'),
+		'2' => __('Critical')
 	);
 
 	$message_types = array(
-		'messageb' => 'Begins with',
-		'messagec' => 'Contains',
-		'messagee' => 'Ends with',
-		'host'     => 'Hostname is',
-		'facility' => 'Facility is',
-		'sql'      => 'SQL Expression');
+		'messageb' => __('Begins with'),
+		'messagec' => __('Contains'),
+		'messagee' => __('Ends with'),
+		'host'     => __('Hostname is'),
+		'facility' => __('Facility is'),
+		'sql'      => __('SQL Expression'));
 
-	$syslog_freqs = array('86400' => 'Last Day', '604800' => 'Last Week');
+	$syslog_freqs = array(
+		'86400' => __('Last Day'), 
+		'604800' => __('Last Week')
+	);
 
 	for ($i = 0; $i <= 86400; $i+=1800) {
 		$minute = $i % 3600;
@@ -935,9 +933,9 @@ function syslog_config_arrays () {
 	foreach ($menu as $temp => $temp2 ) {
 		$menu2[$temp] = $temp2;
 		if ($temp == 'Import/Export') {
-			$menu2['Syslog Settings']['plugins/syslog/syslog_alerts.php'] = 'Alert Rules';
-			$menu2['Syslog Settings']['plugins/syslog/syslog_removal.php'] = 'Removal Rules';
-			$menu2['Syslog Settings']['plugins/syslog/syslog_reports.php'] = 'Report Rules';
+			$menu2['Syslog Settings']['plugins/syslog/syslog_alerts.php'] = __('Alert Rules');
+			$menu2['Syslog Settings']['plugins/syslog/syslog_removal.php'] = __('Removal Rules');
+			$menu2['Syslog Settings']['plugins/syslog/syslog_reports.php'] = __('Report Rules');
 		}
 	}
 	$menu = $menu2;
@@ -954,21 +952,21 @@ function syslog_config_arrays () {
 function syslog_draw_navigation_text ($nav) {
 	global $config;
 
-	$nav['syslog.php:']                = array('title' => 'Syslog', 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1');
-	$nav['syslog_removal.php:']        = array('title' => 'Syslog Removals', 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_removal.php', 'level' => '1');
-	$nav['syslog_removal.php:edit']    = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
-	$nav['syslog_removal.php:newedit'] = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
-	$nav['syslog_removal.php:actions'] = array('title' => '(Actions)', 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
+	$nav['syslog.php:']                = array('title' => __('Syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1');
+	$nav['syslog_removal.php:']        = array('title' => __('Syslog Removals'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_removal.php', 'level' => '1');
+	$nav['syslog_removal.php:edit']    = array('title' => __('(Edit)'), 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
+	$nav['syslog_removal.php:newedit'] = array('title' => __('(Edit)'), 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
+	$nav['syslog_removal.php:actions'] = array('title' => __('(Actions)'), 'mapping' => 'index.php:,syslog_removal.php:', 'url' => 'syslog_removal.php', 'level' => '2');
 
-	$nav['syslog_alerts.php:']         = array('title' => 'Syslog Alerts', 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_alerts.php', 'level' => '1');
-	$nav['syslog_alerts.php:edit']     = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
-	$nav['syslog_alerts.php:newedit']  = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
-	$nav['syslog_alerts.php:actions']  = array('title' => '(Actions)', 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
+	$nav['syslog_alerts.php:']         = array('title' => __('Syslog Alerts'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_alerts.php', 'level' => '1');
+	$nav['syslog_alerts.php:edit']     = array('title' => __('(Edit)'), 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
+	$nav['syslog_alerts.php:newedit']  = array('title' => __('(Edit)'), 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
+	$nav['syslog_alerts.php:actions']  = array('title' => __('(Actions)'), 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2');
 
-	$nav['syslog_reports.php:']        = array('title' => 'Syslog Reports', 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1');
-	$nav['syslog_reports.php:edit']    = array('title' => '(Edit)', 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2');
-	$nav['syslog_reports.php:actions'] = array('title' => '(Actions)', 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2');
-	$nav['syslog.php:actions']         = array('title' => 'Syslog', 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1');
+	$nav['syslog_reports.php:']        = array('title' => __('Syslog Reports'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1');
+	$nav['syslog_reports.php:edit']    = array('title' => __('(Edit)'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2');
+	$nav['syslog_reports.php:actions'] = array('title' => __('(Actions)'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2');
+	$nav['syslog.php:actions']         = array('title' => __('Syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1');
 
 	return $nav;
 }
@@ -1000,25 +998,27 @@ function syslog_graph_buttons($graph_elements = array()) {
 
 		if (isset($graph_local['host_id'])) {
 			$host  = db_fetch_row("SELECT description, hostname FROM host WHERE id='" . $graph_local['host_id'] . "'");
-			if (!is_ipv4_address($host['description']) && strpos($host['description'], '.') !== false) {
-				$parts = explode('.', $host['description']);
-				$sql_where = "WHERE host LIKE '" . $parts[0] . ".%'";
-			}else{
-				$sql_where = "WHERE host='" . $host['description'] . "'";
-			}
+			if (sizeof($host)) {
+				if (!is_ipv4_address($host['description']) && strpos($host['description'], '.') !== false) {
+					$parts = explode('.', $host['description']);
+					$sql_where = "WHERE host LIKE '" . $parts[0] . ".%'";
+				}else{
+					$sql_where = "WHERE host='" . $host['description'] . "'";
+				}
 
-			if (!is_ipv4_address($host['hostname']) && strpos($host['hostname'], '.') !== false) {
-				$parts = explode('.', $host['hostname']);
-				$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host LIKE '" . $parts[0] . ".%'";
-			}else{
-				$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host='" . $host['hostname'] . "'";
-			}
+				if (!is_ipv4_address($host['hostname']) && strpos($host['hostname'], '.') !== false) {
+					$parts = explode('.', $host['hostname']);
+					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host LIKE '" . $parts[0] . ".%'";
+				}else{
+					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host='" . $host['hostname'] . "'";
+				}
 
-			if ($sql_where != '') {
-				$host = syslog_db_fetch_cell("SELECT host_id FROM `" . $syslogdb_default . "`.`syslog_hosts` $sql_where");
+				if ($sql_where != '') {
+					$host = syslog_db_fetch_cell("SELECT host_id FROM `" . $syslogdb_default . "`.`syslog_hosts` $sql_where");
 
-				if (!empty($host)) {
-					print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host['host_id'] . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='Display Syslog in Range'></a><br>";
+					if (!empty($host)) {
+						print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host['host_id'] . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='" . __('Display Syslog in Range') . "'></a><br>";
+					}
 				}
 			}
 		}
@@ -1069,14 +1069,14 @@ function syslog_utilities_action($action) {
 function syslog_utilities_list() {
 	global $config, $colors;
 
-	html_header(array('Syslog Utilities'), 2); ?>
+	html_header(array(__('Syslog Utilities')), 2); ?>
 
 	<tr class='even'>
 		<td class='textArea'>
-			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'>Purge Syslog Devices</a>
+			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'><?php print __('Purge Syslog Devices');?></a>
 		</td>
 		<td class='textArea'>
-			This menu pick provides a means to remove Devices that are no longer reporting into Cactis syslog server
+			<?php print __('This menu pick provides a means to remove Devices that are no longer reporting into Cactis syslog server.');?>
 		</td>
 	</tr>
 	<?php

@@ -136,39 +136,39 @@ function form_actions() {
 		if (get_request_var('drp_action') == '1') { /* delete */
 			print "<tr>
 				<td class='textArea'>
-					<p>Click 'Continue' to Delete the following Syslog Report(s).</p>
+					<p>" . __('Click \'Continue\' to Delete the following Syslog Report(s).') . "</p>
 					<ul>$report_list</ul>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
-			$title = 'Delete Syslog Report(s)';
+			$title = __('Delete Syslog Report(s)');
 		}else if (get_request_var('drp_action') == '2') { /* disable */
 			print "<tr>
 				<td class='textArea'>
-					<p>Click 'Continue' to Disable the following Syslog Report(s).</p>
+					<p>" . __('Click \'Continue\' to Disable the following Syslog Report(s).') . "</p>
 					<ul>$report_list</ul>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
-			$title = 'Disable Syslog Report(s)';
+			$title = __('Disable Syslog Report(s)');
 		}else if (get_request_var('drp_action') == '3') { /* enable */
 			print "<tr>
 				<td class='textArea'>
-					<p>Click 'Continue' to Enable the following Syslog Report(s).</p>
+					<p>" . __('Click \'Continue\' to Enable the following Syslog Report(s).') . "</p>
 					<ul>$report_list</ul>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
-			$title = 'Enable Syslog Report(s)';
+			$title = __('Enable Syslog Report(s)');
 		}
 
-		$save_html = "<input type='button' value='Cancel' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='Continue' title='$title'";
+		$save_html = "<input type='button' value='" . __('Cancel') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __('Continue') . "' title='$title'";
 	}else{
-		print "<tr><td class='odd'><span class='textError'>You must select at least one Syslog Report.</span></td></tr>\n";
-		$save_html = "<input type='button' value='Return' onClick='cactiReturnTo()'>";
+		print "<tr><td class='odd'><span class='textError'>" . __('You must select at least one Syslog Report.') . "</span></td></tr>\n";
+		$save_html = "<input type='button' value='" . __('Return') . "' onClick='cactiReturnTo()'>";
 	}
 
 	print "<tr>
@@ -296,103 +296,103 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (sizeof($report)) {
-			$header_label = '[edit: ' . $report['name'] . ']';
+			$header_label = __('Report Edit [edit: %s]', $report['name']);
 		}else{
-			$header_label = '[new]';
+			$header_label = __('Report Edit [new]');
 
-			$report['name'] = 'New Report Record';
+			$report['name'] = __('New Report Record');
 		}
 	}else{
-		$header_label = '[new]';
+		$header_label = __('Report Edit [new]');
 
-		$report['name'] = 'New Report Record';
+		$report['name'] = __('New Report Record');
 	}
 
 	$fields_syslog_report_edit = array(
 		'spacer0' => array(
 			'method' => 'spacer',
-			'friendly_name' => 'Report Details'
+			'friendly_name' => __('Report Details')
 		),
 		'name' => array(
 			'method' => 'textbox',
-			'friendly_name' => 'Report Name',
-			'description' => 'Please describe this Report.',
+			'friendly_name' => __('Report Name'),
+			'description' => __('Please describe this Report.'),
 			'value' => '|arg1:name|',
 			'max_length' => '250'
 		),
 		'enabled' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Enabled?',
-			'description' => 'Is this Report Enabled?',
+			'friendly_name' => __('Enabled?'),
+			'description' => __('Is this Report Enabled?'),
 			'value' => '|arg1:enabled|',
-			'array' => array('on' => 'Enabled', '' => 'Disabled'),
+			'array' => array('on' => __('Enabled'), '' => __('Disabled')),
 			'default' => 'on'
 		),
 		'type' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'String Match Type',
-			'description' => 'Define how you would like this string matched.',
+			'friendly_name' => __('String Match Type'),
+			'description' => __('Define how you would like this string matched.'),
 			'value' => '|arg1:type|',
 			'array' => $message_types,
 			'default' => 'matchesc'
 		),
 		'message' => array(
 			'method' => 'textbox',
-			'friendly_name' => 'Syslog Message Match String',
-			'description' => 'The matching component of the syslog message.',
+			'friendly_name' => __('Syslog Message Match String'),
+			'description' => __('The matching component of the syslog message.'),
 			'value' => '|arg1:message|',
 			'default' => '',
 			'max_length' => '255'
 		),
 		'timespan' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Report Frequency',
-			'description' => 'How often should this Report be sent to the distribution list?',
+			'friendly_name' => __('Report Frequency'),
+			'description' => __('How often should this Report be sent to the distribution list?'),
 			'value' => '|arg1:timespan|',
 			'array' => $syslog_freqs,
 			'default' => 'del'
 		),
 		'timepart' => array(
 			'method' => 'drop_array',
-			'friendly_name' => 'Send Time',
-			'description' => 'What time of day should this report be sent?',
+			'friendly_name' => __('Send Time'),
+			'description' => __('What time of day should this report be sent?'),
 			'value' => '|arg1:timepart|',
 			'array' => $syslog_times,
 			'default' => 'del'
 		),
 		'message' => array(
-			'friendly_name' => 'Syslog Message Match String',
-			'description' => 'The matching component of the syslog message.',
+			'friendly_name' => __('Syslog Message Match String'),
+			'description' => __('The matching component of the syslog message.'),
 			'method' => 'textbox',
 			'max_length' => '255',
 			'value' => '|arg1:message|',
 			'default' => '',
 		),
 		'body' => array(
-			'friendly_name' => 'Report Body Text',
+			'friendly_name' => __('Report Body Text'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '60',
-			'description' => 'The information that will be contained in the body of the report.',
+			'description' => __('The information that will be contained in the body of the report.'),
 			'method' => 'textarea',
 			'class' => 'textAreaNotes',
 			'value' => '|arg1:body|',
 			'default' => '',
 		),
 		'email' => array(
-			'friendly_name' => 'Report e-mail Addresses',
+			'friendly_name' => __('Report e-mail Addresses'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
-			'description' => 'Comma delimited list of e-mail addresses to send the report to.',
+			'description' => __('Comma delimited list of e-mail addresses to send the report to.'),
 			'method' => 'textarea',
 			'class' => 'textAreaNotes',
 			'value' => '|arg1:email|',
 			'default' => '',
 		),
 		'notes' => array(
-			'friendly_name' => 'Report Notes',
+			'friendly_name' => __('Report Notes'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
-			'description' => 'Space for Notes on the Report',
+			'description' => __('Space for Notes on the Report'),
 			'method' => 'textarea',
 			'class' => 'textAreaNotes',
 			'value' => '|arg1:notes|',
@@ -414,12 +414,14 @@ function syslog_action_edit() {
 
 	form_start('syslog_reports.php');
 
-	html_start_box("Report Edit $header_label", '100%', '', '3', 'center', '');
+	html_start_box($header_label, '100%', '', '3', 'center', '');
 
-	draw_edit_form(array(
-		'config' => array('form_name' => 'chk'),
-		'fields' => inject_form_variables($fields_syslog_report_edit, (isset($report) ? $report : array()))
-		));
+	draw_edit_form(
+		array(
+			'config' => array('form_name' => 'chk'),
+			'fields' => inject_form_variables($fields_syslog_report_edit, (isset($report) ? $report : array()))
+		)
+	);
 
 	html_end_box();
 
@@ -437,27 +439,27 @@ function syslog_filter() {
 			<table class='filterTable'>
 				<tr>
 					<td>
-						Search
+						<?php print __('Search');?>
 					</td>
 					<td>
 						<input type='text' id='filter' size='25' value='<?php print get_request_var('filter');?>'>
 					</td>
 					<td>
-						Enabled
+						<?php print __('Enabled');?>
 					</td>
 					<td>
 						<select id='enabled' onChange='applyFilter()'>
-							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>>All</option>
-							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>>Yes</option>
-							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>>No</option>
+							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>><?php print __('All');?></option>
+							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>><?php print __('Yes');?></option>
+							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>><?php print __('No');?></option>
 						</select>
 					</td>
 					<td>
-						Rows:
+						<?php print __('Rows');?>
 					</td>
 					<td>
 						<select id='rows' onChange='applyFilter()'>
-							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>>Default</option>
+							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default');?></option>
 							<?php
 								if (sizeof($item_rows)) {
 								foreach ($item_rows as $key => $value) {
@@ -468,10 +470,10 @@ function syslog_filter() {
 						</select>
 					</td>
 					<td>
-						<input id='refresh' type='button' value='Go'>
+						<input id='refresh' type='button' value='<?php print __('Go');?>'>
 					</td>
 					<td>
-						<input id='clear' type='button' value='Clear'>
+						<input id='clear' type='button' value='<?php print __('Clear');?>'>
 					</td>
 				</tr>
 			</table>
@@ -556,7 +558,7 @@ function syslog_report() {
     validate_store_request_vars($filters, 'sess_syslogrep');
     /* ================= input validation ================= */
 
-	html_start_box('Syslog Report Filters', '100%', '', '3', 'center', 'syslog_reports.php?action=edit&type=1');
+	html_start_box(__('Syslog Report Filters'), '100%', '', '3', 'center', 'syslog_reports.php?action=edit&type=1');
 
 	syslog_filter();
 
@@ -589,15 +591,15 @@ function syslog_report() {
 	print $nav;
 
 	$display_text = array(
-		'name'     => array('Report Name', 'ASC'),
-		'enabled'  => array('Enabled', 'ASC'),
-		'type'     => array('Match Type', 'ASC'),
-		'message'  => array('Search String', 'ASC'),
-		'timespan' => array('Frequency', 'ASC'),
-		'timepart' => array('Send Time', 'ASC'),
-		'lastsent' => array('Last Sent', 'ASC'),
-		'date'     => array('Last Modified', 'ASC'),
-		'user'     => array('By User', 'DESC'));
+		'name'     => array(__('Report Name'), 'ASC'),
+		'enabled'  => array(__('Enabled'), 'ASC'),
+		'type'     => array(__('Match Type'), 'ASC'),
+		'message'  => array(__('Search String'), 'ASC'),
+		'timespan' => array(__('Frequency'), 'ASC'),
+		'timepart' => array(__('Send Time'), 'ASC'),
+		'lastsent' => array(__('Last Sent'), 'ASC'),
+		'date'     => array(__('Last Modified'), 'ASC'),
+		'user'     => array(__('By User'), 'DESC'));
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -605,19 +607,19 @@ function syslog_report() {
 		foreach ($reports as $report) {
 			form_alternate_row('line' . $report['id']);
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id'] . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", title_trim(htmlentities($report['name']), read_config_option('max_title_length'))) : htmlentities($report['name'])) . '</a>', $report['id']);
-			form_selectable_cell((($report['enabled'] == 'on') ? 'Yes' : 'No'), $report['id']);
+			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes'):__('No')), $report['id']);
 			form_selectable_cell($message_types[$report['type']], $report['id']);
 			form_selectable_cell($report['message'], $report['id']);
 			form_selectable_cell($syslog_freqs[$report['timespan']], $report['id']);
 			form_selectable_cell($syslog_times[$report['timepart']], $report['id']);
-			form_selectable_cell(($report['lastsent'] == 0 ? 'Never': date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);
+			form_selectable_cell(($report['lastsent'] == 0 ? __('Never'): date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);
 			form_selectable_cell(date('Y-m-d H:i:s', $report['date']), $report['id']);
 			form_selectable_cell($report['user'], $report['id']);
 			form_checkbox_cell($report['name'], $report['id']);
 			form_end_row();
 		}
 	}else{
-		print "<tr><td colspan='4'><em>No Syslog Reports Defined</em></td></tr>";
+		print "<tr><td colspan='4'><em>" . __('No Syslog Reports Defined') . "</em></td></tr>";
 	}
 	html_end_box(false);
 
