@@ -63,6 +63,17 @@ function syslog_db_fetch_cell($sql, $col_name = '', $log = TRUE) {
 	return db_fetch_cell($sql, $col_name, $log, $syslog_cnn);
 }
 
+/* syslog_db_fetch_cell_prepared - run a 'select' sql query and return the first column of the
+     first row found
+   @param $sql - the sql query to execute
+   @param $col_name - use this column name instead of the first one
+   @param $log - whether to log error messages, defaults to true
+   @returns - (bool) the output of the sql query as a single variable */
+function syslog_db_fetch_cell_prepared($sql, $params = array(), $col_name = '', $log = TRUE) {
+	global $syslog_cnn;
+	return db_fetch_cell_prepared($sql, $params, $col_name, $log, $syslog_cnn);
+}
+
 /* syslog_db_fetch_row - run a 'select' sql query and return the first row found
    @arg $sql - the sql query to execute
    @arg $log - whether to log error messages, defaults to true
