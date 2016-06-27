@@ -151,7 +151,8 @@ function syslog_view_alarm() {
  *  messages by host, facility, priority, and time range.
 */
 function syslog_statistics() {
-	global $title, $rows, $config;
+	global $title, $rows, $config, $refresh;
+	$refresh['seconds'] = read_config_option('syslog_refresh');
 
 	include(dirname(__FILE__) . '/config.php');
 
