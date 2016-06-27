@@ -242,34 +242,7 @@ function syslog_statistics() {
 		$sql_groupby";
 
 	$total_rows = syslog_db_fetch_cell('SELECT COUNT(*) FROM ('. $rows_query_string  . ') as temp');
-
-	?>
-	<script type='text/javascript'>
-
-	function applyFilter() {
-		strURL  = 'syslog.php?header=false&facility=' + $('#facility').val();
-		strURL += '&priority=' + $('#priority').val();
-		strURL += '&filter=' + $('#filter').val();
-		strURL += '&rows=' + $('#rows').val();
-		loadPageNoHeader(strURL);
-	}
-
-	function forceReturn(evt) {
-		var evt  = (evt) ? evt : ((event) ? event : null);
-		var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-
-		if ((evt.keyCode == 13) && (node.type=='text')) {
-			document.getElementById('syslog_form').submit();
-			return false;
-		}
-	}
-	document.onkeypress = forceReturn;
-
-	</script>
-	<?php
-
 	$nav = html_nav_bar('syslog.php?tab=stats&filter=' . get_request_var_request('filter'), MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 4, __('Messages'), 'page', 'main');
-
 	print $nav;
 
 	$display_text = array(
@@ -355,7 +328,7 @@ function syslog_stats_filter() {
 	?>
 	<tr class='even'>
 		<td>
-		<form name='stats'>
+		<form id='stats_form' action='syslog.php'>
 			<table class='filterTable'>
 				<tr>
 					<td>
@@ -429,7 +402,7 @@ function syslog_stats_filter() {
 						<?php print __('Search');?>
 					</td>
 					<td>
-						<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>'>
+						<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
 					</td>
 				</tr>
 			</table>
@@ -437,11 +410,6 @@ function syslog_stats_filter() {
 		</form>
 		</td>
 		<script type='text/javascript'>
-
-		function applyFilter() {
-			strURL = 'syslog.php?tab=stats&filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
-			loadPageNoHeader(strURL);
-		}
 
 		function clearFilter() {
 			strURL = 'syslog.php?tab=stats&clear=1&header=false';
@@ -456,23 +424,15 @@ function syslog_stats_filter() {
 			$('#clear').click(function() {
 				clearFilter();
 			});
-
-			$('#removal').submit(function(event) {
-				event.preventDefault();
-				applyFilter();
-			});
 		});
 
-		function forceReturn(evt) {
-			var evt  = (evt) ? evt : ((event) ? event : null);
-			var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
-
-			if ((evt.keyCode == 13) && (node.type=='text')) {
-				document.getElementById('syslog_form').submit();
-				return false;
-			}
+		function applyFilter() {
+			strURL  = 'syslog.php?header=false&facility=' + $('#facility').val();
+			strURL += '&priority=' + $('#priority').val();
+			strURL += '&filter=' + $('#filter').val();
+			strURL += '&rows=' + $('#rows').val();
+			loadPageNoHeader(strURL);
 		}
-		document.onkeypress = forceReturn;
 
 		</script>
 	</tr>
