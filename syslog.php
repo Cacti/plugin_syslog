@@ -308,16 +308,17 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 
 	if (get_request_var('facility') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('facility') != '-1') {
+	}elseif (get_request_var('facility') != '-1' && get_request_var('facility') != '') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . 'ss.facility_id=' . get_request_var('facility');
 		$sql_groupby .= ', sf.facility';
 	}else{
 		$sql_groupby .= ', sf.facility';
 	}
 
+
 	if (get_request_var('priority') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('priority') != '-1') {
+	}elseif (get_request_var('priority') != '-1' && get_request_var('priority') != '') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.priority_id=' . get_request_var('priority');
 		$sql_groupby .= ', sp.priority';
 	}else{
