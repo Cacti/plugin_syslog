@@ -479,7 +479,6 @@ function syslog_check_dependencies() {
 function syslog_poller_bottom() {
 	global $config;
 
-	$p = dirname(__FILE__);
 	$command_string = read_config_option('path_php_binary');
 	$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
 	exec_background($command_string, $extra_args);
@@ -1082,4 +1081,3 @@ function syslog_utilities_list() {
 	<?php
 }
 
-?>
