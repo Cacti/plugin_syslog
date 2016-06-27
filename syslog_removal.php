@@ -71,7 +71,7 @@ function form_save() {
 	if ((isset_request_var('save_component_removal')) && (isempty_request_var('add_dq_y'))) {
 		$removalid = api_syslog_removal_save(get_filter_request_var('id'), get_nfilter_request_var('name'), 
 			get_nfilter_request_var('type'), get_nfilter_request_var('message'), 
-			get_nfilter_request_var('method'), get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'));
+			get_nfilter_request_var('rmethod'), get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
 			header('Location: syslog_removal.php?header=false&action=edit&id=' . (empty($id) ? get_request_var('id') : $id));
@@ -209,7 +209,7 @@ function form_actions() {
 	bottom_footer();
 }
 
-function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $enabled) {
+function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, $enabled) {
 	global $config;
 
 	include(dirname(__FILE__) . '/config.php');
@@ -226,7 +226,7 @@ function api_syslog_removal_save($id, $name, $type, $message, $method, $notes, $
 	$save['name']    = form_input_validate($name,    'name',    '', false, 3);
 	$save['type']    = form_input_validate($type,    'type',    '', false, 3);
 	$save['message'] = form_input_validate($message, 'message', '', false, 3);
-	$save['method']  = form_input_validate($method,  'method',  '', false, 3);
+	$save['method']  = form_input_validate($rmethod,  'rmethod',  '', false, 3);
 	$save['notes']   = form_input_validate($notes,   'notes',   '', true, 3);
 	$save['enabled'] = ($enabled == 'on' ? 'on':'');
 	$save['date']    = time();
@@ -383,7 +383,7 @@ function syslog_action_edit() {
 			'value' => '|arg1:message|',
 			'default' => '',
 		),
-		'method' => array(
+		'rmethod' => array(
 			'method' => 'drop_array',
 			'friendly_name' => __('Method of Removal'),
 			'value' => '|arg1:method|',
@@ -414,7 +414,7 @@ function syslog_action_edit() {
 		)
 	);
 
-	form_start('syslog_removal.php', 'chk');
+	form_start('syslog_removal.php', 'syslog_edit');
 
 	html_start_box($header_label, '100%', '', '3', 'center', '');
 
