@@ -195,7 +195,7 @@ function syslog_statistics() {
             ),
         'sort_column' => array(
             'filter' => FILTER_CALLBACK,
-            'default' => 'name',
+            'default' => 'host',
             'options' => array('options' => 'sanitize_search_string')
             ),
         'sort_direction' => array(
