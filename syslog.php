@@ -362,7 +362,7 @@ function syslog_stats_filter() {
 						<?php print __('Facility');?>
 					</td>
 					<td>
-						<select id='facility' onChange='applyChange(document.stats)'>
+						<select id='facility' onChange='applyFilter(document.stats)'>
 							<option value='-1'<?php if (get_request_var('facility') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
 							<option value='-2'<?php if (get_request_var('facility') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
 							<?php
@@ -383,7 +383,7 @@ function syslog_stats_filter() {
 						<?php print __('Priority');?>
 					</td>
 					<td>
-						<select id='priority' onChange='applyChange()'>
+						<select id='priority' onChange='applyFilter()'>
 							<option value='-1'<?php if (get_request_var('priority') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
 							<option value='-2'<?php if (get_request_var('priority') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
 							<?php
@@ -404,7 +404,7 @@ function syslog_stats_filter() {
 						<?php print __('Entries');?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyChange()'>
+						<select id='rows' onChange='applyFilter()'>
 						<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default');?></option>
 						<?php
 							if (sizeof($item_rows) > 0) {
@@ -439,12 +439,12 @@ function syslog_stats_filter() {
 		<script type='text/javascript'>
 
 		function applyFilter() {
-			strURL = 'syslog_reports.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+			strURL = 'syslog.php?tab=stats&filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 			loadPageNoHeader(strURL);
 		}
 
 		function clearFilter() {
-			strURL = 'syslog_reports.php?clear=1&header=false';
+			strURL = 'syslog.php?tab=stats&clear=1&header=false';
 			loadPageNoHeader(strURL);
 		}
 
