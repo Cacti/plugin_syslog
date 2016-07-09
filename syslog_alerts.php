@@ -653,10 +653,6 @@ function syslog_alerts() {
 
 	html_end_box();
 
-	form_start('syslog_alerts.php', 'chk');
-
-	html_start_box('', '100%', '', '3', 'center', '');
-
 	$sql_where = '';
 
 	if (get_request_var('rows') == '-1') {
@@ -677,7 +673,11 @@ function syslog_alerts() {
 
 	$nav = html_nav_bar('syslog_alerts.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 13, __('Alerts'), 'page', 'main');
 
+	form_start('syslog_alerts.php', 'chk');
+
 	print $nav;
+
+	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
 		'name'     => array(__('Alert Name'), 'ASC'),
@@ -715,6 +715,10 @@ function syslog_alerts() {
 	}
 
 	html_end_box(false);
+
+	if (sizeof($alerts)) {
+		print $nav;
+	}
 
 	draw_actions_dropdown($syslog_actions);
 

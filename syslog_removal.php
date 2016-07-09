@@ -577,10 +577,6 @@ function syslog_removal() {
 
 	html_end_box();
 
-	form_start('syslog_removal.php', 'chk');
-
-	html_start_box('', '100%', '', '3', 'center', '');
-
 	$sql_where = '';
 
 	if (get_request_var('rows') == -1) {
@@ -601,7 +597,11 @@ function syslog_removal() {
 
 	$nav = html_nav_bar('syslog_removal.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 13, 'Rules', 'page', 'main');
 
+	form_start('syslog_removal.php', 'chk');
+
 	print $nav;
+
+	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
 		'name'    => array(__('Removal Name'), 'ASC'),
@@ -631,7 +631,12 @@ function syslog_removal() {
 	}else{
 		print "<tr><td colspan='4'><em>" . __('No Syslog Removal Rules Defined'). "</em></td></tr>";
 	}
+
 	html_end_box(false);
+
+	if (sizeof($removals)) {
+		print $nav;
+	}
 
 	draw_actions_dropdown($syslog_actions);
 

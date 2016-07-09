@@ -564,10 +564,6 @@ function syslog_report() {
 
 	html_end_box();
 
-	form_start('syslog_reports.php', 'chk');
-
-	html_start_box('', '100%', $colors['header'], '3', 'center', '');
-
 	$sql_where = '';
 
 	if (get_request_var('rows') == -1) {
@@ -588,7 +584,11 @@ function syslog_report() {
 
 	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 10, 'Reports', 'page', 'main');
 
+	form_start('syslog_reports.php', 'chk');
+
 	print $nav;
+
+	html_start_box('', '100%', $colors['header'], '3', 'center', '');
 
 	$display_text = array(
 		'name'     => array(__('Report Name'), 'ASC'),
@@ -621,7 +621,12 @@ function syslog_report() {
 	}else{
 		print "<tr><td colspan='4'><em>" . __('No Syslog Reports Defined') . "</em></td></tr>";
 	}
+
 	html_end_box(false);
+
+	if (sizeof($reports)) {
+		print $nav;
+	}
 
 	draw_actions_dropdown($syslog_actions);
 

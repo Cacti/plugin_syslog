@@ -215,8 +215,6 @@ function syslog_statistics() {
 
 	html_end_box();
 
-	html_start_box('', '100%', '', '3', 'center', '');
-
 	$sql_where   = '';
 	$sql_groupby = '';
 
@@ -242,8 +240,12 @@ function syslog_statistics() {
 		$sql_groupby";
 
 	$total_rows = syslog_db_fetch_cell('SELECT COUNT(*) FROM ('. $rows_query_string  . ') as temp');
+
 	$nav = html_nav_bar('syslog.php?tab=stats&filter=' . get_request_var_request('filter'), MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 4, __('Messages'), 'page', 'main');
+
 	print $nav;
+
+	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
 		'host'     => array(__('Host Name'), 'ASC'),
@@ -267,6 +269,10 @@ function syslog_statistics() {
 	}
 
 	html_end_box(false);
+
+	if (sizeof($records)) {
+		print $nav;
+	}
 }
 
 function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
@@ -1257,8 +1263,6 @@ function syslog_messages($tab = 'syslog') {
 			$sql_where);
 	}
 
-	html_start_box('', '100%', '', '3', 'center', '');
-
 	if ($tab == 'syslog') {
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 7, 'Messages', 'page', 'main');
 
@@ -1282,6 +1286,8 @@ function syslog_messages($tab = 'syslog') {
 		}
 
 		print $nav;
+
+		html_start_box('', '100%', '', '3', 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -1314,8 +1320,11 @@ function syslog_messages($tab = 'syslog') {
 			print "<tr><td class='center' colspan='7'><em>" . __('No Syslog Messages') . "</em></td></tr>";
 		}
 
-		print $nav;
 		html_end_box(false);
+
+		if (sizeof($syslog_messages)) {
+			print $nav;
+		}
 
 		syslog_syslog_legend();
 
@@ -1335,6 +1344,8 @@ function syslog_messages($tab = 'syslog') {
 			'facility_id' => array('display' => __('Facility'),   'sort' => 'ASC', 'align' => 'right'),
 			'priority_id' => array('display' => __('Priority'),   'sort' => 'ASC', 'align' => 'right')
 		);
+
+		html_start_box('', '100%', '', '3', 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -1358,8 +1369,11 @@ function syslog_messages($tab = 'syslog') {
 			print "<tr><td colspan='11'><em>" . __('No Alert Log Messages') . "</em></td></tr>";
 		}
 
-		print $nav;
 		html_end_box(false);
+
+		if (sizeof($syslog_messages)) {
+			print $nav;
+		}
 
 		syslog_log_legend();
 	}
