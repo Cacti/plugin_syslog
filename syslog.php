@@ -1358,7 +1358,7 @@ function syslog_messages($tab = 'syslog') {
 				print "<td class='left'><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:'Alert Removed') . "</a></td>\n";
 				print '<td class="left nowrap">' . (isset($severities[$log['severity']]) ? $severities[$log['severity']]:'Unknown') . "</td>\n";
 				print '<td class="left nowrap">' . $log['logtime'] . "</td>\n";
-				print '<td class="left syslogMessage">' . (strlen(get_request_var('filter')) ? eregi_replace('(' . preg_quote(get_request_var('filter')) . ')', "<span class='filteredValue'>\\1</span>", title_trim($log['logmsg'], get_request_var_request('trimval'))):title_trim($log['logmsg'], get_request_var_request('trimval'))) . "</td>\n";
+				print '<td class="left syslogMessage">' . filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')) . "</td>\n";
 				print '<td class="right nowrap">' . $log['count'] . "</td>\n";
 				print '<td class="right nowrap">' . $log['host'] . "</td>\n";
 				print '<td class="right nowrap">' . ucfirst($log['facility']) . "</td>\n";

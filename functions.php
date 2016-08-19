@@ -732,7 +732,7 @@ function syslog_manage_items($from_table, $to_table) {
 							$all_seq = $all_seq . ", " . $move_record['seq'];
 						}
 
-						$all_seq = eregi_replace('^,', '', $all_seq);
+						$all_seq = preg_replace('/^,/i', '', $all_seq);
 						syslog_db_execute("INSERT INTO `". $syslogdb_default . "`.`". $to_table ."` 
 							(facility_id, priority_id, host_id, logtime, message)
 							(SELECT facility_id, priority_id, host_id, logtime, message 
