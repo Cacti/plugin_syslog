@@ -44,24 +44,29 @@ array_shift($parms);
 
 if (sizeof($parms)) {
 	foreach($parms as $parameter) {
-		@list($arg, $value) = @explode('=', $parameter);
+		if (strpos($parameter, '=')) {
+			list($arg, $value) = explode('=', $parameter);
+		} else {
+			$arg = $parameter;
+			$value = '';
+		}
 
 		switch ($arg) {
-		case '--debug':
-		case '-d':
-			$syslog_debug = true;
+			case '--debug':
+			case '-d':
+				$syslog_debug = true;
 
-			break;
-		case '--version':
-		case '-V':
-		case '-H':
-		case '--help':
-			display_help();
-			exit(0);
-		default:
-			echo "ERROR: Invalid Argument: ($arg)\n\n";
-			display_help();
-			exit(1);
+				break;
+			case '--version':
+			case '-V':
+			case '-H':
+			case '--help':
+				display_help();
+				exit(0);
+			default:
+				echo "ERROR: Invalid Argument: ($arg)\n\n";
+				display_help();
+				exit(1);
 		}
 	}
 }
