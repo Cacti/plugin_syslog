@@ -524,10 +524,8 @@ syslog_debug('We have ' . $syslog_reports . ' Reports in the database');
 if (sizeof($reports)) {
 foreach($reports as $syslog_report) {
 	print '   Report: ' . $syslog_report['name'] . "\n";
-	if ($syslog_report['min'] < 10)
-		$syslog_report['min'] = '0' . $syslog_report['min'];
 
-	$base_start_time = $syslog_report['hour'] . ' : ' . $syslog_report['min'];
+	$base_start_time = $syslog_report['timepart'];
 
 	$current_time = strtotime('now');
 	if (empty($last_run_time)) {
