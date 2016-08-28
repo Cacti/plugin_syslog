@@ -606,7 +606,7 @@ function syslog_report() {
 	if (sizeof($reports)) {
 		foreach ($reports as $report) {
 			form_alternate_row('line' . $report['id']);
-			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id'] . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", title_trim(htmlentities($report['name']), read_config_option('max_title_length'))) : htmlentities($report['name'])) . '</a>', $report['id']);
+			form_selectable_cell(filter_value(title_trim($report['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id']), $report['id']);
 			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes'):__('No')), $report['id']);
 			form_selectable_cell($message_types[$report['type']], $report['id']);
 			form_selectable_cell($report['message'], $report['id']);
@@ -633,4 +633,3 @@ function syslog_report() {
 	form_end();
 }
 
-?>

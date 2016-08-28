@@ -618,7 +618,7 @@ function syslog_removal() {
 	if (sizeof($removals)) {
 		foreach ($removals as $removal) {
 			form_alternate_row('line' . $removal['id'], true);
-			form_selectable_cell("<a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']) . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", title_trim(htmlentities($removal['name']), read_config_option('max_title_length'))) : htmlentities($removal['name'])) . '</a>', $removal['id']);
+			form_selectable_cell(filter_value(title_trim($removal['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']), $removal['id']);
 			form_selectable_cell((($removal['enabled'] == 'on') ? __('Yes'):__('No')), $removal['id']);
 			form_selectable_cell($message_types[$removal['type']], $removal['id']);
 			form_selectable_cell($removal['message'], $removal['id']);
