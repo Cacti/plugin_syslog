@@ -1,0 +1,8 @@
+[info]
+name = syslog
+version = 2.0
+longname = Syslog Monitoring
+author = The Cacti Group
+email = 
+homepage = http://www.cacti.net
+compat = 1.0.0
