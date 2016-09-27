@@ -1312,7 +1312,7 @@ function syslog_messages($tab = 'syslog') {
 				print '<td class="left nowrap">' . $syslog_message['logtime'] . "</td>\n";
 				print '<td class="left nowrap">' . $hosts[$syslog_message['host_id']] . "</td>\n";
 				print '<td class="left nowrap">' . $syslog_message['program'] . "</td>\n";
-				print '<td class="left syslogMessage">' . (strlen(get_request_var('filter')) ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/', "<span class='filteredValue'>\\1</span>", title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))):title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval'))) . "</td>\n";
+				print '<td class="left syslogMessage">' . filter_value(title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('filter')) . "</td>\n";
 				print '<td class="left nowrap">' . ucfirst($facilities[$syslog_message['facility_id']]) . "</td>\n";
 				print '<td class="left nowrap">' . ucfirst($priorities[$syslog_message['priority_id']]) . "</td>\n";
 			}
