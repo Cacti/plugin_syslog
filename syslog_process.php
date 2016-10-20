@@ -87,6 +87,10 @@ include_once('./lib/poller.php');
 include('./plugins/syslog/config.php');
 include_once('./plugins/syslog/functions.php');
 
+if ($config['poller_id'] > 1) {
+	exit;
+}
+
 /* Connect to the Syslog Database */
 global $syslog_cnn, $cnn_id, $database_default;
 if (empty($syslog_cnn)) {

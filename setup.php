@@ -158,7 +158,7 @@ function syslog_connect() {
 			$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
 			if ($syslog_cnn == false) {
 					echo "Can not connect\n";
-					exit;
+					return FALSE;
 			}
 		}
 	}
