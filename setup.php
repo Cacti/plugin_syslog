@@ -936,10 +936,10 @@ function syslog_config_arrays () {
 	$menu2 = array ();
 	foreach ($menu as $temp => $temp2 ) {
 		$menu2[$temp] = $temp2;
-		if ($temp == 'Import/Export') {
-			$menu2['Syslog Settings']['plugins/syslog/syslog_alerts.php'] = __('Alert Rules');
-			$menu2['Syslog Settings']['plugins/syslog/syslog_removal.php'] = __('Removal Rules');
-			$menu2['Syslog Settings']['plugins/syslog/syslog_reports.php'] = __('Report Rules');
+		if ($temp == __('Import/Export')) {
+			$menu2[__('Syslog Settings')]['plugins/syslog/syslog_alerts.php'] = __('Alert Rules');
+			$menu2[__('Syslog Settings')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules');
+			$menu2[__('Syslog Settings')]['plugins/syslog/syslog_reports.php'] = __('Report Rules');
 		}
 	}
 	$menu = $menu2;
