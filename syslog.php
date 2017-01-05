@@ -1035,10 +1035,20 @@ function syslog_filter($sql_where, $tab) {
 								<?php
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
-								$hosts       = syslog_db_fetch_assoc("SELECT host_id, SUBSTRING_INDEX(host,'.',1) AS host FROM `" . $syslogdb_default . "`.`syslog_hosts` $hosts_where ORDER BY host");
+								$hosts       = syslog_db_fetch_assoc("SELECT host_id, host 
+									FROM `" . $syslogdb_default . "`.`syslog_hosts` 
+									$hosts_where 
+									ORDER BY host");
+
+
 								$selected    = explode(' ', get_request_var('host'));
 								if (sizeof($hosts)) {
 									foreach ($hosts as $host) {
+										if (!is_ipaddress($host['host'])) {
+											$parts = explode('.', $host['host']);
+											$host['host'] = $parts[0];
+										}
+
 										print "<option value='" . $host["host_id"] . "'";
 										if (sizeof($selected)) {
 											if (in_array($host['host_id'], $selected)) {
