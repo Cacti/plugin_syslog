@@ -29,7 +29,14 @@ function plugin_syslog_install() {
 	global $config, $syslog_upgrade;
 	static $bg_inprocess = false;
 
-	include(dirname(__FILE__) . '/config.php');
+	if (file_exists(dirname(__FILE__) . '/config.php')) {
+		include(dirname(__FILE__) . '/config.php');
+	}else{
+		$_SESSION['clog_error'] = __('Please rename your config.php.dist file in the syslog directory, and change setup your database before installing.'); 
+		raise_message('clog_error');
+		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
+		exit;
+	}
 
 	syslog_connect();
 
@@ -55,11 +62,16 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
-	if (isset_request_var('install') || isset_request_var('return') || isset_request_var('cancel')) {
+	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
 			syslog_execute_update($syslog_exists, $_REQUEST);
 			$bg_inprocess = true;
+
+			return true;
 		}
+	}elseif (isset_request_var('cancel')) {
+		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
+		exit;
 	}else{
 		syslog_install_advisor($syslog_exists, $db_version);
 		exit;
@@ -98,9 +110,9 @@ function plugin_syslog_uninstall () {
 	syslog_connect();
 
 	if (isset_request_var('cancel') || isset_request_var('return')) {
-		header('Location:' . $config['url_path'] . 'plugins.php');
+		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
 		exit;
-	}elseif (isset_request_var('uninstall')) {
+	}elseif (isset_request_var('uninstall_method')) {
 		if (get_nfilter_request_var('uninstall_method') == 'all') {
 			/* do the big tables first */
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog`');
@@ -535,6 +547,10 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 			'method' => 'hidden',
 			'value' => 'install'
 		),
+		'install' => array(
+			'method' => 'hidden',
+			'value' => 'true'
+		),
 		'id' => array(
 			'method' => 'hidden',
 			'value' => 'syslog'
@@ -627,20 +643,27 @@ function syslog_uninstall_advisor() {
 			'method' => 'hidden',
 			'value' => 'uninstall'
 		),
+		'uninstall' => array(
+			'method' => 'hidden',
+			'value' => 'true'
+		),
 		'id' => array(
 			'method' => 'hidden',
 			'value' => 'syslog'
 		)
 	);
 
-	print "<form action='plugins.php' method='get'>\n";
+	form_start('plugins.php');
+
 	print "<table align='center' width='80%'><tr><td>\n";
+
 	html_start_box(__('Syslog Uninstall Preferences'), '100%', $colors['header'], '3', 'center', '');
 	draw_edit_form(array(
 		'config' => array(),
 		'fields' => inject_form_variables($fields_syslog_update, array()))
 		);
 	html_end_box();
+
 	syslog_confirm_button('uninstall', 'plugins.php', $syslog_exists);
 	print "</td></tr></table>\n";
 
@@ -651,20 +674,39 @@ function syslog_uninstall_advisor() {
 function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 	if ($action == 'install' ) {
 		if ($syslog_exists) {
-			$value = 'Upgrade';
+			$value = __('Upgrade');
 		}else{
-			$value = 'Install';
+			$value = __('Install');
 		}
 	}else{
-		$value = 'Uninstall';
+		$value = __('Uninstall');
 	}
 
 	?>
 	<table align='center' width='100%'>
 		<tr>
 			<td class='saveRow' align='right'>
-				<input name='<?php print ($syslog_exists ? 'return':'cancel')?>' type='submit' value='<?php print __('Cancel');?>'>
-				<input name='<?php print $action;?>' type='submit' value='<?php print $value;?>'>
+				<input id='<?php print ($syslog_exists ? 'return':'cancel')?>' type='button' value='<?php print __('Cancel');?>'>
+				<input id='<?php print $action;?>' type='submit' value='<?php print $value;?>'>
+				<script type='text/javascript'>
+				$(function() {
+					$('form').submit(function(event) {
+						event.preventDefault();
+						strURL = $(this).attr('action');
+						strURL += (strURL.indexOf('?') >= 0 ? '&':'?') + 'header=false';
+						json = $(this).serializeObject();
+						$.post(strURL, json).done(function(data) {
+							$('#main').html(data);
+							applySkin();
+							window.scrollTo(0, 0);
+						});
+					});
+
+					$('#cancel').click(function() {
+						loadPageNoHeader('plugins.php?header=false');
+					});
+				});
+				</script>
 			</td>
 		</tr>
 	</table>
