@@ -450,11 +450,11 @@ function syslog_action_edit() {
 		),
 		'email' => array(
 			'method' => 'textarea',
-			'friendly_name' => __('E-Mails to Notify'),
+			'friendly_name' => __('Emails to Notify'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '70',
-			'description' => __('Please enter a comma delimited list of e-mail addresses to inform.  If you
-			wish to send out e-mail to a recipient in SMS format, please prefix that recipient\'s e-mail address
+			'description' => __('Please enter a comma delimited list of Email addresses to inform.  If you
+			wish to send out Email to a recipient in SMS format, please prefix that recipient\'s Email address
 			with <b>\'sms@\'</b>.  For example, if the recipients SMS address is <b>\'2485551212@mycarrier.net\'</b>, you would
 			enter it as <b>\'sms@2485551212@mycarrier.net\'</b> and it will be formatted as an SMS message.'),
 			'class' => 'textAreaNotes',
@@ -687,7 +687,7 @@ function syslog_alerts() {
 		'enabled'  => array(__('Enabled'), 'ASC'),
 		'type'     => array(__('Match Type'), 'ASC'),
 		'message'  => array(__('Search String'), 'ASC'),
-		'email'    => array(__('E-Mail Addresses'), 'DESC'),
+		'email'    => array(__('Email Addresses'), 'DESC'),
 		'date'     => array(__('Last Modified'), 'ASC'),
 		'user'     => array(__('By User'), 'DESC')
 	);

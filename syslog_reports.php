@@ -379,10 +379,10 @@ function syslog_action_edit() {
 			'default' => '',
 		),
 		'email' => array(
-			'friendly_name' => __('Report e-mail Addresses'),
+			'friendly_name' => __('Report Email Addresses'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
-			'description' => __('Comma delimited list of e-mail addresses to send the report to.'),
+			'description' => __('Comma delimited list of Email addresses to send the report to.'),
 			'method' => 'textarea',
 			'class' => 'textAreaNotes',
 			'value' => '|arg1:email|',
