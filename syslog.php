@@ -248,7 +248,7 @@ function syslog_statistics() {
 	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
-		'host'     => array(__('Host Name'), 'ASC'),
+		'host'     => array(__('Device Name'), 'ASC'),
 		'facility' => array(__('Facility'), 'ASC'),
 		'priority' => array(__('Priority'), 'ASC'),
 		'records'  => array(__('Records'), 'DESC'));
@@ -1029,7 +1029,7 @@ function syslog_filter($sql_where, $tab) {
 						</td>
 						<td class='even'>
 							<select id='host' multiple style='width: 150px; overflow: scroll;'>
-								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Hosts');?></option><?php }else{ ?>
+								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Devices');?></option><?php }else{ ?>
 								<option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == 0 || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Logs');?></option>
 								<option id='host_none' value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('Threshold Logs');?></option><?php } ?>
 								<?php
@@ -1280,7 +1280,7 @@ function syslog_messages($tab = 'syslog') {
 			$display_text = array(
 				'nosortt'     => array(__('Actions'), 'ASC'),
 				'logtime'     => array(__('Date'), 'ASC'),
-				'host_id'     => array(__('Host'), 'ASC'),
+				'host_id'     => array(__('Device'), 'ASC'),
 				'program'     => array(__('Program'), 'ASC'),
 				'message'     => array(__('Message'), 'ASC'),
 				'facility_id' => array(__('Facility'), 'ASC'),
@@ -1288,7 +1288,7 @@ function syslog_messages($tab = 'syslog') {
 		}else{
 			$display_text = array(
 				'logtime'     => array(__('Date'), 'ASC'),
-				'host_id'     => array(__('Host'), 'ASC'),
+				'host_id'     => array(__('Device'), 'ASC'),
 				'program'     => array(__('Program'), 'ASC'),
 				'message'     => array(__('Message'), 'ASC'),
 				'facility_id' => array(__('Facility'), 'ASC'),
@@ -1350,7 +1350,7 @@ function syslog_messages($tab = 'syslog') {
 			'logtime'     => array('display' => __('Date'),       'sort' => 'ASC', 'align' => 'left'),
 			'logmsg'      => array('display' => __('Message'),    'sort' => 'ASC', 'align' => 'left'),
 			'count'       => array('display' => __('Count'),      'sort' => 'ASC', 'align' => 'right'),
-			'host'        => array('display' => __('Host'),       'sort' => 'ASC', 'align' => 'right'),
+			'host'        => array('display' => __('Device'),     'sort' => 'ASC', 'align' => 'right'),
 			'facility_id' => array('display' => __('Facility'),   'sort' => 'ASC', 'align' => 'right'),
 			'priority_id' => array('display' => __('Priority'),   'sort' => 'ASC', 'align' => 'right')
 		);

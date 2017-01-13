@@ -149,7 +149,7 @@ function form_actions() {
 		}else if (get_request_var('drp_action') == '2') { /* disable */
 			print "<tr>
 				<td class='textArea'>
-					<p>" . __('Click \'Continue\' to Disable  the following Syslog Alert Rule(s).') . "</p>
+					<p>" . __('Click \'Continue\' to Disable the following Syslog Alert Rule(s).') . "</p>
 					<ul>$alert_list</ul>";
 					print "</td></tr>
 				</td>
@@ -305,7 +305,7 @@ function syslog_action_edit() {
 	}else if (isset_request_var('id') && get_nfilter_request_var('action') == 'newedit') {
 		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . get_request_var("id") . (isset_request_var('date') ? " AND logtime='" . get_request_var("date") . "'":""));
 
-		$header_label = __('Alert Ednt [new]');
+		$header_label = __('Alert Edit [new]');
 		if (sizeof($syslog_rec)) {
 			$alert['message'] = $syslog_rec['message'];
 		}

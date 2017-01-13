@@ -345,7 +345,7 @@ function syslog_action_edit() {
 	$fields_syslog_removal_edit = array(
 		'spacer0' => array(
 			'method' => 'spacer',
-			'friendly_name' => __('Removel Rule Details')
+			'friendly_name' => __('Removal Rule Details')
 		),
 		'name' => array(
 			'method' => 'textbox',

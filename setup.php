@@ -206,7 +206,7 @@ function syslog_check_upgrade() {
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 
 	if ($current != $old || $old_pia) {
-		echo __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Intalling.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.') . "\n";
+		echo __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.') . "\n";
 		exit;
 	}
 }
@@ -226,7 +226,7 @@ function syslog_get_mysql_version($db = 'cacti') {
 }
 
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
-	global $config, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
+	global $config, $mysqlVersion, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -261,7 +261,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 }
 
 function syslog_setup_table_new($options) {
-	global $config, $cnn_id, $settings, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
+	global $config, $cnn_id, $settings, $mysqlVersion, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -529,12 +529,12 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 		),
 		'db_type' => array(
 			'method' => 'drop_array',
-			'friendly_name' => __('Database Architecutre'),
+			'friendly_name' => __('Database Architecture'),
 			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.
 				In MySQL 5.5 and above, you can create multiple partitions per day.
 				Prior to MySQL 5.1.6, you only have the traditional table structure available.'),
 			'value' => 'trad',
-			'array' => ($db_version >= '5.1' ? array('trad' => __('Traditional Table'), 'part' => __('Partitioined Table')): array('trad' => __('Traditional Table'))),
+			'array' => ($db_version >= '5.1' ? array('trad' => __('Traditional Table'), 'part' => __('Partitioned Table')): array('trad' => __('Traditional Table'))),
 		),
 		'days' => array(
 			'method' => 'drop_array',
@@ -589,18 +589,16 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 			<p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will
 			be created.  Then, an upgrade process will be launched in the background.  Again, this background process can
 			quite a bit of time to complete.  However, your data will be preserved</p>
-			<p>Regardless of your choice,
-			all existing removal and alert rules will be maintained during the upgrade process.</p>
+			<p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p>
 			<p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.') . "</p>
 			</td></tr>";
 	}else{
 		unset($fields_syslog_update['upgrade_type']);
 		print "<p>" . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.
 			Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables
-			from becomming excessive thus slowing queries.') ."</p>
-			<p>" . __('You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties,
+			from becoming excessive thus slowing queries.') ."</p><p>" . __('You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties,
 			it is strongly recommended that you utilize the MyISAM storage engine.') . "</p>
-			<p>" . __('Can can also select the retention duration.  Please keeep in mind that if you have several hosts logging
+			<p>" . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging
 			to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size
 			smaller.') . "</p>
 			</td></tr>";
@@ -733,8 +731,8 @@ function syslog_config_settings() {
 			'default' => 'on'
 		),
 		'syslog_html' => array(
-			'friendly_name' => __('HTML Based e-Mail'),
-			'description' => __('If this checkbox is set, all e-mails will be sent in HTML format.  Otherwise, e-mails will be sent in plain text.'),
+			'friendly_name' => __('HTML Based Email'),
+			'description' => __('If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text.'),
 			'method' => 'checkbox',
 			'default' => 'on'
 		),
@@ -770,8 +768,8 @@ function syslog_config_settings() {
 		),
 		'syslog_maxrecords' => array(
 			'friendly_name' => __('Max Report Records'),
-			'description' => __('For Threshold based Alerts, what is the maxiumum number that you wish to
-			show in the report.  This is used to limit the size of the html log and e-mail.'),
+			'description' => __('For Threshold based Alerts, what is the maximum number that you wish to
+			show in the report.  This is used to limit the size of the html log and Email.'),
 			'method' => 'drop_array',
 			'default' => '100',
 			'array' => array(
@@ -894,7 +892,7 @@ function syslog_config_arrays () {
 	);
 
 	$syslog_retentions = array(
-		'0'   => __('Indefinate'),
+		'0'   => __('Indefinite'),
 		'1'   => __('%d Day', 1),
 		'2'   => __('%d Days', 2),
 		'3'   => __('%d Days', 3),
@@ -913,7 +911,7 @@ function syslog_config_arrays () {
 	);
 
 	$syslog_alert_retentions = array(
-		'0'   => __('Indefinate'),
+		'0'   => __('Indefinite'),
 		'1'   => __('%d Day', 1),
 		'2'   => __('%d Days', 2),
 		'3'   => __('%d Days', 3),
@@ -1122,7 +1120,7 @@ function syslog_utilities_list() {
 			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'><?php print __('Purge Syslog Devices');?></a>
 		</td>
 		<td class='textArea'>
-			<?php print __('This menu pick provides a means to remove Devices that are no longer reporting into Cactis syslog server.');?>
+			<?php print __('This menu pick provides a means to remove Devices that are no longer reporting into Cacti\'s syslog server.');?>
 		</td>
 	</tr>
 	<?php
