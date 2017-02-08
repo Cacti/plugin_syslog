@@ -1274,7 +1274,7 @@ function syslog_messages($tab = 'syslog') {
 	}
 
 	if ($tab == 'syslog') {
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 7, 'Messages', 'page', 'main');
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 7, __('Messages'), 'page', 'main');
 
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
@@ -1340,7 +1340,7 @@ function syslog_messages($tab = 'syslog') {
 
 		print "<script type='text/javascript'>$(function() { $('button').tooltip({ closed: true }).on('focus', function() { $('#filter').tooltip('close') }).on('click', function() { $(this).tooltip('close'); }); })</script>\n";
 	}else{
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 8, 'Alert Log Rows', 'page', 'main');
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 8, __('Alert Log Rows'), 'page', 'main');
 
 		print $nav;
 
@@ -1363,9 +1363,9 @@ function syslog_messages($tab = 'syslog') {
 			foreach ($syslog_messages as $log) {
 				$title   = htmlspecialchars($log['logmsg'], ENT_QUOTES);
 
-				syslog_row_color($log['severity'], $title);
+				syslog_log_row_color($log['severity'], $title);
 
-				print "<td class='left'><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:'Alert Removed') . "</a></td>\n";
+				print "<td class='left'><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:__('Alert Removed')) . "</a></td>\n";
 				print '<td class="left nowrap">' . (isset($severities[$log['severity']]) ? $severities[$log['severity']]:'Unknown') . "</td>\n";
 				print '<td class="left nowrap">' . $log['logtime'] . "</td>\n";
 				print '<td class="left syslogMessage">' . filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')) . "</td>\n";

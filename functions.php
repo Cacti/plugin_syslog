@@ -475,6 +475,28 @@ function syslog_remove_items($table, $uniqueID) {
 	return array('removed' => $removed, 'xferred' => $xferred);
 }
 
+/** function syslog_log_row_color()
+ *  This function set's the CSS for each row of the syslog table as it is displayed
+ *  it supports both the legacy as well as the new approach to controlling these
+ *  colors.
+*/
+function syslog_log_row_color($severity, $tip_title) {
+	switch($priority) {
+	case '':
+	case '0':
+		$class = 'logInfo';
+		break;
+	case '1':
+		$class = 'logWarning';
+		break;
+	case '2':
+		$class = 'logAlert';
+		break;
+	}
+
+	print "<tr class='$class'>\n";
+}
+
 /** function syslog_row_color()
  *  This function set's the CSS for each row of the syslog table as it is displayed
  *  it supports both the legacy as well as the new approach to controlling these
