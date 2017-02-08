@@ -482,7 +482,7 @@ function syslog_remove_items($table, $uniqueID) {
  *  colors.
 */
 function syslog_log_row_color($severity, $tip_title) {
-	switch($priority) {
+	switch($severity) {
 	case '':
 	case '0':
 		$class = 'logInfo';
