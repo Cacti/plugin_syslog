@@ -38,27 +38,28 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
 			$emails = explode(',', $to);
 
 			if (sizeof($emails)) {
-			foreach($emails as $email) {
-				if (substr_count($email, 'sms@')) {
-					$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
-				}else{
-					$nonsms .= (strlen($nonsms) ? ', ':'') . trim($email);
+				foreach($emails as $email) {
+					if (substr_count($email, 'sms@')) {
+						$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
+					}else{
+						$nonsms .= (strlen($nonsms) ? ', ':'') . trim($email);
+					}
 				}
-			}
 			}
 		}else{
 			$nonsms = $to;
 		}
 
 		if (strlen($sms)) {
-			send_mail($sms, $from, $subject, $smsmessage);
+			mailer($from, $sms, '', '', '', $subject, '', $smsmessage);
 		}
 
 		if (strlen($nonsms)) {
 			if (read_config_option('syslog_html') == 'on') {
-				send_mail($nonsms, $from, $subject, $message, 'html_please');
+				mailer($from, $nonsms, '', '', '', $subject, $message, __('Please use an HTML Email Client'));
 			}else{
-				send_mail($nonsms, $from, $subject, $message);
+				$message = strip_tags(str_replace('<br>', "\n", $message));
+				mailer($from, $nonsms, '', '', '', $subject, '', $message);
 			}
 		}
 	} else {
