@@ -1037,32 +1037,29 @@ function syslog_graph_buttons($graph_elements = array()) {
 	}
 
 	if (isset($graph_elements[1]['local_graph_id'])) {
-		$graph_local = db_fetch_row("SELECT host_id FROM graph_local WHERE id='" . $graph_elements[1]['local_graph_id'] . "'");
+		$host_id = db_fetch_cell_prepared('SELECT host_id FROM graph_local WHERE id = ?', array($graph_elements[1]['local_graph_id']));
 		$sql_where   = '';
 
-		if (isset($graph_local['host_id'])) {
-			$host  = db_fetch_row("SELECT description, hostname FROM host WHERE id='" . $graph_local['host_id'] . "'");
+		if (!empty($host_id)) {
+			$host  = db_fetch_row_prepared('SELECT id, description, hostname FROM host WHERE id = ?', array($host_id));
+
 			if (sizeof($host)) {
 				if (!is_ipv4_address($host['description']) && strpos($host['description'], '.') !== false) {
 					$parts = explode('.', $host['description']);
-					$sql_where = "WHERE host LIKE '" . $parts[0] . ".%'";
+					$sql_where = "WHERE host LIKE " . db_qstr($parts[0] . '.%');
 				}else{
-					$sql_where = "WHERE host='" . $host['description'] . "'";
+					$sql_where = "WHERE host = " . db_qstr($host['description']);
 				}
 
 				if (!is_ipv4_address($host['hostname']) && strpos($host['hostname'], '.') !== false) {
 					$parts = explode('.', $host['hostname']);
-					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host LIKE '" . $parts[0] . ".%'";
+					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host LIKE " . db_qstr($parts[0] . '.%');
 				}else{
-					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host='" . $host['hostname'] . "'";
+					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host = " . db_qstr($host['hostname']);
 				}
 
 				if ($sql_where != '') {
-					$host = syslog_db_fetch_cell("SELECT host_id FROM `" . $syslogdb_default . "`.`syslog_hosts` $sql_where");
-
-					if (!empty($host)) {
-						print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host['host_id'] . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='" . __('Display Syslog in Range') . "'></a><br>";
-					}
+					print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='" . __('Display Syslog in Range') . "'></a><br>";
 				}
 			}
 		}
