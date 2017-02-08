@@ -331,7 +331,7 @@ if (sizeof($query)) {
 					}
 
 					$htmlm .= "<table  class='table' cellspacing='0' cellpadding='3' border='1'>";
-					$htmlm .= "<tr><th class='th'>Hostname</th><th class='th'>Date</th><th class='th'>Severity</th><th class='th'>Priotity</th><th class='th'>Message</th></tr>";
+					$htmlm .= "<tr><th class='th'>" . __('Hostname') . "</th><th class='th'>" . __('Date') . "</th><th class='th'>" . __('Severity') . "</th><th class='th'>" . __('Level') . "</th><th class='th'>" . __('Message') . "</th></tr>";
 
 					$max_alerts  = read_config_option('syslog_maxrecords');
 					$alert_count = 0;
@@ -348,14 +348,14 @@ if (sizeof($query)) {
 							$alertm .= 'Hostname : ' . $a['host'] . "\n";
 							$alertm .= 'Date     : ' . $a['date'] . ' ' . $a['time'] . "\n";
 							$alertm .= 'Severity : ' . $severities[$alert['severity']] . "\n\n";
-							$alertm .= 'Priority : ' . $a['priority'] . "\n\n";
+							$alertm .= 'Level    : ' . $syslog_levels[$a['priority_id']] . "\n\n";
 							$alertm .= 'Message  : ' . "\n" . $a['message'] . "\n";
 
 							if ($alert["method"] == 0) $htmlm   = $htmlh;
 							$htmlm  .= "<tr><td class='td'>" . $a['host']                      . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']] . "</td>"      . "\n";
-							$htmlm  .= "<td class='td'>"     . $a['priority']                  . "</td>"      . "\n";
+							$htmlm  .= "<td class='td'>"     . $syslog_levels[$a['priority_id']]  . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $a['message']                   . "</td></tr>" . "\n";
 						}
 
@@ -598,7 +598,7 @@ foreach($reports as $syslog_report) {
 				$headtext .= '</style></head>';
 
 				$headtext .= "<body class='body'><h1 class='h1'>" . $syslog_report['name'] . "</h1><table>\n" .
-					    "<tr><th class='th'>Date</th><th class='th'>Time</th><th class='th'>Message</th></tr>\n" . $reptext;
+					    "<tr><th class='th'>" . __('Date') . "</th><th class='th'>" . __('Time') . "</th><th class='th'>" . __('Message') . "</th></tr>\n" . $reptext;
 
 				$headtext .= "</table>\n";
 				$smsalert  = $headtext;
@@ -636,16 +636,16 @@ function display_help() {
 }
 
 function alert_replace_variables($alert, $a) {
-	global $severities;
+	global $severities, $syslog_levels, $syslog_facilities;
 
 	$command = $alert['command'];
 
-	$command = str_replace("<ALERTID>",  $alert["id"], $command);
-	$command = str_replace("<HOSTNAME>", $a["host"], $command);
-	$command = str_replace("<PRIORITY>", $a["priority"], $command);
-	$command = str_replace("<FACILITY>", $a["facility"], $command);
-	$command = str_replace("<MESSAGE>",  $a["message"], $command);
-	$command = str_replace("<SEVERITY>", $severities[$alert["severity"]], $command);
+	$command = str_replace('<ALERTID>',  $alert['id'], $command);
+	$command = str_replace('<HOSTNAME>', $a['host'], $command);
+	$command = str_replace('<PRIORITY>', $syslog_levels[$a['priority_id']], $command);
+	$command = str_replace('<FACILITY>', $syslog_facilities[$a['facility_id']], $command);
+	$command = str_replace('<MESSAGE>',  $a['message'], $command);
+	$command = str_replace('<SEVERITY>', $severities[$alert['severity']], $command);
 
 	return $command;
 }
