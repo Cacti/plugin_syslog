@@ -22,11 +22,24 @@
  +-------------------------------------------------------------------------+
 */
 
+$no_http_headers = true;
+
 /* do NOT run this script through a web browser */
 if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
 	die('<br><strong>This script is only meant to run at the command line.</strong>');
 }
-$no_http_headers = true;
+
+$dir = dirname(__FILE__);
+chdir($dir);
+
+if (strpos($dir, 'plugins') !== false) {
+	chdir('../../');
+}
+
+include('./include/global.php');
+include_once('./lib/poller.php');
+include('./plugins/syslog/config.php');
+include_once('./plugins/syslog/functions.php');
 
 /* Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events
@@ -59,6 +72,8 @@ if (sizeof($parms)) {
 				break;
 			case '--version':
 			case '-V':
+				display_version();
+				exit(0);
 			case '-H':
 			case '--help':
 				display_help();
@@ -74,18 +89,6 @@ if (sizeof($parms)) {
 /* record the start time */
 list($micro,$seconds) = explode(' ', microtime());
 $start_time = $seconds + $micro;
-
-$dir = dirname(__FILE__);
-chdir($dir);
-
-if (strpos($dir, 'plugins') !== false) {
-	chdir('../../');
-}
-
-include('./include/global.php');
-include_once('./lib/poller.php');
-include('./plugins/syslog/config.php');
-include_once('./plugins/syslog/functions.php');
 
 if ($config['poller_id'] > 1) {
 	exit;
@@ -311,21 +314,21 @@ if (sizeof($query)) {
 
 					if ($alert['method'] == '1') {
 						$alertm .= "-----------------------------------------------\n";
-						$alertm .= "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered". "\n";
-						$alertm .= __("Name:")           . ' ' . $alert['name']     . "\n";
+						$alertm .= __("WARNING: A Syslog Plugin Instance Count Alert has Been Triggered") . "\n";
+						$alertm .= __("Name:")           . ' ' . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . "\n";
 						$alertm .= __("Severity:")       . ' ' . $severities[$alert['severity']] . "\n";
 						$alertm .= __("Threshold:")      . ' ' . $alert['num'] . "\n";
 						$alertm .= __("Count:")          . ' ' . sizeof($at)       . "\n";
-						$alertm .= __("Message String:") . ' ' . $alert['message'] . "\n";
+						$alertm .= __("Message String:") . ' ' . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "\n";
 
 						$htmlm  .= "<body class='body'><h1 class='h1'>" . __('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name']) . "</h1>";
 						$htmlm  .= "<table class='table' cellspacing='0' cellpadding='3' border='1'>";
 						$htmlm  .= "<tr><th class='th'>" . __('Alert Name') . "</th><th class='th'>" . __('Severity') . "</th><th class='th'>" . __('Threshold') . "</th><th class='th'>" . __('Count') . "</th><th class='th'>" . __('Match String') . "</th></tr>";
-						$htmlm  .= "<tr><td class='td'>" . $alert['name']    . "</td>\n";
+						$htmlm  .= "<tr><td class='td'>" . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . "</td>\n";
 						$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']]  . "</td>\n";
 						$htmlm  .= "<td class='td'>"     . $alert['num']     . "</td>\n";
 						$htmlm  .= "<td class='td'>"     . sizeof($at)       . "</td>\n";
-						$htmlm  .= "<td class='td'>"     . htmlspecialchars($alert['message'], ENT_COMPAT, 'UTF-8') . "</td></tr></table><br>\n";
+						$htmlm  .= "<td class='td'>"     . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "</td></tr></table><br>\n";
 					}else{
 						$htmlm .= "<body class='body'><h1 class='h1'>" . __('Cacti Syslog Plugin Alert \'%s\'', $alert['name']) . "</h1>\n";
 					}
@@ -345,18 +348,18 @@ if (sizeof($query)) {
 						if (($alert['method'] == 1 && $alert_count < $max_alerts) || $alert['method'] == 0) {
 							if ($alert['method'] == 0) $alertm  = $alerth;
 							$alertm .= "-----------------------------------------------\n";
-							$alertm .= __('Hostname:') . ' ' . $a['host'] . "\n";
+							$alertm .= __('Hostname:') . ' ' . htmlspecialchars($a['host'], ENT_QUOTES, 'UTF-8') . "\n";
 							$alertm .= __('Date:')     . ' ' . $a['date'] . ' ' . $a['time'] . "\n";
 							$alertm .= __('Severity:') . ' ' . $severities[$alert['severity']] . "\n\n";
 							$alertm .= __('Level:')    . ' ' . $syslog_levels[$a['priority_id']] . "\n\n";
-							$alertm .= __('Message:')  . ' ' . "\n" . $a['message'] . "\n";
+							$alertm .= __('Message:')  . ' ' . "\n" . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "\n";
 
 							if ($alert["method"] == 0) $htmlm   = $htmlh;
 							$htmlm  .= "<tr><td class='td'>" . $a['host']                      . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']] . "</td>"      . "\n";
 							$htmlm  .= "<td class='td'>"     . $syslog_levels[$a['priority_id']]  . "</td>"      . "\n";
-							$htmlm  .= "<td class='td'>"     . $a['message']                   . "</td></tr>" . "\n";
+							$htmlm  .= "<td class='td'>"     . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>" . "\n";
 						}
 
 						$syslog_alarms++;
@@ -589,7 +592,7 @@ foreach($reports as $syslog_report) {
 
 			if (sizeof($items)) {
 			foreach($items as $item) {
-				$reptext .= '<tr>' . $item['date'] . '</td><td>' . $item['time'] . '</td><td>' . $item['message'] . "</td></tr>\n";
+				$reptext .= '<tr>' . $item['date'] . '</td><td>' . $item['time'] . '</td><td>' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
 			}
 			}
 
@@ -605,7 +608,7 @@ foreach($reports as $syslog_report) {
 				$smsalert  = $headtext;
 
 				// Send mail
-				syslog_sendemail($syslog_report['email'], '', 'Event Report - ' . $syslog_report['name'], $headtext, $smsalert);
+				syslog_sendemail($syslog_report['email'], '', __('Event Report - %s', $syslog_report['name']), $headtext, $smsalert);
 			}
 		}
 	} else {
@@ -630,8 +633,14 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 	db_execute('REPLACE INTO `' . $database_default . "`.`settings` SET name='syslog_stats', value='time:" . round($end_time-$start_time,2) . ' deletes:' . $deleted . ' incoming:' . $incoming . ' removes:' . $removed . ' xfers:' . $xferred . ' alerts:' . $alerts . ' alarms:' . $alarms . ' reports:' . $reports . "'");
 }
 
+/*  display_version - displays version information */
+function display_version() {
+	$version = plugin_syslog_version();
+	echo "Syslog Poller, Version " . trim($version['version']) . ", " . COPYRIGHT_YEARS . "\n";
+}
+
 function display_help() {
-	echo "Syslog Poller Process 2.0, Copyright 2007-2016, The Cacti Group, Inc.\n\n";
+	display_version();
 	echo "The main Syslog poller process script for Cacti Syslogging.\n\n";
 	echo "usage: syslog_process.php [--debug|-d]\n\n";
 }
