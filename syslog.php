@@ -38,7 +38,7 @@ include_once('./plugins/syslog/functions.php');
 
 set_default_action();
 
-$title = 'Syslog Viewer';
+$title = __('Syslog Viewer');
 
 $trimvals = array(
 	'1024' => __('All Text'),
@@ -1309,7 +1309,7 @@ function syslog_messages($tab = 'syslog') {
 			foreach ($syslog_messages as $syslog_message) {
 				$title   = htmlspecialchars($syslog_message['message'], ENT_QUOTES);
 
-				syslog_row_color($syslog_message['priority_id'], $title);
+				syslog_row_color($syslog_message['priority_id'], $syslog_message['message']);
 
 				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 					print "<td class='nowrap left' style='width:1%:padding:1px !important;'>";
@@ -1338,7 +1338,29 @@ function syslog_messages($tab = 'syslog') {
 
 		syslog_syslog_legend();
 
-		print "<script type='text/javascript'>$(function() { $('button').tooltip({ closed: true }).on('focus', function() { $('#filter').tooltip('close') }).on('click', function() { $(this).tooltip('close'); }); })</script>\n";
+		?>
+		<script type='text/javascript'>
+		$(function() {
+			$('.syslogRow').tooltip({
+				track: true,
+				show: { 
+					effect: 'fade', 
+					duration: 250,
+					delay: 125
+				},
+				position: { my: 'left+15 center', at: 'right center' }
+			});
+
+			$('button').tooltip({ 
+				closed: true 
+			}).on('focus', function() { 
+				$('#filter').tooltip('close') 
+			}).on('click', function() { 
+				$(this).tooltip('close'); 
+			});
+		});
+		</script>
+		<?php
 	}else{
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 8, __('Alert Log Rows'), 'page', 'main');
 

@@ -503,7 +503,7 @@ function syslog_log_row_color($severity, $tip_title) {
  *  it supports both the legacy as well as the new approach to controlling these
  *  colors.
 */
-function syslog_row_color($priority, $tip_title) {
+function syslog_row_color($priority, $message) {
 	switch($priority) {
 	case '0':
 		$class = 'logEmerg';
@@ -531,7 +531,7 @@ function syslog_row_color($priority, $tip_title) {
 		break;
 	}
 
-	print "<tr class='$class'>\n";
+	print "<tr title='" . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . "' class='$class syslogRow'>\n";
 }
 
 function sql_hosts_where($tab) {
