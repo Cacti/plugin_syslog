@@ -22,11 +22,25 @@
  +-------------------------------------------------------------------------+
 */
 
+/* we are not talking to the browser */
+$no_http_headers = true;
+
 /* do NOT run this script through a web browser */
 if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
 	die('<br><strong>This script is only meant to run at the command line.</strong>');
 }
-$no_http_headers = false;
+
+$dir = dirname(__FILE__);
+chdir($dir);
+
+if (strpos($dir, 'plugins') !== false) {
+	chdir('../../');
+}
+
+include('./include/global.php');
+include_once('./lib/poller.php');
+include('./plugins/syslog/config.php');
+include_once('./plugins/syslog/functions.php');
 
 /* Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events
@@ -40,8 +54,8 @@ $syslog_debug = true;
 
 /* process calling arguments */
 $parms = $_SERVER['argv'];
-array_shift($parms);
 
+array_shift($parms);
 if (sizeof($parms)) {
 	foreach($parms as $parameter) {
 		if (strpos($parameter, '=')) {
@@ -59,8 +73,12 @@ if (sizeof($parms)) {
 				break;
 			case '--version':
 			case '-V':
-			case '-H':
+			case '-v':
+				display_version();
+				exit;
 			case '--help':
+			case '-H':
+			case '-h':
 				display_help();
 				exit(0);
 			default:
@@ -74,18 +92,6 @@ if (sizeof($parms)) {
 /* record the start time */
 list($micro,$seconds) = explode(' ', microtime());
 $start_time = $seconds + $micro;
-
-$dir = dirname(__FILE__);
-chdir($dir);
-
-if (strpos($dir, 'plugins') !== false) {
-	chdir('../../');
-}
-
-include('./include/global.php');
-include_once('./lib/poller.php');
-include('./plugins/syslog/config.php');
-include_once('./plugins/syslog/functions.php');
 
 /* Connect to the Syslog Database */
 global $syslog_cnn, $cnn_id, $database_default;
@@ -118,11 +124,23 @@ syslog_debug("Xferred     " . $syslog_xferred . ",  Message(s) to the 'syslog_re
 
 syslog_debug('Finished processing...');
 
+function display_version() {
+	global $config;
+
+	if (!function_exists('plugin_syslog_version')) {
+		include_once($config['base_path'] . '/plugins/syslog/setup.php');
+	}
+
+	$info = plugin_syslog_version();
+	echo "Syslog Batch Process, Version " . $info['version'] . ", " . COPYRIGHT_YEARS . "\n";
+}
+
 function display_help() {
-	echo "Syslog Batch Process 2.0, Copyright 2004-2016 - The Cacti Group\n\n";
-	echo "The Syslog batch process script for Cacti Syslogging.\n\n";
-	echo "This script removes old messages from main view prior.\n\n";
-	echo "usage: syslog_batch_transfer.php [--debug|-d]\n\n";
+	display_version();
+
+	echo "\nusage: syslog_batch_transfer.php [--debug|-d]\n\n";
+	echo "The Syslog batch process script for Cacti Syslogging.\n";
+	echo "This script removes old messages from main view.\n";
 }
 
 

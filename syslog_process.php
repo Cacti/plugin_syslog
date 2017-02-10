@@ -72,10 +72,12 @@ if (sizeof($parms)) {
 				break;
 			case '--version':
 			case '-V':
+			case '-v':
 				display_version();
 				exit(0);
-			case '-H':
 			case '--help':
+			case '-H':
+			case '-h':
 				display_help();
 				exit(0);
 			default:
@@ -635,12 +637,19 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 
 /*  display_version - displays version information */
 function display_version() {
+	global $config;
+
+	if (!function_exists('plugin_syslog_version')) {
+		include_once($config['base_path'] . '/plugins/syslog/setup.php');
+	}
+
 	$version = plugin_syslog_version();
 	echo "Syslog Poller, Version " . trim($version['version']) . ", " . COPYRIGHT_YEARS . "\n";
 }
 
 function display_help() {
 	display_version();
+
 	echo "The main Syslog poller process script for Cacti Syslogging.\n\n";
 	echo "usage: syslog_process.php [--debug|-d]\n\n";
 }
