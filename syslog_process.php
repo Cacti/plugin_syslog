@@ -74,12 +74,12 @@ if (sizeof($parms)) {
 			case '-V':
 			case '-v':
 				display_version();
-				exit(0);
+				exit;
 			case '--help':
 			case '-H':
 			case '-h':
 				display_help();
-				exit(0);
+				exit;
 			default:
 				echo "ERROR: Invalid Argument: ($arg)\n\n";
 				display_help();
@@ -142,18 +142,6 @@ if ($alert_retention == '' || $alert_retention < 0 || $alert_retention > 365) {
 	$result = db_execute($sql);
 
 	kill_session_var('sess_config_array');
-}
-
-/* setup e-mail defaults */
-$email     = read_config_option('syslog_email');
-$emailname = read_config_option('syslog_emailname');
-$from      = '';
-if ($email != '') {
-	if ($emailname != '') {
-		$from = "\"$emailname\" ($email)";
-	} else {
-		$from = $email;
-	}
 }
 
 /* delete old syslog and syslog soft messages */
@@ -254,6 +242,18 @@ if (read_config_option('syslog_html') == 'on') {
 }else{
 	$html = false;
 }
+
+$from_email = read_config_option('settings_from_email');
+if ($from_email == '') {
+	$from_email = 'root@localhost';
+}
+
+$from_name  = read_config_option('settings_from_name');
+if ($from_name == '') {
+	$from_name = 'Cacti Reporting';
+}
+
+$from = array($from_email, $from_name);
 
 syslog_debug('Found   ' . $syslog_alerts . ',  Alert Rule' . ($syslog_alerts == 1 ? '' : 's' ) . ' to process');
 
@@ -383,7 +383,7 @@ if (sizeof($query)) {
 								$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $a, 1, $htmlm);
 								$smsalert = __('Sev:') . $severities[$alert['severity']] . __(', Host:') . $a['host'] . __(', URL:') . read_config_option('alert_base_url') . 'plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 
-								syslog_sendemail(trim($alert['email']), '', __('Event Alert - %s', $alert['name']), ($html ? $htmlm:$alertm), $smsalert);
+								syslog_sendemail(trim($alert['email']), $from, __('Event Alert - %s', $alert['name']), ($html ? $htmlm:$alertm), $smsalert);
 
 								if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
 									if (is_executable(read_config_option('syslog_ticket_command'))) {
@@ -432,7 +432,7 @@ if (sizeof($query)) {
 			}
 
 			if ($resend) {
-				syslog_sendemail(trim($alert['email']), '', __('Event Alert - %s', $alert['name']), ($html ? $htmlm:$alertm), $smsalert);
+				syslog_sendemail(trim($alert['email']), $from, __('Event Alert - %s', $alert['name']), ($html ? $htmlm:$alertm), $smsalert);
 
 				if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
 					if (is_executable(read_config_option('syslog_ticket_command'))) {
@@ -610,7 +610,7 @@ foreach($reports as $syslog_report) {
 				$smsalert  = $headtext;
 
 				// Send mail
-				syslog_sendemail($syslog_report['email'], '', __('Event Report - %s', $syslog_report['name']), $headtext, $smsalert);
+				syslog_sendemail($syslog_report['email'], $from, __('Event Report - %s', $syslog_report['name']), $headtext, $smsalert);
 			}
 		}
 	} else {

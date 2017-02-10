@@ -803,18 +803,6 @@ function syslog_config_settings() {
 			'method' => 'textbox',
 			'max_length' => 255,
 			'size' => 80
-		),
-		'syslog_email' => array(
-			'friendly_name' => __('From Email Address'),
-			'description' => __('This is the email address that syslog alerts will appear from.'),
-			'method' => 'textbox',
-			'max_length' => 128,
-		),
-		'syslog_emailname' => array(
-			'friendly_name' => __('From Display Name'),
-			'description' => __('This is the display name that syslog alerts will appear from.'),
-			'method' => 'textbox',
-			'max_length' => 128,
 		)
 	);
 
