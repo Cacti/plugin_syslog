@@ -106,7 +106,8 @@ function syslog_db_fetch_insert_id($syslog_cnn) {
    @arg $autoQuote - whether to use intelligent quoting or not
    @returns - the auto incriment id column (if applicable) */
 function syslog_db_replace($table_name, $array_items, $keyCols) {
-	return db_replace($table_name, $array_items, $keyCols);
+	global $syslog_cnn;
+	return db_replace($table_name, $array_items, $keyCols, $syslog_cnn);
 }
 
 /* syslog_sql_save - saves data to an sql table
@@ -115,6 +116,7 @@ function syslog_db_replace($table_name, $array_items, $keyCols) {
    @arg $key_cols - the primary key(s)
    @returns - the auto incriment id column (if applicable) */
 function syslog_sql_save($array_items, $table_name, $key_cols = 'id', $autoinc = true) {
-	return sql_save($array_items, $table_name, $key_cols, $autoinc);
+	global $syslog_cnn;
+	return sql_save($array_items, $table_name, $key_cols, $autoinc, $syslog_cnn);
 }
 

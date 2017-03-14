@@ -60,6 +60,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 --- 2.0  ---
 * feature: Compatibility with Cacti 1.0
+* bug#17: Compatibility with remote database
 
 --- 1.30 ---
 * feature: Allow Statistics to be disabled
