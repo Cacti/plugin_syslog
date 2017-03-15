@@ -244,7 +244,7 @@ CREATE TABLE `syslog_statistics` (
   `insert_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `records` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`),
+  UNIQUE KEY `unique_pk` (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`),
   KEY `host_id` (`host_id`),
   KEY `facility_id` (`facility_id`),
   KEY `priority_id` (`priority_id`),

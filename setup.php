@@ -481,7 +481,7 @@ function syslog_setup_table_new($options) {
 		`insert_time` TIMESTAMP NOT NULL,
 		`records` int(10) UNSIGNED NOT NULL,
 		PRIMARY KEY (`id`),
-		UNIQUE KEY (`host_id`, `facility_id`, `priority_id`, `program_id`, `insert_time`),
+		UNIQUE KEY `unique_pk` (`host_id`, `facility_id`, `priority_id`, `program_id`, `insert_time`),
 		INDEX `host_id`(`host_id`),
 		INDEX `facility_id`(`facility_id`),
 		INDEX `priority_id`(`priority_id`),
