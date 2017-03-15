@@ -236,13 +236,15 @@ CREATE TABLE `syslog_reports` (
 
 DROP TABLE IF EXISTS `syslog_statistics`;
 CREATE TABLE `syslog_statistics` (
+  `id` bigint unsigned auto_increment,
   `host_id` int(10) unsigned NOT NULL,
   `facility_id` int(10) unsigned NOT NULL,
   `priority_id` int(10) unsigned NOT NULL,
   `program_id` int(10) unsigned DEFAULT NULL,
   `insert_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `records` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`host_id`,`facility_id`,`priority_id`,`insert_time`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`),
   KEY `host_id` (`host_id`),
   KEY `facility_id` (`facility_id`),
   KEY `priority_id` (`priority_id`),

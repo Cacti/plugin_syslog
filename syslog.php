@@ -170,7 +170,7 @@ function syslog_statistics() {
         'timespan' => array(
             'filter' => FILTER_VALIDATE_INT,
 			'pageset' => true,
-            'default' => '-1',
+            'default' => '300',
             ),
         'page' => array(
             'filter' => FILTER_VALIDATE_INT,
@@ -182,13 +182,25 @@ function syslog_statistics() {
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
-        'efacility' => array(
+        'host' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
-        'epriority' => array(
+        'facility' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => '',
+            'options' => array('options' => 'sanitize_search_string')
+            ),
+        'priority' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => '',
+            'options' => array('options' => 'sanitize_search_string')
+            ),
+        'program' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
             'default' => '',
@@ -234,6 +246,8 @@ function syslog_statistics() {
 		ON ss.facility_id=sf.facility_id
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
 		ON ss.priority_id=sp.priority_id
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
+		ON ss.program_id=spr.program_id
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 		ON ss.host_id=sh.host_id
 		$sql_where
@@ -248,20 +262,35 @@ function syslog_statistics() {
 	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
-		'host'     => array(__('Device Name'), 'ASC'),
-		'facility' => array(__('Facility'), 'ASC'),
-		'priority' => array(__('Priority'), 'ASC'),
-		'records'  => array(__('Records'), 'DESC'));
+		'host'        => array('display' => __('Device Name'), 'sort' => 'ASC',  'align' => 'left'),
+		'facility'    => array('display' => __('Facility'),    'sort' => 'ASC',  'align' => 'left'),
+		'priority'    => array('display' => __('Priority'),    'sort' => 'ASC',  'align' => 'left'),
+		'program'     => array('display' => __('Program'),     'sort' => 'ASC',  'align' => 'left'),
+		'insert_time' => array('display' => __('Date'),        'sort' => 'DESC', 'align' => 'right'),
+		'records'     => array('display' => __('Records'),     'sort' => 'DESC', 'align' => 'right'));
 
 	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
+	if (get_request_var('timespan') < 3600) {
+		$date_format = 'Y-m-d H:i';
+	}elseif (get_request_var('timespan') < 86400) {
+		$date_format = 'Y-m-d H:00';
+	}else{
+		$date_format = 'Y-m-d 00:00';
+	}
+
 	if (sizeof($records)) {
 		foreach ($records as $r) {
+			$time = date($date_format, strtotime($r['insert_time']));
+
 			form_alternate_row();
-			echo '<td>' . $r['host'] . '</td>';
+			echo '<td>' . (get_request_var('host') != '-2' ? $r['host']:'-') . '</td>';
 			echo '<td>' . (get_request_var('facility') != '-2' ? ucfirst($r['facility']):'-') . '</td>';
 			echo '<td>' . (get_request_var('priority') != '-2' ? ucfirst($r['priority']):'-') . '</td>';
-			echo '<td>' . $r['records'] . '</td>';
+			echo '<td>' . (get_request_var('program') != '-2' ? ucfirst($r['program']):'-') . '</td>';
+			//echo '<td class="right">' . $r['insert_time'] . '</td>';
+			echo '<td class="right">' . $time . '</td>';
+			echo '<td class="right">' . number_format_i18n($r['records'], -1)     . '</td>';
 			form_end_row();
 		}
 	}else{
@@ -286,6 +315,15 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "sh.host LIKE '%" . get_request_var('filter') . "%'";
 	}
 
+	if (get_request_var('host') == '-2') {
+		// Do nothing
+	}elseif (get_request_var('host') != '-1' && get_request_var('host') != '') {
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . 'ss.host_id=' . get_request_var('host');
+		$sql_groupby .= ', sh.host';
+	}else{
+		$sql_groupby .= ', sh.host';
+	}
+
 	if (get_request_var('facility') == '-2') {
 		// Do nothing
 	}elseif (get_request_var('facility') != '-1' && get_request_var('facility') != '') {
@@ -294,7 +332,6 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 	}else{
 		$sql_groupby .= ', sf.facility';
 	}
-
 
 	if (get_request_var('priority') == '-2') {
 		// Do nothing
@@ -305,6 +342,19 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 		$sql_groupby .= ', sp.priority';
 	}
 
+	if (get_request_var('program') == '-2') {
+		// Do nothing
+	}elseif (get_request_var('program') != '-1' && get_request_var('program') != '') {
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('program');
+		$sql_groupby .= ', spr.program';
+	}else{
+		$sql_groupby .= ', spr.program';
+	}
+
+	if (get_request_var('timespan') != '-1') {
+		$sql_groupby .= ', UNIX_TIMESTAMP(insert_time) DIV ' . get_request_var('timespan');
+	}
+
 	if (!isset_request_var('export')) {
 		$limit = ' LIMIT ' . ($row_limit*(get_request_var('page')-1)) . ',' . $row_limit;
 	} else {
@@ -313,12 +363,16 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 
 	$sort = get_request_var('sort_column');
 
-	$query_sql = "SELECT sh.host, sf.facility, sp.priority, sum(ss.records) AS records
+	$time = 'FROM_UNIXTIME(TRUNCATE(UNIX_TIMESTAMP(insert_time)/' . get_request_var('timespan') . ',0)*' . get_request_var('timespan') . ') AS insert_time';
+
+	$query_sql = "SELECT sh.host, sf.facility, sp.priority, spr.program, sum(ss.records) AS records, $time
 		FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
 		ON ss.facility_id=sf.facility_id
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
 		ON ss.priority_id=sp.priority_id
+		LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
+		ON ss.program_id=spr.program_id
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 		ON ss.host_id=sh.host_id
 		$sql_where
@@ -337,6 +391,27 @@ function syslog_stats_filter() {
 		<form id='stats_form' action='syslog.php'>
 			<table class='filterTable'>
 				<tr>
+					<td>
+						<?php print __('Device');?>
+					</td>
+					<td>
+						<select id='host' onChange='applyFilter(document.stats)'>
+							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
+							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
+							<?php
+							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT host_id, host 
+								FROM syslog_hosts AS sh
+								WHERE host_id IN (SELECT DISTINCT host_id FROM syslog_statistics)
+								ORDER BY host');
+
+							if (sizeof($facilities)) {
+							foreach ($facilities as $r) {
+								print '<option value="' . $r['host_id'] . '"'; if (get_request_var('host') == $r['host_id']) { print ' selected'; } print '>' . $r['host'] . "</option>\n";
+							}
+							}
+							?>
+						</select>
+					</td>
 					<td>
 						<?php print __('Facility');?>
 					</td>
@@ -380,18 +455,24 @@ function syslog_stats_filter() {
 						</select>
 					</td>
 					<td>
-						<?php print __('Entries');?>
+						<?php print __('Program');?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
-						<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default');?></option>
-						<?php
-							if (sizeof($item_rows) > 0) {
-							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
+						<select id='program' onChange='applyFilter()'>
+							<option value='-1'<?php if (get_request_var('program') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
+							<option value='-2'<?php if (get_request_var('program') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
+							<?php
+							$programs = syslog_db_fetch_assoc('SELECT DISTINCT program_id, program 
+								FROM syslog_programs AS spr
+								WHERE program_id IN (SELECT DISTINCT program_id FROM syslog_statistics)
+								ORDER BY program');
+
+							if (sizeof($programs)) {
+							foreach ($programs as $r) {
+								print '<option value="' . $r['program_id'] . '"'; if (get_request_var('program') == $r['program_id']) { print ' selected'; } print '>' . ucfirst($r['program']) . "</option>\n";
 							}
 							}
-						?>
+							?>
 						</select>
 					</td>
 					<td>
@@ -409,6 +490,38 @@ function syslog_stats_filter() {
 					</td>
 					<td>
 						<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
+					</td>
+					<td>
+						<?php print __('Time Range');?>
+					</td>
+					<td>
+						<select id='timespan' onChange='applyFilter()'>
+							<option value='60'<?php if (get_request_var('timespan') == '60') { ?> selected<?php } ?>><?php print __('%d Minute', 1);?></option>
+							<option value='120'<?php if (get_request_var('timespan') == '120') { ?> selected<?php } ?>><?php print __('%d Minutes', 2);?></option>
+							<option value='300'<?php if (get_request_var('timespan') == '300') { ?> selected<?php } ?>><?php print __('%d Minutes', 5);?></option>
+							<option value='600'<?php if (get_request_var('timespan') == '600') { ?> selected<?php } ?>><?php print __('%d Minutes', 10);?></option>
+							<option value='1800'<?php if (get_request_var('timespan') == '1800') { ?> selected<?php } ?>><?php print __('%d Minutes', 30);?></option>
+							<option value='3600'<?php if (get_request_var('timespan') == '3600') { ?> selected<?php } ?>><?php print __('%d Hour', 1);?></option>
+							<option value='7200'<?php if (get_request_var('timespan') == '7200') { ?> selected<?php } ?>><?php print __('%d Hours', 2);?></option>
+							<option value='14400'<?php if (get_request_var('timespan') == '14400') { ?> selected<?php } ?>><?php print __('%d Hours', 4);?></option>
+							<option value='28880'<?php if (get_request_var('timespan') == '28880') { ?> selected<?php } ?>><?php print __('%d Hours', 8);?></option>
+							<option value='86400'<?php if (get_request_var('timespan') == '86400') { ?> selected<?php } ?>><?php print __('%d Day', 1);?></option>
+						</select>
+					</td>
+					<td>
+						<?php print __('Entries');?>
+					</td>
+					<td>
+						<select id='rows' onChange='applyFilter()'>
+						<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default');?></option>
+						<?php
+							if (sizeof($item_rows) > 0) {
+							foreach ($item_rows as $key => $value) {
+								print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
+							}
+							}
+						?>
+						</select>
 					</td>
 				</tr>
 			</table>
@@ -434,7 +547,10 @@ function syslog_stats_filter() {
 
 		function applyFilter() {
 			strURL  = 'syslog.php?header=false&facility=' + $('#facility').val();
+			strURL += '&host=' + $('#host').val();
 			strURL += '&priority=' + $('#priority').val();
+			strURL += '&program=' + $('#program').val();
+			strURL += '&timespan=' + $('#timespan').val();
 			strURL += '&filter=' + $('#filter').val();
 			strURL += '&rows=' + $('#rows').val();
 			loadPageNoHeader(strURL);

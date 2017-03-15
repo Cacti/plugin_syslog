@@ -201,13 +201,29 @@ function syslog_check_upgrade() {
 	/* don't let this script timeout */
 	ini_set('max_execution_time', 0);
 
-	$current = plugin_syslog_version();
-	$current = $current['version'];
+	$version = plugin_syslog_version();
+	$current = $version['version'];
 	$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 
-	if ($current != $old || $old_pia) {
-		echo __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.') . "\n";
-		exit;
+	if ($current != $old) {
+		if ($old_pia || $old < 2) {
+			echo __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.') . "\n";
+			exit;
+		}elseif ($old == 2) {
+			db_execute('ALTER TABLE syslog_statistics 
+				ADD COLUMN id BIGINT UNSIGNED auto_increment FIRST, 
+				DROP PRIMARY KEY, 
+				ADD PRIMARY KEY(id), 
+				ADD UNIQUE INDEX (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`)');
+
+		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
+		db_execute("UPDATE plugin_config SET 
+			version='" . $version['version'] . "', 
+			name='" . $version['longname'] . "', 
+			author='" . $version['author'] . "', 
+			webpage='" . $version['url'] . "' 
+			WHERE directory='" . $version['name'] . "' ");
+		}
 	}
 }
 
@@ -457,13 +473,15 @@ function syslog_setup_table_new($options) {
 		ENGINE=$engine;");
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_statistics` (
+		`id` bigint UNSIGNED auto_increment,
 		`host_id` int(10) UNSIGNED NOT NULL,
 		`facility_id` int(10) UNSIGNED NOT NULL,
 		`priority_id` int(10) UNSIGNED NOT NULL,
 		`program_id` int(10) unsigned default NULL,
 		`insert_time` TIMESTAMP NOT NULL,
 		`records` int(10) UNSIGNED NOT NULL,
-		PRIMARY KEY (`host_id`, `facility_id`, `priority_id`, `insert_time`),
+		PRIMARY KEY (`id`),
+		UNIQUE KEY (`host_id`, `facility_id`, `priority_id`, `program_id`, `insert_time`),
 		INDEX `host_id`(`host_id`),
 		INDEX `facility_id`(`facility_id`),
 		INDEX `priority_id`(`priority_id`),
