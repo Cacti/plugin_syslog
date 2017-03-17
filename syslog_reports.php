@@ -412,13 +412,13 @@ function syslog_action_edit() {
 		)
 	);
 
-	form_start('syslog_reports.php');
+	form_start('syslog_reports.php', 'syslog_edit');
 
 	html_start_box($header_label, '100%', '', '3', 'center', '');
 
 	draw_edit_form(
 		array(
-			'config' => array('form_name' => 'chk'),
+			'config' => array('no_form_tag' => true),
 			'fields' => inject_form_variables($fields_syslog_report_edit, (isset($report) ? $report : array()))
 		)
 	);
@@ -426,8 +426,6 @@ function syslog_action_edit() {
 	html_end_box();
 
 	form_save_button('syslog_reports.php', '', 'id');
-
-	form_end();
 }
 
 function syslog_filter() {
