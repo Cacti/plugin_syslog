@@ -850,7 +850,7 @@ function syslog_show_tab() {
 function syslog_config_arrays () {
 	global $syslog_actions, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
-	global $syslog_retentions, $syslog_alert_retentions;
+	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
 
 	$syslog_actions = array(
 		1 => __('Delete'),
@@ -989,6 +989,8 @@ function syslog_config_arrays () {
 		}
 	}
 	$menu = $menu2;
+
+	$menu_glyphs[__('Syslog Settings')] = 'fa fa-life-ring';
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
 		$messages['syslog_info'] = array('message' => $_SESSION['syslog_info'], 'type' => 'info');
