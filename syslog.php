@@ -66,9 +66,13 @@ if ($current_tab != 'stats') {
 	syslog_request_validation($current_tab);
 }
 
-global $refresh;
-$refresh['seconds'] = get_request_var('refresh');
-$refresh['page']    = $config['url_path'] . 'plugins/syslog/syslog.php?header=false';
+if (isset_request_var('refresh')) {
+	$refresh['seconds'] = get_request_var('refresh');
+	$refresh['page']    = $config['url_path'] . 'plugins/syslog/syslog.php?tab=' . $current_tab;
+	$refresh['logout']  = 'false';
+
+	set_page_refresh($refresh);
+}
 
 /* draw the tabs */
 /* display the main page */
@@ -151,8 +155,7 @@ function syslog_view_alarm() {
  *  messages by host, facility, priority, and time range.
 */
 function syslog_statistics() {
-	global $title, $rows, $config, $refresh;
-	$refresh['seconds'] = read_config_option('syslog_refresh');
+	global $title, $rows, $config;
 
 	include(dirname(__FILE__) . '/config.php');
 
