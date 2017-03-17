@@ -68,7 +68,7 @@ if ($current_tab != 'stats') {
 
 if (isset_request_var('refresh')) {
 	$refresh['seconds'] = get_request_var('refresh');
-	$refresh['page']    = $config['url_path'] . 'plugins/syslog/syslog.php?tab=' . $current_tab;
+	$refresh['page']    = $config['url_path'] . 'plugins/syslog/syslog.php?header=false&tab=' . $current_tab;
 	$refresh['logout']  = 'false';
 
 	set_page_refresh($refresh);
