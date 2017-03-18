@@ -1052,41 +1052,30 @@ function syslog_graph_buttons($graph_elements = array()) {
 			$host  = db_fetch_row_prepared('SELECT id, description, hostname FROM host WHERE id = ?', array($host_id));
 
 			if (sizeof($host)) {
-				if (!is_ipv4_address($host['description']) && strpos($host['description'], '.') !== false) {
+				if (!is_ipaddress($host['description'])) {
 					$parts = explode('.', $host['description']);
-					$sql_where = "WHERE host LIKE " . db_qstr($parts[0] . '.%');
+					$sql_where = 'WHERE host LIKE ' . db_qstr($parts[0] . '.%') . ' OR host = ' . db_qstr($host['description']);
 				}else{
-					$sql_where = "WHERE host = " . db_qstr($host['description']);
+					$sql_where = 'WHERE host = ' . db_qstr($host['description']);
 				}
 
-				if (!is_ipv4_address($host['hostname']) && strpos($host['hostname'], '.') !== false) {
+				if (!is_ipaddress($host['hostname'])) {
 					$parts = explode('.', $host['hostname']);
-					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host LIKE " . db_qstr($parts[0] . '.%');
+					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . 'host LIKE ' . db_qstr($parts[0] . '.%') . ' OR host = ' . db_qstr($host['hostname']);
 				}else{
-					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . "host = " . db_qstr($host['hostname']);
+					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . 'host = ' . db_qstr($host['hostname']);
 				}
 
 				if ($sql_where != '') {
-					print "<a href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='" . __('Display Syslog in Range') . "'></a><br>";
+					$host_id = syslog_db_fetch_cell('SELECT host_id FROM syslog_hosts ' . $sql_where);
+
+					if ($host_id) {
+						print "<a class='iconLink' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2) . "'><img src='" . $config['url_path'] . "plugins/syslog/images/view_syslog.png' border='0' alt='' title='" . __('Display Syslog in Range') . "'></a><br>";
+					}
 				}
 			}
 		}
 	}
-}
-
-function is_ipv4_address($value) {
-	$varr = explode('.', $value);
-	if (sizeof($varr) == 4) {
-		foreach($varr as $number) {
-			if ($number < 0 || $number > 255) {
-				return false;
-			}
-		}
-	}else{
-		return false;
-	}
-
-	return true;
 }
 
 function syslog_utilities_action($action) {
