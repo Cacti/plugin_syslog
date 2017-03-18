@@ -250,7 +250,7 @@ function api_syslog_report_enable($id) {
     Reports Functions
    --------------------- */
 
-function syslog_get_report_records(&$sql_where, $row_limit) {
+function syslog_get_report_records(&$sql_where, $rows) {
 	include(dirname(__FILE__) . '/config.php');
 
 	if (get_request_var('filter') != '') {
@@ -271,11 +271,14 @@ function syslog_get_report_records(&$sql_where, $row_limit) {
 			"enabled=''";
 	}
 
+	$sql_order = get_order_string();
+	$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
+
 	$query_string = 'SELECT *
 		FROM `' . $syslogdb_default . "`.`syslog_reports`
 		$sql_where
-		ORDER BY ". get_request_var('sort_column') . ' ' . get_request_var('sort_direction') .
-		' LIMIT ' . ($row_limit*(get_request_var('page')-1)) . ',' . $row_limit;
+		$sql_order
+		$sql_limit";
 
 	return syslog_db_fetch_assoc($query_string);
 }
@@ -565,14 +568,14 @@ function syslog_report() {
 	$sql_where = '';
 
 	if (get_request_var('rows') == -1) {
-		$row_limit = read_config_option('num_rows_table');
+		$rows = read_config_option('num_rows_table');
 	}elseif (get_request_var('rows') == -2) {
-		$row_limit = 999999;
+		$rows = 999999;
 	}else{
-		$row_limit = get_request_var('rows');
+		$rows = get_request_var('rows');
 	}
 
-	$reports   = syslog_get_report_records($sql_where, $row_limit);
+	$reports   = syslog_get_report_records($sql_where, $rows);
 
 	$rows_query_string = 'SELECT COUNT(*)
 		FROM `' . $syslogdb_default . "`.`syslog_reports`
@@ -580,7 +583,7 @@ function syslog_report() {
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
-	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 10, 'Reports', 'page', 'main');
+	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 10, __('Reports'), 'page', 'main');
 
 	form_start('syslog_reports.php', 'chk');
 

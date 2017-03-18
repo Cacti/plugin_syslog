@@ -276,7 +276,7 @@ function api_syslog_removal_reprocess($id) {
     Removal Functions
    --------------------- */
 
-function syslog_get_removal_records(&$sql_where, $row_limit) {
+function syslog_get_removal_records(&$sql_where, $rows) {
 	include(dirname(__FILE__) . '/config.php');
 
 	if (get_request_var('filter') != '') {
@@ -296,11 +296,14 @@ function syslog_get_removal_records(&$sql_where, $row_limit) {
 			"enabled=''";
 	}
 
+	$sql_order = get_order_string();
+	$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
+
 	$query_string = "SELECT *
 		FROM `" . $syslogdb_default . "`.`syslog_remove`
 		$sql_where
-		ORDER BY ". get_request_var('sort_column') . ' ' . get_request_var('sort_direction') .
-		' LIMIT ' . ($row_limit*(get_request_var('page')-1)) . ',' . $row_limit;
+		$sql_order
+		$sql_limit";
 
 	return syslog_db_fetch_assoc($query_string);
 }
@@ -580,14 +583,14 @@ function syslog_removal() {
 	$sql_where = '';
 
 	if (get_request_var('rows') == -1) {
-		$row_limit = read_config_option('num_rows_table');
+		$rows = read_config_option('num_rows_table');
 	}elseif (get_request_var('rows') == -2) {
-		$row_limit = 999999;
+		$rows = 999999;
 	}else{
-		$row_limit = get_request_var('rows');
+		$rows = get_request_var('rows');
 	}
 
-	$removals = syslog_get_removal_records($sql_where, $row_limit);
+	$removals = syslog_get_removal_records($sql_where, $rows);
 
 	$rows_query_string = "SELECT COUNT(*)
 		FROM `" . $syslogdb_default . "`.`syslog_remove`
@@ -595,7 +598,7 @@ function syslog_removal() {
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
-	$nav = html_nav_bar('syslog_removal.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $row_limit, $total_rows, 13, 'Rules', 'page', 'main');
+	$nav = html_nav_bar('syslog_removal.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 13, 'Rules', 'page', 'main');
 
 	form_start('syslog_removal.php', 'chk');
 

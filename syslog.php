@@ -234,14 +234,14 @@ function syslog_statistics() {
 	$sql_groupby = '';
 
 	if (get_request_var('rows') == -1) {
-		$row_limit = read_config_option('num_rows_table');
+		$rows = read_config_option('num_rows_table');
 	}elseif (get_request_var('rows') == -2) {
-		$row_limit = 999999;
+		$rows = 999999;
 	}else{
-		$row_limit = get_request_var('rows');
+		$rows = get_request_var('rows');
 	}
 
-	$records = get_stats_records($sql_where, $sql_groupby, $row_limit);
+	$records = get_stats_records($sql_where, $sql_groupby, $rows);
 
 	$rows_query_string = "SELECT COUNT(*)
 		FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
@@ -258,7 +258,7 @@ function syslog_statistics() {
 
 	$total_rows = syslog_db_fetch_cell('SELECT COUNT(*) FROM ('. $rows_query_string  . ') as temp');
 
-	$nav = html_nav_bar('syslog.php?tab=stats&filter=' . get_request_var_request('filter'), MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 4, __('Messages'), 'page', 'main');
+	$nav = html_nav_bar('syslog.php?tab=stats&filter=' . get_request_var_request('filter'), MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 4, __('Messages'), 'page', 'main');
 
 	print $nav;
 
@@ -307,7 +307,7 @@ function syslog_statistics() {
 	}
 }
 
-function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
+function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 	include(dirname(__FILE__) . '/config.php');
 
 	$sql_where   = '';
@@ -358,13 +358,12 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 		$sql_groupby .= ', UNIX_TIMESTAMP(insert_time) DIV ' . get_request_var('timespan');
 	}
 
+	$sql_order = get_order_string();
 	if (!isset_request_var('export')) {
-		$limit = ' LIMIT ' . ($row_limit*(get_request_var('page')-1)) . ',' . $row_limit;
+		$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 	} else {
-		$limit = ' LIMIT 10000';
+		$sql_limit = ' LIMIT 10000';
 	}
-
-	$sort = get_request_var('sort_column');
 
 	$time = 'FROM_UNIXTIME(TRUNCATE(UNIX_TIMESTAMP(insert_time)/' . get_request_var('timespan') . ',0)*' . get_request_var('timespan') . ') AS insert_time';
 
@@ -380,8 +379,8 @@ function get_stats_records(&$sql_where, &$sql_groupby, $row_limit) {
 		ON ss.host_id=sh.host_id
 		$sql_where
 		$sql_groupby
-		ORDER BY " . $sort . " " . get_request_var('sort_direction') .
-		$limit;
+		$sql_order
+		$sql_limit";
 
 	return syslog_db_fetch_assoc($query_sql);
 }
@@ -667,7 +666,7 @@ function syslog_request_validation($current_tab, $force = false) {
 	}
 }
 
-function get_syslog_messages(&$sql_where, $row_limit, $tab) {
+function get_syslog_messages(&$sql_where, $rows, $tab) {
 	global $sql_where, $hostfilter, $current_tab, $syslog_incoming_config;
 
 	include(dirname(__FILE__) . '/config.php');
@@ -765,13 +764,12 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);
 
+	$sql_order = get_order_string();
 	if (!isset_request_var('export')) {
-		$limit = ' LIMIT ' . ($row_limit*(get_request_var('page')-1)) . ',' . $row_limit;
+		$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 	} else {
-		$limit = ' LIMIT 10000';
+		$sql_limit = ' LIMIT 10000';
 	}
-
-	$sort = get_request_var('sort_column');
 
 	if ($tab == 'syslog') {
 		if (get_request_var('removal') == '-1') {
@@ -780,8 +778,8 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
-				ORDER BY " . $sort . " " . get_request_var('sort_direction') .
-				$limit;
+				$sql_order
+				$sql_limit";
 		}elseif (get_request_var('removal') == '1') {
 			$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
@@ -793,16 +791,16 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . ")
-				ORDER BY " . $sort . " " . get_request_var('sort_direction') .
-				$limit;
+				$sql_order
+				$sql_limit";
 		}else{
 			$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` AS syslog
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
-				ORDER BY " . $sort . " " . get_request_var('sort_direction') .
-				$limit;
+				$sql_order
+				$sql_limit";
 		}
 	}else{
 		$query_sql = "SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
@@ -816,8 +814,8 @@ function get_syslog_messages(&$sql_where, $row_limit, $tab) {
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
 			ON syslog.program_id=spr.program_id " .
 			$sql_where . "
-			ORDER BY " . $sort . " " . get_request_var('sort_direction') .
-			$limit;
+			$sql_order
+			$sql_limit";
 	}
 
 	//echo $query_sql;
@@ -1346,14 +1344,14 @@ function syslog_messages($tab = 'syslog') {
 	$sql_where = '';
 
 	if (get_request_var('rows') == -1) {
-		$row_limit = read_config_option('num_rows_table');
+		$rows = read_config_option('num_rows_table');
 	}elseif (get_request_var('rows') == -2) {
-		$row_limit = 999999;
+		$rows = 999999;
 	}else{
-		$row_limit = get_request_var('rows');
+		$rows = get_request_var('rows');
 	}
 
-	$syslog_messages = get_syslog_messages($sql_where, $row_limit, $tab);
+	$syslog_messages = get_syslog_messages($sql_where, $rows, $tab);
 
 	syslog_filter($sql_where, $tab);
 
@@ -1393,7 +1391,7 @@ function syslog_messages($tab = 'syslog') {
 	}
 
 	if ($tab == 'syslog') {
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 7, __('Messages'), 'page', 'main');
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 7, __('Messages'), 'page', 'main');
 
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
@@ -1481,7 +1479,7 @@ function syslog_messages($tab = 'syslog') {
 		</script>
 		<?php
 	}else{
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $row_limit, $total_rows, 8, __('Alert Log Rows'), 'page', 'main');
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 8, __('Alert Log Rows'), 'page', 'main');
 
 		print $nav;
 
