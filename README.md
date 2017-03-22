@@ -62,6 +62,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * bug#18: Issues with syslog statistics display
 * bug#17: Compatibility with remote database
 * bug: SQL for matching Cacti host incorrect
+* bug: Syslog Reports were not functional
 
 --- 2.0  ---
 * feature: Compatibility with Cacti 1.0

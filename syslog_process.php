@@ -50,6 +50,7 @@ ini_set('memory_limit', '256M');
 global $syslog_debug, $syslog_facilities, $syslog_levels;
 
 $syslog_debug = false;
+$forcer = false;
 
 /* process calling arguments */
 $parms = $_SERVER['argv'];
@@ -68,6 +69,11 @@ if (sizeof($parms)) {
 			case '--debug':
 			case '-d':
 				$syslog_debug = true;
+
+				break;
+			case '--force-report':
+			case '-F':
+				$forcer = true;
 
 				break;
 			case '--version':
@@ -323,20 +329,20 @@ if (sizeof($query)) {
 						$alertm .= __("Count:")          . ' ' . sizeof($at)       . "\n";
 						$alertm .= __("Message String:") . ' ' . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "\n";
 
-						$htmlm  .= "<body class='body'><h1 class='h1'>" . __('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name']) . "</h1>";
-						$htmlm  .= "<table class='table' cellspacing='0' cellpadding='3' border='1'>";
-						$htmlm  .= "<tr><th class='th'>" . __('Alert Name') . "</th><th class='th'>" . __('Severity') . "</th><th class='th'>" . __('Threshold') . "</th><th class='th'>" . __('Count') . "</th><th class='th'>" . __('Match String') . "</th></tr>";
-						$htmlm  .= "<tr><td class='td'>" . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . "</td>\n";
-						$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']]  . "</td>\n";
-						$htmlm  .= "<td class='td'>"     . $alert['num']     . "</td>\n";
-						$htmlm  .= "<td class='td'>"     . sizeof($at)       . "</td>\n";
-						$htmlm  .= "<td class='td'>"     . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "</td></tr></table><br>\n";
+						$htmlm  .= "<body><h1>" . __('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name']) . "</h1>";
+						$htmlm  .= "<table cellspacing='0' cellpadding='3' border='1'>";
+						$htmlm  .= "<tr><th>" . __('Alert Name') . "</th><th>" . __('Severity') . "</th><th>" . __('Threshold') . "</th><th>" . __('Count') . "</th><th>" . __('Match String') . "</th></tr>";
+						$htmlm  .= "<tr><td>" . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . "</td>\n";
+						$htmlm  .= "<td>"     . $severities[$alert['severity']]  . "</td>\n";
+						$htmlm  .= "<td>"     . $alert['num']     . "</td>\n";
+						$htmlm  .= "<td>"     . sizeof($at)       . "</td>\n";
+						$htmlm  .= "<td>"     . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "</td></tr></table><br>\n";
 					}else{
-						$htmlm .= "<body class='body'><h1 class='h1'>" . __('Cacti Syslog Plugin Alert \'%s\'', $alert['name']) . "</h1>\n";
+						$htmlm .= "<body><h1>" . __('Cacti Syslog Plugin Alert \'%s\'', $alert['name']) . "</h1>\n";
 					}
 
-					$htmlm .= "<table  class='table' cellspacing='0' cellpadding='3' border='1'>";
-					$htmlm .= "<tr><th class='th'>" . __('Hostname') . "</th><th class='th'>" . __('Date') . "</th><th class='th'>" . __('Severity') . "</th><th class='th'>" . __('Level') . "</th><th class='th'>" . __('Message') . "</th></tr>";
+					$htmlm .= "<table>";
+					$htmlm .= "<tr><th'>" . __('Hostname') . "</th><th>" . __('Date') . "</th><th>" . __('Severity') . "</th><th>" . __('Level') . "</th><th>" . __('Message') . "</th></tr>";
 
 					$max_alerts  = read_config_option('syslog_maxrecords');
 					$alert_count = 0;
@@ -357,11 +363,11 @@ if (sizeof($query)) {
 							$alertm .= __('Message:')  . ' ' . "\n" . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "\n";
 
 							if ($alert["method"] == 0) $htmlm   = $htmlh;
-							$htmlm  .= "<tr><td class='td'>" . $a['host']                      . "</td>"      . "\n";
-							$htmlm  .= "<td class='td'>"     . $a['date'] . ' ' . $a['time']   . "</td>"      . "\n";
-							$htmlm  .= "<td class='td'>"     . $severities[$alert['severity']] . "</td>"      . "\n";
-							$htmlm  .= "<td class='td'>"     . $syslog_levels[$a['priority_id']]  . "</td>"      . "\n";
-							$htmlm  .= "<td class='td'>"     . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>" . "\n";
+							$htmlm  .= "<tr><td>" . $a['host']                        . "</td>"      . "\n";
+							$htmlm  .= "<td>"     . $a['date'] . ' ' . $a['time']     . "</td>"      . "\n";
+							$htmlm  .= "<td>"     . $severities[$alert['severity']]   . "</td>"      . "\n";
+							$htmlm  .= "<td>"     . $syslog_levels[$a['priority_id']] . "</td>"      . "\n";
+							$htmlm  .= "<td>"     . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>" . "\n";
 						}
 
 						$syslog_alarms++;
@@ -536,8 +542,10 @@ foreach($reports as $syslog_report) {
 	print '   Report: ' . $syslog_report['name'] . "\n";
 
 	$base_start_time = $syslog_report['timepart'];
+	$last_run_time   = $syslog_report['lastsent'];
+	$seconds_offset  = read_config_option('poller_interval');
 
-	$current_time = strtotime('now');
+	$current_time = time();
 	if (empty($last_run_time)) {
 		if ($current_time > strtotime($base_start_time)) {
 			/* if timer expired within a polling interval, then poll */
@@ -554,7 +562,12 @@ foreach($reports as $syslog_report) {
 	}
 	$time_till_next_run = $next_run_time - $current_time;
 
-	if ($next_run_time < 0) {
+	if ($next_run_time < 0 || $forcer) {
+		db_execute_prepared('UPDATE syslog_reports 
+			SET lastsent = ? 
+			WHERE id = ?', 
+			array(time(), $syslog_report['id']));
+
 		print '       Next Send: Now' . "\n";
 		print "       Creating Report...\n";
 
@@ -592,24 +605,41 @@ foreach($reports as $syslog_report) {
 
 			syslog_debug('We have ' . db_affected_rows($syslog_cnn) . ' items for the Report');
 
+			$classes = array('even', 'odd');
+
+			$i = 0;
 			if (sizeof($items)) {
-			foreach($items as $item) {
-				$reptext .= '<tr>' . $item['date'] . '</td><td>' . $item['time'] . '</td><td>' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
-			}
+				$class = $classes[$i % 2];
+				foreach($items as $item) {
+					$reptext .= '<tr class="' . $class . '"><td class="date">' . $item['logtime'] . '</td><td class="message">' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
+				}
+				$i++;
 			}
 
 			if ($reptext != '') {
-				$headtext .= "<html><head><style type='text/css'>";
+				$headtext  = "<html><head><style type='text/css'>\n";
 				$headtext .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
-				$headtext .= '</style></head>';
+				$headtext .= "</style></head>\n";
 
-				$headtext .= "<body class='body'><h1 class='h1'>" . $syslog_report['name'] . "</h1><table>\n" .
-					    "<tr><th class='th'>" . __('Date') . "</th><th class='th'>" . __('Time') . "</th><th class='th'>" . __('Message') . "</th></tr>\n" . $reptext;
+				$headtext .= "<body>\n";
+
+				$headtext .= "<h1>Cacti Syslog Report - " . $syslog_report['name'] . "</h1>\n";
+				$headtext .= "<hr>\n";
+				$headtext .= "<p>" . $syslog_report['body'] . "</p>";
+				$headtext .= "<hr>\n";
+
+				$headtext .= "<table>\n";
+				$headtext .= "<tr><th>" . __('Date') . "</th><th>" . __('Message') . "</th></tr>\n";
+
+				$headtext .= $reptext;
 
 				$headtext .= "</table>\n";
-				$smsalert  = $headtext;
 
-				// Send mail
+				$headtext .= "</body>\n";
+				$headtext .= "</html>\n";
+
+				$smsalert  = '';
+
 				syslog_sendemail($syslog_report['email'], $from, __('Event Report - %s', $syslog_report['name']), $headtext, $smsalert);
 			}
 		}
@@ -651,7 +681,10 @@ function display_help() {
 	display_version();
 
 	echo "The main Syslog poller process script for Cacti Syslogging.\n\n";
-	echo "usage: syslog_process.php [--debug|-d]\n\n";
+	echo "usage: syslog_process.php [--debug] [--force-report]\n\n";
+	echo "options:\n";
+	echo "    --force-report   Send email reports now.\n";
+	echo "    --debug          Provide more verbose debug output.\n\n";
 }
 
 function alert_replace_variables($alert, $a) {

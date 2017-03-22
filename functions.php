@@ -27,43 +27,39 @@
  +-------------------------------------------------------------------------+
 */
 
-function syslog_sendemail($to, $from, $subject, $message, $smsmessage) {
-	if (syslog_check_dependencies()) {
-		syslog_debug("Sending Alert email to '" . $to . "'");
+function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
+	syslog_debug("Sending Alert email to '" . $to . "'");
 
-		$sms    = '';
-		$nonsms = '';
-		/* if there are SMS emails, process separately */
-		if (substr_count($to, 'sms@')) {
-			$emails = explode(',', $to);
+	$sms    = '';
+	$nonsms = '';
+	/* if there are SMS emails, process separately */
+	if (substr_count($to, 'sms@')) {
+		$emails = explode(',', $to);
 
-			if (sizeof($emails)) {
-				foreach($emails as $email) {
-					if (substr_count($email, 'sms@')) {
-						$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
-					}else{
-						$nonsms .= (strlen($nonsms) ? ', ':'') . trim($email);
-					}
+		if (sizeof($emails)) {
+			foreach($emails as $email) {
+				if (substr_count($email, 'sms@')) {
+					$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
+				}else{
+					$nonsms .= (strlen($nonsms) ? ', ':'') . trim($email);
 				}
 			}
+		}
+	}else{
+		$nonsms = $to;
+	}
+
+	if (strlen($sms) && $smsmessage != '') {
+		mailer($from, $sms, '', '', '', $subject, '', $smsmessage);
+	}
+
+	if (strlen($nonsms)) {
+		if (read_config_option('syslog_html') == 'on') {
+			mailer($from, $nonsms, '', '', '', $subject, $message, __('Please use an HTML Email Client'));
 		}else{
-			$nonsms = $to;
+			$message = strip_tags(str_replace('<br>', "\n", $message));
+			mailer($from, $nonsms, '', '', '', $subject, '', $message);
 		}
-
-		if (strlen($sms)) {
-			mailer($from, $sms, '', '', '', $subject, '', $smsmessage);
-		}
-
-		if (strlen($nonsms)) {
-			if (read_config_option('syslog_html') == 'on') {
-				mailer($from, $nonsms, '', '', '', $subject, $message, __('Please use an HTML Email Client'));
-			}else{
-				$message = strip_tags(str_replace('<br>', "\n", $message));
-				mailer($from, $nonsms, '', '', '', $subject, '', $message);
-			}
-		}
-	} else {
-		syslog_debug('Could not send alert, you are missing the Settings plugin');
 	}
 }
 

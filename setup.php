@@ -958,8 +958,8 @@ function syslog_config_arrays () {
 		'sql'      => __('SQL Expression'));
 
 	$syslog_freqs = array(
-		'86400' => __('Last Day'), 
-		'604800' => __('Last Week')
+		'86400'  => __('Daily'), 
+		'604800' => __('Weekly')
 	);
 
 	for ($i = 0; $i <= 86400; $i+=1800) {
