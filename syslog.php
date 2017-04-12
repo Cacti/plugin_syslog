@@ -796,7 +796,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		}else{
 			$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` AS syslog
+				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				$sql_order
