@@ -232,17 +232,19 @@ function syslog_remove_items($table, $uniqueID) {
 			if ($table == 'syslog_incoming') {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-						(logtime, priority_id, facility_id, host_id, message)
+						(logtime, priority_id, facility_id, program_id, host_id, message)
 						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField']     . "`),
-						priority_id, facility_id, host_id, message
-						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						priority_id, facility_id, program_id, host_id, message
+						FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, si.program_id, si.host_id, si.message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-							ON sf.facility=si.facility
+							ON sf.facility_id=si.facility_id
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-							ON sp.priority=si.priority
+							ON sp.priority_id=si.priority_id
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spg
+							ON spg.program=si.program
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-							ON sh.host=si.host
+							ON sh.host_id=si.host_id
 							WHERE " . $syslog_incoming_config["facilityField"] . "='" . $remove['message'] . "' AND status=" . $uniqueID . ") AS merge";
 				}
 
@@ -255,8 +257,8 @@ function syslog_remove_items($table, $uniqueID) {
 				if (!empty($facility_id)) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-							(logtime, priority_id, facility_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, host_id, message)
+							(logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE facility_id=$facility_id";
 					}
@@ -269,17 +271,19 @@ function syslog_remove_items($table, $uniqueID) {
 			if ($table == 'syslog_incoming') {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-						(logtime, priority_id, facility_id, host_id, message)
+						(logtime, priority_id, facility_id, program_id, host_id, message)
 						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField']     . "`),
-						priority_id, facility_id, host_id, message
-						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						priority_id, facility_id, program_id, host_id, message
+						FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, si.program_id, si.host_id, si.message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-							ON sf.facility=si.facility
+							ON sf.facility_id=si.facility_id
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-							ON sp.priority=si.priority
+							ON sp.priority_id=si.priority_id
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spg
+							ON spg.program=si.program
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-							ON sh.host=si.host
+							ON sh.host_id=si.host_id
 							WHERE host='" . $remove['message'] . "' AND status=" . $uniqueID . ") AS merge";
 				}
 
@@ -292,8 +296,8 @@ function syslog_remove_items($table, $uniqueID) {
 				if (!empty($host_id)) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-							(logtime, priority_id, facility_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, host_id, message)
+							(logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE host_id=$host_id";
 					}
@@ -306,17 +310,19 @@ function syslog_remove_items($table, $uniqueID) {
 			if ($table == 'syslog_incoming') {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-						(logtime, priority_id, facility_id, host_id, message)
+						(logtime, priority_id, facility_id, program_id, host_id, message)
 						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
-						priority_id, facility_id, host_id, message
-						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						priority_id, facility_id, program_id, host_id, message
+						FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, si.program_id, si.host_id, si.message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-							ON sf.facility=si.facility
+							ON sf.facility_id=si.facility_id
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-							ON sp.priority=si.priority
+							ON sp.priority_id=si.priority_id
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spg
+							ON spg.program=si.program
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-							ON sh.host=si.host
+							ON sh.host_id=si.host_id
 							WHERE message LIKE '" . $remove['message'] . "%' AND status=" . $uniqueID . ") AS merge";
 				}
 
@@ -327,8 +333,8 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['message'] != '') {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-							(logtime, priority_id, facility_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, host_id, message)
+							(logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE message LIKE '" . $remove['message'] . "%'";
 					}
@@ -341,17 +347,19 @@ function syslog_remove_items($table, $uniqueID) {
 			if ($table == 'syslog_incoming') {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-						(logtime, priority_id, facility_id, host_id, message)
+						(logtime, priority_id, facility_id, program_id, host_id, message)
 						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
-						priority_id, facility_id, host_id, message
-						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						priority_id, facility_id, program_id, host_id, message
+						FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, si.program_id, si.host_id, si.message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-							ON sf.facility=si.facility
+							ON sf.facility_id=si.facility_id
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-							ON sp.priority=si.priority
+							ON sp.priority_id=si.priority_id
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spg
+							ON spg.program=si.program
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-							ON sh.host=si.host
+							ON sh.host_id=si.host_id
 							WHERE message LIKE '%" . $remove['message'] . "%' AND status=" . $uniqueID . ") AS merge";
 				}
 
@@ -362,8 +370,8 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['message'] != '') {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-							(logtime, priority_id, facility_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, host_id, message)
+							(logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE message LIKE '%" . $remove['message'] . "%'";
 					}
@@ -376,17 +384,19 @@ function syslog_remove_items($table, $uniqueID) {
 			if ($table == 'syslog_incoming') {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-						(logtime, priority_id, facility_id, host_id, message)
+						(logtime, priority_id, facility_id, program_id, host_id, message)
 						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
-						priority_id, facility_id, host_id, message
-						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						priority_id, facility_id, program_id, host_id, message
+						FROM (SELECT date, time, priority_id, facility_id, program_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-							ON sf.facility=si.facility
+							ON sf.facility_id=si.facility_id
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-							ON sp.priority=si.priority
+							ON sp.priority_id=si.priority_id
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spg
+							ON spg.program=si.program
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-							ON sh.host=si.host
+							ON sh.host_id=si.host_id
 							WHERE message LIKE '%" . $remove['message'] . "' AND status=" . $uniqueID . ") AS merge";
 				}
 
@@ -397,8 +407,8 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['message'] != '') {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-							(logtime, priority_id, facility_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, host_id, message)
+							(logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE message LIKE '%" . $remove['message'] . "'";
 					}
@@ -411,17 +421,19 @@ function syslog_remove_items($table, $uniqueID) {
 			if ($table == 'syslog_incoming') {
 				if ($remove['method'] != 'del') {
 					$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-						(logtime, priority_id, facility_id, host_id, message)
+						(logtime, priority_id, facility_id, program_id, host_id, message)
 						SELECT TIMESTAMP(`" . $syslog_incoming_config['dateField'] . "`, `" . $syslog_incoming_config['timeField'] . "`),
-						priority_id, facility_id, host_id, message
-						FROM (SELECT date, time, priority_id, facility_id, host_id, message
+						priority_id, facility_id, program_id, host_id, message
+						FROM (SELECT date, time, priority_id, facility_id, program_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog_incoming` AS si
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-							ON sf.facility=si.facility
+							ON sf.facility_id=si.facility_id
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-							ON sp.priority=si.priority
+							ON sp.priority_id=si.priority_id
+							INNER JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spg
+							ON spg.program=si.program
 							INNER JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-							ON sh.host=si.host
+							ON sh.host_id=si.host_id
 							WHERE (" . $remove['message'] . ") AND status=" . $uniqueID . ") AS merge";
 				}
 
@@ -432,7 +444,7 @@ function syslog_remove_items($table, $uniqueID) {
 				if ($remove['message'] != '') {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
-							(logtime, priority_id, facility_id, host_id, message)
+							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT (logtime, priority_id, facility_id, host_id, message)
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE " . $remove['message'];
