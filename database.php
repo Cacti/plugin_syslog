@@ -52,6 +52,15 @@ function syslog_db_execute($sql, $log = TRUE) {
 	return db_execute($sql, $log, $syslog_cnn);
 }
 
+/* syslog_db_execute_prepared - run an sql query and do not return any output
+   @arg $sql - the sql query to execute
+   @arg $log - whether to log error messages, defaults to true
+   @returns - '1' for success, '0' for error */
+function syslog_db_execute_prepared($sql, $parms = array(), $log = TRUE) {
+	global $syslog_cnn;
+	return db_execute_prepared($sql, $parms, $log, $syslog_cnn);
+}
+
 /* syslog_db_fetch_cell - run a 'select' sql query and return the first column of the
      first row found
    @arg $sql - the sql query to execute

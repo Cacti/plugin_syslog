@@ -219,7 +219,7 @@ CREATE TABLE `syslog_reports` (
   `type` varchar(16) NOT NULL DEFAULT '',
   `enabled` char(2) DEFAULT 'on',
   `timespan` int(16) NOT NULL DEFAULT '0',
-  `timepart` char(5) NOT NULL DEFAULT '00:00',
+  `timepart` int(5) NOT NULL DEFAULT '0',
   `lastsent` int(16) NOT NULL DEFAULT '0',
   `body` varchar(1024) DEFAULT NULL,
   `message` varchar(128) DEFAULT NULL,
