@@ -543,27 +543,31 @@ foreach($reports as $syslog_report) {
 
 	$base_start_time = $syslog_report['timepart'];
 	$last_run_time   = $syslog_report['lastsent'];
-	$seconds_offset  = read_config_option('poller_interval');
+	$time_span       = $syslog_report['timespan'];
+	$seconds_offset  = read_config_option('cron_interval');
 
 	$current_time = time();
 	if (empty($last_run_time)) {
-		if ($current_time > strtotime($base_start_time)) {
+
+		$start_time = strtotime(date('Y-m-d 00:00', $current_time)) + $base_start_time;
+
+		if ($current_time > $start_time) {
 			/* if timer expired within a polling interval, then poll */
-			if (($current_time - 300) < strtotime($base_start_time)) {
-				$next_run_time = strtotime(date('Y-m-d') . ' ' . $base_start_time);
+			if (($current_time - $seconds_offset) < $start_time) {
+				$next_run_time = $start_time;
 			}else{
-				$next_run_time = strtotime(date('Y-m-d') . ' ' . $base_start_time) + 3600*24;
+				$next_run_time = $start_time + 3600*24;
 			}
 		}else{
-			$next_run_time = strtotime(date('Y-m-d') . ' ' . $base_start_time);
+			$next_run_time = $start_time;
 		}
 	}else{
-		$next_run_time = $last_run_time + $seconds_offset;
+		$next_run_time = strtotime(date('Y-m-d 00:00', $last_run_time)) + $base_start_time + $time_span;
 	}
 	$time_till_next_run = $next_run_time - $current_time;
 
-	if ($next_run_time < 0 || $forcer) {
-		db_execute_prepared('UPDATE syslog_reports 
+	if ($time_till_next_run < 0 || $forcer) {
+		syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . '`.`syslog_reports` 
 			SET lastsent = ? 
 			WHERE id = ?', 
 			array(time(), $syslog_report['id']));
@@ -575,30 +579,41 @@ foreach($reports as $syslog_report) {
 		$reptext = '';
 		if ($syslog_report['type'] == 'messageb') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-				WHERE ' . $syslog_incoming_config['textField'] . "
-				LIKE '" . $syslog_report['message'] . "%'";
+				WHERE message LIKE ' . "'" . $syslog_report['message'] . "%'";
 		}
 
 		if ($syslog_report['type'] == 'messagec') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-				WHERE ' . $syslog_incoming_config['textField'] . "
-				LIKE '%" . $syslog_report['message'] . "%'";
+				WHERE message LIKE '. "'%" . $syslog_report['message'] . "%'";
 		}
 
 		if ($syslog_report['type'] == 'messagee') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-				WHERE ' . $syslog_incoming_config['textField'] . "
-				LIKE '%" . $syslog_report['message'] . "'";
+				WHERE message LIKE ' . "'%" . $syslog_report['message'] . "'";
 		}
 
 		if ($syslog_report['type'] == 'host') {
+			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl 
+				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+				ON sl.host_id = sh.host_id
+				WHERE sh.host=' . "'" . $syslog_report['message'] . "'";
+		}
+
+		if ($syslog_report['type'] == 'facility') {
+			$sql = 'SELECT sl.*, sf.facility FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
+				ON sl.facility_id = sf.facility_id
+				WHERE sf.facility=' . "'" . $syslog_report['message'] . "'";
+		}
+
+		if ($syslog_report['type'] == 'sql') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-				WHERE ' . $syslog_incoming_config['hostField'] . "='" . $syslog_report['message'] . "'";
+				WHERE (' . $syslog_report['message'] . ')';
 		}
 
 		if ($sql != '') {
-			$date2 = date('Y-m-d H:i:s', time());
-			$date1 = date('Y-m-d H:i:s', time() - 86400);
+			$date2 = date('Y-m-d H:i:s', $current_time);
+			$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
 			$sql  .= " AND logtime BETWEEN '". $date1 . "' AND '" . $date2 . "'";
 			$sql  .= ' ORDER BY logtime DESC';
 			$items = syslog_db_fetch_assoc($sql);
