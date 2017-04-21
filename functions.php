@@ -297,7 +297,7 @@ function syslog_remove_items($table, $uniqueID) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT logtime, priority_id, facility_id, program_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE host_id=$host_id";
 					}
@@ -334,7 +334,7 @@ function syslog_remove_items($table, $uniqueID) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT logtime, priority_id, facility_id, program_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE message LIKE '" . $remove['message'] . "%'";
 					}
@@ -371,7 +371,7 @@ function syslog_remove_items($table, $uniqueID) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT logtime, priority_id, facility_id, program_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE message LIKE '%" . $remove['message'] . "%'";
 					}
@@ -408,7 +408,7 @@ function syslog_remove_items($table, $uniqueID) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT logtime, priority_id, facility_id, program_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE message LIKE '%" . $remove['message'] . "'";
 					}
@@ -445,7 +445,7 @@ function syslog_remove_items($table, $uniqueID) {
 					if ($remove['method'] != 'del') {
 						$sql1 = "INSERT INTO `" . $syslogdb_default . "`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT (logtime, priority_id, facility_id, host_id, message)
+							SELECT logtime, priority_id, facility_id, host_id, message
 							FROM `" . $syslogdb_default . "`.`syslog`
 							WHERE " . $remove['message'];
 					}
