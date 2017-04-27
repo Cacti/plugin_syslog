@@ -63,6 +63,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * bug#17: Compatibility with remote database
 * bug#19: Removal rules issues
 * bug#20: Issues viewing removed records
+* bug#23: Threshold rule alert format issues
 * bug: SQL for matching Cacti host incorrect
 * bug: Syslog Reports were not functional
 
