@@ -329,7 +329,7 @@ if (sizeof($query)) {
 						$alertm .= __('Count:')          . ' ' . sizeof($at)       . "\n";
 						$alertm .= __('Message String:') . ' ' . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "\n";
 
-						$htmlm  .= '<body><h1>' . __('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name']) . '</h1>';
+						$htmlm  .= '<body><h1>' . __("Cacti Syslog Plugin Threshold Alert '%s'", $alert['name']) . '</h1>';
 						$htmlm  .= '<table cellspacing="0" cellpadding="3" border="1">';
 						$htmlm  .= '<tr><th>' . __('Alert Name') . '</th><th>' . __('Severity') . '</th><th>' . __('Threshold') . '</th><th>' . __('Count') . '</th><th>' . __('Match String') . '</th></tr>';
 						$htmlm  .= '<tr><td>' . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . '</td>';
@@ -362,12 +362,12 @@ if (sizeof($query)) {
 							$alertm .= __('Level:')    . ' ' . $syslog_levels[$a['priority_id']] . "\n\n";
 							$alertm .= __('Message:')  . ' ' . "\n" . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "\n";
 
-							if ($alert["method"] == 0) $htmlm   = $htmlh;
-							$htmlm  .= "<tr><td>" . $a['host']                        . "</td>";
-							$htmlm  .= "<td>"     . $a['date'] . ' ' . $a['time']     . "</td>";
-							$htmlm  .= "<td>"     . $severities[$alert['severity']]   . "</td>";
-							$htmlm  .= "<td>"     . $syslog_levels[$a['priority_id']] . "</td>";
-							$htmlm  .= "<td>"     . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>";
+							if ($alert['method'] == 0) $htmlm   = $htmlh;
+							$htmlm  .= '<tr><td>' . $a['host']                        . '</td>';
+							$htmlm  .= '<td>'     . $a['date'] . ' ' . $a['time']     . '</td>';
+							$htmlm  .= '<td>'     . $severities[$alert['severity']]   . '</td>';
+							$htmlm  .= '<td>'     . $syslog_levels[$a['priority_id']] . '</td>';
+							$htmlm  .= '<td>'     . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . '</td></tr>';
 						}
 
 						$syslog_alarms++;

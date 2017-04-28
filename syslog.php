@@ -138,12 +138,12 @@ function syslog_view_alarm() {
 
 	include(dirname(__FILE__) . '/config.php');
 
-	echo "<table class='cactiTableTitle' cellpadding='3' cellspacing='0' align='center' width='100%'>";
+	echo "<table class='cactiTable'>";
 	echo "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View') . "</td></tr>";
 	echo "<tr><td class='odd'>\n";
 
 	$html = syslog_db_fetch_cell('SELECT html FROM `' . $syslogdb_default . '`.`syslog_logs` WHERE seq=' . get_request_var('id'));
-	echo $html;
+	echo trim($html, "' ");
 
 	echo '</td></tr></table>';
 
