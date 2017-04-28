@@ -176,7 +176,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Fixes to make syslog work properly when using the Superlinks plugin
 * issue: Fix a few image errors
 
-* --- 0.5.1 ---
+--- 0.5.1 ---
 * issue: More 0.8.7 Compatibility fixes
 
 --- 0.5 ---
