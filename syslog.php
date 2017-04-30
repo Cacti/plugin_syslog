@@ -1431,8 +1431,8 @@ function syslog_messages($tab = 'syslog') {
 				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 					print "<td class='nowrap left' style='width:1%:padding:1px !important;'>";
 					if ($syslog_message['mtype'] == 'main') {
-						print "<a style='padding:1px' href='" . htmlspecialchars('syslog_alerts.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='images/add.png' border='0'></a>
-						<a style='padding:1px' href='" . htmlspecialchars('syslog_removal.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='images/delete.png' border='0'></a>\n";
+						print "<a style='padding:1px' href='" . htmlspecialchars('syslog_alerts.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='images/add.png'></a>
+						<a style='padding:1px' href='" . htmlspecialchars('syslog_removal.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='images/delete.png'></a>\n";
 					}
 					print "</td>\n";
 				}
