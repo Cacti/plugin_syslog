@@ -387,7 +387,7 @@ if (sizeof($query)) {
 								$hostlist[] = $a['host'];
 								$htmlm  .= '</table></body></html>';
 								$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $a, 1, $htmlm);
-								$smsalert = __('Sev:') . $severities[$alert['severity']] . __(', Host:') . $a['host'] . __(', URL:') . read_config_option('alert_base_url') . 'plugins/syslog/syslog.php?tab=current&id=' . $sequence;
+								$smsalert = __('Sev:') . $severities[$alert['severity']] . __(', Host:') . $a['host'] . __(', URL:') . read_config_option('base_url') . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 
 								syslog_sendemail(trim($alert['email']), $from, __('Event Alert - %s', $alert['name']), ($html ? $htmlm:$alertm), $smsalert);
 
@@ -418,7 +418,7 @@ if (sizeof($query)) {
 
 					if ($alert['method'] == 1) {
 						$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $at[0], sizeof($at), $htmlm, $hostlist);
-						$smsalert = __('Sev:') . $severities[$alert['severity']] . __(', Count:') . sizeof($at) . __(', URL:') . read_config_option('alert_base_url') . 'plugins/syslog/syslog.php?tab=current&id=' . $sequence;
+						$smsalert = __('Sev:') . $severities[$alert['severity']] . __(', Count:') . sizeof($at) . __(', URL:') . read_config_option('base_url') . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 					}
 
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
