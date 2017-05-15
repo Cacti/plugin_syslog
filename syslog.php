@@ -775,7 +775,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		if (get_request_var('removal') == '-1') {
 			$query_sql = "SELECT syslog.*, syslog_programs.program, 'main' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog` 
-				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` 
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				$sql_order
@@ -783,12 +783,12 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		}elseif (get_request_var('removal') == '1') {
 			$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
-				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` 
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				) UNION (SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` 
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` 
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . ")
 				$sql_order
@@ -796,7 +796,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		}else{
 			$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				LEFT JOIN  `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				$sql_order
