@@ -38,6 +38,10 @@ include_once('./plugins/syslog/functions.php');
 
 set_default_action();
 
+if (get_request_var('action') == 'ajax_programs') {
+	return get_ajax_programs(true);
+}
+
 $title = __('Syslog Viewer');
 
 $trimvals = array(
@@ -96,7 +100,7 @@ if (isset_request_var('export')) {
 
 	bottom_footer();
 }
-	
+
 $_SESSION['sess_nav_level_cache'] = '';
 
 function syslog_display_tabs($current_tab) {
@@ -203,7 +207,7 @@ function syslog_statistics() {
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
-        'program' => array(
+        'eprogram' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
             'default' => '',
@@ -345,10 +349,10 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 		$sql_groupby .= ', sp.priority';
 	}
 
-	if (get_request_var('program') == '-2') {
+	if (get_request_var('eprogram') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('program') != '-1' && get_request_var('program') != '') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('program');
+	}elseif (get_request_var('eprogram') != '-1' && get_request_var('program') != '') {
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('eprogram');
 		$sql_groupby .= ', spr.program';
 	}else{
 		$sql_groupby .= ', spr.program';
@@ -401,9 +405,8 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
 							<?php
-							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT host_id, host 
+							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT host_id, host
 								FROM syslog_hosts AS sh
-								WHERE host_id IN (SELECT DISTINCT host_id FROM syslog_statistics)
 								ORDER BY host');
 
 							if (sizeof($facilities)) {
@@ -422,9 +425,8 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('facility') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
 							<option value='-2'<?php if (get_request_var('facility') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
 							<?php
-							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT facility_id, facility 
+							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT facility_id, facility
 								FROM syslog_facilities AS sf
-								WHERE facility_id IN (SELECT DISTINCT facility_id FROM syslog_statistics)
 								ORDER BY facility');
 
 							if (sizeof($facilities)) {
@@ -443,9 +445,8 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('priority') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
 							<option value='-2'<?php if (get_request_var('priority') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
 							<?php
-							$priorities = syslog_db_fetch_assoc('SELECT DISTINCT priority_id, priority 
+							$priorities = syslog_db_fetch_assoc('SELECT DISTINCT priority_id, priority
 								FROM syslog_priorities AS sp
-								WHERE priority_id IN (SELECT DISTINCT priority_id FROM syslog_statistics)
 								ORDER BY priority');
 
 							if (sizeof($priorities)) {
@@ -456,27 +457,7 @@ function syslog_stats_filter() {
 							?>
 						</select>
 					</td>
-					<td>
-						<?php print __('Program');?>
-					</td>
-					<td>
-						<select id='program' onChange='applyFilter()'>
-							<option value='-1'<?php if (get_request_var('program') == '-1') { ?> selected<?php } ?>><?php print __('All');?></option>
-							<option value='-2'<?php if (get_request_var('program') == '-2') { ?> selected<?php } ?>><?php print __('None');?></option>
-							<?php
-							$programs = syslog_db_fetch_assoc('SELECT DISTINCT program_id, program 
-								FROM syslog_programs AS spr
-								WHERE program_id IN (SELECT DISTINCT program_id FROM syslog_statistics)
-								ORDER BY program');
-
-							if (sizeof($programs)) {
-							foreach ($programs as $r) {
-								print '<option value="' . $r['program_id'] . '"'; if (get_request_var('program') == $r['program_id']) { print ' selected'; } print '>' . ucfirst($r['program']) . "</option>\n";
-							}
-							}
-							?>
-						</select>
-					</td>
+					<?php print html_program_filter(get_request_var('eprogram'));?>
 					<td>
 						<input id='go' type='button' value='<?php print __('Go');?>'>
 					</td>
@@ -599,7 +580,7 @@ function syslog_request_validation($current_tab, $force = false) {
             ),
         'refresh' => array(
             'filter' => FILTER_VALIDATE_INT,
-            'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force) 
+            'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force)
             ),
         'trimval' => array(
             'filter' => FILTER_VALIDATE_INT,
@@ -774,8 +755,8 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	if ($tab == 'syslog') {
 		if (get_request_var('removal') == '-1') {
 			$query_sql = "SELECT syslog.*, syslog_programs.program, 'main' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog` 
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` 
+				FROM `" . $syslogdb_default . "`.`syslog`
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				$sql_order
@@ -783,12 +764,12 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		}elseif (get_request_var('removal') == '1') {
 			$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` 
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . "
 				) UNION (SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` 
+				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
 				ON syslog.program_id=syslog_programs.program_id " .
 				$sql_where . ")
 				$sql_order
@@ -806,11 +787,11 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		$query_sql = "SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-			ON syslog.facility_id=sf.facility_id 
+			ON syslog.facility_id=sf.facility_id
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-			ON syslog.priority_id=sp.priority_id 
+			ON syslog.priority_id=sp.priority_id
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
-			ON syslog.alert_id=sa.id 
+			ON syslog.alert_id=sa.id
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
 			ON syslog.program_id=spr.program_id " .
 			$sql_where . "
@@ -849,7 +830,7 @@ function syslog_filter($sql_where, $tab) {
 		});
 
 		$('#host').multiselect({
-			noneSelectedText: '<?php print __('Select Device(s)');?>', 
+			noneSelectedText: '<?php print __('Select Device(s)');?>',
 			selectedText: function(numChecked, numTotal, checkedItems) {
 				myReturn = numChecked + ' <?php print __('Devices Selected');?>';
 				$.each(checkedItems, function(index, value) {
@@ -860,7 +841,7 @@ function syslog_filter($sql_where, $tab) {
 				});
 				return myReturn;
 			},
-			checkAllText: '<?php print __('All');?>', 
+			checkAllText: '<?php print __('All');?>',
 			uncheckAllText: '<?php print __('None');?>',
 			uncheckall: function() {
 				$(this).multiselect('widget').find(':checkbox:first').each(function() {
@@ -1003,16 +984,16 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function timeshiftFilterLeft() {
-		var json = { 
-			move_left_x: 1, 
-			move_left_y: 1, 
-			date1: $('#date1').val(), 
-			date2: $('#date2').val(), 
-			predefined_timespan: $('#predefined_timespan').val(), 
+		var json = {
+			move_left_x: 1,
+			move_left_y: 1,
+			date1: $('#date1').val(),
+			date2: $('#date2').val(),
+			predefined_timespan: $('#predefined_timespan').val(),
 			predefined_timeshift: $('#predefined_timeshift').val(),
 			__csrf_magic: csrfMagicToken
 		};
-	
+
 		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
 		$.post(href, json).done(function(data) {
 			$('#main').html(data);
@@ -1021,16 +1002,16 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function timeshiftFilterRight() {
-		var json = { 
-			move_right_x: 1, 
-			move_right_y: 1, 
-			date1: $('#date1').val(), 
-			date2: $('#date2').val(), 
-			predefined_timespan: $('#predefined_timespan').val(), 
+		var json = {
+			move_right_x: 1,
+			move_right_y: 1,
+			date1: $('#date1').val(),
+			date2: $('#date2').val(),
+			predefined_timespan: $('#predefined_timespan').val(),
 			predefined_timeshift: $('#predefined_timeshift').val(),
 			__csrf_magic: csrfMagicToken
 		};
-	
+
 		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
 		$.post(href, json).done(function(data) {
 			$('#main').html(data);
@@ -1152,9 +1133,9 @@ function syslog_filter($sql_where, $tab) {
 								<?php
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
-								$hosts       = syslog_db_fetch_assoc("SELECT host_id, host 
-									FROM `" . $syslogdb_default . "`.`syslog_hosts` 
-									$hosts_where 
+								$hosts       = syslog_db_fetch_assoc("SELECT host_id, host
+									FROM `" . $syslogdb_default . "`.`syslog_hosts`
+									$hosts_where
 									ORDER BY host");
 
 
@@ -1212,23 +1193,7 @@ function syslog_filter($sql_where, $tab) {
 				<table class='filterTable'>
 					<tr>
 						<?php api_plugin_hook('syslog_extend_filter');?>
-						<td>
-							<select id='eprogram' onChange='applyFilter()' title='<?php print __('Programs to filter on');?>'>
-								<option value='-1'<?php if (get_request_var('eprogram') == '-1') { ?> selected<?php } ?>><?php print __('All Programs');?></option>
-								<?php
-								$eprograms = syslog_db_fetch_assoc('SELECT program_id, program
-									FROM `' . $syslogdb_default . '`.`syslog_programs` AS fh
-									ORDER BY program');
-
-								if (sizeof($eprograms)) {
-								foreach ($eprograms as $eprogram) {
-									if (trim($eprogram['program']) == '') $eprogram['program'] = 'unspecified';
-									print "<option value='" . $eprogram['program_id'] . "'"; if (get_request_var('eprogram') == $eprogram['program_id']) { print ' selected'; } print '>' . $eprogram['program'] . "</option>\n";
-								}
-								}
-								?>
-							</select>
-						</td>
+						<?php html_program_filter(get_request_var('eprogram'));?>
 						<td>
 							<select id='efacility' onChange='applyFilter()' title='<?php print __('Facilities to filter on');?>'>
 								<option value='-1'<?php if (get_request_var('efacility') == '0') { ?> selected<?php } ?>><?php print __('All Facilities');?></option>
@@ -1368,11 +1333,11 @@ function syslog_messages($tab = 'syslog') {
 					$sql_where
 				) AS rowcount");
 		}elseif (get_request_var("removal") == -1){
-			$total_rows = syslog_db_fetch_cell("SELECT count(*) 
+			$total_rows = syslog_db_fetch_cell("SELECT count(*)
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
 				$sql_where");
 		}else{
-			$total_rows = syslog_db_fetch_cell("SELECT count(*) 
+			$total_rows = syslog_db_fetch_cell("SELECT count(*)
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 				$sql_where");
 		}
@@ -1380,11 +1345,11 @@ function syslog_messages($tab = 'syslog') {
 		$total_rows = syslog_db_fetch_cell("SELECT count(*)
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-			ON syslog.facility_id=sf.facility_id 
+			ON syslog.facility_id=sf.facility_id
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-			ON syslog.priority_id=sp.priority_id 
+			ON syslog.priority_id=sp.priority_id
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_alert` AS sa
-			ON syslog.alert_id=sa.id 
+			ON syslog.alert_id=sa.id
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
 			ON syslog.program_id=spr.program_id " .
 			$sql_where);
@@ -1460,20 +1425,20 @@ function syslog_messages($tab = 'syslog') {
 		$(function() {
 			$('.syslogRow').tooltip({
 				track: true,
-				show: { 
-					effect: 'fade', 
+				show: {
+					effect: 'fade',
 					duration: 250,
 					delay: 125
 				},
 				position: { my: 'left+15 center', at: 'right center' }
 			});
 
-			$('button').tooltip({ 
-				closed: true 
-			}).on('focus', function() { 
-				$('#filter').tooltip('close') 
-			}).on('click', function() { 
-				$(this).tooltip('close'); 
+			$('button').tooltip({
+				closed: true
+			}).on('focus', function() {
+				$('#filter').tooltip('close')
+			}).on('click', function() {
+				$(this).tooltip('close');
 			});
 		});
 		</script>
@@ -1564,4 +1529,134 @@ function save_settings() {
 	syslog_request_validation($current_tab, true);
 }
 
-?>
+function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sql_where = '') {
+	$theme = get_selected_theme();
+
+	if (strpos($call_back, '()') === false) {
+		$call_back .= '()';
+	}
+
+	if ($theme == 'classic') {
+		?>
+		<td>
+			<select id='eprogram' name='eprogram' onChange='<?php print $call_back;?>'>
+				<option value='-1'<?php if (get_request_var('eprogram') == '-1') {?> selected<?php }?>><?php print __('All Programs');?></option>
+				<?php
+
+				$programs = syslog_db_fetch_assoc('SELECT DISTINCT program_id, program
+					FROM syslog_programs AS spr
+					ORDER BY program');
+
+				if (sizeof($programs)) {
+					foreach ($programs as $program) {
+						print "<option value='" . $program['program_id'] . "'"; if (get_request_var('eprogram') == $program['program_id']) { print ' selected'; } print '>' . title_trim(htmlspecialchars($program['program']), 40) . "</option>\n";
+					}
+				}
+				?>
+			</select>
+		</td>
+		<?php
+	} else {
+		if ($program_id > 0) {
+			$program = syslog_db_fetch_cell("SELECT program FROM syslog_programs WHERE program_id = $program_id");
+		} else {
+			$program = __('All Programs');
+		}
+
+		?>
+		<td>
+			<span id='program_wrapper' style='width:200px;' class='ui-selectmenu-button ui-widget ui-state-default ui-corner-all'>
+				<span id='program_click' class='ui-icon ui-icon-triangle-1-s'></span>
+				<input size='28' id='program' value='<?php print $program;?>'>
+			</span>
+			<input type='hidden' id='eprogram' name='eprogram' value='<?php print $program_id;?>'>
+			<input type='hidden' id='call_back' value='<?php print $call_back;?>'>
+		</td>
+		<script type='text/javascript'>
+		$(function() {
+			$('#program').unbind().autocomplete({
+				source: pageName+'?action=ajax_programs',
+				autoFocus: true,
+				minLength: 0,
+				select: function(event,ui) {
+					$('#eprogram').val(ui.item.id);
+					callBack = $('#call_back').val();
+					if (callBack != 'undefined') {
+						eval(callBack);
+					}else{
+						<?php print $call_back;?>;
+					}
+				}
+			}).addClass('ui-state-default ui-selectmenu-text').css('border', 'none').css('background-color', 'transparent');
+
+			$('#program_click').css('z-index', '4');
+			$('#program_wrapper').unbind().dblclick(function() {
+				programOpen = false;
+				clearTimeout(programTimer);
+				clearTimeout(clickProgramTimeout);
+				$('#program').autocomplete('close');
+			}).click(function() {
+				if (programOpen) {
+					$('#program').autocomplete('close');
+					clearTimeout(programTimer);
+					programOpen = false;
+				}else{
+					clickProgramTimeout = setTimeout(function() {
+						$('#program').autocomplete('search', '');
+						clearTimeout(programTimer);
+						programOpen = true;
+					}, 200);
+				}
+			}).on('mouseenter', function() {
+				$(this).addClass('ui-state-hover');
+				$('input#program').addClass('ui-state-hover');
+			}).on('mouseleave', function() {
+				$(this).removeClass('ui-state-hover');
+				$('#program').removeClass('ui-state-hover');
+				programTimer = setTimeout(function() { $('#program').autocomplete('close'); }, 800);
+			});
+
+			var programPrefix = '';
+			$('#program').autocomplete('widget').each(function() {
+				programPrefix=$(this).attr('id');
+
+				if (programPrefix != '') {
+					$('ul[id="'+programPrefix+'"]').on('mouseenter', function() {
+						clearTimeout(programTimer);
+					}).on('mouseleave', function() {
+						programTimer = setTimeout(function() { $('#program').autocomplete('close'); }, 800);
+						$(this).removeClass('ui-state-hover');
+						$('input#program').removeClass('ui-state-hover');
+					});
+				}
+			});
+		});
+		</script>
+	<?php
+	}
+}
+
+function get_ajax_programs($include_any = true, $sql_where = '') {
+	$return    = array();
+
+	$term = get_filter_request_var('term', FILTER_CALLBACK, array('options' => 'sanitize_search_string'));
+	if ($term != '') {
+		$sql_where .= ($sql_where != '' ? ' AND ' : '') . "program LIKE '%$term%'";
+	}
+
+	if (get_request_var('term') == '') {
+		if ($include_any) {
+			$return[] = array('label' => 'All Programs', 'value' => 'All Programs', 'id' => '-1');
+		}
+	}
+
+	$programs = syslog_db_fetch_assoc("SELECT program_id, program FROM syslog_programs $sql_where ORDER BY program LIMIT 20");
+	if (sizeof($programs)) {
+		foreach($programs as $program) {
+			$return[] = array('label' => $program['program'], 'value' => $program['program'], 'id' => $program['program_id']);
+		}
+	}
+
+	print json_encode($return);
+}
+

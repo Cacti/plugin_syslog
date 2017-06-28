@@ -511,6 +511,12 @@ if (read_config_option('syslog_alert_retention') > 0) {
 	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Syslog Host/Facility Record(s)');
 }
 
+/* remove old programs */
+syslog_db_execute('DELETE FROM `' . $syslogdb_default . '`.`syslog_programs` WHERE
+	program_id NOT IN(SELECT DISTINCT program_id FROM `' . $syslogdb_default . '`.`syslog` UNION SELECT DISTINCT program_id FROM syslog_removed)');
+
+syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Old programs from programs table');
+
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date('G') == 0 && date('i') < 5) {
 	syslog_debug('Optimizing Tables');
@@ -567,9 +573,9 @@ foreach($reports as $syslog_report) {
 	$time_till_next_run = $next_run_time - $current_time;
 
 	if ($time_till_next_run < 0 || $forcer) {
-		syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . '`.`syslog_reports` 
-			SET lastsent = ? 
-			WHERE id = ?', 
+		syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . '`.`syslog_reports`
+			SET lastsent = ?
+			WHERE id = ?',
 			array(time(), $syslog_report['id']));
 
 		print '       Next Send: Now' . "\n";
@@ -593,7 +599,7 @@ foreach($reports as $syslog_report) {
 		}
 
 		if ($syslog_report['type'] == 'host') {
-			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl 
+			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
 				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 				ON sl.host_id = sh.host_id
 				WHERE sh.host=' . "'" . $syslog_report['message'] . "'";

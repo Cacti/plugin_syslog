@@ -64,6 +64,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue#19: Removal rules issues
 * issue#20: Issues viewing removed records
 * issue#23: Threshold rule alert format issues
+* issue#30: Syslog page slows when too many programs are in the programs table
 * issue: SQL for matching Cacti host incorrect
 * issue: Syslog Reports were not functional
 * issue: Cleanup formating of Threshold messaging and viewing
