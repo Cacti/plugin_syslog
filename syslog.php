@@ -887,6 +887,10 @@ function syslog_filter($sql_where, $tab) {
 			clearFilter();
 		});
 
+		$('#export').click(function() {
+			exportRecords();
+		});
+
 		$('#startDate').click(function() {
 			if (date1Open) {
 				date1Open = false;
@@ -960,6 +964,10 @@ function syslog_filter($sql_where, $tab) {
 			'&refresh='+$('#refresh').val();
 
 		loadPageNoHeader(strURL);
+	}
+
+	function exportRecords() {
+		document.location = 'syslog.php?export=true';
 	}
 
 	function clearFilter() {
