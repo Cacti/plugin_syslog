@@ -55,7 +55,7 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 
 	if (strlen($nonsms)) {
 		if (read_config_option('syslog_html') == 'on') {
-			mailer($from, $nonsms, '', '', '', $subject, $message, __('Please use an HTML Email Client'));
+			mailer($from, $nonsms, '', '', '', $subject, $message, __('Please use an HTML Email Client', 'syslog'));
 		} else {
 			$message = strip_tags(str_replace('<br>', "\n", $message));
 			mailer($from, $nonsms, '', '', '', $subject, '', $message);
