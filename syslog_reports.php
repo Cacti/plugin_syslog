@@ -593,7 +593,7 @@ function syslog_report() {
 
 	$display_text = array(
 		'name'     => array(__('Report Name', 'syslog'), 'ASC'),
-		'enabled'  => array(__, 'syslog'('Enabled'), 'ASC'),
+		'enabled'  => array(__('Enabled', 'syslog'), 'ASC'),
 		'type'     => array(__('Match Type', 'syslog'), 'ASC'),
 		'message'  => array(__('Search String', 'syslog'), 'ASC'),
 		'timespan' => array(__('Frequency', 'syslog'), 'ASC'),
