@@ -25,6 +25,8 @@ For log events that continue to be generated frequently on a device, such as sma
 
 To install the syslog plugin, simply copy the plugin_sylog directory to Cacti's plugins directory and rename it to simply 'syslog'. Once you have done this, goto Cacti's Plugin Management page, and Install and Enable the plugin. Once this is complete, you can grant users permission to view syslog messages, as well as create Alert, Removal and Report Rules.
 
+Note: You must rename config.php.dist in the syslog plugin directory to config.php and make changes there for the location of the database, user, password, and host.  This is especially important if you are using a remote logging database server.
+
 If you are upgrading to 2.0 from a prior install, you must first uninstall syslog and insure both the syslog, syslog_removal, and syslog_incoming tables are removed, and recreated at install time.
 
 In addtion, the rsyslog configuration has changed in 2.0.  So, for example, to configure modern rsyslog for Cacti, you must create a file called cacti.conf in the /etc/rsyslog.d/ directory that includes the following:
@@ -42,7 +44,7 @@ In addtion, the rsyslog configuration has changed in 2.0.  So, for example, to c
 
 	--------------------- end /etc/rsyslog.d/cacti.conf ---------------------
 
-Ensure you restart rsyslog after these changes are completed.  Other logging servers such as Syslog-NG are also supported with this plugin.
+Ensure you restart rsyslog after these changes are completed.  Other logging servers such as Syslog-NG are also supported with this plugin.  Please see some additional documentation here: [Cacti Documentation Site](https://docs.cacti.net/plugin:syslog.config)
 
 We are using the pure integer values that rsyslog provides to both the priority and facility in this version syslog, which makes the data collection must less costly for the database.  We have also started including the 'program' syslog column for searching and storage and alert generation.
 
@@ -66,6 +68,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue#23: Threshold rule alert format issues
 * issue#30: Syslog page slows when too many programs are in the programs table
 * issue#32: Export of Syslog records not functional
+* issue#38: Enhance the documentation to discuss config.php.dist and doco site
 * issue: SQL for matching Cacti host incorrect
 * issue: Syslog Reports were not functional
 * issue: Cleanup formating of Threshold messaging and viewing
