@@ -32,6 +32,16 @@ tr.even {
 	background-color: snow;
 }
 
+td.host {
+        color: black;
+        text-align: left;
+        font-size: 10px;
+        width: 10%;
+        white-space: nowrap;
+        vertical-align: top;
+        padding: 2px;
+}
+
 td.date {
 	color: black;
 	text-align: left;
