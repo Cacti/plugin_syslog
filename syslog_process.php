@@ -584,17 +584,23 @@ foreach($reports as $syslog_report) {
 		$sql     = '';
 		$reptext = '';
 		if ($syslog_report['type'] == 'messageb') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
+			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+				ON sl.host_id = sh.host_id
 				WHERE message LIKE ' . "'" . $syslog_report['message'] . "%'";
 		}
 
 		if ($syslog_report['type'] == 'messagec') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
+			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+				ON sl.host_id = sh.host_id
 				WHERE message LIKE '. "'%" . $syslog_report['message'] . "%'";
 		}
 
 		if ($syslog_report['type'] == 'messagee') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
+			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+				ON sl.host_id = sh.host_id
 				WHERE message LIKE ' . "'%" . $syslog_report['message'] . "'";
 		}
 
@@ -650,7 +656,7 @@ foreach($reports as $syslog_report) {
 				$headtext .= "<hr>\n";
 
 				$headtext .= "<table>\n";
-				$headtext .= "<tr><th>" . __('Date', 'syslog') . "</th><th>" . __('Message', 'syslog') . "</th></tr>\n";
+				$reptext .= '<tr class="' . $class . '"><td class="host">' . $item['host'] . '</td><td class="date">' . $item['logtime'] . '</td><td class="message">' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
 
 				$headtext .= $reptext;
 

@@ -69,6 +69,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue#30: Syslog page slows when too many programs are in the programs table
 * issue#32: Export of Syslog records not functional
 * issue#38: Enhance the documentation to discuss config.php.dist and doco site
+* issue#40: Adds hostname column to emailed reports
 * issue: SQL for matching Cacti host incorrect
 * issue: Syslog Reports were not functional
 * issue: Cleanup formating of Threshold messaging and viewing
