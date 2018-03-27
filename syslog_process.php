@@ -638,7 +638,7 @@ foreach($reports as $syslog_report) {
 			if (sizeof($items)) {
 				$class = $classes[$i % 2];
 				foreach($items as $item) {
-					$reptext .= '<tr class="' . $class . '"><td class="date">' . $item['logtime'] . '</td><td class="message">' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
+					$reptext .= '<tr class="' . $class . '"><td class="host">' . $item['host'] . '</td><td class="date">' . $item['logtime'] . '</td><td class="message">' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
 				}
 				$i++;
 			}
@@ -656,7 +656,7 @@ foreach($reports as $syslog_report) {
 				$headtext .= "<hr>\n";
 
 				$headtext .= "<table>\n";
-				$reptext .= '<tr class="' . $class . '"><td class="host">' . $item['host'] . '</td><td class="date">' . $item['logtime'] . '</td><td class="message">' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
+				$headtext .= "<tr><th>" . __('Host', 'syslog') . "</th><th>" . __('Date', 'syslog') . "</th><th>" . __('Message', 'syslog') . "</th></tr>\n";
 
 				$headtext .= $reptext;
 
