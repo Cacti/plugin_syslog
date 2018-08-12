@@ -234,7 +234,7 @@ function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, 
 
 	if (!is_error_message()) {
 		$id = 0;
-		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_remove`', 'id');
+		$id = syslog_sql_save($save, 'syslog_remove', 'id');
 
 		if ($id) {
 			raise_message(1);
