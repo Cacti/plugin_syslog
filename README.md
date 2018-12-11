@@ -50,6 +50,23 @@ We are using the pure integer values that rsyslog provides to both the priority 
 
 To setup log forwarding from your network switches and routers, and from your various Linux, UNIX, and other operating system devices, please see their respective documentation.
 
+Finally, it's important, especially in more recent versions of MySQL and MariaDB to set a correct SQL Mode.  These more recent SQL's prevent certain previously allowable syntax such as an empty data and certain group by limitations in the SQL itself.  Therefore, you need to ensure that the SQL mode of the database is correct.  To do this, first start by editing either `/etc/my.cnf` or `/etc/my.cnf.d/server.cnf` and inserting the SQL mode variable into the database configuration.  For example:
+
+```code
+[mysqld]
+sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
+```
+
+After this change, you should log into the mysql server and run the following command:
+
+```code
+mysql
+show global variables like 'sql_mode';
+quit
+```
+
+And ensure that it matches the setting that you placed in the database configuration.  If it does not, please search for the configuration that is making this SQL mode other than what you required.  More recent versions of MySQL and MariaDB will source multiple database configuration files.
+
 ## Possible Bugs and Feature Enhancements
 
 Bug and feature enhancements for the syslog plugin are handled in GitHub. If you find a first search the Cacti forums for a solution before creating an issue in GitHub.
