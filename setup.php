@@ -1,8 +1,7 @@
 <?php
 /*
- ex: set tabstop=4 shiftwidth=4 autoindent:
  +-------------------------------------------------------------------------+
- | Copyright (C) 2004-2017 The Cacti Group                                 |
+ | Copyright (C) 2004-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -191,9 +190,9 @@ function syslog_check_upgrade() {
 
 	$present = syslog_db_fetch_row('SHOW TABLES FROM `' . $syslogdb_default . "` LIKE 'syslog'");
 	$old_pia = false;
-	if (sizeof($present)) {
+	if (cacti_sizeof($present)) {
 		$old_table = syslog_db_fetch_row('SHOW COLUMNS FROM `' . $syslogdb_default . "`.`syslog` LIKE 'time'");
-		if (sizeof($old_table)) {
+		if (cacti_sizeof($old_table)) {
 			$old_pia = true;
 		}
 	}
@@ -235,7 +234,7 @@ function syslog_get_mysql_version($db = 'cacti') {
 
 	}
 
-	if (sizeof($dbInfo)) {
+	if (cacti_sizeof($dbInfo)) {
 		return floatval($dbInfo['Value']);
 	}
 	return '';
@@ -373,11 +372,13 @@ function syslog_setup_table_new($options) {
 		PRIMARY KEY (id)) ENGINE=$engine;");
 
 	$present = syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog_reports'");
-	if (sizeof($present)) {
+
+	if (cacti_sizeof($present)) {
 		$newreport = sizeof(syslog_db_fetch_row("SHOW COLUMNS FROM `" . $syslogdb_default . "`.`syslog_reports` LIKE 'body'"));
 	}else{
 		$newreport = true;
 	}
+
 	if ($truncate || !$newreport) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
@@ -521,7 +522,7 @@ function syslog_poller_bottom() {
 }
 
 function syslog_install_advisor($syslog_exists, $db_version) {
-	global $config, $colors, $syslog_retentions;
+	global $config, $syslog_retentions;
 
 	top_header();
 
@@ -618,7 +619,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 }
 
 function syslog_uninstall_advisor() {
-	global $config, $colors;
+	global $config;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -654,7 +655,7 @@ function syslog_uninstall_advisor() {
 
 	print "<table align='center' width='80%'><tr><td>\n";
 
-	html_start_box(__('Syslog Uninstall Preferences', 'syslog'), '100%', $colors['header'], '3', 'center', '');
+	html_start_box(__('Syslog Uninstall Preferences', 'syslog'), '100%', '', '3', 'center', '');
 	draw_edit_form(array(
 		'config' => array(),
 		'fields' => inject_form_variables($fields_syslog_update, array()))
@@ -1019,13 +1020,19 @@ function syslog_graph_buttons($graph_elements = array()) {
 	}
 
 	if (isset($graph_elements[1]['local_graph_id'])) {
-		$host_id = db_fetch_cell_prepared('SELECT host_id FROM graph_local WHERE id = ?', array($graph_elements[1]['local_graph_id']));
+		$host_id = db_fetch_cell_prepared('SELECT host_id
+			FROM graph_local
+			WHERE id = ?',
+			array($graph_elements[1]['local_graph_id']));
+
 		$sql_where   = '';
 
 		if (!empty($host_id)) {
-			$host  = db_fetch_row_prepared('SELECT id, description, hostname FROM host WHERE id = ?', array($host_id));
+			$host  = db_fetch_row_prepared('SELECT id, description, hostname
+				FROM host WHERE id = ?',
+				array($host_id));
 
-			if (sizeof($host)) {
+			if (cacti_sizeof($host)) {
 				if (!is_ipaddress($host['description'])) {
 					$parts = explode('.', $host['description']);
 					$sql_where = 'WHERE host LIKE ' . db_qstr($parts[0] . '.%') . ' OR host = ' . db_qstr($host['description']);
@@ -1053,7 +1060,7 @@ function syslog_graph_buttons($graph_elements = array()) {
 }
 
 function syslog_utilities_action($action) {
-	global $config, $colors, $refresh, $syslog_cnn;
+	global $config, $refresh, $syslog_cnn;
 
 	if ($action == 'purge_syslog_hosts') {
 		$records = 0;
@@ -1079,7 +1086,7 @@ function syslog_utilities_action($action) {
 }
 
 function syslog_utilities_list() {
-	global $config, $colors;
+	global $config;
 
 	html_header(array(__('Syslog Utilities', 'syslog')), 2); ?>
 

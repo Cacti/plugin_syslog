@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -24,7 +24,7 @@
 
 chdir('../../');
 include('./include/auth.php');
-include_once('plugins/syslog/functions.php');
+include_once('./plugins/syslog/functions.php');
 
 /* redefine the syslog actions for removal rules */
 $syslog_actions = array(
@@ -144,7 +144,7 @@ function form_actions() {
 		}
 	}
 
-	if (sizeof($removal_array)) {
+	if (cacti_sizeof($removal_array)) {
 		if (get_request_var('drp_action') == '1') { /* delete */
 			print "<tr>
 				<td class='textArea'>
@@ -324,7 +324,7 @@ function syslog_action_edit() {
 			FROM `' . $syslogdb_default . '`.`syslog_remove`
 			WHERE id=' . get_request_var('id'));
 
-		if (sizeof($removal)) {
+		if (cacti_sizeof($removal)) {
 			$header_label = __('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
 		}else{
 			$header_label = __('Removal Rule Edit [new]', 'syslog');
@@ -335,7 +335,7 @@ function syslog_action_edit() {
 		$syslog_rec = syslog_db_fetch_row('SELECT * FROM `' . $syslogdb_default . '`.`syslog` WHERE seq=' . get_request_var('id') . (isset_request_var('date') ? " AND logtime='" . get_request_var('date') . "'":""));
 
 		$header_label = __('Removal Rule Edit [new]', 'syslog');
-		if (sizeof($syslog_rec)) {
+		if (cacti_sizeof($syslog_rec)) {
 			$removal['message'] = $syslog_rec['message'];
 		}
 		$removal['name'] = __('New Removal Rule', 'syslog');
@@ -476,10 +476,10 @@ function syslog_filter() {
 						<select id='rows' onChange='applyFilter()'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog');?></option>
 							<?php
-								if (sizeof($item_rows)) {
-								foreach ($item_rows as $key => $value) {
-									print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
-								}
+								if (cacti_sizeof($item_rows)) {
+									foreach ($item_rows as $key => $value) {
+										print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
+									}
 								}
 							?>
 						</select>
@@ -617,7 +617,7 @@ function syslog_removal() {
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-	if (sizeof($removals)) {
+	if (cacti_sizeof($removals)) {
 		foreach ($removals as $removal) {
 			form_alternate_row('line' . $removal['id'], true);
 			form_selectable_cell(filter_value(title_trim($removal['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']), $removal['id']);
@@ -636,7 +636,7 @@ function syslog_removal() {
 
 	html_end_box(false);
 
-	if (sizeof($removals)) {
+	if (cacti_sizeof($removals)) {
 		print $nav;
 	}
 

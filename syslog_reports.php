@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -132,7 +132,7 @@ function form_actions() {
 		}
 	}
 
-	if (sizeof($report_array)) {
+	if (cacti_sizeof($report_array)) {
 		if (get_request_var('drp_action') == '1') { /* delete */
 			print "<tr>
 				<td class='textArea'>
@@ -298,7 +298,7 @@ function syslog_action_edit() {
 			FROM `' . $syslogdb_default . '`.`syslog_reports`
 			WHERE id=' . get_request_var('id'));
 
-		if (sizeof($report)) {
+		if (cacti_sizeof($report)) {
 			$header_label = __('Report Edit [edit: %s]', $report['name'], 'syslog');
 		}else{
 			$header_label = __('Report Edit [new]', 'syslog');
@@ -462,19 +462,19 @@ function syslog_filter() {
 						<select id='rows' onChange='applyFilter()'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog');?></option>
 							<?php
-								if (sizeof($item_rows)) {
-								foreach ($item_rows as $key => $value) {
-									print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
-								}
+								if (cacti_sizeof($item_rows)) {
+									foreach ($item_rows as $key => $value) {
+										print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . '</option>';
+									}
 								}
 							?>
 						</select>
 					</td>
 					<td>
-						<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
-					</td>
-					<td>
-						<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
+						<span>
+							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
+							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
+						</span>
 					</td>
 				</tr>
 			</table>
@@ -583,13 +583,7 @@ function syslog_report() {
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
-	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 10, __('Reports', 'syslog'), 'page', 'main');
-
 	form_start('syslog_reports.php', 'chk');
-
-	print $nav;
-
-	html_start_box('', '100%', $colors['header'], '3', 'center', '');
 
 	$display_text = array(
 		'name'     => array(__('Report Name', 'syslog'), 'ASC'),
@@ -600,11 +594,18 @@ function syslog_report() {
 		'timepart' => array(__('Send Time', 'syslog'), 'ASC'),
 		'lastsent' => array(__('Last Sent', 'syslog'), 'ASC'),
 		'date'     => array(__('Last Modified', 'syslog'), 'ASC'),
-		'user'     => array(__('By User', 'syslog'), 'DESC'));
+		'user'     => array(__('By User', 'syslog'), 'DESC')
+	);
+
+	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('Reports', 'syslog'), 'page', 'main');
+
+	print $nav;
+
+	html_start_box('', '100%', $colors['header'], '3', 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-	if (sizeof($reports)) {
+	if (cacti_sizeof($reports)) {
 		foreach ($reports as $report) {
 			form_alternate_row('line' . $report['id']);
 			form_selectable_cell(filter_value(title_trim($report['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id']), $report['id']);
@@ -620,12 +621,12 @@ function syslog_report() {
 			form_end_row();
 		}
 	}else{
-		print "<tr><td colspan='4'><em>" . __('No Syslog Reports Defined', 'syslog') . "</em></td></tr>";
+		print "<tr><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No Syslog Reports Defined', 'syslog') . "</em></td></tr>";
 	}
 
 	html_end_box(false);
 
-	if (sizeof($reports)) {
+	if (cacti_sizeof($reports)) {
 		print $nav;
 	}
 

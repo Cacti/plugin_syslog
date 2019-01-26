@@ -1,9 +1,7 @@
 <?php
 /*
- ex: set tabstop=4 shiftwidth=4 autoindent:
  +-------------------------------------------------------------------------+
- | Copyright (C) 2005 Electric Sheep Studios                               |
- | Originally by Shitworks, 2004                                           |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -15,15 +13,12 @@
  | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
  | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
- | h.aloe: a syslog monitoring addon for Ian Berry's Cacti	               |
+ | Cacti: The Complete RRDTool-based Graphing Solution                     |
  +-------------------------------------------------------------------------+
- | Originally released as aloe by: sidewinder at shitworks.com             |
- | Modified by: Harlequin <harlequin@cyberonic.com>                        |
- | 2005-11-10 -- ver 0.1.1 beta                                            |
- |   - renamed to h.aloe                                                   |
- |   - updated to work with Cacti 8.6g                                     |
- |   - included Cacti time selector                                        |
- |   - various other modifications                                         |
+ | This code is designed, written, and maintained by the Cacti Group. See  |
+ | about.php and/or the AUTHORS file for specific developer information.   |
+ +-------------------------------------------------------------------------+
+ | http://www.cacti.net/                                                   |
  +-------------------------------------------------------------------------+
 */
 
@@ -36,7 +31,7 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 	if (substr_count($to, 'sms@')) {
 		$emails = explode(',', $to);
 
-		if (sizeof($emails)) {
+		if (cacti_sizeof($emails)) {
 			foreach($emails as $email) {
 				if (substr_count($email, 'sms@')) {
 					$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
@@ -224,7 +219,7 @@ function syslog_remove_items($table, $uniqueID) {
 		$total = 0;
 	}
 
-	if (sizeof($rows)) {
+	if (cacti_sizeof($rows)) {
 	foreach($rows as $remove) {
 		$sql  = '';
 		$sql1 = '';
@@ -540,7 +535,7 @@ function syslog_row_color($priority, $message) {
 		break;
 	}
 
-	print "<tr title='" . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . "' class='$class syslogRow'>\n";
+	print "<tr title='" . html_escape($message) . "' class='selectable $class syslogRow'>\n";
 }
 
 function sql_hosts_where($tab) {
@@ -579,7 +574,7 @@ function syslog_export($tab) {
 
 		print 'host, facility, priority, program, date, message' . "\r\n";
 
-		if (sizeof($messages)) {
+		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
 				print
 					'"' .
@@ -600,7 +595,7 @@ function syslog_export($tab) {
 
 		print 'name, severity, date, message, host, facility, priority, count' . "\r\n";
 
-		if (sizeof($messages)) {
+		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
 				print
 					'"' .
@@ -683,7 +678,7 @@ function syslog_manage_items($from_table, $to_table) {
 	$xferred = 0;
 	$total   = 0;
 
-	if (sizeof($rows)) {
+	if (cacti_sizeof($rows)) {
 		foreach($rows as $remove) {
 			syslog_debug('Processing Rule  - ' . $remove['message']);
 
@@ -760,7 +755,7 @@ function syslog_manage_items($from_table, $to_table) {
 					$move_records = syslog_db_fetch_assoc($sql_sel);
 					syslog_debug("Found   ". sizeof($move_records) . " Message(s)");
 
-					if (sizeof($move_records)) {
+					if (cacti_sizeof($move_records)) {
 						$all_seq = '';
 						$messages_moved = 0;
 						foreach($move_records as $move_record) {

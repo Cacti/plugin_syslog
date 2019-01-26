@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -24,7 +24,7 @@
 
 chdir('../../');
 include('./include/auth.php');
-include_once('plugins/syslog/functions.php');
+include_once('./plugins/syslog/functions.php');
 
 set_default_action();
 
@@ -135,7 +135,7 @@ function form_actions() {
 		}
 	}
 
-	if (sizeof($alert_array)) {
+	if (cacti_sizeof($alert_array)) {
 		if (get_request_var('drp_action') == '1') { /* delete */
 			print "<tr>
 				<td class='textArea'>
@@ -300,7 +300,7 @@ function syslog_action_edit() {
 			FROM `' . $syslogdb_default . '`.`syslog_alert`
 			WHERE id=' . get_request_var('id'));
 
-		if (sizeof($alert)) {
+		if (cacti_sizeof($alert)) {
 			$header_label = __('Alert Edit [edit: %s]' . $alert['name'], 'syslog');
 		} else {
 			$header_label = __('Alert Edit [new]', 'syslog');
@@ -309,7 +309,7 @@ function syslog_action_edit() {
 		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . get_request_var("id") . (isset_request_var('date') ? " AND logtime='" . get_request_var("date") . "'":""));
 
 		$header_label = __('Alert Edit [new]', 'syslog');
-		if (sizeof($syslog_rec)) {
+		if (cacti_sizeof($syslog_rec)) {
 			$alert['message'] = $syslog_rec['message'];
 		}
 
@@ -491,7 +491,7 @@ function syslog_action_edit() {
 	draw_edit_form(
 		array(
 			'config' => array('no_form_tag' => true),
-			'fields' => inject_form_variables($fields_syslog_alert_edit, (sizeof($alert) ? $alert : array()))
+			'fields' => inject_form_variables($fields_syslog_alert_edit, (cacti_sizeof($alert) ? $alert : array()))
 		)
 	);
 
@@ -546,10 +546,10 @@ function syslog_filter() {
 						<select id='rows' onChange='applyFilter()'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog');?></option>
 							<?php
-							if (sizeof($item_rows)) {
-							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
-							}
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
+								}
 							}
 							?>
 						</select>
@@ -690,7 +690,7 @@ function syslog_alerts() {
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-	if (sizeof($alerts)) {
+	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
 			form_alternate_row('line' . $alert['id'], true);
 			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . 'plugins/syslog/syslog_alerts.php?action=edit&id=' . $alert['id'] . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", $alert['name']) : $alert['name']) . '</a>', $alert['id']);
@@ -712,7 +712,7 @@ function syslog_alerts() {
 
 	html_end_box(false);
 
-	if (sizeof($alerts)) {
+	if (cacti_sizeof($alerts)) {
 		print $nav;
 	}
 

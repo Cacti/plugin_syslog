@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -22,22 +22,8 @@
  +-------------------------------------------------------------------------+
 */
 
-/* we are not talking to the browser */
-$no_http_headers = true;
-
-/* do NOT run this script through a web browser */
-if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-	die('<br><strong>This script is only meant to run at the command line.</strong>');
-}
-
-$dir = dirname(__FILE__);
-chdir($dir);
-
-if (strpos($dir, 'plugins') !== false) {
-	chdir('../../');
-}
-
-include('./include/global.php');
+chdir('../../');
+include('./include/cli_check.php');
 include_once('./lib/poller.php');
 include('./plugins/syslog/config.php');
 include_once('./plugins/syslog/functions.php');
@@ -46,7 +32,7 @@ include_once('./plugins/syslog/functions.php');
  * bursts of incoming syslog events
  */
 ini_set('max_execution_time', 3600);
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '-1');
 
 global $syslog_debug;
 
@@ -56,7 +42,7 @@ $syslog_debug = true;
 $parms = $_SERVER['argv'];
 
 array_shift($parms);
-if (sizeof($parms)) {
+if (cacti_sizeof($parms)) {
 	foreach($parms as $parameter) {
 		if (strpos($parameter, '=')) {
 			list($arg, $value) = explode('=', $parameter);

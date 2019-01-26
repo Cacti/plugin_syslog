@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -22,20 +22,8 @@
  +-------------------------------------------------------------------------+
 */
 
-/* do NOT run this script through a web browser */
-if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-	die('<br><strong>This script is only meant to run at the command line.</strong>');
-}
-
-$no_http_headers = true;
-
-// PHP5 uses a different base path apparently
-if (file_exists('include/auth.php')) {
-	include(dirname(__FILE__) . '/../../include/global.php');
-} else {
-	chdir('../../');
-	include(dirname(__FILE__) . '/../../include/global.php');
-}
+chdir('../../');
+include('./include/cli_check.php');
 
 $sli = read_config_option('syslog_last_incoming');
 $slt = read_config_option('syslog_last_total');
@@ -48,14 +36,14 @@ $total_rows = $line['Auto_increment'];
 
 if ($sli == "") {
 	$sql = "REPLACE INTO settings VALUES ('syslog_last_incoming','$i_rows')";
-}else{
+} else {
 	$sql = "UPDATE settings SET value='$i_rows' WHERE name='syslog_last_incoming'";
 }
 db_execute($sql);
 
 if ($slt == "") {
 	$sql = "REPLACE INTO settings VALUES ('syslog_last_total','$total_rows')";
-}else{
+} else {
 	$sql = "UPDATE settings SET value='$total_rows' WHERE name='syslog_last_total'";
 }
 db_execute($sql);

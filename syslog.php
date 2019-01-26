@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -126,9 +126,9 @@ function syslog_display_tabs($current_tab) {
 	/* draw the tabs */
 	print "<div class='tabs'><nav><ul>\n";
 
-	if (sizeof($tabs_syslog)) {
+	if (cacti_sizeof($tabs_syslog)) {
 		foreach (array_keys($tabs_syslog) as $tab_short_name) {
-			print '<li><a class="tab ' . (($tab_short_name == $current_tab) ? 'selected"':'"') . " href='" . htmlspecialchars($config['url_path'] .
+			print '<li><a class="tab ' . (($tab_short_name == $current_tab) ? 'selected"':'"') . " href='" . html_escape($config['url_path'] .
 				'plugins/syslog/syslog.php?' .
 				'tab=' . $tab_short_name) .
 				"'>" . $tabs_syslog[$tab_short_name] . "</a></li>\n";
@@ -286,7 +286,7 @@ function syslog_statistics() {
 		$date_format = 'Y-m-d 00:00';
 	}
 
-	if (sizeof($records)) {
+	if (cacti_sizeof($records)) {
 		foreach ($records as $r) {
 			$time = date($date_format, strtotime($r['insert_time']));
 
@@ -306,7 +306,7 @@ function syslog_statistics() {
 
 	html_end_box(false);
 
-	if (sizeof($records)) {
+	if (cacti_sizeof($records)) {
 		print $nav;
 	}
 }
@@ -401,7 +401,7 @@ function syslog_stats_filter() {
 						<?php print __('Device', 'syslog');?>
 					</td>
 					<td>
-						<select id='host' onChange='applyFilter(document.stats)'>
+						<select id='host' onChange='applyFilter()'>
 							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog');?></option>
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
@@ -409,10 +409,10 @@ function syslog_stats_filter() {
 								FROM syslog_hosts AS sh
 								ORDER BY host');
 
-							if (sizeof($facilities)) {
-							foreach ($facilities as $r) {
-								print '<option value="' . $r['host_id'] . '"'; if (get_request_var('host') == $r['host_id']) { print ' selected'; } print '>' . $r['host'] . "</option>\n";
-							}
+							if (cacti_sizeof($facilities)) {
+								foreach ($facilities as $r) {
+									print '<option value="' . $r['host_id'] . '"'; if (get_request_var('host') == $r['host_id']) { print ' selected'; } print '>' . $r['host'] . "</option>\n";
+								}
 							}
 							?>
 						</select>
@@ -421,7 +421,7 @@ function syslog_stats_filter() {
 						<?php print __('Facility', 'syslog');?>
 					</td>
 					<td>
-						<select id='facility' onChange='applyFilter(document.stats)'>
+						<select id='facility' onChange='applyFilter()'>
 							<option value='-1'<?php if (get_request_var('facility') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog');?></option>
 							<option value='-2'<?php if (get_request_var('facility') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
@@ -429,10 +429,10 @@ function syslog_stats_filter() {
 								FROM syslog_facilities AS sf
 								ORDER BY facility');
 
-							if (sizeof($facilities)) {
-							foreach ($facilities as $r) {
-								print '<option value="' . $r['facility_id'] . '"'; if (get_request_var('facility') == $r['facility_id']) { print ' selected'; } print '>' . ucfirst($r['facility']) . "</option>\n";
-							}
+							if (cacti_sizeof($facilities)) {
+								foreach ($facilities as $r) {
+									print '<option value="' . $r['facility_id'] . '"'; if (get_request_var('facility') == $r['facility_id']) { print ' selected'; } print '>' . ucfirst($r['facility']) . "</option>\n";
+								}
 							}
 							?>
 						</select>
@@ -449,10 +449,10 @@ function syslog_stats_filter() {
 								FROM syslog_priorities AS sp
 								ORDER BY priority');
 
-							if (sizeof($priorities)) {
-							foreach ($priorities as $r) {
-								print '<option value="' . $r['priority_id'] . '"'; if (get_request_var('priority') == $r['priority_id']) { print ' selected'; } print '>' . ucfirst($r['priority']) . "</option>\n";
-							}
+							if (cacti_sizeof($priorities)) {
+								foreach ($priorities as $r) {
+									print '<option value="' . $r['priority_id'] . '"'; if (get_request_var('priority') == $r['priority_id']) { print ' selected'; } print '>' . ucfirst($r['priority']) . "</option>\n";
+								}
 							}
 							?>
 						</select>
@@ -498,10 +498,10 @@ function syslog_stats_filter() {
 						<select id='rows' onChange='applyFilter()'>
 						<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog');?></option>
 						<?php
-							if (sizeof($item_rows) > 0) {
-							foreach ($item_rows as $key => $value) {
-								print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
-							}
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . "</option>\n";
+								}
 							}
 						?>
 						</select>
@@ -529,7 +529,8 @@ function syslog_stats_filter() {
 		});
 
 		function applyFilter() {
-			strURL  = 'syslog.php?header=false&facility=' + $('#facility').val();
+			strURL  = 'syslog.php?header=false';
+			strURL += '&facility=' + $('#facility').val();
 			strURL += '&host=' + $('#host').val();
 			strURL += '&priority=' + $('#priority').val();
 			strURL += '&program=' + $('#program').val();
@@ -930,18 +931,7 @@ function syslog_filter($sql_where, $tab) {
 			dateFormat: 'yy-mm-dd',
 			showButtonPanel: false
 		});
-
-		$(window).resize(function() {
-			resizeHostSelect();
-		});
-
-		resizeHostSelect();
 	});
-
-	function resizeHostSelect() {
-		position = $('#host').offset();
-		$('#host').css('height', ($(window).height()-position.top)+'px');
-	}
 
 	function applyTimespan() {
 		strURL  = urlPath+'plugins/syslog/syslog.php?header=false&predefined_timespan=' + $('#predefined_timespan').val();
@@ -1053,7 +1043,7 @@ function syslog_filter($sql_where, $tab) {
 									$end_val = sizeof($graph_timespans)+1;
 								}
 
-								if (sizeof($graph_timespans) > 0) {
+								if (cacti_sizeof($graph_timespans)) {
 									for ($value=$start_val; $value < $end_val; $value++) {
 										print "<option value='$value'"; if (get_request_var('predefined_timespan') == $value) { print ' selected'; } print '>' . title_trim($graph_timespans[$value], 40) . "</option>\n";
 									}
@@ -1068,7 +1058,7 @@ function syslog_filter($sql_where, $tab) {
 							<input type='text' id='date1' size='15' value='<?php print (isset($_SESSION['sess_current_date1']) ? $_SESSION['sess_current_date1'] : '');?>'>
 						</td>
 						<td>
-							<i title='<?php print __esc('Start Date Selector', 'syslog');?>' class='calendar fa fa-calendar' id='startDate'></i>
+							<i title='<?php print __esc('Start Date Selector', 'syslog');?>' class='calendar fa fa-calendar-alt' id='startDate'></i>
 						</td>
 						<td>
 							<?php print __('To', 'syslog');?>
@@ -1077,7 +1067,7 @@ function syslog_filter($sql_where, $tab) {
 							<input type='text' id='date2' size='15' value='<?php print (isset($_SESSION['sess_current_date2']) ? $_SESSION['sess_current_date2'] : '');?>'>
 						</td>
 						<td>
-							<i title='<?php print __esc('End Date Selector', 'syslog');?>' class='calendar fa fa-calendar' id='endDate'></i>
+							<i title='<?php print __esc('End Date Selector', 'syslog');?>' class='calendar fa fa-calendar-alt' id='endDate'></i>
 						</td>
 						<td>
 							<i title='<?php print __esc('Shift Time Backward', 'syslog');?>' onclick='timeshiftFilterLeft()' class='shiftArrow fa fa-backward'></i>
@@ -1087,7 +1077,7 @@ function syslog_filter($sql_where, $tab) {
 								<?php
 								$start_val = 1;
 								$end_val = sizeof($graph_timeshifts)+1;
-								if (sizeof($graph_timeshifts) > 0) {
+								if (cacti_sizeof($graph_timeshifts)) {
 									for ($shift_value=$start_val; $shift_value < $end_val; $shift_value++) {
 										print "<option value='$shift_value'"; if (get_request_var('predefined_timeshift') == $shift_value) { print ' selected'; } print '>' . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
 									}
@@ -1099,26 +1089,20 @@ function syslog_filter($sql_where, $tab) {
 							<i title='<?php print __esc('Shift Time Forward', 'syslog');?>' onclick='timeshiftFilterRight()' class='shiftArrow fa fa-forward'></i>
 						</td>
 						<td>
-							<input id='go' type='button' value='<?php print __esc('Go', 'syslog');?>'>
-						</td>
-						<td>
-							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog');?>'>
-						</td>
-						<td>
-							<input id='export' type='button' value='<?php print __esc('Export', 'syslog');?>' title='<?php print __esc('Export Records to CSV', 'syslog');?>'>
-						</td>
-						<td>
-							<input id='save' type='button' value='<?php print __esc('Save', 'syslog');?>' title='<?php print __esc('Save Default Settings', 'syslog');?>'>
+							<span>
+								<input id='go' type='button' value='<?php print __esc('Go', 'syslog');?>'>
+								<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog');?>'>
+								<input id='export' type='button' value='<?php print __esc('Export', 'syslog');?>' title='<?php print __esc('Export Records to CSV', 'syslog');?>'>
+								<input id='save' type='button' value='<?php print __esc('Save', 'syslog');?>' title='<?php print __esc('Save Default Settings', 'syslog');?>'>
+							</span>
 						</td>
 						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) { ?>
-						<td align='right' style='white-space:nowrap;'>
-							<input type='button' value='<?php print __esc('Alerts', 'syslog');?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
-						</td>
 						<td>
-							<input type='button' value='<?php print __esc('Removals', 'syslog');?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
-						</td>
-						<td>
-							<input type='button' value='<?php print __esc('Reports', 'syslog');?>' title='<?php print __esc('View Syslog Reports', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>
+							<span>
+								<input type='button' value='<?php print __esc('Alerts', 'syslog');?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
+								<input type='button' value='<?php print __esc('Removals', 'syslog');?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
+								<input type='button' value='<?php print __esc('Reports', 'syslog');?>' title='<?php print __esc('View Syslog Reports', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>
+							</span>
 						</td>
 						<?php } ?>
 						<td>
@@ -1141,14 +1125,14 @@ function syslog_filter($sql_where, $tab) {
 								<?php
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
-								$hosts       = syslog_db_fetch_assoc("SELECT host_id, host
+
+								$hosts = syslog_db_fetch_assoc("SELECT host_id, host
 									FROM `" . $syslogdb_default . "`.`syslog_hosts`
 									$hosts_where
 									ORDER BY host");
 
-
-								$selected    = explode(' ', get_request_var('host'));
-								if (sizeof($hosts)) {
+								$selected = explode(' ', get_request_var('host'));
+								if (cacti_sizeof($hosts)) {
 									foreach ($hosts as $host) {
 										if (!is_ipaddress($host['host'])) {
 											$parts = explode('.', $host['host']);
@@ -1156,13 +1140,13 @@ function syslog_filter($sql_where, $tab) {
 										}
 
 										print "<option value='" . $host["host_id"] . "'";
-										if (sizeof($selected)) {
+										if (cacti_sizeof($selected)) {
 											if (in_array($host['host_id'], $selected)) {
 												print ' selected';
 											}
 										}
 										print '>';
-										print $host['host'] . "</option>\n";
+										print $host['host'] . '</option>';
 									}
 								}
 								?>
@@ -1173,7 +1157,7 @@ function syslog_filter($sql_where, $tab) {
 								<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog');?></option>
 								<?php
 								foreach($item_rows AS $rows => $display_text) {
-									print "<option value='" . $rows . "'"; if (get_request_var('rows') == $rows) { print ' selected'; } print '>' . __('%d Messages', $display_text, 'syslog') . "</option>\n";
+									print "<option value='" . $rows . "'"; if (get_request_var('rows') == $rows) { print ' selected'; } print '>' . __('%d Messages', $display_text, 'syslog') . '</option>';
 								}
 								?>
 							</select>
@@ -1191,7 +1175,7 @@ function syslog_filter($sql_where, $tab) {
 							<select id='refresh' onChange='applyFilter()'>
 								<?php
 								foreach($page_refresh_interval AS $seconds => $display_text) {
-									print "<option value='" . $seconds . "'"; if (get_request_var('refresh') == $seconds) { print ' selected'; } print '>' . $display_text . "</option>\n";
+									print "<option value='" . $seconds . "'"; if (get_request_var('refresh') == $seconds) { print ' selected'; } print '>' . $display_text . '</option>';
 								}
 								?>
 							</select>
@@ -1213,10 +1197,10 @@ function syslog_filter($sql_where, $tab) {
 									ON f.facility_id=fh.facility_id ' . (strlen($hostfilter) ? 'WHERE ':'') . $hostfilter . '
 									ORDER BY facility');
 
-								if (sizeof($efacilities)) {
-								foreach ($efacilities as $efacility) {
-									print "<option value='" . $efacility['facility_id'] . "'"; if (get_request_var('efacility') == $efacility['facility_id']) { print ' selected'; } print '>' . ucfirst($efacility['facility']) . "</option>\n";
-								}
+								if (cacti_sizeof($efacilities)) {
+									foreach ($efacilities as $efacility) {
+										print "<option value='" . $efacility['facility_id'] . "'"; if (get_request_var('efacility') == $efacility['facility_id']) { print ' selected'; } print '>' . ucfirst($efacility['facility']) . '</option>';
+									}
 								}
 								?>
 							</select>
@@ -1340,7 +1324,7 @@ function syslog_messages($tab = 'syslog') {
 					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 					$sql_where
 				) AS rowcount");
-		}elseif (get_request_var("removal") == -1){
+		}elseif (get_request_var('removal') == -1){
 			$total_rows = syslog_db_fetch_cell("SELECT count(*)
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
 				$sql_where");
@@ -1364,8 +1348,6 @@ function syslog_messages($tab = 'syslog') {
 	}
 
 	if ($tab == 'syslog') {
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 7, __('Messages', 'syslog'), 'page', 'main');
-
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
 				'nosortt'     => array(__('Actions', 'syslog'), 'ASC'),
@@ -1385,44 +1367,64 @@ function syslog_messages($tab = 'syslog') {
 				'priority_id' => array(__('Priority', 'syslog'), 'ASC'));
 		}
 
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, cacti_sizeof($display_text), __('Messages', 'syslog'), 'page', 'main');
+
 		print $nav;
 
 		html_start_box('', '100%', '', '3', 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-		$hosts      = array_rekey(syslog_db_fetch_assoc('SELECT host_id, host FROM `' . $syslogdb_default . '`.`syslog_hosts`'), 'host_id', 'host');
-		$facilities = array_rekey(syslog_db_fetch_assoc('SELECT facility_id, facility FROM `' . $syslogdb_default . '`.`syslog_facilities`'), 'facility_id', 'facility');
-		$priorities = array_rekey(syslog_db_fetch_assoc('SELECT priority_id, priority FROM `' . $syslogdb_default . '`.`syslog_priorities`'), 'priority_id', 'priority');
+		$hosts = array_rekey(
+			syslog_db_fetch_assoc('SELECT host_id, host
+				FROM `' . $syslogdb_default . '`.`syslog_hosts`'),
+			'host_id', 'host'
+		);
 
-		if (sizeof($syslog_messages)) {
-			foreach ($syslog_messages as $syslog_message) {
-				$title   = htmlspecialchars($syslog_message['message'], ENT_QUOTES);
+		$facilities = array_rekey(
+			syslog_db_fetch_assoc('SELECT facility_id, facility
+				FROM `' . $syslogdb_default . '`.`syslog_facilities`'),
+			'facility_id', 'facility'
+		);
 
-				syslog_row_color($syslog_message['priority_id'], $syslog_message['message']);
+		$priorities = array_rekey(
+			syslog_db_fetch_assoc('SELECT priority_id, priority
+				FROM `' . $syslogdb_default . '`.`syslog_priorities`'),
+			'priority_id', 'priority'
+		);
+
+		if (cacti_sizeof($syslog_messages)) {
+			foreach ($syslog_messages as $sm) {
+				$title = html_escape($sm['message']);
+
+				syslog_row_color($sm['priority_id'], $sm['message']);
 
 				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
-					print "<td class='nowrap left' style='width:1%:padding:1px !important;'>";
-					if ($syslog_message['mtype'] == 'main') {
-						print "<a style='padding:1px' href='" . htmlspecialchars('syslog_alerts.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/add.png'></a>
-						<a style='padding:1px' href='" . htmlspecialchars('syslog_removal.php?id=' . $syslog_message[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/delete.png'></a>\n";
+					$url = '';
+					if ($sm['mtype'] == 'main') {
+						$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/add.png'></a>";
+						$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/delete.png'></a>";
 					}
-					print "</td>\n";
+
+					form_selectable_cell($url, $sm['seq']);
 				}
-				print '<td class="left nowrap">' . $syslog_message['logtime'] . "</td>\n";
-				print '<td class="left nowrap">' . $hosts[$syslog_message['host_id']] . "</td>\n";
-				print '<td class="left nowrap">' . $syslog_message['program'] . "</td>\n";
-				print '<td class="left syslogMessage">' . filter_value(title_trim($syslog_message[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('filter')) . "</td>\n";
-				print '<td class="left nowrap">' . ucfirst($facilities[$syslog_message['facility_id']]) . "</td>\n";
-				print '<td class="left nowrap">' . ucfirst($priorities[$syslog_message['priority_id']]) . "</td>\n";
+
+				form_selectable_cell($sm['logtime'], $sm['seq']);
+				form_selectable_cell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']]:__('Unknown', 'syslog'), $sm['seq']);
+				form_selectable_cell($sm['program'], $sm['seq']);
+				form_selectable_cell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('filter')), $sm['seq'], '', 'left syslogMessage');
+				form_selectable_cell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']]:__('Unknown', 'syslog'), $sm['seq']);
+				form_selectable_cell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']]:__('Unknown', 'syslog'), $sm['seq']);
+
+				form_end_row();
 			}
 		}else{
-			print "<tr><td class='center' colspan='7'><em>" . __('No Syslog Messages', 'syslog') . "</em></td></tr>";
+			print "<tr><td class='center' colspan='" . (cacti_sizeof($display_text)) . "'><em>" . __('No Syslog Messages', 'syslog') . "</em></td></tr>";
 		}
 
 		html_end_box(false);
 
-		if (sizeof($syslog_messages)) {
+		if (cacti_sizeof($syslog_messages)) {
 			print $nav;
 		}
 
@@ -1452,10 +1454,6 @@ function syslog_messages($tab = 'syslog') {
 		</script>
 		<?php
 	}else{
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 8, __('Alert Log Rows', 'syslog'), 'page', 'main');
-
-		print $nav;
-
 		$display_text = array(
 			'name'        => array('display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'),
 			'severity'    => array('display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'),
@@ -1467,33 +1465,40 @@ function syslog_messages($tab = 'syslog') {
 			'priority_id' => array('display' => __('Priority', 'syslog'),   'sort' => 'ASC', 'align' => 'right')
 		);
 
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, cacti_sizeof($display_text), __('Alert Log Rows', 'syslog'), 'page', 'main');
+
+		print $nav;
+
 		html_start_box('', '100%', '', '3', 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-		if (sizeof($syslog_messages)) {
+		if (cacti_sizeof($syslog_messages)) {
 			foreach ($syslog_messages as $log) {
-				$title   = htmlspecialchars($log['logmsg'], ENT_QUOTES);
+				$title   = html_escape($log['logmsg']);
 
 				syslog_log_row_color($log['severity'], $title);
 
-				print "<td class='left'><a class='linkEditMain' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . "'>" . (strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog')) . "</a></td>\n";
-				print '<td class="left nowrap">' . (isset($severities[$log['severity']]) ? $severities[$log['severity']]:'Unknown') . "</td>\n";
-				print '<td class="left nowrap">' . $log['logtime'] . "</td>\n";
-				print '<td class="left syslogMessage">' . filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')) . "</td>\n";
-				print '<td class="right nowrap">' . $log['count'] . "</td>\n";
-				print '<td class="right nowrap">' . $log['host'] . "</td>\n";
-				print '<td class="right nowrap">' . ucfirst($log['facility']) . "</td>\n";
-				print '<td class="right nowrap">' . ucfirst($log['priority']) . "</td>\n";
-				print "</tr>\n";
+				form_selectable_cell(filter_value(strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq']);
+
+				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']]:__('Unknown', 'syslog'), $log['seq']);
+				form_selectable_cell($log['logtime'], $log['seq']);
+				form_selectable_cell(filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')), $log['seq'], '', 'syslogMessage');
+
+				form_selectable_cell($log['count'], $log['seq'], '', 'right');
+				form_selectable_cell($log['host'], $log['seq'], '', 'right');
+				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'right');
+				form_selectable_cell(ucfirst($log['priority']), $log['seq'], '', 'right');
+
+				form_end_row();
 			}
 		}else{
-			print "<tr><td colspan='11'><em>" . __('No Alert Log Messages', 'syslog') . "</em></td></tr>";
+			print "<tr><td colspan='" . (cacti_sizeof($display_text)) . "'><em>" . __('No Alert Log Messages', 'syslog') . "</em></td></tr>";
 		}
 
 		html_end_box(false);
 
-		if (sizeof($syslog_messages)) {
+		if (cacti_sizeof($syslog_messages)) {
 			print $nav;
 		}
 
@@ -1506,7 +1511,7 @@ function save_settings() {
 
 	syslog_request_validation($current_tab);
 
-	if (sizeof($_REQUEST)) {
+	if (cacti_sizeof($_REQUEST)) {
 		foreach($_REQUEST as $var => $value) {
 			switch($var) {
 			case 'rows':
@@ -1538,110 +1543,35 @@ function save_settings() {
 }
 
 function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sql_where = '') {
-	$theme = get_selected_theme();
-
 	if (strpos($call_back, '()') === false) {
 		$call_back .= '()';
 	}
 
-	if ($theme == 'classic') {
-		?>
-		<td>
-			<select id='eprogram' name='eprogram' onChange='<?php print $call_back;?>'>
-				<option value='-1'<?php if (get_request_var('eprogram') == '-1') {?> selected<?php }?>><?php print __('All Programs', 'syslog');?></option>
-				<?php
-
-				$programs = syslog_db_fetch_assoc('SELECT DISTINCT program_id, program
-					FROM syslog_programs AS spr
-					ORDER BY program');
-
-				if (sizeof($programs)) {
-					foreach ($programs as $program) {
-						print "<option value='" . $program['program_id'] . "'"; if (get_request_var('eprogram') == $program['program_id']) { print ' selected'; } print '>' . title_trim(htmlspecialchars($program['program']), 40) . "</option>\n";
-					}
-				}
-				?>
-			</select>
-		</td>
-		<?php
+	if ($program_id > 0) {
+		$program = syslog_db_fetch_cell("SELECT program
+			FROM syslog_programs
+			WHERE program_id = $program_id");
 	} else {
-		if ($program_id > 0) {
-			$program = syslog_db_fetch_cell("SELECT program FROM syslog_programs WHERE program_id = $program_id");
-		} else {
-			$program = __('All Programs', 'syslog');
-		}
-
-		?>
-		<td>
-			<span id='program_wrapper' style='width:200px;' class='ui-selectmenu-button ui-widget ui-state-default ui-corner-all'>
-				<span id='program_click' class='ui-icon ui-icon-triangle-1-s'></span>
-				<input size='28' id='program' value='<?php print $program;?>'>
-			</span>
-			<input type='hidden' id='eprogram' name='eprogram' value='<?php print $program_id;?>'>
-			<input type='hidden' id='call_back' value='<?php print $call_back;?>'>
-		</td>
-		<script type='text/javascript'>
-		$(function() {
-			$('#program').unbind().autocomplete({
-				source: pageName+'?action=ajax_programs',
-				autoFocus: true,
-				minLength: 0,
-				select: function(event,ui) {
-					$('#eprogram').val(ui.item.id);
-					callBack = $('#call_back').val();
-					if (callBack != 'undefined') {
-						eval(callBack);
-					}else{
-						<?php print $call_back;?>;
-					}
-				}
-			}).addClass('ui-state-default ui-selectmenu-text').css('border', 'none').css('background-color', 'transparent');
-
-			$('#program_click').css('z-index', '4');
-			$('#program_wrapper').unbind().dblclick(function() {
-				programOpen = false;
-				clearTimeout(programTimer);
-				clearTimeout(clickProgramTimeout);
-				$('#program').autocomplete('close');
-			}).click(function() {
-				if (programOpen) {
-					$('#program').autocomplete('close');
-					clearTimeout(programTimer);
-					programOpen = false;
-				}else{
-					clickProgramTimeout = setTimeout(function() {
-						$('#program').autocomplete('search', '');
-						clearTimeout(programTimer);
-						programOpen = true;
-					}, 200);
-				}
-			}).on('mouseenter', function() {
-				$(this).addClass('ui-state-hover');
-				$('input#program').addClass('ui-state-hover');
-			}).on('mouseleave', function() {
-				$(this).removeClass('ui-state-hover');
-				$('#program').removeClass('ui-state-hover');
-				programTimer = setTimeout(function() { $('#program').autocomplete('close'); }, 800);
-			});
-
-			var programPrefix = '';
-			$('#program').autocomplete('widget').each(function() {
-				programPrefix=$(this).attr('id');
-
-				if (programPrefix != '') {
-					$('ul[id="'+programPrefix+'"]').on('mouseenter', function() {
-						clearTimeout(programTimer);
-					}).on('mouseleave', function() {
-						programTimer = setTimeout(function() { $('#program').autocomplete('close'); }, 800);
-						$(this).removeClass('ui-state-hover');
-						$('input#program').removeClass('ui-state-hover');
-					});
-				}
-			});
-		});
-		</script>
-	<?php
+		$program = __('All Programs', 'syslog');
 	}
+
+	print '<td>';
+
+	syslog_form_callback(
+		'eprogram',
+		'SELECT DISTINCT program_id, program FROM syslog_programs AS spr ORDER BY program',
+		'program',
+		'program_id',
+		'ajax_programs',
+		$program_id,
+		$program,
+		__('All Programs', 'syslog'),
+		__('All Programs', 'syslog'),
+		'',
+		$call_back
+	);
+
+	print '</td>';
 }
 
 function get_ajax_programs($include_any = true, $sql_where = '') {
@@ -1654,17 +1584,158 @@ function get_ajax_programs($include_any = true, $sql_where = '') {
 
 	if (get_request_var('term') == '') {
 		if ($include_any) {
-			$return[] = array('label' => 'All Programs', 'value' => 'All Programs', 'id' => '-1');
+			$return[] = array(
+				'label' => __('All Programs', 'syslog'),
+				'value' => __('All Programs', 'syslog'),
+				'id' => '-1'
+			);
 		}
 	}
 
-	$programs = syslog_db_fetch_assoc("SELECT program_id, program FROM syslog_programs $sql_where ORDER BY program LIMIT 20");
-	if (sizeof($programs)) {
+	$programs = syslog_db_fetch_assoc("SELECT program_id, program
+		FROM syslog_programs
+		$sql_where
+		ORDER BY program
+		LIMIT 20");
+
+	if (cacti_sizeof($programs)) {
 		foreach($programs as $program) {
-			$return[] = array('label' => $program['program'], 'value' => $program['program'], 'id' => $program['program_id']);
+			$return[] = array(
+				'label' => $program['program'],
+				'value' => $program['program'],
+				'id' => $program['program_id']
+			);
 		}
 	}
 
 	print json_encode($return);
+}
+
+function syslog_form_callback($form_name, $classic_sql, $column_display, $column_id, $callback, $previous_id, $previous_value, $none_entry, $default_value, $class = '', $on_change = '') {
+	if ($previous_value == '') {
+		$previous_value = $default_value;
+	}
+
+	if (isset($_SESSION['sess_error_fields'])) {
+		if (!empty($_SESSION['sess_error_fields'][$form_name])) {
+			$class .= ($class != '' ? ' ':'') . 'txtErrorTextBox';
+			unset($_SESSION['sess_error_fields'][$form_name]);
+		}
+	}
+
+	if (isset($_SESSION['sess_field_values'])) {
+		if (!empty($_SESSION['sess_field_values'][$form_name])) {
+			$previous_value = $_SESSION['sess_field_values'][$form_name];
+		}
+	}
+
+	if ($class != '') {
+		$class = " class='$class' ";
+	}
+
+	$theme = get_selected_theme();
+	if ($theme == 'classic' || read_config_option('autocomplete') > 0) {
+		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . '>';
+
+		if (!empty($none_entry)) {
+			print "<option value='0'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>\n";
+		}
+
+		$form_data = syslog_db_fetch_assoc($classic_sql);
+
+		html_create_list($form_data, $column_display, $column_id, html_escape($previous_id));
+
+		print "</select>\n";
+	} else {
+		if (empty($previous_id) && $previous_value == '') {
+			$previous_value = $none_entry;
+		}
+
+		print "<span id='$form_name" . "_wrap' class='autodrop ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-corner-all ui-button ui-widget'>";
+		print "<span id='$form_name" . "_click' style='z-index:4' class='ui-selectmenu-icon ui-icon ui-icon-triangle-1-s'></span>";
+		print "<span class='ui-select-text'>";
+		print "<input type='text' class='ui-state-default ui-corner-all' id='$form_name" . "_input' value='" . html_escape($previous_value) . "'>";
+		print "</span>";
+
+		if (!empty($none_entry) && empty($previous_value)) {
+			$previous_value = $none_entry;
+		}
+
+		print "</span>";
+		print "<input type='hidden' id='" . $form_name . "' name='" . $form_name . "' value='" . html_escape($previous_id) . "'>";
+		?>
+		<script type='text/javascript'>
+		var <?php print $form_name;?>Timer;
+		var <?php print $form_name;?>ClickTimer;
+		var <?php print $form_name;?>Open = false;
+
+		$(function() {
+		    $('#<?php print $form_name;?>_input').autocomplete({
+		        source: '<?php print get_current_page();?>?action=<?php print $callback;?>',
+				autoFocus: true,
+				minLength: 0,
+				select: function(event,ui) {
+					$('#<?php print $form_name;?>_input').val(ui.item.label);
+					if (ui.item.id) {
+						$('#<?php print $form_name;?>').val(ui.item.id);
+					} else {
+						$('#<?php print $form_name;?>').val(ui.item.value);
+					}
+					<?php print $on_change;?>;
+				}
+			}).css('border', 'none').css('background-color', 'transparent');
+
+			$('#<?php print $form_name;?>_wrap').on('dblclick', function() {
+				<?php print $form_name;?>Open = false;
+				clearTimeout(<?php print $form_name;?>Timer);
+				clearTimeout(<?php print $form_name;?>ClickTimer);
+				$('#<?php print $form_name;?>_input').autocomplete('close');
+			}).on('click', function() {
+				if (<?php print $form_name;?>Open) {
+					$('#<?php print $form_name;?>_input').autocomplete('close');
+					clearTimeout(<?php print $form_name;?>Timer);
+					<?php print $form_name;?>Open = false;
+				} else {
+					<?php print $form_name;?>ClickTimer = setTimeout(function() {
+						$('#<?php print $form_name;?>_input').autocomplete('search', '');
+						clearTimeout(<?php print $form_name;?>Timer);
+						<?php print $form_name;?>Open = true;
+					}, 200);
+				}
+			}).on('mouseleave', function() {
+				<?php print $form_name;?>Timer = setTimeout(function() { $('#<?php print $form_name;?>_input').autocomplete('close'); }, 800);
+			});
+
+			width = $('#<?php print $form_name;?>_input').textBoxWidth();
+			if (width < 100) {
+				width = 100;
+			}
+
+			$('#<?php print $form_name;?>_wrap').css('width', width+20);
+			$('#<?php print $form_name;?>_input').css('width', width);
+
+			$('ul[id^="ui-id"]').on('mouseenter', function() {
+				clearTimeout(<?php print $form_name;?>Timer);
+			}).on('mouseleave', function() {
+				<?php print $form_name;?>Timer = setTimeout(function() { $('#<?php print $form_name;?>_input').autocomplete('close'); }, 800);
+			});
+
+			$('ul[id^="ui-id"] > li').each().on('mouseenter', function() {
+				$(this).addClass('ui-state-hover');
+			}).on('mouseleave', function() {
+				$(this).removeClass('ui-state-hover');
+			});
+
+			$('#<?php print $form_name;?>_wrap').on('mouseenter', function() {
+				$(this).addClass('ui-state-hover');
+				$('input#<?php print $form_name;?>_input').addClass('ui-state-hover');
+			}).on('mouseleave', function() {
+				$(this).removeClass('ui-state-hover');
+				$('input#<?php print $form_name;?>_input').removeClass('ui-state-hover');
+			});
+		});
+		</script>
+		<?php
+	}
 }
 

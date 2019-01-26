@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2017 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -22,21 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-$no_http_headers = true;
-
-/* do NOT run this script through a web browser */
-if (!isset($_SERVER['argv'][0]) || isset($_SERVER['REQUEST_METHOD'])  || isset($_SERVER['REMOTE_ADDR'])) {
-	die('<br><strong>This script is only meant to run at the command line.</strong>');
-}
-
-$dir = dirname(__FILE__);
-chdir($dir);
-
-if (strpos($dir, 'plugins') !== false) {
-	chdir('../../');
-}
-
-include('./include/global.php');
+include('./include/cli_check.php');
 include_once('./lib/poller.php');
 include('./plugins/syslog/config.php');
 include_once('./plugins/syslog/functions.php');
@@ -45,7 +31,7 @@ include_once('./plugins/syslog/functions.php');
  * bursts of incoming syslog events
  */
 ini_set('max_execution_time', 3600);
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '-1');
 
 global $syslog_debug, $syslog_facilities, $syslog_levels;
 
@@ -56,7 +42,7 @@ $forcer = false;
 $parms = $_SERVER['argv'];
 array_shift($parms);
 
-if (sizeof($parms)) {
+if (cacti_sizeof($parms)) {
 	foreach($parms as $parameter) {
 		if (strpos($parameter, '=')) {
 			list($arg, $value) = explode('=', $parameter);
@@ -194,17 +180,31 @@ if ($syslog_domains != '') {
 
 /* correct for invalid hosts */
 if (read_config_option('syslog_validate_hostname') == 'on') {
-	$hosts = syslog_db_fetch_assoc('SELECT DISTINCT host FROM `' . $syslogdb_default . '`.`syslog_incoming`');
+	$hosts = syslog_db_fetch_assoc('SELECT DISTINCT host
+		FROM `' . $syslogdb_default . '`.`syslog_incoming`');
+
 	foreach($hosts as $host) {
 		if ($host['host'] == gethostbyname($host['host'])) {
-			syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_incoming` SET host='invalid_host' WHERE host='" . $host['host'] . "'");
+			syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
+				SET host = 'invalid_host'
+				WHERE host = " . db_qstr($host['host']));
 		}
 	}
 }
 
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_programs` (program) SELECT DISTINCT program FROM `' . $syslogdb_default . '`.`syslog_incoming` WHERE status=' . $uniqueID . ' ON DUPLICATE KEY UPDATE program=VALUES(program), last_updated=NOW()');
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_programs`
+	(program)
+	SELECT DISTINCT program
+	FROM `' . $syslogdb_default . '`.`syslog_incoming`
+	WHERE status=' . $uniqueID . '
+	ON DUPLICATE KEY UPDATE program=VALUES(program), last_updated=NOW()');
 
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_hosts` (host) SELECT DISTINCT host FROM `' . $syslogdb_default . '`.`syslog_incoming` WHERE status=' . $uniqueID . ' ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()');
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_hosts`
+	(host)
+	SELECT DISTINCT host
+	FROM `' . $syslogdb_default . '`.`syslog_incoming`
+	WHERE status=' . $uniqueID . '
+	ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()');
 
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_host_facilities`
 	(host_id, facility_id)
@@ -217,7 +217,8 @@ syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_host_faciliti
 
 /* tally statistics for this interval */
 if (read_config_option('syslog_statistics') == 'on') {
-	syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics` (host_id, facility_id, priority_id, program_id, insert_time, records)
+	syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_statistics`
+		(host_id, facility_id, priority_id, program_id, insert_time, records)
 		SELECT host_id, facility_id, priority_id, program_id, NOW(), SUM(records) AS records
 		FROM (SELECT host_id, facility_id, priority_id, program_id, COUNT(*) AS records
 			FROM syslog_incoming AS si
@@ -264,7 +265,7 @@ $from = array($from_email, $from_name);
 syslog_debug('Found   ' . $syslog_alerts . ',  Alert Rule' . ($syslog_alerts == 1 ? '' : 's' ) . ' to process');
 
 $syslog_alarms = 0;
-if (sizeof($query)) {
+if (cacti_sizeof($query)) {
 	foreach($query as $alert) {
 		$sql      = '';
 		$alertm   = '';
@@ -315,7 +316,7 @@ if (sizeof($query)) {
 					$date = date('Y-m-d H:i:s', time() - ($alert['repeat_alert'] * read_config_option('poller_interval')));
 				}
 
-				if (sizeof($at)) {
+				if (cacti_sizeof($at)) {
 					$htmlm .= "<html><head><style type='text/css'>";
 					$htmlm .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
 					$htmlm .= '</style></head>';
@@ -323,20 +324,20 @@ if (sizeof($query)) {
 					if ($alert['method'] == '1') {
 						$alertm .= "-----------------------------------------------\n";
 						$alertm .= __('WARNING: A Syslog Plugin Instance Count Alert has Been Triggered', 'syslog') . "\n";
-						$alertm .= __('Name:', 'syslog')           . ' ' . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . "\n";
+						$alertm .= __('Name:', 'syslog')           . ' ' . html_escape($alert['name']) . "\n";
 						$alertm .= __('Severity:', 'syslog')       . ' ' . $severities[$alert['severity']] . "\n";
 						$alertm .= __('Threshold:', 'syslog')      . ' ' . $alert['num'] . "\n";
 						$alertm .= __('Count:', 'syslog')          . ' ' . sizeof($at)       . "\n";
-						$alertm .= __('Message String:', 'syslog') . ' ' . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . "\n";
+						$alertm .= __('Message String:', 'syslog') . ' ' . html_escape($alert['message']) . "\n";
 
 						$htmlm  .= '<body><h1>' . __('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
 						$htmlm  .= '<table cellspacing="0" cellpadding="3" border="1">';
 						$htmlm  .= '<tr><th>' . __('Alert Name', 'syslog') . '</th><th>' . __('Severity', 'syslog') . '</th><th>' . __('Threshold', 'syslog') . '</th><th>' . __('Count', 'syslog') . '</th><th>' . __('Match String', 'syslog') . '</th></tr>';
-						$htmlm  .= '<tr><td>' . htmlspecialchars($alert['name'], ENT_QUOTES, 'UTF-8') . '</td>';
+						$htmlm  .= '<tr><td>' . html_escape($alert['name']) . '</td>';
 						$htmlm  .= '<td>'     . $severities[$alert['severity']]  . '</td>';
 						$htmlm  .= '<td>'     . $alert['num']     . '</td>';
 						$htmlm  .= '<td>'     . sizeof($at)       . '</td>';
-						$htmlm  .= '<td>'     . htmlspecialchars($alert['message'], ENT_QUOTES, 'UTF-8') . '</td></tr></table><br>';
+						$htmlm  .= '<td>'     . html_escape($alert['message']) . '</td></tr></table><br>';
 					}else{
 						$htmlm .= '<body><h1>' . __('Cacti Syslog Plugin Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
 					}
@@ -356,18 +357,18 @@ if (sizeof($query)) {
 						if (($alert['method'] == 1 && $alert_count < $max_alerts) || $alert['method'] == 0) {
 							if ($alert['method'] == 0) $alertm  = $alerth;
 							$alertm .= "-----------------------------------------------\n";
-							$alertm .= __('Hostname:', 'syslog') . ' ' . htmlspecialchars($a['host'], ENT_QUOTES, 'UTF-8') . "\n";
+							$alertm .= __('Hostname:', 'syslog') . ' ' . html_escape($a['host']) . "\n";
 							$alertm .= __('Date:', 'syslog')     . ' ' . $a['date'] . ' ' . $a['time'] . "\n";
 							$alertm .= __('Severity:', 'syslog') . ' ' . $severities[$alert['severity']] . "\n\n";
 							$alertm .= __('Level:', 'syslog')    . ' ' . $syslog_levels[$a['priority_id']] . "\n\n";
-							$alertm .= __('Message:', 'syslog')  . ' ' . "\n" . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . "\n";
+							$alertm .= __('Message:', 'syslog')  . ' ' . "\n" . html_escape($a['message']) . "\n";
 
 							if ($alert['method'] == 0) $htmlm   = $htmlh;
 							$htmlm  .= '<tr><td>' . $a['host']                        . '</td>';
 							$htmlm  .= '<td>'     . $a['date'] . ' ' . $a['time']     . '</td>';
 							$htmlm  .= '<td>'     . $severities[$alert['severity']]   . '</td>';
 							$htmlm  .= '<td>'     . $syslog_levels[$a['priority_id']] . '</td>';
-							$htmlm  .= '<td>'     . htmlspecialchars($a['message'], ENT_QUOTES, 'UTF-8') . '</td></tr>';
+							$htmlm  .= '<td>'     . html_escape($a['message']) . '</td></tr>';
 						}
 
 						$syslog_alarms++;
@@ -457,7 +458,8 @@ if (sizeof($query)) {
 api_plugin_hook('plugin_syslog_after_processing');
 
 /* move syslog records to the syslog table */
-syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog` (logtime, priority_id, facility_id, program_id, host_id, message)
+syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog`
+	(logtime, priority_id, facility_id, program_id, host_id, message)
 	SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config['timeField']     . '`),
 	priority_id, facility_id, program_id, host_id, message
 	FROM (SELECT date, time, priority_id, facility_id, program_id, host_id, message
@@ -490,32 +492,26 @@ if (read_config_option('syslog_statistics') == 'on') {
 
 /* remove alert log messages */
 if (read_config_option('syslog_alert_retention') > 0) {
-	$delete_time=date('Y-m-d H:i:s',time()-(read_config_option('syslog_alert_retention')*86400));
-	api_plugin_hook_function('syslog_delete_hostsalarm', $delete_time);
-	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_logs`
-		WHERE logtime<'" . date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400)) . "'");
+	$delete_date = date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400));
 
+	api_plugin_hook_function('syslog_delete_hostsalarm', $delete_time);
+
+	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_logs`
+		WHERE logtime < '$delete_date'");
 	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Syslog alarm log Record(s)');
 
 	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_hosts`
-		WHERE last_updated<'" . date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400)) . "'");
-
-	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_programs`
-		WHERE last_updated<'" . date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400)) . "'");
-
+		WHERE last_updated < '$delete_date'");
 	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Syslog Host Record(s)');
 
-	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_host_facilities`
-		WHERE last_updated<'" . date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400)) . "'");
+	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_programs`
+		WHERE last_updated < '$delete_date'");
+	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Old programs from programs table');
 
+	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_host_facilities`
+		WHERE last_updated < '$delete_date'");
 	syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Syslog Host/Facility Record(s)');
 }
-
-/* remove old programs */
-syslog_db_execute('DELETE FROM `' . $syslogdb_default . '`.`syslog_programs` WHERE
-	program_id NOT IN(SELECT DISTINCT program_id FROM `' . $syslogdb_default . '`.`syslog` UNION SELECT DISTINCT program_id FROM syslog_removed)');
-
-syslog_debug('Deleted ' . db_affected_rows($syslog_cnn) . ',  Old programs from programs table');
 
 /* OPTIMIZE THE TABLES ONCE A DAY, JUST TO HELP CLEANUP */
 if (date('G') == 0 && date('i') < 5) {
@@ -538,142 +534,146 @@ if (date('G') == 0 && date('i') < 5) {
 syslog_debug('Processing Reports...');
 
 /* Lets run the reports */
-$reports = syslog_db_fetch_assoc('SELECT * FROM `' . $syslogdb_default . "`.`syslog_reports` WHERE enabled='on'");
+$reports = syslog_db_fetch_assoc('SELECT *
+	FROM `' . $syslogdb_default . "`.`syslog_reports`
+	WHERE enabled='on'");
+
 $syslog_reports = sizeof($reports);
 
 syslog_debug('We have ' . $syslog_reports . ' Reports in the database');
 
-if (sizeof($reports)) {
-foreach($reports as $syslog_report) {
-	print '   Report: ' . $syslog_report['name'] . "\n";
+if (cacti_sizeof($reports)) {
+	foreach($reports as $syslog_report) {
+		print '   Report: ' . $syslog_report['name'] . "\n";
 
-	$base_start_time = $syslog_report['timepart'];
-	$last_run_time   = $syslog_report['lastsent'];
-	$time_span       = $syslog_report['timespan'];
-	$seconds_offset  = read_config_option('cron_interval');
+		$base_start_time = $syslog_report['timepart'];
+		$last_run_time   = $syslog_report['lastsent'];
+		$time_span       = $syslog_report['timespan'];
+		$seconds_offset  = read_config_option('cron_interval');
 
-	$current_time = time();
-	if (empty($last_run_time)) {
+		$current_time = time();
 
-		$start_time = strtotime(date('Y-m-d 00:00', $current_time)) + $base_start_time;
+		if (empty($last_run_time)) {
+			$start_time = strtotime(date('Y-m-d 00:00', $current_time)) + $base_start_time;
 
-		if ($current_time > $start_time) {
-			/* if timer expired within a polling interval, then poll */
-			if (($current_time - $seconds_offset) < $start_time) {
-				$next_run_time = $start_time;
+			if ($current_time > $start_time) {
+				/* if timer expired within a polling interval, then poll */
+				if (($current_time - $seconds_offset) < $start_time) {
+					$next_run_time = $start_time;
+				}else{
+					$next_run_time = $start_time + 3600*24;
+				}
 			}else{
-				$next_run_time = $start_time + 3600*24;
+				$next_run_time = $start_time;
 			}
 		}else{
-			$next_run_time = $start_time;
-		}
-	}else{
-		$next_run_time = strtotime(date('Y-m-d 00:00', $last_run_time)) + $base_start_time + $time_span;
-	}
-	$time_till_next_run = $next_run_time - $current_time;
-
-	if ($time_till_next_run < 0 || $forcer) {
-		syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . '`.`syslog_reports`
-			SET lastsent = ?
-			WHERE id = ?',
-			array(time(), $syslog_report['id']));
-
-		print '       Next Send: Now' . "\n";
-		print "       Creating Report...\n";
-
-		$sql     = '';
-		$reptext = '';
-		if ($syslog_report['type'] == 'messageb') {
-			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
-				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
-				ON sl.host_id = sh.host_id
-				WHERE message LIKE ' . "'" . $syslog_report['message'] . "%'";
+			$next_run_time = strtotime(date('Y-m-d 00:00', $last_run_time)) + $base_start_time + $time_span;
 		}
 
-		if ($syslog_report['type'] == 'messagec') {
-			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
-				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
-				ON sl.host_id = sh.host_id
-				WHERE message LIKE '. "'%" . $syslog_report['message'] . "%'";
-		}
+		$time_till_next_run = $next_run_time - $current_time;
 
-		if ($syslog_report['type'] == 'messagee') {
-			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
-				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
-				ON sl.host_id = sh.host_id
-				WHERE message LIKE ' . "'%" . $syslog_report['message'] . "'";
-		}
+		if ($time_till_next_run < 0 || $forcer) {
+			syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . '`.`syslog_reports`
+				SET lastsent = ?
+				WHERE id = ?',
+				array(time(), $syslog_report['id']));
 
-		if ($syslog_report['type'] == 'host') {
-			$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
-				INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
-				ON sl.host_id = sh.host_id
-				WHERE sh.host=' . "'" . $syslog_report['message'] . "'";
-		}
+			print '       Next Send: Now' . "\n";
+			print "       Creating Report...\n";
 
-		if ($syslog_report['type'] == 'facility') {
-			$sql = 'SELECT sl.*, sf.facility FROM `' . $syslogdb_default . '`.`syslog` AS sl
-				INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
-				ON sl.facility_id = sf.facility_id
-				WHERE sf.facility=' . "'" . $syslog_report['message'] . "'";
-		}
+			$sql     = '';
+			$reptext = '';
+			if ($syslog_report['type'] == 'messageb') {
+				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+					ON sl.host_id = sh.host_id
+					WHERE message LIKE ' . "'" . $syslog_report['message'] . "%'";
+			}
 
-		if ($syslog_report['type'] == 'sql') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-				WHERE (' . $syslog_report['message'] . ')';
-		}
+			if ($syslog_report['type'] == 'messagec') {
+				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+					ON sl.host_id = sh.host_id
+					WHERE message LIKE '. "'%" . $syslog_report['message'] . "%'";
+			}
 
-		if ($sql != '') {
-			$date2 = date('Y-m-d H:i:s', $current_time);
-			$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
-			$sql  .= " AND logtime BETWEEN '". $date1 . "' AND '" . $date2 . "'";
-			$sql  .= ' ORDER BY logtime DESC';
-			$items = syslog_db_fetch_assoc($sql);
+			if ($syslog_report['type'] == 'messagee') {
+				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+					ON sl.host_id = sh.host_id
+					WHERE message LIKE ' . "'%" . $syslog_report['message'] . "'";
+			}
 
-			syslog_debug('We have ' . db_affected_rows($syslog_cnn) . ' items for the Report');
+			if ($syslog_report['type'] == 'host') {
+				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+					ON sl.host_id = sh.host_id
+					WHERE sh.host=' . "'" . $syslog_report['message'] . "'";
+			}
 
-			$classes = array('even', 'odd');
+			if ($syslog_report['type'] == 'facility') {
+				$sql = 'SELECT sl.*, sf.facility FROM `' . $syslogdb_default . '`.`syslog` AS sl
+					INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
+					ON sl.facility_id = sf.facility_id
+					WHERE sf.facility=' . "'" . $syslog_report['message'] . "'";
+			}
 
-			$i = 0;
-			if (sizeof($items)) {
-				$class = $classes[$i % 2];
-				foreach($items as $item) {
-					$reptext .= '<tr class="' . $class . '"><td class="host">' . $item['host'] . '</td><td class="date">' . $item['logtime'] . '</td><td class="message">' . htmlspecialchars($item['message'], ENT_QUOTES, 'UTF-8') . "</td></tr>\n";
+			if ($syslog_report['type'] == 'sql') {
+				$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
+					WHERE (' . $syslog_report['message'] . ')';
+			}
+
+			if ($sql != '') {
+				$date2 = date('Y-m-d H:i:s', $current_time);
+				$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
+				$sql  .= " AND logtime BETWEEN '". $date1 . "' AND '" . $date2 . "'";
+				$sql  .= ' ORDER BY logtime DESC';
+				$items = syslog_db_fetch_assoc($sql);
+
+				syslog_debug('We have ' . db_affected_rows($syslog_cnn) . ' items for the Report');
+
+				$classes = array('even', 'odd');
+
+				$i = 0;
+				if (cacti_sizeof($items)) {
+					$class = $classes[$i % 2];
+					foreach($items as $item) {
+						$reptext .= '<tr class="' . $class . '"><td class="host">' . $item['host'] . '</td><td class="date">' . $item['logtime'] . '</td><td class="message">' . html_escape($item['message']) . "</td></tr>\n";
+					}
+					$i++;
 				}
-				$i++;
+
+				if ($reptext != '') {
+					$headtext  = "<html><head><style type='text/css'>\n";
+					$headtext .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
+					$headtext .= "</style></head>\n";
+
+					$headtext .= "<body>\n";
+
+					$headtext .= "<h1>Cacti Syslog Report - " . $syslog_report['name'] . "</h1>\n";
+					$headtext .= "<hr>\n";
+					$headtext .= "<p>" . $syslog_report['body'] . "</p>";
+					$headtext .= "<hr>\n";
+
+					$headtext .= "<table>\n";
+					$headtext .= "<tr><th>" . __('Host', 'syslog') . "</th><th>" . __('Date', 'syslog') . "</th><th>" . __('Message', 'syslog') . "</th></tr>\n";
+
+					$headtext .= $reptext;
+
+					$headtext .= "</table>\n";
+
+					$headtext .= "</body>\n";
+					$headtext .= "</html>\n";
+
+					$smsalert  = '';
+
+					syslog_sendemail($syslog_report['email'], $from, __('Event Report - %s', $syslog_report['name'], 'syslog'), $headtext, $smsalert);
+				}
 			}
-
-			if ($reptext != '') {
-				$headtext  = "<html><head><style type='text/css'>\n";
-				$headtext .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
-				$headtext .= "</style></head>\n";
-
-				$headtext .= "<body>\n";
-
-				$headtext .= "<h1>Cacti Syslog Report - " . $syslog_report['name'] . "</h1>\n";
-				$headtext .= "<hr>\n";
-				$headtext .= "<p>" . $syslog_report['body'] . "</p>";
-				$headtext .= "<hr>\n";
-
-				$headtext .= "<table>\n";
-				$headtext .= "<tr><th>" . __('Host', 'syslog') . "</th><th>" . __('Date', 'syslog') . "</th><th>" . __('Message', 'syslog') . "</th></tr>\n";
-
-				$headtext .= $reptext;
-
-				$headtext .= "</table>\n";
-
-				$headtext .= "</body>\n";
-				$headtext .= "</html>\n";
-
-				$smsalert  = '';
-
-				syslog_sendemail($syslog_report['email'], $from, __('Event Report - %s', $syslog_report['name'], 'syslog'), $headtext, $smsalert);
-			}
+		} else {
+			print '       Next Send: ' . date('Y-m-d H:i:s', $next_run_time) . "\n";
 		}
-	} else {
-		print '       Next Send: ' . date('Y-m-d H:i:s', $next_run_time) . "\n";
 	}
-}
 }
 
 syslog_debug('Finished processing Reports...');
