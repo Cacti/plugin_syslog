@@ -31,8 +31,7 @@ function plugin_syslog_install() {
 	if (file_exists(dirname(__FILE__) . '/config.php')) {
 		include(dirname(__FILE__) . '/config.php');
 	}else{
-		$_SESSION['clog_error'] = __('Please rename your config.php.dist file in the syslog directory, and change setup your database before installing.', 'syslog');
-		raise_message('clog_error');
+		raise_message('syslog_info', __('Please rename your config.php.dist file in the syslog directory, and change setup your database before installing.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
 		exit;
 	}
@@ -534,21 +533,35 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 			'friendly_name' => __('What upgrade/install type do you wish to use', 'syslog'),
 			'description' => __('When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.', 'syslog'),
 			'value' => 'truncate',
-			'array' => array('truncate' => __('Truncate Syslog Table', 'syslog'), 'inline' => __('Inline Upgrade', 'syslog'), 'background' => __('Background Upgrade', 'syslog')),
+			'array' => array(
+				'truncate' => __('Truncate Syslog Table', 'syslog'),
+				'inline' => __('Inline Upgrade', 'syslog'),
+				'background' => __('Background Upgrade', 'syslog')
+			)
 		),
 		'engine' => array(
 			'method' => 'drop_array',
 			'friendly_name' => __('Database Storage Engine', 'syslog'),
 			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available.', 'syslog'),
-			'value' => 'myisam',
-			'array' => array('myisam' => __('MyISAM Storage', 'syslog'), 'innodb' => __('InnoDB Storage', 'syslog')),
+			'value' => 'innodb',
+			'array' => array(
+				'myisam' => __('MyISAM Storage', 'syslog'),
+				'innodb' => __('InnoDB Storage', 'syslog')
+			)
 		),
 		'db_type' => array(
 			'method' => 'drop_array',
 			'friendly_name' => __('Database Architecture', 'syslog'),
 			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available.', 'syslog'),
 			'value' => 'trad',
-			'array' => ($db_version >= '5.1' ? array('trad' => __('Traditional Table', 'syslog'), 'part' => __('Partitioned Table', 'syslog')): array('trad' => __('Traditional Table', 'syslog'))),
+			'array' => ($db_version >= '5.1' ?
+				array(
+				'trad' => __('Traditional Table', 'syslog'),
+				'part' => __('Partitioned Table', 'syslog')) :
+				array(
+					'trad' => __('Traditional Table', 'syslog')
+				)
+			),
 		),
 		'days' => array(
 			'method' => 'drop_array',
@@ -596,6 +609,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 	print "<table align='center' width='80%'><tr><td>\n";
 	html_start_box(__('Syslog %s Advisor', $type, 'syslog') . '<', '100%', '', '3', 'center', '');
 	print "<tr><td>\n";
+
 	if ($syslog_exists) {
 		print "<h2 style='color:red;'>" . __('WARNING: Syslog Upgrade is Time Consuming!!!', 'syslog') . "</h2>\n";
 		print "<p>" . __('The upgrade of the \'main\' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.', 'syslog') . "</p></td></tr>";
@@ -1074,9 +1088,7 @@ function syslog_utilities_action($action) {
 		syslog_db_execute('DELETE FROM syslog_statistics WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
 		$records += db_affected_rows($syslog_cnn);
 
-		$_SESSION['syslog_info'] = "<b>There were $records host records removed from the Syslog database";
-
-		raise_message('syslog_info');
+		raise_message('syslog_info', __('There were %s Device records removed from the Syslog database', $records, 'syslog'), MESSAGE_LEVEL_INFO);
 
 		header('Location: utilities.php');
 		exit;

@@ -1506,15 +1506,15 @@ function syslog_messages($tab = 'syslog') {
 						$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/delete.png'></a>";
 					}
 
-					form_selectable_cell($url, $sm['seq']);
+					form_selectable_cell($url, $sm['seq'], '', 'left');
 				}
 
-				form_selectable_cell($sm['logtime'], $sm['seq']);
-				form_selectable_cell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']]:__('Unknown', 'syslog'), $sm['seq']);
-				form_selectable_cell($sm['program'], $sm['seq']);
+				form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
+				form_selectable_cell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_cell($sm['program'], $sm['seq'], '', 'left');
 				form_selectable_cell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('filter')), $sm['seq'], '', 'left syslogMessage');
-				form_selectable_cell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']]:__('Unknown', 'syslog'), $sm['seq']);
-				form_selectable_cell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']]:__('Unknown', 'syslog'), $sm['seq']);
+				form_selectable_cell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_cell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 
 				form_end_row();
 			}
