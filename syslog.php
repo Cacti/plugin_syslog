@@ -85,16 +85,16 @@ if (isset_request_var('export')) {
 
 	/* clear output so reloads wont re-download */
 	unset_request_var('output');
-}else{
+} else {
 	general_header();
 
 	syslog_display_tabs($current_tab);
 
 	if ($current_tab == 'current') {
 		syslog_view_alarm();
-	}elseif ($current_tab == 'stats') {
+	} elseif ($current_tab == 'stats') {
 		syslog_statistics();
-	}else{
+	} else {
 		syslog_messages($current_tab);
 	}
 
@@ -142,14 +142,14 @@ function syslog_view_alarm() {
 
 	include(dirname(__FILE__) . '/config.php');
 
-	echo "<table class='cactiTable'>";
-	echo "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . "</td></tr>";
-	echo "<tr><td class='odd'>\n";
+	print "<table class='cactiTable'>";
+	print "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . "</td></tr>";
+	print "<tr><td class='odd'>\n";
 
 	$html = syslog_db_fetch_cell('SELECT html FROM `' . $syslogdb_default . '`.`syslog_logs` WHERE seq=' . get_request_var('id'));
-	echo trim($html, "' ");
+	print trim($html, "' ");
 
-	echo '</td></tr></table>';
+	print '</td></tr></table>';
 
 	exit;
 }
@@ -239,9 +239,9 @@ function syslog_statistics() {
 
 	if (get_request_var('rows') == -1) {
 		$rows = read_config_option('num_rows_table');
-	}elseif (get_request_var('rows') == -2) {
+	} elseif (get_request_var('rows') == -2) {
 		$rows = 999999;
-	}else{
+	} else {
 		$rows = get_request_var('rows');
 	}
 
@@ -280,9 +280,9 @@ function syslog_statistics() {
 
 	if (get_request_var('timespan') < 3600) {
 		$date_format = 'Y-m-d H:i';
-	}elseif (get_request_var('timespan') < 86400) {
+	} elseif (get_request_var('timespan') < 86400) {
 		$date_format = 'Y-m-d H:00';
-	}else{
+	} else {
 		$date_format = 'Y-m-d 00:00';
 	}
 
@@ -291,16 +291,16 @@ function syslog_statistics() {
 			$time = date($date_format, strtotime($r['insert_time']));
 
 			form_alternate_row();
-			echo '<td>' . (get_request_var('host') != '-2' ? $r['host']:'-') . '</td>';
-			echo '<td>' . (get_request_var('facility') != '-2' ? ucfirst($r['facility']):'-') . '</td>';
-			echo '<td>' . (get_request_var('priority') != '-2' ? ucfirst($r['priority']):'-') . '</td>';
-			echo '<td>' . (get_request_var('program') != '-2' ? ucfirst($r['program']):'-') . '</td>';
-			//echo '<td class="right">' . $r['insert_time'] . '</td>';
-			echo '<td class="right">' . $time . '</td>';
-			echo '<td class="right">' . number_format_i18n($r['records'], -1)     . '</td>';
+			print '<td>' . (get_request_var('host') != '-2' ? $r['host']:'-') . '</td>';
+			print '<td>' . (get_request_var('facility') != '-2' ? ucfirst($r['facility']):'-') . '</td>';
+			print '<td>' . (get_request_var('priority') != '-2' ? ucfirst($r['priority']):'-') . '</td>';
+			print '<td>' . (get_request_var('program') != '-2' ? ucfirst($r['program']):'-') . '</td>';
+			//print '<td class="right">' . $r['insert_time'] . '</td>';
+			print '<td class="right">' . $time . '</td>';
+			print '<td class="right">' . number_format_i18n($r['records'], -1)     . '</td>';
 			form_end_row();
 		}
-	}else{
+	} else {
 		print "<tr><td colspan='4'><em>" . __('No Syslog Statistics Found', 'syslog') . "</em></td></tr>";
 	}
 
@@ -324,37 +324,37 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 
 	if (get_request_var('host') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('host') != '-1' && get_request_var('host') != '') {
+	} elseif (get_request_var('host') != '-1' && get_request_var('host') != '') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . 'ss.host_id=' . get_request_var('host');
 		$sql_groupby .= ', sh.host';
-	}else{
+	} else {
 		$sql_groupby .= ', sh.host';
 	}
 
 	if (get_request_var('facility') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('facility') != '-1' && get_request_var('facility') != '') {
+	} elseif (get_request_var('facility') != '-1' && get_request_var('facility') != '') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . 'ss.facility_id=' . get_request_var('facility');
 		$sql_groupby .= ', sf.facility';
-	}else{
+	} else {
 		$sql_groupby .= ', sf.facility';
 	}
 
 	if (get_request_var('priority') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('priority') != '-1' && get_request_var('priority') != '') {
+	} elseif (get_request_var('priority') != '-1' && get_request_var('priority') != '') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.priority_id=' . get_request_var('priority');
 		$sql_groupby .= ', sp.priority';
-	}else{
+	} else {
 		$sql_groupby .= ', sp.priority';
 	}
 
 	if (get_request_var('eprogram') == '-2') {
 		// Do nothing
-	}elseif (get_request_var('eprogram') != '-1' && get_request_var('program') != '') {
+	} elseif (get_request_var('eprogram') != '-1' && get_request_var('program') != '') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('eprogram');
 		$sql_groupby .= ', spr.program';
-	}else{
+	} else {
 		$sql_groupby .= ', spr.program';
 	}
 
@@ -479,16 +479,24 @@ function syslog_stats_filter() {
 					</td>
 					<td>
 						<select id='timespan' onChange='applyFilter()'>
-							<option value='60'<?php if (get_request_var('timespan') == '60') { ?> selected<?php } ?>><?php print __('%d Minute', 1, 'syslog');?></option>
-							<option value='120'<?php if (get_request_var('timespan') == '120') { ?> selected<?php } ?>><?php print __('%d Minutes', 2, 'syslog');?></option>
-							<option value='300'<?php if (get_request_var('timespan') == '300') { ?> selected<?php } ?>><?php print __('%d Minutes', 5, 'syslog');?></option>
-							<option value='600'<?php if (get_request_var('timespan') == '600') { ?> selected<?php } ?>><?php print __('%d Minutes', 10, 'syslog');?></option>
-							<option value='1800'<?php if (get_request_var('timespan') == '1800') { ?> selected<?php } ?>><?php print __('%d Minutes', 30, 'syslog');?></option>
-							<option value='3600'<?php if (get_request_var('timespan') == '3600') { ?> selected<?php } ?>><?php print __('%d Hour', 1, 'syslog');?></option>
-							<option value='7200'<?php if (get_request_var('timespan') == '7200') { ?> selected<?php } ?>><?php print __('%d Hours', 2, 'syslog');?></option>
-							<option value='14400'<?php if (get_request_var('timespan') == '14400') { ?> selected<?php } ?>><?php print __('%d Hours', 4, 'syslog');?></option>
-							<option value='28880'<?php if (get_request_var('timespan') == '28880') { ?> selected<?php } ?>><?php print __('%d Hours', 8, 'syslog');?></option>
-							<option value='86400'<?php if (get_request_var('timespan') == '86400') { ?> selected<?php } ?>><?php print __('%d Day', 1, 'syslog');?></option>
+							<?php
+							$timespans = array(
+								60    => __('%d Minute', 1, 'syslog'),
+								120   => __('%d Minutes', 2, 'syslog'),
+								300   => __('%d Minutes', 5, 'syslog'),
+								600   => __('%d Minutes', 10, 'syslog'),
+								1800  => __('%d Minutes', 30, 'syslog'),
+								3600  => __('%d Hour', 1, 'syslog'),
+								7200  => __('%d Hours', 2, 'syslog'),
+								14400 => __('%d Hours', 4, 'syslog'),
+								28880 => __('%d Hours', 8, 'syslog'),
+								86400 => __('%d Day', 1, 'syslog')
+							);
+
+							foreach($timespans as $time => $span) {
+								print '<option value="'. $time . '"' . (get_request_var('timespan') == $time ? ' selected':'') . '>' . $span . '</option>';
+							}
+							?>
 						</select>
 					</td>
 					<td>
@@ -553,11 +561,20 @@ function syslog_stats_filter() {
 function syslog_request_validation($current_tab, $force = false) {
 	global $title, $rows, $config, $reset_multi;
 
-	include_once('./lib/timespan_settings.php');
+	include_once($config['base_path'] . '/lib/time.php');
 
 	if ($current_tab != 'alerts' && isset_request_var('host') && get_nfilter_request_var('host') == -1) {
 		kill_session_var('sess_syslog_' . $current_tab . '_hosts');
 		unset_request_var('host');
+	}
+
+	$shift_span = false;
+	if (isset_request_var('predefined_timespan')) {
+		$shift_span = 'span';
+	} elseif (isset_request_var('predefined_timeshift')) {
+		$shift_span = 'shift';
+	} elseif (isset_request_var('date1') && isset_request_var('date2')) {
+		$shift_span = 'custom';
 	}
 
     /* ================= input validation and session storage ================= */
@@ -578,6 +595,16 @@ function syslog_request_validation($current_tab, $force = false) {
         'removal' => array(
             'filter' => FILTER_VALIDATE_INT,
             'default' => read_user_setting('syslog_removal', '1', $force)
+            ),
+        'predefined_timespan' => array(
+            'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+            'default' => read_user_setting('default_timespan', GT_LAST_DAY, $force)
+            ),
+        'predefined_timeshift' => array(
+            'filter' => FILTER_VALIDATE_INT,
+			'pageset' => true,
+            'default' => read_user_setting('default_timeshift', GTS_1_DAY, $force)
             ),
         'refresh' => array(
             'filter' => FILTER_VALIDATE_INT,
@@ -622,6 +649,18 @@ function syslog_request_validation($current_tab, $force = false) {
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
             ),
+        'date1' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => '',
+            'options' => array('options' => 'sanitize_search_string')
+			),
+        'date2' => array(
+            'filter' => FILTER_CALLBACK,
+            'pageset' => true,
+            'default' => '',
+            'options' => array('options' => 'sanitize_search_string')
+			),
         'sort_column' => array(
             'filter' => FILTER_CALLBACK,
             'default' => 'logtime',
@@ -634,17 +673,74 @@ function syslog_request_validation($current_tab, $force = false) {
             )
     );
 
-    validate_store_request_vars($filters, 'sess_syslogs_' . $current_tab);
+    validate_store_request_vars($filters, 'sess_sl_' . $current_tab);
     /* ================= input validation ================= */
+
+	// Modify session and request variables based upon span/shift/settings
+	set_shift_span($shift_span, 'sess_sl_' . $current_tab);
 
 	api_plugin_hook_function('syslog_request_val');
 
 	if (isset_request_var('host')) {
 		$_SESSION['sess_syslog_' . $current_tab . '_hosts'] = get_nfilter_request_var('host');
-	} else if (isset($_SESSION['sess_syslog_' . $current_tab . '_hosts'])) {
+	} elseif (isset($_SESSION['sess_syslog_' . $current_tab . '_hosts'])) {
 		set_request_var('host', $_SESSION['sess_syslog_' . $current_tab . '_hosts']);
 	} else {
 		set_request_var('host', '-1');
+	}
+}
+
+function set_shift_span($shift_span, $session_prefix) {
+	global $graph_timeshifts;
+
+	if ($shift_span == 'span' || $shift_span === false) {
+		$span = array();
+
+		// Calculate the timespan
+		$first_weekdayid = read_user_setting('first_weekdayid');
+		get_timespan($span, time(), get_request_var('predefined_timespan'), $first_weekdayid);
+
+		// Save the settings for next page refresh
+		set_request_var('date1', date('Y-m-d H:i:s', $span['begin_now']));
+		set_request_var('date2', date('Y-m-d H:i:s', $span['end_now']));
+
+		// We don't want any date saved in the session
+		kill_session_var($session_prefix . '_date1');
+		kill_session_var($session_prefix . '_date2');
+
+		set_request_var('custom', false);
+	} elseif ($shift_span == 'shift') {
+		$span = array();
+
+		$span['current_value_date1'] = get_request_var('date1');
+		$span['current_value_date2'] = get_request_var('date2');
+		$span['begin_now'] = strtotime(get_request_var('date1'));
+		$span['end_now']   = strtotime(get_request_var('date2'));
+
+		if (isset_request_var('shift_right')) {
+			$direction = '+';
+		} elseif (isset_request_var('shift_left')) {
+			$direction = '-';
+		} else {
+			$direction = '+';
+		}
+
+		$timeshift = $graph_timeshifts[get_request_var('predefined_timeshift')];
+
+		// Calculate the new date1 and date2
+		shift_time($span, $direction, $timeshift);
+
+		// Save the settings for next page refresh
+		set_request_var('date1', date('Y-m-d H:i:s', $span['begin_now']));
+		set_request_var('date2', date('Y-m-d H:i:s', $span['end_now']));
+
+		// Save the dates in the session variable for page refresh
+		$_SESSION[$session_prefix . '_date1'] = get_request_var('date1');
+		$_SESSION[$session_prefix . '_date2'] = get_request_var('date2');
+
+		set_request_var('custom', true);
+	} elseif ($shift_span == 'custom') {
+		set_request_var('custom', true);
 	}
 }
 
@@ -657,7 +753,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	/* form the 'where' clause for our main sql query */
 	if (get_request_var('host') == -1 && $tab != 'syslog') {
 		$sql_where .=  "WHERE sl.host='N/A'";
-	}else{
+	} else {
 		if (!isempty_request_var('host')) {
 			sql_hosts_where($tab);
 			if (strlen($hostfilter)) {
@@ -666,11 +762,9 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		}
 	}
 
-	if (isset($_SESSION['sess_current_date1'])) {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
-			"logtime BETWEEN '" . $_SESSION['sess_current_date1'] . "'
-				AND '" . $_SESSION['sess_current_date2'] . "'";
-	}
+	$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
+		"logtime BETWEEN '" . get_request_var('date1') . "'
+			AND '" . get_request_var('date2') . "'";
 
 	if (isset_request_var('id') && $current_tab == 'current') {
 		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
@@ -680,7 +774,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	if (!isempty_request_var('filter')) {
 		if ($tab == 'syslog') {
 			$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "message LIKE '%" . get_request_var('filter') . "%'";
-		}else{
+		} else {
 			$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "logmsg LIKE '%" . get_request_var('filter') . "%'";
 		}
 	}
@@ -762,7 +856,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 				$sql_where . "
 				$sql_order
 				$sql_limit";
-		}elseif (get_request_var('removal') == '1') {
+		} elseif (get_request_var('removal') == '1') {
 			$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
 				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
@@ -775,7 +869,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 				$sql_where . ")
 				$sql_order
 				$sql_limit";
-		}else{
+		} else {
 			$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
@@ -784,7 +878,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 				$sql_order
 				$sql_limit";
 		}
-	}else{
+	} else {
 		$query_sql = "SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
@@ -800,7 +894,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			$sql_limit";
 	}
 
-	//echo $query_sql;
+	//print $query_sql;
 
 	return syslog_db_fetch_assoc($query_sql);
 }
@@ -812,9 +906,9 @@ function syslog_filter($sql_where, $tab) {
 
 	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `" . $syslogdb_default . "`.`syslog_incoming`");
 
-	if (isset($_SESSION['sess_current_date1'])) {
-		$filter_text = __(' [ Start: \'%s\' to End: \'%s\', Unprocessed Messages: %s ]', $_SESSION['sess_current_date1'], $_SESSION['sess_current_date2'], $unprocessed, 'syslog');
-	}else{
+	if (isset_request_var('date1')) {
+		$filter_text = __(' [ Start: \'%s\' to End: \'%s\', Unprocessed Messages: %s ]', get_request_var('date1'), get_request_var('date2'), $unprocessed, 'syslog');
+	} else {
 		$filter_text = __('[ Unprocessed Messages: %s ]', $unprocessed, 'syslog');
 	}
 
@@ -859,11 +953,11 @@ function syslog_filter($sql_where, $tab) {
 							$(this).prop('checked', true);
 						});
 					}
-				}else if (checked == 0) {
+				} else if (checked == 0) {
 					$(this).multiselect('widget').find(':checkbox:first').each(function() {
 						$(this).click();
 					});
-				}else if ($(this).multiselect('widget').find('input:checked:first').val() == '0') {
+				} else if ($(this).multiselect('widget').find('input:checked:first').val() == '0') {
 					if (checked > 0) {
 						$(this).multiselect('widget').find(':checkbox:first').each(function() {
 							$(this).click();
@@ -892,19 +986,19 @@ function syslog_filter($sql_where, $tab) {
 			exportRecords();
 		});
 
-		$('#alerts').click(function() {
+		$('#balerts').click(function() {
 			loadTopTab(urlPath+'plugins/syslog/syslog_alerts.php?header=false');
 			$('.maintabs').find('a').removeClass('selected');
 			$('#tab-console').addClass('selected');
 		});
 
-		$('#removal').click(function() {
+		$('#bremoval').click(function() {
 			loadTopTab(urlPath+'plugins/syslog/syslog_removal.php?header=false');
 			$('.maintabs').find('a').removeClass('selected');
 			$('#tab-console').addClass('selected');
 		});
 
-		$('#reports').click(function() {
+		$('#breports').click(function() {
 			loadTopTab(urlPath+'plugins/syslog/syslog_reports.php?header=false');
 			$('.maintabs').find('a').removeClass('selected');
 			$('#tab-console').addClass('selected');
@@ -914,7 +1008,7 @@ function syslog_filter($sql_where, $tab) {
 			if (date1Open) {
 				date1Open = false;
 				$('#date1').datetimepicker('hide');
-			}else{
+			} else {
 				date1Open = true;
 				$('#date1').datetimepicker('show');
 			}
@@ -924,7 +1018,7 @@ function syslog_filter($sql_where, $tab) {
 			if (date2Open) {
 				date2Open = false;
 				$('#date2').datetimepicker('hide');
-			}else{
+			} else {
 				date2Open = true;
 				$('#date2').datetimepicker('show');
 			}
@@ -952,25 +1046,24 @@ function syslog_filter($sql_where, $tab) {
 	});
 
 	function applyTimespan() {
-		strURL  = urlPath+'plugins/syslog/syslog.php?header=false&predefined_timespan=' + $('#predefined_timespan').val();
-		strURL += '&predefined_timeshift=' + $('#predefined_timeshift').val();
+		strURL  = urlPath+'plugins/syslog/syslog.php?header=false';
+		strURL += '&predefined_timespan=' + $('#predefined_timespan').val();
 		loadPageNoHeader(strURL);
 	}
 
 	function applyFilter() {
-		strURL = 'syslog.php?header=false'+
-			'&date1='+$('#date1').val()+
-			'&date2='+$('#date2').val()+
-			'&host='+$('#host').val()+
-			'&filter='+$('#filter').val()+
-			'&efacility='+$('#efacility').val()+
-			'&epriority='+$('#epriority').val()+
-			'&eprogram='+$('#eprogram').val()+
-			'&rows='+$('#rows').val()+
-			'&trimval='+$('#trimval').val()+
-			'&removal='+$('#removal').val()+
-			'&refresh='+$('#refresh').val();
-
+		strURL  = 'syslog.php?header=false';
+		strURL += '&date1='+$('#date1').val();
+		strURL += '&date2='+$('#date2').val();
+		strURL += '&host='+$('#host').val();
+		strURL += '&filter='+$('#filter').val();
+		strURL += '&efacility='+$('#efacility').val();
+		strURL += '&epriority='+$('#epriority').val();
+		strURL += '&eprogram='+$('#eprogram').val();
+		strURL += '&rows='+$('#rows').val();
+		strURL += '&trimval='+$('#trimval').val();
+		strURL += '&removal='+$('#removal').val();
+		strURL += '&refresh='+$('#refresh').val();
 		loadPageNoHeader(strURL);
 	}
 
@@ -985,14 +1078,20 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function saveSettings() {
-		strURL = 'syslog.php?action=save'+
-			'&trimval='+$('#trimval').val()+
-			'&rows='+$('#rows').val()+
-			'&removal='+$('#removal').val()+
-			'&refresh='+$('#refresh').val()+
-			'&efacility='+$('#efacility').val()+
-			'&epriority='+$('#epriority').val()+
-			'&eprogram='+$('#eprogram').val();
+		strURL  = 'syslog.php?action=save';
+		strURL += '&trimval='+$('#trimval').val();
+		strURL += '&rows='+$('#rows').val();
+		strURL += '&removal='+$('#removal').val();
+		strURL += '&refresh='+$('#refresh').val();
+		strURL += '&efacility='+$('#efacility').val();
+		strURL += '&epriority='+$('#epriority').val();
+		strURL += '&eprogram='+$('#eprogram').val();
+
+		if ($('#predefined_timespan').val() > 0) {
+			strURL += '&predefined_timespan='+$('#predefined_timespan').val();
+		}
+
+		strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
 
 		$.get(strURL, function() {
 			$('#text').show().text('Filter Settings Saved').fadeOut(2000);
@@ -1000,39 +1099,21 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function timeshiftFilterLeft() {
-		var json = {
-			move_left_x: 1,
-			move_left_y: 1,
-			date1: $('#date1').val(),
-			date2: $('#date2').val(),
-			predefined_timespan: $('#predefined_timespan').val(),
-			predefined_timeshift: $('#predefined_timeshift').val(),
-			__csrf_magic: csrfMagicToken
-		};
-
-		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(href, json).done(function(data) {
-			$('#main').html(data);
-			applySkin();
-		});
+		strURL  = 'syslog.php?action='+pageAction+'&header=false';
+		strURL += '&shift_left=true';
+		strURL += '&date1='+$('#date1').val();
+		strURL += '&date2='+$('#date2').val();
+		strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
+		loadPageNoHeader(strURL);
 	}
 
 	function timeshiftFilterRight() {
-		var json = {
-			move_right_x: 1,
-			move_right_y: 1,
-			date1: $('#date1').val(),
-			date2: $('#date2').val(),
-			predefined_timespan: $('#predefined_timespan').val(),
-			predefined_timeshift: $('#predefined_timeshift').val(),
-			__csrf_magic: csrfMagicToken
-		};
-
-		var href = urlPath+'plugins/syslog/syslog.php?action='+pageAction+'&header=false';
-		$.post(href, json).done(function(data) {
-			$('#main').html(data);
-			applySkin();
-		});
+		strURL  = 'syslog.php?action='+pageAction+'&header=false';
+		strURL += '&shift_right=true';
+		strURL += '&date1='+$('#date1').val();
+		strURL += '&date2='+$('#date2').val();
+		strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
+		loadPageNoHeader(strURL);
 	}
 
 	</script>
@@ -1047,7 +1128,7 @@ function syslog_filter($sql_where, $tab) {
 						<td>
 							<select id='predefined_timespan' onChange='applyTimespan()'>
 								<?php
-								if ($_SESSION['custom']) {
+								if (isset_request_var('custom') && get_request_var('custom') == true) {
 									$graph_timespans[GT_CUSTOM] = __('Custom', 'syslog');
 									set_request_var('predefined_timespan', GT_CUSTOM);
 									$start_val = 0;
@@ -1073,7 +1154,7 @@ function syslog_filter($sql_where, $tab) {
 							<?php print __('From', 'syslog');?>
 						</td>
 						<td>
-							<input type='text' id='date1' size='15' value='<?php print (isset($_SESSION['sess_current_date1']) ? $_SESSION['sess_current_date1'] : '');?>'>
+							<input type='text' id='date1' size='15' value='<?php print get_request_var('date1');?>'>
 						</td>
 						<td>
 							<i title='<?php print __esc('Start Date Selector', 'syslog');?>' class='calendar fa fa-calendar-alt' id='startDate'></i>
@@ -1082,7 +1163,7 @@ function syslog_filter($sql_where, $tab) {
 							<?php print __('To', 'syslog');?>
 						</td>
 						<td>
-							<input type='text' id='date2' size='15' value='<?php print (isset($_SESSION['sess_current_date2']) ? $_SESSION['sess_current_date2'] : '');?>'>
+							<input type='text' id='date2' size='15' value='<?php print get_request_var('date2');?>'>
 						</td>
 						<td>
 							<i title='<?php print __esc('End Date Selector', 'syslog');?>' class='calendar fa fa-calendar-alt' id='endDate'></i>
@@ -1091,12 +1172,13 @@ function syslog_filter($sql_where, $tab) {
 							<i title='<?php print __esc('Shift Time Backward', 'syslog');?>' onclick='timeshiftFilterLeft()' class='shiftArrow fa fa-backward'></i>
 						</td>
 						<td>
-							<select id='predefined_timeshift' title='<?php print __esc('Define Shifting Interval', 'syslog');?>' onChange='applyTimespan()'>
+							<select id='predefined_timeshift' title='<?php print __esc('Define Shifting Interval', 'syslog');?>'>
 								<?php
 								$start_val = 1;
-								$end_val = sizeof($graph_timeshifts)+1;
+								$end_val = sizeof($graph_timeshifts) + 1;
 								if (cacti_sizeof($graph_timeshifts)) {
 									for ($shift_value=$start_val; $shift_value < $end_val; $shift_value++) {
+cacti_log('Predefined Timeshift: ' . get_request_var('predefined_timeshift') . ', Val: ' . $shift_value);
 										print "<option value='$shift_value'"; if (get_request_var('predefined_timeshift') == $shift_value) { print ' selected'; } print '>' . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
 									}
 								}
@@ -1117,9 +1199,9 @@ function syslog_filter($sql_where, $tab) {
 						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) { ?>
 						<td>
 							<span>
-								<input id='alerts' type='button' value='<?php print __esc('Alerts', 'syslog');?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog');?>'>
-								<input id='removal' type='button' value='<?php print __esc('Removals', 'syslog');?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog');?>'>
-								<input id='reports' type='button' value='<?php print __esc('Reports', 'syslog');?>' title='<?php print __esc('View Syslog Reports', 'syslog');?>'>
+								<input id='balerts' type='button' value='<?php print __esc('Alerts', 'syslog');?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog');?>'>
+								<input id='bremoval' type='button' value='<?php print __esc('Removals', 'syslog');?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog');?>'>
+								<input id='breports' type='button' value='<?php print __esc('Reports', 'syslog');?>' title='<?php print __esc('View Syslog Reports', 'syslog');?>'>
 							</span>
 						</td>
 						<?php } ?>
@@ -1137,7 +1219,7 @@ function syslog_filter($sql_where, $tab) {
 						</td>
 						<td class='even'>
 							<select id='host' multiple style='width: 150px; overflow: scroll;'>
-								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Devices', 'syslog');?></option><?php }else{ ?>
+								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Devices', 'syslog');?></option><?php } else { ?>
 								<option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == 0 || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Logs', 'syslog');?></option>
 								<option id='host_none' value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('Threshold Logs', 'syslog');?></option><?php } ?>
 								<?php
@@ -1250,7 +1332,7 @@ function syslog_filter($sql_where, $tab) {
 								<option value='2'<?php if (get_request_var('removal') == '2') { ?> selected<?php } ?>><?php print __('Removed Records', 'syslog');?></option>
 							</select>
 						</td>
-						<?php }else{ ?>
+						<?php } else { ?>
 						<input type='hidden' id='removal' value='<?php print get_request_var('removal');?>'>
 						<?php } ?>
 					</tr>
@@ -1320,9 +1402,9 @@ function syslog_messages($tab = 'syslog') {
 
 	if (get_request_var('rows') == -1) {
 		$rows = read_config_option('num_rows_table');
-	}elseif (get_request_var('rows') == -2) {
+	} elseif (get_request_var('rows') == -2) {
 		$rows = 999999;
-	}else{
+	} else {
 		$rows = get_request_var('rows');
 	}
 
@@ -1342,16 +1424,16 @@ function syslog_messages($tab = 'syslog') {
 					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 					$sql_where
 				) AS rowcount");
-		}elseif (get_request_var('removal') == -1){
+		} elseif (get_request_var('removal') == -1){
 			$total_rows = syslog_db_fetch_cell("SELECT count(*)
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
 				$sql_where");
-		}else{
+		} else {
 			$total_rows = syslog_db_fetch_cell("SELECT count(*)
 				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 				$sql_where");
 		}
-	}else{
+	} else {
 		$total_rows = syslog_db_fetch_cell("SELECT count(*)
 			FROM `" . $syslogdb_default . "`.`syslog_logs` AS syslog
 			LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
@@ -1375,7 +1457,7 @@ function syslog_messages($tab = 'syslog') {
 				'message'     => array(__('Message', 'syslog'), 'ASC'),
 				'facility_id' => array(__('Facility', 'syslog'), 'ASC'),
 				'priority_id' => array(__('Priority', 'syslog'), 'ASC'));
-		}else{
+		} else {
 			$display_text = array(
 				'logtime'     => array(__('Date', 'syslog'), 'ASC'),
 				'host_id'     => array(__('Device', 'syslog'), 'ASC'),
@@ -1436,7 +1518,7 @@ function syslog_messages($tab = 'syslog') {
 
 				form_end_row();
 			}
-		}else{
+		} else {
 			print "<tr><td class='center' colspan='" . (cacti_sizeof($display_text)) . "'><em>" . __('No Syslog Messages', 'syslog') . "</em></td></tr>";
 		}
 
@@ -1471,7 +1553,7 @@ function syslog_messages($tab = 'syslog') {
 		});
 		</script>
 		<?php
-	}else{
+	} else {
 		$display_text = array(
 			'name'        => array('display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'),
 			'severity'    => array('display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'),
@@ -1510,7 +1592,7 @@ function syslog_messages($tab = 'syslog') {
 
 				form_end_row();
 			}
-		}else{
+		} else {
 			print "<tr><td colspan='" . (cacti_sizeof($display_text)) . "'><em>" . __('No Alert Log Messages', 'syslog') . "</em></td></tr>";
 		}
 
@@ -1552,6 +1634,12 @@ function save_settings() {
 				break;
 			case 'eprogram':
 				set_user_setting('syslog_eprogram', get_request_var('eprogram'));
+				break;
+			case 'predefined_timespan':
+				set_user_setting('default_timespan', get_request_var('predefined_timespan'));
+				break;
+			case 'predefined_timeshift':
+				set_user_setting('default_timeshift', get_request_var('predefined_timeshift'));
 				break;
 			}
 		}
