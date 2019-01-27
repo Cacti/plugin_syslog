@@ -78,7 +78,7 @@ function form_save() {
    ------------------------ */
 
 function form_actions() {
-	global $colors, $config, $syslog_actions, $fields_syslog_action_edit;
+	global $config, $syslog_actions, $fields_syslog_action_edit;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -284,7 +284,7 @@ function syslog_get_report_records(&$sql_where, $rows) {
 }
 
 function syslog_action_edit() {
-	global $colors, $message_types, $syslog_freqs, $syslog_times;
+	global $message_types, $syslog_freqs, $syslog_times;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -432,7 +432,7 @@ function syslog_action_edit() {
 }
 
 function syslog_filter() {
-	global $colors, $config, $item_rows;
+	global $config, $item_rows;
 	?>
 	<tr class='even'>
 		<td>
@@ -514,7 +514,7 @@ function syslog_filter() {
 }
 
 function syslog_report() {
-	global $colors, $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
+	global $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -601,7 +601,7 @@ function syslog_report() {
 
 	print $nav;
 
-	html_start_box('', '100%', $colors['header'], '3', 'center', '');
+	html_start_box('', '100%', '', '3', 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
