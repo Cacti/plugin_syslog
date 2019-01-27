@@ -494,7 +494,7 @@ if (read_config_option('syslog_statistics') == 'on') {
 if (read_config_option('syslog_alert_retention') > 0) {
 	$delete_date = date('Y-m-d H:i:s', time()-(read_config_option('syslog_alert_retention')*86400));
 
-	api_plugin_hook_function('syslog_delete_hostsalarm', $delete_time);
+	api_plugin_hook_function('syslog_delete_hostsalarm', $delete_date);
 
 	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_logs`
 		WHERE logtime < '$delete_date'");
