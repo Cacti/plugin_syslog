@@ -30,7 +30,7 @@ function plugin_syslog_install() {
 
 	if (file_exists(dirname(__FILE__) . '/config.php')) {
 		include(dirname(__FILE__) . '/config.php');
-	}else{
+	} else {
 		raise_message('syslog_info', __('Please rename your config.php.dist file in the syslog directory, and change setup your database before installing.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
 		exit;
@@ -67,10 +67,10 @@ function plugin_syslog_install() {
 
 			return true;
 		}
-	}elseif (isset_request_var('cancel')) {
+	} elseif (isset_request_var('cancel')) {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
 		exit;
-	}else{
+	} else {
 		syslog_install_advisor($syslog_exists, $db_version);
 		exit;
 	}
@@ -82,23 +82,25 @@ function syslog_execute_update($syslog_exists, $options) {
 	if (isset($options['cancel'])) {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
 		exit;
-	}elseif (isset($options['return'])) {
-		db_execute("DELETE FROM plugin_config WHERE directory='syslog'");
-		db_execute("DELETE FROM plugin_realms WHERE plugin='syslog'");
-		db_execute("DELETE FROM plugin_db_changes WHERE plugin='syslog'");
-		db_execute("DELETE FROM plugin_hooks WHERE name='syslog'");
-	}elseif (isset($options["upgrade_type"])) {
-		if ($options["upgrade_type"] == "truncate") {
+	} elseif (isset($options['return'])) {
+		db_execute('DELETE FROM plugin_config WHERE directory="syslog"');
+		db_execute('DELETE FROM plugin_realms WHERE plugin="syslog"');
+		db_execute('DELETE FROM plugin_db_changes WHERE plugin="syslog"');
+		db_execute('DELETE FROM plugin_hooks WHERE name="syslog"');
+	} elseif (isset($options['upgrade_type'])) {
+		if ($options['upgrade_type'] == 'truncate') {
 			syslog_setup_table_new($options);
 		}
-	}else{
+	} else {
 		syslog_setup_table_new($options);
 	}
 
-	db_execute("REPLACE INTO settings SET name='syslog_retention', value='" . $options['days'] . "'");
+	db_execute_prepared('REPLACE INTO settings
+		SET name="syslog_retention", value = ?',
+		array($options['days']));
 }
 
-function plugin_syslog_uninstall () {
+function plugin_syslog_uninstall() {
 	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username;
 
 	/* database connection information, must be loaded always */
@@ -110,7 +112,7 @@ function plugin_syslog_uninstall () {
 	if (isset_request_var('cancel') || isset_request_var('return')) {
 		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
 		exit;
-	}elseif (isset_request_var('uninstall_method')) {
+	} elseif (isset_request_var('uninstall_method')) {
 		if (get_nfilter_request_var('uninstall_method') == 'all') {
 			/* do the big tables first */
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog`');
@@ -127,11 +129,11 @@ function plugin_syslog_uninstall () {
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog_priorities`');
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog_logs`');
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog_hosts`');
-		}else{
+		} else {
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog`');
 			syslog_db_execute('DROP TABLE IF EXISTS `' . $syslogdb_default . '`.`syslog_removed`');
 		}
-	}else{
+	} else {
 		syslog_uninstall_advisor();
 		exit;
 	}
@@ -161,13 +163,13 @@ function syslog_connect() {
 			($database_default == $syslogdb_default)) {
 			/* move on, using Cacti */
 			$syslog_cnn = $cnn_id;
-		}else{
+		} else {
 			if (!isset($syslogdb_port)) {
 				$syslogdb_port = '3306';
 			}
 			$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
 			if ($syslog_cnn == false) {
-					echo "Can not connect\n";
+					print "Can not connect\n";
 					return FALSE;
 			}
 		}
@@ -205,30 +207,93 @@ function syslog_check_upgrade() {
 
 	if ($current != $old) {
 		if ($old_pia || $old < 2) {
-			echo __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.', 'syslog') . "\n";
+			print __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.', 'syslog') . "\n";
 			exit;
-		}elseif ($old == 2) {
+		} elseif ($old == 2) {
 			db_execute('ALTER TABLE syslog_statistics
 				ADD COLUMN id BIGINT UNSIGNED auto_increment FIRST,
 				DROP PRIMARY KEY,
 				ADD PRIMARY KEY(id),
 				ADD UNIQUE INDEX (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`)');
+		}
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
 		db_execute("UPDATE plugin_config SET
 			version='" . $version['version'] . "',
 			name='" . $version['longname'] . "',
 			author='" . $version['author'] . "',
-			webpage='" . $version['url'] . "'
+			webpage='" . $version['homepage'] . "'
 			WHERE directory='" . $version['name'] . "' ");
+
+		if (!db_column_exists('syslog_alert', 'hash')) {
+			db_add_column('syslog_alert', array(
+				'name'     => 'hash',
+				'type'     => 'varchar(32)',
+				'NULL'     => false,
+				'default'  => '',
+				'after'    => 'id')
+			);
+
+			db_add_column('syslog_remove', array(
+				'name'     => 'hash',
+				'type'     => 'varchar(32)',
+				'NULL'     => false,
+				'default'  => '',
+				'after'    => 'id')
+			);
+
+			db_add_column('syslog_reports', array(
+				'name'     => 'hash',
+				'type'     => 'varchar(32)',
+				'NULL'     => false,
+				'default'  => '',
+				'after'    => 'id')
+			);
+		}
+
+		$alerts = syslog_db_fetch_assoc('SELECT * FROM syslog_alert WHERE hash IS NULL OR hash = ""');
+
+		if (cacti_sizeof($alerts)) {
+			foreach($alerts as $a) {
+				$hash = get_hash_syslog($a['id'], 'syslog_alert');
+				db_execute_prepared('UPDATE syslog_alert
+					SET hash = ?
+					WHERE id = ?',
+					array($hash, $a['id']));
+			}
+		}
+
+		$removes = syslog_db_fetch_assoc('SELECT * FROM syslog_remove WHERE hash IS NULL OR hash = ""');
+
+		if (cacti_sizeof($removes)) {
+			foreach($removes as $r) {
+				$hash = get_hash_syslog($r['id'], 'syslog_remove');
+				db_execute_prepared('UPDATE syslog_remove
+					SET hash = ?
+					WHERE id = ?',
+					array($hash, $r['id']));
+			}
+		}
+
+		$reports = syslog_db_fetch_assoc('SELECT * FROM syslog_reports WHERE hash IS NULL OR hash = ""');
+
+		if (cacti_sizeof($reports)) {
+			foreach($reports as $r) {
+				$hash = get_hash_syslog($r['id'], 'syslog_reports');
+				db_execute_prepared('UPDATE syslog_reports
+					SET hash = ?
+					WHERE id = ?',
+					array($hash, $r['id']));
+			}
 		}
 	}
+
 }
 
 function syslog_get_mysql_version($db = 'cacti') {
 	if ($db == 'cacti') {
 		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
-	}else{
+	} else {
 		$dbInfo = syslog_db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 
 	}
@@ -236,6 +301,7 @@ function syslog_get_mysql_version($db = 'cacti') {
 	if (cacti_sizeof($dbInfo)) {
 		return floatval($dbInfo['Value']);
 	}
+
 	return '';
 }
 
@@ -319,13 +385,14 @@ function syslog_setup_table_new($options) {
 			INDEX host_id (host_id),
 			INDEX priority_id (priority_id),
 			INDEX facility_id (facility_id)) ENGINE=$engine;");
-	}else{
+	} else {
 		syslog_create_partitioned_syslog_table($engine, $options['days']);
 	}
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,
+		`hash` varchar(32) NOT NULL default '',
 		`name` varchar(255) NOT NULL default '',
 		`severity` int(10) UNSIGNED NOT NULL default '0',
 		`method` int(10) unsigned NOT NULL default '0',
@@ -360,6 +427,7 @@ function syslog_setup_table_new($options) {
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_remove` (
 		id int(10) NOT NULL auto_increment,
+		`hash` varchar(32) NOT NULL default '',
 		name varchar(255) NOT NULL default '',
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
@@ -374,13 +442,14 @@ function syslog_setup_table_new($options) {
 
 	if (cacti_sizeof($present)) {
 		$newreport = sizeof(syslog_db_fetch_row("SHOW COLUMNS FROM `" . $syslogdb_default . "`.`syslog_reports` LIKE 'body'"));
-	}else{
+	} else {
 		$newreport = true;
 	}
 
 	if ($truncate || !$newreport) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
+		`hash` varchar(32) NOT NULL default '',
 		name varchar(255) NOT NULL default '',
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
@@ -602,7 +671,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 
 	if ($syslog_exists) {
 		$type = __('Upgrade', 'syslog');
-	}else{
+	} else {
 		$type = __('Install', 'syslog');
 	}
 
@@ -613,7 +682,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 	if ($syslog_exists) {
 		print "<h2 style='color:red;'>" . __('WARNING: Syslog Upgrade is Time Consuming!!!', 'syslog') . "</h2>\n";
 		print "<p>" . __('The upgrade of the \'main\' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.', 'syslog') . "</p></td></tr>";
-	}else{
+	} else {
 		unset($fields_syslog_update['upgrade_type']);
 		print "<p>" . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries.', 'syslog') . '</p><p>' . __('You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine.', 'syslog') . '</p><p>' . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller.', 'syslog') . "</p></td></tr>";
 	}
@@ -687,10 +756,10 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 	if ($action == 'install' ) {
 		if ($syslog_exists) {
 			$value = __('Upgrade', 'syslog');
-		}else{
+		} else {
 			$value = __('Install', 'syslog');
 		}
-	}else{
+	} else {
 		$value = __('Uninstall', 'syslog');
 	}
 
@@ -814,7 +883,7 @@ function syslog_config_settings() {
 
 	if (isset($settings['syslog'])) {
 		$settings['syslog'] = array_merge($settings['syslog'], $temp);
-	}else{
+	} else {
 		$settings['syslog'] = $temp;
 	}
 }
@@ -829,7 +898,7 @@ function syslog_show_tab() {
 	if (api_user_realm_auth('syslog.php')) {
 		if (substr_count($_SERVER['REQUEST_URI'], 'syslog.php')) {
 			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog_down.gif" alt="' . __('Syslog', 'syslog') . '"></a>';
-		}else{
+		} else {
 			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog.gif" alt="' . __('Syslog', 'syslog') . '"></a>';
 		}
 	}
@@ -843,7 +912,8 @@ function syslog_config_arrays () {
 	$syslog_actions = array(
 		1 => __('Delete', 'syslog'),
 		2 => __('Disable', 'syslog'),
-		3 => __('Enable', 'syslog')
+		3 => __('Enable', 'syslog'),
+		4 => __('Export', 'syslog')
 	);
 
 	$syslog_levels = array(
@@ -955,13 +1025,13 @@ function syslog_config_arrays () {
 		$minute = $i % 3600;
 		if ($minute > 0) {
 			$minute = '30';
-		}else{
+		} else {
 			$minute = '00';
 		}
 
 		if ($i > 0) {
 			$hour = strrev(substr(strrev('00' . intval($i/3600)),0,2));
-		}else{
+		} else {
 			$hour = '00';
 		}
 
@@ -1028,7 +1098,7 @@ function syslog_graph_buttons($graph_elements = array()) {
 	if (isset_request_var('graph_end') && strlen(get_filter_request_var('graph_end'))) {
 		$date1 = date('Y-m-d H:i:s', get_filter_request_var('graph_start'));
 		$date2 = date('Y-m-d H:i:s', get_filter_request_var('graph_end'));
-	}else{
+	} else {
 		$date1 = $timespan['current_value_date1'];
 		$date2 = $timespan['current_value_date2'];
 	}
@@ -1050,14 +1120,14 @@ function syslog_graph_buttons($graph_elements = array()) {
 				if (!is_ipaddress($host['description'])) {
 					$parts = explode('.', $host['description']);
 					$sql_where = 'WHERE host LIKE ' . db_qstr($parts[0] . '.%') . ' OR host = ' . db_qstr($host['description']);
-				}else{
+				} else {
 					$sql_where = 'WHERE host = ' . db_qstr($host['description']);
 				}
 
 				if (!is_ipaddress($host['hostname'])) {
 					$parts = explode('.', $host['hostname']);
 					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . 'host LIKE ' . db_qstr($parts[0] . '.%') . ' OR host = ' . db_qstr($host['hostname']);
-				}else{
+				} else {
 					$sql_where .= ($sql_where != '' ? ' OR ':'WHERE ') . 'host = ' . db_qstr($host['hostname']);
 				}
 

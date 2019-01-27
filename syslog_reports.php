@@ -24,17 +24,37 @@
 
 chdir('../../');
 include('./include/auth.php');
+include_once('./lib/xml.php');
 include_once('./plugins/syslog/functions.php');
+include_once('./plugins/syslog/database.php');
 
 set_default_action();
 
+if (isset_request_var('import')) {
+	set_request_var('action', 'import');
+}
+
 switch (get_request_var('action')) {
 	case 'save':
-		form_save();
+		if (isset_request_var('save_component_import')) {
+			report_import();
+		} else {
+			form_save();
+		}
 
 		break;
 	case 'actions':
 		form_actions();
+
+		break;
+	case 'import':
+		top_header();
+		import();
+		bottom_footer();
+
+		break;
+	case 'export':
+		report_export();
 
 		break;
 	case 'edit':
@@ -67,7 +87,7 @@ function form_save() {
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
 			header('Location: syslog_reports.php?header=false&action=edit&id=' . (empty($id) ? get_request_var('id') : $id));
-		}else{
+		} else {
 			header('Location: syslog_reports.php?header=false');
 		}
 	}
@@ -94,14 +114,16 @@ function form_actions() {
 				for ($i=0; $i<count($selected_items); $i++) {
 					api_syslog_report_remove($selected_items[$i]);
 				}
-			}else if (get_request_var('drp_action') == '2') { /* disable */
+			} elseif (get_request_var('drp_action') == '2') { /* disable */
 				for ($i=0; $i<count($selected_items); $i++) {
 					api_syslog_report_disable($selected_items[$i]);
 				}
-			}else if (get_request_var('drp_action') == '3') { /* enable */
+			} elseif (get_request_var('drp_action') == '3') { /* enable */
 				for ($i=0; $i<count($selected_items); $i++) {
 					api_syslog_report_enable($selected_items[$i]);
 				}
+			} elseif (get_request_var('drp_action') == '4') { /* export */
+				$_SESSION['exporter'] = get_nfilter_request_var('selected_items');
 			}
 		}
 
@@ -126,7 +148,10 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
 
-			$report_info = syslog_db_fetch_cell('SELECT name FROM `' . $syslogdb_default . '`.`syslog_reports` WHERE id=' . $matches[1]);
+			$report_info = syslog_db_fetch_cell('SELECT name
+				FROM `' . $syslogdb_default . '`.`syslog_reports`
+				WHERE id=' . $matches[1]);
+
 			$report_list  .= '<li>' . $report_info . '</li>';
 			$report_array[] = $matches[1];
 		}
@@ -137,36 +162,46 @@ function form_actions() {
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Delete the following Syslog Report(s).', 'syslog') . "</p>
-					<ul>$report_list</ul>";
+					<div class='itemlist'><ul>$report_list</ul></div>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Delete Syslog Report(s)', 'syslog');
-		}else if (get_request_var('drp_action') == '2') { /* disable */
+		} elseif (get_request_var('drp_action') == '2') { /* disable */
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Disable the following Syslog Report(s).', 'syslog') . "</p>
-					<ul>$report_list</ul>";
+					<div class='itemlist'><ul>$report_list</ul></div>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Disable Syslog Report(s)', 'syslog');
-		}else if (get_request_var('drp_action') == '3') { /* enable */
+		} elseif (get_request_var('drp_action') == '3') { /* enable */
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Enable the following Syslog Report(s).', 'syslog') . "</p>
-					<ul>$report_list</ul>";
+					<div class='itemlist'><ul>$report_list</ul></div>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Enable Syslog Report(s)', 'syslog');
+		} elseif (get_request_var('drp_action') == '4') { /* export */
+			print "<tr>
+				<td class='textArea'>
+					<p>" . __('Click \'Continue\' to Export the following Syslog Report Rule(s).', 'syslog') . "</p>
+					<div class='itemlist'><ul>$report_list</ul></div>";
+					print "</td></tr>
+				</td>
+			</tr>\n";
+
+			$title = __esc('Export Syslog Report Rule(s)', 'syslog');
 		}
 
 		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
-	}else{
+	} else {
 		print "<tr><td class='odd'><span class='textError'>" . __('You must select at least one Syslog Report.', 'syslog') . "</span></td></tr>\n";
 		$save_html = "<input type='button' value='" . __esc('Return', 'syslog') . "' onClick='cactiReturnTo()'>";
 	}
@@ -187,6 +222,35 @@ function form_actions() {
 	bottom_footer();
 }
 
+function report_export() {
+	/* if we are to save this form, instead of display it */
+	if (isset_request_var('selected_items')) {
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
+
+		if ($selected_items != false) {
+			$output = '<templates>' . PHP_EOL;
+			foreach ($selected_items as $id) {
+				if ($id > 0) {
+					$data = db_fetch_row_prepared('SELECT *
+						FROM syslog_reports
+						WHERE id = ?',
+						array($id));
+
+					if (cacti_sizeof($data)) {
+						unset($data['id']);
+						$output .= syslog_array2xml($data);
+					}
+				}
+			}
+
+			$output .= '</templates>' . PHP_EOL;
+			header('Content-type: application/xml');
+			header('Content-Disposition: attachment; filename=syslog_reports_export.xml');
+			print $output;
+		}
+	}
+}
+
 function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
 	$email, $notes, $enabled) {
 	global $config;
@@ -198,13 +262,14 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 	if ($id) {
 		$save['id'] = $id;
-	}else{
+	} else {
 		$save['id'] = '';
 	}
 
 	$hour   = intval($timepart / 60);
 	$minute = $timepart % 60;
 
+	$save['hash']     = get_hash_syslog($save['id'], 'syslog_reports');
 	$save['name']     = form_input_validate($name,     'name',     '', false, 3);
 	$save['type']     = form_input_validate($type,     'type',     '', false, 3);
 	$save['message']  = form_input_validate($message,  'message',  '', false, 3);
@@ -223,7 +288,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 		if ($id) {
 			raise_message(1);
-		}else{
+		} else {
 			raise_message(2);
 		}
 	}
@@ -266,7 +331,7 @@ function syslog_get_report_records(&$sql_where, $rows) {
 	}elseif (get_request_var('enabled') == '1') {
 		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
 			"enabled='on'";
-	}else{
+	} else {
 		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
 			"enabled=''";
 	}
@@ -300,12 +365,12 @@ function syslog_action_edit() {
 
 		if (cacti_sizeof($report)) {
 			$header_label = __('Report Edit [edit: %s]', $report['name'], 'syslog');
-		}else{
+		} else {
 			$header_label = __('Report Edit [new]', 'syslog');
 
 			$report['name'] = __('New Report Record', 'syslog');
 		}
-	}else{
+	} else {
 		$header_label = __('Report Edit [new]', 'syslog');
 
 		$report['name'] = __('New Report Record', 'syslog');
@@ -474,6 +539,7 @@ function syslog_filter() {
 						<span>
 							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
 							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
+							<input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'>
 						</span>
 					</td>
 				</tr>
@@ -493,16 +559,25 @@ function syslog_filter() {
 			loadPageNoHeader(strURL);
 		}
 
+		function importReport() {
+			strURL = 'syslog_reports.php?action=import&header=false';
+			loadPageNoHeader(strURL);
+		}
+
 		$(function() {
 			$('#refresh').click(function() {
-                    applyFilter();
+				applyFilter();
 			});
 
 			$('#clear').click(function() {
-                    clearFilter();
+				clearFilter();
 			});
 
-			$('#removal').submit(function(event) {
+			$('#import').click(function() {
+				importReport();
+			});
+
+			$('#reports').submit(function(event) {
 				event.preventDefault();
 				applyFilter();
 			});
@@ -571,7 +646,7 @@ function syslog_report() {
 		$rows = read_config_option('num_rows_table');
 	}elseif (get_request_var('rows') == -2) {
 		$rows = 999999;
-	}else{
+	} else {
 		$rows = get_request_var('rows');
 	}
 
@@ -582,8 +657,6 @@ function syslog_report() {
 		$sql_where";
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
-
-	form_start('syslog_reports.php', 'chk');
 
 	$display_text = array(
 		'name'     => array(__('Report Name', 'syslog'), 'ASC'),
@@ -598,6 +671,8 @@ function syslog_report() {
 	);
 
 	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('Reports', 'syslog'), 'page', 'main');
+
+	form_start('syslog_reports.php', 'chk');
 
 	print $nav;
 
@@ -620,7 +695,7 @@ function syslog_report() {
 			form_checkbox_cell($report['name'], $report['id']);
 			form_end_row();
 		}
-	}else{
+	} else {
 		print "<tr><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No Syslog Reports Defined', 'syslog') . "</em></td></tr>";
 	}
 
@@ -633,5 +708,129 @@ function syslog_report() {
 	draw_actions_dropdown($syslog_actions);
 
 	form_end();
+
+	if (isset($_SESSION['exporter'])) {
+		print "<script type='text/javascript'>
+			$(function() {
+				setTimeout(function() {
+					document.location = 'syslog_reports.php?action=export&selected_items=" . $_SESSION['exporter'] . "';
+				}, 250);
+			});
+			</script>";
+
+		kill_session_var('exporter');
+		exit;
+    }
+}
+
+function import() {
+	$form_data = array(
+		'import_file' => array(
+			'friendly_name' => __('Import Report Rule from Local File', 'syslog'),
+			'description' => __('If the XML file containing the Report Rule definition data is located on your local machine, select it here.', 'syslog'),
+			'method' => 'file'
+		),
+		'import_text' => array(
+			'method' => 'textarea',
+			'friendly_name' => __('Import Report Rule from Text', 'syslog'),
+			'description' => __('If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it.', 'syslog'),
+			'value' => '',
+			'default' => '',
+			'textarea_rows' => '10',
+			'textarea_cols' => '80',
+			'class' => 'textAreaNotes'
+		)
+	);
+
+	?>
+	<form method='post' action='syslog_reports.php' enctype='multipart/form-data'>
+	<?php
+
+	html_start_box(__('Import Report Data', 'syslog'), '100%', false, '3', 'center', '');
+
+	draw_edit_form(
+		array(
+			'config' => array('no_form_tag' => true),
+			'fields' => $form_data
+		)
+	);
+
+	html_end_box();
+	form_hidden_box('save_component_import', '1', '');
+
+	form_save_button('', 'import');
+}
+
+function report_import() {
+	if (trim(get_nfilter_request_var('import_text') != '')) {
+		/* textbox input */
+		$xml_data = get_nfilter_request_var('import_text');
+	} elseif (($_FILES['import_file']['tmp_name'] != 'none') && ($_FILES['import_file']['tmp_name'] != '')) {
+		/* file upload */
+		$fp = fopen($_FILES['import_file']['tmp_name'],'r');
+		$xml_data = fread($fp, filesize($_FILES['import_file']['tmp_name']));
+		fclose($fp);
+	} else {
+		header('Location: syslog_reports.php?header=false');
+		exit;
+	}
+
+	/* obtain debug information if it's set */
+	$xml_array = xml2array($xml_data);
+
+	$debug_data = array();
+
+	if (cacti_sizeof($xml_array)) {
+		foreach ($xml_array as $template => $contents) {
+			$error = false;
+			$save  = array();
+
+			if (cacti_sizeof($contents)) {
+				foreach ($contents as $name => $value) {
+					switch($name) {
+					case 'hash':
+						// See if the hash exists, if it does, update the alert
+						$found = db_fetch_cell_prepared('SELECT id
+							FROM syslog_reports
+							WHERE hash = ?',
+							array($value));
+
+						if (!empty($found)) {
+							$save['hash'] = $value;
+							$save['id']   = $found;
+						} else {
+							$save['hash'] = $value;
+							$save['id']   = 0;
+						}
+
+						break;
+					case 'name':
+						$tname = $value;
+						$save['name'] = $value;
+
+						break;
+					default:
+						if (db_column_exists('syslog_reports', $name)) {
+							$save[$name] = $value;
+						}
+
+						break;
+					}
+				}
+			}
+
+			if (!$error) {
+				$id = sql_save($save, 'syslog_reports');
+
+				if ($id) {
+					raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+				} else {
+					raise_message('syslog_info' . $id, __('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
+				}
+			}
+		}
+	}
+
+	header('Location: syslog_reports.php');
 }
 

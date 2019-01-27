@@ -24,17 +24,37 @@
 
 chdir('../../');
 include('./include/auth.php');
+include('./lib/xml.php');
 include_once('./plugins/syslog/functions.php');
+include_once('./plugins/syslog/database.php');
 
 set_default_action();
 
+if (isset_request_var('import')) {
+	set_request_var('action', 'import');
+}
+
 switch (get_request_var('action')) {
 	case 'save':
-		form_save();
+		if (isset_request_var('save_component_import')) {
+			alert_import();
+		} else {
+			form_save();
+		}
 
 		break;
 	case 'actions':
 		form_actions();
+
+		break;
+	case 'import':
+		top_header();
+		import();
+		bottom_footer();
+
+		break;
+	case 'export':
+		alert_export();
 
 		break;
 	case 'edit':
@@ -105,6 +125,8 @@ function form_actions() {
 				for ($i=0; $i<count($selected_items); $i++) {
 					api_syslog_alert_enable($selected_items[$i]);
 				}
+			} elseif (get_request_var('drp_action') == '4') { /* export */
+				$_SESSION['exporter'] = get_nfilter_request_var('selected_items');
 			}
 		}
 
@@ -140,7 +162,7 @@ function form_actions() {
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Delete the following Syslog Alert Rule(s).', 'syslog') . "</p>
-					<ul>$alert_list</ul>";
+					<div class='itemlist'><ul>$alert_list</ul></div>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
@@ -150,7 +172,7 @@ function form_actions() {
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Disable the following Syslog Alert Rule(s).', 'syslog') . "</p>
-					<ul>$alert_list</ul>";
+					<div class='itemlist'><ul>$alert_list</ul></div>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
@@ -160,18 +182,29 @@ function form_actions() {
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Enable the following Syslog Alert Rule(s).', 'syslog') . "</p>
-					<ul>$alert_list</ul>";
+					<div class='itemlist'><ul>$alert_list</ul></div>";
 					print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Enable Syslog Alert Rule(s)', 'syslog');
+		} elseif (get_request_var('drp_action') == '4') { /* export */
+			print "<tr>
+				<td class='textArea'>
+					<p>" . __('Click \'Continue\' to Export the following Syslog Alert Rule(s).', 'syslog') . "</p>
+					<div class='itemlist'><ul>$alert_list</ul></div>";
+					print "</td></tr>
+				</td>
+			</tr>\n";
+
+			$title = __esc('Export Syslog Alert Rule(s)', 'syslog');
 		}
 
 		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
 	} else {
-		print "<tr><td class='even'><span class='textError'>" . __('You must select at least one Syslog Alert Rule.', 'syslog') . "</span></td></tr>\n";
-		$save_html = "<input type='button' value='" . __esc('Return', 'syslog') . "' onClick='cactiReturnTo()'>";
+		raise_message(40);
+		header('Location: syslog_alerts.php?header=false');
+		exit;
 	}
 
 	print "<tr>
@@ -190,6 +223,35 @@ function form_actions() {
 	bottom_footer();
 }
 
+function alert_export() {
+	/* if we are to save this form, instead of display it */
+	if (isset_request_var('selected_items')) {
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
+
+		if ($selected_items != false) {
+			$output = '<templates>' . PHP_EOL;
+			foreach ($selected_items as $id) {
+				if ($id > 0) {
+					$data = db_fetch_row_prepared('SELECT *
+						FROM syslog_alert
+						WHERE id = ?',
+						array($id));
+
+					if (cacti_sizeof($data)) {
+						unset($data['id']);
+						$output .= syslog_array2xml($data);
+					}
+				}
+			}
+
+			$output .= '</templates>' . PHP_EOL;
+			header('Content-type: application/xml');
+			header('Content-Disposition: attachment; filename=syslog_alert_export.xml');
+			print $output;
+		}
+	}
+}
+
 function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
 	$enabled, $severity, $command, $repeat_alert, $open_ticket) {
 
@@ -203,6 +265,8 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	} else {
 		$save['id'] = '';
 	}
+
+	$save['hash']         = get_hash_syslog($save['id'], 'syslog_alert');
 
 	$save['name']         = form_input_validate($name,         'name',     '', false, 3);
 	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
@@ -555,10 +619,11 @@ function syslog_filter() {
 						</select>
 					</td>
 					<td>
-						<input id='refresh' type='button' value='<?php print __('Go', 'syslog');?>'>
-					</td>
-					<td>
-						<input id='clear' type='button' value='<?php print __('Clear', 'syslog');?>'>
+						<span>
+							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
+							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
+							<input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'>
+						</span>
 					</td>
 				</tr>
 			</table>
@@ -576,13 +641,22 @@ function syslog_filter() {
 			loadPageNoHeader(strURL);
 		}
 
+		function importAlert() {
+			strURL = 'syslog_alerts.php?action=import&header=false';
+			loadPageNoHeader(strURL);
+		}
+
 		$(function() {
 			$('#refresh').click(function() {
-                    applyFilter();
+				applyFilter();
 			});
 
 			$('#clear').click(function() {
-                    clearFilter();
+				clearFilter();
+			});
+
+			$('#import').click(function() {
+				importAlert();
 			});
 
 			$('#alert').submit(function(event) {
@@ -667,14 +741,6 @@ function syslog_alerts() {
 
 	$total_rows = syslog_db_fetch_cell($rows_query_string);
 
-	$nav = html_nav_bar('syslog_alerts.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 13, __('Alerts', 'syslog'), 'page', 'main');
-
-	form_start('syslog_alerts.php', 'chk');
-
-	print $nav;
-
-	html_start_box('', '100%', '', '3', 'center', '');
-
 	$display_text = array(
 		'name'     => array(__('Alert Name', 'syslog'), 'ASC'),
 		'severity' => array(__('Severity', 'syslog'), 'ASC'),
@@ -687,6 +753,14 @@ function syslog_alerts() {
 		'date'     => array(__('Last Modified', 'syslog'), 'ASC'),
 		'user'     => array(__('By User', 'syslog'), 'DESC')
 	);
+
+	$nav = html_nav_bar('syslog_alerts.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('Alerts', 'syslog'), 'page', 'main');
+
+	form_start('syslog_alerts.php', 'chk');
+
+	print $nav;
+
+	html_start_box('', '100%', '', '3', 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -707,7 +781,7 @@ function syslog_alerts() {
 			form_end_row();
 		}
 	} else {
-		print "<tr><td colspan='4'><em>" . __('No Syslog Alerts Defined', 'syslog') . "</em></td></tr>";
+		print "<tr><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No Syslog Alerts Defined', 'syslog') . "</em></td></tr>";
 	}
 
 	html_end_box(false);
@@ -719,5 +793,130 @@ function syslog_alerts() {
 	draw_actions_dropdown($syslog_actions);
 
 	form_end();
+
+	if (isset($_SESSION['exporter'])) {
+		print "<script type='text/javascript'>
+			$(function() {
+				setTimeout(function() {
+					document.location = 'syslog_alerts.php?action=export&selected_items=" . $_SESSION['exporter'] . "';
+				}, 250);
+			});
+			</script>";
+
+		kill_session_var('exporter');
+		exit;
+	}
+}
+
+function import() {
+	$form_data = array(
+		'import_file' => array(
+			'friendly_name' => __('Import Alert Rule from Local File', 'syslog'),
+			'description' => __('If the XML file containing the Alert Rule definition data is located on your local machine, select it here.', 'syslog'),
+			'method' => 'file'
+		),
+		'import_text' => array(
+			'method' => 'textarea',
+			'friendly_name' => __('Import Alert Rule from Text', 'syslog'),
+			'description' => __('If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it.', 'syslog'),
+			'value' => '',
+			'default' => '',
+			'textarea_rows' => '10',
+			'textarea_cols' => '80',
+			'class' => 'textAreaNotes'
+		)
+	);
+
+	?>
+	<form method='post' action='syslog_alerts.php' enctype='multipart/form-data'>
+	<?php
+
+	html_start_box(__('Import Alert Rule', 'syslog'), '100%', false, '3', 'center', '');
+
+	draw_edit_form(
+		array(
+			'config' => array('no_form_tag' => true),
+			'fields' => $form_data
+		)
+	);
+
+	html_end_box();
+
+	form_hidden_box('save_component_import', '1', '');
+
+	form_save_button('', 'import');
+}
+
+function alert_import() {
+	if (trim(get_nfilter_request_var('import_text') != '')) {
+		/* textbox input */
+		$xml_data = get_nfilter_request_var('import_text');
+	} elseif (($_FILES['import_file']['tmp_name'] != 'none') && ($_FILES['import_file']['tmp_name'] != '')) {
+		/* file upload */
+		$fp = fopen($_FILES['import_file']['tmp_name'],'r');
+		$xml_data = fread($fp, filesize($_FILES['import_file']['tmp_name']));
+		fclose($fp);
+	} else {
+		header('Location: syslog_alerts.php?header=false');
+		exit;
+	}
+
+	/* obtain debug information if it's set */
+	$xml_array = syslog_xml2array($xml_data);
+
+	$debug_data = array();
+
+	if (cacti_sizeof($xml_array)) {
+		foreach ($xml_array as $template => $contents) {
+			$error = false;
+			$save  = array();
+
+			if (cacti_sizeof($contents)) {
+				foreach ($contents as $name => $value) {
+					switch($name) {
+					case 'hash':
+						// See if the hash exists, if it does, update the alert
+						$found = db_fetch_cell_prepared('SELECT id
+							FROM syslog_alert
+							WHERE hash = ?',
+							array($value));
+
+						if (!empty($found)) {
+							$save['hash'] = $value;
+							$save['id']   = $found;
+						} else {
+							$save['hash'] = $value;
+							$save['id']   = 0;
+						}
+
+						break;
+					case 'name':
+						$tname = $value;
+						$save['name'] = $value;
+
+						break;
+					default:
+						if (db_column_exists('syslog_alert', $name)) {
+							$save[$name] = $value;
+						}
+
+						break;
+					}
+				}
+			}
+
+			if (!$error) {
+				$id = sql_save($save, 'syslog_alert');
+
+				if ($id) {
+					raise_message('syslog_info' . $id, __('NOTE: Alert \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+				} else {
+					raise_message('syslog_info' . $id, __('ERROR: Alert \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
+				}
+			}
+		}
+	}
+
+	header('Location: syslog_alerts.php');
 }
 

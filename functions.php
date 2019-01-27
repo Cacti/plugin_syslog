@@ -797,3 +797,47 @@ function syslog_manage_items($from_table, $to_table) {
 	return array('removed' => $removed, 'xferred' => $xferred);
 }
 
+/* get_hash_syslog - returns the current unique hash for an alert
+   @arg $id - (int) the ID of the syslog item to return a hash for
+   @returns - a 128-bit, hexadecimal hash */
+function get_hash_syslog($id, $table) {
+    $hash = syslog_db_fetch_cell_prepared('SELECT hash
+		FROM ' . $table . '
+		WHERE id = ?',
+		array($id));
+
+	if (empty($hash)) {
+        return generate_hash();
+	} elseif (preg_match('/[a-fA-F0-9]{32}/', $hash)) {
+        return $hash;
+    } else {
+        return generate_hash();
+    }
+}
+
+function syslog_ia2xml($array) {
+	$xml = '';
+
+	if (cacti_sizeof($array)) {
+		foreach ($array as $key=>$value) {
+			if (is_array($value)) {
+				$xml .= "\t<$key>" . syslog_ia2xml($value) . "</$key>\n";
+			} else {
+				$xml .= "\t<$key>" . html_escape($value) . "</$key>\n";
+			}
+		}
+	}
+
+	return $xml;
+}
+
+function syslog_array2xml($array, $tag = 'template') {
+	static $index = 1;
+
+	$xml = "<$tag$index>\n" . syslog_ia2xml($array) . "</$tag$index>\n";
+
+	$index++;
+
+	return $xml;
+}
+
