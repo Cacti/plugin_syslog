@@ -53,7 +53,7 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 			mailer($from, $nonsms, '', '', '', $subject, $message, __('Please use an HTML Email Client', 'syslog'));
 		} else {
 			$message = strip_tags(str_replace('<br>', "\n", $message));
-			mailer($from, $nonsms, '', '', '', $subject, '', $message);
+			mailer($from, $nonsms, '', '', '', $subject, '', $message, '', '', false);
 		}
 	}
 }
