@@ -459,10 +459,10 @@ function syslog_stats_filter() {
 					</td>
 					<?php print html_program_filter(get_request_var('eprogram'));?>
 					<td>
-						<input id='go' type='button' value='<?php print __esc('Go', 'syslog');?>'>
-					</td>
-					<td>
-						<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
+						<span>
+							<input id='go' type='button' value='<?php print __esc('Go', 'syslog');?>'>
+							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
+						</span>
 					</td>
 				</tr>
 			</table>
@@ -892,6 +892,24 @@ function syslog_filter($sql_where, $tab) {
 			exportRecords();
 		});
 
+		$('#alerts').click(function() {
+			loadTopTab(urlPath+'plugins/syslog/syslog_alerts.php?header=false');
+			$('.maintabs').find('a').removeClass('selected');
+			$('#tab-console').addClass('selected');
+		});
+
+		$('#removal').click(function() {
+			loadTopTab(urlPath+'plugins/syslog/syslog_removal.php?header=false');
+			$('.maintabs').find('a').removeClass('selected');
+			$('#tab-console').addClass('selected');
+		});
+
+		$('#reports').click(function() {
+			loadTopTab(urlPath+'plugins/syslog/syslog_reports.php?header=false');
+			$('.maintabs').find('a').removeClass('selected');
+			$('#tab-console').addClass('selected');
+		});
+
 		$('#startDate').click(function() {
 			if (date1Open) {
 				date1Open = false;
@@ -1099,9 +1117,9 @@ function syslog_filter($sql_where, $tab) {
 						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) { ?>
 						<td>
 							<span>
-								<input type='button' value='<?php print __esc('Alerts', 'syslog');?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_alerts.php";?>"'>
-								<input type='button' value='<?php print __esc('Removals', 'syslog');?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_removal.php";?>"'>
-								<input type='button' value='<?php print __esc('Reports', 'syslog');?>' title='<?php print __esc('View Syslog Reports', 'syslog');?>' onClick='javascript:document.location="<?php print $config['url_path'] . "plugins/syslog/syslog_reports.php";?>"'>
+								<input id='alerts' type='button' value='<?php print __esc('Alerts', 'syslog');?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog');?>'>
+								<input id='removal' type='button' value='<?php print __esc('Removals', 'syslog');?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog');?>'>
+								<input id='reports' type='button' value='<?php print __esc('Reports', 'syslog');?>' title='<?php print __esc('View Syslog Reports', 'syslog');?>'>
 							</span>
 						</td>
 						<?php } ?>
