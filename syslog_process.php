@@ -81,8 +81,7 @@ if (cacti_sizeof($parms)) {
 }
 
 /* record the start time */
-list($micro,$seconds) = explode(' ', microtime());
-$start_time = $seconds + $micro;
+$start_time = microtime(true);
 
 if ($config['poller_id'] > 1) {
 	exit;
@@ -554,17 +553,17 @@ if (cacti_sizeof($reports)) {
 		$current_time = time();
 
 		if (empty($last_run_time)) {
-			$start_time = strtotime(date('Y-m-d 00:00', $current_time)) + $base_start_time;
+			$start = strtotime(date('Y-m-d 00:00', $current_time)) + $base_start_time;
 
-			if ($current_time > $start_time) {
+			if ($current_time > $start) {
 				/* if timer expired within a polling interval, then poll */
-				if (($current_time - $seconds_offset) < $start_time) {
-					$next_run_time = $start_time;
+				if (($current_time - $seconds_offset) < $start) {
+					$next_run_time = $start;
 				}else{
-					$next_run_time = $start_time + 3600*24;
+					$next_run_time = $start+ 3600*24;
 				}
 			}else{
-				$next_run_time = $start_time;
+				$next_run_time = $start;
 			}
 		}else{
 			$next_run_time = strtotime(date('Y-m-d 00:00', $last_run_time)) + $base_start_time + $time_span;
@@ -684,8 +683,7 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 	global $database_default;
 
 	/* record the end time */
-	list($micro,$seconds) = explode(' ', microtime());
-	$end_time = $seconds + $micro;
+	$end_time = microtime(true);
 
 	cacti_log('SYSLOG STATS:Time:' . round($end_time-$start_time,2) . ' Deletes:' . $deleted . ' Incoming:' . $incoming . ' Removes:' . $removed . ' XFers:' . $xferred . ' Alerts:' . $alerts . ' Alarms:' . $alarms . ' Reports:' . $reports, true, 'SYSTEM');
 
