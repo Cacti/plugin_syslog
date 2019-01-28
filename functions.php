@@ -128,11 +128,20 @@ function syslog_partition_create($table) {
 	$cformat = 'd' . date('Ymd', $time);
 	$lnow    = date('Y-m-d', $time+86400);
 
-	cacti_log("SYSLOG: Creating new partition '$cformat'", false, 'SYSTEM');
-	syslog_debug("Creating new partition '$cformat'");
-	syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-		PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
-		PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+	$exists = syslog_db_fetch_row("SELECT *
+		FROM `information_schema`.`partitions`
+        WHERE table_schema='" . $syslogdb_default . "'
+		AND partition_name='" . $cformat . "'
+		AND table_name='syslog'
+        ORDER BY partition_ordinal_position");
+
+	if (!cacti_sizeof($exists)) {
+		cacti_log("SYSLOG: Creating new partition '$cformat'", false, 'SYSTEM');
+		syslog_debug("Creating new partition '$cformat'");
+		syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+			PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
+			PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+	}
 }
 
 /**
@@ -147,7 +156,8 @@ function syslog_partition_remove($table) {
 		WHERE table_schema='" . $syslogdb_default . "' AND table_name='syslog'
 		ORDER BY partition_ordinal_position");
 
-	$days     = read_config_option('syslog_retention');
+	$days = read_config_option('syslog_retention');
+
 	syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
 
 	if ($days > 0) {
