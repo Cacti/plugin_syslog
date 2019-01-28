@@ -717,12 +717,12 @@ function alert_replace_variables($alert, $a) {
 
 	$command = $alert['command'];
 
-	$command = str_replace('<ALERTID>',  $alert['id'], $command);
-	$command = str_replace('<HOSTNAME>', $a['host'], $command);
-	$command = str_replace('<PRIORITY>', $syslog_levels[$a['priority_id']], $command);
-	$command = str_replace('<FACILITY>', $syslog_facilities[$a['facility_id']], $command);
-	$command = str_replace('<MESSAGE>',  $a['message'], $command);
-	$command = str_replace('<SEVERITY>', $severities[$alert['severity']], $command);
+	$command = str_replace('<ALERTID>',  cacti_escapeshellarg($alert['id']), $command);
+	$command = str_replace('<HOSTNAME>', cacti_escapeshellarg($a['host']), $command);
+	$command = str_replace('<PRIORITY>', cacti_escapeshellarg($syslog_levels[$a['priority_id']]), $command);
+	$command = str_replace('<FACILITY>', cacti_escapeshellarg($syslog_facilities[$a['facility_id']]), $command);
+	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($a['message']), $command);
+	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
 
 	return $command;
 }
