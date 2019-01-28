@@ -269,12 +269,37 @@ function syslog_statistics() {
 	html_start_box('', '100%', '', '3', 'center', '');
 
 	$display_text = array(
-		'host'        => array('display' => __('Device Name', 'syslog'), 'sort' => 'ASC',  'align' => 'left'),
-		'facility'    => array('display' => __('Facility', 'syslog'),    'sort' => 'ASC',  'align' => 'left'),
-		'priority'    => array('display' => __('Priority', 'syslog'),    'sort' => 'ASC',  'align' => 'left'),
-		'program'     => array('display' => __('Program', 'syslog'),     'sort' => 'ASC',  'align' => 'left'),
-		'insert_time' => array('display' => __('Date', 'syslog'),        'sort' => 'DESC', 'align' => 'right'),
-		'records'     => array('display' => __('Records', 'syslog'),     'sort' => 'DESC', 'align' => 'right'));
+		'host' => array(
+			'display' => __('Device Name', 'syslog'),
+			'sort' => 'ASC',
+			'align' => 'left'
+		),
+		'facility' => array(
+			'display' => __('Facility', 'syslog'),
+			'sort' => 'ASC',
+			'align' => 'left'
+		),
+		'priority' => array(
+			'display' => __('Priority', 'syslog'),
+			'sort' => 'ASC',
+			'align' => 'left'
+		),
+		'program' => array(
+			'display' => __('Program', 'syslog'),
+			'sort' => 'ASC',
+			'align' => 'left'
+		),
+		'insert_time' => array(
+			'display' => __('Date', 'syslog'),
+			'sort' => 'DESC',
+			'align' => 'right'
+		),
+		'records' => array(
+			'display' => __('Records', 'syslog'),
+			'sort' => 'DESC',
+			'align' => 'right'
+		)
+	);
 
 	html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -319,7 +344,7 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 
 	/* form the 'where' clause for our main sql query */
 	if (!isempty_request_var('filter')) {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "sh.host LIKE '%" . get_request_var('filter') . "%'";
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "sh.host LIKE '%" . get_request_var('filter') . "%' OR spr.program LIKE '%" . get_request_var('filter') . "%'";
 	}
 
 	if (get_request_var('host') == '-2') {
@@ -349,10 +374,10 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 		$sql_groupby .= ', sp.priority';
 	}
 
-	if (get_request_var('eprogram') == '-2') {
+	if (get_request_var('program') == '-2') {
 		// Do nothing
-	} elseif (get_request_var('eprogram') != '-1' && get_request_var('program') != '') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('eprogram');
+	} elseif (get_request_var('program') != '-1' && get_request_var('program') != '') {
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('program');
 		$sql_groupby .= ', spr.program';
 	} else {
 		$sql_groupby .= ', spr.program';
@@ -1178,8 +1203,7 @@ function syslog_filter($sql_where, $tab) {
 								$end_val = sizeof($graph_timeshifts) + 1;
 								if (cacti_sizeof($graph_timeshifts)) {
 									for ($shift_value=$start_val; $shift_value < $end_val; $shift_value++) {
-cacti_log('Predefined Timeshift: ' . get_request_var('predefined_timeshift') . ', Val: ' . $shift_value);
-										print "<option value='$shift_value'"; if (get_request_var('predefined_timeshift') == $shift_value) { print ' selected'; } print '>' . title_trim($graph_timeshifts[$shift_value], 40) . "</option>\n";
+										print "<option value='$shift_value'"; if (get_request_var('predefined_timeshift') == $shift_value) { print ' selected'; } print '>' . title_trim($graph_timeshifts[$shift_value], 40) . '</option>';
 									}
 								}
 								?>
@@ -1662,9 +1686,12 @@ function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sq
 	}
 
 	print '<td>';
+	print __('Program', 'syslog');
+	print '</td>';
+	print '<td>';
 
 	syslog_form_callback(
-		'eprogram',
+		'program',
 		'SELECT DISTINCT program_id, program FROM syslog_programs AS spr ORDER BY program',
 		'program',
 		'program_id',
