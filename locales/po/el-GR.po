@@ -5,39 +5,51 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-27 18:42-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: el-GR\n"
+"PO-Revision-Date: 2019-03-16 22:14-0400\n"
+"Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: functions.php:53
+#, fuzzy
 msgid "Please use an HTML Email Client"
-msgstr ""
+msgstr "Χρησιμοποιήστε έναν πελάτη ηλεκτρονικού ταχυδρομείου HTML"
 
 #: setup.php:34
+#, fuzzy
 msgid ""
 "Please rename your config.php.dist file in the syslog directory, and change "
 "setup your database before installing."
 msgstr ""
+"Παρακαλούμε μετονομάστε το αρχείο config.php.dist στον κατάλογο syslog και "
+"αλλάξτε τη ρύθμιση της βάσης δεδομένων σας πριν εγκαταστήσετε."
 
 #: setup.php:210
+#, fuzzy
 msgid ""
 "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove "
 "all Data before Installing.  Migration is possible, but you must plan this "
 "in advance.  No automatic migration is supported."
 msgstr ""
+"Το Syslog 2.0 απαιτεί πλήρη επανεγκατάσταση. Καταργήστε την εγκατάσταση του "
+"Syslog και αφαιρέστε όλα τα δεδομένα πριν από την εγκατάσταση. Η "
+"μετανάστευση είναι δυνατή, αλλά πρέπει να το προγραμματίσετε εκ των "
+"προτέρων. Δεν υποστηρίζεται αυτόματη μετάβαση."
 
 #: setup.php:602
+#, fuzzy
 msgid "What upgrade/install type do you wish to use"
-msgstr ""
+msgstr "Τι τύπος αναβάθμισης / εγκατάστασης θέλετε να χρησιμοποιήσετε"
 
 #: setup.php:603
+#, fuzzy
 msgid ""
 "When you have very large tables, performing a Truncate will be much "
 "quicker.  If you are concerned about archive data, you can choose either "
@@ -46,98 +58,134 @@ msgid ""
 "data from a backup table to the new syslog format.  Again this process can "
 "take several hours."
 msgstr ""
+"Όταν έχετε πολύ μεγάλα τραπέζια, η εκτέλεση ενός Truncate θα είναι πολύ πιο "
+"γρήγορα. Εάν ανησυχείτε για δεδομένα αρχειοθέτησης, μπορείτε να επιλέξετε "
+"είτε Inline, το οποίο θα παγώσει το πρόγραμμα περιήγησής σας για την περίοδο "
+"αυτής της αναβάθμισης ή το παρασκήνιο, το οποίο θα δημιουργήσει μια "
+"διαδικασία στο παρασκήνιο για να φέρει τα παλιά σας δεδομένα syslog από ένα "
+"εφεδρικό πίνακα στη νέα μορφή syslog . Και πάλι αυτή η διαδικασία μπορεί να "
+"διαρκέσει αρκετές ώρες."
 
 #: setup.php:606
+#, fuzzy
 msgid "Truncate Syslog Table"
-msgstr ""
+msgstr "Περικοπή πίνακα Syslog"
 
 #: setup.php:607
+#, fuzzy
 msgid "Inline Upgrade"
-msgstr ""
+msgstr "Ενσωματωμένη αναβάθμιση"
 
 #: setup.php:608
+#, fuzzy
 msgid "Background Upgrade"
-msgstr ""
+msgstr "Αναβάθμιση φόντου"
 
 #: setup.php:613
+#, fuzzy
 msgid "Database Storage Engine"
-msgstr ""
+msgstr "Μηχανή αποθήκευσης βάσεων δεδομένων"
 
 #: setup.php:614
+#, fuzzy
 msgid ""
 "In MySQL 5.1.6 and above, you have the option to make this a partitioned "
 "table by days.  Prior to this release, you only have the traditional table "
 "structure available."
 msgstr ""
+"Στην MySQL 5.1.6 και παραπάνω, έχετε την επιλογή να κάνετε αυτό ένα τραπέζι "
+"κατανεμημένο κατά ημέρες. Πριν από αυτή την έκδοση, διαθέτετε μόνο την "
+"παραδοσιακή δομή πίνακα."
 
 #: setup.php:617
+#, fuzzy
 msgid "MyISAM Storage"
-msgstr ""
+msgstr "MyISAM Αποθήκευση"
 
 #: setup.php:618
+#, fuzzy
 msgid "InnoDB Storage"
-msgstr ""
+msgstr "Αποθήκευση InnoDB"
 
 #: setup.php:623
+#, fuzzy
 msgid "Database Architecture"
-msgstr ""
+msgstr "Αρχιτεκτονική βάσεων δεδομένων"
 
 #: setup.php:624
+#, fuzzy
 msgid ""
 "In MySQL 5.1.6 and above, you have the option to make this a partitioned "
 "table by days.  In MySQL 5.5 and above, you can create multiple partitions "
 "per day.  Prior to MySQL 5.1.6, you only have the traditional table "
 "structure available."
 msgstr ""
+"Στην MySQL 5.1.6 και παραπάνω, έχετε την επιλογή να κάνετε αυτό ένα τραπέζι "
+"κατανεμημένο κατά ημέρες. Στην MySQL 5.5 και παραπάνω, μπορείτε να "
+"δημιουργήσετε πολλαπλά κατατμήματα την ημέρα. Πριν από την MySQL 5.1.6, "
+"διαθέτετε μόνο την παραδοσιακή δομή πίνακα."
 
 #: setup.php:628 setup.php:631
+#, fuzzy
 msgid "Traditional Table"
-msgstr ""
+msgstr "Παραδοσιακός πίνακας"
 
 #: setup.php:629
+#, fuzzy
 msgid "Partitioned Table"
-msgstr ""
+msgstr "Διαχωρισμένος Πίνακας"
 
 #: setup.php:637
+#, fuzzy
 msgid "Retention Policy"
-msgstr ""
+msgstr "Πολιτική διατήρησης"
 
 #: setup.php:638
+#, fuzzy
 msgid ""
 "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr ""
+"Επιλέξτε πόσα ημέρες των τιμών Syslog θέλετε να διατηρήσετε στη βάση "
+"δεδομένων."
 
 #: setup.php:659
+#, fuzzy
 msgid "Partitions per Day"
-msgstr ""
+msgstr "Διαχωριστικά ανά ημέρα"
 
 #: setup.php:660
+#, fuzzy
 msgid "Select the number of partitions per day that you wish to create."
 msgstr ""
+"Επιλέξτε τον αριθμό των κατατμήσεων ανά ημέρα που θέλετε να δημιουργήσετε."
 
 #: setup.php:663 setup.php:664 setup.php:665 setup.php:666 setup.php:667
-#, php-format
+#, fuzzy, php-format
 msgid "%d Per Day"
-msgstr ""
+msgstr "% d ανά ημέρα"
 
 #: setup.php:673 setup.php:758
+#, fuzzy
 msgid "Upgrade"
-msgstr ""
+msgstr "Αναβάθμιση"
 
 #: setup.php:675 setup.php:760
+#, fuzzy
 msgid "Install"
-msgstr ""
+msgstr "Εγκατάσταση"
 
 #: setup.php:679
-#, php-format
+#, fuzzy, php-format
 msgid "Syslog %s Advisor"
-msgstr ""
+msgstr "Σύμβουλος του Syslog %s"
 
 #: setup.php:683
+#, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr ""
+msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Η αναβάθμιση Syslog είναι η κατανάλωση χρόνου !!!"
 
 #: setup.php:684
+#, fuzzy
 msgid ""
 "The upgrade of the 'main' syslog table can be a very time consuming "
 "process.  As such, it is recommended that you either reduce the size of your "
@@ -150,78 +198,118 @@ msgid ""
 "during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with "
 "the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr ""
+"Η αναβάθμιση του κύριου πίνακα syslog μπορεί να είναι μια πολύ χρονοβόρα "
+"διαδικασία. Ως εκ τούτου, συνιστάται είτε να μειώσετε το μέγεθος του πίνακα "
+"syslog πριν από την αναβάθμιση είτε να επιλέξετε την επιλογή φόντου </p><p> "
+"Εάν επιλέξετε την επιλογή φόντου, ο παλαιός πίνακας syslog θα μετονομαστεί "
+"και θα δημιουργηθεί ένας νέος πίνακας syslog. Στη συνέχεια, θα ξεκινήσει μια "
+"διαδικασία αναβάθμισης στο παρασκήνιο. Και πάλι, αυτή η διαδικασία υποβάθρου "
+"μπορεί να ολοκληρωθεί αρκετά. Ωστόσο, τα δεδομένα σας θα διατηρηθούν </p><p> "
+"Ανεξάρτητα από την επιλογή σας, όλοι οι υπάρχοντες κανόνες αφαίρεσης και "
+"προειδοποίησης θα διατηρηθούν κατά τη διάρκεια της διαδικασίας αναβάθμισης. "
+"</p><p> Πατήστε <b>'Αναβάθμιση'</b> για να συνεχίσετε με την αναβάθμιση ή "
+"<b>'Άκυρο'</b> για να επιστρέψετε στο μενού Plugins."
 
 #: setup.php:687
+#, fuzzy
 msgid ""
 "You can also select the retention duration.  Please keep in mind that if you "
 "have several hosts logging to syslog, this table can become quite large.  "
 "So, if not using partitioning, you might want to keep the size smaller."
 msgstr ""
+"Μπορείτε επίσης να επιλέξετε τη διάρκεια διατήρησης. Λάβετε υπόψη ότι αν "
+"έχετε αρκετούς κεντρικούς υπολογιστές που καταγράφουν στο syslog, ο πίνακας "
+"αυτός μπορεί να γίνει αρκετά μεγάλος. Επομένως, εάν δεν χρησιμοποιείτε "
+"διαμέριση, ίσως θέλετε να κρατήσετε το μέγεθος μικρότερο."
 
 #: setup.php:687
+#, fuzzy
 msgid ""
 "You can also set the MySQL storage engine.  If you have not tuned you system "
 "for InnoDB storage properties, it is strongly recommended that you utilize "
 "the MyISAM storage engine."
 msgstr ""
+"Μπορείτε επίσης να ορίσετε τη μηχανή αποθήκευσης MySQL. Εάν δεν έχετε "
+"συντονίσει το σύστημα σας για τις ιδιότητες αποθήκευσης InnoDB, συνιστάται "
+"ιδιαίτερα να χρησιμοποιήσετε τη μηχανή αποθήκευσης MyISAM."
 
 #: setup.php:687
+#, fuzzy
 msgid ""
 "You have several options to choose from when installing Syslog.  The first "
 "is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to "
 "utilize Table Partitioning to prevent the size of the tables from becoming "
 "excessive thus slowing queries."
 msgstr ""
+"Έχετε αρκετές επιλογές για να επιλέξετε κατά την εγκατάσταση του Syslog. Το "
+"πρώτο είναι η Αρχιτεκτονική Βάσεων Δεδομένων. Ξεκινώντας με το MySQL 5.1.6, "
+"μπορείτε να επιλέξετε να χρησιμοποιήσετε το Partitioning Table για να "
+"αποφύγετε το υπερβολικό μέγεθος των πινάκων, με αποτέλεσμα να επιβραδύνετε "
+"τα ερωτήματα."
 
 #: setup.php:691
-#, php-format
+#, fuzzy, php-format
 msgid "Syslog %s Settings"
-msgstr ""
+msgstr "Ρυθμίσεις του Syslog %s"
 
 #: setup.php:718
+#, fuzzy
 msgid "What uninstall method do you want to use?"
-msgstr ""
+msgstr "Ποια μέθοδος απεγκατάστασης θέλετε να χρησιμοποιήσετε;"
 
 #: setup.php:719
+#, fuzzy
 msgid ""
 "When uninstalling syslog, you can remove everything, or only components, "
 "just in case you plan on re-installing in the future."
 msgstr ""
+"Κατά την απεγκατάσταση του syslog, μπορείτε να καταργήσετε τα πάντα ή μόνο "
+"τα εξαρτήματα, μόνο σε περίπτωση που σχεδιάζετε να επανεγκαταστήσετε στο "
+"μέλλον."
 
 #: setup.php:721
+#, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr ""
+msgstr "Κατάργηση όλων (Μητρώα, Πίνακες, Ρυθμίσεις)"
 
 #: setup.php:721
+#, fuzzy
 msgid "Syslog Data Only"
-msgstr ""
+msgstr "Μόνο δεδομένα Syslog"
 
 #: setup.php:741
+#, fuzzy
 msgid "Syslog Uninstall Preferences"
-msgstr ""
+msgstr "Προτιμήσεις κατάργησης εγκατάστασης του Syslog"
 
 #: setup.php:763
+#, fuzzy
 msgid "Uninstall"
-msgstr ""
+msgstr "Καταργήστε την εγκατάσταση"
 
 #: setup.php:770 syslog_alerts.php:203 syslog_removal.php:226
 #: syslog_reports.php:203
+#, fuzzy
 msgid "Cancel"
-msgstr ""
+msgstr "Ακύρωση"
 
 #: setup.php:801 setup.php:900 setup.php:902 setup.php:1066 setup.php:1080
+#, fuzzy
 msgid "Syslog"
-msgstr ""
+msgstr "Syslog"
 
 #: setup.php:805
+#, fuzzy
 msgid "General Settings"
-msgstr ""
+msgstr "Γενικές Ρυθμίσεις"
 
 #: setup.php:809
+#, fuzzy
 msgid "Syslog Enabled"
-msgstr ""
+msgstr "Το Syslog Ενεργοποιήθηκε"
 
 #: setup.php:810
+#, fuzzy
 msgid ""
 "If this checkbox is set, records will be transferred from the Syslog "
 "Incoming table to the main syslog table and Alerts and Reports will be "
@@ -229,43 +317,67 @@ msgid ""
 "will still accumulate into the Syslog Incoming table as this is defined by "
 "the rsyslog or syslog-ng process."
 msgstr ""
+"Εάν έχει οριστεί αυτό το πλαίσιο ελέγχου, οι εγγραφές θα μεταφερθούν από τον "
+"πίνακα εισερχόμενου Syslog στον κύριο πίνακα syslog και οι Ειδοποιήσεις και "
+"Αναφορές θα ενεργοποιηθούν. Λάβετε υπόψη ότι εάν το σύστημα είναι "
+"απενεργοποιημένο, οι καταχωρίσεις του αρχείου καταγραφής θα εξακολουθούν να "
+"συσσωρεύονται στον πίνακα Syslog Incoming, όπως αυτό ορίζεται από τη "
+"διαδικασία rsyslog ή syslog-ng."
 
 #: setup.php:815
+#, fuzzy
 msgid "HTML Based Email"
-msgstr ""
+msgstr "HTML με βάση το ηλεκτρονικό ταχυδρομείο"
 
 #: setup.php:816
+#, fuzzy
 msgid ""
 "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, "
 "Emails will be sent in plain text."
 msgstr ""
+"Εάν έχει οριστεί αυτό το πλαίσιο ελέγχου, όλα τα μηνύματα ηλεκτρονικού "
+"ταχυδρομείου θα αποστέλλονται σε μορφή HTML. Διαφορετικά, τα μηνύματα "
+"ηλεκτρονικού ταχυδρομείου θα αποστέλλονται με απλό κείμενο."
 
 #: setup.php:821
+#, fuzzy
 msgid "Enable Statistics Gathering"
-msgstr ""
+msgstr "Ενεργοποίηση συλλογής στατιστικών στοιχείων"
 
 #: setup.php:822
+#, fuzzy
 msgid ""
 "If this checkbox is set, statistics on where syslog messages are arriving "
 "from will be maintained.  This statistical information can be used to render "
 "things such as heat maps."
 msgstr ""
+"Εάν έχει οριστεί αυτό το πλαίσιο ελέγχου, θα διατηρηθούν τα στατιστικά "
+"στοιχεία για το πού προέρχονται τα μηνύματα syslog. Αυτές οι στατιστικές "
+"πληροφορίες μπορούν να χρησιμοποιηθούν για την απόδοση πράξεων όπως οι "
+"χάρτες θερμότητας."
 
 #: setup.php:827
+#, fuzzy
 msgid "Strip Domains"
-msgstr ""
+msgstr "Πεδία λωρίδων"
 
 #: setup.php:828
+#, fuzzy
 msgid ""
 "A comma delimited list of domains that you wish to remove from the syslog "
 "hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr ""
+"Μια λίστα οριοθετημένων με κόμμα λίστα τομέων που θέλετε να καταργήσετε από "
+"το όνομα κεντρικού υπολογιστή syslog, Παραδείγματα θα είναι 'mydomain.com, "
+"otherdomain.com'"
 
 #: setup.php:835
+#, fuzzy
 msgid "Validate Hostnames"
-msgstr ""
+msgstr "Επικύρωση ονομάτων κεντρικών υπολογιστών"
 
 #: setup.php:836
+#, fuzzy
 msgid ""
 "If this checkbox is set, all hostnames are validated.  If the hostname is "
 "not valid. All records are assigned to a special host called 'invalidhost'.  "
@@ -273,798 +385,1003 @@ msgid ""
 "use of this setting should only be used when other means are not in place to "
 "prevent this from happening."
 msgstr ""
+"Εάν έχει οριστεί αυτό το πλαίσιο ελέγχου, όλα τα ονόματα κεντρικού "
+"υπολογιστή έχουν επικυρωθεί. Εάν το όνομα κεντρικού υπολογιστή δεν είναι "
+"έγκυρο. Όλα τα αρχεία αντιστοιχίζονται σε έναν ειδικό host που ονομάζεται "
+"'invalidhost'. Αυτή η ρύθμιση μπορεί να επηρεάσει το χρόνο επεξεργασίας "
+"syslog σε μεγάλα συστήματα. Επομένως, η χρήση αυτής της ρύθμισης πρέπει να "
+"χρησιμοποιείται μόνο όταν δεν υπάρχουν άλλα μέσα για να αποφευχθεί αυτό."
 
 #: setup.php:841
+#, fuzzy
 msgid "Refresh Interval"
-msgstr ""
+msgstr "Ανανέωση χρονικού διαστήματος"
 
 #: setup.php:842
+#, fuzzy
 msgid "This is the time in seconds before the page refreshes."
-msgstr ""
+msgstr "Αυτή είναι η ώρα σε δευτερόλεπτα πριν ανανεωθεί η σελίδα."
 
 #: setup.php:848
+#, fuzzy
 msgid "Max Report Records"
-msgstr ""
+msgstr "Εγγραφές μέγιστης αναφοράς"
 
 #: setup.php:849
+#, fuzzy
 msgid ""
 "For Threshold based Alerts, what is the maximum number that you wish to show "
 "in the report.  This is used to limit the size of the html log and Email."
 msgstr ""
+"Για ειδοποιήσεις βασισμένες σε κατώφλι, ποιος είναι ο μέγιστος αριθμός που "
+"θέλετε να εμφανίζεται στην αναφορά. Αυτό χρησιμοποιείται για τον περιορισμό "
+"του μεγέθους του αρχείου καταγραφής html και του Email."
 
 #: setup.php:853 setup.php:854 setup.php:855 setup.php:856 setup.php:857
 #: setup.php:858
-#, php-format
+#, fuzzy, php-format
 msgid "%d Records"
-msgstr ""
+msgstr "% d Αρχεία"
 
 #: setup.php:862
+#, fuzzy
 msgid "Syslog Retention"
-msgstr ""
+msgstr "Διατήρηση Syslog"
 
 #: setup.php:863
+#, fuzzy
 msgid "This is the number of days to keep events."
-msgstr ""
+msgstr "Αυτός είναι ο αριθμός ημερών για την τήρηση των συμβάντων."
 
 #: setup.php:869
+#, fuzzy
 msgid "Syslog Alert Retention"
-msgstr ""
+msgstr "Διατήρηση ειδοποίησης Syslog"
 
 #: setup.php:870
+#, fuzzy
 msgid "This is the number of days to keep alert logs."
 msgstr ""
+"Αυτός είναι ο αριθμός ημερών για την τήρηση αρχείων καταγραφής συναγερμών."
 
 #: setup.php:876
+#, fuzzy
 msgid "Command for Opening Tickets"
-msgstr ""
+msgstr "Εντολή ανοίγματος εισιτηρίων"
 
 #: setup.php:877
+#, fuzzy
 msgid ""
 "This command will be executed for opening Help Desk Tickets.  The command "
 "will be required to parse multiple input parameters as follows: <b>--alert-"
 "name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The "
 "hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr ""
+"Αυτή η εντολή θα εκτελεστεί για το άνοιγμα των εισιτηρίων Help Desk. Η "
+"εντολή θα πρέπει να αναλύσει πολλαπλά παραμέτρους εισόδου ως εξής: <b>--"
+"alert-όνομα,</b> <b>--severity,</b> <b>--hostlist,</b> <b>--message.</b> Η "
+"λίστα φιλοξενουμένων θα είναι ένας κατάλογος με κεντρικούς υπολογιστές ο "
+"οποίος επηρεάζεται από την ειδοποίηση."
 
 #: setup.php:913 syslog_removal.php:33
+#, fuzzy
 msgid "Delete"
-msgstr ""
+msgstr "Διαγραφή"
 
 #: setup.php:914 syslog_removal.php:34
+#, fuzzy
 msgid "Disable"
-msgstr ""
+msgstr "Απενεργοποίηση"
 
 #: setup.php:915 syslog_removal.php:35
+#, fuzzy
 msgid "Enable"
-msgstr ""
+msgstr "Ενεργοποίηση"
 
 #: setup.php:916 syslog.php:1195 syslog_removal.php:37
+#, fuzzy
 msgid "Export"
-msgstr ""
+msgstr "Εξαγωγή"
 
 #: setup.php:959 setup.php:978
+#, fuzzy
 msgid "Indefinite"
-msgstr ""
+msgstr "Αόριστος"
 
 #: setup.php:960 setup.php:979 syslog.php:493 syslog_alerts.php:407
-#, php-format
+#, fuzzy, php-format
 msgid "%d Day"
-msgstr ""
+msgstr "% d Ημέρα"
 
 #: setup.php:961 setup.php:962 setup.php:963 setup.php:964 setup.php:965
 #: setup.php:980 setup.php:981 setup.php:982 setup.php:983 setup.php:984
 #: syslog_alerts.php:408
-#, php-format
+#, fuzzy, php-format
 msgid "%d Days"
-msgstr ""
+msgstr "%d Ημέρες"
 
 #: setup.php:966 setup.php:985 syslog_alerts.php:409
-#, php-format
+#, fuzzy, php-format
 msgid "%d Week"
-msgstr ""
+msgstr "% d Εβδομάδα"
 
 #: setup.php:967 setup.php:986 syslog_alerts.php:410
-#, php-format
+#, fuzzy, php-format
 msgid "%d Weeks"
-msgstr ""
+msgstr "% d εβδομάδες"
 
 #: setup.php:968 setup.php:987
-#, php-format
+#, fuzzy, php-format
 msgid "%d Month"
-msgstr ""
+msgstr "% d Μήνας"
 
 #: setup.php:969 setup.php:970 setup.php:971 setup.php:972 setup.php:973
 #: setup.php:988 setup.php:989 setup.php:990 setup.php:991 setup.php:992
-#, php-format
+#, fuzzy, php-format
 msgid "%d Months"
-msgstr ""
+msgstr "% d Μήνες"
 
 #: setup.php:974 setup.php:993
-#, php-format
+#, fuzzy, php-format
 msgid "%d Year"
-msgstr ""
+msgstr "% d Έτος"
 
 #: setup.php:997 syslog_reports.php:692
+#, fuzzy
 msgid "Never"
-msgstr ""
+msgstr "Ποτέ"
 
 #: setup.php:998 syslog.php:484
-#, php-format
+#, fuzzy, php-format
 msgid "%d Minute"
-msgstr ""
+msgstr "% d λεπτά"
 
 #: setup.php:999 setup.php:1000 setup.php:1001 syslog.php:485 syslog.php:486
 #: syslog.php:487 syslog.php:488 syslog_alerts.php:394 syslog_alerts.php:395
 #: syslog_alerts.php:396 syslog_alerts.php:397 syslog_alerts.php:398
 #: syslog_alerts.php:399
-#, php-format
+#, fuzzy, php-format
 msgid "%d Minutes"
-msgstr ""
+msgstr "%d λεπτά"
 
 #: setup.php:1005 syslog.php:1321 syslog.php:1359 syslog.php:1376
+#, fuzzy
 msgid "Notice"
-msgstr ""
+msgstr "Σημείωση"
 
 #: setup.php:1006 syslog.php:1319 syslog.php:1358 syslog.php:1375
+#, fuzzy
 msgid "Warning"
-msgstr ""
+msgstr "Προσοχή"
 
 #: setup.php:1007 syslog.php:1313 syslog.php:1355 syslog.php:1374
+#, fuzzy
 msgid "Critical"
-msgstr ""
+msgstr "Κρίσιμη"
 
 #: setup.php:1011
+#, fuzzy
 msgid "Begins with"
-msgstr ""
+msgstr "Ξεκινάει με"
 
 #: setup.php:1012
+#, fuzzy
 msgid "Contains"
-msgstr ""
+msgstr "περιέχει"
 
 #: setup.php:1013
+#, fuzzy
 msgid "Ends with"
-msgstr ""
+msgstr "结束于"
 
 #: setup.php:1014
+#, fuzzy
 msgid "Hostname is"
-msgstr ""
+msgstr "Το όνομα κεντρικού υπολογιστή είναι"
 
 #: setup.php:1015
+#, fuzzy
 msgid "Facility is"
-msgstr ""
+msgstr "Η διευκόλυνση είναι"
 
 #: setup.php:1016
+#, fuzzy
 msgid "SQL Expression"
-msgstr ""
+msgstr "Έκφραση SQL"
 
 #: setup.php:1020
+#, fuzzy
 msgid "Daily"
-msgstr ""
+msgstr "Καθημερινά"
 
 #: setup.php:1021
+#, fuzzy
 msgid "Weekly"
-msgstr ""
+msgstr "Εβδομαδιαία"
 
 #: setup.php:1044
+#, fuzzy
 msgid "Import/Export"
-msgstr ""
+msgstr "Εισαγωγή/Εξαγωγή"
 
 #: setup.php:1045
+#, fuzzy
 msgid "Alert Rules"
-msgstr ""
+msgstr "Κανόνες προειδοποίησης"
 
 #: setup.php:1045 setup.php:1046 setup.php:1047 setup.php:1052
+#, fuzzy
 msgid "Syslog Settings"
-msgstr ""
+msgstr "Ρυθμίσεις Syslog"
 
 #: setup.php:1046
+#, fuzzy
 msgid "Removal Rules"
-msgstr ""
+msgstr "Κανόνες κατάργησης"
 
 #: setup.php:1047
+#, fuzzy
 msgid "Report Rules"
-msgstr ""
+msgstr "Κανόνες αναφοράς"
 
 #: setup.php:1067
+#, fuzzy
 msgid "Syslog Removals"
-msgstr ""
+msgstr "Syslog Removals"
 
 #: setup.php:1068 setup.php:1069 setup.php:1073 setup.php:1074 setup.php:1078
+#, fuzzy
 msgid "(Edit)"
-msgstr ""
+msgstr "(Eπεξεργασία)"
 
 #: setup.php:1070 setup.php:1075 setup.php:1079
+#, fuzzy
 msgid "(Actions)"
-msgstr ""
+msgstr "Ενέργειες"
 
 #: setup.php:1072
+#, fuzzy
 msgid "Syslog Alerts"
-msgstr ""
+msgstr "Ειδοποιήσεις Syslog"
 
 #: setup.php:1077
+#, fuzzy
 msgid "Syslog Reports"
-msgstr ""
+msgstr "Αναφορές Syslog"
 
 #: setup.php:1138
+#, fuzzy
 msgid "Display Syslog in Range"
-msgstr ""
+msgstr "Εμφάνιση του Syslog στην εμβέλεια"
 
 #: setup.php:1161
-#, php-format
+#, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr ""
+"Υπήρχαν καταργήσεις %s των εγγραφών συσκευών από τη βάση δεδομένων Syslog"
 
 #: setup.php:1173
+#, fuzzy
 msgid "Syslog Utilities"
-msgstr ""
+msgstr "Syslog Utilities"
 
 #: setup.php:1177
+#, fuzzy
 msgid "Purge Syslog Devices"
-msgstr ""
+msgstr "Καθαρίστε τις συσκευές Syslog"
 
 #: setup.php:1180
+#, fuzzy
 msgid ""
 "This menu pick provides a means to remove Devices that are no longer "
 "reporting into Cacti's syslog server."
 msgstr ""
+"Αυτή η επιλογή μενού παρέχει ένα μέσο για την κατάργηση συσκευών που δεν "
+"αναφέρονται πλέον στον διακομιστή syslog του Cacti."
 
 #: syslog.php:45
+#, fuzzy
 msgid "Syslog Viewer"
-msgstr ""
+msgstr "Syslog Viewer"
 
 #: syslog.php:48
+#, fuzzy
 msgid "All Text"
-msgstr ""
+msgstr "Όλα τα κείμενα"
 
 #: syslog.php:49 syslog.php:50 syslog.php:51 syslog.php:52 syslog.php:53
 #: syslog.php:54
-#, php-format
+#, fuzzy, php-format
 msgid "%d Chars"
-msgstr ""
+msgstr "% d Χάρες"
 
 #: syslog.php:110
+#, fuzzy
 msgid "System Logs"
-msgstr ""
+msgstr "Μητρώα συστήματος"
 
 #: syslog.php:112
+#, fuzzy
 msgid "Statistics"
-msgstr ""
+msgstr "Στατιστικά"
 
 #: syslog.php:114
+#, fuzzy
 msgid "Alert Logs"
-msgstr ""
+msgstr "Μητρώο ειδοποιήσεων"
 
 #: syslog.php:123
+#, fuzzy
 msgid "Selected Alert"
-msgstr ""
+msgstr "Επιλεγμένη ειδοποίηση"
 
 #: syslog.php:146
+#, fuzzy
 msgid "Syslog Alert View"
-msgstr ""
+msgstr "Προβολή ειδοποίησης Syslog"
 
 #: syslog.php:231
+#, fuzzy
 msgid "Syslog Statistics Filter"
-msgstr ""
+msgstr "Φίλτρο στατιστικών στοιχείων Syslog"
 
 #: syslog.php:265 syslog.php:1470
+#, fuzzy
 msgid "Messages"
-msgstr ""
+msgstr "Μηνύματα"
 
 #: syslog.php:272
+#, fuzzy
 msgid "Device Name"
-msgstr ""
+msgstr "Όνομα συσκευής"
 
 #: syslog.php:273 syslog.php:421 syslog.php:1458 syslog.php:1466
 #: syslog.php:1564
+#, fuzzy
 msgid "Facility"
-msgstr ""
+msgstr "Εγκατάσταση"
 
 #: syslog.php:274 syslog.php:441 syslog.php:1459 syslog.php:1467
 #: syslog.php:1565
+#, fuzzy
 msgid "Priority"
-msgstr ""
+msgstr "Προτεραιότητα"
 
 #: syslog.php:275 syslog.php:1456 syslog.php:1464
+#, fuzzy
 msgid "Program"
-msgstr ""
+msgstr "Πρόγραμμα"
 
 #: syslog.php:276 syslog.php:1454 syslog.php:1462 syslog.php:1560
 #: syslog_process.php:346 syslog_process.php:659
+#, fuzzy
 msgid "Date"
-msgstr ""
+msgstr "Ημερομηνία"
 
 #: syslog.php:277
+#, fuzzy
 msgid "Records"
-msgstr ""
+msgstr "Εγγραφές"
 
 #: syslog.php:304
+#, fuzzy
 msgid "No Syslog Statistics Found"
-msgstr ""
+msgstr "Δεν βρέθηκαν στατιστικά στοιχεία Syslog"
 
 #: syslog.php:401 syslog.php:1455 syslog.php:1463 syslog.php:1563
+#, fuzzy
 msgid "Device"
-msgstr ""
+msgstr "Συσκευή"
 
 #: syslog.php:405 syslog.php:425 syslog.php:445 syslog.php:939
 #: syslog_alerts.php:601 syslog_removal.php:532 syslog_reports.php:518
+#, fuzzy
 msgid "All"
-msgstr ""
+msgstr "Όλα"
 
 #: syslog.php:406 syslog.php:426 syslog.php:446 syslog.php:940
+#, fuzzy
 msgid "None"
-msgstr ""
+msgstr "Κανένα"
 
 #: syslog.php:463 syslog.php:1193 syslog_alerts.php:623 syslog_removal.php:554
 #: syslog_reports.php:540
+#, fuzzy
 msgid "Go"
-msgstr ""
+msgstr "Πήγαινε"
 
 #: syslog.php:464 syslog.php:1194 syslog_alerts.php:624 syslog_removal.php:555
 #: syslog_reports.php:541
+#, fuzzy
 msgid "Clear"
-msgstr ""
+msgstr "Καθαρισμός"
 
 #: syslog.php:472 syslog.php:970 syslog_alerts.php:591 syslog_removal.php:522
 #: syslog_reports.php:508
+#, fuzzy
 msgid "Search"
-msgstr ""
+msgstr "Αναζήτηση"
 
 #: syslog.php:478
+#, fuzzy
 msgid "Time Range"
-msgstr ""
+msgstr "Εύρος χρόνου"
 
 #: syslog.php:489 syslog_alerts.php:400
-#, php-format
+#, fuzzy, php-format
 msgid "%d Hour"
-msgstr ""
+msgstr "% d ώρα"
 
 #: syslog.php:490 syslog.php:491 syslog.php:492 syslog_alerts.php:401
 #: syslog_alerts.php:402 syslog_alerts.php:403 syslog_alerts.php:404
 #: syslog_alerts.php:405 syslog_alerts.php:406
-#, php-format
+#, fuzzy, php-format
 msgid "%d Hours"
-msgstr ""
+msgstr "% d Ώρες"
 
 #: syslog.php:503
+#, fuzzy
 msgid "Entries"
-msgstr ""
+msgstr "Εγγραφές"
 
 #: syslog.php:507 syslog.php:1257 syslog_alerts.php:611 syslog_removal.php:542
 #: syslog_reports.php:528
+#, fuzzy
 msgid "Default"
-msgstr ""
+msgstr "Προεπιλογή"
 
 #: syslog.php:910
-#, php-format
+#, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
-msgstr ""
+msgstr "[Έναρξη: ' %s' στο τέλος: ' %s', Μη επεξεργασμένα μηνύματα: %s]"
 
 #: syslog.php:912
-#, php-format
+#, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
-msgstr ""
+msgstr "[Μη επεξεργασμένα μηνύματα: %s]"
 
 #: syslog.php:928
+#, fuzzy
 msgid "Select Device(s)"
-msgstr ""
+msgstr "Επιλέξτε συσκευή (ες)"
 
 #: syslog.php:930
+#, fuzzy
 msgid "Devices Selected"
-msgstr ""
+msgstr "Οι συσκευές έχουν επιλεγεί"
 
 #: syslog.php:933
+#, fuzzy
 msgid "All Devices Selected"
-msgstr ""
+msgstr "Όλες οι συσκευές έχουν επιλεγεί"
 
 #: syslog.php:1122
-#, php-format
+#, fuzzy, php-format
 msgid "Syslog Message Filter %s"
-msgstr ""
+msgstr "Φίλτρο μηνυμάτων Syslog %s"
 
 #: syslog.php:1132
+#, fuzzy
 msgid "Custom"
-msgstr ""
+msgstr "Προσαρμογή"
 
 #: syslog.php:1154
+#, fuzzy
 msgid "From"
-msgstr ""
+msgstr "Από"
 
 #: syslog.php:1160
+#, fuzzy
 msgid "Start Date Selector"
-msgstr ""
+msgstr "Επιλογή επιλογής έναρξης"
 
 #: syslog.php:1163
+#, fuzzy
 msgid "To"
-msgstr ""
+msgstr "Προς"
 
 #: syslog.php:1169
+#, fuzzy
 msgid "End Date Selector"
-msgstr ""
+msgstr "Επιλογή ημερομηνίας λήξης"
 
 #: syslog.php:1172
+#, fuzzy
 msgid "Shift Time Backward"
-msgstr ""
+msgstr "Χρόνος μετατόπισης προς τα πίσω"
 
 #: syslog.php:1175
+#, fuzzy
 msgid "Define Shifting Interval"
-msgstr ""
+msgstr "Ορίστε το διάστημα μετατόπισης"
 
 #: syslog.php:1189
+#, fuzzy
 msgid "Shift Time Forward"
-msgstr ""
+msgstr "Μετακίνηση προς τα εμπρός"
 
 #: syslog.php:1194
+#, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr ""
+"Επιστρέψτε τις τιμές του φίλτρου στις προκαθορισμένες από το χρήστη "
+"προεπιλογές"
 
 #: syslog.php:1195
+#, fuzzy
 msgid "Export Records to CSV"
-msgstr ""
+msgstr "Εξαγωγή αρχείων σε CSV"
 
 #: syslog.php:1196
+#, fuzzy
 msgid "Save"
-msgstr ""
+msgstr "Αποθήκευση"
 
 #: syslog.php:1196
+#, fuzzy
 msgid "Save Default Settings"
-msgstr ""
+msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
 
 #: syslog.php:1202 syslog_alerts.php:757
+#, fuzzy
 msgid "Alerts"
-msgstr ""
+msgstr "Προειδοποιήσεις"
 
 #: syslog.php:1202
+#, fuzzy
 msgid "View Syslog Alert Rules"
-msgstr ""
+msgstr "Προβολή κανόνων ειδοποίησης Syslog"
 
 #: syslog.php:1203
+#, fuzzy
 msgid "Removals"
-msgstr ""
+msgstr "Μετακινήσεις"
 
 #: syslog.php:1203
+#, fuzzy
 msgid "View Syslog Removal Rules"
-msgstr ""
+msgstr "Προβολή κανόνων κατάργησης Syslog"
 
 #: syslog.php:1204 syslog_reports.php:673
+#, fuzzy
 msgid "Reports"
-msgstr ""
+msgstr "Αναφορές"
 
 #: syslog.php:1204
+#, fuzzy
 msgid "View Syslog Reports"
-msgstr ""
+msgstr "Προβολή αναφορών Syslog"
 
 #: syslog.php:1222
+#, fuzzy
 msgid "Show All Devices"
-msgstr ""
+msgstr "Εμφάνιση όλων των συσκευών"
 
 #: syslog.php:1223
+#, fuzzy
 msgid "Show All Logs"
-msgstr ""
+msgstr "Εμφάνιση όλων των αρχείων καταγραφής"
 
 #: syslog.php:1224
+#, fuzzy
 msgid "Threshold Logs"
-msgstr ""
+msgstr "Κατώτατα ημερολόγια"
 
 #: syslog.php:1256
+#, fuzzy
 msgid "Display Rows"
-msgstr ""
+msgstr "Προβολή Σειρών"
 
 #: syslog.php:1260
-#, php-format
+#, fuzzy, php-format
 msgid "%d Messages"
-msgstr ""
+msgstr "% d Μηνύματα"
 
 #: syslog.php:1266
+#, fuzzy
 msgid "Message Trim"
-msgstr ""
+msgstr "Μήνυμα Trim"
 
 #: syslog.php:1290
+#, fuzzy
 msgid "Facilities to filter on"
-msgstr ""
+msgstr "Εγκαταστάσεις για φιλτράρισμα"
 
 #: syslog.php:1291
+#, fuzzy
 msgid "All Facilities"
-msgstr ""
+msgstr "Όλες οι παροχές"
 
 #: syslog.php:1309
+#, fuzzy
 msgid "Priority Levels"
-msgstr ""
+msgstr "Επίπεδα προτεραιότητας"
 
 #: syslog.php:1310
+#, fuzzy
 msgid "All Priorities"
-msgstr ""
+msgstr "Όλες οι προτεραιότητες"
 
 #: syslog.php:1311 syslog.php:1354
+#, fuzzy
 msgid "Emergency"
-msgstr ""
+msgstr "Επείγον"
 
 #: syslog.php:1312
+#, fuzzy
 msgid "Critical++"
-msgstr ""
+msgstr "Κρίσιμη ++"
 
 #: syslog.php:1314
+#, fuzzy
 msgid "Alert++"
-msgstr ""
+msgstr "Alert ++"
 
 #: syslog.php:1315 syslog.php:1356
+#, fuzzy
 msgid "Alert"
-msgstr ""
+msgstr "Συναγερμός"
 
 #: syslog.php:1316
+#, fuzzy
 msgid "Error++"
-msgstr ""
+msgstr "Σφάλμα :"
 
 #: syslog.php:1317 syslog.php:1357
+#, fuzzy
 msgid "Error"
-msgstr ""
+msgstr "Σφάλμα"
 
 #: syslog.php:1318
+#, fuzzy
 msgid "Warning++"
-msgstr ""
+msgstr "Προσοχή"
 
 #: syslog.php:1320
+#, fuzzy
 msgid "Notice++"
-msgstr ""
+msgstr "Ανακοίνωση ++"
 
 #: syslog.php:1322
+#, fuzzy
 msgid "Info++"
-msgstr ""
+msgstr "Πληροφορίες PHP"
 
 #: syslog.php:1323 syslog.php:1360
+#, fuzzy
 msgid "Info"
-msgstr ""
+msgstr "Πληροφορίες"
 
 #: syslog.php:1324 syslog.php:1361
+#, fuzzy
 msgid "Debug"
-msgstr ""
+msgstr "Εντοπισμός σφαλμάτων"
 
 #: syslog.php:1329
+#, fuzzy
 msgid "Removal Handling"
-msgstr ""
+msgstr "Αφαίρεση χειρισμού"
 
 #: syslog.php:1330
+#, fuzzy
 msgid "All Records"
-msgstr ""
+msgstr "Όλα τα αρχεία"
 
 #: syslog.php:1331
+#, fuzzy
 msgid "Main Records"
-msgstr ""
+msgstr "Βασικά αρχεία"
 
 #: syslog.php:1332
+#, fuzzy
 msgid "Removed Records"
-msgstr ""
+msgstr "Αφαίρεσε τις εγγραφές"
 
 #: syslog.php:1377
+#, fuzzy
 msgid "Informational"
-msgstr ""
+msgstr "Ενημερωτικό"
 
 #: syslog.php:1453
+#, fuzzy
 msgid "Actions"
-msgstr ""
+msgstr "Ενέργειες"
 
 #: syslog.php:1457 syslog.php:1465 syslog.php:1561 syslog_process.php:346
 #: syslog_process.php:659
+#, fuzzy
 msgid "Message"
-msgstr ""
+msgstr "Μήνυμα"
 
 #: syslog.php:1513 syslog.php:1516 syslog.php:1517 syslog.php:1584
+#, fuzzy
 msgid "Unknown"
-msgstr ""
+msgstr "Άγνωστο"
 
 #: syslog.php:1522
+#, fuzzy
 msgid "No Syslog Messages"
-msgstr ""
+msgstr "Δεν υπάρχουν μηνύματα Syslog"
 
 #: syslog.php:1558 syslog_alerts.php:429 syslog_alerts.php:745
 #: syslog_process.php:335
+#, fuzzy
 msgid "Alert Name"
-msgstr ""
+msgstr "Όνομα ειδοποίησης"
 
 #: syslog.php:1559 syslog_alerts.php:437 syslog_alerts.php:746
 #: syslog_process.php:335 syslog_process.php:346
+#, fuzzy
 msgid "Severity"
-msgstr ""
+msgstr "Δριμύτητα"
 
 #: syslog.php:1562 syslog_process.php:335
+#, fuzzy
 msgid "Count"
-msgstr ""
+msgstr "Μέτρηση"
 
 #: syslog.php:1568
+#, fuzzy
 msgid "Alert Log Rows"
-msgstr ""
+msgstr "Γραμμές αρχείου καταγραφής συναγερμού"
 
 #: syslog.php:1582
+#, fuzzy
 msgid "Alert Removed"
-msgstr ""
+msgstr "Αφαίρεση προειδοποίησης"
 
 #: syslog.php:1596
+#, fuzzy
 msgid "No Alert Log Messages"
-msgstr ""
+msgstr "Δεν υπάρχουν μηνύματα καταγραφής ειδοποιήσεων"
 
 #: syslog.php:1661 syslog.php:1674 syslog.php:1675 syslog.php:1694
 #: syslog.php:1695
+#, fuzzy
 msgid "All Programs"
-msgstr ""
+msgstr "Ολα τα προγράμματα"
 
 #: syslog_alerts.php:164
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί 'Συνέχεια' για να διαγράψετε τους ακόλουθους Κανόνες "
+"ειδοποίησης Syslog."
 
 #: syslog_alerts.php:170
+#, fuzzy
 msgid "Delete Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Διαγραφή κανόνα ειδοποίησης Syslog"
 
 #: syslog_alerts.php:174
+#, fuzzy
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να απενεργοποιήσετε τους ακόλουθους "
+"Κανόνες ειδοποίησης Syslog."
 
 #: syslog_alerts.php:180
+#, fuzzy
 msgid "Disable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Απενεργοποίηση κανόνα ειδοποίησης Syslog"
 
 #: syslog_alerts.php:184
+#, fuzzy
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να ενεργοποιήσετε τον ακόλουθο κανόνα "
+"ειδοποίησης Syslog."
 
 #: syslog_alerts.php:190
+#, fuzzy
 msgid "Enable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Ενεργοποίηση του κανόνα ειδοποίησης Syslog"
 
 #: syslog_alerts.php:194
+#, fuzzy
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να Εξαγάγετε τους ακόλουθους Κανόνες "
+"ειδοποίησης Syslog."
 
 #: syslog_alerts.php:200
+#, fuzzy
 msgid "Export Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Εξαγωγή κανόνα ειδοποίησης Syslog"
 
 #: syslog_alerts.php:203 syslog_removal.php:226 syslog_reports.php:203
+#, fuzzy
 msgid "Continue"
-msgstr ""
+msgstr "Συνέχεια"
 
 #: syslog_alerts.php:368
-#, php-format
+#, fuzzy, php-format
 msgid "Alert Edit [edit: %s]"
-msgstr ""
+msgstr "Ειδοποίηση Επεξεργασία [επεξεργασία: %s]"
 
 #: syslog_alerts.php:370 syslog_alerts.php:375 syslog_alerts.php:382
+#, fuzzy
 msgid "Alert Edit [new]"
-msgstr ""
+msgstr "Ειδοποίηση Επεξεργασία [νέο]"
 
 #: syslog_alerts.php:380 syslog_alerts.php:384
+#, fuzzy
 msgid "New Alert Rule"
-msgstr ""
+msgstr "Νέος κανόνας ειδοποίησης"
 
 #: syslog_alerts.php:393
+#, fuzzy
 msgid "Not Set"
-msgstr ""
+msgstr "Ορισμός ως Προεπιλογή"
 
 #: syslog_alerts.php:411
+#, fuzzy
 msgid "Month"
-msgstr ""
+msgstr "Μήνας"
 
 #: syslog_alerts.php:425
+#, fuzzy
 msgid "Alert Details"
-msgstr ""
+msgstr "Λεπτομέρειες της ειδοποίησης"
 
 #: syslog_alerts.php:430
+#, fuzzy
 msgid "Please describe this Alert."
-msgstr ""
+msgstr "Περιγράψτε αυτήν την ειδοποίηση."
 
 #: syslog_alerts.php:438
+#, fuzzy
 msgid "What is the Severity Level of this Alert?"
-msgstr ""
+msgstr "Ποιο είναι το επίπεδο σοβαρότητας αυτής της ειδοποίησης;"
 
 #: syslog_alerts.php:445
+#, fuzzy
 msgid "Reporting Method"
-msgstr ""
+msgstr "Μέθοδος αναφοράς"
 
 #: syslog_alerts.php:446
+#, fuzzy
 msgid "Define how to Alert on the syslog messages."
-msgstr ""
+msgstr "Ορίστε τον τρόπο ειδοποίησης στα μηνύματα syslog."
 
 #: syslog_alerts.php:448 syslog_alerts.php:772
+#, fuzzy
 msgid "Individual"
-msgstr ""
+msgstr "Προσωπική αγγελία"
 
 #: syslog_alerts.php:448 syslog_alerts.php:453 syslog_alerts.php:772
 #: syslog_process.php:335
+#, fuzzy
 msgid "Threshold"
-msgstr ""
+msgstr "Όριο"
 
 #: syslog_alerts.php:454
+#, fuzzy
 msgid ""
 "For the 'Threshold' method, If the number seen is above this value an Alert "
 "will be triggered."
 msgstr ""
+"Για τη μέθοδο 'Threshold', Εάν ο αριθμός που βλέπετε είναι πάνω από αυτή την "
+"τιμή, θα ενεργοποιηθεί μια Ειδοποίηση."
 
 #: syslog_alerts.php:462 syslog_removal.php:436 syslog_reports.php:401
+#, fuzzy
 msgid "String Match Type"
-msgstr ""
+msgstr "Τύπος αντιστοίχισης σειράς"
 
 #: syslog_alerts.php:463 syslog_removal.php:437
+#, fuzzy
 msgid ""
 "Define how you would like this string matched.  If using the SQL Expression "
 "type you may use any valid SQL expression to generate the alarm.  Available "
 "fields include 'message', 'facility', 'priority', and 'host'."
 msgstr ""
+"Ορίστε πώς θα θέλατε να αντιστοιχεί αυτή η συμβολοσειρά. Εάν χρησιμοποιείτε "
+"τον τύπο έκφρασης SQL, μπορείτε να χρησιμοποιήσετε οποιαδήποτε έγκυρη "
+"έκφραση SQL για να δημιουργήσετε τον συναγερμό. Τα διαθέσιμα πεδία "
+"περιλαμβάνουν το \"μήνυμα\", \"διευκόλυνση\", \"προτεραιότητα\" και "
+"\"υποδοχής\"."
 
 #: syslog_alerts.php:470 syslog_removal.php:444 syslog_reports.php:409
 #: syslog_reports.php:432
+#, fuzzy
 msgid "Syslog Message Match String"
-msgstr ""
+msgstr "Σειρά αντιστοίχισης μηνυμάτων Syslog"
 
 #: syslog_alerts.php:471 syslog_removal.php:445
+#, fuzzy
 msgid ""
 "Enter the matching component of the syslog message, the facility or host "
 "name, or the SQL where clause if using the SQL Expression Match Type."
 msgstr ""
+"Καταχωρίστε το ταιριαστό στοιχείο του μηνύματος syslog, το όνομα της "
+"εγκατάστασης ή του κεντρικού υπολογιστή ή το SQL where clause εάν "
+"χρησιμοποιείτε τον τύπο αντιστοίχισης έκφρασης SQL."
 
 #: syslog_alerts.php:481
+#, fuzzy
 msgid "Alert Enabled"
-msgstr ""
+msgstr "Ενεργοποίηση ειδοποίησης"
 
 #: syslog_alerts.php:482
+#, fuzzy
 msgid "Is this Alert Enabled?"
-msgstr ""
+msgstr "Αυτή η ειδοποίηση είναι ενεργοποιημένη;"
 
 #: syslog_alerts.php:484 syslog_removal.php:431 syslog_reports.php:396
+#, fuzzy
 msgid "Disabled"
-msgstr ""
+msgstr "Απενεργοποιημένο"
 
 #: syslog_alerts.php:484 syslog_alerts.php:597 syslog_alerts.php:749
 #: syslog_removal.php:431 syslog_removal.php:528 syslog_removal.php:677
 #: syslog_reports.php:396 syslog_reports.php:514 syslog_reports.php:663
+#, fuzzy
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #: syslog_alerts.php:488
+#, fuzzy
 msgid "Re-Alert Cycle"
-msgstr ""
+msgstr "Κύκλος επανάληψης"
 
 #: syslog_alerts.php:492
+#, fuzzy
 msgid ""
 "Do not resend this alert again for the same host, until this amount of time "
 "has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr ""
+"Μην ξαναστείλετε ξανά αυτήν την ειδοποίηση για τον ίδιο κεντρικό υπολογιστή, "
+"μέχρι να παρέλθει αυτό το χρονικό διάστημα. Για συναγερμούς με βάση το "
+"κατώφλι, αυτό ισχύει για όλους τους κεντρικούς υπολογιστές."
 
 #: syslog_alerts.php:496
+#, fuzzy
 msgid "Alert Notes"
-msgstr ""
+msgstr "Σημειώσεις προειδοποίησης"
 
 #: syslog_alerts.php:499
+#, fuzzy
 msgid "Space for Notes on the Alert"
-msgstr ""
+msgstr "Χώρος για σημειώσεις σχετικά με την ειδοποίηση"
 
 #: syslog_alerts.php:507
+#, fuzzy
 msgid "Alert Actions"
-msgstr ""
+msgstr "Ενέργειες ειδοποίησης"
 
 #: syslog_alerts.php:511
+#, fuzzy
 msgid "Open Ticket"
-msgstr ""
+msgstr "Δημιουργία Αιτήματος Υποστήριξης"
 
 #: syslog_alerts.php:512
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert"
 msgstr ""
+"Σε περίπτωση που ανοίξει ένα εισιτήριο Help Desk για αυτήν την Ειδοποίηση"
 
 #: syslog_alerts.php:514 syslog_alerts.php:603 syslog_alerts.php:774
 #: syslog_removal.php:534 syslog_removal.php:699 syslog_reports.php:520
 #: syslog_reports.php:687
+#, fuzzy
 msgid "No"
-msgstr ""
+msgstr "Όχι"
 
 #: syslog_alerts.php:514 syslog_alerts.php:602 syslog_alerts.php:774
 #: syslog_removal.php:533 syslog_removal.php:699 syslog_reports.php:519
 #: syslog_reports.php:687
+#, fuzzy
 msgid "Yes"
-msgstr ""
+msgstr "Ναι"
 
 #: syslog_alerts.php:519
+#, fuzzy
 msgid "Emails to Notify"
-msgstr ""
+msgstr "Emails to Notify"
 
 #: syslog_alerts.php:522
+#, fuzzy
 msgid ""
 "Please enter a comma delimited list of Email addresses to inform.  If you "
 "wish to send out Email to a recipient in SMS format, please prefix that "
@@ -1073,12 +1390,21 @@ msgid ""
 "it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an "
 "SMS message."
 msgstr ""
+"Εισαγάγετε έναν κατάλογο γραμματοκιβωτίων διευθύνσεων ηλεκτρονικού "
+"ταχυδρομείου για να ενημερώσετε. Αν θέλετε να στείλετε μήνυμα ηλεκτρονικού "
+"ταχυδρομείου σε έναν παραλήπτη σε μορφή SMS, παρακαλούμε προθέστε την "
+"διεύθυνση ηλεκτρονικού ταχυδρομείου του παραλήπτη με <b>το μήνυμα 'sms @'</"
+"b> . Για παράδειγμα, αν η διεύθυνση SMS του παραλήπτη είναι "
+"<b>'2485551212@mycarrier.net'</b> , θα την εισάγετε ως <b>'sms @ 2485551212 "
+"@ mycarrier.net'</b> και θα μορφοποιηθεί ως μήνυμα SMS."
 
 #: syslog_alerts.php:528
+#, fuzzy
 msgid "Alert Command"
-msgstr ""
+msgstr "Ειδοποίηση εντολής"
 
 #: syslog_alerts.php:531
+#, fuzzy
 msgid ""
 "When an Alert is triggered, run the following command.  The following "
 "replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;"
@@ -1086,521 +1412,674 @@ msgid ""
 "<b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that "
 "<b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds."
 msgstr ""
+"Όταν ενεργοποιείται μια ειδοποίηση, εκτελέστε την ακόλουθη εντολή. Οι "
+"ακόλουθες μεταβλητές αντικατάστασης είναι διαθέσιμες <b>&#39;&lt;HOSTNAME&gt;"
+"&#39;</b> , <b>&#39;&lt;ALERTID&gt;&#39;</b> , <b>&#39;&lt;MESSAGE&gt;&#39;</"
+"b> , <b>&#39;&lt;FACILITY&gt;&#39;</b> , <b>&#39;&lt;PRIORITY&gt;&#39;</b> , "
+"<b>&#39;&lt;SEVERITY&gt;&#39;</b> . Λάβετε υπόψη ότι <b>το &lt;HOSTNAME&gt;</"
+"b> είναι διαθέσιμο μόνο σε μεμονωμένα όρια."
 
 #: syslog_alerts.php:607 syslog_reports.php:524
+#, fuzzy
 msgid "Rows"
-msgstr ""
+msgstr "Σειρές"
 
 #: syslog_alerts.php:625 syslog_alerts.php:914 syslog_removal.php:556
 #: syslog_removal.php:838 syslog_reports.php:542 syslog_reports.php:828
+#, fuzzy
 msgid "Import"
-msgstr ""
+msgstr "Εισαγωγή"
 
 #: syslog_alerts.php:720
+#, fuzzy
 msgid "Syslog Alert Filters"
-msgstr ""
+msgstr "Φίλτρα ειδοποιήσεων Syslog"
 
 #: syslog_alerts.php:747 syslog_removal.php:680
+#, fuzzy
 msgid "Method"
-msgstr ""
+msgstr "Μέθοδος"
 
 #: syslog_alerts.php:748
+#, fuzzy
 msgid "Threshold Count"
-msgstr ""
+msgstr "Υπολογισμός κατωφλίου"
 
 #: syslog_alerts.php:750 syslog_removal.php:678 syslog_reports.php:664
+#, fuzzy
 msgid "Match Type"
-msgstr ""
+msgstr "Τύπος αντιστοίχισης"
 
 #: syslog_alerts.php:751 syslog_removal.php:679 syslog_reports.php:665
+#, fuzzy
 msgid "Search String"
-msgstr ""
+msgstr "Αναζήτηση στοιχειοσειράς"
 
 #: syslog_alerts.php:752
+#, fuzzy
 msgid "Email Addresses"
-msgstr ""
+msgstr "Διευθύνσεις ηλεκτρονικού ταχυδρομείου"
 
 #: syslog_alerts.php:753 syslog_removal.php:681 syslog_reports.php:669
+#, fuzzy
 msgid "Last Modified"
-msgstr ""
+msgstr "Τελευταία τροποποίηση"
 
 #: syslog_alerts.php:754 syslog_removal.php:682 syslog_reports.php:670
+#, fuzzy
 msgid "By User"
-msgstr ""
+msgstr "Από τον χρήστη"
 
 #: syslog_alerts.php:773
+#, fuzzy
 msgid "N/A"
-msgstr ""
+msgstr "Μη Διαθέσιμο"
 
 #: syslog_alerts.php:777
+#, fuzzy
 msgid "Multiple"
-msgstr ""
+msgstr "Πολλαπλούς"
 
 #: syslog_alerts.php:784
+#, fuzzy
 msgid "No Syslog Alerts Defined"
-msgstr ""
+msgstr "Δεν έχουν οριστεί ειδοποιήσεις Syslog"
 
 #: syslog_alerts.php:814
+#, fuzzy
 msgid "Import Alert Rule from Local File"
-msgstr ""
+msgstr "Εισαγωγή κανόνα ειδοποίησης από τοπικό αρχείο"
 
 #: syslog_alerts.php:815
+#, fuzzy
 msgid ""
 "If the XML file containing the Alert Rule definition data is located on your "
 "local machine, select it here."
 msgstr ""
+"Εάν το αρχείο XML που περιέχει τα δεδομένα ορισμού κανόνα ειδοποίησης "
+"βρίσκεται στο τοπικό σας μηχάνημα, επιλέξτε το εδώ."
 
 #: syslog_alerts.php:820
+#, fuzzy
 msgid "Import Alert Rule from Text"
-msgstr ""
+msgstr "Εισαγωγή κανόνα ειδοποίησης από κείμενο"
 
 #: syslog_alerts.php:821
+#, fuzzy
 msgid ""
 "If you have the XML file containing the Alert Ruledefinition data as text, "
 "you can paste it into this box to import it."
 msgstr ""
+"Αν έχετε το αρχείο XML που περιέχει τα δεδομένα ορισμού του κανόνα "
+"ειδοποίησης ως κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για "
+"να το εισαγάγετε."
 
 #: syslog_alerts.php:834
+#, fuzzy
 msgid "Import Alert Rule"
-msgstr ""
+msgstr "Εισαγωγή κανόνα ειδοποίησης"
 
 #: syslog_alerts.php:912 syslog_removal.php:836 syslog_reports.php:826
+#, fuzzy
 msgid "Imported"
-msgstr ""
+msgstr "Εισήχθει"
 
 #: syslog_alerts.php:912
-#, php-format
+#, fuzzy, php-format
 msgid "NOTE: Alert '%s' %s!"
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Προειδοποίηση ' %s' %s!"
 
 #: syslog_alerts.php:912 syslog_removal.php:836 syslog_reports.php:826
+#, fuzzy
 msgid "Updated"
-msgstr ""
+msgstr "Ενημερώθηκε"
 
 #: syslog_alerts.php:914
-#, php-format
+#, fuzzy, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
-msgstr ""
+msgstr "ΣΦΑΛΜΑ: Η ειδοποίηση ' %s' %s απέτυχε!"
 
 #: syslog_alerts.php:914 syslog_removal.php:838 syslog_reports.php:828
+#, fuzzy
 msgid "Update"
-msgstr ""
+msgstr "Ενημέρωση"
 
 #: syslog_process.php:326
+#, fuzzy
 msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
 msgstr ""
+"ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Έχει ενεργοποιηθεί μια ειδοποίηση καταμέτρησης περιπτώσεων "
+"του Syslog Plugin"
 
 #: syslog_process.php:327
+#, fuzzy
 msgid "Name:"
-msgstr ""
+msgstr "Όνομα"
 
 #: syslog_process.php:328 syslog_process.php:362
+#, fuzzy
 msgid "Severity:"
-msgstr ""
+msgstr "Δριμύτητα:"
 
 #: syslog_process.php:329
+#, fuzzy
 msgid "Threshold:"
-msgstr ""
+msgstr "Κατώφλι:"
 
 #: syslog_process.php:330
+#, fuzzy
 msgid "Count:"
-msgstr ""
+msgstr "Μετρώ:"
 
 #: syslog_process.php:331
+#, fuzzy
 msgid "Message String:"
-msgstr ""
+msgstr "Σειρά μηνυμάτων:"
 
 #: syslog_process.php:333
-#, php-format
+#, fuzzy, php-format
 msgid "Cacti Syslog Plugin Threshold Alert '%s'"
 msgstr ""
+"Ειδοποίηση κατώτατου ορίου προσθήκης συμπληρωματικού σήματος Cacti Syslog ' "
+"%s'"
 
 #: syslog_process.php:335
+#, fuzzy
 msgid "Match String"
-msgstr ""
+msgstr "Αγώνας αντιστοίχισης"
 
 #: syslog_process.php:342
-#, php-format
+#, fuzzy, php-format
 msgid "Cacti Syslog Plugin Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog Plugin Alert ' %s'"
 
 #: syslog_process.php:346
+#, fuzzy
 msgid "Hostname"
-msgstr ""
+msgstr "Όνομα κεντρικού υπολογιστή"
 
 #: syslog_process.php:346
+#, fuzzy
 msgid "Level"
-msgstr ""
+msgstr "Επίπεδο"
 
 #: syslog_process.php:360
+#, fuzzy
 msgid "Hostname:"
-msgstr ""
+msgstr "Όνομα κεντρικού υπολογιστή:"
 
 #: syslog_process.php:361
+#, fuzzy
 msgid "Date:"
-msgstr ""
+msgstr "Ημερομηνία"
 
 #: syslog_process.php:363
+#, fuzzy
 msgid "Level:"
-msgstr ""
+msgstr "Συνδρομή"
 
 #: syslog_process.php:364
+#, fuzzy
 msgid "Message:"
-msgstr ""
+msgstr "Μήνυμα:"
 
 #: syslog_process.php:391
+#, fuzzy
 msgid ", Host:"
-msgstr ""
+msgstr "Συντονίζει"
 
 #: syslog_process.php:391 syslog_process.php:422
+#, fuzzy
 msgid ", URL:"
-msgstr ""
+msgstr ", URL:"
 
 #: syslog_process.php:391 syslog_process.php:422
+#, fuzzy
 msgid "Sev:"
-msgstr ""
+msgstr "Sev:"
 
 #: syslog_process.php:393 syslog_process.php:442
-#, php-format
+#, fuzzy, php-format
 msgid "Event Alert - %s"
-msgstr ""
+msgstr "Ειδοποίηση συμβάντων - %s"
 
 #: syslog_process.php:422
+#, fuzzy
 msgid ", Count:"
-msgstr ""
+msgstr ", Μετρώ:"
 
 #: syslog_process.php:659
+#, fuzzy
 msgid "Host"
-msgstr ""
+msgstr "Διακομιστής"
 
 #: syslog_process.php:670
-#, php-format
+#, fuzzy, php-format
 msgid "Event Report - %s"
-msgstr ""
+msgstr "Αναφορά συμβάντος - %s"
 
 #: syslog_removal.php:36
+#, fuzzy
 msgid "Reprocess"
-msgstr ""
+msgstr "Επανεπεξεργασία"
 
 #: syslog_removal.php:177
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να διαγράψετε τους ακόλουθους κανόνες "
+"απομάκρυνσης Syslog."
 
 #: syslog_removal.php:183
+#, fuzzy
 msgid "Delete Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Διαγραφή κανόνων (κανόνων) κατάργησης του Syslog"
 
 #: syslog_removal.php:187
+#, fuzzy
 msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να απενεργοποιήσετε τους ακόλουθους "
+"κανόνες απομάκρυνσης Syslog."
 
 #: syslog_removal.php:193
+#, fuzzy
 msgid "Disable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Απενεργοποίηση κανόνας (-ων) αφαίρεσης Syslog"
 
 #: syslog_removal.php:197
+#, fuzzy
 msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να ενεργοποιήσετε τους ακόλουθους "
+"κανόνες απομάκρυνσης Syslog."
 
 #: syslog_removal.php:203
+#, fuzzy
 msgid "Enable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Ενεργοποίηση του κανόνα κατάργησης Syslog"
 
 #: syslog_removal.php:207
+#, fuzzy
 msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να επεξεργαστείτε εκ νέου τον "
+"παρακάτω κανόνα κατάργησης Syslog."
 
 #: syslog_removal.php:213
+#, fuzzy
 msgid "Retroactively Process Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Αναδρομικά επεξεργαστείτε κανόνα (-ους) αφαίρεσης Syslog"
 
 #: syslog_removal.php:217
+#, fuzzy
 msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να Εξαγάγετε τους ακόλουθους Κανόνες "
+"κατάργησης Syslog."
 
 #: syslog_removal.php:223
+#, fuzzy
 msgid "Export Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Εξαγωγή κανόνα (-ων) αφαίρεσης Syslog"
 
 #: syslog_removal.php:337
-#, php-format
+#, fuzzy, php-format
 msgid "There were %s messages removed, and %s messages transferred"
-msgstr ""
+msgstr "Έγινε κατάργηση μηνυμάτων %s και μεταφορά μηνυμάτων %s"
 
 #: syslog_removal.php:393
-#, php-format
+#, fuzzy, php-format
 msgid "Removal Rule Edit [edit: %s]"
-msgstr ""
+msgstr "Επεξεργασία κανόνα κατάργησης [επεξεργασία: %s]"
 
 #: syslog_removal.php:395 syslog_removal.php:402
+#, fuzzy
 msgid "Removal Rule Edit [new]"
-msgstr ""
+msgstr "Επεξεργασία κανόνα κατάργησης [new]"
 
 #: syslog_removal.php:397 syslog_removal.php:410
+#, fuzzy
 msgid "New Removal Record"
-msgstr ""
+msgstr "Νέα καταγραφή απομάκρυνσης"
 
 #: syslog_removal.php:406
+#, fuzzy
 msgid "New Removal Rule"
-msgstr ""
+msgstr "Νέος κανόνας κατάργησης"
 
 #: syslog_removal.php:416
+#, fuzzy
 msgid "Removal Rule Details"
-msgstr ""
+msgstr "Στοιχεία κανόνα κατάργησης"
 
 #: syslog_removal.php:420
+#, fuzzy
 msgid "Removal Rule Name"
-msgstr ""
+msgstr "Όνομα κανόνα κατάργησης"
 
 #: syslog_removal.php:421
+#, fuzzy
 msgid "Please describe this Removal Rule."
-msgstr ""
+msgstr "Περιγράψτε αυτόν τον κανόνα κατάργησης."
 
 #: syslog_removal.php:428 syslog_reports.php:393
+#, fuzzy
 msgid "Enabled?"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #: syslog_removal.php:429
+#, fuzzy
 msgid "Is this Removal Rule Enabled?"
-msgstr ""
+msgstr "Είναι ενεργοποιημένος αυτός ο κανόνας κατάργησης;"
 
 #: syslog_removal.php:455
+#, fuzzy
 msgid "Method of Removal"
-msgstr ""
+msgstr "Μέθοδος αφαίρεσης"
 
 #: syslog_removal.php:457 syslog_removal.php:702
+#, fuzzy
 msgid "Deletion"
-msgstr ""
+msgstr "Διαγραφή"
 
 #: syslog_removal.php:457
+#, fuzzy
 msgid "Transferal"
-msgstr ""
+msgstr "Μεταφορά"
 
 #: syslog_removal.php:461
+#, fuzzy
 msgid "Removal Rule Notes"
-msgstr ""
+msgstr "Σημειώσεις κανόνα κατάργησης"
 
 #: syslog_removal.php:464
+#, fuzzy
 msgid "Space for Notes on the Removal rule"
-msgstr ""
+msgstr "Χώρος για σημειώσεις σχετικά με τον κανόνα κατάργησης"
 
 #: syslog_removal.php:538 syslog_removal.php:687
+#, fuzzy
 msgid "Rules"
-msgstr ""
+msgstr "Κανόνες"
 
 #: syslog_removal.php:651
+#, fuzzy
 msgid "Syslog Removal Rule Filters"
-msgstr ""
+msgstr "Φίλτρα κανόνα κατάργησης Syslog"
 
 #: syslog_removal.php:676
+#, fuzzy
 msgid "Removal Name"
-msgstr ""
+msgstr "Όνομα απομάκρυνσης"
 
 #: syslog_removal.php:702
+#, fuzzy
 msgid "Transfer"
-msgstr ""
+msgstr "ΜΕΤΑΦΟΡΑ"
 
 #: syslog_removal.php:709
+#, fuzzy
 msgid "No Syslog Removal Rules Defined"
-msgstr ""
+msgstr "Δεν έχουν οριστεί κανόνα κατάργησης Syslog"
 
 #: syslog_removal.php:739
+#, fuzzy
 msgid "Import Removal Rule from Local File"
-msgstr ""
+msgstr "Εισαγωγή κανόνα κατάργησης από τοπικό αρχείο"
 
 #: syslog_removal.php:740
+#, fuzzy
 msgid ""
 "If the XML file containing the Removal Rule definition data is located on "
 "your local machine, select it here."
 msgstr ""
+"Εάν το αρχείο XML που περιέχει τα δεδομένα ορισμού του κανόνα αφαίρεσης "
+"βρίσκεται στο τοπικό σας μηχάνημα, επιλέξτε το εδώ."
 
 #: syslog_removal.php:745
+#, fuzzy
 msgid "Import Removal Rule from Text"
-msgstr ""
+msgstr "Κανόνας κατάργησης εισαγωγής από κείμενο"
 
 #: syslog_removal.php:746
+#, fuzzy
 msgid ""
 "If you have the XML file containing the Removal Rule definition data as "
 "text, you can paste it into this box to import it."
 msgstr ""
+"Αν έχετε το αρχείο XML που περιέχει τα δεδομένα ορισμού κανόνα αφαίρεσης ως "
+"κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για να το εισαγάγετε."
 
 #: syslog_removal.php:759
+#, fuzzy
 msgid "Import Removal Rule"
-msgstr ""
+msgstr "Κανόνας κατάργησης εισαγωγής"
 
 #: syslog_removal.php:836
-#, php-format
+#, fuzzy, php-format
 msgid "NOTE: Removal Rule '%s' %s!"
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Ο κανόνας κατάργησης ' %s' %s!"
 
 #: syslog_removal.php:838
-#, php-format
+#, fuzzy, php-format
 msgid "ERROR: Removal Rule '%s' %s Failed!"
-msgstr ""
+msgstr "Σφάλμα: Ο κανόνας κατάργησης ' %s' %s απέτυχε!"
 
 #: syslog_reports.php:164
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Syslog Report(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να διαγράψετε τις ακόλουθες αναφορές "
+"Syslog."
 
 #: syslog_reports.php:170
+#, fuzzy
 msgid "Delete Syslog Report(s)"
-msgstr ""
+msgstr "Διαγραφή αναφορών Syslog"
 
 #: syslog_reports.php:174
+#, fuzzy
 msgid "Click 'Continue' to Disable the following Syslog Report(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να απενεργοποιήσετε την παρακάτω "
+"αναφορά Syslog."
 
 #: syslog_reports.php:180
+#, fuzzy
 msgid "Disable Syslog Report(s)"
-msgstr ""
+msgstr "Απενεργοποίηση αναφορών Syslog"
 
 #: syslog_reports.php:184
+#, fuzzy
 msgid "Click 'Continue' to Enable the following Syslog Report(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να ενεργοποιήσετε την παρακάτω "
+"αναφορά Syslog."
 
 #: syslog_reports.php:190
+#, fuzzy
 msgid "Enable Syslog Report(s)"
-msgstr ""
+msgstr "Ενεργοποίηση αναφορών Syslog"
 
 #: syslog_reports.php:194
+#, fuzzy
 msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
 msgstr ""
+"Κάντε κλικ στο κουμπί \"Συνέχεια\" για να εξαγάγετε τον ακόλουθο κανόνα "
+"αναφοράς Syslog."
 
 #: syslog_reports.php:200
+#, fuzzy
 msgid "Export Syslog Report Rule(s)"
-msgstr ""
+msgstr "Εξαγωγή κανόνων αναφοράς Syslog"
 
 #: syslog_reports.php:205
+#, fuzzy
 msgid "You must select at least one Syslog Report."
-msgstr ""
+msgstr "Πρέπει να επιλέξετε τουλάχιστον μία αναφορά Syslog."
 
 #: syslog_reports.php:206
+#, fuzzy
 msgid "Return"
-msgstr ""
+msgstr "ΕΠΙΣΤΡΟΦΗ"
 
 #: syslog_reports.php:367
-#, php-format
+#, fuzzy, php-format
 msgid "Report Edit [edit: %s]"
-msgstr ""
+msgstr "Αναφορά επεξεργασίας [επεξεργασία: %s]"
 
 #: syslog_reports.php:369 syslog_reports.php:374
+#, fuzzy
 msgid "Report Edit [new]"
-msgstr ""
+msgstr "Αναφορά επεξεργασίας [new]"
 
 #: syslog_reports.php:371 syslog_reports.php:376
+#, fuzzy
 msgid "New Report Record"
-msgstr ""
+msgstr "Νέα καταγραφή αναφοράς"
 
 #: syslog_reports.php:382
+#, fuzzy
 msgid "Report Details"
-msgstr ""
+msgstr "Αναφορά στοιχείων"
 
 #: syslog_reports.php:386 syslog_reports.php:662
+#, fuzzy
 msgid "Report Name"
-msgstr ""
+msgstr "Αναφορά ονόματος"
 
 #: syslog_reports.php:387
+#, fuzzy
 msgid "Please describe this Report."
-msgstr ""
+msgstr "Περιγράψτε αυτήν την αναφορά."
 
 #: syslog_reports.php:394
+#, fuzzy
 msgid "Is this Report Enabled?"
-msgstr ""
+msgstr "Αυτή η αναφορά είναι ενεργοποιημένη;"
 
 #: syslog_reports.php:402
+#, fuzzy
 msgid "Define how you would like this string matched."
-msgstr ""
+msgstr "Ορίστε πώς θα θέλατε να αντιστοιχεί αυτή η συμβολοσειρά."
 
 #: syslog_reports.php:410 syslog_reports.php:433
+#, fuzzy
 msgid "The matching component of the syslog message."
-msgstr ""
+msgstr "Το στοιχείο αντιστοίχισης του μηνύματος syslog."
 
 #: syslog_reports.php:417
+#, fuzzy
 msgid "Report Frequency"
-msgstr ""
+msgstr "Συχνότητα αναφοράς"
 
 #: syslog_reports.php:418
+#, fuzzy
 msgid "How often should this Report be sent to the distribution list?"
-msgstr ""
+msgstr "Πόσο συχνά πρέπει να αποστέλλεται αυτή η αναφορά στη λίστα διανομής;"
 
 #: syslog_reports.php:425 syslog_reports.php:667
+#, fuzzy
 msgid "Send Time"
-msgstr ""
+msgstr "Αποστολή ώρας"
 
 #: syslog_reports.php:426
+#, fuzzy
 msgid "What time of day should this report be sent?"
-msgstr ""
+msgstr "Τι ώρα της ημέρας πρέπει να αποσταλεί αυτή η αναφορά;"
 
 #: syslog_reports.php:440
+#, fuzzy
 msgid "Report Body Text"
-msgstr ""
+msgstr "Αναφορά κειμένου σώματος"
 
 #: syslog_reports.php:443
+#, fuzzy
 msgid "The information that will be contained in the body of the report."
-msgstr ""
+msgstr "Οι πληροφορίες που θα περιέχονται στο σώμα της έκθεσης."
 
 #: syslog_reports.php:450
+#, fuzzy
 msgid "Report Email Addresses"
-msgstr ""
+msgstr "Αναφορά διευθύνσεων ηλεκτρονικού ταχυδρομείου"
 
 #: syslog_reports.php:453
+#, fuzzy
 msgid "Comma delimited list of Email addresses to send the report to."
 msgstr ""
+"Οριοθετημένη από κόμμα λίστα διευθύνσεων ηλεκτρονικού ταχυδρομείου για την "
+"αποστολή της αναφοράς στο."
 
 #: syslog_reports.php:460
+#, fuzzy
 msgid "Report Notes"
-msgstr ""
+msgstr "Αναφορά σημειώσεων"
 
 #: syslog_reports.php:463
+#, fuzzy
 msgid "Space for Notes on the Report"
-msgstr ""
+msgstr "Χώρος για σημειώσεις σχετικά με την αναφορά"
 
 #: syslog_reports.php:637
+#, fuzzy
 msgid "Syslog Report Filters"
-msgstr ""
+msgstr "Syslog Report Filters"
 
 #: syslog_reports.php:666
+#, fuzzy
 msgid "Frequency"
-msgstr ""
+msgstr "Συχνότητα"
 
 #: syslog_reports.php:668
+#, fuzzy
 msgid "Last Sent"
-msgstr ""
+msgstr "Τελευταία αποστολή"
 
 #: syslog_reports.php:699
+#, fuzzy
 msgid "No Syslog Reports Defined"
-msgstr ""
+msgstr "Δεν έχουν οριστεί αναφορές Syslog"
 
 #: syslog_reports.php:729
+#, fuzzy
 msgid "Import Report Rule from Local File"
-msgstr ""
+msgstr "Αναφορά κανόνα αναφοράς από τοπικό αρχείο"
 
 #: syslog_reports.php:730
+#, fuzzy
 msgid ""
 "If the XML file containing the Report Rule definition data is located on "
 "your local machine, select it here."
 msgstr ""
+"Εάν το αρχείο XML που περιέχει τα δεδομένα ορισμού κανόνων αναφοράς "
+"βρίσκεται στο τοπικό σας μηχάνημα, επιλέξτε το εδώ."
 
 #: syslog_reports.php:735
+#, fuzzy
 msgid "Import Report Rule from Text"
-msgstr ""
+msgstr "Αναφορά κανόνα αναφοράς από κείμενο"
 
 #: syslog_reports.php:736
+#, fuzzy
 msgid ""
 "If you have the XML file containing the Report Rule definition data as text, "
 "you can paste it into this box to import it."
 msgstr ""
+"Αν έχετε το αρχείο XML που περιέχει τα δεδομένα ορισμού κανόνων αναφοράς ως "
+"κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για να το εισαγάγετε."
 
 #: syslog_reports.php:749
+#, fuzzy
 msgid "Import Report Data"
-msgstr ""
+msgstr "Εισαγωγή δεδομένων αναφοράς"
 
 #: syslog_reports.php:826
-#, php-format
+#, fuzzy, php-format
 msgid "NOTE: Report Rule '%s' %s!"
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Αναφορά του κανόνα ' %s' %s!"
 
 #: syslog_reports.php:828
-#, php-format
+#, fuzzy, php-format
 msgid "ERROR: Report Rule '%s' %s Failed!"
-msgstr ""
+msgstr "ΣΦΑΛΜΑ: Ο κανόνας αναφοράς ' %s' %s απέτυχε!"
