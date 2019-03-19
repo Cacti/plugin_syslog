@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-27 18:42-0500\n"
+"POT-Creation-Date: 2019-03-19 09:51+0000\n"
 "PO-Revision-Date: 2019-03-16 22:38-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -452,7 +452,7 @@ msgstr "비활성화"
 msgid "Enable"
 msgstr "활성화"
 
-#: setup.php:916 syslog.php:1195 syslog_removal.php:37
+#: setup.php:916 syslog.php:1219 syslog_removal.php:37
 #, fuzzy
 msgid "Export"
 msgstr "내보내기"
@@ -462,7 +462,7 @@ msgstr "내보내기"
 msgid "Indefinite"
 msgstr "무기한"
 
-#: setup.php:960 setup.php:979 syslog.php:493 syslog_alerts.php:407
+#: setup.php:960 setup.php:979 syslog.php:518 syslog_alerts.php:407
 #, fuzzy, php-format
 msgid "%d Day"
 msgstr "% d 일"
@@ -505,30 +505,30 @@ msgstr "% d 년"
 msgid "Never"
 msgstr "안함"
 
-#: setup.php:998 syslog.php:484
+#: setup.php:998 syslog.php:509
 #, fuzzy, php-format
 msgid "%d Minute"
 msgstr "% d 분"
 
-#: setup.php:999 setup.php:1000 setup.php:1001 syslog.php:485 syslog.php:486
-#: syslog.php:487 syslog.php:488 syslog_alerts.php:394 syslog_alerts.php:395
+#: setup.php:999 setup.php:1000 setup.php:1001 syslog.php:510 syslog.php:511
+#: syslog.php:512 syslog.php:513 syslog_alerts.php:394 syslog_alerts.php:395
 #: syslog_alerts.php:396 syslog_alerts.php:397 syslog_alerts.php:398
 #: syslog_alerts.php:399
 #, fuzzy, php-format
 msgid "%d Minutes"
 msgstr "%d 분"
 
-#: setup.php:1005 syslog.php:1321 syslog.php:1359 syslog.php:1376
+#: setup.php:1005 syslog.php:1345 syslog.php:1383 syslog.php:1400
 #, fuzzy
 msgid "Notice"
 msgstr "공지"
 
-#: setup.php:1006 syslog.php:1319 syslog.php:1358 syslog.php:1375
+#: setup.php:1006 syslog.php:1343 syslog.php:1382 syslog.php:1399
 #, fuzzy
 msgid "Warning"
 msgstr "경고"
 
-#: setup.php:1007 syslog.php:1313 syslog.php:1355 syslog.php:1374
+#: setup.php:1007 syslog.php:1337 syslog.php:1379 syslog.php:1398
 #, fuzzy
 msgid "Critical"
 msgstr "크리티컬"
@@ -698,416 +698,416 @@ msgstr "Syslog 경고보기"
 msgid "Syslog Statistics Filter"
 msgstr "Syslog 통계 필터"
 
-#: syslog.php:265 syslog.php:1470
+#: syslog.php:265 syslog.php:1494
 #, fuzzy
 msgid "Messages"
 msgstr "메시지"
 
-#: syslog.php:272
+#: syslog.php:273
 #, fuzzy
 msgid "Device Name"
 msgstr "장치 이름"
 
-#: syslog.php:273 syslog.php:421 syslog.php:1458 syslog.php:1466
-#: syslog.php:1564
+#: syslog.php:278 syslog.php:446 syslog.php:1482 syslog.php:1490
+#: syslog.php:1588
 #, fuzzy
 msgid "Facility"
 msgstr "시설"
 
-#: syslog.php:274 syslog.php:441 syslog.php:1459 syslog.php:1467
-#: syslog.php:1565
+#: syslog.php:283 syslog.php:466 syslog.php:1483 syslog.php:1491
+#: syslog.php:1589
 #, fuzzy
 msgid "Priority"
 msgstr "우선순위"
 
-#: syslog.php:275 syslog.php:1456 syslog.php:1464
+#: syslog.php:288 syslog.php:1480 syslog.php:1488 syslog.php:1689
 #, fuzzy
 msgid "Program"
 msgstr "프로그램"
 
-#: syslog.php:276 syslog.php:1454 syslog.php:1462 syslog.php:1560
-#: syslog_process.php:346 syslog_process.php:659
+#: syslog.php:293 syslog.php:1478 syslog.php:1486 syslog.php:1584
+#: syslog_process.php:345 syslog_process.php:658
 #, fuzzy
 msgid "Date"
 msgstr "날짜"
 
-#: syslog.php:277
+#: syslog.php:298
 #, fuzzy
 msgid "Records"
 msgstr "기록"
 
-#: syslog.php:304
+#: syslog.php:329
 #, fuzzy
 msgid "No Syslog Statistics Found"
 msgstr "Syslog 통계 없음"
 
-#: syslog.php:401 syslog.php:1455 syslog.php:1463 syslog.php:1563
+#: syslog.php:426 syslog.php:1479 syslog.php:1487 syslog.php:1587
 #, fuzzy
 msgid "Device"
 msgstr "장치"
 
-#: syslog.php:405 syslog.php:425 syslog.php:445 syslog.php:939
+#: syslog.php:430 syslog.php:450 syslog.php:470 syslog.php:964
 #: syslog_alerts.php:601 syslog_removal.php:532 syslog_reports.php:518
 #, fuzzy
 msgid "All"
 msgstr "모두"
 
-#: syslog.php:406 syslog.php:426 syslog.php:446 syslog.php:940
+#: syslog.php:431 syslog.php:451 syslog.php:471 syslog.php:965
 #, fuzzy
 msgid "None"
 msgstr "없음"
 
-#: syslog.php:463 syslog.php:1193 syslog_alerts.php:623 syslog_removal.php:554
+#: syslog.php:488 syslog.php:1217 syslog_alerts.php:623 syslog_removal.php:554
 #: syslog_reports.php:540
 #, fuzzy
 msgid "Go"
 msgstr "가기"
 
-#: syslog.php:464 syslog.php:1194 syslog_alerts.php:624 syslog_removal.php:555
+#: syslog.php:489 syslog.php:1218 syslog_alerts.php:624 syslog_removal.php:555
 #: syslog_reports.php:541
 #, fuzzy
 msgid "Clear"
 msgstr "지우기"
 
-#: syslog.php:472 syslog.php:970 syslog_alerts.php:591 syslog_removal.php:522
+#: syslog.php:497 syslog.php:995 syslog_alerts.php:591 syslog_removal.php:522
 #: syslog_reports.php:508
 #, fuzzy
 msgid "Search"
 msgstr "검색"
 
-#: syslog.php:478
+#: syslog.php:503
 #, fuzzy
 msgid "Time Range"
 msgstr "시간 범위"
 
-#: syslog.php:489 syslog_alerts.php:400
+#: syslog.php:514 syslog_alerts.php:400
 #, fuzzy, php-format
 msgid "%d Hour"
 msgstr "% d 시간"
 
-#: syslog.php:490 syslog.php:491 syslog.php:492 syslog_alerts.php:401
+#: syslog.php:515 syslog.php:516 syslog.php:517 syslog_alerts.php:401
 #: syslog_alerts.php:402 syslog_alerts.php:403 syslog_alerts.php:404
 #: syslog_alerts.php:405 syslog_alerts.php:406
 #, fuzzy, php-format
 msgid "%d Hours"
 msgstr "% d 시간"
 
-#: syslog.php:503
+#: syslog.php:528
 #, fuzzy
 msgid "Entries"
 msgstr "입력 항목"
 
-#: syslog.php:507 syslog.php:1257 syslog_alerts.php:611 syslog_removal.php:542
+#: syslog.php:532 syslog.php:1281 syslog_alerts.php:611 syslog_removal.php:542
 #: syslog_reports.php:528
 #, fuzzy
 msgid "Default"
 msgstr "기본값"
 
-#: syslog.php:910
+#: syslog.php:935
 #, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
 msgstr "[시작 : ' %s'에서 끝 : ' %s', 처리되지 않은 메시지 :  %s]"
 
-#: syslog.php:912
+#: syslog.php:937
 #, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[처리되지 않은 메시지 :  %s]"
 
-#: syslog.php:928
+#: syslog.php:953
 #, fuzzy
 msgid "Select Device(s)"
 msgstr "장치 선택"
 
-#: syslog.php:930
+#: syslog.php:955
 #, fuzzy
 msgid "Devices Selected"
 msgstr "선택한 장치"
 
-#: syslog.php:933
+#: syslog.php:958
 #, fuzzy
 msgid "All Devices Selected"
 msgstr "선택한 모든 장치"
 
-#: syslog.php:1122
+#: syslog.php:1147
 #, fuzzy, php-format
 msgid "Syslog Message Filter %s"
 msgstr "Syslog 메시지 필터  %s"
 
-#: syslog.php:1132
+#: syslog.php:1157
 #, fuzzy
 msgid "Custom"
 msgstr "사용자 정의"
 
-#: syslog.php:1154
+#: syslog.php:1179
 #, fuzzy
 msgid "From"
 msgstr "발신자"
 
-#: syslog.php:1160
+#: syslog.php:1185
 #, fuzzy
 msgid "Start Date Selector"
 msgstr "시작 날짜 선택기"
 
-#: syslog.php:1163
+#: syslog.php:1188
 #, fuzzy
 msgid "To"
 msgstr "수신"
 
-#: syslog.php:1169
+#: syslog.php:1194
 #, fuzzy
 msgid "End Date Selector"
 msgstr "종료일 선택기"
 
-#: syslog.php:1172
+#: syslog.php:1197
 #, fuzzy
 msgid "Shift Time Backward"
 msgstr "시프트 시간 뒤로"
 
-#: syslog.php:1175
+#: syslog.php:1200
 #, fuzzy
 msgid "Define Shifting Interval"
 msgstr "이동 간격 정의"
 
-#: syslog.php:1189
+#: syslog.php:1213
 #, fuzzy
 msgid "Shift Time Forward"
 msgstr "시프트 타임 전달"
 
-#: syslog.php:1194
+#: syslog.php:1218
 #, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr "필터 값을 사용자가 정의한 기본값으로 되돌립니다."
 
-#: syslog.php:1195
+#: syslog.php:1219
 #, fuzzy
 msgid "Export Records to CSV"
 msgstr "CSV로 레코드 내보내기"
 
-#: syslog.php:1196
+#: syslog.php:1220
 #, fuzzy
 msgid "Save"
 msgstr "저장"
 
-#: syslog.php:1196
+#: syslog.php:1220
 #, fuzzy
 msgid "Save Default Settings"
 msgstr "기본 설정 저장"
 
-#: syslog.php:1202 syslog_alerts.php:757
+#: syslog.php:1226 syslog_alerts.php:757
 #, fuzzy
 msgid "Alerts"
 msgstr "경고"
 
-#: syslog.php:1202
+#: syslog.php:1226
 #, fuzzy
 msgid "View Syslog Alert Rules"
 msgstr "Syslog 경고 규칙보기"
 
-#: syslog.php:1203
+#: syslog.php:1227
 #, fuzzy
 msgid "Removals"
 msgstr "삭제"
 
-#: syslog.php:1203
+#: syslog.php:1227
 #, fuzzy
 msgid "View Syslog Removal Rules"
 msgstr "Syslog 제거 규칙보기"
 
-#: syslog.php:1204 syslog_reports.php:673
+#: syslog.php:1228 syslog_reports.php:673
 #, fuzzy
 msgid "Reports"
 msgstr "보고서"
 
-#: syslog.php:1204
+#: syslog.php:1228
 #, fuzzy
 msgid "View Syslog Reports"
 msgstr "Syslog 보고서보기"
 
-#: syslog.php:1222
+#: syslog.php:1246
 #, fuzzy
 msgid "Show All Devices"
 msgstr "모든 장치 표시"
 
-#: syslog.php:1223
+#: syslog.php:1247
 #, fuzzy
 msgid "Show All Logs"
 msgstr "모든 로그 표시"
 
-#: syslog.php:1224
+#: syslog.php:1248
 #, fuzzy
 msgid "Threshold Logs"
 msgstr "임계 값 로그"
 
-#: syslog.php:1256
+#: syslog.php:1280
 #, fuzzy
 msgid "Display Rows"
 msgstr "행 표시"
 
-#: syslog.php:1260
+#: syslog.php:1284
 #, fuzzy, php-format
 msgid "%d Messages"
 msgstr "메시지 % d 개"
 
-#: syslog.php:1266
+#: syslog.php:1290
 #, fuzzy
 msgid "Message Trim"
 msgstr "메시지 트림"
 
-#: syslog.php:1290
+#: syslog.php:1314
 #, fuzzy
 msgid "Facilities to filter on"
 msgstr "필터링 기능"
 
-#: syslog.php:1291
+#: syslog.php:1315
 #, fuzzy
 msgid "All Facilities"
 msgstr "모든 부대시설"
 
-#: syslog.php:1309
+#: syslog.php:1333
 #, fuzzy
 msgid "Priority Levels"
 msgstr "우선 순위"
 
-#: syslog.php:1310
+#: syslog.php:1334
 #, fuzzy
 msgid "All Priorities"
 msgstr "모든 우선 순위"
 
-#: syslog.php:1311 syslog.php:1354
+#: syslog.php:1335 syslog.php:1378
 #, fuzzy
 msgid "Emergency"
 msgstr "긴급"
 
-#: syslog.php:1312
+#: syslog.php:1336
 #, fuzzy
 msgid "Critical++"
 msgstr "치명적인 ++"
 
-#: syslog.php:1314
+#: syslog.php:1338
 #, fuzzy
 msgid "Alert++"
 msgstr "Alert ++"
 
-#: syslog.php:1315 syslog.php:1356
+#: syslog.php:1339 syslog.php:1380
 #, fuzzy
 msgid "Alert"
 msgstr "경고"
 
-#: syslog.php:1316
+#: syslog.php:1340
 #, fuzzy
 msgid "Error++"
 msgstr "오류:"
 
-#: syslog.php:1317 syslog.php:1357
+#: syslog.php:1341 syslog.php:1381
 #, fuzzy
 msgid "Error"
 msgstr "오류"
 
-#: syslog.php:1318
+#: syslog.php:1342
 #, fuzzy
 msgid "Warning++"
 msgstr "경고"
 
-#: syslog.php:1320
+#: syslog.php:1344
 #, fuzzy
 msgid "Notice++"
 msgstr "알림 ++"
 
-#: syslog.php:1322
+#: syslog.php:1346
 #, fuzzy
 msgid "Info++"
 msgstr "정보 ++"
 
-#: syslog.php:1323 syslog.php:1360
+#: syslog.php:1347 syslog.php:1384
 #, fuzzy
 msgid "Info"
 msgstr "정보"
 
-#: syslog.php:1324 syslog.php:1361
+#: syslog.php:1348 syslog.php:1385
 #, fuzzy
 msgid "Debug"
 msgstr "디버그"
 
-#: syslog.php:1329
+#: syslog.php:1353
 #, fuzzy
 msgid "Removal Handling"
 msgstr "제거 처리"
 
-#: syslog.php:1330
+#: syslog.php:1354
 #, fuzzy
 msgid "All Records"
 msgstr "모든 기록"
 
-#: syslog.php:1331
+#: syslog.php:1355
 #, fuzzy
 msgid "Main Records"
 msgstr "주요 기록"
 
-#: syslog.php:1332
+#: syslog.php:1356
 #, fuzzy
 msgid "Removed Records"
 msgstr "삭제 된 레코드"
 
-#: syslog.php:1377
+#: syslog.php:1401
 #, fuzzy
 msgid "Informational"
 msgstr "정보 제공"
 
-#: syslog.php:1453
+#: syslog.php:1477
 #, fuzzy
 msgid "Actions"
 msgstr "작업"
 
-#: syslog.php:1457 syslog.php:1465 syslog.php:1561 syslog_process.php:346
-#: syslog_process.php:659
+#: syslog.php:1481 syslog.php:1489 syslog.php:1585 syslog_process.php:345
+#: syslog_process.php:658
 #, fuzzy
 msgid "Message"
 msgstr "메시지"
 
-#: syslog.php:1513 syslog.php:1516 syslog.php:1517 syslog.php:1584
+#: syslog.php:1537 syslog.php:1540 syslog.php:1541 syslog.php:1608
 #, fuzzy
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: syslog.php:1522
+#: syslog.php:1546
 #, fuzzy
 msgid "No Syslog Messages"
 msgstr "Syslog 메시지 없음"
 
-#: syslog.php:1558 syslog_alerts.php:429 syslog_alerts.php:745
-#: syslog_process.php:335
+#: syslog.php:1582 syslog_alerts.php:429 syslog_alerts.php:745
+#: syslog_process.php:334
 #, fuzzy
 msgid "Alert Name"
 msgstr "알림 이름"
 
-#: syslog.php:1559 syslog_alerts.php:437 syslog_alerts.php:746
-#: syslog_process.php:335 syslog_process.php:346
+#: syslog.php:1583 syslog_alerts.php:437 syslog_alerts.php:746
+#: syslog_process.php:334 syslog_process.php:345
 #, fuzzy
 msgid "Severity"
 msgstr "중요도"
 
-#: syslog.php:1562 syslog_process.php:335
+#: syslog.php:1586 syslog_process.php:334
 #, fuzzy
 msgid "Count"
 msgstr "카운트"
 
-#: syslog.php:1568
+#: syslog.php:1592
 #, fuzzy
 msgid "Alert Log Rows"
 msgstr "경고 로그 행"
 
-#: syslog.php:1582
+#: syslog.php:1606
 #, fuzzy
 msgid "Alert Removed"
 msgstr "경고 제거됨"
 
-#: syslog.php:1596
+#: syslog.php:1620
 #, fuzzy
 msgid "No Alert Log Messages"
 msgstr "경고 로그 메시지 없음"
 
-#: syslog.php:1661 syslog.php:1674 syslog.php:1675 syslog.php:1694
-#: syslog.php:1695
+#: syslog.php:1685 syslog.php:1701 syslog.php:1702 syslog.php:1721
+#: syslog.php:1722
 #, fuzzy
 msgid "All Programs"
 msgstr "모든 프로그램"
@@ -1213,7 +1213,7 @@ msgid "Individual"
 msgstr "개별"
 
 #: syslog_alerts.php:448 syslog_alerts.php:453 syslog_alerts.php:772
-#: syslog_process.php:335
+#: syslog_process.php:334
 #, fuzzy
 msgid "Threshold"
 msgstr "문턱값"
@@ -1496,112 +1496,112 @@ msgstr "오류 : 경고 ' %s' %s이 (가) 실패했습니다!"
 msgid "Update"
 msgstr "업데이트"
 
-#: syslog_process.php:326
+#: syslog_process.php:325
 #, fuzzy
 msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
 msgstr "경고 : Syslog 플러그인 인스턴스 수 경고가 트리거되었습니다."
 
-#: syslog_process.php:327
+#: syslog_process.php:326
 #, fuzzy
 msgid "Name:"
 msgstr "이름"
 
-#: syslog_process.php:328 syslog_process.php:362
+#: syslog_process.php:327 syslog_process.php:361
 #, fuzzy
 msgid "Severity:"
 msgstr "중요도"
 
-#: syslog_process.php:329
+#: syslog_process.php:328
 #, fuzzy
 msgid "Threshold:"
 msgstr "문턱값:"
 
-#: syslog_process.php:330
+#: syslog_process.php:329
 #, fuzzy
 msgid "Count:"
 msgstr "카운트:"
 
-#: syslog_process.php:331
+#: syslog_process.php:330
 #, fuzzy
 msgid "Message String:"
 msgstr "메시지 문자열 :"
 
-#: syslog_process.php:333
+#: syslog_process.php:332
 #, fuzzy, php-format
 msgid "Cacti Syslog Plugin Threshold Alert '%s'"
 msgstr "Cacti Syslog 플러그인 임계 값 경고 ' %s'"
 
-#: syslog_process.php:335
+#: syslog_process.php:334
 #, fuzzy
 msgid "Match String"
 msgstr "일치하는 문자열"
 
-#: syslog_process.php:342
+#: syslog_process.php:341
 #, fuzzy, php-format
 msgid "Cacti Syslog Plugin Alert '%s'"
 msgstr "Cacti Syslog 플러그인 경고 ' %s'"
 
-#: syslog_process.php:346
+#: syslog_process.php:345
 #, fuzzy
 msgid "Hostname"
 msgstr "호스트이름:"
 
-#: syslog_process.php:346
+#: syslog_process.php:345
 #, fuzzy
 msgid "Level"
 msgstr "레벨"
 
-#: syslog_process.php:360
+#: syslog_process.php:359
 #, fuzzy
 msgid "Hostname:"
 msgstr "호스트이름:"
 
-#: syslog_process.php:361
+#: syslog_process.php:360
 #, fuzzy
 msgid "Date:"
 msgstr "날짜"
 
-#: syslog_process.php:363
+#: syslog_process.php:362
 #, fuzzy
 msgid "Level:"
 msgstr "회원등급 :"
 
-#: syslog_process.php:364
+#: syslog_process.php:363
 #, fuzzy
 msgid "Message:"
 msgstr "내용:"
 
-#: syslog_process.php:391
+#: syslog_process.php:390
 #, fuzzy
 msgid ", Host:"
 msgstr "호스트:"
 
-#: syslog_process.php:391 syslog_process.php:422
+#: syslog_process.php:390 syslog_process.php:421
 #, fuzzy
 msgid ", URL:"
 msgstr ", URL :"
 
-#: syslog_process.php:391 syslog_process.php:422
+#: syslog_process.php:390 syslog_process.php:421
 #, fuzzy
 msgid "Sev:"
 msgstr "세브 :"
 
-#: syslog_process.php:393 syslog_process.php:442
+#: syslog_process.php:392 syslog_process.php:441
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "이벤트 경고 -  %s"
 
-#: syslog_process.php:422
+#: syslog_process.php:421
 #, fuzzy
 msgid ", Count:"
 msgstr ", 개수 :"
 
-#: syslog_process.php:659
+#: syslog_process.php:658
 #, fuzzy
 msgid "Host"
 msgstr "호스트"
 
-#: syslog_process.php:670
+#: syslog_process.php:669
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "이벤트 보고서 -  %s"
