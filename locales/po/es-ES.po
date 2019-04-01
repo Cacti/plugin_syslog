@@ -6,12 +6,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2019-03-19 09:51+0000\n"
-"PO-Revision-Date: 2019-03-20 08:50+0000\n"
-"Last-Translator: Mark Brugnoli-Vinten <netniv@cacti.net>\n"
-"Language-Team: Spanish <http://translate.cacti.net/projects/cacti/syslog/es-"
-"ES/>\n"
+"PO-Revision-Date: 2019-04-01 21:12+0000\n"
+"Last-Translator: Javier Pobeda <javier.pobeda@pm.me>\n"
+"Language-Team: Spanish <http://translate.cacti.net/projects/cacti/syslog/"
+"es-ES/>\n"
 "Language: es-ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -287,7 +287,6 @@ msgstr "Desinstalar"
 
 #: setup.php:770 syslog_alerts.php:203 syslog_removal.php:226
 #: syslog_reports.php:203
-#, fuzzy
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -899,7 +898,6 @@ msgid "Export Records to CSV"
 msgstr "Exportar registros a CSV"
 
 #: syslog.php:1220
-#, fuzzy
 msgid "Save"
 msgstr "Guardar"
 
@@ -1450,7 +1448,7 @@ msgstr "Nombre de Usuario"
 
 #: syslog_alerts.php:773
 msgid "N/A"
-msgstr "N/A"
+msgstr "N/D"
 
 #: syslog_alerts.php:777
 #, fuzzy
@@ -1893,7 +1891,6 @@ msgid "You must select at least one Syslog Report."
 msgstr "Debe seleccionar al menos un Informe Syslog."
 
 #: syslog_reports.php:206
-#, fuzzy
 msgid "Return"
 msgstr "Regresar"
 
