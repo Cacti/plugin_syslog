@@ -577,21 +577,64 @@ function syslog_export($tab) {
 		$sql_where  = '';
 		$messages   = get_syslog_messages($sql_where, 100000, $tab);
 
-		$hosts      = array_rekey(syslog_db_fetch_assoc('SELECT host_id, host FROM `' . $syslogdb_default . '`.`syslog_hosts`'), 'host_id', 'host');
-		$facilities = array_rekey(syslog_db_fetch_assoc('SELECT facility_id, facility FROM `' . $syslogdb_default . '`.`syslog_facilities`'), 'facility_id', 'facility');
-		$priorities = array_rekey(syslog_db_fetch_assoc('SELECT priority_id, priority FROM `' . $syslogdb_default . '`.`syslog_priorities`'), 'priority_id', 'priority');
-		$programs = array_rekey(syslog_db_fetch_assoc('SELECT program_id, program FROM `' . $syslogdb_default . '`.`syslog_programs`'), 'program_id', 'program');
+		$hosts = array_rekey(
+			syslog_db_fetch_assoc('SELECT host_id, host 
+				FROM `' . $syslogdb_default . '`.`syslog_hosts`'), 
+			'host_id', 'host'
+		);
+
+		$facilities = array_rekey(
+			syslog_db_fetch_assoc('SELECT facility_id, facility 
+				FROM `' . $syslogdb_default . '`.`syslog_facilities`'), 
+			'facility_id', 'facility'
+		);
+
+		$priorities = array_rekey(
+			syslog_db_fetch_assoc('SELECT priority_id, priority 
+				FROM `' . $syslogdb_default . '`.`syslog_priorities`'), 
+			'priority_id', 'priority'
+		);
+
+		$programs = array_rekey(
+			syslog_db_fetch_assoc('SELECT program_id, program 
+				FROM `' . $syslogdb_default . '`.`syslog_programs`'), 
+			'program_id', 'program'
+		);
 
 		print 'host, facility, priority, program, date, message' . "\r\n";
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
+				if (isset($facilities[$message['facility_id']])) {
+					$facility = $facilities[$message['facility_id']];
+				} else {
+					$facility = 'Unknown';
+				}
+
+				if (isset($programs[$message['program_id']])) {
+					$program = $programs[$message['program_id']];
+				} else {
+					$program = 'Unknown';
+				}
+
+				if (isset($priorities[$message['priority_id']])) {
+					$priority = $priorities[$message['priority_id']];
+				} else {
+					$priority = 'Unknown';
+				}
+
+				if (isset($hosts[$message['host_id']])) {
+					$host = $hosts[$message['host_id']];
+				} else {
+					$host = 'Unknown';
+				}
+
 				print
 					'"' .
-					$hosts[$message['host_id']]                    . '","' .
-					ucfirst($facilities[$message['facility_id']])  . '","' .
-					ucfirst($priorities[$message['priority_id']])  . '","' .
-					ucfirst($programs[$message['program_id']])     . '","' .
+					$host                                          . '","' .
+					ucfirst($facility)                             . '","' .
+					ucfirst($priority)                             . '","' .
+					ucfirst($program)                              . '","' .
 					$message['logtime']                            . '","' .
 					$message[$syslog_incoming_config['textField']] . '"'   . "\r\n";
 			}
@@ -607,10 +650,16 @@ function syslog_export($tab) {
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
+				if (isset($severities[$message['severity']])) {
+					$severity = $severities[$message['severity']];
+				} else {
+					$severity = 'Unknown';
+				}
+
 				print
 					'"' .
 					$message['name']                  . '","' .
-					$severities[$message['severity']] . '","' .
+					$severity                         . '","' .
 					$message['logtime']               . '","' .
 					$message['logmsg']                . '","' .
 					$message['host']                  . '","' .
