@@ -549,18 +549,29 @@ function syslog_row_color($priority, $message) {
 }
 
 function sql_hosts_where($tab) {
-	global $hostfilter, $syslog_incoming_config;
+	global $hostfilter, $hostfilter_log, $syslog_incoming_config;
 
-	$hostfilter  = '';
+	$hostfilter     = '';
+	$hostfilter_log = '';
 
 	if (!isempty_request_var('host') && get_request_var('host') != 'null') {
 		$hostarray = explode(' ', get_request_var('host'));
 		if ($hostarray[0] != '0') {
 			foreach($hostarray as $host_id) {
 				input_validate_input_number($host_id);
+
+				$log_host = db_fetch_cell('SELECT host 
+					FROM syslog_hosts 
+					WHERE id = ?', 
+					array($host_id));
+
+				if (!empty($log_host)) {
+					$hostfilter_log .= ($hostfilter_log != '' ? ' AND ':'') . 'host = ' . db_qstr($log_host);
+				}
 			}
 
 			$hostfilter .= (strlen($hostfilter) ? ' AND ':'') . ' host_id IN(' . implode(',', $hostarray) . ')';
+
 		}
 	}
 }

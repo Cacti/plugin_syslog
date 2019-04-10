@@ -770,21 +770,23 @@ function set_shift_span($shift_span, $session_prefix) {
 }
 
 function get_syslog_messages(&$sql_where, $rows, $tab) {
-	global $sql_where, $hostfilter, $current_tab, $syslog_incoming_config;
+	global $sql_where, $hostfilter, $hostfilter_log, $current_tab, $syslog_incoming_config;
 
 	include(dirname(__FILE__) . '/config.php');
 
 	$sql_where = '';
 	/* form the 'where' clause for our main sql query */
 	if (get_request_var('host') == -1 && $tab != 'syslog') {
-		$sql_where .=  "WHERE sl.host='N/A'";
-	} else {
+		// Nothing to do
+	} elseif ($tab == 'syslog') {
 		if (!isempty_request_var('host')) {
 			sql_hosts_where($tab);
 			if (strlen($hostfilter)) {
-				$sql_where .=  'WHERE ' . $hostfilter;
+				$sql_where .= 'WHERE ' . $hostfilter;
 			}
 		}
+	} elseif (!isempty_request_var('host')) {
+		$sql_where .= 'WHERE ' . $hostfilter_log;
 	}
 
 	$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
