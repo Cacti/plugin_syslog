@@ -823,7 +823,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			$priorities = "=1";
 			break;
 		case '1':
-			$priorities = "<1";
+			$priorities = "<=1";
 			break;
 		case '2o':
 			$priorities = "=2";
@@ -1242,7 +1242,7 @@ function syslog_filter($sql_where, $tab) {
 							<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
 						</td>
 						<td class='even'>
-							<select id='host' multiple style='width: 150px; overflow: scroll;'>
+							<select id='host' multiple style='display:none; width: 150px; overflow: scroll;'>
 								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Devices', 'syslog');?></option><?php } else { ?>
 								<option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == 0 || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Logs', 'syslog');?></option>
 								<option id='host_none' value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('Threshold Logs', 'syslog');?></option><?php } ?>
@@ -1333,10 +1333,10 @@ function syslog_filter($sql_where, $tab) {
 							<select id='epriority' onChange='applyFilter()' title='<?php print __('Priority Levels', 'syslog');?>'>
 								<option value='-1'<?php if (get_request_var('epriority') == '-1') { ?> selected<?php } ?>><?php print __('All Priorities', 'syslog');?></option>
 								<option value='0'<?php if (get_request_var('epriority') == '0') { ?> selected<?php } ?>><?php print __('Emergency', 'syslog');?></option>
-								<option value='1'<?php if (get_request_var('epriority') == '1') { ?> selected<?php } ?>><?php print __('Critical++', 'syslog');?></option>
-								<option value='1o'<?php if (get_request_var('epriority') == '1o') { ?> selected<?php } ?>><?php print __('Critical', 'syslog');?></option>
-								<option value='2'<?php if (get_request_var('epriority') == '2') { ?> selected<?php } ?>><?php print __('Alert++', 'syslog');?></option>
-								<option value='2o'<?php if (get_request_var('epriority') == '2o') { ?> selected<?php } ?>><?php print __('Alert', 'syslog');?></option>
+								<option value='1'<?php if (get_request_var('epriority') == '1') { ?> selected<?php } ?>><?php print __('Alert++', 'syslog');?></option>
+								<option value='1o'<?php if (get_request_var('epriority') == '1o') { ?> selected<?php } ?>><?php print __('Alert', 'syslog');?></option>
+								<option value='2'<?php if (get_request_var('epriority') == '2') { ?> selected<?php } ?>><?php print __('Critical++', 'syslog');?></option>
+								<option value='2o'<?php if (get_request_var('epriority') == '2o') { ?> selected<?php } ?>><?php print __('Critical', 'syslog');?></option>
 								<option value='3'<?php if (get_request_var('epriority') == '3') { ?> selected<?php } ?>><?php print __('Error++', 'syslog');?></option>
 								<option value='3o'<?php if (get_request_var('epriority') == '3o') { ?> selected<?php } ?>><?php print __('Error', 'syslog');?></option>
 								<option value='4'<?php if (get_request_var('epriority') == '4') { ?> selected<?php } ?>><?php print __('Warning++', 'syslog');?></option>
@@ -1691,7 +1691,7 @@ function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sq
 	print '<td>';
 
 	syslog_form_callback(
-		'program',
+		'eprogram',
 		'SELECT DISTINCT program_id, program FROM syslog_programs AS spr ORDER BY program',
 		'program',
 		'program_id',
