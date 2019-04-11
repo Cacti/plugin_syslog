@@ -1,205 +1,304 @@
 <cacti>	
-	<hash_0000126fa46bd2855631e8680f1598e2ee29b0>
+	<hash_0001026fa46bd2855631e8680f1598e2ee29b0>
 		<name>Localhost - Syslog Messages</name>
 		<graph>
 			<t_title></t_title>
 			<title>|host_description| - Syslog Messages</title>
+			<t_vertical_label></t_vertical_label>
+			<vertical_label></vertical_label>
 			<t_image_format_id></t_image_format_id>
 			<image_format_id>1</image_format_id>
 			<t_height></t_height>
 			<height>120</height>
 			<t_width></t_width>
 			<width>500</width>
+			<t_base_value></t_base_value>
+			<base_value>1000</base_value>
+			<t_slope_mode></t_slope_mode>
+			<slope_mode>on</slope_mode>
 			<t_auto_scale></t_auto_scale>
 			<auto_scale>on</auto_scale>
 			<t_auto_scale_opts></t_auto_scale_opts>
 			<auto_scale_opts>2</auto_scale_opts>
 			<t_auto_scale_log></t_auto_scale_log>
 			<auto_scale_log></auto_scale_log>
+			<t_scale_log_units></t_scale_log_units>
+			<scale_log_units></scale_log_units>
 			<t_auto_scale_rigid></t_auto_scale_rigid>
 			<auto_scale_rigid></auto_scale_rigid>
-			<t_auto_padding></t_auto_padding>
-			<auto_padding>on</auto_padding>
-			<t_export></t_export>
-			<export>on</export>
 			<t_upper_limit></t_upper_limit>
 			<upper_limit>100</upper_limit>
 			<t_lower_limit></t_lower_limit>
 			<lower_limit>0</lower_limit>
-			<t_base_value></t_base_value>
-			<base_value>1000</base_value>
 			<t_unit_value></t_unit_value>
 			<unit_value></unit_value>
 			<t_unit_exponent_value></t_unit_exponent_value>
 			<unit_exponent_value></unit_exponent_value>
-			<t_vertical_label></t_vertical_label>
-			<vertical_label></vertical_label>
+			<t_unit_length></t_unit_length>
+			<unit_length></unit_length>
+			<t_no_gridfit></t_no_gridfit>
+			<no_gridfit></no_gridfit>
+			<t_alt_y_grid></t_alt_y_grid>
+			<alt_y_grid></alt_y_grid>
+			<t_right_axis></t_right_axis>
+			<right_axis></right_axis>
+			<t_right_axis_label></t_right_axis_label>
+			<right_axis_label></right_axis_label>
+			<t_right_axis_format></t_right_axis_format>
+			<right_axis_format></right_axis_format>
+			<t_right_axis_formatter></t_right_axis_formatter>
+			<right_axis_formatter></right_axis_formatter>
+			<t_left_axis_formatter></t_left_axis_formatter>
+			<left_axis_formatter></left_axis_formatter>
+			<t_auto_padding></t_auto_padding>
+			<auto_padding>on</auto_padding>
+			<t_dynamic_labels></t_dynamic_labels>
+			<dynamic_labels></dynamic_labels>
+			<t_force_rules_legend></t_force_rules_legend>
+			<force_rules_legend></force_rules_legend>
+			<t_tab_width></t_tab_width>
+			<tab_width>30</tab_width>
+			<t_legend_position></t_legend_position>
+			<legend_position></legend_position>
+			<t_legend_direction></t_legend_direction>
+			<legend_direction></legend_direction>
 		</graph>
 		<items>
-			<hash_100012be2d31bbf2909bf41c22c3529fa5d015>
-				<task_item_id>hash_08001284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
-				<color_id>FF5700</color_id>
+			<hash_100102be2d31bbf2909bf41c22c3529fa5d015>
 				<graph_type_id>7</graph_type_id>
+				<task_item_id>hash_08010284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
+				<color_id>FF5700</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>1</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
 				<gprint_id>0</gprint_id>
+				<textalign></textalign>
 				<text_format>New</text_format>
 				<hard_return></hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset></dash_offset>
 				<sequence>1</sequence>
-			</hash_100012be2d31bbf2909bf41c22c3529fa5d015>
-			<hash_10001257366cf4ba9bb0a4c1bd1d507812a9ba>
-				<task_item_id>hash_08001284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
-				<color_id>0</color_id>
+			</hash_100102be2d31bbf2909bf41c22c3529fa5d015>
+			<hash_10010257366cf4ba9bb0a4c1bd1d507812a9ba>
 				<graph_type_id>9</graph_type_id>
+				<task_item_id>hash_08010284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
+				<color_id>0</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>4</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
-				<gprint_id>0</gprint_id>
-				<text_format>Current:</text_format>
+				<gprint_id>hash_06010219414480d6897c8731c7dc6c5310653e</gprint_id>
+				<textalign></textalign>
+				<text_format>Current</text_format>
 				<hard_return></hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset>0</dash_offset>
 				<sequence>2</sequence>
-			</hash_10001257366cf4ba9bb0a4c1bd1d507812a9ba>
-			<hash_100012e09000ffaac468330cc5ec71f6b50666>
-				<task_item_id>hash_08001284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
-				<color_id>0</color_id>
+			</hash_10010257366cf4ba9bb0a4c1bd1d507812a9ba>
+			<hash_100102e09000ffaac468330cc5ec71f6b50666>
 				<graph_type_id>9</graph_type_id>
+				<task_item_id>hash_08010284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
+				<color_id>0</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>1</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
-				<gprint_id>0</gprint_id>
-				<text_format>Average:</text_format>
+				<gprint_id>hash_06010219414480d6897c8731c7dc6c5310653e</gprint_id>
+				<textalign></textalign>
+				<text_format>Average</text_format>
 				<hard_return></hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset>0</dash_offset>
 				<sequence>3</sequence>
-			</hash_100012e09000ffaac468330cc5ec71f6b50666>
-			<hash_100012d79cd2d157ba3d1277fac8d023a885d7>
-				<task_item_id>hash_08001284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
-				<color_id>0</color_id>
+			</hash_100102e09000ffaac468330cc5ec71f6b50666>
+			<hash_100102d79cd2d157ba3d1277fac8d023a885d7>
 				<graph_type_id>9</graph_type_id>
+				<task_item_id>hash_08010284bd627cff9525c9c20a6307ded2e7f3</task_item_id>
+				<color_id>0</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>3</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
-				<gprint_id>0</gprint_id>
-				<text_format>Max:</text_format>
+				<gprint_id>hash_06010219414480d6897c8731c7dc6c5310653e</gprint_id>
+				<textalign></textalign>
+				<text_format>Max</text_format>
 				<hard_return>on</hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset>0</dash_offset>
 				<sequence>4</sequence>
-			</hash_100012d79cd2d157ba3d1277fac8d023a885d7>
-			<hash_1000120306c981e9e40a8d1ec3380a11b4292e>
-				<task_item_id>hash_0800127b1b95bff8dbb0926122c888073ba66e</task_item_id>
-				<color_id>4444FF</color_id>
+			</hash_100102d79cd2d157ba3d1277fac8d023a885d7>
+			<hash_1001020306c981e9e40a8d1ec3380a11b4292e>
 				<graph_type_id>4</graph_type_id>
+				<task_item_id>hash_0801027b1b95bff8dbb0926122c888073ba66e</task_item_id>
+				<color_id>4444FF</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>1</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
 				<gprint_id>0</gprint_id>
+				<textalign></textalign>
 				<text_format>Processed</text_format>
 				<hard_return></hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset></dash_offset>
 				<sequence>5</sequence>
-			</hash_1000120306c981e9e40a8d1ec3380a11b4292e>
-			<hash_1000120368e7d77cff2e35313a5cadfca50353>
-				<task_item_id>hash_0800127b1b95bff8dbb0926122c888073ba66e</task_item_id>
-				<color_id>0</color_id>
+			</hash_1001020306c981e9e40a8d1ec3380a11b4292e>
+			<hash_1001020368e7d77cff2e35313a5cadfca50353>
 				<graph_type_id>9</graph_type_id>
+				<task_item_id>hash_0801027b1b95bff8dbb0926122c888073ba66e</task_item_id>
+				<color_id>0</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>4</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
-				<gprint_id>0</gprint_id>
-				<text_format>Current:</text_format>
+				<gprint_id>hash_06010219414480d6897c8731c7dc6c5310653e</gprint_id>
+				<textalign></textalign>
+				<text_format>Current</text_format>
 				<hard_return></hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset>0</dash_offset>
 				<sequence>6</sequence>
-			</hash_1000120368e7d77cff2e35313a5cadfca50353>
-			<hash_100012062825473ef104f2e2a6a28b40d5d274>
-				<task_item_id>hash_0800127b1b95bff8dbb0926122c888073ba66e</task_item_id>
-				<color_id>0</color_id>
+			</hash_1001020368e7d77cff2e35313a5cadfca50353>
+			<hash_100102062825473ef104f2e2a6a28b40d5d274>
 				<graph_type_id>9</graph_type_id>
+				<task_item_id>hash_0801027b1b95bff8dbb0926122c888073ba66e</task_item_id>
+				<color_id>0</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>1</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
-				<gprint_id>0</gprint_id>
-				<text_format>Average:</text_format>
+				<gprint_id>hash_06010219414480d6897c8731c7dc6c5310653e</gprint_id>
+				<textalign></textalign>
+				<text_format>Average</text_format>
 				<hard_return></hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset>0</dash_offset>
 				<sequence>7</sequence>
-			</hash_100012062825473ef104f2e2a6a28b40d5d274>
-			<hash_1000122b48a51e0222da761f9b5b4bf116d55d>
-				<task_item_id>hash_0800127b1b95bff8dbb0926122c888073ba66e</task_item_id>
-				<color_id>0</color_id>
+			</hash_100102062825473ef104f2e2a6a28b40d5d274>
+			<hash_1001022b48a51e0222da761f9b5b4bf116d55d>
 				<graph_type_id>9</graph_type_id>
+				<task_item_id>hash_0801027b1b95bff8dbb0926122c888073ba66e</task_item_id>
+				<color_id>0</color_id>
+				<alpha>FF</alpha>
 				<consolidation_function_id>3</consolidation_function_id>
 				<cdef_id>0</cdef_id>
+				<vdef_id>0</vdef_id>
+				<shift></shift>
 				<value></value>
-				<gprint_id>0</gprint_id>
-				<text_format>Max:</text_format>
-				<hard_return></hard_return>
+				<gprint_id>hash_06010219414480d6897c8731c7dc6c5310653e</gprint_id>
+				<textalign></textalign>
+				<text_format>Max</text_format>
+				<hard_return>on</hard_return>
+				<line_width>0.00</line_width>
+				<dashes></dashes>
+				<dash_offset>0</dash_offset>
 				<sequence>8</sequence>
-			</hash_1000122b48a51e0222da761f9b5b4bf116d55d>
+			</hash_1001022b48a51e0222da761f9b5b4bf116d55d>
 		</items>
 		<inputs>
-			<hash_0900127c084deaebac22c800fed716695f603e>
+			<hash_0901027c084deaebac22c800fed716695f603e>
 				<name>Data Source [total]</name>
 				<description></description>
 				<column_name>task_item_id</column_name>
-				<items>hash_000012be2d31bbf2909bf41c22c3529fa5d015|hash_00001257366cf4ba9bb0a4c1bd1d507812a9ba|hash_000012e09000ffaac468330cc5ec71f6b50666|hash_000012d79cd2d157ba3d1277fac8d023a885d7</items>
-			</hash_0900127c084deaebac22c800fed716695f603e>
-			<hash_0900124ee32a9ba66d9adf6e99fe5295cd2bee>
+				<items>hash_000102be2d31bbf2909bf41c22c3529fa5d015|hash_00010257366cf4ba9bb0a4c1bd1d507812a9ba|hash_000102e09000ffaac468330cc5ec71f6b50666|hash_000102d79cd2d157ba3d1277fac8d023a885d7</items>
+			</hash_0901027c084deaebac22c800fed716695f603e>
+			<hash_0901024ee32a9ba66d9adf6e99fe5295cd2bee>
 				<name>Data Source [incoming]</name>
 				<description></description>
 				<column_name>task_item_id</column_name>
-				<items>hash_0000120306c981e9e40a8d1ec3380a11b4292e|hash_0000120368e7d77cff2e35313a5cadfca50353|hash_000012062825473ef104f2e2a6a28b40d5d274|hash_0000122b48a51e0222da761f9b5b4bf116d55d</items>
-			</hash_0900124ee32a9ba66d9adf6e99fe5295cd2bee>
+				<items>hash_0001020306c981e9e40a8d1ec3380a11b4292e|hash_0001020368e7d77cff2e35313a5cadfca50353|hash_000102062825473ef104f2e2a6a28b40d5d274|hash_0001022b48a51e0222da761f9b5b4bf116d55d</items>
+			</hash_0901024ee32a9ba66d9adf6e99fe5295cd2bee>
 		</inputs>
-	</hash_0000126fa46bd2855631e8680f1598e2ee29b0>
-	<hash_010012dc0147f0499341197c6f4e6c387c91b5>
+	</hash_0001026fa46bd2855631e8680f1598e2ee29b0>
+	<hash_010102dc0147f0499341197c6f4e6c387c91b5>
 		<name>Localhost - Syslog Messages</name>
 		<ds>
 			<t_name></t_name>
 			<name>|host_description| - Syslog Messages</name>
-			<data_input_id>hash_030012bf254919c41c22573b7791015f4e7364</data_input_id>
-			<t_rra_id></t_rra_id>
+			<data_input_id>hash_030102bf254919c41c22573b7791015f4e7364</data_input_id>
+			<t_data_source_profile_id></t_data_source_profile_id>
+			<data_source_profile_id>hash_200102affdacc86af7a3d746c5af5b4e4844c5</data_source_profile_id>
 			<t_rrd_step></t_rrd_step>
 			<rrd_step>300</rrd_step>
 			<t_active></t_active>
 			<active>on</active>
-			<rra_items>hash_150012c21df5178e5c955013591239eb0afd46|hash_1500120d9c0af8b8acdc7807943937b3208e29|hash_1500126fc2d038fb42950138b0ce3e9874cc60|hash_150012e36f3adb9f152adfa5dc50fd2b23337e</rra_items>
 		</ds>
 		<items>
-			<hash_08001284bd627cff9525c9c20a6307ded2e7f3>
+			<hash_08010284bd627cff9525c9c20a6307ded2e7f3>
 				<t_data_source_name></t_data_source_name>
 				<data_source_name>total</data_source_name>
 				<t_rrd_minimum></t_rrd_minimum>
 				<rrd_minimum>0</rrd_minimum>
 				<t_rrd_maximum></t_rrd_maximum>
-				<rrd_maximum>0</rrd_maximum>
+				<rrd_maximum>U</rrd_maximum>
 				<t_data_source_type_id></t_data_source_type_id>
 				<data_source_type_id>1</data_source_type_id>
 				<t_rrd_heartbeat></t_rrd_heartbeat>
 				<rrd_heartbeat>600</rrd_heartbeat>
 				<t_data_input_field_id></t_data_input_field_id>
-				<data_input_field_id>hash_07001267ce63580ef0eab26d6f87ff025664dc</data_input_field_id>
-			</hash_08001284bd627cff9525c9c20a6307ded2e7f3>
-			<hash_0800127b1b95bff8dbb0926122c888073ba66e>
+				<data_input_field_id>hash_07010267ce63580ef0eab26d6f87ff025664dc</data_input_field_id>
+			</hash_08010284bd627cff9525c9c20a6307ded2e7f3>
+			<hash_0801027b1b95bff8dbb0926122c888073ba66e>
 				<t_data_source_name></t_data_source_name>
 				<data_source_name>incoming</data_source_name>
 				<t_rrd_minimum></t_rrd_minimum>
 				<rrd_minimum>0</rrd_minimum>
 				<t_rrd_maximum></t_rrd_maximum>
-				<rrd_maximum>0</rrd_maximum>
+				<rrd_maximum>U</rrd_maximum>
 				<t_data_source_type_id></t_data_source_type_id>
 				<data_source_type_id>1</data_source_type_id>
 				<t_rrd_heartbeat></t_rrd_heartbeat>
 				<rrd_heartbeat>600</rrd_heartbeat>
 				<t_data_input_field_id></t_data_input_field_id>
-				<data_input_field_id>hash_070012e1552e9d99522b2770316a5f1972ecba</data_input_field_id>
-			</hash_0800127b1b95bff8dbb0926122c888073ba66e>
+				<data_input_field_id>hash_070102e1552e9d99522b2770316a5f1972ecba</data_input_field_id>
+			</hash_0801027b1b95bff8dbb0926122c888073ba66e>
 		</items>
 		<data>
+			<item_000>
+				<data_input_field_id>hash_07010200da52ba8bdb5d6267640410b4411fcc</data_input_field_id>
+				<t_value></t_value>
+				<value>vmhost5</value>
+			</item_000>
+			<item_001>
+				<data_input_field_id>hash_07010275e346e0a239f1c6937383b1f4e899ff</data_input_field_id>
+				<t_value></t_value>
+				<value>2</value>
+			</item_001>
+			<item_002>
+				<data_input_field_id>hash_0701027fe32b1db0ea5a832503188dc0456dc1</data_input_field_id>
+				<t_value>on</t_value>
+				<value>no</value>
+			</item_002>
 		</data>
-	</hash_010012dc0147f0499341197c6f4e6c387c91b5>
-	<hash_030012bf254919c41c22573b7791015f4e7364>
+	</hash_010102dc0147f0499341197c6f4e6c387c91b5>
+	<hash_030102bf254919c41c22573b7791015f4e7364>
 		<name>Localhost - Syslog Messages</name>
 		<type_id>1</type_id>
-		<input_string>/usr/bin/php -q &lt;path_cacti&gt;/plugins/syslog/syslog_counter.php</input_string>
+		<input_string>L3Vzci9iaW4vcGhwIC1xIDxwYXRoX2NhY3RpPi9wbHVnaW5zL3N5c2xvZy9zeXNsb2dfY291bnRlci5waHA=</input_string>
 		<fields>
-			<hash_07001267ce63580ef0eab26d6f87ff025664dc>
+			<hash_07010267ce63580ef0eab26d6f87ff025664dc>
 				<name>New Messages</name>
 				<update_rra>on</update_rra>
 				<regexp_match></regexp_match>
@@ -207,8 +306,8 @@
 				<type_code></type_code>
 				<input_output>out</input_output>
 				<data_name>total</data_name>
-			</hash_07001267ce63580ef0eab26d6f87ff025664dc>
-			<hash_070012e1552e9d99522b2770316a5f1972ecba>
+			</hash_07010267ce63580ef0eab26d6f87ff025664dc>
+			<hash_070102e1552e9d99522b2770316a5f1972ecba>
 				<name>Processed Messages</name>
 				<update_rra>on</update_rra>
 				<regexp_match></regexp_match>
@@ -216,7 +315,45 @@
 				<type_code></type_code>
 				<input_output>out</input_output>
 				<data_name>incoming</data_name>
-			</hash_070012e1552e9d99522b2770316a5f1972ecba>
+			</hash_070102e1552e9d99522b2770316a5f1972ecba>
 		</fields>
-	</hash_030012bf254919c41c22573b7791015f4e7364>
+	</hash_030102bf254919c41c22573b7791015f4e7364>
+	<hash_200102affdacc86af7a3d746c5af5b4e4844c5>
+		<name>Upgrade Profile 1</name>
+		<step>300</step>
+		<heartbeat>600</heartbeat>
+		<x_files_factor>0.5</x_files_factor>
+		<default></default>
+		<cf_items>1|2|3|4</cf_items>
+		<items>
+			<item_000>
+				<name>Daily (5 Minute Average)</name>
+				<steps>1</steps>
+				<rows>600</rows>
+				<timespan>172800</timespan>
+			</item_000>
+			<item_001>
+				<name>Weekly (30 Minute Average)</name>
+				<steps>6</steps>
+				<rows>700</rows>
+				<timespan>1209600</timespan>
+			</item_001>
+			<item_002>
+				<name>Monthly (2 Hour Average)</name>
+				<steps>24</steps>
+				<rows>775</rows>
+				<timespan>5237568</timespan>
+			</item_002>
+			<item_003>
+				<name>Yearly (1 Day Average)</name>
+				<steps>288</steps>
+				<rows>797</rows>
+				<timespan>63072000</timespan>
+			</item_003>
+		</items>
+	</hash_200102affdacc86af7a3d746c5af5b4e4844c5>
+	<hash_06010219414480d6897c8731c7dc6c5310653e>
+		<name>Exact Numbers</name>
+		<gprint_text>%8.0lf</gprint_text>
+	</hash_06010219414480d6897c8731c7dc6c5310653e>
 </cacti>
