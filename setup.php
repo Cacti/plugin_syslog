@@ -1173,10 +1173,10 @@ function syslog_utilities_list() {
 	html_header(array(__('Syslog Utilities', 'syslog')), 2); ?>
 
 	<tr class='even'>
-		<td class='textArea'>
+		<td>
 			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'><?php print __('Purge Syslog Devices', 'syslog');?></a>
 		</td>
-		<td class='textArea'>
+		<td>
 			<?php print __('This menu pick provides a means to remove Devices that are no longer reporting into Cacti\'s syslog server.', 'syslog');?>
 		</td>
 	</tr>
