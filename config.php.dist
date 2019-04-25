@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2014 The Cacti Group                                 |
+ | Copyright (C) 2007-2019 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -44,6 +44,14 @@ if (!$use_cacti_db) {
 	$syslogdb_port     = $database_port;
 }
 
+/* Uncomment lines below to enable options for silent installation during intall plugin */
+//$syslog_install_options['upgrade_type'] = 'truncate';
+//$syslog_install_options['engine']       = 'innodb';
+//$syslog_install_options['db_type']      = 'trad';
+//$syslog_install_options['days']         = '1 Month';
+//$syslog_install_options['mode']         = 'install';
+//$syslog_install_options['id']           = 'syslog';
+
 /* field in the incomming table */
 $syslog_incoming_config['dateField']          = 'date';
 $syslog_incoming_config['timeField']          = 'time';
@@ -53,4 +61,3 @@ $syslog_incoming_config['hostField']          = 'host_id';
 $syslog_incoming_config['textField']          = 'message';
 $syslog_incoming_config['id']                 = 'seq';
 
-?>

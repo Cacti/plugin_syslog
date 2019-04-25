@@ -67,6 +67,12 @@ function plugin_syslog_install() {
 
 			return true;
 		}
+	} elseif (isset($syslog_install_options) && cacti_sizeof($syslog_install_options)) {
+		/* hack for syslog so IBM Spectrum LSF RTM can install syslog without user interaction with preset defaults */
+		if (!$bg_inprocess) {
+			syslog_execute_update($syslog_exists, $syslog_install_options);
+			$bg_inprocess = true;
+		}
 	} elseif (isset_request_var('cancel')) {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
 		exit;
