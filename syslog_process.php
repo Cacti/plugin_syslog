@@ -98,7 +98,24 @@ if (empty($syslog_cnn)) {
 		if (!isset($syslogdb_port)) {
 			$syslogdb_port = '3306';
 		}
-		$syslog_cnn = db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port);
+
+		if (!isset($syslogdb_ssl)) {
+		    $syslogdb_ssl = false;
+		}
+
+		if (!isset($syslogdb_ssl_key)) {
+		    $syslogdb_ssl_key = '';
+		}
+
+		if (!isset($syslogdb_ssl_cert)) {
+		    $syslogdb_ssl_cert = '';
+		}
+
+		if (!isset($syslogdb_ssl_ca)) {
+		    $syslogdb_ssl_ca = '';
+		}
+
+		$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port, $syslogdb_ssl, $syslogdb_ssl_key, $syslogdb_ssl_cert, $syslogdb_ssl_ca);
 	}
 }
 
