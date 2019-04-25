@@ -710,6 +710,10 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$id = 0;
 		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_logs`', 'seq');
 
+		$save['seq']        = $id;
+		$save['alert_name'] = $alert_name;
+		api_plugin_hook_function('syslog_update_hostsalarm', $save);
+
 		cacti_log("WARNING: The Syslog Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered on Host '" . $msg['host'] . "', and Sequence '$id'", false, 'SYSLOG');
 
 		return $id;
@@ -727,6 +731,16 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 
 		$id = 0;
 		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_logs`', 'seq');
+
+		$save['seq']         = $id;
+		$save['alert_name']  = $alert_name;
+
+		if (cacti_sizeof($hosts)) {
+			foreach($hosts as $host){
+				$save['host'] = $host;
+				api_plugin_hook_function('syslog_update_hostsalarm', $save);
+			}
+		}
 
 		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, 'SYSLOG');
 
