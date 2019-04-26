@@ -281,6 +281,17 @@ $from = array($from_email, $from_name);
 syslog_debug('Found   ' . $syslog_alerts . ',  Alert Rule' . ($syslog_alerts == 1 ? '' : 's' ) . ' to process');
 
 $syslog_alarms = 0;
+
+if (substr(read_config_option('base_url'), 0, 4) != 'http') {
+	if (read_config_option('force_https') == 'on') {
+		$prefix = 'https://';
+	} else {
+		$prefix = 'http://';
+	}
+
+	set_config_option('base_url', $prefix . read_config_option('base_url'));
+}
+
 if (cacti_sizeof($query)) {
 	foreach($query as $alert) {
 		$sql      = '';
@@ -404,7 +415,7 @@ if (cacti_sizeof($query)) {
 								$hostlist[] = $a['host'];
 								$htmlm  .= '</table></body></html>';
 								$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $a, 1, $htmlm);
-								$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Host:', 'syslog') . $a['host'] . __(', URL:', 'syslog') . read_config_option('base_url') . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
+								$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Host:', 'syslog') . $a['host'] . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 
 								syslog_sendemail(trim($alert['email']), $from, __('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
 
@@ -435,7 +446,7 @@ if (cacti_sizeof($query)) {
 
 					if ($alert['method'] == 1) {
 						$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $at[0], sizeof($at), $htmlm, $hostlist);
-						$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Count:', 'syslog') . sizeof($at) . __(', URL:', 'syslog') . read_config_option('base_url') . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
+						$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Count:', 'syslog') . sizeof($at) . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 					}
 
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
