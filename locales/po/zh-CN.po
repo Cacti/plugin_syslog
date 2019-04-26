@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 09:51+0000\n"
-"PO-Revision-Date: 2019-03-16 23:04-0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2019-04-26 01:41+0000\n"
+"Last-Translator: whsir <wh@whsir.com>\n"
+"Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/"
+"cacti/syslog/zh-CN/>\n"
+"Language: zh-CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 3.4-dev\n"
 
 #: functions.php:53
 #, fuzzy
@@ -738,13 +740,13 @@ msgstr "所有"
 #: syslog.php:431 syslog.php:451 syslog.php:471 syslog.php:965
 #, fuzzy
 msgid "None"
-msgstr "没有"
+msgstr "无"
 
 #: syslog.php:488 syslog.php:1217 syslog_alerts.php:623 syslog_removal.php:554
 #: syslog_reports.php:540
 #, fuzzy
 msgid "Go"
-msgstr "启动"
+msgstr "Go"
 
 #: syslog.php:489 syslog.php:1218 syslog_alerts.php:624 syslog_removal.php:555
 #: syslog_reports.php:541
@@ -776,9 +778,8 @@ msgid "%d Hours"
 msgstr "%d 时"
 
 #: syslog.php:528
-#, fuzzy
 msgid "Entries"
-msgstr "项"
+msgstr "条目"
 
 #: syslog.php:532 syslog.php:1281 syslog_alerts.php:611 syslog_removal.php:542
 #: syslog_reports.php:528
@@ -1136,7 +1137,6 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "导出系统日志警报规则"
 
 #: syslog_alerts.php:203 syslog_removal.php:226 syslog_reports.php:203
-#, fuzzy
 msgid "Continue"
 msgstr "继续"
 
@@ -1826,7 +1826,6 @@ msgid "You must select at least one Syslog Report."
 msgstr "您必须至少选择一个Syslog报告。"
 
 #: syslog_reports.php:206
-#, fuzzy
 msgid "Return"
 msgstr "返回"
 
