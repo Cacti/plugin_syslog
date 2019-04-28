@@ -89,7 +89,7 @@ function form_save() {
 			get_nfilter_request_var('open_ticket'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
-			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($id) ? get_filter_request_var('id') : $id));
+			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
 		} else {
 			header('Location: syslog_alerts.php?header=false');
 		}
