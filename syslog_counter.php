@@ -22,8 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-chdir('../../');
-include('./include/cli_check.php');
+include(__dir__ . '/../../include/cli_check.php');
 
 $sli = read_config_option('syslog_last_incoming');
 $slt = read_config_option('syslog_last_total');
