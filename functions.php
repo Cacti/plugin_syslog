@@ -690,7 +690,7 @@ function syslog_debug($message) {
 	}
 }
 
-function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html) {
+function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html = '', $hosts = array()) {
 	global $config, $severities;
 
 	include(dirname(__FILE__) . '/config.php');
