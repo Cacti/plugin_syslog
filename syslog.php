@@ -789,29 +789,29 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		$sql_where .= 'WHERE ' . $hostfilter_log;
 	}
 
-	$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
+	$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
 		"logtime BETWEEN '" . get_request_var('date1') . "'
 			AND '" . get_request_var('date2') . "'";
 
 	if (isset_request_var('id') && $current_tab == 'current') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
 			'sa.id=' . get_request_var('id');
 	}
 
 	if (!isempty_request_var('filter')) {
 		if ($tab == 'syslog') {
-			$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "message LIKE '%" . get_request_var('filter') . "%'";
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "message LIKE '%" . get_request_var('filter') . "%'";
 		} else {
-			$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "logmsg LIKE '%" . get_request_var('filter') . "%'";
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "logmsg LIKE '%" . get_request_var('filter') . "%'";
 		}
 	}
 
 	if (get_request_var('eprogram') != '-1') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "syslog.program_id='" . get_request_var('eprogram') . "'";
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.program_id='" . get_request_var('eprogram') . "'";
 	}
 
 	if (get_request_var('efacility') != '-1') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "syslog.facility_id='" . get_request_var('efacility') . "'";
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.facility_id='" . get_request_var('efacility') . "'";
 	}
 
 	if (isset_request_var('epriority') && get_request_var('epriority') != '-1') {
@@ -819,50 +819,50 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 
 		switch(get_request_var('epriority')) {
 		case '0':
-			$priorities = "=0";
+			$priorities = '=0';
 			break;
 		case '1o':
-			$priorities = "=1";
+			$priorities = '=1';
 			break;
 		case '1':
-			$priorities = "<=1";
+			$priorities = '<=1';
 			break;
 		case '2o':
-			$priorities = "=2";
+			$priorities = '=2';
 			break;
 		case '2':
-			$priorities = "<=2";
+			$priorities = '<=2';
 			break;
 		case '3o':
-			$priorities = "=3";
+			$priorities = '=3';
 			break;
 		case '3':
-			$priorities = "<=3";
+			$priorities = '<=3';
 			break;
 		case '4o':
-			$priorities = "=4";
+			$priorities = '=4';
 			break;
 		case '4':
-			$priorities = "<=4";
+			$priorities = '<=4';
 			break;
 		case '5o':
-			$priorities = "=5";
+			$priorities = '=5';
 			break;
 		case '5':
-			$priorities = "<=5";
+			$priorities = '<=5';
 			break;
 		case '6o':
-			$priorities = "=6";
+			$priorities = '=6';
 			break;
 		case '6':
-			$priorities = "<=6";
+			$priorities = '<=6';
 			break;
 		case '7':
-			$priorities = "=7";
+			$priorities = '=7';
 			break;
 		}
 
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'syslog.priority_id ' . $priorities;
+		$sql_where .= ($sql_where == '' ? 'WHERE ': ' AND ') . 'syslog.priority_id ' . $priorities;
 	}
 
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);
@@ -1714,7 +1714,7 @@ function get_ajax_programs($include_any = true, $sql_where = '') {
 
 	$term = get_filter_request_var('term', FILTER_CALLBACK, array('options' => 'sanitize_search_string'));
 	if ($term != '') {
-		$sql_where .= ($sql_where != '' ? ' AND ' : '') . "program LIKE '%$term%'";
+		$sql_where .= ($sql_where != '' ? ' AND ' : 'WHERE ') . "program LIKE '%$term%'";
 	}
 
 	if (get_request_var('term') == '') {

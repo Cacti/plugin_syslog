@@ -560,7 +560,7 @@ function sql_hosts_where($tab) {
 			foreach($hostarray as $host_id) {
 				input_validate_input_number($host_id);
 
-				$log_host = db_fetch_cell('SELECT host 
+				$log_host = db_fetch_cell_prepared('SELECT host 
 					FROM syslog_hosts 
 					WHERE id = ?', 
 					array($host_id));
