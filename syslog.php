@@ -781,11 +781,12 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	} elseif ($tab == 'syslog') {
 		if (!isempty_request_var('host')) {
 			sql_hosts_where($tab);
+
 			if (strlen($hostfilter)) {
 				$sql_where .= 'WHERE ' . $hostfilter;
 			}
 		}
-	} elseif (!isempty_request_var('host')) {
+	} elseif (!isempty_request_var('host') && $hostfilter_log != '') {
 		$sql_where .= 'WHERE ' . $hostfilter_log;
 	}
 
@@ -944,6 +945,7 @@ function syslog_filter($sql_where, $tab) {
 
 	var date1Open = false;
 	var date2Open = false;
+	var pageTab   = '<?php print get_request_var('tab');?>';
 
 	$(function() {
 		$('#syslog_form').submit(function(event) {
@@ -1079,7 +1081,8 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function applyFilter() {
-		strURL  = 'syslog.php?header=false';
+		strURL  = 'syslog.php?tab='+pageTab;
+		strURL += '&header=false';
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
 		strURL += '&host='+$('#host').val();
@@ -1126,7 +1129,7 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function timeshiftFilterLeft() {
-		strURL  = 'syslog.php?action='+pageAction+'&header=false';
+		strURL  = 'syslog.php?tab='+pageTab+'&header=false';
 		strURL += '&shift_left=true';
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
@@ -1135,7 +1138,7 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function timeshiftFilterRight() {
-		strURL  = 'syslog.php?action='+pageAction+'&header=false';
+		strURL  = 'syslog.php?tab='+pageTab+'&header=false';
 		strURL += '&shift_right=true';
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
@@ -1152,6 +1155,9 @@ function syslog_filter($sql_where, $tab) {
 			<form id='syslog_form' action='syslog.php'>
 				<table class='filterTable'>
 					<tr>
+						<td>
+							<?php print __('Timespan', 'syslog');?>
+						</td>
 						<td>
 							<select id='predefined_timespan' onChange='applyTimespan()'>
 								<?php
@@ -1181,7 +1187,7 @@ function syslog_filter($sql_where, $tab) {
 							<?php print __('From', 'syslog');?>
 						</td>
 						<td>
-							<input type='text' id='date1' size='15' value='<?php print get_request_var('date1');?>'>
+							<input type='text' id='date1' size='18' value='<?php print get_request_var('date1');?>'>
 						</td>
 						<td>
 							<i title='<?php print __esc('Start Date Selector', 'syslog');?>' class='calendar fa fa-calendar-alt' id='startDate'></i>
@@ -1190,7 +1196,7 @@ function syslog_filter($sql_where, $tab) {
 							<?php print __('To', 'syslog');?>
 						</td>
 						<td>
-							<input type='text' id='date2' size='15' value='<?php print get_request_var('date2');?>'>
+							<input type='text' id='date2' size='18' value='<?php print get_request_var('date2');?>'>
 						</td>
 						<td>
 							<i title='<?php print __esc('End Date Selector', 'syslog');?>' class='calendar fa fa-calendar-alt' id='endDate'></i>
@@ -1241,7 +1247,13 @@ function syslog_filter($sql_where, $tab) {
 				<table class='filterTable'>
 					<tr>
 						<td>
+							<?php print __('Search', 'syslog');?>
+						</td>
+						<td>
 							<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
+						</td>
+						<td>
+							<?php print __('Devices', 'syslog');?>
 						</td>
 						<td class='even'>
 							<select id='host' multiple style='display:none; width: 150px; overflow: scroll;'>
@@ -1279,14 +1291,20 @@ function syslog_filter($sql_where, $tab) {
 							</select>
 						</td>
 						<td>
+							<?php print __('Messages', 'syslog');?>
+						</td>
+						<td>
 							<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog');?>'>
 								<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog');?></option>
 								<?php
 								foreach($item_rows AS $rows => $display_text) {
-									print "<option value='" . $rows . "'"; if (get_request_var('rows') == $rows) { print ' selected'; } print '>' . __('%d Messages', $display_text, 'syslog') . '</option>';
+									print "<option value='" . $rows . "'"; if (get_request_var('rows') == $rows) { print ' selected'; } print '>' . $display_text . '</option>';
 								}
 								?>
 							</select>
+						</td>
+						<td>
+							<?php print __('Trim', 'syslog');?>
 						</td>
 						<td>
 							<select id='trimval' onChange='applyFilter()' title='<?php print __esc('Message Trim', 'syslog');?>'>
@@ -1296,6 +1314,9 @@ function syslog_filter($sql_where, $tab) {
 								}
 								?>
 							</select>
+						</td>
+						<td>
+							<?php print __('Refresh', 'syslog');?>
 						</td>
 						<td>
 							<select id='refresh' onChange='applyFilter()'>
@@ -1312,6 +1333,9 @@ function syslog_filter($sql_where, $tab) {
 					<tr>
 						<?php api_plugin_hook('syslog_extend_filter');?>
 						<?php html_program_filter(get_request_var('eprogram'));?>
+						<td>
+							<?php print __('Facility', 'syslog');?>
+						</td>
 						<td>
 							<select id='efacility' onChange='applyFilter()' title='<?php print __esc('Facilities to filter on', 'syslog');?>'>
 								<option value='-1'<?php if (get_request_var('efacility') == '0') { ?> selected<?php } ?>><?php print __('All Facilities', 'syslog');?></option>
@@ -1330,6 +1354,9 @@ function syslog_filter($sql_where, $tab) {
 								}
 								?>
 							</select>
+						</td>
+						<td>
+							<?php print __('Priority', 'syslog');?>
 						</td>
 						<td>
 							<select id='epriority' onChange='applyFilter()' title='<?php print __('Priority Levels', 'syslog');?>'>
@@ -1351,6 +1378,9 @@ function syslog_filter($sql_where, $tab) {
 							</select>
 						</td>
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
+						<td>
+							<?php print __('Record Type', 'syslog');?>
+						</td>
 						<td>
 							<select id='removal' onChange='applyFilter()' title='<?php print __esc('Removal Handling', 'syslog');?>'>
 								<option value='1'<?php if (get_request_var('removal') == '1') { ?> selected<?php } ?>><?php print __('All Records', 'syslog');?></option>
@@ -1605,11 +1635,11 @@ function syslog_messages($tab = 'syslog') {
 
 				syslog_log_row_color($log['severity'], $title);
 
-				form_selectable_cell(filter_value(strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq']);
+				form_selectable_cell(filter_value(strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
 
-				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']]:__('Unknown', 'syslog'), $log['seq']);
-				form_selectable_cell($log['logtime'], $log['seq']);
-				form_selectable_cell(filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')), $log['seq'], '', 'syslogMessage');
+				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']]:__('Unknown', 'syslog'), $log['seq'], '', 'left');
+				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
+				form_selectable_cell(filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
 				form_selectable_cell($log['host'], $log['seq'], '', 'right');
