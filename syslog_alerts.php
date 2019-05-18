@@ -861,8 +861,7 @@ function alert_import() {
 		exit;
 	}
 
-	/* obtain debug information if it's set */
-	$xml_array = syslog_xml2array($xml_data);
+	$xml_array = xml2array($xml_data);
 
 	$debug_data = array();
 
