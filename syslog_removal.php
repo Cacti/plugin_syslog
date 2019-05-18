@@ -334,7 +334,12 @@ function api_syslog_removal_reprocess($id) {
 	$syslog_removed = $syslog_items['removed'];
 	$syslog_xferred = $syslog_items['xferred'];
 
-	raise_message('syslog_info', __('There were %s messages removed, and %s messages transferred', $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
+	$name = db_fetch_cell_prepared('SELECT name 
+		FROM syslog_remove 
+		WHERE id = ?', 
+		array($id));
+
+	raise_message('syslog_info' . $id, __('Rule \'%s\' resulted in %s/%s messages removed/transferred', $name, $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
 }
 
 /* ---------------------
