@@ -560,9 +560,9 @@ function sql_hosts_where($tab) {
 			foreach($hostarray as $host_id) {
 				input_validate_input_number($host_id);
 
-				$log_host = db_fetch_cell_prepared('SELECT host 
-					FROM syslog_hosts 
-					WHERE id = ?', 
+				$log_host = db_fetch_cell_prepared('SELECT host
+					FROM syslog_hosts
+					WHERE host_id = ?',
 					array($host_id));
 
 				if (!empty($log_host)) {
@@ -589,26 +589,26 @@ function syslog_export($tab) {
 		$messages   = get_syslog_messages($sql_where, 100000, $tab);
 
 		$hosts = array_rekey(
-			syslog_db_fetch_assoc('SELECT host_id, host 
-				FROM `' . $syslogdb_default . '`.`syslog_hosts`'), 
+			syslog_db_fetch_assoc('SELECT host_id, host
+				FROM `' . $syslogdb_default . '`.`syslog_hosts`'),
 			'host_id', 'host'
 		);
 
 		$facilities = array_rekey(
-			syslog_db_fetch_assoc('SELECT facility_id, facility 
-				FROM `' . $syslogdb_default . '`.`syslog_facilities`'), 
+			syslog_db_fetch_assoc('SELECT facility_id, facility
+				FROM `' . $syslogdb_default . '`.`syslog_facilities`'),
 			'facility_id', 'facility'
 		);
 
 		$priorities = array_rekey(
-			syslog_db_fetch_assoc('SELECT priority_id, priority 
-				FROM `' . $syslogdb_default . '`.`syslog_priorities`'), 
+			syslog_db_fetch_assoc('SELECT priority_id, priority
+				FROM `' . $syslogdb_default . '`.`syslog_priorities`'),
 			'priority_id', 'priority'
 		);
 
 		$programs = array_rekey(
-			syslog_db_fetch_assoc('SELECT program_id, program 
-				FROM `' . $syslogdb_default . '`.`syslog_programs`'), 
+			syslog_db_fetch_assoc('SELECT program_id, program
+				FROM `' . $syslogdb_default . '`.`syslog_programs`'),
 			'program_id', 'program'
 		);
 
