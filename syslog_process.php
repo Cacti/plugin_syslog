@@ -302,30 +302,30 @@ if (cacti_sizeof($query)) {
 
 		if ($alert['type'] == 'facility') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE ' . $syslog_incoming_config['facilityField'] . "='" . $alert['message'] . "'
-				AND status=" . $uniqueID;
+				WHERE ' . $syslog_incoming_config['facilityField'] . ' = ' . db_qstr($alert['message']) . '
+				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'messageb') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE ' . $syslog_incoming_config['textField'] . "
-				LIKE '" . $alert['message'] . "%'
-				AND status=" . $uniqueID;
+				WHERE ' . $syslog_incoming_config['textField'] . '
+				LIKE ' . db_qstr($alert['message'] . '%') . '
+				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'messagec') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE ' . $syslog_incoming_config['textField'] . "
-				LIKE '%" . $alert['message'] . "%'
-				AND status=" . $uniqueID;
+				WHERE ' . $syslog_incoming_config['textField'] . '
+				LIKE ' . db_qstr('%' . $alert['message'] . '%') . '
+				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'messagee') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE ' . $syslog_incoming_config['textField'] . "
-				LIKE '%" . $alert['message'] . "'
-				AND status=" . $uniqueID;
+				WHERE ' . $syslog_incoming_config['textField'] . '
+				LIKE ' . db_qstr('%' . $alert['message']) . '
+				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'host') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE ' . $syslog_incoming_config['hostField'] . "='" . $alert['message'] . "'
-				AND status=" . $uniqueID;
+				WHERE ' . $syslog_incoming_config['hostField'] . ' = ' . db_qstr($alert['message']) . '
+				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'sql') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE (' . $alert['message'] . ')
+				WHERE (' . db_qstr($alert['message']) . ')
 				AND status=' . $uniqueID;
 		}
 
@@ -614,40 +614,40 @@ if (cacti_sizeof($reports)) {
 				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
-					WHERE message LIKE ' . "'" . $syslog_report['message'] . "%'";
+					WHERE message LIKE ' . db_qstr($syslog_report['message'] . '%');
 			}
 
 			if ($syslog_report['type'] == 'messagec') {
 				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
-					WHERE message LIKE '. "'%" . $syslog_report['message'] . "%'";
+					WHERE message LIKE ' . db_qstr('%' . $syslog_report['message'] . '%');
 			}
 
 			if ($syslog_report['type'] == 'messagee') {
 				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
-					WHERE message LIKE ' . "'%" . $syslog_report['message'] . "'";
+					WHERE message LIKE ' . db_qstr('%' . $syslog_report['message']);
 			}
 
 			if ($syslog_report['type'] == 'host') {
 				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
-					WHERE sh.host=' . "'" . $syslog_report['message'] . "'";
+					WHERE sh.host = ' . db_qstr($syslog_report['message']);
 			}
 
 			if ($syslog_report['type'] == 'facility') {
 				$sql = 'SELECT sl.*, sf.facility FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 					ON sl.facility_id = sf.facility_id
-					WHERE sf.facility=' . "'" . $syslog_report['message'] . "'";
+					WHERE sf.facility = ' . db_qstr($syslog_report['message']);
 			}
 
 			if ($syslog_report['type'] == 'sql') {
 				$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-					WHERE (' . $syslog_report['message'] . ')';
+					WHERE (' . db_qstr($syslog_report['message']) . ')';
 			}
 
 			if ($sql != '') {
@@ -713,9 +713,9 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 	/* record the end time */
 	$end_time = microtime(true);
 
-	cacti_log('SYSLOG STATS:Time:' . round($end_time-$start_time,2) . ' Deletes:' . $deleted . ' Incoming:' . $incoming . ' Removes:' . $removed . ' XFers:' . $xferred . ' Alerts:' . $alerts . ' Alarms:' . $alarms . ' Reports:' . $reports, true, 'SYSTEM');
+	cacti_log('SYSLOG STATS: Time:' . round($end_time-$start_time,2) . ' Deletes:' . $deleted . ' Incoming:' . $incoming . ' Removes:' . $removed . ' XFers:' . $xferred . ' Alerts:' . $alerts . ' Alarms:' . $alarms . ' Reports:' . $reports, true, 'SYSTEM');
 
-	db_execute('REPLACE INTO `' . $database_default . "`.`settings` SET name='syslog_stats', value='time:" . round($end_time-$start_time,2) . ' deletes:' . $deleted . ' incoming:' . $incoming . ' removes:' . $removed . ' xfers:' . $xferred . ' alerts:' . $alerts . ' alarms:' . $alarms . ' reports:' . $reports . "'");
+	set_config_option('syslog_stats', 'time:' . round($end_time-$start_time,2) . ' deletes:' . $deleted . ' incoming:' . $incoming . ' removes:' . $removed . ' xfers:' . $xferred . ' alerts:' . $alerts . ' alarms:' . $alarms . ' reports:' . $reports);
 }
 
 /*  display_version - displays version information */
