@@ -584,23 +584,24 @@ function sql_hosts_where($tab) {
 	$hostfilter_log = '';
 
 	if (!isempty_request_var('host') && get_request_var('host') != 'null') {
-		$hostarray = explode(' ', get_request_var('host'));
+		$hostarray = explode(',', get_request_var('host'));
 		if ($hostarray[0] != '0') {
 			foreach($hostarray as $host_id) {
 				input_validate_input_number($host_id);
 
-				$log_host = db_fetch_cell_prepared('SELECT host
-					FROM syslog_hosts
-					WHERE host_id = ?',
-					array($host_id));
+				if ($host_id > 0) {
+					$log_host = db_fetch_cell_prepared('SELECT host
+						FROM syslog_hosts
+						WHERE host_id = ?',
+						array($host_id));
 
-				if (!empty($log_host)) {
-					$hostfilter_log .= ($hostfilter_log != '' ? ' AND ':'') . 'host = ' . db_qstr($log_host);
+					if (!empty($log_host)) {
+						$hostfilter_log .= ($hostfilter_log != '' ? ' AND ':'') . 'host = ' . db_qstr($log_host);
+					}
 				}
 			}
 
 			$hostfilter .= (strlen($hostfilter) ? ' AND ':'') . ' host_id IN(' . implode(',', $hostarray) . ')';
-
 		}
 	}
 }

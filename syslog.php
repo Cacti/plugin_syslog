@@ -775,9 +775,33 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	include(dirname(__FILE__) . '/config.php');
 
 	$sql_where = '';
-	/* form the 'where' clause for our main sql query */
-	if (get_request_var('host') == -1 && $tab != 'syslog') {
-		// Nothing to do
+
+	if (get_request_var('host') == 0 && $tab != 'syslog') {
+		// Show all hosts
+	} elseif (strpos(get_request_var('host'), '-1') !== false && $tab != 'syslog') {
+		// Show threshold type only plus matching hosts if any
+		$hosts = explode(',', get_request_var('host'));
+
+		if (cacti_sizeof($hosts) > 1) {
+			sql_hosts_where($tab);
+
+			if (strlen($hostfilter_log)) {
+				$sql_where .= 'WHERE ' . $hostfilter_log;
+			}
+		}
+
+		$ids = array_rekey(
+			syslog_db_fetch_assoc('SELECT id
+				FROM syslog_alert
+				WHERE method = 1'),
+			'id', 'id'
+		);
+
+		if (cacti_sizeof($ids)) {
+			$sql_where .= ($sql_where == '' ? 'WHERE ':' AND ') . 'alert_id IN (' . implode(', ', $ids) . ')';
+		} else {
+			$sql_where .= ($sql_where == '' ? 'WHERE ':' AND ') . '0 = 1';
+		}
 	} elseif ($tab == 'syslog') {
 		if (!isempty_request_var('host')) {
 			sql_hosts_where($tab);
@@ -787,6 +811,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			}
 		}
 	} elseif (!isempty_request_var('host') && $hostfilter_log != '') {
+echo "Fash";
 		$sql_where .= 'WHERE ' . $hostfilter_log;
 	}
 
@@ -801,18 +826,18 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 
 	if (!isempty_request_var('filter')) {
 		if ($tab == 'syslog') {
-			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "message LIKE '%" . get_request_var('filter') . "%'";
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "message LIKE " . db_qstr('%' . get_request_var('filter') . '%');
 		} else {
-			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "logmsg LIKE '%" . get_request_var('filter') . "%'";
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "logmsg LIKE " . db_qstr('%' . get_request_var('filter') . '%');
 		}
 	}
 
 	if (get_request_var('eprogram') != '-1') {
-		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.program_id='" . get_request_var('eprogram') . "'";
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.program_id = " . db_qstr(get_request_var('eprogram'));
 	}
 
 	if (get_request_var('efacility') != '-1') {
-		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.facility_id='" . get_request_var('efacility') . "'";
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.facility_id = " . db_qstr(get_request_var('efacility'));
 	}
 
 	if (isset_request_var('epriority') && get_request_var('epriority') != '-1') {
@@ -820,46 +845,46 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 
 		switch(get_request_var('epriority')) {
 		case '0':
-			$priorities = '=0';
+			$priorities = ' = 0';
 			break;
 		case '1o':
-			$priorities = '=1';
+			$priorities = ' = 1';
 			break;
 		case '1':
-			$priorities = '<=1';
+			$priorities = ' <= 1';
 			break;
 		case '2o':
-			$priorities = '=2';
+			$priorities = ' = 2';
 			break;
 		case '2':
-			$priorities = '<=2';
+			$priorities = ' <= 2';
 			break;
 		case '3o':
-			$priorities = '=3';
+			$priorities = ' = 3';
 			break;
 		case '3':
-			$priorities = '<=3';
+			$priorities = ' <= 3';
 			break;
 		case '4o':
-			$priorities = '=4';
+			$priorities = ' = 4';
 			break;
 		case '4':
-			$priorities = '<=4';
+			$priorities = ' <= 4';
 			break;
 		case '5o':
-			$priorities = '=5';
+			$priorities = ' = 5';
 			break;
 		case '5':
-			$priorities = '<=5';
+			$priorities = ' <= 5';
 			break;
 		case '6o':
-			$priorities = '=6';
+			$priorities = ' = 6';
 			break;
 		case '6':
-			$priorities = '<=6';
+			$priorities = ' <= 6';
 			break;
 		case '7':
-			$priorities = '=7';
+			$priorities = ' = 7';
 			break;
 		}
 
@@ -922,7 +947,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			$sql_limit";
 	}
 
-	//print $query_sql;
+	print $query_sql;
 
 	return syslog_db_fetch_assoc($query_sql);
 }
@@ -1480,7 +1505,7 @@ function syslog_messages($tab = 'syslog') {
 					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
 					$sql_where
 				) AS rowcount");
-		} elseif (get_request_var('removal') == -1){
+		} elseif (get_request_var('removal') == -1) {
 			$total_rows = syslog_db_fetch_cell("SELECT count(*)
 				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
 				$sql_where");
