@@ -811,7 +811,6 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			}
 		}
 	} elseif (!isempty_request_var('host') && $hostfilter_log != '') {
-echo "Fash";
 		$sql_where .= 'WHERE ' . $hostfilter_log;
 	}
 
@@ -894,6 +893,7 @@ echo "Fash";
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);
 
 	$sql_order = get_order_string();
+
 	if (!isset_request_var('export')) {
 		$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 	} else {
@@ -947,7 +947,7 @@ echo "Fash";
 			$sql_limit";
 	}
 
-	print $query_sql;
+	//print $query_sql;
 
 	return syslog_db_fetch_assoc($query_sql);
 }
