@@ -6,16 +6,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2019-03-19 09:51+0000\n"
-"PO-Revision-Date: 2019-03-16 22:25-0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: fr_FR\n"
+"PO-Revision-Date: 2019-05-29 15:13+0000\n"
+"Last-Translator: Olivier VOGEL <olivier.vogel@st.com>\n"
+"Language-Team: French <http://translate.cacti.net/projects/cacti/syslog/"
+"fr-FR/>\n"
+"Language: fr-FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.4-dev\n"
 
 #: functions.php:53
 #, fuzzy
@@ -289,7 +291,6 @@ msgstr "Désinstaller"
 
 #: setup.php:770 syslog_alerts.php:203 syslog_removal.php:226
 #: syslog_reports.php:203
-#, fuzzy
 msgid "Cancel"
 msgstr "Abandonner"
 
@@ -460,7 +461,6 @@ msgstr ""
 "hôtes affectés par l'alerte."
 
 #: setup.php:913 syslog_removal.php:33
-#, fuzzy
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -795,7 +795,6 @@ msgstr "Effacer"
 
 #: syslog.php:497 syslog.php:995 syslog_alerts.php:591 syslog_removal.php:522
 #: syslog_reports.php:508
-#, fuzzy
 msgid "Search"
 msgstr "Rechercher"
 
@@ -823,7 +822,6 @@ msgstr "Entrées"
 
 #: syslog.php:532 syslog.php:1281 syslog_alerts.php:611 syslog_removal.php:542
 #: syslog_reports.php:528
-#, fuzzy
 msgid "Default"
 msgstr "Défaut"
 
@@ -1186,7 +1184,6 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "Règle(s) d'alerte d'exportation Syslog"
 
 #: syslog_alerts.php:203 syslog_removal.php:226 syslog_reports.php:203
-#, fuzzy
 msgid "Continue"
 msgstr "Continuer"
 
@@ -1908,7 +1905,6 @@ msgid "You must select at least one Syslog Report."
 msgstr "Vous devez sélectionner au moins un rapport Syslog."
 
 #: syslog_reports.php:206
-#, fuzzy
 msgid "Return"
 msgstr "Retour"
 
