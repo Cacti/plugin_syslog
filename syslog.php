@@ -1825,17 +1825,17 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 
 	$theme = get_selected_theme();
 	if ($theme == 'classic' || read_config_option('autocomplete') > 0) {
-		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . '>';
+		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . ($on_change != '' ? "onChange='$on_change'":'') . '>';
 
 		if (!empty($none_entry)) {
-			print "<option value='0'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>\n";
+			print "<option value='-1'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>";
 		}
 
 		$form_data = syslog_db_fetch_assoc($classic_sql);
 
 		html_create_list($form_data, $column_display, $column_id, html_escape($previous_id));
 
-		print "</select>\n";
+		print '</select>';
 	} else {
 		if (empty($previous_id) && $previous_value == '') {
 			$previous_value = $none_entry;
