@@ -86,7 +86,7 @@ function form_save() {
 			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
-			header('Location: syslog_reports.php?header=false&action=edit&id=' . (empty($id) ? get_request_var('id') : $id));
+			header('Location: syslog_reports.php?header=false&action=edit&id=' . (empty($reportid) ? get_request_var('id') : $reportid));
 		} else {
 			header('Location: syslog_reports.php?header=false');
 		}
