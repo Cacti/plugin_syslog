@@ -549,7 +549,7 @@ function syslog_log_row_color($severity, $tip_title) {
 function syslog_row_color($priority, $message) {
 	switch($priority) {
 	case '0':
-		$class = 'logEmerg';
+		$class = 'logEmergency';
 		break;
 	case '1':
 		$class = 'logAlert';
