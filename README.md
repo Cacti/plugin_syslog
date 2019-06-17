@@ -77,6 +77,27 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 ## ChangeLog
 
+--- 2.2  ---
+* feature: Allow for reprocess message per rule 
+* issue#66: Filter for All Programs can not work well
+* issue#67: SQL error after choose device
+* issue#69: Cirtical and Alert filter can not work well
+* issue#71: Export alert log has sql error
+* issue#72: Graph Template not workable after import by cli/import_template.php
+* issue#73: Gap to Cacti 1.x: Syslog missed to support database ssl
+* issue#74: New Requirement: another new hook 'syslog_update_hostsalarm'
+* issue#76: New Requirement: background install syslog plugin with pre-defined options
+* issue#77: Fixed: PHP Notice undefined variable
+* issue#78: Misc issue about syslog_alerts->log->host
+* issue#79: PHP 7.2 supporting to remove deprecated each()
+* issue#80: Syslog plugin auto disabled after import an alert rule
+* issue#81: php error when enter a value in Program filter and click go
+* issue#82: Syslog can not deal with with single quotation
+* issue#83: Change device filter can not return correct value in syslog- alert rule page
+* issue#84: All Progarms not show anything using Classic theme
+* issue#86: No color for emergency item
+* issue#89: plugins/syslog/syslog_reports.php:89: Undefined variable '$id'
+
 --- 2.1  ---
 * issue#18: Issues with syslog statistics display
 * issue#17: Compatibility with remote database
