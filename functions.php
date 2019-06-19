@@ -583,8 +583,8 @@ function sql_hosts_where($tab) {
 	$hostfilter     = '';
 	$hostfilter_log = '';
 
-	if (!isempty_request_var('host') && get_request_var('host') != 'null') {
-		$hostarray = explode(',', get_request_var('host'));
+	if (!isempty_request_var('host') && get_nfilter_request_var('host') != 'null') {
+		$hostarray = explode(',', trim(get_nfilter_request_var('host')));
 		if ($hostarray[0] != '0') {
 			foreach($hostarray as $host_id) {
 				input_validate_input_number($host_id);

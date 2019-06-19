@@ -190,10 +190,9 @@ function syslog_statistics() {
             'options' => array('options' => 'sanitize_search_string')
             ),
         'host' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_VALIDATE_IS_NUMERIC_LIST,
             'pageset' => true,
             'default' => '',
-            'options' => array('options' => 'sanitize_search_string')
             ),
         'facility' => array(
             'filter' => FILTER_CALLBACK,
@@ -645,10 +644,9 @@ function syslog_request_validation($current_tab, $force = false) {
             'default' => '-1'
 			),
         'host' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_VALIDATE_IS_NUMERIC_LIST,
             'pageset' => true,
-            'default' => '0',
-            'options' => array('options' => 'sanitize_search_string')
+            'default' => '',
             ),
         'efacility' => array(
             'filter' => FILTER_CALLBACK,
@@ -1280,7 +1278,7 @@ function syslog_filter($sql_where, $tab) {
 						<td>
 							<?php print __('Devices', 'syslog');?>
 						</td>
-						<td class='even'>
+						<td>
 							<select id='host' multiple style='display:none; width: 150px; overflow: scroll;'>
 								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Devices', 'syslog');?></option><?php } else { ?>
 								<option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == 0 || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Logs', 'syslog');?></option>
@@ -1294,7 +1292,8 @@ function syslog_filter($sql_where, $tab) {
 									$hosts_where
 									ORDER BY host");
 
-								$selected = explode(' ', get_request_var('host'));
+								$selected = explode(',', get_request_var('host'));
+
 								if (cacti_sizeof($hosts)) {
 									foreach ($hosts as $host) {
 										if (!is_ipaddress($host['host'])) {
@@ -1302,7 +1301,7 @@ function syslog_filter($sql_where, $tab) {
 											$host['host'] = $parts[0];
 										}
 
-										print "<option value='" . $host["host_id"] . "'";
+										print "<option value='" . $host['host_id'] . "'";
 										if (cacti_sizeof($selected)) {
 											if (in_array($host['host_id'], $selected)) {
 												print ' selected';

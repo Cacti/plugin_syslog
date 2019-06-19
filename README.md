@@ -77,6 +77,9 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 ## ChangeLog
 
+--- develop ---
+* issue#91: Page become blank after collecting multiple host syslog info
+
 --- 2.2  ---
 * feature: Allow for reprocess message per rule 
 * issue#66: Filter for All Programs can not work well
