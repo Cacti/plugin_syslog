@@ -334,9 +334,9 @@ function api_syslog_removal_reprocess($id) {
 	$syslog_removed = $syslog_items['removed'];
 	$syslog_xferred = $syslog_items['xferred'];
 
-	$name = db_fetch_cell_prepared('SELECT name 
-		FROM syslog_remove 
-		WHERE id = ?', 
+	$name = db_fetch_cell_prepared('SELECT name
+		FROM syslog_remove
+		WHERE id = ?',
 		array($id));
 
 	raise_message('syslog_info' . $id, __('Rule \'%s\' resulted in %s/%s messages removed/transferred', $name, $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
@@ -703,7 +703,7 @@ function syslog_removal() {
 			form_selectable_cell(filter_value(title_trim($removal['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']), $removal['id']);
 			form_selectable_cell((($removal['enabled'] == 'on') ? __('Yes', 'syslog'):__('No', 'syslog')), $removal['id']);
 			form_selectable_cell($message_types[$removal['type']], $removal['id']);
-			form_selectable_cell($removal['message'], $removal['id']);
+			form_selectable_ecell($removal['message'], $removal['id']);
 			form_selectable_cell((($removal['method'] == 'del') ? __('Deletion', 'syslog'): __('Transfer', 'syslog')), $removal['id']);
 			form_selectable_cell(date('Y-m-d H:i:s', $removal['date']), $removal['id']);
 			form_selectable_cell($removal['user'], $removal['id']);

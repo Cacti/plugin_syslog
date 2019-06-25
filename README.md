@@ -79,6 +79,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 --- develop ---
 * issue#91: Page become blank after collecting multiple host syslog info
+* issue#94: Stored XSS in syslog_removal.php 
 
 --- 2.2  ---
 * feature: Allow for reprocess message per rule 
