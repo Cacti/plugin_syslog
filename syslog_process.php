@@ -164,7 +164,10 @@ if (!syslog_is_partitioned()) {
 /* get a uniqueID to allow moving of records to done table */
 while (1) {
 	$uniqueID = rand(1, 127);
-	$count    = syslog_db_fetch_cell('SELECT count(*) FROM `' . $syslogdb_default . '`.`syslog_incoming` WHERE status=' . $uniqueID);
+
+	$count = syslog_db_fetch_cell('SELECT count(*)
+		FROM `' . $syslogdb_default . '`.`syslog_incoming`
+		WHERE status=' . $uniqueID);
 
 	if ($count == 0) {
 		break;

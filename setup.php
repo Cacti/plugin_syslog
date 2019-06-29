@@ -1176,13 +1176,34 @@ function syslog_utilities_action($action) {
 	if ($action == 'purge_syslog_hosts') {
 		$records = 0;
 
-		syslog_db_execute('DELETE FROM syslog_hosts WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
+		syslog_db_execute('DELETE FROM syslog_hosts
+			WHERE host_id NOT IN (
+				SELECT DISTINCT host_id
+				FROM syslog
+				UNION
+				SELECT DISTINCT host_id
+				FROM syslog_removed
+			)');
 		$records += db_affected_rows($syslog_cnn);
 
-		syslog_db_execute('DELETE FROM syslog_host_facilities WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
+		syslog_db_execute('DELETE FROM syslog_host_facilities
+			WHERE host_id NOT IN (
+				SELECT DISTINCT host_id
+				FROM syslog
+				UNION
+				SELECT DISTINCT host_id
+				FROM syslog_removed
+			)');
 		$records += db_affected_rows($syslog_cnn);
 
-		syslog_db_execute('DELETE FROM syslog_statistics WHERE host_id NOT IN (SELECT DISTINCT host_id FROM syslog UNION SELECT DISTINCT host_id FROM syslog_removed)');
+		syslog_db_execute('DELETE FROM syslog_statistics
+			WHERE host_id NOT IN (
+				SELECT DISTINCT host_id
+				FROM syslog
+				UNION
+				SELECT DISTINCT host_id
+				FROM syslog_removed
+			)');
 		$records += db_affected_rows($syslog_cnn);
 
 		raise_message('syslog_info', __('There were %s Device records removed from the Syslog database', $records, 'syslog'), MESSAGE_LEVEL_INFO);

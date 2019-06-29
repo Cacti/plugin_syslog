@@ -774,31 +774,40 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 
 	$sql_where = '';
 
-	if (get_request_var('host') == 0 && $tab != 'syslog') {
-		// Show all hosts
-	} elseif (strpos(get_request_var('host'), '-1') !== false && $tab != 'syslog') {
-		// Show threshold type only plus matching hosts if any
-		$hosts = explode(',', get_request_var('host'));
-
-		if (cacti_sizeof($hosts) > 1) {
-			sql_hosts_where($tab);
-
-			if (strlen($hostfilter_log)) {
-				$sql_where .= 'WHERE ' . $hostfilter_log;
-			}
-		}
-
-		$ids = array_rekey(
-			syslog_db_fetch_assoc('SELECT id
-				FROM syslog_alert
-				WHERE method = 1'),
-			'id', 'id'
-		);
-
-		if (cacti_sizeof($ids)) {
-			$sql_where .= ($sql_where == '' ? 'WHERE ':' AND ') . 'alert_id IN (' . implode(', ', $ids) . ')';
+	if ($tab == 'alerts') {
+		if (get_request_var('host') == 0) {
+			// Show all hosts
 		} else {
-			$sql_where .= ($sql_where == '' ? 'WHERE ':' AND ') . '0 = 1';
+			$hosts = explode(',', get_request_var('host'));
+
+			$thold_pos = array_search('-1', $hosts, true);
+
+			if ($thold_pos !== false) {
+				unset($hosts[$thold_pos]);
+			}
+
+			if (sizeof($hosts)) {
+				sql_hosts_where($tab);
+
+				if (strlen($hostfilter_log)) {
+					$sql_where .= 'WHERE ' . $hostfilter_log;
+				}
+			}
+
+			if ($thold_pos !== false) {
+				$ids = array_rekey(
+					syslog_db_fetch_assoc('SELECT id
+						FROM syslog_alert
+						WHERE method = 1'),
+					'id', 'id'
+				);
+
+				if (cacti_sizeof($ids)) {
+					$sql_where .= ($sql_where == '' ? 'WHERE ':' OR ') . 'alert_id IN (' . implode(', ', $ids) . ')';
+				} elseif ($sql_where == '') {
+					$sql_where .= 'WHERE 0 = 1';
+				}
+			}
 		}
 	} elseif ($tab == 'syslog') {
 		if (!isempty_request_var('host')) {
@@ -808,8 +817,6 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 				$sql_where .= 'WHERE ' . $hostfilter;
 			}
 		}
-	} elseif (!isempty_request_var('host') && $hostfilter_log != '') {
-		$sql_where .= 'WHERE ' . $hostfilter_log;
 	}
 
 	$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
@@ -823,18 +830,18 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 
 	if (!isempty_request_var('filter')) {
 		if ($tab == 'syslog') {
-			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "message LIKE " . db_qstr('%' . get_request_var('filter') . '%');
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'message LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
 		} else {
-			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "logmsg LIKE " . db_qstr('%' . get_request_var('filter') . '%');
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'logmsg LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
 		}
 	}
 
 	if (get_request_var('eprogram') != '-1') {
-		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.program_id = " . db_qstr(get_request_var('eprogram'));
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'syslog.program_id = ' . db_qstr(get_request_var('eprogram'));
 	}
 
 	if (get_request_var('efacility') != '-1') {
-		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . "syslog.facility_id = " . db_qstr(get_request_var('efacility'));
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'syslog.facility_id = ' . db_qstr(get_request_var('efacility'));
 	}
 
 	if (isset_request_var('epriority') && get_request_var('epriority') != '-1') {

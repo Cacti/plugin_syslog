@@ -582,6 +582,7 @@ function sql_hosts_where($tab) {
 
 	$hostfilter     = '';
 	$hostfilter_log = '';
+	$hosts_array    = array();
 
 	if (!isempty_request_var('host') && get_nfilter_request_var('host') != 'null') {
 		$hostarray = explode(',', trim(get_nfilter_request_var('host')));
@@ -596,9 +597,13 @@ function sql_hosts_where($tab) {
 						array($host_id));
 
 					if (!empty($log_host)) {
-						$hostfilter_log .= ($hostfilter_log != '' ? ' AND ':'') . 'host = ' . db_qstr($log_host);
+						$hosts_array[] = db_qstr($log_host);
 					}
 				}
+			}
+
+			if (sizeof($hosts_array)) {
+				$hostfilter_log = ' host IN(' . implode(',', $hosts_array) . ')';
 			}
 
 			$hostfilter .= (strlen($hostfilter) ? ' AND ':'') . ' host_id IN(' . implode(',', $hostarray) . ')';
