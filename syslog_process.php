@@ -219,8 +219,8 @@ syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_programs`
 	ON DUPLICATE KEY UPDATE program=VALUES(program), last_updated=NOW()');
 
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_hosts`
-	(host)
-	SELECT DISTINCT host
+	(host, last_updated)
+	SELECT DISTINCT host, NOW() AS last_updated
 	FROM `' . $syslogdb_default . '`.`syslog_incoming`
 	WHERE status=' . $uniqueID . '
 	ON DUPLICATE KEY UPDATE host=VALUES(host), last_updated=NOW()');
@@ -492,7 +492,7 @@ syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog`
 	(logtime, priority_id, facility_id, program_id, host_id, message)
 	SELECT TIMESTAMP(`' . $syslog_incoming_config['dateField'] . '`, `' . $syslog_incoming_config['timeField']     . '`),
 	priority_id, facility_id, program_id, host_id, message
-	FROM (SELECT date, time, priority_id, facility_id, program_id, host_id, message
+	FROM (SELECT date, time, priority_id, facility_id, sp.program_id, sh.host_id, message
 		FROM syslog_incoming AS si
 		INNER JOIN syslog_hosts AS sh
 		ON sh.host=si.host

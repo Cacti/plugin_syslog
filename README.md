@@ -80,7 +80,8 @@ The sylog plugin has been in development for well over a decade with increasing 
 --- develop ---
 * issue#90: Can not show correct info when choose device filter in Syslog - Alert Log page 
 * issue#91: Page become blank after collecting multiple host syslog info
-* issue#94: Stored XSS in syslog_removal.php 
+* issue#94: Stored XSS in syslog_removal.php
+* issue#95: Syslog Hosts and Syslog Programs table looses sync with data
 
 --- 2.2  ---
 * feature: Allow for reprocess message per rule 
