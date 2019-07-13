@@ -6,10 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2019-03-19 09:51+0000\n"
-"PO-Revision-Date: 2019-04-26 01:41+0000\n"
-"Last-Translator: whsir <wh@whsir.com>\n"
+"PO-Revision-Date: 2019-07-13 03:14+0000\n"
+"Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/"
 "cacti/syslog/zh-CN/>\n"
 "Language: zh-CN\n"
@@ -727,9 +727,8 @@ msgid "No Syslog Statistics Found"
 msgstr "未找到Syslog统计信息"
 
 #: syslog.php:426 syslog.php:1479 syslog.php:1487 syslog.php:1587
-#, fuzzy
 msgid "Device"
-msgstr "设备模板"
+msgstr "设备"
 
 #: syslog.php:430 syslog.php:450 syslog.php:470 syslog.php:964
 #: syslog_alerts.php:601 syslog_removal.php:532 syslog_reports.php:518
@@ -744,19 +743,16 @@ msgstr "无"
 
 #: syslog.php:488 syslog.php:1217 syslog_alerts.php:623 syslog_removal.php:554
 #: syslog_reports.php:540
-#, fuzzy
 msgid "Go"
 msgstr "Go"
 
 #: syslog.php:489 syslog.php:1218 syslog_alerts.php:624 syslog_removal.php:555
 #: syslog_reports.php:541
-#, fuzzy
 msgid "Clear"
 msgstr "清除"
 
 #: syslog.php:497 syslog.php:995 syslog_alerts.php:591 syslog_removal.php:522
 #: syslog_reports.php:508
-#, fuzzy
 msgid "Search"
 msgstr "搜索"
 
