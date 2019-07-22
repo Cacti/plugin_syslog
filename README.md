@@ -77,6 +77,9 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 ## ChangeLog
 
+--- 2.4 ---
+* issue: Resolving issues with nav level cache being set incorrectly 
+
 --- 2.3 ---
 * issue#90: Can not show correct info when choose device filter in Syslog - Alert Log page 
 * issue#91: Page become blank after collecting multiple host syslog info
