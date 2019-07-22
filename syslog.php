@@ -101,7 +101,7 @@ if (isset_request_var('export')) {
 	bottom_footer();
 }
 
-$_SESSION['sess_nav_level_cache'] = '';
+$_SESSION['sess_nav_level_cache'] = array();
 
 function syslog_display_tabs($current_tab) {
 	global $config;
