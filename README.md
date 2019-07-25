@@ -80,17 +80,21 @@ The sylog plugin has been in development for well over a decade with increasing 
 --- develop ---
 
 * issue#96: Syslog filtering does not work with some international characters
+* issue#87: Program data is not sync with syslog_incoming under PHP 7.2
 
 --- 2.4 ---
+
 * issue: Resolving issues with nav level cache being set incorrectly 
 
 --- 2.3 ---
+
 * issue#90: Can not show correct info when choose device filter in Syslog - Alert Log page 
 * issue#91: Page become blank after collecting multiple host syslog info
 * issue#94: Stored XSS in syslog_removal.php
 * issue#95: Syslog Hosts and Syslog Programs table looses sync with data
 
 --- 2.2  ---
+
 * feature: Allow for reprocess message per rule 
 * issue#66: Filter for All Programs can not work well
 * issue#67: SQL error after choose device
@@ -112,6 +116,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue#89: plugins/syslog/syslog_reports.php:89: Undefined variable '$id'
 
 --- 2.1  ---
+
 * issue#18: Issues with syslog statistics display
 * issue#17: Compatibility with remote database
 * issue#19: Removal rules issues
@@ -126,9 +131,11 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Cleanup formating of Threshold messaging and viewing
 
 --- 2.0  ---
+
 * feature: Compatibility with Cacti 1.0
 
 --- 1.30 ---
+
 * feature: Allow Statistics to be disabled
 * feature: Allow Processing of Removal Rules on Main Syslog Table
 * feature: Cleanup UI irregularities
@@ -136,6 +143,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Remove syslog 'message' from Log message to prvent deadlock on cacti log syslog processing
 
 --- 1.22  ---
+
 * issue: Upgrade script does not properly handle all conditions
 * issue: Strip domain does not always work as expected
 * issue: Resizing a page on IE6 caused a loop on the syslog page
@@ -143,12 +151,14 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Issue with Plugin Realm naming
 
 --- 1.21 ---
+
 * issue: Fix timespan selector
 * issue: Reintroduce Filter time range view
 * issue: Syslog Statistics Row Counter Invalid
 * feature: Provide option to tag invalid hosts
 
 --- 1.20 ---
+
 * feature: Provide host based statistics tab
 * feature: Support generic help desk integration.  Requires customer script
 * feature: Support re-alert cycles for all alert type
@@ -158,6 +168,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Message column was date column
 
 --- 1.10 ---
+
 * feature: Allow Syslog to Strip Domains Suffix's.
 * feature: Make compatible with earlier versions of Cacti.
 * feature: Allow Plugins to extend filtering
@@ -170,12 +181,14 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Can not add disabled alarm/removal/report rule
 
 --- 1.07 ---
+
 * issue: Rearchitect to improve support mutliple databases
 * issue: Don't process a report if it's not enabled.
 * issue: Don't process an alert if it's not enabled.
 * issue: Don't process a removal rule if it's not enabled.
 
 --- 1.06 ---
+
 * issue#0001854: Error found in Cacti Log
 * issue#0001871: Priority dropdown labels in syslog.php for "All Priorities" set to incorrect priority id 
 * issue#0001872: Priorities drop drown to show specific value
@@ -183,12 +196,14 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Hex Errors Upon Install
 
 --- 1.05 ---
+
 * issue: Remove poorly defined security settings
 * issue: Don't show actions if you don't have permissions
 * issue: Fix page refresh dropdown bug
 * feature: Re-add refresh settings to syslog
 
 --- 1.04 ---
+
 * issue#0001824: Syslog icon is not shown in graph view 
 * issue: Link on Alarm Log does not properly redirect to 'current' tab
 * issue: Unselecting all hosts results in SQL error
@@ -196,20 +211,24 @@ The sylog plugin has been in development for well over a decade with increasing 
 * compat: Remove deprecated split() command
 
 --- 1.03 ---
+
 * feature: Add alarm host and counts to sms messages
 * issue: Fix issue with individual syslog html messages
 * issue: Fix creating alarms and removals from the syslog tab
 * issue: Fix syslog removal UI with respect to rule type's
 
 --- 1.02 ---
+
 * feature: Add syslog database functions to mitigate issues with same system installs
 
 --- 1.01 ---
+
 * feature: Add alert commands by popular demand
 * issue#0001788: missing closing quote in syslog_alerts.php
 * issue#0001785: revision 1086 can not save reports when using seperate syslog mysql database
 
 --- 1.0 ---
+
 * feature: Support SMS e-mail messages
 * feature: Support MySQL partitioning for MySQL 5.1 and above for performance reasons
 * feature: Normalize the syslog table for performance reasons
@@ -230,13 +249,16 @@ The sylog plugin has been in development for well over a decade with increasing 
 * feature: Turn images to buttons
 
 --- 0.5.2 ---
+
 * issue: Fixes to make syslog work properly when using the Superlinks plugin
 * issue: Fix a few image errors
 
 --- 0.5.1 ---
+
 * issue: More 0.8.7 Compatibility fixes
 
 --- 0.5 ---
+
 * feature: Modified Message retrieval function to better make use of indexes, which greatly speeds it up
 * feature: When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
 * feature: Alert email now uses the Alert Name in the subject
@@ -257,22 +279,26 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: Fix Cacti 0.8.7 compatibility
 
 --- 0.4 ---
+
 * issue#0000034 - Fix for shadow.gif file error in httpd logs.
 * issue#0000036 - Syslog plugin causes duplicates if multiple log processors are running at once
 * issue#0000037 - Option for max time to save syslog events
 * issue: Removed some debugging code
 
 --- 0.3 ---
+
 * feature: Move Processing code to its own file
 * feature: Add Debugging to the Processing Code (/debug)
 * issue: Fixed an issue with "message" being hard coded
 * issue: Fixed a typo in the removal code
 
 --- 0.2 ---
+
 * issue#0000010 Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
 * issue#0000013 - Fix issues with database names with uncommon characters by enclosing in back-ticks
 * issue: Fixed a minor error that caused the graphs page to not refresh
 * issue: Modified SQL query in syslog processor to speed things up greatly
 
 --- 0.1 ---
+
 * Initial release

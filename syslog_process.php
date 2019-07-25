@@ -212,11 +212,11 @@ if (read_config_option('syslog_validate_hostname') == 'on') {
 }
 
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_programs`
-	(program)
-	SELECT DISTINCT program
+	(program, last_updated)
+	SELECT DISTINCT program, NOW()
 	FROM `' . $syslogdb_default . '`.`syslog_incoming`
 	WHERE status=' . $uniqueID . '
-	ON DUPLICATE KEY UPDATE program=VALUES(program), last_updated=NOW()');
+	ON DUPLICATE KEY UPDATE program=VALUES(program), last_updated=VALUES(last_updated)');
 
 syslog_db_execute('INSERT INTO `' . $syslogdb_default . '`.`syslog_hosts`
 	(host, last_updated)
