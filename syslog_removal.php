@@ -351,9 +351,9 @@ function syslog_get_removal_records(&$sql_where, $rows) {
 
 	if (get_request_var('filter') != '') {
 		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
-			"(message LIKE '%" . get_request_var('filter') . "%' OR " .
-			"notes LIKE '%" . get_request_var('filter') . "%' OR " .
-			"name LIKE '%" . get_request_var('filter') . "%')";
+			'(message LIKE ' . db_qstr('%' . get_request_var('filter') . '%') . '
+			OR notes LIKE '  . db_qstr('%' . get_request_var('filter') . '%') . '
+			OR name LIKE '   . db_qstr('%' . get_request_var('filter') . '%') . ')';
 	}
 
 	if (get_request_var('enabled') == '-1') {
@@ -527,7 +527,7 @@ function syslog_filter() {
 						<?php print __('Search', 'syslog');?>
 					</td>
 					<td>
-						<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>'>
+						<input type='text' id='filter' size='30' value='<?php print html_escape_request_var('filter');?>'>
 					</td>
 					<td>
 						<?php print __('Enabled', 'syslog');?>
@@ -633,10 +633,9 @@ function syslog_removal() {
             'default' => '-1'
 			),
         'filter' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_DEFAULT,
             'pageset' => true,
-            'default' => '',
-            'options' => array('options' => 'sanitize_search_string')
+            'default' => ''
             ),
         'sort_column' => array(
             'filter' => FILTER_CALLBACK,

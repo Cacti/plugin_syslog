@@ -77,6 +77,10 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 ## ChangeLog
 
+--- develop ---
+
+* issue#96: Syslog filtering does not work with some international characters
+
 --- 2.4 ---
 * issue: Resolving issues with nav level cache being set incorrectly 
 

@@ -184,10 +184,9 @@ function syslog_statistics() {
             'default' => '1'
             ),
         'filter' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_DEFAULT,
             'pageset' => true,
-            'default' => '',
-            'options' => array('options' => 'sanitize_search_string')
+            'default' => ''
             ),
         'host' => array(
             'filter' => FILTER_VALIDATE_IS_NUMERIC_LIST,
@@ -343,7 +342,9 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 
 	/* form the 'where' clause for our main sql query */
 	if (!isempty_request_var('filter')) {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . "sh.host LIKE '%" . get_request_var('filter') . "%' OR spr.program LIKE '%" . get_request_var('filter') . "%'";
+		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
+			'sh.host LIKE '       . db_qstr('%' . get_request_var('filter') . '%') . '
+			OR spr.program LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
 	}
 
 	if (get_request_var('host') == '-2') {
@@ -496,7 +497,7 @@ function syslog_stats_filter() {
 						<?php print __('Search', 'syslog');?>
 					</td>
 					<td>
-						<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
+						<input type='text' id='filter' size='30' value='<?php print html_escape_request_var('filter');?>' onChange='applyFilter()'>
 					</td>
 					<td>
 						<?php print __('Time Range', 'syslog');?>
@@ -667,10 +668,9 @@ function syslog_request_validation($current_tab, $force = false) {
             'options' => array('options' => 'sanitize_search_string')
             ),
         'filter' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_DEFAULT,
             'pageset' => true,
-            'default' => '',
-            'options' => array('options' => 'sanitize_search_string')
+            'default' => ''
             ),
         'date1' => array(
             'filter' => FILTER_CALLBACK,
@@ -1280,7 +1280,7 @@ function syslog_filter($sql_where, $tab) {
 							<?php print __('Search', 'syslog');?>
 						</td>
 						<td>
-							<input type='text' id='filter' size='30' value='<?php print get_request_var('filter');?>' onChange='applyFilter()'>
+							<input type='text' id='filter' size='30' value='<?php print html_escape_request_var('filter');?>' onChange='applyFilter()'>
 						</td>
 						<td>
 							<?php print __('Devices', 'syslog');?>
