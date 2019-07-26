@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 09:51+0000\n"
-"PO-Revision-Date: 2019-07-13 03:14+0000\n"
+"PO-Revision-Date: 2019-07-25 23:57+0000\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/"
 "cacti/syslog/zh-CN/>\n"
@@ -425,7 +425,6 @@ msgstr ""
 "警报影响的逗号分隔的主机列表。"
 
 #: setup.php:913 syslog_removal.php:33
-#, fuzzy
 msgid "Delete"
 msgstr "删除"
 
