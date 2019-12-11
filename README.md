@@ -79,6 +79,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 --- develop ---
 
+* issue#100: Fix odd/even classes generation in report
 * issue#96: Syslog filtering does not work with some international characters
 * issue#87: Program data is not sync with syslog_incoming under PHP 7.2
 
