@@ -664,13 +664,13 @@ if (cacti_sizeof($reports)) {
 
 				$classes = array('even', 'odd');
 
-				$i = 0;
 				if (cacti_sizeof($items)) {
-					$class = $classes[$i % 2];
+					$i = 0;
 					foreach($items as $item) {
+						$class = $classes[$i % 2];
 						$reptext .= '<tr class="' . $class . '"><td class="host">' . $item['host'] . '</td><td class="date">' . $item['logtime'] . '</td><td class="message">' . html_escape($item['message']) . "</td></tr>\n";
+						$i++;
 					}
-					$i++;
 				}
 
 				if ($reptext != '') {
