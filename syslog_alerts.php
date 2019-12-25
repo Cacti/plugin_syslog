@@ -348,6 +348,58 @@ function syslog_get_alert_records(&$sql_where, $rows) {
 	return syslog_db_fetch_assoc($query_string);
 }
 
+function get_repeat_array() {
+	$poller_interval = read_config_option('poller_interval');
+
+	$multiplier = 300 / $poller_interval;
+
+	$repeatarray = array(
+		$multiplier * 0    => __('Not Set', 'syslog'),
+	);
+
+	if ($multiplier > 1) {
+		$repeatarray += array(
+			round($multiplier / 5,0) => __('1 Minute', 'syslog'),
+		);
+	}
+
+	$repeatarray += array(
+		$multiplier * 1    => __('%d Minutes', 5, 'syslog'),
+		$multiplier * 2    => __('%d Minutes', 10, 'syslog'),
+		$multiplier * 3    => __('%d Minutes', 15, 'syslog'),
+		$multiplier * 4    => __('%d Minutes', 20, 'syslog'),
+		$multiplier * 6    => __('%d Minutes', 30, 'syslog'),
+		$multiplier * 8    => __('%d Minutes', 45, 'syslog'),
+		$multiplier * 12   => __('%d Hour', 1, 'syslog'),
+		$multiplier * 24   => __('%d Hours', 2, 'syslog'),
+		$multiplier * 36   => __('%d Hours', 3, 'syslog'),
+		$multiplier * 48   => __('%d Hours', 4, 'syslog'),
+		$multiplier * 72   => __('%d Hours', 6, 'syslog'),
+		$multiplier * 96   => __('%d Hours', 8, 'syslog'),
+		$multiplier * 144  => __('%d Hours', 12, 'syslog'),
+		$multiplier * 288  => __('%d Day', 1, 'syslog'),
+		$multiplier * 576  => __('%d Days', 2, 'syslog'),
+		$multiplier * 2016 => __('%d Week', 1, 'syslog'),
+		$multiplier * 4032 => __('%d Weeks', 2, 'syslog'),
+		$multiplier * 8640 => __('1 Month', 'syslog')
+	);
+
+	$alert_retention = read_config_option('syslog_alert_retention');
+	if ($alert_retention != '' && $alert_retention > 0 && $alert_retention < 365) {
+		$repeat_end = ($alert_retention * 24 * 60 * $multiplier) / 5;
+	}
+
+	if ($repeat_end) {
+		foreach ($repeatarray as $i => $value) {
+			if ($i > $repeat_end) {
+				unset($repeatarray[$i]);
+			}
+		}
+	}
+
+	return $repeatarray;
+}
+
 function syslog_action_edit() {
 	global $message_types, $severities;
 
@@ -384,40 +436,7 @@ function syslog_action_edit() {
 		$alert['name'] = __('New Alert Rule', 'syslog');
 	}
 
-	$alert_retention = read_config_option('syslog_alert_retention');
-	if ($alert_retention != '' && $alert_retention > 0 && $alert_retention < 365) {
-		$repeat_end = ($alert_retention * 24 * 60) / 5;
-	}
-
-	$repeatarray = array(
-		0    => __('Not Set', 'syslog'),
-		1    => __('%d Minutes', 5, 'syslog'),
-		2    => __('%d Minutes', 10, 'syslog'),
-		3    => __('%d Minutes', 15, 'syslog'),
-		4    => __('%d Minutes', 20, 'syslog'),
-		6    => __('%d Minutes', 30, 'syslog'),
-		8    => __('%d Minutes', 45, 'syslog'),
-		12   => __('%d Hour', 1, 'syslog'),
-		24   => __('%d Hours', 2, 'syslog'),
-		36   => __('%d Hours', 3, 'syslog'),
-		48   => __('%d Hours', 4, 'syslog'),
-		72   => __('%d Hours', 6, 'syslog'),
-		96   => __('%d Hours', 8, 'syslog'),
-		144  => __('%d Hours', 12, 'syslog'),
-		288  => __('%d Day', 1, 'syslog'),
-		576  => __('%d Days', 2, 'syslog'),
-		2016 => __('%d Week', 1, 'syslog'),
-		4032 => __('%d Weeks', 2, 'syslog'),
-		8640 => __('Month', 'syslog')
-	);
-
-	if ($repeat_end) {
-		foreach ($repeatarray as $i => $value) {
-			if ($i > $repeat_end) {
-				unset($repeatarray[$i]);
-			}
-		}
-	}
+	$repeatarray = get_repeat_array();
 
 	$fields_syslog_alert_edit = array(
 		'spacer0' => array(
