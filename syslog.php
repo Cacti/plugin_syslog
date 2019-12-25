@@ -40,6 +40,8 @@ set_default_action();
 
 if (get_request_var('action') == 'ajax_programs') {
 	return get_ajax_programs(true);
+} elseif (get_request_var('action') == 'ajax_programs_wnone') {
+	return get_ajax_programs(true, true);
 }
 
 $title = __('Syslog Viewer', 'syslog');
@@ -194,19 +196,17 @@ function syslog_statistics() {
             'default' => '',
             ),
         'facility' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_VALIDATE_INT,
             'pageset' => true,
             'default' => '',
-            'options' => array('options' => 'sanitize_search_string')
             ),
         'priority' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_VALIDATE_INT,
             'pageset' => true,
             'default' => '',
-            'options' => array('options' => 'sanitize_search_string')
             ),
-        'eprogram' => array(
-            'filter' => FILTER_CALLBACK,
+        'program' => array(
+            'filter' => FILTER_VALIDATE_INT,
             'pageset' => true,
             'default' => '',
             'options' => array('options' => 'sanitize_search_string')
@@ -482,7 +482,7 @@ function syslog_stats_filter() {
 							?>
 						</select>
 					</td>
-					<?php print html_program_filter(get_request_var('eprogram'));?>
+					<?php print html_program_filter(get_request_var('program'), true, 'ajax_programs_wnone');?>
 					<td>
 						<span>
 							<input id='go' type='button' value='<?php print __esc('Go', 'syslog');?>'>
@@ -563,10 +563,11 @@ function syslog_stats_filter() {
 
 		function applyFilter() {
 			strURL  = 'syslog.php?header=false';
+			strURL += '&none=true';
 			strURL += '&facility=' + $('#facility').val();
 			strURL += '&host=' + $('#host').val();
 			strURL += '&priority=' + $('#priority').val();
-			strURL += '&program=' + $('#program').val();
+			strURL += '&program=' + $('#eprogram').val();
 			strURL += '&timespan=' + $('#timespan').val();
 			strURL += '&filter=' + $('#filter').val();
 			strURL += '&rows=' + $('#rows').val();
@@ -662,10 +663,9 @@ function syslog_request_validation($current_tab, $force = false) {
             'options' => array('options' => 'sanitize_search_string')
             ),
         'eprogram' => array(
-            'filter' => FILTER_CALLBACK,
+            'filter' => FILTER_VALIDATE_INT,
             'pageset' => true,
             'default' => read_user_setting('syslog_eprogram', '-1', $force),
-            'options' => array('options' => 'sanitize_search_string')
             ),
         'filter' => array(
             'filter' => FILTER_DEFAULT,
@@ -1363,7 +1363,7 @@ function syslog_filter($sql_where, $tab) {
 				<table class='filterTable'>
 					<tr>
 						<?php api_plugin_hook('syslog_extend_filter');?>
-						<?php html_program_filter(get_request_var('eprogram'));?>
+						<?php html_program_filter(get_request_var('eprogram'), false);?>
 						<td>
 							<?php print __('Facility', 'syslog');?>
 						</td>
@@ -1735,7 +1735,7 @@ function save_settings() {
 	syslog_request_validation($current_tab, true);
 }
 
-function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sql_where = '') {
+function html_program_filter($program_id = '-1', $none_entry, $action = 'ajax_programs', $call_back = 'applyFilter', $sql_where = '') {
 	if (strpos($call_back, '()') === false) {
 		$call_back .= '()';
 	}
@@ -1744,6 +1744,8 @@ function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sq
 		$program = syslog_db_fetch_cell("SELECT program
 			FROM syslog_programs
 			WHERE program_id = $program_id");
+	} elseif ($program_id == -2) {
+		$program = __('None', 'syslog');
 	} else {
 		$program = __('All Programs', 'syslog');
 	}
@@ -1753,15 +1755,21 @@ function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sq
 	print '</td>';
 	print '<td>';
 
+	if ($none_entry) {
+		$none_entry = __('None', 'syslog');
+	} else {
+		$none_entry = '';
+	}
+
 	syslog_form_callback(
 		'eprogram',
 		'SELECT DISTINCT program_id, program FROM syslog_programs AS spr ORDER BY program',
 		'program',
 		'program_id',
-		'ajax_programs',
+		$action,
 		$program_id,
 		$program,
-		__('All Programs', 'syslog'),
+		$none_entry,
 		__('All Programs', 'syslog'),
 		'',
 		$call_back
@@ -1770,7 +1778,7 @@ function html_program_filter($program_id = '-1', $call_back = 'applyFilter', $sq
 	print '</td>';
 }
 
-function get_ajax_programs($include_any = true, $sql_where = '') {
+function get_ajax_programs($include_any = true, $include_none = false, $sql_where = '') {
 	$return    = array();
 
 	$term = get_filter_request_var('term', FILTER_CALLBACK, array('options' => 'sanitize_search_string'));
@@ -1784,6 +1792,14 @@ function get_ajax_programs($include_any = true, $sql_where = '') {
 				'label' => __('All Programs', 'syslog'),
 				'value' => __('All Programs', 'syslog'),
 				'id' => '-1'
+			);
+		}
+
+		if ($include_none) {
+			$return[] = array(
+				'label' => __('None', 'syslog'),
+				'value' => __('None', 'syslog'),
+				'id' => '-2'
 			);
 		}
 	}
@@ -1834,7 +1850,7 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . ($on_change != '' ? "onChange='$on_change'":'') . '>';
 
 		if (!empty($none_entry)) {
-			print "<option value='-1'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>";
+			print "<option value='-2'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>";
 		}
 
 		$form_data = syslog_db_fetch_assoc($classic_sql);
