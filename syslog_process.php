@@ -328,7 +328,7 @@ if (cacti_sizeof($query)) {
 				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'sql') {
 			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
-				WHERE (' . db_qstr($alert['message']) . ')
+				WHERE (' . $alert['message'] . ')
 				AND status=' . $uniqueID;
 		}
 
@@ -650,7 +650,7 @@ if (cacti_sizeof($reports)) {
 
 			if ($syslog_report['type'] == 'sql') {
 				$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
-					WHERE (' . db_qstr($syslog_report['message']) . ')';
+					WHERE (' . $syslog_report['message'] . ')';
 			}
 
 			if ($sql != '') {

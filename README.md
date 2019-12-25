@@ -80,6 +80,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 --- develop ---
 
 * issue#102: Syslog statistics filter problem - select program
+* issue#101: Alert rule SQL Expression not working as expected
 * issue#100: Fix odd/even classes generation in report
 * issue#96: Syslog filtering does not work with some international characters
 * issue#87: Program data is not sync with syslog_incoming under PHP 7.2
