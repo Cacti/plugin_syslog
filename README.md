@@ -84,6 +84,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue#100: Fix odd/even classes generation in report
 * issue#99: Re-Alert Cycle (Alert Rules) is wrong in case of 1 minute poller interval
 * issue#96: Syslog filtering does not work with some international characters
+* issue#88: Provide text color to indicate device status in Cacti
 * issue#87: Program data is not sync with syslog_incoming under PHP 7.2
 
 --- 2.4 ---

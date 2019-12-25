@@ -31,6 +31,7 @@ $guest_account = true;
 /* initialize cacti environment */
 chdir('../../');
 include('./include/auth.php');
+include('./lib/html_tree.php');
 
 /* syslog specific database setup and functions */
 include('./plugins/syslog/config.php');
@@ -337,12 +338,9 @@ function syslog_statistics() {
 function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 	include(dirname(__FILE__) . '/config.php');
 
-	$sql_where   = '';
-	$sql_groupby = 'GROUP BY sh.host';
-
 	/* form the 'where' clause for our main sql query */
 	if (!isempty_request_var('filter')) {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') .
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
 			'sh.host LIKE '       . db_qstr('%' . get_request_var('filter') . '%') . '
 			OR spr.program LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
 	}
@@ -350,41 +348,41 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 	if (get_request_var('host') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('host') != '-1' && get_request_var('host') != '') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . 'ss.host_id=' . get_request_var('host');
-		$sql_groupby .= ', sh.host';
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'ss.host_id=' . get_request_var('host');
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sh.host';
 	} else {
-		$sql_groupby .= ', sh.host';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sh.host';
 	}
 
 	if (get_request_var('facility') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('facility') != '-1' && get_request_var('facility') != '') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ' : ' AND ') . 'ss.facility_id=' . get_request_var('facility');
-		$sql_groupby .= ', sf.facility';
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'ss.facility_id=' . get_request_var('facility');
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sf.facility';
 	} else {
-		$sql_groupby .= ', sf.facility';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sf.facility';
 	}
 
 	if (get_request_var('priority') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('priority') != '-1' && get_request_var('priority') != '') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.priority_id=' . get_request_var('priority');
-		$sql_groupby .= ', sp.priority';
+		$sql_where .= ($sql_where == '' ? 'WHERE ': ' AND ') . 'ss.priority_id=' . get_request_var('priority');
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sp.priority';
 	} else {
-		$sql_groupby .= ', sp.priority';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sp.priority';
 	}
 
 	if (get_request_var('program') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('program') != '-1' && get_request_var('program') != '') {
-		$sql_where .= (!strlen($sql_where) ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('program');
-		$sql_groupby .= ', spr.program';
+		$sql_where .= ($sql_where == '' ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('program');
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'spr.program';
 	} else {
-		$sql_groupby .= ', spr.program';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'spr.program';
 	}
 
 	if (get_request_var('timespan') != '-1') {
-		$sql_groupby .= ', UNIX_TIMESTAMP(insert_time) DIV ' . get_request_var('timespan');
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . ' UNIX_TIMESTAMP(insert_time) DIV ' . get_request_var('timespan');
 	}
 
 	$sql_order = get_order_string();
@@ -392,6 +390,10 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 		$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
 	} else {
 		$sql_limit = ' LIMIT 10000';
+	}
+
+	if ($sql_groupby != '') {
+		$sql_groupby = 'GROUP BY ' . $sql_groupby;
 	}
 
 	$time = 'FROM_UNIXTIME(TRUNCATE(UNIX_TIMESTAMP(insert_time)/' . get_request_var('timespan') . ',0)*' . get_request_var('timespan') . ') AS insert_time';
@@ -410,6 +412,8 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 		$sql_groupby
 		$sql_order
 		$sql_limit";
+
+	//cacti_log(str_replace("\n", "", $query_sql));
 
 	return syslog_db_fetch_assoc($query_sql);
 }
@@ -430,13 +434,24 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog');?></option>
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
-							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT host_id, host
+							$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
 								FROM syslog_hosts AS sh
+								LEFT JOIN host AS h
+								ON sh.host = h.hostname
+								OR sh.host = h.description
+								OR sh.host LIKE substring_index(h.hostname, ".", 1)
+								OR sh.host LIKE substring_index(h.description, ".", 1)
 								ORDER BY host');
 
-							if (cacti_sizeof($facilities)) {
-								foreach ($facilities as $r) {
-									print '<option value="' . $r['host_id'] . '"'; if (get_request_var('host') == $r['host_id']) { print ' selected'; } print '>' . $r['host'] . "</option>\n";
+							if (cacti_sizeof($hosts)) {
+								foreach ($hosts as $host) {
+									if (!empty($host['id'])) {
+										$class = get_device_leaf_class($host['id']);
+									} else {
+										$class = 'deviceUnknown';
+									}
+
+									print '<option class="' . $class . '" value="' . $host['host_id'] . '"'; if (get_request_var('host') == $host['host_id']) { print ' selected'; } print '>' . $host['host'] . '</option>';
 								}
 							}
 							?>
@@ -558,6 +573,14 @@ function syslog_stats_filter() {
 
 			$('#clear').click(function() {
 				clearFilter();
+			});
+
+			$('#host').selectmenu({
+				open: function() {
+					$('div.ui-selectmenu-menu li.ui-menu-item').each(function(idx){
+						$(this).addClass( $('#host option').eq(idx).attr('class') )
+					})
+				}
 			});
 		});
 
@@ -1294,8 +1317,13 @@ function syslog_filter($sql_where, $tab) {
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
 
-								$hosts = syslog_db_fetch_assoc("SELECT host_id, host
-									FROM `" . $syslogdb_default . "`.`syslog_hosts`
+								$hosts = syslog_db_fetch_assoc("SELECT sh.host_id, sh.host, h.id
+									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+									LEFT JOIN host AS h
+									ON sh.host = h.hostname
+									OR sh.host = h.description
+									OR sh.host LIKE substring_index(h.hostname, '.', 1)
+									OR sh.host LIKE substring_index(h.description, '.', 1)
 									$hosts_where
 									ORDER BY host");
 
@@ -1308,7 +1336,13 @@ function syslog_filter($sql_where, $tab) {
 											$host['host'] = $parts[0];
 										}
 
-										print "<option value='" . $host['host_id'] . "'";
+										if (!empty($host['id'])) {
+											$class = get_device_leaf_class($host['id']);
+										} else {
+											$class = 'deviceUnknown';
+										}
+
+										print "<option class='$class' value='" . $host['host_id'] . "'";
 										if (cacti_sizeof($selected)) {
 											if (in_array($host['host_id'], $selected)) {
 												print ' selected';
