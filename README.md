@@ -29,7 +29,22 @@ Note: You must rename config.php.dist in the syslog plugin directory to config.p
 
 If you are upgrading to 2.0 from a prior install, you must first uninstall syslog and insure both the syslog, syslog_removal, and syslog_incoming tables are removed, and recreated at install time.
 
-In addtion, the rsyslog configuration has changed in 2.0.  So, for example, to configure modern rsyslog for Cacti, you must create a file called cacti.conf in the /etc/rsyslog.d/ directory that includes the following:
+In addtion, the rsyslog configuration has changed in 2.5.  So, for example, to configure modern rsyslog for Cacti, you MUST create a file called cacti.conf in the /etc/rsyslog.d/ directory that includes the following:
+
+	--------------------- start /etc/rsyslog.d/cacti.conf ---------------------
+
+	$ModLoad imudp
+	$UDPServerRun 514
+	$ModLoad ommysql
+
+	$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message) \
+values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated%', '%HOSTNAME%', TRIM('%msg%'))", SQL
+
+	*.* >localhost,my_database,my_user,my_password;cacti_syslog
+
+	--------------------- end /etc/rsyslog.d/cacti.conf ---------------------
+
+This is a change from versions 2.0 to 2.4 and below, which had the following file format:
 
 	--------------------- start /etc/rsyslog.d/cacti.conf ---------------------
 
@@ -43,6 +58,8 @@ In addtion, the rsyslog configuration has changed in 2.0.  So, for example, to c
 	*.* >localhost,my_database,my_user,my_password;cacti_syslog
 
 	--------------------- end /etc/rsyslog.d/cacti.conf ---------------------
+
+If you are upgrading to version 2.5 from an earlier version, make sure that you update this template format and restart rsyslog.  You may loose some syslog data, but doing this in a timely fashion, will minimize data loss.
 
 Ensure you restart rsyslog after these changes are completed.  Other logging servers such as Syslog-NG are also supported with this plugin.  Please see some additional documentation here: [Cacti Documentation Site](https://docs.cacti.net/plugin:syslog.config)
 
@@ -81,6 +98,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 * issue#102: Syslog statistics filter problem - select program
 * issue#101: Alert rule SQL Expression not working as expected
+* issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps instead of legacy date/time
 * issue#100: Fix odd/even classes generation in report
 * issue#99: Re-Alert Cycle (Alert Rules) is wrong in case of 1 minute poller interval
 * issue#96: Syslog filtering does not work with some international characters

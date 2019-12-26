@@ -64,8 +64,7 @@ if (!$use_cacti_db) {
 //$syslog_install_options['id']           = 'syslog';
 
 /* field in the incomming table */
-$syslog_incoming_config['dateField']          = 'date';
-$syslog_incoming_config['timeField']          = 'time';
+$syslog_incoming_config['timeField']          = 'logtime';
 $syslog_incoming_config['priorityField']      = 'priority_id';
 $syslog_incoming_config['facilityField']      = 'facility_id';
 $syslog_incoming_config['hostField']          = 'host_id';

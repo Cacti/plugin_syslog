@@ -276,6 +276,12 @@ function syslog_check_upgrade() {
 				'default'  => '',
 				'after'    => 'id')
 			);
+
+			if (db_column_exists('syslog_incoming', 'date')) {
+				db_execute("ALTER TABLE syslog_incoming
+					DROP COLUMN date,
+					CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
+			}
 		}
 
 		$alerts = syslog_db_fetch_assoc('SELECT * FROM syslog_alert WHERE hash IS NULL OR hash = ""');
@@ -441,8 +447,7 @@ function syslog_setup_table_new($options) {
 		facility_id int(10) unsigned default NULL,
 		priority_id int(10) unsigned default NULL,
 		program varchar(40) default NULL,
-		`date` date default NULL,
-		`time` time default NULL,
+		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(64) default NULL,
 		message varchar(1024) NOT NULL DEFAULT '',
 		seq bigint unsigned NOT NULL auto_increment,
