@@ -94,7 +94,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 ## ChangeLog
 
---- develop ---
+--- 2.5 ---
 
 * issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps instead of legacy date/time
 * issue#102: Syslog statistics filter problem - select program
