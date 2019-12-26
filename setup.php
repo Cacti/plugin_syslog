@@ -276,15 +276,17 @@ function syslog_check_upgrade() {
 				'default'  => '',
 				'after'    => 'id')
 			);
-
-			if (db_column_exists('syslog_incoming', 'date')) {
-				db_execute("ALTER TABLE syslog_incoming
-					DROP COLUMN date,
-					CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
-			}
 		}
 
-		$alerts = syslog_db_fetch_assoc('SELECT * FROM syslog_alert WHERE hash IS NULL OR hash = ""');
+		if (db_column_exists('syslog_incoming', 'date')) {
+			db_execute("ALTER TABLE syslog_incoming
+				DROP COLUMN date,
+				CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
+		}
+
+		$alerts = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_alert
+			WHERE hash IS NULL OR hash = ""');
 
 		if (cacti_sizeof($alerts)) {
 			foreach($alerts as $a) {
@@ -296,7 +298,9 @@ function syslog_check_upgrade() {
 			}
 		}
 
-		$removes = syslog_db_fetch_assoc('SELECT * FROM syslog_remove WHERE hash IS NULL OR hash = ""');
+		$removes = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_remove
+			WHERE hash IS NULL OR hash = ""');
 
 		if (cacti_sizeof($removes)) {
 			foreach($removes as $r) {
@@ -308,7 +312,9 @@ function syslog_check_upgrade() {
 			}
 		}
 
-		$reports = syslog_db_fetch_assoc('SELECT * FROM syslog_reports WHERE hash IS NULL OR hash = ""');
+		$reports = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_reports
+			WHERE hash IS NULL OR hash = ""');
 
 		if (cacti_sizeof($reports)) {
 			foreach($reports as $r) {
