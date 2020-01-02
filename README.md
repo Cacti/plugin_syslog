@@ -1,279 +1,458 @@
 # syslog
 
-The syslog plugin is a Cacti plugin that has been around for more than a decade.  It was inspired by the 'aloe' and 'h.aloe' plugins originally developed by the Cacti users sidewinder and Harlequin in the early 2000's.  As you will be able to see from the ChangeLog, it has undergone several changes throughout the years, and remains, even today when you have enterprise offering from both Elastic and Splunk, remains a relevant plugin for small to medium sized companies.
+The syslog plugin is a Cacti plugin that has been around for more than a decade.
+It was inspired by the 'aloe' and 'h.aloe' plugins originally developed by the
+Cacti users sidewinder and Harlequin in the early 2000's.  As you will be able
+to see from the ChangeLog, it has undergone several changes throughout the
+years, and remains, even today when you have enterprise offering from both
+Elastic and Splunk, remains a relevant plugin for small to medium sized
+companies.
 
-It provides a simple Syslog event search an Alert generation and notification interface that can generate both HTML and SMS messages for operations personnel who wish to receive notifications inside of a data or network operations center.
+It provides a simple Syslog event search an Alert generation and notification
+interface that can generate both HTML and SMS messages for operations personnel
+who wish to receive notifications inside of a data or network operations center.
 
-When combined by the Linux SNMPTT package, it can be converted into an SNMP Trap and Inform receiver and notification engine as the SNMPTT tool will receive SNMP Traps and Informs and convert them into Syslog messages on your log server.  These syslog messages can then be consumed by the syslog plugin.  So, this tool is quite handy.
+When combined by the Linux SNMPTT package, it can be converted into an SNMP Trap
+and Inform receiver and notification engine as the SNMPTT tool will receive SNMP
+Traps and Informs and convert them into Syslog messages on your log server.
+These syslog messages can then be consumed by the syslog plugin.  So, this tool
+is quite handy.
 
-For log events that continue to be generated frequently on a device, such as smartd's feature to notify every 15 minutes of an impending drive failure, can be quieted using syslog's 'Re-Alert' setting.
+For log events that continue to be generated frequently on a device, such as
+smartd's feature to notify every 15 minutes of an impending drive failure, can
+be quieted using syslog's 'Re-Alert' setting.
 
 ## Features
 
 * Message filter
+
 * Message search
+
 * Output to screen or file
+
 * Date time picker
+
 * Event Alerter
+
 * Event Removal (for Events you don't want to see)
+
 * Filter events by Cacti Graph window from Cacti's Graph View pages
+
 * Use of native MySQL and MariaDB database partitioning for larger installs
+
 * Remote Log Server connection capabilities
+
 * Custom column mappings between Remote Log Server and required Syslog columns
 
 ## Installation
 
-To install the syslog plugin, simply copy the plugin_sylog directory to Cacti's plugins directory and rename it to simply 'syslog'. Once you have done this, goto Cacti's Plugin Management page, and Install and Enable the plugin. Once this is complete, you can grant users permission to view syslog messages, as well as create Alert, Removal and Report Rules.
+To install the syslog plugin, simply copy the plugin_sylog directory to Cacti's
+plugins directory and rename it to simply 'syslog'. Once you have done this,
+goto Cacti's Plugin Management page, and Install and Enable the plugin. Once
+this is complete, you can grant users permission to view syslog messages, as
+well as create Alert, Removal and Report Rules.
 
-Note: You must rename config.php.dist in the syslog plugin directory to config.php and make changes there for the location of the database, user, password, and host.  This is especially important if you are using a remote logging database server.
+Note: You must rename config.php.dist in the syslog plugin directory to
+config.php and make changes there for the location of the database, user,
+password, and host.  This is especially important if you are using a remote
+logging database server.
 
-If you are upgrading to 2.0 from a prior install, you must first uninstall syslog and insure both the syslog, syslog_removal, and syslog_incoming tables are removed, and recreated at install time.
+If you are upgrading to 2.0 from a prior install, you must first uninstall
+syslog and insure both the syslog, syslog_removal, and syslog_incoming tables
+are removed, and recreated at install time.
 
-In addtion, the rsyslog configuration has changed in 2.5.  So, for example, to configure modern rsyslog for Cacti, you MUST create a file called cacti.conf in the /etc/rsyslog.d/ directory that includes the following:
+In addtion, the rsyslog configuration has changed in 2.5.  So, for example, to
+configure modern rsyslog for Cacti, you MUST create a file called cacti.conf in
+the /etc/rsyslog.d/ directory that includes the following:
 
-	--------------------- start /etc/rsyslog.d/cacti.conf ---------------------
+### Cacti Configuration for RSYSLOG
 
-	$ModLoad imudp
-	$UDPServerRun 514
-	$ModLoad ommysql
+Edit /etc/rsyslog.d/cacti.conf
 
-	$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message) \
-values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated%', '%HOSTNAME%', TRIM('%msg%'))", SQL
+```console
+$ModLoad imudp
+$UDPServerRun 514
+$ModLoad ommysql
 
-	*.* >localhost,my_database,my_user,my_password;cacti_syslog
+$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message) \
+  values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated%', '%HOSTNAME%', TRIM('%msg%'))", SQL
 
-	--------------------- end /etc/rsyslog.d/cacti.conf ---------------------
+*.* >localhost,my_database,my_user,my_password;cacti_syslog
+```
 
-This is a change from versions 2.0 to 2.4 and below, which had the following file format:
+This is a change from versions 2.0 to 2.4 and below, which had the following
+file format:
 
-	--------------------- start /etc/rsyslog.d/cacti.conf ---------------------
+```console
+$ModLoad imudp
+$UDPServerRun 514
+$ModLoad ommysql
 
-	$ModLoad imudp
-	$UDPServerRun 514
-	$ModLoad ommysql
+$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, date, time, host, message) \
+  values (%syslogfacility%, %syslogpriority%, '%programname%', '%timereported:::date-mysql%', '%timereported:::date-mysql%', '%HOSTNAME%', TRIM('%msg%'))", SQL
 
-	$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, date, time, host, message) \ 
-    values (%syslogfacility%, %syslogpriority%, '%programname%', '%timereported:::date-mysql%', '%timereported:::date-mysql%', '%HOSTNAME%', TRIM('%msg%'))", SQL
+*.* >localhost,my_database,my_user,my_password;cacti_syslog
+```
 
-	*.* >localhost,my_database,my_user,my_password;cacti_syslog
+If you are upgrading to version 2.5 from an earlier version, make sure that you
+update this template format and restart rsyslog.  You may loose some syslog
+data, but doing this in a timely fashion, will minimize data loss.
 
-	--------------------- end /etc/rsyslog.d/cacti.conf ---------------------
+Ensure you restart rsyslog after these changes are completed.  Other logging
+servers such as Syslog-NG are also supported with this plugin.  Please see some
+additional documentation here: [Cacti Documentation
+Site](https://docs.cacti.net/plugin:syslog.config)
 
-If you are upgrading to version 2.5 from an earlier version, make sure that you update this template format and restart rsyslog.  You may loose some syslog data, but doing this in a timely fashion, will minimize data loss.
+We are using the pure integer values that rsyslog provides to both the priority
+and facility in this version syslog, which makes the data collection must less
+costly for the database.  We have also started including the 'program' syslog
+column for searching and storage and alert generation.
 
-Ensure you restart rsyslog after these changes are completed.  Other logging servers such as Syslog-NG are also supported with this plugin.  Please see some additional documentation here: [Cacti Documentation Site](https://docs.cacti.net/plugin:syslog.config)
+To setup log forwarding from your network switches and routers, and from your
+various Linux, UNIX, and other operating system devices, please see their
+respective documentation.
 
-We are using the pure integer values that rsyslog provides to both the priority and facility in this version syslog, which makes the data collection must less costly for the database.  We have also started including the 'program' syslog column for searching and storage and alert generation.
+Finally, it's important, especially in more recent versions of MySQL and MariaDB
+to set a correct SQL Mode.  These more recent SQL's prevent certain previously
+allowable syntax such as an empty data and certain group by limitations in the
+SQL itself.  Therefore, you need to ensure that the SQL mode of the database is
+correct.  To do this, first start by editing either `/etc/my.cnf` or
+`/etc/my.cnf.d/server.cnf` and inserting the SQL mode variable into the database
+configuration.  For example:
 
-To setup log forwarding from your network switches and routers, and from your various Linux, UNIX, and other operating system devices, please see their respective documentation.
-
-Finally, it's important, especially in more recent versions of MySQL and MariaDB to set a correct SQL Mode.  These more recent SQL's prevent certain previously allowable syntax such as an empty data and certain group by limitations in the SQL itself.  Therefore, you need to ensure that the SQL mode of the database is correct.  To do this, first start by editing either `/etc/my.cnf` or `/etc/my.cnf.d/server.cnf` and inserting the SQL mode variable into the database configuration.  For example:
-
-```code
+```ini
 [mysqld]
 sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
 ```
 
-After this change, you should log into the mysql server and run the following command:
+After this change, you should log into the mysql server and run the following
+command:
 
-```code
-mysql
-show global variables like 'sql_mode';
-quit
+```console
+mysql> show global variables like 'sql_mode';
 ```
 
-And ensure that it matches the setting that you placed in the database configuration.  If it does not, please search for the configuration that is making this SQL mode other than what you required.  More recent versions of MySQL and MariaDB will source multiple database configuration files.
+And ensure that it matches the setting that you placed in the database
+configuration.  If it does not, please search for the configuration that is
+making this SQL mode other than what you required.  More recent versions of
+MySQL and MariaDB will source multiple database configuration files.
 
 ## Possible Bugs and Feature Enhancements
 
-Bug and feature enhancements for the syslog plugin are handled in GitHub. If you find a first search the Cacti forums for a solution before creating an issue in GitHub.
+Bug and feature enhancements for the syslog plugin are handled in GitHub. If you
+find a first search the Cacti forums for a solution before creating an issue in
+GitHub.
 
 ## Authors
 
-The sylog plugin has been in development for well over a decade with increasing functionality and stibility over that time. There have been several contributors to thold over the years. Chief amonst them are Jimmy Conner, Larry Adams, SideWinder, and Harlequin. We hope that version 2.0 and beyond are the most stable and robust versions of syslog ever published. We are always looking for new ideas. So, this won't be the last release of syslog, you can rest assured of that.
+The sylog plugin has been in development for well over a decade with increasing
+functionality and stibility over that time. There have been several contributors
+to thold over the years. Chief amonst them are Jimmy Conner, Larry Adams,
+SideWinder, and Harlequin. We hope that version 2.0 and beyond are the most
+stable and robust versions of syslog ever published. We are always looking for
+new ideas. So, this won't be the last release of syslog, you can rest assured of
+that.
 
 ## ChangeLog
 
+--- develop ---
+
+* issue#104: When filtering, syslog incorrectly thinks the Cacti hosts table
+  does not exist
+
 --- 2.5 ---
 
-* issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps instead of legacy date/time
+* issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps
+  instead of legacy date/time
+
 * issue#102: Syslog statistics filter problem - select program
+
 * issue#101: Alert rule SQL Expression not working as expected
+
 * issue#100: Fix odd/even classes generation in report
-* issue#99: Re-Alert Cycle (Alert Rules) is wrong in case of 1 minute poller interval
+
+* issue#99: Re-Alert Cycle (Alert Rules) is wrong in case of 1 minute poller
+  interval
+
 * issue#96: Syslog filtering does not work with some international characters
+
 * issue#88: Provide text color to indicate device status in Cacti
+
 * issue#87: Program data is not sync with syslog_incoming under PHP 7.2
 
 --- 2.4 ---
 
-* issue: Resolving issues with nav level cache being set incorrectly 
+* issue: Resolving issues with nav level cache being set incorrectly
 
 --- 2.3 ---
 
-* issue#90: Can not show correct info when choose device filter in Syslog - Alert Log page 
+* issue#90: Can not show correct info when choose device filter in Syslog -
+  Alert Log page
+
 * issue#91: Page become blank after collecting multiple host syslog info
+
 * issue#94: Stored XSS in syslog_removal.php
+
 * issue#95: Syslog Hosts and Syslog Programs table looses sync with data
 
---- 2.2  ---
+--- 2.2 ---
 
-* feature: Allow for reprocess message per rule 
+* feature: Allow for reprocess message per rule
+
 * issue#66: Filter for All Programs can not work well
+
 * issue#67: SQL error after choose device
+
 * issue#69: Cirtical and Alert filter can not work well
+
 * issue#71: Export alert log has sql error
+
 * issue#72: Graph Template not workable after import by cli/import_template.php
+
 * issue#73: Gap to Cacti 1.x: Syslog missed to support database ssl
+
 * issue#74: New Requirement: another new hook 'syslog_update_hostsalarm'
-* issue#76: New Requirement: background install syslog plugin with pre-defined options
+
+* issue#76: New Requirement: background install syslog plugin with pre-defined
+  options
+
 * issue#77: Fixed: PHP Notice undefined variable
+
 * issue#78: Misc issue about syslog_alerts->log->host
+
 * issue#79: PHP 7.2 supporting to remove deprecated each()
+
 * issue#80: Syslog plugin auto disabled after import an alert rule
+
 * issue#81: php error when enter a value in Program filter and click go
+
 * issue#82: Syslog can not deal with with single quotation
-* issue#83: Change device filter can not return correct value in syslog- alert rule page
+
+* issue#83: Change device filter can not return correct value in syslog- alert
+  rule page
+
 * issue#84: All Progarms not show anything using Classic theme
+
 * issue#86: No color for emergency item
+
 * issue#89: plugins/syslog/syslog_reports.php:89: Undefined variable '$id'
 
---- 2.1  ---
+--- 2.1 ---
 
 * issue#18: Issues with syslog statistics display
+
 * issue#17: Compatibility with remote database
+
 * issue#19: Removal rules issues
+
 * issue#20: Issues viewing removed records
+
 * issue#23: Threshold rule alert format issues
+
 * issue#30: Syslog page slows when too many programs are in the programs table
+
 * issue#32: Export of Syslog records not functional
+
 * issue#38: Enhance the documentation to discuss config.php.dist and doco site
+
 * issue#40: Adds hostname column to emailed reports
+
 * issue: SQL for matching Cacti host incorrect
+
 * issue: Syslog Reports were not functional
+
 * issue: Cleanup formating of Threshold messaging and viewing
 
---- 2.0  ---
+--- 2.0 ---
 
 * feature: Compatibility with Cacti 1.0
 
 --- 1.30 ---
 
 * feature: Allow Statistics to be disabled
-* feature: Allow Processing of Removal Rules on Main Syslog Table
-* feature: Cleanup UI irregularities
-* feature: Allow purging of old host entries
-* issue: Remove syslog 'message' from Log message to prvent deadlock on cacti log syslog processing
 
---- 1.22  ---
+* feature: Allow Processing of Removal Rules on Main Syslog Table
+
+* feature: Cleanup UI irregularities
+
+* feature: Allow purging of old host entries
+
+* issue: Remove syslog 'message' from Log message to prvent deadlock on cacti
+  log syslog processing
+
+--- 1.22 ---
 
 * issue: Upgrade script does not properly handle all conditions
+
 * issue: Strip domain does not always work as expected
+
 * issue: Resizing a page on IE6 caused a loop on the syslog page
+
 * issue: Correct issue where 'warning' is used instead of 'warn' on log insert
+
 * issue: Issue with Plugin Realm naming
 
 --- 1.21 ---
 
 * issue: Fix timespan selector
+
 * issue: Reintroduce Filter time range view
+
 * issue: Syslog Statistics Row Counter Invalid
+
 * feature: Provide option to tag invalid hosts
 
 --- 1.20 ---
 
 * feature: Provide host based statistics tab
+
 * feature: Support generic help desk integration.  Requires customer script
+
 * feature: Support re-alert cycles for all alert type
+
 * feature: Limit re-alert cycles to the max log retention
+
 * feature: Make the default timespan 30 minutes for performance reasons
+
 * issue: sort fields interfering with one another between syslog and alarm tabs
+
 * issue: Message column was date column
 
 --- 1.10 ---
 
 * feature: Allow Syslog to Strip Domains Suffix's.
+
 * feature: Make compatible with earlier versions of Cacti.
+
 * feature: Allow Plugins to extend filtering
+
 * issue: Minor issue with wrong db function being called.
+
 * issue: Legend had Critical and Alert reversed.
+
 * issue: Syslog filter can cause SQL errors
+
 * issue: Wrong page redirect links.
+
 * issue: Partitioning was writing always to the dMaxValue partition
+
 * issue: Emergency Logs were not being highlighted correctly
+
 * issue: Can not add disabled alarm/removal/report rule
 
 --- 1.07 ---
 
 * issue: Rearchitect to improve support mutliple databases
+
 * issue: Don't process a report if it's not enabled.
+
 * issue: Don't process an alert if it's not enabled.
+
 * issue: Don't process a removal rule if it's not enabled.
 
 --- 1.06 ---
 
 * issue#0001854: Error found in Cacti Log
-* issue#0001871: Priority dropdown labels in syslog.php for "All Priorities" set to incorrect priority id 
+
+* issue#0001871: Priority dropdown labels in syslog.php for "All Priorities" set
+  to incorrect priority id
+
 * issue#0001872: Priorities drop drown to show specific value
+
 * issue: Only show one facility in the dropdown
+
 * issue: Hex Errors Upon Install
 
 --- 1.05 ---
 
 * issue: Remove poorly defined security settings
+
 * issue: Don't show actions if you don't have permissions
+
 * issue: Fix page refresh dropdown bug
+
 * feature: Re-add refresh settings to syslog
 
 --- 1.04 ---
 
-* issue#0001824: Syslog icon is not shown in graph view 
+* issue#0001824: Syslog icon is not shown in graph view
+
 * issue: Link on Alarm Log does not properly redirect to 'current' tab
+
 * issue: Unselecting all hosts results in SQL error
+
 * issue: Exporting to CSV not working properly
+
 * compat: Remove deprecated split() command
 
 --- 1.03 ---
 
 * feature: Add alarm host and counts to sms messages
+
 * issue: Fix issue with individual syslog html messages
+
 * issue: Fix creating alarms and removals from the syslog tab
+
 * issue: Fix syslog removal UI with respect to rule type's
 
 --- 1.02 ---
 
-* feature: Add syslog database functions to mitigate issues with same system installs
+* feature: Add syslog database functions to mitigate issues with same system
+  installs
 
 --- 1.01 ---
 
 * feature: Add alert commands by popular demand
+
 * issue#0001788: missing closing quote in syslog_alerts.php
-* issue#0001785: revision 1086 can not save reports when using seperate syslog mysql database
+
+* issue#0001785: revision 1086 can not save reports when using seperate syslog
+  mysql database
 
 --- 1.0 ---
 
 * feature: Support SMS e-mail messages
-* feature: Support MySQL partitioning for MySQL 5.1 and above for performance reasons
+
+* feature: Support MySQL partitioning for MySQL 5.1 and above for performance
+  reasons
+
 * feature: Normalize the syslog table for performance reasons
+
 * feature: Allow editing of Alerts, Removal Rules and Reports
+
 * feature: Priorities are now >= behavior from syslog interface
+
 * feature: Move Altering and Removal menu's to the Console
+
 * feature: Allow specification of foreground/background colors from UI
+
 * feature: Add Walter Zorn's tooltip to syslog messages (www.walterzorn.com)
+
 * feature: Allow the syslog page to be sorted
-* feature: Add Removal Rules to simply move log messages to a lower priority table
+
+* feature: Add Removal Rules to simply move log messages to a lower priority
+  table
+
 * feature: Use more Javascript on the Syslog page
+
 * feature: Add HTML e-Mail capability with CSS
+
 * feature: Display Alert Log history from the UI
+
 * feature: Allow Removal Rules to be filtered from the UI
+
 * feature: Add Reporting capability
+
 * feature: Add Threshold Alarms
+
 * feature: Add Alert Severity to Alarms
+
 * feature: Turn images to buttons
 
 --- 0.5.2 ---
 
 * issue: Fixes to make syslog work properly when using the Superlinks plugin
+
 * issue: Fix a few image errors
 
 --- 0.5.1 ---
@@ -282,44 +461,77 @@ The sylog plugin has been in development for well over a decade with increasing 
 
 --- 0.5 ---
 
-* feature: Modified Message retrieval function to better make use of indexes, which greatly speeds it up
-* feature: When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
+* feature: Modified Message retrieval function to better make use of indexes,
+  which greatly speeds it up
+
+* feature: When adding a removal rule, only that rule will execute immediately,
+  instead of rerunning all rules
+
 * feature: Alert email now uses the Alert Name in the subject
+
 * feature: Add ability to create Reports
+
 * feature: Allow access for the guest account
+
 * feature: Change name to syslog, from haloe
+
 * feature: Use mailer options from the Settings Plugin
+
 * feature: Add option for From Email address and From Display Name
+
 * feature: Use new "api_user_realm_auth" from Plugin Architecture
+
 * issue#0000046 - Event text colors (black) when setup a event color in black
+
 * issue#0000047 - Change the Priority and Levels to be in Ascending order
+
 * issue: Fixes for errors when using removal rules
-* issue: Minor fix for error that would sometimes cause Syslog to not be processed
+
+* issue: Minor fix for error that would sometimes cause Syslog to not be
+  processed
+
 * issue: Update SQL to include indexes
+
 * issue: Fix pagination of Alerts and Removal Rules
-* issue: Lots of code / html cleanup for faster pages loads (use a little CSS also)
-* issue: Fix for improper display of html entities in the syslog message (thanks dagonet)
+
+* issue: Lots of code / html cleanup for faster pages loads (use a little CSS
+  also)
+
+* issue: Fix for improper display of html entities in the syslog message (thanks
+  dagonet)
+
 * issue: Fix Cacti 0.8.7 compatibility
 
 --- 0.4 ---
 
 * issue#0000034 - Fix for shadow.gif file error in httpd logs.
-* issue#0000036 - Syslog plugin causes duplicates if multiple log processors are running at once
+
+* issue#0000036 - Syslog plugin causes duplicates if multiple log processors are
+  running at once
+
 * issue#0000037 - Option for max time to save syslog events
+
 * issue: Removed some debugging code
 
 --- 0.3 ---
 
 * feature: Move Processing code to its own file
+
 * feature: Add Debugging to the Processing Code (/debug)
+
 * issue: Fixed an issue with "message" being hard coded
+
 * issue: Fixed a typo in the removal code
 
 --- 0.2 ---
 
 * issue#0000010 Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
-* issue#0000013 - Fix issues with database names with uncommon characters by enclosing in back-ticks
+
+* issue#0000013 - Fix issues with database names with uncommon characters by
+  enclosing in back-ticks
+
 * issue: Fixed a minor error that caused the graphs page to not refresh
+
 * issue: Modified SQL query in syslog processor to speed things up greatly
 
 --- 0.1 ---

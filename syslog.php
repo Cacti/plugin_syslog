@@ -981,7 +981,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals;
+	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals, $syslogdb_default, $database_default;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -1318,8 +1318,8 @@ function syslog_filter($sql_where, $tab) {
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
 
 								$hosts = syslog_db_fetch_assoc("SELECT sh.host_id, sh.host, h.id
-									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-									LEFT JOIN host AS h
+									FROM `$syslogdb_default`.`syslog_hosts` AS sh
+									LEFT JOIN `$database_default`.host AS h
 									ON sh.host = h.hostname
 									OR sh.host = h.description
 									OR sh.host LIKE substring_index(h.hostname, '.', 1)
