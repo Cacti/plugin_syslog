@@ -75,7 +75,7 @@ $UDPServerRun 514
 $ModLoad ommysql
 
 $template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message) \
-  values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated%', '%HOSTNAME%', TRIM('%msg%'))", SQL
+  values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated:::date-mysql%', '%HOSTNAME%', TRIM('%msg%'))", SQL
 
 *.* >localhost,my_database,my_user,my_password;cacti_syslog
 ```
