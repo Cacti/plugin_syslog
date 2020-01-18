@@ -578,6 +578,8 @@ function sql_hosts_where($tab) {
 	$hostfilter_log = '';
 	$hosts_array    = array();
 
+	include(dirname(__FILE__) . '/config.php');
+
 	if (!isempty_request_var('host') && get_nfilter_request_var('host') != 'null') {
 		$hostarray = explode(',', trim(get_nfilter_request_var('host')));
 		if ($hostarray[0] != '0') {
@@ -585,8 +587,8 @@ function sql_hosts_where($tab) {
 				input_validate_input_number($host_id);
 
 				if ($host_id > 0) {
-					$log_host = db_fetch_cell_prepared('SELECT host
-						FROM syslog_hosts
+					$log_host = syslog_db_fetch_cell_prepared('SELECT host
+						FROM `' . $syslogdb_default . '`.`syslog_hosts`
 						WHERE host_id = ?',
 						array($host_id));
 
@@ -802,12 +804,12 @@ function syslog_manage_items($from_table, $to_table) {
 				if ($remove['method'] != 'del') {
 					$sql_sel = "SELECT seq FROM `" . $syslogdb_default . "`. $from_table
 						WHERE facility_id IN
-							(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
+							(SELECT distinct facility_id FROM `". $syslogdb_default . "`syslog_facilities
 							WHERE facility ='". $remove['message']."')";
 				} else {
 					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table
 						WHERE facility_id IN
-							(SELECT distinct facility_id from `". $syslogdb_default . "`syslog_facilities
+							(SELECT distinct facility_id FROM `". $syslogdb_default . "`syslog_facilities
 							WHERE facility ='". $remove['message']."')";
 				}
 
@@ -816,12 +818,12 @@ function syslog_manage_items($from_table, $to_table) {
 					$sql_sel = "SELECT seq
 						FROM `" . $syslogdb_default . "`. $from_table
 						WHERE host_id in
-							(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
+							(SELECT distinct host_id FROM `". $syslogdb_default . "`syslog_hosts
 							WHERE host ='". $remove['message']."')";
 				} else {
 					$sql_dlt = "DELETE FROM `" . $syslogdb_default . "`. $from_table
 						WHERE host_id in
-							(SELECT distinct host_id from `". $syslogdb_default . "`syslog_hosts
+							(SELECT distinct host_id FROM `". $syslogdb_default . "`syslog_hosts
 							WHERE host ='". $remove['message']."')";
 				}
 			} elseif ($remove['type'] == 'messageb') {

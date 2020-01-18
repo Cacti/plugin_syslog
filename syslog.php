@@ -420,6 +420,9 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 
 function syslog_stats_filter() {
 	global $config, $item_rows;
+
+	include(dirname(__FILE__) . '/config.php');
+
 	?>
 	<tr class='even'>
 		<td>
@@ -435,7 +438,7 @@ function syslog_stats_filter() {
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
 							$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
-								FROM syslog_hosts AS sh
+								FROM `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 								LEFT JOIN host AS h
 								ON sh.host = h.hostname
 								OR sh.host = h.description
@@ -466,7 +469,7 @@ function syslog_stats_filter() {
 							<option value='-2'<?php if (get_request_var('facility') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
 							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT facility_id, facility
-								FROM syslog_facilities AS sf
+								FROM `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ORDER BY facility');
 
 							if (cacti_sizeof($facilities)) {
@@ -486,7 +489,7 @@ function syslog_stats_filter() {
 							<option value='-2'<?php if (get_request_var('priority') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
 							$priorities = syslog_db_fetch_assoc('SELECT DISTINCT priority_id, priority
-								FROM syslog_priorities AS sp
+								FROM `' . $syslogdb_default . '`.`syslog_priorities` AS sp
 								ORDER BY priority');
 
 							if (cacti_sizeof($priorities)) {
@@ -820,7 +823,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			if ($thold_pos !== false) {
 				$ids = array_rekey(
 					syslog_db_fetch_assoc('SELECT id
-						FROM syslog_alert
+						FROM `' . $syslogdb_default . '`.`syslog_alert`
 						WHERE method = 1'),
 					'id', 'id'
 				);
@@ -981,7 +984,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals, $syslogdb_default, $database_default;
+	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -1318,8 +1321,8 @@ function syslog_filter($sql_where, $tab) {
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
 
 								$hosts = syslog_db_fetch_assoc("SELECT sh.host_id, sh.host, h.id
-									FROM `$syslogdb_default`.`syslog_hosts` AS sh
-									LEFT JOIN `$database_default`.host AS h
+									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+									LEFT JOIN host AS h
 									ON sh.host = h.hostname
 									OR sh.host = h.description
 									OR sh.host LIKE substring_index(h.hostname, '.', 1)

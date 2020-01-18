@@ -160,6 +160,8 @@ that.
 * issue#104: When filtering, syslog incorrectly thinks the Cacti hosts table
   does not exist
 
+* issue#107: Removal rule not using correct DB when using $use_cacti_db = false;
+
 --- 2.5 ---
 
 * issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps
