@@ -248,14 +248,6 @@ function syslog_statistics() {
 
 	$rows_query_string = "SELECT COUNT(*)
 		FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
-		LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
-		ON ss.facility_id=sf.facility_id
-		LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
-		ON ss.priority_id=sp.priority_id
-		LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS spr
-		ON ss.program_id=spr.program_id
-		LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-		ON ss.host_id=sh.host_id
 		$sql_where
 		$sql_groupby";
 
@@ -349,36 +341,36 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 		// Do nothing
 	} elseif (get_request_var('host') != '-1' && get_request_var('host') != '') {
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'ss.host_id=' . get_request_var('host');
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sh.host';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'host_id';
 	} else {
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sh.host';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'host_id';
 	}
 
 	if (get_request_var('facility') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('facility') != '-1' && get_request_var('facility') != '') {
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'ss.facility_id=' . get_request_var('facility');
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sf.facility';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'facility_id';
 	} else {
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sf.facility';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'facility_id';
 	}
 
 	if (get_request_var('priority') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('priority') != '-1' && get_request_var('priority') != '') {
 		$sql_where .= ($sql_where == '' ? 'WHERE ': ' AND ') . 'ss.priority_id=' . get_request_var('priority');
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sp.priority';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'priority_id';
 	} else {
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'sp.priority';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'priority_id';
 	}
 
 	if (get_request_var('program') == '-2') {
 		// Do nothing
 	} elseif (get_request_var('program') != '-1' && get_request_var('program') != '') {
 		$sql_where .= ($sql_where == '' ? 'WHERE ': ' AND ') . 'ss.program_id=' . get_request_var('program');
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'spr.program';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'program_id';
 	} else {
-		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'spr.program';
+		$sql_groupby .= ($sql_groupby != '' ? ', ':'') . 'program_id';
 	}
 
 	if (get_request_var('timespan') != '-1') {
@@ -398,8 +390,13 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 
 	$time = 'FROM_UNIXTIME(TRUNCATE(UNIX_TIMESTAMP(insert_time)/' . get_request_var('timespan') . ',0)*' . get_request_var('timespan') . ') AS insert_time';
 
-	$query_sql = "SELECT sh.host, sf.facility, sp.priority, spr.program, sum(ss.records) AS records, $time
-		FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
+	$query_sql = "SELECT sh.host, sf.facility, sp.priority, spr.program, records, insert_time
+		FROM (
+			SELECT host_id, facility_id, priority_id, program_id, sum(records) AS records, $time
+			FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
+			$sql_where
+			$sql_groupby
+		) AS ss
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_facilities` AS sf
 		ON ss.facility_id=sf.facility_id
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_priorities` AS sp
@@ -408,8 +405,6 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 		ON ss.program_id=spr.program_id
 		LEFT JOIN `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 		ON ss.host_id=sh.host_id
-		$sql_where
-		$sql_groupby
 		$sql_order
 		$sql_limit";
 

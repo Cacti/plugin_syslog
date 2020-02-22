@@ -162,6 +162,8 @@ that.
 
 * issue#107: Removal rule not using correct DB when using $use_cacti_db = false;
 
+* issue: Massive performance improvement in statistics page rendering
+
 --- 2.5 ---
 
 * issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps
