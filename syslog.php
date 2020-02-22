@@ -986,9 +986,9 @@ function syslog_filter($sql_where, $tab) {
 	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `" . $syslogdb_default . "`.`syslog_incoming`");
 
 	if (isset_request_var('date1')) {
-		$filter_text = __(' [ Start: \'%s\' to End: \'%s\', Unprocessed Messages: %s ]', get_request_var('date1'), get_request_var('date2'), $unprocessed, 'syslog');
+		$filter_text = __esc(' [ Start: \'%s\' to End: \'%s\', Unprocessed Messages: %s ]', get_request_var('date1'), get_request_var('date2'), $unprocessed, 'syslog');
 	} else {
-		$filter_text = __('[ Unprocessed Messages: %s ]', $unprocessed, 'syslog');
+		$filter_text = __esc('[ Unprocessed Messages: %s ]', $unprocessed, 'syslog');
 	}
 
 	?>

@@ -155,12 +155,14 @@ that.
 
 ## ChangeLog
 
---- develop ---
+--- 2.6 ---
 
 * issue#104: When filtering, syslog incorrectly thinks the Cacti hosts table
   does not exist
 
 * issue#107: Removal rule not using correct DB when using $use_cacti_db = false;
+
+* issue#109: Should merge CVE-2020-7106 solution to syslog plugin
 
 * issue: Massive performance improvement in statistics page rendering
 

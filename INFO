@@ -1,6 +1,6 @@
 [info]
 name = syslog
-version = 2.5
+version = 2.6
 longname = Syslog Monitoring
 author = The Cacti Group
 email = 
