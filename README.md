@@ -164,6 +164,8 @@ that.
 
 * issue#109: Should merge CVE-2020-7106 solution to syslog plugin
 
+* issue#110: Syslog Alerts cause DB errors
+
 * issue: Massive performance improvement in statistics page rendering
 
 --- 2.5 ---

@@ -388,14 +388,14 @@ if (cacti_sizeof($query)) {
 							if ($alert['method'] == 0) $alertm  = $alerth;
 							$alertm .= "-----------------------------------------------\n";
 							$alertm .= __('Hostname:', 'syslog') . ' ' . html_escape($a['host']) . "\n";
-							$alertm .= __('Date:', 'syslog')     . ' ' . $a['date'] . ' ' . $a['time'] . "\n";
+							$alertm .= __('Date:', 'syslog')     . ' ' . $a['logtime'] . "\n";
 							$alertm .= __('Severity:', 'syslog') . ' ' . $severities[$alert['severity']] . "\n\n";
 							$alertm .= __('Level:', 'syslog')    . ' ' . $syslog_levels[$a['priority_id']] . "\n\n";
 							$alertm .= __('Message:', 'syslog')  . ' ' . "\n" . html_escape($a['message']) . "\n";
 
 							if ($alert['method'] == 0) $htmlm   = $htmlh;
 							$htmlm  .= '<tr><td>' . $a['host']                        . '</td>';
-							$htmlm  .= '<td>'     . $a['date'] . ' ' . $a['time']     . '</td>';
+							$htmlm  .= '<td>'     . $a['logtime']                     . '</td>';
 							$htmlm  .= '<td>'     . $severities[$alert['severity']]   . '</td>';
 							$htmlm  .= '<td>'     . $syslog_levels[$a['priority_id']] . '</td>';
 							$htmlm  .= '<td>'     . html_escape($a['message']) . '</td></tr>';
@@ -410,8 +410,8 @@ if (cacti_sizeof($query)) {
 								$ignore = syslog_db_fetch_cell('SELECT count(*)
 									FROM syslog_logs
 									WHERE alert_id=' . $alert['id'] . "
-									AND logtime>'$date'
-									AND host='" . $a['host'] . "'");
+									AND logtime > '$date'
+									AND host = " . db_qstr($a['host']));
 							}
 
 							if (!$ignore) {
