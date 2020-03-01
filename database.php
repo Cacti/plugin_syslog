@@ -134,3 +134,18 @@ function syslog_sql_save($array_items, $table_name, $key_cols = 'id', $autoinc =
 	return sql_save($array_items, $table_name, $key_cols, $autoinc, $syslog_cnn);
 }
 
+/* syslog_db_table_exists - checks whether a table exists
+   @param $table - the name of the table
+   @param $log - whether to log error messages, defaults to true
+   @returns - (bool) the output of the sql query as a single variable */
+function syslog_db_table_exists($table, $log = true) {
+	global $syslog_cnn;
+
+	preg_match("/([`]{0,1}(?<database>[\w_]+)[`]{0,1}\.){0,1}[`]{0,1}(?<table>[\w_]+)[`]{0,1}/", $table, $matches);
+	if ($matches !== false && array_key_exists('table', $matches)) {
+		$sql = 'SHOW TABLES LIKE \'' . $matches['table'] . '\'';
+		return (db_fetch_cell($sql, '', $log, $syslog_cnn) ? true : false);
+	}
+	return false;
+}
+
