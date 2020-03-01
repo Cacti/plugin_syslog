@@ -432,21 +432,27 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog');?></option>
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
-							$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
-								FROM `' . $syslogdb_default . '`.`syslog_hosts` AS sh
-								LEFT JOIN host AS h
-								ON sh.host = h.hostname
-								OR sh.host = h.description
-								OR sh.host LIKE substring_index(h.hostname, ".", 1)
-								OR sh.host LIKE substring_index(h.description, ".", 1)
-								ORDER BY host');
+							if (syslog_db_table_exists('host', false)) {
+								$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
+									FROM `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+									LEFT JOIN host AS h
+									ON sh.host = h.hostname
+									OR sh.host = h.description
+									OR sh.host LIKE substring_index(h.hostname, ".", 1)
+									OR sh.host LIKE substring_index(h.description, ".", 1)
+									ORDER BY host');
+							} else {
+								$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, "0" AS id
+									FROM `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+									ORDER BY host');
+							}
 
 							if (cacti_sizeof($hosts)) {
 								foreach ($hosts as $host) {
 									if (!empty($host['id'])) {
 										$class = get_device_leaf_class($host['id']);
 									} else {
-										$class = 'deviceUnknown';
+										$class = 'deviceUp';
 									}
 
 									print '<option class="' . $class . '" value="' . $host['host_id'] . '"'; if (get_request_var('host') == $host['host_id']) { print ' selected'; } print '>' . $host['host'] . '</option>';
@@ -1315,15 +1321,22 @@ function syslog_filter($sql_where, $tab) {
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
 
-								$hosts = syslog_db_fetch_assoc("SELECT sh.host_id, sh.host, h.id
-									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
-									LEFT JOIN host AS h
-									ON sh.host = h.hostname
-									OR sh.host = h.description
-									OR sh.host LIKE substring_index(h.hostname, '.', 1)
-									OR sh.host LIKE substring_index(h.description, '.', 1)
-									$hosts_where
-									ORDER BY host");
+								if (syslog_db_table_exists('host', false)) {
+									$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
+										FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+										LEFT JOIN host AS h
+										ON sh.host = h.hostname
+										OR sh.host = h.description
+										OR sh.host LIKE substring_index(h.hostname, '.', 1)
+										OR sh.host LIKE substring_index(h.description, '.', 1)
+										$hosts_where
+										ORDER BY host");
+								} else {
+									$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, "0" AS id
+										FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+										$hosts_where
+										ORDER BY host");
+								}
 
 								$selected = explode(',', get_request_var('host'));
 
@@ -1337,7 +1350,7 @@ function syslog_filter($sql_where, $tab) {
 										if (!empty($host['id'])) {
 											$class = get_device_leaf_class($host['id']);
 										} else {
-											$class = 'deviceUnknown';
+											$class = 'deviceUp';
 										}
 
 										print "<option class='$class' value='" . $host['host_id'] . "'";

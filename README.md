@@ -166,6 +166,8 @@ that.
 
 * issue#110: Syslog Alerts cause DB errors
 
+* issue#111: Can not load host table when use different syslog server
+
 * issue: Massive performance improvement in statistics page rendering
 
 --- 2.5 ---
