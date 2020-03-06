@@ -155,6 +155,10 @@ that.
 
 ## ChangeLog
 
+--- develop ---
+
+* issue#116: Background process fail to operate syslog_coming table; syslog_process.php fail if current workdir is not CACTI_TOP
+
 --- 2.7 ---
 
 * issue#110: Syslog Alerts cause DB errors
