@@ -22,10 +22,9 @@
  +-------------------------------------------------------------------------+
 */
 
-include('./include/cli_check.php');
-include_once('./lib/poller.php');
-include('./plugins/syslog/config.php');
-include_once('./plugins/syslog/functions.php');
+include(dirname(__FILE__) . '/../../include/cli_check.php');
+include(dirname(__FILE__) . '/config.php');
+include_once(dirname(__FILE__) . '/functions.php');
 
 /* Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events

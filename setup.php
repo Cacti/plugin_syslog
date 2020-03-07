@@ -212,7 +212,7 @@ function syslog_check_upgrade() {
 
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = array('plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php');
-	if (!in_array(get_current_page(), $files)) {
+	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' &&  !in_array(get_current_page(), $files)) {
 		return;
 	}
 
