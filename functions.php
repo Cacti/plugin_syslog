@@ -247,7 +247,7 @@ function syslog_remove_items($table, $uniqueID) {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
-							FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
 								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ON sf.facility_id = si.facility_id
@@ -290,7 +290,7 @@ function syslog_remove_items($table, $uniqueID) {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
-							FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
 								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ON sf.facility_id = si.facility_id
@@ -333,7 +333,7 @@ function syslog_remove_items($table, $uniqueID) {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
-							FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
 								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ON sf.facility_id = si.facility_id
@@ -372,7 +372,7 @@ function syslog_remove_items($table, $uniqueID) {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
-							FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
 								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ON sf.facility_id = si.facility_id
@@ -411,7 +411,7 @@ function syslog_remove_items($table, $uniqueID) {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
-							FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
 								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ON sf.facility_id = si.facility_id
@@ -450,7 +450,7 @@ function syslog_remove_items($table, $uniqueID) {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
-							FROM (SELECT si.date, si.time, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
 								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 								ON sf.facility_id = si.facility_id

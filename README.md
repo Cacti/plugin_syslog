@@ -157,6 +157,8 @@ that.
 
 --- develop ---
 
+* issue#115: Some field where not corrected following the version change
+
 * issue#116: Background process fail to operate syslog_coming table; syslog_process.php fail if current workdir is not CACTI_TOP
 
 --- 2.7 ---
