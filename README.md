@@ -155,13 +155,13 @@ that.
 
 ## ChangeLog
 
---- develop ---
+--- 2.8 ---
 
 * issue#115: Some field where not corrected following the version change
 
 * issue#116: Background process fail to operate syslog_coming table; syslog_process.php fail if current workdir is not CACTI_TOP
 
-* issue#1117: Export of rules does not work when using db other than Cacti
+* issue#117: Export of rules does not work when using db other than Cacti
 
 --- 2.7 ---
 
