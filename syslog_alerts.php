@@ -224,6 +224,8 @@ function form_actions() {
 }
 
 function alert_export() {
+	include(dirname(__FILE__) . '/config.php');
+
 	/* if we are to save this form, instead of display it */
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
@@ -232,8 +234,8 @@ function alert_export() {
 			$output = '<templates>' . PHP_EOL;
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
-					$data = db_fetch_row_prepared('SELECT *
-						FROM syslog_alert
+					$data = syslog_db_fetch_row_prepared('SELECT *
+						FROM `' . $syslogdb_default . '`.`syslog_alert`
 						WHERE id = ?',
 						array($id));
 
@@ -422,7 +424,9 @@ function syslog_action_edit() {
 			$header_label = __('Alert Edit [new]', 'syslog');
 		}
 	} elseif (isset_request_var('id') && get_nfilter_request_var('action') == 'newedit') {
-		$syslog_rec = syslog_db_fetch_row("SELECT * FROM `" . $syslogdb_default . "`.`syslog` WHERE seq=" . get_request_var("id") . (isset_request_var('date') ? " AND logtime='" . get_request_var("date") . "'":""));
+		$syslog_rec = syslog_db_fetch_row("SELECT *
+			FROM `" . $syslogdb_default . "`.`syslog`
+			WHERE seq=" . get_request_var("id") . (isset_request_var('date') ? " AND logtime='" . get_request_var("date") . "'":""));
 
 		$header_label = __('Alert Edit [new]', 'syslog');
 		if (cacti_sizeof($syslog_rec)) {

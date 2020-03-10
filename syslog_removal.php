@@ -247,6 +247,8 @@ function form_actions() {
 }
 
 function removal_export() {
+	include(dirname(__FILE__) . '/config.php');
+
 	/* if we are to save this form, instead of display it */
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
@@ -255,8 +257,8 @@ function removal_export() {
 			$output = '<templates>' . PHP_EOL;
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
-					$data = db_fetch_row_prepared('SELECT *
-						FROM syslog_remove
+					$data = syslog_db_fetch_row_prepared('SELECT *
+						FROM `' . $syslogdb_default . '`.`syslog_remove`
 						WHERE id = ?',
 						array($id));
 

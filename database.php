@@ -79,9 +79,10 @@ function syslog_db_fetch_cell($sql, $col_name = '', $log = TRUE) {
 
 /* syslog_db_fetch_cell_prepared - run a 'select' sql query and return the first column of the
      first row found
-   @param $sql - the sql query to execute
-   @param $col_name - use this column name instead of the first one
-   @param $log - whether to log error messages, defaults to true
+   @arg $sql - the sql query to execute
+   @arg $params - an array of parameters
+   @arg $col_name - use this column name instead of the first one
+   @arg $log - whether to log error messages, defaults to true
    @returns - (bool) the output of the sql query as a single variable */
 function syslog_db_fetch_cell_prepared($sql, $params = array(), $col_name = '', $log = TRUE) {
 	global $syslog_cnn;
@@ -97,6 +98,16 @@ function syslog_db_fetch_row($sql, $log = TRUE) {
 	return db_fetch_row($sql, $log, $syslog_cnn);
 }
 
+/* syslog_db_fetch_row_prepared - run a 'select' sql query and return the first row found
+   @arg $sql - the sql query to execute
+   @arg $params - an array of parameters
+   @arg $log - whether to log error messages, defaults to true
+   @returns - the first row of the result as a hash */
+function syslog_db_fetch_row_prepared($sql, $params = array(), $log = TRUE) {
+	global $syslog_cnn;
+	return db_fetch_row_prepared($sql, $params, $log, $syslog_cnn);
+}
+
 /* syslog_db_fetch_assoc - run a 'select' sql query and return all rows found
    @arg $sql - the sql query to execute
    @arg $log - whether to log error messages, defaults to true
@@ -104,6 +115,16 @@ function syslog_db_fetch_row($sql, $log = TRUE) {
 function syslog_db_fetch_assoc($sql, $log = TRUE) {
 	global $syslog_cnn;
 	return db_fetch_assoc($sql, $log, $syslog_cnn);
+}
+
+/* syslog_db_fetch_assoc_prepared - run a 'select' sql query and return all rows found
+   @arg $sql - the sql query to execute
+   @arg $params - an array of parameters
+   @arg $log - whether to log error messages, defaults to true
+   @returns - the entire result set as a multi-dimensional hash */
+function syslog_db_fetch_assoc_prepared($sql, $params = array(), $log = TRUE) {
+	global $syslog_cnn;
+	return db_fetch_assoc($sql, $params, $log, $syslog_cnn);
 }
 
 /* syslog_db_fetch_insert_id - get the last insert_id or auto incriment
@@ -135,8 +156,8 @@ function syslog_sql_save($array_items, $table_name, $key_cols = 'id', $autoinc =
 }
 
 /* syslog_db_table_exists - checks whether a table exists
-   @param $table - the name of the table
-   @param $log - whether to log error messages, defaults to true
+   @arg $table - the name of the table
+   @arg $log - whether to log error messages, defaults to true
    @returns - (bool) the output of the sql query as a single variable */
 function syslog_db_table_exists($table, $log = true) {
 	global $syslog_cnn;

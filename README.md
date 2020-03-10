@@ -161,6 +161,8 @@ that.
 
 * issue#116: Background process fail to operate syslog_coming table; syslog_process.php fail if current workdir is not CACTI_TOP
 
+* issue#1117: Export of rules does not work when using db other than Cacti
+
 --- 2.7 ---
 
 * issue#110: Syslog Alerts cause DB errors
