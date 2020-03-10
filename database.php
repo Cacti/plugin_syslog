@@ -149,3 +149,13 @@ function syslog_db_table_exists($table, $log = true) {
 	return false;
 }
 
+function syslog_db_column_exists($table, $column, $log = true) {
+	global $syslog_cnn;
+	return db_column_exists($table, $column, $log, $syslog_cnn);
+}
+
+function syslog_db_add_column($table, $column, $log = true) {
+	global $syslog_cnn;
+	return db_add_column($table, $column, $log, $syslog_cnn);
+}
+

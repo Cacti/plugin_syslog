@@ -204,7 +204,7 @@ function syslog_connect() {
 }
 
 function syslog_check_upgrade() {
-	global $config, $cnn_id, $syslog_levels, $database_default, $syslog_upgrade;
+	global $config, $syslog_cnn, $cnn_id, $syslog_levels, $database_default, $syslog_upgrade;
 
 	include(dirname(__FILE__) . '/config.php');
 
@@ -237,7 +237,7 @@ function syslog_check_upgrade() {
 			print __('Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported.', 'syslog') . "\n";
 			exit;
 		} elseif ($old == 2) {
-			db_execute('ALTER TABLE syslog_statistics
+			syslog_db_execute('ALTER TABLE syslog_statistics
 				ADD COLUMN id BIGINT UNSIGNED auto_increment FIRST,
 				DROP PRIMARY KEY,
 				ADD PRIMARY KEY(id),
@@ -252,8 +252,8 @@ function syslog_check_upgrade() {
 			webpage='" . $version['homepage'] . "'
 			WHERE directory='" . $version['name'] . "' ");
 
-		if (!db_column_exists('syslog_alert', 'hash')) {
-			db_add_column('syslog_alert', array(
+		if (!syslog_db_column_exists('syslog_alert', 'hash')) {
+			syslog_db_add_column('syslog_alert', array(
 				'name'     => 'hash',
 				'type'     => 'varchar(32)',
 				'NULL'     => false,
@@ -261,7 +261,7 @@ function syslog_check_upgrade() {
 				'after'    => 'id')
 			);
 
-			db_add_column('syslog_remove', array(
+			syslog_db_add_column('syslog_remove', array(
 				'name'     => 'hash',
 				'type'     => 'varchar(32)',
 				'NULL'     => false,
@@ -269,7 +269,7 @@ function syslog_check_upgrade() {
 				'after'    => 'id')
 			);
 
-			db_add_column('syslog_reports', array(
+			syslog_db_add_column('syslog_reports', array(
 				'name'     => 'hash',
 				'type'     => 'varchar(32)',
 				'NULL'     => false,
@@ -278,8 +278,8 @@ function syslog_check_upgrade() {
 			);
 		}
 
-		if (db_column_exists('syslog_incoming', 'date')) {
-			db_execute("ALTER TABLE syslog_incoming
+		if (syslog_db_column_exists('syslog_incoming', 'date')) {
+			syslog_db_execute("ALTER TABLE syslog_incoming
 				DROP COLUMN date,
 				CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
 		}
@@ -291,7 +291,7 @@ function syslog_check_upgrade() {
 		if (cacti_sizeof($alerts)) {
 			foreach($alerts as $a) {
 				$hash = get_hash_syslog($a['id'], 'syslog_alert');
-				db_execute_prepared('UPDATE syslog_alert
+				syslog_db_execute_prepared('UPDATE syslog_alert
 					SET hash = ?
 					WHERE id = ?',
 					array($hash, $a['id']));
@@ -305,7 +305,7 @@ function syslog_check_upgrade() {
 		if (cacti_sizeof($removes)) {
 			foreach($removes as $r) {
 				$hash = get_hash_syslog($r['id'], 'syslog_remove');
-				db_execute_prepared('UPDATE syslog_remove
+				syslog_db_execute_prepared('UPDATE syslog_remove
 					SET hash = ?
 					WHERE id = ?',
 					array($hash, $r['id']));
@@ -319,14 +319,13 @@ function syslog_check_upgrade() {
 		if (cacti_sizeof($reports)) {
 			foreach($reports as $r) {
 				$hash = get_hash_syslog($r['id'], 'syslog_reports');
-				db_execute_prepared('UPDATE syslog_reports
+				syslog_db_execute_prepared('UPDATE syslog_reports
 					SET hash = ?
 					WHERE id = ?',
 					array($hash, $r['id']));
 			}
 		}
 	}
-
 }
 
 function syslog_get_mysql_version($db = 'cacti') {
