@@ -176,11 +176,15 @@ while (1) {
 syslog_debug('Unique ID = ' . $uniqueID);
 
 /* flag all records with the uniqueID prior to moving */
-syslog_db_execute('UPDATE `' . $syslogdb_default . '`.`syslog_incoming` SET status=' . $uniqueID . ' WHERE status=0');
+syslog_db_execute('UPDATE `' . $syslogdb_default . '`.`syslog_incoming`
+	SET status = ' . $uniqueID . '
+	WHERE status = 0');
 
 api_plugin_hook('plugin_syslog_before_processing');
 
-$syslog_incoming = db_affected_rows($syslog_cnn);
+$syslog_incoming = db_fetch_cell('SELECT COUNT(seq)
+	FROM `' . $syslogdb_default . '`.`syslog_incoming`
+	WHERE status = ' . $uniqueID);
 
 syslog_debug('Found   ' . $syslog_incoming .  ', New Message(s) to process');
 
@@ -191,7 +195,7 @@ if ($syslog_domains != '') {
 
 	foreach($domains as $domain) {
 		syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
-			SET host=SUBSTRING_INDEX(host,'.',1)
+			SET host = SUBSTRING_INDEX(host, '.', 1)
 			WHERE host LIKE '%$domain'");
 	}
 }

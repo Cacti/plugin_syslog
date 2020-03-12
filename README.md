@@ -155,6 +155,10 @@ that.
 
 ## ChangeLog
 
+--- develop ---
+
+* issue: Syslog stats not reporting properly
+
 --- 2.8 ---
 
 * issue#115: Some field where not corrected following the version change

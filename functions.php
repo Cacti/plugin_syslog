@@ -284,7 +284,7 @@ function syslog_remove_items($table, $uniqueID) {
 							WHERE facility_id = ' . $facility_id;
 					}
 				}
-			}elseif ($remove['type'] == 'host') {
+			} elseif ($remove['type'] == 'host') {
 				if ($table == 'syslog_incoming') {
 					if ($remove['method'] != 'del') {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
@@ -444,7 +444,7 @@ function syslog_remove_items($table, $uniqueID) {
 							WHERE message LIKE ' . db_qstr('%' . $remove['message']);
 					}
 				}
-			}elseif ($remove['type'] == 'sql') {
+			} elseif ($remove['type'] == 'sql') {
 				if ($table == 'syslog_incoming') {
 					if ($remove['method'] != 'del') {
 						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
@@ -507,8 +507,6 @@ function syslog_remove_items($table, $uniqueID) {
 			}
 		}
 	}
-
-	if ($removed == 0) $xferred = $total;
 
 	return array('removed' => $removed, 'xferred' => $xferred);
 }
@@ -598,7 +596,7 @@ function sql_hosts_where($tab) {
 				}
 			}
 
-			if (sizeof($hosts_array)) {
+			if (cacti_sizeof($hosts_array)) {
 				$hostfilter_log = ' host IN(' . implode(',', $hosts_array) . ')';
 			}
 
@@ -717,7 +715,7 @@ function syslog_debug($message) {
 	global $syslog_debug;
 
 	if ($syslog_debug) {
-		echo 'SYSLOG: ' . trim($message) . "\n";
+		print 'SYSLOG: ' . trim($message) . "\n";
 	}
 }
 
@@ -767,7 +765,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save['alert_name']  = $alert_name;
 
 		if (cacti_sizeof($hosts)) {
-			foreach($hosts as $host){
+			foreach($hosts as $host) {
 				$save['host'] = $host;
 				api_plugin_hook_function('syslog_update_hostsalarm', $save);
 			}
