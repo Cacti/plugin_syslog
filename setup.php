@@ -1078,8 +1078,8 @@ function syslog_config_arrays () {
 	$menu2 = array ();
 	foreach ($menu as $temp => $temp2 ) {
 		$menu2[$temp] = $temp2;
-		if ($temp == __('Import/Export', 'syslog')) {
-			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php'] = __('Alert Rules', 'syslog');
+		if ($temp == __('Import/Export')) {
+			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
 			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
 		}

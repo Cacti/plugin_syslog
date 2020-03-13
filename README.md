@@ -159,6 +159,8 @@ that.
 
 * issue: Syslog stats not reporting properly
 
+* issue: Internationalization issues on console
+
 --- 2.8 ---
 
 * issue#115: Some field where not corrected following the version change
