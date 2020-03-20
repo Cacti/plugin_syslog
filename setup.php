@@ -1088,6 +1088,11 @@ function syslog_config_arrays () {
 
 	$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
 
+	if (function_exists('auth_augment_roles')) {
+		auth_augment_roles(__('Normal User'), array('syslog.php'));
+		auth_augment_roles(__('System Administration'), array('syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'));
+	}
+
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
 		$messages['syslog_info'] = array('message' => $_SESSION['syslog_info'], 'type' => 'info');
 	}
