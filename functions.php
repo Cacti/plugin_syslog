@@ -530,7 +530,7 @@ function syslog_log_row_color($severity, $tip_title) {
 		break;
 	}
 
-	print "<tr class='$class'>\n";
+	print "<tr class='tableRow selectable $class'>\n";
 }
 
 /** function syslog_row_color()

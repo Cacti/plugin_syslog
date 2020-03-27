@@ -157,6 +157,8 @@ that.
 
 --- develop ---
 
+* issue#120: SQL syntax error for syslog when click browser back button
+
 * issue: Syslog stats not reporting properly
 
 * issue: Internationalization issues on console

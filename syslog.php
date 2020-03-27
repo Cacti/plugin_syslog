@@ -303,10 +303,13 @@ function syslog_statistics() {
 	}
 
 	if (cacti_sizeof($records)) {
+		$i = 0;
+
 		foreach ($records as $r) {
 			$time = date($date_format, strtotime($r['insert_time']));
 
-			form_alternate_row();
+			form_alternate_row('line' . $i);
+
 			print '<td>' . (get_request_var('host') != '-2' ? $r['host']:'-') . '</td>';
 			print '<td>' . (get_request_var('facility') != '-2' ? ucfirst($r['facility']):'-') . '</td>';
 			print '<td>' . (get_request_var('priority') != '-2' ? ucfirst($r['priority']):'-') . '</td>';
@@ -314,7 +317,10 @@ function syslog_statistics() {
 			//print '<td class="right">' . $r['insert_time'] . '</td>';
 			print '<td class="right">' . $time . '</td>';
 			print '<td class="right">' . number_format_i18n($r['records'], -1)     . '</td>';
+
 			form_end_row();
+
+			$i++;
 		}
 	} else {
 		print "<tr><td colspan='4'><em>" . __('No Syslog Statistics Found', 'syslog') . "</em></td></tr>";
@@ -1159,13 +1165,13 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function clearFilter() {
-		strURL = 'syslog.php?header=false&clear=true';
-
+		strURL  = 'syslog.php?tab=' + pageTab;
+		strURL += '&header=false&clear=true';
 		loadPageNoHeader(strURL);
 	}
 
 	function saveSettings() {
-		strURL  = 'syslog.php?action=save';
+		strURL  = 'syslog.php?action=save&tab=' + pageTab;
 		strURL += '&trimval='+$('#trimval').val();
 		strURL += '&rows='+$('#rows').val();
 		strURL += '&removal='+$('#removal').val();
