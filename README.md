@@ -155,7 +155,7 @@ that.
 
 ## ChangeLog
 
---- develop ---
+--- 2.9 ---
 
 * issue#120: SQL syntax error for syslog when click browser back button
 
