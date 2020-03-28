@@ -274,7 +274,7 @@ if (read_config_option('syslog_html') == 'on') {
 
 $from_email = read_config_option('settings_from_email');
 if ($from_email == '') {
-	$from_email = 'root@localhost';
+	$from_email = 'Cacti@cacti.net';
 }
 
 $from_name  = read_config_option('settings_from_name');
