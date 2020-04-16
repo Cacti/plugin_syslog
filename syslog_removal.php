@@ -397,7 +397,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($removal)) {
-			$header_label = __('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
+			$header_label = __esc('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
 		} else {
 			$header_label = __('Removal Rule Edit [new]', 'syslog');
 

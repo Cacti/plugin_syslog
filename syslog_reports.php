@@ -364,7 +364,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($report)) {
-			$header_label = __('Report Edit [edit: %s]', $report['name'], 'syslog');
+			$header_label = __esc('Report Edit [edit: %s]', $report['name'], 'syslog');
 		} else {
 			$header_label = __('Report Edit [new]', 'syslog');
 

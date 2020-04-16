@@ -419,7 +419,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($alert)) {
-			$header_label = __('Alert Edit [edit: %s]' . $alert['name'], 'syslog');
+			$header_label = __esc('Alert Edit [edit: %s]' . $alert['name'], 'syslog');
 		} else {
 			$header_label = __('Alert Edit [new]', 'syslog');
 		}
