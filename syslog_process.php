@@ -363,7 +363,7 @@ if (cacti_sizeof($query)) {
 						$alertm .= __('Count:', 'syslog')          . ' ' . sizeof($at)       . "\n";
 						$alertm .= __('Message String:', 'syslog') . ' ' . html_escape($alert['message']) . "\n";
 
-						$htmlm  .= '<body><h1>' . __('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
+						$htmlm  .= '<body><h1>' . __esc('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
 						$htmlm  .= '<table cellspacing="0" cellpadding="3" border="1">';
 						$htmlm  .= '<tr><th>' . __('Alert Name', 'syslog') . '</th><th>' . __('Severity', 'syslog') . '</th><th>' . __('Threshold', 'syslog') . '</th><th>' . __('Count', 'syslog') . '</th><th>' . __('Match String', 'syslog') . '</th></tr>';
 						$htmlm  .= '<tr><td>' . html_escape($alert['name']) . '</td>';
@@ -372,7 +372,7 @@ if (cacti_sizeof($query)) {
 						$htmlm  .= '<td>'     . sizeof($at)       . '</td>';
 						$htmlm  .= '<td>'     . html_escape($alert['message']) . '</td></tr></table><br>';
 					}else{
-						$htmlm .= '<body><h1>' . __('Cacti Syslog Plugin Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
+						$htmlm .= '<body><h1>' . __esc('Cacti Syslog Plugin Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
 					}
 
 					$htmlm .= '<table>';
@@ -423,7 +423,7 @@ if (cacti_sizeof($query)) {
 								$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $a, 1, $htmlm);
 								$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Host:', 'syslog') . $a['host'] . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 
-								syslog_sendemail(trim($alert['email']), $from, __('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
+								syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
 
 								if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
 									if (is_executable(read_config_option('syslog_ticket_command'))) {
@@ -472,7 +472,7 @@ if (cacti_sizeof($query)) {
 			}
 
 			if ($resend) {
-				syslog_sendemail(trim($alert['email']), $from, __('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
+				syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
 
 				if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
 					if (is_executable(read_config_option('syslog_ticket_command'))) {
@@ -699,7 +699,7 @@ if (cacti_sizeof($reports)) {
 
 					$smsalert  = '';
 
-					syslog_sendemail($syslog_report['email'], $from, __('Event Report - %s', $syslog_report['name'], 'syslog'), $headtext, $smsalert);
+					syslog_sendemail($syslog_report['email'], $from, __esc('Event Report - %s', $syslog_report['name'], 'syslog'), $headtext, $smsalert);
 				}
 			}
 		} else {

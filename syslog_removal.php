@@ -341,7 +341,7 @@ function api_syslog_removal_reprocess($id) {
 		WHERE id = ?',
 		array($id));
 
-	raise_message('syslog_info' . $id, __('Rule \'%s\' resulted in %s/%s messages removed/transferred', $name, $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
+	raise_message('syslog_info' . $id, __esc('Rule \'%s\' resulted in %s/%s messages removed/transferred', $name, $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
 }
 
 /* ---------------------
@@ -839,9 +839,9 @@ function removal_import() {
 				$id = sql_save($save, 'syslog_remove');
 
 				if ($id) {
-					raise_message('syslog_info' . $id, __('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+					raise_message('syslog_info' . $id, __esc('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
 				} else {
-					raise_message('syslog_info' . $id, __('ERROR: Removal Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
+					raise_message('syslog_info' . $id, __esc('ERROR: Removal Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 				}
 			}
 		}
