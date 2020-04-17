@@ -155,6 +155,10 @@ that.
 
 ## ChangeLog
 
+--- develop ---
+
+* issue#122: Apply Cacti#3191 for XSS exposure (CVE-2020-7106)
+
 --- 2.9 ---
 
 * issue#120: SQL syntax error for syslog when click browser back button
