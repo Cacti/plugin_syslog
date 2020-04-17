@@ -149,7 +149,7 @@ function form_actions() {
 
 	form_start('syslog_removal.php');
 
-	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
 
 	/* setup some variables */
 	$removal_array = array(); $removal_list = '';
