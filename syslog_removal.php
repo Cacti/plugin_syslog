@@ -758,9 +758,7 @@ function import() {
 		)
 	);
 
-	?>
-	<form method='post' action='syslog_removal.php' enctype='multipart/form-data'>
-	<?php
+	form_start('syslog_removal.php', '', true);
 
 	html_start_box(__('Import Removal Rule', 'syslog'), '100%', false, '3', 'center', '');
 

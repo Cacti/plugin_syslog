@@ -741,9 +741,7 @@ function import() {
 		)
 	);
 
-	?>
-	<form method='post' action='syslog_reports.php' enctype='multipart/form-data'>
-	<?php
+	form_start('syslog_reports.php', '', true);
 
 	html_start_box(__('Import Report Data', 'syslog'), '100%', false, '3', 'center', '');
 
