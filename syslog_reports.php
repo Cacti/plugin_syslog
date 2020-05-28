@@ -152,7 +152,7 @@ function form_actions() {
 				FROM `' . $syslogdb_default . '`.`syslog_reports`
 				WHERE id=' . $matches[1]);
 
-			$report_list  .= '<li>' . $report_info . '</li>';
+			$report_list  .= '<li>' . html_escape($report_info) . '</li>';
 			$report_array[] = $matches[1];
 		}
 	}

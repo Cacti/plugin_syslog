@@ -152,7 +152,7 @@ function form_actions() {
 			/* ==================================================== */
 
 			$alert_info = syslog_db_fetch_cell('SELECT name FROM `' . $syslogdb_default . '`.`syslog_alert` WHERE id=' . $matches[1]);
-			$alert_list .= '<li>' . $alert_info . '</li>';
+			$alert_list .= '<li>' . html_escape($alert_info) . '</li>';
 			$alert_array[] = $matches[1];
 		}
 	}
@@ -789,7 +789,7 @@ function syslog_alerts() {
 	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
 			form_alternate_row('line' . $alert['id'], true);
-			form_selectable_cell("<a class='linkEditMain' href='" . $config['url_path'] . 'plugins/syslog/syslog_alerts.php?action=edit&id=' . $alert['id'] . "'>" . ((get_request_var('filter') != '') ? preg_replace('/(' . preg_quote(get_request_var('filter')) . ')/i', "<span class='filteredValue'>\\1</span>", $alert['name']) : $alert['name']) . '</a>', $alert['id']);
+			form_selectable_cell(filter_value($alert['name'], get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_alerts.php?action=edit&id=' . $alert['id']), $alert['id']);
 			form_selectable_cell($severities[$alert['severity']], $alert['id']);
 			form_selectable_cell(($alert['method'] == 1 ? __('Threshold', 'syslog'):__('Individual', 'syslog')), $alert['id']);
 			form_selectable_cell(($alert['method'] == 1 ? $alert['num']:__('N/A', 'syslog')), $alert['id']);
