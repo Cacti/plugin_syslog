@@ -451,37 +451,38 @@ if (cacti_sizeof($query)) {
 					$alertm .= "-----------------------------------------------\n\n";
 
 					if ($alert['method'] == 1) {
+						//The syslog_sendemail should be called prior to syslog_log_alert, otherwise, the $found always larger than 0
+						if ($alertm != '') {
+							$resend = true;
+							if ($alert['repeat_alert'] > 0) {
+								$found = syslog_db_fetch_cell('SELECT count(*)
+									FROM syslog_logs
+									WHERE alert_id=' . $alert['id'] . "
+									AND logtime>'$date'");
+
+								if ($found) $resend = false;
+							}
+
+							if ($resend) {
+								syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
+
+								if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
+									if (is_executable(read_config_option('syslog_ticket_command'))) {
+										exec(read_config_option('syslog_ticket_command') .
+											" --alert-name='" . clean_up_name($alert['name']) . "'" .
+											" --severity='"   . $alert['severity'] . "'" .
+											" --hostlist='"   . implode(',',$hostlist) . "'" .
+											" --message='"    . $alert['message'] . "'");
+									}
+								}
+							}
+						}
+						
 						$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $at[0], sizeof($at), $htmlm, $hostlist);
 						$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Count:', 'syslog') . sizeof($at) . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 					}
 
 					syslog_debug("Alert Rule '" . $alert['name'] . "' has been activated");
-				}
-			}
-		}
-
-		if ($alertm != '' && $alert['method'] == 1) {
-			$resend = true;
-			if ($alert['repeat_alert'] > 0) {
-				$found = syslog_db_fetch_cell('SELECT count(*)
-					FROM syslog_logs
-					WHERE alert_id=' . $alert['id'] . "
-					AND logtime>'$date'");
-
-				if ($found) $resend = false;
-			}
-
-			if ($resend) {
-				syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), ($html ? $htmlm:$alertm), $smsalert);
-
-				if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
-					if (is_executable(read_config_option('syslog_ticket_command'))) {
-						exec(read_config_option('syslog_ticket_command') .
-							" --alert-name='" . clean_up_name($alert['name']) . "'" .
-							" --severity='"   . $alert['severity'] . "'" .
-							" --hostlist='"   . implode(',',$hostlist) . "'" .
-							" --message='"    . $alert['message'] . "'");
-					}
 				}
 			}
 		}
