@@ -849,9 +849,7 @@ function import() {
 		)
 	);
 
-	?>
-	<form method='post' action='syslog_alerts.php' enctype='multipart/form-data'>
-	<?php
+	form_start('syslog_alerts.php', '', true);
 
 	html_start_box(__('Import Alert Rule', 'syslog'), '100%', false, '3', 'center', '');
 
