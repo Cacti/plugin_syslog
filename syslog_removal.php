@@ -165,7 +165,7 @@ function form_actions() {
 				FROM `" . $syslogdb_default . "`.`syslog_remove`
 				WHERE id=" . $matches[1]);
 
-			$removal_list  .= '<li>' . $removal_info . '</li>';
+			$removal_list  .= '<li>' . html_escape($removal_info) . '</li>';
 			$removal_array[] = $matches[1];
 		}
 	}
