@@ -795,8 +795,8 @@ function syslog_alerts() {
 			form_selectable_cell(($alert['method'] == 1 ? $alert['num']:__('N/A', 'syslog')), $alert['id']);
 			form_selectable_cell((($alert['enabled'] == 'on') ? __('Yes', 'syslog'):__('No', 'syslog')), $alert['id']);
 			form_selectable_cell($message_types[$alert['type']], $alert['id']);
-			form_selectable_cell(title_trim($alert['message'],60), $alert['id']);
-			form_selectable_cell((substr_count($alert['email'], ',') ? __('Multiple', 'syslog'):$alert['email']), $alert['id']);
+			form_selectable_cell(title_trim(html_escape($alert['message']),60), $alert['id']);
+			form_selectable_cell((substr_count($alert['email'], ',') ? __('Multiple', 'syslog'):html_escape($alert['email'])), $alert['id']);
 			form_selectable_cell(date('Y-m-d H:i:s', $alert['date']), $alert['id']);
 			form_selectable_cell($alert['user'], $alert['id']);
 			form_checkbox_cell($alert['name'], $alert['id']);

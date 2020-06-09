@@ -685,7 +685,7 @@ function syslog_report() {
 			form_selectable_cell(filter_value(title_trim($report['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id']), $report['id']);
 			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes', 'syslog'):__('No', 'syslog')), $report['id']);
 			form_selectable_cell($message_types[$report['type']], $report['id']);
-			form_selectable_cell($report['message'], $report['id']);
+			form_selectable_cell(html_escape($report['message']), $report['id']);
 			form_selectable_cell($syslog_freqs[$report['timespan']], $report['id']);
 			form_selectable_cell($syslog_times[$report['timepart']], $report['id']);
 			form_selectable_cell(($report['lastsent'] == 0 ? __('Never', 'syslog'): date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);
