@@ -43,7 +43,11 @@ if (get_request_var('action') == 'ajax_programs') {
 	return get_ajax_programs(true);
 } elseif (get_request_var('action') == 'ajax_programs_wnone') {
 	return get_ajax_programs(true, true);
+} elseif (get_request_var('action') == 'save') {
+	save_settings();
+	exit;
 }
+
 
 $title = __('Syslog Viewer', 'syslog');
 
@@ -62,11 +66,6 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, array('options' => array('
 
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
-
-if (get_request_var('action') == 'save') {
-	save_settings();
-	exit;
-}
 
 /* validate the syslog post/get/request information */;
 if ($current_tab != 'stats') {
@@ -1138,13 +1137,16 @@ function syslog_filter($sql_where, $tab) {
 	});
 
 	function applyTimespan() {
-		strURL  = urlPath+'plugins/syslog/syslog.php?header=false';
+		var strURL  = urlPath+'plugins/syslog/syslog.php?header=false';
+
 		strURL += '&predefined_timespan=' + $('#predefined_timespan').val();
+
 		loadPageNoHeader(strURL);
 	}
 
 	function applyFilter() {
-		strURL  = 'syslog.php?tab='+pageTab;
+		var strURL  = 'syslog.php?tab='+pageTab;
+
 		strURL += '&header=false';
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
@@ -1165,47 +1167,56 @@ function syslog_filter($sql_where, $tab) {
 	}
 
 	function clearFilter() {
-		strURL  = 'syslog.php?tab=' + pageTab;
+		var strURL  = 'syslog.php?tab=' + pageTab;
+
 		strURL += '&header=false&clear=true';
+
 		loadPageNoHeader(strURL);
 	}
 
 	function saveSettings() {
-		strURL  = 'syslog.php?action=save&tab=' + pageTab;
-		strURL += '&trimval='+$('#trimval').val();
-		strURL += '&rows='+$('#rows').val();
-		strURL += '&removal='+$('#removal').val();
-		strURL += '&refresh='+$('#refresh').val();
-		strURL += '&efacility='+$('#efacility').val();
-		strURL += '&epriority='+$('#epriority').val();
-		strURL += '&eprogram='+$('#eprogram').val();
+		var strURL  = 'syslog.php?action=save&tab=' + pageTab;
+		var data    = {};
+
+		data.trimval      = $('#trimval').val();
+		data.rows         = $('#rows').val();
+		data.removal      = $('#removal').val();
+		data.refresh      = $('#refresh').val();
+		data.efacility    = $('#efacility').val();
+		data.epriority    = $('#epriority').val();
+		data.eprogram     = $('#eprogram').val();
+		data.__csrf_magic = csrfMagicToken;
 
 		if ($('#predefined_timespan').val() > 0) {
-			strURL += '&predefined_timespan='+$('#predefined_timespan').val();
+			data.predefined_timespan = $('#predefined_timespan').val();
 		}
 
-		strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
+		data.predefined_timeshift = $('#predefined_timeshift').val();
 
-		$.get(strURL, function() {
+		$.post(strURL, data).finished(function() {
 			$('#text').show().text('Filter Settings Saved').fadeOut(2000);
 		});
 	}
 
 	function timeshiftFilterLeft() {
-		strURL  = 'syslog.php?tab='+pageTab+'&header=false';
+		var strURL  = 'syslog.php?tab='+pageTab+'&header=false';
+
 		strURL += '&shift_left=true';
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
 		strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
+
 		loadPageNoHeader(strURL);
 	}
 
 	function timeshiftFilterRight() {
-		strURL  = 'syslog.php?tab='+pageTab+'&header=false';
+		var strURL  = 'syslog.php?tab='+pageTab+'&header=false';
+
 		strURL += '&shift_right=true';
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
 		strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
+
 		loadPageNoHeader(strURL);
 	}
 
@@ -1747,38 +1758,28 @@ function syslog_messages($tab = 'syslog') {
 function save_settings() {
 	global $current_tab;
 
-	syslog_request_validation($current_tab);
+//	syslog_request_validation($current_tab);
 
-	if (cacti_sizeof($_REQUEST)) {
-		foreach($_REQUEST as $var => $value) {
-			switch($var) {
-			case 'rows':
-				set_user_setting('syslog_rows', get_request_var('rows'));
-				break;
-			case 'refresh':
-				set_user_setting('syslog_refresh', get_request_var('refresh'));
-				break;
-			case 'removal':
-				set_user_setting('syslog_removal', get_request_var('removal'));
-				break;
-			case 'trimval':
-				set_user_setting('syslog_trimval', get_request_var('trimval'));
-				break;
-			case 'efacility':
-				set_user_setting('syslog_efacility', get_request_var('efacility'));
-				break;
-			case 'epriority':
-				set_user_setting('syslog_epriority', get_request_var('epriority'));
-				break;
-			case 'eprogram':
-				set_user_setting('syslog_eprogram', get_request_var('eprogram'));
-				break;
-			case 'predefined_timespan':
-				set_user_setting('default_timespan', get_request_var('predefined_timespan'));
-				break;
-			case 'predefined_timeshift':
-				set_user_setting('default_timeshift', get_request_var('predefined_timeshift'));
-				break;
+	$variables = array(
+		'rows',
+		'refresh',
+		'removal',
+		'trimval',
+		'efacility',
+		'priority',
+		'eprogram',
+		'predefined_timespan',
+		'predefined_timeshift',
+	);
+
+	foreach($variables as $v) {
+		if (isset_request_var($v)) {
+			// Accomdate predefined
+			if (strpos($v, 'predefined') !== false) {
+				$v = str_replace('predefined_', 'default_', $v);
+				set_user_setting($v, get_request_var($v));
+			} else {
+				set_user_setting('syslog_' . $v, get_request_var($v));
 			}
 		}
 	}
