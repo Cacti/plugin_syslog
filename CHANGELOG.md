@@ -1,6 +1,6 @@
 ## ChangeLog
 
---- develop ---
+--- 3.0 ---
 
 * issue#122: Apply Cacti#3191 for XSS exposure (CVE-2020-7106)
 
