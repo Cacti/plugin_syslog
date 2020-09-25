@@ -4,6 +4,8 @@
 
 * issue#122: Apply Cacti#3191 for XSS exposure (CVE-2020-7106)
 
+* issue#124: Feature request: Syslog Search for message NOT containing something
+
 * issue#128：The syslog alert email is not sent if the Reporting Method is set to threshold.
 
 * issue#132: Cacti log shows syslog error when setting the "Re-Alert Cycle" in Alert Rules settings

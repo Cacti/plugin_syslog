@@ -185,8 +185,8 @@ function syslog_statistics() {
             'filter' => FILTER_VALIDATE_INT,
             'default' => '1'
             ),
-        'filter' => array(
-            'filter' => FILTER_DEFAULT,
+        'rfilter' => array(
+            'filter' => FILTER_VALIDATE_IS_REGEX,
             'pageset' => true,
             'default' => ''
             ),
@@ -252,7 +252,7 @@ function syslog_statistics() {
 
 	$total_rows = syslog_db_fetch_cell('SELECT COUNT(*) FROM ('. $rows_query_string  . ') as temp');
 
-	$nav = html_nav_bar('syslog.php?tab=stats&filter=' . get_request_var_request('filter'), MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 4, __('Messages', 'syslog'), 'page', 'main');
+	$nav = html_nav_bar('syslog.php?tab=stats', MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, 4, __('Messages', 'syslog'), 'page', 'main');
 
 	print $nav;
 
@@ -336,10 +336,10 @@ function get_stats_records(&$sql_where, &$sql_groupby, $rows) {
 	include(dirname(__FILE__) . '/config.php');
 
 	/* form the 'where' clause for our main sql query */
-	if (!isempty_request_var('filter')) {
+	if (!isempty_request_var('rfilter')) {
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
-			'sh.host LIKE '       . db_qstr('%' . get_request_var('filter') . '%') . '
-			OR spr.program LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
+			'sh.host RLIKE "'       . get_request_var('rfilter') . '"
+			OR spr.program RLIKE "' . get_request_var('rfilter') . '"';
 	}
 
 	if (get_request_var('host') == '-2') {
@@ -521,7 +521,7 @@ function syslog_stats_filter() {
 						<?php print __('Search', 'syslog');?>
 					</td>
 					<td>
-						<input type='text' id='filter' size='30' value='<?php print html_escape_request_var('filter');?>' onChange='applyFilter()'>
+						<input type='text' id='rfilter' size='30' value='<?php print html_escape_request_var('rfilter');?>' onChange='applyFilter()'>
 					</td>
 					<td>
 						<?php print __('Time Range', 'syslog');?>
@@ -601,7 +601,7 @@ function syslog_stats_filter() {
 			strURL += '&priority=' + $('#priority').val();
 			strURL += '&program=' + $('#eprogram').val();
 			strURL += '&timespan=' + $('#timespan').val();
-			strURL += '&filter=' + $('#filter').val();
+			strURL += '&rfilter=' + base64_encode($('#rfilter').val());
 			strURL += '&rows=' + $('#rows').val();
 			loadPageNoHeader(strURL);
 		}
@@ -699,8 +699,8 @@ function syslog_request_validation($current_tab, $force = false) {
             'pageset' => true,
             'default' => read_user_setting('syslog_eprogram', '-1', $force),
             ),
-        'filter' => array(
-            'filter' => FILTER_DEFAULT,
+        'rfilter' => array(
+            'filter' => FILTER_VALIDATE_IS_REGEX,
             'pageset' => true,
             'default' => ''
             ),
@@ -860,11 +860,11 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			'sa.id=' . get_request_var('id');
 	}
 
-	if (!isempty_request_var('filter')) {
+	if (!isempty_request_var('rfilter')) {
 		if ($tab == 'syslog') {
-			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'message LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'message RLIKE "' . get_request_var('rfilter') . '"';
 		} else {
-			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'logmsg LIKE ' . db_qstr('%' . get_request_var('filter') . '%');
+			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'logmsg RLIKE "' . get_request_var('rfilter') . '"';
 		}
 	}
 
@@ -1151,7 +1151,7 @@ function syslog_filter($sql_where, $tab) {
 		strURL += '&date1='+$('#date1').val();
 		strURL += '&date2='+$('#date2').val();
 		strURL += '&host='+$('#host').val();
-		strURL += '&filter='+$('#filter').val();
+		strURL += '&rfilter='+base64_encode($('#rfilter').val());
 		strURL += '&efacility='+$('#efacility').val();
 		strURL += '&epriority='+$('#epriority').val();
 		strURL += '&eprogram='+$('#eprogram').val();
@@ -1324,7 +1324,7 @@ function syslog_filter($sql_where, $tab) {
 							<?php print __('Search', 'syslog');?>
 						</td>
 						<td>
-							<input type='text' id='filter' size='30' value='<?php print html_escape_request_var('filter');?>' onChange='applyFilter()'>
+							<input type='text' id='rfilter' size='30' value='<?php print html_escape_request_var('rfilter');?>' onChange='applyFilter()'>
 						</td>
 						<td>
 							<?php print __('Devices', 'syslog');?>
@@ -1661,7 +1661,7 @@ function syslog_messages($tab = 'syslog') {
 				form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
 				form_selectable_cell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 				form_selectable_cell($sm['program'], $sm['seq'], '', 'left');
-				form_selectable_cell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('filter')), $sm['seq'], '', 'left syslogMessage');
+				form_selectable_cell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')), $sm['seq'], '', 'left syslogMessage');
 				form_selectable_cell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 				form_selectable_cell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 
@@ -1728,11 +1728,11 @@ function syslog_messages($tab = 'syslog') {
 
 				syslog_log_row_color($log['severity'], $title);
 
-				form_selectable_cell(filter_value(strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
+				form_selectable_cell(filter_value(strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
 
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']]:__('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
-				form_selectable_cell(filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('filter')), $log['seq'], '', 'syslogMessage left');
+				form_selectable_cell(filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('rfilter')), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
 				form_selectable_cell($log['host'], $log['seq'], '', 'right');
