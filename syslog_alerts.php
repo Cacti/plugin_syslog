@@ -391,7 +391,7 @@ function get_repeat_array() {
 		$repeat_end = ($alert_retention * 24 * 60 * $multiplier) / 5;
 	}
 
-	if ($repeat_end) {
+	if (isset($repeat_end)) {
 		foreach ($repeatarray as $i => $value) {
 			if ($i > $repeat_end) {
 				unset($repeatarray[$i]);
