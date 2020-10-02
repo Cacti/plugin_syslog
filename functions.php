@@ -566,7 +566,7 @@ function syslog_row_color($priority, $message) {
 		break;
 	}
 
-	print "<tr title='" . html_escape($message) . "' class='selectable $class syslogRow'>\n";
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow'>";
 }
 
 function sql_hosts_where($tab) {

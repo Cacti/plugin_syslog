@@ -1499,7 +1499,7 @@ function syslog_syslog_legend() {
 	global $disabled_color, $notmon_color, $database_default;
 
 	html_start_box('', '100%', '', '3', 'center', '');
-	print '<tr>';
+	print '<tr class="">';
 	print "<td width='10%' class='logEmergency'>" . __('Emergency', 'syslog') . '</td>';
 	print "<td width='10%' class='logCritical'>"  . __('Critical', 'syslog')  . '</td>';
 	print "<td width='10%' class='logAlert'>"     . __('Alert', 'syslog')     . '</td>';
@@ -1519,7 +1519,7 @@ function syslog_log_legend() {
 	global $disabled_color, $notmon_color, $database_default;
 
 	html_start_box('', '100%', '', '3', 'center', '');
-	print '<tr>';
+	print '<tr class="">';
 	print "<td width='10%' class='logCritical'>" . __('Critical', 'syslog')      . '</td>';
 	print "<td width='10%' class='logWarning'>"  . __('Warning', 'syslog')       . '</td>';
 	print "<td width='10%' class='logNotice'>"   . __('Notice', 'syslog')        . '</td>';
@@ -1651,8 +1651,8 @@ function syslog_messages($tab = 'syslog') {
 				if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 					$url = '';
 					if ($sm['mtype'] == 'main') {
-						$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/add.png'></a>";
-						$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><img src='" . $config['url_path'] . "plugins/syslog/images/delete.png'></a>";
+						$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i>";
+						$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><i class='deviceDown fas fa-minus-circle'></i>";
 					}
 
 					form_selectable_cell($url, $sm['seq'], '', 'left');

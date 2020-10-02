@@ -12,6 +12,8 @@
 
 * issue#133: Saving Settings on the Syslog Tab are not retained in latest Cacti
 
+* feature: Migrate all Syslog Images to Fontawesome Glyphs
+
 --- 2.9 ---
 
 * issue#120: SQL syntax error for syslog when click browser back button
