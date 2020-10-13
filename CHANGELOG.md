@@ -12,6 +12,8 @@
 
 * issue#133: Saving Settings on the Syslog Tab are not retained in latest Cacti
 
+* issue#138: Syslog install with option 'upgrade_type=truncate' removes records from table syslog_alert and syslog_remove
+
 * feature: Migrate all Syslog Images to Fontawesome Glyphs
 
 --- 2.9 ---
