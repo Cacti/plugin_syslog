@@ -427,7 +427,7 @@ function syslog_setup_table_new($options) {
 		syslog_create_partitioned_syslog_table($engine, $options['days']);
 	}
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`");
+	//if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,
 		`hash` varchar(32) NOT NULL default '',
@@ -461,7 +461,7 @@ function syslog_setup_table_new($options) {
 		INDEX program (program),
 		INDEX `status` (`status`)) ENGINE=$engine;");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
+	//if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_remove` (
 		id int(10) NOT NULL auto_increment,
 		`hash` varchar(32) NOT NULL default '',
