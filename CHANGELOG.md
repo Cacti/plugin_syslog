@@ -12,7 +12,10 @@
 
 * issue#133: Saving Settings on the Syslog Tab are not retained in latest Cacti
 
+* feature#134: Syslog Search to include Program column - Reports
+
 * feature: Migrate all Syslog Images to Fontawesome Glyphs
+
 
 --- 2.9 ---
 

@@ -402,12 +402,15 @@ function syslog_setup_table_new($options) {
 
 	/* validate some simple information */
 	$mysqlVersion = syslog_get_mysql_version('syslog');
-	$truncate     = ((isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate') ? true:false);
-	$engine       = ((isset($options['engine']) && $options['engine'] == 'innodb') ? 'InnoDB':'MyISAM');
-	$partitioned  = ((isset($options['db_type']) && $options['db_type'] == 'part') ? true:false);
+	$truncate     = isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate' ? true:false;
+	$engine       = isset($options['engine']) && $options['engine'] == 'innodb' ? 'InnoDB':'MyISAM';
+	$partitioned  = isset($options['db_type']) && $options['db_type'] == 'part' ? true:false;
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`");
+	if ($truncate) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`");
+	}
+
 	if (!$partitioned) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
 			facility_id int(10) unsigned default NULL,
@@ -427,7 +430,10 @@ function syslog_setup_table_new($options) {
 		syslog_create_partitioned_syslog_table($engine, $options['days']);
 	}
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`");
+	if ($truncate) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_alert`");
+	}
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,
 		`hash` varchar(32) NOT NULL default '',
@@ -1049,6 +1055,7 @@ function syslog_config_arrays () {
 		'messagec' => __('Contains', 'syslog'),
 		'messagee' => __('Ends with', 'syslog'),
 		'host'     => __('Hostname is', 'syslog'),
+		'program'  => __('Program is', 'syslog'),
 		'facility' => __('Facility is', 'syslog'),
 		'sql'      => __('SQL Expression', 'syslog')
 	);

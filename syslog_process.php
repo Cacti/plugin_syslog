@@ -263,8 +263,11 @@ $syslog_removed = $syslog_items['removed'];
 $syslog_xferred = $syslog_items['xferred'];
 
 /* send out the alerts */
-$query = syslog_db_fetch_assoc('SELECT * FROM `' . $syslogdb_default . "`.`syslog_alert` WHERE enabled='on'");
-$syslog_alerts  = sizeof($query);
+$query = syslog_db_fetch_assoc('SELECT *
+	FROM `' . $syslogdb_default . "`.`syslog_alert`
+	WHERE enabled='on'");
+
+$syslog_alerts = sizeof($query);
 
 if (read_config_option('syslog_html') == 'on') {
 	$html = true;
@@ -307,30 +310,36 @@ if (cacti_sizeof($query)) {
 		$th_sql   = '';
 
 		if ($alert['type'] == 'facility') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			$sql = 'SELECT *
+				FROM `' . $syslogdb_default . '`.`syslog_incoming`
 				WHERE ' . $syslog_incoming_config['facilityField'] . ' = ' . db_qstr($alert['message']) . '
 				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'messageb') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			$sql = 'SELECT *
+				FROM `' . $syslogdb_default . '`.`syslog_incoming`
 				WHERE ' . $syslog_incoming_config['textField'] . '
 				LIKE ' . db_qstr($alert['message'] . '%') . '
 				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'messagec') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			$sql = 'SELECT *
+				FROM `' . $syslogdb_default . '`.`syslog_incoming`
 				WHERE ' . $syslog_incoming_config['textField'] . '
 				LIKE ' . db_qstr('%' . $alert['message'] . '%') . '
 				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'messagee') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			$sql = 'SELECT *
+				FROM `' . $syslogdb_default . '`.`syslog_incoming`
 				WHERE ' . $syslog_incoming_config['textField'] . '
 				LIKE ' . db_qstr('%' . $alert['message']) . '
 				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'host') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			$sql = 'SELECT *
+				FROM `' . $syslogdb_default . '`.`syslog_incoming`
 				WHERE ' . $syslog_incoming_config['hostField'] . ' = ' . db_qstr($alert['message']) . '
 				AND status = ' . $uniqueID;
 		} else if ($alert['type'] == 'sql') {
-			$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			$sql = 'SELECT *
+				FROM `' . $syslogdb_default . '`.`syslog_incoming`
 				WHERE (' . $alert['message'] . ')
 				AND status=' . $uniqueID;
 		}
@@ -617,42 +626,56 @@ if (cacti_sizeof($reports)) {
 			$sql     = '';
 			$reptext = '';
 			if ($syslog_report['type'] == 'messageb') {
-				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				$sql = 'SELECT sl.*, sh.host
+					FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
 					WHERE message LIKE ' . db_qstr($syslog_report['message'] . '%');
 			}
 
 			if ($syslog_report['type'] == 'messagec') {
-				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				$sql = 'SELECT sl.*, sh.host
+					FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
 					WHERE message LIKE ' . db_qstr('%' . $syslog_report['message'] . '%');
 			}
 
 			if ($syslog_report['type'] == 'messagee') {
-				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				$sql = 'SELECT sl.*, sh.host
+					FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
 					WHERE message LIKE ' . db_qstr('%' . $syslog_report['message']);
 			}
 
 			if ($syslog_report['type'] == 'host') {
-				$sql = 'SELECT sl.*, sh.host FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				$sql = 'SELECT sl.*, sh.host
+					FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 					ON sl.host_id = sh.host_id
 					WHERE sh.host = ' . db_qstr($syslog_report['message']);
 			}
 
 			if ($syslog_report['type'] == 'facility') {
-				$sql = 'SELECT sl.*, sf.facility FROM `' . $syslogdb_default . '`.`syslog` AS sl
+				$sql = 'SELECT sl.*, sf.facility
+					FROM `' . $syslogdb_default . '`.`syslog` AS sl
 					INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
 					ON sl.facility_id = sf.facility_id
 					WHERE sf.facility = ' . db_qstr($syslog_report['message']);
 			}
 
+			if ($syslog_report['type'] == 'program') {
+				$sql = 'SELECT sl.*, sp.program
+					FROM `' . $syslogdb_default . '`.`syslog` AS sl
+					INNER JOIN `' . $syslogdb_default . '`.`syslog_programs` AS sp
+					ON sl.program_id = sp.program_id
+					WHERE sp.program = ' . db_qstr($syslog_report['message']);
+			}
+
 			if ($syslog_report['type'] == 'sql') {
-				$sql = 'SELECT * FROM `' . $syslogdb_default . '`.`syslog`
+				$sql = 'SELECT *
+					FROM `' . $syslogdb_default . '`.`syslog`
 					WHERE (' . $syslog_report['message'] . ')';
 			}
 
