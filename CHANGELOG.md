@@ -1,5 +1,13 @@
 ## ChangeLog
 
+--- 3.1 ---
+
+* issue#142: The indicator is not removed upon completion when export syslog
+
+* issue#141: Import syslog - Alert rule has error
+
+* issue#142: Syslog save button can not work well
+
 --- 3.0 ---
 
 * issue#122: Apply Cacti#3191 for XSS exposure (CVE-2020-7106)

@@ -136,7 +136,7 @@ function form_actions() {
 
 	form_start('syslog_reports.php');
 
-	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
 
 	/* setup some variables */
 	$report_array = array(); $report_list = '';
@@ -152,7 +152,7 @@ function form_actions() {
 				FROM `' . $syslogdb_default . '`.`syslog_reports`
 				WHERE id=' . $matches[1]);
 
-			$report_list  .= '<li>' . html_escape($report_info) . '</li>';
+			$report_list  .= '<li>' . $report_info . '</li>';
 			$report_array[] = $matches[1];
 		}
 	}
@@ -364,7 +364,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($report)) {
-			$header_label = __esc('Report Edit [edit: %s]', $report['name'], 'syslog');
+			$header_label = __('Report Edit [edit: %s]', $report['name'], 'syslog');
 		} else {
 			$header_label = __('Report Edit [new]', 'syslog');
 
@@ -685,7 +685,7 @@ function syslog_report() {
 			form_selectable_cell(filter_value(title_trim($report['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id']), $report['id']);
 			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes', 'syslog'):__('No', 'syslog')), $report['id']);
 			form_selectable_cell($message_types[$report['type']], $report['id']);
-			form_selectable_cell(html_escape($report['message']), $report['id']);
+			form_selectable_cell($report['message'], $report['id']);
 			form_selectable_cell($syslog_freqs[$report['timespan']], $report['id']);
 			form_selectable_cell($syslog_times[$report['timepart']], $report['id']);
 			form_selectable_cell(($report['lastsent'] == 0 ? __('Never', 'syslog'): date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);
@@ -713,6 +713,7 @@ function syslog_report() {
 			$(function() {
 				setTimeout(function() {
 					document.location = 'syslog_reports.php?action=export&selected_items=" . $_SESSION['exporter'] . "';
+					Pace.stop();
 				}, 250);
 			});
 			</script>";
@@ -741,7 +742,7 @@ function import() {
 		)
 	);
 
-	form_start('syslog_reports.php', '', true);
+	print "<form method='post' action='syslog_reports.php' enctype='multipart/form-data'>";
 
 	html_start_box(__('Import Report Data', 'syslog'), '100%', false, '3', 'center', '');
 
@@ -753,6 +754,7 @@ function import() {
 	);
 
 	html_end_box();
+
 	form_hidden_box('save_component_import', '1', '');
 
 	form_save_button('', 'import');
@@ -820,9 +822,9 @@ function report_import() {
 				$id = sql_save($save, 'syslog_reports');
 
 				if ($id) {
-					raise_message('syslog_info' . $id, __esc('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+					raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
 				} else {
-					raise_message('syslog_info' . $id, __esc('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
+					raise_message('syslog_info' . $id, __('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 				}
 			}
 		}

@@ -149,7 +149,7 @@ function form_actions() {
 
 	form_start('syslog_removal.php');
 
-	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
 
 	/* setup some variables */
 	$removal_array = array(); $removal_list = '';
@@ -165,7 +165,7 @@ function form_actions() {
 				FROM `" . $syslogdb_default . "`.`syslog_remove`
 				WHERE id=" . $matches[1]);
 
-			$removal_list  .= '<li>' . html_escape($removal_info) . '</li>';
+			$removal_list  .= '<li>' . $removal_info . '</li>';
 			$removal_array[] = $matches[1];
 		}
 	}
@@ -341,7 +341,7 @@ function api_syslog_removal_reprocess($id) {
 		WHERE id = ?',
 		array($id));
 
-	raise_message('syslog_info' . $id, __esc('Rule \'%s\' resulted in %s/%s messages removed/transferred', $name, $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
+	raise_message('syslog_info' . $id, __('Rule \'%s\' resulted in %s/%s messages removed/transferred', $name, $syslog_removed, $syslog_xferred, 'syslog'), MESSAGE_LEVEL_INFO);
 }
 
 /* ---------------------
@@ -397,7 +397,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($removal)) {
-			$header_label = __esc('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
+			$header_label = __('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
 		} else {
 			$header_label = __('Removal Rule Edit [new]', 'syslog');
 
@@ -730,6 +730,7 @@ function syslog_removal() {
 			$(function() {
 				setTimeout(function() {
 					document.location = 'syslog_removal.php?action=export&selected_items=" . $_SESSION['exporter'] . "';
+					Pace.stop();
 				}, 250);
 			});
 			</script>";
@@ -758,7 +759,7 @@ function import() {
 		)
 	);
 
-	form_start('syslog_removal.php', '', true);
+	print "<form method='post' action='syslog_removal.php' enctype='multipart/form-data'>";
 
 	html_start_box(__('Import Removal Rule', 'syslog'), '100%', false, '3', 'center', '');
 
@@ -770,6 +771,7 @@ function import() {
 	);
 
 	html_end_box();
+
 	form_hidden_box('save_component_import', '1', '');
 
 	form_save_button('', 'import');
@@ -837,9 +839,9 @@ function removal_import() {
 				$id = sql_save($save, 'syslog_remove');
 
 				if ($id) {
-					raise_message('syslog_info' . $id, __esc('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+					raise_message('syslog_info' . $id, __('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
 				} else {
-					raise_message('syslog_info' . $id, __esc('ERROR: Removal Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
+					raise_message('syslog_info' . $id, __('ERROR: Removal Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 				}
 			}
 		}

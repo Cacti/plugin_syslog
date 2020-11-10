@@ -821,6 +821,7 @@ function syslog_alerts() {
 			$(function() {
 				setTimeout(function() {
 					document.location = 'syslog_alerts.php?action=export&selected_items=" . $_SESSION['exporter'] . "';
+					Pace.stop();
 				}, 250);
 			});
 			</script>";
@@ -849,7 +850,7 @@ function import() {
 		)
 	);
 
-	form_start('syslog_alerts.php', '', true);
+	print "<form method='post' action='syslog_alerts.php' enctype='multipart/form-data'>";
 
 	html_start_box(__('Import Alert Rule', 'syslog'), '100%', false, '3', 'center', '');
 
