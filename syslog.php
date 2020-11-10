@@ -1164,6 +1164,7 @@ function syslog_filter($sql_where, $tab) {
 
 	function exportRecords() {
 		document.location = 'syslog.php?export=true';
+		Pace.stop();
 	}
 
 	function clearFilter() {
@@ -1193,7 +1194,7 @@ function syslog_filter($sql_where, $tab) {
 
 		data.predefined_timeshift = $('#predefined_timeshift').val();
 
-		$.post(strURL, data).finished(function() {
+		$.post(strURL, data).done(function() {
 			$('#text').show().text('Filter Settings Saved').fadeOut(2000);
 		});
 	}
