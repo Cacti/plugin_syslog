@@ -1929,6 +1929,11 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 		print "</span>";
 		print "<input type='hidden' id='" . $form_name . "' name='" . $form_name . "' value='" . html_escape($previous_id) . "'>";
 		?>
+		<style type='text/css'>
+		.syslogMessage {
+			white-space: normal !important;
+		}
+		</style>
 		<script type='text/javascript'>
 		var <?php print $form_name;?>Timer;
 		var <?php print $form_name;?>ClickTimer;
