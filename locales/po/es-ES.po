@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2020-12-12 22:16-0500\n"
-"PO-Revision-Date: 2019-04-01 21:12+0000\n"
+"PO-Revision-Date: 2020-12-14 19:44-0500\n"
 "Last-Translator: Javier Pobeda <javier.pobeda@pm.me>\n"
 "Language-Team: Spanish <http://translate.cacti.net/projects/cacti/syslog/es-ES/>\n"
-"Language: es-ES\n"
+"Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.4-dev\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: functions.php:53
 #, fuzzy
@@ -99,7 +99,6 @@ msgid "Partitioned Table"
 msgstr "Tabla Particionada"
 
 #: setup.php:680
-#, fuzzy
 msgid "Retention Policy"
 msgstr "Política de retención"
 
@@ -124,12 +123,10 @@ msgid "%d Per Day"
 msgstr "Por día"
 
 #: setup.php:716 setup.php:801
-#, fuzzy
 msgid "Upgrade"
 msgstr "Actualizar"
 
 #: setup.php:718 setup.php:803
-#, fuzzy
 msgid "Install"
 msgstr "Instalar"
 
@@ -194,7 +191,6 @@ msgid "Syslog Uninstall Preferences"
 msgstr "Preferencias de desinstalación de Syslog"
 
 #: setup.php:806
-#, fuzzy
 msgid "Uninstall"
 msgstr "Desinstalar"
 
@@ -263,7 +259,6 @@ msgid "If this checkbox is set, all hostnames are validated.  If the hostname is
 msgstr "Si esta casilla está activada, se validan todos los nombres de host.  Si el nombre del host no es válido. Todos los registros se asignan a un host especial llamado'invalidhost'.  Esta configuración puede afectar el tiempo de procesamiento del syslog en sistemas grandes.  Por lo tanto, el uso de este ajuste sólo debe utilizarse cuando no existan otros medios para evitar que esto ocurra."
 
 #: setup.php:884
-#, fuzzy
 msgid "Refresh Interval"
 msgstr "Intervalo de refresco"
 
@@ -331,7 +326,6 @@ msgid "Enable"
 msgstr "Habilitar"
 
 #: setup.php:959 syslog.php:1302 syslog_removal.php:37
-#, fuzzy
 msgid "Export"
 msgstr "Exportar"
 
@@ -341,24 +335,24 @@ msgid "Indefinite"
 msgstr "Indefinido"
 
 #: setup.php:1003 setup.php:1022 syslog.php:542 syslog_alerts.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "%d Day"
 msgstr "%d dia"
 
 #: setup.php:1004 setup.php:1005 setup.php:1006 setup.php:1007 setup.php:1008
 #: setup.php:1023 setup.php:1024 setup.php:1025 setup.php:1026 setup.php:1027
 #: syslog_alerts.php:383
-#, fuzzy, php-format
+#, php-format
 msgid "%d Days"
 msgstr "%d Días"
 
 #: setup.php:1009 setup.php:1028 syslog_alerts.php:384
-#, fuzzy, php-format
+#, php-format
 msgid "%d Week"
 msgstr "%d semana"
 
 #: setup.php:1010 setup.php:1029 syslog_alerts.php:385
-#, fuzzy, php-format
+#, php-format
 msgid "%d Weeks"
 msgstr "%d semanas"
 
@@ -379,7 +373,6 @@ msgid "%d Year"
 msgstr "%d Año"
 
 #: setup.php:1040 syslog_reports.php:691
-#, fuzzy
 msgid "Never"
 msgstr "Nunca"
 
@@ -397,34 +390,29 @@ msgid "%d Minutes"
 msgstr "%d Minutos"
 
 #: setup.php:1048 syslog.php:1468 syslog.php:1509 syslog.php:1526
-#, fuzzy
 msgid "Notice"
 msgstr "Aviso"
 
 #: setup.php:1049 syslog.php:1466 syslog.php:1508 syslog.php:1525
-#, fuzzy
 msgid "Warning"
 msgstr "Advertencia"
 
 #: setup.php:1050 syslog.php:1462 syslog.php:1505 syslog.php:1524
-#, fuzzy
 msgid "Critical"
 msgstr "Crítica"
 
 #: setup.php:1054
 #, fuzzy
 msgid "Begins with"
-msgstr "comienza con"
+msgstr "Comienza con"
 
 #: setup.php:1055
-#, fuzzy
 msgid "Contains"
-msgstr "contiene"
+msgstr "Contiene"
 
 #: setup.php:1056
-#, fuzzy
 msgid "Ends with"
-msgstr "termina con"
+msgstr "Termina con"
 
 #: setup.php:1057
 #, fuzzy
@@ -439,7 +427,7 @@ msgstr "Programa"
 #: setup.php:1059
 #, fuzzy
 msgid "Facility is"
-msgstr "La instalación es"
+msgstr "Instalaciones"
 
 #: setup.php:1060
 #, fuzzy
@@ -447,17 +435,14 @@ msgid "SQL Expression"
 msgstr "Expresión SQL"
 
 #: setup.php:1064
-#, fuzzy
 msgid "Daily"
 msgstr "Diario"
 
 #: setup.php:1065
-#, fuzzy
 msgid "Weekly"
 msgstr "Semanal"
 
 #: setup.php:1088
-#, fuzzy
 msgid "Import/Export"
 msgstr "Importar/Exportar"
 
@@ -483,11 +468,11 @@ msgstr "Reglas del informe"
 
 #: setup.php:1099
 msgid "Normal User"
-msgstr ""
+msgstr "Usuario estándar"
 
 #: setup.php:1100
 msgid "System Administration"
-msgstr ""
+msgstr "Administración del sistema"
 
 #: setup.php:1116
 #, fuzzy
@@ -495,14 +480,13 @@ msgid "Syslog Removals"
 msgstr "Mudanzas de Syslog"
 
 #: setup.php:1117 setup.php:1118 setup.php:1122 setup.php:1123 setup.php:1127
-#, fuzzy
 msgid "(Edit)"
 msgstr "(Editar)"
 
 #: setup.php:1119 setup.php:1124 setup.php:1128
 #, fuzzy
 msgid "(Actions)"
-msgstr "Acciones"
+msgstr "(acciones)"
 
 #: setup.php:1121
 #, fuzzy
@@ -545,7 +529,6 @@ msgid "Syslog Viewer"
 msgstr "Visor de Syslog"
 
 #: syslog.php:55
-#, fuzzy
 msgid "All Text"
 msgstr "Todo el texto"
 
@@ -561,7 +544,6 @@ msgid "System Logs"
 msgstr "Registros del sistema"
 
 #: syslog.php:114
-#, fuzzy
 msgid "Statistics"
 msgstr "Estadísticas"
 
@@ -586,29 +568,24 @@ msgid "Syslog Statistics Filter"
 msgstr "Filtro de estadísticas Syslog"
 
 #: syslog.php:255 syslog.php:1388 syslog.php:1620
-#, fuzzy
 msgid "Messages"
-msgstr "Cuando se utiliza syslog/registro para logging, los mensajes de registro de Cacti que se reenviarán a la bitácora/registro."
+msgstr "Mensajes"
 
 #: syslog.php:263
-#, fuzzy
 msgid "Device Name"
 msgstr "Nombre de dispositivo"
 
 #: syslog.php:268 syslog.php:470 syslog.php:1431 syslog.php:1608
 #: syslog.php:1616 syslog.php:1714
-#, fuzzy
 msgid "Facility"
 msgstr "Instalaciones"
 
 #: syslog.php:273 syslog.php:490 syslog.php:1453 syslog.php:1609
 #: syslog.php:1617 syslog.php:1715
-#, fuzzy
 msgid "Priority"
 msgstr "Prioridad"
 
 #: syslog.php:278 syslog.php:1606 syslog.php:1614 syslog.php:1807
-#, fuzzy
 msgid "Program"
 msgstr "Programa"
 
@@ -618,7 +595,6 @@ msgid "Date"
 msgstr "Fecha"
 
 #: syslog.php:288
-#, fuzzy
 msgid "Records"
 msgstr "Registros"
 
@@ -628,7 +604,6 @@ msgid "No Syslog Statistics Found"
 msgstr "No se encontraron estadísticas de Syslog"
 
 #: syslog.php:433 syslog.php:1605 syslog.php:1613 syslog.php:1713
-#, fuzzy
 msgid "Device"
 msgstr "Dispositivo"
 
@@ -644,7 +619,6 @@ msgstr "Ninguno"
 
 #: syslog.php:512 syslog.php:1300 syslog_alerts.php:646 syslog_removal.php:561
 #: syslog_reports.php:540
-#, fuzzy
 msgid "Go"
 msgstr "Ir"
 
@@ -659,24 +633,22 @@ msgid "Search"
 msgstr "Buscar"
 
 #: syslog.php:527
-#, fuzzy
 msgid "Time Range"
 msgstr "Intervalo de tiempo"
 
 #: syslog.php:538 syslog_alerts.php:375
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hour"
 msgstr "%d hora"
 
 #: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:376
 #: syslog_alerts.php:377 syslog_alerts.php:378 syslog_alerts.php:379
 #: syslog_alerts.php:380 syslog_alerts.php:381
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hours"
 msgstr "%d horas"
 
 #: syslog.php:552
-#, fuzzy
 msgid "Entries"
 msgstr "Entradas"
 
@@ -716,22 +688,18 @@ msgid "Syslog Message Filter %s"
 msgstr "Filtro de mensajes Syslog %s"
 
 #: syslog.php:1234
-#, fuzzy
 msgid "Timespan"
-msgstr "Intervalo de tiempo"
+msgstr "Fecha y hora"
 
 #: syslog.php:1240
-#, fuzzy
 msgid "Custom"
 msgstr "Personalizado"
 
 #: syslog.php:1262
-#, fuzzy
 msgid "From"
 msgstr "Desde"
 
 #: syslog.php:1268
-#, fuzzy
 msgid "Start Date Selector"
 msgstr "Selector de fecha de inicio"
 
@@ -741,22 +709,18 @@ msgid "To"
 msgstr "Para"
 
 #: syslog.php:1277
-#, fuzzy
 msgid "End Date Selector"
 msgstr "Selector de fecha de finalización"
 
 #: syslog.php:1280
-#, fuzzy
 msgid "Shift Time Backward"
 msgstr "Ajustar intervalo hacia atras"
 
 #: syslog.php:1283
-#, fuzzy
 msgid "Define Shifting Interval"
 msgstr "Definir el intervalo de tiempo"
 
 #: syslog.php:1296
-#, fuzzy
 msgid "Shift Time Forward"
 msgstr "Ajustar intervalo hacia adelante"
 
@@ -780,7 +744,6 @@ msgid "Save Default Settings"
 msgstr "Grabar parametrizaciones estándar"
 
 #: syslog.php:1309 syslog_alerts.php:779
-#, fuzzy
 msgid "Alerts"
 msgstr "Alertas"
 
@@ -800,7 +763,6 @@ msgid "View Syslog Removal Rules"
 msgstr "Ver reglas de eliminación de Syslog"
 
 #: syslog.php:1311 syslog_reports.php:672
-#, fuzzy
 msgid "Reports"
 msgstr "Reportes"
 
@@ -810,9 +772,8 @@ msgid "View Syslog Reports"
 msgstr "Ver los informes de Syslog"
 
 #: syslog.php:1331
-#, fuzzy
 msgid "Devices"
-msgstr "Dispositivo"
+msgstr "Dispositivos"
 
 #: syslog.php:1335
 #, fuzzy
@@ -836,7 +797,7 @@ msgstr "Visualizar líneas"
 
 #: syslog.php:1401
 msgid "Trim"
-msgstr ""
+msgstr "Versi&oacute;n"
 
 #: syslog.php:1404
 #, fuzzy
@@ -844,9 +805,8 @@ msgid "Message Trim"
 msgstr "Recorte de mensajes"
 
 #: syslog.php:1413
-#, fuzzy
 msgid "Refresh"
-msgstr "Intervalo de refresco"
+msgstr "Refrescar"
 
 #: syslog.php:1434
 #, fuzzy
@@ -854,9 +814,8 @@ msgid "Facilities to filter on"
 msgstr "Facilidades para filtrar"
 
 #: syslog.php:1435
-#, fuzzy
 msgid "All Facilities"
-msgstr "Todos los servicios"
+msgstr "Todas las instalaciones"
 
 #: syslog.php:1456
 #, fuzzy
@@ -864,34 +823,31 @@ msgid "Priority Levels"
 msgstr "Niveles de prioridad"
 
 #: syslog.php:1457
-#, fuzzy
 msgid "All Priorities"
-msgstr "Todas las prioridades"
+msgstr "Todas las Prioridades"
 
 #: syslog.php:1458 syslog.php:1504
-#, fuzzy
 msgid "Emergency"
 msgstr "Emergencia"
 
 #: syslog.php:1459
 #, fuzzy
 msgid "Alert++"
-msgstr "Alerta+++"
+msgstr "Alerta"
 
 #: syslog.php:1460 syslog.php:1506
-#, fuzzy
 msgid "Alert"
 msgstr "Alerta"
 
 #: syslog.php:1461
 #, fuzzy
 msgid "Critical++"
-msgstr "Crítico++"
+msgstr "Crítica"
 
 #: syslog.php:1463
 #, fuzzy
 msgid "Error++"
-msgstr "Error"
+msgstr "Error:"
 
 #: syslog.php:1464 syslog.php:1507
 msgid "Error"
@@ -905,27 +861,24 @@ msgstr "[Advertencia]"
 #: syslog.php:1467
 #, fuzzy
 msgid "Notice++"
-msgstr "Aviso++"
+msgstr "Aviso"
 
 #: syslog.php:1469
 #, fuzzy
 msgid "Info++"
-msgstr "Info PHP"
+msgstr "Información"
 
 #: syslog.php:1470 syslog.php:1510
-#, fuzzy
 msgid "Info"
-msgstr "RRDtool Tune Info"
+msgstr "Información"
 
 #: syslog.php:1471 syslog.php:1511
-#, fuzzy
 msgid "Debug"
 msgstr "Depuraración"
 
 #: syslog.php:1476
-#, fuzzy
 msgid "Record Type"
-msgstr "Registros"
+msgstr "Tipo de registro"
 
 #: syslog.php:1479
 #, fuzzy
@@ -933,7 +886,6 @@ msgid "Removal Handling"
 msgstr "Manipulación de la mudanza"
 
 #: syslog.php:1480
-#, fuzzy
 msgid "All Records"
 msgstr "Todos los Registros"
 
@@ -948,7 +900,6 @@ msgid "Removed Records"
 msgstr "Registros eliminados"
 
 #: syslog.php:1527
-#, fuzzy
 msgid "Informational"
 msgstr "Información"
 
@@ -963,7 +914,6 @@ msgid "Message"
 msgstr "Tipo de mensaje SNMP"
 
 #: syslog.php:1663 syslog.php:1666 syslog.php:1667 syslog.php:1734
-#, fuzzy
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -974,20 +924,17 @@ msgstr "No hay mensajes Syslog"
 
 #: syslog.php:1708 syslog_alerts.php:452 syslog_alerts.php:767
 #: syslog_process.php:377
-#, fuzzy
 msgid "Alert Name"
 msgstr "Nombre de alerta"
 
 #: syslog.php:1709 syslog_alerts.php:460 syslog_alerts.php:768
 #: syslog_process.php:377 syslog_process.php:388
-#, fuzzy
 msgid "Severity"
 msgstr "Severidad"
 
 #: syslog.php:1712 syslog_process.php:377
-#, fuzzy
 msgid "Count"
-msgstr "Número de reintentos de Ping"
+msgstr "Cuenta"
 
 #: syslog.php:1718
 #, fuzzy
@@ -1005,7 +952,6 @@ msgid "No Alert Log Messages"
 msgstr "No hay mensajes de registro de alertas"
 
 #: syslog.php:1803 syslog.php:1826 syslog.php:1845 syslog.php:1846
-#, fuzzy
 msgid "All Programs"
 msgstr "Todos los programas"
 
@@ -1050,24 +996,20 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "Exportar reglas de alerta de Syslog"
 
 #: syslog_alerts.php:203 syslog_removal.php:226 syslog_reports.php:203
-#, fuzzy
 msgid "Continue"
 msgstr "Continuar"
 
 #: syslog_alerts.php:359
-#, fuzzy
 msgid "Not Set"
 msgstr "No establecido"
 
 #: syslog_alerts.php:364
-#, fuzzy
 msgid "1 Minute"
-msgstr "%d Minuto"
+msgstr "1 Minuto"
 
 #: syslog_alerts.php:386
-#, fuzzy
 msgid "1 Month"
-msgstr "%d Mes"
+msgstr "1 Mes"
 
 #: syslog_alerts.php:422
 #, fuzzy, php-format
@@ -1085,7 +1027,6 @@ msgid "New Alert Rule"
 msgstr "Nueva Regla de Alerta"
 
 #: syslog_alerts.php:448
-#, fuzzy
 msgid "Alert Details"
 msgstr "Detalles de la alerta"
 
@@ -1110,13 +1051,11 @@ msgid "Define how to Alert on the syslog messages."
 msgstr "Definir cómo Alertar en los mensajes del syslog."
 
 #: syslog_alerts.php:471 syslog_alerts.php:794
-#, fuzzy
 msgid "Individual"
 msgstr "Individual"
 
 #: syslog_alerts.php:471 syslog_alerts.php:476 syslog_alerts.php:794
 #: syslog_process.php:377
-#, fuzzy
 msgid "Threshold"
 msgstr "Límite"
 
@@ -1192,9 +1131,8 @@ msgid "Alert Actions"
 msgstr "Acciones de alerta"
 
 #: syslog_alerts.php:534
-#, fuzzy
 msgid "Open Ticket"
-msgstr "Crear una nueva consulta"
+msgstr "Abrir consulta"
 
 #: syslog_alerts.php:535
 #, fuzzy
@@ -1234,13 +1172,11 @@ msgid "When an Alert is triggered, run the following command.  The following rep
 msgstr "Cuando se activa una alerta, ejecute el siguiente comando.  Las siguientes variables de sustitución están disponibles <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;/ i&gt; &lt;/ i&gt;MENSAJE:'</b>, <b>'FACILIDAD','</b>, <b>'PRIORIDAD','</b>, <b>'SEVERIDAD','</b>'.  Tenga en cuenta que <b>'&lt;HOSTNAME&gt;'</b> sólo está disponible en umbrales individuales."
 
 #: syslog_alerts.php:630 syslog_reports.php:524
-#, fuzzy
 msgid "Rows"
 msgstr "Filas"
 
 #: syslog_alerts.php:648 syslog_alerts.php:934 syslog_removal.php:563
 #: syslog_removal.php:844 syslog_reports.php:542 syslog_reports.php:827
-#, fuzzy
 msgid "Import"
 msgstr "Importar"
 
@@ -1250,7 +1186,6 @@ msgid "Syslog Alert Filters"
 msgstr "Filtros de Alerta Syslog"
 
 #: syslog_alerts.php:769 syslog_removal.php:686
-#, fuzzy
 msgid "Method"
 msgstr "Método"
 
@@ -1260,7 +1195,6 @@ msgid "Threshold Count"
 msgstr "Conteo de umbrales"
 
 #: syslog_alerts.php:772 syslog_removal.php:684 syslog_reports.php:663
-#, fuzzy
 msgid "Match Type"
 msgstr "Tipo de coincidencia"
 
@@ -1270,26 +1204,22 @@ msgid "Search String"
 msgstr "Cadena de búsqueda"
 
 #: syslog_alerts.php:774
-#, fuzzy
 msgid "Email Addresses"
-msgstr "Correos electrónicos"
+msgstr "Direcciones de correo"
 
 #: syslog_alerts.php:775 syslog_removal.php:687 syslog_reports.php:668
-#, fuzzy
 msgid "Last Modified"
 msgstr "Ultima modificación"
 
 #: syslog_alerts.php:776 syslog_removal.php:688 syslog_reports.php:669
-#, fuzzy
 msgid "By User"
-msgstr "Nombre de Usuario"
+msgstr "Por usuario"
 
 #: syslog_alerts.php:795
 msgid "N/A"
 msgstr "N/D"
 
 #: syslog_alerts.php:799
-#, fuzzy
 msgid "Multiple"
 msgstr "Múltiple"
 
@@ -1324,9 +1254,8 @@ msgid "Import Alert Rule"
 msgstr "Regla de alerta de importación"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Imported"
-msgstr "Cacti haría los siguientes cambios si el paquete fue importado:"
+msgstr "Importado"
 
 #: syslog_alerts.php:932
 #, fuzzy, php-format
@@ -1334,9 +1263,8 @@ msgid "NOTE: Alert '%s' %s!"
 msgstr "NOTA: ¡Alerta '%s' %s!"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Updated"
-msgstr "[actualizado]"
+msgstr "Actualizado"
 
 #: syslog_alerts.php:934
 #, fuzzy, php-format
@@ -1344,7 +1272,6 @@ msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "ERROR: Alerta '%s' %s Fallido!"
 
 #: syslog_alerts.php:934 syslog_removal.php:844 syslog_reports.php:827
-#, fuzzy
 msgid "Update"
 msgstr "Actualizar"
 
@@ -1354,9 +1281,8 @@ msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
 msgstr "ADVERTENCIA: Se ha disparado una Alerta de Conteo de Instancia de Syslog Plugin"
 
 #: syslog_process.php:369
-#, fuzzy
 msgid "Name:"
-msgstr "Nombre"
+msgstr "Nombre:"
 
 #: syslog_process.php:370 syslog_process.php:404
 #, fuzzy
@@ -1366,12 +1292,11 @@ msgstr "Severidad"
 #: syslog_process.php:371
 #, fuzzy
 msgid "Threshold:"
-msgstr "Umbral:"
+msgstr "Límite"
 
 #: syslog_process.php:372
-#, fuzzy
 msgid "Count:"
-msgstr "Número de reintentos de Ping"
+msgstr "Cantidad:"
 
 #: syslog_process.php:373
 #, fuzzy
@@ -1384,9 +1309,8 @@ msgid "Cacti Syslog Plugin Threshold Alert '%s'"
 msgstr "Cacti Syslog Plugin Threshold Alert '%s' (Alerta de Umbral de Plugin de Cacti Syslog)"
 
 #: syslog_process.php:377
-#, fuzzy
 msgid "Match String"
-msgstr "Cadena de fósforos"
+msgstr "Coincidir Cadena"
 
 #: syslog_process.php:384
 #, fuzzy, php-format
@@ -1394,34 +1318,28 @@ msgid "Cacti Syslog Plugin Alert '%s'"
 msgstr "Alerta de plugin de Cacti Syslog '%s' (%s)"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Hostname"
 msgstr "Nombre de equipo"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Level"
-msgstr "DEVEL - Nivel de depuración para programadores"
+msgstr "Nivel"
 
 #: syslog_process.php:402
-#, fuzzy
 msgid "Hostname:"
 msgstr "Nombre de equipo:"
 
 #: syslog_process.php:403
-#, fuzzy
 msgid "Date:"
 msgstr "Fecha:"
 
 #: syslog_process.php:405
-#, fuzzy
 msgid "Level:"
-msgstr "DEVEL - Nivel de depuración para programadores"
+msgstr "Nivel:"
 
 #: syslog_process.php:406
-#, fuzzy
 msgid "Message:"
-msgstr "Tipo de mensaje SNMP"
+msgstr "Mensaje:"
 
 #: syslog_process.php:433
 #, fuzzy
@@ -1446,10 +1364,9 @@ msgstr "Alerta de Evento - %s"
 #: syslog_process.php:491
 #, fuzzy
 msgid ", Count:"
-msgstr "Recuento de índices"
+msgstr "Cuenta"
 
 #: syslog_process.php:715
-#, fuzzy
 msgid "Host"
 msgstr "Equipo"
 
@@ -1554,9 +1471,8 @@ msgid "Please describe this Removal Rule."
 msgstr "Describa esta regla de eliminación."
 
 #: syslog_removal.php:435 syslog_reports.php:393
-#, fuzzy
 msgid "Enabled?"
-msgstr "Habilitado"
+msgstr "¿Activado?"
 
 #: syslog_removal.php:436
 #, fuzzy
@@ -1569,12 +1485,10 @@ msgid "Method of Removal"
 msgstr "Método de remoción"
 
 #: syslog_removal.php:464 syslog_removal.php:708
-#, fuzzy
 msgid "Deletion"
-msgstr "Borrado"
+msgstr "Supresión"
 
 #: syslog_removal.php:464
-#, fuzzy
 msgid "Transferal"
 msgstr "Transferencia"
 
@@ -1589,9 +1503,8 @@ msgid "Space for Notes on the Removal rule"
 msgstr "Espacio para notas sobre la regla de eliminación"
 
 #: syslog_removal.php:545 syslog_removal.php:693
-#, fuzzy
 msgid "Rules"
-msgstr "Forzar reglas de leyenda (--force-rules-legend)"
+msgstr "Reglas"
 
 #: syslog_removal.php:657
 #, fuzzy
@@ -1604,7 +1517,6 @@ msgid "Removal Name"
 msgstr "Nombre de la Remoción"
 
 #: syslog_removal.php:708
-#, fuzzy
 msgid "Transfer"
 msgstr "Transferir"
 
@@ -1713,12 +1625,10 @@ msgid "New Report Record"
 msgstr "Nuevo registro de informe"
 
 #: syslog_reports.php:382
-#, fuzzy
 msgid "Report Details"
 msgstr "Detalles del informe"
 
 #: syslog_reports.php:386 syslog_reports.php:661
-#, fuzzy
 msgid "Report Name"
 msgstr "Nombre de Reporte"
 
@@ -1745,7 +1655,7 @@ msgstr "El componente correspondiente del mensaje syslog."
 #: syslog_reports.php:417
 #, fuzzy
 msgid "Report Frequency"
-msgstr "Frecuencia del informe"
+msgstr "Frecuencia de informe MacAuth"
 
 #: syslog_reports.php:418
 #, fuzzy
@@ -1753,9 +1663,8 @@ msgid "How often should this Report be sent to the distribution list?"
 msgstr "¿Con qué frecuencia debe enviarse este Informe a la lista de distribución?"
 
 #: syslog_reports.php:425 syslog_reports.php:666
-#, fuzzy
 msgid "Send Time"
-msgstr "Hora de envío"
+msgstr "Hora de Envío"
 
 #: syslog_reports.php:426
 #, fuzzy
@@ -1775,7 +1684,7 @@ msgstr "La información que figurará en el cuerpo del informe."
 #: syslog_reports.php:450
 #, fuzzy
 msgid "Report Email Addresses"
-msgstr "Informe de direcciones de correo electrónico"
+msgstr "Direcciones de correo electrónico del Informe MacAuth"
 
 #: syslog_reports.php:453
 #, fuzzy
@@ -1798,12 +1707,10 @@ msgid "Syslog Report Filters"
 msgstr "Filtros de informes Syslog"
 
 #: syslog_reports.php:665
-#, fuzzy
 msgid "Frequency"
 msgstr "Frecuencia"
 
 #: syslog_reports.php:667
-#, fuzzy
 msgid "Last Sent"
 msgstr "Último Enviado"
 

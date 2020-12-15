@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2020-12-12 22:16-0500\n"
-"PO-Revision-Date: 2019-03-16 22:58-0400\n"
+"PO-Revision-Date: 2020-12-14 19:49-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: functions.php:53
 #, fuzzy
@@ -98,9 +98,8 @@ msgid "Partitioned Table"
 msgstr "Bölümlenmiş Tablo"
 
 #: setup.php:680
-#, fuzzy
 msgid "Retention Policy"
-msgstr "Alıkoyma politikası"
+msgstr "Saklama ilkesi"
 
 #: setup.php:681
 #, fuzzy
@@ -123,12 +122,10 @@ msgid "%d Per Day"
 msgstr "Günde% d"
 
 #: setup.php:716 setup.php:801
-#, fuzzy
 msgid "Upgrade"
 msgstr "Yükselt"
 
 #: setup.php:718 setup.php:803
-#, fuzzy
 msgid "Install"
 msgstr "Yükle"
 
@@ -193,13 +190,11 @@ msgid "Syslog Uninstall Preferences"
 msgstr "Sistem Günlüğü Kaldırma Tercihleri"
 
 #: setup.php:806
-#, fuzzy
 msgid "Uninstall"
 msgstr "Kaldır"
 
 #: setup.php:813 syslog_alerts.php:203 syslog_removal.php:226
 #: syslog_reports.php:203
-#, fuzzy
 msgid "Cancel"
 msgstr "İptal"
 
@@ -209,7 +204,6 @@ msgid "Syslog"
 msgstr "Sistem günlüğü"
 
 #: setup.php:848
-#, fuzzy
 msgid "General Settings"
 msgstr "Genel Ayarlar"
 
@@ -264,7 +258,6 @@ msgid "If this checkbox is set, all hostnames are validated.  If the hostname is
 msgstr "Bu onay kutusu ayarlanmışsa, tüm ana bilgisayar adları doğrulanır. Ana bilgisayar adı geçerli değilse. Tüm kayıtlar 'invalidhost' adında özel bir ana bilgisayara atanmıştır. Bu ayar büyük sistemlerde syslog işlem süresini etkileyebilir. Bu nedenle, bu ayarın kullanımı, bunun olmasını engellemek için yalnızca başka araçlar bulunmadığında kullanılmalıdır."
 
 #: setup.php:884
-#, fuzzy
 msgid "Refresh Interval"
 msgstr "Yenileme aralığı"
 
@@ -320,22 +313,18 @@ msgid "This command will be executed for opening Help Desk Tickets.  The command
 msgstr "Bu komut Yardım Masası Biletlerini açmak için uygulanacaktır. Komut aşağıdaki gibi birden fazla giriş parametresini ayrıştırmak için gerekli olacaktır: <b>--alert-name</b> , <b>--severity</b> , <b>--hostlist</b> , <b>--message</b> . Ana bilgisayar listesi, uyarıdan etkilenen ana bilgisayarların virgülle ayrılmış bir listesi olacaktır."
 
 #: setup.php:956 syslog_removal.php:33
-#, fuzzy
 msgid "Delete"
 msgstr "Sil"
 
 #: setup.php:957 syslog_removal.php:34
-#, fuzzy
 msgid "Disable"
 msgstr "Devre Dışı"
 
 #: setup.php:958 syslog_removal.php:35
-#, fuzzy
 msgid "Enable"
 msgstr "Etkinleştir"
 
 #: setup.php:959 syslog.php:1302 syslog_removal.php:37
-#, fuzzy
 msgid "Export"
 msgstr "Dışa Aktar"
 
@@ -345,14 +334,14 @@ msgid "Indefinite"
 msgstr "Belirsiz"
 
 #: setup.php:1003 setup.php:1022 syslog.php:542 syslog_alerts.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "%d Day"
 msgstr "%d Gün"
 
 #: setup.php:1004 setup.php:1005 setup.php:1006 setup.php:1007 setup.php:1008
 #: setup.php:1023 setup.php:1024 setup.php:1025 setup.php:1026 setup.php:1027
 #: syslog_alerts.php:383
-#, fuzzy, php-format
+#, php-format
 msgid "%d Days"
 msgstr "%d Gün"
 
@@ -378,62 +367,55 @@ msgid "%d Months"
 msgstr "% d Ay"
 
 #: setup.php:1017 setup.php:1036
-#, fuzzy, php-format
+#, php-format
 msgid "%d Year"
-msgstr "% d Yıl"
+msgstr "%d yıl"
 
 #: setup.php:1040 syslog_reports.php:691
-#, fuzzy
 msgid "Never"
 msgstr "Asla"
 
 #: setup.php:1041 syslog.php:533
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
-msgstr "% d Dakika"
+msgstr "% d dakika"
 
 #: setup.php:1042 setup.php:1043 setup.php:1044 syslog.php:534 syslog.php:535
 #: syslog.php:536 syslog.php:537 syslog_alerts.php:369 syslog_alerts.php:370
 #: syslog_alerts.php:371 syslog_alerts.php:372 syslog_alerts.php:373
 #: syslog_alerts.php:374
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d Dakika"
 
 #: setup.php:1048 syslog.php:1468 syslog.php:1509 syslog.php:1526
-#, fuzzy
 msgid "Notice"
 msgstr "Uyarı"
 
 #: setup.php:1049 syslog.php:1466 syslog.php:1508 syslog.php:1525
-#, fuzzy
 msgid "Warning"
 msgstr "Uyarı"
 
 #: setup.php:1050 syslog.php:1462 syslog.php:1505 syslog.php:1524
-#, fuzzy
 msgid "Critical"
-msgstr "Çok Yüksek"
+msgstr "Kritik"
 
 #: setup.php:1054
-#, fuzzy
 msgid "Begins with"
-msgstr "ile başlar"
+msgstr "İle Başlayan"
 
 #: setup.php:1055
-#, fuzzy
 msgid "Contains"
-msgstr "şunu içeren"
+msgstr "İçeren"
 
 #: setup.php:1056
-#, fuzzy
 msgid "Ends with"
-msgstr "ile biter"
+msgstr "İle Biten"
 
 #: setup.php:1057
 #, fuzzy
 msgid "Hostname is"
-msgstr "Sunucu Adı"
+msgstr "Makine adı:"
 
 #: setup.php:1058
 #, fuzzy
@@ -451,17 +433,14 @@ msgid "SQL Expression"
 msgstr "SQL İfadesi"
 
 #: setup.php:1064
-#, fuzzy
 msgid "Daily"
 msgstr "Günlük"
 
 #: setup.php:1065
-#, fuzzy
 msgid "Weekly"
 msgstr "Haftalık"
 
 #: setup.php:1088
-#, fuzzy
 msgid "Import/Export"
 msgstr "İçe Aktar/Dışa Aktar"
 
@@ -487,11 +466,11 @@ msgstr "Rapor Kuralları"
 
 #: setup.php:1099
 msgid "Normal User"
-msgstr ""
+msgstr "Normal Kullanıcı"
 
 #: setup.php:1100
 msgid "System Administration"
-msgstr ""
+msgstr "Sistem Yönetimi"
 
 #: setup.php:1116
 #, fuzzy
@@ -499,7 +478,6 @@ msgid "Syslog Removals"
 msgstr "Syslog Kaldırma"
 
 #: setup.php:1117 setup.php:1118 setup.php:1122 setup.php:1123 setup.php:1127
-#, fuzzy
 msgid "(Edit)"
 msgstr "(Düzenle)"
 
@@ -549,9 +527,8 @@ msgid "Syslog Viewer"
 msgstr "Syslog Görüntüleyici"
 
 #: syslog.php:55
-#, fuzzy
 msgid "All Text"
-msgstr "Tüm Metinler"
+msgstr "Tüm Metin"
 
 #: syslog.php:56 syslog.php:57 syslog.php:58 syslog.php:59 syslog.php:60
 #: syslog.php:61
@@ -560,12 +537,10 @@ msgid "%d Chars"
 msgstr "% d Karakter"
 
 #: syslog.php:112
-#, fuzzy
 msgid "System Logs"
 msgstr "Sistem Günlükleri"
 
 #: syslog.php:114
-#, fuzzy
 msgid "Statistics"
 msgstr "İstatistikler"
 
@@ -590,40 +565,33 @@ msgid "Syslog Statistics Filter"
 msgstr "Sistem Günlüğü İstatistikleri Filtresi"
 
 #: syslog.php:255 syslog.php:1388 syslog.php:1620
-#, fuzzy
 msgid "Messages"
 msgstr "Mesajlar"
 
 #: syslog.php:263
-#, fuzzy
 msgid "Device Name"
-msgstr "Cihaz adı"
+msgstr "Aygıt Adı"
 
 #: syslog.php:268 syslog.php:470 syslog.php:1431 syslog.php:1608
 #: syslog.php:1616 syslog.php:1714
-#, fuzzy
 msgid "Facility"
 msgstr "Tesis"
 
 #: syslog.php:273 syslog.php:490 syslog.php:1453 syslog.php:1609
 #: syslog.php:1617 syslog.php:1715
-#, fuzzy
 msgid "Priority"
 msgstr "Öncelik"
 
 #: syslog.php:278 syslog.php:1606 syslog.php:1614 syslog.php:1807
-#, fuzzy
 msgid "Program"
-msgstr "program"
+msgstr "Program"
 
 #: syslog.php:283 syslog.php:1604 syslog.php:1612 syslog.php:1710
 #: syslog_process.php:388 syslog_process.php:715
-#, fuzzy
 msgid "Date"
 msgstr "Tarih"
 
 #: syslog.php:288
-#, fuzzy
 msgid "Records"
 msgstr "Kayıtlar"
 
@@ -633,65 +601,56 @@ msgid "No Syslog Statistics Found"
 msgstr "Syslog İstatistikleri Bulunamadı"
 
 #: syslog.php:433 syslog.php:1605 syslog.php:1613 syslog.php:1713
-#, fuzzy
 msgid "Device"
 msgstr "Cihaz"
 
 #: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
 #: syslog_alerts.php:624 syslog_removal.php:539 syslog_reports.php:518
-#, fuzzy
 msgid "All"
 msgstr "Tümü"
 
 #: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1801
 #: syslog.php:1812 syslog.php:1853 syslog.php:1854
-#, fuzzy
 msgid "None"
 msgstr "Yok"
 
 #: syslog.php:512 syslog.php:1300 syslog_alerts.php:646 syslog_removal.php:561
 #: syslog_reports.php:540
-#, fuzzy
 msgid "Go"
 msgstr "Git"
 
 #: syslog.php:513 syslog.php:1301 syslog_alerts.php:647 syslog_removal.php:562
 #: syslog_reports.php:541
-#, fuzzy
 msgid "Clear"
 msgstr "Temizle"
 
 #: syslog.php:521 syslog.php:1061 syslog.php:1325 syslog_alerts.php:614
 #: syslog_removal.php:529 syslog_reports.php:508
-#, fuzzy
 msgid "Search"
 msgstr "Arama"
 
 #: syslog.php:527
-#, fuzzy
 msgid "Time Range"
 msgstr "Zaman aralığı"
 
 #: syslog.php:538 syslog_alerts.php:375
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hour"
 msgstr "%d Saat"
 
 #: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:376
 #: syslog_alerts.php:377 syslog_alerts.php:378 syslog_alerts.php:379
 #: syslog_alerts.php:380 syslog_alerts.php:381
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hours"
 msgstr "%d Saat"
 
 #: syslog.php:552
-#, fuzzy
 msgid "Entries"
 msgstr "Kayıtlar"
 
 #: syslog.php:556 syslog.php:1392 syslog_alerts.php:634 syslog_removal.php:549
 #: syslog_reports.php:528
-#, fuzzy
 msgid "Default"
 msgstr "Varsayılan"
 
@@ -726,17 +685,14 @@ msgid "Syslog Message Filter %s"
 msgstr "Syslog İleti Filtresi %s"
 
 #: syslog.php:1234
-#, fuzzy
 msgid "Timespan"
-msgstr "Zaman aralığı"
+msgstr "Zaman Süreci"
 
 #: syslog.php:1240
-#, fuzzy
 msgid "Custom"
 msgstr "Özel"
 
 #: syslog.php:1262
-#, fuzzy
 msgid "From"
 msgstr "Kimden"
 
@@ -746,7 +702,6 @@ msgid "Start Date Selector"
 msgstr "Başlangıç Tarihi Seçicisi"
 
 #: syslog.php:1271
-#, fuzzy
 msgid "To"
 msgstr "Kime"
 
@@ -781,7 +736,6 @@ msgid "Export Records to CSV"
 msgstr "Kayıtları CSV’ye Aktar"
 
 #: syslog.php:1303
-#, fuzzy
 msgid "Save"
 msgstr "Kaydet"
 
@@ -791,7 +745,6 @@ msgid "Save Default Settings"
 msgstr "Varsayılan Ayarları Kaydet"
 
 #: syslog.php:1309 syslog_alerts.php:779
-#, fuzzy
 msgid "Alerts"
 msgstr "Uyarılar"
 
@@ -811,7 +764,6 @@ msgid "View Syslog Removal Rules"
 msgstr "Syslog Kaldırma Kurallarını Göster"
 
 #: syslog.php:1311 syslog_reports.php:672
-#, fuzzy
 msgid "Reports"
 msgstr "Raporlar"
 
@@ -821,9 +773,8 @@ msgid "View Syslog Reports"
 msgstr "Syslog Raporlarını Görüntüle"
 
 #: syslog.php:1331
-#, fuzzy
 msgid "Devices"
-msgstr "Cihaz"
+msgstr "Cihazlar"
 
 #: syslog.php:1335
 #, fuzzy
@@ -847,7 +798,7 @@ msgstr "Satırları Görüntüle"
 
 #: syslog.php:1401
 msgid "Trim"
-msgstr ""
+msgstr "Motor"
 
 #: syslog.php:1404
 #, fuzzy
@@ -855,9 +806,8 @@ msgid "Message Trim"
 msgstr "Mesaj Kırpma"
 
 #: syslog.php:1413
-#, fuzzy
 msgid "Refresh"
-msgstr "Yenileme aralığı"
+msgstr "Yenile"
 
 #: syslog.php:1434
 #, fuzzy
@@ -865,7 +815,6 @@ msgid "Facilities to filter on"
 msgstr "Filtrelemek için tesisler"
 
 #: syslog.php:1435
-#, fuzzy
 msgid "All Facilities"
 msgstr "Tüm İmkanlar"
 
@@ -875,37 +824,33 @@ msgid "Priority Levels"
 msgstr "Öncelik Seviyeleri"
 
 #: syslog.php:1457
-#, fuzzy
 msgid "All Priorities"
 msgstr "Tüm Öncelikler"
 
 #: syslog.php:1458 syslog.php:1504
-#, fuzzy
 msgid "Emergency"
 msgstr "Acil Durum"
 
 #: syslog.php:1459
 #, fuzzy
 msgid "Alert++"
-msgstr "Uyarı ++"
+msgstr "Uyarı"
 
 #: syslog.php:1460 syslog.php:1506
-#, fuzzy
 msgid "Alert"
-msgstr "Alarm"
+msgstr "Uyarı"
 
 #: syslog.php:1461
 #, fuzzy
 msgid "Critical++"
-msgstr "Kritik ++"
+msgstr "Kritik"
 
 #: syslog.php:1463
 #, fuzzy
 msgid "Error++"
-msgstr "Hata:"
+msgstr "Hata"
 
 #: syslog.php:1464 syslog.php:1507
-#, fuzzy
 msgid "Error"
 msgstr "Hata"
 
@@ -917,27 +862,24 @@ msgstr "UYARI:"
 #: syslog.php:1467
 #, fuzzy
 msgid "Notice++"
-msgstr "Uyarı ++"
+msgstr "Uyarı"
 
 #: syslog.php:1469
 #, fuzzy
 msgid "Info++"
-msgstr "PHP Bilgi"
+msgstr "Bilgi"
 
 #: syslog.php:1470 syslog.php:1510
-#, fuzzy
 msgid "Info"
 msgstr "Bilgi"
 
 #: syslog.php:1471 syslog.php:1511
-#, fuzzy
 msgid "Debug"
 msgstr "Hata ayıklama"
 
 #: syslog.php:1476
-#, fuzzy
 msgid "Record Type"
-msgstr "Kayıtlar"
+msgstr "Kayıt Türü"
 
 #: syslog.php:1479
 #, fuzzy
@@ -945,7 +887,6 @@ msgid "Removal Handling"
 msgstr "Kaldırma taşıma"
 
 #: syslog.php:1480
-#, fuzzy
 msgid "All Records"
 msgstr "Tüm Kayıtlar"
 
@@ -960,23 +901,19 @@ msgid "Removed Records"
 msgstr "Kaldırılan Kayıtlar"
 
 #: syslog.php:1527
-#, fuzzy
 msgid "Informational"
 msgstr "Bilgilendirici"
 
 #: syslog.php:1603
-#, fuzzy
 msgid "Actions"
 msgstr "Eylemler"
 
 #: syslog.php:1607 syslog.php:1615 syslog.php:1711 syslog_process.php:388
 #: syslog_process.php:715
-#, fuzzy
 msgid "Message"
 msgstr "Mesaj"
 
 #: syslog.php:1663 syslog.php:1666 syslog.php:1667 syslog.php:1734
-#, fuzzy
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
@@ -987,18 +924,15 @@ msgstr "Syslog İletisi Yok"
 
 #: syslog.php:1708 syslog_alerts.php:452 syslog_alerts.php:767
 #: syslog_process.php:377
-#, fuzzy
 msgid "Alert Name"
 msgstr "Alarm Adı"
 
 #: syslog.php:1709 syslog_alerts.php:460 syslog_alerts.php:768
 #: syslog_process.php:377 syslog_process.php:388
-#, fuzzy
 msgid "Severity"
 msgstr "Önem Düzeyi"
 
 #: syslog.php:1712 syslog_process.php:377
-#, fuzzy
 msgid "Count"
 msgstr "Sayı"
 
@@ -1063,24 +997,20 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "Syslog Uyarı Kurallarını Dışa Aktar"
 
 #: syslog_alerts.php:203 syslog_removal.php:226 syslog_reports.php:203
-#, fuzzy
 msgid "Continue"
 msgstr "Devam et"
 
 #: syslog_alerts.php:359
-#, fuzzy
 msgid "Not Set"
-msgstr "Varsayılana ayarla"
+msgstr "Ayarlanmadı"
 
 #: syslog_alerts.php:364
-#, fuzzy
 msgid "1 Minute"
-msgstr "% d Dakika"
+msgstr "1 dakika boyu"
 
 #: syslog_alerts.php:386
-#, fuzzy
 msgid "1 Month"
-msgstr "Ay"
+msgstr "1 Month"
 
 #: syslog_alerts.php:422
 #, fuzzy, php-format
@@ -1123,13 +1053,11 @@ msgid "Define how to Alert on the syslog messages."
 msgstr "Sistem günlüğü iletilerinde nasıl Uyarı verileceğini tanımlayın."
 
 #: syslog_alerts.php:471 syslog_alerts.php:794
-#, fuzzy
 msgid "Individual"
 msgstr "Bireysel"
 
 #: syslog_alerts.php:471 syslog_alerts.php:476 syslog_alerts.php:794
 #: syslog_process.php:377
-#, fuzzy
 msgid "Threshold"
 msgstr "Eşik"
 
@@ -1170,14 +1098,12 @@ msgid "Is this Alert Enabled?"
 msgstr "Bu Uyarı Etkinleştirildi mi?"
 
 #: syslog_alerts.php:507 syslog_removal.php:438 syslog_reports.php:396
-#, fuzzy
 msgid "Disabled"
 msgstr "Devre dışı"
 
 #: syslog_alerts.php:507 syslog_alerts.php:620 syslog_alerts.php:771
 #: syslog_removal.php:438 syslog_removal.php:535 syslog_removal.php:683
 #: syslog_reports.php:396 syslog_reports.php:514 syslog_reports.php:662
-#, fuzzy
 msgid "Enabled"
 msgstr "Etkin"
 
@@ -1207,7 +1133,6 @@ msgid "Alert Actions"
 msgstr "Uyarı Eylemleri"
 
 #: syslog_alerts.php:534
-#, fuzzy
 msgid "Open Ticket"
 msgstr "Destek Talebi"
 
@@ -1219,14 +1144,12 @@ msgstr "Bu Uyarı için bir Yardım Masası Bilet Açılmalı mı?"
 #: syslog_alerts.php:537 syslog_alerts.php:626 syslog_alerts.php:796
 #: syslog_removal.php:541 syslog_removal.php:705 syslog_reports.php:520
 #: syslog_reports.php:686
-#, fuzzy
 msgid "No"
 msgstr "Hayır"
 
 #: syslog_alerts.php:537 syslog_alerts.php:625 syslog_alerts.php:796
 #: syslog_removal.php:540 syslog_removal.php:705 syslog_reports.php:519
 #: syslog_reports.php:686
-#, fuzzy
 msgid "Yes"
 msgstr "Evet"
 
@@ -1251,13 +1174,11 @@ msgid "When an Alert is triggered, run the following command.  The following rep
 msgstr "Bir Uyarı tetiklendiğinde, aşağıdaki komutu çalıştırın. Aşağıdaki değiştirme değişkenleri <b>&#39;&lt;HOSTNAME&gt;&#39;</b> , <b>&#39;&lt;ALERTID&gt;&#39;</b> , <b>&#39;&lt;MESSAGE&gt;&#39;</b> , <b>&#39;&lt;FACILITY&gt;&#39;</b> , <b>&#39;&lt;PRIORITY&gt;&#39;</b> , <b>&#39;&lt;SEVERITY&gt;&#39;</b> . Lütfen <b>&#39;&lt;HOSTNAME&gt;&#39; ün</b> sadece bireysel eşiklerde mevcut olduğunu unutmayın."
 
 #: syslog_alerts.php:630 syslog_reports.php:524
-#, fuzzy
 msgid "Rows"
 msgstr "Satırlar"
 
 #: syslog_alerts.php:648 syslog_alerts.php:934 syslog_removal.php:563
 #: syslog_removal.php:844 syslog_reports.php:542 syslog_reports.php:827
-#, fuzzy
 msgid "Import"
 msgstr "İçe Aktar"
 
@@ -1267,7 +1188,6 @@ msgid "Syslog Alert Filters"
 msgstr "Syslog Uyarısı Filtreleri"
 
 #: syslog_alerts.php:769 syslog_removal.php:686
-#, fuzzy
 msgid "Method"
 msgstr "Yöntem"
 
@@ -1287,27 +1207,22 @@ msgid "Search String"
 msgstr "Arama dizisi"
 
 #: syslog_alerts.php:774
-#, fuzzy
 msgid "Email Addresses"
 msgstr "E-Posta Adres"
 
 #: syslog_alerts.php:775 syslog_removal.php:687 syslog_reports.php:668
-#, fuzzy
 msgid "Last Modified"
 msgstr "Son Düzenleme"
 
 #: syslog_alerts.php:776 syslog_removal.php:688 syslog_reports.php:669
-#, fuzzy
 msgid "By User"
-msgstr "Kullanıcı:"
+msgstr "Kullanıcıya Göre"
 
 #: syslog_alerts.php:795
-#, fuzzy
 msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php:799
-#, fuzzy
 msgid "Multiple"
 msgstr "Çoklu"
 
@@ -1342,7 +1257,6 @@ msgid "Import Alert Rule"
 msgstr "Uyarı Kuralını İçe Aktar"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Imported"
 msgstr "Eklendi"
 
@@ -1352,7 +1266,6 @@ msgid "NOTE: Alert '%s' %s!"
 msgstr "Not: ' %s' %s uyarısı!"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Updated"
 msgstr "Güncellendi"
 
@@ -1362,7 +1275,6 @@ msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "HATA: Uyarı ' %s' %s Başarısız!"
 
 #: syslog_alerts.php:934 syslog_removal.php:844 syslog_reports.php:827
-#, fuzzy
 msgid "Update"
 msgstr "Güncelle"
 
@@ -1372,9 +1284,8 @@ msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
 msgstr "UYARI: Bir Syslog Eklentisi Eşgörünümü Sayısı Uyarısı Tetiklendi"
 
 #: syslog_process.php:369
-#, fuzzy
 msgid "Name:"
-msgstr "İsim"
+msgstr "İsim:"
 
 #: syslog_process.php:370 syslog_process.php:404
 #, fuzzy
@@ -1384,10 +1295,9 @@ msgstr "Önem Düzeyi"
 #: syslog_process.php:371
 #, fuzzy
 msgid "Threshold:"
-msgstr "Eşik:"
+msgstr "Eşik"
 
 #: syslog_process.php:372
-#, fuzzy
 msgid "Count:"
 msgstr "Sayılan:"
 
@@ -1412,39 +1322,33 @@ msgid "Cacti Syslog Plugin Alert '%s'"
 msgstr "Kaktüsler Syslog Eklentisi Uyarısı ' %s'"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Hostname"
 msgstr "Sunucu Adı"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Level"
 msgstr "Seviye"
 
 #: syslog_process.php:402
-#, fuzzy
 msgid "Hostname:"
-msgstr "Sunucu Adı"
+msgstr "Makine adı:"
 
 #: syslog_process.php:403
-#, fuzzy
 msgid "Date:"
-msgstr "Tarih"
+msgstr "Tarih:"
 
 #: syslog_process.php:405
-#, fuzzy
 msgid "Level:"
 msgstr "Seviye:"
 
 #: syslog_process.php:406
-#, fuzzy
 msgid "Message:"
 msgstr "Mesaj:"
 
 #: syslog_process.php:433
 #, fuzzy
 msgid ", Host:"
-msgstr ", Ana Bilgisayar:"
+msgstr "Sunucu:"
 
 #: syslog_process.php:433 syslog_process.php:491
 #, fuzzy
@@ -1464,10 +1368,9 @@ msgstr "Etkinlik Uyarısı - %s"
 #: syslog_process.php:491
 #, fuzzy
 msgid ", Count:"
-msgstr ", Sayısı:"
+msgstr "Sayı"
 
 #: syslog_process.php:715
-#, fuzzy
 msgid "Host"
 msgstr "Host"
 
@@ -1572,9 +1475,8 @@ msgid "Please describe this Removal Rule."
 msgstr "Lütfen bu Kaldırma Kuralını tanımlayın."
 
 #: syslog_removal.php:435 syslog_reports.php:393
-#, fuzzy
 msgid "Enabled?"
-msgstr "Etkin"
+msgstr "Etkin mi?"
 
 #: syslog_removal.php:436
 #, fuzzy
@@ -1592,7 +1494,6 @@ msgid "Deletion"
 msgstr "silme"
 
 #: syslog_removal.php:464
-#, fuzzy
 msgid "Transferal"
 msgstr "Transferi"
 
@@ -1607,7 +1508,6 @@ msgid "Space for Notes on the Removal rule"
 msgstr "Kaldırma kuralına ilişkin notlar için alan"
 
 #: syslog_removal.php:545 syslog_removal.php:693
-#, fuzzy
 msgid "Rules"
 msgstr "Kurallar"
 
@@ -1622,7 +1522,6 @@ msgid "Removal Name"
 msgstr "Kaldırma Adı"
 
 #: syslog_removal.php:708
-#, fuzzy
 msgid "Transfer"
 msgstr "Aktar"
 
@@ -1712,7 +1611,6 @@ msgid "You must select at least one Syslog Report."
 msgstr "En az bir Syslog Raporu seçmelisiniz."
 
 #: syslog_reports.php:206
-#, fuzzy
 msgid "Return"
 msgstr "Dönüş"
 
@@ -1732,12 +1630,10 @@ msgid "New Report Record"
 msgstr "Yeni Rapor Kaydı"
 
 #: syslog_reports.php:382
-#, fuzzy
 msgid "Report Details"
 msgstr "Rapor Detayları"
 
 #: syslog_reports.php:386 syslog_reports.php:661
-#, fuzzy
 msgid "Report Name"
 msgstr "Rapor Adı"
 
@@ -1817,7 +1713,6 @@ msgid "Syslog Report Filters"
 msgstr "Syslog Rapor Filtreleri"
 
 #: syslog_reports.php:665
-#, fuzzy
 msgid "Frequency"
 msgstr "Sıklık"
 

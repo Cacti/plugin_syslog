@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2020-12-12 22:16-0500\n"
-"PO-Revision-Date: 2019-03-16 22:52-0400\n"
+"PO-Revision-Date: 2020-12-14 19:48-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: functions.php:53
 #, fuzzy
@@ -123,12 +123,10 @@ msgid "%d Per Day"
 msgstr "d В день"
 
 #: setup.php:716 setup.php:801
-#, fuzzy
 msgid "Upgrade"
 msgstr "Обновить"
 
 #: setup.php:718 setup.php:803
-#, fuzzy
 msgid "Install"
 msgstr "Установить"
 
@@ -193,23 +191,19 @@ msgid "Syslog Uninstall Preferences"
 msgstr "Удаление привилегий системного журнала"
 
 #: setup.php:806
-#, fuzzy
 msgid "Uninstall"
 msgstr "Удалить"
 
 #: setup.php:813 syslog_alerts.php:203 syslog_removal.php:226
 #: syslog_reports.php:203
-#, fuzzy
 msgid "Cancel"
 msgstr "Отмена"
 
 #: setup.php:844 setup.php:943 setup.php:945 setup.php:1115 setup.php:1129
-#, fuzzy
 msgid "Syslog"
-msgstr "Syslog"
+msgstr "Системный журнал"
 
 #: setup.php:848
-#, fuzzy
 msgid "General Settings"
 msgstr "Основые Настройки"
 
@@ -264,9 +258,8 @@ msgid "If this checkbox is set, all hostnames are validated.  If the hostname is
 msgstr "Если этот флажок установлен, все имена хостов будут подтверждены.  Если имя хоста недействительно. Все записи закрепляются за специальным хостом под названием 'invalidhost'.  Эта настройка может повлиять на время обработки системного журнала на больших системах.  Поэтому использование этого параметра следует использовать только в том случае, если отсутствуют другие средства для предотвращения этого."
 
 #: setup.php:884
-#, fuzzy
 msgid "Refresh Interval"
-msgstr "Интервал обновления"
+msgstr "ÐÐ½ÑÐµÑÐ²Ð°Ð» Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ"
 
 #: setup.php:885
 #, fuzzy
@@ -320,75 +313,69 @@ msgid "This command will be executed for opening Help Desk Tickets.  The command
 msgstr "Эта команда будет выполнена для открытия билетов в службу поддержки.  Команда будет необходима для разбора нескольких входных параметров следующим образом: <b>--имя пользователя</b>, <b>- серьезность</b>, <b>-- хостлист</b>, <b>-сообщение</b>.  Список хостов будет представлять собой список хостов, ограниченных запятыми и подверженных влиянию предупреждения."
 
 #: setup.php:956 syslog_removal.php:33
-#, fuzzy
 msgid "Delete"
 msgstr "Удалить"
 
 #: setup.php:957 syslog_removal.php:34
-#, fuzzy
 msgid "Disable"
 msgstr "Выключить"
 
 #: setup.php:958 syslog_removal.php:35
-#, fuzzy
 msgid "Enable"
 msgstr "Включить"
 
 #: setup.php:959 syslog.php:1302 syslog_removal.php:37
-#, fuzzy
 msgid "Export"
 msgstr "Экспорт"
 
 #: setup.php:1002 setup.php:1021
-#, fuzzy
 msgid "Indefinite"
 msgstr "Всегда"
 
 #: setup.php:1003 setup.php:1022 syslog.php:542 syslog_alerts.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "%d Day"
-msgstr "День"
+msgstr "%d День"
 
 #: setup.php:1004 setup.php:1005 setup.php:1006 setup.php:1007 setup.php:1008
 #: setup.php:1023 setup.php:1024 setup.php:1025 setup.php:1026 setup.php:1027
 #: syslog_alerts.php:383
-#, fuzzy, php-format
+#, php-format
 msgid "%d Days"
 msgstr "%d Дня(ей)"
 
 #: setup.php:1009 setup.php:1028 syslog_alerts.php:384
-#, fuzzy, php-format
+#, php-format
 msgid "%d Week"
-msgstr "Неделя"
+msgstr "%d Неделя"
 
 #: setup.php:1010 setup.php:1029 syslog_alerts.php:385
-#, fuzzy, php-format
+#, php-format
 msgid "%d Weeks"
 msgstr "%d Недели"
 
 #: setup.php:1011 setup.php:1030
-#, fuzzy, php-format
+#, php-format
 msgid "%d Month"
 msgstr "%d Месяц"
 
 #: setup.php:1012 setup.php:1013 setup.php:1014 setup.php:1015 setup.php:1016
 #: setup.php:1031 setup.php:1032 setup.php:1033 setup.php:1034 setup.php:1035
-#, fuzzy, php-format
+#, php-format
 msgid "%d Months"
 msgstr "%d Месяца"
 
 #: setup.php:1017 setup.php:1036
-#, fuzzy, php-format
+#, php-format
 msgid "%d Year"
-msgstr "Год"
+msgstr "%d Год"
 
 #: setup.php:1040 syslog_reports.php:691
-#, fuzzy
 msgid "Never"
 msgstr "Никогда"
 
 #: setup.php:1041 syslog.php:533
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgstr "%d Минута"
 
@@ -396,24 +383,21 @@ msgstr "%d Минута"
 #: syslog.php:536 syslog.php:537 syslog_alerts.php:369 syslog_alerts.php:370
 #: syslog_alerts.php:371 syslog_alerts.php:372 syslog_alerts.php:373
 #: syslog_alerts.php:374
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d Минут"
 
 #: setup.php:1048 syslog.php:1468 syslog.php:1509 syslog.php:1526
-#, fuzzy
 msgid "Notice"
 msgstr "Уведомление"
 
 #: setup.php:1049 syslog.php:1466 syslog.php:1508 syslog.php:1525
-#, fuzzy
 msgid "Warning"
 msgstr "Предупреждение"
 
 #: setup.php:1050 syslog.php:1462 syslog.php:1505 syslog.php:1524
-#, fuzzy
 msgid "Critical"
-msgstr "Критическая"
+msgstr "Критический"
 
 #: setup.php:1054
 #, fuzzy
@@ -421,14 +405,12 @@ msgid "Begins with"
 msgstr "начинается с"
 
 #: setup.php:1055
-#, fuzzy
 msgid "Contains"
-msgstr "содержит"
+msgstr "Содержит"
 
 #: setup.php:1056
-#, fuzzy
 msgid "Ends with"
-msgstr "заканчивается на"
+msgstr "Заканчивается"
 
 #: setup.php:1057
 #, fuzzy
@@ -443,7 +425,7 @@ msgstr "Тур"
 #: setup.php:1059
 #, fuzzy
 msgid "Facility is"
-msgstr "Квартира"
+msgstr "Объект"
 
 #: setup.php:1060
 #, fuzzy
@@ -451,17 +433,14 @@ msgid "SQL Expression"
 msgstr "Выражение SQL"
 
 #: setup.php:1064
-#, fuzzy
 msgid "Daily"
 msgstr "Ежедневно"
 
 #: setup.php:1065
-#, fuzzy
 msgid "Weekly"
 msgstr "Еженедельно"
 
 #: setup.php:1088
-#, fuzzy
 msgid "Import/Export"
 msgstr "Импорт/Экспорт"
 
@@ -487,11 +466,11 @@ msgstr "Правила составления отчетов"
 
 #: setup.php:1099
 msgid "Normal User"
-msgstr ""
+msgstr "Обычный пользователь"
 
 #: setup.php:1100
 msgid "System Administration"
-msgstr ""
+msgstr "Администрирование системы."
 
 #: setup.php:1116
 #, fuzzy
@@ -499,7 +478,6 @@ msgid "Syslog Removals"
 msgstr "Удаление системного журнала"
 
 #: setup.php:1117 setup.php:1118 setup.php:1122 setup.php:1123 setup.php:1127
-#, fuzzy
 msgid "(Edit)"
 msgstr "(Редактировать)"
 
@@ -560,12 +538,10 @@ msgid "%d Chars"
 msgstr "d Шары"
 
 #: syslog.php:112
-#, fuzzy
 msgid "System Logs"
 msgstr "Системные журналы"
 
 #: syslog.php:114
-#, fuzzy
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -590,40 +566,33 @@ msgid "Syslog Statistics Filter"
 msgstr "Фильтр статистики Syslog"
 
 #: syslog.php:255 syslog.php:1388 syslog.php:1620
-#, fuzzy
 msgid "Messages"
 msgstr "Сообщения"
 
 #: syslog.php:263
-#, fuzzy
 msgid "Device Name"
 msgstr "Имя устройства"
 
 #: syslog.php:268 syslog.php:470 syslog.php:1431 syslog.php:1608
 #: syslog.php:1616 syslog.php:1714
-#, fuzzy
 msgid "Facility"
 msgstr "Объект"
 
 #: syslog.php:273 syslog.php:490 syslog.php:1453 syslog.php:1609
 #: syslog.php:1617 syslog.php:1715
-#, fuzzy
 msgid "Priority"
 msgstr "Приоритет"
 
 #: syslog.php:278 syslog.php:1606 syslog.php:1614 syslog.php:1807
-#, fuzzy
 msgid "Program"
-msgstr "Тур"
+msgstr "Программа"
 
 #: syslog.php:283 syslog.php:1604 syslog.php:1612 syslog.php:1710
 #: syslog_process.php:388 syslog_process.php:715
-#, fuzzy
 msgid "Date"
 msgstr "Дата"
 
 #: syslog.php:288
-#, fuzzy
 msgid "Records"
 msgstr "Записи"
 
@@ -633,65 +602,56 @@ msgid "No Syslog Statistics Found"
 msgstr "Статистика Syslog не найдена"
 
 #: syslog.php:433 syslog.php:1605 syslog.php:1613 syslog.php:1713
-#, fuzzy
 msgid "Device"
 msgstr "Устройство"
 
 #: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
 #: syslog_alerts.php:624 syslog_removal.php:539 syslog_reports.php:518
-#, fuzzy
 msgid "All"
 msgstr "Все"
 
 #: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1801
 #: syslog.php:1812 syslog.php:1853 syslog.php:1854
-#, fuzzy
 msgid "None"
 msgstr "Нет"
 
 #: syslog.php:512 syslog.php:1300 syslog_alerts.php:646 syslog_removal.php:561
 #: syslog_reports.php:540
-#, fuzzy
 msgid "Go"
-msgstr "Выполнить"
+msgstr "Перейти"
 
 #: syslog.php:513 syslog.php:1301 syslog_alerts.php:647 syslog_removal.php:562
 #: syslog_reports.php:541
-#, fuzzy
 msgid "Clear"
 msgstr "Очистить"
 
 #: syslog.php:521 syslog.php:1061 syslog.php:1325 syslog_alerts.php:614
 #: syslog_removal.php:529 syslog_reports.php:508
-#, fuzzy
 msgid "Search"
 msgstr "Найти"
 
 #: syslog.php:527
-#, fuzzy
 msgid "Time Range"
 msgstr "Временной диапазон"
 
 #: syslog.php:538 syslog_alerts.php:375
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hour"
 msgstr "%d Час"
 
 #: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:376
 #: syslog_alerts.php:377 syslog_alerts.php:378 syslog_alerts.php:379
 #: syslog_alerts.php:380 syslog_alerts.php:381
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hours"
 msgstr "%d Часа(ов)"
 
 #: syslog.php:552
-#, fuzzy
 msgid "Entries"
 msgstr "Записи"
 
 #: syslog.php:556 syslog.php:1392 syslog_alerts.php:634 syslog_removal.php:549
 #: syslog_reports.php:528
-#, fuzzy
 msgid "Default"
 msgstr "Стандартно"
 
@@ -731,12 +691,10 @@ msgid "Timespan"
 msgstr "Временной диапазон"
 
 #: syslog.php:1240
-#, fuzzy
 msgid "Custom"
 msgstr "Пользовательский"
 
 #: syslog.php:1262
-#, fuzzy
 msgid "From"
 msgstr "От"
 
@@ -746,9 +704,8 @@ msgid "Start Date Selector"
 msgstr "Выбор даты запуска"
 
 #: syslog.php:1271
-#, fuzzy
 msgid "To"
-msgstr "До"
+msgstr "Кому"
 
 #: syslog.php:1277
 #, fuzzy
@@ -781,7 +738,6 @@ msgid "Export Records to CSV"
 msgstr "Экспорт записей в CSV"
 
 #: syslog.php:1303
-#, fuzzy
 msgid "Save"
 msgstr " Сохранить "
 
@@ -791,7 +747,6 @@ msgid "Save Default Settings"
 msgstr "Сохранить настройки по умолчанию"
 
 #: syslog.php:1309 syslog_alerts.php:779
-#, fuzzy
 msgid "Alerts"
 msgstr "Оповещения"
 
@@ -811,7 +766,6 @@ msgid "View Syslog Removal Rules"
 msgstr "Просмотреть правила удаления системного журнала"
 
 #: syslog.php:1311 syslog_reports.php:672
-#, fuzzy
 msgid "Reports"
 msgstr "Отчеты"
 
@@ -821,9 +775,8 @@ msgid "View Syslog Reports"
 msgstr "Просмотр отчетов системного журнала"
 
 #: syslog.php:1331
-#, fuzzy
 msgid "Devices"
-msgstr "Устройство"
+msgstr "Устройства"
 
 #: syslog.php:1335
 #, fuzzy
@@ -847,7 +800,7 @@ msgstr "Отображать строки"
 
 #: syslog.php:1401
 msgid "Trim"
-msgstr ""
+msgstr "Обрезка"
 
 #: syslog.php:1404
 #, fuzzy
@@ -855,9 +808,8 @@ msgid "Message Trim"
 msgstr "Обрезка сообщений"
 
 #: syslog.php:1413
-#, fuzzy
 msgid "Refresh"
-msgstr "Интервал обновления"
+msgstr "Обновить"
 
 #: syslog.php:1434
 #, fuzzy
@@ -865,7 +817,6 @@ msgid "Facilities to filter on"
 msgstr "Оборудование для фильтрации"
 
 #: syslog.php:1435
-#, fuzzy
 msgid "All Facilities"
 msgstr "Все удобства"
 
@@ -880,64 +831,58 @@ msgid "All Priorities"
 msgstr "Все приоритеты"
 
 #: syslog.php:1458 syslog.php:1504
-#, fuzzy
 msgid "Emergency"
 msgstr "Аварийный"
 
 #: syslog.php:1459
 #, fuzzy
 msgid "Alert++"
-msgstr "Предупреждение+++"
+msgstr "Оповещение"
 
 #: syslog.php:1460 syslog.php:1506
-#, fuzzy
 msgid "Alert"
 msgstr "Оповещение"
 
 #: syslog.php:1461
 #, fuzzy
 msgid "Critical++"
-msgstr "Критический+++"
+msgstr "Критический"
 
 #: syslog.php:1463
 #, fuzzy
 msgid "Error++"
-msgstr "Ошибка:"
+msgstr "ОШИБКА:"
 
 #: syslog.php:1464 syslog.php:1507
-#, fuzzy
 msgid "Error"
 msgstr "Ошибка"
 
 #: syslog.php:1465
 #, fuzzy
 msgid "Warning++"
-msgstr "ВНИМАНИЕ:"
+msgstr "Предупреждение"
 
 #: syslog.php:1467
 #, fuzzy
 msgid "Notice++"
-msgstr "Уведомление+++"
+msgstr "Уведомление"
 
 #: syslog.php:1469
 #, fuzzy
 msgid "Info++"
-msgstr "Информация по PHP"
+msgstr "Информация"
 
 #: syslog.php:1470 syslog.php:1510
-#, fuzzy
 msgid "Info"
 msgstr "Информация"
 
 #: syslog.php:1471 syslog.php:1511
-#, fuzzy
 msgid "Debug"
 msgstr "Отладка"
 
 #: syslog.php:1476
-#, fuzzy
 msgid "Record Type"
-msgstr "Записи"
+msgstr "Тип записи"
 
 #: syslog.php:1479
 #, fuzzy
@@ -945,7 +890,6 @@ msgid "Removal Handling"
 msgstr "Удаление Обработка удаления"
 
 #: syslog.php:1480
-#, fuzzy
 msgid "All Records"
 msgstr "Все записи"
 
@@ -960,23 +904,19 @@ msgid "Removed Records"
 msgstr "Удаленные записи"
 
 #: syslog.php:1527
-#, fuzzy
 msgid "Informational"
 msgstr "Информационный"
 
 #: syslog.php:1603
-#, fuzzy
 msgid "Actions"
 msgstr "Действия"
 
 #: syslog.php:1607 syslog.php:1615 syslog.php:1711 syslog_process.php:388
 #: syslog_process.php:715
-#, fuzzy
 msgid "Message"
 msgstr "Сообщение"
 
 #: syslog.php:1663 syslog.php:1666 syslog.php:1667 syslog.php:1734
-#, fuzzy
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -987,18 +927,15 @@ msgstr "Нет сообщений в системном журнале"
 
 #: syslog.php:1708 syslog_alerts.php:452 syslog_alerts.php:767
 #: syslog_process.php:377
-#, fuzzy
 msgid "Alert Name"
 msgstr "Имя оповещения"
 
 #: syslog.php:1709 syslog_alerts.php:460 syslog_alerts.php:768
 #: syslog_process.php:377 syslog_process.php:388
-#, fuzzy
 msgid "Severity"
 msgstr "Важность"
 
 #: syslog.php:1712 syslog_process.php:377
-#, fuzzy
 msgid "Count"
 msgstr "Количество"
 
@@ -1018,9 +955,8 @@ msgid "No Alert Log Messages"
 msgstr "Сообщения журнала оповещений отсутствуют"
 
 #: syslog.php:1803 syslog.php:1826 syslog.php:1845 syslog.php:1846
-#, fuzzy
 msgid "All Programs"
-msgstr "Все программы"
+msgstr "Все Программы"
 
 #: syslog_alerts.php:164
 #, fuzzy
@@ -1063,24 +999,20 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "Правило(ы) уведомления об экспорте в Syslog"
 
 #: syslog_alerts.php:203 syslog_removal.php:226 syslog_reports.php:203
-#, fuzzy
 msgid "Continue"
 msgstr "Продолжить"
 
 #: syslog_alerts.php:359
-#, fuzzy
 msgid "Not Set"
-msgstr "Установить/Обновить фильтры"
+msgstr "Не задано"
 
 #: syslog_alerts.php:364
-#, fuzzy
 msgid "1 Minute"
-msgstr "%d Минута"
+msgstr "1 минута"
 
 #: syslog_alerts.php:386
-#, fuzzy
 msgid "1 Month"
-msgstr "Месяц"
+msgstr "1 месяц"
 
 #: syslog_alerts.php:422
 #, fuzzy, php-format
@@ -1123,13 +1055,11 @@ msgid "Define how to Alert on the syslog messages."
 msgstr "Определите, как оповещать о нарушениях в syslog сообщениях."
 
 #: syslog_alerts.php:471 syslog_alerts.php:794
-#, fuzzy
 msgid "Individual"
 msgstr "Индивидуальный"
 
 #: syslog_alerts.php:471 syslog_alerts.php:476 syslog_alerts.php:794
 #: syslog_process.php:377
-#, fuzzy
 msgid "Threshold"
 msgstr "Порог"
 
@@ -1170,14 +1100,12 @@ msgid "Is this Alert Enabled?"
 msgstr "Включено ли это оповещение?"
 
 #: syslog_alerts.php:507 syslog_removal.php:438 syslog_reports.php:396
-#, fuzzy
 msgid "Disabled"
 msgstr "Выключен"
 
 #: syslog_alerts.php:507 syslog_alerts.php:620 syslog_alerts.php:771
 #: syslog_removal.php:438 syslog_removal.php:535 syslog_removal.php:683
 #: syslog_reports.php:396 syslog_reports.php:514 syslog_reports.php:662
-#, fuzzy
 msgid "Enabled"
 msgstr "Включено"
 
@@ -1207,7 +1135,6 @@ msgid "Alert Actions"
 msgstr "Действия по оповещению"
 
 #: syslog_alerts.php:534
-#, fuzzy
 msgid "Open Ticket"
 msgstr "Открыть тикет"
 
@@ -1219,14 +1146,12 @@ msgstr "Если билет в службу поддержки будет отк
 #: syslog_alerts.php:537 syslog_alerts.php:626 syslog_alerts.php:796
 #: syslog_removal.php:541 syslog_removal.php:705 syslog_reports.php:520
 #: syslog_reports.php:686
-#, fuzzy
 msgid "No"
 msgstr "Нет"
 
 #: syslog_alerts.php:537 syslog_alerts.php:625 syslog_alerts.php:796
 #: syslog_removal.php:540 syslog_removal.php:705 syslog_reports.php:519
 #: syslog_reports.php:686
-#, fuzzy
 msgid "Yes"
 msgstr "Да"
 
@@ -1251,13 +1176,11 @@ msgid "When an Alert is triggered, run the following command.  The following rep
 msgstr "При срабатывании сигнала тревоги выполните следующую команду.  Доступны следующие переменные замены <b>'HOSTNAME&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;; </b>, <b>'FACILITY&gt;; </b>, <b>'PRIORITY&gt;;, </b>, <b>'SEVERITY&gt;; </b>'</b>.  Пожалуйста, обратите внимание, что <b>'HOSTNAME&lt;HOSTNAME&gt;;;;; </b> доступен только для отдельных пороговых значений."
 
 #: syslog_alerts.php:630 syslog_reports.php:524
-#, fuzzy
 msgid "Rows"
 msgstr "Строк"
 
 #: syslog_alerts.php:648 syslog_alerts.php:934 syslog_removal.php:563
 #: syslog_removal.php:844 syslog_reports.php:542 syslog_reports.php:827
-#, fuzzy
 msgid "Import"
 msgstr "Импорт"
 
@@ -1267,7 +1190,6 @@ msgid "Syslog Alert Filters"
 msgstr "Фильтры оповещений Syslog"
 
 #: syslog_alerts.php:769 syslog_removal.php:686
-#, fuzzy
 msgid "Method"
 msgstr "Метод"
 
@@ -1277,9 +1199,8 @@ msgid "Threshold Count"
 msgstr "Пороговый граф"
 
 #: syslog_alerts.php:772 syslog_removal.php:684 syslog_reports.php:663
-#, fuzzy
 msgid "Match Type"
-msgstr "Тип соответствия"
+msgstr "Тип Матча"
 
 #: syslog_alerts.php:773 syslog_removal.php:685 syslog_reports.php:664
 #, fuzzy
@@ -1287,27 +1208,22 @@ msgid "Search String"
 msgstr "Строка поиска"
 
 #: syslog_alerts.php:774
-#, fuzzy
 msgid "Email Addresses"
 msgstr "Адрес электронной почты"
 
 #: syslog_alerts.php:775 syslog_removal.php:687 syslog_reports.php:668
-#, fuzzy
 msgid "Last Modified"
 msgstr "Последнее изменение"
 
 #: syslog_alerts.php:776 syslog_removal.php:688 syslog_reports.php:669
-#, fuzzy
 msgid "By User"
-msgstr "Нет пользователя"
+msgstr "Пользователем"
 
 #: syslog_alerts.php:795
-#, fuzzy
 msgid "N/A"
 msgstr "Н/Д"
 
 #: syslog_alerts.php:799
-#, fuzzy
 msgid "Multiple"
 msgstr "Множественный"
 
@@ -1342,7 +1258,6 @@ msgid "Import Alert Rule"
 msgstr "Правило уведомления об импорте"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Imported"
 msgstr "Импортировано"
 
@@ -1352,7 +1267,6 @@ msgid "NOTE: Alert '%s' %s!"
 msgstr "ПРИМЕЧАНИЕ: Предупреждение '%s' %s!"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Updated"
 msgstr "Обновлено"
 
@@ -1362,7 +1276,6 @@ msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "СКОРАЯ ПОМОЩЬ: Предупреждение '%s' %s Неудачно!"
 
 #: syslog_alerts.php:934 syslog_removal.php:844 syslog_reports.php:827
-#, fuzzy
 msgid "Update"
 msgstr "Обновить"
 
@@ -1372,9 +1285,8 @@ msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
 msgstr "ВНИМАНИЕ: Сигнал о количестве экземпляров подключаемого модуля Syslog сработал."
 
 #: syslog_process.php:369
-#, fuzzy
 msgid "Name:"
-msgstr "Имя"
+msgstr "Имя:"
 
 #: syslog_process.php:370 syslog_process.php:404
 #, fuzzy
@@ -1384,10 +1296,9 @@ msgstr "Важность"
 #: syslog_process.php:371
 #, fuzzy
 msgid "Threshold:"
-msgstr "Порог:"
+msgstr "Порог"
 
 #: syslog_process.php:372
-#, fuzzy
 msgid "Count:"
 msgstr "Количество:"
 
@@ -1412,32 +1323,26 @@ msgid "Cacti Syslog Plugin Alert '%s'"
 msgstr "Предупреждение о плагине Cacti Syslog '%s'."
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Hostname"
 msgstr "Имя хоста"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Level"
 msgstr "Уровень"
 
 #: syslog_process.php:402
-#, fuzzy
 msgid "Hostname:"
 msgstr "Имя хоста : "
 
 #: syslog_process.php:403
-#, fuzzy
 msgid "Date:"
-msgstr "Дата"
+msgstr "Дата:"
 
 #: syslog_process.php:405
-#, fuzzy
 msgid "Level:"
 msgstr "Уровень:"
 
 #: syslog_process.php:406
-#, fuzzy
 msgid "Message:"
 msgstr "Сообщение:"
 
@@ -1464,10 +1369,9 @@ msgstr "Предупреждение о событии - %s"
 #: syslog_process.php:491
 #, fuzzy
 msgid ", Count:"
-msgstr "Граф"
+msgstr "Количество"
 
 #: syslog_process.php:715
-#, fuzzy
 msgid "Host"
 msgstr "Хост"
 
@@ -1572,9 +1476,8 @@ msgid "Please describe this Removal Rule."
 msgstr "Пожалуйста, опишите это правило об удалении."
 
 #: syslog_removal.php:435 syslog_reports.php:393
-#, fuzzy
 msgid "Enabled?"
-msgstr "Включено"
+msgstr "Включить?"
 
 #: syslog_removal.php:436
 #, fuzzy
@@ -1607,7 +1510,6 @@ msgid "Space for Notes on the Removal rule"
 msgstr "Место для примечаний по правилу об удалении"
 
 #: syslog_removal.php:545 syslog_removal.php:693
-#, fuzzy
 msgid "Rules"
 msgstr "Правила"
 
@@ -1622,7 +1524,6 @@ msgid "Removal Name"
 msgstr "Удаление имени"
 
 #: syslog_removal.php:708
-#, fuzzy
 msgid "Transfer"
 msgstr "Перевод"
 
@@ -1712,7 +1613,6 @@ msgid "You must select at least one Syslog Report."
 msgstr "Вы должны выбрать хотя бы один Syslog Report."
 
 #: syslog_reports.php:206
-#, fuzzy
 msgid "Return"
 msgstr "Вернуть"
 
@@ -1732,14 +1632,12 @@ msgid "New Report Record"
 msgstr "Новый отчет Запись"
 
 #: syslog_reports.php:382
-#, fuzzy
 msgid "Report Details"
-msgstr "Деталі"
+msgstr "Детали Отчёта"
 
 #: syslog_reports.php:386 syslog_reports.php:661
-#, fuzzy
 msgid "Report Name"
-msgstr "Название отчета"
+msgstr "Имя отчета"
 
 #: syslog_reports.php:387
 #, fuzzy
@@ -1772,9 +1670,8 @@ msgid "How often should this Report be sent to the distribution list?"
 msgstr "Как часто следует направлять настоящий Отчет в список рассылки?"
 
 #: syslog_reports.php:425 syslog_reports.php:666
-#, fuzzy
 msgid "Send Time"
-msgstr "Отправить время"
+msgstr "Время Отправки"
 
 #: syslog_reports.php:426
 #, fuzzy
@@ -1817,12 +1714,10 @@ msgid "Syslog Report Filters"
 msgstr "Фильтры отчетов Syslog"
 
 #: syslog_reports.php:665
-#, fuzzy
 msgid "Frequency"
 msgstr "Частота"
 
 #: syslog_reports.php:667
-#, fuzzy
 msgid "Last Sent"
 msgstr "Последняя отправка"
 

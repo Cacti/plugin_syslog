@@ -8,63 +8,53 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2020-12-12 22:16-0500\n"
-"PO-Revision-Date: 2019-07-25 23:57+0000\n"
+"PO-Revision-Date: 2020-12-14 19:50-0500\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
-"Language: zh-CN\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.4-dev\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: functions.php:53
-#, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "请使用HTML电子邮件客户端"
 
 #: setup.php:34
-#, fuzzy
 msgid "Please rename your config.php.dist file in the syslog directory, and change setup your database before installing."
 msgstr "请重命名syslog目录中的config.php.dist文件，并在安装之前更改数据库设置。"
 
 #: setup.php:237
-#, fuzzy
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
 msgstr "Syslog 2.0需要重新安装。请在安装前卸载Syslog并删除所有数据。迁移是可能的，但您必须提前计划。不支持自动迁移。"
 
 #: setup.php:645
-#, fuzzy
 msgid "What upgrade/install type do you wish to use"
 msgstr "您希望使用哪种升级/安装类型"
 
 #: setup.php:646
-#, fuzzy
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "当你有非常大的表时，执行截断将更快。如果您担心存档数据，可以选择Inline（这将在此升级期间冻结浏览器）或后台，这将创建后台进程以将旧的syslog数据从备份表转换为新的syslog格式。这个过程可能需要几个小时。"
 
 #: setup.php:649
-#, fuzzy
 msgid "Truncate Syslog Table"
 msgstr "截断Syslog表"
 
 #: setup.php:650
-#, fuzzy
 msgid "Inline Upgrade"
 msgstr "内联升级"
 
 #: setup.php:651
-#, fuzzy
 msgid "Background Upgrade"
 msgstr "后台升级"
 
 #: setup.php:656
-#, fuzzy
 msgid "Database Storage Engine"
 msgstr "数据库存储引擎"
 
 #: setup.php:657
-#, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available."
 msgstr "在MySQL 5.1.6及更高版本中，您可以选择按天划分一个分区表。在此版本之前，您只能使用传统的表结构。"
 
@@ -79,22 +69,18 @@ msgid "InnoDB Storage"
 msgstr "InnoDB存储"
 
 #: setup.php:666
-#, fuzzy
 msgid "Database Architecture"
 msgstr "数据库架构"
 
 #: setup.php:667
-#, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available."
 msgstr "在MySQL 5.1.6及更高版本中，您可以选择按天划分一个分区表。在MySQL 5.5及更高版本中，您可以每天创建多个分区。在MySQL 5.1.6之前，您只能使用传统的表结构。"
 
 #: setup.php:671 setup.php:674
-#, fuzzy
 msgid "Traditional Table"
 msgstr "传统表"
 
 #: setup.php:672
-#, fuzzy
 msgid "Partitioned Table"
 msgstr "分区表"
 
@@ -104,12 +90,10 @@ msgid "Retention Policy"
 msgstr "保留政策"
 
 #: setup.php:681
-#, fuzzy
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "选择要在数据库中维护的Syslog值的天数。"
 
 #: setup.php:702
-#, fuzzy
 msgid "Partitions per Day"
 msgstr "每天分区"
 
@@ -119,17 +103,15 @@ msgid "Select the number of partitions per day that you wish to create."
 msgstr "选择您希望每天创建的分区数。"
 
 #: setup.php:706 setup.php:707 setup.php:708 setup.php:709 setup.php:710
-#, fuzzy, php-format
+#, php-format
 msgid "%d Per Day"
-msgstr "％d每天"
+msgstr "％d 每天"
 
 #: setup.php:716 setup.php:801
-#, fuzzy
 msgid "Upgrade"
 msgstr "升级"
 
 #: setup.php:718 setup.php:803
-#, fuzzy
 msgid "Install"
 msgstr "安装"
 
@@ -139,27 +121,22 @@ msgid "Syslog %s Advisor"
 msgstr "Syslog％s顾问"
 
 #: setup.php:726
-#, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "警告：Syslog升级是耗时的！"
 
 #: setup.php:727
-#, fuzzy
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "'main'系统日志表的升级可能是一个非常耗时的过程。因此，建议您在升级之前减小syslog表的大小，或者选择后台选项</p><p>如果选择后台选项，则将重命名旧的syslog表，并将创建新的syslog表。然后，将在后台启动升级过程。同样，这个后台进程可能需要相当多的时间才能完成。但是，您的数据将被保留</p><p>无论您的选择如何，在升级过程中都将保留所有现有的删除和警报规则。 </p><p>按<b>“升级”</b>继续升级，或按<b>“取消”</b>返回“插件”菜单。"
 
 #: setup.php:730
-#, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller."
 msgstr "您也可以选择保留期限。请记住，如果您有多个主机登录到syslog，则此表可能会变得非常大。因此，如果不使用分区，您可能希望保持较小的大小。"
 
 #: setup.php:730
-#, fuzzy
 msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
 msgstr "您还可以设置MySQL存储引擎。如果您尚未针对InnoDB存储属性调整系统，则强烈建议您使用MyISAM存储引擎。"
 
 #: setup.php:730
-#, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries."
 msgstr "安装Syslog时有几个选项可供选择。第一个是数据库架构。从MySQL 5.1.6开始，您可以选择使用表分区来防止表的大小变得过大，从而减慢查询速度。"
 
@@ -169,17 +146,14 @@ msgid "Syslog %s Settings"
 msgstr "Syslog％s设置"
 
 #: setup.php:761
-#, fuzzy
 msgid "What uninstall method do you want to use?"
 msgstr "你想用什么卸载方法？"
 
 #: setup.php:762
-#, fuzzy
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "卸载syslog时，您可以删除所有内容或仅删除组件，以防您计划将来重新安装。"
 
 #: setup.php:764
-#, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "删除所有内容（日志，表格，设置）"
 
@@ -189,30 +163,25 @@ msgid "Syslog Data Only"
 msgstr "仅限Syslog数据"
 
 #: setup.php:784
-#, fuzzy
 msgid "Syslog Uninstall Preferences"
 msgstr "Syslog卸载首选项"
 
 #: setup.php:806
-#, fuzzy
 msgid "Uninstall"
 msgstr "卸载"
 
 #: setup.php:813 syslog_alerts.php:203 syslog_removal.php:226
 #: syslog_reports.php:203
-#, fuzzy
 msgid "Cancel"
 msgstr "取消"
 
 #: setup.php:844 setup.php:943 setup.php:945 setup.php:1115 setup.php:1129
-#, fuzzy
 msgid "Syslog"
 msgstr "系统日志"
 
 #: setup.php:848
-#, fuzzy
 msgid "General Settings"
-msgstr "基本设置"
+msgstr "常规设置"
 
 #: setup.php:852
 #, fuzzy
@@ -220,27 +189,22 @@ msgid "Syslog Enabled"
 msgstr "已启用Syslog"
 
 #: setup.php:853
-#, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "如果设置了此复选框，则记录将从Syslog Incoming表传输到主syslog表，并且将启用Alerts and Reports。请记住，如果系统被禁用，日志条目仍会累积到Syslog Incoming表中，因为这是由rsyslog或syslog-ng进程定义的。"
 
 #: setup.php:858
-#, fuzzy
 msgid "HTML Based Email"
 msgstr "HTML电子邮件"
 
 #: setup.php:859
-#, fuzzy
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
 msgstr "如果设置了此复选框，则所有电子邮件都将以HTML格式发送。否则，电子邮件将以纯文本形式发送。"
 
 #: setup.php:864
-#, fuzzy
 msgid "Enable Statistics Gathering"
-msgstr "启用统计信息收集"
+msgstr "进程汇总统计"
 
 #: setup.php:865
-#, fuzzy
 msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
 msgstr "如果设置了此复选框，则将保留有关syslog消息来自何处的统计信息。此统计信息可用于渲染热图等内容。"
 
@@ -250,27 +214,22 @@ msgid "Strip Domains"
 msgstr "剥离域"
 
 #: setup.php:871
-#, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "您希望从syslog主机名中删除的以逗号分隔的域列表，例如'mydomain.com，otherdomain.com'"
 
 #: setup.php:878
-#, fuzzy
 msgid "Validate Hostnames"
 msgstr "验证主机名"
 
 #: setup.php:879
-#, fuzzy
 msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
 msgstr "如果设置了此复选框，则验证所有主机名。如果主机名无效。所有记录都分配给名为“invalidhost”的特殊主机。此设置可能会影响大型系统上的syslog处理时间。因此，只有在没有其他方法可以防止这种情况发生时，才应使用此设置。"
 
 #: setup.php:884
-#, fuzzy
 msgid "Refresh Interval"
 msgstr "刷新频率"
 
 #: setup.php:885
-#, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "这是页面刷新前的秒数。"
 
@@ -286,9 +245,9 @@ msgstr "对于基于阈值的警报，您希望在报告中显示的最大数量
 
 #: setup.php:896 setup.php:897 setup.php:898 setup.php:899 setup.php:900
 #: setup.php:901
-#, fuzzy, php-format
+#, php-format
 msgid "%d Records"
-msgstr "％d记录"
+msgstr "%d 记录"
 
 #: setup.php:905
 #, fuzzy
@@ -325,70 +284,65 @@ msgid "Delete"
 msgstr "删除"
 
 #: setup.php:957 syslog_removal.php:34
-#, fuzzy
 msgid "Disable"
 msgstr "禁用"
 
 #: setup.php:958 syslog_removal.php:35
-#, fuzzy
 msgid "Enable"
 msgstr "启用"
 
 #: setup.php:959 syslog.php:1302 syslog_removal.php:37
-#, fuzzy
 msgid "Export"
 msgstr "导出"
 
 #: setup.php:1002 setup.php:1021
-#, fuzzy
 msgid "Indefinite"
 msgstr "无限制"
 
 #: setup.php:1003 setup.php:1022 syslog.php:542 syslog_alerts.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "%d Day"
 msgstr "%d 天"
 
 #: setup.php:1004 setup.php:1005 setup.php:1006 setup.php:1007 setup.php:1008
 #: setup.php:1023 setup.php:1024 setup.php:1025 setup.php:1026 setup.php:1027
 #: syslog_alerts.php:383
-#, fuzzy, php-format
+#, php-format
 msgid "%d Days"
 msgstr "%d 天"
 
 #: setup.php:1009 setup.php:1028 syslog_alerts.php:384
-#, fuzzy, php-format
+#, php-format
 msgid "%d Week"
 msgstr "%d 周"
 
 #: setup.php:1010 setup.php:1029 syslog_alerts.php:385
-#, fuzzy, php-format
+#, php-format
 msgid "%d Weeks"
 msgstr "%d 周"
 
 #: setup.php:1011 setup.php:1030
-#, fuzzy, php-format
+#, php-format
 msgid "%d Month"
 msgstr "%d 月"
 
 #: setup.php:1012 setup.php:1013 setup.php:1014 setup.php:1015 setup.php:1016
 #: setup.php:1031 setup.php:1032 setup.php:1033 setup.php:1034 setup.php:1035
-#, fuzzy, php-format
+#, php-format
 msgid "%d Months"
 msgstr "%d 月"
 
 #: setup.php:1017 setup.php:1036
-#, fuzzy, php-format
+#, php-format
 msgid "%d Year"
 msgstr "%d 年"
 
 #: setup.php:1040 syslog_reports.php:691
-#, fuzzy
 msgid "Never"
 msgstr "从不"
 
 #: setup.php:1041 syslog.php:533
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minute"
 msgstr "%d 分钟"
 
@@ -396,24 +350,21 @@ msgstr "%d 分钟"
 #: syslog.php:536 syslog.php:537 syslog_alerts.php:369 syslog_alerts.php:370
 #: syslog_alerts.php:371 syslog_alerts.php:372 syslog_alerts.php:373
 #: syslog_alerts.php:374
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
-msgstr "%d 分钟"
+msgstr "%d分钟"
 
 #: setup.php:1048 syslog.php:1468 syslog.php:1509 syslog.php:1526
-#, fuzzy
 msgid "Notice"
-msgstr "通知"
+msgstr "注意"
 
 #: setup.php:1049 syslog.php:1466 syslog.php:1508 syslog.php:1525
-#, fuzzy
 msgid "Warning"
 msgstr "警告"
 
 #: setup.php:1050 syslog.php:1462 syslog.php:1505 syslog.php:1524
-#, fuzzy
 msgid "Critical"
-msgstr "关键的可执行程序位置和版本"
+msgstr "严重"
 
 #: setup.php:1054
 #, fuzzy
@@ -421,19 +372,17 @@ msgid "Begins with"
 msgstr "开始于"
 
 #: setup.php:1055
-#, fuzzy
 msgid "Contains"
 msgstr "包含"
 
 #: setup.php:1056
-#, fuzzy
 msgid "Ends with"
-msgstr "结尾于"
+msgstr "以此结尾"
 
 #: setup.php:1057
 #, fuzzy
 msgid "Hostname is"
-msgstr "主机名"
+msgstr "主机名:"
 
 #: setup.php:1058
 #, fuzzy
@@ -443,25 +392,21 @@ msgstr "调试 - 统计，错误，结果，I / O和程序流程"
 #: setup.php:1059
 #, fuzzy
 msgid "Facility is"
-msgstr "设施是"
+msgstr "设施"
 
 #: setup.php:1060
-#, fuzzy
 msgid "SQL Expression"
 msgstr "SQL表达式"
 
 #: setup.php:1064
-#, fuzzy
 msgid "Daily"
 msgstr "每日"
 
 #: setup.php:1065
-#, fuzzy
 msgid "Weekly"
 msgstr "每周"
 
 #: setup.php:1088
-#, fuzzy
 msgid "Import/Export"
 msgstr "导入/导出"
 
@@ -471,9 +416,8 @@ msgid "Alert Rules"
 msgstr "警报规则"
 
 #: setup.php:1089 setup.php:1090 setup.php:1091 setup.php:1096
-#, fuzzy
 msgid "Syslog Settings"
-msgstr "系统日志设置"
+msgstr "Syslog 设置"
 
 #: setup.php:1090
 #, fuzzy
@@ -487,11 +431,11 @@ msgstr "报告规则"
 
 #: setup.php:1099
 msgid "Normal User"
-msgstr ""
+msgstr "普通用户"
 
 #: setup.php:1100
 msgid "System Administration"
-msgstr ""
+msgstr "系统管理"
 
 #: setup.php:1116
 #, fuzzy
@@ -499,12 +443,10 @@ msgid "Syslog Removals"
 msgstr "Syslog删除"
 
 #: setup.php:1117 setup.php:1118 setup.php:1122 setup.php:1123 setup.php:1127
-#, fuzzy
 msgid "(Edit)"
 msgstr "（编辑）"
 
 #: setup.php:1119 setup.php:1124 setup.php:1128
-#, fuzzy
 msgid "(Actions)"
 msgstr "操作"
 
@@ -549,7 +491,6 @@ msgid "Syslog Viewer"
 msgstr "系统日志查看器"
 
 #: syslog.php:55
-#, fuzzy
 msgid "All Text"
 msgstr "所有文字"
 
@@ -560,17 +501,14 @@ msgid "%d Chars"
 msgstr "％d Chars"
 
 #: syslog.php:112
-#, fuzzy
 msgid "System Logs"
 msgstr "系统日志"
 
 #: syslog.php:114
-#, fuzzy
 msgid "Statistics"
 msgstr "统计"
 
 #: syslog.php:116
-#, fuzzy
 msgid "Alert Logs"
 msgstr "警报日志"
 
@@ -590,40 +528,33 @@ msgid "Syslog Statistics Filter"
 msgstr "系统日志统计过滤器"
 
 #: syslog.php:255 syslog.php:1388 syslog.php:1620
-#, fuzzy
 msgid "Messages"
 msgstr "消息"
 
 #: syslog.php:263
-#, fuzzy
 msgid "Device Name"
 msgstr "设备名称"
 
 #: syslog.php:268 syslog.php:470 syslog.php:1431 syslog.php:1608
 #: syslog.php:1616 syslog.php:1714
-#, fuzzy
 msgid "Facility"
 msgstr "设施"
 
 #: syslog.php:273 syslog.php:490 syslog.php:1453 syslog.php:1609
 #: syslog.php:1617 syslog.php:1715
-#, fuzzy
 msgid "Priority"
 msgstr "优先级"
 
 #: syslog.php:278 syslog.php:1606 syslog.php:1614 syslog.php:1807
-#, fuzzy
 msgid "Program"
-msgstr "调试 - 统计，错误，结果，I / O和程序流程"
+msgstr "程序"
 
 #: syslog.php:283 syslog.php:1604 syslog.php:1612 syslog.php:1710
 #: syslog_process.php:388 syslog_process.php:715
-#, fuzzy
 msgid "Date"
 msgstr "日期"
 
 #: syslog.php:288
-#, fuzzy
 msgid "Records"
 msgstr "记录"
 
@@ -638,13 +569,11 @@ msgstr "设备"
 
 #: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
 #: syslog_alerts.php:624 syslog_removal.php:539 syslog_reports.php:518
-#, fuzzy
 msgid "All"
 msgstr "所有"
 
 #: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1801
 #: syslog.php:1812 syslog.php:1853 syslog.php:1854
-#, fuzzy
 msgid "None"
 msgstr "无"
 
@@ -664,21 +593,20 @@ msgid "Search"
 msgstr "搜索"
 
 #: syslog.php:527
-#, fuzzy
 msgid "Time Range"
 msgstr "时间范围"
 
 #: syslog.php:538 syslog_alerts.php:375
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hour"
-msgstr "%d小时"
+msgstr "%d 小时"
 
 #: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:376
 #: syslog_alerts.php:377 syslog_alerts.php:378 syslog_alerts.php:379
 #: syslog_alerts.php:380 syslog_alerts.php:381
-#, fuzzy, php-format
+#, php-format
 msgid "%d Hours"
-msgstr "%d 时"
+msgstr "%d 小时"
 
 #: syslog.php:552
 msgid "Entries"
@@ -686,19 +614,18 @@ msgstr "条目"
 
 #: syslog.php:556 syslog.php:1392 syslog_alerts.php:634 syslog_removal.php:549
 #: syslog_reports.php:528
-#, fuzzy
 msgid "Default"
 msgstr "默认"
 
 #: syslog.php:1000
-#, fuzzy, php-format
+#, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
 msgstr "[开始：'％s'到结尾：'％s'，未处理的消息：％s]"
 
 #: syslog.php:1002
-#, fuzzy, php-format
+#, php-format
 msgid "[ Unprocessed Messages: %s ]"
-msgstr "[未处理的消息：％s]"
+msgstr "[未处理消息:%s]"
 
 #: syslog.php:1019
 #, fuzzy
@@ -721,47 +648,38 @@ msgid "Syslog Message Filter %s"
 msgstr "系统日志消息过滤器％s"
 
 #: syslog.php:1234
-#, fuzzy
 msgid "Timespan"
-msgstr "时间范围"
+msgstr "时间跨度"
 
 #: syslog.php:1240
-#, fuzzy
 msgid "Custom"
 msgstr "自定义"
 
 #: syslog.php:1262
-#, fuzzy
 msgid "From"
 msgstr "从"
 
 #: syslog.php:1268
-#, fuzzy
 msgid "Start Date Selector"
 msgstr "开始日期选择器"
 
 #: syslog.php:1271
-#, fuzzy
 msgid "To"
 msgstr "到"
 
 #: syslog.php:1277
-#, fuzzy
 msgid "End Date Selector"
 msgstr "结束日期选择器"
 
 #: syslog.php:1280
-#, fuzzy
 msgid "Shift Time Backward"
 msgstr "向后移动时间"
 
 #: syslog.php:1283
-#, fuzzy
 msgid "Define Shifting Interval"
 msgstr "定义移动间隔"
 
 #: syslog.php:1296
-#, fuzzy
 msgid "Shift Time Forward"
 msgstr "向前移动时间"
 
@@ -776,7 +694,6 @@ msgid "Export Records to CSV"
 msgstr "将记录导出为CSV"
 
 #: syslog.php:1303
-#, fuzzy
 msgid "Save"
 msgstr "保存"
 
@@ -786,7 +703,6 @@ msgid "Save Default Settings"
 msgstr "保存默认设置"
 
 #: syslog.php:1309 syslog_alerts.php:779
-#, fuzzy
 msgid "Alerts"
 msgstr "警告"
 
@@ -806,7 +722,6 @@ msgid "View Syslog Removal Rules"
 msgstr "查看Syslog删除规则"
 
 #: syslog.php:1311 syslog_reports.php:672
-#, fuzzy
 msgid "Reports"
 msgstr "报告"
 
@@ -816,7 +731,6 @@ msgid "View Syslog Reports"
 msgstr "查看Syslog报告"
 
 #: syslog.php:1331
-#, fuzzy
 msgid "Devices"
 msgstr "设备"
 
@@ -833,7 +747,7 @@ msgstr "显示所有日志"
 #: syslog.php:1337
 #, fuzzy
 msgid "Threshold Logs"
-msgstr "阈值日志"
+msgstr "保持这个天数的阈值日志。"
 
 #: syslog.php:1391
 #, fuzzy
@@ -842,7 +756,7 @@ msgstr "显示行"
 
 #: syslog.php:1401
 msgid "Trim"
-msgstr ""
+msgstr "裁剪"
 
 #: syslog.php:1404
 #, fuzzy
@@ -850,9 +764,8 @@ msgid "Message Trim"
 msgstr "消息修剪"
 
 #: syslog.php:1413
-#, fuzzy
 msgid "Refresh"
-msgstr "刷新频率"
+msgstr "刷新"
 
 #: syslog.php:1434
 #, fuzzy
@@ -860,7 +773,6 @@ msgid "Facilities to filter on"
 msgstr "要过滤的设施"
 
 #: syslog.php:1435
-#, fuzzy
 msgid "All Facilities"
 msgstr "所有设施"
 
@@ -875,34 +787,31 @@ msgid "All Priorities"
 msgstr "所有优先事项"
 
 #: syslog.php:1458 syslog.php:1504
-#, fuzzy
 msgid "Emergency"
-msgstr "警务人员"
+msgstr "紧急"
 
 #: syslog.php:1459
 #, fuzzy
 msgid "Alert++"
-msgstr "警报++"
+msgstr "警报"
 
 #: syslog.php:1460 syslog.php:1506
-#, fuzzy
 msgid "Alert"
-msgstr "警告"
+msgstr "警报"
 
 #: syslog.php:1461
 #, fuzzy
 msgid "Critical++"
-msgstr "关键的可执行程序位置和版本"
+msgstr "严重"
 
 #: syslog.php:1463
 #, fuzzy
 msgid "Error++"
-msgstr "错误："
+msgstr "ERROR:"
 
 #: syslog.php:1464 syslog.php:1507
-#, fuzzy
 msgid "Error"
-msgstr "错误："
+msgstr "错误"
 
 #: syslog.php:1465
 #, fuzzy
@@ -912,27 +821,24 @@ msgstr "[警告]"
 #: syslog.php:1467
 #, fuzzy
 msgid "Notice++"
-msgstr "注意++"
+msgstr "注意"
 
 #: syslog.php:1469
 #, fuzzy
 msgid "Info++"
-msgstr "PHP Info"
+msgstr "信息"
 
 #: syslog.php:1470 syslog.php:1510
-#, fuzzy
 msgid "Info"
-msgstr "RRDtool调谐信息"
+msgstr "信息"
 
 #: syslog.php:1471 syslog.php:1511
-#, fuzzy
 msgid "Debug"
 msgstr "Debug"
 
 #: syslog.php:1476
-#, fuzzy
 msgid "Record Type"
-msgstr "记录"
+msgstr "记录类型"
 
 #: syslog.php:1479
 #, fuzzy
@@ -940,7 +846,6 @@ msgid "Removal Handling"
 msgstr "搬运处理"
 
 #: syslog.php:1480
-#, fuzzy
 msgid "All Records"
 msgstr "所有记录"
 
@@ -955,23 +860,19 @@ msgid "Removed Records"
 msgstr "删除了记录"
 
 #: syslog.php:1527
-#, fuzzy
 msgid "Informational"
 msgstr "信息"
 
 #: syslog.php:1603
-#, fuzzy
 msgid "Actions"
 msgstr "操作"
 
 #: syslog.php:1607 syslog.php:1615 syslog.php:1711 syslog_process.php:388
 #: syslog_process.php:715
-#, fuzzy
 msgid "Message"
-msgstr "SNMP 消息类型"
+msgstr "信息"
 
 #: syslog.php:1663 syslog.php:1666 syslog.php:1667 syslog.php:1734
-#, fuzzy
 msgid "Unknown"
 msgstr "未知"
 
@@ -982,20 +883,17 @@ msgstr "没有系统日志消息"
 
 #: syslog.php:1708 syslog_alerts.php:452 syslog_alerts.php:767
 #: syslog_process.php:377
-#, fuzzy
 msgid "Alert Name"
 msgstr "提醒名称"
 
 #: syslog.php:1709 syslog_alerts.php:460 syslog_alerts.php:768
 #: syslog_process.php:377 syslog_process.php:388
-#, fuzzy
 msgid "Severity"
 msgstr "严重"
 
 #: syslog.php:1712 syslog_process.php:377
-#, fuzzy
 msgid "Count"
-msgstr "错误次数"
+msgstr "计数"
 
 #: syslog.php:1718
 #, fuzzy
@@ -1062,19 +960,16 @@ msgid "Continue"
 msgstr "继续"
 
 #: syslog_alerts.php:359
-#, fuzzy
 msgid "Not Set"
-msgstr "<未设置>"
+msgstr "没有设置"
 
 #: syslog_alerts.php:364
-#, fuzzy
 msgid "1 Minute"
-msgstr "%d 分钟"
+msgstr "1 分钟"
 
 #: syslog_alerts.php:386
-#, fuzzy
 msgid "1 Month"
-msgstr "月"
+msgstr "1个月"
 
 #: syslog_alerts.php:422
 #, fuzzy, php-format
@@ -1092,12 +987,10 @@ msgid "New Alert Rule"
 msgstr "新警报规则"
 
 #: syslog_alerts.php:448
-#, fuzzy
 msgid "Alert Details"
 msgstr "通知详情"
 
 #: syslog_alerts.php:453
-#, fuzzy
 msgid "Please describe this Alert."
 msgstr "请描述此警报。"
 
@@ -1117,13 +1010,11 @@ msgid "Define how to Alert on the syslog messages."
 msgstr "定义如何对系统日志消息进行警报。"
 
 #: syslog_alerts.php:471 syslog_alerts.php:794
-#, fuzzy
 msgid "Individual"
 msgstr "个人"
 
 #: syslog_alerts.php:471 syslog_alerts.php:476 syslog_alerts.php:794
 #: syslog_process.php:377
-#, fuzzy
 msgid "Threshold"
 msgstr "阈值"
 
@@ -1164,21 +1055,18 @@ msgid "Is this Alert Enabled?"
 msgstr "此警报已启用吗？"
 
 #: syslog_alerts.php:507 syslog_removal.php:438 syslog_reports.php:396
-#, fuzzy
 msgid "Disabled"
 msgstr "已禁用"
 
 #: syslog_alerts.php:507 syslog_alerts.php:620 syslog_alerts.php:771
 #: syslog_removal.php:438 syslog_removal.php:535 syslog_removal.php:683
 #: syslog_reports.php:396 syslog_reports.php:514 syslog_reports.php:662
-#, fuzzy
 msgid "Enabled"
 msgstr "启用"
 
 #: syslog_alerts.php:511
-#, fuzzy
 msgid "Re-Alert Cycle"
-msgstr "重新警报周期"
+msgstr "重新报警周期"
 
 #: syslog_alerts.php:515
 #, fuzzy
@@ -1201,9 +1089,8 @@ msgid "Alert Actions"
 msgstr "警报措施"
 
 #: syslog_alerts.php:534
-#, fuzzy
 msgid "Open Ticket"
-msgstr "打开工单"
+msgstr "创建工单"
 
 #: syslog_alerts.php:535
 #, fuzzy
@@ -1220,7 +1107,6 @@ msgstr "否"
 #: syslog_alerts.php:537 syslog_alerts.php:625 syslog_alerts.php:796
 #: syslog_removal.php:540 syslog_removal.php:705 syslog_reports.php:519
 #: syslog_reports.php:686
-#, fuzzy
 msgid "Yes"
 msgstr "是"
 
@@ -1245,13 +1131,11 @@ msgid "When an Alert is triggered, run the following command.  The following rep
 msgstr "触发警报时，请运行以下命令。以下替换变量可用于<b>“&lt;HOSTNAME&gt;”</b> ， <b>“&lt;ALERTID&gt;”</b> ， <b>“&lt;MESSAGE&gt;”</b> ， <b>“&lt;FACILITY&gt;”</b> ， <b>“&lt;PRIORITY&gt;”</b> ， <b>“&lt;SEVERITY&gt;”</b> 。请注意， <b>&#39;&lt;HOSTNAME&gt;&#39;</b>仅适用于各个阈值。"
 
 #: syslog_alerts.php:630 syslog_reports.php:524
-#, fuzzy
 msgid "Rows"
 msgstr "行数:"
 
 #: syslog_alerts.php:648 syslog_alerts.php:934 syslog_removal.php:563
 #: syslog_removal.php:844 syslog_reports.php:542 syslog_reports.php:827
-#, fuzzy
 msgid "Import"
 msgstr "导入"
 
@@ -1261,7 +1145,6 @@ msgid "Syslog Alert Filters"
 msgstr "系统日志警报过滤器"
 
 #: syslog_alerts.php:769 syslog_removal.php:686
-#, fuzzy
 msgid "Method"
 msgstr "方法"
 
@@ -1271,37 +1154,30 @@ msgid "Threshold Count"
 msgstr "门槛数"
 
 #: syslog_alerts.php:772 syslog_removal.php:684 syslog_reports.php:663
-#, fuzzy
 msgid "Match Type"
-msgstr "比赛类型"
+msgstr "匹配类型"
 
 #: syslog_alerts.php:773 syslog_removal.php:685 syslog_reports.php:664
-#, fuzzy
 msgid "Search String"
-msgstr "响应搜索字符串 - 维护页面"
+msgstr "搜索字符串"
 
 #: syslog_alerts.php:774
-#, fuzzy
 msgid "Email Addresses"
-msgstr "邮件地址"
+msgstr "电子邮件地址"
 
 #: syslog_alerts.php:775 syslog_removal.php:687 syslog_reports.php:668
-#, fuzzy
 msgid "Last Modified"
 msgstr "上一次更改"
 
 #: syslog_alerts.php:776 syslog_removal.php:688 syslog_reports.php:669
-#, fuzzy
 msgid "By User"
-msgstr "没有用户"
+msgstr "按用户"
 
 #: syslog_alerts.php:795
-#, fuzzy
 msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php:799
-#, fuzzy
 msgid "Multiple"
 msgstr "多个"
 
@@ -1336,9 +1212,8 @@ msgid "Import Alert Rule"
 msgstr "导入警报规则"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Imported"
-msgstr "如果导入包,Cacti 将做出以下更改:"
+msgstr "导入的"
 
 #: syslog_alerts.php:932
 #, fuzzy, php-format
@@ -1346,9 +1221,8 @@ msgid "NOTE: Alert '%s' %s!"
 msgstr "注意：提醒'％s'％s！"
 
 #: syslog_alerts.php:932 syslog_removal.php:842 syslog_reports.php:825
-#, fuzzy
 msgid "Updated"
-msgstr "[更新]"
+msgstr "更新"
 
 #: syslog_alerts.php:934
 #, fuzzy, php-format
@@ -1356,7 +1230,6 @@ msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "错误：警报'％s'％s失败！"
 
 #: syslog_alerts.php:934 syslog_removal.php:844 syslog_reports.php:827
-#, fuzzy
 msgid "Update"
 msgstr "更新"
 
@@ -1366,24 +1239,21 @@ msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
 msgstr "警告：已触发Syslog插件实例计数警报"
 
 #: syslog_process.php:369
-#, fuzzy
 msgid "Name:"
-msgstr "名称"
+msgstr "名称："
 
 #: syslog_process.php:370 syslog_process.php:404
-#, fuzzy
 msgid "Severity:"
-msgstr "严重"
+msgstr "严重:"
 
 #: syslog_process.php:371
 #, fuzzy
 msgid "Threshold:"
-msgstr "阈："
+msgstr "阈值"
 
 #: syslog_process.php:372
-#, fuzzy
 msgid "Count:"
-msgstr "错误次数"
+msgstr "计数："
 
 #: syslog_process.php:373
 #, fuzzy
@@ -1396,7 +1266,6 @@ msgid "Cacti Syslog Plugin Threshold Alert '%s'"
 msgstr "Cacti Syslog插件阈值警报'％s'"
 
 #: syslog_process.php:377
-#, fuzzy
 msgid "Match String"
 msgstr "匹配字符串"
 
@@ -1406,34 +1275,28 @@ msgid "Cacti Syslog Plugin Alert '%s'"
 msgstr "Cacti Syslog插件警报'％s'"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Hostname"
 msgstr "主机名"
 
 #: syslog_process.php:388
-#, fuzzy
 msgid "Level"
-msgstr "DEVEL - 开发人员DEBUG级别"
+msgstr "级别"
 
 #: syslog_process.php:402
-#, fuzzy
 msgid "Hostname:"
-msgstr "主机名"
+msgstr "主机名:"
 
 #: syslog_process.php:403
-#, fuzzy
 msgid "Date:"
-msgstr "日期"
+msgstr "日期："
 
 #: syslog_process.php:405
-#, fuzzy
 msgid "Level:"
-msgstr "DEVEL - 开发人员DEBUG级别"
+msgstr "级别："
 
 #: syslog_process.php:406
-#, fuzzy
 msgid "Message:"
-msgstr "SNMP 消息类型"
+msgstr "信息："
 
 #: syslog_process.php:433
 #, fuzzy
@@ -1458,10 +1321,9 @@ msgstr "事件警报 - ％s"
 #: syslog_process.php:491
 #, fuzzy
 msgid ", Count:"
-msgstr "错误次数"
+msgstr "计数"
 
 #: syslog_process.php:715
-#, fuzzy
 msgid "Host"
 msgstr "主机"
 
@@ -1566,9 +1428,8 @@ msgid "Please describe this Removal Rule."
 msgstr "请描述此删除规则。"
 
 #: syslog_removal.php:435 syslog_reports.php:393
-#, fuzzy
 msgid "Enabled?"
-msgstr "启用"
+msgstr "启用？"
 
 #: syslog_removal.php:436
 #, fuzzy
@@ -1581,12 +1442,10 @@ msgid "Method of Removal"
 msgstr "移除方法"
 
 #: syslog_removal.php:464 syslog_removal.php:708
-#, fuzzy
 msgid "Deletion"
-msgstr "删除"
+msgstr "删除插件"
 
 #: syslog_removal.php:464
-#, fuzzy
 msgid "Transferal"
 msgstr "转让"
 
@@ -1601,9 +1460,8 @@ msgid "Space for Notes on the Removal rule"
 msgstr "关于删除规则的注释空间"
 
 #: syslog_removal.php:545 syslog_removal.php:693
-#, fuzzy
 msgid "Rules"
-msgstr "强制规则图例 (--force-rules-legend)"
+msgstr "规则"
 
 #: syslog_removal.php:657
 #, fuzzy
@@ -1616,7 +1474,6 @@ msgid "Removal Name"
 msgstr "删除名称"
 
 #: syslog_removal.php:708
-#, fuzzy
 msgid "Transfer"
 msgstr "转移"
 
@@ -1725,12 +1582,10 @@ msgid "New Report Record"
 msgstr "新报告记录"
 
 #: syslog_reports.php:382
-#, fuzzy
 msgid "Report Details"
 msgstr "报告详情"
 
 #: syslog_reports.php:386 syslog_reports.php:661
-#, fuzzy
 msgid "Report Name"
 msgstr "报告名称"
 
@@ -1755,7 +1610,6 @@ msgid "The matching component of the syslog message."
 msgstr "syslog消息的匹配组件。"
 
 #: syslog_reports.php:417
-#, fuzzy
 msgid "Report Frequency"
 msgstr "数据更新频率"
 
@@ -1787,7 +1641,7 @@ msgstr "将包含在报告正文中的信息。"
 #: syslog_reports.php:450
 #, fuzzy
 msgid "Report Email Addresses"
-msgstr "报告电子邮件地址"
+msgstr "MacAuth报告电子邮件地址"
 
 #: syslog_reports.php:453
 #, fuzzy
@@ -1810,12 +1664,10 @@ msgid "Syslog Report Filters"
 msgstr "系统日志报告过滤器"
 
 #: syslog_reports.php:665
-#, fuzzy
 msgid "Frequency"
 msgstr "频率"
 
 #: syslog_reports.php:667
-#, fuzzy
 msgid "Last Sent"
 msgstr "最后发送的邮件"
 
@@ -1845,17 +1697,16 @@ msgid "If you have the XML file containing the Report Rule definition data as te
 msgstr "如果您将包含报告规则定义数据的XML文件作为文本，则可以将其粘贴到此框中以将其导入。"
 
 #: syslog_reports.php:747
-#, fuzzy
 msgid "Import Report Data"
 msgstr "导入报告数据"
 
 #: syslog_reports.php:825
-#, fuzzy, php-format
+#, php-format
 msgid "NOTE: Report Rule '%s' %s!"
-msgstr "注意：报告规则'％s'％s！"
+msgstr "注意：报告规则"
 
 #: syslog_reports.php:827
-#, fuzzy, php-format
+#, php-format
 msgid "ERROR: Report Rule '%s' %s Failed!"
 msgstr "错误：报告规则'％s'％s失败！"
 
