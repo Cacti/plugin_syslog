@@ -65,6 +65,16 @@ In addtion, the rsyslog configuration has changed in 2.5.  So, for example, to
 configure modern rsyslog for Cacti, you MUST create a file called cacti.conf in
 the /etc/rsyslog.d/ directory that includes the following:
 
+You have two options for storing syslog information you can either use the exisiting
+Cacti Database or use a dedicated database for syslog as syslog databases especially
+for large networks can grow pretty quick it may be wise to create a dedicated database.
+To use a dedicated DB first create a database in mysql and assign a user you will then change
+```console
+$use_cacti_db = true; 
+to 
+$use_cacti_db = false;
+```
+
 ### Cacti Configuration for RSYSLOG
 
 Edit /etc/rsyslog.d/cacti.conf
@@ -93,6 +103,13 @@ $template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, pr
 
 *.* >localhost,my_database,my_user,my_password;cacti_syslog
 ```
+for centos/rhel systems you will all need to install the rsyslog-mysql package
+
+```
+yum install rsyslog-mysql
+systemctl resatrt rsyslog
+```
+
 
 If you are upgrading to version 2.5 from an earlier version, make sure that you
 update this template format and restart rsyslog.  You may loose some syslog
