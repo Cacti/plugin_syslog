@@ -75,6 +75,13 @@ to
 $use_cacti_db = false;
 ```
 
+You will also need to ensure the cacti user is granted select on the syslog database
+
+```shell
+GRANT SELECT  ON syslog.* TO  'cacti'@'localhost';
+```
+
+
 ### Cacti Configuration for RSYSLOG
 
 Edit /etc/rsyslog.d/cacti.conf
