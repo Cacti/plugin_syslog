@@ -336,7 +336,7 @@ function api_syslog_removal_reprocess($id) {
 	$syslog_removed = $syslog_items['removed'];
 	$syslog_xferred = $syslog_items['xferred'];
 
-	$name = db_fetch_cell_prepared('SELECT name
+	$name = syslog_db_fetch_cell_prepared('SELECT name
 		FROM syslog_remove
 		WHERE id = ?',
 		array($id));
@@ -806,7 +806,7 @@ function removal_import() {
 					switch($name) {
 					case 'hash':
 						// See if the hash exists, if it does, update the alert
-						$found = db_fetch_cell_prepared('SELECT id
+						$found = syslog_db_fetch_cell_prepared('SELECT id
 							FROM syslog_remove
 							WHERE hash = ?',
 							array($value));

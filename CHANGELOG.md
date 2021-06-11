@@ -4,6 +4,8 @@
 
 * issue#114: Message Column missing
 
+* issue#154: When removing a rule, wrong database connection is used
+
 --- 3.1 ---
 
 * issue#142: The indicator is not removed upon completion when export syslog
