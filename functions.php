@@ -284,6 +284,49 @@ function syslog_remove_items($table, $uniqueID) {
 							WHERE facility_id = ' . $facility_id;
 					}
 				}
+			} else if ($remove['type'] == 'program') {
+				if ($table == 'syslog_incoming') {
+					if ($remove['method'] != 'del') {
+						$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
+							(logtime, priority_id, facility_id, program_id, host_id, message)
+							SELECT logtime, priority_id, facility_id, program_id, host_id, message
+							FROM (SELECT si.logtime, si.priority_id, si.facility_id, spg.program_id, sh.host_id, si.message
+								FROM `' . $syslogdb_default . '`.`syslog_incoming` AS si
+								INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
+								ON sf.facility_id = si.facility_id
+								INNER JOIN `' . $syslogdb_default . '`.`syslog_priorities` AS sp
+								ON sp.priority_id = si.priority_id
+								INNER JOIN `' . $syslogdb_default . '`.`syslog_programs` AS spg
+								ON spg.program = si.program
+								INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+								ON sh.host = si.host
+								WHERE program = ' . db_qstr($remove['message']) . '
+								AND status = ' . $uniqueID . '
+							) AS merge';
+					}
+
+					$sql = 'DELETE
+						FROM `' . $syslogdb_default . '`.`syslog_incoming`
+						WHERE `program` = ' . db_qstr($remove['message']) . '
+						AND `status` = ' . $uniqueID;
+				} else {
+					$program_id = syslog_db_fetch_cell('SELECT program_id
+						FROM `' . $syslogdb_default . '`.`syslog_programs`
+						WHERE program = ' . db_qstr($remove['message']));
+
+					if (!empty($program_id)) {
+						if ($remove['method'] != 'del') {
+							$sql1 = 'INSERT INTO `' . $syslogdb_default . '`.`syslog_removed`
+								(logtime, priority_id, facility_id, program_id, host_id, message)
+								SELECT logtime, priority_id, facility_id, program_id, host_id, message
+								FROM `' . $syslogdb_default . '`.`syslog`
+								WHERE program_id = ' . $program_id;
+						}
+
+						$sql  = 'DELETE FROM `' . $syslogdb_default . '`.`syslog`
+							WHERE program_id = ' . $program_id;
+					}
+				}
 			} elseif ($remove['type'] == 'host') {
 				if ($table == 'syslog_incoming') {
 					if ($remove['method'] != 'del') {
