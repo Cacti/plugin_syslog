@@ -916,7 +916,7 @@ function alert_import() {
 
 						break;
 					default:
-						if (db_column_exists('syslog_alert', $name)) {
+						if (syslog_db_column_exists('syslog_alert', $name)) {
 							$save[$name] = $value;
 						}
 

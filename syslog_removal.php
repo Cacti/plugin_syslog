@@ -826,7 +826,7 @@ function removal_import() {
 
 						break;
 					default:
-						if (db_column_exists('syslog_remove', $name)) {
+						if (syslog_db_column_exists('syslog_remove', $name)) {
 							$save[$name] = $value;
 						}
 

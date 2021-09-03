@@ -809,7 +809,7 @@ function report_import() {
 
 						break;
 					default:
-						if (db_column_exists('syslog_reports', $name)) {
+						if (syslog_db_column_exists('syslog_reports', $name)) {
 							$save[$name] = $value;
 						}
 

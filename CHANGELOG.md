@@ -6,6 +6,8 @@
 
 * issue#154: When removing a rule, wrong database connection is used
 
+* issue#155: Wrong database connection is used resulting in missing table errors
+
 --- 3.1 ---
 
 * issue#142: The indicator is not removed upon completion when export syslog
