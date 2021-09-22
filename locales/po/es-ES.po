@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2020-12-12 22:16-0500\n"
-"PO-Revision-Date: 2020-12-14 19:44-0500\n"
-"Last-Translator: Javier Pobeda <javier.pobeda@pm.me>\n"
-"Language-Team: Spanish <http://translate.cacti.net/projects/cacti/syslog/es-ES/>\n"
-"Language: es_ES\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.4.2\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2020-12-12 22:16-0500\nPO-Revision-Date: 2021-09-22 14:09+0000\nLast-Translator: Tadeo Briceño <tadeobriceno@vencable.com>\nLanguage-Team: Spanish <http://translate.cacti.net/projects/cacti/syslog/es/>\nLanguage: es-ES\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 4.3.2\n"
 
 #: functions.php:53
 #, fuzzy
@@ -436,7 +424,7 @@ msgstr "Expresión SQL"
 
 #: setup.php:1064
 msgid "Daily"
-msgstr "Diario"
+msgstr "diario"
 
 #: setup.php:1065
 msgid "Weekly"
@@ -484,7 +472,6 @@ msgid "(Edit)"
 msgstr "(Editar)"
 
 #: setup.php:1119 setup.php:1124 setup.php:1128
-#, fuzzy
 msgid "(Actions)"
 msgstr "(acciones)"
 
@@ -655,7 +642,7 @@ msgstr "Entradas"
 #: syslog.php:556 syslog.php:1392 syslog_alerts.php:634 syslog_removal.php:549
 #: syslog_reports.php:528
 msgid "Default"
-msgstr "Por defecto"
+msgstr "Predeterminado"
 
 #: syslog.php:1000
 #, fuzzy, php-format
@@ -806,7 +793,7 @@ msgstr "Recorte de mensajes"
 
 #: syslog.php:1413
 msgid "Refresh"
-msgstr "Refrescar"
+msgstr "Actualizar"
 
 #: syslog.php:1434
 #, fuzzy
@@ -1217,7 +1204,7 @@ msgstr "Por usuario"
 
 #: syslog_alerts.php:795
 msgid "N/A"
-msgstr "N/D"
+msgstr "n/d"
 
 #: syslog_alerts.php:799
 msgid "Multiple"
