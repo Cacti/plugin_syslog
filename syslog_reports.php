@@ -136,7 +136,7 @@ function form_actions() {
 
 	form_start('syslog_reports.php');
 
-	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
 
 	/* setup some variables */
 	$report_array = array(); $report_list = '';
@@ -364,7 +364,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($report)) {
-			$header_label = __('Report Edit [edit: %s]', $report['name'], 'syslog');
+			$header_label = __esc('Report Edit [edit: %s]', $report['name'], 'syslog');
 		} else {
 			$header_label = __('Report Edit [new]', 'syslog');
 

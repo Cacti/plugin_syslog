@@ -149,7 +149,7 @@ function form_actions() {
 
 	form_start('syslog_removal.php');
 
-	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
 
 	/* setup some variables */
 	$removal_array = array(); $removal_list = '';
@@ -397,7 +397,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($removal)) {
-			$header_label = __('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
+			$header_label = __esc('Removal Rule Edit [edit: %s]', $removal['name'], 'syslog');
 		} else {
 			$header_label = __('Removal Rule Edit [new]', 'syslog');
 
