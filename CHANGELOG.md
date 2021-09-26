@@ -10,7 +10,7 @@
 
 --- 3.1 ---
 
-* issue#142: The indicator is not removed upon completion when export syslog
+* issue#140: The indicator is not removed upon completion when export syslog
 
 * issue#141: Import syslog - Alert rule has error
 
