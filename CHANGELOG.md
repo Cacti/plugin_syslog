@@ -8,6 +8,8 @@
 
 * issue#155: Wrong database connection is used resulting in missing table errors
 
+* issue#159: Sync 'syslog' schema cross Traditional/Partitioned mode to avoid audit issue
+
 --- 3.1 ---
 
 * issue#140: The indicator is not removed upon completion when export syslog
