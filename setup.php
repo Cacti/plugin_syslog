@@ -417,7 +417,7 @@ function syslog_setup_table_new($options) {
 			priority_id int(10) unsigned default NULL,
 			program_id int(10) unsigned default NULL,
 			host_id int(10) unsigned default NULL,
-			logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+			logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 			message varchar(1024) NOT NULL default '',
 			seq bigint unsigned NOT NULL auto_increment,
 			PRIMARY KEY (seq, logtime),
