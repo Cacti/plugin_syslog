@@ -4,98 +4,71 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2020-12-12 22:16-0500\n"
-"PO-Revision-Date: 2020-12-14 19:46-0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: ja_JP\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2020-12-12 22:16-0500\nPO-Revision-Date: 2021-10-20 15:01+0000\nLast-Translator: Seita Kawamot <seita_sk@yahoo.co.jp>\nLanguage-Team: Japanese <http://translate.cacti.net/projects/cacti/syslog/ja/>\nLanguage: ja-JP\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:53
-#, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "HTMLメールクライアントを使用してください"
 
 #: setup.php:34
-#, fuzzy
 msgid "Please rename your config.php.dist file in the syslog directory, and change setup your database before installing."
 msgstr "syslogディレクトリにあるconfig.php.distファイルの名前を変更し、インストール前にデータベースの設定を変更してください。"
 
 #: setup.php:237
-#, fuzzy
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
-msgstr "Syslog 2.0を再インストールする必要があります。インストールする前にSyslogをアンインストールし、すべてのデータを削除してください。移行は可能ですが、事前に計画する必要があります。自動移行はサポートされていません。"
+msgstr "Syslog 2.0を再インストールする必要があります。Syslogをアンインストールし、インストールする前にすべてのデータを削除してください。移行は可能ですが、事前に計画する必要があります。自動移行はサポートされていません。"
 
 #: setup.php:645
-#, fuzzy
 msgid "What upgrade/install type do you wish to use"
-msgstr "どのアップグレード/インストールの種類を使用しますか"
+msgstr "どの種類のアップグレード/インストールを使用しますか"
 
 #: setup.php:646
-#, fuzzy
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr "非常に大きなテーブルがある場合は、切り捨てを実行するほうがはるかに速くなります。アーカイブデータが気になる場合は、このアップグレードの間ブラウザをフリーズさせるInline、またはバックアップテーブルから古いsyslogデータを新しいsyslogフォーマットに変換するバックグラウンドプロセスを作成するbackgroundのいずれかを選択できます。 。このプロセスにも数時間かかることがあります。"
+msgstr "非常に大きなテーブルがある場合は、切り捨てを実行するほうがはるかに速くなります。アーカイブデータが気になる場合は、このアップグレードの間ブラウザを停止させる「Inline」、またはバックアップテーブルから古いsyslogデータを新しいsyslogフォーマットに変換するバックグラウンドプロセスを作成する「background」のいずれかを選択できます 。このプロセスにも数時間かかることがあります。"
 
 #: setup.php:649
-#, fuzzy
 msgid "Truncate Syslog Table"
-msgstr "Syslogテーブルの切り捨て"
+msgstr "Syslogテーブルを切り捨てる"
 
 #: setup.php:650
-#, fuzzy
 msgid "Inline Upgrade"
 msgstr "インラインアップグレード"
 
 #: setup.php:651
-#, fuzzy
 msgid "Background Upgrade"
 msgstr "バックグラウンドアップグレード"
 
 #: setup.php:656
-#, fuzzy
 msgid "Database Storage Engine"
 msgstr "データベースストレージエンジン"
 
 #: setup.php:657
-#, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available."
-msgstr "MySQL 5.1.6以降では、これを日ごとにパーティションテーブルにすることができます。このリリースより前は、従来のテーブル構造しか利用できません。"
+msgstr "MySQL 5.1.6以降では、これを日ごとにパーティションテーブルにすることができます。このリリースより前では、従来のテーブル構造しか利用できません。"
 
 #: setup.php:660
-#, fuzzy
 msgid "MyISAM Storage"
 msgstr "MyISAMストレージ"
 
 #: setup.php:661
-#, fuzzy
 msgid "InnoDB Storage"
 msgstr "InnoDBストレージ"
 
 #: setup.php:666
-#, fuzzy
 msgid "Database Architecture"
 msgstr "データベースアーキテクチャ"
 
 #: setup.php:667
-#, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available."
-msgstr "MySQL 5.1.6以降では、これを日ごとにパーティションテーブルにすることができます。 MySQL 5.5以降では、1日に複数のパーティションを作成できます。 MySQL 5.1.6より前のバージョンでは、伝統的なテーブル構造しか利用できません。"
+msgstr "MySQL 5.1.6以降では、これを日ごとにパーティションテーブルにすることができます。 MySQL 5.5以降では、1日に複数のパーティションを作成できます。 MySQL 5.1.6より前のバージョンでは、従来のテーブル構造しか利用できません。"
 
 #: setup.php:671 setup.php:674
-#, fuzzy
 msgid "Traditional Table"
-msgstr "伝統的なテーブル"
+msgstr "従来のテーブル"
 
 #: setup.php:672
-#, fuzzy
 msgid "Partitioned Table"
-msgstr "パーティション表"
+msgstr "パーティションドテーブル"
 
 #: setup.php:680
 #, fuzzy
