@@ -69,6 +69,7 @@ The sylog plugin has been in development for well over a decade with increasing 
 * issue: SQL for matching Cacti host incorrect
 * issue: Syslog Reports were not functional
 * issue: Cleanup formating of Threshold messaging and viewing
+* issue: Message lentgth does not follow RFC
 
 --- 2.0  ---
 * feature: Compatibility with Cacti 1.0
