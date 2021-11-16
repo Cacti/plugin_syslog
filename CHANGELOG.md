@@ -10,6 +10,8 @@
 
 * issue#159: Sync 'syslog' schema cross Traditional/Partitioned mode to avoid audit issue
 
+* issue#161: Message colum does not follow RFC 5424
+
 --- 3.1 ---
 
 * issue#140: The indicator is not removed upon completion when export syslog
