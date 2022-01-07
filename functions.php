@@ -166,7 +166,7 @@ function syslog_partition_remove($table) {
 			$i = 0;
 			while ($user_partitions > $days) {
 				$oldest = $number_of_partitions[$i];
-				cacti_log("SYSLOG: Removing old partition 'd" . $oldest['PARTITION_NAME'] . "'", false, 'SYSTEM');
+				cacti_log("SYSLOG: Removing old partition '" . $oldest['PARTITION_NAME'] . "'", false, 'SYSTEM');
 				syslog_debug("Removing partition '" . $oldest['PARTITION_NAME'] . "'");
 				syslog_db_execute("ALTER TABLE `" . $syslogdb_default . "`.`$table` DROP PARTITION " . $oldest['PARTITION_NAME']);
 				$i++;

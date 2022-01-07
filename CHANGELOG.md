@@ -1,5 +1,9 @@
 ## ChangeLog
 
+--- develop ---
+
+* issue: Removal of partition issues incorrect message
+
 --- 3.2 ---
 
 * issue#114: Message Column missing
