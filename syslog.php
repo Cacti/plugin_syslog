@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2020 The Cacti Group                                 |
+ | Copyright (C) 2007-2022 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -1164,6 +1164,7 @@ function syslog_filter($sql_where, $tab) {
 
 	function exportRecords() {
 		document.location = 'syslog.php?export=true';
+
 		Pace.stop();
 	}
 

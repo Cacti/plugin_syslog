@@ -4,6 +4,8 @@
 
 * issue: Removal of partition issues incorrect message
 
+* issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
+
 --- 3.2 ---
 
 * issue#114: Message Column missing

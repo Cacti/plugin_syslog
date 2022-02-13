@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2020 The Cacti Group                                 |
+ | Copyright (C) 2007-2022 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-include(__dir__ . '/../../include/cli_check.php');
+include(__DIR__ . '/../../include/cli_check.php');
 
 $sli = read_config_option('syslog_last_incoming');
 $slt = read_config_option('syslog_last_total');

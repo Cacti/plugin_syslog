@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2007-2020 The Cacti Group                                 |
+ | Copyright (C) 2007-2022 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -35,8 +35,8 @@
    @arg $db_ssl_cert - the path to the ssl cert file
    @arg $db_ssl_ca - the path to the ssl ca file
    @returns - (object) connection_id for success, (bool) '0' for error */
-function syslog_db_connect_real($host, $user, $pass, $db_name, $db_type, $port = '3306', $retries = 20, $db_ssl,
-	$db_ssl_key, $db_ssl_cert, $db_ssl_ca) {
+function syslog_db_connect_real($host, $user, $pass, $db_name, $db_type, $port = '3306', $retries = 20, $db_ssl = '',
+	$db_ssl_key = '', $db_ssl_cert = '', $db_ssl_ca = '') {
 	return db_connect_real($host, $user, $pass, $db_name, $db_type, $port, $retries, $db_ssl, $db_ssl_key, $db_ssl_cert, $db_ssl_ca);
 }
 
