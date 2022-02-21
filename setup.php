@@ -1142,14 +1142,20 @@ function syslog_graph_buttons($graph_elements = array()) {
 
 	include(dirname(__FILE__) . '/config.php');
 
-	if (get_nfilter_request_var('action') == 'view') return;
+	if (get_nfilter_request_var('action') == 'view') {
+		return;
+	}
 
-	if (isset_request_var('graph_end') && strlen(get_filter_request_var('graph_end'))) {
-		$date1 = date('Y-m-d H:i:s', get_filter_request_var('graph_start'));
-		$date2 = date('Y-m-d H:i:s', get_filter_request_var('graph_end'));
+	if (get_current_page() == 'graph_view.php') {
+		if (isset_request_var('graph_end') && strlen(get_filter_request_var('graph_end'))) {
+			$date1 = date('Y-m-d H:i:s', get_filter_request_var('graph_start'));
+			$date2 = date('Y-m-d H:i:s', get_filter_request_var('graph_end'));
+		} else {
+			$date1 = $timespan['current_value_date1'];
+			$date2 = $timespan['current_value_date2'];
+		}
 	} else {
-		$date1 = $timespan['current_value_date1'];
-		$date2 = $timespan['current_value_date2'];
+		return;
 	}
 
 	if (isset($graph_elements[1]['local_graph_id'])) {
