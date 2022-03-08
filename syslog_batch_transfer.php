@@ -76,8 +76,7 @@ if (cacti_sizeof($parms)) {
 }
 
 /* record the start time */
-list($micro,$seconds) = explode(' ', microtime());
-$start_time = $seconds + $micro;
+$start_time = microtime(true);
 
 /* Connect to the Syslog Database */
 global $syslog_cnn, $cnn_id, $database_default;
