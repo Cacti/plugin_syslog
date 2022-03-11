@@ -82,7 +82,7 @@ if (cacti_sizeof($parms)) {
 /* record the start time */
 $start_time = microtime(true);
 
-if ($config['poller_id'] > 1) {
+if ($config['poller_id'] > 1 && read_config_option('syslog_remote_enabled') !== 'on') {
 	exit;
 }
 
