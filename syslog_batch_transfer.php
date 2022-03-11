@@ -25,7 +25,7 @@
 chdir('../../');
 include('./include/cli_check.php');
 include_once('./lib/poller.php');
-include('./plugins/syslog/config.php');
+include(SYSLOG_CONFIG);
 include_once('./plugins/syslog/functions.php');
 
 /* Let it run for an hour if it has to, to clear up any big

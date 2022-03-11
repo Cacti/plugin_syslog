@@ -210,7 +210,7 @@ function syslog_check_changed($request, $session) {
 function syslog_remove_items($table, $uniqueID) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	if ($table == 'syslog') {
 		$rows = syslog_db_fetch_assoc("SELECT *
@@ -619,7 +619,7 @@ function sql_hosts_where($tab) {
 	$hostfilter_log = '';
 	$hosts_array    = array();
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	if (!isempty_request_var('host') && get_nfilter_request_var('host') != 'null') {
 		$hostarray = explode(',', trim(get_nfilter_request_var('host')));
@@ -651,7 +651,7 @@ function sql_hosts_where($tab) {
 function syslog_export($tab) {
 	global $syslog_incoming_config, $severities;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	if ($tab == 'syslog') {
 		header('Content-type: application/excel');
@@ -765,7 +765,7 @@ function syslog_debug($message) {
 function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html = '', $hosts = array()) {
 	global $config, $severities;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	if ($count <= 1) {
 		$save['seq']         = '';
@@ -823,7 +823,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 function syslog_manage_items($from_table, $to_table) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	/* Select filters to work on */
 	$rows = syslog_db_fetch_assoc('SELECT * FROM `' . $syslogdb_default . "`.`syslog_remove` WHERE enabled='on'");

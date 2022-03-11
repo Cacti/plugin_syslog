@@ -6,6 +6,8 @@
 
 * issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
 
+* feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
+
 --- 3.2 ---
 
 * issue#114: Message Column missing

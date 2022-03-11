@@ -103,7 +103,7 @@ function form_save() {
 function form_actions() {
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP,
 		 array('options' => array('regexp' => '/^([a-zA-Z0-9_]+)$/')));
@@ -224,7 +224,7 @@ function form_actions() {
 }
 
 function alert_export() {
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	/* if we are to save this form, instead of display it */
 	if (isset_request_var('selected_items')) {
@@ -257,7 +257,7 @@ function alert_export() {
 function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
 	$enabled, $severity, $command, $repeat_alert, $open_ticket) {
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	/* get the username */
 	$username = db_fetch_cell('SELECT username FROM user_auth WHERE id=' . $_SESSION['sess_user_id']);
@@ -299,17 +299,17 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 }
 
 function api_syslog_alert_remove($id) {
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 	syslog_db_execute("DELETE FROM `" . $syslogdb_default . "`.`syslog_alert` WHERE id='" . $id . "'");
 }
 
 function api_syslog_alert_disable($id) {
-	include(dirname(__FILE__) . "/config.php");
+	include(SYSLOG_CONFIG);
 	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='' WHERE id='" . $id . "'");
 }
 
 function api_syslog_alert_enable($id) {
-	include(dirname(__FILE__) . "/config.php");
+	include(SYSLOG_CONFIG);
 	syslog_db_execute("UPDATE `" . $syslogdb_default . "`.`syslog_alert` SET enabled='on' WHERE id='" . $id . "'");
 }
 
@@ -318,7 +318,7 @@ function api_syslog_alert_enable($id) {
    --------------------- */
 
 function syslog_get_alert_records(&$sql_where, $rows) {
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	if (get_request_var('filter') != '') {
 		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
@@ -405,7 +405,7 @@ function get_repeat_array() {
 function syslog_action_edit() {
 	global $message_types, $severities;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	/* ================= input validation ================= */
 	get_filter_request_var('id');
@@ -697,7 +697,7 @@ function syslog_filter() {
 function syslog_alerts() {
 	global $syslog_actions, $config, $message_types, $severities;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
     /* ================= input validation and session storage ================= */
     $filters = array(

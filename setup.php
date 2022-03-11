@@ -28,10 +28,10 @@ function plugin_syslog_install() {
 	global $config, $syslog_upgrade;
 	static $bg_inprocess = false;
 
-	if (file_exists(dirname(__FILE__) . '/config.php')) {
-		include(dirname(__FILE__) . '/config.php');
+	if (file_exists(SYSLOG_CONFIG)) {
+		include(SYSLOG_CONFIG);
 	} else {
-		raise_message('syslog_info', __('Please rename your config.php.dist file in the syslog directory, and change setup your database before installing.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		raise_message('syslog_info', __('Please rename your %s.dist file in the syslog directory, and change setup your database before installing.', SYSLOG_CONFIG, 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
 		exit;
 	}
@@ -110,7 +110,7 @@ function plugin_syslog_uninstall() {
 	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username;
 
 	/* database connection information, must be loaded always */
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 	include_once(dirname(__FILE__) . '/functions.php');
 
 	syslog_connect();
@@ -160,7 +160,8 @@ function plugin_syslog_upgrade() {
 function syslog_connect() {
 	global $config, $cnn_id, $syslog_cnn, $database_default;
 
-	include(dirname(__FILE__) . '/config.php');
+	// Handle remote syslog processing
+	include(SYSLOG_CONFIG);
 	include_once(dirname(__FILE__) . '/functions.php');
 
 	/* Connect to the Syslog Database */
@@ -206,7 +207,7 @@ function syslog_connect() {
 function syslog_check_upgrade() {
 	global $config, $syslog_cnn, $cnn_id, $syslog_levels, $database_default, $syslog_upgrade;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	syslog_connect();
 
@@ -346,7 +347,7 @@ function syslog_get_mysql_version($db = 'cacti') {
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
 	global $config, $mysqlVersion, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	$sql = "CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
 		facility_id int(10) unsigned default NULL,
@@ -382,7 +383,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 function syslog_setup_table_new($options) {
 	global $config, $cnn_id, $settings, $mysqlVersion, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	$tables  = array();
 
@@ -747,7 +748,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 function syslog_uninstall_advisor() {
 	global $config;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	syslog_connect();
 
@@ -921,7 +922,23 @@ function syslog_config_settings() {
 			'method' => 'textbox',
 			'max_length' => 255,
 			'size' => 80
-		)
+		),
+		'syslog_remote_header' => array(
+			'friendly_name' => __('Remote Message Processing', 'syslog'),
+			'method' => 'spacer',
+		),
+		'syslog_remote_enabled' => array(
+			'friendly_name' => __('Enable Remote Data Collector Message Processing', 'syslog'),
+			'description' => __('If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own \'config_local.php\' file in order to inform Syslog to use an independent database for message display and processing.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
+		'syslog_remote_sync_rules' => array(
+			'friendly_name' => __('Remote Data Collector Rules Sync', 'syslog'),
+			'description' => __('If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
 	);
 
 	if (isset($settings['syslog'])) {
@@ -948,9 +965,20 @@ function syslog_show_tab() {
 }
 
 function syslog_config_arrays () {
-	global $syslog_actions, $menu, $message_types, $severities, $messages;
+	global $syslog_actions, $config, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
+
+	// Setup the syslog database settings path
+	if (!defined('SYSLOG_CONFIG')) {
+		if (file_exists(dirname(__FILE__) . '/config_local.php')) {
+			define('SYSLOG_CONFIG', dirname(__FILE__) . '/config_local.php');
+			$config['syslog_remote_db'] = true;
+		} else {
+			define('SYSLOG_CONFIG', dirname(__FILE__) . '/config.php');
+			$config['syslog_remote_db'] = false;
+		}
+	}
 
 	$syslog_actions = array(
 		1 => __('Delete', 'syslog'),
@@ -1140,7 +1168,7 @@ function syslog_config_insert() {
 function syslog_graph_buttons($graph_elements = array()) {
 	global $config, $timespan, $graph_timeshifts;
 
-	include(dirname(__FILE__) . '/config.php');
+	include(SYSLOG_CONFIG);
 
 	if (get_nfilter_request_var('action') == 'view') {
 		return;
