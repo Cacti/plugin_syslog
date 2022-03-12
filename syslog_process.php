@@ -82,40 +82,16 @@ if (cacti_sizeof($parms)) {
 /* record the start time */
 $start_time = microtime(true);
 
-if ($config['poller_id'] > 1 && read_config_option('syslog_remote_enabled') !== 'on') {
-	exit;
-}
+/* connect to the syslog database if different than Cacti */
+syslog_connect();
 
-/* Connect to the Syslog Database */
-global $syslog_cnn, $cnn_id, $database_default;
-if (empty($syslog_cnn)) {
-	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-		($database_default == $syslogdb_default)) {
-		/* move on, using Cacti */
-		$syslog_cnn = $cnn_id;
-	}else{
-		if (!isset($syslogdb_port)) {
-			$syslogdb_port = '3306';
-		}
-
-		if (!isset($syslogdb_ssl)) {
-		    $syslogdb_ssl = false;
-		}
-
-		if (!isset($syslogdb_ssl_key)) {
-		    $syslogdb_ssl_key = '';
-		}
-
-		if (!isset($syslogdb_ssl_cert)) {
-		    $syslogdb_ssl_cert = '';
-		}
-
-		if (!isset($syslogdb_ssl_ca)) {
-		    $syslogdb_ssl_ca = '';
-		}
-
-		$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port, $syslogdb_ssl, $syslogdb_ssl_key, $syslogdb_ssl_cert, $syslogdb_ssl_ca);
+if ($config['poller_id'] > 1) {
+	if (read_config_option('syslog_remote_enabled') !== 'on') {
+		exit;
 	}
+
+	/* replicate in syslog tables sync is enabled */
+	syslog_replicate_in();
 }
 
 /* If Syslog Collection is Disabled, Exit Here */

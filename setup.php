@@ -57,6 +57,9 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'utilities_list',        'syslog_utilities_list',       'setup.php');
 	api_plugin_register_hook('syslog', 'utilities_action',      'syslog_utilities_action',     'setup.php');
 
+	/* hook for table replication */
+	api_plugin_register_hook('syslog', 'replicate_out',         'syslog_replicate_out',        'setup.php');
+
 	api_plugin_register_realm('syslog', 'syslog.php', 'Plugin -> Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Plugin -> Syslog Administration', 1);
 
@@ -207,6 +210,8 @@ function syslog_connect() {
 function syslog_check_upgrade() {
 	global $config, $syslog_cnn, $cnn_id, $syslog_levels, $database_default, $syslog_upgrade;
 
+	syslog_determine_config();
+
 	include(SYSLOG_CONFIG);
 
 	syslog_connect();
@@ -244,6 +249,8 @@ function syslog_check_upgrade() {
 				ADD PRIMARY KEY(id),
 				ADD UNIQUE INDEX (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`)');
 		}
+
+		api_plugin_register_hook('syslog', 'replicate_out', 'syslog_replicate_out', 'setup.php', 1);
 
 		db_execute("UPDATE plugin_config SET version='$current' WHERE directory='syslog'");
 		db_execute("UPDATE plugin_config SET
@@ -615,7 +622,87 @@ function syslog_setup_table_new($options) {
 	}
 }
 
-function plugin_syslog_version () {
+function syslog_replicate_out($data) {
+	include(SYSLOG_CONFIG);
+
+	syslog_connect();
+
+	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
+		$remote_poller_id = $data['remote_poller_id'];
+		$rcnn_id          = $data['rcnn_id'];
+		$class            = $data['class'];
+
+		if ($class == 'all') {
+			$data = syslog_db_fetch_assoc('SELECT * FROM syslog_alert');
+			replicate_out_table($rcnn_id, $data, 'syslog_alert', $remote_poller_id);
+			$data = syslog_db_fetch_assoc('SELECT * FROM syslog_remove');
+			replicate_out_table($rcnn_id, $data, 'syslog_remove', $remote_poller_id);
+			$data = syslog_db_fetch_assoc('SELECT * FROM syslog_reports');
+			replicate_out_table($rcnn_id, $data, 'syslog_reports', $remote_poller_id);
+		}
+	}
+
+	return $data;
+}
+
+function syslog_replicate_in($data) {
+	include(SYSLOG_CONFIG);
+
+	syslog_connect();
+
+	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
+		$data = db_fetch_assoc('SELECT * FROM syslog_alert');
+		syslog_replace_data('syslog_alert', $data);
+
+		$data = db_fetch_assoc('SELECT * FROM syslog_remove');
+		syslog_replace_data('syslog_remove', $data);
+
+		$data = db_fetch_assoc('SELECT * FROM syslog_reports');
+		syslog_replace_data('syslog_reports', $data);
+	}
+
+	return $data;
+}
+
+function sylog_replace_data($table, &$data) {
+	if (cacti_sizeof($data)) {
+		$sqlData  = array();
+		$sqlQuery = array();
+		$columns  = array_keys($data[0]);
+
+		$create   = db_fetch_cell("SHOW CREATE TABLE $table");
+
+		// Make the prefix
+		$sql_prefix = "INSERT INTO $table (`" . implode('`,`', $columns) . '`) VALUES ';
+
+		// Make the suffix
+		$sql_suffix = "ON DUPLICATE KEY UPDATE ";
+		foreach($columns as $c) {
+			$sql_suffix .= " $c = VALUES($c),";
+		}
+		$sql_suffix = trim($sql_suffix, ',');
+
+		// Construct the prepared statement
+		foreach($data as $row) {
+			$sqlQuery[] = '(' . trim(str_repeat('?, ', cacti_sizeof($columns)), ',') . ')';
+
+			foreach($row as $col) {
+				$sqlData[] = $col;
+			}
+		}
+
+		$sql = implode(', ', $sqlQuery);
+
+		if (!syslog_db_table_exists($table)) {
+			syslog_db_execute($create);
+			syslog_db_execute("TRUNCATE TABLE $table");
+		}
+
+		syslog_db_execute_prepared($sql_prefix . $sql . $sql_suffix, $sqlData);
+	}
+}
+
+function plugin_syslog_version() {
 	global $config;
 	$info = parse_ini_file($config['base_path'] . '/plugins/syslog/INFO', true);
 	return $info['info'];
@@ -964,10 +1051,8 @@ function syslog_show_tab() {
 	}
 }
 
-function syslog_config_arrays () {
-	global $syslog_actions, $config, $menu, $message_types, $severities, $messages;
-	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
-	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
+function syslog_determine_config() {
+	global $config;
 
 	// Setup the syslog database settings path
 	if (!defined('SYSLOG_CONFIG')) {
@@ -979,6 +1064,14 @@ function syslog_config_arrays () {
 			$config['syslog_remote_db'] = false;
 		}
 	}
+}
+
+function syslog_config_arrays () {
+	global $syslog_actions, $config, $menu, $message_types, $severities, $messages;
+	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
+	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
+
+	syslog_determine_config();
 
 	$syslog_actions = array(
 		1 => __('Delete', 'syslog'),

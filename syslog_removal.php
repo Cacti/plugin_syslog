@@ -301,15 +301,9 @@ function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, 
 	$save['date']    = time();
 	$save['user']    = $username;
 
+	$id = 0;
 	if (!is_error_message()) {
-		$id = 0;
-		$id = syslog_sql_save($save, 'syslog_remove', 'id');
-
-		if ($id) {
-			raise_message(1);
-		} else {
-			raise_message(2);
-		}
+		$id = syslog_sync_save($save, 'syslog_remove', 'id');
 	}
 
 	return $id;
@@ -654,7 +648,13 @@ function syslog_removal() {
     validate_store_request_vars($filters, 'sess_syslogr');
     /* ================= input validation ================= */
 
-	html_start_box(__('Syslog Removal Rule Filters', 'syslog'), '100%', '', '3', 'center', 'syslog_removal.php?action=edit&type=1');
+	if (syslog_allow_edits()) {
+		$url = 'syslog_removal.php?action=edit&type=1';
+	} else {
+		$url = '';
+	}
+
+	html_start_box(__('Syslog Removal Rule Filters', 'syslog'), '100%', '', '3', 'center', $url);
 
 	syslog_filter();
 

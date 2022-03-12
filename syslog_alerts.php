@@ -285,14 +285,9 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	$save['user']         = $username;
 	$save['date']         = time();
 
+	$id = 0;
 	if (!is_error_message()) {
-		$id = 0;
-		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_alert`', 'id');
-		if ($id) {
-			raise_message(1);
-		} else {
-			raise_message(2);
-		}
+		$id = syslog_sync_save($save, 'syslog_alert', 'id');
 	}
 
 	return $id;
@@ -739,7 +734,13 @@ function syslog_alerts() {
     validate_store_request_vars($filters, 'sess_sysloga');
     /* ================= input validation ================= */
 
-	html_start_box(__('Syslog Alert Filters', 'syslog'), '100%', '', '3', 'center', 'syslog_alerts.php?action=edit');
+	if (syslog_allow_edits()) {
+		$url = 'syslog_alerts.php?action=edit';
+	} else {
+		$url = '';
+	}
+
+	html_start_box(__('Syslog Alert Filters', 'syslog'), '100%', '', '3', 'center', $url);
 
 	syslog_filter();
 

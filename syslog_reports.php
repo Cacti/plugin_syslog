@@ -282,15 +282,9 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save['date']     = time();
 	$save['user']     = $username;
 
+	$id = 0;
 	if (!is_error_message()) {
-		$id = 0;
-		$id = syslog_sql_save($save, '`' . $syslogdb_default . '`.`syslog_reports`', 'id');
-
-		if ($id) {
-			raise_message(1);
-		} else {
-			raise_message(2);
-		}
+		$id = syslog_sync_save($save, 'syslog_reports', 'id');
 	}
 
 	return $id;
@@ -633,7 +627,13 @@ function syslog_report() {
     validate_store_request_vars($filters, 'sess_syslogrep');
     /* ================= input validation ================= */
 
-	html_start_box(__('Syslog Report Filters', 'syslog'), '100%', '', '3', 'center', 'syslog_reports.php?action=edit&type=1');
+	if (syslog_allow_edits()) {
+		$url = 'syslog_reports.php?action=edit&type=1';
+	} else {
+		$url = '';
+	}
+
+	html_start_box(__('Syslog Report Filters', 'syslog'), '100%', '', '3', 'center', $url);
 
 	syslog_filter();
 

@@ -8,6 +8,8 @@
 
 * feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
 
+* feature: Support the replication of the main Cacti's Syslog rules to Remote Data Collectors when the Remote Data Collectors Syslog plugins operate independent from the main Cacti server.
+
 --- 3.2 ---
 
 * issue#114: Message Column missing
