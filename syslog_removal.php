@@ -40,7 +40,7 @@ $syslog_actions = array(
 /* set default action */
 set_default_action();
 
-if (isset_request_var('import')) {
+if (isset_request_var('import') && syslog_allow_edits()) {
 	set_request_var('action', 'import');
 }
 
@@ -499,6 +499,9 @@ function syslog_action_edit() {
 
 	?>
 	<script type='text/javascript'>
+
+	var allowEdits=<?php print syslog_allow_edits() ? 'true':'false';?>;
+
 	function changeTypes() {
 		if ($('#type').val == 'sql') {
 			$('#message').prop('rows', 5);
@@ -506,6 +509,18 @@ function syslog_action_edit() {
 			$('#message').prop('rows', 2);
 		}
 	}
+
+	$(function() {
+		if (!allowEdits) {
+			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
+			$('#syslog_edit').find('select').each(function() {
+				if ($(this).selectmenu('instance')) {
+					$(this).selectmenu('refresh');
+				}
+			});
+		}
+	});
+
 	</script>
 	<?php
 }
@@ -523,7 +538,7 @@ function syslog_filter() {
 						<?php print __('Search', 'syslog');?>
 					</td>
 					<td>
-						<input type='text' id='filter' size='30' value='<?php print html_escape_request_var('filter');?>'>
+						<input type='text' id='filter' size='25' value='<?php print html_escape_request_var('filter');?>'>
 					</td>
 					<td>
 						<?php print __('Enabled', 'syslog');?>
@@ -554,7 +569,7 @@ function syslog_filter() {
 						<span>
 							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
 							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
-							<input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'>
+							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'><?php } ?>
 						</span>
 					</td>
 				</tr>

@@ -30,7 +30,7 @@ include_once('./plugins/syslog/database.php');
 
 set_default_action();
 
-if (isset_request_var('import')) {
+if (isset_request_var('import') && syslog_allow_edits()) {
 	set_request_var('action', 'import');
 }
 
@@ -414,7 +414,7 @@ function syslog_action_edit() {
 			WHERE id=' . get_request_var('id'));
 
 		if (cacti_sizeof($alert)) {
-			$header_label = __esc('Alert Edit [edit: %s]' . $alert['name'], 'syslog');
+			$header_label = __esc('Alert Edit [edit: %s]', $alert['name'], 'syslog');
 		} else {
 			$header_label = __('Alert Edit [new]', 'syslog');
 		}
@@ -584,6 +584,8 @@ function syslog_action_edit() {
 	?>
 	<script type='text/javascript'>
 
+	var allowEdits=<?php print syslog_allow_edits() ? 'true':'false';?>;
+
 	function changeTypes() {
 		if ($('#type').val() == 'sql') {
 			$('#message').prep('rows', 6);
@@ -591,8 +593,19 @@ function syslog_action_edit() {
 			$('#message').prep('rows', 2);
 		}
 	}
-	</script>
 
+	$(function() {
+		if (!allowEdits) {
+			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
+			$('#syslog_edit').find('select').each(function() {
+				if ($(this).selectmenu('instance')) {
+					$(this).selectmenu('refresh');
+				}
+			});
+		}
+	});
+
+	</script>
 	<?php
 }
 
@@ -640,7 +653,7 @@ function syslog_filter() {
 						<span>
 							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
 							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
-							<input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'>
+							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'><?php } ?>
 						</span>
 					</td>
 				</tr>
