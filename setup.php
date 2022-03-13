@@ -391,11 +391,10 @@ function syslog_get_mysql_version($db = 'cacti') {
 		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
 	} else {
 		$dbInfo = syslog_db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
-
 	}
 
 	if (cacti_sizeof($dbInfo)) {
-		return floatval($dbInfo['Value']);
+		return floatval(str_replace('-MariaDB', '', $dbInfo['Value']));
 	}
 
 	return '';
@@ -420,7 +419,8 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 		INDEX program_id (program_id),
 		INDEX host_id (host_id),
 		INDEX priority_id (priority_id),
-		INDEX facility_id (facility_id)) ENGINE=$engine
+		INDEX facility_id (facility_id))
+		ENGINE=$engine
 		PARTITION BY RANGE (TO_DAYS(logtime))\n";
 
 	$now = time();
@@ -458,12 +458,42 @@ function syslog_setup_table_new($options) {
 
 	syslog_connect();
 
+	// Set default if they are not set.
+	if (!cacti_sizeof($options)) {
+		$options['upgrade_type'] = read_config_option('syslog_install_upgrade_type');
+		$options['engine']       = read_config_option('syslog_install_engine');
+		$options['db_type']      = read_config_option('syslog_install_db_type');
+		$options['days']         = read_config_option('syslog_install_days');
+
+		if (empty($options['upgrade_type'])) {
+			$options['upgrade_type'] = 'upgrade';
+		}
+
+		if (empty($options['engine'])) {
+			$options['engine'] = 'InnoDB';
+		}
+
+		if (empty($options['db_type'])) {
+			$options['db_type'] = 'part';
+		}
+
+		if (empty($options['days'])) {
+			$options['days'] = 30;
+		}
+	}
+
 	/* validate some simple information */
 	$mysqlVersion = syslog_get_mysql_version('syslog');
 	$truncate     = isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate' ? true:false;
 	$engine       = isset($options['engine']) && $options['engine'] == 'innodb' ? 'InnoDB':'MyISAM';
 	$partitioned  = isset($options['db_type']) && $options['db_type'] == 'part' ? true:false;
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
+
+	/* set table construction settings for the remote pollers */
+	set_config_option('syslog_install_upgrade_type', $options['upgrade_type'], true);
+	set_config_option('syslog_install_engine',       $options['engine'], true);
+	set_config_option('syslog_install_db_type',      $options['db_type'], true);
+	set_config_option('syslog_install_days',         $options['days'], true);
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`");
@@ -484,7 +514,8 @@ function syslog_setup_table_new($options) {
 			INDEX program_id (program_id),
 			INDEX host_id (host_id),
 			INDEX priority_id (priority_id),
-			INDEX facility_id (facility_id)) ENGINE=$engine;");
+			INDEX facility_id (facility_id))
+			ENGINE=$engine;");
 	} else {
 		syslog_create_partitioned_syslog_table($engine, $options['days']);
 	}
@@ -539,7 +570,8 @@ function syslog_setup_table_new($options) {
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		notes varchar(255) default NULL,
-		PRIMARY KEY (id)) ENGINE=$engine;");
+		PRIMARY KEY (id))
+		ENGINE=$engine;");
 
 	$present = syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog_reports'");
 
@@ -565,7 +597,8 @@ function syslog_setup_table_new($options) {
 		`date` int(16) NOT NULL default '0',
 		email varchar(255) default NULL,
 		notes varchar(255) default NULL,
-		PRIMARY KEY (id)) ENGINE=$engine;");
+		PRIMARY KEY (id))
+		ENGINE=$engine;");
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_programs` (
@@ -574,7 +607,8 @@ function syslog_setup_table_new($options) {
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 		PRIMARY KEY (`program`),
 		INDEX host_id (`program_id`),
-		INDEX last_updated (`last_updated`)) ENGINE=$engine
+		INDEX last_updated (`last_updated`))
+		ENGINE=$engine
 		COMMENT='Contains all programs currently in the syslog table'");
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_hosts` (
@@ -583,7 +617,8 @@ function syslog_setup_table_new($options) {
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 		PRIMARY KEY (`host`),
 		INDEX host_id (`host_id`),
-		INDEX last_updated (`last_updated`)) ENGINE=$engine
+		INDEX last_updated (`last_updated`))
+		ENGINE=$engine
 		COMMENT='Contains all hosts currently in the syslog table'");
 
 	syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`");
@@ -592,7 +627,8 @@ function syslog_setup_table_new($options) {
 		`facility` varchar(10) NOT NULL,
 		`last_updated` TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
 		PRIMARY KEY  (`facility_id`),
-		INDEX last_updated (`last_updated`)) ENGINE=$engine;");
+		INDEX last_updated (`last_updated`))
+		ENGINE=$engine;");
 
 	syslog_db_execute("INSERT INTO `" .  $syslogdb_default . "`.`syslog_facilities` (facility_id, facility) VALUES
 		(0,'kern'), (1,'user'), (2,'mail'), (3,'daemon'), (4,'auth'), (5,'syslog'), (6,'lpd'), (7,'news'),
