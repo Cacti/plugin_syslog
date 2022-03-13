@@ -694,7 +694,7 @@ function syslog_replicate_out($data) {
 	return $data;
 }
 
-function syslog_replicate_in($data) {
+function syslog_replicate_in() {
 	include(SYSLOG_CONFIG);
 
 	syslog_connect();
@@ -709,23 +709,33 @@ function syslog_replicate_in($data) {
 		$data = db_fetch_assoc('SELECT * FROM syslog_reports');
 		syslog_replace_data('syslog_reports', $data);
 	}
-
-	return $data;
 }
 
-function sylog_replace_data($table, &$data) {
+function syslog_replace_data($table, &$data) {
 	if (cacti_sizeof($data)) {
 		$sqlData  = array();
 		$sqlQuery = array();
 		$columns  = array_keys($data[0]);
 
-		$create   = db_fetch_cell("SHOW CREATE TABLE $table");
+		$create = db_fetch_row('SHOW CREATE TABLE ' . $table);
+		if (isset($create["CREATE TABLE `$table`"]) || isset($create['Create Table'])) {
+			if (isset($create["CREATE TABLE `$table`"])) {
+				$create_sql = $create["CREATE TABLE `$table`"];
+			} else {
+				$create_sql = $create['Create Table'];
+			}
+		}
+
+		if (!syslog_db_table_exists($table)) {
+			syslog_db_execute($create);
+			syslog_db_execute("TRUNCATE TABLE $table");
+		}
 
 		// Make the prefix
 		$sql_prefix = "INSERT INTO $table (`" . implode('`,`', $columns) . '`) VALUES ';
 
 		// Make the suffix
-		$sql_suffix = "ON DUPLICATE KEY UPDATE ";
+		$sql_suffix = ' ON DUPLICATE KEY UPDATE ';
 		foreach($columns as $c) {
 			$sql_suffix .= " $c = VALUES($c),";
 		}
@@ -733,7 +743,7 @@ function sylog_replace_data($table, &$data) {
 
 		// Construct the prepared statement
 		foreach($data as $row) {
-			$sqlQuery[] = '(' . trim(str_repeat('?, ', cacti_sizeof($columns)), ',') . ')';
+			$sqlQuery[] = '(' . trim(str_repeat('?, ', cacti_sizeof($columns)), ', ') . ')';
 
 			foreach($row as $col) {
 				$sqlData[] = $col;
@@ -741,11 +751,6 @@ function sylog_replace_data($table, &$data) {
 		}
 
 		$sql = implode(', ', $sqlQuery);
-
-		if (!syslog_db_table_exists($table)) {
-			syslog_db_execute($create);
-			syslog_db_execute("TRUNCATE TABLE $table");
-		}
 
 		syslog_db_execute_prepared($sql_prefix . $sql . $sql_suffix, $sqlData);
 	}
