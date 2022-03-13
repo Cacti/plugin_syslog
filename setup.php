@@ -28,10 +28,12 @@ function plugin_syslog_install() {
 	global $config, $syslog_upgrade;
 	static $bg_inprocess = false;
 
-	if (file_exists(SYSLOG_CONFIG)) {
+	syslog_determine_config();
+
+	if (defined(SYSLOG_CONFIG)) {
 		include(SYSLOG_CONFIG);
 	} else {
-		raise_message('syslog_info', __('Please rename your %s.dist file in the syslog directory, and change setup your database before installing.', SYSLOG_CONFIG, 'syslog'), MESSAGE_LEVEL_ERROR);
+		raise_message('syslog_info', __('Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location:' . $config['url_path'] . 'plugins.php?header=false');
 		exit;
 	}
@@ -1113,7 +1115,7 @@ function syslog_determine_config() {
 		if (file_exists(dirname(__FILE__) . '/config_local.php')) {
 			define('SYSLOG_CONFIG', dirname(__FILE__) . '/config_local.php');
 			$config['syslog_remote_db'] = true;
-		} else {
+		} elseif (file_exists(dirname(__FILE__) . '/config.php')) {
 			define('SYSLOG_CONFIG', dirname(__FILE__) . '/config.php');
 			$config['syslog_remote_db'] = false;
 		}
