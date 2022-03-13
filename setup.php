@@ -1380,6 +1380,8 @@ function syslog_config_insert() {
 		return;
 	}
 
+	syslog_determine_config();
+
 	syslog_connect();
 
 	syslog_check_upgrade();
@@ -1391,6 +1393,8 @@ function syslog_graph_buttons($graph_elements = array()) {
 	if (!syslog_config_safe()) {
 		return;
 	}
+
+	syslog_determine_config();
 
 	include(SYSLOG_CONFIG);
 
