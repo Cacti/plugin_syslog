@@ -167,6 +167,8 @@ function plugin_syslog_upgrade() {
 function syslog_connect() {
 	global $config, $cnn_id, $syslog_cnn, $local_db_cnn_id, $remote_db_cnn_id;
 
+	syslog_determine_config();
+
 	// Handle remote syslog processing
 	include(SYSLOG_CONFIG);
 	include_once(dirname(__FILE__) . '/functions.php');
