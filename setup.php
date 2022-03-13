@@ -161,19 +161,41 @@ function plugin_syslog_upgrade() {
 }
 
 function syslog_connect() {
-	global $config, $cnn_id, $syslog_cnn, $database_default;
+	global $config, $cnn_id, $syslog_cnn, $local_db_cnn_id, $remote_db_cnn_id;
 
 	// Handle remote syslog processing
 	include(SYSLOG_CONFIG);
 	include_once(dirname(__FILE__) . '/functions.php');
 
+	$connect_remote = false;
+	$connected      = true;
+
 	/* Connect to the Syslog Database */
 	if (empty($syslog_cnn)) {
-		if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
-			($database_default == $syslogdb_default)) {
-			/* move on, using Cacti */
-			$syslog_cnn = $cnn_id;
+		if ($config['poller_id'] == 1) {
+			if ($use_cacti_db == true) {
+				$syslog_cnn = $local_db_cnn_id;
+				$connected = true;
+			} else {
+				$connect_remote = true;
+			}
+		} elseif (isset($config['syslog_remote_db'])) {
+			if ($use_cacti_db == true) {
+				$syslog_cnn = $local_db_cnn_id;
+				$connected = true;
+			} else {
+				$connect_remote = true;
+			}
 		} else {
+			if ($use_cacti_db == true) {
+				$syslog_cnn = $remote_db_cnn_id;
+				$connected = true;
+			} else {
+				$connect_remote = true;
+			}
+		}
+
+		if ($connect_remote) {
 			if (!isset($syslogdb_port)) {
 				$syslogdb_port = '3306';
 			}
@@ -199,12 +221,25 @@ function syslog_connect() {
 			}
 
 			$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port, $syslogdb_retries, $syslogdb_ssl, $syslogdb_ssl_key, $syslogdb_ssl_cert, $syslogdb_ssl_ca);
+
 			if ($syslog_cnn == false) {
-					print "Can not connect\n";
-					return FALSE;
+				print "FATAL Can not connect\n";
+				$connected = false;
 			}
 		}
+
+		if ($connected && !syslog_db_table_exists('syslog')) {
+			cacti_log('Setting Up Database Tables Since they do not exist', false, 'SYSLOG');
+
+			if (!isset($syslog_install_options)) {
+				$syslog_install_options = array();
+			}
+
+			syslog_setup_table_new($syslog_install_options);
+		}
 	}
+
+	return $connected;
 }
 
 function syslog_check_upgrade() {
@@ -333,6 +368,17 @@ function syslog_check_upgrade() {
 					array($hash, $r['id']));
 			}
 		}
+
+		if (!syslog_db_column_exists('syslog_alert', 'level')) {
+			syslog_db_add_column('syslog_alert', array(
+				'name'     => 'level',
+				'type'     => 'int(10)',
+				'unsigned' => true,
+				'NULL'     => false,
+				'default'  => '0',
+				'after'    => 'method')
+			);
+		}
 	}
 }
 
@@ -388,7 +434,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 }
 
 function syslog_setup_table_new($options) {
-	global $config, $cnn_id, $settings, $mysqlVersion, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
+	global $config, $cnn_id, $syslog_cnn, $settings, $mysqlVersion, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
 
 	include(SYSLOG_CONFIG);
 
@@ -449,6 +495,7 @@ function syslog_setup_table_new($options) {
 		`name` varchar(255) NOT NULL default '',
 		`severity` int(10) UNSIGNED NOT NULL default '0',
 		`method` int(10) unsigned NOT NULL default '0',
+		`level` int(10) unsigned NOT NULL default '0',
 		`num` int(10) unsigned NOT NULL default '1',
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
@@ -632,13 +679,15 @@ function syslog_replicate_out($data) {
 		$rcnn_id          = $data['rcnn_id'];
 		$class            = $data['class'];
 
+		cacti_log('INFO: Replacting for the Syslog Plugin', false, 'REPLICATE');
+
 		if ($class == 'all') {
-			$data = syslog_db_fetch_assoc('SELECT * FROM syslog_alert');
-			replicate_out_table($rcnn_id, $data, 'syslog_alert', $remote_poller_id);
-			$data = syslog_db_fetch_assoc('SELECT * FROM syslog_remove');
-			replicate_out_table($rcnn_id, $data, 'syslog_remove', $remote_poller_id);
-			$data = syslog_db_fetch_assoc('SELECT * FROM syslog_reports');
-			replicate_out_table($rcnn_id, $data, 'syslog_reports', $remote_poller_id);
+			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_alert');
+			replicate_out_table($rcnn_id, $tdata, 'syslog_alert', $remote_poller_id);
+			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_remove');
+			replicate_out_table($rcnn_id, $tdata, 'syslog_remove', $remote_poller_id);
+			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_reports');
+			replicate_out_table($rcnn_id, $tdata, 'syslog_reports', $remote_poller_id);
 		}
 	}
 
@@ -1016,7 +1065,7 @@ function syslog_config_settings() {
 		),
 		'syslog_remote_enabled' => array(
 			'friendly_name' => __('Enable Remote Data Collector Message Processing', 'syslog'),
-			'description' => __('If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own \'config_local.php\' file in order to inform Syslog to use an independent database for message display and processing.', 'syslog'),
+			'description' => __('If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own \'config_local.php\' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file \'config_local.php.dist\' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled.', 'syslog'),
 			'method' => 'checkbox',
 			'default' => ''
 		),

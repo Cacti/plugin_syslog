@@ -22,32 +22,44 @@
  +-------------------------------------------------------------------------+
 */
 
-global $config;
-
-/**
- * Do not change this value
- */
-$use_cacti_db = false;
+global $config, $database_type, $database_default, $database_hostname;
+global $database_username, $database_password, $database_port;
+global $database_ssl, $database_ssl_key, $database_ssl_cert, $database_ssl_ca;
 
 /**
  * Required Section:
  *
  * These settings are required as the use of the central
- * Cacti database can not be used.  Additionally, due to
- * the way Cacti handles online connection, you must
- * specify your server settings separately.
+ * Cacti database can not be used.
  */
-$syslogdb_type     = 'mysql';
-$syslogdb_default  = 'syslog';
-$syslogdb_hostname = 'localhost';
-$syslogdb_username = 'cactiuser';
-$syslogdb_password = 'cactiuser';
-$syslogdb_port     = 3306;
-$syslogdb_retries  = 5;
-$syslogdb_ssl      = false;
-$syslogdb_ssl_key  = '';
-$syslogdb_ssl_cert = '';
-$syslogdb_ssl_ca   = '';
+
+$use_cacti_db = true;
+
+if (!$use_cacti_db) {
+	$syslogdb_type     = 'mysql';
+	$syslogdb_default  = 'syslog';
+	$syslogdb_hostname = 'localhost';
+	$syslogdb_username = 'cactiuser';
+	$syslogdb_password = 'cactiuser';
+	$syslogdb_port     = 3306;
+	$syslogdb_retries  = 5;
+	$syslogdb_ssl      = false;
+	$syslogdb_ssl_key  = '';
+	$syslogdb_ssl_cert = '';
+	$syslogdb_ssl_ca   = '';
+} else {
+	$syslogdb_type     = $database_type;
+	$syslogdb_default  = $database_default;
+	$syslogdb_hostname = $database_hostname;
+	$syslogdb_username = $database_username;
+	$syslogdb_password = $database_password;
+	$syslogdb_port     = $database_port;
+	$syslogdb_retries  = 5;
+	$syslogdb_ssl      = $database_ssl;
+	$syslogdb_ssl_key  = $database_ssl_key;
+	$syslogdb_ssl_cert = $database_ssl_cert;
+	$syslogdb_ssl_ca   = $database_ssl_ca;
+}
 
 /**
  * Required Section:
