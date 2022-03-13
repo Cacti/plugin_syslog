@@ -30,7 +30,7 @@ function plugin_syslog_install() {
 
 	syslog_determine_config();
 
-	if (defined(SYSLOG_CONFIG)) {
+	if (defined('SYSLOG_CONFIG')) {
 		include(SYSLOG_CONFIG);
 	} else {
 		raise_message('syslog_info', __('Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing.', 'syslog'), MESSAGE_LEVEL_ERROR);
@@ -113,6 +113,8 @@ function syslog_execute_update($syslog_exists, $options) {
 
 function plugin_syslog_uninstall() {
 	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username;
+
+	syslog_determine_config();
 
 	/* database connection information, must be loaded always */
 	include(SYSLOG_CONFIG);
@@ -230,7 +232,7 @@ function syslog_connect() {
 			}
 		}
 
-		if ($connected && !syslog_db_table_exists('syslog')) {
+		if ($connected && !syslog_db_table_exists('syslog') && api_plugin_is_enabled('syslog')) {
 			cacti_log('Setting Up Database Tables Since they do not exist', false, 'SYSLOG');
 
 			if (!isset($syslog_install_options)) {
