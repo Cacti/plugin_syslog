@@ -809,9 +809,13 @@ function syslog_check_dependencies() {
 function syslog_poller_bottom() {
 	global $config;
 
-	$command_string = read_config_option('path_php_binary');
-	$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
-	exec_background($command_string, $extra_args);
+	if (syslog_config_safe()) {
+		$command_string = read_config_option('path_php_binary');
+		$extra_args = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
+		exec_background($command_string, $extra_args);
+	} else {
+		cacti_log('WARNING: You have installed the Syslog plugin, but you have not properly set a config.php or config_local.php', false, 'POLLER');
+	}
 }
 
 function syslog_install_advisor($syslog_exists, $db_version) {
@@ -1158,6 +1162,23 @@ function syslog_determine_config() {
 			$config['syslog_remote_db'] = false;
 		}
 	}
+}
+
+function syslog_config_safe() {
+	global $config;
+
+	$files = array(
+		dirname(__FILE__) . '/config_local.php',
+		dirname(__FILE__) . '/config.php'
+	);
+
+	foreach($files as $file) {
+		if (file_exists($file) && is_readable($file)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 function syslog_config_arrays () {
