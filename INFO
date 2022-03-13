@@ -6,4 +6,5 @@ author = The Cacti Group
 email = 
 homepage = http://www.cacti.net
 compat = 1.2.20
+nosync = config.php
 capabilities = online_view:1, online_mgmt:1, offline_view:1, offline_mgmt:1, remote_collect:0, remote_poller:1

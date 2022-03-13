@@ -1140,6 +1140,10 @@ function syslog_top_graph_refresh($refresh) {
 function syslog_show_tab() {
 	global $config;
 
+	if (!syslog_config_safe()) {
+		return;
+	}
+
 	if (api_user_realm_auth('syslog.php')) {
 		if (substr_count($_SERVER['REQUEST_URI'], 'syslog.php')) {
 			print '<a href="' . $config['url_path'] . 'plugins/syslog/syslog.php"><img src="' . $config['url_path'] . 'plugins/syslog/images/tab_syslog_down.gif" alt="' . __('Syslog', 'syslog') . '"></a>';
@@ -1318,18 +1322,20 @@ function syslog_config_arrays () {
 		$syslog_times[$i] = $hour . ':' . $minute;
 	}
 
-	$menu2 = array ();
-	foreach ($menu as $temp => $temp2 ) {
-		$menu2[$temp] = $temp2;
-		if ($temp == __('Import/Export')) {
-			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
-			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
-			$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
+	if (syslog_config_safe()) {
+		$menu2 = array ();
+		foreach ($menu as $temp => $temp2 ) {
+			$menu2[$temp] = $temp2;
+			if ($temp == __('Import/Export')) {
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
+			}
 		}
-	}
-	$menu = $menu2;
+		$menu = $menu2;
 
-	$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
+		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
+	}
 
 	if (function_exists('auth_augment_roles')) {
 		auth_augment_roles(__('Normal User'), array('syslog.php'));
@@ -1368,6 +1374,10 @@ function syslog_draw_navigation_text ($nav) {
 }
 
 function syslog_config_insert() {
+	if (!syslog_config_safe()) {
+		return;
+	}
+
 	syslog_connect();
 
 	syslog_check_upgrade();
@@ -1375,6 +1385,10 @@ function syslog_config_insert() {
 
 function syslog_graph_buttons($graph_elements = array()) {
 	global $config, $timespan, $graph_timeshifts;
+
+	if (!syslog_config_safe()) {
+		return;
+	}
 
 	include(SYSLOG_CONFIG);
 
@@ -1437,6 +1451,10 @@ function syslog_graph_buttons($graph_elements = array()) {
 function syslog_utilities_action($action) {
 	global $config, $refresh, $syslog_cnn;
 
+	if (!syslog_config_safe()) {
+		return;
+	}
+
 	if ($action == 'purge_syslog_hosts') {
 		$records = 0;
 
@@ -1481,6 +1499,10 @@ function syslog_utilities_action($action) {
 
 function syslog_utilities_list() {
 	global $config;
+
+	if (!syslog_config_safe()) {
+		return;
+	}
 
 	html_header(array(__('Syslog Utilities', 'syslog')), 2); ?>
 
