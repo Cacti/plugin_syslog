@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:50-0500\n"
+"PO-Revision-Date: 2022-03-19 17:02-0400\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
 "Language: zh_CN\n"
@@ -16,11 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "保存失败。同步模式下的远程数据收集器不允许保存规则。而是从主 Cacti 服务器保存。"
 
 #: functions.php:115
 msgid "Please use an HTML Email Client"
@@ -40,9 +41,8 @@ msgid "Severity:"
 msgstr "严重:"
 
 #: functions.php:1221
-#, fuzzy
 msgid "Threshold:"
-msgstr "阈值"
+msgstr "阈值："
 
 #: functions.php:1222
 msgid "Count:"
@@ -142,7 +142,7 @@ msgstr "事件警报 - ％s"
 #: functions.php:1385
 #, fuzzy
 msgid ", Count:"
-msgstr "计数"
+msgstr "计数："
 
 #: functions.php:1814
 msgid "Host"
@@ -199,7 +199,7 @@ msgstr "MyISAM存储"
 #: setup.php:875
 #, fuzzy
 msgid "InnoDB Storage"
-msgstr "InnoDB存储"
+msgstr "使用InnoDB 存储引擎时,保持表空间的独立性很重要. 对于 %s 的长期用户,表管理会变得更简单.如果您尚未开启此功能, 可以通过在所有InnoDB 表上运行alter 语句来开启此功能."
 
 #: setup.php:880
 msgid "Database Architecture"
@@ -218,9 +218,8 @@ msgid "Partitioned Table"
 msgstr "分区表"
 
 #: setup.php:894
-#, fuzzy
 msgid "Retention Policy"
-msgstr "保留政策"
+msgstr "保留策略"
 
 #: setup.php:895
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
@@ -418,20 +417,24 @@ msgid "Remote Message Processing"
 msgstr "消息字符串："
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "启用远程数据收集器消息处理"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "如果您的远程数据收集器有自己的 Syslog 数据库并独立处理它们的消息，请选中此复选框。通过选中此复选框，您的远程数据收集器将需要维护自己的“config_local.php”文件，以便通知 Syslog 使用独立数据库进行消息显示和处理。为此请使用模板文件“config_local.php.dist”。警告：启用此选项后，系统日志表将自动创建。"
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "远程数据收集器规则同步"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "如果您的远程数据收集器有自己的系统日志数据库并独立处理三个消息，如果您希望将主要 Cacti 数据库警报、删除和报告规则发送到远程 Cacti 系统，请选中此复选框。"
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -536,12 +539,12 @@ msgstr "以此结尾"
 #: setup.php:1325
 #, fuzzy
 msgid "Hostname is"
-msgstr "主机名:"
+msgstr "主机名: "
 
 #: setup.php:1326
 #, fuzzy
 msgid "Program is"
-msgstr "调试 - 统计，错误，结果，I / O和程序流程"
+msgstr "程序"
 
 #: setup.php:1327
 #, fuzzy
@@ -891,7 +894,6 @@ msgid "Show All Devices"
 msgstr "显示所有设备"
 
 #: syslog.php:1337
-#, fuzzy
 msgid "Show All Logs"
 msgstr "显示所有日志"
 
@@ -933,9 +935,8 @@ msgid "Priority Levels"
 msgstr "优先级"
 
 #: syslog.php:1458
-#, fuzzy
 msgid "All Priorities"
-msgstr "所有优先事项"
+msgstr "所有优先级"
 
 #: syslog.php:1459 syslog.php:1505
 msgid "Emergency"
@@ -1123,16 +1124,12 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
-#| msgid "Alert Details"
 msgid "Details"
-msgstr "通知详情"
+msgstr "详情"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "名称："
+msgstr "名称"
 
 #: syslog_alerts.php:462
 msgid "Please describe this Alert."
@@ -1149,14 +1146,13 @@ msgid "Reporting Level"
 msgstr "报告方法"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "为了记录重新警报周期，应在系统或设备级别跟踪警报。"
 
 #: syslog_alerts.php:480
-#, fuzzy
-#| msgid "System Logs"
 msgid "System"
-msgstr "系统日志"
+msgstr "系统"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1223,9 +1219,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "不要再次为同一主机重新发送此警报，直到经过这段时间。对于基于阈值的警报，这适用于所有主机。"
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "提示备注"
+msgstr "注释"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1237,8 +1232,9 @@ msgid "Open Ticket"
 msgstr "创建工单"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "是否应为此警报打开帮助台工单。注意：为方便起见，Ticket 命令脚本将填充几个“ALERT_”环境变量。"
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1255,11 +1251,12 @@ msgstr "是"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
 msgid "Notification List"
-msgstr ""
+msgstr "通知列表"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "使用此通知列表的内容来规定应通知谁以及如何通知。"
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1272,9 +1269,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "请输入逗号分隔的电子邮件地址列表以通知。如果您希望以短信格式向收件人发送电子邮件，请在收件人的电子邮件地址前加上<b>“sms @”</b> 。例如，如果收件人的SMS地址为<b>“2485551212@mycarrier.net”</b> ，则将其输入为<b>“sms @ 2485551212 @ mycarrier.net”</b> ，并将其格式化为SMS消息。"
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "警报命令"
+msgstr "命令"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1377,9 +1373,8 @@ msgid "Update"
 msgstr "更新"
 
 #: syslog_removal.php:36
-#, fuzzy
 msgid "Reprocess"
-msgstr "重新处理"
+msgstr "正在重新处理"
 
 #: syslog_removal.php:177
 #, fuzzy
@@ -1675,14 +1670,12 @@ msgid "What time of day should this report be sent?"
 msgstr "该报告应该在什么时间发送？"
 
 #: syslog_reports.php:440
-#, fuzzy
 msgid "Report Format"
-msgstr "报告说明"
+msgstr "报告格式"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "报告正文"
+msgstr "正文文本"
 
 #: syslog_reports.php:454
 #, fuzzy

@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:46-0500\n"
+"PO-Revision-Date: 2022-03-19 16:59-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "저장에 실패했습니다. 동기화 모드의 원격 데이터 수집기는 규칙을 저장할 수 없습니다. 대신 주 선인장 서버에서 저장하십시오."
 
 #: functions.php:115
 #, fuzzy
@@ -122,12 +123,12 @@ msgstr "내용:"
 #: functions.php:1293
 #, fuzzy
 msgid ", Host:"
-msgstr "호스트:"
+msgstr "호스트"
 
 #: functions.php:1293 functions.php:1385
 #, fuzzy
 msgid ", URL:"
-msgstr ", URL :"
+msgstr "URL"
 
 #: functions.php:1293 functions.php:1385
 #, fuzzy
@@ -142,7 +143,7 @@ msgstr "이벤트 경고 -  %s"
 #: functions.php:1385
 #, fuzzy
 msgid ", Count:"
-msgstr "카운트"
+msgstr "카운트:"
 
 #: functions.php:1814
 msgid "Host"
@@ -229,9 +230,8 @@ msgid "Partitioned Table"
 msgstr "분할 된 테이블"
 
 #: setup.php:894
-#, fuzzy
 msgid "Retention Policy"
-msgstr "보존 정책"
+msgstr "입력내용 보유 정책"
 
 #: setup.php:895
 #, fuzzy
@@ -451,20 +451,24 @@ msgid "Remote Message Processing"
 msgstr "메시지 문자열 :"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "원격 데이터 수집기 메시지 처리 활성화"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "원격 데이터 수집기에 자체 Syslog 데이터베이스가 있고 해당 메시지를 독립적으로 처리하는 경우 이 확인란을 선택합니다. 이 확인란을 선택하면 원격 데이터 수집기가 자체 'config_local.php' 파일을 유지 관리하여 메시지 표시 및 처리에 독립 데이터베이스를 사용하도록 Syslog에 알릴 필요가 있습니다. 이를 위해 템플릿 파일 'config_local.php.dist'를 사용하십시오. 경고: 이 옵션이 활성화되는 즉시 Syslog 테이블이 자동으로 생성됩니다."
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "원격 데이터 수집기 규칙 동기화"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "원격 데이터 수집기에 자체 Syslog 데이터베이스가 있고 3개의 메시지를 독립적으로 처리하는 경우 기본 선인장 데이터베이스 경고, 제거 및 보고 규칙을 원격 선인장 시스템으로 보내려면 이 확인란을 선택하십시오."
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -1170,15 +1174,12 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
 msgid "Details"
-msgstr "알림 세부 정보"
+msgstr "상세정보"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "이름:"
+msgstr "이름"
 
 #: syslog_alerts.php:462
 #, fuzzy
@@ -1196,14 +1197,13 @@ msgid "Reporting Level"
 msgstr "보고 방법"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "재경보 주기를 기록하려면 시스템 또는 장치 수준에서 경보를 추적해야 합니다."
 
 #: syslog_alerts.php:480
-#, fuzzy
-#| msgid "System Logs"
 msgid "System"
-msgstr "시스템 로그"
+msgstr "시스템"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1272,9 +1272,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "이 시간이 경과 할 때까지 동일한 호스트에 대해이 경고를 다시 보내지 마십시오. 임계 값 기반 경보의 경우 이는 모든 호스트에 적용됩니다."
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "알림 메모"
+msgstr "노트"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1286,8 +1285,9 @@ msgid "Open Ticket"
 msgstr "문의하기"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "이 경보에 대한 헬프 데스크 티켓이 열려 있어야 합니다. 참고: 티켓 명령 스크립트는 편의를 위해 여러 'ALERT_' 환경 변수로 채워집니다."
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1302,12 +1302,14 @@ msgid "Yes"
 msgstr "예"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
+#, fuzzy
 msgid "Notification List"
-msgstr ""
+msgstr "알림 목록"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "이 알림 목록의 내용을 사용하여 알림을 받아야 하는 사람과 방법을 지정하십시오."
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1320,9 +1322,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "알리려면 쉼표로 구분 된 이메일 주소 목록을 입력하십시오. SMS 형식으로 수신자에게 전자 메일을 보내려면 해당 수신자의 전자 메일 주소 앞에 <b>'SMS @'를 추가하십시오</b> . 예를 들어 수신자의 SMS 주소가 <b>'2485551212@mycarrier.net'</b> 인 경우 <b>'sms @ 2485551212 @ mycarrier.net'</b> 으로 입력하면 SMS 메시지로 형식이 지정됩니다."
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "경고 명령"
+msgstr "명령어"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1727,14 +1728,12 @@ msgid "What time of day should this report be sent?"
 msgstr "이 보고서를 보내려면 몇시 간?"
 
 #: syslog_reports.php:440
-#, fuzzy
 msgid "Report Format"
-msgstr "보고서 노트"
+msgstr "리포트 형식"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "보고서 본문 텍스트"
+msgstr "바디 텍스트"
 
 #: syslog_reports.php:454
 #, fuzzy

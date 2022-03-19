@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:47-0500\n"
+"PO-Revision-Date: 2022-03-19 17:00-0400\n"
 "Last-Translator: Jaroslaw Kłopotek <jkl@interduo.pl>\n"
 "Language-Team: Polish <http://translate.cacti.net/projects/cacti/syslog/pl-PL/>\n"
 "Language: pl_PL\n"
@@ -16,11 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "Zapisywanie Nie powiodło się. Zdalni zbieracze danych w trybie synchronizacji nie mogą zapisywać reguł. Zapisz zamiast tego z głównego serwera Cacti."
 
 #: functions.php:115
 #, fuzzy
@@ -145,7 +146,7 @@ msgstr "Alert zdarzenia - %s"
 #: functions.php:1385
 #, fuzzy
 msgid ", Count:"
-msgstr "Liczba"
+msgstr "Licznik:"
 
 #: functions.php:1814
 msgid "Host"
@@ -451,20 +452,24 @@ msgid "Remote Message Processing"
 msgstr "String komunikatów:"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "Włącz przetwarzanie komunikatów zdalnego kolektora danych"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "Jeśli zdalne kolektory danych mają własne bazy danych Syslog i niezależnie przetwarzają swoje wiadomości, zaznacz to pole wyboru. Zaznaczając to pole wyboru, zdalne kolektory danych będą musiały utrzymywać własny plik „config_local.php”, aby poinformować Syslog, aby używał niezależnej bazy danych do wyświetlania i przetwarzania wiadomości. W tym celu użyj pliku szablonu 'config_local.php.dist'. OSTRZEŻENIE: Tabele Syslog zostaną utworzone automatycznie po włączeniu tej opcji."
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "Synchronizacja reguł zdalnego kolektora danych"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "Jeśli zdalne zbieracze danych mają własne bazy danych Syslog i niezależnie przetwarzają trzy wiadomości, zaznacz to pole wyboru, jeśli chcesz, aby reguły dotyczące alertów, usuwania i raportowania głównych baz danych kaktusów były wysyłane do systemu zdalnych kaktusów."
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -500,7 +505,7 @@ msgid "%d Days"
 msgstr "%d dni"
 
 #: setup.php:1277 setup.php:1296 syslog_alerts.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "%d Week"
 msgstr "%d Tydzień"
 
@@ -682,7 +687,6 @@ msgid "Syslog Viewer"
 msgstr "Przeglądarka logów"
 
 #: syslog.php:55
-#, fuzzy
 msgid "All Text"
 msgstr "Cały tekst"
 
@@ -1167,16 +1171,12 @@ msgid "N/A"
 msgstr "N/D"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
-#| msgid "Alert Details"
 msgid "Details"
-msgstr "szczegóły powiadomienia"
+msgstr "Szczegóły"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "Nazwa:"
+msgstr "Nazwa"
 
 #: syslog_alerts.php:462
 #, fuzzy
@@ -1194,14 +1194,13 @@ msgid "Reporting Level"
 msgstr "Metoda raportowania"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "W przypadku rejestrowania cykli ponownego alertu, alert powinien być śledzony na poziomie systemu lub urządzenia."
 
 #: syslog_alerts.php:480
-#, fuzzy
-#| msgid "System Logs"
 msgid "System"
-msgstr "Dzienniki systemowe"
+msgstr "System"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1224,9 +1223,8 @@ msgstr "W przypadku metody 'Progu', jeśli liczba widziana jest powyżej tej war
 
 #: syslog_alerts.php:502 syslog_alerts.php:836 syslog_removal.php:699
 #: syslog_reports.php:713
-#, fuzzy
 msgid "Match Type"
-msgstr "Typ zapałki"
+msgstr "Typ dopasowania"
 
 #: syslog_alerts.php:503 syslog_removal.php:438
 #, fuzzy
@@ -1270,9 +1268,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Nie wysyłaj tego alertu ponownie dla tego samego hosta, aż do upływu tego czasu. W przypadku alarmów progowych dotyczy to wszystkich hostów."
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "Uwagi ostrzegawcze"
+msgstr "Notatki"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1284,8 +1281,9 @@ msgid "Open Ticket"
 msgstr "Stwórz ofertę"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "Czy zgłoszenie Help Desk zostanie otwarte dla tego alertu. UWAGA: Dla wygody skrypt poleceń Ticket zostanie wypełniony kilkoma zmiennymi środowiskowymi „ALERT_”."
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1300,12 +1298,14 @@ msgid "Yes"
 msgstr "Tak"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
+#, fuzzy
 msgid "Notification List"
-msgstr ""
+msgstr "Lista powiadomień"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "Użyj zawartości tej listy powiadomień, aby określić, kto i w jaki sposób powinien zostać powiadomiony."
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1318,9 +1318,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "Proszę wpisać przecinek z listy adresów e-mail, aby uzyskać informacje.  Jeśli chcesz wysłać wiadomość e-mail do odbiorcy w formacie SMS, prosimy o wcześniejsze ustalenie adresu e-mail odbiorcy z <b>'sms@'</b>.  Na przykład, jeśli adres odbiorcy SMS to <b>'2485551212@mycarrier.net'</b>, wpiszesz go jako <b>'sms@2485551212@mycarrier.net'</b> i zostanie sformatowany jako wiadomość SMS."
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "Dowództwo alarmowe"
+msgstr "Komenda"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1728,9 +1727,8 @@ msgid "Report Format"
 msgstr "Sprawozdanie Uwagi do sprawozdania"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "Organ sprawozdania Tekst sprawozdania"
+msgstr "Tekst podstawowy"
 
 #: syslog_reports.php:454
 #, fuzzy

@@ -8,19 +8,20 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2021-07-23 11:47+0000\n"
+"PO-Revision-Date: 2022-03-19 17:01-0400\n"
 "Last-Translator: Sergey <sbolshagin@gmail.com>\n"
 "Language-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\n"
-"Language: ru-RU\n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.3.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "Сохранить не удалось. Удаленным сборщикам данных в режиме синхронизации не разрешено сохранять правила. Вместо этого сохраните с основного сервера Cacti."
 
 #: functions.php:115
 #, fuzzy
@@ -125,7 +126,7 @@ msgstr "Сообщение:"
 #: functions.php:1293
 #, fuzzy
 msgid ", Host:"
-msgstr "Хостинг:"
+msgstr "Хост"
 
 #: functions.php:1293 functions.php:1385
 #, fuzzy
@@ -145,7 +146,7 @@ msgstr "Предупреждение о событии - %s"
 #: functions.php:1385
 #, fuzzy
 msgid ", Count:"
-msgstr "Количество"
+msgstr "Количество:"
 
 #: functions.php:1814
 msgid "Host"
@@ -452,20 +453,24 @@ msgid "Remote Message Processing"
 msgstr "Строка сообщения:"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "Включить обработку сообщений удаленного сборщика данных"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают свои сообщения независимо, установите этот флажок. Установив этот флажок, ваши удаленные сборщики данных должны будут поддерживать свой собственный файл «config_local.php», чтобы сообщить Syslog о необходимости использования независимой базы данных для отображения и обработки сообщений. Для этой цели используйте файл шаблона config_local.php.dist. ПРЕДУПРЕЖДЕНИЕ. Таблицы системного журнала будут созданы автоматически, как только эта опция будет включена."
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "Синхронизация правил удаленного сборщика данных"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают три сообщения независимо, установите этот флажок, если вы хотите, чтобы правила предупреждений, удаления и отчетов основных баз данных Cacti отправлялись в удаленную систему Cacti."
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -570,12 +575,12 @@ msgstr "Заканчивается"
 #: setup.php:1325
 #, fuzzy
 msgid "Hostname is"
-msgstr "Имя хоста : "
+msgstr "Имя хоста"
 
 #: setup.php:1326
 #, fuzzy
 msgid "Program is"
-msgstr "Тур"
+msgstr "Программа"
 
 #: setup.php:1327
 #, fuzzy
@@ -682,9 +687,8 @@ msgid "Syslog Viewer"
 msgstr "Средство просмотра системного журнала"
 
 #: syslog.php:55
-#, fuzzy
 msgid "All Text"
-msgstr "Все тексты"
+msgstr "Весь текст"
 
 #: syslog.php:56 syslog.php:57 syslog.php:58 syslog.php:59 syslog.php:60
 #: syslog.php:61
@@ -1003,7 +1007,7 @@ msgstr "Критический"
 #: syslog.php:1464
 #, fuzzy
 msgid "Error++"
-msgstr "ОШИБКА:"
+msgstr "Ошибка:"
 
 #: syslog.php:1465 syslog.php:1508
 msgid "Error"
@@ -1012,7 +1016,7 @@ msgstr "Ошибка"
 #: syslog.php:1466
 #, fuzzy
 msgid "Warning++"
-msgstr "Предупреждение"
+msgstr "ВНИМАНИЕ:"
 
 #: syslog.php:1468
 #, fuzzy
@@ -1167,15 +1171,12 @@ msgid "N/A"
 msgstr "Н/Д"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
 msgid "Details"
-msgstr "Предупредить Подробности"
+msgstr "Детали"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "Имя:"
+msgstr "Имя"
 
 #: syslog_alerts.php:462
 #, fuzzy
@@ -1193,14 +1194,13 @@ msgid "Reporting Level"
 msgstr "Метод отчетности"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "Для записи циклов повторного оповещения следует отслеживать оповещение на уровне системы или устройства."
 
 #: syslog_alerts.php:480
-#, fuzzy
-#| msgid "System Logs"
 msgid "System"
-msgstr "Системные журналы"
+msgstr "Система"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1268,9 +1268,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Не отправляйте это предупреждение повторно для того же хоста, пока это время не пройдет. Для сигналов тревоги, основанных на пороговых значениях, это применимо ко всем хостам."
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "Примечания к уведомлению"
+msgstr "Заметки"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1282,8 +1281,9 @@ msgid "Open Ticket"
 msgstr "Открыть тикет"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "Следует ли открывать билет службы поддержки для этого предупреждения. ПРИМЕЧАНИЕ. Командный сценарий Ticket будет заполнен несколькими переменными среды 'ALERT_' для удобства."
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1299,11 +1299,12 @@ msgstr "Да"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
 msgid "Notification List"
-msgstr ""
+msgstr "Список уведомлений"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "Используйте содержимое этого списка уведомлений, чтобы указать, кто и как должен быть уведомлен."
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1316,9 +1317,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "Пожалуйста, введите список адресов электронной почты, разделенный запятыми, чтобы сообщить об этом.  Если вы хотите отправить электронную почту получателю в формате SMS, пожалуйста, приставьте адрес электронной почты получателя с помощью SMS <b>'sms@'</b>.  Например, если SMS адрес получателя <b>'2485551212@mycarrier.net'</b>, вы вводите его как <b>'sms@2485551212@mycarrier.net'</b> и форматируете как SMS сообщение."
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "Команда оповещения"
+msgstr "Команда"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1726,9 +1726,8 @@ msgid "Report Format"
 msgstr "Примечания к отчету"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "Текст основного текста доклада"
+msgstr "Основной текст"
 
 #: syslog_reports.php:454
 #, fuzzy

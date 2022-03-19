@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:45-0500\n"
+"PO-Revision-Date: 2022-03-19 16:58-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: hi_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "बचाव असफल हुआ। समन्वयन मोड में दूरस्थ डेटा संग्राहकों को नियम सहेजने की अनुमति नहीं है। इसके बजाय मेन कैक्टि सर्वर से सेव करें।"
 
 #: functions.php:115
 #, fuzzy
@@ -128,7 +129,7 @@ msgstr "स्तर:"
 #: functions.php:1259
 #, fuzzy
 msgid "Message:"
-msgstr "संदेश:"
+msgstr "संदेश"
 
 #: functions.php:1293
 #, fuzzy
@@ -461,20 +462,24 @@ msgid "Remote Message Processing"
 msgstr "संदेश स्ट्रिंग:"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "दूरस्थ डेटा संग्राहक संदेश संसाधन सक्षम करें"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "यदि आपके दूरस्थ डेटा संग्राहक के पास अपने स्वयं के Syslog डेटाबेस हैं और अपने संदेशों को स्वतंत्र रूप से संसाधित करते हैं, तो इस चेकबॉक्स को चेक करें। इस चेकबॉक्स को चेक करके, आपके दूरस्थ डेटा संग्राहकों को संदेश प्रदर्शन और प्रसंस्करण के लिए एक स्वतंत्र डेटाबेस का उपयोग करने के लिए Syslog को सूचित करने के लिए अपनी 'config_local.php' फ़ाइल बनाए रखने की आवश्यकता होगी। कृपया इस उद्देश्य के लिए टेम्पलेट फ़ाइल 'config_local.php.dist' का उपयोग करें। चेतावनी: इस विकल्प के सक्षम होते ही Syslog टेबल अपने आप बन जाएगी।"
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "रिमोट डेटा कलेक्टर नियम सिंक"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "यदि आपके दूरस्थ डेटा संग्राहक के पास अपने स्वयं के Syslog डेटाबेस हैं और तीन संदेशों को स्वतंत्र रूप से संसाधित करते हैं, तो इस चेकबॉक्स को चेक करें यदि आप चाहते हैं कि मुख्य कैक्टि डेटाबेस अलर्ट, निष्कासन और रिपोर्ट नियम रिमोट कैक्टि सिस्टम को भेजे जाएं।"
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -1011,7 +1016,7 @@ msgstr "आपातकालीन"
 #: syslog.php:1460
 #, fuzzy
 msgid "Alert++"
-msgstr "चेतावनी ++"
+msgstr "सावधान"
 
 #: syslog.php:1461 syslog.php:1507
 msgid "Alert"
@@ -1039,7 +1044,7 @@ msgstr "चेतावनी:"
 #: syslog.php:1468
 #, fuzzy
 msgid "Notice++"
-msgstr "सूचना ++"
+msgstr "नोटिस"
 
 #: syslog.php:1470
 #, fuzzy
@@ -1196,12 +1201,10 @@ msgid "N/A"
 msgstr "लागू नहीं"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
 msgid "Details"
-msgstr "चेतावनी विवरण"
+msgstr "विवरण"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
 msgid "Name"
 msgstr "नाम"
 
@@ -1221,13 +1224,13 @@ msgid "Reporting Level"
 msgstr "रिपोर्टिंग विधि"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "री-अलर्ट साइकिल रिकॉर्ड करने के लिए, अलर्ट को सिस्टम या डिवाइस स्तर पर ट्रैक किया जाना चाहिए।"
 
 #: syslog_alerts.php:480
-#, fuzzy
 msgid "System"
-msgstr "सिस्टम लॉग"
+msgstr "प्रणाली"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1297,9 +1300,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "इस अलर्ट को उसी होस्ट के लिए फिर से न भेजें, जब तक कि यह समय समाप्त न हो जाए। दहलीज आधारित अलार्म के लिए, यह सभी मेजबानों पर लागू होता है।"
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "नोट्स नोट करें"
+msgstr "नोट"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1312,8 +1314,9 @@ msgid "Open Ticket"
 msgstr "खुली टिकट"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "क्या इस अलर्ट के लिए हेल्प डेस्क टिकट खोला जाना चाहिए। नोट: टिकट कमांड स्क्रिप्ट सुविधा के लिए कई 'ALERT_' पर्यावरण चर के साथ भर जाएगी।"
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1328,12 +1331,14 @@ msgid "Yes"
 msgstr "हाँ"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
+#, fuzzy
 msgid "Notification List"
-msgstr ""
+msgstr "अधिसूचना सूची"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "इस अधिसूचना सूची की सामग्री का उपयोग यह तय करने के लिए करें कि किसे अधिसूचित किया जाना चाहिए और कैसे।"
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1346,9 +1351,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "कृपया सूचित करने के लिए ईमेल पतों की अल्पविराम सीमांकित सूची दर्ज करें। यदि आप एसएमएस प्रारूप में किसी प्राप्तकर्ता को ईमेल भेजना चाहते हैं, तो कृपया उस प्राप्तकर्ता के ईमेल पते को <b>'sms @' के</b> साथ उपसर्ग करें। उदाहरण के लिए, यदि प्राप्तकर्ता का एसएमएस पता <b>'2485551212@mycarrier.net' है</b> , तो आप इसे <b>'sms @ 2485551212 @ mycarrier.net' के</b> रूप में दर्ज करेंगे और इसे एसएमएस संदेश के रूप में स्वरूपित किया जाएगा।"
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "अलर्ट कमांड"
+msgstr "निर्देश"
 
 #: syslog_alerts.php:580
 #, fuzzy

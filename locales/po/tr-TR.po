@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:49-0500\n"
+"PO-Revision-Date: 2022-03-19 17:01-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "Kayıt başarısız. Senkronizasyon Modundaki Uzak Veri Toplayıcıların Kuralları Kaydetmesine izin verilmez. Bunun yerine Ana Kaktüs Sunucusundan kaydedin."
 
 #: functions.php:115
 #, fuzzy
@@ -144,7 +145,7 @@ msgstr "Etkinlik Uyarısı - %s"
 #: functions.php:1385
 #, fuzzy
 msgid ", Count:"
-msgstr "Sayı"
+msgstr "Sayılan:"
 
 #: functions.php:1814
 msgid "Host"
@@ -451,20 +452,24 @@ msgid "Remote Message Processing"
 msgstr "Mesaj dizesi:"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "Uzak Veri Toplayıcı İleti İşlemeyi Etkinleştir"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "Uzak Veri Toplayıcılarınızın kendi Syslog veritabanları varsa ve mesajlarını bağımsız olarak işliyorsa bu onay kutusunu işaretleyin. Bu Onay Kutusunu işaretleyerek, Syslog'u mesaj görüntüleme ve işleme için bağımsız bir veritabanı kullanma konusunda bilgilendirmek için Uzak Veri Toplayıcılarınızın kendi 'config_local.php' dosyalarını tutmaları gerekecektir. Lütfen bu amaç için 'config_local.php.dist' şablon dosyasını kullanın. UYARI: Bu seçenek etkinleştirilir etkinleştirilmez, sistem günlüğü tabloları otomatik olarak oluşturulacaktır."
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "Uzak Veri Toplayıcı Kuralları Senkronizasyonu"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "Uzak Veri Toplayıcılarınızın kendi Syslog veritabanları varsa ve üç mesajı bağımsız olarak işliyorsa, Ana Kaktüs veritabanları Uyarılar, Kaldırma ve Rapor kurallarının Uzak Kaktüs Sistemine gönderilmesini istiyorsanız bu onay kutusunu işaretleyin."
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -574,7 +579,7 @@ msgstr "Makine adı:"
 #: setup.php:1326
 #, fuzzy
 msgid "Program is"
-msgstr "program"
+msgstr "Program"
 
 #: setup.php:1327
 #, fuzzy
@@ -999,7 +1004,7 @@ msgstr "Kritik"
 #: syslog.php:1464
 #, fuzzy
 msgid "Error++"
-msgstr "Hata"
+msgstr "Hata:"
 
 #: syslog.php:1465 syslog.php:1508
 msgid "Error"
@@ -1164,15 +1169,12 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
 msgid "Details"
-msgstr "Uyarı Detayları"
+msgstr "Detaylar"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "İsim:"
+msgstr "İsim"
 
 #: syslog_alerts.php:462
 #, fuzzy
@@ -1190,14 +1192,13 @@ msgid "Reporting Level"
 msgstr "Raporlama yöntemi"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "Yeniden Uyarı Döngülerini kaydetmek için, Uyarının Sistem veya Cihaz düzeyinde izlenmesi gerekir."
 
 #: syslog_alerts.php:480
-#, fuzzy
-#| msgid "System Logs"
 msgid "System"
-msgstr "Sistem Günlükleri"
+msgstr "Sistem"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1266,9 +1267,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Bu uyarıyı aynı ana bilgisayar için, bu süre geçmeden tekrar göndermeyin. Eşik tabanlı alarmlar için bu, tüm ana bilgisayarlar için geçerlidir."
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "Uyarı notları"
+msgstr "Notlar"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1280,8 +1280,9 @@ msgid "Open Ticket"
 msgstr "Destek Talebi"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "Bu Uyarı için bir Yardım Masası Bileti açılırsa. NOT: Bilet komut komut dosyası, kolaylık sağlamak için birkaç 'ALERT_' ortam değişkeniyle doldurulacaktır."
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1296,12 +1297,14 @@ msgid "Yes"
 msgstr "Evet"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
+#, fuzzy
 msgid "Notification List"
-msgstr ""
+msgstr "Bildirim Listesi"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "Kimin ve nasıl bilgilendirileceğini belirlemek için bu Bildirim Listesinin içeriğini kullanın."
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1314,9 +1317,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "Lütfen bilgilendirmek için virgülle ayrılmış bir E-posta adresi listesi girin. Bir alıcıya SMS biçiminde bir e-posta göndermek istiyorsanız, lütfen alıcının e-posta adresini <b>'sms @'</b> ile <b>ekleyin</b> . Örneğin, alıcıların SMS adresi <b>'2485551212@mycarrier.net' ise</b> , <b>'sms @ 2485551212 @ mycarrier.net' olarak girersiniz</b> ve SMS mesajı olarak biçimlendirilir."
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "Uyarı Komutanlığı"
+msgstr "Komut"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1719,14 +1721,12 @@ msgid "What time of day should this report be sent?"
 msgstr "Bu rapor hangi saatte gönderilmelidir?"
 
 #: syslog_reports.php:440
-#, fuzzy
 msgid "Report Format"
-msgstr "Rapor Notları"
+msgstr "Rapor Biçimi"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "Gövde Metnini Rapor Et"
+msgstr "Gövde Metni"
 
 #: syslog_reports.php:454
 #, fuzzy

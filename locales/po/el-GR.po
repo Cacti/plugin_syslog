@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:44-0500\n"
+"PO-Revision-Date: 2022-03-19 16:55-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: el_GR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "Η αποθήκευση απέτυχε. Οι απομακρυσμένοι συλλέκτες δεδομένων σε λειτουργία συγχρονισμού δεν επιτρέπεται να αποθηκεύουν κανόνες. Αποθήκευση από τον κύριο διακομιστή Cacti."
 
 #: functions.php:115
 #, fuzzy
@@ -232,7 +233,6 @@ msgid "Partitioned Table"
 msgstr "Διαχωρισμένος Πίνακας"
 
 #: setup.php:894
-#, fuzzy
 msgid "Retention Policy"
 msgstr "Πολιτική διατήρησης"
 
@@ -453,20 +453,24 @@ msgid "Remote Message Processing"
 msgstr "Σειρά μηνυμάτων:"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "Ενεργοποίηση απομακρυσμένης επεξεργασίας μηνυμάτων συλλογής δεδομένων"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "Εάν οι Remote Data Collectors έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται τα μηνύματά τους ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου. Επιλέγοντας αυτό το πλαίσιο ελέγχου, οι απομακρυσμένοι συλλέκτες δεδομένων σας θα πρέπει να διατηρούν το δικό τους αρχείο 'config_local.php' προκειμένου να ενημερώσουν το Syslog να χρησιμοποιήσει μια ανεξάρτητη βάση δεδομένων για την εμφάνιση και την επεξεργασία μηνυμάτων. Χρησιμοποιήστε το αρχείο προτύπου 'config_local.php.dist' για αυτό το σκοπό. ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Οι πίνακες Syslog θα δημιουργηθούν αυτόματα μόλις ενεργοποιηθεί αυτή η επιλογή."
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "Συγχρονισμός κανόνων απομακρυσμένης συλλογής δεδομένων"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "Εάν οι Remote Data Collectors σας έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται τρία μηνύματα ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου εάν θέλετε οι κανόνες Alerts, Removal and Report των Κύριων βάσεων δεδομένων Cacti να αποστέλλονται στο Remote Cacti System."
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -559,7 +563,7 @@ msgstr "Κρίσιμο"
 #: setup.php:1322
 #, fuzzy
 msgid "Begins with"
-msgstr "Ξεκινάει από"
+msgstr "αρχίζει με"
 
 #: setup.php:1323
 msgid "Contains"
@@ -577,7 +581,7 @@ msgstr "Όνομα κεντρικού υπολογιστή:"
 #: setup.php:1326
 #, fuzzy
 msgid "Program is"
-msgstr "Πρόγραμμα"
+msgstr "Program"
 
 #: setup.php:1327
 #, fuzzy
@@ -1004,7 +1008,7 @@ msgstr "Κρίσιμο"
 #: syslog.php:1464
 #, fuzzy
 msgid "Error++"
-msgstr "Σφάλμα"
+msgstr "Σφάλμα :"
 
 #: syslog.php:1465 syslog.php:1508
 msgid "Error"
@@ -1140,9 +1144,8 @@ msgid "Continue"
 msgstr "Συνέχεια"
 
 #: syslog_alerts.php:357
-#, fuzzy
 msgid "Not Set"
-msgstr "Ορισμός ως Προεπιλογή"
+msgstr "Μη Ορισμένο"
 
 #: syslog_alerts.php:362
 msgid "1 Minute"
@@ -1172,16 +1175,12 @@ msgid "N/A"
 msgstr "Μη Διαθέσιμο"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
-#| msgid "Alert Details"
 msgid "Details"
-msgstr "Λεπτομέρειες της ειδοποίησης"
+msgstr "Λεπτομέρειες"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "Όνομα:"
+msgstr "Όνομα"
 
 #: syslog_alerts.php:462
 #, fuzzy
@@ -1199,13 +1198,13 @@ msgid "Reporting Level"
 msgstr "Μέθοδος αναφοράς"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "Για την καταγραφή των κύκλων εκ νέου ειδοποίησης, εάν η ειδοποίηση παρακολουθείται σε επίπεδο συστήματος ή συσκευής."
 
 #: syslog_alerts.php:480
-#, fuzzy
 msgid "System"
-msgstr "Μητρώα συστήματος"
+msgstr "Σύστημα"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1274,9 +1273,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Μην ξαναστείλετε ξανά αυτήν την ειδοποίηση για τον ίδιο κεντρικό υπολογιστή, μέχρι να παρέλθει αυτό το χρονικό διάστημα. Για συναγερμούς με βάση το κατώφλι, αυτό ισχύει για όλους τους κεντρικούς υπολογιστές."
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "Σημειώσεις προειδοποίησης"
+msgstr "Σημειώσεις"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1288,8 +1286,9 @@ msgid "Open Ticket"
 msgstr "Δημιουργία Αιτήματος Υποστήριξης"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "Σε περίπτωση που ανοίξει εισιτήριο Help Desk για αυτήν την Ειδοποίηση. ΣΗΜΕΙΩΣΗ: Το σενάριο εντολής Ticket θα συμπληρωθεί με πολλές μεταβλητές περιβάλλοντος \"ALERT_\" για ευκολία."
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1304,12 +1303,14 @@ msgid "Yes"
 msgstr "Ναι"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
+#, fuzzy
 msgid "Notification List"
-msgstr ""
+msgstr "Λίστα ειδοποιήσεων"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "Χρησιμοποιήστε τα περιεχόμενα αυτής της Λίστας Ειδοποιήσεων για να υπαγορεύσετε ποιος πρέπει να ειδοποιείται και πώς."
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1322,9 +1323,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "Εισαγάγετε έναν κατάλογο γραμματοκιβωτίων διευθύνσεων ηλεκτρονικού ταχυδρομείου για να ενημερώσετε. Αν θέλετε να στείλετε μήνυμα ηλεκτρονικού ταχυδρομείου σε έναν παραλήπτη σε μορφή SMS, παρακαλούμε προθέστε την διεύθυνση ηλεκτρονικού ταχυδρομείου του παραλήπτη με <b>το μήνυμα 'sms @'</b> . Για παράδειγμα, αν η διεύθυνση SMS του παραλήπτη είναι <b>'2485551212@mycarrier.net'</b> , θα την εισάγετε ως <b>'sms @ 2485551212 @ mycarrier.net'</b> και θα μορφοποιηθεί ως μήνυμα SMS."
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "Ειδοποίηση εντολής"
+msgstr "Εντολή"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1355,9 +1355,8 @@ msgid "Threshold Count"
 msgstr "Υπολογισμός κατωφλίου"
 
 #: syslog_alerts.php:837 syslog_removal.php:700 syslog_reports.php:714
-#, fuzzy
 msgid "Search String"
-msgstr "Αναζήτηση στοιχειοσειράς"
+msgstr "Αναζήτηση συμβολοσειράς"
 
 #: syslog_alerts.php:838 syslog_reports.php:470
 #, fuzzy
@@ -1369,9 +1368,8 @@ msgid "Last Modified"
 msgstr "Τελευταία τροποποίηση"
 
 #: syslog_alerts.php:840 syslog_removal.php:703 syslog_reports.php:719
-#, fuzzy
 msgid "By User"
-msgstr "Χρήστης:"
+msgstr "ταυτότητα χρήστη"
 
 #: syslog_alerts.php:863
 msgid "Multiple"
@@ -1720,9 +1718,8 @@ msgid "How often should this Report be sent to the distribution list?"
 msgstr "Πόσο συχνά πρέπει να αποστέλλεται αυτή η αναφορά στη λίστα διανομής;"
 
 #: syslog_reports.php:432 syslog_reports.php:716
-#, fuzzy
 msgid "Send Time"
-msgstr "Αποστολή ώρας"
+msgstr "Αποστολή χρόνου"
 
 #: syslog_reports.php:433
 #, fuzzy
@@ -1735,9 +1732,8 @@ msgid "Report Format"
 msgstr "Αναφορά σημειώσεων"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "Αναφορά κειμένου σώματος"
+msgstr "Κείμενο Σώματος"
 
 #: syslog_reports.php:454
 #, fuzzy

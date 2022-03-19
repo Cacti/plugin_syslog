@@ -8,18 +8,19 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2020-12-14 19:49-0500\n"
+"PO-Revision-Date: 2022-03-19 17:02-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: vi_VN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
+#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "Lưu không thành công. Người thu thập dữ liệu từ xa ở Chế độ đồng bộ hóa không được phép Lưu quy tắc. Thay vào đó, hãy lưu từ Máy chủ Xương rồng Chính."
 
 #: functions.php:115
 #, fuzzy
@@ -451,20 +452,24 @@ msgid "Remote Message Processing"
 msgstr "Chuỗi tin nhắn:"
 
 #: setup.php:1144
+#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "Bật xử lý tin nhắn của trình thu thập dữ liệu từ xa"
 
 #: setup.php:1145
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thư của họ một cách độc lập, hãy chọn hộp kiểm này. Bằng cách chọn Hộp kiểm này, Bộ thu thập dữ liệu từ xa của bạn sẽ cần duy trì tệp 'config_local.php' của riêng họ để thông báo cho Syslog sử dụng cơ sở dữ liệu độc lập để hiển thị và xử lý thông báo. Vui lòng sử dụng tệp mẫu 'config_local.php.dist' cho mục đích này. CẢNH BÁO: Bảng nhật ký sẽ tự động được tạo ngay sau khi tùy chọn này được bật."
 
 #: setup.php:1150
+#, fuzzy
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
 
 #: setup.php:1151
+#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thông báo thu thập một cách độc lập, hãy chọn hộp kiểm này nếu bạn muốn các quy tắc Cảnh báo, Xóa và Báo cáo của Cơ sở dữ liệu Xương rồng Chính được gửi đến Hệ thống Xương rồng Từ xa."
 
 #: setup.php:1224 syslog_removal.php:33
 msgid "Delete"
@@ -488,40 +493,40 @@ msgid "Indefinite"
 msgstr "Không xác định"
 
 #: setup.php:1271 setup.php:1290 syslog.php:542 syslog_alerts.php:380
-#, fuzzy, php-format
+#, php-format
 msgid "%d Day"
-msgstr "% d ngày"
+msgstr "%d Ngày"
 
 #: setup.php:1272 setup.php:1273 setup.php:1274 setup.php:1275 setup.php:1276
 #: setup.php:1291 setup.php:1292 setup.php:1293 setup.php:1294 setup.php:1295
 #: syslog_alerts.php:381
-#, fuzzy, php-format
+#, php-format
 msgid "%d Days"
-msgstr "% d ngày"
+msgstr "%d Ngày"
 
 #: setup.php:1277 setup.php:1296 syslog_alerts.php:382
-#, fuzzy, php-format
+#, php-format
 msgid "%d Week"
-msgstr "% d tuần"
+msgstr "% d Tuần"
 
 #: setup.php:1278 setup.php:1297 syslog_alerts.php:383
-#, fuzzy, php-format
+#, php-format
 msgid "%d Weeks"
-msgstr "% d tuần"
+msgstr "% d Tuần"
 
 #: setup.php:1279 setup.php:1298
-#, fuzzy, php-format
+#, php-format
 msgid "%d Month"
-msgstr "% d tháng"
+msgstr "% d Tháng"
 
 #: setup.php:1280 setup.php:1281 setup.php:1282 setup.php:1283 setup.php:1284
 #: setup.php:1299 setup.php:1300 setup.php:1301 setup.php:1302 setup.php:1303
-#, fuzzy, php-format
+#, php-format
 msgid "%d Months"
-msgstr "% d tháng"
+msgstr "% d Tháng"
 
 #: setup.php:1285 setup.php:1304
-#, fuzzy, php-format
+#, php-format
 msgid "%d Year"
 msgstr "% d Năm"
 
@@ -560,9 +565,8 @@ msgid "Begins with"
 msgstr "bắt đầu là"
 
 #: setup.php:1323
-#, fuzzy
 msgid "Contains"
-msgstr "có chứa"
+msgstr "Chứa"
 
 #: setup.php:1324
 #, fuzzy
@@ -1172,15 +1176,12 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php:457 syslog_reports.php:389
-#, fuzzy
 msgid "Details"
-msgstr "Chi tiết cảnh báo"
+msgstr "Chi tiết"
 
 #: syslog_alerts.php:461 syslog_reports.php:393
-#, fuzzy
-#| msgid "Name:"
 msgid "Name"
-msgstr "Tên:"
+msgstr "Tên"
 
 #: syslog_alerts.php:462
 #, fuzzy
@@ -1198,13 +1199,13 @@ msgid "Reporting Level"
 msgstr "Phương pháp báo cáo"
 
 #: syslog_alerts.php:478
+#, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "Để ghi lại các Chu kỳ Cảnh báo lại, Cảnh báo có được theo dõi ở cấp Hệ thống hoặc Thiết bị hay không."
 
 #: syslog_alerts.php:480
-#, fuzzy
 msgid "System"
-msgstr "Nhật ký hệ thống"
+msgstr "Hệ thống"
 
 #: syslog_alerts.php:485
 #, fuzzy
@@ -1273,9 +1274,8 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Không gửi lại thông báo này cho cùng một máy chủ, cho đến khi hết thời gian này. Đối với báo động dựa trên ngưỡng, điều này áp dụng cho tất cả các máy chủ."
 
 #: syslog_alerts.php:536 syslog_reports.php:480
-#, fuzzy
 msgid "Notes"
-msgstr "Ghi chú cảnh báo"
+msgstr "Ghi chú"
 
 #: syslog_alerts.php:539
 #, fuzzy
@@ -1287,8 +1287,9 @@ msgid "Open Ticket"
 msgstr "Mở Ticket"
 
 #: syslog_alerts.php:552
+#, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "Nếu một Vé hỗ trợ được mở cho Thông báo này. LƯU Ý: Kịch bản lệnh Ticket sẽ được điền với một số biến môi trường 'ALERT_' để thuận tiện."
 
 #: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
@@ -1303,12 +1304,14 @@ msgid "Yes"
 msgstr "Có"
 
 #: syslog_alerts.php:559 syslog_reports.php:462
+#, fuzzy
 msgid "Notification List"
-msgstr ""
+msgstr "Danh sách thông báo"
 
 #: syslog_alerts.php:560 syslog_reports.php:463
+#, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "Sử dụng nội dung của Danh sách thông báo này để chỉ định ai sẽ được thông báo và làm thế nào."
 
 #: syslog_alerts.php:568
 #, fuzzy
@@ -1321,9 +1324,8 @@ msgid "Please enter a comma delimited list of Email addresses to inform.  If you
 msgstr "Vui lòng nhập danh sách địa chỉ Email được phân cách bằng dấu phẩy để thông báo. Nếu bạn muốn gửi Email đến người nhận ở định dạng SMS, vui lòng thêm tiền tố địa chỉ Email của người nhận đó bằng <b>'sms @'</b> . Ví dụ: nếu địa chỉ SMS của người nhận là <b>'2485551212@mycarrier.net'</b> , bạn sẽ nhập nó dưới dạng <b>'sms @ 2485551212 @ mycarrier.net'</b> và nó sẽ được định dạng dưới dạng tin nhắn SMS."
 
 #: syslog_alerts.php:577
-#, fuzzy
 msgid "Command"
-msgstr "Lệnh cảnh báo"
+msgstr "Command"
 
 #: syslog_alerts.php:580
 #, fuzzy
@@ -1733,9 +1735,8 @@ msgid "Report Format"
 msgstr "Báo cáo ghi chú"
 
 #: syslog_reports.php:451
-#, fuzzy
 msgid "Body Text"
-msgstr "Báo cáo nội dung"
+msgstr "Body Text"
 
 #: syslog_reports.php:454
 #, fuzzy
