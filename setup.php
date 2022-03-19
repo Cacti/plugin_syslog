@@ -385,6 +385,28 @@ function syslog_check_upgrade() {
 				'after'    => 'method')
 			);
 		}
+
+		if (!syslog_db_column_exists('syslog_alert', 'notify')) {
+			syslog_db_add_column('syslog_alert', array(
+				'name'     => 'notify',
+				'type'     => 'int(10)',
+				'unsigned' => true,
+				'NULL'     => false,
+				'default'  => '0',
+				'after'    => 'email')
+			);
+		}
+
+		if (!syslog_db_column_exists('syslog_reports', 'notify')) {
+			syslog_db_add_column('syslog_reports', array(
+				'name'     => 'notify',
+				'type'     => 'int(10)',
+				'unsigned' => true,
+				'NULL'     => false,
+				'default'  => '0',
+				'after'    => 'email')
+			);
+		}
 	}
 }
 
@@ -542,9 +564,11 @@ function syslog_setup_table_new($options) {
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		`email` varchar(255) default NULL,
+		`notify` int(10) unsigned NOT NULL default '0',
 		`command` varchar(255) default NULL,
 		`notes` varchar(255) default NULL,
-		PRIMARY KEY (id)) ENGINE=$engine;");
+		PRIMARY KEY (id))
+		ENGINE=$engine;");
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_incoming` (
@@ -558,7 +582,8 @@ function syslog_setup_table_new($options) {
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
 		INDEX program (program),
-		INDEX `status` (`status`)) ENGINE=$engine;");
+		INDEX `status` (`status`))
+		ENGINE=$engine;");
 
 	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_remove` (
@@ -598,6 +623,7 @@ function syslog_setup_table_new($options) {
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		email varchar(255) default NULL,
+		notify int(10) unsigned NOT NULL default '0',
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id))
 		ENGINE=$engine;");

@@ -83,7 +83,8 @@ function form_save() {
 			get_nfilter_request_var('type'), get_nfilter_request_var('message'),
 			get_nfilter_request_var('timespan'), get_nfilter_request_var('timepart'),
 			get_nfilter_request_var('body'), get_nfilter_request_var('email'),
-			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'));
+			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'),
+			get_nfilter_request_var('notify'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
 			header('Location: syslog_reports.php?header=false&action=edit&id=' . (empty($reportid) ? get_request_var('id') : $reportid));
@@ -252,7 +253,7 @@ function report_export() {
 }
 
 function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
-	$email, $notes, $enabled) {
+	$email, $notes, $enabled, $notify = 0) {
 	global $config;
 
 	include(SYSLOG_CONFIG);
@@ -281,6 +282,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save['enabled']  = ($enabled == 'on' ? 'on':'');
 	$save['date']     = time();
 	$save['user']     = $username;
+	$save['notify']   = $notify;
 
 	$id = 0;
 	if (!is_error_message()) {
@@ -370,14 +372,25 @@ function syslog_action_edit() {
 		$report['name'] = __('New Report Record', 'syslog');
 	}
 
+	if (db_table_exists('plugin_notification_lists')) {
+		$lists = array_rekey(
+			db_fetch_assoc('SELECT id, name
+				FROM plugin_notification_lists
+				ORDER BY name'),
+			'id', 'name'
+		);
+	} else {
+		$lists = array('0' => __('N/A', 'syslog'));
+	}
+
 	$fields_syslog_report_edit = array(
 		'spacer0' => array(
 			'method' => 'spacer',
-			'friendly_name' => __('Report Details', 'syslog')
+			'friendly_name' => __('Details', 'syslog')
 		),
 		'name' => array(
 			'method' => 'textbox',
-			'friendly_name' => __('Report Name', 'syslog'),
+			'friendly_name' => __('Name', 'syslog'),
 			'description' => __('Please describe this Report.', 'syslog'),
 			'value' => '|arg1:name|',
 			'max_length' => '250'
@@ -400,7 +413,7 @@ function syslog_action_edit() {
 		),
 		'message' => array(
 			'method' => 'textbox',
-			'friendly_name' => __('Syslog Message Match String', 'syslog'),
+			'friendly_name' => __('Message Match String', 'syslog'),
 			'description' => __('The matching component of the syslog message.', 'syslog'),
 			'value' => '|arg1:message|',
 			'default' => '',
@@ -408,7 +421,7 @@ function syslog_action_edit() {
 		),
 		'timespan' => array(
 			'method' => 'drop_array',
-			'friendly_name' => __('Report Frequency', 'syslog'),
+			'friendly_name' => __('Frequency', 'syslog'),
 			'description' => __('How often should this Report be sent to the distribution list?', 'syslog'),
 			'value' => '|arg1:timespan|',
 			'array' => $syslog_freqs,
@@ -422,8 +435,12 @@ function syslog_action_edit() {
 			'array' => $syslog_times,
 			'default' => 'del'
 		),
+		'spacer1' => array(
+			'method' => 'spacer',
+			'friendly_name' => __('Report Format', 'syslog')
+		),
 		'message' => array(
-			'friendly_name' => __('Syslog Message Match String', 'syslog'),
+			'friendly_name' => __('Message Match String', 'syslog'),
 			'description' => __('The matching component of the syslog message.', 'syslog'),
 			'method' => 'textbox',
 			'max_length' => '255',
@@ -431,7 +448,7 @@ function syslog_action_edit() {
 			'default' => '',
 		),
 		'body' => array(
-			'friendly_name' => __('Report Body Text', 'syslog'),
+			'friendly_name' => __('Body Text', 'syslog'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '60',
 			'description' => __('The information that will be contained in the body of the report.', 'syslog'),
@@ -440,8 +457,17 @@ function syslog_action_edit() {
 			'value' => '|arg1:body|',
 			'default' => '',
 		),
+		'notify' => array(
+			'method' => 'drop_array',
+			'friendly_name' => __('Notification List', 'syslog'),
+			'description' => __('Use the contents of this Notification List to dictate who should be notified and how.', 'syslog'),
+			'value' => '|arg1:notify|',
+			'array' => $lists,
+			'none_value' => __('None', 'syslog'),
+			'default' => '0'
+		),
 		'email' => array(
-			'friendly_name' => __('Report Email Addresses', 'syslog'),
+			'friendly_name' => __('Email Addresses', 'syslog'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
 			'description' => __('Comma delimited list of Email addresses to send the report to.', 'syslog'),
@@ -451,7 +477,7 @@ function syslog_action_edit() {
 			'default' => '',
 		),
 		'notes' => array(
-			'friendly_name' => __('Report Notes', 'syslog'),
+			'friendly_name' => __('Notes', 'syslog'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
 			'description' => __('Space for Notes on the Report', 'syslog'),
@@ -493,6 +519,7 @@ function syslog_action_edit() {
 	<script type='text/javascript'>
 
 	var allowEdits=<?php print syslog_allow_edits() ? 'true':'false';?>;
+	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true':'false';?>;
 
 	$(function() {
 		if (!allowEdits) {
@@ -502,6 +529,10 @@ function syslog_action_edit() {
 					$(this).selectmenu('refresh');
 				}
 			});
+		}
+
+		if (!notifyExists) {
+			$('#row_notify').hide();
 		}
 	});
 

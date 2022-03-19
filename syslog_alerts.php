@@ -81,12 +81,13 @@ switch (get_request_var('action')) {
 function form_save() {
 	if ((isset_request_var('save_component_alert')) && (isempty_request_var('add_dq_y'))) {
 		$alertid = api_syslog_alert_save(get_nfilter_request_var('id'), get_nfilter_request_var('name'),
-			get_nfilter_request_var('report_method'), get_nfilter_request_var('num'),
-			get_nfilter_request_var('type'), get_nfilter_request_var('message'),
-			get_nfilter_request_var('email'), get_nfilter_request_var('notes'),
-			get_nfilter_request_var('enabled'), get_nfilter_request_var('severity'),
-			get_nfilter_request_var('command'), get_nfilter_request_var('repeat_alert'),
-			get_nfilter_request_var('open_ticket'));
+			get_nfilter_request_var('report_method'), get_filter_request_var('level'),
+			get_nfilter_request_var('num'), get_nfilter_request_var('type'),
+			get_nfilter_request_var('message'), get_nfilter_request_var('email'),
+			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'),
+			get_nfilter_request_var('severity'), get_nfilter_request_var('command'),
+			get_nfilter_request_var('repeat_alert'), get_nfilter_request_var('open_ticket'),
+			get_nfilter_request_var('notify'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -254,8 +255,8 @@ function alert_export() {
 	}
 }
 
-function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $email, $notes,
-	$enabled, $severity, $command, $repeat_alert, $open_ticket) {
+function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $message, $email, $notes,
+	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0) {
 
 	include(SYSLOG_CONFIG);
 
@@ -282,6 +283,8 @@ function api_syslog_alert_save($id, $name, $method, $num, $type, $message, $emai
 	$save['type']         = $type;
 	$save['severity']     = $severity;
 	$save['method']       = $method;
+	$save['level']        = $level;
+	$save['notify']       = $notify;
 	$save['user']         = $username;
 	$save['date']         = time();
 
@@ -435,16 +438,27 @@ function syslog_action_edit() {
 		$alert['name'] = __('New Alert Rule', 'syslog');
 	}
 
+	if (db_table_exists('plugin_notification_lists')) {
+		$lists = array_rekey(
+			db_fetch_assoc('SELECT id, name
+				FROM plugin_notification_lists
+				ORDER BY name'),
+			'id', 'name'
+		);
+	} else {
+		$lists = array('0' => __('N/A', 'syslog'));
+	}
+
 	$repeatarray = get_repeat_array();
 
 	$fields_syslog_alert_edit = array(
 		'spacer0' => array(
 			'method' => 'spacer',
-			'friendly_name' => __('Alert Details', 'syslog')
+			'friendly_name' => __('Details', 'syslog')
 		),
 		'name' => array(
 			'method' => 'textbox',
-			'friendly_name' => __('Alert Name', 'syslog'),
+			'friendly_name' => __('Name', 'syslog'),
 			'description' => __('Please describe this Alert.', 'syslog'),
 			'value' => '|arg1:name|',
 			'max_length' => '250',
@@ -457,6 +471,14 @@ function syslog_action_edit() {
 			'value' => '|arg1:severity|',
 			'array' => $severities,
 			'default' => '1'
+		),
+		'level' => array(
+			'method' => 'drop_array',
+			'friendly_name' => __('Reporting Level', 'syslog'),
+			'description' => __('For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level.', 'syslog'),
+			'value' => '|arg1:level|',
+			'array' => array('0' => __('System', 'syslog'), '1' => __('Device', 'syslog')),
+			'default' => '0'
 		),
 		'report_method' => array(
 			'method' => 'drop_array',
@@ -477,7 +499,7 @@ function syslog_action_edit() {
 		),
 		'type' => array(
 			'method' => 'drop_array',
-			'friendly_name' => __('String Match Type', 'syslog'),
+			'friendly_name' => __('Match Type', 'syslog'),
 			'description' => __('Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include \'message\', \'facility\', \'priority\', and \'host\'.', 'syslog'),
 			'value' => '|arg1:type|',
 			'array' => $message_types,
@@ -485,7 +507,7 @@ function syslog_action_edit() {
 			'default' => 'matchesc'
 		),
 		'message' => array(
-			'friendly_name' => __('Syslog Message Match String', 'syslog'),
+			'friendly_name' => __('Message Match String', 'syslog'),
 			'description' => __('Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.', 'syslog'),
 			'textarea_rows' => '2',
 			'textarea_cols' => '70',
@@ -496,7 +518,7 @@ function syslog_action_edit() {
 		),
 		'enabled' => array(
 			'method' => 'drop_array',
-			'friendly_name' => __('Alert Enabled', 'syslog'),
+			'friendly_name' => __('Enabled', 'syslog'),
 			'description' => __('Is this Alert Enabled?', 'syslog'),
 			'value' => '|arg1:enabled|',
 			'array' => array('on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')),
@@ -511,7 +533,7 @@ function syslog_action_edit() {
 			'value' => '|arg1:repeat_alert|'
 		),
 		'notes' => array(
-			'friendly_name' => __('Alert Notes', 'syslog'),
+			'friendly_name' => __('Notes', 'syslog'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '70',
 			'description' => __('Space for Notes on the Alert', 'syslog'),
@@ -522,15 +544,24 @@ function syslog_action_edit() {
 		),
 		'spacer1' => array(
 			'method' => 'spacer',
-			'friendly_name' => __('Alert Actions', 'syslog')
+			'friendly_name' => __('Actions', 'syslog')
 		),
 		'open_ticket' => array(
 			'method' => 'drop_array',
 			'friendly_name' => __('Open Ticket', 'syslog'),
-			'description' => __('Should a Help Desk Ticket be opened for this Alert', 'syslog'),
+			'description' => __('Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several \'ALERT_\' environment variables for convenience.', 'syslog'),
 			'value' => '|arg1:open_ticket|',
 			'array' => array('on' => __('Yes', 'syslog'), '' => __('No', 'syslog')),
 			'default' => ''
+		),
+		'notify' => array(
+			'method' => 'drop_array',
+			'friendly_name' => __('Notification List', 'syslog'),
+			'description' => __('Use the contents of this Notification List to dictate who should be notified and how.', 'syslog'),
+			'value' => '|arg1:notify|',
+			'array' => $lists,
+			'none_value' => __('None', 'syslog'),
+			'default' => '0'
 		),
 		'email' => array(
 			'method' => 'textarea',
@@ -543,10 +574,10 @@ function syslog_action_edit() {
 			'max_length' => '255'
 		),
 		'command' => array(
-			'friendly_name' => __('Alert Command', 'syslog'),
+			'friendly_name' => __('Command', 'syslog'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '70',
-			'description' => __('When an Alert is triggered, run the following command.  The following replacement variables are available <b>\'&lt;HOSTNAME&gt;\'</b>, <b>\'&lt;ALERTID&gt;\'</b>, <b>\'&lt;MESSAGE&gt;\'</b>, <b>\'&lt;FACILITY&gt;\'</b>, <b>\'&lt;PRIORITY&gt;\'</b>, <b>\'&lt;SEVERITY&gt;\'</b>.  Please note that <b>\'&lt;HOSTNAME&gt;\'</b> is only available on individual thresholds.', 'syslog'),
+			'description' => __('When an Alert is triggered, run the following command.  The following replacement variables are available <b>\'&lt;HOSTNAME&gt;\'</b>, <b>\'&lt;ALERTID&gt;\'</b>, <b>\'&lt;MESSAGE&gt;\'</b>, <b>\'&lt;FACILITY&gt;\'</b>, <b>\'&lt;PRIORITY&gt;\'</b>, <b>\'&lt;SEVERITY&gt;\'</b>.  Please note that <b>\'&lt;HOSTNAME&gt;\'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with \'ALERT_\'.', 'syslog'),
 			'method' => 'textarea',
 			'class' => 'textAreaNotes',
 			'value' => '|arg1:command|',
@@ -585,12 +616,21 @@ function syslog_action_edit() {
 	<script type='text/javascript'>
 
 	var allowEdits=<?php print syslog_allow_edits() ? 'true':'false';?>;
+	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true':'false';?>;
 
 	function changeTypes() {
 		if ($('#type').val() == 'sql') {
-			$('#message').prep('rows', 6);
+			$('#message').prop('rows', 6);
 		} else {
-			$('#message').prep('rows', 2);
+			$('#message').prop('rows', 2);
+		}
+	}
+
+	function changeMethod() {
+		if ($('#report_method').val() == 0) {
+			$('#row_num').hide();
+		} else {
+			$('#row_num').show();
 		}
 	}
 
@@ -603,6 +643,16 @@ function syslog_action_edit() {
 				}
 			});
 		}
+
+		if (!notifyExists) {
+			$('#row_notify').hide();
+		}
+
+		$('#report_method').change(function() {
+			changeMethod();
+		});
+
+		changeMethod();
 	});
 
 	</script>

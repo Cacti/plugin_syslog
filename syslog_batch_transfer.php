@@ -34,9 +34,9 @@ include_once('./plugins/syslog/functions.php');
 ini_set('max_execution_time', 3600);
 ini_set('memory_limit', '-1');
 
-global $syslog_debug;
+global $debug;
 
-$syslog_debug = true;
+$debug = true;
 
 /* process calling arguments */
 $parms = $_SERVER['argv'];
@@ -54,7 +54,7 @@ if (cacti_sizeof($parms)) {
 		switch ($arg) {
 			case '--debug':
 			case '-d':
-				$syslog_debug = true;
+				$debug = true;
 
 				break;
 			case '--version':

@@ -4,11 +4,21 @@
 
 * issue: Removal of partition issues incorrect message
 
+* issue: Make the syslog processing routine more readable
+
 * issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
 
 * feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
 
-* feature: Support the replication of the main Cacti's Syslog rules to Remote Data Collectors when the Remote Data Collectors Syslog plugins operate independent from the main Cacti server.
+* feature: Support the replication of the main Cacti Syslog rules to Remote Data Collectors
+
+* feature: Support process interlocking using the Cacti process registration functions
+
+* feature: Support both system and host level re-alert cycles and command execution
+
+* feature: Support using the Thold notification lists if Thold is installed on the system
+
+* feature: Support using Cacti Format CSS files to construct Alert and Report messages.
 
 --- 3.2 ---
 
