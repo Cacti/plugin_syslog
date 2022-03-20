@@ -43,11 +43,13 @@ if (get_request_var('action') == 'ajax_programs') {
 	return get_ajax_programs(true);
 } elseif (get_request_var('action') == 'ajax_programs_wnone') {
 	return get_ajax_programs(true, true);
+} elseif (get_request_var('action') == 'ajax_hosts') {
+	print get_ajax_hosts();
+	exit;
 } elseif (get_request_var('action') == 'save') {
 	save_settings();
 	exit;
 }
-
 
 $title = __('Syslog Viewer', 'syslog');
 
@@ -104,6 +106,60 @@ if (isset_request_var('export')) {
 }
 
 $_SESSION['sess_nav_level_cache'] = array();
+
+function get_ajax_hosts() {
+	include(SYSLOG_CONFIG);
+
+	$ac_rows = read_config_option('autocomplete_rows');
+	if ($ac_rows <= 0) {
+		$ac_rows = 100;
+	}
+
+	$term = '%' . get_nfilter_request_var('term') . '%';
+
+	if (syslog_db_table_exists('host', false)) {
+		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, h.id
+			FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+			LEFT JOIN host AS h
+			ON sh.host = h.hostname
+			OR sh.host = h.description
+			OR sh.host LIKE substring_index(h.hostname, '.', 1)
+			OR sh.host LIKE substring_index(h.description, '.', 1)
+			WHERE sh.host LIKE ?
+			OR h.description LIKE ?
+			ORDER BY host
+			LIMIT $ac_rows",
+			array($term, $term));
+	} else {
+		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
+			FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+			WHERE sh.host LIKE ?
+			OR h.description LIKE ?
+			ORDER BY host
+			LIMIT $ac_rows",
+			array($term, $term));
+	}
+
+	if (cacti_sizeof($hosts)) {
+		foreach ($hosts as $host) {
+			if (!empty($host['id'])) {
+				$class = get_device_leaf_class($host['id']);
+			} else {
+				$class = 'deviceUp';
+			}
+
+			$rhosts[$host['host_id']] = array(
+				'host'    => $host['host'],
+				'host_id' => $host['id'],
+				'class'   => $class
+			);
+		}
+
+		return json_encode($rhosts);
+	} else {
+		return json_encode(array());
+	}
+}
 
 function syslog_display_tabs($current_tab) {
 	global $config;
@@ -437,19 +493,26 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog');?></option>
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog');?></option>
 							<?php
+							$ac_rows = read_config_option('autocomplete_rows');
+							if ($ac_rows <= 0) {
+								$ac_rows = 100;
+							}
+
 							if (syslog_db_table_exists('host', false)) {
-								$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
-									FROM `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+								$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, h.id
+									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 									LEFT JOIN host AS h
 									ON sh.host = h.hostname
 									OR sh.host = h.description
-									OR sh.host LIKE substring_index(h.hostname, ".", 1)
-									OR sh.host LIKE substring_index(h.description, ".", 1)
-									ORDER BY host');
+									OR sh.host LIKE substring_index(h.hostname, '.', 1)
+									OR sh.host LIKE substring_index(h.description, '.', 1)
+									ORDER BY host
+									LIMIT $ac_rows");
 							} else {
-								$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, "0" AS id
-									FROM `' . $syslogdb_default . '`.`syslog_hosts` AS sh
-									ORDER BY host');
+								$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
+									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+									ORDER BY host
+									LIMIT $ac_rows");
 							}
 
 							if (cacti_sizeof($hosts)) {
@@ -1008,6 +1071,7 @@ function syslog_filter($sql_where, $tab) {
 	var date1Open = false;
 	var date2Open = false;
 	var pageTab   = '<?php print get_request_var('tab');?>';
+	var hostTerm  = '';
 
 	$(function() {
 		$('#syslog_form').submit(function(event) {
@@ -1016,6 +1080,9 @@ function syslog_filter($sql_where, $tab) {
 		});
 
 		$('#host').multiselect({
+			menuHeight: $(window).height()*.7,
+			menuWidth: '210',
+			linkInfo: faIcons,
 			noneSelectedText: '<?php print __('Select Device(s)', 'syslog');?>',
 			selectedText: function(numChecked, numTotal, checkedItems) {
 				myReturn = numChecked + ' <?php print __('Devices Selected', 'syslog');?>';
@@ -1027,12 +1094,44 @@ function syslog_filter($sql_where, $tab) {
 				});
 				return myReturn;
 			},
-			checkAllText: '<?php print __('All', 'syslog');?>',
-			uncheckAllText: '<?php print __('None', 'syslog');?>',
-			uncheckall: function() {
+			uncheckAll: function() {
 				$(this).multiselect('widget').find(':checkbox:first').each(function() {
 					$(this).prop('checked', true);
 				});
+				$('#test').trigger('keyup');
+			},
+			checkAll: function() {
+				$(this).multiselect('widget').find(':checkbox').not(':first').each(function() {
+					$(this).prop('checked', true);
+				});
+				$(this).multiselect('widget').find(':checkbox:first').each(function() {
+					$(this).prop('checked', false);
+				});
+			},
+			open: function(event, ui) {
+				if ($('#term').length == 0) {
+					var width = parseInt($(this).multiselect('widget').find('.ui-multiselect-header').width() - 5);
+					$(this).multiselect('widget').find('.ui-multiselect-header').after('<input id="term" class="ui-state-default ui-corner-all" style="width:'+width+'px" type="text" value="'+hostTerm+'">');
+					$('#term').on('keyup', function() {
+						$.getJSON('syslog.php?action=ajax_hosts&term='+$('#term').val(), function(data) {
+							$('#host').find('option').not(':selected').each(function() {
+								if ($(this).attr('id') != 'host_all') {
+									$(this).remove();
+								}
+							});
+
+							$.each(data, function(index, hostData) {
+								if ($('#host option[value="'+index+'"]').length == 0) {
+									$('#host').append('<option class="'+hostData.class+'" value="'+index+'">'+hostData.host+'</option>');
+								}
+							});
+
+							$('#host').multiselect('refresh');
+						});
+					});
+				}
+
+				$('#term').focus();
 			},
 			click: function(event, ui) {
 				checked=$(this).multiselect('widget').find('input:checked').length;
@@ -1057,8 +1156,6 @@ function syslog_filter($sql_where, $tab) {
 					}
 				}
 			}
-		}).multiselectfilter( {
-			label: '<?php print __('Search', 'syslog');?>', width: '150'
 		});
 
 		$('#save').click(function() {
@@ -1333,31 +1430,93 @@ function syslog_filter($sql_where, $tab) {
 						</td>
 						<td>
 							<select id='host' multiple style='display:none; width: 150px; overflow: scroll;'>
-								<?php if ($tab == 'syslog') { ?><option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == '0' || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Devices', 'syslog');?></option><?php } else { ?>
-								<option id='host_all' value='0'<?php if (get_request_var('host') == 'null' || get_request_var('host') == 0 || $reset_multi) { ?> selected<?php } ?>><?php print __('Show All Logs', 'syslog');?></option>
-								<option id='host_none' value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('Threshold Logs', 'syslog');?></option><?php } ?>
 								<?php
+								$hfilter = get_request_var('host');
+
+								if ($tab == 'syslog') {
+									print "<option id='host_all' value='0'" . (($hfilter == 'null' || $hfilter == '0' || $reset_multi) ? 'selected':'') . '>' .  __('Show All Devices', 'syslog') . '</option>';
+								} else {
+									print "<option id='host_all' value='0'" . (($hfilter == 'null' || $hfilter == 0 || $reset_multi) ? 'selected':'') . '>' . __('Show All Logs', 'syslog') . '</option>';
+									print "<option id='host_none' value='-1'" . ($hfilter == '-1' ? 'selected':'') . '>' . __('Threshold Logs', 'syslog') . '</option>';
+								}
+
 								$hosts_where = '';
 								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
 
-								if (syslog_db_table_exists('host', false)) {
-									$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
-										FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
-										LEFT JOIN host AS h
-										ON sh.host = h.hostname
-										OR sh.host = h.description
-										OR sh.host LIKE substring_index(h.hostname, '.', 1)
-										OR sh.host LIKE substring_index(h.description, '.', 1)
-										$hosts_where
-										ORDER BY host");
-								} else {
-									$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, "0" AS id
-										FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
-										$hosts_where
-										ORDER BY host");
+								if ($hosts_where != '') {
+									$hosts_where = 'WHERE ' . $hosts_where;
 								}
 
-								$selected = explode(',', get_request_var('host'));
+								if ($hfilter != '0' && $hfilter != '' && $hfilter != '-1') {
+									$mhosts_where  = ($hosts_where != '' ? ' AND ':'WHERE ') . ' host_id IN (' . $hfilter . ')';
+									$mhosts_nwhere = ($hosts_where != '' ? $hosts_where . ' AND ':'WHERE ') . ' host_id NOT IN (' . $hfilter . ')';
+								}
+
+								$ac_rows = read_config_option('autocomplete_rows');
+								if ($ac_rows <= 0) {
+									$ac_rows = 100;
+								}
+
+								if (syslog_db_table_exists('host', false)) {
+									if ($hfilter != '0' && $hfilter != '' && $hfilter != '-1') {
+										$hosts = syslog_db_fetch_assoc("SELECT *
+											FROM (
+												SELECT DISTINCT sh.host_id, sh.host, h.id, '1' AS selected
+												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												LEFT JOIN host AS h
+												ON sh.host = h.hostname
+												OR sh.host = h.description
+												OR sh.host LIKE substring_index(h.hostname, '.', 1)
+												OR sh.host LIKE substring_index(h.description, '.', 1)
+												$mhosts_where
+												UNION
+												SELECT DISTINCT sh.host_id, sh.host, h.id, '0' AS selected
+												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												LEFT JOIN host AS h
+												ON sh.host = h.hostname
+												OR sh.host = h.description
+												OR sh.host LIKE substring_index(h.hostname, '.', 1)
+												OR sh.host LIKE substring_index(h.description, '.', 1)
+												$mhosts_nwhere
+											) AS rs
+											ORDER BY selected DESC, host
+											LIMIT $ac_rows");
+									} else {
+										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, h.id
+											FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+											LEFT JOIN host AS h
+											ON sh.host = h.hostname
+											OR sh.host = h.description
+											OR sh.host LIKE substring_index(h.hostname, '.', 1)
+											OR sh.host LIKE substring_index(h.description, '.', 1)
+											$hosts_where
+											ORDER BY host
+											LIMIT $ac_rows");
+									}
+								} else {
+									if ($hfilter != '0' && $hfilter != '' && $hfilter != '-1') {
+										$hosts = syslog_db_fetch_assoc("SELECT *
+											FROM (
+												SELECT DISTINCT sh.host_id, sh.host, '0' AS id, '1' AS selected
+												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												$mhosts_where
+												UNION
+												SELECT DISTINCT sh.host_id, sh.host, '0' AS id, '0' AS selected
+												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												$mhosts_nwhere
+											) AS rs
+											ORDER BY selected DESC, host
+											LIMIT $ac_rows");
+									} else {
+										$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, "0" AS id
+											FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+											$hosts_where
+											ORDER BY host
+											LIMIT $ac_rows");
+									}
+								}
+
+								$selected = explode(',', $hfilter);
 
 								if (cacti_sizeof($hosts)) {
 									foreach ($hosts as $host) {
