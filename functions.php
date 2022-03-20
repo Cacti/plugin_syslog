@@ -1246,9 +1246,11 @@ function syslog_process_alert($alert, $sql, $count) {
 
 		if (cacti_sizeof($at)) {
 			if ($html) {
-				$message .= "<style type='text/css'>";
-				$message .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
-				$message .= '</style>';
+				if (!$format_ok) {
+					$message .= "<style type='text/css'>";
+					$message .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
+					$message .= '</style>';
+				}
 
 				if ($alert['method'] == '1') {
 					$message  .= '<h1>' . __esc('Cacti Syslog Plugin Threshold Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
@@ -1919,9 +1921,11 @@ function syslog_process_reports() {
 					}
 
 					if ($reptext != '') {
-						$message  = '<style type="text/css">';
-						$message .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
-						$message .= '</style>';
+						if (!$format_ok) {
+							$message  = '<style type="text/css">';
+							$message .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
+							$message .= '</style>';
+						}
 
 						$message .= '<h1>Cacti Syslog Report - ' . html_escape($report['name']) . '</h1>';
 						$message .= '<hr>';
