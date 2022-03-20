@@ -211,7 +211,9 @@ $stale   = $results['stale'];
  * process any syslog reports that are due to be
  * sent.
  */
-$reports = syslog_process_reports();
+$results  = syslog_process_reports();
+$reports  = $results['total_reports'];
+$sentrpts = $results['sent_reports'];
 
 /**
  * prune and optimize any tables that are required to
