@@ -1072,6 +1072,7 @@ function syslog_filter($sql_where, $tab) {
 	var date2Open = false;
 	var pageTab   = '<?php print get_request_var('tab');?>';
 	var hostTerm  = '';
+	var placeHolder = '<?php print __esc('Enter a search term', 'syslog');?>';
 
 	$(function() {
 		$('#syslog_form').submit(function(event) {
@@ -1111,7 +1112,7 @@ function syslog_filter($sql_where, $tab) {
 			open: function(event, ui) {
 				if ($('#term').length == 0) {
 					var width = parseInt($(this).multiselect('widget').find('.ui-multiselect-header').width() - 5);
-					$(this).multiselect('widget').find('.ui-multiselect-header').after('<input id="term" class="ui-state-default ui-corner-all" style="width:'+width+'px" type="text" value="'+hostTerm+'">');
+					$(this).multiselect('widget').find('.ui-multiselect-header').after('<input id="term" placeholder="'+placeHolder+'" class="ui-state-default ui-corner-all" style="width:'+width+'px" type="text" value="'+hostTerm+'">');
 					$('#term').on('keyup', function() {
 						$.getJSON('syslog.php?action=ajax_hosts&term='+$('#term').val(), function(data) {
 							$('#host').find('option').not(':selected').each(function() {
