@@ -134,10 +134,9 @@ function get_ajax_hosts() {
 		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
 			FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
 			WHERE sh.host LIKE ?
-			OR h.description LIKE ?
 			ORDER BY host
 			LIMIT $ac_rows",
-			array($term, $term));
+			array($term));
 	}
 
 	if (cacti_sizeof($hosts)) {
