@@ -1053,7 +1053,15 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 }
 
 function syslog_config_settings() {
-	global $tabs, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
+	global $config, $tabs, $formats, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
+
+	include_once($config['base_path'] . '/lib/reports.php');
+
+	if (get_nfilter_request_var('tab') == 'syslog') {
+		$formats = reports_get_format_files();
+	} elseif (empty($formats)) {
+		$formats = array();
+	}
 
 	$tabs['syslog'] = __('Syslog', 'syslog');
 
@@ -1065,12 +1073,6 @@ function syslog_config_settings() {
 		'syslog_enabled' => array(
 			'friendly_name' => __('Syslog Enabled', 'syslog'),
 			'description' => __('If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process.', 'syslog'),
-			'method' => 'checkbox',
-			'default' => 'on'
-		),
-		'syslog_html' => array(
-			'friendly_name' => __('HTML Based Email', 'syslog'),
-			'description' => __('If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text.', 'syslog'),
 			'method' => 'checkbox',
 			'default' => 'on'
 		),
@@ -1115,6 +1117,36 @@ function syslog_config_settings() {
 				400 => __('%d Records', 400, 'syslog')
 			)
 		),
+		'syslog_ticket_command' => array(
+			'friendly_name' => __('Command for Opening Tickets', 'syslog'),
+			'description' => __('This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert.', 'syslog'),
+			'method' => 'textbox',
+			'max_length' => 255,
+			'size' => 80
+		),
+		'syslog_html_header' => array(
+			'friendly_name' => __('HTML Notification Settings', 'syslog'),
+			'method' => 'spacer',
+			'collapsible' => 'true'
+		),
+		'syslog_html' => array(
+			'friendly_name' => __('Enable HTML Based Email', 'syslog'),
+			'description' => __('If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => 'on'
+		),
+		'syslog_format_file' => array(
+			'friendly_name' => __('Format File to Use', 'syslog'),
+			'method' => 'drop_array',
+			'default' => 'default.format',
+			'description' => __('Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the \'formats\' directory.', 'syslog'),
+			'array' => $formats
+		),
+		'syslog_retention_header' => array(
+			'friendly_name' => __('Data Retention Settings', 'syslog'),
+			'method' => 'spacer',
+			'collapsible' => 'true'
+		),
 		'syslog_retention' => array(
 			'friendly_name' => __('Syslog Retention', 'syslog'),
 			'description' => __('This is the number of days to keep events.', 'syslog'),
@@ -1128,13 +1160,6 @@ function syslog_config_settings() {
 			'method' => 'drop_array',
 			'default' => '30',
 			'array' => $syslog_alert_retentions
-		),
-		'syslog_ticket_command' => array(
-			'friendly_name' => __('Command for Opening Tickets', 'syslog'),
-			'description' => __('This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert.', 'syslog'),
-			'method' => 'textbox',
-			'max_length' => 255,
-			'size' => 80
 		),
 		'syslog_remote_header' => array(
 			'friendly_name' => __('Remote Message Processing', 'syslog'),
