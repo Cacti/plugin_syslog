@@ -1221,7 +1221,7 @@ function syslog_process_alerts($uniqueID) {
  * @return (int)    '1' if the alert triggered, else '0'
  */
 function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
-	global $config;
+	global $config, $severities, $syslog_levels;
 
 	include_once($config['base_path'] . '/lib/reports.php');
 
@@ -1286,6 +1286,8 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 		 */
 		if ($alert['repeat_alert']) {
 			$date = date('Y-m-d H:i:s', time() - ($alert['repeat_alert'] * read_config_option('poller_interval')));
+		} else {
+			$date = '';
 		}
 
 		if (cacti_sizeof($at)) {
@@ -1397,14 +1399,14 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 								WHERE alert_id = ?
 								AND logtime > ?
 								AND host = ?',
-								array($alert['id'], $data, $hostname));
+								array($alert['id'], $date, $hostname));
 						} else {
 							$ignore = syslog_db_fetch_cell_prepared('SELECT COUNT(*)
 								FROM syslog_logs
 								WHERE alert_id = ?
 								AND logtime > ?
 								AND host = "system"',
-								array($alert['id'], $data));
+								array($alert['id'], $date));
 						}
 					}
 
