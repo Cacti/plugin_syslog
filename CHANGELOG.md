@@ -8,6 +8,10 @@
 
 * issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
 
+* issue#160: PHP 8 Support
+
+* issue#166: Allow Syslog to pass hostname for the threshold type reporting
+
 * feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
 
 * feature: Support the replication of the main Cacti Syslog rules to Remote Data Collectors
