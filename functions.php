@@ -1290,6 +1290,8 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 			$date = '';
 		}
 
+		$message = '';
+
 		if (cacti_sizeof($at)) {
 			if ($html) {
 				if (!$format_ok) {
@@ -1321,7 +1323,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					$message  .= '<td>'     . html_escape($alert['message']) . '</td></tr></table><br>';
 				} else {
 					if ($hostname != '') {
-						$message  .= '<h1>' . __esc('Cacti Syslog Threshold Alert \'%s\' and Host \'%s\'', $alert['name'], $hostname, 'syslog') . '</h1>';
+						$message .= '<h1>' . __esc('Cacti Syslog Threshold Alert \'%s\' and Host \'%s\'', $alert['name'], $hostname, 'syslog') . '</h1>';
 					} else {
 						$message .= '<h1>' . __esc('Cacti Syslog Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
 					}
