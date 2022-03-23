@@ -8,6 +8,12 @@
 
 * issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
 
+* issue#135: Syslog plugin will break remote collectors if DB is not present
+
+* issue#146: Support Email address distribution lists
+
+* issue#151: Syslog 3.1 has a hardcoded path for sh which causes issues running other scripts
+
 * issue#160: PHP 8 Support
 
 * issue#166: Allow Syslog to pass hostname for the threshold type reporting

@@ -1477,7 +1477,13 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 
 					cacti_log("SYSLOG NOTICE: Executing '$command'", true, 'SYSTEM');
 
-					exec_background('/bin/sh', $command);
+					$cparts = explode(' ', $command);
+
+					if (is_executable($cparts[0])) {
+						exec_background($command);
+					} else {
+						exec_background('/bin/sh', $command);
+					}
 				}
 			}
 
