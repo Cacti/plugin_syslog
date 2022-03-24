@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-19 10:38-0400\n"
-"PO-Revision-Date: 2022-03-19 17:01-0400\n"
-"Last-Translator: Sergey <sbolshagin@gmail.com>\n"
-"Language-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\n"
-"Language: ru_RU\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 3.0.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-19 10:38-0400\nPO-Revision-Date: 2022-03-24 23:54+0000\nLast-Translator: Anatoliy <hamrad99h2@gmail.com>\nLanguage-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -1246,7 +1234,7 @@ msgstr "Введите соответствующий компонент соо�
 #: syslog_removal.php:698 syslog_reports.php:403 syslog_reports.php:558
 #: syslog_reports.php:712
 msgid "Enabled"
-msgstr "Включено"
+msgstr "Разрешено"
 
 #: syslog_alerts.php:522
 #, fuzzy
