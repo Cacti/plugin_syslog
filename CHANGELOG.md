@@ -8,6 +8,8 @@
 
 * issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
 
+* issue#65: MySQL failures due to large amount of syslog data
+
 * issue#135: Syslog plugin will break remote collectors if DB is not present
 
 * issue#146: Support Email address distribution lists
