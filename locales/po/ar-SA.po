@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-19 10:38-0400\n"
+"POT-Creation-Date: 2022-03-26 11:33-0400\n"
 "PO-Revision-Date: 2022-03-19 16:54-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,138 +22,148 @@ msgstr ""
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "فشل عملية الحفظ. لا يُسمح لمجمعي البيانات عن بُعد في وضع المزامنة بحفظ القواعد. احفظ من خادم الصبار الرئيسي بدلاً من ذلك."
 
-#: functions.php:115
+#: functions.php:116
 #, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "الرجاء استخدام عميل بريد HTML الإلكتروني"
 
-#: functions.php:1218
-#, fuzzy
-msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
-msgstr "تحذير: تم تنشيط تنبيه مثيل البرنامج المساعد Syslog"
-
-#: functions.php:1219
-msgid "Name:"
-msgstr "الاسم:"
-
-#: functions.php:1220 functions.php:1257
-#, fuzzy
-msgid "Severity:"
-msgstr "حدة، وخامة"
-
-#: functions.php:1221
-#, fuzzy
-msgid "Threshold:"
-msgstr "العتبة"
-
-#: functions.php:1222
-#, fuzzy
-msgid "Count:"
-msgstr "عدد"
-
-#: functions.php:1223
-#, fuzzy
-msgid "Message String:"
-msgstr "سلسلة الرسائل:"
-
-#: functions.php:1225
+#: functions.php:1313 functions.php:1334
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Threshold Alert '%s'"
+msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
 msgstr "تنبيه عتبة Cacti Syslog '٪ s'"
 
-#: functions.php:1227 syslog.php:1709 syslog_alerts.php:831
+#: functions.php:1315
+#, fuzzy, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "تنبيه عتبة Cacti Syslog '٪ s'"
+
+#: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 #, fuzzy
 msgid "Alert Name"
 msgstr "اسم التنبيه"
 
-#: functions.php:1227 syslog.php:1713
+#: functions.php:1321 functions.php:1348 syslog.php:1869 syslog_alerts.php:470
+#: syslog_alerts.php:847
+msgid "Severity"
+msgstr "حدة، وخامة"
+
+#: functions.php:1322 syslog_alerts.php:489 syslog_alerts.php:494
+#: syslog_alerts.php:873
+msgid "Threshold"
+msgstr "العتبة"
+
+#: functions.php:1323 syslog.php:1872
 msgid "Count"
 msgstr "عدد"
 
-#: functions.php:1227
+#: functions.php:1324
 #, fuzzy
 msgid "Match String"
 msgstr "سلسلة المباراة"
 
-#: functions.php:1227 functions.php:1238 syslog.php:1710 syslog_alerts.php:469
-#: syslog_alerts.php:832
-msgid "Severity"
-msgstr "حدة، وخامة"
-
-#: functions.php:1227 syslog_alerts.php:488 syslog_alerts.php:493
-#: syslog_alerts.php:858
-msgid "Threshold"
-msgstr "العتبة"
-
-#: functions.php:1234
+#: functions.php:1336
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Alert '%s'"
+msgid "Cacti Syslog Alert '%s'"
 msgstr "تنبيه مكون Cacti Syslog '٪ s'"
 
-#: functions.php:1238 functions.php:1814 syslog.php:283 syslog.php:1605
-#: syslog.php:1613 syslog.php:1711
-msgid "Date"
-msgstr "التاريخ"
-
-#: functions.php:1238
+#: functions.php:1346
 msgid "Hostname"
 msgstr "اسم الخادم"
 
-#: functions.php:1238
+#: functions.php:1347 functions.php:2070 syslog.php:338 syslog.php:1764
+#: syslog.php:1772 syslog.php:1870
+msgid "Date"
+msgstr "التاريخ"
+
+#: functions.php:1349
 msgid "Level"
 msgstr "نوع الاشتراك"
 
-#: functions.php:1238 functions.php:1814 syslog.php:1608 syslog.php:1616
-#: syslog.php:1712
+#: functions.php:1350 functions.php:2071 syslog.php:1767 syslog.php:1775
+#: syslog.php:1871
 msgid "Message"
 msgstr "رسالة"
 
-#: functions.php:1255
+#: functions.php:1356
+#, fuzzy, php-format
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
+msgstr "تحذير: تم تنشيط تنبيه مثيل البرنامج المساعد Syslog"
+
+#: functions.php:1358
+#, fuzzy
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
+msgstr "تحذير: تم تنشيط تنبيه مثيل البرنامج المساعد Syslog"
+
+#: functions.php:1367
+msgid "Name:"
+msgstr "الاسم:"
+
+#: functions.php:1368 functions.php:1402
+#, fuzzy
+msgid "Severity:"
+msgstr "حدة، وخامة"
+
+#: functions.php:1369
+#, fuzzy
+msgid "Threshold:"
+msgstr "العتبة"
+
+#: functions.php:1370
+#, fuzzy
+msgid "Count:"
+msgstr "عدد"
+
+#: functions.php:1371
+#, fuzzy
+msgid "Message String:"
+msgstr "سلسلة الرسائل:"
+
+#: functions.php:1400
 msgid "Hostname:"
 msgstr "أسم المضيف:"
 
-#: functions.php:1256
+#: functions.php:1401
 msgid "Date:"
 msgstr "تاريخ:"
 
-#: functions.php:1258
+#: functions.php:1403
 msgid "Level:"
 msgstr "الباقة:"
 
-#: functions.php:1259
+#: functions.php:1404
 msgid "Message:"
 msgstr "الرسالة:"
 
-#: functions.php:1293
+#: functions.php:1442
 #, fuzzy
 msgid ", Host:"
 msgstr "المضيف:"
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid ", URL:"
 msgstr "، URL:"
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid "Sev:"
 msgstr "بغازي:"
 
-#: functions.php:1295 functions.php:1355
+#: functions.php:1458 functions.php:1557
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "تنبيه الحدث -٪ s"
 
-#: functions.php:1385
+#: functions.php:1560
 #, fuzzy
 msgid ", Count:"
 msgstr "عدد"
 
-#: functions.php:1814
+#: functions.php:2069
 msgid "Host"
 msgstr "المستضيف Host"
 
-#: functions.php:1825
+#: functions.php:2094
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "تقرير الحدث -٪ s"
@@ -168,937 +178,960 @@ msgstr "يرجى إعادة تسمية ملف config.php.dist في دليل sysl
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
 msgstr "يتطلب Syslog 2.0 إعادة تثبيت بالكامل. الرجاء إزالة تثبيت Syslog وإزالة جميع البيانات قبل التثبيت. الترحيل ممكن ، لكن يجب عليك التخطيط مسبقًا. لا يوجد ترحيل تلقائي مدعوم."
 
-#: setup.php:859
+#: setup.php:872
 #, fuzzy
 msgid "What upgrade/install type do you wish to use"
 msgstr "ما نوع الترقية / التثبيت الذي ترغب في استخدامه"
 
-#: setup.php:860
+#: setup.php:873
 #, fuzzy
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "عندما يكون لديك طاولات كبيرة جدًا ، سيكون أداء Truncate أسرع بكثير. إذا كنت مهتمًا بأرشفة البيانات ، فيمكنك اختيار إما Inline ، الذي سيجمد متصفحك لفترة هذه الترقية ، أو الخلفية ، مما سيخلق عملية خلفية لإحضار بيانات syslog القديمة الخاصة بك من جدول نسخ احتياطي إلى تنسيق syslog الجديد . مرة أخرى ، قد تستغرق هذه العملية عدة ساعات."
 
-#: setup.php:863
+#: setup.php:876
 #, fuzzy
 msgid "Truncate Syslog Table"
 msgstr "اقتطاع سيسلوغ الجدول"
 
-#: setup.php:864
+#: setup.php:877
 #, fuzzy
 msgid "Inline Upgrade"
 msgstr "مضمنة ترقية"
 
-#: setup.php:865
+#: setup.php:878
 #, fuzzy
 msgid "Background Upgrade"
 msgstr "ترقية الخلفية"
 
-#: setup.php:870
+#: setup.php:883
 #, fuzzy
 msgid "Database Storage Engine"
 msgstr "محرك تخزين قاعدة البيانات"
 
-#: setup.php:871
+#: setup.php:884
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available."
 msgstr "في MySQL 5.1.6 وما فوق ، لديك الخيار لجعل هذا جدولًا مقسومًا بالأيام. قبل هذا الإصدار ، لديك فقط بنية الجدول التقليدية المتاحة."
 
-#: setup.php:874
+#: setup.php:887
 #, fuzzy
 msgid "MyISAM Storage"
 msgstr "MyISAM التخزين"
 
-#: setup.php:875
+#: setup.php:888
 #, fuzzy
 msgid "InnoDB Storage"
 msgstr "تخزين InnoDB"
 
-#: setup.php:880
+#: setup.php:893
 #, fuzzy
 msgid "Database Architecture"
 msgstr "بنية قاعدة البيانات"
 
-#: setup.php:881
+#: setup.php:894
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available."
 msgstr "في MySQL 5.1.6 وما فوق ، لديك الخيار لجعل هذا جدولًا مقسومًا بالأيام. في MySQL 5.5 وما فوق ، يمكنك إنشاء أقسام متعددة في اليوم الواحد. قبل MySQL 5.1.6 ، لديك فقط بنية الجدول التقليدية المتاحة."
 
-#: setup.php:885 setup.php:888
+#: setup.php:898 setup.php:901
 #, fuzzy
 msgid "Traditional Table"
 msgstr "الجدول التقليدي"
 
-#: setup.php:886
+#: setup.php:899
 #, fuzzy
 msgid "Partitioned Table"
 msgstr "جدول مقسم"
 
-#: setup.php:894
+#: setup.php:907
 #, fuzzy
 msgid "Retention Policy"
 msgstr "سياسة الإحتفاظ"
 
-#: setup.php:895
+#: setup.php:908
 #, fuzzy
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "اختر عدد أيام قيم Syslog التي ترغب في الاحتفاظ بها في قاعدة البيانات."
 
-#: setup.php:916
+#: setup.php:929
 #, fuzzy
 msgid "Partitions per Day"
 msgstr "أقسام في اليوم الواحد"
 
-#: setup.php:917
+#: setup.php:930
 #, fuzzy
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "حدد عدد الأقسام التي ترغب في إنشائها يوميًا."
 
-#: setup.php:920 setup.php:921 setup.php:922 setup.php:923 setup.php:924
+#: setup.php:933 setup.php:934 setup.php:935 setup.php:936 setup.php:937
 #, fuzzy, php-format
 msgid "%d Per Day"
 msgstr "٪ د في اليوم"
 
-#: setup.php:930 setup.php:1015
+#: setup.php:943 setup.php:1028
 msgid "Upgrade"
 msgstr "ترقية"
 
-#: setup.php:932 setup.php:1017
+#: setup.php:945 setup.php:1030
 msgid "Install"
 msgstr "تثبيت"
 
-#: setup.php:936
+#: setup.php:949
 #, fuzzy, php-format
 msgid "Syslog %s Advisor"
 msgstr "مستشار Syslog٪ s"
 
-#: setup.php:940
+#: setup.php:953
 #, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "تحذير: ترقية Syslog تستهلك الوقت !!!"
 
-#: setup.php:941
+#: setup.php:954
 #, fuzzy
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "يمكن أن تكون ترقية جدول syslog 'الرئيسي' عملية تستغرق وقتًا طويلاً للغاية. على هذا النحو ، يوصى إما بتقليل حجم جدول سجل النظام الخاص بك قبل الترقية ، أو اختيار خيار الخلفية </p><p style=\";text-align:right;direction:rtl\"> إذا اخترت خيار الخلفية ، فسيتم إعادة تسمية جدول سجل النظام القديم الخاص بك ، وسيتم إنشاء جدول سجل جديد. بعد ذلك ، سيتم إطلاق عملية الترقية في الخلفية. مرة أخرى ، يمكن أن تكتمل عملية الخلفية هذه بعض الوقت. ومع ذلك ، سيتم الحفاظ على البيانات الخاصة بك </p><p style=\";text-align:right;direction:rtl\"> بغض النظر عن اختيارك ، سيتم الحفاظ على جميع قواعد الإزالة والتنبيه الحالية أثناء عملية الترقية. </p><p style=\";text-align:right;direction:rtl\"> اضغط على <b>\"ترقية\"</b> لمتابعة الترقية ، أو <b>\"إلغاء\"</b> للعودة إلى قائمة الإضافات."
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller."
 msgstr "يمكنك أيضًا تحديد مدة الاستبقاء. يرجى مراعاة أنه إذا كان لديك عدة مضيفين يقومون بتسجيل الدخول إلى syslog ، فيمكن أن يصبح هذا الجدول كبيرًا. لذلك ، إذا لم تكن تستخدم التقسيم ، فقد ترغب في الحفاظ على الحجم أصغر."
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
 msgstr "يمكنك أيضًا ضبط محرك تخزين MySQL. إذا لم تقم بضبط النظام الخاص بك لخصائص التخزين InnoDB ، يوصى بشدة باستخدام محرك التخزين MyISAM."
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries."
 msgstr "لديك العديد من الخيارات للاختيار من بينها عند تثبيت Syslog. الأول هو بنية قاعدة البيانات. بدءًا من MySQL 5.1.6 ، يمكنك اختيار استخدام تقسيم الجدول لمنع أن يصبح حجم الجداول مفرطًا مما يؤدي إلى تباطؤ الاستعلامات."
 
-#: setup.php:948
+#: setup.php:961
 #, fuzzy, php-format
 msgid "Syslog %s Settings"
 msgstr "إعدادات Syslog٪ s"
 
-#: setup.php:975
+#: setup.php:988
 #, fuzzy
 msgid "What uninstall method do you want to use?"
 msgstr "ما طريقة إلغاء التثبيت التي تريد استخدامها؟"
 
-#: setup.php:976
+#: setup.php:989
 #, fuzzy
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "عند إزالة تثبيت syslog ، يمكنك إزالة كل شيء أو المكونات فقط ، في حال كنت تخطط لإعادة التثبيت في المستقبل."
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "إزالة كل شيء (السجلات ، الجداول ، الإعدادات)"
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Syslog Data Only"
 msgstr "بيانات Syslog فقط"
 
-#: setup.php:998
+#: setup.php:1011
 #, fuzzy
 msgid "Syslog Uninstall Preferences"
 msgstr "سيسلوغ إلغاء تثبيت التفضيلات"
 
-#: setup.php:1020
+#: setup.php:1033
 msgid "Uninstall"
 msgstr "الغاء التثبيت"
 
-#: setup.php:1027 syslog_alerts.php:204 syslog_removal.php:226
+#: setup.php:1040 syslog_alerts.php:204 syslog_removal.php:226
 #: syslog_reports.php:204
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: setup.php:1058 setup.php:1177 setup.php:1179 setup.php:1385 setup.php:1399
+#: setup.php:1079 setup.php:1215 setup.php:1217 setup.php:1423 setup.php:1437
 #, fuzzy
 msgid "Syslog"
 msgstr "سيسلوغ"
 
-#: setup.php:1062
+#: setup.php:1083
 msgid "General Settings"
 msgstr "الاعدادات العامة"
 
-#: setup.php:1066
+#: setup.php:1087
 #, fuzzy
 msgid "Syslog Enabled"
 msgstr "Syslog ممكن"
 
-#: setup.php:1067
+#: setup.php:1088
 #, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "إذا تم تعيين مربع الاختيار هذا ، فسيتم نقل السجلات من جدول Syslog الوارد إلى جدول تسجيل الدخول الرئيسي وسيتم تمكين التنبيهات والتقارير. يرجى الانتباه إلى أنه في حالة تعطيل النظام ، ستظل إدخالات السجل تتراكم في جدول Syslog الوارد حيث يتم تعريف ذلك بواسطة عملية rsyslog أو syslog-ng."
 
-#: setup.php:1072
-#, fuzzy
-msgid "HTML Based Email"
-msgstr "البريد الإلكتروني القائم على HTML"
-
-#: setup.php:1073
-#, fuzzy
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "إذا تم تعيين مربع الاختيار هذا ، فسيتم إرسال جميع رسائل البريد الإلكتروني بتنسيق HTML. خلاف ذلك ، سيتم إرسال رسائل البريد الإلكتروني في نص عادي."
-
-#: setup.php:1078
+#: setup.php:1093
 #, fuzzy
 msgid "Enable Statistics Gathering"
 msgstr "تمكين تجمع الإحصائيات"
 
-#: setup.php:1079
+#: setup.php:1094
 #, fuzzy
 msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
 msgstr "إذا تم تعيين مربع الاختيار هذا ، فسيتم الاحتفاظ بإحصائيات حول مكان وصول رسائل syslog. يمكن استخدام هذه المعلومات الإحصائية لتقديم أشياء مثل خرائط الحرارة."
 
-#: setup.php:1084
+#: setup.php:1099
 #, fuzzy
 msgid "Strip Domains"
 msgstr "المجالات قطاع"
 
-#: setup.php:1085
+#: setup.php:1100
 #, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "قائمة محددة بفواصل للنطاقات التي ترغب في إزالتها من اسم مضيف syslog ، ومن الأمثلة على ذلك \"mydomain.com ، otherdomain.com\""
 
-#: setup.php:1092
+#: setup.php:1107
 #, fuzzy
 msgid "Validate Hostnames"
 msgstr "التحقق من صحة أسماء المضيف"
 
-#: setup.php:1093
+#: setup.php:1108
 #, fuzzy
 msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
 msgstr "إذا تم تعيين مربع الاختيار هذا ، فسيتم التحقق من صحة جميع أسماء المضيفين. إذا كان اسم المضيف غير صالح. يتم تعيين جميع السجلات لمضيف خاص يسمى \"invalidhost\". يمكن أن يؤثر هذا الإعداد على وقت معالجة syslog على الأنظمة الكبيرة. لذلك ، يجب استخدام هذا الإعداد فقط عند عدم وجود وسائل أخرى لمنع حدوث ذلك."
 
-#: setup.php:1098
+#: setup.php:1113
 msgid "Refresh Interval"
 msgstr "الفاصل الزمني للتحديث"
 
-#: setup.php:1099
+#: setup.php:1114
 #, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "هذا هو الوقت بالثواني قبل تحديث الصفحة."
 
-#: setup.php:1105
+#: setup.php:1120
 #, fuzzy
 msgid "Max Report Records"
 msgstr "ماكس تقرير السجلات"
 
-#: setup.php:1106
+#: setup.php:1121
 #, fuzzy
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "بالنسبة إلى التنبيهات المستندة إلى العتبة ، ما هو الحد الأقصى الذي ترغب في عرضه في التقرير. يستخدم هذا للحد من حجم سجل HTML والبريد الإلكتروني."
 
-#: setup.php:1110 setup.php:1111 setup.php:1112 setup.php:1113 setup.php:1114
-#: setup.php:1115
+#: setup.php:1125 setup.php:1126 setup.php:1127 setup.php:1128 setup.php:1129
+#: setup.php:1130
 #, fuzzy, php-format
 msgid "%d Records"
 msgstr "٪ d السجلات"
 
-#: setup.php:1119
-#, fuzzy
-msgid "Syslog Retention"
-msgstr "سيسلوغ الاحتفاظ"
-
-#: setup.php:1120
-#, fuzzy
-msgid "This is the number of days to keep events."
-msgstr "هذا هو عدد الأيام للحفاظ على الأحداث."
-
-#: setup.php:1126
-#, fuzzy
-msgid "Syslog Alert Retention"
-msgstr "سيسلوغ تنبيه الاحتفاظ"
-
-#: setup.php:1127
-#, fuzzy
-msgid "This is the number of days to keep alert logs."
-msgstr "هذا هو عدد الأيام للاحتفاظ بسجلات التنبيه."
-
-#: setup.php:1133
+#: setup.php:1134
 #, fuzzy
 msgid "Command for Opening Tickets"
 msgstr "القيادة لفتح التذاكر"
 
-#: setup.php:1134
+#: setup.php:1135
 #, fuzzy
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "سيتم تنفيذ هذا الأمر لفتح \"Help Desk Tickets\". سوف تكون هناك حاجة الأمر لتحليل معلمات إدخال متعددة على النحو التالي: <b>--alert-name</b> ، - <b>خطورة</b> ، <b>--hostlist</b> ، <b>--message</b> . ستكون قائمة المضيفين عبارة عن قائمة محددة من المضيفين المتأثرين بالتنبيه."
 
-#: setup.php:1140
+#: setup.php:1141
+#, fuzzy
+#| msgid "Notification List"
+msgid "HTML Notification Settings"
+msgstr "قائمة الإخطارات"
+
+#: setup.php:1146
+#, fuzzy
+msgid "Enable HTML Based Email"
+msgstr "البريد الإلكتروني القائم على HTML"
+
+#: setup.php:1147
+#, fuzzy
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "إذا تم تعيين مربع الاختيار هذا ، فسيتم إرسال جميع رسائل البريد الإلكتروني بتنسيق HTML. خلاف ذلك ، سيتم إرسال رسائل البريد الإلكتروني في نص عادي."
+
+#: setup.php:1152
+#, fuzzy
+#| msgid "Normal User"
+msgid "Format File to Use"
+msgstr "المستخدم العادي"
+
+#: setup.php:1155
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr ""
+
+#: setup.php:1159
+msgid "Data Retention Settings"
+msgstr ""
+
+#: setup.php:1164
+#, fuzzy
+msgid "Syslog Retention"
+msgstr "سيسلوغ الاحتفاظ"
+
+#: setup.php:1165
+#, fuzzy
+msgid "This is the number of days to keep events."
+msgstr "هذا هو عدد الأيام للحفاظ على الأحداث."
+
+#: setup.php:1171
+#, fuzzy
+msgid "Syslog Alert Retention"
+msgstr "سيسلوغ تنبيه الاحتفاظ"
+
+#: setup.php:1172
+#, fuzzy
+msgid "This is the number of days to keep alert logs."
+msgstr "هذا هو عدد الأيام للاحتفاظ بسجلات التنبيه."
+
+#: setup.php:1178
 #, fuzzy
 msgid "Remote Message Processing"
 msgstr "سلسلة الرسائل:"
 
-#: setup.php:1144
+#: setup.php:1182
 #, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "تفعيل معالجة رسائل جامع البيانات عن بعد"
 
-#: setup.php:1145
+#: setup.php:1183
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "إذا كان لدى برنامج Remote Data Collectors قواعد بيانات Syslog الخاصة بهم ويقومون بمعالجة رسائلهم بشكل مستقل ، فحدد مربع الاختيار هذا. من خلال تحديد مربع الاختيار هذا ، سيحتاج برنامج Remote Data Collectors لديك إلى الاحتفاظ بملف 'config_local.php' الخاص بهم لإبلاغ Syslog باستخدام قاعدة بيانات مستقلة لعرض الرسائل ومعالجتها. يرجى استخدام ملف القالب \"config_local.php.dist\" لهذا الغرض. تحذير: سيتم إنشاء جداول سجل النظام تلقائيًا بمجرد تمكين هذا الخيار."
 
-#: setup.php:1150
+#: setup.php:1188
 #, fuzzy
 msgid "Remote Data Collector Rules Sync"
 msgstr "مزامنة قواعد جامع البيانات عن بعد"
 
-#: setup.php:1151
+#: setup.php:1189
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "إذا كان لدى جامعي البيانات عن بُعد قواعد بيانات Syslog الخاصة بهم ويقومون بمعالجة الرسائل بشكل مستقل ، فحدد مربع الاختيار هذا إذا كنت ترغب في إرسال قواعد بيانات التنبيهات والإزالة والتقرير لقواعد بيانات Cacti الرئيسية إلى Remote Cacti System."
 
-#: setup.php:1224 syslog_removal.php:33
+#: setup.php:1262 syslog_removal.php:33
 msgid "Delete"
 msgstr "حذف"
 
-#: setup.php:1225 syslog_removal.php:34
+#: setup.php:1263 syslog_removal.php:34
 msgid "Disable"
 msgstr "تعطيل"
 
-#: setup.php:1226 syslog_removal.php:35
+#: setup.php:1264 syslog_removal.php:35
 msgid "Enable"
 msgstr "تفعيل"
 
-#: setup.php:1227 syslog.php:1303 syslog_removal.php:37
+#: setup.php:1265 syslog.php:1400 syslog_removal.php:37
 msgid "Export"
 msgstr "تصدير"
 
-#: setup.php:1270 setup.php:1289
+#: setup.php:1308 setup.php:1327
 #, fuzzy
 msgid "Indefinite"
 msgstr "غير محدد"
 
-#: setup.php:1271 setup.php:1290 syslog.php:542 syslog_alerts.php:380
+#: setup.php:1309 setup.php:1328 syslog.php:604 syslog_alerts.php:381
 #, fuzzy, php-format
 msgid "%d Day"
 msgstr "٪ د يوم"
 
-#: setup.php:1272 setup.php:1273 setup.php:1274 setup.php:1275 setup.php:1276
-#: setup.php:1291 setup.php:1292 setup.php:1293 setup.php:1294 setup.php:1295
-#: syslog_alerts.php:381
+#: setup.php:1310 setup.php:1311 setup.php:1312 setup.php:1313 setup.php:1314
+#: setup.php:1329 setup.php:1330 setup.php:1331 setup.php:1332 setup.php:1333
+#: syslog_alerts.php:382
 #, php-format
 msgid "%d Days"
 msgstr "٪ أيام"
 
-#: setup.php:1277 setup.php:1296 syslog_alerts.php:382
+#: setup.php:1315 setup.php:1334 syslog_alerts.php:383
 #, fuzzy, php-format
 msgid "%d Week"
 msgstr "٪ د الأسبوع"
 
-#: setup.php:1278 setup.php:1297 syslog_alerts.php:383
+#: setup.php:1316 setup.php:1335 syslog_alerts.php:384
 #, fuzzy, php-format
 msgid "%d Weeks"
 msgstr "٪ د أسابيع"
 
-#: setup.php:1279 setup.php:1298
+#: setup.php:1317 setup.php:1336
 #, fuzzy, php-format
 msgid "%d Month"
 msgstr "٪ د الشهر"
 
-#: setup.php:1280 setup.php:1281 setup.php:1282 setup.php:1283 setup.php:1284
-#: setup.php:1299 setup.php:1300 setup.php:1301 setup.php:1302 setup.php:1303
+#: setup.php:1318 setup.php:1319 setup.php:1320 setup.php:1321 setup.php:1322
+#: setup.php:1337 setup.php:1338 setup.php:1339 setup.php:1340 setup.php:1341
 #, fuzzy, php-format
 msgid "%d Months"
 msgstr "٪ د أشهر"
 
-#: setup.php:1285 setup.php:1304
+#: setup.php:1323 setup.php:1342
 #, fuzzy, php-format
 msgid "%d Year"
 msgstr "٪ د السنة"
 
-#: setup.php:1308 syslog_reports.php:741
+#: setup.php:1346 syslog_reports.php:741
 msgid "Never"
 msgstr "أبدا"
 
-#: setup.php:1309 syslog.php:533
+#: setup.php:1347 syslog.php:595
 #, fuzzy, php-format
 msgid "%d Minute"
 msgstr "٪ د دقيقة"
 
-#: setup.php:1310 setup.php:1311 setup.php:1312 syslog.php:534 syslog.php:535
-#: syslog.php:536 syslog.php:537 syslog_alerts.php:367 syslog_alerts.php:368
-#: syslog_alerts.php:369 syslog_alerts.php:370 syslog_alerts.php:371
-#: syslog_alerts.php:372
+#: setup.php:1348 setup.php:1349 setup.php:1350 syslog.php:596 syslog.php:597
+#: syslog.php:598 syslog.php:599 syslog_alerts.php:368 syslog_alerts.php:369
+#: syslog_alerts.php:370 syslog_alerts.php:371 syslog_alerts.php:372
+#: syslog_alerts.php:373
 #, fuzzy, php-format
 msgid "%d Minutes"
 msgstr "%d دقيقة (دقائق)"
 
-#: setup.php:1316 syslog.php:1469 syslog.php:1510 syslog.php:1527
+#: setup.php:1354 syslog.php:1628 syslog.php:1669 syslog.php:1686
 msgid "Notice"
 msgstr "تنبيه"
 
-#: setup.php:1317 syslog.php:1467 syslog.php:1509 syslog.php:1526
+#: setup.php:1355 syslog.php:1626 syslog.php:1668 syslog.php:1685
 msgid "Warning"
 msgstr "تحذير"
 
-#: setup.php:1318 syslog.php:1463 syslog.php:1506 syslog.php:1525
+#: setup.php:1356 syslog.php:1622 syslog.php:1665 syslog.php:1684
 msgid "Critical"
 msgstr "حرجة"
 
-#: setup.php:1322
+#: setup.php:1360
 #, fuzzy
 msgid "Begins with"
 msgstr "يبدأ مع"
 
-#: setup.php:1323
+#: setup.php:1361
 #, fuzzy
 msgid "Contains"
 msgstr "يحتوي"
 
-#: setup.php:1324
+#: setup.php:1362
 #, fuzzy
 msgid "Ends with"
 msgstr "ينتهي مع"
 
-#: setup.php:1325
+#: setup.php:1363
 #, fuzzy
 msgid "Hostname is"
 msgstr "أسم المضيف:"
 
-#: setup.php:1326
+#: setup.php:1364
 #, fuzzy
 msgid "Program is"
 msgstr "برنامج"
 
-#: setup.php:1327
+#: setup.php:1365
 #, fuzzy
 msgid "Facility is"
 msgstr "المرافق"
 
-#: setup.php:1328
+#: setup.php:1366
 #, fuzzy
 msgid "SQL Expression"
 msgstr "تعبير SQL"
 
-#: setup.php:1332
+#: setup.php:1370
 msgid "Daily"
 msgstr "يومي"
 
-#: setup.php:1333
+#: setup.php:1371
 msgid "Weekly"
 msgstr "أسبوعي"
 
-#: setup.php:1357
+#: setup.php:1395
 msgid "Import/Export"
 msgstr "استيراد و تصدير"
 
-#: setup.php:1358
+#: setup.php:1396
 #, fuzzy
 msgid "Alert Rules"
 msgstr "قواعد التنبيه"
 
-#: setup.php:1358 setup.php:1359 setup.php:1360 setup.php:1365
+#: setup.php:1396 setup.php:1397 setup.php:1398 setup.php:1403
 #, fuzzy
 msgid "Syslog Settings"
 msgstr "إعدادات سيسلوغ"
 
-#: setup.php:1359
+#: setup.php:1397
 #, fuzzy
 msgid "Removal Rules"
 msgstr "قواعد الإزالة"
 
-#: setup.php:1360
+#: setup.php:1398
 #, fuzzy
 msgid "Report Rules"
 msgstr "تقرير القواعد"
 
-#: setup.php:1369
+#: setup.php:1407
 msgid "Normal User"
 msgstr "المستخدم العادي"
 
-#: setup.php:1370
+#: setup.php:1408
 msgid "System Administration"
 msgstr "إدارة النظام"
 
-#: setup.php:1386
+#: setup.php:1424
 #, fuzzy
 msgid "Syslog Removals"
 msgstr "عمليات إزالة Syslog"
 
-#: setup.php:1387 setup.php:1388 setup.php:1392 setup.php:1393 setup.php:1397
+#: setup.php:1425 setup.php:1426 setup.php:1430 setup.php:1431 setup.php:1435
 msgid "(Edit)"
 msgstr "(تعديل)"
 
-#: setup.php:1389 setup.php:1394 setup.php:1398
+#: setup.php:1427 setup.php:1432 setup.php:1436
 #, fuzzy
 msgid "(Actions)"
 msgstr "أفعال"
 
-#: setup.php:1391
+#: setup.php:1429
 #, fuzzy
 msgid "Syslog Alerts"
 msgstr "تنبيهات سيسلوغ"
 
-#: setup.php:1396
+#: setup.php:1434
 #, fuzzy
 msgid "Syslog Reports"
 msgstr "سيسلوغ التقارير"
 
-#: setup.php:1475
+#: setup.php:1513
 #, fuzzy
 msgid "Display Syslog in Range"
 msgstr "عرض سيسلوغ في المدى"
 
-#: setup.php:1523
+#: setup.php:1561
 #, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "تمت إزالة سجلات الجهاز٪ s من قاعدة بيانات Syslog"
 
-#: setup.php:1539
+#: setup.php:1577
 #, fuzzy
 msgid "Syslog Utilities"
 msgstr "سيسلوغ المرافق"
 
-#: setup.php:1543
+#: setup.php:1581
 #, fuzzy
 msgid "Purge Syslog Devices"
 msgstr "تطهير أجهزة سيسلوغ"
 
-#: setup.php:1546
+#: setup.php:1584
 #, fuzzy
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "يوفر اختيار القائمة هذا وسيلة لإزالة الأجهزة التي لم تعد تقدم تقارير إلى خادم syslog في Cacti."
 
-#: syslog.php:52
+#: syslog.php:54
 #, fuzzy
 msgid "Syslog Viewer"
 msgstr "سيسلوغ عارض"
 
-#: syslog.php:55
+#: syslog.php:57
 #, fuzzy
 msgid "All Text"
 msgstr "كل النص"
 
-#: syslog.php:56 syslog.php:57 syslog.php:58 syslog.php:59 syslog.php:60
-#: syslog.php:61
+#: syslog.php:58 syslog.php:59 syslog.php:60 syslog.php:61 syslog.php:62
+#: syslog.php:63
 #, fuzzy, php-format
 msgid "%d Chars"
 msgstr "٪ د الأحرف"
 
-#: syslog.php:112
+#: syslog.php:167
 #, fuzzy
 msgid "System Logs"
 msgstr "سجلات النظام"
 
-#: syslog.php:114
+#: syslog.php:169
 msgid "Statistics"
 msgstr "الإحصائيات"
 
-#: syslog.php:116
+#: syslog.php:171
 #, fuzzy
 msgid "Alert Logs"
 msgstr "سجلات التنبيه"
 
-#: syslog.php:125
+#: syslog.php:180
 #, fuzzy
 msgid "Selected Alert"
 msgstr "تنبيه محدد"
 
-#: syslog.php:148
+#: syslog.php:203
 #, fuzzy
 msgid "Syslog Alert View"
 msgstr "عرض تنبيه Syslog"
 
-#: syslog.php:229
+#: syslog.php:284
 #, fuzzy
 msgid "Syslog Statistics Filter"
 msgstr "سيسلوغ الإحصاء تصفية"
 
-#: syslog.php:255 syslog.php:1389 syslog.php:1621
+#: syslog.php:310 syslog.php:1548 syslog.php:1780
 msgid "Messages"
 msgstr "رسائل"
 
-#: syslog.php:263
+#: syslog.php:318
 msgid "Device Name"
 msgstr "اسم الجهاز"
 
-#: syslog.php:268 syslog.php:470 syslog.php:1432 syslog.php:1609
-#: syslog.php:1617 syslog.php:1715
+#: syslog.php:323 syslog.php:532 syslog.php:1591 syslog.php:1768
+#: syslog.php:1776 syslog.php:1874
 msgid "Facility"
 msgstr "المرافق"
 
-#: syslog.php:273 syslog.php:490 syslog.php:1454 syslog.php:1610
-#: syslog.php:1618 syslog.php:1716
+#: syslog.php:328 syslog.php:552 syslog.php:1613 syslog.php:1769
+#: syslog.php:1777 syslog.php:1875
 msgid "Priority"
 msgstr "الأولوية"
 
-#: syslog.php:278 syslog.php:1607 syslog.php:1615 syslog.php:1808
+#: syslog.php:333 syslog.php:1766 syslog.php:1774 syslog.php:1967
 #, fuzzy
 msgid "Program"
 msgstr "برنامج"
 
-#: syslog.php:288
+#: syslog.php:343
 msgid "Records"
 msgstr "المواد"
 
-#: syslog.php:325
+#: syslog.php:380
 #, fuzzy
 msgid "No Syslog Statistics Found"
 msgstr "لم يتم العثور على إحصائيات Syslog"
 
-#: syslog.php:433 syslog.php:1606 syslog.php:1614 syslog.php:1714
-#: syslog_alerts.php:480
+#: syslog.php:488 syslog.php:1765 syslog.php:1773 syslog.php:1873
+#: syslog_alerts.php:481
 msgid "Device"
 msgstr "جهاز"
 
-#: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
-#: syslog_alerts.php:682 syslog_removal.php:548 syslog_reports.php:562
+#: syslog.php:492 syslog.php:536 syslog.php:556 syslog_alerts.php:697
+#: syslog_removal.php:548 syslog_reports.php:562
 msgid "All"
 msgstr "الكل"
 
-#: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1802
-#: syslog.php:1813 syslog.php:1854 syslog.php:1855 syslog_alerts.php:563
-#: syslog_reports.php:466
+#: syslog.php:493 syslog.php:537 syslog.php:557 syslog.php:1961 syslog.php:1972
+#: syslog.php:2013 syslog.php:2014 syslog_alerts.php:556 syslog_reports.php:466
 msgid "None"
 msgstr "لا شيء"
 
-#: syslog.php:512 syslog.php:1301 syslog_alerts.php:704 syslog_removal.php:570
+#: syslog.php:574 syslog.php:1398 syslog_alerts.php:719 syslog_removal.php:570
 #: syslog_reports.php:584
 msgid "Go"
 msgstr "أذهب"
 
-#: syslog.php:513 syslog.php:1302 syslog_alerts.php:705 syslog_removal.php:571
+#: syslog.php:575 syslog.php:1399 syslog_alerts.php:720 syslog_removal.php:571
 #: syslog_reports.php:585
 msgid "Clear"
 msgstr "واضح"
 
-#: syslog.php:521 syslog.php:1061 syslog.php:1326 syslog_alerts.php:672
-#: syslog_removal.php:538 syslog_reports.php:552
+#: syslog.php:583 syslog.php:1423 syslog_alerts.php:687 syslog_removal.php:538
+#: syslog_reports.php:552
 msgid "Search"
 msgstr "بحث"
 
-#: syslog.php:527
+#: syslog.php:589
 msgid "Time Range"
 msgstr "النطاق الزمني"
 
-#: syslog.php:538 syslog_alerts.php:373
+#: syslog.php:600 syslog_alerts.php:374
 #, php-format
 msgid "%d Hour"
 msgstr "%d ساعة"
 
-#: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:374
-#: syslog_alerts.php:375 syslog_alerts.php:376 syslog_alerts.php:377
-#: syslog_alerts.php:378 syslog_alerts.php:379
+#: syslog.php:601 syslog.php:602 syslog.php:603 syslog_alerts.php:375
+#: syslog_alerts.php:376 syslog_alerts.php:377 syslog_alerts.php:378
+#: syslog_alerts.php:379 syslog_alerts.php:380
 #, php-format
 msgid "%d Hours"
 msgstr "‫d٪ د ساعات"
 
-#: syslog.php:552
+#: syslog.php:614
 msgid "Entries"
 msgstr "مقالات"
 
-#: syslog.php:556 syslog.php:1393 syslog_alerts.php:692 syslog_removal.php:558
+#: syslog.php:618 syslog.php:1552 syslog_alerts.php:707 syslog_removal.php:558
 #: syslog_reports.php:572
 msgid "Default"
 msgstr "الافتراضي"
 
-#: syslog.php:1000
+#: syslog.php:1062
 #, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
 msgstr "[ابدأ: '٪ s' إلى النهاية: '٪ s' ، الرسائل غير المجهزة:٪ s]"
 
-#: syslog.php:1002
+#: syslog.php:1064
 #, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[الرسائل غير المجهزة:٪ s]"
 
-#: syslog.php:1019
+#: syslog.php:1074
+msgid "Enter a search term"
+msgstr ""
+
+#: syslog.php:1086
 #, fuzzy
 msgid "Select Device(s)"
 msgstr "اختر الجهاز (الأجهزة)"
 
-#: syslog.php:1021
+#: syslog.php:1088
 #, fuzzy
 msgid "Devices Selected"
 msgstr "الأجهزة المختارة"
 
-#: syslog.php:1024
+#: syslog.php:1091
 #, fuzzy
 msgid "All Devices Selected"
 msgstr "جميع الأجهزة المحددة"
 
-#: syslog.php:1228
+#: syslog.php:1325
 #, fuzzy, php-format
 msgid "Syslog Message Filter %s"
 msgstr "Syslog Message Filter٪ s"
 
-#: syslog.php:1235
+#: syslog.php:1332
 msgid "Timespan"
 msgstr "زمن"
 
-#: syslog.php:1241
+#: syslog.php:1338
 msgid "Custom"
 msgstr "مخصص"
 
-#: syslog.php:1263
+#: syslog.php:1360
 msgid "From"
 msgstr "من"
 
-#: syslog.php:1269
+#: syslog.php:1366
 msgid "Start Date Selector"
 msgstr "محدد تاريخ البدء"
 
-#: syslog.php:1272
+#: syslog.php:1369
 msgid "To"
 msgstr "إلى"
 
-#: syslog.php:1278
+#: syslog.php:1375
 msgid "End Date Selector"
 msgstr "محدد تاريخ النهاية"
 
-#: syslog.php:1281
+#: syslog.php:1378
 msgid "Shift Time Backward"
 msgstr "التحول مرة الى الوراء"
 
-#: syslog.php:1284
+#: syslog.php:1381
 msgid "Define Shifting Interval"
 msgstr "تحديد الفاصل الزمني للتحويل"
 
-#: syslog.php:1297
+#: syslog.php:1394
 msgid "Shift Time Forward"
 msgstr "التحول إلى الأمام"
 
-#: syslog.php:1302
+#: syslog.php:1399
 #, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr "إرجاع قيم عامل التصفية إلى الإعدادات الافتراضية المعرفة من قبل المستخدم"
 
-#: syslog.php:1303
+#: syslog.php:1400
 #, fuzzy
 msgid "Export Records to CSV"
 msgstr "تصدير السجلات إلى CSV"
 
-#: syslog.php:1304
+#: syslog.php:1401
 msgid "Save"
 msgstr "حفظ"
 
-#: syslog.php:1304
+#: syslog.php:1401
 #, fuzzy
 msgid "Save Default Settings"
 msgstr "حفظ الإعدادات الافتراضية"
 
-#: syslog.php:1310 syslog_alerts.php:843
+#: syslog.php:1407 syslog_alerts.php:858
 #, fuzzy
 msgid "Alerts"
 msgstr "التنبيهات"
 
-#: syslog.php:1310
+#: syslog.php:1407
 #, fuzzy
 msgid "View Syslog Alert Rules"
 msgstr "عرض قواعد تنبيه Syslog"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "Removals"
 msgstr "إزالة"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "View Syslog Removal Rules"
 msgstr "عرض قواعد إزالة Syslog"
 
-#: syslog.php:1312 syslog_reports.php:722
+#: syslog.php:1409 syslog_reports.php:722
 msgid "Reports"
 msgstr "التقارير"
 
-#: syslog.php:1312
+#: syslog.php:1409
 #, fuzzy
 msgid "View Syslog Reports"
 msgstr "عرض تقارير سيسلوغ"
 
-#: syslog.php:1332
+#: syslog.php:1429
 msgid "Devices"
 msgstr "الأجهزة"
 
-#: syslog.php:1336
+#: syslog.php:1437
 #, fuzzy
 msgid "Show All Devices"
 msgstr "عرض جميع الأجهزة"
 
-#: syslog.php:1337
+#: syslog.php:1439
 #, fuzzy
 msgid "Show All Logs"
 msgstr "إظهار جميع السجلات"
 
-#: syslog.php:1338
+#: syslog.php:1440
 #, fuzzy
 msgid "Threshold Logs"
 msgstr "سجلات العتبة"
 
-#: syslog.php:1392
+#: syslog.php:1551
 #, fuzzy
 msgid "Display Rows"
 msgstr "عرض الصفوف"
 
-#: syslog.php:1402
+#: syslog.php:1561
 #, fuzzy
 msgid "Trim"
 msgstr "تقليم"
 
-#: syslog.php:1405
+#: syslog.php:1564
 #, fuzzy
 msgid "Message Trim"
 msgstr "رسالة تريم"
 
-#: syslog.php:1414
+#: syslog.php:1573
 msgid "Refresh"
 msgstr "تحديث"
 
-#: syslog.php:1435
+#: syslog.php:1594
 #, fuzzy
 msgid "Facilities to filter on"
 msgstr "مرافق للتصفية على"
 
-#: syslog.php:1436
+#: syslog.php:1595
 #, fuzzy
 msgid "All Facilities"
 msgstr "جميع المرافق"
 
-#: syslog.php:1457
+#: syslog.php:1616
 #, fuzzy
 msgid "Priority Levels"
 msgstr "مستويات الأولوية"
 
-#: syslog.php:1458
+#: syslog.php:1617
 #, fuzzy
 msgid "All Priorities"
 msgstr "جميع الأولويات"
 
-#: syslog.php:1459 syslog.php:1505
+#: syslog.php:1618 syslog.php:1664
 msgid "Emergency"
 msgstr "الطوارئ"
 
-#: syslog.php:1460
+#: syslog.php:1619
 #, fuzzy
 msgid "Alert++"
 msgstr "إشعار"
 
-#: syslog.php:1461 syslog.php:1507
+#: syslog.php:1620 syslog.php:1666
 msgid "Alert"
 msgstr "إشعار"
 
-#: syslog.php:1462
+#: syslog.php:1621
 #, fuzzy
 msgid "Critical++"
 msgstr "حرجة"
 
-#: syslog.php:1464
+#: syslog.php:1623
 #, fuzzy
 msgid "Error++"
 msgstr "خطأ:"
 
-#: syslog.php:1465 syslog.php:1508
+#: syslog.php:1624 syslog.php:1667
 msgid "Error"
 msgstr "خطأ"
 
-#: syslog.php:1466
+#: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
 msgstr "تحذير:"
 
-#: syslog.php:1468
+#: syslog.php:1627
 #, fuzzy
 msgid "Notice++"
 msgstr "تنبيه"
 
-#: syslog.php:1470
+#: syslog.php:1629
 #, fuzzy
 msgid "Info++"
 msgstr "معلومات"
 
-#: syslog.php:1471 syslog.php:1511
+#: syslog.php:1630 syslog.php:1670
 msgid "Info"
 msgstr "معلومات"
 
-#: syslog.php:1472 syslog.php:1512
+#: syslog.php:1631 syslog.php:1671
 msgid "Debug"
 msgstr "التصحيح"
 
-#: syslog.php:1477
+#: syslog.php:1636
 msgid "Record Type"
 msgstr "نوع السجل"
 
-#: syslog.php:1480
+#: syslog.php:1639
 #, fuzzy
 msgid "Removal Handling"
 msgstr "إزالة المناولة"
 
-#: syslog.php:1481
+#: syslog.php:1640
 #, fuzzy
 msgid "All Records"
 msgstr "جميع السجلات"
 
-#: syslog.php:1482
+#: syslog.php:1641
 #, fuzzy
 msgid "Main Records"
 msgstr "السجلات الرئيسية"
 
-#: syslog.php:1483
+#: syslog.php:1642
 #, fuzzy
 msgid "Removed Records"
 msgstr "السجلات التي تمت إزالتها"
 
-#: syslog.php:1528
+#: syslog.php:1687
 #, fuzzy
 msgid "Informational"
 msgstr "معلوماتية"
 
-#: syslog.php:1604 syslog_alerts.php:547
+#: syslog.php:1763 syslog_alerts.php:581
 msgid "Actions"
 msgstr "أفعال"
 
-#: syslog.php:1664 syslog.php:1667 syslog.php:1668 syslog.php:1735
+#: syslog.php:1823 syslog.php:1826 syslog.php:1827 syslog.php:1894
 msgid "Unknown"
 msgstr "غير معروف"
 
-#: syslog.php:1673
+#: syslog.php:1832
 #, fuzzy
 msgid "No Syslog Messages"
 msgstr "لا توجد رسائل Syslog"
 
-#: syslog.php:1719
+#: syslog.php:1878
 #, fuzzy
 msgid "Alert Log Rows"
 msgstr "تنبيه سجل الصفوف"
 
-#: syslog.php:1733
+#: syslog.php:1892
 #, fuzzy
 msgid "Alert Removed"
 msgstr "تنبيه إزالتها"
 
-#: syslog.php:1747
+#: syslog.php:1906
 #, fuzzy
 msgid "No Alert Log Messages"
 msgstr "لا توجد رسائل سجل تنبيه"
 
-#: syslog.php:1804 syslog.php:1827 syslog.php:1846 syslog.php:1847
+#: syslog.php:1963 syslog.php:1986 syslog.php:2005 syslog.php:2006
 #, fuzzy
 msgid "All Programs"
 msgstr "كل البرامج"
@@ -1147,290 +1180,305 @@ msgstr "قواعد (قواعد) تنبيه تصدير Syslog"
 msgid "Continue"
 msgstr "إستمرار"
 
-#: syslog_alerts.php:357
+#: syslog_alerts.php:358
 msgid "Not Set"
 msgstr "لم يتم التعيين"
 
-#: syslog_alerts.php:362
+#: syslog_alerts.php:363
 msgid "1 Minute"
 msgstr "1 دقيقة"
 
-#: syslog_alerts.php:384
+#: syslog_alerts.php:385
 #, fuzzy
 msgid "1 Month"
 msgstr "شهر"
 
-#: syslog_alerts.php:420
+#: syslog_alerts.php:421
 #, fuzzy, php-format
 msgid "Alert Edit [edit: %s]"
 msgstr "تنبيه تحرير [تحرير:٪ s]"
 
-#: syslog_alerts.php:422 syslog_alerts.php:429 syslog_alerts.php:436
+#: syslog_alerts.php:423 syslog_alerts.php:430 syslog_alerts.php:437
 #, fuzzy
 msgid "Alert Edit [new]"
 msgstr "تنبيه تحرير [جديد]"
 
-#: syslog_alerts.php:434 syslog_alerts.php:438
+#: syslog_alerts.php:435 syslog_alerts.php:439
 #, fuzzy
 msgid "New Alert Rule"
 msgstr "قاعدة تنبيه جديدة"
 
-#: syslog_alerts.php:449 syslog_alerts.php:859 syslog_reports.php:383
+#: syslog_alerts.php:450 syslog_alerts.php:874 syslog_reports.php:383
 msgid "N/A"
 msgstr "N/A"
 
-#: syslog_alerts.php:457 syslog_reports.php:389
+#: syslog_alerts.php:458 syslog_reports.php:389
 msgid "Details"
 msgstr "التفاصيل"
 
-#: syslog_alerts.php:461 syslog_reports.php:393
+#: syslog_alerts.php:462 syslog_reports.php:393
 msgid "Name"
 msgstr "الاسم"
 
-#: syslog_alerts.php:462
+#: syslog_alerts.php:463
 #, fuzzy
 msgid "Please describe this Alert."
 msgstr "يرجى وصف هذا التنبيه."
 
-#: syslog_alerts.php:470
+#: syslog_alerts.php:471
 #, fuzzy
 msgid "What is the Severity Level of this Alert?"
 msgstr "ما هو مستوى خطورة هذا التنبيه؟"
 
-#: syslog_alerts.php:477
+#: syslog_alerts.php:478
 #, fuzzy
 msgid "Reporting Level"
 msgstr "طريقة الإبلاغ"
 
-#: syslog_alerts.php:478
+#: syslog_alerts.php:479
 #, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
 msgstr "لتسجيل دورات إعادة التنبيه ، يجب تتبع التنبيه على مستوى النظام أو الجهاز."
 
-#: syslog_alerts.php:480
+#: syslog_alerts.php:481
 msgid "System"
 msgstr "النظام"
 
-#: syslog_alerts.php:485
+#: syslog_alerts.php:486
 #, fuzzy
 msgid "Reporting Method"
 msgstr "طريقة الإبلاغ"
 
-#: syslog_alerts.php:486
+#: syslog_alerts.php:487
 #, fuzzy
 msgid "Define how to Alert on the syslog messages."
 msgstr "حدد كيفية تنبيه رسائل syslog."
 
-#: syslog_alerts.php:488 syslog_alerts.php:858
+#: syslog_alerts.php:489 syslog_alerts.php:873
 #, fuzzy
 msgid "Individual"
 msgstr "فرد"
 
-#: syslog_alerts.php:494
+#: syslog_alerts.php:495
 #, fuzzy
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr "بالنسبة لطريقة \"العتبة\" ، إذا كان الرقم المرئي أعلى من هذه القيمة ، فسيتم تشغيل تنبيه."
 
-#: syslog_alerts.php:502 syslog_alerts.php:836 syslog_removal.php:699
+#: syslog_alerts.php:503 syslog_alerts.php:851 syslog_removal.php:699
 #: syslog_reports.php:713
 #, fuzzy
 msgid "Match Type"
 msgstr "نوع مباراة"
 
-#: syslog_alerts.php:503 syslog_removal.php:438
+#: syslog_alerts.php:504 syslog_removal.php:438
 #, fuzzy
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
 msgstr "حدد كيف تريد مطابقة هذه السلسلة. في حالة استخدام نوع تعبير SQL ، يمكنك استخدام أي تعبير SQL صالح لإنشاء المنبه. تتضمن الحقول المتاحة \"رسالة\" و \"مرفق\" و \"أولوية\" و \"مضيف\"."
 
-#: syslog_alerts.php:510 syslog_reports.php:416 syslog_reports.php:443
+#: syslog_alerts.php:511 syslog_reports.php:416 syslog_reports.php:443
 #, fuzzy
 msgid "Message Match String"
 msgstr "سيسلوغ رسالة المباراة سلسلة"
 
-#: syslog_alerts.php:511 syslog_removal.php:446
+#: syslog_alerts.php:512 syslog_removal.php:446
 #, fuzzy
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
 msgstr "أدخل المكون المطابق لرسالة syslog ، أو اسم المنشأة أو المضيف ، أو SQL حيث جملة إذا كنت تستخدم نوع مطابقة تعبير SQL."
 
-#: syslog_alerts.php:521 syslog_alerts.php:524 syslog_alerts.php:678
-#: syslog_alerts.php:835 syslog_removal.php:432 syslog_removal.php:544
+#: syslog_alerts.php:522 syslog_alerts.php:525 syslog_alerts.php:693
+#: syslog_alerts.php:850 syslog_removal.php:432 syslog_removal.php:544
 #: syslog_removal.php:698 syslog_reports.php:403 syslog_reports.php:558
 #: syslog_reports.php:712
 msgid "Enabled"
 msgstr "مفعل"
 
-#: syslog_alerts.php:522
+#: syslog_alerts.php:523
 #, fuzzy
 msgid "Is this Alert Enabled?"
 msgstr "هل هذا التنبيه ممكن؟"
 
-#: syslog_alerts.php:524 syslog_removal.php:432 syslog_reports.php:403
+#: syslog_alerts.php:525 syslog_removal.php:432 syslog_reports.php:403
 msgid "Disabled"
 msgstr "معطل"
 
-#: syslog_alerts.php:528
+#: syslog_alerts.php:529
 #, fuzzy
 msgid "Re-Alert Cycle"
 msgstr "إعادة تنبيه دورة"
 
-#: syslog_alerts.php:532
+#: syslog_alerts.php:533
 #, fuzzy
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr "لا تقم بإعادة إرسال هذا التنبيه مرة أخرى لنفس المضيف ، حتى ينقضي هذا الوقت. بالنسبة لأجهزة الإنذار القائمة على العتبة ، ينطبق ذلك على جميع الأجهزة المضيفة."
 
-#: syslog_alerts.php:536 syslog_reports.php:480
+#: syslog_alerts.php:537 syslog_reports.php:480
 msgid "Notes"
 msgstr "الملاحظات"
 
-#: syslog_alerts.php:539
+#: syslog_alerts.php:540
 #, fuzzy
 msgid "Space for Notes on the Alert"
 msgstr "مساحة للملاحظات على التنبيه"
 
-#: syslog_alerts.php:551
+#: syslog_alerts.php:548
+msgid "Email Options"
+msgstr ""
+
+#: syslog_alerts.php:552 syslog_reports.php:462
+msgid "Notification List"
+msgstr "قائمة الإخطارات"
+
+#: syslog_alerts.php:553 syslog_reports.php:463
+#, fuzzy
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "استخدم محتويات قائمة الإخطارات هذه لإملاء من يجب إخطاره وكيف."
+
+#: syslog_alerts.php:561
+#, fuzzy
+msgid "Emails to Notify"
+msgstr "رسائل البريد الإلكتروني لإخطار"
+
+#: syslog_alerts.php:564
+#, fuzzy
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "يرجى إدخال قائمة محددة بفواصل لعناوين البريد الإلكتروني للإبلاغ. إذا كنت ترغب في إرسال بريد إلكتروني إلى مستلم بتنسيق SMS ، يرجى بادئة عنوان البريد الإلكتروني للمستلم بـ <b>'sms @'</b> . على سبيل المثال ، إذا كان عنوان SMS للمستلمين هو <b>\"2485551212@mycarrier.net\"</b> ، فيمكنك إدخاله كـ <b>\"sms @ 2485551212 @ mycarrier.net\"</b> وسيتم تنسيقه كرسالة SMS."
+
+#: syslog_alerts.php:570 syslog_reports.php:451
+#, fuzzy
+#| msgid "Body Text"
+msgid "Email Body Text"
+msgstr "نص الخلفية"
+
+#: syslog_alerts.php:573
+#, fuzzy
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "المعلومات التي سيتم تضمينها في متن التقرير."
+
+#: syslog_alerts.php:585
 #, fuzzy
 msgid "Open Ticket"
 msgstr "تذكرة مفتوحة"
 
-#: syslog_alerts.php:552
+#: syslog_alerts.php:586
 #, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "في حالة فتح تذكرة مكتب المساعدة لهذا التنبيه. ملاحظة: سيتم ملء البرنامج النصي لأمر Ticket بالعديد من متغيرات البيئة \"ALERT_\" للراحة."
 
-#: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:699 syslog_alerts.php:875
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
 #: syslog_reports.php:736
 msgid "No"
 msgstr "لا"
 
-#: syslog_alerts.php:554 syslog_alerts.php:683 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:698 syslog_alerts.php:875
 #: syslog_removal.php:549 syslog_removal.php:720 syslog_reports.php:563
 #: syslog_reports.php:736
 msgid "Yes"
 msgstr "نعم"
 
-#: syslog_alerts.php:559 syslog_reports.php:462
-msgid "Notification List"
-msgstr "قائمة الإخطارات"
-
-#: syslog_alerts.php:560 syslog_reports.php:463
-#, fuzzy
-msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr "استخدم محتويات قائمة الإخطارات هذه لإملاء من يجب إخطاره وكيف."
-
-#: syslog_alerts.php:568
-#, fuzzy
-msgid "Emails to Notify"
-msgstr "رسائل البريد الإلكتروني لإخطار"
-
-#: syslog_alerts.php:571
-#, fuzzy
-msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr "يرجى إدخال قائمة محددة بفواصل لعناوين البريد الإلكتروني للإبلاغ. إذا كنت ترغب في إرسال بريد إلكتروني إلى مستلم بتنسيق SMS ، يرجى بادئة عنوان البريد الإلكتروني للمستلم بـ <b>'sms @'</b> . على سبيل المثال ، إذا كان عنوان SMS للمستلمين هو <b>\"2485551212@mycarrier.net\"</b> ، فيمكنك إدخاله كـ <b>\"sms @ 2485551212 @ mycarrier.net\"</b> وسيتم تنسيقه كرسالة SMS."
-
-#: syslog_alerts.php:577
+#: syslog_alerts.php:592
 msgid "Command"
 msgstr "المشرف"
 
-#: syslog_alerts.php:580
+#: syslog_alerts.php:595
 #, fuzzy
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "عند تشغيل تنبيه ، قم بتشغيل الأمر التالي. تتوفر متغيرات الاستبدال التالية <b>&quot;&lt;HOSTNAME&gt;&quot;</b> ، <b>&quot;&lt;ALERTID&gt;&quot;</b> ، <b>&quot;&lt;MESSAGE&gt;&quot;</b> ، <b>&quot;&lt;FACILITY&gt;&quot;</b> ، <b>&quot;&lt;PRIORITY&gt;&quot;</b> ، <b>&quot;&lt;SEVERITY&gt;&quot;</b> . يرجى ملاحظة أن <b>&quot;&lt;HOSTNAME&gt;&quot;</b> متاح فقط على <b>الحدود</b> الفردية."
 
-#: syslog_alerts.php:688 syslog_reports.php:568
+#: syslog_alerts.php:703 syslog_reports.php:568
 msgid "Rows"
 msgstr "الصفوف"
 
-#: syslog_alerts.php:706 syslog_alerts.php:998 syslog_removal.php:572
+#: syslog_alerts.php:721 syslog_alerts.php:1013 syslog_removal.php:572
 #: syslog_removal.php:859 syslog_reports.php:586 syslog_reports.php:877
 msgid "Import"
 msgstr "استيراد"
 
-#: syslog_alerts.php:806
+#: syslog_alerts.php:821
 #, fuzzy
 msgid "Syslog Alert Filters"
 msgstr "Syslog تنبيه مرشحات"
 
-#: syslog_alerts.php:833 syslog_removal.php:701
+#: syslog_alerts.php:848 syslog_removal.php:701
 msgid "Method"
 msgstr "طريقة"
 
-#: syslog_alerts.php:834
+#: syslog_alerts.php:849
 #, fuzzy
 msgid "Threshold Count"
 msgstr "عتبة العد"
 
-#: syslog_alerts.php:837 syslog_removal.php:700 syslog_reports.php:714
+#: syslog_alerts.php:852 syslog_removal.php:700 syslog_reports.php:714
 #, fuzzy
 msgid "Search String"
 msgstr "دالة البحث"
 
-#: syslog_alerts.php:838 syslog_reports.php:470
+#: syslog_alerts.php:853 syslog_reports.php:470
 msgid "Email Addresses"
 msgstr "عنواين البريد الالكترونى"
 
-#: syslog_alerts.php:839 syslog_removal.php:702 syslog_reports.php:718
+#: syslog_alerts.php:854 syslog_removal.php:702 syslog_reports.php:718
 msgid "Last Modified"
 msgstr "آخر تعديل"
 
-#: syslog_alerts.php:840 syslog_removal.php:703 syslog_reports.php:719
+#: syslog_alerts.php:855 syslog_removal.php:703 syslog_reports.php:719
 #, fuzzy
 msgid "By User"
 msgstr "المستخدم.:"
 
-#: syslog_alerts.php:863
+#: syslog_alerts.php:878
 msgid "Multiple"
 msgstr "متعدد"
 
-#: syslog_alerts.php:870
+#: syslog_alerts.php:885
 #, fuzzy
 msgid "No Syslog Alerts Defined"
 msgstr "لا توجد تنبيهات Syslog محددة"
 
-#: syslog_alerts.php:901
+#: syslog_alerts.php:916
 #, fuzzy
 msgid "Import Alert Rule from Local File"
 msgstr "استيراد قاعدة التنبيه من الملف المحلي"
 
-#: syslog_alerts.php:902
+#: syslog_alerts.php:917
 #, fuzzy
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr "إذا كان ملف XML الذي يحتوي على بيانات تعريف قاعدة التنبيه موجودًا على جهازك المحلي ، فحدده هنا."
 
-#: syslog_alerts.php:907
+#: syslog_alerts.php:922
 #, fuzzy
 msgid "Import Alert Rule from Text"
 msgstr "استيراد قاعدة التنبيه من النص"
 
-#: syslog_alerts.php:908
+#: syslog_alerts.php:923
 #, fuzzy
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr "إذا كان لديك ملف XML يحتوي على بيانات Alert Ruledefinition كنص ، فيمكنك لصقه في هذا المربع لاستيراده."
 
-#: syslog_alerts.php:919
+#: syslog_alerts.php:934
 #, fuzzy
 msgid "Import Alert Rule"
 msgstr "استيراد تنبيه القاعدة"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 msgid "Imported"
 msgstr "تم الاستيراد"
 
-#: syslog_alerts.php:996
+#: syslog_alerts.php:1011
 #, fuzzy, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr "ملاحظة: تنبيه '٪ s'٪ s!"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 msgid "Updated"
 msgstr "تم التحديث"
 
-#: syslog_alerts.php:998
+#: syslog_alerts.php:1013
 #, fuzzy, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "خطأ: فشل التنبيه '٪ s'٪ s!"
 
-#: syslog_alerts.php:998 syslog_removal.php:859 syslog_reports.php:877
+#: syslog_alerts.php:1013 syslog_removal.php:859 syslog_reports.php:877
 msgid "Update"
 msgstr "تحديث"
 
@@ -1741,13 +1789,9 @@ msgstr "في أي وقت من اليوم يجب إرسال هذا التقرير
 msgid "Report Format"
 msgstr "تقرير ملاحظات"
 
-#: syslog_reports.php:451
-msgid "Body Text"
-msgstr "نص الخلفية"
-
 #: syslog_reports.php:454
 #, fuzzy
-msgid "The information that will be contained in the body of the report."
+msgid "The information that will be contained in the body of the Report."
 msgstr "المعلومات التي سيتم تضمينها في متن التقرير."
 
 #: syslog_reports.php:473
