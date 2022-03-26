@@ -136,6 +136,7 @@ syslog_init_variables();
  * always use partitioning as it will guarantee the best
  * performing syslog database.
  */
+syslog_debug('-------------------------------------------------------------------------------------');
 if (!syslog_is_partitioned()) {
 	syslog_debug('Syslog Table is NOT Partitioned');
 	$deleted = syslog_traditional_manage();
@@ -143,6 +144,7 @@ if (!syslog_is_partitioned()) {
 	syslog_debug('Syslog Table IS Partitioned');
 	$deleted = syslog_partition_manage();
 }
+syslog_debug('-------------------------------------------------------------------------------------');
 
 /**
  * pre-processing includes marking a uniqueID to be used

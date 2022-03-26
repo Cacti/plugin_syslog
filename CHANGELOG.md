@@ -10,6 +10,8 @@
 
 * issue#65: MySQL failures due to large amount of syslog data
 
+* issue#108: Add Body Text to Alert email
+
 * issue#135: Syslog plugin will break remote collectors if DB is not present
 
 * issue#146: Support Email address distribution lists

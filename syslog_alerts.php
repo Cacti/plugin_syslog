@@ -87,7 +87,7 @@ function form_save() {
 			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'),
 			get_nfilter_request_var('severity'), get_nfilter_request_var('command'),
 			get_nfilter_request_var('repeat_alert'), get_nfilter_request_var('open_ticket'),
-			get_nfilter_request_var('notify'));
+			get_nfilter_request_var('notify'), get_nfilter_request_var('body'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -256,7 +256,7 @@ function alert_export() {
 }
 
 function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $message, $email, $notes,
-	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0) {
+	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '') {
 
 	include(SYSLOG_CONFIG);
 
@@ -274,6 +274,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['name']         = form_input_validate($name,         'name',     '', false, 3);
 	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
 	$save['message']      = form_input_validate($message,      'message',  '', false, 3);
+	$save['body']         = form_input_validate($body,         'body',     '', false, 3);
 	$save['email']        = form_input_validate(trim($email),  'email',    '', true, 3);
 	$save['command']      = form_input_validate($command,      'command',  '', true, 3);
 	$save['notes']        = form_input_validate($notes,        'notes',    '', true, 3);
@@ -542,17 +543,9 @@ function syslog_action_edit() {
 			'value' => '|arg1:notes|',
 			'default' => '',
 		),
-		'spacer1' => array(
+		'header_email' => array(
 			'method' => 'spacer',
-			'friendly_name' => __('Actions', 'syslog')
-		),
-		'open_ticket' => array(
-			'method' => 'drop_array',
-			'friendly_name' => __('Open Ticket', 'syslog'),
-			'description' => __('Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several \'ALERT_\' environment variables for convenience.', 'syslog'),
-			'value' => '|arg1:open_ticket|',
-			'array' => array('on' => __('Yes', 'syslog'), '' => __('No', 'syslog')),
-			'default' => ''
+			'friendly_name' => __('Email Options', 'syslog')
 		),
 		'notify' => array(
 			'method' => 'drop_array',
@@ -572,6 +565,28 @@ function syslog_action_edit() {
 			'class' => 'textAreaNotes',
 			'value' => '|arg1:email|',
 			'max_length' => '255'
+		),
+		'body' => array(
+			'friendly_name' => __('Email Body Text', 'syslog'),
+			'textarea_rows' => '6',
+			'textarea_cols' => '80',
+			'description' => __('This information will appear in the body of the Alert just before the Alert details.', 'syslog'),
+			'method' => 'textarea',
+			'class' => 'textAreaNotes',
+			'value' => '|arg1:body|',
+			'default' => '',
+		),
+		'spacer1' => array(
+			'method' => 'spacer',
+			'friendly_name' => __('Actions', 'syslog')
+		),
+		'open_ticket' => array(
+			'method' => 'drop_array',
+			'friendly_name' => __('Open Ticket', 'syslog'),
+			'description' => __('Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several \'ALERT_\' environment variables for convenience.', 'syslog'),
+			'value' => '|arg1:open_ticket|',
+			'array' => array('on' => __('Yes', 'syslog'), '' => __('No', 'syslog')),
+			'default' => ''
 		),
 		'command' => array(
 			'friendly_name' => __('Command', 'syslog'),

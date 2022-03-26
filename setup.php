@@ -397,6 +397,16 @@ function syslog_check_upgrade() {
 			);
 		}
 
+		if (!syslog_db_column_exists('syslog_alert', 'body')) {
+			syslog_db_add_column('syslog_alert', array(
+				'name'     => 'body',
+				'type'     => 'varchar(8192)',
+				'NULL'     => false,
+				'default'  => '',
+				'after'    => 'message')
+			);
+		}
+
 		if (!syslog_db_column_exists('syslog_reports', 'notify')) {
 			syslog_db_add_column('syslog_reports', array(
 				'name'     => 'notify',
@@ -407,6 +417,8 @@ function syslog_check_upgrade() {
 				'after'    => 'email')
 			);
 		}
+
+		syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
 	}
 }
 
@@ -561,6 +573,7 @@ function syslog_setup_table_new($options) {
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
 		`open_ticket` CHAR(2) default '',
 		`message` VARCHAR(2048) NOT NULL default '',
+		`body` VARCHAR(8192) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		`email` varchar(255) default NULL,
@@ -618,7 +631,7 @@ function syslog_setup_table_new($options) {
 		timespan int(16) NOT NULL default '0',
 		timepart char(5) NOT NULL default '00:00',
 		lastsent int(16) NOT NULL default '0',
-		body " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " default NULL,
+		body varchar(8192) NOT NULL default '0',
 		message varchar(2048) default NULL,
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
