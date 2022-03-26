@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-19 10:38-0400\n"
+"POT-Creation-Date: 2022-03-26 11:33-0400\n"
 "PO-Revision-Date: 2022-03-19 17:02-0400\n"
 "Last-Translator: Linya Huang <linya0405@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <http://translate.cacti.net/projects/cacti/syslog/zh_Hant/>\n"
@@ -23,135 +23,145 @@ msgstr ""
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "保存失敗。同步模式下的遠程數據收集器不允許保存規則。而是從主 Cacti 服務器保存。"
 
-#: functions.php:115
+#: functions.php:116
 #, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "請使用HTML電子郵件客戶端"
 
-#: functions.php:1218
-#, fuzzy
-msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
-msgstr "警告：已觸發Syslog插件實例計數警報"
-
-#: functions.php:1219
-msgid "Name:"
-msgstr "名稱："
-
-#: functions.php:1220 functions.php:1257
-msgid "Severity:"
-msgstr "嚴重性："
-
-#: functions.php:1221
-msgid "Threshold:"
-msgstr "閾值："
-
-#: functions.php:1222
-msgid "Count:"
-msgstr "計數："
-
-#: functions.php:1223
-#, fuzzy
-msgid "Message String:"
-msgstr "消息字符串："
-
-#: functions.php:1225
+#: functions.php:1313 functions.php:1334
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Threshold Alert '%s'"
+msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
 msgstr "Cacti Syslog插件閾值警報'％s'"
 
-#: functions.php:1227 syslog.php:1709 syslog_alerts.php:831
+#: functions.php:1315
+#, fuzzy, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Cacti Syslog插件閾值警報'％s'"
+
+#: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 #, fuzzy
 msgid "Alert Name"
 msgstr "警報名稱"
 
-#: functions.php:1227 syslog.php:1713
+#: functions.php:1321 functions.php:1348 syslog.php:1869 syslog_alerts.php:470
+#: syslog_alerts.php:847
+msgid "Severity"
+msgstr "重要性"
+
+#: functions.php:1322 syslog_alerts.php:489 syslog_alerts.php:494
+#: syslog_alerts.php:873
+msgid "Threshold"
+msgstr "閾值"
+
+#: functions.php:1323 syslog.php:1872
 msgid "Count"
 msgstr "計數"
 
-#: functions.php:1227
+#: functions.php:1324
 #, fuzzy
 msgid "Match String"
 msgstr "匹配字符串"
 
-#: functions.php:1227 functions.php:1238 syslog.php:1710 syslog_alerts.php:469
-#: syslog_alerts.php:832
-msgid "Severity"
-msgstr "重要性"
-
-#: functions.php:1227 syslog_alerts.php:488 syslog_alerts.php:493
-#: syslog_alerts.php:858
-msgid "Threshold"
-msgstr "閾值"
-
-#: functions.php:1234
+#: functions.php:1336
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Alert '%s'"
+msgid "Cacti Syslog Alert '%s'"
 msgstr "Cacti Syslog插件警報'％s'"
 
-#: functions.php:1238 functions.php:1814 syslog.php:283 syslog.php:1605
-#: syslog.php:1613 syslog.php:1711
-msgid "Date"
-msgstr "日期"
-
-#: functions.php:1238
+#: functions.php:1346
 msgid "Hostname"
 msgstr "主機名稱"
 
-#: functions.php:1238
+#: functions.php:1347 functions.php:2070 syslog.php:338 syslog.php:1764
+#: syslog.php:1772 syslog.php:1870
+msgid "Date"
+msgstr "日期"
+
+#: functions.php:1349
 msgid "Level"
 msgstr "等級"
 
-#: functions.php:1238 functions.php:1814 syslog.php:1608 syslog.php:1616
-#: syslog.php:1712
+#: functions.php:1350 functions.php:2071 syslog.php:1767 syslog.php:1775
+#: syslog.php:1871
 msgid "Message"
 msgstr "訊息"
 
-#: functions.php:1255
+#: functions.php:1356
+#, fuzzy, php-format
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
+msgstr "警告：已觸發Syslog插件實例計數警報"
+
+#: functions.php:1358
+#, fuzzy
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
+msgstr "警告：已觸發Syslog插件實例計數警報"
+
+#: functions.php:1367
+msgid "Name:"
+msgstr "名稱："
+
+#: functions.php:1368 functions.php:1402
+msgid "Severity:"
+msgstr "嚴重性："
+
+#: functions.php:1369
+msgid "Threshold:"
+msgstr "閾值："
+
+#: functions.php:1370
+msgid "Count:"
+msgstr "計數："
+
+#: functions.php:1371
+#, fuzzy
+msgid "Message String:"
+msgstr "消息字符串："
+
+#: functions.php:1400
 msgid "Hostname:"
 msgstr "主機名稱："
 
-#: functions.php:1256
+#: functions.php:1401
 msgid "Date:"
 msgstr "日期："
 
-#: functions.php:1258
+#: functions.php:1403
 msgid "Level:"
 msgstr "等級:"
 
-#: functions.php:1259
+#: functions.php:1404
 msgid "Message:"
 msgstr "訊息："
 
-#: functions.php:1293
+#: functions.php:1442
 #, fuzzy
 msgid ", Host:"
 msgstr "主辦："
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid ", URL:"
 msgstr "，URL："
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid "Sev:"
 msgstr "西弗："
 
-#: functions.php:1295 functions.php:1355
+#: functions.php:1458 functions.php:1557
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "事件警報 - ％s"
 
-#: functions.php:1385
+#: functions.php:1560
 #, fuzzy
 msgid ", Count:"
 msgstr "計數："
 
-#: functions.php:1814
+#: functions.php:2069
 msgid "Host"
 msgstr "主機"
 
-#: functions.php:1825
+#: functions.php:2094
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "活動報告 - ％s"
@@ -166,927 +176,949 @@ msgstr "請重命名syslog目錄中的config.php.dist文件，並在安裝之前
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
 msgstr "Syslog 2.0需要重新安裝。請在安裝前卸載Syslog並刪除所有數據。遷移是可能的，但您必須提前計劃。不支持自動遷移。"
 
-#: setup.php:859
+#: setup.php:872
 #, fuzzy
 msgid "What upgrade/install type do you wish to use"
 msgstr "您希望使用哪種升級/安裝類型"
 
-#: setup.php:860
+#: setup.php:873
 #, fuzzy
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "當你有非常大的表時，執行截斷將更快。如果您擔心存檔數據，可以選擇Inline（這將在此升級期間凍結瀏覽器）或後台，這將創建後台進程以將舊的syslog數據從備份表轉換為新的syslog格式。這個過程可能需要幾個小時。"
 
-#: setup.php:863
+#: setup.php:876
 #, fuzzy
 msgid "Truncate Syslog Table"
 msgstr "截斷Syslog表"
 
-#: setup.php:864
+#: setup.php:877
 #, fuzzy
 msgid "Inline Upgrade"
 msgstr "內聯昇級"
 
-#: setup.php:865
+#: setup.php:878
 #, fuzzy
 msgid "Background Upgrade"
 msgstr "後台升級"
 
-#: setup.php:870
+#: setup.php:883
 #, fuzzy
 msgid "Database Storage Engine"
 msgstr "數據庫存儲引擎"
 
-#: setup.php:871
+#: setup.php:884
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available."
 msgstr "在MySQL 5.1.6及更高版本中，您可以選擇按天劃分一個分區表。在此版本之前，您只能使用傳統的表結構。"
 
-#: setup.php:874
+#: setup.php:887
 #, fuzzy
 msgid "MyISAM Storage"
 msgstr "MyISAM存儲"
 
-#: setup.php:875
+#: setup.php:888
 #, fuzzy
 msgid "InnoDB Storage"
 msgstr "InnoDB存儲"
 
-#: setup.php:880
+#: setup.php:893
 #, fuzzy
 msgid "Database Architecture"
 msgstr "數據庫架構"
 
-#: setup.php:881
+#: setup.php:894
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available."
 msgstr "在MySQL 5.1.6及更高版本中，您可以選擇按天劃分一個分區表。在MySQL 5.5及更高版本中，您可以每天創建多個分區。在MySQL 5.1.6之前，您只能使用傳統的表結構。"
 
-#: setup.php:885 setup.php:888
+#: setup.php:898 setup.php:901
 #, fuzzy
 msgid "Traditional Table"
 msgstr "傳統表"
 
-#: setup.php:886
+#: setup.php:899
 #, fuzzy
 msgid "Partitioned Table"
 msgstr "分區表"
 
-#: setup.php:894
+#: setup.php:907
 #, fuzzy
 msgid "Retention Policy"
 msgstr "保留政策"
 
-#: setup.php:895
+#: setup.php:908
 #, fuzzy
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "選擇要在數據庫中維護的Syslog值的天數。"
 
-#: setup.php:916
+#: setup.php:929
 #, fuzzy
 msgid "Partitions per Day"
 msgstr "每天分區"
 
-#: setup.php:917
+#: setup.php:930
 #, fuzzy
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "選擇您希望每天創建的分區數。"
 
-#: setup.php:920 setup.php:921 setup.php:922 setup.php:923 setup.php:924
+#: setup.php:933 setup.php:934 setup.php:935 setup.php:936 setup.php:937
 #, fuzzy, php-format
 msgid "%d Per Day"
 msgstr "％d每天"
 
-#: setup.php:930 setup.php:1015
+#: setup.php:943 setup.php:1028
 msgid "Upgrade"
 msgstr "升級"
 
-#: setup.php:932 setup.php:1017
+#: setup.php:945 setup.php:1030
 msgid "Install"
 msgstr "安裝"
 
-#: setup.php:936
+#: setup.php:949
 #, fuzzy, php-format
 msgid "Syslog %s Advisor"
 msgstr "Syslog％s顧問"
 
-#: setup.php:940
+#: setup.php:953
 #, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "警告：Syslog升級是耗時的！"
 
-#: setup.php:941
+#: setup.php:954
 #, fuzzy
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "'main'系統日誌表的升級可能是一個非常耗時的過程。因此，建議您在升級之前減小syslog表的大小，或者選擇後台選項</p><p>如果選擇後台選項，則將重命名舊的syslog表，並將創建新的syslog表。然後，將在後台啟動升級過程。同樣，這個後台進程可能需要相當多的時間才能完成。但是，您的數據將被保留</p><p>無論您的選擇如何，在升級過程中都將保留所有現有的刪除和警報規則。 </p><p>按<b>“升級”</b>繼續升級，或按<b>“取消”</b>返回“插件”菜單。"
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller."
 msgstr "您也可以選擇保留期限。請記住，如果您有多個主機登錄到syslog，則此表可能會變得非常大。因此，如果不使用分區，您可能希望保持較小的大小。"
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
 msgstr "您還可以設置MySQL存儲引擎。如果您尚未針對InnoDB存儲屬性調整系統，則強烈建議您使用MyISAM存儲引擎。"
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries."
 msgstr "安裝Syslog時有幾個選項可供選擇。第一個是數據庫架構。從MySQL 5.1.6開始，您可以選擇使用表分區來防止表的大小變得過大，從而減慢查詢速度。"
 
-#: setup.php:948
+#: setup.php:961
 #, fuzzy, php-format
 msgid "Syslog %s Settings"
 msgstr "Syslog％s設置"
 
-#: setup.php:975
+#: setup.php:988
 #, fuzzy
 msgid "What uninstall method do you want to use?"
 msgstr "你想用什麼卸載方法？"
 
-#: setup.php:976
+#: setup.php:989
 #, fuzzy
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "卸載syslog時，您可以刪除所有內容或僅刪除組件，以防您計劃將來重新安裝。"
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "刪除所有內容（日誌，表格，設置）"
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Syslog Data Only"
 msgstr "僅限Syslog數據"
 
-#: setup.php:998
+#: setup.php:1011
 #, fuzzy
 msgid "Syslog Uninstall Preferences"
 msgstr "Syslog卸載首選項"
 
-#: setup.php:1020
+#: setup.php:1033
 msgid "Uninstall"
 msgstr "解除安裝"
 
-#: setup.php:1027 syslog_alerts.php:204 syslog_removal.php:226
+#: setup.php:1040 syslog_alerts.php:204 syslog_removal.php:226
 #: syslog_reports.php:204
 msgid "Cancel"
 msgstr "取消"
 
-#: setup.php:1058 setup.php:1177 setup.php:1179 setup.php:1385 setup.php:1399
+#: setup.php:1079 setup.php:1215 setup.php:1217 setup.php:1423 setup.php:1437
 #, fuzzy
 msgid "Syslog"
 msgstr "系統日誌"
 
-#: setup.php:1062
+#: setup.php:1083
 msgid "General Settings"
 msgstr "一般設定"
 
-#: setup.php:1066
+#: setup.php:1087
 #, fuzzy
 msgid "Syslog Enabled"
 msgstr "已啟用Syslog"
 
-#: setup.php:1067
+#: setup.php:1088
 #, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "如果設置了此復選框，則記錄將從Syslog Incoming表傳輸到主syslog表，並且將啟用Alerts and Reports。請記住，如果系統被禁用，日誌條目仍會累積到Syslog Incoming表中，因為這是由rsyslog或syslog-ng進程定義的。"
 
-#: setup.php:1072
-#, fuzzy
-msgid "HTML Based Email"
-msgstr "HTML電子郵件"
-
-#: setup.php:1073
-#, fuzzy
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "如果設置了此復選框，則所有電子郵件都將以HTML格式發送。否則，電子郵件將以純文本形式發送。"
-
-#: setup.php:1078
+#: setup.php:1093
 #, fuzzy
 msgid "Enable Statistics Gathering"
 msgstr "啟用統計信息收集"
 
-#: setup.php:1079
+#: setup.php:1094
 #, fuzzy
 msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
 msgstr "如果設置了此復選框，則將保留有關syslog消息來自何處的統計信息。此統計信息可用於渲染熱圖等內容。"
 
-#: setup.php:1084
+#: setup.php:1099
 #, fuzzy
 msgid "Strip Domains"
 msgstr "剝離域"
 
-#: setup.php:1085
+#: setup.php:1100
 #, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "您希望從syslog主機名中刪除的以逗號分隔的域列表，例如'mydomain.com，otherdomain.com'"
 
-#: setup.php:1092
+#: setup.php:1107
 #, fuzzy
 msgid "Validate Hostnames"
 msgstr "驗證主機名"
 
-#: setup.php:1093
+#: setup.php:1108
 #, fuzzy
 msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
 msgstr "如果設置了此復選框，則驗證所有主機名。如果主機名無效。所有記錄都分配給名為“invalidhost”的特殊主機。此設置可能會影響大型系統上的syslog處理時間。因此，只有在沒有其他方法可以防止這種情況發生時，才應使用此設置。"
 
-#: setup.php:1098
+#: setup.php:1113
 msgid "Refresh Interval"
 msgstr "刷新間隔"
 
-#: setup.php:1099
+#: setup.php:1114
 #, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "這是頁面刷新前的秒數。"
 
-#: setup.php:1105
+#: setup.php:1120
 #, fuzzy
 msgid "Max Report Records"
 msgstr "最大報告記錄"
 
-#: setup.php:1106
+#: setup.php:1121
 #, fuzzy
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "對於基於閾值的警報，您希望在報告中顯示的最大數量是多少。這用於限制html日誌和電子郵件的大小。"
 
-#: setup.php:1110 setup.php:1111 setup.php:1112 setup.php:1113 setup.php:1114
-#: setup.php:1115
+#: setup.php:1125 setup.php:1126 setup.php:1127 setup.php:1128 setup.php:1129
+#: setup.php:1130
 #, fuzzy, php-format
 msgid "%d Records"
 msgstr "％d記錄"
 
-#: setup.php:1119
-#, fuzzy
-msgid "Syslog Retention"
-msgstr "Syslog保留"
-
-#: setup.php:1120
-#, fuzzy
-msgid "This is the number of days to keep events."
-msgstr "這是保留事件的天數。"
-
-#: setup.php:1126
-#, fuzzy
-msgid "Syslog Alert Retention"
-msgstr "系統日誌警報保留"
-
-#: setup.php:1127
-#, fuzzy
-msgid "This is the number of days to keep alert logs."
-msgstr "這是保留警報日誌的天數。"
-
-#: setup.php:1133
+#: setup.php:1134
 #, fuzzy
 msgid "Command for Opening Tickets"
 msgstr "打開門票的命令"
 
-#: setup.php:1134
+#: setup.php:1135
 #, fuzzy
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "將執行此命令以打開幫助台票證。該命令將需要解析多個輸入參數如下<b>：--alert名</b> <b><b><b>，--severity，--hostlist，--message。</b></b></b>主機列表將是受警報影響的逗號分隔的主機列表。"
 
-#: setup.php:1140
+#: setup.php:1141
+#, fuzzy
+msgid "HTML Notification Settings"
+msgstr "通知列表"
+
+#: setup.php:1146
+#, fuzzy
+msgid "Enable HTML Based Email"
+msgstr "HTML電子郵件"
+
+#: setup.php:1147
+#, fuzzy
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "如果設置了此復選框，則所有電子郵件都將以HTML格式發送。否則，電子郵件將以純文本形式發送。"
+
+#: setup.php:1152
+#, fuzzy
+#| msgid "Normal User"
+msgid "Format File to Use"
+msgstr "普通用戶"
+
+#: setup.php:1155
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr ""
+
+#: setup.php:1159
+msgid "Data Retention Settings"
+msgstr ""
+
+#: setup.php:1164
+#, fuzzy
+msgid "Syslog Retention"
+msgstr "Syslog保留"
+
+#: setup.php:1165
+#, fuzzy
+msgid "This is the number of days to keep events."
+msgstr "這是保留事件的天數。"
+
+#: setup.php:1171
+#, fuzzy
+msgid "Syslog Alert Retention"
+msgstr "系統日誌警報保留"
+
+#: setup.php:1172
+#, fuzzy
+msgid "This is the number of days to keep alert logs."
+msgstr "這是保留警報日誌的天數。"
+
+#: setup.php:1178
 #, fuzzy
 msgid "Remote Message Processing"
 msgstr "消息字符串："
 
-#: setup.php:1144
+#: setup.php:1182
 #, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "啟用遠程數據收集器消息處理"
 
-#: setup.php:1145
+#: setup.php:1183
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "如果您的遠程數據收集器有自己的 Syslog 數據庫並獨立處理它們的消息，請選中此復選框。通過選中此復選框，您的遠程數據收集器將需要維護自己的“config_local.php”文件，以便通知 Syslog 使用獨立數據庫進行消息顯示和處理。為此請使用模板文件“config_local.php.dist”。警告：啟用此選項後，系統日誌表將自動創建。"
 
-#: setup.php:1150
+#: setup.php:1188
 #, fuzzy
 msgid "Remote Data Collector Rules Sync"
 msgstr "遠程數據收集器規則同步"
 
-#: setup.php:1151
+#: setup.php:1189
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "如果您的遠程數據收集器有自己的系統日誌數據庫並獨立處理三個消息，如果您希望將主要 Cacti 數據庫警報、刪除和報告規則發送到遠程 Cacti 系統，請選中此復選框。"
 
-#: setup.php:1224 syslog_removal.php:33
+#: setup.php:1262 syslog_removal.php:33
 msgid "Delete"
 msgstr "刪除"
 
-#: setup.php:1225 syslog_removal.php:34
+#: setup.php:1263 syslog_removal.php:34
 msgid "Disable"
 msgstr "停用"
 
-#: setup.php:1226 syslog_removal.php:35
+#: setup.php:1264 syslog_removal.php:35
 msgid "Enable"
 msgstr "啟用"
 
-#: setup.php:1227 syslog.php:1303 syslog_removal.php:37
+#: setup.php:1265 syslog.php:1400 syslog_removal.php:37
 msgid "Export"
 msgstr "匯出"
 
-#: setup.php:1270 setup.php:1289
+#: setup.php:1308 setup.php:1327
 msgid "Indefinite"
 msgstr "未定"
 
-#: setup.php:1271 setup.php:1290 syslog.php:542 syslog_alerts.php:380
+#: setup.php:1309 setup.php:1328 syslog.php:604 syslog_alerts.php:381
 #, php-format
 msgid "%d Day"
 msgstr "%d 天"
 
-#: setup.php:1272 setup.php:1273 setup.php:1274 setup.php:1275 setup.php:1276
-#: setup.php:1291 setup.php:1292 setup.php:1293 setup.php:1294 setup.php:1295
-#: syslog_alerts.php:381
+#: setup.php:1310 setup.php:1311 setup.php:1312 setup.php:1313 setup.php:1314
+#: setup.php:1329 setup.php:1330 setup.php:1331 setup.php:1332 setup.php:1333
+#: syslog_alerts.php:382
 #, php-format
 msgid "%d Days"
 msgstr "%d 天"
 
-#: setup.php:1277 setup.php:1296 syslog_alerts.php:382
+#: setup.php:1315 setup.php:1334 syslog_alerts.php:383
 #, php-format
 msgid "%d Week"
 msgstr "％d週"
 
-#: setup.php:1278 setup.php:1297 syslog_alerts.php:383
+#: setup.php:1316 setup.php:1335 syslog_alerts.php:384
 #, php-format
 msgid "%d Weeks"
 msgstr "％d週"
 
-#: setup.php:1279 setup.php:1298
+#: setup.php:1317 setup.php:1336
 #, php-format
 msgid "%d Month"
 msgstr "％d月"
 
-#: setup.php:1280 setup.php:1281 setup.php:1282 setup.php:1283 setup.php:1284
-#: setup.php:1299 setup.php:1300 setup.php:1301 setup.php:1302 setup.php:1303
+#: setup.php:1318 setup.php:1319 setup.php:1320 setup.php:1321 setup.php:1322
+#: setup.php:1337 setup.php:1338 setup.php:1339 setup.php:1340 setup.php:1341
 #, php-format
 msgid "%d Months"
 msgstr "％d個月"
 
-#: setup.php:1285 setup.php:1304
+#: setup.php:1323 setup.php:1342
 #, php-format
 msgid "%d Year"
 msgstr "％d年"
 
-#: setup.php:1308 syslog_reports.php:741
+#: setup.php:1346 syslog_reports.php:741
 msgid "Never"
 msgstr "從不"
 
-#: setup.php:1309 syslog.php:533
+#: setup.php:1347 syslog.php:595
 #, php-format
 msgid "%d Minute"
 msgstr "%d 分鐘"
 
-#: setup.php:1310 setup.php:1311 setup.php:1312 syslog.php:534 syslog.php:535
-#: syslog.php:536 syslog.php:537 syslog_alerts.php:367 syslog_alerts.php:368
-#: syslog_alerts.php:369 syslog_alerts.php:370 syslog_alerts.php:371
-#: syslog_alerts.php:372
+#: setup.php:1348 setup.php:1349 setup.php:1350 syslog.php:596 syslog.php:597
+#: syslog.php:598 syslog.php:599 syslog_alerts.php:368 syslog_alerts.php:369
+#: syslog_alerts.php:370 syslog_alerts.php:371 syslog_alerts.php:372
+#: syslog_alerts.php:373
 #, php-format
 msgid "%d Minutes"
 msgstr "%d 分鐘"
 
-#: setup.php:1316 syslog.php:1469 syslog.php:1510 syslog.php:1527
+#: setup.php:1354 syslog.php:1628 syslog.php:1669 syslog.php:1686
 msgid "Notice"
 msgstr "通知"
 
-#: setup.php:1317 syslog.php:1467 syslog.php:1509 syslog.php:1526
+#: setup.php:1355 syslog.php:1626 syslog.php:1668 syslog.php:1685
 msgid "Warning"
 msgstr "警告"
 
-#: setup.php:1318 syslog.php:1463 syslog.php:1506 syslog.php:1525
+#: setup.php:1356 syslog.php:1622 syslog.php:1665 syslog.php:1684
 msgid "Critical"
 msgstr "嚴重"
 
-#: setup.php:1322
+#: setup.php:1360
 #, fuzzy
 msgid "Begins with"
 msgstr "開始於"
 
-#: setup.php:1323
+#: setup.php:1361
 msgid "Contains"
 msgstr "包含"
 
-#: setup.php:1324
+#: setup.php:1362
 msgid "Ends with"
 msgstr "以此結束"
 
-#: setup.php:1325
+#: setup.php:1363
 #, fuzzy
 msgid "Hostname is"
 msgstr "主機名稱："
 
-#: setup.php:1326
+#: setup.php:1364
 #, fuzzy
 msgid "Program is"
 msgstr "程序"
 
-#: setup.php:1327
+#: setup.php:1365
 #, fuzzy
 msgid "Facility is"
 msgstr "設施"
 
-#: setup.php:1328
+#: setup.php:1366
 #, fuzzy
 msgid "SQL Expression"
 msgstr "SQL表達式"
 
-#: setup.php:1332
+#: setup.php:1370
 msgid "Daily"
 msgstr "每日"
 
-#: setup.php:1333
+#: setup.php:1371
 msgid "Weekly"
 msgstr "每週"
 
-#: setup.php:1357
+#: setup.php:1395
 msgid "Import/Export"
 msgstr "匯入/匯出"
 
-#: setup.php:1358
+#: setup.php:1396
 #, fuzzy
 msgid "Alert Rules"
 msgstr "警報規則"
 
-#: setup.php:1358 setup.php:1359 setup.php:1360 setup.php:1365
+#: setup.php:1396 setup.php:1397 setup.php:1398 setup.php:1403
 #, fuzzy
 msgid "Syslog Settings"
 msgstr "系統日誌設置"
 
-#: setup.php:1359
+#: setup.php:1397
 #, fuzzy
 msgid "Removal Rules"
 msgstr "搬遷規則"
 
-#: setup.php:1360
+#: setup.php:1398
 #, fuzzy
 msgid "Report Rules"
 msgstr "報告規則"
 
-#: setup.php:1369
+#: setup.php:1407
 msgid "Normal User"
 msgstr "普通用戶"
 
-#: setup.php:1370
+#: setup.php:1408
 msgid "System Administration"
 msgstr "系統管理"
 
-#: setup.php:1386
+#: setup.php:1424
 #, fuzzy
 msgid "Syslog Removals"
 msgstr "Syslog刪除"
 
-#: setup.php:1387 setup.php:1388 setup.php:1392 setup.php:1393 setup.php:1397
+#: setup.php:1425 setup.php:1426 setup.php:1430 setup.php:1431 setup.php:1435
 msgid "(Edit)"
 msgstr "(編輯)"
 
-#: setup.php:1389 setup.php:1394 setup.php:1398
+#: setup.php:1427 setup.php:1432 setup.php:1436
 #, fuzzy
 msgid "(Actions)"
 msgstr "動作"
 
-#: setup.php:1391
+#: setup.php:1429
 #, fuzzy
 msgid "Syslog Alerts"
 msgstr "Syslog提醒"
 
-#: setup.php:1396
+#: setup.php:1434
 #, fuzzy
 msgid "Syslog Reports"
 msgstr "系統日誌報告"
 
-#: setup.php:1475
+#: setup.php:1513
 #, fuzzy
 msgid "Display Syslog in Range"
 msgstr "在範圍內顯示Syslog"
 
-#: setup.php:1523
+#: setup.php:1561
 #, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "從Syslog數據庫中刪除了％s設備記錄"
 
-#: setup.php:1539
+#: setup.php:1577
 #, fuzzy
 msgid "Syslog Utilities"
 msgstr "Syslog實用工具"
 
-#: setup.php:1543
+#: setup.php:1581
 #, fuzzy
 msgid "Purge Syslog Devices"
 msgstr "清除Syslog設備"
 
-#: setup.php:1546
+#: setup.php:1584
 #, fuzzy
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "此菜單選項提供了一種刪除不再向Cacti的syslog服務器報告的設備的方法。"
 
-#: syslog.php:52
+#: syslog.php:54
 #, fuzzy
 msgid "Syslog Viewer"
 msgstr "系統日誌查看器"
 
-#: syslog.php:55
+#: syslog.php:57
 msgid "All Text"
 msgstr "所有文字"
 
-#: syslog.php:56 syslog.php:57 syslog.php:58 syslog.php:59 syslog.php:60
-#: syslog.php:61
+#: syslog.php:58 syslog.php:59 syslog.php:60 syslog.php:61 syslog.php:62
+#: syslog.php:63
 #, fuzzy, php-format
 msgid "%d Chars"
 msgstr "％d Chars"
 
-#: syslog.php:112
+#: syslog.php:167
 msgid "System Logs"
 msgstr "系統日誌"
 
-#: syslog.php:114
+#: syslog.php:169
 msgid "Statistics"
 msgstr "統計"
 
-#: syslog.php:116
+#: syslog.php:171
 #, fuzzy
 msgid "Alert Logs"
 msgstr "警報日誌"
 
-#: syslog.php:125
+#: syslog.php:180
 #, fuzzy
 msgid "Selected Alert"
 msgstr "選定的警報"
 
-#: syslog.php:148
+#: syslog.php:203
 #, fuzzy
 msgid "Syslog Alert View"
 msgstr "Syslog警報視圖"
 
-#: syslog.php:229
+#: syslog.php:284
 #, fuzzy
 msgid "Syslog Statistics Filter"
 msgstr "系統日誌統計過濾器"
 
-#: syslog.php:255 syslog.php:1389 syslog.php:1621
+#: syslog.php:310 syslog.php:1548 syslog.php:1780
 msgid "Messages"
 msgstr "訊息"
 
-#: syslog.php:263
+#: syslog.php:318
 msgid "Device Name"
 msgstr "設備名稱"
 
-#: syslog.php:268 syslog.php:470 syslog.php:1432 syslog.php:1609
-#: syslog.php:1617 syslog.php:1715
+#: syslog.php:323 syslog.php:532 syslog.php:1591 syslog.php:1768
+#: syslog.php:1776 syslog.php:1874
 msgid "Facility"
 msgstr "設施"
 
-#: syslog.php:273 syslog.php:490 syslog.php:1454 syslog.php:1610
-#: syslog.php:1618 syslog.php:1716
+#: syslog.php:328 syslog.php:552 syslog.php:1613 syslog.php:1769
+#: syslog.php:1777 syslog.php:1875
 msgid "Priority"
 msgstr "優先度"
 
-#: syslog.php:278 syslog.php:1607 syslog.php:1615 syslog.php:1808
+#: syslog.php:333 syslog.php:1766 syslog.php:1774 syslog.php:1967
 msgid "Program"
 msgstr "程序"
 
-#: syslog.php:288
+#: syslog.php:343
 msgid "Records"
 msgstr "資料"
 
-#: syslog.php:325
+#: syslog.php:380
 #, fuzzy
 msgid "No Syslog Statistics Found"
 msgstr "未找到Syslog統計信息"
 
-#: syslog.php:433 syslog.php:1606 syslog.php:1614 syslog.php:1714
-#: syslog_alerts.php:480
+#: syslog.php:488 syslog.php:1765 syslog.php:1773 syslog.php:1873
+#: syslog_alerts.php:481
 msgid "Device"
 msgstr "裝置"
 
-#: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
-#: syslog_alerts.php:682 syslog_removal.php:548 syslog_reports.php:562
+#: syslog.php:492 syslog.php:536 syslog.php:556 syslog_alerts.php:697
+#: syslog_removal.php:548 syslog_reports.php:562
 msgid "All"
 msgstr "全部"
 
-#: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1802
-#: syslog.php:1813 syslog.php:1854 syslog.php:1855 syslog_alerts.php:563
-#: syslog_reports.php:466
+#: syslog.php:493 syslog.php:537 syslog.php:557 syslog.php:1961 syslog.php:1972
+#: syslog.php:2013 syslog.php:2014 syslog_alerts.php:556 syslog_reports.php:466
 msgid "None"
 msgstr "無"
 
-#: syslog.php:512 syslog.php:1301 syslog_alerts.php:704 syslog_removal.php:570
+#: syslog.php:574 syslog.php:1398 syslog_alerts.php:719 syslog_removal.php:570
 #: syslog_reports.php:584
 msgid "Go"
 msgstr "送出"
 
-#: syslog.php:513 syslog.php:1302 syslog_alerts.php:705 syslog_removal.php:571
+#: syslog.php:575 syslog.php:1399 syslog_alerts.php:720 syslog_removal.php:571
 #: syslog_reports.php:585
 msgid "Clear"
 msgstr "清除"
 
-#: syslog.php:521 syslog.php:1061 syslog.php:1326 syslog_alerts.php:672
-#: syslog_removal.php:538 syslog_reports.php:552
+#: syslog.php:583 syslog.php:1423 syslog_alerts.php:687 syslog_removal.php:538
+#: syslog_reports.php:552
 msgid "Search"
 msgstr "搜尋"
 
-#: syslog.php:527
+#: syslog.php:589
 msgid "Time Range"
 msgstr "時間範圍"
 
-#: syslog.php:538 syslog_alerts.php:373
+#: syslog.php:600 syslog_alerts.php:374
 #, php-format
 msgid "%d Hour"
 msgstr "%d 小時"
 
-#: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:374
-#: syslog_alerts.php:375 syslog_alerts.php:376 syslog_alerts.php:377
-#: syslog_alerts.php:378 syslog_alerts.php:379
+#: syslog.php:601 syslog.php:602 syslog.php:603 syslog_alerts.php:375
+#: syslog_alerts.php:376 syslog_alerts.php:377 syslog_alerts.php:378
+#: syslog_alerts.php:379 syslog_alerts.php:380
 #, php-format
 msgid "%d Hours"
 msgstr "%d 小時"
 
-#: syslog.php:552
+#: syslog.php:614
 msgid "Entries"
 msgstr "留言"
 
-#: syslog.php:556 syslog.php:1393 syslog_alerts.php:692 syslog_removal.php:558
+#: syslog.php:618 syslog.php:1552 syslog_alerts.php:707 syslog_removal.php:558
 #: syslog_reports.php:572
 msgid "Default"
 msgstr "預設"
 
-#: syslog.php:1000
+#: syslog.php:1062
 #, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
 msgstr "[開始：'％s'到結尾：'％s'，未處理的消息：％s]"
 
-#: syslog.php:1002
+#: syslog.php:1064
 #, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[未處理的消息：％s]"
 
-#: syslog.php:1019
+#: syslog.php:1074
+msgid "Enter a search term"
+msgstr ""
+
+#: syslog.php:1086
 #, fuzzy
 msgid "Select Device(s)"
 msgstr "選擇設備"
 
-#: syslog.php:1021
+#: syslog.php:1088
 #, fuzzy
 msgid "Devices Selected"
 msgstr "選擇的設備"
 
-#: syslog.php:1024
+#: syslog.php:1091
 #, fuzzy
 msgid "All Devices Selected"
 msgstr "選擇所有設備"
 
-#: syslog.php:1228
+#: syslog.php:1325
 #, fuzzy, php-format
 msgid "Syslog Message Filter %s"
 msgstr "系統日誌消息過濾器％s"
 
-#: syslog.php:1235
+#: syslog.php:1332
 msgid "Timespan"
 msgstr "時間跨度"
 
-#: syslog.php:1241
+#: syslog.php:1338
 msgid "Custom"
 msgstr "自訂"
 
-#: syslog.php:1263
+#: syslog.php:1360
 msgid "From"
 msgstr "從"
 
-#: syslog.php:1269
+#: syslog.php:1366
 msgid "Start Date Selector"
 msgstr "開始日期選擇器"
 
-#: syslog.php:1272
+#: syslog.php:1369
 msgid "To"
 msgstr "到"
 
-#: syslog.php:1278
+#: syslog.php:1375
 msgid "End Date Selector"
 msgstr "結束日期選擇器"
 
-#: syslog.php:1281
+#: syslog.php:1378
 msgid "Shift Time Backward"
 msgstr "轉移時間倒退"
 
-#: syslog.php:1284
+#: syslog.php:1381
 msgid "Define Shifting Interval"
 msgstr "定義移位間隔"
 
-#: syslog.php:1297
+#: syslog.php:1394
 msgid "Shift Time Forward"
 msgstr "轉移時間"
 
-#: syslog.php:1302
+#: syslog.php:1399
 #, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr "將過濾器值返回到用戶定義的默認值"
 
-#: syslog.php:1303
+#: syslog.php:1400
 #, fuzzy
 msgid "Export Records to CSV"
 msgstr "將記錄導出為CSV"
 
-#: syslog.php:1304
+#: syslog.php:1401
 msgid "Save"
 msgstr "儲存"
 
-#: syslog.php:1304
+#: syslog.php:1401
 #, fuzzy
 msgid "Save Default Settings"
 msgstr "保存默認設置"
 
-#: syslog.php:1310 syslog_alerts.php:843
+#: syslog.php:1407 syslog_alerts.php:858
 msgid "Alerts"
 msgstr "通知"
 
-#: syslog.php:1310
+#: syslog.php:1407
 #, fuzzy
 msgid "View Syslog Alert Rules"
 msgstr "查看Syslog警報規則"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "Removals"
 msgstr "清除"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "View Syslog Removal Rules"
 msgstr "查看Syslog刪除規則"
 
-#: syslog.php:1312 syslog_reports.php:722
+#: syslog.php:1409 syslog_reports.php:722
 msgid "Reports"
 msgstr "報告"
 
-#: syslog.php:1312
+#: syslog.php:1409
 #, fuzzy
 msgid "View Syslog Reports"
 msgstr "查看Syslog報告"
 
-#: syslog.php:1332
+#: syslog.php:1429
 msgid "Devices"
 msgstr "設備"
 
-#: syslog.php:1336
+#: syslog.php:1437
 #, fuzzy
 msgid "Show All Devices"
 msgstr "顯示所有設備"
 
-#: syslog.php:1337
+#: syslog.php:1439
 #, fuzzy
 msgid "Show All Logs"
 msgstr "顯示所有日誌"
 
-#: syslog.php:1338
+#: syslog.php:1440
 #, fuzzy
 msgid "Threshold Logs"
 msgstr "閾值日誌"
 
-#: syslog.php:1392
+#: syslog.php:1551
 #, fuzzy
 msgid "Display Rows"
 msgstr "顯示行"
 
-#: syslog.php:1402
+#: syslog.php:1561
 msgid "Trim"
 msgstr "特林"
 
-#: syslog.php:1405
+#: syslog.php:1564
 #, fuzzy
 msgid "Message Trim"
 msgstr "消息修剪"
 
-#: syslog.php:1414
+#: syslog.php:1573
 msgid "Refresh"
 msgstr "重新整理"
 
-#: syslog.php:1435
+#: syslog.php:1594
 #, fuzzy
 msgid "Facilities to filter on"
 msgstr "要過濾的設施"
 
-#: syslog.php:1436
+#: syslog.php:1595
 msgid "All Facilities"
 msgstr "所有設施"
 
-#: syslog.php:1457
+#: syslog.php:1616
 #, fuzzy
 msgid "Priority Levels"
 msgstr "優先級"
 
-#: syslog.php:1458
+#: syslog.php:1617
 msgid "All Priorities"
 msgstr "所有優先事項"
 
-#: syslog.php:1459 syslog.php:1505
+#: syslog.php:1618 syslog.php:1664
 msgid "Emergency"
 msgstr "緊急"
 
-#: syslog.php:1460
+#: syslog.php:1619
 #, fuzzy
 msgid "Alert++"
 msgstr "警報"
 
-#: syslog.php:1461 syslog.php:1507
+#: syslog.php:1620 syslog.php:1666
 msgid "Alert"
 msgstr "警報"
 
-#: syslog.php:1462
+#: syslog.php:1621
 #, fuzzy
 msgid "Critical++"
 msgstr "嚴重"
 
-#: syslog.php:1464
+#: syslog.php:1623
 #, fuzzy
 msgid "Error++"
 msgstr "錯誤:"
 
-#: syslog.php:1465 syslog.php:1508
+#: syslog.php:1624 syslog.php:1667
 msgid "Error"
 msgstr "錯誤"
 
-#: syslog.php:1466
+#: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
 msgstr "警告："
 
-#: syslog.php:1468
+#: syslog.php:1627
 #, fuzzy
 msgid "Notice++"
 msgstr "通知"
 
-#: syslog.php:1470
+#: syslog.php:1629
 #, fuzzy
 msgid "Info++"
 msgstr "資訊"
 
-#: syslog.php:1471 syslog.php:1511
+#: syslog.php:1630 syslog.php:1670
 msgid "Info"
 msgstr "資訊"
 
-#: syslog.php:1472 syslog.php:1512
+#: syslog.php:1631 syslog.php:1671
 msgid "Debug"
 msgstr "除錯"
 
-#: syslog.php:1477
+#: syslog.php:1636
 #, fuzzy
 msgid "Record Type"
 msgstr "資料"
 
-#: syslog.php:1480
+#: syslog.php:1639
 #, fuzzy
 msgid "Removal Handling"
 msgstr "搬運處理"
 
-#: syslog.php:1481
+#: syslog.php:1640
 #, fuzzy
 msgid "All Records"
 msgstr "所有記錄"
 
-#: syslog.php:1482
+#: syslog.php:1641
 #, fuzzy
 msgid "Main Records"
 msgstr "主要記錄"
 
-#: syslog.php:1483
+#: syslog.php:1642
 #, fuzzy
 msgid "Removed Records"
 msgstr "刪除了記錄"
 
-#: syslog.php:1528
+#: syslog.php:1687
 msgid "Informational"
 msgstr "資訊"
 
-#: syslog.php:1604 syslog_alerts.php:547
+#: syslog.php:1763 syslog_alerts.php:581
 msgid "Actions"
 msgstr "動作"
 
-#: syslog.php:1664 syslog.php:1667 syslog.php:1668 syslog.php:1735
+#: syslog.php:1823 syslog.php:1826 syslog.php:1827 syslog.php:1894
 msgid "Unknown"
 msgstr "未知"
 
-#: syslog.php:1673
+#: syslog.php:1832
 #, fuzzy
 msgid "No Syslog Messages"
 msgstr "沒有系統日誌消息"
 
-#: syslog.php:1719
+#: syslog.php:1878
 #, fuzzy
 msgid "Alert Log Rows"
 msgstr "警報日誌行"
 
-#: syslog.php:1733
+#: syslog.php:1892
 #, fuzzy
 msgid "Alert Removed"
 msgstr "警報已刪除"
 
-#: syslog.php:1747
+#: syslog.php:1906
 #, fuzzy
 msgid "No Alert Log Messages"
 msgstr "沒有警報日誌消息"
 
-#: syslog.php:1804 syslog.php:1827 syslog.php:1846 syslog.php:1847
+#: syslog.php:1963 syslog.php:1986 syslog.php:2005 syslog.php:2006
 #, fuzzy
 msgid "All Programs"
 msgstr "所有課程"
@@ -1135,287 +1167,302 @@ msgstr "導出系統日誌警報規則"
 msgid "Continue"
 msgstr "繼續"
 
-#: syslog_alerts.php:357
+#: syslog_alerts.php:358
 msgid "Not Set"
 msgstr "未設定"
 
-#: syslog_alerts.php:362
+#: syslog_alerts.php:363
 msgid "1 Minute"
 msgstr "1 分鐘"
 
-#: syslog_alerts.php:384
+#: syslog_alerts.php:385
 msgid "1 Month"
 msgstr "1個月"
 
-#: syslog_alerts.php:420
+#: syslog_alerts.php:421
 #, fuzzy, php-format
 msgid "Alert Edit [edit: %s]"
 msgstr "警報編輯[編輯：％s]"
 
-#: syslog_alerts.php:422 syslog_alerts.php:429 syslog_alerts.php:436
+#: syslog_alerts.php:423 syslog_alerts.php:430 syslog_alerts.php:437
 #, fuzzy
 msgid "Alert Edit [new]"
 msgstr "提醒編輯[新]"
 
-#: syslog_alerts.php:434 syslog_alerts.php:438
+#: syslog_alerts.php:435 syslog_alerts.php:439
 #, fuzzy
 msgid "New Alert Rule"
 msgstr "新警報規則"
 
-#: syslog_alerts.php:449 syslog_alerts.php:859 syslog_reports.php:383
+#: syslog_alerts.php:450 syslog_alerts.php:874 syslog_reports.php:383
 msgid "N/A"
 msgstr "不适用"
 
-#: syslog_alerts.php:457 syslog_reports.php:389
+#: syslog_alerts.php:458 syslog_reports.php:389
 msgid "Details"
 msgstr "詳細資料"
 
-#: syslog_alerts.php:461 syslog_reports.php:393
+#: syslog_alerts.php:462 syslog_reports.php:393
 msgid "Name"
 msgstr "名稱"
 
-#: syslog_alerts.php:462
+#: syslog_alerts.php:463
 #, fuzzy
 msgid "Please describe this Alert."
 msgstr "請描述此警報。"
 
-#: syslog_alerts.php:470
+#: syslog_alerts.php:471
 #, fuzzy
 msgid "What is the Severity Level of this Alert?"
 msgstr "此警報的嚴重級別是多少？"
 
-#: syslog_alerts.php:477
+#: syslog_alerts.php:478
 #, fuzzy
 msgid "Reporting Level"
 msgstr "報告方法"
 
-#: syslog_alerts.php:478
+#: syslog_alerts.php:479
 #, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
 msgstr "為了記錄重新警報週期，應在系統或設備級別跟踪警報。"
 
-#: syslog_alerts.php:480
+#: syslog_alerts.php:481
 msgid "System"
 msgstr "取得系統報表"
 
-#: syslog_alerts.php:485
+#: syslog_alerts.php:486
 #, fuzzy
 msgid "Reporting Method"
 msgstr "報告方法"
 
-#: syslog_alerts.php:486
+#: syslog_alerts.php:487
 #, fuzzy
 msgid "Define how to Alert on the syslog messages."
 msgstr "定義如何對系統日誌消息進行警報。"
 
-#: syslog_alerts.php:488 syslog_alerts.php:858
+#: syslog_alerts.php:489 syslog_alerts.php:873
 msgid "Individual"
 msgstr "個人"
 
-#: syslog_alerts.php:494
+#: syslog_alerts.php:495
 #, fuzzy
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr "對於“閾值”方法，如果看到的數字高於此值，將觸發警報。"
 
-#: syslog_alerts.php:502 syslog_alerts.php:836 syslog_removal.php:699
+#: syslog_alerts.php:503 syslog_alerts.php:851 syslog_removal.php:699
 #: syslog_reports.php:713
 #, fuzzy
 msgid "Match Type"
 msgstr "比賽類型"
 
-#: syslog_alerts.php:503 syslog_removal.php:438
+#: syslog_alerts.php:504 syslog_removal.php:438
 #, fuzzy
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
 msgstr "定義您希望此字符串匹配的方式。如果使用SQL Expression類型，則可以使用任何有效的SQL表達式來生成警報。可用字段包括“消息”，“設施”，“優先級”和“主機”。"
 
-#: syslog_alerts.php:510 syslog_reports.php:416 syslog_reports.php:443
+#: syslog_alerts.php:511 syslog_reports.php:416 syslog_reports.php:443
 #, fuzzy
 msgid "Message Match String"
 msgstr "系統日誌消息匹配字符串"
 
-#: syslog_alerts.php:511 syslog_removal.php:446
+#: syslog_alerts.php:512 syslog_removal.php:446
 #, fuzzy
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
 msgstr "如果使用SQL表達式匹配類型，請輸入syslog消息，設施或主機名或SQL where子句的匹配組件。"
 
-#: syslog_alerts.php:521 syslog_alerts.php:524 syslog_alerts.php:678
-#: syslog_alerts.php:835 syslog_removal.php:432 syslog_removal.php:544
+#: syslog_alerts.php:522 syslog_alerts.php:525 syslog_alerts.php:693
+#: syslog_alerts.php:850 syslog_removal.php:432 syslog_removal.php:544
 #: syslog_removal.php:698 syslog_reports.php:403 syslog_reports.php:558
 #: syslog_reports.php:712
 msgid "Enabled"
 msgstr "啟用"
 
-#: syslog_alerts.php:522
+#: syslog_alerts.php:523
 #, fuzzy
 msgid "Is this Alert Enabled?"
 msgstr "此警報已啟用嗎？"
 
-#: syslog_alerts.php:524 syslog_removal.php:432 syslog_reports.php:403
+#: syslog_alerts.php:525 syslog_removal.php:432 syslog_reports.php:403
 msgid "Disabled"
 msgstr "停用"
 
-#: syslog_alerts.php:528
+#: syslog_alerts.php:529
 #, fuzzy
 msgid "Re-Alert Cycle"
 msgstr "重新警報週期"
 
-#: syslog_alerts.php:532
+#: syslog_alerts.php:533
 #, fuzzy
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr "不要再次為同一主機重新發送此警報，直到經過這段時間。對於基於閾值的警報，這適用於所有主機。"
 
-#: syslog_alerts.php:536 syslog_reports.php:480
+#: syslog_alerts.php:537 syslog_reports.php:480
 msgid "Notes"
 msgstr "備註"
 
-#: syslog_alerts.php:539
+#: syslog_alerts.php:540
 #, fuzzy
 msgid "Space for Notes on the Alert"
 msgstr "警報備註的空間"
 
-#: syslog_alerts.php:551
+#: syslog_alerts.php:548
+msgid "Email Options"
+msgstr ""
+
+#: syslog_alerts.php:552 syslog_reports.php:462
+#, fuzzy
+msgid "Notification List"
+msgstr "通知列表"
+
+#: syslog_alerts.php:553 syslog_reports.php:463
+#, fuzzy
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "使用此通知列表的內容來規定應通知誰以及如何通知。"
+
+#: syslog_alerts.php:561
+#, fuzzy
+msgid "Emails to Notify"
+msgstr "電子郵件通知"
+
+#: syslog_alerts.php:564
+#, fuzzy
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "請輸入逗號分隔的電子郵件地址列表以通知。如果您希望以短信格式向收件人發送電子郵件，請在收件人的電子郵件地址前加上<b>“sms @”</b> 。例如，如果收件人的SMS地址為<b>“2485551212@mycarrier.net”</b> ，則將其輸入為<b>“sms @ 2485551212 @ mycarrier.net”</b> ，並將其格式化為SMS消息。"
+
+#: syslog_alerts.php:570 syslog_reports.php:451
+#, fuzzy
+#| msgid "Body Text"
+msgid "Email Body Text"
+msgstr "主體文字"
+
+#: syslog_alerts.php:573
+#, fuzzy
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "將包含在報告正文中的信息。"
+
+#: syslog_alerts.php:585
 msgid "Open Ticket"
 msgstr "開新問題單"
 
-#: syslog_alerts.php:552
+#: syslog_alerts.php:586
 #, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "是否應為此警報打開幫助台工單。注意：為方便起見，Ticket 命令腳本將填充幾個“ALERT_”環境變量。"
 
-#: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:699 syslog_alerts.php:875
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
 #: syslog_reports.php:736
 msgid "No"
 msgstr "否"
 
-#: syslog_alerts.php:554 syslog_alerts.php:683 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:698 syslog_alerts.php:875
 #: syslog_removal.php:549 syslog_removal.php:720 syslog_reports.php:563
 #: syslog_reports.php:736
 msgid "Yes"
 msgstr "是"
 
-#: syslog_alerts.php:559 syslog_reports.php:462
-#, fuzzy
-msgid "Notification List"
-msgstr "通知列表"
-
-#: syslog_alerts.php:560 syslog_reports.php:463
-#, fuzzy
-msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr "使用此通知列表的內容來規定應通知誰以及如何通知。"
-
-#: syslog_alerts.php:568
-#, fuzzy
-msgid "Emails to Notify"
-msgstr "電子郵件通知"
-
-#: syslog_alerts.php:571
-#, fuzzy
-msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr "請輸入逗號分隔的電子郵件地址列表以通知。如果您希望以短信格式向收件人發送電子郵件，請在收件人的電子郵件地址前加上<b>“sms @”</b> 。例如，如果收件人的SMS地址為<b>“2485551212@mycarrier.net”</b> ，則將其輸入為<b>“sms @ 2485551212 @ mycarrier.net”</b> ，並將其格式化為SMS消息。"
-
-#: syslog_alerts.php:577
+#: syslog_alerts.php:592
 msgid "Command"
 msgstr "命令"
 
-#: syslog_alerts.php:580
+#: syslog_alerts.php:595
 #, fuzzy
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "觸發警報時，請運行以下命令。以下替換變量可用於<b>“&lt;HOSTNAME&gt;”</b> ， <b>“&lt;ALERTID&gt;”</b> ， <b>“&lt;MESSAGE&gt;”</b> ， <b>“&lt;FACILITY&gt;”</b> ， <b>“&lt;PRIORITY&gt;”</b> ， <b>“&lt;SEVERITY&gt;”</b> 。請注意， <b>&#39;&lt;HOSTNAME&gt;&#39;</b>僅適用於各個閾值。"
 
-#: syslog_alerts.php:688 syslog_reports.php:568
+#: syslog_alerts.php:703 syslog_reports.php:568
 msgid "Rows"
 msgstr "行"
 
-#: syslog_alerts.php:706 syslog_alerts.php:998 syslog_removal.php:572
+#: syslog_alerts.php:721 syslog_alerts.php:1013 syslog_removal.php:572
 #: syslog_removal.php:859 syslog_reports.php:586 syslog_reports.php:877
 msgid "Import"
 msgstr "匯入"
 
-#: syslog_alerts.php:806
+#: syslog_alerts.php:821
 #, fuzzy
 msgid "Syslog Alert Filters"
 msgstr "系統日誌警報過濾器"
 
-#: syslog_alerts.php:833 syslog_removal.php:701
+#: syslog_alerts.php:848 syslog_removal.php:701
 msgid "Method"
 msgstr "方法"
 
-#: syslog_alerts.php:834
+#: syslog_alerts.php:849
 #, fuzzy
 msgid "Threshold Count"
 msgstr "門檻數"
 
-#: syslog_alerts.php:837 syslog_removal.php:700 syslog_reports.php:714
+#: syslog_alerts.php:852 syslog_removal.php:700 syslog_reports.php:714
 #, fuzzy
 msgid "Search String"
 msgstr "搜索字符串"
 
-#: syslog_alerts.php:838 syslog_reports.php:470
+#: syslog_alerts.php:853 syslog_reports.php:470
 msgid "Email Addresses"
 msgstr "電子郵件信箱"
 
-#: syslog_alerts.php:839 syslog_removal.php:702 syslog_reports.php:718
+#: syslog_alerts.php:854 syslog_removal.php:702 syslog_reports.php:718
 msgid "Last Modified"
 msgstr "最後修改"
 
-#: syslog_alerts.php:840 syslog_removal.php:703 syslog_reports.php:719
+#: syslog_alerts.php:855 syslog_removal.php:703 syslog_reports.php:719
 msgid "By User"
 msgstr "依據用戶"
 
-#: syslog_alerts.php:863
+#: syslog_alerts.php:878
 msgid "Multiple"
 msgstr "多"
 
-#: syslog_alerts.php:870
+#: syslog_alerts.php:885
 #, fuzzy
 msgid "No Syslog Alerts Defined"
 msgstr "沒有系統日誌警報定義"
 
-#: syslog_alerts.php:901
+#: syslog_alerts.php:916
 #, fuzzy
 msgid "Import Alert Rule from Local File"
 msgstr "從本地文件導入警報規則"
 
-#: syslog_alerts.php:902
+#: syslog_alerts.php:917
 #, fuzzy
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr "如果包含警報規則定義數據的XML文件位於本地計算機上，請在此處選擇它。"
 
-#: syslog_alerts.php:907
+#: syslog_alerts.php:922
 #, fuzzy
 msgid "Import Alert Rule from Text"
 msgstr "從文本導入警報規則"
 
-#: syslog_alerts.php:908
+#: syslog_alerts.php:923
 #, fuzzy
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr "如果您將包含Alert Ruledefinition數據的XML文件作為文本，則可以將其粘貼到此框中以將其導入。"
 
-#: syslog_alerts.php:919
+#: syslog_alerts.php:934
 #, fuzzy
 msgid "Import Alert Rule"
 msgstr "導入警報規則"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 msgid "Imported"
 msgstr "已匯入"
 
-#: syslog_alerts.php:996
+#: syslog_alerts.php:1011
 #, fuzzy, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr "注意：提醒'％s'％s！"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 msgid "Updated"
 msgstr "已更新"
 
-#: syslog_alerts.php:998
+#: syslog_alerts.php:1013
 #, fuzzy, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "錯誤：警報'％s'％s失敗！"
 
-#: syslog_alerts.php:998 syslog_removal.php:859 syslog_reports.php:877
+#: syslog_alerts.php:1013 syslog_removal.php:859 syslog_reports.php:877
 msgid "Update"
 msgstr "更新"
 
@@ -1723,13 +1770,9 @@ msgstr "該報告應該在什麼時間發送？"
 msgid "Report Format"
 msgstr "報告說明"
 
-#: syslog_reports.php:451
-msgid "Body Text"
-msgstr "主體文字"
-
 #: syslog_reports.php:454
 #, fuzzy
-msgid "The information that will be contained in the body of the report."
+msgid "The information that will be contained in the body of the Report."
 msgstr "將包含在報告正文中的信息。"
 
 #: syslog_reports.php:473
