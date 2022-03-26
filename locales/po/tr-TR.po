@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-19 17:01-0400\n"
+"PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: tr_TR\n"
@@ -448,12 +448,14 @@ msgid "Format File to Use"
 msgstr "Normal Kullanıcı"
 
 #: setup.php:1155
+#, fuzzy
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "Kullanılacak özel html sarmalayıcıyı ve CSS dosyasını seçin. Bu dosya, raporunuzu sarmak için hem html hem de CSS içerir. Basitçe CSS'den fazlasını içeriyorsa, özel bir<REPORT> dosyanın içindeki etiket. Bu biçim etiketi, rapor içeriğiyle değiştirilecektir. Bu dosyalar 'formatlar' dizininde bulunur."
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "Veri Saklama Ayarları"
 
 #: setup.php:1164
 #, fuzzy
@@ -849,8 +851,9 @@ msgid "[ Unprocessed Messages: %s ]"
 msgstr "[İşlenmemiş Mesajlar: %s]"
 
 #: syslog.php:1074
+#, fuzzy
 msgid "Enter a search term"
-msgstr ""
+msgstr "Bir arama terimi girin"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1309,7 +1312,7 @@ msgstr "Alarm ile ilgili notlar için alan"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "E-posta Seçenekleri"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 #, fuzzy

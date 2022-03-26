@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-24 23:54+0000\n"
+"PO-Revision-Date: 2022-03-26 11:39-0400\n"
 "Last-Translator: Anatoliy <hamrad99h2@gmail.com>\n"
 "Language-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\n"
-"Language: ru-RU\n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -450,12 +450,14 @@ msgid "Format File to Use"
 msgstr "Обычный пользователь"
 
 #: setup.php:1155
+#, fuzzy
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "Выберите пользовательскую оболочку html и файл CSS для использования. Этот файл содержит как html, так и CSS для обертывания вашего отчета. Если он содержит больше, чем просто CSS, вам нужно поместить специальный<REPORT> тег внутри файла. Этот тег формата будет заменен содержимым отчета. Эти файлы находятся в каталоге форматов."
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "Настройки хранения данных"
 
 #: setup.php:1164
 #, fuzzy
@@ -851,8 +853,9 @@ msgid "[ Unprocessed Messages: %s ]"
 msgstr "[ Необработанные сообщения: %s ]"
 
 #: syslog.php:1074
+#, fuzzy
 msgid "Enter a search term"
-msgstr ""
+msgstr "Введите поисковый запрос"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1040,7 +1043,7 @@ msgstr "Критический"
 #: syslog.php:1623
 #, fuzzy
 msgid "Error++"
-msgstr "Ошибка:"
+msgstr "Ошибка"
 
 #: syslog.php:1624 syslog.php:1667
 msgid "Error"
@@ -1049,7 +1052,7 @@ msgstr "Ошибка"
 #: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
-msgstr "ВНИМАНИЕ:"
+msgstr "Предупреждение"
 
 #: syslog.php:1627
 #, fuzzy
@@ -1311,7 +1314,7 @@ msgstr "Пространство для заметок в оповещении"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "Параметры Email"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 msgid "Notification List"

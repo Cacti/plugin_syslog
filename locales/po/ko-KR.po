@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-19 16:59-0400\n"
+"PO-Revision-Date: 2022-03-26 11:38-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ko_KR\n"
@@ -446,12 +446,14 @@ msgid "Format File to Use"
 msgstr "일반 사용자"
 
 #: setup.php:1155
+#, fuzzy
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "사용할 사용자 정의 html 래퍼 및 CSS 파일을 선택합니다. 이 파일에는 보고서를 둘러싸기 위한 html과 CSS가 모두 포함되어 있습니다. 단순히 CSS 이상을 포함하는 경우 특별한<REPORT> 파일 내부의 태그. 이 형식 태그는 보고서 내용으로 대체됩니다. 이 파일은 'formats' 디렉토리에 있습니다."
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "데이터 보존 설정"
 
 #: setup.php:1164
 #, fuzzy
@@ -603,7 +605,7 @@ msgstr "로 끝나다"
 #: setup.php:1363
 #, fuzzy
 msgid "Hostname is"
-msgstr "호스트이름:"
+msgstr "호스트명"
 
 #: setup.php:1364
 #, fuzzy
@@ -850,8 +852,9 @@ msgid "[ Unprocessed Messages: %s ]"
 msgstr "[처리되지 않은 메시지 :  %s]"
 
 #: syslog.php:1074
+#, fuzzy
 msgid "Enter a search term"
-msgstr ""
+msgstr "검색어를 입력하세요"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1313,7 +1316,7 @@ msgstr "알리미에 대한 메모를위한 공간"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "이메일 옵션"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 #, fuzzy

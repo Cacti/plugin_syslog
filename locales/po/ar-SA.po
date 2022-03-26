@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-19 16:54-0400\n"
+"PO-Revision-Date: 2022-03-26 11:35-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar_SA\n"
@@ -446,18 +446,17 @@ msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwi
 msgstr "إذا تم تعيين مربع الاختيار هذا ، فسيتم إرسال جميع رسائل البريد الإلكتروني بتنسيق HTML. خلاف ذلك ، سيتم إرسال رسائل البريد الإلكتروني في نص عادي."
 
 #: setup.php:1152
-#, fuzzy
-#| msgid "Normal User"
 msgid "Format File to Use"
-msgstr "المستخدم العادي"
+msgstr "تنسيق ملف للاستخدام"
 
 #: setup.php:1155
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "اختر ملف html المخصص وملف CSS لاستخدامه. يحتوي هذا الملف على كل من html و CSS للتفاف حول تقريرك. إذا كان يحتوي على أكثر من مجرد CSS ، فستحتاج إلى وضع خاص <REPORT> علامة داخل الملف. سيتم استبدال علامة التنسيق هذه بمحتوى التقرير. توجد هذه الملفات في دليل &quot;التنسيقات&quot;."
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "إعدادات الاحتفاظ بالبيانات"
 
 #: setup.php:1164
 #, fuzzy
@@ -860,7 +859,7 @@ msgstr "[الرسائل غير المجهزة:٪ s]"
 
 #: syslog.php:1074
 msgid "Enter a search term"
-msgstr ""
+msgstr "أدخل مصطلح البحث"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1322,7 +1321,7 @@ msgstr "مساحة للملاحظات على التنبيه"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "خيارات البريد الكتروني"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 msgid "Notification List"

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-19 17:02-0400\n"
+"PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
 "Language: zh_CN\n"
@@ -410,18 +410,19 @@ msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwi
 msgstr "如果设置了此复选框，则所有电子邮件都将以HTML格式发送。否则，电子邮件将以纯文本形式发送。"
 
 #: setup.php:1152
-#, fuzzy
-#| msgid "Normal User"
 msgid "Format File to Use"
-msgstr "普通用户"
+msgstr "格式化文件以使用"
 
 #: setup.php:1155
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
 msgstr ""
+"择要使用的自定义html包装器和CSS文件. 该文件包含html和CSS.以包装您的报告.如果它包含的不仅仅是CSS.你需要在文件中放置一个特殊的<REPORT>标签.此格式标签将被报告内容替换.\n"
+"这些文件位于'formats'目录."
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "数据保留设置"
 
 #: setup.php:1164
 #, fuzzy
@@ -814,7 +815,7 @@ msgstr "[未处理消息:%s]"
 
 #: syslog.php:1074
 msgid "Enter a search term"
-msgstr ""
+msgstr "请输入搜索词"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1264,7 +1265,7 @@ msgstr "警报备注的空间"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "电子邮件选项"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 msgid "Notification List"

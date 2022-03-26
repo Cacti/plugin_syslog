@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-19 17:01-0400\n"
+"PO-Revision-Date: 2022-03-26 11:39-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -446,12 +446,14 @@ msgid "Format File to Use"
 msgstr "Normal användare"
 
 #: setup.php:1155
+#, fuzzy
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "Välj det anpassade html-omslag och CSS-fil som ska användas. Den här filen innehåller både html och CSS för att omsluta din rapport. Om den innehåller mer än bara CSS måste du placera en special<REPORT> taggen inuti filen. Denna formattagg kommer att ersättas av rapportens innehåll. Dessa filer finns i katalogen \"format\"."
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "Inställningar för datalagring"
 
 #: setup.php:1164
 #, fuzzy
@@ -601,7 +603,7 @@ msgstr "Slutar med"
 #: setup.php:1363
 #, fuzzy
 msgid "Hostname is"
-msgstr "& Värddatornamn:"
+msgstr "Värdnamn"
 
 #: setup.php:1364
 #, fuzzy
@@ -850,7 +852,7 @@ msgstr "[Obehandlade meddelanden: %s]"
 
 #: syslog.php:1074
 msgid "Enter a search term"
-msgstr ""
+msgstr "Ange ett sökbegrepp eller tecken här"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1314,7 +1316,7 @@ msgstr "Rymd för anteckningar om varningen"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "E-post Val"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 #, fuzzy

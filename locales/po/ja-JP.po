@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-19 16:58-0400\n"
+"PO-Revision-Date: 2022-03-26 11:38-0400\n"
 "Last-Translator: Seita Kawamot <seita_sk@yahoo.co.jp>\n"
 "Language-Team: Japanese <http://translate.cacti.net/projects/cacti/syslog/ja/>\n"
 "Language: ja_JP\n"
@@ -433,12 +433,14 @@ msgid "Format File to Use"
 msgstr "通常のユーザー"
 
 #: setup.php:1155
+#, fuzzy
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "使用するカスタムhtmlラッパーとCSSファイルを選択します。このファイルには、レポートをラップアラウンドするためのhtmlとCSSの両方が含まれています。単なるCSS以外のものが含まれている場合は、特別なものを配置する必要があります<REPORT>ファイル内のタグ。このフォーマットタグは、レポートの内容に置き換えられます。これらのファイルは「formats」ディレクトリにあります。"
 
 #: setup.php:1159
+#, fuzzy
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "データ保持設定"
 
 #: setup.php:1164
 #, fuzzy
@@ -835,8 +837,9 @@ msgid "[ Unprocessed Messages: %s ]"
 msgstr "[未処理メッセージ：％s]"
 
 #: syslog.php:1074
+#, fuzzy
 msgid "Enter a search term"
-msgstr ""
+msgstr "検索語を入力してください"
 
 #: syslog.php:1086
 #, fuzzy
@@ -1032,7 +1035,7 @@ msgstr "エラー"
 #: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
-msgstr "警告:"
+msgstr "警告"
 
 #: syslog.php:1627
 #, fuzzy
@@ -1297,7 +1300,7 @@ msgstr "警告に関するメモのスペース"
 
 #: syslog_alerts.php:548
 msgid "Email Options"
-msgstr ""
+msgstr "メールオプション"
 
 #: syslog_alerts.php:552 syslog_reports.php:462
 #, fuzzy
