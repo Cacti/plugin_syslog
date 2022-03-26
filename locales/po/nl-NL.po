@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-19 10:38-0400\n"
+"POT-Creation-Date: 2022-03-26 11:33-0400\n"
 "PO-Revision-Date: 2022-03-19 16:59-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,135 +22,145 @@ msgstr ""
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "Opslaan mislukt. Externe gegevensverzamelaars in de synchronisatiemodus mogen geen regels opslaan. Sla in plaats daarvan op vanaf de Main Cacti Server."
 
-#: functions.php:115
+#: functions.php:116
 #, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "Gebruik een HTML-e-mailclient"
 
-#: functions.php:1218
-#, fuzzy
-msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
-msgstr "WAARSCHUWING: Een Syslog Plugin Instance Count Alert is geactiveerd."
-
-#: functions.php:1219
-msgid "Name:"
-msgstr "Naam:"
-
-#: functions.php:1220 functions.php:1257
-msgid "Severity:"
-msgstr "Ernst:"
-
-#: functions.php:1221
-#, fuzzy
-msgid "Threshold:"
-msgstr "Drempel"
-
-#: functions.php:1222
-msgid "Count:"
-msgstr "Telling:"
-
-#: functions.php:1223
-#, fuzzy
-msgid "Message String:"
-msgstr "Berichtreeks:"
-
-#: functions.php:1225
+#: functions.php:1313 functions.php:1334
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Threshold Alert '%s'"
+msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
 msgstr "Cactussen Syslog Plugin Drempelwaarde Waarschuwing '%s'"
 
-#: functions.php:1227 syslog.php:1709 syslog_alerts.php:831
+#: functions.php:1315
+#, fuzzy, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Cactussen Syslog Plugin Drempelwaarde Waarschuwing '%s'"
+
+#: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 msgid "Alert Name"
 msgstr "Melding naam"
 
-#: functions.php:1227 syslog.php:1713
+#: functions.php:1321 functions.php:1348 syslog.php:1869 syslog_alerts.php:470
+#: syslog_alerts.php:847
+msgid "Severity"
+msgstr "Gevoeligheid"
+
+#: functions.php:1322 syslog_alerts.php:489 syslog_alerts.php:494
+#: syslog_alerts.php:873
+msgid "Threshold"
+msgstr "Drempel"
+
+#: functions.php:1323 syslog.php:1872
 msgid "Count"
 msgstr "Aantal"
 
-#: functions.php:1227
+#: functions.php:1324
 #, fuzzy
 msgid "Match String"
 msgstr "Wedstrijd String"
 
-#: functions.php:1227 functions.php:1238 syslog.php:1710 syslog_alerts.php:469
-#: syslog_alerts.php:832
-msgid "Severity"
-msgstr "Gevoeligheid"
-
-#: functions.php:1227 syslog_alerts.php:488 syslog_alerts.php:493
-#: syslog_alerts.php:858
-msgid "Threshold"
-msgstr "Drempel"
-
-#: functions.php:1234
+#: functions.php:1336
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Alert '%s'"
+msgid "Cacti Syslog Alert '%s'"
 msgstr "Cactussen Syslog Plugin Waarschuwing '%s'"
 
-#: functions.php:1238 functions.php:1814 syslog.php:283 syslog.php:1605
-#: syslog.php:1613 syslog.php:1711
-msgid "Date"
-msgstr "Datum"
-
-#: functions.php:1238
+#: functions.php:1346
 msgid "Hostname"
 msgstr "Hostname"
 
-#: functions.php:1238
+#: functions.php:1347 functions.php:2070 syslog.php:338 syslog.php:1764
+#: syslog.php:1772 syslog.php:1870
+msgid "Date"
+msgstr "Datum"
+
+#: functions.php:1349
 msgid "Level"
 msgstr "Niveau"
 
-#: functions.php:1238 functions.php:1814 syslog.php:1608 syslog.php:1616
-#: syslog.php:1712
+#: functions.php:1350 functions.php:2071 syslog.php:1767 syslog.php:1775
+#: syslog.php:1871
 msgid "Message"
 msgstr "Bericht"
 
-#: functions.php:1255
+#: functions.php:1356
+#, fuzzy, php-format
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
+msgstr "WAARSCHUWING: Een Syslog Plugin Instance Count Alert is geactiveerd."
+
+#: functions.php:1358
+#, fuzzy
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
+msgstr "WAARSCHUWING: Een Syslog Plugin Instance Count Alert is geactiveerd."
+
+#: functions.php:1367
+msgid "Name:"
+msgstr "Naam:"
+
+#: functions.php:1368 functions.php:1402
+msgid "Severity:"
+msgstr "Ernst:"
+
+#: functions.php:1369
+#, fuzzy
+msgid "Threshold:"
+msgstr "Drempel"
+
+#: functions.php:1370
+msgid "Count:"
+msgstr "Telling:"
+
+#: functions.php:1371
+#, fuzzy
+msgid "Message String:"
+msgstr "Berichtreeks:"
+
+#: functions.php:1400
 msgid "Hostname:"
 msgstr "Hostname:"
 
-#: functions.php:1256
+#: functions.php:1401
 msgid "Date:"
 msgstr "Datum:"
 
-#: functions.php:1258
+#: functions.php:1403
 msgid "Level:"
 msgstr "Niveau:"
 
-#: functions.php:1259
+#: functions.php:1404
 msgid "Message:"
 msgstr "Bericht:"
 
-#: functions.php:1293
+#: functions.php:1442
 #, fuzzy
 msgid ", Host:"
 msgstr "Host:"
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid ", URL:"
 msgstr "URL:"
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid "Sev:"
 msgstr "Sev:"
 
-#: functions.php:1295 functions.php:1355
+#: functions.php:1458 functions.php:1557
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "Gebeurteniswaarschuwing - %s"
 
-#: functions.php:1385
+#: functions.php:1560
 #, fuzzy
 msgid ", Count:"
 msgstr "Telling:"
 
-#: functions.php:1814
+#: functions.php:2069
 msgid "Host"
 msgstr "Host"
 
-#: functions.php:1825
+#: functions.php:2094
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "Gebeurtenisverslag - %s"
@@ -165,929 +175,952 @@ msgstr "Hernoem uw config.php.dist bestand in de syslog directory, en wijzig de 
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
 msgstr "Syslog 2.0 vereist een volledige herinstallatie.  Gelieve te verwijderen Syslog en verwijder alle gegevens voordat u installeert.  Migratie is mogelijk, maar u moet dit vooraf plannen.  Er wordt geen automatische migratie ondersteund."
 
-#: setup.php:859
+#: setup.php:872
 #, fuzzy
 msgid "What upgrade/install type do you wish to use"
 msgstr "Welk type upgrade/installatie wenst u te gebruiken"
 
-#: setup.php:860
+#: setup.php:873
 #, fuzzy
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "Wanneer u zeer grote tafels heeft, zal het uitvoeren van een Truncate veel sneller gaan.  Als u zich zorgen maakt over archiefgegevens, kunt u kiezen tussen Inline, dat uw browser bevriest voor de periode van deze upgrade, of achtergrond, dat een achtergrondproces creëert om uw oude sysloggegevens van een back-uptabel naar het nieuwe syslogformaat te brengen.  Ook dit proces kan enkele uren in beslag nemen."
 
-#: setup.php:863
+#: setup.php:876
 #, fuzzy
 msgid "Truncate Syslog Table"
 msgstr "Truncate Syslog Tabel"
 
-#: setup.php:864
+#: setup.php:877
 #, fuzzy
 msgid "Inline Upgrade"
 msgstr "Inline Upgrade"
 
-#: setup.php:865
+#: setup.php:878
 #, fuzzy
 msgid "Background Upgrade"
 msgstr "Achtergrond Upgrade"
 
-#: setup.php:870
+#: setup.php:883
 #, fuzzy
 msgid "Database Storage Engine"
 msgstr "Database opslag engine"
 
-#: setup.php:871
+#: setup.php:884
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available."
 msgstr "In MySQL 5.1.6 en hoger heeft u de optie om dit een gepartitioneerde tabel per dag te maken.  Voorafgaand aan deze release heeft u alleen de traditionele tafelstructuur beschikbaar."
 
-#: setup.php:874
+#: setup.php:887
 #, fuzzy
 msgid "MyISAM Storage"
 msgstr "MyISAM-opslag"
 
-#: setup.php:875
+#: setup.php:888
 #, fuzzy
 msgid "InnoDB Storage"
 msgstr "InnoDB-opslag"
 
-#: setup.php:880
+#: setup.php:893
 #, fuzzy
 msgid "Database Architecture"
 msgstr "Database Architectuur"
 
-#: setup.php:881
+#: setup.php:894
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available."
 msgstr "In MySQL 5.1.6 en hoger heeft u de optie om dit een gepartitioneerde tabel per dag te maken.  In MySQL 5.5 en hoger kunt u meerdere partities per dag maken.  Voorafgaand aan MySQL 5.1.6 heeft u alleen de traditionele tafelstructuur beschikbaar."
 
-#: setup.php:885 setup.php:888
+#: setup.php:898 setup.php:901
 #, fuzzy
 msgid "Traditional Table"
 msgstr "Traditionele tafel"
 
-#: setup.php:886
+#: setup.php:899
 #, fuzzy
 msgid "Partitioned Table"
 msgstr "Gesegmenteerde tabel"
 
-#: setup.php:894
+#: setup.php:907
 #, fuzzy
 msgid "Retention Policy"
 msgstr "Retentiebeleid"
 
-#: setup.php:895
+#: setup.php:908
 #, fuzzy
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "Kies hoeveel dagen Syslog-waarden u in de database wilt bijhouden."
 
-#: setup.php:916
+#: setup.php:929
 #, fuzzy
 msgid "Partitions per Day"
 msgstr "Scheidingswanden per dag"
 
-#: setup.php:917
+#: setup.php:930
 #, fuzzy
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "Selecteer het aantal partities per dag dat u wilt maken."
 
-#: setup.php:920 setup.php:921 setup.php:922 setup.php:923 setup.php:924
+#: setup.php:933 setup.php:934 setup.php:935 setup.php:936 setup.php:937
 #, fuzzy, php-format
 msgid "%d Per Day"
 msgstr "%d per dag"
 
-#: setup.php:930 setup.php:1015
+#: setup.php:943 setup.php:1028
 msgid "Upgrade"
 msgstr "Upgrade"
 
-#: setup.php:932 setup.php:1017
+#: setup.php:945 setup.php:1030
 msgid "Install"
 msgstr "Installeer"
 
-#: setup.php:936
+#: setup.php:949
 #, fuzzy, php-format
 msgid "Syslog %s Advisor"
 msgstr "Syslog %s Adviseur"
 
-#: setup.php:940
+#: setup.php:953
 #, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "WAARSCHUWING: Syslog Upgrade is tijdrovend!"
 
-#: setup.php:941
+#: setup.php:954
 #, fuzzy
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "De upgrade van de 'main' syslog tabel kan een zeer tijdrovend proces zijn.  Als zodanig is het aan te raden om ofwel de grootte van uw syslogtabel te verkleinen voordat u gaat upgraden, ofwel de achtergrondoptie</p> <p> <p>Als u de achtergrondoptie kiest, wordt uw oude syslogtabel hernoemd en wordt er een nieuwe syslogtabel gemaakt.  Vervolgens wordt op de achtergrond een upgradeproces gestart.  Nogmaals, dit achtergrondproces kan behoorlijk wat tijd in beslag nemen om af te ronden.  Uw gegevens worden echter bewaard</p> <p></p> <p>Regardless van uw keuze, alle bestaande verwijderings- en waarschuwingsregels blijven behouden tijdens het upgradeproces.</p> <p> <p>Druk op <b>'Upgrade'</b> om verder te gaan met de upgrade, of <b>'Annuleren'</b> om terug te keren naar het menu Plugins."
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller."
 msgstr "U kunt ook de bewaartermijn selecteren.  Houd er rekening mee dat als je meerdere hosts hebt die inloggen op syslog, deze tabel vrij groot kan worden.  Dus, als u geen partitionering gebruikt, wilt u misschien de grootte kleiner houden."
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
 msgstr "U kunt ook de MySQL storage engine instellen.  Als u uw systeem niet hebt afgestemd op de opslageigenschappen van InnoDB, is het sterk aan te raden om de MyISAM-opslagmotor te gebruiken."
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries."
 msgstr "U heeft verschillende opties om uit te kiezen bij het installeren van Syslog.  De eerste is de Database Architectuur.  Beginnend met MySQL 5.1.6, kunt u ervoor kiezen om Table Partitioning te gebruiken om te voorkomen dat de grootte van de tabellen te groot wordt en zo de queries vertragen."
 
-#: setup.php:948
+#: setup.php:961
 #, fuzzy, php-format
 msgid "Syslog %s Settings"
 msgstr "Syslog %s Instellingen"
 
-#: setup.php:975
+#: setup.php:988
 #, fuzzy
 msgid "What uninstall method do you want to use?"
 msgstr "Welke verwijderingsmethode wilt u gebruiken?"
 
-#: setup.php:976
+#: setup.php:989
 #, fuzzy
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "Bij het verwijderen van syslog kunt u alles of alleen onderdelen verwijderen voor het geval u van plan bent om in de toekomst opnieuw te installeren."
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "Alles verwijderen (logboeken, tabellen, instellingen)"
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Syslog Data Only"
 msgstr "Alleen Sysloggegevens"
 
-#: setup.php:998
+#: setup.php:1011
 #, fuzzy
 msgid "Syslog Uninstall Preferences"
 msgstr "Syslog Voorkeuren verwijderen"
 
-#: setup.php:1020
+#: setup.php:1033
 msgid "Uninstall"
 msgstr "De-installeer"
 
-#: setup.php:1027 syslog_alerts.php:204 syslog_removal.php:226
+#: setup.php:1040 syslog_alerts.php:204 syslog_removal.php:226
 #: syslog_reports.php:204
 msgid "Cancel"
 msgstr "Annuleer"
 
-#: setup.php:1058 setup.php:1177 setup.php:1179 setup.php:1385 setup.php:1399
+#: setup.php:1079 setup.php:1215 setup.php:1217 setup.php:1423 setup.php:1437
 #, fuzzy
 msgid "Syslog"
 msgstr "Syslog"
 
-#: setup.php:1062
+#: setup.php:1083
 msgid "General Settings"
 msgstr "Algemene instellingen"
 
-#: setup.php:1066
+#: setup.php:1087
 #, fuzzy
 msgid "Syslog Enabled"
 msgstr "Syslog ingeschakeld"
 
-#: setup.php:1067
+#: setup.php:1088
 #, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "Als dit selectievakje is ingesteld, worden records van de Syslog Inkomende tabel naar de hoofdsyslogtabel overgedragen en worden waarschuwingen en rapporten ingeschakeld.  Houd er rekening mee dat als het systeem uitgeschakeld is, de logboekvermeldingen zich nog steeds zullen ophopen in de Syslog Inkomende tabel, aangezien dit gedefinieerd wordt door het rsyslog of syslog-ng proces."
 
-#: setup.php:1072
-#, fuzzy
-msgid "HTML Based Email"
-msgstr "HTML-gebaseerde e-mail"
-
-#: setup.php:1073
-#, fuzzy
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "Als dit selectievakje is ingesteld, worden alle e-mails in HTML-formaat verzonden.  Anders worden e-mails in platte tekst verzonden."
-
-#: setup.php:1078
+#: setup.php:1093
 #, fuzzy
 msgid "Enable Statistics Gathering"
 msgstr "Statistieken verzamelen mogelijk maken"
 
-#: setup.php:1079
+#: setup.php:1094
 #, fuzzy
 msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
 msgstr "Als dit selectievakje is ingesteld, worden statistieken bijgehouden over waar de syslogberichten vandaan komen.  Deze statistische informatie kan worden gebruikt om zaken als warmtekaarten weer te geven."
 
-#: setup.php:1084
+#: setup.php:1099
 #, fuzzy
 msgid "Strip Domains"
 msgstr "Strip Domeinen"
 
-#: setup.php:1085
+#: setup.php:1100
 #, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "Een comma delimited lijst van domeinen die u wilt verwijderen uit de syslog hostname, Voorbeelden hiervan zijn 'mydomain.com, otherdomain.com'."
 
-#: setup.php:1092
+#: setup.php:1107
 #, fuzzy
 msgid "Validate Hostnames"
 msgstr "Valideer hostnamen"
 
-#: setup.php:1093
+#: setup.php:1108
 #, fuzzy
 msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
 msgstr "Als dit selectievakje is ingesteld, worden alle hostnamen gevalideerd.  Als de hostnaam niet geldig is. Alle records worden toegewezen aan een speciale host genaamd 'invalidhost'.  Deze instelling kan van invloed zijn op de verwerkingstijd van syslogs op grote systemen.  Daarom mag deze instelling alleen worden gebruikt als er geen andere middelen zijn om dit te voorkomen."
 
-#: setup.php:1098
+#: setup.php:1113
 msgid "Refresh Interval"
 msgstr "Vernieuwingsinterval"
 
-#: setup.php:1099
+#: setup.php:1114
 #, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "Dit is de tijd in seconden voordat de pagina wordt ververst."
 
-#: setup.php:1105
+#: setup.php:1120
 #, fuzzy
 msgid "Max Report Records"
 msgstr "Max. rapportverslagen"
 
-#: setup.php:1106
+#: setup.php:1121
 #, fuzzy
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "Wat is het maximale aantal waarschuwingen dat u in het rapport wilt weergeven voor waarschuwingen op basis van een drempelwaarde.  Dit wordt gebruikt om de grootte van het html logboek en e-mail te beperken."
 
-#: setup.php:1110 setup.php:1111 setup.php:1112 setup.php:1113 setup.php:1114
-#: setup.php:1115
+#: setup.php:1125 setup.php:1126 setup.php:1127 setup.php:1128 setup.php:1129
+#: setup.php:1130
 #, fuzzy, php-format
 msgid "%d Records"
 msgstr "%d Records"
 
-#: setup.php:1119
-#, fuzzy
-msgid "Syslog Retention"
-msgstr "Syslogbehoud"
-
-#: setup.php:1120
-#, fuzzy
-msgid "This is the number of days to keep events."
-msgstr "Dit is het aantal dagen om evenementen te houden."
-
-#: setup.php:1126
-#, fuzzy
-msgid "Syslog Alert Retention"
-msgstr "Syslog Waarschuwingsretentie"
-
-#: setup.php:1127
-#, fuzzy
-msgid "This is the number of days to keep alert logs."
-msgstr "Dit is het aantal dagen om een alarmlogboek bij te houden."
-
-#: setup.php:1133
+#: setup.php:1134
 #, fuzzy
 msgid "Command for Opening Tickets"
 msgstr "Commando voor het openen van tickets"
 
-#: setup.php:1134
+#: setup.php:1135
 #, fuzzy
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "Dit commando wordt uitgevoerd voor het openen van Help Desk Tickets.  Het commando is nodig om meerdere invoerparameters als volgt te parseren: <b>--alert-naam</b>, <b>--zwaartepunt</b>, <b>--hostlist</b>, <b>--bericht</b>.  De hostlijst is een door komma's afgebakende lijst van hosts waarop de waarschuwing van invloed is."
 
-#: setup.php:1140
+#: setup.php:1141
+#, fuzzy
+#| msgid "Notification List"
+msgid "HTML Notification Settings"
+msgstr "Notificatielijst"
+
+#: setup.php:1146
+#, fuzzy
+msgid "Enable HTML Based Email"
+msgstr "HTML-gebaseerde e-mail"
+
+#: setup.php:1147
+#, fuzzy
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Als dit selectievakje is ingesteld, worden alle e-mails in HTML-formaat verzonden.  Anders worden e-mails in platte tekst verzonden."
+
+#: setup.php:1152
+#, fuzzy
+#| msgid "Normal User"
+msgid "Format File to Use"
+msgstr "Particulier"
+
+#: setup.php:1155
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr ""
+
+#: setup.php:1159
+msgid "Data Retention Settings"
+msgstr ""
+
+#: setup.php:1164
+#, fuzzy
+msgid "Syslog Retention"
+msgstr "Syslogbehoud"
+
+#: setup.php:1165
+#, fuzzy
+msgid "This is the number of days to keep events."
+msgstr "Dit is het aantal dagen om evenementen te houden."
+
+#: setup.php:1171
+#, fuzzy
+msgid "Syslog Alert Retention"
+msgstr "Syslog Waarschuwingsretentie"
+
+#: setup.php:1172
+#, fuzzy
+msgid "This is the number of days to keep alert logs."
+msgstr "Dit is het aantal dagen om een alarmlogboek bij te houden."
+
+#: setup.php:1178
 #, fuzzy
 msgid "Remote Message Processing"
 msgstr "Berichtreeks:"
 
-#: setup.php:1144
+#: setup.php:1182
 #, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "Berichtenverwerking van externe gegevensverzamelaar inschakelen"
 
-#: setup.php:1145
+#: setup.php:1183
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Als uw externe gegevensverzamelaars hun eigen Syslog-databases hebben en hun berichten onafhankelijk verwerken, vinkt u dit selectievakje aan. Door dit selectievakje aan te vinken, moeten uw externe gegevensverzamelaars hun eigen 'config_local.php'-bestand onderhouden om Syslog te informeren om een onafhankelijke database te gebruiken voor het weergeven en verwerken van berichten. Gebruik hiervoor het sjabloonbestand 'config_local.php.dist'. WAARSCHUWING: Syslog-tabellen worden automatisch aangemaakt zodra deze optie is ingeschakeld."
 
-#: setup.php:1150
+#: setup.php:1188
 #, fuzzy
 msgid "Remote Data Collector Rules Sync"
 msgstr "Regels voor externe gegevensverzamelaar synchroniseren"
 
-#: setup.php:1151
+#: setup.php:1189
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Als uw externe gegevensverzamelaars hun eigen Syslog-databases hebben en drie berichten onafhankelijk verwerken, vinkt u dit selectievakje aan als u wilt dat de waarschuwings-, verwijderings- en rapportregels van de belangrijkste Cacti-databases naar het externe Cacti-systeem worden verzonden."
 
-#: setup.php:1224 syslog_removal.php:33
+#: setup.php:1262 syslog_removal.php:33
 msgid "Delete"
 msgstr "Verwijderen"
 
-#: setup.php:1225 syslog_removal.php:34
+#: setup.php:1263 syslog_removal.php:34
 msgid "Disable"
 msgstr "Uitschakelen"
 
-#: setup.php:1226 syslog_removal.php:35
+#: setup.php:1264 syslog_removal.php:35
 msgid "Enable"
 msgstr "Inschakelen"
 
-#: setup.php:1227 syslog.php:1303 syslog_removal.php:37
+#: setup.php:1265 syslog.php:1400 syslog_removal.php:37
 msgid "Export"
 msgstr "Exporteer"
 
-#: setup.php:1270 setup.php:1289
+#: setup.php:1308 setup.php:1327
 #, fuzzy
 msgid "Indefinite"
 msgstr "Onbepaald"
 
-#: setup.php:1271 setup.php:1290 syslog.php:542 syslog_alerts.php:380
+#: setup.php:1309 setup.php:1328 syslog.php:604 syslog_alerts.php:381
 #, php-format
 msgid "%d Day"
 msgstr "%d Dag"
 
-#: setup.php:1272 setup.php:1273 setup.php:1274 setup.php:1275 setup.php:1276
-#: setup.php:1291 setup.php:1292 setup.php:1293 setup.php:1294 setup.php:1295
-#: syslog_alerts.php:381
+#: setup.php:1310 setup.php:1311 setup.php:1312 setup.php:1313 setup.php:1314
+#: setup.php:1329 setup.php:1330 setup.php:1331 setup.php:1332 setup.php:1333
+#: syslog_alerts.php:382
 #, php-format
 msgid "%d Days"
 msgstr "%d Dagen"
 
-#: setup.php:1277 setup.php:1296 syslog_alerts.php:382
+#: setup.php:1315 setup.php:1334 syslog_alerts.php:383
 #, php-format
 msgid "%d Week"
 msgstr "%d Week"
 
-#: setup.php:1278 setup.php:1297 syslog_alerts.php:383
+#: setup.php:1316 setup.php:1335 syslog_alerts.php:384
 #, php-format
 msgid "%d Weeks"
 msgstr "%d Weken"
 
-#: setup.php:1279 setup.php:1298
+#: setup.php:1317 setup.php:1336
 #, php-format
 msgid "%d Month"
 msgstr "%d Maand"
 
-#: setup.php:1280 setup.php:1281 setup.php:1282 setup.php:1283 setup.php:1284
-#: setup.php:1299 setup.php:1300 setup.php:1301 setup.php:1302 setup.php:1303
+#: setup.php:1318 setup.php:1319 setup.php:1320 setup.php:1321 setup.php:1322
+#: setup.php:1337 setup.php:1338 setup.php:1339 setup.php:1340 setup.php:1341
 #, php-format
 msgid "%d Months"
 msgstr "%d Maanden"
 
-#: setup.php:1285 setup.php:1304
+#: setup.php:1323 setup.php:1342
 #, php-format
 msgid "%d Year"
 msgstr "%d Jaar"
 
-#: setup.php:1308 syslog_reports.php:741
+#: setup.php:1346 syslog_reports.php:741
 msgid "Never"
 msgstr "Nooit"
 
-#: setup.php:1309 syslog.php:533
+#: setup.php:1347 syslog.php:595
 #, php-format
 msgid "%d Minute"
 msgstr "%d Minuut"
 
-#: setup.php:1310 setup.php:1311 setup.php:1312 syslog.php:534 syslog.php:535
-#: syslog.php:536 syslog.php:537 syslog_alerts.php:367 syslog_alerts.php:368
-#: syslog_alerts.php:369 syslog_alerts.php:370 syslog_alerts.php:371
-#: syslog_alerts.php:372
+#: setup.php:1348 setup.php:1349 setup.php:1350 syslog.php:596 syslog.php:597
+#: syslog.php:598 syslog.php:599 syslog_alerts.php:368 syslog_alerts.php:369
+#: syslog_alerts.php:370 syslog_alerts.php:371 syslog_alerts.php:372
+#: syslog_alerts.php:373
 #, php-format
 msgid "%d Minutes"
 msgstr "%d Minuten"
 
-#: setup.php:1316 syslog.php:1469 syslog.php:1510 syslog.php:1527
+#: setup.php:1354 syslog.php:1628 syslog.php:1669 syslog.php:1686
 msgid "Notice"
 msgstr "Melding"
 
-#: setup.php:1317 syslog.php:1467 syslog.php:1509 syslog.php:1526
+#: setup.php:1355 syslog.php:1626 syslog.php:1668 syslog.php:1685
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: setup.php:1318 syslog.php:1463 syslog.php:1506 syslog.php:1525
+#: setup.php:1356 syslog.php:1622 syslog.php:1665 syslog.php:1684
 msgid "Critical"
 msgstr "Kritiek"
 
-#: setup.php:1322
+#: setup.php:1360
 msgid "Begins with"
 msgstr "Begint met"
 
-#: setup.php:1323
+#: setup.php:1361
 msgid "Contains"
 msgstr "Bevat"
 
-#: setup.php:1324
+#: setup.php:1362
 msgid "Ends with"
 msgstr "Eindigt op"
 
-#: setup.php:1325
+#: setup.php:1363
 #, fuzzy
 msgid "Hostname is"
 msgstr "Hostname:"
 
-#: setup.php:1326
+#: setup.php:1364
 #, fuzzy
 msgid "Program is"
 msgstr "Programma"
 
-#: setup.php:1327
+#: setup.php:1365
 #, fuzzy
 msgid "Facility is"
 msgstr "Faciliteit"
 
-#: setup.php:1328
+#: setup.php:1366
 #, fuzzy
 msgid "SQL Expression"
 msgstr "SQL-uitdrukking"
 
-#: setup.php:1332
+#: setup.php:1370
 msgid "Daily"
 msgstr "Dagelijks"
 
-#: setup.php:1333
+#: setup.php:1371
 msgid "Weekly"
 msgstr "Wekelijks"
 
-#: setup.php:1357
+#: setup.php:1395
 msgid "Import/Export"
 msgstr "Importeren/exporteren"
 
-#: setup.php:1358
+#: setup.php:1396
 #, fuzzy
 msgid "Alert Rules"
 msgstr "Waarschuwingsregels"
 
-#: setup.php:1358 setup.php:1359 setup.php:1360 setup.php:1365
+#: setup.php:1396 setup.php:1397 setup.php:1398 setup.php:1403
 #, fuzzy
 msgid "Syslog Settings"
 msgstr "Syslog instellingen"
 
-#: setup.php:1359
+#: setup.php:1397
 #, fuzzy
 msgid "Removal Rules"
 msgstr "Verhuisregels"
 
-#: setup.php:1360
+#: setup.php:1398
 #, fuzzy
 msgid "Report Rules"
 msgstr "Rapportregels"
 
-#: setup.php:1369
+#: setup.php:1407
 msgid "Normal User"
 msgstr "Particulier"
 
-#: setup.php:1370
+#: setup.php:1408
 msgid "System Administration"
 msgstr "Systeembeheer"
 
-#: setup.php:1386
+#: setup.php:1424
 #, fuzzy
 msgid "Syslog Removals"
 msgstr "Syslog Verhuizingen"
 
-#: setup.php:1387 setup.php:1388 setup.php:1392 setup.php:1393 setup.php:1397
+#: setup.php:1425 setup.php:1426 setup.php:1430 setup.php:1431 setup.php:1435
 msgid "(Edit)"
 msgstr "(Wijzig)"
 
-#: setup.php:1389 setup.php:1394 setup.php:1398
+#: setup.php:1427 setup.php:1432 setup.php:1436
 #, fuzzy
 msgid "(Actions)"
 msgstr "Acties"
 
-#: setup.php:1391
+#: setup.php:1429
 #, fuzzy
 msgid "Syslog Alerts"
 msgstr "Syslog Waarschuwingen"
 
-#: setup.php:1396
+#: setup.php:1434
 #, fuzzy
 msgid "Syslog Reports"
 msgstr "Syslog Rapporten"
 
-#: setup.php:1475
+#: setup.php:1513
 #, fuzzy
 msgid "Display Syslog in Range"
 msgstr "Toon Syslog in Bereik"
 
-#: setup.php:1523
+#: setup.php:1561
 #, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "Er werden %s Apparaatrecords verwijderd uit de Syslog-database"
 
-#: setup.php:1539
+#: setup.php:1577
 #, fuzzy
 msgid "Syslog Utilities"
 msgstr "Syslog Hulpprogramma's"
 
-#: setup.php:1543
+#: setup.php:1581
 #, fuzzy
 msgid "Purge Syslog Devices"
 msgstr "Syslogapparaten zuiveren"
 
-#: setup.php:1546
+#: setup.php:1584
 #, fuzzy
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "Deze menu-keuze biedt een middel om Apparaten te verwijderen die niet langer rapporteren op de syslogserver van Cacti."
 
-#: syslog.php:52
+#: syslog.php:54
 #, fuzzy
 msgid "Syslog Viewer"
 msgstr "Syslog Viewer"
 
-#: syslog.php:55
+#: syslog.php:57
 #, fuzzy
 msgid "All Text"
 msgstr "Alle tekst"
 
-#: syslog.php:56 syslog.php:57 syslog.php:58 syslog.php:59 syslog.php:60
-#: syslog.php:61
+#: syslog.php:58 syslog.php:59 syslog.php:60 syslog.php:61 syslog.php:62
+#: syslog.php:63
 #, fuzzy, php-format
 msgid "%d Chars"
 msgstr "%d Littekens"
 
-#: syslog.php:112
+#: syslog.php:167
 msgid "System Logs"
 msgstr "Systeem logboeken"
 
-#: syslog.php:114
+#: syslog.php:169
 msgid "Statistics"
 msgstr "Statistieken"
 
-#: syslog.php:116
+#: syslog.php:171
 #, fuzzy
 msgid "Alert Logs"
 msgstr "Waarschuwingslogboeken"
 
-#: syslog.php:125
+#: syslog.php:180
 #, fuzzy
 msgid "Selected Alert"
 msgstr "Geselecteerde waarschuwing"
 
-#: syslog.php:148
+#: syslog.php:203
 #, fuzzy
 msgid "Syslog Alert View"
 msgstr "Syslog Alert Mening"
 
-#: syslog.php:229
+#: syslog.php:284
 #, fuzzy
 msgid "Syslog Statistics Filter"
 msgstr "Syslog Statistieken Filter"
 
-#: syslog.php:255 syslog.php:1389 syslog.php:1621
+#: syslog.php:310 syslog.php:1548 syslog.php:1780
 msgid "Messages"
 msgstr "Berichten"
 
-#: syslog.php:263
+#: syslog.php:318
 msgid "Device Name"
 msgstr "Apparaatnaam"
 
-#: syslog.php:268 syslog.php:470 syslog.php:1432 syslog.php:1609
-#: syslog.php:1617 syslog.php:1715
+#: syslog.php:323 syslog.php:532 syslog.php:1591 syslog.php:1768
+#: syslog.php:1776 syslog.php:1874
 msgid "Facility"
 msgstr "Faciliteit"
 
-#: syslog.php:273 syslog.php:490 syslog.php:1454 syslog.php:1610
-#: syslog.php:1618 syslog.php:1716
+#: syslog.php:328 syslog.php:552 syslog.php:1613 syslog.php:1769
+#: syslog.php:1777 syslog.php:1875
 msgid "Priority"
 msgstr "Prioriteit"
 
-#: syslog.php:278 syslog.php:1607 syslog.php:1615 syslog.php:1808
+#: syslog.php:333 syslog.php:1766 syslog.php:1774 syslog.php:1967
 msgid "Program"
 msgstr "Programma"
 
-#: syslog.php:288
+#: syslog.php:343
 msgid "Records"
 msgstr "Rijen"
 
-#: syslog.php:325
+#: syslog.php:380
 #, fuzzy
 msgid "No Syslog Statistics Found"
 msgstr "Geen Syslog Statistieken gevonden"
 
-#: syslog.php:433 syslog.php:1606 syslog.php:1614 syslog.php:1714
-#: syslog_alerts.php:480
+#: syslog.php:488 syslog.php:1765 syslog.php:1773 syslog.php:1873
+#: syslog_alerts.php:481
 msgid "Device"
 msgstr "Apparaat"
 
-#: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
-#: syslog_alerts.php:682 syslog_removal.php:548 syslog_reports.php:562
+#: syslog.php:492 syslog.php:536 syslog.php:556 syslog_alerts.php:697
+#: syslog_removal.php:548 syslog_reports.php:562
 msgid "All"
 msgstr "Alle"
 
-#: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1802
-#: syslog.php:1813 syslog.php:1854 syslog.php:1855 syslog_alerts.php:563
-#: syslog_reports.php:466
+#: syslog.php:493 syslog.php:537 syslog.php:557 syslog.php:1961 syslog.php:1972
+#: syslog.php:2013 syslog.php:2014 syslog_alerts.php:556 syslog_reports.php:466
 msgid "None"
 msgstr "Geen"
 
-#: syslog.php:512 syslog.php:1301 syslog_alerts.php:704 syslog_removal.php:570
+#: syslog.php:574 syslog.php:1398 syslog_alerts.php:719 syslog_removal.php:570
 #: syslog_reports.php:584
 msgid "Go"
 msgstr "Ga"
 
-#: syslog.php:513 syslog.php:1302 syslog_alerts.php:705 syslog_removal.php:571
+#: syslog.php:575 syslog.php:1399 syslog_alerts.php:720 syslog_removal.php:571
 #: syslog_reports.php:585
 msgid "Clear"
 msgstr "Herstel"
 
-#: syslog.php:521 syslog.php:1061 syslog.php:1326 syslog_alerts.php:672
-#: syslog_removal.php:538 syslog_reports.php:552
+#: syslog.php:583 syslog.php:1423 syslog_alerts.php:687 syslog_removal.php:538
+#: syslog_reports.php:552
 msgid "Search"
 msgstr "Zoeken"
 
-#: syslog.php:527
+#: syslog.php:589
 msgid "Time Range"
 msgstr "Tijdreeks"
 
-#: syslog.php:538 syslog_alerts.php:373
+#: syslog.php:600 syslog_alerts.php:374
 #, php-format
 msgid "%d Hour"
 msgstr "%d Uur"
 
-#: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:374
-#: syslog_alerts.php:375 syslog_alerts.php:376 syslog_alerts.php:377
-#: syslog_alerts.php:378 syslog_alerts.php:379
+#: syslog.php:601 syslog.php:602 syslog.php:603 syslog_alerts.php:375
+#: syslog_alerts.php:376 syslog_alerts.php:377 syslog_alerts.php:378
+#: syslog_alerts.php:379 syslog_alerts.php:380
 #, php-format
 msgid "%d Hours"
 msgstr "%d Uren"
 
-#: syslog.php:552
+#: syslog.php:614
 msgid "Entries"
 msgstr "Regels"
 
-#: syslog.php:556 syslog.php:1393 syslog_alerts.php:692 syslog_removal.php:558
+#: syslog.php:618 syslog.php:1552 syslog_alerts.php:707 syslog_removal.php:558
 #: syslog_reports.php:572
 msgid "Default"
 msgstr "Standaard"
 
-#: syslog.php:1000
+#: syslog.php:1062
 #, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
 msgstr " Begin: '%s' tot einde: '%s', Onbewerkte berichten: %s ]."
 
-#: syslog.php:1002
+#: syslog.php:1064
 #, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "Onbewerkte berichten: %s ]"
 
-#: syslog.php:1019
+#: syslog.php:1074
+msgid "Enter a search term"
+msgstr ""
+
+#: syslog.php:1086
 #, fuzzy
 msgid "Select Device(s)"
 msgstr "Selecteer apparaat(en)"
 
-#: syslog.php:1021
+#: syslog.php:1088
 #, fuzzy
 msgid "Devices Selected"
 msgstr "Geselecteerde apparaten"
 
-#: syslog.php:1024
+#: syslog.php:1091
 #, fuzzy
 msgid "All Devices Selected"
 msgstr "Alle geselecteerde apparaten"
 
-#: syslog.php:1228
+#: syslog.php:1325
 #, fuzzy, php-format
 msgid "Syslog Message Filter %s"
 msgstr "Syslogbericht Filter %s"
 
-#: syslog.php:1235
+#: syslog.php:1332
 msgid "Timespan"
 msgstr "Tijdspanne"
 
-#: syslog.php:1241
+#: syslog.php:1338
 msgid "Custom"
 msgstr "Aangepast"
 
-#: syslog.php:1263
+#: syslog.php:1360
 msgid "From"
 msgstr "Van"
 
-#: syslog.php:1269
+#: syslog.php:1366
 msgid "Start Date Selector"
 msgstr "Startdatum selector"
 
-#: syslog.php:1272
+#: syslog.php:1369
 msgid "To"
 msgstr "Tot"
 
-#: syslog.php:1278
+#: syslog.php:1375
 msgid "End Date Selector"
 msgstr "Einddatum selector"
 
-#: syslog.php:1281
+#: syslog.php:1378
 msgid "Shift Time Backward"
 msgstr "Verschuif tijd achteruit"
 
-#: syslog.php:1284
+#: syslog.php:1381
 msgid "Define Shifting Interval"
 msgstr "Definieer verschuivingsinterval"
 
-#: syslog.php:1297
+#: syslog.php:1394
 msgid "Shift Time Forward"
 msgstr "Verschuif tijd vooruit"
 
-#: syslog.php:1302
+#: syslog.php:1399
 #, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr "Retourneer filterwaarden naar de door de gebruiker gedefinieerde standaardwaarden"
 
-#: syslog.php:1303
+#: syslog.php:1400
 #, fuzzy
 msgid "Export Records to CSV"
 msgstr "Records exporteren naar CSV"
 
-#: syslog.php:1304
+#: syslog.php:1401
 msgid "Save"
 msgstr "Opslaan"
 
-#: syslog.php:1304
+#: syslog.php:1401
 #, fuzzy
 msgid "Save Default Settings"
 msgstr "Standaardinstellingen opslaan"
 
-#: syslog.php:1310 syslog_alerts.php:843
+#: syslog.php:1407 syslog_alerts.php:858
 msgid "Alerts"
 msgstr "Meldingen"
 
-#: syslog.php:1310
+#: syslog.php:1407
 #, fuzzy
 msgid "View Syslog Alert Rules"
 msgstr "Bekijk Syslog Waarschuwingsregels"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "Removals"
 msgstr "Verhuizingen"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "View Syslog Removal Rules"
 msgstr "Bekijk de regels voor het verwijderen van syslogs"
 
-#: syslog.php:1312 syslog_reports.php:722
+#: syslog.php:1409 syslog_reports.php:722
 msgid "Reports"
 msgstr "Rapportages"
 
-#: syslog.php:1312
+#: syslog.php:1409
 #, fuzzy
 msgid "View Syslog Reports"
 msgstr "Bekijk Syslog Rapporten"
 
-#: syslog.php:1332
+#: syslog.php:1429
 msgid "Devices"
 msgstr "Apparaten"
 
-#: syslog.php:1336
+#: syslog.php:1437
 #, fuzzy
 msgid "Show All Devices"
 msgstr "Toon alle apparaten"
 
-#: syslog.php:1337
+#: syslog.php:1439
 #, fuzzy
 msgid "Show All Logs"
 msgstr "Toon alle logboeken"
 
-#: syslog.php:1338
+#: syslog.php:1440
 #, fuzzy
 msgid "Threshold Logs"
 msgstr "Drempel Logboeken"
 
-#: syslog.php:1392
+#: syslog.php:1551
 #, fuzzy
 msgid "Display Rows"
 msgstr "Vertoningsrijen"
 
-#: syslog.php:1402
+#: syslog.php:1561
 msgid "Trim"
 msgstr "Trim"
 
-#: syslog.php:1405
+#: syslog.php:1564
 #, fuzzy
 msgid "Message Trim"
 msgstr "Bericht trimmen"
 
-#: syslog.php:1414
+#: syslog.php:1573
 msgid "Refresh"
 msgstr "Vernieuwen"
 
-#: syslog.php:1435
+#: syslog.php:1594
 #, fuzzy
 msgid "Facilities to filter on"
 msgstr "Faciliteiten om te filteren op"
 
-#: syslog.php:1436
+#: syslog.php:1595
 msgid "All Facilities"
 msgstr "Alle faciliteiten"
 
-#: syslog.php:1457
+#: syslog.php:1616
 #, fuzzy
 msgid "Priority Levels"
 msgstr "Prioriteitsniveaus"
 
-#: syslog.php:1458
+#: syslog.php:1617
 #, fuzzy
 msgid "All Priorities"
 msgstr "Alle prioriteiten"
 
-#: syslog.php:1459 syslog.php:1505
+#: syslog.php:1618 syslog.php:1664
 msgid "Emergency"
 msgstr "Noodgeval"
 
-#: syslog.php:1460
+#: syslog.php:1619
 #, fuzzy
 msgid "Alert++"
 msgstr "Melding"
 
-#: syslog.php:1461 syslog.php:1507
+#: syslog.php:1620 syslog.php:1666
 msgid "Alert"
 msgstr "Melding"
 
-#: syslog.php:1462
+#: syslog.php:1621
 #, fuzzy
 msgid "Critical++"
 msgstr "Kritiek"
 
-#: syslog.php:1464
+#: syslog.php:1623
 #, fuzzy
 msgid "Error++"
 msgstr "Fout:"
 
-#: syslog.php:1465 syslog.php:1508
+#: syslog.php:1624 syslog.php:1667
 msgid "Error"
 msgstr "Fout"
 
-#: syslog.php:1466
+#: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
 msgstr "WAARSCHUWING:"
 
-#: syslog.php:1468
+#: syslog.php:1627
 #, fuzzy
 msgid "Notice++"
 msgstr "Melding"
 
-#: syslog.php:1470
+#: syslog.php:1629
 #, fuzzy
 msgid "Info++"
 msgstr "Info"
 
-#: syslog.php:1471 syslog.php:1511
+#: syslog.php:1630 syslog.php:1670
 msgid "Info"
 msgstr "Info"
 
-#: syslog.php:1472 syslog.php:1512
+#: syslog.php:1631 syslog.php:1671
 msgid "Debug"
 msgstr "Debug"
 
-#: syslog.php:1477
+#: syslog.php:1636
 #, fuzzy
 msgid "Record Type"
 msgstr "Rijen"
 
-#: syslog.php:1480
+#: syslog.php:1639
 #, fuzzy
 msgid "Removal Handling"
 msgstr "Verwijdering Behandeling"
 
-#: syslog.php:1481
+#: syslog.php:1640
 #, fuzzy
 msgid "All Records"
 msgstr "Alle records"
 
-#: syslog.php:1482
+#: syslog.php:1641
 #, fuzzy
 msgid "Main Records"
 msgstr "Hoofdrecords"
 
-#: syslog.php:1483
+#: syslog.php:1642
 #, fuzzy
 msgid "Removed Records"
 msgstr "Verwijderde records"
 
-#: syslog.php:1528
+#: syslog.php:1687
 msgid "Informational"
 msgstr "Informatief"
 
-#: syslog.php:1604 syslog_alerts.php:547
+#: syslog.php:1763 syslog_alerts.php:581
 msgid "Actions"
 msgstr "Acties"
 
-#: syslog.php:1664 syslog.php:1667 syslog.php:1668 syslog.php:1735
+#: syslog.php:1823 syslog.php:1826 syslog.php:1827 syslog.php:1894
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: syslog.php:1673
+#: syslog.php:1832
 #, fuzzy
 msgid "No Syslog Messages"
 msgstr "Geen Syslogberichten"
 
-#: syslog.php:1719
+#: syslog.php:1878
 #, fuzzy
 msgid "Alert Log Rows"
 msgstr "Alert logboek rijen"
 
-#: syslog.php:1733
+#: syslog.php:1892
 #, fuzzy
 msgid "Alert Removed"
 msgstr "Alarm verwijderd"
 
-#: syslog.php:1747
+#: syslog.php:1906
 #, fuzzy
 msgid "No Alert Log Messages"
 msgstr "Geen waarschuwingsberichten in het logboek"
 
-#: syslog.php:1804 syslog.php:1827 syslog.php:1846 syslog.php:1847
+#: syslog.php:1963 syslog.php:1986 syslog.php:2005 syslog.php:2006
 msgid "All Programs"
 msgstr "Alle programma&#39;s"
 
@@ -1135,286 +1168,301 @@ msgstr "Exporteren Syslog Waarschuwingsregel(en)"
 msgid "Continue"
 msgstr "Volgende"
 
-#: syslog_alerts.php:357
+#: syslog_alerts.php:358
 msgid "Not Set"
 msgstr "Niet ingesteld"
 
-#: syslog_alerts.php:362
+#: syslog_alerts.php:363
 msgid "1 Minute"
 msgstr "1 Minuut"
 
-#: syslog_alerts.php:384
+#: syslog_alerts.php:385
 msgid "1 Month"
 msgstr "1 Maand"
 
-#: syslog_alerts.php:420
+#: syslog_alerts.php:421
 #, fuzzy, php-format
 msgid "Alert Edit [edit: %s]"
 msgstr "Waarschuwing Bewerken [Bewerken: %s]"
 
-#: syslog_alerts.php:422 syslog_alerts.php:429 syslog_alerts.php:436
+#: syslog_alerts.php:423 syslog_alerts.php:430 syslog_alerts.php:437
 #, fuzzy
 msgid "Alert Edit [new]"
 msgstr "Waarschuwing Bewerken [nieuw]"
 
-#: syslog_alerts.php:434 syslog_alerts.php:438
+#: syslog_alerts.php:435 syslog_alerts.php:439
 #, fuzzy
 msgid "New Alert Rule"
 msgstr "Nieuwe waarschuwingsregel"
 
-#: syslog_alerts.php:449 syslog_alerts.php:859 syslog_reports.php:383
+#: syslog_alerts.php:450 syslog_alerts.php:874 syslog_reports.php:383
 msgid "N/A"
 msgstr "N/B"
 
-#: syslog_alerts.php:457 syslog_reports.php:389
+#: syslog_alerts.php:458 syslog_reports.php:389
 msgid "Details"
 msgstr "Details"
 
-#: syslog_alerts.php:461 syslog_reports.php:393
+#: syslog_alerts.php:462 syslog_reports.php:393
 msgid "Name"
 msgstr "Naam"
 
-#: syslog_alerts.php:462
+#: syslog_alerts.php:463
 #, fuzzy
 msgid "Please describe this Alert."
 msgstr "Beschrijf deze waarschuwing."
 
-#: syslog_alerts.php:470
+#: syslog_alerts.php:471
 #, fuzzy
 msgid "What is the Severity Level of this Alert?"
 msgstr "Wat is de ernstgraad van deze waarschuwing?"
 
-#: syslog_alerts.php:477
+#: syslog_alerts.php:478
 #, fuzzy
 msgid "Reporting Level"
 msgstr "Rapportagemethode"
 
-#: syslog_alerts.php:478
+#: syslog_alerts.php:479
 #, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
 msgstr "Voor het opnemen van herwaarschuwingscycli, moet de waarschuwing worden gevolgd op systeem- of apparaatniveau."
 
-#: syslog_alerts.php:480
+#: syslog_alerts.php:481
 msgid "System"
 msgstr "Systeem"
 
-#: syslog_alerts.php:485
+#: syslog_alerts.php:486
 #, fuzzy
 msgid "Reporting Method"
 msgstr "Rapportagemethode"
 
-#: syslog_alerts.php:486
+#: syslog_alerts.php:487
 #, fuzzy
 msgid "Define how to Alert on the syslog messages."
 msgstr "Definieer hoe te waarschuwen op de syslog berichten."
 
-#: syslog_alerts.php:488 syslog_alerts.php:858
+#: syslog_alerts.php:489 syslog_alerts.php:873
 msgid "Individual"
 msgstr "Individu"
 
-#: syslog_alerts.php:494
+#: syslog_alerts.php:495
 #, fuzzy
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr "Voor de 'Threshold' methode, Als het geziene getal boven deze waarde ligt, wordt een Alert geactiveerd."
 
-#: syslog_alerts.php:502 syslog_alerts.php:836 syslog_removal.php:699
+#: syslog_alerts.php:503 syslog_alerts.php:851 syslog_removal.php:699
 #: syslog_reports.php:713
 msgid "Match Type"
 msgstr "Wedstrijd Type"
 
-#: syslog_alerts.php:503 syslog_removal.php:438
+#: syslog_alerts.php:504 syslog_removal.php:438
 #, fuzzy
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
 msgstr "Definieer hoe u deze string wilt laten matchen.  Als u het type SQL Expression gebruikt, kunt u elke geldige SQL-expressie gebruiken om het alarm te genereren.  Beschikbare velden zijn onder meer \"bericht\", \"faciliteit\", \"prioriteit\" en \"host\"."
 
-#: syslog_alerts.php:510 syslog_reports.php:416 syslog_reports.php:443
+#: syslog_alerts.php:511 syslog_reports.php:416 syslog_reports.php:443
 #, fuzzy
 msgid "Message Match String"
 msgstr "Syslog bericht Match String"
 
-#: syslog_alerts.php:511 syslog_removal.php:446
+#: syslog_alerts.php:512 syslog_removal.php:446
 #, fuzzy
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
 msgstr "Voer het overeenkomende onderdeel van het syslogbericht, de faciliteit of hostnaam, of de SQL where clause in als u het SQL Expression Match Type gebruikt."
 
-#: syslog_alerts.php:521 syslog_alerts.php:524 syslog_alerts.php:678
-#: syslog_alerts.php:835 syslog_removal.php:432 syslog_removal.php:544
+#: syslog_alerts.php:522 syslog_alerts.php:525 syslog_alerts.php:693
+#: syslog_alerts.php:850 syslog_removal.php:432 syslog_removal.php:544
 #: syslog_removal.php:698 syslog_reports.php:403 syslog_reports.php:558
 #: syslog_reports.php:712
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
-#: syslog_alerts.php:522
+#: syslog_alerts.php:523
 #, fuzzy
 msgid "Is this Alert Enabled?"
 msgstr "Is deze waarschuwing ingeschakeld?"
 
-#: syslog_alerts.php:524 syslog_removal.php:432 syslog_reports.php:403
+#: syslog_alerts.php:525 syslog_removal.php:432 syslog_reports.php:403
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-#: syslog_alerts.php:528
+#: syslog_alerts.php:529
 #, fuzzy
 msgid "Re-Alert Cycle"
 msgstr "Herwaarschuwingscyclus"
 
-#: syslog_alerts.php:532
+#: syslog_alerts.php:533
 #, fuzzy
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr "Verstuur deze waarschuwing niet opnieuw voor dezelfde host, totdat deze tijd verstreken is. Voor drempelgebaseerde alarmen geldt dit voor alle hosts."
 
-#: syslog_alerts.php:536 syslog_reports.php:480
+#: syslog_alerts.php:537 syslog_reports.php:480
 msgid "Notes"
 msgstr "Notities"
 
-#: syslog_alerts.php:539
+#: syslog_alerts.php:540
 #, fuzzy
 msgid "Space for Notes on the Alert"
 msgstr "Ruimte voor opmerkingen over het alarm"
 
-#: syslog_alerts.php:551
+#: syslog_alerts.php:548
+msgid "Email Options"
+msgstr ""
+
+#: syslog_alerts.php:552 syslog_reports.php:462
+msgid "Notification List"
+msgstr "Notificatielijst"
+
+#: syslog_alerts.php:553 syslog_reports.php:463
+#, fuzzy
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Gebruik de inhoud van deze notificatielijst om te bepalen wie op de hoogte moet worden gesteld en hoe."
+
+#: syslog_alerts.php:561
+#, fuzzy
+msgid "Emails to Notify"
+msgstr "E-mails om te melden"
+
+#: syslog_alerts.php:564
+#, fuzzy
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Voer een door komma's afgebakende lijst met e-mailadressen in om u te informeren.  Als u een e-mail naar een ontvanger in sms-formaat wilt verzenden, kunt u het e-mailadres van die ontvanger voorvoegen met <b>'sms@'</b>.  Als het SMS-adres van de ontvanger bijvoorbeeld <b>'2485551212@mycarrier.net'</b> is, voert u het in als <b>'sms@2485551212@mycarrier.net'</b> en wordt het geformatteerd als een SMS-bericht."
+
+#: syslog_alerts.php:570 syslog_reports.php:451
+#, fuzzy
+#| msgid "Body Text"
+msgid "Email Body Text"
+msgstr "Body tekst"
+
+#: syslog_alerts.php:573
+#, fuzzy
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "De informatie die in het hoofddeel van het verslag zal worden opgenomen."
+
+#: syslog_alerts.php:585
 msgid "Open Ticket"
 msgstr "Open ticket"
 
-#: syslog_alerts.php:552
+#: syslog_alerts.php:586
 #, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "Mocht er een Helpdesk Ticket worden geopend voor deze Alert. OPMERKING: Het Ticket-opdrachtscript wordt voor het gemak gevuld met verschillende 'ALERT_'-omgevingsvariabelen."
 
-#: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:699 syslog_alerts.php:875
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
 #: syslog_reports.php:736
 msgid "No"
 msgstr "Nee"
 
-#: syslog_alerts.php:554 syslog_alerts.php:683 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:698 syslog_alerts.php:875
 #: syslog_removal.php:549 syslog_removal.php:720 syslog_reports.php:563
 #: syslog_reports.php:736
 msgid "Yes"
 msgstr "Ja"
 
-#: syslog_alerts.php:559 syslog_reports.php:462
-msgid "Notification List"
-msgstr "Notificatielijst"
-
-#: syslog_alerts.php:560 syslog_reports.php:463
-#, fuzzy
-msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr "Gebruik de inhoud van deze notificatielijst om te bepalen wie op de hoogte moet worden gesteld en hoe."
-
-#: syslog_alerts.php:568
-#, fuzzy
-msgid "Emails to Notify"
-msgstr "E-mails om te melden"
-
-#: syslog_alerts.php:571
-#, fuzzy
-msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr "Voer een door komma's afgebakende lijst met e-mailadressen in om u te informeren.  Als u een e-mail naar een ontvanger in sms-formaat wilt verzenden, kunt u het e-mailadres van die ontvanger voorvoegen met <b>'sms@'</b>.  Als het SMS-adres van de ontvanger bijvoorbeeld <b>'2485551212@mycarrier.net'</b> is, voert u het in als <b>'sms@2485551212@mycarrier.net'</b> en wordt het geformatteerd als een SMS-bericht."
-
-#: syslog_alerts.php:577
+#: syslog_alerts.php:592
 msgid "Command"
 msgstr "Commando"
 
-#: syslog_alerts.php:580
+#: syslog_alerts.php:595
 #, fuzzy
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Wanneer een waarschuwing wordt geactiveerd, voert u het volgende commando uit.  De volgende vervangingsvariabelen zijn beschikbaar <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Let op: <b>'&lt;HOSTNAME&gt;'</b> is alleen beschikbaar op individuele drempels."
 
-#: syslog_alerts.php:688 syslog_reports.php:568
+#: syslog_alerts.php:703 syslog_reports.php:568
 msgid "Rows"
 msgstr "Rijen"
 
-#: syslog_alerts.php:706 syslog_alerts.php:998 syslog_removal.php:572
+#: syslog_alerts.php:721 syslog_alerts.php:1013 syslog_removal.php:572
 #: syslog_removal.php:859 syslog_reports.php:586 syslog_reports.php:877
 msgid "Import"
 msgstr "Importeren"
 
-#: syslog_alerts.php:806
+#: syslog_alerts.php:821
 #, fuzzy
 msgid "Syslog Alert Filters"
 msgstr "Syslog Alert Filters"
 
-#: syslog_alerts.php:833 syslog_removal.php:701
+#: syslog_alerts.php:848 syslog_removal.php:701
 msgid "Method"
 msgstr "Methode"
 
-#: syslog_alerts.php:834
+#: syslog_alerts.php:849
 #, fuzzy
 msgid "Threshold Count"
 msgstr "Drempelwaarde Telling"
 
-#: syslog_alerts.php:837 syslog_removal.php:700 syslog_reports.php:714
+#: syslog_alerts.php:852 syslog_removal.php:700 syslog_reports.php:714
 #, fuzzy
 msgid "Search String"
 msgstr "Zoeken op String"
 
-#: syslog_alerts.php:838 syslog_reports.php:470
+#: syslog_alerts.php:853 syslog_reports.php:470
 msgid "Email Addresses"
 msgstr "E-mailadressen"
 
-#: syslog_alerts.php:839 syslog_removal.php:702 syslog_reports.php:718
+#: syslog_alerts.php:854 syslog_removal.php:702 syslog_reports.php:718
 msgid "Last Modified"
 msgstr "Laatste keer bewerkt"
 
-#: syslog_alerts.php:840 syslog_removal.php:703 syslog_reports.php:719
+#: syslog_alerts.php:855 syslog_removal.php:703 syslog_reports.php:719
 #, fuzzy
 msgid "By User"
 msgstr "Geen gebruiker"
 
-#: syslog_alerts.php:863
+#: syslog_alerts.php:878
 msgid "Multiple"
 msgstr "Meerdere"
 
-#: syslog_alerts.php:870
+#: syslog_alerts.php:885
 #, fuzzy
 msgid "No Syslog Alerts Defined"
 msgstr "Geen Syslog Alerts Gedefinieerd"
 
-#: syslog_alerts.php:901
+#: syslog_alerts.php:916
 #, fuzzy
 msgid "Import Alert Rule from Local File"
 msgstr "Waarschuwingsregel importeren uit lokaal bestand"
 
-#: syslog_alerts.php:902
+#: syslog_alerts.php:917
 #, fuzzy
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr "Als het XML-bestand met de definitiegegevens van de waarschuwingsregel zich op uw lokale machine bevindt, selecteert u het hier."
 
-#: syslog_alerts.php:907
+#: syslog_alerts.php:922
 #, fuzzy
 msgid "Import Alert Rule from Text"
 msgstr "Waarschuwingsregel importeren uit tekst"
 
-#: syslog_alerts.php:908
+#: syslog_alerts.php:923
 #, fuzzy
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr "Als u het XML-bestand met de Alert Ruledefinition-gegevens als tekst hebt, kunt u het in dit vakje plakken om het te importeren."
 
-#: syslog_alerts.php:919
+#: syslog_alerts.php:934
 #, fuzzy
 msgid "Import Alert Rule"
 msgstr "Invoerwaarschuwingsregel"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 msgid "Imported"
 msgstr "Geïmporteerd"
 
-#: syslog_alerts.php:996
+#: syslog_alerts.php:1011
 #, fuzzy, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr "OPMERKING: Waarschuwing '%s' %s!"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 msgid "Updated"
 msgstr "Bijgewerkt"
 
-#: syslog_alerts.php:998
+#: syslog_alerts.php:1013
 #, fuzzy, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "ERROR: Waarschuwing '%s' %s Mislukt!"
 
-#: syslog_alerts.php:998 syslog_removal.php:859 syslog_reports.php:877
+#: syslog_alerts.php:1013 syslog_removal.php:859 syslog_reports.php:877
 msgid "Update"
 msgstr "Bijwerken"
 
@@ -1721,13 +1769,9 @@ msgstr "Hoe laat moet dit verslag worden verzonden?"
 msgid "Report Format"
 msgstr "Rapportnota's"
 
-#: syslog_reports.php:451
-msgid "Body Text"
-msgstr "Body tekst"
-
 #: syslog_reports.php:454
 #, fuzzy
-msgid "The information that will be contained in the body of the report."
+msgid "The information that will be contained in the body of the Report."
 msgstr "De informatie die in het hoofddeel van het verslag zal worden opgenomen."
 
 #: syslog_reports.php:473
