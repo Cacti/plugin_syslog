@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-19 10:38-0400\n"
+"POT-Creation-Date: 2022-03-26 11:33-0400\n"
 "PO-Revision-Date: 2022-03-19 16:58-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,145 +22,155 @@ msgstr ""
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "बचाव असफल हुआ। समन्वयन मोड में दूरस्थ डेटा संग्राहकों को नियम सहेजने की अनुमति नहीं है। इसके बजाय मेन कैक्टि सर्वर से सेव करें।"
 
-#: functions.php:115
+#: functions.php:116
 #, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "कृपया एक HTML ईमेल क्लाइंट का उपयोग करें"
 
-#: functions.php:1218
-#, fuzzy
-msgid "WARNING: A Syslog Plugin Instance Count Alert has Been Triggered"
-msgstr "चेतावनी: एक Syslog Plugin Instance Count Alert हो गया है"
-
-#: functions.php:1219
-#, fuzzy
-msgid "Name:"
-msgstr "नाम"
-
-#: functions.php:1220 functions.php:1257
-#, fuzzy
-msgid "Severity:"
-msgstr "तीव्रता"
-
-#: functions.php:1221
-#, fuzzy
-msgid "Threshold:"
-msgstr "सीमा:"
-
-#: functions.php:1222
-#, fuzzy
-msgid "Count:"
-msgstr "गणना:"
-
-#: functions.php:1223
-#, fuzzy
-msgid "Message String:"
-msgstr "संदेश स्ट्रिंग:"
-
-#: functions.php:1225
+#: functions.php:1313 functions.php:1334
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Threshold Alert '%s'"
+msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
 msgstr "Cacti Syslog Plugin थ्रेसहोल्ड अलर्ट ' %s'"
 
-#: functions.php:1227 syslog.php:1709 syslog_alerts.php:831
+#: functions.php:1315
+#, fuzzy, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Cacti Syslog Plugin थ्रेसहोल्ड अलर्ट ' %s'"
+
+#: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 #, fuzzy
 msgid "Alert Name"
 msgstr "अलर्ट नाम"
 
-#: functions.php:1227 syslog.php:1713
-#, fuzzy
-msgid "Count"
-msgstr "गिनती"
-
-#: functions.php:1227
-#, fuzzy
-msgid "Match String"
-msgstr "मैच स्ट्रिंग"
-
-#: functions.php:1227 functions.php:1238 syslog.php:1710 syslog_alerts.php:469
-#: syslog_alerts.php:832
+#: functions.php:1321 functions.php:1348 syslog.php:1869 syslog_alerts.php:470
+#: syslog_alerts.php:847
 msgid "Severity"
 msgstr "तीव्रता"
 
-#: functions.php:1227 syslog_alerts.php:488 syslog_alerts.php:493
-#: syslog_alerts.php:858
+#: functions.php:1322 syslog_alerts.php:489 syslog_alerts.php:494
+#: syslog_alerts.php:873
 #, fuzzy
 msgid "Threshold"
 msgstr "द्वार"
 
-#: functions.php:1234
+#: functions.php:1323 syslog.php:1872
+#, fuzzy
+msgid "Count"
+msgstr "गिनती"
+
+#: functions.php:1324
+#, fuzzy
+msgid "Match String"
+msgstr "मैच स्ट्रिंग"
+
+#: functions.php:1336
 #, fuzzy, php-format
-msgid "Cacti Syslog Plugin Alert '%s'"
+msgid "Cacti Syslog Alert '%s'"
 msgstr "Cacti Syslog Plugin Alert ' %s'"
 
-#: functions.php:1238 functions.php:1814 syslog.php:283 syslog.php:1605
-#: syslog.php:1613 syslog.php:1711
-msgid "Date"
-msgstr "दिनांक"
-
-#: functions.php:1238
+#: functions.php:1346
 msgid "Hostname"
 msgstr "होस्टनांऽ"
 
-#: functions.php:1238
+#: functions.php:1347 functions.php:2070 syslog.php:338 syslog.php:1764
+#: syslog.php:1772 syslog.php:1870
+msgid "Date"
+msgstr "दिनांक"
+
+#: functions.php:1349
 #, fuzzy
 msgid "Level"
 msgstr "स्तर"
 
-#: functions.php:1238 functions.php:1814 syslog.php:1608 syslog.php:1616
-#: syslog.php:1712
+#: functions.php:1350 functions.php:2071 syslog.php:1767 syslog.php:1775
+#: syslog.php:1871
 msgid "Message"
 msgstr "संदेश"
 
-#: functions.php:1255
+#: functions.php:1356
+#, fuzzy, php-format
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
+msgstr "चेतावनी: एक Syslog Plugin Instance Count Alert हो गया है"
+
+#: functions.php:1358
+#, fuzzy
+msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
+msgstr "चेतावनी: एक Syslog Plugin Instance Count Alert हो गया है"
+
+#: functions.php:1367
+#, fuzzy
+msgid "Name:"
+msgstr "नाम"
+
+#: functions.php:1368 functions.php:1402
+#, fuzzy
+msgid "Severity:"
+msgstr "तीव्रता"
+
+#: functions.php:1369
+#, fuzzy
+msgid "Threshold:"
+msgstr "सीमा:"
+
+#: functions.php:1370
+#, fuzzy
+msgid "Count:"
+msgstr "गणना:"
+
+#: functions.php:1371
+#, fuzzy
+msgid "Message String:"
+msgstr "संदेश स्ट्रिंग:"
+
+#: functions.php:1400
 msgid "Hostname:"
 msgstr "#-#-#-#-# balsa.HEAD.hi.po (Balsa 2.x) #-#-#-#-# उपयोगकर्ता का नाम #-#-#-#-# eel.HEAD.hi.po (eel VERSION) #-#-#-#-# उपयोगकर्ता का नाम: (_U)"
 
-#: functions.php:1256
+#: functions.php:1401
 #, fuzzy
 msgid "Date:"
 msgstr "दिनांक"
 
-#: functions.php:1258
+#: functions.php:1403
 #, fuzzy
 msgid "Level:"
 msgstr "स्तर:"
 
-#: functions.php:1259
+#: functions.php:1404
 #, fuzzy
 msgid "Message:"
 msgstr "संदेश"
 
-#: functions.php:1293
+#: functions.php:1442
 #, fuzzy
 msgid ", Host:"
 msgstr "होस्ट:"
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php:1293 functions.php:1385
+#: functions.php:1442 functions.php:1560
 #, fuzzy
 msgid "Sev:"
 msgstr "सेव:"
 
-#: functions.php:1295 functions.php:1355
+#: functions.php:1458 functions.php:1557
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "इवेंट अलर्ट - %s"
 
-#: functions.php:1385
+#: functions.php:1560
 #, fuzzy
 msgid ", Count:"
 msgstr ", गणना:"
 
-#: functions.php:1814
+#: functions.php:2069
 msgid "Host"
 msgstr "होस्ट"
 
-#: functions.php:1825
+#: functions.php:2094
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "घटना की रिपोर्ट - %s"
@@ -175,950 +185,972 @@ msgstr "कृपया syslog निर्देशिका में अप�
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
 msgstr "Syslog 2.0 के लिए एक पूर्ण स्थापना की आवश्यकता है। कृपया स्थापित करने से पहले Syslog और सभी डेटा को हटा दें। प्रवासन संभव है, लेकिन आपको इसकी योजना पहले से ही बना लेनी चाहिए। कोई भी स्वचालित माइग्रेशन समर्थित नहीं है।"
 
-#: setup.php:859
+#: setup.php:872
 #, fuzzy
 msgid "What upgrade/install type do you wish to use"
 msgstr "आप किस अपग्रेड / इंस्टॉल प्रकार का उपयोग करना चाहते हैं"
 
-#: setup.php:860
+#: setup.php:873
 #, fuzzy
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "जब आपके पास बहुत बड़ी टेबल होती हैं, तो एक Truncate प्रदर्शन बहुत तेज होगा। यदि आप संग्रह डेटा के बारे में चिंतित हैं, तो आप या तो इनलाइन चुन सकते हैं, जो आपके ब्राउज़र को इस अपग्रेड की अवधि, या पृष्ठभूमि के लिए फ्रीज कर देगा, जो आपके पुराने syslog डेटा को बैकअप टेबल से नए syslog प्रारूप में लाने के लिए एक पृष्ठभूमि प्रक्रिया का निर्माण करेगा। । फिर से इस प्रक्रिया में कई घंटे लग सकते हैं।"
 
-#: setup.php:863
+#: setup.php:876
 #, fuzzy
 msgid "Truncate Syslog Table"
 msgstr "ट्रंकसेट सिसलॉग टेबल"
 
-#: setup.php:864
+#: setup.php:877
 #, fuzzy
 msgid "Inline Upgrade"
 msgstr "इनलाइन अपग्रेड"
 
-#: setup.php:865
+#: setup.php:878
 #, fuzzy
 msgid "Background Upgrade"
 msgstr "बैकग्राउंड अपग्रेड"
 
-#: setup.php:870
+#: setup.php:883
 #, fuzzy
 msgid "Database Storage Engine"
 msgstr "डेटाबेस संग्रहण इंजन"
 
-#: setup.php:871
+#: setup.php:884
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available."
 msgstr "MySQL 5.1.6 और इसके बाद के संस्करण में, आपके पास इसे दिनों के अनुसार एक विभाजन तालिका बनाने का विकल्प है। इस रिलीज से पहले, आपके पास केवल पारंपरिक टेबल संरचना उपलब्ध है।"
 
-#: setup.php:874
+#: setup.php:887
 #, fuzzy
 msgid "MyISAM Storage"
 msgstr "MyISAM संग्रहण"
 
-#: setup.php:875
+#: setup.php:888
 #, fuzzy
 msgid "InnoDB Storage"
 msgstr "InnoDB संग्रहण"
 
-#: setup.php:880
+#: setup.php:893
 #, fuzzy
 msgid "Database Architecture"
 msgstr "डेटाबेस आर्किटेक्चर"
 
-#: setup.php:881
+#: setup.php:894
 #, fuzzy
 msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available."
 msgstr "MySQL 5.1.6 और इसके बाद के संस्करण में, आपके पास इसे दिनों के अनुसार एक विभाजन तालिका बनाने का विकल्प है। MySQL 5.5 और इसके बाद के संस्करण में, आप प्रति दिन कई विभाजन बना सकते हैं। MySQL 5.1.6 से पहले, आपके पास केवल पारंपरिक टेबल संरचना उपलब्ध है।"
 
-#: setup.php:885 setup.php:888
+#: setup.php:898 setup.php:901
 #, fuzzy
 msgid "Traditional Table"
 msgstr "पारंपरिक तालिका"
 
-#: setup.php:886
+#: setup.php:899
 #, fuzzy
 msgid "Partitioned Table"
 msgstr "विभाजन तालिका"
 
-#: setup.php:894
+#: setup.php:907
 #, fuzzy
 msgid "Retention Policy"
 msgstr "अवधारण नीति"
 
-#: setup.php:895
+#: setup.php:908
 #, fuzzy
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "डेटाबेस में बनाए रखने के लिए आप कितने दिनों के Syslog मान चुनें।"
 
-#: setup.php:916
+#: setup.php:929
 #, fuzzy
 msgid "Partitions per Day"
 msgstr "प्रति दिन विभाजन"
 
-#: setup.php:917
+#: setup.php:930
 #, fuzzy
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "प्रति दिन विभाजन की संख्या का चयन करें जिसे आप बनाना चाहते हैं।"
 
-#: setup.php:920 setup.php:921 setup.php:922 setup.php:923 setup.php:924
+#: setup.php:933 setup.php:934 setup.php:935 setup.php:936 setup.php:937
 #, fuzzy, php-format
 msgid "%d Per Day"
 msgstr "प्रति दिन% d"
 
-#: setup.php:930 setup.php:1015
+#: setup.php:943 setup.php:1028
 msgid "Upgrade"
 msgstr "अपग्रेड  करो"
 
-#: setup.php:932 setup.php:1017
+#: setup.php:945 setup.php:1030
 msgid "Install"
 msgstr "इन्स्टाल करें "
 
-#: setup.php:936
+#: setup.php:949
 #, fuzzy, php-format
 msgid "Syslog %s Advisor"
 msgstr "Syslog %s सलाहकार"
 
-#: setup.php:940
+#: setup.php:953
 #, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "चेतावनी: Syslog अपग्रेड समय का उपभोग है !!!"
 
-#: setup.php:941
+#: setup.php:954
 #, fuzzy
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "'मुख्य' syslog तालिका का उन्नयन एक बहुत समय लेने वाली प्रक्रिया हो सकती है। इस प्रकार, यह अनुशंसा की जाती है कि आप अपग्रेड करने से पहले या तो अपनी syslog तालिका का आकार कम कर दें, या पृष्ठभूमि विकल्प चुनें </p><p> यदि आप पृष्ठभूमि विकल्प चुनते हैं, तो आपकी विरासत syslog तालिका का नाम बदल दिया जाएगा, और एक नया syslog तालिका बनाई जाएगी। फिर, पृष्ठभूमि में एक नवीनीकरण प्रक्रिया शुरू की जाएगी। फिर से, इस पृष्ठभूमि की प्रक्रिया को पूरा करने में काफी समय लग सकता है। हालाँकि, आपका डेटा संरक्षित रहेगा </p><p> आपकी पसंद के बावजूद, अपग्रेड प्रक्रिया के दौरान सभी मौजूदा निष्कासन और सतर्क नियमों को बनाए रखा जाएगा। </p><p> <b>अपग्रेड के</b> साथ आगे बढ़ने के लिए <b>'अपग्रेड'</b> दबाएँ, या प्लगइन्स मेनू पर लौटने के लिए <b>'रद्द करें'</b> ।"
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller."
 msgstr "आप अवधारण अवधि भी चुन सकते हैं। कृपया ध्यान रखें कि यदि आपके पास कई मेजबान लॉग इन करने के लिए syslog है, तो यह तालिका काफी बड़ी हो सकती है। इसलिए, यदि आप विभाजन का उपयोग नहीं कर रहे हैं, तो आप आकार को छोटा रखना चाह सकते हैं।"
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
 msgstr "आप MySQL स्टोरेज इंजन भी सेट कर सकते हैं। यदि आपने InnoDB भंडारण गुणों के लिए आपको सिस्टम ट्यून नहीं किया है, तो यह दृढ़ता से अनुशंसा की जाती है कि आप MyISAM संग्रहण इंजन का उपयोग करें।"
 
-#: setup.php:944
+#: setup.php:957
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries."
 msgstr "आपके पास Syslog स्थापित करते समय चुनने के लिए कई विकल्प हैं। पहला डेटाबेस आर्किटेक्चर है। MySQL 5.1.6 के साथ शुरू करके, आप टेबल विभाजन का उपयोग करने के लिए तालिकाओं के आकार को अत्यधिक धीमा होने से रोकने के लिए चुनाव कर सकते हैं।"
 
-#: setup.php:948
+#: setup.php:961
 #, fuzzy, php-format
 msgid "Syslog %s Settings"
 msgstr "Syslog %s सेटिंग"
 
-#: setup.php:975
+#: setup.php:988
 #, fuzzy
 msgid "What uninstall method do you want to use?"
 msgstr "आप क्या स्थापना विधि का उपयोग करना चाहते हैं"
 
-#: setup.php:976
+#: setup.php:989
 #, fuzzy
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "जब आप syslog को अनइंस्टॉल करते हैं, तो आप भविष्य में फिर से स्थापित करने की योजना के तहत सब कुछ या केवल घटकों को हटा सकते हैं।"
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "सब कुछ निकालें (लॉग, टेबल, सेटिंग्स)"
 
-#: setup.php:978
+#: setup.php:991
 #, fuzzy
 msgid "Syslog Data Only"
 msgstr "केवल Syslog डेटा"
 
-#: setup.php:998
+#: setup.php:1011
 #, fuzzy
 msgid "Syslog Uninstall Preferences"
 msgstr "Syslog अनइंस्टॉल प्राथमिकताएं"
 
-#: setup.php:1020
+#: setup.php:1033
 msgid "Uninstall"
 msgstr "अनइंस्टाल करो"
 
-#: setup.php:1027 syslog_alerts.php:204 syslog_removal.php:226
+#: setup.php:1040 syslog_alerts.php:204 syslog_removal.php:226
 #: syslog_reports.php:204
 msgid "Cancel"
 msgstr "कैंसिल करें"
 
-#: setup.php:1058 setup.php:1177 setup.php:1179 setup.php:1385 setup.php:1399
+#: setup.php:1079 setup.php:1215 setup.php:1217 setup.php:1423 setup.php:1437
 #, fuzzy
 msgid "Syslog"
 msgstr "syslog"
 
-#: setup.php:1062
+#: setup.php:1083
 msgid "General Settings"
 msgstr "सामान्य सेटिंग्स"
 
-#: setup.php:1066
+#: setup.php:1087
 #, fuzzy
 msgid "Syslog Enabled"
 msgstr "सिसलॉग सक्षम"
 
-#: setup.php:1067
+#: setup.php:1088
 #, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "यदि यह चेकबॉक्स सेट किया गया है, तो रिकॉर्ड को Syslog आने वाली तालिका से मुख्य syslog तालिका में स्थानांतरित किया जाएगा और अलर्ट और रिपोर्ट सक्षम की जाएंगी। कृपया ध्यान रखें कि यदि सिस्टम अक्षम है लॉग प्रविष्टियाँ अभी भी Syslog आने वाली तालिका में जमा हो जाएँगी क्योंकि यह rsyslog या syslog-ng प्रक्रिया द्वारा परिभाषित किया गया है।"
 
-#: setup.php:1072
-#, fuzzy
-msgid "HTML Based Email"
-msgstr "HTML आधारित ईमेल"
-
-#: setup.php:1073
-#, fuzzy
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "यदि यह चेकबॉक्स सेट है, तो सभी ईमेल HTML प्रारूप में भेजे जाएंगे। अन्यथा, ईमेल सादे पाठ में भेजे जाएंगे।"
-
-#: setup.php:1078
+#: setup.php:1093
 #, fuzzy
 msgid "Enable Statistics Gathering"
 msgstr "सांख्यिकी सभा सक्षम करें"
 
-#: setup.php:1079
+#: setup.php:1094
 #, fuzzy
 msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
 msgstr "यदि यह चेकबॉक्स सेट किया गया है, तो जहाँ से syslog संदेश आ रहे हैं, उसके आंकड़े बनाए रखे जाएंगे। इस सांख्यिकीय जानकारी का उपयोग गर्मी के नक्शे जैसी चीजों को प्रस्तुत करने के लिए किया जा सकता है।"
 
-#: setup.php:1084
+#: setup.php:1099
 #, fuzzy
 msgid "Strip Domains"
 msgstr "स्ट्रिप डोमेन"
 
-#: setup.php:1085
+#: setup.php:1100
 #, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "उन डोमेन की एक अल्पविराम सीमांकित सूची जिसे आप syslog hostname से हटाना चाहते हैं, उदाहरण 'mydomain.com, otherdomain.com' होंगे।"
 
-#: setup.php:1092
+#: setup.php:1107
 #, fuzzy
 msgid "Validate Hostnames"
 msgstr "होस्टनाम का सत्यापन करें"
 
-#: setup.php:1093
+#: setup.php:1108
 #, fuzzy
 msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
 msgstr "यदि यह चेकबॉक्स सेट है, तो सभी होस्टनाम मान्य हैं। यदि होस्टनाम मान्य नहीं है। सभी रिकॉर्ड एक विशेष होस्ट को दिए जाते हैं जिसे 'अमान्यहोस्ट' कहा जाता है। यह सेटिंग बड़े सिस्टम पर syslog प्रसंस्करण समय को प्रभावित कर सकती है। इसलिए, इस सेटिंग का उपयोग केवल तब किया जाना चाहिए जब अन्य साधनों को ऐसा होने से रोकने के लिए जगह न हो।"
 
-#: setup.php:1098
+#: setup.php:1113
 msgid "Refresh Interval"
 msgstr "अंतराल ताज़ा करें"
 
-#: setup.php:1099
+#: setup.php:1114
 #, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "पृष्ठ रीफ़्रेश होने से पहले सेकंड में यह समय है।"
 
-#: setup.php:1105
+#: setup.php:1120
 #, fuzzy
 msgid "Max Report Records"
 msgstr "मैक्स रिपोर्ट रिकॉर्ड"
 
-#: setup.php:1106
+#: setup.php:1121
 #, fuzzy
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "थ्रेशोल्ड आधारित अलर्ट के लिए, अधिकतम संख्या क्या है जो आप रिपोर्ट में दिखाना चाहते हैं। इसका उपयोग html लॉग और ईमेल के आकार को सीमित करने के लिए किया जाता है।"
 
-#: setup.php:1110 setup.php:1111 setup.php:1112 setup.php:1113 setup.php:1114
-#: setup.php:1115
+#: setup.php:1125 setup.php:1126 setup.php:1127 setup.php:1128 setup.php:1129
+#: setup.php:1130
 #, fuzzy, php-format
 msgid "%d Records"
 msgstr "% d रिकॉर्ड्स"
 
-#: setup.php:1119
-#, fuzzy
-msgid "Syslog Retention"
-msgstr "Syslog अवधारण"
-
-#: setup.php:1120
-#, fuzzy
-msgid "This is the number of days to keep events."
-msgstr "यह घटनाओं को रखने के लिए दिनों की संख्या है।"
-
-#: setup.php:1126
-#, fuzzy
-msgid "Syslog Alert Retention"
-msgstr "Syslog अलर्ट रिटेंशन"
-
-#: setup.php:1127
-#, fuzzy
-msgid "This is the number of days to keep alert logs."
-msgstr "यह चेतावनी लॉग रखने के लिए दिनों की संख्या है।"
-
-#: setup.php:1133
+#: setup.php:1134
 #, fuzzy
 msgid "Command for Opening Tickets"
 msgstr "टिकट खोलने की कमान"
 
-#: setup.php:1134
+#: setup.php:1135
 #, fuzzy
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "हेल्प डेस्क टिकट खोलने के लिए इस कमांड को अंजाम दिया जाएगा। <b>--Alert-नाम,</b> <b>--severity,</b> <b>--hostlist,</b> <b>--message:</b> आदेश के रूप में इस प्रकार एकाधिक इनपुट पैरामीटर पार्स करने की आवश्यकता होगी। होस्टलिस्ट अलर्ट द्वारा प्रभावित मेजबानों की अल्पविराम वाली सूची होगी।"
 
-#: setup.php:1140
+#: setup.php:1141
+#, fuzzy
+msgid "HTML Notification Settings"
+msgstr "अधिसूचना सूची"
+
+#: setup.php:1146
+#, fuzzy
+msgid "Enable HTML Based Email"
+msgstr "HTML आधारित ईमेल"
+
+#: setup.php:1147
+#, fuzzy
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "यदि यह चेकबॉक्स सेट है, तो सभी ईमेल HTML प्रारूप में भेजे जाएंगे। अन्यथा, ईमेल सादे पाठ में भेजे जाएंगे।"
+
+#: setup.php:1152
+#, fuzzy
+#| msgid "Normal User"
+msgid "Format File to Use"
+msgstr "सामान्य उपयोगकर्ता"
+
+#: setup.php:1155
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr ""
+
+#: setup.php:1159
+msgid "Data Retention Settings"
+msgstr ""
+
+#: setup.php:1164
+#, fuzzy
+msgid "Syslog Retention"
+msgstr "Syslog अवधारण"
+
+#: setup.php:1165
+#, fuzzy
+msgid "This is the number of days to keep events."
+msgstr "यह घटनाओं को रखने के लिए दिनों की संख्या है।"
+
+#: setup.php:1171
+#, fuzzy
+msgid "Syslog Alert Retention"
+msgstr "Syslog अलर्ट रिटेंशन"
+
+#: setup.php:1172
+#, fuzzy
+msgid "This is the number of days to keep alert logs."
+msgstr "यह चेतावनी लॉग रखने के लिए दिनों की संख्या है।"
+
+#: setup.php:1178
 #, fuzzy
 msgid "Remote Message Processing"
 msgstr "संदेश स्ट्रिंग:"
 
-#: setup.php:1144
+#: setup.php:1182
 #, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "दूरस्थ डेटा संग्राहक संदेश संसाधन सक्षम करें"
 
-#: setup.php:1145
+#: setup.php:1183
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "यदि आपके दूरस्थ डेटा संग्राहक के पास अपने स्वयं के Syslog डेटाबेस हैं और अपने संदेशों को स्वतंत्र रूप से संसाधित करते हैं, तो इस चेकबॉक्स को चेक करें। इस चेकबॉक्स को चेक करके, आपके दूरस्थ डेटा संग्राहकों को संदेश प्रदर्शन और प्रसंस्करण के लिए एक स्वतंत्र डेटाबेस का उपयोग करने के लिए Syslog को सूचित करने के लिए अपनी 'config_local.php' फ़ाइल बनाए रखने की आवश्यकता होगी। कृपया इस उद्देश्य के लिए टेम्पलेट फ़ाइल 'config_local.php.dist' का उपयोग करें। चेतावनी: इस विकल्प के सक्षम होते ही Syslog टेबल अपने आप बन जाएगी।"
 
-#: setup.php:1150
+#: setup.php:1188
 #, fuzzy
 msgid "Remote Data Collector Rules Sync"
 msgstr "रिमोट डेटा कलेक्टर नियम सिंक"
 
-#: setup.php:1151
+#: setup.php:1189
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "यदि आपके दूरस्थ डेटा संग्राहक के पास अपने स्वयं के Syslog डेटाबेस हैं और तीन संदेशों को स्वतंत्र रूप से संसाधित करते हैं, तो इस चेकबॉक्स को चेक करें यदि आप चाहते हैं कि मुख्य कैक्टि डेटाबेस अलर्ट, निष्कासन और रिपोर्ट नियम रिमोट कैक्टि सिस्टम को भेजे जाएं।"
 
-#: setup.php:1224 syslog_removal.php:33
+#: setup.php:1262 syslog_removal.php:33
 msgid "Delete"
 msgstr "हटाएं"
 
-#: setup.php:1225 syslog_removal.php:34
+#: setup.php:1263 syslog_removal.php:34
 msgid "Disable"
 msgstr "अक्षम करें"
 
-#: setup.php:1226 syslog_removal.php:35
+#: setup.php:1264 syslog_removal.php:35
 msgid "Enable"
 msgstr "सक्षम करें"
 
-#: setup.php:1227 syslog.php:1303 syslog_removal.php:37
+#: setup.php:1265 syslog.php:1400 syslog_removal.php:37
 msgid "Export"
 msgstr "एक्सपोर्ट"
 
-#: setup.php:1270 setup.php:1289
+#: setup.php:1308 setup.php:1327
 #, fuzzy
 msgid "Indefinite"
 msgstr "अनिश्चितकालीन"
 
-#: setup.php:1271 setup.php:1290 syslog.php:542 syslog_alerts.php:380
+#: setup.php:1309 setup.php:1328 syslog.php:604 syslog_alerts.php:381
 #, fuzzy, php-format
 msgid "%d Day"
 msgstr "% द डे"
 
-#: setup.php:1272 setup.php:1273 setup.php:1274 setup.php:1275 setup.php:1276
-#: setup.php:1291 setup.php:1292 setup.php:1293 setup.php:1294 setup.php:1295
-#: syslog_alerts.php:381
+#: setup.php:1310 setup.php:1311 setup.php:1312 setup.php:1313 setup.php:1314
+#: setup.php:1329 setup.php:1330 setup.php:1331 setup.php:1332 setup.php:1333
+#: syslog_alerts.php:382
 #, fuzzy, php-format
 msgid "%d Days"
 msgstr "% ड डय"
 
-#: setup.php:1277 setup.php:1296 syslog_alerts.php:382
+#: setup.php:1315 setup.php:1334 syslog_alerts.php:383
 #, fuzzy, php-format
 msgid "%d Week"
 msgstr "% d वीक"
 
-#: setup.php:1278 setup.php:1297 syslog_alerts.php:383
+#: setup.php:1316 setup.php:1335 syslog_alerts.php:384
 #, fuzzy, php-format
 msgid "%d Weeks"
 msgstr "% द वीक"
 
-#: setup.php:1279 setup.php:1298
+#: setup.php:1317 setup.php:1336
 #, fuzzy, php-format
 msgid "%d Month"
 msgstr "% d महीना"
 
-#: setup.php:1280 setup.php:1281 setup.php:1282 setup.php:1283 setup.php:1284
-#: setup.php:1299 setup.php:1300 setup.php:1301 setup.php:1302 setup.php:1303
+#: setup.php:1318 setup.php:1319 setup.php:1320 setup.php:1321 setup.php:1322
+#: setup.php:1337 setup.php:1338 setup.php:1339 setup.php:1340 setup.php:1341
 #, fuzzy, php-format
 msgid "%d Months"
 msgstr "% d माह"
 
-#: setup.php:1285 setup.php:1304
+#: setup.php:1323 setup.php:1342
 #, fuzzy, php-format
 msgid "%d Year"
 msgstr "% d वष"
 
-#: setup.php:1308 syslog_reports.php:741
+#: setup.php:1346 syslog_reports.php:741
 msgid "Never"
 msgstr "कभी नहीं"
 
-#: setup.php:1309 syslog.php:533
+#: setup.php:1347 syslog.php:595
 #, fuzzy, php-format
 msgid "%d Minute"
 msgstr "% d मिनट"
 
-#: setup.php:1310 setup.php:1311 setup.php:1312 syslog.php:534 syslog.php:535
-#: syslog.php:536 syslog.php:537 syslog_alerts.php:367 syslog_alerts.php:368
-#: syslog_alerts.php:369 syslog_alerts.php:370 syslog_alerts.php:371
-#: syslog_alerts.php:372
+#: setup.php:1348 setup.php:1349 setup.php:1350 syslog.php:596 syslog.php:597
+#: syslog.php:598 syslog.php:599 syslog_alerts.php:368 syslog_alerts.php:369
+#: syslog_alerts.php:370 syslog_alerts.php:371 syslog_alerts.php:372
+#: syslog_alerts.php:373
 #, fuzzy, php-format
 msgid "%d Minutes"
 msgstr "% d मिनट"
 
-#: setup.php:1316 syslog.php:1469 syslog.php:1510 syslog.php:1527
+#: setup.php:1354 syslog.php:1628 syslog.php:1669 syslog.php:1686
 msgid "Notice"
 msgstr "नोटिस"
 
-#: setup.php:1317 syslog.php:1467 syslog.php:1509 syslog.php:1526
+#: setup.php:1355 syslog.php:1626 syslog.php:1668 syslog.php:1685
 msgid "Warning"
 msgstr "चेतावनी"
 
-#: setup.php:1318 syslog.php:1463 syslog.php:1506 syslog.php:1525
+#: setup.php:1356 syslog.php:1622 syslog.php:1665 syslog.php:1684
 #, fuzzy
 msgid "Critical"
 msgstr "गंभीर"
 
-#: setup.php:1322
+#: setup.php:1360
 #, fuzzy
 msgid "Begins with"
 msgstr "साथ शुरू होता है"
 
-#: setup.php:1323
+#: setup.php:1361
 #, fuzzy
 msgid "Contains"
 msgstr "रखता है"
 
-#: setup.php:1324
+#: setup.php:1362
 #, fuzzy
 msgid "Ends with"
 msgstr "इससे समाप्त होता है"
 
-#: setup.php:1325
+#: setup.php:1363
 #, fuzzy
 msgid "Hostname is"
 msgstr "#-#-#-#-# balsa.HEAD.hi.po (Balsa 2.x) #-#-#-#-# उपयोगकर्ता का नाम #-#-#-#-# eel.HEAD.hi.po (eel VERSION) #-#-#-#-# उपयोगकर्ता का नाम: (_U)"
 
-#: setup.php:1326
+#: setup.php:1364
 #, fuzzy
 msgid "Program is"
 msgstr "कार्यक्रम"
 
-#: setup.php:1327
+#: setup.php:1365
 #, fuzzy
 msgid "Facility is"
 msgstr "सुविधा है"
 
-#: setup.php:1328
+#: setup.php:1366
 #, fuzzy
 msgid "SQL Expression"
 msgstr "एसक्यूएल अभिव्यक्ति"
 
-#: setup.php:1332
+#: setup.php:1370
 msgid "Daily"
 msgstr "प्रतिदिन"
 
-#: setup.php:1333
+#: setup.php:1371
 msgid "Weekly"
 msgstr "साप्ताहिक"
 
-#: setup.php:1357
+#: setup.php:1395
 msgid "Import/Export"
 msgstr "दरामद करो / बरामद करो"
 
-#: setup.php:1358
+#: setup.php:1396
 #, fuzzy
 msgid "Alert Rules"
 msgstr "अलर्ट नियम"
 
-#: setup.php:1358 setup.php:1359 setup.php:1360 setup.php:1365
+#: setup.php:1396 setup.php:1397 setup.php:1398 setup.php:1403
 #, fuzzy
 msgid "Syslog Settings"
 msgstr "Syslog सेटिंग्स"
 
-#: setup.php:1359
+#: setup.php:1397
 #, fuzzy
 msgid "Removal Rules"
 msgstr "निष्कासन नियम"
 
-#: setup.php:1360
+#: setup.php:1398
 #, fuzzy
 msgid "Report Rules"
 msgstr "रिपोर्ट के नियम"
 
-#: setup.php:1369
+#: setup.php:1407
 msgid "Normal User"
 msgstr "सामान्य उपयोगकर्ता"
 
-#: setup.php:1370
+#: setup.php:1408
 msgid "System Administration"
 msgstr "तंत्र प्रशासन"
 
-#: setup.php:1386
+#: setup.php:1424
 #, fuzzy
 msgid "Syslog Removals"
 msgstr "सिसलॉग रिमूवल"
 
-#: setup.php:1387 setup.php:1388 setup.php:1392 setup.php:1393 setup.php:1397
+#: setup.php:1425 setup.php:1426 setup.php:1430 setup.php:1431 setup.php:1435
 #, fuzzy
 msgid "(Edit)"
 msgstr "संपादित करें"
 
-#: setup.php:1389 setup.php:1394 setup.php:1398
+#: setup.php:1427 setup.php:1432 setup.php:1436
 #, fuzzy
 msgid "(Actions)"
 msgstr "कार्रवाइयाँ"
 
-#: setup.php:1391
+#: setup.php:1429
 #, fuzzy
 msgid "Syslog Alerts"
 msgstr "Syslog अलर्ट"
 
-#: setup.php:1396
+#: setup.php:1434
 #, fuzzy
 msgid "Syslog Reports"
 msgstr "Syslog रिपोर्ट"
 
-#: setup.php:1475
+#: setup.php:1513
 #, fuzzy
 msgid "Display Syslog in Range"
 msgstr "रेंज में Syslog प्रदर्शित करें"
 
-#: setup.php:1523
+#: setup.php:1561
 #, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "Syslog डेटाबेस से %s डिवाइस रिकॉर्ड हटा दिए गए थे"
 
-#: setup.php:1539
+#: setup.php:1577
 #, fuzzy
 msgid "Syslog Utilities"
 msgstr "सिसलॉग यूटिलिटीज"
 
-#: setup.php:1543
+#: setup.php:1581
 #, fuzzy
 msgid "Purge Syslog Devices"
 msgstr "Purge Syslog Devices"
 
-#: setup.php:1546
+#: setup.php:1584
 #, fuzzy
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "यह मेनू पिक उन उपकरणों को हटाने का साधन प्रदान करता है जो अब Cacti के syslog सर्वर में रिपोर्टिंग नहीं कर रहे हैं।"
 
-#: syslog.php:52
+#: syslog.php:54
 #, fuzzy
 msgid "Syslog Viewer"
 msgstr "सिसलॉग व्यूअर"
 
-#: syslog.php:55
+#: syslog.php:57
 #, fuzzy
 msgid "All Text"
 msgstr "सभी पाठ"
 
-#: syslog.php:56 syslog.php:57 syslog.php:58 syslog.php:59 syslog.php:60
-#: syslog.php:61
+#: syslog.php:58 syslog.php:59 syslog.php:60 syslog.php:61 syslog.php:62
+#: syslog.php:63
 #, fuzzy, php-format
 msgid "%d Chars"
 msgstr "% d चर"
 
-#: syslog.php:112
+#: syslog.php:167
 #, fuzzy
 msgid "System Logs"
 msgstr "सिस्टम लॉग"
 
-#: syslog.php:114
+#: syslog.php:169
 msgid "Statistics"
 msgstr "आंकड़े"
 
-#: syslog.php:116
+#: syslog.php:171
 #, fuzzy
 msgid "Alert Logs"
 msgstr "चेतावनी लॉग"
 
-#: syslog.php:125
+#: syslog.php:180
 #, fuzzy
 msgid "Selected Alert"
 msgstr "चयनित अलर्ट"
 
-#: syslog.php:148
+#: syslog.php:203
 #, fuzzy
 msgid "Syslog Alert View"
 msgstr "Syslog अलर्ट देखें"
 
-#: syslog.php:229
+#: syslog.php:284
 #, fuzzy
 msgid "Syslog Statistics Filter"
 msgstr "Syslog सांख्यिकी फ़िल्टर"
 
-#: syslog.php:255 syslog.php:1389 syslog.php:1621
+#: syslog.php:310 syslog.php:1548 syslog.php:1780
 msgid "Messages"
 msgstr "संदेश"
 
-#: syslog.php:263
+#: syslog.php:318
 msgid "Device Name"
 msgstr "उपकरण नामः% 1"
 
-#: syslog.php:268 syslog.php:470 syslog.php:1432 syslog.php:1609
-#: syslog.php:1617 syslog.php:1715
+#: syslog.php:323 syslog.php:532 syslog.php:1591 syslog.php:1768
+#: syslog.php:1776 syslog.php:1874
 #, fuzzy
 msgid "Facility"
 msgstr "सुविधा"
 
-#: syslog.php:273 syslog.php:490 syslog.php:1454 syslog.php:1610
-#: syslog.php:1618 syslog.php:1716
+#: syslog.php:328 syslog.php:552 syslog.php:1613 syslog.php:1769
+#: syslog.php:1777 syslog.php:1875
 #, fuzzy
 msgid "Priority"
 msgstr "प्राथमिकता"
 
-#: syslog.php:278 syslog.php:1607 syslog.php:1615 syslog.php:1808
+#: syslog.php:333 syslog.php:1766 syslog.php:1774 syslog.php:1967
 #, fuzzy
 msgid "Program"
 msgstr "कार्यक्रम"
 
-#: syslog.php:288
+#: syslog.php:343
 #, fuzzy
 msgid "Records"
 msgstr "अभिलेख"
 
-#: syslog.php:325
+#: syslog.php:380
 #, fuzzy
 msgid "No Syslog Statistics Found"
 msgstr "कोई Sloglog सांख्यिकी नहीं मिली"
 
-#: syslog.php:433 syslog.php:1606 syslog.php:1614 syslog.php:1714
-#: syslog_alerts.php:480
+#: syslog.php:488 syslog.php:1765 syslog.php:1773 syslog.php:1873
+#: syslog_alerts.php:481
 msgid "Device"
 msgstr "डिवाइस"
 
-#: syslog.php:437 syslog.php:474 syslog.php:494 syslog.php:1030
-#: syslog_alerts.php:682 syslog_removal.php:548 syslog_reports.php:562
+#: syslog.php:492 syslog.php:536 syslog.php:556 syslog_alerts.php:697
+#: syslog_removal.php:548 syslog_reports.php:562
 msgid "All"
 msgstr "所有"
 
-#: syslog.php:438 syslog.php:475 syslog.php:495 syslog.php:1031 syslog.php:1802
-#: syslog.php:1813 syslog.php:1854 syslog.php:1855 syslog_alerts.php:563
-#: syslog_reports.php:466
+#: syslog.php:493 syslog.php:537 syslog.php:557 syslog.php:1961 syslog.php:1972
+#: syslog.php:2013 syslog.php:2014 syslog_alerts.php:556 syslog_reports.php:466
 msgid "None"
 msgstr "कोई नहीं"
 
-#: syslog.php:512 syslog.php:1301 syslog_alerts.php:704 syslog_removal.php:570
+#: syslog.php:574 syslog.php:1398 syslog_alerts.php:719 syslog_removal.php:570
 #: syslog_reports.php:584
 msgid "Go"
 msgstr "जाएं"
 
-#: syslog.php:513 syslog.php:1302 syslog_alerts.php:705 syslog_removal.php:571
+#: syslog.php:575 syslog.php:1399 syslog_alerts.php:720 syslog_removal.php:571
 #: syslog_reports.php:585
 msgid "Clear"
 msgstr "明确"
 
-#: syslog.php:521 syslog.php:1061 syslog.php:1326 syslog_alerts.php:672
-#: syslog_removal.php:538 syslog_reports.php:552
+#: syslog.php:583 syslog.php:1423 syslog_alerts.php:687 syslog_removal.php:538
+#: syslog_reports.php:552
 msgid "Search"
 msgstr "खोजें"
 
-#: syslog.php:527
+#: syslog.php:589
 #, fuzzy
 msgid "Time Range"
 msgstr "समय सीमा"
 
-#: syslog.php:538 syslog_alerts.php:373
+#: syslog.php:600 syslog_alerts.php:374
 #, fuzzy, php-format
 msgid "%d Hour"
 msgstr "% d घंटा"
 
-#: syslog.php:539 syslog.php:540 syslog.php:541 syslog_alerts.php:374
-#: syslog_alerts.php:375 syslog_alerts.php:376 syslog_alerts.php:377
-#: syslog_alerts.php:378 syslog_alerts.php:379
+#: syslog.php:601 syslog.php:602 syslog.php:603 syslog_alerts.php:375
+#: syslog_alerts.php:376 syslog_alerts.php:377 syslog_alerts.php:378
+#: syslog_alerts.php:379 syslog_alerts.php:380
 #, fuzzy, php-format
 msgid "%d Hours"
 msgstr "% d घंटे"
 
-#: syslog.php:552
+#: syslog.php:614
 msgid "Entries"
 msgstr "प्रविश्टयां"
 
-#: syslog.php:556 syslog.php:1393 syslog_alerts.php:692 syslog_removal.php:558
+#: syslog.php:618 syslog.php:1552 syslog_alerts.php:707 syslog_removal.php:558
 #: syslog_reports.php:572
 msgid "Default"
 msgstr "डिफ़ॉल्ट"
 
-#: syslog.php:1000
+#: syslog.php:1062
 #, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
 msgstr "[प्रारंभ: ' %s' से अंत: ' %s', असंसाधित संदेश: %s]"
 
-#: syslog.php:1002
+#: syslog.php:1064
 #, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[असंसाधित संदेश: %s]"
 
-#: syslog.php:1019
+#: syslog.php:1074
+msgid "Enter a search term"
+msgstr ""
+
+#: syslog.php:1086
 #, fuzzy
 msgid "Select Device(s)"
 msgstr "डिवाइस का चयन करें"
 
-#: syslog.php:1021
+#: syslog.php:1088
 #, fuzzy
 msgid "Devices Selected"
 msgstr "उपकरणों का चयन किया"
 
-#: syslog.php:1024
+#: syslog.php:1091
 #, fuzzy
 msgid "All Devices Selected"
 msgstr "सभी उपकरण चयनित"
 
-#: syslog.php:1228
+#: syslog.php:1325
 #, fuzzy, php-format
 msgid "Syslog Message Filter %s"
 msgstr "Syslog संदेश फ़िल्टर %s"
 
-#: syslog.php:1235
+#: syslog.php:1332
 msgid "Timespan"
 msgstr "काल"
 
-#: syslog.php:1241
+#: syslog.php:1338
 msgid "Custom"
 msgstr "रुचि अनुसरणीय"
 
-#: syslog.php:1263
+#: syslog.php:1360
 msgid "From"
 msgstr "और से"
 
-#: syslog.php:1269
+#: syslog.php:1366
 #, fuzzy
 msgid "Start Date Selector"
 msgstr "प्रारंभ तिथि चयनकर्ता"
 
-#: syslog.php:1272
+#: syslog.php:1369
 msgid "To"
 msgstr "Til"
 
-#: syslog.php:1278
+#: syslog.php:1375
 #, fuzzy
 msgid "End Date Selector"
 msgstr "अंतिम तिथि चयनकर्ता"
 
-#: syslog.php:1281
+#: syslog.php:1378
 #, fuzzy
 msgid "Shift Time Backward"
 msgstr "शिफ्ट टाइम बैकवर्ड"
 
-#: syslog.php:1284
+#: syslog.php:1381
 #, fuzzy
 msgid "Define Shifting Interval"
 msgstr "शिफ्टिंग इंटरवल को परिभाषित करें"
 
-#: syslog.php:1297
+#: syslog.php:1394
 #, fuzzy
 msgid "Shift Time Forward"
 msgstr "शिफ्ट टाइम फॉरवर्ड"
 
-#: syslog.php:1302
+#: syslog.php:1399
 #, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr "अपने उपयोगकर्ता परिभाषित डिफॉल्ट्स के लिए फ़िल्टर मान लौटाएं"
 
-#: syslog.php:1303
+#: syslog.php:1400
 #, fuzzy
 msgid "Export Records to CSV"
 msgstr "सीएसवी को निर्यात रिकॉर्ड"
 
-#: syslog.php:1304
+#: syslog.php:1401
 msgid "Save"
 msgstr "सेव करें"
 
-#: syslog.php:1304
+#: syslog.php:1401
 #, fuzzy
 msgid "Save Default Settings"
 msgstr "डिफ़ॉल्ट सेटिंग्स सहेजें"
 
-#: syslog.php:1310 syslog_alerts.php:843
+#: syslog.php:1407 syslog_alerts.php:858
 msgid "Alerts"
 msgstr "警报"
 
-#: syslog.php:1310
+#: syslog.php:1407
 #, fuzzy
 msgid "View Syslog Alert Rules"
 msgstr "Syslog अलर्ट नियम देखें"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "Removals"
 msgstr "निष्कासन"
 
-#: syslog.php:1311
+#: syslog.php:1408
 #, fuzzy
 msgid "View Syslog Removal Rules"
 msgstr "Syslog हटाना नियम देखें"
 
-#: syslog.php:1312 syslog_reports.php:722
+#: syslog.php:1409 syslog_reports.php:722
 msgid "Reports"
 msgstr "रिपोर्ट्स"
 
-#: syslog.php:1312
+#: syslog.php:1409
 #, fuzzy
 msgid "View Syslog Reports"
 msgstr "Syslog रिपोर्ट देखें"
 
-#: syslog.php:1332
+#: syslog.php:1429
 msgid "Devices"
 msgstr "डिवाइस"
 
-#: syslog.php:1336
+#: syslog.php:1437
 #, fuzzy
 msgid "Show All Devices"
 msgstr "सभी डिवाइस दिखाएं"
 
-#: syslog.php:1337
+#: syslog.php:1439
 #, fuzzy
 msgid "Show All Logs"
 msgstr "सभी लॉग दिखाएं"
 
-#: syslog.php:1338
+#: syslog.php:1440
 #, fuzzy
 msgid "Threshold Logs"
 msgstr "थ्रेसहोल्ड लॉग्स"
 
-#: syslog.php:1392
+#: syslog.php:1551
 #, fuzzy
 msgid "Display Rows"
 msgstr "पंक्तियों को प्रदर्शित करें"
 
-#: syslog.php:1402
+#: syslog.php:1561
 #, fuzzy
 msgid "Trim"
 msgstr "ट्रिम"
 
-#: syslog.php:1405
+#: syslog.php:1564
 #, fuzzy
 msgid "Message Trim"
 msgstr "संदेश ट्रिम"
 
-#: syslog.php:1414
+#: syslog.php:1573
 msgid "Refresh"
 msgstr "रीफ्रैश करो"
 
-#: syslog.php:1435
+#: syslog.php:1594
 #, fuzzy
 msgid "Facilities to filter on"
 msgstr "फिल्टर करने की सुविधा"
 
-#: syslog.php:1436
+#: syslog.php:1595
 #, fuzzy
 msgid "All Facilities"
 msgstr "सभी सुविधाएं"
 
-#: syslog.php:1457
+#: syslog.php:1616
 #, fuzzy
 msgid "Priority Levels"
 msgstr "प्राथमिकता स्तर"
 
-#: syslog.php:1458
+#: syslog.php:1617
 #, fuzzy
 msgid "All Priorities"
 msgstr "सभी प्राथमिकताएं"
 
-#: syslog.php:1459 syslog.php:1505
+#: syslog.php:1618 syslog.php:1664
 #, fuzzy
 msgid "Emergency"
 msgstr "आपातकालीन"
 
-#: syslog.php:1460
+#: syslog.php:1619
 #, fuzzy
 msgid "Alert++"
 msgstr "सावधान"
 
-#: syslog.php:1461 syslog.php:1507
+#: syslog.php:1620 syslog.php:1666
 msgid "Alert"
 msgstr "सावधान"
 
-#: syslog.php:1462
+#: syslog.php:1621
 #, fuzzy
 msgid "Critical++"
 msgstr "क्रिटिकल ++"
 
-#: syslog.php:1464
+#: syslog.php:1623
 #, fuzzy
 msgid "Error++"
 msgstr "त्रुटी:"
 
-#: syslog.php:1465 syslog.php:1508
+#: syslog.php:1624 syslog.php:1667
 msgid "Error"
 msgstr "त्रुटि"
 
-#: syslog.php:1466
+#: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
 msgstr "चेतावनी:"
 
-#: syslog.php:1468
+#: syslog.php:1627
 #, fuzzy
 msgid "Notice++"
 msgstr "नोटिस"
 
-#: syslog.php:1470
+#: syslog.php:1629
 #, fuzzy
 msgid "Info++"
 msgstr "जानकारी ++"
 
-#: syslog.php:1471 syslog.php:1511
+#: syslog.php:1630 syslog.php:1670
 #, fuzzy
 msgid "Info"
 msgstr "जानकारी"
 
-#: syslog.php:1472 syslog.php:1512
+#: syslog.php:1631 syslog.php:1671
 msgid "Debug"
 msgstr "डीबग करो"
 
-#: syslog.php:1477
+#: syslog.php:1636
 #, fuzzy
 msgid "Record Type"
 msgstr "अभिलेख"
 
-#: syslog.php:1480
+#: syslog.php:1639
 #, fuzzy
 msgid "Removal Handling"
 msgstr "हटाने का काम"
 
-#: syslog.php:1481
+#: syslog.php:1640
 #, fuzzy
 msgid "All Records"
 msgstr "सभी रिकॉर्ड"
 
-#: syslog.php:1482
+#: syslog.php:1641
 #, fuzzy
 msgid "Main Records"
 msgstr "मुख्य रिकॉर्ड"
 
-#: syslog.php:1483
+#: syslog.php:1642
 #, fuzzy
 msgid "Removed Records"
 msgstr "निकाले गए रिकॉर्ड"
 
-#: syslog.php:1528
+#: syslog.php:1687
 #, fuzzy
 msgid "Informational"
 msgstr "सूचना"
 
-#: syslog.php:1604 syslog_alerts.php:547
+#: syslog.php:1763 syslog_alerts.php:581
 msgid "Actions"
 msgstr "कार्रवाइयाँ"
 
-#: syslog.php:1664 syslog.php:1667 syslog.php:1668 syslog.php:1735
+#: syslog.php:1823 syslog.php:1826 syslog.php:1827 syslog.php:1894
 msgid "Unknown"
 msgstr "अज्ञात"
 
-#: syslog.php:1673
+#: syslog.php:1832
 #, fuzzy
 msgid "No Syslog Messages"
 msgstr "कोई Syslog संदेश नहीं"
 
-#: syslog.php:1719
+#: syslog.php:1878
 #, fuzzy
 msgid "Alert Log Rows"
 msgstr "चेतावनी लॉग पंक्तियाँ"
 
-#: syslog.php:1733
+#: syslog.php:1892
 #, fuzzy
 msgid "Alert Removed"
 msgstr "अलर्ट निकाला गया"
 
-#: syslog.php:1747
+#: syslog.php:1906
 #, fuzzy
 msgid "No Alert Log Messages"
 msgstr "कोई चेतावनी लॉग संदेश"
 
-#: syslog.php:1804 syslog.php:1827 syslog.php:1846 syslog.php:1847
+#: syslog.php:1963 syslog.php:1986 syslog.php:2005 syslog.php:2006
 #, fuzzy
 msgid "All Programs"
 msgstr "सभी कार्यक्रम"
@@ -1167,295 +1199,309 @@ msgstr "निर्यात Sloglog चेतावनी नियम"
 msgid "Continue"
 msgstr "जारी रखें"
 
-#: syslog_alerts.php:357
+#: syslog_alerts.php:358
 #, fuzzy
 msgid "Not Set"
 msgstr "डिफ़ॉल्ट नियत करें"
 
-#: syslog_alerts.php:362
+#: syslog_alerts.php:363
 msgid "1 Minute"
 msgstr "1 मिनट"
 
-#: syslog_alerts.php:384
+#: syslog_alerts.php:385
 #, fuzzy
 msgid "1 Month"
 msgstr "महीना"
 
-#: syslog_alerts.php:420
+#: syslog_alerts.php:421
 #, fuzzy, php-format
 msgid "Alert Edit [edit: %s]"
 msgstr "चेतावनी संपादित करें [संपादित करें: %s]"
 
-#: syslog_alerts.php:422 syslog_alerts.php:429 syslog_alerts.php:436
+#: syslog_alerts.php:423 syslog_alerts.php:430 syslog_alerts.php:437
 #, fuzzy
 msgid "Alert Edit [new]"
 msgstr "चेतावनी संपादित करें [नया]"
 
-#: syslog_alerts.php:434 syslog_alerts.php:438
+#: syslog_alerts.php:435 syslog_alerts.php:439
 #, fuzzy
 msgid "New Alert Rule"
 msgstr "नया अलर्ट नियम"
 
-#: syslog_alerts.php:449 syslog_alerts.php:859 syslog_reports.php:383
+#: syslog_alerts.php:450 syslog_alerts.php:874 syslog_reports.php:383
 msgid "N/A"
 msgstr "लागू नहीं"
 
-#: syslog_alerts.php:457 syslog_reports.php:389
+#: syslog_alerts.php:458 syslog_reports.php:389
 msgid "Details"
 msgstr "विवरण"
 
-#: syslog_alerts.php:461 syslog_reports.php:393
+#: syslog_alerts.php:462 syslog_reports.php:393
 msgid "Name"
 msgstr "नाम"
 
-#: syslog_alerts.php:462
+#: syslog_alerts.php:463
 #, fuzzy
 msgid "Please describe this Alert."
 msgstr "कृपया इस अलर्ट का वर्णन करें।"
 
-#: syslog_alerts.php:470
+#: syslog_alerts.php:471
 #, fuzzy
 msgid "What is the Severity Level of this Alert?"
 msgstr "इस अलर्ट का गंभीरता स्तर क्या है?"
 
-#: syslog_alerts.php:477
+#: syslog_alerts.php:478
 #, fuzzy
 msgid "Reporting Level"
 msgstr "रिपोर्टिंग विधि"
 
-#: syslog_alerts.php:478
+#: syslog_alerts.php:479
 #, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
 msgstr "री-अलर्ट साइकिल रिकॉर्ड करने के लिए, अलर्ट को सिस्टम या डिवाइस स्तर पर ट्रैक किया जाना चाहिए।"
 
-#: syslog_alerts.php:480
+#: syslog_alerts.php:481
 msgid "System"
 msgstr "प्रणाली"
 
-#: syslog_alerts.php:485
+#: syslog_alerts.php:486
 #, fuzzy
 msgid "Reporting Method"
 msgstr "रिपोर्टिंग विधि"
 
-#: syslog_alerts.php:486
+#: syslog_alerts.php:487
 #, fuzzy
 msgid "Define how to Alert on the syslog messages."
 msgstr "परिभाषित करें कि सिसलॉग संदेशों पर अलर्ट कैसे करें।"
 
-#: syslog_alerts.php:488 syslog_alerts.php:858
+#: syslog_alerts.php:489 syslog_alerts.php:873
 #, fuzzy
 msgid "Individual"
 msgstr "व्यक्ति"
 
-#: syslog_alerts.php:494
+#: syslog_alerts.php:495
 #, fuzzy
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr "'थ्रेसहोल्ड' विधि के लिए, यदि देखा गया नंबर इस मान से ऊपर है तो अलर्ट चालू हो जाएगा।"
 
-#: syslog_alerts.php:502 syslog_alerts.php:836 syslog_removal.php:699
+#: syslog_alerts.php:503 syslog_alerts.php:851 syslog_removal.php:699
 #: syslog_reports.php:713
 #, fuzzy
 msgid "Match Type"
 msgstr "मिलान के प्रकार"
 
-#: syslog_alerts.php:503 syslog_removal.php:438
+#: syslog_alerts.php:504 syslog_removal.php:438
 #, fuzzy
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
 msgstr "परिभाषित करें कि आप इस स्ट्रिंग से कैसे मेल खाना चाहते हैं। यदि SQL एक्सप्रेशन प्रकार का उपयोग कर आप अलार्म उत्पन्न करने के लिए किसी भी मान्य SQL अभिव्यक्ति का उपयोग कर सकते हैं। उपलब्ध फ़ील्ड में 'संदेश', 'सुविधा', 'प्राथमिकता' और 'होस्ट' शामिल हैं।"
 
-#: syslog_alerts.php:510 syslog_reports.php:416 syslog_reports.php:443
+#: syslog_alerts.php:511 syslog_reports.php:416 syslog_reports.php:443
 #, fuzzy
 msgid "Message Match String"
 msgstr "Syslog संदेश मिलान स्ट्रिंग"
 
-#: syslog_alerts.php:511 syslog_removal.php:446
+#: syslog_alerts.php:512 syslog_removal.php:446
 #, fuzzy
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
 msgstr "Syslog संदेश, सुविधा या होस्ट नाम, या SQL जहाँ क्लॉज़ यदि SQL एक्सप्रेशन मिलान प्रकार का उपयोग कर रहा है, के मिलान घटक दर्ज करें।"
 
-#: syslog_alerts.php:521 syslog_alerts.php:524 syslog_alerts.php:678
-#: syslog_alerts.php:835 syslog_removal.php:432 syslog_removal.php:544
+#: syslog_alerts.php:522 syslog_alerts.php:525 syslog_alerts.php:693
+#: syslog_alerts.php:850 syslog_removal.php:432 syslog_removal.php:544
 #: syslog_removal.php:698 syslog_reports.php:403 syslog_reports.php:558
 #: syslog_reports.php:712
 msgid "Enabled"
 msgstr "सक्षम"
 
-#: syslog_alerts.php:522
+#: syslog_alerts.php:523
 #, fuzzy
 msgid "Is this Alert Enabled?"
 msgstr "क्या यह अलर्ट सक्षम है?"
 
-#: syslog_alerts.php:524 syslog_removal.php:432 syslog_reports.php:403
+#: syslog_alerts.php:525 syslog_removal.php:432 syslog_reports.php:403
 msgid "Disabled"
 msgstr "अक्षम"
 
-#: syslog_alerts.php:528
+#: syslog_alerts.php:529
 #, fuzzy
 msgid "Re-Alert Cycle"
 msgstr "री-अलर्ट साइकिल"
 
-#: syslog_alerts.php:532
+#: syslog_alerts.php:533
 #, fuzzy
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr "इस अलर्ट को उसी होस्ट के लिए फिर से न भेजें, जब तक कि यह समय समाप्त न हो जाए। दहलीज आधारित अलार्म के लिए, यह सभी मेजबानों पर लागू होता है।"
 
-#: syslog_alerts.php:536 syslog_reports.php:480
+#: syslog_alerts.php:537 syslog_reports.php:480
 msgid "Notes"
 msgstr "नोट"
 
-#: syslog_alerts.php:539
+#: syslog_alerts.php:540
 #, fuzzy
 msgid "Space for Notes on the Alert"
 msgstr "अलर्ट पर नोट्स के लिए स्थान"
 
-#: syslog_alerts.php:551
+#: syslog_alerts.php:548
+msgid "Email Options"
+msgstr ""
+
+#: syslog_alerts.php:552 syslog_reports.php:462
+#, fuzzy
+msgid "Notification List"
+msgstr "अधिसूचना सूची"
+
+#: syslog_alerts.php:553 syslog_reports.php:463
+#, fuzzy
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "इस अधिसूचना सूची की सामग्री का उपयोग यह तय करने के लिए करें कि किसे अधिसूचित किया जाना चाहिए और कैसे।"
+
+#: syslog_alerts.php:561
+#, fuzzy
+msgid "Emails to Notify"
+msgstr "सूचित करने के लिए ईमेल"
+
+#: syslog_alerts.php:564
+#, fuzzy
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "कृपया सूचित करने के लिए ईमेल पतों की अल्पविराम सीमांकित सूची दर्ज करें। यदि आप एसएमएस प्रारूप में किसी प्राप्तकर्ता को ईमेल भेजना चाहते हैं, तो कृपया उस प्राप्तकर्ता के ईमेल पते को <b>'sms @' के</b> साथ उपसर्ग करें। उदाहरण के लिए, यदि प्राप्तकर्ता का एसएमएस पता <b>'2485551212@mycarrier.net' है</b> , तो आप इसे <b>'sms @ 2485551212 @ mycarrier.net' के</b> रूप में दर्ज करेंगे और इसे एसएमएस संदेश के रूप में स्वरूपित किया जाएगा।"
+
+#: syslog_alerts.php:570 syslog_reports.php:451
+#, fuzzy
+msgid "Email Body Text"
+msgstr "रिपोर्ट बॉडी टेक्स्ट"
+
+#: syslog_alerts.php:573
+#, fuzzy
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "रिपोर्ट के मुख्य भाग में जो जानकारी होगी।"
+
+#: syslog_alerts.php:585
 #, fuzzy
 msgid "Open Ticket"
 msgstr "खुली टिकट"
 
-#: syslog_alerts.php:552
+#: syslog_alerts.php:586
 #, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "क्या इस अलर्ट के लिए हेल्प डेस्क टिकट खोला जाना चाहिए। नोट: टिकट कमांड स्क्रिप्ट सुविधा के लिए कई 'ALERT_' पर्यावरण चर के साथ भर जाएगी।"
 
-#: syslog_alerts.php:554 syslog_alerts.php:684 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:699 syslog_alerts.php:875
 #: syslog_removal.php:550 syslog_removal.php:720 syslog_reports.php:564
 #: syslog_reports.php:736
 msgid "No"
 msgstr "नहीं"
 
-#: syslog_alerts.php:554 syslog_alerts.php:683 syslog_alerts.php:860
+#: syslog_alerts.php:588 syslog_alerts.php:698 syslog_alerts.php:875
 #: syslog_removal.php:549 syslog_removal.php:720 syslog_reports.php:563
 #: syslog_reports.php:736
 msgid "Yes"
 msgstr "हाँ"
 
-#: syslog_alerts.php:559 syslog_reports.php:462
-#, fuzzy
-msgid "Notification List"
-msgstr "अधिसूचना सूची"
-
-#: syslog_alerts.php:560 syslog_reports.php:463
-#, fuzzy
-msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr "इस अधिसूचना सूची की सामग्री का उपयोग यह तय करने के लिए करें कि किसे अधिसूचित किया जाना चाहिए और कैसे।"
-
-#: syslog_alerts.php:568
-#, fuzzy
-msgid "Emails to Notify"
-msgstr "सूचित करने के लिए ईमेल"
-
-#: syslog_alerts.php:571
-#, fuzzy
-msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr "कृपया सूचित करने के लिए ईमेल पतों की अल्पविराम सीमांकित सूची दर्ज करें। यदि आप एसएमएस प्रारूप में किसी प्राप्तकर्ता को ईमेल भेजना चाहते हैं, तो कृपया उस प्राप्तकर्ता के ईमेल पते को <b>'sms @' के</b> साथ उपसर्ग करें। उदाहरण के लिए, यदि प्राप्तकर्ता का एसएमएस पता <b>'2485551212@mycarrier.net' है</b> , तो आप इसे <b>'sms @ 2485551212 @ mycarrier.net' के</b> रूप में दर्ज करेंगे और इसे एसएमएस संदेश के रूप में स्वरूपित किया जाएगा।"
-
-#: syslog_alerts.php:577
+#: syslog_alerts.php:592
 msgid "Command"
 msgstr "निर्देश"
 
-#: syslog_alerts.php:580
+#: syslog_alerts.php:595
 #, fuzzy
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "जब कोई अलर्ट चालू होता है, तो निम्न कमांड चलाएँ। निम्नलिखित प्रतिस्थापन चर <b>&#39;&lt;HOSTNAME&gt;&#39;</b> , <b>&#39;&lt;ALERTID&gt;&#39;</b> , <b>&#39;&lt;MESSAGE&gt;&#39;</b> , <b>&#39;&lt;FACILITY&gt;&#39;</b> , <b>&#39;&lt;PRIORITY&gt;&#39;</b> , <b>&#39;&lt;SEVERITY&gt;&#39; उपलब्ध हैं</b> । कृपया ध्यान दें कि <b>&#39;&lt;HOSTNAME&gt;&#39;</b> केवल व्यक्तिगत थ्रेसहोल्ड पर उपलब्ध है।"
 
-#: syslog_alerts.php:688 syslog_reports.php:568
+#: syslog_alerts.php:703 syslog_reports.php:568
 msgid "Rows"
 msgstr "पंक्तियाँ"
 
-#: syslog_alerts.php:706 syslog_alerts.php:998 syslog_removal.php:572
+#: syslog_alerts.php:721 syslog_alerts.php:1013 syslog_removal.php:572
 #: syslog_removal.php:859 syslog_reports.php:586 syslog_reports.php:877
 msgid "Import"
 msgstr "आयात करें"
 
-#: syslog_alerts.php:806
+#: syslog_alerts.php:821
 #, fuzzy
 msgid "Syslog Alert Filters"
 msgstr "Syslog अलर्ट फिल्टर"
 
-#: syslog_alerts.php:833 syslog_removal.php:701
+#: syslog_alerts.php:848 syslog_removal.php:701
 msgid "Method"
 msgstr "तरीका"
 
-#: syslog_alerts.php:834
+#: syslog_alerts.php:849
 #, fuzzy
 msgid "Threshold Count"
 msgstr "थ्रेशोल्ड काउंट"
 
-#: syslog_alerts.php:837 syslog_removal.php:700 syslog_reports.php:714
+#: syslog_alerts.php:852 syslog_removal.php:700 syslog_reports.php:714
 #, fuzzy
 msgid "Search String"
 msgstr "खोज स्ट्रिंग"
 
-#: syslog_alerts.php:838 syslog_reports.php:470
+#: syslog_alerts.php:853 syslog_reports.php:470
 #, fuzzy
 msgid "Email Addresses"
 msgstr "ईमेल पता"
 
-#: syslog_alerts.php:839 syslog_removal.php:702 syslog_reports.php:718
+#: syslog_alerts.php:854 syslog_removal.php:702 syslog_reports.php:718
 msgid "Last Modified"
 msgstr "पिछली मर्तबा परिवर्धित"
 
-#: syslog_alerts.php:840 syslog_removal.php:703 syslog_reports.php:719
+#: syslog_alerts.php:855 syslog_removal.php:703 syslog_reports.php:719
 #, fuzzy
 msgid "By User"
 msgstr "बरतूनी:"
 
-#: syslog_alerts.php:863
+#: syslog_alerts.php:878
 msgid "Multiple"
 msgstr "कई"
 
-#: syslog_alerts.php:870
+#: syslog_alerts.php:885
 #, fuzzy
 msgid "No Syslog Alerts Defined"
 msgstr "कोई Sloglog अलर्ट परिभाषित नहीं"
 
-#: syslog_alerts.php:901
+#: syslog_alerts.php:916
 #, fuzzy
 msgid "Import Alert Rule from Local File"
 msgstr "स्थानीय फ़ाइल से अलर्ट नियम आयात करें"
 
-#: syslog_alerts.php:902
+#: syslog_alerts.php:917
 #, fuzzy
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr "यदि एलर्ट नियम परिभाषा डेटा वाली XML फ़ाइल आपके स्थानीय मशीन पर स्थित है, तो इसे यहाँ चुनें।"
 
-#: syslog_alerts.php:907
+#: syslog_alerts.php:922
 #, fuzzy
 msgid "Import Alert Rule from Text"
 msgstr "पाठ से चेतावनी नियम आयात करें"
 
-#: syslog_alerts.php:908
+#: syslog_alerts.php:923
 #, fuzzy
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr "अगर आपके पास XML फ़ाइल है जिसमें टेक्स्ट के रूप में Alert Ruledefinition डेटा है, तो आप इसे आयात करने के लिए इस बॉक्स में पेस्ट कर सकते हैं।"
 
-#: syslog_alerts.php:919
+#: syslog_alerts.php:934
 #, fuzzy
 msgid "Import Alert Rule"
 msgstr "आयात नियम"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 #, fuzzy
 msgid "Imported"
 msgstr "आयातित"
 
-#: syslog_alerts.php:996
+#: syslog_alerts.php:1011
 #, fuzzy, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr "नोट: अलर्ट ' %s' %s!"
 
-#: syslog_alerts.php:996 syslog_removal.php:857 syslog_reports.php:875
+#: syslog_alerts.php:1011 syslog_removal.php:857 syslog_reports.php:875
 #, fuzzy
 msgid "Updated"
 msgstr "अपडेट किया गया"
 
-#: syslog_alerts.php:998
+#: syslog_alerts.php:1013
 #, fuzzy, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "त्रुटि: चेतावनी ' %s' %s विफल!"
 
-#: syslog_alerts.php:998 syslog_removal.php:859 syslog_reports.php:877
+#: syslog_alerts.php:1013 syslog_removal.php:859 syslog_reports.php:877
 msgid "Update"
 msgstr "अपडेट करें"
 
@@ -1767,14 +1813,9 @@ msgstr "इस रिपोर्ट को दिन के किस समय
 msgid "Report Format"
 msgstr "रिपोर्ट नोट"
 
-#: syslog_reports.php:451
-#, fuzzy
-msgid "Body Text"
-msgstr "रिपोर्ट बॉडी टेक्स्ट"
-
 #: syslog_reports.php:454
 #, fuzzy
-msgid "The information that will be contained in the body of the report."
+msgid "The information that will be contained in the body of the Report."
 msgstr "रिपोर्ट के मुख्य भाग में जो जानकारी होगी।"
 
 #: syslog_reports.php:473
