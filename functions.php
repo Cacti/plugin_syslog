@@ -279,6 +279,9 @@ function syslog_remove_items($table, $uniqueID) {
 
 	include(SYSLOG_CONFIG);
 
+	syslog_debug('-------------------------------------------------------------------------------------');
+	syslog_debug('Processing Removal Rules...');
+
 	if ($table == 'syslog') {
 		$rows = syslog_db_fetch_assoc("SELECT *
 			FROM `" . $syslogdb_default . "`.`syslog_remove`
@@ -1691,6 +1694,9 @@ function syslog_strip_incoming_domains($uniqueID) {
  */
 function syslog_update_reference_tables($uniqueID) {
 	global $syslogdb_default;
+
+	syslog_debug('-------------------------------------------------------------------------------------');
+	syslog_debug('Updating Reference Tables from New Syslog Records');
 
 	/* correct for invalid hosts */
 	if (read_config_option('syslog_validate_hostname') == 'on') {
