@@ -22,27 +22,39 @@ For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
 be quieted using syslog's 'Re-Alert' setting.
 
-## Features
+## Core Features
 
-* Message filter
+* Message filtering
 
-* Message search
+* Message searching
 
-* Output to screen or file
+* Message Alerting
 
-* Date time picker
+* Alert Levels of System and Host
 
-* Event Alerter
+* Alert Methods of Individual and Threshold Alerts
 
-* Event Removal (for Events you don't want to see)
+* Message Removal Rules to Delete or Hide Messages
 
-* Filter events by Cacti Graph window from Cacti's Graph View pages
+* Filter Messages by Cacti Graph window from Cacti's Graph View pages
 
 * Use of native MySQL and MariaDB database partitioning for larger installs
 
 * Remote Log Server connection capabilities
 
 * Custom column mappings between Remote Log Server and required Syslog columns
+
+* Ability to Generate Tickets to Ticketing Systems through Script Execution
+
+* Ability to run alert specific commands at Alert and Re-alert times
+
+## Important Version 4.0 Release Notes
+
+In prior releases of Syslog, the Individual Alert Method would send an Email, open a ticket
+or run a command per line in the Syslog that matches the pattern.  However, in Syslog
+Version 4, if you want an alert per Host, you will have to move your reports from the
+`System Level` to the `Host Level` as `System Level` Alerts will generate one command
+execution for all matching messages.
 
 ## Installation
 
