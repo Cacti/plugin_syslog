@@ -32,7 +32,7 @@ be quieted using syslog's 'Re-Alert' setting.
 
 * Alert Levels of System and Host
 
-* Alert Methods of Individual and Threshold Alerts
+* Alert Methods of Individual and Threshold Based
 
 * Message Removal Rules to Delete or Hide Messages
 
