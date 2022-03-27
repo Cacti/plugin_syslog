@@ -1121,7 +1121,7 @@ function syslog_process_alerts($uniqueID) {
 				$groupBy = '';
 			}
 
-			$sql_data = syslog_get_alert_sql($alert);
+			$sql_data = syslog_get_alert_sql($alert, $uniqueID);
 
 			if (!cacti_sizeof($sql_data)) {
 				syslog_debug(sprintf('Error       - Unable to determine SQL for Alert \'%s\'', $alert['name']));
@@ -1547,7 +1547,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
  *
  * @return (array)  The SQL and the prepared array for the SQL
  */
-function syslog_get_alert_sql(&$alert) {
+function syslog_get_alert_sql(&$alert, $uniqueID) {
 	global $syslogdb_default, $syslog_incoming_config;
 
 	$params = array();
