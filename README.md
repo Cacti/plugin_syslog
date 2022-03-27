@@ -52,7 +52,7 @@ be quieted using syslog's 'Re-Alert' setting.
 
 In prior releases of Syslog, the Individual Alert Method would send an Email, open a ticket
 or run a command per line in the Syslog that matches the pattern.  However, in Syslog
-Version 4, if you want an alert per Host, you will have to move your reports from the
+Version 4, if you want an alert per Host, you will have to move your Alerts from the
 `System Level` to the `Host Level` as `System Level` Alerts will generate one command
 execution for all matching messages.
 
