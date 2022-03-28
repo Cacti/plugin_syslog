@@ -468,7 +468,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 function syslog_setup_table_new($options) {
 	global $config, $settings, $syslogdb_default, $mysqlVersion, $syslog_levels;
 
-	syslog_determin_config();
+	syslog_determine_config();
 	syslog_connect();
 
 	$tables  = array();
