@@ -28,6 +28,10 @@ include_once('./lib/xml.php');
 include_once('./plugins/syslog/functions.php');
 include_once('./plugins/syslog/database.php');
 
+syslog_determine_config();
+include(SYSLOG_CONFIG);
+syslog_connect();
+
 /* redefine the syslog actions for removal rules */
 $syslog_actions = array(
 	1 => __('Delete', 'syslog'),

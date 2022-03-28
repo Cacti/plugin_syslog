@@ -23,8 +23,12 @@
 */
 
 include(dirname(__FILE__) . '/../../include/cli_check.php');
-include(SYSLOG_CONFIG);
 include_once(dirname(__FILE__) . '/functions.php');
+include_once(dirname(__FILE__) . '/database.php');
+
+syslog_determine_config();
+include(SYSLOG_CONFIG);
+syslog_connect();
 
 /**
  * Let it run for an hour if it has to, to clear up any big
@@ -82,9 +86,6 @@ if (cacti_sizeof($parms)) {
 
 /* record the start time */
 $start_time = microtime(true);
-
-/* connect to the syslog database if different than Cacti */
-syslog_connect();
 
 /**
  * sanity checks before starting.  The first sanity check is

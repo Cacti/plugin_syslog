@@ -22,8 +22,6 @@
  +-------------------------------------------------------------------------+
 */
 
-include_once($config['base_path'] . '/plugins/syslog/database.php');
-
 function plugin_syslog_install() {
 	global $config, $syslog_upgrade;
 	static $bg_inprocess = false;
@@ -112,14 +110,9 @@ function syslog_execute_update($syslog_exists, $options) {
 }
 
 function plugin_syslog_uninstall() {
-	global $config, $cnn_id, $syslog_incoming_config, $database_default, $database_hostname, $database_username;
+	global $config, $syslogdb_default;
 
 	syslog_determine_config();
-
-	/* database connection information, must be loaded always */
-	include(SYSLOG_CONFIG);
-	include_once(dirname(__FILE__) . '/functions.php');
-
 	syslog_connect();
 
 	if (isset_request_var('cancel') || isset_request_var('return')) {
@@ -165,13 +158,14 @@ function plugin_syslog_upgrade() {
 }
 
 function syslog_connect() {
-	global $config, $cnn_id, $syslog_cnn, $local_db_cnn_id, $remote_db_cnn_id;
+	global $config, $syslog_cnn, $syslogdb_default, $local_db_cnn_id, $remote_db_cnn_id;
 
 	syslog_determine_config();
 
 	// Handle remote syslog processing
 	include(SYSLOG_CONFIG);
 	include_once(dirname(__FILE__) . '/functions.php');
+	include_once(dirname(__FILE__) . '/database.php');
 
 	$connect_remote = false;
 	$connected      = true;
@@ -249,12 +243,9 @@ function syslog_connect() {
 }
 
 function syslog_check_upgrade() {
-	global $config, $syslog_cnn, $cnn_id, $syslog_levels, $database_default, $syslog_upgrade;
+	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_determine_config();
-
-	include(SYSLOG_CONFIG);
-
 	syslog_connect();
 
 	// Let's only run this check if we are on a page that actually needs the data
@@ -437,9 +428,10 @@ function syslog_get_mysql_version($db = 'cacti') {
 }
 
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
-	global $config, $mysqlVersion, $cnn_id, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
+	global $config, $mysqlVersion, $syslogdb_default, $syslog_levels;
 
-	include(SYSLOG_CONFIG);
+	syslog_determine_config();
+	syslog_connect();
 
 	$sql = "CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog` (
 		facility_id int(10) unsigned default NULL,
@@ -474,9 +466,10 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 }
 
 function syslog_setup_table_new($options) {
-	global $config, $cnn_id, $syslog_cnn, $settings, $mysqlVersion, $syslog_incoming_config, $syslog_levels, $database_default, $database_hostname, $database_username;
+	global $config, $settings, $syslogdb_default, $mysqlVersion, $syslog_levels;
 
-	include(SYSLOG_CONFIG);
+	syslog_determin_config();
+	syslog_connect();
 
 	$tables  = array();
 
@@ -491,8 +484,6 @@ function syslog_setup_table_new($options) {
 		7 => 'debug',
 		8 => 'other'
 	);
-
-	syslog_connect();
 
 	// Set default if they are not set.
 	if (!cacti_sizeof($options)) {
@@ -745,14 +736,13 @@ function syslog_setup_table_new($options) {
 
 	foreach($settings['syslog'] AS $name => $values) {
 		if (isset($values['default'])) {
-			db_execute('REPLACE INTO `' . $database_default . "`.`settings` (name, value) VALUES ('$name', '" . $values['default'] . "')");
+			set_config_option($name, $values['default']);
 		}
 	}
 }
 
 function syslog_replicate_out($data) {
-	include(SYSLOG_CONFIG);
-
+	syslog_determine_config();
 	syslog_connect();
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -776,8 +766,7 @@ function syslog_replicate_out($data) {
 }
 
 function syslog_replicate_in() {
-	include(SYSLOG_CONFIG);
-
+	syslog_determine_config();
 	syslog_connect();
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -972,10 +961,10 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 }
 
 function syslog_uninstall_advisor() {
-	global $config;
+	global $config, $syslogdb_default;
 
+	syslog_determine_config();
 	include(SYSLOG_CONFIG);
-
 	syslog_connect();
 
 	$syslog_exists = sizeof(syslog_db_fetch_row('SHOW TABLES FROM `' . $syslogdb_default . "` LIKE 'syslog'"));
@@ -1009,13 +998,16 @@ function syslog_uninstall_advisor() {
 	print "<table align='center' width='80%'><tr><td>\n";
 
 	html_start_box(__('Syslog Uninstall Preferences', 'syslog'), '100%', '', '3', 'center', '');
+
 	draw_edit_form(array(
 		'config' => array(),
 		'fields' => inject_form_variables($fields_syslog_update, array()))
-		);
+	);
+
 	html_end_box();
 
 	syslog_confirm_button('uninstall', 'plugins.php', $syslog_exists);
+
 	print "</td></tr></table>\n";
 
 	bottom_footer();
@@ -1053,7 +1045,7 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 						});
 					});
 
-					$('#cancel').click(function() {
+					$('#cancel, #return').click(function() {
 						loadPageNoHeader('plugins.php?header=false');
 					});
 				});
@@ -1445,7 +1437,7 @@ function syslog_config_insert() {
 	}
 
 	syslog_determine_config();
-
+	include(SYSLOG_CONFIG);
 	syslog_connect();
 
 	syslog_check_upgrade();
@@ -1459,8 +1451,8 @@ function syslog_graph_buttons($graph_elements = array()) {
 	}
 
 	syslog_determine_config();
-
 	include(SYSLOG_CONFIG);
+	syslog_connect();
 
 	if (get_nfilter_request_var('action') == 'view') {
 		return;
@@ -1519,7 +1511,7 @@ function syslog_graph_buttons($graph_elements = array()) {
 }
 
 function syslog_utilities_action($action) {
-	global $config, $refresh, $syslog_cnn;
+	global $config, $refresh;
 
 	if (!syslog_config_safe()) {
 		return;
@@ -1536,7 +1528,7 @@ function syslog_utilities_action($action) {
 				SELECT DISTINCT host_id
 				FROM syslog_removed
 			)');
-		$records += db_affected_rows($syslog_cnn);
+		$records += syslog_db_affected_rows();
 
 		syslog_db_execute('DELETE FROM syslog_host_facilities
 			WHERE host_id NOT IN (
@@ -1546,7 +1538,7 @@ function syslog_utilities_action($action) {
 				SELECT DISTINCT host_id
 				FROM syslog_removed
 			)');
-		$records += db_affected_rows($syslog_cnn);
+		$records += syslog_db_affected_rows();
 
 		syslog_db_execute('DELETE FROM syslog_statistics
 			WHERE host_id NOT IN (
@@ -1556,7 +1548,7 @@ function syslog_utilities_action($action) {
 				SELECT DISTINCT host_id
 				FROM syslog_removed
 			)');
-		$records += db_affected_rows($syslog_cnn);
+		$records += syslog_db_affected_rows();
 
 		raise_message('syslog_info', __('There were %s Device records removed from the Syslog database', $records, 'syslog'), MESSAGE_LEVEL_INFO);
 

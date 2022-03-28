@@ -25,8 +25,12 @@
 chdir('../../');
 include('./include/cli_check.php');
 include_once('./lib/poller.php');
-include(SYSLOG_CONFIG);
 include_once('./plugins/syslog/functions.php');
+include_once('./plugins/syslog/database.php');
+
+syslog_determine_config();
+include(SYSLOG_CONFIG);
+syslog_connect();
 
 /* Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events

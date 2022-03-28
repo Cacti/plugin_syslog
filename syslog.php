@@ -31,13 +31,15 @@ $guest_account = true;
 /* initialize cacti environment */
 chdir('../../');
 include('./include/auth.php');
-include('./lib/html_tree.php');
-
+include_once('./lib/html_tree.php');
 include_once('./plugins/syslog/functions.php');
+include_once('./plugins/syslog/database.php');
+
 syslog_determine_config();
 
-/* syslog specific database setup and functions */
 include(SYSLOG_CONFIG);
+
+syslog_connect();
 
 set_default_action();
 
