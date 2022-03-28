@@ -526,10 +526,10 @@ function syslog_setup_table_new($options) {
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `" . $syslogdb_default . "` LIKE 'syslog'"));
 
 	/* set table construction settings for the remote pollers */
-	set_config_option('syslog_install_upgrade_type', $options['upgrade_type'], true);
-	set_config_option('syslog_install_engine',       $options['engine'], true);
-	set_config_option('syslog_install_db_type',      $options['db_type'], true);
-	set_config_option('syslog_install_days',         $options['days'], true);
+	set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type'])?'':$options['upgrade_type'], true);
+	set_config_option('syslog_install_engine',       empty($options['engine'])      ?'':$options['engine'], true);
+	set_config_option('syslog_install_db_type',      empty($options['db_type'])     ?'':$options['db_type'], true);
+	set_config_option('syslog_install_days',         empty($options['days'])        ?'':$options['days'], true);
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog`");
