@@ -33,11 +33,11 @@ chdir('../../');
 include('./include/auth.php');
 include('./lib/html_tree.php');
 
+include_once('./plugins/syslog/functions.php');
 syslog_determine_config();
 
 /* syslog specific database setup and functions */
 include(SYSLOG_CONFIG);
-include_once('./plugins/syslog/functions.php');
 
 set_default_action();
 

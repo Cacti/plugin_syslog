@@ -2300,3 +2300,17 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 	return $command;
 }
 
+function syslog_determine_config() {
+	global $config;
+
+	// Setup the syslog database settings path
+	if (!defined('SYSLOG_CONFIG')) {
+		if (file_exists(dirname(__FILE__) . '/config_local.php')) {
+			define('SYSLOG_CONFIG', dirname(__FILE__) . '/config_local.php');
+			$config['syslog_remote_db'] = true;
+		} elseif (file_exists(dirname(__FILE__) . '/config.php')) {
+			define('SYSLOG_CONFIG', dirname(__FILE__) . '/config.php');
+			$config['syslog_remote_db'] = false;
+		}
+	}
+}
