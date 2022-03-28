@@ -1274,7 +1274,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 		/**
 		 * A list of all messages from the alert
 		 */
-		$amessage = '';
+		$results = array();
 
 		syslog_debug(sprintf('Found   %5s - Matching Records.', cacti_sizeof($at)));
 
@@ -1287,10 +1287,14 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 				}
 
 				if ($alert['method'] == '1') {
-					if ($hostname != '') {
-						$message  .= '<h1>' . __esc('Cacti Syslog Threshold Alert \'%s\' for Host \'%s\'', $alert['name'], $hostname, 'syslog') . '</h1>';
+					if ($alert['body'] == '') {
+						if ($hostname != '') {
+							$message  .= '<h1>' . __esc('Cacti Syslog Threshold Alert \'%s\' for Host \'%s\'', $alert['name'], $hostname, 'syslog') . '</h1>';
+						} else {
+							$message  .= '<h1>' . __esc('Cacti Syslog Threshold Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
+						}
 					} else {
-						$message  .= '<h1>' . __esc('Cacti Syslog Threshold Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
+						$message .= '<table class="cactiTable"><tr><td>' . $alert['body'] . '</td></td></table>';
 					}
 
 					$message  .= '<table class="cactiTable">';
@@ -1308,15 +1312,15 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					$message  .= '<td>'     . sizeof($at)       . '</td>';
 					$message  .= '<td>'     . html_escape($alert['message']) . '</td></tr></table><br>';
 				} else {
-					if ($hostname != '') {
-						$message .= '<h1>' . __esc('Cacti Syslog Alert \'%s\' for Host \'%s\'', $alert['name'], $hostname, 'syslog') . '</h1>';
+					if ($alert['body'] == '') {
+						if ($hostname != '') {
+							$message .= '<h1>' . __esc('Cacti Syslog Alert \'%s\' for Host \'%s\'', $alert['name'], $hostname, 'syslog') . '</h1>';
+						} else {
+							$message .= '<h1>' . __esc('Cacti Syslog Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
+						}
 					} else {
-						$message .= '<h1>' . __esc('Cacti Syslog Alert \'%s\'', $alert['name'], 'syslog') . '</h1>';
+						$message .= '<table class="cactiTable"><tr><td>' . $alert['body'] . '</td></td></table>';
 					}
-				}
-
-				if ($alert['body'] != '') {
-					$message .= '<table class="cactiTable"><tr><td>' . $alert['body'] . '</td></td></table>';
 				}
 
 				$message .= '<table class="cactiTable">';
@@ -1329,17 +1333,16 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 				</tr>';
 			} else {
 				if ($alert['method'] == '1') {
-					$message .= '---------------------------------------------------------------------' . PHP_EOL . PHP_EOL;
-					if ($hostname != '') {
-						$message .= __('WARNING: A Syslog Threshold Alert has Been Triggered for Host \'%s\'', $hostname, 'syslog') . PHP_EOL . PHP_EOL;
+					if ($alert['body'] == '') {
+						$message .= '---------------------------------------------------------------------' . PHP_EOL . PHP_EOL;
+						if ($hostname != '') {
+							$message .= __('WARNING: A Syslog Threshold Alert has Been Triggered for Host \'%s\'', $hostname, 'syslog') . PHP_EOL . PHP_EOL;
+						} else {
+							$message .= __('WARNING: A Syslog Threshold Alert has Been Triggered', 'syslog') . PHP_EOL . PHP_EOL;
+						}
 					} else {
-						$message .= __('WARNING: A Syslog Threshold Alert has Been Triggered', 'syslog') . PHP_EOL . PHP_EOL;
-					}
-
-					if ($alert['body'] != '') {
 						$message .= '---------------------------------------------------------------------' . PHP_EOL . PHP_EOL;
 						$message .= $alert['body'] . PHP_EOL;
-						$message .= '---------------------------------------------------------------------' . PHP_EOL . PHP_EOL;
 					}
 
 					$message .= __('Name:', 'syslog')           . ' ' . html_escape($alert['name'])     . PHP_EOL;
@@ -1347,14 +1350,40 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					$message .= __('Threshold:', 'syslog')      . ' ' . $alert['num']                   . PHP_EOL;
 					$message .= __('Count:', 'syslog')          . ' ' . sizeof($at)                     . PHP_EOL;
 					$message .= __('Message String:', 'syslog') . ' ' . html_escape($alert['message'])  . PHP_EOL;
+				} else {
+					if ($alert['body'] == '') {
+						if ($hostname != '') {
+							$message .= __esc('Cacti Syslog Alert \'%s\' for Host \'%s\'', $alert['name'], $hostname, 'syslog');
+						} else {
+							$message .= __esc('Cacti Syslog Alert \'%s\'', $alert['name'], 'syslog');
+						}
+					} else {
+						$message .= '---------------------------------------------------------------------' . PHP_EOL . PHP_EOL;
+						$message .= $alert['body'];
+					}
 				}
 			}
 
 			$hmessage = $message;
+			$plogged  = false;
+			$flogged  = false;
 
 			foreach($at as $a) {
 				$hostlist[] = $a['host'];
-				$amessage  .= ($amessage != '' ? ', ':'') . $a['message'];
+				$results['message']    .= ($results['message'] != '' ? ', ':'') . $a['message'];
+
+				if (isset($results['priority_id']) && $results['priority_id'] != $a['priority_id'] && !$plogged) {
+					cacti_log(sprintf('Alert \'%s\' has more than one priority id, last one experienced will be leveraged', $alert['name']), false, 'SYSLOG');
+					$plogged = true;
+				}
+
+				if (isset($results['facility_id']) && $results['facility_id'] != $a['facility_id'] && !$flogged) {
+					cacti_log(sprintf('Alert \'%s\' has more than one facility id, last one experienced will be leveraged', $alert['name']), false, 'SYSLOG');
+					$flogged = true;
+				}
+
+				$results['priority_id'] = $a['priority_id'];
+				$results['facility_id'] = $a['facility_id'];
 
 				if (($alert['method'] == 1 && $alert_count < $max_alerts) || $alert['method'] == 0) {
 					if ($alert['method'] == 0) {
@@ -1448,7 +1477,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), $message, $smsalert);
 					}
 
-					alert_setup_environment($alert, $amessage, $hostlist, $hostname);
+					alert_setup_environment($alert, $results, $hostlist, $hostname);
 
 					/**
 					 * Open a ticket if this options have been selected.
@@ -1473,7 +1502,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					}
 
 					if (trim($alert['command']) != '' && !$ignore) {
-						$command = alert_replace_variables($alert, $amessage, $hostname);
+						$command = alert_replace_variables($alert, $results, $hostname);
 
 						cacti_log("SYSLOG NOTICE: Executing '$command'", true, 'SYSTEM');
 
@@ -1498,7 +1527,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $at[0], sizeof($at), $message, $hostlist);
 					$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Count:', 'syslog') . sizeof($at) . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 
-					alert_setup_environment($alert, $amessage, $hostlist, $hostname);
+					alert_setup_environment($alert, $results, $hostlist, $hostname);
 
 					if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
 						if (is_executable(read_config_option('syslog_ticket_command'))) {
@@ -1520,7 +1549,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					}
 
 					if (trim($alert['command']) != '' && !$ignore) {
-						$command = alert_replace_variables($alert, $amessage, $hostname);
+						$command = alert_replace_variables($alert, $results, $hostname);
 
 						cacti_log("SYSLOG NOTICE: Executing '$command'", true, 'SYSTEM');
 
@@ -2227,7 +2256,7 @@ function syslog_init_variables() {
  *
  * @return (void)
  */
-function alert_setup_environment(&$alert, $amessage, $hostlist = array(), $hostname = '') {
+function alert_setup_environment(&$alert, $results, $hostlist = array(), $hostname = '') {
 	global $severities, $syslog_levels, $syslog_facilities;
 
 	putenv('ALERT_ALERTID='       . cacti_escapeshellarg($alert['id']));
@@ -2237,13 +2266,13 @@ function alert_setup_environment(&$alert, $amessage, $hostlist = array(), $hostn
 	putenv('ALERT_SEVERITY='      . cacti_escapeshellarg($alert['severity']));
 	putenv('ALERT_SEVERITY_TEXT=' . cacti_escapeshellarg($severities[$alert['severity']]));
 
-	putenv('ALERT_PRIORITY='      . cacti_escapeshellarg($syslog_levels[$a['priority_id']]));
-	putenv('ALERT_FACILITY='      . cacti_escapeshellarg($syslog_facilities[$a['facility_id']]));
+	putenv('ALERT_PRIORITY='      . cacti_escapeshellarg($syslog_levels[$results['priority_id']]));
+	putenv('ALERT_FACILITY='      . cacti_escapeshellarg($syslog_facilities[$results['facility_id']]));
 
 	putenv('ALERT_HOSTLIST='      . cacti_escapeshellarg(implode(',', $hostlist)));
 	putenv('ALERT_HOSTNAME='      . cacti_escapeshellarg($hostname));
 
-	putenv('ALERT_MESSAGES='      . cacti_escapeshellarg($amessage));
+	putenv('ALERT_MESSAGES='      . cacti_escapeshellarg($results['message']));
 }
 
 /**
@@ -2256,16 +2285,16 @@ function alert_setup_environment(&$alert, $amessage, $hostlist = array(), $hostn
  *
  * @return (void)
  */
-function alert_replace_variables($alert, $amessage, $hostname = '') {
+function alert_replace_variables($alert, $results, $hostname = '') {
 	global $severities, $syslog_levels, $syslog_facilities;
 
 	$command = $alert['command'];
 
 	$command = str_replace('<ALERTID>',  cacti_escapeshellarg($alert['id']), $command);
 	$command = str_replace('<HOSTNAME>', cacti_escapeshellarg($hostname), $command);
-	$command = str_replace('<PRIORITY>', cacti_escapeshellarg($syslog_levels[$a['priority_id']]), $command);
-	$command = str_replace('<FACILITY>', cacti_escapeshellarg($syslog_facilities[$a['facility_id']]), $command);
-	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($amessage), $command);
+	$command = str_replace('<PRIORITY>', cacti_escapeshellarg($syslog_levels[$results['priority_id']]), $command);
+	$command = str_replace('<FACILITY>', cacti_escapeshellarg($syslog_facilities[$results['facility_id']]), $command);
+	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($a['message']), $command);
 	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
 
 	return $command;
