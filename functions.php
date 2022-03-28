@@ -1420,6 +1420,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 			 * If this is a repeat alert type threshold, then check to
 			 * see if it's time to re-alert.
 			 */
+			$found = '';
 			if ($alert['repeat_alert'] > 0) {
 				if ($hostname != '') {
 					$found = syslog_db_fetch_cell_prepared('SELECT COUNT(*)
