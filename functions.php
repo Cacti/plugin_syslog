@@ -1414,7 +1414,8 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 			$syslog_alarms++;
 			$alert_count++;
 
-			$send = true;
+			$send  = true;
+			$found = false;
 
 			/**
 			 * If this is a repeat alert type threshold, then check to
