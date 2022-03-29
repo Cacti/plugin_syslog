@@ -2294,7 +2294,7 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 	$command = str_replace('<HOSTNAME>', cacti_escapeshellarg($hostname), $command);
 	$command = str_replace('<PRIORITY>', cacti_escapeshellarg($syslog_levels[$results['priority_id']]), $command);
 	$command = str_replace('<FACILITY>', cacti_escapeshellarg($syslog_facilities[$results['facility_id']]), $command);
-	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($a['message']), $command);
+	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($results['message']), $command);
 	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
 
 	return $command;
