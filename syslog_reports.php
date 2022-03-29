@@ -280,7 +280,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save['message']  = form_input_validate($message,  'message',  '', false, 3);
 	$save['timespan'] = form_input_validate($timespan, 'timespan', '', false, 3);
 	$save['timepart'] = form_input_validate($timepart, 'timepart', '', false, 3);
-	$save['body']     = form_input_validate($body,     'body',     '', false, 3);
+	$save['body']     = form_input_validate($body,     'body',     '', true, 3);
 	$save['email']    = form_input_validate($email,    'email',    '', true, 3);
 	$save['notes']    = form_input_validate($notes,    'notes',    '', true, 3);
 	$save['enabled']  = ($enabled == 'on' ? 'on':'');

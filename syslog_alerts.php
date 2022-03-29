@@ -278,7 +278,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['name']         = form_input_validate($name,         'name',     '', false, 3);
 	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
 	$save['message']      = form_input_validate($message,      'message',  '', false, 3);
-	$save['body']         = form_input_validate($body,         'body',     '', false, 3);
+	$save['body']         = form_input_validate($body,         'body',     '', true, 3);
 	$save['email']        = form_input_validate(trim($email),  'email',    '', true, 3);
 	$save['command']      = form_input_validate($command,      'command',  '', true, 3);
 	$save['notes']        = form_input_validate($notes,        'notes',    '', true, 3);
