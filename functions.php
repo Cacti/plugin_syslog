@@ -1370,7 +1370,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 
 			foreach($at as $a) {
 				$hostlist[] = $a['host'];
-				$results['message']    .= ($results['message'] != '' ? ', ':'') . $a['message'];
+				$results['message'] = (isset($results['message']) ? $results['message'] . ', ':'') . $a['message'];
 
 				if (isset($results['priority_id']) && $results['priority_id'] != $a['priority_id'] && !$plogged) {
 					cacti_log(sprintf('Alert \'%s\' has more than one priority id, last one experienced will be leveraged', $alert['name']), false, 'SYSLOG');
