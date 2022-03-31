@@ -842,7 +842,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save['alert_id']    = $alert_id;
 		$save['logseq']      = $msg['seq'];
 		$save['logtime']     = $msg['logtime'];
-		$save['logmsg']      = db_qstr($msg['message']);
+		$save['logmsg']      = $msg['message'];
 		$save['host']        = $msg['host'];
 		$save['facility_id'] = $msg['facility_id'];
 		$save['priority_id'] = $msg['priority_id'];
@@ -864,7 +864,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 		$save['alert_id']    = $alert_id;
 		$save['logseq']      = 0;
 		$save['logtime']     = date('Y-m-d H:i:s');
-		$save['logmsg']      = db_qstr($alert_name);
+		$save['logmsg']      = $alert_name;
 		$save['host']        = 'N/A';
 		$save['facility_id'] = $msg['facility_id'];
 		$save['priority_id'] = $msg['priority_id'];
@@ -993,13 +993,13 @@ function syslog_manage_items($from_table, $to_table) {
 							(facility_id, priority_id, host_id, logtime, message)
 							(SELECT facility_id, priority_id, host_id, logtime, message
 							FROM `". $syslogdb_default . "`.". $from_table ."
-							WHERE seq in (" . $all_seq ."))");
+							WHERE seq IN (" . $all_seq ."))");
 
 						$messages_moved = db_affected_rows($syslog_cnn);
 
 						if ($messages_moved > 0) {
 							syslog_db_execute("DELETE FROM `". $syslogdb_default . "`.`" . $from_table ."`
-								WHERE seq in (" . $all_seq .")" );
+								WHERE seq IN (" . $all_seq .")" );
 						}
 
 						$xferred += $messages_moved;
