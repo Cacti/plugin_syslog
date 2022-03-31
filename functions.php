@@ -1147,7 +1147,7 @@ function syslog_process_alerts($uniqueID) {
 					 * both thresholed and system levels have the same process
 					 */
 					$th_sql  = str_replace('*', 'host, COUNT(*) AS count', $sql);
-					$results = syslog_db_fetch_cell_prepared($th_sql . $groupBy, $params);
+					$results = syslog_db_fetch_assoc_prepared($th_sql . $groupBy, $params);
 
 					if (cacti_sizeof($results)) {
 						foreach($results as $result) {
