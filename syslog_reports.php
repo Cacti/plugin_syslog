@@ -90,7 +90,7 @@ function form_save() {
 			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'),
 			get_nfilter_request_var('notify'));
 
-		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id'))) {
+		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $reportid === false) {
 			header('Location: syslog_reports.php?header=false&action=edit&id=' . (empty($reportid) ? get_request_var('id') : $reportid));
 		} else {
 			header('Location: syslog_reports.php?header=false');
@@ -290,10 +290,30 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 	$id = 0;
 	if (!is_error_message()) {
-		$id = syslog_sync_save($save, 'syslog_reports', 'id');
+		$sql = syslog_get_alert_sql($save, 100);
+
+		if (cacti_sizeof($sql)) {
+			$approx_sql = vsprintf(str_replace('?', "%s", $sql['sql']), $sql['params']);
+
+			$results = syslog_db_fetch_assoc_prepared($sql['sql'], $sql['params'], false);
+
+			if ($results === false) {
+				raise_message('sql_error', __('The SQL Syntax Entered is invalid.  Please correct your SQL.  The Pre-processed SQL is:<br><br> %s', $approx_sql, 'syslog'), MESSAGE_LEVEL_ERROR);
+
+				return false;
+			} else {
+				$id = syslog_sync_save($save, 'syslog_reports', 'id');
+
+				return $id;
+			}
+		} else {
+			raise_message('sql_error', __('The processed SQL was invalid.  Please correct your SQL', 'syslog'), MESSAGE_LEVEL_ERROR);
+
+			return false;
+		}
 	}
 
-	return $id;
+	return false;
 }
 
 function api_syslog_report_remove($id) {

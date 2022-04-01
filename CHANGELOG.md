@@ -1,6 +1,6 @@
 ## ChangeLog
 
---- develop ---
+--- 4.0 ---
 
 * issue: Removal of partition issues incorrect message
 
@@ -21,6 +21,8 @@
 * issue#160: PHP 8 Support
 
 * issue#166: Allow Syslog to pass hostname for the threshold type reporting
+
+* feature#181: For Regex Message Processing Rules test the regex at save time and inform user if it's syntactically correct
 
 * feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
 
