@@ -293,12 +293,16 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 		$sql = syslog_get_alert_sql($save, 100);
 
 		if (cacti_sizeof($sql)) {
-			$approx_sql = vsprintf(str_replace('?', "%s", $sql['sql']), $sql['params']);
+			$db_sql = str_replace('%', '|||||', $sql['sql']);
+			$db_sql = str_replace('?', '%s', $db_sql);
+			$approx_sql = vsprintf($db_sql, $sql['params']);
+			$approx_sql = str_replace('|||||', '%', $approx_sql);
 
 			$results = syslog_db_fetch_assoc_prepared($sql['sql'], $sql['params'], false);
 
 			if ($results === false) {
-				raise_message('sql_error', __('The SQL Syntax Entered is invalid.  Please correct your SQL.  The Pre-processed SQL is:<br><br> %s', $approx_sql, 'syslog'), MESSAGE_LEVEL_ERROR);
+				raise_message('sql_error', __('The SQL Syntax Entered is invalid.  Please correct your SQL.<br>', 'syslog'), MESSAGE_LEVEL_ERROR);
+				raise_message('sql_detail', __('The Pre-processed SQL is:<br><br> %s', $approx_sql, 'syslog'), MESSAGE_LEVEL_INFO);
 
 				return false;
 			} else {
