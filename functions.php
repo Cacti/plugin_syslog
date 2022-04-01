@@ -2284,7 +2284,7 @@ function alert_setup_environment(&$alert, $results, $hostlist = array(), $hostna
  * @param  (string) A comma delimited list of syslog messages
  * @param  (string) The hostname in the case of a host level alert
  *
- * @return (void)
+ * @return (string) The command and it'a arguments escaped
  */
 function alert_replace_variables($alert, $results, $hostname = '') {
 	global $severities, $syslog_levels, $syslog_facilities;
