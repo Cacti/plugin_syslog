@@ -1952,7 +1952,7 @@ function save_settings() {
 	syslog_request_validation($current_tab, true);
 }
 
-function html_program_filter($program_id = '-1', $none_entry, $action = 'ajax_programs', $call_back = 'applyFilter', $sql_where = '') {
+function html_program_filter($program_id = '-1', $none_entry = '', $action = 'ajax_programs', $call_back = 'applyFilter', $sql_where = '') {
 	if (strpos($call_back, '()') === false) {
 		$call_back .= '()';
 	}
