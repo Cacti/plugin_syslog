@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2022-03-31 16:49+0000\nLast-Translator: Anatoliy <hamrad99h2@gmail.com>\nLanguage-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 4.8.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2022-06-17 06:19+0000\nLast-Translator: Coool <coool@mail.lv>\nLanguage-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -918,7 +918,7 @@ msgstr "Экспорт записей в CSV"
 
 #: syslog.php:1401
 msgid "Save"
-msgstr " Сохранить "
+msgstr "Сохранить"
 
 #: syslog.php:1401
 #, fuzzy
