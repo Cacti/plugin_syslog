@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2022-06-11 03:50+0000\nLast-Translator: San IPE <sanipe1949@krunsea.com>\nLanguage-Team: Turkish <http://translate.cacti.net/projects/cacti/syslog/tr/>\nLanguage: tr-TR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 4.8.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2022-06-21 05:25+0000\nLast-Translator: San IPE <sanipe1949@krunsea.com>\nLanguage-Team: Turkish <http://translate.cacti.net/projects/cacti/syslog/tr/>\nLanguage: tr-TR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -530,25 +530,25 @@ msgid "%d Week"
 msgstr "% d Hafta"
 
 #: setup.php:1316 setup.php:1335 syslog_alerts.php:384
-#, fuzzy, php-format
+#, php-format
 msgid "%d Weeks"
-msgstr "% d Hafta"
+msgstr "%d Hafta"
 
 #: setup.php:1317 setup.php:1336
-#, fuzzy, php-format
+#, php-format
 msgid "%d Month"
-msgstr "% d Ay"
+msgstr "%d Ay"
 
 #: setup.php:1318 setup.php:1319 setup.php:1320 setup.php:1321 setup.php:1322
 #: setup.php:1337 setup.php:1338 setup.php:1339 setup.php:1340 setup.php:1341
-#, fuzzy, php-format
+#, php-format
 msgid "%d Months"
-msgstr "% d Ay"
+msgstr "%d Ay"
 
 #: setup.php:1323 setup.php:1342
 #, php-format
 msgid "%d Year"
-msgstr "%d yıl"
+msgstr "%d Yıl"
 
 #: setup.php:1346 syslog_reports.php:741
 msgid "Never"
@@ -802,7 +802,7 @@ msgstr "Temizle"
 #: syslog.php:583 syslog.php:1423 syslog_alerts.php:687 syslog_removal.php:538
 #: syslog_reports.php:552
 msgid "Search"
-msgstr "Arama"
+msgstr "Ara"
 
 #: syslog.php:589
 msgid "Time Range"
