@@ -1510,9 +1510,9 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						$cparts = explode(' ', $command);
 
 						if (is_executable($cparts[0])) {
-							exec_background($command);
+							exec($command);
 						} else {
-							exec_background('/bin/sh', $command);
+							exec('/bin/sh', $command);
 						}
 					}
 				}
@@ -1557,9 +1557,9 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						$cparts = explode(' ', $command);
 
 						if (is_executable($cparts[0])) {
-							exec_background($command);
+							exec($command);
 						} else {
-							exec_background('/bin/sh', $command);
+							exec('/bin/sh', $command);
 						}
 					}
 				}
