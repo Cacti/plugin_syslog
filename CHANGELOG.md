@@ -1,6 +1,7 @@
 ## ChangeLog
 
 --- 4.0 ---
+* issue#193: Fix command execution
 
 * issue: Removal of partition issues incorrect message
 
