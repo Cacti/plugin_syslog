@@ -142,6 +142,9 @@ function syslog_traditional_manage() {
 	/* determine the oldest date to retain */
 	if (read_config_option('syslog_retention') > 0) {
 		$retention = date('Y-m-d', time() - (86400 * read_config_option('syslog_retention')));
+	} else {
+		$retention = date('Y-m-d', time() - (30 * 86400));
+		set_config_option('syslog_retention', '30');
 	}
 
 	/* delete from the main syslog table first */
