@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* issue#189: Issues with undefined variable in traditional table maintenance
+* 
 * issue#193: Fix command execution
 
 --- 4.0 ---
