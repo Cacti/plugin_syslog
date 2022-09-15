@@ -1,5 +1,9 @@
 ## ChangeLog
 
+--- develop ---
+
+* issue#193: Fix command execution
+
 --- 4.0 ---
 
 * issue: Removal of partition issues incorrect message
