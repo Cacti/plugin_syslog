@@ -1675,7 +1675,7 @@ function syslog_preprocess_incoming_records() {
 	syslog_debug('Unique ID = ' . $uniqueID);
 	syslog_debug('-------------------------------------------------------------------------------------');
 
-	$syslog_incoming = db_fetch_cell_prepared('SELECT COUNT(seq)
+	$syslog_incoming = syslog_db_fetch_cell_prepared('SELECT COUNT(seq)
 		FROM `' . $syslogdb_default . '`.`syslog_incoming`
 		WHERE `status` = ?',
 		array($uniqueID));

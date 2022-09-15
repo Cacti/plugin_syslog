@@ -2,8 +2,10 @@
 
 --- develop ---
 
+* issue#186: Wrong connection in functions.php
+
 * issue#189: Issues with undefined variable in traditional table maintenance
-* 
+
 * issue#193: Fix command execution
 
 --- 4.0 ---
