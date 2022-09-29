@@ -2,11 +2,15 @@
 
 --- develop ---
 
+* issue#185: Wrong column specification on cleanup query
+
 * issue#186: Wrong connection in functions.php
 
 * issue#189: Issues with undefined variable in traditional table maintenance
 
 * issue#193: Fix command execution
+
+* issue#196: Undefined variable $ignore
 
 --- 4.0 ---
 
