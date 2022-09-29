@@ -1707,7 +1707,7 @@ function syslog_strip_incoming_domains($uniqueID) {
 			syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
 				SET host = SUBSTRING_INDEX(host, '.', 1)
 				WHERE host LIKE '%$domain'
-				AND uniqueID = $uniqueID");
+				AND `status` = $uniqueID");
 		}
 	}
 }
