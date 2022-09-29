@@ -1505,7 +1505,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						}
 					}
 
-					if (trim($alert['command']) != '' && !$ignore) {
+					if (trim($alert['command']) != '' && !$found) {
 						$command = alert_replace_variables($alert, $results, $hostname);
 
 						cacti_log("SYSLOG NOTICE: Executing '$command'", true, 'SYSTEM');
@@ -1552,7 +1552,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						}
 					}
 
-					if (trim($alert['command']) != '' && !$ignore) {
+					if (trim($alert['command']) != '' && !$found) {
 						$command = alert_replace_variables($alert, $results, $hostname);
 
 						cacti_log("SYSLOG NOTICE: Executing '$command'", true, 'SYSTEM');
