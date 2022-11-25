@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-26 11:38-0400\n"
-"Last-Translator: Jaroslaw Kłopotek <jkl@interduo.pl>\n"
-"Language-Team: Polish <http://translate.cacti.net/projects/cacti/syslog/pl-PL/>\n"
-"Language: pl_PL\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 3.0.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2022-11-25 18:50+0000\nLast-Translator: kaktus <kaktus_j_p@o2.pl>\nLanguage-Team: Polish <http://translate.cacti.net/projects/cacti/syslog/pl/>\nLanguage: pl-PL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -574,7 +562,7 @@ msgstr "%d minuta"
 #: syslog.php:598 syslog.php:599 syslog_alerts.php:368 syslog_alerts.php:369
 #: syslog_alerts.php:370 syslog_alerts.php:371 syslog_alerts.php:372
 #: syslog_alerts.php:373
-#, fuzzy, php-format
+#, php-format
 msgid "%d Minutes"
 msgstr "%d minut"
 
