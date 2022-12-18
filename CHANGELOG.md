@@ -12,6 +12,8 @@
 
 * issue#196: Undefined variable $ignore
 
+* feature: Provide better messaging if the Data Collector is in offline mode
+
 --- 4.0 ---
 
 * issue: Removal of partition issues incorrect message

@@ -95,7 +95,7 @@ $start_time = microtime(true);
 if (read_config_option('syslog_enabled') == '') {
 	$message = 'WARNING: Syslog record transferral and alerting/reporting is disabled.';
 
-	cacti_log($warning, false, 'SYSLOG');
+	cacti_log($message, false, 'SYSLOG');
 	print $message . PHP_EOL;
 
 	exit(1);
@@ -110,6 +110,11 @@ if (read_config_option('syslog_enabled') == '') {
  */
 if ($config['poller_id'] > 1) {
 	if (read_config_option('syslog_remote_enabled') !== 'on') {
+      $message = 'WARNING: Syslog is offline and Remote Data Collector Message Processing is disabled!';
+
+      cacti_log($message, false, 'SYSLOG');
+      print $message . PHP_EOL;
+
 		exit(1);
 	}
 
