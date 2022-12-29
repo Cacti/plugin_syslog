@@ -1699,7 +1699,10 @@ function syslog_preprocess_incoming_records() {
  * @return (void)
  */
 function syslog_strip_incoming_domains($uniqueID) {
+	global $syslogdb_default;
+
 	$syslog_domains = read_config_option('syslog_domains');
+
 	if ($syslog_domains != '') {
 		$domains = explode(',', trim($syslog_domains));
 
