@@ -12,6 +12,8 @@
 
 * issue#196: Undefined variable $ignore
 
+* issue#205: function syslog_strip_incoming_domains($uniqueID)
+
 * feature: Provide better messaging if the Data Collector is in offline mode
 
 --- 4.0 ---
