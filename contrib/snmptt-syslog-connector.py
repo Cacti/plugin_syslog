@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 
 #### Created by Sean Mancini sean@seanmancini.com www.seanmancini.com

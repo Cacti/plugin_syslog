@@ -16,13 +16,15 @@
 
 * feature: Provide better messaging if the Data Collector is in offline mode
 
+
 --- 4.0 ---
 
 * issue: Removal of partition issues incorrect message
 
 * issue: Make the syslog processing routine more readable
 
-* issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
+* issue: Fix oversight in database connection handling around default values
+  identified in PHP 8.1.2 testing
 
 * issue#65: MySQL failures due to large amount of syslog data
 
@@ -32,25 +34,34 @@
 
 * issue#146: Support Email address distribution lists
 
-* issue#151: Syslog 3.1 has a hardcoded path for sh which causes issues running other scripts
+* issue#151: Syslog 3.1 has a hardcoded path for sh which causes issues running
+  other scripts
 
 * issue#160: PHP 8 Support
 
 * issue#166: Allow Syslog to pass hostname for the threshold type reporting
 
-* feature#181: For Regex Message Processing Rules test the regex at save time and inform user if it's syntactically correct
+* feature#181: For Regex Message Processing Rules test the regex at save time
+  and inform user if it's syntactically correct
 
-* feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
+* feature: Support a local Syslog config file when Syslog is designed to work
+  independently from the main Cacti server.
 
-* feature: Support the replication of the main Cacti Syslog rules to Remote Data Collectors
+* feature: Support the replication of the main Cacti Syslog rules to Remote Data
+  Collectors
 
-* feature: Support process interlocking using the Cacti process registration functions
+* feature: Support process interlocking using the Cacti process registration
+  functions
 
-* feature: Support both system and host level re-alert cycles and command execution
+* feature: Support both system and host level re-alert cycles and command
+  execution
 
-* feature: Support using the Thold notification lists if Thold is installed on the system
+* feature: Support using the Thold notification lists if Thold is installed on
+  the system
 
-* feature: Support using Cacti Format CSS files to construct Alert and Report messages.
+* feature: Support using Cacti Format CSS files to construct Alert and Report
+  messages.
+
 
 --- 3.2 ---
 
@@ -60,9 +71,11 @@
 
 * issue#155: Wrong database connection is used resulting in missing table errors
 
-* issue#159: Sync 'syslog' schema cross Traditional/Partitioned mode to avoid audit issue
+* issue#159: Sync 'syslog' schema cross Traditional/Partitioned mode to avoid
+  audit issue
 
 * issue#161: Message colum does not follow RFC 5424
+
 
 --- 3.1 ---
 
@@ -72,15 +85,18 @@
 
 * issue#142: Syslog save button can not work well
 
+
 --- 3.0 ---
 
 * issue#122: Apply Cacti#3191 for XSS exposure (CVE-2020-7106)
 
 * issue#124: Feature request: Syslog Search for message NOT containing something
 
-* issue#128：The syslog alert email is not sent if the Reporting Method is set to threshold.
+* issue#128：The syslog alert email is not sent if the Reporting Method is set
+  to threshold.
 
-* issue#132: Cacti log shows syslog error when setting the "Re-Alert Cycle" in Alert Rules settings
+* issue#132: Cacti log shows syslog error when setting the "Re-Alert Cycle" in
+  Alert Rules settings
 
 * issue#133: Saving Settings on the Syslog Tab are not retained in latest Cacti
 
@@ -97,19 +113,23 @@
 
 * issue: Internationalization issues on console
 
+
 --- 2.8 ---
 
 * issue#115: Some field where not corrected following the version change
 
-* issue#116: Background process fail to operate syslog_coming table; syslog_process.php fail if current workdir is not CACTI_TOP
+* issue#116: Background process fail to operate syslog_coming table;
+  syslog_process.php fail if current workdir is not CACTI_TOP
 
 * issue#117: Export of rules does not work when using db other than Cacti
+
 
 --- 2.7 ---
 
 * issue#110: Syslog Alerts cause DB errors
 
 * issue#111: Can not load host table when use different syslog server
+
 
 --- 2.6 ---
 
@@ -121,6 +141,7 @@
 * issue#109: Should merge CVE-2020-7106 solution to syslog plugin
 
 * issue: Massive performance improvement in statistics page rendering
+
 
 --- 2.5 ---
 
@@ -142,9 +163,11 @@
 
 * issue#87: Program data is not sync with syslog_incoming under PHP 7.2
 
+
 --- 2.4 ---
 
 * issue: Resolving issues with nav level cache being set incorrectly
+
 
 --- 2.3 ---
 
@@ -156,6 +179,7 @@
 * issue#94: Stored XSS in syslog_removal.php
 
 * issue#95: Syslog Hosts and Syslog Programs table looses sync with data
+
 
 --- 2.2 ---
 
@@ -199,6 +223,7 @@
 
 * issue#89: plugins/syslog/syslog_reports.php:89: Undefined variable '$id'
 
+
 --- 2.1 ---
 
 * issue#18: Issues with syslog statistics display
@@ -225,9 +250,11 @@
 
 * issue: Cleanup formating of Threshold messaging and viewing
 
+
 --- 2.0 ---
 
 * feature: Compatibility with Cacti 1.0
+
 
 --- 1.30 ---
 
@@ -242,6 +269,7 @@
 * issue: Remove syslog 'message' from Log message to prvent deadlock on cacti
   log syslog processing
 
+
 --- 1.22 ---
 
 * issue: Upgrade script does not properly handle all conditions
@@ -254,6 +282,7 @@
 
 * issue: Issue with Plugin Realm naming
 
+
 --- 1.21 ---
 
 * issue: Fix timespan selector
@@ -263,6 +292,7 @@
 * issue: Syslog Statistics Row Counter Invalid
 
 * feature: Provide option to tag invalid hosts
+
 
 --- 1.20 ---
 
@@ -279,6 +309,7 @@
 * issue: sort fields interfering with one another between syslog and alarm tabs
 
 * issue: Message column was date column
+
 
 --- 1.10 ---
 
@@ -302,6 +333,7 @@
 
 * issue: Can not add disabled alarm/removal/report rule
 
+
 --- 1.07 ---
 
 * issue: Rearchitect to improve support mutliple databases
@@ -311,6 +343,7 @@
 * issue: Don't process an alert if it's not enabled.
 
 * issue: Don't process a removal rule if it's not enabled.
+
 
 --- 1.06 ---
 
@@ -325,6 +358,7 @@
 
 * issue: Hex Errors Upon Install
 
+
 --- 1.05 ---
 
 * issue: Remove poorly defined security settings
@@ -334,6 +368,7 @@
 * issue: Fix page refresh dropdown bug
 
 * feature: Re-add refresh settings to syslog
+
 
 --- 1.04 ---
 
@@ -347,6 +382,7 @@
 
 * compat: Remove deprecated split() command
 
+
 --- 1.03 ---
 
 * feature: Add alarm host and counts to sms messages
@@ -357,10 +393,12 @@
 
 * issue: Fix syslog removal UI with respect to rule type's
 
+
 --- 1.02 ---
 
 * feature: Add syslog database functions to mitigate issues with same system
   installs
+
 
 --- 1.01 ---
 
@@ -370,6 +408,7 @@
 
 * issue#0001785: revision 1086 can not save reports when using seperate syslog
   mysql database
+
 
 --- 1.0 ---
 
@@ -411,15 +450,18 @@
 
 * feature: Turn images to buttons
 
+
 --- 0.5.2 ---
 
 * issue: Fixes to make syslog work properly when using the Superlinks plugin
 
 * issue: Fix a few image errors
 
+
 --- 0.5.1 ---
 
 * issue: More 0.8.7 Compatibility fixes
+
 
 --- 0.5 ---
 
@@ -464,6 +506,7 @@
 
 * issue: Fix Cacti 0.8.7 compatibility
 
+
 --- 0.4 ---
 
 * issue#0000034 - Fix for shadow.gif file error in httpd logs.
@@ -475,6 +518,7 @@
 
 * issue: Removed some debugging code
 
+
 --- 0.3 ---
 
 * feature: Move Processing code to its own file
@@ -484,6 +528,7 @@
 * issue: Fixed an issue with "message" being hard coded
 
 * issue: Fixed a typo in the removal code
+
 
 --- 0.2 ---
 
@@ -496,6 +541,10 @@
 
 * issue: Modified SQL query in syslog processor to speed things up greatly
 
+
 --- 0.1 ---
 
 * Initial release
+
+-----------------------------------------------
+Copyright (c) 2004-2023 - The Cacti Group, Inc.

@@ -50,11 +50,11 @@ be quieted using syslog's 'Re-Alert' setting.
 
 ## Important Version 4.0 Release Notes
 
-In prior releases of Syslog, the Individual Alert Method would send an Email, open a ticket
-or run a command per line in the Syslog that matches the pattern.  However, in Syslog
-Version 4, if you want an alert per Host, you will have to move your Alerts from the
-`System Level` to the `Host Level` as `System Level` Alerts will generate one command
-execution for all matching messages.
+In prior releases of Syslog, the Individual Alert Method would send an Email,
+open a ticket or run a command per line in the Syslog that matches the pattern.
+However, in Syslog Version 4, if you want an alert per Host, you will have to
+move your Alerts from the `System Level` to the `Host Level` as `System Level`
+Alerts will generate one command execution for all matching messages.
 
 ## Installation
 
@@ -81,16 +81,21 @@ You have two options for storing syslog information you can either use the exisi
 Cacti Database or use a dedicated database for syslog as syslog databases especially
 for large networks can grow pretty quick it may be wise to create a dedicated database.
 To use a dedicated DB first create a database in mysql and assign a user you will then change
+
 ```console
 $use_cacti_db = true; 
+```
+
 to 
+
+``console
 $use_cacti_db = false;
 ```
 
 You will also need to ensure the cacti user is granted select on the syslog database
 
 ```shell
-GRANT SELECT  ON syslog.* TO  'cacti'@'localhost';
+GRANT SELECT ON syslog.* TO 'cacti'@'localhost';
 ```
 
 
@@ -122,7 +127,8 @@ $template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, pr
 
 *.* >localhost,my_database,my_user,my_password;cacti_syslog
 ```
-for centos/rhel systems you will all need to install the rsyslog-mysql package
+
+For CentOS/RHEL systems you will all need to install the rsyslog-mysql package
 
 ```
 yum install rsyslog-mysql
@@ -189,3 +195,5 @@ stable and robust versions of syslog ever published. We are always looking for
 new ideas. So, this won't be the last release of syslog, you can rest assured of
 that.
 
+-----------------------------------------------
+Copyright (c) 2004-2023 - The Cacti Group, Inc.
