@@ -1085,7 +1085,7 @@ function syslog_filter($sql_where, $tab) {
 
 		$('#host').multiselect({
 			menuHeight: $(window).height()*.7,
-			menuWidth: '210',
+			menuWidth: '220',
 			linkInfo: faIcons,
 			noneSelectedText: '<?php print __('Select Device(s)', 'syslog');?>',
 			selectedText: function(numChecked, numTotal, checkedItems) {
