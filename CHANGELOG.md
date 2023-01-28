@@ -1,6 +1,6 @@
 ## ChangeLog
 
---- develop ---
+--- 4.1 ---
 
 * issue#185: Wrong column specification on cleanup query
 
