@@ -4,24 +4,11 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-26 11:37-0400\n"
-"Last-Translator: Olivier VOGEL <olivier.vogel@st.com>\n"
-"Language-Team: French <http://translate.cacti.net/projects/cacti/syslog/fr-FR/>\n"
-"Language: fr_FR\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Poedit 3.0.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2023-01-30 20:39+0000\nLast-Translator: Arno St <arno@daika08.ch>\nLanguage-Team: French <http://translate.cacti.net/projects/cacti/syslog/fr/>\nLanguage: fr-FR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n > 1;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
-#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr "Échec de la sauvegarde. Les collecteurs de données distants en mode de synchronisation ne sont pas autorisés à enregistrer des règles. Enregistrez plutôt à partir du serveur principal de cactus."
+msgstr "Échec de la sauvegarde. Les collecteurs de données distants en mode de synchronisation ne sont pas autorisés à enregistrer des règles. Enregistrez plutôt à partir du serveur principal de cacti."
 
 #: functions.php:116
 #, fuzzy
@@ -29,14 +16,14 @@ msgid "Please use an HTML Email Client"
 msgstr "Veuillez utiliser un client de messagerie HTML"
 
 #: functions.php:1313 functions.php:1334
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
-msgstr "Cacti Syslog Plugin Threshold Alert'%s' (seuil d'alerte)"
+msgstr "Cacti Syslog Plugin seuil d'alerte'%s' et host '%s'"
 
 #: functions.php:1315
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr "Cacti Syslog Plugin Threshold Alert'%s' (seuil d'alerte)"
+msgstr "Cacti Syslog Plugin seuil d'alerte'%s'"
 
 #: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 msgid "Alert Name"
@@ -62,9 +49,9 @@ msgid "Match String"
 msgstr "Corde d'allumette"
 
 #: functions.php:1336
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Cacti Syslog Plugin Alert'%s' (Alerte Plugin Cacti Syslog)"
+msgstr "Cacti Syslog alerte '%s'"
 
 #: functions.php:1346
 msgid "Hostname"
@@ -85,14 +72,13 @@ msgid "Message"
 msgstr "Message"
 
 #: functions.php:1356
-#, fuzzy, php-format
+#, php-format
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
-msgstr "AVERTISSEMENT : Une alerte de comptage d'instance de plugin Syslog a été déclenchée"
+msgstr "AVERTISSEMENT : Une alerte du nombre d'instance du plugin Syslog a été déclenchée pour le host '%s'"
 
 #: functions.php:1358
-#, fuzzy
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
-msgstr "AVERTISSEMENT : Une alerte de comptage d'instance de plugin Syslog a été déclenchée"
+msgstr "AVERTISSEMENT : Une alerte du nombre d'instance de Syslog a été déclenchée"
 
 #: functions.php:1367
 msgid "Name:"
@@ -111,9 +97,8 @@ msgid "Count:"
 msgstr "Nombre:"
 
 #: functions.php:1371
-#, fuzzy
 msgid "Message String:"
-msgstr "Chaîne de messages :"
+msgstr "Texte du messages :"
 
 #: functions.php:1400
 msgid "Hostname:"
@@ -132,14 +117,12 @@ msgid "Message:"
 msgstr "Message :"
 
 #: functions.php:1442
-#, fuzzy
 msgid ", Host:"
-msgstr "Hôte :"
+msgstr ", host :"
 
 #: functions.php:1442 functions.php:1560
-#, fuzzy
 msgid ", URL:"
-msgstr "URL, URL :"
+msgstr ", URL :"
 
 #: functions.php:1442 functions.php:1560
 #, fuzzy
