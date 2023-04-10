@@ -39,7 +39,6 @@ function plugin_syslog_install() {
 	syslog_connect();
 
 	$syslog_exists = sizeof(syslog_db_fetch_row('SHOW TABLES FROM `' . $syslogdb_default . "` LIKE 'syslog'"));
-	$db_version    = syslog_get_mysql_version('syslog');
 
 	/* ================= input validation ================= */
 	get_filter_request_var('days');
@@ -80,7 +79,7 @@ function plugin_syslog_install() {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
 		exit;
 	} else {
-		syslog_install_advisor($syslog_exists, $db_version);
+		syslog_install_advisor($syslog_exists);
 		exit;
 	}
 }
@@ -413,22 +412,8 @@ function syslog_check_upgrade() {
 	}
 }
 
-function syslog_get_mysql_version($db = 'cacti') {
-	if ($db == 'cacti') {
-		$dbInfo = db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
-	} else {
-		$dbInfo = syslog_db_fetch_row("SHOW GLOBAL VARIABLES LIKE 'version'");
-	}
-
-	if (cacti_sizeof($dbInfo)) {
-		return floatval(str_replace('-MariaDB', '', $dbInfo['Value']));
-	}
-
-	return '';
-}
-
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
-	global $config, $mysqlVersion, $syslogdb_default, $syslog_levels;
+	global $config, $syslogdb_default, $syslog_levels;
 
 	syslog_determine_config();
 	syslog_connect();
@@ -466,7 +451,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 }
 
 function syslog_setup_table_new($options) {
-	global $config, $settings, $syslogdb_default, $mysqlVersion, $syslog_levels;
+	global $config, $settings, $syslogdb_default, $syslog_levels;
 
 	syslog_determine_config();
 	syslog_connect();
@@ -510,7 +495,6 @@ function syslog_setup_table_new($options) {
 	}
 
 	/* validate some simple information */
-	$mysqlVersion = syslog_get_mysql_version('syslog');
 	$truncate     = isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate' ? true:false;
 	$engine       = isset($options['engine']) && $options['engine'] == 'innodb' ? 'InnoDB':'MyISAM';
 	$partitioned  = isset($options['db_type']) && $options['db_type'] == 'part' ? true:false;
@@ -865,7 +849,7 @@ function syslog_poller_bottom() {
 	}
 }
 
-function syslog_install_advisor($syslog_exists, $db_version) {
+function syslog_install_advisor($syslog_exists) {
 	global $config, $syslog_retentions;
 
 	top_header();
@@ -925,21 +909,19 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 		)
 	);
 
-	if ($db_version >= 5.5) {
-		$fields_syslog_update['dayparts'] = array(
-			'method' => 'drop_array',
-			'friendly_name' => __('Partitions per Day', 'syslog'),
-			'description' => __('Select the number of partitions per day that you wish to create.', 'syslog'),
-			'value' => '1',
-			'array' => array(
-				'1'  => __('%d Per Day', 1, 'syslog'),
-				'2'  => __('%d Per Day', 2, 'syslog'),
-				'4'  => __('%d Per Day', 4, 'syslog'),
-				'6'  => __('%d Per Day', 6, 'syslog'),
-				'12' => __('%d Per Day', 12, 'syslog')
-			)
-		);
-	}
+	$fields_syslog_update['dayparts'] = array(
+		'method' => 'drop_array',
+		'friendly_name' => __('Partitions per Day', 'syslog'),
+		'description' => __('Select the number of partitions per day that you wish to create.', 'syslog'),
+		'value' => '1',
+		'array' => array(
+			'1'  => __('%d Per Day', 1, 'syslog'),
+			'2'  => __('%d Per Day', 2, 'syslog'),
+			'4'  => __('%d Per Day', 4, 'syslog'),
+			'6'  => __('%d Per Day', 6, 'syslog'),
+			'12' => __('%d Per Day', 12, 'syslog')
+		)
+	);
 
 	if ($syslog_exists) {
 		$type = __('Upgrade', 'syslog');
