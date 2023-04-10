@@ -882,14 +882,10 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 			'friendly_name' => __('Database Architecture', 'syslog'),
 			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available.', 'syslog'),
 			'value' => 'trad',
-			'array' => ($db_version >= '5.1' ?
-				array(
+			'array' => array(
 				'trad' => __('Traditional Table', 'syslog'),
-				'part' => __('Partitioned Table', 'syslog')) :
-				array(
-					'trad' => __('Traditional Table', 'syslog')
-				)
-			),
+				'part' => __('Partitioned Table', 'syslog')
+			)
 		),
 		'days' => array(
 			'method' => 'drop_array',
@@ -943,7 +939,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 		print "<p>" . __('The upgrade of the \'main\' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.', 'syslog') . "</p></td></tr>";
 	} else {
 		unset($fields_syslog_update['upgrade_type']);
-		print "<p>" . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Starting with MySQL 5.1.6, you can elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries.', 'syslog') . '</p><p>' . __('You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine.', 'syslog') . '</p><p>' . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller.', 'syslog') . "</p></td></tr>";
+		print "<p>" . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.  You should elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries.', 'syslog') . '</p><p>' . __('You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine.', 'syslog') . '</p><p>' . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller.', 'syslog') . "</p></td></tr>";
 	}
 	html_end_box();
 	print "<form action='plugins.php' method='get'>\n";
