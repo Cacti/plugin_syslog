@@ -439,7 +439,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 		program_id int(10) unsigned default NULL,
 		host_id int(10) unsigned default NULL,
 		logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-		message " . ($mysqlVersion > 5 ? "varchar(1024)":"text") . " NOT NULL default '',
+		message varchar(1024) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY(seq, logtime),
 		INDEX `seq` (`seq`),
@@ -574,7 +574,10 @@ function syslog_setup_table_new($options) {
 		PRIMARY KEY (id))
 		ENGINE=$engine;");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`");
+	if ($truncate) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_incoming`");
+	}
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_incoming` (
 		facility_id int(10) unsigned default NULL,
 		priority_id int(10) unsigned default NULL,
@@ -589,7 +592,10 @@ function syslog_setup_table_new($options) {
 		INDEX `status` (`status`))
 		ENGINE=$engine;");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
+	if ($truncate) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_remove`");
+	}
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_remove` (
 		id int(10) NOT NULL auto_increment,
 		`hash` varchar(32) NOT NULL default '',
@@ -612,7 +618,10 @@ function syslog_setup_table_new($options) {
 		$newreport = true;
 	}
 
-	if ($truncate || !$newreport) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`");
+	if ($truncate || !$newreport) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_reports`");
+	}
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
 		`hash` varchar(32) NOT NULL default '',
@@ -632,7 +641,10 @@ function syslog_setup_table_new($options) {
 		PRIMARY KEY (id))
 		ENGINE=$engine;");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`");
+	if ($truncate) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_hosts`");
+	}
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_programs` (
 		`program_id` int(10) unsigned NOT NULL auto_increment,
 		`program` VARCHAR(40) NOT NULL,
@@ -654,6 +666,7 @@ function syslog_setup_table_new($options) {
 		COMMENT='Contains all hosts currently in the syslog table'");
 
 	syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_facilities`");
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_facilities` (
 		`facility_id` int(10) unsigned NOT NULL,
 		`facility` varchar(10) NOT NULL,
@@ -669,6 +682,7 @@ function syslog_setup_table_new($options) {
 		(22,'local6'), (23,'local7');");
 
 	syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_priorities`");
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `". $syslogdb_default . "`.`syslog_priorities` (
 		`priority_id` int(10) unsigned NOT NULL,
 		`priority` varchar(10) NOT NULL,
@@ -687,7 +701,10 @@ function syslog_setup_table_new($options) {
 		PRIMARY KEY  (`host_id`,`facility_id`))
 		ENGINE=$engine;");
 
-	if ($truncate) syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`");
+	if ($truncate) {
+		syslog_db_execute("DROP TABLE IF EXISTS `" . $syslogdb_default . "`.`syslog_removed`");
+	}
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_removed` LIKE `" . $syslogdb_default . "`.`syslog`");
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `" . $syslogdb_default . "`.`syslog_logs` (
@@ -870,7 +887,7 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 		'engine' => array(
 			'method' => 'drop_array',
 			'friendly_name' => __('Database Storage Engine', 'syslog'),
-			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  Prior to this release, you only have the traditional table structure available.', 'syslog'),
+			'description' => __('You have the option to make this a partitioned table by days.', 'syslog'),
 			'value' => 'innodb',
 			'array' => array(
 				'myisam' => __('MyISAM Storage', 'syslog'),
@@ -880,8 +897,8 @@ function syslog_install_advisor($syslog_exists, $db_version) {
 		'db_type' => array(
 			'method' => 'drop_array',
 			'friendly_name' => __('Database Architecture', 'syslog'),
-			'description' => __('In MySQL 5.1.6 and above, you have the option to make this a partitioned table by days.  In MySQL 5.5 and above, you can create multiple partitions per day.  Prior to MySQL 5.1.6, you only have the traditional table structure available.', 'syslog'),
-			'value' => 'trad',
+			'description' => __('You have the option to make this a partitioned table by days.  You can create multiple partitions per day.', 'syslog'),
+			'value' => 'part',
 			'array' => array(
 				'trad' => __('Traditional Table', 'syslog'),
 				'part' => __('Partitioned Table', 'syslog')
