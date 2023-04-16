@@ -4,27 +4,25 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2022-09-16 13:04+0000\nLast-Translator: Anton Zhuravlev <baka109g@gmail.com>\nLanguage-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 4.8.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2023-04-16 10:06+0000\nLast-Translator: Сергей <zersh@mail.ru>\nLanguage-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\nLanguage: ru-RU\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
-#, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "Сохранить не удалось. Удаленным сборщикам данных в режиме синхронизации не разрешено сохранять правила. Вместо этого сохраните с основного сервера Cacti."
 
 #: functions.php:116
-#, fuzzy
 msgid "Please use an HTML Email Client"
-msgstr "Пожалуйста, используйте HTML-клиент электронной почты."
+msgstr "Пожалуйста, используйте HTML-клиент электронной почты"
 
 #: functions.php:1313 functions.php:1334
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
-msgstr "Предупреждение о пороговом значении плагина Cacti Syslog '%s' для модуля Cacti Syslog"
+msgstr "Cacti Syslog срабатывание алерта '%s' хоста '%s'"
 
 #: functions.php:1315
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr "Предупреждение о пороговом значении плагина Cacti Syslog '%s' для модуля Cacti Syslog"
+msgstr "Предупреждение о пороговом значении плагина Cacti Syslog '%s'"
 
 #: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 msgid "Alert Name"
@@ -45,14 +43,13 @@ msgid "Count"
 msgstr "Количество"
 
 #: functions.php:1324
-#, fuzzy
 msgid "Match String"
-msgstr "Стринг матча"
+msgstr "Строка соответствия"
 
 #: functions.php:1336
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Предупреждение о плагине Cacti Syslog '%s'."
+msgstr "Предупреждение Cacti Syslog '%s'"
 
 #: functions.php:1346
 msgid "Hostname"
@@ -73,41 +70,37 @@ msgid "Message"
 msgstr "Сообщение"
 
 #: functions.php:1356
-#, fuzzy, php-format
+#, php-format
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
-msgstr "ВНИМАНИЕ: Сигнал о количестве экземпляров подключаемого модуля Syslog сработал."
+msgstr "ВНИМАНИЕ: Количество сработавших алертов Syslog для хоста '%s'"
 
 #: functions.php:1358
-#, fuzzy
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
-msgstr "ВНИМАНИЕ: Сигнал о количестве экземпляров подключаемого модуля Syslog сработал."
+msgstr "ВНИМАНИЕ: Количество сработавших алертов Syslog"
 
 #: functions.php:1367
 msgid "Name:"
 msgstr "Имя:"
 
 #: functions.php:1368 functions.php:1402
-#, fuzzy
 msgid "Severity:"
-msgstr "Важность"
+msgstr "Важность:"
 
 #: functions.php:1369
-#, fuzzy
 msgid "Threshold:"
-msgstr "Порог"
+msgstr "Порог:"
 
 #: functions.php:1370
 msgid "Count:"
 msgstr "Количество:"
 
 #: functions.php:1371
-#, fuzzy
 msgid "Message String:"
 msgstr "Строка сообщения:"
 
 #: functions.php:1400
 msgid "Hostname:"
-msgstr "Имя хоста : "
+msgstr "Имя хоста:"
 
 #: functions.php:1401
 msgid "Date:"
@@ -122,14 +115,12 @@ msgid "Message:"
 msgstr "Сообщение:"
 
 #: functions.php:1442
-#, fuzzy
 msgid ", Host:"
-msgstr "Хост"
+msgstr ", Host:"
 
 #: functions.php:1442 functions.php:1560
-#, fuzzy
 msgid ", URL:"
-msgstr "URL-АДРЕС:"
+msgstr ", URL-АДРЕС:"
 
 #: functions.php:1442 functions.php:1560
 #, fuzzy
@@ -137,21 +128,20 @@ msgid "Sev:"
 msgstr "Сев:"
 
 #: functions.php:1458 functions.php:1557
-#, fuzzy, php-format
+#, php-format
 msgid "Event Alert - %s"
-msgstr "Предупреждение о событии - %s"
+msgstr "Оповещение о событии - %s"
 
 #: functions.php:1560
-#, fuzzy
 msgid ", Count:"
-msgstr "Количество:"
+msgstr ", Количество:"
 
 #: functions.php:2069
 msgid "Host"
 msgstr "Хост"
 
 #: functions.php:2094
-#, fuzzy, php-format
+#, php-format
 msgid "Event Report - %s"
 msgstr "Отчет о событии - %s"
 
@@ -176,9 +166,8 @@ msgid "When you have very large tables, performing a Truncate will be much quick
 msgstr "Когда у вас очень большие столы, выполнение Truncate будет намного быстрее.  Если вас беспокоят архивные данные, вы можете выбрать Inline, который заморозит ваш браузер на время обновления, или фон, который создаст фоновый процесс для переноса старых данных syslog из резервной таблицы в новый формат syslog.  Опять же, этот процесс может занять несколько часов."
 
 #: setup.php:876
-#, fuzzy
 msgid "Truncate Syslog Table"
-msgstr "Усечение таблицы системного журнала"
+msgstr "Обрезать Syslog таблицу"
 
 #: setup.php:877
 #, fuzzy
@@ -186,9 +175,8 @@ msgid "Inline Upgrade"
 msgstr "Обновление онлайн"
 
 #: setup.php:878
-#, fuzzy
 msgid "Background Upgrade"
-msgstr "Обновление фоновой информации"
+msgstr "Фоновое обновление"
 
 #: setup.php:883
 #, fuzzy
@@ -251,9 +239,9 @@ msgid "Select the number of partitions per day that you wish to create."
 msgstr "Выберите количество разделов в день, которое вы хотите создать."
 
 #: setup.php:933 setup.php:934 setup.php:935 setup.php:936 setup.php:937
-#, fuzzy, php-format
+#, php-format
 msgid "%d Per Day"
-msgstr "d В день"
+msgstr "%d в день"
 
 #: setup.php:943 setup.php:1028
 msgid "Upgrade"
@@ -269,9 +257,8 @@ msgid "Syslog %s Advisor"
 msgstr "Syslog %s Советник"
 
 #: setup.php:953
-#, fuzzy
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr "ВНИМАНИЕ: Обновление системного журнала отнимает много времени!!!!"
+msgstr "ВНИМАНИЕ: Обновление системного журнала отнимает много времени!!!"
 
 #: setup.php:954
 #, fuzzy
@@ -294,34 +281,29 @@ msgid "You have several options to choose from when installing Syslog.  The firs
 msgstr "У вас есть несколько вариантов на выбор при установке Syslog.  Первая - это архитектура базы данных.  Начиная с MySQL 5.1.6, вы можете использовать разметку таблиц, чтобы предотвратить избыточный размер таблиц, замедляя тем самым выполнение запросов."
 
 #: setup.php:961
-#, fuzzy, php-format
+#, php-format
 msgid "Syslog %s Settings"
 msgstr "Syslog %s Настройки"
 
 #: setup.php:988
-#, fuzzy
 msgid "What uninstall method do you want to use?"
 msgstr "Какой метод деинсталляции вы хотите использовать?"
 
 #: setup.php:989
-#, fuzzy
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "Удаляя syslog, вы можете удалить все или только отдельные компоненты, на случай, если планируете переустановить его в будущем."
 
 #: setup.php:991
-#, fuzzy
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "Удалить все (журналы, таблицы, настройки)"
 
 #: setup.php:991
-#, fuzzy
 msgid "Syslog Data Only"
-msgstr "Только данные системного журнала"
+msgstr "Только данные syslog"
 
 #: setup.php:1011
-#, fuzzy
 msgid "Syslog Uninstall Preferences"
-msgstr "Удаление привилегий системного журнала"
+msgstr "Параметры удаления Syslog"
 
 #: setup.php:1033
 msgid "Uninstall"
@@ -341,79 +323,66 @@ msgid "General Settings"
 msgstr "Основные Настройки"
 
 #: setup.php:1087
-#, fuzzy
 msgid "Syslog Enabled"
-msgstr "Включен системный журнал"
+msgstr "Syslog включён"
 
 #: setup.php:1088
-#, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr "Если этот флажок установлен, записи будут переноситься из таблицы входящих сообщений Syslog в основную таблицу системного журнала, а сигналы тревоги и отчеты будут включены.  Пожалуйста, имейте в виду, что если система отключена, записи журнала будут накапливаться в таблице входящих сообщений Syslog, как это определено процессом rsyslog или syslog-ng."
+msgstr "Если этот флажок установлен, записи будут переноситься из таблицы входящих сообщений Syslog в основную таблицу системного журнала, а сигналы тревоги и отчеты будут включены. Пожалуйста, имейте в виду, что если система отключена, записи журнала будут накапливаться в таблице входящих сообщений Syslog, как это определено процессом rsyslog или syslog-ng."
 
 #: setup.php:1093
-#, fuzzy
 msgid "Enable Statistics Gathering"
 msgstr "Включить сбор статистики"
 
 #: setup.php:1094
-#, fuzzy
 msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
-msgstr "Если этот флажок установлен, будет вестись статистика о том, откуда приходят сообщения системного журнала.  Эта статистическая информация может быть использована для отображения таких объектов, как тепловые карты."
+msgstr "Если этот флажок установлен, будет вестись статистика о том, откуда приходят сообщения системного журнала. Эта статистическая информация может быть использована для отображения таких объектов, как тепловые карты."
 
 #: setup.php:1099
-#, fuzzy
 msgid "Strip Domains"
-msgstr "Стриптизерские домены"
+msgstr "Обрезать домены"
 
 #: setup.php:1100
-#, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "Запятый список доменов, которые вы хотите удалить из имени хоста syslog, например 'mydomain.com, elserdomain.com'."
+msgstr "Список доменов через запятую, которые вы хотите удалить из имени syslog хоста. Например 'mydomain.com, otherdomain.com'"
 
 #: setup.php:1107
-#, fuzzy
 msgid "Validate Hostnames"
-msgstr "Подтвердить имена хостов"
+msgstr "Проверка имен хостов"
 
 #: setup.php:1108
-#, fuzzy
 msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
-msgstr "Если этот флажок установлен, все имена хостов будут подтверждены.  Если имя хоста недействительно. Все записи закрепляются за специальным хостом под названием 'invalidhost'.  Эта настройка может повлиять на время обработки системного журнала на больших системах.  Поэтому использование этого параметра следует использовать только в том случае, если отсутствуют другие средства для предотвращения этого."
+msgstr "Если этот флажок установлен, все имена хостов будут проверяться. Если имя хоста недействительно, все записи закрепляются за специальным хостом под названием 'invalidhost'. Эта настройка может повлиять на время обработки системного журнала на больших системах. Поэтому использование этого параметра следует использовать только в том случае, если отсутствуют другие средства для предотвращения этого."
 
 #: setup.php:1113
 msgid "Refresh Interval"
-msgstr "Интервал обновления страницы"
+msgstr "Интервал обновления"
 
 #: setup.php:1114
-#, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "Это время в секундах до обновления страницы."
 
 #: setup.php:1120
-#, fuzzy
 msgid "Max Report Records"
-msgstr "Макс. отчет Записи"
+msgstr "Макс. количество отчётов"
 
 #: setup.php:1121
-#, fuzzy
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "Для оповещений на основе пороговых значений укажите максимальное число, которое вы хотите показать в отчете.  Используется для ограничения размера журнала html и электронной почты."
 
 #: setup.php:1125 setup.php:1126 setup.php:1127 setup.php:1128 setup.php:1129
 #: setup.php:1130
-#, fuzzy, php-format
+#, php-format
 msgid "%d Records"
-msgstr "d Записи"
+msgstr "%d Записи"
 
 #: setup.php:1134
-#, fuzzy
 msgid "Command for Opening Tickets"
-msgstr "Команда для открытия билетов"
+msgstr "Команда для открытия тикета"
 
 #: setup.php:1135
-#, fuzzy
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr "Эта команда будет выполнена для открытия билетов в службу поддержки.  Команда будет необходима для разбора нескольких входных параметров следующим образом: <b>--имя пользователя</b>, <b>- серьезность</b>, <b>-- хостлист</b>, <b>-сообщение</b>.  Список хостов будет представлять собой список хостов, ограниченных запятыми и подверженных влиянию предупреждения."
+msgstr "Эта команда будет выполнена для открытия билетов в службу поддержки. Команда понимать нескольких входных параметров следующим образом: <b>--alert-name</b>, <b>- -severity</b>, <b>--hostlist</b>, <b>--message</b>. Список хостов разделён запятой, на которые распространяется предупреждения(alerts)."
 
 #: setup.php:1141
 #, fuzzy
@@ -422,75 +391,60 @@ msgid "HTML Notification Settings"
 msgstr "Список уведомлений"
 
 #: setup.php:1146
-#, fuzzy
 msgid "Enable HTML Based Email"
 msgstr "Электронная почта на основе HTML"
 
 #: setup.php:1147
-#, fuzzy
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "Если этот флажок установлен, все письма будут отправляться в формате HTML.  В противном случае письма будут отправляться открытым текстом."
+msgstr "Если этот флажок установлен, все письма будут отправляться в формате HTML. В противном случае письма будут отправляться открытым текстом."
 
 #: setup.php:1152
-#, fuzzy
-#| msgid "Normal User"
 msgid "Format File to Use"
-msgstr "Обычный пользователь"
+msgstr "Формат файла"
 
 #: setup.php:1155
-#, fuzzy
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Выберите пользовательскую оболочку html и файл CSS для использования. Этот файл содержит как html, так и CSS для обертывания вашего отчета. Если он содержит больше, чем просто CSS, вам нужно поместить специальный<REPORT> тег внутри файла. Этот тег формата будет заменен содержимым отчета. Эти файлы находятся в каталоге форматов."
+msgstr "Выберите пользовательскую оболочку html и файл CSS для использования. Этот файл содержит как html, так и CSS для обертки вашего отчета. Если он содержит больше, чем просто CSS, вам нужно поместить специальный тег <REPORT> внутри файла. Этот тег будет заменен содержимым отчета. Эти файлы находятся в каталоге 'formats'."
 
 #: setup.php:1159
-#, fuzzy
 msgid "Data Retention Settings"
 msgstr "Настройки хранения данных"
 
 #: setup.php:1164
-#, fuzzy
 msgid "Syslog Retention"
-msgstr "Сохранение Syslog"
+msgstr "Хранение Syslog"
 
 #: setup.php:1165
-#, fuzzy
 msgid "This is the number of days to keep events."
 msgstr "Это количество дней для хранения событий."
 
 #: setup.php:1171
-#, fuzzy
 msgid "Syslog Alert Retention"
 msgstr "Сохранение оповещения в системном журнале"
 
 #: setup.php:1172
-#, fuzzy
 msgid "This is the number of days to keep alert logs."
-msgstr "Это количество дней для ведения журналов тревог."
+msgstr "Это количество дней, в течение которых должны храниться журналы предупреждений."
 
 #: setup.php:1178
-#, fuzzy
 msgid "Remote Message Processing"
-msgstr "Строка сообщения:"
+msgstr "Удалённая обработка сообщений"
 
 #: setup.php:1182
-#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
-msgstr "Включить обработку сообщений удаленного сборщика данных"
+msgstr "Включить обработку сообщений удаленного Data Collector"
 
 #: setup.php:1183
-#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают свои сообщения независимо, установите этот флажок. Установив этот флажок, ваши удаленные сборщики данных должны будут поддерживать свой собственный файл «config_local.php», чтобы сообщить Syslog о необходимости использования независимой базы данных для отображения и обработки сообщений. Для этой цели используйте файл шаблона config_local.php.dist. ПРЕДУПРЕЖДЕНИЕ. Таблицы системного журнала будут созданы автоматически, как только эта опция будет включена."
 
 #: setup.php:1188
-#, fuzzy
 msgid "Remote Data Collector Rules Sync"
 msgstr "Синхронизация правил удаленного сборщика данных"
 
 #: setup.php:1189
-#, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают три сообщения независимо, установите этот флажок, если вы хотите, чтобы правила предупреждений, удаления и отчетов основных баз данных Cacti отправлялись в удаленную систему Cacti."
+msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают свои сообщения независимо, установите этот флажок, если вы хотите, чтобы правила предупреждений, удаления и отчетов основных баз данных Cacti отправлялись в удаленную систему Cacti."
 
 #: setup.php:1262 syslog_removal.php:33
 msgid "Delete"
@@ -864,9 +818,8 @@ msgid "Syslog Message Filter %s"
 msgstr "Фильтр сообщений системного журнала %s"
 
 #: syslog.php:1332
-#, fuzzy
 msgid "Timespan"
-msgstr "Временной диапазон"
+msgstr "Продолжительность"
 
 #: syslog.php:1338
 msgid "Custom"
@@ -1784,7 +1737,7 @@ msgstr "Фильтры отчетов Syslog"
 
 #: syslog_reports.php:711
 msgid "Report Name"
-msgstr "Имя отчета"
+msgstr "Название отчета"
 
 #: syslog_reports.php:717
 msgid "Last Sent"
