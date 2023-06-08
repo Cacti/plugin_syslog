@@ -22,3 +22,4 @@
 .git*
 
 locales/po/*.mo
+config.php
