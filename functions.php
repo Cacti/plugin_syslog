@@ -1656,7 +1656,7 @@ function syslog_preprocess_incoming_records() {
 	while (1) {
 		$uniqueID = rand(1, 127);
 
-		$count = syslog_db_fetch_cell_prepared('SELECT count(*)
+		$count = syslog_db_fetch_cell_prepared('SELECT COUNT(*)
 			FROM `' . $syslogdb_default . '`.`syslog_incoming`
 			WHERE `status` = ?',
 			array($uniqueID));

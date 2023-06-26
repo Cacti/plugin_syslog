@@ -1524,10 +1524,7 @@ function syslog_filter($sql_where, $tab) {
 
 								if (cacti_sizeof($hosts)) {
 									foreach ($hosts as $host) {
-										if (!is_ipaddress($host['host'])) {
-											$parts = explode('.', $host['host']);
-											$host['host'] = $parts[0];
-										}
+										$host['host'] = syslog_strip_domain($host['host']);
 
 										if (!empty($host['id'])) {
 											$class = get_device_leaf_class($host['id']);
@@ -1536,6 +1533,7 @@ function syslog_filter($sql_where, $tab) {
 										}
 
 										print "<option class='$class' value='" . $host['host_id'] . "'";
+
 										if (cacti_sizeof($selected)) {
 											if (in_array($host['host_id'], $selected)) {
 												print ' selected';
@@ -1657,8 +1655,34 @@ function syslog_filter($sql_where, $tab) {
 	<?php html_end_box(false);
 }
 
-/** function syslog_syslog_legend()
- *  This function displays the foreground and background colors for the syslog syslog legend
+/**
+ * function syslog_strip_domain()
+ *
+ * Simple function to strip the domain for a hostname
+ *
+ * @param string hostname
+ */
+function syslog_strip_domain($hostname) {
+	if (strpos($hostname, '.') === false) {
+		return $hostname;
+	} elseif (filter_var($hostnam, FILTER_VALIDATE_IP)) {
+		return $hostname;
+	} else {
+		$parts = explode('.', $hostname);
+		foreach($parts as $part) {
+			if (is_numeric($part)) {
+				return $hostname;
+			}
+		}
+
+		return $parts[0];
+	}
+}
+
+/**
+ * function syslog_syslog_legend()
+ *
+ * This function displays the foreground and background colors for the syslog syslog legend
 */
 function syslog_syslog_legend() {
 	global $disabled_color, $notmon_color, $database_default;

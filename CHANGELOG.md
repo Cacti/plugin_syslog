@@ -1,5 +1,9 @@
 ## ChangeLog
 
+--- develop ---
+
+* issue#211: Device Filter missing devices
+
 --- 4.1 ---
 
 * issue#185: Wrong column specification on cleanup query
