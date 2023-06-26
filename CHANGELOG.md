@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* issue#184: Unable to remove messages by expression from 'program' column
+
 * issue#208: Uncaught ValueError: escapeshellarg()
 
 * issue#211: Device Filter missing devices

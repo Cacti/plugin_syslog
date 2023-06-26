@@ -577,8 +577,8 @@ function syslog_remove_items($table, $uniqueID) {
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 								ON sh.host = si.host
 								WHERE `status` = ' . $uniqueID . '
-							) AS merge
-							WHERE (' . $remove['message'] . ')';
+								AND (' . $remove['message'] . ')
+							) AS merge';
 					}
 
 					$sql = 'DELETE
@@ -595,8 +595,17 @@ function syslog_remove_items($table, $uniqueID) {
 								WHERE ' . $remove['message'];
 						}
 
-						$sql  = 'DELETE FROM `' . $syslogdb_default . '`.`syslog`
-							WHERE ' . $remove['message'];
+						$sql  = 'DELETE syslog
+							FROM `' . $syslogdb_default . '`.`syslog`
+							INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
+							ON sf.facility_id = si.facility_id
+							INNER JOIN `' . $syslogdb_default . '`.`syslog_priorities` AS sp
+							ON sp.priority_id = si.priority_id
+							INNER JOIN `' . $syslogdb_default . '`.`syslog_programs` AS spg
+							ON spg.program = si.program
+							INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
+							ON sh.host = si.host
+							WHERE (' . $remove['message'] . ')';
 					}
 				}
 			}
