@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* issue#208: Uncaught ValueError: escapeshellarg()
+
 * issue#211: Device Filter missing devices
 
 --- 4.1 ---

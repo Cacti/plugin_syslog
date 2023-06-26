@@ -2279,7 +2279,7 @@ function alert_setup_environment(&$alert, $results, $hostlist = array(), $hostna
 	putenv('ALERT_HOSTLIST='      . cacti_escapeshellarg(implode(',', $hostlist)));
 	putenv('ALERT_HOSTNAME='      . cacti_escapeshellarg($hostname));
 
-	putenv('ALERT_MESSAGES='      . cacti_escapeshellarg($results['message']));
+	putenv('ALERT_MESSAGES='      . cacti_escapeshellarg(trim(str_replace("\0", ' ', $results['message']))));
 }
 
 /**
