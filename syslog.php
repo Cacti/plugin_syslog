@@ -1665,7 +1665,7 @@ function syslog_filter($sql_where, $tab) {
 function syslog_strip_domain($hostname) {
 	if (strpos($hostname, '.') === false) {
 		return $hostname;
-	} elseif (filter_var($hostnam, FILTER_VALIDATE_IP)) {
+	} elseif (filter_var($hostname, FILTER_VALIDATE_IP)) {
 		return $hostname;
 	} else {
 		$parts = explode('.', $hostname);
