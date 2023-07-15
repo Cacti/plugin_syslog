@@ -1516,24 +1516,24 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 
 					if (trim($alert['command']) != '' && !$found) {
 						$command = alert_replace_variables($alert, $results, $hostname);
-					
+
 						$logMessage = "SYSLOG NOTICE: Executing '$command'";
-					
+
 						$cparts = explode(' ', $command);
-					
+
 						if (is_executable($cparts[0])) {
 							exec($command, $output, $returnCode);
 						} else {
-							exec('/bin/sh '  $command, $output, $returnCode);
+							exec('/bin/sh ' . $command, $output, $returnCode);
 						}
-					
+
 						// Append the return code to the log message without the dot
 						$logMessage .= " Command return code: $returnCode";
-					
+
 						// Log the combined message
 						cacti_log($logMessage, true, 'SYSTEM');
 					}
-					
+
 				}
 			} elseif ($alert['method'] == 1) {
 				if ($send) {
@@ -1570,24 +1570,23 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 
 					if (trim($alert['command']) != '' && !$found) {
 						$command = alert_replace_variables($alert, $results, $hostname);
-					
+
 						$logMessage = "SYSLOG NOTICE: Executing '$command'";
-					
+
 						$cparts = explode(' ', $command);
-					
+
 						if (is_executable($cparts[0])) {
 							exec($command, $output, $returnCode);
 						} else {
-							exec('/bin/sh '  $command, $output, $returnCode);
+							exec('/bin/sh ' . $command, $output, $returnCode);
 						}
-					
+
 						// Append the return code to the log message without the dot
 						$logMessage .= " Command return code: $returnCode";
-					
+
 						// Log the combined message
 						cacti_log($logMessage, true, 'SYSTEM');
 					}
-					
 				}
 			}
 
