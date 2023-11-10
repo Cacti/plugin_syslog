@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-26 11:40-0400\n"
-"Last-Translator: tomcat <luis_126@126.com>\n"
-"Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
-"Language: zh_CN\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.0.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2023-11-10 02:07+0000\nLast-Translator: Ben Hsu <48728121@qq.com>\nLanguage-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh_Hans/>\nLanguage: zh-CN\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -323,7 +311,7 @@ msgstr "系统日志"
 
 #: setup.php:1083
 msgid "General Settings"
-msgstr "常规设置"
+msgstr "通用设置"
 
 #: setup.php:1087
 #, fuzzy
@@ -534,7 +522,7 @@ msgstr "从不"
 #: setup.php:1347 syslog.php:595
 #, php-format
 msgid "%d Minute"
-msgstr "%d 分钟"
+msgstr "%d分钟"
 
 #: setup.php:1348 setup.php:1349 setup.php:1350 syslog.php:596 syslog.php:597
 #: syslog.php:598 syslog.php:599 syslog_alerts.php:368 syslog_alerts.php:369
@@ -634,7 +622,7 @@ msgstr "Syslog删除"
 
 #: setup.php:1425 setup.php:1426 setup.php:1430 setup.php:1431 setup.php:1435
 msgid "(Edit)"
-msgstr "（编辑）"
+msgstr "(编辑)"
 
 #: setup.php:1427 setup.php:1432 setup.php:1436
 msgid "(Actions)"
