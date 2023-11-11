@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2023-11-10 02:07+0000\nLast-Translator: Ben Hsu <48728121@qq.com>\nLanguage-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh_Hans/>\nLanguage: zh-CN\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 4.8.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2023-11-11 10:07+0000\nLast-Translator: Ben Hsu <48728121@qq.com>\nLanguage-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh_Hans/>\nLanguage: zh-CN\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -16,14 +16,14 @@ msgid "Please use an HTML Email Client"
 msgstr "请使用HTML电子邮件客户端"
 
 #: functions.php:1313 functions.php:1334
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
-msgstr "Cacti Syslog插件阈值警报'％s'"
+msgstr "Cacti Syslog插件阈值警报'%s'"
 
 #: functions.php:1315
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr "Cacti Syslog插件阈值警报'％s'"
+msgstr "Cacti Syslog插件阈值警报'%s'"
 
 #: functions.php:1320 syslog.php:1868 syslog_alerts.php:846
 msgid "Alert Name"
@@ -48,9 +48,9 @@ msgid "Match String"
 msgstr "匹配字符串"
 
 #: functions.php:1336
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Cacti Syslog插件警报'％s'"
+msgstr "Cacti Syslog插件警报'%s'"
 
 #: functions.php:1346
 msgid "Hostname"
@@ -71,14 +71,13 @@ msgid "Message"
 msgstr "信息"
 
 #: functions.php:1356
-#, fuzzy, php-format
+#, php-format
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
-msgstr "警告：已触发Syslog插件实例计数警报"
+msgstr "警告：已触发Syslog插件实例计数警报'%s'"
 
 #: functions.php:1358
-#, fuzzy
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
-msgstr "警告：已触发Syslog插件实例计数警报"
+msgstr "警告:已触发Syslog实例计数警报"
 
 #: functions.php:1367
 msgid "Name:"
@@ -97,9 +96,8 @@ msgid "Count:"
 msgstr "计数："
 
 #: functions.php:1371
-#, fuzzy
 msgid "Message String:"
-msgstr "消息字符串："
+msgstr "消息字符串:"
 
 #: functions.php:1400
 msgid "Hostname:"
@@ -118,14 +116,12 @@ msgid "Message:"
 msgstr "信息："
 
 #: functions.php:1442
-#, fuzzy
 msgid ", Host:"
-msgstr "这个主机"
+msgstr ",这个主机:"
 
 #: functions.php:1442 functions.php:1560
-#, fuzzy
 msgid ", URL:"
-msgstr "，URL："
+msgstr ",URL："
 
 #: functions.php:1442 functions.php:1560
 #, fuzzy
@@ -133,29 +129,26 @@ msgid "Sev:"
 msgstr "西弗："
 
 #: functions.php:1458 functions.php:1557
-#, fuzzy, php-format
+#, php-format
 msgid "Event Alert - %s"
-msgstr "事件警报 - ％s"
+msgstr "事件警报-%s"
 
 #: functions.php:1560
-#, fuzzy
 msgid ", Count:"
-msgstr "计数："
+msgstr ",计数："
 
 #: functions.php:2069
 msgid "Host"
 msgstr "主机"
 
 #: functions.php:2094
-#, fuzzy, php-format
+#, php-format
 msgid "Event Report - %s"
-msgstr "活动报告 - ％s"
+msgstr "事件报告-%s"
 
 #: setup.php:36
-#, fuzzy
-#| msgid "Please rename your config.php.dist file in the syslog directory, and change setup your database before installing."
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
-msgstr "请重命名syslog目录中的config.php.dist文件，并在安装之前更改数据库设置。"
+msgstr "请在syslog目录下重命名config.php.dist或者 config_local.php.dist文件,并在安装前变更数据库配置."
 
 #: setup.php:284
 msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
@@ -190,14 +183,12 @@ msgid "In MySQL 5.1.6 and above, you have the option to make this a partitioned 
 msgstr "在MySQL 5.1.6及更高版本中，您可以选择按天划分一个分区表。在此版本之前，您只能使用传统的表结构。"
 
 #: setup.php:887
-#, fuzzy
 msgid "MyISAM Storage"
 msgstr "MyISAM存储"
 
 #: setup.php:888
-#, fuzzy
 msgid "InnoDB Storage"
-msgstr "使用InnoDB 存储引擎时,保持表空间的独立性很重要. 对于 %s 的长期用户,表管理会变得更简单.如果您尚未开启此功能, 可以通过在所有InnoDB 表上运行alter 语句来开启此功能."
+msgstr "InnoDB存储"
 
 #: setup.php:893
 msgid "Database Architecture"
@@ -228,14 +219,13 @@ msgid "Partitions per Day"
 msgstr "每天分区"
 
 #: setup.php:930
-#, fuzzy
 msgid "Select the number of partitions per day that you wish to create."
-msgstr "选择您希望每天创建的分区数。"
+msgstr "选择您希望每天创建的分开数量。"
 
 #: setup.php:933 setup.php:934 setup.php:935 setup.php:936 setup.php:937
 #, php-format
 msgid "%d Per Day"
-msgstr "％d 每天"
+msgstr "%d每天"
 
 #: setup.php:943 setup.php:1028
 msgid "Upgrade"
@@ -271,9 +261,9 @@ msgid "You have several options to choose from when installing Syslog.  The firs
 msgstr "安装Syslog时有几个选项可供选择。第一个是数据库架构。从MySQL 5.1.6开始，您可以选择使用表分区来防止表的大小变得过大，从而减慢查询速度。"
 
 #: setup.php:961
-#, fuzzy, php-format
+#, php-format
 msgid "Syslog %s Settings"
-msgstr "Syslog％s设置"
+msgstr "Syslog%s设置"
 
 #: setup.php:988
 msgid "What uninstall method do you want to use?"
@@ -288,7 +278,6 @@ msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "删除所有内容（日志，表格，设置）"
 
 #: setup.php:991
-#, fuzzy
 msgid "Syslog Data Only"
 msgstr "仅限Syslog数据"
 
@@ -314,7 +303,6 @@ msgid "General Settings"
 msgstr "通用设置"
 
 #: setup.php:1087
-#, fuzzy
 msgid "Syslog Enabled"
 msgstr "已启用Syslog"
 
@@ -361,9 +349,8 @@ msgid "Max Report Records"
 msgstr "最大报告记录"
 
 #: setup.php:1121
-#, fuzzy
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr "对于基于阈值的警报，您希望在报告中显示的最大数量是多少。这用于限制html日志和电子邮件的大小。"
+msgstr "对于基于警报的阈值，您希望在报告中显示的最大数量是多少。这用于限制html日志和电子邮件的大小。"
 
 #: setup.php:1125 setup.php:1126 setup.php:1127 setup.php:1128 setup.php:1129
 #: setup.php:1130
@@ -372,9 +359,8 @@ msgid "%d Records"
 msgstr "%d 记录"
 
 #: setup.php:1134
-#, fuzzy
 msgid "Command for Opening Tickets"
-msgstr "打开门票的命令"
+msgstr "创建任务单的命令"
 
 #: setup.php:1135
 #, fuzzy
@@ -382,16 +368,12 @@ msgid "This command will be executed for opening Help Desk Tickets.  The command
 msgstr "将执行此命令以打开帮助台票证。该命令将需要解析多个输入参数如下<b>：--alert名</b> <b><b><b>，--severity，--hostlist，--message。</b></b></b>主机列表将是受警报影响的逗号分隔的主机列表。"
 
 #: setup.php:1141
-#, fuzzy
-#| msgid "Notification List"
 msgid "HTML Notification Settings"
-msgstr "通知列表"
+msgstr "HTML通知设置"
 
 #: setup.php:1146
-#, fuzzy
-#| msgid "HTML Based Email"
 msgid "Enable HTML Based Email"
-msgstr "HTML电子邮件"
+msgstr "启用基于HTML的电子邮件"
 
 #: setup.php:1147
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
@@ -418,27 +400,22 @@ msgid "Syslog Retention"
 msgstr "Syslog保留"
 
 #: setup.php:1165
-#, fuzzy
 msgid "This is the number of days to keep events."
 msgstr "这是保留事件的天数。"
 
 #: setup.php:1171
-#, fuzzy
 msgid "Syslog Alert Retention"
 msgstr "系统日志警报保留"
 
 #: setup.php:1172
-#, fuzzy
 msgid "This is the number of days to keep alert logs."
 msgstr "这是保留警报日志的天数。"
 
 #: setup.php:1178
-#, fuzzy
 msgid "Remote Message Processing"
-msgstr "消息字符串："
+msgstr "远程消息处理"
 
 #: setup.php:1182
-#, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "启用远程数据收集器消息处理"
 
