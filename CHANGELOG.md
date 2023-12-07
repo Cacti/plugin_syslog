@@ -8,6 +8,8 @@
 
 * issue#211: Device Filter missing devices
 
+* issue#218: SQL errors when deleting messages
+
 --- 4.1 ---
 
 * issue#185: Wrong column specification on cleanup query
