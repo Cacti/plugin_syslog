@@ -58,7 +58,7 @@ Alerts will generate one command execution for all matching messages.
 
 ## Installation
 
-To install the syslog plugin, simply copy the plugin_sylog directory to Cacti's
+To install the syslog plugin, simply copy the plugin_syslog directory to Cacti's
 plugins directory and rename it to simply 'syslog'. Once you have done this,
 goto Cacti's Plugin Management page, and Install and Enable the plugin. Once
 this is complete, you can grant users permission to view syslog messages, as
@@ -73,11 +73,11 @@ If you are upgrading to 2.0 from a prior install, you must first uninstall
 syslog and insure both the syslog, syslog_removal, and syslog_incoming tables
 are removed, and recreated at install time.
 
-In addtion, the rsyslog configuration has changed in 2.5.  So, for example, to
+In addition, the rsyslog configuration has changed in 2.5.  So, for example, to
 configure modern rsyslog for Cacti, you MUST create a file called cacti.conf in
 the /etc/rsyslog.d/ directory that includes the following:
 
-You have two options for storing syslog information you can either use the exisiting
+You have two options for storing syslog information you can either use the existing
 Cacti Database or use a dedicated database for syslog as syslog databases especially
 for large networks can grow pretty quick it may be wise to create a dedicated database.
 To use a dedicated DB first create a database in mysql and assign a user you will then change
@@ -187,9 +187,9 @@ GitHub.
 
 ## Authors
 
-The sylog plugin has been in development for well over a decade with increasing
+The syslog plugin has been in development for well over a decade with increasing
 functionality and stibility over that time. There have been several contributors
-to thold over the years. Chief amonst them are Jimmy Conner, Larry Adams,
+to thold over the years. Chief amongst them are Jimmy Conner, Larry Adams,
 SideWinder, and Harlequin. We hope that version 2.0 and beyond are the most
 stable and robust versions of syslog ever published. We are always looking for
 new ideas. So, this won't be the last release of syslog, you can rest assured of

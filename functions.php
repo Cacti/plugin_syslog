@@ -888,7 +888,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 			}
 		}
 
-		cacti_log("WARNING: The Syslog Intance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, 'SYSLOG');
+		cacti_log("WARNING: The Syslog Instance Alert '$alert_name' with Severity '" . $severities[$severity] . "', has been Triggered, Count was '" . $count . "', and Sequence '$id'", false, 'SYSLOG');
 
 		return $id;
 	}
@@ -1082,7 +1082,7 @@ function syslog_array2xml($array, $tag = 'template') {
  *                                    threshold amount that take place every collector cycle (30 seconds, 1 minutes, 5 minutes, etc)
  * Host based non-threshold alerts  - Alerts that happen on a per host basis, so you can alert for each host that the syslog message
  *                                    occurred to.
- * Host based threshold alerts      - Like the sytem level alert, it's an alert that happens more than x times per host.
+ * Host based threshold alerts      - Like the system level alert, it's an alert that happens more than x times per host.
  *
  * The advantage and reason for having host based alerts is that it allows you to target ticket generation for a specific host
  * and more importantly, to be able to have a separate re-alert cycles for that very same message as there can be similar messages
@@ -1191,7 +1191,7 @@ function syslog_process_alerts($uniqueID) {
  * @param  (string) The SQL to search for the Alert
  * @param  (array)  The SQL parameters to be prepared into the SQL
  * @param  (int)    In the case of a threshold alert, the number of occurrents
- *                  of hosts with occurrences that were encounted through
+ *                  of hosts with occurrences that were encountered through
  *                  pre-processing the message
  * @param  (string) The hostname that this alert rule is for
  *
@@ -1891,7 +1891,7 @@ function syslog_postprocess_tables() {
 	global $syslogdb_default, $syslog_cnn;
 
 	syslog_debug('-------------------------------------------------------------------------------------');
-	syslog_debug('Post Processing/Maintenance of Sylog Tables');
+	syslog_debug('Post Processing/Maintenance of Syslog Tables');
 	syslog_debug('-------------------------------------------------------------------------------------');
 
 	$delete_date = date('Y-m-d H:i:s', time() - (read_config_option('syslog_retention')*86400));
@@ -2268,7 +2268,7 @@ function syslog_init_variables() {
 }
 
 /**
- * alert_setup_environment - set's up the envrionment for a syslog alert
+ * alert_setup_environment - set's up the environment for a syslog alert
  *
  * @param  (array)  The alert definition
  * @param  (string) A comma delimited list of syslog messages

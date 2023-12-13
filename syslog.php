@@ -678,7 +678,7 @@ function syslog_stats_filter() {
 }
 
 /** function syslog_request_validation()
- *  This is a generic funtion for this page that makes sure that
+ *  This is a generic function for this page that makes sure that
  *  we have a good request.  We want to protect against people who
  *  like to create issues with Cacti.
 */
@@ -1963,7 +1963,7 @@ function save_settings() {
 
 	foreach($variables as $v) {
 		if (isset_request_var($v)) {
-			// Accomdate predefined
+			// Accommodate predefined
 			if (strpos($v, 'predefined') !== false) {
 				$v = str_replace('predefined_', 'default_', $v);
 				set_user_setting($v, get_request_var($v));

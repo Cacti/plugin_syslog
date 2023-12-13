@@ -84,7 +84,7 @@
 * issue#159: Sync 'syslog' schema cross Traditional/Partitioned mode to avoid
   audit issue
 
-* issue#161: Message colum does not follow RFC 5424
+* issue#161: Message column does not follow RFC 5424
 
 
 --- 3.1 ---
@@ -227,7 +227,7 @@
 * issue#83: Change device filter can not return correct value in syslog- alert
   rule page
 
-* issue#84: All Progarms not show anything using Classic theme
+* issue#84: All Programs not show anything using Classic theme
 
 * issue#86: No color for emergency item
 
@@ -258,7 +258,7 @@
 
 * issue: Syslog Reports were not functional
 
-* issue: Cleanup formating of Threshold messaging and viewing
+* issue: Cleanup formatting of Threshold messaging and viewing
 
 
 --- 2.0 ---
@@ -346,7 +346,7 @@
 
 --- 1.07 ---
 
-* issue: Rearchitect to improve support mutliple databases
+* issue: Rearchitect to improve support multiple databases
 
 * issue: Don't process a report if it's not enabled.
 
@@ -416,7 +416,7 @@
 
 * issue#0001788: missing closing quote in syslog_alerts.php
 
-* issue#0001785: revision 1086 can not save reports when using seperate syslog
+* issue#0001785: revision 1086 can not save reports when using separate syslog
   mysql database
 
 

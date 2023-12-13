@@ -751,7 +751,7 @@ function syslog_replicate_out($data) {
 		$rcnn_id          = $data['rcnn_id'];
 		$class            = $data['class'];
 
-		cacti_log('INFO: Replacting for the Syslog Plugin', false, 'REPLICATE');
+		cacti_log('INFO: Replicating for the Syslog Plugin', false, 'REPLICATE');
 
 		if ($class == 'all') {
 			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_alert');
