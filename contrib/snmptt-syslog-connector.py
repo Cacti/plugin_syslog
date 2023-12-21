@@ -1,12 +1,11 @@
+
+#### Create by Sean Mancini sean@seanmancini.com www.seanmancini.com
+### usage enter  /opt/snmptt_syslog.py --hostname $aA --alert "$Fz" --priority 6 --facility 2  in your cacti syslog command execution 
+## this will write the messege direct to the cacti syslog incoming table to be ingested into the syslog database
+
+
+
 #!/usr/bin/python3
-
-#### Created by Sean Mancini sean@seanmancini.com www.seanmancini.com
-### usage enter  /opt/cacti-syslog-connector.py --hostname $aA --alert "$Fz" --priority 6 --facility 2  in you SNMPTT EXEC config line
-### EXEC /opt/snmptt_syslog.py --hostname $aA --alert "$Fz" --priority 6 --facility 2 ( Change variables as you see fit)
-## this will write the message directly to the cacti syslog incoming table to be ingested into the syslog database
-
-
-
 
 ### connect to mysql database
 
@@ -15,6 +14,8 @@ import mysql.connector
 import sys
 from datetime import datetime
 import argparse
+import dotenv
+import os
 
 
 # Define Arguments for variables from snmptt
@@ -38,11 +39,14 @@ if args.priority is not None: ({'Alert priority': args.priority}) #device templa
 
 ### connect to database
 try:
+    ### read database credentials from .env file
+    ### create .env file in same directory as script
+    dotenv.load_dotenv(dotenv.find_dotenv())
     db = mysql.connector.connect(
-        host = "localhost",
-        user = "",
-        passwd = "",
-        database = ""
+        host=os.getenv("MYSQL_HOST"),
+        user=os.getenv("MYSQL_USER"),
+        passwd=os.getenv("MYSQL_PASS"),
+        database=os.getenv("MYSQL_DB")
     )
 
     ### create cursor
