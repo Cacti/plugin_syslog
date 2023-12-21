@@ -1,4 +1,3 @@
-
 #!/usr/bin/python3
 
 #### Created by Sean Mancini sean@seanmancini.com www.seanmancini.com
@@ -6,8 +5,6 @@
 ### EXEC /opt/snmptt_syslog.py --hostname $aA --alert "$Fz" --priority 6 --facility 2 ( Change variables as you see fit)
 ## this will write the message directly to the cacti syslog incoming table to be ingested into the syslog database
 
-
-### connect to mysql database
 
 ### import modules
 import mysql.connector
@@ -17,6 +14,11 @@ import argparse
 import dotenv
 import os
 
+dotenv.load_dotenv(dotenv.find_dotenv())
+if dotenv.find_dotenv():
+    print("Successfully loaded .env file")
+else:
+    print("Unable to load .env file ensure it is in the same directory as the script")
 
 # Define Arguments for variables from snmptt
 parser = argparse.ArgumentParser(description = 'SNMPTT Variables')
@@ -41,7 +43,6 @@ if args.priority is not None: ({'Alert priority': args.priority}) #device templa
 try:
     ### read database credentials from .env file
     ### create .env file in same directory as script
-    dotenv.load_dotenv(dotenv.find_dotenv())
     db = mysql.connector.connect(
         host=os.getenv("MYSQL_HOST"),
         user=os.getenv("MYSQL_USER"),
