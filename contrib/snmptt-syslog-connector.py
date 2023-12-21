@@ -1,8 +1,10 @@
 
-#### Create by Sean Mancini sean@seanmancini.com www.seanmancini.com
-### usage enter  /opt/snmptt_syslog.py --hostname $aA --alert "$Fz" --priority 6 --facility 2  in your cacti syslog command execution 
-## this will write the messege direct to the cacti syslog incoming table to be ingested into the syslog database
+!/usr/bin/python3
 
+#### Created by Sean Mancini sean@seanmancini.com www.seanmancini.com
+### usage enter  /opt/cacti-syslog-connector.py --hostname $aA --alert "$Fz" --priority 6 --facility 2  in you SNMPTT EXEC config line
+### EXEC /opt/snmptt_syslog.py --hostname $aA --alert "$Fz" --priority 6 --facility 2 ( Change variables as you see fit)
+## this will write the message directly to the cacti syslog incoming table to be ingested into the syslog database
 
 
 #!/usr/bin/python3
