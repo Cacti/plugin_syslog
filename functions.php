@@ -416,7 +416,7 @@ function syslog_remove_items($table, $uniqueID) {
 								ON spg.program = si.program
 								INNER JOIN `' . $syslogdb_default . '`.`syslog_hosts` AS sh
 								ON sh.host = si.host
-								WHERE host = ' . db_qstr($remove['message']) . '
+								WHERE si.host = ' . db_qstr($remove['message']) . '
 								AND `status` = ' . $uniqueID . '
 							) AS merge';
 					}
