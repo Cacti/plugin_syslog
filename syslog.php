@@ -887,7 +887,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			if (sizeof($hosts)) {
 				sql_hosts_where($tab);
 
-				if (strlen($hostfilter_log)) {
+				if ($hostfilter_log != '') {
 					$sql_where .= 'WHERE ' . $hostfilter_log;
 				}
 			}
@@ -911,7 +911,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		if (!isempty_request_var('host')) {
 			sql_hosts_where($tab);
 
-			if (strlen($hostfilter)) {
+			if ($hostfilter != '') {
 				$sql_where .= 'WHERE ' . $hostfilter;
 			}
 		}
@@ -1600,7 +1600,7 @@ function syslog_filter($sql_where, $tab) {
 								$efacilities = syslog_db_fetch_assoc('SELECT DISTINCT f.facility_id, f.facility
 									FROM `' . $syslogdb_default . '`.`syslog_host_facilities` AS fh
 									INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS f
-									ON f.facility_id=fh.facility_id ' . (strlen($hostfilter) ? 'WHERE ':'') . $hostfilter . '
+									ON f.facility_id=fh.facility_id ' . ($hostfilter != '' ? 'WHERE ':'') . $hostfilter . '
 									ORDER BY facility');
 
 								if (cacti_sizeof($efacilities)) {
@@ -1917,7 +1917,7 @@ function syslog_messages($tab = 'syslog') {
 
 				syslog_log_row_color($log['severity'], $title);
 
-				form_selectable_cell(filter_value(strlen($log['name']) ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
+				form_selectable_cell(filter_value($log['name'] != '' ? $log['name']:__('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
 
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']]:__('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');

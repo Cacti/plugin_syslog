@@ -97,9 +97,9 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 		if (cacti_sizeof($emails)) {
 			foreach($emails as $email) {
 				if (substr_count($email, 'sms@')) {
-					$sms .= (strlen($sms) ? ', ':'') . str_replace('sms@', '', trim($email));
+					$sms .= ($sms != '' ? ', ':'') . str_replace('sms@', '', trim($email));
 				} else {
-					$nonsms .= (strlen($nonsms) ? ', ':'') . trim($email);
+					$nonsms .= ($nonsms != '' ? ', ':'') . trim($email);
 				}
 			}
 		}
@@ -717,7 +717,7 @@ function sql_hosts_where($tab) {
 				$hostfilter_log = ' host IN(' . implode(',', $hosts_array) . ')';
 			}
 
-			$hostfilter .= (strlen($hostfilter) ? ' AND ':'') . ' host_id IN(' . implode(',', $hostarray) . ')';
+			$hostfilter .= ($hostfilter != '' ? ' AND ':'') . ' host_id IN(' . implode(',', $hostarray) . ')';
 		}
 	}
 }
@@ -1487,9 +1487,15 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					/**
 					 * Open a ticket if this options have been selected.
 					 */
-					if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
-						if (is_executable(read_config_option('syslog_ticket_command'))) {
-							$command = read_config_option('syslog_ticket_command') .
+					$command = read_config_option('syslog_ticket_command');
+
+					if ($command != '') {
+						$command = trim($command);
+					}
+
+					if ($alert['open_ticket'] == 'on' && $command != '') {
+						if (is_executable($command)) {
+							$command = $command .
 								' --alert-name=' . cacti_escapeshellarg(clean_up_name($alert['name'])) .
 								' --severity='   . cacti_escapeshellarg($alert['severity']) .
 								' --hostlist='   . cacti_escapeshellarg(implode(',',$hostlist)) .
@@ -1541,9 +1547,15 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 
 					alert_setup_environment($alert, $results, $hostlist, $hostname);
 
-					if ($alert['open_ticket'] == 'on' && strlen(read_config_option('syslog_ticket_command'))) {
-						if (is_executable(read_config_option('syslog_ticket_command'))) {
-							$command = read_config_option('syslog_ticket_command') .
+					$command = read_config_option('syslog_ticket_command');
+
+					if ($command != '') {
+						$command = trim($command);
+					}
+
+					if ($alert['open_ticket'] == 'on' && $command != '') {
+						if (is_executable($command)) {
+							$command = $command .
 								' --alert-name=' . cacti_escapeshellarg(clean_up_name($alert['name'])) .
 								' --severity='   . cacti_escapeshellarg($alert['severity']) .
 								' --hostlist='   . cacti_escapeshellarg(implode(',',$hostlist)) .

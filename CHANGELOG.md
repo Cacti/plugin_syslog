@@ -8,7 +8,11 @@
 
 * issue#211: Device Filter missing devices
 
+* issue#217: Fixing Removal Rule SQL issue
+
 * issue#218: SQL errors when deleting messages
+
+* issue#222: PHP Deprecation Errors in PHP 8.2
 
 --- 4.1 ---
 
