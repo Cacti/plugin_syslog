@@ -8,6 +8,8 @@
 
 * issue#211: Device Filter missing devices
 
+* issue#216: Documentation correction for rsyslogd config for version above 2.4
+
 * issue#217: Fixing Removal Rule SQL issue
 
 * issue#218: SQL errors when deleting messages
