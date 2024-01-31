@@ -4,18 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2022-03-26 11:33-0400\n"
-"PO-Revision-Date: 2022-03-26 11:38-0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: nl_NL\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0.1\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2022-03-26 11:33-0400\nPO-Revision-Date: 2024-01-31 14:27+0000\nLast-Translator: Edwin Lankamp <edwin.lankamp@gmail.com>\nLanguage-Team: Dutch <http://translate.cacti.net/projects/cacti/syslog/nl/>\nLanguage: nl-NL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 4.8.1\n"
 
 #: functions.php:72
 #, fuzzy
@@ -28,9 +17,9 @@ msgid "Please use an HTML Email Client"
 msgstr "Gebruik een HTML-e-mailclient"
 
 #: functions.php:1313 functions.php:1334
-#, fuzzy, php-format
+#, php-format
 msgid "Cacti Syslog Threshold Alert '%s' and Host '%s'"
-msgstr "Cactussen Syslog Plugin Drempelwaarde Waarschuwing '%s'"
+msgstr "Cacti Syslog Drempelwaarde Waarschuwing '%s' en Host '%s'"
 
 #: functions.php:1315
 #, fuzzy, php-format
@@ -86,12 +75,12 @@ msgstr "Bericht"
 #: functions.php:1356
 #, fuzzy, php-format
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered for Host '%s'"
-msgstr "WAARSCHUWING: Een Syslog Plugin Instance Count Alert is geactiveerd."
+msgstr "WAARSCHUWING: Er is een waarschuwing voor het aantal Syslog-exemplaren geactiveerd voor Host '%s'"
 
 #: functions.php:1358
 #, fuzzy
 msgid "WARNING: A Syslog Instance Count Alert has Been Triggered"
-msgstr "WAARSCHUWING: Een Syslog Plugin Instance Count Alert is geactiveerd."
+msgstr "WAARSCHUWING: Er is een waarschuwing voor het aantal Syslog-exemplaren geactiveerd"
 
 #: functions.php:1367
 msgid "Name:"
@@ -102,9 +91,8 @@ msgid "Severity:"
 msgstr "Ernst:"
 
 #: functions.php:1369
-#, fuzzy
 msgid "Threshold:"
-msgstr "Drempel"
+msgstr "Drempel:"
 
 #: functions.php:1370
 msgid "Count:"
@@ -142,7 +130,6 @@ msgid ", URL:"
 msgstr "URL:"
 
 #: functions.php:1442 functions.php:1560
-#, fuzzy
 msgid "Sev:"
 msgstr "Sev:"
 
@@ -349,7 +336,7 @@ msgstr "Syslog"
 
 #: setup.php:1083
 msgid "General Settings"
-msgstr "Algemene instellingen"
+msgstr "Algemene Instellingen"
 
 #: setup.php:1087
 #, fuzzy
@@ -377,9 +364,8 @@ msgid "Strip Domains"
 msgstr "Strip Domeinen"
 
 #: setup.php:1100
-#, fuzzy
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "Een comma delimited lijst van domeinen die u wilt verwijderen uit de syslog hostname, Voorbeelden hiervan zijn 'mydomain.com, otherdomain.com'."
+msgstr "Een comma delimited lijst van domeinen die u wilt verwijderen uit de syslog hostname, Voorbeelden hiervan zijn 'mydomain.com, otherdomain.com'"
 
 #: setup.php:1107
 #, fuzzy
@@ -479,9 +465,8 @@ msgid "This is the number of days to keep alert logs."
 msgstr "Dit is het aantal dagen om een alarmlogboek bij te houden."
 
 #: setup.php:1178
-#, fuzzy
 msgid "Remote Message Processing"
-msgstr "Berichtreeks:"
+msgstr "Berichtverwerking op afstand"
 
 #: setup.php:1182
 #, fuzzy
@@ -604,9 +589,8 @@ msgid "Ends with"
 msgstr "Eindigt op"
 
 #: setup.php:1363
-#, fuzzy
 msgid "Hostname is"
-msgstr "Hostname:"
+msgstr "Hostnaam is"
 
 #: setup.php:1364
 #, fuzzy
@@ -670,7 +654,7 @@ msgstr "Syslog Verhuizingen"
 
 #: setup.php:1425 setup.php:1426 setup.php:1430 setup.php:1431 setup.php:1435
 msgid "(Edit)"
-msgstr "(Wijzig)"
+msgstr "(bewerken)"
 
 #: setup.php:1427 setup.php:1432 setup.php:1436
 #, fuzzy
@@ -845,7 +829,7 @@ msgstr "Standaard"
 #: syslog.php:1062
 #, fuzzy, php-format
 msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
-msgstr " Begin: '%s' tot einde: '%s', Onbewerkte berichten: %s ]."
+msgstr " Begin: '%s' tot einde: '%s', Onbewerkte berichten: %s ]"
 
 #: syslog.php:1064
 #, fuzzy, php-format
@@ -1034,9 +1018,8 @@ msgid "Critical++"
 msgstr "Kritiek"
 
 #: syslog.php:1623
-#, fuzzy
 msgid "Error++"
-msgstr "Fout:"
+msgstr "Fout++"
 
 #: syslog.php:1624 syslog.php:1667
 msgid "Error"
@@ -1045,7 +1028,7 @@ msgstr "Fout"
 #: syslog.php:1625
 #, fuzzy
 msgid "Warning++"
-msgstr "WAARSCHUWING:"
+msgstr "Waarschuwing++"
 
 #: syslog.php:1627
 #, fuzzy
@@ -1526,7 +1509,7 @@ msgstr "Exporteren Syslog Verwijderingsregel(en)"
 #: syslog_removal.php:338
 #, fuzzy, php-format
 msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
-msgstr "Er werden %s berichten verwijderd en %s berichten overgedragen"
+msgstr "Regel '%s' resulteerde in %s/%s-berichten verwijderd/overgedragen"
 
 #: syslog_removal.php:394
 #, fuzzy, php-format
@@ -1779,7 +1762,7 @@ msgstr "De informatie die in het hoofddeel van het verslag zal worden opgenomen.
 #: syslog_reports.php:473
 #, fuzzy
 msgid "Comma delimited list of Email addresses to send the report to."
-msgstr "Comma delimited list of Email addresses to send the report to."
+msgstr "Door komma's gescheiden lijst met e-mailadressen waarnaar het rapport moet worden verzonden."
 
 #: syslog_reports.php:483
 #, fuzzy
