@@ -1,6 +1,6 @@
 ## ChangeLog
 
---- develop ---
+--- 4.2 ---
 
 * issue#184: Unable to remove messages by expression from 'program' column
 
