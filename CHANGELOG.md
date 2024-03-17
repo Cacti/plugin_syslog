@@ -14,6 +14,8 @@
 
 * issue#218: SQL errors when deleting messages
 
+* issue#220: Error when creating an Alert Rules based on program name
+
 * issue#222: PHP Deprecation Errors in PHP 8.2
 
 --- 4.1 ---

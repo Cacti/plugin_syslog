@@ -1612,6 +1612,10 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 function syslog_get_alert_sql(&$alert, $uniqueID) {
 	global $syslogdb_default, $syslog_incoming_config;
 
+	if (!isset($syslog_incoming_config['programField'])) {
+		$syslog_incoming_config['programField'] = 'program';
+	}
+
 	$params = array();
 	$sql    = '';
 
@@ -1651,6 +1655,14 @@ function syslog_get_alert_sql(&$alert, $uniqueID) {
 		$sql = 'SELECT *
 			FROM `' . $syslogdb_default . '`.`syslog_incoming`
 			WHERE `' . $syslog_incoming_config['hostField'] . '` = ?
+			AND `status` = ?' . $uniqueID;
+
+		$params[] = $alert['message'];
+		$params[] = $uniqueID;
+	} elseif ($alert['type'] == 'program') {
+		$sql = 'SELECT *
+			FROM `' . $syslogdb_default . '`.`syslog_incoming`
+			WHERE `' . $syslog_incoming_config['programField'] . '` = ?
 			AND `status` = ?' . $uniqueID;
 
 		$params[] = $alert['message'];

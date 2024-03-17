@@ -1,7 +1,7 @@
 <?php
 /*
  +-------------------------------------------------------------------------+
- | Copyright (C) 2004-2023 The Cacti Group                                 |
+ | Copyright (C) 2004-2024 The Cacti Group                                 |
  |                                                                         |
  | This program is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License             |
@@ -64,10 +64,11 @@ if (!$use_cacti_db) {
 //$syslog_install_options['id']           = 'syslog';
 
 /* field in the incomming table */
-$syslog_incoming_config['timeField']          = 'logtime';
 $syslog_incoming_config['priorityField']      = 'priority_id';
 $syslog_incoming_config['facilityField']      = 'facility_id';
-$syslog_incoming_config['hostField']          = 'host_id';
+$syslog_incoming_config['programField']       = 'program';
+$syslog_incoming_config['timeField']          = 'logtime';
+$syslog_incoming_config['hostField']          = 'host';
 $syslog_incoming_config['textField']          = 'message';
 $syslog_incoming_config['id']                 = 'seq';
 
