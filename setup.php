@@ -281,11 +281,11 @@ function syslog_check_upgrade() {
 				version = ?, name = ?, author = ?, webpage = ?
 				WHERE directory = ?",
 				array(
-					$info['version'],
-					$info['longname'],
-					$info['author'],
-					$info['homepage'],
-					$info['name']
+					$version['version'],
+					$version['longname'],
+					$version['author'],
+					$version['homepage'],
+					$version['name']
 				)
 			);
 		} else {
