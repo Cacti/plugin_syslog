@@ -1718,7 +1718,7 @@ function syslog_messages($tab = 'syslog') {
 	global $syslogdb_default;
 
 	if (defined('SYSLOG_CONFIG')) {
-		include_once(SYSLOG_CONFIG);
+		include(SYSLOG_CONFIG);
 	}
 
 	include('./include/global_arrays.php');
