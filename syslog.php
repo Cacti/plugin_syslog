@@ -1828,6 +1828,11 @@ function syslog_messages($tab = 'syslog') {
 
 		if (cacti_sizeof($syslog_messages)) {
 			foreach ($syslog_messages as $sm) {
+
+				if (is_null($sm[$syslog_incoming_config['textField']])) {
+					$sm[$syslog_incoming_config['textField']] = __('Empty message', 'syslog');
+				}
+
 				$title = html_escape($sm['message']);
 
 				syslog_row_color($sm['priority_id'], $sm['message']);
