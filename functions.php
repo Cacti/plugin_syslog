@@ -251,7 +251,7 @@ function syslog_partition_check($table) {
 	global $syslogdb_default;
 
 	if (defined('SYSLOG_CONFIG')) {
-		include_once(SYSLOG_CONFIG);
+		include(SYSLOG_CONFIG);
 	}
 
 	/* find date of last partition */
@@ -727,7 +727,7 @@ function syslog_export($tab) {
 	global $syslogdb_default;
 
 	if (defined('SYSLOG_CONFIG')) {
-		include_once(SYSLOG_CONFIG);
+		include(SYSLOG_CONFIG);
 	}
 
 	if ($tab == 'syslog') {
@@ -1613,7 +1613,7 @@ function syslog_get_alert_sql(&$alert, $uniqueID) {
 	global $syslogdb_default, $syslog_incoming_config;
 
 	if (defined('SYSLOG_CONFIG')) {
-		include_once(SYSLOG_CONFIG);
+		include(SYSLOG_CONFIG);
 	}
 
 	if (!isset($syslog_incoming_config['programField'])) {
