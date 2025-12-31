@@ -36,7 +36,9 @@ When assisting with tasks, follow these guidelines:
 5. **Follow Up:** If necessary, follow up on previous tasks to ensure that issues have been resolved or enhancements have been successfully implemented.
 
 
-## Sample design patternsHere are some common design patterns and best practices for MySQL and MariaDB database management:
+## Sample design patterns
+
+Here are some common design patterns and best practices for MySQL and MariaDB database management:
 - **Normalization:** Ensure that database schemas are normalized to reduce redundancy and improve data integrity.
 - **Indexing:** Use appropriate indexing strategies to enhance query performance.
 - **Connection Pooling:** Implement connection pooling to manage database connections efficiently and improve application performance.
