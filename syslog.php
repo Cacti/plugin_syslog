@@ -199,7 +199,7 @@ function syslog_view_alarm() {
 	global $syslogdb_default;
 
 	print "<table class='cactiTable'>";
-	print "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . "</td></tr>";
+ 	print "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . "</td></tr>";
 	print "<tr><td class='odd'>\n";
 
 	$html = syslog_db_fetch_cell('SELECT html FROM `' . $syslogdb_default . '`.`syslog_logs` WHERE seq=' . get_request_var('id'));
@@ -662,6 +662,7 @@ function syslog_stats_filter() {
 			strURL += '&timespan=' + $('#timespan').val();
 			strURL += '&rfilter=' + base64_encode($('#rfilter').val());
 			strURL += '&rows=' + $('#rows').val();
+			strURL += '&grouping=' + ($('#grouping').length ? $('#grouping').val() : '0');
 			loadPageNoHeader(strURL);
 		}
 
@@ -758,11 +759,17 @@ function syslog_request_validation($current_tab, $force = false) {
             'pageset' => true,
             'default' => read_user_setting('syslog_eprogram', '-1', $force),
             ),
+        'grouping' => array(
+            'filter' => FILTER_VALIDATE_INT,
+            'pageset' => true,
+            'default' => read_user_setting('syslog_grouping', '0', $force),
+            ),
         'rfilter' => array(
             'filter' => FILTER_VALIDATE_IS_REGEX,
             'pageset' => true,
             'default' => ''
             ),
+
         'date1' => array(
             'filter' => FILTER_CALLBACK,
             'pageset' => true,
@@ -996,35 +1003,128 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	}
 
 	if ($tab == 'syslog') {
-		if (get_request_var('removal') == '-1') {
-			$query_sql = "SELECT syslog.*, syslog_programs.program, 'main' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog`
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
-				ON syslog.program_id=syslog_programs.program_id " .
-				$sql_where . "
+		// Check if grouping is enabled
+		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
+		
+		if ($grouping_enabled) {
+			// When grouping, we need to get grouped results with counts
+			if (get_request_var('removal') == '-1') {
+				$query_sql = "SELECT 
+					syslog.host_id,
+					syslog.message,
+					syslog.program_id,
+					syslog.facility_id,
+					syslog.priority_id,
+					syslog_programs.program,
+					'main' AS mtype,
+					COUNT(*) AS occurrence_count,
+					MIN(syslog.logtime) AS first_logtime,
+					MAX(syslog.logtime) AS logtime,
+					MIN(syslog.seq) AS seq,
+					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+					FROM `" . $syslogdb_default . "`.`syslog`
+					LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id " .
+					$sql_where . "
+					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					$sql_order
+					$sql_limit";
+			} elseif (get_request_var('removal') == '1') {
+				$query_sql = "SELECT * FROM (
+					(SELECT 
+						syslog.host_id,
+						syslog.message,
+						syslog.program_id,
+						syslog.facility_id,
+						syslog.priority_id,
+						syslog_programs.program,
+						'main' AS mtype,
+						COUNT(*) AS occurrence_count,
+						MIN(syslog.logtime) AS first_logtime,
+						MAX(syslog.logtime) AS logtime,
+						MIN(syslog.seq) AS seq,
+						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+						FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+						LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+						ON syslog.program_id=syslog_programs.program_id " .
+						$sql_where . "
+						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					) UNION (SELECT 
+						syslog.host_id,
+						syslog.message,
+						syslog.program_id,
+						syslog.facility_id,
+						syslog.priority_id,
+						syslog_programs.program,
+						'remove' AS mtype,
+						COUNT(*) AS occurrence_count,
+						MIN(syslog.logtime) AS first_logtime,
+						MAX(syslog.logtime) AS logtime,
+						MIN(syslog.seq) AS seq,
+						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+						FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+						LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+						ON syslog.program_id=syslog_programs.program_id " .
+						$sql_where . "
+						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					)
+				) AS grouped_results
 				$sql_order
 				$sql_limit";
-		} elseif (get_request_var('removal') == '1') {
-			$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
-				ON syslog.program_id=syslog_programs.program_id " .
-				$sql_where . "
-				) UNION (SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
-				ON syslog.program_id=syslog_programs.program_id " .
-				$sql_where . ")
-				$sql_order
-				$sql_limit";
+			} else {
+				$query_sql = "SELECT 
+					syslog.host_id,
+					syslog.message,
+					syslog.program_id,
+					syslog.facility_id,
+					syslog.priority_id,
+					syslog_programs.program,
+					'remove' AS mtype,
+					COUNT(*) AS occurrence_count,
+					MIN(syslog.logtime) AS first_logtime,
+					MAX(syslog.logtime) AS logtime,
+					MIN(syslog.seq) AS seq,
+					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+					LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
+					ON syslog.program_id=syslog_programs.program_id " .
+					$sql_where . "
+					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					$sql_order
+					$sql_limit";
+			}
 		} else {
-			$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
-				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
-				ON syslog.program_id=syslog_programs.program_id " .
-				$sql_where . "
-				$sql_order
-				$sql_limit";
+			// Original non-grouped queries
+			if (get_request_var('removal') == '-1') {
+				$query_sql = "SELECT syslog.*, syslog_programs.program, 'main' AS mtype
+					FROM `" . $syslogdb_default . "`.`syslog`
+					LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id " .
+					$sql_where . "
+					$sql_order
+					$sql_limit";
+			} elseif (get_request_var('removal') == '1') {
+				$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
+					FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+					LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id " .
+					$sql_where . "
+					) UNION (SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
+					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+					LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id " .
+					$sql_where . ")
+					$sql_order
+					$sql_limit";
+			} else {
+				$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
+					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+					LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs` AS syslog_programs
+					ON syslog.program_id=syslog_programs.program_id " .
+					$sql_where . "
+					$sql_order
+					$sql_limit";
+			}
 		}
 	} else {
 		$query_sql = "SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
@@ -1251,6 +1351,7 @@ function syslog_filter($sql_where, $tab) {
 		strURL += '&trimval='+$('#trimval').val();
 		strURL += '&removal='+$('#removal').val();
 		strURL += '&refresh='+$('#refresh').val();
+		strURL += '&grouping=' + ($('#grouping').length ? $('#grouping').val() : '0');
 		loadPageNoHeader(strURL);
 	}
 
@@ -1638,6 +1739,19 @@ function syslog_filter($sql_where, $tab) {
 						<?php } else { ?>
 						<input type='hidden' id='removal' value='<?php print get_request_var('removal');?>'>
 						<?php } ?>
+						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
+						<td>
+							<?php print __('Display', 'syslog');?>
+						</td>
+						<td>
+							<select id='grouping' onChange='applyFilter()' title='<?php print __esc('Group Duplicate Messages', 'syslog');?>'>
+								<option value='0'<?php if (get_request_var('grouping') == '0') { ?> selected<?php } ?>><?php print __('Individual Messages', 'syslog');?></option>
+								<option value='1'<?php if (get_request_var('grouping') == '1') { ?> selected<?php } ?>><?php print __('Grouped Messages', 'syslog');?></option>
+							</select>
+						</td>
+						<?php } else { ?>
+						<input type='hidden' id='grouping' value='0'>
+						<?php } ?>
 					</tr>
 				</table>
 			</form>
@@ -1746,25 +1860,53 @@ function syslog_messages($tab = 'syslog') {
 	syslog_filter($sql_where, $tab);
 
 	if ($tab == 'syslog') {
-		if (get_request_var('removal') == 1) {
-			$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
-				FROM (
-					SELECT count(*) AS totals
+		// Check if grouping is enabled for row count
+		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
+		
+		if ($grouping_enabled) {
+			// When grouping, count distinct groups instead of individual rows
+			if (get_request_var('removal') == 1) {
+				$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
+					FROM (
+						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
+						FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+						$sql_where
+						UNION
+						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
+						FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+						$sql_where
+					) AS rowcount");
+			} elseif (get_request_var('removal') == -1) {
+				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
 					FROM `" . $syslogdb_default . "`.`syslog` AS syslog
-					$sql_where
-					UNION
-					SELECT count(*) AS totals
+					$sql_where");
+			} else {
+				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
 					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-					$sql_where
-				) AS rowcount");
-		} elseif (get_request_var('removal') == -1) {
-			$total_rows = syslog_db_fetch_cell("SELECT count(*)
-				FROM `" . $syslogdb_default . "`.`syslog` AS syslog
-				$sql_where");
+					$sql_where");
+			}
 		} else {
-			$total_rows = syslog_db_fetch_cell("SELECT count(*)
-				FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
-				$sql_where");
+			// Original non-grouped row counting
+			if (get_request_var('removal') == 1) {
+				$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
+					FROM (
+						SELECT count(*) AS totals
+						FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+						$sql_where
+						UNION
+						SELECT count(*) AS totals
+						FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+						$sql_where
+					) AS rowcount");
+			} elseif (get_request_var('removal') == -1) {
+				$total_rows = syslog_db_fetch_cell("SELECT count(*)
+					FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+					$sql_where");
+			} else {
+				$total_rows = syslog_db_fetch_cell("SELECT count(*)
+					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+					$sql_where");
+			}
 		}
 	} else {
 		$total_rows = syslog_db_fetch_cell("SELECT count(*)
@@ -1781,6 +1923,9 @@ function syslog_messages($tab = 'syslog') {
 	}
 
 	if ($tab == 'syslog') {
+		// Check if grouping is enabled for display
+		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
+		
 		if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 			$display_text = array(
 				'nosortt'     => array(__('Actions', 'syslog'), 'ASC'),
@@ -1790,6 +1935,11 @@ function syslog_messages($tab = 'syslog') {
 				'message'     => array(__('Message', 'syslog'), 'ASC'),
 				'facility_id' => array(__('Facility', 'syslog'), 'ASC'),
 				'priority_id' => array(__('Priority', 'syslog'), 'ASC'));
+			
+			// Add count column if grouping is enabled
+			if ($grouping_enabled) {
+				$display_text['occurrence_count'] = array(__('Count', 'syslog'), 'DESC');
+			}
 		} else {
 			$display_text = array(
 				'logtime'     => array(__('Date', 'syslog'), 'ASC'),
@@ -1798,6 +1948,11 @@ function syslog_messages($tab = 'syslog') {
 				'message'     => array(__('Message', 'syslog'), 'ASC'),
 				'facility_id' => array(__('Facility', 'syslog'), 'ASC'),
 				'priority_id' => array(__('Priority', 'syslog'), 'ASC'));
+			
+			// Add count column if grouping is enabled
+			if ($grouping_enabled) {
+				$display_text['occurrence_count'] = array(__('Count', 'syslog'), 'DESC');
+			}
 		}
 
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, cacti_sizeof($display_text), __('Messages', 'syslog'), 'page', 'main');
@@ -1847,14 +2002,68 @@ function syslog_messages($tab = 'syslog') {
 					form_selectable_cell($url, $sm['seq'], '', 'left');
 				}
 
-				form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
+				// Display grouped or individual messages
+				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1) {
+					// Grouped message display with expand/collapse
+					$expand_icon = "<i class='fas fa-chevron-down syslog-group-toggle' data-seq='" . $sm['seq'] . "' style='cursor:pointer; margin-right:5px;'></i>";
+					form_selectable_cell($expand_icon . $sm['logtime'], $sm['seq'], '', 'left');
+				} else {
+					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
+				}
+				
 				form_selectable_cell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 				form_selectable_cell($sm['program'], $sm['seq'], '', 'left');
 				form_selectable_cell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')), $sm['seq'], '', 'left syslogMessage');
 				form_selectable_cell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 				form_selectable_cell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']]:__('Unknown', 'syslog'), $sm['seq'], '', 'left');
 
+				// Add occurrence count if grouping is enabled
+				if ($grouping_enabled) {
+					form_selectable_cell(isset($sm['occurrence_count']) ? $sm['occurrence_count'] : 1, $sm['seq'], '', 'right');
+				}
+
 				form_end_row();
+				
+				// If grouping is enabled and there are multiple occurrences, add hidden detail rows
+				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1 && isset($sm['seq_list'])) {
+					$seq_array = explode(',', $sm['seq_list']);
+					
+					// Get individual messages for this group
+					$detail_messages = syslog_db_fetch_assoc("SELECT syslog.*, syslog_programs.program
+						FROM `" . $syslogdb_default . "`.`" . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
+						LEFT JOIN `" . $syslogdb_default . "`.`syslog_programs`
+						ON syslog.program_id=syslog_programs.program_id
+						WHERE syslog.seq IN (" . implode(',', array_map('intval', $seq_array)) . ")
+						ORDER BY syslog.logtime DESC");
+					
+					if (cacti_sizeof($detail_messages)) {
+						foreach ($detail_messages as $dm) {
+							$severity_class = syslog_row_color($dm['priority_id'], $dm['message']);	
+							print "<tr class='tableRow syslog-detail-row syslog-detail-" . $sm['seq'] . " " . $severity_class . "' style='display:none;' data-parent='" . $sm['seq'] . "'>";
+							if (api_plugin_user_realm_auth('syslog_alerts.php')) {
+								$url = '';
+								if ($sm['mtype'] == 'main') {
+									$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i>";
+									$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><i class='deviceDown fas fa-minus-circle'></i>";
+								}
+								print "<td class='left' style='padding-left:30px;'>" . $url . "</td>";
+							}
+							
+							print "<td class='left' style='padding-left:30px;'>" . $dm['logtime'] . "</td>";
+							print "<td class='left'>" . (isset($hosts[$dm['host_id']]) ? $hosts[$dm['host_id']] : __('Unknown', 'syslog')) . "</td>";
+							print "<td class='left'>" . $dm['program'] . "</td>";
+							print "<td class='left syslogMessage'>" . filter_value(title_trim($dm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')) . "</td>";
+							print "<td class='left'>" . (isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog')) . "</td>";
+							print "<td class='left'>" . (isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog')) . "</td>";
+							
+							if ($grouping_enabled) {
+								print "<td class='right'></td>";
+							}
+							
+							print "</tr>";
+						}
+					}
+				}
 			}
 		} else {
 			print "<tr><td class='center' colspan='" . (cacti_sizeof($display_text)) . "'><em>" . __('No Syslog Messages', 'syslog') . "</em></td></tr>";
@@ -1887,6 +2096,26 @@ function syslog_messages($tab = 'syslog') {
 				$('#filter').tooltip('close')
 			}).on('click', function() {
 				$(this).tooltip('close');
+			});
+			
+			// Handle syslog group expand/collapse
+			$('.syslog-group-toggle').off('click').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				
+				var seq = $(this).data('seq');
+				var detailRows = $('.syslog-detail-' + seq);
+				var icon = $(this);
+				
+				if (detailRows.is(':visible')) {
+					// Collapse
+					detailRows.hide();
+					icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+				} else {
+					// Expand
+					detailRows.show();
+					icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+				}
 			});
 		});
 		</script>
@@ -1957,6 +2186,7 @@ function save_settings() {
 		'efacility',
 		'priority',
 		'eprogram',
+		'grouping',
 		'predefined_timespan',
 		'predefined_timeshift',
 	);
