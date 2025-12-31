@@ -364,7 +364,7 @@ function importRemoval() {
  * Change message textarea rows based on type
  */
 function changeTypes() {
-	if ($('#type').val == 'sql') {
+	if ($('#type').val() == 'sql') {
 		$('#message').prop('rows', 5);
 	} else {
 		$('#message').prop('rows', 2);
