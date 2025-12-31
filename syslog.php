@@ -1723,7 +1723,7 @@ function syslog_messages($tab = 'syslog') {
 				// Display grouped or individual messages
 				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1) {
 					// Grouped message display with expand/collapse
-					$expand_icon = "<i class='fas fa-chevron-down syslog-group-toggle' data-seq='" . $sm['seq'] . "' style='cursor:pointer; margin-right:5px;'></i>";
+					$expand_icon = "<i class='fas fa-chevron-down syslog-group-toggle' data-seq='" . html_escape($sm['seq']) . "' style='cursor:pointer; margin-right:5px;'></i>";
 					form_selectable_cell($expand_icon . $sm['logtime'], $sm['seq'], '', 'left');
 				} else {
 					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
