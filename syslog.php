@@ -201,7 +201,7 @@ function syslog_view_alarm() {
 	global $syslogdb_default;
 
 	print "<table class='cactiTable'>";
- 	print "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . "</td></tr>";
+	print "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . "</td></tr>";
 	print "<tr><td class='odd'>\n";
 
 	$html = syslog_db_fetch_cell('SELECT html FROM `' . $syslogdb_default . '`.`syslog_logs` WHERE seq=' . get_request_var('id'));
