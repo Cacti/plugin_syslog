@@ -93,3 +93,28 @@ p {
 	text-align:left;
 	font-size:12px;
 }
+
+/* Syslog message grouping styles */
+.syslog-group-toggle {
+	transition: transform 0.2s ease;
+	color: #337ab7;
+	display: inline-block;
+}
+
+.syslog-group-toggle:hover {
+	color: #23527c;
+}
+
+.syslog-group-toggle.fa-chevron-up {
+	transform: rotate(0deg);
+}
+
+.syslog-group-toggle.fa-chevron-down {
+	transform: rotate(0deg);
+}
+
+
+.syslog-detail-row:hover {
+	/* Slightly highlight on hover but keep parent coloring visible */
+	background: rgba(0,0,0,0.02) !important;
+}
