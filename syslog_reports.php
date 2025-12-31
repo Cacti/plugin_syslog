@@ -51,6 +51,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'import':
 		top_header();
+		syslog_include_js();
 		import();
 		bottom_footer();
 
@@ -61,6 +62,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'edit':
 		top_header();
+		syslog_include_js();
 
 		syslog_action_edit();
 
@@ -68,6 +70,7 @@ switch (get_request_var('action')) {
 		break;
 	default:
 		top_header();
+		syslog_include_js();
 
 		syslog_report();
 
@@ -614,41 +617,7 @@ function syslog_filter() {
 		<input type='hidden' id='page' value='<?php print get_filter_request_var('page');?>'>
 		</form>
 		<script type='text/javascript'>
-
-		function applyFilter() {
-			strURL = 'syslog_reports.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
-			loadPageNoHeader(strURL);
-		}
-
-		function clearFilter() {
-			strURL = 'syslog_reports.php?clear=1&header=false';
-			loadPageNoHeader(strURL);
-		}
-
-		function importReport() {
-			strURL = 'syslog_reports.php?action=import&header=false';
-			loadPageNoHeader(strURL);
-		}
-
-		$(function() {
-			$('#refresh').click(function() {
-				applyFilter();
-			});
-
-			$('#clear').click(function() {
-				clearFilter();
-			});
-
-			$('#import').click(function() {
-				importReport();
-			});
-
-			$('#reports').submit(function(event) {
-				event.preventDefault();
-				applyFilter();
-			});
-		});
-
+		initSyslogReports();
 		</script>
 	</tr>
 	<?php
