@@ -1757,7 +1757,7 @@ function syslog_messages($tab = 'syslog') {
 					if (cacti_sizeof($detail_messages)) {
 						foreach ($detail_messages as $dm) {
 							$severity_class = syslog_row_color($dm['priority_id'], $dm['message']);	
-							print "<tr class='tableRow syslog-detail-row syslog-detail-" . $sm['seq'] . " " . $severity_class . "' style='display:none;' data-parent='" . $sm['seq'] . "'>";
+							print "<tr class='tableRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . " " . $severity_class . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
 							if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 								$url = '';
 								if ($sm['mtype'] == 'main') {
