@@ -183,7 +183,7 @@ function initSyslogMain(config) {
 			linkInfo: faIcons,
 			noneSelectedText: config.noneSelectedText || '',
 			selectedText: function(numChecked, numTotal, checkedItems) {
-				myReturn = numChecked + ' ' + config.devicesSelectedText;
+				var myReturn = numChecked + ' ' + config.devicesSelectedText;
 				$.each(checkedItems, function(index, value) {
 					if (value.value == '0') {
 						myReturn = config.allDevicesText;
