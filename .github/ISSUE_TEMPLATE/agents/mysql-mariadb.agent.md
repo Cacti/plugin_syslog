@@ -57,7 +57,7 @@ When assisting with tasks, follow these guidelines:
 - `db_last_insert_id()`: Retrieves the ID of the last inserted record.
 
 
-##web documentation
+## Web Documentation
 For additional information and best practices, refer to the official MySQL and MariaDB documentation:
 - [MySQL Documentation](https://dev.mysql.com/doc/)
 - [MariaDB Documentation](https://mariadb.com/kb/en/documentation/)
