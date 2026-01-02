@@ -13,9 +13,12 @@ SQL_INSERT="INSERT INTO syslog_incoming (facility_id, priority_id, program, logt
 echo "Starting insert of $ITERATIONS batches (30,000 total records)..."
 echo "Start time: $(date)"
 
+# MySQL connection parameters
+MYSQL_CMD="mysql -h 127.0.0.1 -u cactiuser -pcactiuser cacti"
+
 # Loop and insert
 for i in $(seq 1 $ITERATIONS); do
-    mysql -u root -e "$SQL_INSERT"
+    $MYSQL_CMD -e "$SQL_INSERT"
     
     # Show progress every 100 iterations
     if [ $((i % 100)) -eq 0 ]; then
@@ -26,3 +29,7 @@ done
 echo "Completed!"
 echo "End time: $(date)"
 echo "Total records inserted: $((ITERATIONS * 3))"
+
+# Verify insertion
+echo "Verifying record count:"
+$MYSQL_CMD -e "SELECT COUNT(*) as total_records FROM syslog_incoming;"
