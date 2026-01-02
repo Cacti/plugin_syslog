@@ -1798,11 +1798,6 @@ function syslog_check_cacti_hosts($host, $uniqueID) {
 	
 	return false;
 }
-		
-
-
-
-
 /**
  * syslog_update_reference_tables - There are many values in the syslog plugin
  *   that for the purposes of reducing the size of the syslog table are normalized
