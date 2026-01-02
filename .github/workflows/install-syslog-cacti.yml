@@ -187,6 +187,7 @@ jobs:
           exit 1
         fi
     
+    
     - name: Run Cacti Poller
       run: |
         cd ${{ github.workspace }}/cacti
@@ -232,3 +233,39 @@ jobs:
           echo "=== Cacti Log ==="
           sudo cat ${{ github.workspace }}/cacti/log/cacti.log
         fi
+
+
+    - name: Create PHPStan config
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/syslog
+        cat > phpstan.neon << 'EOF'
+        parameters:
+          level: 5
+          paths:
+            - .
+          excludePaths:
+            - vendor/
+            - locales/
+          ignoreErrors:
+            - '#Function db_[a-z_]+ not found\.#'
+            - '#Function cacti_[a-z_]+ not found\.#'
+            - '#has invalid return type the\.#'
+            - '#Class [a-zA-Z_\\]+ not found\.#'
+          bootstrapFiles:
+            - ../../include/global.php
+        EOF
+    
+    - name: Install PHPStan
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/syslog
+        composer require --dev phpstan/phpstan --with-all-dependencies || composer global require phpstan/phpstan
+    
+    - name: Run PHPStan Analysis
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/syslog
+        if [ -f vendor/bin/phpstan ]; then
+          vendor/bin/phpstan analyse --no-progress --error-format=github || true
+        else
+          phpstan analyse --no-progress --error-format=github || true
+        fi
+      continue-on-error: true
