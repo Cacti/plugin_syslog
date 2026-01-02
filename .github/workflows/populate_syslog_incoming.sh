@@ -27,7 +27,11 @@ export MYSQL_PWD="cactiuser"
 MYSQL_CMD="mysql -h 127.0.0.1 -u cactiuser cacti"
 
 # Create Rules
+
+echo "Creating alert and removal rules..."
 $MYSQL_CMD -e "$SQL_ALERT_RULE_INSERT"
+
+echo "Creating removal rule..."
 $MYSQL_CMD -e "$SQL_REMOVAL_RULE_INSERT"
 
 
