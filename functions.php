@@ -22,6 +22,13 @@
  +-------------------------------------------------------------------------+
 */
 
+function syslog_include_js() {
+	global $config;
+	?>
+	<script type='text/javascript' src='<?php print $config['url_path'];?>plugins/syslog/js/functions.js'></script>
+	<?php
+}
+
 function syslog_allow_edits() {
 	global $config;
 
@@ -684,7 +691,8 @@ function syslog_row_color($priority, $message) {
 		break;
 	}
 
-	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow'>";
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow syslog-detail-row'>";
+	return $class;
 }
 
 function sql_hosts_where($tab) {

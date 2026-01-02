@@ -61,6 +61,7 @@ switch (get_request_var('action')) {
 		break;
 	case 'import':
 		top_header();
+		syslog_include_js();
 		import();
 		bottom_footer();
 
@@ -72,6 +73,7 @@ switch (get_request_var('action')) {
 	case 'edit':
 	case 'newedit':
 		top_header();
+		syslog_include_js();
 
 		syslog_action_edit();
 
@@ -79,6 +81,7 @@ switch (get_request_var('action')) {
 		break;
 	default:
 		top_header();
+		syslog_include_js();
 
 		syslog_removal();
 
@@ -498,28 +501,7 @@ function syslog_action_edit() {
 
 	?>
 	<script type='text/javascript'>
-
-	var allowEdits=<?php print syslog_allow_edits() ? 'true':'false';?>;
-
-	function changeTypes() {
-		if ($('#type').val == 'sql') {
-			$('#message').prop('rows', 5);
-		} else {
-			$('#message').prop('rows', 2);
-		}
-	}
-
-	$(function() {
-		if (!allowEdits) {
-			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
-			$('#syslog_edit').find('select').each(function() {
-				if ($(this).selectmenu('instance')) {
-					$(this).selectmenu('refresh');
-				}
-			});
-		}
-	});
-
+	initSyslogRemoval(<?php print syslog_allow_edits() ? 'true':'false';?>);
 	</script>
 	<?php
 }
@@ -576,41 +558,7 @@ function syslog_filter() {
 			<input type='hidden' id='page' value='<?php print get_filter_request_var('page');?>'>
 		</form>
 		<script type='text/javascript'>
-
-		function applyFilter() {
-			strURL = 'syslog_removal.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
-			loadPageNoHeader(strURL);
-		}
-
-		function clearFilter() {
-			strURL = 'syslog_removal.php?clear=1&header=false';
-			loadPageNoHeader(strURL);
-		}
-
-		function importRemoval() {
-			strURL = 'syslog_removal.php?action=import&header=false';
-			loadPageNoHeader(strURL);
-		}
-
-		$(function() {
-			$('#refresh').click(function() {
-				applyFilter();
-			});
-
-			$('#clear').click(function() {
-				clearFilter();
-			});
-
-			$('#import').click(function() {
-				importRemoval();
-			});
-
-			$('#removal').submit(function(event) {
-				event.preventDefault();
-				applyFilter();
-			});
-		});
-
+		initSyslogRemoval(<?php print syslog_allow_edits() ? 'true':'false';?>);
 		</script>
 		</td>
 	</tr>
