@@ -60,4 +60,4 @@ This is the **Syslog Plugin** for Cacti, a PHP-based network monitoring and grap
 
 **Documentation & Resources**
 - [Cacti main repo](https://github.com/Cacti/cacti/tree/1.2.x)
-- [cacti documentation](https://www.github.com/Cacti/documentation)
+- [cacti documentation](https://github.com/Cacti/documentation)
