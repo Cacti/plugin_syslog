@@ -199,9 +199,9 @@ jobs:
     
     - name: Populate Syslog Test Data
       run: |
-        chmod +x ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows/populate_syslog_incoming.sh
+        sudo chmod +x ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows/populate_syslog_incoming.sh
         cd ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows
-        ./populate_syslog_incoming.sh
+        sudo ./populate_syslog_incoming.sh
 
 
     - name: force Syslog Plugin Poller
