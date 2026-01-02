@@ -508,3 +508,91 @@ function initSyslogReports() {
 		});
 	});
 }
+
+/* ========================================================================
+ * Autocomplete Form Callback Functions
+ * ======================================================================== */
+
+/**
+ * Initialize autocomplete for form dropdown fields
+ * @param {string} formName - The name of the form field
+ * @param {string} callback - The AJAX callback action
+ * @param {string} onChange - The onChange callback to execute when selection changes
+ */
+function initSyslogAutocomplete(formName, callback, onChange) {
+	var formNameTimer;
+	var formNameClickTimer;
+	var formNameOpen = false;
+	
+	$(function() {
+		$('#' + formName + '_input').autocomplete({
+			source: window.location.pathname + '?action=' + callback,
+			autoFocus: true,
+			minLength: 0,
+			select: function(event, ui) {
+				$('#' + formName + '_input').val(ui.item.label);
+				if (ui.item.id) {
+					$('#' + formName).val(ui.item.id);
+				} else {
+					$('#' + formName).val(ui.item.value);
+				}
+				if (onChange) {
+					eval(onChange);
+				}
+			}
+		}).css('border', 'none').css('background-color', 'transparent');
+
+		$('#' + formName + '_wrap').on('dblclick', function() {
+			formNameOpen = false;
+			clearTimeout(formNameTimer);
+			clearTimeout(formNameClickTimer);
+			$('#' + formName + '_input').autocomplete('close');
+		}).on('click', function() {
+			if (formNameOpen) {
+				$('#' + formName + '_input').autocomplete('close');
+				clearTimeout(formNameTimer);
+				formNameOpen = false;
+			} else {
+				formNameClickTimer = setTimeout(function() {
+					$('#' + formName + '_input').autocomplete('search', '');
+					clearTimeout(formNameTimer);
+					formNameOpen = true;
+				}, 200);
+			}
+		}).on('mouseleave', function() {
+			formNameTimer = setTimeout(function() { 
+				$('#' + formName + '_input').autocomplete('close'); 
+			}, 800);
+		});
+
+		var width = $('#' + formName + '_input').textBoxWidth();
+		if (width < 100) {
+			width = 100;
+		}
+
+		$('#' + formName + '_wrap').css('width', width + 20);
+		$('#' + formName + '_input').css('width', width);
+
+		$('ul[id^="ui-id"]').on('mouseenter', function() {
+			clearTimeout(formNameTimer);
+		}).on('mouseleave', function() {
+			formNameTimer = setTimeout(function() { 
+				$('#' + formName + '_input').autocomplete('close'); 
+			}, 800);
+		});
+
+		$('ul[id^="ui-id"] > li').each().on('mouseenter', function() {
+			$(this).addClass('ui-state-hover');
+		}).on('mouseleave', function() {
+			$(this).removeClass('ui-state-hover');
+		});
+
+		$('#' + formName + '_wrap').on('mouseenter', function() {
+			$(this).addClass('ui-state-hover');
+			$('input#' + formName + '_input').addClass('ui-state-hover');
+		}).on('mouseleave', function() {
+			$(this).removeClass('ui-state-hover');
+			$('input#' + formName + '_input').removeClass('ui-state-hover');
+		});
+	});
+}

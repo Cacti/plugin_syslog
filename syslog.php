@@ -970,9 +970,8 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	if ($tab == 'syslog') {
 		// Check if grouping is enabled
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
-		
+	
 		if ($grouping_enabled) {
-			// When grouping, we need to get grouped results with counts
 			if (get_request_var('removal') == '-1') {
 				$query_sql = "SELECT 
 					syslog.host_id,
@@ -2071,75 +2070,7 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 		}
 		</style>
 		<script type='text/javascript'>
-		var <?php print $form_name;?>Timer;
-		var <?php print $form_name;?>ClickTimer;
-		var <?php print $form_name;?>Open = false;
-
-		$(function() {
-		    $('#<?php print $form_name;?>_input').autocomplete({
-		        source: '<?php print get_current_page();?>?action=<?php print $callback;?>',
-				autoFocus: true,
-				minLength: 0,
-				select: function(event,ui) {
-					$('#<?php print $form_name;?>_input').val(ui.item.label);
-					if (ui.item.id) {
-						$('#<?php print $form_name;?>').val(ui.item.id);
-					} else {
-						$('#<?php print $form_name;?>').val(ui.item.value);
-					}
-					<?php print $on_change;?>;
-				}
-			}).css('border', 'none').css('background-color', 'transparent');
-
-			$('#<?php print $form_name;?>_wrap').on('dblclick', function() {
-				<?php print $form_name;?>Open = false;
-				clearTimeout(<?php print $form_name;?>Timer);
-				clearTimeout(<?php print $form_name;?>ClickTimer);
-				$('#<?php print $form_name;?>_input').autocomplete('close');
-			}).on('click', function() {
-				if (<?php print $form_name;?>Open) {
-					$('#<?php print $form_name;?>_input').autocomplete('close');
-					clearTimeout(<?php print $form_name;?>Timer);
-					<?php print $form_name;?>Open = false;
-				} else {
-					<?php print $form_name;?>ClickTimer = setTimeout(function() {
-						$('#<?php print $form_name;?>_input').autocomplete('search', '');
-						clearTimeout(<?php print $form_name;?>Timer);
-						<?php print $form_name;?>Open = true;
-					}, 200);
-				}
-			}).on('mouseleave', function() {
-				<?php print $form_name;?>Timer = setTimeout(function() { $('#<?php print $form_name;?>_input').autocomplete('close'); }, 800);
-			});
-
-			width = $('#<?php print $form_name;?>_input').textBoxWidth();
-			if (width < 100) {
-				width = 100;
-			}
-
-			$('#<?php print $form_name;?>_wrap').css('width', width+20);
-			$('#<?php print $form_name;?>_input').css('width', width);
-
-			$('ul[id^="ui-id"]').on('mouseenter', function() {
-				clearTimeout(<?php print $form_name;?>Timer);
-			}).on('mouseleave', function() {
-				<?php print $form_name;?>Timer = setTimeout(function() { $('#<?php print $form_name;?>_input').autocomplete('close'); }, 800);
-			});
-
-			$('ul[id^="ui-id"] > li').each().on('mouseenter', function() {
-				$(this).addClass('ui-state-hover');
-			}).on('mouseleave', function() {
-				$(this).removeClass('ui-state-hover');
-			});
-
-			$('#<?php print $form_name;?>_wrap').on('mouseenter', function() {
-				$(this).addClass('ui-state-hover');
-				$('input#<?php print $form_name;?>_input').addClass('ui-state-hover');
-			}).on('mouseleave', function() {
-				$(this).removeClass('ui-state-hover');
-				$('input#<?php print $form_name;?>_input').removeClass('ui-state-hover');
-			});
-		});
+		initSyslogAutocomplete('<?php print $form_name;?>', '<?php print $callback;?>', '<?php print $on_change;?>');
 		</script>
 		<?php
 	}
