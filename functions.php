@@ -1822,8 +1822,8 @@ function syslog_update_reference_tables($uniqueID) {
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Updating Reference Tables from New Syslog Records');
 
-
-	if (read_config_option('syslog_use_cacti_hosts') == 'on') {
+	/* Validate and resolve hostnames - check DNS first, then Cacti, then mark invalid */
+	if (read_config_option('syslog_validate_hostname') == 'on') {
 		$hosts = syslog_db_fetch_assoc_prepared('SELECT DISTINCT host
 			FROM `' . $syslogdb_default . '`.`syslog_incoming`
 			WHERE `status` = ?',
@@ -1834,23 +1834,21 @@ function syslog_update_reference_tables($uniqueID) {
 				continue;
 			}
 			
-			syslog_check_cacti_hosts($host['host'], $uniqueID);
-		}
-	}
-
-
-	/* correct for invalid hosts */
-	if (read_config_option('syslog_validate_hostname') == 'on') {
-		$hosts = syslog_db_fetch_assoc('SELECT DISTINCT host
-			FROM `' . $syslogdb_default . '`.`syslog_incoming`');
-
-		foreach($hosts as $host) {
+			// Check if hostname resolves via DNS
 			if ($host['host'] == gethostbyname($host['host'])) {
-				syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
-					SET host = 'invalid_host'
-					WHERE host = ?",
-					array($host['host']));
+				// DNS failed, try to resolve against Cacti hosts
+				$resolved = syslog_check_cacti_hosts($host['host'], $uniqueID);
+				
+				// If not found in Cacti either, mark as invalid
+				if (!$resolved) {
+					syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
+						SET host = 'invalid_host'
+						WHERE host = ?
+						AND `status` = ?",
+						array($host['host'], $uniqueID));
+				}
 			}
+			// If DNS succeeds, hostname is valid - leave it as is
 		}
 	}
 

@@ -1144,12 +1144,6 @@ function syslog_config_settings() {
 			'method' => 'checkbox',
 			'default' => ''
 		),
-		'syslog_use_cacti_hosts' => array(
-			'friendly_name' => __('Resolve Syslog host IPs against Cacti Hosts', 'syslog'),
-			'description' => __('If this checkbox is set, all hostnames found in syslog messages will be cross referenced against the Cacti Host table.  If a hostname is not found in Cacti, the message will be assigned to a special host called \'unknownhost\'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening.', 'syslog'),
-			'method' => 'checkbox',
-			'default' => ''
-		),
 		'syslog_refresh' => array(
 			'friendly_name' => __('Refresh Interval', 'syslog'),
 			'description' => __('This is the time in seconds before the page refreshes.', 'syslog'),
