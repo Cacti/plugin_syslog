@@ -1761,7 +1761,7 @@ function syslog_messages($tab = 'syslog') {
 								$url = '';
 								if ($sm['mtype'] == 'main') {
 									$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i>";
-									$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><i class='deviceDown fas fa-minus-circle'></i>";
+									$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=new') . "'><i class='deviceDown fas fa-minus-circle'></i>";
 								}
 								print "<td class='left' style='padding-left:30px;'>" . $url . "</td>";
 							}
