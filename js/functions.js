@@ -232,7 +232,7 @@ function initSyslogMain(config) {
 				$('#term').focus();
 			},
 			click: function(event, ui) {
-				checked=$(this).multiselect('widget').find('input:checked').length;
+				var checked = $(this).multiselect('widget').find('input:checked').length;
 
 				if (ui.value == '0') {
 					if (ui.checked == true) {
