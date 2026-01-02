@@ -1766,12 +1766,12 @@ function syslog_messages($tab = 'syslog') {
 								print "<td class='left' style='padding-left:30px;'>" . $url . "</td>";
 							}
 							
-							print "<td class='left' style='padding-left:30px;'>" . $dm['logtime'] . "</td>";
-							print "<td class='left'>" . (isset($hosts[$dm['host_id']]) ? $hosts[$dm['host_id']] : __('Unknown', 'syslog')) . "</td>";
-							print "<td class='left'>" . $dm['program'] . "</td>";
+							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . "</td>";
+							print "<td class='left'>" . html_escape(isset($hosts[$dm['host_id']]) ? $hosts[$dm['host_id']] : __('Unknown', 'syslog')) . "</td>";
+							print "<td class='left'>" . html_escape($dm['program']) . "</td>";
 							print "<td class='left syslogMessage'>" . filter_value(title_trim($dm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')) . "</td>";
-							print "<td class='left'>" . (isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog')) . "</td>";
-							print "<td class='left'>" . (isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog')) . "</td>";
+							print "<td class='left'>" . html_escape(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog')) . "</td>";
+							print "<td class='left'>" . html_escape(isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog')) . "</td>";
 							
 							if ($grouping_enabled) {
 								print "<td class='right'></td>";
