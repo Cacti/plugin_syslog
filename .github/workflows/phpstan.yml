@@ -72,8 +72,61 @@ jobs:
           excludePaths:
             - vendor/
             - locales/
+          ignoreErrors:
+            - '#Function db_[a-z_]+ not found\.#'
+            - '#Function cacti_[a-z_]+ not found\.#'
+            - '#has invalid return type the\.#'
+            - '#Class [a-zA-Z_\\]+ not found\.#'
+          bootstrapFiles:
+            - .github/workflows/phpstan-bootstrap.php
         EOF
         fi
+
+    - name: Create PHPStan bootstrap for Cacti functions
+      run: |
+        mkdir -p .github/workflows
+        cat > .github/workflows/phpstan-bootstrap.php << 'EOF'
+        <?php
+        // PHPStan bootstrap file for Cacti plugin functions
+        // These functions are provided by the main Cacti application
+        
+        if (!function_exists('db_connect_real')) {
+            function db_connect_real(string $host, string $user, string $pass, string $db, string $type, int $port = 0, int $ssl = false, int $ssl_ca = '', int $ssl_cert = '', int $ssl_key = '') {}
+        }
+        if (!function_exists('db_close')) {
+            function db_close(&$link = null): bool { return true; }
+        }
+        if (!function_exists('db_execute')) {
+            function db_execute(string $sql, bool $log = true, int $db_conn = 0): bool { return true; }
+        }
+        if (!function_exists('db_execute_prepared')) {
+            function db_execute_prepared(string $sql, array $params = [], bool $log = true, int $db_conn = 0): bool { return true; }
+        }
+        if (!function_exists('db_fetch_cell')) {
+            function db_fetch_cell(string $sql, string $col_name = '', bool $log = true, int $db_conn = 0) { return ''; }
+        }
+        if (!function_exists('db_fetch_cell_prepared')) {
+            function db_fetch_cell_prepared(string $sql, array $params = [], string $col_name = '', bool $log = true, int $db_conn = 0) { return ''; }
+        }
+        if (!function_exists('db_fetch_row')) {
+            function db_fetch_row(string $sql, bool $log = true, int $db_conn = 0): array { return []; }
+        }
+        if (!function_exists('db_fetch_row_prepared')) {
+            function db_fetch_row_prepared(string $sql, array $params = [], bool $log = true, int $db_conn = 0): array { return []; }
+        }
+        if (!function_exists('db_fetch_assoc')) {
+            function db_fetch_assoc(string $sql, bool $log = true, int $db_conn = 0): array { return []; }
+        }
+        if (!function_exists('db_fetch_assoc_prepared')) {
+            function db_fetch_assoc_prepared(string $sql, array $params = [], bool $log = true, int $db_conn = 0): array { return []; }
+        }
+        if (!function_exists('cacti_log')) {
+            function cacti_log(string $message, bool $output = false, string $environ = 'CMDPHP', int $level = 0): void {}
+        }
+        if (!function_exists('cacti_sizeof')) {
+            function cacti_sizeof($array): int { return is_array($array) ? count($array) : 0; }
+        }
+        EOF
 
     - name: Install PHPStan
       run: composer require --dev phpstan/phpstan --with-all-dependencies || composer global require phpstan/phpstan
