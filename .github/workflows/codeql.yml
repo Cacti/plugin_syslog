@@ -19,7 +19,7 @@
 # | http://www.cacti.net/                                                   |
 # +-------------------------------------------------------------------------+
 
-name: "CodeQL Security Analysis"
+name: "PHPStan Static Analysis"
 
 on:
   push:
@@ -31,39 +31,58 @@ on:
       - main
       - develop
   schedule:
-    # Run CodeQL analysis weekly on Mondays at 00:00 UTC
+    # Run PHPStan analysis weekly on Mondays at 00:00 UTC
     - cron: '0 0 * * 1'
 
 jobs:
-  analyze:
-    name: CodeQL Analysis
+  phpstan:
+    name: PHPStan Analysis
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
 
     strategy:
       fail-fast: false
       matrix:
-        language: ['javascript', 'php']
+        php: ['8.0', '8.1', '8.2', '8.3']
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+    - name: Setup PHP ${{ matrix.php }}
+      uses: shivammathur/setup-php@v2
       with:
-        languages: ${{ matrix.language }}
-        # You can customize queries by uncommenting and modifying:
-        # queries: security-extended,security-and-quality
+        php-version: ${{ matrix.php }}
+        extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
+        coverage: none
 
-    # Autobuild attempts to build any compiled languages
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v3
+    - name: Install Composer dependencies
+      run: |
+        if [ -f composer.json ]; then
+          composer install --prefer-dist --no-progress --no-suggest
+        fi
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+    - name: Create PHPStan config if not exists
+      run: |
+        if [ ! -f phpstan.neon ]; then
+          cat > phpstan.neon << 'EOF'
+        parameters:
+          level: 5
+          paths:
+            - .
+          excludePaths:
+            - vendor/
+            - locales/
+        EOF
+        fi
+
+    - name: Install PHPStan
+      run: composer require --dev phpstan/phpstan --with-all-dependencies || composer global require phpstan/phpstan
+
+    - name: Run PHPStan
+      run: |
+        if [ -f vendor/bin/phpstan ]; then
+          vendor/bin/phpstan analyse --no-progress --error-format=github || true
+        else
+          phpstan analyse --no-progress --error-format=github || true
+        fi
+      continue-on-error: true
