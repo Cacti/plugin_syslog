@@ -91,7 +91,7 @@ jobs:
         // These functions are provided by the main Cacti application
         
         if (!function_exists('db_connect_real')) {
-            function db_connect_real(string $host, string $user, string $pass, string $db, string $type, int $port = 0, int $ssl = false, int $ssl_ca = '', int $ssl_cert = '', int $ssl_key = '') {}
+            function db_connect_real(string $host, string $user, string $pass, string $db, string $type, int $port = 0, bool $ssl = false, string $ssl_ca = '', string $ssl_cert = '', string $ssl_key = '') {}
         }
         if (!function_exists('db_close')) {
             function db_close(&$link = null): bool { return true; }
