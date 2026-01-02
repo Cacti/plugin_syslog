@@ -11,7 +11,7 @@ This is the **Syslog Plugin** for Cacti, a PHP-based network monitoring and grap
   - **Critical:** ALWAYS use the `syslog_db_*` wrapper functions (defined in `database.php`) for all database operations. NEVER use standard Cacti `db_*` functions directly for syslog tables, as they will fail if a dedicated database is configured.
 - **Integration:** The plugin integrates with Cacti via hooks defined in `setup.php`.
 - **Poller Integration:** Background processes (`syslog_process.php`, `syslog_removal.php`) are triggered by Cacti's poller or run independently.
-- **Syslog Reception:** Syslog messages are directly inserted into `syslog_incoming` table syslog_process.php then processes them.
+- **Syslog Reception:** Syslog messages are directly inserted into the `syslog_incoming` table; `syslog_process.php` then processes them.
 
 ## Critical Developer Workflows
 
