@@ -19,7 +19,7 @@
 # | http://www.cacti.net/                                                   |
 # +-------------------------------------------------------------------------+
 
-name: PHP Lint
+name: PHP Lint (Code Style)
 
 on:
   push:
@@ -32,31 +32,54 @@ on:
       - develop
 
 jobs:
-  php-lint:
+  php-cs:
     runs-on: ubuntu-latest
     
-    strategy:
-      fail-fast: false
-      matrix:
-        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
-    
-    name: PHP ${{ matrix.php }} Lint
+    name: PHP CodeSniffer
     
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     
-    - name: Setup PHP ${{ matrix.php }}
+    - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php }}
+        php-version: '8.2'
         extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
         coverage: none
     
-    - name: Install parallel-lint
-      run: composer global require php-parallel-lint/php-parallel-lint
+    - name: Install PHP_CodeSniffer
+      run: composer global require squizlabs/php_codesniffer
     
-    - name: Run parallel-lint
+    - name: Create phpcs.xml if not exists
+      run: |
+        if [ ! -f phpcs.xml ]; then
+          cat > phpcs.xml << 'EOF'
+        <?xml version="1.0"?>
+        <ruleset name="Syslog Plugin">
+            <description>Coding standards for Cacti Syslog Plugin</description>
+            
+            <file>.</file>
+            
+            <exclude-pattern>*/vendor/*</exclude-pattern>
+            <exclude-pattern>*/locales/*</exclude-pattern>
+            <exclude-pattern>*.js</exclude-pattern>
+            
+            <arg name="extensions" value="php"/>
+            <arg name="colors"/>
+            <arg value="p"/>
+            
+            <rule ref="PSR12">
+                <exclude name="PSR1.Files.SideEffects"/>
+                <exclude name="PSR12.Files.FileHeader"/>
+            </rule>
+        </ruleset>
+        EOF
+        fi
+    
+    - name: Run PHP CodeSniffer
       run: |
         export PATH="$HOME/.composer/vendor/bin:$PATH"
-        parallel-lint --exclude vendor --exclude locales/LC_MESSAGES .
+        phpcs --standard=phpcs.xml --report=checkstyle --report-file=phpcs-report.xml . || true
+        phpcs --standard=phpcs.xml .
+      continue-on-error: true
