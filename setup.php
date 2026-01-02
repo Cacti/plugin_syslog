@@ -1140,7 +1140,7 @@ function syslog_config_settings() {
 		),
 		'syslog_validate_hostname' => array(
 			'friendly_name' => __('Validate Hostnames', 'syslog'),
-			'description' => __('If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called \'invalidhost\'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening.', 'syslog'),
+			'description' => __('If this checkbox is set, all hostnames are validated via DNS lookup first. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned to a special host called \'invalid_host\'.', 'syslog'),
 			'method' => 'checkbox',
 			'default' => ''
 		),
