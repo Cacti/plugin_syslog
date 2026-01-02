@@ -256,3 +256,16 @@ jobs:
           phpstan analyse --no-progress --error-format=github || true
         fi
       continue-on-error: true
+
+
+    - name: Call Code Quality Agent
+      if: github.event_name == 'pull_request'
+      env:
+        AGENT_URL: ${{ secrets.CODE_QUALITY_AGENT_URL }}
+        AGENT_TOKEN: ${{ secrets.CODE_QUALITY_AGENT_TOKEN }}
+      run: |
+        echo "Calling Code Quality Specialist agent for this PR..."
+        curl -sS -X POST "$AGENT_URL/run_agent" \
+          -H "Authorization: Bearer $AGENT_TOKEN" \
+          -H "Content-Type: application/json" \
+          -d "{\"repo\":\"${{ github.repository }}\",\"pr\":${{ toJson(github.event.pull_request)}}}" || true
