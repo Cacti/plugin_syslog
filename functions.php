@@ -1780,26 +1780,22 @@ function syslog_check_cacti_hosts($host, $uniqueID) {
 	}
 
 	// Check if the host exists in cacti by hostname and get the description
-	$cacti_host = db_fetch_row_prepared('SELECT hostname, description
+	$cacti_host = db_fetch_row_prepared('SELECT description
 		FROM host
 		WHERE hostname = ?
 		LIMIT 1',
 		array($host));
 
 	if (cacti_sizeof($cacti_host) && !empty($cacti_host['description'])) {
-		// Resolve the hostname to IP
-		$ip_address = gethostbyname($cacti_host['hostname']);
-		
-		// Update syslog_incoming: replace IP with description
-		syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
+		syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . '`.`syslog_incoming`
 			SET host = ?
 			WHERE host = ?
-			AND `status` = ?",
-			array($cacti_host['description'], $ip_address, $uniqueID));
-			
+			AND `status` = ?',
+			array($cacti_host['description'], $host, $uniqueID));
+		
 		return true;
 	}
-
+	
 	return false;
 }
 		
@@ -1826,7 +1822,7 @@ function syslog_update_reference_tables($uniqueID) {
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Updating Reference Tables from New Syslog Records');
 
-	
+
 	if (read_config_option('syslog_use_cacti_hosts') == 'on') {
 		$hosts = syslog_db_fetch_assoc_prepared('SELECT DISTINCT host
 			FROM `' . $syslogdb_default . '`.`syslog_incoming`
