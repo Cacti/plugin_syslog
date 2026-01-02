@@ -6,6 +6,9 @@
 * issue: Don't use MyISAM for non-analytical tables
 * issue: The install advisor for Syslog was broken in current Cacti releases
 * feature: Allow the use of Aria Storage Engine for MariaDB databases
+* feature: Add message grouping functionality to collapse duplicate syslog messages and display occurrence counts
+* feature: Refactor JavaScript by consolidating inline code from PHP files into centralized js/functions.js
+* feature: Enhanced hostname validation to resolve against Cacti host table when DNS lookup fails, replacing hostname with Cacti host description 
 
 --- 4.2 ---
 
