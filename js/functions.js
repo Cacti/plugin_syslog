@@ -332,6 +332,54 @@ function initSyslogMain(config) {
 	});
 }
 
+/**
+ * Initialize syslog message tooltips and group expand/collapse functionality
+ * Call this after the syslog message table is rendered or updated
+ */
+function initSyslogMessagesDisplay() {
+	$(function() {
+		// Initialize tooltips for syslog rows
+		$('.syslogRow').tooltip({
+			track: true,
+			show: {
+				effect: 'fade',
+				duration: 250,
+				delay: 125
+			},
+			position: { my: 'left+15 center', at: 'right center' }
+		});
+
+		// Initialize tooltips for buttons
+		$('button').tooltip({
+			closed: true
+		}).on('focus', function() {
+			$('#filter').tooltip('close');
+		}).on('click', function() {
+			$(this).tooltip('close');
+		});
+
+		// Handle syslog group expand/collapse
+		$('.syslog-group-toggle').off('click').on('click', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+
+			var seq = $(this).data('seq');
+			var detailRows = $('.syslog-detail-' + seq);
+			var icon = $(this);
+
+			if (detailRows.is(':visible')) {
+				// Collapse
+				detailRows.hide();
+				icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+			} else {
+				// Expand
+				detailRows.show();
+				icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+			}
+		});
+	});
+}
+
 /* ========================================================================
  * Removal Rules Functions (syslog_removal.php)
  * ======================================================================== */

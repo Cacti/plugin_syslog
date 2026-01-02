@@ -1796,45 +1796,7 @@ function syslog_messages($tab = 'syslog') {
 
 		?>
 		<script type='text/javascript'>
-		$(function() {
-			$('.syslogRow').tooltip({
-				track: true,
-				show: {
-					effect: 'fade',
-					duration: 250,
-					delay: 125
-				},
-				position: { my: 'left+15 center', at: 'right center' }
-			});
-
-			$('button').tooltip({
-				closed: true
-			}).on('focus', function() {
-				$('#filter').tooltip('close')
-			}).on('click', function() {
-				$(this).tooltip('close');
-			});
-			
-			// Handle syslog group expand/collapse
-			$('.syslog-group-toggle').off('click').on('click', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				
-				var seq = $(this).data('seq');
-				var detailRows = $('.syslog-detail-' + seq);
-				var icon = $(this);
-				
-				if (detailRows.is(':visible')) {
-					// Collapse
-					detailRows.hide();
-					icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-				} else {
-					// Expand
-					detailRows.show();
-					icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
-				}
-			});
-		});
+		initSyslogMessagesDisplay();
 		</script>
 		<?php
 	} else {
