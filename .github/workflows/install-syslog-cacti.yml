@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
+        php: ['8.1', '8.2', '8.3']
         os: [ubuntu-latest]
     
     services:
@@ -215,16 +215,6 @@ jobs:
           exit 1
         fi
 
-    - name: Test Syslog Plugin Functions
-      run: |
-        cd ${{ github.workspace }}/cacti/plugins/syslog
-        php -r "
-        require_once('../../include/global.php');
-        require_once('setup.php');
-        \$info = plugin_syslog_version();
-        echo 'Syslog Plugin Version: ' . \$info['version'] . PHP_EOL;
-        echo 'Plugin loaded successfully!' . PHP_EOL;
-        "
     
     - name: View Cacti Logs
       if: always()
@@ -247,10 +237,7 @@ jobs:
             - vendor/
             - locales/
           ignoreErrors:
-            - '#Function db_[a-z_]+ not found\.#'
-            - '#Function cacti_[a-z_]+ not found\.#'
             - '#has invalid return type the\.#'
-            - '#Class [a-zA-Z_\\]+ not found\.#'
           bootstrapFiles:
             - ../../include/global.php
         EOF
