@@ -14,7 +14,8 @@ echo "Starting insert of $ITERATIONS batches (30,000 total records)..."
 echo "Start time: $(date)"
 
 # MySQL connection parameters
-MYSQL_CMD="mysql -h 127.0.0.1 -u cactiuser -pcactiuser cacti"
+export MYSQL_PWD="cactiuser"
+MYSQL_CMD="mysql -h 127.0.0.1 -u cactiuser cacti"
 
 # Loop and insert
 for i in $(seq 1 $ITERATIONS); do
