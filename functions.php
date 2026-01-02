@@ -695,7 +695,6 @@ function syslog_row_color($priority, $message) {
 	return $class;
 }
 
-
 function sql_hosts_where($tab) {
 	global $hostfilter, $hostfilter_log, $syslog_incoming_config;
 	global $syslogdb_default;
