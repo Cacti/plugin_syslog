@@ -28,7 +28,7 @@ You have access to the following tools to assist you in your tasks:
 
 ## The project in this repo calls on functions from the cacti project. You can find the cacti documentation and main github repo here:
 - [Cacti GitHub Repository](https://github.com/Cacti/cacti/tree/1.2.x)
-- [Cacti Documentation](https://www.github.com/Cacti/documentation)
+- [Cacti Documentation](https://github.com/Cacti/documentation)
 
 
 
