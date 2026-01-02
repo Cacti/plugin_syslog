@@ -19,7 +19,7 @@ function clearFilterStats() {
  * Apply filter for statistics view
  */
 function applyFilterStats() {
-	strURL  = 'syslog.php?header=false';
+	var strURL  = 'syslog.php?header=false';
 	strURL += '&none=true';
 	strURL += '&facility=' + $('#facility').val();
 	strURL += '&host=' + $('#host').val();
@@ -388,7 +388,7 @@ function initSyslogMessagesDisplay() {
  * Apply filter for removal rules view
  */
 function applyFilterRemoval() {
-	strURL = 'syslog_removal.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_removal.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 	loadPageNoHeader(strURL);
 }
 
@@ -396,7 +396,7 @@ function applyFilterRemoval() {
  * Clear filter for removal rules view
  */
 function clearFilterRemoval() {
-	strURL = 'syslog_removal.php?clear=1&header=false';
+	var strURL = 'syslog_removal.php?clear=1&header=false';
 	loadPageNoHeader(strURL);
 }
 
@@ -404,7 +404,7 @@ function clearFilterRemoval() {
  * Import removal rule
  */
 function importRemoval() {
-	strURL = 'syslog_removal.php?action=import&header=false';
+	var strURL = 'syslog_removal.php?action=import&header=false';
 	loadPageNoHeader(strURL);
 }
 
@@ -461,7 +461,8 @@ function initSyslogRemoval(allowEdits) {
  * Apply filter for alert rules view
  */
 function applyFilterAlerts() {
-	strURL = 'syslog_alerts.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_alerts.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+
 	loadPageNoHeader(strURL);
 }
 
@@ -469,7 +470,8 @@ function applyFilterAlerts() {
  * Clear filter for alert rules view
  */
 function clearFilterAlerts() {
-	strURL = 'syslog_alerts.php?clear=1&header=false';
+	var strURL = 'syslog_alerts.php?clear=1&header=false';
+
 	loadPageNoHeader(strURL);
 }
 
@@ -477,7 +479,8 @@ function clearFilterAlerts() {
  * Import alert rule
  */
 function importAlert() {
-	strURL = 'syslog_alerts.php?action=import&header=false';
+	var strURL = 'syslog_alerts.php?action=import&header=false';
+
 	loadPageNoHeader(strURL);
 }
 
@@ -513,7 +516,8 @@ function initSyslogAlerts() {
  * Apply filter for report rules view
  */
 function applyFilterReports() {
-	strURL = 'syslog_reports.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_reports.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+
 	loadPageNoHeader(strURL);
 }
 
@@ -521,7 +525,8 @@ function applyFilterReports() {
  * Clear filter for report rules view
  */
 function clearFilterReports() {
-	strURL = 'syslog_reports.php?clear=1&header=false';
+	var strURL = 'syslog_reports.php?clear=1&header=false';
+
 	loadPageNoHeader(strURL);
 }
 
@@ -529,7 +534,8 @@ function clearFilterReports() {
  * Import report rule
  */
 function importReport() {
-	strURL = 'syslog_reports.php?action=import&header=false';
+	var strURL = 'syslog_reports.php?action=import&header=false';
+
 	loadPageNoHeader(strURL);
 }
 
