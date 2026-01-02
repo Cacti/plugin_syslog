@@ -197,6 +197,23 @@ jobs:
           exit 1
         fi
     
+    - name: Populate Syslog Test Data
+      run: |
+        chmod +x ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows/populate_syslog_incoming.sh
+        cd ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows
+        ./populate_syslog_incoming.sh
+
+
+    - name: force Syslog Plugin Poller
+      run: |
+        cd ${{ github.workspace }}/cacti
+        sudo php plugins/syslog/syslog_process.php  --debug
+        if ! grep -q "SYSTEM SYSLOG STATS" log/cacti.log; then
+          echo "Syslog plugin poller did not finish successfully"
+          cat log/cacti.log
+          exit 1
+        fi
+
     - name: Test Syslog Plugin Functions
       run: |
         cd ${{ github.workspace }}/cacti/plugins/syslog
