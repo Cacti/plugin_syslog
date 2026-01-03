@@ -1140,7 +1140,13 @@ function syslog_config_settings() {
 		),
 		'syslog_resolve_hostname' => array(
 			'friendly_name' => __('Resolve Hostnames', 'syslog'),
-			'description' => __('If this checkbox is set, all hostnames are resolved via DNS lookup first. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned to a special host called \'invalid_host\'.', 'syslog'),
+			'description' => __('If this checkbox is set, all hostnames are resolved via DNS lookup first. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix \'unresolved-Original_hostname\'.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
+		'syslog_no_dns' => array(
+			'friendly_name' => __('Disable DNS Resolution for incoming hosts', 'syslog'),
+			'description' => __('If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired.', 'syslog'),
 			'method' => 'checkbox',
 			'default' => ''
 		),

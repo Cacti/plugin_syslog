@@ -1487,7 +1487,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					/**
 					 * Open a ticket if this options have been selected.
 					 */
-					$command = read_config_option('syslog_ticket_command');
+					 $command = read_config_option('syslog_ticket_command');
 
 					if ($command != '') {
 						$command = trim($command);
@@ -1834,14 +1834,15 @@ function syslog_update_reference_tables($uniqueID) {
 				// DNS failed, try to resolve against Cacti hosts
 				$resolved = syslog_check_cacti_hosts($host['host'], $uniqueID);
 				
-				// If not found in Cacti either, set the hostname to the initial value
+				// If not found in Cacti either, prefix the hostname
 				if (!$resolved) {
-					cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as 'invalid-hostname'", false, 'SYSLOG');
+					$unresolved_host = 'unresolved-' . $host['host'];
+					cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as '" . $unresolved_host . "'", false, 'SYSLOG');
 					syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
 						SET host = ?
 						WHERE host = ?
 						AND `status` = ?",
-						array($host['host'], $host['host'], $uniqueID));
+						array($unresolved_host, $host['host'], $uniqueID));
 				}
 			}
 		}
