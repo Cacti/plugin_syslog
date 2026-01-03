@@ -1779,7 +1779,7 @@ function syslog_check_cacti_hosts($host, $uniqueID) {
 	}
 
 	// Check if the host exists in cacti by hostname and get the description
-	$cacti_host = db_fetch_row_prepared('SELECT description
+	$cacti_host = db_fetch_row_prepared('SELECT DISTINCT description
 		FROM host
 		WHERE hostname = ?
 		LIMIT 1',
@@ -1833,13 +1833,17 @@ function syslog_update_reference_tables($uniqueID) {
             // Check if hostname resolves via DNS (only if DNS is enabled)
             if (read_config_option('syslog_no_dns') != 'on') {
                 if ($host['host'] != gethostbyname($host['host'])) {
-                    continue;
+                    // DNS resolved successfully
+                    $resolved = true;
                 }
             }
-            // Check if hostname exists in Cacti hosts table
-            $resolved = syslog_check_cacti_hosts($host['host'], $uniqueID);
             
-            // If not found in Cacti either, prefix the hostname
+            // Check if hostname exists in Cacti hosts table (only if not already resolved via DNS)
+            if (!$resolved) {
+                $resolved = syslog_check_cacti_hosts($host['host'], $uniqueID);
+            }
+            
+            // If not resolved via DNS or found in Cacti, prefix the hostname
             if (!$resolved) {
                 $unresolved_host = 'unresolved-' . $host['host'];
                 cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as '" . $unresolved_host . "'", false, 'SYSLOG');
