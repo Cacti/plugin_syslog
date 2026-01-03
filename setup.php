@@ -1138,9 +1138,9 @@ function syslog_config_settings() {
 			'size' => 80,
 			'max_length' => 255,
 		),
-		'syslog_validate_hostname' => array(
-			'friendly_name' => __('Validate Hostnames', 'syslog'),
-			'description' => __('If this checkbox is set, all hostnames are validated via DNS lookup first. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned to a special host called \'invalid_host\'.', 'syslog'),
+		'syslog_resolve_hostname' => array(
+			'friendly_name' => __('Resolve Hostnames', 'syslog'),
+			'description' => __('If this checkbox is set, all hostnames are resolved via DNS lookup first. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned to a special host called \'invalid_host\'.', 'syslog'),
 			'method' => 'checkbox',
 			'default' => ''
 		),
