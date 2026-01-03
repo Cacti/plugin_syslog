@@ -1760,7 +1760,6 @@ function syslog_strip_incoming_domains($uniqueID) {
 
 
 
-
 /**
  * Check if the hostname is in the cacti hosts table
  * Some devices only send IP addresses in syslog messages, and may not be in the DNS
@@ -1818,35 +1817,40 @@ function syslog_update_reference_tables($uniqueID) {
 	syslog_debug('Updating Reference Tables from New Syslog Records');
 
 	/* Validate and resolve hostnames - check DNS first, then Cacti, then mark invalid */
-	if (read_config_option('syslog_resolve_hostname') == 'on') {
-		$hosts = syslog_db_fetch_assoc_prepared('SELECT DISTINCT host
-			FROM `' . $syslogdb_default . '`.`syslog_incoming`
-			WHERE `status` = ?',
-			array($uniqueID));
+    if (read_config_option('syslog_resolve_hostname') == 'on') {
+        $hosts = syslog_db_fetch_assoc_prepared('SELECT DISTINCT host
+            FROM `' . $syslogdb_default . '`.`syslog_incoming`
+            WHERE `status` = ?',
+            array($uniqueID));
 
-		foreach($hosts as $host) {
-			if (!isset($host['host']) || empty($host['host'])) {
-				continue;
-			}
-			
-			// Check if hostname resolves via DNS
-			if ($host['host'] == gethostbyname($host['host'])) {
-				// DNS failed, try to resolve against Cacti hosts
-				$resolved = syslog_check_cacti_hosts($host['host'], $uniqueID);
-				
-				// If not found in Cacti either, prefix the hostname
-				if (!$resolved) {
-					$unresolved_host = 'unresolved-' . $host['host'];
-					cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as '" . $unresolved_host . "'", false, 'SYSLOG');
-					syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
-						SET host = ?
-						WHERE host = ?
-						AND `status` = ?",
-						array($unresolved_host, $host['host'], $uniqueID));
-				}
-			}
-		}
-	}
+        foreach($hosts as $host) {
+            if (!isset($host['host']) || empty($host['host'])) {
+                continue;
+            }
+            
+            $resolved = false;
+            
+            // Check if hostname resolves via DNS (only if DNS is enabled)
+            if (read_config_option('syslog_no_dns') != 'on') {
+                if ($host['host'] != gethostbyname($host['host'])) {
+                    continue;
+                }
+            }
+            // Check if hostname exists in Cacti hosts table
+            $resolved = syslog_check_cacti_hosts($host['host'], $uniqueID);
+            
+            // If not found in Cacti either, prefix the hostname
+            if (!$resolved) {
+                $unresolved_host = 'unresolved-' . $host['host'];
+                cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as '" . $unresolved_host . "'", false, 'SYSLOG');
+                syslog_db_execute_prepared('UPDATE `' . $syslogdb_default . "`.`syslog_incoming`
+                    SET host = ?
+                    WHERE host = ?
+                    AND `status` = ?",
+                    array($unresolved_host, $host['host'], $uniqueID));
+            }
+        }
+    }
 
 	syslog_db_execute_prepared('INSERT INTO `' . $syslogdb_default . '`.`syslog_programs`
 		(program, last_updated)
