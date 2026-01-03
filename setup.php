@@ -1138,18 +1138,6 @@ function syslog_config_settings() {
 			'size' => 80,
 			'max_length' => 255,
 		),
-		'syslog_resolve_hostname' => array(
-			'friendly_name' => __('Resolve Hostnames', 'syslog'),
-			'description' => __('If this checkbox is set, all hostnames are resolved via DNS lookup first. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix \'unresolved-Original_hostname\'.', 'syslog'),
-			'method' => 'checkbox',
-			'default' => ''
-		),
-		'syslog_no_dns' => array(
-			'friendly_name' => __('Disable DNS Resolution for incoming hosts', 'syslog'),
-			'description' => __('If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired.', 'syslog'),
-			'method' => 'checkbox',
-			'default' => ''
-		),
 		'syslog_refresh' => array(
 			'friendly_name' => __('Refresh Interval', 'syslog'),
 			'description' => __('This is the time in seconds before the page refreshes.', 'syslog'),
@@ -1179,6 +1167,23 @@ function syslog_config_settings() {
 			'size' => 80
 		),
 		'syslog_html_header' => array(
+			'friendly_name' => __('Host Discovery Options', 'syslog'),
+			'method' => 'spacer',
+			'collapsible' => 'true'
+		),
+		'syslog_resolve_hostname' => array(
+			'friendly_name' => __('Enable Hostname Resolution', 'syslog'),
+			'description' => __('If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix \'unresolved-Original_hostname\'.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
+		'syslog_no_dns' => array(
+			'friendly_name' => __('Skip DNS Resolution for incoming hosts', 'syslog'),
+			'description' => __('If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => ''
+		),
+		'syslog_html_notification_header' => array(
 			'friendly_name' => __('HTML Notification Settings', 'syslog'),
 			'method' => 'spacer',
 			'collapsible' => 'true'
