@@ -47,10 +47,10 @@ including any delays or issues encountered during the delegation process.
 - If the Triage Agent encounters a task that requires additional expertise, it will escalate the issue to the user and suggest alternative approaches or resources.
 
 
-## Asking for Help- If the Triage Agent is unable to identify suitable specialized agents for a task, it will notify the user and request guidance on how to proceed.
+## Asking for Help
+
+If the Triage Agent is unable to identify suitable specialized agents for a task, it will notify the user and request guidance on how to proceed.
 - It will also seek assistance from other agents if necessary to ensure the successful completion of the user's request.
-
-
 ## Example Workflow1. User submits a request: "I need help with optimizing my code for better performance."
 2. Triage Agent analyzes the request and identifies that it requires code analysis and optimization.
 3. Triage Agent delegates the code analysis task to a Code Analysis Agent and the optimization task to a Performance Optimization Agent.
