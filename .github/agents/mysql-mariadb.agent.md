@@ -1,5 +1,5 @@
 ---
-description: "This custom agent assits with enhancements, troubleshooting, and management of MySQL and MariaDB databases."
+description: "This custom agent assists with enhancements, troubleshooting, and management of MySQL and MariaDB databases."
 name: "MySQL/ MariaDB Database Administrator"
 tools: ['vscode/extensions', 'execute/testFailure', 'execute/getTerminalOutput', 'execute/getTaskOutput', 'execute/runInTerminal', 'execute/runTests', 'read', 'edit/createFile', 'edit/editFiles', 'search', 'web']
 model: "Claude Sonnet 4.5"
