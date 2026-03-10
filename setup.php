@@ -1566,6 +1566,25 @@ function syslog_utilities_action($action) {
 	}
 
 	if ($action == 'purge_syslog_hosts') {
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+			raise_message('syslog_error', __('Invalid request. This action requires a CSRF protected POST.', 'syslog'), MESSAGE_LEVEL_ERROR);
+			header('Location: utilities.php');
+			exit;
+		}
+
+		if (function_exists('csrf_check')) {
+			if (!csrf_check(false)) {
+				raise_message('syslog_error', __('Invalid request. This action requires a CSRF protected POST.', 'syslog'), MESSAGE_LEVEL_ERROR);
+				header('Location: utilities.php');
+				exit;
+			}
+		} else {
+			cacti_log('WARNING: syslog purge blocked -- CSRF validation unavailable', false, 'SYSLOG');
+			raise_message('syslog_error', __('Invalid request. Please try again.', 'syslog'), MESSAGE_LEVEL_ERROR);
+			header('Location: utilities.php');
+			exit;
+		}
+
 		$records = 0;
 
 		syslog_db_execute('DELETE FROM syslog_hosts
@@ -1618,7 +1637,50 @@ function syslog_utilities_list() {
 
 	<tr class='even'>
 		<td>
-			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'><?php print __('Purge Syslog Devices', 'syslog');?></a>
+			<input id='syslog_purge_hosts' type='button' value='<?php print __esc('Purge Syslog Devices', 'syslog');?>'>
+			<div id='syslog_purge_dialog' style='display:none;'>
+				<p><?php print __esc('Are you sure you want to purge stale Syslog devices?', 'syslog');?></p>
+			</div>
+			<script type='text/javascript'>
+			$(function() {
+				$('#syslog_purge_hosts').on('click', function() {
+					$('#syslog_purge_dialog').dialog({
+						title: <?php print json_encode(__('Confirm Purge', 'syslog'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);?>,
+						minHeight: 80,
+						minWidth: 400,
+						resizable: false,
+						draggable: true,
+						buttons: {
+							'Cancel': {
+								text: <?php print json_encode(__('Cancel', 'syslog'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);?>,
+								id: 'btnPurgeCancel',
+								click: function() {
+									$(this).dialog('close');
+								}
+							},
+							'Continue': {
+								text: <?php print json_encode(__('Continue', 'syslog'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);?>,
+								id: 'btnPurgeContinue',
+								click: function() {
+									$(this).dialog('close');
+
+									var postData = {
+										action: 'purge_syslog_hosts',
+										__csrf_magic: csrfMagicToken
+									};
+
+									if (typeof postUrl == 'function') {
+										postUrl({url: 'utilities.php', noState: true}, postData);
+									} else {
+										loadPageUsingPost('utilities.php', postData);
+									}
+								}
+							}
+						}
+					});
+				});
+			});
+			</script>
 		</td>
 		<td>
 			<?php print __('This menu pick provides a means to remove Devices that are no longer reporting into Cacti\'s syslog server.', 'syslog');?>
@@ -1626,4 +1688,3 @@ function syslog_utilities_list() {
 	</tr>
 	<?php
 }
-
