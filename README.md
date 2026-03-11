@@ -177,7 +177,7 @@ sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
 ```
 
 ### Special Note for the Grouping feature
-Syslog now supports the ability to group similar messeges from a specific host together
+Syslog now supports the ability to group similar messages from a specific host together
 for easy summarization for larger systems you may need to expand the default mariadb group_concat_max_len
 The default is 1MB you may need to raise it much higher depending on your needs
 

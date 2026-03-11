@@ -55,7 +55,7 @@ if (!$use_cacti_db) {
 	$syslogdb_ssl_ca   = $database_ssl_ca;
 }
 
-/* Uncomment lines below to enable options for silent installation during intall plugin */
+/* Uncomment lines below to enable options for silent installation during install plugin */
 //$syslog_install_options['upgrade_type'] = 'truncate';
 //$syslog_install_options['engine']       = 'innodb';
 //$syslog_install_options['db_type']      = 'trad';
@@ -63,7 +63,7 @@ if (!$use_cacti_db) {
 //$syslog_install_options['mode']         = 'install';
 //$syslog_install_options['id']           = 'syslog';
 
-/* field in the incomming table */
+/* field in the incoming table */
 $syslog_incoming_config['priorityField']      = 'priority_id';
 $syslog_incoming_config['facilityField']      = 'facility_id';
 $syslog_incoming_config['programField']       = 'program';
