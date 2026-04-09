@@ -58,7 +58,7 @@ jobs:
       run: |
         cd cacti/plugins/syslog
         if find . -name '*.php' -not -path './vendor/*' -exec php -l {} 2>&1 \; | grep -iv 'no syntax errors detected'; then
-          print "Syntax errors found!"
+          echo "Syntax errors found!"
           exit 1
         fi
 
