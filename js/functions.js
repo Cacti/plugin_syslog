@@ -73,9 +73,8 @@ function applyTimespan() {
  */
 function applyFilter() {
 	var strURL  = 'syslog.php?tab='+(window.pageTab || '');
+
 	strURL += '&header=false';
-	strURL += '&date1='+$('#date1').val();
-	strURL += '&date2='+$('#date2').val();
 	strURL += '&host='+$('#host').val();
 	strURL += '&rfilter='+base64_encode($('#rfilter').val());
 	strURL += '&efacility='+$('#efacility').val();
@@ -86,6 +85,14 @@ function applyFilter() {
 	strURL += '&removal='+$('#removal').val();
 	strURL += '&refresh='+$('#refresh').val();
 	strURL += '&grouping=' + ($('#grouping').length ? $('#grouping').val() : '0');
+
+	if ($('#predefined_timespan').val() == 0) {
+		strURL += '&date1='+$('#date1').val();
+		strURL += '&date2='+$('#date2').val();
+	} else {
+		strURL += '&predefined_timespan='+$('#predefined_timespan').val();
+	}
+
 	loadPageNoHeader(strURL);
 }
 
@@ -577,7 +584,7 @@ function initSyslogAutocomplete(formName, callback, onChange) {
 	var formNameTimer;
 	var formNameClickTimer;
 	var formNameOpen = false;
-	
+
 	$(function() {
 		$('#' + formName + '_input').autocomplete({
 			source: window.location.pathname + '?action=' + callback,
@@ -614,8 +621,8 @@ function initSyslogAutocomplete(formName, callback, onChange) {
 				}, 200);
 			}
 		}).on('mouseleave', function() {
-			formNameTimer = setTimeout(function() { 
-				$('#' + formName + '_input').autocomplete('close'); 
+			formNameTimer = setTimeout(function() {
+				$('#' + formName + '_input').autocomplete('close');
 			}, 800);
 		});
 
@@ -630,8 +637,8 @@ function initSyslogAutocomplete(formName, callback, onChange) {
 		$('ul[id^="ui-id"]').on('mouseenter', function() {
 			clearTimeout(formNameTimer);
 		}).on('mouseleave', function() {
-			formNameTimer = setTimeout(function() { 
-				$('#' + formName + '_input').autocomplete('close'); 
+			formNameTimer = setTimeout(function() {
+				$('#' + formName + '_input').autocomplete('close');
 			}, 800);
 		});
 
