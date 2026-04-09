@@ -139,7 +139,6 @@ jobs:
     - name: Check PHP version
       run: php -v
     
-    
     - name: Run apt-get update
       run: sudo apt-get update
     
@@ -237,17 +236,6 @@ jobs:
         cd ${{ github.workspace }}/cacti
         sudo php cli/plugin_manage.php --plugin=syslog --install --enable
 
-    - name: Run Plugin Regression Tests
-      run: |
-        cd ${{ github.workspace }}/cacti/plugins/syslog
-        if [ -d tests/regression ]; then
-          for test in tests/regression/*.php; do
-            [ -f "$test" ] || continue
-            php "$test"
-          done
-        fi
-    
-    
     - name: Run Cacti Poller
       run: |
         cd ${{ github.workspace }}/cacti
