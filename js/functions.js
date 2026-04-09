@@ -85,13 +85,9 @@ function applyFilter() {
 	strURL += '&removal='+$('#removal').val();
 	strURL += '&refresh='+$('#refresh').val();
 	strURL += '&grouping=' + ($('#grouping').length ? $('#grouping').val() : '0');
-
-	if ($('#predefined_timespan').val() == 0) {
-		strURL += '&date1='+$('#date1').val();
-		strURL += '&date2='+$('#date2').val();
-	} else {
-		strURL += '&predefined_timespan='+$('#predefined_timespan').val();
-	}
+	strURL += '&predefined_timespan='+$('#predefined_timespan').val();
+	strURL += '&date1='+$('#date1').val();
+	strURL += '&date2='+$('#date2').val();
 
 	loadPageNoHeader(strURL);
 }
@@ -174,6 +170,8 @@ function initSyslogMain(config) {
 	var pageTab   = config.pageTab || '';
 	var hostTerm  = '';
 	var placeHolder = config.placeHolder || '';
+	var origDate1 = $('#date1').val();
+	var origDate2 = $('#date2').val();
 
 	// Make pageTab global for other functions
 	window.pageTab = pageTab;
@@ -322,9 +320,13 @@ function initSyslogMain(config) {
 			stepMinute: 1,
 			showAnim: 'slideDown',
 			numberOfMonths: 1,
-			timeFormat: 'HH:mm',
+			timeFormat: 'HH:mm:ss',
 			dateFormat: 'yy-mm-dd',
 			showButtonPanel: false
+		}).on('change', function() {
+			if ($('#date1').val() != origDate1) {
+				$('#predefined_timespan').val(0).selectmenu('refresh');
+			}
 		});
 
 		$('#date2').datetimepicker({
@@ -332,10 +334,14 @@ function initSyslogMain(config) {
 			stepMinute: 1,
 			showAnim: 'slideDown',
 			numberOfMonths: 1,
-			timeFormat: 'HH:mm',
+			timeFormat: 'HH:mm:ss',
 			dateFormat: 'yy-mm-dd',
 			showButtonPanel: false
-		});
+		}).on('change', function() {
+			if ($('#date2').val() != origDate2) {
+				$('#predefined_timespan').val(0).selectmenu('refresh');
+			}
+		});;
 	});
 }
 
