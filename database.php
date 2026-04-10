@@ -94,7 +94,7 @@ function syslog_db_execute_prepared($sql, $parms = [], $log = true) {
  * @param string $col_name Use this column name instead of the first one
  * @param bool   $log      Whether to log error messages, defaults to true
  *
- * @return bool the output of the sql query as a single variable
+ * @return mixed The output of the sql query as a single variable
  */
 function syslog_db_fetch_cell($sql, $col_name = '', $log = true) {
 	global $syslog_cnn;
@@ -111,7 +111,7 @@ function syslog_db_fetch_cell($sql, $col_name = '', $log = true) {
  * @param string $col_name Use this column name instead of the first one
  * @param bool   $log      Whether to log error messages, defaults to true
  *
- * @return bool The output of the sql query as a single variable
+ * @return mixed The output of the sql query as a single variable
  */
 function syslog_db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) {
 	global $syslog_cnn;
