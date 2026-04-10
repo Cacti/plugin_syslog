@@ -344,7 +344,7 @@ function syslog_partition_create($table, $time = null) {
 			 * contain only digits, hyphens, and the letter 'd'.
 			 */
 			syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-				PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
+				PARTITION $cformat VALUES LESS THAN (UNIX_TIMESTAMP('$lnow')),
 				PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
 		}
 	} finally {
