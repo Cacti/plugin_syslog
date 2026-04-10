@@ -855,7 +855,7 @@ function syslog_export($tab) {
 				}
 
 				if (isset($hosts[$message['host_id']])) {
-					$host = $hosts[$message['host_id']];
+					$host = trim($hosts[$message['host_id']], ' =+-@');
 				} else {
 					$host = 'Unknown';
 				}
@@ -871,7 +871,10 @@ function syslog_export($tab) {
 
 				fputcsv($fp, $line);
 			}
+
 		}
+
+		fclose($fp);
 	} else {
 		header('Content-type: application/excel');
 		header('Content-Disposition: attachment; filename=alert_log_view-' . date('Y-m-d',time()) . '.csv');
@@ -893,12 +896,15 @@ function syslog_export($tab) {
 					$severity = 'Unknown';
 				}
 
+				$host   = trim($message['host'], ' =+-@');
+				$logmsg = trim($message['logmsg'], ' =+-@');
+
 				$line = [
 					$message['name'],
 					$severity,
 					$message['logtime'],
-					$message['logmsg'],
-					$message['host'],
+					$logmsg,
+					$host,
 					ucfirst($message['facility']),
 					ucfirst($message['priority']),
 					$message['count']
