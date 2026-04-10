@@ -146,9 +146,9 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			// ====================================================
 
-			$alert_info = syslog_db_fetch_cell_prepared('SELECT name
-				FROM `' . $syslogdb_default . '`.`syslog_alert`
-				WHERE id = ?',
+			$alert_info = syslog_db_fetch_cell_prepared("SELECT name
+				FROM `$syslogdb_default`.`syslog_alert`
+				WHERE id = ?",
 				[$matches[1]]);
 
 			$alert_list .= '<li>' . html_escape($alert_info) . '</li>';
@@ -234,9 +234,9 @@ function alert_export() {
 
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
-					$data = syslog_db_fetch_row_prepared('SELECT *
-						FROM `' . $syslogdb_default . '`.`syslog_alert`
-						WHERE id = ?',
+					$data = syslog_db_fetch_row_prepared("SELECT *
+						FROM `$syslogdb_default`.`syslog_alert`
+						WHERE id = ?",
 						[$id]);
 
 					if (cacti_sizeof($data)) {
@@ -332,7 +332,7 @@ function api_syslog_alert_disable($id) {
 
 function api_syslog_alert_enable($id) {
 	global $syslogdb_default;
-	syslog_db_execute("UPDATE `$syslogdb_default`.`syslog_alert` SET enabled = 'on' WHERE id = ?", [$id]);
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_alert` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
 function syslog_get_alert_records(&$sql_where, &$sql_params, $rows) {
@@ -359,8 +359,8 @@ function syslog_get_alert_records(&$sql_where, &$sql_params, $rows) {
 	$sql_order = get_order_string();
 	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
 
-	$query_string = 'SELECT *
-		FROM `' . $syslogdb_default . "`.`syslog_alert`
+	$query_string = "SELECT *
+		FROM `$syslogdb_default`.`syslog_alert`
 		$sql_where
 		$sql_order
 		$sql_limit";
@@ -432,9 +432,9 @@ function syslog_action_edit() {
 	// ====================================================
 
 	if (!isempty_request_var('id') && get_nfilter_request_var('action') == 'edit') {
-		$alert = syslog_db_fetch_row_prepared('SELECT *
-			FROM `' . $syslogdb_default . '`.`syslog_alert`
-			WHERE id = ?',
+		$alert = syslog_db_fetch_row_prepared("SELECT *
+			FROM `$syslogdb_default`.`syslog_alert`
+			WHERE id = ?",
 			[get_request_var('id')]);
 
 		if (cacti_sizeof($alert)) {
@@ -837,8 +837,8 @@ function syslog_alerts() {
 
 	$alerts = syslog_get_alert_records($sql_where, $sql_params, $rows);
 
-	$rows_query_string = 'SELECT COUNT(*)
-		FROM `' . $syslogdb_default . "`.`syslog_alert`
+	$rows_query_string = "SELECT COUNT(*)
+		FROM `$syslogdb_default`.`syslog_alert`
 		$sql_where";
 
 	$total_rows = syslog_db_fetch_cell_prepared($rows_query_string, $sql_params);

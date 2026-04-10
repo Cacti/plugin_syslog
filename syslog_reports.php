@@ -143,9 +143,9 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			// ====================================================
 
-			$report_info = syslog_db_fetch_cell_prepared('SELECT name
-				FROM `' . $syslogdb_default . '`.`syslog_reports`
-				WHERE id = ?',
+			$report_info = syslog_db_fetch_cell_prepared("SELECT name
+				FROM `$syslogdb_default`.`syslog_reports`
+				WHERE id = ?",
 				[$matches[1]]);
 
 			$report_list .= '<li>' . $report_info . '</li>';
@@ -313,17 +313,17 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 function api_syslog_report_remove($id) {
 	global $syslogdb_default;
-	syslog_db_execute('DELETE FROM `' . $syslogdb_default . '`.`syslog_reports` WHERE id=' . $id);
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_reports` WHERE id = ?", [$id]);
 }
 
 function api_syslog_report_disable($id) {
 	global $syslogdb_default;
-	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_reports` SET enabled='' WHERE id=" . $id);
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_reports` SET enabled = '' WHERE id = ?", [$id]);
 }
 
 function api_syslog_report_enable($id) {
 	global $syslogdb_default;
-	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id=" . $id);
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_reports` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
 function syslog_get_report_records(&$sql_where, &$sql_params, $rows) {
@@ -350,8 +350,8 @@ function syslog_get_report_records(&$sql_where, &$sql_params, $rows) {
 	$sql_order = get_order_string();
 	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
 
-	$query_string = 'SELECT *
-		FROM `' . $syslogdb_default . "`.`syslog_reports`
+	$query_string = "SELECT *
+		FROM `$syslogdb_default`.`syslog_reports`
 		$sql_where
 		$sql_order
 		$sql_limit";
@@ -369,9 +369,9 @@ function syslog_action_edit() {
 	// ====================================================
 
 	if (isset_request_var('id')) {
-		$report = syslog_db_fetch_row_prepared('SELECT *
-			FROM `' . $syslogdb_default . '`.`syslog_reports`
-			WHERE id =?',
+		$report = syslog_db_fetch_row_prepared("SELECT *
+			FROM `$syslogdb_default`.`syslog_reports`
+			WHERE id = ?",
 			[get_request_var('id')]);
 
 		if (cacti_sizeof($report)) {
@@ -686,8 +686,8 @@ function syslog_report() {
 
 	$reports = syslog_get_report_records($sql_where, $sql_params, $rows);
 
-	$rows_query_string = 'SELECT COUNT(*)
-		FROM `' . $syslogdb_default . "`.`syslog_reports`
+	$rows_query_string = "SELECT COUNT(*)
+		FROM `$syslogdb_default`.`syslog_reports`
 		$sql_where";
 
 	$total_rows = syslog_db_fetch_cell_prepared($rows_query_string, $sql_params);

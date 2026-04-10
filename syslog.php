@@ -127,8 +127,8 @@ function get_ajax_hosts() {
 	$term = '%' . get_nfilter_request_var('term') . '%';
 
 	if (syslog_db_table_exists('host', false)) {
-		$hosts = syslog_db_fetch_assoc_prepared('SELECT DISTINCT sh.host_id, sh.host, h.id
-			FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, h.id
+			FROM `$syslogdb_default`.`syslog_hosts` AS sh
 			LEFT JOIN host AS h
 			ON sh.host = h.hostname
 			OR sh.host = h.description
@@ -141,7 +141,7 @@ function get_ajax_hosts() {
 			[$term, $term]);
 	} else {
 		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
-			FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+			FROM `$syslogdb_default`.`syslog_hosts` AS sh
 			WHERE sh.host LIKE ?
 			ORDER BY host
 			LIMIT $ac_rows",
@@ -214,9 +214,9 @@ function syslog_view_alarm() {
 	print "<tr class='tableHeader'><td class='textHeaderDark'>" . __('Syslog Alert View', 'syslog') . '</td></tr>';
 	print "<tr><td class='odd'>";
 
-	$html = syslog_db_fetch_cell_prepared('SELECT html
-		FROM `' . $syslogdb_default . '`.`syslog_logs`
-		WHERE seq = ?',
+	$html = syslog_db_fetch_cell_prepared("SELECT html
+		FROM `$syslogdb_default`.`syslog_logs`
+		WHERE seq = ?",
 		[get_request_var('id')]);
 
 	print trim($html, "' ");
@@ -316,8 +316,8 @@ function syslog_statistics() {
 
 	$records = get_stats_records($sql_where, $sql_params, $sql_groupby, $rows);
 
-	$rows_query_string = 'SELECT COUNT(*)
-		FROM `' . $syslogdb_default . "`.`syslog_statistics` AS ss
+	$rows_query_string = "SELECT COUNT(*)
+		FROM `$syslogdb_default`.`syslog_statistics` AS ss
 		$sql_where
 		$sql_groupby";
 
@@ -475,17 +475,17 @@ function get_stats_records(&$sql_where, &$sql_params, &$sql_groupby, $rows) {
 	$query_sql = "SELECT sh.host, sf.facility, sp.priority, spr.program, records, insert_time
 		FROM (
 			SELECT host_id, facility_id, priority_id, program_id, sum(records) AS records, $time
-			FROM `" . $syslogdb_default . "`.`syslog_statistics` AS ss
+			FROM `$syslogdb_default`.`syslog_statistics` AS ss
 			$sql_where
 			$sql_groupby
 		) AS ss
-		LEFT JOIN `" . $syslogdb_default . '`.`syslog_facilities` AS sf
+		LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf
 		ON ss.facility_id=sf.facility_id
-		LEFT JOIN `' . $syslogdb_default . '`.`syslog_priorities` AS sp
+		LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS sp
 		ON ss.priority_id=sp.priority_id
-		LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs` AS spr
+		LEFT JOIN `$syslogdb_default`.`syslog_programs` AS spr
 		ON ss.program_id=spr.program_id
-		LEFT JOIN `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+		LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 		ON ss.host_id=sh.host_id
 		$sql_order
 		$sql_limit";
@@ -520,8 +520,8 @@ function syslog_stats_filter() {
 							}
 
 							if (syslog_db_table_exists('host', false)) {
-								$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
-									FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+								$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, h.id
+									FROM `$syslogdb_default`.`syslog_hosts` AS sh
 									LEFT JOIN host AS h
 									ON sh.host = h.hostname
 									OR sh.host = h.description
@@ -531,7 +531,7 @@ function syslog_stats_filter() {
 									LIMIT $ac_rows");
 							} else {
 								$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
-									FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+									FROM `$syslogdb_default`.`syslog_hosts` AS sh
 									ORDER BY host
 									LIMIT $ac_rows");
 							}
@@ -550,7 +550,7 @@ function syslog_stats_filter() {
 										print ' selected';
 									}
 
-									print '>' . $host['host'] . '</option>';
+									print '>' . html_escape($host['host']) . '</option>';
 								}
 							}
 							?>
@@ -564,9 +564,9 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('facility') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog'); ?></option>
 							<option value='-2'<?php if (get_request_var('facility') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog'); ?></option>
 							<?php
-							$facilities = syslog_db_fetch_assoc('SELECT DISTINCT facility_id, facility
-								FROM `' . $syslogdb_default . '`.`syslog_facilities` AS sf
-								ORDER BY facility');
+							$facilities = syslog_db_fetch_assoc("SELECT DISTINCT facility_id, facility
+								FROM `$syslogdb_default`.`syslog_facilities` AS sf
+								ORDER BY facility");
 
 							if (cacti_sizeof($facilities)) {
 								foreach ($facilities as $r) {
@@ -576,7 +576,7 @@ function syslog_stats_filter() {
 										print ' selected';
 									}
 
-									print '>' . ucfirst($r['facility']) . '</option>';
+									print '>' . html_escape(ucfirst($r['facility'])) . '</option>';
 								}
 							}
 							?>
@@ -590,9 +590,9 @@ function syslog_stats_filter() {
 							<option value='-1'<?php if (get_request_var('priority') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog'); ?></option>
 							<option value='-2'<?php if (get_request_var('priority') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog'); ?></option>
 							<?php
-							$priorities = syslog_db_fetch_assoc('SELECT DISTINCT priority_id, priority
-								FROM `' . $syslogdb_default . '`.`syslog_priorities` AS sp
-								ORDER BY priority');
+							$priorities = syslog_db_fetch_assoc("SELECT DISTINCT priority_id, priority
+								FROM `$syslogdb_default`.`syslog_priorities` AS sp
+								ORDER BY priority");
 
 							if (cacti_sizeof($priorities)) {
 								foreach ($priorities as $r) {
@@ -602,7 +602,7 @@ function syslog_stats_filter() {
 										print ' selected';
 									}
 
-									print '>' . ucfirst($r['priority']) . '</option>';
+									print '>' . html_escape(ucfirst($r['priority'])) . '</option>';
 								}
 							}
 							?>
@@ -928,9 +928,9 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 
 			if ($thold_pos !== false) {
 				$ids = array_rekey(
-					syslog_db_fetch_assoc('SELECT id
-						FROM `' . $syslogdb_default . '`.`syslog_alert`
-						WHERE method = 1'),
+					syslog_db_fetch_assoc("SELECT id
+						FROM `$syslogdb_default`.`syslog_alert`
+						WHERE method = 1"),
 					'id', 'id'
 				);
 
@@ -1070,10 +1070,10 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 					MAX(syslog.logtime) AS logtime,
 					MIN(syslog.seq) AS seq,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
-					FROM `" . $syslogdb_default . '`.`syslog`
-					LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
-					ON syslog.program_id=syslog_programs.program_id ' .
-					$sql_where . "
+					FROM `$syslogdb_default`.`syslog`
+					LEFT JOIN `$syslogdb_default`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id
+					$sql_where
 					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
 					$sql_order
 					$sql_limit";
@@ -1092,10 +1092,10 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 						MAX(syslog.logtime) AS logtime,
 						MIN(syslog.seq) AS seq,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
-						FROM `" . $syslogdb_default . '`.`syslog` AS syslog
-						LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
-						ON syslog.program_id=syslog_programs.program_id ' .
-						$sql_where . "
+						FROM `$syslogdb_default`.`syslog` AS syslog
+						LEFT JOIN `$syslogdb_default`.`syslog_programs`
+						ON syslog.program_id=syslog_programs.program_id
+						$sql_where
 						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
 					) UNION (SELECT
 						syslog.host_id,
@@ -1110,10 +1110,10 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 						MAX(syslog.logtime) AS logtime,
 						MIN(syslog.seq) AS seq,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
-						FROM `" . $syslogdb_default . '`.`syslog_removed` AS syslog
-						LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
-						ON syslog.program_id=syslog_programs.program_id ' .
-						$sql_where . "
+						FROM `$syslogdb_default`.`syslog_removed` AS syslog
+						LEFT JOIN `$syslogdb_default`.`syslog_programs`
+						ON syslog.program_id=syslog_programs.program_id
+						$sql_where
 						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
 					)
 				) AS grouped_results
@@ -1133,10 +1133,10 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 					MAX(syslog.logtime) AS logtime,
 					MIN(syslog.seq) AS seq,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
-					FROM `" . $syslogdb_default . '`.`syslog_removed` AS syslog
-					LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs` AS syslog_programs
-					ON syslog.program_id=syslog_programs.program_id ' .
-					$sql_where . "
+					FROM `$syslogdb_default`.`syslog_removed` AS syslog
+					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
+					ON syslog.program_id=syslog_programs.program_id
+					$sql_where
 					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
 					$sql_order
 					$sql_limit";
@@ -1145,47 +1145,47 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 			// Original non-grouped queries
 			if (get_request_var('removal') == '-1') {
 				$query_sql = "SELECT syslog.*, syslog_programs.program, 'main' AS mtype
-					FROM `" . $syslogdb_default . '`.`syslog`
-					LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
-					ON syslog.program_id=syslog_programs.program_id ' .
-					$sql_where . "
+					FROM `$syslogdb_default`.`syslog`
+					LEFT JOIN `$syslogdb_default`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id
+					$sql_where
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
 				$query_sql = "(SELECT syslog.*, syslog_programs.program, 'main' AS mtype
-					FROM `" . $syslogdb_default . '`.`syslog` AS syslog
-					LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
+					FROM `$syslogdb_default`.`syslog` AS syslog
+					LEFT JOIN `$syslogdb_default`.`syslog_programs`
 					ON syslog.program_id=syslog_programs.program_id ' .
-					$sql_where . "
+					$sql_where
 					) UNION (SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
-					FROM `" . $syslogdb_default . '`.`syslog_removed` AS syslog
-					LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
-					ON syslog.program_id=syslog_programs.program_id ' .
-					$sql_where . ")
+					FROM `$syslogdb_default`.`syslog_removed` AS syslog
+					LEFT JOIN `$syslogdb_default`.`syslog_programs`
+					ON syslog.program_id=syslog_programs.program_id
+					$sql_where)
 					$sql_order
 					$sql_limit";
 			} else {
 				$query_sql = "SELECT syslog.*, syslog_programs.program, 'remove' AS mtype
-					FROM `" . $syslogdb_default . '`.`syslog_removed` AS syslog
-					LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs` AS syslog_programs
-					ON syslog.program_id=syslog_programs.program_id ' .
-					$sql_where . "
+					FROM `$syslogdb_default`.`syslog_removed` AS syslog
+					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
+					ON syslog.program_id=syslog_programs.program_id
+					$sql_where
 					$sql_order
 					$sql_limit";
 			}
 		}
 	} else {
-		$query_sql = 'SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
-			FROM `' . $syslogdb_default . '`.`syslog_logs` AS syslog
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
+		$query_sql = "SELECT syslog.*, sf.facility, sp.priority, spr.program, sa.name, sa.severity
+			FROM `$syslogdb_default`.`syslog_logs` AS syslog
+			LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf
 			ON syslog.facility_id=sf.facility_id
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_priorities` AS sp
+			LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS sp
 			ON syslog.priority_id=sp.priority_id
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_alert` AS sa
+			LEFT JOIN `$syslogdb_default`.`syslog_alert` AS sa
 			ON syslog.alert_id=sa.id
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs` AS spr
-			ON syslog.program_id=spr.program_id ' .
-			$sql_where . "
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS spr
+			ON syslog.program_id=spr.program_id
+			$sql_where
 			$sql_order
 			$sql_limit";
 	}
@@ -1199,7 +1199,7 @@ function syslog_filter($sql_where, $tab) {
 	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals;
 	global $syslogdb_default;
 
-	$unprocessed = syslog_db_fetch_cell('SELECT COUNT(*) FROM `' . $syslogdb_default . '`.`syslog_incoming`');
+	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
 
 	if (isset_request_var('date1')) {
 		$filter_text = __esc(' [ Start: \'%s\' to End: \'%s\', Unprocessed Messages: %s ]', get_request_var('date1'), get_request_var('date2'), $unprocessed, 'syslog');
@@ -1242,12 +1242,12 @@ function syslog_filter($sql_where, $tab) {
 									$end_val   = sizeof($graph_timespans);
 								}
 
-	if (cacti_sizeof($graph_timespans)) {
-		foreach ($graph_timespans as $index => $value) {
-			print "<option value='$index'" . (get_request_var('predefined_timespan') == $index ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-		}
-	}
-	?>
+								if (cacti_sizeof($graph_timespans)) {
+									foreach ($graph_timespans as $index => $value) {
+										print "<option value='$index'" . (get_request_var('predefined_timespan') == $index ? ' selected' : '') . '>' . html_escape($value) . '</option>';
+									}
+								}
+								?>
 							</select>
 						</td>
 						<td>
@@ -1274,19 +1274,19 @@ function syslog_filter($sql_where, $tab) {
 						<td>
 							<select id='predefined_timeshift' title='<?php print __esc('Define Shifting Interval', 'syslog'); ?>'>
 								<?php
-	$start_val = 1;
-	$end_val   = sizeof($graph_timeshifts) + 1;
+								$start_val = 1;
+								$end_val   = sizeof($graph_timeshifts) + 1;
 
-	if (cacti_sizeof($graph_timeshifts)) {
-		for ($shift_value = $start_val; $shift_value < $end_val; $shift_value++) {
-			print "<option value='$shift_value'";
+								if (cacti_sizeof($graph_timeshifts)) {
+									for ($shift_value = $start_val; $shift_value < $end_val; $shift_value++) {
+										print "<option value='$shift_value'";
 
-			if (get_request_var('predefined_timeshift') == $shift_value) {
-				print ' selected';
-			} print '>' . title_trim($graph_timeshifts[$shift_value], 40) . '</option>';
-		}
-	}
-	?>
+										if (get_request_var('predefined_timeshift') == $shift_value) {
+											print ' selected';
+										} print '>' . title_trim($graph_timeshifts[$shift_value], 40) . '</option>';
+									}
+								}
+								?>
 							</select>
 						</td>
 						<td>
@@ -1362,7 +1362,7 @@ function syslog_filter($sql_where, $tab) {
 										$hosts = syslog_db_fetch_assoc("SELECT *
 											FROM (
 												SELECT DISTINCT sh.host_id, sh.host, h.id, '1' AS selected
-												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												FROM `$syslogdb_default`.`syslog_hosts` AS sh
 												LEFT JOIN host AS h
 												ON sh.host = h.hostname
 												OR sh.host = h.description
@@ -1371,7 +1371,7 @@ function syslog_filter($sql_where, $tab) {
 												$mhosts_where
 												UNION
 												SELECT DISTINCT sh.host_id, sh.host, h.id, '0' AS selected
-												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												FROM `$syslogdb_default`.`syslog_hosts` AS sh
 												LEFT JOIN host AS h
 												ON sh.host = h.hostname
 												OR sh.host = h.description
@@ -1382,8 +1382,8 @@ function syslog_filter($sql_where, $tab) {
 											ORDER BY selected DESC, host
 											LIMIT $ac_rows");
 									} else {
-										$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, h.id
-											FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, h.id
+											FROM `$syslogdb_default`.`syslog_hosts` AS sh
 											LEFT JOIN host AS h
 											ON sh.host = h.hostname
 											OR sh.host = h.description
@@ -1398,18 +1398,18 @@ function syslog_filter($sql_where, $tab) {
 										$hosts = syslog_db_fetch_assoc("SELECT *
 											FROM (
 												SELECT DISTINCT sh.host_id, sh.host, '0' AS id, '1' AS selected
-												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												FROM `$syslogdb_default`.`syslog_hosts` AS sh
 												$mhosts_where
 												UNION
 												SELECT DISTINCT sh.host_id, sh.host, '0' AS id, '0' AS selected
-												FROM `" . $syslogdb_default . "`.`syslog_hosts` AS sh
+												FROM `$syslogdb_default`.`syslog_hosts` AS sh
 												$mhosts_nwhere
 											) AS rs
 											ORDER BY selected DESC, host
 											LIMIT $ac_rows");
 									} else {
-										$hosts = syslog_db_fetch_assoc('SELECT DISTINCT sh.host_id, sh.host, "0" AS id
-											FROM `' . $syslogdb_default . "`.`syslog_hosts` AS sh
+										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, '0 AS id
+											FROM `$syslogdb_default`.`syslog_hosts` AS sh
 											$hosts_where
 											ORDER BY host
 											LIMIT $ac_rows");
@@ -1437,7 +1437,7 @@ function syslog_filter($sql_where, $tab) {
 										}
 
 										print '>';
-										print $host['host'] . '</option>';
+										print html_escape($host['host']) . '</option>';
 									}
 								}
 								?>
@@ -1515,10 +1515,10 @@ function syslog_filter($sql_where, $tab) {
 									$hostfilter = '';
 								}
 
-								$efacilities = syslog_db_fetch_assoc('SELECT DISTINCT f.facility_id, f.facility
-									FROM `' . $syslogdb_default . '`.`syslog_host_facilities` AS fh
-									INNER JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS f
-									ON f.facility_id=fh.facility_id ' . ($hostfilter != '' ? 'WHERE ' : '') . $hostfilter . '
+								$efacilities = syslog_db_fetch_assoc("SELECT DISTINCT f.facility_id, f.facility
+									FROM `$syslogdb_default`.`syslog_host_facilities` AS fh
+									INNER JOIN `$syslogdb_default`.`syslog_facilities` AS f
+									ON f.facility_id=fh.facility_id " . ($hostfilter != '' ? 'WHERE ' : '') . $hostfilter . '
 									ORDER BY facility');
 
 								if (cacti_sizeof($efacilities)) {
@@ -1529,7 +1529,7 @@ function syslog_filter($sql_where, $tab) {
 											print ' selected';
 										}
 
-										print '>' . ucfirst($efacility['facility']) . '</option>';
+										print '>' . html_escape(ucfirst($efacility['facility'])) . '</option>';
 									}
 								}
 								?>
@@ -1709,57 +1709,57 @@ function syslog_messages($tab = 'syslog') {
 				$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
 					FROM (
 						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
-						FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
 						UNION
 						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
-						FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
 					) AS rowcount");
 			} elseif (get_request_var('removal') == -1) {
 				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
-					FROM `" . $syslogdb_default . "`.`syslog` AS syslog
+					FROM `$syslogdb_default`.`syslog` AS syslog
 					$sql_where");
 			} else {
 				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
-					FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					$sql_where");
 			}
 		} else {
 			// Original non-grouped row counting
 			if (get_request_var('removal') == 1) {
-				$total_rows = syslog_db_fetch_cell('SELECT SUM(totals)
+				$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
 					FROM (
-						SELECT count(*) AS totals
-						FROM `' . $syslogdb_default . "`.`syslog` AS syslog
+						SELECT COUNT(*) AS totals
+						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
 						UNION
-						SELECT count(*) AS totals
-						FROM `" . $syslogdb_default . "`.`syslog_removed` AS syslog
+						SELECT COUNT(*) AS totals
+						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
 					) AS rowcount");
 			} elseif (get_request_var('removal') == -1) {
-				$total_rows = syslog_db_fetch_cell('SELECT count(*)
-					FROM `' . $syslogdb_default . "`.`syslog` AS syslog
+				$total_rows = syslog_db_fetch_cell("SELECT COUNT(*)
+					FROM `$syslogdb_default`.`syslog` AS syslog
 					$sql_where");
 			} else {
-				$total_rows = syslog_db_fetch_cell('SELECT count(*)
-					FROM `' . $syslogdb_default . "`.`syslog_removed` AS syslog
+				$total_rows = syslog_db_fetch_cell("SELECT COUNT(*)
+					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					$sql_where");
 			}
 		}
 	} else {
-		$total_rows = syslog_db_fetch_cell('SELECT count(*)
-			FROM `' . $syslogdb_default . '`.`syslog_logs` AS syslog
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_facilities` AS sf
+		$total_rows = syslog_db_fetch_cell("SELECT COUNT(*)
+			FROM `$syslogdb_default`.`syslog_logs` AS syslog
+			LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf
 			ON syslog.facility_id=sf.facility_id
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_priorities` AS sp
+			LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS sp
 			ON syslog.priority_id=sp.priority_id
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_alert` AS sa
+			LEFT JOIN `$syslogdb_default`.`syslog_alert` AS sa
 			ON syslog.alert_id=sa.id
-			LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs` AS spr
-			ON syslog.program_id=spr.program_id ' .
-			$sql_where);
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS spr
+			ON syslog.program_id=spr.program_id
+			$sql_where");
 	}
 
 	if ($tab == 'syslog') {
@@ -1804,20 +1804,20 @@ function syslog_messages($tab = 'syslog') {
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
 		$hosts = array_rekey(
-			syslog_db_fetch_assoc('SELECT host_id, host
-				FROM `' . $syslogdb_default . '`.`syslog_hosts`'),
+			syslog_db_fetch_assoc("SELECT host_id, host
+				FROM `$syslogdb_default`.`syslog_hosts`"),
 			'host_id', 'host'
 		);
 
 		$facilities = array_rekey(
-			syslog_db_fetch_assoc('SELECT facility_id, facility
-				FROM `' . $syslogdb_default . '`.`syslog_facilities`'),
+			syslog_db_fetch_assoc("SELECT facility_id, facility
+				FROM `$syslogdb_default`.`syslog_facilities`"),
 			'facility_id', 'facility'
 		);
 
 		$priorities = array_rekey(
-			syslog_db_fetch_assoc('SELECT priority_id, priority
-				FROM `' . $syslogdb_default . '`.`syslog_priorities`'),
+			syslog_db_fetch_assoc("SELECT priority_id, priority
+				FROM `$syslogdb_default`.`syslog_priorities`"),
 			'priority_id', 'priority'
 		);
 
@@ -1851,11 +1851,11 @@ function syslog_messages($tab = 'syslog') {
 					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
 				}
 
-				form_selectable_cell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
-				form_selectable_cell($sm['program'], $sm['seq'], '', 'left');
-				form_selectable_cell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')), $sm['seq'], '', 'left syslogMessage');
-				form_selectable_cell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
-				form_selectable_cell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_ecell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_ecell($sm['program'], $sm['seq'], '', 'left');
+				form_selectable_ecell(filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')), $sm['seq'], '', 'left syslogMessage');
+				form_selectable_ecell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_ecell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
 
 				// Add occurrence count if grouping is enabled
 				if ($grouping_enabled) {
@@ -1869,11 +1869,11 @@ function syslog_messages($tab = 'syslog') {
 					$seq_array = explode(',', $sm['seq_list']);
 
 					// Get individual messages for this group
-					$detail_messages = syslog_db_fetch_assoc('SELECT syslog.*, syslog_programs.program
-						FROM `' . $syslogdb_default . '`.`' . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . '` AS syslog
-						LEFT JOIN `' . $syslogdb_default . '`.`syslog_programs`
+					$detail_messages = syslog_db_fetch_assoc("SELECT syslog.*, syslog_programs.program
+						FROM `$syslogdb_default`.`" . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
+						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
-						WHERE syslog.seq IN (' . implode(',', array_map('intval', $seq_array)) . ')
+						WHERE syslog.seq IN (" . implode(',', array_map('intval', $seq_array)) . ')
 						ORDER BY syslog.logtime DESC');
 
 					if (cacti_sizeof($detail_messages)) {

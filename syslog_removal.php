@@ -160,9 +160,9 @@ function form_actions() {
 			input_validate_input_number($matches[1]);
 			// ====================================================
 
-			$removal_info = syslog_db_fetch_cell_prepared('SELECT name
-				FROM `' . $syslogdb_default . '`.`syslog_remove`
-				WHERE id = ?',
+			$removal_info = syslog_db_fetch_cell_prepared("SELECT name
+				FROM `$syslogdb_default`.`syslog_remove`
+				WHERE id = ?",
 				[$matches[1]]);
 
 			$removal_list .= '<li>' . $removal_info . '</li>';
@@ -258,9 +258,9 @@ function removal_export() {
 
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
-					$data = syslog_db_fetch_row_prepared('SELECT *
-						FROM `' . $syslogdb_default . '`.`syslog_remove`
-						WHERE id = ?',
+					$data = syslog_db_fetch_row_prepared("SELECT *
+						FROM `$syslogdb_default`.`syslog_remove`
+						WHERE id = ?",
 						[$id]);
 
 					if (cacti_sizeof($data)) {
@@ -365,8 +365,8 @@ function syslog_get_removal_records(&$sql_where, &$sql_params, $rows) {
 	$sql_order = get_order_string();
 	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
 
-	$query_string = 'SELECT *
-		FROM `' . $syslogdb_default . "`.`syslog_remove`
+	$query_string = "SELECT *
+		FROM `$syslogdb_default`.`syslog_remove`
 		$sql_where
 		$sql_order
 		$sql_limit";
@@ -385,9 +385,9 @@ function syslog_action_edit() {
 	// ====================================================
 
 	if (isset_request_var('id') && get_nfilter_request_var('action') == 'edit') {
-		$removal = syslog_db_fetch_row_prepared('SELECT *
-			FROM `' . $syslogdb_default . '`.`syslog_remove`
-			WHERE id = ?',
+		$removal = syslog_db_fetch_row_prepared("SELECT *
+			FROM `$syslogdb_default`.`syslog_remove`
+			WHERE id = ?",
 			[get_request_var('id')]);
 
 		if (cacti_sizeof($removal)) {
@@ -649,8 +649,8 @@ function syslog_removal() {
 
 	$removals = syslog_get_removal_records($sql_where, $sql_params, $rows);
 
-	$rows_query_string = 'SELECT COUNT(*)
-		FROM `' . $syslogdb_default . "`.`syslog_remove`
+	$rows_query_string = "SELECT COUNT(*)
+		FROM `$syslogdb_default`.`syslog_remove`
 		$sql_where";
 
 	$total_rows = syslog_db_fetch_cell_prepared($rows_query_string, $sql_params);
