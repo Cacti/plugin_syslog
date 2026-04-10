@@ -312,17 +312,17 @@ function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, 
 
 function api_syslog_removal_remove($id) {
 	global $syslogdb_default;
-	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_remove` WHERE id='" . $id . "'");
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_remove` WHERE id = ?", [$id]);
 }
 
 function api_syslog_removal_disable($id) {
 	global $syslogdb_default;
-	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_remove` SET enabled='' WHERE id='" . $id . "'");
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_remove` SET enabled = '' WHERE id = ?", [$id]);
 }
 
 function api_syslog_removal_enable($id) {
 	global $syslogdb_default;
-	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_remove` SET enabled='on' WHERE id='" . $id . "'");
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_remove` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
 function api_syslog_removal_reprocess($id) {
