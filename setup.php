@@ -633,7 +633,7 @@ function syslog_setup_table_new($options) {
 	$present = syslog_db_fetch_row("SHOW TABLES FROM `$syslogdb_default` LIKE 'syslog_reports'");
 
 	if (cacti_sizeof($present)) {
-		$newreport = syslog_db_column_exists("$syslogdb_default`.`syslog_reports`", 'body');
+		$newreport = syslog_db_column_exists('syslog_reports', 'body');
 	} else {
 		$newreport = true;
 	}
