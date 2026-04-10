@@ -1382,7 +1382,7 @@ function syslog_filter($sql_where, $tab) {
 											ORDER BY selected DESC, host
 											LIMIT $ac_rows");
 									} else {
-										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, '0 AS id
+										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
 											FROM `$syslogdb_default`.`syslog_hosts` AS sh
 											$hosts_where
 											ORDER BY host

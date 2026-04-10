@@ -243,12 +243,12 @@ function syslog_partition_manage() {
 
 	if (syslog_partition_check('syslog', $time)) {
 		syslog_partition_create('syslog', $time);
-		$syslog_deleted = syslog_partition_remove('syslog', $time);
+		$syslog_deleted = syslog_partition_remove('syslog');
 	}
 
 	if (syslog_partition_check('syslog_removed', $time)) {
 		syslog_partition_create('syslog_removed', $time);
-		$syslog_deleted += syslog_partition_remove('syslog_removed', $time);
+		$syslog_deleted += syslog_partition_remove('syslog_removed');
 	}
 
 	return $syslog_deleted;
@@ -357,7 +357,7 @@ function syslog_partition_create($table, $time = null) {
 /**
  * Remove old partitions for the specified table.
  *
- * @param mixed $table
+ * @param string $table The name of the table
  */
 function syslog_partition_remove($table) {
 	global $syslogdb_default;
@@ -366,6 +366,10 @@ function syslog_partition_remove($table) {
 		cacti_log("SYSLOG: partition_remove called with disallowed table '$table'", false, 'SYSTEM');
 
 		return 0;
+	}
+
+	if ($time === null) {
+		$time = time();
 	}
 
 	$lock_name = substr(hash('sha256', $syslogdb_default . '.syslog_partition_remove.' . $table), 0, 60);
