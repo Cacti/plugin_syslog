@@ -87,7 +87,7 @@ if (!preg_match('/syslog_db_fetch_(?:row|assoc|cell)_prepared[^)]*information_sc
 $allowed_tables = ['syslog', 'syslog_removed'];
 
 foreach ($allowed_tables as $t) {
-	if (!preg_match("/in_array\(\s*\\\$table\s*,\s*array\s*\(\s*'syslog'\s*,\s*'syslog_removed'\s*\)/", $functions)) {
+	if (!preg_match("/in_array\(\s*\\\$table\s*,\s*(?:\[\s*'syslog'\s*,\s*'syslog_removed'\s*\]|array\s*\(\s*'syslog'\s*,\s*'syslog_removed'\s*\))/", $functions)) {
 		fwrite(STDERR, "Allowlist does not contain expected table '$t'.\n");
 		exit(1);
 	}
