@@ -40,7 +40,7 @@ if (!preg_match('/finally\s*\{[^}]*RELEASE_LOCK/s', $functions)) {
 }
 
 // The allowlist must be exactly the two known partition tables, nothing else.
-if (!preg_match("/in_array\(\s*\\\$table\s*,\s*array\s*\(\s*'syslog'\s*,\s*'syslog_removed'\s*\)\s*,\s*true\s*\)/", $functions)) {
+if (!preg_match("/in_array\(\s*\\\$table\s*,\s*(?:array\s*\(\s*'syslog'\s*,\s*'syslog_removed'\s*\)|\[\s*'syslog'\s*,\s*'syslog_removed'\s*\])\s*,\s*true\s*\)/", $functions)) {
 	fwrite(STDERR, "syslog_partition_table_allowed allowlist is not exactly ['syslog', 'syslog_removed'].\n");
 	exit(1);
 }
