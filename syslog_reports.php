@@ -253,9 +253,7 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	global $config, $syslogdb_default;
 
 	// get the username
-	$username = db_fetch_cell_prepared('SELECT username
-		FROM user_auth WHERE id = ?',
-		[$_SESSION['sess_user_id']]);
+	$username = get_username();
 
 	if ($id) {
 		$save['id'] = $id;

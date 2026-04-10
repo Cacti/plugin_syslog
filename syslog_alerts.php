@@ -259,7 +259,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	global $syslogdb_default;
 
 	// get the username
-	$username = db_fetch_cell('SELECT username FROM user_auth WHERE id=' . $_SESSION['sess_user_id']);
+	$username = get_username();
 
 	if ($id) {
 		$save['id'] = $id;
@@ -443,6 +443,7 @@ function syslog_action_edit() {
 			$header_label = __('Alert Edit [new]', 'syslog');
 		}
 	} elseif (isset_request_var('id') && get_nfilter_request_var('action') == 'newedit') {
+		$sql_params   = [];
 		$sql_where    = 'WHERE seq = ?';
 		$sql_params[] = get_request_var('id');
 

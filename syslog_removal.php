@@ -283,10 +283,7 @@ function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, 
 	global $syslogdb_default;
 
 	// get the username
-	$username = db_fetch_cell_prepared('SELECT username
-		FROM user_auth
-		WHERE id = ?',
-		[$_SESSION['sess_user_id']]);
+	$username = get_username();
 
 	if ($id) {
 		$save['id'] = $id;
