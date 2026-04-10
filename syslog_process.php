@@ -274,7 +274,7 @@ function sig_handler($signo) {
 		case SIGINT:
 			cacti_log("WARNING: Syslog 'master' is shutting down by signal!", false, 'SYSLOG');
 
-			unregister_process('syslog', 'master', $config['poller_id'], getmypid());
+			unregister_process('syslog', 'master', $config['poller_id']);
 
 			exit(1);
 
