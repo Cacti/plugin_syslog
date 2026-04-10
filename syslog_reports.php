@@ -228,7 +228,7 @@ function report_export() {
 
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
-					$data = db_fetch_row_prepared('SELECT *
+					$data = syslog_db_fetch_row_prepared('SELECT *
 						FROM syslog_reports
 						WHERE id = ?',
 						[$id]);
