@@ -445,7 +445,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 		priority_id int(10) unsigned default NULL,
 		program_id int(10) unsigned default NULL,
 		host_id int(10) unsigned default NULL,
-		logtime DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 		message varchar(1024) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY(seq, logtime),
@@ -457,7 +457,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 		INDEX facility_id (facility_id))
 		ENGINE=$engine
 		$row_format
-		PARTITION BY RANGE (TO_DAYS(logtime))\n";
+		PARTITION BY RANGE (UNIX_TIMESTAMP(logtime))\n";
 
 	$now = time();
 
@@ -468,10 +468,12 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 		$date      = gmdate('Y-m-d', $timestamp);
 		$format    = gmdate('Ymd', strtotime('- 1 day', $timestamp));
 
-		$parts .= ($parts != '' ? ",\n" : '(') . ' PARTITION d' . $format . " VALUES LESS THAN (TO_DAYS('" . $date . "'))";
+		$parts .= ($parts != '' ? ",\n" : '(') . ' PARTITION d' . $format . " VALUES LESS THAN (UNIX_TIMESTAMP('" . $date . "'))";
 	}
 
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
+
+	//cacti_log($sql . $parts);
 
 	syslog_db_execute($sql . $parts);
 }

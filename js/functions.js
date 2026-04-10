@@ -580,6 +580,18 @@ function initSyslogReports() {
  * Autocomplete Form Callback Functions
  * ======================================================================== */
 
+function syslogExecuteFunctionByName(functionName, context /*, args */) {
+	var args       = Array.prototype.slice.call(arguments, 2);
+	var namespaces = functionName.split('.');
+	var func       = namespaces.pop();
+
+	for(var i = 0; i < namespaces.length; i++) {
+		context = context[namespaces[i]];
+	}
+
+	return context[func].apply(context, args);
+}
+
 /**
  * Initialize autocomplete for form dropdown fields
  * @param {string} formName - The name of the form field
@@ -598,13 +610,19 @@ function initSyslogAutocomplete(formName, callback, onChange) {
 			minLength: 0,
 			select: function(event, ui) {
 				$('#' + formName + '_input').val(ui.item.label);
+
 				if (ui.item.id) {
 					$('#' + formName).val(ui.item.id);
 				} else {
 					$('#' + formName).val(ui.item.value);
 				}
+
 				if (onChange) {
-					eval(onChange);
+					$(this).autocomplete('close');
+
+					onChange = onChange.replace('(', '').replace(')', '');
+
+					syslogExecuteFunctionByName(onChange, window);
 				}
 			}
 		}).css('border', 'none').css('background-color', 'transparent');

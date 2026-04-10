@@ -1070,9 +1070,10 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
-				$query_sql = "SELECT * FROM (
-					(SELECT
-						syslog.host_id, syslog.message, syslog.program_id,
+				$query_sql = "SELECT *
+					FROM (
+					(
+						SELECT syslog.host_id, syslog.message, syslog.program_id,
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
@@ -1082,7 +1083,8 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
 						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
-					) UNION (SELECT syslog.host_id, syslog.message, syslog.program_id,
+					) UNION (
+						SELECT syslog.host_id, syslog.message, syslog.program_id,
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
@@ -1121,16 +1123,19 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
-				$query_sql = "(SELECT `syslog`.*, `syslog_programs`.`program`, 'main' AS mtype
-					FROM `$syslogdb_default`.`syslog` AS syslog
-					LEFT JOIN `$syslogdb_default`.`syslog_programs`
-					ON syslog.program_id=syslog_programs.program_id
-					$sql_where
-					) UNION (SELECT `syslog`.*, `syslog_programs`.`program`, 'remove' AS mtype
-					FROM `$syslogdb_default`.`syslog_removed` AS syslog
-					LEFT JOIN `$syslogdb_default`.`syslog_programs`
-					ON syslog.program_id = syslog_programs.program_id
-					$sql_where)
+				$query_sql = "(
+						SELECT `syslog`.*, `syslog_programs`.`program`, 'main' AS mtype
+						FROM `$syslogdb_default`.`syslog` AS syslog
+						LEFT JOIN `$syslogdb_default`.`syslog_programs`
+						ON syslog.program_id=syslog_programs.program_id
+						$sql_where
+					) UNION (
+						SELECT `syslog`.*, `syslog_programs`.`program`, 'remove' AS mtype
+						FROM `$syslogdb_default`.`syslog_removed` AS syslog
+						LEFT JOIN `$syslogdb_default`.`syslog_programs`
+						ON syslog.program_id = syslog_programs.program_id
+						$sql_where
+					)
 					$sql_order
 					$sql_limit";
 			} else {
