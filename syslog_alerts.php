@@ -322,17 +322,17 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 
 function api_syslog_alert_remove($id) {
 	global $syslogdb_default;
-	syslog_db_execute('DELETE FROM `' . $syslogdb_default . "`.`syslog_alert` WHERE id='" . $id . "'");
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_alert` WHERE id = ?", [$id]);
 }
 
 function api_syslog_alert_disable($id) {
 	global $syslogdb_default;
-	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_alert` SET enabled='' WHERE id='" . $id . "'");
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_alert` SET enabled = '' WHERE id = ?", [$id]);
 }
 
 function api_syslog_alert_enable($id) {
 	global $syslogdb_default;
-	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_alert` SET enabled='on' WHERE id='" . $id . "'");
+	syslog_db_execute("UPDATE `$syslogdb_default`.`syslog_alert` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
 function syslog_get_alert_records(&$sql_where, &$sql_params, $rows) {
