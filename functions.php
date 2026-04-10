@@ -856,13 +856,15 @@ function syslog_export($tab) {
 					$host = 'Unknown';
 				}
 
+				$logmsg = trim($message[$syslog_incoming_config['textField']], ' =+-@');
+
 				$line = [
 					$host,
 					ucfirst($facility),
 					ucfirst($priority),
 					ucfirst($program),
 					$message['logtime'],
-					$message[$syslog_incoming_config['textField']]
+					$logmsg
 				];
 
 				fputcsv($fp, $line);
