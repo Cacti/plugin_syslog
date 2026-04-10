@@ -633,7 +633,7 @@ function syslog_setup_table_new($options) {
 	$present = syslog_db_fetch_row("SHOW TABLES FROM `$syslogdb_default` LIKE 'syslog_reports'");
 
 	if (cacti_sizeof($present)) {
-		$newreport = sizeof(syslog_db_fetch_row("SHOW COLUMNS FROM `$syslogdb_default`.`syslog_reports` LIKE 'body'"));
+		$newreport = syslog_db_column_exists("$syslogdb_default`.`syslog_reports`", 'body');
 	} else {
 		$newreport = true;
 	}
@@ -784,6 +784,9 @@ function syslog_setup_table_new($options) {
 			set_config_option($name, $values['default']);
 		}
 	}
+
+	// ensure that the setting if set previously to truncate is switched to upgrade
+	set_config_option('syslog_install_upgrade_type', 'upgrade');
 }
 
 function syslog_replicate_out($data) {
