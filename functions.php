@@ -380,10 +380,6 @@ function syslog_partition_remove($table) {
 		return 0;
 	}
 
-	if ($time === null) {
-		$time = time();
-	}
-
 	$lock_name = substr(hash('sha256', $syslogdb_default . '.syslog_partition_remove.' . $table), 0, 60);
 
 	$locked = syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 10)', [$lock_name]);
@@ -1008,12 +1004,12 @@ function syslog_manage_items($from_table, $to_table) {
 					$sql_sel = "SELECT seq
 						FROM `$syslogdb_default`.`$from_table`
 						WHERE facility_id IN
-							(SELECT distinct facility_id FROM `$syslogdb_default`syslog_facilities
+							(SELECT distinct facility_id FROM `$syslogdb_default`.`syslog_facilities`
 							WHERE facility = " . db_qstr($remove['message']) . ')';
 				} else {
 					$sql_dlt = "DELETE FROM `$syslogdb_default`.`$from_table`
 						WHERE facility_id IN
-							(SELECT distinct facility_id FROM `$syslogdb_default`syslog_facilities
+							(SELECT distinct facility_id FROM `$syslogdb_default`.`syslog_facilities`
 							WHERE facility = " . db_qstr($remove['message']) . ')';
 				}
 			} elseif ($remove['type'] == 'host') {
