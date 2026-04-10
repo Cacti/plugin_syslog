@@ -238,14 +238,17 @@ function syslog_traditional_manage() {
 function syslog_partition_manage() {
 	$syslog_deleted = 0;
 
-	if (syslog_partition_check('syslog')) {
-		syslog_partition_create('syslog');
-		$syslog_deleted = syslog_partition_remove('syslog');
+	// Always create the partition an hour ahead of time
+	$time = time() + 3600;
+
+	if (syslog_partition_check('syslog', $time)) {
+		syslog_partition_create('syslog', $time);
+		$syslog_deleted = syslog_partition_remove('syslog', $time);
 	}
 
-	if (syslog_partition_check('syslog_removed')) {
-		syslog_partition_create('syslog_removed');
-		$syslog_deleted += syslog_partition_remove('syslog_removed');
+	if (syslog_partition_check('syslog_removed', $time)) {
+		syslog_partition_create('syslog_removed', $time);
+		$syslog_deleted += syslog_partition_remove('syslog_removed', $time);
 	}
 
 	return $syslog_deleted;
@@ -276,15 +279,20 @@ function syslog_partition_table_allowed($table) {
 /**
  * Create a new partition for the specified table.
  *
- * @param mixed $table
+ * @param mixed $table The table to rotate
+ * @param int   $time Assume this time for the partition rotation
  *
  * @return bool true on success, false on lock failure or disallowed table.
  */
-function syslog_partition_create($table) {
+function syslog_partition_create($table, $time = null) {
 	global $syslogdb_default;
 
 	if (!syslog_partition_table_allowed($table)) {
 		return false;
+	}
+
+	if ($time === null) {
+		$time = time() + 3600;
 	}
 
 	// Hash to guarantee the lock name stays within MySQL's 64-byte limit.
@@ -295,7 +303,7 @@ function syslog_partition_create($table) {
 	 * poller cycle (typically 5 minutes), so sustained contention is not
 	 * expected. A failure is logged so monitoring can detect repeated misses.
 	 */
-	$locked    = syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 10)', [$lock_name]);
+	$locked = syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 10)', [$lock_name]);
 
 	if ($locked === null) {
 		// NULL means the GET_LOCK call itself failed, not just contention.
@@ -312,9 +320,8 @@ function syslog_partition_create($table) {
 
 	try {
 		// determine the format of the table name
-		$time    = time();
-		$cformat = 'd' . date('Ymd', $time);
-		$lnow    = date('Y-m-d', $time + 86400);
+		$cformat = 'd' . gmdate('Ymd', $time);
+		$lnow    = gmdate('Y-m-d', strtotime('+1 day', $time));
 
 		$exists = syslog_db_fetch_row_prepared('SELECT *
 			FROM `information_schema`.`partitions`
@@ -424,8 +431,13 @@ function syslog_partition_remove($table) {
  * syslog_partition_create and syslog_partition_remove acquire. External
  * serialization is provided by the poller cycle calling
  * syslog_partition_manage().
+ *
+ * @param string $table The table to check
+ * @param int    $time  The time to assume for creation verification
+ *
+ * @return bool If it's time to rotate the partition
  */
-function syslog_partition_check($table) {
+function syslog_partition_check($table, $time = null) {
 	global $syslogdb_default;
 
 	if (!syslog_partition_table_allowed($table)) {
@@ -436,16 +448,21 @@ function syslog_partition_check($table) {
 		include(SYSLOG_CONFIG);
 	}
 
+	if ($time === null) {
+		$time = time() + 3600;
+	}
+
 	// find date of last partition
 	$last_part = syslog_db_fetch_cell_prepared('SELECT PARTITION_NAME
 		FROM `information_schema`.`partitions`
-		WHERE table_schema = ? AND table_name = ?
+		WHERE table_schema = ?
+		AND table_name = ?
 		ORDER BY partition_ordinal_position DESC
 		LIMIT 1,1',
 		[$syslogdb_default, $table]);
 
 	$lformat   = str_replace('d', '', $last_part);
-	$cformat   = date('Ymd');
+	$cformat   = gmdate('Ymd', $time);
 
 	if ($cformat > $lformat) {
 		return true;
@@ -793,7 +810,11 @@ function syslog_export($tab) {
 			'program_id', 'program'
 		);
 
-		print 'host, facility, priority, program, date, message' . "\r\n";
+		$fp = fopen('php://output', 'w');
+
+		$line = ['host', 'facility', 'priority', 'program', 'date', 'message'];
+
+		fputcsv($fp, $line);
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -821,13 +842,16 @@ function syslog_export($tab) {
 					$host = 'Unknown';
 				}
 
-				print '"' .
-					$host . '","' .
-					ucfirst($facility) . '","' .
-					ucfirst($priority) . '","' .
-					ucfirst($program) . '","' .
-					$message['logtime'] . '","' .
-					$message[$syslog_incoming_config['textField']] . '"' . "\r\n";
+				$line = [
+					$host,
+					ucfirst($facility),
+					ucfirst($priority),
+					ucfirst($program),
+					$message['logtime'],
+					$message[$syslog_incoming_config['textField']]
+				];
+
+				fputcsv($fp, $line);
 			}
 		}
 	} else {
@@ -837,7 +861,11 @@ function syslog_export($tab) {
 		$sql_where  = '';
 		$messages   = get_syslog_messages($sql_where, 100000, $tab);
 
-		print 'name, severity, date, message, host, facility, priority, count' . "\r\n";
+		$line = ['name', 'severity', 'date', 'message', 'host', 'facility', 'priority', 'count'];
+
+		$fp = fopen('php://output', 'w');
+
+		fputcsv($fp, $line);
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -847,17 +875,22 @@ function syslog_export($tab) {
 					$severity = 'Unknown';
 				}
 
-				print '"' .
-					$message['name'] . '","' .
-					$severity . '","' .
-					$message['logtime'] . '","' .
-					$message['logmsg'] . '","' .
-					$message['host'] . '","' .
-					ucfirst($message['facility']) . '","' .
-					ucfirst($message['priority']) . '","' .
-					$message['count'] . '"' . "\r\n";
+				$line = [
+					$message['name'],
+					$severity,
+					$message['logtime'],
+					$message['logmsg'],
+					$message['host'],
+					ucfirst($message['facility']),
+					ucfirst($message['priority']),
+					$message['count']
+				];
+
+				fputcsv($fp, $line);
 			}
 		}
+
+		fclose($fp);
 	}
 }
 
