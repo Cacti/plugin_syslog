@@ -686,7 +686,7 @@ function syslog_report() {
 		$rows = get_request_var('rows');
 	}
 
-	$reports   = syslog_get_report_records($sql_where, $sql_params $rows);
+	$reports = syslog_get_report_records($sql_where, $sql_params, $rows);
 
 	$rows_query_string = 'SELECT COUNT(*)
 		FROM `' . $syslogdb_default . "`.`syslog_reports`
