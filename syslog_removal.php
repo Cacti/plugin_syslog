@@ -401,6 +401,7 @@ function syslog_action_edit() {
 			$removal['name'] = __('New Removal Record', 'syslog');
 		}
 	} elseif (isset_request_var('id') && get_nfilter_request_var('action') == 'newedit') {
+		$sql_params   = [];
 		$sql_where    = 'WHERE seq = ?';
 		$sql_params[] = get_request_var('id');
 
