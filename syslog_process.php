@@ -259,9 +259,9 @@ unregister_process('syslog', 'master', $config['poller_id']);
 exit(0);
 
 /**
- * sig_handler - provides a generic means to catch exceptions to the Cacti log.
+ * sig_handler - handles UNIX signals and logs shutdown events to the Cacti log.
  *
- * @param int $signo The signal that was thrown by the interface.
+ * @param int $signo The signal received by the process.
  *
  * @return (void)
  */
