@@ -989,7 +989,7 @@ function syslog_install_advisor($syslog_exists) {
 	}
 
 	print "<table align='center' width='80%'><tr><td>";
-	html_start_box(__('Syslog %s Advisor', $type, 'syslog') . '<', '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog %s Advisor', $type, 'syslog'), '100%', '', '3', 'center', '');
 	print '<tr><td>';
 
 	if ($syslog_exists) {
