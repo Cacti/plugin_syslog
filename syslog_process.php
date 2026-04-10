@@ -39,11 +39,10 @@ syslog_connect();
  * bursts of incoming syslog events
  */
 ini_set('output_buffering', 'Off');
-ini_set('max_runtime', '-1');
 ini_set('max_execution_time', 3600);
 ini_set('memory_limit', '-1');
 
-set_time_limit(0);
+set_time_limit(3600);
 ob_implicit_flush();
 
 global $debug, $syslog_facilities, $syslog_levels;
