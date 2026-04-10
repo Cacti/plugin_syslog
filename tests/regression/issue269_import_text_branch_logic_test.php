@@ -10,12 +10,12 @@
  * called in isolation because they depend on the Cacti runtime.
  */
 
-$root = dirname(__DIR__, 2);
-$targets = array(
+$root    = dirname(__DIR__, 2);
+$targets = [
 	'alert_import'   => $root . '/syslog_alerts.php',
 	'removal_import' => $root . '/syslog_removal.php',
 	'report_import'  => $root . '/syslog_reports.php',
-);
+];
 
 foreach ($targets as $func => $target) {
 	$content = file_get_contents($target);
@@ -65,4 +65,4 @@ foreach ($targets as $func => $target) {
 	}
 }
 
-echo "issue269_import_text_branch_logic_test passed\n";
+print "issue269_import_text_branch_logic_test passed\n";

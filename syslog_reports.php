@@ -67,6 +67,7 @@ switch (get_request_var('action')) {
 		syslog_action_edit();
 
 		bottom_footer();
+
 		break;
 	default:
 		top_header();
@@ -75,12 +76,9 @@ switch (get_request_var('action')) {
 		syslog_report();
 
 		bottom_footer();
+
 		break;
 }
-
-/* --------------------------
-    The Save Function
-   -------------------------- */
 
 function form_save() {
 	if ((isset_request_var('save_component_report')) && (isempty_request_var('add_dq_y'))) {
@@ -99,18 +97,14 @@ function form_save() {
 	}
 }
 
-/* ------------------------
-    The 'actions' function
-   ------------------------ */
-
 function form_actions() {
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 	global $syslogdb_default;
 
 	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP,
-		 array('options' => array('regexp' => '/^([a-zA-Z0-9_]+)$/')));
+		['options' => ['regexp' => '/^([a-zA-Z0-9_]+)$/']]);
 
-	/* if we are to save this form, instead of display it */
+	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 		$drp_action     = get_request_var('drp_action');
@@ -118,11 +112,11 @@ function form_actions() {
 		syslog_apply_selected_items_action(
 			$selected_items,
 			$drp_action,
-			array(
+			[
 				'1' => 'api_syslog_report_remove',
 				'2' => 'api_syslog_report_disable',
 				'3' => 'api_syslog_report_enable'
-			),
+			],
 			'4',
 			get_nfilter_request_var('selected_items')
 		);
@@ -138,62 +132,64 @@ function form_actions() {
 
 	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
 
-	/* setup some variables */
-	$report_array = array(); $report_list = '';
+	// setup some variables
+	$report_array = [];
+	$report_list  = '';
 
-	/* loop through each of the clusters selected on the previous page and get more info about them */
+	// loop through each of the clusters selected on the previous page and get more info about them
 	foreach ($_POST as $var => $val) {
 		if (preg_match('/^chk_([0-9]+)$/', $var, $matches)) {
-			/* ================= input validation ================= */
+			// ================= input validation =================
 			input_validate_input_number($matches[1]);
-			/* ==================================================== */
+			// ====================================================
 
-			$report_info = syslog_db_fetch_cell('SELECT name
+			$report_info = syslog_db_fetch_cell_prepared('SELECT name
 				FROM `' . $syslogdb_default . '`.`syslog_reports`
-				WHERE id=' . $matches[1]);
+				WHERE id = ?',
+				[$matches[1]]);
 
-			$report_list  .= '<li>' . $report_info . '</li>';
+			$report_list .= '<li>' . $report_info . '</li>';
 			$report_array[] = $matches[1];
 		}
 	}
 
 	if (cacti_sizeof($report_array)) {
-		if (get_request_var('drp_action') == '1') { /* delete */
+		if (get_request_var('drp_action') == '1') { // delete
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Delete the following Syslog Report(s).', 'syslog') . "</p>
 					<div class='itemlist'><ul>$report_list</ul></div>";
-					print "</td></tr>
+			print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Delete Syslog Report(s)', 'syslog');
-		} elseif (get_request_var('drp_action') == '2') { /* disable */
+		} elseif (get_request_var('drp_action') == '2') { // disable
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Disable the following Syslog Report(s).', 'syslog') . "</p>
 					<div class='itemlist'><ul>$report_list</ul></div>";
-					print "</td></tr>
+			print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Disable Syslog Report(s)', 'syslog');
-		} elseif (get_request_var('drp_action') == '3') { /* enable */
+		} elseif (get_request_var('drp_action') == '3') { // enable
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Enable the following Syslog Report(s).', 'syslog') . "</p>
 					<div class='itemlist'><ul>$report_list</ul></div>";
-					print "</td></tr>
+			print "</td></tr>
 				</td>
 			</tr>\n";
 
 			$title = __esc('Enable Syslog Report(s)', 'syslog');
-		} elseif (get_request_var('drp_action') == '4') { /* export */
+		} elseif (get_request_var('drp_action') == '4') { // export
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Export the following Syslog Report Rule(s).', 'syslog') . "</p>
 					<div class='itemlist'><ul>$report_list</ul></div>";
-					print "</td></tr>
+			print "</td></tr>
 				</td>
 			</tr>\n";
 
@@ -223,18 +219,19 @@ function form_actions() {
 }
 
 function report_export() {
-	/* if we are to save this form, instead of display it */
+	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
 		if ($selected_items != false) {
 			$output = '<templates>' . PHP_EOL;
+
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
 					$data = db_fetch_row_prepared('SELECT *
 						FROM syslog_reports
 						WHERE id = ?',
-						array($id));
+						[$id]);
 
 					if (cacti_sizeof($data)) {
 						unset($data['id']);
@@ -255,8 +252,10 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$email, $notes, $enabled, $notify = 0) {
 	global $config, $syslogdb_default;
 
-	/* get the username */
-	$username = db_fetch_cell('SELECT username FROM user_auth WHERE id=' . $_SESSION['sess_user_id']);
+	// get the username
+	$username = db_fetch_cell_prepared('SELECT username
+		FROM user_auth WHERE id = ?',
+		[$_SESSION['sess_user_id']]);
 
 	if ($id) {
 		$save['id'] = $id;
@@ -276,18 +275,19 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	$save['body']     = form_input_validate($body,     'body',     '', true, 3);
 	$save['email']    = form_input_validate($email,    'email',    '', true, 3);
 	$save['notes']    = form_input_validate($notes,    'notes',    '', true, 3);
-	$save['enabled']  = ($enabled == 'on' ? 'on':'');
+	$save['enabled']  = ($enabled == 'on' ? 'on' : '');
 	$save['date']     = time();
 	$save['user']     = $username;
 	$save['notify']   = $notify;
 
 	$id = 0;
+
 	if (!is_error_message()) {
 		$sql = syslog_get_alert_sql($save, 100);
 
 		if (cacti_sizeof($sql)) {
-			$db_sql = str_replace('%', '|||||', $sql['sql']);
-			$db_sql = str_replace('?', '%s', $db_sql);
+			$db_sql     = str_replace('%', '|||||', $sql['sql']);
+			$db_sql     = str_replace('?', '%s', $db_sql);
 			$approx_sql = vsprintf($db_sql, $sql['params']);
 			$approx_sql = str_replace('|||||', '%', $approx_sql);
 
@@ -328,33 +328,29 @@ function api_syslog_report_enable($id) {
 	syslog_db_execute('UPDATE `' . $syslogdb_default . "`.`syslog_reports` SET enabled='on' WHERE id=" . $id);
 }
 
-/* ---------------------
-    Reports Functions
-   --------------------- */
-
-function syslog_get_report_records(&$sql_where, $rows) {
+function syslog_get_report_records(&$sql_where, &$sql_params, $rows) {
 	global $syslogdb_default;
 
 	if (get_request_var('filter') != '') {
-		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
-			'(message LIKE ' . db_qstr('%' . get_request_var('filter') . '%') . '
-			OR email LIKE '  . db_qstr('%' . get_request_var('filter') . '%') . '
-			OR notes LIKE '  . db_qstr('%' . get_request_var('filter') . '%') . '
-			OR name LIKE '   . db_qstr('%' . get_request_var('filter') . '%') . ')';
+		$sql_where .= (strlen($sql_where) ? ' AND ' : 'WHERE ') .
+			'(message LIKE ? OR email LIKE ? OR notes LIKE ? OR name LIKE ?)';
+
+		$sql_params[] = '%' . get_request_var('filter') . '%';
+		$sql_params[] = '%' . get_request_var('filter') . '%';
+		$sql_params[] = '%' . get_request_var('filter') . '%';
+		$sql_params[] = '%' . get_request_var('filter') . '%';
 	}
 
-	if (get_request_var('enabled') == '-1') {
-		// Display all status'
-	}elseif (get_request_var('enabled') == '1') {
-		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
-			"enabled='on'";
-	} else {
-		$sql_where .= (strlen($sql_where) ? ' AND ':'WHERE ') .
-			"enabled=''";
+	if (get_request_var('enabled') != '-1') {
+		if (get_request_var('enabled') == '1') {
+			$sql_where .= (strlen($sql_where) ? ' AND ' : 'WHERE ') . "enabled='on'";
+		} else {
+			$sql_where .= (strlen($sql_where) ? ' AND ' : 'WHERE ') . "enabled=''";
+		}
 	}
 
 	$sql_order = get_order_string();
-	$sql_limit = ' LIMIT ' . ($rows*(get_request_var('page')-1)) . ',' . $rows;
+	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
 
 	$query_string = 'SELECT *
 		FROM `' . $syslogdb_default . "`.`syslog_reports`
@@ -362,22 +358,23 @@ function syslog_get_report_records(&$sql_where, $rows) {
 		$sql_order
 		$sql_limit";
 
-	return syslog_db_fetch_assoc($query_string);
+	return syslog_db_fetch_assoc_prepared($query_string, $sql_params);
 }
 
 function syslog_action_edit() {
 	global $message_types, $syslog_freqs, $syslog_times;
 	global $syslogdb_default;
 
-	/* ================= input validation ================= */
+	// ================= input validation =================
 	get_filter_request_var('id');
 	get_filter_request_var('type');
-	/* ==================================================== */
+	// ====================================================
 
 	if (isset_request_var('id')) {
-		$report = syslog_db_fetch_row('SELECT *
+		$report = syslog_db_fetch_row_prepared('SELECT *
 			FROM `' . $syslogdb_default . '`.`syslog_reports`
-			WHERE id=' . get_request_var('id'));
+			WHERE id =?',
+			[get_request_var('id')]);
 
 		if (cacti_sizeof($report)) {
 			$header_label = __esc('Report Edit [edit: %s]', $report['name'], 'syslog');
@@ -400,135 +397,135 @@ function syslog_action_edit() {
 			'id', 'name'
 		);
 	} else {
-		$lists = array('0' => __('N/A', 'syslog'));
+		$lists = ['0' => __('N/A', 'syslog')];
 	}
 
-	$fields_syslog_report_edit = array(
-		'spacer0' => array(
-			'method' => 'spacer',
+	$fields_syslog_report_edit = [
+		'spacer0' => [
+			'method'        => 'spacer',
 			'friendly_name' => __('Details', 'syslog')
-		),
-		'name' => array(
-			'method' => 'textbox',
+		],
+		'name' => [
+			'method'        => 'textbox',
 			'friendly_name' => __('Name', 'syslog'),
-			'description' => __('Please describe this Report.', 'syslog'),
-			'value' => '|arg1:name|',
-			'max_length' => '250'
-		),
-		'enabled' => array(
-			'method' => 'drop_array',
+			'description'   => __('Please describe this Report.', 'syslog'),
+			'value'         => '|arg1:name|',
+			'max_length'    => '250'
+		],
+		'enabled' => [
+			'method'        => 'drop_array',
 			'friendly_name' => __('Enabled?', 'syslog'),
-			'description' => __('Is this Report Enabled?', 'syslog'),
-			'value' => '|arg1:enabled|',
-			'array' => array('on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')),
-			'default' => 'on'
-		),
-		'type' => array(
-			'method' => 'drop_array',
+			'description'   => __('Is this Report Enabled?', 'syslog'),
+			'value'         => '|arg1:enabled|',
+			'array'         => ['on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')],
+			'default'       => 'on'
+		],
+		'type' => [
+			'method'        => 'drop_array',
 			'friendly_name' => __('String Match Type', 'syslog'),
-			'description' => __('Define how you would like this string matched.', 'syslog'),
-			'value' => '|arg1:type|',
-			'array' => $message_types,
-			'default' => 'matchesc'
-		),
-		'message' => array(
-			'method' => 'textbox',
+			'description'   => __('Define how you would like this string matched.', 'syslog'),
+			'value'         => '|arg1:type|',
+			'array'         => $message_types,
+			'default'       => 'matchesc'
+		],
+		'message' => [
+			'method'        => 'textbox',
 			'friendly_name' => __('Message Match String', 'syslog'),
-			'description' => __('The matching component of the syslog message.', 'syslog'),
-			'value' => '|arg1:message|',
-			'default' => '',
-			'max_length' => '255'
-		),
-		'timespan' => array(
-			'method' => 'drop_array',
+			'description'   => __('The matching component of the syslog message.', 'syslog'),
+			'value'         => '|arg1:message|',
+			'default'       => '',
+			'max_length'    => '255'
+		],
+		'timespan' => [
+			'method'        => 'drop_array',
 			'friendly_name' => __('Frequency', 'syslog'),
-			'description' => __('How often should this Report be sent to the distribution list?', 'syslog'),
-			'value' => '|arg1:timespan|',
-			'array' => $syslog_freqs,
-			'default' => 'del'
-		),
-		'timepart' => array(
-			'method' => 'drop_array',
+			'description'   => __('How often should this Report be sent to the distribution list?', 'syslog'),
+			'value'         => '|arg1:timespan|',
+			'array'         => $syslog_freqs,
+			'default'       => 'del'
+		],
+		'timepart' => [
+			'method'        => 'drop_array',
 			'friendly_name' => __('Send Time', 'syslog'),
-			'description' => __('What time of day should this report be sent?', 'syslog'),
-			'value' => '|arg1:timepart|',
-			'array' => $syslog_times,
-			'default' => 'del'
-		),
-		'spacer1' => array(
-			'method' => 'spacer',
+			'description'   => __('What time of day should this report be sent?', 'syslog'),
+			'value'         => '|arg1:timepart|',
+			'array'         => $syslog_times,
+			'default'       => 'del'
+		],
+		'spacer1' => [
+			'method'        => 'spacer',
 			'friendly_name' => __('Report Format', 'syslog')
-		),
-		'message' => array(
+		],
+		'message' => [
 			'friendly_name' => __('Message Match String', 'syslog'),
-			'description' => __('The matching component of the syslog message.', 'syslog'),
-			'method' => 'textbox',
-			'max_length' => '255',
-			'value' => '|arg1:message|',
-			'default' => '',
-		),
-		'body' => array(
+			'description'   => __('The matching component of the syslog message.', 'syslog'),
+			'method'        => 'textbox',
+			'max_length'    => '255',
+			'value'         => '|arg1:message|',
+			'default'       => '',
+		],
+		'body' => [
 			'friendly_name' => __('Email Body Text', 'syslog'),
 			'textarea_rows' => '6',
 			'textarea_cols' => '80',
-			'description' => __('The information that will be contained in the body of the Report.', 'syslog'),
-			'method' => 'textarea',
-			'class' => 'textAreaNotes',
-			'value' => '|arg1:body|',
-			'default' => '',
-		),
-		'notify' => array(
-			'method' => 'drop_array',
+			'description'   => __('The information that will be contained in the body of the Report.', 'syslog'),
+			'method'        => 'textarea',
+			'class'         => 'textAreaNotes',
+			'value'         => '|arg1:body|',
+			'default'       => '',
+		],
+		'notify' => [
+			'method'        => 'drop_array',
 			'friendly_name' => __('Notification List', 'syslog'),
-			'description' => __('Use the contents of this Notification List to dictate who should be notified and how.', 'syslog'),
-			'value' => '|arg1:notify|',
-			'array' => $lists,
-			'none_value' => __('None', 'syslog'),
-			'default' => '0'
-		),
-		'email' => array(
+			'description'   => __('Use the contents of this Notification List to dictate who should be notified and how.', 'syslog'),
+			'value'         => '|arg1:notify|',
+			'array'         => $lists,
+			'none_value'    => __('None', 'syslog'),
+			'default'       => '0'
+		],
+		'email' => [
 			'friendly_name' => __('Email Addresses', 'syslog'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
-			'description' => __('Comma delimited list of Email addresses to send the report to.', 'syslog'),
-			'method' => 'textarea',
-			'class' => 'textAreaNotes',
-			'value' => '|arg1:email|',
-			'default' => '',
-		),
-		'notes' => array(
+			'description'   => __('Comma delimited list of Email addresses to send the report to.', 'syslog'),
+			'method'        => 'textarea',
+			'class'         => 'textAreaNotes',
+			'value'         => '|arg1:email|',
+			'default'       => '',
+		],
+		'notes' => [
 			'friendly_name' => __('Notes', 'syslog'),
 			'textarea_rows' => '3',
 			'textarea_cols' => '60',
-			'description' => __('Space for Notes on the Report', 'syslog'),
-			'method' => 'textarea',
-			'class' => 'textAreaNotes',
-			'value' => '|arg1:notes|',
-			'default' => '',
-		),
-		'id' => array(
+			'description'   => __('Space for Notes on the Report', 'syslog'),
+			'method'        => 'textarea',
+			'class'         => 'textAreaNotes',
+			'value'         => '|arg1:notes|',
+			'default'       => '',
+		],
+		'id' => [
 			'method' => 'hidden_zero',
-			'value' => '|arg1:id|'
-		),
-		'_id' => array(
+			'value'  => '|arg1:id|'
+		],
+		'_id' => [
 			'method' => 'hidden_zero',
-			'value' => '|arg1:id|'
-		),
-		'save_component_report' => array(
+			'value'  => '|arg1:id|'
+		],
+		'save_component_report' => [
 			'method' => 'hidden',
-			'value' => '1'
-		)
-	);
+			'value'  => '1'
+		]
+	];
 
 	form_start('syslog_reports.php', 'syslog_edit');
 
 	html_start_box($header_label, '100%', '', '3', 'center', '');
 
 	draw_edit_form(
-		array(
-			'config' => array('no_form_tag' => true),
-			'fields' => inject_form_variables($fields_syslog_report_edit, (isset($report) ? $report : array()))
-		)
+		[
+			'config' => ['no_form_tag' => true],
+			'fields' => inject_form_variables($fields_syslog_report_edit, (isset($report) ? $report : []))
+		]
 	);
 
 	html_end_box();
@@ -538,8 +535,8 @@ function syslog_action_edit() {
 	?>
 	<script type='text/javascript'>
 
-	var allowEdits=<?php print syslog_allow_edits() ? 'true':'false';?>;
-	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true':'false';?>;
+	var allowEdits=<?php print syslog_allow_edits() ? 'true' : 'false'; ?>;
+	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
 
 	$(function() {
 		if (!allowEdits) {
@@ -569,47 +566,51 @@ function syslog_filter() {
 			<table class='filterTable'>
 				<tr>
 					<td>
-						<?php print __('Search', 'syslog');?>
+						<?php print __('Search', 'syslog'); ?>
 					</td>
 					<td>
-						<input type='text' id='filter' size='25' value='<?php print html_escape_request_var('filter');?>'>
+						<input type='text' id='filter' size='25' value='<?php print html_escape_request_var('filter'); ?>'>
 					</td>
 					<td>
-						<?php print __('Enabled', 'syslog');?>
+						<?php print __('Enabled', 'syslog'); ?>
 					</td>
 					<td>
 						<select id='enabled' onChange='applyFilter()'>
-							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>><?php print __('All', 'syslog');?></option>
-							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>><?php print __('Yes', 'syslog');?></option>
-							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>><?php print __('No', 'syslog');?></option>
+							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>><?php print __('All', 'syslog'); ?></option>
+							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>><?php print __('Yes', 'syslog'); ?></option>
+							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>><?php print __('No', 'syslog'); ?></option>
 						</select>
 					</td>
 					<td>
-						<?php print __('Rows', 'syslog');?>
+						<?php print __('Rows', 'syslog'); ?>
 					</td>
 					<td>
 						<select id='rows' onChange='applyFilter()'>
-							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog');?></option>
+							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 								if (cacti_sizeof($item_rows)) {
 									foreach ($item_rows as $key => $value) {
-										print '<option value="' . $key . '"'; if (get_request_var('rows') == $key) { print ' selected'; } print '>' . $value . '</option>';
+										print '<option value="' . $key . '"';
+
+										if (get_request_var('rows') == $key) {
+											print ' selected';
+										} print '>' . $value . '</option>';
 									}
 								}
-							?>
+	?>
 						</select>
 					</td>
 					<td>
 						<span>
-							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog');?>'>
-							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog');?>'>
-							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog');?>'><?php } ?>
+							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
+							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'>
+							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
 						</span>
 					</td>
 				</tr>
 			</table>
 		</td>
-		<input type='hidden' id='page' value='<?php print get_filter_request_var('page');?>'>
+		<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 		</form>
 		<script type='text/javascript'>
 		initSyslogReports();
@@ -622,45 +623,45 @@ function syslog_report() {
 	global $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
 	global $syslogdb_default;
 
-    /* ================= input validation and session storage ================= */
-    $filters = array(
-        'rows' => array(
-            'filter' => FILTER_VALIDATE_INT,
-            'pageset' => true,
-            'default' => '-1',
-            ),
-        'page' => array(
-            'filter' => FILTER_VALIDATE_INT,
-            'default' => '1'
-            ),
-        'id' => array(
-            'filter' => FILTER_VALIDATE_INT,
-            'default' => '1'
-            ),
-        'enabled' => array(
-            'filter' => FILTER_VALIDATE_INT,
+	// ================= input validation and session storage =================
+	$filters = [
+		'rows' => [
+			'filter'  => FILTER_VALIDATE_INT,
 			'pageset' => true,
-            'default' => '-1'
-			),
-        'filter' => array(
-            'filter' => FILTER_DEFAULT,
-            'pageset' => true,
-            'default' => ''
-            ),
-        'sort_column' => array(
-            'filter' => FILTER_CALLBACK,
-            'default' => 'name',
-            'options' => array('options' => 'sanitize_search_string')
-            ),
-        'sort_direction' => array(
-            'filter' => FILTER_CALLBACK,
-            'default' => 'ASC',
-            'options' => array('options' => 'sanitize_search_string')
-            )
-    );
+			'default' => '-1',
+			],
+		'page' => [
+			'filter'  => FILTER_VALIDATE_INT,
+			'default' => '1'
+			],
+		'id' => [
+			'filter'  => FILTER_VALIDATE_INT,
+			'default' => '1'
+			],
+		'enabled' => [
+			'filter'  => FILTER_VALIDATE_INT,
+			'pageset' => true,
+			'default' => '-1'
+			],
+		'filter' => [
+			'filter'  => FILTER_DEFAULT,
+			'pageset' => true,
+			'default' => ''
+			],
+		'sort_column' => [
+			'filter'  => FILTER_CALLBACK,
+			'default' => 'name',
+			'options' => ['options' => 'sanitize_search_string']
+			],
+		'sort_direction' => [
+			'filter'  => FILTER_CALLBACK,
+			'default' => 'ASC',
+			'options' => ['options' => 'sanitize_search_string']
+			]
+	];
 
-    validate_store_request_vars($filters, 'sess_syslogrep');
-    /* ================= input validation ================= */
+	validate_store_request_vars($filters, 'sess_syslogrep');
+	// ================= input validation =================
 
 	if (syslog_allow_edits()) {
 		$url = 'syslog_reports.php?action=edit&type=1';
@@ -674,35 +675,36 @@ function syslog_report() {
 
 	html_end_box();
 
-	$sql_where = '';
+	$sql_where  = '';
+	$sql_params = [];
 
 	if (get_request_var('rows') == -1) {
 		$rows = read_config_option('num_rows_table');
-	}elseif (get_request_var('rows') == -2) {
+	} elseif (get_request_var('rows') == -2) {
 		$rows = 999999;
 	} else {
 		$rows = get_request_var('rows');
 	}
 
-	$reports   = syslog_get_report_records($sql_where, $rows);
+	$reports   = syslog_get_report_records($sql_where, $sql_params $rows);
 
 	$rows_query_string = 'SELECT COUNT(*)
 		FROM `' . $syslogdb_default . "`.`syslog_reports`
 		$sql_where";
 
-	$total_rows = syslog_db_fetch_cell($rows_query_string);
+	$total_rows = syslog_db_fetch_cell_prepared($rows_query_string, $sql_params);
 
-	$display_text = array(
-		'name'     => array(__('Report Name', 'syslog'), 'ASC'),
-		'enabled'  => array(__('Enabled', 'syslog'), 'ASC'),
-		'type'     => array(__('Match Type', 'syslog'), 'ASC'),
-		'message'  => array(__('Search String', 'syslog'), 'ASC'),
-		'timespan' => array(__('Frequency', 'syslog'), 'ASC'),
-		'timepart' => array(__('Send Time', 'syslog'), 'ASC'),
-		'lastsent' => array(__('Last Sent', 'syslog'), 'ASC'),
-		'date'     => array(__('Last Modified', 'syslog'), 'ASC'),
-		'user'     => array(__('By User', 'syslog'), 'DESC')
-	);
+	$display_text = [
+		'name'     => [__('Report Name', 'syslog'), 'ASC'],
+		'enabled'  => [__('Enabled', 'syslog'), 'ASC'],
+		'type'     => [__('Match Type', 'syslog'), 'ASC'],
+		'message'  => [__('Search String', 'syslog'), 'ASC'],
+		'timespan' => [__('Frequency', 'syslog'), 'ASC'],
+		'timepart' => [__('Send Time', 'syslog'), 'ASC'],
+		'lastsent' => [__('Last Sent', 'syslog'), 'ASC'],
+		'date'     => [__('Last Modified', 'syslog'), 'ASC'],
+		'user'     => [__('By User', 'syslog'), 'DESC']
+	];
 
 	$nav = html_nav_bar('syslog_reports.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('Reports', 'syslog'), 'page', 'main');
 
@@ -718,19 +720,19 @@ function syslog_report() {
 		foreach ($reports as $report) {
 			form_alternate_row('line' . $report['id']);
 			form_selectable_cell(filter_value(title_trim($report['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id']), $report['id']);
-			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes', 'syslog'):__('No', 'syslog')), $report['id']);
+			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes', 'syslog') : __('No', 'syslog')), $report['id']);
 			form_selectable_cell($message_types[$report['type']], $report['id']);
 			form_selectable_cell($report['message'], $report['id']);
 			form_selectable_cell($syslog_freqs[$report['timespan']], $report['id']);
 			form_selectable_cell($syslog_times[$report['timepart']], $report['id']);
-			form_selectable_cell(($report['lastsent'] == 0 ? __('Never', 'syslog'): date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);
+			form_selectable_cell(($report['lastsent'] == 0 ? __('Never', 'syslog') : date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);
 			form_selectable_cell(date('Y-m-d H:i:s', $report['date']), $report['id']);
 			form_selectable_cell($report['user'], $report['id']);
 			form_checkbox_cell($report['name'], $report['id']);
 			form_end_row();
 		}
 	} else {
-		print "<tr><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No Syslog Reports Defined', 'syslog') . "</em></td></tr>";
+		print "<tr><td colspan='" . (cacti_sizeof($display_text) + 1) . "'><em>" . __('No Syslog Reports Defined', 'syslog') . '</em></td></tr>';
 	}
 
 	html_end_box(false);
@@ -755,37 +757,37 @@ function syslog_report() {
 
 		kill_session_var('exporter');
 		exit;
-    }
+	}
 }
 
 function import() {
-	$form_data = array(
-		'import_file' => array(
+	$form_data = [
+		'import_file' => [
 			'friendly_name' => __('Import Report Rule from Local File', 'syslog'),
-			'description' => __('If the XML file containing the Report Rule definition data is located on your local machine, select it here.', 'syslog'),
-			'method' => 'file'
-		),
-		'import_text' => array(
-			'method' => 'textarea',
+			'description'   => __('If the XML file containing the Report Rule definition data is located on your local machine, select it here.', 'syslog'),
+			'method'        => 'file'
+		],
+		'import_text' => [
+			'method'        => 'textarea',
 			'friendly_name' => __('Import Report Rule from Text', 'syslog'),
-			'description' => __('If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it.', 'syslog'),
-			'value' => '',
-			'default' => '',
+			'description'   => __('If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it.', 'syslog'),
+			'value'         => '',
+			'default'       => '',
 			'textarea_rows' => '10',
 			'textarea_cols' => '80',
-			'class' => 'textAreaNotes'
-		)
-	);
+			'class'         => 'textAreaNotes'
+		]
+	];
 
 	print "<form method='post' action='syslog_reports.php' enctype='multipart/form-data'>";
 
 	html_start_box(__('Import Report Data', 'syslog'), '100%', false, '3', 'center', '');
 
 	draw_edit_form(
-		array(
-			'config' => array('no_form_tag' => true),
+		[
+			'config' => ['no_form_tag' => true],
 			'fields' => $form_data
-		)
+		]
 	);
 
 	html_end_box();
@@ -798,46 +800,46 @@ function import() {
 function report_import() {
 	$xml_data = syslog_get_import_xml_payload('syslog_reports.php?header=false');
 
-	/* obtain debug information if it's set */
+	// obtain debug information if it's set
 	$xml_array = xml2array($xml_data);
 
-	$debug_data = array();
+	$debug_data = [];
 
 	if (cacti_sizeof($xml_array)) {
 		foreach ($xml_array as $template => $contents) {
 			$error = false;
-			$save  = array();
+			$save  = [];
 
 			if (cacti_sizeof($contents)) {
 				foreach ($contents as $name => $value) {
 					switch($name) {
-					case 'hash':
-						// See if the hash exists, if it does, update the alert
-						$found = db_fetch_cell_prepared('SELECT id
+						case 'hash':
+							// See if the hash exists, if it does, update the alert
+							$found = db_fetch_cell_prepared('SELECT id
 							FROM syslog_reports
 							WHERE hash = ?',
-							array($value));
+								[$value]);
 
-						if (!empty($found)) {
-							$save['hash'] = $value;
-							$save['id']   = $found;
-						} else {
-							$save['hash'] = $value;
-							$save['id']   = 0;
-						}
+							if (!empty($found)) {
+								$save['hash'] = $value;
+								$save['id']   = $found;
+							} else {
+								$save['hash'] = $value;
+								$save['id']   = 0;
+							}
 
-						break;
-					case 'name':
-						$tname = $value;
-						$save['name'] = $value;
+							break;
+						case 'name':
+							$tname        = $value;
+							$save['name'] = $value;
 
-						break;
-					default:
-						if (syslog_db_column_exists('syslog_reports', $name)) {
-							$save[$name] = $value;
-						}
+							break;
+						default:
+							if (syslog_db_column_exists('syslog_reports', $name)) {
+								$save[$name] = $value;
+							}
 
-						break;
+							break;
 					}
 				}
 			}
@@ -846,9 +848,9 @@ function report_import() {
 				$id = sql_save($save, 'syslog_reports');
 
 				if ($id) {
-					raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog'):__('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+					raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
 				} else {
-					raise_message('syslog_info' . $id, __('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog'):__('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
+					raise_message('syslog_info' . $id, __('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 				}
 			}
 		}

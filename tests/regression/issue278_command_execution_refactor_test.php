@@ -35,13 +35,13 @@ if (strpos($functions, "exec('/bin/sh '") !== false) {
 	exit(1);
 }
 
-/* open_ticket guard: function is a no-op unless open_ticket == 'on' */
+// open_ticket guard: function is a no-op unless open_ticket == 'on'
 if (strpos($functions, "\$alert['open_ticket'] == 'on'") === false) {
 	fwrite(STDERR, "syslog_execute_ticket_command() must guard on open_ticket == 'on'.\n");
 	exit(1);
 }
 
-/* empty-command guard: function is a no-op when command trims to '' */
+// empty-command guard: function is a no-op when command trims to ''
 if (strpos($functions, "\$command != ''") === false) {
 	fwrite(STDERR, "syslog_execute_ticket_command() must guard on non-empty command.\n");
 	exit(1);
@@ -74,41 +74,43 @@ if (strpos($functions, 'alert_replace_variables(') === false) {
 	exit(1);
 }
 
-/* ticket command must only log on failure ($return != 0), not unconditionally */
+// ticket command must only log on failure ($return != 0), not unconditionally
 if (preg_match('/exec\(\$command,.*?\$return\);\s*\n\s*cacti_log\(sprintf\(\'SYSLOG NOTICE:/s', $functions)) {
 	fwrite(STDERR, "syslog_execute_ticket_command() must not unconditionally log success after exec().\n");
 	exit(1);
 }
 
-/* syslog_execute_alert_command must not have dead assignment $returnCode = 126 */
+// syslog_execute_alert_command must not have dead assignment $returnCode = 126
 if (preg_match('/\$returnCode\s*=\s*126/', $functions)) {
 	fwrite(STDERR, "syslog_execute_alert_command() must not contain dead assignment \$returnCode = 126.\n");
 	exit(1);
 }
 
-/* quote-stripping: executable extraction must trim surrounding quotes */
+// quote-stripping: executable extraction must trim surrounding quotes
 if (strpos($functions, "trim(\$cparts[0], '\"\\'')") === false) {
 	fwrite(STDERR, "Executable extraction must strip surrounding quotes from command path.\n");
 	exit(1);
 }
 
-/* preg_split for whitespace tokenization (handles tabs and consecutive spaces) */
+// preg_split for whitespace tokenization (handles tabs and consecutive spaces)
 if (substr_count($functions, "preg_split('/\\s+/', trim(\$command))") < 1) {
 	fwrite(STDERR, "Command tokenization must use preg_split for whitespace splitting.\n");
 	exit(1);
 }
 
-/* non-executable error path must log SYSLOG ERROR in both helpers */
+// non-executable error path must log SYSLOG ERROR in both helpers
 if (substr_count($functions, 'SYSLOG ERROR:') < 2) {
 	fwrite(STDERR, "Both helpers must log SYSLOG ERROR when executable is missing.\n");
 	exit(1);
 }
 
-/* cacti_escapeshellarg must wrap all four --arg values in ticket command */
-$ticket_fn_match = array();
+// cacti_escapeshellarg must wrap all four --arg values in ticket command
+$ticket_fn_match = [];
+
 if (preg_match('/function syslog_execute_ticket_command\b.*?^}/ms', $functions, $ticket_fn_match)) {
 	$ticket_body = $ticket_fn_match[0];
 	$esc_count   = substr_count($ticket_body, 'cacti_escapeshellarg(');
+
 	if ($esc_count < 4) {
 		fwrite(STDERR, "syslog_execute_ticket_command() must call cacti_escapeshellarg() for all 4 --arg values (found $esc_count).\n");
 		exit(1);

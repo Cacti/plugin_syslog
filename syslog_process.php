@@ -22,9 +22,9 @@
  +-------------------------------------------------------------------------+
 */
 
-include(dirname(__FILE__) . '/../../include/cli_check.php');
-include_once(dirname(__FILE__) . '/functions.php');
-include_once(dirname(__FILE__) . '/database.php');
+include(__DIR__ . '/../../include/cli_check.php');
+include_once(__DIR__ . '/functions.php');
+include_once(__DIR__ . '/database.php');
 
 syslog_connect();
 
@@ -40,16 +40,16 @@ global $debug, $syslog_facilities, $syslog_levels;
 $debug  = false;
 $forcer = false;
 
-/* process calling arguments */
+// process calling arguments
 $parms = $_SERVER['argv'];
 array_shift($parms);
 
 if (cacti_sizeof($parms)) {
-	foreach($parms as $parameter) {
+	foreach ($parms as $parameter) {
 		if (strpos($parameter, '=')) {
-			list($arg, $value) = explode('=', $parameter);
+			[$arg, $value] = explode('=', $parameter);
 		} else {
-			$arg = $parameter;
+			$arg   = $parameter;
 			$value = '';
 		}
 
@@ -82,7 +82,7 @@ if (cacti_sizeof($parms)) {
 	}
 }
 
-/* record the start time */
+// record the start time
 $start_time = microtime(true);
 
 /**
@@ -116,7 +116,7 @@ if ($config['poller_id'] > 1) {
 		exit(1);
 	}
 
-	/* replicate in syslog tables sync is enabled */
+	// replicate in syslog tables sync is enabled
 	syslog_replicate_in();
 }
 
@@ -125,7 +125,7 @@ if ($config['poller_id'] > 1) {
  * running exit until such time as the syslog process times out.
  */
 if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
-    exit(0);
+	exit(0);
 }
 
 /**
@@ -141,6 +141,7 @@ syslog_init_variables();
  * performing syslog database.
  */
 syslog_debug('-------------------------------------------------------------------------------------');
+
 if (!syslog_is_partitioned()) {
 	syslog_debug('Syslog Table is NOT Partitioned');
 	$deleted = syslog_traditional_manage();
@@ -157,7 +158,7 @@ syslog_debug('------------------------------------------------------------------
  * chooses to strip them.
  */
 $results  = syslog_preprocess_incoming_records();
-$max_seq = $results['max_seq'];
+$max_seq  = $results['max_seq'];
 $incoming = $results['incoming'];
 
 /**
@@ -271,4 +272,3 @@ function display_help() {
 	print '    --force-report   Send email reports now.' . PHP_EOL;
 	print '    --debug          Provide more verbose debug output.' . PHP_EOL . PHP_EOL;
 }
-
