@@ -343,9 +343,21 @@ function syslog_partition_create($table, $time = null) {
 			 * regex guard). $cformat and $lnow derive from date() and
 			 * contain only digits, hyphens, and the letter 'd'.
 			 */
-			syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-				PARTITION $cformat VALUES LESS THAN (UNIX_TIMESTAMP('$lnow')),
-				PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+			$create_syntax = syslog_db_fetch_row("SHOW CREATE TABLE `$syslogdb_default`.`$table`");
+
+			if (cacti_sizeof($create_syntax)) {
+				if (str_contains($create_syntax['Create Table'], 'TO_DAYS')) {
+					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+						PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
+						PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+				} else {
+					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+						PARTITION $cformat VALUES LESS THAN (UNIX_TIMESTAMP('$lnow')),
+						PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+				}
+			} else {
+				cacti_log('WARNING: Unable to determine Partition type for rotation', false, 'SYSLOG');
+			}
 		}
 	} finally {
 		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock_name]);
