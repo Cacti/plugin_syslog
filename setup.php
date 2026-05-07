@@ -169,7 +169,7 @@ function plugin_syslog_upgrade() {
 }
 
 function syslog_connect() {
-	global $config, $syslog_cnn, $syslogdb_default, $local_db_cnn_id, $remote_db_cnn_id;
+	global $config, $syslog_cnn, $syslogdb_default, $local_db_cnn_id, $remote_db_cnn_id, $syslog_incoming_config;
 
 	syslog_determine_config();
 
