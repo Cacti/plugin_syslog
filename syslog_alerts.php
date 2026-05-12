@@ -259,7 +259,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	global $syslogdb_default;
 
 	// get the username
-	$username = get_username();
+	$username = get_username($_SESSION['sess_user_id']);
 
 	if ($id) {
 		$save['id'] = $id;
