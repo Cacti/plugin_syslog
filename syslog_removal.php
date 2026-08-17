@@ -126,14 +126,14 @@ function form_actions() {
 
 	form_start('syslog_removal.php');
 
-	html_start_box($syslog_actions{get_request_var('drp_action')}, '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
 
 	/* setup some variables */
-	$removal_array = array(); $removal_list = '';
+	$removal_array = []; $removal_list = '';
 
 	/* loop through each of the clusters selected on the previous page and get more info about them */
-	while (list($var,$val) = each($_POST)) {
-		if (preg_match('/^chk_([0-9]+)$/', $var, $matches)) {
+	foreach (array_keys($_POST) as $var) {
+		if (preg_match('/^chk_([0-9]+)$/', $var, $matches) === 1) {
 			/* ================= input validation ================= */
 			input_validate_input_number($matches[1]);
 			/* ==================================================== */
@@ -644,4 +644,3 @@ function syslog_removal() {
 
 	form_end();
 }
-
