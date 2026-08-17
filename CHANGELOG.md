@@ -2,6 +2,20 @@
 
 --- develop ---
 
+* security: Require POST and CSRF validation for unused-host purge
+  operations
+* security: Escape HTML and JavaScript output contexts and restrict callback
+  dispatch to bare identifiers
+* security: Defuse spreadsheet formulas in CSV output while retaining
+  `fputcsv()` quoting
+* security: Limit pasted and uploaded XML rule imports to 5 MiB before
+  parsing
+* issue: Use integer UTC partition boundaries and preserve `dMaxValue` as a
+  fail-safe write partition
+* test: Add standalone security regressions and Docker/Playwright end-to-end
+  coverage
+* ci: Validate the plugin on Linux with PHP 8.1-8.3 and pinned Cacti
+  `release/1.2.31`
 * issue#199: Duplicate Partition name errors
 * issue#250: Fix date filter persistence by validating before shift_span detection
 * issue#252: hardening: escape device hostname output in syslog view; parameterize alert API functions
