@@ -1,4 +1,37 @@
 <?php
+
+/**
+ * Prefix values that spreadsheet applications could interpret as formulas.
+ * Non-string values are returned unchanged for callers that preserve types.
+ *
+ * Only literal spaces are stripped before the check; a leading tab or CR is
+ * itself a formula trigger in some importers and must stay detectable as
+ * the first character rather than being treated as skippable whitespace.
+ *
+ * @param mixed $value Value destined for CSV output.
+ * @return mixed Sanitized CSV value.
+ */
+function syslog_csv_safe(mixed $value): mixed {
+	if (!is_string($value) || $value === '') {
+		return $value;
+	}
+
+	if (str_starts_with($value, "'")) {
+		return $value;
+	}
+
+	$stripped = ltrim($value, ' ');
+
+	if ($stripped === '') {
+		return $value;
+	}
+
+	if (preg_match('/^[=+\-@\t\r]/', $stripped) === 1) {
+		return "'" . $value;
+	}
+
+	return $value;
+}
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
@@ -851,20 +884,20 @@ function syslog_export($tab) {
 				}
 
 				if (isset($hosts[$message['host_id']])) {
-					$host = trim($hosts[$message['host_id']], ' =+-@');
+					$host = $hosts[$message['host_id']];
 				} else {
 					$host = 'Unknown';
 				}
 
-				$logmsg = trim($message[$syslog_incoming_config['textField']], ' =+-@');
+				$logmsg = $message[$syslog_incoming_config['textField']];
 
 				$line = [
-					$host,
-					ucfirst($facility),
-					ucfirst($priority),
-					ucfirst($program),
+					syslog_csv_safe($host),
+					syslog_csv_safe(ucfirst($facility)),
+					syslog_csv_safe(ucfirst($priority)),
+					syslog_csv_safe(ucfirst($program)),
 					$message['logtime'],
-					$logmsg
+					syslog_csv_safe($logmsg)
 				];
 
 				fputcsv($fp, $line);
@@ -894,17 +927,14 @@ function syslog_export($tab) {
 					$severity = 'Unknown';
 				}
 
-				$host   = trim($message['host'], ' =+-@');
-				$logmsg = trim($message['logmsg'], ' =+-@');
-
 				$line = [
-					$message['name'],
-					$severity,
+					syslog_csv_safe($message['name']),
+					syslog_csv_safe($severity),
 					$message['logtime'],
-					$logmsg,
-					$host,
-					ucfirst($message['facility']),
-					ucfirst($message['priority']),
+					syslog_csv_safe($message['logmsg']),
+					syslog_csv_safe($message['host']),
+					syslog_csv_safe(ucfirst($message['facility'])),
+					syslog_csv_safe(ucfirst($message['priority'])),
 					$message['count']
 				];
 
