@@ -32,8 +32,9 @@ $guest_account = true;
 chdir('../../');
 include('./include/auth.php');
 include_once('./lib/html_tree.php');
-include_once('./plugins/syslog/functions.php');
-include_once('./plugins/syslog/database.php');
+include_once(__DIR__ . '/setup.php');
+include_once(__DIR__ . '/functions.php');
+include_once(__DIR__ . '/database.php');
 
 syslog_connect();
 
@@ -2135,8 +2136,13 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 			white-space: normal !important;
 		}
 		</style>
+		<?php
+		// JSON_HEX_TAG escapes </script>; the other flags block HTML context
+		// escapes if the script block ever runs under unusual content types.
+		$js_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR;
+		?>
 		<script type='text/javascript'>
-		initSyslogAutocomplete('<?php print $form_name; ?>', '<?php print $callback; ?>', '<?php print $on_change; ?>');
+		initSyslogAutocomplete(<?php print json_encode($form_name, $js_flags); ?>, <?php print json_encode($callback, $js_flags); ?>, <?php print json_encode($on_change, $js_flags); ?>);
 		</script>
 		<?php
 	}

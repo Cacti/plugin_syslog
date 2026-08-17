@@ -463,17 +463,21 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 
 	$parts = '';
 
+	/*
+	 * Partition boundaries are integer epochs computed in PHP and injected
+	 * as numeric literals. This keeps both MySQL and PHP session time zones
+	 * out of the equation: the boundary is always the next UTC midnight
+	 * after the labeled day.
+	 */
 	for ($i = $days; $i >= -1; $i--) {
-		$timestamp = $now - ($i * 86400);
-		$date      = gmdate('Y-m-d', $timestamp);
-		$format    = gmdate('Ymd', strtotime('- 1 day', $timestamp));
+		$day_epoch      = $now - ($i * 86400);
+		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
+		$format         = gmdate('Ymd', $day_epoch);
 
-		$parts .= ($parts != '' ? ",\n" : '(') . ' PARTITION d' . $format . " VALUES LESS THAN (UNIX_TIMESTAMP('" . $date . "'))";
+		$parts .= ($parts !== '' ? ",\n" : '(') . ' PARTITION d' . $format . ' VALUES LESS THAN (' . $boundary_epoch . ')';
 	}
 
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
-
-	//cacti_log($sql . $parts);
 
 	syslog_db_execute($sql . $parts);
 }

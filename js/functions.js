@@ -224,8 +224,13 @@ function initSyslogMain(config) {
 							});
 
 							$.each(data, function(index, hostData) {
-								if ($('#host option[value="'+index+'"]').length == 0) {
-									$('#host').append('<option class="'+DOMPurify.sanitize(hostData.class)+'" value="'+DOMPurify.sanitize(index)+'">'+DOMPurify.sanitize(hostData.host)+'</option>');
+								if ($('#host').find('option').filter(function() { return $(this).val() === String(index); }).length === 0) {
+									// jQuery attr/text handle escaping; string concat + DOMPurify leaves attribute quotes unescaped.
+									$('<option>')
+										.attr('value', index)
+										.attr('class', hostData.class)
+										.text(hostData.host)
+										.appendTo('#host');
 								}
 							});
 
@@ -580,16 +585,52 @@ function initSyslogReports() {
  * Autocomplete Form Callback Functions
  * ======================================================================== */
 
-function syslogExecuteFunctionByName(functionName, context /*, args */) {
-	var args       = Array.prototype.slice.call(arguments, 2);
-	var namespaces = functionName.split('.');
-	var func       = namespaces.pop();
-
-	for(var i = 0; i < namespaces.length; i++) {
-		context = context[namespaces[i]];
+/**
+ * Invoke a whitelisted callback by bare identifier.
+ *
+ * Only accepts a simple identifier ([A-Za-z_$][A-Za-z0-9_$]*). Dotted
+ * paths, arguments, and non-identifier characters are rejected so an
+ * attacker who controls an onChange string cannot reach arbitrary
+ * globals (eval, Function, fetch, ...). If the callback is unknown or
+ * not a function, the call is skipped with a console warning.
+ */
+function syslogInvokeCallback(functionName) {
+	if (typeof functionName !== 'string') {
+		return;
 	}
 
-	return context[func].apply(context, args);
+	let trimmed = functionName.trim();
+
+	// Only tolerate an exact trailing "()" for legacy callers; reject any arguments.
+	if (trimmed.endsWith('()')) {
+		trimmed = trimmed.substring(0, trimmed.length - 2).trim();
+	} else if (trimmed.indexOf('(') !== -1 || trimmed.indexOf(')') !== -1) {
+		if (window.console && console.warn) {
+			console.warn('syslog: refusing to invoke callback with arguments or invalid parentheses', functionName);
+		}
+
+		return;
+	}
+
+	if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(trimmed)) {
+		if (window.console && console.warn) {
+			console.warn('syslog: refusing to invoke non-identifier callback', functionName);
+		}
+
+		return;
+	}
+
+	const fn = window[trimmed];
+
+	if (typeof fn !== 'function') {
+		if (window.console && console.warn) {
+			console.warn('syslog: callback is not a function', trimmed);
+		}
+
+		return;
+	}
+
+	return fn();
 }
 
 /**
@@ -619,10 +660,7 @@ function initSyslogAutocomplete(formName, callback, onChange) {
 
 				if (onChange) {
 					$(this).autocomplete('close');
-
-					onChange = onChange.replace('(', '').replace(')', '');
-
-					syslogExecuteFunctionByName(onChange, window);
+					syslogInvokeCallback(onChange);
 				}
 			}
 		}).css('border', 'none').css('background-color', 'transparent');
