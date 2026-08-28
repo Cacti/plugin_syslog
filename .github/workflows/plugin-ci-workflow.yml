@@ -40,6 +40,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: Cacti/cacti
+        ref: release/1.2.31
         path: cacti
     
     - name: Checkout Syslog Plugin
@@ -57,10 +58,17 @@ jobs:
     - name: Check PHP Syntax (Lint)
       run: |
         cd cacti/plugins/syslog
-        if find . -name '*.php' -not -path './vendor/*' -exec php -l {} 2>&1 \; | grep -iv 'no syntax errors detected'; then
+        if find . -name '*.php' -not -path './vendor/*' -exec php -l {} \; 2>&1 | grep -iv 'no syntax errors detected'; then
           echo "Syntax errors found!"
           exit 1
         fi
+
+    - name: Run Regression Tests
+      run: |
+        cd cacti/plugins/syslog
+        for test in tests/regression/*.php; do
+          php "$test"
+        done
 
     - name: Run PHP CS Fixer (Dry Run)
       run: |
@@ -122,6 +130,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: Cacti/cacti
+        ref: release/1.2.31
         path: cacti
     
     - name: Checkout Syslog Plugin
@@ -143,7 +152,7 @@ jobs:
       run: sudo apt-get update
     
     - name: Install System Dependencies
-      run: sudo apt-get install -y apache2 snmp snmpd rrdtool fping libapache2-mod-php${{ matrix.php }}
+      run: sudo apt-get install -y apache2 snmp snmpd rrdtool fping libapache2-mod-php
     
     - name: Start SNMPD Agent and Test
       run: |
@@ -163,16 +172,15 @@ jobs:
         echo -e "[client]\nuser = root\npassword = cactiroot\nhost = 127.0.0.1\n" > ~/.my.cnf
     
     - name: Initialize Cacti Database
-      env:
-        MYSQL_AUTH_USR: '--defaults-file=~/.my.cnf'
       run: |
-        mysql $MYSQL_AUTH_USR -e 'CREATE DATABASE IF NOT EXISTS cacti;'
-        mysql $MYSQL_AUTH_USR -e "CREATE USER IF NOT EXISTS 'cactiuser'@'localhost' IDENTIFIED BY 'cactiuser';"
-        mysql $MYSQL_AUTH_USR -e "GRANT ALL PRIVILEGES ON cacti.* TO 'cactiuser'@'localhost';"
-        mysql $MYSQL_AUTH_USR -e "GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'localhost';"
-        mysql $MYSQL_AUTH_USR -e "FLUSH PRIVILEGES;"
-        mysql $MYSQL_AUTH_USR cacti < ${{ github.workspace }}/cacti/cacti.sql
-        mysql $MYSQL_AUTH_USR -e "INSERT INTO settings (name, value) VALUES ('path_php_binary', '/usr/bin/php')" cacti
+        MYSQL_AUTH_USR="--defaults-file=$HOME/.my.cnf"
+        mysql "$MYSQL_AUTH_USR" -e 'CREATE DATABASE IF NOT EXISTS cacti;'
+        mysql "$MYSQL_AUTH_USR" -e "CREATE USER IF NOT EXISTS 'cactiuser'@'localhost' IDENTIFIED BY 'cactiuser';"
+        mysql "$MYSQL_AUTH_USR" -e "GRANT ALL PRIVILEGES ON cacti.* TO 'cactiuser'@'localhost';"
+        mysql "$MYSQL_AUTH_USR" -e "GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'localhost';"
+        mysql "$MYSQL_AUTH_USR" -e "FLUSH PRIVILEGES;"
+        mysql "$MYSQL_AUTH_USR" cacti < ${{ github.workspace }}/cacti/cacti.sql
+        mysql "$MYSQL_AUTH_USR" -e "INSERT INTO settings (name, value) VALUES ('path_php_binary', '/usr/bin/php')" cacti
     
     - name: Validate composer files
       run: |

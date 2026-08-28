@@ -12,6 +12,7 @@
 * issue#278: Extract alert command execution into shared helper in functions.php; command tokenization now uses preg_split (handles tabs and consecutive spaces); /bin/sh fallback for non-executable command templates removed (use absolute paths with execute bit set)
 * issue#298: syslog poller: lock timeout, signal handler, and earlier partition rotation
 * issue#300: Syslog table drop with no apparent reason
+* issue: Repair plugin integration CI, execute regression tests, and reject empty import files safely
 * issue: Making changes to support Cacti 1.3
 * issue: Don't use MyISAM for non-analytical tables
 * issue: The install advisor for Syslog was broken in current Cacti releases

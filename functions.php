@@ -145,9 +145,11 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 }
 
 function syslog_get_import_xml_payload($redirect_url) {
-	if (trim(get_nfilter_request_var('import_text')) != '') {
+	$import_text = (string) get_nfilter_request_var('import_text');
+
+	if (trim($import_text) !== '') {
 		// textbox input
-		return get_nfilter_request_var('import_text');
+		return $import_text;
 	}
 
 	if (isset($_FILES['import_file']['tmp_name']) &&
@@ -166,19 +168,10 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
-		$fp = fopen($tmp_name, 'rb');
-
-		if ($fp === false) {
-			cacti_log('SYSLOG ERROR: Failed to open uploaded import file', false, 'SYSTEM');
-			header('Location: ' . $redirect_url);
-			exit;
-		}
-
-		$xml_data = fread($fp, filesize($tmp_name));
-		fclose($fp);
+		$xml_data = syslog_read_import_file($tmp_name);
 
 		if ($xml_data === false) {
-			cacti_log('SYSLOG ERROR: Failed to read uploaded import file', false, 'SYSTEM');
+			cacti_log('SYSLOG ERROR: Uploaded import file is empty or unreadable', false, 'SYSTEM');
 			header('Location: ' . $redirect_url);
 			exit;
 		}
@@ -188,6 +181,26 @@ function syslog_get_import_xml_payload($redirect_url) {
 
 	header('Location: ' . $redirect_url);
 	exit;
+}
+
+function syslog_read_import_file(string $filename): string|false {
+	$size = filesize($filename);
+
+	if ($size === false || $size < 1) {
+		return false;
+	}
+
+	$handle = fopen($filename, 'rb');
+
+	if ($handle === false) {
+		return false;
+	}
+
+	try {
+		return fread($handle, $size);
+	} finally {
+		fclose($handle);
+	}
 }
 
 function syslog_is_partitioned() {
