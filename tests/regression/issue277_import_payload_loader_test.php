@@ -31,12 +31,13 @@ if ($functions === false) {
 	exit(1);
 }
 
-if (strpos($functions, 'function syslog_get_import_xml_payload(') === false) {
+if (!str_contains($functions, 'function syslog_get_import_xml_payload(')) {
 	fwrite(STDERR, "Shared import payload loader helper is missing.\n");
 	exit(1);
 }
 
-if (strpos($functions, "trim(get_nfilter_request_var('import_text')) != ''") === false) {
+if (!str_contains($functions, '$import_text = (string) get_nfilter_request_var(\'import_text\')') ||
+		!str_contains($functions, 'trim($import_text) !== \'\'')) {
 	fwrite(STDERR, "Shared import payload loader is missing trimmed text handling.\n");
 	exit(1);
 }

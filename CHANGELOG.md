@@ -8,6 +8,7 @@
 * issue#256: hardening: prevent CSV formula injection and malformed CSV output in exports
 * issue#258: Execute CREATE TABLE SQL correctly during replication sync
 * issue#260: hardening: replace eval-based callback execution in syslog autocomplete JS
+* issue#262: Harden CSV exports and XML import payload handling
 * issue#278: Extract duplicated alert command execution paths in syslog_process_alerts
 * issue#278: Extract alert command execution into shared helper in functions.php; command tokenization now uses preg_split (handles tabs and consecutive spaces); /bin/sh fallback for non-executable command templates removed (use absolute paths with execute bit set)
 * issue#298: syslog poller: lock timeout, signal handler, and earlier partition rotation
