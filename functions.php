@@ -47,6 +47,18 @@ function syslog_include_js() {
 	<?php
 }
 
+/**
+ * __esc() is not enough inside a <script> block, because the browser does
+ * not HTML-decode there. The value has to arrive as a JSON literal.
+ *
+ * @param mixed $value
+ *
+ * @return string
+ */
+function syslog_json_safe($value) {
+	return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR);
+}
+
 function syslog_allow_edits() {
 	global $config;
 
