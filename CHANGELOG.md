@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* issue: Make HTML escaping behavior explicit across PHP 8 versions
 * issue#199: Duplicate Partition name errors
 * issue#250: Fix date filter persistence by validating before shift_span detection
 * issue#252: hardening: escape device hostname output in syslog view; parameterize alert API functions

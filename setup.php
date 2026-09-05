@@ -1592,7 +1592,9 @@ function syslog_graph_buttons($graph_elements = []) {
 					$host_id = syslog_db_fetch_cell_prepared('SELECT host_id FROM syslog_hosts ' . $sql_where, $sql_params);
 
 					if ($host_id) {
-						print "<a class='iconLink' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2) . "' title='" . __('Display Syslog in Range', 'syslog') . "'><i class='deviceRecovering fas fa-exclamation-triangle'></i></a><br>";
+						$url = $config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2;
+
+						print "<a class='iconLink' href='" . htmlspecialchars($url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . "' title='" . htmlspecialchars(__('Display Syslog in Range', 'syslog'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . "'><i class='deviceRecovering fas fa-exclamation-triangle'></i></a><br>";
 					}
 				}
 			}

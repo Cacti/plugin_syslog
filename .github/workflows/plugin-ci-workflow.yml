@@ -139,8 +139,12 @@ jobs:
     - name: Check PHP version
       run: php -v
     
-    - name: Run apt-get update
-      run: sudo apt-get update
+    - name: Add the ondrej PHP repository
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y software-properties-common
+        sudo add-apt-repository -y ppa:ondrej/php
+        sudo apt-get update
     
     - name: Install System Dependencies
       run: sudo apt-get install -y apache2 snmp snmpd rrdtool fping libapache2-mod-php${{ matrix.php }}
