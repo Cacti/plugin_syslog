@@ -408,23 +408,11 @@ function initSyslogMain(config) {
 			exportRecords();
 		});
 
-		$('#balerts').click(function() {
-			loadTopTab(urlPath+'plugins/syslog/syslog_alerts.php?header=false');
-			$('.maintabs').find('a').removeClass('selected');
-			$('#tab-console').addClass('selected');
-		});
 
-		$('#bremoval').click(function() {
-			loadTopTab(urlPath+'plugins/syslog/syslog_removal.php?header=false');
-			$('.maintabs').find('a').removeClass('selected');
-			$('#tab-console').addClass('selected');
-		});
 
-		$('#breports').click(function() {
-			loadTopTab(urlPath+'plugins/syslog/syslog_reports.php?header=false');
-			$('.maintabs').find('a').removeClass('selected');
-			$('#tab-console').addClass('selected');
-		});
+
+
+
 
 
 	});

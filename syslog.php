@@ -1341,15 +1341,6 @@ function syslog_filter($sql_where, $tab) {
 								<input id='save' type='button' value='<?php print __esc('Save', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
 							</span>
 						</td>
-						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) { ?>
-						<td>
-							<span>
-								<input id='balerts' type='button' value='<?php print __esc('Alerts', 'syslog'); ?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog'); ?>'>
-								<input id='bremoval' type='button' value='<?php print __esc('Removals', 'syslog'); ?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog'); ?>'>
-								<input id='breports' type='button' value='<?php print __esc('Reports', 'syslog'); ?>' title='<?php print __esc('View Syslog Reports', 'syslog'); ?>'>
-							</span>
-						</td>
-						<?php } ?>
 						<td>
 							<span id='text'></span>
 							<input type='hidden' name='action' value='actions'>
