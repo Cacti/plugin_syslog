@@ -278,3 +278,23 @@
 		grid-row: 1;
 	}
 }
+
+#syslog_search_content[hidden] {
+	display: none;
+}
+
+#syslog_form .syslogSearchToggle {
+	flex-shrink: 0;
+	width: 34px;
+	height: 34px;
+	border: 1px solid var(--search-border);
+	border-radius: 6px;
+	background: var(--search-card);
+	color: var(--search-text);
+	cursor: pointer;
+}
+
+#syslog_form .syslogSearchToggle:hover,
+#syslog_form .syslogSearchToggle:focus-visible {
+	background: var(--search-tint);
+}

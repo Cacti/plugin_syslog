@@ -1292,8 +1292,16 @@ function syslog_filter($sql_where, $tab) {
 								<p><?php print __esc('Combine conditions to find the messages you need.', 'syslog'); ?></p>
 							</div>
 						</div>
+						<button type='button' id='syslog_search_toggle' class='syslogSearchToggle'
+							aria-expanded='true' aria-controls='syslog_search_content'
+							aria-label='<?php print __esc('Hide search', 'syslog'); ?>'
+							title='<?php print __esc('Hide search', 'syslog'); ?>'
+							data-hide='<?php print __esc('Hide search', 'syslog'); ?>'
+							data-show='<?php print __esc('Show search', 'syslog'); ?>'
+							onclick='toggleSyslogSearch()'><i class='fa fa-chevron-up' aria-hidden='true'></i></button>
 						<input type='hidden' id='search_mode' value='logical'>
 					</div>
+					<div id='syslog_search_content'>
 					<input type='hidden' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
 					<div id='syslog_search_builder'
 						data-fields='<?php $fields = syslog_search_fields(); if ($tab != 'syslog') { unset($fields['host_id']); } print html_escape(json_encode($fields)); ?>'
@@ -1309,6 +1317,7 @@ function syslog_filter($sql_where, $tab) {
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
 					<div class='syslogSearchFooter'>
 						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers.', 'syslog'); ?></details>
+					</div>
 					</div>
 				</section>
 				<table class='filterTable syslogSearchButtons'>

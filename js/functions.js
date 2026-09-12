@@ -106,6 +106,18 @@ function syslogSearchExpression(rows) {
 	}).join('');
 }
 
+function toggleSyslogSearch(expanded) {
+	var content = document.getElementById('syslog_search_content');
+	var button = document.getElementById('syslog_search_toggle');
+	if (!content || !button) return;
+	if (typeof expanded !== 'boolean') expanded = content.hidden;
+	content.hidden = !expanded;
+	button.setAttribute('aria-expanded', String(expanded));
+	button.title = expanded ? button.dataset.hide : button.dataset.show;
+	button.setAttribute('aria-label', button.title);
+	button.querySelector('i').className = 'fa ' + (expanded ? 'fa-chevron-up' : 'fa-chevron-down');
+}
+
 function syncSyslogSearchBuilder() {
 	var builder = document.getElementById('syslog_search_builder');
 	if (!builder || $('#search_mode').val() !== 'logical') {
@@ -119,6 +131,7 @@ function syncSyslogSearchBuilder() {
 		return true;
 	}
 	for (var input of inputs) {
+		if (input.validity && !input.validity.valid) toggleSyslogSearch(true);
 		if (!input.reportValidity()) {
 			return false;
 		}
