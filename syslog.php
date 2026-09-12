@@ -875,6 +875,16 @@ function syslog_request_validation($current_tab, $force = false) {
 		$_SESSION['sess_sl_' . $current_tab . '_' . $key] = get_request_var($key);
 	}
 
+	set_shift_span($shift_span, 'sess_sl_' . $current_tab);
+	$date_query_key = 'sess_sl_' . $current_tab . '_query_dates';
+	if (!isset($_POST['rfilter']) && (empty($_SESSION[$date_query_key]) || isset_request_var('clear') || isset_request_var('reset'))) {
+		$query = get_request_var('rfilter');
+		$dates = 'logtime >= "' . get_request_var('date1') . '" AND logtime <= "' . get_request_var('date2') . '"';
+		set_request_var('rfilter', ($query === '' ? '' : '(' . $query . ') AND ') . $dates);
+		$_SESSION['sess_sl_' . $current_tab . '_rfilter'] = get_request_var('rfilter');
+	}
+	$_SESSION[$date_query_key] = true;
+
 	$GLOBALS['syslog_search_tree'] = null;
 	$GLOBALS['syslog_search_error'] = '';
 	if (get_request_var('search_mode') === 'logical') {
@@ -888,8 +898,6 @@ function syslog_request_validation($current_tab, $force = false) {
 
 	// ================= input validation =================
 
-	// Modify session and request variables based upon span/shift/settings
-	set_shift_span($shift_span, 'sess_sl_' . $current_tab);
 
 	api_plugin_hook_function('syslog_request_val');
 
@@ -1031,9 +1039,12 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 		$sql_where = 'WHERE (' . substr($sql_where, 6) . ')';
 	}
 
-	$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
-		"logtime BETWEEN '" . get_request_var('date1') . "'
-			AND '" . get_request_var('date2') . "'";
+	if (get_request_var('search_mode') !== 'logical') {
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
+			"logtime BETWEEN '" . get_request_var('date1') . "'
+				AND '" . get_request_var('date2') . "'";
+	}
+
 
 	if (isset_request_var('id') && $current_tab == 'current') {
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
@@ -1253,16 +1264,12 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $config, $graph_timeshifts, $page_refresh_interval, $item_rows, $trimvals;
+	global $config, $page_refresh_interval, $item_rows, $trimvals;
 	global $syslogdb_default;
 
 	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
 
-	if (isset_request_var('date1')) {
-		$filter_text = __esc(' [ Start: \'%s\' to End: \'%s\', Unprocessed Messages: %s ]', get_request_var('date1'), get_request_var('date2'), $unprocessed, 'syslog');
-	} else {
-		$filter_text = __esc('[ Unprocessed Messages: %s ]', $unprocessed, 'syslog');
-	}
+	$filter_text = __esc('[ Unprocessed Messages: %s ]', $unprocessed, 'syslog');
 
 	?>
 	<script type='text/javascript'>
@@ -1276,61 +1283,6 @@ function syslog_filter($sql_where, $tab) {
 		<tr class='even noprint syslogFilterRow'>
 			<td class='noprint'>
 			<form id='syslog_form' action='syslog.php' method='post'>
-				<input type='hidden' id='predefined_timespan' value='<?php print html_escape_request_var('predefined_timespan'); ?>'>
-				<input type='hidden' id='predefined_timeshift' value='<?php print html_escape_request_var('predefined_timeshift'); ?>'>
-				<table class='filterTable'>
-					<tr>
-						<td>
-							<?php print __('From', 'syslog'); ?>
-						</td>
-						<td>
-							<input type='text' id='date1' size='18' value='<?php print html_escape_request_var('date1'); ?>'>
-						</td>
-						<td>
-							<i title='<?php print __esc('Start Date Selector', 'syslog'); ?>' class='calendar fa fa-calendar-alt' id='startDate'></i>
-						</td>
-						<td>
-							<?php print __('To', 'syslog'); ?>
-						</td>
-						<td>
-							<input type='text' id='date2' size='18' value='<?php print html_escape_request_var('date2'); ?>'>
-						</td>
-						<td>
-							<i title='<?php print __esc('End Date Selector', 'syslog'); ?>' class='calendar fa fa-calendar-alt' id='endDate'></i>
-						</td>
-						<td>
-							<i title='<?php print __esc('Shift Time Backward', 'syslog'); ?>' onclick='timeshiftFilterLeft()' class='shiftArrow fa fa-backward'></i>
-						</td>
-						<td>
-							<span><?php print html_escape($graph_timeshifts[get_request_var('predefined_timeshift')] ?? ''); ?></span>
-						</td>
-						<td>
-							<i title='<?php print __esc('Shift Time Forward', 'syslog'); ?>' onclick='timeshiftFilterRight()' class='shiftArrow fa fa-forward'></i>
-						</td>
-						<td>
-							<span>
-								<input id='go' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
-								<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'>
-								<input id='export' type='button' value='<?php print __esc('Export', 'syslog'); ?>' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'>
-								<input id='save' type='button' value='<?php print __esc('Save', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
-							</span>
-						</td>
-						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) { ?>
-						<td>
-							<span>
-								<input id='balerts' type='button' value='<?php print __esc('Alerts', 'syslog'); ?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog'); ?>'>
-								<input id='bremoval' type='button' value='<?php print __esc('Removals', 'syslog'); ?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog'); ?>'>
-								<input id='breports' type='button' value='<?php print __esc('Reports', 'syslog'); ?>' title='<?php print __esc('View Syslog Reports', 'syslog'); ?>'>
-							</span>
-						</td>
-						<?php } ?>
-						<td>
-							<span id='text'></span>
-							<input type='hidden' name='action' value='actions'>
-							<input type='hidden' name='syslog_pdt_change' value='false'>
-						</td>
-					</tr>
-				</table>
 				<section class='syslogSearchPanel' aria-labelledby='syslog_search_title'>
 					<div class='syslogSearchHeader'>
 						<div class='syslogSearchHeading'>
@@ -1357,9 +1309,35 @@ function syslog_filter($sql_where, $tab) {
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
 					<div class='syslogSearchFooter'>
 						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers.', 'syslog'); ?></details>
-						<button type='button' class='syslogSearchSubmit' onclick='applyFilter()'><i class='fa fa-search' aria-hidden='true'></i> <?php print __esc('Search messages', 'syslog'); ?></button>
 					</div>
 				</section>
+				<table class='filterTable syslogSearchButtons'>
+					<tr>
+						<td>
+							<span>
+								<input id='go' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
+								<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'>
+								<input id='export' type='button' value='<?php print __esc('Export', 'syslog'); ?>' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'>
+								<input id='save' type='button' value='<?php print __esc('Save', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
+							</span>
+						</td>
+						<?php if (api_plugin_user_realm_auth('syslog_alerts.php')) { ?>
+						<td>
+							<span>
+								<input id='balerts' type='button' value='<?php print __esc('Alerts', 'syslog'); ?>' title='<?php print __esc('View Syslog Alert Rules', 'syslog'); ?>'>
+								<input id='bremoval' type='button' value='<?php print __esc('Removals', 'syslog'); ?>' title='<?php print __esc('View Syslog Removal Rules', 'syslog'); ?>'>
+								<input id='breports' type='button' value='<?php print __esc('Reports', 'syslog'); ?>' title='<?php print __esc('View Syslog Reports', 'syslog'); ?>'>
+							</span>
+						</td>
+						<?php } ?>
+						<td>
+							<span id='text'></span>
+							<input type='hidden' name='action' value='actions'>
+							<input type='hidden' name='syslog_pdt_change' value='false'>
+						</td>
+					</tr>
+				</table>
+
 				<table class='filterTable'>
 					<tr>
 						<td>

@@ -233,10 +233,12 @@ remove a condition, then Enter or Go to apply the query.
 
 The standalone device, program, facility, and priority filters are replaced by
 builder conditions. The only standalone dropdowns are Record Type, Display,
-Messages, Trim, and Refresh. From/To date inputs and time-shift buttons remain
-available. Existing
-legacy regex searches become literal message contains conditions. Searches persist per tab across
-pagination, refresh, grouping, and CSV export. Search, export, clear, and time
+Messages, Trim, and Refresh. From and To are Date conditions in the builder
+(`>=` and `<=`), with the date/time picker available when their values are focused.
+The current date range is migrated into these editable conditions. Removing them
+removes the time restriction. Action buttons appear below the search.
+Legacy regex searches become literal message contains conditions. Searches persist per tab across
+pagination, refresh, grouping, and CSV export. Search, export, and clear
 controls submit values through CSRF-protected POST bodies instead of URL queries.
 
 A single blank default message condition clears the query. Other incomplete

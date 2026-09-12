@@ -82,7 +82,7 @@ foreach (['syslog', 'alerts'] as $tab) {
 			$sql_where = '';
 			get_syslog_messages($sql_where, 20, $tab);
 			$predicate = syslog_logical_search_sql($GLOBALS['syslog_search_tree'], $tab === 'syslog' ? 'message' : 'logmsg');
-			search_assert(str_contains($sql_where, ' AND ' . $predicate), 'Predicate in shared count filter');
+			search_assert(str_contains($sql_where, $predicate), 'Predicate in shared count filter');
 			search_assert(str_contains($GLOBALS['captured_sql'], $sql_where), 'Predicate in results query');
 			search_assert(str_contains($GLOBALS['captured_sql'], 'LIMIT 0,20'), 'Pagination retained');
 			if ($tab === 'syslog' && $removal === '1') {
@@ -95,9 +95,18 @@ foreach (['syslog', 'alerts'] as $tab) {
 	search_assert(str_contains($GLOBALS['captured_sql'], 'LIMIT 10000'), 'Export limit retained');
 	unset($GLOBALS['request']['export']);
 }
+// Builder dates are the only time restriction, including ranges outside the old span.
+$GLOBALS['syslog_search_tree'] = syslog_parse_logical_search('logtime >= "2020-01-01 00:00:00" AND logtime <= "2020-01-02 00:00:00"');
+get_syslog_messages($sql_where, 20, 'syslog');
+search_assert(str_contains($sql_where, "syslog.logtime >= '2020-01-01 00:00:00'"), 'From condition applied');
+search_assert(str_contains($sql_where, "syslog.logtime <= '2020-01-02 00:00:00'"), 'To condition applied');
+search_assert(!str_contains($sql_where, 'BETWEEN'), 'No hidden legacy date restriction');
+$GLOBALS['syslog_search_tree'] = null;
+get_syslog_messages($sql_where, 20, 'syslog');
+search_assert(!str_contains($sql_where, 'logtime'), 'Removing date conditions removes time restrictions');
 $GLOBALS['syslog_search_error'] = 'Invalid logical search';
 get_syslog_messages($sql_where, 20, 'syslog');
-search_assert(str_contains($sql_where, 'AND (1 = 0)'), 'Invalid expression fails closed');
+search_assert(str_contains($sql_where, '(1 = 0)'), 'Invalid expression fails closed');
 ob_start();
 syslog_export('syslog');
 $error = ob_get_clean();

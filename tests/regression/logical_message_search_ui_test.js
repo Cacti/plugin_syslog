@@ -4,16 +4,17 @@ const vm = require('node:vm');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../../js/functions.js'), 'utf8');
 let focused;
 class Element {
-	constructor(tag = 'div') { this.tag = tag; this.children = []; this.handlers = {}; this.value = ''; this.dataset = {}; }
+	constructor(tag = 'div') { this.tag = tag; this.children = []; this.handlers = {}; this.jqueryHandlers = {}; this.value = ''; this.dataset = {}; }
 	appendChild(child) { this.children.push(child); }
 	replaceChildren() { this.children = []; }
 	setAttribute(name, value) { this[name] = value; }
 	addEventListener(event, handler) { this.handlers[event] = handler; }
+	dispatchEvent(event) { if (this.handlers[event.type]) this.handlers[event.type](); }
 	focus() { focused = this; }
 	reportValidity() { return !this.required || this.value !== ''; }
 	querySelectorAll(selector) {
 		return this.children.flatMap(child => [
-			...(selector[0] === '.' ? child.className === selector.slice(1) : child.tag === selector) ? [child] : [],
+			...(selector[0] === '.' ? (child.className || '').split(' ').includes(selector.slice(1)) : child.tag === selector) ? [child] : [],
 			...child.querySelectorAll(selector)
 		]);
 	}
@@ -26,13 +27,17 @@ for (const id of ['syslog_search_builder', 'search_mode', 'rfilter', 'logical_se
 nodes.search_mode.value = 'logical';
 nodes.syslog_search_builder.dataset = {tree: 'null', message: 'Message', contains: 'contains', notContains: 'does not contain', remove: 'Remove condition'};
 const context = {
+	Event: class { constructor(type) { this.type = type; } },
 	$: selector => {
-		const node = nodes[selector.slice(1)];
+		const node = typeof selector === 'string' ? nodes[selector.slice(1)] : selector;
 		return {
+			datetimepicker(options) { node.datepickerOptions = options; },
 			val(value) { if (value !== undefined) node.value = value; return node.value; },
 			toggle(show) { node.hidden = !show; },
 			attr(name, value) { node.setAttribute(name, value); },
-			on(event, handler) { node.addEventListener(event, handler); }
+			empty() { node.replaceChildren(); },
+			on(event, handler) { node.jqueryHandlers[event] = handler; },
+			trigger(event) { if (node.jqueryHandlers[event]) node.jqueryHandlers[event](); }
 		};
 	},
 	document: {getElementById: id => nodes[id], createElement: tag => new Element(tag)},
@@ -88,7 +93,7 @@ assert.equal(context.syslogSearchExpression(context.syslogSearchRows(['NOT', pre
 const first = builder.querySelectorAll('.syslogSearchRow')[0];
 const fieldSelect = first.children[1];
 fieldSelect.value = 'host';
-fieldSelect.handlers.change();
+context.$(fieldSelect).trigger('change');
 assert.equal(builder.searchRows[0].field, 'host');
 assert.equal(builder.searchRows[0].operator, 'contains');
 // Export submits the current unsaved builder state in a POST body.
@@ -115,4 +120,34 @@ const values = Object.fromEntries(postedForm.children.map(input => [input.name, 
 assert.equal(values.tab, 'alerts');
 assert.equal(values.__csrf_magic, 'test-token');
 assert.equal(values.rfilter, submitted.rfilter);
+// Theme-generated jQuery changes must update all available fields, not just Message.
+builder.dataset.fields = JSON.stringify({message: 'Message', host: 'Host', program: 'Program', facility: 'Facility', priority: 'Priority', priority_id: 'Priority ID', logtime: 'Date'});
+context.initSyslogSearchBuilder();
+for (const field of ['host', 'program', 'facility', 'priority', 'priority_id']) {
+	const select = builder.querySelectorAll('.syslogSearchRow')[0].children[1];
+	assert.ok(select.children.some(option => option.value === field), field + ' available');
+	select.value = field;
+	context.$(select).trigger('change');
+	assert.equal(builder.searchRows[0].field, field, 'Themed field change applied');
+	const operator = builder.querySelectorAll('.syslogSearchRow')[0].children[2];
+	operator.value = '=';
+	context.$(operator).trigger('change');
+	enter(0, field === 'priority_id' ? '4' : 'test-value');
+	context.syncSyslogSearchBuilder();
+	assert.ok(nodes.rfilter.value.startsWith(field + ' = "'), 'Selected field/operator serialized');
+}
+// Date rows retain the Cacti datetime picker and serialize picker changes.
+builder.dataset.fields = JSON.stringify({message: 'Message', logtime: 'Date'});
+builder.dataset.tree = JSON.stringify(['AND', ['predicate', 'logtime', '>=', '2020-01-01 00:00:00'], ['predicate', 'logtime', '<=', '2020-01-02 00:00:00']]);
+context.initSyslogSearchBuilder();
+let dates = builder.querySelectorAll('.syslogSearchDate');
+assert.equal(dates.length, 2);
+assert.equal(dates[0].datepickerOptions.dateFormat, 'yy-mm-dd');
+dates[0].datepickerOptions.onSelect('2020-01-01 12:30:00');
+context.syncSyslogSearchBuilder();
+assert.equal(nodes.rfilter.value, 'logtime >= "2020-01-01 12:30:00" AND logtime <= "2020-01-02 00:00:00"');
+add('AND');
+dates = builder.querySelectorAll('.syslogSearchDate');
+assert.ok(dates[0].datepickerOptions, 'Picker reattached after adding a condition');
+assert.equal(dates[0].value, '2020-01-01 12:30:00');
 console.log('logical_message_search_ui_test passed');

@@ -127,6 +127,24 @@ function syncSyslogSearchBuilder() {
 	return true;
 }
 
+function initSyslogSearchDates(container) {
+	container.querySelectorAll('.syslogSearchDate').forEach(function(input) {
+		$(input).datetimepicker({
+			minuteGrid: 10,
+			stepMinute: 1,
+			showAnim: 'slideDown',
+			numberOfMonths: 1,
+			timeFormat: 'HH:mm:ss',
+			dateFormat: 'yy-mm-dd',
+			showButtonPanel: false,
+			onSelect: function(value) {
+				input.value = value;
+				input.dispatchEvent(new Event('change'));
+			}
+		});
+	});
+}
+
 function initSyslogSearchBuilder() {
 	var builder = document.getElementById('syslog_search_builder');
 	if (!builder) {
@@ -156,11 +174,13 @@ function initSyslogSearchBuilder() {
 			node.appendChild(item);
 		});
 		node.value = value;
-		node.addEventListener('change', function() { onChange(node.value); });
+		// Cacti selectmenu emits a jQuery change event; this also handles native selects.
+		$(node).on('change', function() { onChange(node.value); });
 		return node;
 	}
 	function render(container, rows) {
-		container.replaceChildren();
+		// Let jQuery dispose themed selectmenu widgets before rebuilding rows.
+		$(container).empty();
 		rows.forEach(function(row, index) {
 			var line = element('div', 'syslogSearchRow' + (row.rows ? ' syslogSearchGroupRow' : ''));
 			var connector = element('div', 'syslogSearchConnector');
@@ -179,19 +199,24 @@ function initSyslogSearchBuilder() {
 					row.field = value;
 					row.operator = value === 'seq' || value.endsWith('_id') || value === 'logtime' ? '=' : 'contains';
 					render(container, rows);
+					initSyslogSearchDates(container);
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
 				var operators = numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
-				line.appendChild(select(operators.map(function(op) { return [op, op]; }), row.operator || 'contains', 'Operator', function(value) { row.operator = value; }));
+				line.appendChild(select(operators.map(function(op) { return [op, row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op]; }), row.operator || 'contains', 'Operator', function(value) { row.operator = value; }));
 				line.appendChild(select([['0', labels.match], ['1', labels.exclude]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
 				var input = element('input', 'syslogSearchText');
 				input.type = 'text';
 				input.size = 35;
-				input.placeholder = labels.placeholder || labels.message;
+				input.placeholder = row.field === 'logtime' ? 'YYYY-MM-DD HH:MM:SS' : labels.placeholder || labels.message;
 				input.required = true;
 				input.value = row.value;
-				input.setAttribute('aria-label', labels.message);
+				input.setAttribute('aria-label', fields[row.field || 'message']);
 				input.addEventListener('input', function() { row.value = input.value; });
+				input.addEventListener('change', function() { row.value = input.value; });
+				if (row.field === 'logtime') {
+					input.className += ' syslogSearchDate';
+				}
 				line.appendChild(input);
 			}
 			var remove = element('button', 'syslogSearchRemove', '\u00d7');
@@ -204,6 +229,7 @@ function initSyslogSearchBuilder() {
 					rows.push({join: 'AND', negative: false, value: ''});
 				}
 				render(container, rows);
+				initSyslogSearchDates(container);
 				container.querySelector('.syslogSearchText').focus();
 			});
 			line.appendChild(remove);
@@ -217,6 +243,7 @@ function initSyslogSearchBuilder() {
 			button.addEventListener('click', function() {
 				rows.push({join: operator === 'OR' ? 'OR' : 'AND', negative: operator === 'NOT', value: ''});
 				render(container, rows);
+				initSyslogSearchDates(container);
 				var inputs = container.querySelectorAll('.syslogSearchText');
 				inputs[inputs.length - 1].focus();
 			});
@@ -225,6 +252,7 @@ function initSyslogSearchBuilder() {
 		container.appendChild(actions);
 	}
 	render(builder, builder.searchRows);
+	initSyslogSearchDates(builder);
 	$('#rfilter').toggle(false);
 	// Go/Enter share custom validation, which permits a single empty search row.
 	$('#syslog_form').attr('novalidate', 'novalidate');
@@ -251,7 +279,7 @@ function postSyslog(data) {
 
 function syslogFilterData() {
 	var data = {search_mode: 'logical', rfilter: $('#rfilter').val(), page: 1};
-	['rows', 'trimval', 'removal', 'refresh', 'grouping', 'predefined_timespan', 'date1', 'date2', 'predefined_timeshift'].forEach(function(name) {
+	['rows', 'trimval', 'removal', 'refresh', 'grouping'].forEach(function(name) {
 		if ($('#' + name).length) data[name] = $('#' + name).val();
 	});
 	return data;
@@ -286,11 +314,6 @@ function saveSettings() {
 	data.refresh      = $('#refresh').val();
 	data.__csrf_magic = csrfMagicToken;
 
-	if ($('#predefined_timespan').val() > 0) {
-		data.predefined_timespan = $('#predefined_timespan').val();
-	}
-
-	data.predefined_timeshift = $('#predefined_timeshift').val();
 
 	$.post(strURL, data).done(function() {
 		$('#text').show().text('Filter Settings Saved').fadeOut(2000);
@@ -298,35 +321,11 @@ function saveSettings() {
 }
 
 /**
- * Shift time filter left (backward)
- */
-function timeshiftFilterLeft() {
-	if (!syncSyslogSearchBuilder()) return;
-	var data = syslogFilterData();
-	data.shift_left = 'true';
-	postSyslog(data);
-}
-
-/**
- * Shift time filter right (forward)
- */
-function timeshiftFilterRight() {
-	if (!syncSyslogSearchBuilder()) return;
-	var data = syslogFilterData();
-	data.shift_right = 'true';
-	postSyslog(data);
-}
-
-/**
  * Initialize main syslog view
  * @param {object} config - Configuration object containing pageTab
  */
 function initSyslogMain(config) {
-	var date1Open = false;
-	var date2Open = false;
 	var pageTab   = config.pageTab || '';
-	var origDate1 = $('#date1').val();
-	var origDate2 = $('#date2').val();
 
 	// Make pageTab global for other functions
 	window.pageTab = pageTab;
@@ -374,53 +373,7 @@ function initSyslogMain(config) {
 			$('#tab-console').addClass('selected');
 		});
 
-		$('#startDate').click(function() {
-			if (date1Open) {
-				date1Open = false;
-				$('#date1').datetimepicker('hide');
-			} else {
-				date1Open = true;
-				$('#date1').datetimepicker('show');
-			}
-		});
 
-		$('#endDate').click(function() {
-			if (date2Open) {
-				date2Open = false;
-				$('#date2').datetimepicker('hide');
-			} else {
-				date2Open = true;
-				$('#date2').datetimepicker('show');
-			}
-		});
-
-		$('#date1').datetimepicker({
-			minuteGrid: 10,
-			stepMinute: 1,
-			showAnim: 'slideDown',
-			numberOfMonths: 1,
-			timeFormat: 'HH:mm:ss',
-			dateFormat: 'yy-mm-dd',
-			showButtonPanel: false
-		}).on('change', function() {
-			if ($('#date1').val() != origDate1) {
-				$('#predefined_timespan').val(0);
-			}
-		});
-
-		$('#date2').datetimepicker({
-			minuteGrid: 10,
-			stepMinute: 1,
-			showAnim: 'slideDown',
-			numberOfMonths: 1,
-			timeFormat: 'HH:mm:ss',
-			dateFormat: 'yy-mm-dd',
-			showButtonPanel: false
-		}).on('change', function() {
-			if ($('#date2').val() != origDate2) {
-				$('#predefined_timespan').val(0);
-			}
-		});;
 	});
 }
 
