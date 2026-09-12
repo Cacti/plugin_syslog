@@ -225,6 +225,12 @@ numeric IDs. Host ID is available in the system-log viewer. Text fields support
 **contains**, **=**, **!=**, and **like**. Numeric IDs and dates support
 **=**, **!=**, **>**, **>=**, **<**, and **<=**. Dates use `YYYY-MM-DD HH:MM:SS`.
 
+Facility, priority, their IDs, and program ID use database-backed dropdowns.
+ID choices show their names alongside the stored IDs. Host, host ID, and program
+text fields offer autocomplete. Message and sequence suggestions sample the
+latest 1,000 records per selected record source; message suggestions start after
+two characters. You can still type text or LIKE patterns. Dates keep their picker.
+
 Contains treats wildcard and regex characters literally. LIKE uses `%` for any
 number of characters and `_` for one character. Case sensitivity follows database
 collation. AND takes precedence over OR; NOT excludes the

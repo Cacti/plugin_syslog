@@ -30,6 +30,51 @@ function syslog_search_fields() {
 		'facility_id' => 'Facility ID', 'priority_id' => 'Priority ID'];
 }
 
+/** Database-backed values used by query-builder dropdowns. */
+function syslog_search_choices() {
+	global $syslogdb_default;
+	$choices = [];
+	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities', 'program' => 'syslog_programs'] as $field => $table) {
+		$choices[$field . '_id'] = [];
+		if ($field !== 'program') { $choices[$field] = []; }
+		foreach (syslog_db_fetch_assoc("SELECT {$field}_id AS id, $field AS name FROM `$syslogdb_default`.`$table` ORDER BY $field") as $record) {
+			$choices[$field . '_id'][] = [(string) $record['id'], $record['name'] . ' (' . $record['id'] . ')'];
+			if ($field !== 'program') { $choices[$field][] = [$record['name'], $record['name']]; }
+		}
+	}
+	return $choices;
+}
+
+/** Bounded suggestions; message/sequence suggestions sample recent records. */
+function syslog_search_suggestions($field, $term, $tab, $removal) {
+	global $syslogdb_default;
+	if (!isset(syslog_search_fields()[$field]) || $field === 'logtime' || strlen($term) > 1024) {
+		return [];
+	}
+	$pattern = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term) . '%';
+	$base = substr($field, -3) === '_id' ? substr($field, 0, -3) : $field;
+	$tables = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'];
+	if (isset($tables[$base]) && !($base === 'host' && $tab === 'alerts')) {
+		$table = $tables[$base];
+		$records = syslog_db_fetch_assoc_prepared("SELECT $field AS value, $base AS label
+			FROM `$syslogdb_default`.`$table`
+			WHERE $base LIKE ? ESCAPE '!' OR CAST($field AS CHAR) LIKE ? ESCAPE '!'
+			ORDER BY $base LIMIT 30", [$pattern, $pattern]);
+	} else {
+		if (!in_array($field, ['message', 'seq', 'host'], true)) { return []; }
+		$column = $field === 'message' && $tab === 'alerts' ? 'logmsg' : $field;
+		$tables = $tab === 'alerts' ? ['syslog_logs'] : ($removal === '1' ? ['syslog', 'syslog_removed'] : [$removal === '-1' ? 'syslog' : 'syslog_removed']);
+		$queries = [];
+		foreach ($tables as $table) {
+			$queries[] = "SELECT $column AS value FROM (SELECT $column FROM `$syslogdb_default`.`$table` ORDER BY seq DESC LIMIT 1000) AS recent_$table";
+		}
+		$records = syslog_db_fetch_assoc_prepared('SELECT DISTINCT value, value AS label FROM (' . implode(' UNION ALL ', $queries) . ") AS suggestions WHERE value LIKE ? ESCAPE '!' ORDER BY value LIMIT 30", [$pattern]);
+	}
+	return array_map(function ($record) {
+		return ['value' => (string) $record['value'], 'label' => (string) $record['label']];
+	}, $records);
+}
+
 function syslog_search_operators($field) {
 	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
 		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];

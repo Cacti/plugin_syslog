@@ -39,6 +39,16 @@ syslog_connect();
 
 set_default_action();
 
+if (get_request_var('action') === 'ajax_search_values') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print json_encode(syslog_search_suggestions(
+		(string) get_nfilter_request_var('field'), (string) get_nfilter_request_var('term'),
+		get_nfilter_request_var('tab') === 'alerts' ? 'alerts' : 'syslog',
+		(string) get_nfilter_request_var('removal')
+	));
+	exit;
+}
+
 if (get_request_var('action') == 'ajax_programs') {
 	return get_ajax_programs(true);
 }
@@ -1304,6 +1314,7 @@ function syslog_filter($sql_where, $tab) {
 					<div id='syslog_search_content'>
 					<input type='hidden' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
 					<div id='syslog_search_builder'
+						data-choices='<?php print html_escape(json_encode(syslog_search_choices())); ?>'
 						data-fields='<?php $fields = syslog_search_fields(); if ($tab != 'syslog') { unset($fields['host_id']); } print html_escape(json_encode($fields)); ?>'
 						data-tree='<?php print html_escape(json_encode($GLOBALS['syslog_search_tree'] ?? null)); ?>'
 						data-message='<?php print __esc('Message', 'syslog'); ?>'

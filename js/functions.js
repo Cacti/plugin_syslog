@@ -158,6 +158,28 @@ function initSyslogSearchDates(container) {
 	});
 }
 
+function initSyslogSearchAutocomplete(input, field, row) {
+	$(input).autocomplete({
+		minLength: field === 'message' ? 2 : 0,
+		delay: 250,
+		source: function(request, respond) {
+			$.ajax({
+				url: 'syslog.php', type: 'POST', dataType: 'json',
+				data: {action: 'ajax_search_values', field: field, term: request.term,
+					tab: window.pageTab || 'syslog', removal: $('#removal').val() || '-1',
+					__csrf_magic: csrfMagicToken}
+			}).done(respond).fail(function() { respond([]); });
+		},
+		select: function(event, ui) {
+			input.value = ui.item.value;
+			row.value = ui.item.value;
+			return false;
+		}
+	}).on('focus', function() {
+		if (field !== 'message' || input.value.length >= 2) $(input).autocomplete('search', input.value);
+	});
+}
+
 function initSyslogSearchBuilder() {
 	var builder = document.getElementById('syslog_search_builder');
 	if (!builder) {
@@ -165,6 +187,7 @@ function initSyslogSearchBuilder() {
 	}
 	var labels = builder.dataset;
 	var tree = JSON.parse(labels.tree || 'null');
+	var choices = JSON.parse(labels.choices || '{}');
 	builder.searchRows = syslogSearchRows(tree);
 	if (!builder.searchRows.length) {
 		builder.searchRows.push({join: 'AND', negative: false, value: $('#rfilter').val() || ''});
@@ -210,7 +233,8 @@ function initSyslogSearchBuilder() {
 				var fields = JSON.parse(labels.fields || '{"message":"Message","host":"Host"}');
 				line.appendChild(select(Object.entries(fields), row.field || 'message', 'Field', function(value) {
 					row.field = value;
-					row.operator = value === 'seq' || value.endsWith('_id') || value === 'logtime' ? '=' : 'contains';
+					row.value = '';
+					row.operator = choices[value] || value === 'seq' || value.endsWith('_id') || value === 'logtime' ? '=' : 'contains';
 					render(container, rows);
 					initSyslogSearchDates(container);
 				}));
@@ -218,17 +242,30 @@ function initSyslogSearchBuilder() {
 				var operators = numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
 				line.appendChild(select(operators.map(function(op) { return [op, row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op]; }), row.operator || 'contains', 'Operator', function(value) { row.operator = value; }));
 				line.appendChild(select([['0', labels.match], ['1', labels.exclude]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
-				var input = element('input', 'syslogSearchText');
-				input.type = 'text';
-				input.size = 35;
-				input.placeholder = row.field === 'logtime' ? 'YYYY-MM-DD HH:MM:SS' : labels.placeholder || labels.message;
-				input.required = true;
-				input.value = row.value;
-				input.setAttribute('aria-label', fields[row.field || 'message']);
-				input.addEventListener('input', function() { row.value = input.value; });
-				input.addEventListener('change', function() { row.value = input.value; });
-				if (row.field === 'logtime') {
-					input.className += ' syslogSearchDate';
+				var input;
+				if (choices[row.field]) {
+					var options = [['', 'Select a value…']].concat(choices[row.field]);
+					// Preserve saved values even if their lookup row has since disappeared.
+					if (row.value && !options.some(function(option) { return option[0] === row.value; })) {
+						options.push([row.value, row.value]);
+					}
+					input = select(options, row.value, fields[row.field], function(value) { row.value = value; });
+					input.className = 'syslogSearchText';
+					input.required = true;
+				} else {
+					input = element('input', 'syslogSearchText');
+					input.type = 'text';
+					input.size = 35;
+					input.placeholder = row.field === 'logtime' ? 'YYYY-MM-DD HH:MM:SS' : labels.placeholder || labels.message;
+					input.required = true;
+					input.value = row.value;
+					input.setAttribute('aria-label', fields[row.field || 'message']);
+					input.addEventListener('input', function() { row.value = input.value; });
+					input.addEventListener('change', function() { row.value = input.value; });
+					if (row.field === 'logtime') {
+						input.className += ' syslogSearchDate';
+					}
+					if (row.field !== 'logtime') initSyslogSearchAutocomplete(input, row.field || 'message', row);
 				}
 				line.appendChild(input);
 			}

@@ -32,6 +32,7 @@ const context = {
 		const node = typeof selector === 'string' ? nodes[selector.slice(1)] : selector;
 		return {
 			datetimepicker(options) { node.datepickerOptions = options; },
+			autocomplete(options) { node.autocompleteOptions = options; return this; },
 			val(value) { if (value !== undefined) node.value = value; return node.value; },
 			toggle(show) { node.hidden = !show; },
 			attr(name, value) { node.setAttribute(name, value); },
@@ -96,6 +97,7 @@ fieldSelect.value = 'host';
 context.$(fieldSelect).trigger('change');
 assert.equal(builder.searchRows[0].field, 'host');
 assert.equal(builder.searchRows[0].operator, 'contains');
+enter(0, 'message A');
 // Export submits the current unsaved builder state in a POST body.
 let submitted;
 context.postSyslog = data => { submitted = data; };
@@ -136,6 +138,27 @@ for (const field of ['host', 'program', 'facility', 'priority', 'priority_id']) 
 	context.syncSyslogSearchBuilder();
 	assert.ok(nodes.rfilter.value.startsWith(field + ' = "'), 'Selected field/operator serialized');
 }
+// Database-backed dropdowns show labels while storing the actual IDs.
+builder.dataset.choices = JSON.stringify({facility: [['auth', 'auth']], program_id: [['12', 'sshd (12)']], priority_id: [['4', 'warning (4)']]});
+builder.dataset.fields = JSON.stringify({message: 'Message', host: 'Host', facility: 'Facility', program_id: 'Program ID', priority_id: 'Priority ID'});
+for (const [field, value] of [['facility', 'auth'], ['program_id', '12'], ['priority_id', '4']]) {
+	builder.dataset.tree = JSON.stringify(['predicate', field, '=', value]);
+	context.initSyslogSearchBuilder();
+	const input = builder.querySelector('.syslogSearchText');
+	assert.equal(input.tag, 'select');
+	assert.ok(input.children.some(option => option.value === value));
+	input.value = value;
+	context.$(input).trigger('change');
+	context.syncSyslogSearchBuilder();
+	assert.equal(nodes.rfilter.value, field + ' = "' + value + '"');
+}
+builder.dataset.tree = JSON.stringify(['predicate', 'host', '=', 'old-host']);
+context.initSyslogSearchBuilder();
+const hostInput = builder.querySelector('.syslogSearchText');
+assert.equal(hostInput.autocompleteOptions.minLength, 0);
+hostInput.autocompleteOptions.select({}, {item: {value: 'router-1', label: 'router-1'}});
+context.syncSyslogSearchBuilder();
+assert.equal(nodes.rfilter.value, 'host = "router-1"');
 // Date rows retain the Cacti datetime picker and serialize picker changes.
 builder.dataset.fields = JSON.stringify({message: 'Message', logtime: 'Date'});
 builder.dataset.tree = JSON.stringify(['AND', ['predicate', 'logtime', '>=', '2020-01-01 00:00:00'], ['predicate', 'logtime', '<=', '2020-01-02 00:00:00']]);
