@@ -60,15 +60,6 @@ function initSyslogStats() {
  * ======================================================================== */
 
 /**
- * Apply timespan filter
- */
-function applyTimespan() {
-	var strURL  = urlPath+'plugins/syslog/syslog.php?header=false';
-	strURL += '&predefined_timespan=' + $('#predefined_timespan').val();
-	loadPageNoHeader(strURL);
-}
-
-/**
  * Apply main syslog filter
  */
 /** Convert saved searches to editable conditions, retaining explicit groups. */
@@ -82,6 +73,8 @@ function syslogSearchRows(tree) {
 		if (precedence && precedence >= minimum) {
 			append(node[1], join, precedence);
 			append(node[2], node[0], precedence);
+		} else if (node[0] === 'predicate') {
+			rows.push({join: join, negative: false, field: node[1], operator: node[2], value: node[3]});
 		} else if (node[0] === 'term') {
 			rows.push({join: join, negative: false, value: node[1]});
 		} else if (node[0] === 'NOT') {
@@ -106,6 +99,9 @@ function syslogSearchExpression(rows) {
 	return rows.map(function(row, index) {
 		var term = row.rows ? '(' + syslogSearchExpression(row.rows) + ')' :
 			'"' + row.value.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+		if (!row.rows && (row.field && row.field !== 'message' || row.operator && row.operator !== 'contains')) {
+			term = (row.field || 'message') + ' ' + (row.operator || 'contains') + ' ' + term;
+		}
 		return (index ? ' ' + row.join + ' ' : '') + (row.negative ? 'NOT ' : '') + term;
 	}).join('');
 }
@@ -116,7 +112,9 @@ function syncSyslogSearchBuilder() {
 		return true;
 	}
 	var inputs = builder.querySelectorAll('.syslogSearchText');
-	if (inputs.length === 1 && inputs[0].value === '' && builder.querySelectorAll('.syslogSearchRow').length === 1) {
+	if (inputs.length === 1 && inputs[0].value === '' && builder.querySelectorAll('.syslogSearchRow').length === 1 &&
+		(!builder.searchRows[0].field || builder.searchRows[0].field === 'message') &&
+		(!builder.searchRows[0].operator || builder.searchRows[0].operator === 'contains') && !builder.searchRows[0].negative) {
 		$('#rfilter').val('');
 		return true;
 	}
@@ -176,12 +174,20 @@ function initSyslogSearchBuilder() {
 				render(group, row.rows);
 				line.appendChild(group);
 			} else {
-				line.appendChild(element('span', 'syslogSearchField', labels.message));
-				line.appendChild(select([['0', labels.contains], ['1', labels.notContains]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
+				var fields = JSON.parse(labels.fields || '{"message":"Message","host":"Host"}');
+				line.appendChild(select(Object.entries(fields), row.field || 'message', 'Field', function(value) {
+					row.field = value;
+					row.operator = value === 'seq' || value.endsWith('_id') || value === 'logtime' ? '=' : 'contains';
+					render(container, rows);
+				}));
+				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
+				var operators = numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+				line.appendChild(select(operators.map(function(op) { return [op, op]; }), row.operator || 'contains', 'Operator', function(value) { row.operator = value; }));
+				line.appendChild(select([['0', labels.match], ['1', labels.exclude]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
 				var input = element('input', 'syslogSearchText');
 				input.type = 'text';
 				input.size = 35;
-				input.placeholder = labels.message;
+				input.placeholder = labels.placeholder || labels.message;
 				input.required = true;
 				input.value = row.value;
 				input.setAttribute('aria-label', labels.message);
@@ -218,97 +224,66 @@ function initSyslogSearchBuilder() {
 		});
 		container.appendChild(actions);
 	}
-	var previousMode = $('#search_mode').val();
-	function showMode() {
-		var logical = $('#search_mode').val() === 'logical';
-		builder.hidden = !logical;
-		$('#logical_search_help').toggle(logical);
-		$('#rfilter').toggle(!logical);
-		// Hidden builder inputs must not participate in native form validation.
-		builder.querySelectorAll('input').forEach(function(input) { input.disabled = !logical; });
-	}
 	render(builder, builder.searchRows);
-	showMode();
-	$('#search_mode').on('change', function() {
-		if (this.value === 'logical' && previousMode === 'regex') {
-			builder.searchRows = [{join: 'AND', negative: false, value: $('#rfilter').val()}];
-			render(builder, builder.searchRows);
-		}
-		previousMode = this.value;
-		showMode();
-	});
-	$('#rfilter').on('change', function() {
-		if ($('#search_mode').val() === 'regex') {
-			applyFilter();
-		}
-	});
+	$('#rfilter').toggle(false);
 	// Go/Enter share custom validation, which permits a single empty search row.
 	$('#syslog_form').attr('novalidate', 'novalidate');
 }
 
-function applyFilter() {
-	if (!syncSyslogSearchBuilder()) {
-		return;
-	}
-
-	var strURL  = 'syslog.php?tab='+(window.pageTab || '');
-
-	strURL += '&header=false';
-	strURL += '&host='+$('#host').val();
-	strURL += '&search_mode=' + $('#search_mode').val();
-	strURL += '&rfilter=' + encodeURIComponent($('#search_mode').val() === 'logical' ? $('#rfilter').val() : base64_encode($('#rfilter').val()));
-	strURL += '&efacility='+$('#efacility').val();
-	strURL += '&epriority='+$('#epriority').val();
-	strURL += '&eprogram='+$('#eprogram').val();
-	strURL += '&rows='+$('#rows').val();
-	strURL += '&trimval='+$('#trimval').val();
-	strURL += '&removal='+$('#removal').val();
-	strURL += '&refresh='+$('#refresh').val();
-	strURL += '&grouping=' + ($('#grouping').length ? $('#grouping').val() : '0');
-	strURL += '&predefined_timespan='+$('#predefined_timespan').val();
-	strURL += '&date1='+$('#date1').val();
-	strURL += '&date2='+$('#date2').val();
-
-	loadPageNoHeader(strURL);
+/** Submit filter values in a CSRF-protected POST body, including downloads. */
+function postSyslog(data) {
+	var form = document.createElement('form');
+	form.method = 'post';
+	form.action = 'syslog.php';
+	data.tab = window.pageTab || 'syslog';
+	data.__csrf_magic = csrfMagicToken;
+	Object.keys(data).forEach(function(name) {
+		var input = document.createElement('input');
+		input.type = 'hidden';
+		input.name = name;
+		input.value = data[name];
+		form.appendChild(input);
+	});
+	document.body.appendChild(form);
+	form.submit();
+	form.remove();
 }
 
-/**
- * Export records to CSV
- */
-function exportRecords() {
-	if (!syncSyslogSearchBuilder()) {
-		return;
-	}
+function syslogFilterData() {
+	var data = {search_mode: 'logical', rfilter: $('#rfilter').val(), page: 1};
+	['rows', 'trimval', 'removal', 'refresh', 'grouping', 'predefined_timespan', 'date1', 'date2', 'predefined_timeshift'].forEach(function(name) {
+		if ($('#' + name).length) data[name] = $('#' + name).val();
+	});
+	return data;
+}
 
-	document.location = 'syslog.php?export=true&tab=' + encodeURIComponent(window.pageTab || 'syslog') +
-		'&search_mode=' + $('#search_mode').val() + '&rfilter=' +
-		encodeURIComponent($('#search_mode').val() === 'logical' ? $('#rfilter').val() : base64_encode($('#rfilter').val()));
+function applyFilter() {
+	if (syncSyslogSearchBuilder()) postSyslog(syslogFilterData());
+}
+
+function exportRecords() {
+	if (!syncSyslogSearchBuilder()) return;
+	var data = syslogFilterData();
+	data.export = 'true';
+	postSyslog(data);
 	Pace.stop();
 }
 
-/**
- * Clear main syslog filter
- */
 function clearFilter() {
-	var strURL  = 'syslog.php?tab=' + (window.pageTab || '');
-	strURL += '&header=false&clear=true';
-	loadPageNoHeader(strURL);
+	postSyslog({clear: 'true'});
 }
 
 /**
  * Save syslog filter settings
  */
 function saveSettings() {
-	var strURL  = 'syslog.php?action=save&tab=' + (window.pageTab || '');
-	var data    = {};
+	var strURL  = 'syslog.php';
+	var data    = {action: 'save', tab: window.pageTab || 'syslog'};
 
 	data.trimval      = $('#trimval').val();
 	data.rows         = $('#rows').val();
 	data.removal      = $('#removal').val();
 	data.refresh      = $('#refresh').val();
-	data.efacility    = $('#efacility').val();
-	data.epriority    = $('#epriority').val();
-	data.eprogram     = $('#eprogram').val();
 	data.__csrf_magic = csrfMagicToken;
 
 	if ($('#predefined_timespan').val() > 0) {
@@ -326,36 +301,30 @@ function saveSettings() {
  * Shift time filter left (backward)
  */
 function timeshiftFilterLeft() {
-	var strURL  = 'syslog.php?tab='+(window.pageTab || '')+'&header=false';
-	strURL += '&shift_left=true';
-	strURL += '&date1='+$('#date1').val();
-	strURL += '&date2='+$('#date2').val();
-	strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
-	loadPageNoHeader(strURL);
+	if (!syncSyslogSearchBuilder()) return;
+	var data = syslogFilterData();
+	data.shift_left = 'true';
+	postSyslog(data);
 }
 
 /**
  * Shift time filter right (forward)
  */
 function timeshiftFilterRight() {
-	var strURL  = 'syslog.php?tab='+(window.pageTab || '')+'&header=false';
-	strURL += '&shift_right=true';
-	strURL += '&date1='+$('#date1').val();
-	strURL += '&date2='+$('#date2').val();
-	strURL += '&predefined_timeshift='+$('#predefined_timeshift').val();
-	loadPageNoHeader(strURL);
+	if (!syncSyslogSearchBuilder()) return;
+	var data = syslogFilterData();
+	data.shift_right = 'true';
+	postSyslog(data);
 }
 
 /**
  * Initialize main syslog view
- * @param {object} config - Configuration object containing: pageTab, placeHolder, noneSelectedText, devicesSelectedText, allDevicesText
+ * @param {object} config - Configuration object containing pageTab
  */
 function initSyslogMain(config) {
 	var date1Open = false;
 	var date2Open = false;
 	var pageTab   = config.pageTab || '';
-	var hostTerm  = '';
-	var placeHolder = config.placeHolder || '';
 	var origDate1 = $('#date1').val();
 	var origDate2 = $('#date2').val();
 
@@ -366,87 +335,10 @@ function initSyslogMain(config) {
 		initSyslogSearchBuilder();
 		$('#syslog_form').submit(function(event) {
 			event.preventDefault();
+			event.stopImmediatePropagation();
 			applyFilter();
 		});
 
-		$('#host').multiselect({
-			menuHeight: $(window).height()*.7,
-			menuWidth: '220',
-			linkInfo: faIcons,
-			noneSelectedText: config.noneSelectedText || '',
-			selectedText: function(numChecked, numTotal, checkedItems) {
-				var myReturn = numChecked + ' ' + config.devicesSelectedText;
-				$.each(checkedItems, function(index, value) {
-					if (value.value == '0') {
-						myReturn = config.allDevicesText;
-						return false;
-					}
-				});
-				return myReturn;
-			},
-			uncheckAll: function() {
-				$(this).multiselect('widget').find(':checkbox:first').each(function() {
-					$(this).prop('checked', true);
-				});
-				$('#test').trigger('keyup');
-			},
-			checkAll: function() {
-				$(this).multiselect('widget').find(':checkbox').not(':first').each(function() {
-					$(this).prop('checked', true);
-				});
-				$(this).multiselect('widget').find(':checkbox:first').each(function() {
-					$(this).prop('checked', false);
-				});
-			},
-			open: function(event, ui) {
-				if ($('#term').length == 0) {
-					var width = parseInt($(this).multiselect('widget').find('.ui-multiselect-header').width() - 5);
-					$(this).multiselect('widget').find('.ui-multiselect-header').after('<input id="term" placeholder="'+placeHolder+'" class="ui-state-default ui-corner-all" style="width:'+width+'px" type="text" value="'+hostTerm+'">');
-					$('#term').on('keyup', function() {
-						$.getJSON('syslog.php?action=ajax_hosts&term='+$('#term').val(), function(data) {
-							$('#host').find('option').not(':selected').each(function() {
-								if ($(this).attr('id') != 'host_all') {
-									$(this).remove();
-								}
-							});
-
-							$.each(data, function(index, hostData) {
-								if ($('#host option[value="'+index+'"]').length == 0) {
-									$('#host').append('<option class="'+DOMPurify.sanitize(hostData.class)+'" value="'+DOMPurify.sanitize(index)+'">'+DOMPurify.sanitize(hostData.host)+'</option>');
-								}
-							});
-
-							$('#host').multiselect('refresh');
-						});
-					});
-				}
-
-				$('#term').focus();
-			},
-			click: function(event, ui) {
-				var checked = $(this).multiselect('widget').find('input:checked').length;
-
-				if (ui.value == '0') {
-					if (ui.checked == true) {
-						$('#host').multiselect('uncheckAll');
-						$(this).multiselect('widget').find(':checkbox:first').each(function() {
-							$(this).prop('checked', true);
-						});
-					}
-				} else if (checked == 0) {
-					$(this).multiselect('widget').find(':checkbox:first').each(function() {
-						$(this).click();
-					});
-				} else if ($(this).multiselect('widget').find('input:checked:first').val() == '0') {
-					if (checked > 0) {
-						$(this).multiselect('widget').find(':checkbox:first').each(function() {
-							$(this).click();
-							$(this).prop('disable', true);
-						});
-					}
-				}
-			}
-		});
 
 		$('#save').click(function() {
 			saveSettings();
@@ -512,7 +404,7 @@ function initSyslogMain(config) {
 			showButtonPanel: false
 		}).on('change', function() {
 			if ($('#date1').val() != origDate1) {
-				$('#predefined_timespan').val(0).selectmenu('refresh');
+				$('#predefined_timespan').val(0);
 			}
 		});
 
@@ -526,7 +418,7 @@ function initSyslogMain(config) {
 			showButtonPanel: false
 		}).on('change', function() {
 			if ($('#date2').val() != origDate2) {
-				$('#predefined_timespan').val(0).selectmenu('refresh');
+				$('#predefined_timespan').val(0);
 			}
 		});;
 	});

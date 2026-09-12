@@ -46,13 +46,31 @@ search_assert($rendered === '<span class="filteredValue">&lt;script&gt;</span><s
 $GLOBALS['request']['search_mode'] = 'regex';
 search_assert(syslog_message_filter_value('error', 'error') === 'legacy', 'Regex rendering unchanged');
 
+// Table predicates are allowlisted and values remain SQL literals.
+$GLOBALS['syslogdb_default'] = 'syslog';
+foreach (['host = "router-1"', 'host like "web-%"', 'program contains "sshd"', 'facility = "auth"', 'priority_id <= "4"', 'logtime >= "2026-01-01 00:00:00"'] as $expression) {
+	$tree = syslog_parse_logical_search($expression);
+	search_assert($tree[0] === 'predicate', 'Field predicate parsed');
+	foreach (['message', 'logmsg'] as $column) {
+		search_assert(str_contains(syslog_logical_search_sql($tree, $column), db_qstr($tree[3])), 'Field values quoted');
+	}
+}
+foreach (['message regex "error|warning"', 'password = "x"', 'host_id like "1"', 'seq = "1 OR 1=1"', 'logtime > "yesterday"'] as $invalid) {
+	try {
+		syslog_parse_logical_search($invalid);
+		throw new RuntimeException('Accepted invalid field predicate: ' . $invalid);
+	} catch (InvalidArgumentException $expected) {}
+}
+search_assert(syslog_logical_positive_terms(syslog_parse_logical_search('host = "router" AND message contains "error"')) === ['error'], 'Only message values highlighted');
+search_assert(str_contains(syslog_logical_search_sql(syslog_parse_logical_search('host = "router"'), 'logmsg'), 'syslog.host ='), 'Alerts use their stored hostname');
+
 // Exercise the real query builder without bootstrapping Cacti or requiring a database.
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
 $start = strpos($source, 'function get_syslog_messages(');
 $end = strpos($source, 'function syslog_filter(', $start);
 eval(substr($source, $start, $end - $start));
 $GLOBALS['syslogdb_default'] = 'syslog';
-$GLOBALS['request'] = ['search_mode' => 'logical', 'rfilter' => '(error OR warning) AND NOT timeout', 'host' => '', 'date1' => '2026-01-01', 'date2' => '2026-01-02', 'eprogram' => '-1', 'efacility' => '-1', 'epriority' => '-1', 'page' => 1];
+$GLOBALS['request'] = ['search_mode' => 'logical', 'rfilter' => '(error OR warning) AND NOT timeout AND (host like "web-%" OR program = "sshd") AND priority_id <= "4"', 'host' => '', 'date1' => '2026-01-01', 'date2' => '2026-01-02', 'eprogram' => '-1', 'efacility' => '-1', 'epriority' => '-1', 'page' => 1];
 $GLOBALS['syslog_search_tree'] = syslog_parse_logical_search($GLOBALS['request']['rfilter']);
 $GLOBALS['syslog_search_error'] = '';
 foreach (['syslog', 'alerts'] as $tab) {

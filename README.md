@@ -211,36 +211,37 @@ that.
 
 ## Building a message search
 
-The message viewer and triggered-alert message view provide a **Build search**
-mode. Enter the first message text, then click **AND**, **OR**, or **NOT** to add
-another condition on its own row. For example:
+The message and triggered-alert viewers use a query builder. Choose a field,
+operator, and value, then add **AND**, **OR**, or **NOT** conditions. For example:
 
 ```text
-    Message contains          message A
-AND Message contains          message B
-OR  Message contains          Message C
+    Message contains  connection refused
+AND Host    =         router-1
+OR  Host    like      web-%
 ```
 
-This finds messages containing both A and B, or messages containing C. AND
-conditions are matched together before OR alternatives. NOT adds an AND condition
-with **does not contain** selected. Each row lets you change its AND/OR connector,
-switch between **contains** and **does not contain**, or remove it with **×**.
-Press Enter or Go to run the assembled search. Adding or editing rows does not
-submit the search automatically.
+Fields include message, host, program, facility, priority, date, sequence, and
+numeric IDs. Host ID is available in the system-log viewer. Text fields support
+**contains**, **=**, **!=**, and **like**. Numeric IDs and dates support
+**=**, **!=**, **>**, **>=**, **<**, and **<=**. Dates use `YYYY-MM-DD HH:MM:SS`.
 
-Each text box matches a literal substring, including spaces, quotes, operator
-words, `%`, `_`, and regex characters. There is no query syntax to type or escape.
-Case sensitivity follows the database column's collation. A single empty row
-clears the message restriction; additional rows must contain text before searching
-or exporting. Previously saved parenthesized logical searches retain their groups
-when displayed in the builder.
+Contains treats wildcard and regex characters literally. LIKE uses `%` for any
+number of characters and `_` for one character. Case sensitivity follows database
+collation. AND takes precedence over OR; NOT excludes the
+condition. Existing grouped expressions retain their grouping. Use **×** to
+remove a condition, then Enter or Go to apply the query.
 
-The assembled search is retained per message tab through pagination, refresh,
-grouping, and CSV export. **Clear** restores an empty builder. **Regex** mode is
-still available, and existing searches saved before the builder retain their
-regex behavior. New sessions default to the builder. Searches allow up to 8192
-bytes of generated expression, 256 tokens, and 32 nesting levels. Invalid searches
-return no results and CSV export rejects them.
+The standalone device, program, facility, and priority filters are replaced by
+builder conditions. The only standalone dropdowns are Record Type, Display,
+Messages, Trim, and Refresh. From/To date inputs and time-shift buttons remain
+available. Existing
+legacy regex searches become literal message contains conditions. Searches persist per tab across
+pagination, refresh, grouping, and CSV export. Search, export, clear, and time
+controls submit values through CSRF-protected POST bodies instead of URL queries.
+
+A single blank default message condition clears the query. Other incomplete
+conditions block submission. Searches allow up to 8192 bytes, 256 tokens, and 32
+nesting levels. Invalid searches return no results and CSV export rejects them.
 
 -----------------------------------------------
 Copyright (c) 2004-2026 - The Cacti Group, Inc.

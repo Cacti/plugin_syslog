@@ -81,19 +81,38 @@ for (const [tree, expected] of [
 ]) {
 	assert.equal(context.syslogSearchExpression(context.syslogSearchRows(tree)), expected);
 }
-// Export builds from the current rows without requiring a previous Go click.
+// Field predicates survive serialization and rehydration, including SQL wildcard text.
+const predicate = ['predicate', 'host', 'like', 'web-%'];
+assert.equal(context.syslogSearchExpression(context.syslogSearchRows(predicate)), 'host like "web-%"');
+assert.equal(context.syslogSearchExpression(context.syslogSearchRows(['NOT', predicate])), 'NOT host like "web-%"');
+const first = builder.querySelectorAll('.syslogSearchRow')[0];
+const fieldSelect = first.children[1];
+fieldSelect.value = 'host';
+fieldSelect.handlers.change();
+assert.equal(builder.searchRows[0].field, 'host');
+assert.equal(builder.searchRows[0].operator, 'contains');
+// Export submits the current unsaved builder state in a POST body.
+let submitted;
+context.postSyslog = data => { submitted = data; };
+context.syslogFilterData = () => ({rfilter: nodes.rfilter.value});
 const exportStart = source.indexOf('function exportRecords()');
-vm.runInNewContext(source.slice(exportStart, source.indexOf('/**', exportStart)), context);
+vm.runInNewContext(source.slice(exportStart, source.indexOf('function clearFilter()', exportStart)), context);
 context.exportRecords();
-let url = new URL(context.document.location, 'http://localhost/');
-assert.equal(url.searchParams.get('tab'), 'alerts');
-assert.equal(url.searchParams.get('rfilter'), '"message A" AND "message B" OR "Message C"');
-nodes.search_mode.value = 'regex';
-nodes.search_mode.handlers.change.call(nodes.search_mode);
-assert.equal(builder.hidden, true);
-assert.equal(builder.querySelector('.syslogSearchText').disabled, true);
-nodes.rfilter.value = 'error|warning';
-context.exportRecords();
-url = new URL(context.document.location, 'http://localhost/');
-assert.equal(Buffer.from(url.searchParams.get('rfilter'), 'base64').toString(), 'error|warning');
+assert.equal(submitted.export, 'true');
+assert.equal(submitted.rfilter, 'host contains "message A" AND "message B" OR "Message C"');
+// Exercise the actual form transport and verify no query is appended to its action.
+let postedForm;
+Element.prototype.submit = function() { postedForm = this; };
+Element.prototype.remove = function() {};
+context.document.body = new Element('body');
+context.csrfMagicToken = 'test-token';
+const postStart = source.indexOf('function postSyslog(');
+vm.runInNewContext(source.slice(postStart, source.indexOf('function syslogFilterData()', postStart)), context);
+context.postSyslog(submitted);
+assert.equal(postedForm.method, 'post');
+assert.equal(postedForm.action, 'syslog.php');
+const values = Object.fromEntries(postedForm.children.map(input => [input.name, input.value]));
+assert.equal(values.tab, 'alerts');
+assert.equal(values.__csrf_magic, 'test-token');
+assert.equal(values.rfilter, submitted.rfilter);
 console.log('logical_message_search_ui_test passed');

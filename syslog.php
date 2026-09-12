@@ -829,11 +829,58 @@ function syslog_request_validation($current_tab, $force = false) {
 		$_SESSION['sess_sl_' . $current_tab . '_rfilter'] = $logical_input;
 	}
 
+	if (get_request_var('search_mode') !== 'logical') {
+		$legacy = get_request_var('rfilter');
+		set_request_var('rfilter', $legacy === '' ? '' : 'message contains ' . '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $legacy) . '"');
+		set_request_var('search_mode', 'logical');
+	}
+	// New submissions contain the entire query. Convert old saved dropdown state only on entry.
+	if (!isset($_POST['rfilter']) && !isset_request_var('clear')) {
+		$conditions = [];
+		foreach (['eprogram' => 'program_id', 'efacility' => 'facility_id', 'epriority' => 'priority_id'] as $old => $field) {
+			$value = (string) get_request_var($old);
+			if ($value !== '-1' && $value !== '') {
+				$operator = $old === 'epriority' && substr($value, -1) !== 'o' ? '<=' : '=';
+				$conditions[] = $field . ' ' . $operator . ' "' . (int) $value . '"';
+			}
+		}
+		$hosts = (string) get_request_var('host');
+		if ($hosts !== '' && $hosts !== '0') {
+			$host_conditions = [];
+			foreach (explode(',', $hosts) as $host) {
+				if (ctype_digit($host)) {
+					if ($current_tab === 'syslog') {
+						$host_conditions[] = 'host_id = "' . $host . '"';
+					} else {
+						global $syslogdb_default;
+						$hostname = syslog_db_fetch_cell_prepared("SELECT host FROM `$syslogdb_default`.`syslog_hosts` WHERE host_id = ?", [$host]);
+						if ($hostname !== false && $hostname !== '') {
+							$host_conditions[] = 'host = "' . str_replace(['\\', '"'], ['\\\\', '\\"'], $hostname) . '"';
+						}
+					}
+				}
+			}
+			if ($host_conditions) { $conditions[] = '(' . implode(' OR ', $host_conditions) . ')'; }
+		}
+		if ($conditions) {
+			$query = get_request_var('rfilter');
+			set_request_var('rfilter', ($query === '' ? '' : '(' . $query . ') AND ') . implode(' AND ', $conditions));
+		}
+	}
+	foreach (['host' => '0', 'eprogram' => '-1', 'efacility' => '-1', 'epriority' => '-1'] as $key => $value) {
+		set_request_var($key, $value);
+		$_SESSION['sess_sl_' . $current_tab . '_' . $key] = $value;
+	}
+	foreach (['rfilter', 'search_mode'] as $key) {
+		$_SESSION['sess_sl_' . $current_tab . '_' . $key] = get_request_var($key);
+	}
+
 	$GLOBALS['syslog_search_tree'] = null;
 	$GLOBALS['syslog_search_error'] = '';
 	if (get_request_var('search_mode') === 'logical') {
 		try {
 			$GLOBALS['syslog_search_tree'] = syslog_parse_logical_search(get_request_var('rfilter'));
+			syslog_logical_search_sql($GLOBALS['syslog_search_tree'], $current_tab === 'syslog' ? 'message' : 'logmsg');
 		} catch (InvalidArgumentException $error) {
 			$GLOBALS['syslog_search_error'] = __('Invalid logical search: %s', $error->getMessage(), 'syslog');
 		}
@@ -1206,7 +1253,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $config, $graph_timespans, $graph_timeshifts, $reset_multi, $page_refresh_interval, $item_rows, $trimvals;
+	global $config, $graph_timeshifts, $page_refresh_interval, $item_rows, $trimvals;
 	global $syslogdb_default;
 
 	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
@@ -1220,46 +1267,19 @@ function syslog_filter($sql_where, $tab) {
 	?>
 	<script type='text/javascript'>
 	initSyslogMain({
-		pageTab: '<?php print get_request_var('tab'); ?>',
-		placeHolder: '<?php print __esc('Enter a search term', 'syslog'); ?>',
-		noneSelectedText: '<?php print __esc('Select Device(s)', 'syslog'); ?>',
-		devicesSelectedText: '<?php print __esc('Devices Selected', 'syslog'); ?>',
-		allDevicesText: '<?php print __esc('All Devices Selected', 'syslog'); ?>'
+		pageTab: '<?php print get_request_var('tab'); ?>'
 	});
 	</script>
 	<?php
 
-	$graph_timespans[GT_CUSTOM] = __('Custom', 'syslog');
-
 	html_start_box(__('Syslog Message Filter %s', $filter_text, 'syslog'), '100%', '', '3', 'center', ''); ?>
-		<tr class='noprint syslogFilterRow'>
+		<tr class='even noprint syslogFilterRow'>
 			<td class='noprint'>
-			<form id='syslog_form' action='syslog.php'>
+			<form id='syslog_form' action='syslog.php' method='post'>
+				<input type='hidden' id='predefined_timespan' value='<?php print html_escape_request_var('predefined_timespan'); ?>'>
+				<input type='hidden' id='predefined_timeshift' value='<?php print html_escape_request_var('predefined_timeshift'); ?>'>
 				<table class='filterTable'>
 					<tr>
-						<td>
-							<?php print __('Timespan', 'syslog'); ?>
-						</td>
-						<td>
-							<select id='predefined_timespan' onChange='applyTimespan()'>
-								<?php
-								if (isset_request_var('custom') && get_request_var('custom') == true) {
-									set_request_var('predefined_timespan', GT_CUSTOM);
-									$start_val = 0;
-									$end_val   = sizeof($graph_timespans);
-								} else {
-									$start_val = 0;
-									$end_val   = sizeof($graph_timespans);
-								}
-
-								if (cacti_sizeof($graph_timespans)) {
-									foreach ($graph_timespans as $index => $value) {
-										print "<option value='$index'" . (get_request_var('predefined_timespan') == $index ? ' selected' : '') . '>' . html_escape($value) . '</option>';
-									}
-								}
-								?>
-							</select>
-						</td>
 						<td>
 							<?php print __('From', 'syslog'); ?>
 						</td>
@@ -1282,22 +1302,7 @@ function syslog_filter($sql_where, $tab) {
 							<i title='<?php print __esc('Shift Time Backward', 'syslog'); ?>' onclick='timeshiftFilterLeft()' class='shiftArrow fa fa-backward'></i>
 						</td>
 						<td>
-							<select id='predefined_timeshift' title='<?php print __esc('Define Shifting Interval', 'syslog'); ?>'>
-								<?php
-								$start_val = 1;
-								$end_val   = sizeof($graph_timeshifts) + 1;
-
-								if (cacti_sizeof($graph_timeshifts)) {
-									for ($shift_value = $start_val; $shift_value < $end_val; $shift_value++) {
-										print "<option value='$shift_value'";
-
-										if (get_request_var('predefined_timeshift') == $shift_value) {
-											print ' selected';
-										} print '>' . title_trim($graph_timeshifts[$shift_value], 40) . '</option>';
-									}
-								}
-								?>
-							</select>
+							<span><?php print html_escape($graph_timeshifts[get_request_var('predefined_timeshift')] ?? ''); ?></span>
 						</td>
 						<td>
 							<i title='<?php print __esc('Shift Time Forward', 'syslog'); ?>' onclick='timeshiftFilterRight()' class='shiftArrow fa fa-forward'></i>
@@ -1326,152 +1331,37 @@ function syslog_filter($sql_where, $tab) {
 						</td>
 					</tr>
 				</table>
-				<table class='filterTable syslogSearchTable'>
-					<tr>
-						<td>
-							<?php print __('Search', 'syslog'); ?>
-						</td>
-						<td>
-							<select id='search_mode' aria-label='<?php print __esc('Search mode', 'syslog'); ?>'>
-								<option value='logical' <?php print get_request_var('search_mode') == 'logical' ? 'selected' : ''; ?>><?php print __('Build search', 'syslog'); ?></option>
-								<option value='regex' <?php print get_request_var('search_mode') == 'regex' ? 'selected' : ''; ?>><?php print __('Regex', 'syslog'); ?></option>
-							</select>
-							<input type='text' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
-							<div id='syslog_search_builder'
-								data-tree='<?php print html_escape(json_encode($GLOBALS['syslog_search_tree'] ?? null)); ?>'
-								data-message='<?php print __esc('Message', 'syslog'); ?>'
-								data-contains='<?php print __esc('contains', 'syslog'); ?>'
-								data-not-contains='<?php print __esc('does not contain', 'syslog'); ?>'
-								data-remove='<?php print __esc('Remove condition', 'syslog'); ?>'
-								data-match='<?php print __esc('Match group', 'syslog'); ?>'
-								data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
+				<section class='syslogSearchPanel' aria-labelledby='syslog_search_title'>
+					<div class='syslogSearchHeader'>
+						<div class='syslogSearchHeading'>
+							<span class='syslogSearchIcon' aria-hidden='true'><i class='fa fa-search'></i></span>
+							<div>
+								<h3 id='syslog_search_title'><?php print __esc('Search messages', 'syslog'); ?></h3>
+								<p><?php print __esc('Combine conditions to find the messages you need.', 'syslog'); ?></p>
 							</div>
-							<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Enter message text, then use AND, OR, or NOT to add another condition. AND conditions are matched together; OR adds an alternative.', 'syslog'); ?></details>
-							<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
-						</td>
-					</tr>
-				</table>
+						</div>
+						<input type='hidden' id='search_mode' value='logical'>
+					</div>
+					<input type='hidden' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
+					<div id='syslog_search_builder'
+						data-fields='<?php $fields = syslog_search_fields(); if ($tab != 'syslog') { unset($fields['host_id']); } print html_escape(json_encode($fields)); ?>'
+						data-tree='<?php print html_escape(json_encode($GLOBALS['syslog_search_tree'] ?? null)); ?>'
+						data-message='<?php print __esc('Message', 'syslog'); ?>'
+						data-placeholder='<?php print __esc('Enter message text…', 'syslog'); ?>'
+						data-contains='<?php print __esc('contains', 'syslog'); ?>'
+						data-not-contains='<?php print __esc('does not contain', 'syslog'); ?>'
+						data-remove='<?php print __esc('Remove condition', 'syslog'); ?>'
+						data-match='<?php print __esc('Match group', 'syslog'); ?>'
+						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
+					</div>
+					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
+					<div class='syslogSearchFooter'>
+						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers.', 'syslog'); ?></details>
+						<button type='button' class='syslogSearchSubmit' onclick='applyFilter()'><i class='fa fa-search' aria-hidden='true'></i> <?php print __esc('Search messages', 'syslog'); ?></button>
+					</div>
+				</section>
 				<table class='filterTable'>
 					<tr>
-						<td>
-							<?php print __('Devices', 'syslog'); ?>
-						</td>
-						<td>
-							<select id='host' multiple style='display:none; width: 150px; overflow: scroll;'>
-								<?php
-								$hfilter = get_request_var('host');
-
-								if ($tab == 'syslog') {
-									print "<option id='host_all' value='0'" . (($hfilter == 'null' || $hfilter == '0' || $reset_multi) ? 'selected' : '') . '>' . __('Show All Devices', 'syslog') . '</option>';
-								} else {
-									print "<option id='host_all' value='0'" . (($hfilter == 'null' || $hfilter == 0 || $reset_multi) ? 'selected' : '') . '>' . __('Show All Logs', 'syslog') . '</option>';
-									print "<option id='host_none' value='-1'" . ($hfilter == '-1' ? 'selected' : '') . '>' . __('Threshold Logs', 'syslog') . '</option>';
-								}
-
-								$hosts_where = '';
-								$hosts_where = api_plugin_hook_function('syslog_hosts_where', $hosts_where);
-
-								if ($hosts_where != '') {
-									$hosts_where = 'WHERE ' . $hosts_where;
-								}
-
-								if ($hfilter != '0' && $hfilter != '' && $hfilter != '-1') {
-									$mhosts_where  = ($hosts_where != '' ? ' AND ' : 'WHERE ') . ' host_id IN (' . $hfilter . ')';
-									$mhosts_nwhere = ($hosts_where != '' ? $hosts_where . ' AND ' : 'WHERE ') . ' host_id NOT IN (' . $hfilter . ')';
-								}
-
-								$ac_rows = read_config_option('autocomplete_rows');
-
-								if ($ac_rows <= 0) {
-									$ac_rows = 100;
-								}
-
-								if (syslog_db_table_exists('host', false)) {
-									if ($hfilter != '0' && $hfilter != '' && $hfilter != '-1') {
-										$hosts = syslog_db_fetch_assoc("SELECT *
-											FROM (
-												SELECT DISTINCT sh.host_id, sh.host, h.id, '1' AS selected
-												FROM `$syslogdb_default`.`syslog_hosts` AS sh
-												LEFT JOIN host AS h
-												ON sh.host = h.hostname
-												OR sh.host = h.description
-												OR sh.host LIKE substring_index(h.hostname, '.', 1)
-												OR sh.host LIKE substring_index(h.description, '.', 1)
-												$mhosts_where
-												UNION
-												SELECT DISTINCT sh.host_id, sh.host, h.id, '0' AS selected
-												FROM `$syslogdb_default`.`syslog_hosts` AS sh
-												LEFT JOIN host AS h
-												ON sh.host = h.hostname
-												OR sh.host = h.description
-												OR sh.host LIKE substring_index(h.hostname, '.', 1)
-												OR sh.host LIKE substring_index(h.description, '.', 1)
-												$mhosts_nwhere
-											) AS rs
-											ORDER BY selected DESC, host
-											LIMIT $ac_rows");
-									} else {
-										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, h.id
-											FROM `$syslogdb_default`.`syslog_hosts` AS sh
-											LEFT JOIN host AS h
-											ON sh.host = h.hostname
-											OR sh.host = h.description
-											OR sh.host LIKE substring_index(h.hostname, '.', 1)
-											OR sh.host LIKE substring_index(h.description, '.', 1)
-											$hosts_where
-											ORDER BY host
-											LIMIT $ac_rows");
-									}
-								} else {
-									if ($hfilter != '0' && $hfilter != '' && $hfilter != '-1') {
-										$hosts = syslog_db_fetch_assoc("SELECT *
-											FROM (
-												SELECT DISTINCT sh.host_id, sh.host, '0' AS id, '1' AS selected
-												FROM `$syslogdb_default`.`syslog_hosts` AS sh
-												$mhosts_where
-												UNION
-												SELECT DISTINCT sh.host_id, sh.host, '0' AS id, '0' AS selected
-												FROM `$syslogdb_default`.`syslog_hosts` AS sh
-												$mhosts_nwhere
-											) AS rs
-											ORDER BY selected DESC, host
-											LIMIT $ac_rows");
-									} else {
-										$hosts = syslog_db_fetch_assoc("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
-											FROM `$syslogdb_default`.`syslog_hosts` AS sh
-											$hosts_where
-											ORDER BY host
-											LIMIT $ac_rows");
-									}
-								}
-
-								$selected = explode(',', $hfilter);
-
-								if (cacti_sizeof($hosts)) {
-									foreach ($hosts as $host) {
-										$host['host'] = syslog_strip_domain($host['host']);
-
-										if (!empty($host['id'])) {
-											$class = get_device_leaf_class($host['id']);
-										} else {
-											$class = 'deviceUp';
-										}
-
-										print "<option class='$class' value='" . $host['host_id'] . "'";
-
-										if (cacti_sizeof($selected)) {
-											if (in_array($host['host_id'], $selected, true)) {
-												print ' selected';
-											}
-										}
-
-										print '>';
-										print html_escape($host['host']) . '</option>';
-									}
-								}
-								?>
-							</select>
-						</td>
 						<td>
 							<?php print __('Messages', 'syslog'); ?>
 						</td>
@@ -1532,60 +1422,6 @@ function syslog_filter($sql_where, $tab) {
 				<table class='filterTable'>
 					<tr>
 						<?php api_plugin_hook('syslog_extend_filter'); ?>
-						<?php html_program_filter(get_request_var('eprogram'), false); ?>
-						<td>
-							<?php print __('Facility', 'syslog'); ?>
-						</td>
-						<td>
-							<select id='efacility' onChange='applyFilter()' title='<?php print __esc('Facilities to filter on', 'syslog'); ?>'>
-								<option value='-1'<?php if (get_request_var('efacility') == '0') { ?> selected<?php } ?>><?php print __('All Facilities', 'syslog'); ?></option>
-								<?php
-								if (!isset($hostfilter)) {
-									$hostfilter = '';
-								}
-
-								$efacilities = syslog_db_fetch_assoc("SELECT DISTINCT f.facility_id, f.facility
-									FROM `$syslogdb_default`.`syslog_host_facilities` AS fh
-									INNER JOIN `$syslogdb_default`.`syslog_facilities` AS f
-									ON f.facility_id=fh.facility_id " . ($hostfilter != '' ? 'WHERE ' : '') . $hostfilter . '
-									ORDER BY facility');
-
-								if (cacti_sizeof($efacilities)) {
-									foreach ($efacilities as $efacility) {
-										print "<option value='" . $efacility['facility_id'] . "'";
-
-										if (get_request_var('efacility') == $efacility['facility_id']) {
-											print ' selected';
-										}
-
-										print '>' . html_escape(ucfirst($efacility['facility'])) . '</option>';
-									}
-								}
-								?>
-							</select>
-						</td>
-						<td>
-							<?php print __('Priority', 'syslog'); ?>
-						</td>
-						<td>
-							<select id='epriority' onChange='applyFilter()' title='<?php print __('Priority Levels', 'syslog'); ?>'>
-								<option value='-1'<?php if (get_request_var('epriority') == '-1') { ?> selected<?php } ?>><?php print __('All Priorities', 'syslog'); ?></option>
-								<option value='0'<?php if (get_request_var('epriority') == '0') { ?> selected<?php } ?>><?php print __('Emergency', 'syslog'); ?></option>
-								<option value='1'<?php if (get_request_var('epriority') == '1') { ?> selected<?php } ?>><?php print __('Alert++', 'syslog'); ?></option>
-								<option value='1o'<?php if (get_request_var('epriority') == '1o') { ?> selected<?php } ?>><?php print __('Alert', 'syslog'); ?></option>
-								<option value='2'<?php if (get_request_var('epriority') == '2') { ?> selected<?php } ?>><?php print __('Critical++', 'syslog'); ?></option>
-								<option value='2o'<?php if (get_request_var('epriority') == '2o') { ?> selected<?php } ?>><?php print __('Critical', 'syslog'); ?></option>
-								<option value='3'<?php if (get_request_var('epriority') == '3') { ?> selected<?php } ?>><?php print __('Error++', 'syslog'); ?></option>
-								<option value='3o'<?php if (get_request_var('epriority') == '3o') { ?> selected<?php } ?>><?php print __('Error', 'syslog'); ?></option>
-								<option value='4'<?php if (get_request_var('epriority') == '4') { ?> selected<?php } ?>><?php print __('Warning++', 'syslog'); ?></option>
-								<option value='4o'<?php if (get_request_var('epriority') == '4o') { ?> selected<?php } ?>><?php print __('Warning', 'syslog'); ?></option>
-								<option value='5'<?php if (get_request_var('epriority') == '5') { ?> selected<?php } ?>><?php print __('Notice++', 'syslog'); ?></option>
-								<option value='5o'<?php if (get_request_var('epriority') == '5o') { ?> selected<?php } ?>><?php print __('Notice', 'syslog'); ?></option>
-								<option value='6'<?php if (get_request_var('epriority') == '6') { ?> selected<?php } ?>><?php print __('Info++', 'syslog'); ?></option>
-								<option value='6o'<?php if (get_request_var('epriority') == '6o') { ?> selected<?php } ?>><?php print __('Info', 'syslog'); ?></option>
-								<option value='7'<?php if (get_request_var('epriority') == '7') { ?> selected<?php } ?>><?php print __('Debug', 'syslog'); ?></option>
-							</select>
-						</td>
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
 						<td>
 							<?php print __('Record Type', 'syslog'); ?>

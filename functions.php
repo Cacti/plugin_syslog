@@ -22,6 +22,19 @@
  +-------------------------------------------------------------------------+
 */
 
+/** Allowlisted fields and operators shared by validation and the builder. */
+function syslog_search_fields() {
+	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
+		'facility' => 'Facility', 'priority' => 'Priority', 'logtime' => 'Date',
+		'seq' => 'Sequence', 'host_id' => 'Host ID', 'program_id' => 'Program ID',
+		'facility_id' => 'Facility ID', 'priority_id' => 'Priority ID'];
+}
+
+function syslog_search_operators($field) {
+	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
+		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+}
+
 /** Parse literal message searches. Uppercase operators bind NOT, AND, then OR. */
 function syslog_parse_logical_search($input) {
 	if (strlen($input) > 8192) {
@@ -33,6 +46,14 @@ function syslog_parse_logical_search($input) {
 	for ($i = 0; $i < $length;) {
 		if (ctype_space($input[$i])) {
 			$i++;
+			continue;
+		}
+		if (preg_match('/\G([a-z_]+)\s+(contains|like|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
+			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
+				throw new InvalidArgumentException('Invalid field or operator.');
+			}
+			$tokens[] = ['field', $match[1], $match[2]];
+			$i += strlen($match[0]);
 			continue;
 		}
 		if ($input[$i] == '(' || $input[$i] == ')') {
@@ -88,6 +109,18 @@ function syslog_parse_logical_search($input) {
 			if (($tokens[$position++][0] ?? '') != ')') {
 				throw new InvalidArgumentException('Expected a closing parenthesis.');
 			}
+		} elseif ($token[0] == 'field') {
+			$value = $tokens[$position++] ?? [];
+			if (($value[0] ?? '') !== 'term') {
+				throw new InvalidArgumentException('Expected a quoted field value.');
+			}
+			if (($token[1] === 'seq' || substr($token[1], -3) === '_id') && !ctype_digit($value[1])) {
+				throw new InvalidArgumentException('IDs must be nonnegative integers.');
+			}
+			if ($token[1] === 'logtime' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
+				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
+			}
+			$node = ['predicate', $token[1], $token[2], $value[1]];
 		} elseif ($token[0] == 'term') {
 			$node = $token;
 		} else {
@@ -119,6 +152,30 @@ function syslog_logical_search_sql($tree, $column) {
 	if ($tree === null) {
 		return '';
 	}
+	if ($tree[0] === 'predicate') {
+		global $syslogdb_default;
+		[, $field, $operator, $value] = $tree;
+		if (!isset(syslog_search_fields()[$field]) || !in_array($operator, syslog_search_operators($field), true)) {
+			throw new InvalidArgumentException('Invalid field or operator.');
+		}
+		if ($field === 'host_id' && $column === 'logmsg') {
+			throw new InvalidArgumentException('Host ID is only available for system logs.');
+		}
+		$target = $field === 'message' ? $column : 'syslog.' . $field;
+		if (in_array($field, ['host', 'program', 'facility', 'priority'], true)) {
+			if ($field === 'host' && $column === 'logmsg') {
+				$target = 'syslog.host';
+			} else {
+				$table = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'][$field];
+				$target = "(SELECT search_lookup.$field FROM `$syslogdb_default`.`$table` AS search_lookup WHERE search_lookup.{$field}_id = syslog.{$field}_id)";
+			}
+		}
+		if ($operator === 'contains') {
+			return '(LOCATE(' . db_qstr($value) . ', ' . $target . ') > 0)';
+		}
+		$operator = ['like' => 'LIKE'][$operator] ?? $operator;
+		return '(' . $target . ' ' . $operator . ' ' . db_qstr($value) . ')';
+	}
 	if ($tree[0] == 'term') {
 		return '(LOCATE(' . db_qstr($tree[1]) . ', ' . $column . ') > 0)';
 	}
@@ -131,6 +188,9 @@ function syslog_logical_search_sql($tree, $column) {
 function syslog_logical_positive_terms($tree, $negative = false) {
 	if ($tree === null) {
 		return [];
+	}
+	if ($tree[0] === 'predicate') {
+		return !$negative && $tree[1] === 'message' && in_array($tree[2], ['contains', '='], true) ? [$tree[3]] : [];
 	}
 	if ($tree[0] == 'term') {
 		return $negative ? [] : [$tree[1]];
