@@ -145,12 +145,18 @@ for (const [field, value] of [['facility', 'auth'], ['program_id', '12'], ['prio
 	builder.dataset.tree = JSON.stringify(['predicate', field, '=', value]);
 	context.initSyslogSearchBuilder();
 	const input = builder.querySelector('.syslogSearchText');
-	assert.equal(input.tag, 'select');
-	assert.ok(input.children.some(option => option.value === value));
-	input.value = value;
-	context.$(input).trigger('change');
+	assert.equal(input.tag, 'input');
+	assert.ok(input.autocompleteOptions.source.some(option => option.value === value));
+	input.autocompleteOptions.select({}, {item: {value: value}});
 	context.syncSyslogSearchBuilder();
 	assert.equal(nodes.rfilter.value, field + ' = "' + value + '"');
+	const custom = field === 'facility' ? 'future-facility' : '999';
+	enter(0, custom);
+	context.syncSyslogSearchBuilder();
+	assert.equal(nodes.rfilter.value, field + ' = "' + custom + '"', 'Custom value retained without a database match');
+	builder.dataset.tree = JSON.stringify(['predicate', field, '=', custom]);
+	context.initSyslogSearchBuilder();
+	assert.equal(builder.querySelector('.syslogSearchText').value, custom, 'Custom value restored on reload');
 }
 builder.dataset.tree = JSON.stringify(['predicate', 'host', '=', 'old-host']);
 context.initSyslogSearchBuilder();

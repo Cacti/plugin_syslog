@@ -225,8 +225,9 @@ numeric IDs. Host ID is available in the system-log viewer. Text fields support
 **contains**, **=**, **!=**, and **like**. Numeric IDs and dates support
 **=**, **!=**, **>**, **>=**, **<**, and **<=**. Dates use `YYYY-MM-DD HH:MM:SS`.
 
-Facility, priority, their IDs, and program ID use database-backed dropdowns.
-ID choices show their names alongside the stored IDs. Host, host ID, and program
+Facility, priority, their IDs, and program ID use editable database-backed dropdowns.
+ID choices show their names alongside the stored IDs. You can also enter a value
+that is not yet in the database; ID fields still require nonnegative integers. Host, host ID, and program
 text fields offer autocomplete. Message and sequence suggestions sample the
 latest 1,000 records per selected record source; message suggestions start after
 two characters. You can still type text or LIKE patterns. Dates keep their picker.

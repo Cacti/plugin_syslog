@@ -242,30 +242,31 @@ function initSyslogSearchBuilder() {
 				var operators = numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
 				line.appendChild(select(operators.map(function(op) { return [op, row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op]; }), row.operator || 'contains', 'Operator', function(value) { row.operator = value; }));
 				line.appendChild(select([['0', labels.match], ['1', labels.exclude]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
-				var input;
-				if (choices[row.field]) {
-					var options = [['', 'Select a value…']].concat(choices[row.field]);
-					// Preserve saved values even if their lookup row has since disappeared.
-					if (row.value && !options.some(function(option) { return option[0] === row.value; })) {
-						options.push([row.value, row.value]);
-					}
-					input = select(options, row.value, fields[row.field], function(value) { row.value = value; });
-					input.className = 'syslogSearchText';
-					input.required = true;
+				var input = element('input', 'syslogSearchText');
+				input.type = 'text';
+				input.size = 35;
+				input.placeholder = row.field === 'logtime' ? 'YYYY-MM-DD HH:MM:SS' :
+					choices[row.field] ? 'Select or enter a value…' : labels.placeholder || labels.message;
+				input.required = true;
+				input.value = row.value;
+				input.setAttribute('aria-label', fields[row.field || 'message']);
+				input.addEventListener('input', function() { row.value = input.value; });
+				input.addEventListener('change', function() { row.value = input.value; });
+				if (row.field === 'logtime') {
+					input.className += ' syslogSearchDate';
+				} else if (choices[row.field]) {
+					// Suggestions assist entry without restricting searches to existing values.
+					$(input).autocomplete({
+						minLength: 0,
+						source: choices[row.field].map(function(option) { return {value: option[0], label: option[1]}; }),
+						select: function(event, ui) {
+							input.value = ui.item.value;
+							row.value = ui.item.value;
+							return false;
+						}
+					}).on('focus', function() { $(input).autocomplete('search', ''); });
 				} else {
-					input = element('input', 'syslogSearchText');
-					input.type = 'text';
-					input.size = 35;
-					input.placeholder = row.field === 'logtime' ? 'YYYY-MM-DD HH:MM:SS' : labels.placeholder || labels.message;
-					input.required = true;
-					input.value = row.value;
-					input.setAttribute('aria-label', fields[row.field || 'message']);
-					input.addEventListener('input', function() { row.value = input.value; });
-					input.addEventListener('change', function() { row.value = input.value; });
-					if (row.field === 'logtime') {
-						input.className += ' syslogSearchDate';
-					}
-					if (row.field !== 'logtime') initSyslogSearchAutocomplete(input, row.field || 'message', row);
+					initSyslogSearchAutocomplete(input, row.field || 'message', row);
 				}
 				line.appendChild(input);
 			}
