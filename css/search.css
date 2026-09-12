@@ -298,3 +298,12 @@
 #syslog_form .syslogSearchToggle:focus-visible {
 	background: var(--search-tint);
 }
+
+/* Cacti themes set a fixed autocomplete height; short search lists should fit. */
+.ui-autocomplete.syslogSearchSuggestions {
+	height: auto;
+	min-height: 0;
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}

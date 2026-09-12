@@ -160,6 +160,7 @@ function initSyslogSearchDates(container) {
 
 function initSyslogSearchAutocomplete(input, field, row) {
 	$(input).autocomplete({
+		classes: {'ui-autocomplete': 'syslogSearchSuggestions'},
 		minLength: field === 'message' ? 2 : 0,
 		delay: 250,
 		source: function(request, respond) {
@@ -257,6 +258,7 @@ function initSyslogSearchBuilder() {
 				} else if (choices[row.field]) {
 					// Suggestions assist entry without restricting searches to existing values.
 					$(input).autocomplete({
+						classes: {'ui-autocomplete': 'syslogSearchSuggestions'},
 						minLength: 0,
 						source: choices[row.field].map(function(option) { return {value: option[0], label: option[1]}; }),
 						select: function(event, ui) {
