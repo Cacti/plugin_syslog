@@ -229,15 +229,20 @@
 }
 
 #syslog_form .syslogSearchFilters {
-	width: 100%;
+	width: auto;
+	min-width: 50%;
 	margin-top: 14px;
-	border-spacing: 0;
+	border-spacing: 0 6px;
 	white-space: nowrap;
 }
 
 #syslog_form .syslogSearchFilters td {
-	padding: 4px 10px 4px 0;
+	padding: 0 10px 0 0;
 	vertical-align: middle;
+}
+
+#syslog_form .syslogSearchFilters td:first-child {
+	width: 1%;
 }
 
 #syslog_form .syslogSearchFilters select {
@@ -294,14 +299,10 @@
 		grid-row: 1;
 	}
 
-	#syslog_form .syslogSearchFilters,
-	#syslog_form .syslogSearchFilters tbody,
-	#syslog_form .syslogSearchFilters tr {
+	#syslog_form .syslogSearchFilters {
 		display: block;
-	}
-
-	#syslog_form .syslogSearchFilters td {
-		display: inline-block;
+		overflow-x: auto;
+		white-space: normal;
 	}
 }
 
