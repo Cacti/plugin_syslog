@@ -554,9 +554,9 @@
 #syslog_workspace tr.syslogRow.logCritical .syslogSeverity,
 #syslog_workspace tr.syslogRow.logError .syslogSeverity { font-weight: 700; box-shadow: 0 0 0 1px #c0392b33; }
 #syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 0 16px 16px; border: 1px solid #b8c6d2; background: #f8faf9; color: #23362f; box-shadow: -2px 2px 8px #0001; }
-#syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 -16px 16px; padding: 12px 16px; border-bottom: 1px solid #cbd8d1; background: linear-gradient(#eef3f7, #dce5ed); }
+#syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 -16px 16px; padding: 12px 16px; }
 #syslog_message_details h3 { margin: 0; font-size: 16px; }
-#syslog_details_close { border: 1px solid #b8c6d2; border-radius: 3px; background: #f8fafc; font-size: 20px; line-height: 1; cursor: pointer; }
+#syslog_details_close { min-width: 28px; min-height: 28px; margin: 0; padding: 2px 7px; border-radius: 3px; font-size: 20px; line-height: 1; cursor: pointer; }
 #syslog_message_details dl { display: grid; grid-template-columns: minmax(80px, auto) minmax(0, 1fr); gap: 12px; margin: 0 0 20px; }
 #syslog_message_details dt { font-weight: 600; }
 #syslog_message_details dd { margin: 0; overflow-wrap: anywhere; }

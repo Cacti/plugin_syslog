@@ -2032,7 +2032,7 @@ function syslog_messages($tab = 'syslog') {
 	print '</div>';
 	?>
 	<aside id='syslog_message_details' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
-		<header><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
+		<header class='ui-widget-header'><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' class='ui-state-default' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
 		<dl><?php foreach (['received' => __('Date', 'syslog'), 'device' => __('Device', 'syslog'), 'program' => __('Program', 'syslog'), 'facility' => __('Facility', 'syslog'), 'severity' => __('Priority', 'syslog')] as $key => $label) { print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>"; } ?></dl>
 		<h4><?php print __esc('Message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>
 		<div class='syslogDetailsActions'><button type='button' id='syslog_details_copy'><?php print __esc('Copy message', 'syslog'); ?></button><span id='syslog_copy_status' role='status' data-success='<?php print __esc('Copied', 'syslog'); ?>' data-error='<?php print __esc('Copy unavailable. Select and copy the message text.', 'syslog'); ?>'></span></div>
