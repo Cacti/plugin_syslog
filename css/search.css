@@ -539,7 +539,7 @@
 #syslog_message_details dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 24px 0; }
 #syslog_message_details dd { margin: 0; overflow-wrap: anywhere; }
 #syslog_details_raw { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid #cbd8d1; background: #eef2ef; font: 13px/1.6 monospace; user-select: text; }
-.syslogDetailsFilters { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 24px; }
+.syslogDetailsFilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
 #syslog_copy_status { display: block; padding-top: 8px; }
 @media (max-width: 1000px) {
 	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
