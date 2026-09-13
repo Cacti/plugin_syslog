@@ -553,14 +553,16 @@
 #syslog_workspace tr.syslogRow.logAlert .syslogSeverity,
 #syslog_workspace tr.syslogRow.logCritical .syslogSeverity,
 #syslog_workspace tr.syslogRow.logError .syslogSeverity { font-weight: 700; box-shadow: 0 0 0 1px #c0392b33; }
-#syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 16px; border-left: 1px solid #cbd8d1; background: #f8faf9; color: #23362f; }
-#syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 0 16px 16px; border: 1px solid #b8c6d2; background: #f8faf9; color: #23362f; box-shadow: -2px 2px 8px #0001; }
+#syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 -16px 16px; padding: 12px 16px; border-bottom: 1px solid #cbd8d1; background: linear-gradient(#eef3f7, #dce5ed); }
 #syslog_message_details h3 { margin: 0; font-size: 16px; }
-#syslog_details_close { border: 0; background: transparent; font-size: 24px; cursor: pointer; }
-#syslog_message_details dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 24px 0; }
+#syslog_details_close { border: 1px solid #b8c6d2; border-radius: 3px; background: #f8fafc; font-size: 20px; line-height: 1; cursor: pointer; }
+#syslog_message_details dl { display: grid; grid-template-columns: minmax(80px, auto) minmax(0, 1fr); gap: 12px; margin: 0 0 20px; }
+#syslog_message_details dt { font-weight: 600; }
 #syslog_message_details dd { margin: 0; overflow-wrap: anywhere; }
+#syslog_message_details h4 { margin: 0 0 8px; padding-top: 16px; border-top: 1px solid #d5dfda; font-size: 13px; }
 #syslog_details_raw { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid #cbd8d1; background: #eef2ef; font: 13px/1.6 monospace; user-select: text; }
-.syslogDetailsFilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
+.syslogDetailsActions, .syslogDetailsFilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; }
 #syslog_copy_status { display: block; padding-top: 8px; }
 @media (max-width: 1000px) {
 	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
