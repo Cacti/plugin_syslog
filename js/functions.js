@@ -302,6 +302,20 @@ function initSyslogSearchDates(container) {
 			timeFormat: 'HH:mm:ss',
 			dateFormat: 'yy-mm-dd',
 			showButtonPanel: false,
+			beforeShow: function() {
+				// The picker is appended to <body>; raise it above a modal dialog
+				// whose z-index jQuery UI may have bumped past the CSS default.
+				var dialog = input.closest ? input.closest('.ui-dialog') : null;
+				if (dialog) {
+					setTimeout(function() {
+						var z = parseInt(window.getComputedStyle(dialog).zIndex, 10);
+						if (z) {
+							var picker = document.getElementById('ui-datepicker-div');
+							if (picker) picker.style.zIndex = z + 50;
+						}
+					}, 0);
+				}
+			},
 			onSelect: function(value) {
 				input.value = value;
 				input.dispatchEvent(new Event('change'));
@@ -313,6 +327,9 @@ function initSyslogSearchDates(container) {
 function initSyslogSearchAutocomplete(input, field, row) {
 	$(input).autocomplete({
 		classes: {'ui-autocomplete': 'syslogSearchSuggestions'},
+		// Menus appended to <body> fall behind a modal dialog once jQuery UI
+		// raises its z-index; keep suggestions inside the dialog when present.
+		appendTo: input.closest ? input.closest('.ui-dialog') : null,
 		minLength: field === 'message' ? 2 : 0,
 		delay: 250,
 		source: function(request, respond) {
@@ -444,6 +461,9 @@ function initSyslogSearchBuilder(builder, rows) {
 					// Suggestions assist entry without restricting searches to existing values.
 					$(input).autocomplete({
 						classes: {'ui-autocomplete': 'syslogSearchSuggestions'},
+						// Menus appended to <body> fall behind a modal dialog once
+						// jQuery UI raises its z-index; keep them in the dialog.
+						appendTo: input.closest ? input.closest('.ui-dialog') : null,
 						minLength: 0,
 						source: choices[row.field].map(function(option) { return {value: option[0], label: option[1]}; }),
 						select: function(event, ui) {
