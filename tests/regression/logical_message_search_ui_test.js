@@ -22,7 +22,7 @@ class Element {
 }
 const nodes = {};
 for (const id of ['syslog_search_builder', 'search_mode', 'rfilter', 'logical_search_help', 'syslog_form']) {
-	nodes[id] = new Element();
+	nodes[id] = Object.assign(new Element(), {id});
 }
 nodes.search_mode.value = 'logical';
 nodes.syslog_search_builder.dataset = {tree: 'null', message: 'Message', contains: 'contains', notContains: 'does not contain', remove: 'Remove condition'};

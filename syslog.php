@@ -67,6 +67,24 @@ if (get_request_var('action') == 'save') {
 	exit;
 }
 
+if (get_request_var('action') == 'saved_search_save') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print saved_search_save();
+	exit;
+}
+
+if (get_request_var('action') == 'saved_search_delete') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print saved_search_delete();
+	exit;
+}
+
+if (get_request_var('action') == 'saved_search_global') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print saved_search_global();
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 $trimvals = [
@@ -839,6 +857,17 @@ function syslog_request_validation($current_tab, $force = false) {
 		$_SESSION['sess_sl_' . $current_tab . '_rfilter'] = $logical_input;
 	}
 
+	// ================= saved searches =================
+	$saved_id = get_filter_request_var('saved', FILTER_VALIDATE_INT);
+
+	if ($saved_id > 0 && !isset($_POST['rfilter'])) {
+		// Applying a saved search restores its expression and standard filters.
+		saved_search_apply($current_tab, $saved_id);
+	} elseif (isset($_POST['rfilter']) || isset_request_var('clear') || isset_request_var('reset')) {
+		// Manual edits detach the active saved search.
+		kill_session_var('sess_sl_' . $current_tab . '_saved');
+	}
+
 	if (get_request_var('search_mode') !== 'logical') {
 		$legacy = get_request_var('rfilter');
 		set_request_var('rfilter', $legacy === '' ? '' : 'message contains ' . '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $legacy) . '"');
@@ -918,6 +947,163 @@ function syslog_request_validation($current_tab, $force = false) {
 	} else {
 		set_request_var('host', '-1');
 	}
+}
+
+/**
+ * Apply a saved search: restore its expression and standard filters, and
+ * record it as the active saved search for the tab.  Dates are left out so
+ * that the page entry logic re-derives a fresh date range.
+ */
+function saved_search_apply($tab, $saved_id) {
+	global $syslogdb_default;
+
+	$username = get_username($_SESSION['sess_user_id']);
+
+	$row = syslog_db_fetch_row_prepared("SELECT id, search, removal, grouping
+		FROM `$syslogdb_default`.`syslog_saved_searches`
+		WHERE id = ?
+		AND (`user` = ? OR is_global = 'on')",
+		[$saved_id, $username]);
+
+	if ($row === false) {
+		kill_session_var('sess_sl_' . $tab . '_saved');
+
+		return;
+	}
+
+	set_request_var('rfilter', $row['search']);
+	set_request_var('removal', $row['removal']);
+	set_request_var('grouping', $row['grouping']);
+	set_request_var('page', '1');
+
+	$_SESSION['sess_sl_' . $tab . '_rfilter']  = $row['search'];
+	$_SESSION['sess_sl_' . $tab . '_removal']  = $row['removal'];
+	$_SESSION['sess_sl_' . $tab . '_grouping'] = $row['grouping'];
+	$_SESSION['sess_sl_' . $tab . '_page']     = '1';
+	$_SESSION['sess_sl_' . $tab . '_saved']    = (int) $saved_id;
+
+	// Let the page entry logic append fresh dates to the saved expression.
+	kill_session_var('sess_sl_' . $tab . '_query_dates');
+}
+
+function saved_search_save() {
+	global $syslogdb_default;
+
+	$username = get_username($_SESSION['sess_user_id']);
+	$name     = trim((string) get_nfilter_request_var('name'));
+	$search   = (string) get_nfilter_request_var('rfilter');
+	$removal  = get_filter_request_var('removal', FILTER_VALIDATE_INT);
+	$grouping = get_filter_request_var('grouping', FILTER_VALIDATE_INT);
+
+	if ($removal === false || $removal === null) {
+		$removal = 1;
+	}
+
+	if ($grouping === false || $grouping === null) {
+		$grouping = 0;
+	}
+
+	if ($name === '' || strlen($name) > 128) {
+		return json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
+	}
+
+	// Saved searches exclude the dates the page entry logic appends.
+	$search = syslog_strip_auto_dates($search, get_request_var('date1'), get_request_var('date2'));
+
+	try {
+		$tree = syslog_parse_logical_search($search);
+		syslog_logical_search_sql($tree, get_request_var('tab') === 'alerts' ? 'logmsg' : 'message');
+	} catch (InvalidArgumentException $error) {
+		return json_encode(['error' => __('Invalid logical search: %s', $error->getMessage(), 'syslog')]);
+	}
+
+	// Upsert by owner and name, preserving the global flag of an existing row.
+	$existing_id = syslog_db_fetch_cell_prepared("SELECT id
+		FROM `$syslogdb_default`.`syslog_saved_searches`
+		WHERE `user` = ? AND name = ?",
+		[$username, $name]);
+
+	if ($existing_id) {
+		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_saved_searches`
+			SET search = ?, removal = ?, grouping = ?, `date` = ?
+			WHERE id = ?",
+			[$search, $removal, $grouping, time(), $existing_id]);
+
+		return json_encode(['id' => (int) $existing_id]);
+	}
+
+	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_saved_searches`
+		(name, search, removal, grouping, `user`, is_global, `date`)
+		VALUES (?, ?, ?, ?, ?, '', ?)",
+		[$name, $search, $removal, $grouping, $username, time()]);
+
+	return json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
+}
+
+function saved_search_delete() {
+	global $syslogdb_default;
+
+	$username = get_username($_SESSION['sess_user_id']);
+	$id       = get_filter_request_var('id', FILTER_VALIDATE_INT);
+
+	if ($id === false || $id === null || $id <= 0) {
+		return json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
+	}
+
+	$row = syslog_db_fetch_row_prepared("SELECT `user`, is_global
+		FROM `$syslogdb_default`.`syslog_saved_searches`
+		WHERE id = ?",
+		[$id]);
+
+	if ($row === false) {
+		return json_encode(['error' => __('Saved search not found.', 'syslog')]);
+	}
+
+	if ($row['user'] !== $username && !($row['is_global'] === 'on' && syslog_saved_search_admin())) {
+		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+	}
+
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_saved_searches`
+		WHERE id = ?",
+		[$id]);
+
+	if ((int) ($_SESSION['sess_sl_' . get_request_var('tab') . '_saved'] ?? 0) === (int) $id) {
+		kill_session_var('sess_sl_' . get_request_var('tab') . '_saved');
+	}
+
+	return json_encode(['id' => (int) $id]);
+}
+
+function saved_search_global() {
+	global $syslogdb_default;
+
+	if (!syslog_saved_search_admin()) {
+		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+	}
+
+	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
+
+	if ($id === false || $id === null || $id <= 0) {
+		return json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
+	}
+
+	$row = syslog_db_fetch_row_prepared("SELECT is_global
+		FROM `$syslogdb_default`.`syslog_saved_searches`
+		WHERE id = ?",
+		[$id]);
+
+	if ($row === false) {
+		return json_encode(['error' => __('Saved search not found.', 'syslog')]);
+	}
+
+	$is_global = $row['is_global'] === 'on' ? '' : 'on';
+
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_saved_searches`
+		SET is_global = ?
+		WHERE id = ?",
+		[$is_global, $id]);
+
+	return json_encode(['id' => (int) $id, 'is_global' => $is_global]);
 }
 
 function set_shift_span($shift_span, $session_prefix) {
@@ -1281,6 +1467,28 @@ function syslog_filter($sql_where, $tab) {
 
 	$filter_text = __esc('[ Unprocessed Messages: %s ]', $unprocessed, 'syslog');
 
+	// Shared search builder data for the main panel and the saved search dialog.
+	$saved_fields = syslog_search_fields();
+
+	if ($tab != 'syslog') {
+		unset($saved_fields['host_id']);
+	}
+
+	$saved_choices_json = html_escape(json_encode(syslog_search_choices()));
+	$saved_fields_json  = html_escape(json_encode($saved_fields));
+	$saved_tree_json    = html_escape(json_encode($GLOBALS['syslog_search_tree'] ?? null));
+
+	$username = get_username($_SESSION['sess_user_id']);
+
+	$saved_searches = syslog_db_fetch_assoc_prepared("SELECT id, name, `user`, is_global
+		FROM `$syslogdb_default`.`syslog_saved_searches`
+		WHERE `user` = ? OR is_global = 'on'
+		ORDER BY is_global, name",
+		[$username]);
+
+	$saved_active = (int) ($_SESSION['sess_sl_' . $tab . '_saved'] ?? 0);
+	$saved_admin  = syslog_saved_search_admin();
+
 	?>
 	<script type='text/javascript'>
 	initSyslogMain({
@@ -1308,12 +1516,50 @@ function syslog_filter($sql_where, $tab) {
 							onclick='toggleSyslogSearch()'><i class='fa fa-chevron-up' aria-hidden='true'></i></button>
 						<input type='hidden' id='search_mode' value='logical'>
 					</div>
+					<div class='syslogSearchSavedBar'>
+						<label for='saved_search'><?php print __('Saved Searches', 'syslog'); ?></label>
+						<select id='saved_search'>
+							<option value='0'><?php print __('None', 'syslog'); ?></option>
+							<?php
+							$saved_groups = [
+								__('My Searches', 'syslog')   => [],
+								__('Global Searches', 'syslog') => []
+							];
+
+							foreach ($saved_searches as $saved) {
+								$saved_groups[$saved['is_global'] === 'on' ? __('Global Searches', 'syslog') : __('My Searches', 'syslog')][] = $saved;
+							}
+
+							foreach ($saved_groups as $saved_label => $saved_group) {
+								if (cacti_sizeof($saved_group)) {
+									print "<optgroup label='" . html_escape($saved_label) . "'>";
+
+									foreach ($saved_group as $saved) {
+										print "<option value='" . $saved['id'] . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
+											html_escape($saved['name']) . '</option>';
+									}
+
+									print '</optgroup>';
+								}
+							}
+							?>
+						</select>
+						<span>
+							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
+							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
+							<input id='saved_delete' type='button' value='<?php print __esc('Delete', 'syslog'); ?>'>
+							<input id='saved_saveas' type='button' value='<?php print __esc('Save As', 'syslog'); ?>'>
+							<?php if ($saved_admin) { ?>
+							<input id='saved_global' type='button' value='<?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Make Global', 'syslog'); ?>'>
+							<?php } ?>
+						</span>
+					</div>
 					<div id='syslog_search_content'>
 					<input type='hidden' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
 					<div id='syslog_search_builder'
-						data-choices='<?php print html_escape(json_encode(syslog_search_choices())); ?>'
-						data-fields='<?php $fields = syslog_search_fields(); if ($tab != 'syslog') { unset($fields['host_id']); } print html_escape(json_encode($fields)); ?>'
-						data-tree='<?php print html_escape(json_encode($GLOBALS['syslog_search_tree'] ?? null)); ?>'
+						data-choices='<?php print $saved_choices_json; ?>'
+						data-fields='<?php print $saved_fields_json; ?>'
+						data-tree='<?php print $saved_tree_json; ?>'
 						data-message='<?php print __esc('Message', 'syslog'); ?>'
 						data-placeholder='<?php print __esc('Enter message text…', 'syslog'); ?>'
 						data-contains='<?php print __esc('contains', 'syslog'); ?>'
@@ -1403,6 +1649,36 @@ function syslog_filter($sql_where, $tab) {
 					</div>
 					</div>
 				</section>
+				<div id='syslog_saved_dialog' class='syslogSavedDialog' style='display:none'
+					data-new-title='<?php print __esc('New Saved Search', 'syslog'); ?>'
+					data-edit-title='<?php print __esc('Edit Saved Search', 'syslog'); ?>'
+					data-saveas='<?php print __esc('Save As', 'syslog'); ?>'
+					data-apply='<?php print __esc('Apply', 'syslog'); ?>'
+					data-cancel='<?php print __esc('Cancel', 'syslog'); ?>'
+					data-save='<?php print __esc('Save', 'syslog'); ?>'
+					data-delete-confirm='<?php print __esc('Delete the selected saved search?', 'syslog'); ?>'>
+					<div class='syslogSavedNameRow'>
+						<label for='syslog_saved_name'><?php print __('Name', 'syslog'); ?></label>
+						<input type='text' id='syslog_saved_name' size='40' maxlength='128'>
+					</div>
+					<div id='syslog_saved_builder'
+						data-choices='<?php print $saved_choices_json; ?>'
+						data-fields='<?php print $saved_fields_json; ?>'
+						data-message='<?php print __esc('Message', 'syslog'); ?>'
+						data-placeholder='<?php print __esc('Enter message text…', 'syslog'); ?>'
+						data-contains='<?php print __esc('contains', 'syslog'); ?>'
+						data-not-contains='<?php print __esc('does not contain', 'syslog'); ?>'
+						data-remove='<?php print __esc('Remove condition', 'syslog'); ?>'
+						data-match='<?php print __esc('Match group', 'syslog'); ?>'
+						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
+					</div>
+				</div>
+				<div id='syslog_saved_prompt' class='syslogSavedPrompt' title='<?php print __esc('Save Search As', 'syslog'); ?>' style='display:none'>
+					<div class='syslogSavedNameRow'>
+						<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
+						<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
+					</div>
+				</div>
 				<table class='filterTable syslogSearchButtons'>
 					<tr>
 						<td>

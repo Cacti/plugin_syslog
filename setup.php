@@ -61,6 +61,7 @@ function plugin_syslog_install() {
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches.php', 'Syslog Saved Searches Admin', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -427,6 +428,22 @@ function syslog_check_upgrade() {
 	}
 
 	syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
+
+	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+			id int(10) NOT NULL auto_increment,
+			name varchar(128) NOT NULL default '',
+			search text NOT NULL,
+			removal int(10) NOT NULL default '1',
+			grouping int(10) NOT NULL default '0',
+			`user` varchar(32) NOT NULL default '',
+			is_global char(2) NOT NULL default '',
+			`date` int(16) NOT NULL default '0',
+			PRIMARY KEY (id),
+			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
 }
 
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
@@ -659,6 +676,20 @@ function syslog_setup_table_new($options) {
 		notify int(10) unsigned NOT NULL default '0',
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+		id int(10) NOT NULL auto_increment,
+		name varchar(128) NOT NULL default '',
+		search text NOT NULL,
+		removal int(10) NOT NULL default '1',
+		grouping int(10) NOT NULL default '0',
+		`user` varchar(32) NOT NULL default '',
+		is_global char(2) NOT NULL default '',
+		`date` int(16) NOT NULL default '0',
+		PRIMARY KEY (id),
+		KEY owner (`user`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 

@@ -118,25 +118,33 @@ function toggleSyslogSearch(expanded) {
 	button.querySelector('i').className = 'fa ' + (expanded ? 'fa-chevron-up' : 'fa-chevron-down');
 }
 
+/** Serialize a builder into an expression; null when a value is invalid. */
+function syslogBuilderSync(builder) {
+	var inputs = builder.querySelectorAll('.syslogSearchText');
+	if (inputs.length === 1 && inputs[0].value === '' && builder.querySelectorAll('.syslogSearchRow').length === 1 &&
+		(!builder.searchRows[0].field || builder.searchRows[0].field === 'message') &&
+		(!builder.searchRows[0].operator || builder.searchRows[0].operator === 'contains') && !builder.searchRows[0].negative) {
+		return '';
+	}
+	for (var input of inputs) {
+		if (input.validity && !input.validity.valid && builder.id === 'syslog_search_builder') toggleSyslogSearch(true);
+		if (!input.reportValidity()) {
+			return null;
+		}
+	}
+	return syslogSearchExpression(builder.searchRows);
+}
+
 function syncSyslogSearchBuilder() {
 	var builder = document.getElementById('syslog_search_builder');
 	if (!builder || $('#search_mode').val() !== 'logical') {
 		return true;
 	}
-	var inputs = builder.querySelectorAll('.syslogSearchText');
-	if (inputs.length === 1 && inputs[0].value === '' && builder.querySelectorAll('.syslogSearchRow').length === 1 &&
-		(!builder.searchRows[0].field || builder.searchRows[0].field === 'message') &&
-		(!builder.searchRows[0].operator || builder.searchRows[0].operator === 'contains') && !builder.searchRows[0].negative) {
-		$('#rfilter').val('');
-		return true;
+	var expression = syslogBuilderSync(builder);
+	if (expression === null) {
+		return false;
 	}
-	for (var input of inputs) {
-		if (input.validity && !input.validity.valid) toggleSyslogSearch(true);
-		if (!input.reportValidity()) {
-			return false;
-		}
-	}
-	$('#rfilter').val(syslogSearchExpression(builder.searchRows));
+	$('#rfilter').val(expression);
 	return true;
 }
 
@@ -181,17 +189,22 @@ function initSyslogSearchAutocomplete(input, field, row) {
 	});
 }
 
-function initSyslogSearchBuilder() {
-	var builder = document.getElementById('syslog_search_builder');
+function initSyslogSearchBuilder(builder, rows) {
+	if (builder === undefined) {
+		builder = document.getElementById('syslog_search_builder');
+	}
 	if (!builder) {
 		return;
 	}
 	var labels = builder.dataset;
-	var tree = JSON.parse(labels.tree || 'null');
 	var choices = JSON.parse(labels.choices || '{}');
-	builder.searchRows = syslogSearchRows(tree);
+	if (!rows) {
+		var tree = JSON.parse(labels.tree || 'null');
+		rows = syslogSearchRows(tree);
+	}
+	builder.searchRows = rows;
 	if (!builder.searchRows.length) {
-		builder.searchRows.push({join: 'AND', negative: false, value: $('#rfilter').val() || ''});
+		builder.searchRows.push({join: 'AND', negative: false, value: builder.id === 'syslog_search_builder' ? ($('#rfilter').val() || '') : ''});
 	}
 
 	function element(tag, className, text) {
@@ -318,9 +331,11 @@ function initSyslogSearchBuilder() {
 	}
 	render(builder, builder.searchRows);
 	initSyslogSearchDates(builder);
-	$('#rfilter').toggle(false);
-	// Go/Enter share custom validation, which permits a single empty search row.
-	$('#syslog_form').attr('novalidate', 'novalidate');
+	if (builder.id === 'syslog_search_builder') {
+		$('#rfilter').toggle(false);
+		// Go/Enter share custom validation, which permits a single empty search row.
+		$('#syslog_form').attr('novalidate', 'novalidate');
+	}
 }
 
 /** Submit filter values in a CSRF-protected POST body, including downloads. */
@@ -393,6 +408,183 @@ function saveSettings() {
 	});
 }
 
+/* ========================================================================
+ * Saved Searches (predefined filters)
+ * ======================================================================== */
+
+/** Labels rendered by the server as data attributes on the saved search dialog. */
+function savedSearchText() {
+	var dialog = document.getElementById('syslog_saved_dialog');
+	return dialog ? dialog.dataset : {};
+}
+
+/** POST a saved search action, then continue with the JSON result. */
+function savedSearchPost(data, done) {
+	data.tab = window.pageTab || 'syslog';
+	data.__csrf_magic = csrfMagicToken;
+	$.post('syslog.php', data, null, 'json').done(function(result) {
+		if (result && result.error) {
+			alert(result.error);
+			return;
+		}
+		if (done) done(result);
+	}).fail(function() {
+		alert('Saved search request failed.');
+	});
+}
+
+function savedSearchActive() {
+	var value = $('#saved_search').val();
+	return value && value !== '0' ? parseInt(value, 10) : 0;
+}
+
+/** Actions that need an active saved search stay disabled otherwise. */
+function savedSearchButtons() {
+	var id = savedSearchActive();
+	$('#saved_edit, #saved_delete').prop('disabled', !id);
+
+	var global = $('#saved_global');
+	if (global.length) {
+		global.prop('disabled', !id);
+	}
+}
+
+/** Serialized expression without trailing date rows, so saved searches stay dynamic. */
+function savedSearchExpression(builder) {
+	var rows = JSON.parse(JSON.stringify(builder.searchRows));
+	while (rows.length && !rows[rows.length - 1].rows &&
+		rows[rows.length - 1].field === 'logtime' &&
+		(rows[rows.length - 1].operator === '>=' || rows[rows.length - 1].operator === '<=')) {
+		rows.pop();
+	}
+	return syslogSearchExpression(rows);
+}
+
+function initSavedSearches() {
+	var dropdown = document.getElementById('saved_search');
+	if (!dropdown) {
+		return;
+	}
+	dropdown.dataset.active = dropdown.value;
+	$('#saved_search').on('change', function() {
+		var id = parseInt(this.value, 10);
+		if (!id) {
+			// The placeholder keeps the current filter; restore the selection.
+			$(this).val(this.dataset.active);
+			return;
+		}
+		postSyslog({saved: id});
+	});
+	$('#saved_new').click(function() { openSavedSearchDialog('new'); });
+	$('#saved_edit').click(function() { openSavedSearchDialog('edit'); });
+	$('#saved_delete').click(function() {
+		var id = savedSearchActive();
+		if (!id) return;
+		if (!window.confirm(savedSearchText().deleteConfirm)) return;
+		savedSearchPost({action: 'saved_search_delete', id: id}, function() {
+			postSyslog({});
+		});
+	});
+	$('#saved_saveas').click(function() {
+		if (!syncSyslogSearchBuilder()) return;
+		savedSearchPrompt('', function(name) {
+			savedSearchSave(savedSearchExpression(document.getElementById('syslog_search_builder')), name, function(id) {
+				postSyslog({saved: id});
+			});
+		});
+	});
+	$('#saved_global').click(function() {
+		var id = savedSearchActive();
+		if (!id) return;
+		savedSearchPost({action: 'saved_search_global', id: id}, function() {
+			postSyslog({saved: id});
+		});
+	});
+	savedSearchButtons();
+}
+
+function savedSearchPrompt(name, accept) {
+	var text = savedSearchText();
+	var input = document.getElementById('syslog_saved_prompt_name');
+	input.value = name || '';
+	$('#syslog_saved_prompt').dialog({
+		modal: true,
+		width: 420,
+		autoOpen: true,
+		buttons: [
+			{text: text.save, click: function() {
+				var value = input.value.trim();
+				if (!value) {
+					input.focus();
+					return;
+				}
+				$(this).dialog('close');
+				accept(value);
+			}},
+			{text: text.cancel, click: function() { $(this).dialog('close'); }}
+		]
+	});
+}
+
+function savedSearchSave(expression, name, done) {
+	savedSearchPost({
+		action: 'saved_search_save', name: name, rfilter: expression,
+		removal: $('#removal').val() || '1', grouping: $('#grouping').val() || '0'
+	}, done);
+}
+
+function openSavedSearchDialog(mode) {
+	var dialog = document.getElementById('syslog_saved_dialog');
+	var main = document.getElementById('syslog_search_builder');
+	var builder = document.getElementById('syslog_saved_builder');
+	var text = savedSearchText();
+	var rows;
+
+	if (mode === 'edit' && main && main.searchRows) {
+		rows = JSON.parse(JSON.stringify(main.searchRows));
+	} else {
+		rows = [{join: 'AND', negative: false, value: ''}];
+	}
+
+	initSyslogSearchBuilder(builder, rows);
+
+	var selected = document.getElementById('saved_search').selectedOptions;
+	var name = mode === 'edit' && selected && selected.length && selected[0].value !== '0' ? selected[0].textContent : '';
+
+	$('#syslog_saved_dialog').dialog({
+		modal: true,
+		width: Math.min(1040, $(window).width() - 40),
+		maxHeight: $(window).height() - 80,
+		title: mode === 'new' ? text.newTitle : text.editTitle,
+		buttons: [
+			{text: text.saveas, click: function() {
+				var chosen = document.getElementById('syslog_saved_name').value.trim();
+				if (!chosen) {
+					document.getElementById('syslog_saved_name').focus();
+					return;
+				}
+				var expression = syslogBuilderSync(builder);
+				if (expression === null) return;
+				savedSearchSave(savedSearchExpression(builder), chosen, function(id) {
+					$(dialog).dialog('close');
+					postSyslog({saved: id});
+				});
+			}},
+			{text: text.apply, click: function() {
+				var expression = syslogBuilderSync(builder);
+				if (expression === null) return;
+				$(dialog).dialog('close');
+				var data = syslogFilterData();
+				data.rfilter = expression;
+				postSyslog(data);
+			}},
+			{text: text.cancel, click: function() { $(dialog).dialog('close'); }}
+		]
+	});
+
+	document.getElementById('syslog_saved_name').value = name;
+}
+
 /**
  * Initialize main syslog view
  * @param {object} config - Configuration object containing pageTab
@@ -404,7 +596,8 @@ function initSyslogMain(config) {
 	window.pageTab = pageTab;
 
 	$(function() {
-		initSyslogSearchBuilder();
+		initSyslogSearchBuilder(document.getElementById('syslog_search_builder'));
+		initSavedSearches();
 		$('#syslog_form').submit(function(event) {
 			event.preventDefault();
 			event.stopImmediatePropagation();

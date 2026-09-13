@@ -257,6 +257,31 @@ function syslog_logical_positive_terms($tree, $negative = false) {
 	return array_merge(syslog_logical_positive_terms($tree[1], $negative), syslog_logical_positive_terms($tree[2], $negative));
 }
 
+/**
+ * Remove the date clause the page entry logic appends to a search, so saved
+ * searches stay dynamic (dates are re-derived each time one is applied).
+ */
+function syslog_strip_auto_dates($search, $date1, $date2) {
+	$d1 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
+	$d2 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
+	$suffix = 'logtime >= "' . $d1 . '" AND logtime <= "' . $d2 . '"';
+
+	if (substr($search, -strlen($suffix)) === $suffix) {
+		$search = substr($search, 0, -strlen($suffix));
+
+		if (substr($search, -5) === ' AND ') {
+			$search = substr($search, 0, -5);
+		}
+	}
+
+	return $search;
+}
+
+/** Permission to make saved searches global and to manage other users' global searches. */
+function syslog_saved_search_admin() {
+	return api_plugin_user_realm_auth('syslog_saved_searches.php');
+}
+
 function syslog_message_filter_value($value, $filter, $href = '') {
 	if (get_request_var('search_mode') != 'logical') {
 		return filter_value($value, $filter, $href);

@@ -68,6 +68,97 @@
 	display: none;
 }
 
+#syslog_form .syslogSearchSavedBar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--search-border);
+}
+
+#syslog_form .syslogSearchSavedBar label {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--search-muted);
+}
+
+#syslog_form .syslogSearchSavedBar select {
+	box-sizing: border-box;
+	min-width: 160px;
+	max-width: 240px;
+	min-height: 26px;
+	margin: 0;
+	padding: 2px 6px;
+	font: inherit;
+	color: var(--search-text);
+	border: 1px solid var(--search-border);
+	border-radius: 5px;
+	background: var(--search-card);
+	cursor: pointer;
+}
+
+#syslog_form .syslogSearchSavedBar input[type='button'] {
+	min-height: 26px;
+	padding: 2px 10px;
+	border: 1px solid var(--search-border);
+	border-radius: 5px;
+	background: var(--search-card);
+	color: var(--search-text);
+	font-size: 12px;
+	cursor: pointer;
+}
+
+#syslog_form .syslogSearchSavedBar input[type='button']:hover:not(:disabled) {
+	background: var(--search-tint);
+	border-color: var(--search-accent);
+}
+
+#syslog_form .syslogSearchSavedBar input[type='button']:disabled {
+	opacity: 0.5;
+	cursor: default;
+}
+
+.syslogSavedDialog,
+.syslogSavedPrompt {
+	box-sizing: border-box;
+}
+
+.syslogSavedDialog .syslogSavedNameRow,
+.syslogSavedPrompt .syslogSavedNameRow {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 10px;
+}
+
+.syslogSavedDialog .syslogSavedNameRow label,
+.syslogSavedPrompt .syslogSavedNameRow label {
+	font-size: 12px;
+	font-weight: 600;
+	color: #23362f;
+	white-space: nowrap;
+}
+
+.syslogSavedDialog .syslogSavedNameRow input,
+.syslogSavedPrompt .syslogSavedNameRow input {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	padding: 4px 8px;
+	border: 1px solid #cbd8d1;
+	border-radius: 5px;
+	background: #fff;
+	color: #23362f;
+}
+
+.syslogSavedDialog #syslog_saved_builder .syslogSearchText {
+	max-width: none;
+}
+
 #syslog_search_builder .syslogSearchRow {
 	display: grid;
 	grid-template-columns: 66px 120px 100px 110px minmax(100px, 1fr) 26px;

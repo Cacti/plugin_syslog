@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* feature: Add saved searches: store named filter definitions (conditions plus record type and grouping), apply them from a dropdown, and manage them with New/Edit/Delete/Save As; a new 'Syslog Saved Searches Admin' realm gates Make Global. Saved searches keep the date range dynamic (last day by default)
+
 * issue#199: Duplicate Partition name errors
 * issue#250: Fix date filter persistence by validating before shift_span detection
 * issue#252: hardening: escape device hostname output in syslog view; parameterize alert API functions
