@@ -512,6 +512,14 @@
 #syslog_workspace tr:has(.syslogMessageOpen) td { padding: 6px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.5 monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+/* Cacti themes run .button() on every button, so hovering paints the jQuery UI
+   state styles and the message looks like an editable input; keep it inert. */
+.syslogMessageOpen.ui-state-hover, .syslogMessageOpen.ui-state-focus, .syslogMessageOpen.ui-state-active {
+	background: transparent;
+	border: 0;
+	font-weight: inherit;
+	color: inherit;
+}
 .syslogMessageOpen:focus-visible, #syslog_message_details button:focus-visible, .syslogMenu > summary:focus-visible { outline: 2px solid #276448; outline-offset: 2px; }
 .syslogSeverity { display: inline-block; border-radius: 3px; padding: 2px 7px; color: #34423a; background: #e1e6e3; font-size: 12px; }
 .syslogSeverity-err, .syslogSeverity-error, .syslogSeverity-emerg, .syslogSeverity-alert, .syslogSeverity-crit { background: #fbe0de; color: #8a2420; }
