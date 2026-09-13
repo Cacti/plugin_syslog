@@ -427,7 +427,7 @@ function savedSearchPost(data, done) {
 			alert(result.error);
 			return;
 		}
-		if (done) done(result);
+		if (done) done(parseInt(result.id, 10));
 	}).fail(function() {
 		alert('Saved search request failed.');
 	});
