@@ -88,6 +88,7 @@ if (get_request_var('action') == 'saved_search_global') {
 $title = __('Syslog Viewer', 'syslog');
 
 $trimvals = [
+	'0'    => __('Fit column', 'syslog'),
 	'1024' => __('All Text', 'syslog'),
 	'30'   => __('%d Chars', 30, 'syslog'),
 	'50'   => __('%d Chars', 50, 'syslog'),
@@ -784,7 +785,7 @@ function syslog_request_validation($current_tab, $force = false) {
 		],
 		'trimval' => [
 			'filter'  => FILTER_VALIDATE_INT,
-			'default' => read_user_setting('syslog_trimval', '75', $force)
+			'default' => read_user_setting('syslog_trimval', '0', $force)
 		],
 		'enabled' => [
 			'filter'  => FILTER_VALIDATE_INT,
@@ -1504,7 +1505,7 @@ function syslog_filter($sql_where, $tab) {
 	html_start_box(__('Syslog Message Filter %s', $filter_text, 'syslog'), '100%', '', '3', 'center', ''); ?>
 		<tr class='even noprint syslogFilterRow'>
 			<td class='noprint'>
-			<form id='syslog_form' action='syslog.php' method='post'>
+			<form id='syslog_form' data-theme='<?php print html_escape(get_selected_theme()); ?>' action='syslog.php' method='post'>
 				<section class='syslogSearchPanel' aria-labelledby='syslog_search_title'>
 					<div class='syslogSearchHeader'>
 						<div class='syslogSearchHeading'>
@@ -1513,11 +1514,11 @@ function syslog_filter($sql_where, $tab) {
 						</div>
 						<button type='button' id='syslog_search_toggle' class='syslogSearchToggle'
 							aria-expanded='true' aria-controls='syslog_search_content'
-							aria-label='<?php print __esc('Hide search', 'syslog'); ?>'
-							title='<?php print __esc('Hide search', 'syslog'); ?>'
-							data-hide='<?php print __esc('Hide search', 'syslog'); ?>'
-							data-show='<?php print __esc('Show search', 'syslog'); ?>'
-							onclick='toggleSyslogSearch()'><i class='fa fa-chevron-up' aria-hidden='true'></i></button>
+							aria-label='<?php print __esc('Collapse filters', 'syslog'); ?>'
+							title='<?php print __esc('Collapse filters', 'syslog'); ?>'
+							data-hide='<?php print __esc('Collapse filters', 'syslog'); ?>'
+							data-show='<?php print __esc('Edit filters', 'syslog'); ?>'
+							onclick='toggleSyslogSearch()'><span><?php print __esc('Collapse filters', 'syslog'); ?></span><i class='fa fa-chevron-up' aria-hidden='true'></i></button>
 						<input type='hidden' id='search_mode' value='logical'>
 					</div>
 					<div class='syslogSearchSavedBar'>
@@ -1548,16 +1549,28 @@ function syslog_filter($sql_where, $tab) {
 							}
 							?>
 						</select>
-						<span>
+						<input id='saved_saveas' type='button' value='<?php print __esc('Save search', 'syslog'); ?>'>
+						<details class='syslogMenu'><summary aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>'>⋯</summary><div class='syslogMenuBody'>
 							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
 							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
 							<input id='saved_delete' type='button' value='<?php print __esc('Delete', 'syslog'); ?>'>
-							<input id='saved_saveas' type='button' value='<?php print __esc('Save As', 'syslog'); ?>'>
 							<?php if ($saved_admin) { ?>
 							<input id='saved_global' type='button' value='<?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Make Global', 'syslog'); ?>'>
 							<?php } ?>
-						</span>
+						</div></details>
+						<div id='syslog_time' class='syslogTime'>
+							<label for='syslog_time_range'><?php print __esc('Time range', 'syslog'); ?></label>
+							<select id='syslog_time_range'>
+								<?php foreach (['3600' => __('Last hour', 'syslog'), '21600' => __('Last 6 hours', 'syslog'), '86400' => __('Last 24 hours', 'syslog'), '604800' => __('Last 7 days', 'syslog'), '2592000' => __('Last 30 days', 'syslog'), 'custom' => __('Custom range', 'syslog'), 'query' => __('Defined in query', 'syslog'), 'all' => __('All time', 'syslog')] as $value => $label) { print "<option value='" . $value . "'>" . html_escape($label) . '</option>'; } ?>
+							</select>
+							<span><?php print html_escape(date_default_timezone_get()); ?></span>
+							<div id='syslog_custom_time' hidden>
+								<label for='syslog_time_from'><?php print __esc('From', 'syslog'); ?></label><input id='syslog_time_from' type='datetime-local' step='1' required>
+								<label for='syslog_time_to'><?php print __esc('To', 'syslog'); ?></label><input id='syslog_time_to' type='datetime-local' step='1' required>
+							</div>
+						</div>
 					</div>
+					<div id='syslog_search_summary' hidden></div>
 					<div id='syslog_search_content'>
 					<input type='hidden' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
 					<div id='syslog_search_builder' class='syslogSearchBuilder'
@@ -1573,7 +1586,7 @@ function syslog_filter($sql_where, $tab) {
 						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
 					</div>
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
-					<div class='syslogSearchOptions'>
+					<details id='syslog_view_options' class='syslogMenu'><summary><?php print __esc('View options', 'syslog'); ?></summary><div class='syslogMenuBody syslogSearchOptions'>
 						<div class='syslogSearchOption'>
 							<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
 							<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
@@ -1648,6 +1661,7 @@ function syslog_filter($sql_where, $tab) {
 						<?php } ?>
 						<div class='syslogSearchOptionHook'><?php api_plugin_hook('syslog_extend_filter'); ?></div>
 					</div>
+					</details>
 					<div class='syslogSearchFooter'>
 						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted.', 'syslog'); ?></details>
 					</div>
@@ -1687,7 +1701,7 @@ function syslog_filter($sql_where, $tab) {
 								<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'>
 								<input id='refresh_results' type='button' value='<?php print __esc('Refresh', 'syslog'); ?>' title='<?php print __esc('Refresh Results', 'syslog'); ?>'>
 								<input id='export' type='button' value='<?php print __esc('Export', 'syslog'); ?>' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'>
-								<input id='save' type='button' value='<?php print __esc('Save', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
+								<input id='save' type='button' value='<?php print __esc('Save view defaults', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
 							</span>
 						</td>
 						<td>
@@ -1810,6 +1824,7 @@ function syslog_messages($tab = 'syslog') {
 	$syslog_messages = get_syslog_messages($sql_where, $rows, $tab);
 
 	syslog_filter($sql_where, $tab);
+	print "<div id='syslog_workspace' data-theme='" . html_escape(get_selected_theme()) . "'><div class='syslogResultsMain'>";
 
 	if ($tab == 'syslog') {
 		// Check if grouping is enabled for row count
@@ -1947,8 +1962,8 @@ function syslog_messages($tab = 'syslog') {
 					$url = '';
 
 					if ($sm['mtype'] == 'main') {
-						$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i>";
-						$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><i class='deviceDown fas fa-minus-circle'></i>";
+						$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i></a>";
+						$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $sm[$syslog_incoming_config['id']] . '&action=newedit&type=new&type=0') . "'><i class='deviceDown fas fa-minus-circle'></i></a>";
 					}
 
 					form_selectable_cell($url, $sm['seq'], '', 'left');
@@ -1965,7 +1980,7 @@ function syslog_messages($tab = 'syslog') {
 
 				form_selectable_ecell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
 				form_selectable_ecell($sm['program'], $sm['seq'], '', 'left');
-				form_selectable_ecell(syslog_message_filter_value(title_trim($sm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')), $sm['seq'], '', 'left syslogMessage');
+				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime']), $sm['seq'], '', 'left syslogMessage');
 				form_selectable_ecell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
 				form_selectable_ecell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
 
@@ -1990,15 +2005,14 @@ function syslog_messages($tab = 'syslog') {
 
 					if (cacti_sizeof($detail_messages)) {
 						foreach ($detail_messages as $dm) {
-							$severity_class = syslog_row_color($dm['priority_id'], $dm['message']);
-							print "<tr class='tableRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . ' ' . $severity_class . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
+							print "<tr class='tableRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
 
 							if (api_plugin_user_realm_auth('syslog_alerts.php')) {
 								$url = '';
 
 								if ($sm['mtype'] == 'main') {
-									$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i>";
-									$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=new') . "'><i class='deviceDown fas fa-minus-circle'></i>";
+									$url .= "<a style='padding:1px' href='" . html_escape('syslog_alerts.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=0') . "'><i class='deviceUp fas fa-plus-circle'></i></a>";
+									$url .= "<a style='padding:1px' href='" . html_escape('syslog_removal.php?id=' . $dm[$syslog_incoming_config['id']] . '&action=newedit&type=new') . "'><i class='deviceDown fas fa-minus-circle'></i></a>";
 								}
 								print "<td class='left' style='padding-left:30px;'>" . $url . '</td>';
 							}
@@ -2006,7 +2020,7 @@ function syslog_messages($tab = 'syslog') {
 							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
 							print "<td class='left'>" . html_escape(isset($hosts[$dm['host_id']]) ? $hosts[$dm['host_id']] : __('Unknown', 'syslog')) . '</td>';
 							print "<td class='left'>" . html_escape($dm['program']) . '</td>';
-							print "<td class='left syslogMessage'>" . syslog_message_filter_value(title_trim($dm[$syslog_incoming_config['textField']], get_request_var_request('trimval')), get_request_var('rfilter')) . '</td>';
+							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime']) . '</td>';
 							print "<td class='left'>" . html_escape(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog')) . '</td>';
 							print "<td class='left'>" . html_escape(isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog')) . '</td>';
 
@@ -2029,7 +2043,6 @@ function syslog_messages($tab = 'syslog') {
 			print $nav;
 		}
 
-		syslog_syslog_legend();
 
 		?>
 		<script type='text/javascript'>
@@ -2066,7 +2079,7 @@ function syslog_messages($tab = 'syslog') {
 
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
-				form_selectable_cell(syslog_message_filter_value(title_trim($log['logmsg'], get_request_var_request('trimval')), get_request_var('rfilter')), $log['seq'], '', 'syslogMessage left');
+				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime']), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
 				form_selectable_cell($log['host'], $log['seq'], '', 'right');
@@ -2087,6 +2100,17 @@ function syslog_messages($tab = 'syslog') {
 
 		syslog_log_legend();
 	}
+	print '</div>';
+	?>
+	<aside id='syslog_message_details' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
+		<header><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
+		<dl><?php foreach (['device' => __('Device', 'syslog'), 'program' => __('Program', 'syslog'), 'facility' => __('Facility', 'syslog'), 'severity' => __('Severity', 'syslog'), 'received' => __('Received', 'syslog')] as $key => $label) { print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>"; } ?></dl>
+		<h4><?php print __esc('Raw message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>
+		<button type='button' id='syslog_details_copy'><?php print __esc('Copy message', 'syslog'); ?></button><span id='syslog_copy_status' role='status' data-success='<?php print __esc('Copied', 'syslog'); ?>' data-error='<?php print __esc('Copy unavailable. Select and copy the message text.', 'syslog'); ?>'></span>
+		<div class='syslogDetailsFilters'><button type='button' data-filter-detail='host'><?php print __esc('Filter by device', 'syslog'); ?></button><button type='button' data-filter-detail='program'><?php print __esc('Filter by program', 'syslog'); ?></button></div>
+	</aside></div>
+	<script>initSyslogWorkspace();</script>
+	<?php
 }
 
 function save_settings() {

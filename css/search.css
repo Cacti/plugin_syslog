@@ -471,3 +471,115 @@
 .ui-autocomplete.syslogSearchSuggestions {
 	z-index: 9999;
 }
+
+/* Engineer workspace: compact controls, flexible message column, optional inspector. */
+#syslog_form .syslogSearchPanel {
+	width: 100%;
+	margin: 0;
+	padding: 10px 12px;
+	border-radius: 0;
+	box-shadow: none;
+}
+#syslog_form .syslogSearchHeader { margin-bottom: 4px; }
+#syslog_form .syslogSearchSavedBar { margin: 0 0 10px; padding: 0; border: 0; }
+#syslog_form .syslogSearchSavedBar label { font-size: 12px; text-transform: none; letter-spacing: normal; }
+#syslog_form .syslogTime { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#syslog_custom_time { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; flex-basis: 100%; justify-content: flex-end; }
+#syslog_custom_time[hidden], #syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
+#syslog_custom_time input { width: 165px; }
+#syslog_search_summary { padding: 8px 0; overflow-wrap: anywhere; font-family: monospace; }
+.syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+.syslogQueryActions { display: flex; gap: 6px; padding-top: 4px; }
+#syslog_form #go { background: var(--search-accent); color: white; border: 1px solid var(--search-accent); padding: 6px 22px; }
+#syslog_form .syslogSearchRow { border-radius: 4px; }
+#syslog_form .syslogSearchFooter { border: 0; margin: 2px 0 0; padding: 0; }
+.syslogMenu { position: relative; }
+.syslogMenu > summary { cursor: pointer; padding: 5px 10px; border: 1px solid #aab7ae; border-radius: 4px; list-style: none; white-space: nowrap; }
+.syslogMenu > summary::-webkit-details-marker { display: none; }
+.syslogMenu > summary::after { content: ' ▾'; }
+.syslogMenuBody { position: absolute; z-index: 100; top: 100%; right: 0; min-width: 180px; padding: 10px; border: 1px solid #aab7ae; border-radius: 4px; background: #f3f6f5; color: #23362f; box-shadow: 0 4px 16px #0002; }
+.syslogSearchSavedBar .syslogMenuBody { left: 0; right: auto; }
+.syslogSearchSavedBar .syslogMenuBody input { display: block; width: 100%; margin-bottom: 6px; text-align: left; }
+#syslog_form .syslogMenuBody.syslogSearchOptions { width: 350px; max-width: calc(100vw - 40px); margin: 0; display: flex; }
+.syslogResultsToolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 8px 12px; }
+#syslog_view_summary { margin-right: auto; opacity: .85; }
+#syslog_form .syslogResultsToolbar .syslogSearchOption { flex-direction: row; align-items: center; gap: 8px; }
+#syslog_form .syslogResultsToolbar .syslogSearchOption label { font-size: 12px; }
+#syslog_form .syslogSearchButtons { display: none; }
+#syslog_workspace { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; }
+#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) minmax(300px, 26%); }
+.syslogResultsMain { min-width: 0; overflow-x: auto; }
+#syslog_workspace table { width: 100%; }
+#syslog_workspace tr:has(.syslogMessageOpen) { background: #fff; color: #23362f; }
+#syslog_workspace tr:has(.syslogMessageOpen):nth-child(even) { background: #f7f9f8; }
+#syslog_workspace tr:has(.syslogMessageOpen):hover { background: #eef4ef; }
+#syslog_workspace tr.syslogSelected { background: #e2edda; }
+#syslog_workspace tr:has(.syslogMessageOpen) td { padding: 6px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
+#syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
+.syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.5 monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.syslogMessageOpen:focus-visible, #syslog_message_details button:focus-visible, .syslogMenu > summary:focus-visible { outline: 2px solid #276448; outline-offset: 2px; }
+.syslogSeverity { display: inline-block; border-radius: 3px; padding: 2px 7px; color: #34423a; background: #e1e6e3; font-size: 12px; }
+.syslogSeverity-err, .syslogSeverity-error, .syslogSeverity-emerg, .syslogSeverity-alert, .syslogSeverity-crit { background: #fbe0de; color: #8a2420; }
+.syslogSeverity-warning, .syslogSeverity-warn { background: #fff0c4; color: #744900; }
+.syslogSeverity-info { background: #e0eed8; color: #315626; }
+.syslogSeverity-notice { background: #dfecf8; color: #254e76; }
+#syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 16px; border-left: 1px solid #cbd8d1; background: #f8faf9; color: #23362f; }
+#syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+#syslog_message_details h3 { margin: 0; font-size: 16px; }
+#syslog_details_close { border: 0; background: transparent; font-size: 24px; cursor: pointer; }
+#syslog_message_details dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; margin: 24px 0; }
+#syslog_message_details dd { margin: 0; overflow-wrap: anywhere; }
+#syslog_details_raw { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid #cbd8d1; background: #eef2ef; font: 13px/1.6 monospace; user-select: text; }
+.syslogDetailsFilters { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 24px; }
+#syslog_copy_status { display: block; padding-top: 8px; }
+@media (max-width: 1000px) {
+	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
+	#syslog_message_details { position: fixed; z-index: 101; right: 0; top: 10vh; bottom: 0; width: min(420px, 100%); box-shadow: -4px 0 18px #0003; }
+	.syslogQueryLayout { grid-template-columns: minmax(0, 1fr); }
+	#syslog_form .syslogTime { margin-left: 0; }
+}
+@media (max-width: 700px) {
+	#syslog_form .syslogSearchPanel { padding: 8px; }
+	#syslog_form .syslogTime { flex-basis: 100%; }
+	.syslogResultsToolbar { padding: 8px; }
+	#syslog_view_summary { flex-basis: 100%; }
+	#syslog_form .syslogMenuBody.syslogSearchOptions { left: 0; right: auto; width: 280px; }
+	#syslog_workspace table { min-width: 850px; }
+}
+/* Keep scoped surfaces legible when the host Cacti theme is dark. */
+html[data-theme='dark'] #syslog_form .syslogSearchPanel,
+body.dark #syslog_form .syslogSearchPanel {
+	--search-surface: #252d29; --search-card: #303a34; --search-text: #edf3ef;
+	--search-muted: #bacabd; --search-border: #596d60; --search-accent: #70ae85; --search-tint: #3a5142;
+}
+#syslog_form .syslogSearchPanel { position: relative; }
+#syslog_form .syslogSearchHeader { position: absolute; top: 10px; right: 12px; }
+#syslog_form .syslogSearchHeading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+#syslog_form .syslogSearchToggle { width: auto; gap: 8px; padding: 4px 8px; }
+#syslog_form .syslogSearchSavedBar { padding-right: 140px; min-height: 28px; }
+.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 60px 120px 100px 55px minmax(100px, 1fr) 26px; }
+.syslogSearchNegate { display: flex; align-items: center; gap: 4px; font-size: 11px; }
+.syslogSearchBuilder .syslogSearchNegate input { min-height: 0; }
+#syslog_workspace tr.syslogSelected:has(.syslogMessageOpen) { background: #e2edda; }
+#syslog_message_details { resize: horizontal; min-width: 280px; max-width: 50vw; }
+#syslog_form[data-theme='dark'] .syslogSearchPanel,
+#syslog_form[data-theme='midwinter'] .syslogSearchPanel {
+	--search-surface: #252d29; --search-card: #303a34; --search-text: #edf3ef;
+	--search-muted: #bacabd; --search-border: #596d60; --search-accent: #70ae85; --search-tint: #3a5142;
+}
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr:has(.syslogMessageOpen),
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) #syslog_message_details { background: #252d29; color: #edf3ef; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr:has(.syslogMessageOpen):nth-child(even) { background: #303a34; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogSelected:has(.syslogMessageOpen) { background: #3a5142; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) #syslog_details_raw { background: #303a34; color: #edf3ef; }
+@media (max-width: 1000px) { #syslog_message_details { max-width: 100vw; resize: none; } }
+@media (max-width: 700px) {
+	#syslog_form .syslogSearchSavedBar { padding-right: 0; padding-top: 34px; }
+	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 45px minmax(65px, 1fr) minmax(55px, 1fr) 50px 28px; }
+}
+#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) auto; }
+#syslog_message_details { width: clamp(300px, 26vw, 480px); }
+@media (max-width: 1000px) {
+	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
+	#syslog_message_details { width: min(420px, 100%); }
+}

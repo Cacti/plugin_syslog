@@ -106,15 +106,208 @@ function syslogSearchExpression(rows) {
 	}).join('');
 }
 
+/** Extract only a global time constraint; leave dates inside OR/NOT groups intact. */
+function syslogSplitTime(tree) {
+	var predicates = [];
+	var query = tree;
+	while (query && query[0] === 'AND' && query[2][0] === 'predicate' && query[2][1] === 'logtime') {
+		predicates.unshift(query[2]);
+		query = query[1];
+	}
+	if (query && query[0] === 'predicate' && query[1] === 'logtime') {
+		predicates.unshift(query);
+		query = null;
+	}
+	if (predicates.length === 1 && predicates[0][2] === 'last') {
+		return {tree: query, mode: predicates[0][3]};
+	}
+	if (predicates.length === 2 && predicates[0][2] === '>=' && predicates[1][2] === '<=') {
+		return {tree: query, mode: 'custom', from: predicates[0][3], to: predicates[1][3]};
+	}
+	return {tree: tree, mode: JSON.stringify(tree).includes('"logtime"') ? 'query' : 'all'};
+}
+
+function syslogTimeExpression(expression) {
+	var range = document.getElementById('syslog_time_range');
+	if (!range || range.value === 'query' || range.value === 'all') return expression;
+	var time;
+	if (range.value === 'custom') {
+		var from = document.getElementById('syslog_time_from');
+		var to = document.getElementById('syslog_time_to');
+		for (var input of [from, to]) {
+			input.setCustomValidity(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(input.value) ? '' : 'Use YYYY-MM-DD HH:MM:SS');
+			if (!input.reportValidity()) return null;
+		}
+		to.setCustomValidity(from.value <= to.value ? '' : 'End time must be after start time');
+		if (!to.reportValidity()) return null;
+		time = syslogSearchExpression([
+			{field: 'logtime', operator: '>=', value: from.value.replace('T', ' ') + (from.value.length === 16 ? ':00' : ''), join: 'AND'},
+			{field: 'logtime', operator: '<=', value: to.value.replace('T', ' ') + (to.value.length === 16 ? ':00' : ''), join: 'AND'}
+		]);
+	} else {
+		time = syslogSearchExpression([{field: 'logtime', operator: 'last', value: range.value}]);
+	}
+	return (expression ? '(' + expression + ') AND ' : '') + time;
+}
+
+function initSyslogCompactSearch() {
+	var form = document.getElementById('syslog_form');
+	if (!form) return;
+	var builder = document.getElementById('syslog_search_builder');
+	var split = syslogSplitTime(JSON.parse(builder.dataset.tree || 'null'));
+	var invalid = document.getElementById('logical_search_error').textContent.trim();
+	if (invalid) split.mode = 'query';
+	var range = document.getElementById('syslog_time_range');
+	// Retain less common relative presets from an existing saved search.
+	if (!Array.from(range.options).some(function(option) { return option.value === split.mode; })) {
+		range.add(new Option(split.mode, split.mode));
+	}
+	range.value = split.mode;
+	range.querySelector('option[value="query"]').disabled = split.mode !== 'query';
+	if ($(range).selectmenu('instance')) $(range).selectmenu('refresh');
+	document.getElementById('syslog_time_from').value = (split.from || '').replace(' ', 'T');
+	document.getElementById('syslog_time_to').value = (split.to || '').replace(' ', 'T');
+	builder.dataset.tree = JSON.stringify(split.tree);
+	// A time-only query starts with one empty, editable message condition.
+	var rows = invalid ? builder.searchRows : syslogSearchRows(split.tree);
+	if (!rows.length) rows = [{join: 'AND', negative: false, value: ''}];
+	initSyslogSearchBuilder(builder, rows);
+	function updateTime() {
+		document.getElementById('syslog_custom_time').hidden = range.value !== 'custom';
+	}
+	$(range).on('change', updateTime);
+	updateTime();
+
+	var actions = document.createElement('div');
+	actions.className = 'syslogQueryActions';
+	actions.append(document.getElementById('go'), document.getElementById('clear'));
+	var query = document.createElement('div');
+	query.className = 'syslogQueryLayout';
+	builder.before(query);
+	query.append(builder, actions);
+
+	var toolbar = document.createElement('div');
+	toolbar.className = 'syslogResultsToolbar';
+	form.append(toolbar);
+	var status = document.createElement('span');
+	status.id = 'syslog_view_summary';
+	toolbar.append(status);
+	var options = document.getElementById('syslog_view_options');
+	toolbar.append(options);
+	options.querySelector('.syslogMenuBody').append(document.getElementById('save'), document.getElementById('text'));
+	document.getElementById('text').setAttribute('role', 'status');
+	var refresh = document.getElementById('refresh').closest('.syslogSearchOption');
+	toolbar.append(refresh, document.getElementById('refresh_results'), document.getElementById('export'));
+	var summaries = ['rows', 'removal', 'grouping', 'trimval'].map(function(id) {
+		var select = document.getElementById(id);
+		return select && select.selectedOptions ? select.selectedOptions[0].textContent : '';
+	}).filter(Boolean);
+	status.textContent = summaries.join(' · ');
+	$('#refresh_results').off('click').on('click', refreshResults);
+	var summary = document.getElementById('syslog_search_summary');
+	summary.textContent = document.getElementById('rfilter').value || builder.dataset.message;
+	try { if (localStorage.getItem('syslog.search.collapsed') === 'true') toggleSyslogSearch(false); } catch (error) { /* Storage may be disabled. */ }
+	if (document.getElementById('logical_search_error').textContent.trim()) toggleSyslogSearch(true);
+	form.addEventListener('keydown', function(event) {
+		if (event.key === 'Escape') form.querySelectorAll('details[open]').forEach(function(menu) { menu.open = false; });
+	});
+}
+
+/** Inspect complete messages locally; never inject log content as HTML. */
+function initSyslogWorkspace() {
+	$(function() {
+		var workspace = document.getElementById('syslog_workspace');
+		var pane = document.getElementById('syslog_message_details');
+		if (!workspace || !pane) return;
+		var active, details;
+		function close() {
+			pane.hidden = true;
+			workspace.classList.remove('has-details');
+			if (active) {
+				active.setAttribute('aria-expanded', 'false');
+				active.closest('tr').classList.remove('syslogSelected');
+				active.focus();
+			}
+		}
+		workspace.querySelectorAll('.syslogMessageOpen').forEach(function(button) {
+			var row = button.closest('tr');
+			row.removeAttribute('title');
+			var data = JSON.parse(button.dataset.message);
+			// Show severity through a badge, leaving message backgrounds neutral.
+			Array.from(row.cells).forEach(function(cell) {
+				if (cell.textContent.trim().toLowerCase() === String(data.severity).toLowerCase() && !cell.querySelector('button, a')) {
+					var badge = document.createElement('span');
+					badge.className = 'syslogSeverity syslogSeverity-' + String(data.severity).toLowerCase().replace(/[^a-z]/g, '');
+					badge.textContent = cell.textContent;
+					cell.replaceChildren(badge);
+				}
+			});
+			button.addEventListener('click', function(event) {
+				event.stopPropagation();
+				if (active) { active.setAttribute('aria-expanded', 'false'); active.closest('tr').classList.remove('syslogSelected'); }
+				active = button;
+				details = data;
+				pane.querySelectorAll('[data-detail]').forEach(function(node) { node.textContent = data[node.dataset.detail] || '—'; });
+				document.getElementById('syslog_details_raw').textContent = data.message;
+				document.getElementById('syslog_copy_status').textContent = '';
+				pane.querySelector('[data-filter-detail="program"]').disabled = !data.program;
+				pane.querySelector('[data-filter-detail="host"]').disabled = !data.device;
+				pane.hidden = false;
+				workspace.classList.add('has-details');
+				row.classList.add('syslogSelected');
+				button.setAttribute('aria-expanded', 'true');
+				pane.focus({preventScroll: true});
+			});
+		});
+		document.getElementById('syslog_details_close').addEventListener('click', close);
+		pane.addEventListener('keydown', function(event) { if (event.key === 'Escape') close(); });
+		document.getElementById('syslog_details_copy').addEventListener('click', async function() {
+			var status = document.getElementById('syslog_copy_status');
+			try {
+				if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(details.message);
+				else {
+					var text = document.createElement('textarea');
+					text.value = details.message;
+					pane.append(text);
+					text.select();
+					var copied = document.execCommand('copy');
+					text.remove();
+					if (!copied) throw new Error('Copy failed');
+				}
+				status.textContent = status.dataset.success;
+			} catch (error) { status.textContent = status.dataset.error; }
+			this.focus();
+		});
+		pane.querySelectorAll('[data-filter-detail]').forEach(function(button) {
+			button.addEventListener('click', function() {
+				var builder = document.getElementById('syslog_search_builder');
+				var expression = syslogBuilderSync(builder);
+				if (expression === null) return;
+				var condition = syslogSearchExpression([{field: button.dataset.filterDetail, operator: '=', value: button.dataset.filterDetail === 'host' ? details.device : details.program}]);
+				var query = syslogTimeExpression((expression ? '(' + expression + ') AND ' : '') + condition);
+				if (query === null) return;
+				var data = syslogFilterData();
+				data.rfilter = query;
+				postSyslog(data);
+			});
+		});
+	});
+}
+
 function toggleSyslogSearch(expanded) {
 	var content = document.getElementById('syslog_search_content');
 	var button = document.getElementById('syslog_search_toggle');
 	if (!content || !button) return;
 	if (typeof expanded !== 'boolean') expanded = content.hidden;
 	content.hidden = !expanded;
+	var summary = document.getElementById('syslog_search_summary');
+	if (summary) summary.hidden = expanded;
+	try { localStorage.setItem('syslog.search.collapsed', String(!expanded)); } catch (error) { /* Storage may be disabled. */ }
 	button.setAttribute('aria-expanded', String(expanded));
 	button.title = expanded ? button.dataset.hide : button.dataset.show;
 	button.setAttribute('aria-label', button.title);
+	var label = button.querySelector('span');
+	if (label) label.textContent = button.title;
 	button.querySelector('i').className = 'fa ' + (expanded ? 'fa-chevron-up' : 'fa-chevron-down');
 }
 
@@ -144,6 +337,8 @@ function syncSyslogSearchBuilder() {
 	if (expression === null) {
 		return false;
 	}
+	expression = syslogTimeExpression(expression);
+	if (expression === null) return false;
 	$('#rfilter').val(expression);
 	return true;
 }
@@ -269,7 +464,14 @@ function initSyslogSearchBuilder(builder, rows) {
 						initSyslogSearchDates(container);
 					}
 				}));
-				line.appendChild(select([['0', labels.match], ['1', labels.exclude]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
+				var negate = element('label', 'syslogSearchNegate');
+				var checkbox = element('input', '');
+				checkbox.type = 'checkbox';
+				checkbox.checked = !!row.negative;
+				checkbox.addEventListener('change', function() { row.negative = checkbox.checked; });
+				negate.appendChild(checkbox);
+				negate.appendChild(element('span', '', 'NOT'));
+				line.appendChild(negate);
 				var input = element('input', 'syslogSearchText');
 				input.type = 'text';
 				input.size = 35;
@@ -320,12 +522,12 @@ function initSyslogSearchBuilder(builder, rows) {
 			container.appendChild(line);
 		});
 		var actions = element('div', 'syslogSearchActions');
-		['AND', 'OR', 'NOT'].forEach(function(operator) {
+		['AND', 'OR', 'NOT', 'Group'].forEach(function(operator) {
 			var button = element('button', 'syslogSearchAdd', operator);
 			button.setAttribute('aria-label', operator);
 			button.type = 'button';
 			button.addEventListener('click', function() {
-				rows.push({join: operator === 'OR' ? 'OR' : 'AND', negative: operator === 'NOT', value: ''});
+				rows.push(operator === 'Group' ? {join: 'AND', negative: false, rows: [{join: 'AND', negative: false, value: ''}]} : {join: operator === 'OR' ? 'OR' : 'AND', negative: operator === 'NOT', value: ''});
 				render(container, rows);
 				initSyslogSearchDates(container);
 				var inputs = container.querySelectorAll('.syslogSearchText');
@@ -377,10 +579,7 @@ function applyFilter() {
 
 /** Reload results with the current filter, keeping the active page. */
 function refreshResults() {
-	if (!syncSyslogSearchBuilder()) return;
-	var data = syslogFilterData();
-	data.page = parseInt($('#page').val(), 10) || 1;
-	postSyslog(data);
+	postSyslog({page: parseInt($('#page').val(), 10) || 1, refresh: $('#refresh').val()});
 }
 
 function exportRecords() {
@@ -580,7 +779,8 @@ function openSavedSearchDialog(mode) {
 				if (expression === null) return;
 				$(dialog).dialog('close');
 				var data = syslogFilterData();
-				data.rfilter = expression;
+				data.rfilter = syslogTimeExpression(expression);
+				if (data.rfilter === null) return;
 				postSyslog(data);
 			}},
 			{text: text.cancel, click: function() { $(dialog).dialog('close'); }}
@@ -601,6 +801,7 @@ function initSyslogMain(config) {
 	$(function() {
 		initSyslogSearchBuilder(document.getElementById('syslog_search_builder'));
 		initSavedSearches();
+		initSyslogCompactSearch();
 		$('#syslog_form').submit(function(event) {
 			event.preventDefault();
 			event.stopImmediatePropagation();

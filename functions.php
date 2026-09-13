@@ -2805,3 +2805,13 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 
 	return $command;
 }
+
+/** Render untrusted log text as an accessible details trigger. */
+function syslog_message_button($message, $device, $program, $facility, $severity, $received) {
+	$details = compact('device', 'program', 'facility', 'severity', 'received');
+	$details['message'] = (string) $message;
+	$trim = (int) get_request_var_request('trimval');
+	$text = $trim > 0 ? title_trim((string) $message, $trim) : (string) $message;
+	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
+		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
+}

@@ -50,3 +50,7 @@ locales/po/*.mo
 # Ignore visual studio code
 .vscode/**
 
+# Ignore node_modules
+.agents/**
+
+.claude/**

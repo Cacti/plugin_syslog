@@ -1,0 +1,35 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const source = fs.readFileSync(require('node:path').join(__dirname, '../../js/functions.js'), 'utf8');
+const nodes = {};
+const context = {document: {getElementById: id => nodes[id]}};
+vm.runInNewContext(source.slice(source.indexOf('function syslogSearchRows('), source.indexOf('function applyFilter()')), context);
+const predicate = (field, op, value) => ['predicate', field, op, value];
+const host = predicate('host', '=', 'router');
+const relative = predicate('logtime', 'last', '86400');
+const from = predicate('logtime', '>=', '2026-09-12 00:00:00');
+const to = predicate('logtime', '<=', '2026-09-13 00:00:00');
+assert.equal(context.syslogSplitTime(['AND', host, relative]).mode, '86400');
+assert.deepEqual(context.syslogSplitTime(['AND', host, relative]).tree, host);
+assert.equal(context.syslogSplitTime(['AND', ['AND', host, from], to]).mode, 'custom');
+assert.equal(context.syslogSplitTime(['AND', from, to]).tree, null);
+for (const tree of [['OR', host, relative], ['NOT', relative], ['AND', host, from]]) {
+ assert.equal(context.syslogSplitTime(tree).mode, 'query');
+ assert.deepEqual(context.syslogSplitTime(tree).tree, tree, 'Dates in authored logic remain untouched');
+}
+nodes.syslog_time_range = {value: '86400'};
+assert.equal(context.syslogTimeExpression('"error" OR "warning"'), '("error" OR "warning") AND logtime last "86400"', 'Time applies to the whole OR expression');
+assert.equal(context.syslogTimeExpression(''), 'logtime last "86400"');
+nodes.syslog_time_range.value = 'custom';
+const input = value => ({value, error: '', setCustomValidity(error) {this.error = error;}, reportValidity() {return !this.error;}});
+nodes.syslog_time_from = input('2026-09-12T00:00');
+nodes.syslog_time_to = input('2026-09-13T00:00');
+assert.equal(context.syslogTimeExpression(''), 'logtime >= "2026-09-12 00:00:00" AND logtime <= "2026-09-13 00:00:00"');
+nodes.syslog_time_to.value = '2026-09-11T00:00';
+assert.equal(context.syslogTimeExpression(''), null, 'Reversed date range blocks submission');
+nodes.syslog_time_to.value = 'invalid';
+assert.equal(context.syslogTimeExpression(''), null);
+nodes.syslog_time_range.value = 'all';
+assert.equal(context.syslogTimeExpression('"error"'), '"error"');
+console.log('compact_search_time_test passed');
