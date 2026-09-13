@@ -228,25 +228,47 @@
 	padding: 6px 0;
 }
 
-#syslog_form .syslogSearchFilters {
-	width: auto;
-	min-width: 50%;
+#syslog_form .syslogSearchOptions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 10px 22px;
 	margin-top: 14px;
-	border-spacing: 0 6px;
-	white-space: nowrap;
+	padding-top: 12px;
+	border-top: 1px solid var(--search-border);
 }
 
-#syslog_form .syslogSearchFilters td {
-	padding: 0 10px 0 0;
-	vertical-align: middle;
+#syslog_form .syslogSearchOption {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 }
 
-#syslog_form .syslogSearchFilters td:first-child {
-	width: 1%;
+#syslog_form .syslogSearchOption label {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--search-muted);
 }
 
-#syslog_form .syslogSearchFilters select {
-	max-width: 100%;
+#syslog_form .syslogSearchOption select {
+	box-sizing: border-box;
+	min-width: 120px;
+	max-width: 170px;
+	min-height: 32px;
+	margin: 0;
+	padding: 4px 8px;
+	font: inherit;
+	color: var(--search-text);
+	border: 1px solid var(--search-border);
+	border-radius: 5px;
+	background: var(--search-card);
+	cursor: pointer;
+}
+
+#syslog_form .syslogSearchOptionHook {
+	flex: 1 1 100%;
 }
 
 #syslog_form .syslogSearchSubmit {
@@ -299,10 +321,13 @@
 		grid-row: 1;
 	}
 
-	#syslog_form .syslogSearchFilters {
-		display: block;
-		overflow-x: auto;
-		white-space: normal;
+	#syslog_form .syslogSearchOptions {
+		gap: 8px 16px;
+	}
+
+	#syslog_form .syslogSearchOption select {
+		min-width: 100px;
+		max-width: none;
 	}
 }
 

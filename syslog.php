@@ -1326,103 +1326,81 @@ function syslog_filter($sql_where, $tab) {
 						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
 					</div>
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
-					<table class='filterTable syslogSearchFilters'>
-						<tr>
-							<td>
-								<?php print __('Results limit', 'syslog'); ?>
-							</td>
-							<td>
-								<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
-									<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
-									<?php
-									foreach ($item_rows as $rows => $display_text) {
-										print "<option value='" . $rows . "'";
+					<div class='syslogSearchOptions'>
+						<div class='syslogSearchOption'>
+							<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
+							<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
+								<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
+								<?php
+								foreach ($item_rows as $rows => $display_text) {
+									print "<option value='" . $rows . "'";
 
-										if (get_request_var('rows') == $rows) {
-											print ' selected';
-										}
-
-										print '>' . $display_text . '</option>';
+									if (get_request_var('rows') == $rows) {
+										print ' selected';
 									}
-									?>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<?php print __('Trim', 'syslog'); ?>
-							</td>
-							<td>
-								<select id='trimval' onChange='applyFilter()' title='<?php print __esc('Message Trim', 'syslog'); ?>'>
-									<?php
-									foreach ($trimvals as $seconds => $display_text) {
-										print "<option value='" . $seconds . "'";
 
-										if (get_request_var('trimval') == $seconds) {
-											print ' selected';
-										}
+									print '>' . $display_text . '</option>';
+								}
+								?>
+							</select>
+						</div>
+						<div class='syslogSearchOption'>
+							<label for='trimval'><?php print __('Trim', 'syslog'); ?></label>
+							<select id='trimval' onChange='applyFilter()' title='<?php print __esc('Message Trim', 'syslog'); ?>'>
+								<?php
+								foreach ($trimvals as $seconds => $display_text) {
+									print "<option value='" . $seconds . "'";
 
-										print '>' . $display_text . '</option>';
+									if (get_request_var('trimval') == $seconds) {
+										print ' selected';
 									}
-									?>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<?php print __('Refresh', 'syslog'); ?>
-							</td>
-							<td>
-								<select id='refresh' onChange='applyFilter()'>
-									<?php
-									foreach ($page_refresh_interval as $seconds => $display_text) {
-										print "<option value='" . $seconds . "'";
 
-										if (get_request_var('refresh') == $seconds) {
-											print ' selected';
-										}
+									print '>' . $display_text . '</option>';
+								}
+								?>
+							</select>
+						</div>
+						<div class='syslogSearchOption'>
+							<label for='refresh'><?php print __('Refresh', 'syslog'); ?></label>
+							<select id='refresh' onChange='applyFilter()'>
+								<?php
+								foreach ($page_refresh_interval as $seconds => $display_text) {
+									print "<option value='" . $seconds . "'";
 
-										print '>' . $display_text . '</option>';
+									if (get_request_var('refresh') == $seconds) {
+										print ' selected';
 									}
-									?>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<?php api_plugin_hook('syslog_extend_filter'); ?>
-						</tr>
+
+									print '>' . $display_text . '</option>';
+								}
+								?>
+							</select>
+						</div>
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
-						<tr>
-							<td>
-								<?php print __('Record Type', 'syslog'); ?>
-							</td>
-							<td>
-								<select id='removal' onChange='applyFilter()' title='<?php print __esc('Removal Handling', 'syslog'); ?>'>
-									<option value='1'<?php if (get_request_var('removal') == '1') { ?> selected<?php } ?>><?php print __('All Records', 'syslog'); ?></option>
-									<option value='-1'<?php if (get_request_var('removal') == '-1') { ?> selected<?php } ?>><?php print __('Main Records', 'syslog'); ?></option>
-									<option value='2'<?php if (get_request_var('removal') == '2') { ?> selected<?php } ?>><?php print __('Removed Records', 'syslog'); ?></option>
-								</select>
-							</td>
-						</tr>
+						<div class='syslogSearchOption'>
+							<label for='removal'><?php print __('Record Type', 'syslog'); ?></label>
+							<select id='removal' onChange='applyFilter()' title='<?php print __esc('Removal Handling', 'syslog'); ?>'>
+								<option value='1'<?php if (get_request_var('removal') == '1') { ?> selected<?php } ?>><?php print __('All Records', 'syslog'); ?></option>
+								<option value='-1'<?php if (get_request_var('removal') == '-1') { ?> selected<?php } ?>><?php print __('Main Records', 'syslog'); ?></option>
+								<option value='2'<?php if (get_request_var('removal') == '2') { ?> selected<?php } ?>><?php print __('Removed Records', 'syslog'); ?></option>
+							</select>
+						</div>
 						<?php } else { ?>
 						<input type='hidden' id='removal' value='<?php print html_escape_request_var('removal'); ?>'>
 						<?php } ?>
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
-						<tr>
-							<td>
-								<?php print __('Display', 'syslog'); ?>
-							</td>
-							<td>
-								<select id='grouping' onChange='applyFilter()' title='<?php print __esc('Group Duplicate Messages', 'syslog'); ?>'>
-									<option value='0'<?php if (get_request_var('grouping') == '0') { ?> selected<?php } ?>><?php print __('Individual Messages', 'syslog'); ?></option>
-									<option value='1'<?php if (get_request_var('grouping') == '1') { ?> selected<?php } ?>><?php print __('Grouped Messages', 'syslog'); ?></option>
-								</select>
-							</td>
-						</tr>
+						<div class='syslogSearchOption'>
+							<label for='grouping'><?php print __('Display', 'syslog'); ?></label>
+							<select id='grouping' onChange='applyFilter()' title='<?php print __esc('Group Duplicate Messages', 'syslog'); ?>'>
+								<option value='0'<?php if (get_request_var('grouping') == '0') { ?> selected<?php } ?>><?php print __('Individual Messages', 'syslog'); ?></option>
+								<option value='1'<?php if (get_request_var('grouping') == '1') { ?> selected<?php } ?>><?php print __('Grouped Messages', 'syslog'); ?></option>
+							</select>
+						</div>
 						<?php } else { ?>
 						<input type='hidden' id='grouping' value='0'>
 						<?php } ?>
-					</table>
+						<div class='syslogSearchOptionHook'><?php api_plugin_hook('syslog_extend_filter'); ?></div>
+					</div>
 					<div class='syslogSearchFooter'>
 						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers.', 'syslog'); ?></details>
 					</div>
