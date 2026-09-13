@@ -1033,6 +1033,15 @@ function syslog_row_color($priority, $message) {
 	return '';
 }
 
+/** Render compact metadata labels without changing the surrounding table theme. */
+function syslog_metadata_label($value, $type) {
+	$value = (string) $value;
+	$class = $type === 'priority' ? 'syslogSeverity' : 'syslogFacility';
+	$modifier = preg_replace('/[^a-z]/', '', strtolower($value));
+
+	return '<span class="' . $class . ' ' . $class . '-' . html_escape($modifier) . '">' . html_escape($value) . '</span>';
+}
+
 function sql_hosts_where($tab) {
 	global $hostfilter, $hostfilter_log, $syslog_incoming_config;
 	global $syslogdb_default;

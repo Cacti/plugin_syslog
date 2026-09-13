@@ -1913,13 +1913,13 @@ function syslog_messages($tab = 'syslog') {
 					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
 				}
 
-				form_selectable_ecell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
-				form_selectable_ecell($sm['program'], $sm['seq'], '', 'left');
+				form_selectable_ecell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left syslogMeta');
+				form_selectable_ecell($sm['program'], $sm['seq'], '', 'left syslogMeta');
 				// Group summaries show the latest timestamp; use its matching sequence ID.
 				$rule_id = $grouping_enabled && !empty($sm['seq_list']) ? explode(',', $sm['seq_list'])[0] : $sm[$syslog_incoming_config['id']];
 				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype']), $sm['seq'], '', 'left syslogMessage');
-				form_selectable_ecell(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
-				form_selectable_ecell(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_cell(syslog_metadata_label(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), 'facility'), $sm['seq'], '', 'left');
+				form_selectable_cell(syslog_metadata_label(isset($priorities[$sm['priority_id']]) ? $priorities[$sm['priority_id']] : __('Unknown', 'syslog'), 'priority'), $sm['seq'], '', 'left');
 
 				// Add occurrence count if grouping is enabled
 				if ($grouping_enabled) {
@@ -1949,8 +1949,8 @@ function syslog_messages($tab = 'syslog') {
 							print "<td class='left'>" . html_escape(isset($hosts[$dm['host_id']]) ? $hosts[$dm['host_id']] : __('Unknown', 'syslog')) . '</td>';
 							print "<td class='left'>" . html_escape($dm['program']) . '</td>';
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
-							print "<td class='left'>" . html_escape(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog')) . '</td>';
-							print "<td class='left'>" . html_escape(isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog')) . '</td>';
+							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
+							print "<td class='left'>" . syslog_metadata_label(isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog'), 'priority') . '</td>';
 
 							if ($grouping_enabled) {
 								print "<td class='right'></td>";
