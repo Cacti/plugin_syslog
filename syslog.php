@@ -1554,7 +1554,7 @@ function syslog_filter($sql_where, $tab) {
 							?>
 						</select>
 						<input id='saved_saveas' type='button' value='<?php print __esc('Save search', 'syslog'); ?>'>
-						<details class='syslogMenu'><summary aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>'>⋯</summary><div class='syslogMenuBody'>
+						<details class='syslogMenu'><summary aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>' title='<?php print __esc('Manage saved searches', 'syslog'); ?>'><?php print __esc('Manage', 'syslog'); ?></summary><div class='syslogMenuBody'>
 							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
 							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
 							<input id='saved_delete' type='button' value='<?php print __esc('Delete', 'syslog'); ?>'>
