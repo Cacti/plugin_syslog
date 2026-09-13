@@ -1297,10 +1297,7 @@ function syslog_filter($sql_where, $tab) {
 					<div class='syslogSearchHeader'>
 						<div class='syslogSearchHeading'>
 							<span class='syslogSearchIcon' aria-hidden='true'><i class='fa fa-search'></i></span>
-							<div>
-								<h3 id='syslog_search_title'><?php print __esc('Search messages', 'syslog'); ?></h3>
-								<p><?php print __esc('Search Syslog Messages', 'syslog'); ?></p>
-							</div>
+							<h3 id='syslog_search_title'><?php print __esc('Search messages', 'syslog'); ?></h3>
 						</div>
 						<button type='button' id='syslog_search_toggle' class='syslogSearchToggle'
 							aria-expanded='true' aria-controls='syslog_search_content'

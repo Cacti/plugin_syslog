@@ -9,15 +9,15 @@
 	--search-tint: #e2ede6;
 	box-sizing: border-box;
 	width: min(100%, 1020px, calc(100vw - 28px));
-	margin: 12px 4px;
-	padding: 18px 20px 14px;
+	margin: 8px 4px;
+	padding: 10px 14px;
 	border: 1px solid var(--search-border);
-	border-radius: 12px;
+	border-radius: 10px;
 	background: var(--search-surface);
 	color: var(--search-text);
 	box-shadow: 0 2px 6px #20392c0a;
 	font-size: 13px;
-	line-height: 1.5;
+	line-height: 1.4;
 }
 
 #syslog_form .syslogSearchHeader,
@@ -30,33 +30,27 @@
 
 #syslog_form .syslogSearchHeader {
 	justify-content: space-between;
-	margin-bottom: 18px;
+	margin-bottom: 8px;
 }
 
 #syslog_form .syslogSearchIcon {
 	display: grid;
 	place-items: center;
-	width: 36px;
-	height: 36px;
-	border-radius: 10px;
+	width: 24px;
+	height: 24px;
+	border-radius: 6px;
 	background: var(--search-tint);
 	color: var(--search-accent);
-	font-size: 16px;
+	font-size: 12px;
 	flex-shrink: 0;
 }
 
 #syslog_form #syslog_search_title {
 	margin: 0;
-	font-size: 16px;
+	font-size: 13px;
 	font-weight: 600;
 	line-height: 1.4;
 	color: var(--search-text);
-}
-
-#syslog_form .syslogSearchHeading p {
-	margin: 2px 0 0;
-	font-size: 12px;
-	color: var(--search-muted);
 }
 
 #syslog_form .syslogSearchMode select,
@@ -76,11 +70,11 @@
 
 #syslog_search_builder .syslogSearchRow {
 	display: grid;
-	grid-template-columns: 66px 120px 100px 110px minmax(100px, 1fr) 30px;
+	grid-template-columns: 66px 120px 100px 110px minmax(100px, 1fr) 26px;
 	align-items: center;
-	gap: 10px;
-	margin-bottom: 8px;
-	padding: 9px 10px;
+	gap: 8px;
+	margin-bottom: 6px;
+	padding: 4px 8px;
 	border: 1px solid var(--search-border);
 	border-radius: 8px;
 	background: var(--search-card);
@@ -98,14 +92,14 @@
 	box-sizing: border-box;
 	font: inherit;
 	color: var(--search-text);
-	min-height: 32px;
+	min-height: 26px;
 	margin: 0;
 	border-radius: 5px;
 }
 
 #syslog_search_builder select {
 	width: 100%;
-	padding: 4px 6px;
+	padding: 2px 6px;
 	border: 1px solid transparent;
 	background: transparent;
 	cursor: pointer;
@@ -127,7 +121,8 @@
 	display: block;
 	text-align: center;
 	color: var(--search-accent);
-	font-size: 22px;
+	font-size: 16px;
+	line-height: 1;
 }
 
 #syslog_search_builder .syslogSearchField {
@@ -139,7 +134,7 @@
 	width: 100%;
 	min-width: 0;
 	max-width: none;
-	padding: 6px 10px;
+	padding: 4px 8px;
 	border: 1px solid var(--search-border);
 	background: var(--search-surface);
 	color: var(--search-text);
@@ -155,7 +150,7 @@
 	border: 0;
 	background: transparent;
 	color: var(--search-muted);
-	font-size: 19px;
+	font-size: 16px;
 	cursor: pointer;
 }
 
@@ -167,12 +162,12 @@
 #syslog_search_builder .syslogSearchActions {
 	display: flex;
 	gap: 8px;
-	margin-top: 10px;
+	margin-top: 6px;
 }
 
 #syslog_search_builder .syslogSearchAdd {
-	min-height: 30px;
-	padding: 4px 12px;
+	min-height: 24px;
+	padding: 2px 10px;
 	border: 1px solid var(--search-border);
 	background: var(--search-card);
 	color: var(--search-accent);
@@ -183,7 +178,7 @@
 
 #syslog_search_builder .syslogSearchAdd::before {
 	content: '+ ';
-	font-size: 14px;
+	font-size: 13px;
 }
 
 #syslog_search_builder .syslogSearchAdd:hover {
@@ -211,8 +206,8 @@
 #syslog_form .syslogSearchFooter {
 	justify-content: space-between;
 	align-items: flex-start;
-	margin-top: 14px;
-	padding-top: 12px;
+	margin-top: 8px;
+	padding-top: 6px;
 	border-top: 1px solid var(--search-border);
 }
 
@@ -225,27 +220,27 @@
 #logical_search_help summary {
 	cursor: pointer;
 	width: fit-content;
-	padding: 6px 0;
+	padding: 2px 0;
 }
 
 #syslog_form .syslogSearchOptions {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-end;
-	gap: 10px 22px;
-	margin-top: 14px;
-	padding-top: 12px;
+	gap: 8px 16px;
+	margin-top: 8px;
+	padding-top: 8px;
 	border-top: 1px solid var(--search-border);
 }
 
 #syslog_form .syslogSearchOption {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 2px;
 }
 
 #syslog_form .syslogSearchOption label {
-	font-size: 11px;
+	font-size: 10px;
 	font-weight: 600;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -256,9 +251,9 @@
 	box-sizing: border-box;
 	min-width: 120px;
 	max-width: 170px;
-	min-height: 32px;
+	min-height: 26px;
 	margin: 0;
-	padding: 4px 8px;
+	padding: 2px 6px;
 	font: inherit;
 	color: var(--search-text);
 	border: 1px solid var(--search-border);
@@ -277,9 +272,9 @@
 	justify-content: center;
 	gap: 8px;
 	margin-left: auto;
-	padding: 8px 16px;
+	padding: 4px 14px;
 	border: 1px solid var(--search-accent);
-	border-radius: 7px;
+	border-radius: 6px;
 	background: var(--search-accent);
 	color: #fff;
 	font: inherit;
@@ -340,8 +335,8 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 34px;
-	height: 34px;
+	width: 28px;
+	height: 28px;
 	border: 1px solid var(--search-border);
 	border-radius: 6px;
 	background: var(--search-card);
