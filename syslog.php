@@ -87,17 +87,6 @@ if (get_request_var('action') == 'saved_search_global') {
 
 $title = __('Syslog Viewer', 'syslog');
 
-$trimvals = [
-	'0'    => __('Fit column', 'syslog'),
-	'1024' => __('All Text', 'syslog'),
-	'30'   => __('%d Chars', 30, 'syslog'),
-	'50'   => __('%d Chars', 50, 'syslog'),
-	'75'   => __('%d Chars', 75, 'syslog'),
-	'100'  => __('%d Chars', 100, 'syslog'),
-	'150'  => __('%d Chars', 150, 'syslog'),
-	'300'  => __('%d Chars', 300, 'syslog')
-];
-
 // set the default tab
 get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^([a-zA-Z]+)$/']]);
 
@@ -783,10 +772,6 @@ function syslog_request_validation($current_tab, $force = false) {
 			'filter'  => FILTER_VALIDATE_INT,
 			'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force)
 		],
-		'trimval' => [
-			'filter'  => FILTER_VALIDATE_INT,
-			'default' => read_user_setting('syslog_trimval', '0', $force)
-		],
 		'enabled' => [
 			'filter'  => FILTER_VALIDATE_INT,
 			'pageset' => true,
@@ -1469,7 +1454,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 }
 
 function syslog_filter($sql_where, $tab) {
-	global $config, $page_refresh_interval, $item_rows, $trimvals;
+	global $config, $page_refresh_interval, $item_rows;
 	global $syslogdb_default;
 
 	$unprocessed = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
@@ -1597,22 +1582,6 @@ function syslog_filter($sql_where, $tab) {
 					</div>
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
 					<details id='syslog_view_options' class='syslogMenu'><summary><?php print __esc('View options', 'syslog'); ?></summary><div class='syslogMenuBody syslogSearchOptions'>
-						<div class='syslogSearchOption'>
-							<label for='trimval'><?php print __('Trim', 'syslog'); ?></label>
-							<select id='trimval' onChange='applyFilter()' title='<?php print __esc('Message Trim', 'syslog'); ?>'>
-								<?php
-								foreach ($trimvals as $seconds => $display_text) {
-									print "<option value='" . $seconds . "'";
-
-									if (get_request_var('trimval') == $seconds) {
-										print ' selected';
-									}
-
-									print '>' . $display_text . '</option>';
-								}
-								?>
-							</select>
-						</div>
 						<div class='syslogSearchOption'>
 							<label for='refresh'><?php print __('Refresh', 'syslog'); ?></label>
 							<select id='refresh' onChange='applyFilter()'>
@@ -2083,7 +2052,6 @@ function save_settings() {
 		'rows',
 		'refresh',
 		'removal',
-		'trimval',
 		'efacility',
 		'priority',
 		'eprogram',

@@ -134,7 +134,7 @@ function initSyslogCompactSearch() {
 	document.getElementById('text').setAttribute('role', 'status');
 	var refresh = document.getElementById('refresh').closest('.syslogSearchOption');
 	toolbar.append(refresh, document.getElementById('refresh_results'), document.getElementById('export'));
-	var summaries = ['rows', 'removal', 'grouping', 'trimval'].map(function(id) {
+	var summaries = ['rows', 'removal', 'grouping'].map(function(id) {
 		var select = document.getElementById(id);
 		return select && select.selectedOptions ? select.selectedOptions[0].textContent : '';
 	}).filter(Boolean);
@@ -552,7 +552,7 @@ function postSyslog(data) {
 
 function syslogFilterData() {
 	var data = {search_mode: 'logical', rfilter: $('#rfilter').val(), page: 1};
-	['rows', 'trimval', 'removal', 'refresh', 'grouping'].forEach(function(name) {
+	['rows', 'removal', 'refresh', 'grouping'].forEach(function(name) {
 		if ($('#' + name).length) data[name] = $('#' + name).val();
 	});
 	return data;
@@ -586,7 +586,6 @@ function saveSettings() {
 	var strURL  = 'syslog.php';
 	var data    = {action: 'save', tab: window.pageTab || 'syslog'};
 
-	data.trimval      = $('#trimval').val();
 	data.rows         = $('#rows').val();
 	data.removal      = $('#removal').val();
 	data.refresh      = $('#refresh').val();
