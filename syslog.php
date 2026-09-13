@@ -723,6 +723,10 @@ function syslog_stats_filter() {
 function syslog_request_validation($current_tab, $force = false) {
 	global $title, $rows, $config, $reset_multi;
 
+	// Cacti validation populates $_POST even for values restored from the session.
+	// Capture the original submission before any request helpers mutate it.
+	$filter_submitted = isset($_POST['rfilter']);
+
 	include_once($config['base_path'] . '/lib/time.php');
 
 	if ($current_tab != 'alerts' && isset_request_var('host') && get_nfilter_request_var('host') == -1) {
@@ -860,10 +864,10 @@ function syslog_request_validation($current_tab, $force = false) {
 	// ================= saved searches =================
 	$saved_id = get_filter_request_var('saved', FILTER_VALIDATE_INT);
 
-	if ($saved_id > 0 && !isset($_POST['rfilter'])) {
+	if ($saved_id > 0 && !$filter_submitted) {
 		// Applying a saved search restores its expression and standard filters.
 		saved_search_apply($current_tab, $saved_id);
-	} elseif (isset($_POST['rfilter']) || isset_request_var('clear') || isset_request_var('reset')) {
+	} elseif ($filter_submitted || isset_request_var('clear') || isset_request_var('reset')) {
 		// Manual edits detach the active saved search.
 		kill_session_var('sess_sl_' . $current_tab . '_saved');
 	}
@@ -874,7 +878,7 @@ function syslog_request_validation($current_tab, $force = false) {
 		set_request_var('search_mode', 'logical');
 	}
 	// New submissions contain the entire query. Convert old saved dropdown state only on entry.
-	if (!isset($_POST['rfilter']) && !isset_request_var('clear')) {
+	if (!$filter_submitted && !isset_request_var('clear')) {
 		$conditions = [];
 		foreach (['eprogram' => 'program_id', 'efacility' => 'facility_id', 'epriority' => 'priority_id'] as $old => $field) {
 			$value = (string) get_request_var($old);
@@ -916,7 +920,7 @@ function syslog_request_validation($current_tab, $force = false) {
 
 	set_shift_span($shift_span, 'sess_sl_' . $current_tab);
 	$date_query_key = 'sess_sl_' . $current_tab . '_query_dates';
-	if (!isset($_POST['rfilter']) && (empty($_SESSION[$date_query_key]) || isset_request_var('clear') || isset_request_var('reset'))) {
+	if (!$filter_submitted && (empty($_SESSION[$date_query_key]) || isset_request_var('clear') || isset_request_var('reset'))) {
 		$query = get_request_var('rfilter');
 		$dates = 'logtime >= "' . get_request_var('date1') . '" AND logtime <= "' . get_request_var('date2') . '"';
 		set_request_var('rfilter', ($query === '' ? '' : '(' . $query . ') AND ') . $dates);
