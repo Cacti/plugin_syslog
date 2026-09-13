@@ -1942,7 +1942,7 @@ function syslog_messages($tab = 'syslog') {
 
 					if (cacti_sizeof($detail_messages)) {
 						foreach ($detail_messages as $dm) {
-							print "<tr class='tableRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . ' ' . syslog_priority_class($dm['priority_id']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
+							print "<tr class='tableRow syslogRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
 
 
 							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';

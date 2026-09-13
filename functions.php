@@ -1028,11 +1028,9 @@ function syslog_priority_class($priority) {
 }
 
 function syslog_row_color($priority, $message) {
-	$class = syslog_priority_class($priority);
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row'>";
 
-	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow syslog-detail-row'>";
-
-	return $class;
+	return '';
 }
 
 function sql_hosts_where($tab) {

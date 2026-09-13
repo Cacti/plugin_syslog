@@ -510,6 +510,10 @@
 #syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) minmax(300px, 26%); }
 .syslogResultsMain { min-width: 0; overflow-x: auto; }
 #syslog_workspace table { width: 100%; }
+#syslog_workspace tr.syslogRow:nth-child(even) { background: #f7f9f8; }
+#syslog_workspace tr.syslogRow:hover { background: #edf3f0; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:nth-child(even) { background: #2b3530; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:hover { background: #34443a; }
 #syslog_workspace tr:has(.syslogMessageOpen) td { padding: 6px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.5 monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
