@@ -1299,7 +1299,7 @@ function syslog_filter($sql_where, $tab) {
 							<span class='syslogSearchIcon' aria-hidden='true'><i class='fa fa-search'></i></span>
 							<div>
 								<h3 id='syslog_search_title'><?php print __esc('Search messages', 'syslog'); ?></h3>
-								<p><?php print __esc('Combine conditions to find the messages you need.', 'syslog'); ?></p>
+								<p><?php print __esc('Search Syslog Messages', 'syslog'); ?></p>
 							</div>
 						</div>
 						<button type='button' id='syslog_search_toggle' class='syslogSearchToggle'
