@@ -170,14 +170,20 @@ function initSyslogWorkspace() {
 			row.removeAttribute('title');
 			row.classList.add('syslogRowOpen');
 			var data = JSON.parse(button.dataset.message);
-			// Show severity through a badge, leaving message backgrounds neutral.
-			Array.from(row.cells).forEach(function(cell) {
-				if (cell.textContent.trim().toLowerCase() === String(data.severity).toLowerCase() && !cell.querySelector('button, a')) {
-					var badge = document.createElement('span');
-					badge.className = 'syslogSeverity syslogSeverity-' + String(data.severity).toLowerCase().replace(/[^a-z]/g, '');
-					badge.textContent = cell.textContent;
-					cell.replaceChildren(badge);
-				}
+			// Show facility and severity through badges, leaving message backgrounds neutral.
+			[
+				['facility', 'syslogFacility'],
+				['severity', 'syslogSeverity']
+			].forEach(function(item) {
+				var value = String(data[item[0]] || '');
+				Array.from(row.cells).forEach(function(cell) {
+					if (value && cell.textContent.trim().toLowerCase() === value.toLowerCase() && !cell.querySelector('button, a, .syslogFacility, .syslogSeverity')) {
+						var badge = document.createElement('span');
+						badge.className = item[1] + ' ' + item[1] + '-' + value.toLowerCase().replace(/[^a-z]/g, '');
+						badge.textContent = cell.textContent;
+						cell.replaceChildren(badge);
+					}
+				});
 			});
 			function open() {
 				if (active) { active.setAttribute('aria-expanded', 'false'); active.closest('tr').classList.remove('syslogSelected'); }

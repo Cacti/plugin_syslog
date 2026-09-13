@@ -531,6 +531,7 @@
 .syslogSeverity-warning, .syslogSeverity-warn { background: #fff0c4; color: #744900; }
 .syslogSeverity-info { background: #e0eed8; color: #315626; }
 .syslogSeverity-notice { background: #dfecf8; color: #254e76; }
+.syslogFacility { display: inline-block; border-radius: 3px; padding: 2px 7px; color: #34423a; background: #e8edf0; font-size: 12px; }
 #syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 16px; border-left: 1px solid #cbd8d1; background: #f8faf9; color: #23362f; }
 #syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 #syslog_message_details h3 { margin: 0; font-size: 16px; }
