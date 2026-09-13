@@ -420,10 +420,6 @@ function initSyslogMain(config) {
 			applyFilter();
 		});
 
-		$('#refresh_results').click(function() {
-			refreshResults();
-		});
-
 		$('#clear').click(function() {
 			clearFilter();
 		});

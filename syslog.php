@@ -1399,7 +1399,7 @@ function syslog_filter($sql_where, $tab) {
 						<div class='syslogSearchOptionHook'><?php api_plugin_hook('syslog_extend_filter'); ?></div>
 					</div>
 					<div class='syslogSearchFooter'>
-						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers.', 'syslog'); ?></details>
+						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted.', 'syslog'); ?></details>
 					</div>
 					</div>
 				</section>
