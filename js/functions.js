@@ -114,6 +114,9 @@ function initSyslogCompactSearch() {
 	var actions = document.createElement('div');
 	actions.className = 'syslogQueryActions';
 	actions.append(document.getElementById('go'), document.getElementById('clear'));
+	// The results limit scopes the search itself, so keep it beside the search buttons.
+	var limit = document.querySelector('.syslogResultsLimit');
+	if (limit) actions.append(limit);
 	var query = document.createElement('div');
 	query.className = 'syslogQueryLayout';
 	builder.before(query);
@@ -165,6 +168,7 @@ function initSyslogWorkspace() {
 		workspace.querySelectorAll('.syslogMessageOpen').forEach(function(button) {
 			var row = button.closest('tr');
 			row.removeAttribute('title');
+			row.classList.add('syslogRowOpen');
 			var data = JSON.parse(button.dataset.message);
 			// Show severity through a badge, leaving message backgrounds neutral.
 			Array.from(row.cells).forEach(function(cell) {
@@ -175,8 +179,7 @@ function initSyslogWorkspace() {
 					cell.replaceChildren(badge);
 				}
 			});
-			button.addEventListener('click', function(event) {
-				event.stopPropagation();
+			function open() {
 				if (active) { active.setAttribute('aria-expanded', 'false'); active.closest('tr').classList.remove('syslogSelected'); }
 				active = button;
 				details = data;
@@ -196,6 +199,15 @@ function initSyslogWorkspace() {
 				row.classList.add('syslogSelected');
 				button.setAttribute('aria-expanded', 'true');
 				pane.focus({preventScroll: true});
+			}
+			// The message button keeps keyboard access; the rest of the row opens the pane too.
+			button.addEventListener('click', function(event) {
+				event.stopPropagation();
+				open();
+			});
+			row.addEventListener('click', function(event) {
+				if (event.target.closest('a, button, input, select, textarea, summary, .syslog-group-toggle')) return;
+				open();
 			});
 		});
 		document.getElementById('syslog_details_close').addEventListener('click', close);

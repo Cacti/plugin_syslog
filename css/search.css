@@ -486,7 +486,9 @@
 #syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
 #syslog_search_summary { padding: 8px 0; overflow-wrap: anywhere; font-family: monospace; }
 .syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
-.syslogQueryActions { display: flex; gap: 6px; padding-top: 4px; }
+.syslogQueryActions { display: flex; align-items: flex-end; gap: 6px; padding-top: 4px; }
+.syslogQueryActions .syslogResultsLimit { gap: 0; }
+.syslogQueryActions .syslogResultsLimit label { margin-bottom: 1px; }
 #syslog_form #go { background: var(--search-accent); color: white; border: 1px solid var(--search-accent); padding: 6px 22px; }
 #syslog_form .syslogSearchRow { border-radius: 4px; }
 #syslog_form .syslogSearchFooter { border: 0; margin: 2px 0 0; padding: 0; }
@@ -571,6 +573,9 @@ body.dark #syslog_form .syslogSearchPanel {
 
 /* Selection must not replace the severity background supplied by Cacti. */
 #syslog_workspace tr.syslogSelected { outline: 2px solid currentColor; outline-offset: -2px; }
+/* Any part of a row carrying a message opens the details pane. */
+#syslog_workspace tr.syslogRowOpen { cursor: pointer; }
+#syslog_workspace tr.syslogRowOpen:hover td:not(:has(.syslogMessageOpen, a, button)) { filter: brightness(0.92); }
 .syslogDetailsRules { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
 #syslog_message_details .syslogRuleButton { display: inline-block; padding: 8px 10px; border: 1px solid #81968a; border-radius: 4px; text-decoration: none; color: inherit; }
 #syslog_message_details .syslogRuleButton[hidden] { display: none; }

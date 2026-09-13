@@ -920,10 +920,10 @@ function syslog_request_validation($current_tab, $force = false) {
 	}
 
 	set_shift_span($shift_span, 'sess_sl_' . $current_tab);
-	$date_query_key = 'sess_sl_' . $current_tab . '_query_dates';
-	if (!$filter_submitted && (empty($_SESSION[$date_query_key]) || isset_request_var('clear') || isset_request_var('reset'))) {
+	if (get_request_var('search_mode') === 'logical') {
 		$query = get_request_var('rfilter');
-		// Keep authored date conditions intact; the default is a single relative row.
+		// Keep authored date conditions intact; the default last-day limit is
+		// reapplied whenever the search carries no date condition of its own.
 		try {
 			$has_dates = syslog_search_has_time(syslog_parse_logical_search($query));
 		} catch (InvalidArgumentException $error) {
@@ -936,7 +936,6 @@ function syslog_request_validation($current_tab, $force = false) {
 		}
 		$_SESSION['sess_sl_' . $current_tab . '_rfilter'] = get_request_var('rfilter');
 	}
-	$_SESSION[$date_query_key] = true;
 
 	$GLOBALS['syslog_search_tree'] = null;
 	$GLOBALS['syslog_search_error'] = '';
@@ -996,8 +995,7 @@ function saved_search_apply($tab, $saved_id) {
 	$_SESSION['sess_sl_' . $tab . '_page']     = '1';
 	$_SESSION['sess_sl_' . $tab . '_saved']    = (int) $saved_id;
 
-	// Let page entry add the default range only if the saved expression has no dates.
-	kill_session_var('sess_sl_' . $tab . '_query_dates');
+	// Page entry reapplies the default range when the saved expression has no dates.
 }
 
 function saved_search_save() {
@@ -1580,25 +1578,25 @@ function syslog_filter($sql_where, $tab) {
 						data-match='<?php print __esc('Match group', 'syslog'); ?>'
 						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
 					</div>
+					<div class='syslogSearchOption syslogResultsLimit'>
+						<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
+						<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
+							<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
+							<?php
+							foreach ($item_rows as $rows => $display_text) {
+								print "<option value='" . $rows . "'";
+
+								if (get_request_var('rows') == $rows) {
+									print ' selected';
+								}
+
+								print '>' . $display_text . '</option>';
+							}
+							?>
+						</select>
+					</div>
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
 					<details id='syslog_view_options' class='syslogMenu'><summary><?php print __esc('View options', 'syslog'); ?></summary><div class='syslogMenuBody syslogSearchOptions'>
-						<div class='syslogSearchOption'>
-							<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
-							<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
-								<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
-								<?php
-								foreach ($item_rows as $rows => $display_text) {
-									print "<option value='" . $rows . "'";
-
-									if (get_request_var('rows') == $rows) {
-										print ' selected';
-									}
-
-									print '>' . $display_text . '</option>';
-								}
-								?>
-							</select>
-						</div>
 						<div class='syslogSearchOption'>
 							<label for='trimval'><?php print __('Trim', 'syslog'); ?></label>
 							<select id='trimval' onChange='applyFilter()' title='<?php print __esc('Message Trim', 'syslog'); ?>'>

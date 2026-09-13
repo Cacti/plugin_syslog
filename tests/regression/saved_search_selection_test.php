@@ -27,7 +27,7 @@ function selection_assert($condition, $message) {
 }
 
 foreach ([false, true] as $manual) {
-	$_SESSION = ['sess_user_id' => 1, 'sess_sl_syslog_saved' => 7, 'sess_sl_syslog_query_dates' => true];
+	$_SESSION = ['sess_user_id' => 1, 'sess_sl_syslog_saved' => 7];
 	$_POST = $_REQUEST = ['saved' => 7];
 	if ($manual) $_POST['rfilter'] = $_REQUEST['rfilter'] = 'manual';
 	$current_tab = 'syslog';
@@ -42,7 +42,6 @@ foreach ([false, true] as $manual) {
 		selection_assert($_REQUEST['rfilter'] === 'host = "router" AND message contains "error"', 'Selected expression is restored');
 		selection_assert($_REQUEST['removal'] === '2' && $_REQUEST['grouping'] === '1', 'Saved display filters are restored');
 		selection_assert($_SESSION['sess_sl_syslog_saved'] === 7, 'Active selection keeps Edit and Delete enabled');
-		selection_assert(!isset($_SESSION['sess_sl_syslog_query_dates']), 'Saved search requests fresh dates');
 		selection_assert(!$filter_submitted, 'Helper writes must not turn selection into a manual submission');
 	}
 }
