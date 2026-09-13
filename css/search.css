@@ -486,7 +486,7 @@
 #syslog_form .syslogSearchSavedBar label { font-size: 12px; text-transform: none; letter-spacing: normal; }
 #syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
 #syslog_search_summary { padding: 8px 0; overflow-wrap: anywhere; font-family: monospace; }
-.syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+.syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
 .syslogQueryActions { display: flex; align-items: flex-end; gap: 6px; padding-top: 4px; }
 .syslogQueryActions .syslogResultsLimit { gap: 0; }
 .syslogQueryActions .syslogResultsLimit label { margin-bottom: 1px; }
