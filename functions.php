@@ -1119,9 +1119,11 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
+		// PHP 8.4 deprecates fputcsv() without an explicit $escape; '' matches the
+		// upcoming default and emits RFC 4180 CSV for messages containing backslashes.
 		$line = ['host', 'facility', 'priority', 'program', 'date', 'message'];
 
-		fputcsv($fp, $line);
+		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -1160,7 +1162,7 @@ function syslog_export($tab) {
 					$logmsg
 				];
 
-				fputcsv($fp, $line);
+				fputcsv($fp, $line, ',', '"', '');
 			}
 
 		}
@@ -1177,7 +1179,7 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
-		fputcsv($fp, $line);
+		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -1201,7 +1203,7 @@ function syslog_export($tab) {
 					$message['count']
 				];
 
-				fputcsv($fp, $line);
+				fputcsv($fp, $line, ',', '"', '');
 			}
 		}
 
