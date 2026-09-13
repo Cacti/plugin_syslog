@@ -337,6 +337,9 @@
 
 #syslog_form .syslogSearchToggle {
 	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 34px;
 	height: 34px;
 	border: 1px solid var(--search-border);
