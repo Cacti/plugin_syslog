@@ -509,6 +509,7 @@ function savedSearchPrompt(name, accept) {
 	input.value = name || '';
 	$('#syslog_saved_prompt').dialog({
 		modal: true,
+		appendTo: 'body',
 		width: 420,
 		autoOpen: true,
 		buttons: [
@@ -553,8 +554,8 @@ function openSavedSearchDialog(mode) {
 
 	$('#syslog_saved_dialog').dialog({
 		modal: true,
+		appendTo: 'body',
 		width: Math.min(1040, $(window).width() - 40),
-		maxHeight: $(window).height() - 80,
 		title: mode === 'new' ? text.newTitle : text.editTitle,
 		buttons: [
 			{text: text.saveas, click: function() {

@@ -132,6 +132,8 @@
 	--search-accent: #276448;
 	--search-tint: #e2ede6;
 	box-sizing: border-box;
+	max-height: calc(100vh - 140px);
+	overflow-y: auto;
 	padding: 12px 14px;
 	background: var(--search-surface);
 	color: var(--search-text);
