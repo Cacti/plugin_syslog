@@ -561,9 +561,10 @@ function openSavedSearchDialog(mode) {
 			{text: text.saveas, click: function() {
 				var expression = syslogBuilderSync(builder);
 				if (expression === null) return;
+				// Close the editor first; stacking a second modal over it is unreliable.
+				$(dialog).dialog('close');
 				savedSearchPrompt(mode === 'edit' ? name : '', function(chosen) {
 					savedSearchSave(savedSearchExpression(builder), chosen, function(id) {
-						$(dialog).dialog('close');
 						postSyslog({saved: id});
 					});
 				});
