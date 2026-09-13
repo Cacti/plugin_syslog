@@ -524,11 +524,11 @@
 #syslog_workspace tr.syslogAlertRow td:first-child { border-left: 4px solid #c0392b; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:nth-child(even) { background: #2b3530; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:hover { background: #34443a; }
-#syslog_workspace tr:has(.syslogMessageOpen) td { padding: 6px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
-#syslog_workspace tr:has(.syslogMessageOpen) td.syslogMeta { color: #5d6b65; }
+#syslog_workspace tr:has(.syslogMessageOpen) td { padding: 7px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
+#syslog_workspace tr:has(.syslogMessageOpen) td.syslogMeta { color: #5d6b65; font-size: 12px; }
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
-.syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.5 monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 /* Cacti themes run .button() on every button, so the theme's .ui-button:hover
    paints the message like an editable input; keep it inert. Match the theme's
    selector weight (.ui-button:hover = 0,2,0) and then some. */
