@@ -251,6 +251,22 @@ function initSyslogWorkspace() {
 	});
 }
 
+function initSyslogValueFilters() {
+	document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+		button.addEventListener('click', function(event) {
+			event.stopPropagation();
+			var builder = document.getElementById('syslog_search_builder');
+			if (!builder) return;
+			var expression = syslogBuilderSync(builder);
+			if (expression === null) return;
+			var condition = syslogSearchExpression([{field: button.dataset.filterField, operator: '=', value: button.dataset.filterValue}]);
+			var data = syslogFilterData();
+			data.rfilter = (expression ? '(' + expression + ') AND ' : '') + condition;
+			postSyslog(data);
+		});
+	});
+}
+
 function toggleSyslogSearch(expanded) {
 	var content = document.getElementById('syslog_search_content');
 	var button = document.getElementById('syslog_search_toggle');

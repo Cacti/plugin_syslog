@@ -1913,8 +1913,8 @@ function syslog_messages($tab = 'syslog') {
 					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
 				}
 
-				form_selectable_ecell(isset($hosts[$sm['host_id']]) ? $hosts[$sm['host_id']] : __('Unknown', 'syslog'), $sm['seq'], '', 'left syslogMeta');
-				form_selectable_ecell($sm['program'], $sm['seq'], '', 'left syslogMeta');
+				form_selectable_ecell(syslog_value_filter_button($hosts[$sm['host_id']] ?? __('Unknown', 'syslog'), 'host'), $sm['seq'], '', 'left syslogMeta');
+				form_selectable_ecell(syslog_value_filter_button($sm['program'], 'program'), $sm['seq'], '', 'left syslogMeta');
 				// Group summaries show the latest timestamp; use its matching sequence ID.
 				$rule_id = $grouping_enabled && !empty($sm['seq_list']) ? explode(',', $sm['seq_list'])[0] : $sm[$syslog_incoming_config['id']];
 				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype']), $sm['seq'], '', 'left syslogMessage');
@@ -1946,8 +1946,8 @@ function syslog_messages($tab = 'syslog') {
 
 
 							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
-							print "<td class='left'>" . html_escape(isset($hosts[$dm['host_id']]) ? $hosts[$dm['host_id']] : __('Unknown', 'syslog')) . '</td>';
-							print "<td class='left'>" . html_escape($dm['program']) . '</td>';
+							print "<td class='left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
+							print "<td class='left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
 							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
 							print "<td class='left'>" . syslog_metadata_label(isset($priorities[$dm['priority_id']]) ? $priorities[$dm['priority_id']] : __('Unknown', 'syslog'), 'priority') . '</td>';
@@ -1976,6 +1976,7 @@ function syslog_messages($tab = 'syslog') {
 		?>
 		<script type='text/javascript'>
 		initSyslogMessagesDisplay();
+		initSyslogValueFilters();
 		</script>
 		<?php
 	} else {
@@ -2011,7 +2012,7 @@ function syslog_messages($tab = 'syslog') {
 				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime']), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
-				form_selectable_cell($log['host'], $log['seq'], '', 'right');
+				form_selectable_cell(syslog_value_filter_button($log['host'], 'host'), $log['seq'], '', 'right');
 				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'right');
 				form_selectable_cell(ucfirst($log['priority']), $log['seq'], '', 'right');
 

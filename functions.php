@@ -1043,6 +1043,13 @@ function syslog_metadata_label($value, $type) {
 	return '<span class="' . $class . ' ' . $class . '-' . html_escape($modifier) . '">' . html_escape($value) . '</span>';
 }
 
+/** Render a displayed device or program value as a direct filter action. */
+function syslog_value_filter_button($value, $field) {
+	$value = (string) $value;
+	if ($value === '') return html_escape(__('Unknown', 'syslog'));
+	return '<button type="button" class="syslogValueFilter" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
+}
+
 function sql_hosts_where($tab) {
 	global $hostfilter, $hostfilter_log, $syslog_incoming_config;
 	global $syslogdb_default;
