@@ -1329,12 +1329,15 @@ function syslog_filter($sql_where, $tab) {
 					<div class='syslogSearchFooter'>
 						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers.', 'syslog'); ?></details>
 					</div>
+					</div>
+				</section>
 				<table class='filterTable syslogSearchButtons'>
 					<tr>
 						<td>
 							<span>
 								<input id='go' type='button' value='<?php print __esc('Search', 'syslog'); ?>'>
 								<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'>
+								<input id='refresh_results' type='button' value='<?php print __esc('Refresh', 'syslog'); ?>' title='<?php print __esc('Refresh Results', 'syslog'); ?>'>
 								<input id='export' type='button' value='<?php print __esc('Export', 'syslog'); ?>' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'>
 								<input id='save' type='button' value='<?php print __esc('Save', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
 							</span>
@@ -1346,7 +1349,7 @@ function syslog_filter($sql_where, $tab) {
 						</td>
 					</tr>
 				</table>
-
+				<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 				<table class='filterTable'>
 					<tr>
 						<td>
@@ -1438,8 +1441,6 @@ function syslog_filter($sql_where, $tab) {
 						<?php } ?>
 					</tr>
 				</table>
-					</div>
-				</section>
 			</form>
 			</td>
 		</tr>

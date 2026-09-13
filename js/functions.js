@@ -354,6 +354,14 @@ function applyFilter() {
 	if (syncSyslogSearchBuilder()) postSyslog(syslogFilterData());
 }
 
+/** Reload results with the current filter, keeping the active page. */
+function refreshResults() {
+	if (!syncSyslogSearchBuilder()) return;
+	var data = syslogFilterData();
+	data.page = parseInt($('#page').val(), 10) || 1;
+	postSyslog(data);
+}
+
 function exportRecords() {
 	if (!syncSyslogSearchBuilder()) return;
 	var data = syslogFilterData();
@@ -410,6 +418,10 @@ function initSyslogMain(config) {
 
 		$('#go').click(function() {
 			applyFilter();
+		});
+
+		$('#refresh_results').click(function() {
+			refreshResults();
 		});
 
 		$('#clear').click(function() {

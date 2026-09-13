@@ -243,12 +243,12 @@ builder conditions. The only standalone dropdowns are Record Type, Display,
 Results limit, Trim, and Refresh. From and To are Date conditions in the builder
 (`>=` and `<=`), with the date/time picker available when their values are focused.
 The current date range is migrated into these editable conditions. Removing them
-removes the time restriction. Action buttons and display controls are inside the collapsible search panel.
+removes the time restriction. Action buttons (Search, Clear, Refresh, Export, Save) appear below the collapsible search panel.
 For rolling date ranges, select Date → In the last → Hour, 6 hours, Day, Week,
 2 weeks, 30 days, 3 months, or 6 months. Month presets use calendar months. These ranges are recalculated by the database on each search or refresh.
 Use the comparison operators for custom dates with the date picker.
 Legacy regex searches become literal message contains conditions. Searches persist per tab across
-pagination, refresh, grouping, and CSV export. Search, export, and clear
+pagination, refresh, grouping, and CSV export. The Refresh button reloads the current page of results without resetting the filter or pagination. Search, export, and clear
 controls submit values through CSRF-protected POST bodies instead of URL queries.
 
 A single blank default message condition clears the query. Other incomplete
