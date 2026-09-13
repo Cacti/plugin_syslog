@@ -976,7 +976,7 @@ function syslog_log_row_color($severity, $tip_title) {
 			break;
 	}
 
-	print "<tr class='tableRow selectable $class'>\n";
+	print "<tr class='tableRow selectable syslogAlertRow $class'>\n";
 }
 
 /**
@@ -1028,7 +1028,8 @@ function syslog_priority_class($priority) {
 }
 
 function syslog_row_color($priority, $message) {
-	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row'>";
+	$priority_class = syslog_priority_class($priority);
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
 
 	return '';
 }

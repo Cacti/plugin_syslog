@@ -512,6 +512,16 @@
 #syslog_workspace table { width: 100%; }
 #syslog_workspace tr.syslogRow:nth-child(even) { background: #f7f9f8; }
 #syslog_workspace tr.syslogRow:hover { background: #edf3f0; }
+#syslog_workspace tr.syslogRow td:first-child { border-left: 4px solid transparent; }
+#syslog_workspace tr.syslogRow.logEmergency td:first-child,
+#syslog_workspace tr.syslogRow.logAlert td:first-child,
+#syslog_workspace tr.syslogRow.logCritical td:first-child,
+#syslog_workspace tr.syslogRow.logError td:first-child { border-left-color: #c0392b; }
+#syslog_workspace tr.syslogRow.logWarning td:first-child { border-left-color: #d28a00; }
+#syslog_workspace tr.syslogRow.logNotice td:first-child { border-left-color: #3478b5; }
+#syslog_workspace tr.syslogRow.logInfo td:first-child { border-left-color: #5b9b4b; }
+#syslog_workspace tr.syslogRow.logDebug td:first-child { border-left-color: #8b9690; }
+#syslog_workspace tr.syslogAlertRow td:first-child { border-left: 4px solid #c0392b; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:nth-child(even) { background: #2b3530; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:hover { background: #34443a; }
 #syslog_workspace tr:has(.syslogMessageOpen) td { padding: 6px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
@@ -532,12 +542,17 @@
 	color: inherit;
 }
 .syslogMessageOpen:focus-visible, #syslog_message_details button:focus-visible, .syslogMenu > summary:focus-visible { outline: 2px solid #276448; outline-offset: 2px; }
-.syslogSeverity, .syslogFacility { display: inline-block; border: 1px solid #b7c5be; border-radius: 3px; padding: 2px 7px; color: #34423a; background: #e1e6e3; font-size: 12px; line-height: 1.2; }
+.syslogSeverity, .syslogFacility { display: inline-block; border: 1px solid #b7c5be; border-radius: 4px; padding: 3px 8px; color: #34423a; background: #e1e6e3; font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
 .syslogSeverity-err, .syslogSeverity-error, .syslogSeverity-emerg, .syslogSeverity-alert, .syslogSeverity-crit { background: #fbe0de; color: #8a2420; }
 .syslogSeverity-warning, .syslogSeverity-warn { background: #fff0c4; color: #744900; }
 .syslogSeverity-info { background: #e0eed8; color: #315626; }
 .syslogSeverity-notice { background: #dfecf8; color: #254e76; }
+.syslogSeverity-debug { background: #edf0ee; color: #52615a; }
 .syslogFacility { display: inline-block; border-radius: 3px; padding: 2px 7px; color: #34423a; background: #e8edf0; font-size: 12px; }
+#syslog_workspace tr.syslogRow.logEmergency .syslogSeverity,
+#syslog_workspace tr.syslogRow.logAlert .syslogSeverity,
+#syslog_workspace tr.syslogRow.logCritical .syslogSeverity,
+#syslog_workspace tr.syslogRow.logError .syslogSeverity { font-weight: 700; box-shadow: 0 0 0 1px #c0392b33; }
 #syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 16px; border-left: 1px solid #cbd8d1; background: #f8faf9; color: #23362f; }
 #syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 #syslog_message_details h3 { margin: 0; font-size: 16px; }
