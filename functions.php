@@ -76,6 +76,7 @@ function syslog_search_suggestions($field, $term, $tab, $removal) {
 }
 
 function syslog_search_operators($field) {
+	if ($field === 'logtime') { return ['=', '!=', '>', '>=', '<', '<=', 'last']; }
 	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
 		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
 }
@@ -93,7 +94,7 @@ function syslog_parse_logical_search($input) {
 			$i++;
 			continue;
 		}
-		if (preg_match('/\G([a-z_]+)\s+(contains|like|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
+		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
 			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
 				throw new InvalidArgumentException('Invalid field or operator.');
 			}
@@ -162,7 +163,10 @@ function syslog_parse_logical_search($input) {
 			if (($token[1] === 'seq' || substr($token[1], -3) === '_id') && !ctype_digit($value[1])) {
 				throw new InvalidArgumentException('IDs must be nonnegative integers.');
 			}
-			if ($token[1] === 'logtime' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
+			if ($token[2] === 'last' && !in_array($value[1], ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+				throw new InvalidArgumentException('Invalid date preset.');
+			}
+			if ($token[1] === 'logtime' && $token[2] !== 'last' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
 				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
 			}
 			$node = ['predicate', $token[1], $token[2], $value[1]];
@@ -205,6 +209,13 @@ function syslog_logical_search_sql($tree, $column) {
 		}
 		if ($field === 'host_id' && $column === 'logmsg') {
 			throw new InvalidArgumentException('Host ID is only available for system logs.');
+		}
+		if ($operator === 'last') {
+			if (!in_array($value, ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+				throw new InvalidArgumentException('Invalid date preset.');
+			}
+			$interval = ['3months' => '3 MONTH', '6months' => '6 MONTH'][$value] ?? ((int) $value . ' SECOND');
+			return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
 		}
 		$target = $field === 'message' ? $column : 'syslog.' . $field;
 		if (in_array($field, ['host', 'program', 'facility', 'priority'], true)) {

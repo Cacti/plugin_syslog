@@ -240,8 +240,16 @@ function initSyslogSearchBuilder() {
 					initSyslogSearchDates(container);
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
-				var operators = numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
-				line.appendChild(select(operators.map(function(op) { return [op, row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op]; }), row.operator || 'contains', 'Operator', function(value) { row.operator = value; }));
+				var operators = row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+				line.appendChild(select(operators.map(function(op) { return [op, op === 'last' ? 'In the last' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op]; }), row.operator || 'contains', 'Operator', function(value) {
+					var previous = row.operator;
+					row.operator = value;
+					if (row.field === 'logtime' && (previous === 'last' || value === 'last')) {
+						row.value = value === 'last' ? '3600' : '';
+						render(container, rows);
+						initSyslogSearchDates(container);
+					}
+				}));
 				line.appendChild(select([['0', labels.match], ['1', labels.exclude]], row.negative ? '1' : '0', labels.message, function(value) { row.negative = value === '1'; }));
 				var input = element('input', 'syslogSearchText');
 				input.type = 'text';
@@ -253,7 +261,11 @@ function initSyslogSearchBuilder() {
 				input.setAttribute('aria-label', fields[row.field || 'message']);
 				input.addEventListener('input', function() { row.value = input.value; });
 				input.addEventListener('change', function() { row.value = input.value; });
-				if (row.field === 'logtime') {
+				if (row.field === 'logtime' && row.operator === 'last') {
+					input = select([['3600', 'Hour'], ['21600', '6 hours'], ['86400', 'Day'], ['604800', 'Week'], ['1209600', '2 weeks'], ['2592000', '30 days'], ['3months', '3 months'], ['6months', '6 months']], row.value, 'Date range', function(value) { row.value = value; });
+					input.className = 'syslogSearchText';
+					input.required = true;
+				} else if (row.field === 'logtime') {
 					input.className += ' syslogSearchDate';
 				} else if (choices[row.field]) {
 					// Suggestions assist entry without restricting searches to existing values.

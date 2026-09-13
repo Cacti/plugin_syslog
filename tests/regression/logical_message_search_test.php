@@ -64,6 +64,19 @@ foreach (['message regex "error|warning"', 'password = "x"', 'host_id like "1"',
 search_assert(syslog_logical_positive_terms(syslog_parse_logical_search('host = "router" AND message contains "error"')) === ['error'], 'Only message values highlighted');
 search_assert(str_contains(syslog_logical_search_sql(syslog_parse_logical_search('host = "router"'), 'logmsg'), 'syslog.host ='), 'Alerts use their stored hostname');
 
+foreach (['3600', '21600', '86400', '604800', '1209600', '2592000'] as $seconds) {
+	$tree = syslog_parse_logical_search('logtime last "' . $seconds . '"');
+	search_assert(syslog_logical_search_sql($tree, 'message') === '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $seconds . ' SECOND) AND NOW())', 'Rolling preset uses database time');
+}
+foreach (['3months' => '3 MONTH', '6months' => '6 MONTH'] as $preset => $interval) {
+	$tree = syslog_parse_logical_search('logtime last "' . $preset . '"');
+	search_assert(syslog_logical_search_sql($tree, 'message') === '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())', 'Month presets use calendar months');
+}
+foreach (['logtime last "0"', 'logtime last "3600); DROP TABLE syslog"', 'host last "3600"'] as $invalid) {
+	try { syslog_parse_logical_search($invalid); throw new RuntimeException('Accepted invalid preset'); }
+	catch (InvalidArgumentException $expected) {}
+}
+
 // Exercise the real query builder without bootstrapping Cacti or requiring a database.
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
 $start = strpos($source, 'function get_syslog_messages(');

@@ -236,14 +236,17 @@ Contains treats wildcard and regex characters literally. LIKE uses `%` for any
 number of characters and `_` for one character. Case sensitivity follows database
 collation. AND takes precedence over OR; NOT excludes the
 condition. Existing grouped expressions retain their grouping. Use **×** to
-remove a condition, then Enter or Go to apply the query.
+remove a condition, then Enter or Search to apply the query.
 
 The standalone device, program, facility, and priority filters are replaced by
 builder conditions. The only standalone dropdowns are Record Type, Display,
-Messages, Trim, and Refresh. From and To are Date conditions in the builder
+Results limit, Trim, and Refresh. From and To are Date conditions in the builder
 (`>=` and `<=`), with the date/time picker available when their values are focused.
 The current date range is migrated into these editable conditions. Removing them
-removes the time restriction. Action buttons appear below the search.
+removes the time restriction. Action buttons and display controls are inside the collapsible search panel.
+For rolling date ranges, select Date → In the last → Hour, 6 hours, Day, Week,
+2 weeks, 30 days, 3 months, or 6 months. Month presets use calendar months. These ranges are recalculated by the database on each search or refresh.
+Use the comparison operators for custom dates with the date picker.
 Legacy regex searches become literal message contains conditions. Searches persist per tab across
 pagination, refresh, grouping, and CSV export. Search, export, and clear
 controls submit values through CSRF-protected POST bodies instead of URL queries.
