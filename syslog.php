@@ -1556,7 +1556,7 @@ function syslog_filter($sql_where, $tab) {
 					</div>
 					<div id='syslog_search_content'>
 					<input type='hidden' id='rfilter' size='40' aria-label='<?php print __esc('Search messages', 'syslog'); ?>' value='<?php print html_escape_request_var('rfilter'); ?>'>
-					<div id='syslog_search_builder'
+					<div id='syslog_search_builder' class='syslogSearchBuilder'
 						data-choices='<?php print $saved_choices_json; ?>'
 						data-fields='<?php print $saved_fields_json; ?>'
 						data-tree='<?php print $saved_tree_json; ?>'
@@ -1657,11 +1657,7 @@ function syslog_filter($sql_where, $tab) {
 					data-cancel='<?php print __esc('Cancel', 'syslog'); ?>'
 					data-save='<?php print __esc('Save', 'syslog'); ?>'
 					data-delete-confirm='<?php print __esc('Delete the selected saved search?', 'syslog'); ?>'>
-					<div class='syslogSavedNameRow'>
-						<label for='syslog_saved_name'><?php print __('Name', 'syslog'); ?></label>
-						<input type='text' id='syslog_saved_name' size='40' maxlength='128'>
-					</div>
-					<div id='syslog_saved_builder'
+					<div id='syslog_saved_builder' class='syslogSearchBuilder'
 						data-choices='<?php print $saved_choices_json; ?>'
 						data-fields='<?php print $saved_fields_json; ?>'
 						data-message='<?php print __esc('Message', 'syslog'); ?>'

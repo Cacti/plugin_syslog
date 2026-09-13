@@ -64,7 +64,7 @@
 	font-size: 12px;
 }
 
-#syslog_search_builder[hidden] {
+.syslogSearchBuilder[hidden] {
 	display: none;
 }
 
@@ -122,12 +122,31 @@
 	cursor: default;
 }
 
-.syslogSavedDialog,
+/* The saved-search dialog reuses the search panel's surface and tokens. */
+.syslogSavedDialog {
+	--search-surface: #f3f6f5;
+	--search-card: #fff;
+	--search-text: #23362f;
+	--search-muted: #596d64;
+	--search-border: #cbd8d1;
+	--search-accent: #276448;
+	--search-tint: #e2ede6;
+	box-sizing: border-box;
+	padding: 12px 14px;
+	background: var(--search-surface);
+	color: var(--search-text);
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.syslogSavedDialog .syslogSearchBuilder {
+	margin: 0;
+}
+
 .syslogSavedPrompt {
 	box-sizing: border-box;
 }
 
-.syslogSavedDialog .syslogSavedNameRow,
 .syslogSavedPrompt .syslogSavedNameRow {
 	display: flex;
 	align-items: center;
@@ -135,7 +154,6 @@
 	margin-bottom: 10px;
 }
 
-.syslogSavedDialog .syslogSavedNameRow label,
 .syslogSavedPrompt .syslogSavedNameRow label {
 	font-size: 12px;
 	font-weight: 600;
@@ -143,7 +161,6 @@
 	white-space: nowrap;
 }
 
-.syslogSavedDialog .syslogSavedNameRow input,
 .syslogSavedPrompt .syslogSavedNameRow input {
 	box-sizing: border-box;
 	width: 100%;
@@ -155,11 +172,7 @@
 	color: #23362f;
 }
 
-.syslogSavedDialog #syslog_saved_builder .syslogSearchText {
-	max-width: none;
-}
-
-#syslog_search_builder .syslogSearchRow {
+.syslogSearchBuilder .syslogSearchRow {
 	display: grid;
 	grid-template-columns: 66px 120px 100px 110px minmax(100px, 1fr) 26px;
 	align-items: center;
@@ -172,14 +185,14 @@
 	transition: border-color 120ms;
 }
 
-#syslog_search_builder .syslogSearchRow:focus-within {
+.syslogSearchBuilder .syslogSearchRow:focus-within {
 	border-color: var(--search-accent);
 	box-shadow: 0 0 0 2px var(--search-tint);
 }
 
-#syslog_search_builder input,
-#syslog_search_builder select,
-#syslog_search_builder button {
+.syslogSearchBuilder input,
+.syslogSearchBuilder select,
+.syslogSearchBuilder button {
 	box-sizing: border-box;
 	font: inherit;
 	color: var(--search-text);
@@ -188,7 +201,7 @@
 	border-radius: 5px;
 }
 
-#syslog_search_builder select {
+.syslogSearchBuilder select {
 	width: 100%;
 	padding: 2px 6px;
 	border: 1px solid transparent;
@@ -196,18 +209,18 @@
 	cursor: pointer;
 }
 
-#syslog_search_builder select:hover {
+.syslogSearchBuilder select:hover {
 	background: var(--search-surface);
 }
 
-#syslog_search_builder .syslogSearchConnector select {
+.syslogSearchBuilder .syslogSearchConnector select {
 	background: var(--search-tint);
 	color: var(--search-accent);
 	font-size: 11px;
 	font-weight: 700;
 }
 
-#syslog_search_builder .syslogSearchConnector:empty::after {
+.syslogSearchBuilder .syslogSearchConnector:empty::after {
 	content: '\2022';
 	display: block;
 	text-align: center;
@@ -216,11 +229,11 @@
 	line-height: 1;
 }
 
-#syslog_search_builder .syslogSearchField {
+.syslogSearchBuilder .syslogSearchField {
 	font-weight: 600;
 }
 
-#syslog_search_builder .syslogSearchText,
+.syslogSearchBuilder .syslogSearchText,
 #syslog_form .syslogSearchPanel > #rfilter {
 	width: 100%;
 	min-width: 0;
@@ -232,12 +245,12 @@
 	box-shadow: none;
 }
 
-#syslog_search_builder .syslogSearchText::placeholder {
+.syslogSearchBuilder .syslogSearchText::placeholder {
 	color: var(--search-muted);
 	opacity: 0.85;
 }
 
-#syslog_search_builder .syslogSearchRemove {
+.syslogSearchBuilder .syslogSearchRemove {
 	border: 0;
 	background: transparent;
 	color: var(--search-muted);
@@ -245,18 +258,18 @@
 	cursor: pointer;
 }
 
-#syslog_search_builder .syslogSearchRemove:hover {
+.syslogSearchBuilder .syslogSearchRemove:hover {
 	background: #fae8e6;
 	color: #9c3327;
 }
 
-#syslog_search_builder .syslogSearchActions {
+.syslogSearchBuilder .syslogSearchActions {
 	display: flex;
 	gap: 8px;
 	margin-top: 6px;
 }
 
-#syslog_search_builder .syslogSearchAdd {
+.syslogSearchBuilder .syslogSearchAdd {
 	min-height: 24px;
 	padding: 2px 10px;
 	border: 1px solid var(--search-border);
@@ -267,12 +280,12 @@
 	cursor: pointer;
 }
 
-#syslog_search_builder .syslogSearchAdd::before {
+.syslogSearchBuilder .syslogSearchAdd::before {
 	content: '+ ';
 	font-size: 13px;
 }
 
-#syslog_search_builder .syslogSearchAdd:hover {
+.syslogSearchBuilder .syslogSearchAdd:hover {
 	background: var(--search-tint);
 	border-color: var(--search-accent);
 }
@@ -282,11 +295,11 @@
 	outline-offset: 2px;
 }
 
-#syslog_search_builder .syslogSearchGroupRow {
+.syslogSearchBuilder .syslogSearchGroupRow {
 	grid-template-columns: 66px 145px minmax(0, 1fr) 30px;
 }
 
-#syslog_search_builder .syslogSearchGroup {
+.syslogSearchBuilder .syslogSearchGroup {
 	grid-column: 1 / -1;
 	grid-row: 2;
 	border-left: 2px solid var(--search-border);
@@ -392,17 +405,17 @@
 		flex-wrap: wrap;
 	}
 
-	#syslog_search_builder .syslogSearchRow {
+	.syslogSearchBuilder .syslogSearchRow {
 		grid-template-columns: 45px minmax(70px, 1fr) minmax(60px, 1fr) minmax(70px, 1fr) 28px;
 		gap: 5px;
 	}
 
-	#syslog_search_builder .syslogSearchText {
+	.syslogSearchBuilder .syslogSearchText {
 		grid-column: 1 / -1;
 		grid-row: 2;
 	}
 
-	#syslog_search_builder .syslogSearchRemove {
+	.syslogSearchBuilder .syslogSearchRemove {
 		grid-column: 5;
 		grid-row: 1;
 	}

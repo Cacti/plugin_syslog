@@ -558,16 +558,13 @@ function openSavedSearchDialog(mode) {
 		title: mode === 'new' ? text.newTitle : text.editTitle,
 		buttons: [
 			{text: text.saveas, click: function() {
-				var chosen = document.getElementById('syslog_saved_name').value.trim();
-				if (!chosen) {
-					document.getElementById('syslog_saved_name').focus();
-					return;
-				}
 				var expression = syslogBuilderSync(builder);
 				if (expression === null) return;
-				savedSearchSave(savedSearchExpression(builder), chosen, function(id) {
-					$(dialog).dialog('close');
-					postSyslog({saved: id});
+				savedSearchPrompt(mode === 'edit' ? name : '', function(chosen) {
+					savedSearchSave(savedSearchExpression(builder), chosen, function(id) {
+						$(dialog).dialog('close');
+						postSyslog({saved: id});
+					});
 				});
 			}},
 			{text: text.apply, click: function() {
@@ -581,8 +578,6 @@ function openSavedSearchDialog(mode) {
 			{text: text.cancel, click: function() { $(dialog).dialog('close'); }}
 		]
 	});
-
-	document.getElementById('syslog_saved_name').value = name;
 }
 
 /**
