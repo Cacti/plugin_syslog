@@ -538,7 +538,7 @@ function syslog_stats_filter() {
 						<?php print __('Device', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='host' onChange='applyFilter()'>
+						<select id='host' onChange='applyFilterStats()'>
 							<option value='-1'<?php if (get_request_var('host') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog'); ?></option>
 							<option value='-2'<?php if (get_request_var('host') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog'); ?></option>
 							<?php
@@ -589,7 +589,7 @@ function syslog_stats_filter() {
 						<?php print __('Facility', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='facility' onChange='applyFilter()'>
+						<select id='facility' onChange='applyFilterStats()'>
 							<option value='-1'<?php if (get_request_var('facility') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog'); ?></option>
 							<option value='-2'<?php if (get_request_var('facility') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog'); ?></option>
 							<?php
@@ -615,7 +615,7 @@ function syslog_stats_filter() {
 						<?php print __('Priority', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='priority' onChange='applyFilter()'>
+						<select id='priority' onChange='applyFilterStats()'>
 							<option value='-1'<?php if (get_request_var('priority') == '-1') { ?> selected<?php } ?>><?php print __('All', 'syslog'); ?></option>
 							<option value='-2'<?php if (get_request_var('priority') == '-2') { ?> selected<?php } ?>><?php print __('None', 'syslog'); ?></option>
 							<?php
@@ -637,7 +637,7 @@ function syslog_stats_filter() {
 							?>
 						</select>
 					</td>
-					<?php print html_program_filter(get_request_var('program'), true, 'ajax_programs_wnone'); ?>
+					<?php print html_program_filter(get_request_var('program'), true, 'ajax_programs_wnone', 'applyFilterStats'); ?>
 					<td>
 						<span>
 							<input id='go' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
@@ -652,13 +652,13 @@ function syslog_stats_filter() {
 						<?php print __('Search', 'syslog'); ?>
 					</td>
 					<td>
-						<input type='text' id='rfilter' size='30' value='<?php print html_escape_request_var('rfilter'); ?>' onChange='applyFilter()'>
+						<input type='text' id='rfilter' size='30' value='<?php print html_escape_request_var('rfilter'); ?>' onChange='applyFilterStats()'>
 					</td>
 					<td>
 						<?php print __('Time Range', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='timespan' onChange='applyFilter()'>
+						<select id='timespan' onChange='applyFilterStats()'>
 							<?php
 							$timespans = [
 								60	   => __('%d Minute', 1, 'syslog'),
@@ -683,7 +683,7 @@ function syslog_stats_filter() {
 						<?php print __('Entries', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
+						<select id='rows' onChange='applyFilterStats()'>
 						<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
 						<?php
 							if (cacti_sizeof($item_rows)) {
