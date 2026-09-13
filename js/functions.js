@@ -325,12 +325,8 @@ function initSyslogSearchDates(container) {
 }
 
 function initSyslogSearchAutocomplete(input, field, row) {
-	var wrapper = input.closest ? input.closest('.ui-dialog') : null;
-	var widget = $(input).autocomplete({
+	$(input).autocomplete({
 		classes: {'ui-autocomplete': 'syslogSearchSuggestions'},
-		// Menus appended to <body> fall behind a modal dialog once jQuery UI
-		// raises its z-index; keep suggestions inside the dialog when present.
-		appendTo: wrapper,
 		minLength: field === 'message' ? 2 : 0,
 		delay: 250,
 		source: function(request, respond) {
@@ -348,12 +344,7 @@ function initSyslogSearchAutocomplete(input, field, row) {
 		}
 	}).on('focus', function() {
 		if (field !== 'message' || input.value.length >= 2) $(input).autocomplete('search', input.value);
-	}).autocomplete('instance');
-	// Rows rendered before .dialog() wrapped the builder start with a
-	// body-appended menu; move it in when a wrapper exists.
-	if (wrapper && !wrapper.contains(widget.menu.element[0])) {
-		widget.menu.element.appendTo(wrapper);
-	}
+	});
 }
 
 function initSyslogSearchBuilder(builder, rows) {
@@ -465,12 +456,10 @@ function initSyslogSearchBuilder(builder, rows) {
 					input.className += ' syslogSearchDate';
 				} else if (choices[row.field]) {
 					// Suggestions assist entry without restricting searches to existing values.
-					var wrapper = input.closest ? input.closest('.ui-dialog') : null;
-					var widget = $(input).autocomplete({
+					// Menus default to <body>, which a modal dialog can cover; the
+					// wrapper is applied after the row joins the document below.
+					$(input).autocomplete({
 						classes: {'ui-autocomplete': 'syslogSearchSuggestions'},
-						// Menus appended to <body> fall behind a modal dialog once
-						// jQuery UI raises its z-index; keep them in the dialog.
-						appendTo: wrapper,
 						minLength: 0,
 						source: choices[row.field].map(function(option) { return {value: option[0], label: option[1]}; }),
 						select: function(event, ui) {
@@ -478,16 +467,22 @@ function initSyslogSearchBuilder(builder, rows) {
 							row.value = ui.item.value;
 							return false;
 						}
-					}).on('focus', function() { $(input).autocomplete('search', ''); }).autocomplete('instance');
-					// Rows rendered before .dialog() wrapped the builder start
-					// with a body-appended menu; move it in when a wrapper exists.
-					if (wrapper && !wrapper.contains(widget.menu.element[0])) {
-						widget.menu.element.appendTo(wrapper);
-					}
+					}).on('focus', function() { $(input).autocomplete('search', ''); });
 				} else {
 					initSyslogSearchAutocomplete(input, row.field || 'message', row);
 				}
 				line.appendChild(input);
+				if (input.classList.contains('syslogSearchText') && $(input).data('ui-autocomplete')) {
+					// The widget was created before this row joined the document, so
+					// a dialog wrapper could not be resolved then; attach the menu to
+					// the enclosing modal dialog, whose z-index jQuery UI may raise
+					// above body-appended menus.
+					var wrapper = input.closest('.ui-dialog');
+					var widget = $(input).data('ui-autocomplete');
+					if (wrapper && !wrapper.contains(widget.menu.element[0])) {
+						widget.menu.element.appendTo(wrapper);
+					}
+				}
 			}
 			var remove = element('button', 'syslogSearchRemove', '\u00d7');
 			remove.type = 'button';
