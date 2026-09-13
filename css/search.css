@@ -483,10 +483,7 @@
 #syslog_form .syslogSearchHeader { margin-bottom: 4px; }
 #syslog_form .syslogSearchSavedBar { margin: 0 0 10px; padding: 0; border: 0; }
 #syslog_form .syslogSearchSavedBar label { font-size: 12px; text-transform: none; letter-spacing: normal; }
-#syslog_form .syslogTime { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-#syslog_custom_time { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; flex-basis: 100%; justify-content: flex-end; }
-#syslog_custom_time[hidden], #syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
-#syslog_custom_time input { width: 165px; }
+#syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
 #syslog_search_summary { padding: 8px 0; overflow-wrap: anywhere; font-family: monospace; }
 .syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
 .syslogQueryActions { display: flex; gap: 6px; padding-top: 4px; }
@@ -510,10 +507,6 @@
 #syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) minmax(300px, 26%); }
 .syslogResultsMain { min-width: 0; overflow-x: auto; }
 #syslog_workspace table { width: 100%; }
-#syslog_workspace tr:has(.syslogMessageOpen) { background: #fff; color: #23362f; }
-#syslog_workspace tr:has(.syslogMessageOpen):nth-child(even) { background: #f7f9f8; }
-#syslog_workspace tr:has(.syslogMessageOpen):hover { background: #eef4ef; }
-#syslog_workspace tr.syslogSelected { background: #e2edda; }
 #syslog_workspace tr:has(.syslogMessageOpen) td { padding: 6px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.5 monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
@@ -536,11 +529,9 @@
 	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
 	#syslog_message_details { position: fixed; z-index: 101; right: 0; top: 10vh; bottom: 0; width: min(420px, 100%); box-shadow: -4px 0 18px #0003; }
 	.syslogQueryLayout { grid-template-columns: minmax(0, 1fr); }
-	#syslog_form .syslogTime { margin-left: 0; }
 }
 @media (max-width: 700px) {
 	#syslog_form .syslogSearchPanel { padding: 8px; }
-	#syslog_form .syslogTime { flex-basis: 100%; }
 	.syslogResultsToolbar { padding: 8px; }
 	#syslog_view_summary { flex-basis: 100%; }
 	#syslog_form .syslogMenuBody.syslogSearchOptions { left: 0; right: auto; width: 280px; }
@@ -557,29 +548,34 @@ body.dark #syslog_form .syslogSearchPanel {
 #syslog_form .syslogSearchHeading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 #syslog_form .syslogSearchToggle { width: auto; gap: 8px; padding: 4px 8px; }
 #syslog_form .syslogSearchSavedBar { padding-right: 140px; min-height: 28px; }
-.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 60px 120px 100px 55px minmax(100px, 1fr) 26px; }
-.syslogSearchNegate { display: flex; align-items: center; gap: 4px; font-size: 11px; }
-.syslogSearchBuilder .syslogSearchNegate input { min-height: 0; }
-#syslog_workspace tr.syslogSelected:has(.syslogMessageOpen) { background: #e2edda; }
+.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 60px 120px 170px minmax(100px, 1fr) 26px; }
 #syslog_message_details { resize: horizontal; min-width: 280px; max-width: 50vw; }
 #syslog_form[data-theme='dark'] .syslogSearchPanel,
 #syslog_form[data-theme='midwinter'] .syslogSearchPanel {
 	--search-surface: #252d29; --search-card: #303a34; --search-text: #edf3ef;
 	--search-muted: #bacabd; --search-border: #596d60; --search-accent: #70ae85; --search-tint: #3a5142;
 }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr:has(.syslogMessageOpen),
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) #syslog_message_details { background: #252d29; color: #edf3ef; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr:has(.syslogMessageOpen):nth-child(even) { background: #303a34; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogSelected:has(.syslogMessageOpen) { background: #3a5142; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) #syslog_details_raw { background: #303a34; color: #edf3ef; }
 @media (max-width: 1000px) { #syslog_message_details { max-width: 100vw; resize: none; } }
 @media (max-width: 700px) {
 	#syslog_form .syslogSearchSavedBar { padding-right: 0; padding-top: 34px; }
-	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 45px minmax(65px, 1fr) minmax(55px, 1fr) 50px 28px; }
+	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 45px minmax(65px, 1fr) minmax(120px, 1fr) 28px; }
 }
 #syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) auto; }
 #syslog_message_details { width: clamp(300px, 26vw, 480px); }
 @media (max-width: 1000px) {
 	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
 	#syslog_message_details { width: min(420px, 100%); }
+}
+
+/* Selection must not replace the severity background supplied by Cacti. */
+#syslog_workspace tr.syslogSelected { outline: 2px solid currentColor; outline-offset: -2px; }
+.syslogDetailsRules { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+#syslog_message_details .syslogRuleButton { display: inline-block; padding: 8px 10px; border: 1px solid #81968a; border-radius: 4px; text-decoration: none; color: inherit; }
+#syslog_message_details .syslogRuleButton[hidden] { display: none; }
+#syslog_message_details .syslogRuleButton:hover { text-decoration: underline; }
+#syslog_message_details .syslogRuleButton:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+@media (max-width: 700px) {
+	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) .syslogSearchRemove { grid-column: 4; }
 }

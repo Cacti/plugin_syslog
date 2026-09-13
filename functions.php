@@ -988,7 +988,7 @@ function syslog_log_row_color($severity, $tip_title) {
  * @param mixed $priority
  * @param mixed $message
  */
-function syslog_row_color($priority, $message) {
+function syslog_priority_class($priority) {
 	switch($priority) {
 		case '0':
 			$class = 'logEmergency';
@@ -1023,6 +1023,12 @@ function syslog_row_color($priority, $message) {
 
 			break;
 	}
+
+	return $class ?? '';
+}
+
+function syslog_row_color($priority, $message) {
+	$class = syslog_priority_class($priority);
 
 	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow syslog-detail-row'>";
 
@@ -2807,11 +2813,39 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 }
 
 /** Render untrusted log text as an accessible details trigger. */
-function syslog_message_button($message, $device, $program, $facility, $severity, $received) {
+function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = '') {
 	$details = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
+	$details['rules'] = syslog_message_rule_links($id, $source, $received);
 	$trim = (int) get_request_var_request('trimval');
 	$text = $trim > 0 ? title_trim((string) $message, $trim) : (string) $message;
 	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
 		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
+}
+
+/** Only main-table records can seed the existing rule editors. */
+function syslog_message_rule_links($id, $source, $received) {
+	$links = [];
+	if ($source !== 'main' || !ctype_digit((string) $id) || (int) $id < 1) {
+		return $links;
+	}
+
+	$query = http_build_query(['id' => $id, 'action' => 'newedit', 'type' => '0', 'date' => $received]);
+	foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
+		if (api_plugin_user_realm_auth($page)) {
+			$links[$action] = $page . '?' . $query;
+		}
+	}
+	return $links;
+}
+
+/** Dates nested in authored groups must not gain a second implicit time range. */
+function syslog_search_has_time($tree) {
+	if (!$tree) return false;
+	if ($tree[0] === 'predicate') return $tree[1] === 'logtime';
+	if ($tree[0] === 'NOT') return syslog_search_has_time($tree[1]);
+	if ($tree[0] === 'AND' || $tree[0] === 'OR') {
+		return syslog_search_has_time($tree[1]) || syslog_search_has_time($tree[2]);
+	}
+	return false;
 }

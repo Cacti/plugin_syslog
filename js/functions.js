@@ -106,77 +106,10 @@ function syslogSearchExpression(rows) {
 	}).join('');
 }
 
-/** Extract only a global time constraint; leave dates inside OR/NOT groups intact. */
-function syslogSplitTime(tree) {
-	var predicates = [];
-	var query = tree;
-	while (query && query[0] === 'AND' && query[2][0] === 'predicate' && query[2][1] === 'logtime') {
-		predicates.unshift(query[2]);
-		query = query[1];
-	}
-	if (query && query[0] === 'predicate' && query[1] === 'logtime') {
-		predicates.unshift(query);
-		query = null;
-	}
-	if (predicates.length === 1 && predicates[0][2] === 'last') {
-		return {tree: query, mode: predicates[0][3]};
-	}
-	if (predicates.length === 2 && predicates[0][2] === '>=' && predicates[1][2] === '<=') {
-		return {tree: query, mode: 'custom', from: predicates[0][3], to: predicates[1][3]};
-	}
-	return {tree: tree, mode: JSON.stringify(tree).includes('"logtime"') ? 'query' : 'all'};
-}
-
-function syslogTimeExpression(expression) {
-	var range = document.getElementById('syslog_time_range');
-	if (!range || range.value === 'query' || range.value === 'all') return expression;
-	var time;
-	if (range.value === 'custom') {
-		var from = document.getElementById('syslog_time_from');
-		var to = document.getElementById('syslog_time_to');
-		for (var input of [from, to]) {
-			input.setCustomValidity(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(input.value) ? '' : 'Use YYYY-MM-DD HH:MM:SS');
-			if (!input.reportValidity()) return null;
-		}
-		to.setCustomValidity(from.value <= to.value ? '' : 'End time must be after start time');
-		if (!to.reportValidity()) return null;
-		time = syslogSearchExpression([
-			{field: 'logtime', operator: '>=', value: from.value.replace('T', ' ') + (from.value.length === 16 ? ':00' : ''), join: 'AND'},
-			{field: 'logtime', operator: '<=', value: to.value.replace('T', ' ') + (to.value.length === 16 ? ':00' : ''), join: 'AND'}
-		]);
-	} else {
-		time = syslogSearchExpression([{field: 'logtime', operator: 'last', value: range.value}]);
-	}
-	return (expression ? '(' + expression + ') AND ' : '') + time;
-}
-
 function initSyslogCompactSearch() {
 	var form = document.getElementById('syslog_form');
 	if (!form) return;
 	var builder = document.getElementById('syslog_search_builder');
-	var split = syslogSplitTime(JSON.parse(builder.dataset.tree || 'null'));
-	var invalid = document.getElementById('logical_search_error').textContent.trim();
-	if (invalid) split.mode = 'query';
-	var range = document.getElementById('syslog_time_range');
-	// Retain less common relative presets from an existing saved search.
-	if (!Array.from(range.options).some(function(option) { return option.value === split.mode; })) {
-		range.add(new Option(split.mode, split.mode));
-	}
-	range.value = split.mode;
-	range.querySelector('option[value="query"]').disabled = split.mode !== 'query';
-	if ($(range).selectmenu('instance')) $(range).selectmenu('refresh');
-	document.getElementById('syslog_time_from').value = (split.from || '').replace(' ', 'T');
-	document.getElementById('syslog_time_to').value = (split.to || '').replace(' ', 'T');
-	builder.dataset.tree = JSON.stringify(split.tree);
-	// A time-only query starts with one empty, editable message condition.
-	var rows = invalid ? builder.searchRows : syslogSearchRows(split.tree);
-	if (!rows.length) rows = [{join: 'AND', negative: false, value: ''}];
-	initSyslogSearchBuilder(builder, rows);
-	function updateTime() {
-		document.getElementById('syslog_custom_time').hidden = range.value !== 'custom';
-	}
-	$(range).on('change', updateTime);
-	updateTime();
 
 	var actions = document.createElement('div');
 	actions.className = 'syslogQueryActions';
@@ -248,6 +181,12 @@ function initSyslogWorkspace() {
 				active = button;
 				details = data;
 				pane.querySelectorAll('[data-detail]').forEach(function(node) { node.textContent = data[node.dataset.detail] || '—'; });
+				pane.querySelectorAll('[data-rule]').forEach(function(link) {
+					var url = (data.rules || {})[link.dataset.rule];
+					link.hidden = !url;
+					if (url) link.setAttribute('href', url);
+					else link.removeAttribute('href');
+				});
 				document.getElementById('syslog_details_raw').textContent = data.message;
 				document.getElementById('syslog_copy_status').textContent = '';
 				pane.querySelector('[data-filter-detail="program"]').disabled = !data.program;
@@ -284,7 +223,7 @@ function initSyslogWorkspace() {
 				var expression = syslogBuilderSync(builder);
 				if (expression === null) return;
 				var condition = syslogSearchExpression([{field: button.dataset.filterDetail, operator: '=', value: button.dataset.filterDetail === 'host' ? details.device : details.program}]);
-				var query = syslogTimeExpression((expression ? '(' + expression + ') AND ' : '') + condition);
+				var query = (expression ? '(' + expression + ') AND ' : '') + condition;
 				if (query === null) return;
 				var data = syslogFilterData();
 				data.rfilter = query;
@@ -337,8 +276,6 @@ function syncSyslogSearchBuilder() {
 	if (expression === null) {
 		return false;
 	}
-	expression = syslogTimeExpression(expression);
-	if (expression === null) return false;
 	$('#rfilter').val(expression);
 	return true;
 }
@@ -455,23 +392,26 @@ function initSyslogSearchBuilder(builder, rows) {
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
 				var operators = row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
-				line.appendChild(select(operators.map(function(op) { return [op, op === 'last' ? 'In the last' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op]; }), row.operator || 'contains', 'Operator', function(value) {
+				var inverse = {'=': '!=', '!=': '=', '>': '<=', '>=': '<', '<': '>=', '<=': '>'};
+				var operatorOptions = [];
+				if (row.operator && !operators.includes(row.operator)) operators.push(row.operator);
+				operators.forEach(function(op) {
+					var name = op === 'last' ? 'In the last' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op;
+					operatorOptions.push([op, name]);
+					if (!inverse[op]) operatorOptions.push(['NOT ' + op, op === 'contains' ? 'does not contain' : op === 'like' ? 'does not match pattern' : 'NOT ' + name]);
+				});
+				var selectedOperator = row.operator || 'contains';
+				if (row.negative) selectedOperator = inverse[selectedOperator] || 'NOT ' + selectedOperator;
+				line.appendChild(select(operatorOptions, selectedOperator, 'Operator', function(value) {
 					var previous = row.operator;
-					row.operator = value;
-					if (row.field === 'logtime' && (previous === 'last' || value === 'last')) {
-						row.value = value === 'last' ? '3600' : '';
+					row.negative = value.startsWith('NOT ');
+					row.operator = row.negative ? value.slice(4) : value;
+					if (row.field === 'logtime' && previous !== row.operator && (previous === 'last' || row.operator === 'last')) {
+						row.value = row.operator === 'last' ? '86400' : '';
 						render(container, rows);
 						initSyslogSearchDates(container);
 					}
 				}));
-				var negate = element('label', 'syslogSearchNegate');
-				var checkbox = element('input', '');
-				checkbox.type = 'checkbox';
-				checkbox.checked = !!row.negative;
-				checkbox.addEventListener('change', function() { row.negative = checkbox.checked; });
-				negate.appendChild(checkbox);
-				negate.appendChild(element('span', '', 'NOT'));
-				line.appendChild(negate);
 				var input = element('input', 'syslogSearchText');
 				input.type = 'text';
 				input.size = 35;
@@ -483,7 +423,7 @@ function initSyslogSearchBuilder(builder, rows) {
 				input.addEventListener('input', function() { row.value = input.value; });
 				input.addEventListener('change', function() { row.value = input.value; });
 				if (row.field === 'logtime' && row.operator === 'last') {
-					input = select([['3600', 'Hour'], ['21600', '6 hours'], ['86400', 'Day'], ['604800', 'Week'], ['1209600', '2 weeks'], ['2592000', '30 days'], ['3months', '3 months'], ['6months', '6 months']], row.value, 'Date range', function(value) { row.value = value; });
+					input = select([['3600', '1 hour'], ['21600', '6 hours'], ['86400', '24 hours'], ['604800', '7 days'], ['1209600', '2 weeks'], ['2592000', '30 days'], ['3months', '3 months'], ['6months', '6 months']], row.value, 'Date range', function(value) { row.value = value; });
 					input.className = 'syslogSearchText';
 					input.required = true;
 				} else if (row.field === 'logtime') {
@@ -654,15 +594,9 @@ function savedSearchButtons() {
 	}
 }
 
-/** Serialized expression without trailing date rows, so saved searches stay dynamic. */
+/** Save all authored conditions, including relative or fixed date filters. */
 function savedSearchExpression(builder) {
-	var rows = JSON.parse(JSON.stringify(builder.searchRows));
-	while (rows.length && !rows[rows.length - 1].rows &&
-		rows[rows.length - 1].field === 'logtime' &&
-		(rows[rows.length - 1].operator === '>=' || rows[rows.length - 1].operator === '<=')) {
-		rows.pop();
-	}
-	return syslogSearchExpression(rows);
+	return syslogBuilderSync(builder);
 }
 
 function initSavedSearches() {
@@ -779,7 +713,7 @@ function openSavedSearchDialog(mode) {
 				if (expression === null) return;
 				$(dialog).dialog('close');
 				var data = syslogFilterData();
-				data.rfilter = syslogTimeExpression(expression);
+				data.rfilter = expression;
 				if (data.rfilter === null) return;
 				postSyslog(data);
 			}},

@@ -200,3 +200,17 @@ dateOperator.value = '>=';
 context.$(dateOperator).trigger('change');
 assert.ok(builder.querySelector('.syslogSearchDate').datepickerOptions, 'Custom date picker restored after leaving preset');
 console.log('logical_message_search_ui_test passed');
+// Negation is selected with the operator; != must not duplicate NOT =.
+builder.dataset.tree = JSON.stringify(['NOT', ['predicate', 'host', '=', 'router']]);
+context.initSyslogSearchBuilder();
+let operator = builder.querySelector('.syslogSearchRow').children[2];
+assert.equal(operator.value, '!=');
+assert.equal(operator.children.filter(option => option.value === 'NOT =').length, 0);
+assert.equal(builder.querySelectorAll('.syslogSearchNegate').length, 0);
+builder.dataset.tree = JSON.stringify(['term', 'timeout']);
+context.initSyslogSearchBuilder();
+operator = builder.querySelector('.syslogSearchRow').children[2];
+operator.value = 'NOT contains';
+context.$(operator).trigger('change');
+context.syncSyslogSearchBuilder();
+assert.equal(nodes.rfilter.value, 'NOT "timeout"');
