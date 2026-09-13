@@ -1510,7 +1510,7 @@ function syslog_filter($sql_where, $tab) {
 		<tr class='even noprint syslogFilterRow'>
 			<td class='noprint'>
 			<form id='syslog_form' data-theme='<?php print html_escape(get_selected_theme()); ?>' action='syslog.php' method='post'>
-				<section class='syslogSearchPanel ui-widget ui-widget-content ui-corner-all' aria-labelledby='syslog_search_title'>
+				<section class='syslogSearchPanel' aria-labelledby='syslog_search_title'>
 					<div class='syslogSearchHeader'>
 						<div class='syslogSearchHeading'>
 							<span class='syslogSearchIcon' aria-hidden='true'><i class='fa fa-search'></i></span>
@@ -1553,7 +1553,7 @@ function syslog_filter($sql_where, $tab) {
 							}
 							?>
 						</select>
-						<details class='syslogMenu'><summary class='ui-button ui-widget ui-corner-all' aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>' title='<?php print __esc('Manage saved searches', 'syslog'); ?>'><?php print __esc('Manage', 'syslog'); ?></summary><div class='ui-widget ui-widget-content ui-corner-all syslogMenuBody'>
+						<details class='syslogMenu'><summary aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>' title='<?php print __esc('Manage saved searches', 'syslog'); ?>'><?php print __esc('Manage', 'syslog'); ?></summary><div class='syslogMenuBody'>
 							<input id='saved_saveas' type='button' value='<?php print __esc('Save search', 'syslog'); ?>'>
 							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
 							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
@@ -1596,7 +1596,7 @@ function syslog_filter($sql_where, $tab) {
 						</select>
 					</div>
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
-					<details id='syslog_view_options' class='syslogMenu'><summary class='ui-button ui-widget ui-corner-all'><?php print __esc('View options', 'syslog'); ?></summary><div class='ui-widget ui-widget-content ui-corner-all syslogMenuBody syslogSearchOptions'>
+					<details id='syslog_view_options' class='syslogMenu'><summary><?php print __esc('View options', 'syslog'); ?></summary><div class='syslogMenuBody syslogSearchOptions'>
 						<div class='syslogSearchOption'>
 							<label for='trimval'><?php print __('Trim', 'syslog'); ?></label>
 							<select id='trimval' onChange='applyFilter()' title='<?php print __esc('Message Trim', 'syslog'); ?>'>
@@ -1656,7 +1656,7 @@ function syslog_filter($sql_where, $tab) {
 					</div>
 					</details>
 					<div class='syslogSearchFooter'>
-						<details id='logical_search_help'><summary class='ui-button ui-widget ui-corner-all'><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted.', 'syslog'); ?></details>
+						<details id='logical_search_help'><summary><?php print __esc('Search help', 'syslog'); ?></summary><?php print __esc('Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted.', 'syslog'); ?></details>
 					</div>
 					</div>
 				</section>
@@ -2062,12 +2062,12 @@ function syslog_messages($tab = 'syslog') {
 	}
 	print '</div>';
 	?>
-	<aside id='syslog_message_details' class='ui-widget ui-widget-content' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
+	<aside id='syslog_message_details' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
 		<header><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
 		<dl><?php foreach (['device' => __('Device', 'syslog'), 'program' => __('Program', 'syslog'), 'facility' => __('Facility', 'syslog'), 'severity' => __('Severity', 'syslog'), 'received' => __('Received', 'syslog')] as $key => $label) { print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>"; } ?></dl>
-		<h4><?php print __esc('Raw message', 'syslog'); ?></h4><pre id='syslog_details_raw' class='ui-widget-content ui-corner-all'></pre>
+		<h4><?php print __esc('Raw message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>
 		<button type='button' id='syslog_details_copy'><?php print __esc('Copy message', 'syslog'); ?></button><span id='syslog_copy_status' role='status' data-success='<?php print __esc('Copied', 'syslog'); ?>' data-error='<?php print __esc('Copy unavailable. Select and copy the message text.', 'syslog'); ?>'></span>
-		<div class='syslogDetailsRules'><a data-rule='alarm' class='syslogRuleButton ui-button ui-widget ui-corner-all' hidden><?php print __esc('Create Alarm Rule', 'syslog'); ?></a><a data-rule='removal' class='syslogRuleButton ui-button ui-widget ui-corner-all' hidden><?php print __esc('Create Removal Rule', 'syslog'); ?></a></div>
+		<div class='syslogDetailsRules'><a data-rule='alarm' class='syslogRuleButton' hidden><?php print __esc('Create Alarm Rule', 'syslog'); ?></a><a data-rule='removal' class='syslogRuleButton' hidden><?php print __esc('Create Removal Rule', 'syslog'); ?></a></div>
 		<div class='syslogDetailsFilters'><button type='button' data-filter-detail='host'><?php print __esc('Filter by device', 'syslog'); ?></button><button type='button' data-filter-detail='program'><?php print __esc('Filter by program', 'syslog'); ?></button></div>
 	</aside></div>
 	<script>initSyslogWorkspace();</script>

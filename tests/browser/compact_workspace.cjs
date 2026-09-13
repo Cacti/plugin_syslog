@@ -3,15 +3,14 @@ const path = require('node:path');
 const {execFileSync} = require('node:child_process');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '../..');
-const theme = process.env.CACTI_THEME || 'classic';
 const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 const fixture = execFileSync('php', [path.join(root, 'tests/fixtures/compact_workspace.php')], {encoding: 'utf8'});
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1600,height:950}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const routes = {
-  '/main.css': path.join(cacti, 'include/themes/' + theme + '/main.css'),
-  '/jquery-ui.css': path.join(cacti, 'include/themes/' + theme + '/jquery-ui.css'),
+  '/main.css': path.join(cacti, 'include/themes/classic/main.css'),
+  '/jquery-ui.css': path.join(cacti, 'include/themes/classic/jquery-ui.css'),
   '/jquery.js': path.join(cacti, 'include/js/jquery.js'),
   '/jquery-ui.js': path.join(cacti, 'include/js/jquery-ui.js'),
   '/jquery.timepicker.js': path.join(cacti, 'include/js/jquery.timepicker.js'),
@@ -25,13 +24,6 @@ const fixture = execFileSync('php', [path.join(root, 'tests/fixtures/compact_wor
  });
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
  assert.deepEqual(errors,[]);
- const themeColors = await page.evaluate(() => {
-  const probe = document.createElement('div'); probe.className = 'ui-widget-content'; document.body.append(probe);
-  const color = getComputedStyle(probe).backgroundColor;
-  const panel = getComputedStyle(document.querySelector('.syslogSearchPanel')).backgroundColor;
-  probe.remove(); return {color, panel};
- });
- assert.equal(themeColors.panel, themeColors.color, 'Search panel inherits the active Cacti theme');
  assert.equal(await page.locator('#saved_saveas').isVisible(), false);
  await page.locator('.syslogSearchSavedBar summary').click();
  assert.equal(await page.locator('#saved_saveas').isVisible(), true);
@@ -39,8 +31,6 @@ const fixture = execFileSync('php', [path.join(root, 'tests/fixtures/compact_wor
  assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), true);
  await page.keyboard.press('Escape');
  assert.equal(await page.locator('#saved_saveas').isVisible(), false);
- assert.ok(await page.locator('.syslogSearchAdd').first().evaluate(el => $(el).button('instance')));
-
  assert.equal(await page.locator('#syslog_search_builder .syslogSearchRow').count(),2);
  assert.equal(await page.locator('#syslog_time_range').count(),0);
  assert.equal(await page.locator('.syslogSearchNegate').count(),0);
@@ -76,12 +66,10 @@ const fixture = execFileSync('php', [path.join(root, 'tests/fixtures/compact_wor
  await page.locator('#syslog_search_toggle').click();assert.equal(await page.locator('#syslog_search_content').isVisible(),false);
  await page.locator('#syslog_search_toggle').click();
  const timeRow = page.locator('#syslog_search_builder .syslogSearchRow').nth(1);
- await timeRow.locator('select[aria-label="Operator"] + .ui-selectmenu-button').click();
- await page.getByRole('option', {name: 'NOT In the last', exact: true}).click();
+ await timeRow.locator('select[aria-label="Operator"]').selectOption('NOT last');
  await page.locator('#go').click();
  assert.match(await page.evaluate(()=>posts.at(-1).rfilter), /NOT logtime last "86400"/);
- await timeRow.locator('select[aria-label="Operator"] + .ui-selectmenu-button').click();
- await page.getByRole('option', {name: 'In the last', exact: true}).click();
+ await timeRow.locator('select[aria-label="Operator"]').selectOption('last');
  await page.locator('#syslog_view_options summary').click();assert.equal(await page.locator('#save').isVisible(),true);
  assert.equal(await page.locator('.syslogQueryActions .syslogResultsLimit').count(),1,'Results limit sits beside the search buttons');
  assert.equal(await page.locator('#syslog_view_options #rows').count(),0,'Results limit no longer hides in view options');

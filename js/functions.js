@@ -396,7 +396,7 @@ function initSyslogSearchBuilder(builder, rows) {
 		});
 		$(container).empty();
 		rows.forEach(function(row, index) {
-			var line = element('div', 'ui-widget-content ui-corner-all syslogSearchRow' + (row.rows ? ' syslogSearchGroupRow' : ''));
+			var line = element('div', 'syslogSearchRow' + (row.rows ? ' syslogSearchGroupRow' : ''));
 			var connector = element('div', 'syslogSearchConnector');
 			if (index) {
 				connector.appendChild(select([['AND', 'AND'], ['OR', 'OR']], row.join, 'AND / OR', function(value) { row.join = value; }));
@@ -515,15 +515,6 @@ function initSyslogSearchBuilder(builder, rows) {
 			actions.appendChild(button);
 		});
 		container.appendChild(actions);
-		// Rows are rebuilt after edits, so initialize the new Cacti widgets too.
-		if ($.fn && $.fn.selectmenu) {
-			$(container).find('select').each(function() {
-				if (!$(this).selectmenu('instance')) {
-					$(this).selectmenu({width: '100%', change: function() { $(this).trigger('change'); }});
-				}
-			});
-		}
-		if ($.fn && $.fn.button) $(container).find('button').button();
 	}
 	render(builder, builder.searchRows);
 	initSyslogSearchDates(builder);
