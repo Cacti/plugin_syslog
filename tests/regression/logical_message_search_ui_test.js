@@ -37,6 +37,14 @@ const context = {
 			toggle(show) { node.hidden = !show; },
 			attr(name, value) { node.setAttribute(name, value); },
 			empty() { node.replaceChildren(); },
+			find(selector) {
+				const found = node.querySelectorAll(selector);
+				return { each(fn) { found.forEach(fn); }, length: found.length };
+			},
+			selectmenu(arg) {
+				if (arg === 'instance') return undefined;
+				return this;
+			},
 			on(event, handler) { node.jqueryHandlers[event] = handler; },
 			trigger(event) { if (node.jqueryHandlers[event]) node.jqueryHandlers[event](); }
 		};

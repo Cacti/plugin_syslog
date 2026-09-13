@@ -463,3 +463,11 @@
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+/* Menus jQuery UI appends to <body> inherit the theme's .ui-front z-index and
+   would render behind open dialogs; lift them above the plugin's modals. */
+.ui-selectmenu-menu,
+#ui-datepicker-div,
+.ui-autocomplete.syslogSearchSuggestions {
+	z-index: 9999;
+}

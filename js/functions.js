@@ -229,7 +229,13 @@ function initSyslogSearchBuilder(builder, rows) {
 		return node;
 	}
 	function render(container, rows) {
-		// Let jQuery dispose themed selectmenu widgets before rebuilding rows.
+		// The Cacti theme turns selects into selectmenu widgets; destroy them so
+		// their body-appended menus are removed before rebuilding the rows.
+		$(container).find('select').each(function() {
+			if ($(this).selectmenu('instance')) {
+				$(this).selectmenu('destroy');
+			}
+		});
 		$(container).empty();
 		rows.forEach(function(row, index) {
 			var line = element('div', 'syslogSearchRow' + (row.rows ? ' syslogSearchGroupRow' : ''));
