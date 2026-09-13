@@ -1913,8 +1913,8 @@ function syslog_messages($tab = 'syslog') {
 					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
 				}
 
-				form_selectable_ecell(syslog_value_filter_button($hosts[$sm['host_id']] ?? __('Unknown', 'syslog'), 'host'), $sm['seq'], '', 'left syslogMeta');
-				form_selectable_ecell(syslog_value_filter_button($sm['program'], 'program'), $sm['seq'], '', 'left syslogMeta');
+				form_selectable_cell(syslog_value_filter_button($hosts[$sm['host_id']] ?? __('Unknown', 'syslog'), 'host'), $sm['seq'], '', 'left syslogMeta');
+				form_selectable_cell(syslog_value_filter_button($sm['program'], 'program'), $sm['seq'], '', 'left syslogMeta');
 				// Group summaries show the latest timestamp; use its matching sequence ID.
 				$rule_id = $grouping_enabled && !empty($sm['seq_list']) ? explode(',', $sm['seq_list'])[0] : $sm[$syslog_incoming_config['id']];
 				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype']), $sm['seq'], '', 'left syslogMessage');
