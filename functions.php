@@ -161,8 +161,8 @@ function syslog_get_import_xml_payload($redirect_url) {
 	}
 
 	if (isset($_FILES['import_file']['tmp_name']) &&
-			$_FILES['import_file']['tmp_name'] !== 'none' &&
-			$_FILES['import_file']['tmp_name'] !== '') {
+		$_FILES['import_file']['tmp_name'] !== 'none' &&
+		$_FILES['import_file']['tmp_name'] !== '') {
 		// file upload
 		$tmp_name = $_FILES['import_file']['tmp_name'];
 
