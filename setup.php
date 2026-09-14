@@ -60,7 +60,8 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'replicate_out',         'syslog_replicate_out',        'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -256,13 +257,55 @@ function syslog_connect() {
 	return $connected;
 }
 
+/** Repair old installs before Cacti's auth.php checks the requested page. */
+function syslog_upgrade_saved_search_realm() {
+	global $user_auth_realm_filenames;
+
+	$admin = null;
+	$template = null;
+	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (in_array('syslog_alerts.php', $files, true)) {
+			$admin = $realm;
+		}
+		if (in_array('syslog_saved_searches.php', $files, true)) {
+			$template = $realm;
+		}
+	}
+
+	if ($admin === null) {
+		return;
+	}
+
+	if ($template === null) {
+		// Keep the realm ID: existing user and group grants must not change.
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
+			[$admin['file'] . ',syslog_saved_searches.php', $admin['id'], 'syslog'])) {
+			return;
+		}
+		$template = $admin;
+		api_plugin_replicate_config();
+	}
+
+	// A legacy standalone realm retains its grants. Administrators can also
+	// access Templates, without granting legacy template users other admin pages.
+	// Update the already-loaded map so the repair works on this request too.
+	if ($template['id'] == $admin['id'] || api_plugin_user_realm_auth('syslog_alerts.php')) {
+		$user_auth_realm_filenames['syslog_saved_searches.php'] = (int) $admin['id'] + 100;
+	}
+}
+
 function syslog_check_upgrade() {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
+	syslog_upgrade_saved_search_realm();
+	// Keep newly introduced permission realms available for existing installs.
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 
 	// Let's only run this check if we are on a page that actually needs the data
-	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php'];
+	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php'];
 
 	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
 		return;
@@ -427,6 +470,22 @@ function syslog_check_upgrade() {
 	}
 
 	syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
+
+	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+			id int(10) NOT NULL auto_increment,
+			name varchar(128) NOT NULL default '',
+			search text NOT NULL,
+			removal int(10) NOT NULL default '1',
+			grouping int(10) NOT NULL default '0',
+			`user` varchar(32) NOT NULL default '',
+			is_global char(2) NOT NULL default '',
+			`date` int(16) NOT NULL default '0',
+			PRIMARY KEY (id),
+			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
 }
 
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
@@ -663,6 +722,20 @@ function syslog_setup_table_new($options) {
 		notify int(10) unsigned NOT NULL default '0',
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+		id int(10) NOT NULL auto_increment,
+		name varchar(128) NOT NULL default '',
+		search text NOT NULL,
+		removal int(10) NOT NULL default '1',
+		grouping int(10) NOT NULL default '0',
+		`user` varchar(32) NOT NULL default '',
+		is_global char(2) NOT NULL default '',
+		`date` int(16) NOT NULL default '0',
+		PRIMARY KEY (id),
+		KEY owner (`user`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
@@ -1473,6 +1546,7 @@ function syslog_config_arrays() {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
 			}
 		}
 		$menu = $menu2;
@@ -1482,7 +1556,7 @@ function syslog_config_arrays() {
 
 	if (function_exists('auth_augment_roles')) {
 		auth_augment_roles(__('Normal User'), ['syslog.php']);
-		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php']);
+		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', 'syslog_saved_searches.php']);
 	}
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
@@ -1511,6 +1585,7 @@ function syslog_draw_navigation_text($nav) {
 	$nav['syslog_reports.php:']        = ['title' => __('Syslog Reports', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1'];
 	$nav['syslog_reports.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
 	$nav['syslog_reports.php:actions'] = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
+	$nav['syslog_saved_searches.php:'] = ['title' => __('Saved Search Templates', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_saved_searches.php', 'level' => '1'];
 	$nav['syslog.php:actions']         = ['title' => __('Syslog', 'syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1'];
 
 	return $nav;
