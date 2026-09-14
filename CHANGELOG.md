@@ -3,6 +3,16 @@
 --- develop ---
 
 * feature: Add saved searches: store named filter definitions (conditions plus record type and grouping), apply them from a dropdown, and manage them with New/Edit/Delete/Save As; a new 'Syslog Saved Searches Admin' realm gates Make Global. Saved searches keep the date range dynamic (last day by default)
+* feature: Allow users to share saved searches with each other, gated by a new 'Syslog Saved Searches Share' realm; admins get a Console search admin page to manage all saved searches, and the delete button for global searches is hidden from unauthorized users (new realms added to upgrade)
+* feature: Rebuild the search area: support custom searches, allow users to hide/show the search box, add date range presets, and move the row limit into the search area; redirect-only buttons (Alerts, Removals, Reports) removed
+* feature: Allow filtering the log view by clicking a device or program in the results
+* feature: Improve message readability: label facility, host, and program columns,
+
+* issue: Fix PHP 8.2+ compatibility
+* issue: Fix date filter not being respected when searching
+* issue: Correct validation error when creating an Alert Rule
+* issue: Fix Statistics page redirecting to logs
+* issue: Fix DOM race condition and dropdown rendering in modals
 
 * issue#199: Duplicate Partition name errors
 * issue#250: Fix date filter persistence by validating before shift_span detection
