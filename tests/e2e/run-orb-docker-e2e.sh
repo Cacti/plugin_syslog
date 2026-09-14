@@ -6,6 +6,15 @@ CACTI_REPO="${CACTI_REPO:-$(cd "${ROOT_DIR}/../cacti" && pwd)}"
 TEMP_DIR="${TEMP_DIR:-/tmp/cacti-syslog-e2e}"
 PW_IMAGE="${PW_IMAGE:-mcr.microsoft.com/playwright:v1.52.0-jammy}"
 
+case "${TEMP_DIR}" in
+	/tmp/?*)
+		;;
+	*)
+		echo "Refusing to rm -rf TEMP_DIR outside /tmp: ${TEMP_DIR}" >&2
+		exit 1
+		;;
+esac
+
 rm -rf "${TEMP_DIR}"
 mkdir -p "${TEMP_DIR}/plugins/syslog"
 
