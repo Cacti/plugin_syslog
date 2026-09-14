@@ -236,6 +236,15 @@ jobs:
 
     - name: Re-apply web user ownership before polling
       run: |
+        # Ancestor directories above the checkout (e.g. /home/runner, .../work)
+        # are typically 750 owned by the runner user, which blocks a non-root
+        # www-data process from traversing down to the checkout at all.
+        p="${{ github.workspace }}"
+        while [ "$p" != "/" ]; do
+          sudo chmod o+x "$p" || true
+          p=$(dirname "$p")
+        done
+
         sudo chown -R www-data:runner ${{ github.workspace }}/cacti
         sudo find ${{ github.workspace }}/cacti -type d -exec chmod 775 {} \;
         sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
