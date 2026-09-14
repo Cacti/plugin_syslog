@@ -1047,7 +1047,11 @@ function syslog_metadata_label($value, $type) {
 function syslog_value_filter_button($value, $field) {
 	$value = (string) $value;
 	if ($value === '') return html_escape(__('Unknown', 'syslog'));
-	return '<button type="button" class="syslogValueFilter" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
+	$class = 'syslogValueFilter';
+	if ($field === 'priority') {
+		$class .= ' syslogSeverity syslogSeverity-' . html_escape(preg_replace('/[^a-z]/', '', strtolower($value)));
+	}
+	return '<button type="button" class="' . $class . '" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
 }
 
 function sql_hosts_where($tab) {
