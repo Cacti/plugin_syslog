@@ -4,7 +4,10 @@ include('./include/auth.php');
 include_once('./plugins/syslog/functions.php');
 include_once('./plugins/syslog/database.php');
 
-if (!api_plugin_user_realm_auth('syslog_saved_searches.php')) {
+// The page was originally registered in its own realm and is now part of
+// Syslog Administration. Accept both mappings so existing installations do
+// not lose access when the realm registration changes.
+if (!api_plugin_user_realm_auth('syslog_saved_searches.php') && !api_plugin_user_realm_auth('syslog_alerts.php')) {
 	die(__('Permission denied.', 'syslog'));
 }
 
