@@ -698,13 +698,11 @@ function savedSearchActive() {
 	return value && value !== '0' ? parseInt(value, 10) : 0;
 }
 
-/** Match the server: owners, or template administrators for global searches. */
+/** Match the server: only options the server marked manageable may be edited or deleted. */
 function savedSearchCanManage() {
 	var id = savedSearchActive();
-	var dropdown = document.getElementById('saved_search');
-	var selected = dropdown?.selectedOptions[0];
-	return !!(id && selected && (selected.dataset.owner === dropdown.dataset.user ||
-		(selected.dataset.global === '1' && dropdown.dataset.admin === '1')));
+	var selected = document.getElementById('saved_search')?.selectedOptions[0];
+	return !!(id && selected && selected.dataset.manage === '1');
 }
 
 /** Never offer deletion for a template the current user cannot manage. */

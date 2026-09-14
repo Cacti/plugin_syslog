@@ -1533,7 +1533,10 @@ function syslog_filter($sql_where, $tab) {
 									print "<optgroup label='" . html_escape($saved_label) . "'>";
 
 									foreach ($saved_group as $saved) {
-										print "<option value='" . $saved['id'] . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
+										// Match the server-side delete permission in saved_search_delete().
+										$can_manage = $saved['user'] === $username || ($saved['is_global'] === 'on' && $saved_admin);
+
+										print "<option value='" . $saved['id'] . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "' data-manage='" . ($can_manage ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
 											html_escape($saved['name']) . '</option>';
 									}
 

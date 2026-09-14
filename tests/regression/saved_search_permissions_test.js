@@ -13,19 +13,25 @@ const context = {
  }
 };
 vm.runInNewContext(source.slice(source.indexOf('function savedSearchActive('), source.indexOf('/** Save all authored conditions')), context);
-for (const admin of ['0', '1']) {
- for (const global of ['0', '1']) {
-  for (const owner of ['tester', 'someone-else']) {
-   dropdown.dataset.admin = admin;
-   dropdown.selectedOptions = [{dataset: {owner, global}}];
-   context.savedSearchButtons();
-   const allowed = owner === 'tester' || (global === '1' && admin === '1');
-   assert.equal(buttons['#saved_delete'].visible, allowed, JSON.stringify({admin, global, owner}));
-   assert.equal(buttons['#saved_delete'].disabled, !allowed);
-   assert.equal(buttons['#saved_edit'].disabled, !allowed);
-  }
- }
+// The server stamps each option with its own delete permission via data-manage.
+for (const manage of ['0', '1']) {
+ dropdown.selectedOptions = [{dataset: {owner: 'someone-else', global: '0', manage}}];
+ context.savedSearchButtons();
+ assert.equal(buttons['#saved_delete'].visible, manage === '1');
+ assert.equal(buttons['#saved_delete'].disabled, manage !== '1');
+ assert.equal(buttons['#saved_edit'].disabled, manage !== '1');
 }
+// The dropdown-level attributes no longer influence the decision.
+dropdown.dataset.admin = '1';
+dropdown.dataset.user = 'someone-else';
+dropdown.selectedOptions = [{dataset: {owner: 'someone-else', global: '1', manage: '0'}}];
+context.savedSearchButtons();
+assert.equal(buttons['#saved_delete'].visible, false);
+assert.equal(buttons['#saved_delete'].disabled, true);
+dropdown.selectedOptions = [{dataset: {owner: 'tester', global: '0', manage: '1'}}];
+context.savedSearchButtons();
+assert.equal(buttons['#saved_delete'].visible, true);
+assert.equal(buttons['#saved_delete'].disabled, false);
 dropdown.value = '0';
 dropdown.selectedOptions = [];
 context.savedSearchButtons();
