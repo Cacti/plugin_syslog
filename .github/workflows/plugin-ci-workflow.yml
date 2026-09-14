@@ -139,7 +139,7 @@ jobs:
     - name: Check PHP version
       run: php -v
     
-    - name: Add the ondrej PHP repository
+    - name: Run apt-get update
       run: |
         sudo apt-get update
     
