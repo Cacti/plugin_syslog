@@ -119,6 +119,41 @@
 	display: none;
 }
 
+.syslogRuleFilterBuilder {
+	box-sizing: border-box;
+	max-width: 1100px;
+	padding: 12px;
+}
+
+.syslogRuleFilterPanel {
+	box-sizing: border-box;
+	width: fit-content;
+	max-width: 100%;
+	min-width: 0;
+	margin: 4px 0;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.syslogRuleFilterPanel[hidden] {
+	display: none;
+}
+
+.syslogRuleFilterBuilder .syslogSearchActions {
+	margin-top: 8px;
+	padding-top: 8px;
+}
+
+.syslogRuleFilterBuilder .syslogSearchRow {
+	border-radius: 3px;
+}
+
+.syslogRuleFilterBuilder .ui-selectmenu-button {
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0;
+}
+
 #syslog_form .syslogSearchSavedBar {
 	display: flex;
 	flex-wrap: wrap;
@@ -290,14 +325,17 @@
 #syslog_form .syslogSearchPanel > #rfilter {
 	width: 100%;
 	min-width: 0;
-	max-width: none;
+	max-width: 360px;
 	padding: 4px 8px;
-	border: 1px solid var(--search-border);
-	background: var(--search-surface);
-	color: var(--search-text);
+	/* Fallbacks keep the field outlined outside the search panel tokens. */
+	border: 1px solid var(--search-border, #cbd8d1);
+	background: var(--search-surface, transparent);
+	color: var(--search-text, inherit);
 	box-shadow: none;
 }
-
+.syslogRuleFilterBuilder .syslogSearchText {
+	max-width: 360px;
+}
 .syslogSearchBuilder .syslogSearchText::placeholder {
 	color: var(--search-muted);
 	opacity: 0.85;

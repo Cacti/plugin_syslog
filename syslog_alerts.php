@@ -312,7 +312,11 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 				return $id;
 			}
 		} else {
-			raise_message('sql_error', __('The processed SQL was invalid.  Please correct your SQL', 'syslog'), MESSAGE_LEVEL_ERROR);
+			if ($save['type'] === 'filter' && !empty($GLOBALS['syslog_rule_filter_error'])) {
+				raise_message('filter_error', __('The filter is invalid: %s', $GLOBALS['syslog_rule_filter_error'], 'syslog'), MESSAGE_LEVEL_ERROR);
+			} else {
+				raise_message('sql_error', __('The processed SQL was invalid.  Please correct your SQL', 'syslog'), MESSAGE_LEVEL_ERROR);
+			}
 
 			return false;
 		}
@@ -442,6 +446,10 @@ function syslog_action_edit() {
 			$header_label = __esc('Alert Edit [edit: %s]', $alert['name'], 'syslog');
 		} else {
 			$header_label = __('Alert Edit [new]', 'syslog');
+			$alert = [
+				'name' => __('New Alert Rule', 'syslog'),
+				'type' => 'filter'
+			];
 		}
 	} elseif (isset_request_var('id') && get_nfilter_request_var('action') == 'newedit') {
 		$sql_params   = [];
@@ -465,10 +473,12 @@ function syslog_action_edit() {
 		}
 
 		$alert['name'] = __('New Alert Rule', 'syslog');
+		$alert['type'] = 'filter';
 	} else {
 		$header_label = __('Alert Edit [new]', 'syslog');
 
 		$alert['name'] = __('New Alert Rule', 'syslog');
+		$alert['type'] = 'filter';
 	}
 
 	if (db_table_exists('plugin_notification_lists')) {
@@ -483,6 +493,31 @@ function syslog_action_edit() {
 	}
 
 	$repeatarray = get_repeat_array();
+	// Present older simple rules as their equivalent SQL expression. Reuse the
+	// existing compiler so configured columns and LIKE wildcard semantics are
+	// preserved. This changes the editor only; storage changes on explicit Save.
+	if (in_array($alert['type'] ?? '', ['messageb', 'messagec', 'messagee', 'host', 'program', 'facility'], true)) {
+		$legacy_query = syslog_get_alert_sql($alert, 0);
+		if (preg_match('/WHERE\s+(`[^`]+`\s+(?:LIKE|=)\s+)\?/', $legacy_query['sql'], $legacy_match)) {
+			$alert['message'] = $legacy_match[1] . db_qstr($legacy_query['params'][0]);
+			$alert['type'] = 'sql';
+		}
+	}
+	$filter_conditions = [];
+	if (($alert['type'] ?? '') === 'filter') {
+		$filter_document = json_decode($alert['message'] ?? '', true);
+		if (is_array($filter_document) && ($filter_document['version'] ?? null) === 1 && is_array($filter_document['conditions'] ?? null)) {
+			$filter_conditions = $filter_document['conditions'];
+		} elseif (get_nfilter_request_var('action') === 'newedit' && !empty($alert['message'])) {
+			$filter_conditions = [[
+				'join' => 'AND',
+				'negative' => false,
+				'field' => 'message',
+				'operator' => 'contains',
+				'value' => $alert['message']
+			]];
+		}
+	}
 
 	$fields_syslog_alert_edit = [
 		'spacer0' => [
@@ -533,15 +568,18 @@ function syslog_action_edit() {
 		'type' => [
 			'method'        => 'drop_array',
 			'friendly_name' => __('Match Type', 'syslog'),
-			'description'   => __('Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include \'message\', \'facility\', \'priority\', and \'host\'.', 'syslog'),
+			'description'   => __('Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules.', 'syslog'),
 			'value'         => '|arg1:type|',
-			'array'         => $message_types,
+			'array'         => [
+				'filter' => __('Filter Builder', 'syslog'),
+				'sql' => __('SQL Expression', 'syslog')
+			],
 			'on_change'     => 'changeTypes()',
-			'default'       => 'matchesc'
+			'default'       => 'filter'
 		],
 		'message' => [
 			'friendly_name' => __('Message Match String', 'syslog'),
-			'description'   => __('Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.', 'syslog'),
+			'description'   => __('Build filter conditions or enter an SQL expression to match syslog messages.', 'syslog'),
 			'textarea_rows' => '2',
 			'textarea_cols' => '70',
 			'method'        => 'textarea',
@@ -664,8 +702,44 @@ function syslog_action_edit() {
 
 	var allowEdits=<?php print syslog_allow_edits() ? 'true' : 'false'; ?>;
 	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
+	var alertFilterBuilder;
+	var alertFilterConfig = {
+		fields: <?php print syslog_json_safe([
+			'message' => __('Message', 'syslog'),
+			'host' => __('Host', 'syslog'),
+			'program' => __('Program', 'syslog'),
+			'facility_id' => __('Facility', 'syslog'),
+			'priority_id' => __('Priority', 'syslog')
+		]); ?>,
+		operators: {
+			message: ['contains', 'begins', 'ends', '=', '!='],
+			host: ['=', '!=', 'contains', 'begins', 'ends'],
+			program: ['=', '!=', 'contains', 'begins', 'ends'],
+			facility_id: ['=', '!='],
+			priority_id: ['=', '!=']
+		},
+		choices: <?php
+			$filter_choices = syslog_search_choices();
+			print syslog_json_safe([
+				'facility_id' => $filter_choices['facility_id'] ?? [],
+				'priority_id' => $filter_choices['priority_id'] ?? []
+			]);
+		?>,
+		conditions: <?php print syslog_json_safe($filter_conditions); ?>,
+		labels: {
+			message: <?php print syslog_json_safe(__('Value', 'syslog')); ?>,
+			placeholder: <?php print syslog_json_safe(__('Enter a value', 'syslog')); ?>,
+			match: <?php print syslog_json_safe(__('Match', 'syslog')); ?>,
+			exclude: <?php print syslog_json_safe(__('Exclude', 'syslog')); ?>,
+			remove: <?php print syslog_json_safe(__('Remove condition', 'syslog')); ?>,
+			integer: <?php print syslog_json_safe(__('Enter a nonnegative integer', 'syslog')); ?>
+		}
+	};
 
 	function changeTypes() {
+		var filterMode = $('#type').val() == 'filter';
+		$('#message').toggle(!filterMode);
+		$('#syslog_alert_filter_panel').prop('hidden', !filterMode);
 		if ($('#type').val() == 'sql') {
 			$('#message').prop('rows', 6);
 		} else {
@@ -682,8 +756,32 @@ function syslog_action_edit() {
 	}
 
 	$(function() {
+		var message = document.getElementById('message');
+		var panel = document.createElement('section');
+		panel.id = 'syslog_alert_filter_panel';
+		panel.className = 'syslogRuleFilterPanel ui-widget-content ui-corner-all';
+		panel.setAttribute('aria-label', <?php print syslog_json_safe(__('Alarm filter conditions', 'syslog')); ?>);
+		var builder = document.createElement('div');
+		builder.id = 'syslog_alert_filter_builder';
+		builder.className = 'syslogSearchBuilder syslogRuleFilterBuilder';
+		builder.setAttribute('aria-label', <?php print syslog_json_safe(__('Alarm filter conditions', 'syslog')); ?>);
+		panel.appendChild(builder);
+		message.insertAdjacentElement('afterend', panel);
+		if (!alertFilterConfig.conditions.length && message.value && $('#type').val() != 'filter') {
+			alertFilterConfig.conditions = [{join: 'AND', negative: false, field: 'message', operator: 'contains', value: message.value}];
+		}
+		alertFilterBuilder = new SyslogFilterBuilder(builder, alertFilterConfig);
+		$('#type').off('change.syslogAlertFilter').on('change.syslogAlertFilter', changeTypes);
+		$('#syslog_edit').off('submit.syslogAlertFilter').on('submit.syslogAlertFilter', function(event) {
+			if ($('#type').val() == 'filter' && !alertFilterBuilder.syncTo(message)) {
+				event.preventDefault();
+			}
+		});
+		changeTypes();
+
 		if (!allowEdits) {
 			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
+			alertFilterBuilder.setDisabled(true);
 			$('#syslog_edit').find('select').each(function() {
 				if ($(this).selectmenu('instance')) {
 					$(this).selectmenu('refresh');

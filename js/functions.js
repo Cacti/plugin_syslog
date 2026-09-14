@@ -373,6 +373,7 @@ function initSyslogSearchBuilder(builder, rows) {
 	}
 	var labels = builder.dataset;
 	var choices = JSON.parse(labels.choices || '{}');
+	var configuredOperators = JSON.parse(labels.operators || '{}');
 	if (!rows) {
 		var tree = JSON.parse(labels.tree || 'null');
 		rows = syslogSearchRows(tree);
@@ -430,12 +431,14 @@ function initSyslogSearchBuilder(builder, rows) {
 				line.appendChild(select(Object.entries(fields), row.field || 'message', 'Field', function(value) {
 					row.field = value;
 					row.value = '';
-					row.operator = choices[value] || value === 'seq' || value.endsWith('_id') || value === 'logtime' ? '=' : 'contains';
+					row.operator = configuredOperators[value] ? configuredOperators[value][0] :
+						(choices[value] || value === 'seq' || value.endsWith('_id') || value === 'logtime' ? '=' : 'contains');
 					render(container, rows);
 					initSyslogSearchDates(container);
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
-				var operators = row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+				var operators = configuredOperators[row.field || 'message'] ||
+					(row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like']);
 				var inverse = {'=': '!=', '!=': '=', '>': '<=', '>=': '<', '<': '>=', '<=': '>'};
 				var operatorOptions = [];
 				if (row.operator && !operators.includes(row.operator)) operators.push(row.operator);
@@ -464,6 +467,11 @@ function initSyslogSearchBuilder(builder, rows) {
 				input.required = true;
 				input.value = row.value;
 				input.setAttribute('aria-label', fields[row.field || 'message']);
+				if (numeric && row.field !== 'logtime') {
+					input.pattern = '[0-9]+';
+					input.inputMode = 'numeric';
+					input.title = labels.integer || 'Enter a nonnegative integer';
+				}
 				input.addEventListener('input', function() { row.value = input.value; });
 				input.addEventListener('change', function() { row.value = input.value; });
 				if (row.field === 'logtime' && row.operator === 'last') {

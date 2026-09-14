@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
 * feature: Deprecate the Statistics tab and remove statistics data collection and database setup
 * security: Require POST and CSRF validation for unused-host purge
   operations
