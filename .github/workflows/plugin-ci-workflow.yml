@@ -234,10 +234,18 @@ jobs:
       run: ./include/vendor/bin/phpstan analyze --level 6 ${{ github.workspace }}/cacti/plugins/syslog
       working-directory: ${{ github.workspace }}/cacti
 
+    - name: Re-apply web user ownership before polling
+      run: |
+        sudo chown -R www-data:runner ${{ github.workspace }}/cacti
+        sudo find ${{ github.workspace }}/cacti -type d -exec chmod 775 {} \;
+        sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
+        sudo chmod +x ${{ github.workspace }}/cacti/cmd.php
+        sudo chmod +x ${{ github.workspace }}/cacti/poller.php
+
     - name: Run Cacti Poller
       run: |
         cd ${{ github.workspace }}/cacti
-        sudo php poller.php --poller=1 --force --debug
+        sudo -u www-data php poller.php --poller=1 --force --debug
         if ! grep -q "SYSTEM STATS" log/cacti.log; then
           echo "Cacti poller did not finish successfully"
           cat log/cacti.log
@@ -253,7 +261,7 @@ jobs:
     - name: force Syslog Plugin Poller
       run: |
         cd ${{ github.workspace }}/cacti
-        sudo php plugins/syslog/syslog_process.php  --debug
+        sudo -u www-data php plugins/syslog/syslog_process.php --debug
         if ! grep -q "SYSTEM SYSLOG STATS" log/cacti.log; then
           echo "Syslog plugin poller did not finish successfully"
           cat log/cacti.log
