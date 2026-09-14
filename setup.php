@@ -450,7 +450,9 @@ function syslog_check_upgrade() {
 		);
 	}
 
-	syslog_db_execute('ALTER TABLE syslog_alert MODIFY column message VARCHAR(8192) NOT NULL default ""');
+	// Structured filter JSON can exceed the old VARCHAR limit. TEXT also keeps
+	// the alert table below the InnoDB/MariaDB inline row-size ceiling.
+	syslog_db_execute('ALTER TABLE syslog_alert MODIFY column message TEXT NOT NULL');
 
 	if (!syslog_db_column_exists('syslog_reports', 'notify')) {
 		syslog_db_add_column('syslog_reports', [
@@ -634,7 +636,7 @@ function syslog_setup_table_new($options) {
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
 		`open_ticket` CHAR(2) default '',
-		`message` VARCHAR(8192) NOT NULL default '',
+		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',

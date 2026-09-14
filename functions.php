@@ -27,6 +27,14 @@ if (file_exists($syslog_query_builder)) {
 	require_once $syslog_query_builder;
 }
 
+/** Encode values safely for embedding as JavaScript literals in PHP views. */
+function syslog_json_safe($value): string {
+	return json_encode(
+		$value,
+		JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR
+	);
+}
+
 /** Allowlisted fields and operators shared by validation and the builder. */
 function syslog_search_fields() {
 	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
