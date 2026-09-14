@@ -560,9 +560,18 @@
 #syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) minmax(300px, 26%); }
 .syslogResultsMain { min-width: 0; overflow-x: auto; }
 #syslog_workspace table { width: 100%; }
-#syslog_workspace tr.syslogRow:nth-child(even) { background: #f7f9f8; }
-#syslog_workspace tr.syslogRow:hover { background: #edf3f0; }
+/* Kiwi-style pastel row tints: one soft shade per priority, white for Info. */
+#syslog_workspace tr.syslogRow { --syslog-tint: transparent; --syslog-tint-even: #f7f9f8; --syslog-tint-hover: #edf3f0; background: var(--syslog-tint); }
+#syslog_workspace tr.syslogRow:nth-child(even) { background: var(--syslog-tint-even); }
+#syslog_workspace tr.syslogRow:hover { background: var(--syslog-tint-hover); }
 #syslog_workspace tr.syslogRow td:first-child { border-left: 4px solid transparent; }
+#syslog_workspace tr.syslogRow.logEmergency { --syslog-tint: #ffc7c7; --syslog-tint-even: #fcbfbf; --syslog-tint-hover: #f9b5b5; }
+#syslog_workspace tr.syslogRow.logAlert { --syslog-tint: #ffd3cd; --syslog-tint-even: #f9c9c2; --syslog-tint-hover: #f5beba; }
+#syslog_workspace tr.syslogRow.logCritical { --syslog-tint: #ffd9d5; --syslog-tint-even: #f9cecb; --syslog-tint-hover: #f5c2c0; }
+#syslog_workspace tr.syslogRow.logError { --syslog-tint: #ffe0dd; --syslog-tint-even: #f9d4d3; --syslog-tint-hover: #f5c9c8; }
+#syslog_workspace tr.syslogRow.logWarning { --syslog-tint: #fff3c4; --syslog-tint-even: #f7e9ba; --syslog-tint-hover: #f3e0b0; }
+#syslog_workspace tr.syslogRow.logNotice { --syslog-tint: #d7efdd; --syslog-tint-even: #cde6d4; --syslog-tint-hover: #c2ddcb; }
+#syslog_workspace tr.syslogRow.logDebug { --syslog-tint: #e9ecec; --syslog-tint-even: #e0e3e3; --syslog-tint-hover: #d8dbdb; }
 #syslog_workspace tr.syslogRow.logEmergency td:first-child,
 #syslog_workspace tr.syslogRow.logAlert td:first-child,
 #syslog_workspace tr.syslogRow.logCritical td:first-child,
@@ -572,8 +581,14 @@
 #syslog_workspace tr.syslogRow.logInfo td:first-child { border-left-color: #5b9b4b; }
 #syslog_workspace tr.syslogRow.logDebug td:first-child { border-left-color: #8b9690; }
 #syslog_workspace tr.syslogAlertRow td:first-child { border-left: 4px solid #c0392b; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:nth-child(even) { background: #2b3530; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow:hover { background: #34443a; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow { --syslog-tint-even: #2b3530; --syslog-tint-hover: #34443a; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logEmergency { --syslog-tint: #5c2626; --syslog-tint-even: #552424; --syslog-tint-hover: #663030; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logAlert { --syslog-tint: #57302a; --syslog-tint-even: #502c27; --syslog-tint-hover: #613832; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logCritical { --syslog-tint: #533434; --syslog-tint-even: #4c3131; --syslog-tint-hover: #5d3b3b; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logError { --syslog-tint: #4b393a; --syslog-tint-even: #443436; --syslog-tint-hover: #554144; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logWarning { --syslog-tint: #54482a; --syslog-tint-even: #4c4127; --syslog-tint-hover: #5e5132; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logNotice { --syslog-tint: #2e4a3c; --syslog-tint-even: #2a4438; --syslog-tint-hover: #355444; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logDebug { --syslog-tint: #3b423e; --syslog-tint-even: #363c39; --syslog-tint-hover: #434b46; }
 #syslog_workspace tr:has(.syslogMessageOpen) td { padding: 7px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
 #syslog_workspace tr:has(.syslogMessageOpen) td.syslogMeta { color: #5d6b65; font-size: 12px; }
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
