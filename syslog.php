@@ -1546,7 +1546,7 @@ function syslog_filter($sql_where, $tab) {
 							<input id='saved_saveas' type='button' value='<?php print __esc('Save search', 'syslog'); ?>'>
 							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
 							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
-							<input id='saved_delete' type='button' value='<?php print __esc('Delete', 'syslog'); ?>'>
+							<input id='saved_delete' type='button' disabled style='display:none' value='<?php print __esc('Delete', 'syslog'); ?>'>
 							<?php if ($saved_share) { ?>
 							<input id='saved_global' type='button' value='<?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Save for all', 'syslog'); ?>'>
 							<?php } ?>

@@ -12,6 +12,24 @@
 	border-radius: 3px;
 }
 
+.syslogTemplateEditor .ui-selectmenu-button {
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0;
+}
+
+.syslogTemplateEditor .syslogSearchGroupRow > .syslogSearchRemove {
+	grid-column: 4;
+	grid-row: 1;
+}
+
+@media (max-width: 700px) {
+	.syslogTemplateEditor .syslogSearchText + .ui-selectmenu-button {
+		grid-column: 1 / -1;
+		grid-row: 2;
+	}
+}
+
 .syslogTemplateEditor .ui-state-error {
 	padding: 8px;
 }

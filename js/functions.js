@@ -698,18 +698,24 @@ function savedSearchActive() {
 	return value && value !== '0' ? parseInt(value, 10) : 0;
 }
 
-/** Actions that need an active saved search stay disabled otherwise. */
-function savedSearchButtons() {
+/** Match the server: owners, or template administrators for global searches. */
+function savedSearchCanManage() {
 	var id = savedSearchActive();
-	var selected = document.getElementById('saved_search')?.selectedOptions[0];
-	var canEdit = id && selected && (selected.dataset.global !== '1' || selected.dataset.owner === document.getElementById('saved_search').dataset.user || document.getElementById('saved_search').dataset.admin === '1');
-	var canManageGlobal = canEdit;
-	$('#saved_edit, #saved_delete').prop('disabled', !id);
-	$('#saved_edit').prop('disabled', !canEdit);
+	var dropdown = document.getElementById('saved_search');
+	var selected = dropdown?.selectedOptions[0];
+	return !!(id && selected && (selected.dataset.owner === dropdown.dataset.user ||
+		(selected.dataset.global === '1' && dropdown.dataset.admin === '1')));
+}
+
+/** Never offer deletion for a template the current user cannot manage. */
+function savedSearchButtons() {
+	var canManage = savedSearchCanManage();
+	$('#saved_edit').prop('disabled', !canManage);
+	$('#saved_delete').prop('disabled', !canManage).toggle(canManage);
 
 	var global = $('#saved_global');
 	if (global.length) {
-		global.prop('disabled', !canManageGlobal);
+		global.prop('disabled', !canManage);
 	}
 }
 
@@ -733,7 +739,7 @@ function initSavedSearches() {
 	$('#saved_edit').click(function() { openSavedSearchDialog('edit'); });
 	$('#saved_delete').click(function() {
 		var id = savedSearchActive();
-		if (!id) return;
+		if (!savedSearchCanManage()) return;
 		if (!window.confirm(savedSearchText().deleteConfirm)) return;
 		savedSearchPost({action: 'saved_search_delete', id: id}, function() {
 			postSyslog({});
