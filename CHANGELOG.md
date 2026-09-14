@@ -27,6 +27,7 @@
 * issue: Correct validation error when creating an Alert Rule
 * issue: Fix Statistics page redirecting to logs
 * issue: Fix DOM race condition and dropdown rendering in modals
+* issue: Make HTML escaping behavior explicit across PHP 8 versions
 
 * issue#199: Duplicate Partition name errors
 * issue#250: Fix date filter persistence by validating before shift_span detection
