@@ -62,7 +62,7 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php', 'Syslog Saved Searches Admin', 1);
-	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Syslog Saved Searches Share', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -263,7 +263,7 @@ function syslog_check_upgrade() {
 
 	syslog_connect();
 	// Keep newly introduced permission realms available for existing installs.
-	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Syslog Saved Searches Share', 0);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php'];

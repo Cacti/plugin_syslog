@@ -1517,7 +1517,6 @@ function syslog_filter($sql_where, $tab) {
 					<div class='syslogSearchSavedBar'>
 						<label for='saved_search'><?php print __('Saved Searches', 'syslog'); ?></label>
 						<select id='saved_search'>
-							<option value='0'><?php print __('None', 'syslog'); ?></option>
 							<?php
 							$saved_groups = [
 								__('My Searches', 'syslog')   => [],

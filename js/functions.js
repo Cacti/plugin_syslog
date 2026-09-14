@@ -667,11 +667,7 @@ function initSavedSearches() {
 	dropdown.dataset.active = dropdown.value;
 	$('#saved_search').on('change', function() {
 		var id = parseInt(this.value, 10);
-		if (!id) {
-			// The placeholder keeps the current filter; restore the selection.
-			$(this).val(this.dataset.active);
-			return;
-		}
+		if (!id) return;
 		postSyslog({saved: id});
 	});
 	$('#saved_new').click(function() { openSavedSearchDialog('new'); });
