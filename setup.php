@@ -62,6 +62,7 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php', 'Syslog Saved Searches Admin', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Syslog Saved Searches Share', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {

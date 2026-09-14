@@ -282,6 +282,11 @@ function syslog_saved_search_admin() {
 	return api_plugin_user_realm_auth('syslog_saved_searches.php');
 }
 
+/** Permission to share saved searches with all syslog users. */
+function syslog_saved_search_share() {
+	return syslog_saved_search_admin() || api_plugin_user_realm_auth('syslog_saved_searches_share.php');
+}
+
 function syslog_message_filter_value($value, $filter, $href = '') {
 	if (get_request_var('search_mode') != 'logical') {
 		return filter_value($value, $filter, $href);

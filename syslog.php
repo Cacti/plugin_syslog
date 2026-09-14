@@ -1071,23 +1071,27 @@ function saved_search_delete() {
 function saved_search_global() {
 	global $syslogdb_default;
 
-	if (!syslog_saved_search_admin()) {
+	if (!syslog_saved_search_share()) {
 		return json_encode(['error' => __('Permission denied.', 'syslog')]);
 	}
 
 	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
+	$username = get_username($_SESSION['sess_user_id']);
 
 	if ($id === false || $id === null || $id <= 0) {
 		return json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
 	}
 
-	$row = syslog_db_fetch_row_prepared("SELECT is_global
+	$row = syslog_db_fetch_row_prepared("SELECT `user`, is_global
 		FROM `$syslogdb_default`.`syslog_saved_searches`
 		WHERE id = ?",
 		[$id]);
 
 	if ($row === false) {
 		return json_encode(['error' => __('Saved search not found.', 'syslog')]);
+	}
+	if ($row['user'] !== $username && !syslog_saved_search_admin()) {
+		return json_encode(['error' => __('You may only share your own saved searches.', 'syslog')]);
 	}
 
 	$is_global = $row['is_global'] === 'on' ? '' : 'on';
@@ -1481,7 +1485,7 @@ function syslog_filter($sql_where, $tab) {
 		[$username]);
 
 	$saved_active = (int) ($_SESSION['sess_sl_' . $tab . '_saved'] ?? 0);
-	$saved_admin  = syslog_saved_search_admin();
+	$saved_share  = syslog_saved_search_share();
 
 	?>
 	<script type='text/javascript'>
@@ -1543,8 +1547,8 @@ function syslog_filter($sql_where, $tab) {
 							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
 							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
 							<input id='saved_delete' type='button' value='<?php print __esc('Delete', 'syslog'); ?>'>
-							<?php if ($saved_admin) { ?>
-							<input id='saved_global' type='button' value='<?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Make Global', 'syslog'); ?>'>
+							<?php if ($saved_share) { ?>
+							<input id='saved_global' type='button' value='<?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Save for all', 'syslog'); ?>'>
 							<?php } ?>
 						</div></details>
 					</div>
