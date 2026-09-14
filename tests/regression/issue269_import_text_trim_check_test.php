@@ -1,6 +1,7 @@
 <?php
 
 $root    = dirname(__DIR__, 2);
+$helper  = file_get_contents($root . '/functions.php');
 $targets = [
 	$root . '/syslog_alerts.php',
 	$root . '/syslog_reports.php',
@@ -8,6 +9,32 @@ $targets = [
 ];
 
 $legacy = "trim(get_nfilter_request_var('import_text') != '')";
+
+if ($helper === false) {
+	fwrite(STDERR, "Unable to read the shared import helper\n");
+	exit(1);
+}
+
+if (substr_count($helper, 'function syslog_get_import_xml_payload(') !== 1 ||
+	preg_match('/^function syslog_get_import_xml_payload\([^)]*\)\s*\{.*?^\}/ms', $helper, $matches) !== 1) {
+	fwrite(STDERR, "Unable to isolate one shared import helper\n");
+	exit(1);
+}
+
+$helperBody = $matches[0];
+$usesLocal  = str_contains($helperBody, '$import_text = (string) get_nfilter_request_var(\'import_text\')') &&
+	str_contains($helperBody, "trim(\$import_text) !== ''");
+$usesDirect = str_contains($helperBody, "trim(get_nfilter_request_var('import_text')) != ''");
+
+if (!$usesLocal && !$usesDirect) {
+	fwrite(STDERR, "Shared import helper does not preserve the issue #269 trim semantics\n");
+	exit(1);
+}
+
+if (str_contains($helperBody, $legacy)) {
+	fwrite(STDERR, "Legacy import_text trim/comparison bug remains in the shared import helper\n");
+	exit(1);
+}
 
 foreach ($targets as $target) {
 	$content = file_get_contents($target);
@@ -22,26 +49,9 @@ foreach ($targets as $target) {
 		exit(1);
 	}
 
-	$fixedPattern = '/trim\s*\(\s*\$import_text\s*\)\s*!=\s*\'\'/';
-
-	if (!preg_match($fixedPattern, $content)) {
-		fwrite(STDERR, "Fixed import_text trim/comparison check missing in $target\n");
+	if (substr_count($content, 'syslog_get_import_xml_payload(') !== 1) {
+		fwrite(STDERR, "Shared import payload helper call missing in $target\n");
 		exit(1);
-	}
-
-	/* After the local $import_text assignment, there must be no second
-	   get_nfilter_request_var('import_text') call.  A duplicate call
-	   would bypass the cached local variable. */
-	$needle    = "\$import_text = get_nfilter_request_var('import_text')";
-	$assignPos = strpos($content, $needle);
-
-	if ($assignPos !== false) {
-		$afterAssign = substr($content, $assignPos + strlen($needle));
-
-		if (preg_match('/get_nfilter_request_var\s*\(\s*\'import_text\'\s*\)/', $afterAssign)) {
-			fwrite(STDERR, "Redundant get_nfilter_request_var('import_text') call after local assignment in $target\n");
-			exit(1);
-		}
 	}
 }
 

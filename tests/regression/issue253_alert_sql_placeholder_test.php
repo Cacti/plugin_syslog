@@ -30,14 +30,14 @@ $programAlert = [
 $hostSql = syslog_get_alert_sql($hostAlert, 55);
 $progSql = syslog_get_alert_sql($programAlert, 66);
 
-issue253_assert(strpos($hostSql['sql'], 'AND `status` = ?') !== false, 'Host alert SQL must keep status as a placeholder.');
-issue253_assert(strpos($hostSql['sql'], '?55') === false, 'Host alert SQL must not concatenate uniqueID into SQL text.');
+issue253_assert(strpos($hostSql['sql'], 'AND `status` = 1') !== false, 'Host alert SQL must select processed incoming rows.');
+issue253_assert(strpos($hostSql['sql'], 'AND `seq` <= ?') !== false, 'Host alert SQL must bound rows by sequence.');
 issue253_assert(count($hostSql['params']) === 2, 'Host alert SQL must pass two prepared parameters.');
-issue253_assert($hostSql['params'][1] === 55, 'Host alert status param should be the uniqueID.');
+issue253_assert($hostSql['params'][1] === 55, 'Host alert sequence parameter should be the processing boundary.');
 
-issue253_assert(strpos($progSql['sql'], 'AND `status` = ?') !== false, 'Program alert SQL must keep status as a placeholder.');
-issue253_assert(strpos($progSql['sql'], '?66') === false, 'Program alert SQL must not concatenate uniqueID into SQL text.');
+issue253_assert(strpos($progSql['sql'], 'AND `status` = 1') !== false, 'Program alert SQL must select processed incoming rows.');
+issue253_assert(strpos($progSql['sql'], 'AND `seq` <= ?') !== false, 'Program alert SQL must bound rows by sequence.');
 issue253_assert(count($progSql['params']) === 2, 'Program alert SQL must pass two prepared parameters.');
-issue253_assert($progSql['params'][1] === 66, 'Program alert status param should be the uniqueID.');
+issue253_assert($progSql['params'][1] === 66, 'Program alert sequence parameter should be the processing boundary.');
 
 print "issue253_alert_sql_placeholder_test passed\n";

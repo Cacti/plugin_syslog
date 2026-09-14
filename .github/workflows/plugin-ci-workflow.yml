@@ -63,6 +63,13 @@ jobs:
           exit 1
         fi
 
+    - name: Run Regression Tests
+      run: |
+        cd cacti/plugins/syslog
+        for test in tests/regression/*.php; do
+          php "$test"
+        done
+
     - name: Run PHP CS Fixer (Dry Run)
       run: |
         cd cacti/plugins/syslog

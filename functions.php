@@ -481,12 +481,6 @@ function syslog_get_import_xml_payload($redirect_url) {
 
 	if (trim($import_text) !== '') {
 		// textbox input
-		if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
-			cacti_log('SYSLOG ERROR: Text import payload exceeds the maximum size', false, 'SYSTEM');
-			header('Location: ' . $redirect_url);
-			exit;
-		}
-
 		return $import_text;
 	}
 
@@ -506,27 +500,10 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
-		$size = (int) ($_FILES['import_file']['size'] ?? filesize($tmp_name));
-
-		if ($size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES) {
-			cacti_log('SYSLOG ERROR: Uploaded import file has an invalid size', false, 'SYSTEM');
-			header('Location: ' . $redirect_url);
-			exit;
-		}
-
-		$fp = fopen($tmp_name, 'rb');
-
-		if ($fp === false) {
-			cacti_log('SYSLOG ERROR: Failed to open uploaded import file', false, 'SYSTEM');
-			header('Location: ' . $redirect_url);
-			exit;
-		}
-
-		$xml_data = fread($fp, $size);
-		fclose($fp);
+		$xml_data = syslog_read_import_file($tmp_name);
 
 		if ($xml_data === false) {
-			cacti_log('SYSLOG ERROR: Failed to read uploaded import file', false, 'SYSTEM');
+			cacti_log('SYSLOG ERROR: Uploaded import file is empty or unreadable', false, 'SYSTEM');
 			header('Location: ' . $redirect_url);
 			exit;
 		}
@@ -538,20 +515,24 @@ function syslog_get_import_xml_payload($redirect_url) {
 	exit;
 }
 
-function syslog_csv_cell(mixed $value): string {
-	$value = (string) $value;
+function syslog_read_import_file(string $filename): string|false {
+	$size = filesize($filename);
 
-	if ($value === '' || str_starts_with($value, "'")) {
-		return $value;
+	if ($size === false || $size < 1) {
+		return false;
 	}
 
-	$trimmed = ltrim($value, ' ');
+	$handle = fopen($filename, 'rb');
 
-	if ($trimmed !== '' && in_array($trimmed[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
-		return "'" . $value;
+	if ($handle === false) {
+		return false;
 	}
 
-	return $value;
+	try {
+		return fread($handle, $size);
+	} finally {
+		fclose($handle);
+	}
 }
 
 function syslog_is_partitioned() {
