@@ -55,3 +55,6 @@ locales/po/*.mo
 
 .claude/**
 .devcontainer/devcontainer.json
+node_modules/**
+package-lock.json
+package.json

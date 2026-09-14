@@ -257,10 +257,50 @@ function syslog_connect() {
 	return $connected;
 }
 
+/** Repair old installs before Cacti's auth.php checks the requested page. */
+function syslog_upgrade_saved_search_realm() {
+	global $user_auth_realm_filenames;
+
+	$admin = null;
+	$template = null;
+	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (in_array('syslog_alerts.php', $files, true)) {
+			$admin = $realm;
+		}
+		if (in_array('syslog_saved_searches.php', $files, true)) {
+			$template = $realm;
+		}
+	}
+
+	if ($admin === null) {
+		return;
+	}
+
+	if ($template === null) {
+		// Keep the realm ID: existing user and group grants must not change.
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
+			[$admin['file'] . ',syslog_saved_searches.php', $admin['id'], 'syslog'])) {
+			return;
+		}
+		$template = $admin;
+		api_plugin_replicate_config();
+	}
+
+	// A legacy standalone realm retains its grants. Administrators can also
+	// access Templates, without granting legacy template users other admin pages.
+	// Update the already-loaded map so the repair works on this request too.
+	if ($template['id'] == $admin['id'] || api_plugin_user_realm_auth('syslog_alerts.php')) {
+		$user_auth_realm_filenames['syslog_saved_searches.php'] = (int) $admin['id'] + 100;
+	}
+}
+
 function syslog_check_upgrade() {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
+	syslog_upgrade_saved_search_realm();
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 
@@ -1512,7 +1552,7 @@ function syslog_config_arrays() {
 
 	if (function_exists('auth_augment_roles')) {
 		auth_augment_roles(__('Normal User'), ['syslog.php']);
-		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php']);
+		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', 'syslog_saved_searches.php']);
 	}
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
