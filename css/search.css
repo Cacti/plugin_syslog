@@ -531,8 +531,12 @@
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 .syslogValueFilter { padding: 2px 5px; margin: -2px -5px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
 .syslogValueFilter:hover, .syslogValueFilter:focus-visible { border-color: #79a98a; background: #e4f1e7; color: #174d31; text-decoration-style: solid; }
+.syslogHostLabel { border-color: #c7d8e8; background: #eef5fb; color: #285477; text-decoration: none; }
+.syslogProgramLabel { border-color: #ddd0e8; background: #f6f0fa; color: #654477; text-decoration: none; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogValueFilter:hover,
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogValueFilter:focus-visible { border-color: #70ae85; background: #354f3e; color: #edf3ef; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogHostLabel { border-color: #526f8a; background: #2f4354; color: #d7e8f7; }
+#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogProgramLabel { border-color: #765d88; background: #473752; color: #eadcf2; }
 /* Cacti themes run .button() on every button, so the theme's .ui-button:hover
    paints the message like an editable input; keep it inert. Match the theme's
    selector weight (.ui-button:hover = 0,2,0) and then some. */

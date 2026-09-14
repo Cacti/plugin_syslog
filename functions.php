@@ -1048,6 +1048,8 @@ function syslog_value_filter_button($value, $field) {
 	$value = (string) $value;
 	if ($value === '') return html_escape(__('Unknown', 'syslog'));
 	$class = 'syslogValueFilter';
+	if ($field === 'host') $class .= ' syslogHostLabel';
+	if ($field === 'program') $class .= ' syslogProgramLabel';
 	if ($field === 'priority') {
 		$class .= ' syslogSeverity syslogSeverity-' . html_escape(preg_replace('/[^a-z]/', '', strtolower($value)));
 	}
