@@ -253,4 +253,6 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 	if (!preg_match('/function\s+syslog_manage_items\s*\(\s*\$from_table\s*,\s*\$to_table\s*\)/', $functions)) {
 		throw new RuntimeException('syslog_manage_items function with $from_table, $to_table signature not found.');
 	}
+
+	expect(true)->toBeTrue();
 });

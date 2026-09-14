@@ -62,4 +62,6 @@ it('preserves import text trim semantics in the shared payload helper', function
 			throw new RuntimeException("Shared import payload helper call missing in $target");
 		}
 	}
+
+	expect(true)->toBeTrue();
 });

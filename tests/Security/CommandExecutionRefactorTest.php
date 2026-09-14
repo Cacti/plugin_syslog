@@ -108,4 +108,6 @@ it('keeps alert and ticket command execution shell-safe', function () {
 			throw new RuntimeException("syslog_execute_ticket_command() must call cacti_escapeshellarg() for all 4 --arg values (found $esc_count).");
 		}
 	}
+
+	expect(true)->toBeTrue();
 });

@@ -42,4 +42,6 @@ it('routes bulk selected-item actions through the shared dispatch helper', funct
 			throw new RuntimeException("Shared selected-items action helper is not used in $target");
 		}
 	}
+
+	expect(true)->toBeTrue();
 });

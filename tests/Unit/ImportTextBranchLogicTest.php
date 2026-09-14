@@ -37,4 +37,6 @@ it('routes every rule importer through the shared import payload helper', functi
 			throw new RuntimeException("$func: route duplicates shared import payload parsing in $target");
 		}
 	}
+
+	expect(true)->toBeTrue();
 });

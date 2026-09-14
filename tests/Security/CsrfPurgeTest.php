@@ -246,4 +246,6 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 	if (strpos($allowed, 'MSG:syslog_info|') === false) {
 		throw new RuntimeException("A completed purge must report the record count:\n$allowed");
 	}
+
+	expect(true)->toBeTrue();
 });

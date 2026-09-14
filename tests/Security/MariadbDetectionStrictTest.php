@@ -26,4 +26,6 @@ it('uses a strict comparison for MariaDB detection', function () {
 	if (!preg_match($fixedPattern, $setup)) {
 		throw new RuntimeException('Strict MariaDB stripos comparison is missing.');
 	}
+
+	expect(true)->toBeTrue();
 });

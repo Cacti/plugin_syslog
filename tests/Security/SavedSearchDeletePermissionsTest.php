@@ -83,4 +83,6 @@ it('only allows the owner or an admin to delete a shared saved search', function
 			}
 		}
 	}
+
+	expect(true)->toBeTrue();
 });

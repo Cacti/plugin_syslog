@@ -73,5 +73,5 @@ it('reapplies the default last-day limit whenever a search has no date condition
 	expect($run_block('(unclosed'))->toBe('(unclosed', 'Invalid input not modified');
 
 	// The obsolete once-per-session gate must not return.
-	expect($source)->not->toContain('_query_dates', 'Session date gate removed');
+	expect(str_contains($source, '_query_dates'))->toBeFalse('Session date gate removed');
 });

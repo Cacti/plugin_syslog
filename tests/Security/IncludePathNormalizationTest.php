@@ -117,4 +117,6 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/database\.php[\'"]\s*\)/', $setup)) {
 		throw new RuntimeException('setup.php must use __DIR__ for database.php include');
 	}
+
+	expect(true)->toBeTrue();
 });

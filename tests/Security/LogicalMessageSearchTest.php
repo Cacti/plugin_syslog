@@ -77,7 +77,7 @@ it('parses the logical search grammar and rejects malformed or oversized input',
 		expect($tree[0])->toBe('predicate', 'Field predicate parsed');
 
 		foreach (['message', 'logmsg'] as $column) {
-			expect(syslog_logical_search_sql($tree, $column))->toContain(db_qstr($tree[3]), 'Field values quoted');
+			expect(str_contains(syslog_logical_search_sql($tree, $column), db_qstr($tree[3])))->toBeTrue('Field values quoted');
 		}
 	}
 
@@ -91,7 +91,7 @@ it('parses the logical search grammar and rejects malformed or oversized input',
 	}
 
 	expect(syslog_logical_positive_terms(syslog_parse_logical_search('host = "router" AND message contains "error"')))->toBe(['error'], 'Only message values highlighted');
-	expect(syslog_logical_search_sql(syslog_parse_logical_search('host = "router"'), 'logmsg'))->toContain('syslog.host =', 'Alerts use their stored hostname');
+	expect(str_contains(syslog_logical_search_sql(syslog_parse_logical_search('host = "router"'), 'logmsg'), 'syslog.host ='))->toBeTrue('Alerts use their stored hostname');
 
 	foreach (['3600', '21600', '86400', '604800', '1209600', '2592000'] as $seconds) {
 		$tree = syslog_parse_logical_search('logtime last "' . $seconds . '"');
@@ -179,9 +179,9 @@ it('applies the logical search predicate consistently in the real query builder'
 
 				$predicate = syslog_logical_search_sql($GLOBALS['syslog_search_tree'], $tab === 'syslog' ? 'message' : 'logmsg');
 
-				expect($sql_where)->toContain($predicate, 'Predicate in shared count filter');
-				expect($GLOBALS['captured_sql'])->toContain($sql_where, 'Predicate in results query');
-				expect($GLOBALS['captured_sql'])->toContain('LIMIT 0,20', 'Pagination retained');
+				expect(str_contains($sql_where, $predicate))->toBeTrue('Predicate in shared count filter');
+				expect(str_contains($GLOBALS['captured_sql'], $sql_where))->toBeTrue('Predicate in results query');
+				expect(str_contains($GLOBALS['captured_sql'], 'LIMIT 0,20'))->toBeTrue('Pagination retained');
 
 				if ($tab === 'syslog' && $removal === '1') {
 					expect(substr_count($GLOBALS['captured_sql'], $predicate))->toBe(2, 'Both union branches filtered');
@@ -193,7 +193,7 @@ it('applies the logical search predicate consistently in the real query builder'
 
 		get_syslog_messages($sql_where, 20, $tab);
 
-		expect($GLOBALS['captured_sql'])->toContain('LIMIT 10000', 'Export limit retained');
+		expect(str_contains($GLOBALS['captured_sql'], 'LIMIT 10000'))->toBeTrue('Export limit retained');
 
 		unset($GLOBALS['request']['export']);
 	}
@@ -203,21 +203,21 @@ it('applies the logical search predicate consistently in the real query builder'
 
 	get_syslog_messages($sql_where, 20, 'syslog');
 
-	expect($sql_where)->toContain("syslog.logtime >= '2020-01-01 00:00:00'", 'From condition applied');
-	expect($sql_where)->toContain("syslog.logtime <= '2020-01-02 00:00:00'", 'To condition applied');
-	expect($sql_where)->not->toContain('BETWEEN', 'No hidden legacy date restriction');
+	expect(str_contains($sql_where, "syslog.logtime >= '2020-01-01 00:00:00'"))->toBeTrue('From condition applied');
+	expect(str_contains($sql_where, "syslog.logtime <= '2020-01-02 00:00:00'"))->toBeTrue('To condition applied');
+	expect(str_contains($sql_where, 'BETWEEN'))->toBeFalse('No hidden legacy date restriction');
 
 	$GLOBALS['syslog_search_tree'] = null;
 
 	get_syslog_messages($sql_where, 20, 'syslog');
 
-	expect($sql_where)->not->toContain('logtime', 'Removing date conditions removes time restrictions');
+	expect(str_contains($sql_where, 'logtime'))->toBeFalse('Removing date conditions removes time restrictions');
 
 	$GLOBALS['syslog_search_error'] = 'Invalid logical search';
 
 	get_syslog_messages($sql_where, 20, 'syslog');
 
-	expect($sql_where)->toContain('(1 = 0)', 'Invalid expression fails closed');
+	expect(str_contains($sql_where, '(1 = 0)'))->toBeTrue('Invalid expression fails closed');
 
 	// syslog_export() calls http_response_code()/header(): run it in its own
 	// process so an earlier test's console output in this same PHPUnit/Pest
@@ -249,8 +249,8 @@ it('applies the logical search predicate consistently in the real query builder'
 	fclose($pipes[2]);
 	proc_close($process);
 
-	expect($stdout)->toContain('CODE:400', 'Invalid export must respond with HTTP 400');
-	expect($stdout)->toContain('BODY:Invalid logical search', 'Invalid export rejected');
+	expect(str_contains($stdout, 'CODE:400'))->toBeTrue('Invalid export must respond with HTTP 400');
+	expect(str_contains($stdout, 'BODY:Invalid logical search'))->toBeTrue('Invalid export rejected');
 
 	$GLOBALS['syslog_search_error']     = '';
 	$GLOBALS['request']['search_mode']  = 'regex';
@@ -258,5 +258,5 @@ it('applies the logical search predicate consistently in the real query builder'
 
 	get_syslog_messages($sql_where, 20, 'syslog');
 
-	expect($sql_where)->toContain("message RLIKE 'error|warning'", 'Regex query retained');
+	expect(str_contains($sql_where, "message RLIKE 'error|warning'"))->toBeTrue('Regex query retained');
 });

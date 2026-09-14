@@ -109,4 +109,6 @@ it('renders saved-search template rows escaped with only a CSRF-protected delete
 			throw new RuntimeException('Every action form must receive a CSRF token');
 		}
 	}
+
+	expect(true)->toBeTrue();
 });
