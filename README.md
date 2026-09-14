@@ -103,11 +103,13 @@ partition in place and skips retention pruning rather than risking a write gap.
 
 ### Validation
 
-The repository includes standalone PHP security regressions and a disposable
-Docker/Playwright end-to-end harness. GitHub CI runs PHP syntax and quality
-checks, CodeQL, and the PHP 8.1-8.3 integration matrix on Linux. The Docker E2E
-runner refuses unsafe temporary-directory paths before performing recursive
-cleanup.
+The repository includes a Pest test suite (`tests/Security`, `tests/Unit`)
+run against Cacti's own Composer-managed vendor tree, plus a disposable
+Docker/Playwright end-to-end harness. GitHub CI runs a single integration-test
+workflow that installs a pinned Cacti checkout, runs the Pest suite, and
+exercises the syslog poller end-to-end on the PHP 8.2-8.4 matrix on Linux. The
+Docker E2E runner refuses unsafe temporary-directory paths before performing
+recursive cleanup.
 
 ## Installation
 

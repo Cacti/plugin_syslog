@@ -44,7 +44,7 @@ plugin_syslog/
 ├── css/search.css                # Search UI styling
 ├── locales/                      # gettext .po/.mo translation catalogs
 ├── template/                     # Cacti graph template XML
-└── tests/regression/             # Standalone PHP regression tests (no full Cacti bootstrap needed)
+└── tests/                        # Pest test suite (tests/Security, tests/Unit) run against Cacti's vendor tree
 ```
 
 ## Architecture & Data Flow
@@ -218,7 +218,7 @@ Document all changes in `CHANGELOG.md` under `--- develop ---`, prefixed by type
 ### Commit Messages
 - Use descriptive commit messages; reference issue/PR numbers when applicable (`fix: ... (#339)`).
 - Group related changes logically; prefer one concern per commit.
-- Run `php -l` and the relevant `tests/regression/*.php` scripts before committing.
+- Run `php -l` on changed files, and add/update the relevant Pest test under `tests/Security` or `tests/Unit` before committing.
 
 ## Key Files
 - `setup.php`: Plugin installation, hook registration, and schema updates.
