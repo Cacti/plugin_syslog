@@ -54,19 +54,33 @@ it('validates uploads before reading and rejects zero-byte imports', function ()
 
 	$this->loadPluginSource('functions.php');
 
-	$emptyFixture   = tempnam(sys_get_temp_dir(), 'syslog-empty-import-');
-	$payloadFixture = tempnam(sys_get_temp_dir(), 'syslog-import-');
+	$emptyFixture    = tempnam(sys_get_temp_dir(), 'syslog-empty-import-');
+	$payloadFixture  = tempnam(sys_get_temp_dir(), 'syslog-import-');
+	$oversizeFixture = tempnam(sys_get_temp_dir(), 'syslog-oversize-import-');
 
-	if ($emptyFixture === false || $payloadFixture === false ||
+	if ($emptyFixture === false || $payloadFixture === false || $oversizeFixture === false ||
 		file_put_contents($payloadFixture, '<xml>fixture</xml>') === false) {
 		throw new RuntimeException('Unable to create import payload fixtures.');
 	}
 
+	// Behavioral coverage for the SYSLOG_IMPORT_MAX_BYTES upload guard,
+	// beyond the earlier source-text checks: a file this large must fail
+	// closed rather than being read into memory.
+	$handle = fopen($oversizeFixture, 'wb');
+
+	if ($handle === false || fseek($handle, SYSLOG_IMPORT_MAX_BYTES) !== 0 || fwrite($handle, 'x') === false) {
+		throw new RuntimeException('Unable to create the oversized import fixture.');
+	}
+
+	fclose($handle);
+
 	try {
 		expect(syslog_read_import_file($emptyFixture))->toBeFalse('A zero-byte import must fail without calling fread() with a zero length.');
 		expect(syslog_read_import_file($payloadFixture))->toBe('<xml>fixture</xml>', 'A non-empty import payload must round trip without data loss.');
+		expect(syslog_read_import_file($oversizeFixture))->toBeFalse('A file larger than SYSLOG_IMPORT_MAX_BYTES must be rejected.');
 	} finally {
 		unlink($emptyFixture);
 		unlink($payloadFixture);
+		unlink($oversizeFixture);
 	}
 });

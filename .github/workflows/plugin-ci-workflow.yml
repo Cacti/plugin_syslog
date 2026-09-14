@@ -88,6 +88,14 @@ jobs:
     - name: Run apt-get update
       run: sudo apt-get update
 
+    - name: Install System Dependencies
+      run: sudo apt-get install -y snmp snmpd rrdtool fping
+
+    - name: Start SNMPD Agent and Test
+      run: |
+        sudo systemctl start snmpd
+        sudo snmpwalk -c public -v2c -On localhost .1.3.6.1.2.1.1      
+
     - name: Setup Permissions
       run: |
         sudo chown -R www-data:runner ${{ github.workspace }}/cacti

@@ -446,15 +446,15 @@ const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
 function syslog_get_import_xml_payload($redirect_url) {
 	$import_text = (string) get_nfilter_request_var('import_text');
 
+	if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
+		cacti_log('SYSLOG ERROR: Text import payload exceeds the maximum size', false, 'SYSTEM');
+		raise_message('syslog_import_size_error', __('Text import payload exceeds the maximum size', 'syslog'), MESSAGE_LEVEL_ERROR);
+		header('Location: ' . $redirect_url);
+		exit;
+	}
+
 	if (trim($import_text) !== '') {
 		// textbox input
-		if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
-			cacti_log('SYSLOG ERROR: Text import payload exceeds the maximum size', false, 'SYSTEM');
-			print 'Text import payload exceeds the maximum size';
-			header('Location: ' . $redirect_url);
-			exit;
-		}
-
 		return $import_text;
 	}
 

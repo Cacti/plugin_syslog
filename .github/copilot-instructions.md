@@ -38,7 +38,7 @@ plugin_syslog/
 ├── syslog_reports.php           # Report rule administration
 ├── syslog_saved_searches.php    # Shared/admin saved-search templates
 ├── syslog_process.php           # CLI poller: ingest syslog_incoming -> syslog
-├── syslog_removal.php / syslog_counter.php / syslog_batch_transfer.php  # CLI maintenance scripts
+├── syslog_counter.php / syslog_batch_transfer.php  # CLI maintenance scripts
 ├── config.php.dist              # Template for dedicated syslog database config
 ├── js/functions.js               # Client-side search/UI logic
 ├── css/search.css                # Search UI styling
@@ -80,8 +80,9 @@ plugin_syslog/
 
 ### Function Names
 - **Plugin lifecycle/hook-registration functions** MUST be prefixed `plugin_syslog_`: `plugin_syslog_install()`, `plugin_syslog_uninstall()`, `plugin_syslog_upgrade()`, `plugin_syslog_version()`.
+- **Public rule-save APIs** use the `api_syslog_` prefix: `api_syslog_alert_save()`, `api_syslog_removal_save()`, `api_syslog_report_save()`.
 - **All other functions** MUST be prefixed `syslog_`: `syslog_connect()`, `syslog_db_execute_prepared()`, `syslog_search_fields()`.
-- Match the existing prefix used by the function you are editing; do not introduce a third naming scheme.
+- Match the existing prefix used by the function you are editing; do not introduce a fourth naming scheme.
 
 ### Database Tables
 Tables use a bare `syslog`/`syslog_removed` name or a `syslog_` prefix (NOT `plugin_syslog_`):

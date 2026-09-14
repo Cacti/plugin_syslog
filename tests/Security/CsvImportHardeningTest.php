@@ -28,9 +28,36 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 	}
 
 	// Both Syslog CSV export paths (system logs and alert logs) must call the
-	// hardening helper on every text cell; the definition itself adds one match.
-	if (substr_count($functions, 'syslog_csv_safe(') < 10) {
-		throw new RuntimeException('Both Syslog CSV export paths must harden every cell');
+	// hardening helper on every text cell. Check each branch of
+	// syslog_export() individually so one branch losing several calls can't
+	// hide behind matches accumulated elsewhere in the file.
+	$exportStart = strpos($functions, 'function syslog_export(');
+	$exportEnd   = strpos($functions, 'function syslog_debug(', $exportStart);
+
+	if ($exportStart === false || $exportEnd === false) {
+		throw new RuntimeException('Unable to isolate syslog_export()');
+	}
+
+	$exportBody  = substr($functions, $exportStart, $exportEnd - $exportStart);
+
+	// Anchored to line start/end at one tab of indentation: syslog_csv_safe()
+	// calls nested inside the per-message loops sit at deeper indentation
+	// and would otherwise satisfy a plain (unanchored) substring search for
+	// "} else {" from their own closing brace.
+	if (!preg_match('/^\t\} else \{$/m', $exportBody, $branchMatch, PREG_OFFSET_CAPTURE)) {
+		throw new RuntimeException('Unable to split syslog_export() into its system/alert log branches');
+	}
+
+	$branchSplit     = $branchMatch[0][1];
+	$systemLogBranch = substr($exportBody, 0, $branchSplit);
+	$alertLogBranch  = substr($exportBody, $branchSplit);
+
+	if (substr_count($systemLogBranch, 'syslog_csv_safe(') < 5) {
+		throw new RuntimeException('System log CSV export branch must harden every text cell');
+	}
+
+	if (substr_count($alertLogBranch, 'syslog_csv_safe(') < 6) {
+		throw new RuntimeException('Alert log CSV export branch must harden every text cell');
 	}
 
 	if (substr_count($functions, 'fputcsv($fp, $line, \',\', \'"\', \'\')') !== 4) {
@@ -98,6 +125,8 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 	// since this plugin's request-var/logging stubs differ from bootstrap's.
 	$root = dirname(__DIR__, 2);
 	$code = sprintf(<<<'PHP'
+		define('MESSAGE_LEVEL_ERROR', 1);
+
 		$payload = str_repeat('x', (5 * 1024 * 1024) + 1);
 
 		function get_nfilter_request_var(string $name): string {
@@ -106,8 +135,19 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 			return $payload;
 		}
 
+		// Real cacti_log()/raise_message() write to a log file/session, not
+		// the response body; fwrite(STDERR, ...) mirrors that (and, unlike
+		// print/echo, cannot itself cause "headers already sent" below).
 		function cacti_log(string $message, bool $output, string $facility): void {
-			print $message;
+			fwrite(STDERR, "LOG:$message\n");
+		}
+
+		function __(string $text, string $domain = ''): string {
+			return $text;
+		}
+
+		function raise_message(string $id, string $text = '', int $level = 0): void {
+			fwrite(STDERR, "MSG:$text\n");
 		}
 
 		require %s;
@@ -133,7 +173,14 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 	fclose($pipes[2]);
 	$status = proc_close($process);
 
-	if ($status !== 0 || !str_contains($stdout, 'Text import payload exceeds the maximum size') ||
+	// The rejection must raise its message and redirect without ever writing
+	// to the response body first, or the redirect silently fails with
+	// "headers already sent" and the user is left on a blank/broken page.
+	if (str_contains($stderr, 'headers already sent')) {
+		throw new RuntimeException("Oversized text import emitted output before redirecting: $stderr");
+	}
+
+	if ($status !== 0 || !str_contains($stderr, 'MSG:Text import payload exceeds the maximum size') ||
 		str_contains($stdout, 'UNREACHABLE')) {
 		throw new RuntimeException("Oversized text import did not fail closed: $stderr");
 	}

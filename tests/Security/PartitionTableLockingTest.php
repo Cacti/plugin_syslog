@@ -202,7 +202,9 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 
 	// Boundary math may be expressed in SQL (strtotime()/UNIX_TIMESTAMP()) or,
 	// as of the UTC epoch rewrite, in PHP via intdiv() against 86400 seconds.
-	if (!preg_match('/(?:strtotime\s*\(|UNIX_TIMESTAMP\s*\(|intdiv\s*\()/', $create_body)) {
+	// Match the actual operands so an unrelated intdiv() elsewhere in the
+	// function body can't satisfy this check.
+	if (!preg_match('/(?:strtotime\s*\(|UNIX_TIMESTAMP\s*\(|intdiv\s*\(\s*\$time\s*,\s*86400\s*\))/', $create_body)) {
 		throw new RuntimeException('syslog_partition_create is missing partition boundary computation logic.');
 	}
 
