@@ -5,6 +5,7 @@ const source = fs.readFileSync(require('node:path').join(__dirname, '../../js/fu
 let focused;
 class Element {
 	constructor(tag = 'div') { this.tag = tag; this.children = []; this.handlers = {}; this.jqueryHandlers = {}; this.value = ''; this.dataset = {}; }
+	get classList() { return {contains: name => (this.className || '').split(' ').includes(name)}; }
 	appendChild(child) { this.children.push(child); }
 	replaceChildren() { this.children = []; }
 	setAttribute(name, value) { this[name] = value; }
@@ -31,6 +32,7 @@ const context = {
 	$: selector => {
 		const node = typeof selector === 'string' ? nodes[selector.slice(1)] : selector;
 		return {
+			data() { return undefined; },
 			datetimepicker(options) { node.datepickerOptions = options; },
 			autocomplete(options) { node.autocompleteOptions = options; return this; },
 			val(value) { if (value !== undefined) node.value = value; return node.value; },

@@ -2,24 +2,34 @@
 
 // Render a populated list: an empty list did not exercise the original fatal.
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog_saved_searches.php');
-$start = strpos($source, "\tforeach (\$rows as \$template) {");
-$end = strpos($source, "\n}\nhtml_end_box();", $start);
+$start = strpos($source, 'function syslog_template_list(');
+$end = strpos($source, 'function syslog_template_edit(', $start);
 if ($start === false || $end === false) {
 	throw new RuntimeException('Template rendering block not found');
 }
 
 function __($text, $domain = '') { return $text; }
+function __esc($text, $domain = '') { return html_escape($text); }
 function html_escape($text) { return htmlspecialchars($text, ENT_QUOTES, 'UTF-8'); }
+function html_start_box(...$args) { print '<table>'; }
+function html_end_box() { print '</table>'; }
+function html_header($columns) { print '<tr><th>' . implode('</th><th>', $columns) . '</th></tr>'; }
+function form_alternate_row($id) { print '<tr>'; }
+function form_end_row() { print '</tr>'; }
+eval(substr($source, $start, $end - $start));
 
 $rows = [
 	['id' => 1, 'name' => 'Example <one>', 'user' => 'admin', 'search' => 'message contains "error"'],
 	['id' => 2, 'name' => 'Example two', 'user' => 'admin', 'search' => 'message contains "warning"'],
 ];
 ob_start();
-eval(substr($source, $start, $end - $start));
+syslog_template_list($rows);
 $html = ob_get_clean();
 if (substr_count($html, "<form method='post'") !== 2 || strpos($html, 'Example &lt;one&gt;') === false) {
 	throw new RuntimeException('Expected escaped rows with POST action forms');
+}
+if (strpos($html, 'purge') !== false || substr_count($html, "value='delete'") !== 2) {
+	throw new RuntimeException('Delete must be the only removal action');
 }
 
 // Optionally check token injection with the installed Cacti output handler.

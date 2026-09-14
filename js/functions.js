@@ -314,6 +314,53 @@ function syncSyslogSearchBuilder() {
 	return true;
 }
 
+/** Shared-template administration uses the same builder as the log view. */
+function initSyslogTemplates() {
+	var builder = document.getElementById('syslog_template_builder');
+	if (builder) {
+		// Read the active jQuery UI theme rather than imposing a plugin palette.
+		var sample = $('<div class="ui-widget-content"><button class="ui-button ui-widget ui-state-default" type="button"></button></div>').hide().appendTo(document.body);
+		var button = sample.find('button');
+		var tokens = {
+			'surface': sample.css('background-color'), 'card': sample.css('background-color'),
+			'text': sample.css('color'), 'muted': sample.css('color'),
+			'border': sample.css('border-top-color'), 'accent': button.css('color'),
+			'tint': button.css('background-color')
+		};
+		Object.keys(tokens).forEach(function(key) { builder.style.setProperty('--search-' + key, tokens[key]); });
+		sample.remove();
+		initSyslogSearchBuilder(builder);
+	}
+	$('#syslog_template_form').attr('novalidate', 'novalidate').off('submit.syslogTemplates').on('submit.syslogTemplates', function(event) {
+		var name = this.querySelector('[name="name"]');
+		name.required = true;
+		name.setCustomValidity(name.value.trim() ? '' : 'Enter a template name.');
+		if (!name.reportValidity()) { event.preventDefault(); return; }
+		if (builder) {
+			var expression = syslogBuilderSync(builder);
+			if (expression === null) { event.preventDefault(); return; }
+			$('#template_search').val(expression);
+		}
+	});
+	$('.syslogTemplateDelete').off('submit.syslogTemplates').on('submit.syslogTemplates', function(event) {
+		if (this.dataset.confirmed === 'true') return;
+		event.preventDefault();
+		var form = this;
+		$('<div>').text(form.dataset.confirm).dialog({
+			modal: true, title: form.dataset.title, width: Math.min(440, window.innerWidth - 32),
+			close: function() { $(this).dialog('destroy').remove(); },
+			buttons: [
+				{text: form.dataset.cancel, click: function() { $(this).dialog('close'); }},
+				{text: form.dataset.delete, click: function() {
+					form.dataset.confirmed = 'true';
+					$(this).dialog('close');
+					form.requestSubmit();
+				}}
+			]
+		});
+	});
+}
+
 function initSyslogSearchDates(container) {
 	container.querySelectorAll('.syslogSearchDate').forEach(function(input) {
 		$(input).datetimepicker({
@@ -390,6 +437,7 @@ function initSyslogSearchBuilder(builder, rows) {
 	function element(tag, className, text) {
 		var node = document.createElement(tag);
 		node.className = className;
+		if (labels.theme === 'cacti' && tag === 'button') node.className += ' ui-button ui-corner-all ui-widget';
 		if (text) {
 			node.textContent = text;
 		}
@@ -537,6 +585,13 @@ function initSyslogSearchBuilder(builder, rows) {
 			actions.appendChild(button);
 		});
 		container.appendChild(actions);
+		if (labels.theme === 'cacti') {
+			$(container).find('select').each(function() {
+				if (!$(this).selectmenu('instance')) {
+					$(this).selectmenu({change: function(event, ui) { $(this).val(ui.item.value).trigger('change'); }});
+				}
+			});
+		}
 	}
 	render(builder, builder.searchRows);
 	initSyslogSearchDates(builder);

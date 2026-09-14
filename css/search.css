@@ -1,4 +1,36 @@
 /* Scoped query builder surfaces; does not change Cacti or email styles. */
+.syslogTemplateEditor {
+	padding: 12px;
+}
+
+.syslogTemplateEditor .syslogSearchBuilder {
+	max-width: 1100px;
+	margin: 0;
+}
+
+.syslogTemplateEditor .syslogSearchRow {
+	border-radius: 3px;
+}
+
+.syslogTemplateEditor .ui-state-error {
+	padding: 8px;
+}
+
+.syslogTemplateQuery {
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	max-width: 60vw;
+}
+
+.syslogTemplateActions {
+	width: 1%;
+	white-space: nowrap;
+}
+
+.syslogTemplateActions form {
+	margin: 0;
+}
+
 #syslog_form .syslogSearchPanel {
 	--search-surface: #f3f6f5;
 	--search-card: #fff;
