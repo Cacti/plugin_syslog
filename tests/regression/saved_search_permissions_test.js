@@ -13,13 +13,14 @@ const context = {
  }
 };
 vm.runInNewContext(source.slice(source.indexOf('function savedSearchActive('), source.indexOf('/** Save all authored conditions')), context);
-// The server stamps each option with its own delete permission via data-manage.
-for (const manage of ['0', '1']) {
- dropdown.selectedOptions = [{dataset: {owner: 'someone-else', global: '0', manage}}];
+// Only an explicit server stamp of data-manage='0' withdraws Delete; any other
+// state (missing flag, '1', legacy markup) defers to server-side enforcement.
+for (const manage of ['0', '1', undefined]) {
+ dropdown.selectedOptions = [{dataset: {owner: 'someone-else', global: '0', ...(manage !== undefined ? {manage} : {})}}];
  context.savedSearchButtons();
- assert.equal(buttons['#saved_delete'].visible, manage === '1');
- assert.equal(buttons['#saved_delete'].disabled, manage !== '1');
- assert.equal(buttons['#saved_edit'].disabled, manage !== '1');
+ assert.equal(buttons['#saved_delete'].visible, manage !== '0');
+ assert.equal(buttons['#saved_delete'].disabled, manage === '0');
+ assert.equal(buttons['#saved_edit'].disabled, manage === '0');
 }
 // The dropdown-level attributes no longer influence the decision.
 dropdown.dataset.admin = '1';

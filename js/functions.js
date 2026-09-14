@@ -698,11 +698,11 @@ function savedSearchActive() {
 	return value && value !== '0' ? parseInt(value, 10) : 0;
 }
 
-/** Match the server: only options the server marked manageable may be edited or deleted. */
+/** Only the server's own permission stamp may take Delete away; missing flag defers to it. */
 function savedSearchCanManage() {
 	var id = savedSearchActive();
 	var selected = document.getElementById('saved_search')?.selectedOptions[0];
-	return !!(id && selected && selected.dataset.manage === '1');
+	return !!(id && selected && selected.dataset.manage !== '0');
 }
 
 /** Never offer deletion for a template the current user cannot manage. */
