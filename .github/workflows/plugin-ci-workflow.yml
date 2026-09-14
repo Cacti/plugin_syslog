@@ -141,11 +141,17 @@ jobs:
     - name: Check PHP version
       run: php -v
     
+    - name: Add ondrej/php PPA for non-default PHP versions
+      run: |
+        if [ "${{ matrix.php }}" != "8.3" ]; then
+          LC_ALL=C.UTF-8 sudo add-apt-repository -y ppa:ondrej/php
+        fi
+    
     - name: Run apt-get update
       run: sudo apt-get update
     
     - name: Install System Dependencies
-      run: sudo apt-get install -y apache2 snmp snmpd rrdtool fping
+      run: sudo apt-get install -y snmp snmpd rrdtool fping
     
     - name: Start SNMPD Agent and Test
       run: |
