@@ -660,7 +660,16 @@ body.dark #syslog_form .syslogSearchPanel {
 #syslog_form .syslogSearchHeading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 #syslog_form .syslogSearchToggle { width: auto; gap: 8px; padding: 4px 8px; }
 #syslog_form .syslogSearchSavedBar { padding-right: 140px; min-height: 28px; }
-.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 60px 120px 170px minmax(100px, 1fr) 26px; }
+.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) {
+	box-sizing: border-box;
+	width: min(100%, 860px);
+	grid-template-columns: 60px 120px 170px minmax(220px, 420px) 26px;
+}
+.syslogSearchBuilder .syslogSearchRow > .ui-selectmenu-button {
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0;
+}
 #syslog_message_details { resize: horizontal; min-width: 280px; max-width: 50vw; }
 #syslog_form[data-theme='dark'] .syslogSearchPanel,
 #syslog_form[data-theme='midwinter'] .syslogSearchPanel {
