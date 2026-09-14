@@ -60,7 +60,8 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'replicate_out',         'syslog_replicate_out',        'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -256,13 +257,55 @@ function syslog_connect() {
 	return $connected;
 }
 
+/** Repair old installs before Cacti's auth.php checks the requested page. */
+function syslog_upgrade_saved_search_realm() {
+	global $user_auth_realm_filenames;
+
+	$admin = null;
+	$template = null;
+	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (in_array('syslog_alerts.php', $files, true)) {
+			$admin = $realm;
+		}
+		if (in_array('syslog_saved_searches.php', $files, true)) {
+			$template = $realm;
+		}
+	}
+
+	if ($admin === null) {
+		return;
+	}
+
+	if ($template === null) {
+		// Keep the realm ID: existing user and group grants must not change.
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
+			[$admin['file'] . ',syslog_saved_searches.php', $admin['id'], 'syslog'])) {
+			return;
+		}
+		$template = $admin;
+		api_plugin_replicate_config();
+	}
+
+	// A legacy standalone realm retains its grants. Administrators can also
+	// access Templates, without granting legacy template users other admin pages.
+	// Update the already-loaded map so the repair works on this request too.
+	if ($template['id'] == $admin['id'] || api_plugin_user_realm_auth('syslog_alerts.php')) {
+		$user_auth_realm_filenames['syslog_saved_searches.php'] = (int) $admin['id'] + 100;
+	}
+}
+
 function syslog_check_upgrade() {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
+	syslog_upgrade_saved_search_realm();
+	// Keep newly introduced permission realms available for existing installs.
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 
 	// Let's only run this check if we are on a page that actually needs the data
-	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php'];
+	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php'];
 
 	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
 		return;
@@ -427,6 +470,22 @@ function syslog_check_upgrade() {
 	}
 
 	syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
+
+	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+			id int(10) NOT NULL auto_increment,
+			name varchar(128) NOT NULL default '',
+			search text NOT NULL,
+			removal int(10) NOT NULL default '1',
+			grouping int(10) NOT NULL default '0',
+			`user` varchar(32) NOT NULL default '',
+			is_global char(2) NOT NULL default '',
+			`date` int(16) NOT NULL default '0',
+			PRIMARY KEY (id),
+			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
 }
 
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
@@ -463,17 +522,21 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 
 	$parts = '';
 
+	/*
+	 * Partition boundaries are integer epochs computed in PHP and injected
+	 * as numeric literals. This keeps both MySQL and PHP session time zones
+	 * out of the equation: the boundary is always the next UTC midnight
+	 * after the labeled day.
+	 */
 	for ($i = $days; $i >= -1; $i--) {
-		$timestamp = $now - ($i * 86400);
-		$date      = gmdate('Y-m-d', $timestamp);
-		$format    = gmdate('Ymd', strtotime('- 1 day', $timestamp));
+		$day_epoch      = $now - ($i * 86400);
+		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
+		$format         = gmdate('Ymd', $day_epoch);
 
-		$parts .= ($parts != '' ? ",\n" : '(') . ' PARTITION d' . $format . " VALUES LESS THAN (UNIX_TIMESTAMP('" . $date . "'))";
+		$parts .= ($parts !== '' ? ",\n" : '(') . ' PARTITION d' . $format . ' VALUES LESS THAN (' . $boundary_epoch . ')';
 	}
 
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
-
-	//cacti_log($sql . $parts);
 
 	syslog_db_execute($sql . $parts);
 }
@@ -659,6 +722,20 @@ function syslog_setup_table_new($options) {
 		notify int(10) unsigned NOT NULL default '0',
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+		id int(10) NOT NULL auto_increment,
+		name varchar(128) NOT NULL default '',
+		search text NOT NULL,
+		removal int(10) NOT NULL default '1',
+		grouping int(10) NOT NULL default '0',
+		`user` varchar(32) NOT NULL default '',
+		is_global char(2) NOT NULL default '',
+		`date` int(16) NOT NULL default '0',
+		PRIMARY KEY (id),
+		KEY owner (`user`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
@@ -1469,6 +1546,7 @@ function syslog_config_arrays() {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
 			}
 		}
 		$menu = $menu2;
@@ -1478,7 +1556,7 @@ function syslog_config_arrays() {
 
 	if (function_exists('auth_augment_roles')) {
 		auth_augment_roles(__('Normal User'), ['syslog.php']);
-		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php']);
+		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', 'syslog_saved_searches.php']);
 	}
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
@@ -1507,6 +1585,7 @@ function syslog_draw_navigation_text($nav) {
 	$nav['syslog_reports.php:']        = ['title' => __('Syslog Reports', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1'];
 	$nav['syslog_reports.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
 	$nav['syslog_reports.php:actions'] = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
+	$nav['syslog_saved_searches.php:'] = ['title' => __('Saved Search Templates', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_saved_searches.php', 'level' => '1'];
 	$nav['syslog.php:actions']         = ['title' => __('Syslog', 'syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1'];
 
 	return $nav;
@@ -1592,7 +1671,9 @@ function syslog_graph_buttons($graph_elements = []) {
 					$host_id = syslog_db_fetch_cell_prepared('SELECT host_id FROM syslog_hosts ' . $sql_where, $sql_params);
 
 					if ($host_id) {
-						print "<a class='iconLink' href='" . htmlspecialchars($config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2) . "' title='" . __('Display Syslog in Range', 'syslog') . "'><i class='deviceRecovering fas fa-exclamation-triangle'></i></a><br>";
+						$url = $config['url_path'] . 'plugins/syslog/syslog.php?tab=syslog&reset=1&host=' . $host_id . '&date1=' . $date1 . '&date2=' . $date2;
+
+						print "<a class='iconLink' href='" . htmlspecialchars($url, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . "' title='" . htmlspecialchars(__('Display Syslog in Range', 'syslog'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . "'><i class='deviceRecovering fas fa-exclamation-triangle'></i></a><br>";
 					}
 				}
 			}
@@ -1607,7 +1688,31 @@ function syslog_utilities_action($action) {
 		return;
 	}
 
-	if ($action == 'purge_syslog_hosts') {
+	if ($action === 'purge_syslog_hosts') {
+		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+			cacti_log('WARNING: syslog purge blocked -- non-POST request', false, 'SYSLOG');
+			raise_message('syslog_method_error', __('Invalid request. Please try again.', 'syslog'), MESSAGE_LEVEL_ERROR);
+			header('Location: utilities.php?header=false');
+			exit;
+		}
+
+		// csrf_check($fatal) returns bool; $fatal=false tells the helper not to
+		// die/exit on failure so we can log and redirect with a user-visible
+		// message ourselves.
+		if (!function_exists('csrf_check')) {
+			cacti_log('WARNING: syslog purge blocked -- CSRF validation unavailable', false, 'SYSLOG');
+			raise_message('syslog_csrf_unavailable', __('Invalid request. Please try again.', 'syslog'), MESSAGE_LEVEL_ERROR);
+			header('Location: utilities.php?header=false');
+			exit;
+		}
+
+		if (!csrf_check(false)) {
+			cacti_log('WARNING: syslog purge blocked -- CSRF token validation failed', false, 'SYSLOG');
+			raise_message('syslog_csrf_error', __('Invalid request. Please try again.', 'syslog'), MESSAGE_LEVEL_ERROR);
+			header('Location: utilities.php?header=false');
+			exit;
+		}
+
 		$records = 0;
 
 		syslog_db_execute('DELETE FROM syslog_hosts
@@ -1642,7 +1747,7 @@ function syslog_utilities_action($action) {
 
 		raise_message('syslog_info', __('There were %s Device records removed from the Syslog database', $records, 'syslog'), MESSAGE_LEVEL_INFO);
 
-		header('Location: utilities.php');
+		header('Location: utilities.php?header=false');
 		exit;
 	}
 
@@ -1660,7 +1765,52 @@ function syslog_utilities_list() {
 
 	<tr class='even'>
 		<td>
-			<a class='hyperLink' href='utilities.php?action=purge_syslog_hosts'><?php print __('Purge Syslog Devices', 'syslog'); ?></a>
+			<input id='syslog_purge_hosts' type='button' value='<?php print __esc('Purge Syslog Devices', 'syslog'); ?>'>
+			<div id='syslog_purge_dialog' style='display:none;'>
+				<p><?php print __esc('Are you sure you want to purge stale Syslog devices?', 'syslog'); ?></p>
+			</div>
+			<script type='text/javascript'>
+			$(function() {
+				$('#syslog_purge_hosts').on('click', function() {
+					$('#syslog_purge_dialog').dialog({
+						title: <?php print syslog_json_safe(__('Confirm Purge', 'syslog')); ?>,
+						minHeight: 80,
+						minWidth: 400,
+						resizable: false,
+						draggable: true,
+						buttons: {
+							'Cancel': {
+								text: <?php print syslog_json_safe(__('Cancel', 'syslog')); ?>,
+								id: 'btnPurgeCancel',
+								click: function() {
+									$(this).dialog('close');
+								}
+							},
+							'Continue': {
+								text: <?php print syslog_json_safe(__('Continue', 'syslog')); ?>,
+								id: 'btnPurgeContinue',
+								click: function() {
+									$(this).dialog('close');
+
+									/* set the URL */
+									var strURL = 'utilities.php?header=false';
+
+									/* ensure that the csrf magic is appended */
+									var json = {action: 'purge_syslog_hosts'};
+									json.__csrf_magic = csrfMagicToken;
+
+									if (typeof postUrl == 'function') {
+										postUrl({url: strURL}, json);
+									} else {
+										loadPageUsingPost(strURL, json);
+									}
+								}
+							}
+						}
+					});
+				});
+			});
+			</script>
 		</td>
 		<td>
 			<?php print __('This menu pick provides a means to remove Devices that are no longer reporting into Cacti\'s syslog server.', 'syslog'); ?>

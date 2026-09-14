@@ -1,4 +1,37 @@
 <?php
+
+/**
+ * Prefix values that spreadsheet applications could interpret as formulas.
+ * Non-string values are returned unchanged for callers that preserve types.
+ *
+ * Only literal spaces are stripped before the check; a leading tab or CR is
+ * itself a formula trigger in some importers and must stay detectable as
+ * the first character rather than being treated as skippable whitespace.
+ *
+ * @param mixed $value Value destined for CSV output.
+ * @return mixed Sanitized CSV value.
+ */
+function syslog_csv_safe(mixed $value): mixed {
+	if (!is_string($value) || $value === '') {
+		return $value;
+	}
+
+	if (str_starts_with($value, "'")) {
+		return $value;
+	}
+
+	$stripped = ltrim($value, ' ');
+
+	if ($stripped === '') {
+		return $value;
+	}
+
+	if (preg_match('/^[=+\-@\t\r]/', $stripped) === 1) {
+		return "'" . $value;
+	}
+
+	return $value;
+}
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
@@ -22,6 +55,290 @@
  +-------------------------------------------------------------------------+
 */
 
+/** Allowlisted fields and operators shared by validation and the builder. */
+function syslog_search_fields() {
+	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
+		'facility' => 'Facility', 'priority' => 'Priority', 'logtime' => 'Date',
+		'seq' => 'Sequence', 'host_id' => 'Host ID', 'program_id' => 'Program ID',
+		'facility_id' => 'Facility ID', 'priority_id' => 'Priority ID'];
+}
+
+/** Database-backed values used by query-builder dropdowns. */
+function syslog_search_choices() {
+	global $syslogdb_default;
+	$choices = [];
+	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities', 'program' => 'syslog_programs'] as $field => $table) {
+		$choices[$field . '_id'] = [];
+		if ($field !== 'program') { $choices[$field] = []; }
+		foreach (syslog_db_fetch_assoc("SELECT {$field}_id AS id, $field AS name FROM `$syslogdb_default`.`$table` ORDER BY $field") as $record) {
+			$choices[$field . '_id'][] = [(string) $record['id'], $record['name'] . ' (' . $record['id'] . ')'];
+			if ($field !== 'program') { $choices[$field][] = [$record['name'], $record['name']]; }
+		}
+	}
+	return $choices;
+}
+
+/** Bounded suggestions; message/sequence suggestions sample recent records. */
+function syslog_search_suggestions($field, $term, $tab, $removal) {
+	global $syslogdb_default;
+	if (!isset(syslog_search_fields()[$field]) || $field === 'logtime' || strlen($term) > 1024) {
+		return [];
+	}
+	$pattern = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term) . '%';
+	$base = substr($field, -3) === '_id' ? substr($field, 0, -3) : $field;
+	$tables = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'];
+	if (isset($tables[$base]) && !($base === 'host' && $tab === 'alerts')) {
+		$table = $tables[$base];
+		$records = syslog_db_fetch_assoc_prepared("SELECT $field AS value, $base AS label
+			FROM `$syslogdb_default`.`$table`
+			WHERE $base LIKE ? ESCAPE '!' OR CAST($field AS CHAR) LIKE ? ESCAPE '!'
+			ORDER BY $base LIMIT 30", [$pattern, $pattern]);
+	} else {
+		if (!in_array($field, ['message', 'seq', 'host'], true)) { return []; }
+		$column = $field === 'message' && $tab === 'alerts' ? 'logmsg' : $field;
+		$tables = $tab === 'alerts' ? ['syslog_logs'] : ($removal === '1' ? ['syslog', 'syslog_removed'] : [$removal === '-1' ? 'syslog' : 'syslog_removed']);
+		$queries = [];
+		foreach ($tables as $table) {
+			$queries[] = "SELECT $column AS value FROM (SELECT $column FROM `$syslogdb_default`.`$table` ORDER BY seq DESC LIMIT 1000) AS recent_$table";
+		}
+		$records = syslog_db_fetch_assoc_prepared('SELECT DISTINCT value, value AS label FROM (' . implode(' UNION ALL ', $queries) . ") AS suggestions WHERE value LIKE ? ESCAPE '!' ORDER BY value LIMIT 30", [$pattern]);
+	}
+	return array_map(function ($record) {
+		return ['value' => (string) $record['value'], 'label' => (string) $record['label']];
+	}, $records);
+}
+
+function syslog_search_operators($field) {
+	if ($field === 'logtime') { return ['=', '!=', '>', '>=', '<', '<=', 'last']; }
+	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
+		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+}
+
+/** Parse literal message searches. Uppercase operators bind NOT, AND, then OR. */
+function syslog_parse_logical_search($input) {
+	if (strlen($input) > 8192) {
+		throw new InvalidArgumentException('Search is too long (maximum 8192 bytes).');
+	}
+
+	$tokens = [];
+	$length = strlen($input);
+	for ($i = 0; $i < $length;) {
+		if (ctype_space($input[$i])) {
+			$i++;
+			continue;
+		}
+		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
+			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
+				throw new InvalidArgumentException('Invalid field or operator.');
+			}
+			$tokens[] = ['field', $match[1], $match[2]];
+			$i += strlen($match[0]);
+			continue;
+		}
+		if ($input[$i] == '(' || $input[$i] == ')') {
+			$tokens[] = [$input[$i++], ''];
+		} elseif ($input[$i] == '"') {
+			$value = '';
+			$closed = false;
+			for ($i++; $i < $length; $i++) {
+				if ($input[$i] == '"') {
+					$i++;
+					$closed = true;
+					break;
+				}
+				if ($input[$i] == '\\' && $i + 1 < $length && ($input[$i + 1] == '"' || $input[$i + 1] == '\\')) {
+					$i++;
+				}
+				$value .= $input[$i];
+			}
+			if (!$closed || $value === '') {
+				throw new InvalidArgumentException('Use a nonempty phrase with a closing double quote.');
+			}
+			$tokens[] = ['term', $value];
+		} elseif (preg_match('/\G(AND|OR|NOT)(?=\s|[()"]|$)/', $input, $match, 0, $i)) {
+			$tokens[] = [$match[1], ''];
+			$i += strlen($match[1]);
+		} else {
+			$start = $i++;
+			while ($i < $length && strpos('()"', $input[$i]) === false) {
+				if (ctype_space($input[$i - 1]) && preg_match('/\G(AND|OR|NOT)(?=\s|[()"]|$)/', $input, $match, 0, $i)) {
+					break;
+				}
+				$i++;
+			}
+			$tokens[] = ['term', trim(substr($input, $start, $i - $start))];
+		}
+	}
+	if (!$tokens) {
+		return null;
+	}
+	if (count($tokens) > 256) {
+		throw new InvalidArgumentException('Search is too complex (maximum 256 tokens).');
+	}
+	$position = 0;
+	$parse = function ($minimum = 0, $depth = 0) use (&$parse, &$position, $tokens) {
+		if ($depth > 32) {
+			throw new InvalidArgumentException('Search nesting is too deep (maximum 32 levels).');
+		}
+		$token = $tokens[$position++] ?? ['', ''];
+		if ($token[0] == 'NOT') {
+			$node = ['NOT', $parse(3, $depth + 1)];
+		} elseif ($token[0] == '(') {
+			$node = $parse(0, $depth + 1);
+			if (($tokens[$position++][0] ?? '') != ')') {
+				throw new InvalidArgumentException('Expected a closing parenthesis.');
+			}
+		} elseif ($token[0] == 'field') {
+			$value = $tokens[$position++] ?? [];
+			if (($value[0] ?? '') !== 'term') {
+				throw new InvalidArgumentException('Expected a quoted field value.');
+			}
+			if (($token[1] === 'seq' || substr($token[1], -3) === '_id') && !ctype_digit($value[1])) {
+				throw new InvalidArgumentException('IDs must be nonnegative integers.');
+			}
+			if ($token[2] === 'last' && !in_array($value[1], ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+				throw new InvalidArgumentException('Invalid date preset.');
+			}
+			if ($token[1] === 'logtime' && $token[2] !== 'last' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
+				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
+			}
+			$node = ['predicate', $token[1], $token[2], $value[1]];
+		} elseif ($token[0] == 'term') {
+			$node = $token;
+		} else {
+			throw new InvalidArgumentException('Expected a search term, NOT, or an opening parenthesis.');
+		}
+		while (isset($tokens[$position])) {
+			$operator = $tokens[$position][0];
+			$precedence = ['OR' => 1, 'AND' => 2][$operator] ?? 0;
+			if (!$precedence || $precedence < $minimum) {
+				break;
+			}
+			$position++;
+			$node = [$operator, $node, $parse($precedence + 1, $depth + 1)];
+		}
+		return $node;
+	};
+	$tree = $parse();
+	if ($position != count($tokens)) {
+		throw new InvalidArgumentException('Expected AND or OR between terms, or found an extra closing parenthesis.');
+	}
+	return $tree;
+}
+
+/** LOCATE treats wildcard and regex characters literally and uses column collation. */
+function syslog_logical_search_sql($tree, $column) {
+	if (!in_array($column, ['message', 'logmsg'], true)) {
+		throw new InvalidArgumentException('Invalid message column.');
+	}
+	if ($tree === null) {
+		return '';
+	}
+	if ($tree[0] === 'predicate') {
+		global $syslogdb_default;
+		[, $field, $operator, $value] = $tree;
+		if (!isset(syslog_search_fields()[$field]) || !in_array($operator, syslog_search_operators($field), true)) {
+			throw new InvalidArgumentException('Invalid field or operator.');
+		}
+		if ($field === 'host_id' && $column === 'logmsg') {
+			throw new InvalidArgumentException('Host ID is only available for system logs.');
+		}
+		if ($operator === 'last') {
+			if (!in_array($value, ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+				throw new InvalidArgumentException('Invalid date preset.');
+			}
+			$interval = ['3months' => '3 MONTH', '6months' => '6 MONTH'][$value] ?? ((int) $value . ' SECOND');
+			return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+		}
+		$target = $field === 'message' ? $column : 'syslog.' . $field;
+		if (in_array($field, ['host', 'program', 'facility', 'priority'], true)) {
+			if ($field === 'host' && $column === 'logmsg') {
+				$target = 'syslog.host';
+			} else {
+				$table = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'][$field];
+				$target = "(SELECT search_lookup.$field FROM `$syslogdb_default`.`$table` AS search_lookup WHERE search_lookup.{$field}_id = syslog.{$field}_id)";
+			}
+		}
+		if ($operator === 'contains') {
+			return '(LOCATE(' . db_qstr($value) . ', ' . $target . ') > 0)';
+		}
+		$operator = ['like' => 'LIKE'][$operator] ?? $operator;
+		return '(' . $target . ' ' . $operator . ' ' . db_qstr($value) . ')';
+	}
+	if ($tree[0] == 'term') {
+		return '(LOCATE(' . db_qstr($tree[1]) . ', ' . $column . ') > 0)';
+	}
+	if ($tree[0] == 'NOT') {
+		return '(NOT ' . syslog_logical_search_sql($tree[1], $column) . ')';
+	}
+	return '(' . syslog_logical_search_sql($tree[1], $column) . ' ' . $tree[0] . ' ' . syslog_logical_search_sql($tree[2], $column) . ')';
+}
+
+function syslog_logical_positive_terms($tree, $negative = false) {
+	if ($tree === null) {
+		return [];
+	}
+	if ($tree[0] === 'predicate') {
+		return !$negative && $tree[1] === 'message' && in_array($tree[2], ['contains', '='], true) ? [$tree[3]] : [];
+	}
+	if ($tree[0] == 'term') {
+		return $negative ? [] : [$tree[1]];
+	}
+	if ($tree[0] == 'NOT') {
+		return syslog_logical_positive_terms($tree[1], !$negative);
+	}
+	return array_merge(syslog_logical_positive_terms($tree[1], $negative), syslog_logical_positive_terms($tree[2], $negative));
+}
+
+/**
+ * Remove the date clause the page entry logic appends to a search, so saved
+ * searches stay dynamic (dates are re-derived each time one is applied).
+ */
+function syslog_strip_auto_dates($search, $date1, $date2) {
+	$d1 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
+	$d2 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
+	$suffix = 'logtime >= "' . $d1 . '" AND logtime <= "' . $d2 . '"';
+
+	if (substr($search, -strlen($suffix)) === $suffix) {
+		$search = substr($search, 0, -strlen($suffix));
+
+		if (substr($search, -5) === ' AND ') {
+			$search = substr($search, 0, -5);
+		}
+	}
+
+	return $search;
+}
+
+/** Permission to make saved searches global and to manage other users' global searches. */
+function syslog_saved_search_admin() {
+	return api_plugin_user_realm_auth('syslog_saved_searches.php');
+}
+
+/** Permission to share saved searches with all syslog users. */
+function syslog_saved_search_share() {
+	return syslog_saved_search_admin() || api_plugin_user_realm_auth('syslog_saved_searches_share.php');
+}
+
+function syslog_message_filter_value($value, $filter, $href = '') {
+	if (get_request_var('search_mode') != 'logical') {
+		return filter_value($value, $filter, $href);
+	}
+	$terms = syslog_logical_positive_terms($GLOBALS['syslog_search_tree'] ?? null);
+	usort($terms, function ($a, $b) { return strlen($b) - strlen($a); });
+	$pattern = $terms ? '~(' . implode('|', array_map(function ($term) { return preg_quote($term, '~'); }, $terms)) . ')~iu' : '';
+	$parts = $pattern ? preg_split($pattern, $value, -1, PREG_SPLIT_DELIM_CAPTURE) : [$value];
+	if ($parts === false) {
+		$parts = [$value];
+	}
+	$output = '';
+	foreach ($parts as $index => $part) {
+		$escaped = htmlspecialchars($part, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		$output .= $index % 2 ? '<span class="filteredValue">' . $escaped . '</span>' : $escaped;
+	}
+	return $href === '' ? $output : '<a class="linkEditMain" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . $output . '</a>';
+}
+
 function syslog_apply_selected_items_action($selected_items, $drp_action, $action_map, $export_action = '', $export_items = '') {
 	if ($selected_items != false) {
 		if (isset($action_map[$drp_action])) {
@@ -43,8 +360,21 @@ function syslog_apply_selected_items_action($selected_items, $drp_action, $actio
 function syslog_include_js() {
 	global $config;
 	?>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js'></script>
+	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(__DIR__ . '/js/functions.js'); ?>'></script>
 	<?php
+}
+
+/**
+ * __esc() is not enough inside a <script> block, because the browser does
+ * not HTML-decode there. The value has to arrive as a JSON literal.
+ *
+ * @param mixed $value
+ *
+ * @return string
+ */
+function syslog_json_safe($value) {
+	return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR);
 }
 
 function syslog_allow_edits() {
@@ -144,6 +474,8 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 	}
 }
 
+const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
+
 function syslog_get_import_xml_payload($redirect_url) {
 	$import_text = (string) get_nfilter_request_var('import_text');
 
@@ -153,8 +485,8 @@ function syslog_get_import_xml_payload($redirect_url) {
 	}
 
 	if (isset($_FILES['import_file']['tmp_name']) &&
-		$_FILES['import_file']['tmp_name'] != 'none' &&
-		$_FILES['import_file']['tmp_name'] != '') {
+		$_FILES['import_file']['tmp_name'] !== 'none' &&
+		$_FILES['import_file']['tmp_name'] !== '') {
 		// file upload
 		$tmp_name = $_FILES['import_file']['tmp_name'];
 
@@ -254,14 +586,22 @@ function syslog_partition_manage() {
 	// Always create the partition an hour ahead of time
 	$time = time() + 3600;
 
+	/*
+	 * Only run the retention prune when the next partition is ready.
+	 * If maintenance cannot safely create it, leave dMaxValue in place
+	 * as the write-path safety net and avoid dropping old partitions
+	 * without a replacement.
+	 */
 	if (syslog_partition_check('syslog', $time)) {
-		syslog_partition_create('syslog', $time);
-		$syslog_deleted = syslog_partition_remove('syslog');
+		if (syslog_partition_create('syslog', $time)) {
+			$syslog_deleted = syslog_partition_remove('syslog');
+		}
 	}
 
 	if (syslog_partition_check('syslog_removed', $time)) {
-		syslog_partition_create('syslog_removed', $time);
-		$syslog_deleted += syslog_partition_remove('syslog_removed');
+		if (syslog_partition_create('syslog_removed', $time)) {
+			$syslog_deleted += syslog_partition_remove('syslog_removed');
+		}
 	}
 
 	return $syslog_deleted;
@@ -304,9 +644,26 @@ function syslog_partition_create($table, $time = null) {
 		return false;
 	}
 
+	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
+		cacti_log("SYSLOG ERROR: Invalid database name; partition create aborted", false, 'SYSLOG');
+
+		return false;
+	}
+
 	if ($time === null) {
 		$time = time() + 3600;
 	}
+
+	// Reject non-numeric, negative, or far-future timestamps; boundary
+	// math assumes a non-negative UTC epoch within 64-bit safe range so
+	// extreme inputs cannot underflow or overflow to float.
+	if (!is_numeric($time) || (int) $time < 0 || (int) $time > 4102444800) {
+		cacti_log("SYSLOG ERROR: syslog_partition_create called with invalid time '$time' for table '$table'", false, 'SYSLOG');
+
+		return false;
+	}
+
+	$time = (int) $time;
 
 	// Hash to guarantee the lock name stays within MySQL's 64-byte limit.
 	$lock_name = substr(hash('sha256', $syslogdb_default . '.syslog_partition_create.' . $table), 0, 60);
@@ -331,10 +688,32 @@ function syslog_partition_create($table, $time = null) {
 		return false;
 	}
 
+	$success = false;
+
 	try {
-		// determine the format of the table name
-		$cformat = 'd' . gmdate('Ymd', $time);
-		$lnow    = gmdate('Y-m-d', strtotime('+1 day', $time));
+		/*
+		 * Boundary arithmetic is done in PHP against the UTC epoch so the
+		 * result is independent of both the PHP and MySQL session time zones.
+		 * $boundary_epoch is the next UTC midnight strictly after $time; it
+		 * becomes the VALUES LESS THAN literal for UNIX_TIMESTAMP partitions
+		 * and the source for the date string passed to TO_DAYS.
+		 */
+		$boundary_epoch = (intdiv($time, 86400) + 1) * 86400;
+
+		if ($boundary_epoch <= 0 || $boundary_epoch <= $time) {
+			cacti_log("SYSLOG ERROR: Boundary epoch computation failed for '$table' (time=$time); leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+			return false;
+		}
+
+		$cformat        = 'd' . gmdate('Ymd', $time);
+		$boundary_date  = gmdate('Y-m-d', $boundary_epoch);
+
+		if (preg_match('/^d\d{8}$/', $cformat) !== 1 || preg_match('/^\d{4}-\d{2}-\d{2}$/', $boundary_date) !== 1) {
+			cacti_log("SYSLOG ERROR: Derived partition values failed format validation for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+			return false;
+		}
 
 		$exists = syslog_db_fetch_row_prepared('SELECT *
 			FROM `information_schema`.`partitions`
@@ -353,30 +732,41 @@ function syslog_partition_create($table, $time = null) {
 			 * MySQL does not support parameter binding for DDL identifiers
 			 * or partition definitions. $table is safe because it passed
 			 * syslog_partition_table_allowed() (two-value allowlist plus
-			 * regex guard). $cformat and $lnow derive from date() and
-			 * contain only digits, hyphens, and the letter 'd'.
+			 * regex guard). $cformat, $boundary_epoch, and $boundary_date
+			 * derive from integer arithmetic and gmdate(), so they contain
+			 * only digits, hyphens, and the letter 'd'.
 			 */
-			$create_syntax = syslog_db_fetch_row("SHOW CREATE TABLE `$syslogdb_default`.`$table`");
+			$create_syntax = syslog_db_fetch_row_prepared("SHOW CREATE TABLE `$syslogdb_default`.`$table`");
 
-			if (cacti_sizeof($create_syntax)) {
-				if (str_contains($create_syntax['Create Table'], 'TO_DAYS')) {
-					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-						PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
-						PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
-				} else {
-					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-						PARTITION $cformat VALUES LESS THAN (UNIX_TIMESTAMP('$lnow')),
-						PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
-				}
+			if (!cacti_sizeof($create_syntax) || empty($create_syntax['Create Table'])) {
+				cacti_log("SYSLOG ERROR: SHOW CREATE TABLE returned no rows for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+				return false;
+			}
+
+			$create_sql = $create_syntax['Create Table'];
+
+			if (stripos($create_sql, 'TO_DAYS') !== false) {
+				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+					PARTITION $cformat VALUES LESS THAN (TO_DAYS('$boundary_date')),
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+			} elseif (stripos($create_sql, 'UNIX_TIMESTAMP') !== false) {
+				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+					PARTITION $cformat VALUES LESS THAN ($boundary_epoch),
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
 			} else {
-				cacti_log('WARNING: Unable to determine Partition type for rotation', false, 'SYSLOG');
+				cacti_log("SYSLOG ERROR: Unable to determine partition expression (neither TO_DAYS nor UNIX_TIMESTAMP) for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+				return false;
 			}
 		}
+
+		$success = true;
 	} finally {
 		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock_name]);
 	}
 
-	return true;
+	return $success;
 }
 
 /**
@@ -389,6 +779,12 @@ function syslog_partition_remove($table) {
 
 	if (!syslog_partition_table_allowed($table)) {
 		cacti_log("SYSLOG: partition_remove called with disallowed table '$table'", false, 'SYSTEM');
+
+		return 0;
+	}
+
+	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
+		cacti_log("SYSLOG ERROR: Invalid database name; partition remove aborted", false, 'SYSLOG');
 
 		return 0;
 	}
@@ -431,11 +827,24 @@ function syslog_partition_remove($table) {
 				while ($user_partitions > $days) {
 					$oldest = $number_of_partitions[$i];
 
-					cacti_log("SYSLOG: Removing old partition '" . $oldest['PARTITION_NAME'] . "'", false, 'SYSTEM');
+					$part_name = $oldest['PARTITION_NAME'];
 
-					syslog_debug("Removing partition '" . $oldest['PARTITION_NAME'] . "'");
+					if (preg_match('/^[a-zA-Z0-9_]+$/', $part_name) !== 1) {
+						cacti_log("SYSLOG ERROR: Invalid partition name '$part_name' for '$table'; skipping drop", false, 'SYSLOG');
+						break;
+					}
 
-					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION " . $oldest['PARTITION_NAME']);
+					cacti_log("SYSLOG: Removing old partition '" . $part_name . "'", false, 'SYSTEM');
+
+					syslog_debug("Removing partition '" . $part_name . "'");
+
+					/* $table passed syslog_partition_table_allowed() at function entry; $part_name is regex-validated above. DDL identifiers cannot be parameterized. */
+					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`");
+
+					if ($result === false) {
+						cacti_log("SYSLOG ERROR: Failed to drop partition '$part_name' from '$table' after $i successful drop(s); aborting further drops", false, 'SYSLOG');
+						break;
+					}
 
 					$i++;
 					$user_partitions--;
@@ -709,7 +1118,7 @@ function syslog_log_row_color($severity, $tip_title) {
 			break;
 	}
 
-	print "<tr class='tableRow selectable $class'>\n";
+	print "<tr class='tableRow selectable syslogAlertRow $class'>\n";
 }
 
 /**
@@ -721,7 +1130,7 @@ function syslog_log_row_color($severity, $tip_title) {
  * @param mixed $priority
  * @param mixed $message
  */
-function syslog_row_color($priority, $message) {
+function syslog_priority_class($priority) {
 	switch($priority) {
 		case '0':
 			$class = 'logEmergency';
@@ -757,9 +1166,36 @@ function syslog_row_color($priority, $message) {
 			break;
 	}
 
-	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow syslog-detail-row'>";
+	return $class ?? '';
+}
 
-	return $class;
+function syslog_row_color($priority, $message) {
+	$priority_class = syslog_priority_class($priority);
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
+
+	return '';
+}
+
+/** Render compact metadata labels without changing the surrounding table theme. */
+function syslog_metadata_label($value, $type) {
+	$value = (string) $value;
+	$class = $type === 'priority' ? 'syslogSeverity' : 'syslogFacility';
+	$modifier = preg_replace('/[^a-z]/', '', strtolower($value));
+
+	return '<span class="' . $class . ' ' . $class . '-' . html_escape($modifier) . '">' . html_escape($value) . '</span>';
+}
+
+/** Render a displayed device or program value as a direct filter action. */
+function syslog_value_filter_button($value, $field) {
+	$value = (string) $value;
+	if ($value === '') return html_escape(__('Unknown', 'syslog'));
+	$class = 'syslogValueFilter';
+	if ($field === 'host') $class .= ' syslogHostLabel';
+	if ($field === 'program') $class .= ' syslogProgramLabel';
+	if ($field === 'priority') {
+		$class .= ' syslogSeverity syslogSeverity-' . html_escape(preg_replace('/[^a-z]/', '', strtolower($value)));
+	}
+	return '<button type="button" class="' . $class . '" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
 }
 
 function sql_hosts_where($tab) {
@@ -798,7 +1234,47 @@ function sql_hosts_where($tab) {
 	}
 }
 
+/**
+ * Defuse CSV formula injection without mutating content.
+ *
+ * Spreadsheet applications (Excel, LibreOffice, Google Sheets) interpret any
+ * cell starting with =, +, -, @, TAB, or CR as a formula. Prepending a
+ * single quote tells them to treat the cell as literal text. The quote is
+ * visible in the cell but does not alter the underlying data, unlike
+ * trimming which loses characters.
+ *
+ * See OWASP CSV Injection Prevention Cheat Sheet.
+ */
+function syslog_csv_safe(mixed $value): mixed {
+	if (!is_string($value) || $value === '') {
+		return $value;
+	}
+
+	// Some CSV importers strip leading spaces before parsing as a
+	// formula, so " =SUM(A1)" is still dangerous. Only strip literal
+	// spaces here; tabs and carriage returns are themselves triggers
+	// and must remain detectable as the first character.
+	$stripped = ltrim($value, ' ');
+
+	if ($stripped === '') {
+		return $value;
+	}
+
+	if (in_array($stripped[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+		return "'" . $value;
+	}
+
+	return $value;
+}
+
 function syslog_export($tab) {
+	if (!empty($GLOBALS['syslog_search_error'])) {
+		http_response_code(400);
+		header('Content-Type: text/plain; charset=UTF-8');
+		print $GLOBALS['syslog_search_error'];
+		return;
+	}
+
 	global $syslog_incoming_config, $severities;
 	global $syslogdb_default;
 
@@ -839,9 +1315,11 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
+		// PHP 8.4 deprecates fputcsv() without an explicit $escape; '' matches the
+		// upcoming default and emits RFC 4180 CSV for messages containing backslashes.
 		$line = ['host', 'facility', 'priority', 'program', 'date', 'message'];
 
-		fputcsv($fp, $line);
+		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -864,23 +1342,23 @@ function syslog_export($tab) {
 				}
 
 				if (isset($hosts[$message['host_id']])) {
-					$host = trim($hosts[$message['host_id']], ' =+-@');
+					$host = $hosts[$message['host_id']];
 				} else {
 					$host = 'Unknown';
 				}
 
-				$logmsg = trim($message[$syslog_incoming_config['textField']], ' =+-@');
+				$logmsg = $message[$syslog_incoming_config['textField']];
 
 				$line = [
-					$host,
-					ucfirst($facility),
-					ucfirst($priority),
-					ucfirst($program),
+					syslog_csv_safe($host),
+					syslog_csv_safe(ucfirst($facility)),
+					syslog_csv_safe(ucfirst($priority)),
+					syslog_csv_safe(ucfirst($program)),
 					$message['logtime'],
-					$logmsg
+					syslog_csv_safe($logmsg)
 				];
 
-				fputcsv($fp, $line);
+				fputcsv($fp, $line, ',', '"', '');
 			}
 
 		}
@@ -897,7 +1375,7 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
-		fputcsv($fp, $line);
+		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -907,21 +1385,18 @@ function syslog_export($tab) {
 					$severity = 'Unknown';
 				}
 
-				$host   = trim($message['host'], ' =+-@');
-				$logmsg = trim($message['logmsg'], ' =+-@');
-
 				$line = [
-					$message['name'],
-					$severity,
+					syslog_csv_safe($message['name']),
+					syslog_csv_safe($severity),
 					$message['logtime'],
-					$logmsg,
-					$host,
-					ucfirst($message['facility']),
-					ucfirst($message['priority']),
+					syslog_csv_safe($message['logmsg']),
+					syslog_csv_safe($message['host']),
+					syslog_csv_safe(ucfirst($message['facility'])),
+					syslog_csv_safe(ucfirst($message['priority'])),
 					$message['count']
-				];
+				]);
 
-				fputcsv($fp, $line);
+				fputcsv($fp, $line, ',', '"', '');
 			}
 		}
 
@@ -933,7 +1408,7 @@ function syslog_debug($message) {
 	global $debug;
 
 	if ($debug) {
-		print date('H:m:s') . ' SYSLOG DEBUG: ' . trim($message) . PHP_EOL;
+		print date('H:i:s') . ' SYSLOG DEBUG: ' . trim($message) . PHP_EOL;
 	}
 }
 
@@ -997,6 +1472,19 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 function syslog_manage_items($from_table, $to_table) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
+
+	/*
+	 * Table names are interpolated into DDL/DML below because MySQL does
+	 * not bind identifiers. Reject anything outside the static allowlist
+	 * so a future caller cannot turn this into a SQL injection surface.
+	 */
+	$allowed_tables = ['syslog', 'syslog_incoming', 'syslog_removed'];
+
+	if (!in_array($from_table, $allowed_tables, true) || !in_array($to_table, $allowed_tables, true)) {
+		cacti_log("SYSLOG ERROR: syslog_manage_items called with disallowed tables from='$from_table' to='$to_table'", false, 'SYSLOG');
+
+		return ['removed' => 0, 'xferred' => 0];
+	}
 
 	// Select filters to work on
 	$rows = syslog_db_fetch_assoc("SELECT * FROM `$syslogdb_default`.`syslog_remove` WHERE enabled = 'on'");
@@ -1064,13 +1552,13 @@ function syslog_manage_items($from_table, $to_table) {
 					$sql_dlt = "DELETE FROM `$syslogdb_default`.`$from_table`
 						WHERE message LIKE " . db_qstr('%' . $remove['message']);
 				}
-			} elseif ($remove['type'] == 'sql') {
-				if ($remove['method'] != 'del') {
+			} elseif ($remove['type'] === 'sql') {
+				if ($remove['method'] !== 'del') {
 					$sql_sel = "SELECT seq FROM `$syslogdb_default`.`$from_table`
-						WHERE message (" . $remove['message'] . ') ';
+						WHERE (" . $remove['message'] . ')';
 				} else {
 					$sql_dlt = "DELETE FROM `$syslogdb_default`.`$from_table`
-						WHERE message (" . $remove['message'] . ') ';
+						WHERE (" . $remove['message'] . ')';
 				}
 			}
 
@@ -1780,7 +2268,6 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
 		$params[] = $alert['message'];
 		$params[] = $max_seq;
 	} elseif ($alert['type'] == 'sql') {
-		// TODO: Make Injection proof
 		$sql = "SELECT *
 			FROM `$syslogdb_default`.`syslog_incoming`
 			WHERE ({$alert['message']})
@@ -2254,9 +2741,9 @@ function syslog_process_reports() {
 					$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
 					$sql .= ' AND logtime BETWEEN ? AND ?';
 					$sql .= ' ORDER BY logtime DESC';
-					$items = syslog_db_fetch_assoc_prepared($sql, [$data1, $date2]);
+					$items = syslog_db_fetch_assoc_prepared($sql, [$date1, $date2]);
 
-					syslog_debug('We have ' . db_affected_rows($syslog_cnn) . ' items for the Report');
+					syslog_debug('We have ' . cacti_sizeof($items) . ' items for the Report');
 
 					$classes = ['even', 'odd'];
 
@@ -2530,4 +3017,41 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
 
 	return $command;
+}
+
+/** Render untrusted log text as an accessible details trigger. */
+function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = '') {
+	$details = compact('device', 'program', 'facility', 'severity', 'received');
+	$details['message'] = (string) $message;
+	$details['rules'] = syslog_message_rule_links($id, $source, $received);
+	$text = title_trim((string) $message, 100);
+	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
+		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
+}
+
+/** Only main-table records can seed the existing rule editors. */
+function syslog_message_rule_links($id, $source, $received) {
+	$links = [];
+	if ($source !== 'main' || !ctype_digit((string) $id) || (int) $id < 1) {
+		return $links;
+	}
+
+	$query = http_build_query(['id' => $id, 'action' => 'newedit', 'type' => '0', 'date' => $received]);
+	foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
+		if (api_plugin_user_realm_auth($page)) {
+			$links[$action] = $page . '?' . $query;
+		}
+	}
+	return $links;
+}
+
+/** Dates nested in authored groups must not gain a second implicit time range. */
+function syslog_search_has_time($tree) {
+	if (!$tree) return false;
+	if ($tree[0] === 'predicate') return $tree[1] === 'logtime';
+	if ($tree[0] === 'NOT') return syslog_search_has_time($tree[1]);
+	if ($tree[0] === 'AND' || $tree[0] === 'OR') {
+		return syslog_search_has_time($tree[1]) || syslog_search_has_time($tree[2]);
+	}
+	return false;
 }

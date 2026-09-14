@@ -56,6 +56,59 @@ However, in Syslog Version 4, if you want an alert per Host, you will have to
 move your Alerts from the `System Level` to the `Host Level` as `System Level`
 Alerts will generate one command execution for all matching messages.
 
+## Develop Branch Compatibility and Hardening Notes
+
+The following behavior is part of the hardening work being prepared on the
+`develop` branch for the next release. Released versions may not include every
+item yet.
+
+### Runtime and Test Baseline
+
+The hardened code paths use PHP 8.0-compatible language features and require
+PHP 8.0 or later. The Linux integration workflow currently exercises PHP 8.1,
+8.2, and 8.3 against Cacti `release/1.2.31`, including installation, plugin
+enablement, polling, and sample Syslog processing.
+
+This plugin does not ship its own `composer.json`. Composer validation and
+dependency installation in CI use the manifest supplied by the checked-out
+Cacti core release.
+
+### Security-Sensitive Behavior
+
+* Purging unused Syslog hosts requires a POST request and a valid Cacti CSRF
+  token. The operation fails closed when CSRF validation is unavailable.
+
+* Alert, navigation, and JavaScript-bound values are escaped for their output
+  context. JavaScript callback dispatch accepts only a bare function identifier
+  with no arguments or dotted path.
+
+* CSV exports continue to use PHP's `fputcsv()` for quoting. Cells beginning
+  with spreadsheet formula markers (`=`, `+`, `-`, `@`, tab, or carriage
+  return), including markers after leading spaces, are prefixed with a single
+  quote before export.
+
+* XML rule imports accept either pasted text or an uploaded file. Both paths
+  enforce a 5 MiB payload limit before XML parsing; rejected payloads are logged
+  and redirected without being parsed.
+
+* Legacy SQL-expression rules remain trusted administrator configuration. Do
+  not grant rule-management permissions to untrusted users, and review custom
+  SQL expressions before enabling them.
+
+### Partition Maintenance
+
+Partition boundaries are calculated with integer UTC epoch arithmetic. When a
+new partition cannot be created safely, maintenance leaves the `dMaxValue`
+partition in place and skips retention pruning rather than risking a write gap.
+
+### Validation
+
+The repository includes standalone PHP security regressions and a disposable
+Docker/Playwright end-to-end harness. GitHub CI runs PHP syntax and quality
+checks, CodeQL, and the PHP 8.1-8.3 integration matrix on Linux. The Docker E2E
+runner refuses unsafe temporary-directory paths before performing recursive
+cleanup.
+
 ## Installation
 
 To install the syslog plugin, simply copy the plugin_syslog directory to Cacti's
@@ -208,6 +261,52 @@ SideWinder, and Harlequin. We hope that version 2.0 and beyond are the most
 stable and robust versions of syslog ever published. We are always looking for
 new ideas. So, this won't be the last release of syslog, you can rest assured of
 that.
+
+## Building a message search
+
+The message and triggered-alert viewers use a query builder. Choose a field,
+operator, and value, then add **AND**, **OR**, or **NOT** conditions. For example:
+
+```text
+    Message contains  connection refused
+AND Host    =         router-1
+OR  Host    like      web-%
+```
+
+Fields include message, host, program, facility, priority, date, sequence, and
+numeric IDs. Host ID is available in the system-log viewer. Text fields support
+**contains**, **=**, **!=**, and **like**. Numeric IDs and dates support
+**=**, **!=**, **>**, **>=**, **<**, and **<=**. Dates use `YYYY-MM-DD HH:MM:SS`.
+
+Facility, priority, their IDs, and program ID use editable database-backed dropdowns.
+ID choices show their names alongside the stored IDs. You can also enter a value
+that is not yet in the database; ID fields still require nonnegative integers. Host, host ID, and program
+text fields offer autocomplete. Message and sequence suggestions sample the
+latest 1,000 records per selected record source; message suggestions start after
+two characters. You can still type text or LIKE patterns. Dates keep their picker.
+
+Contains treats wildcard and regex characters literally. LIKE uses `%` for any
+number of characters and `_` for one character. Case sensitivity follows database
+collation. AND takes precedence over OR; NOT excludes the
+condition. Existing grouped expressions retain their grouping. Use **×** to
+remove a condition, then Enter or Search to apply the query.
+
+The standalone device, program, facility, and priority filters are replaced by
+builder conditions. The only standalone dropdowns are Record Type, Display,
+Results limit, Trim, and Refresh. From and To are Date conditions in the builder
+(`>=` and `<=`), with the date/time picker available when their values are focused.
+The current date range is migrated into these editable conditions. Removing them
+removes the time restriction. Action buttons (Search, Clear, Refresh, Export, Save) appear below the collapsible search panel.
+For rolling date ranges, select Date → In the last → Hour, 6 hours, Day, Week,
+2 weeks, 30 days, 3 months, or 6 months. Month presets use calendar months. These ranges are recalculated by the database on each search or refresh.
+Use the comparison operators for custom dates with the date picker.
+Legacy regex searches become literal message contains conditions. Searches persist per tab across
+pagination, refresh, grouping, and CSV export. The Refresh button reloads the current page of results without resetting the filter or pagination. Search, export, and clear
+controls submit values through CSRF-protected POST bodies instead of URL queries.
+
+A single blank default message condition clears the query. Other incomplete
+conditions block submission. Searches allow up to 8192 bytes, 256 tokens, and 32
+nesting levels. Invalid searches return no results and CSV export rejects them.
 
 -----------------------------------------------
 Copyright (c) 2004-2026 - The Cacti Group, Inc.

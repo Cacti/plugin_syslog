@@ -25,8 +25,9 @@
 chdir('../../');
 include('./include/auth.php');
 include_once('./lib/xml.php');
-include_once('./plugins/syslog/functions.php');
-include_once('./plugins/syslog/database.php');
+include_once(__DIR__ . '/setup.php');
+include_once(__DIR__ . '/functions.php');
+include_once(__DIR__ . '/database.php');
 
 syslog_connect();
 
@@ -428,7 +429,7 @@ function syslog_action_edit() {
 	// ================= input validation =================
 	get_filter_request_var('id');
 	get_filter_request_var('type');
-	get_filter_request_var('date');
+	get_filter_request_var('date', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/']]);
 	// ====================================================
 
 	if (!isempty_request_var('id') && get_nfilter_request_var('action') == 'edit') {

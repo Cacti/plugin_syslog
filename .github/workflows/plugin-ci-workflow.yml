@@ -149,7 +149,8 @@ jobs:
       run: php -v
     
     - name: Run apt-get update
-      run: sudo apt-get update
+      run: |
+        sudo apt-get update
     
     - name: Install System Dependencies
       run: sudo apt-get install -y snmp snmpd rrdtool fping
