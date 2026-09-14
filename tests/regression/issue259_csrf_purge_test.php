@@ -59,7 +59,7 @@ define('MESSAGE_LEVEL_INFO', 1);
 define('MESSAGE_LEVEL_ERROR', 3);
 
 $scenario = $argv[1];
-$payload  = $argv[2];
+$payload  = getenv('ISSUE259_PAYLOAD');
 
 function __($text, ...$args) {
     global $payload;
@@ -125,13 +125,34 @@ HARNESS;
 
 file_put_contents($sandbox . '/harness.php', $harness);
 
+/*
+ * The payload travels through the process environment rather than argv:
+ * shell/argv quoting rules for control characters differ across platforms
+ * (notably Windows vs. POSIX shells), which can silently corrupt a hostile
+ * string in transit. Using proc_open()'s $env parameter hands the value to
+ * the child process verbatim on every platform.
+ */
 function issue259_run($sandbox, $scenario, $payload) {
-    $command = escapeshellarg(PHP_BINARY) . ' ' .
-        escapeshellarg($sandbox . '/harness.php') . ' ' .
-        escapeshellarg($scenario) . ' ' .
-        escapeshellarg($payload) . ' 2>&1';
+    $pipes   = [];
+    $process = proc_open(
+        [PHP_BINARY, $sandbox . '/harness.php', $scenario],
+        [1 => ['pipe', 'w'], 2 => ['pipe', 'w']],
+        $pipes,
+        null,
+        ['ISSUE259_PAYLOAD' => $payload] + getenv()
+    );
 
-    return shell_exec($command);
+    if (!is_resource($process)) {
+        return false;
+    }
+
+    $stdout = stream_get_contents($pipes[1]);
+    $stderr = stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    proc_close($process);
+
+    return $stdout . $stderr;
 }
 
 /* the encoder, on its own */
@@ -220,8 +241,10 @@ foreach ($blocked as $scenario => $reason) {
 
 $allowed = issue259_run($sandbox, 'action_valid_token', $payload);
 
-if (substr_count($allowed, 'DBEXEC') !== 3) {
-    issue259_fail("A POST with a valid token must run all three deletes:\n$allowed");
+// Two deletes: syslog_hosts and syslog_host_facilities. (A third delete
+// against syslog_statistics existed before that table was deprecated.)
+if (substr_count($allowed, 'DBEXEC') !== 2) {
+    issue259_fail("A POST with a valid token must run both deletes:\n$allowed");
 }
 
 if (strpos($allowed, 'MSG:syslog_info|') === false) {

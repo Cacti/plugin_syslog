@@ -237,7 +237,9 @@ if (!preg_match('/\$time\b/', $create_body)) {
 	exit(1);
 }
 
-if (!preg_match('/(?:strtotime\s*\(|UNIX_TIMESTAMP\s*\()/', $create_body)) {
+// Boundary math may be expressed in SQL (strtotime()/UNIX_TIMESTAMP()) or,
+// as of the UTC epoch rewrite, in PHP via intdiv() against 86400 seconds.
+if (!preg_match('/(?:strtotime\s*\(|UNIX_TIMESTAMP\s*\(|intdiv\s*\()/', $create_body)) {
 	fwrite(STDERR, "syslog_partition_create is missing partition boundary computation logic.\n");
 	exit(1);
 }

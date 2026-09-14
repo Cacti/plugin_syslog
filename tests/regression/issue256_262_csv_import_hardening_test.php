@@ -11,9 +11,8 @@ foreach ([
 	'SYSLOG_IMPORT_MAX_BYTES',
 	'$import_text = (string) get_nfilter_request_var(\'import_text\')',
 	'strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES',
-	'$size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES',
-	'function syslog_csv_cell(mixed $value): string',
-	"array_map('syslog_csv_cell'",
+	'$size === false || $size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES',
+	'function syslog_csv_safe(mixed $value): mixed',
 ] as $needle) {
 	if (!str_contains($functions, $needle)) {
 		fwrite(STDERR, "Missing import/export hardening: $needle\n");
@@ -21,7 +20,9 @@ foreach ([
 	}
 }
 
-if (substr_count($functions, "array_map('syslog_csv_cell'") !== 2) {
+// Both Syslog CSV export paths (system logs and alert logs) must call the
+// hardening helper on every text cell; the definition itself adds one match.
+if (substr_count($functions, 'syslog_csv_safe(') < 10) {
 	fwrite(STDERR, "Both Syslog CSV export paths must harden every cell\n");
 	exit(1);
 }
@@ -37,12 +38,12 @@ if (str_contains($functions, 'trim($hosts[$message[\'host_id\']], \' =+-@\')') |
 	exit(1);
 }
 
-if (!preg_match('/function\s+syslog_csv_cell\s*\([^)]*\)\s*:\s*string\s*\{.*?\n\}/s', $functions, $match)) {
-	fwrite(STDERR, "Unable to extract syslog_csv_cell()\n");
+if (!preg_match('/function\s+syslog_csv_safe\s*\([^)]*\)\s*:\s*mixed\s*\{.*?\n\}/s', $functions, $match)) {
+	fwrite(STDERR, "Unable to extract syslog_csv_safe()\n");
 	exit(1);
 }
 
-eval(str_replace('function syslog_csv_cell', 'function issue256_262_csv_cell', $match[0]));
+eval(str_replace('function syslog_csv_safe', 'function issue256_262_csv_cell', $match[0]));
 
 foreach ([
 	['=SUM(A1)', "'=SUM(A1)"],

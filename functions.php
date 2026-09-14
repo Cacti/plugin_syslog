@@ -448,6 +448,13 @@ function syslog_get_import_xml_payload($redirect_url) {
 
 	if (trim($import_text) !== '') {
 		// textbox input
+		if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
+			cacti_log('SYSLOG ERROR: Text import payload exceeds the maximum size', false, 'SYSTEM');
+			print 'Text import payload exceeds the maximum size';
+			header('Location: ' . $redirect_url);
+			exit;
+		}
+
 		return $import_text;
 	}
 
@@ -470,7 +477,7 @@ function syslog_get_import_xml_payload($redirect_url) {
 		$xml_data = syslog_read_import_file($tmp_name);
 
 		if ($xml_data === false) {
-			cacti_log('SYSLOG ERROR: Uploaded import file is empty or unreadable', false, 'SYSTEM');
+			cacti_log('SYSLOG ERROR: Uploaded import file is empty, unreadable, or exceeds the maximum size', false, 'SYSTEM');
 			header('Location: ' . $redirect_url);
 			exit;
 		}
@@ -485,7 +492,7 @@ function syslog_get_import_xml_payload($redirect_url) {
 function syslog_read_import_file(string $filename): string|false {
 	$size = filesize($filename);
 
-	if ($size === false || $size < 1) {
+	if ($size === false || $size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES) {
 		return false;
 	}
 
