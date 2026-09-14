@@ -22,6 +22,11 @@
  +-------------------------------------------------------------------------+
 */
 
+$syslog_query_builder = __DIR__ . '/lib/QueryBuilder.php';
+if (file_exists($syslog_query_builder)) {
+	require_once $syslog_query_builder;
+}
+
 /** Allowlisted fields and operators shared by validation and the builder. */
 function syslog_search_fields() {
 	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
@@ -328,6 +333,7 @@ function syslog_include_js() {
 	global $config;
 	?>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(__DIR__ . '/js/filter-builder.js'); ?>'></script>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(__DIR__ . '/js/functions.js'); ?>'></script>
 	<?php
 }
@@ -887,6 +893,291 @@ function syslog_check_changed($request, $session) {
 	}
 }
 
+/**
+ * syslog_get_removal_rule_fields - Trusted field map used to compile
+ * structured filter rules for removal processing and editor validation.
+ *
+ * @param string $table  The syslog table the rule will run against
+ * @param string $prefix Optional table alias prefixed to each column
+ *
+ * @return array The QueryBuilder field definitions
+ */
+function syslog_get_removal_rule_fields($table = 'syslog_incoming', $prefix = '') {
+	global $syslog_incoming_config;
+
+	$column = function ($name) use ($prefix) {
+		return $prefix . '`' . $name . '`';
+	};
+
+	if ($table === 'syslog_incoming') {
+		if (!isset($syslog_incoming_config['programField'])) {
+			$syslog_incoming_config['programField'] = 'program';
+		}
+		foreach (['textField' => 'message', 'hostField' => 'host', 'facilityField' => 'facility_id', 'priorityField' => 'priority_id'] as $setting => $default) {
+			if (!isset($syslog_incoming_config[$setting])) {
+				$syslog_incoming_config[$setting] = $default;
+			}
+		}
+
+		return [
+			'message' => ['column' => $column($syslog_incoming_config['textField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host' => ['column' => $column($syslog_incoming_config['hostField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'program' => ['column' => $column($syslog_incoming_config['programField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'facility_id' => ['column' => $column($syslog_incoming_config['facilityField']), 'operators' => ['=', '!='], 'type' => 'integer'],
+			'priority_id' => ['column' => $column($syslog_incoming_config['priorityField']), 'operators' => ['=', '!='], 'type' => 'integer']
+		];
+	}
+
+	// The syslog (and syslog_removed) tables store normalized id columns.
+	return [
+		'message' => ['column' => $column('message'), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+		'host_id' => ['column' => $column('host_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
+		'program_id' => ['column' => $column('program_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
+		'facility_id' => ['column' => $column('facility_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
+		'priority_id' => ['column' => $column('priority_id'), 'operators' => ['=', '!='], 'type' => 'integer']
+	];
+}
+
+/**
+ * syslog_removal_filter_normalize - Rewrite string host/program predicates
+ * into their normalized id columns so retroactive processing can compile
+ * rules against the syslog table, which stores ids rather than names.
+ *
+ * @param string $json  The versioned filter document
+ * @param string $table The syslog table the rule will run against
+ *
+ * @return array The translated filter document, or the original document
+ */
+function syslog_removal_filter_normalize($json, $table) {
+	if ($table !== 'syslog' || !class_exists('Cacti\\Syslog\\QueryBuilder')) {
+		$document = json_decode($json, true);
+
+		return is_array($document) ? $document : [];
+	}
+
+	try {
+		$document = json_decode($json, true, 32, JSON_THROW_ON_ERROR);
+	} catch (\JsonException $error) {
+		return [];
+	}
+
+	if (!is_array($document) || !isset($document['conditions'])) {
+		return [];
+	}
+
+	$maps = [
+		'host' => ['table' => 'syslog_hosts',    'name' => 'host',    'id' => 'host_id'],
+		'program' => ['table' => 'syslog_programs', 'name' => 'program', 'id' => 'program_id']
+	];
+
+	$resolve = function ($field, $operator, $value) use ($maps, $table) {
+		if ($table !== 'syslog' || !isset($maps[$field])) {
+			return null;
+		}
+
+		$map   = $maps[$field];
+		$value = str_replace(['!', '%', '_'], ['!!', '!%', '!_'], (string) $value);
+
+		switch ($operator) {
+			case '=':
+				$pattern = $value;
+				break;
+			case '!=':
+				$pattern = $value;
+				break;
+			case 'contains':
+				$pattern = '%' . $value . '%';
+				break;
+			case 'begins':
+				$pattern = $value . '%';
+				break;
+			case 'ends':
+				$pattern = '%' . $value;
+				break;
+			default:
+				return null;
+		}
+
+		$ids = [];
+		foreach (syslog_db_fetch_assoc_prepared("SELECT {$map['id']} AS id
+			FROM `{$map['table']}`
+			WHERE `{$map['name']}` LIKE ? ESCAPE '!'",
+			[$pattern]) as $record) {
+			$ids[] = (string) $record['id'];
+		}
+
+		if (!cacti_sizeof($ids)) {
+			// Normalized ids are unsigned and start at 1, so 0 matches
+			// nothing without tripping the integer value validation.
+			$ids[] = '0';
+		}
+
+		$rows = [];
+		foreach ($ids as $index => $id) {
+			$rows[] = [
+				'join'     => $index === 0 ? 'AND' : 'OR',
+				'negative' => false,
+				'field'    => $map['id'],
+				'operator' => '=',
+				'value'    => $id
+			];
+		}
+
+		if (cacti_sizeof($rows) === 1) {
+			return $rows[0];
+		}
+
+		return ['join' => 'AND', 'negative' => false, 'rows' => $rows];
+	};
+
+	$walk = function (&$conditions) use (&$walk, $resolve) {
+		if (!is_array($conditions)) {
+			return;
+		}
+
+		foreach ($conditions as $index => $condition) {
+			if (!is_array($condition)) {
+				continue;
+			}
+
+			if (isset($condition['rows'])) {
+				$walk($conditions[$index]['rows']);
+
+				continue;
+			}
+
+			if (isset($condition['field'], $condition['operator'], $condition['value'])) {
+				$replacement = $resolve($condition['field'], $condition['operator'], $condition['value']);
+
+				if (is_array($replacement)) {
+					$replacement['join']     = $condition['join'] ?? 'AND';
+					$replacement['negative'] = $condition['negative'] ?? false;
+					$conditions[$index]      = $replacement;
+				}
+			}
+		}
+	};
+
+	$walk($document['conditions']);
+
+	return $document;
+}
+
+/**
+ * syslog_get_removal_rule_sql - Compile a structured filter removal rule
+ * into parameterized SQL for the given table.
+ *
+ * @param array  $remove The removal rule attributes
+ * @param string $table  The syslog table the rule will run against
+ * @param string $prefix Optional table alias prefixed to each column
+ *
+ * @return array The SQL and params, or an empty array on failure
+ */
+function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $prefix = '') {
+	global $syslogdb_default;
+
+	if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
+		$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
+
+		return [];
+	}
+
+	$document = syslog_removal_filter_normalize($remove['message'], $table);
+
+	if (!isset($document['conditions'])) {
+		$GLOBALS['syslog_rule_filter_error'] = 'The filter is not valid JSON.';
+
+		return [];
+	}
+
+	$document['version'] = 1;
+
+	try {
+		$filter = \Cacti\Syslog\QueryBuilder::compile(
+			json_encode($document),
+			syslog_get_removal_rule_fields($table, $prefix)
+		);
+	} catch (InvalidArgumentException $error) {
+		$GLOBALS['syslog_rule_filter_error'] = $error->getMessage();
+
+		return [];
+	}
+
+	if ($table === 'syslog_incoming' && $prefix === '') {
+		$filter['params'][] = 1;
+		$filter['params'][] = $remove['max_seq'];
+
+		return [
+			'sql' => "WHERE ({$filter['sql']})
+				AND `status` = ?
+				AND `seq` <= ?",
+			'params' => $filter['params']
+		];
+	}
+
+	if ($table === 'syslog_incoming') {
+		// Aliased shape for the joined transferal INSERT.
+		$filter['params'][] = 1;
+		$filter['params'][] = $remove['max_seq'];
+
+		return [
+			'sql' => "WHERE ({$filter['sql']})
+				AND si.`status` = ?
+				AND si.`seq` <= ?",
+			'params' => $filter['params']
+		];
+	}
+
+	return ['sql' => 'WHERE (' . $filter['sql'] . ')', 'params' => $filter['params']];
+}
+
+/**
+ * syslog_filter_rule_summary - Human readable one-line summary of a
+ * versioned filter document for list pages.
+ *
+ * @param string $json The versioned filter document
+ *
+ * @return string The summary, or the raw string when not a filter document
+ */
+function syslog_filter_rule_summary($json) {
+	$document = json_decode((string) $json, true);
+
+	if (!is_array($document) || !isset($document['conditions']) || !is_array($document['conditions'])) {
+		return $json;
+	}
+
+	$fields = syslog_search_fields();
+	$parts  = [];
+
+	$walk = function ($conditions) use (&$walk, &$parts, $fields) {
+		if (!is_array($conditions)) {
+			return;
+		}
+
+		foreach ($conditions as $condition) {
+			if (!is_array($condition)) {
+				continue;
+			}
+
+			if (isset($condition['rows'])) {
+				$walk($condition['rows']);
+
+				continue;
+			}
+
+			if (isset($condition['field'], $condition['operator'], $condition['value'])) {
+				$label    = $fields[$condition['field']] ?? $condition['field'];
+				$negative = !empty($condition['negative']) ? '!' : '';
+				$parts[]  = $negative . $label . ' ' . $condition['operator'] . ' ' . $condition['value'];
+			}
+		}
+	};
+
+	$walk($document['conditions']);
+
+	return cacti_sizeof($parts) ? implode('; ', $parts) : $json;
+}
+
 function syslog_remove_items($table, $max_seq) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
@@ -924,7 +1215,48 @@ function syslog_remove_items($table, $max_seq) {
 			$sql_where = '';
 			$params    = [];
 
-			if ($remove['type'] == 'facility') {
+			// The transferal INSERT joins the incoming table with an
+			// alias, so the shared WHERE would be ambiguous there while
+			// the plain DELETE needs unqualified columns.  Compile both
+			// shapes up front and track them separately.
+			$insert_where = '';
+			$insert_params = [];
+
+			if ($remove['type'] == 'filter') {
+				if ($table == 'syslog_incoming') {
+					$remove['max_seq'] = $max_seq;
+
+					$compiled = syslog_get_removal_rule_sql($remove, $table);
+
+					if (cacti_sizeof($compiled)) {
+						$sql_where = $compiled['sql'];
+						$params    = $compiled['params'];
+					} else {
+						syslog_debug("Removal Rule '" . $remove['name'] . "' filter is invalid: " . ($GLOBALS['syslog_rule_filter_error'] ?? 'unknown error'));
+					}
+
+					if ($remove['method'] != 'del') {
+						$insert_compiled = syslog_get_removal_rule_sql($remove, $table, 'si.');
+
+						if (cacti_sizeof($insert_compiled)) {
+							$insert_where  = $insert_compiled['sql'];
+							$insert_params = $insert_compiled['params'];
+						} else {
+							$insert_where = '';
+							$insert_params = [];
+						}
+					}
+				} else {
+					$compiled = syslog_get_removal_rule_sql($remove, $table);
+
+					if (cacti_sizeof($compiled)) {
+						$sql_where = $compiled['sql'];
+						$params    = $compiled['params'];
+					} else {
+						syslog_debug("Removal Rule '" . $remove['name'] . "' filter is invalid: " . ($GLOBALS['syslog_rule_filter_error'] ?? 'unknown error'));
+					}
+				}
+			} elseif ($remove['type'] == 'facility') {
 				if ($table == 'syslog_incoming') {
 					$sql_where = 'WHERE `' . $syslog_incoming_config['facilityField'] . '` = ?
 						AND `status` = 1
@@ -1031,14 +1363,31 @@ function syslog_remove_items($table, $max_seq) {
 			if ($sql_where != '') {
 				if ($remove['method'] != 'del') {
 					if ($table == 'syslog_incoming') {
-						syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
-							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
-							FROM `$syslogdb_default`.`syslog_incoming` AS si
-							INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
-							ON sh.host = si.host
-							INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
-							ON sp.program = si.program $sql_where", $params);
+						if ($remove['type'] == 'filter') {
+							// Filter rules compile an alias-qualified WHERE
+							// for this joined INSERT separately.
+							if ($insert_where == '') {
+								continue;
+							}
+
+							syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+								(logtime, priority_id, facility_id, program_id, host_id, message)
+								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
+								FROM `$syslogdb_default`.`syslog_incoming` AS si
+								INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
+								ON sh.host = si.host
+								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
+								ON sp.program = si.program $insert_where", $insert_params);
+						} else {
+							syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+								(logtime, priority_id, facility_id, program_id, host_id, message)
+								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
+								FROM `$syslogdb_default`.`syslog_incoming` AS si
+								INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
+								ON sh.host = si.host
+								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
+								ON sp.program = si.program $sql_where", $params);
+						}
 					} else {
 						syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
@@ -2183,9 +2532,49 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
 	if (!isset($syslog_incoming_config['programField'])) {
 		$syslog_incoming_config['programField'] = 'program';
 	}
+	foreach (['textField' => 'message', 'hostField' => 'host', 'facilityField' => 'facility_id', 'priorityField' => 'priority_id'] as $setting => $default) {
+		if (!isset($syslog_incoming_config[$setting])) {
+			$syslog_incoming_config[$setting] = $default;
+		}
+	}
 
 	$params = [];
 	$sql    = '';
+
+	if ($alert['type'] == 'filter') {
+		if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
+			$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
+
+			return [];
+		}
+		$fields = [
+			'message' => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host' => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'program' => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
+			'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
+		];
+
+		try {
+			$filter = \Cacti\Syslog\QueryBuilder::compile($alert['message'], $fields);
+		} catch (InvalidArgumentException $error) {
+			$GLOBALS['syslog_rule_filter_error'] = $error->getMessage();
+
+			return [];
+		}
+
+		$filter['params'][] = 1;
+		$filter['params'][] = $max_seq;
+
+		return [
+			'sql' => "SELECT *
+				FROM `$syslogdb_default`.`syslog_incoming`
+				WHERE ({$filter['sql']})
+				AND `status` = ?
+				AND `seq` <= ?",
+			'params' => $filter['params']
+		];
+	}
 
 	if ($alert['type'] == 'facility') {
 		$sql = "SELECT *

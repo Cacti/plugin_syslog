@@ -302,6 +302,18 @@ function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, 
 	$save['date']    = time();
 	$save['user']    = $username;
 
+	// Structured filter rules are validated against the same compiler used
+	// during processing.  SQL expression rules keep their free-form behavior.
+	if ($type === 'filter' && !is_error_message()) {
+		$probe = ['message' => $message, 'max_seq' => 0];
+
+		if (!cacti_sizeof(syslog_get_removal_rule_sql($probe, 'syslog_incoming'))) {
+			raise_message('filter_error', __('The filter is invalid: %s', ($GLOBALS['syslog_rule_filter_error'] ?? 'unknown error'), 'syslog'), MESSAGE_LEVEL_ERROR);
+
+			return false;
+		}
+	}
+
 	$id = 0;
 
 	if (!is_error_message()) {
@@ -419,11 +431,65 @@ function syslog_action_edit() {
 		}
 
 		$removal['name'] = __('New Removal Rule', 'syslog');
+		$removal['type'] = 'filter';
 	} else {
 		$header_label = '[new]';
 
 		$removal['name'] = __('New Removal Record', 'syslog');
+		$removal['type'] = 'filter';
 	}
+
+	$filter_conditions = [];
+	if (($removal['type'] ?? '') === 'filter') {
+		$filter_document = json_decode($removal['message'] ?? '', true);
+		if (is_array($filter_document) && ($filter_document['version'] ?? null) === 1 && is_array($filter_document['conditions'] ?? null)) {
+			$filter_conditions = $filter_document['conditions'];
+		} elseif (get_nfilter_request_var('action') === 'newedit' && !empty($removal['message'])) {
+			$filter_conditions = [[
+				'join' => 'AND',
+				'negative' => false,
+				'field' => 'message',
+				'operator' => 'contains',
+				'value' => $removal['message']
+			]];
+		}
+	}
+
+	// Present older simple rules as their equivalent SQL expression. This
+	// changes the editor only; storage changes on explicit Save.
+	if (in_array($removal['type'] ?? '', ['messageb', 'messagec', 'messagee', 'host', 'program', 'facility'], true)) {
+		$column = match ($removal['type']) {
+			'host'     => 'host',
+			'program'  => 'program',
+			'facility' => 'facility_id',
+			default    => 'message'
+		};
+
+		if ($removal['type'] === 'facility') {
+			// Facility rules store a name; resolve it to the normalized id.
+			$facility_id = syslog_db_fetch_cell_prepared("SELECT facility_id
+				FROM `$syslogdb_default`.`syslog_facilities`
+				WHERE facility = ?",
+				[$removal['message']]);
+
+			$removal['message'] = '`facility_id` = ' . db_qstr($facility_id);
+		} elseif ($removal['type'] === 'messageb') {
+			$removal['message'] = '`message` LIKE ' . db_qstr($removal['message'] . '%');
+		} elseif ($removal['type'] === 'messagec') {
+			$removal['message'] = '`message` LIKE ' . db_qstr('%' . $removal['message'] . '%');
+		} elseif ($removal['type'] === 'messagee') {
+			$removal['message'] = '`message` LIKE ' . db_qstr('%' . $removal['message']);
+		} else {
+			$removal['message'] = '`' . $column . '` = ' . db_qstr($removal['message']);
+		}
+
+		$removal['type'] = 'sql';
+	}
+
+	$removal_message_types = [
+		'filter' => $message_types['filter'],
+		'sql'    => $message_types['sql']
+	];
 
 	$fields_syslog_removal_edit = [
 		'spacer0' => [
@@ -451,9 +517,9 @@ function syslog_action_edit() {
 			'friendly_name' => __('String Match Type', 'syslog'),
 			'description'   => __('Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include \'message\', \'facility\', \'priority\', and \'host\'.', 'syslog'),
 			'value'         => '|arg1:type|',
-			'array'         => $message_types,
+			'array'         => $removal_message_types,
 			'on_change'     => 'changeTypes()',
-			'default'       => 'matchesc'
+			'default'       => 'filter'
 		],
 		'message' => [
 			'friendly_name' => __('Syslog Message Match String', 'syslog'),
@@ -513,7 +579,105 @@ function syslog_action_edit() {
 
 	?>
 	<script type='text/javascript'>
-	initSyslogRemoval(<?php print syslog_allow_edits() ? 'true' : 'false'; ?>);
+
+	var allowEdits=<?php print syslog_allow_edits() ? 'true' : 'false'; ?>;
+	var removalFilterBuilder;
+	var removalFilterConfig = {
+		fields: <?php print syslog_json_safe([
+			'message' => __('Message', 'syslog'),
+			'host' => __('Host', 'syslog'),
+			'program' => __('Program', 'syslog'),
+			'facility_id' => __('Facility', 'syslog'),
+			'priority_id' => __('Priority', 'syslog')
+		]); ?>,
+		operators: {
+			message: ['contains', 'begins', 'ends', '=', '!='],
+			host: ['=', '!=', 'contains', 'begins', 'ends'],
+			program: ['=', '!=', 'contains', 'begins', 'ends'],
+			facility_id: ['=', '!='],
+			priority_id: ['=', '!=']
+		},
+		choices: <?php
+			$filter_choices = syslog_search_choices();
+			print syslog_json_safe([
+				'facility_id' => $filter_choices['facility_id'] ?? [],
+				'priority_id' => $filter_choices['priority_id'] ?? []
+			]);
+		?>,
+		conditions: <?php print syslog_json_safe($filter_conditions); ?>,
+		labels: {
+			message: <?php print syslog_json_safe(__('Value', 'syslog')); ?>,
+			placeholder: <?php print syslog_json_safe(__('Enter a value', 'syslog')); ?>,
+			match: <?php print syslog_json_safe(__('Match', 'syslog')); ?>,
+			exclude: <?php print syslog_json_safe(__('Exclude', 'syslog')); ?>,
+			remove: <?php print syslog_json_safe(__('Remove condition', 'syslog')); ?>,
+			integer: <?php print syslog_json_safe(__('Enter a nonnegative integer', 'syslog')); ?>
+		}
+	};
+
+	function changeTypes() {
+		var filterMode = $('#type').val() == 'filter';
+		$('#message').toggle(!filterMode);
+		$('#syslog_removal_filter_panel').prop('hidden', !filterMode);
+		if ($('#type').val() == 'sql') {
+			$('#message').prop('rows', 5);
+		} else {
+			$('#message').prop('rows', 2);
+		}
+	}
+
+	$(function() {
+		var message = document.getElementById('message');
+		var panel = document.createElement('section');
+		panel.id = 'syslog_removal_filter_panel';
+		panel.className = 'syslogRuleFilterPanel ui-widget-content ui-corner-all';
+		panel.setAttribute('aria-label', <?php print syslog_json_safe(__('Removal filter conditions', 'syslog')); ?>);
+		var builder = document.createElement('div');
+		builder.id = 'syslog_removal_filter_builder';
+		builder.className = 'syslogSearchBuilder syslogRuleFilterBuilder';
+		builder.setAttribute('aria-label', <?php print syslog_json_safe(__('Removal filter conditions', 'syslog')); ?>);
+		panel.appendChild(builder);
+		message.insertAdjacentElement('afterend', panel);
+		if (!removalFilterConfig.conditions.length && message.value && $('#type').val() != 'filter') {
+			removalFilterConfig.conditions = [{join: 'AND', negative: false, field: 'message', operator: 'contains', value: message.value}];
+		}
+		removalFilterBuilder = new SyslogFilterBuilder(builder, removalFilterConfig);
+		$('#type').off('change.syslogRemovalFilter').on('change.syslogRemovalFilter', changeTypes);
+		$('#syslog_edit').off('submit.syslogRemovalFilter').on('submit.syslogRemovalFilter', function(event) {
+			if ($('#type').val() == 'filter' && !removalFilterBuilder.syncTo(message)) {
+				event.preventDefault();
+			}
+		});
+		changeTypes();
+
+		if (!allowEdits) {
+			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
+			removalFilterBuilder.setDisabled(true);
+			$('#syslog_edit').find('select').each(function() {
+				if ($(this).selectmenu('instance')) {
+					$(this).selectmenu('refresh');
+				}
+			});
+		}
+
+		$('#refresh').click(function() {
+			applyFilterRemoval();
+		});
+
+		$('#clear').click(function() {
+			clearFilterRemoval();
+		});
+
+		$('#import').click(function() {
+			importRemoval();
+		});
+
+		$('#removal').submit(function(event) {
+			event.preventDefault();
+			applyFilterRemoval();
+		});
+	});
+
 	</script>
 	<?php
 }
@@ -682,7 +846,7 @@ function syslog_removal() {
 			form_selectable_cell(filter_value(title_trim($removal['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_removal.php?action=edit&id=' . $removal['id']), $removal['id']);
 			form_selectable_cell((($removal['enabled'] == 'on') ? __('Yes', 'syslog') : __('No', 'syslog')), $removal['id']);
 			form_selectable_cell($message_types[$removal['type']], $removal['id']);
-			form_selectable_ecell($removal['message'], $removal['id']);
+			form_selectable_ecell(($removal['type'] == 'filter' ? syslog_filter_rule_summary($removal['message']) : $removal['message']), $removal['id']);
 			form_selectable_cell((($removal['method'] == 'del') ? __('Deletion', 'syslog') : __('Transfer', 'syslog')), $removal['id']);
 			form_selectable_cell(date('Y-m-d H:i:s', $removal['date']), $removal['id']);
 			form_selectable_cell($removal['user'], $removal['id']);
