@@ -156,7 +156,7 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 	};
 
 	// The encoder, on its own.
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	$encoded = syslog_json_safe($payload);
 

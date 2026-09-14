@@ -18,7 +18,7 @@ it('only allows the owner or an admin to delete a shared saved search', function
 	// api_plugin_user_realm_auth(), which is overridden below; loading it
 	// here (rather than faking syslog_saved_search_admin directly) keeps
 	// this test correct regardless of what other test files already loaded.
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	$source = plugin_test_read_source('syslog.php');
 	$start  = strpos($source, 'function saved_search_delete()');

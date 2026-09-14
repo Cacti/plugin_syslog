@@ -13,6 +13,13 @@
  * own Composer-managed vendor tree checked out by the CI workflow.
  */
 
-// pest()->extend() (not uses()) is required to bind $this to TestCase across
-// a directory; in() takes paths relative to this file, not absolute ones.
-pest()->extend(TestCase::class)->in('Security', 'Unit');
+/*
+ * Every test starts from the same clean slate: no leftover request vars,
+ * session state, or per-test function fakes from a previous test file. A
+ * global beforeEach() (rather than a custom TestCase bound via
+ * pest()->extend()->in(), which proved unreliable across Pest versions/CI)
+ * works regardless of what $this resolves to in a test.
+ */
+beforeEach(function () {
+	syslog_test_reset_globals();
+});

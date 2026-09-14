@@ -52,7 +52,7 @@ it('validates uploads before reading and rejects zero-byte imports', function ()
 		throw new RuntimeException('Shared import payload loader must validate an upload before opening it.');
 	}
 
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	$emptyFixture    = tempnam(sys_get_temp_dir(), 'syslog-empty-import-');
 	$payloadFixture  = tempnam(sys_get_temp_dir(), 'syslog-import-');

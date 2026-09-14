@@ -21,7 +21,7 @@ it('binds host and program alert SQL through prepared-statement placeholders', f
 		'textField'     => 'message',
 	];
 
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	$hostAlert = ['type' => 'host', 'message' => 'router1'];
 	$programAlert = ['type' => 'program', 'message' => 'sshd'];

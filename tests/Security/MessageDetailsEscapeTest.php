@@ -15,7 +15,7 @@
  */
 
 it('escapes hostile log and device text in the message-details button', function () {
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	$message = '<script>alert("log")</script> & "quoted"';
 	$html = syslog_message_button($message, 'router" onmouseover="bad', 'kernel', 'kern', 'warning', '2026-09-13 00:00:00');

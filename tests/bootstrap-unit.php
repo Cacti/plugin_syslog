@@ -38,8 +38,8 @@
  * one Pest process, a second global `function get_request_var()` in a test
  * file would be a fatal redeclaration. Tests install a closure through
  * test_override() instead; syslog_test_reset_globals() (called before every
- * test, see Pest.php/TestCase.php) clears the registry so one test's fake
- * never leaks into the next.
+ * test, see Pest.php) clears the registry so one test's fake never leaks
+ * into the next.
  */
 
 $cacti_root = dirname(__DIR__, 3);
@@ -76,7 +76,6 @@ if (!in_array($expected_version, ['1.2.x', 'develop'], true) && $cacti_version !
 }
 
 require_once $autoload;
-require_once __DIR__ . '/TestCase.php';
 
 /*
  * base_path has to point at the Cacti root two levels above this plugin:
@@ -638,4 +637,21 @@ function syslog_test_load($path) {
 			$GLOBALS[$__name] = $__value;
 		}
 	}
+}
+
+/**
+ * Load a plugin source file relative to the plugin root, once per process.
+ *
+ * A plain function rather than a TestCase method: Pest's directory-wide
+ * pest()->extend()->in() binding proved unreliable across Pest versions
+ * (tests kept getting the default PHPUnit\Framework\TestCase instead of our
+ * TestCase, causing "Call to undefined method ...::loadPluginSource()"), so
+ * tests call this directly instead of $this->loadPluginSource().
+ *
+ * @param string $file File name relative to the plugin root.
+ *
+ * @return void
+ */
+function syslog_load_plugin_source($file) {
+	syslog_test_load(dirname(__DIR__) . '/' . $file);
 }

@@ -15,7 +15,7 @@
  */
 
 it('builds search choices and suggestions safely, rejecting unknown fields', function () {
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	test_override('syslog_db_fetch_assoc', function ($sql) {
 		return [['id' => 4, 'name' => 'warning']];

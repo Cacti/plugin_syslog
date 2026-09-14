@@ -14,7 +14,7 @@
  */
 
 it('reapplies the default last-day limit whenever a search has no date condition', function () {
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	$source = plugin_test_read_source('syslog.php');
 	$start  = strpos($source, "set_shift_span(\$shift_span, 'sess_sl_' . \$current_tab);");

@@ -20,7 +20,7 @@ it('folds the saved-search realm into the admin realm without widening existing 
 	// same storage instead of a closure-local shadow.
 	global $user_auth_realm_filenames, $test_realms, $test_grants, $test_writes, $test_replications;
 
-	$this->loadPluginSource('setup.php');
+	syslog_load_plugin_source('setup.php');
 
 	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
 		global $test_realms;

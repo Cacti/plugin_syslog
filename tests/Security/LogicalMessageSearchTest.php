@@ -16,7 +16,7 @@
  */
 
 it('parses the logical search grammar and rejects malformed or oversized input', function () {
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	test_override('db_qstr', function ($value) {
 		return "'" . str_replace(['\\', "'"], ['\\\\', "''"], $value) . "'";
@@ -116,7 +116,7 @@ it('parses the logical search grammar and rejects malformed or oversized input',
 });
 
 it('applies the logical search predicate consistently in the real query builder', function () {
-	$this->loadPluginSource('functions.php');
+	syslog_load_plugin_source('functions.php');
 
 	test_override('db_qstr', function ($value) {
 		return "'" . str_replace(['\\', "'"], ['\\\\', "''"], $value) . "'";
