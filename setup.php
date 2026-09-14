@@ -262,6 +262,8 @@ function syslog_check_upgrade() {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
+	// Keep newly introduced permission realms available for existing installs.
+	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Syslog Saved Searches Share', 0);
 
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php'];
