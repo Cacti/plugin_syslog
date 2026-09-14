@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Deprecate the Statistics tab and remove statistics data collection and database setup
 * security: Require POST and CSRF validation for unused-host purge
   operations
 * security: Escape HTML and JavaScript output contexts and restrict callback

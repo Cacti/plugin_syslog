@@ -194,14 +194,6 @@ $incoming = $results['incoming'];
 syslog_update_reference_tables($max_seq);
 
 /**
- * The statistics process allows the Cacti
- * administrator to get some comprehension of flow
- * into the syslog table and what message types are flowing
- * into it.
- */
-syslog_update_statistics($max_seq);
-
-/**
  * remove records that don't need to to be transferred
  */
 $results = syslog_remove_items('syslog_incoming', $max_seq);

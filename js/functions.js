@@ -4,58 +4,6 @@
  */
 
 /* ========================================================================
- * Statistics View Functions (syslog.php - stats tab)
- * ======================================================================== */
-
-/**
- * Clear filter for statistics view
- */
-function clearFilterStats() {
-	strURL = 'syslog.php?tab=stats&clear=1&header=false';
-	loadPageNoHeader(strURL);
-}
-
-/**
- * Apply filter for statistics view
- */
-function applyFilterStats() {
-	var strURL  = 'syslog.php?header=false';
-	strURL += '&none=true';
-	strURL += '&facility=' + $('#facility').val();
-	strURL += '&host=' + $('#host').val();
-	strURL += '&priority=' + $('#priority').val();
-	strURL += '&program=' + $('#eprogram').val();
-	strURL += '&timespan=' + $('#timespan').val();
-	strURL += '&rfilter=' + base64_encode($('#rfilter').val());
-	strURL += '&rows=' + $('#rows').val();
-	strURL += '&grouping=' + ($('#grouping').length ? $('#grouping').val() : '0');
-	loadPageNoHeader(strURL);
-}
-
-/**
- * Initialize statistics view
- */
-function initSyslogStats() {
-	$(function() {
-		$('#go').click(function() {
-			applyFilterStats();
-		});
-
-		$('#clear').click(function() {
-			clearFilterStats();
-		});
-
-		$('#host').selectmenu({
-			open: function() {
-				$('div.ui-selectmenu-menu li.ui-menu-item').each(function(idx){
-					$(this).addClass( $('#host option').eq(idx).attr('class') )
-				})
-			}
-		});
-	});
-}
-
-/* ========================================================================
  * Main Syslog View Functions (syslog.php - syslog/alerts tabs)
  * ======================================================================== */
 
