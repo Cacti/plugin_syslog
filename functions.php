@@ -1,4 +1,37 @@
 <?php
+
+/**
+ * Prefix values that spreadsheet applications could interpret as formulas.
+ * Non-string values are returned unchanged for callers that preserve types.
+ *
+ * Only literal spaces are stripped before the check; a leading tab or CR is
+ * itself a formula trigger in some importers and must stay detectable as
+ * the first character rather than being treated as skippable whitespace.
+ *
+ * @param mixed $value Value destined for CSV output.
+ * @return mixed Sanitized CSV value.
+ */
+function syslog_csv_safe(mixed $value): mixed {
+	if (!is_string($value) || $value === '') {
+		return $value;
+	}
+
+	if (str_starts_with($value, "'")) {
+		return $value;
+	}
+
+	$stripped = ltrim($value, ' ');
+
+	if ($stripped === '') {
+		return $value;
+	}
+
+	if (preg_match('/^[=+\-@\t\r]/', $stripped) === 1) {
+		return "'" . $value;
+	}
+
+	return $value;
+}
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
@@ -332,6 +365,18 @@ function syslog_include_js() {
 	<?php
 }
 
+/**
+ * __esc() is not enough inside a <script> block, because the browser does
+ * not HTML-decode there. The value has to arrive as a JSON literal.
+ *
+ * @param mixed $value
+ *
+ * @return string
+ */
+function syslog_json_safe($value) {
+	return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR);
+}
+
 function syslog_allow_edits() {
 	global $config;
 
@@ -429,15 +474,25 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 	}
 }
 
+const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
+
 function syslog_get_import_xml_payload($redirect_url) {
-	if (trim(get_nfilter_request_var('import_text')) != '') {
+	$import_text = (string) get_nfilter_request_var('import_text');
+
+	if (trim($import_text) !== '') {
 		// textbox input
-		return get_nfilter_request_var('import_text');
+		if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
+			cacti_log('SYSLOG ERROR: Text import payload exceeds the maximum size', false, 'SYSTEM');
+			header('Location: ' . $redirect_url);
+			exit;
+		}
+
+		return $import_text;
 	}
 
 	if (isset($_FILES['import_file']['tmp_name']) &&
-		$_FILES['import_file']['tmp_name'] != 'none' &&
-		$_FILES['import_file']['tmp_name'] != '') {
+		$_FILES['import_file']['tmp_name'] !== 'none' &&
+		$_FILES['import_file']['tmp_name'] !== '') {
 		// file upload
 		$tmp_name = $_FILES['import_file']['tmp_name'];
 
@@ -451,6 +506,14 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
+		$size = (int) ($_FILES['import_file']['size'] ?? filesize($tmp_name));
+
+		if ($size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES) {
+			cacti_log('SYSLOG ERROR: Uploaded import file has an invalid size', false, 'SYSTEM');
+			header('Location: ' . $redirect_url);
+			exit;
+		}
+
 		$fp = fopen($tmp_name, 'rb');
 
 		if ($fp === false) {
@@ -459,7 +522,7 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
-		$xml_data = fread($fp, filesize($tmp_name));
+		$xml_data = fread($fp, $size);
 		fclose($fp);
 
 		if ($xml_data === false) {
@@ -473,6 +536,22 @@ function syslog_get_import_xml_payload($redirect_url) {
 
 	header('Location: ' . $redirect_url);
 	exit;
+}
+
+function syslog_csv_cell(mixed $value): string {
+	$value = (string) $value;
+
+	if ($value === '' || str_starts_with($value, "'")) {
+		return $value;
+	}
+
+	$trimmed = ltrim($value, ' ');
+
+	if ($trimmed !== '' && in_array($trimmed[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+		return "'" . $value;
+	}
+
+	return $value;
 }
 
 function syslog_is_partitioned() {
@@ -526,14 +605,22 @@ function syslog_partition_manage() {
 	// Always create the partition an hour ahead of time
 	$time = time() + 3600;
 
+	/*
+	 * Only run the retention prune when the next partition is ready.
+	 * If maintenance cannot safely create it, leave dMaxValue in place
+	 * as the write-path safety net and avoid dropping old partitions
+	 * without a replacement.
+	 */
 	if (syslog_partition_check('syslog', $time)) {
-		syslog_partition_create('syslog', $time);
-		$syslog_deleted = syslog_partition_remove('syslog');
+		if (syslog_partition_create('syslog', $time)) {
+			$syslog_deleted = syslog_partition_remove('syslog');
+		}
 	}
 
 	if (syslog_partition_check('syslog_removed', $time)) {
-		syslog_partition_create('syslog_removed', $time);
-		$syslog_deleted += syslog_partition_remove('syslog_removed');
+		if (syslog_partition_create('syslog_removed', $time)) {
+			$syslog_deleted += syslog_partition_remove('syslog_removed');
+		}
 	}
 
 	return $syslog_deleted;
@@ -576,9 +663,26 @@ function syslog_partition_create($table, $time = null) {
 		return false;
 	}
 
+	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
+		cacti_log("SYSLOG ERROR: Invalid database name; partition create aborted", false, 'SYSLOG');
+
+		return false;
+	}
+
 	if ($time === null) {
 		$time = time() + 3600;
 	}
+
+	// Reject non-numeric, negative, or far-future timestamps; boundary
+	// math assumes a non-negative UTC epoch within 64-bit safe range so
+	// extreme inputs cannot underflow or overflow to float.
+	if (!is_numeric($time) || (int) $time < 0 || (int) $time > 4102444800) {
+		cacti_log("SYSLOG ERROR: syslog_partition_create called with invalid time '$time' for table '$table'", false, 'SYSLOG');
+
+		return false;
+	}
+
+	$time = (int) $time;
 
 	// Hash to guarantee the lock name stays within MySQL's 64-byte limit.
 	$lock_name = substr(hash('sha256', $syslogdb_default . '.syslog_partition_create.' . $table), 0, 60);
@@ -603,10 +707,32 @@ function syslog_partition_create($table, $time = null) {
 		return false;
 	}
 
+	$success = false;
+
 	try {
-		// determine the format of the table name
-		$cformat = 'd' . gmdate('Ymd', $time);
-		$lnow    = gmdate('Y-m-d', strtotime('+1 day', $time));
+		/*
+		 * Boundary arithmetic is done in PHP against the UTC epoch so the
+		 * result is independent of both the PHP and MySQL session time zones.
+		 * $boundary_epoch is the next UTC midnight strictly after $time; it
+		 * becomes the VALUES LESS THAN literal for UNIX_TIMESTAMP partitions
+		 * and the source for the date string passed to TO_DAYS.
+		 */
+		$boundary_epoch = (intdiv($time, 86400) + 1) * 86400;
+
+		if ($boundary_epoch <= 0 || $boundary_epoch <= $time) {
+			cacti_log("SYSLOG ERROR: Boundary epoch computation failed for '$table' (time=$time); leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+			return false;
+		}
+
+		$cformat        = 'd' . gmdate('Ymd', $time);
+		$boundary_date  = gmdate('Y-m-d', $boundary_epoch);
+
+		if (preg_match('/^d\d{8}$/', $cformat) !== 1 || preg_match('/^\d{4}-\d{2}-\d{2}$/', $boundary_date) !== 1) {
+			cacti_log("SYSLOG ERROR: Derived partition values failed format validation for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+			return false;
+		}
 
 		$exists = syslog_db_fetch_row_prepared('SELECT *
 			FROM `information_schema`.`partitions`
@@ -625,30 +751,41 @@ function syslog_partition_create($table, $time = null) {
 			 * MySQL does not support parameter binding for DDL identifiers
 			 * or partition definitions. $table is safe because it passed
 			 * syslog_partition_table_allowed() (two-value allowlist plus
-			 * regex guard). $cformat and $lnow derive from date() and
-			 * contain only digits, hyphens, and the letter 'd'.
+			 * regex guard). $cformat, $boundary_epoch, and $boundary_date
+			 * derive from integer arithmetic and gmdate(), so they contain
+			 * only digits, hyphens, and the letter 'd'.
 			 */
-			$create_syntax = syslog_db_fetch_row("SHOW CREATE TABLE `$syslogdb_default`.`$table`");
+			$create_syntax = syslog_db_fetch_row_prepared("SHOW CREATE TABLE `$syslogdb_default`.`$table`");
 
-			if (cacti_sizeof($create_syntax)) {
-				if (str_contains($create_syntax['Create Table'], 'TO_DAYS')) {
-					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-						PARTITION $cformat VALUES LESS THAN (TO_DAYS('$lnow')),
-						PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
-				} else {
-					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
-						PARTITION $cformat VALUES LESS THAN (UNIX_TIMESTAMP('$lnow')),
-						PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
-				}
+			if (!cacti_sizeof($create_syntax) || empty($create_syntax['Create Table'])) {
+				cacti_log("SYSLOG ERROR: SHOW CREATE TABLE returned no rows for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+				return false;
+			}
+
+			$create_sql = $create_syntax['Create Table'];
+
+			if (stripos($create_sql, 'TO_DAYS') !== false) {
+				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+					PARTITION $cformat VALUES LESS THAN (TO_DAYS('$boundary_date')),
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+			} elseif (stripos($create_sql, 'UNIX_TIMESTAMP') !== false) {
+				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+					PARTITION $cformat VALUES LESS THAN ($boundary_epoch),
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
 			} else {
-				cacti_log('WARNING: Unable to determine Partition type for rotation', false, 'SYSLOG');
+				cacti_log("SYSLOG ERROR: Unable to determine partition expression (neither TO_DAYS nor UNIX_TIMESTAMP) for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+				return false;
 			}
 		}
+
+		$success = true;
 	} finally {
 		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock_name]);
 	}
 
-	return true;
+	return $success;
 }
 
 /**
@@ -661,6 +798,12 @@ function syslog_partition_remove($table) {
 
 	if (!syslog_partition_table_allowed($table)) {
 		cacti_log("SYSLOG: partition_remove called with disallowed table '$table'", false, 'SYSTEM');
+
+		return 0;
+	}
+
+	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
+		cacti_log("SYSLOG ERROR: Invalid database name; partition remove aborted", false, 'SYSLOG');
 
 		return 0;
 	}
@@ -703,11 +846,24 @@ function syslog_partition_remove($table) {
 				while ($user_partitions > $days) {
 					$oldest = $number_of_partitions[$i];
 
-					cacti_log("SYSLOG: Removing old partition '" . $oldest['PARTITION_NAME'] . "'", false, 'SYSTEM');
+					$part_name = $oldest['PARTITION_NAME'];
 
-					syslog_debug("Removing partition '" . $oldest['PARTITION_NAME'] . "'");
+					if (preg_match('/^[a-zA-Z0-9_]+$/', $part_name) !== 1) {
+						cacti_log("SYSLOG ERROR: Invalid partition name '$part_name' for '$table'; skipping drop", false, 'SYSLOG');
+						break;
+					}
 
-					syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION " . $oldest['PARTITION_NAME']);
+					cacti_log("SYSLOG: Removing old partition '" . $part_name . "'", false, 'SYSTEM');
+
+					syslog_debug("Removing partition '" . $part_name . "'");
+
+					/* $table passed syslog_partition_table_allowed() at function entry; $part_name is regex-validated above. DDL identifiers cannot be parameterized. */
+					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`");
+
+					if ($result === false) {
+						cacti_log("SYSLOG ERROR: Failed to drop partition '$part_name' from '$table' after $i successful drop(s); aborting further drops", false, 'SYSLOG');
+						break;
+					}
 
 					$i++;
 					$user_partitions--;
@@ -1097,6 +1253,39 @@ function sql_hosts_where($tab) {
 	}
 }
 
+/**
+ * Defuse CSV formula injection without mutating content.
+ *
+ * Spreadsheet applications (Excel, LibreOffice, Google Sheets) interpret any
+ * cell starting with =, +, -, @, TAB, or CR as a formula. Prepending a
+ * single quote tells them to treat the cell as literal text. The quote is
+ * visible in the cell but does not alter the underlying data, unlike
+ * trimming which loses characters.
+ *
+ * See OWASP CSV Injection Prevention Cheat Sheet.
+ */
+function syslog_csv_safe(mixed $value): mixed {
+	if (!is_string($value) || $value === '') {
+		return $value;
+	}
+
+	// Some CSV importers strip leading spaces before parsing as a
+	// formula, so " =SUM(A1)" is still dangerous. Only strip literal
+	// spaces here; tabs and carriage returns are themselves triggers
+	// and must remain detectable as the first character.
+	$stripped = ltrim($value, ' ');
+
+	if ($stripped === '') {
+		return $value;
+	}
+
+	if (in_array($stripped[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+		return "'" . $value;
+	}
+
+	return $value;
+}
+
 function syslog_export($tab) {
 	if (!empty($GLOBALS['syslog_search_error'])) {
 		http_response_code(400);
@@ -1172,20 +1361,20 @@ function syslog_export($tab) {
 				}
 
 				if (isset($hosts[$message['host_id']])) {
-					$host = trim($hosts[$message['host_id']], ' =+-@');
+					$host = $hosts[$message['host_id']];
 				} else {
 					$host = 'Unknown';
 				}
 
-				$logmsg = trim($message[$syslog_incoming_config['textField']], ' =+-@');
+				$logmsg = $message[$syslog_incoming_config['textField']];
 
 				$line = [
-					$host,
-					ucfirst($facility),
-					ucfirst($priority),
-					ucfirst($program),
+					syslog_csv_safe($host),
+					syslog_csv_safe(ucfirst($facility)),
+					syslog_csv_safe(ucfirst($priority)),
+					syslog_csv_safe(ucfirst($program)),
 					$message['logtime'],
-					$logmsg
+					syslog_csv_safe($logmsg)
 				];
 
 				fputcsv($fp, $line, ',', '"', '');
@@ -1215,19 +1404,16 @@ function syslog_export($tab) {
 					$severity = 'Unknown';
 				}
 
-				$host   = trim($message['host'], ' =+-@');
-				$logmsg = trim($message['logmsg'], ' =+-@');
-
 				$line = [
-					$message['name'],
-					$severity,
+					syslog_csv_safe($message['name']),
+					syslog_csv_safe($severity),
 					$message['logtime'],
-					$logmsg,
-					$host,
-					ucfirst($message['facility']),
-					ucfirst($message['priority']),
+					syslog_csv_safe($message['logmsg']),
+					syslog_csv_safe($message['host']),
+					syslog_csv_safe(ucfirst($message['facility'])),
+					syslog_csv_safe(ucfirst($message['priority'])),
 					$message['count']
-				];
+				]);
 
 				fputcsv($fp, $line, ',', '"', '');
 			}
@@ -1241,7 +1427,7 @@ function syslog_debug($message) {
 	global $debug;
 
 	if ($debug) {
-		print date('H:m:s') . ' SYSLOG DEBUG: ' . trim($message) . PHP_EOL;
+		print date('H:i:s') . ' SYSLOG DEBUG: ' . trim($message) . PHP_EOL;
 	}
 }
 
@@ -1305,6 +1491,19 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 function syslog_manage_items($from_table, $to_table) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
+
+	/*
+	 * Table names are interpolated into DDL/DML below because MySQL does
+	 * not bind identifiers. Reject anything outside the static allowlist
+	 * so a future caller cannot turn this into a SQL injection surface.
+	 */
+	$allowed_tables = ['syslog', 'syslog_incoming', 'syslog_removed'];
+
+	if (!in_array($from_table, $allowed_tables, true) || !in_array($to_table, $allowed_tables, true)) {
+		cacti_log("SYSLOG ERROR: syslog_manage_items called with disallowed tables from='$from_table' to='$to_table'", false, 'SYSLOG');
+
+		return ['removed' => 0, 'xferred' => 0];
+	}
 
 	// Select filters to work on
 	$rows = syslog_db_fetch_assoc("SELECT * FROM `$syslogdb_default`.`syslog_remove` WHERE enabled = 'on'");
@@ -1372,13 +1571,13 @@ function syslog_manage_items($from_table, $to_table) {
 					$sql_dlt = "DELETE FROM `$syslogdb_default`.`$from_table`
 						WHERE message LIKE " . db_qstr('%' . $remove['message']);
 				}
-			} elseif ($remove['type'] == 'sql') {
-				if ($remove['method'] != 'del') {
+			} elseif ($remove['type'] === 'sql') {
+				if ($remove['method'] !== 'del') {
 					$sql_sel = "SELECT seq FROM `$syslogdb_default`.`$from_table`
-						WHERE message (" . $remove['message'] . ') ';
+						WHERE (" . $remove['message'] . ')';
 				} else {
 					$sql_dlt = "DELETE FROM `$syslogdb_default`.`$from_table`
-						WHERE message (" . $remove['message'] . ') ';
+						WHERE (" . $remove['message'] . ')';
 				}
 			}
 
@@ -2088,7 +2287,6 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
 		$params[] = $alert['message'];
 		$params[] = $max_seq;
 	} elseif ($alert['type'] == 'sql') {
-		// TODO: Make Injection proof
 		$sql = "SELECT *
 			FROM `$syslogdb_default`.`syslog_incoming`
 			WHERE ({$alert['message']})
@@ -2516,9 +2714,9 @@ function syslog_process_reports() {
 					$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
 					$sql .= ' AND logtime BETWEEN ? AND ?';
 					$sql .= ' ORDER BY logtime DESC';
-					$items = syslog_db_fetch_assoc_prepared($sql, [$data1, $date2]);
+					$items = syslog_db_fetch_assoc_prepared($sql, [$date1, $date2]);
 
-					syslog_debug('We have ' . db_affected_rows($syslog_cnn) . ' items for the Report');
+					syslog_debug('We have ' . cacti_sizeof($items) . ' items for the Report');
 
 					$classes = ['even', 'odd'];
 

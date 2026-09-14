@@ -56,6 +56,59 @@ However, in Syslog Version 4, if you want an alert per Host, you will have to
 move your Alerts from the `System Level` to the `Host Level` as `System Level`
 Alerts will generate one command execution for all matching messages.
 
+## Develop Branch Compatibility and Hardening Notes
+
+The following behavior is part of the hardening work being prepared on the
+`develop` branch for the next release. Released versions may not include every
+item yet.
+
+### Runtime and Test Baseline
+
+The hardened code paths use PHP 8.0-compatible language features and require
+PHP 8.0 or later. The Linux integration workflow currently exercises PHP 8.1,
+8.2, and 8.3 against Cacti `release/1.2.31`, including installation, plugin
+enablement, polling, and sample Syslog processing.
+
+This plugin does not ship its own `composer.json`. Composer validation and
+dependency installation in CI use the manifest supplied by the checked-out
+Cacti core release.
+
+### Security-Sensitive Behavior
+
+* Purging unused Syslog hosts requires a POST request and a valid Cacti CSRF
+  token. The operation fails closed when CSRF validation is unavailable.
+
+* Alert, navigation, and JavaScript-bound values are escaped for their output
+  context. JavaScript callback dispatch accepts only a bare function identifier
+  with no arguments or dotted path.
+
+* CSV exports continue to use PHP's `fputcsv()` for quoting. Cells beginning
+  with spreadsheet formula markers (`=`, `+`, `-`, `@`, tab, or carriage
+  return), including markers after leading spaces, are prefixed with a single
+  quote before export.
+
+* XML rule imports accept either pasted text or an uploaded file. Both paths
+  enforce a 5 MiB payload limit before XML parsing; rejected payloads are logged
+  and redirected without being parsed.
+
+* Legacy SQL-expression rules remain trusted administrator configuration. Do
+  not grant rule-management permissions to untrusted users, and review custom
+  SQL expressions before enabling them.
+
+### Partition Maintenance
+
+Partition boundaries are calculated with integer UTC epoch arithmetic. When a
+new partition cannot be created safely, maintenance leaves the `dMaxValue`
+partition in place and skips retention pruning rather than risking a write gap.
+
+### Validation
+
+The repository includes standalone PHP security regressions and a disposable
+Docker/Playwright end-to-end harness. GitHub CI runs PHP syntax and quality
+checks, CodeQL, and the PHP 8.1-8.3 integration matrix on Linux. The Docker E2E
+runner refuses unsafe temporary-directory paths before performing recursive
+cleanup.
+
 ## Installation
 
 To install the syslog plugin, simply copy the plugin_syslog directory to Cacti's
