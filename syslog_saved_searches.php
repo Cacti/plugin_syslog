@@ -57,7 +57,8 @@ if ($row !== false) {
 	$rows = syslog_db_fetch_assoc("SELECT id, name, search, user FROM $db.syslog_saved_searches WHERE is_global = 'on' ORDER BY name");
 	print "<tr><th>" . __('Name', 'syslog') . "</th><th>" . __('Owner', 'syslog') . "</th><th>" . __('Search', 'syslog') . "</th><th>" . __('Actions', 'syslog') . "</th></tr>";
 	foreach ($rows as $template) {
-		print "<tr><td>" . html_escape($template['name']) . "</td><td>" . html_escape($template['user']) . "</td><td>" . html_escape($template['search']) . "</td><td><a href='syslog_saved_searches.php?edit=" . (int) $template['id'] . "'>" . __('Edit', 'syslog') . "</a> <form method='post' style='display:inline'>" . csrf_magic() . "<input type='hidden' name='id' value='" . (int) $template['id'] . "'><button name='template_action' value='purge'>" . __('Purge', 'syslog') . "</button> <button name='template_action' value='delete'>" . __('Delete', 'syslog') . '</button></form></td></tr>';
+		// Cacti's CSRF output handler injects the token into each POST form.
+		print "<tr><td>" . html_escape($template['name']) . "</td><td>" . html_escape($template['user']) . "</td><td>" . html_escape($template['search']) . "</td><td><a href='syslog_saved_searches.php?edit=" . (int) $template['id'] . "'>" . __('Edit', 'syslog') . "</a> <form method='post' style='display:inline'><input type='hidden' name='id' value='" . (int) $template['id'] . "'><button name='template_action' value='purge'>" . __('Purge', 'syslog') . "</button> <button name='template_action' value='delete'>" . __('Delete', 'syslog') . '</button></form></td></tr>';
 	}
 }
 html_end_box();
