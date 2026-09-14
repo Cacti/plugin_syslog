@@ -13,4 +13,6 @@
  * own Composer-managed vendor tree checked out by the CI workflow.
  */
 
-uses(TestCase::class)->in(__DIR__ . '/Security', __DIR__ . '/Unit');
+// pest()->extend() (not uses()) is required to bind $this to TestCase across
+// a directory; in() takes paths relative to this file, not absolute ones.
+pest()->extend(TestCase::class)->in('Security', 'Unit');
