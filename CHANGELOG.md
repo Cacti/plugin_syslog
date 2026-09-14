@@ -2,6 +2,20 @@
 
 --- develop ---
 
+* security: Require POST and CSRF validation for unused-host purge
+  operations
+* security: Escape HTML and JavaScript output contexts and restrict callback
+  dispatch to bare identifiers
+* security: Defuse spreadsheet formulas in CSV output while retaining
+  `fputcsv()` quoting
+* security: Limit pasted and uploaded XML rule imports to 5 MiB before
+  parsing
+* issue: Use integer UTC partition boundaries and preserve `dMaxValue` as a
+  fail-safe write partition
+* test: Add standalone security regressions and Docker/Playwright end-to-end
+  coverage
+* ci: Validate the plugin on Linux with PHP 8.1-8.3 and pinned Cacti
+  `release/1.2.31`
 * feature: Add saved searches: store named filter definitions (conditions plus record type and grouping), apply them from a dropdown, and manage them with New/Edit/Delete/Save As; a new 'Syslog Saved Searches Admin' realm gates Make Global. Saved searches keep the date range dynamic (last day by default)
 * feature: Allow users to share saved searches with each other, gated by a new 'Syslog Saved Searches Share' realm; admins get a Console search admin page to manage all saved searches, and the delete button for global searches is hidden from unauthorized users (new realms added to upgrade)
 * feature: Rebuild the search area: support custom searches, allow users to hide/show the search box, add date range presets, and move the row limit into the search area; redirect-only buttons (Alerts, Removals, Reports) removed
