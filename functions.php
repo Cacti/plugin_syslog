@@ -474,15 +474,25 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 	}
 }
 
+const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
+
 function syslog_get_import_xml_payload($redirect_url) {
-	if (trim(get_nfilter_request_var('import_text')) != '') {
+	$import_text = (string) get_nfilter_request_var('import_text');
+
+	if (trim($import_text) !== '') {
 		// textbox input
-		return get_nfilter_request_var('import_text');
+		if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
+			cacti_log('SYSLOG ERROR: Text import payload exceeds the maximum size', false, 'SYSTEM');
+			header('Location: ' . $redirect_url);
+			exit;
+		}
+
+		return $import_text;
 	}
 
 	if (isset($_FILES['import_file']['tmp_name']) &&
-		$_FILES['import_file']['tmp_name'] != 'none' &&
-		$_FILES['import_file']['tmp_name'] != '') {
+		$_FILES['import_file']['tmp_name'] !== 'none' &&
+		$_FILES['import_file']['tmp_name'] !== '') {
 		// file upload
 		$tmp_name = $_FILES['import_file']['tmp_name'];
 
@@ -496,6 +506,14 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
+		$size = (int) ($_FILES['import_file']['size'] ?? filesize($tmp_name));
+
+		if ($size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES) {
+			cacti_log('SYSLOG ERROR: Uploaded import file has an invalid size', false, 'SYSTEM');
+			header('Location: ' . $redirect_url);
+			exit;
+		}
+
 		$fp = fopen($tmp_name, 'rb');
 
 		if ($fp === false) {
@@ -504,7 +522,7 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
-		$xml_data = fread($fp, filesize($tmp_name));
+		$xml_data = fread($fp, $size);
 		fclose($fp);
 
 		if ($xml_data === false) {
@@ -518,6 +536,22 @@ function syslog_get_import_xml_payload($redirect_url) {
 
 	header('Location: ' . $redirect_url);
 	exit;
+}
+
+function syslog_csv_cell(mixed $value): string {
+	$value = (string) $value;
+
+	if ($value === '' || str_starts_with($value, "'")) {
+		return $value;
+	}
+
+	$trimmed = ltrim($value, ' ');
+
+	if ($trimmed !== '' && in_array($trimmed[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+		return "'" . $value;
+	}
+
+	return $value;
 }
 
 function syslog_is_partitioned() {
@@ -1379,7 +1413,7 @@ function syslog_export($tab) {
 					syslog_csv_safe(ucfirst($message['facility'])),
 					syslog_csv_safe(ucfirst($message['priority'])),
 					$message['count']
-				];
+				]);
 
 				fputcsv($fp, $line, ',', '"', '');
 			}
