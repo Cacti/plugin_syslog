@@ -35,79 +35,13 @@ env:
   CACTI: 1.2.x
 
 jobs:
-  quality-checks:
-    name: PHP Quality (Lint, Stan, CS)
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Cacti
-      uses: actions/checkout@v7
-      with:
-        repository: Cacti/cacti
-        ref: ${{ env.CACTI }}
-        path: cacti
-    
-    - name: Checkout Syslog Plugin
-      uses: actions/checkout@v7
-      with:
-        path: cacti/plugins/syslog
-    
-    - name: Setup PHP 8.3
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.3'
-        extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
-        tools: php-cs-fixer, phpstan
-
-    - name: Check PHP Syntax (Lint)
-      run: |
-        cd cacti/plugins/syslog
-        if find . -name '*.php' -not -path './vendor/*' -exec php -l {} \; 2>&1 | grep -iv 'no syntax errors detected'; then
-          echo "Syntax errors found!"
-          exit 1
-        fi
-
-    - name: Run Regression Tests
-      run: |
-        cd cacti/plugins/syslog
-        for test in tests/regression/*.php; do
-          php "$test"
-        done
-
-    - name: Run PHP CS Fixer (Dry Run)
-      run: |
-        cd cacti/plugins/syslog
-        php-cs-fixer fix --dry-run --diff --ansi --config=../../../.php-cs-fixer.php . || true
-
-    - name: Create PHPStan config
-      run: |
-        cd cacti/plugins/syslog
-        cat > phpstan.neon << 'EOF'
-        parameters:
-          level: 5
-          paths:
-            - .
-          excludePaths:
-            - vendor/
-            - locales/
-          ignoreErrors:
-            - '#has invalid return type the\.#'
-          bootstrapFiles:
-            - ../../include/global.php
-        EOF
-
-    - name: Run PHPStan Analysis
-      run: |
-        cd cacti/plugins/syslog
-        phpstan analyse --no-progress --error-format=github || true
-
   integration-test:
-    needs: quality-checks
     runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.2', '8.3','8.4']
+        php: ['8.2', '8.3', '8.4']
         os: [ubuntu-latest]
 
     services:
@@ -135,34 +69,33 @@ jobs:
         repository: Cacti/cacti
         ref: ${{ env.CACTI }}
         path: cacti
-    
+
     - name: Checkout Syslog Plugin
       uses: actions/checkout@v7
       with:
         path: cacti/plugins/syslog
-    
+
     - name: Install PHP ${{ matrix.php }}
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
         extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
         ini-values: "post_max_size=256M, max_execution_time=60, date.timezone=America/New_York"
-    
+
     - name: Check PHP version
       run: php -v
-    
+
     - name: Run apt-get update
-      run: |
-        sudo apt-get update
-    
+      run: sudo apt-get update
+
     - name: Install System Dependencies
       run: sudo apt-get install -y snmp snmpd rrdtool fping
-    
+
     - name: Start SNMPD Agent and Test
       run: |
         sudo systemctl start snmpd
-        sudo snmpwalk -c public -v2c -On localhost .1.3.6.1.2.1.1
-    
+        sudo snmpwalk -c public -v2c -On localhost .1.3.6.1.2.1.1      
+
     - name: Setup Permissions
       run: |
         sudo chown -R www-data:runner ${{ github.workspace }}/cacti
@@ -170,11 +103,11 @@ jobs:
         sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
         sudo chmod +x ${{ github.workspace }}/cacti/cmd.php
         sudo chmod +x ${{ github.workspace }}/cacti/poller.php
-    
+
     - name: Create MySQL Config
       run: |
         echo -e "[client]\nuser = root\npassword = cactiroot\nhost = 127.0.0.1\n" > ~/.my.cnf
-    
+
     - name: Initialize Cacti Database
       run: |
         MYSQL_AUTH_USR="--defaults-file=$HOME/.my.cnf"
@@ -185,21 +118,24 @@ jobs:
         mysql "$MYSQL_AUTH_USR" -e "FLUSH PRIVILEGES;"
         mysql "$MYSQL_AUTH_USR" cacti < ${{ github.workspace }}/cacti/cacti.sql
         mysql "$MYSQL_AUTH_USR" -e "INSERT INTO settings (name, value) VALUES ('path_php_binary', '/usr/bin/php')" cacti
-    
+
     - name: Validate composer files
       run: |
         cd ${{ github.workspace }}/cacti
         if [ -f composer.json ]; then
           composer validate --strict || true
         fi
-    
+
     - name: Install Composer Dependencies
       run: |
         cd ${{ github.workspace }}/cacti
         if [ -f composer.json ]; then
-          sudo composer install --prefer-dist --no-progress
+          composer config --no-plugins allow-plugins.pestphp/pest-plugin true
+          composer require --dev --no-progress --no-interaction "pestphp/pest: ^3" "pestphp/pest-plugin-drift: ^3.0"
+          rm -f composer.lock
+          composer install --dev --no-progress
         fi
-    
+
     - name: Create Cacti config.php
       run: |
         cat ${{ github.workspace }}/cacti/include/config.php.dist | \
@@ -208,7 +144,7 @@ jobs:
         sed -r "s/'cactiuser'/'cactiuser'/g" | \
         sed -r "s/'cactiuser'/'cactiuser'/g" > ${{ github.workspace }}/cacti/include/config.php
         sudo chmod 664 ${{ github.workspace }}/cacti/include/config.php
-    
+
     - name: Create Syslog Plugin config.php
       run: |
         cp ${{ github.workspace }}/cacti/plugins/syslog/config.php.dist ${{ github.workspace }}/cacti/plugins/syslog/config.php
@@ -217,47 +153,114 @@ jobs:
         sed -i "s/'cactiuser'/'cactiuser'/g" ${{ github.workspace }}/cacti/plugins/syslog/config.php
         sed -i 's/\/\/\$/\$/g' ${{ github.workspace }}/cacti/plugins/syslog/config.php
         sudo chmod 664 ${{ github.workspace }}/cacti/include/config.php
-    
+
     - name: Configure Apache
       run: |
         cat << 'EOF' | sed 's#GITHUB_WORKSPACE#${{ github.workspace }}#g' > /tmp/cacti.conf
         <VirtualHost *:80>
           ServerAdmin webmaster@localhost
           DocumentRoot GITHUB_WORKSPACE/cacti
-          
+
           <Directory GITHUB_WORKSPACE/cacti>
             Options Indexes FollowSymLinks
             AllowOverride All
             Require all granted
           </Directory>
-          
+
           ErrorLog ${APACHE_LOG_DIR}/error.log
           CustomLog ${APACHE_LOG_DIR}/access.log combined
         </VirtualHost>
         EOF
         sudo cp /tmp/cacti.conf /etc/apache2/sites-available/000-default.conf
         sudo systemctl restart apache2
-    
+
     - name: Install Cacti via CLI
       run: |
         cd ${{ github.workspace }}/cacti
         sudo php cli/install_cacti.php --accept-eula --install --force
-    
+
     - name: Install Syslog Plugin
       run: |
         cd ${{ github.workspace }}/cacti
         sudo php cli/plugin_manage.php --plugin=syslog --install --enable
 
+    - name: Check PHP Syntax for Plugin
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/syslog
+        if find . -name '*.php' -not -path './vendor/*' -exec php -l {} 2>&1 \; | grep -iv 'no syntax errors detected'; then
+          echo "Syntax errors found!"
+          exit 1
+        fi
+
+    - name: Set expected Cacti version for unit tests
+      run: echo -n "${{ env.CACTI }}" | sudo tee ${{ github.workspace }}/cacti/plugins/syslog/tests/.cacti-version > /dev/null
+
+    - name: Run Pest Unit Tests
+      run: |
+        cd ${{ github.workspace }}/cacti
+        include/vendor/bin/pest --configuration=plugins/syslog/phpunit.xml \
+          --coverage-clover=plugins/syslog/coverage/clover.xml \
+          plugins/syslog/tests/Security plugins/syslog/tests/Unit
+
+    - name: Upload coverage report
+      if: always()
+      uses: actions/upload-artifact@v5
+      with:
+        name: coverage-php${{ matrix.php }}
+        path: ${{ github.workspace }}/cacti/plugins/syslog/coverage/
+        if-no-files-found: warn
+
+    - name: Remove the plugins directory exclusion from the .phpstan.neon
+      if: ${{ env.CACTI != '1.2.x' }}
+      run: sed '/plugins/d' -i .phpstan.neon
+      working-directory: ${{ github.workspace }}/cacti
+
+    - name: Mark composer scripts executable
+      if: ${{ env.CACTI != '1.2.x' }}
+      run: sudo chmod +x ${{ github.workspace }}/cacti/include/vendor/bin/*
+
+    - name: Run Linter on base code
+      if: ${{ env.CACTI != '1.2.x' }}
+      run: composer run-script lint ${{ github.workspace }}/cacti/plugins/syslog
+      working-directory: ${{ github.workspace }}/cacti
+
+    - name: Checking coding standards on base code
+      if: ${{ env.CACTI != '1.2.x' }}
+      run: composer run-script phpcsfixer ${{ github.workspace }}/cacti/plugins/syslog
+      working-directory: ${{ github.workspace }}/cacti
+
+    - name: Run PHPStan at Level 6 on base code outside of Composer due to technical issues
+      if: ${{ env.CACTI != '1.2.x' }}
+      run: ./include/vendor/bin/phpstan analyze --level 6 ${{ github.workspace }}/cacti/plugins/syslog
+      working-directory: ${{ github.workspace }}/cacti
+
+    - name: Re-apply web user ownership before polling
+      run: |
+        # Ancestor directories above the checkout (e.g. /home/runner, .../work)
+        # are typically 750 owned by the runner user, which blocks a non-root
+        # www-data process from traversing down to the checkout at all.
+        p="${{ github.workspace }}"
+        while [ "$p" != "/" ]; do
+          sudo chmod o+x "$p" || true
+          p=$(dirname "$p")
+        done
+
+        sudo chown -R www-data:runner ${{ github.workspace }}/cacti
+        sudo find ${{ github.workspace }}/cacti -type d -exec chmod 775 {} \;
+        sudo find ${{ github.workspace }}/cacti -type f -exec chmod 664 {} \;
+        sudo chmod +x ${{ github.workspace }}/cacti/cmd.php
+        sudo chmod +x ${{ github.workspace }}/cacti/poller.php
+
     - name: Run Cacti Poller
       run: |
         cd ${{ github.workspace }}/cacti
-        sudo php poller.php --poller=1 --force --debug
+        sudo -u www-data php poller.php --poller=1 --force --debug
         if ! grep -q "SYSTEM STATS" log/cacti.log; then
           echo "Cacti poller did not finish successfully"
           cat log/cacti.log
           exit 1
         fi
-    
+
     - name: Populate Syslog Test Data
       run: |
         sudo chmod +x ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows/populate_syslog_incoming.sh
@@ -267,13 +270,13 @@ jobs:
     - name: force Syslog Plugin Poller
       run: |
         cd ${{ github.workspace }}/cacti
-        sudo php plugins/syslog/syslog_process.php  --debug
+        sudo -u www-data php plugins/syslog/syslog_process.php --debug
         if ! grep -q "SYSTEM SYSLOG STATS" log/cacti.log; then
           echo "Syslog plugin poller did not finish successfully"
           cat log/cacti.log
           exit 1
         fi
-    
+
     - name: View Cacti Logs
       if: always()
       run: |

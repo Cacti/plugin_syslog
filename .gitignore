@@ -53,6 +53,10 @@ locales/po/*.mo
 # Ignore node_modules
 .agents/**
 
+# Ignore Pest/PHPUnit local artifacts
+.phpunit.cache/**
+coverage/**
+
 .claude/**
 .devcontainer/devcontainer.json
 node_modules/**

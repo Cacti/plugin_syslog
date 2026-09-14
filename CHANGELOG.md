@@ -3,6 +3,10 @@
 --- develop ---
 
 * feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
+* ci: Rebuild the CI workflow around a single integration-test job that runs
+  the test suite with Pest against Cacti's own Composer-managed vendor tree,
+  matching the plugin_evidence workflow; standalone tests/regression/*.php
+  scripts are replaced by tests/Security and tests/Unit Pest test suites
 * feature: Deprecate the Statistics tab and remove statistics data collection and database setup
 * security: Require POST and CSRF validation for unused-host purge
   operations
