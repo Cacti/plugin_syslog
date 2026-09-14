@@ -19,6 +19,7 @@
 * issue#252: hardening: escape device hostname output in syslog view; parameterize alert API functions
 * issue#256: hardening: prevent CSV formula injection and malformed CSV output in exports
 * issue#258: Execute CREATE TABLE SQL correctly during replication sync
+* issue#259: hardening: require POST and a CSRF token for the purge syslog devices utility
 * issue#260: hardening: replace eval-based callback execution in syslog autocomplete JS
 * issue#262: Harden CSV exports and XML import payload handling
 * issue#278: Extract duplicated alert command execution paths in syslog_process_alerts
