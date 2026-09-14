@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2025-03-07 14:31-0500\nPO-Revision-Date: 2026-03-16 13:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2025-03-07 14:31-0500\nPO-Revision-Date: 2026-09-12 08:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: functions.php:72
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
@@ -36,7 +36,7 @@ msgstr "Allvarlighetsgrad"
 #: functions.php:1316 syslog_alerts.php:517 syslog_alerts.php:522
 #: syslog_alerts.php:901
 msgid "Threshold"
-msgstr "Tröskelvärde"
+msgstr "Tröskel"
 
 #: functions.php:1317 syslog.php:1900
 msgid "Count"
@@ -105,7 +105,7 @@ msgstr "Meddelandesträng:"
 
 #: functions.php:1415
 msgid "Hostname:"
-msgstr "Värdnamn:"
+msgstr "& Värddatornamn:"
 
 #: functions.php:1416
 msgid "Date:"
@@ -129,7 +129,7 @@ msgstr ", URL:"
 
 #: functions.php:1484 functions.php:1548
 msgid "Sev:"
-msgstr "Allv:"
+msgstr "Sev:"
 
 #: functions.php:1490 functions.php:1544
 #, php-format
@@ -323,7 +323,7 @@ msgstr "Om den här kryssrutan är markerad kommer statistik över varifrån sys
 
 #: setup.php:1086
 msgid "Strip Domains"
-msgstr "Ta bort domäner"
+msgstr "Strip Domains"
 
 #: setup.php:1087
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
@@ -347,7 +347,7 @@ msgstr "Detta är den tid i sekunder som återstår innan sidan uppdateras."
 
 #: setup.php:1107
 msgid "Max Report Records"
-msgstr "Max rapportposter"
+msgstr "Max Report Records"
 
 #: setup.php:1108
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
@@ -381,11 +381,11 @@ msgstr "Om den här kryssrutan är markerad skickas alla e-postmeddelanden i HTM
 
 #: setup.php:1139
 msgid "Format File to Use"
-msgstr "Formatfil som ska användas"
+msgstr "Formatera fil som ska användas"
 
 #: setup.php:1142
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Välj den anpassade html-omslaget och CSS-filen som ska användas.  Den här filen innehåller både html och CSS för att omsluta din rapport.  Om den innehåller mer än bara CSS måste du placera en särskild <REPORT> -tagg inuti filen.  Denna format-tagg kommer att ersättas av rapportens innehåll.  Dessa filer finns i katalogen \"formats\"."
+msgstr "Välj den anpassade HTML-wrapper och CSS-filen som ska användas. Den här filen innehåller både html och CSS för att paketera runt din rapport. Om det innehåller mer än bara CSS, måste du placera en speciell <REPORT> tagga inuti filen. Denna formattag kommer att ersättas med rapportinnehållet. Dessa filer finns i katalogen &quot;format&quot;."
 
 #: setup.php:1146
 msgid "Data Retention Settings"
@@ -450,7 +450,7 @@ msgstr "Obestämd tid"
 #: setup.php:1296 setup.php:1315 syslog.php:608 syslog_alerts.php:409
 #, php-format
 msgid "%d Day"
-msgstr "%d dygn"
+msgstr "%d Dag"
 
 #: setup.php:1297 setup.php:1298 setup.php:1299 setup.php:1300 setup.php:1301
 #: setup.php:1316 setup.php:1317 setup.php:1318 setup.php:1319 setup.php:1320
@@ -576,7 +576,7 @@ msgstr "Normal användare"
 
 #: setup.php:1395
 msgid "System Administration"
-msgstr "Systemadministration"
+msgstr "Systemadministratör"
 
 #: setup.php:1411
 msgid "Syslog Removals"
@@ -588,7 +588,7 @@ msgstr "(Redigera)"
 
 #: setup.php:1414 setup.php:1419 setup.php:1423
 msgid "(Actions)"
-msgstr "(Åtgärder)"
+msgstr "Åtgärder"
 
 #: setup.php:1416
 msgid "Syslog Alerts"
@@ -700,12 +700,12 @@ msgstr "Alla"
 #: syslog.php:497 syslog.php:541 syslog.php:561 syslog.php:1989 syslog.php:2000
 #: syslog.php:2041 syslog.php:2042 syslog_alerts.php:584 syslog_reports.php:494
 msgid "None"
-msgstr "Ingen"
+msgstr "inget"
 
 #: syslog.php:578 syslog.php:1402 syslog_alerts.php:747 syslog_removal.php:574
 #: syslog_reports.php:612
 msgid "Go"
-msgstr "Start"
+msgstr "Utför"
 
 #: syslog.php:579 syslog.php:1403 syslog_alerts.php:748 syslog_removal.php:575
 #: syslog_reports.php:613
@@ -775,7 +775,7 @@ msgstr "Filter för Syslog-meddelanden %s"
 
 #: syslog.php:1336
 msgid "Timespan"
-msgstr "Tidsintervall"
+msgstr "Tidsspann"
 
 #: syslog.php:1342
 msgid "Custom"
@@ -787,7 +787,7 @@ msgstr "Från"
 
 #: syslog.php:1370
 msgid "Start Date Selector"
-msgstr "Välj startdatum"
+msgstr "Startdatumsväljare"
 
 #: syslog.php:1373
 msgid "To"
@@ -795,19 +795,19 @@ msgstr "Till"
 
 #: syslog.php:1379
 msgid "End Date Selector"
-msgstr "Välj slutdatum"
+msgstr "Slutdatumväljare"
 
 #: syslog.php:1382
 msgid "Shift Time Backward"
-msgstr "Förskjut tiden bakåt"
+msgstr "Växla tiden bakåt"
 
 #: syslog.php:1385
 msgid "Define Shifting Interval"
-msgstr "Definiera förskjutningsintervall"
+msgstr "Definiera växlingsintervall"
 
 #: syslog.php:1398
 msgid "Shift Time Forward"
-msgstr "Förskjut tiden framåt"
+msgstr "Växla tiden framåt"
 
 #: syslog.php:1403
 msgid "Return filter values to their user defined defaults"
@@ -827,7 +827,7 @@ msgstr "Spara standardinställningar"
 
 #: syslog.php:1411 syslog_alerts.php:886
 msgid "Alerts"
-msgstr "Larm"
+msgstr "Varningar"
 
 #: syslog.php:1411
 msgid "View Syslog Alert Rules"
@@ -1044,7 +1044,7 @@ msgstr "Den SQL som bearbetades var ogiltig.  Vänligen korrigera din SQL"
 
 #: syslog_alerts.php:386
 msgid "Not Set"
-msgstr "Inte inställd"
+msgstr "Ej inställt"
 
 #: syslog_alerts.php:391
 msgid "1 Minute"
@@ -1069,7 +1069,7 @@ msgstr "Ny varningsregel"
 
 #: syslog_alerts.php:478 syslog_alerts.php:902 syslog_reports.php:411
 msgid "N/A"
-msgstr "Inte tillgänglig"
+msgstr "N/A"
 
 #: syslog_alerts.php:486 syslog_reports.php:417
 msgid "Details"
@@ -1165,11 +1165,11 @@ msgstr "Utrymme för anteckningar om varningen"
 
 #: syslog_alerts.php:576
 msgid "Email Options"
-msgstr "Alternativ för e-post"
+msgstr "E-post Val"
 
 #: syslog_alerts.php:580 syslog_reports.php:490
 msgid "Notification List"
-msgstr "Aviseringslista"
+msgstr "Notifieringslista"
 
 #: syslog_alerts.php:581 syslog_reports.php:491
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
@@ -1295,7 +1295,7 @@ msgstr "OBS: Varning '%s' %s!"
 
 #: syslog_alerts.php:1039 syslog_removal.php:861 syslog_reports.php:903
 msgid "Updated"
-msgstr "Uppdaterad"
+msgstr "Uppdatera"
 
 #: syslog_alerts.php:1041
 #, php-format
