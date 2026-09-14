@@ -311,7 +311,11 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 				return $id;
 			}
 		} else {
-			raise_message('sql_error', __('The processed SQL was invalid.  Please correct your SQL', 'syslog'), MESSAGE_LEVEL_ERROR);
+			if ($save['type'] === 'filter' && !empty($GLOBALS['syslog_rule_filter_error'])) {
+				raise_message('filter_error', __('The filter is invalid: %s', $GLOBALS['syslog_rule_filter_error'], 'syslog'), MESSAGE_LEVEL_ERROR);
+			} else {
+				raise_message('sql_error', __('The processed SQL was invalid.  Please correct your SQL', 'syslog'), MESSAGE_LEVEL_ERROR);
+			}
 
 			return false;
 		}
@@ -482,6 +486,13 @@ function syslog_action_edit() {
 	}
 
 	$repeatarray = get_repeat_array();
+	$filter_conditions = [];
+	if (($alert['type'] ?? '') === 'filter') {
+		$filter_document = json_decode($alert['message'] ?? '', true);
+		if (is_array($filter_document) && ($filter_document['version'] ?? null) === 1 && is_array($filter_document['conditions'] ?? null)) {
+			$filter_conditions = $filter_document['conditions'];
+		}
+	}
 
 	$fields_syslog_alert_edit = [
 		'spacer0' => [
@@ -532,7 +543,7 @@ function syslog_action_edit() {
 		'type' => [
 			'method'        => 'drop_array',
 			'friendly_name' => __('Match Type', 'syslog'),
-			'description'   => __('Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include \'message\', \'facility\', \'priority\', and \'host\'.', 'syslog'),
+			'description'   => __('Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules.', 'syslog'),
 			'value'         => '|arg1:type|',
 			'array'         => $message_types,
 			'on_change'     => 'changeTypes()',
@@ -540,7 +551,7 @@ function syslog_action_edit() {
 		],
 		'message' => [
 			'friendly_name' => __('Message Match String', 'syslog'),
-			'description'   => __('Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type.', 'syslog'),
+			'description'   => __('Enter the simple match value, build structured conditions, or maintain the expression for a legacy SQL rule.', 'syslog'),
 			'textarea_rows' => '2',
 			'textarea_cols' => '70',
 			'method'        => 'textarea',
@@ -663,8 +674,44 @@ function syslog_action_edit() {
 
 	var allowEdits=<?php print syslog_allow_edits() ? 'true' : 'false'; ?>;
 	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
+	var alertFilterBuilder;
+	var alertFilterConfig = {
+		fields: <?php print syslog_json_safe([
+			'message' => __('Message', 'syslog'),
+			'host' => __('Host', 'syslog'),
+			'program' => __('Program', 'syslog'),
+			'facility_id' => __('Facility', 'syslog'),
+			'priority_id' => __('Priority', 'syslog')
+		]); ?>,
+		operators: {
+			message: ['contains', 'begins', 'ends', '=', '!='],
+			host: ['=', '!=', 'contains', 'begins', 'ends'],
+			program: ['=', '!=', 'contains', 'begins', 'ends'],
+			facility_id: ['=', '!='],
+			priority_id: ['=', '!=']
+		},
+		choices: <?php
+			$filter_choices = syslog_search_choices();
+			print syslog_json_safe([
+				'facility_id' => $filter_choices['facility_id'] ?? [],
+				'priority_id' => $filter_choices['priority_id'] ?? []
+			]);
+		?>,
+		conditions: <?php print syslog_json_safe($filter_conditions); ?>,
+		labels: {
+			message: <?php print syslog_json_safe(__('Value', 'syslog')); ?>,
+			placeholder: <?php print syslog_json_safe(__('Enter a value', 'syslog')); ?>,
+			match: <?php print syslog_json_safe(__('Match', 'syslog')); ?>,
+			exclude: <?php print syslog_json_safe(__('Exclude', 'syslog')); ?>,
+			remove: <?php print syslog_json_safe(__('Remove condition', 'syslog')); ?>,
+			integer: <?php print syslog_json_safe(__('Enter a nonnegative integer', 'syslog')); ?>
+		}
+	};
 
 	function changeTypes() {
+		var filterMode = $('#type').val() == 'filter';
+		$('#message').toggle(!filterMode);
+		$('#syslog_alert_filter_builder').prop('hidden', !filterMode);
 		if ($('#type').val() == 'sql') {
 			$('#message').prop('rows', 6);
 		} else {
@@ -681,8 +728,26 @@ function syslog_action_edit() {
 	}
 
 	$(function() {
+		var message = document.getElementById('message');
+		var builder = document.createElement('div');
+		builder.id = 'syslog_alert_filter_builder';
+		builder.className = 'syslogSearchBuilder syslogRuleFilterBuilder';
+		builder.setAttribute('aria-label', <?php print syslog_json_safe(__('Alarm filter conditions', 'syslog')); ?>);
+		message.insertAdjacentElement('afterend', builder);
+		if (!alertFilterConfig.conditions.length && message.value && $('#type').val() != 'filter') {
+			alertFilterConfig.conditions = [{join: 'AND', negative: false, field: 'message', operator: 'contains', value: message.value}];
+		}
+		alertFilterBuilder = new SyslogFilterBuilder(builder, alertFilterConfig);
+		$('#syslog_edit').off('submit.syslogAlertFilter').on('submit.syslogAlertFilter', function(event) {
+			if ($('#type').val() == 'filter' && !alertFilterBuilder.syncTo(message)) {
+				event.preventDefault();
+			}
+		});
+		changeTypes();
+
 		if (!allowEdits) {
 			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
+			alertFilterBuilder.setDisabled(true);
 			$('#syslog_edit').find('select').each(function() {
 				if ($(this).selectmenu('instance')) {
 					$(this).selectmenu('refresh');

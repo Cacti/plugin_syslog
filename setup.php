@@ -450,6 +450,8 @@ function syslog_check_upgrade() {
 		);
 	}
 
+	syslog_db_execute('ALTER TABLE syslog_alert MODIFY column message VARCHAR(8192) NOT NULL default ""');
+
 	if (!syslog_db_column_exists('syslog_reports', 'notify')) {
 		syslog_db_add_column('syslog_reports', [
 			'name'     => 'notify',
@@ -632,7 +634,7 @@ function syslog_setup_table_new($options) {
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
 		`open_ticket` CHAR(2) default '',
-		`message` VARCHAR(2048) NOT NULL default '',
+		`message` VARCHAR(8192) NOT NULL default '',
 		`body` VARCHAR(8192) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
@@ -1473,6 +1475,7 @@ function syslog_config_arrays() {
 		'host'     => __('Hostname is', 'syslog'),
 		'program'  => __('Program is', 'syslog'),
 		'facility' => __('Facility is', 'syslog'),
+		'filter'   => __('Filter Builder', 'syslog'),
 		'sql'      => __('SQL Expression', 'syslog')
 	];
 

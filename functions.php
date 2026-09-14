@@ -22,6 +22,11 @@
  +-------------------------------------------------------------------------+
 */
 
+$syslog_query_builder = __DIR__ . '/src/QueryBuilder.php';
+if (file_exists($syslog_query_builder)) {
+	require_once $syslog_query_builder;
+}
+
 /** Allowlisted fields and operators shared by validation and the builder. */
 function syslog_search_fields() {
 	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
@@ -328,6 +333,7 @@ function syslog_include_js() {
 	global $config;
 	?>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(__DIR__ . '/js/filter-builder.js'); ?>'></script>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(__DIR__ . '/js/functions.js'); ?>'></script>
 	<?php
 }
@@ -2029,9 +2035,49 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
 	if (!isset($syslog_incoming_config['programField'])) {
 		$syslog_incoming_config['programField'] = 'program';
 	}
+	foreach (['textField' => 'message', 'hostField' => 'host', 'facilityField' => 'facility_id', 'priorityField' => 'priority_id'] as $setting => $default) {
+		if (!isset($syslog_incoming_config[$setting])) {
+			$syslog_incoming_config[$setting] = $default;
+		}
+	}
 
 	$params = [];
 	$sql    = '';
+
+	if ($alert['type'] == 'filter') {
+		if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
+			$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
+
+			return [];
+		}
+		$fields = [
+			'message' => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host' => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'program' => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
+			'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
+		];
+
+		try {
+			$filter = \Cacti\Syslog\QueryBuilder::compile($alert['message'], $fields);
+		} catch (InvalidArgumentException $error) {
+			$GLOBALS['syslog_rule_filter_error'] = $error->getMessage();
+
+			return [];
+		}
+
+		$filter['params'][] = 1;
+		$filter['params'][] = $max_seq;
+
+		return [
+			'sql' => "SELECT *
+				FROM `$syslogdb_default`.`syslog_incoming`
+				WHERE ({$filter['sql']})
+				AND `status` = ?
+				AND `seq` <= ?",
+			'params' => $filter['params']
+		];
+	}
 
 	if ($alert['type'] == 'facility') {
 		$sql = "SELECT *

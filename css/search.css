@@ -119,6 +119,18 @@
 	display: none;
 }
 
+.syslogRuleFilterBuilder {
+	box-sizing: border-box;
+	max-width: 1100px;
+	padding: 8px 0;
+}
+
+.syslogRuleFilterBuilder .ui-selectmenu-button {
+	box-sizing: border-box;
+	width: 100% !important;
+	min-width: 0;
+}
+
 #syslog_form .syslogSearchSavedBar {
 	display: flex;
 	flex-wrap: wrap;
