@@ -1503,6 +1503,7 @@ function syslog_config_arrays() {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
 			}
 		}
 		$menu = $menu2;
@@ -1541,6 +1542,7 @@ function syslog_draw_navigation_text($nav) {
 	$nav['syslog_reports.php:']        = ['title' => __('Syslog Reports', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1'];
 	$nav['syslog_reports.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
 	$nav['syslog_reports.php:actions'] = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
+	$nav['syslog_saved_searches.php:'] = ['title' => __('Saved Search Templates', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_saved_searches.php', 'level' => '1'];
 	$nav['syslog.php:actions']         = ['title' => __('Syslog', 'syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1'];
 
 	return $nav;

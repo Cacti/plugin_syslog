@@ -646,11 +646,15 @@ function savedSearchActive() {
 /** Actions that need an active saved search stay disabled otherwise. */
 function savedSearchButtons() {
 	var id = savedSearchActive();
+	var selected = document.getElementById('saved_search')?.selectedOptions[0];
+	var canEdit = id && selected && (selected.dataset.global !== '1' || selected.dataset.owner === document.getElementById('saved_search').dataset.user || document.getElementById('saved_search').dataset.admin === '1');
+	var canManageGlobal = canEdit;
 	$('#saved_edit, #saved_delete').prop('disabled', !id);
+	$('#saved_edit').prop('disabled', !canEdit);
 
 	var global = $('#saved_global');
 	if (global.length) {
-		global.prop('disabled', !id);
+		global.prop('disabled', !canManageGlobal);
 	}
 }
 

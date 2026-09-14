@@ -1486,6 +1486,7 @@ function syslog_filter($sql_where, $tab) {
 
 	$saved_active = (int) ($_SESSION['sess_sl_' . $tab . '_saved'] ?? 0);
 	$saved_share  = syslog_saved_search_share();
+	$saved_admin  = syslog_saved_search_admin();
 
 	?>
 	<script type='text/javascript'>
@@ -1516,7 +1517,7 @@ function syslog_filter($sql_where, $tab) {
 					</div>
 					<div class='syslogSearchSavedBar'>
 						<label for='saved_search'><?php print __('Saved Searches', 'syslog'); ?></label>
-						<select id='saved_search'>
+						<select id='saved_search' data-user='<?php print html_escape($username); ?>' data-admin='<?php print $saved_admin ? '1' : '0'; ?>'>
 							<?php
 							$saved_groups = [
 								__('My Searches', 'syslog')   => [],
@@ -1532,7 +1533,7 @@ function syslog_filter($sql_where, $tab) {
 									print "<optgroup label='" . html_escape($saved_label) . "'>";
 
 									foreach ($saved_group as $saved) {
-										print "<option value='" . $saved['id'] . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
+										print "<option value='" . $saved['id'] . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
 											html_escape($saved['name']) . '</option>';
 									}
 
