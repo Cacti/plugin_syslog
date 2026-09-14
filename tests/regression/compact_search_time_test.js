@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const source = fs.readFileSync(require('node:path').join(__dirname, '../../js/functions.js'), 'utf8');
+const context = {};
+vm.runInNewContext(source.slice(source.indexOf('function syslogSearchRows('), source.indexOf('function applyFilter()')), context);
+const predicate = (field, op, value) => ['predicate', field, op, value];
+const host = predicate('host', '=', 'router');
+const relative = predicate('logtime', 'last', '86400');
+const from = predicate('logtime', '>=', '2026-09-12 00:00:00');
+const to = predicate('logtime', '<=', '2026-09-13 00:00:00');
+assert.equal(context.syslogSearchExpression(context.syslogSearchRows(['AND', host, relative])), 'host = "router" AND logtime last "86400"');
+assert.equal(context.syslogSearchExpression(context.syslogSearchRows(['AND', from, to])), 'logtime >= "2026-09-12 00:00:00" AND logtime <= "2026-09-13 00:00:00"');
+assert.equal(context.syslogSearchExpression(context.syslogSearchRows(['OR', host, relative])), 'host = "router" OR logtime last "86400"');
+assert.equal(context.syslogSearchExpression(context.syslogSearchRows(['NOT', relative])), 'NOT logtime last "86400"');
+assert.equal(source.includes('syslogTimeExpression'), false, 'No second time filter appended outside the builder');
+console.log('compact_search_time_test passed');

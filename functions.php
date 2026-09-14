@@ -22,6 +22,290 @@
  +-------------------------------------------------------------------------+
 */
 
+/** Allowlisted fields and operators shared by validation and the builder. */
+function syslog_search_fields() {
+	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
+		'facility' => 'Facility', 'priority' => 'Priority', 'logtime' => 'Date',
+		'seq' => 'Sequence', 'host_id' => 'Host ID', 'program_id' => 'Program ID',
+		'facility_id' => 'Facility ID', 'priority_id' => 'Priority ID'];
+}
+
+/** Database-backed values used by query-builder dropdowns. */
+function syslog_search_choices() {
+	global $syslogdb_default;
+	$choices = [];
+	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities', 'program' => 'syslog_programs'] as $field => $table) {
+		$choices[$field . '_id'] = [];
+		if ($field !== 'program') { $choices[$field] = []; }
+		foreach (syslog_db_fetch_assoc("SELECT {$field}_id AS id, $field AS name FROM `$syslogdb_default`.`$table` ORDER BY $field") as $record) {
+			$choices[$field . '_id'][] = [(string) $record['id'], $record['name'] . ' (' . $record['id'] . ')'];
+			if ($field !== 'program') { $choices[$field][] = [$record['name'], $record['name']]; }
+		}
+	}
+	return $choices;
+}
+
+/** Bounded suggestions; message/sequence suggestions sample recent records. */
+function syslog_search_suggestions($field, $term, $tab, $removal) {
+	global $syslogdb_default;
+	if (!isset(syslog_search_fields()[$field]) || $field === 'logtime' || strlen($term) > 1024) {
+		return [];
+	}
+	$pattern = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term) . '%';
+	$base = substr($field, -3) === '_id' ? substr($field, 0, -3) : $field;
+	$tables = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'];
+	if (isset($tables[$base]) && !($base === 'host' && $tab === 'alerts')) {
+		$table = $tables[$base];
+		$records = syslog_db_fetch_assoc_prepared("SELECT $field AS value, $base AS label
+			FROM `$syslogdb_default`.`$table`
+			WHERE $base LIKE ? ESCAPE '!' OR CAST($field AS CHAR) LIKE ? ESCAPE '!'
+			ORDER BY $base LIMIT 30", [$pattern, $pattern]);
+	} else {
+		if (!in_array($field, ['message', 'seq', 'host'], true)) { return []; }
+		$column = $field === 'message' && $tab === 'alerts' ? 'logmsg' : $field;
+		$tables = $tab === 'alerts' ? ['syslog_logs'] : ($removal === '1' ? ['syslog', 'syslog_removed'] : [$removal === '-1' ? 'syslog' : 'syslog_removed']);
+		$queries = [];
+		foreach ($tables as $table) {
+			$queries[] = "SELECT $column AS value FROM (SELECT $column FROM `$syslogdb_default`.`$table` ORDER BY seq DESC LIMIT 1000) AS recent_$table";
+		}
+		$records = syslog_db_fetch_assoc_prepared('SELECT DISTINCT value, value AS label FROM (' . implode(' UNION ALL ', $queries) . ") AS suggestions WHERE value LIKE ? ESCAPE '!' ORDER BY value LIMIT 30", [$pattern]);
+	}
+	return array_map(function ($record) {
+		return ['value' => (string) $record['value'], 'label' => (string) $record['label']];
+	}, $records);
+}
+
+function syslog_search_operators($field) {
+	if ($field === 'logtime') { return ['=', '!=', '>', '>=', '<', '<=', 'last']; }
+	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
+		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+}
+
+/** Parse literal message searches. Uppercase operators bind NOT, AND, then OR. */
+function syslog_parse_logical_search($input) {
+	if (strlen($input) > 8192) {
+		throw new InvalidArgumentException('Search is too long (maximum 8192 bytes).');
+	}
+
+	$tokens = [];
+	$length = strlen($input);
+	for ($i = 0; $i < $length;) {
+		if (ctype_space($input[$i])) {
+			$i++;
+			continue;
+		}
+		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
+			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
+				throw new InvalidArgumentException('Invalid field or operator.');
+			}
+			$tokens[] = ['field', $match[1], $match[2]];
+			$i += strlen($match[0]);
+			continue;
+		}
+		if ($input[$i] == '(' || $input[$i] == ')') {
+			$tokens[] = [$input[$i++], ''];
+		} elseif ($input[$i] == '"') {
+			$value = '';
+			$closed = false;
+			for ($i++; $i < $length; $i++) {
+				if ($input[$i] == '"') {
+					$i++;
+					$closed = true;
+					break;
+				}
+				if ($input[$i] == '\\' && $i + 1 < $length && ($input[$i + 1] == '"' || $input[$i + 1] == '\\')) {
+					$i++;
+				}
+				$value .= $input[$i];
+			}
+			if (!$closed || $value === '') {
+				throw new InvalidArgumentException('Use a nonempty phrase with a closing double quote.');
+			}
+			$tokens[] = ['term', $value];
+		} elseif (preg_match('/\G(AND|OR|NOT)(?=\s|[()"]|$)/', $input, $match, 0, $i)) {
+			$tokens[] = [$match[1], ''];
+			$i += strlen($match[1]);
+		} else {
+			$start = $i++;
+			while ($i < $length && strpos('()"', $input[$i]) === false) {
+				if (ctype_space($input[$i - 1]) && preg_match('/\G(AND|OR|NOT)(?=\s|[()"]|$)/', $input, $match, 0, $i)) {
+					break;
+				}
+				$i++;
+			}
+			$tokens[] = ['term', trim(substr($input, $start, $i - $start))];
+		}
+	}
+	if (!$tokens) {
+		return null;
+	}
+	if (count($tokens) > 256) {
+		throw new InvalidArgumentException('Search is too complex (maximum 256 tokens).');
+	}
+	$position = 0;
+	$parse = function ($minimum = 0, $depth = 0) use (&$parse, &$position, $tokens) {
+		if ($depth > 32) {
+			throw new InvalidArgumentException('Search nesting is too deep (maximum 32 levels).');
+		}
+		$token = $tokens[$position++] ?? ['', ''];
+		if ($token[0] == 'NOT') {
+			$node = ['NOT', $parse(3, $depth + 1)];
+		} elseif ($token[0] == '(') {
+			$node = $parse(0, $depth + 1);
+			if (($tokens[$position++][0] ?? '') != ')') {
+				throw new InvalidArgumentException('Expected a closing parenthesis.');
+			}
+		} elseif ($token[0] == 'field') {
+			$value = $tokens[$position++] ?? [];
+			if (($value[0] ?? '') !== 'term') {
+				throw new InvalidArgumentException('Expected a quoted field value.');
+			}
+			if (($token[1] === 'seq' || substr($token[1], -3) === '_id') && !ctype_digit($value[1])) {
+				throw new InvalidArgumentException('IDs must be nonnegative integers.');
+			}
+			if ($token[2] === 'last' && !in_array($value[1], ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+				throw new InvalidArgumentException('Invalid date preset.');
+			}
+			if ($token[1] === 'logtime' && $token[2] !== 'last' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
+				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
+			}
+			$node = ['predicate', $token[1], $token[2], $value[1]];
+		} elseif ($token[0] == 'term') {
+			$node = $token;
+		} else {
+			throw new InvalidArgumentException('Expected a search term, NOT, or an opening parenthesis.');
+		}
+		while (isset($tokens[$position])) {
+			$operator = $tokens[$position][0];
+			$precedence = ['OR' => 1, 'AND' => 2][$operator] ?? 0;
+			if (!$precedence || $precedence < $minimum) {
+				break;
+			}
+			$position++;
+			$node = [$operator, $node, $parse($precedence + 1, $depth + 1)];
+		}
+		return $node;
+	};
+	$tree = $parse();
+	if ($position != count($tokens)) {
+		throw new InvalidArgumentException('Expected AND or OR between terms, or found an extra closing parenthesis.');
+	}
+	return $tree;
+}
+
+/** LOCATE treats wildcard and regex characters literally and uses column collation. */
+function syslog_logical_search_sql($tree, $column) {
+	if (!in_array($column, ['message', 'logmsg'], true)) {
+		throw new InvalidArgumentException('Invalid message column.');
+	}
+	if ($tree === null) {
+		return '';
+	}
+	if ($tree[0] === 'predicate') {
+		global $syslogdb_default;
+		[, $field, $operator, $value] = $tree;
+		if (!isset(syslog_search_fields()[$field]) || !in_array($operator, syslog_search_operators($field), true)) {
+			throw new InvalidArgumentException('Invalid field or operator.');
+		}
+		if ($field === 'host_id' && $column === 'logmsg') {
+			throw new InvalidArgumentException('Host ID is only available for system logs.');
+		}
+		if ($operator === 'last') {
+			if (!in_array($value, ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+				throw new InvalidArgumentException('Invalid date preset.');
+			}
+			$interval = ['3months' => '3 MONTH', '6months' => '6 MONTH'][$value] ?? ((int) $value . ' SECOND');
+			return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+		}
+		$target = $field === 'message' ? $column : 'syslog.' . $field;
+		if (in_array($field, ['host', 'program', 'facility', 'priority'], true)) {
+			if ($field === 'host' && $column === 'logmsg') {
+				$target = 'syslog.host';
+			} else {
+				$table = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'][$field];
+				$target = "(SELECT search_lookup.$field FROM `$syslogdb_default`.`$table` AS search_lookup WHERE search_lookup.{$field}_id = syslog.{$field}_id)";
+			}
+		}
+		if ($operator === 'contains') {
+			return '(LOCATE(' . db_qstr($value) . ', ' . $target . ') > 0)';
+		}
+		$operator = ['like' => 'LIKE'][$operator] ?? $operator;
+		return '(' . $target . ' ' . $operator . ' ' . db_qstr($value) . ')';
+	}
+	if ($tree[0] == 'term') {
+		return '(LOCATE(' . db_qstr($tree[1]) . ', ' . $column . ') > 0)';
+	}
+	if ($tree[0] == 'NOT') {
+		return '(NOT ' . syslog_logical_search_sql($tree[1], $column) . ')';
+	}
+	return '(' . syslog_logical_search_sql($tree[1], $column) . ' ' . $tree[0] . ' ' . syslog_logical_search_sql($tree[2], $column) . ')';
+}
+
+function syslog_logical_positive_terms($tree, $negative = false) {
+	if ($tree === null) {
+		return [];
+	}
+	if ($tree[0] === 'predicate') {
+		return !$negative && $tree[1] === 'message' && in_array($tree[2], ['contains', '='], true) ? [$tree[3]] : [];
+	}
+	if ($tree[0] == 'term') {
+		return $negative ? [] : [$tree[1]];
+	}
+	if ($tree[0] == 'NOT') {
+		return syslog_logical_positive_terms($tree[1], !$negative);
+	}
+	return array_merge(syslog_logical_positive_terms($tree[1], $negative), syslog_logical_positive_terms($tree[2], $negative));
+}
+
+/**
+ * Remove the date clause the page entry logic appends to a search, so saved
+ * searches stay dynamic (dates are re-derived each time one is applied).
+ */
+function syslog_strip_auto_dates($search, $date1, $date2) {
+	$d1 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
+	$d2 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
+	$suffix = 'logtime >= "' . $d1 . '" AND logtime <= "' . $d2 . '"';
+
+	if (substr($search, -strlen($suffix)) === $suffix) {
+		$search = substr($search, 0, -strlen($suffix));
+
+		if (substr($search, -5) === ' AND ') {
+			$search = substr($search, 0, -5);
+		}
+	}
+
+	return $search;
+}
+
+/** Permission to make saved searches global and to manage other users' global searches. */
+function syslog_saved_search_admin() {
+	return api_plugin_user_realm_auth('syslog_saved_searches.php');
+}
+
+/** Permission to share saved searches with all syslog users. */
+function syslog_saved_search_share() {
+	return syslog_saved_search_admin() || api_plugin_user_realm_auth('syslog_saved_searches_share.php');
+}
+
+function syslog_message_filter_value($value, $filter, $href = '') {
+	if (get_request_var('search_mode') != 'logical') {
+		return filter_value($value, $filter, $href);
+	}
+	$terms = syslog_logical_positive_terms($GLOBALS['syslog_search_tree'] ?? null);
+	usort($terms, function ($a, $b) { return strlen($b) - strlen($a); });
+	$pattern = $terms ? '~(' . implode('|', array_map(function ($term) { return preg_quote($term, '~'); }, $terms)) . ')~iu' : '';
+	$parts = $pattern ? preg_split($pattern, $value, -1, PREG_SPLIT_DELIM_CAPTURE) : [$value];
+	if ($parts === false) {
+		$parts = [$value];
+	}
+	$output = '';
+	foreach ($parts as $index => $part) {
+		$escaped = htmlspecialchars($part, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		$output .= $index % 2 ? '<span class="filteredValue">' . $escaped . '</span>' : $escaped;
+	}
+	return $href === '' ? $output : '<a class="linkEditMain" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . $output . '</a>';
+}
+
 function syslog_apply_selected_items_action($selected_items, $drp_action, $action_map, $export_action = '', $export_items = '') {
 	if ($selected_items != false) {
 		if (isset($action_map[$drp_action])) {
@@ -43,7 +327,8 @@ function syslog_apply_selected_items_action($selected_items, $drp_action, $actio
 function syslog_include_js() {
 	global $config;
 	?>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js'></script>
+	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(__DIR__ . '/js/functions.js'); ?>'></script>
 	<?php
 }
 
@@ -696,7 +981,7 @@ function syslog_log_row_color($severity, $tip_title) {
 			break;
 	}
 
-	print "<tr class='tableRow selectable $class'>\n";
+	print "<tr class='tableRow selectable syslogAlertRow $class'>\n";
 }
 
 /**
@@ -708,7 +993,7 @@ function syslog_log_row_color($severity, $tip_title) {
  * @param mixed $priority
  * @param mixed $message
  */
-function syslog_row_color($priority, $message) {
+function syslog_priority_class($priority) {
 	switch($priority) {
 		case '0':
 			$class = 'logEmergency';
@@ -744,9 +1029,36 @@ function syslog_row_color($priority, $message) {
 			break;
 	}
 
-	print "<tr title='" . html_escape($message) . "' class='tableRow selectable $class syslogRow syslog-detail-row'>";
+	return $class ?? '';
+}
 
-	return $class;
+function syslog_row_color($priority, $message) {
+	$priority_class = syslog_priority_class($priority);
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
+
+	return '';
+}
+
+/** Render compact metadata labels without changing the surrounding table theme. */
+function syslog_metadata_label($value, $type) {
+	$value = (string) $value;
+	$class = $type === 'priority' ? 'syslogSeverity' : 'syslogFacility';
+	$modifier = preg_replace('/[^a-z]/', '', strtolower($value));
+
+	return '<span class="' . $class . ' ' . $class . '-' . html_escape($modifier) . '">' . html_escape($value) . '</span>';
+}
+
+/** Render a displayed device or program value as a direct filter action. */
+function syslog_value_filter_button($value, $field) {
+	$value = (string) $value;
+	if ($value === '') return html_escape(__('Unknown', 'syslog'));
+	$class = 'syslogValueFilter';
+	if ($field === 'host') $class .= ' syslogHostLabel';
+	if ($field === 'program') $class .= ' syslogProgramLabel';
+	if ($field === 'priority') {
+		$class .= ' syslogSeverity syslogSeverity-' . html_escape(preg_replace('/[^a-z]/', '', strtolower($value)));
+	}
+	return '<button type="button" class="' . $class . '" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
 }
 
 function sql_hosts_where($tab) {
@@ -786,6 +1098,13 @@ function sql_hosts_where($tab) {
 }
 
 function syslog_export($tab) {
+	if (!empty($GLOBALS['syslog_search_error'])) {
+		http_response_code(400);
+		header('Content-Type: text/plain; charset=UTF-8');
+		print $GLOBALS['syslog_search_error'];
+		return;
+	}
+
 	global $syslog_incoming_config, $severities;
 	global $syslogdb_default;
 
@@ -826,9 +1145,11 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
+		// PHP 8.4 deprecates fputcsv() without an explicit $escape; '' matches the
+		// upcoming default and emits RFC 4180 CSV for messages containing backslashes.
 		$line = ['host', 'facility', 'priority', 'program', 'date', 'message'];
 
-		fputcsv($fp, $line);
+		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -867,7 +1188,7 @@ function syslog_export($tab) {
 					$logmsg
 				];
 
-				fputcsv($fp, $line);
+				fputcsv($fp, $line, ',', '"', '');
 			}
 
 		}
@@ -884,7 +1205,7 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
-		fputcsv($fp, $line);
+		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
 			foreach ($messages as $message) {
@@ -908,7 +1229,7 @@ function syslog_export($tab) {
 					$message['count']
 				];
 
-				fputcsv($fp, $line);
+				fputcsv($fp, $line, ',', '"', '');
 			}
 		}
 
@@ -2517,4 +2838,41 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
 
 	return $command;
+}
+
+/** Render untrusted log text as an accessible details trigger. */
+function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = '') {
+	$details = compact('device', 'program', 'facility', 'severity', 'received');
+	$details['message'] = (string) $message;
+	$details['rules'] = syslog_message_rule_links($id, $source, $received);
+	$text = title_trim((string) $message, 100);
+	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
+		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
+}
+
+/** Only main-table records can seed the existing rule editors. */
+function syslog_message_rule_links($id, $source, $received) {
+	$links = [];
+	if ($source !== 'main' || !ctype_digit((string) $id) || (int) $id < 1) {
+		return $links;
+	}
+
+	$query = http_build_query(['id' => $id, 'action' => 'newedit', 'type' => '0', 'date' => $received]);
+	foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
+		if (api_plugin_user_realm_auth($page)) {
+			$links[$action] = $page . '?' . $query;
+		}
+	}
+	return $links;
+}
+
+/** Dates nested in authored groups must not gain a second implicit time range. */
+function syslog_search_has_time($tree) {
+	if (!$tree) return false;
+	if ($tree[0] === 'predicate') return $tree[1] === 'logtime';
+	if ($tree[0] === 'NOT') return syslog_search_has_time($tree[1]);
+	if ($tree[0] === 'AND' || $tree[0] === 'OR') {
+		return syslog_search_has_time($tree[1]) || syslog_search_has_time($tree[2]);
+	}
+	return false;
 }
