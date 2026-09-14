@@ -718,15 +718,15 @@ function syslog_setup_table_new($options) {
 		ROW_FORMAT=Dynamic");
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
-		id int(10) NOT NULL auto_increment,
-		name varchar(128) NOT NULL default '',
-		search text NOT NULL,
-		removal int(10) NOT NULL default '1',
-		grouping int(10) NOT NULL default '0',
+		`id` int(10) NOT NULL auto_increment,
+		`name` varchar(128) NOT NULL default '',
+		`search` text NOT NULL,
+		`removal` int(10) NOT NULL default '1',
+		`grouping` int(10) NOT NULL default '0',
 		`user` varchar(32) NOT NULL default '',
-		is_global char(2) NOT NULL default '',
+		`is_global` char(2) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
-		PRIMARY KEY (id),
+		PRIMARY KEY (`id`),
 		KEY owner (`user`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
