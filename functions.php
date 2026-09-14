@@ -2313,39 +2313,6 @@ function syslog_update_reference_tables($max_seq) {
 }
 
 /**
- * syslog_update_statistics - Insert new statistics rows into the syslog statistics
- * table for post review
- *
- * @param int $max_seq The max_seq for all syslog incoming records to be processed
- *
- * @return void
- */
-function syslog_update_statistics($max_seq) {
-	global $syslogdb_default, $syslog_cnn;
-
-	if (read_config_option('syslog_statistics') == 'on') {
-		syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_statistics`
-			(host_id, facility_id, priority_id, program_id, insert_time, records)
-			SELECT host_id, facility_id, priority_id, program_id, NOW(), SUM(records) AS records
-			FROM (SELECT host_id, facility_id, priority_id, program_id, COUNT(*) AS records
-				FROM syslog_incoming AS si
-				INNER JOIN syslog_hosts AS sh
-				ON sh.host=si.host
-				INNER JOIN syslog_programs AS sp
-				ON sp.program=si.program
-				WHERE si.`status` = 1
-				AND si.`seq` <= ?
-				GROUP BY host_id, priority_id, facility_id, program_id) AS merge
-			GROUP BY host_id, priority_id, facility_id, program_id",
-			[$max_seq]);
-
-		$stats = db_affected_rows($syslog_cnn);
-
-		syslog_debug('Stats   ' . $stats . " - Record(s) to the 'syslog_statistics' table");
-	}
-}
-
-/**
  * syslog_incoming_to_syslog - Move incoming syslog records to the syslog table
  *
  * Once all Alerts have been processed, we need to move entries first to
@@ -2411,19 +2378,6 @@ function syslog_postprocess_tables() {
 	syslog_debug('-------------------------------------------------------------------------------------');
 
 	$delete_date = date('Y-m-d H:i:s', time() - (read_config_option('syslog_retention') * 86400));
-
-	// remove stats messages
-	if (read_config_option('syslog_statistics') == 'on') {
-		if (read_config_option('syslog_retention') > 0) {
-			syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_statistics`
-				WHERE insert_time < ?",
-				[$delete_date]);
-
-			syslog_debug(sprintf('Deleted %5s - Syslog Statistics Record(s)', db_affected_rows($syslog_cnn)));
-		}
-	} else {
-		syslog_db_execute("TRUNCATE `$syslogdb_default`.`syslog_statistics`");
-	}
 
 	// remove alert log messages
 	if (read_config_option('syslog_alert_retention') > 0) {

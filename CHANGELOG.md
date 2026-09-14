@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Deprecate the Statistics tab and remove statistics data collection and database setup
 * feature: Add saved searches: store named filter definitions (conditions plus record type and grouping), apply them from a dropdown, and manage them with New/Edit/Delete/Save As; a new 'Syslog Saved Searches Admin' realm gates Make Global. Saved searches keep the date range dynamic (last day by default)
 * feature: Allow users to share saved searches with each other, gated by a new 'Syslog Saved Searches Share' realm; admins get a Console search admin page to manage all saved searches, and the delete button for global searches is hidden from unauthorized users (new realms added to upgrade)
 * feature: Rebuild the search area: support custom searches, allow users to hide/show the search box, add date range presets, and move the row limit into the search area; redirect-only buttons (Alerts, Removals, Reports) removed

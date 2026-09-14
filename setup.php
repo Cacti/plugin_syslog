@@ -344,14 +344,6 @@ function syslog_check_upgrade() {
 		}
 	}
 
-	if (!db_column_exists('syslog_statistics', 'id')) {
-		syslog_db_execute('ALTER TABLE syslog_statistics
-			ADD COLUMN id BIGINT UNSIGNED auto_increment FIRST,
-			DROP PRIMARY KEY,
-			ADD PRIMARY KEY(id),
-			ADD UNIQUE INDEX (`host_id`,`facility_id`,`priority_id`,`program_id`,`insert_time`)');
-	}
-
 	if (!syslog_db_column_exists('syslog_alert', 'hash')) {
 		syslog_db_add_column('syslog_alert', [
 			'name'     => 'hash',
@@ -829,25 +821,6 @@ function syslog_setup_table_new($options) {
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_statistics` (
-		`id` bigint UNSIGNED auto_increment,
-		`host_id` int(10) UNSIGNED NOT NULL,
-		`facility_id` int(10) UNSIGNED NOT NULL,
-		`priority_id` int(10) UNSIGNED NOT NULL,
-		`program_id` int(10) unsigned default NULL,
-		`insert_time` TIMESTAMP NOT NULL,
-		`records` int(10) UNSIGNED NOT NULL,
-		PRIMARY KEY (`id`),
-		UNIQUE KEY `unique_pk` (`host_id`, `facility_id`, `priority_id`, `program_id`, `insert_time`),
-		INDEX `host_id`(`host_id`),
-		INDEX `facility_id`(`facility_id`),
-		INDEX `priority_id`(`priority_id`),
-		INDEX `program_id` (`program_id`),
-		INDEX `insert_time`(`insert_time`))
-		ENGINE=InnoDB
-		ROW_FORMAT=Dynamic
-		COMMENT='Maintains High Level Statistics'");
-
 	if (!isset($settings['syslog'])) {
 		syslog_config_settings();
 	}
@@ -1222,12 +1195,6 @@ function syslog_config_settings() {
 			'description'   => __('If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process.', 'syslog'),
 			'method'        => 'checkbox',
 			'default'       => 'on'
-		],
-		'syslog_statistics' => [
-			'friendly_name' => __('Enable Statistics Gathering', 'syslog'),
-			'description'   => __('If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps.', 'syslog'),
-			'method'        => 'checkbox',
-			'default'       => ''
 		],
 		'syslog_domains' => [
 			'friendly_name' => __('Strip Domains', 'syslog'),
@@ -1696,16 +1663,6 @@ function syslog_utilities_action($action) {
 		$records += syslog_db_affected_rows();
 
 		syslog_db_execute('DELETE FROM syslog_host_facilities
-			WHERE host_id NOT IN (
-				SELECT DISTINCT host_id
-				FROM syslog
-				UNION
-				SELECT DISTINCT host_id
-				FROM syslog_removed
-			)');
-		$records += syslog_db_affected_rows();
-
-		syslog_db_execute('DELETE FROM syslog_statistics
 			WHERE host_id NOT IN (
 				SELECT DISTINCT host_id
 				FROM syslog
