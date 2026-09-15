@@ -3083,7 +3083,9 @@ function syslog_process_reports() {
 					if ($reptext != '') {
 						if (!$format_ok) {
 							$message  = '<style type="text/css">';
-						$message .= file_get_contents($config['base_path'] . '/plugins/syslog/css/syslog.css');
+							$message .= file_get_contents($config['base_path'] . '/plugins/syslog/css/syslog.css');
+							$message .= '</style>';
+						}
 
 						$message .= '<h1>Cacti Syslog Report - ' . html_escape($report['name']) . '</h1>';
 						$message .= '<hr>';
