@@ -534,11 +534,17 @@ function syslog_is_partitioned() {
 function syslog_traditional_manage() {
 	global $syslogdb_default, $syslog_cnn;
 
-	// determine the oldest date to retain
+	/*
+	 * The retention cutoff is computed in UTC with gmdate() so it agrees with
+	 * the UTC epoch partition boundaries used by syslog_partition_create().
+	 * 'logtime' is a MySQL TIMESTAMP compared against integer UTC boundaries
+	 * everywhere else, so a local-time cutoff here could shift the prune
+	 * window by the server timezone offset and DST transitions.
+	 */
 	if (read_config_option('syslog_retention') > 0) {
-		$retention = date('Y-m-d', time() - (86400 * read_config_option('syslog_retention')));
+		$retention = gmdate('Y-m-d', time() - (86400 * read_config_option('syslog_retention')));
 	} else {
-		$retention = date('Y-m-d', time() - (30 * 86400));
+		$retention = gmdate('Y-m-d', time() - (30 * 86400));
 		set_config_option('syslog_retention', '30');
 	}
 
@@ -2919,7 +2925,12 @@ function syslog_postprocess_tables() {
 	syslog_debug('Post Processing/Maintenance of Syslog Tables');
 	syslog_debug('-------------------------------------------------------------------------------------');
 
-	$delete_date = date('Y-m-d H:i:s', time() - (read_config_option('syslog_retention') * 86400));
+	/*
+	 * Like syslog_traditional_manage(), reference-table retention is computed
+	 * in UTC so it agrees with the UTC partition boundaries and cannot drift
+	 * with the server timezone or DST transitions.
+	 */
+	$delete_date = gmdate('Y-m-d H:i:s', time() - (read_config_option('syslog_retention') * 86400));
 
 	// remove alert log messages
 	if (read_config_option('syslog_alert_retention') > 0) {
