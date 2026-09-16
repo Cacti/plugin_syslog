@@ -20,13 +20,13 @@
 it('keeps syslog partition table locking and DDL identifiers safe', function () {
 	$functions = plugin_test_read_source('functions.php');
 
-	// All three information_schema queries must be prepared statements
+	// All four information_schema queries must be prepared statements
 	// scoped to the requested table via a placeholder. Match only calls
 	// whose first argument contains 'information_schema' to exclude the
 	// GET_LOCK / RELEASE_LOCK uses of syslog_db_fetch_cell_prepared.
 	$partition_query_count = preg_match_all('/syslog_db_fetch_(?:row|assoc|cell)_prepared\s*\([^)]*information_schema/', $functions);
 
-	if ($partition_query_count === false || $partition_query_count !== 3) {
+	if ($partition_query_count === false || $partition_query_count !== 4) {
 		throw new RuntimeException('Partition queries are not consistently scoped to the requested table.');
 	}
 
@@ -40,6 +40,10 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 
 	if (!preg_match('/function\s+syslog_partition_table_allowed\s*\(/', $functions)) {
 		throw new RuntimeException('Partition table validation helper is missing.');
+	}
+
+	if (!preg_match('/function\s+syslog_partition_report_state\s*\(/', $functions)) {
+		throw new RuntimeException('Partition state reporting helper is missing.');
 	}
 
 	// RELEASE_LOCK must appear inside a finally block, not just anywhere in the function.
@@ -180,6 +184,14 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 		throw new RuntimeException('syslog_partition_check does not use _prepared with table_name placeholder.');
 	}
 
+	if (!preg_match('/function\s+syslog_partition_report_state\s*\(\s*\$table\s*\)\s*\{(.{0,5000})/s', $functions, $m_report_prep)) {
+		throw new RuntimeException('syslog_partition_report_state function body not found.');
+	}
+
+	if (!preg_match('/syslog_db_fetch_assoc_prepared[^)]*information_schema[^)]*table_name\s*=\s*\?/s', $m_report_prep[1])) {
+		throw new RuntimeException('syslog_partition_report_state information_schema query is not scoped to table_name via placeholder.');
+	}
+
 	// ---- Partition boundary must be driven by the optional $time parameter ----
 
 	$create_start = strpos($functions, 'function syslog_partition_create');
@@ -239,6 +251,10 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 	$manage_body = substr($functions, $manage_start, $manage_end - $manage_start);
 
 	foreach (['syslog', 'syslog_removed'] as $table) {
+		if (!preg_match('/syslog_partition_report_state\s*\(\s*\'' . $table . '\'\s*\)/', $manage_body)) {
+			throw new RuntimeException("syslog_partition_manage does not report partition state for '$table'.");
+		}
+
 		if (!preg_match('/syslog_partition_create\s*\(\s*\'' . $table . '\'/', $manage_body)) {
 			throw new RuntimeException("syslog_partition_manage does not call syslog_partition_create('$table').");
 		}
