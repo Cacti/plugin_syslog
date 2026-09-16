@@ -492,7 +492,7 @@ function syslog_check_upgrade() {
 	}
 }
 
-function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
+function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3) {
 	global $config, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
@@ -507,6 +507,12 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 	if ($days < 0 || $days > 365) {
 		$days = 30;
 	}
+
+	if (!is_numeric($ahead_days) || (int) $ahead_days < 1 || (int) $ahead_days > 7) {
+		$ahead_days = 3;
+	}
+
+	$ahead_days = (int) $ahead_days;
 
 	if (stripos($engine, 'aria') !== false) {
 		$row_format = 'ROW_FORMAT=Page';
@@ -543,7 +549,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 	 * out of the equation: the boundary is always the next UTC midnight
 	 * after the labeled day.
 	 */
-	for ($i = $days; $i >= -1; $i--) {
+	for ($i = $days; $i >= (0 - $ahead_days); $i--) {
 		$day_epoch      = $now - ($i * 86400);
 		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
 		$format         = gmdate('Ymd', $day_epoch);
@@ -648,7 +654,7 @@ function syslog_setup_table_new($options) {
 
 	// The syslog table is created partitioned; the helper also selects the
 	// matching ROW_FORMAT for the chosen engine.
-	syslog_create_partitioned_syslog_table($engine, $options['days']);
+	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'));
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert`");
@@ -1311,6 +1317,21 @@ function syslog_config_settings() {
 			'method'        => 'drop_array',
 			'default'       => '30',
 			'array'         => $syslog_retentions
+		],
+		'syslog_partition_ahead_days' => [
+			'friendly_name' => __('Partition Pre-create Window', 'syslog'),
+			'description'   => __('This is the number of future daily partitions to maintain for partitioned Syslog tables.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '3',
+			'array'         => [
+				'1' => __('%d Day', 1, 'syslog'),
+				'2' => __('%d Days', 2, 'syslog'),
+				'3' => __('%d Days', 3, 'syslog'),
+				'4' => __('%d Days', 4, 'syslog'),
+				'5' => __('%d Days', 5, 'syslog'),
+				'6' => __('%d Days', 6, 'syslog'),
+				'7' => __('%d Days', 7, 'syslog')
+			]
 		],
 		'syslog_alert_retention' => [
 			'friendly_name' => __('Syslog Alert Retention', 'syslog'),
