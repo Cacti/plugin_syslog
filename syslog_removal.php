@@ -643,11 +643,12 @@ function syslog_action_edit() {
 		}
 		removalFilterBuilder = new SyslogFilterBuilder(builder, removalFilterConfig);
 		$('#type').off('change.syslogRemovalFilter').on('change.syslogRemovalFilter', changeTypes);
-		$('#syslog_edit').off('submit.syslogRemovalFilter').on('submit.syslogRemovalFilter', function(event) {
+		document.getElementById('syslog_edit').addEventListener('submit', function(event) {
 			if ($('#type').val() == 'filter' && !removalFilterBuilder.syncTo(message)) {
 				event.preventDefault();
+				event.stopImmediatePropagation();
 			}
-		});
+		}, true);
 		changeTypes();
 
 		if (!allowEdits) {
