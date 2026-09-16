@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Deprecate traditional (non-partitioned) tables: new installs always create partitioned tables and only offer InnoDB and Aria storage engines; existing traditional installs keep working with a notice advising migration
 * feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
 * ci: Rebuild the CI workflow around a single integration-test job that runs
   the test suite with Pest against Cacti's own Composer-managed vendor tree,

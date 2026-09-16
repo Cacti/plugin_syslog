@@ -71,7 +71,7 @@ if (!$use_cacti_db) {
 
 $syslog_install_options['upgrade_type'] = 'truncate';
 $syslog_install_options['engine']       = 'innodb';
-$syslog_install_options['db_type']      = 'trad';
+$syslog_install_options['db_type']      = 'part';
 $syslog_install_options['days']         = '30';
 $syslog_install_options['mode']         = 'install';
 $syslog_install_options['id']           = 'syslog';
