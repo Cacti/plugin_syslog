@@ -15,6 +15,14 @@ const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 		for (const file of ['jquery.js', 'jquery-ui.js', 'jquery.timepicker.js']) {
 			await page.addScriptTag({path: path.join(cacti, 'include/js', file)});
 		}
+		// Cacti registers its AJAX serializer before editor initialization.
+		// The builder must populate message before that earlier bubble handler runs.
+		await page.evaluate(() => {
+			document.getElementById('syslog_edit').addEventListener('submit', event => {
+				event.preventDefault();
+				window.serializedMessage = document.getElementById('message').value;
+			});
+		});
 		// Reproduce loading a list page and then navigating to its editor.
 		for (let visit = 0; visit < 2; visit++) {
 			await page.addScriptTag({path: path.join(root, 'js/filter-builder.js')});
@@ -41,8 +49,8 @@ const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 		await page.selectOption('#type', 'filter');
 		assert.equal(await builder.isVisible(), true);
 		const document = await page.evaluate(() => {
-			$('#syslog_edit').on('submit.test', event => event.preventDefault()).trigger('submit');
-			return JSON.parse($('#message').val());
+			document.getElementById('syslog_edit').dispatchEvent(new Event('submit', {bubbles: true, cancelable: true}));
+			return JSON.parse(window.serializedMessage);
 		});
 		assert.equal(document.conditions.length, 2);
 		assert.equal(document.conditions[0].value, 'failure');
