@@ -75,3 +75,46 @@ it('records polling runtime min average and max values', function () {
 	expect($values['polling_runtime_max'])->toBe('4');
 	expect($values['polling_runtime_count'])->toBe('2');
 });
+
+it('increments rule processing totals from existing status values', function () {
+	syslog_load_plugin_source('functions.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$values = ['total_alert_rules_processed' => '3'];
+
+	test_override('syslog_db_table_exists', function ($table) {
+		return $table === 'syslog_status';
+	});
+
+	test_override('syslog_db_fetch_assoc', function () use (&$values) {
+		return array_map(function ($name, $value) {
+			return ['name' => $name, 'value' => $value, 'updated' => time()];
+		}, array_keys($values), $values);
+	});
+
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$values) {
+		$values[$params[0]] = $params[1];
+
+		return true;
+	});
+
+	expect(syslog_status_set('last_alert_rules_processed', 0))->toBeTrue();
+	expect(syslog_status_increment('total_alert_rules_processed', 2))->toBeTrue();
+
+	expect($values['last_alert_rules_processed'])->toBe('0');
+	expect($values['total_alert_rules_processed'])->toBe('5');
+});
+
+it('serializes last run rule activity with names and counts', function () {
+	syslog_load_plugin_source('functions.php');
+
+	$json = syslog_status_rule_activity_json([
+		['name' => 'Disk Full', 'count' => 2],
+		['name' => 'Drop Noise', 'count' => 15],
+	]);
+
+	expect(json_decode($json, true))->toBe([
+		['name' => 'Disk Full', 'count' => 2],
+		['name' => 'Drop Noise', 'count' => 15],
+	]);
+});

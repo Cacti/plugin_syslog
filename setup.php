@@ -494,11 +494,13 @@ function syslog_check_upgrade() {
 	if (!syslog_db_table_exists('syslog_status', false)) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
 			`name` varchar(64) NOT NULL default '',
-			`value` varchar(255) NOT NULL default '',
+			`value` text NOT NULL,
 			`updated` int(16) NOT NULL default '0',
 			PRIMARY KEY (`name`))
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
+	} else {
+		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
 	}
 }
 
@@ -785,7 +787,7 @@ function syslog_setup_table_new($options) {
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
 		`name` varchar(64) NOT NULL default '',
-		`value` varchar(255) NOT NULL default '',
+		`value` text NOT NULL,
 		`updated` int(16) NOT NULL default '0',
 		PRIMARY KEY (`name`))
 		ENGINE=InnoDB

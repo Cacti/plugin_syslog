@@ -259,6 +259,31 @@ function syslog_status_format_runtime_stats($status) {
 	);
 }
 
+function syslog_status_format_count($value) {
+	return $value === '' || !is_numeric($value) ? '0' : number_format((int) $value);
+}
+
+function syslog_status_format_rule_activity($value) {
+	$rules = json_decode((string) $value, true);
+
+	if (!is_array($rules) || !cacti_sizeof($rules)) {
+		return __('None', 'syslog');
+	}
+
+	$items = [];
+
+	foreach ($rules as $rule) {
+		if (!is_array($rule) || empty($rule['name'])) {
+			continue;
+		}
+
+		$count   = isset($rule['count']) && is_numeric($rule['count']) ? (int) $rule['count'] : 0;
+		$items[] = sprintf('%s (%s)', $rule['name'], number_format($count));
+	}
+
+	return cacti_sizeof($items) ? implode(', ', $items) : __('None', 'syslog');
+}
+
 function syslog_status() {
 	$status = syslog_status_get();
 
@@ -276,6 +301,22 @@ function syslog_status() {
 		__('Last Processed Record Count', 'syslog') => (
 			$status['last_record_count'] === '' ? '0' : number_format((int) $status['last_record_count'])
 		),
+		__('Alert Rules Processed', 'syslog') => sprintf(
+			'%s %s / %s %s',
+			syslog_status_format_count($status['last_alert_rules_processed']),
+			__('last run', 'syslog'),
+			syslog_status_format_count($status['total_alert_rules_processed']),
+			__('total', 'syslog')
+		),
+		__('Alert Rules Fired', 'syslog') => syslog_status_format_rule_activity($status['last_alert_rules_fired']),
+		__('Delete Rules Processed', 'syslog') => sprintf(
+			'%s %s / %s %s',
+			syslog_status_format_count($status['last_delete_rules_processed']),
+			__('last run', 'syslog'),
+			syslog_status_format_count($status['total_delete_rules_processed']),
+			__('total', 'syslog')
+		),
+		__('Delete Rules Fired', 'syslog') => syslog_status_format_rule_activity($status['last_delete_rules_fired']),
 	];
 
 	foreach ($rows as $metric => $value) {
