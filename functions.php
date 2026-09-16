@@ -642,9 +642,10 @@ function syslog_traditional_manage() {
  */
 function syslog_partition_manage() {
 	$syslog_deleted = 0;
+	$ahead_days     = syslog_partition_ahead_days();
 
-	// Always create the partition an hour ahead of time
-	$time = time() + 3600;
+	// Always create partitions ahead of time to avoid midnight races.
+	$base_time = time() + 7200;
 
 	/*
 	 * Only run the retention prune when the next partition is ready.
@@ -652,19 +653,60 @@ function syslog_partition_manage() {
 	 * as the write-path safety net and avoid dropping old partitions
 	 * without a replacement.
 	 */
-	if (syslog_partition_check('syslog', $time)) {
-		if (syslog_partition_create('syslog', $time)) {
-			$syslog_deleted = syslog_partition_remove('syslog');
-		}
+	if (syslog_partition_ensure_ahead('syslog', $base_time, $ahead_days)) {
+		$syslog_deleted = syslog_partition_remove('syslog');
 	}
 
-	if (syslog_partition_check('syslog_removed', $time)) {
-		if (syslog_partition_create('syslog_removed', $time)) {
-			$syslog_deleted += syslog_partition_remove('syslog_removed');
-		}
+	if (syslog_partition_ensure_ahead('syslog_removed', $base_time, $ahead_days)) {
+		$syslog_deleted += syslog_partition_remove('syslog_removed');
 	}
 
 	return $syslog_deleted;
+}
+
+/**
+ * Return the configured number of future daily partitions to maintain.
+ *
+ * @return int Days ahead to pre-create.
+ */
+function syslog_partition_ahead_days() {
+	$ahead_days = read_config_option('syslog_partition_ahead_days');
+
+	if ($ahead_days === '' || !is_numeric($ahead_days)) {
+		$ahead_days = 3;
+	}
+
+	$ahead_days = (int) $ahead_days;
+
+	if ($ahead_days < 1 || $ahead_days > 7) {
+		$ahead_days = 3;
+	}
+
+	return $ahead_days;
+}
+
+/**
+ * Ensure concrete partitions exist from the current window through the
+ * configured future horizon.
+ *
+ * @param string $table      The table to maintain
+ * @param int    $base_time  Base timestamp for the maintenance window
+ * @param int    $ahead_days Number of future days to maintain
+ *
+ * @return bool true when all needed partitions already exist or were created.
+ */
+function syslog_partition_ensure_ahead($table, $base_time, $ahead_days) {
+	for ($day = 0; $day <= $ahead_days; $day++) {
+		$time = $base_time + ($day * 86400);
+
+		if (syslog_partition_check($table, $time)) {
+			if (!syslog_partition_create($table, $time)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 /**
@@ -874,17 +916,19 @@ function syslog_partition_remove($table) {
 			ORDER BY partition_ordinal_position',
 			[$syslogdb_default, $table]);
 
-		$days = read_config_option('syslog_retention');
+		$days       = read_config_option('syslog_retention');
+		$ahead_days = syslog_partition_ahead_days();
 
-		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
+		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' retention partition(s) plus '$ahead_days' future partition(s).");
 
 		if ($days > 0) {
 			$user_partitions = sizeof($number_of_partitions) - 1;
+			$keep_partitions = (int) $days + $ahead_days;
 
-			if ($user_partitions >= $days) {
+			if ($user_partitions >= $keep_partitions) {
 				$i = 0;
 
-				while ($user_partitions > $days) {
+				while ($user_partitions > $keep_partitions) {
 					$oldest = $number_of_partitions[$i];
 
 					$part_name = $oldest['PARTITION_NAME'];
@@ -3399,6 +3443,7 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 function syslog_init_variables() {
 	$syslog_retention = read_config_option('syslog_retention');
 	$alert_retention  = read_config_option('syslog_alert_retention');
+	$ahead_days       = read_config_option('syslog_partition_ahead_days');
 
 	if ($syslog_retention == '' || $syslog_retention < 0 || $syslog_retention > 365) {
 		set_config_option('syslog_retention', '30');
@@ -3406,6 +3451,10 @@ function syslog_init_variables() {
 
 	if ($alert_retention == '' || $alert_retention < 0 || $alert_retention > 365) {
 		set_config_option('syslog_alert_retention', '30');
+	}
+
+	if ($ahead_days == '' || !is_numeric($ahead_days) || $ahead_days < 1 || $ahead_days > 7) {
+		set_config_option('syslog_partition_ahead_days', '3');
 	}
 
 	if (substr(read_config_option('base_url'), 0, 4) != 'http') {
