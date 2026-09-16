@@ -22,7 +22,7 @@ it('fully removes the deprecated Statistics tab and its data collection', functi
 	$process    = file_get_contents($root . '/syslog_process.php');
 	$javascript = file_get_contents($root . '/js/functions.js');
 
-	expect(strpos($viewer, "['syslog', 'alerts', 'current']"))->not->toBeFalse('Viewer must reject removed tab names');
+	expect(strpos($viewer, "['syslog', 'alerts', 'current', 'status']"))->not->toBeFalse('Viewer must reject removed tab names while allowing Syslog Status');
 	expect(strpos($viewer, "['stats']"))->toBeFalse('Statistics tab registration remains');
 	expect(strpos($viewer, 'function syslog_statistics'))->toBeFalse('Statistics view remains');
 	expect(strpos($setup, 'CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_statistics`'))->toBeFalse('Statistics table setup remains');

@@ -94,7 +94,7 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
-if (!in_array($current_tab, ['syslog', 'alerts', 'current'], true)) {
+if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status'], true)) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
@@ -127,6 +127,8 @@ if (isset_request_var('export')) {
 
 	if ($current_tab == 'current') {
 		syslog_view_alarm();
+	} elseif ($current_tab == 'status') {
+		syslog_status();
 	} else {
 		syslog_messages($current_tab);
 	}
@@ -198,6 +200,8 @@ function syslog_display_tabs($current_tab) {
 
 	$tabs_syslog['alerts'] = __('Alert Logs', 'syslog');
 
+	$tabs_syslog['status'] = __('Syslog Status', 'syslog');
+
 	// if they were redirected to the page, let's set that up
 	if (!isempty_request_var('id') || $current_tab == 'current') {
 		$current_tab = 'current';
@@ -222,6 +226,41 @@ function syslog_display_tabs($current_tab) {
 	}
 
 	print '</ul></nav></div>';
+}
+
+function syslog_status_format_time($value) {
+	if ($value === '' || !is_numeric($value) || (int) $value <= 0) {
+		return __('Never', 'syslog');
+	}
+
+	return date('Y-m-d H:i:s', (int) $value);
+}
+
+function syslog_status() {
+	$status = syslog_status_get();
+
+	html_start_box(__('Syslog Status', 'syslog'), '100%', false, '3', 'center', '');
+
+	html_header([
+		__('Metric', 'syslog'),
+		__('Value', 'syslog')
+	]);
+
+	$rows = [
+		__('Last Syslog Polling Time', 'syslog') => syslog_status_format_time($status['last_polling_time']),
+		__('Last Start Time', 'syslog')          => syslog_status_format_time($status['last_start_time']),
+		__('Last End Time', 'syslog')            => syslog_status_format_time($status['last_end_time']),
+		__('Last Record Count', 'syslog')        => ($status['last_record_count'] === '' ? '0' : number_format((int) $status['last_record_count'])),
+	];
+
+	foreach ($rows as $metric => $value) {
+		form_alternate_row();
+		form_selectable_cell(html_escape($metric), '');
+		form_selectable_cell(html_escape($value), '');
+		form_end_row();
+	}
+
+	html_end_box(false);
 }
 
 function syslog_view_alarm() {

@@ -589,6 +589,61 @@ function syslog_notice_traditional_tables($raise = true) {
 	return true;
 }
 
+function syslog_status_ensure_table() {
+	global $syslogdb_default;
+
+	if (!syslog_db_table_exists('syslog_status', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+			`name` varchar(64) NOT NULL default '',
+			`value` varchar(255) NOT NULL default '',
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`name`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+}
+
+function syslog_status_set($name, $value) {
+	global $syslogdb_default;
+
+	if (!preg_match('/^[a-z0-9_]{1,64}$/', $name)) {
+		cacti_log("SYSLOG ERROR: Invalid status field '$name'", false, 'SYSLOG');
+
+		return false;
+	}
+
+	syslog_status_ensure_table();
+
+	return syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_status`
+		(`name`, `value`, `updated`)
+		VALUES (?, ?, ?)
+		ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated` = VALUES(`updated`)",
+		[$name, (string) $value, time()]);
+}
+
+function syslog_status_get() {
+	global $syslogdb_default;
+
+	syslog_status_ensure_table();
+
+	$status = [
+		'last_polling_time' => '',
+		'last_start_time'   => '',
+		'last_end_time'     => '',
+		'last_record_count' => '',
+	];
+
+	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
+		FROM `$syslogdb_default`.`syslog_status`
+		WHERE `name` IN ('last_polling_time', 'last_start_time', 'last_end_time', 'last_record_count')");
+
+	foreach ($rows as $row) {
+		$status[$row['name']] = $row['value'];
+	}
+
+	return $status;
+}
+
 function syslog_is_partitioned() {
 	global $syslogdb_default;
 

@@ -81,6 +81,7 @@ if (cacti_sizeof($parms)) {
 
 // record the start time
 $start_time = microtime(true);
+$start_timestamp = time();
 
 // Connect to the Syslog Database
 global $syslog_cnn, $cnn_id, $database_default;
@@ -127,6 +128,8 @@ if (read_config_option('syslog_enabled') == '') {
 
 // remove records that don't need to to be transferred
 syslog_debug('Syslog Batch Transfer / Remove Process started ...... ');
+syslog_status_set('last_start_time', $start_timestamp);
+
 $syslog_items   = syslog_manage_items('syslog', 'syslog_removed');
 $syslog_removed = $syslog_items['removed'];
 $syslog_xferred = $syslog_items['xferred'];
@@ -134,6 +137,8 @@ syslog_debug('Removed     ' . $syslog_removed . ",  Message(s) from the 'syslog'
 syslog_debug('Xferred     ' . $syslog_xferred . ",  Message(s) to the 'syslog_removed' table");
 
 syslog_debug('Finished processing...');
+syslog_status_set('last_end_time', time());
+syslog_status_set('last_record_count', $syslog_removed + $syslog_xferred);
 
 function display_version() {
 	global $config;
