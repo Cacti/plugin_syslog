@@ -428,7 +428,13 @@ function initSyslogSearchBuilder(builder, rows) {
 				line.appendChild(group);
 			} else {
 				var fields = JSON.parse(labels.fields || '{"message":"Message","host":"Host"}');
-				line.appendChild(select(Object.entries(fields), row.field || 'message', 'Field', function(value) {
+				// New rows display these defaults even before a user changes either
+				// select. Persist them in the model so structured-rule JSON contains
+				// the same field and operator that the editor shows.
+				row.field = row.field || 'message';
+				row.operator = row.operator || (configuredOperators[row.field] ? configuredOperators[row.field][0] :
+					(choices[row.field] || row.field === 'seq' || row.field.endsWith('_id') || row.field === 'logtime' ? '=' : 'contains'));
+				line.appendChild(select(Object.entries(fields), row.field, 'Field', function(value) {
 					row.field = value;
 					row.value = '';
 					row.operator = configuredOperators[value] ? configuredOperators[value][0] :
@@ -437,7 +443,7 @@ function initSyslogSearchBuilder(builder, rows) {
 					initSyslogSearchDates(container);
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
-				var operators = configuredOperators[row.field || 'message'] ||
+				var operators = configuredOperators[row.field] ||
 					(row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like']);
 				var inverse = {'=': '!=', '!=': '=', '>': '<=', '>=': '<', '<': '>=', '<=': '>'};
 				var operatorOptions = [];
@@ -447,7 +453,7 @@ function initSyslogSearchBuilder(builder, rows) {
 					operatorOptions.push([op, name]);
 					if (!inverse[op]) operatorOptions.push(['NOT ' + op, op === 'contains' ? 'does not contain' : op === 'like' ? 'does not match pattern' : 'NOT ' + name]);
 				});
-				var selectedOperator = row.operator || 'contains';
+				var selectedOperator = row.operator;
 				if (row.negative) selectedOperator = inverse[selectedOperator] || 'NOT ' + selectedOperator;
 				line.appendChild(select(operatorOptions, selectedOperator, 'Operator', function(value) {
 					var previous = row.operator;
