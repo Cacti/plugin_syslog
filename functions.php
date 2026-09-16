@@ -566,6 +566,9 @@ function syslog_partition_manage() {
 	// Always create the partition an hour ahead of time
 	$time = time() + 3600;
 
+	syslog_partition_report_state('syslog');
+	syslog_partition_report_state('syslog_removed');
+
 	/*
 	 * Only run the retention prune when the next partition is ready.
 	 * If maintenance cannot safely create it, leave dMaxValue in place
@@ -607,6 +610,98 @@ function syslog_partition_table_allowed($table) {
 	}
 
 	return true;
+}
+
+/**
+ * Report suspicious partition metadata after a crash or database restart.
+ *
+ * This is intentionally read-only. MySQL/MariaDB DDL is atomic, but if the
+ * server restarts during maintenance, the next poller run should leave an
+ * explicit breadcrumb when metadata is missing or internally inconsistent.
+ *
+ * @param string $table The table to inspect
+ *
+ * @return bool true when the visible partition state looks usable.
+ */
+function syslog_partition_report_state($table) {
+	global $syslogdb_default;
+
+	if (!syslog_partition_table_allowed($table)) {
+		cacti_log("SYSLOG: partition_report_state called with disallowed table '$table'", false, 'SYSTEM');
+
+		return false;
+	}
+
+	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
+		cacti_log("SYSLOG ERROR: Invalid database name; partition state check aborted", false, 'SYSLOG');
+
+		return false;
+	}
+
+	$partitions = syslog_db_fetch_assoc_prepared('SELECT partition_name, partition_description, partition_ordinal_position
+		FROM `information_schema`.`partitions`
+		WHERE table_schema = ? AND table_name = ?
+		ORDER BY partition_ordinal_position',
+		[$syslogdb_default, $table]);
+
+	if (!cacti_sizeof($partitions)) {
+		cacti_log("SYSLOG WARNING: No partition metadata found for '$table'; maintenance may be recovering from an interrupted DDL or an unexpected table state", false, 'SYSLOG');
+
+		return false;
+	}
+
+	$expected_position = 1;
+	$maxvalue_count    = 0;
+	$previous_boundary = null;
+	$valid             = true;
+
+	foreach ($partitions as $partition) {
+		$name        = isset($partition['partition_name']) ? $partition['partition_name'] : (isset($partition['PARTITION_NAME']) ? $partition['PARTITION_NAME'] : '');
+		$description = isset($partition['partition_description']) ? $partition['partition_description'] : (isset($partition['PARTITION_DESCRIPTION']) ? $partition['PARTITION_DESCRIPTION'] : '');
+		$position    = isset($partition['partition_ordinal_position']) ? $partition['partition_ordinal_position'] : (isset($partition['PARTITION_ORDINAL_POSITION']) ? $partition['PARTITION_ORDINAL_POSITION'] : null);
+
+		if ((int) $position !== $expected_position) {
+			cacti_log("SYSLOG WARNING: Partition metadata for '$table' has unexpected ordinal position '$position' at expected position '$expected_position'", false, 'SYSLOG');
+			$valid = false;
+		}
+
+		if (!is_string($name) || preg_match('/^(d\d{8}|dMaxValue)$/', $name) !== 1) {
+			cacti_log("SYSLOG WARNING: Partition metadata for '$table' contains unexpected partition name '$name'", false, 'SYSLOG');
+			$valid = false;
+		}
+
+		if ($name === 'dMaxValue') {
+			$maxvalue_count++;
+
+			if ($expected_position !== cacti_sizeof($partitions)) {
+				cacti_log("SYSLOG WARNING: Partition metadata for '$table' has dMaxValue before the last partition; inspect recent ALTER TABLE maintenance", false, 'SYSLOG');
+				$valid = false;
+			}
+		} else {
+			if ($description === null || $description === '' || strtoupper((string) $description) === 'MAXVALUE') {
+				cacti_log("SYSLOG WARNING: Partition '$name' on '$table' has an unexpected boundary description; inspect recent ALTER TABLE maintenance", false, 'SYSLOG');
+				$valid = false;
+			} elseif (is_numeric($description)) {
+				$boundary = (float) $description;
+
+				if ($previous_boundary !== null && $boundary <= $previous_boundary) {
+					cacti_log("SYSLOG WARNING: Partition '$name' on '$table' is not ordered after the previous boundary; inspect recent ALTER TABLE maintenance", false, 'SYSLOG');
+					$valid = false;
+				}
+
+				$previous_boundary = $boundary;
+			}
+		}
+
+		$expected_position++;
+	}
+
+	if ($maxvalue_count !== 1) {
+		cacti_log("SYSLOG WARNING: Partition metadata for '$table' has $maxvalue_count dMaxValue partitions; expected exactly one", false, 'SYSLOG');
+		$valid = false;
+	}
+
+	return $valid;
 }
 
 /**
