@@ -1361,16 +1361,29 @@ function syslog_remove_items($table, $max_seq) {
 			}
 
 			if ($sql_where != '') {
+				$transaction_started = false;
+				$move_failed         = false;
+				$messages_xferred    = 0;
+				$messages_removed    = 0;
+
 				if ($remove['method'] != 'del') {
+					if (!syslog_db_execute('START TRANSACTION')) {
+						cacti_log("SYSLOG ERROR: Unable to start transaction for removal rule '" . $remove['name'] . "'", false, 'SYSLOG');
+						continue;
+					}
+
+					$transaction_started = true;
+
 					if ($table == 'syslog_incoming') {
 						if ($remove['type'] == 'filter') {
 							// Filter rules compile an alias-qualified WHERE
 							// for this joined INSERT separately.
 							if ($insert_where == '') {
+								syslog_db_execute('ROLLBACK');
 								continue;
 							}
 
-							syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 								(logtime, priority_id, facility_id, program_id, host_id, message)
 								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
 								FROM `$syslogdb_default`.`syslog_incoming` AS si
@@ -1379,7 +1392,7 @@ function syslog_remove_items($table, $max_seq) {
 								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 								ON sp.program = si.program $insert_where", $insert_params);
 						} else {
-							syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 								(logtime, priority_id, facility_id, program_id, host_id, message)
 								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
 								FROM `$syslogdb_default`.`syslog_incoming` AS si
@@ -1389,25 +1402,49 @@ function syslog_remove_items($table, $max_seq) {
 								ON sp.program = si.program $sql_where", $params);
 						}
 					} else {
-						syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+						$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
 							FROM `$syslogdb_default`.`syslog` $sql_where", $params);
 					}
 
-					$xferred += db_affected_rows($syslog_cnn);
+					if ($move_failed) {
+						syslog_db_execute('ROLLBACK');
+						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after archive insert failed", false, 'SYSLOG');
+						continue;
+					}
+
+					$messages_xferred = db_affected_rows($syslog_cnn);
 				}
 
 				if ($table == 'syslog_incoming') {
-					syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming` $sql_where", $params);
+					$move_failed = !syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming` $sql_where", $params);
 				} else {
-					syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog` $sql_where", $params);
+					$move_failed = !syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog` $sql_where", $params);
 				}
 
-				$removed += db_affected_rows($syslog_cnn);
+				if ($move_failed) {
+					if ($transaction_started) {
+						syslog_db_execute('ROLLBACK');
+						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after delete failed", false, 'SYSLOG');
+					}
+
+					continue;
+				}
+
+				$messages_removed = db_affected_rows($syslog_cnn);
+
+				if ($transaction_started && !syslog_db_execute('COMMIT')) {
+					syslog_db_execute('ROLLBACK');
+					cacti_log("SYSLOG ERROR: Unable to commit transaction for removal rule '" . $remove['name'] . "'", false, 'SYSLOG');
+					continue;
+				}
+
+				$xferred += $messages_xferred;
+				$removed += $messages_removed;
 			}
 		}
-	}
+		}
 
 	syslog_debug(sprintf('Removed %5s - Record(s) from ' . $table, $removed));
 	syslog_debug(sprintf('Xferred %5s - Record(s) to the syslog_removed table', $xferred));
@@ -1904,17 +1941,37 @@ function syslog_manage_items($from_table, $to_table) {
 						}
 
 						$all_seq = preg_replace('/^,/i', '', $all_seq);
-						syslog_db_execute("INSERT INTO `$syslogdb_default`.`$to_table`
+
+						if (!syslog_db_execute('START TRANSACTION')) {
+							cacti_log("SYSLOG ERROR: Unable to start transaction for removal rule '" . $remove['message'] . "'", false, 'SYSLOG');
+							continue;
+						}
+
+						if (!syslog_db_execute("INSERT INTO `$syslogdb_default`.`$to_table`
 							(facility_id, priority_id, host_id, logtime, message)
 							(SELECT facility_id, priority_id, host_id, logtime, message
 							FROM `$syslogdb_default`.`$from_table`
-							WHERE seq IN (" . $all_seq . '))');
+							WHERE seq IN (" . $all_seq . '))')) {
+							syslog_db_execute('ROLLBACK');
+							cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['message'] . "' after move insert failed", false, 'SYSLOG');
+							continue;
+						}
 
 						$messages_moved = db_affected_rows($syslog_cnn);
 
 						if ($messages_moved > 0) {
-							syslog_db_execute("DELETE FROM `$syslogdb_default`.`$from_table`
-								WHERE seq IN ($all_seq)");
+							if (!syslog_db_execute("DELETE FROM `$syslogdb_default`.`$from_table`
+								WHERE seq IN ($all_seq)")) {
+								syslog_db_execute('ROLLBACK');
+								cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['message'] . "' after move delete failed", false, 'SYSLOG');
+								continue;
+							}
+						}
+
+						if (!syslog_db_execute('COMMIT')) {
+							syslog_db_execute('ROLLBACK');
+							cacti_log("SYSLOG ERROR: Unable to commit transaction for removal rule '" . $remove['message'] . "'", false, 'SYSLOG');
+							continue;
 						}
 
 						$xferred += $messages_moved;
