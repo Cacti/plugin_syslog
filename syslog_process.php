@@ -146,6 +146,7 @@ if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
 	exit(0);
 }
 
+syslog_status_set('last_polling_time', $start_timestamp);
 syslog_status_set('last_start_time', $start_timestamp);
 
 /**

@@ -247,10 +247,12 @@ function syslog_status() {
 	]);
 
 	$rows = [
-		__('Last Syslog Polling Time', 'syslog') => syslog_status_format_time($status['last_polling_time']),
-		__('Last Start Time', 'syslog')          => syslog_status_format_time($status['last_start_time']),
-		__('Last End Time', 'syslog')            => syslog_status_format_time($status['last_end_time']),
-		__('Last Record Count', 'syslog')        => ($status['last_record_count'] === '' ? '0' : number_format((int) $status['last_record_count'])),
+		__('Last Syslog Processing Run', 'syslog') => syslog_status_format_time($status['last_polling_time']),
+		__('Last Processing Start Time', 'syslog') => syslog_status_format_time($status['last_start_time']),
+		__('Last Processing End Time', 'syslog')   => syslog_status_format_time($status['last_end_time']),
+		__('Last Processed Record Count', 'syslog') => (
+			$status['last_record_count'] === '' ? '0' : number_format((int) $status['last_record_count'])
+		),
 	];
 
 	foreach ($rows as $metric => $value) {
