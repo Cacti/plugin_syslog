@@ -515,6 +515,80 @@ function syslog_read_import_file(string $filename): string|false {
 	}
 }
 
+/**
+ * syslog_validate_storage_engine - Normalize a requested storage engine to
+ * one of the supported engines.
+ *
+ * The plugin only supports the InnoDB storage engine and, on MariaDB, the
+ * Aria storage engine.  Any other engine, including the MyISAM choice that
+ * older installs could make, falls back to InnoDB so table creation can no
+ * longer produce tables that the plugin does not support.
+ *
+ * @param mixed $engine The requested storage engine name.
+ *
+ * @return string Either 'InnoDB' or 'Aria'
+ */
+function syslog_validate_storage_engine($engine) {
+	$engine = is_string($engine) ? trim($engine) : '';
+
+	if (stripos($engine, 'aria') !== false) {
+		return 'Aria';
+	}
+
+	if (stripos($engine, 'innodb') !== false) {
+		return 'InnoDB';
+	}
+
+	if ($engine !== '') {
+		cacti_log("SYSLOG WARNING: Unsupported storage engine '$engine' requested.  Only InnoDB and Aria (MariaDB) are supported; falling back to InnoDB", false, 'SYSLOG');
+	}
+
+	return 'InnoDB';
+}
+
+/**
+ * syslog_notice_traditional_tables - Raise the deprecation notice for
+ * traditional (non-partitioned) Syslog tables.
+ *
+ * Partitioned tables are the only supported architecture for new installs,
+ * but existing traditional installs must keep working.  When the main
+ * syslog table exists and is not partitioned, this logs a warning and, on
+ * UI pages, raises a message advising the administrator to migrate to a
+ * partitioned table.  The notice is throttled to once per day through the
+ * 'syslog_traditional_notice' setting so neither the poller log nor the UI
+ * banner spams the administrator.
+ *
+ * @param bool $raise Raise a UI message in addition to logging the warning.
+ *
+ * @return bool true if the table is traditional, false otherwise.
+ */
+function syslog_notice_traditional_tables($raise = true) {
+	// Nothing to warn about when the tables have not been created yet
+	if (!syslog_db_table_exists('syslog', false)) {
+		return false;
+	}
+
+	if (syslog_is_partitioned()) {
+		return false;
+	}
+
+	$last_notice = read_config_option('syslog_traditional_notice');
+
+	if ($last_notice != '' && (time() - (int) $last_notice) < 86400) {
+		return true;
+	}
+
+	set_config_option('syslog_traditional_notice', time());
+
+	cacti_log("WARNING: The 'syslog' table is not partitioned.  Traditional (non-partitioned) tables are deprecated and are no longer available for new installs; migrate to a partitioned table", false, 'SYSLOG');
+
+	if ($raise) {
+		raise_message('syslog_traditional_deprecated', __('The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture.', 'syslog'), MESSAGE_LEVEL_WARN);
+	}
+
+	return true;
+}
+
 function syslog_is_partitioned() {
 	global $syslogdb_default;
 
@@ -530,9 +604,15 @@ function syslog_is_partitioned() {
 
 /**
  * This function will manage old data for non-partitioned tables
+ *
+ * Traditional (non-partitioned) tables are deprecated.  Existing installs
+ * continue to operate, but the maintenance pass logs a throttled warning so
+ * the administrator is reminded to migrate to partitioned tables.
  */
 function syslog_traditional_manage() {
 	global $syslogdb_default, $syslog_cnn;
+
+	syslog_notice_traditional_tables(false);
 
 	// determine the oldest date to retain
 	if (read_config_option('syslog_retention') > 0) {
