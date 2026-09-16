@@ -621,6 +621,34 @@ function syslog_status_set($name, $value) {
 		[$name, (string) $value, time()]);
 }
 
+function syslog_status_record_runtime($seconds) {
+	if (!is_numeric($seconds)) {
+		return false;
+	}
+
+	$seconds = round(max(0, (float) $seconds), 3);
+	$status  = syslog_status_get();
+
+	$count = isset($status['polling_runtime_count']) && is_numeric($status['polling_runtime_count']) ? (int) $status['polling_runtime_count'] : 0;
+	$sum   = isset($status['polling_runtime_sum']) && is_numeric($status['polling_runtime_sum']) ? (float) $status['polling_runtime_sum'] : 0.0;
+	$min   = isset($status['polling_runtime_min']) && is_numeric($status['polling_runtime_min']) ? (float) $status['polling_runtime_min'] : $seconds;
+	$max   = isset($status['polling_runtime_max']) && is_numeric($status['polling_runtime_max']) ? (float) $status['polling_runtime_max'] : $seconds;
+
+	$count++;
+	$sum += $seconds;
+	$min = min($min, $seconds);
+	$max = max($max, $seconds);
+
+	syslog_status_set('polling_runtime_last', $seconds);
+	syslog_status_set('polling_runtime_min', $min);
+	syslog_status_set('polling_runtime_avg', round($sum / $count, 3));
+	syslog_status_set('polling_runtime_max', $max);
+	syslog_status_set('polling_runtime_count', $count);
+	syslog_status_set('polling_runtime_sum', $sum);
+
+	return true;
+}
+
 function syslog_status_get() {
 	global $syslogdb_default;
 
@@ -631,11 +659,28 @@ function syslog_status_get() {
 		'last_start_time'   => '',
 		'last_end_time'     => '',
 		'last_record_count' => '',
+		'polling_runtime_last'  => '',
+		'polling_runtime_min'   => '',
+		'polling_runtime_avg'   => '',
+		'polling_runtime_max'   => '',
+		'polling_runtime_count' => '',
+		'polling_runtime_sum'   => '',
 	];
 
 	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
 		FROM `$syslogdb_default`.`syslog_status`
-		WHERE `name` IN ('last_polling_time', 'last_start_time', 'last_end_time', 'last_record_count')");
+		WHERE `name` IN (
+			'last_polling_time',
+			'last_start_time',
+			'last_end_time',
+			'last_record_count',
+			'polling_runtime_last',
+			'polling_runtime_min',
+			'polling_runtime_avg',
+			'polling_runtime_max',
+			'polling_runtime_count',
+			'polling_runtime_sum'
+		)");
 
 	foreach ($rows as $row) {
 		$status[$row['name']] = $row['value'];

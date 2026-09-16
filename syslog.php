@@ -236,6 +236,29 @@ function syslog_status_format_time($value) {
 	return date('Y-m-d H:i:s', (int) $value);
 }
 
+function syslog_status_format_seconds($value) {
+	if ($value === '' || !is_numeric($value)) {
+		return __('Never', 'syslog');
+	}
+
+	return number_format((float) $value, 3) . ' ' . __('seconds', 'syslog');
+}
+
+function syslog_status_format_runtime_stats($status) {
+	if ($status['polling_runtime_last'] === '' || !is_numeric($status['polling_runtime_last'])) {
+		return __('Never', 'syslog');
+	}
+
+	return sprintf(
+		'%s (%s / %s / %s %s)',
+		syslog_status_format_seconds($status['polling_runtime_last']),
+		number_format((float) $status['polling_runtime_min'], 3),
+		number_format((float) $status['polling_runtime_avg'], 3),
+		number_format((float) $status['polling_runtime_max'], 3),
+		__('min/avg/max', 'syslog')
+	);
+}
+
 function syslog_status() {
 	$status = syslog_status_get();
 
@@ -247,7 +270,7 @@ function syslog_status() {
 	]);
 
 	$rows = [
-		__('Last Syslog Processing Run', 'syslog') => syslog_status_format_time($status['last_polling_time']),
+		__('Polling Runtime', 'syslog')            => syslog_status_format_runtime_stats($status),
 		__('Last Processing Start Time', 'syslog') => syslog_status_format_time($status['last_start_time']),
 		__('Last Processing End Time', 'syslog')   => syslog_status_format_time($status['last_end_time']),
 		__('Last Processed Record Count', 'syslog') => (

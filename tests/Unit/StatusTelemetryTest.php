@@ -43,3 +43,35 @@ it('rejects invalid syslog status field names', function () {
 	expect(syslog_status_set('last record count', 42))->toBeFalse();
 	expect($executed)->toBeFalse();
 });
+
+it('records polling runtime min average and max values', function () {
+	syslog_load_plugin_source('functions.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$values = [];
+
+	test_override('syslog_db_table_exists', function ($table) {
+		return $table === 'syslog_status';
+	});
+
+	test_override('syslog_db_fetch_assoc', function () use (&$values) {
+		return array_map(function ($name, $value) {
+			return ['name' => $name, 'value' => $value, 'updated' => time()];
+		}, array_keys($values), $values);
+	});
+
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$values) {
+		$values[$params[0]] = $params[1];
+
+		return true;
+	});
+
+	expect(syslog_status_record_runtime(2.0))->toBeTrue();
+	expect(syslog_status_record_runtime(4.0))->toBeTrue();
+
+	expect($values['polling_runtime_last'])->toBe('4');
+	expect($values['polling_runtime_min'])->toBe('2');
+	expect($values['polling_runtime_avg'])->toBe('3');
+	expect($values['polling_runtime_max'])->toBe('4');
+	expect($values['polling_runtime_count'])->toBe('2');
+});

@@ -248,6 +248,7 @@ syslog_postprocess_tables();
 syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports);
 syslog_status_set('last_end_time', time());
 syslog_status_set('last_record_count', $moved);
+syslog_status_record_runtime(microtime(true) - $start_time);
 
 /**
  * unregister the syslog process entry so the next poller

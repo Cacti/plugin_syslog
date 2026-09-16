@@ -139,6 +139,7 @@ syslog_debug('Xferred     ' . $syslog_xferred . ",  Message(s) to the 'syslog_re
 syslog_debug('Finished processing...');
 syslog_status_set('last_end_time', time());
 syslog_status_set('last_record_count', $syslog_removed + $syslog_xferred);
+syslog_status_record_runtime(microtime(true) - $start_time);
 
 function display_version() {
 	global $config;
