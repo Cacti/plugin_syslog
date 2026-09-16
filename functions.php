@@ -367,9 +367,7 @@ function syslog_sync_save($data, $table, $primary = '') {
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
 		if ($config['poller_id'] == 1) {
-			$stable = "`$syslogdb_default`.`$table`";
-
-			$id = syslog_sql_save($data, $stable, $primary);
+			$id = syslog_sql_save($data, $table, $primary);
 
 			if ($id > 0) {
 				raise_message(1);
@@ -398,9 +396,7 @@ function syslog_sync_save($data, $table, $primary = '') {
 			raise_message('syslog_denied', __('Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		}
 	} else {
-		$stable = "`$syslogdb_default`.`$table`";
-
-		$id = syslog_sql_save($data, $stable, $primary);
+		$id = syslog_sql_save($data, $table, $primary);
 
 		if ($id > 0) {
 			raise_message(1);
