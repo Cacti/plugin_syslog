@@ -234,7 +234,7 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 		throw new RuntimeException("syslog_partition_create does not log a warning when the partition expression can't be determined.");
 	}
 
-	// ---- syslog_partition_manage must exist and drive both tables through check/create/remove ----
+	// ---- syslog_partition_manage must exist and drive both tables through ensure/remove ----
 
 	$manage_start = strpos($functions, 'function syslog_partition_manage');
 
@@ -251,12 +251,8 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 	$manage_body = substr($functions, $manage_start, $manage_end - $manage_start);
 
 	foreach (['syslog', 'syslog_removed'] as $table) {
-		if (!preg_match('/syslog_partition_report_state\s*\(\s*\'' . $table . '\'\s*\)/', $manage_body)) {
-			throw new RuntimeException("syslog_partition_manage does not report partition state for '$table'.");
-		}
-
-		if (!preg_match('/syslog_partition_create\s*\(\s*\'' . $table . '\'/', $manage_body)) {
-			throw new RuntimeException("syslog_partition_manage does not call syslog_partition_create('$table').");
+		if (!preg_match('/syslog_partition_ensure_ahead\s*\(\s*\'' . $table . '\'/', $manage_body)) {
+			throw new RuntimeException("syslog_partition_manage does not ensure future partitions for '$table'.");
 		}
 
 		if (!preg_match('/syslog_partition_remove\s*\(\s*\'' . $table . '\'\s*\)/', $manage_body)) {
