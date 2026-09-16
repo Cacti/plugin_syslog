@@ -137,6 +137,7 @@ function plugin_syslog_uninstall() {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_priorities`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_logs`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_hosts`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches`");
 		} else {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");
