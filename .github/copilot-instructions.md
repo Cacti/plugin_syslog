@@ -150,6 +150,14 @@ Table/column names can't be bound as parameters; when they must be interpolated 
 - Check realm permissions before privileged actions: `api_plugin_user_realm_auth('syslog_alerts.php')`.
 - Require `POST` + `csrf_check()` for any state-changing action (see `syslog_utilities_action('purge_syslog_hosts')` in `setup.php`).
 
+`get_filter_request_var()` (and its `gfrv()` shorthand, where available) called with only the
+`$name` argument (no regex/filter as the 2nd/3rd argument) already validates the value as numeric
+and returns it as a **string** -- it does not return an int, and it halts execution if the request
+value is not numeric. Because of this, do NOT cast its output to `(int)` when the result is only
+used for string output (e.g. `print`/`echo`, string concatenation, embedding in HTML/JS); the cast
+is redundant. Only cast when the value is genuinely used in an integer/numeric context (e.g.
+arithmetic, strict `===` comparisons).
+
 ### Output Escaping
 - Escape HTML with `html_escape()`; escape values embedded in `<script>` blocks with `syslog_json_safe()` (adds `JSON_HEX_TAG|AMP|APOS|QUOT`), never plain `json_encode()`.
 - Defuse CSV formula injection on every exported cell with `syslog_csv_safe()` before `fputcsv()`.
