@@ -555,8 +555,14 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 	 * "keep_partitions" math in syslog_partition_remove(), or newly
 	 * installed tables over-provision by one partition and the very next
 	 * retention prune immediately deletes the oldest one.
+	 *
+	 * $days = 0 is a valid "Indefinite" retention setting (never pruned by
+	 * syslog_partition_remove(), which only prunes when $days > 0), but
+	 * $days - 1 would then be -1 and skip creating today's concrete
+	 * partition entirely. Clamp the starting bound to 0 so today is always
+	 * created regardless of retention.
 	 */
-	for ($i = $days - 1; $i >= (0 - $ahead_days); $i--) {
+	for ($i = max($days - 1, 0); $i >= (0 - $ahead_days); $i--) {
 		$day_epoch      = $now - ($i * 86400);
 		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
 		$format         = gmdate('Ymd', $day_epoch);

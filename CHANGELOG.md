@@ -2,6 +2,9 @@
 
 --- develop ---
 
+* bug: Fix a fresh install with "Indefinite" retention (days = 0) never creating today's concrete
+  partition, since the off-by-one fix in the historical loop bound would otherwise start the loop
+  one day before today; the starting bound is now clamped so today's partition is always created
 * bug: Fix an off-by-one in partitioned syslog table creation that over-provisioned one extra
   historical partition, causing the first retention prune after install to immediately drop a
   freshly created partition
