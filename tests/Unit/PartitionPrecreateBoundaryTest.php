@@ -55,8 +55,11 @@ it('always pre-creates today\'s partition, even with indefinite (0-day) retentio
 
 	$dates = partition_precreate_dates($ddl);
 
-	expect($dates)->toContain('d' . $today, "Today's partition (d$today) must always be pre-created, even for indefinite retention.");
-	expect($dates)->toHaveCount(4, 'Indefinite retention should only pre-create today plus the future ahead-days partitions.');
+	// Today's partition must always be pre-created, even for indefinite retention.
+	expect($dates)->toContain('d' . $today);
+
+	// Indefinite retention should only pre-create today plus the future ahead-days partitions.
+	expect($dates)->toHaveCount(4);
 });
 
 it('keeps the normal retention window unchanged (30 days plus 3 ahead days)', function () {
