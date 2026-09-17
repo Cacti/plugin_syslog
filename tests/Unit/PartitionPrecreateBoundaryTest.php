@@ -31,6 +31,8 @@ function partition_precreate_extract_function() {
 	$source = $m[0];
 	$source = str_replace('function syslog_create_partitioned_syslog_table', 'function test_create_partitioned_syslog_table', $source);
 	$source = str_replace("\tsyslog_connect();\n", '', $source);
+	// Freeze $now to an injected, fixed timestamp so the test and the function always agree on "today", regardless of when the test runs.
+	$source = str_replace('$now = time();', "\$now = \$GLOBALS['__test_partition_precreate_base_time'];", $source);
 	$source = str_replace('syslog_db_execute($sql . $parts);', 'return $sql . $parts;', $source);
 
 	if (!function_exists('test_create_partitioned_syslog_table')) {
@@ -49,7 +51,9 @@ it('always pre-creates today\'s partition, even with indefinite (0-day) retentio
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 
-	$today = gmdate('Ymd');
+	$base_time = time();
+	$GLOBALS['__test_partition_precreate_base_time'] = $base_time;
+	$today = gmdate('Ymd', $base_time);
 
 	$ddl = test_create_partitioned_syslog_table('InnoDB', 0, 3);
 
@@ -67,6 +71,9 @@ it('keeps the normal retention window unchanged (30 days plus 3 ahead days)', fu
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 
+	$base_time = time();
+	$GLOBALS['__test_partition_precreate_base_time'] = $base_time;
+
 	$ddl = test_create_partitioned_syslog_table('InnoDB', 30, 3);
 
 	$dates = partition_precreate_dates($ddl);
@@ -74,7 +81,7 @@ it('keeps the normal retention window unchanged (30 days plus 3 ahead days)', fu
 	// 30 retained days (today plus 29 prior days) plus 3 future ahead-days.
 	expect($dates)->toHaveCount(33);
 
-	$oldest = gmdate('Ymd', time() - (29 * 86400));
+	$oldest = gmdate('Ymd', $base_time - (29 * 86400));
 
 	expect($dates)->toContain('d' . $oldest);
 });
