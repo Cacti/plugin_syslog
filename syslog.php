@@ -288,44 +288,62 @@ function syslog_status() {
 	$status = syslog_status_get();
 
 	html_start_box(__('Syslog Status', 'syslog'), '100%', false, '3', 'center', '');
-
-	html_header([
-		__('Metric', 'syslog'),
-		__('Value', 'syslog')
-	]);
-
-	$rows = [
-		__('Polling Runtime', 'syslog')            => syslog_status_format_runtime_stats($status),
-		__('Last Processing Start Time', 'syslog') => syslog_status_format_time($status['last_start_time']),
-		__('Last Processing End Time', 'syslog')   => syslog_status_format_time($status['last_end_time']),
-		__('Last Processed Record Count', 'syslog') => (
-			$status['last_record_count'] === '' ? '0' : number_format((int) $status['last_record_count'])
-		),
-		__('Alert Rules Processed', 'syslog') => sprintf(
-			'%s %s / %s %s',
-			syslog_status_format_count($status['last_alert_rules_processed']),
-			__('last run', 'syslog'),
-			syslog_status_format_count($status['total_alert_rules_processed']),
-			__('total', 'syslog')
-		),
-		__('Alert Rules Fired', 'syslog') => syslog_status_format_rule_activity($status['last_alert_rules_fired']),
-		__('Delete Rules Processed', 'syslog') => sprintf(
-			'%s %s / %s %s',
-			syslog_status_format_count($status['last_delete_rules_processed']),
-			__('last run', 'syslog'),
-			syslog_status_format_count($status['total_delete_rules_processed']),
-			__('total', 'syslog')
-		),
-		__('Delete Rules Fired', 'syslog') => syslog_status_format_rule_activity($status['last_delete_rules_fired']),
-	];
-
-	foreach ($rows as $metric => $value) {
-		form_alternate_row();
-		form_selectable_cell(html_escape($metric), '');
-		form_selectable_cell(html_escape($value), '');
-		form_end_row();
-	}
-
+	?>
+	<tr><td>
+		<div class="syslogStatus">
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_run">
+				<h2 id="syslog_status_run" class="syslogStatusHeading ui-widget-header"><?php print __esc('Latest processing run', 'syslog'); ?></h2>
+				<dl class="syslogStatusMetrics">
+					<div>
+						<dt><?php print __esc('Records processed', 'syslog'); ?></dt>
+						<dd class="syslogStatusValue"><?php print html_escape(syslog_status_format_count($status['last_record_count'])); ?></dd>
+					</div>
+					<div>
+						<dt><?php print __esc('Polling runtime', 'syslog'); ?></dt>
+						<dd class="syslogStatusValue"><?php print html_escape(syslog_status_format_seconds($status['polling_runtime_last'])); ?></dd>
+					</div>
+				</dl>
+				<dl class="syslogStatusTimings">
+					<?php
+					$timings = [
+						__('Started', 'syslog') => syslog_status_format_time($status['last_start_time']),
+						__('Finished', 'syslog') => syslog_status_format_time($status['last_end_time']),
+						__('Minimum runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_min']),
+						__('Average runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_avg']),
+						__('Maximum runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_max'])
+					];
+					foreach ($timings as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					}
+					?>
+				</dl>
+			</section>
+			<section aria-labelledby="syslog_status_rules">
+				<h2 id="syslog_status_rules" class="syslogStatusHeading ui-widget-header"><?php print __esc('Rule activity', 'syslog'); ?></h2>
+				<table class="syslogStatusRules" aria-labelledby="syslog_status_rules">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Rules processed', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Last run', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Total', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php foreach (['alert' => __('Alert rules', 'syslog'), 'delete' => __('Delete rules', 'syslog')] as $type => $label) { ?>
+						<tr class="syslogStatusRuleCounts">
+							<th scope="row"><?php print html_escape($label); ?></th>
+							<td><?php print html_escape(syslog_status_format_count($status['last_' . $type . '_rules_processed'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_count($status['total_' . $type . '_rules_processed'])); ?></td>
+						</tr>
+						<tr class="syslogStatusRuleDetails"><td colspan="3">
+							<span class="syslogStatusDetailLabel"><?php print __esc('Fired last run', 'syslog'); ?>:</span>
+							<?php print html_escape(syslog_status_format_rule_activity($status['last_' . $type . '_rules_fired'])); ?>
+						</td></tr>
+					<?php } ?>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	</td></tr>
+	<?php
 	html_end_box(false);
 }
 
