@@ -548,8 +548,15 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 	 * as numeric literals. This keeps both MySQL and PHP session time zones
 	 * out of the equation: the boundary is always the next UTC midnight
 	 * after the labeled day.
+	 *
+	 * $days counts today as one of the retained days, so the historical
+	 * loop bound is $days - 1 (today plus $days - 1 prior days = $days
+	 * total). This must stay in lockstep with the $days + $ahead_days
+	 * "keep_partitions" math in syslog_partition_remove(), or newly
+	 * installed tables over-provision by one partition and the very next
+	 * retention prune immediately deletes the oldest one.
 	 */
-	for ($i = $days; $i >= (0 - $ahead_days); $i--) {
+	for ($i = $days - 1; $i >= (0 - $ahead_days); $i--) {
 		$day_epoch      = $now - ($i * 86400);
 		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
 		$format         = gmdate('Ymd', $day_epoch);
