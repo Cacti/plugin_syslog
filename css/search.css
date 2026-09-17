@@ -818,6 +818,11 @@ body.dark #syslog_form .syslogSearchPanel {
 	width: 48%;
 }
 
+/* Cacti's dark theme gives all th cells an !important column divider. */
+.syslogStatus .syslogStatusRules th {
+	border-right: none !important;
+}
+
 .syslogStatusRules thead th {
 	font-weight: normal;
 }
