@@ -284,6 +284,37 @@ function syslog_status_format_rule_activity($value) {
 	return cacti_sizeof($items) ? implode(', ', $items) : __('None', 'syslog');
 }
 
+/** Read live storage metrics only when rendering the status tab. */
+function syslog_status_storage() {
+	global $syslogdb_default, $syslog_retentions, $syslog_alert_retentions;
+
+	$incoming = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
+	$bytes = syslog_db_fetch_cell_prepared('SELECT DATA_LENGTH + INDEX_LENGTH
+		FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+		[$syslogdb_default, 'syslog']);
+
+	$size = __('Unavailable', 'syslog');
+	if (is_numeric($bytes) && $bytes >= 0) {
+		$units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+		$unit = 0;
+		while ($bytes >= 1024 && $unit < count($units) - 1) {
+			$bytes /= 1024;
+			$unit++;
+		}
+		$size = number_format((float) $bytes, $unit === 0 ? 0 : 2) . ' ' . $units[$unit];
+	}
+
+	$retention = read_config_option('syslog_retention');
+	$alert_retention = read_config_option('syslog_alert_retention');
+
+	return [
+		__('Rows in syslog_incoming', 'syslog') => is_numeric($incoming) ? number_format((int) $incoming) : __('Unavailable', 'syslog'),
+		__('Syslog table size (data + indexes)', 'syslog') => $size,
+		__('Syslog retention', 'syslog') => $syslog_retentions[$retention] ?? __('Unavailable', 'syslog'),
+		__('Alert retention', 'syslog') => $syslog_alert_retentions[$alert_retention] ?? __('Unavailable', 'syslog')
+	];
+}
+
 function syslog_status() {
 	$status = syslog_status_get();
 
@@ -316,6 +347,14 @@ function syslog_status() {
 						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
 					}
 					?>
+				</dl>
+			</section>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_storage">
+				<h2 id="syslog_status_storage" class="syslogStatusHeading ui-widget-header"><?php print __esc('Storage and retention', 'syslog'); ?></h2>
+				<dl class="syslogStatusTimings syslogStatusStorage">
+					<?php foreach (syslog_status_storage() as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					} ?>
 				</dl>
 			</section>
 			<section aria-labelledby="syslog_status_rules">

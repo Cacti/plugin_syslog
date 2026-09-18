@@ -864,3 +864,7 @@ body.dark #syslog_form .syslogSearchPanel {
 		padding-inline: 8px;
 	}
 }
+
+.syslogStatusStorage {
+	border-top: 0;
+}
