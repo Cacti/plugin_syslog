@@ -77,7 +77,9 @@ it('only allows the owner or an admin to delete a shared saved search', function
 				$result  = json_decode(saved_search_delete(), true);
 				$allowed = $owner === 'tester' || ($global === 'on' && $admin);
 
-				if ($GLOBALS['writes'] !== (int) $allowed || isset($result['error']) === $allowed) {
+				// An allowed delete also clears the share rows, so count the
+				// saved-searches statement rather than an exact total.
+				if (($GLOBALS['writes'] > 0) !== $allowed || isset($result['error']) === $allowed) {
 					throw new RuntimeException('Deletion permissions do not match ownership and administration');
 				}
 			}

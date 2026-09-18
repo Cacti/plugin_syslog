@@ -302,6 +302,205 @@ function syslog_dashboard_share() {
 	return syslog_dashboard_admin() || api_plugin_user_realm_auth('syslog_dashboards_share.php');
 }
 
+/**
+ * The whitelisted share table and item column per shareable item kind.
+ *
+ * @return array|null [table, column], or null for an unknown kind.
+ */
+function syslog_share_table($item) {
+	$tables = [
+		'dashboard'    => ['syslog_dashboards_perm', 'dashboard_id'],
+		'saved_search' => ['syslog_saved_searches_perm', 'search_id']
+	];
+
+	return isset($tables[$item]) ? $tables[$item] : null;
+}
+
+/** Cacti group ids the session user is a member of, or the given user. */
+function syslog_user_group_ids($user_id = 0) {
+	if ($user_id === 0) {
+		$user_id = isset($_SESSION['sess_user_id']) ? (int) $_SESSION['sess_user_id'] : 0;
+	}
+
+	if ($user_id <= 0) {
+		return [];
+	}
+
+	$groups = db_fetch_assoc_prepared('SELECT group_id
+		FROM user_auth_group_members
+		WHERE user_id = ?',
+		[$user_id]);
+
+	if (!cacti_sizeof($groups)) {
+		return [];
+	}
+
+	$ids = [];
+
+	foreach ($groups as $group) {
+		$ids[] = (int) $group['group_id'];
+	}
+
+	return $ids;
+}
+
+/**
+ * Ids of one shareable item kind granted to the current user or one of
+ * their groups. Returns [] outside a session or when nothing is granted.
+ */
+function syslog_shared_item_ids($item) {
+	global $syslogdb_default;
+
+	static $cache = [];
+
+	$user_id = isset($_SESSION['sess_user_id']) ? (int) $_SESSION['sess_user_id'] : 0;
+
+	if ($user_id <= 0) {
+		return [];
+	}
+
+	if (isset($cache[$item])) {
+		return $cache[$item];
+	}
+
+	$share_table = syslog_share_table($item);
+
+	if ($share_table === null) {
+		return [];
+	}
+
+	list($table, $column) = $share_table;
+
+	$group_ids = syslog_user_group_ids($user_id);
+
+	$sql = "SELECT $column AS id
+		FROM `$syslogdb_default`.`$table`
+		WHERE type = 'user' AND item_id = ?";
+	$params = [$user_id];
+
+	if (cacti_sizeof($group_ids)) {
+		$sql .= " OR (type = 'group' AND item_id IN (" . implode(',', array_fill(0, cacti_sizeof($group_ids), '?')) . '))';
+
+		foreach ($group_ids as $group_id) {
+			$params[] = $group_id;
+		}
+	}
+
+	$rows = syslog_db_fetch_assoc_prepared($sql, $params);
+
+	$ids = [];
+
+	if (cacti_sizeof($rows)) {
+		foreach ($rows as $row) {
+			if (isset($row['id']) && (int) $row['id'] > 0) {
+				$ids[] = (int) $row['id'];
+			}
+		}
+	}
+
+	$cache[$item] = $ids;
+
+	return $ids;
+}
+
+/** Current grants on one item, shaped for the drop_multi form fields. */
+function syslog_fetch_item_shares($item, $item_id) {
+	global $syslogdb_default;
+
+	$shares = ['users' => [], 'groups' => []];
+
+	$share_table = syslog_share_table($item);
+
+	if ($share_table === null || (int) $item_id <= 0) {
+		return $shares;
+	}
+
+	list($table, $column) = $share_table;
+
+	$rows = syslog_db_fetch_assoc_prepared("SELECT type, item_id
+		FROM `$syslogdb_default`.`$table`
+		WHERE $column = ?",
+		[(int) $item_id]);
+
+	if (cacti_sizeof($rows)) {
+		foreach ($rows as $row) {
+			$key = $row['type'] === 'group' ? 'groups' : 'users';
+
+			$shares[$key][] = ['id' => (int) $row['item_id']];
+		}
+	}
+
+	return $shares;
+}
+
+/** Normalize a posted multiselect of user or group ids to unique integers. */
+function syslog_parse_share_ids($name) {
+	if (!isset_request_var($name)) {
+		return [];
+	}
+
+	$raw = get_nfilter_request_var($name);
+
+	if (!is_array($raw)) {
+		return [];
+	}
+
+	$ids = [];
+
+	foreach ($raw as $id) {
+		if ((int) $id > 0) {
+			$ids[] = (int) $id;
+		}
+	}
+
+	return array_values(array_unique($ids));
+}
+
+/**
+ * Replace the user and group share rows of one item. Unknown ids are kept;
+ * they simply never match a real user or group.
+ */
+function syslog_save_item_shares($item, $item_id, $users, $groups) {
+	global $syslogdb_default;
+
+	$share_table = syslog_share_table($item);
+
+	if ($share_table === null || (int) $item_id <= 0) {
+		return;
+	}
+
+	list($table, $column) = $share_table;
+
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`$table`
+		WHERE $column = ?",
+		[(int) $item_id]);
+
+	// Duplicates would collide with the composite primary key.
+	$users  = array_unique(array_map('intval', $users));
+	$groups = array_unique(array_map('intval', $groups));
+
+	$grants = [];
+
+	foreach ($users as $user_id) {
+		if ((int) $user_id > 0) {
+			$grants[] = [(int) $item_id, 'user', (int) $user_id];
+		}
+	}
+
+	foreach ($groups as $group_id) {
+		if ((int) $group_id > 0) {
+			$grants[] = [(int) $item_id, 'group', (int) $group_id];
+		}
+	}
+
+	foreach ($grants as $grant) {
+		syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`$table`
+			($column, type, item_id)
+			VALUES (?, ?, ?)",
+			$grant);
+	}
+}
+
 function syslog_message_filter_value($value, $filter, $href = '') {
 	if (get_request_var('search_mode') != 'logical') {
 		return filter_value($value, $filter, $href);

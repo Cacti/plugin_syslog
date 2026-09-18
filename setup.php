@@ -141,6 +141,8 @@ function plugin_syslog_uninstall() {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboard_panels`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboards`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboards_perm`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches_perm`");
 		} else {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");
@@ -593,6 +595,29 @@ function syslog_check_upgrade() {
 			'default' => '',
 			'after'   => 'user']
 		);
+	}
+
+	// Per-user and per-group grants from the admin Dashboards page, beyond
+	// the owner and the global share flag.
+	if (!syslog_db_table_exists('syslog_dashboards_perm', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards_perm` (
+			`dashboard_id` int(10) NOT NULL default '0',
+			`type` varchar(5) NOT NULL default '',
+			`item_id` int(10) NOT NULL default '0',
+			PRIMARY KEY (`dashboard_id`, `type`, `item_id`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	// The same grants for saved searches.
+	if (!syslog_db_table_exists('syslog_saved_searches_perm', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches_perm` (
+			`search_id` int(10) NOT NULL default '0',
+			`type` varchar(5) NOT NULL default '',
+			`item_id` int(10) NOT NULL default '0',
+			PRIMARY KEY (`search_id`, `type`, `item_id`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
 	}
 
 	if (!syslog_db_table_exists('syslog_status', false)) {

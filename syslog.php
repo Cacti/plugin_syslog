@@ -762,10 +762,17 @@ function saved_search_apply($tab, $saved_id) {
 
 	$username = get_username($_SESSION['sess_user_id']);
 
+	$sql_where = "`user` = ? OR is_global = 'on'";
+	$shared = syslog_shared_item_ids('saved_search');
+
+	if (cacti_sizeof($shared)) {
+		$sql_where .= ' OR id IN (' . implode(',', $shared) . ')';
+	}
+
 	$row = syslog_db_fetch_row_prepared("SELECT id, search, removal, grouping
 		FROM `$syslogdb_default`.`syslog_saved_searches`
 		WHERE id = ?
-		AND (`user` = ? OR is_global = 'on')",
+		AND ($sql_where)",
 		[$saved_id, $username]);
 
 	if ($row === false) {
@@ -864,6 +871,9 @@ function saved_search_delete() {
 
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_saved_searches`
 		WHERE id = ?",
+		[$id]);
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_saved_searches_perm`
+		WHERE search_id = ?",
 		[$id]);
 
 	if ((int) ($_SESSION['sess_sl_' . get_request_var('tab') . '_saved'] ?? 0) === (int) $id) {
@@ -1283,9 +1293,18 @@ function syslog_filter($sql_where, $tab) {
 
 	$username = get_username($_SESSION['sess_user_id']);
 
+	// Note: $sql_where is this function's message filter; the saved search
+	// visibility clause is separate.
+	$saved_where = "`user` = ? OR is_global = 'on'";
+	$shared_searches = syslog_shared_item_ids('saved_search');
+
+	if (cacti_sizeof($shared_searches)) {
+		$saved_where .= ' OR id IN (' . implode(',', $shared_searches) . ')';
+	}
+
 	$saved_searches = syslog_db_fetch_assoc_prepared("SELECT id, name, `user`, is_global
 		FROM `$syslogdb_default`.`syslog_saved_searches`
-		WHERE `user` = ? OR is_global = 'on'
+		WHERE $saved_where
 		ORDER BY is_global, name",
 		[$username]);
 
@@ -1330,11 +1349,20 @@ function syslog_filter($sql_where, $tab) {
 							<?php
 							$saved_groups = [
 								__('My Searches', 'syslog')   => [],
-								__('Global Searches', 'syslog') => []
+								__('Global Searches', 'syslog') => [],
+								__('Shared With Me', 'syslog')  => []
 							];
 
 							foreach ($saved_searches as $saved) {
-								$saved_groups[$saved['is_global'] === 'on' ? __('Global Searches', 'syslog') : __('My Searches', 'syslog')][] = $saved;
+								if ($saved['is_global'] === 'on') {
+									$label = __('Global Searches', 'syslog');
+								} elseif ($saved['user'] === $username) {
+									$label = __('My Searches', 'syslog');
+								} else {
+									$label = __('Shared With Me', 'syslog');
+								}
+
+								$saved_groups[$label][] = $saved;
 							}
 
 							foreach ($saved_groups as $saved_label => $saved_group) {

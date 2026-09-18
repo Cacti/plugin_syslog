@@ -450,7 +450,7 @@ function syslog_dashboard_load_panel($panel_id) {
  *
  * @param array $panel Row from syslog_dashboard_load_panel().
  *
- * @return array|null ['user' => ..., 'is_global' => ...], or null.
+ * @return array|null ['id' => ..., 'user' => ..., 'is_global' => ...], or null.
  */
 function syslog_dashboard_panel_owner($panel) {
 	if ($panel === null || !isset($panel['dashboard_user'])) {
@@ -458,6 +458,7 @@ function syslog_dashboard_panel_owner($panel) {
 	}
 
 	return [
+		'id'        => (int) $panel['dashboard_id'],
 		'user'      => $panel['dashboard_user'],
 		'is_global' => $panel['dashboard_global']
 	];
@@ -644,10 +645,18 @@ function syslog_dashboard_username() {
 	return isset($_SESSION['sess_user_id']) ? get_username($_SESSION['sess_user_id']) : '';
 }
 
-/** May the current user see this dashboard: owned, or shared with everyone. */
+/** May the current user see this dashboard: owned, globally shared, or granted to them or their groups. */
 function syslog_dashboard_can_view($dashboard) {
-	return $dashboard !== null
-		&& ($dashboard['user'] === syslog_dashboard_username() || $dashboard['is_global'] === 'on');
+	if ($dashboard === null) {
+		return false;
+	}
+
+	if ($dashboard['user'] === syslog_dashboard_username() || $dashboard['is_global'] === 'on') {
+		return true;
+	}
+
+	// Explicit user/group grants from the admin Dashboards page.
+	return in_array((int) $dashboard['id'], syslog_shared_item_ids('dashboard'), true);
 }
 
 /** May the current user change this dashboard: owned, or shared and an administrator. */
@@ -660,15 +669,22 @@ function syslog_dashboard_can_edit($dashboard) {
 		|| ($dashboard['is_global'] === 'on' && syslog_dashboard_admin());
 }
 
-/** Dashboards the current user owns, plus every shared dashboard. */
+/** Dashboards the current user owns, plus every shared or granted dashboard. */
 function syslog_dashboard_list() {
 	global $syslogdb_default;
 
 	$username = syslog_dashboard_username();
+	$shared   = syslog_shared_item_ids('dashboard');
+
+	$sql_where = "`user` = ? OR is_global = 'on'";
+
+	if (cacti_sizeof($shared)) {
+		$sql_where .= ' OR id IN (' . implode(',', $shared) . ')';
+	}
 
 	return syslog_db_fetch_assoc_prepared("SELECT id, name, `user`, is_global
 		FROM `$syslogdb_default`.`syslog_dashboards`
-		WHERE `user` = ? OR is_global = 'on'
+		WHERE $sql_where
 		ORDER BY is_global, name",
 		[$username]);
 }
@@ -735,6 +751,9 @@ function syslog_dashboard_save() {
 			[$id]);
 		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboards`
 			WHERE id = ?",
+			[$id]);
+		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboards_perm`
+			WHERE dashboard_id = ?",
 			[$id]);
 
 		return json_encode(['id' => (int) $id, 'deleted' => true]);
@@ -1175,9 +1194,9 @@ function syslog_dashboard() {
 	// Match the server-side write permission of every dashboard endpoint.
 	$can_manage = syslog_dashboard_can_edit($selected);
 	$can_share  = syslog_dashboard_share();
-	// A shared dashboard owned by someone else is view-only for this user.
-	$is_shared  = $selected !== null && $selected['is_global'] === 'on'
-		&& $selected['user'] !== syslog_dashboard_username();
+	// A dashboard owned by someone else is view-only for this user, whether
+	// it is shared globally or granted to this user or their groups.
+	$is_shared  = $selected !== null && $selected['user'] !== syslog_dashboard_username();
 
 	$panels = $dashboard_id > 0 ? syslog_dashboard_panels($dashboard_id) : [];
 
@@ -1213,9 +1232,16 @@ function syslog_dashboard() {
 
 	$username = isset($_SESSION['sess_user_id']) ? get_username($_SESSION['sess_user_id']) : '';
 
+	$sql_where = "`user` = ? OR is_global = 'on'";
+	$shared_searches = $username === '' ? [] : syslog_shared_item_ids('saved_search');
+
+	if (cacti_sizeof($shared_searches)) {
+		$sql_where .= ' OR id IN (' . implode(',', $shared_searches) . ')';
+	}
+
 	$saved_searches = $username === '' ? [] : syslog_db_fetch_assoc_prepared("SELECT id, name, search, removal
 		FROM `$syslogdb_default`.`syslog_saved_searches`
-		WHERE `user` = ? OR is_global = 'on'
+		WHERE $sql_where
 		ORDER BY is_global, name",
 		[$username]);
 
@@ -1305,11 +1331,20 @@ function syslog_dashboard() {
 								// per-option ownership stamping for the JS layer.
 								$dashboard_groups = [
 									__('My Dashboards', 'syslog')     => [],
-									__('Global Dashboards', 'syslog') => []
+									__('Global Dashboards', 'syslog') => [],
+									__('Shared With Me', 'syslog')    => []
 								];
 
 								foreach ($dashboards as $dashboard) {
-									$dashboard_groups[$dashboard['is_global'] === 'on' ? __('Global Dashboards', 'syslog') : __('My Dashboards', 'syslog')][] = $dashboard;
+									if ($dashboard['is_global'] === 'on') {
+										$label = __('Global Dashboards', 'syslog');
+									} elseif ($dashboard['user'] === $username) {
+										$label = __('My Dashboards', 'syslog');
+									} else {
+										$label = __('Shared With Me', 'syslog');
+									}
+
+									$dashboard_groups[$label][] = $dashboard;
 								}
 
 								foreach ($dashboard_groups as $dashboard_label => $dashboard_group) {

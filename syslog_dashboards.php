@@ -22,6 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_dashboard')
 	if ($id > 0 && $name !== '' && strlen($name) <= 128) {
 		if (!syslog_db_execute_prepared("UPDATE $db.syslog_dashboards SET name = ?, updated = ? WHERE id = ?", [$name, time(), $id])) {
 			$error = __('Unable to save the dashboard. Please try again.', 'syslog');
+		} else {
+			// Replace the user/group grants with the posted selections.
+			syslog_save_item_shares('dashboard', $id,
+				syslog_parse_share_ids('shared_users'),
+				syslog_parse_share_ids('shared_groups'));
 		}
 	} else {
 		$error = __('Enter a dashboard name between 1 and 128 characters.', 'syslog');
@@ -38,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('dashboard_action
 		// Panels first, then the dashboard itself.
 		syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id]);
 		syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards WHERE id = ?", [$id]);
+		syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards_perm WHERE dashboard_id = ?", [$id]);
 	}
 	header('Location: syslog_dashboards.php');
 	exit;
@@ -57,7 +63,25 @@ if ($row) {
 }
 ?>
 <script type='text/javascript'>
-$(function() { initSyslogTemplates(); });
+$(function() {
+	initSyslogTemplates();
+	<?php if ($row) { ?>
+	$('#shared_users').multiselect({
+		selectedList: 7,
+		noneSelectedText: '<?php print __esc('Share with users…', 'syslog'); ?>',
+		header: false,
+		height: 200,
+		menuWidth: 300
+	});
+	$('#shared_groups').multiselect({
+		selectedList: 7,
+		noneSelectedText: '<?php print __esc('Share with groups…', 'syslog'); ?>',
+		header: false,
+		height: 200,
+		menuWidth: 300
+	});
+	<?php } ?>
+});
 </script>
 <?php
 bottom_footer();
@@ -107,12 +131,20 @@ function syslog_dashboard_list($rows = null) {
 }
 
 function syslog_dashboard_edit($row, $error) {
+	// Cacti accounts and groups to grant this dashboard to, beyond its owner
+	// and the global share flag.
+	$users  = array_rekey(db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username'), 'id', 'username');
+	$groups = array_rekey(db_fetch_assoc('SELECT id, name FROM user_auth_group ORDER BY name'), 'id', 'name');
+	$shares = syslog_fetch_item_shares('dashboard', (int) $row['id']);
+
 	form_start('syslog_dashboards.php', 'syslog_dashboard_form');
 	html_start_box(__('Edit Dashboard', 'syslog'), '100%', '', '3', 'center', '');
 	draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => [
 		'name' => ['friendly_name' => __('Name', 'syslog'), 'method' => 'textbox', 'value' => $row['name'], 'max_length' => 128, 'size' => 60, 'description' => __('The name shown in the Dashboards select of the Syslog Dashboard tab.', 'syslog')],
 		'owner' => ['friendly_name' => __('Owner', 'syslog'), 'method' => 'static', 'value' => html_escape($row['user'])],
 		'shared' => ['friendly_name' => __('Shared', 'syslog'), 'method' => 'static', 'value' => $row['is_global'] === 'on' ? __('Yes', 'syslog') : __('No', 'syslog')],
+		'shared_users' => ['friendly_name' => __('Shared With Users', 'syslog'), 'method' => 'drop_multi', 'array' => $users, 'value' => $shares['users'], 'description' => __('Users who can view this dashboard in addition to its owner and any global sharing.', 'syslog')],
+		'shared_groups' => ['friendly_name' => __('Shared With Groups', 'syslog'), 'method' => 'drop_multi', 'array' => $groups, 'value' => $shares['groups'], 'description' => __('Groups who can view this dashboard in addition to its owner and any global sharing.', 'syslog')],
 		'id' => ['method' => 'hidden', 'value' => (int) $row['id']],
 		'save_dashboard' => ['method' => 'hidden', 'value' => '1']
 	]]);

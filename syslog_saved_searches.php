@@ -26,6 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_template'))
 			syslog_parse_logical_search($search);
 			if (!syslog_db_execute_prepared("UPDATE $db.syslog_saved_searches SET name = ?, search = ? WHERE id = ? AND is_global = 'on'", [$name, $search, $id])) {
 				$error = __('Unable to save the template. Please try again.', 'syslog');
+			} else {
+				// Replace the user/group grants with the posted selections.
+				syslog_save_item_shares('saved_search', $id,
+					syslog_parse_share_ids('shared_users'),
+					syslog_parse_share_ids('shared_groups'));
 			}
 		} catch (InvalidArgumentException $error) {
 			$error = $error->getMessage();
@@ -43,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('template_action'
 	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
 	if ($id > 0 && get_request_var('template_action') === 'delete') {
 		syslog_db_execute_prepared("DELETE FROM $db.syslog_saved_searches WHERE id = ? AND is_global = 'on'", [$id]);
+		syslog_db_execute_prepared("DELETE FROM $db.syslog_saved_searches_perm WHERE search_id = ?", [$id]);
 	}
 	header('Location: syslog_saved_searches.php');
 	exit;
@@ -64,7 +70,25 @@ if ($row) {
 }
 ?>
 <script type='text/javascript'>
-$(function() { initSyslogTemplates(); });
+$(function() {
+	initSyslogTemplates();
+	<?php if ($row) { ?>
+	$('#shared_users').multiselect({
+		selectedList: 7,
+		noneSelectedText: '<?php print __esc('Share with users…', 'syslog'); ?>',
+		header: false,
+		height: 200,
+		menuWidth: 300
+	});
+	$('#shared_groups').multiselect({
+		selectedList: 7,
+		noneSelectedText: '<?php print __esc('Share with groups…', 'syslog'); ?>',
+		header: false,
+		height: 200,
+		menuWidth: 300
+	});
+	<?php } ?>
+});
 </script>
 <?php
 bottom_footer();
@@ -96,11 +120,20 @@ function syslog_template_edit($row, $error) {
 	} catch (InvalidArgumentException $exception) {
 		$error = $error ?: $exception->getMessage();
 	}
+
+	// Cacti accounts and groups to grant this template to, beyond global
+	// availability.
+	$users  = array_rekey(db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username'), 'id', 'username');
+	$groups = array_rekey(db_fetch_assoc('SELECT id, name FROM user_auth_group ORDER BY name'), 'id', 'name');
+	$shares = syslog_fetch_item_shares('saved_search', (int) $row['id']);
+
 	form_start('syslog_saved_searches.php', 'syslog_template_form');
 	html_start_box(__('Edit Saved Search Template', 'syslog'), '100%', '', '3', 'center', '');
 	draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => [
 		'name' => ['friendly_name' => __('Name', 'syslog'), 'method' => 'textbox', 'value' => $row['name'], 'max_length' => 128, 'size' => 60, 'description' => __('The name shown to all users in Saved Searches.', 'syslog')],
 		'owner' => ['friendly_name' => __('Owner', 'syslog'), 'method' => 'static', 'value' => html_escape($row['user'])],
+		'shared_users' => ['friendly_name' => __('Shared With Users', 'syslog'), 'method' => 'drop_multi', 'array' => $users, 'value' => $shares['users'], 'description' => __('Users who can use this template in addition to its owner.', 'syslog')],
+		'shared_groups' => ['friendly_name' => __('Shared With Groups', 'syslog'), 'method' => 'drop_multi', 'array' => $groups, 'value' => $shares['groups'], 'description' => __('Groups who can use this template in addition to its owner.', 'syslog')],
 		'id' => ['method' => 'hidden', 'value' => (int) $row['id']],
 		'save_template' => ['method' => 'hidden', 'value' => '1']
 	]]);

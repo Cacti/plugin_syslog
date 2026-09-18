@@ -2,6 +2,13 @@
 
 --- develop ---
 
+* feature: Add per-user and per-group dashboard and saved-search sharing to
+  the admin Dashboards and Saved Search Templates pages with Cacti's jQuery
+  multiselect widget: grants are stored in new syslog_dashboards_perm and
+  syslog_saved_searches_perm tables, granted dashboards and searches appear
+  to their users in a new "Shared With Me" group of the viewer's selects,
+  and share rows are cleared when their item is deleted
+
 * change: Group all syslog permission realms under their own "Syslog"
   section on the User and Group Permissions pages, as the audit plugin
   does, instead of the generic Plugin Permissions section; this also
