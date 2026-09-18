@@ -1236,6 +1236,20 @@ function syslog_config_settings() {
 				400 => __('%d Records', 400, 'syslog')
 			]
 		],
+		'syslog_max_workers' => [
+			'friendly_name' => __('Maximum Syslog Processing Processes', 'syslog'),
+			'description'   => __('When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '1',
+			'array'         => [
+				1  => __('%d Worker Process', 1, 'syslog'),
+				2  => __('%d Worker Processes', 2, 'syslog'),
+				4  => __('%d Worker Processes', 4, 'syslog'),
+				6  => __('%d Worker Processes', 6, 'syslog'),
+				8  => __('%d Worker Processes', 8, 'syslog'),
+				16 => __('%d Worker Processes', 16, 'syslog')
+			]
+		],
 		'syslog_ticket_command' => [
 			'friendly_name' => __('Command for Opening Tickets', 'syslog'),
 			'description'   => __('This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert.', 'syslog'),

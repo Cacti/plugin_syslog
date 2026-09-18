@@ -616,6 +616,96 @@ function syslog_partition_table_allowed($table) {
 }
 
 /**
+ * syslog_compute_slices - Compute a list of disjoint seq slices covering
+ * the given inclusive seq range.  Used to distribute incoming syslog
+ * records across parallel worker processes.
+ *
+ * When $seq_start and $seq_end are both 0, or the range is empty, the
+ * function returns an empty array as there is nothing to slice.
+ *
+ * The worker count is clamped to at least 1.  When the number of workers
+ * exceeds the number of records in the range, excess slices are empty
+ * arrays which callers tolerate.
+ *
+ * @param int $seq_start The first seq of the range (inclusive)
+ * @param int $seq_end   The last seq of the range (inclusive)
+ * @param int $workers   The number of slices to compute
+ *
+ * @return array An array of ['start' => int, 'end' => int] slices
+ */
+function syslog_compute_slices($seq_start, $seq_end, $workers) {
+	$seq_start = (int) $seq_start;
+	$seq_end   = (int) $seq_end;
+	$workers   = max(1, (int) $workers);
+
+	if ($seq_end < $seq_start || $seq_start <= 0) {
+		return [];
+	}
+
+	$total    = $seq_end - $seq_start + 1;
+	$per_slice = (int) ceil($total / $workers);
+
+	$slices = [];
+	$start  = $seq_start;
+
+	while ($start <= $seq_end) {
+		$end = min($start + $per_slice - 1, $seq_end);
+
+		$slices[] = ['start' => $start, 'end' => $end];
+
+		$start = $end + 1;
+	}
+
+	return $slices;
+}
+
+/**
+ * syslog_validate_worker_args - Validate the command line arguments passed
+ * to a syslog worker child process before they reach the database layer.
+ *
+ * All values arrive from the command line, so each is checked against a
+ * strict format before use.  Sequence bounds must form a sane inclusive
+ * range.
+ *
+ * @param int    $child     The child process number, must be a positive integer
+ * @param string $run_id    A 32 character hex run identifier
+ * @param string $phase     Either 'references' or 'transfer'
+ * @param int    $seq_start The first seq of the slice (inclusive)
+ * @param int    $seq_end   The last seq of the slice (inclusive)
+ *
+ * @return bool true when all arguments are valid, else false
+ */
+function syslog_validate_worker_args($child, $run_id, $phase, $seq_start, $seq_end) {
+	if (preg_match('/^[1-9][0-9]*$/', (string) $child) !== 1) {
+		return false;
+	}
+
+	if (preg_match('/^[a-f0-9]{32}$/', (string) $run_id) !== 1) {
+		return false;
+	}
+
+	if (!in_array($phase, ['references', 'transfer'], true)) {
+		return false;
+	}
+
+	if (preg_match('/^[0-9]+$/', (string) $seq_start) !== 1 ||
+		preg_match('/^[0-9]+$/', (string) $seq_end) !== 1) {
+		return false;
+	}
+
+	$seq_start = (int) $seq_start;
+	$seq_end   = (int) $seq_end;
+
+	// The zero range is the unbounded sentinel reserved for the serial
+	// path.  A worker must always be launched with a real slice.
+	if ($seq_start <= 0 || $seq_end <= 0) {
+		return false;
+	}
+
+	return $seq_start <= $seq_end;
+}
+
+/**
  * Create a new partition for the specified table.
  *
  * @param mixed $table The table to rotate
@@ -2725,12 +2815,14 @@ function syslog_strip_incoming_domains($max_seq) {
  * Some devices only send IP addresses in syslog messages, and may not be in the DNS
  * however they may be in the cacti hosts table as monitored devices.
  *
- * @param string $host The hostname to check
- * @param int    $max_seq The max_seq for syslog_incoming messages to process
+ * @param string $host      The hostname to check
+ * @param int    $max_seq   The max_seq for syslog_incoming messages to process
+ * @param int    $seq_start Optional first seq of a slice (0 for no bound)
+ * @param int    $seq_end   Optional last seq of a slice (0 for no bound)
  *
  * @return bool True if the host exists in the Cacti database, false otherwise
  */
-function syslog_check_cacti_hosts($host, $max_seq) {
+function syslog_check_cacti_hosts($host, $max_seq, $seq_start = 0, $seq_end = 0) {
 	global $syslogdb_default;
 
 	if (empty($host)) {
@@ -2745,12 +2837,21 @@ function syslog_check_cacti_hosts($host, $max_seq) {
 		[$host]);
 
 	if (cacti_sizeof($cacti_host) && !empty($cacti_host['description'])) {
-		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
-			SET host = ?
-			WHERE host = ?
-			AND `status` = 1
-			AND `seq` <= ?",
-			[$cacti_host['description'], $host, $max_seq]);
+		if ($seq_start > 0 && $seq_end > 0) {
+			syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+				SET host = ?
+				WHERE host = ?
+				AND `status` = 1
+				AND `seq` BETWEEN ? AND ?",
+				[$cacti_host['description'], $host, $seq_start, $seq_end]);
+		} else {
+			syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+				SET host = ?
+				WHERE host = ?
+				AND `status` = 1
+				AND `seq` <= ?",
+				[$cacti_host['description'], $host, $max_seq]);
+		}
 
 		return true;
 	}
@@ -2772,52 +2873,115 @@ function syslog_check_cacti_hosts($host, $max_seq) {
  * @return void
  */
 function syslog_update_reference_tables($max_seq) {
-	global $syslogdb_default;
-
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Updating Reference Tables from New Syslog Records');
 
 	// Validate and resolve hostnames - check DNS first, then Cacti, then mark invalid
-	if (read_config_option('syslog_resolve_hostname') == 'on') {
+	syslog_resolve_incoming_hosts($max_seq);
+
+	// Upsert the normalized reference values
+	syslog_normalize_reference_tables($max_seq);
+}
+
+/**
+ * syslog_resolve_incoming_hosts - Validate and resolve the hostnames of
+ * incoming syslog records.  DNS is attempted first, then the Cacti hosts
+ * table, and finally the hostname is prefixed with 'unresolved-'.
+ *
+ * When seq bounds are supplied, only records inside the inclusive seq
+ * slice are updated which allows parallel workers to operate on disjoint
+ * slices without touching each other's rows.
+ *
+ * @param int $max_seq   The max_seq for syslog_incoming messages to process
+ * @param int $seq_start Optional first seq of a slice (0 for no bound)
+ * @param int $seq_end   Optional last seq of a slice (0 for no bound)
+ *
+ * @return int The number of distinct hosts resolved
+ */
+function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
+	global $syslogdb_default;
+
+	if (read_config_option('syslog_resolve_hostname') != 'on') {
+		return 0;
+	}
+
+	if ($seq_start > 0 && $seq_end > 0) {
 		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT host
-            FROM `$syslogdb_default`.`syslog_incoming`
-            WHERE `status` = 1
+			FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE `status` = 1
+			AND `seq` BETWEEN ? AND ?",
+			[$seq_start, $seq_end]);
+	} else {
+		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT host
+			FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE `status` = 1
 			AND `seq` <= ?",
 			[$max_seq]);
+	}
 
-		foreach ($hosts as $host) {
-			if (!isset($host['host']) || empty($host['host'])) {
-				continue;
+	$resolved_count = 0;
+
+	foreach ($hosts as $host) {
+		if (!isset($host['host']) || empty($host['host'])) {
+			continue;
+		}
+
+		$resolved = false;
+
+		// Check if hostname resolves via DNS (only if DNS is enabled)
+		if (read_config_option('syslog_no_dns') != 'on') {
+			if ($host['host'] != gethostbyname($host['host'])) {
+				// DNS resolved successfully
+				$resolved = true;
 			}
+		}
 
-			$resolved = false;
+		// Check if hostname exists in Cacti hosts table (only if not already resolved via DNS)
+		if (!$resolved) {
+			$resolved = syslog_check_cacti_hosts($host['host'], $max_seq, $seq_start, $seq_end);
+		}
 
-			// Check if hostname resolves via DNS (only if DNS is enabled)
-			if (read_config_option('syslog_no_dns') != 'on') {
-				if ($host['host'] != gethostbyname($host['host'])) {
-					// DNS resolved successfully
-					$resolved = true;
-				}
-			}
+		// If not resolved via DNS or found in Cacti, prefix the hostname
+		if (!$resolved) {
+			$unresolved_host = 'unresolved-' . $host['host'];
+			cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as '" . $unresolved_host . "'", false, 'SYSLOG');
 
-			// Check if hostname exists in Cacti hosts table (only if not already resolved via DNS)
-			if (!$resolved) {
-				$resolved = syslog_check_cacti_hosts($host['host'], $max_seq);
-			}
-
-			// If not resolved via DNS or found in Cacti, prefix the hostname
-			if (!$resolved) {
-				$unresolved_host = 'unresolved-' . $host['host'];
-				cacti_log("SYSLOG WARNING: Hostname '" . $host['host'] . "' could not be resolved via DNS or found in Cacti hosts table, marking as '" . $unresolved_host . "'", false, 'SYSLOG');
+			if ($seq_start > 0 && $seq_end > 0) {
 				syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
-                    SET host = ?
-                    WHERE host = ?
-                    AND `status` = 1
+					SET host = ?
+					WHERE host = ?
+					AND `status` = 1
+					AND `seq` BETWEEN ? AND ?",
+					[$unresolved_host, $host['host'], $seq_start, $seq_end]);
+			} else {
+				syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+					SET host = ?
+					WHERE host = ?
+					AND `status` = 1
 					AND `seq` <= ?",
 					[$unresolved_host, $host['host'], $max_seq]);
 			}
+		} else {
+			$resolved_count++;
 		}
 	}
+
+	return $resolved_count;
+}
+
+/**
+ * syslog_normalize_reference_tables - Upsert the normalized reference
+ * values (programs, hosts, host facilities) for all incoming records in
+ * scope.  This is a set-based operation and is intentionally performed
+ * by the master process only when running in parallel mode to avoid
+ * InnoDB concurrent ON DUPLICATE KEY deadlocks.
+ *
+ * @param int $max_seq The max_seq for syslog_incoming messages to process
+ *
+ * @return void
+ */
+function syslog_normalize_reference_tables($max_seq) {
+	global $syslogdb_default;
 
 	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_programs`
 		(program, last_updated)
@@ -2861,18 +3025,52 @@ function syslog_update_reference_tables($max_seq) {
 }
 
 /**
+ * syslog_delete_stale_incoming - Delete records left in the incoming table
+ * that are older than one hour.  These are records whose owning poller
+ * crashed before they were transferred.
+ *
+ * @return int The number of stale records deleted
+ */
+function syslog_delete_stale_incoming() {
+	global $syslogdb_default, $syslog_cnn;
+
+	syslog_db_execute("DELETE FROM `$syslogdb_default`.`syslog_incoming` WHERE logtime < DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+
+	$stale = db_affected_rows($syslog_cnn);
+
+	syslog_debug(sprintf('Deleted %5s - Stale Message(s) from incoming', $stale));
+
+	return $stale;
+}
+
+/**
  * syslog_incoming_to_syslog - Move incoming syslog records to the syslog table
  *
  * Once all Alerts have been processed, we need to move entries first to
  * the syslog table, and then after which we can perform various
  * removal rules against them.
  *
- * @param int $max_seq The max_seq for rows in the syslog table
+ * When seq bounds are supplied, only records within the inclusive seq
+ * slice are transferred which allows parallel workers to operate on
+ * disjoint slices.  The stale record deletion is intentionally left to
+ * the caller in that case.
  *
- * @return int The number of rows moved to the syslog table
+ * @param int $max_seq   The max_seq for rows in the syslog table
+ * @param int $seq_start Optional first seq of a slice (0 for no bound)
+ * @param int $seq_end   Optional last seq of a slice (0 for no bound)
+ *
+ * @return array Array with the number of rows moved and stale rows deleted
  */
-function syslog_incoming_to_syslog($max_seq) {
+function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 	global $syslogdb_default, $syslog_cnn;
+
+	$slice_where = '';
+	$slice_param = [];
+
+	if ($seq_start > 0 && $seq_end > 0) {
+		$slice_where = ' AND si.`seq` BETWEEN ? AND ?';
+		$slice_param = [$seq_start, $seq_end];
+	}
 
 	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
 		(logtime, priority_id, facility_id, program_id, host_id, message)
@@ -2886,8 +3084,9 @@ function syslog_incoming_to_syslog($max_seq) {
 			ON sp.program = si.program
 			WHERE si.`status` = 1
 			AND si.`seq` <= ?
+			$slice_where
 		) AS merge",
-		[$max_seq]);
+		array_merge([$max_seq], $slice_param));
 
 	$moved = db_affected_rows($syslog_cnn);
 
@@ -2896,18 +3095,27 @@ function syslog_incoming_to_syslog($max_seq) {
 
 	syslog_debug(sprintf('Moved   %5s - Message(s) to the syslog table', $moved));
 
-	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
-		WHERE `status` = 1
-		AND `seq` <= ?",
-		[$max_seq]);
+	if ($seq_start > 0 && $seq_end > 0) {
+		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE `status` = 1
+			AND `seq` BETWEEN ? AND ?",
+			[$seq_start, $seq_end]);
+	} else {
+		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE `status` = 1
+			AND `seq` <= ?",
+			[$max_seq]);
+	}
 
 	syslog_debug(sprintf('Deleted %5s - Already Processed Message(s) from incoming', db_affected_rows($syslog_cnn)));
 
-	syslog_db_execute("DELETE FROM `$syslogdb_default`.`syslog_incoming` WHERE logtime < DATE_SUB(NOW(), INTERVAL 1 HOUR)");
-
-	$stale = db_affected_rows($syslog_cnn);
-
-	syslog_debug(sprintf('Deleted %5s - Stale Message(s) from incoming', $stale));
+	if ($seq_start > 0 && $seq_end > 0) {
+		// The stale record cleanup is owned by the master after all
+		// transfer workers complete to avoid interleaved DELETEs.
+		$stale = 0;
+	} else {
+		$stale = syslog_delete_stale_incoming();
+	}
 
 	return ['moved' => $moved, 'stale' => $stale];
 }

@@ -2,6 +2,10 @@
 
 --- develop ---
 
+* feature: Add parallel syslog processing: a new 'Maximum Syslog Processing
+  Processes' setting splits hostname resolution and incoming message transfer
+  across worker processes on disjoint seq ranges, following Cacti's boost
+  poller model, with signal-safe teardown and single-process fallback
 * issue: Compute syslog and reference-table retention cutoffs in UTC with
   gmdate() so they agree with the integer UTC epoch partition boundaries and
   cannot drift with the server timezone or DST transitions (issue#317)
