@@ -585,6 +585,153 @@ function syslog_notice_traditional_tables($raise = true) {
 	return true;
 }
 
+function syslog_status_ensure_table() {
+	global $syslogdb_default;
+	static $checked = false;
+
+	if ($checked) {
+		return;
+	}
+
+	if (!syslog_db_table_exists('syslog_status', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+			`name` varchar(64) NOT NULL default '',
+			`value` text NOT NULL,
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`name`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	$checked = true;
+}
+
+function syslog_status_set($name, $value) {
+	global $syslogdb_default;
+
+	if (!preg_match('/^[a-z0-9_]{1,64}$/', $name)) {
+		cacti_log("SYSLOG ERROR: Invalid status field '$name'", false, 'SYSLOG');
+
+		return false;
+	}
+
+	syslog_status_ensure_table();
+
+	return syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_status`
+		(`name`, `value`, `updated`)
+		VALUES (?, ?, ?)
+		ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated` = VALUES(`updated`)",
+		[$name, (string) $value, time()]);
+}
+
+function syslog_status_increment($name, $amount) {
+	if (!is_numeric($amount)) {
+		return false;
+	}
+
+	$status  = syslog_status_get();
+	$current = isset($status[$name]) && is_numeric($status[$name]) ? (int) $status[$name] : 0;
+
+	return syslog_status_set($name, $current + (int) $amount);
+}
+
+function syslog_status_record_runtime($seconds) {
+	if (!is_numeric($seconds)) {
+		return false;
+	}
+
+	$seconds = round(max(0, (float) $seconds), 3);
+	$status  = syslog_status_get();
+
+	$count = isset($status['polling_runtime_count']) && is_numeric($status['polling_runtime_count']) ? (int) $status['polling_runtime_count'] : 0;
+	$sum   = isset($status['polling_runtime_sum']) && is_numeric($status['polling_runtime_sum']) ? (float) $status['polling_runtime_sum'] : 0.0;
+	$min   = isset($status['polling_runtime_min']) && is_numeric($status['polling_runtime_min']) ? (float) $status['polling_runtime_min'] : $seconds;
+	$max   = isset($status['polling_runtime_max']) && is_numeric($status['polling_runtime_max']) ? (float) $status['polling_runtime_max'] : $seconds;
+
+	$count++;
+	$sum += $seconds;
+	$min = min($min, $seconds);
+	$max = max($max, $seconds);
+
+	syslog_status_set('polling_runtime_last', $seconds);
+	syslog_status_set('polling_runtime_min', $min);
+	syslog_status_set('polling_runtime_avg', round($sum / $count, 3));
+	syslog_status_set('polling_runtime_max', $max);
+	syslog_status_set('polling_runtime_count', $count);
+	syslog_status_set('polling_runtime_sum', $sum);
+
+	return true;
+}
+
+function syslog_status_rule_activity_json($rules) {
+	$activity = [];
+
+	foreach ($rules as $rule) {
+		if (!is_array($rule) || empty($rule['name'])) {
+			continue;
+		}
+
+		$activity[] = [
+			'name'  => (string) $rule['name'],
+			'count' => isset($rule['count']) && is_numeric($rule['count']) ? (int) $rule['count'] : 0
+		];
+	}
+
+	return json_encode($activity);
+}
+
+function syslog_status_get() {
+	global $syslogdb_default;
+
+	syslog_status_ensure_table();
+
+	$status = [
+		'last_polling_time' => '',
+		'last_start_time'   => '',
+		'last_end_time'     => '',
+		'last_record_count' => '',
+		'polling_runtime_last'  => '',
+		'polling_runtime_min'   => '',
+		'polling_runtime_avg'   => '',
+		'polling_runtime_max'   => '',
+		'polling_runtime_count' => '',
+		'polling_runtime_sum'   => '',
+		'last_alert_rules_processed'   => '',
+		'total_alert_rules_processed'  => '',
+		'last_delete_rules_processed'  => '',
+		'total_delete_rules_processed' => '',
+		'last_alert_rules_fired'       => '',
+		'last_delete_rules_fired'      => '',
+	];
+
+	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
+		FROM `$syslogdb_default`.`syslog_status`
+		WHERE `name` IN (
+			'last_polling_time',
+			'last_start_time',
+			'last_end_time',
+			'last_record_count',
+			'polling_runtime_last',
+			'polling_runtime_min',
+			'polling_runtime_avg',
+			'polling_runtime_max',
+			'polling_runtime_count',
+			'polling_runtime_sum',
+			'last_alert_rules_processed',
+			'total_alert_rules_processed',
+			'last_delete_rules_processed',
+			'total_delete_rules_processed',
+			'last_alert_rules_fired',
+			'last_delete_rules_fired'
+		)");
+
+	foreach ($rows as $row) {
+		$status[$row['name']] = $row['value'];
+	}
+
+	return $status;
+}
+
 function syslog_is_partitioned() {
 	global $syslogdb_default;
 
@@ -1411,9 +1558,12 @@ function syslog_remove_items($table, $max_seq) {
 	}
 
 	syslog_debug(sprintf('Found   %5s - Removal Rule(s) to process', cacti_sizeof($rows)));
+	syslog_status_set('last_delete_rules_processed', cacti_sizeof($rows));
+	syslog_status_increment('total_delete_rules_processed', cacti_sizeof($rows));
 
 	$removed = 0;
 	$xferred = 0;
+	$fired   = [];
 
 	if ($table == 'syslog_incoming') {
 		$total = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
@@ -1657,9 +1807,18 @@ function syslog_remove_items($table, $max_seq) {
 
 				$xferred += $messages_xferred;
 				$removed += $messages_removed;
+
+				if (($messages_xferred + $messages_removed) > 0) {
+					$fired[] = [
+						'name'  => $remove['name'],
+						'count' => $messages_xferred + $messages_removed
+					];
+				}
 			}
 		}
 		}
+
+	syslog_status_set('last_delete_rules_fired', syslog_status_rule_activity_json($fired));
 
 	syslog_debug(sprintf('Removed %5s - Record(s) from ' . $table, $removed));
 	syslog_debug(sprintf('Xferred %5s - Record(s) to the syslog_removed table', $xferred));
@@ -2065,10 +2224,13 @@ function syslog_manage_items($from_table, $to_table) {
 	$rows = syslog_db_fetch_assoc("SELECT * FROM `$syslogdb_default`.`syslog_remove` WHERE enabled = 'on'");
 
 	syslog_debug(sprintf('Found   %5s - Removal Rule(s) to process', cacti_sizeof($rows)));
+	syslog_status_set('last_delete_rules_processed', cacti_sizeof($rows));
+	syslog_status_increment('total_delete_rules_processed', cacti_sizeof($rows));
 
 	$removed = 0;
 	$xferred = 0;
 	$total   = 0;
+	$fired   = [];
 
 	if (cacti_sizeof($rows)) {
 		foreach ($rows as $remove) {
@@ -2191,6 +2353,13 @@ function syslog_manage_items($from_table, $to_table) {
 
 						$xferred += $messages_moved;
 						$move_count = $messages_moved;
+
+						if ($messages_moved > 0) {
+							$fired[] = [
+								'name'  => $remove['name'],
+								'count' => $messages_moved
+							];
+						}
 					}
 
 					$debugm = sprintf('Moved   %5s - Message(s)', $move_count);
@@ -2199,14 +2368,24 @@ function syslog_manage_items($from_table, $to_table) {
 				if ($sql_dlt != '') {
 					// now delete the remainder that match
 					syslog_db_execute($sql_dlt);
-					$removed += db_affected_rows($syslog_cnn);
+					$deleted = db_affected_rows($syslog_cnn);
+					$removed += $deleted;
 					$debugm   = sprintf('Deleted %5s Message(s)', $removed);
+
+					if ($deleted > 0) {
+						$fired[] = [
+							'name'  => $remove['name'],
+							'count' => $deleted
+						];
+					}
 				}
 
 				syslog_debug($debugm);
 			}
 		}
 	}
+
+	syslog_status_set('last_delete_rules_fired', syslog_status_rule_activity_json($fired));
 
 	return ['removed' => $removed, 'xferred' => $xferred];
 }
@@ -2374,6 +2553,7 @@ function syslog_process_alerts($max_seq) {
 
 	$syslog_alarms = 0;
 	$syslog_alerts = 0;
+	$fired         = [];
 
 	// send out the alerts
 	$alerts = syslog_db_fetch_assoc("SELECT *
@@ -2389,6 +2569,8 @@ function syslog_process_alerts($max_seq) {
 	syslog_debug('-------------------------------------------------------------------------------------');
 
 	syslog_debug(sprintf('Found   %5s - Alert Rule(s) to process', $syslog_alerts));
+	syslog_status_set('last_alert_rules_processed', $syslog_alerts);
+	syslog_status_increment('total_alert_rules_processed', $syslog_alerts);
 
 	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
@@ -2425,20 +2607,42 @@ function syslog_process_alerts($max_seq) {
 
 							$asql = $sql . ' AND host = ?';
 
-							$syslog_alarms += syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
+							$triggered = syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
+							$syslog_alarms += $triggered;
+
+							if ($triggered > 0) {
+								$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
+							}
 						}
 					}
 				} elseif ($alert['method'] == '1') {
 					$th_sql = str_replace('*', 'COUNT(*)', $sql);
 					$count  = syslog_db_fetch_cell_prepared($th_sql . $groupBy, $params);
-					$syslog_alarms += syslog_process_alert($alert, $sql, $params, $count);
+					$triggered = syslog_process_alert($alert, $sql, $params, $count);
+					$syslog_alarms += $triggered;
+
+					if ($triggered > 0) {
+						$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
+					}
 				} else {
 					$count = 0;
-					$syslog_alarms += syslog_process_alert($alert, $sql, $params, $count);
+					$triggered = syslog_process_alert($alert, $sql, $params, $count);
+					$syslog_alarms += $triggered;
+
+					if ($triggered > 0) {
+						$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
+					}
 				}
 			}
 		}
 	}
+
+	$activity = [];
+	foreach ($fired as $name => $count) {
+		$activity[] = ['name' => $name, 'count' => $count];
+	}
+
+	syslog_status_set('last_alert_rules_fired', syslog_status_rule_activity_json($activity));
 
 	return ['syslog_alerts' => $syslog_alerts, 'syslog_alarms' => $syslog_alarms];
 }

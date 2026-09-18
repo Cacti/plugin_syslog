@@ -101,6 +101,7 @@ if (function_exists('pcntl_signal')) {
 
 // record the start time
 $start_time = microtime(true);
+$start_timestamp = time();
 
 /**
  * sanity checks before starting.  The first sanity check is
@@ -144,6 +145,9 @@ if ($config['poller_id'] > 1) {
 if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
 	exit(0);
 }
+
+syslog_status_set('last_polling_time', $start_timestamp);
+syslog_status_set('last_start_time', $start_timestamp);
 
 /**
  * initialize some key variables if they are not already initialized
@@ -242,6 +246,9 @@ syslog_postprocess_tables();
  * to the settings table
  */
 syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports);
+syslog_status_set('last_end_time', time());
+syslog_status_set('last_record_count', $moved);
+syslog_status_record_runtime(microtime(true) - $start_time);
 
 /**
  * unregister the syslog process entry so the next poller

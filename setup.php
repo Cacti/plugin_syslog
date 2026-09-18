@@ -490,6 +490,18 @@ function syslog_check_upgrade() {
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
 	}
+
+	if (!syslog_db_table_exists('syslog_status', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+			`name` varchar(64) NOT NULL default '',
+			`value` text NOT NULL,
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`name`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	} else {
+		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
+	}
 }
 
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3) {
@@ -786,6 +798,14 @@ function syslog_setup_table_new($options) {
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+		`name` varchar(64) NOT NULL default '',
+		`value` text NOT NULL,
+		`updated` int(16) NOT NULL default '0',
+		PRIMARY KEY (`name`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_hosts`");
 	}
@@ -1001,6 +1021,12 @@ function syslog_poller_bottom() {
 	global $config;
 
 	if (syslog_config_safe()) {
+		include_once(__DIR__ . '/functions.php');
+		include_once(__DIR__ . '/database.php');
+
+		syslog_connect();
+		syslog_status_set('last_polling_time', time());
+
 		$command_string = read_config_option('path_php_binary');
 		$extra_args     = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
 		exec_background($command_string, $extra_args);
