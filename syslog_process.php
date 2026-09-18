@@ -605,7 +605,8 @@ function syslog_launch_workers($phase, $slices, $run_id, $debug = false) {
 
 	cacti_log("NOTE: Syslog launched $children '$phase' worker process(es)", false, 'SYSLOG');
 
-	sleep(2);
+	// No settle delay here: the caller's syslog_wait_workers() covers the
+	// registration window with a fast poll instead of a fixed sleep.
 
 	return $children;
 }

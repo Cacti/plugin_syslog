@@ -1085,10 +1085,12 @@ function syslog_workers_running() {
  * registration grace, for every launched child to appear in the process
  * table; without this a child that has not registered yet would make the
  * running count look like zero and the master would race ahead exactly as
- * if it had never waited at all.  Then the master polls the process table
- * every two seconds, mirroring the boost poller, until all children are
- * done.  Children that disappear without recording their statistics are
- * warned about after the wait completes.
+ * if it had never waited at all.  Then the master polls the process
+ * table until all children are done.  Polling starts at a tenth of a
+ * second and backs off up to one second so a short burst of records is
+ * not delayed by a fixed multi second tick while a long transfer does
+ * not spam the process table.  Children that disappear without recording
+ * their statistics are warned about after the wait completes.
  *
  * @param int $expected The number of children that were launched
  *
@@ -1096,20 +1098,27 @@ function syslog_workers_running() {
  */
 function syslog_wait_workers($expected) {
 	// STAGE 1: give every launched child time to register, bounded so a
-	// child that crashed before registering cannot stall the master
-	$grace_polls = 5;
+	// child that crashed before registering cannot stall the master.
+	// The grace window stays at ten seconds; the tenth of a second poll
+	// just notices registration as soon as it happens.
+	$grace_polls = 100;
 
 	for ($i = 0; $i < $grace_polls && syslog_workers_running() < $expected; $i++) {
-		syslog_debug(sprintf('Waiting for %s Worker(s) to register, Sleeping for 2 seconds.', $expected));
+		syslog_debug(sprintf('Waiting for %s Worker(s) to register.', $expected));
 
-		sleep(2);
+		usleep(100000);
 	}
 
-	// STAGE 2: wait for the registered children to complete
-	while (syslog_workers_running() > 0) {
-		syslog_debug(sprintf('%s Worker(s) Running, Sleeping for 2 seconds.', syslog_workers_running()));
+	// STAGE 2: wait for the registered children to complete, backing off
+	// from a tenth of a second to at most one second between polls
+	$interval = 100000;
 
-		sleep(2);
+	while (syslog_workers_running() > 0) {
+		syslog_debug(sprintf('%s Worker(s) Running.', syslog_workers_running()));
+
+		usleep($interval);
+
+		$interval = min($interval * 2, 1000000);
 	}
 
 	// verify that each child recorded its completion
