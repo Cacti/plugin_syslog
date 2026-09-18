@@ -893,7 +893,7 @@ function initSyslogMessagesDisplay() {
  * Apply filter for removal rules view
  */
 function applyFilterRemoval() {
-	var strURL = 'syslog_removal.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_removal.php?filter='+encodeURIComponent($('#filter').val())+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 	loadPageNoHeader(strURL);
 }
 
@@ -966,7 +966,7 @@ function initSyslogRemoval(allowEdits) {
  * Apply filter for alert rules view
  */
 function applyFilterAlerts() {
-	var strURL = 'syslog_alerts.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_alerts.php?filter='+encodeURIComponent($('#filter').val())+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 
 	loadPageNoHeader(strURL);
 }
@@ -1021,7 +1021,7 @@ function initSyslogAlerts() {
  * Apply filter for report rules view
  */
 function applyFilterReports() {
-	var strURL = 'syslog_reports.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_reports.php?filter='+encodeURIComponent($('#filter').val())+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 
 	loadPageNoHeader(strURL);
 }
