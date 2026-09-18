@@ -279,13 +279,21 @@ function syslogPanelDialogOpen(panelId) {
 		title: dialog.dataset.title,
 		open: function() {
 			// The builder renders before .dialog() creates its wrapper, so
-			// suggestion menus appended to <body> stack behind the modal;
+			// suggestion and selectmenu menus appended to <body> stack outside
+			// the modal's focus containment. The dialog would blur them on
+			// focusin, leaving the widget's internal open state inconsistent;
 			// move them into the dialog's own stacking context.
 			var wrapper = dialog.closest('.ui-dialog');
 			$(builder).find('.syslogSearchText').each(function() {
 				var widget = $(this).data('ui-autocomplete');
 				if (widget && !wrapper.contains(widget.menu.element[0])) {
 					widget.menu.element.appendTo(wrapper);
+				}
+			});
+			$('#syslog_panel_dialog select').each(function() {
+				var selectmenu = $(this).selectmenu('instance');
+				if (selectmenu && selectmenu.menuWrap && !wrapper.contains(selectmenu.menuWrap[0])) {
+					selectmenu.menuWrap.appendTo(wrapper);
 				}
 			});
 		},
