@@ -651,6 +651,16 @@ $(function() {
 		});
 	});
 
+	// Like the syslog tab, the refresh interval is stored server side in the
+	// session and drives set_page_refresh() on every dashboard reload.
+	$('#syslog_dashboard_refresh').on('change', function() {
+		syslogDashboardLoad({
+			dashboard_id: syslogDashboard.dashboardId,
+			dashboard_timespan: $('#syslog_dashboard_timespan').val() || '86400',
+			refresh: this.value
+		});
+	});
+
 	$('#syslog_panel_new').click(function() {
 		if (!syslogDashboard.dashboardId) {
 			alert(syslogDashboard.text.emptyTitle);

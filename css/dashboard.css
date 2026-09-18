@@ -23,8 +23,22 @@
 
 /* Scoped dashboard surfaces; follows the search.css conventions. */
 
+/* Dashboard bar header: heading on the left, Time Range/Refresh on the right. */
+#syslog_dashboard_form .syslogSearchHeader {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+#syslog_dashboard_form .syslogDashboardTimespan {
+	margin-left: auto;
+}
+
 .syslogDashboardBar .syslogDashboardTimespan,
 .syslogDashboardBar .syslogDashboardTimespan label,
+.syslogDashboardBar .syslogDashboardRefresh,
+.syslogDashboardBar .syslogDashboardRefresh label,
 .syslogDashboardBar .syslogDashboardBarRow label {
 	font-size: 12px;
 	color: var(--search-text, #23362f);
@@ -32,6 +46,7 @@
 
 #syslog_form .syslogDashboardBar .syslogDashboardTimespan select,
 #syslog_dashboard_form .syslogDashboardTimespan select,
+#syslog_dashboard_form .syslogDashboardRefresh select,
 #syslog_dashboard_form .syslogDashboardBarRow select {
 	box-sizing: border-box;
 	min-width: 140px;

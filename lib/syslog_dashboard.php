@@ -1165,7 +1165,7 @@ function syslog_dashboard_panel_reposition($panel, $dashboard_id, $position) {
  * bootstrap data (panels and labels) for js/dashboard.js.
  */
 function syslog_dashboard() {
-	global $config, $syslogdb_default;
+	global $config, $syslogdb_default, $page_refresh_interval;
 
 	$dashboards    = syslog_dashboard_list();
 	$dashboard_id  = get_filter_request_var('dashboard_id', FILTER_VALIDATE_INT);
@@ -1317,6 +1317,22 @@ function syslog_dashboard() {
 
 								foreach ($timespans as $value => $label) {
 									print "<option value='" . html_escape($value) . "'" . ($selected_timespan === $value ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+								}
+								?>
+							</select>
+						</div>
+						<div class='syslogDashboardRefresh'>
+							<label for='syslog_dashboard_refresh'><?php print __esc('Refresh', 'syslog'); ?></label>
+							<select id='syslog_dashboard_refresh'>
+								<?php
+								foreach ($page_refresh_interval as $seconds => $display_text) {
+									print "<option value='" . $seconds . "'";
+
+									if (get_request_var('refresh') == $seconds) {
+										print ' selected';
+									}
+
+									print '>' . html_escape($display_text) . '</option>';
 								}
 								?>
 							</select>
