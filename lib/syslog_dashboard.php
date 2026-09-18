@@ -184,6 +184,15 @@ function syslog_dashboard_label_safe($label) {
 		return '';
 	}
 
+	$label = trim($label);
+
+	// billboard.js keys legend metrics by target id; an empty (or purely
+	// whitespace) label becomes a falsy id and getLegendItemTextBox()
+	// returns undefined for it, crashing chart render. Show "Unknown".
+	if ($label === '') {
+		return __('Unknown', 'syslog');
+	}
+
 	// Entities keep the label inert even where a consumer forgets escaping.
 	return htmlspecialchars($label, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
@@ -245,6 +254,10 @@ function syslog_dashboard_timeseries_sql($source, $removal, $predicate, $bucket,
 		$table = "`$syslogdb_default`.`syslog` AS syslog";
 	} else {
 		// All records: UNION over both system log tables, summed per bucket.
+		// $select ends with a comma, so each branch appends its aggregate
+		// first; adding ', mtype' directly would emit a double comma.
+		$select .= 'COUNT(*) AS records';
+
 		$sql = "SELECT bucket, SUM(records) AS records FROM (
 			(SELECT $select, 'main' AS mtype
 				FROM `$syslogdb_default`.`syslog` AS syslog
@@ -522,6 +535,22 @@ function syslog_dashboard_panel_data($panel, $dashboard_timespan) {
 			$labels[] = __('Other', 'syslog');
 			$values[] = $other;
 		}
+	}
+
+	// billboard.js uses the label string as the series id; duplicate labels
+	// (two rows sharing a sanitized name) collide on one legend entry, so
+	// distinct rows are made unique before they reach the chart.
+	$labels = array_values(array_unique($labels));
+	$values = array_values(array_intersect_key($values, $labels));
+
+	if (cacti_sizeof($labels) === 0) {
+		return [
+			'kind'   => 'breakdown',
+			'chart'  => $settings['chart'],
+			'labels' => [],
+			'series' => [[]],
+			'total'  => $total
+		];
 	}
 
 	return [

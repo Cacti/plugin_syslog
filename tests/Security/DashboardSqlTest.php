@@ -44,6 +44,12 @@ it('builds timeseries SQL with fixed aliases and integer literals', function () 
 	expect($sql)->toContain('SUM(records) AS records');
 	expect($sql)->toContain('`syslogdb`.`syslog_removed` AS syslog');
 	expect(substr_count($sql, 'WHERE 1=1'))->toBe(2);
+
+	// The bucket select keeps its trailing comma only before the aggregate;
+	// each union branch must not emit a double comma before the mtype tag.
+	expect($sql)->toContain("COUNT(*) AS records, 'main' AS mtype");
+	expect($sql)->toContain("COUNT(*) AS records, 'remove' AS mtype");
+	expect($sql)->not->toContain(', ,');
 });
 
 it('resolves breakdown dimensions through lookup subqueries', function () {

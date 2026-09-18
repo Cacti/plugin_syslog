@@ -73,4 +73,10 @@ it('sanitizes chart labels for tooltip contexts', function () {
 	// Control characters (including the newline in this literal) vanish.
 	expect(syslog_dashboard_label_safe("bad\x01name\n"))->toBe('badname', 'Control characters are stripped');
 	expect(syslog_dashboard_label_safe(123))->toBe('123', 'Non-string labels are cast safely');
+
+	// billboard.js crashes on empty legend ids, so blank labels surface
+	// as "Unknown" instead of an empty string.
+	expect(syslog_dashboard_label_safe(''))->toBe('Unknown', 'Empty labels are replaced');
+	expect(syslog_dashboard_label_safe('   '))->toBe('Unknown', 'Whitespace-only labels are replaced');
+	expect(syslog_dashboard_label_safe("\x01\n"))->toBe('Unknown', 'Labels that strip to empty are replaced');
 });
