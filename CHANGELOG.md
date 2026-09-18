@@ -2,6 +2,9 @@
 
 --- develop ---
 
+* feature: Log per worker SYSLOG STATS lines in the boost poller style
+  (Time, ProcessNumber, Records, Resolved) so parallel processing work
+  is attributable per process in the Cacti log
 * feature: Show parallel worker activity on the Syslog Status tab: worker
   processes currently running and the records and hostnames each worker
   handled during the last parallel run

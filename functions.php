@@ -4007,6 +4007,38 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 }
 
 /**
+ * syslog_log_child_statistics - log the statistics of a completed worker
+ * child process following the boost poller's per child stats format.
+ *
+ * The master's aggregate 'SYSLOG STATS' line only shows the cycle total,
+ * so under parallel processing this per process line attributes the work
+ * to each worker, mirroring 'BOOST STATS: Time:... ProcessNumber:N ...'.
+ *
+ * @param float $start    The child process start time from microtime()
+ * @param int   $child    The child process number
+ * @param int   $moved    The records the child transferred
+ * @param int   $resolved The hostnames the child resolved
+ *
+ * @return void
+ */
+function syslog_log_child_statistics($start, $child, $moved, $resolved) {
+	$end = microtime(true);
+
+	$cacti_stats = sprintf(
+		'Time:%01.2f ' .
+		'ProcessNumber:%s ' .
+		'Records:%s ' .
+		'Resolved:%s',
+		round($end - $start, 2),
+		$child,
+		$moved,
+		$resolved
+	);
+
+	cacti_log('SYSLOG STATS: ' . $cacti_stats, false, 'SYSTEM');
+}
+
+/**
  * syslog_init_variables - initialize key variables on first pass of a run
  * of the syslog plugin.  This function should not have to run more than
  * once during the syslog plugins lifecycle.

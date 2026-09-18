@@ -494,6 +494,8 @@ function syslog_worker_main($debug = false) {
 
 	set_config_option('stats_syslog_child_' . $child, json_encode($stats));
 
+	syslog_log_child_statistics($child_start, $child, $moved, isset($resolved) ? $resolved : 0);
+
 	unregister_process('syslog', 'child', $child);
 
 	cacti_log(sprintf('NOTE: Syslog child %s completed phase %s (%d-%d) in %01.2f seconds', $child, $phase, $seq_start, $seq_end, round($child_end - $child_start, 2)), false, 'SYSLOG', ($debug ? POLLER_VERBOSITY_NONE : POLLER_VERBOSITY_MEDIUM));
