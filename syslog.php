@@ -1789,7 +1789,7 @@ function syslog_messages($tab = 'syslog') {
 							print "<tr class='tableRow syslogRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
 
 
-							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
+							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
@@ -1873,6 +1873,11 @@ function syslog_messages($tab = 'syslog') {
 		}
 
 		syslog_log_legend();
+		?>
+		<script type='text/javascript'>
+		initSyslogValueFilters();
+		</script>
+		<?php
 	}
 	print '</div>';
 	?>
