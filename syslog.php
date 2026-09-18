@@ -94,7 +94,7 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
-if (!in_array($current_tab, ['syslog', 'alerts', 'current'], true)) {
+if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status'], true)) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
@@ -127,6 +127,8 @@ if (isset_request_var('export')) {
 
 	if ($current_tab == 'current') {
 		syslog_view_alarm();
+	} elseif ($current_tab == 'status') {
+		syslog_status();
 	} else {
 		syslog_messages($current_tab);
 	}
@@ -198,6 +200,8 @@ function syslog_display_tabs($current_tab) {
 
 	$tabs_syslog['alerts'] = __('Alert Logs', 'syslog');
 
+	$tabs_syslog['status'] = __('Syslog Status', 'syslog');
+
 	// if they were redirected to the page, let's set that up
 	if (!isempty_request_var('id') || $current_tab == 'current') {
 		$current_tab = 'current';
@@ -222,6 +226,164 @@ function syslog_display_tabs($current_tab) {
 	}
 
 	print '</ul></nav></div>';
+}
+
+function syslog_status_format_time($value) {
+	if ($value === '' || !is_numeric($value) || (int) $value <= 0) {
+		return __('Never', 'syslog');
+	}
+
+	return date('Y-m-d H:i:s', (int) $value);
+}
+
+function syslog_status_format_seconds($value) {
+	if ($value === '' || !is_numeric($value)) {
+		return __('Never', 'syslog');
+	}
+
+	return number_format((float) $value, 3) . ' ' . __('seconds', 'syslog');
+}
+
+function syslog_status_format_runtime_stats($status) {
+	if ($status['polling_runtime_last'] === '' || !is_numeric($status['polling_runtime_last'])) {
+		return __('Never', 'syslog');
+	}
+
+	return sprintf(
+		'%s (%s / %s / %s %s)',
+		syslog_status_format_seconds($status['polling_runtime_last']),
+		number_format((float) $status['polling_runtime_min'], 3),
+		number_format((float) $status['polling_runtime_avg'], 3),
+		number_format((float) $status['polling_runtime_max'], 3),
+		__('min/avg/max', 'syslog')
+	);
+}
+
+function syslog_status_format_count($value) {
+	return $value === '' || !is_numeric($value) ? '0' : number_format((int) $value);
+}
+
+function syslog_status_format_rule_activity($value) {
+	$rules = json_decode((string) $value, true);
+
+	if (!is_array($rules) || !cacti_sizeof($rules)) {
+		return __('None', 'syslog');
+	}
+
+	$items = [];
+
+	foreach ($rules as $rule) {
+		if (!is_array($rule) || empty($rule['name'])) {
+			continue;
+		}
+
+		$count   = isset($rule['count']) && is_numeric($rule['count']) ? (int) $rule['count'] : 0;
+		$items[] = sprintf('%s (%s)', $rule['name'], number_format($count));
+	}
+
+	return cacti_sizeof($items) ? implode(', ', $items) : __('None', 'syslog');
+}
+
+/** Read live storage metrics only when rendering the status tab. */
+function syslog_status_storage() {
+	global $syslogdb_default, $syslog_retentions, $syslog_alert_retentions;
+
+	$incoming = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
+	$bytes = syslog_db_fetch_cell_prepared('SELECT DATA_LENGTH + INDEX_LENGTH
+		FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+		[$syslogdb_default, 'syslog']);
+
+	$size = __('Unavailable', 'syslog');
+	if (is_numeric($bytes) && $bytes >= 0) {
+		$units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+		$unit = 0;
+		while ($bytes >= 1024 && $unit < count($units) - 1) {
+			$bytes /= 1024;
+			$unit++;
+		}
+		$size = number_format((float) $bytes, $unit === 0 ? 0 : 2) . ' ' . $units[$unit];
+	}
+
+	$retention = read_config_option('syslog_retention');
+	$alert_retention = read_config_option('syslog_alert_retention');
+
+	return [
+		__('Rows in syslog_incoming', 'syslog') => is_numeric($incoming) ? number_format((int) $incoming) : __('Unavailable', 'syslog'),
+		__('Syslog table size (data + indexes)', 'syslog') => $size,
+		__('Syslog retention', 'syslog') => $syslog_retentions[$retention] ?? __('Unavailable', 'syslog'),
+		__('Alert retention', 'syslog') => $syslog_alert_retentions[$alert_retention] ?? __('Unavailable', 'syslog')
+	];
+}
+
+function syslog_status() {
+	$status = syslog_status_get();
+
+	html_start_box(__('Syslog Status', 'syslog'), '100%', false, '3', 'center', '');
+	?>
+	<tr><td>
+		<div class="syslogStatus">
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_run">
+				<h2 id="syslog_status_run" class="syslogStatusHeading ui-widget-header"><?php print __esc('Latest processing run', 'syslog'); ?></h2>
+				<dl class="syslogStatusMetrics">
+					<div>
+						<dt><?php print __esc('Records processed', 'syslog'); ?></dt>
+						<dd class="syslogStatusValue"><?php print html_escape(syslog_status_format_count($status['last_record_count'])); ?></dd>
+					</div>
+					<div>
+						<dt><?php print __esc('Polling runtime', 'syslog'); ?></dt>
+						<dd class="syslogStatusValue"><?php print html_escape(syslog_status_format_seconds($status['polling_runtime_last'])); ?></dd>
+					</div>
+				</dl>
+				<dl class="syslogStatusTimings">
+					<?php
+					$timings = [
+						__('Started', 'syslog') => syslog_status_format_time($status['last_start_time']),
+						__('Finished', 'syslog') => syslog_status_format_time($status['last_end_time']),
+						__('Minimum runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_min']),
+						__('Average runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_avg']),
+						__('Maximum runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_max'])
+					];
+					foreach ($timings as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					}
+					?>
+				</dl>
+			</section>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_storage">
+				<h2 id="syslog_status_storage" class="syslogStatusHeading ui-widget-header"><?php print __esc('Storage and retention', 'syslog'); ?></h2>
+				<dl class="syslogStatusTimings syslogStatusStorage">
+					<?php foreach (syslog_status_storage() as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					} ?>
+				</dl>
+			</section>
+			<section aria-labelledby="syslog_status_rules">
+				<h2 id="syslog_status_rules" class="syslogStatusHeading ui-widget-header"><?php print __esc('Rule activity', 'syslog'); ?></h2>
+				<table class="syslogStatusRules" aria-labelledby="syslog_status_rules">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Rules processed', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Last run', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Total', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php foreach (['alert' => __('Alert rules', 'syslog'), 'delete' => __('Delete rules', 'syslog')] as $type => $label) { ?>
+						<tr class="syslogStatusRuleCounts">
+							<th scope="row"><?php print html_escape($label); ?></th>
+							<td><?php print html_escape(syslog_status_format_count($status['last_' . $type . '_rules_processed'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_count($status['total_' . $type . '_rules_processed'])); ?></td>
+						</tr>
+						<tr class="syslogStatusRuleDetails"><td colspan="3">
+							<span class="syslogStatusDetailLabel"><?php print __esc('Fired last run', 'syslog'); ?>:</span>
+							<?php print html_escape(syslog_status_format_rule_activity($status['last_' . $type . '_rules_fired'])); ?>
+						</td></tr>
+					<?php } ?>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	</td></tr>
+	<?php
+	html_end_box(false);
 }
 
 function syslog_view_alarm() {

@@ -9,6 +9,14 @@
 * issue: Compute syslog and reference-table retention cutoffs in UTC with
   gmdate() so they agree with the integer UTC epoch partition boundaries and
   cannot drift with the server timezone or DST transitions (issue#317)
+* bug: Fix a fresh install with "Indefinite" retention (days = 0) never creating today's concrete
+  partition, since the off-by-one fix in the historical loop bound would otherwise start the loop
+  one day before today; the starting bound is now clamped so today's partition is always created
+* bug: Fix an off-by-one in partitioned syslog table creation that over-provisioned one extra
+  historical partition, causing the first retention prune after install to immediately drop a
+  freshly created partition
+* bug: Drop the syslog_saved_searches table during a full uninstall; it was previously left behind
+* feature: Deprecate traditional (non-partitioned) tables: new installs always create partitioned tables and only offer InnoDB and Aria storage engines; existing traditional installs keep working with a notice advising migration
 * feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
 * ci: Rebuild the CI workflow around a single integration-test job that runs
   the test suite with Pest against Cacti's own Composer-managed vendor tree,

@@ -137,6 +137,7 @@ function plugin_syslog_uninstall() {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_priorities`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_logs`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_hosts`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches`");
 		} else {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");
@@ -316,7 +317,9 @@ function syslog_check_upgrade() {
 
 	if (function_exists('api_plugin_upgrade_register')) {
 		if (!api_plugin_upgrade_register('syslog')) {
-			// No upgrade required
+			// No upgrade required, but still warn about deprecated table layouts
+			syslog_notice_traditional_tables(true);
+
 			return;
 		}
 	} else {
@@ -339,7 +342,9 @@ function syslog_check_upgrade() {
 				]
 			);
 		} else {
-			// No upgrade required
+			// No upgrade required, but still warn about deprecated table layouts
+			syslog_notice_traditional_tables(true);
+
 			return;
 		}
 	}
@@ -485,12 +490,41 @@ function syslog_check_upgrade() {
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
 	}
+
+	if (!syslog_db_table_exists('syslog_status', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+			`name` varchar(64) NOT NULL default '',
+			`value` text NOT NULL,
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`name`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	} else {
+		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
+	}
 }
 
-function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) {
+function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3) {
 	global $config, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
+
+	$engine = syslog_validate_storage_engine($engine);
+
+	// Guard the partition loop against non-numeric or extreme values: a
+	// crafted 'days' option would otherwise loop indefinitely or emit a
+	// very large DDL statement.
+	$days = (int) $days;
+
+	if ($days < 0 || $days > 365) {
+		$days = 30;
+	}
+
+	if (!is_numeric($ahead_days) || (int) $ahead_days < 1 || (int) $ahead_days > 7) {
+		$ahead_days = 3;
+	}
+
+	$ahead_days = (int) $ahead_days;
 
 	if (stripos($engine, 'aria') !== false) {
 		$row_format = 'ROW_FORMAT=Page';
@@ -526,8 +560,21 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30) 
 	 * as numeric literals. This keeps both MySQL and PHP session time zones
 	 * out of the equation: the boundary is always the next UTC midnight
 	 * after the labeled day.
+	 *
+	 * $days counts today as one of the retained days, so the historical
+	 * loop bound is $days - 1 (today plus $days - 1 prior days = $days
+	 * total). This must stay in lockstep with the $days + $ahead_days
+	 * "keep_partitions" math in syslog_partition_remove(), or newly
+	 * installed tables over-provision by one partition and the very next
+	 * retention prune immediately deletes the oldest one.
+	 *
+	 * $days = 0 is a valid "Indefinite" retention setting (never pruned by
+	 * syslog_partition_remove(), which only prunes when $days > 0), but
+	 * $days - 1 would then be -1 and skip creating today's concrete
+	 * partition entirely. Clamp the starting bound to 0 so today is always
+	 * created regardless of retention.
 	 */
-	for ($i = $days; $i >= -1; $i--) {
+	for ($i = max($days - 1, 0); $i >= (0 - $ahead_days); $i--) {
 		$day_epoch      = $now - ($i * 86400);
 		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
 		$format         = gmdate('Ymd', $day_epoch);
@@ -583,11 +630,42 @@ function syslog_setup_table_new($options) {
 		}
 	}
 
+	// Partitioned tables are the only supported architecture.  Traditional
+	// (non-partitioned) tables are deprecated, so the 'trad' architecture
+	// silently upgrades to partitioned table creation no matter how the
+	// options were supplied (request, saved settings, or legacy config.php).
+	if (!isset($options['db_type']) || $options['db_type'] != 'part') {
+		if (isset($options['db_type']) && $options['db_type'] == 'trad') {
+			cacti_log("SYSLOG WARNING: The 'trad' database architecture setting is deprecated.  Partitioned tables are the only supported architecture; creating partitioned tables", false, 'SYSLOG');
+		}
+
+		$options['db_type'] = 'part';
+	}
+
 	// validate some simple information
 	$truncate     = isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate' ? true : false;
-	$engine       = isset($options['engine']) && $options['engine'] == 'innodb' ? 'InnoDB' : $options['engine'];
-	$partitioned  = isset($options['db_type']) && $options['db_type'] == 'part' ? true : false;
+	$engine       = syslog_validate_storage_engine(isset($options['engine']) ? $options['engine'] : 'InnoDB');
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `$syslogdb_default` LIKE 'syslog'"));
+
+	// Aria is only supported on MariaDB.  If a legacy setting requests Aria
+	// on MySQL, fall back to InnoDB so table creation cannot fail.
+	if (stripos($engine, 'aria') !== false) {
+		$database = syslog_db_fetch_row('SHOW GLOBAL VARIABLES LIKE "version"');
+		$version  = is_array($database) && isset($database['Value']) ? (string) $database['Value'] : '';
+
+		if (stripos($version, 'mariadb') === false) {
+			cacti_log('SYSLOG WARNING: Aria storage engine requested on a non-MariaDB database.  Falling back to InnoDB', false, 'SYSLOG');
+
+			$engine = 'InnoDB';
+		}
+	}
+
+	// Partition retention days are required for partitioned table creation
+	// regardless of how the options were supplied.  '0' is a valid value
+	// (Indefinite retention) and must not be coerced.
+	if (!isset($options['days']) || !is_numeric($options['days']) || (int) $options['days'] < 0) {
+		$options['days'] = 30;
+	}
 
 	// set table construction settings for the remote pollers
 	set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type']) ? '' : $options['upgrade_type'], true);
@@ -599,33 +677,9 @@ function syslog_setup_table_new($options) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 	}
 
-	if (stripos($engine, 'aria') !== false) {
-		$row_format = 'ROW_FORMAT=Page';
-	} else {
-		$row_format = 'ROW_FORMAT=Dynamic';
-	}
-
-	if (!$partitioned) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog` (
-			facility_id int(10) unsigned default NULL,
-			priority_id int(10) unsigned default NULL,
-			program_id int(10) unsigned default NULL,
-			host_id int(10) unsigned default NULL,
-			logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
-			message varchar(2048) NOT NULL default '',
-			seq bigint unsigned NOT NULL auto_increment,
-			PRIMARY KEY (seq, logtime),
-			INDEX `seq` (`seq`),
-			INDEX logtime (logtime),
-			INDEX program_id (program_id),
-			INDEX host_id (host_id),
-			INDEX priority_id (priority_id),
-			INDEX facility_id (facility_id))
-			ENGINE=$engine
-			$row_format");
-	} else {
-		syslog_create_partitioned_syslog_table($engine, $options['days']);
-	}
+	// The syslog table is created partitioned; the helper also selects the
+	// matching ROW_FORMAT for the chosen engine.
+	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'));
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert`");
@@ -675,6 +729,12 @@ function syslog_setup_table_new($options) {
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_remove`");
+	}
+
+	if (stripos($engine, 'aria') !== false) {
+		$row_format = 'ROW_FORMAT=Page';
+	} else {
+		$row_format = 'ROW_FORMAT=Dynamic';
 	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_remove` (
@@ -735,6 +795,14 @@ function syslog_setup_table_new($options) {
 		`date` int(16) NOT NULL default '0',
 		PRIMARY KEY (`id`),
 		KEY owner (`user`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+		`name` varchar(64) NOT NULL default '',
+		`value` text NOT NULL,
+		`updated` int(16) NOT NULL default '0',
+		PRIMARY KEY (`name`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
@@ -953,6 +1021,12 @@ function syslog_poller_bottom() {
 	global $config;
 
 	if (syslog_config_safe()) {
+		include_once(__DIR__ . '/functions.php');
+		include_once(__DIR__ . '/database.php');
+
+		syslog_connect();
+		syslog_status_set('last_polling_time', time());
+
 		$command_string = read_config_option('path_php_binary');
 		$extra_args     = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
 		exec_background($command_string, $extra_args);
@@ -983,23 +1057,16 @@ function syslog_install_advisor($syslog_exists) {
 		'engine' => [
 			'method'        => 'drop_array',
 			'friendly_name' => __('Database Storage Engine', 'syslog'),
-			'description'   => __('You have the option to make this a partitioned table by days.', 'syslog'),
+			'description'   => __('The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.', 'syslog'),
 			'value'         => 'innodb',
 			'array'         => [
-				'myisam' => __('MyISAM Storage', 'syslog'),
 				'innodb' => __('InnoDB Storage', 'syslog'),
 				'aria'   => __('Aria Storage', 'syslog')
 			]
 		],
 		'db_type' => [
-			'method'        => 'drop_array',
-			'friendly_name' => __('Database Architecture', 'syslog'),
-			'description'   => __('You have the option to make this a partitioned table by days.  You can create multiple partitions per day.', 'syslog'),
-			'value'         => 'part',
-			'array'         => [
-				'trad' => __('Traditional Table', 'syslog'),
-				'part' => __('Partitioned Table', 'syslog')
-			]
+			'method' => 'hidden',
+			'value'  => 'part'
 		],
 		'days' => [
 			'method'        => 'drop_array',
@@ -1061,7 +1128,7 @@ function syslog_install_advisor($syslog_exists) {
 		print '<p>' . __('The upgrade of the \'main\' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.', 'syslog') . '</p></td></tr>';
 	} else {
 		unset($fields_syslog_update['upgrade_type']);
-		print '<p>' . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.  You should elect to utilize Table Partitioning to prevent the size of the tables from becoming excessive thus slowing queries.', 'syslog') . '</p><p>' . __('You can also set the MySQL storage engine for the analytical tables syslog and syslog_remove.  If you have not tuned you system for InnoDB storage properties and using MySQL, it is strongly recommended that you utilize the MyISAM storage engine.  If using MariaDB, we recommend the Aria Storage Engine as it\'s designed for analytical queries', 'syslog') . '</p><p>' . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.  So, if not using partitioning, you might want to keep the size smaller.', 'syslog') . '</p></td></tr>';
+		print '<p>' . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs.', 'syslog') . '</p><p>' . __('You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries.', 'syslog') . '</p><p>' . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.', 'syslog') . '</p></td></tr>';
 	}
 	html_end_box();
 
@@ -1303,6 +1370,21 @@ function syslog_config_settings() {
 			'method'        => 'drop_array',
 			'default'       => '30',
 			'array'         => $syslog_retentions
+		],
+		'syslog_partition_ahead_days' => [
+			'friendly_name' => __('Partition Pre-create Window', 'syslog'),
+			'description'   => __('This is the number of future daily partitions to maintain for partitioned Syslog tables.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '3',
+			'array'         => [
+				'1' => __('%d Day', 1, 'syslog'),
+				'2' => __('%d Days', 2, 'syslog'),
+				'3' => __('%d Days', 3, 'syslog'),
+				'4' => __('%d Days', 4, 'syslog'),
+				'5' => __('%d Days', 5, 'syslog'),
+				'6' => __('%d Days', 6, 'syslog'),
+				'7' => __('%d Days', 7, 'syslog')
+			]
 		],
 		'syslog_alert_retention' => [
 			'friendly_name' => __('Syslog Alert Retention', 'syslog'),

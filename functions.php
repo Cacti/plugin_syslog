@@ -367,9 +367,7 @@ function syslog_sync_save($data, $table, $primary = '') {
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
 		if ($config['poller_id'] == 1) {
-			$stable = "`$syslogdb_default`.`$table`";
-
-			$id = syslog_sql_save($data, $stable, $primary);
+			$id = syslog_sql_save($data, $table, $primary);
 
 			if ($id > 0) {
 				raise_message(1);
@@ -398,9 +396,7 @@ function syslog_sync_save($data, $table, $primary = '') {
 			raise_message('syslog_denied', __('Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		}
 	} else {
-		$stable = "`$syslogdb_default`.`$table`";
-
-		$id = syslog_sql_save($data, $stable, $primary);
+		$id = syslog_sql_save($data, $table, $primary);
 
 		if ($id > 0) {
 			raise_message(1);
@@ -515,6 +511,227 @@ function syslog_read_import_file(string $filename): string|false {
 	}
 }
 
+/**
+ * syslog_validate_storage_engine - Normalize a requested storage engine to
+ * one of the supported engines.
+ *
+ * The plugin only supports the InnoDB storage engine and, on MariaDB, the
+ * Aria storage engine.  Any other engine, including the MyISAM choice that
+ * older installs could make, falls back to InnoDB so table creation can no
+ * longer produce tables that the plugin does not support.
+ *
+ * @param mixed $engine The requested storage engine name.
+ *
+ * @return string Either 'InnoDB' or 'Aria'
+ */
+function syslog_validate_storage_engine($engine) {
+	$engine = is_string($engine) ? trim($engine) : '';
+
+	if (stripos($engine, 'aria') !== false) {
+		return 'Aria';
+	}
+
+	if (stripos($engine, 'innodb') !== false) {
+		return 'InnoDB';
+	}
+
+	if ($engine !== '') {
+		cacti_log("SYSLOG WARNING: Unsupported storage engine '$engine' requested.  Only InnoDB and Aria (MariaDB) are supported; falling back to InnoDB", false, 'SYSLOG');
+	}
+
+	return 'InnoDB';
+}
+
+/**
+ * syslog_notice_traditional_tables - Raise the deprecation notice for
+ * traditional (non-partitioned) Syslog tables.
+ *
+ * Partitioned tables are the only supported architecture for new installs,
+ * but existing traditional installs must keep working.  When the main
+ * syslog table exists and is not partitioned, this logs a warning and, on
+ * UI pages, raises a message advising the administrator to migrate to a
+ * partitioned table.  The notice is throttled to once per day through the
+ * 'syslog_traditional_notice' setting so neither the poller log nor the UI
+ * banner spams the administrator.
+ *
+ * @param bool $raise Raise a UI message in addition to logging the warning.
+ *
+ * @return bool true if the table is traditional, false otherwise.
+ */
+function syslog_notice_traditional_tables($raise = true) {
+	// Nothing to warn about when the tables have not been created yet
+	if (!syslog_db_table_exists('syslog', false)) {
+		return false;
+	}
+
+	if (syslog_is_partitioned()) {
+		return false;
+	}
+
+	$last_notice = read_config_option('syslog_traditional_notice');
+
+	if ($last_notice != '' && (time() - (int) $last_notice) < 86400) {
+		return true;
+	}
+
+	set_config_option('syslog_traditional_notice', time());
+
+	cacti_log("WARNING: The 'syslog' table is not partitioned.  Traditional (non-partitioned) tables are deprecated and are no longer available for new installs; migrate to a partitioned table", false, 'SYSLOG');
+
+	if ($raise) {
+		raise_message('syslog_traditional_deprecated', __('The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture.', 'syslog'), MESSAGE_LEVEL_WARN);
+	}
+
+	return true;
+}
+
+function syslog_status_ensure_table() {
+	global $syslogdb_default;
+	static $checked = false;
+
+	if ($checked) {
+		return;
+	}
+
+	if (!syslog_db_table_exists('syslog_status', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+			`name` varchar(64) NOT NULL default '',
+			`value` text NOT NULL,
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`name`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	$checked = true;
+}
+
+function syslog_status_set($name, $value) {
+	global $syslogdb_default;
+
+	if (!preg_match('/^[a-z0-9_]{1,64}$/', $name)) {
+		cacti_log("SYSLOG ERROR: Invalid status field '$name'", false, 'SYSLOG');
+
+		return false;
+	}
+
+	syslog_status_ensure_table();
+
+	return syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_status`
+		(`name`, `value`, `updated`)
+		VALUES (?, ?, ?)
+		ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated` = VALUES(`updated`)",
+		[$name, (string) $value, time()]);
+}
+
+function syslog_status_increment($name, $amount) {
+	if (!is_numeric($amount)) {
+		return false;
+	}
+
+	$status  = syslog_status_get();
+	$current = isset($status[$name]) && is_numeric($status[$name]) ? (int) $status[$name] : 0;
+
+	return syslog_status_set($name, $current + (int) $amount);
+}
+
+function syslog_status_record_runtime($seconds) {
+	if (!is_numeric($seconds)) {
+		return false;
+	}
+
+	$seconds = round(max(0, (float) $seconds), 3);
+	$status  = syslog_status_get();
+
+	$count = isset($status['polling_runtime_count']) && is_numeric($status['polling_runtime_count']) ? (int) $status['polling_runtime_count'] : 0;
+	$sum   = isset($status['polling_runtime_sum']) && is_numeric($status['polling_runtime_sum']) ? (float) $status['polling_runtime_sum'] : 0.0;
+	$min   = isset($status['polling_runtime_min']) && is_numeric($status['polling_runtime_min']) ? (float) $status['polling_runtime_min'] : $seconds;
+	$max   = isset($status['polling_runtime_max']) && is_numeric($status['polling_runtime_max']) ? (float) $status['polling_runtime_max'] : $seconds;
+
+	$count++;
+	$sum += $seconds;
+	$min = min($min, $seconds);
+	$max = max($max, $seconds);
+
+	syslog_status_set('polling_runtime_last', $seconds);
+	syslog_status_set('polling_runtime_min', $min);
+	syslog_status_set('polling_runtime_avg', round($sum / $count, 3));
+	syslog_status_set('polling_runtime_max', $max);
+	syslog_status_set('polling_runtime_count', $count);
+	syslog_status_set('polling_runtime_sum', $sum);
+
+	return true;
+}
+
+function syslog_status_rule_activity_json($rules) {
+	$activity = [];
+
+	foreach ($rules as $rule) {
+		if (!is_array($rule) || empty($rule['name'])) {
+			continue;
+		}
+
+		$activity[] = [
+			'name'  => (string) $rule['name'],
+			'count' => isset($rule['count']) && is_numeric($rule['count']) ? (int) $rule['count'] : 0
+		];
+	}
+
+	return json_encode($activity);
+}
+
+function syslog_status_get() {
+	global $syslogdb_default;
+
+	syslog_status_ensure_table();
+
+	$status = [
+		'last_polling_time' => '',
+		'last_start_time'   => '',
+		'last_end_time'     => '',
+		'last_record_count' => '',
+		'polling_runtime_last'  => '',
+		'polling_runtime_min'   => '',
+		'polling_runtime_avg'   => '',
+		'polling_runtime_max'   => '',
+		'polling_runtime_count' => '',
+		'polling_runtime_sum'   => '',
+		'last_alert_rules_processed'   => '',
+		'total_alert_rules_processed'  => '',
+		'last_delete_rules_processed'  => '',
+		'total_delete_rules_processed' => '',
+		'last_alert_rules_fired'       => '',
+		'last_delete_rules_fired'      => '',
+	];
+
+	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
+		FROM `$syslogdb_default`.`syslog_status`
+		WHERE `name` IN (
+			'last_polling_time',
+			'last_start_time',
+			'last_end_time',
+			'last_record_count',
+			'polling_runtime_last',
+			'polling_runtime_min',
+			'polling_runtime_avg',
+			'polling_runtime_max',
+			'polling_runtime_count',
+			'polling_runtime_sum',
+			'last_alert_rules_processed',
+			'total_alert_rules_processed',
+			'last_delete_rules_processed',
+			'total_delete_rules_processed',
+			'last_alert_rules_fired',
+			'last_delete_rules_fired'
+		)");
+
+	foreach ($rows as $row) {
+		$status[$row['name']] = $row['value'];
+	}
+
+	return $status;
+}
+
 function syslog_is_partitioned() {
 	global $syslogdb_default;
 
@@ -530,9 +747,15 @@ function syslog_is_partitioned() {
 
 /**
  * This function will manage old data for non-partitioned tables
+ *
+ * Traditional (non-partitioned) tables are deprecated.  Existing installs
+ * continue to operate, but the maintenance pass logs a throttled warning so
+ * the administrator is reminded to migrate to partitioned tables.
  */
 function syslog_traditional_manage() {
 	global $syslogdb_default, $syslog_cnn;
+
+	syslog_notice_traditional_tables(false);
 
 	/*
 	 * The retention cutoff is computed in UTC with gmdate() so it agrees with
@@ -541,6 +764,8 @@ function syslog_traditional_manage() {
 	 * everywhere else, so a local-time cutoff here could shift the prune
 	 * window by the server timezone offset and DST transitions.
 	 */
+
+	// determine the oldest date to retain
 	if (read_config_option('syslog_retention') > 0) {
 		$retention = gmdate('Y-m-d', time() - (86400 * read_config_option('syslog_retention')));
 	} else {
@@ -568,9 +793,13 @@ function syslog_traditional_manage() {
  */
 function syslog_partition_manage() {
 	$syslog_deleted = 0;
+	$ahead_days     = syslog_partition_ahead_days();
 
-	// Always create the partition an hour ahead of time
-	$time = time() + 3600;
+	// Always create partitions ahead of time to avoid midnight races.
+	$base_time = time() + 7200;
+
+	syslog_partition_report_state('syslog');
+	syslog_partition_report_state('syslog_removed');
 
 	/*
 	 * Only run the retention prune when the next partition is ready.
@@ -578,19 +807,60 @@ function syslog_partition_manage() {
 	 * as the write-path safety net and avoid dropping old partitions
 	 * without a replacement.
 	 */
-	if (syslog_partition_check('syslog', $time)) {
-		if (syslog_partition_create('syslog', $time)) {
-			$syslog_deleted = syslog_partition_remove('syslog');
-		}
+	if (syslog_partition_ensure_ahead('syslog', $base_time, $ahead_days)) {
+		$syslog_deleted = syslog_partition_remove('syslog');
 	}
 
-	if (syslog_partition_check('syslog_removed', $time)) {
-		if (syslog_partition_create('syslog_removed', $time)) {
-			$syslog_deleted += syslog_partition_remove('syslog_removed');
-		}
+	if (syslog_partition_ensure_ahead('syslog_removed', $base_time, $ahead_days)) {
+		$syslog_deleted += syslog_partition_remove('syslog_removed');
 	}
 
 	return $syslog_deleted;
+}
+
+/**
+ * Return the configured number of future daily partitions to maintain.
+ *
+ * @return int Days ahead to pre-create.
+ */
+function syslog_partition_ahead_days() {
+	$ahead_days = read_config_option('syslog_partition_ahead_days');
+
+	if ($ahead_days === '' || !is_numeric($ahead_days)) {
+		$ahead_days = 3;
+	}
+
+	$ahead_days = (int) $ahead_days;
+
+	if ($ahead_days < 1 || $ahead_days > 7) {
+		$ahead_days = 3;
+	}
+
+	return $ahead_days;
+}
+
+/**
+ * Ensure concrete partitions exist from the current window through the
+ * configured future horizon.
+ *
+ * @param string $table      The table to maintain
+ * @param int    $base_time  Base timestamp for the maintenance window
+ * @param int    $ahead_days Number of future days to maintain
+ *
+ * @return bool true when all needed partitions already exist or were created.
+ */
+function syslog_partition_ensure_ahead($table, $base_time, $ahead_days) {
+	for ($day = 0; $day <= $ahead_days; $day++) {
+		$time = $base_time + ($day * 86400);
+
+		if (syslog_partition_check($table, $time)) {
+			if (!syslog_partition_create($table, $time)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 /**
@@ -703,6 +973,98 @@ function syslog_validate_worker_args($child, $run_id, $phase, $seq_start, $seq_e
 	}
 
 	return $seq_start <= $seq_end;
+}
+
+/**
+ * Report suspicious partition metadata after a crash or database restart.
+ *
+ * This is intentionally read-only. MySQL/MariaDB DDL is atomic, but if the
+ * server restarts during maintenance, the next poller run should leave an
+ * explicit breadcrumb when metadata is missing or internally inconsistent.
+ *
+ * @param string $table The table to inspect
+ *
+ * @return bool true when the visible partition state looks usable.
+ */
+function syslog_partition_report_state($table) {
+	global $syslogdb_default;
+
+	if (!syslog_partition_table_allowed($table)) {
+		cacti_log("SYSLOG: partition_report_state called with disallowed table '$table'", false, 'SYSTEM');
+
+		return false;
+	}
+
+	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
+		cacti_log("SYSLOG ERROR: Invalid database name; partition state check aborted", false, 'SYSLOG');
+
+		return false;
+	}
+
+	$partitions = syslog_db_fetch_assoc_prepared('SELECT partition_name, partition_description, partition_ordinal_position
+		FROM `information_schema`.`partitions`
+		WHERE table_schema = ? AND table_name = ?
+		ORDER BY partition_ordinal_position',
+		[$syslogdb_default, $table]);
+
+	if (!cacti_sizeof($partitions)) {
+		cacti_log("SYSLOG WARNING: No partition metadata found for '$table'; maintenance may be recovering from an interrupted DDL or an unexpected table state", false, 'SYSLOG');
+
+		return false;
+	}
+
+	$expected_position = 1;
+	$maxvalue_count    = 0;
+	$previous_boundary = null;
+	$valid             = true;
+
+	foreach ($partitions as $partition) {
+		$name        = isset($partition['partition_name']) ? $partition['partition_name'] : (isset($partition['PARTITION_NAME']) ? $partition['PARTITION_NAME'] : '');
+		$description = isset($partition['partition_description']) ? $partition['partition_description'] : (isset($partition['PARTITION_DESCRIPTION']) ? $partition['PARTITION_DESCRIPTION'] : '');
+		$position    = isset($partition['partition_ordinal_position']) ? $partition['partition_ordinal_position'] : (isset($partition['PARTITION_ORDINAL_POSITION']) ? $partition['PARTITION_ORDINAL_POSITION'] : null);
+
+		if ((int) $position !== $expected_position) {
+			cacti_log("SYSLOG WARNING: Partition metadata for '$table' has unexpected ordinal position '$position' at expected position '$expected_position'", false, 'SYSLOG');
+			$valid = false;
+		}
+
+		if (!is_string($name) || preg_match('/^(d\d{8}|dMaxValue)$/', $name) !== 1) {
+			cacti_log("SYSLOG WARNING: Partition metadata for '$table' contains unexpected partition name '$name'", false, 'SYSLOG');
+			$valid = false;
+		}
+
+		if ($name === 'dMaxValue') {
+			$maxvalue_count++;
+
+			if ($expected_position !== cacti_sizeof($partitions)) {
+				cacti_log("SYSLOG WARNING: Partition metadata for '$table' has dMaxValue before the last partition; inspect recent ALTER TABLE maintenance", false, 'SYSLOG');
+				$valid = false;
+			}
+		} else {
+			if ($description === null || $description === '' || strtoupper((string) $description) === 'MAXVALUE') {
+				cacti_log("SYSLOG WARNING: Partition '$name' on '$table' has an unexpected boundary description; inspect recent ALTER TABLE maintenance", false, 'SYSLOG');
+				$valid = false;
+			} elseif (is_numeric($description)) {
+				$boundary = (float) $description;
+
+				if ($previous_boundary !== null && $boundary <= $previous_boundary) {
+					cacti_log("SYSLOG WARNING: Partition '$name' on '$table' is not ordered after the previous boundary; inspect recent ALTER TABLE maintenance", false, 'SYSLOG');
+					$valid = false;
+				}
+
+				$previous_boundary = $boundary;
+			}
+		}
+
+		$expected_position++;
+	}
+
+	if ($maxvalue_count !== 1) {
+		cacti_log("SYSLOG WARNING: Partition metadata for '$table' has $maxvalue_count dMaxValue partitions; expected exactly one", false, 'SYSLOG');
+		$valid = false;
+	}
+
+	return $valid;
 }
 
 /**
@@ -890,17 +1252,19 @@ function syslog_partition_remove($table) {
 			ORDER BY partition_ordinal_position',
 			[$syslogdb_default, $table]);
 
-		$days = read_config_option('syslog_retention');
+		$days       = read_config_option('syslog_retention');
+		$ahead_days = syslog_partition_ahead_days();
 
-		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' of them.");
+		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' retention partition(s) plus '$ahead_days' future partition(s).");
 
 		if ($days > 0) {
 			$user_partitions = sizeof($number_of_partitions) - 1;
+			$keep_partitions = (int) $days + $ahead_days;
 
-			if ($user_partitions >= $days) {
+			if ($user_partitions >= $keep_partitions) {
 				$i = 0;
 
-				while ($user_partitions > $days) {
+				while ($user_partitions > $keep_partitions) {
 					$oldest = $number_of_partitions[$i];
 
 					$part_name = $oldest['PARTITION_NAME'];
@@ -1292,9 +1656,12 @@ function syslog_remove_items($table, $max_seq) {
 	}
 
 	syslog_debug(sprintf('Found   %5s - Removal Rule(s) to process', cacti_sizeof($rows)));
+	syslog_status_set('last_delete_rules_processed', cacti_sizeof($rows));
+	syslog_status_increment('total_delete_rules_processed', cacti_sizeof($rows));
 
 	$removed = 0;
 	$xferred = 0;
+	$fired   = [];
 
 	if ($table == 'syslog_incoming') {
 		$total = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
@@ -1457,16 +1824,29 @@ function syslog_remove_items($table, $max_seq) {
 			}
 
 			if ($sql_where != '') {
+				$transaction_started = false;
+				$move_failed         = false;
+				$messages_xferred    = 0;
+				$messages_removed    = 0;
+
 				if ($remove['method'] != 'del') {
+					if (!syslog_db_execute('START TRANSACTION')) {
+						cacti_log("SYSLOG ERROR: Unable to start transaction for removal rule '" . $remove['name'] . "'", false, 'SYSLOG');
+						continue;
+					}
+
+					$transaction_started = true;
+
 					if ($table == 'syslog_incoming') {
 						if ($remove['type'] == 'filter') {
 							// Filter rules compile an alias-qualified WHERE
 							// for this joined INSERT separately.
 							if ($insert_where == '') {
+								syslog_db_execute('ROLLBACK');
 								continue;
 							}
 
-							syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 								(logtime, priority_id, facility_id, program_id, host_id, message)
 								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
 								FROM `$syslogdb_default`.`syslog_incoming` AS si
@@ -1475,7 +1855,7 @@ function syslog_remove_items($table, $max_seq) {
 								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 								ON sp.program = si.program $insert_where", $insert_params);
 						} else {
-							syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 								(logtime, priority_id, facility_id, program_id, host_id, message)
 								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
 								FROM `$syslogdb_default`.`syslog_incoming` AS si
@@ -1485,25 +1865,58 @@ function syslog_remove_items($table, $max_seq) {
 								ON sp.program = si.program $sql_where", $params);
 						}
 					} else {
-						syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
+						$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 							(logtime, priority_id, facility_id, program_id, host_id, message)
 							SELECT logtime, priority_id, facility_id, program_id, host_id, message
 							FROM `$syslogdb_default`.`syslog` $sql_where", $params);
 					}
 
-					$xferred += db_affected_rows($syslog_cnn);
+					if ($move_failed) {
+						syslog_db_execute('ROLLBACK');
+						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after archive insert failed", false, 'SYSLOG');
+						continue;
+					}
+
+					$messages_xferred = db_affected_rows($syslog_cnn);
 				}
 
 				if ($table == 'syslog_incoming') {
-					syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming` $sql_where", $params);
+					$move_failed = !syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming` $sql_where", $params);
 				} else {
-					syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog` $sql_where", $params);
+					$move_failed = !syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog` $sql_where", $params);
 				}
 
-				$removed += db_affected_rows($syslog_cnn);
+				if ($move_failed) {
+					if ($transaction_started) {
+						syslog_db_execute('ROLLBACK');
+						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after delete failed", false, 'SYSLOG');
+					}
+
+					continue;
+				}
+
+				$messages_removed = db_affected_rows($syslog_cnn);
+
+				if ($transaction_started && !syslog_db_execute('COMMIT')) {
+					syslog_db_execute('ROLLBACK');
+					cacti_log("SYSLOG ERROR: Unable to commit transaction for removal rule '" . $remove['name'] . "'", false, 'SYSLOG');
+					continue;
+				}
+
+				$xferred += $messages_xferred;
+				$removed += $messages_removed;
+
+				if (($messages_xferred + $messages_removed) > 0) {
+					$fired[] = [
+						'name'  => $remove['name'],
+						'count' => $messages_xferred + $messages_removed
+					];
+				}
 			}
 		}
-	}
+		}
+
+	syslog_status_set('last_delete_rules_fired', syslog_status_rule_activity_json($fired));
 
 	syslog_debug(sprintf('Removed %5s - Record(s) from ' . $table, $removed));
 	syslog_debug(sprintf('Xferred %5s - Record(s) to the syslog_removed table', $xferred));
@@ -1909,10 +2322,13 @@ function syslog_manage_items($from_table, $to_table) {
 	$rows = syslog_db_fetch_assoc("SELECT * FROM `$syslogdb_default`.`syslog_remove` WHERE enabled = 'on'");
 
 	syslog_debug(sprintf('Found   %5s - Removal Rule(s) to process', cacti_sizeof($rows)));
+	syslog_status_set('last_delete_rules_processed', cacti_sizeof($rows));
+	syslog_status_increment('total_delete_rules_processed', cacti_sizeof($rows));
 
 	$removed = 0;
 	$xferred = 0;
 	$total   = 0;
+	$fired   = [];
 
 	if (cacti_sizeof($rows)) {
 		foreach ($rows as $remove) {
@@ -2000,21 +2416,48 @@ function syslog_manage_items($from_table, $to_table) {
 						}
 
 						$all_seq = preg_replace('/^,/i', '', $all_seq);
-						syslog_db_execute("INSERT INTO `$syslogdb_default`.`$to_table`
+
+						if (!syslog_db_execute('START TRANSACTION')) {
+							cacti_log("SYSLOG ERROR: Unable to start transaction for removal rule '" . $remove['message'] . "'", false, 'SYSLOG');
+							continue;
+						}
+
+						if (!syslog_db_execute("INSERT INTO `$syslogdb_default`.`$to_table`
 							(facility_id, priority_id, host_id, logtime, message)
 							(SELECT facility_id, priority_id, host_id, logtime, message
 							FROM `$syslogdb_default`.`$from_table`
-							WHERE seq IN (" . $all_seq . '))');
+							WHERE seq IN (" . $all_seq . '))')) {
+							syslog_db_execute('ROLLBACK');
+							cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['message'] . "' after move insert failed", false, 'SYSLOG');
+							continue;
+						}
 
 						$messages_moved = db_affected_rows($syslog_cnn);
 
 						if ($messages_moved > 0) {
-							syslog_db_execute("DELETE FROM `$syslogdb_default`.`$from_table`
-								WHERE seq IN ($all_seq)");
+							if (!syslog_db_execute("DELETE FROM `$syslogdb_default`.`$from_table`
+								WHERE seq IN ($all_seq)")) {
+								syslog_db_execute('ROLLBACK');
+								cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['message'] . "' after move delete failed", false, 'SYSLOG');
+								continue;
+							}
+						}
+
+						if (!syslog_db_execute('COMMIT')) {
+							syslog_db_execute('ROLLBACK');
+							cacti_log("SYSLOG ERROR: Unable to commit transaction for removal rule '" . $remove['message'] . "'", false, 'SYSLOG');
+							continue;
 						}
 
 						$xferred += $messages_moved;
 						$move_count = $messages_moved;
+
+						if ($messages_moved > 0) {
+							$fired[] = [
+								'name'  => $remove['name'],
+								'count' => $messages_moved
+							];
+						}
 					}
 
 					$debugm = sprintf('Moved   %5s - Message(s)', $move_count);
@@ -2023,14 +2466,24 @@ function syslog_manage_items($from_table, $to_table) {
 				if ($sql_dlt != '') {
 					// now delete the remainder that match
 					syslog_db_execute($sql_dlt);
-					$removed += db_affected_rows($syslog_cnn);
+					$deleted = db_affected_rows($syslog_cnn);
+					$removed += $deleted;
 					$debugm   = sprintf('Deleted %5s Message(s)', $removed);
+
+					if ($deleted > 0) {
+						$fired[] = [
+							'name'  => $remove['name'],
+							'count' => $deleted
+						];
+					}
 				}
 
 				syslog_debug($debugm);
 			}
 		}
 	}
+
+	syslog_status_set('last_delete_rules_fired', syslog_status_rule_activity_json($fired));
 
 	return ['removed' => $removed, 'xferred' => $xferred];
 }
@@ -2198,6 +2651,7 @@ function syslog_process_alerts($max_seq) {
 
 	$syslog_alarms = 0;
 	$syslog_alerts = 0;
+	$fired         = [];
 
 	// send out the alerts
 	$alerts = syslog_db_fetch_assoc("SELECT *
@@ -2213,6 +2667,8 @@ function syslog_process_alerts($max_seq) {
 	syslog_debug('-------------------------------------------------------------------------------------');
 
 	syslog_debug(sprintf('Found   %5s - Alert Rule(s) to process', $syslog_alerts));
+	syslog_status_set('last_alert_rules_processed', $syslog_alerts);
+	syslog_status_increment('total_alert_rules_processed', $syslog_alerts);
 
 	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
@@ -2249,20 +2705,42 @@ function syslog_process_alerts($max_seq) {
 
 							$asql = $sql . ' AND host = ?';
 
-							$syslog_alarms += syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
+							$triggered = syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
+							$syslog_alarms += $triggered;
+
+							if ($triggered > 0) {
+								$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
+							}
 						}
 					}
 				} elseif ($alert['method'] == '1') {
 					$th_sql = str_replace('*', 'COUNT(*)', $sql);
 					$count  = syslog_db_fetch_cell_prepared($th_sql . $groupBy, $params);
-					$syslog_alarms += syslog_process_alert($alert, $sql, $params, $count);
+					$triggered = syslog_process_alert($alert, $sql, $params, $count);
+					$syslog_alarms += $triggered;
+
+					if ($triggered > 0) {
+						$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
+					}
 				} else {
 					$count = 0;
-					$syslog_alarms += syslog_process_alert($alert, $sql, $params, $count);
+					$triggered = syslog_process_alert($alert, $sql, $params, $count);
+					$syslog_alarms += $triggered;
+
+					if ($triggered > 0) {
+						$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
+					}
 				}
 			}
 		}
 	}
+
+	$activity = [];
+	foreach ($fired as $name => $count) {
+		$activity[] = ['name' => $name, 'count' => $count];
+	}
+
+	syslog_status_set('last_alert_rules_fired', syslog_status_rule_activity_json($activity));
 
 	return ['syslog_alerts' => $syslog_alerts, 'syslog_alarms' => $syslog_alarms];
 }
@@ -2372,7 +2850,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 			if ($html) {
 				if (!$format_ok) {
 					$message .= "<style type='text/css'>";
-					$message .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
+					$message .= file_get_contents($config['base_path'] . '/plugins/syslog/css/syslog.css');
 					$message .= '</style>';
 				}
 
@@ -3302,7 +3780,7 @@ function syslog_process_reports() {
 					if ($reptext != '') {
 						if (!$format_ok) {
 							$message  = '<style type="text/css">';
-							$message .= file_get_contents($config['base_path'] . '/plugins/syslog/syslog.css');
+							$message .= file_get_contents($config['base_path'] . '/plugins/syslog/css/syslog.css');
 							$message .= '</style>';
 						}
 
@@ -3481,6 +3959,7 @@ function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred
 function syslog_init_variables() {
 	$syslog_retention = read_config_option('syslog_retention');
 	$alert_retention  = read_config_option('syslog_alert_retention');
+	$ahead_days       = read_config_option('syslog_partition_ahead_days');
 
 	if ($syslog_retention == '' || $syslog_retention < 0 || $syslog_retention > 365) {
 		set_config_option('syslog_retention', '30');
@@ -3488,6 +3967,10 @@ function syslog_init_variables() {
 
 	if ($alert_retention == '' || $alert_retention < 0 || $alert_retention > 365) {
 		set_config_option('syslog_alert_retention', '30');
+	}
+
+	if ($ahead_days == '' || !is_numeric($ahead_days) || $ahead_days < 1 || $ahead_days > 7) {
+		set_config_option('syslog_partition_ahead_days', '3');
 	}
 
 	if (substr(read_config_option('base_url'), 0, 4) != 'http') {

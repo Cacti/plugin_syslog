@@ -48,6 +48,18 @@ be quieted using syslog's 'Re-Alert' setting.
 
 * Ability to run alert specific commands at Alert and Re-alert times
 
+## Table Architecture and Storage Engine Support
+
+New installs always create partitioned `syslog` tables.  The traditional
+non-partitioned table architecture is deprecated and can no longer be
+selected during installation.  Existing installs that still run traditional
+tables keep working and receive a notice advising an upgrade to partitioned
+tables, but the plugin does not migrate the table automatically.
+
+Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are
+supported.  Other engines, including MyISAM, are no longer offered and fall
+back to InnoDB when legacy settings request them.
+
 ## Important Version 4.0 Release Notes
 
 In prior releases of Syslog, the Individual Alert Method would send an Email,
