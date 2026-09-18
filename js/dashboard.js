@@ -266,13 +266,9 @@ function syslogPanelDialogOpen(panelId) {
 	var builder = document.getElementById('syslog_panel_builder');
 	var editing = panelId > 0 ? syslogDashboardPanelById(panelId) : null;
 
-	// Start every open from a clean wrapper: closing and re-opening without
-	// destroying leaves the previous dialog's selectmenu bindings stacked,
-	// which makes later interactions appear to fire once and then stop.
-	if ($('#syslog_panel_dialog').dialog('instance')) {
-		$('#syslog_panel_dialog').dialog('destroy');
-	}
-
+	// Reuse the same .dialog() instance: jQuery UI dialog on an existing
+	// element is idempotent and its selectmenu bindings stay intact across
+	// reopen cycles (destroying the wrapper would orphan their menus).
 	syslogPanelDialogFields(editing);
 
 	$('#syslog_panel_dialog').dialog({
