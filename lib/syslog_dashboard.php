@@ -1085,6 +1085,7 @@ function syslog_dashboard() {
 			</div>
 		</div>
 		<div id='syslog_panel_builder' class='syslogSearchBuilder'
+			data-theme='cacti'
 			data-choices='<?php print html_escape(json_encode($choices)); ?>'
 			data-fields='<?php print html_escape(json_encode($fields)); ?>'
 			data-message='<?php print __esc('Message', 'syslog'); ?>'
