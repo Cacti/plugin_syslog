@@ -745,6 +745,8 @@ function syslog_dashboard_panel_save() {
 	$move         = (string) get_nfilter_request_var('panel_move');
 	$delete       = get_nfilter_request_var('panel_delete') === '1';
 	$resize       = get_nfilter_request_var('panel_resize') === '1';
+	$reposition   = get_nfilter_request_var('panel_position') === '1';
+	$position     = get_filter_request_var('position', FILTER_VALIDATE_INT);
 
 	if ($dashboard_id === false || $dashboard_id === null || $dashboard_id <= 0) {
 		return json_encode(['error' => __('A valid dashboard is required.', 'syslog')]);
@@ -755,7 +757,7 @@ function syslog_dashboard_panel_save() {
 	}
 
 	// Repositioning, resizing, and deletion address existing panels only.
-	if ($delete || $resize || in_array($move, ['up', 'down'], true)) {
+	if ($delete || $resize || $reposition || in_array($move, ['up', 'down'], true)) {
 		if ($panel_id === false || $panel_id === null || $panel_id <= 0) {
 			return json_encode(['error' => __('A valid dashboard panel is required.', 'syslog')]);
 		}
@@ -772,6 +774,16 @@ function syslog_dashboard_panel_save() {
 				[$panel_id]);
 
 			return json_encode(['id' => (int) $panel_id, 'deleted' => true]);
+		}
+
+		if ($reposition) {
+			if ($position === false || $position === null || $position < 1) {
+				return json_encode(['error' => __('A valid panel position is required.', 'syslog')]);
+			}
+
+			syslog_dashboard_panel_reposition($panel, $dashboard_id, (int) $position);
+
+			return json_encode(['id' => (int) $panel_id, 'position' => (int) $position]);
 		}
 
 		if ($resize) {
@@ -923,6 +935,38 @@ function syslog_dashboard_panel_move($panel, $dashboard_id, $direction) {
 			SET position = ?
 			WHERE id = ?",
 			[$position + 1, $id]);
+	}
+}
+
+/**
+ * Move a panel to an absolute 1-based position (drag-and-drop) and
+ * renumber the remaining panels so the order stays gapless.
+ *
+ * @param array $panel        Loaded panel row.
+ * @param int   $dashboard_id Owning dashboard id.
+ * @param int   $position     Requested 1-based position.
+ */
+function syslog_dashboard_panel_reposition($panel, $dashboard_id, $position) {
+	global $syslogdb_default;
+
+	$panels = syslog_dashboard_panels($dashboard_id);
+	$ids = [];
+
+	foreach ($panels as $row) {
+		if ((int) $row['id'] !== (int) $panel['id']) {
+			$ids[] = (int) $row['id'];
+		}
+	}
+
+	// Clamp into the valid range, then splice the panel in.
+	$position = min(max($position, 1), cacti_sizeof($ids) + 1);
+	array_splice($ids, $position - 1, 0, [(int) $panel['id']]);
+
+	foreach ($ids as $index => $id) {
+		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
+			SET position = ?
+			WHERE id = ?",
+			[$index + 1, $id]);
 	}
 }
 

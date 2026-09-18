@@ -133,6 +133,22 @@
 	touch-action: none;
 }
 
+/* Right-edge strip; wider hit target for horizontal (column) resizing. */
+.syslogDashboardCardResizeRight {
+	position: absolute;
+	top: 0;
+	right: -4px;
+	width: 10px;
+	height: 100%;
+	cursor: ew-resize;
+	touch-action: none;
+	z-index: 2;
+}
+
+.syslogDashboardCardResizeRight:hover {
+	background: linear-gradient(to right, transparent, rgba(39, 100, 72, 0.18));
+}
+
 .syslogDashboardCardResize::after {
 	content: '';
 	position: absolute;
@@ -170,6 +186,23 @@
 .syslogDashboardEmpty[hidden],
 .syslogDashboardGrid[hidden] {
 	display: none;
+}
+
+/* Drag-and-drop reorder affordances. */
+.syslogDashboardCardHeader {
+	cursor: grab;
+}
+
+.syslogDashboardCardDragging {
+	opacity: 0.45;
+}
+
+.syslogDashboardCardDropBefore {
+	box-shadow: 0 -4px 0 0 var(--search-accent, #276448);
+}
+
+.syslogDashboardCardDropAfter {
+	box-shadow: 0 4px 0 0 var(--search-accent, #276448);
 }
 
 /* Panel editor dialog rows. */

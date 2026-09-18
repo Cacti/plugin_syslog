@@ -55,6 +55,7 @@ function syslogDashboardPanelCard(panel) {
 
 	var header = document.createElement('header');
 	header.className = 'syslogDashboardCardHeader';
+	header.setAttribute('draggable', 'true');
 
 	var title = document.createElement('h3');
 	title.className = 'syslogDashboardCardTitle';
@@ -84,6 +85,11 @@ function syslogDashboardPanelCard(panel) {
 	resize.setAttribute('aria-hidden', 'true');
 	card.append(resize);
 
+	var edge = document.createElement('span');
+	edge.className = 'syslogDashboardCardResizeRight';
+	edge.setAttribute('aria-hidden', 'true');
+	card.append(edge);
+
 	syslogDashboardApplySize(panel, card);
 
 	return card;
@@ -108,15 +114,26 @@ function syslogDashboardApplySize(panel, card) {
 	}
 }
 
-/**
- * Drag the corner handle to resize a panel: horizontally it snaps to whole
- * grid columns, vertically to pixels. The final size is persisted so it
- * survives reloads.
- */
+/** Wire the corner and edge handles of a card to the resize logic. */
 function syslogDashboardInitResize(card, panel) {
-	var handle = card.querySelector('.syslogDashboardCardResize');
-	if (!handle) return;
+	var corner = card.querySelector('.syslogDashboardCardResize');
+	var edge = card.querySelector('.syslogDashboardCardResizeRight');
 
+	if (corner) syslogDashboardBindResize(corner, card, panel, 'both');
+	if (edge) syslogDashboardBindResize(edge, card, panel, 'span');
+}
+
+/**
+ * Drag a resize handle: horizontally it snaps to whole grid columns,
+ * vertically to pixels (corner only). The final size is persisted so it
+ * survives reloads.
+ *
+ * @param {HTMLElement} handle The handle receiving the pointer gesture.
+ * @param {HTMLElement} card   The panel card being resized.
+ * @param {object}      panel  The panel definition.
+ * @param {string}      axis   'both' or 'span' (horizontal only).
+ */
+function syslogDashboardBindResize(handle, card, panel, axis) {
 	handle.addEventListener('pointerdown', function(event) {
 		event.preventDefault();
 
@@ -133,22 +150,25 @@ function syslogDashboardInitResize(card, panel) {
 		var startWidth = card.getBoundingClientRect().width;
 		var startHeight = chart.clientHeight - padY;
 		var span = Math.min(Math.max(parseInt(panel.width, 10) || 1, 1), syslogDashboardWidthMax);
-		var height = 0;
+		var height = parseInt(panel.height, 10) || 0;
 
 		handle.setPointerCapture(event.pointerId);
 
 		function onMove(moveEvent) {
 			var dx = moveEvent.clientX - startX;
-			var dy = moveEvent.clientY - startY;
 
 			span = Math.round((startWidth + dx + colGap) / (colWidth + colGap));
 			span = Math.min(Math.max(span, 1), syslogDashboardWidthMax);
 			card.style.gridColumn = 'span ' + span;
 
-			height = Math.round(startHeight + dy);
-			height = Math.min(Math.max(height, syslogDashboardHeightMin), syslogDashboardHeightMax);
-			chart.style.minHeight = height + 'px';
-			chart.style.height = height + 'px';
+			if (axis === 'both') {
+				var dy = moveEvent.clientY - startY;
+
+				height = Math.round(startHeight + dy);
+				height = Math.min(Math.max(height, syslogDashboardHeightMin), syslogDashboardHeightMax);
+				chart.style.minHeight = height + 'px';
+				chart.style.height = height + 'px';
+			}
 		}
 
 		function onUp() {
@@ -161,7 +181,7 @@ function syslogDashboardInitResize(card, panel) {
 			window.dispatchEvent(new Event('resize'));
 
 			// Sizes at the default height are stored as 0 (follow default).
-			var savedHeight = Math.abs(height - syslogDashboardHeightDefault) < 13 ? 0 : height;
+			var savedHeight = axis === 'both' && Math.abs(height - syslogDashboardHeightDefault) < 13 ? 0 : height;
 			var currentWidth = parseInt(panel.width, 10) || 1;
 
 			if (span === currentWidth && savedHeight === (parseInt(panel.height, 10) || 0)) {
@@ -295,7 +315,104 @@ function syslogDashboardRenderGrid() {
 		var card = syslogDashboardPanelCard(panel);
 		grid.append(card);
 		syslogDashboardInitResize(card, panel);
+		syslogDashboardInitDrag(card, panel);
 		syslogDashboardLoadPanel(panel);
+	});
+}
+
+/* ===================== Drag-and-drop reorder ===================== */
+
+/**
+ * Make a card reorderable: dragging its header shows a placeholder, and
+ * dropping posts the new 1-based position. Drop targets are the card
+ * midpoints, so moving a panel underneath another works in both
+ * directions without up/down buttons.
+ */
+function syslogDashboardInitDrag(card, panel) {
+	var header = card.querySelector('.syslogDashboardCardHeader');
+	if (!header) return;
+
+	header.addEventListener('dragstart', function(event) {
+		event.dataTransfer.effectAllowed = 'move';
+		event.dataTransfer.setData('text/plain', String(panel.id));
+		card.classList.add('syslogDashboardCardDragging');
+	});
+
+	header.addEventListener('dragend', function() {
+		card.classList.remove('syslogDashboardCardDragging');
+		document.querySelectorAll('.syslogDashboardCardDropBefore')
+			.forEach(function(el) { el.classList.remove('syslogDashboardCardDropBefore'); });
+	});
+
+	card.addEventListener('dragover', function(event) {
+		if (!document.querySelector('.syslogDashboardCardDragging')) return;
+		event.preventDefault();
+		event.dataTransfer.dropEffect = 'move';
+
+		var rect = card.getBoundingClientRect();
+		var before = event.clientY < rect.top + rect.height / 2;
+		card.classList.toggle('syslogDashboardCardDropBefore', before);
+		card.classList.toggle('syslogDashboardCardDropAfter', !before);
+	});
+
+	card.addEventListener('dragleave', function(event) {
+		if (event.target === card) {
+			card.classList.remove('syslogDashboardCardDropBefore', 'syslogDashboardCardDropAfter');
+		}
+	});
+
+	card.addEventListener('drop', function(event) {
+		if (!document.querySelector('.syslogDashboardCardDragging')) return;
+		event.preventDefault();
+
+		var draggedId = parseInt(event.dataTransfer.getData('text/plain'), 10);
+		var targetId = panel.id;
+
+		card.classList.remove('syslogDashboardCardDropBefore', 'syslogDashboardCardDropAfter');
+
+		if (!draggedId || draggedId === targetId) return;
+		if (draggedId === panel.id) return;
+
+		var rect = card.getBoundingClientRect();
+		var before = event.clientY < rect.top + rect.height / 2;
+		var panels = syslogDashboard.panels || [];
+		var order = panels.map(function(p) { return p.id; });
+		var from = order.indexOf(draggedId);
+
+		if (from === -1) return;
+		order.splice(from, 1);
+
+		var insertAt = order.indexOf(targetId) + (before ? 0 : 1);
+		order.splice(insertAt, 0, draggedId);
+
+		var position = insertAt + 1;
+
+		// Optimistically apply locally, then persist; server renumbers.
+		syslogDashboardApplyOrder(order, draggedId, position);
+	});
+}
+
+/**
+ * Reorder the local panel list, move the dragged card in the DOM, and
+ * POST the new absolute position to the server.
+ */
+function syslogDashboardApplyOrder(order, draggedId, position) {
+	var grid = document.getElementById('syslog_dashboard_grid');
+	var byId = {};
+
+	syslogDashboard.panels.forEach(function(p) { byId[p.id] = p; });
+	syslogDashboard.panels = order.map(function(id) { return byId[id]; });
+
+	order.forEach(function(id) {
+		grid.append(document.getElementById('syslog_panel_' + id));
+	});
+
+	syslogDashboardPost({
+		action: 'dashboard_panel_save',
+		dashboard_id: syslogDashboard.dashboardId,
+		panel_id: draggedId,
+		panel_position: '1',
+		position: position
 	});
 }
 

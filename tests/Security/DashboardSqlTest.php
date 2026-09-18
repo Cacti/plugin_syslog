@@ -152,3 +152,41 @@ it('repositions panels within one dashboard only', function () {
 	syslog_dashboard_panel_move(['id' => 3], 1, -1);
 	expect($updates)->toBe([], 'Moving the first panel up changes nothing');
 });
+
+it('repositions panels by absolute drag position', function () {
+	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('lib/syslog_dashboard.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslogdb';
+
+	$updates = [];
+
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) {
+		if (str_contains($sql, 'ORDER BY position')) {
+			return [
+				['id' => 3, 'position' => 1],
+				['id' => 5, 'position' => 2],
+				['id' => 9, 'position' => 3]
+			];
+		}
+
+		return [];
+	});
+
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$updates) {
+		if (str_contains($sql, 'SET position = ?')) {
+			$updates[] = $params;
+		}
+
+		return true;
+	});
+
+	// Dragging 3 to the last slot: order becomes 5, 9, 3 → positions 1..3.
+	syslog_dashboard_panel_reposition(['id' => 3], 1, 3);
+	expect($updates)->toBe([[1, 5], [2, 9], [3, 3]], 'Absolute position renumbers the rest');
+
+	// Out-of-range positions clamp instead of corrupting the sequence.
+	$updates = [];
+	syslog_dashboard_panel_reposition(['id' => 9], 1, 99);
+	expect($updates)->toBe([[1, 3], [2, 5], [3, 9]], 'Oversized position clamps to the last slot');
+});
