@@ -130,7 +130,7 @@ jobs:
       run: |
         cd ${{ github.workspace }}/cacti
         if [ -f composer.json ]; then
-sudo env COMPOSER_ALLOW_SUPERUSER=1 composer config --no-plugins allow-plugins.pestphp/pest-plugin true
+          sudo env COMPOSER_ALLOW_SUPERUSER=1 composer config --no-plugins allow-plugins.pestphp/pest-plugin true
           sudo env COMPOSER_ALLOW_SUPERUSER=1 composer require --no-progress --no-interaction "pestphp/pest: ^3" "pestphp/pest-plugin-drift: ^3.0"
           sudo rm -f composer.lock
           sudo env COMPOSER_ALLOW_SUPERUSER=1 composer install --dev --no-progress
