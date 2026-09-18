@@ -1033,6 +1033,102 @@ function syslog_validate_worker_args($child, $run_id, $phase, $seq_start, $seq_e
 }
 
 /**
+ * syslog_workers_running - count the parallel worker children registered
+ * in Cacti's process table.
+ *
+ * A child that died without unregistering itself (SIGKILL, OOM kill,
+ * database restart) leaves a stale row behind that would otherwise make
+ * the master's wait loop block forever.  Stale rows are detected by pid
+ * liveness and removed here, with a warning, so the wait always drains.
+ *
+ * The process table lives in the main Cacti database, not the syslog
+ * database, so the core helpers are required here.
+ *
+ * @return int The number of live, registered workers
+ */
+function syslog_workers_running() {
+	$processes = db_fetch_assoc("SELECT pid
+		FROM processes
+		WHERE tasktype = 'syslog'
+		AND taskname = 'child'");
+
+	if (!cacti_sizeof($processes)) {
+		return 0;
+	}
+
+	$running = 0;
+
+	foreach ($processes as $process) {
+		$pid = (int) $process['pid'];
+
+		if (cacti_process_still_running($pid)) {
+			$running++;
+
+			continue;
+		}
+
+		cacti_log("WARNING: Syslog worker PID $pid is no longer running, removing its stale process entry", false, 'SYSLOG');
+
+		db_execute("DELETE FROM processes
+			WHERE tasktype = 'syslog'
+			AND taskname = 'child'
+			AND pid = $pid");
+	}
+
+	return $running;
+}
+
+/**
+ * syslog_wait_workers - wait for the launched worker children to finish.
+ *
+ * The wait is two staged.  First the master waits, up to a short
+ * registration grace, for every launched child to appear in the process
+ * table; without this a child that has not registered yet would make the
+ * running count look like zero and the master would race ahead exactly as
+ * if it had never waited at all.  Then the master polls the process table
+ * every two seconds, mirroring the boost poller, until all children are
+ * done.  Children that disappear without recording their statistics are
+ * warned about after the wait completes.
+ *
+ * @param int $expected The number of children that were launched
+ *
+ * @return (void)
+ */
+function syslog_wait_workers($expected) {
+	// STAGE 1: give every launched child time to register, bounded so a
+	// child that crashed before registering cannot stall the master
+	$grace_polls = 5;
+
+	for ($i = 0; $i < $grace_polls && syslog_workers_running() < $expected; $i++) {
+		syslog_debug(sprintf('Waiting for %s Worker(s) to register, Sleeping for 2 seconds.', $expected));
+
+		sleep(2);
+	}
+
+	// STAGE 2: wait for the registered children to complete
+	while (syslog_workers_running() > 0) {
+		syslog_debug(sprintf('%s Worker(s) Running, Sleeping for 2 seconds.', syslog_workers_running()));
+
+		sleep(2);
+	}
+
+	// verify that each child recorded its completion
+	$missing = [];
+
+	for ($i = 1; $i <= $expected; $i++) {
+		$stat = read_config_option('stats_syslog_child_' . $i);
+
+		if ($stat === false || $stat === '' || $stat === null) {
+			$missing[] = $i;
+		}
+	}
+
+	if (cacti_sizeof($missing)) {
+		cacti_log('WARNING: Syslog worker(s) exited without recording completion: ' . implode(', ', $missing), false, 'SYSLOG');
+	}
+}
+
+/**
  * Report suspicious partition metadata after a crash or database restart.
  *
  * This is intentionally read-only. MySQL/MariaDB DDL is atomic, but if the

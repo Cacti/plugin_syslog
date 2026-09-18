@@ -288,7 +288,14 @@ if ($parallel && $max_seq > 0) {
 	// ROUND 1: resolve hostnames for incoming records in parallel
 	$host_slices = syslog_compute_slices(1, $max_seq, $syslog_max_workers);
 
-	syslog_launch_workers('references', $host_slices, $run_id, $debug);
+	$launched = syslog_launch_workers('references', $host_slices, $run_id, $debug);
+
+	/*
+	 * The reference upserts, the removal rules and the alert rules that
+	 * follow all operate on the same incoming rows the workers are
+	 * updating, so the master must not race ahead of its children.
+	 */
+	syslog_wait_workers($launched);
 
 	syslog_normalize_reference_tables($max_seq);
 } else {
@@ -342,7 +349,15 @@ if ($parallel && $max_seq > 0) {
 
 		$transfer_slices = syslog_compute_slices($min_seq, $max_seq, $syslog_max_workers);
 
-		syslog_launch_workers('transfer', $transfer_slices, $run_id, $debug);
+		$launched = syslog_launch_workers('transfer', $transfer_slices, $run_id, $debug);
+
+		/*
+		 * The stale record cleanup, the stats aggregation and the
+		 * master's own exit all assume the transfer is complete, so
+		 * block until every child has recorded its statistics and
+		 * unregistered itself.
+		 */
+		syslog_wait_workers($launched);
 
 		$stale = syslog_delete_stale_incoming();
 
@@ -451,7 +466,16 @@ function syslog_worker_main($debug = false) {
 	}
 
 	if (!register_process_start('syslog', 'child', $child, 1200)) {
-		exit(0);
+		/*
+		 * A previous worker with this number is still registered
+		 * (crashed without unregistering, or the master did not wait
+		 * for it).  Never fail silently: the master checks that every
+		 * launched child reported statistics, so leave a breadcrumb
+		 * for that warning too.
+		 */
+		cacti_log("WARNING: Syslog child $child could not register, another worker with that number is still registered", false, 'SYSLOG');
+
+		exit(1);
 	}
 
 	syslog_status_set('last_worker_start', time());
@@ -584,53 +608,6 @@ function syslog_launch_workers($phase, $slices, $run_id, $debug = false) {
 	sleep(2);
 
 	return $children;
-}
-
-/**
- * syslog_workers_running - count the worker children registered in
- * Cacti's process table.
- *
- * @return int The number of running workers
- */
-function syslog_workers_running() {
-	return (int) db_fetch_cell("SELECT COUNT(*)
-		FROM processes
-		WHERE tasktype = 'syslog'
-		AND taskname = 'child'");
-}
-
-/**
- * syslog_wait_workers - wait for the launched worker children to finish.
- *
- * Polls the process table every two seconds, mirroring the boost poller.
- * Children that disappear without recording their statistics are warned
- * about after the wait completes.
- *
- * @param int $expected The number of children that were launched
- *
- * @return (void)
- */
-function syslog_wait_workers($expected) {
-	while (syslog_workers_running() > 0) {
-		syslog_debug(sprintf('%s Worker(s) Running, Sleeping for 2 seconds.', syslog_workers_running()));
-
-		sleep(2);
-	}
-
-	// verify that each child recorded its completion
-	$missing = [];
-
-	for ($i = 1; $i <= $expected; $i++) {
-		$stat = read_config_option('stats_syslog_child_' . $i);
-
-		if ($stat === false || $stat === '' || $stat === null) {
-			$missing[] = $i;
-		}
-	}
-
-	if (cacti_sizeof($missing)) {
-		cacti_log('WARNING: Syslog worker(s) exited without recording completion: ' . implode(', ', $missing), false, 'SYSLOG');
-	}
 }
 
 /**
