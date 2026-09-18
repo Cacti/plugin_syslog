@@ -386,7 +386,8 @@ function syslog_dashboard_load_panel($panel_id) {
 		AND d.`user` = ?",
 		[$panel_id, $username]);
 
-	return $panel === false ? null : $panel;
+	// Some Cacti versions return [] rather than false when no row matches.
+	return $panel === false || $panel === null || !cacti_sizeof($panel) ? null : $panel;
 }
 
 /**
@@ -543,7 +544,8 @@ function syslog_dashboard_load($dashboard_id) {
 		AND `user` = ?",
 		[$dashboard_id, $username]);
 
-	return $dashboard === false ? null : $dashboard;
+	// Some Cacti versions return [] rather than false when no row matches.
+	return $dashboard === false || $dashboard === null || !cacti_sizeof($dashboard) ? null : $dashboard;
 }
 
 /** All dashboards owned by the current user. */
@@ -642,7 +644,19 @@ function syslog_dashboard_save() {
 		VALUES (?, ?, ?, ?)",
 		[$name, $username, time(), time()]);
 
-	return json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
+	// Upsert semantics: resolve the row by owner and name when the
+	// connection's insert id is unavailable on some Cacti builds.
+	$id = (int) syslog_db_fetch_insert_id();
+
+	if ($id <= 0) {
+		$id = (int) syslog_db_fetch_cell_prepared("SELECT id
+			FROM `$syslogdb_default`.`syslog_dashboards`
+			WHERE `user` = ? AND name = ?
+			ORDER BY id DESC",
+			[$username, $name]);
+	}
+
+	return json_encode(['id' => $id]);
 }
 
 /**
@@ -738,7 +752,7 @@ function syslog_dashboard_panel_save() {
 
 		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
 			SET title = ?, expression = ?, source = ?, removal = ?, kind = ?,
-			chart = ?, field = ?, interval = ?, timespan = ?, top_n = ?
+			chart = ?, field = ?, `interval` = ?, timespan = ?, top_n = ?
 			WHERE id = ?",
 			[$title, $expression, $settings['source'], (int) $settings['removal'],
 				$settings['kind'], $settings['chart'], $settings['field'],
@@ -750,13 +764,25 @@ function syslog_dashboard_panel_save() {
 	$position = syslog_dashboard_next_position($dashboard_id);
 
 	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
-		(dashboard_id, title, expression, source, removal, kind, chart, field, interval, timespan, top_n, position, `date`)
+		(dashboard_id, title, expression, source, removal, kind, chart, field, `interval`, timespan, top_n, position, `date`)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		[$dashboard_id, $title, $expression, $settings['source'], (int) $settings['removal'],
 			$settings['kind'], $settings['chart'], $settings['field'], $settings['interval'],
 			$settings['timespan'], $settings['top_n'], $position, time()]);
 
-	return json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
+	// Fall back to a positional lookup when the connection's insert id is
+	// unavailable on some Cacti builds.
+	$id = (int) syslog_db_fetch_insert_id();
+
+	if ($id <= 0) {
+		$id = (int) syslog_db_fetch_cell_prepared("SELECT id
+			FROM `$syslogdb_default`.`syslog_dashboard_panels`
+			WHERE dashboard_id = ?
+			ORDER BY id DESC",
+			[$dashboard_id]);
+	}
+
+	return json_encode(['id' => $id]);
 }
 
 /**

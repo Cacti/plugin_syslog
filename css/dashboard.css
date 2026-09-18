@@ -137,6 +137,12 @@
 	background: var(--search-surface, #f3f6f5);
 }
 
+/* The class sets display, which would beat the UA [hidden] rule. */
+.syslogDashboardEmpty[hidden],
+.syslogDashboardGrid[hidden] {
+	display: none;
+}
+
 /* Panel editor dialog rows. */
 
 .syslogPanelDialog .syslogPanelDialogRows > div {
