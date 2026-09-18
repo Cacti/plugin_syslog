@@ -35,6 +35,7 @@ include_once('./lib/html_tree.php');
 include_once(__DIR__ . '/setup.php');
 include_once(__DIR__ . '/functions.php');
 include_once(__DIR__ . '/database.php');
+include_once(__DIR__ . '/lib/syslog_dashboard.php');
 
 syslog_connect();
 
@@ -86,6 +87,24 @@ if (get_request_var('action') == 'saved_search_global') {
 	exit;
 }
 
+if (get_request_var('action') == 'dashboard_chart') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_chart_data();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_save') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_save();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_panel_save') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_panel_save();
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab
@@ -94,7 +113,7 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
-if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status'], true)) {
+if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard'], true)) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
@@ -129,6 +148,8 @@ if (isset_request_var('export')) {
 		syslog_view_alarm();
 	} elseif ($current_tab == 'status') {
 		syslog_status();
+	} elseif ($current_tab == 'dashboard') {
+		syslog_dashboard();
 	} else {
 		syslog_messages($current_tab);
 	}
@@ -199,6 +220,8 @@ function syslog_display_tabs($current_tab) {
 	$tabs_syslog['syslog'] = __('System Logs', 'syslog');
 
 	$tabs_syslog['alerts'] = __('Alert Logs', 'syslog');
+
+	$tabs_syslog['dashboard'] = __('Dashboard', 'syslog');
 
 	$tabs_syslog['status'] = __('Syslog Status', 'syslog');
 
@@ -461,6 +484,33 @@ function syslog_request_validation($current_tab, $force = false) {
 	$filter_submitted = isset($_POST['rfilter']);
 
 	include_once($config['base_path'] . '/lib/time.php');
+
+	// The dashboard tab charts panels through its own endpoint and does not
+	// use the log viewer filters; only validate its shared controls here.
+	if ($current_tab == 'dashboard') {
+		$dashboard_filters = [
+			'dashboard_id' => [
+				'filter'  => FILTER_VALIDATE_INT,
+				'pageset' => true,
+				'default' => '0'
+			],
+			'dashboard_timespan' => [
+				'filter'  => FILTER_CALLBACK,
+				'pageset' => true,
+				'default' => '86400',
+				'options' => ['options' => 'sanitize_search_string']
+			],
+			'refresh' => [
+				'filter'  => FILTER_VALIDATE_INT,
+				'pageset' => true,
+				'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force)
+			]
+		];
+
+		validate_store_request_vars($dashboard_filters, 'sess_sl_dashboard');
+
+		return;
+	}
 
 	if ($current_tab != 'alerts' && isset_request_var('host') && get_nfilter_request_var('host') == -1) {
 		kill_session_var('sess_syslog_' . $current_tab . '_hosts');

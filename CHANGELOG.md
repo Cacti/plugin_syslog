@@ -2,6 +2,11 @@
 
 --- develop ---
 
+* feature: Add a Dashboard tab with per-user dashboards of chart panels:
+  timeseries (line/area/bar) and breakdown (donut by host, program,
+  facility, or priority) panels chart System Logs and Alert Logs through
+  the same logical search DSL as the log viewer; panels can start from a
+  saved search and every write re-verifies dashboard ownership
 * feature: Log per worker SYSLOG STATS lines in the boost poller style
   (Time, ProcessNumber, Records, Resolved) so parallel processing work
   is attributable per process in the Cacti log

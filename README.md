@@ -28,6 +28,8 @@ be quieted using syslog's 'Re-Alert' setting.
 
 * Message searching
 
+* Dashboards with time series and breakdown charts of your saved searches
+
 * Message Alerting
 
 * Alert Levels of System and Host
