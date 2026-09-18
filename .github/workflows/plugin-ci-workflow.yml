@@ -33,6 +33,7 @@ on:
 
 env:
   CACTI: 1.2.x
+  COMPOSER_ALLOW_SUPERUSER: 1
 
 jobs:
   integration-test:
@@ -130,10 +131,10 @@ jobs:
       run: |
         cd ${{ github.workspace }}/cacti
         if [ -f composer.json ]; then
-          sudo env COMPOSER_ALLOW_SUPERUSER=1 composer config --no-plugins allow-plugins.pestphp/pest-plugin true
-          sudo env COMPOSER_ALLOW_SUPERUSER=1 composer require --no-progress --no-interaction "pestphp/pest: ^3" "pestphp/pest-plugin-drift: ^3.0"
+          sudo composer config --no-plugins allow-plugins.pestphp/pest-plugin true
+          sudo composer require --no-progress --no-interaction "pestphp/pest: ^3" "pestphp/pest-plugin-drift: ^3.0"
           sudo rm -f composer.lock
-          sudo env COMPOSER_ALLOW_SUPERUSER=1 composer install --dev --no-progress
+          sudo composer install --dev --no-progress
         fi
 
     - name: Create Cacti config.php
