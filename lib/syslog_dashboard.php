@@ -803,11 +803,15 @@ function syslog_dashboard() {
 
 	$dashboards    = syslog_dashboard_list();
 	$dashboard_id  = get_filter_request_var('dashboard_id', FILTER_VALIDATE_INT);
-	$timespan      = syslog_dashboard_request_timespan();
 
-	// Keep only an owned dashboard selected.
+	// Keep only an owned dashboard selected; fall back to the first one so
+	// the tab opens ready instead of the empty state while one exists.
 	if ($dashboard_id === false || $dashboard_id === null || syslog_dashboard_load($dashboard_id) === null) {
 		$dashboard_id = 0;
+	}
+
+	if ($dashboard_id === 0 && cacti_sizeof($dashboards)) {
+		$dashboard_id = (int) reset($dashboards)['id'];
 	}
 
 	$panels = $dashboard_id > 0 ? syslog_dashboard_panels($dashboard_id) : [];
@@ -816,12 +820,26 @@ function syslog_dashboard() {
 
 	if (cacti_sizeof($panels)) {
 		foreach ($panels as $panel) {
+			// Editing rehydrates the builder from the server-parsed tree, so
+			// a legacy or hand-edited expression can never corrupt the dialog.
+			try {
+				$tree = syslog_parse_logical_search((string) $panel['expression']);
+			} catch (InvalidArgumentException $error) {
+				$tree = null;
+			}
+
 			$panel_json[] = [
-				'id'     => (int) $panel['id'],
-				'title'  => (string) $panel['title'],
-				'source' => (string) $panel['source'],
-				'kind'   => (string) $panel['kind'],
-				'chart'  => (string) $panel['chart']
+				'id'       => (int) $panel['id'],
+				'title'    => (string) $panel['title'],
+				'source'   => (string) $panel['source'],
+				'kind'     => (string) $panel['kind'],
+				'chart'    => (string) $panel['chart'],
+				'field'    => (string) $panel['field'],
+				'interval' => (string) $panel['interval'],
+				'timespan' => (string) $panel['timespan'],
+				'removal'  => (string) $panel['removal'],
+				'top_n'    => (int) $panel['top_n'],
+				'tree'     => $tree
 			];
 		}
 	}
@@ -833,6 +851,18 @@ function syslog_dashboard() {
 		WHERE `user` = ? OR is_global = 'on'
 		ORDER BY is_global, name",
 		[$username]);
+
+	// Pre-parse each saved search server side; the dialog imports the tree
+	// directly instead of re-parsing DSL text in the browser.
+	$saved_trees = [];
+
+	foreach ($saved_searches as $saved) {
+		try {
+			$saved_trees[(int) $saved['id']] = syslog_parse_logical_search((string) $saved['search']);
+		} catch (InvalidArgumentException $error) {
+			$saved_trees[(int) $saved['id']] = null;
+		}
+	}
 	?>
 	<script type='text/javascript'>
 	var syslogDashboard = {
@@ -1018,9 +1048,9 @@ function syslog_dashboard() {
 					<?php
 					if (cacti_sizeof($saved_searches)) {
 						foreach ($saved_searches as $saved) {
-							print "<option value='" . (int) $saved['id'] . "'
-								data-expression='" . html_escape($saved['search']) . "'
-								data-removal='" . html_escape($saved['removal']) . "'>"
+							print "<option value='" . (int) $saved['id'] . "'"
+								. " data-tree='" . html_escape(json_encode($saved_trees[(int) $saved['id']] ?? null)) . "'"
+								. " data-removal='" . html_escape($saved['removal']) . "'>"
 								. html_escape($saved['name']) . '</option>';
 						}
 					}

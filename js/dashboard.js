@@ -115,28 +115,39 @@ function syslogDashboardRenderChart(panel, data) {
 
 	if (status) status.hidden = true;
 
-	var columns = [['x'].concat(data.labels), ['records'].concat(data.series[0])];
+	var config;
 
-	var config = {
-		bindto: '#syslog_chart_' + panel.id,
-		data: {
-			x: 'x',
-			columns: columns,
-			names: { records: panel.title },
-			type: data.kind === 'breakdown' ? 'donut' : (data.chart === 'bar' ? 'bar' : (data.chart === 'area' ? 'area' : 'line'))
-		},
-		legend: { show: data.kind !== 'timeseries' },
-		padding: { right: 16 }
-	};
+	if (data.kind === 'breakdown') {
+		// Donuts chart one column per slice: [label, value].
+		var slices = data.labels.map(function(label, index) {
+			return [label, data.series[0][index]];
+		});
 
-	if (data.kind === 'timeseries') {
-		config.axis = {
-			x: { type: 'category', tick: { culling: { max: 8 }, multiline: false } },
-			y: { tick: { culling: { max: 5 } }, min: 0, padding: { bottom: 0 } }
+		config = {
+			bindto: '#syslog_chart_' + panel.id,
+			data: { columns: slices, type: 'donut' },
+			donut: { title: panel.title, label: { show: false } },
+			legend: { position: 'right' },
+			padding: { right: 16 }
 		};
 	} else {
-		config.donut = { title: panel.title };
-		config.legend = { position: 'right' };
+		var columns = [['x'].concat(data.labels), ['records'].concat(data.series[0])];
+
+		config = {
+			bindto: '#syslog_chart_' + panel.id,
+			data: {
+				x: 'x',
+				columns: columns,
+				names: { records: panel.title },
+				type: data.chart === 'bar' ? 'bar' : (data.chart === 'area' ? 'area' : 'line')
+			},
+			legend: { show: false },
+			axis: {
+				x: { type: 'category', tick: { culling: { max: 8 }, multiline: false } },
+				y: { tick: { culling: { max: 5 } }, min: 0, padding: { bottom: 0 } }
+			},
+			padding: { right: 16 }
+		};
 	}
 
 	syslogDashboardDestroyChart(panel.id);
@@ -177,46 +188,65 @@ function syslogDashboardRenderGrid() {
 
 /* ===================== Panel editor dialog ===================== */
 
-function syslogPanelDialogFields(panel) {
-	var editor = document.getElementById('syslog_panel_dialog');
+/** Chart choices depend on the panel kind; breakdowns only chart as donuts. */
+function syslogPanelChartOptions(kind) {
+	return kind === 'breakdown' ? [['donut', 'Donut']] : [['line', 'Line'], ['area', 'Area'], ['bar', 'Bar']];
+}
 
+/**
+ * Rebuild the chart select for the active kind, restore a valid selection,
+ * and refresh every selectmenu widget so buttons match the native values.
+ */
+function syslogPanelDialogSync() {
+	var kind = $('#syslog_panel_kind').val();
+	var source = $('#syslog_panel_source').val();
+	var previous = $('#syslog_panel_chart').val();
+	var chart = $('#syslog_panel_chart');
+	var options = syslogPanelChartOptions(kind);
+
+	chart.empty();
+	options.forEach(function(option) {
+		$('<option>').val(option[0]).text(option[1]).appendTo(chart);
+	});
+	chart.val(options.some(function(option) { return option[0] === previous; }) ? previous : options[0][0]);
+
+	$('.syslogPanelOnlyTimeseries').toggle(kind === 'timeseries');
+	$('.syslogPanelOnlyBreakdown').toggle(kind === 'breakdown');
+	$('.syslogPanelOnlySyslog').toggle(source === 'syslog');
+
+	$('#syslog_panel_dialog select').each(function() {
+		if ($(this).selectmenu('instance')) {
+			$(this).selectmenu('refresh');
+		}
+	});
+}
+
+function syslogPanelDialogFields(panel) {
 	$('#syslog_panel_title').val(panel ? panel.title : '');
-	$('#syslog_panel_source').val(panel ? panel.source : 'syslog').trigger('change');
-	$('#syslog_panel_kind').val(panel ? panel.kind : 'timeseries').trigger('change');
-	$('#syslog_panel_chart').val(panel ? (panel.chart || 'line') : 'line');
+	$('#syslog_panel_source').val(panel ? panel.source : 'syslog');
+	$('#syslog_panel_kind').val(panel ? panel.kind : 'timeseries');
 	$('#syslog_panel_interval').val(panel ? (panel.interval || 'dashboard') : 'dashboard');
 	$('#syslog_panel_field').val(panel ? (panel.field || 'host') : 'host');
 	$('#syslog_panel_top_n').val(panel ? (panel.top_n || 10) : 10);
 	$('#syslog_panel_timespan').val(panel ? (panel.timespan || 'dashboard') : 'dashboard');
 	$('#syslog_panel_removal').val(panel ? (panel.removal || '1') : '1');
 	$('#syslog_panel_saved').val('0');
+	$('#syslog_panel_chart').val(panel ? (panel.chart || 'line') : 'line');
+
+	syslogPanelDialogSync();
 
 	var builder = document.getElementById('syslog_panel_builder');
+	var rows = panel && panel.tree ? syslogSearchRows(panel.tree) : [];
 
-	if (window.SyslogFilterBuilder) {
-		if (builder.instance) {
-			builder.instance = null;
-		}
-
-		builder.instance = new SyslogFilterBuilder(builder, {
-			fields: JSON.parse(builder.dataset.fields || '{}'),
-			choices: JSON.parse(builder.dataset.choices || '{}'),
-			conditions: panel && panel.tree ? panel.tree : [],
-			labels: {
-				message: builder.dataset.message,
-				placeholder: builder.dataset.placeholder,
-				remove: builder.dataset.remove,
-				match: builder.dataset.match,
-				exclude: builder.dataset.exclude
-			}
-		});
-	}
+	initSyslogSearchBuilder(builder, rows);
 }
 
 function syslogPanelDialogRead() {
 	var builder = document.getElementById('syslog_panel_builder');
-	var expression = builder.instance ? builder.instance.serialize() : '';
 
+	// Panels store the same logical search expression as the log viewer;
+	// syslogBuilderSync serializes the rows into that DSL, or returns null
+	// when a row value is invalid (Save is blocked in that case).
 	return {
 		title: $('#syslog_panel_title').val().trim(),
 		source: $('#syslog_panel_source').val(),
@@ -227,12 +257,13 @@ function syslogPanelDialogRead() {
 		top_n: $('#syslog_panel_top_n').val(),
 		timespan: $('#syslog_panel_timespan').val(),
 		removal: $('#syslog_panel_removal').val(),
-		expression: expression
+		expression: syslogBuilderSync(builder)
 	};
 }
 
 function syslogPanelDialogOpen(panelId) {
 	var dialog = document.getElementById('syslog_panel_dialog');
+	var builder = document.getElementById('syslog_panel_builder');
 	var editing = panelId > 0 ? syslogDashboardPanelById(panelId) : null;
 
 	syslogPanelDialogFields(editing);
@@ -243,6 +274,18 @@ function syslogPanelDialogOpen(panelId) {
 		width: Math.min(760, $(window).width() - 40),
 		height: $(window).height() - 100,
 		title: dialog.dataset.title,
+		open: function() {
+			// The builder renders before .dialog() creates its wrapper, so
+			// suggestion menus appended to <body> stack behind the modal;
+			// move them into the dialog's own stacking context.
+			var wrapper = dialog.closest('.ui-dialog');
+			$(builder).find('.syslogSearchText').each(function() {
+				var widget = $(this).data('ui-autocomplete');
+				if (widget && !wrapper.contains(widget.menu.element[0])) {
+					widget.menu.element.appendTo(wrapper);
+				}
+			});
+		},
 		buttons: [
 			{
 				text: dialog.dataset.save,
@@ -250,6 +293,10 @@ function syslogPanelDialogOpen(panelId) {
 					var values = syslogPanelDialogRead();
 					if (!values.title) {
 						$('#syslog_panel_title').focus();
+						return;
+					}
+					if (values.expression === null) {
+						// A builder row is invalid; its input was flagged for fixing.
 						return;
 					}
 					$(this).dialog('close');
@@ -336,33 +383,42 @@ $(function() {
 	});
 
 	// Show/hide dialog rows that only apply to the chosen type/source.
-	$('#syslog_panel_kind, #syslog_panel_source').on('change', function() {
-		var kind = $('#syslog_panel_kind').val();
-		var source = $('#syslog_panel_source').val();
+	$('#syslog_panel_kind, #syslog_panel_source').on('change', syslogPanelDialogSync);
 
-		$('.syslogPanelOnlyTimeseries').toggle(kind === 'timeseries');
-		$('.syslogPanelOnlyBreakdown').toggle(kind === 'breakdown');
-		$('.syslogPanelOnlySyslog').toggle(source === 'syslog');
-
-		if (kind === 'breakdown' && $('#syslog_panel_chart').val() !== 'donut') {
-			$('#syslog_panel_chart').val('donut');
-		}
-	});
-
-	// Importing a saved search seeds the expression and record type.
+	// Importing a saved search seeds the rows and record type from the
+	// server-parsed tree so the builder shows exactly what will be saved.
 	$('#syslog_panel_saved').on('change', function() {
 		var option = this.selectedOptions[0];
 		if (!option || option.value === '0') return;
 
 		var builder = document.getElementById('syslog_panel_builder');
-		if (builder.instance) {
-			builder.instance.element.searchRows = [];
-			builder.instance.element.dispatchEvent(new Event('syslog:rebuild'));
+		var tree = null;
+
+		try {
+			tree = JSON.parse(option.dataset.tree || 'null');
+		} catch (error) {
+			tree = null;
 		}
 
-		var savedExpression = option.dataset.expression || '';
+		initSyslogSearchBuilder(builder, syslogSearchRows(tree));
+
 		$('#syslog_panel_removal').val(option.dataset.removal || '1');
-		$('#syslog_panel_builder').attr('data-saved-expression', savedExpression);
+		syslogPanelDialogSync();
+
+		// Suggestion menus default to <body>; keep them inside the modal's
+		// stacking context so they are not covered by the dialog overlay.
+		var wrapper = this.closest('.ui-dialog');
+		if (wrapper) {
+			$(builder).find('.syslogSearchText').each(function() {
+				var widget = $(this).data('ui-autocomplete');
+				if (widget && !wrapper.contains(widget.menu.element[0])) {
+					widget.menu.element.appendTo(wrapper);
+				}
+			});
+		}
+
+		var input = builder.querySelector('.syslogSearchText');
+		if (input) input.focus();
 	});
 
 	// Panel card actions bubble from the grid.
