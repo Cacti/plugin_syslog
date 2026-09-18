@@ -69,6 +69,21 @@ function syslog_dashboard_top_n_cap() {
 	return 50;
 }
 
+/** Maximum grid columns a panel may span. */
+function syslog_dashboard_width_cap() {
+	return 3;
+}
+
+/** Minimum chart height in pixels; 0 follows the default. */
+function syslog_dashboard_height_min() {
+	return 140;
+}
+
+/** Maximum chart height in pixels. */
+function syslog_dashboard_height_cap() {
+	return 1200;
+}
+
 /** Server-side cap on rendered buckets per timeseries. */
 function syslog_dashboard_bucket_cap() {
 	return 720;
@@ -354,6 +369,30 @@ function syslog_dashboard_panel_settings($panel) {
 		return __('Invalid dashboard top count.', 'syslog');
 	}
 
+	$width = trim((string) ($panel['width'] ?? ''));
+
+	if ($width === '') {
+		$width = 1;
+	} else {
+		$width = (int) $width;
+	}
+
+	if ($width < 1 || $width > syslog_dashboard_width_cap()) {
+		return __('Invalid dashboard panel width.', 'syslog');
+	}
+
+	$height = trim((string) ($panel['height'] ?? ''));
+
+	if ($height === '') {
+		$height = 0;
+	} else {
+		$height = (int) $height;
+	}
+
+	if ($height < 0 || $height > syslog_dashboard_height_cap()) {
+		return __('Invalid dashboard panel height.', 'syslog');
+	}
+
 	return [
 		'source'   => $source,
 		'kind'     => $kind,
@@ -362,7 +401,9 @@ function syslog_dashboard_panel_settings($panel) {
 		'interval' => $interval,
 		'timespan' => $timespan,
 		'removal'  => $source === 'alerts' ? '1' : ($removal === '' ? '1' : $removal),
-		'top_n'    => $top_n
+		'top_n'    => $top_n,
+		'width'    => $width,
+		'height'   => $height
 	];
 }
 
@@ -676,6 +717,7 @@ function syslog_dashboard_panel_save() {
 	$panel_id     = get_filter_request_var('panel_id', FILTER_VALIDATE_INT);
 	$move         = (string) get_nfilter_request_var('panel_move');
 	$delete       = get_nfilter_request_var('panel_delete') === '1';
+	$resize       = get_nfilter_request_var('panel_resize') === '1';
 
 	if ($dashboard_id === false || $dashboard_id === null || $dashboard_id <= 0) {
 		return json_encode(['error' => __('A valid dashboard is required.', 'syslog')]);
@@ -685,8 +727,8 @@ function syslog_dashboard_panel_save() {
 		return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 	}
 
-	// Repositioning and deletion address existing panels only.
-	if ($delete || in_array($move, ['up', 'down'], true)) {
+	// Repositioning, resizing, and deletion address existing panels only.
+	if ($delete || $resize || in_array($move, ['up', 'down'], true)) {
 		if ($panel_id === false || $panel_id === null || $panel_id <= 0) {
 			return json_encode(['error' => __('A valid dashboard panel is required.', 'syslog')]);
 		}
@@ -705,6 +747,27 @@ function syslog_dashboard_panel_save() {
 			return json_encode(['id' => (int) $panel_id, 'deleted' => true]);
 		}
 
+		if ($resize) {
+			$size = syslog_dashboard_panel_settings([
+				'source' => $panel['source'], 'kind' => $panel['kind'], 'chart' => $panel['chart'],
+				'field' => $panel['field'], 'interval' => $panel['interval'], 'timespan' => $panel['timespan'],
+				'removal' => $panel['removal'], 'top_n' => $panel['top_n'],
+				'width'  => (string) get_nfilter_request_var('width'),
+				'height' => (string) get_nfilter_request_var('height')
+			]);
+
+			if (is_string($size)) {
+				return json_encode(['error' => $size]);
+			}
+
+			syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
+				SET width = ?, height = ?
+				WHERE id = ?",
+				[$size['width'], $size['height'], $panel_id]);
+
+			return json_encode(['id' => (int) $panel_id, 'width' => $size['width'], 'height' => $size['height']]);
+		}
+
 		syslog_dashboard_panel_move($panel, $dashboard_id, $move === 'up' ? -1 : 1);
 
 		return json_encode(['id' => (int) $panel_id, 'moved' => $move]);
@@ -719,7 +782,9 @@ function syslog_dashboard_panel_save() {
 		'interval' => (string) get_nfilter_request_var('interval'),
 		'timespan' => (string) get_nfilter_request_var('timespan'),
 		'removal'  => (string) get_nfilter_request_var('removal'),
-		'top_n'    => (string) get_nfilter_request_var('top_n')
+		'top_n'    => (string) get_nfilter_request_var('top_n'),
+		'width'    => (string) get_nfilter_request_var('width'),
+		'height'   => (string) get_nfilter_request_var('height')
 	];
 
 	$settings = syslog_dashboard_panel_settings($panel);
@@ -750,13 +815,26 @@ function syslog_dashboard_panel_save() {
 			return json_encode(['error' => __('Dashboard panel not found.', 'syslog')]);
 		}
 
+		// The editor dialog does not manage size; keep the persisted values
+		// when the request did not supply them so dialog saves cannot reset
+		// a panel the user has resized.
+		if ((string) get_nfilter_request_var('width') === '') {
+			$settings['width'] = (int) $existing['width'];
+		}
+
+		if ((string) get_nfilter_request_var('height') === '') {
+			$settings['height'] = (int) $existing['height'];
+		}
+
 		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
 			SET title = ?, expression = ?, source = ?, removal = ?, kind = ?,
-			chart = ?, field = ?, `interval` = ?, timespan = ?, top_n = ?
+			chart = ?, field = ?, `interval` = ?, timespan = ?, top_n = ?,
+			width = ?, height = ?
 			WHERE id = ?",
 			[$title, $expression, $settings['source'], (int) $settings['removal'],
 				$settings['kind'], $settings['chart'], $settings['field'],
-				$settings['interval'], $settings['timespan'], $settings['top_n'], $panel_id]);
+				$settings['interval'], $settings['timespan'], $settings['top_n'],
+				$settings['width'], $settings['height'], $panel_id]);
 
 		return json_encode(['id' => (int) $panel_id]);
 	}
@@ -764,11 +842,12 @@ function syslog_dashboard_panel_save() {
 	$position = syslog_dashboard_next_position($dashboard_id);
 
 	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
-		(dashboard_id, title, expression, source, removal, kind, chart, field, `interval`, timespan, top_n, position, `date`)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		(dashboard_id, title, expression, source, removal, kind, chart, field, `interval`, timespan, top_n, width, height, position, `date`)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		[$dashboard_id, $title, $expression, $settings['source'], (int) $settings['removal'],
 			$settings['kind'], $settings['chart'], $settings['field'], $settings['interval'],
-			$settings['timespan'], $settings['top_n'], $position, time()]);
+			$settings['timespan'], $settings['top_n'], $settings['width'], $settings['height'],
+			$position, time()]);
 
 	// Fall back to a positional lookup when the connection's insert id is
 	// unavailable on some Cacti builds.
@@ -865,6 +944,8 @@ function syslog_dashboard() {
 				'timespan' => (string) $panel['timespan'],
 				'removal'  => (string) $panel['removal'],
 				'top_n'    => (int) $panel['top_n'],
+				'width'    => (int) $panel['width'],
+				'height'   => (int) $panel['height'],
 				'tree'     => $tree
 			];
 		}

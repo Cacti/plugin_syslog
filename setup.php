@@ -520,12 +520,35 @@ function syslog_check_upgrade() {
 			`interval` varchar(16) NOT NULL default 'dashboard',
 			`timespan` varchar(16) NOT NULL default 'dashboard',
 			`top_n` int(10) NOT NULL default '10',
+			`width` smallint(5) unsigned NOT NULL default '1',
+			`height` smallint(5) unsigned NOT NULL default '0',
 			`position` int(10) NOT NULL default '0',
 			`date` int(16) NOT NULL default '0',
 			PRIMARY KEY (`id`),
 			KEY dashboard (`dashboard_id`))
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
+	}
+
+	// Panel resizing persists a grid span and chart height per panel.
+	if (!syslog_db_column_exists('syslog_dashboard_panels', 'width')) {
+		syslog_db_add_column('syslog_dashboard_panels', [
+			'name'    => 'width',
+			'type'    => 'smallint(5) unsigned',
+			'NULL'    => false,
+			'default' => '1',
+			'after'   => 'top_n']
+		);
+	}
+
+	if (!syslog_db_column_exists('syslog_dashboard_panels', 'height')) {
+		syslog_db_add_column('syslog_dashboard_panels', [
+			'name'    => 'height',
+			'type'    => 'smallint(5) unsigned',
+			'NULL'    => false,
+			'default' => '0',
+			'after'   => 'width']
+		);
 	}
 
 	if (!syslog_db_table_exists('syslog_status', false)) {

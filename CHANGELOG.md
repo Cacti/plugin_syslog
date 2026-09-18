@@ -2,6 +2,9 @@
 
 --- develop ---
 
+* feature: Make dashboard panels resizable: drag the corner handle to span
+  up to three grid columns and set the chart height; sizes persist per
+  panel and dialog saves keep a user's custom sizing
 * feature: Add a Dashboard tab with per-user dashboards of chart panels:
   timeseries (line/area/bar) and breakdown (donut by host, program,
   facility, or priority) panels chart System Logs and Alert Logs through

@@ -73,6 +73,7 @@
 
 .syslogDashboardCard {
 	box-sizing: border-box;
+	position: relative;
 	border: 1px solid var(--search-border, #cbd8d1);
 	border-radius: 8px;
 	background: var(--search-card, #fff);
@@ -119,6 +120,34 @@
 .syslogChart {
 	min-height: 260px;
 	padding: 6px 6px 0 0;
+}
+
+/* Bottom-right drag handle; expands the pointer target to the corner. */
+.syslogDashboardCardResize {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 20px;
+	height: 20px;
+	cursor: nwse-resize;
+	touch-action: none;
+}
+
+.syslogDashboardCardResize::after {
+	content: '';
+	position: absolute;
+	right: 4px;
+	bottom: 4px;
+	width: 8px;
+	height: 8px;
+	border-right: 2px solid var(--search-muted, #596d64);
+	border-bottom: 2px solid var(--search-muted, #596d64);
+	opacity: 0.6;
+}
+
+.syslogDashboardCardResize:hover::after,
+.syslogDashboardCardResize:focus::after {
+	opacity: 1;
 }
 
 .syslogDashboardCardStatus {

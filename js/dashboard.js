@@ -9,6 +9,12 @@
 /* Chart handles so panels can be destroyed before re-rendering. */
 var syslogDashboardCharts = {};
 
+/* Resizing limits; mirrored server-side by syslog_dashboard_*_cap(). */
+var syslogDashboardWidthMax = 3;
+var syslogDashboardHeightMin = 140;
+var syslogDashboardHeightMax = 1200;
+var syslogDashboardHeightDefault = 260;
+
 function syslogDashboardPost(data, done) {
 	data.tab = 'dashboard';
 	data.__csrf_magic = csrfMagicToken;
@@ -73,7 +79,112 @@ function syslogDashboardPanelCard(panel) {
 	status.textContent = '...';
 	card.append(status);
 
+	var resize = document.createElement('span');
+	resize.className = 'syslogDashboardCardResize';
+	resize.setAttribute('aria-hidden', 'true');
+	card.append(resize);
+
+	syslogDashboardApplySize(panel, card);
+
 	return card;
+}
+
+/** Apply a panel's persisted grid span and chart height to its card. */
+function syslogDashboardApplySize(panel, card) {
+	var chart = card.querySelector('.syslogChart');
+	var span = Math.min(Math.max(parseInt(panel.width, 10) || 1, 1), syslogDashboardWidthMax);
+	var height = parseInt(panel.height, 10) || 0;
+
+	card.style.gridColumn = 'span ' + span;
+
+	if (chart) {
+		if (height > 0) {
+			chart.style.minHeight = height + 'px';
+			chart.style.height = height + 'px';
+		} else {
+			chart.style.minHeight = '';
+			chart.style.height = '';
+		}
+	}
+}
+
+/**
+ * Drag the corner handle to resize a panel: horizontally it snaps to whole
+ * grid columns, vertically to pixels. The final size is persisted so it
+ * survives reloads.
+ */
+function syslogDashboardInitResize(card, panel) {
+	var handle = card.querySelector('.syslogDashboardCardResize');
+	if (!handle) return;
+
+	handle.addEventListener('pointerdown', function(event) {
+		event.preventDefault();
+
+		var grid = document.getElementById('syslog_dashboard_grid');
+		var chart = card.querySelector('.syslogChart');
+		var gridStyle = getComputedStyle(grid);
+		var chartStyle = getComputedStyle(chart);
+		var columns = (gridStyle.gridTemplateColumns || '').split(' ').filter(Boolean);
+		var colWidth = columns.length ? parseFloat(columns[0]) : card.getBoundingClientRect().width;
+		var colGap = parseFloat(gridStyle.columnGap) || 0;
+		var padY = parseFloat(chartStyle.paddingTop) + parseFloat(chartStyle.paddingBottom);
+		var startX = event.clientX;
+		var startY = event.clientY;
+		var startWidth = card.getBoundingClientRect().width;
+		var startHeight = chart.clientHeight - padY;
+		var span = Math.min(Math.max(parseInt(panel.width, 10) || 1, 1), syslogDashboardWidthMax);
+		var height = 0;
+
+		handle.setPointerCapture(event.pointerId);
+
+		function onMove(moveEvent) {
+			var dx = moveEvent.clientX - startX;
+			var dy = moveEvent.clientY - startY;
+
+			span = Math.round((startWidth + dx + colGap) / (colWidth + colGap));
+			span = Math.min(Math.max(span, 1), syslogDashboardWidthMax);
+			card.style.gridColumn = 'span ' + span;
+
+			height = Math.round(startHeight + dy);
+			height = Math.min(Math.max(height, syslogDashboardHeightMin), syslogDashboardHeightMax);
+			chart.style.minHeight = height + 'px';
+			chart.style.height = height + 'px';
+		}
+
+		function onUp() {
+			handle.removeEventListener('pointermove', onMove);
+			handle.removeEventListener('pointerup', onUp);
+			handle.removeEventListener('pointercancel', onUp);
+
+			// billboard.js reflows on window resize; nudge it so the chart
+			// fills the resized panel without refetching data.
+			window.dispatchEvent(new Event('resize'));
+
+			// Sizes at the default height are stored as 0 (follow default).
+			var savedHeight = Math.abs(height - syslogDashboardHeightDefault) < 13 ? 0 : height;
+			var currentWidth = parseInt(panel.width, 10) || 1;
+
+			if (span === currentWidth && savedHeight === (parseInt(panel.height, 10) || 0)) {
+				return;
+			}
+
+			panel.width = span;
+			panel.height = savedHeight;
+
+			syslogDashboardPost({
+				action: 'dashboard_panel_save',
+				dashboard_id: syslogDashboard.dashboardId,
+				panel_id: panel.id,
+				panel_resize: '1',
+				width: span,
+				height: savedHeight
+			});
+		}
+
+		handle.addEventListener('pointermove', onMove);
+		handle.addEventListener('pointerup', onUp);
+		handle.addEventListener('pointercancel', onUp);
+	});
 }
 
 function actionButtons() {
@@ -181,7 +292,9 @@ function syslogDashboardRenderGrid() {
 	syslogDashboardCharts = {};
 
 	(syslogDashboard.panels || []).forEach(function(panel) {
-		grid.append(syslogDashboardPanelCard(panel));
+		var card = syslogDashboardPanelCard(panel);
+		grid.append(card);
+		syslogDashboardInitResize(card, panel);
 		syslogDashboardLoadPanel(panel);
 	});
 }
