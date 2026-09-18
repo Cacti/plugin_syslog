@@ -1730,9 +1730,19 @@ function syslog_config_arrays() {
 		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
 	}
 
+	// Group all syslog realms under their own permissions section, as the
+	// audit plugin does, instead of the generic Plugin Permissions section.
 	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('Normal User'), ['syslog.php']);
-		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php']);
+		auth_augment_roles(__('Syslog', 'syslog'), [
+			'syslog.php',
+			'syslog_alerts.php',
+			'syslog_removal.php',
+			'syslog_reports.php',
+			'syslog_saved_searches.php',
+			'syslog_dashboards.php',
+			'syslog_saved_searches_share.php',
+			'syslog_dashboards_share.php'
+		]);
 	}
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {

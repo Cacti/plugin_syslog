@@ -2,6 +2,12 @@
 
 --- develop ---
 
+* change: Group all syslog permission realms under their own "Syslog"
+  section on the User and Group Permissions pages, as the audit plugin
+  does, instead of the generic Plugin Permissions section; this also
+  moves the Share Saved Templates and Share Dashboards realms, which
+  previously fell under the generic section
+
 * feature: Add dashboard sharing, gated by a new "Share Dashboards" user and
   group permission realm: owners with the permission can share a dashboard
   with all syslog users, shared dashboards are view-only for other users and
