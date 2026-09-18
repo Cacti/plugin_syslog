@@ -772,11 +772,12 @@ function syslog_action_edit() {
 		}
 		alertFilterBuilder = new SyslogFilterBuilder(builder, alertFilterConfig);
 		$('#type').off('change.syslogAlertFilter').on('change.syslogAlertFilter', changeTypes);
-		$('#syslog_edit').off('submit.syslogAlertFilter').on('submit.syslogAlertFilter', function(event) {
+		document.getElementById('syslog_edit').addEventListener('submit', function(event) {
 			if ($('#type').val() == 'filter' && !alertFilterBuilder.syncTo(message)) {
 				event.preventDefault();
+				event.stopImmediatePropagation();
 			}
-		});
+		}, true);
 		changeTypes();
 
 		if (!allowEdits) {
