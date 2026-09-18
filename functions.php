@@ -292,6 +292,16 @@ function syslog_saved_search_share() {
 	return syslog_saved_search_admin() || api_plugin_user_realm_auth('syslog_saved_searches_share.php');
 }
 
+/** Permission to manage all dashboards, including other users' shared dashboards. */
+function syslog_dashboard_admin() {
+	return api_plugin_user_realm_auth('syslog_alerts.php');
+}
+
+/** Permission to share dashboards with all syslog users. */
+function syslog_dashboard_share() {
+	return syslog_dashboard_admin() || api_plugin_user_realm_auth('syslog_dashboards_share.php');
+}
+
 function syslog_message_filter_value($value, $filter, $href = '') {
 	if (get_request_var('search_mode') != 'logical') {
 		return filter_value($value, $filter, $href);

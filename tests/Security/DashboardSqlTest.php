@@ -77,7 +77,7 @@ it('resolves breakdown dimensions through lookup subqueries', function () {
 	expect($sql)->not->toContain('syslog_hosts');
 });
 
-it('scopes panel and dashboard loads to the requesting user', function () {
+it('resolves dashboard loads by id and classifies ownership client-side', function () {
 	syslog_load_plugin_source('functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
@@ -99,19 +99,22 @@ it('scopes panel and dashboard loads to the requesting user', function () {
 
 	syslog_dashboard_load(7);
 
-	// Loads bind the id and owner parameters.
+	// Loads bind the id only; the capability helpers classify the row.
 	expect($calls[0]['sql'])->toContain('WHERE id = ?');
-	expect($calls[0]['sql'])->toContain("AND `user` = ?");
-	expect($calls[0]['params'])->toBe([7, 'alice']);
+	expect($calls[0]['sql'])->not->toContain('AND `user` = ?');
+	expect($calls[0]['params'])->toBe([7]);
 
 	$calls = [];
 
 	syslog_dashboard_load_panel(13);
 
-	// Panel loads join dashboard ownership and scope by owner.
+	// Panel loads join the dashboard and return its ownership columns so
+	// callers can gate reads and writes.
 	expect($calls[0]['sql'])->toContain('INNER JOIN `syslogdb`.`syslog_dashboards`');
-	expect($calls[0]['sql'])->toContain("AND d.`user` = ?");
-	expect($calls[0]['params'])->toBe([13, 'alice']);
+	expect($calls[0]['sql'])->toContain('d.`user` AS dashboard_user');
+	expect($calls[0]['sql'])->toContain('d.is_global AS dashboard_global');
+	expect($calls[0]['sql'])->not->toContain("AND d.`user` = ?");
+	expect($calls[0]['params'])->toBe([13]);
 });
 
 it('repositions panels within one dashboard only', function () {

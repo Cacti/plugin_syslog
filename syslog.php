@@ -105,6 +105,18 @@ if (get_request_var('action') == 'dashboard_panel_save') {
 	exit;
 }
 
+if (get_request_var('action') == 'dashboard_global') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_global();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_copy') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_copy();
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab

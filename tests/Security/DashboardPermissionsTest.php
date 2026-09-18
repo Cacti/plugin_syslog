@@ -115,6 +115,117 @@ it('denies panel writes for panels outside the owned dashboard', function () {
 	expect($executed)->toBe([], 'No update statements run without panel ownership');
 });
 
+it('treats another user\'s shared dashboard as view-only', function () {
+	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('lib/syslog_dashboard.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+
+	$_SESSION['sess_user_id'] = 42;
+
+	test_override('get_username', function ($id) {
+		return 'alice';
+	});
+
+	// A dashboard bob shared with everyone; alice is not an administrator.
+	$global_dashboard = ['id' => 6, 'name' => 'Shared Ops', 'user' => 'bob', 'is_global' => 'on'];
+	$shared_panel = ['id' => 77, 'dashboard_id' => 6, 'dashboard_user' => 'bob', 'dashboard_global' => 'on'];
+
+	test_override('syslog_db_fetch_row_prepared', function ($sql, $params) use ($global_dashboard, $shared_panel) {
+		if (str_contains($sql, 'INNER JOIN') !== false) {
+			return $shared_panel;
+		}
+
+		return $global_dashboard;
+	});
+
+	test_override('api_plugin_user_realm_auth', function ($file) {
+		return false;
+	});
+
+	$executed = [];
+
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$executed) {
+		$executed[] = $sql;
+
+		return true;
+	});
+
+	$GLOBALS['request'] = [
+		'name'            => 'Shared Ops',
+		'id'              => '6',
+		'dashboard_delete' => '1'
+	];
+
+	$result = json_decode(syslog_dashboard_save(), true);
+
+	expect($result['error'])->toBe('Dashboard not found.', 'Deleting a foreign shared dashboard is refused');
+	expect($executed)->toBe([], 'No delete statements run without admin rights');
+
+	$GLOBALS['request']['dashboard_delete'] = '';
+	$result = json_decode(syslog_dashboard_save(), true);
+
+	expect($result['error'])->toBe('Dashboard not found.', 'Renaming a foreign shared dashboard is refused');
+	expect($executed)->toBe([], 'No update statements run without admin rights');
+
+	// Panel writes on the shared dashboard are refused the same way.
+	$GLOBALS['request'] = [
+		'dashboard_id' => '6',
+		'panel_id'     => '77',
+		'panel_delete' => '1'
+	];
+
+	$result = json_decode(syslog_dashboard_panel_save(), true);
+
+	expect($result['error'])->toBe('Dashboard not found.', 'Panel writes on a foreign shared dashboard are refused');
+	expect($executed)->toBe([], 'No panel delete statements run without admin rights');
+});
+
+it('lets an administrator edit a shared dashboard', function () {
+	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('lib/syslog_dashboard.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+
+	$_SESSION['sess_user_id'] = 42;
+
+	test_override('get_username', function ($id) {
+		return 'alice';
+	});
+
+	$global_dashboard = ['id' => 6, 'name' => 'Shared Ops', 'user' => 'bob', 'is_global' => 'on'];
+
+	test_override('syslog_db_fetch_row_prepared', function ($sql, $params) use ($global_dashboard) {
+		if (str_contains($sql, 'INNER JOIN') === false) {
+			return $global_dashboard;
+		}
+
+		return false;
+	});
+
+	test_override('api_plugin_user_realm_auth', function ($file) {
+		return true;
+	});
+
+	$executed = [];
+
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$executed) {
+		$executed[] = $sql;
+
+		return true;
+	});
+
+	$GLOBALS['request'] = [
+		'name' => 'Renamed Ops',
+		'id'   => '6'
+	];
+
+	$result = json_decode(syslog_dashboard_save(), true);
+
+	expect($result)->toBe(['id' => 6], 'An admin renames a shared dashboard');
+	expect($executed)->not->toBe([], 'The rename update runs for an admin');
+});
+
 it('rejects panel definitions that fail validation or the search DSL', function () {
 	syslog_load_plugin_source('functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');

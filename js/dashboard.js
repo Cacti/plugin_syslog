@@ -55,7 +55,7 @@ function syslogDashboardPanelCard(panel) {
 
 	var header = document.createElement('header');
 	header.className = 'syslogDashboardCardHeader';
-	header.setAttribute('draggable', 'true');
+	if (syslogDashboard.canManage) header.setAttribute('draggable', 'true');
 
 	var title = document.createElement('h3');
 	title.className = 'syslogDashboardCardTitle';
@@ -80,15 +80,18 @@ function syslogDashboardPanelCard(panel) {
 	status.textContent = '...';
 	card.append(status);
 
-	var resize = document.createElement('span');
-	resize.className = 'syslogDashboardCardResize';
-	resize.setAttribute('aria-hidden', 'true');
-	card.append(resize);
+	// Shared dashboards are view-only: no resize or drag affordances.
+	if (syslogDashboard.canManage) {
+		var resize = document.createElement('span');
+		resize.className = 'syslogDashboardCardResize';
+		resize.setAttribute('aria-hidden', 'true');
+		card.append(resize);
 
-	var edge = document.createElement('span');
-	edge.className = 'syslogDashboardCardResizeRight';
-	edge.setAttribute('aria-hidden', 'true');
-	card.append(edge);
+		var edge = document.createElement('span');
+		edge.className = 'syslogDashboardCardResizeRight';
+		edge.setAttribute('aria-hidden', 'true');
+		card.append(edge);
+	}
 
 	syslogDashboardApplySize(panel, card);
 
@@ -116,6 +119,8 @@ function syslogDashboardApplySize(panel, card) {
 
 /** Wire the corner and edge handles of a card to the resize logic. */
 function syslogDashboardInitResize(card, panel) {
+	if (!syslogDashboard.canManage) return;
+
 	var corner = card.querySelector('.syslogDashboardCardResize');
 	var edge = card.querySelector('.syslogDashboardCardResizeRight');
 
@@ -208,6 +213,9 @@ function syslogDashboardBindResize(handle, card, panel, axis) {
 }
 
 function actionButtons() {
+	// Shared dashboards are view-only for non-owners.
+	if (!syslogDashboard.canManage) return [];
+
 	var buttons = [];
 	// fa-pen: Font Awesome 5 (Cacti 1.2) dropped the FA4 fa-pencil name,
 	// which rendered an empty glyph and made the button look missing.
@@ -331,6 +339,8 @@ function syslogDashboardRenderGrid() {
  * directions without up/down buttons.
  */
 function syslogDashboardInitDrag(card, panel) {
+	if (!syslogDashboard.canManage) return;
+
 	var header = card.querySelector('.syslogDashboardCardHeader');
 	if (!header) return;
 
@@ -603,6 +613,30 @@ $(function() {
 
 		syslogDashboardPost({action: 'dashboard_save', id: id, dashboard_delete: '1'}, function() {
 			syslogDashboardLoad({});
+		});
+	});
+
+	// Share/unshare the selected dashboard with all syslog users; the server
+	// re-verifies the Share Dashboards permission and ownership.
+	$('#syslog_dashboard_share').click(function() {
+		var id = parseInt($('#syslog_dashboard_select').val(), 10);
+		if (!id) return;
+
+		syslogDashboardPost({action: 'dashboard_global', id: id}, function() {
+			syslogDashboardLoad({dashboard_id: id});
+		});
+	});
+
+	// Clone a shared dashboard into the viewer's own list.
+	$('#syslog_dashboard_copy').click(function() {
+		var id = parseInt($('#syslog_dashboard_select').val(), 10);
+		if (!id) return;
+
+		var current = $('#syslog_dashboard_select').find(':selected').text();
+		syslogDashboardPrompt(current + ' ' + syslogDashboard.text.copySuffix, function(name) {
+			syslogDashboardPost({action: 'dashboard_copy', id: id, name: name}, function(result) {
+				syslogDashboardLoad({dashboard_id: result.id});
+			});
 		});
 	});
 

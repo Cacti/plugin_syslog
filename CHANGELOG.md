@@ -2,6 +2,12 @@
 
 --- develop ---
 
+* feature: Add dashboard sharing, gated by a new "Share Dashboards" user and
+  group permission realm: owners with the permission can share a dashboard
+  with all syslog users, shared dashboards are view-only for other users and
+  offer "Save as my copy" to clone one into their own list, and
+  administrators manage every dashboard (including those of deleted users)
+  from a new Console page under Syslog Settings
 * feature: Add drag-and-drop panel reordering: drag a panel header and
   drop it above or below another panel; the placement line previews the
   target and the server renumbers positions gaplessly

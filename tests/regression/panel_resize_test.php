@@ -13,7 +13,7 @@ function get_nfilter_request_var($name) {
 function get_username($id) { return 'admin'; }
 function syslog_dashboard_load($id) {
 	// Only dashboard 5 exists for the current user.
-	return $id == 5 ? ['id' => 5, 'user' => 'admin'] : null;
+	return $id == 5 ? ['id' => 5, 'user' => 'admin', 'is_global' => ''] : null;
 }
 function syslog_dashboard_load_panel($id) {
 	$panels = [
@@ -21,13 +21,15 @@ function syslog_dashboard_load_panel($id) {
 			'id' => 7, 'dashboard_id' => 5, 'source' => 'syslog', 'kind' => 'timeseries',
 			'chart' => 'line', 'field' => 'host', 'interval' => 'dashboard',
 			'timespan' => 'dashboard', 'removal' => '1', 'top_n' => 10,
-			'width' => 1, 'height' => 0
+			'width' => 1, 'height' => 0,
+			'dashboard_user' => 'admin', 'dashboard_global' => ''
 		],
 		9 => [
 			'id' => 9, 'dashboard_id' => 6, 'source' => 'syslog', 'kind' => 'timeseries',
 			'chart' => 'line', 'field' => 'host', 'interval' => 'dashboard',
 			'timespan' => 'dashboard', 'removal' => '1', 'top_n' => 10,
-			'width' => 1, 'height' => 0
+			'width' => 1, 'height' => 0,
+			'dashboard_user' => 'admin', 'dashboard_global' => ''
 		]
 	];
 	return $panels[$id] ?? null;
@@ -61,8 +63,25 @@ $helpers = [
 	'function syslog_dashboard_width_cap()',
 	'function syslog_dashboard_height_min()',
 	'function syslog_dashboard_height_cap()',
-	'function syslog_dashboard_panel_settings('
+	'function syslog_dashboard_panel_settings(',
+	'function syslog_dashboard_username(',
+	'function syslog_dashboard_can_view(',
+	'function syslog_dashboard_can_edit(',
+	'function syslog_dashboard_panel_owner('
 ];
+
+// functions.php provides these realm helpers; ownership of an owned row
+// short-circuits before they are consulted, so a simple stub suffices.
+if (!function_exists('syslog_dashboard_admin')) {
+	function syslog_dashboard_admin() {
+		return false;
+	}
+}
+if (!function_exists('syslog_dashboard_share')) {
+	function syslog_dashboard_share() {
+		return false;
+	}
+}
 
 foreach ($helpers as $marker) {
 	$from = strpos($source, $marker);

@@ -421,7 +421,9 @@ function syslog_dashboard_panel_settings($panel) {
 }
 
 /**
- * Fetch and validate a panel owned by the current user.
+ * Fetch and validate a panel by id, joined with its dashboard ownership
+ * columns. Callers gate reads with syslog_dashboard_can_view() and writes
+ * with syslog_dashboard_can_edit().
  *
  * @param int $panel_id Panel id.
  *
@@ -430,18 +432,35 @@ function syslog_dashboard_panel_settings($panel) {
 function syslog_dashboard_load_panel($panel_id) {
 	global $syslogdb_default;
 
-	$username = get_username($_SESSION['sess_user_id']);
-
-	$panel = syslog_db_fetch_row_prepared("SELECT p.*
+	$panel = syslog_db_fetch_row_prepared("SELECT p.*,
+		d.`user` AS dashboard_user, d.is_global AS dashboard_global
 		FROM `$syslogdb_default`.`syslog_dashboard_panels` AS p
 		INNER JOIN `$syslogdb_default`.`syslog_dashboards` AS d
 		ON p.dashboard_id = d.id
-		WHERE p.id = ?
-		AND d.`user` = ?",
-		[$panel_id, $username]);
+		WHERE p.id = ?",
+		[$panel_id]);
 
 	// Some Cacti versions return [] rather than false when no row matches.
 	return $panel === false || $panel === null || !cacti_sizeof($panel) ? null : $panel;
+}
+
+/**
+ * A panel row as a dashboard-shaped row, so the capability helpers can
+ * classify it from the joined columns.
+ *
+ * @param array $panel Row from syslog_dashboard_load_panel().
+ *
+ * @return array|null ['user' => ..., 'is_global' => ...], or null.
+ */
+function syslog_dashboard_panel_owner($panel) {
+	if ($panel === null || !isset($panel['dashboard_user'])) {
+		return null;
+	}
+
+	return [
+		'user'      => $panel['dashboard_user'],
+		'is_global' => $panel['dashboard_global']
+	];
 }
 
 /**
@@ -580,7 +599,7 @@ function syslog_dashboard_chart_data() {
 
 	$panel = syslog_dashboard_load_panel($panel_id);
 
-	if ($panel === null) {
+	if ($panel === null || !syslog_dashboard_can_view(syslog_dashboard_panel_owner($panel))) {
 		return json_encode(['error' => __('Dashboard panel not found.', 'syslog')]);
 	}
 
@@ -600,32 +619,57 @@ function syslog_dashboard_request_timespan() {
 	return $timespan === 'dashboard' ? 86400 : syslog_dashboard_timespan_seconds($timespan);
 }
 
-/** Owned dashboard row for the current user, or null. */
+/**
+ * Dashboard row by id, regardless of owner. Callers must gate reads with
+ * syslog_dashboard_can_view() and writes with syslog_dashboard_can_edit().
+ *
+ * @param int $dashboard_id Dashboard id.
+ *
+ * @return array|null Dashboard row, or null.
+ */
 function syslog_dashboard_load($dashboard_id) {
 	global $syslogdb_default;
 
-	$username = get_username($_SESSION['sess_user_id']);
-
 	$dashboard = syslog_db_fetch_row_prepared("SELECT *
 		FROM `$syslogdb_default`.`syslog_dashboards`
-		WHERE id = ?
-		AND `user` = ?",
-		[$dashboard_id, $username]);
+		WHERE id = ?",
+		[$dashboard_id]);
 
 	// Some Cacti versions return [] rather than false when no row matches.
 	return $dashboard === false || $dashboard === null || !cacti_sizeof($dashboard) ? null : $dashboard;
 }
 
-/** All dashboards owned by the current user. */
+/** Current username, or an empty string outside a session. */
+function syslog_dashboard_username() {
+	return isset($_SESSION['sess_user_id']) ? get_username($_SESSION['sess_user_id']) : '';
+}
+
+/** May the current user see this dashboard: owned, or shared with everyone. */
+function syslog_dashboard_can_view($dashboard) {
+	return $dashboard !== null
+		&& ($dashboard['user'] === syslog_dashboard_username() || $dashboard['is_global'] === 'on');
+}
+
+/** May the current user change this dashboard: owned, or shared and an administrator. */
+function syslog_dashboard_can_edit($dashboard) {
+	if (!syslog_dashboard_can_view($dashboard)) {
+		return false;
+	}
+
+	return $dashboard['user'] === syslog_dashboard_username()
+		|| ($dashboard['is_global'] === 'on' && syslog_dashboard_admin());
+}
+
+/** Dashboards the current user owns, plus every shared dashboard. */
 function syslog_dashboard_list() {
 	global $syslogdb_default;
 
-	$username = get_username($_SESSION['sess_user_id']);
+	$username = syslog_dashboard_username();
 
-	return syslog_db_fetch_assoc_prepared("SELECT id, name
+	return syslog_db_fetch_assoc_prepared("SELECT id, name, `user`, is_global
 		FROM `$syslogdb_default`.`syslog_dashboards`
-		WHERE `user` = ?
-		ORDER BY name",
+		WHERE `user` = ? OR is_global = 'on'
+		ORDER BY is_global, name",
 		[$username]);
 }
 
@@ -680,7 +724,9 @@ function syslog_dashboard_save() {
 			return json_encode(['error' => __('A valid dashboard is required.', 'syslog')]);
 		}
 
-		if (syslog_dashboard_load($id) === null) {
+		$dashboard = syslog_dashboard_load($id);
+
+		if (!syslog_dashboard_can_edit($dashboard)) {
 			return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 		}
 
@@ -695,7 +741,9 @@ function syslog_dashboard_save() {
 	}
 
 	if ($id > 0) {
-		if (syslog_dashboard_load($id) === null) {
+		$dashboard = syslog_dashboard_load($id);
+
+		if (!syslog_dashboard_can_edit($dashboard)) {
 			return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 		}
 
@@ -728,6 +776,127 @@ function syslog_dashboard_save() {
 }
 
 /**
+ * JSON endpoint: toggle sharing of a dashboard with all syslog users.
+ * Mirrors saved_search_global(): requires the Share Dashboards permission,
+ * and only the owner or an administrator may change a dashboard.
+ *
+ * @return string JSON response.
+ */
+function syslog_dashboard_global() {
+	global $syslogdb_default;
+
+	if (!isset($_SESSION['sess_user_id'])) {
+		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+	}
+
+	if (!syslog_dashboard_share()) {
+		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+	}
+
+	$username = syslog_dashboard_username();
+	$id       = get_filter_request_var('id', FILTER_VALIDATE_INT);
+
+	if ($id === false || $id === null || $id <= 0) {
+		return json_encode(['error' => __('A valid dashboard is required.', 'syslog')]);
+	}
+
+	$row = syslog_dashboard_load($id);
+
+	if ($row === null) {
+		return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
+	}
+
+	if ($row['user'] !== $username && !syslog_dashboard_admin()) {
+		return json_encode(['error' => __('You may only share your own dashboards.', 'syslog')]);
+	}
+
+	$is_global = $row['is_global'] === 'on' ? '' : 'on';
+
+	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboards`
+		SET is_global = ?, updated = ?
+		WHERE id = ?",
+		[$is_global, time(), $id]);
+
+	return json_encode(['id' => (int) $id, 'is_global' => $is_global]);
+}
+
+/**
+ * JSON endpoint: clone a dashboard the current user can see (typically a
+ * shared one) into their own list, panels and all.
+ *
+ * @return string JSON response.
+ */
+function syslog_dashboard_copy() {
+	global $syslogdb_default;
+
+	if (!isset($_SESSION['sess_user_id'])) {
+		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+	}
+
+	$username = syslog_dashboard_username();
+	$id       = get_filter_request_var('id', FILTER_VALIDATE_INT);
+
+	if ($id === false || $id === null || $id <= 0) {
+		return json_encode(['error' => __('A valid dashboard is required.', 'syslog')]);
+	}
+
+	$source = syslog_dashboard_load($id);
+
+	if (!syslog_dashboard_can_view($source)) {
+		return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
+	}
+
+	$name = trim((string) get_nfilter_request_var('name'));
+
+	if ($name === '') {
+		$name = trim((string) $source['name']) . ' ' . __('copy', 'syslog');
+	}
+
+	if (strlen($name) > 128) {
+		return json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
+	}
+
+	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
+		(name, `user`, is_global, `date`, updated)
+		VALUES (?, ?, '', ?, ?)",
+		[$name, $username, time(), time()]);
+
+	// Resolve the new id before copying: some Cacti builds do not expose a
+	// reliable insert id, so fall back to an owner-scoped lookup.
+	$new_id = (int) syslog_db_fetch_insert_id();
+
+	if ($new_id <= 0) {
+		$new_id = (int) syslog_db_fetch_cell_prepared("SELECT id
+			FROM `$syslogdb_default`.`syslog_dashboards`
+			WHERE `user` = ? AND name = ?
+			ORDER BY id DESC",
+			[$username, $name]);
+	}
+
+	if ($new_id <= 0) {
+		return json_encode(['error' => __('Dashboard could not be copied.', 'syslog')]);
+	}
+
+	$panels = syslog_dashboard_panels($id);
+
+	if (cacti_sizeof($panels)) {
+		foreach ($panels as $panel) {
+			syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
+				(dashboard_id, title, expression, source, removal, kind, chart, field,
+				`interval`, timespan, top_n, width, height, position, `date`)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				[$new_id, $panel['title'], $panel['expression'], $panel['source'],
+					(int) $panel['removal'], $panel['kind'], $panel['chart'], $panel['field'],
+					$panel['interval'], $panel['timespan'], (int) $panel['top_n'],
+					(int) $panel['width'], (int) $panel['height'],
+					(int) $panel['position'], time()]);
+		}
+	}
+
+	return json_encode(['id' => $new_id]);
+}
+
+/**
  * JSON endpoint: create or update a panel, or delete/reposition one.
  * Every write re-verifies dashboard ownership.
  *
@@ -752,7 +921,7 @@ function syslog_dashboard_panel_save() {
 		return json_encode(['error' => __('A valid dashboard is required.', 'syslog')]);
 	}
 
-	if (syslog_dashboard_load($dashboard_id) === null) {
+	if (!syslog_dashboard_can_edit(syslog_dashboard_load($dashboard_id))) {
 		return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 	}
 
@@ -764,7 +933,8 @@ function syslog_dashboard_panel_save() {
 
 		$panel = syslog_dashboard_load_panel($panel_id);
 
-		if ($panel === null || (int) $panel['dashboard_id'] !== (int) $dashboard_id) {
+		if ($panel === null || !syslog_dashboard_can_edit(syslog_dashboard_panel_owner($panel))
+			|| (int) $panel['dashboard_id'] !== (int) $dashboard_id) {
 			return json_encode(['error' => __('Dashboard panel not found.', 'syslog')]);
 		}
 
@@ -850,7 +1020,8 @@ function syslog_dashboard_panel_save() {
 	if ($panel_id > 0) {
 		$existing = syslog_dashboard_load_panel($panel_id);
 
-		if ($existing === null || (int) $existing['dashboard_id'] !== (int) $dashboard_id) {
+		if ($existing === null || !syslog_dashboard_can_edit(syslog_dashboard_panel_owner($existing))
+			|| (int) $existing['dashboard_id'] !== (int) $dashboard_id) {
 			return json_encode(['error' => __('Dashboard panel not found.', 'syslog')]);
 		}
 
@@ -980,15 +1151,33 @@ function syslog_dashboard() {
 	$dashboards    = syslog_dashboard_list();
 	$dashboard_id  = get_filter_request_var('dashboard_id', FILTER_VALIDATE_INT);
 
-	// Keep only an owned dashboard selected; fall back to the first one so
-	// the tab opens ready instead of the empty state while one exists.
-	if ($dashboard_id === false || $dashboard_id === null || syslog_dashboard_load($dashboard_id) === null) {
+	// Keep only a viewable dashboard selected; fall back to the first owned
+	// one so the tab opens ready instead of the empty state while one exists.
+	if ($dashboard_id === false || $dashboard_id === null
+		|| !syslog_dashboard_can_view(syslog_dashboard_load($dashboard_id))) {
 		$dashboard_id = 0;
 	}
 
+	// Never auto-select a shared dashboard; only an owned one opens by default.
 	if ($dashboard_id === 0 && cacti_sizeof($dashboards)) {
-		$dashboard_id = (int) reset($dashboards)['id'];
+		$username = syslog_dashboard_username();
+
+		foreach ($dashboards as $dashboard) {
+			if ($dashboard['user'] === $username) {
+				$dashboard_id = (int) $dashboard['id'];
+				break;
+			}
+		}
 	}
+
+	$selected = syslog_dashboard_load($dashboard_id);
+
+	// Match the server-side write permission of every dashboard endpoint.
+	$can_manage = syslog_dashboard_can_edit($selected);
+	$can_share  = syslog_dashboard_share();
+	// A shared dashboard owned by someone else is view-only for this user.
+	$is_shared  = $selected !== null && $selected['is_global'] === 'on'
+		&& $selected['user'] !== syslog_dashboard_username();
 
 	$panels = $dashboard_id > 0 ? syslog_dashboard_panels($dashboard_id) : [];
 
@@ -1048,6 +1237,9 @@ function syslog_dashboard() {
 		dashboardId: <?php print (int) $dashboard_id; ?>,
 		timespan: <?php print syslog_json_safe((string) get_nfilter_request_var('dashboard_timespan') ?: '86400'); ?>,
 		refresh: <?php print (int) get_request_var('refresh'); ?>,
+		canManage: <?php print $can_manage ? 'true' : 'false'; ?>,
+		canShare: <?php print $can_share ? 'true' : 'false'; ?>,
+		shared: <?php print $is_shared ? 'true' : 'false'; ?>,
 		text: {
 			libraryUnavailable: <?php print syslog_json_safe(__('Chart library unavailable on this Cacti installation.', 'syslog')); ?>,
 			editPanel: <?php print syslog_json_safe(__('Edit Panel', 'syslog')); ?>,
@@ -1058,7 +1250,11 @@ function syslog_dashboard() {
 			delete: <?php print syslog_json_safe(__('Delete', 'syslog')); ?>,
 			deletePanelConfirm: <?php print syslog_json_safe(__('Delete this dashboard panel?', 'syslog')); ?>,
 			deleteDashboardConfirm: <?php print syslog_json_safe(__('Delete this dashboard and all of its panels?', 'syslog')); ?>,
-			emptyTitle: <?php print syslog_json_safe(__('Name your dashboard', 'syslog')); ?>
+			emptyTitle: <?php print syslog_json_safe(__('Name your dashboard', 'syslog')); ?>,
+			makePrivate: <?php print syslog_json_safe(__('Make Private', 'syslog')); ?>,
+			shareDashboard: <?php print syslog_json_safe(__('Share with all', 'syslog')); ?>,
+			saveAsCopy: <?php print syslog_json_safe(__('Save as my copy', 'syslog')); ?>,
+			copySuffix: <?php print syslog_json_safe(__('copy', 'syslog')); ?>
 		}
 	};
 	</script>
@@ -1102,20 +1298,55 @@ function syslog_dashboard() {
 					</div>
 					<div class='syslogDashboardBarRow'>
 						<label for='syslog_dashboard_select'><?php print __('Dashboards', 'syslog'); ?></label>
-						<select id='syslog_dashboard_select'>
+						<select id='syslog_dashboard_select' data-admin='<?php print syslog_dashboard_admin() ? '1' : '0'; ?>'>
 							<?php
 							if (cacti_sizeof($dashboards)) {
+								// Mirrors the saved-search select: optgroups plus
+								// per-option ownership stamping for the JS layer.
+								$dashboard_groups = [
+									__('My Dashboards', 'syslog')     => [],
+									__('Global Dashboards', 'syslog') => []
+								];
+
 								foreach ($dashboards as $dashboard) {
-									print "<option value='" . (int) $dashboard['id'] . "'" . ((int) $dashboard['id'] === (int) $dashboard_id ? ' selected' : '') . '>' . html_escape($dashboard['name']) . '</option>';
+									$dashboard_groups[$dashboard['is_global'] === 'on' ? __('Global Dashboards', 'syslog') : __('My Dashboards', 'syslog')][] = $dashboard;
+								}
+
+								foreach ($dashboard_groups as $dashboard_label => $dashboard_group) {
+									if (!cacti_sizeof($dashboard_group)) {
+										continue;
+									}
+
+									print "<optgroup label='" . html_escape($dashboard_label) . "'>";
+
+									foreach ($dashboard_group as $dashboard) {
+										// Match the server-side write permission in syslog_dashboard_panel_save().
+										$manageable = syslog_dashboard_can_edit($dashboard);
+
+										print "<option value='" . (int) $dashboard['id'] . "' data-owner='" . html_escape($dashboard['user']) . "' data-global='" . ($dashboard['is_global'] === 'on' ? '1' : '0') . "' data-manage='" . ($manageable ? '1' : '0') . "'" . ((int) $dashboard['id'] === (int) $dashboard_id ? ' selected' : '') . '>' .
+											html_escape($dashboard['name']) . '</option>';
+									}
+
+									print '</optgroup>';
 								}
 							}
 							?>
 						</select>
 						<input type='button' id='syslog_dashboard_new' value='<?php print __esc('New', 'syslog'); ?>'>
+						<?php if ($can_manage) { ?>
 						<input type='button' id='syslog_dashboard_rename' value='<?php print __esc('Rename', 'syslog'); ?>'>
 						<input type='button' id='syslog_dashboard_delete' value='<?php print __esc('Delete', 'syslog'); ?>'>
+						<?php if ($can_share) { ?>
+						<input type='button' id='syslog_dashboard_share' value='<?php print ($selected !== null && $selected['is_global'] === 'on') ? __esc('Make Private', 'syslog') : __esc('Share with all', 'syslog'); ?>'>
+						<?php } ?>
+						<?php } ?>
+						<?php if ($is_shared) { ?>
+						<input type='button' id='syslog_dashboard_copy' value='<?php print __esc('Save as my copy', 'syslog'); ?>'>
+						<?php } ?>
 						<span class='syslogDashboardPanelActions'>
+							<?php if ($can_manage) { ?>
 							<input type='button' id='syslog_panel_new' value='<?php print __esc('Add Panel', 'syslog'); ?>'>
+							<?php } ?>
 						</span>
 					</div>
 				</section>
