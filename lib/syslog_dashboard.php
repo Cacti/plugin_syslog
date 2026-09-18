@@ -539,19 +539,17 @@ function syslog_dashboard_panel_data($panel, $dashboard_timespan) {
 
 	// billboard.js uses the label string as the series id; duplicate labels
 	// (two rows sharing a sanitized name) collide on one legend entry, so
-	// distinct rows are made unique before they reach the chart.
-	$labels = array_values(array_unique($labels));
-	$values = array_values(array_intersect_key($values, $labels));
+	// their counts are merged into a single slice instead.
+	$merged = [];
 
-	if (cacti_sizeof($labels) === 0) {
-		return [
-			'kind'   => 'breakdown',
-			'chart'  => $settings['chart'],
-			'labels' => [],
-			'series' => [[]],
-			'total'  => $total
-		];
+	if (cacti_sizeof($labels)) {
+		foreach ($labels as $index => $label) {
+			$merged[$label] = ($merged[$label] ?? 0) + $values[$index];
+		}
 	}
+
+	$labels = array_keys($merged);
+	$values = array_values($merged);
 
 	return [
 		'kind'   => 'breakdown',
