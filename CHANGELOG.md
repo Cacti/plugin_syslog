@@ -2,6 +2,11 @@
 
 --- develop ---
 
+* feature: Add drag-and-drop panel reordering: drag a panel header and
+  drop it above or below another panel; the placement line previews the
+  target and the server renumbers positions gaplessly
+* feature: Add a right-edge resize strip so panel width can be dragged
+  directly (ew-resize) instead of only the small corner grip
 * feature: Make dashboard panels resizable: drag the corner handle to span
   up to three grid columns and set the chart height; sizes persist per
   panel and dialog saves keep a user's custom sizing
