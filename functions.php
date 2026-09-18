@@ -789,6 +789,61 @@ function syslog_worker_stats_get() {
 	return $stats;
 }
 
+/**
+ * syslog_aggregate_worker_stats - collect and sum the per child
+ * statistics recorded in the settings table, then prune them.
+ *
+ * The rows are read with a dedicated fresh SELECT instead of
+ * read_config_option(): that helper caches values per process, and the
+ * master has already read these same keys while waiting out the
+ * references phase, where the moved count is always zero.  The cached
+ * references numbers would therefore make the transfer total and the
+ * 'Records processed' figure on the Syslog Status tab stay at zero.
+ * The settings table lives in the main Cacti database, so the core
+ * db helper is required here.
+ *
+ * @param int $workers The number of workers that may have run
+ *
+ * @return array Aggregated moved and resolved totals
+ */
+function syslog_aggregate_worker_stats($workers) {
+	$moved    = 0;
+	$resolved = 0;
+
+	$rows = db_fetch_assoc("SELECT `name`, `value`
+		FROM settings
+		WHERE `name` LIKE 'stats_syslog_child_%'");
+
+	foreach ($rows as $row) {
+		$child = (int) str_replace('stats_syslog_child_', '', $row['name']);
+
+		if ($child < 1 || $child > $workers) {
+			continue;
+		}
+
+		$data = json_decode((string) $row['value'], true);
+
+		if (!is_array($data)) {
+			cacti_log('WARNING: Ignoring malformed Syslog worker statistics.', false, 'SYSLOG');
+
+			continue;
+		}
+
+		$moved    += isset($data['moved']) ? (int) $data['moved'] : 0;
+		$resolved += isset($data['resolved']) ? (int) $data['resolved'] : 0;
+	}
+
+	// The settings table lives in the main Cacti database, not the
+	// syslog database, so the core helper is required here.
+	db_execute("DELETE FROM settings
+		WHERE name LIKE 'stats_syslog_child_%'");
+
+	syslog_status_set('last_worker_moved', $moved);
+	syslog_status_set('last_worker_resolved', $resolved);
+
+	return ['moved' => $moved, 'resolved' => $resolved];
+}
+
 function syslog_is_partitioned() {
 	global $syslogdb_default;
 

@@ -639,48 +639,6 @@ function syslog_kill_workers() {
 }
 
 /**
- * syslog_aggregate_worker_stats - collect and sum the per child
- * statistics recorded in the settings table, then prune them.
- *
- * @param int $workers The number of workers that may have run
- *
- * @return array Aggregated moved and resolved totals
- */
-function syslog_aggregate_worker_stats($workers) {
-	$moved    = 0;
-	$resolved = 0;
-
-	for ($i = 1; $i <= $workers; $i++) {
-		$stat = read_config_option('stats_syslog_child_' . $i);
-
-		if ($stat === false || $stat === '' || $stat === null) {
-			continue;
-		}
-
-		$data = json_decode($stat, true);
-
-		if (!is_array($data)) {
-			cacti_log('WARNING: Ignoring malformed Syslog worker statistics.', false, 'SYSLOG');
-
-			continue;
-		}
-
-		$moved    += isset($data['moved']) ? (int) $data['moved'] : 0;
-		$resolved += isset($data['resolved']) ? (int) $data['resolved'] : 0;
-	}
-
-	// The settings table lives in the main Cacti database, not the
-	// syslog database, so the core helper is required here.
-	db_execute("DELETE FROM settings
-		WHERE name LIKE 'stats_syslog_child_%'");
-
-	syslog_status_set('last_worker_moved', $moved);
-	syslog_status_set('last_worker_resolved', $resolved);
-
-	return ['moved' => $moved, 'resolved' => $resolved];
-}
-
-/**
  * display_version - displays version information
  *
  * @return (void)
