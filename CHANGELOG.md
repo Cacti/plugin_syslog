@@ -2,6 +2,21 @@
 
 --- develop ---
 
+* feature: Add an All Users / All Groups option to the Shared With Users and
+  Shared With Groups selects of the admin Dashboards and Saved Search
+  Templates pages: a single stored "all" grant makes the item visible to
+  every signed-in user, instead of selecting each account one by one
+
+* feature: Let administrators reassign the owner of a dashboard or saved
+  search template from the admin edit pages through an owner dropdown
+  instead of the read-only owner display
+
+* feature: Replace the inline Delete buttons on the admin Dashboards and
+  Saved Search Templates pages with Cacti's standard selection checkboxes
+  and bulk actions dropdown, matching the Alert Rules page: deleting now
+  asks for confirmation, lists the selected items, and runs through the
+  shared selected-items dispatch helper
+
 * feature: Add per-user and per-group dashboard and saved-search sharing to
   the admin Dashboards and Saved Search Templates pages with Cacti's jQuery
   multiselect widget: grants are stored in new syslog_dashboards_perm and

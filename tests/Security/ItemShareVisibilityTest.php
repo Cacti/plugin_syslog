@@ -138,3 +138,65 @@ it('replaces share rows and validates posted selections', function () {
 
 	expect($shares)->toBe(['users' => [['id' => 4]], 'groups' => [['id' => 7]]], 'Grants read back shaped for the multiselects');
 });
+it('grants everyone through the all sentinel', function () {
+	syslog_load_plugin_source('functions.php');
+
+	$captured = [];
+
+	test_override('db_fetch_assoc_prepared', function ($sql, $params = []) {
+		return [];
+	});
+
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params = [], $log = true) use (&$captured) {
+		$captured[] = [$sql, $params];
+
+		return [['id' => '9']];
+	});
+
+	$_SESSION = ['sess_user_id' => 2];
+
+	expect(syslog_shared_item_ids('saved_search'))->toBe([9], 'The granted id resolves');
+
+	// An 'all' row must be part of the same query, with no extra binds.
+	expect(str_contains($captured[0][0], "type = 'all'"))->toBeTrue('The everyone grant is matched');
+	expect($captured[0][1])->toBe([2], 'Only the session user binds for the user clause');
+
+	$statements = [];
+
+	test_override('syslog_db_execute_prepared', function ($sql, $params = []) use (&$statements) {
+		$statements[] = [$sql, $params];
+
+		return true;
+	});
+
+	syslog_save_item_shares('dashboard', 12, ['all'], [7]);
+
+	expect(cacti_sizeof($statements))->toBe(3, 'The all grant writes one row alongside the others');
+	expect($statements[1][1])->toBe([12, 'all', 0], 'The all grant stores a single item_id 0 row');
+	expect($statements[2][1])->toBe([12, 'group', 7], 'Group grants still store normally');
+
+	syslog_save_item_shares('dashboard', 13, ['all', 'all'], []);
+
+	expect(cacti_sizeof($statements))->toBe(5, 'Duplicate all sentinels collapse to one row');
+	expect($statements[4][1])->toBe([13, 'all', 0], 'No user rows follow an all-only selection');
+
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params = [], $log = true) {
+		return [['type' => 'all', 'item_id' => '0']];
+	});
+
+	$shares = syslog_fetch_item_shares('saved_search', 5);
+
+	expect($shares)->toBe(['users' => [['id' => 'all']], 'groups' => [['id' => 'all']]], 'The all grant reads back into both selects');
+
+	test_override('isset_request_var', function ($name) {
+		return isset($_REQUEST[$name]);
+	});
+
+	test_override('get_nfilter_request_var', function ($name) {
+		return $_REQUEST[$name];
+	});
+
+	$_REQUEST['shared_users'] = ['all', '3', 'all', 'x', 0];
+
+	expect(syslog_parse_share_ids('shared_users'))->toBe(['all', 3], 'The all sentinel survives parsing and deduplication');
+});

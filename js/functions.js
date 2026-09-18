@@ -290,23 +290,6 @@ function initSyslogTemplates() {
 			$('#template_search').val(expression);
 		}
 	});
-	$('.syslogTemplateDelete').off('submit.syslogTemplates').on('submit.syslogTemplates', function(event) {
-		if (this.dataset.confirmed === 'true') return;
-		event.preventDefault();
-		var form = this;
-		$('<div>').text(form.dataset.confirm).dialog({
-			modal: true, title: form.dataset.title, width: Math.min(440, window.innerWidth - 32),
-			close: function() { $(this).dialog('destroy').remove(); },
-			buttons: [
-				{text: form.dataset.cancel, click: function() { $(this).dialog('close'); }},
-				{text: form.dataset.delete, click: function() {
-					form.dataset.confirmed = 'true';
-					$(this).dialog('close');
-					form.requestSubmit();
-				}}
-			]
-		});
-	});
 }
 
 function initSyslogSearchDates(container) {

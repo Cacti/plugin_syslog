@@ -346,7 +346,8 @@ function syslog_user_group_ids($user_id = 0) {
 
 /**
  * Ids of one shareable item kind granted to the current user or one of
- * their groups. Returns [] outside a session or when nothing is granted.
+ * their groups, plus anything granted to everyone through an 'all' row.
+ * Returns [] outside a session or when nothing is granted.
  */
 function syslog_shared_item_ids($item) {
 	global $syslogdb_default;
@@ -375,7 +376,7 @@ function syslog_shared_item_ids($item) {
 
 	$sql = "SELECT $column AS id
 		FROM `$syslogdb_default`.`$table`
-		WHERE type = 'user' AND item_id = ?";
+		WHERE (type = 'user' AND item_id = ?) OR type = 'all'";
 	$params = [$user_id];
 
 	if (cacti_sizeof($group_ids)) {
@@ -424,16 +425,22 @@ function syslog_fetch_item_shares($item, $item_id) {
 
 	if (cacti_sizeof($rows)) {
 		foreach ($rows as $row) {
-			$key = $row['type'] === 'group' ? 'groups' : 'users';
+			if ($row['type'] === 'all') {
+				// The 'all' grant shows in both selects of the admin forms.
+				$shares['users'][]  = ['id' => 'all'];
+				$shares['groups'][] = ['id' => 'all'];
+			} else {
+				$key = $row['type'] === 'group' ? 'groups' : 'users';
 
-			$shares[$key][] = ['id' => (int) $row['item_id']];
+				$shares[$key][] = ['id' => (int) $row['item_id']];
+			}
 		}
 	}
 
 	return $shares;
 }
 
-/** Normalize a posted multiselect of user or group ids to unique integers. */
+/** Normalize a posted multiselect of user or group ids to unique integers, allowing the 'all' sentinel. */
 function syslog_parse_share_ids($name) {
 	if (!isset_request_var($name)) {
 		return [];
@@ -448,7 +455,9 @@ function syslog_parse_share_ids($name) {
 	$ids = [];
 
 	foreach ($raw as $id) {
-		if ((int) $id > 0) {
+		if ($id === 'all') {
+			$ids[] = 'all';
+		} elseif ((int) $id > 0) {
 			$ids[] = (int) $id;
 		}
 	}
@@ -458,7 +467,8 @@ function syslog_parse_share_ids($name) {
 
 /**
  * Replace the user and group share rows of one item. Unknown ids are kept;
- * they simply never match a real user or group.
+ * they simply never match a real user or group. The 'all' sentinel grants
+ * the item to every signed-in user with a single row (item_id 0).
  */
 function syslog_save_item_shares($item, $item_id, $users, $groups) {
 	global $syslogdb_default;
@@ -476,10 +486,14 @@ function syslog_save_item_shares($item, $item_id, $users, $groups) {
 		[(int) $item_id]);
 
 	// Duplicates would collide with the composite primary key.
-	$users  = array_unique(array_map('intval', $users));
-	$groups = array_unique(array_map('intval', $groups));
+	$users  = array_unique(array_map('strval', $users));
+	$groups = array_unique(array_map('strval', $groups));
 
 	$grants = [];
+
+	if (in_array('all', $users, true) || in_array('all', $groups, true)) {
+		$grants[] = [(int) $item_id, 'all', 0];
+	}
 
 	foreach ($users as $user_id) {
 		if ((int) $user_id > 0) {
