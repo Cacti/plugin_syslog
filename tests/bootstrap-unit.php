@@ -401,6 +401,12 @@ if (!function_exists('cacti_sizeof')) {
 	}
 }
 
+if (!function_exists('cacti_process_still_running')) {
+	function cacti_process_still_running($pid) {
+		return test_call_override('cacti_process_still_running', [$pid], true);
+	}
+}
+
 if (!function_exists('is_realm_allowed')) {
 	function is_realm_allowed($realm) {
 		return test_call_override('is_realm_allowed', [$realm], true);

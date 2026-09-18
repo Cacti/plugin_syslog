@@ -48,8 +48,15 @@ ob_implicit_flush();
 
 global $debug, $syslog_facilities, $syslog_levels;
 
-$debug  = false;
-$forcer = false;
+global $child, $run_id, $phase, $seq_start, $seq_end;
+
+$debug     = false;
+$forcer    = false;
+$child     = 0;
+$run_id    = '';
+$phase     = '';
+$seq_start = 0;
+$seq_end   = 0;
 
 // process calling arguments
 $parms = $_SERVER['argv'];
@@ -73,6 +80,56 @@ if (cacti_sizeof($parms)) {
 			case '--force-report':
 			case '-F':
 				$forcer = true;
+
+				break;
+			case '--child':
+				if (preg_match('/^[1-9][0-9]*$/', $value) !== 1) {
+					print "ERROR: Child identifier must be a positive integer.\n\n";
+					display_help();
+					exit(1);
+				}
+
+				$child = (int) $value;
+
+				break;
+			case '--run-id':
+				if (preg_match('/^[a-f0-9]{32}$/', $value) !== 1) {
+					print "ERROR: Run identifier must be a 32 character hexadecimal value.\n\n";
+					display_help();
+					exit(1);
+				}
+
+				$run_id = $value;
+
+				break;
+			case '--phase':
+				if (!in_array($value, ['references', 'transfer'], true)) {
+					print "ERROR: Phase must be one of 'references' or 'transfer'.\n\n";
+					display_help();
+					exit(1);
+				}
+
+				$phase = $value;
+
+				break;
+			case '--seq-start':
+				if (preg_match('/^[0-9]+$/', $value) !== 1) {
+					print "ERROR: Sequence start must be a non-negative integer.\n\n";
+					display_help();
+					exit(1);
+				}
+
+				$seq_start = (int) $value;
+
+				break;
+			case '--seq-end':
+				if (preg_match('/^[0-9]+$/', $value) !== 1) {
+					print "ERROR: Sequence end must be a non-negative integer.\n\n";
+					display_help();
+					exit(1);
+				}
+
+				$seq_end = (int) $value;
 
 				break;
 			case '--version':
@@ -102,6 +159,25 @@ if (function_exists('pcntl_signal')) {
 // record the start time
 $start_time = microtime(true);
 $start_timestamp = time();
+
+/**
+ * Read the maximum number of worker processes once.  An unset or
+ * invalid value means single process operation which is the default.
+ */
+$syslog_max_workers = max(1, (int) read_config_option('syslog_max_workers'));
+$syslogdb_default   = isset($syslogdb_default) ? $syslogdb_default : '';
+
+/**
+ * Child worker mode.  When launched by the master with --child=N, the
+ * process executes exactly one phase of work over one seq slice and
+ * exits.  This mirrors the child handling in Cacti's poller_boost.php.
+ */
+if ($child > 0) {
+	syslog_worker_main($debug);
+
+	// syslog_worker_main() always exits, this is a fail-safe
+	exit(1);
+}
 
 /**
  * sanity checks before starting.  The first sanity check is
@@ -194,8 +270,37 @@ $incoming = $results['incoming'];
  * To reduce the overall size of the syslog table over
  * time and to speed up searching for these various
  * columns in the database.
+ *
+ * When multiple workers are configured and the platform
+ * supports them, the per host resolution part is spread
+ * across parallel worker processes operating on disjoint
+ * seq slices.  The set based reference upserts always
+ * remain on the master to avoid concurrent
+ * ON DUPLICATE KEY deadlocks.
  */
-syslog_update_reference_tables($max_seq);
+$parallel = syslog_parallel_supported();
+
+if ($parallel && $max_seq > 0) {
+	syslog_debug('Parallel Processing Enabled with ' . $syslog_max_workers . ' Worker(s)');
+
+	$run_id = bin2hex(random_bytes(16));
+
+	// ROUND 1: resolve hostnames for incoming records in parallel
+	$host_slices = syslog_compute_slices(1, $max_seq, $syslog_max_workers);
+
+	$launched = syslog_launch_workers('references', $host_slices, $run_id, $debug);
+
+	/*
+	 * The reference upserts, the removal rules and the alert rules that
+	 * follow all operate on the same incoming rows the workers are
+	 * updating, so the master must not race ahead of its children.
+	 */
+	syslog_wait_workers($launched);
+
+	syslog_normalize_reference_tables($max_seq);
+} else {
+	syslog_update_reference_tables($max_seq);
+}
 
 /**
  * remove records that don't need to to be transferred
@@ -222,10 +327,52 @@ api_plugin_hook('plugin_syslog_after_processing');
 /**
  * move records from incoming to syslog table and remove
  * any stale records to to a poller crash
+ *
+ * In parallel mode the transfer is spread across workers
+ * over disjoint seq slices.  Slices are recomputed after
+ * removal rules have deleted their share of rows so
+ * workers never spawn for empty ranges.
  */
-$results = syslog_incoming_to_syslog($max_seq);
-$moved   = $results['moved'];
-$stale   = $results['stale'];
+if ($parallel && $max_seq > 0) {
+	$remaining = (int) syslog_db_fetch_cell_prepared("SELECT COUNT(seq)
+		FROM `$syslogdb_default`.`syslog_incoming`
+		WHERE `status` = 1
+		AND `seq` <= ?",
+		[$max_seq]);
+
+	if ($remaining > 0) {
+		$min_seq = (int) syslog_db_fetch_cell_prepared("SELECT MIN(seq)
+			FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE `status` = 1
+			AND `seq` <= ?",
+			[$max_seq]);
+
+		$transfer_slices = syslog_compute_slices($min_seq, $max_seq, $syslog_max_workers);
+
+		$launched = syslog_launch_workers('transfer', $transfer_slices, $run_id, $debug);
+
+		/*
+		 * The stale record cleanup, the stats aggregation and the
+		 * master's own exit all assume the transfer is complete, so
+		 * block until every child has recorded its statistics and
+		 * unregistered itself.
+		 */
+		syslog_wait_workers($launched);
+
+		$stale = syslog_delete_stale_incoming();
+
+		$worker_stats = syslog_aggregate_worker_stats($syslog_max_workers);
+
+		$moved = $worker_stats['moved'];
+	} else {
+		$moved = 0;
+		$stale = 0;
+	}
+} else {
+	$results = syslog_incoming_to_syslog($max_seq);
+	$moved   = $results['moved'];
+	$stale   = $results['stale'];
+}
 
 /**
  * process any syslog reports that are due to be
@@ -261,17 +408,30 @@ exit(0);
 /**
  * sig_handler - handles UNIX signals and logs shutdown events to the Cacti log.
  *
+ * The master terminates any running worker children before unregistering
+ * itself.  Each child unregisters its own process table row.
+ *
  * @param int $signo The signal received by the process.
  *
  * @return (void)
  */
 function sig_handler($signo) {
-	global $config;
+	global $config, $child;
 
 	switch ($signo) {
 		case SIGTERM:
 		case SIGINT:
+			if ($child > 0) {
+				cacti_log("WARNING: Syslog 'child' process $child is shutting down by signal!", false, 'SYSLOG');
+
+				unregister_process('syslog', 'child', $child);
+
+				exit(1);
+			}
+
 			cacti_log("WARNING: Syslog 'master' is shutting down by signal!", false, 'SYSLOG');
+
+			syslog_kill_workers();
 
 			unregister_process('syslog', 'master', $config['poller_id']);
 
@@ -281,6 +441,243 @@ function sig_handler($signo) {
 		default:
 			// ignore all other signals
 	}
+}
+
+/**
+ * syslog_worker_main - entry point for a parallel worker child process.
+ *
+ * The child registers itself in Cacti's process table, executes exactly
+ * one phase (references or transfer) over one seq slice, records its
+ * statistics in the settings table for the master to aggregate, and
+ * unregisters itself.  A child never continues past a failure; it exits
+ * with a non-zero status so the master can log a warning.
+ *
+ * @param bool $debug Whether to emit verbose debug output
+ *
+ * @return (void) This function always exits.
+ */
+function syslog_worker_main($debug = false) {
+	global $child, $run_id, $phase, $seq_start, $seq_end;
+
+	// The command line is the only source of these values, revalidate
+	if (!syslog_validate_worker_args($child, $run_id, $phase, $seq_start, $seq_end)) {
+		cacti_log("ERROR: Syslog child $child rejected invalid worker arguments", false, 'SYSLOG');
+		exit(1);
+	}
+
+	if (!register_process_start('syslog', 'child', $child, 1200)) {
+		/*
+		 * A previous worker with this number is still registered
+		 * (crashed without unregistering, or the master did not wait
+		 * for it).  Never fail silently: the master checks that every
+		 * launched child reported statistics, so leave a breadcrumb
+		 * for that warning too.
+		 */
+		cacti_log("WARNING: Syslog child $child could not register, another worker with that number is still registered", false, 'SYSLOG');
+
+		exit(1);
+	}
+
+	syslog_status_set('last_worker_start', time());
+
+	$child_start = microtime(true);
+	$success     = false;
+
+	switch ($phase) {
+		case 'references':
+			$resolved = syslog_resolve_incoming_hosts($seq_end, $seq_start, $seq_end);
+			$moved    = 0;
+			$success  = true;
+
+			syslog_debug(sprintf('Resolved %5s - Hostname(s) in slice %d-%d', $resolved, $seq_start, $seq_end));
+
+			break;
+		case 'transfer':
+			$results = syslog_incoming_to_syslog($seq_end, $seq_start, $seq_end);
+			$moved   = $results['moved'];
+			$success = true;
+
+			syslog_debug(sprintf('Moved   %5s - Message(s) in slice %d-%d', $moved, $seq_start, $seq_end));
+
+			break;
+		default:
+			// unreachable, validated above
+			break;
+	}
+
+	$child_end = microtime(true);
+
+	$stats = [
+		'child'    => $child,
+		'run_id'   => $run_id,
+		'phase'    => $phase,
+		'moved'    => $moved,
+		'resolved' => isset($resolved) ? $resolved : 0,
+		'runtime'  => round($child_end - $child_start, 3),
+	];
+
+	set_config_option('stats_syslog_child_' . $child, json_encode($stats));
+
+	syslog_log_child_statistics($child_start, $child, $moved, isset($resolved) ? $resolved : 0);
+
+	unregister_process('syslog', 'child', $child);
+
+	cacti_log(sprintf('NOTE: Syslog child %s completed phase %s (%d-%d) in %01.2f seconds', $child, $phase, $seq_start, $seq_end, round($child_end - $child_start, 2)), false, 'SYSLOG', ($debug ? POLLER_VERBOSITY_NONE : POLLER_VERBOSITY_MEDIUM));
+
+	if ($success) {
+		exit(0);
+	}
+
+	exit(1);
+}
+
+/**
+ * syslog_parallel_supported - determine whether the current platform and
+ * configuration can run parallel worker processes.
+ *
+ * @return bool true when parallel workers may be launched
+ */
+function syslog_parallel_supported() {
+	global $syslog_max_workers;
+
+	if ($syslog_max_workers <= 1) {
+		return false;
+	}
+
+	if ($GLOBALS['config']['cacti_server_os'] == 'win32') {
+		return false;
+	}
+
+	if (!function_exists('posix_kill') || !function_exists('pcntl_signal')) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * syslog_launch_workers - spawn the configured worker child processes.
+ *
+ * Each child is started detached in the background, exactly as Cacti's
+ * boost poller launches its children, and coordinates through the
+ * process table.
+ *
+ * @param string $phase  The phase to run, references or transfer
+ * @param array  $slices The seq slices to distribute across the children
+ * @param string $run_id The shared run identifier for this cycle
+ * @param bool   $debug  Whether to propagate debug output to children
+ *
+ * @return int The number of children launched
+ */
+function syslog_launch_workers($phase, $slices, $run_id, $debug = false) {
+	$children = 0;
+
+	// Pre-clean any stats from a previous crashed run so aggregation
+	// only counts children that reported during this cycle.  The
+	// settings table lives in the main Cacti database, not the syslog
+	// database, so the core helper is required here.
+	db_execute("DELETE FROM settings
+		WHERE name LIKE 'stats_syslog_child_%'");
+
+	$php_binary = read_config_option('path_php_binary');
+
+	if (empty($php_binary)) {
+		$php_binary = PHP_BINARY;
+	}
+
+	$script = __FILE__;
+
+	foreach ($slices as $index => $slice) {
+		$child_number = $index + 1;
+
+		$extra_args = ' -q ' . cacti_escapeshellarg($script) .
+			' --child=' . $child_number .
+			' --run-id=' . $run_id .
+			' --phase=' . $phase .
+			' --seq-start=' . $slice['start'] .
+			' --seq-end=' . $slice['end'] .
+			($debug ? ' --debug' : '');
+
+		exec_background($php_binary, $extra_args);
+
+		$children++;
+	}
+
+	cacti_log("NOTE: Syslog launched $children '$phase' worker process(es)", false, 'SYSLOG');
+
+	// No settle delay here: the caller's syslog_wait_workers() covers the
+	// registration window with a fast poll instead of a fixed sleep.
+
+	return $children;
+}
+
+/**
+ * syslog_kill_workers - signal any registered worker children to
+ * terminate.  Used by the master on shutdown signals.
+ *
+ * @return (void)
+ */
+function syslog_kill_workers() {
+	$processes = db_fetch_assoc("SELECT pid
+		FROM processes
+		WHERE tasktype = 'syslog'
+		AND taskname = 'child'");
+
+	if (!cacti_sizeof($processes)) {
+		return;
+	}
+
+	foreach ($processes as $process) {
+		$pid = (int) $process['pid'];
+
+		if (cacti_process_still_running($pid)) {
+			cacti_log("WARNING: Stopping Syslog worker PID $pid due to master shutdown.", false, 'SYSLOG');
+
+			cacti_process_kill($pid, SIGTERM);
+		}
+	}
+}
+
+/**
+ * syslog_aggregate_worker_stats - collect and sum the per child
+ * statistics recorded in the settings table, then prune them.
+ *
+ * @param int $workers The number of workers that may have run
+ *
+ * @return array Aggregated moved and resolved totals
+ */
+function syslog_aggregate_worker_stats($workers) {
+	$moved    = 0;
+	$resolved = 0;
+
+	for ($i = 1; $i <= $workers; $i++) {
+		$stat = read_config_option('stats_syslog_child_' . $i);
+
+		if ($stat === false || $stat === '' || $stat === null) {
+			continue;
+		}
+
+		$data = json_decode($stat, true);
+
+		if (!is_array($data)) {
+			cacti_log('WARNING: Ignoring malformed Syslog worker statistics.', false, 'SYSLOG');
+
+			continue;
+		}
+
+		$moved    += isset($data['moved']) ? (int) $data['moved'] : 0;
+		$resolved += isset($data['resolved']) ? (int) $data['resolved'] : 0;
+	}
+
+	// The settings table lives in the main Cacti database, not the
+	// syslog database, so the core helper is required here.
+	db_execute("DELETE FROM settings
+		WHERE name LIKE 'stats_syslog_child_%'");
+
+	syslog_status_set('last_worker_moved', $moved);
+	syslog_status_set('last_worker_resolved', $resolved);
+
+	return ['moved' => $moved, 'resolved' => $resolved];
 }
 
 /**
@@ -309,7 +706,14 @@ function display_help() {
 
 	print 'The main Syslog poller process script for Cacti Syslogging.' . PHP_EOL . PHP_EOL;
 	print 'usage: syslog_process.php [--debug] [--force-report]' . PHP_EOL . PHP_EOL;
+	print '       syslog_process.php --child=N --run-id=<32hex> --phase=references|transfer --seq-start=N --seq-end=N' . PHP_EOL . PHP_EOL;
 	print 'options:' . PHP_EOL;
 	print '    --force-report   Send email reports now.' . PHP_EOL;
 	print '    --debug          Provide more verbose debug output.' . PHP_EOL . PHP_EOL;
+	print 'worker options (used internally by the master process):' . PHP_EOL;
+	print '    --child          The worker process number, a positive integer.' . PHP_EOL;
+	print '    --run-id         The 32 character hexadecimal run identifier.' . PHP_EOL;
+	print '    --phase          The phase to process, references or transfer.' . PHP_EOL;
+	print '    --seq-start      The first seq of the slice to process.' . PHP_EOL;
+	print '    --seq-end        The last seq of the slice to process.' . PHP_EOL . PHP_EOL;
 }

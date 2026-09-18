@@ -2,6 +2,19 @@
 
 --- develop ---
 
+* feature: Log per worker SYSLOG STATS lines in the boost poller style
+  (Time, ProcessNumber, Records, Resolved) so parallel processing work
+  is attributable per process in the Cacti log
+* feature: Show parallel worker activity on the Syslog Status tab: worker
+  processes currently running and the records and hostnames each worker
+  handled during the last parallel run
+* feature: Add parallel syslog processing: a new 'Maximum Syslog Processing
+  Processes' setting splits hostname resolution and incoming message transfer
+  across worker processes on disjoint seq ranges, following Cacti's boost
+  poller model, with signal-safe teardown and single-process fallback
+* issue: Compute syslog and reference-table retention cutoffs in UTC with
+  gmdate() so they agree with the integer UTC epoch partition boundaries and
+  cannot drift with the server timezone or DST transitions (issue#317)
 * bug: Fix a fresh install with "Indefinite" retention (days = 0) never creating today's concrete
   partition, since the off-by-one fix in the historical loop bound would otherwise start the loop
   one day before today; the starting bound is now clamped so today's partition is always created
