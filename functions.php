@@ -732,6 +732,63 @@ function syslog_status_get() {
 	return $status;
 }
 
+/**
+ * syslog_worker_stats_get - Collect the parallel worker statistics shown
+ * on the Syslog Status tab.
+ *
+ * Returns the number of worker processes currently registered in Cacti's
+ * process table, the configured maximum, and the per child records
+ * handled during the last parallel run.  Per child statistics come from
+ * the settings table which lives in the main Cacti database, so the core
+ * db helper is required here.
+ *
+ * @return array Array with running workers, configured workers, and per
+ *              child stats keyed by child number
+ */
+function syslog_worker_stats_get() {
+	$stats = [
+		'running'  => 0,
+		'workers'  => max(1, (int) read_config_option('syslog_max_workers')),
+		'children' => [],
+	];
+
+	if (!db_table_exists('processes')) {
+		return $stats;
+	}
+
+	$stats['running'] = (int) db_fetch_cell("SELECT COUNT(*)
+		FROM processes
+		WHERE tasktype = 'syslog'
+		AND taskname = 'child'");
+
+	$rows = db_fetch_assoc("SELECT `name`, `value`
+		FROM settings
+		WHERE `name` LIKE 'stats_syslog_child_%'");
+
+	foreach ($rows as $row) {
+		$child = (int) str_replace('stats_syslog_child_', '', $row['name']);
+
+		$data = json_decode((string) $row['value'], true);
+
+		if (!is_array($data)) {
+			continue;
+		}
+
+		$stats['children'][$child] = [
+			'child'    => isset($data['child']) ? (int) $data['child'] : $child,
+			'run_id'   => isset($data['run_id']) ? (string) $data['run_id'] : '',
+			'phase'    => isset($data['phase']) ? (string) $data['phase'] : '',
+			'moved'    => isset($data['moved']) ? (int) $data['moved'] : 0,
+			'resolved' => isset($data['resolved']) ? (int) $data['resolved'] : 0,
+			'runtime'  => isset($data['runtime']) ? (float) $data['runtime'] : 0.0,
+		];
+	}
+
+	ksort($stats['children']);
+
+	return $stats;
+}
+
 function syslog_is_partitioned() {
 	global $syslogdb_default;
 

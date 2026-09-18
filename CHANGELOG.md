@@ -2,6 +2,9 @@
 
 --- develop ---
 
+* feature: Show parallel worker activity on the Syslog Status tab: worker
+  processes currently running and the records and hostnames each worker
+  handled during the last parallel run
 * feature: Add parallel syslog processing: a new 'Maximum Syslog Processing
   Processes' setting splits hostname resolution and incoming message transfer
   across worker processes on disjoint seq ranges, following Cacti's boost

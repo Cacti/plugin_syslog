@@ -318,6 +318,8 @@ function syslog_status_storage() {
 function syslog_status() {
 	$status = syslog_status_get();
 
+	$worker_stats = syslog_worker_stats_get();
+
 	html_start_box(__('Syslog Status', 'syslog'), '100%', false, '3', 'center', '');
 	?>
 	<tr><td>
@@ -356,6 +358,42 @@ function syslog_status() {
 						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
 					} ?>
 				</dl>
+			</section>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_workers">
+				<h2 id="syslog_status_workers" class="syslogStatusHeading ui-widget-header"><?php print __esc('Parallel workers', 'syslog'); ?></h2>
+				<dl class="syslogStatusTimings syslogStatusWorkerSummary">
+					<?php
+					$workers_summary = [
+						__('Worker processes running', 'syslog') => syslog_status_format_count($worker_stats['running']),
+						__('Configured worker processes', 'syslog') => syslog_status_format_count($worker_stats['workers'])
+					];
+					foreach ($workers_summary as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					}
+					?>
+				</dl>
+				<?php if (cacti_sizeof($worker_stats['children'])) { ?>
+				<table class="syslogStatusWorkers" aria-labelledby="syslog_status_workers">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Process', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Records handled', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Hosts resolved', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Runtime', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php foreach ($worker_stats['children'] as $child) { ?>
+						<tr>
+							<th scope="row"><?php print html_escape(syslog_status_format_count($child['child'])); ?></th>
+							<td><?php print html_escape(syslog_status_format_count($child['moved'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_count($child['resolved'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_seconds($child['runtime'])); ?></td>
+						</tr>
+					<?php } ?>
+					</tbody>
+				</table>
+				<?php } else { ?>
+				<p class="syslogStatusWorkersEmpty"><?php print __esc('No per process statistics recorded yet.  Worker statistics appear after the first parallel run.', 'syslog'); ?></p>
+				<?php } ?>
 			</section>
 			<section aria-labelledby="syslog_status_rules">
 				<h2 id="syslog_status_rules" class="syslogStatusHeading ui-widget-header"><?php print __esc('Rule activity', 'syslog'); ?></h2>
