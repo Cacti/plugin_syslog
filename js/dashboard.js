@@ -209,7 +209,9 @@ function syslogDashboardBindResize(handle, card, panel, axis) {
 
 function actionButtons() {
 	var buttons = [];
-	[['edit', 'fa-pencil', 'Edit'], ['up', 'fa-arrow-up', 'Move up'], ['down', 'fa-arrow-down', 'Move down'], ['delete', 'fa-trash', 'Delete']].forEach(function(entry) {
+	// fa-pen: Font Awesome 5 (Cacti 1.2) dropped the FA4 fa-pencil name,
+	// which rendered an empty glyph and made the button look missing.
+	[['edit', 'fa-pen', 'Edit'], ['up', 'fa-arrow-up', 'Move up'], ['down', 'fa-arrow-down', 'Move down'], ['delete', 'fa-trash', 'Delete']].forEach(function(entry) {
 		var button = document.createElement('button');
 		button.type = 'button';
 		button.className = 'syslogDashboardCardButton';
