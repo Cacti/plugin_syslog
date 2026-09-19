@@ -35,6 +35,7 @@ include_once('./lib/html_tree.php');
 include_once(__DIR__ . '/setup.php');
 include_once(__DIR__ . '/functions.php');
 include_once(__DIR__ . '/database.php');
+include_once(__DIR__ . '/lib/syslog_dashboard.php');
 
 syslog_connect();
 
@@ -86,6 +87,36 @@ if (get_request_var('action') == 'saved_search_global') {
 	exit;
 }
 
+if (get_request_var('action') == 'dashboard_chart') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_chart_data();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_save') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_save();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_panel_save') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_panel_save();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_global') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_global();
+	exit;
+}
+
+if (get_request_var('action') == 'dashboard_copy') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_dashboard_copy();
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab
@@ -94,7 +125,7 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
-if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status'], true)) {
+if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard'], true)) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
@@ -129,6 +160,8 @@ if (isset_request_var('export')) {
 		syslog_view_alarm();
 	} elseif ($current_tab == 'status') {
 		syslog_status();
+	} elseif ($current_tab == 'dashboard') {
+		syslog_dashboard();
 	} else {
 		syslog_messages($current_tab);
 	}
@@ -199,6 +232,8 @@ function syslog_display_tabs($current_tab) {
 	$tabs_syslog['syslog'] = __('System Logs', 'syslog');
 
 	$tabs_syslog['alerts'] = __('Alert Logs', 'syslog');
+
+	$tabs_syslog['dashboard'] = __('Dashboard', 'syslog');
 
 	$tabs_syslog['status'] = __('Syslog Status', 'syslog');
 
@@ -462,6 +497,33 @@ function syslog_request_validation($current_tab, $force = false) {
 
 	include_once($config['base_path'] . '/lib/time.php');
 
+	// The dashboard tab charts panels through its own endpoint and does not
+	// use the log viewer filters; only validate its shared controls here.
+	if ($current_tab == 'dashboard') {
+		$dashboard_filters = [
+			'dashboard_id' => [
+				'filter'  => FILTER_VALIDATE_INT,
+				'pageset' => true,
+				'default' => '0'
+			],
+			'dashboard_timespan' => [
+				'filter'  => FILTER_CALLBACK,
+				'pageset' => true,
+				'default' => '86400',
+				'options' => ['options' => 'sanitize_search_string']
+			],
+			'refresh' => [
+				'filter'  => FILTER_VALIDATE_INT,
+				'pageset' => true,
+				'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force)
+			]
+		];
+
+		validate_store_request_vars($dashboard_filters, 'sess_sl_dashboard');
+
+		return;
+	}
+
 	if ($current_tab != 'alerts' && isset_request_var('host') && get_nfilter_request_var('host') == -1) {
 		kill_session_var('sess_syslog_' . $current_tab . '_hosts');
 		unset_request_var('host');
@@ -700,10 +762,17 @@ function saved_search_apply($tab, $saved_id) {
 
 	$username = get_username($_SESSION['sess_user_id']);
 
+	$sql_where = "`user` = ? OR is_global = 'on'";
+	$shared = syslog_shared_item_ids('saved_search');
+
+	if (cacti_sizeof($shared)) {
+		$sql_where .= ' OR id IN (' . implode(',', $shared) . ')';
+	}
+
 	$row = syslog_db_fetch_row_prepared("SELECT id, search, removal, grouping
 		FROM `$syslogdb_default`.`syslog_saved_searches`
 		WHERE id = ?
-		AND (`user` = ? OR is_global = 'on')",
+		AND ($sql_where)",
 		[$saved_id, $username]);
 
 	if ($row === false) {
@@ -802,6 +871,9 @@ function saved_search_delete() {
 
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_saved_searches`
 		WHERE id = ?",
+		[$id]);
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_saved_searches_perm`
+		WHERE search_id = ?",
 		[$id]);
 
 	if ((int) ($_SESSION['sess_sl_' . get_request_var('tab') . '_saved'] ?? 0) === (int) $id) {
@@ -1221,9 +1293,18 @@ function syslog_filter($sql_where, $tab) {
 
 	$username = get_username($_SESSION['sess_user_id']);
 
+	// Note: $sql_where is this function's message filter; the saved search
+	// visibility clause is separate.
+	$saved_where = "`user` = ? OR is_global = 'on'";
+	$shared_searches = syslog_shared_item_ids('saved_search');
+
+	if (cacti_sizeof($shared_searches)) {
+		$saved_where .= ' OR id IN (' . implode(',', $shared_searches) . ')';
+	}
+
 	$saved_searches = syslog_db_fetch_assoc_prepared("SELECT id, name, `user`, is_global
 		FROM `$syslogdb_default`.`syslog_saved_searches`
-		WHERE `user` = ? OR is_global = 'on'
+		WHERE $saved_where
 		ORDER BY is_global, name",
 		[$username]);
 
@@ -1268,11 +1349,20 @@ function syslog_filter($sql_where, $tab) {
 							<?php
 							$saved_groups = [
 								__('My Searches', 'syslog')   => [],
-								__('Global Searches', 'syslog') => []
+								__('Global Searches', 'syslog') => [],
+								__('Shared With Me', 'syslog')  => []
 							];
 
 							foreach ($saved_searches as $saved) {
-								$saved_groups[$saved['is_global'] === 'on' ? __('Global Searches', 'syslog') : __('My Searches', 'syslog')][] = $saved;
+								if ($saved['is_global'] === 'on') {
+									$label = __('Global Searches', 'syslog');
+								} elseif ($saved['user'] === $username) {
+									$label = __('My Searches', 'syslog');
+								} else {
+									$label = __('Shared With Me', 'syslog');
+								}
+
+								$saved_groups[$label][] = $saved;
 							}
 
 							foreach ($saved_groups as $saved_label => $saved_group) {
@@ -1699,7 +1789,7 @@ function syslog_messages($tab = 'syslog') {
 							print "<tr class='tableRow syslogRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
 
 
-							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
+							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
@@ -1783,6 +1873,11 @@ function syslog_messages($tab = 'syslog') {
 		}
 
 		syslog_log_legend();
+		?>
+		<script type='text/javascript'>
+		initSyslogValueFilters();
+		</script>
+		<?php
 	}
 	print '</div>';
 	?>

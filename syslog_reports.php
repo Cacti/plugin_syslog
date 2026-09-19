@@ -574,7 +574,7 @@ function syslog_filter() {
 						<?php print __('Enabled', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='enabled' onChange='applyFilter()'>
+						<select id='enabled' onChange='applyFilterReports()'>
 							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>><?php print __('All', 'syslog'); ?></option>
 							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>><?php print __('Yes', 'syslog'); ?></option>
 							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>><?php print __('No', 'syslog'); ?></option>
@@ -584,7 +584,7 @@ function syslog_filter() {
 						<?php print __('Rows', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilter()'>
+						<select id='rows' onChange='applyFilterReports()'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 								if (cacti_sizeof($item_rows)) {

@@ -2,6 +2,53 @@
 
 --- develop ---
 
+* feature: Add an All Users / All Groups option to the Shared With Users and
+  Shared With Groups selects of the admin Dashboards and Saved Search
+  Templates pages: a single stored "all" grant makes the item visible to
+  every signed-in user, instead of selecting each account one by one
+
+* feature: Let administrators reassign the owner of a dashboard or saved
+  search template from the admin edit pages through an owner dropdown
+  instead of the read-only owner display
+
+* feature: Replace the inline Delete buttons on the admin Dashboards and
+  Saved Search Templates pages with Cacti's standard selection checkboxes
+  and bulk actions dropdown, matching the Alert Rules page: deleting now
+  asks for confirmation, lists the selected items, and runs through the
+  shared selected-items dispatch helper
+
+* feature: Add per-user and per-group dashboard and saved-search sharing to
+  the admin Dashboards and Saved Search Templates pages with Cacti's jQuery
+  multiselect widget: grants are stored in new syslog_dashboards_perm and
+  syslog_saved_searches_perm tables, granted dashboards and searches appear
+  to their users in a new "Shared With Me" group of the viewer's selects,
+  and share rows are cleared when their item is deleted
+
+* change: Group all syslog permission realms under their own "Syslog"
+  section on the User and Group Permissions pages, as the audit plugin
+  does, instead of the generic Plugin Permissions section; this also
+  moves the Share Saved Templates and Share Dashboards realms, which
+  previously fell under the generic section
+
+* feature: Add dashboard sharing, gated by a new "Share Dashboards" user and
+  group permission realm: owners with the permission can share a dashboard
+  with all syslog users, shared dashboards are view-only for other users and
+  offer "Save as my copy" to clone one into their own list, and
+  administrators manage every dashboard (including those of deleted users)
+  from a new Console page under Syslog Settings
+* feature: Add drag-and-drop panel reordering: drag a panel header and
+  drop it above or below another panel; the placement line previews the
+  target and the server renumbers positions gaplessly
+* feature: Add a right-edge resize strip so panel width can be dragged
+  directly (ew-resize) instead of only the small corner grip
+* feature: Make dashboard panels resizable: drag the corner handle to span
+  up to three grid columns and set the chart height; sizes persist per
+  panel and dialog saves keep a user's custom sizing
+* feature: Add a Dashboard tab with per-user dashboards of chart panels:
+  timeseries (line/area/bar) and breakdown (donut by host, program,
+  facility, or priority) panels chart System Logs and Alert Logs through
+  the same logical search DSL as the log viewer; panels can start from a
+  saved search and every write re-verifies dashboard ownership
 * feature: Log per worker SYSLOG STATS lines in the boost poller style
   (Time, ProcessNumber, Records, Resolved) so parallel processing work
   is attributable per process in the Cacti log

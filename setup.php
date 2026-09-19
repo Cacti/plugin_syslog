@@ -60,8 +60,9 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'replicate_out',         'syslog_replicate_out',        'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
+	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -138,6 +139,10 @@ function plugin_syslog_uninstall() {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_logs`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_hosts`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboard_panels`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboards`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboards_perm`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches_perm`");
 		} else {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");
@@ -297,16 +302,47 @@ function syslog_upgrade_saved_search_realm() {
 	}
 }
 
+/** Give pre-existing installs the Dashboards console page inside the admin realm. */
+function syslog_upgrade_dashboard_realm() {
+	global $user_auth_realm_filenames;
+
+	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (!in_array('syslog_alerts.php', $files, true)) {
+			continue;
+		}
+
+		if (in_array('syslog_dashboards.php', $files, true)) {
+			return;
+		}
+
+		// Keep the realm ID: existing user and group grants must not change.
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
+			[$realm['file'] . ',syslog_dashboards.php', $realm['id'], 'syslog'])) {
+			return;
+		}
+		api_plugin_replicate_config();
+
+		// Update the already-loaded map so the repair works on this request too.
+		$user_auth_realm_filenames['syslog_dashboards.php'] = (int) $realm['id'] + 100;
+
+		return;
+	}
+}
+
 function syslog_check_upgrade() {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
 	syslog_upgrade_saved_search_realm();
+	syslog_upgrade_dashboard_realm();
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
+	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
 
 	// Let's only run this check if we are on a page that actually needs the data
-	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php'];
+	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
 
 	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
 		return;
@@ -487,6 +523,99 @@ function syslog_check_upgrade() {
 			`date` int(16) NOT NULL default '0',
 			PRIMARY KEY (`id`),
 			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	if (!syslog_db_table_exists('syslog_dashboards', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
+			`id` int(10) NOT NULL auto_increment,
+			`name` varchar(128) NOT NULL default '',
+			`user` varchar(32) NOT NULL default '',
+			`is_global` char(2) NOT NULL default '',
+			`date` int(16) NOT NULL default '0',
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`id`),
+			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	if (!syslog_db_table_exists('syslog_dashboard_panels', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboard_panels` (
+			`id` int(10) NOT NULL auto_increment,
+			`dashboard_id` int(10) NOT NULL default '0',
+			`title` varchar(128) NOT NULL default '',
+			`expression` text NOT NULL,
+			`source` varchar(16) NOT NULL default 'syslog',
+			`removal` int(10) NOT NULL default '1',
+			`kind` varchar(16) NOT NULL default 'timeseries',
+			`chart` varchar(16) NOT NULL default 'line',
+			`field` varchar(16) NOT NULL default 'host',
+			`interval` varchar(16) NOT NULL default 'dashboard',
+			`timespan` varchar(16) NOT NULL default 'dashboard',
+			`top_n` int(10) NOT NULL default '10',
+			`width` smallint(5) unsigned NOT NULL default '1',
+			`height` smallint(5) unsigned NOT NULL default '0',
+			`position` int(10) NOT NULL default '0',
+			`date` int(16) NOT NULL default '0',
+			PRIMARY KEY (`id`),
+			KEY dashboard (`dashboard_id`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	// Panel resizing persists a grid span and chart height per panel.
+	if (!syslog_db_column_exists('syslog_dashboard_panels', 'width')) {
+		syslog_db_add_column('syslog_dashboard_panels', [
+			'name'    => 'width',
+			'type'    => 'smallint(5) unsigned',
+			'NULL'    => false,
+			'default' => '1',
+			'after'   => 'top_n']
+		);
+	}
+
+	if (!syslog_db_column_exists('syslog_dashboard_panels', 'height')) {
+		syslog_db_add_column('syslog_dashboard_panels', [
+			'name'    => 'height',
+			'type'    => 'smallint(5) unsigned',
+			'NULL'    => false,
+			'default' => '0',
+			'after'   => 'width']
+		);
+	}
+
+	// Sharing persists a global flag on the dashboard itself.
+	if (!syslog_db_column_exists('syslog_dashboards', 'is_global')) {
+		syslog_db_add_column('syslog_dashboards', [
+			'name'    => 'is_global',
+			'type'    => 'char(2)',
+			'NULL'    => false,
+			'default' => '',
+			'after'   => 'user']
+		);
+	}
+
+	// Per-user and per-group grants from the admin Dashboards page, beyond
+	// the owner and the global share flag.
+	if (!syslog_db_table_exists('syslog_dashboards_perm', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards_perm` (
+			`dashboard_id` int(10) NOT NULL default '0',
+			`type` varchar(5) NOT NULL default '',
+			`item_id` int(10) NOT NULL default '0',
+			PRIMARY KEY (`dashboard_id`, `type`, `item_id`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	// The same grants for saved searches.
+	if (!syslog_db_table_exists('syslog_saved_searches_perm', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches_perm` (
+			`search_id` int(10) NOT NULL default '0',
+			`type` varchar(5) NOT NULL default '',
+			`item_id` int(10) NOT NULL default '0',
+			PRIMARY KEY (`search_id`, `type`, `item_id`))
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
 	}
@@ -1618,6 +1747,7 @@ function syslog_config_arrays() {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_dashboards.php'] = __('Dashboards', 'syslog');
 			}
 		}
 		$menu = $menu2;
@@ -1625,9 +1755,19 @@ function syslog_config_arrays() {
 		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
 	}
 
+	// Group all syslog realms under their own permissions section, as the
+	// audit plugin does, instead of the generic Plugin Permissions section.
 	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('Normal User'), ['syslog.php']);
-		auth_augment_roles(__('System Administration'), ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', 'syslog_saved_searches.php']);
+		auth_augment_roles(__('Syslog', 'syslog'), [
+			'syslog.php',
+			'syslog_alerts.php',
+			'syslog_removal.php',
+			'syslog_reports.php',
+			'syslog_saved_searches.php',
+			'syslog_dashboards.php',
+			'syslog_saved_searches_share.php',
+			'syslog_dashboards_share.php'
+		]);
 	}
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
@@ -1657,6 +1797,7 @@ function syslog_draw_navigation_text($nav) {
 	$nav['syslog_reports.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
 	$nav['syslog_reports.php:actions'] = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
 	$nav['syslog_saved_searches.php:'] = ['title' => __('Saved Search Templates', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_saved_searches.php', 'level' => '1'];
+	$nav['syslog_dashboards.php:']     = ['title' => __('Dashboards', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_dashboards.php', 'level' => '1'];
 	$nav['syslog.php:actions']         = ['title' => __('Syslog', 'syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1'];
 
 	return $nav;

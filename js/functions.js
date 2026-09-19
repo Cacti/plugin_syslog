@@ -290,23 +290,6 @@ function initSyslogTemplates() {
 			$('#template_search').val(expression);
 		}
 	});
-	$('.syslogTemplateDelete').off('submit.syslogTemplates').on('submit.syslogTemplates', function(event) {
-		if (this.dataset.confirmed === 'true') return;
-		event.preventDefault();
-		var form = this;
-		$('<div>').text(form.dataset.confirm).dialog({
-			modal: true, title: form.dataset.title, width: Math.min(440, window.innerWidth - 32),
-			close: function() { $(this).dialog('destroy').remove(); },
-			buttons: [
-				{text: form.dataset.cancel, click: function() { $(this).dialog('close'); }},
-				{text: form.dataset.delete, click: function() {
-					form.dataset.confirmed = 'true';
-					$(this).dialog('close');
-					form.requestSubmit();
-				}}
-			]
-		});
-	});
 }
 
 function initSyslogSearchDates(container) {
@@ -910,7 +893,7 @@ function initSyslogMessagesDisplay() {
  * Apply filter for removal rules view
  */
 function applyFilterRemoval() {
-	var strURL = 'syslog_removal.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_removal.php?filter='+encodeURIComponent($('#filter').val())+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 	loadPageNoHeader(strURL);
 }
 
@@ -983,7 +966,7 @@ function initSyslogRemoval(allowEdits) {
  * Apply filter for alert rules view
  */
 function applyFilterAlerts() {
-	var strURL = 'syslog_alerts.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_alerts.php?filter='+encodeURIComponent($('#filter').val())+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 
 	loadPageNoHeader(strURL);
 }
@@ -1038,7 +1021,7 @@ function initSyslogAlerts() {
  * Apply filter for report rules view
  */
 function applyFilterReports() {
-	var strURL = 'syslog_reports.php?filter='+$('#filter').val()+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	var strURL = 'syslog_reports.php?filter='+encodeURIComponent($('#filter').val())+'&enabled='+$('#enabled').val()+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
 
 	loadPageNoHeader(strURL);
 }

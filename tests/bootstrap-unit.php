@@ -425,6 +425,30 @@ if (!function_exists('html_header')) {
 	}
 }
 
+if (!function_exists('html_header_checkbox')) {
+	function html_header_checkbox($header_items, $include_form = true, $form_action = '', $resizable = true, $prefix = 'chk') {
+		return test_call_override('html_header_checkbox', [$header_items, $include_form, $form_action, $resizable, $prefix], null);
+	}
+}
+
+if (!function_exists('form_checkbox_cell')) {
+	function form_checkbox_cell($title, $id, $disabled = false) {
+		return test_call_override('form_checkbox_cell', [$title, $id, $disabled], null);
+	}
+}
+
+if (!function_exists('form_end')) {
+	function form_end($ajax = true) {
+		return test_call_override('form_end', [$ajax], null);
+	}
+}
+
+if (!function_exists('draw_actions_dropdown')) {
+	function draw_actions_dropdown($actions_array, $delete_action = 1) {
+		return test_call_override('draw_actions_dropdown', [$actions_array, $delete_action], null);
+	}
+}
+
 if (!function_exists('html_header_sort')) {
 	function html_header_sort($display_text, $sort_column, $sort_direction, $rows = 1, $url = '') {
 		return test_call_override('html_header_sort', [$display_text, $sort_column, $sort_direction, $rows, $url], null);

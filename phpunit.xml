@@ -30,6 +30,7 @@
             <file>setup.php</file>
             <file>database.php</file>
             <file>functions.php</file>
+            <file>lib/syslog_dashboard.php</file>
             <file>syslog.php</file>
             <file>syslog_alerts.php</file>
             <file>syslog_removal.php</file>
