@@ -365,6 +365,7 @@ function initSyslogDashboards() {
 }
 
 function initSyslogSearchDates(container) {
+	container.querySelectorAll('.syslogSearchDate').forEach(function(input) {
 		$(input).datetimepicker({
 			minuteGrid: 10,
 			stepMinute: 1,
