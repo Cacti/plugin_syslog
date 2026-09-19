@@ -55,6 +55,16 @@ if (isset_request_var('action') && get_nfilter_request_var('action') === 'action
 	exit;
 }
 
+if (isset_request_var('action') && get_nfilter_request_var('action') === 'export') {
+	syslog_saved_search_export();
+	exit;
+}
+
+if (isset_request_var('action') && get_nfilter_request_var('action') === 'import') {
+	syslog_saved_search_import();
+	exit;
+}
+
 $row = $edit > 0 ? syslog_db_fetch_row_prepared("SELECT id, name, search, removal, grouping, user FROM $db.syslog_saved_searches WHERE id = ? AND is_global = 'on'", [$edit]) : false;
 if ($row && $error !== '') {
 	$row['name'] = $name;
@@ -95,7 +105,11 @@ $(function() {
 bottom_footer();
 
 function syslog_template_list($rows) {
-	$actions = [1 => __('Delete', 'syslog')];
+	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
+
+	if (syslog_allow_edits()) {
+		$actions[3] = __('Import', 'syslog');
+	}
 
 	form_start('syslog_saved_searches.php', 'chk');
 
@@ -124,7 +138,7 @@ function syslog_template_list($rows) {
 function syslog_template_actions() {
 	global $db;
 
-	$actions = [1 => __('Delete', 'syslog')];
+	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
 
 	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP,
 		['options' => ['regexp' => '/^([a-zA-Z0-9_]+)$/']]);
@@ -140,7 +154,7 @@ function syslog_template_actions() {
 
 		syslog_apply_selected_items_action($selected_items, get_request_var('drp_action'), [
 			'1' => 'api_syslog_saved_search_remove'
-		]);
+		], '2', get_nfilter_request_var('selected_items'));
 
 		header('Location: syslog_saved_searches.php?header=false');
 
@@ -212,6 +226,143 @@ function api_syslog_saved_search_remove($id) {
 	global $db;
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_saved_searches WHERE id = ? AND is_global = 'on'", [$id]);
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_saved_searches_perm WHERE search_id = ?", [$id]);
+}
+
+function syslog_saved_search_export() {
+	global $db;
+
+	if (isset_request_var('selected_items')) {
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
+
+		if ($selected_items != false) {
+			$templates = [];
+
+			foreach ($selected_items as $id) {
+				if ($id <= 0) {
+					continue;
+				}
+
+				$template = syslog_db_fetch_row_prepared("SELECT *
+					FROM $db.syslog_saved_searches
+					WHERE id = ? AND is_global = 'on'",
+					[$id]);
+
+				if (!cacti_sizeof($template)) {
+					continue;
+				}
+
+				unset($template['id']);
+
+				$template['shared_users']  = array_column(syslog_fetch_item_shares('saved_search', $id)['users'], 'id');
+				$template['shared_groups'] = array_column(syslog_fetch_item_shares('saved_search', $id)['groups'], 'id');
+
+				$templates[] = $template;
+			}
+
+			$output = syslog_rules_array2json('syslog_saved_searches', $templates);
+			header('Content-type: application/json');
+			header('Content-Disposition: attachment; filename=syslog_saved_searches_export.json');
+			print $output;
+		}
+	}
+}
+
+function syslog_saved_search_import() {
+	global $db;
+
+	$import_data = syslog_get_import_payload('syslog_saved_searches.php?header=false');
+	$import_array = syslog_parse_rule_import($import_data);
+
+	$imported = 0;
+	$updated  = 0;
+	$failed   = 0;
+
+	if ($import_array !== false && cacti_sizeof($import_array)) {
+		foreach ($import_array as $contents) {
+			if (!is_array($contents)) {
+				continue;
+			}
+
+			$save = [
+				'name'      => $contents['name'] ?? '',
+				'search'    => $contents['search'] ?? '',
+				'removal'   => $contents['removal'] ?? 1,
+				'grouping'  => $contents['grouping'] ?? 0,
+				'user'      => $contents['user'] ?? get_username($_SESSION['sess_user_id']),
+				'is_global' => 'on',
+				'date'      => $contents['date'] ?? time(),
+			];
+
+			if (isset($contents['hash']) && $contents['hash'] !== '') {
+				$save['hash'] = $contents['hash'];
+				$found = syslog_db_fetch_cell_prepared("SELECT id
+					FROM $db.syslog_saved_searches
+					WHERE hash = ? AND is_global = 'on'",
+					[$contents['hash']]);
+
+				if (!empty($found)) {
+					$save['id'] = $found;
+				} else {
+					$save['id'] = 0;
+				}
+			} else {
+				$save['hash'] = generate_hash();
+				$save['id']   = 0;
+			}
+
+			if ($save['name'] === '' || strlen($save['name']) > 128) {
+				$failed++;
+				continue;
+			}
+
+			if (isset($contents['shared_users']) && is_array($contents['shared_users'])) {
+				$shared_users = $contents['shared_users'];
+			} else {
+				$shared_users = [];
+			}
+
+			if (isset($contents['shared_groups']) && is_array($contents['shared_groups'])) {
+				$shared_groups = $contents['shared_groups'];
+			} else {
+				$shared_groups = [];
+			}
+
+			unset($contents['shared_users'], $contents['shared_groups']);
+
+			foreach ($contents as $name => $value) {
+				if (syslog_db_column_exists('syslog_saved_searches', $name) && !isset($save[$name])) {
+					$save[$name] = $value;
+				}
+			}
+
+			$id = syslog_sql_save($save, 'syslog_saved_searches', 'id');
+
+			if (!$id) {
+				$failed++;
+				continue;
+			}
+
+			if (is_array($shared_users) || is_array($shared_groups)) {
+				syslog_save_item_shares('saved_search', $id, $shared_users, $shared_groups);
+			}
+
+			if ($save['id'] > 0) {
+				$updated++;
+			} else {
+				$imported++;
+			}
+		}
+	}
+
+	if ($imported || $updated) {
+		raise_message('syslog_info', __esc('NOTE: Imported %d and updated %d Saved Search Template(s).', $imported, $updated, 'syslog'), MESSAGE_LEVEL_INFO);
+	}
+
+	if ($failed) {
+		raise_message('syslog_error', __esc('ERROR: %d Saved Search Template(s) failed to import.', $failed, 'syslog'), MESSAGE_LEVEL_ERROR);
+	}
+
+	header('Location: syslog_saved_searches.php');
 }
 
 function syslog_template_edit($row, $error) {

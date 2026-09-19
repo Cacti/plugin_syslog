@@ -669,8 +669,13 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 }
 
 const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
+const SYSLOG_IMPORT_VERSION   = 1;
 
 function syslog_get_import_xml_payload($redirect_url) {
+	return syslog_get_import_payload($redirect_url);
+}
+
+function syslog_get_import_payload($redirect_url) {
 	$import_text = (string) get_nfilter_request_var('import_text');
 
 	if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {
@@ -701,15 +706,15 @@ function syslog_get_import_xml_payload($redirect_url) {
 			exit;
 		}
 
-		$xml_data = syslog_read_import_file($tmp_name);
+		$import_data = syslog_read_import_file($tmp_name);
 
-		if ($xml_data === false) {
+		if ($import_data === false) {
 			cacti_log('SYSLOG ERROR: Uploaded import file is empty, unreadable, or exceeds the maximum size', false, 'SYSTEM');
 			header('Location: ' . $redirect_url);
 			exit;
 		}
 
-		return $xml_data;
+		return $import_data;
 	}
 
 	header('Location: ' . $redirect_url);
@@ -734,6 +739,94 @@ function syslog_read_import_file(string $filename): string|false {
 	} finally {
 		fclose($handle);
 	}
+}
+
+/**
+ * syslog_rules_array2json - encode a list of rule rows as a JSON export document
+ *
+ * @param string $table  Source rule table, used for uniqueness/version metadata
+ * @param array  $rules  Rule rows (the 'id' key is removed before export)
+ *
+ * @return string JSON document suitable for download
+ */
+function syslog_rules_array2json(string $table, array $rules): string {
+	$templates = [];
+
+	foreach ($rules as $rule) {
+		if (!is_array($rule)) {
+			continue;
+		}
+
+		unset($rule['id']);
+
+		if (!isset($rule['hash']) || $rule['hash'] === '') {
+			cacti_log("SYSLOG WARNING: Exported $table rule is missing a hash", false, 'SYSTEM');
+		}
+
+		$templates[] = $rule;
+	}
+
+	return json_encode([
+		'version'   => SYSLOG_IMPORT_VERSION,
+		'generator' => 'syslog',
+		'table'     => $table,
+		'templates' => $templates,
+	], JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+}
+
+/**
+ * syslog_parse_rule_import - parse a pasted or uploaded rule import payload
+ *
+ * Accepts JSON (preferred) or the legacy XML format.  Returns an array of
+ * rule arrays keyed by an incremental template index, mirroring the shape
+ * previously returned by xml2array() for minimal downstream churn.
+ *
+ * @param string $payload Raw import payload
+ *
+ * @return array|false
+ */
+function syslog_parse_rule_import(string $payload) {
+	$trimmed = trim($payload);
+
+	if ($trimmed === '') {
+		return false;
+	}
+
+	if (str_starts_with($trimmed, '{') || str_starts_with($trimmed, '[')) {
+		try {
+			$decoded = json_decode($trimmed, true, 64, JSON_THROW_ON_ERROR);
+		} catch (JsonException $e) {
+			return false;
+		}
+
+		if (!is_array($decoded)) {
+			return false;
+		}
+
+		$templates = [];
+
+		if (isset($decoded['templates']) && is_array($decoded['templates'])) {
+			$templates = $decoded['templates'];
+		} elseif (isset($decoded[0]) && is_array($decoded[0])) {
+			$templates = $decoded;
+		}
+
+		$index = 1;
+		$out   = [];
+
+		foreach ($templates as $template) {
+			if (!is_array($template)) {
+				continue;
+			}
+
+			$out['template' . $index] = $template;
+			$index++;
+		}
+
+		return $out;
+	}
+
+	return xml2array($payload);
 }
 
 /**

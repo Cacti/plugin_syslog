@@ -48,6 +48,16 @@ if (isset_request_var('action') && get_nfilter_request_var('action') === 'action
 	exit;
 }
 
+if (isset_request_var('action') && get_nfilter_request_var('action') === 'export') {
+	syslog_dashboard_export();
+	exit;
+}
+
+if (isset_request_var('action') && get_nfilter_request_var('action') === 'import') {
+	syslog_dashboard_import();
+	exit;
+}
+
 $row = $edit > 0 ? syslog_db_fetch_row_prepared("SELECT id, name, `user`, is_global, updated FROM $db.syslog_dashboards WHERE id = ?", [$edit]) : false;
 if ($row && $error !== '') {
 	$row['name'] = $name;
@@ -95,6 +105,12 @@ function syslog_dashboard_list($rows = null) {
 			ORDER BY name");
 	}
 
+	if (syslog_allow_edits()) {
+		$url = 'syslog_dashboards.php?action=edit';
+	} else {
+		$url = '';
+	}
+
 	// Flag dashboards whose owner no longer exists so admins can clean up
 	// after deleting a Cacti user.
 	$usernames = [];
@@ -105,7 +121,7 @@ function syslog_dashboard_list($rows = null) {
 
 	form_start('syslog_dashboards.php', 'chk');
 
-	html_start_box(__('Dashboards', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Dashboards', 'syslog'), '100%', '', '3', 'center', $url);
 
 	html_header_checkbox([__('Name', 'syslog'), __('Owner', 'syslog'), __('Shared', 'syslog'), __('Panels', 'syslog'), __('Updated', 'syslog')], false);
 
@@ -129,7 +145,13 @@ function syslog_dashboard_list($rows = null) {
 	}
 	html_end_box(false);
 
-	draw_actions_dropdown([1 => __('Delete', 'syslog')]);
+	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
+
+	if (syslog_allow_edits()) {
+		$actions[3] = __('Import', 'syslog');
+	}
+
+	draw_actions_dropdown($actions);
 
 	form_end();
 }
@@ -137,7 +159,7 @@ function syslog_dashboard_list($rows = null) {
 function syslog_dashboard_actions() {
 	global $db;
 
-	$actions = [1 => __('Delete', 'syslog')];
+	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
 
 	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP,
 		['options' => ['regexp' => '/^([a-zA-Z0-9_]+)$/']]);
@@ -153,7 +175,7 @@ function syslog_dashboard_actions() {
 
 		syslog_apply_selected_items_action($selected_items, get_request_var('drp_action'), [
 			'1' => 'api_syslog_dashboard_remove'
-		]);
+		], '2', get_nfilter_request_var('selected_items'));
 
 		header('Location: syslog_dashboards.php?header=false');
 
@@ -189,14 +211,25 @@ function syslog_dashboard_actions() {
 	}
 
 	if (cacti_sizeof($dashboard_array)) {
-		print "<tr>
-			<td class='textArea'>
-				<p>" . __('Click \'Continue\' to Delete the following Dashboard(s) and all of their Panels.', 'syslog') . "</p>
-				<div class='itemlist'><ul>$dashboard_list</ul></div>
-			</td>
-		</tr>";
+		if (get_request_var('drp_action') == '1') { // delete
+			print "<tr>
+				<td class='textArea'>
+					<p>" . __('Click \'Continue\' to Delete the following Dashboard(s) and all of their Panels.', 'syslog') . "</p>
+					<div class='itemlist'><ul>$dashboard_list</ul></div>
+				</td>
+			</tr>";
 
-		$title = __esc('Delete Dashboard(s)', 'syslog');
+			$title = __esc('Delete Dashboard(s)', 'syslog');
+		} elseif (get_request_var('drp_action') == '2') { // export
+			print "<tr>
+				<td class='textArea'>
+					<p>" . __('Click \'Continue\' to Export the following Dashboard(s).', 'syslog') . "</p>
+					<div class='itemlist'><ul>$dashboard_list</ul></div>
+				</td>
+			</tr>";
+
+			$title = __esc('Export Dashboard(s)', 'syslog');
+		}
 
 		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
 	} else {
@@ -227,6 +260,178 @@ function api_syslog_dashboard_remove($id) {
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id]);
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards WHERE id = ?", [$id]);
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards_perm WHERE dashboard_id = ?", [$id]);
+}
+
+function syslog_dashboard_export() {
+	global $db;
+
+	if (isset_request_var('selected_items')) {
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
+
+		if ($selected_items != false) {
+			$dashboards = [];
+
+			foreach ($selected_items as $id) {
+				if ($id <= 0) {
+					continue;
+				}
+
+				$dashboard = syslog_db_fetch_row_prepared("SELECT *
+					FROM $db.syslog_dashboards
+					WHERE id = ?",
+					[$id]);
+
+				if (!cacti_sizeof($dashboard)) {
+					continue;
+				}
+
+				unset($dashboard['id']);
+				$dashboard['panels'] = syslog_dashboard_panels($id);
+
+				foreach ($dashboard['panels'] as &$panel) {
+					unset($panel['id'], $panel['dashboard_id']);
+				}
+
+				$dashboard['shared_users']  = array_column(syslog_fetch_item_shares('dashboard', $id)['users'], 'id');
+				$dashboard['shared_groups'] = array_column(syslog_fetch_item_shares('dashboard', $id)['groups'], 'id');
+
+				$dashboards[] = $dashboard;
+			}
+
+			$output = syslog_rules_array2json('syslog_dashboards', $dashboards);
+			header('Content-type: application/json');
+			header('Content-Disposition: attachment; filename=syslog_dashboards_export.json');
+			print $output;
+		}
+	}
+}
+
+function syslog_dashboard_import() {
+	global $db;
+
+	$import_data = syslog_get_import_payload('syslog_dashboards.php?header=false');
+	$import_array = syslog_parse_rule_import($import_data);
+
+	$imported = 0;
+	$updated  = 0;
+	$failed   = 0;
+
+	if ($import_array !== false && cacti_sizeof($import_array)) {
+		foreach ($import_array as $contents) {
+			if (!is_array($contents)) {
+				continue;
+			}
+
+			$save = [
+				'name'      => $contents['name'] ?? '',
+				'user'      => $contents['user'] ?? get_username($_SESSION['sess_user_id']),
+				'is_global' => $contents['is_global'] ?? '',
+				'date'      => $contents['date'] ?? time(),
+				'updated'   => $contents['updated'] ?? time(),
+			];
+
+			if (isset($contents['hash']) && $contents['hash'] !== '') {
+				$save['hash'] = $contents['hash'];
+				$found = syslog_db_fetch_cell_prepared("SELECT id
+					FROM $db.syslog_dashboards
+					WHERE hash = ?",
+					[$contents['hash']]);
+
+				if (!empty($found)) {
+					$save['id'] = $found;
+				} else {
+					$save['id'] = 0;
+				}
+			} else {
+				$save['hash'] = generate_hash();
+				$save['id']   = 0;
+			}
+
+			if ($save['name'] === '' || strlen($save['name']) > 128) {
+				$failed++;
+				continue;
+			}
+
+			$panels        = $contents['panels'] ?? [];
+			$shared_users  = $contents['shared_users'] ?? [];
+			$shared_groups = $contents['shared_groups'] ?? [];
+
+			unset($contents['panels'], $contents['shared_users'], $contents['shared_groups']);
+
+			foreach ($contents as $name => $value) {
+				if (syslog_db_column_exists('syslog_dashboards', $name) && !isset($save[$name])) {
+					$save[$name] = $value;
+				}
+			}
+
+			$id = syslog_sql_save($save, 'syslog_dashboards', 'id');
+
+			if (!$id) {
+				$failed++;
+				continue;
+			}
+
+			if (cacti_sizeof($panels)) {
+				syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id]);
+
+				foreach ($panels as $panel) {
+					if (!is_array($panel)) {
+						continue;
+					}
+
+					$panel_save = [
+						'dashboard_id' => $id,
+						'title'        => $panel['title'] ?? '',
+						'expression'   => $panel['expression'] ?? '',
+						'source'       => $panel['source'] ?? 'syslog',
+						'removal'      => $panel['removal'] ?? 1,
+						'kind'         => $panel['kind'] ?? 'timeseries',
+						'chart'        => $panel['chart'] ?? 'line',
+						'field'        => $panel['field'] ?? 'host',
+						'interval'     => $panel['interval'] ?? 'dashboard',
+						'timespan'     => $panel['timespan'] ?? 'dashboard',
+						'top_n'        => $panel['top_n'] ?? 10,
+						'width'        => $panel['width'] ?? 1,
+						'height'       => $panel['height'] ?? 0,
+						'position'     => $panel['position'] ?? 0,
+						'date'         => $panel['date'] ?? time(),
+					];
+
+					syslog_db_execute_prepared("INSERT INTO $db.syslog_dashboard_panels
+						(dashboard_id, title, expression, source, removal, kind, chart, field,
+						`interval`, timespan, top_n, width, height, position, `date`)
+						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+						[
+							$panel_save['dashboard_id'], $panel_save['title'], $panel_save['expression'],
+							$panel_save['source'], $panel_save['removal'], $panel_save['kind'],
+							$panel_save['chart'], $panel_save['field'], $panel_save['interval'],
+							$panel_save['timespan'], $panel_save['top_n'], $panel_save['width'],
+							$panel_save['height'], $panel_save['position'], $panel_save['date'],
+						]);
+				}
+			}
+
+			if (is_array($shared_users) || is_array($shared_groups)) {
+				syslog_save_item_shares('dashboard', $id, $shared_users, $shared_groups);
+			}
+
+			if ($save['id'] > 0) {
+				$updated++;
+			} else {
+				$imported++;
+			}
+		}
+	}
+
+	if ($imported || $updated) {
+		raise_message('syslog_info', __esc('NOTE: Imported %d and updated %d Dashboard(s).', $imported, $updated, 'syslog'), MESSAGE_LEVEL_INFO);
+	}
+
+	if ($failed) {
+		raise_message('syslog_error', __esc('ERROR: %d Dashboard(s) failed to import.', $failed, 'syslog'), MESSAGE_LEVEL_ERROR);
+	}
+
+	header('Location: syslog_dashboards.php');
 }
 
 function syslog_dashboard_edit($row, $error) {

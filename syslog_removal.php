@@ -255,7 +255,7 @@ function removal_export() {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
 		if ($selected_items != false) {
-			$output = '<templates>' . PHP_EOL;
+			$rules = [];
 
 			foreach ($selected_items as $id) {
 				if ($id > 0) {
@@ -265,15 +265,14 @@ function removal_export() {
 						[$id]);
 
 					if (cacti_sizeof($data)) {
-						unset($data['id']);
-						$output .= syslog_array2xml($data);
+						$rules[] = $data;
 					}
 				}
 			}
 
-			$output .= '</templates>' . PHP_EOL;
-			header('Content-type: application/xml');
-			header('Content-Disposition: attachment; filename=syslog_removal_export.xml');
+			$output = syslog_rules_array2json('syslog_remove', $rules);
+			header('Content-type: application/json');
+			header('Content-Disposition: attachment; filename=syslog_removal_export.json');
 			print $output;
 		}
 	}
@@ -921,15 +920,15 @@ function import() {
 }
 
 function removal_import() {
-	$xml_data = syslog_get_import_xml_payload('syslog_removal.php?header=false');
+	$import_data = syslog_get_import_payload('syslog_removal.php?header=false');
 
 	// obtain debug information if it's set
-	$xml_array = xml2array($xml_data);
+	$import_array = syslog_parse_rule_import($import_data);
 
 	$debug_data = [];
 
-	if (cacti_sizeof($xml_array)) {
-		foreach ($xml_array as $template => $contents) {
+	if ($import_array !== false && cacti_sizeof($import_array)) {
+		foreach ($import_array as $template => $contents) {
 			$error = false;
 			$save  = [];
 

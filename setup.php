@@ -459,6 +459,34 @@ function syslog_check_upgrade() {
 		}
 	}
 
+	$searches = syslog_db_fetch_assoc('SELECT *
+		FROM syslog_saved_searches
+		WHERE hash IS NULL OR hash = ""');
+
+	if (cacti_sizeof($searches)) {
+		foreach ($searches as $s) {
+			$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
+			syslog_db_execute_prepared('UPDATE syslog_saved_searches
+				SET hash = ?
+				WHERE id = ?',
+				[$hash, $s['id']]);
+		}
+	}
+
+	$dashboards = syslog_db_fetch_assoc('SELECT *
+		FROM syslog_dashboards
+		WHERE hash IS NULL OR hash = ""');
+
+	if (cacti_sizeof($dashboards)) {
+		foreach ($dashboards as $d) {
+			$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
+			syslog_db_execute_prepared('UPDATE syslog_dashboards
+				SET hash = ?
+				WHERE id = ?',
+				[$hash, $d['id']]);
+		}
+	}
+
 	if (!syslog_db_column_exists('syslog_alert', 'level')) {
 		syslog_db_add_column('syslog_alert', [
 			'name'     => 'level',
@@ -514,6 +542,7 @@ function syslog_check_upgrade() {
 	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
 			`id` int(10) NOT NULL auto_increment,
+			`hash` varchar(32) NOT NULL default '',
 			`name` varchar(128) NOT NULL default '',
 			`search` text NOT NULL,
 			`removal` int(10) NOT NULL default '1',
@@ -527,9 +556,20 @@ function syslog_check_upgrade() {
 			ROW_FORMAT=Dynamic");
 	}
 
+	if (!syslog_db_column_exists('syslog_saved_searches', 'hash')) {
+		syslog_db_add_column('syslog_saved_searches', [
+			'name'    => 'hash',
+			'type'    => 'varchar(32)',
+			'NULL'    => false,
+			'default' => '',
+			'after'   => 'id']
+		);
+	}
+
 	if (!syslog_db_table_exists('syslog_dashboards', false)) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
 			`id` int(10) NOT NULL auto_increment,
+			`hash` varchar(32) NOT NULL default '',
 			`name` varchar(128) NOT NULL default '',
 			`user` varchar(32) NOT NULL default '',
 			`is_global` char(2) NOT NULL default '',
@@ -539,6 +579,16 @@ function syslog_check_upgrade() {
 			KEY owner (`user`))
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
+	}
+
+	if (!syslog_db_column_exists('syslog_dashboards', 'hash')) {
+		syslog_db_add_column('syslog_dashboards', [
+			'name'    => 'hash',
+			'type'    => 'varchar(32)',
+			'NULL'    => false,
+			'default' => '',
+			'after'   => 'id']
+		);
 	}
 
 	if (!syslog_db_table_exists('syslog_dashboard_panels', false)) {
