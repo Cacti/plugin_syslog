@@ -288,7 +288,7 @@ function syslog_dashboard_list($rows, $nav = '', $display_text = []) {
 
 	html_start_box('', '100%', '', '3', 'center', '');
 
-	html_header_sort_checkbox($display_text, false);
+	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
 	if (cacti_sizeof($rows)) {
 		foreach ($rows as $dashboard) {
