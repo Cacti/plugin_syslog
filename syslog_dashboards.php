@@ -202,7 +202,7 @@ function syslog_dashboards() {
 
 	html_end_box();
 
-	syslog_dashboard_list($dashboards, $nav, $display_text);
+	syslog_dashboard_table($dashboards, $nav, $display_text);
 }
 
 function syslog_dashboard_filter() {
@@ -258,7 +258,7 @@ function syslog_dashboard_filter() {
 	<?php
 }
 
-function syslog_dashboard_list($rows, $nav = '', $display_text = []) {
+function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 	global $db;
 
 	if (!cacti_sizeof($display_text)) {
