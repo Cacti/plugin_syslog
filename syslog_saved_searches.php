@@ -12,6 +12,8 @@ if (!api_plugin_user_realm_auth('syslog_saved_searches.php') && !api_plugin_user
 }
 
 syslog_connect();
+set_default_action();
+
 $db = $syslogdb_default;
 $error = '';
 $edit = get_filter_request_var('edit', FILTER_VALIDATE_INT);
@@ -50,26 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_template'))
 	}
 }
 
-if (isset_request_var('action') && get_nfilter_request_var('action') === 'actions') {
-	syslog_template_actions();
-	exit;
-}
-
-if (isset_request_var('action') && get_nfilter_request_var('action') === 'export') {
-	syslog_saved_search_export();
-	exit;
-}
-
-if (isset_request_var('action') && get_nfilter_request_var('action') === 'import') {
-	if (isset_request_var('save_component_import')) {
-		syslog_saved_search_import();
-	} else {
-		top_header();
-		syslog_include_js();
-		syslog_saved_search_import_form();
-		bottom_footer();
-	}
-	exit;
+if (isset_request_var('import') && syslog_allow_edits()) {
+	set_request_var('action', 'import');
 }
 
 $row = $edit > 0 ? syslog_db_fetch_row_prepared("SELECT id, name, search, removal, grouping, user FROM $db.syslog_saved_searches WHERE id = ? AND is_global = 'on'", [$edit]) : false;
@@ -78,13 +62,40 @@ if ($row && $error !== '') {
 	$row['search'] = $search;
 }
 
-top_header();
-syslog_include_js();
-if ($row) {
-	syslog_template_edit($row, $error);
-} else {
-	$rows = syslog_db_fetch_assoc("SELECT id, name, search, user FROM $db.syslog_saved_searches WHERE is_global = 'on' ORDER BY name");
-	syslog_template_list($rows);
+switch (get_request_var('action')) {
+	case 'actions':
+		syslog_template_actions();
+
+		exit;
+	case 'export':
+		syslog_saved_search_export();
+
+		exit;
+	case 'import':
+		if (isset_request_var('save_component_import')) {
+			syslog_saved_search_import();
+		} else {
+			top_header();
+			syslog_include_js();
+			syslog_saved_search_import_form();
+			bottom_footer();
+		}
+
+		exit;
+	case 'edit':
+	default:
+		top_header();
+		syslog_include_js();
+
+		if ($row) {
+			syslog_template_edit($row, $error);
+		} else {
+			syslog_saved_searches();
+		}
+
+		bottom_footer();
+
+		break;
 }
 ?>
 <script type='text/javascript'>
@@ -111,31 +122,164 @@ $(function() {
 <?php
 bottom_footer();
 
-function syslog_template_list($rows) {
-	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
+function syslog_saved_searches() {
+	global $db, $config;
 
-	if (syslog_allow_edits()) {
-		$actions[3] = __('Import', 'syslog');
+	// ================= input validation and session storage =================
+	$filters = [
+		'rows' => [
+			'filter'  => FILTER_VALIDATE_INT,
+			'pageset' => true,
+			'default' => '-1',
+		],
+		'page' => [
+			'filter'  => FILTER_VALIDATE_INT,
+			'default' => '1'
+		],
+		'filter' => [
+			'filter'  => FILTER_DEFAULT,
+			'pageset' => true,
+			'default' => ''
+		],
+		'sort_column' => [
+			'filter'  => FILTER_CALLBACK,
+			'default' => 'name',
+			'options' => ['options' => 'sanitize_search_string']
+		],
+		'sort_direction' => [
+			'filter'  => FILTER_CALLBACK,
+			'default' => 'ASC',
+			'options' => ['options' => 'sanitize_search_string']
+		]
+	];
+
+	validate_store_request_vars($filters, 'sess_syslogsst');
+	// ================= input validation =================
+
+	if (get_request_var('rows') == '-1') {
+		$rows = read_config_option('num_rows_table');
+	} elseif (get_request_var('rows') == -2) {
+		$rows = 999999;
+	} else {
+		$rows = get_request_var('rows');
 	}
 
-	form_start('syslog_saved_searches.php', 'chk');
+	$sql_where  = "WHERE is_global = 'on'";
+	$sql_params = [];
+
+	if (get_request_var('filter') != '') {
+		$sql_where .= ' AND (name LIKE ? OR `user` LIKE ? OR search LIKE ?)';
+		$filter = '%' . get_request_var('filter') . '%';
+		$sql_params = [$filter, $filter, $filter];
+	}
+
+	$sql_order = get_order_string();
+	$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
+
+	$templates = syslog_db_fetch_assoc_prepared("SELECT id, name, search, user
+		FROM $db.syslog_saved_searches
+		$sql_where
+		$sql_order
+		$sql_limit", $sql_params);
+
+	$total_rows = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
+		FROM $db.syslog_saved_searches
+		$sql_where", $sql_params);
+
+	$nav = html_nav_bar('syslog_saved_searches.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 4, __('Templates', 'syslog'), 'page', 'main');
 
 	html_start_box(__('Saved Search Templates', 'syslog'), '100%', '', '3', 'center', '');
 
+	syslog_saved_search_filter();
+
+	html_end_box();
+
+	syslog_template_list($templates, $nav);
+}
+
+function syslog_saved_search_filter() {
+	global $config, $item_rows;
+
+	?>
+	<tr class='even'>
+		<td>
+		<form id='saved_searches' action='syslog_saved_searches.php' method='get'>
+			<table class='filterTable'>
+				<tr>
+					<td>
+						<?php print __('Search', 'syslog'); ?>
+					</td>
+					<td>
+						<input type='text' id='filter' size='25' value='<?php print html_escape_request_var('filter'); ?>'>
+					</td>
+					<td>
+						<?php print __('Rows', 'syslog'); ?>
+					</td>
+					<td>
+						<select id='rows' onChange='applyFilterSavedSearches()'>
+							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog'); ?></option>
+							<?php
+							if (cacti_sizeof($item_rows)) {
+								foreach ($item_rows as $key => $value) {
+									print '<option value="' . $key . '"';
+
+									if (get_request_var('rows') == $key) {
+										print ' selected';
+									} print '>' . $value . "</option>\n";
+								}
+							}
+	?>
+						</select>
+					</td>
+					<td>
+						<span>
+							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
+							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'>
+							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
+						</span>
+					</td>
+				</tr>
+			</table>
+			<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
+		</form>
+		<script type='text/javascript'>
+		initSyslogSavedSearches();
+		</script>
+		</td>
+	</tr>
+	<?php
+}
+
+function syslog_template_list($rows, $nav = '') {
+	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
+
+	form_start('syslog_saved_searches.php', 'chk');
+
+	if ($nav !== '') {
+		print $nav;
+	}
+
+	html_start_box('', '100%', '', '3', 'center', '');
+
 	html_header_checkbox([__('Name', 'syslog'), __('Owner', 'syslog'), __('Query', 'syslog')], false);
 
-	foreach ($rows as $template) {
-		$id = (int) $template['id'];
-		form_alternate_row('line' . $id, true);
-		print "<td><a class='linkEditMain' href='syslog_saved_searches.php?edit=$id'>" . html_escape($template['name']) . '</a></td>';
-		print '<td>' . html_escape($template['user']) . "</td><td class='syslogTemplateQuery'>" . html_escape($template['search']) . '</td>';
-		form_checkbox_cell($template['name'], $id);
-		form_end_row();
-	}
-	if (!$rows) {
+	if (cacti_sizeof($rows)) {
+		foreach ($rows as $template) {
+			$id = (int) $template['id'];
+			form_alternate_row('line' . $id, true);
+			print "<td><a class='linkEditMain' href='syslog_saved_searches.php?edit=$id'>" . html_escape($template['name']) . '</a></td>';
+			print '<td>' . html_escape($template['user']) . "</td><td class='syslogTemplateQuery'>" . html_escape($template['search']) . '</td>';
+			form_checkbox_cell($template['name'], $id);
+			form_end_row();
+		}
+	} else {
 		print "<tr><td colspan='4'><em>" . __('No shared search templates. Save a search for all users from Syslog to create one.', 'syslog') . '</em></td></tr>';
 	}
 	html_end_box(false);
+
+	if ($nav !== '') {
+		print $nav;
+	}
 
 	draw_actions_dropdown($actions);
 
@@ -152,15 +296,6 @@ function syslog_template_actions() {
 
 	if (!isset($actions[get_request_var('drp_action')])) {
 		header('Location: syslog_saved_searches.php');
-		exit;
-	}
-
-	if (get_request_var('drp_action') == '3') {
-		if (!syslog_allow_edits()) {
-			header('Location: syslog_saved_searches.php?header=false');
-			exit;
-		}
-		header('Location: syslog_saved_searches.php?action=import&header=false');
 		exit;
 	}
 

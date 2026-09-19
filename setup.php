@@ -417,73 +417,83 @@ function syslog_check_upgrade() {
 			CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
 	}
 
-	$alerts = syslog_db_fetch_assoc('SELECT *
-		FROM syslog_alert
-		WHERE hash IS NULL OR hash = ""');
+	if (syslog_db_column_exists('syslog_alert', 'hash')) {
+		$alerts = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_alert
+			WHERE hash IS NULL OR hash = ""');
 
-	if (cacti_sizeof($alerts)) {
-		foreach ($alerts as $a) {
-			$hash = get_hash_syslog($a['id'], 'syslog_alert');
-			syslog_db_execute_prepared('UPDATE syslog_alert
-				SET hash = ?
-				WHERE id = ?',
-				[$hash, $a['id']]);
+		if (cacti_sizeof($alerts)) {
+			foreach ($alerts as $a) {
+				$hash = get_hash_syslog($a['id'], 'syslog_alert');
+				syslog_db_execute_prepared('UPDATE syslog_alert
+					SET hash = ?
+					WHERE id = ?',
+					[$hash, $a['id']]);
+			}
 		}
 	}
 
-	$removes = syslog_db_fetch_assoc('SELECT *
-		FROM syslog_remove
-		WHERE hash IS NULL OR hash = ""');
+	if (syslog_db_column_exists('syslog_remove', 'hash')) {
+		$removes = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_remove
+			WHERE hash IS NULL OR hash = ""');
 
-	if (cacti_sizeof($removes)) {
-		foreach ($removes as $r) {
-			$hash = get_hash_syslog($r['id'], 'syslog_remove');
-			syslog_db_execute_prepared('UPDATE syslog_remove
-				SET hash = ?
-				WHERE id = ?',
-				[$hash, $r['id']]);
+		if (cacti_sizeof($removes)) {
+			foreach ($removes as $r) {
+				$hash = get_hash_syslog($r['id'], 'syslog_remove');
+				syslog_db_execute_prepared('UPDATE syslog_remove
+					SET hash = ?
+					WHERE id = ?',
+					[$hash, $r['id']]);
+			}
 		}
 	}
 
-	$reports = syslog_db_fetch_assoc('SELECT *
-		FROM syslog_reports
-		WHERE hash IS NULL OR hash = ""');
+	if (syslog_db_column_exists('syslog_reports', 'hash')) {
+		$reports = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_reports
+			WHERE hash IS NULL OR hash = ""');
 
-	if (cacti_sizeof($reports)) {
-		foreach ($reports as $r) {
-			$hash = get_hash_syslog($r['id'], 'syslog_reports');
-			syslog_db_execute_prepared('UPDATE syslog_reports
-				SET hash = ?
-				WHERE id = ?',
-				[$hash, $r['id']]);
+		if (cacti_sizeof($reports)) {
+			foreach ($reports as $r) {
+				$hash = get_hash_syslog($r['id'], 'syslog_reports');
+				syslog_db_execute_prepared('UPDATE syslog_reports
+					SET hash = ?
+					WHERE id = ?',
+					[$hash, $r['id']]);
+			}
 		}
 	}
 
-	$searches = syslog_db_fetch_assoc('SELECT *
-		FROM syslog_saved_searches
-		WHERE hash IS NULL OR hash = ""');
+	if (syslog_db_column_exists('syslog_saved_searches', 'hash')) {
+		$searches = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_saved_searches
+			WHERE hash IS NULL OR hash = ""');
 
-	if (cacti_sizeof($searches)) {
-		foreach ($searches as $s) {
-			$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
-			syslog_db_execute_prepared('UPDATE syslog_saved_searches
-				SET hash = ?
-				WHERE id = ?',
-				[$hash, $s['id']]);
+		if (cacti_sizeof($searches)) {
+			foreach ($searches as $s) {
+				$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
+				syslog_db_execute_prepared('UPDATE syslog_saved_searches
+					SET hash = ?
+					WHERE id = ?',
+					[$hash, $s['id']]);
+			}
 		}
 	}
 
-	$dashboards = syslog_db_fetch_assoc('SELECT *
-		FROM syslog_dashboards
-		WHERE hash IS NULL OR hash = ""');
+	if (syslog_db_column_exists('syslog_dashboards', 'hash')) {
+		$dashboards = syslog_db_fetch_assoc('SELECT *
+			FROM syslog_dashboards
+			WHERE hash IS NULL OR hash = ""');
 
-	if (cacti_sizeof($dashboards)) {
-		foreach ($dashboards as $d) {
-			$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
-			syslog_db_execute_prepared('UPDATE syslog_dashboards
-				SET hash = ?
-				WHERE id = ?',
-				[$hash, $d['id']]);
+		if (cacti_sizeof($dashboards)) {
+			foreach ($dashboards as $d) {
+				$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
+				syslog_db_execute_prepared('UPDATE syslog_dashboards
+					SET hash = ?
+					WHERE id = ?',
+					[$hash, $d['id']]);
+			}
 		}
 	}
 
