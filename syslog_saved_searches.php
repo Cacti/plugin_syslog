@@ -355,7 +355,7 @@ function syslog_template_actions() {
 
 		$title = __esc('Delete Saved Search Template(s)', 'syslog');
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
+		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'";
 	} else {
 		raise_message(40);
 		header('Location: syslog_saved_searches.php?header=false');

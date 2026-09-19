@@ -401,7 +401,7 @@ function syslog_dashboard_actions() {
 			$title = __esc('Export Dashboard(s)', 'syslog');
 		}
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
+		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>\u0026nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'";
 	} else {
 		raise_message(40);
 		header('Location: syslog_dashboards.php?header=false');
