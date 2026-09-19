@@ -61,7 +61,14 @@ if (isset_request_var('action') && get_nfilter_request_var('action') === 'export
 }
 
 if (isset_request_var('action') && get_nfilter_request_var('action') === 'import') {
-	syslog_saved_search_import();
+	if (isset_request_var('save_component_import')) {
+		syslog_saved_search_import();
+	} else {
+		top_header();
+		syslog_include_js();
+		syslog_saved_search_import_form();
+		bottom_footer();
+	}
 	exit;
 }
 
@@ -148,13 +155,27 @@ function syslog_template_actions() {
 		exit;
 	}
 
+	if (get_request_var('drp_action') == '3') {
+		if (!syslog_allow_edits()) {
+			header('Location: syslog_saved_searches.php?header=false');
+			exit;
+		}
+		header('Location: syslog_saved_searches.php?action=import&header=false');
+		exit;
+	}
+
 	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
 
+		if ($selected_items != false && get_request_var('drp_action') == '2') {
+			syslog_saved_search_export();
+			exit;
+		}
+
 		syslog_apply_selected_items_action($selected_items, get_request_var('drp_action'), [
 			'1' => 'api_syslog_saved_search_remove'
-		], '2', get_nfilter_request_var('selected_items'));
+		]);
 
 		header('Location: syslog_saved_searches.php?header=false');
 
@@ -363,6 +384,49 @@ function syslog_saved_search_import() {
 	}
 
 	header('Location: syslog_saved_searches.php');
+}
+
+function syslog_saved_search_import_form() {
+	if (!syslog_allow_edits()) {
+		header('Location: syslog_saved_searches.php?header=false');
+		exit;
+	}
+
+	$form_data = [
+		'import_file' => [
+			'friendly_name' => __('Import Saved Search Template from Local File', 'syslog'),
+			'description'   => __('If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here.', 'syslog'),
+			'method'        => 'file'
+		],
+		'import_text' => [
+			'method'        => 'textarea',
+			'friendly_name' => __('Import Saved Search Template from Text', 'syslog'),
+			'description'   => __('If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it.', 'syslog'),
+			'value'         => '',
+			'default'       => '',
+			'textarea_rows' => '10',
+			'textarea_cols' => '80',
+			'class'         => 'textAreaNotes'
+		]
+	];
+
+	print "<form method='post' action='syslog_saved_searches.php' enctype='multipart/form-data'>";
+
+	html_start_box(__('Import Saved Search Template', 'syslog'), '100%', false, '3', 'center', '');
+
+	draw_edit_form(
+		[
+			'config' => ['no_form_tag' => true],
+			'fields' => $form_data
+		]
+	);
+
+	html_end_box();
+
+	form_hidden_box('save_component_import', '1', '');
+	form_hidden_box('action', 'import', '');
+
+	form_save_button('', 'import');
 }
 
 function syslog_template_edit($row, $error) {
