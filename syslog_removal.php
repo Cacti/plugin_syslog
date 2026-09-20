@@ -868,14 +868,7 @@ function syslog_removal() {
 	form_end();
 
 	if (isset($_SESSION['exporter'])) {
-		print "<script type='text/javascript'>
-			$(function() {
-				setTimeout(function() {
-					document.location = 'syslog_removal.php?action=export&selected_items=" . $_SESSION['exporter'] . "';
-					Pace.stop();
-				}, 250);
-			});
-			</script>";
+		syslog_download_frame('syslog_removal.php?action=export&selected_items=' . $_SESSION['exporter']);
 
 		kill_session_var('exporter');
 		exit;

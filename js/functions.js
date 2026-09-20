@@ -624,6 +624,17 @@ function postSyslog(data) {
 	var form = document.createElement('form');
 	form.method = 'post';
 	form.action = 'syslog.php';
+	if (data.export === 'true') {
+		var frame = document.getElementById('syslog_download');
+		if (!frame) {
+			frame = document.createElement('iframe');
+			frame.id = frame.name = 'syslog_download';
+			frame.hidden = true;
+			frame.title = 'Syslog download';
+			document.body.appendChild(frame);
+		}
+		form.target = frame.name;
+	}
 	data.tab = window.pageTab || 'syslog';
 	data.__csrf_magic = csrfMagicToken;
 	Object.keys(data).forEach(function(name) {
@@ -660,7 +671,6 @@ function exportRecords() {
 	var data = syslogFilterData();
 	data.export = 'true';
 	postSyslog(data);
-	Pace.stop();
 }
 
 function clearFilter() {
