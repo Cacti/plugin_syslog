@@ -552,6 +552,31 @@ function syslog_apply_selected_items_action($selected_items, $drp_action, $actio
 	}
 }
 
+/** Close a native bulk confirmation form and clear Cacti's download spinner. */
+function syslog_export_form_end($export) {
+	global $form_id;
+
+	form_end(false);
+	if (!$export) {
+		return;
+	}
+	?>
+	<script type='text/javascript'>
+	(function() {
+		var form = document.getElementById(<?php print syslog_json_safe($form_id); ?>);
+		if (!form) return;
+		form.addEventListener('submit', function() {
+			// Cacti renders its loading bar on beforeunload, even for attachments.
+			// Run after that handler; the page stays open when a download starts.
+			window.addEventListener('beforeunload', function() {
+				if (window.Pace) window.Pace.stop();
+			}, {once: true});
+		});
+	})();
+	</script>
+	<?php
+}
+
 function syslog_include_js() {
 	global $config;
 	?>

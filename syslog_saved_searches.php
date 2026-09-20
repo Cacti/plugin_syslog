@@ -376,7 +376,7 @@ function syslog_template_actions() {
 	html_end_box();
 
 	// Bulk actions can return a JSON attachment; bypass Cacti's HTML AJAX handler.
-	form_end(false);
+	syslog_export_form_end(get_request_var('drp_action') == '2');
 
 	bottom_footer();
 }
