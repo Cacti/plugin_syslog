@@ -697,11 +697,13 @@ function syslog_get_import_payload($redirect_url) {
 		$tmp_name = $_FILES['import_file']['tmp_name'];
 
 		if (!isset($_FILES['import_file']['error']) || $_FILES['import_file']['error'] !== UPLOAD_ERR_OK) {
+			raise_message('syslog_import_error', __('Unable to read the uploaded import file. Check the file and upload size limit.', 'syslog'), MESSAGE_LEVEL_ERROR);
 			header('Location: ' . $redirect_url);
 			exit;
 		}
 
 		if (!is_uploaded_file($tmp_name)) {
+			raise_message('syslog_import_error', __('Unable to read the uploaded import file. Check the file and upload size limit.', 'syslog'), MESSAGE_LEVEL_ERROR);
 			header('Location: ' . $redirect_url);
 			exit;
 		}
@@ -710,6 +712,7 @@ function syslog_get_import_payload($redirect_url) {
 
 		if ($import_data === false) {
 			cacti_log('SYSLOG ERROR: Uploaded import file is empty, unreadable, or exceeds the maximum size', false, 'SYSTEM');
+			raise_message('syslog_import_error', __('Unable to read the uploaded import file. Check the file and upload size limit.', 'syslog'), MESSAGE_LEVEL_ERROR);
 			header('Location: ' . $redirect_url);
 			exit;
 		}
@@ -717,6 +720,7 @@ function syslog_get_import_payload($redirect_url) {
 		return $import_data;
 	}
 
+	raise_message('syslog_import_error', __('Select an import file or paste its contents before importing.', 'syslog'), MESSAGE_LEVEL_ERROR);
 	header('Location: ' . $redirect_url);
 	exit;
 }
@@ -782,10 +786,11 @@ function syslog_rules_array2json(string $table, array $rules): string {
  * previously returned by xml2array() for minimal downstream churn.
  *
  * @param string $payload Raw import payload
+ * @param string $expected_table Destination object table
  *
  * @return array|false
  */
-function syslog_parse_rule_import(string $payload) {
+function syslog_parse_rule_import(string $payload, string $expected_table) {
 	$trimmed = trim($payload);
 
 	if ($trimmed === '') {
@@ -803,6 +808,13 @@ function syslog_parse_rule_import(string $payload) {
 			return false;
 		}
 
+		if (isset($decoded['table']) && $decoded['table'] !== $expected_table) {
+			return false;
+		}
+		if (isset($decoded['version']) && $decoded['version'] !== SYSLOG_IMPORT_VERSION) {
+			return false;
+		}
+
 		$templates = [];
 
 		if (isset($decoded['templates']) && is_array($decoded['templates'])) {
@@ -815,8 +827,8 @@ function syslog_parse_rule_import(string $payload) {
 		$out   = [];
 
 		foreach ($templates as $template) {
-			if (!is_array($template)) {
-				continue;
+			if (!is_array($template) || !syslog_import_matches_table($template, $expected_table)) {
+				return false;
 			}
 
 			$out['template' . $index] = $template;
@@ -826,7 +838,41 @@ function syslog_parse_rule_import(string $payload) {
 		return $out;
 	}
 
-	return xml2array($payload);
+	// Legacy exports have no table metadata; validate their distinguishing fields.
+	if (!in_array($expected_table, ['syslog_alert', 'syslog_remove'], true) ||
+		!function_exists('xml2array')) {
+		return false;
+	}
+	$templates = xml2array($payload);
+	if (!is_array($templates)) {
+		return false;
+	}
+	foreach ($templates as $template) {
+		if (!is_array($template) || !syslog_import_matches_table($template, $expected_table)) {
+			return false;
+		}
+	}
+	return $templates;
+}
+
+/** Validate object identity even for older exports without table metadata. */
+function syslog_import_matches_table(array $template, string $table): bool {
+	if (!isset($template['name']) || !is_string($template['name']) || trim($template['name']) === '') {
+		return false;
+	}
+	switch ($table) {
+		case 'syslog_alert':
+			return isset($template['severity'], $template['method'], $template['message']) &&
+				in_array((string) $template['method'], ['0', '1'], true) && is_string($template['message']);
+		case 'syslog_remove':
+			return isset($template['method'], $template['message']) &&
+				in_array($template['method'], ['del', 'trans'], true) && is_string($template['message']);
+		case 'syslog_saved_searches':
+			return isset($template['search']) && is_string($template['search']) && !isset($template['panels']);
+		case 'syslog_dashboards':
+			return isset($template['panels']) && is_array($template['panels']);
+	}
+	return false;
 }
 
 /**

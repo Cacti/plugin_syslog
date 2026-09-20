@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_template'))
 	}
 }
 
-if (isset_request_var('import') && syslog_allow_edits()) {
+if ((isset_request_var('import') || isset_request_var('save_component_import')) && syslog_allow_edits()) {
 	set_request_var('action', 'import');
 }
 
@@ -430,7 +430,13 @@ function syslog_saved_search_import() {
 	global $db;
 
 	$import_data = syslog_get_import_payload('syslog_saved_searches.php');
-	$import_array = syslog_parse_rule_import($import_data);
+	$import_array = syslog_parse_rule_import($import_data, 'syslog_saved_searches');
+
+	if ($import_array === false || !$import_array) {
+		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		header('Location: syslog_saved_searches.php');
+		return;
+	}
 
 	$imported = 0;
 	$updated  = 0;
@@ -562,9 +568,8 @@ function syslog_saved_search_import_form() {
 	html_end_box();
 
 	form_hidden_box('save_component_import', '1', '');
-	form_hidden_box('action', 'import', '');
 
-	form_save_button('', 'import');
+	form_save_button('', 'import', 'id', false);
 }
 
 function syslog_template_edit($row, $error) {

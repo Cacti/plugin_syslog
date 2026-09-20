@@ -975,7 +975,8 @@ function syslog_alerts() {
 			form_selectable_cell((($alert['enabled'] == 'on') ? __('Yes', 'syslog') : __('No', 'syslog')), $alert['id']);
 			form_selectable_cell($message_types[$alert['type']], $alert['id']);
 			form_selectable_cell(title_trim(html_escape($alert['message']),60), $alert['id']);
-			form_selectable_cell((substr_count($alert['email'], ',') ? __('Multiple', 'syslog') : html_escape($alert['email'])), $alert['id']);
+			$email = (string) ($alert['email'] ?? '');
+			form_selectable_cell((substr_count($email, ',') ? __('Multiple', 'syslog') : html_escape($email)), $alert['id']);
 			form_selectable_cell(date('Y-m-d H:i:s', $alert['date']), $alert['id']);
 			form_selectable_cell($alert['user'], $alert['id']);
 			form_checkbox_cell($alert['name'], $alert['id']);
@@ -1044,13 +1045,19 @@ function import() {
 
 	form_hidden_box('save_component_import', '1', '');
 
-	form_save_button('', 'import');
+	form_save_button('', 'import', 'id', false);
 }
 
 function alert_import() {
-	$import_data = syslog_get_import_payload('syslog_alerts.php?header=false');
+	$import_data = syslog_get_import_payload('syslog_alerts.php');
 
-	$import_array = syslog_parse_rule_import($import_data);
+	$import_array = syslog_parse_rule_import($import_data, 'syslog_alert');
+
+	if ($import_array === false || !$import_array) {
+		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		header('Location: syslog_alerts.php');
+		return;
+	}
 
 	$debug_data = [];
 

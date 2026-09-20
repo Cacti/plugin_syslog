@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_dashboard')
 	}
 }
 
-if (isset_request_var('import') && syslog_allow_edits()) {
+if ((isset_request_var('import') || isset_request_var('save_component_import')) && syslog_allow_edits()) {
 	set_request_var('action', 'import');
 }
 
@@ -480,7 +480,13 @@ function syslog_dashboard_import() {
 	global $db;
 
 	$import_data = syslog_get_import_payload('syslog_dashboards.php');
-	$import_array = syslog_parse_rule_import($import_data);
+	$import_array = syslog_parse_rule_import($import_data, 'syslog_dashboards');
+
+	if ($import_array === false || !$import_array) {
+		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		header('Location: syslog_dashboards.php');
+		return;
+	}
 
 	$imported = 0;
 	$updated  = 0;
@@ -541,8 +547,13 @@ function syslog_dashboard_import() {
 				continue;
 			}
 
+			// An exported empty dashboard must also clear existing panels.
+			if (!syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id])) {
+				$failed++;
+				continue;
+			}
+
 			if (cacti_sizeof($panels)) {
-				syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id]);
 
 				foreach ($panels as $panel) {
 					if (!is_array($panel)) {
@@ -567,7 +578,7 @@ function syslog_dashboard_import() {
 						'date'         => $panel['date'] ?? time(),
 					];
 
-					syslog_db_execute_prepared("INSERT INTO $db.syslog_dashboard_panels
+					if (!syslog_db_execute_prepared("INSERT INTO $db.syslog_dashboard_panels
 						(dashboard_id, title, expression, source, removal, kind, chart, field,
 						`interval`, timespan, top_n, width, height, position, `date`)
 						VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -577,7 +588,10 @@ function syslog_dashboard_import() {
 							$panel_save['chart'], $panel_save['field'], $panel_save['interval'],
 							$panel_save['timespan'], $panel_save['top_n'], $panel_save['width'],
 							$panel_save['height'], $panel_save['position'], $panel_save['date'],
-						]);
+						])) {
+						$failed++;
+						continue 2;
+					}
 				}
 			}
 
@@ -642,9 +656,8 @@ function syslog_dashboard_import_form() {
 	html_end_box();
 
 	form_hidden_box('save_component_import', '1', '');
-	form_hidden_box('action', 'import', '');
 
-	form_save_button('', 'import');
+	form_save_button('', 'import', 'id', false);
 }
 
 function syslog_dashboard_edit($row, $error) {

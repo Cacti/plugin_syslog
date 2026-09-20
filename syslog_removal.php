@@ -916,14 +916,20 @@ function import() {
 
 	form_hidden_box('save_component_import', '1', '');
 
-	form_save_button('', 'import');
+	form_save_button('', 'import', 'id', false);
 }
 
 function removal_import() {
-	$import_data = syslog_get_import_payload('syslog_removal.php?header=false');
+	$import_data = syslog_get_import_payload('syslog_removal.php');
 
 	// obtain debug information if it's set
-	$import_array = syslog_parse_rule_import($import_data);
+	$import_array = syslog_parse_rule_import($import_data, 'syslog_remove');
+
+	if ($import_array === false || !$import_array) {
+		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		header('Location: syslog_removal.php');
+		return;
+	}
 
 	$debug_data = [];
 
