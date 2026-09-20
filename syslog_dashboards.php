@@ -346,7 +346,7 @@ function syslog_dashboard_actions() {
 			'1' => 'api_syslog_dashboard_remove'
 		]);
 
-		header('Location: syslog_dashboards.php?header=false');
+		header('Location: syslog_dashboards.php');
 
 		exit;
 	}
@@ -403,7 +403,7 @@ function syslog_dashboard_actions() {
 		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'>";
 	} else {
 		raise_message(40);
-		header('Location: syslog_dashboards.php?header=false');
+		header('Location: syslog_dashboards.php');
 		exit;
 	}
 
@@ -479,7 +479,7 @@ function syslog_dashboard_export() {
 function syslog_dashboard_import() {
 	global $db;
 
-	$import_data = syslog_get_import_payload('syslog_dashboards.php?header=false');
+	$import_data = syslog_get_import_payload('syslog_dashboards.php');
 	$import_array = syslog_parse_rule_import($import_data);
 
 	$imported = 0;
@@ -606,7 +606,7 @@ function syslog_dashboard_import() {
 
 function syslog_dashboard_import_form() {
 	if (!syslog_allow_edits()) {
-		header('Location: syslog_dashboards.php?header=false');
+		header('Location: syslog_dashboards.php');
 		exit;
 	}
 

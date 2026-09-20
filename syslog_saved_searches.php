@@ -311,7 +311,7 @@ function syslog_template_actions() {
 			'1' => 'api_syslog_saved_search_remove'
 		]);
 
-		header('Location: syslog_saved_searches.php?header=false');
+		header('Location: syslog_saved_searches.php');
 
 		exit;
 	}
@@ -360,7 +360,7 @@ function syslog_template_actions() {
 		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'>";
 	} else {
 		raise_message(40);
-		header('Location: syslog_saved_searches.php?header=false');
+		header('Location: syslog_saved_searches.php');
 		exit;
 	}
 
@@ -429,7 +429,7 @@ function syslog_saved_search_export() {
 function syslog_saved_search_import() {
 	global $db;
 
-	$import_data = syslog_get_import_payload('syslog_saved_searches.php?header=false');
+	$import_data = syslog_get_import_payload('syslog_saved_searches.php');
 	$import_array = syslog_parse_rule_import($import_data);
 
 	$imported = 0;
@@ -526,7 +526,7 @@ function syslog_saved_search_import() {
 
 function syslog_saved_search_import_form() {
 	if (!syslog_allow_edits()) {
-		header('Location: syslog_saved_searches.php?header=false');
+		header('Location: syslog_saved_searches.php');
 		exit;
 	}
 
