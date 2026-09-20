@@ -913,7 +913,7 @@ function import() {
 }
 
 function removal_import() {
-	$import_data = syslog_get_import_payload('syslog_removal.php');
+	$import_data = syslog_get_import_xml_payload('syslog_removal.php');
 
 	// obtain debug information if it's set
 	$import_array = syslog_parse_rule_import($import_data, 'syslog_remove');

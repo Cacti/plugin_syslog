@@ -13,7 +13,7 @@ function set_request_var($key, $value) { $_POST[$key] = $value; }
 function isset_request_var($key) { return isset($_POST[$key]); }
 function get_nfilter_request_var($key) { return $_POST[$key] ?? ''; }
 function sanitize_unserialize_selected_items($value) { return unserialize($value, ['allowed_classes' => false]); }
-function syslog_get_import_payload($url) { return $GLOBALS['payload']; }
+function syslog_get_import_xml_payload($url) { return $GLOBALS['payload']; }
 function syslog_db_fetch_row_prepared(...$args) { return $GLOBALS['fixture']; }
 function syslog_dashboard_panels($id) { return $GLOBALS['panels']; }
 function syslog_fetch_item_shares(...$args) { return ['users' => [['id' => 7]], 'groups' => [['id' => 8]]]; }

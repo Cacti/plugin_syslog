@@ -696,10 +696,6 @@ const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
 const SYSLOG_IMPORT_VERSION   = 1;
 
 function syslog_get_import_xml_payload($redirect_url) {
-	return syslog_get_import_payload($redirect_url);
-}
-
-function syslog_get_import_payload($redirect_url) {
 	$import_text = (string) get_nfilter_request_var('import_text');
 
 	if (strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES) {

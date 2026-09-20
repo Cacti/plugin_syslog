@@ -479,7 +479,7 @@ function syslog_dashboard_export() {
 function syslog_dashboard_import() {
 	global $db;
 
-	$import_data = syslog_get_import_payload('syslog_dashboards.php');
+	$import_data = syslog_get_import_xml_payload('syslog_dashboards.php');
 	$import_array = syslog_parse_rule_import($import_data, 'syslog_dashboards');
 
 	if ($import_array === false || !$import_array) {
