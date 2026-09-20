@@ -552,6 +552,30 @@ function syslog_apply_selected_items_action($selected_items, $drp_action, $actio
 	}
 }
 
+/** Download in a separate browsing context so Cacti's page-unload spinner never starts. */
+function syslog_download_frame($url = '') {
+	print "<iframe id='syslog_download' name='syslog_download' hidden title='" . __esc('Syslog download', 'syslog') . "' src='" . html_escape($url === '' ? 'about:blank' : $url) . "'></iframe>";
+}
+
+/** Close a native bulk confirmation form, targeting exports at the download frame. */
+function syslog_export_form_end($export) {
+	global $form_id;
+
+	form_end(false);
+	if (!$export) {
+		return;
+	}
+	syslog_download_frame();
+	?>
+	<script type='text/javascript'>
+	(function() {
+		var form = document.getElementById(<?php print syslog_json_safe($form_id); ?>);
+		if (form) form.target = 'syslog_download';
+	})();
+	</script>
+	<?php
+}
+
 function syslog_include_js() {
 	global $config;
 	?>
@@ -669,6 +693,7 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 }
 
 const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
+const SYSLOG_IMPORT_VERSION   = 1;
 
 function syslog_get_import_xml_payload($redirect_url) {
 	$import_text = (string) get_nfilter_request_var('import_text');
@@ -692,26 +717,30 @@ function syslog_get_import_xml_payload($redirect_url) {
 		$tmp_name = $_FILES['import_file']['tmp_name'];
 
 		if (!isset($_FILES['import_file']['error']) || $_FILES['import_file']['error'] !== UPLOAD_ERR_OK) {
+			raise_message('syslog_import_error', __('Unable to read the uploaded import file. Check the file and upload size limit.', 'syslog'), MESSAGE_LEVEL_ERROR);
 			header('Location: ' . $redirect_url);
 			exit;
 		}
 
 		if (!is_uploaded_file($tmp_name)) {
+			raise_message('syslog_import_error', __('Unable to read the uploaded import file. Check the file and upload size limit.', 'syslog'), MESSAGE_LEVEL_ERROR);
 			header('Location: ' . $redirect_url);
 			exit;
 		}
 
-		$xml_data = syslog_read_import_file($tmp_name);
+		$import_data = syslog_read_import_file($tmp_name);
 
-		if ($xml_data === false) {
+		if ($import_data === false) {
 			cacti_log('SYSLOG ERROR: Uploaded import file is empty, unreadable, or exceeds the maximum size', false, 'SYSTEM');
+			raise_message('syslog_import_error', __('Unable to read the uploaded import file. Check the file and upload size limit.', 'syslog'), MESSAGE_LEVEL_ERROR);
 			header('Location: ' . $redirect_url);
 			exit;
 		}
 
-		return $xml_data;
+		return $import_data;
 	}
 
+	raise_message('syslog_import_error', __('Select an import file or paste its contents before importing.', 'syslog'), MESSAGE_LEVEL_ERROR);
 	header('Location: ' . $redirect_url);
 	exit;
 }
@@ -734,6 +763,136 @@ function syslog_read_import_file(string $filename): string|false {
 	} finally {
 		fclose($handle);
 	}
+}
+
+/**
+ * syslog_rules_array2json - encode a list of rule rows as a JSON export document
+ *
+ * @param string $table  Source rule table, used for uniqueness/version metadata
+ * @param array  $rules  Rule rows (the 'id' key is removed before export)
+ *
+ * @return string JSON document suitable for download
+ */
+function syslog_rules_array2json(string $table, array $rules): string {
+	$templates = [];
+
+	foreach ($rules as $rule) {
+		if (!is_array($rule)) {
+			continue;
+		}
+
+		unset($rule['id']);
+
+		if (!isset($rule['hash']) || $rule['hash'] === '') {
+			cacti_log("SYSLOG WARNING: Exported $table rule is missing a hash", false, 'SYSTEM');
+		}
+
+		$templates[] = $rule;
+	}
+
+	return json_encode([
+		'version'   => SYSLOG_IMPORT_VERSION,
+		'generator' => 'syslog',
+		'table'     => $table,
+		'templates' => $templates,
+	], JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+}
+
+/**
+ * syslog_parse_rule_import - parse a pasted or uploaded rule import payload
+ *
+ * Accepts JSON (preferred) or the legacy XML format.  Returns an array of
+ * rule arrays keyed by an incremental template index, mirroring the shape
+ * previously returned by xml2array() for minimal downstream churn.
+ *
+ * @param string $payload Raw import payload
+ * @param string $expected_table Destination object table
+ *
+ * @return array|false
+ */
+function syslog_parse_rule_import(string $payload, string $expected_table) {
+	$trimmed = trim($payload);
+
+	if ($trimmed === '') {
+		return false;
+	}
+
+	if (str_starts_with($trimmed, '{') || str_starts_with($trimmed, '[')) {
+		try {
+			$decoded = json_decode($trimmed, true, 64, JSON_THROW_ON_ERROR);
+		} catch (JsonException $e) {
+			return false;
+		}
+
+		if (!is_array($decoded)) {
+			return false;
+		}
+
+		if (isset($decoded['table']) && $decoded['table'] !== $expected_table) {
+			return false;
+		}
+		if (isset($decoded['version']) && $decoded['version'] !== SYSLOG_IMPORT_VERSION) {
+			return false;
+		}
+
+		$templates = [];
+
+		if (isset($decoded['templates']) && is_array($decoded['templates'])) {
+			$templates = $decoded['templates'];
+		} elseif (isset($decoded[0]) && is_array($decoded[0])) {
+			$templates = $decoded;
+		}
+
+		$index = 1;
+		$out   = [];
+
+		foreach ($templates as $template) {
+			if (!is_array($template) || !syslog_import_matches_table($template, $expected_table)) {
+				return false;
+			}
+
+			$out['template' . $index] = $template;
+			$index++;
+		}
+
+		return $out;
+	}
+
+	// Legacy exports have no table metadata; validate their distinguishing fields.
+	if (!in_array($expected_table, ['syslog_alert', 'syslog_remove'], true) ||
+		!function_exists('xml2array')) {
+		return false;
+	}
+	$templates = xml2array($payload);
+	if (!is_array($templates)) {
+		return false;
+	}
+	foreach ($templates as $template) {
+		if (!is_array($template) || !syslog_import_matches_table($template, $expected_table)) {
+			return false;
+		}
+	}
+	return $templates;
+}
+
+/** Validate object identity even for older exports without table metadata. */
+function syslog_import_matches_table(array $template, string $table): bool {
+	if (!isset($template['name']) || !is_string($template['name']) || trim($template['name']) === '') {
+		return false;
+	}
+	switch ($table) {
+		case 'syslog_alert':
+			return isset($template['severity'], $template['method'], $template['message']) &&
+				in_array((string) $template['method'], ['0', '1'], true) && is_string($template['message']);
+		case 'syslog_remove':
+			return isset($template['method'], $template['message']) &&
+				in_array($template['method'], ['del', 'trans'], true) && is_string($template['message']);
+		case 'syslog_saved_searches':
+			return isset($template['search']) && is_string($template['search']) && !isset($template['panels']);
+		case 'syslog_dashboards':
+			return isset($template['panels']) && is_array($template['panels']);
+	}
+	return false;
 }
 
 /**

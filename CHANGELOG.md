@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* feature: Add JSON export and a matching Import form to the Saved Search Templates and Dashboards admin pages, and give both pages the same filter/header bar (search, rows, Go, Clear, Import) used on Alert Rules, Removal Rules, and Reports
+* issue: Fix upgrade-time "Unknown column 'hash' in 'WHERE'" errors by guarding hash backfill queries with syslog_db_column_exists(); existing saved searches, dashboards, alerts, removal rules, and reports now get hash values backfilled before later upgrade steps reference the column
 * feature: Add an All Users / All Groups option to the Shared With Users and
   Shared With Groups selects of the admin Dashboards and Saved Search
   Templates pages: a single stored "all" grant makes the item visible to

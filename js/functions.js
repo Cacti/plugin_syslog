@@ -292,6 +292,78 @@ function initSyslogTemplates() {
 	});
 }
 
+function importSavedSearch() {
+	var strURL = 'syslog_saved_searches.php?action=import&header=false';
+	loadPageNoHeader(strURL);
+}
+
+function applyFilterSavedSearches() {
+	var strURL = 'syslog_saved_searches.php?filter='+encodeURIComponent($('#filter').val())+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	loadPageNoHeader(strURL);
+}
+
+function clearFilterSavedSearches() {
+	var strURL = 'syslog_saved_searches.php?clear=1&header=false';
+	loadPageNoHeader(strURL);
+}
+
+function initSyslogSavedSearches() {
+	$(function() {
+		$('#refresh').click(function() {
+			applyFilterSavedSearches();
+		});
+
+		$('#clear').click(function() {
+			clearFilterSavedSearches();
+		});
+
+		$('#import').click(function() {
+			importSavedSearch();
+		});
+
+		$('#saved_searches').submit(function(event) {
+			event.preventDefault();
+			applyFilterSavedSearches();
+		});
+	});
+}
+
+function importDashboard() {
+	var strURL = 'syslog_dashboards.php?action=import&header=false';
+	loadPageNoHeader(strURL);
+}
+
+function applyFilterDashboards() {
+	var strURL = 'syslog_dashboards.php?filter='+encodeURIComponent($('#filter').val())+'&rows='+$('#rows').val()+'&page='+$('#page').val()+'&header=false';
+	loadPageNoHeader(strURL);
+}
+
+function clearFilterDashboards() {
+	var strURL = 'syslog_dashboards.php?clear=1&header=false';
+	loadPageNoHeader(strURL);
+}
+
+function initSyslogDashboards() {
+	$(function() {
+		$('#refresh').click(function() {
+			applyFilterDashboards();
+		});
+
+		$('#clear').click(function() {
+			clearFilterDashboards();
+		});
+
+		$('#import').click(function() {
+			importDashboard();
+		});
+
+		$('#dashboards').submit(function(event) {
+			event.preventDefault();
+			applyFilterDashboards();
+		});
+	});
+}
+
 function initSyslogSearchDates(container) {
 	container.querySelectorAll('.syslogSearchDate').forEach(function(input) {
 		$(input).datetimepicker({
@@ -552,6 +624,17 @@ function postSyslog(data) {
 	var form = document.createElement('form');
 	form.method = 'post';
 	form.action = 'syslog.php';
+	if (data.export === 'true') {
+		var frame = document.getElementById('syslog_download');
+		if (!frame) {
+			frame = document.createElement('iframe');
+			frame.id = frame.name = 'syslog_download';
+			frame.hidden = true;
+			frame.title = 'Syslog download';
+			document.body.appendChild(frame);
+		}
+		form.target = frame.name;
+	}
 	data.tab = window.pageTab || 'syslog';
 	data.__csrf_magic = csrfMagicToken;
 	Object.keys(data).forEach(function(name) {
@@ -588,7 +671,6 @@ function exportRecords() {
 	var data = syslogFilterData();
 	data.export = 'true';
 	postSyslog(data);
-	Pace.stop();
 }
 
 function clearFilter() {
