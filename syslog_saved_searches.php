@@ -93,8 +93,6 @@ switch (get_request_var('action')) {
 			syslog_saved_searches();
 		}
 
-		bottom_footer();
-
 		break;
 }
 ?>
@@ -283,7 +281,8 @@ function syslog_template_list($rows, $nav = '') {
 
 	draw_actions_dropdown($actions);
 
-	form_end();
+	// Bulk actions can return a JSON attachment; bypass Cacti's HTML AJAX handler.
+	form_end(false);
 }
 
 function syslog_template_actions() {
@@ -301,7 +300,7 @@ function syslog_template_actions() {
 
 	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
-		$selected_items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
 		if ($selected_items != false && get_request_var('drp_action') == '2') {
 			syslog_saved_search_export();
@@ -346,16 +345,19 @@ function syslog_template_actions() {
 	}
 
 	if (cacti_sizeof($template_array)) {
+		$export = get_request_var('drp_action') == '2';
 		print "<tr>
 			<td class='textArea'>
-				<p>" . __('Click \'Continue\' to Delete the following Saved Search Template(s).', 'syslog') . "</p>
+				<p>" . ($export
+					? __('Click \'Continue\' to Export the following Saved Search Template(s).', 'syslog')
+					: __('Click \'Continue\' to Delete the following Saved Search Template(s).', 'syslog')) . "</p>
 				<div class='itemlist'><ul>$template_list</ul></div>
 			</td>
 		</tr>";
 
-		$title = __esc('Delete Saved Search Template(s)', 'syslog');
+		$title = $export ? __esc('Export Saved Search Template(s)', 'syslog') : __esc('Delete Saved Search Template(s)', 'syslog');
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'";
+		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'>";
 	} else {
 		raise_message(40);
 		header('Location: syslog_saved_searches.php?header=false');
@@ -373,7 +375,8 @@ function syslog_template_actions() {
 
 	html_end_box();
 
-	form_end();
+	// Bulk actions can return a JSON attachment; bypass Cacti's HTML AJAX handler.
+	form_end(false);
 
 	bottom_footer();
 }

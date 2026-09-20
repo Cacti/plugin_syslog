@@ -86,8 +86,6 @@ switch (get_request_var('action')) {
 			syslog_dashboards();
 		}
 
-		bottom_footer();
-
 		break;
 }
 ?>
@@ -289,7 +287,7 @@ function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 
 	html_start_box('', '100%', '', '3', 'center', '');
 
-	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
+	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
 
 	if (cacti_sizeof($rows)) {
 		foreach ($rows as $dashboard) {
@@ -318,7 +316,8 @@ function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 
 	draw_actions_dropdown($actions);
 
-	form_end();
+	// Bulk actions can return a JSON attachment; bypass Cacti's HTML AJAX handler.
+	form_end(false);
 }
 
 function syslog_dashboard_actions() {
@@ -336,7 +335,7 @@ function syslog_dashboard_actions() {
 
 	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
-		$selected_items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
+		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
 		if ($selected_items != false && get_request_var('drp_action') == '2') {
 			syslog_dashboard_export();
@@ -401,7 +400,7 @@ function syslog_dashboard_actions() {
 			$title = __esc('Export Dashboard(s)', 'syslog');
 		}
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>\u0026nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'";
+		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'>";
 	} else {
 		raise_message(40);
 		header('Location: syslog_dashboards.php?header=false');
@@ -419,7 +418,8 @@ function syslog_dashboard_actions() {
 
 	html_end_box();
 
-	form_end();
+	// Bulk actions can return a JSON attachment; bypass Cacti's HTML AJAX handler.
+	form_end(false);
 
 	bottom_footer();
 }
