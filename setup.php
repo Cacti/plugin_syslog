@@ -928,7 +928,6 @@ function syslog_config_arrays () {
 		'messagee' => __('Ends with', 'syslog'),
 		'host'     => __('Hostname is', 'syslog'),
 		'facility' => __('Facility is', 'syslog'),
-		'sql'      => __('SQL Expression', 'syslog')
 	);
 
 	$syslog_freqs = array(
@@ -1093,4 +1092,3 @@ function syslog_utilities_list() {
 	</tr>
 	<?php
 }
-

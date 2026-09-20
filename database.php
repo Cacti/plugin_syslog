@@ -72,6 +72,17 @@ function syslog_db_fetch_cell($sql, $col_name = '', $log = TRUE) {
 	return db_fetch_cell($sql, $col_name, $log, $syslog_cnn);
 }
 
+/* syslog_db_fetch_assoc_prepared - run a 'select' sql query and return all rows found
+   @arg $sql - the sql query to run
+   @arg $params - the parameters to bind to the query
+   @arg $log - whether or not to log the query to the cacti log
+   @returns - the complete result set as an associative array */
+function syslog_db_fetch_assoc_prepared(string $sql, array $params = [], bool $log = true) {
+	global $syslog_cnn;
+
+	return db_fetch_assoc_prepared($sql, $params, $log, $syslog_cnn);
+}
+
 /* syslog_db_fetch_cell_prepared - run a 'select' sql query and return the first column of the
      first row found
    @param $sql - the sql query to execute
@@ -128,4 +139,3 @@ function syslog_sql_save($array_items, $table_name, $key_cols = 'id', $autoinc =
 	global $syslog_cnn;
 	return sql_save($array_items, $table_name, $key_cols, $autoinc, $syslog_cnn);
 }
-
