@@ -2526,15 +2526,16 @@ function syslog_remove_items($table, $max_seq) {
 }
 
 /**
- * function syslog_log_row_color()
- * This function set's the CSS for each row of the syslog table as it is displayed
- * it supports both the legacy as well as the new approach to controlling these
- * colors.
+ * Sets the CSS class for each alert log row of the syslog table as it is
+ * displayed. The classes reuse the same Kiwi-style pastel tints that the
+ * main syslog table applies per priority, so both tables share one look.
  *
- * @param mixed $severity
- * @param mixed $tip_title
+ * @param mixed $severity The alert severity of the row.
+ * @param mixed $tip_title The row tooltip title (unused, kept for compatibility).
+ *
+ * @return void
  */
-function syslog_log_row_color($severity, $tip_title) {
+function syslog_log_row_color($severity, $tip_title): void {
 	switch($severity) {
 		case '':
 		case '0':
@@ -2551,7 +2552,7 @@ function syslog_log_row_color($severity, $tip_title) {
 			break;
 	}
 
-	print "<tr class='tableRow selectable syslogAlertRow $class'>\n";
+	print "<tr class='tableRow selectable syslogRow $class'>\n";
 }
 
 /**
@@ -2804,7 +2805,7 @@ function syslog_export($tab) {
 		$sql_where  = '';
 		$messages   = get_syslog_messages($sql_where, 100000, $tab);
 
-		$line = ['name', 'severity', 'date', 'message', 'host', 'facility', 'priority', 'count'];
+		$line = ['date', 'device', 'severity', 'alertname', 'message', 'count', 'facility', 'priority'];
 
 		$fp = fopen('php://output', 'w');
 
@@ -2819,14 +2820,14 @@ function syslog_export($tab) {
 				}
 
 				$line = [
-					syslog_csv_safe($message['name']),
-					syslog_csv_safe($severity),
 					$message['logtime'],
-					syslog_csv_safe($message['logmsg']),
 					syslog_csv_safe($message['host']),
+					syslog_csv_safe($severity),
+					syslog_csv_safe($message['name']),
+					syslog_csv_safe($message['logmsg']),
+					$message['count'],
 					syslog_csv_safe(ucfirst($message['facility'])),
-					syslog_csv_safe(ucfirst($message['priority'])),
-					$message['count']
+					syslog_csv_safe(ucfirst($message['priority']))
 				];
 
 				fputcsv($fp, $line, ',', '"', '');
