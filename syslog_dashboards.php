@@ -313,7 +313,7 @@ function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 		foreach ($rows as $dashboard) {
 			$id = (int) $dashboard['id'];
 			$owner = html_escape($dashboard['user']);
-			if (cacti_sizeof($usernames) && !isset($usernames[$dashboard['user']])) {
+			if (isset($usernames) && cacti_sizeof($usernames) && !isset($usernames[$dashboard['user']])) {
 				$owner .= ' (' . __('deleted user', 'syslog') . ')';
 			}
 			form_alternate_row('line' . $id, true);
@@ -414,7 +414,7 @@ function syslog_dashboard_actions() {
 			</tr>";
 
 			$title = __esc('Delete Dashboard(s)', 'syslog');
-		} else { // export
+		} elseif (get_request_var('drp_action') == '2') { // export
 			print "<tr>
 				<td class='textArea'>
 					<p>" . __('Click \'Continue\' to Export the following Dashboard(s).', 'syslog') . "</p>

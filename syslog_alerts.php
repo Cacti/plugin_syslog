@@ -1162,7 +1162,7 @@ function alert_import(): void {
 
 	if ($import_array !== false && cacti_sizeof($import_array)) {
 		foreach ($import_array as $template => $contents) {
-			$save  = [];
+			$save  = [];;
 			$tname = '';
 
 			if (cacti_sizeof($contents)) {
