@@ -216,6 +216,19 @@ function syslog_db_replace($table_name, $array_items, $keyCols) {
 function syslog_sql_save($array_items, $table_name, $key_cols = 'id', $autoinc = true) {
 	global $syslog_cnn;
 
+	/**
+	 * The Syslog connection's default database is always the Syslog database
+	 * (use_cacti_db connects to $database_default, a separate config connects
+	 * to $syslogdb_default), so the qualifier is redundant here. Cacti 1.2.31
+	 * rejects qualified names in db_get_table_column_types() via
+	 * db_is_safe_identifier(), which made every sql_save() on a qualified
+	 * table fail with "Column ... does not exist". The unqualified name also
+	 * keeps sql_save()'s own db_table_exists() check on the same database.
+	 */
+	if (is_string($table_name) && preg_match("/^[`]{0,1}[\w_]+[`]{0,1}\.[`]{0,1}(?<table>[\w_]+)[`]{0,1}$/", $table_name, $matches)) {
+		$table_name = $matches['table'];
+	}
+
 	return sql_save($array_items, $table_name, $key_cols, $autoinc, $syslog_cnn);
 }
 
