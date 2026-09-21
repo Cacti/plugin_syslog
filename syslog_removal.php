@@ -96,7 +96,12 @@ switch (get_request_var('action')) {
 	The Save Function
    -------------------------- */
 
-function form_save() {
+/**
+ * Save a Syslog Removal Rule and redirect back to the edit screen.
+ *
+ * @return void
+ */
+function form_save(): void {
 	if ((isset_request_var('save_component_removal')) && (isempty_request_var('add_dq_y'))) {
 		$removalid = api_syslog_removal_save(get_filter_request_var('id'), get_nfilter_request_var('name'),
 			get_nfilter_request_var('type'), get_nfilter_request_var('message'),
@@ -114,7 +119,12 @@ function form_save() {
 	The 'actions' function
    ------------------------ */
 
-function form_actions() {
+/**
+ * Display the bulk action confirmation form for the selected Syslog Removal Rules.
+ *
+ * @return void
+ */
+function form_actions(): void {
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 	global $syslogdb_default;
 
@@ -126,15 +136,17 @@ function form_actions() {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 		$drp_action     = get_request_var('drp_action');
 
+		$action_map = [
+			'1' => 'api_syslog_removal_remove',
+			'2' => 'api_syslog_removal_disable',
+			'3' => 'api_syslog_removal_enable',
+			'4' => 'api_syslog_removal_reprocess'
+		];
+
 		syslog_apply_selected_items_action(
 			$selected_items,
 			$drp_action,
-			[
-				'1' => 'api_syslog_removal_remove',
-				'2' => 'api_syslog_removal_disable',
-				'3' => 'api_syslog_removal_enable',
-				'4' => 'api_syslog_removal_reprocess'
-			],
+			$action_map,
 			'5',
 			get_nfilter_request_var('selected_items')
 		);
@@ -153,6 +165,7 @@ function form_actions() {
 	// setup some variables
 	$removal_array = [];
 	$removal_list  = '';
+	$title         = '';
 
 	// loop through each of the clusters selected on the previous page and get more info about them
 	foreach ($_POST as $var => $val) {
@@ -234,7 +247,7 @@ function form_actions() {
 	print "<tr>
 		<td class='saveRow'>
 			<input type='hidden' name='action' value='actions'>
-			<input type='hidden' name='selected_items' value='" . (isset($removal_array) ? serialize($removal_array) : '') . "'>
+			<input type='hidden' name='selected_items' value='" . serialize($removal_array) . "'>
 			<input type='hidden' name='drp_action' value='" . get_request_var('drp_action') . "'>
 			$save_html
 		</td>
@@ -247,7 +260,12 @@ function form_actions() {
 	bottom_footer();
 }
 
-function removal_export() {
+/**
+ * Export the selected Syslog Removal Rules as a JSON download.
+ *
+ * @return void
+ */
+function removal_export(): void {
 	global $syslogdb_default;
 
 	// if we are to save this form, instead of display it
@@ -278,7 +296,20 @@ function removal_export() {
 	}
 }
 
-function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, $enabled) {
+/**
+ * Validate and save a Syslog Removal Rule.
+ *
+ * @param int|string $id      The id of the Removal Rule, '' for a new rule.
+ * @param string $name    The name of the Removal Rule.
+ * @param string $type    The match type of the Removal Rule.
+ * @param string $message The match string of the Removal Rule.
+ * @param string $rmethod The method of removal, 'del' or 'trans'.
+ * @param string $notes   The notes of the Removal Rule.
+ * @param string $enabled 'on' when the Removal Rule is enabled, otherwise ''.
+ *
+ * @return int|false The id of the saved Removal Rule, or false when the save failed.
+ */
+function api_syslog_removal_save(int|string $id, string $name, string $type, string $message, string $rmethod, string $notes, string $enabled): int|false {
 	global $config;
 	global $syslogdb_default;
 
@@ -316,28 +347,62 @@ function api_syslog_removal_save($id, $name, $type, $message, $rmethod, $notes, 
 	$id = 0;
 
 	if (!is_error_message()) {
-		$id = syslog_sync_save($save, 'syslog_remove', 'id');
+		// syslog_sync_save() does not return the saved id, so look it up
+		syslog_sync_save($save, 'syslog_remove', 'id');
+
+		$id = (int) syslog_db_fetch_cell_prepared("SELECT id
+			FROM `$syslogdb_default`.`syslog_remove`
+			WHERE hash = ?",
+			[$save['hash']]);
 	}
 
 	return $id;
 }
 
-function api_syslog_removal_remove($id) {
+/**
+ * Delete a Syslog Removal Rule by id.
+ *
+ * @param int $id The id of the Removal Rule to delete.
+ *
+ * @return void
+ */
+function api_syslog_removal_remove(int $id): void {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_remove` WHERE id = ?", [$id]);
 }
 
-function api_syslog_removal_disable($id) {
+/**
+ * Disable a Syslog Removal Rule by id.
+ *
+ * @param int $id The id of the Removal Rule to disable.
+ *
+ * @return void
+ */
+function api_syslog_removal_disable(int $id): void {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_remove` SET enabled = '' WHERE id = ?", [$id]);
 }
 
-function api_syslog_removal_enable($id) {
+/**
+ * Enable a Syslog Removal Rule by id.
+ *
+ * @param int $id The id of the Removal Rule to enable.
+ *
+ * @return void
+ */
+function api_syslog_removal_enable(int $id): void {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_remove` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
-function api_syslog_removal_reprocess($id) {
+/**
+ * Retroactively apply a Syslog Removal Rule to existing syslog messages.
+ *
+ * @param int $id The id of the Removal Rule to reprocess.
+ *
+ * @return void
+ */
+function api_syslog_removal_reprocess(int $id): void {
 	// remove records retroactively
 	$syslog_items   = syslog_remove_items('syslog', $id);
 	$syslog_removed = $syslog_items['removed'];
@@ -355,7 +420,17 @@ function api_syslog_removal_reprocess($id) {
 	Removal Functions
    --------------------- */
 
-function syslog_get_removal_records(&$sql_where, &$sql_params, $rows) {
+/**
+ * Fetch the Syslog Removal Rules matching the current filter, appending the
+ * generated where clause and parameters to the given references.
+ *
+ * @param string            $sql_where  The where clause, passed by reference.
+ * @param array<int, mixed> $sql_params The prepared SQL parameters, passed by reference.
+ * @param int               $rows       The number of rows to fetch.
+ *
+ * @return array<int, array<string, mixed>> The matching Removal Rules.
+ */
+function syslog_get_removal_records(&$sql_where, &$sql_params, int $rows): array {
 	global $syslogdb_default;
 
 	if (get_request_var('filter') != '') {
@@ -386,7 +461,12 @@ function syslog_get_removal_records(&$sql_where, &$sql_params, $rows) {
 	return syslog_db_fetch_assoc_prepared($query_string, $sql_params);
 }
 
-function syslog_action_edit() {
+/**
+ * Display the Syslog Removal Rule edit form.
+ *
+ * @return void
+ */
+function syslog_action_edit(): void {
 	global $message_types;
 	global $syslogdb_default;
 
@@ -682,7 +762,12 @@ function syslog_action_edit() {
 	<?php
 }
 
-function syslog_filter() {
+/**
+ * Display the Syslog Removal Rule filter row.
+ *
+ * @return void
+ */
+function syslog_removal_filter(): void {
 	global $config, $item_rows;
 
 	?>
@@ -745,7 +830,12 @@ function syslog_filter() {
 	<?php
 }
 
-function syslog_removal() {
+/**
+ * Display the Syslog Removal Rule list.
+ *
+ * @return void
+ */
+function syslog_removal(): void {
 	global $syslog_actions, $message_types, $config;
 	global $syslogdb_default;
 
@@ -797,7 +887,7 @@ function syslog_removal() {
 
 	html_start_box(__('Syslog Removal Rule Filters', 'syslog'), '100%', '', '3', 'center', $url);
 
-	syslog_filter();
+	syslog_removal_filter();
 
 	html_end_box();
 
@@ -875,7 +965,12 @@ function syslog_removal() {
 	}
 }
 
-function import() {
+/**
+ * Display the Syslog Removal Rule import form.
+ *
+ * @return void
+ */
+function import(): void {
 	$form_data = [
 		'import_file' => [
 			'friendly_name' => __('Import Removal Rule from Local File', 'syslog'),
@@ -912,7 +1007,12 @@ function import() {
 	form_save_button('', 'import', 'id', false);
 }
 
-function removal_import() {
+/**
+ * Import Syslog Removal Rules from an uploaded file or pasted JSON/XML text.
+ *
+ * @return void
+ */
+function removal_import(): void {
 	$import_data = syslog_get_import_xml_payload('syslog_removal.php');
 
 	// obtain debug information if it's set
@@ -928,7 +1028,7 @@ function removal_import() {
 
 	if ($import_array !== false && cacti_sizeof($import_array)) {
 		foreach ($import_array as $template => $contents) {
-			$error = false;
+			$tname = '';
 			$save  = [];
 
 			if (cacti_sizeof($contents)) {
@@ -965,14 +1065,12 @@ function removal_import() {
 				}
 			}
 
-			if (!$error) {
-				$id = sql_save($save, 'syslog_remove');
+			$id = sql_save($save, 'syslog_remove');
 
-				if ($id) {
-					raise_message('syslog_info' . $id, __('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
-				} else {
-					raise_message('syslog_info' . $id, __('ERROR: Removal Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
-				}
+			if ($id) {
+				raise_message('syslog_info' . $id, __('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+			} else {
+				raise_message('syslog_info' . $id, __('ERROR: Removal Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 			}
 		}
 	}

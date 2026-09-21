@@ -48,6 +48,11 @@ ob_implicit_flush();
 
 global $debug, $syslog_facilities, $syslog_levels;
 
+/**
+ * @var array<string, mixed> $config Cacti's global configuration array.
+ */
+global $config;
+
 global $child, $run_id, $phase, $seq_start, $seq_end;
 
 $debug     = false;
@@ -437,7 +442,6 @@ function sig_handler($signo) {
 
 			exit(1);
 
-			break;
 		default:
 			// ignore all other signals
 	}
@@ -482,11 +486,11 @@ function syslog_worker_main($debug = false) {
 
 	$child_start = microtime(true);
 	$success     = false;
+	$moved       = 0;
 
 	switch ($phase) {
 		case 'references':
 			$resolved = syslog_resolve_incoming_hosts($seq_end, $seq_start, $seq_end);
-			$moved    = 0;
 			$success  = true;
 
 			syslog_debug(sprintf('Resolved %5s - Hostname(s) in slice %d-%d', $resolved, $seq_start, $seq_end));
@@ -623,7 +627,7 @@ function syslog_kill_workers() {
 		WHERE tasktype = 'syslog'
 		AND taskname = 'child'");
 
-	if (!cacti_sizeof($processes)) {
+	if (!is_array($processes) || !cacti_sizeof($processes)) {
 		return;
 	}
 

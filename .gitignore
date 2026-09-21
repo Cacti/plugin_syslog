@@ -62,3 +62,9 @@ coverage/**
 node_modules/**
 package-lock.json
 package.json
+vendor/**
+composer.json
+composer.lock
+phpstan.neon
+phpstan-baseline.neon
+phpstan-stubs.php

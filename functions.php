@@ -27,16 +27,24 @@ if (file_exists($syslog_query_builder)) {
 	require_once $syslog_query_builder;
 }
 
-/** Allowlisted fields and operators shared by validation and the builder. */
-function syslog_search_fields() {
+/**
+ * Allowlisted fields and operators shared by validation and the builder.
+ *
+ * @return array<string, string> Map of field names to display labels.
+ */
+function syslog_search_fields(): array {
 	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
 		'facility' => 'Facility', 'priority' => 'Priority', 'logtime' => 'Date',
 		'seq' => 'Sequence', 'host_id' => 'Host ID', 'program_id' => 'Program ID',
 		'facility_id' => 'Facility ID', 'priority_id' => 'Priority ID'];
 }
 
-/** Database-backed values used by query-builder dropdowns. */
-function syslog_search_choices() {
+/**
+ * Database-backed values used by query-builder dropdowns.
+ *
+ * @return array<string, array<int, array<int, string>>> Map of field names to choice arrays.
+ */
+function syslog_search_choices(): array {
 	global $syslogdb_default;
 	$choices = [];
 	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities', 'program' => 'syslog_programs'] as $field => $table) {
@@ -50,8 +58,17 @@ function syslog_search_choices() {
 	return $choices;
 }
 
-/** Bounded suggestions; message/sequence suggestions sample recent records. */
-function syslog_search_suggestions($field, $term, $tab, $removal) {
+/**
+ * Bounded suggestions; message/sequence suggestions sample recent records.
+ *
+ * @param string $field   The field to get suggestions for.
+ * @param string $term    The search term.
+ * @param string $tab     The current tab.
+ * @param string $removal The removal flag.
+ *
+ * @return array<int, array{value: string, label: string}> Array of suggestion objects.
+ */
+function syslog_search_suggestions(string $field, string $term, string $tab, string $removal): array {
 	global $syslogdb_default;
 	if (!isset(syslog_search_fields()[$field]) || $field === 'logtime' || strlen($term) > 1024) {
 		return [];
@@ -80,14 +97,29 @@ function syslog_search_suggestions($field, $term, $tab, $removal) {
 	}, $records);
 }
 
-function syslog_search_operators($field) {
+/**
+ * Get available search operators for a field.
+ *
+ * @param string $field The field name.
+ *
+ * @return array<int, string> Array of operator strings.
+ */
+function syslog_search_operators(string $field): array {
 	if ($field === 'logtime') { return ['=', '!=', '>', '>=', '<', '<=', 'last']; }
 	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
 		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
 }
 
-/** Parse literal message searches. Uppercase operators bind NOT, AND, then OR. */
-function syslog_parse_logical_search($input) {
+/**
+ * Parse literal message searches. Uppercase operators bind NOT, AND, then OR.
+ *
+ * @param string $input The search input string.
+ *
+ * @return array<int|string, mixed>|null The parsed search tree, or null if empty.
+ *
+ * @throws InvalidArgumentException When the search is too long, too complex, or malformed.
+ */
+function syslog_parse_logical_search(string $input): ?array {
 	if (strlen($input) > 8192) {
 		throw new InvalidArgumentException('Search is too long (maximum 8192 bytes).');
 	}
@@ -152,6 +184,7 @@ function syslog_parse_logical_search($input) {
 		if ($depth > 32) {
 			throw new InvalidArgumentException('Search nesting is too deep (maximum 32 levels).');
 		}
+		/** @var array<int, string> $token A token: ['field', name, operator], ['term', value], ['NOT'|'AND'|'OR'|'('|')', '']. */
 		$token = $tokens[$position++] ?? ['', ''];
 		if ($token[0] == 'NOT') {
 			$node = ['NOT', $parse(3, $depth + 1)];
@@ -198,8 +231,17 @@ function syslog_parse_logical_search($input) {
 	return $tree;
 }
 
-/** LOCATE treats wildcard and regex characters literally and uses column collation. */
-function syslog_logical_search_sql($tree, $column) {
+/**
+ * LOCATE treats wildcard and regex characters literally and uses column collation.
+ *
+ * @param array<int|string, mixed>|null $tree   The parsed search tree.
+ * @param string                    $column The column name ('message' or 'logmsg').
+ *
+ * @return string The SQL WHERE clause fragment.
+ *
+ * @throws InvalidArgumentException When the tree or column is invalid.
+ */
+function syslog_logical_search_sql(?array $tree, string $column): string {
 	if (!in_array($column, ['message', 'logmsg'], true)) {
 		throw new InvalidArgumentException('Invalid message column.');
 	}
@@ -246,7 +288,15 @@ function syslog_logical_search_sql($tree, $column) {
 	return '(' . syslog_logical_search_sql($tree[1], $column) . ' ' . $tree[0] . ' ' . syslog_logical_search_sql($tree[2], $column) . ')';
 }
 
-function syslog_logical_positive_terms($tree, $negative = false) {
+/**
+ * Extract positive terms from a parsed search tree.
+ *
+ * @param array<int|string, mixed>|null $tree     The parsed search tree.
+ * @param bool                      $negative Whether to extract negative terms.
+ *
+ * @return array<int, string> Array of search terms.
+ */
+function syslog_logical_positive_terms(?array $tree, bool $negative = false): array {
 	if ($tree === null) {
 		return [];
 	}
@@ -265,8 +315,14 @@ function syslog_logical_positive_terms($tree, $negative = false) {
 /**
  * Remove the date clause the page entry logic appends to a search, so saved
  * searches stay dynamic (dates are re-derived each time one is applied).
+ *
+ * @param string $search The search string.
+ * @param mixed  $date1  The start date.
+ * @param mixed  $date2  The end date.
+ *
+ * @return string The search string with auto dates removed.
  */
-function syslog_strip_auto_dates($search, $date1, $date2) {
+function syslog_strip_auto_dates(string $search, mixed $date1, mixed $date2): string {
 	$d1 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
 	$d2 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
 	$suffix = 'logtime >= "' . $d1 . '" AND logtime <= "' . $d2 . '"';
@@ -282,32 +338,50 @@ function syslog_strip_auto_dates($search, $date1, $date2) {
 	return $search;
 }
 
-/** Permission to make saved searches global and to manage other users' global searches. */
-function syslog_saved_search_admin() {
+/**
+ * Permission to make saved searches global and to manage other users' global searches.
+ *
+ * @return bool True if the user has admin permission.
+ */
+function syslog_saved_search_admin(): bool {
 	return api_plugin_user_realm_auth('syslog_saved_searches.php');
 }
 
-/** Permission to share saved searches with all syslog users. */
-function syslog_saved_search_share() {
+/**
+ * Permission to share saved searches with all syslog users.
+ *
+ * @return bool True if the user has share permission.
+ */
+function syslog_saved_search_share(): bool {
 	return syslog_saved_search_admin() || api_plugin_user_realm_auth('syslog_saved_searches_share.php');
 }
 
-/** Permission to manage all dashboards, including other users' shared dashboards. */
-function syslog_dashboard_admin() {
+/**
+ * Permission to manage all dashboards, including other users' shared dashboards.
+ *
+ * @return bool True if the user has dashboard admin permission.
+ */
+function syslog_dashboard_admin(): bool {
 	return api_plugin_user_realm_auth('syslog_alerts.php');
 }
 
-/** Permission to share dashboards with all syslog users. */
-function syslog_dashboard_share() {
+/**
+ * Permission to share dashboards with all syslog users.
+ *
+ * @return bool True if the user has dashboard share permission.
+ */
+function syslog_dashboard_share(): bool {
 	return syslog_dashboard_admin() || api_plugin_user_realm_auth('syslog_dashboards_share.php');
 }
 
 /**
  * The whitelisted share table and item column per shareable item kind.
  *
- * @return array|null [table, column], or null for an unknown kind.
+ * @param string $item The item kind ('dashboard' or 'saved_search').
+ *
+ * @return array<int, string>|null [table, column], or null for an unknown kind.
  */
-function syslog_share_table($item) {
+function syslog_share_table(string $item): ?array {
 	$tables = [
 		'dashboard'    => ['syslog_dashboards_perm', 'dashboard_id'],
 		'saved_search' => ['syslog_saved_searches_perm', 'search_id']
@@ -316,8 +390,14 @@ function syslog_share_table($item) {
 	return isset($tables[$item]) ? $tables[$item] : null;
 }
 
-/** Cacti group ids the session user is a member of, or the given user. */
-function syslog_user_group_ids($user_id = 0) {
+/**
+ * Cacti group ids the session user is a member of, or the given user.
+ *
+ * @param int $user_id The user ID, or 0 for the current session user.
+ *
+ * @return array<int, int> Array of group IDs.
+ */
+function syslog_user_group_ids(int $user_id = 0): array {
 	if ($user_id === 0) {
 		$user_id = isset($_SESSION['sess_user_id']) ? (int) $_SESSION['sess_user_id'] : 0;
 	}
@@ -331,7 +411,7 @@ function syslog_user_group_ids($user_id = 0) {
 		WHERE user_id = ?',
 		[$user_id]);
 
-	if (!cacti_sizeof($groups)) {
+	if (!is_array($groups) || !cacti_sizeof($groups)) {
 		return [];
 	}
 
@@ -348,8 +428,12 @@ function syslog_user_group_ids($user_id = 0) {
  * Ids of one shareable item kind granted to the current user or one of
  * their groups, plus anything granted to everyone through an 'all' row.
  * Returns [] outside a session or when nothing is granted.
+ *
+ * @param string $item The item kind.
+ *
+ * @return array<int, int> Array of item IDs granted to the user.
  */
-function syslog_shared_item_ids($item) {
+function syslog_shared_item_ids(string $item): array {
 	global $syslogdb_default;
 
 	static $cache = [];
@@ -404,8 +488,15 @@ function syslog_shared_item_ids($item) {
 	return $ids;
 }
 
-/** Current grants on one item, shaped for the drop_multi form fields. */
-function syslog_fetch_item_shares($item, $item_id) {
+/**
+ * Current grants on one item, shaped for the drop_multi form fields.
+ *
+ * @param string $item   The item kind.
+ * @param int    $item_id The item ID.
+ *
+ * @return array{users: array<int, array{id: string|int}>, groups: array<int, array{id: string|int}>}
+ */
+function syslog_fetch_item_shares(string $item, int $item_id): array {
 	global $syslogdb_default;
 
 	$shares = ['users' => [], 'groups' => []];
@@ -440,8 +531,14 @@ function syslog_fetch_item_shares($item, $item_id) {
 	return $shares;
 }
 
-/** Normalize a posted multiselect of user or group ids to unique integers, allowing the 'all' sentinel. */
-function syslog_parse_share_ids($name) {
+/**
+ * Normalize a posted multiselect of user or group ids to unique integers, allowing the 'all' sentinel.
+ *
+ * @param string $name The request variable name.
+ *
+ * @return array<int, string|int> Array of IDs with 'all' sentinel allowed.
+ */
+function syslog_parse_share_ids(string $name): array {
 	if (!isset_request_var($name)) {
 		return [];
 	}
@@ -469,8 +566,15 @@ function syslog_parse_share_ids($name) {
  * Replace the user and group share rows of one item. Unknown ids are kept;
  * they simply never match a real user or group. The 'all' sentinel grants
  * the item to every signed-in user with a single row (item_id 0).
+ *
+ * @param string       $item    The item kind.
+ * @param int          $item_id The item ID.
+ * @param array<int|string> $users Array of user IDs or 'all'.
+ * @param array<int|string> $groups Array of group IDs or 'all'.
+ *
+ * @return void
  */
-function syslog_save_item_shares($item, $item_id, $users, $groups) {
+function syslog_save_item_shares(string $item, int $item_id, array $users, array $groups): void {
 	global $syslogdb_default;
 
 	$share_table = syslog_share_table($item);
@@ -515,7 +619,16 @@ function syslog_save_item_shares($item, $item_id, $users, $groups) {
 	}
 }
 
-function syslog_message_filter_value($value, $filter, $href = '') {
+/**
+ * Format a message value with highlighted search terms.
+ *
+ * @param string $value  The message value.
+ * @param string $filter The filter settings.
+ * @param string $href   Optional link href.
+ *
+ * @return string The formatted HTML output.
+ */
+function syslog_message_filter_value(string $value, string $filter, string $href = ''): string {
 	if (get_request_var('search_mode') != 'logical') {
 		return filter_value($value, $filter, $href);
 	}
@@ -534,7 +647,18 @@ function syslog_message_filter_value($value, $filter, $href = '') {
 	return $href === '' ? $output : '<a class="linkEditMain" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . $output . '</a>';
 }
 
-function syslog_apply_selected_items_action($selected_items, $drp_action, $action_map, $export_action = '', $export_items = '') {
+/**
+ * Apply a bulk action to selected items.
+ *
+ * @param array<int, mixed>|false $selected_items Array of selected item IDs, or false.
+ * @param string                  $drp_action     The selected action.
+ * @param array<int|string, string> $action_map     Map of actions to function names.
+ * @param string                  $export_action  Optional export action name.
+ * @param string                  $export_items   Optional export items config.
+ *
+ * @return void
+ */
+function syslog_apply_selected_items_action($selected_items, string $drp_action, array $action_map, string $export_action = '', string $export_items = ''): void {
 	if ($selected_items != false) {
 		if (isset($action_map[$drp_action])) {
 			$action_function = $action_map[$drp_action];
@@ -552,13 +676,25 @@ function syslog_apply_selected_items_action($selected_items, $drp_action, $actio
 	}
 }
 
-/** Download in a separate browsing context so Cacti's page-unload spinner never starts. */
-function syslog_download_frame($url = '') {
+/**
+ * Download in a separate browsing context so Cacti's page-unload spinner never starts.
+ *
+ * @param string $url The URL to load in the iframe.
+ *
+ * @return void
+ */
+function syslog_download_frame(string $url = ''): void {
 	print "<iframe id='syslog_download' name='syslog_download' hidden title='" . __esc('Syslog download', 'syslog') . "' src='" . html_escape($url === '' ? 'about:blank' : $url) . "'></iframe>";
 }
 
-/** Close a native bulk confirmation form, targeting exports at the download frame. */
-function syslog_export_form_end($export) {
+/**
+ * Close a native bulk confirmation form, targeting exports at the download frame.
+ *
+ * @param bool $export Whether this is an export form.
+ *
+ * @return void
+ */
+function syslog_export_form_end(bool $export): void {
 	global $form_id;
 
 	form_end(false);
@@ -576,7 +712,12 @@ function syslog_export_form_end($export) {
 	<?php
 }
 
-function syslog_include_js() {
+/**
+ * Include syslog plugin JavaScript and CSS assets.
+ *
+ * @return void
+ */
+function syslog_include_js(): void {
 	global $config;
 	?>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
@@ -599,7 +740,12 @@ function syslog_json_safe($value) {
 	return json_encode($value, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR);
 }
 
-function syslog_allow_edits() {
+/**
+ * Check if edits are allowed based on remote sync configuration.
+ *
+ * @return bool True if edits are allowed, false otherwise.
+ */
+function syslog_allow_edits(): bool {
 	global $config;
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -611,7 +757,16 @@ function syslog_allow_edits() {
 	return true;
 }
 
-function syslog_sync_save($data, $table, $primary = '') {
+/**
+ * Save data with remote sync support.
+ *
+ * @param array<string, mixed> $data    The data to save.
+ * @param string               $table   The table name.
+ * @param string               $primary The primary key column name.
+ *
+ * @return void
+ */
+function syslog_sync_save(array $data, string $table, string $primary = ''): void {
 	global $config, $syslogdb_default;
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -655,7 +810,18 @@ function syslog_sync_save($data, $table, $primary = '') {
 	}
 }
 
-function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
+/**
+ * Send email alert with optional SMS support.
+ *
+ * @param string $to         Recipient email address (may include sms@ addresses).
+ * @param array<int, string> $from Sender email and name as a list: [email, name].
+ * @param string $subject    Email subject.
+ * @param string $message    Email message body (HTML).
+ * @param string $smsmessage SMS message body.
+ *
+ * @return void
+ */
+function syslog_sendemail(string $to, array $from, string $subject, string $message, string $smsmessage = ''): void {
 	syslog_debug("Sending Alert email to '" . $to . "'");
 
 	$sms    = '';
@@ -695,6 +861,15 @@ function syslog_sendemail($to, $from, $subject, $message, $smsmessage = '') {
 const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
 const SYSLOG_IMPORT_VERSION   = 1;
 
+/**
+ * Get import payload from text input or uploaded file.
+ *
+ * @param string $redirect_url URL to redirect to on error.
+ *
+ * @return string The import payload.
+ *
+ * @throws void Exits on error.
+ */
 function syslog_get_import_xml_payload($redirect_url) {
 	$import_text = (string) get_nfilter_request_var('import_text');
 
@@ -745,6 +920,13 @@ function syslog_get_import_xml_payload($redirect_url) {
 	exit;
 }
 
+/**
+ * Read import file contents safely.
+ *
+ * @param string $filename The file path to read.
+ *
+ * @return string|false The file contents, or false on failure.
+ */
 function syslog_read_import_file(string $filename): string|false {
 	$size = filesize($filename);
 
@@ -768,8 +950,8 @@ function syslog_read_import_file(string $filename): string|false {
 /**
  * syslog_rules_array2json - encode a list of rule rows as a JSON export document
  *
- * @param string $table  Source rule table, used for uniqueness/version metadata
- * @param array  $rules  Rule rows (the 'id' key is removed before export)
+ * @param string $table                     Source rule table, used for uniqueness/version metadata
+ * @param array<int, array<string, mixed>>  $rules Rule rows (the 'id' key is removed before export)
  *
  * @return string JSON document suitable for download
  */
@@ -790,12 +972,16 @@ function syslog_rules_array2json(string $table, array $rules): string {
 		$templates[] = $rule;
 	}
 
-	return json_encode([
+	$encoded = json_encode([
 		'version'   => SYSLOG_IMPORT_VERSION,
 		'generator' => 'syslog',
 		'table'     => $table,
 		'templates' => $templates,
 	], JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+
+	// json_encode() only fails on malformed data, which cannot occur here;
+	// fall back to an empty string rather than returning false to callers.
+	return $encoded === false ? '' : $encoded;
 }
 
 /**
@@ -805,12 +991,12 @@ function syslog_rules_array2json(string $table, array $rules): string {
  * rule arrays keyed by an incremental template index, mirroring the shape
  * previously returned by xml2array() for minimal downstream churn.
  *
- * @param string $payload Raw import payload
- * @param string $expected_table Destination object table
+ * @param string $payload        Raw import payload.
+ * @param string $expected_table Destination object table.
  *
- * @return array|false
+ * @return array<string, array<string, mixed>>|false Parsed templates, or false on failure.
  */
-function syslog_parse_rule_import(string $payload, string $expected_table) {
+function syslog_parse_rule_import(string $payload, string $expected_table): array|false {
 	$trimmed = trim($payload);
 
 	if ($trimmed === '') {
@@ -875,7 +1061,14 @@ function syslog_parse_rule_import(string $payload, string $expected_table) {
 	return $templates;
 }
 
-/** Validate object identity even for older exports without table metadata. */
+/**
+ * Validate object identity even for older exports without table metadata.
+ *
+ * @param array<string, mixed> $template The template array.
+ * @param string               $table    The expected table name.
+ *
+ * @return bool True if the template matches the table, false otherwise.
+ */
 function syslog_import_matches_table(array $template, string $table): bool {
 	if (!isset($template['name']) || !is_string($template['name']) || trim($template['name']) === '') {
 		return false;
@@ -906,7 +1099,7 @@ function syslog_import_matches_table(array $template, string $table): bool {
  *
  * @param mixed $engine The requested storage engine name.
  *
- * @return string Either 'InnoDB' or 'Aria'
+ * @return string Either 'InnoDB' or 'Aria'.
  */
 function syslog_validate_storage_engine($engine) {
 	$engine = is_string($engine) ? trim($engine) : '';
@@ -969,7 +1162,12 @@ function syslog_notice_traditional_tables($raise = true) {
 	return true;
 }
 
-function syslog_status_ensure_table() {
+/**
+ * Creates the plugin status table once per request if it does not exist.
+ *
+ * @return void
+ */
+function syslog_status_ensure_table(): void {
 	global $syslogdb_default;
 	static $checked = false;
 
@@ -978,8 +1176,8 @@ function syslog_status_ensure_table() {
 	}
 
 	if (!syslog_db_table_exists('syslog_status', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
-			`name` varchar(64) NOT NULL default '',
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status`
+			(`name` varchar(64) NOT NULL default '',
 			`value` text NOT NULL,
 			`updated` int(16) NOT NULL default '0',
 			PRIMARY KEY (`name`))
@@ -990,7 +1188,16 @@ function syslog_status_ensure_table() {
 	$checked = true;
 }
 
-function syslog_status_set($name, $value) {
+/**
+ * Store one status value in the syslog_status table. Invalid names are
+ * rejected and logged.
+ *
+ * @param string                $name  Status field name, matching /^[a-z0-9_]{1,64}$/.
+ * @param string|int|float|bool $value Value to store, stringified before insert.
+ *
+ * @return bool True when the row was written.
+ */
+function syslog_status_set(string $name, string|int|float|bool $value): bool {
 	global $syslogdb_default;
 
 	if (!preg_match('/^[a-z0-9_]{1,64}$/', $name)) {
@@ -1008,7 +1215,16 @@ function syslog_status_set($name, $value) {
 		[$name, (string) $value, time()]);
 }
 
-function syslog_status_increment($name, $amount) {
+/**
+ * Add an amount to a numeric status counter, creating it at the stored
+ * current value plus the amount.
+ *
+ * @param string           $name   Status field name.
+ * @param int|float|string $amount Numeric amount to add.
+ *
+ * @return bool True when the row was written.
+ */
+function syslog_status_increment(string $name, int|float|string $amount): bool {
 	if (!is_numeric($amount)) {
 		return false;
 	}
@@ -1019,7 +1235,15 @@ function syslog_status_increment($name, $amount) {
 	return syslog_status_set($name, $current + (int) $amount);
 }
 
-function syslog_status_record_runtime($seconds) {
+/**
+ * Record one polling runtime sample and update the last/min/avg/max/count
+ * and sum telemetry fields.
+ *
+ * @param int|float|string $seconds Elapsed runtime seconds.
+ *
+ * @return bool True when the samples were written.
+ */
+function syslog_status_record_runtime(int|float|string $seconds): bool {
 	if (!is_numeric($seconds)) {
 		return false;
 	}
@@ -1047,7 +1271,14 @@ function syslog_status_record_runtime($seconds) {
 	return true;
 }
 
-function syslog_status_rule_activity_json($rules) {
+/**
+ * Encode the per rule activity of the last poller run as a JSON document.
+ *
+ * @param array<int, array<string, mixed>> $rules Rules that fired, with 'name' and 'count' keys.
+ *
+ * @return string JSON document, or an empty string when encoding fails.
+ */
+function syslog_status_rule_activity_json(array $rules): string {
 	$activity = [];
 
 	foreach ($rules as $rule) {
@@ -1061,10 +1292,16 @@ function syslog_status_rule_activity_json($rules) {
 		];
 	}
 
-	return json_encode($activity);
+	return (string) json_encode($activity);
 }
 
-function syslog_status_get() {
+/**
+ * Read the status fields shown on the Syslog Status tab, with defaults for
+ * fields that have never been written.
+ *
+ * @return array<string, string> Map of status field names to values.
+ */
+function syslog_status_get(): array {
 	global $syslogdb_default;
 
 	syslog_status_ensure_table();
@@ -1110,7 +1347,7 @@ function syslog_status_get() {
 		)");
 
 	foreach ($rows as $row) {
-		$status[$row['name']] = $row['value'];
+		$status[(string) $row['name']] = (string) $row['value'];
 	}
 
 	return $status;
@@ -1148,6 +1385,10 @@ function syslog_worker_stats_get() {
 	$rows = db_fetch_assoc("SELECT `name`, `value`
 		FROM settings
 		WHERE `name` LIKE 'stats_syslog_child_%'");
+
+	if (!is_array($rows)) {
+		$rows = [];
+	}
 
 	foreach ($rows as $row) {
 		$child = (int) str_replace('stats_syslog_child_', '', $row['name']);
@@ -1198,6 +1439,10 @@ function syslog_aggregate_worker_stats($workers) {
 		FROM settings
 		WHERE `name` LIKE 'stats_syslog_child_%'");
 
+	if (!is_array($rows)) {
+		$rows = [];
+	}
+
 	foreach ($rows as $row) {
 		$child = (int) str_replace('stats_syslog_child_', '', $row['name']);
 
@@ -1228,13 +1473,18 @@ function syslog_aggregate_worker_stats($workers) {
 	return ['moved' => $moved, 'resolved' => $resolved];
 }
 
-function syslog_is_partitioned() {
+/**
+ * Whether the syslog table uses native partitioning.
+ *
+ * @return bool True when the table definition contains a PARTITION clause.
+ */
+function syslog_is_partitioned(): bool {
 	global $syslogdb_default;
 
 	// see if the table is partitioned
 	$syntax = syslog_db_fetch_row("SHOW CREATE TABLE `$syslogdb_default`.`syslog`");
 
-	if (substr_count($syntax['Create Table'], 'PARTITION')) {
+	if (is_array($syntax) && substr_count((string) $syntax['Create Table'], 'PARTITION')) {
 		return true;
 	} else {
 		return false;
@@ -1247,6 +1497,8 @@ function syslog_is_partitioned() {
  * Traditional (non-partitioned) tables are deprecated.  Existing installs
  * continue to operate, but the maintenance pass logs a throttled warning so
  * the administrator is reminded to migrate to partitioned tables.
+ *
+ * @return int Number of rows deleted from the syslog tables.
  */
 function syslog_traditional_manage() {
 	global $syslogdb_default, $syslog_cnn;
@@ -1263,7 +1515,7 @@ function syslog_traditional_manage() {
 
 	// determine the oldest date to retain
 	if (read_config_option('syslog_retention') > 0) {
-		$retention = gmdate('Y-m-d', time() - (86400 * read_config_option('syslog_retention')));
+		$retention = gmdate('Y-m-d', time() - (86400 * (int) read_config_option('syslog_retention')));
 	} else {
 		$retention = gmdate('Y-m-d', time() - (30 * 86400));
 		set_config_option('syslog_retention', '30');
@@ -1286,8 +1538,10 @@ function syslog_traditional_manage() {
 
 /**
  * This function will manage a partitioned table by checking for time to create
+ *
+ * @return int Number of rows removed by partition pruning.
  */
-function syslog_partition_manage() {
+function syslog_partition_manage(): int {
 	$syslog_deleted = 0;
 	$ahead_days     = syslog_partition_ahead_days();
 
@@ -1366,7 +1620,11 @@ function syslog_partition_ensure_ahead($table, $base_time, $ahead_days) {
  * for identifier interpolation in DDL statements (MySQL does not support
  * parameter binding for identifiers).
  *
- * @param mixed $table
+ * The untyped signature is intentional: security tests assert it exactly.
+ *
+ * @param mixed $table The table name to validate.
+ *
+ * @return bool True when the table may be used in partition DDL.
  */
 function syslog_partition_table_allowed($table) {
 	if (!in_array($table, ['syslog', 'syslog_removed'], true)) {
@@ -1491,7 +1749,7 @@ function syslog_workers_running() {
 		WHERE tasktype = 'syslog'
 		AND taskname = 'child'");
 
-	if (!cacti_sizeof($processes)) {
+	if (!is_array($processes) || !cacti_sizeof($processes)) {
 		return 0;
 	}
 
@@ -1788,11 +2046,11 @@ function syslog_partition_create($table, $time = null) {
 			if (stripos($create_sql, 'TO_DAYS') !== false) {
 				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION $cformat VALUES LESS THAN (TO_DAYS('$boundary_date')),
-					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", []);
 			} elseif (stripos($create_sql, 'UNIX_TIMESTAMP') !== false) {
 				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION $cformat VALUES LESS THAN ($boundary_epoch),
-					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)");
+					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", []);
 			} else {
 				cacti_log("SYSLOG ERROR: Unable to determine partition expression (neither TO_DAYS nor UNIX_TIMESTAMP) for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
 
@@ -1811,7 +2069,11 @@ function syslog_partition_create($table, $time = null) {
 /**
  * Remove old partitions for the specified table.
  *
+ * The untyped signature is intentional: security tests assert it exactly.
+ *
  * @param string $table The name of the table
+ *
+ * @return int Number of partitions removed.
  */
 function syslog_partition_remove($table) {
 	global $syslogdb_default;
@@ -1880,7 +2142,7 @@ function syslog_partition_remove($table) {
 					syslog_debug("Removing partition '" . $part_name . "'");
 
 					/* $table passed syslog_partition_table_allowed() at function entry; $part_name is regex-validated above. DDL identifiers cannot be parameterized. */
-					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`");
+					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`", []);
 
 					if ($result === false) {
 						cacti_log("SYSLOG ERROR: Failed to drop partition '$part_name' from '$table' after $i successful drop(s); aborting further drops", false, 'SYSLOG');
@@ -1900,15 +2162,17 @@ function syslog_partition_remove($table) {
 	return $syslog_deleted;
 }
 
-/*
+/**
  * syslog_partition_check is a read-only SELECT against information_schema.
  * It does not execute DDL, so it does not need the named lock that
  * syslog_partition_create and syslog_partition_remove acquire. External
  * serialization is provided by the poller cycle calling
  * syslog_partition_manage().
  *
- * @param string $table The table to check
- * @param int    $time  The time to assume for creation verification
+ * The untyped signature is intentional: security tests assert it exactly.
+ *
+ * @param string   $table The table to check
+ * @param int|null $time  The time to assume for creation verification
  *
  * @return bool If it's time to rotate the partition
  */
@@ -1946,12 +2210,22 @@ function syslog_partition_check($table, $time = null) {
 	}
 }
 
-function syslog_check_changed($request, $session) {
+/**
+ * Report whether a request variable differs from its remembered session value.
+ *
+ * @param string $request The request variable name to check.
+ * @param string $session The session variable name to compare against.
+ *
+ * @return int|null 1 when the value changed, or null when unchanged or unset.
+ */
+function syslog_check_changed(string $request, string $session): ?int {
 	if ((isset_request_var($request)) && (isset($_SESSION[$session]))) {
 		if (get_request_var($request) != $_SESSION[$session]) {
 			return 1;
 		}
 	}
+
+	return null;
 }
 
 /**
@@ -2031,8 +2305,8 @@ function syslog_removal_filter_normalize($json, $table) {
 		'program' => ['table' => 'syslog_programs', 'name' => 'program', 'id' => 'program_id']
 	];
 
-	$resolve = function ($field, $operator, $value) use ($maps, $table) {
-		if ($table !== 'syslog' || !isset($maps[$field])) {
+	$resolve = function ($field, $operator, $value) use ($maps) {
+		if (!isset($maps[$field])) {
 			return null;
 		}
 
@@ -2153,9 +2427,17 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 
 	$document['version'] = 1;
 
+	$json = json_encode($document);
+
+	if ($json === false) {
+		$GLOBALS['syslog_rule_filter_error'] = 'The filter could not be encoded.';
+
+		return [];
+	}
+
 	try {
 		$filter = \Cacti\Syslog\QueryBuilder::compile(
-			json_encode($document),
+			$json,
 			syslog_get_removal_rule_fields($table, $prefix)
 		);
 	} catch (InvalidArgumentException $error) {
@@ -2239,6 +2521,15 @@ function syslog_filter_rule_summary($json) {
 	return cacti_sizeof($parts) ? implode('; ', $parts) : $json;
 }
 
+/**
+ * Apply every enabled removal rule against the given table, either deleting
+ * matching records or transferring them to the syslog_removed table.
+ *
+ * @param string $table   The table to process ('syslog' or 'syslog_incoming').
+ * @param int    $max_seq The highest incoming sequence number to consider.
+ *
+ * @return array{removed: int, xferred: int} Counts of removed and transferred records.
+ */
 function syslog_remove_items($table, $max_seq) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
@@ -2536,6 +2827,17 @@ function syslog_remove_items($table, $max_seq) {
  * @return void
  */
 function syslog_log_row_color($severity, $tip_title): void {
+ * displayed. It supports both the legacy as well as the new approach to
+ * controlling these colors.
+ *
+ * @param mixed $severity  The alert severity of the row.
+ * @param mixed $tip_title The row tooltip title (unused, kept for compatibility).
+ *
+ * @return void
+ */
+function syslog_log_row_color($severity, $tip_title): void {
+	$class = '';
+
 	switch($severity) {
 		case '':
 		case '0':
@@ -2556,15 +2858,13 @@ function syslog_log_row_color($severity, $tip_title): void {
 }
 
 /**
- * function syslog_row_color()
- * This function set's the CSS for each row of the syslog table as it is displayed
- * it supports both the legacy as well as the new approach to controlling these
- * colors.
+ * Returns the CSS class for a syslog priority level as it is displayed.
  *
- * @param mixed $priority
- * @param mixed $message
+ * @param mixed $priority The syslog priority level (0-7).
+ *
+ * @return string The CSS class name, empty for an unknown priority.
  */
-function syslog_priority_class($priority) {
+function syslog_priority_class($priority): string {
 	switch($priority) {
 		case '0':
 			$class = 'logEmergency';
@@ -2603,15 +2903,32 @@ function syslog_priority_class($priority) {
 	return $class ?? '';
 }
 
-function syslog_row_color($priority, $message) {
+/**
+ * Prints the opening row tag with the priority CSS class and message tooltip
+ * for each row of the syslog table as it is displayed. It supports both the
+ * legacy as well as the new approach to controlling these colors.
+ *
+ * @param mixed $priority The syslog priority level of the row.
+ * @param mixed $message  The syslog message for the row tooltip.
+ *
+ * @return string Always an empty string, kept for legacy row composition.
+ */
+function syslog_row_color($priority, $message): string {
 	$priority_class = syslog_priority_class($priority);
 	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
 
 	return '';
 }
 
-/** Render compact metadata labels without changing the surrounding table theme. */
-function syslog_metadata_label($value, $type) {
+/**
+ * Render compact metadata labels without changing the surrounding table theme.
+ *
+ * @param mixed  $value The facility or priority value to display.
+ * @param string $type The label type ('priority' or 'facility').
+ *
+ * @return string The formatted HTML label.
+ */
+function syslog_metadata_label($value, string $type): string {
 	$value = (string) $value;
 	$class = $type === 'priority' ? 'syslogSeverity' : 'syslogFacility';
 	$modifier = preg_replace('/[^a-z]/', '', strtolower($value));
@@ -2619,8 +2936,15 @@ function syslog_metadata_label($value, $type) {
 	return '<span class="' . $class . ' ' . $class . '-' . html_escape($modifier) . '">' . html_escape($value) . '</span>';
 }
 
-/** Render a displayed device or program value as a direct filter action. */
-function syslog_value_filter_button($value, $field) {
+/**
+ * Render a displayed device or program value as a direct filter action.
+ *
+ * @param mixed  $value The displayed value to render as a filter button.
+ * @param string $field The field the filter applies to.
+ *
+ * @return string The formatted HTML filter button.
+ */
+function syslog_value_filter_button($value, string $field): string {
 	$value = (string) $value;
 	if ($value === '') return html_escape(__('Unknown', 'syslog'));
 	$class = 'syslogValueFilter';
@@ -2632,6 +2956,15 @@ function syslog_value_filter_button($value, $field) {
 	return '<button type="button" class="' . $class . '" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
 }
 
+/**
+ * Build the SQL host filter clauses from the current host request filter.
+ * The resulting clauses are returned through the $hostfilter and
+ * $hostfilter_log globals.
+ *
+ * @param mixed $tab The current tab (unused, kept for compatibility).
+ *
+ * @return void
+ */
 function sql_hosts_where($tab) {
 	global $hostfilter, $hostfilter_log, $syslog_incoming_config;
 	global $syslogdb_default;
@@ -2663,7 +2996,7 @@ function sql_hosts_where($tab) {
 				$hostfilter_log = ' host IN(' . implode(',', $hosts_array) . ')';
 			}
 
-			$hostfilter .= ($hostfilter != '' ? ' AND ' : '') . ' host_id IN(' . implode(',', $hostarray) . ')';
+			$hostfilter .= ' host_id IN(' . implode(',', $hostarray) . ')';
 		}
 	}
 }
@@ -2701,6 +3034,14 @@ function syslog_csv_safe(mixed $value): mixed {
 	return $value;
 }
 
+/**
+ * Stream the current syslog or alert log view to the browser as a CSV file
+ * download.
+ *
+ * @param mixed $tab The current tab ('syslog' or an alert log tab).
+ *
+ * @return void
+ */
 function syslog_export($tab) {
 	if (!empty($GLOBALS['syslog_search_error'])) {
 		http_response_code(400);
@@ -2748,6 +3089,10 @@ function syslog_export($tab) {
 		);
 
 		$fp = fopen('php://output', 'w');
+
+		if ($fp === false) {
+			return;
+		}
 
 		// PHP 8.4 deprecates fputcsv() without an explicit $escape; '' matches the
 		// upcoming default and emits RFC 4180 CSV for messages containing backslashes.
@@ -2809,6 +3154,10 @@ function syslog_export($tab) {
 
 		$fp = fopen('php://output', 'w');
 
+		if ($fp === false) {
+			return;
+		}
+
 		fputcsv($fp, $line, ',', '"', '');
 
 		if (cacti_sizeof($messages)) {
@@ -2838,7 +3187,14 @@ function syslog_export($tab) {
 	}
 }
 
-function syslog_debug($message) {
+/**
+ * Print a debug message to the console when debugging is enabled.
+ *
+ * @param string $message The debug message to print.
+ *
+ * @return void
+ */
+function syslog_debug(string $message): void {
 	global $debug;
 
 	if ($debug) {
@@ -2846,7 +3202,21 @@ function syslog_debug($message) {
 	}
 }
 
-function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $html = '', $hosts = []) {
+/**
+ * Log a triggered alert to the syslog_logs table and notify the host alarm
+ * hook. Both single message alerts and threshold alerts are supported.
+ *
+ * @param mixed                  $alert_id   The alert rule ID.
+ * @param mixed                  $alert_name The alert rule name.
+ * @param mixed                  $severity   The alert severity.
+ * @param array<string, mixed>   $msg        The matching syslog message record.
+ * @param int                    $count      The number of matching messages.
+ * @param string                 $html       The HTML body for the alert log entry.
+ * @param array<int, mixed>      $hosts      The hosts to associate with the alarm.
+ *
+ * @return int|false The sequence of the new alert log entry, or false on failure.
+ */
+function syslog_log_alert($alert_id, $alert_name, $severity, array $msg, int $count = 1, $html = '', $hosts = []) {
 	global $config, $severities;
 	global $syslogdb_default;
 
@@ -2903,6 +3273,15 @@ function syslog_log_alert($alert_id, $alert_name, $severity, $msg, $count = 1, $
 	}
 }
 
+/**
+ * Move or remove syslog messages that match the enabled removal rules. Only
+ * allowlisted table names are accepted.
+ *
+ * @param string $from_table The source table name.
+ * @param string $to_table   The destination table name.
+ *
+ * @return array{removed: int, xferred: int} The number of records removed and transferred.
+ */
 function syslog_manage_items($from_table, $to_table) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
@@ -3115,7 +3494,14 @@ function get_hash_syslog($id, $table) {
 	}
 }
 
-function syslog_ia2xml($array) {
+/**
+ * Recursively render an array of item values as one indented XML tag per key.
+ *
+ * @param array<string|int, mixed> $array The array to convert.
+ *
+ * @return string The XML fragment.
+ */
+function syslog_ia2xml(array $array): string {
 	$xml = '';
 
 	if (cacti_sizeof($array)) {
@@ -3123,7 +3509,7 @@ function syslog_ia2xml($array) {
 			if (is_array($value)) {
 				$xml .= "\t<$key>" . syslog_ia2xml($value) . "</$key>\n";
 			} else {
-				$xml .= "\t<$key>" . html_escape($value) . "</$key>\n";
+				$xml .= "\t<$key>" . html_escape((string) $value) . "</$key>\n";
 			}
 		}
 	}
@@ -3131,7 +3517,15 @@ function syslog_ia2xml($array) {
 	return $xml;
 }
 
-function syslog_array2xml($array, $tag = 'template') {
+/**
+ * Wrap an array of item values in a numbered XML tag block.
+ *
+ * @param array<string|int, mixed> $array The array to convert.
+ * @param string                   $tag   The tag name to wrap the data in.
+ *
+ * @return string The XML fragment.
+ */
+function syslog_array2xml(array $array, string $tag = 'template'): string {
 	static $index = 1;
 
 	$xml = "<$tag$index>\n" . syslog_ia2xml($array) . "</$tag$index>\n";
@@ -3159,7 +3553,7 @@ function syslog_execute_ticket_command($alert, $hostlist, $error_message) {
 
 	if ($alert['open_ticket'] == 'on' && $command != '') {
 		// trim surrounding quotes so paths like "/usr/bin/cmd" resolve correctly
-		$cparts     = preg_split('/\s+/', trim($command));
+		$cparts     = preg_split('/\s+/', trim($command)) ?: [''];
 		$executable = trim($cparts[0], '"\'');
 
 		if (cacti_sizeof($cparts) && is_executable($executable)) {
@@ -3204,7 +3598,7 @@ function syslog_execute_alert_command($alert, $results, $hostname) {
 	$command = alert_replace_variables($alert, $results, $hostname);
 
 	// trim surrounding quotes so paths like "/usr/bin/cmd" resolve correctly
-	$cparts     = preg_split('/\s+/', trim($command));
+	$cparts     = preg_split('/\s+/', trim($command)) ?: [''];
 	$executable = trim($cparts[0], '"\'');
 
 	$output = [];
@@ -3637,7 +4031,11 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 			 * will be reported in the notification.
 			 */
 			if ($alert['method'] == '0') {
-				if ($send) {
+				/**
+				 * Without matching records the alert body and the matched
+				 * message record would be undefined, so do not alert.
+				 */
+				if ($send && isset($a)) {
 					$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $a, 1, $message);
 
 					$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Host:', 'syslog') . $a['host'] . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
@@ -3656,7 +4054,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					 */
 					syslog_execute_ticket_command($alert, $hostlist, 'ERROR: Ticket Command Failed.  Alert:%s, Exit:%s, Output:%s');
 
-					if (trim($alert['command']) != '' && !$found) {
+					if (trim($alert['command']) != '') {
 						syslog_execute_alert_command($alert, $results, $hostname);
 					}
 				}
@@ -3665,7 +4063,12 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					/**
 					 * Send the Email notification
 					 */
-					if ($alert['email'] != '' || $smsalert != '') {
+					/**
+					 * The SMS text is only known after the alert is logged,
+					 * so a threshold alert emails out only when a recipient
+					 * is configured.
+					 */
+					if ($alert['email'] != '') {
 						syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), $message, $smsalert);
 					}
 
@@ -3676,7 +4079,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 
 					syslog_execute_ticket_command($alert, $hostlist, 'ERROR: Command Failed.  Alert:%s, Exit:%s, Output:%s');
 
-					if (trim($alert['command']) != '' && !$found) {
+					if (trim($alert['command']) != '') {
 						syslog_execute_alert_command($alert, $results, $hostname);
 					}
 				}
@@ -3824,11 +4227,12 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
  * records to done table and mark incoming records with the max_seq and
  * then if syslog is configured to strip domains, perform that first.
  *
- * @return int Unique id to allow syslog messages that come in randomly to
- *             be differentiate between messages to process and messages
- *             to be left till then ext polling cycle.
+ * @return array{max_seq: int, incoming: int} The maximum sequence id, allowing
+ *             syslog messages that come in randomly to be differentiated
+ *             between messages to process and messages to be left till the
+ *             next polling cycle, and the number of incoming records found.
  */
-function syslog_preprocess_incoming_records() {
+function syslog_preprocess_incoming_records(): array {
 	global $syslogdb_default;
 
 	$max_seq = syslog_db_fetch_cell("SELECT MAX(seq) FROM `$syslogdb_default`.`syslog_incoming` WHERE status = 0");
@@ -3857,7 +4261,7 @@ function syslog_preprocess_incoming_records() {
 
 		api_plugin_hook('plugin_syslog_before_processing');
 
-		return ['max_seq' => $max_seq, 'incoming' => $syslog_incoming];
+		return ['max_seq' => (int) $max_seq, 'incoming' => (int) $syslog_incoming];
 	}
 
 	return ['max_seq' => 0, 'incoming' => 0];
@@ -4109,7 +4513,7 @@ function syslog_normalize_reference_tables($max_seq) {
  * that are older than one hour.  These are records whose owning poller
  * crashed before they were transferred.
  *
- * @return int The number of stale records deleted
+ * @return int|false The number of stale records deleted
  */
 function syslog_delete_stale_incoming() {
 	global $syslogdb_default, $syslog_cnn;
@@ -4218,7 +4622,7 @@ function syslog_postprocess_tables() {
 	 * in UTC so it agrees with the UTC partition boundaries and cannot drift
 	 * with the server timezone or DST transitions.
 	 */
-	$delete_date = gmdate('Y-m-d H:i:s', time() - (read_config_option('syslog_retention') * 86400));
+	$delete_date = gmdate('Y-m-d H:i:s', time() - ((int) read_config_option('syslog_retention') * 86400));
 
 	// remove alert log messages
 	if (read_config_option('syslog_alert_retention') > 0) {
@@ -4286,6 +4690,19 @@ function syslog_process_reports() {
 	$report_tag = false;
 	$theme      = false;
 	$format_ok  = false;
+	$from_email = read_config_option('settings_from_email');
+
+	if ($from_email == '') {
+		$from_email = 'Cacti@cacti.net';
+	}
+
+	$from_name  = read_config_option('settings_from_name');
+
+	if ($from_name == '') {
+		$from_name = 'Cacti Reporting';
+	}
+
+	$from = [$from_email, $from_name];
 
 	if (read_config_option('syslog_html') == 'on') {
 		$html      = true;
@@ -4316,7 +4733,7 @@ function syslog_process_reports() {
 			$base_start_time = $report['timepart'];
 			$last_run_time   = $report['lastsent'];
 			$time_span       = $report['timespan'];
-			$seconds_offset  = read_config_option('cron_interval');
+			$seconds_offset  = (int) read_config_option('cron_interval');
 
 			$current_time = time();
 
@@ -4380,6 +4797,8 @@ function syslog_process_reports() {
 					}
 
 					if ($reptext != '') {
+						$message = '';
+
 						if (!$format_ok) {
 							$message  = '<style type="text/css">';
 							$message .= file_get_contents($config['base_path'] . '/plugins/syslog/css/syslog.css');
@@ -4434,12 +4853,14 @@ function syslog_process_reports() {
 /**
  * syslog_get_report_sql - Return the SQL syntax for the report query
  *
- * @param array $report The report to process
+ * @param array<string, mixed> $report The report to process, passed by reference
  *
- * @return string The unprepared SQL
+ * @return string The unprepared SQL, empty for an unknown report type
  */
 function syslog_get_report_sql(&$report) {
 	global $syslogdb_default;
+
+	$sql = '';
 
 	if ($report['type'] == 'messageb') {
 		$sql = "SELECT sl.*, sh.host
@@ -4502,7 +4923,7 @@ function syslog_get_report_sql(&$report) {
  * generate a Cacti log message and save settings in the settings table for use
  * by various graph templates
  *
- * @param string $start_time The start time of the polling process
+ * @param float  $start_time The start time of the polling process
  * @param int    $deleted The number of syslog messages deleted
  * @param int    $incoming The number of syslog incoming messages
  * @param int    $removed The number of syslog messages removed
@@ -4513,7 +4934,7 @@ function syslog_get_report_sql(&$report) {
  *
  * @return void
  */
-function syslog_process_log($start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports) {
+function syslog_process_log(float $start_time, $deleted, $incoming, $removed, $xferred, $alerts, $alarms, $reports): void {
 	global $database_default, $debug;
 
 	// record the end time
@@ -4607,7 +5028,7 @@ function syslog_init_variables() {
 		set_config_option('syslog_partition_ahead_days', '3');
 	}
 
-	if (substr(read_config_option('base_url'), 0, 4) != 'http') {
+	if (substr((string) read_config_option('base_url'), 0, 4) != 'http') {
 		if (read_config_option('force_https') == 'on') {
 			$prefix = 'https://';
 		} else {
@@ -4621,10 +5042,10 @@ function syslog_init_variables() {
 /**
  * alert_setup_environment - set's up the environment for a syslog alert
  *
- * @param array  $alert The alert definition
- * @param string $results A comma delimited list of syslog messages
- * @param array  $hostlist The list of hosts that match for the alert
- * @param string $hostname The hostname in the case of a host level alert
+ * @param array<string, mixed> $alert    The alert definition
+ * @param array<string, mixed> $results  The matched syslog result row
+ * @param array<int, string>   $hostlist The list of hosts that match for the alert
+ * @param string               $hostname The hostname in the case of a host level alert
  *
  * @return void
  */
@@ -4651,16 +5072,16 @@ function alert_setup_environment(&$alert, $results, $hostlist = [], $hostname = 
  * alert_replace_variables - add command line parameter to the syslog command
  *   or ticket opening script
  *
- * @param array  $alert The alert definition
- * @param string $results A comma delimited list of syslog messages
- * @param string $hostname The hostname in the case of a host level alert
+ * @param array<string, mixed> $alert    The alert definition
+ * @param array<string, mixed> $results  The matched syslog result row
+ * @param string               $hostname The hostname in the case of a host level alert
  *
  * @return string The command and it'a arguments escaped
  */
 function alert_replace_variables($alert, $results, $hostname = '') {
 	global $severities, $syslog_levels, $syslog_facilities;
 
-	$command = $alert['command'];
+	$command = (string) $alert['command'];
 
 	$command = str_replace('<ALERTID>',  cacti_escapeshellarg($alert['id']), $command);
 	$command = str_replace('<HOSTNAME>', cacti_escapeshellarg($hostname), $command);
@@ -4672,8 +5093,21 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 	return $command;
 }
 
-/** Render untrusted log text as an accessible details trigger. */
-function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = '') {
+/**
+ * Render untrusted log text as an accessible details trigger.
+ *
+ * @param string     $message  The log message text.
+ * @param string     $device   The device (host) name.
+ * @param string     $program  The program name.
+ * @param string     $facility The facility name.
+ * @param string     $severity The severity (priority) text.
+ * @param string     $received The logtime of the record.
+ * @param int|string $id       The sequence id of the record, 0 when unknown.
+ * @param string     $source   The table the record came from.
+ *
+ * @return string The details trigger button HTML.
+ */
+function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = ''): string {
 	$details = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
 	$details['rules'] = syslog_message_rule_links($id, $source, $received);
@@ -4682,8 +5116,16 @@ function syslog_message_button($message, $device, $program, $facility, $severity
 		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
 }
 
-/** Only main-table records can seed the existing rule editors. */
-function syslog_message_rule_links($id, $source, $received) {
+/**
+ * Only main-table records can seed the existing rule editors.
+ *
+ * @param int|string $id       The sequence id of the record.
+ * @param string     $source   The table the record came from.
+ * @param string     $received The logtime of the record.
+ *
+ * @return array<string, string> Map of action name to rule editor URL.
+ */
+function syslog_message_rule_links($id, $source, $received): array {
 	$links = [];
 	if ($source !== 'main' || !ctype_digit((string) $id) || (int) $id < 1) {
 		return $links;
@@ -4698,13 +5140,30 @@ function syslog_message_rule_links($id, $source, $received) {
 	return $links;
 }
 
-/** Dates nested in authored groups must not gain a second implicit time range. */
-function syslog_search_has_time($tree) {
-	if (!$tree) return false;
-	if ($tree[0] === 'predicate') return $tree[1] === 'logtime';
-	if ($tree[0] === 'NOT') return syslog_search_has_time($tree[1]);
-	if ($tree[0] === 'AND' || $tree[0] === 'OR') {
-		return syslog_search_has_time($tree[1]) || syslog_search_has_time($tree[2]);
+/**
+ * Dates nested in authored groups must not gain a second implicit time range.
+ *
+ * @param array<int|string, mixed>|null $tree The parsed search tree.
+ *
+ * @return bool True when the tree contains a logtime predicate.
+ */
+function syslog_search_has_time($tree): bool {
+	if (!is_array($tree) || !isset($tree[0])) {
+		return false;
 	}
+
+	if ($tree[0] === 'predicate') {
+		return ($tree[1] ?? null) === 'logtime';
+	}
+
+	if ($tree[0] === 'NOT') {
+		return syslog_search_has_time(is_array($tree[1] ?? null) ? $tree[1] : null);
+	}
+
+	if ($tree[0] === 'AND' || $tree[0] === 'OR') {
+		return syslog_search_has_time(is_array($tree[1] ?? null) ? $tree[1] : null)
+			|| syslog_search_has_time(is_array($tree[2] ?? null) ? $tree[2] : null);
+	}
+
 	return false;
 }
