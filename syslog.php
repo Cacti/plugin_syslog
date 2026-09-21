@@ -1943,8 +1943,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 		<?php
 	} else {
 		$display_text = [
-			'host'        => ['display' => __('Device', 'syslog'),	 'sort' => 'ASC', 'align' => 'left'],
 			'logtime'     => ['display' => __('Date', 'syslog'),	   'sort' => 'ASC', 'align' => 'left'],
+			'host'        => ['display' => __('Device', 'syslog'),	 'sort' => 'ASC', 'align' => 'left'],
 			'severity'    => ['display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
 			'nosort'      => ['display' => __('Alert Name', 'syslog'), 'align' => 'left'],
 			'logmsg'      => ['display' => __('Message', 'syslog'),	'sort' => 'ASC', 'align' => 'left'],
@@ -1967,8 +1967,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				syslog_log_row_color($log['severity'], $title);
 
-				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
+				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell(syslog_metadata_label(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), 'priority'), $log['seq'], '', 'left');
 				$alert_name = $log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog');
 				form_selectable_cell("<span class='syslogAlertName'>" . filter_value(html_escape($alert_name), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . '</span>', $log['seq'], '', 'left');
