@@ -1699,9 +1699,8 @@ function syslog_log_legend(): void {
 
 	html_start_box('', '100%', '', '3', 'center', '');
 	print '<tr class="">';
-	print "<td width='10%' class='logCritical'>" . __('Critical', 'syslog') . '</td>';
+	print "<td width='10%' class='logAlert'>" . __('Alert', 'syslog') . '</td>';
 	print "<td width='10%' class='logWarning'>" . __('Warning', 'syslog') . '</td>';
-	print "<td width='10%' class='logNotice'>" . __('Notice', 'syslog') . '</td>';
 	print "<td width='10%' class='logInfo'>" . __('Informational', 'syslog') . '</td>';
 	print '</tr>';
 	html_end_box(false);
@@ -1944,14 +1943,14 @@ function syslog_messages(string $tab = 'syslog'): void {
 		<?php
 	} else {
 		$display_text = [
-			'name'        => ['display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'],
-			'severity'    => ['display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
 			'logtime'     => ['display' => __('Date', 'syslog'),	   'sort' => 'ASC', 'align' => 'left'],
+			'host'        => ['display' => __('Device', 'syslog'),	 'sort' => 'ASC', 'align' => 'left'],
+			'severity'    => ['display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
+			'name'        => ['display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'],
 			'logmsg'      => ['display' => __('Message', 'syslog'),	'sort' => 'ASC', 'align' => 'left'],
 			'count'       => ['display' => __('Count', 'syslog'),	  'sort' => 'ASC', 'align' => 'right'],
-			'host'        => ['display' => __('Device', 'syslog'),	 'sort' => 'ASC', 'align' => 'right'],
-			'facility_id' => ['display' => __('Facility', 'syslog'),   'sort' => 'ASC', 'align' => 'right'],
-			'priority_id' => ['display' => __('Priority', 'syslog'),   'sort' => 'ASC', 'align' => 'right']
+			'facility_id' => ['display' => __('Facility', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
+			'priority_id' => ['display' => __('Priority', 'syslog'),   'sort' => 'ASC', 'align' => 'left']
 		];
 
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var_request('page'), $rows, $total_rows, cacti_sizeof($display_text), __('Alert Log Rows', 'syslog'), 'page', 'main');
@@ -1968,16 +1967,15 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				syslog_log_row_color($log['severity'], $title);
 
-				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
-
-				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
+				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
+				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
+				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
 				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime']), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
-				print "<td class='nowrap right'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
-				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'right');
-				print "<td class='nowrap right'>" . syslog_value_filter_button(ucfirst($log['priority']), 'priority') . '</td>';
+				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'left');
+				print "<td class='nowrap left'>" . syslog_value_filter_button(ucfirst($log['priority']), 'priority') . '</td>';
 
 				form_end_row();
 			}
