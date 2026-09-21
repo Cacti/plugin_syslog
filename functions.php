@@ -3141,7 +3141,7 @@ function syslog_export($tab) {
 		$sql_where  = '';
 		$messages   = get_syslog_messages($sql_where, 100000, $tab);
 
-		$line = ['date', 'device', 'severity', 'alertname', 'message', 'count', 'facility', 'priority'];
+		$line = ['device', 'date', 'severity', 'alertname', 'message', 'count', 'facility', 'priority'];
 
 		$fp = fopen('php://output', 'w');
 
@@ -3160,8 +3160,8 @@ function syslog_export($tab) {
 				}
 
 				$line = [
-					$message['logtime'],
 					syslog_csv_safe($message['host']),
+					$message['logtime'],
 					syslog_csv_safe($severity),
 					syslog_csv_safe($message['name']),
 					syslog_csv_safe($message['logmsg']),
