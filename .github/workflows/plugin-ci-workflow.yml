@@ -46,8 +46,8 @@ jobs:
         os: [ubuntu-latest]
 
     services:
-      mysql:
-        image: mysql:8.0
+      mariadb:
+        image: mariadb:11.8
         env:
           MYSQL_ROOT_PASSWORD: cactiroot
           MYSQL_DATABASE: cacti
@@ -91,7 +91,7 @@ jobs:
       run: sudo apt-get update
 
     - name: Install System Dependencies
-      run: sudo apt-get install -y snmp snmpd rrdtool fping
+      run: sudo apt-get install -y snmp snmpd rrdtool fping gettext
 
     - name: Start SNMPD Agent and Test
       run: |
@@ -182,6 +182,20 @@ jobs:
         cd ${{ github.workspace }}/cacti/plugins/syslog
         if find . -name '*.php' -not -path './vendor/*' -exec php -l {} 2>&1 \; | grep -iv 'no syntax errors detected'; then
           echo "Syntax errors found!"
+          exit 1
+        fi
+
+    - name: Verify translation template is up to date
+      run: |
+        cd ${{ github.workspace }}/cacti/plugins/syslog
+        chmod +x locales/build_gettext.sh
+        ./locales/build_gettext.sh
+        grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.new
+        git checkout -- locales/
+        grep -v '^"POT-Creation-Date:' locales/po/cacti.pot > /tmp/cacti.pot.old
+        if ! cmp -s /tmp/cacti.pot.old /tmp/cacti.pot.new; then
+          echo "locales/po/cacti.pot is out of date. Run locales/build_gettext.sh and commit the updated locales/po/cacti.pot."
+          diff -u /tmp/cacti.pot.old /tmp/cacti.pot.new || true
           exit 1
         fi
 
