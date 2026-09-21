@@ -4,7 +4,7 @@ const {execFileSync} = require('node:child_process');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '../..');
 const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
-const fixture = execFileSync('php', [path.join(root, 'tests/fixtures/compact_workspace.php')], {encoding: 'utf8'});
+const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_workspace.php')], {encoding: 'utf8'});
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1600,height:950}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
