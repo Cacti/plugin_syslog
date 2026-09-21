@@ -609,7 +609,6 @@
 #syslog_workspace tr.syslogRow.logNotice td:first-child { border-left-color: #3478b5; }
 #syslog_workspace tr.syslogRow.logInfo td:first-child { border-left-color: #5b9b4b; }
 #syslog_workspace tr.syslogRow.logDebug td:first-child { border-left-color: #8b9690; }
-#syslog_workspace tr.syslogAlertRow td:first-child { border-left: 4px solid #c0392b; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow { --syslog-tint-even: #2b3530; --syslog-tint-hover: #34443a; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logEmergency { --syslog-tint: #5c2626; --syslog-tint-even: #552424; --syslog-tint-hover: #663030; }
 #syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logAlert { --syslog-tint: #57302a; --syslog-tint-even: #502c27; --syslog-tint-hover: #613832; }
