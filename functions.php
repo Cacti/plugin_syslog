@@ -2827,15 +2827,6 @@ function syslog_remove_items($table, $max_seq) {
  * @return void
  */
 function syslog_log_row_color($severity, $tip_title): void {
- * displayed. It supports both the legacy as well as the new approach to
- * controlling these colors.
- *
- * @param mixed $severity  The alert severity of the row.
- * @param mixed $tip_title The row tooltip title (unused, kept for compatibility).
- *
- * @return void
- */
-function syslog_log_row_color($severity, $tip_title): void {
 	$class = '';
 
 	switch($severity) {
