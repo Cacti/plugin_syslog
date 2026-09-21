@@ -65,22 +65,23 @@ jobs:
 
     steps:
     - name: Checkout Cacti
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         repository: Cacti/cacti
         ref: ${{ env.CACTI }}
         path: cacti
 
     - name: Checkout Syslog Plugin
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: cacti/plugins/syslog
 
     - name: Install PHP ${{ matrix.php }}
-      uses: shivammathur/setup-php@v2
+      uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
       with:
         php-version: ${{ matrix.php }}
         extensions: intl, mysql, gd, ldap, gmp, xml, curl, json, mbstring
+        coverage: pcov
         ini-values: "post_max_size=256M, max_execution_time=60, date.timezone=America/New_York"
 
     - name: Check PHP version
@@ -108,14 +109,18 @@ jobs:
     - name: Create MySQL Config
       run: |
         echo -e "[client]\nuser = root\npassword = cactiroot\nhost = 127.0.0.1\n" > ~/.my.cnf
+        chmod 600 ~/.my.cnf
 
     - name: Initialize Cacti Database
       run: |
         MYSQL_AUTH_USR="--defaults-file=$HOME/.my.cnf"
         mysql "$MYSQL_AUTH_USR" -e 'CREATE DATABASE IF NOT EXISTS cacti;'
         mysql "$MYSQL_AUTH_USR" -e "CREATE USER IF NOT EXISTS 'cactiuser'@'localhost' IDENTIFIED BY 'cactiuser';"
+        mysql "$MYSQL_AUTH_USR" -e "CREATE USER IF NOT EXISTS 'cactiuser'@'127.0.0.1' IDENTIFIED BY 'cactiuser';"
         mysql "$MYSQL_AUTH_USR" -e "GRANT ALL PRIVILEGES ON cacti.* TO 'cactiuser'@'localhost';"
+        mysql "$MYSQL_AUTH_USR" -e "GRANT ALL PRIVILEGES ON cacti.* TO 'cactiuser'@'127.0.0.1';"
         mysql "$MYSQL_AUTH_USR" -e "GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'localhost';"
+        mysql "$MYSQL_AUTH_USR" -e "GRANT SELECT ON mysql.time_zone_name TO 'cactiuser'@'127.0.0.1';"
         mysql "$MYSQL_AUTH_USR" -e "FLUSH PRIVILEGES;"
         mysql "$MYSQL_AUTH_USR" cacti < ${{ github.workspace }}/cacti/cacti.sql
         mysql "$MYSQL_AUTH_USR" -e "INSERT INTO settings (name, value) VALUES ('path_php_binary', '/usr/bin/php')" cacti
@@ -137,6 +142,13 @@ jobs:
           sudo composer install --dev --no-progress
         fi
 
+    - name: Restore vendor ownership for Pest
+      run: |
+        cd ${{ github.workspace }}/cacti
+        if [ -d include/vendor ]; then
+          sudo chown -R runner:runner include/vendor composer.lock
+        fi
+
     - name: Create Cacti config.php
       run: |
         cat ${{ github.workspace }}/cacti/include/config.php.dist | \
@@ -154,26 +166,6 @@ jobs:
         sed -i "s/'cactiuser'/'cactiuser'/g" ${{ github.workspace }}/cacti/plugins/syslog/config.php
         sed -i 's/\/\/\$/\$/g' ${{ github.workspace }}/cacti/plugins/syslog/config.php
         sudo chmod 664 ${{ github.workspace }}/cacti/include/config.php
-
-    - name: Configure Apache
-      run: |
-        cat << 'EOF' | sed 's#GITHUB_WORKSPACE#${{ github.workspace }}#g' > /tmp/cacti.conf
-        <VirtualHost *:80>
-          ServerAdmin webmaster@localhost
-          DocumentRoot GITHUB_WORKSPACE/cacti
-
-          <Directory GITHUB_WORKSPACE/cacti>
-            Options Indexes FollowSymLinks
-            AllowOverride All
-            Require all granted
-          </Directory>
-
-          ErrorLog ${APACHE_LOG_DIR}/error.log
-          CustomLog ${APACHE_LOG_DIR}/access.log combined
-        </VirtualHost>
-        EOF
-        sudo cp /tmp/cacti.conf /etc/apache2/sites-available/000-default.conf
-        sudo systemctl restart apache2
 
     - name: Install Cacti via CLI
       run: |
@@ -200,12 +192,11 @@ jobs:
       run: |
         cd ${{ github.workspace }}/cacti
         include/vendor/bin/pest --configuration=plugins/syslog/phpunit.xml \
-          --coverage-clover=plugins/syslog/coverage/clover.xml \
-          plugins/syslog/tests/Security plugins/syslog/tests/Unit
+          --coverage-clover=plugins/syslog/coverage/clover.xml
 
     - name: Upload coverage report
       if: always()
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: coverage-php${{ matrix.php }}
         path: ${{ github.workspace }}/cacti/plugins/syslog/coverage/
@@ -264,8 +255,8 @@ jobs:
 
     - name: Populate Syslog Test Data
       run: |
-        sudo chmod +x ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows/populate_syslog_incoming.sh
-        cd ${{ github.workspace }}/cacti/plugins/syslog/.github/workflows
+        sudo chmod +x ${{ github.workspace }}/cacti/plugins/syslog/tests/bin/populate_syslog_incoming.sh
+        cd ${{ github.workspace }}/cacti/plugins/syslog/tests/bin
         sudo ./populate_syslog_incoming.sh
 
     - name: force Syslog Plugin Poller

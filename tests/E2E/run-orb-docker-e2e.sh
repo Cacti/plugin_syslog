@@ -99,9 +99,9 @@ docker exec cacti_web php cli/plugin_manage.php --plugin=syslog --install --enab
 docker run --rm \
   --network cacti-syslog-e2e_default \
   --ipc=host \
-  -v "${ROOT_DIR}/tests/e2e/playwright:/work" \
+  -v "${ROOT_DIR}/tests/E2E/playwright:/work" \
   -w /work \
   "${PW_IMAGE}" \
   npm install
 
-"${ROOT_DIR}/tests/e2e/playwright/run-e2e.sh"
+"${ROOT_DIR}/tests/E2E/playwright/run-e2e.sh"
