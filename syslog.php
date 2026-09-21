@@ -1946,7 +1946,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 			'host'        => ['display' => __('Device', 'syslog'),	 'sort' => 'ASC', 'align' => 'left'],
 			'logtime'     => ['display' => __('Date', 'syslog'),	   'sort' => 'ASC', 'align' => 'left'],
 			'severity'    => ['display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
-			'name'        => ['display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'],
+			'nosort'      => ['display' => __('Alert Name', 'syslog'), 'align' => 'left'],
 			'logmsg'      => ['display' => __('Message', 'syslog'),	'sort' => 'ASC', 'align' => 'left'],
 			'count'       => ['display' => __('Count', 'syslog'),	  'sort' => 'ASC', 'align' => 'right'],
 			'facility_id' => ['display' => __('Facility', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
