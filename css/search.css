@@ -648,7 +648,7 @@
 }
 .syslogMessageOpen:focus-visible, #syslog_message_details button:focus-visible, .syslogMenu > summary:focus-visible { outline: 2px solid #276448; outline-offset: 2px; }
 .syslogSeverity, .syslogFacility { display: inline-block; border: 1px solid #b7c5be; border-radius: 4px; padding: 3px 8px; color: #34423a; background: #e1e6e3; font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
-.syslogSeverity-err, .syslogSeverity-error, .syslogSeverity-emerg, .syslogSeverity-alert, .syslogSeverity-crit { background: #fbe0de; color: #8a2420; }
+.syslogSeverity-err, .syslogSeverity-error, .syslogSeverity-emerg, .syslogSeverity-alert, .syslogSeverity-crit, .syslogSeverity-critical { background: #fbe0de; color: #8a2420; }
 .syslogSeverity-warning, .syslogSeverity-warn { background: #fff0c4; color: #744900; }
 .syslogSeverity-info { background: #e0eed8; color: #315626; }
 .syslogSeverity-notice { background: #dfecf8; color: #254e76; }

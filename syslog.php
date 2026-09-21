@@ -1969,7 +1969,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
-				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
+				form_selectable_cell(syslog_metadata_label(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), 'priority'), $log['seq'], '', 'left');
 				$alert_name = $log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog');
 				form_selectable_cell("<span class='syslogAlertName'>" . filter_value(html_escape($alert_name), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current') . '</span>', $log['seq'], '', 'left');
 				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime']), $log['seq'], '', 'syslogMessage left');
