@@ -82,7 +82,12 @@ switch (get_request_var('action')) {
 		break;
 }
 
-function form_save() {
+/**
+ * Save the alert rule submitted by the edit form and redirect back.
+ *
+ * @return void
+ */
+function form_save(): void {
 	if ((isset_request_var('save_component_alert')) && (isempty_request_var('add_dq_y'))) {
 		$alertid = api_syslog_alert_save(get_nfilter_request_var('id'), get_nfilter_request_var('name'),
 			get_nfilter_request_var('report_method'), get_filter_request_var('level'),
@@ -101,7 +106,12 @@ function form_save() {
 	}
 }
 
-function form_actions() {
+/**
+ * Render the bulk action confirmation form and apply the selected action.
+ *
+ * @return void
+ */
+function form_actions(): void {
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 	global $syslogdb_default;
 
@@ -113,14 +123,18 @@ function form_actions() {
 		$selected_items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
 		$drp_action     = get_request_var('drp_action');
 
+		// PHP normalizes the numeric-string keys below to integers, matching the
+		// action ids of the dropdown.
+		$action_map = [
+			'1' => 'api_syslog_alert_remove',
+			'2' => 'api_syslog_alert_disable',
+			'3' => 'api_syslog_alert_enable'
+		];
+
 		syslog_apply_selected_items_action(
 			$selected_items,
 			$drp_action,
-			[
-				'1' => 'api_syslog_alert_remove',
-				'2' => 'api_syslog_alert_disable',
-				'3' => 'api_syslog_alert_enable'
-			],
+			$action_map,
 			'4',
 			get_nfilter_request_var('selected_items')
 		);
@@ -139,6 +153,7 @@ function form_actions() {
 	// setup some variables
 	$alert_array = [];
 	$alert_list  = '';
+	$title       = '';
 
 	// loop through each of the clusters selected on the previous page and get more info about them
 	foreach ($_POST as $var => $val) {
@@ -210,7 +225,7 @@ function form_actions() {
 	print "<tr>
 		<td align='right' class='saveRow'>
 			<input type='hidden' name='action' value='actions'>
-			<input type='hidden' name='selected_items' value='" . (isset($alert_array) ? serialize($alert_array) : '') . "'>
+			<input type='hidden' name='selected_items' value='" . serialize($alert_array) . "'>
 			<input type='hidden' name='drp_action' value='" . get_request_var('drp_action') . "'>
 			$save_html
 		</td>
@@ -223,7 +238,12 @@ function form_actions() {
 	bottom_footer();
 }
 
-function alert_export() {
+/**
+ * Export the selected alert rules as a JSON download.
+ *
+ * @return void
+ */
+function alert_export(): void {
 	global $syslogdb_default;
 
 	// if we are to save this form, instead of display it
@@ -254,8 +274,30 @@ function alert_export() {
 	}
 }
 
+/**
+ * Validate and save a syslog alert rule.
+ *
+ * @param string|int|null $id           The id of the alert rule to update, empty for a new rule.
+ * @param string          $name         The name of the alert rule.
+ * @param string|int      $method       The reporting method, 0 for Individual, 1 for Threshold.
+ * @param string|int|null $level        The reporting level, 0 for System, 1 for Device.
+ * @param string|int      $num          The threshold count for the Threshold method.
+ * @param string          $type         The match type, either 'filter' or 'sql'.
+ * @param string          $message      The match string or the filter rule document.
+ * @param string          $email        The comma delimited list of email addresses to notify.
+ * @param string          $notes        The notes for the alert rule.
+ * @param string          $enabled      'on' when the alert rule is enabled, otherwise empty.
+ * @param string|int      $severity     The severity level of the alert rule.
+ * @param string          $command      The command to run when the alert is triggered.
+ * @param string|int      $repeat_alert The re-alert cycle in poller cycles.
+ * @param string          $open_ticket  'on' to open a help desk ticket, otherwise empty.
+ * @param string|int      $notify       The id of the notification list to use, 0 for none.
+ * @param string          $body         The body text for the alert email.
+ *
+ * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
+ */
 function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $message, $email, $notes,
-	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '') {
+	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = ''): false|null {
 	global $syslogdb_default;
 
 	// get the username
@@ -287,13 +329,11 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['user']         = $username;
 	$save['date']         = time();
 
-	$id = 0;
-
 	if (!is_error_message()) {
 		$sql = syslog_get_alert_sql($save, 100);
 
 		if (cacti_sizeof($sql)) {
-			$db_sql     = str_replace('%', '|||||', $sql['sql']);
+			$db_sql     = (string) str_replace('%', '|||||', $sql['sql']);
 			$db_sql     = str_replace('?', '%s', $db_sql);
 			$approx_sql = vsprintf($db_sql, $sql['params']);
 			$approx_sql = str_replace('|||||', '%', $approx_sql);
@@ -306,9 +346,11 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 
 				return false;
 			} else {
-				$id = syslog_sync_save($save, 'syslog_alert', 'id');
+				syslog_sync_save($save, 'syslog_alert', 'id');
 
-				return $id;
+				// syslog_sync_save() raises its own success/failure message and
+				// returns no id, so signal success without one.
+				return null;
 			}
 		} else {
 			if ($save['type'] === 'filter' && !empty($GLOBALS['syslog_rule_filter_error'])) {
@@ -324,22 +366,52 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	return false;
 }
 
+/**
+ * Remove the given alert rule from the database.
+ *
+ * @param int|string $id The id of the alert rule to remove.
+ *
+ * @return void
+ */
 function api_syslog_alert_remove($id) {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_alert` WHERE id = ?", [$id]);
 }
 
+/**
+ * Disable the given alert rule.
+ *
+ * @param int|string $id The id of the alert rule to disable.
+ *
+ * @return void
+ */
 function api_syslog_alert_disable($id) {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_alert` SET enabled = '' WHERE id = ?", [$id]);
 }
 
+/**
+ * Enable the given alert rule.
+ *
+ * @param int|string $id The id of the alert rule to enable.
+ *
+ * @return void
+ */
 function api_syslog_alert_enable($id) {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_alert` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
-function syslog_get_alert_records(&$sql_where, &$sql_params, $rows) {
+/**
+ * Fetch the alert rule records matching the current page filter.
+ *
+ * @param string             $sql_where  The WHERE clause to append the filter to, passed by reference.
+ * @param array<int, string> $sql_params The prepared SQL parameters to append to, passed by reference.
+ * @param int                $rows       The number of rows per page to fetch.
+ *
+ * @return array<int, array<string, mixed>> The alert rule records found.
+ */
+function syslog_get_alert_records(string &$sql_where, array &$sql_params, int $rows): array {
 	global $syslogdb_default;
 
 	if (get_request_var('filter') != '') {
@@ -372,8 +444,17 @@ function syslog_get_alert_records(&$sql_where, &$sql_params, $rows) {
 	return syslog_db_fetch_assoc_prepared($query_string, $sql_params);
 }
 
-function get_repeat_array() {
-	$poller_interval = read_config_option('poller_interval');
+/**
+ * Build the re-alert cycle dropdown options based on the poller interval.
+ *
+ * @return array<int, string> The re-alert cycle options in poller cycles.
+ */
+function get_repeat_array(): array {
+	$poller_interval = (int) read_config_option('poller_interval');
+
+	if ($poller_interval < 1) {
+		$poller_interval = 300;
+	}
 
 	$multiplier = 300 / $poller_interval;
 
@@ -411,7 +492,7 @@ function get_repeat_array() {
 	$alert_retention = read_config_option('syslog_alert_retention');
 
 	if ($alert_retention != '' && $alert_retention > 0 && $alert_retention < 365) {
-		$repeat_end = ($alert_retention * 24 * 60 * $multiplier) / 5;
+		$repeat_end = ((int) $alert_retention * 24 * 60 * $multiplier) / 5;
 	}
 
 	if (isset($repeat_end)) {
@@ -425,7 +506,12 @@ function get_repeat_array() {
 	return $repeatarray;
 }
 
-function syslog_action_edit() {
+/**
+ * Render the alert rule edit or creation form.
+ *
+ * @return void
+ */
+function syslog_action_edit(): void {
 	global $message_types, $severities;
 	global $syslogdb_default;
 
@@ -804,7 +890,12 @@ function syslog_action_edit() {
 	<?php
 }
 
-function syslog_filter() {
+/**
+ * Render the alert rule filter bar.
+ *
+ * @return void
+ */
+function syslog_alerts_filter(): void {
 	global $config, $item_rows;
 
 	?>
@@ -867,7 +958,12 @@ function syslog_filter() {
 	<?php
 }
 
-function syslog_alerts() {
+/**
+ * Render the main alert rule list page.
+ *
+ * @return void
+ */
+function syslog_alerts(): void {
 	global $syslog_actions, $config, $message_types, $severities;
 	global $syslogdb_default;
 
@@ -919,7 +1015,7 @@ function syslog_alerts() {
 
 	html_start_box(__('Syslog Alert Filters', 'syslog'), '100%', '', '3', 'center', $url);
 
-	syslog_filter();
+	syslog_alerts_filter();
 
 	html_end_box();
 
@@ -927,11 +1023,11 @@ function syslog_alerts() {
 	$sql_params = [];
 
 	if (get_request_var('rows') == '-1') {
-		$rows = read_config_option('num_rows_table');
+		$rows = (int) read_config_option('num_rows_table');
 	} elseif (get_request_var('rows') == -2) {
 		$rows = 999999;
 	} else {
-		$rows = get_request_var('rows');
+		$rows = (int) get_request_var('rows');
 	}
 
 	$alerts = syslog_get_alert_records($sql_where, $sql_params, $rows);
@@ -1004,7 +1100,12 @@ function syslog_alerts() {
 	}
 }
 
-function import() {
+/**
+ * Render the alert rule import form.
+ *
+ * @return void
+ */
+function import(): void {
 	$form_data = [
 		'import_file' => [
 			'friendly_name' => __('Import Alert Rule from Local File', 'syslog'),
@@ -1041,7 +1142,12 @@ function import() {
 	form_save_button('', 'import', 'id', false);
 }
 
-function alert_import() {
+/**
+ * Import alert rule definitions from an uploaded file or pasted payload.
+ *
+ * @return void
+ */
+function alert_import(): void {
 	$import_data = syslog_get_import_xml_payload('syslog_alerts.php');
 
 	$import_array = syslog_parse_rule_import($import_data, 'syslog_alert');
@@ -1056,8 +1162,8 @@ function alert_import() {
 
 	if ($import_array !== false && cacti_sizeof($import_array)) {
 		foreach ($import_array as $template => $contents) {
-			$error = false;
-			$save  = [];
+			$save  = [];;
+			$tname = '';
 
 			if (cacti_sizeof($contents)) {
 				foreach ($contents as $name => $value) {
@@ -1093,14 +1199,12 @@ function alert_import() {
 				}
 			}
 
-			if (!$error) {
-				$id = sql_save($save, 'syslog_alert');
+			$id = sql_save($save, 'syslog_alert');
 
-				if ($id) {
-					raise_message('syslog_info' . $id, __esc('NOTE: Alert \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
-				} else {
-					raise_message('syslog_info' . $id, __esc('ERROR: Alert \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
-				}
+			if ($id) {
+				raise_message('syslog_info' . $id, __esc('NOTE: Alert \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+			} else {
+				raise_message('syslog_info' . $id, __esc('ERROR: Alert \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 			}
 		}
 	}

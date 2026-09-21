@@ -14,6 +14,7 @@ if (!api_plugin_user_realm_auth('syslog_dashboards.php') && !api_plugin_user_rea
 syslog_connect();
 set_default_action();
 
+global $syslogdb_default;
 $db = $syslogdb_default;
 $error = '';
 $edit = get_filter_request_var('edit', FILTER_VALIDATE_INT);
@@ -113,6 +114,11 @@ $(function() {
 <?php
 bottom_footer();
 
+/**
+ * Render the dashboards list page.
+ *
+ * @return void
+ */
 function syslog_dashboards() {
 	global $db, $config;
 
@@ -172,7 +178,7 @@ function syslog_dashboards() {
 		FROM $db.syslog_dashboards d
 		$sql_where
 		$sql_order
-		$sql_limit", $sql_params);
+		$sql_limit", $sql_params) ?: [];
 
 	$total_rows = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
 		FROM $db.syslog_dashboards d
@@ -203,6 +209,11 @@ function syslog_dashboards() {
 	syslog_dashboard_table($dashboards, $nav, $display_text);
 }
 
+/**
+ * Render the filter row for the dashboards list.
+ *
+ * @return void
+ */
 function syslog_dashboard_filter() {
 	global $config, $item_rows;
 
@@ -256,6 +267,15 @@ function syslog_dashboard_filter() {
 	<?php
 }
 
+/**
+ * Render the dashboards table.
+ *
+ * @param list<array<string, mixed>>        $rows         The dashboard rows to display.
+ * @param string                            $nav          The navigation bar HTML to print above and below the table.
+ * @param array<string, array<int, string>> $display_text The sortable column display text.
+ *
+ * @return void
+ */
 function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 	global $db;
 
@@ -320,6 +340,11 @@ function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 	form_end(false);
 }
 
+/**
+ * Run the bulk action requested for the selected dashboards.
+ *
+ * @return void
+ */
 function syslog_dashboard_actions() {
 	global $db;
 
@@ -342,9 +367,9 @@ function syslog_dashboard_actions() {
 			exit;
 		}
 
-		syslog_apply_selected_items_action($selected_items, get_request_var('drp_action'), [
-			'1' => 'api_syslog_dashboard_remove'
-		]);
+		$action_map = ['1' => 'api_syslog_dashboard_remove'];
+
+		syslog_apply_selected_items_action($selected_items, (string) get_request_var('drp_action'), $action_map);
 
 		header('Location: syslog_dashboards.php');
 
@@ -424,6 +449,13 @@ function syslog_dashboard_actions() {
 	bottom_footer();
 }
 
+/**
+ * Remove a dashboard, its panels and its shares.
+ *
+ * @param int $id The id of the dashboard to remove.
+ *
+ * @return void
+ */
 function api_syslog_dashboard_remove($id) {
 	global $db;
 	// Panels first, then the dashboard itself.
@@ -432,6 +464,11 @@ function api_syslog_dashboard_remove($id) {
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards_perm WHERE dashboard_id = ?", [$id]);
 }
 
+/**
+ * Export the selected dashboards as a JSON attachment.
+ *
+ * @return void
+ */
 function syslog_dashboard_export() {
 	global $db;
 
@@ -476,6 +513,11 @@ function syslog_dashboard_export() {
 	}
 }
 
+/**
+ * Import dashboards from the posted JSON payload.
+ *
+ * @return void
+ */
 function syslog_dashboard_import() {
 	global $db;
 
@@ -618,6 +660,11 @@ function syslog_dashboard_import() {
 	header('Location: syslog_dashboards.php');
 }
 
+/**
+ * Display the dashboard import form.
+ *
+ * @return void
+ */
 function syslog_dashboard_import_form() {
 	if (!syslog_allow_edits()) {
 		header('Location: syslog_dashboards.php');
@@ -660,6 +707,14 @@ function syslog_dashboard_import_form() {
 	form_save_button('', 'import', 'id', false);
 }
 
+/**
+ * Display the dashboard edit form.
+ *
+ * @param array<string, mixed> $row   The dashboard row being edited.
+ * @param string               $error The error message to display, if any.
+ *
+ * @return void
+ */
 function syslog_dashboard_edit($row, $error) {
 	// Cacti accounts and groups to grant this dashboard to, beyond its owner
 	// and the global share flag. The 'all' entry shares it with every

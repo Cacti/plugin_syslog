@@ -37,6 +37,8 @@ include_once(__DIR__ . '/functions.php');
 include_once(__DIR__ . '/database.php');
 include_once(__DIR__ . '/lib/syslog_dashboard.php');
 
+global $config;
+
 syslog_connect();
 
 set_default_action();
@@ -52,11 +54,15 @@ if (get_request_var('action') === 'ajax_search_values') {
 }
 
 if (get_request_var('action') == 'ajax_programs') {
-	return get_ajax_programs(true);
+	get_ajax_programs(true);
+
+	exit;
 }
 
 if (get_request_var('action') == 'ajax_programs_wnone') {
-	return get_ajax_programs(true, true);
+	get_ajax_programs(true, true);
+
+	exit;
 }
 
 if (get_request_var('action') == 'ajax_hosts') {
@@ -171,7 +177,12 @@ if (isset_request_var('export')) {
 
 $_SESSION['sess_nav_level_cache'] = [];
 
-function get_ajax_hosts() {
+/**
+ * Return the host list for the autocomplete endpoint as a JSON document.
+ *
+ * @return string JSON document mapping host ids to host data.
+ */
+function get_ajax_hosts(): string {
 	global $syslogdb_default;
 
 	$ac_rows = read_config_option('autocomplete_rows');
@@ -205,6 +216,8 @@ function get_ajax_hosts() {
 	}
 
 	if (cacti_sizeof($hosts)) {
+		$rhosts = [];
+
 		foreach ($hosts as $host) {
 			if (!empty($host['id'])) {
 				$class = get_device_leaf_class($host['id']);
@@ -219,13 +232,20 @@ function get_ajax_hosts() {
 			];
 		}
 
-		return json_encode($rhosts);
+		return (string) json_encode($rhosts);
 	} else {
-		return json_encode([]);
+		return (string) json_encode([]);
 	}
 }
 
-function syslog_display_tabs($current_tab) {
+/**
+ * Draw the tab navigation for the syslog page.
+ *
+ * @param string $current_tab The currently selected tab.
+ *
+ * @return void
+ */
+function syslog_display_tabs(string $current_tab): void {
 	global $config;
 
 	// present a tabbed interface
@@ -263,7 +283,14 @@ function syslog_display_tabs($current_tab) {
 	print '</ul></nav></div>';
 }
 
-function syslog_status_format_time($value) {
+/**
+ * Format a unix timestamp for the status tab, or 'Never' when it is unset.
+ *
+ * @param string $value The raw status value.
+ *
+ * @return string The formatted timestamp.
+ */
+function syslog_status_format_time(string $value): string {
 	if ($value === '' || !is_numeric($value) || (int) $value <= 0) {
 		return __('Never', 'syslog');
 	}
@@ -271,7 +298,14 @@ function syslog_status_format_time($value) {
 	return date('Y-m-d H:i:s', (int) $value);
 }
 
-function syslog_status_format_seconds($value) {
+/**
+ * Format a runtime in seconds for the status tab, or 'Never' when it is unset.
+ *
+ * @param string $value The raw status value.
+ *
+ * @return string The formatted runtime.
+ */
+function syslog_status_format_seconds(string $value): string {
 	if ($value === '' || !is_numeric($value)) {
 		return __('Never', 'syslog');
 	}
@@ -279,7 +313,14 @@ function syslog_status_format_seconds($value) {
 	return number_format((float) $value, 3) . ' ' . __('seconds', 'syslog');
 }
 
-function syslog_status_format_runtime_stats($status) {
+/**
+ * Summarize the last polling runtime together with its min/avg/max values.
+ *
+ * @param array<string, string> $status The status values.
+ *
+ * @return string The formatted runtime statistics.
+ */
+function syslog_status_format_runtime_stats(array $status): string {
 	if ($status['polling_runtime_last'] === '' || !is_numeric($status['polling_runtime_last'])) {
 		return __('Never', 'syslog');
 	}
@@ -294,11 +335,25 @@ function syslog_status_format_runtime_stats($status) {
 	);
 }
 
-function syslog_status_format_count($value) {
+/**
+ * Format a counter for the status tab, or '0' when it is unset.
+ *
+ * @param string $value The raw status value.
+ *
+ * @return string The formatted counter.
+ */
+function syslog_status_format_count(string $value): string {
 	return $value === '' || !is_numeric($value) ? '0' : number_format((int) $value);
 }
 
-function syslog_status_format_rule_activity($value) {
+/**
+ * Summarize the rules that fired during the last poller run.
+ *
+ * @param string $value JSON document of rule activity, or an empty string.
+ *
+ * @return string Comma separated list of rule names with their counts.
+ */
+function syslog_status_format_rule_activity(string $value): string {
 	$rules = json_decode((string) $value, true);
 
 	if (!is_array($rules) || !cacti_sizeof($rules)) {
@@ -319,8 +374,12 @@ function syslog_status_format_rule_activity($value) {
 	return cacti_sizeof($items) ? implode(', ', $items) : __('None', 'syslog');
 }
 
-/** Read live storage metrics only when rendering the status tab. */
-function syslog_status_storage() {
+/**
+ * Read live storage metrics only when rendering the status tab.
+ *
+ * @return array<string, string> Map of storage labels to formatted values.
+ */
+function syslog_status_storage(): array {
 	global $syslogdb_default, $syslog_retentions, $syslog_alert_retentions;
 
 	$incoming = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
@@ -350,7 +409,12 @@ function syslog_status_storage() {
 	];
 }
 
-function syslog_status() {
+/**
+ * Display the syslog processing status tab.
+ *
+ * @return void
+ */
+function syslog_status(): void {
 	$status = syslog_status_get();
 
 	$worker_stats = syslog_worker_stats_get();
@@ -459,7 +523,12 @@ function syslog_status() {
 	html_end_box(false);
 }
 
-function syslog_view_alarm() {
+/**
+ * Display the HTML body of the selected alert, then stop.
+ *
+ * @return void
+ */
+function syslog_view_alarm(): void {
 	global $config;
 	global $syslogdb_default;
 
@@ -480,15 +549,18 @@ function syslog_view_alarm() {
 }
 
 /**
- * function syslog_request_validation()
+ * Validate the request for the syslog page and store the filter state.
+ *
  * This is a generic function for this page that makes sure that
  * we have a good request.  We want to protect against people who
  * like to create issues with Cacti.
  *
- * @param mixed $current_tab
- * @param mixed $force
+ * @param string $current_tab The currently selected tab.
+ * @param bool   $force       Whether to bypass cached user settings.
+ *
+ * @return void
  */
-function syslog_request_validation($current_tab, $force = false) {
+function syslog_request_validation(string $current_tab, bool $force = false): void {
 	global $title, $rows, $config, $reset_multi;
 
 	// Cacti validation populates $_POST even for values restored from the session.
@@ -756,8 +828,13 @@ function syslog_request_validation($current_tab, $force = false) {
  * Apply a saved search: restore its expression and standard filters, and
  * record it as active for the tab. Authored date filters are retained;
  * searches without dates receive the default relative range.
+ *
+ * @param string $tab      The tab the saved search belongs to.
+ * @param int    $saved_id The saved search id.
+ *
+ * @return void
  */
-function saved_search_apply($tab, $saved_id) {
+function saved_search_apply(string $tab, int $saved_id): void {
 	global $syslogdb_default;
 
 	$username = get_username($_SESSION['sess_user_id']);
@@ -795,7 +872,12 @@ function saved_search_apply($tab, $saved_id) {
 	// Page entry reapplies the default range when the saved expression has no dates.
 }
 
-function saved_search_save() {
+/**
+ * Create or update a saved search from an AJAX submission.
+ *
+ * @return string JSON document with the saved search id, or an error.
+ */
+function saved_search_save(): string {
 	global $syslogdb_default;
 
 	$username = get_username($_SESSION['sess_user_id']);
@@ -813,14 +895,14 @@ function saved_search_save() {
 	}
 
 	if ($name === '' || strlen($name) > 128) {
-		return json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
+		return (string) json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
 	}
 
 	try {
 		$tree = syslog_parse_logical_search($search);
 		syslog_logical_search_sql($tree, get_request_var('tab') === 'alerts' ? 'logmsg' : 'message');
 	} catch (InvalidArgumentException $error) {
-		return json_encode(['error' => __('Invalid logical search: %s', $error->getMessage(), 'syslog')]);
+		return (string) json_encode(['error' => __('Invalid logical search: %s', $error->getMessage(), 'syslog')]);
 	}
 
 	// Upsert by owner and name, preserving the global flag of an existing row.
@@ -835,7 +917,7 @@ function saved_search_save() {
 			WHERE id = ?",
 			[$search, $removal, $grouping, time(), $existing_id]);
 
-		return json_encode(['id' => (int) $existing_id]);
+		return (string) json_encode(['id' => (int) $existing_id]);
 	}
 
 	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_saved_searches`
@@ -843,17 +925,22 @@ function saved_search_save() {
 		VALUES (?, ?, ?, ?, ?, '', ?)",
 		[$name, $search, $removal, $grouping, $username, time()]);
 
-	return json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
+		return (string) json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
 }
 
-function saved_search_delete() {
+/**
+ * Delete a saved search that the current user is allowed to manage.
+ *
+ * @return string JSON document with the deleted id, or an error.
+ */
+function saved_search_delete(): string {
 	global $syslogdb_default;
 
 	$username = get_username($_SESSION['sess_user_id']);
 	$id       = get_filter_request_var('id', FILTER_VALIDATE_INT);
 
 	if ($id === false || $id === null || $id <= 0) {
-		return json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
+		return (string) json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
 	}
 
 	$row = syslog_db_fetch_row_prepared("SELECT `user`, is_global
@@ -862,11 +949,11 @@ function saved_search_delete() {
 		[$id]);
 
 	if ($row === false) {
-		return json_encode(['error' => __('Saved search not found.', 'syslog')]);
+		return (string) json_encode(['error' => __('Saved search not found.', 'syslog')]);
 	}
 
 	if ($row['user'] !== $username && !($row['is_global'] === 'on' && syslog_saved_search_admin())) {
-		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+		return (string) json_encode(['error' => __('Permission denied.', 'syslog')]);
 	}
 
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_saved_searches`
@@ -880,21 +967,26 @@ function saved_search_delete() {
 		kill_session_var('sess_sl_' . get_request_var('tab') . '_saved');
 	}
 
-	return json_encode(['id' => (int) $id]);
+	return (string) json_encode(['id' => (int) $id]);
 }
 
-function saved_search_global() {
+/**
+ * Toggle the global sharing flag of an owned saved search.
+ *
+ * @return string JSON document with the id and new flag, or an error.
+ */
+function saved_search_global(): string {
 	global $syslogdb_default;
 
 	if (!syslog_saved_search_share()) {
-		return json_encode(['error' => __('Permission denied.', 'syslog')]);
+		return (string) json_encode(['error' => __('Permission denied.', 'syslog')]);
 	}
 
 	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
 	$username = get_username($_SESSION['sess_user_id']);
 
 	if ($id === false || $id === null || $id <= 0) {
-		return json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
+		return (string) json_encode(['error' => __('A valid saved search is required.', 'syslog')]);
 	}
 
 	$row = syslog_db_fetch_row_prepared("SELECT `user`, is_global
@@ -903,10 +995,10 @@ function saved_search_global() {
 		[$id]);
 
 	if ($row === false) {
-		return json_encode(['error' => __('Saved search not found.', 'syslog')]);
+		return (string) json_encode(['error' => __('Saved search not found.', 'syslog')]);
 	}
 	if ($row['user'] !== $username && !syslog_saved_search_admin()) {
-		return json_encode(['error' => __('You may only share your own saved searches.', 'syslog')]);
+		return (string) json_encode(['error' => __('You may only share your own saved searches.', 'syslog')]);
 	}
 
 	$is_global = $row['is_global'] === 'on' ? '' : 'on';
@@ -916,10 +1008,18 @@ function saved_search_global() {
 		WHERE id = ?",
 		[$is_global, $id]);
 
-	return json_encode(['id' => (int) $id, 'is_global' => $is_global]);
+	return (string) json_encode(['id' => (int) $id, 'is_global' => $is_global]);
 }
 
-function set_shift_span($shift_span, $session_prefix) {
+/**
+ * Apply a timespan or timeshift selection and store the resulting dates.
+ *
+ * @param bool|string $shift_span       The shift mode: 'span', 'shift', 'custom', or false for page navigation.
+ * @param string      $session_prefix The session key prefix of the tab.
+ *
+ * @return void
+ */
+function set_shift_span(bool|string $shift_span, string $session_prefix): void {
 	global $graph_timeshifts;
 
 	if ($shift_span === 'span') {
@@ -982,9 +1082,8 @@ function set_shift_span($shift_span, $session_prefix) {
 		} else {
 			// Session keys missing; fall back to a fresh span calculation.
 			$first_weekdayid = read_user_setting('first_weekdayid');
-			$default         = get_request_var('predefined_timespan') ?? 7;
 			$span            = [];
-			get_timespan($span, time(), $default, $first_weekdayid);
+			get_timespan($span, time(), get_request_var('predefined_timespan'), $first_weekdayid);
 			set_request_var('date1', date('Y-m-d H:i:s', $span['begin_now']));
 			set_request_var('date2', date('Y-m-d H:i:s', $span['end_now']));
 			set_request_var('custom', false);
@@ -992,7 +1091,16 @@ function set_shift_span($shift_span, $session_prefix) {
 	}
 }
 
-function get_syslog_messages(&$sql_where, $rows, $tab) {
+/**
+ * Build the log query and the shared WHERE clause for the log viewer.
+ *
+ * @param string     $sql_where The built WHERE clause, updated in place.
+ * @param int|string $rows      The number of rows to fetch per page.
+ * @param string     $tab       The current tab: 'syslog' or 'alerts'.
+ *
+ * @return list<array<string, mixed>> The matching log records.
+ */
+function get_syslog_messages(string &$sql_where, int|string $rows, string $tab): array {
 	global $sql_where, $hostfilter, $hostfilter_log, $current_tab, $syslog_incoming_config;
 	global $syslogdb_default;
 
@@ -1149,7 +1257,7 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	$sql_order = get_order_string();
 
 	if (!isset_request_var('export')) {
-		$sql_limit = ' LIMIT ' . ($rows * (get_request_var('page') - 1)) . ',' . $rows;
+		$sql_limit = ' LIMIT ' . ((int) $rows * (get_request_var('page') - 1)) . ',' . $rows;
 	} else {
 		$sql_limit = ' LIMIT 10000';
 	}
@@ -1272,7 +1380,15 @@ function get_syslog_messages(&$sql_where, $rows, $tab) {
 	return syslog_db_fetch_assoc($query_sql);
 }
 
-function syslog_filter($sql_where, $tab) {
+/**
+ * Draw the filter panel above the log results.
+ *
+ * @param string $sql_where The message filter clause built by the query builder.
+ * @param string $tab       The current tab: 'syslog' or 'alerts'.
+ *
+ * @return void
+ */
+function syslog_filter(string $sql_where, string $tab): void {
 	global $config, $page_refresh_interval, $item_rows;
 	global $syslogdb_default;
 
@@ -1287,9 +1403,9 @@ function syslog_filter($sql_where, $tab) {
 		unset($saved_fields['host_id']);
 	}
 
-	$saved_choices_json = html_escape(json_encode(syslog_search_choices()));
-	$saved_fields_json  = html_escape(json_encode($saved_fields));
-	$saved_tree_json    = html_escape(json_encode($GLOBALS['syslog_search_tree'] ?? null));
+	$saved_choices_json = html_escape((string) json_encode(syslog_search_choices()));
+	$saved_fields_json  = html_escape((string) json_encode($saved_fields));
+	$saved_tree_json    = html_escape((string) json_encode($GLOBALS['syslog_search_tree'] ?? null));
 
 	$username = get_username($_SESSION['sess_user_id']);
 
@@ -1525,14 +1641,13 @@ function syslog_filter($sql_where, $tab) {
 }
 
 /**
- * function syslog_strip_domain()
+ * Strip the domain from a hostname for rule matching.
  *
- * Simple function to strip the domain for a hostname
+ * @param string $hostname The hostname or IP address.
  *
- * @param string hostname
- * @param mixed $hostname
+ * @return string The bare hostname, or the original address.
  */
-function syslog_strip_domain($hostname) {
+function syslog_strip_domain(string $hostname): string {
 	if (strpos($hostname, '.') === false) {
 		return $hostname;
 	}
@@ -1553,11 +1668,11 @@ function syslog_strip_domain($hostname) {
 }
 
 /**
- * function syslog_syslog_legend()
+ * Display the foreground and background colors for the syslog legend.
  *
- * This function displays the foreground and background colors for the syslog syslog legend
+ * @return void
  */
-function syslog_syslog_legend() {
+function syslog_syslog_legend(): void {
 	global $disabled_color, $notmon_color, $database_default;
 
 	html_start_box('', '100%', '', '3', 'center', '');
@@ -1575,10 +1690,11 @@ function syslog_syslog_legend() {
 }
 
 /**
- * function syslog_log_legend()
- * This function displays the foreground and background colors for the syslog log legend
+ * Display the foreground and background colors for the alert log legend.
+ *
+ * @return void
  */
-function syslog_log_legend() {
+function syslog_log_legend(): void {
 	global $disabled_color, $notmon_color, $database_default;
 
 	html_start_box('', '100%', '', '3', 'center', '');
@@ -1592,13 +1708,16 @@ function syslog_log_legend() {
 }
 
 /**
- * function syslog_messages()
+ * Display the main log results table for syslog or alert messages.
+ *
  * This is the main page display function in Syslog.  Displays all the
  * syslog messages that are relevant to Syslog.
  *
- * @param mixed $tab
+ * @param string $tab The current tab: 'syslog' or 'alerts'.
+ *
+ * @return void
  */
-function syslog_messages($tab = 'syslog') {
+function syslog_messages(string $tab = 'syslog'): void {
 	global $sql_where, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 	global $syslogdb_default;
@@ -1893,7 +2012,12 @@ function syslog_messages($tab = 'syslog') {
 	<?php
 }
 
-function save_settings() {
+/**
+ * Save the current filter values as the user's defaults.
+ *
+ * @return void
+ */
+function save_settings(): void {
 	global $current_tab;
 
 //	syslog_request_validation($current_tab);
@@ -1925,7 +2049,18 @@ function save_settings() {
 	syslog_request_validation($current_tab, true);
 }
 
-function html_program_filter($program_id = '-1', $none_entry = '', $action = 'ajax_programs', $call_back = 'applyFilter', $sql_where = '') {
+/**
+ * Draw the program filter dropdown.
+ *
+ * @param int|string $program_id The selected program id.
+ * @param string     $none_entry The entry to show when nothing is selected.
+ * @param string     $action     The AJAX action for the dropdown.
+ * @param string     $call_back  The JavaScript callback on selection.
+ * @param string     $sql_where  An optional WHERE clause for the query.
+ *
+ * @return void
+ */
+function html_program_filter(int|string $program_id = '-1', string $none_entry = '', string $action = 'ajax_programs', string $call_back = 'applyFilter', string $sql_where = ''): void {
 	if (strpos($call_back, '()') === false) {
 		$call_back .= '()';
 	}
@@ -1969,7 +2104,16 @@ function html_program_filter($program_id = '-1', $none_entry = '', $action = 'aj
 	print '</td>';
 }
 
-function get_ajax_programs($include_any = true, $include_none = false, $sql_where = '') {
+/**
+ * Return the program list for the autocomplete endpoint as JSON.
+ *
+ * @param bool   $include_any  Whether to include the 'All Programs' entry.
+ * @param bool   $include_none Whether to include the 'None' entry.
+ * @param string $sql_where    An optional WHERE clause for the query.
+ *
+ * @return void
+ */
+function get_ajax_programs(bool $include_any = true, bool $include_none = false, string $sql_where = ''): void {
 	$return	    = [];
 	$sql_params = [];
 
@@ -2017,7 +2161,24 @@ function get_ajax_programs($include_any = true, $include_none = false, $sql_wher
 	print json_encode($return);
 }
 
-function syslog_form_callback($form_name, $classic_sql, $column_display, $column_id, $callback, $previous_id, $previous_value, $none_entry, $default_value, $class = '', $on_change = '') {
+/**
+ * Draw a program selection control, either a classic list or an autocomplete box.
+ *
+ * @param string     $form_name      The name of the form field.
+ * @param string     $classic_sql    The query for the classic dropdown.
+ * @param string     $column_display The display column of the query.
+ * @param string     $column_id      The id column of the query.
+ * @param string     $callback       The AJAX action for the autocomplete.
+ * @param int|string $previous_id    The previously selected id.
+ * @param string     $previous_value The previously selected value.
+ * @param string     $none_entry     The entry to show when nothing is selected.
+ * @param string     $default_value  The value to show when no previous value exists.
+ * @param string     $class          An extra CSS class.
+ * @param string     $on_change      The JavaScript callback on change.
+ *
+ * @return void
+ */
+function syslog_form_callback(string $form_name, string $classic_sql, string $column_display, string $column_id, string $callback, int|string $previous_id, string $previous_value, string $none_entry, string $default_value, string $class = '', string $on_change = ''): void {
 	if ($previous_value == '') {
 		$previous_value = $default_value;
 	}
@@ -2050,7 +2211,7 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 
 		$form_data = syslog_db_fetch_assoc($classic_sql);
 
-		html_create_list($form_data, $column_display, $column_id, html_escape($previous_id));
+		html_create_list($form_data, $column_display, $column_id, html_escape((string) $previous_id));
 
 		print '</select>';
 	} else {
@@ -2069,7 +2230,7 @@ function syslog_form_callback($form_name, $classic_sql, $column_display, $column
 		}
 
 		print '</span>';
-		print "<input type='hidden' id='" . $form_name . "' name='" . $form_name . "' value='" . html_escape($previous_id) . "'>";
+		print "<input type='hidden' id='" . $form_name . "' name='" . $form_name . "' value='" . html_escape((string) $previous_id) . "'>";
 		?>
 		<style type='text/css'>
 		.syslogMessage {

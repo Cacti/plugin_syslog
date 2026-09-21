@@ -24,7 +24,7 @@ class QueryBuilder {
 	 * @param string $json Versioned filter document.
 	 * @param array  $fields Map of logical field names to trusted SQL columns.
 	 *
-	 * @return array{sql:string,params:array}
+	 * @return array{sql:string,params:array<int, string>}
 	 */
 	public static function compile(string $json, array $fields): array {
 		if ($json === '' || strlen($json) > self::MAX_JSON_BYTES) {
@@ -49,6 +49,19 @@ class QueryBuilder {
 		return ['sql' => $sql, 'params' => $params];
 	}
 
+	/**
+	 * Recursively compile a condition list into SQL.
+	 *
+	 * @param mixed $conditions The condition list from the untrusted filter document.
+	 * @param array<string, mixed> $fields Map of logical field names to trusted SQL columns.
+	 * @param array<int, string> $params The bound parameters, accumulated by reference.
+	 * @param int $count The number of conditions compiled so far, passed by reference.
+	 * @param int $depth The current nesting depth.
+	 *
+	 * @return string The compiled SQL fragment.
+	 *
+	 * @throws InvalidArgumentException When the condition list is invalid.
+	 */
 	private static function compileConditions($conditions, array $fields, array &$params, int &$count, int $depth): string {
 		if (!is_array($conditions) || !$conditions || $depth > self::MAX_DEPTH) {
 			throw new InvalidArgumentException($depth > self::MAX_DEPTH ? 'The filter nesting is too deep.' : 'The filter must contain a condition.');

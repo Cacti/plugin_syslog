@@ -81,7 +81,12 @@ switch (get_request_var('action')) {
 		break;
 }
 
-function form_save() {
+/**
+ * Save a Syslog Report rule and redirect back to the edit screen.
+ *
+ * @return void
+ */
+function form_save(): void {
 	if ((isset_request_var('save_component_report')) && (isempty_request_var('add_dq_y'))) {
 		$reportid = api_syslog_report_save(get_filter_request_var('id'), get_nfilter_request_var('name'),
 			get_nfilter_request_var('type'), get_nfilter_request_var('message'),
@@ -98,7 +103,12 @@ function form_save() {
 	}
 }
 
-function form_actions() {
+/**
+ * Display the bulk action confirmation form for the selected Syslog Reports.
+ *
+ * @return void
+ */
+function form_actions(): void {
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 	global $syslogdb_default;
 
@@ -110,14 +120,16 @@ function form_actions() {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 		$drp_action     = get_request_var('drp_action');
 
+		$action_map = [
+			'1' => 'api_syslog_report_remove',
+			'2' => 'api_syslog_report_disable',
+			'3' => 'api_syslog_report_enable'
+		];
+
 		syslog_apply_selected_items_action(
 			$selected_items,
 			$drp_action,
-			[
-				'1' => 'api_syslog_report_remove',
-				'2' => 'api_syslog_report_disable',
-				'3' => 'api_syslog_report_enable'
-			],
+			$action_map,
 			'4',
 			get_nfilter_request_var('selected_items')
 		);
@@ -136,6 +148,7 @@ function form_actions() {
 	// setup some variables
 	$report_array = [];
 	$report_list  = '';
+	$title        = '';
 
 	// loop through each of the clusters selected on the previous page and get more info about them
 	foreach ($_POST as $var => $val) {
@@ -206,7 +219,7 @@ function form_actions() {
 	print "<tr>
 		<td align='right' class='saveRow'>
 			<input type='hidden' name='action' value='actions'>
-			<input type='hidden' name='selected_items' value='" . (isset($report_array) ? serialize($report_array) : '') . "'>
+			<input type='hidden' name='selected_items' value='" . serialize($report_array) . "'>
 			<input type='hidden' name='drp_action' value='" . get_request_var('drp_action') . "'>
 			$save_html
 		</td>
@@ -219,7 +232,12 @@ function form_actions() {
 	bottom_footer();
 }
 
-function report_export() {
+/**
+ * Export the selected Syslog Report rules as an XML download.
+ *
+ * @return void
+ */
+function report_export(): void {
 	// if we are to save this form, instead of display it
 	if (isset_request_var('selected_items')) {
 		$selected_items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
@@ -249,8 +267,25 @@ function report_export() {
 	}
 }
 
-function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepart, $body,
-	$email, $notes, $enabled, $notify = 0) {
+/**
+ * Validate and save a Syslog Report rule.
+ *
+ * @param int|string $id        The id of the Report rule, '' for a new rule.
+ * @param string $name     The name of the Report.
+ * @param string $type     The match type of the Report.
+ * @param string $message  The match string of the Report.
+ * @param int    $timespan The frequency of the Report.
+ * @param int    $timepart The time of day the Report is sent.
+ * @param string $body     The email body text of the Report.
+ * @param string $email    The comma delimited email addresses of the Report.
+ * @param string $notes    The notes of the Report.
+ * @param string $enabled  'on' when the Report is enabled, otherwise ''.
+ * @param int|string $notify   The notification list id of the Report.
+ *
+ * @return int|false The id of the saved Report, or false when the save failed.
+ */
+function api_syslog_report_save(int|string $id, string $name, string $type, string $message, int $timespan, int $timepart, string $body,
+	string $email, string $notes, string $enabled, int|string $notify = 0): int|false {
 	global $config, $syslogdb_default;
 
 	// get the username
@@ -285,12 +320,15 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 		$sql = syslog_get_alert_sql($save, 100);
 
 		if (cacti_sizeof($sql)) {
-			$db_sql     = str_replace('%', '|||||', $sql['sql']);
+			$sql_sql    = is_string($sql['sql']) ? $sql['sql'] : '';
+			$sql_params = is_array($sql['params']) ? $sql['params'] : [];
+
+			$db_sql     = str_replace('%', '|||||', $sql_sql);
 			$db_sql     = str_replace('?', '%s', $db_sql);
-			$approx_sql = vsprintf($db_sql, $sql['params']);
+			$approx_sql = vsprintf($db_sql, $sql_params);
 			$approx_sql = str_replace('|||||', '%', $approx_sql);
 
-			$results = syslog_db_fetch_assoc_prepared($sql['sql'], $sql['params'], false);
+			$results = syslog_db_fetch_assoc_prepared($sql_sql, $sql_params, false);
 
 			if ($results === false) {
 				raise_message('sql_error', __('The SQL Syntax Entered is invalid.  Please correct your SQL.<br>', 'syslog'), MESSAGE_LEVEL_ERROR);
@@ -298,7 +336,13 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 
 				return false;
 			} else {
-				$id = syslog_sync_save($save, 'syslog_reports', 'id');
+				// syslog_sync_save() does not return the saved id, so look it up
+				syslog_sync_save($save, 'syslog_reports', 'id');
+
+				$id = (int) syslog_db_fetch_cell_prepared("SELECT id
+					FROM `$syslogdb_default`.`syslog_reports`
+					WHERE hash = ?",
+					[$save['hash']]);
 
 				return $id;
 			}
@@ -312,22 +356,53 @@ function api_syslog_report_save($id, $name, $type, $message, $timespan, $timepar
 	return false;
 }
 
-function api_syslog_report_remove($id) {
+/**
+ * Delete a Syslog Report rule by id.
+ *
+ * @param int $id The id of the Report rule to delete.
+ *
+ * @return void
+ */
+function api_syslog_report_remove(int $id): void {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_reports` WHERE id = ?", [$id]);
 }
 
-function api_syslog_report_disable($id) {
+/**
+ * Disable a Syslog Report rule by id.
+ *
+ * @param int $id The id of the Report rule to disable.
+ *
+ * @return void
+ */
+function api_syslog_report_disable(int $id): void {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_reports` SET enabled = '' WHERE id = ?", [$id]);
 }
 
-function api_syslog_report_enable($id) {
+/**
+ * Enable a Syslog Report rule by id.
+ *
+ * @param int $id The id of the Report rule to enable.
+ *
+ * @return void
+ */
+function api_syslog_report_enable(int $id): void {
 	global $syslogdb_default;
 	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_reports` SET enabled = 'on' WHERE id = ?", [$id]);
 }
 
-function syslog_get_report_records(&$sql_where, &$sql_params, $rows) {
+/**
+ * Fetch the Syslog Report rules matching the current filter, appending the
+ * generated where clause and parameters to the given references.
+ *
+ * @param string              $sql_where The where clause, passed by reference.
+ * @param array<int, mixed>   $sql_params The prepared SQL parameters, passed by reference.
+ * @param int                 $rows      The number of rows to fetch.
+ *
+ * @return array<int, array<string, mixed>> The matching Report rules.
+ */
+function syslog_get_report_records(&$sql_where, &$sql_params, int $rows): array {
 	global $syslogdb_default;
 
 	if (get_request_var('filter') != '') {
@@ -360,7 +435,12 @@ function syslog_get_report_records(&$sql_where, &$sql_params, $rows) {
 	return syslog_db_fetch_assoc_prepared($query_string, $sql_params);
 }
 
-function syslog_action_edit() {
+/**
+ * Display the Syslog Report rule edit form.
+ *
+ * @return void
+ */
+function syslog_action_edit(): void {
 	global $message_types, $syslog_freqs, $syslog_times;
 	global $syslogdb_default;
 
@@ -426,14 +506,6 @@ function syslog_action_edit() {
 			'value'         => '|arg1:type|',
 			'array'         => $message_types,
 			'default'       => 'matchesc'
-		],
-		'message' => [
-			'method'        => 'textbox',
-			'friendly_name' => __('Message Match String', 'syslog'),
-			'description'   => __('The matching component of the syslog message.', 'syslog'),
-			'value'         => '|arg1:message|',
-			'default'       => '',
-			'max_length'    => '255'
 		],
 		'timespan' => [
 			'method'        => 'drop_array',
@@ -556,7 +628,12 @@ function syslog_action_edit() {
 	<?php
 }
 
-function syslog_filter() {
+/**
+ * Display the Syslog Report filter row.
+ *
+ * @return void
+ */
+function syslog_reports_filter(): void {
 	global $config, $item_rows;
 	?>
 	<tr class='even'>
@@ -618,7 +695,12 @@ function syslog_filter() {
 	<?php
 }
 
-function syslog_report() {
+/**
+ * Display the Syslog Report list.
+ *
+ * @return void
+ */
+function syslog_report(): void {
 	global $syslog_actions, $message_types, $syslog_freqs, $syslog_times, $config;
 	global $syslogdb_default;
 
@@ -670,7 +752,7 @@ function syslog_report() {
 
 	html_start_box(__('Syslog Report Filters', 'syslog'), '100%', '', '3', 'center', $url);
 
-	syslog_filter();
+	syslog_reports_filter();
 
 	html_end_box();
 
@@ -752,7 +834,12 @@ function syslog_report() {
 	}
 }
 
-function import() {
+/**
+ * Display the Syslog Report import form.
+ *
+ * @return void
+ */
+function import(): void {
 	$form_data = [
 		'import_file' => [
 			'friendly_name' => __('Import Report Rule from Local File', 'syslog'),
@@ -789,7 +876,12 @@ function import() {
 	form_save_button('', 'import');
 }
 
-function report_import() {
+/**
+ * Import Syslog Report rules from an uploaded file or pasted XML text.
+ *
+ * @return void
+ */
+function report_import(): void {
 	$xml_data = syslog_get_import_xml_payload('syslog_reports.php?header=false');
 
 	// obtain debug information if it's set
@@ -797,9 +889,9 @@ function report_import() {
 
 	$debug_data = [];
 
-	if (cacti_sizeof($xml_array)) {
+	if (is_array($xml_array) && cacti_sizeof($xml_array)) {
 		foreach ($xml_array as $template => $contents) {
-			$error = false;
+			$tname = '';
 			$save  = [];
 
 			if (cacti_sizeof($contents)) {
@@ -836,14 +928,12 @@ function report_import() {
 				}
 			}
 
-			if (!$error) {
-				$id = sql_save($save, 'syslog_reports');
+			$id = sql_save($save, 'syslog_reports');
 
-				if ($id) {
-					raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
-				} else {
-					raise_message('syslog_info' . $id, __('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
-				}
+			if ($id) {
+				raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
+			} else {
+				raise_message('syslog_info' . $id, __('ERROR: Report Rule \'%s\' %s Failed!', $tname, ($save['id'] > 0 ? __('Update', 'syslog') : __('Import', 'syslog')), 'syslog'), MESSAGE_LEVEL_ERROR);
 			}
 		}
 	}

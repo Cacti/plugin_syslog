@@ -22,6 +22,13 @@
  +-------------------------------------------------------------------------+
 */
 
+/**
+ * Install the Syslog plugin, registering its hooks, realms and database tables.
+ *
+ * @return bool|void True when the install action was queued or completed, false
+ *                   when the Syslog config file has not been created yet, and
+ *                   nothing when the install is already running in the background.
+ */
 function plugin_syslog_install() {
 	global $config, $syslog_upgrade;
 	static $bg_inprocess = false;
@@ -38,6 +45,7 @@ function plugin_syslog_install() {
 
 	syslog_connect();
 
+	/** @var string $syslogdb_default The name of the Syslog database, defined in the Syslog config file. */
 	$syslog_exists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `$syslogdb_default` LIKE 'syslog'"));
 
 	// ================= input validation =================
@@ -74,6 +82,7 @@ function plugin_syslog_install() {
 	} elseif (isset($syslog_install_options) && cacti_sizeof($syslog_install_options)) {
 		// hack for syslog so IBM Spectrum LSF RTM can install syslog without user interaction with preset defaults
 		if (!$bg_inprocess) {
+			/** @var array<string, mixed> $syslog_install_options Optional pre-configured install options, defined in the Syslog config file. */
 			syslog_execute_update($syslog_exists, $syslog_install_options);
 			$bg_inprocess = true;
 		}
@@ -86,7 +95,16 @@ function plugin_syslog_install() {
 	}
 }
 
-function syslog_execute_update($syslog_exists, $options) {
+/**
+ * Perform the requested Syslog install or upgrade action.
+ *
+ * @param int                  $syslog_exists Whether the Syslog table already exists.
+ * @param array<string, mixed> $options       The install options, either from the
+ *                                            request or the Syslog config file.
+ *
+ * @return void
+ */
+function syslog_execute_update(int $syslog_exists, array $options): void {
 	global $config;
 
 	if (isset($options['cancel'])) {
@@ -110,7 +128,12 @@ function syslog_execute_update($syslog_exists, $options) {
 	set_config_option('syslog_retention', $options['days']);
 }
 
-function plugin_syslog_uninstall() {
+/**
+ * Uninstall the Syslog plugin, optionally removing its database tables.
+ *
+ * @return void
+ */
+function plugin_syslog_uninstall(): void {
 	global $config, $syslogdb_default;
 
 	syslog_determine_config();
@@ -153,7 +176,12 @@ function plugin_syslog_uninstall() {
 	}
 }
 
-function plugin_syslog_check_config() {
+/**
+ * Check that the Syslog config file has been created before installing.
+ *
+ * @return bool True when either config file is present, false otherwise.
+ */
+function plugin_syslog_check_config(): bool {
 	// Here we will check to ensure everything is configured
 	if (!file_exists(__DIR__ . '/config_local.php') && !file_exists(__DIR__ . '/config.php')) {
 		raise_message('syslog_info', __('Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing.', 'syslog'), MESSAGE_LEVEL_ERROR);
@@ -168,14 +196,24 @@ function plugin_syslog_check_config() {
 	return true;
 }
 
-function plugin_syslog_upgrade() {
+/**
+ * Upgrade the Syslog plugin to the newest version.
+ *
+ * @return bool Always false, the upgrade is handled by syslog_check_upgrade().
+ */
+function plugin_syslog_upgrade(): bool {
 	// Here we will upgrade to the newest version
 	syslog_check_upgrade();
 
 	return false;
 }
 
-function syslog_connect() {
+/**
+ * Connect to the Syslog database, either the local Cacti database or a remote one.
+ *
+ * @return bool True when a Syslog database connection is available, false otherwise.
+ */
+function syslog_connect(): bool {
 	global $config, $syslog_cnn, $syslogdb_default, $local_db_cnn_id, $remote_db_cnn_id, $syslog_incoming_config;
 
 	syslog_determine_config();
@@ -193,6 +231,7 @@ function syslog_connect() {
 
 	// Connect to the Syslog Database
 	if (empty($syslog_cnn)) {
+		/** @var bool $use_cacti_db Whether the Syslog tables live in the local Cacti database, defined in the Syslog config file. */
 		if ($config['poller_id'] == 1) {
 			if ($use_cacti_db == true) {
 				$syslog_cnn = $local_db_cnn_id;
@@ -241,6 +280,12 @@ function syslog_connect() {
 				$syslogdb_ssl_ca = '';
 			}
 
+			/**
+			 * @var string $syslogdb_hostname The hostname of the Syslog database server.
+			 * @var string $syslogdb_username The username for the Syslog database server.
+			 * @var string $syslogdb_password The password for the Syslog database server.
+			 * @var string $syslogdb_type     The database type of the Syslog database server.
+			 */
 			$syslog_cnn = syslog_db_connect_real($syslogdb_hostname, $syslogdb_username, $syslogdb_password, $syslogdb_default, $syslogdb_type, $syslogdb_port, $syslogdb_retries, $syslogdb_ssl, $syslogdb_ssl_key, $syslogdb_ssl_cert, $syslogdb_ssl_ca);
 
 			if ($syslog_cnn == false) {
@@ -263,20 +308,27 @@ function syslog_connect() {
 	return $connected;
 }
 
-/** Repair old installs before Cacti's auth.php checks the requested page. */
-function syslog_upgrade_saved_search_realm() {
+/**
+ * Repair old installs before Cacti's auth.php checks the requested page.
+ *
+ * @return void
+ */
+function syslog_upgrade_saved_search_realm(): void {
 	global $user_auth_realm_filenames;
 
 	$admin = null;
 	$template = null;
 	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
-	foreach ($realms as $realm) {
-		$files = explode(',', $realm['file']);
-		if (in_array('syslog_alerts.php', $files, true)) {
-			$admin = $realm;
-		}
-		if (in_array('syslog_saved_searches.php', $files, true)) {
-			$template = $realm;
+
+	if (is_array($realms)) {
+		foreach ($realms as $realm) {
+			$files = explode(',', $realm['file']);
+			if (in_array('syslog_alerts.php', $files, true)) {
+				$admin = $realm;
+			}
+			if (in_array('syslog_saved_searches.php', $files, true)) {
+				$template = $realm;
+			}
 		}
 	}
 
@@ -302,36 +354,48 @@ function syslog_upgrade_saved_search_realm() {
 	}
 }
 
-/** Give pre-existing installs the Dashboards console page inside the admin realm. */
-function syslog_upgrade_dashboard_realm() {
+/**
+ * Give pre-existing installs the Dashboards console page inside the admin realm.
+ *
+ * @return void
+ */
+function syslog_upgrade_dashboard_realm(): void {
 	global $user_auth_realm_filenames;
 
 	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
-	foreach ($realms as $realm) {
-		$files = explode(',', $realm['file']);
-		if (!in_array('syslog_alerts.php', $files, true)) {
-			continue;
-		}
 
-		if (in_array('syslog_dashboards.php', $files, true)) {
+	if (is_array($realms)) {
+		foreach ($realms as $realm) {
+			$files = explode(',', $realm['file']);
+			if (!in_array('syslog_alerts.php', $files, true)) {
+				continue;
+			}
+
+			if (in_array('syslog_dashboards.php', $files, true)) {
+				return;
+			}
+
+			// Keep the realm ID: existing user and group grants must not change.
+			if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
+				[$realm['file'] . ',syslog_dashboards.php', $realm['id'], 'syslog'])) {
+				return;
+			}
+			api_plugin_replicate_config();
+
+			// Update the already-loaded map so the repair works on this request too.
+			$user_auth_realm_filenames['syslog_dashboards.php'] = (int) $realm['id'] + 100;
+
 			return;
 		}
-
-		// Keep the realm ID: existing user and group grants must not change.
-		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
-			[$realm['file'] . ',syslog_dashboards.php', $realm['id'], 'syslog'])) {
-			return;
-		}
-		api_plugin_replicate_config();
-
-		// Update the already-loaded map so the repair works on this request too.
-		$user_auth_realm_filenames['syslog_dashboards.php'] = (int) $realm['id'] + 100;
-
-		return;
 	}
 }
 
-function syslog_check_upgrade() {
+/**
+ * Upgrade the Syslog database schema for legacy installs.
+ *
+ * @return void
+ */
+function syslog_check_upgrade(): void {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
@@ -693,6 +757,16 @@ function syslog_check_upgrade() {
 	}
 }
 
+/**
+ * Create the partitioned Syslog table, including past and future partitions.
+ *
+ * @param string           $engine     The storage engine to create the table with.
+ * @param float|int|string $days       The number of days of retention to provision.
+ * @param int|string|false $ahead_days The number of days of partitions to create
+ *                                     ahead of today, or false when unconfigured.
+ *
+ * @return void
+ */
 function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3) {
 	global $config, $syslogdb_default, $syslog_levels;
 
@@ -776,7 +850,16 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 	syslog_db_execute($sql . $parts);
 }
 
-function syslog_setup_table_new($options) {
+/**
+ * Create the Syslog database tables, dropping existing ones on truncate.
+ *
+ * @param array<string, mixed> $options The install options, either from the
+ *                                      request, saved settings, or the Syslog
+ *                                      config file.
+ *
+ * @return void
+ */
+function syslog_setup_table_new(array $options): void {
 	global $config, $settings, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
@@ -1103,6 +1186,15 @@ function syslog_setup_table_new($options) {
 	set_config_option('syslog_install_upgrade_type', 'upgrade');
 }
 
+/**
+ * Replicate the Syslog rules tables to a remote data collector.
+ *
+ * @param array<string, mixed> $data The replication data provided by Cacti,
+ *                                   containing the remote poller id, the remote
+ *                                   connection id and the replication class.
+ *
+ * @return array<string, mixed> The replication data, unmodified.
+ */
 function syslog_replicate_out($data) {
 	syslog_connect();
 
@@ -1126,7 +1218,12 @@ function syslog_replicate_out($data) {
 	return $data;
 }
 
-function syslog_replicate_in() {
+/**
+ * Pull the Syslog rules tables from the main Cacti database.
+ *
+ * @return void
+ */
+function syslog_replicate_in(): void {
 	syslog_connect();
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -1141,6 +1238,14 @@ function syslog_replicate_in() {
 	}
 }
 
+/**
+ * Replace the data in the local table with the replicated data.
+ *
+ * @param string                           $table The name of the table to replace.
+ * @param array<int, array<string, mixed>> $data  The replicated rows, passed by reference.
+ *
+ * @return void
+ */
 function syslog_replace_data($table, &$data) {
 	if (cacti_sizeof($data)) {
 		$sqlData    = [];
@@ -1150,10 +1255,10 @@ function syslog_replace_data($table, &$data) {
 
 		$create = db_fetch_row('SHOW CREATE TABLE ' . $table);
 
-		if (isset($create["CREATE TABLE `$table`"]) || isset($create['Create Table'])) {
+		if (is_array($create)) {
 			if (isset($create["CREATE TABLE `$table`"])) {
 				$create_sql = $create["CREATE TABLE `$table`"];
-			} else {
+			} elseif (isset($create['Create Table'])) {
 				$create_sql = $create['Create Table'];
 			}
 		}
@@ -1195,18 +1300,38 @@ function syslog_replace_data($table, &$data) {
 	}
 }
 
-function plugin_syslog_version() {
+/**
+ * Return the version information for the Syslog plugin.
+ *
+ * @return array<string, mixed> The 'info' section of the plugin INFO file, or an
+ *                              empty array when the file cannot be parsed.
+ */
+function plugin_syslog_version(): array {
 	global $config;
 	$info = parse_ini_file($config['base_path'] . '/plugins/syslog/INFO', true);
 
-	return $info['info'];
+	if (is_array($info) && isset($info['info']) && is_array($info['info'])) {
+		return $info['info'];
+	}
+
+	return [];
 }
 
-function syslog_check_dependencies() {
+/**
+ * Check that the Syslog plugin dependencies are met.
+ *
+ * @return bool Always true, the Syslog plugin has no dependencies.
+ */
+function syslog_check_dependencies(): bool {
 	return true;
 }
 
-function syslog_poller_bottom() {
+/**
+ * Poller bottom hook, launches the Syslog message processing process.
+ *
+ * @return void
+ */
+function syslog_poller_bottom(): void {
 	global $config;
 
 	if (syslog_config_safe()) {
@@ -1216,7 +1341,7 @@ function syslog_poller_bottom() {
 		syslog_connect();
 		syslog_status_set('last_polling_time', time());
 
-		$command_string = read_config_option('path_php_binary');
+		$command_string = (string) read_config_option('path_php_binary');
 		$extra_args     = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
 		exec_background($command_string, $extra_args);
 	} else {
@@ -1224,7 +1349,14 @@ function syslog_poller_bottom() {
 	}
 }
 
-function syslog_install_advisor($syslog_exists) {
+/**
+ * Display the install/upgrade advisor form.
+ *
+ * @param int $syslog_exists Whether the Syslog table already exists.
+ *
+ * @return void
+ */
+function syslog_install_advisor(int $syslog_exists): void {
 	global $config, $syslog_retentions;
 
 	top_header();
@@ -1338,7 +1470,12 @@ function syslog_install_advisor($syslog_exists) {
 	exit;
 }
 
-function syslog_uninstall_advisor() {
+/**
+ * Display the uninstall advisor form.
+ *
+ * @return void
+ */
+function syslog_uninstall_advisor(): void {
 	global $config, $syslogdb_default;
 
 	syslog_connect();
@@ -1390,7 +1527,16 @@ function syslog_uninstall_advisor() {
 	exit;
 }
 
-function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
+/**
+ * Display the confirm and cancel buttons for the install/uninstall forms.
+ *
+ * @param string $action        The action being confirmed, either 'install' or 'uninstall'.
+ * @param string $cancel_url    The URL to load when the action is cancelled.
+ * @param int    $syslog_exists Whether the Syslog table already exists.
+ *
+ * @return void
+ */
+function syslog_confirm_button(string $action, string $cancel_url, int $syslog_exists): void {
 	if ($action == 'install') {
 		if ($syslog_exists) {
 			$value = __('Upgrade', 'syslog');
@@ -1439,7 +1585,12 @@ function syslog_confirm_button($action, $cancel_url, $syslog_exists) {
 	<?php
 }
 
-function syslog_config_settings() {
+/**
+ * Register the Syslog settings in the Cacti settings table.
+ *
+ * @return void
+ */
+function syslog_config_settings(): void {
 	global $config, $tabs, $formats, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
 
 	include_once($config['base_path'] . '/lib/reports.php');
@@ -1607,11 +1758,23 @@ function syslog_config_settings() {
 	}
 }
 
+/**
+ * Return the refresh value for the top graph tabs.
+ *
+ * @param mixed $refresh The refresh interval provided by Cacti or a prior plugin hook.
+ *
+ * @return mixed The refresh interval, unmodified.
+ */
 function syslog_top_graph_refresh($refresh) {
 	return $refresh;
 }
 
-function syslog_show_tab() {
+/**
+ * Draw the Syslog tab in the top header.
+ *
+ * @return void
+ */
+function syslog_show_tab(): void {
 	global $config;
 
 	if (!syslog_config_safe()) {
@@ -1627,7 +1790,12 @@ function syslog_show_tab() {
 	}
 }
 
-function syslog_determine_config() {
+/**
+ * Determine which Syslog config file is present, and if it is for a remote database.
+ *
+ * @return void
+ */
+function syslog_determine_config(): void {
 	global $config;
 
 	// Setup the syslog database settings path
@@ -1642,7 +1810,12 @@ function syslog_determine_config() {
 	}
 }
 
-function syslog_config_safe() {
+/**
+ * Check that either Syslog config file exists and is readable.
+ *
+ * @return bool True when a Syslog config file is available, false otherwise.
+ */
+function syslog_config_safe(): bool {
 	global $config;
 
 	$files = [
@@ -1659,7 +1832,12 @@ function syslog_config_safe() {
 	return false;
 }
 
-function syslog_config_arrays() {
+/**
+ * Setup the Syslog specific global arrays used throughout the plugin.
+ *
+ * @return void
+ */
+function syslog_config_arrays(): void {
 	global $syslog_actions, $config, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
@@ -1839,6 +2017,13 @@ function syslog_config_arrays() {
 	}
 }
 
+/**
+ * Add the Syslog pages to the Cacti navigation structure.
+ *
+ * @param array<string, array<string, mixed>> $nav The navigation array provided by Cacti.
+ *
+ * @return array<string, array<string, mixed>> The navigation array with the Syslog pages added.
+ */
 function syslog_draw_navigation_text($nav) {
 	global $config;
 
@@ -1863,7 +2048,12 @@ function syslog_draw_navigation_text($nav) {
 	return $nav;
 }
 
-function syslog_config_insert() {
+/**
+ * Upgrade the Syslog database when the plugin config is loaded.
+ *
+ * @return void
+ */
+function syslog_config_insert(): void {
 	if (!syslog_config_safe()) {
 		return;
 	}
@@ -1873,7 +2063,14 @@ function syslog_config_insert() {
 	syslog_check_upgrade();
 }
 
-function syslog_graph_buttons($graph_elements = []) {
+/**
+ * Display a link to the Syslog page filtered for the graphed device.
+ *
+ * @param array<int, array<string, mixed>> $graph_elements The graph elements provided by Cacti.
+ *
+ * @return void
+ */
+function syslog_graph_buttons($graph_elements = []): void {
 	global $config, $timespan, $graph_timeshifts;
 
 	if (!syslog_config_safe()) {
@@ -1912,7 +2109,7 @@ function syslog_graph_buttons($graph_elements = []) {
 				FROM host WHERE id = ?',
 				[$host_id]);
 
-			if (cacti_sizeof($host)) {
+			if (is_array($host) && cacti_sizeof($host)) {
 				if (!is_ipaddress($host['description'])) {
 					$parts     = explode('.', $host['description']);
 
@@ -1953,6 +2150,14 @@ function syslog_graph_buttons($graph_elements = []) {
 	}
 }
 
+/**
+ * Handle the Syslog utilities actions.
+ *
+ * @param string $action The action requested from the utilities page.
+ *
+ * @return string|void The action, unmodified when it is not a Syslog action, or
+ *                     nothing when the Syslog config file is not available.
+ */
 function syslog_utilities_action($action) {
 	global $config, $refresh;
 
@@ -2016,7 +2221,12 @@ function syslog_utilities_action($action) {
 	return $action;
 }
 
-function syslog_utilities_list() {
+/**
+ * Add the Syslog purge utility to the utilities page.
+ *
+ * @return void
+ */
+function syslog_utilities_list(): void {
 	global $config;
 
 	if (!syslog_config_safe()) {
