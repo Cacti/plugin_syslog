@@ -29,63 +29,113 @@
  * same validation and safety guarantees.
  */
 
-/** Allowlisted log sources for a dashboard panel. */
-function syslog_dashboard_sources() {
+/**
+ * Allowlisted log sources for a dashboard panel.
+ *
+ * @return array<int, string> Allowed source names.
+ */
+function syslog_dashboard_sources(): array {
 	return ['syslog', 'alerts'];
 }
 
-/** Allowlisted panel kinds. */
-function syslog_dashboard_kinds() {
+/**
+ * Allowlisted panel kinds.
+ *
+ * @return array<int, string> Allowed panel kinds.
+ */
+function syslog_dashboard_kinds(): array {
 	return ['timeseries', 'breakdown'];
 }
 
-/** Allowlisted chart types per panel kind. */
-function syslog_dashboard_charts($kind) {
+/**
+ * Allowlisted chart types per panel kind.
+ *
+ * @param string $kind A syslog_dashboard_kinds() value.
+ *
+ * @return array<int, string> Allowed chart types for the kind.
+ */
+function syslog_dashboard_charts(string $kind): array {
 	return $kind === 'breakdown' ? ['donut'] : ['line', 'area', 'bar'];
 }
 
-/** Allowlisted breakdown dimensions. */
-function syslog_dashboard_fields() {
+/**
+ * Allowlisted breakdown dimensions.
+ *
+ * @return array<int, string> Allowed breakdown dimensions.
+ */
+function syslog_dashboard_fields(): array {
 	return ['host', 'program', 'facility', 'priority'];
 }
 
-/** Allowlisted bucket intervals; 'dashboard'/'auto' are resolved at render time. */
-function syslog_dashboard_intervals() {
+/**
+ * Allowlisted bucket intervals; 'dashboard'/'auto' are resolved at render time.
+ *
+ * @return array<int, string> Allowed bucket intervals.
+ */
+function syslog_dashboard_intervals(): array {
 	return ['dashboard', 'auto', 'minute', '10min', 'hour', 'day'];
 }
 
-/** Allowlisted panel timespans; 'dashboard' follows the shared time picker. */
-function syslog_dashboard_timespans() {
+/**
+ * Allowlisted panel timespans; 'dashboard' follows the shared time picker.
+ *
+ * @return array<int, string> Allowed timespan presets.
+ */
+function syslog_dashboard_timespans(): array {
 	return ['dashboard', '3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'];
 }
 
-/** Allowlisted record-type settings for the System Logs source. */
-function syslog_dashboard_removals() {
+/**
+ * Allowlisted record-type settings for the System Logs source.
+ *
+ * @return array<int, string> Allowed record-type settings.
+ */
+function syslog_dashboard_removals(): array {
 	return ['1', '-1', '2'];
 }
 
-/** Server-side cap on the per-panel top-N. */
-function syslog_dashboard_top_n_cap() {
+/**
+ * Server-side cap on the per-panel top-N.
+ *
+ * @return int Maximum top-N.
+ */
+function syslog_dashboard_top_n_cap(): int {
 	return 50;
 }
 
-/** Maximum grid columns a panel may span. */
-function syslog_dashboard_width_cap() {
+/**
+ * Maximum grid columns a panel may span.
+ *
+ * @return int Maximum panel width.
+ */
+function syslog_dashboard_width_cap(): int {
 	return 3;
 }
 
-/** Minimum chart height in pixels; 0 follows the default. */
-function syslog_dashboard_height_min() {
+/**
+ * Minimum chart height in pixels; 0 follows the default.
+ *
+ * @return int Minimum chart height.
+ */
+function syslog_dashboard_height_min(): int {
 	return 140;
 }
 
-/** Maximum chart height in pixels. */
-function syslog_dashboard_height_cap() {
+/**
+ * Maximum chart height in pixels.
+ *
+ * @return int Maximum chart height.
+ */
+function syslog_dashboard_height_cap(): int {
 	return 1200;
 }
 
-/** Server-side cap on rendered buckets per timeseries. */
-function syslog_dashboard_bucket_cap() {
+/**
+ * Server-side cap on rendered buckets per timeseries.
+ *
+ * @return int Maximum bucket count.
+ */
+function syslog_dashboard_bucket_cap(): int {
 	return 720;
 }
 
@@ -96,7 +146,7 @@ function syslog_dashboard_bucket_cap() {
  *
  * @return int Window length in seconds, or 86400 for unknown values.
  */
-function syslog_dashboard_timespan_seconds($preset) {
+function syslog_dashboard_timespan_seconds(string $preset): int {
 	$months = ['3months' => 3, '6months' => 6];
 
 	if (isset($months[$preset])) {
@@ -120,7 +170,7 @@ function syslog_dashboard_timespan_seconds($preset) {
  *
  * @return int Bucket size in seconds.
  */
-function syslog_dashboard_bucket_seconds($seconds, $interval) {
+function syslog_dashboard_bucket_seconds(int $seconds, string $interval): int {
 	$explicit = ['minute' => 60, '10min' => 600, 'hour' => 3600, 'day' => 86400];
 
 	if (isset($explicit[$interval])) {
@@ -162,7 +212,7 @@ function syslog_dashboard_bucket_seconds($seconds, $interval) {
  *
  * @return string Human-readable local time label.
  */
-function syslog_dashboard_bucket_label($epoch, $bucket) {
+function syslog_dashboard_bucket_label(int $epoch, int $bucket): string {
 	return date($bucket >= 86400 ? 'Y-m-d' : 'Y-m-d H:i', (int) $epoch);
 }
 
@@ -170,7 +220,7 @@ function syslog_dashboard_bucket_label($epoch, $bucket) {
  * Strip characters that would be unsafe inside a chart label rendered
  * through billboard tooltips (which build HTML client side).
  *
- * @param string $label Raw label from the database.
+ * @param int|string $label Raw label from the database.
  *
  * @return string Sanitized label.
  */
@@ -200,13 +250,14 @@ function syslog_dashboard_label_safe($label) {
 /**
  * Resolve the lookup table and join columns for a breakdown dimension.
  *
- * @param string $field A syslog_dashboard_fields() value.
+ * @param string $field  A syslog_dashboard_fields() value.
  * @param string $source Panel source ('syslog' or 'alerts').
  *
- * @return array|null [table, id_column, name_column] or null when the
- *                    dimension reads the log row directly.
+ * @return array<int, string>|null [table, id_column, name_column], or null
+ *                                   when the dimension reads the log row
+ *                                   directly.
  */
-function syslog_dashboard_breakdown_lookup($field, $source) {
+function syslog_dashboard_breakdown_lookup(string $field, string $source): ?array {
 	if ($source === 'alerts' && $field === 'host') {
 		return null;
 	}
@@ -229,15 +280,15 @@ function syslog_dashboard_breakdown_lookup($field, $source) {
  * The log table is aliased `syslog` so logical search predicates bind
  * exactly as they do in the log viewer queries.
  *
- * @param string $source   'syslog' or 'alerts'.
- * @param int    $removal  Record type for the syslog source (-1, 1, 2).
+ * @param string $source    'syslog' or 'alerts'.
+ * @param string $removal   Record type for the syslog source ('1', '-1', '2').
  * @param string $predicate Validated SQL WHERE predicate (without WHERE).
- * @param int    $bucket   Bucket size in seconds.
- * @param int    $start    Window start as a Unix timestamp.
+ * @param int    $bucket    Bucket size in seconds.
+ * @param int    $start     Window start as a Unix timestamp.
  *
  * @return string The complete SQL statement.
  */
-function syslog_dashboard_timeseries_sql($source, $removal, $predicate, $bucket, $start) {
+function syslog_dashboard_timeseries_sql(string $source, string $removal, string $predicate, int $bucket, int $start): string {
 	global $syslogdb_default;
 
 	$select = 'FLOOR(UNIX_TIMESTAMP(syslog.logtime) / ' . (int) $bucket . ') * ' . (int) $bucket . ' AS bucket, ';
@@ -277,15 +328,15 @@ function syslog_dashboard_timeseries_sql($source, $removal, $predicate, $bucket,
 /**
  * Build the SQL that aggregates a breakdown panel.
  *
- * @param string $source   'syslog' or 'alerts'.
+ * @param string $source    'syslog' or 'alerts'.
  * @param string $field     A syslog_dashboard_fields() value.
- * @param int    $removal  Record type for the syslog source (-1, 1, 2).
+ * @param string $removal   Record type for the syslog source ('1', '-1', '2').
  * @param string $predicate Validated SQL WHERE predicate (without WHERE).
- * @param int    $start    Window start as a Unix timestamp.
+ * @param int    $start     Window start as a Unix timestamp.
  *
  * @return string The complete SQL statement.
  */
-function syslog_dashboard_breakdown_sql($source, $field, $removal, $predicate, $start) {
+function syslog_dashboard_breakdown_sql(string $source, string $field, string $removal, string $predicate, int $start): string {
 	global $syslogdb_default;
 
 	$lookup = syslog_dashboard_breakdown_lookup($field, $source);
@@ -329,11 +380,16 @@ function syslog_dashboard_breakdown_sql($source, $field, $removal, $predicate, $
  * Turn one dashboard panel row into a validated, render-ready definition.
  * Returns an error string on the first invalid field.
  *
- * @param array $panel Raw panel row from the database.
+ * @param array<string, mixed> $panel Raw panel row from the database.
  *
- * @return array|string Validated panel or a translated error message.
+ * @return array{source: string, kind: string, chart: string, field: string,
+ *               interval: string, timespan: string, removal: string,
+ *               top_n: int, width: int, height: int}|string Validated panel
+ *                                                          settings, or a
+ *                                                          translated error
+ *                                                          message.
  */
-function syslog_dashboard_panel_settings($panel) {
+function syslog_dashboard_panel_settings(array $panel) {
 	$source = (string) ($panel['source'] ?? '');
 
 	if (!in_array($source, syslog_dashboard_sources(), true)) {
@@ -427,9 +483,10 @@ function syslog_dashboard_panel_settings($panel) {
  *
  * @param int $panel_id Panel id.
  *
- * @return array|null Panel row joined with dashboard ownership, or null.
+ * @return array<string, mixed>|null Panel row joined with dashboard ownership,
+ *                                    or null.
  */
-function syslog_dashboard_load_panel($panel_id) {
+function syslog_dashboard_load_panel(int $panel_id): ?array {
 	global $syslogdb_default;
 
 	$panel = syslog_db_fetch_row_prepared("SELECT p.*,
@@ -448,11 +505,12 @@ function syslog_dashboard_load_panel($panel_id) {
  * A panel row as a dashboard-shaped row, so the capability helpers can
  * classify it from the joined columns.
  *
- * @param array $panel Row from syslog_dashboard_load_panel().
+ * @param array<string, mixed> $panel Row from syslog_dashboard_load_panel().
  *
- * @return array|null ['id' => ..., 'user' => ..., 'is_global' => ...], or null.
+ * @return array<string, mixed>|null ['id' => ..., 'user' => ..., 'is_global' => ...],
+ *                                    or null.
  */
-function syslog_dashboard_panel_owner($panel) {
+function syslog_dashboard_panel_owner(?array $panel): ?array {
 	if ($panel === null || !isset($panel['dashboard_user'])) {
 		return null;
 	}
@@ -467,12 +525,15 @@ function syslog_dashboard_panel_owner($panel) {
 /**
  * Produce the chart payload for one panel.
  *
- * @param array $panel Valid panel row (from syslog_dashboard_load_panel()).
- * @param int   $dashboard_timespan Seconds for the shared time picker.
+ * @param array<string, mixed> $panel              Valid panel row (from
+ *                                                 syslog_dashboard_load_panel()).
+ * @param int                  $dashboard_timespan Seconds for the shared time
+ *                                                 picker.
  *
- * @return array Chart payload: labels + series for the client renderer.
+ * @return array<string, mixed> Chart payload: labels + series for the client
+ *                              renderer, or an error payload.
  */
-function syslog_dashboard_panel_data($panel, $dashboard_timespan) {
+function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): array {
 	$settings = syslog_dashboard_panel_settings($panel);
 
 	if (is_string($settings)) {
@@ -583,7 +644,7 @@ function syslog_dashboard_panel_data($panel, $dashboard_timespan) {
 /**
  * JSON endpoint: chart data for one panel.
  *
- * @return string JSON response.
+ * @return string|false JSON response.
  */
 function syslog_dashboard_chart_data() {
 	global $syslogdb_default;
@@ -609,8 +670,11 @@ function syslog_dashboard_chart_data() {
 	return json_encode(syslog_dashboard_panel_data($panel, $dashboard_timespan));
 }
 
-/** Allowlist the shared dashboard timespan request value. */
-function syslog_dashboard_request_timespan() {
+/** Allowlist the shared dashboard timespan request value.
+ *
+ * @return int Resolved timespan in seconds.
+ */
+function syslog_dashboard_request_timespan(): int {
 	$timespan = (string) get_nfilter_request_var('dashboard_timespan');
 
 	if (!in_array($timespan, syslog_dashboard_timespans(), true)) {
@@ -626,9 +690,9 @@ function syslog_dashboard_request_timespan() {
  *
  * @param int $dashboard_id Dashboard id.
  *
- * @return array|null Dashboard row, or null.
+ * @return array<string, mixed>|null Dashboard row, or null.
  */
-function syslog_dashboard_load($dashboard_id) {
+function syslog_dashboard_load(int $dashboard_id): ?array {
 	global $syslogdb_default;
 
 	$dashboard = syslog_db_fetch_row_prepared("SELECT *
@@ -640,13 +704,23 @@ function syslog_dashboard_load($dashboard_id) {
 	return $dashboard === false || $dashboard === null || !cacti_sizeof($dashboard) ? null : $dashboard;
 }
 
-/** Current username, or an empty string outside a session. */
-function syslog_dashboard_username() {
-	return isset($_SESSION['sess_user_id']) ? get_username($_SESSION['sess_user_id']) : '';
+/** Current username, or an empty string outside a session.
+ *
+ * @return string The current username, or '' outside a session.
+ */
+function syslog_dashboard_username(): string {
+	return isset($_SESSION['sess_user_id']) ? (string) get_username($_SESSION['sess_user_id']) : '';
 }
 
-/** May the current user see this dashboard: owned, globally shared, or granted to them or their groups. */
-function syslog_dashboard_can_view($dashboard) {
+/**
+ * May the current user see this dashboard: owned, globally shared, or granted
+ * to them or their groups.
+ *
+ * @param array<string, mixed>|null $dashboard Dashboard row, or null.
+ *
+ * @return bool True if the dashboard is viewable.
+ */
+function syslog_dashboard_can_view(?array $dashboard): bool {
 	if ($dashboard === null) {
 		return false;
 	}
@@ -659,9 +733,16 @@ function syslog_dashboard_can_view($dashboard) {
 	return in_array((int) $dashboard['id'], syslog_shared_item_ids('dashboard'), true);
 }
 
-/** May the current user change this dashboard: owned, or shared and an administrator. */
-function syslog_dashboard_can_edit($dashboard) {
-	if (!syslog_dashboard_can_view($dashboard)) {
+/**
+ * May the current user change this dashboard: owned, or shared and an
+ * administrator.
+ *
+ * @param array<string, mixed>|null $dashboard Dashboard row, or null.
+ *
+ * @return bool True if the dashboard is editable.
+ */
+function syslog_dashboard_can_edit(?array $dashboard): bool {
+	if ($dashboard === null || !syslog_dashboard_can_view($dashboard)) {
 		return false;
 	}
 
@@ -669,8 +750,11 @@ function syslog_dashboard_can_edit($dashboard) {
 		|| ($dashboard['is_global'] === 'on' && syslog_dashboard_admin());
 }
 
-/** Dashboards the current user owns, plus every shared or granted dashboard. */
-function syslog_dashboard_list() {
+/** Dashboards the current user owns, plus every shared or granted dashboard.
+ *
+ * @return array<int, array<string, mixed>> Dashboard rows.
+ */
+function syslog_dashboard_list(): array {
 	global $syslogdb_default;
 
 	$username = syslog_dashboard_username();
@@ -689,8 +773,13 @@ function syslog_dashboard_list() {
 		[$username]);
 }
 
-/** Panels of one dashboard ordered by their position. */
-function syslog_dashboard_panels($dashboard_id) {
+/** Panels of one dashboard ordered by their position.
+ *
+ * @param int $dashboard_id Dashboard id.
+ *
+ * @return array<int, array<string, mixed>> Panel rows ordered by position.
+ */
+function syslog_dashboard_panels(int $dashboard_id): array {
 	global $syslogdb_default;
 
 	return syslog_db_fetch_assoc_prepared("SELECT *
@@ -700,8 +789,13 @@ function syslog_dashboard_panels($dashboard_id) {
 		[$dashboard_id]);
 }
 
-/** Next free position for panels of a dashboard. */
-function syslog_dashboard_next_position($dashboard_id) {
+/** Next free position for panels of a dashboard.
+ *
+ * @param int $dashboard_id Dashboard id.
+ *
+ * @return int The next free 1-based position.
+ */
+function syslog_dashboard_next_position(int $dashboard_id): int {
 	global $syslogdb_default;
 
 	$position = syslog_db_fetch_cell_prepared("SELECT MAX(position) + 1
@@ -716,7 +810,7 @@ function syslog_dashboard_next_position($dashboard_id) {
  * JSON endpoint: create or rename a dashboard (upsert by name), or delete
  * one (with its panels). All actions are scoped to the current user.
  *
- * @return string JSON response.
+ * @return string|false JSON response.
  */
 function syslog_dashboard_save() {
 	global $syslogdb_default;
@@ -799,7 +893,7 @@ function syslog_dashboard_save() {
  * Mirrors saved_search_global(): requires the Share Dashboards permission,
  * and only the owner or an administrator may change a dashboard.
  *
- * @return string JSON response.
+ * @return string|false JSON response.
  */
 function syslog_dashboard_global() {
 	global $syslogdb_default;
@@ -843,7 +937,7 @@ function syslog_dashboard_global() {
  * JSON endpoint: clone a dashboard the current user can see (typically a
  * shared one) into their own list, panels and all.
  *
- * @return string JSON response.
+ * @return string|false JSON response.
  */
 function syslog_dashboard_copy() {
 	global $syslogdb_default;
@@ -861,7 +955,7 @@ function syslog_dashboard_copy() {
 
 	$source = syslog_dashboard_load($id);
 
-	if (!syslog_dashboard_can_view($source)) {
+	if ($source === null || !syslog_dashboard_can_view($source)) {
 		return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 	}
 
@@ -919,7 +1013,7 @@ function syslog_dashboard_copy() {
  * JSON endpoint: create or update a panel, or delete/reposition one.
  * Every write re-verifies dashboard ownership.
  *
- * @return string JSON response.
+ * @return string|false JSON response.
  */
 function syslog_dashboard_panel_save() {
 	global $syslogdb_default;
@@ -1097,11 +1191,11 @@ function syslog_dashboard_panel_save() {
  * Swap a panel with its neighbor in the requested direction and renumber
  * the positions so the order stays gapless.
  *
- * @param array $panel        Loaded panel row.
- * @param int   $dashboard_id Owning dashboard id.
- * @param int   $direction    -1 for up, 1 for down.
+ * @param array<string, mixed> $panel        Loaded panel row.
+ * @param int                  $dashboard_id Owning dashboard id.
+ * @param int                  $direction    -1 for up, 1 for down.
  */
-function syslog_dashboard_panel_move($panel, $dashboard_id, $direction) {
+function syslog_dashboard_panel_move(array $panel, int $dashboard_id, int $direction): void {
 	global $syslogdb_default;
 
 	$panels = syslog_dashboard_panels($dashboard_id);
@@ -1132,11 +1226,11 @@ function syslog_dashboard_panel_move($panel, $dashboard_id, $direction) {
  * Move a panel to an absolute 1-based position (drag-and-drop) and
  * renumber the remaining panels so the order stays gapless.
  *
- * @param array $panel        Loaded panel row.
- * @param int   $dashboard_id Owning dashboard id.
- * @param int   $position     Requested 1-based position.
+ * @param array<string, mixed> $panel        Loaded panel row.
+ * @param int                  $dashboard_id Owning dashboard id.
+ * @param int                  $position     Requested 1-based position.
  */
-function syslog_dashboard_panel_reposition($panel, $dashboard_id, $position) {
+function syslog_dashboard_panel_reposition(array $panel, int $dashboard_id, int $position): void {
 	global $syslogdb_default;
 
 	$panels = syslog_dashboard_panels($dashboard_id);
@@ -1163,8 +1257,10 @@ function syslog_dashboard_panel_reposition($panel, $dashboard_id, $position) {
 /**
  * Render the Dashboard tab: toolbar, grid skeleton, and the client-side
  * bootstrap data (panels and labels) for js/dashboard.js.
+ *
+ * @return void
  */
-function syslog_dashboard() {
+function syslog_dashboard(): void {
 	global $config, $syslogdb_default, $page_refresh_interval;
 
 	$dashboards    = syslog_dashboard_list();
@@ -1316,7 +1412,7 @@ function syslog_dashboard() {
 								];
 
 								foreach ($timespans as $value => $label) {
-									print "<option value='" . html_escape($value) . "'" . ($selected_timespan === $value ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+									print "<option value='" . html_escape((string) $value) . "'" . ((string) $value === $selected_timespan ? ' selected' : '') . '>' . html_escape($label) . '</option>';
 								}
 								?>
 							</select>
@@ -1509,9 +1605,9 @@ function syslog_dashboard() {
 					if (cacti_sizeof($saved_searches)) {
 						foreach ($saved_searches as $saved) {
 							print "<option value='" . (int) $saved['id'] . "'"
-								. " data-tree='" . html_escape(json_encode($saved_trees[(int) $saved['id']] ?? null)) . "'"
-								. " data-removal='" . html_escape($saved['removal']) . "'>"
-								. html_escape($saved['name']) . '</option>';
+								. " data-tree='" . html_escape((string) json_encode($saved_trees[(int) $saved['id']] ?? null)) . "'"
+								. " data-removal='" . html_escape((string) $saved['removal']) . "'>"
+								. html_escape((string) $saved['name']) . '</option>';
 						}
 					}
 					?>
@@ -1520,8 +1616,8 @@ function syslog_dashboard() {
 		</div>
 		<div id='syslog_panel_builder' class='syslogSearchBuilder'
 			data-theme='cacti'
-			data-choices='<?php print html_escape(json_encode($choices)); ?>'
-			data-fields='<?php print html_escape(json_encode($fields)); ?>'
+			data-choices='<?php print html_escape((string) json_encode($choices)); ?>'
+			data-fields='<?php print html_escape((string) json_encode($fields)); ?>'
 			data-message='<?php print __esc('Message', 'syslog'); ?>'
 			data-placeholder='<?php print __esc('Enter message text…', 'syslog'); ?>'
 			data-remove='<?php print __esc('Remove condition', 'syslog'); ?>'

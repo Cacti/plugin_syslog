@@ -85,6 +85,7 @@ $start_timestamp = time();
 
 // Connect to the Syslog Database
 global $syslog_cnn, $cnn_id, $database_default;
+global $database_hostname, $syslogdb_hostname, $syslogdb_default, $syslogdb_username, $syslogdb_password, $syslogdb_type;
 
 if (empty($syslog_cnn)) {
 	if ((strtolower($database_hostname) == strtolower($syslogdb_hostname)) &&
@@ -141,7 +142,12 @@ syslog_status_set('last_end_time', time());
 syslog_status_set('last_record_count', $syslog_removed + $syslog_xferred);
 syslog_status_record_runtime(microtime(true) - $start_time);
 
-function display_version() {
+/**
+ * display_version - displays version information
+ *
+ * @return void
+ */
+function display_version(): void {
 	global $config;
 
 	if (!function_exists('plugin_syslog_version')) {
@@ -152,7 +158,12 @@ function display_version() {
 	print 'Syslog Batch Process, Version ' . $info['version'] . ', ' . COPYRIGHT_YEARS . "\n";
 }
 
-function display_help() {
+/**
+ * display_help - displays help information
+ *
+ * @return void
+ */
+function display_help(): void {
 	display_version();
 
 	print "\nusage: syslog_batch_transfer.php [--debug|-d]\n\n";

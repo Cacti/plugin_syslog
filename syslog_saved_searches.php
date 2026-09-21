@@ -14,6 +14,7 @@ if (!api_plugin_user_realm_auth('syslog_saved_searches.php') && !api_plugin_user
 syslog_connect();
 set_default_action();
 
+global $syslogdb_default;
 $db = $syslogdb_default;
 $error = '';
 $edit = get_filter_request_var('edit', FILTER_VALIDATE_INT);
@@ -120,6 +121,11 @@ $(function() {
 <?php
 bottom_footer();
 
+/**
+ * Render the saved search templates list page.
+ *
+ * @return void
+ */
 function syslog_saved_searches() {
 	global $db, $config;
 
@@ -178,7 +184,7 @@ function syslog_saved_searches() {
 		FROM $db.syslog_saved_searches
 		$sql_where
 		$sql_order
-		$sql_limit", $sql_params);
+		$sql_limit", $sql_params) ?: [];
 
 	$total_rows = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
 		FROM $db.syslog_saved_searches
@@ -195,6 +201,11 @@ function syslog_saved_searches() {
 	syslog_template_list($templates, $nav);
 }
 
+/**
+ * Render the filter row for the saved search templates list.
+ *
+ * @return void
+ */
 function syslog_saved_search_filter() {
 	global $config, $item_rows;
 
@@ -248,6 +259,14 @@ function syslog_saved_search_filter() {
 	<?php
 }
 
+/**
+ * Render the saved search templates table.
+ *
+ * @param list<array<string, mixed>> $rows The template rows to display.
+ * @param string                           $nav  The navigation bar HTML to print above and below the table.
+ *
+ * @return void
+ */
 function syslog_template_list($rows, $nav = '') {
 	$actions = [1 => __('Delete', 'syslog'), 2 => __('Export', 'syslog')];
 
@@ -285,6 +304,11 @@ function syslog_template_list($rows, $nav = '') {
 	form_end(false);
 }
 
+/**
+ * Run the bulk action requested for the selected saved search templates.
+ *
+ * @return void
+ */
 function syslog_template_actions() {
 	global $db;
 
@@ -307,9 +331,9 @@ function syslog_template_actions() {
 			exit;
 		}
 
-		syslog_apply_selected_items_action($selected_items, get_request_var('drp_action'), [
-			'1' => 'api_syslog_saved_search_remove'
-		]);
+		$action_map = ['1' => 'api_syslog_saved_search_remove'];
+
+		syslog_apply_selected_items_action($selected_items, (string) get_request_var('drp_action'), $action_map);
 
 		header('Location: syslog_saved_searches.php');
 
@@ -381,12 +405,24 @@ function syslog_template_actions() {
 	bottom_footer();
 }
 
+/**
+ * Remove a saved search template and its shares.
+ *
+ * @param int $id The id of the saved search template to remove.
+ *
+ * @return void
+ */
 function api_syslog_saved_search_remove($id) {
 	global $db;
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_saved_searches WHERE id = ? AND is_global = 'on'", [$id]);
 	syslog_db_execute_prepared("DELETE FROM $db.syslog_saved_searches_perm WHERE search_id = ?", [$id]);
 }
 
+/**
+ * Export the selected saved search templates as a JSON attachment.
+ *
+ * @return void
+ */
 function syslog_saved_search_export() {
 	global $db;
 
@@ -426,6 +462,11 @@ function syslog_saved_search_export() {
 	}
 }
 
+/**
+ * Import saved search templates from the posted JSON payload.
+ *
+ * @return void
+ */
 function syslog_saved_search_import() {
 	global $db;
 
@@ -507,9 +548,7 @@ function syslog_saved_search_import() {
 				continue;
 			}
 
-			if (is_array($shared_users) || is_array($shared_groups)) {
-				syslog_save_item_shares('saved_search', $id, $shared_users, $shared_groups);
-			}
+			syslog_save_item_shares('saved_search', $id, $shared_users, $shared_groups);
 
 			if ($save['id'] > 0) {
 				$updated++;
@@ -530,6 +569,11 @@ function syslog_saved_search_import() {
 	header('Location: syslog_saved_searches.php');
 }
 
+/**
+ * Display the saved search template import form.
+ *
+ * @return void
+ */
 function syslog_saved_search_import_form() {
 	if (!syslog_allow_edits()) {
 		header('Location: syslog_saved_searches.php');
@@ -572,6 +616,14 @@ function syslog_saved_search_import_form() {
 	form_save_button('', 'import', 'id', false);
 }
 
+/**
+ * Display the saved search template edit form.
+ *
+ * @param array<string, mixed> $row   The template row being edited.
+ * @param string               $error The error message to display, if any.
+ *
+ * @return void
+ */
 function syslog_template_edit($row, $error) {
 	$tree = null;
 	try {
