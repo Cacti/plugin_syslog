@@ -37,3 +37,10 @@ it('builds maintenance schedules from day and time controls', function () {
 	expect(syslog_alert_schedule_is_active($schedule, $wednesdayEarly))->toBeTrue();
 	expect(syslog_alert_maintenance_window('0', '00:00', '06:00'))->toBe('');
 });
+
+it('recognizes one-time date and time maintenance windows', function () {
+	syslog_load_plugin_source('functions.php');
+
+	expect(syslog_alert_datetime_window_is_active('2024-02-14 09:00', '2024-02-14 12:00', strtotime('2024-02-14 10:00')))->toBeTrue();
+	expect(syslog_alert_datetime_window_is_active('2024-02-14 09:00', '2024-02-14 12:00', strtotime('2024-02-14 12:30')))->toBeFalse();
+});

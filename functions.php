@@ -4233,6 +4233,18 @@ function syslog_alert_maintenance_window(string $days, string $start, string $en
 	return "$days $start-$end";
 }
 
+/** Return true while a valid local one-time maintenance interval is active. */
+function syslog_alert_datetime_window_is_active(string $start, string $end, ?int $timestamp = null): bool {
+	if (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $start) || !preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $end)) {
+		return false;
+	}
+	$start_time = strtotime($start);
+	$end_time   = strtotime($end);
+	$timestamp  = $timestamp ?? time();
+
+	return $start_time !== false && $end_time !== false && $end_time > $start_time && $timestamp >= $start_time && $timestamp <= $end_time;
+}
+
 /**
  * Check cooldown and duplicate state for a rule notification.
  *
@@ -4300,12 +4312,15 @@ function syslog_process_alerts($max_seq) {
 			$mode = $alert['maintenance_mode'] ?? 'inherit';
 			if ($mode === 'custom') {
 				$schedule = syslog_alert_maintenance_window((string) ($alert['maintenance_days'] ?? ''), (string) ($alert['maintenance_start'] ?? ''), (string) ($alert['maintenance_end'] ?? ''));
+				$dated_window = syslog_alert_datetime_window_is_active((string) ($alert['maintenance_datetime_start'] ?? ''), (string) ($alert['maintenance_datetime_end'] ?? ''));
 			} elseif ($mode === 'disabled') {
 				$schedule = '';
+				$dated_window = false;
 			} else {
 				$schedule = syslog_alert_maintenance_window((string) read_config_option('syslog_alert_maintenance_days'), (string) read_config_option('syslog_alert_maintenance_start'), (string) read_config_option('syslog_alert_maintenance_end'));
+				$dated_window = syslog_alert_datetime_window_is_active((string) read_config_option('syslog_alert_maintenance_datetime_start'), (string) read_config_option('syslog_alert_maintenance_datetime_end'));
 			}
-			if (syslog_alert_schedule_is_active($schedule)) {
+			if ($dated_window || syslog_alert_schedule_is_active($schedule)) {
 				syslog_debug(sprintf("Alert Rule '%s' is muted by a maintenance window", $alert['name']));
 
 				continue;

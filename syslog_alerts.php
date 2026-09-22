@@ -107,7 +107,8 @@ function form_save(): void {
 			get_nfilter_request_var('notify'), get_nfilter_request_var('body'),
 			get_nfilter_request_var('cooldown_minutes'), get_nfilter_request_var('deduplication_minutes'),
 			get_nfilter_request_var('maintenance_mode'), get_nfilter_request_var('maintenance_days'),
-			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'));
+			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'),
+			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -310,13 +311,16 @@ function alert_export(): void {
  * @param string          $maintenance_days Weekdays selected for the rule maintenance window.
  * @param string          $maintenance_start Local start time for the rule maintenance window.
  * @param string          $maintenance_end Local end time for the rule maintenance window.
+ * @param string          $maintenance_datetime_start Optional one-time local start date/time.
+ * @param string          $maintenance_datetime_end Optional one-time local end date/time.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
 function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $message, $email, $notes,
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
-	$maintenance_start = '00:00', $maintenance_end = '00:00'): false|null {
+	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
+	$maintenance_datetime_end = ''): false|null {
 	global $syslogdb_default;
 
 	// get the username
@@ -345,6 +349,8 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['maintenance_days']  = preg_match('/^[1-7](,[1-7])*$/', $maintenance_days) ? $maintenance_days : '1,2,3,4,5';
 	$save['maintenance_start'] = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_start) ? $maintenance_start : '00:00';
 	$save['maintenance_end']   = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_end) ? $maintenance_end : '00:00';
+	$save['maintenance_datetime_start'] = preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $maintenance_datetime_start) ? $maintenance_datetime_start : '';
+	$save['maintenance_datetime_end']   = preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $maintenance_datetime_end) ? $maintenance_datetime_end : '';
 	$save['open_ticket']  = ($open_ticket == 'on' ? 'on' : '');
 	$save['type']         = $type;
 	$save['severity']     = $severity;
@@ -741,7 +747,7 @@ function syslog_action_edit(): void {
 			'friendly_name' => __('Rule Maintenance Days', 'syslog'),
 			'method'        => 'drop_array',
 			'description'   => __('Days for this rule timeframe, when Use rule timeframe is selected.', 'syslog'),
-			'array'         => ['1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'), '1,2,3,4,5,6,7' => __('Every day', 'syslog')],
+			'array'         => syslog_alert_maintenance_day_options(),
 			'value'         => '|arg1:maintenance_days|',
 			'default'       => '1,2,3,4,5'
 		],
@@ -760,6 +766,18 @@ function syslog_action_edit(): void {
 			'array'         => syslog_alert_maintenance_time_options(),
 			'value'         => '|arg1:maintenance_end|',
 			'default'       => '00:00'
+		],
+		'maintenance_datetime_start' => [
+			'friendly_name' => __('One-time Rule Maintenance Starts', 'syslog'),
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16',
+			'description'   => __('Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM.', 'syslog'),
+			'value'         => '|arg1:maintenance_datetime_start|', 'default' => ''
+		],
+		'maintenance_datetime_end' => [
+			'friendly_name' => __('One-time Rule Maintenance Ends', 'syslog'),
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16',
+			'description'   => __('Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM.', 'syslog'),
+			'value'         => '|arg1:maintenance_datetime_end|', 'default' => ''
 		],
 		'notes' => [
 			'friendly_name' => __('Notes', 'syslog'),

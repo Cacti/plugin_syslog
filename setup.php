@@ -600,7 +600,9 @@ function syslog_check_upgrade(): void {
 		['maintenance_mode', 'varchar(16)', 'inherit', 'suppression_schedule'],
 		['maintenance_days', 'varchar(32)', '1,2,3,4,5', 'maintenance_mode'],
 		['maintenance_start', 'char(5)', '00:00', 'maintenance_days'],
-		['maintenance_end', 'char(5)', '00:00', 'maintenance_start']
+		['maintenance_end', 'char(5)', '00:00', 'maintenance_start'],
+		['maintenance_datetime_start', 'varchar(16)', '', 'maintenance_end'],
+		['maintenance_datetime_end', 'varchar(16)', '', 'maintenance_datetime_start']
 	] as [$name, $type, $default, $after]) {
 		if (!syslog_db_column_exists('syslog_alert', $name)) {
 			syslog_db_add_column('syslog_alert', [
@@ -1004,6 +1006,8 @@ function syslog_setup_table_new(array $options): void {
 		`maintenance_days` varchar(32) NOT NULL default '1,2,3,4,5',
 		`maintenance_start` char(5) NOT NULL default '00:00',
 		`maintenance_end` char(5) NOT NULL default '00:00',
+		`maintenance_datetime_start` varchar(16) NOT NULL default '',
+		`maintenance_datetime_end` varchar(16) NOT NULL default '',
 		`open_ticket` CHAR(2) default '',
 		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
@@ -1647,6 +1651,17 @@ function syslog_alert_maintenance_time_options(): array {
 	return $options;
 }
 
+function syslog_alert_maintenance_day_options(bool $include_disabled = false): array {
+	$options = [
+		'1' => __('Monday', 'syslog'), '2' => __('Tuesday', 'syslog'), '3' => __('Wednesday', 'syslog'),
+		'4' => __('Thursday', 'syslog'), '5' => __('Friday', 'syslog'), '6' => __('Saturday', 'syslog'), '7' => __('Sunday', 'syslog'),
+		'1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'),
+		'1,2,3,4,5,6,7' => __('Every day', 'syslog')
+	];
+
+	return $include_disabled ? ['0' => __('Disabled', 'syslog')] + $options : $options;
+}
+
 function syslog_config_settings(): void {
 	global $config, $tabs, $formats, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
 
@@ -1840,7 +1855,7 @@ function syslog_config_settings(): void {
 			'friendly_name' => __('Maintenance Window Days', 'syslog'),
 			'description'   => __('Days when all alert notifications are muted during the configured maintenance timeframe.', 'syslog'),
 			'method'        => 'drop_array',
-			'array'         => ['1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'), '1,2,3,4,5,6,7' => __('Every day', 'syslog'), '0' => __('Disabled', 'syslog')],
+			'array'         => syslog_alert_maintenance_day_options(true),
 			'default'       => '0'
 		],
 		'syslog_alert_maintenance_start' => [
@@ -1856,6 +1871,16 @@ function syslog_config_settings(): void {
 			'method'        => 'drop_array',
 			'array'         => syslog_alert_maintenance_time_options(),
 			'default'       => '00:00'
+		],
+		'syslog_alert_maintenance_datetime_start' => [
+			'friendly_name' => __('One-time Maintenance Starts', 'syslog'),
+			'description'   => __('Optional local date and time to start a one-time global maintenance window.', 'syslog'),
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16', 'default' => ''
+		],
+		'syslog_alert_maintenance_datetime_end' => [
+			'friendly_name' => __('One-time Maintenance Ends', 'syslog'),
+			'description'   => __('Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM.', 'syslog'),
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16', 'default' => ''
 		],
 		'syslog_alert_cooldown_minutes' => [
 			'friendly_name' => __('Default Alert Cooldown', 'syslog'),
