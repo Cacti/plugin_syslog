@@ -1675,6 +1675,15 @@ function syslog_config_settings(): void {
 
 	$tabs['syslog'] = __('Syslog', 'syslog');
 
+	// Settings fields are rendered by Cacti's generic textbox control, which
+	// does not accept a CSS class. Register click actions so the core form
+	// renderer attaches the standard Cacti date-time picker to both inputs.
+	if (get_nfilter_request_var('tab') == 'syslog') {
+		$picker = "if (!$(this).hasClass('hasDatepicker')) { $(this).datetimepicker({minuteGrid: 10, stepMinute: 1, showAnim: 'slideDown', numberOfMonths: 1, timeFormat: 'HH:mm', dateFormat: 'yy-mm-dd', showButtonPanel: false}); } $(this).datetimepicker('show')";
+		$_SESSION['form_click_actions']['syslog_alert_maintenance_datetime_start'] = $picker;
+		$_SESSION['form_click_actions']['syslog_alert_maintenance_datetime_end']   = $picker;
+	}
+
 	$temp = [
 		'syslog_header' => [
 			'friendly_name' => __('General Settings', 'syslog'),
