@@ -320,7 +320,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
 	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
-	$maintenance_datetime_end = ''): false|null {
+	$maintenance_datetime_end = '') {
 	global $syslogdb_default;
 
 	// get the username
