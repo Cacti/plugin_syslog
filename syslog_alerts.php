@@ -106,7 +106,8 @@ function form_save(): void {
 			get_nfilter_request_var('repeat_alert'), get_nfilter_request_var('open_ticket'),
 			get_nfilter_request_var('notify'), get_nfilter_request_var('body'),
 			get_nfilter_request_var('cooldown_minutes'), get_nfilter_request_var('deduplication_minutes'),
-			get_nfilter_request_var('suppression_schedule'));
+			get_nfilter_request_var('maintenance_mode'), get_nfilter_request_var('maintenance_days'),
+			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -305,13 +306,17 @@ function alert_export(): void {
  * @param string          $body         The body text for the alert email.
  * @param string|int      $cooldown_minutes Per-rule notification cooldown; 0 inherits the global setting.
  * @param string|int      $deduplication_minutes Per-rule duplicate suppression window; 0 inherits the global setting.
- * @param string          $suppression_schedule Per-rule maintenance schedule; empty inherits the global schedule.
+ * @param string          $maintenance_mode Whether this rule inherits, overrides, or disables maintenance muting.
+ * @param string          $maintenance_days Weekdays selected for the rule maintenance window.
+ * @param string          $maintenance_start Local start time for the rule maintenance window.
+ * @param string          $maintenance_end Local end time for the rule maintenance window.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
 function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $message, $email, $notes,
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
-	$deduplication_minutes = 0, $suppression_schedule = ''): false|null {
+	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
+	$maintenance_start = '00:00', $maintenance_end = '00:00'): false|null {
 	global $syslogdb_default;
 
 	// get the username
@@ -336,7 +341,10 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['repeat_alert'] = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
 	$save['cooldown_minutes'] = max(-1, (int) $cooldown_minutes);
 	$save['deduplication_minutes'] = max(-1, (int) $deduplication_minutes);
-	$save['suppression_schedule'] = form_input_validate(trim($suppression_schedule), 'suppression_schedule', '', true, 3);
+	$save['maintenance_mode']  = in_array($maintenance_mode, ['inherit', 'custom', 'disabled'], true) ? $maintenance_mode : 'inherit';
+	$save['maintenance_days']  = preg_match('/^[1-7](,[1-7])*$/', $maintenance_days) ? $maintenance_days : '1,2,3,4,5';
+	$save['maintenance_start'] = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_start) ? $maintenance_start : '00:00';
+	$save['maintenance_end']   = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_end) ? $maintenance_end : '00:00';
 	$save['open_ticket']  = ($open_ticket == 'on' ? 'on' : '');
 	$save['type']         = $type;
 	$save['severity']     = $severity;
@@ -721,14 +729,37 @@ function syslog_action_edit(): void {
 			'value'         => '|arg1:deduplication_minutes|',
 			'default'       => '-1'
 		],
-		'suppression_schedule' => [
-			'friendly_name' => __('Maintenance Window Override', 'syslog'),
-			'method'        => 'textarea',
-			'textarea_rows' => '3',
-			'textarea_cols' => '70',
-			'description'   => __('Mute this rule during local-time windows. One per line, for example: Mon-Fri 22:00-06:00. Leave empty to use the global schedule; enter off to ignore it.', 'syslog'),
-			'value'         => '|arg1:suppression_schedule|',
-			'default'       => ''
+		'maintenance_mode' => [
+			'friendly_name' => __('Maintenance Window', 'syslog'),
+			'method'        => 'drop_array',
+			'description'   => __('Choose whether this rule uses the global maintenance timeframe or its own timeframe.', 'syslog'),
+			'array'         => ['inherit' => __('Use global timeframe', 'syslog'), 'custom' => __('Use rule timeframe', 'syslog'), 'disabled' => __('Do not mute this rule', 'syslog')],
+			'value'         => '|arg1:maintenance_mode|',
+			'default'       => 'inherit'
+		],
+		'maintenance_days' => [
+			'friendly_name' => __('Rule Maintenance Days', 'syslog'),
+			'method'        => 'drop_array',
+			'description'   => __('Days for this rule timeframe, when Use rule timeframe is selected.', 'syslog'),
+			'array'         => ['1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'), '1,2,3,4,5,6,7' => __('Every day', 'syslog')],
+			'value'         => '|arg1:maintenance_days|',
+			'default'       => '1,2,3,4,5'
+		],
+		'maintenance_start' => [
+			'friendly_name' => __('Rule Maintenance Starts', 'syslog'),
+			'method'        => 'drop_array',
+			'description'   => __('Local start time for this rule timeframe.', 'syslog'),
+			'array'         => syslog_alert_maintenance_time_options(),
+			'value'         => '|arg1:maintenance_start|',
+			'default'       => '00:00'
+		],
+		'maintenance_end' => [
+			'friendly_name' => __('Rule Maintenance Ends', 'syslog'),
+			'method'        => 'drop_array',
+			'description'   => __('Local end time for this rule timeframe.', 'syslog'),
+			'array'         => syslog_alert_maintenance_time_options(),
+			'value'         => '|arg1:maintenance_end|',
+			'default'       => '00:00'
 		],
 		'notes' => [
 			'friendly_name' => __('Notes', 'syslog'),

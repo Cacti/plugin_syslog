@@ -4171,7 +4171,7 @@ function syslog_execute_alert_command($alert, $results, $hostname) {
  * Return true when a day expression contains the given ISO weekday (1=Mon).
  */
 function syslog_alert_schedule_day_matches(string $expression, int $weekday): bool {
-	$days = ['mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6, 'sun' => 7];
+	$days = ['mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6, 'sun' => 7, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7];
 	$expression = strtolower(trim($expression));
 
 	if ($expression === '*') {
@@ -4222,6 +4222,15 @@ function syslog_alert_schedule_is_active(string $schedule, ?int $timestamp = nul
 	}
 
 	return false;
+}
+
+/** Build a single maintenance window from the day and time form controls. */
+function syslog_alert_maintenance_window(string $days, string $start, string $end): string {
+	if ($days === '0' || !preg_match('/^[1-7](,[1-7])*$/', $days) || !preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $start) || !preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $end) || $start === $end) {
+		return '';
+	}
+
+	return "$days $start-$end";
 }
 
 /**
@@ -4288,8 +4297,14 @@ function syslog_process_alerts($max_seq) {
 
 	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
-			$schedule = trim((string) ($alert['suppression_schedule'] ?? ''));
-			$schedule = $schedule !== '' ? $schedule : (string) read_config_option('syslog_alert_maintenance_schedule');
+			$mode = $alert['maintenance_mode'] ?? 'inherit';
+			if ($mode === 'custom') {
+				$schedule = syslog_alert_maintenance_window((string) ($alert['maintenance_days'] ?? ''), (string) ($alert['maintenance_start'] ?? ''), (string) ($alert['maintenance_end'] ?? ''));
+			} elseif ($mode === 'disabled') {
+				$schedule = '';
+			} else {
+				$schedule = syslog_alert_maintenance_window((string) read_config_option('syslog_alert_maintenance_days'), (string) read_config_option('syslog_alert_maintenance_start'), (string) read_config_option('syslog_alert_maintenance_end'));
+			}
 			if (syslog_alert_schedule_is_active($schedule)) {
 				syslog_debug(sprintf("Alert Rule '%s' is muted by a maintenance window", $alert['name']));
 

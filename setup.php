@@ -596,7 +596,11 @@ function syslog_check_upgrade(): void {
 	foreach ([
 		['cooldown_minutes', 'int(10)', '-1', 'repeat_alert'],
 		['deduplication_minutes', 'int(10)', '-1', 'cooldown_minutes'],
-		['suppression_schedule', 'text', '', 'deduplication_minutes']
+		['suppression_schedule', 'text', '', 'deduplication_minutes'],
+		['maintenance_mode', 'varchar(16)', 'inherit', 'suppression_schedule'],
+		['maintenance_days', 'varchar(32)', '1,2,3,4,5', 'maintenance_mode'],
+		['maintenance_start', 'char(5)', '00:00', 'maintenance_days'],
+		['maintenance_end', 'char(5)', '00:00', 'maintenance_start']
 	] as [$name, $type, $default, $after]) {
 		if (!syslog_db_column_exists('syslog_alert', $name)) {
 			syslog_db_add_column('syslog_alert', [
@@ -996,6 +1000,10 @@ function syslog_setup_table_new(array $options): void {
 		`cooldown_minutes` int(10) NOT NULL default '-1',
 		`deduplication_minutes` int(10) NOT NULL default '-1',
 		`suppression_schedule` text NOT NULL,
+		`maintenance_mode` varchar(16) NOT NULL default 'inherit',
+		`maintenance_days` varchar(32) NOT NULL default '1,2,3,4,5',
+		`maintenance_start` char(5) NOT NULL default '00:00',
+		`maintenance_end` char(5) NOT NULL default '00:00',
 		`open_ticket` CHAR(2) default '',
 		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
@@ -1627,6 +1635,18 @@ function syslog_confirm_button(string $action, string $cancel_url, int $syslog_e
  *
  * @return void
  */
+function syslog_alert_maintenance_time_options(): array {
+	$options = [];
+	for ($hour = 0; $hour < 24; $hour++) {
+		foreach ([0, 30] as $minute) {
+			$value = sprintf('%02d:%02d', $hour, $minute);
+			$options[$value] = $value;
+		}
+	}
+
+	return $options;
+}
+
 function syslog_config_settings(): void {
 	global $config, $tabs, $formats, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
 
@@ -1816,13 +1836,26 @@ function syslog_config_settings(): void {
 			'method'        => 'spacer',
 			'collapsible'   => 'true'
 		],
-		'syslog_alert_maintenance_schedule' => [
-			'friendly_name' => __('Maintenance Window Schedule', 'syslog'),
-			'description'   => __('Mute all alert notifications during these local-time windows. One window per line, for example: Mon-Fri 22:00-06:00 or Sat 01:00-03:00. Use * for every day. Per-rule schedules replace this schedule for that rule.', 'syslog'),
-			'method'        => 'textarea',
-			'textarea_rows' => '3',
-			'textarea_cols' => '70',
-			'default'       => ''
+		'syslog_alert_maintenance_days' => [
+			'friendly_name' => __('Maintenance Window Days', 'syslog'),
+			'description'   => __('Days when all alert notifications are muted during the configured maintenance timeframe.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => ['1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'), '1,2,3,4,5,6,7' => __('Every day', 'syslog'), '0' => __('Disabled', 'syslog')],
+			'default'       => '0'
+		],
+		'syslog_alert_maintenance_start' => [
+			'friendly_name' => __('Maintenance Window Starts', 'syslog'),
+			'description'   => __('Local start time for the global maintenance window.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => syslog_alert_maintenance_time_options(),
+			'default'       => '00:00'
+		],
+		'syslog_alert_maintenance_end' => [
+			'friendly_name' => __('Maintenance Window Ends', 'syslog'),
+			'description'   => __('Local end time for the global maintenance window. An earlier end time continues into the next day.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => syslog_alert_maintenance_time_options(),
+			'default'       => '00:00'
 		],
 		'syslog_alert_cooldown_minutes' => [
 			'friendly_name' => __('Default Alert Cooldown', 'syslog'),
