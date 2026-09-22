@@ -791,7 +791,7 @@ function syslog_action_edit(): void {
 	form_save_button('syslog_alerts.php', '', 'id');
 
 	if (syslog_allow_edits()) {
-		print "<div class='syslogRuleTestBar'><input id='syslog_rule_test' type='button' value='" . __esc('Test rule', 'syslog') . "'></div>";
+		print "<input id='syslog_rule_test' class='ui-button ui-corner-all ui-widget' type='button' value='" . __esc('Test rule', 'syslog') . "'>";
 		print "<div id='syslog_rule_test_dialog' style='display:none;' title='" . __esc('Rule Test Preview', 'syslog') . "'></div>";
 	}
 
@@ -901,6 +901,16 @@ function syslog_action_edit(): void {
 		$('#syslog_rule_test').on('click.syslogRuleTest', function() {
 			testSyslogRule('#syslog_edit', '#syslog_rule_test_dialog', <?php print syslog_json_safe(__('Rule Test Preview', 'syslog')); ?>);
 		});
+
+		var testRuleButton = $('#syslog_rule_test');
+		var saveRow = $('#syslog_edit .saveRow');
+		var cancelButton = saveRow.find('.cactiReturnTo');
+
+		if (cancelButton.length) {
+			testRuleButton.insertAfter(cancelButton);
+		} else {
+			testRuleButton.prependTo(saveRow);
+		}
 	});
 
 	</script>

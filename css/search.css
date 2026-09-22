@@ -957,11 +957,6 @@ body.dark #syslog_form .syslogSearchPanel {
 }
 
 /* Rule preview ("Test rule") */
-.syslogRuleTestBar {
-	margin: 8px 0;
-	text-align: center;
-}
-
 .syslogRuleTestResult {
 	max-height: 420px;
 	overflow: auto;
