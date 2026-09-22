@@ -896,3 +896,92 @@ body.dark #syslog_form .syslogSearchPanel {
 	font-size: 0.95em;
 	opacity: 0.8;
 }
+
+.syslogStatusPartitionBlocked,
+.syslogStatusHealthWarning {
+	margin: 12px;
+	padding: 8px 12px;
+	border-inline-start: 3px solid currentColor;
+	font-size: 0.95em;
+}
+
+.syslogStatusWarningLabel {
+	font-weight: 600;
+}
+
+.syslogStatus .syslogStatusPhases {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+	margin-top: 10px;
+}
+
+.syslogStatusPhases th,
+.syslogStatusPhases td {
+	padding: 10px 12px;
+	text-align: left;
+	overflow-wrap: anywhere;
+}
+
+.syslogStatusPhases th:first-child {
+	width: 28%;
+}
+
+/* Cacti's dark theme gives all th cells an !important column divider. */
+.syslogStatus .syslogStatusPhases th {
+	border-right: none !important;
+}
+
+.syslogStatusPhases thead th {
+	font-weight: normal;
+}
+
+.syslogStatusPhases thead th:not(:first-child),
+.syslogStatusPhases tbody td {
+	text-align: right;
+}
+
+.syslogStatusPhases tbody tr.syslogStatusPhaseSlowest th,
+.syslogStatusPhases tbody tr.syslogStatusPhaseSlowest td {
+	font-weight: 600;
+}
+
+.syslogStatusPhasesEmpty {
+	font-size: 0.95em;
+	opacity: 0.8;
+}
+
+.syslogStatusPhaseSlowestSummary {
+	margin-top: 8px;
+	font-size: 0.95em;
+}
+
+/* Rule preview ("Test rule") */
+.syslogRuleTestResult {
+	max-height: 420px;
+	overflow: auto;
+	text-align: left;
+}
+
+.syslogRuleTestResult table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 8px;
+}
+
+.syslogRuleTestResult th,
+.syslogRuleTestResult td {
+	padding: 6px 10px;
+	text-align: left;
+	overflow-wrap: anywhere;
+	font-size: 0.95em;
+}
+
+.syslogRuleTestError {
+	padding: 8px 0;
+	text-align: left;
+}
+
+.syslogRuleTestCount {
+	font-weight: 600;
+}

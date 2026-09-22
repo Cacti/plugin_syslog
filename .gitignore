@@ -68,3 +68,4 @@ composer.lock
 phpstan.neon
 phpstan-baseline.neon
 phpstan-stubs.php
+graphify-out/**

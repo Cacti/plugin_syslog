@@ -40,6 +40,12 @@ it('ensures partitions sequentially through the configured future horizon', func
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 
+	// Raise the per-run recovery limit above the four-day horizon so the
+	// complete recovery path is exercised.
+	test_override('read_config_option', function ($name) {
+		return $name === 'syslog_partition_recover_limit' ? '7' : '';
+	});
+
 	test_override('syslog_db_fetch_cell_prepared', function ($sql) use (&$last_partition) {
 		if (str_contains($sql, 'GET_LOCK') || str_contains($sql, 'RELEASE_LOCK')) {
 			return 1;
@@ -73,7 +79,13 @@ it('ensures partitions sequentially through the configured future horizon', func
 		return true;
 	});
 
-	expect(syslog_partition_ensure_ahead('syslog', $base_time, 3))->toBeTrue();
+	$recovery = syslog_partition_recover('syslog', $base_time, 3);
+
+	expect($recovery['created'])->toBe(4);
+	expect($recovery['missing'])->toBe(0);
+	expect($recovery['stop_reason'])->toBe('');
+	expect($recovery['retention_deferred'])->toBeFalse();
+	expect($recovery['dmax_risk'])->toBeFalse();
 	expect($created)->toBe([
 		'd20260915',
 		'd20260916',

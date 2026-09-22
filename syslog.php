@@ -375,6 +375,211 @@ function syslog_status_format_rule_activity(string $value): string {
 }
 
 /**
+ * Default incoming-backlog age after which the collector looks stale.
+ *
+ * Matches the poller interval the Status tab refresh defaults to: one
+ * missed processing run is worth a warning.
+ */
+define('SYSLOG_COLLECTOR_STALE_SECONDS', 300);
+
+/**
+ * Default incoming-backlog count after which the collector looks backed up.
+ *
+ * A few thousand unprocessed messages is normal for a busy collector
+ * between poller runs; far more than that suggests the processing path
+ * has stopped keeping up.
+ */
+define('SYSLOG_COLLECTOR_BACKLOG_THRESHOLD', 10000);
+
+/**
+ * Read live collector health metrics for the Syslog Status tab.
+ *
+ * Every metric is queried against the real Syslog database connection
+ * with the configured incoming-table field mappings.  When a query
+ * cannot be answered, the metric reads 'Unavailable' rather than an
+ * invented value.
+ *
+ * @return array{
+ *   last_received: string,
+ *   oldest_age: string,
+ *   backlog: string,
+ *   processed: string,
+ *   warning: bool,
+ *   warning_text: string
+ * } Collector health metrics with formatted values and a warning flag.
+ */
+function syslog_status_collector_health(): array {
+	global $syslogdb_default, $syslog_incoming_config;
+
+	if (!isset($syslog_incoming_config['timeField'])) {
+		$syslog_incoming_config['timeField'] = 'logtime';
+	}
+
+	$time_field   = $syslog_incoming_config['timeField'];
+	$id_field     = isset($syslog_incoming_config['id']) ? $syslog_incoming_config['id'] : 'seq';
+
+	// Column identifiers come from the plugin config file, not user input,
+	// but they are interpolated into SQL so they are strictly validated.
+	foreach ([$time_field, $id_field] as $column) {
+		if (!is_string($column) || preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column) !== 1) {
+			return syslog_status_collector_unavailable();
+		}
+	}
+
+	$warning     = false;
+	$warn_parts  = [];
+
+	// Last received log timestamp: the newest incoming row by time field.
+	$last_received_raw = syslog_db_fetch_cell("SELECT MAX(`$time_field`)
+		FROM `$syslogdb_default`.`syslog_incoming`");
+
+	$last_received = __('Unavailable', 'syslog');
+	$seconds_since = null;
+
+	if (is_string($last_received_raw) && $last_received_raw !== '' && $last_received_raw !== 'NULL') {
+		$epoch = strtotime($last_received_raw);
+
+		if ($epoch !== false) {
+			$last_received = date('Y-m-d H:i:s', $epoch);
+			$seconds_since = time() - $epoch;
+		}
+	}
+
+	// Oldest unprocessed incoming log age, and the incoming backlog count.
+	$oldest_raw = syslog_db_fetch_cell("SELECT MIN(`$time_field`)
+		FROM `$syslogdb_default`.`syslog_incoming`");
+
+	$oldest_age = __('Unavailable', 'syslog');
+
+	if (is_string($oldest_raw) && $oldest_raw !== '' && $oldest_raw !== 'NULL') {
+		$oldest_epoch = strtotime($oldest_raw);
+
+		if ($oldest_epoch !== false) {
+			$age = time() - $oldest_epoch;
+
+			if ($age >= 0) {
+				$oldest_age = syslog_status_format_age($age);
+			}
+		}
+	}
+
+	$backlog_raw = syslog_db_fetch_cell("SELECT COUNT(*)
+		FROM `$syslogdb_default`.`syslog_incoming`");
+
+	$backlog = __('Unavailable', 'syslog');
+
+	if (is_numeric($backlog_raw)) {
+		$backlog = number_format((int) $backlog_raw);
+	}
+
+	// Records processed in the latest processing run.
+	$status      = syslog_status_get();
+	$processed   = syslog_status_format_count($status['last_record_count']);
+
+	// Warning state: stale data or an oversized backlog.
+	$stale_threshold     = (int) read_config_option('syslog_stale_threshold');
+	$backlog_threshold   = (int) read_config_option('syslog_backlog_threshold');
+
+	if ($stale_threshold <= 0) {
+		$stale_threshold = SYSLOG_COLLECTOR_STALE_SECONDS;
+	}
+
+	if ($backlog_threshold <= 0) {
+		$backlog_threshold = SYSLOG_COLLECTOR_BACKLOG_THRESHOLD;
+	}
+
+	if ($seconds_since !== null && $seconds_since > $stale_threshold) {
+		$warning    = true;
+		$warn_parts[] = sprintf(__('no message received for %s', 'syslog'), syslog_status_format_age($seconds_since));
+	}
+
+	if (is_numeric($backlog_raw) && (int) $backlog_raw > $backlog_threshold) {
+		$warning      = true;
+		$warn_parts[] = sprintf(__('incoming backlog of %s messages', 'syslog'), number_format((int) $backlog_raw));
+	}
+
+	if (is_numeric($backlog_raw) && (int) $backlog_raw === 0 && $seconds_since === null) {
+		$warning    = true;
+		$warn_parts[] = __('no incoming data is available to evaluate', 'syslog');
+	}
+
+	return [
+		'last_received' => $last_received,
+		'oldest_age'    => $oldest_age,
+		'backlog'       => $backlog,
+		'processed'     => $processed,
+		'warning'       => $warning,
+		'warning_text'  => cacti_sizeof($warn_parts) ? implode('; ', $warn_parts) : ''
+	];
+}
+
+/**
+ * Provide the all-unavailable collector health shape for broken configs.
+ *
+ * @return array The collector health array with every metric unavailable.
+ */
+function syslog_status_collector_unavailable(): array {
+	$unavailable = __('Unavailable', 'syslog');
+
+	return [
+		'last_received' => $unavailable,
+		'oldest_age'    => $unavailable,
+		'backlog'       => $unavailable,
+		'processed'     => '0',
+		'warning'       => false,
+		'warning_text'  => ''
+	];
+}
+
+/**
+ * Format a duration in seconds as a compact human-readable age.
+ *
+ * @param int $seconds The age in seconds.
+ *
+ * @return string The formatted age, for example '3h 12m'.
+ */
+function syslog_status_format_age(int $seconds): string {
+	if ($seconds < 60) {
+		return $seconds . ' ' . __('seconds', 'syslog');
+	}
+
+	$parts = [];
+
+	$days = intdiv($seconds, 86400);
+	$rest = $seconds % 86400;
+
+	if ($days > 0) {
+		$parts[] = $days . ' ' . ($days === 1 ? __('day', 'syslog') : __('days', 'syslog'));
+	}
+
+	$hours = intdiv($rest, 3600);
+	$rest %= 3600;
+
+	if ($hours > 0) {
+		$parts[] = $hours . ' ' . ($hours === 1 ? __('hour', 'syslog') : __('hours', 'syslog'));
+	}
+
+	$minutes = intdiv($rest, 60);
+
+	if ($minutes > 0 || !cacti_sizeof($parts)) {
+		$parts[] = $minutes . ' ' . ($minutes === 1 ? __('minute', 'syslog') : __('minutes', 'syslog'));
+	}
+
+	return implode(' ', array_slice($parts, 0, 2));
+}
+
+/**
+ * Format an age value for the collector health display.
+ *
+ * @param int $seconds The age in seconds.
+ *
+ * @return string The formatted age.
+ */
+function syslog_status_format_age_value(int $seconds): string {
+	return syslog_status_format_age($seconds);
+}
+
+/**
  * Read live storage metrics only when rendering the status tab.
  *
  * @return array<string, string> Map of storage labels to formatted values.
@@ -457,6 +662,36 @@ function syslog_status(): void {
 						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
 					} ?>
 				</dl>
+				<?php $partition_block = syslog_partition_blocked_state(); ?>
+				<?php if ($partition_block['blocked']) { ?>
+				<p class="syslogStatusPartitionBlocked">
+					<span class="syslogStatusWarningLabel"><?php print __esc('Partition maintenance blocked', 'syslog'); ?>:</span>
+					<?php print html_escape($partition_block['reason'] !== '' ? $partition_block['reason'] : __('Partition maintenance is stopped; writes continue into the dMaxValue safety partition.', 'syslog')); ?>
+				</p>
+				<?php } ?>
+			</section>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_collector">
+				<h2 id="syslog_status_collector" class="syslogStatusHeading ui-widget-header"><?php print __esc('Collector health', 'syslog'); ?></h2>
+				<?php $health = syslog_status_collector_health(); ?>
+				<dl class="syslogStatusTimings syslogStatusCollector">
+					<?php
+					$health_metrics = [
+						__('Last received log', 'syslog') => $health['last_received'],
+						__('Oldest unprocessed message', 'syslog') => $health['oldest_age'],
+						__('Incoming backlog', 'syslog') => $health['backlog'],
+						__('Records processed in latest run', 'syslog') => $health['processed']
+					];
+					foreach ($health_metrics as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					}
+					?>
+				</dl>
+				<?php if ($health['warning']) { ?>
+				<p class="syslogStatusHealthWarning">
+					<span class="syslogStatusWarningLabel"><?php print __esc('Collector warning', 'syslog'); ?>:</span>
+					<?php print html_escape($health['warning_text']); ?>
+				</p>
+				<?php } ?>
 			</section>
 			<section class="syslogStatusRun" aria-labelledby="syslog_status_workers">
 				<h2 id="syslog_status_workers" class="syslogStatusHeading ui-widget-header"><?php print __esc('Parallel workers', 'syslog'); ?></h2>
@@ -492,6 +727,64 @@ function syslog_status(): void {
 				</table>
 				<?php } else { ?>
 				<p class="syslogStatusWorkersEmpty"><?php print __esc('No per process statistics recorded yet.  Worker statistics appear after the first parallel run.', 'syslog'); ?></p>
+				<?php } ?>
+			</section>
+			<section aria-labelledby="syslog_status_phases">
+				<h2 id="syslog_status_phases" class="syslogStatusHeading ui-widget-header"><?php print __esc('Processing phases', 'syslog'); ?></h2>
+				<?php
+				$phase_telemetry = syslog_status_phase_telemetry();
+				$phase_labels = [
+					'partition'  => __('Partition maintenance', 'syslog'),
+					'references' => __('Reference updates', 'syslog'),
+					'removal'    => __('Removal rules', 'syslog'),
+					'alerts'     => __('Alert evaluation', 'syslog'),
+					'transfer'   => __('Incoming transfer', 'syslog'),
+					'reports'    => __('Report processing', 'syslog')
+				];
+
+				$slowest_phase = '';
+				$slowest_seconds = -1.0;
+
+				foreach ($phase_telemetry as $phase => $telemetry) {
+					if ($telemetry === null) {
+						continue;
+					}
+
+					if ($telemetry['seconds'] > $slowest_seconds) {
+						$slowest_seconds = $telemetry['seconds'];
+						$slowest_phase   = $phase;
+					}
+				}
+				?>
+				<table class="syslogStatusPhases" aria-labelledby="syslog_status_phases">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Phase', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Started', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Duration', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Records', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php $any_phase = false; ?>
+					<?php foreach ($phase_telemetry as $phase => $telemetry) { ?>
+						<?php if ($telemetry === null) { continue; } $any_phase = true; ?>
+						<tr<?php if ($phase === $slowest_phase) { print ' class="syslogStatusPhaseSlowest"'; } ?>>
+							<th scope="row"><?php print html_escape($phase_labels[$phase] ?? $phase); ?></th>
+							<td><?php print html_escape(syslog_status_format_time((string) $telemetry['start'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_seconds((string) $telemetry['seconds'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_count((string) $telemetry['count'])); ?></td>
+						</tr>
+					<?php } ?>
+					<?php if (!$any_phase) { ?>
+					<tr><td colspan="4" class="syslogStatusPhasesEmpty"><?php print __esc('No phase timings recorded yet.  Phase timings appear after the next poller run.', 'syslog'); ?></td></tr>
+					<?php } ?>
+					</tbody>
+				</table>
+				<?php if ($slowest_phase !== '') { ?>
+				<p class="syslogStatusPhaseSlowestSummary">
+					<span class="syslogStatusDetailLabel"><?php print __esc('Slowest phase', 'syslog'); ?>:</span>
+					<?php print html_escape($phase_labels[$slowest_phase] ?? $slowest_phase); ?>
+					(<?php print html_escape(syslog_status_format_seconds((string) $slowest_seconds)); ?>)
+				</p>
 				<?php } ?>
 			</section>
 			<section aria-labelledby="syslog_status_rules">

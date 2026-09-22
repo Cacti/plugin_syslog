@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-21 14:12-0400\n"
+"POT-Creation-Date: 2026-09-21 23:45-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -48,155 +48,234 @@ msgstr ""
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr ""
 
-#: functions.php:2940 lib/syslog_dashboard.php:243 syslog.php:1878
-#: syslog.php:1883 syslog.php:1884 syslog.php:1911 syslog.php:1914
-#: syslog.php:1915 syslog.php:1972
+#: functions.php:1693
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr ""
+
+#: functions.php:1737
+#, php-format
+msgid "remaining partition gap: %d day(s)"
+msgstr ""
+
+#: functions.php:1738
+msgid "no retention deferral"
+msgstr ""
+
+#: functions.php:1738
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr ""
+
+#: functions.php:1742
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr ""
+
+#: functions.php:1818
+msgid "per run recovery limit reached"
+msgstr ""
+
+#: functions.php:1826
+#, fuzzy
+msgid "partition creation failed"
+msgstr "Bảng phân vùng"
+
+#: functions.php:2791
+msgid "Unknown rule type."
+msgstr ""
+
+#: functions.php:2847
+msgid "The configured incoming field mapping is invalid."
+msgstr ""
+
+#: functions.php:2859
+msgid "The facility of this rule is not in the reference table yet."
+msgstr ""
+
+#: functions.php:2894
+msgid "Unknown rule match type."
+msgstr ""
+
+#: functions.php:2901
+msgid "The rule did not compile to a query."
+msgstr ""
+
+#: functions.php:2912
+msgid "The preview query could not be evaluated."
+msgstr ""
+
+#: functions.php:2922
+msgid "The preview sample could not be read."
+msgstr ""
+
+#: functions.php:2964 lib/syslog_dashboard.php:653 lib/syslog_dashboard.php:819
+#: lib/syslog_dashboard.php:902 lib/syslog_dashboard.php:906
+#: lib/syslog_dashboard.php:946 lib/syslog_dashboard.php:1022 syslog.php:1249
+#: syslog.php:1275 syslog_dashboards.php:11 syslog_saved_searches.php:11
+msgid "Permission denied."
+msgstr ""
+
+#: functions.php:2968 functions.php:2972 setup.php:2212 setup.php:2222
+#: setup.php:2229
+msgid "Invalid request. Please try again."
+msgstr ""
+
+#: functions.php:2983
+msgid "The rule has no match expression to test."
+msgstr ""
+
+#: functions.php:2987
+msgid "The match expression is too long to test."
+msgstr ""
+
+#: functions.php:3474 lib/syslog_dashboard.php:243 syslog.php:2171
+#: syslog.php:2176 syslog.php:2177 syslog.php:2204 syslog.php:2207
+#: syslog.php:2208 syslog.php:2265
 msgid "Unknown"
 msgstr "Không xác định"
 
-#: functions.php:3847
+#: functions.php:4381
 #, fuzzy, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cảnh báo ngưỡng của Cacti Syslog ' %s'"
 
-#: functions.php:3849
+#: functions.php:4383
 #, fuzzy, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cảnh báo ngưỡng của Cacti Syslog ' %s'"
 
-#: functions.php:3857 syslog.php:1949 syslog_alerts.php:1042
+#: functions.php:4391 syslog.php:2242 syslog_alerts.php:1069
 msgid "Alert Name"
 msgstr "Tên cảnh báo"
 
-#: functions.php:3858 functions.php:3885 syslog.php:1948 syslog_alerts.php:622
-#: syslog_alerts.php:1043
+#: functions.php:4392 functions.php:4419 syslog.php:2241 syslog_alerts.php:630
+#: syslog_alerts.php:1070
 msgid "Severity"
 msgstr "Mức độ nghiêm trọng"
 
-#: functions.php:3859 syslog_alerts.php:641 syslog_alerts.php:646
-#: syslog_alerts.php:1069
+#: functions.php:4393 syslog_alerts.php:649 syslog_alerts.php:654
+#: syslog_alerts.php:1096
 msgid "Threshold"
 msgstr "Ngưỡng"
 
-#: functions.php:3860 syslog.php:1830 syslog.php:1951
+#: functions.php:4394 syslog.php:2123 syslog.php:2244
 msgid "Count"
 msgstr "Đếm"
 
-#: functions.php:3861
+#: functions.php:4395
 #, fuzzy
 msgid "Match String"
 msgstr "Chuỗi kết hợp"
 
-#: functions.php:3872 functions.php:3912
+#: functions.php:4406 functions.php:4446
 #, fuzzy, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cảnh báo ngưỡng của Cacti Syslog ' %s'"
 
-#: functions.php:3874 functions.php:3914
+#: functions.php:4408 functions.php:4448
 #, fuzzy, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Thông báo về plugin Cacti Syslog ' %s'"
 
-#: functions.php:3883
+#: functions.php:4417
 msgid "Hostname"
 msgstr "Tên máy chủ"
 
-#: functions.php:3884 functions.php:4808 syslog.php:1821 syslog.php:1946
-#: syslog.php:2003
+#: functions.php:4418 functions.php:5342 syslog.php:2114 syslog.php:2239
+#: syslog.php:2296
 msgid "Date"
 msgstr "Ngày"
 
-#: functions.php:3886
+#: functions.php:4420
 msgid "Level"
 msgstr "Cấp độ"
 
-#: functions.php:3887 functions.php:4809 lib/syslog_dashboard.php:1621
-#: syslog.php:1518 syslog.php:1603 syslog.php:1824 syslog.php:1950
-#: syslog.php:2004 syslog_alerts.php:793 syslog_removal.php:666
+#: functions.php:4421 functions.php:5343 lib/syslog_dashboard.php:1621
+#: syslog.php:1811 syslog.php:1896 syslog.php:2117 syslog.php:2243
+#: syslog.php:2297 syslog_alerts.php:806 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
 msgstr "Tin nhắn"
 
-#: functions.php:3895
+#: functions.php:4429
 #, fuzzy, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "CẢNH BÁO: Thông báo Đếm Syslog Plugin Đã được kích hoạt"
 
-#: functions.php:3897
+#: functions.php:4431
 #, fuzzy
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "CẢNH BÁO: Thông báo Đếm Syslog Plugin Đã được kích hoạt"
 
-#: functions.php:3904
+#: functions.php:4438
 msgid "Name:"
 msgstr "Tên:"
 
-#: functions.php:3905 functions.php:3961
+#: functions.php:4439 functions.php:4495
 #, fuzzy
 msgid "Severity:"
 msgstr "Mức độ nghiêm trọng"
 
-#: functions.php:3906
+#: functions.php:4440
 #, fuzzy
 msgid "Threshold:"
 msgstr "Ngưỡng"
 
-#: functions.php:3907
+#: functions.php:4441
 msgid "Count:"
 msgstr "Đếm:"
 
-#: functions.php:3908
+#: functions.php:4442
 #, fuzzy
 msgid "Message String:"
 msgstr "Chuỗi tin nhắn:"
 
-#: functions.php:3959
+#: functions.php:4493
 msgid "Hostname:"
 msgstr "Tên máy:"
 
-#: functions.php:3960
+#: functions.php:4494
 msgid "Date:"
 msgstr "Ngày:"
 
-#: functions.php:3962
+#: functions.php:4496
 msgid "Level:"
 msgstr "Cấp độ:"
 
-#: functions.php:3963
+#: functions.php:4497
 msgid "Message:"
 msgstr "Tin nhắn:"
 
-#: functions.php:4032
+#: functions.php:4566
 #, fuzzy
 msgid ", Host:"
 msgstr "Chủ:"
 
-#: functions.php:4032 functions.php:4067
+#: functions.php:4566 functions.php:4601
 #, fuzzy
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php:4032 functions.php:4067
+#: functions.php:4566 functions.php:4601
 #, fuzzy
 msgid "Sev:"
 msgstr "Thứ bảy:"
 
-#: functions.php:4038 functions.php:4063
+#: functions.php:4572 functions.php:4597
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "Thông báo sự kiện - %s"
 
-#: functions.php:4067
+#: functions.php:4601
 #, fuzzy
 msgid ", Count:"
 msgstr "Đếm:"
 
-#: functions.php:4807 lib/syslog_dashboard.php:1568 syslog_alerts.php:794
-#: syslog_removal.php:667
+#: functions.php:5341 lib/syslog_dashboard.php:1568 syslog_alerts.php:807
+#: syslog_removal.php:680
 msgid "Host"
 msgstr "Host"
 
-#: functions.php:4832
+#: functions.php:5366
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "Báo cáo sự kiện - %s"
@@ -241,21 +320,14 @@ msgstr ""
 msgid "Invalid dashboard panel height."
 msgstr ""
 
-#: lib/syslog_dashboard.php:550 lib/syslog_dashboard.php:1130 syslog.php:809
-#: syslog.php:905
+#: lib/syslog_dashboard.php:550 lib/syslog_dashboard.php:1130 syslog.php:1102
+#: syslog.php:1198
 #, php-format
 msgid "Invalid logical search: %s"
 msgstr ""
 
 #: lib/syslog_dashboard.php:616
 msgid "Other"
-msgstr ""
-
-#: lib/syslog_dashboard.php:653 lib/syslog_dashboard.php:819
-#: lib/syslog_dashboard.php:902 lib/syslog_dashboard.php:906
-#: lib/syslog_dashboard.php:946 lib/syslog_dashboard.php:1022 syslog.php:956
-#: syslog.php:982 syslog_dashboards.php:11 syslog_saved_searches.php:11
-msgid "Permission denied."
 msgstr ""
 
 #: lib/syslog_dashboard.php:659 lib/syslog_dashboard.php:1044
@@ -267,7 +339,7 @@ msgstr ""
 msgid "Dashboard panel not found."
 msgstr ""
 
-#: lib/syslog_dashboard.php:826 lib/syslog_dashboard.php:969 syslog.php:898
+#: lib/syslog_dashboard.php:826 lib/syslog_dashboard.php:969 syslog.php:1191
 msgid "A name of up to 128 characters is required."
 msgstr ""
 
@@ -314,23 +386,23 @@ msgstr ""
 msgid "New Panel"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1369 lib/syslog_dashboard.php:1524 syslog.php:1598
+#: lib/syslog_dashboard.php:1369 lib/syslog_dashboard.php:1524 syslog.php:1891
 msgid "Save"
 msgstr "Lưu"
 
 #: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1554
-#: setup.php:2255 syslog.php:1597 syslog_alerts.php:218
-#: syslog_dashboards.php:428 syslog_removal.php:240 syslog_reports.php:213
+#: setup.php:2296 syslog.php:1890 syslog_alerts.php:226
+#: syslog_dashboards.php:428 syslog_removal.php:248 syslog_reports.php:213
 #: syslog_saved_searches.php:384
 msgid "Cancel"
 msgstr "Hủy"
 
-#: lib/syslog_dashboard.php:1371 syslog.php:1596
+#: lib/syslog_dashboard.php:1371 syslog.php:1889
 msgid "Apply"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:1846
-#: syslog.php:1505 syslog_dashboards.php:300 syslog_dashboards.php:351
+#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:1887
+#: syslog.php:1798 syslog_dashboards.php:300 syslog_dashboards.php:351
 #: syslog_removal.php:36 syslog_saved_searches.php:271
 #: syslog_saved_searches.php:315
 msgid "Delete"
@@ -348,7 +420,7 @@ msgstr ""
 msgid "Name your dashboard"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1376 lib/syslog_dashboard.php:1487 syslog.php:1507
+#: lib/syslog_dashboard.php:1376 lib/syslog_dashboard.php:1487 syslog.php:1800
 msgid "Make Private"
 msgstr ""
 
@@ -409,11 +481,11 @@ msgstr "Gửi lần cuối"
 msgid "Last %d Months"
 msgstr "% d Tháng"
 
-#: lib/syslog_dashboard.php:1421 syslog.php:1546 syslog.php:1624
+#: lib/syslog_dashboard.php:1421 syslog.php:1839 syslog.php:1917
 msgid "Refresh"
 msgstr "Làm mới"
 
-#: lib/syslog_dashboard.php:1438 setup.php:1988 setup.php:2045
+#: lib/syslog_dashboard.php:1438 setup.php:2029 setup.php:2086
 #: syslog_dashboards.php:201 syslog_dashboards.php:203
 msgid "Dashboards"
 msgstr ""
@@ -426,12 +498,12 @@ msgstr ""
 msgid "Global Dashboards"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1447 lib/syslog_dashboard.php:1456 syslog.php:1469
-#: syslog.php:1478
+#: lib/syslog_dashboard.php:1447 lib/syslog_dashboard.php:1456 syslog.php:1762
+#: syslog.php:1771
 msgid "Shared With Me"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1482 syslog.php:1503
+#: lib/syslog_dashboard.php:1482 syslog.php:1796
 msgid "New"
 msgstr ""
 
@@ -536,18 +608,18 @@ msgstr "Hàng ngày"
 msgid "Field"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1569 syslog.php:1823 syslog.php:2003
-#: syslog.php:2078 syslog_alerts.php:795 syslog_removal.php:668
+#: lib/syslog_dashboard.php:1569 syslog.php:2116 syslog.php:2296
+#: syslog.php:2371 syslog_alerts.php:808 syslog_removal.php:681
 msgid "Program"
 msgstr "Chương trình"
 
-#: lib/syslog_dashboard.php:1570 syslog.php:1825 syslog.php:1952
-#: syslog.php:2003 syslog_alerts.php:796 syslog_removal.php:669
+#: lib/syslog_dashboard.php:1570 syslog.php:2118 syslog.php:2245
+#: syslog.php:2296 syslog_alerts.php:809 syslog_removal.php:682
 msgid "Facility"
 msgstr "Tiện ích"
 
-#: lib/syslog_dashboard.php:1571 syslog.php:1826 syslog.php:1953
-#: syslog.php:2003 syslog_alerts.php:797 syslog_removal.php:670
+#: lib/syslog_dashboard.php:1571 syslog.php:2119 syslog.php:2246
+#: syslog.php:2296 syslog_alerts.php:810 syslog_removal.php:683
 msgid "Priority"
 msgstr "Ưu tiên"
 
@@ -556,21 +628,21 @@ msgstr "Ưu tiên"
 msgid "Top Count"
 msgstr "Đếm"
 
-#: lib/syslog_dashboard.php:1593 syslog.php:1563
+#: lib/syslog_dashboard.php:1593 syslog.php:1856
 msgid "Record Type"
 msgstr "Loại dữ liệu"
 
-#: lib/syslog_dashboard.php:1595 syslog.php:1565
+#: lib/syslog_dashboard.php:1595 syslog.php:1858
 #, fuzzy
 msgid "All Records"
 msgstr "Tất cả hồ sơ"
 
-#: lib/syslog_dashboard.php:1596 syslog.php:1566
+#: lib/syslog_dashboard.php:1596 syslog.php:1859
 #, fuzzy
 msgid "Main Records"
 msgstr "Hồ sơ chính"
 
-#: lib/syslog_dashboard.php:1597 syslog.php:1567
+#: lib/syslog_dashboard.php:1597 syslog.php:1860
 #, fuzzy
 msgid "Removed Records"
 msgstr "Hồ sơ bị xóa"
@@ -579,30 +651,30 @@ msgstr "Hồ sơ bị xóa"
 msgid "Start from Saved Search"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2072
-#: syslog.php:2083 syslog.php:2136 syslog.php:2137 syslog_alerts.php:711
+#: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
+#: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:719
 #: syslog_reports.php:554
 msgid "None"
 msgstr "Không"
 
-#: lib/syslog_dashboard.php:1622 syslog.php:1519 syslog.php:1604
+#: lib/syslog_dashboard.php:1622 syslog.php:1812 syslog.php:1897
 #: syslog_saved_searches.php:666
 msgid "Enter message text…"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1623 syslog.php:1522 syslog.php:1607
-#: syslog_alerts.php:819 syslog_removal.php:692 syslog_saved_searches.php:666
+#: lib/syslog_dashboard.php:1623 syslog.php:1815 syslog.php:1900
+#: syslog_alerts.php:832 syslog_removal.php:705 syslog_saved_searches.php:666
 #, fuzzy
 msgid "Remove condition"
 msgstr "Hồ sơ bị xóa"
 
-#: lib/syslog_dashboard.php:1624 syslog.php:1523 syslog.php:1608
+#: lib/syslog_dashboard.php:1624 syslog.php:1816 syslog.php:1901
 #: syslog_saved_searches.php:666
 #, fuzzy
 msgid "Match group"
 msgstr "Loại so khớp"
 
-#: lib/syslog_dashboard.php:1625 syslog.php:1524 syslog.php:1609
+#: lib/syslog_dashboard.php:1625 syslog.php:1817 syslog.php:1902
 #: syslog_saved_searches.php:666
 msgid "Exclude group"
 msgstr ""
@@ -611,7 +683,7 @@ msgstr ""
 msgid "Dashboard Name"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1630 syslog.php:1614 syslog_alerts.php:614
+#: lib/syslog_dashboard.php:1630 syslog.php:1907 syslog_alerts.php:622
 #: syslog_dashboards.php:188 syslog_dashboards.php:284
 #: syslog_dashboards.php:733 syslog_reports.php:489
 #: syslog_saved_searches.php:281 syslog_saved_searches.php:648
@@ -763,8 +835,8 @@ msgstr "Tùy chọn gỡ cài đặt nhật ký hệ thống"
 msgid "Uninstall"
 msgstr "Gỡ cài đặt"
 
-#: setup.php:1604 setup.php:1786 setup.php:1788 setup.php:1999 setup.php:2030
-#: setup.php:2046
+#: setup.php:1604 setup.php:1827 setup.php:1829 setup.php:2040 setup.php:2071
+#: setup.php:2087
 msgid "Syslog"
 msgstr "Syslog"
 
@@ -913,265 +985,314 @@ msgstr ""
 msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
 msgstr ""
 
-#: setup.php:1720 setup.php:1893 setup.php:1912 syslog_alerts.php:485
+#: setup.php:1720 setup.php:1934 setup.php:1953 syslog_alerts.php:493
 #, php-format
 msgid "%d Day"
 msgstr "%d Ngày"
 
 #: setup.php:1721 setup.php:1722 setup.php:1723 setup.php:1724 setup.php:1725
-#: setup.php:1726 setup.php:1894 setup.php:1895 setup.php:1896 setup.php:1897
-#: setup.php:1898 setup.php:1913 setup.php:1914 setup.php:1915 setup.php:1916
-#: setup.php:1917 syslog_alerts.php:486
+#: setup.php:1726 setup.php:1935 setup.php:1936 setup.php:1937 setup.php:1938
+#: setup.php:1939 setup.php:1954 setup.php:1955 setup.php:1956 setup.php:1957
+#: setup.php:1958 syslog_alerts.php:494
 #, php-format
 msgid "%d Days"
 msgstr "%d Ngày"
 
 #: setup.php:1730
 #, fuzzy
+msgid "Partition Recovery Limit"
+msgstr "Phân vùng mỗi ngày"
+
+#: setup.php:1731
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr ""
+
+#: setup.php:1735
+#, fuzzy, php-format
+msgid "%d Partition per run"
+msgstr "Phân vùng mỗi ngày"
+
+#: setup.php:1736 setup.php:1737 setup.php:1738 setup.php:1739 setup.php:1740
+#, fuzzy, php-format
+msgid "%d Partitions per run"
+msgstr "Phân vùng mỗi ngày"
+
+#: setup.php:1744
+msgid "Collector Staleness Threshold"
+msgstr ""
+
+#: setup.php:1745
+msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgstr ""
+
+#: setup.php:1749
+msgid "Default (300 seconds)"
+msgstr ""
+
+#: setup.php:1750 setup.php:1751 setup.php:1752 setup.php:1753 setup.php:1754
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#: setup.php:1758
+msgid "Collector Backlog Threshold"
+msgstr ""
+
+#: setup.php:1759
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr ""
+
+#: setup.php:1763
+msgid "Default (10000 messages)"
+msgstr ""
+
+#: setup.php:1764 setup.php:1765 setup.php:1766 setup.php:1767
+#, fuzzy, php-format
+msgid "%d Messages"
+msgstr "Tin nhắn"
+
+#: setup.php:1771
+#, fuzzy
 msgid "Syslog Alert Retention"
 msgstr "Lưu giữ thông báo nhật ký hệ thống"
 
-#: setup.php:1731
+#: setup.php:1772
 #, fuzzy
 msgid "This is the number of days to keep alert logs."
 msgstr "Đây là số ngày để giữ nhật ký cảnh báo."
 
-#: setup.php:1737
+#: setup.php:1778
 #, fuzzy
 msgid "Remote Message Processing"
 msgstr "Chuỗi tin nhắn:"
 
-#: setup.php:1741
+#: setup.php:1782
 #, fuzzy
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "Bật xử lý tin nhắn của trình thu thập dữ liệu từ xa"
 
-#: setup.php:1742
+#: setup.php:1783
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thư của họ một cách độc lập, hãy chọn hộp kiểm này. Bằng cách chọn Hộp kiểm này, Bộ thu thập dữ liệu từ xa của bạn sẽ cần duy trì tệp 'config_local.php' của riêng họ để thông báo cho Syslog sử dụng cơ sở dữ liệu độc lập để hiển thị và xử lý thông báo. Vui lòng sử dụng tệp mẫu 'config_local.php.dist' cho mục đích này. CẢNH BÁO: Bảng nhật ký sẽ tự động được tạo ngay sau khi tùy chọn này được bật."
 
-#: setup.php:1747
+#: setup.php:1788
 #, fuzzy
 msgid "Remote Data Collector Rules Sync"
 msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
 
-#: setup.php:1748
+#: setup.php:1789
 #, fuzzy
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thông báo thu thập một cách độc lập, hãy chọn hộp kiểm này nếu bạn muốn các quy tắc Cảnh báo, Xóa và Báo cáo của Cơ sở dữ liệu Xương rồng Chính được gửi đến Hệ thống Xương rồng Từ xa."
 
-#: setup.php:1847 syslog_removal.php:37
+#: setup.php:1888 syslog_removal.php:37
 msgid "Disable"
 msgstr "Vô hiệu hóa"
 
-#: setup.php:1848 syslog_removal.php:38
+#: setup.php:1889 syslog_removal.php:38
 msgid "Enable"
 msgstr "Bật"
 
-#: setup.php:1849 syslog.php:1625 syslog_dashboards.php:300
+#: setup.php:1890 syslog.php:1918 syslog_dashboards.php:300
 #: syslog_dashboards.php:351 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
 msgstr "Xuất ra"
 
-#: setup.php:1892 setup.php:1911
+#: setup.php:1933 setup.php:1952
 #, fuzzy
 msgid "Indefinite"
 msgstr "Không xác định"
 
-#: setup.php:1899 setup.php:1918 syslog_alerts.php:487
+#: setup.php:1940 setup.php:1959 syslog_alerts.php:495
 #, php-format
 msgid "%d Week"
 msgstr "% d Tuần"
 
-#: setup.php:1900 setup.php:1919 syslog_alerts.php:488
+#: setup.php:1941 setup.php:1960 syslog_alerts.php:496
 #, php-format
 msgid "%d Weeks"
 msgstr "% d Tuần"
 
-#: setup.php:1901 setup.php:1920
+#: setup.php:1942 setup.php:1961
 #, php-format
 msgid "%d Month"
 msgstr "% d Tháng"
 
-#: setup.php:1902 setup.php:1903 setup.php:1904 setup.php:1905 setup.php:1906
-#: setup.php:1921 setup.php:1922 setup.php:1923 setup.php:1924 setup.php:1925
+#: setup.php:1943 setup.php:1944 setup.php:1945 setup.php:1946 setup.php:1947
+#: setup.php:1962 setup.php:1963 setup.php:1964 setup.php:1965 setup.php:1966
 #, php-format
 msgid "%d Months"
 msgstr "% d Tháng"
 
-#: setup.php:1907 setup.php:1926
+#: setup.php:1948 setup.php:1967
 #, php-format
 msgid "%d Year"
 msgstr "% d Năm"
 
-#: setup.php:1930 syslog.php:295 syslog.php:310 syslog.php:325
+#: setup.php:1971 syslog.php:295 syslog.php:310 syslog.php:325
 #: syslog_dashboards.php:324 syslog_reports.php:809
 msgid "Never"
 msgstr "Không bao giờ"
 
-#: setup.php:1931
+#: setup.php:1972
 #, php-format
 msgid "%d Minute"
 msgstr "%d phút"
 
-#: setup.php:1932 setup.php:1933 setup.php:1934 syslog_alerts.php:472
-#: syslog_alerts.php:473 syslog_alerts.php:474 syslog_alerts.php:475
-#: syslog_alerts.php:476 syslog_alerts.php:477
+#: setup.php:1973 setup.php:1974 setup.php:1975 syslog_alerts.php:480
+#: syslog_alerts.php:481 syslog_alerts.php:482 syslog_alerts.php:483
+#: syslog_alerts.php:484 syslog_alerts.php:485
 #, php-format
 msgid "%d Minutes"
 msgstr "%d phút"
 
-#: setup.php:1938 syslog.php:1685
+#: setup.php:1979 syslog.php:1978
 msgid "Notice"
 msgstr "Thông báo"
 
-#: setup.php:1939 syslog.php:1684 syslog.php:1703
+#: setup.php:1980 syslog.php:1977 syslog.php:1996
 msgid "Warning"
 msgstr "Cảnh báo"
 
-#: setup.php:1940 syslog.php:1681
+#: setup.php:1981 syslog.php:1974
 msgid "Critical"
 msgstr "Chỉ trích"
 
-#: setup.php:1944
+#: setup.php:1985
 #, fuzzy
 msgid "Begins with"
 msgstr "bắt đầu là"
 
-#: setup.php:1945
+#: setup.php:1986
 msgid "Contains"
 msgstr "Chứa"
 
-#: setup.php:1946
+#: setup.php:1987
 #, fuzzy
 msgid "Ends with"
 msgstr "kết thúc với"
 
-#: setup.php:1947
+#: setup.php:1988
 #, fuzzy
 msgid "Hostname is"
 msgstr "Tên máy:"
 
-#: setup.php:1948
+#: setup.php:1989
 #, fuzzy
 msgid "Program is"
 msgstr "Chương trình"
 
-#: setup.php:1949
+#: setup.php:1990
 #, fuzzy
 msgid "Facility is"
 msgstr "Tiện ích"
 
-#: setup.php:1950 syslog_alerts.php:659
+#: setup.php:1991 syslog_alerts.php:667
 msgid "Filter Builder"
 msgstr ""
 
-#: setup.php:1951 syslog_alerts.php:660
+#: setup.php:1992 syslog_alerts.php:668
 #, fuzzy
 msgid "SQL Expression"
 msgstr "Biểu thức SQL"
 
-#: setup.php:1955
+#: setup.php:1996
 msgid "Daily"
 msgstr "Hàng ngày"
 
-#: setup.php:1956
+#: setup.php:1997
 msgid "Weekly"
 msgstr "Hàng tuần"
 
-#: setup.php:1983
+#: setup.php:2024
 msgid "Import/Export"
 msgstr "Nhập vào/Xuất ra"
 
-#: setup.php:1984
+#: setup.php:2025
 #, fuzzy
 msgid "Alert Rules"
 msgstr "Quy tắc cảnh báo"
 
-#: setup.php:1984 setup.php:1985 setup.php:1986 setup.php:1987 setup.php:1988
-#: setup.php:1993
+#: setup.php:2025 setup.php:2026 setup.php:2027 setup.php:2028 setup.php:2029
+#: setup.php:2034
 #, fuzzy
 msgid "Syslog Settings"
 msgstr "Cài đặt nhật ký hệ thống"
 
-#: setup.php:1985
+#: setup.php:2026
 #, fuzzy
 msgid "Removal Rules"
 msgstr "Quy tắc loại bỏ"
 
-#: setup.php:1986
+#: setup.php:2027
 #, fuzzy
 msgid "Report Rules"
 msgstr "Quy tắc báo cáo"
 
-#: setup.php:1987 setup.php:2044 syslog_saved_searches.php:195
+#: setup.php:2028 setup.php:2085 syslog_saved_searches.php:195
 msgid "Saved Search Templates"
 msgstr ""
 
-#: setup.php:2031
+#: setup.php:2072
 #, fuzzy
 msgid "Syslog Removals"
 msgstr "Xóa nhật ký hệ thống"
 
-#: setup.php:2032 setup.php:2033 setup.php:2037 setup.php:2038 setup.php:2042
+#: setup.php:2073 setup.php:2074 setup.php:2078 setup.php:2079 setup.php:2083
 msgid "(Edit)"
 msgstr "(Sửa)"
 
-#: setup.php:2034 setup.php:2039 setup.php:2043
+#: setup.php:2075 setup.php:2080 setup.php:2084
 #, fuzzy
 msgid "(Actions)"
 msgstr "Hành động"
 
-#: setup.php:2036
+#: setup.php:2077
 #, fuzzy
 msgid "Syslog Alerts"
 msgstr "Cảnh báo nhật ký hệ thống"
 
-#: setup.php:2041
+#: setup.php:2082
 #, fuzzy
 msgid "Syslog Reports"
 msgstr "Báo cáo nhật ký hệ thống"
 
-#: setup.php:2145
+#: setup.php:2186
 #, fuzzy
 msgid "Display Syslog in Range"
 msgstr "Hiển thị Syslog trong Phạm vi"
 
-#: setup.php:2171 setup.php:2181 setup.php:2188
-msgid "Invalid request. Please try again."
-msgstr ""
-
-#: setup.php:2215
+#: setup.php:2256
 #, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "Đã có %s hồ sơ thiết bị bị xóa khỏi cơ sở dữ liệu Syslog"
 
-#: setup.php:2236
+#: setup.php:2277
 #, fuzzy
 msgid "Syslog Utilities"
 msgstr "Syslog tiện ích"
 
-#: setup.php:2240
+#: setup.php:2281
 #, fuzzy
 msgid "Purge Syslog Devices"
 msgstr "Thanh lọc các thiết bị Syslog"
 
-#: setup.php:2242
+#: setup.php:2283
 msgid "Are you sure you want to purge stale Syslog devices?"
 msgstr ""
 
-#: setup.php:2248
+#: setup.php:2289
 msgid "Confirm Purge"
 msgstr ""
 
-#: setup.php:2262 syslog_alerts.php:218 syslog_dashboards.php:428
-#: syslog_removal.php:240 syslog_reports.php:213 syslog_saved_searches.php:384
+#: setup.php:2303 syslog_alerts.php:226 syslog_dashboards.php:428
+#: syslog_removal.php:248 syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Continue"
 msgstr "Tiếp tục"
 
-#: setup.php:2288
+#: setup.php:2329
 #, fuzzy
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "Lựa chọn menu này cung cấp một phương tiện để xóa các Thiết bị không còn báo cáo vào máy chủ nhật ký hệ thống của Cacti."
@@ -1181,7 +1302,7 @@ msgstr "Lựa chọn menu này cung cấp một phương tiện để xóa các 
 msgid "Syslog Viewer"
 msgstr "Trình xem nhật ký hệ thống"
 
-#: syslog.php:258 syslog.php:422
+#: syslog.php:258 syslog.php:627
 #, fuzzy
 msgid "Syslog Status"
 msgstr "Cài đặt nhật ký hệ thống"
@@ -1191,7 +1312,7 @@ msgstr "Cài đặt nhật ký hệ thống"
 msgid "Selected Alert"
 msgstr "Thông báo được chọn"
 
-#: syslog.php:313
+#: syslog.php:313 syslog.php:543
 msgid "seconds"
 msgstr ""
 
@@ -1199,860 +1320,1002 @@ msgstr ""
 msgid "min/avg/max"
 msgstr ""
 
-#: syslog.php:390 syslog.php:405 syslog.php:407 syslog.php:408
+#: syslog.php:436 syslog.php:452 syslog.php:469 syslog.php:522 syslog.php:595
+#: syslog.php:610 syslog.php:612 syslog.php:613
 msgid "Unavailable"
 msgstr ""
 
-#: syslog.php:405
+#: syslog.php:493
+#, fuzzy, php-format
+msgid "no message received for %s"
+msgstr "Bộ lọc thư Syslog %s"
+
+#: syslog.php:498
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr ""
+
+#: syslog.php:503
+msgid "no incoming data is available to evaluate"
+msgstr ""
+
+#: syslog.php:552
+#, fuzzy
+msgid "day"
+msgstr "Hàng ngày"
+
+#: syslog.php:552
+msgid "days"
+msgstr ""
+
+#: syslog.php:559
+msgid "hour"
+msgstr ""
+
+#: syslog.php:559
+#, fuzzy
+msgid "hours"
+msgstr "%d giờ"
+
+#: syslog.php:565
+#, fuzzy
+msgid "minute"
+msgstr "1 Phút"
+
+#: syslog.php:565
+#, fuzzy
+msgid "minutes"
+msgstr "1 Phút"
+
+#: syslog.php:610
 msgid "Rows in syslog_incoming"
 msgstr ""
 
-#: syslog.php:406
+#: syslog.php:611
 msgid "Syslog table size (data + indexes)"
 msgstr ""
 
-#: syslog.php:407
+#: syslog.php:612
 #, fuzzy
 msgid "Syslog retention"
 msgstr "Duy trì nhật ký hệ thống"
 
-#: syslog.php:408
+#: syslog.php:613
 #, fuzzy
 msgid "Alert retention"
 msgstr "Lưu giữ thông báo nhật ký hệ thống"
 
-#: syslog.php:427
+#: syslog.php:632
 msgid "Latest processing run"
 msgstr ""
 
-#: syslog.php:430
+#: syslog.php:635
 #, fuzzy
 msgid "Records processed"
 msgstr "Tái chế"
 
-#: syslog.php:434
+#: syslog.php:639
 msgid "Polling runtime"
 msgstr ""
 
-#: syslog.php:441
+#: syslog.php:646 syslog.php:762
 msgid "Started"
 msgstr ""
 
-#: syslog.php:442
+#: syslog.php:647
 msgid "Finished"
 msgstr ""
 
-#: syslog.php:443
+#: syslog.php:648
 msgid "Minimum runtime"
 msgstr ""
 
-#: syslog.php:444
+#: syslog.php:649
 msgid "Average runtime"
 msgstr ""
 
-#: syslog.php:445
+#: syslog.php:650
 msgid "Maximum runtime"
 msgstr ""
 
-#: syslog.php:454
+#: syslog.php:659
 #, fuzzy
 msgid "Storage and retention"
 msgstr "Duy trì nhật ký hệ thống"
 
-#: syslog.php:462
+#: syslog.php:668
+#, fuzzy
+msgid "Partition maintenance blocked"
+msgstr "Bảng phân vùng"
+
+#: syslog.php:669
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr ""
+
+#: syslog.php:674
+msgid "Collector health"
+msgstr ""
+
+#: syslog.php:679
+msgid "Last received log"
+msgstr ""
+
+#: syslog.php:680
+#, fuzzy
+msgid "Oldest unprocessed message"
+msgstr "[Tin nhắn chưa được xử lý: %s]"
+
+#: syslog.php:681
+msgid "Incoming backlog"
+msgstr ""
+
+#: syslog.php:682
+#, fuzzy
+msgid "Records processed in latest run"
+msgstr "Tái chế"
+
+#: syslog.php:691
+msgid "Collector warning"
+msgstr ""
+
+#: syslog.php:697
 msgid "Parallel workers"
 msgstr ""
 
-#: syslog.php:466
+#: syslog.php:701
 msgid "Worker processes running"
 msgstr ""
 
-#: syslog.php:467
+#: syslog.php:702
 msgid "Configured worker processes"
 msgstr ""
 
-#: syslog.php:477
+#: syslog.php:712
 #, fuzzy
 msgid "Process"
 msgstr "Tái chế"
 
-#: syslog.php:478
+#: syslog.php:713
 #, fuzzy
 msgid "Records handled"
 msgstr "Bản ghi"
 
-#: syslog.php:479
+#: syslog.php:714
 msgid "Hosts resolved"
 msgstr ""
 
-#: syslog.php:480
+#: syslog.php:715
 msgid "Runtime"
 msgstr ""
 
-#: syslog.php:494
+#: syslog.php:729
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
 msgstr ""
 
-#: syslog.php:498
+#: syslog.php:733
+msgid "Processing phases"
+msgstr ""
+
+#: syslog.php:737
+#, fuzzy
+msgid "Partition maintenance"
+msgstr "Bảng phân vùng"
+
+#: syslog.php:738
+msgid "Reference updates"
+msgstr ""
+
+#: syslog.php:739
+#, fuzzy
+msgid "Removal rules"
+msgstr "Quy tắc loại bỏ"
+
+#: syslog.php:740
+#, fuzzy
+msgid "Alert evaluation"
+msgstr "Lưu giữ thông báo nhật ký hệ thống"
+
+#: syslog.php:741
+msgid "Incoming transfer"
+msgstr ""
+
+#: syslog.php:742
+#, fuzzy
+msgid "Report processing"
+msgstr "Tái chế"
+
+#: syslog.php:761
+msgid "Phase"
+msgstr ""
+
+#: syslog.php:763
+#, fuzzy
+msgid "Duration"
+msgstr "Xóa"
+
+#: syslog.php:764
+#, fuzzy
+msgid "Records"
+msgstr "% d Hồ sơ"
+
+#: syslog.php:778
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr ""
+
+#: syslog.php:784
+msgid "Slowest phase"
+msgstr ""
+
+#: syslog.php:791
 msgid "Rule activity"
 msgstr ""
 
-#: syslog.php:501
+#: syslog.php:794
 #, fuzzy
 msgid "Rules processed"
 msgstr "Tái chế"
 
-#: syslog.php:502
+#: syslog.php:795
 #, fuzzy
 msgid "Last run"
 msgstr "Gửi lần cuối"
 
-#: syslog.php:503
+#: syslog.php:796
 msgid "Total"
 msgstr ""
 
-#: syslog.php:506
+#: syslog.php:799
 #, fuzzy
 msgid "Alert rules"
 msgstr "Quy tắc cảnh báo"
 
-#: syslog.php:506
+#: syslog.php:799
 #, fuzzy
 msgid "Delete rules"
 msgstr "Quy tắc cảnh báo"
 
-#: syslog.php:513
+#: syslog.php:806
 msgid "Fired last run"
 msgstr ""
 
-#: syslog.php:536
+#: syslog.php:829
 #, fuzzy
 msgid "Syslog Alert View"
 msgstr "Xem thông báo nhật ký hệ thống"
 
-#: syslog.php:943 syslog.php:989
+#: syslog.php:1236 syslog.php:1282
 msgid "A valid saved search is required."
 msgstr ""
 
-#: syslog.php:952 syslog.php:998
+#: syslog.php:1245 syslog.php:1291
 msgid "Saved search not found."
 msgstr ""
 
-#: syslog.php:1001
+#: syslog.php:1294
 msgid "You may only share your own saved searches."
 msgstr ""
 
-#: syslog.php:1397
+#: syslog.php:1690
 #, fuzzy, php-format
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[Tin nhắn chưa được xử lý: %s]"
 
-#: syslog.php:1435
+#: syslog.php:1728
 #, fuzzy
 msgid "Enter a search term"
 msgstr "Nhập một cụm từ tìm kiếm"
 
-#: syslog.php:1436
+#: syslog.php:1729
 #, fuzzy
 msgid "Select Device(s)"
 msgstr "Chọn thiết bị"
 
-#: syslog.php:1437
+#: syslog.php:1730
 #, fuzzy
 msgid "Devices Selected"
 msgstr "Thiết bị được chọn"
 
-#: syslog.php:1438
+#: syslog.php:1731
 #, fuzzy
 msgid "All Devices Selected"
 msgstr "Tất cả các thiết bị được chọn"
 
-#: syslog.php:1443
+#: syslog.php:1736
 #, fuzzy, php-format
 msgid "Syslog Message Filter %s"
 msgstr "Bộ lọc thư Syslog %s"
 
-#: syslog.php:1451 syslog.php:1513
+#: syslog.php:1744 syslog.php:1806
 #, fuzzy
 msgid "Search messages"
 msgstr "Tin nhắn"
 
-#: syslog.php:1455 syslog.php:1456 syslog.php:1457 syslog.php:1459
+#: syslog.php:1748 syslog.php:1749 syslog.php:1750 syslog.php:1752
 msgid "Collapse filters"
 msgstr ""
 
-#: syslog.php:1458
+#: syslog.php:1751
 msgid "Edit filters"
 msgstr ""
 
-#: syslog.php:1463
+#: syslog.php:1756
 #, fuzzy
 msgid "Saved Searches"
 msgstr "Tìm kiếm"
 
-#: syslog.php:1467 syslog.php:1476
+#: syslog.php:1760 syslog.php:1769
 #, fuzzy
 msgid "My Searches"
 msgstr "Tìm kiếm"
 
-#: syslog.php:1468 syslog.php:1474
+#: syslog.php:1761 syslog.php:1767
 msgid "Global Searches"
 msgstr ""
 
-#: syslog.php:1501
+#: syslog.php:1794
 msgid "Manage"
 msgstr ""
 
-#: syslog.php:1501
+#: syslog.php:1794
 #, fuzzy
 msgid "Manage saved searches"
 msgstr "Nhập một cụm từ tìm kiếm"
 
-#: syslog.php:1502
+#: syslog.php:1795
 #, fuzzy
 msgid "Save search"
 msgstr "Tìm kiếm"
 
-#: syslog.php:1504
+#: syslog.php:1797
 #, fuzzy
 msgid "Edit"
 msgstr "(Sửa)"
 
-#: syslog.php:1507
+#: syslog.php:1800
 msgid "Save for all"
 msgstr ""
 
-#: syslog.php:1520 syslog.php:1605
+#: syslog.php:1813 syslog.php:1898
 #, fuzzy
 msgid "contains"
 msgstr "Chứa"
 
-#: syslog.php:1521 syslog.php:1606
+#: syslog.php:1814 syslog.php:1899
 msgid "does not contain"
 msgstr ""
 
-#: syslog.php:1527
+#: syslog.php:1820
 msgid "Results limit"
 msgstr ""
 
-#: syslog.php:1528
+#: syslog.php:1821
 #, fuzzy
 msgid "Display Rows"
 msgstr "Hàng hiển thị"
 
-#: syslog.php:1529 syslog_alerts.php:928 syslog_dashboards.php:237
-#: syslog_removal.php:800 syslog_reports.php:665 syslog_saved_searches.php:229
+#: syslog.php:1822 syslog_alerts.php:955 syslog_dashboards.php:237
+#: syslog_removal.php:827 syslog_reports.php:665 syslog_saved_searches.php:229
 msgid "Default"
 msgstr "Mặc định"
 
-#: syslog.php:1544
+#: syslog.php:1837
 #, fuzzy
 msgid "View options"
 msgstr "Tùy chọn email"
 
-#: syslog.php:1564
+#: syslog.php:1857
 #, fuzzy
 msgid "Removal Handling"
 msgstr "Xử lý loại bỏ"
 
-#: syslog.php:1575
+#: syslog.php:1868
 #, fuzzy
 msgid "Display"
 msgstr "Hàng hiển thị"
 
-#: syslog.php:1576
+#: syslog.php:1869
 msgid "Group Duplicate Messages"
 msgstr ""
 
-#: syslog.php:1577
+#: syslog.php:1870
 #, fuzzy
 msgid "Individual Messages"
 msgstr "Cá nhân"
 
-#: syslog.php:1578
+#: syslog.php:1871
 #, fuzzy
 msgid "Grouped Messages"
 msgstr "Tin nhắn"
 
-#: syslog.php:1588
+#: syslog.php:1881
 #, php-format
 msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
 msgstr ""
 
-#: syslog.php:1588
+#: syslog.php:1881
 #, fuzzy
 msgid "Search help"
 msgstr "Tìm kiếm"
 
-#: syslog.php:1593
+#: syslog.php:1886
 msgid "New Saved Search"
 msgstr ""
 
-#: syslog.php:1594
+#: syslog.php:1887
 msgid "Edit Saved Search"
 msgstr ""
 
-#: syslog.php:1595
+#: syslog.php:1888
 #, fuzzy
 msgid "Save As"
 msgstr "Lưu"
 
-#: syslog.php:1599
+#: syslog.php:1892
 msgid "Delete the selected saved search?"
 msgstr ""
 
-#: syslog.php:1612
+#: syslog.php:1905
 #, fuzzy
 msgid "Save Search As"
 msgstr "Tìm kiếm"
 
-#: syslog.php:1622 syslog_alerts.php:908 syslog_dashboards.php:227
-#: syslog_removal.php:780 syslog_reports.php:645 syslog_saved_searches.php:219
+#: syslog.php:1915 syslog_alerts.php:935 syslog_dashboards.php:227
+#: syslog_removal.php:807 syslog_reports.php:645 syslog_saved_searches.php:219
 msgid "Search"
 msgstr "Tìm kiếm"
 
-#: syslog.php:1623 syslog_alerts.php:945 syslog_dashboards.php:254
-#: syslog_removal.php:817 syslog_reports.php:682 syslog_saved_searches.php:246
+#: syslog.php:1916 syslog_alerts.php:972 syslog_dashboards.php:254
+#: syslog_removal.php:844 syslog_reports.php:682 syslog_saved_searches.php:246
 msgid "Clear"
 msgstr "Xóa"
 
-#: syslog.php:1623
+#: syslog.php:1916
 #, fuzzy
 msgid "Return filter values to their user defined defaults"
 msgstr "Trả về giá trị bộ lọc cho mặc định do người dùng xác định"
 
-#: syslog.php:1624
+#: syslog.php:1917
 #, fuzzy
 msgid "Refresh Results"
 msgstr "Thời gian cập nhật"
 
-#: syslog.php:1625
+#: syslog.php:1918
 #, fuzzy
 msgid "Export Records to CSV"
 msgstr "Xuất bản ghi sang CSV"
 
-#: syslog.php:1626
+#: syslog.php:1919
 #, fuzzy
 msgid "Save Default Settings"
 msgstr "Lưu cài đặt mặc định"
 
-#: syslog.php:1626
+#: syslog.php:1919
 #, fuzzy
 msgid "Save view defaults"
 msgstr "Lưu cài đặt mặc định"
 
-#: syslog.php:1680
+#: syslog.php:1973
 msgid "Emergency"
 msgstr "Khẩn cấp"
 
-#: syslog.php:1682 syslog.php:1702
+#: syslog.php:1975 syslog.php:1995
 msgid "Alert"
 msgstr "Cảnh báo"
 
-#: syslog.php:1683
+#: syslog.php:1976
 msgid "Error"
 msgstr "Lỗi"
 
-#: syslog.php:1686
+#: syslog.php:1979
 msgid "Info"
 msgstr "Thông tin"
 
-#: syslog.php:1687
+#: syslog.php:1980
 msgid "Debug"
 msgstr "Gỡ rối"
 
-#: syslog.php:1704
+#: syslog.php:1997
 msgid "Informational"
 msgstr "Thông tin"
 
-#: syslog.php:1822 syslog.php:1947 syslog.php:2003 syslog_alerts.php:633
+#: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:641
 msgid "Device"
 msgstr "Thiết bị"
 
-#: syslog.php:1832
+#: syslog.php:2125
 msgid "Messages"
 msgstr "Tin nhắn"
 
-#: syslog.php:1861
+#: syslog.php:2154
 #, fuzzy
 msgid "Empty message"
 msgstr "Tin nhắn"
 
-#: syslog.php:1927
+#: syslog.php:2220
 #, fuzzy
 msgid "No Syslog Messages"
 msgstr "Không có tin nhắn nhật ký hệ thống"
 
-#: syslog.php:1956
+#: syslog.php:2249
 #, fuzzy
 msgid "Alert Log Rows"
 msgstr "Nhật ký cảnh báo"
 
-#: syslog.php:1973
+#: syslog.php:2266
 #, fuzzy
 msgid "Alert Removed"
 msgstr "Đã xóa thông báo"
 
-#: syslog.php:1983
+#: syslog.php:2276
 #, fuzzy
 msgid "No Alert Log Messages"
 msgstr "Không có thông báo Nhật ký thông báo"
 
-#: syslog.php:2002
+#: syslog.php:2295
 msgid "Close message details"
 msgstr ""
 
-#: syslog.php:2002
+#: syslog.php:2295
 #, fuzzy
 msgid "Message details"
 msgstr "Tin nhắn"
 
-#: syslog.php:2005
+#: syslog.php:2298
 msgid "Copied"
 msgstr ""
 
-#: syslog.php:2005
+#: syslog.php:2298
 #, fuzzy
 msgid "Copy message"
 msgstr "Tin nhắn"
 
-#: syslog.php:2005
+#: syslog.php:2298
 msgid "Copy unavailable. Select and copy the message text."
 msgstr ""
 
-#: syslog.php:2006
+#: syslog.php:2299
 #, fuzzy
 msgid "Create Alarm Rule"
 msgstr "Quy tắc cảnh báo nhập khẩu"
 
-#: syslog.php:2006
+#: syslog.php:2299
 #, fuzzy
 msgid "Create Removal Rule"
 msgstr "Quy tắc loại bỏ mới"
 
-#: syslog.php:2007
+#: syslog.php:2300
 msgid "Filter by device"
 msgstr ""
 
-#: syslog.php:2007
+#: syslog.php:2300
 msgid "Filter by program"
 msgstr ""
 
-#: syslog.php:2074 syslog.php:2097 syslog.php:2128 syslog.php:2129
+#: syslog.php:2367 syslog.php:2390 syslog.php:2421 syslog.php:2422
 msgid "All Programs"
 msgstr "Tất cả chương trình"
 
-#: syslog_alerts.php:179
+#: syslog_alerts.php:187
 #, fuzzy
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để xóa (các) Quy tắc cảnh báo nhật ký hệ thống sau đây."
 
-#: syslog_alerts.php:185
+#: syslog_alerts.php:193
 #, fuzzy
 msgid "Delete Syslog Alert Rule(s)"
 msgstr "Xóa (các) Quy tắc cảnh báo nhật ký hệ thống"
 
-#: syslog_alerts.php:189
+#: syslog_alerts.php:197
 #, fuzzy
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để vô hiệu hóa (các) Quy tắc cảnh báo nhật ký hệ thống sau đây."
 
-#: syslog_alerts.php:195
+#: syslog_alerts.php:203
 #, fuzzy
 msgid "Disable Syslog Alert Rule(s)"
 msgstr "Vô hiệu hóa (các) Quy tắc cảnh báo nhật ký hệ thống"
 
-#: syslog_alerts.php:199
+#: syslog_alerts.php:207
 #, fuzzy
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để bật (các) Quy tắc cảnh báo nhật ký hệ thống sau đây."
 
-#: syslog_alerts.php:205
+#: syslog_alerts.php:213
 #, fuzzy
 msgid "Enable Syslog Alert Rule(s)"
 msgstr "Kích hoạt quy tắc cảnh báo nhật ký hệ thống"
 
-#: syslog_alerts.php:209
+#: syslog_alerts.php:217
 #, fuzzy
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để xuất (các) Quy tắc cảnh báo nhật ký hệ thống sau đây."
 
-#: syslog_alerts.php:215
+#: syslog_alerts.php:223
 #, fuzzy
 msgid "Export Syslog Alert Rule(s)"
 msgstr "Xuất quy tắc cảnh báo nhật ký hệ thống"
 
-#: syslog_alerts.php:344 syslog_reports.php:334
+#: syslog_alerts.php:352 syslog_reports.php:334
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr ""
 
-#: syslog_alerts.php:345 syslog_reports.php:335
+#: syslog_alerts.php:353 syslog_reports.php:335
 #, php-format
 msgid "The Pre-processed SQL is:<br><br> %s"
 msgstr ""
 
-#: syslog_alerts.php:357 syslog_removal.php:341
+#: syslog_alerts.php:365 syslog_removal.php:349
 #, php-format
 msgid "The filter is invalid: %s"
 msgstr ""
 
-#: syslog_alerts.php:359 syslog_reports.php:350
+#: syslog_alerts.php:367 syslog_reports.php:350
 msgid "The processed SQL was invalid.  Please correct your SQL"
 msgstr ""
 
-#: syslog_alerts.php:462
+#: syslog_alerts.php:470
 msgid "Not Set"
 msgstr "Chưa thiết lập"
 
-#: syslog_alerts.php:467
+#: syslog_alerts.php:475
 msgid "1 Minute"
 msgstr "1 Phút"
 
-#: syslog_alerts.php:478
+#: syslog_alerts.php:486
 #, fuzzy, php-format
 msgid "%d Hour"
 msgstr "%d giờ"
 
-#: syslog_alerts.php:479 syslog_alerts.php:480 syslog_alerts.php:481
-#: syslog_alerts.php:482 syslog_alerts.php:483 syslog_alerts.php:484
+#: syslog_alerts.php:487 syslog_alerts.php:488 syslog_alerts.php:489
+#: syslog_alerts.php:490 syslog_alerts.php:491 syslog_alerts.php:492
 #, fuzzy, php-format
 msgid "%d Hours"
 msgstr "%d giờ"
 
-#: syslog_alerts.php:489
+#: syslog_alerts.php:497
 msgid "1 Month"
 msgstr "1 Tháng"
 
-#: syslog_alerts.php:531
+#: syslog_alerts.php:539
 #, fuzzy, php-format
 msgid "Alert Edit [edit: %s]"
 msgstr "Thông báo Chỉnh sửa [chỉnh sửa: %s]"
 
-#: syslog_alerts.php:533 syslog_alerts.php:554 syslog_alerts.php:563
+#: syslog_alerts.php:541 syslog_alerts.php:562 syslog_alerts.php:571
 #, fuzzy
 msgid "Alert Edit [new]"
 msgstr "Chỉnh sửa thông báo [mới]"
 
-#: syslog_alerts.php:535 syslog_alerts.php:560 syslog_alerts.php:565
+#: syslog_alerts.php:543 syslog_alerts.php:568 syslog_alerts.php:573
 #, fuzzy
 msgid "New Alert Rule"
 msgstr "Quy tắc cảnh báo mới"
 
-#: syslog_alerts.php:577 syslog_alerts.php:1070 syslog_reports.php:479
+#: syslog_alerts.php:585 syslog_alerts.php:1097 syslog_reports.php:479
 msgid "N/A"
 msgstr "N/A"
 
-#: syslog_alerts.php:610 syslog_reports.php:485
+#: syslog_alerts.php:618 syslog_reports.php:485
 msgid "Details"
 msgstr "Chi tiết"
 
-#: syslog_alerts.php:615
+#: syslog_alerts.php:623
 #, fuzzy
 msgid "Please describe this Alert."
 msgstr "Vui lòng mô tả Thông báo này."
 
-#: syslog_alerts.php:623
+#: syslog_alerts.php:631
 #, fuzzy
 msgid "What is the Severity Level of this Alert?"
 msgstr "Mức độ nghiêm trọng của thông báo này là gì?"
 
-#: syslog_alerts.php:630
+#: syslog_alerts.php:638
 #, fuzzy
 msgid "Reporting Level"
 msgstr "Phương pháp báo cáo"
 
-#: syslog_alerts.php:631
+#: syslog_alerts.php:639
 #, fuzzy
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
 msgstr "Để ghi lại các Chu kỳ Cảnh báo lại, Cảnh báo có được theo dõi ở cấp Hệ thống hoặc Thiết bị hay không."
 
-#: syslog_alerts.php:633
+#: syslog_alerts.php:641
 msgid "System"
 msgstr "Hệ thống"
 
-#: syslog_alerts.php:638
+#: syslog_alerts.php:646
 #, fuzzy
 msgid "Reporting Method"
 msgstr "Phương pháp báo cáo"
 
-#: syslog_alerts.php:639
+#: syslog_alerts.php:647
 #, fuzzy
 msgid "Define how to Alert on the syslog messages."
 msgstr "Xác định cách thông báo trên các thông báo nhật ký hệ thống."
 
-#: syslog_alerts.php:641 syslog_alerts.php:1069
+#: syslog_alerts.php:649 syslog_alerts.php:1096
 msgid "Individual"
 msgstr "Cá nhân"
 
-#: syslog_alerts.php:647
+#: syslog_alerts.php:655
 #, fuzzy
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr "Đối với phương pháp 'Ngưỡng', Nếu số được nhìn thấy cao hơn giá trị này, Thông báo sẽ được kích hoạt."
 
-#: syslog_alerts.php:655 syslog_alerts.php:1047 syslog_removal.php:916
+#: syslog_alerts.php:663 syslog_alerts.php:1074 syslog_removal.php:943
 #: syslog_reports.php:781
 #, fuzzy
 msgid "Match Type"
 msgstr "Loại so khớp"
 
-#: syslog_alerts.php:656
+#: syslog_alerts.php:664
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
 msgstr ""
 
-#: syslog_alerts.php:666 syslog_reports.php:531
+#: syslog_alerts.php:674 syslog_reports.php:531
 #, fuzzy
 msgid "Message Match String"
 msgstr "Chuỗi kết hợp tin nhắn Syslog"
 
-#: syslog_alerts.php:667
+#: syslog_alerts.php:675
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
 msgstr ""
 
-#: syslog_alerts.php:677 syslog_alerts.php:680 syslog_alerts.php:914
-#: syslog_alerts.php:1046 syslog_removal.php:591 syslog_removal.php:786
-#: syslog_removal.php:915 syslog_reports.php:499 syslog_reports.php:651
+#: syslog_alerts.php:685 syslog_alerts.php:688 syslog_alerts.php:941
+#: syslog_alerts.php:1073 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
 msgstr "Bật"
 
-#: syslog_alerts.php:678
+#: syslog_alerts.php:686
 #, fuzzy
 msgid "Is this Alert Enabled?"
 msgstr "Thông báo này đã được bật chưa?"
 
-#: syslog_alerts.php:680 syslog_removal.php:591 syslog_reports.php:499
+#: syslog_alerts.php:688 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
 msgstr "Vô hiệu hóa"
 
-#: syslog_alerts.php:684
+#: syslog_alerts.php:692
 #, fuzzy
 msgid "Re-Alert Cycle"
 msgstr "Chu kỳ cảnh báo lại"
 
-#: syslog_alerts.php:688
+#: syslog_alerts.php:696
 #, fuzzy
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr "Không gửi lại thông báo này cho cùng một máy chủ, cho đến khi hết thời gian này. Đối với báo động dựa trên ngưỡng, điều này áp dụng cho tất cả các máy chủ."
 
-#: syslog_alerts.php:692 syslog_reports.php:568
+#: syslog_alerts.php:700 syslog_reports.php:568
 msgid "Notes"
 msgstr "Ghi chú"
 
-#: syslog_alerts.php:695
+#: syslog_alerts.php:703
 #, fuzzy
 msgid "Space for Notes on the Alert"
 msgstr "Không gian cho ghi chú trên cảnh báo"
 
-#: syslog_alerts.php:703
+#: syslog_alerts.php:711
 msgid "Email Options"
 msgstr "Tùy chọn email"
 
-#: syslog_alerts.php:707 syslog_reports.php:550
+#: syslog_alerts.php:715 syslog_reports.php:550
 #, fuzzy
 msgid "Notification List"
 msgstr "Danh sách thông báo"
 
-#: syslog_alerts.php:708 syslog_reports.php:551
+#: syslog_alerts.php:716 syslog_reports.php:551
 #, fuzzy
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
 msgstr "Sử dụng nội dung của Danh sách thông báo này để chỉ định ai sẽ được thông báo và làm thế nào."
 
-#: syslog_alerts.php:716
+#: syslog_alerts.php:724
 #, fuzzy
 msgid "Emails to Notify"
 msgstr "Email để thông báo"
 
-#: syslog_alerts.php:719
+#: syslog_alerts.php:727
 #, fuzzy
 msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
 msgstr "Vui lòng nhập danh sách địa chỉ Email được phân cách bằng dấu phẩy để thông báo. Nếu bạn muốn gửi Email đến người nhận ở định dạng SMS, vui lòng thêm tiền tố địa chỉ Email của người nhận đó bằng <b>'sms @'</b> . Ví dụ: nếu địa chỉ SMS của người nhận là <b>'2485551212@mycarrier.net'</b> , bạn sẽ nhập nó dưới dạng <b>'sms @ 2485551212 @ mycarrier.net'</b> và nó sẽ được định dạng dưới dạng tin nhắn SMS."
 
-#: syslog_alerts.php:725 syslog_reports.php:539
+#: syslog_alerts.php:733 syslog_reports.php:539
 #, fuzzy
 msgid "Email Body Text"
 msgstr "Body Text"
 
-#: syslog_alerts.php:728
+#: syslog_alerts.php:736
 #, fuzzy
 msgid "This information will appear in the body of the Alert just before the Alert details."
 msgstr "Thông tin sẽ được chứa trong phần thân của báo cáo."
 
-#: syslog_alerts.php:736
+#: syslog_alerts.php:744
 msgid "Actions"
 msgstr "Hành động"
 
-#: syslog_alerts.php:740
+#: syslog_alerts.php:748
 msgid "Open Ticket"
 msgstr "Mở Ticket"
 
-#: syslog_alerts.php:741
+#: syslog_alerts.php:749
 #, fuzzy
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "Nếu một Vé hỗ trợ được mở cho Thông báo này. LƯU Ý: Kịch bản lệnh Ticket sẽ được điền với một số biến môi trường 'ALERT_' để thuận tiện."
 
-#: syslog_alerts.php:743 syslog_alerts.php:920 syslog_alerts.php:1071
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:792
-#: syslog_removal.php:937 syslog_reports.php:657 syslog_reports.php:804
+#: syslog_alerts.php:751 syslog_alerts.php:947 syslog_alerts.php:1098
+#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:819
+#: syslog_removal.php:964 syslog_reports.php:657 syslog_reports.php:804
 msgid "No"
 msgstr "Không"
 
-#: syslog_alerts.php:743 syslog_alerts.php:919 syslog_alerts.php:1071
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:791
-#: syslog_removal.php:937 syslog_reports.php:656 syslog_reports.php:804
+#: syslog_alerts.php:751 syslog_alerts.php:946 syslog_alerts.php:1098
+#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:818
+#: syslog_removal.php:964 syslog_reports.php:656 syslog_reports.php:804
 msgid "Yes"
 msgstr "Có"
 
-#: syslog_alerts.php:747
+#: syslog_alerts.php:755
 msgid "Command"
 msgstr "Command"
 
-#: syslog_alerts.php:750
+#: syslog_alerts.php:758
 #, fuzzy
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Khi Thông báo được kích hoạt, hãy chạy lệnh sau. Các biến thay thế sau có sẵn <b>&#39;&lt;HOSTNAME&gt;&#39;</b> , <b>&#39;&lt;ALERTID&gt;&#39;</b> , <b>&#39;&lt;MESSAGE&gt;&#39;</b> , <b>&#39;&lt;FACILITY&gt;&#39;</b> , <b>&#39;&lt;PRIORITY&gt;&#39;</b> , <b>&#39;&lt;SEVERITY&gt;&#39;</b> . Xin lưu ý rằng <b>&#39;&lt;HOSTNAME&gt;&#39;</b> chỉ khả dụng trên các ngưỡng riêng lẻ."
 
-#: syslog_alerts.php:815 syslog_removal.php:688
+#: syslog_alerts.php:794 syslog_removal.php:668
+#, fuzzy
+msgid "Test rule"
+msgstr "Quy tắc cảnh báo"
+
+#: syslog_alerts.php:795 syslog_alerts.php:902 syslog_removal.php:669
+#: syslog_removal.php:774
+msgid "Rule Test Preview"
+msgstr ""
+
+#: syslog_alerts.php:828 syslog_removal.php:701
 msgid "Value"
 msgstr ""
 
-#: syslog_alerts.php:816 syslog_removal.php:689
+#: syslog_alerts.php:829 syslog_removal.php:702
 #, fuzzy
 msgid "Enter a value"
 msgstr "Nhập một cụm từ tìm kiếm"
 
-#: syslog_alerts.php:817 syslog_removal.php:690
+#: syslog_alerts.php:830 syslog_removal.php:703
 #, fuzzy
 msgid "Match"
 msgstr "Loại so khớp"
 
-#: syslog_alerts.php:818 syslog_removal.php:691
+#: syslog_alerts.php:831 syslog_removal.php:704
 msgid "Exclude"
 msgstr ""
 
-#: syslog_alerts.php:820 syslog_removal.php:693
+#: syslog_alerts.php:833 syslog_removal.php:706
 #, fuzzy
 msgid "Enter a nonnegative integer"
 msgstr "Nhập một cụm từ tìm kiếm"
 
-#: syslog_alerts.php:848 syslog_alerts.php:852
+#: syslog_alerts.php:861 syslog_alerts.php:865
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:918 syslog_removal.php:790 syslog_reports.php:655
+#: syslog_alerts.php:945 syslog_removal.php:817 syslog_reports.php:655
 msgid "All"
 msgstr "Tất cả"
 
-#: syslog_alerts.php:924 syslog_dashboards.php:233 syslog_reports.php:661
+#: syslog_alerts.php:951 syslog_dashboards.php:233 syslog_reports.php:661
 #: syslog_saved_searches.php:225
 msgid "Rows"
 msgstr "Hàng"
 
-#: syslog_alerts.php:944 syslog_dashboards.php:253 syslog_removal.php:816
+#: syslog_alerts.php:971 syslog_dashboards.php:253 syslog_removal.php:843
 #: syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr "Đi"
 
-#: syslog_alerts.php:946 syslog_alerts.php:1207 syslog_dashboards.php:255
-#: syslog_removal.php:818 syslog_removal.php:1073 syslog_reports.php:683
+#: syslog_alerts.php:973 syslog_alerts.php:1234 syslog_dashboards.php:255
+#: syslog_removal.php:845 syslog_removal.php:1100 syslog_reports.php:683
 #: syslog_reports.php:936 syslog_saved_searches.php:247
 msgid "Import"
 msgstr "Nhập"
 
-#: syslog_alerts.php:1016
+#: syslog_alerts.php:1043
 #, fuzzy
 msgid "Syslog Alert Filters"
 msgstr "Bộ lọc cảnh báo nhật ký hệ thống"
 
-#: syslog_alerts.php:1044 syslog_removal.php:918
+#: syslog_alerts.php:1071 syslog_removal.php:945
 msgid "Method"
 msgstr "Phương thức"
 
-#: syslog_alerts.php:1045
+#: syslog_alerts.php:1072
 #, fuzzy
 msgid "Threshold Count"
 msgstr "Đếm ngưỡng"
 
-#: syslog_alerts.php:1048 syslog_removal.php:917 syslog_reports.php:782
+#: syslog_alerts.php:1075 syslog_removal.php:944 syslog_reports.php:782
 #, fuzzy
 msgid "Search String"
 msgstr "Chuỗi tìm kiếm"
 
-#: syslog_alerts.php:1049 syslog_reports.php:558
+#: syslog_alerts.php:1076 syslog_reports.php:558
 msgid "Email Addresses"
 msgstr "Địa chỉ Email"
 
-#: syslog_alerts.php:1050 syslog_removal.php:919 syslog_reports.php:786
+#: syslog_alerts.php:1077 syslog_removal.php:946 syslog_reports.php:786
 msgid "Last Modified"
 msgstr "Sửa đổi lần cuối"
 
-#: syslog_alerts.php:1051 syslog_removal.php:920 syslog_reports.php:787
+#: syslog_alerts.php:1078 syslog_removal.php:947 syslog_reports.php:787
 #, fuzzy
 msgid "By User"
 msgstr "Thành viên: "
 
-#: syslog_alerts.php:1054
+#: syslog_alerts.php:1081
 msgid "Alerts"
 msgstr "Cảnh báo"
 
-#: syslog_alerts.php:1075
+#: syslog_alerts.php:1102
 msgid "Multiple"
 msgstr "Nhiều"
 
-#: syslog_alerts.php:1082
+#: syslog_alerts.php:1109
 #, fuzzy
 msgid "No Syslog Alerts Defined"
 msgstr "Không có cảnh báo Syslog được xác định"
 
-#: syslog_alerts.php:1111
+#: syslog_alerts.php:1138
 #, fuzzy
 msgid "Import Alert Rule from Local File"
 msgstr "Nhập quy tắc cảnh báo từ tệp cục bộ"
 
-#: syslog_alerts.php:1112
+#: syslog_alerts.php:1139
 #, fuzzy
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr "Nếu tệp XML chứa dữ liệu định nghĩa Quy tắc cảnh báo nằm trên máy cục bộ của bạn, hãy chọn nó ở đây."
 
-#: syslog_alerts.php:1117
+#: syslog_alerts.php:1144
 #, fuzzy
 msgid "Import Alert Rule from Text"
 msgstr "Nhập quy tắc cảnh báo từ văn bản"
 
-#: syslog_alerts.php:1118
+#: syslog_alerts.php:1145
 #, fuzzy
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr "Nếu bạn có tệp XML chứa dữ liệu Định nghĩa cảnh báo dưới dạng văn bản, bạn có thể dán tệp vào hộp này để nhập tệp."
 
-#: syslog_alerts.php:1129
+#: syslog_alerts.php:1156
 #, fuzzy
 msgid "Import Alert Rule"
 msgstr "Quy tắc cảnh báo nhập khẩu"
 
-#: syslog_alerts.php:1156 syslog_dashboards.php:528 syslog_removal.php:1022
+#: syslog_alerts.php:1183 syslog_dashboards.php:528 syslog_removal.php:1049
 #: syslog_saved_searches.php:477
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
 msgstr ""
 
-#: syslog_alerts.php:1205 syslog_removal.php:1071 syslog_reports.php:934
+#: syslog_alerts.php:1232 syslog_removal.php:1098 syslog_reports.php:934
 msgid "Imported"
 msgstr "Đã nhập"
 
-#: syslog_alerts.php:1205
+#: syslog_alerts.php:1232
 #, fuzzy, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr "LƯU Ý: Thông báo ' %s' %s!"
 
-#: syslog_alerts.php:1205 syslog_dashboards.php:192 syslog_dashboards.php:288
-#: syslog_removal.php:1071 syslog_reports.php:934
+#: syslog_alerts.php:1232 syslog_dashboards.php:192 syslog_dashboards.php:288
+#: syslog_removal.php:1098 syslog_reports.php:934
 msgid "Updated"
 msgstr "Đã cập nhật"
 
-#: syslog_alerts.php:1207
+#: syslog_alerts.php:1234
 #, fuzzy, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "LRI: Thông báo ' %s' %s Không thành công!"
 
-#: syslog_alerts.php:1207 syslog_removal.php:1073 syslog_reports.php:936
+#: syslog_alerts.php:1234 syslog_removal.php:1100 syslog_reports.php:936
 msgid "Update"
 msgstr "Cập nhật"
 
@@ -2200,209 +2463,209 @@ msgstr ""
 msgid "Reprocess"
 msgstr "Tái chế"
 
-#: syslog_removal.php:191
+#: syslog_removal.php:199
 #, fuzzy
 msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để xóa (các) Quy tắc xóa nhật ký hệ thống sau đây."
 
-#: syslog_removal.php:197
+#: syslog_removal.php:205
 #, fuzzy
 msgid "Delete Syslog Removal Rule(s)"
 msgstr "Xóa (các) Quy tắc xóa Syslog"
 
-#: syslog_removal.php:201
+#: syslog_removal.php:209
 #, fuzzy
 msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để vô hiệu hóa (các) Quy tắc xóa Syslog sau."
 
-#: syslog_removal.php:207
+#: syslog_removal.php:215
 #, fuzzy
 msgid "Disable Syslog Removal Rule(s)"
 msgstr "Vô hiệu hóa (các) Quy tắc xóa Syslog"
 
-#: syslog_removal.php:211
+#: syslog_removal.php:219
 #, fuzzy
 msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để bật (các) Quy tắc xóa Syslog sau."
 
-#: syslog_removal.php:217
+#: syslog_removal.php:225
 #, fuzzy
 msgid "Enable Syslog Removal Rule(s)"
 msgstr "Kích hoạt quy tắc xóa nhật ký hệ thống"
 
-#: syslog_removal.php:221
+#: syslog_removal.php:229
 #, fuzzy
 msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để xử lý lại (các) Quy tắc xóa Syslog sau."
 
-#: syslog_removal.php:227
+#: syslog_removal.php:235
 #, fuzzy
 msgid "Retroactively Process Syslog Removal Rule(s)"
 msgstr "Quy trình loại bỏ Syslog quy trình"
 
-#: syslog_removal.php:231
+#: syslog_removal.php:239
 #, fuzzy
 msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
 msgstr "Nhấp vào 'Tiếp tục' để xuất (các) Quy tắc xóa Syslog sau."
 
-#: syslog_removal.php:237
+#: syslog_removal.php:245
 #, fuzzy
 msgid "Export Syslog Removal Rule(s)"
 msgstr "Xuất quy tắc xóa Syslog"
 
-#: syslog_removal.php:416
+#: syslog_removal.php:424
 #, fuzzy, php-format
 msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
 msgstr "Đã xóa %s tin nhắn và %s tin nhắn được chuyển"
 
-#: syslog_removal.php:486
+#: syslog_removal.php:494
 #, fuzzy, php-format
 msgid "Removal Rule Edit [edit: %s]"
 msgstr "Quy tắc xóa Chỉnh sửa [chỉnh sửa: %s]"
 
-#: syslog_removal.php:488 syslog_removal.php:506
+#: syslog_removal.php:496 syslog_removal.php:514
 #, fuzzy
 msgid "Removal Rule Edit [new]"
 msgstr "Quy tắc xóa Chỉnh sửa [mới]"
 
-#: syslog_removal.php:490 syslog_removal.php:517
+#: syslog_removal.php:498 syslog_removal.php:525
 #, fuzzy
 msgid "New Removal Record"
 msgstr "Bản ghi loại bỏ mới"
 
-#: syslog_removal.php:512
+#: syslog_removal.php:520
 #, fuzzy
 msgid "New Removal Rule"
 msgstr "Quy tắc loại bỏ mới"
 
-#: syslog_removal.php:576
+#: syslog_removal.php:584
 #, fuzzy
 msgid "Removal Rule Details"
 msgstr "Chi tiết quy tắc loại bỏ"
 
-#: syslog_removal.php:580
+#: syslog_removal.php:588
 #, fuzzy
 msgid "Removal Rule Name"
 msgstr "Tên quy tắc loại bỏ"
 
-#: syslog_removal.php:581
+#: syslog_removal.php:589
 #, fuzzy
 msgid "Please describe this Removal Rule."
 msgstr "Vui lòng mô tả Quy tắc loại bỏ này."
 
-#: syslog_removal.php:588 syslog_reports.php:496
+#: syslog_removal.php:596 syslog_reports.php:496
 msgid "Enabled?"
 msgstr "Bật?"
 
-#: syslog_removal.php:589
+#: syslog_removal.php:597
 #, fuzzy
 msgid "Is this Removal Rule Enabled?"
 msgstr "Là quy tắc loại bỏ này được kích hoạt?"
 
-#: syslog_removal.php:596 syslog_reports.php:504
+#: syslog_removal.php:604 syslog_reports.php:504
 #, fuzzy
 msgid "String Match Type"
 msgstr "Loại kết hợp chuỗi"
 
-#: syslog_removal.php:597
+#: syslog_removal.php:605
 #, fuzzy
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
 msgstr "Xác định cách bạn muốn chuỗi này khớp. Nếu sử dụng loại Biểu thức SQL, bạn có thể sử dụng bất kỳ biểu thức SQL hợp lệ nào để tạo cảnh báo. Các trường có sẵn bao gồm 'tin nhắn', 'cơ sở', 'ưu tiên' và 'máy chủ'."
 
-#: syslog_removal.php:604
+#: syslog_removal.php:612
 #, fuzzy
 msgid "Syslog Message Match String"
 msgstr "Chuỗi kết hợp tin nhắn Syslog"
 
-#: syslog_removal.php:605
+#: syslog_removal.php:613
 #, fuzzy
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
 msgstr "Nhập thành phần phù hợp của thông báo nhật ký hệ thống, tên cơ sở hoặc tên máy chủ hoặc mệnh đề SQL nếu sử dụng Loại đối sánh biểu thức SQL."
 
-#: syslog_removal.php:615
+#: syslog_removal.php:623
 #, fuzzy
 msgid "Method of Removal"
 msgstr "Phương pháp loại bỏ"
 
-#: syslog_removal.php:617 syslog_removal.php:940
+#: syslog_removal.php:625 syslog_removal.php:967
 #, fuzzy
 msgid "Deletion"
 msgstr "Xóa"
 
-#: syslog_removal.php:617
+#: syslog_removal.php:625
 #, fuzzy
 msgid "Transferal"
 msgstr "Chuyển nhượng"
 
-#: syslog_removal.php:621
+#: syslog_removal.php:629
 #, fuzzy
 msgid "Removal Rule Notes"
 msgstr "Ghi chú quy tắc loại bỏ"
 
-#: syslog_removal.php:624
+#: syslog_removal.php:632
 #, fuzzy
 msgid "Space for Notes on the Removal rule"
 msgstr "Không gian cho ghi chú về quy tắc Xóa"
 
-#: syslog_removal.php:713 syslog_removal.php:717
+#: syslog_removal.php:726 syslog_removal.php:730
 #, fuzzy
 msgid "Removal filter conditions"
 msgstr "Ghi chú quy tắc loại bỏ"
 
-#: syslog_removal.php:796 syslog_removal.php:925
+#: syslog_removal.php:823 syslog_removal.php:952
 msgid "Rules"
 msgstr "Quy tắc"
 
-#: syslog_removal.php:888
+#: syslog_removal.php:915
 #, fuzzy
 msgid "Syslog Removal Rule Filters"
 msgstr "Bộ lọc quy tắc loại bỏ nhật ký hệ thống"
 
-#: syslog_removal.php:914
+#: syslog_removal.php:941
 #, fuzzy
 msgid "Removal Name"
 msgstr "Tên xóa"
 
-#: syslog_removal.php:940
+#: syslog_removal.php:967
 msgid "Transfer"
 msgstr "Vận chuyển"
 
-#: syslog_removal.php:947
+#: syslog_removal.php:974
 #, fuzzy
 msgid "No Syslog Removal Rules Defined"
 msgstr "Không có quy tắc xóa Syslog được xác định"
 
-#: syslog_removal.php:976
+#: syslog_removal.php:1003
 #, fuzzy
 msgid "Import Removal Rule from Local File"
 msgstr "Nhập quy tắc xóa từ tệp cục bộ"
 
-#: syslog_removal.php:977
+#: syslog_removal.php:1004
 #, fuzzy
 msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
 msgstr "Nếu tệp XML chứa dữ liệu định nghĩa Quy tắc loại bỏ được đặt trên máy cục bộ của bạn, hãy chọn nó ở đây."
 
-#: syslog_removal.php:982
+#: syslog_removal.php:1009
 #, fuzzy
 msgid "Import Removal Rule from Text"
 msgstr "Nhập quy tắc xóa khỏi văn bản"
 
-#: syslog_removal.php:983
+#: syslog_removal.php:1010
 #, fuzzy
 msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
 msgstr "Nếu bạn có tệp XML chứa dữ liệu định nghĩa Quy tắc loại bỏ dưới dạng văn bản, bạn có thể dán tệp vào hộp này để nhập tệp."
 
-#: syslog_removal.php:994
+#: syslog_removal.php:1021
 #, fuzzy
 msgid "Import Removal Rule"
 msgstr "Quy tắc loại bỏ nhập khẩu"
 
-#: syslog_removal.php:1071
+#: syslog_removal.php:1098
 #, fuzzy, php-format
 msgid "NOTE: Removal Rule '%s' %s!"
 msgstr "LƯU Ý: Quy tắc xóa ' %s' %s!"
 
-#: syslog_removal.php:1073
+#: syslog_removal.php:1100
 #, fuzzy, php-format
 msgid "ERROR: Removal Rule '%s' %s Failed!"
 msgstr "LRI: Quy tắc xóa ' %s' %s Không thành công!"
@@ -2781,10 +3044,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Notice++"
 #~ msgstr "Thông báo"
-
-#, fuzzy
-#~ msgid "Partitioned Table"
-#~ msgstr "Bảng phân vùng"
 
 #, fuzzy
 #~ msgid "Priority Levels"

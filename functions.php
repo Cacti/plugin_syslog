@@ -1296,6 +1296,110 @@ function syslog_status_rule_activity_json(array $rules): string {
 }
 
 /**
+ * The processing phases that carry per phase telemetry.
+ *
+ * The worker/process path owns the timestamps: each phase records its own
+ * start and end wall clock time, duration in seconds, and processed count
+ * through syslog_status_record_phase().
+ *
+ * @return array<int, string> The telemetry phase names.
+ */
+function syslog_status_phase_names(): array {
+	return [
+		'partition',
+		'references',
+		'removal',
+		'alerts',
+		'transfer',
+		'reports'
+	];
+}
+
+/**
+ * Record one processing phase's telemetry in the syslog_status table.
+ *
+ * The phase entry stores the start timestamp, end timestamp, duration in
+ * seconds, and the number of records the phase handled.  Invalid phase
+ * names are rejected so the status table stays queryable.
+ *
+ * @param string     $phase   One of the syslog_status_phase_names() phases.
+ * @param int        $start   Unix timestamp the phase began.
+ * @param int        $end     Unix timestamp the phase ended.
+ * @param float      $seconds Wall clock seconds the phase took.
+ * @param int|string $count   Records processed by the phase.
+ *
+ * @return bool True when the telemetry row was written.
+ */
+function syslog_status_record_phase(string $phase, int $start, int $end, float $seconds, int|string $count): bool {
+	if (!in_array($phase, syslog_status_phase_names(), true)) {
+		return false;
+	}
+
+	if ($end < $start) {
+		return false;
+	}
+
+	$telemetry = [
+		'start'    => $start,
+		'end'      => $end,
+		'seconds'  => round(max(0, $seconds), 3),
+		'count'    => (int) $count
+	];
+
+	return syslog_status_set('phase_' . $phase, (string) json_encode($telemetry));
+}
+
+/**
+ * Read the recorded per phase telemetry, with empty entries for phases
+ * that have never run.
+ *
+ * @return array<string, array{start:int,end:int,seconds:float,count:int}|null>
+ *               Map of phase name to its telemetry document, or null when
+ *               the phase has not recorded a run yet.
+ */
+function syslog_status_phase_telemetry(): array {
+	global $syslogdb_default;
+
+	$phases = [];
+
+	foreach (syslog_status_phase_names() as $phase) {
+		$phases[$phase] = null;
+	}
+
+	$rows = syslog_db_fetch_assoc_prepared("SELECT `name`, `value`
+		FROM `$syslogdb_default`.`syslog_status`
+		WHERE `name` LIKE 'phase\\_%'",
+		[]);
+
+	if (!is_array($rows)) {
+		return $phases;
+	}
+
+	foreach ($rows as $row) {
+		$name = str_replace('phase_', '', (string) $row['name']);
+
+		if (!array_key_exists($name, $phases)) {
+			continue;
+		}
+
+		$decoded = json_decode((string) $row['value'], true);
+
+		if (!is_array($decoded) || !isset($decoded['start'], $decoded['end'], $decoded['seconds'], $decoded['count'])) {
+			continue;
+		}
+
+		$phases[$name] = [
+			'start'   => (int) $decoded['start'],
+			'end'     => (int) $decoded['end'],
+			'seconds' => (float) $decoded['seconds'],
+			'count'   => (int) $decoded['count']
+		];
+	}
+
+	return $phases;
+}
+
+/**
  * Read the status fields shown on the Syslog Status tab, with defaults for
  * fields that have never been written.
  *
@@ -1537,7 +1641,42 @@ function syslog_traditional_manage() {
 }
 
 /**
- * This function will manage a partitioned table by checking for time to create
+ * Whether partition maintenance is currently blocked and why.
+ *
+ * Reads the telemetry written by syslog_partition_manage(), so the Status
+ * page can surface the condition without re-deriving it.
+ *
+ * @return array{blocked: bool, reason: string} Blocked flag and reason text.
+ */
+function syslog_partition_blocked_state(): array {
+	$status = syslog_status_get();
+
+	$blocked = false;
+
+	if (isset($status['partition_maintenance_blocked']) && is_numeric($status['partition_maintenance_blocked'])) {
+		$blocked = (int) $status['partition_maintenance_blocked'] === 1;
+	}
+
+	return [
+		'blocked' => $blocked,
+		'reason'  => isset($status['partition_maintenance_reason']) ? (string) $status['partition_maintenance_reason'] : ''
+	];
+}
+
+/**
+ * syslog_partition_manage - Manage the partitions for both syslog tables.
+ *
+ * The run is fail-safe: when syslog_partition_report_state() reports an
+ * invalid or incomplete partition layout for either table, or when the
+ * creation of a required partition fails, every further partition action
+ * (creation, retention pruning) is skipped.  Writes continue through the
+ * dMaxValue safety partition, which is never removed.
+ *
+ * Missing future partitions are recovered in bounded steps: at most
+ * 'syslog_partition_recover_limit' partitions per table per run are
+ * created, so a large gap heals over several poller cycles instead of
+ * issuing one long-running ALTER TABLE chain.  Retention pruning only
+ * runs once the full future horizon exists again.
  *
  * @return int Number of rows removed by partition pruning.
  */
@@ -1548,24 +1687,167 @@ function syslog_partition_manage(): int {
 	// Always create partitions ahead of time to avoid midnight races.
 	$base_time = time() + 7200;
 
-	syslog_partition_report_state('syslog');
-	syslog_partition_report_state('syslog_removed');
+	// Fail safe: refuse to touch partitions while metadata looks wrong.
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		if (!syslog_partition_report_state($table)) {
+			$reason = sprintf(__('Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition.', 'syslog'), $table);
 
-	/*
-	 * Only run the retention prune when the next partition is ready.
-	 * If maintenance cannot safely create it, leave dMaxValue in place
-	 * as the write-path safety net and avoid dropping old partitions
-	 * without a replacement.
-	 */
-	if (syslog_partition_ensure_ahead('syslog', $base_time, $ahead_days)) {
-		$syslog_deleted = syslog_partition_remove('syslog');
+			cacti_log("SYSLOG ERROR: $reason", false, 'SYSLOG');
+
+			syslog_status_set('partition_maintenance_blocked', 1);
+			syslog_status_set('partition_maintenance_reason', $reason);
+
+			return 0;
+		}
 	}
 
-	if (syslog_partition_ensure_ahead('syslog_removed', $base_time, $ahead_days)) {
-		$syslog_deleted += syslog_partition_remove('syslog_removed');
+	// Bounded recovery: heal missing future partitions a few at a time.
+	$recovery  = syslog_partition_recover('syslog', $base_time, $ahead_days);
+
+	if ($recovery['stop_reason'] === '') {
+		$recovery_removed = syslog_partition_remove('syslog');
+	} else {
+		$recovery_removed = 0;
 	}
 
-	return $syslog_deleted;
+	$recovery2 = syslog_partition_recover('syslog_removed', $base_time, $ahead_days);
+
+	if ($recovery2['stop_reason'] === '') {
+		$recovery2_removed = syslog_partition_remove('syslog_removed');
+	} else {
+		$recovery2_removed = 0;
+	}
+
+	if ($recovery['stop_reason'] === '' && $recovery2['stop_reason'] === '') {
+		// All partitions for both tables are healthy; clear any block.
+		syslog_status_set('partition_maintenance_blocked', 0);
+		syslog_status_set('partition_maintenance_reason', '');
+
+		return $recovery_removed + $recovery2_removed;
+	}
+
+	// Report the first blocking recovery for operator visibility.
+	$recovery_failed = $recovery['stop_reason'] !== '' ? $recovery : $recovery2;
+	$failed_table    = $recovery['stop_reason'] !== '' ? 'syslog' : 'syslog_removed';
+
+	$reason = sprintf(
+		'%s: %s; %s; %s',
+		$failed_table,
+		$recovery_failed['stop_reason'],
+		sprintf(__('remaining partition gap: %d day(s)', 'syslog'), $recovery_failed['missing']),
+		$recovery_failed['retention_deferred'] ? __('retention pruning deferred until the future horizon is restored', 'syslog') : __('no retention deferral', 'syslog')
+	);
+
+	if ($recovery_failed['dmax_risk']) {
+		$reason .= '; ' . __('new records are accumulating in the dMaxValue safety partition', 'syslog');
+	}
+
+	cacti_log("SYSLOG ERROR: Partition recovery for '$failed_table' stopped early: $reason", false, 'SYSLOG');
+
+	syslog_status_set('partition_maintenance_blocked', 1);
+	syslog_status_set('partition_maintenance_reason', $reason);
+
+	return $recovery_removed + $recovery2_removed;
+}
+
+/**
+ * syslog_partition_recover - Create missing partitions up to a bounded
+ * number per run, stopping safely at the first failure.
+ *
+ * The future write horizon is what protects retention pruning: only when
+ * every partition through the configured ahead-days horizon exists may old
+ * partitions be pruned, otherwise data would be dropped without a
+ * replacement window.  The dMaxValue partition stays in place as the
+ * write-path safety net the whole time.
+ *
+ * @param string $table      The table to maintain.
+ * @param int    $base_time  Base timestamp for the maintenance window.
+ * @param int    $ahead_days Number of future days to maintain.
+ *
+ * @return array{created: int, missing: int, stop_reason: string, retention_deferred: bool, dmax_risk: bool}
+ *               Recovery telemetry: partitions created this run, the
+ *               remaining gap, why the run stopped, whether retention
+ *               was deferred, and whether writes landed in dMaxValue.
+ */
+function syslog_partition_recover($table, $base_time, $ahead_days) {
+	$limit = read_config_option('syslog_partition_recover_limit');
+
+	if (!is_numeric($limit) || (int) $limit < 1) {
+		$limit = 3;
+	}
+
+	$limit = (int) $limit;
+
+	if ($limit > 31) {
+		$limit = 31;
+	}
+
+	$created      = 0;
+	$missing      = 0;
+	$stop         = '';
+	$dmax_risk    = false;
+	$need_ahead   = 0;
+
+	for ($day = 0; $day <= $ahead_days; $day++) {
+		$time = $base_time + ($day * 86400);
+
+		if (syslog_partition_check($table, $time)) {
+			$need_ahead++;
+		}
+	}
+
+	if ($need_ahead === 0) {
+		return [
+			'created'            => 0,
+			'missing'            => 0,
+			'stop_reason'        => '',
+			'retention_deferred' => false,
+			'dmax_risk'          => false
+		];
+	}
+
+	for ($day = 0; $day <= $ahead_days; $day++) {
+		$time = $base_time + ($day * 86400);
+
+		if (!syslog_partition_check($table, $time)) {
+			continue;
+		}
+
+		if ($created >= $limit) {
+			$missing = $need_ahead - $created;
+			$stop    = __('per run recovery limit reached', 'syslog');
+
+			break;
+		}
+
+		$missing = $need_ahead - $created;
+
+		if (!syslog_partition_create($table, $time)) {
+			$stop = __('partition creation failed', 'syslog');
+			/*
+			 * When the next concrete partition is still missing, every new
+			 * write lands in dMaxValue until the gap is healed; the
+			 * retention prune stays deferred too.
+			 */
+			$dmax_risk = true;
+
+			break;
+		}
+
+		$created++;
+	}
+
+	if ($stop === '') {
+		$missing = 0;
+	}
+
+	return [
+		'created'            => $created,
+		'missing'            => $missing,
+		'stop_reason'        => $stop,
+		'retention_deferred' => $stop !== '',
+		'dmax_risk'          => $dmax_risk
+	];
 }
 
 /**
@@ -1587,30 +1869,6 @@ function syslog_partition_ahead_days() {
 	}
 
 	return $ahead_days;
-}
-
-/**
- * Ensure concrete partitions exist from the current window through the
- * configured future horizon.
- *
- * @param string $table      The table to maintain
- * @param int    $base_time  Base timestamp for the maintenance window
- * @param int    $ahead_days Number of future days to maintain
- *
- * @return bool true when all needed partitions already exist or were created.
- */
-function syslog_partition_ensure_ahead($table, $base_time, $ahead_days) {
-	for ($day = 0; $day <= $ahead_days; $day++) {
-		$time = $base_time + ($day * 86400);
-
-		if (syslog_partition_check($table, $time)) {
-			if (!syslog_partition_create($table, $time)) {
-				return false;
-			}
-		}
-	}
-
-	return true;
 }
 
 /**
@@ -2044,15 +2302,26 @@ function syslog_partition_create($table, $time = null) {
 			$create_sql = $create_syntax['Create Table'];
 
 			if (stripos($create_sql, 'TO_DAYS') !== false) {
-				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+				$altered = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION $cformat VALUES LESS THAN (TO_DAYS('$boundary_date')),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", []);
 			} elseif (stripos($create_sql, 'UNIX_TIMESTAMP') !== false) {
-				syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
+				$altered = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION $cformat VALUES LESS THAN ($boundary_epoch),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", []);
 			} else {
 				cacti_log("SYSLOG ERROR: Unable to determine partition expression (neither TO_DAYS nor UNIX_TIMESTAMP) for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
+
+				return false;
+			}
+
+			if ($altered === false) {
+				/*
+				 * The required partition could not be created.  Callers stop
+				 * maintenance and defer retention pruning; writes continue
+				 * into the existing dMaxValue safety partition.
+				 */
+				cacti_log("SYSLOG ERROR: Failed to create partition '$cformat' on '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
 
 				return false;
 			}
@@ -2134,6 +2403,13 @@ function syslog_partition_remove($table) {
 
 					if (preg_match('/^[a-zA-Z0-9_]+$/', $part_name) !== 1) {
 						cacti_log("SYSLOG ERROR: Invalid partition name '$part_name' for '$table'; skipping drop", false, 'SYSLOG');
+						break;
+					}
+
+					if ($part_name === 'dMaxValue') {
+						// The dMaxValue partition is the write-path fail
+						// safe and must never be dropped.
+						cacti_log("SYSLOG ERROR: Refusing to drop the dMaxValue safety partition on '$table'; stopping retention prune", false, 'SYSLOG');
 						break;
 					}
 
@@ -2408,7 +2684,7 @@ function syslog_removal_filter_normalize($json, $table) {
  *
  * @return array The SQL and params, or an empty array on failure
  */
-function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $prefix = '') {
+function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $prefix = '', $processing_boundary = true) {
 	global $syslogdb_default;
 
 	if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
@@ -2446,7 +2722,7 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 		return [];
 	}
 
-	if ($table === 'syslog_incoming' && $prefix === '') {
+	if ($table === 'syslog_incoming' && $prefix === '' && $processing_boundary) {
 		$filter['params'][] = 1;
 		$filter['params'][] = $remove['max_seq'];
 
@@ -2458,7 +2734,7 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 		];
 	}
 
-	if ($table === 'syslog_incoming') {
+	if ($table === 'syslog_incoming' && $processing_boundary) {
 		// Aliased shape for the joined transferal INSERT.
 		$filter['params'][] = 1;
 		$filter['params'][] = $remove['max_seq'];
@@ -2472,6 +2748,264 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 	}
 
 	return ['sql' => 'WHERE (' . $filter['sql'] . ')', 'params' => $filter['params']];
+}
+
+/**
+ * How many preview rows the "Test rule" action may return at most.
+ *
+ * The per-request preview row count is additionally clamped so a single
+ * response cannot stream unbounded data.
+ */
+define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 10);
+
+/**
+ * syslog_rule_preview - Run a read-only preview of a rule against the
+ * incoming table.
+ *
+ * The rule is compiled through the same QueryBuilder/compiler paths the
+ * poller uses, so the preview reflects exactly what the rule would match
+ * at processing time.  Only SELECT statements are issued: the preview
+ * never saves, enables, disables, deletes, moves, alerts, emails,
+ * executes commands, or alters any database data.
+ *
+ * Legacy 'sql' type rules are only executed under the existing
+ * trusted-admin model: they carry hand written SQL stored by
+ * administrators with the Syslog Administration realm, the same users
+ * who can trigger their execution from the poller anyway.
+ *
+ * @param array  $rule      The rule attributes: 'type', 'message' and, for
+ *                          removal rules, 'method'.  The 'filter' and
+ *                          legacy match types are compiled safely.
+ * @param string $rule_type Either 'alert' or 'removal'.
+ * @param int    $rows      Maximum number of matching messages to return.
+ *
+ * @return array{error: string, count: int, rows: array<int, array<string, string>>}
+ *               The bounded preview result, or an error message.
+ */
+function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows = 10): array {
+	global $syslogdb_default, $syslog_incoming_config;
+
+	$rows = max(1, min($rows, SYSLOG_RULE_PREVIEW_MAX_ROWS));
+
+	if (!in_array($rule_type, ['alert', 'removal'], true)) {
+		return ['error' => __('Unknown rule type.', 'syslog'), 'count' => 0, 'rows' => []];
+	}
+
+	$type = isset($rule['type']) ? (string) $rule['type'] : '';
+	$rule['message'] = isset($rule['message']) ? (string) $rule['message'] : '';
+
+	$sql    = '';
+	$params = [];
+
+	if ($type === 'filter') {
+		// Structured filter documents: compile through the shared builder.
+		if ($rule_type === 'removal') {
+			// The removal compiler reads the processing boundary from the
+			// rule; a preview matches the whole incoming table.
+			$rule['max_seq'] = PHP_INT_MAX;
+
+			$compiled = syslog_get_removal_rule_sql($rule, 'syslog_incoming', '', false);
+
+			if (cacti_sizeof($compiled)) {
+				// The removal compiler returns a bare WHERE clause; the
+				// preview always selects from the incoming table.
+				$sql    = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` " . $compiled['sql'];
+				$params = $compiled['params'];
+			}
+		} else {
+			$sql_data = syslog_get_alert_sql($rule, 0, false);
+
+			$sql    = isset($sql_data['sql']) ? (string) $sql_data['sql'] : '';
+			$params = isset($sql_data['params']) ? (array) $sql_data['params'] : [];
+
+			// Preview filters intentionally omit the worker-only status and
+			// sequence boundaries, so they show records waiting for the next
+			// poller pass as well as records currently being processed.
+		}
+	} else {
+		// Legacy match types and hand written SQL.  Every value is bound
+		// through a placeholder; only the static WHERE shape is built here
+		// and the configured column names come from the plugin config.
+		if (!isset($syslog_incoming_config['programField'])) {
+			$syslog_incoming_config['programField'] = 'program';
+		}
+
+		foreach (['textField' => 'message', 'hostField' => 'host', 'facilityField' => 'facility_id', 'priorityField' => 'priority_id'] as $setting => $default) {
+			if (!isset($syslog_incoming_config[$setting])) {
+				$syslog_incoming_config[$setting] = $default;
+			}
+		}
+
+		$column = match ($type) {
+			'facility' => $syslog_incoming_config['facilityField'],
+			'host'     => $syslog_incoming_config['hostField'],
+			'program'  => $syslog_incoming_config['programField'],
+			default    => $syslog_incoming_config['textField']
+		};
+
+		if (!is_string($column) || preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column) !== 1) {
+			return ['error' => __('The configured incoming field mapping is invalid.', 'syslog'), 'count' => 0, 'rows' => []];
+		}
+
+		switch ($type) {
+			case 'facility':
+				// Facility rules store the facility name; resolve the id.
+				$facility_id = syslog_db_fetch_cell_prepared("SELECT facility_id
+					FROM `$syslogdb_default`.`syslog_facilities`
+					WHERE facility = ?",
+					[$rule['message']]);
+
+				if (empty($facility_id)) {
+					return ['error' => __('The facility of this rule is not in the reference table yet.', 'syslog'), 'count' => 0, 'rows' => []];
+				}
+
+				$sql     = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` WHERE `$column` = ?";
+				$params  = [$facility_id];
+
+				break;
+			case 'host':
+			case 'program':
+				$sql     = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` WHERE `$column` = ?";
+				$params  = [$rule['message']];
+
+				break;
+			case 'messageb':
+				$sql     = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` WHERE `$column` LIKE ?";
+				$params  = [$rule['message'] . '%'];
+
+				break;
+			case 'messagec':
+				$sql     = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` WHERE `$column` LIKE ?";
+				$params  = ['%' . $rule['message'] . '%'];
+
+				break;
+			case 'messagee':
+				$sql     = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` WHERE `$column` LIKE ?";
+				$params  = ['%' . $rule['message']];
+
+				break;
+			case 'sql':
+				// Trusted-admin legacy rules: hand written WHERE clause.
+				$sql     = "SELECT * FROM `$syslogdb_default`.`syslog_incoming` WHERE (" . $rule['message'] . ')';
+				$params  = [];
+
+				break;
+			default:
+				return ['error' => __('Unknown rule match type.', 'syslog'), 'count' => 0, 'rows' => []];
+		}
+	}
+
+	if ($sql === '') {
+		$error = isset($GLOBALS['syslog_rule_filter_error']) && $GLOBALS['syslog_rule_filter_error'] !== ''
+			? (string) $GLOBALS['syslog_rule_filter_error']
+			: __('The rule did not compile to a query.', 'syslog');
+
+		return ['error' => $error, 'count' => 0, 'rows' => []];
+	}
+
+	// Only a bounded SELECT may run: wrap the compiled WHERE in a COUNT
+	// subquery and a LIMIT sample ordered by the newest records.
+	$count = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM ($sql) AS preview", $params);
+
+	if (!is_numeric($count)) {
+		return [
+			'error' => __('The preview query could not be evaluated.', 'syslog'),
+			'count' => 0,
+			'rows'  => []
+		];
+	}
+
+	$sample = syslog_db_fetch_assoc_prepared("$sql ORDER BY seq DESC LIMIT $rows", $params);
+
+	if (!is_array($sample)) {
+		return [
+			'error' => __('The preview sample could not be read.', 'syslog'),
+			'count' => (int) $count,
+			'rows'  => []
+		];
+	}
+
+	$time_field = isset($syslog_incoming_config['timeField']) ? $syslog_incoming_config['timeField'] : 'logtime';
+	$text_field = isset($syslog_incoming_config['textField']) ? $syslog_incoming_config['textField'] : 'message';
+
+	$out = [];
+
+	foreach ($sample as $record) {
+		$out[] = [
+			'seq'     => isset($record['seq']) ? (string) $record['seq'] : '',
+			'logtime' => isset($record[$time_field]) ? (string) $record[$time_field] : '',
+			'host'    => isset($record['host']) ? (string) $record['host'] : '',
+			'program' => isset($record['program']) ? (string) $record['program'] : '',
+			'message' => isset($record[$text_field]) ? (string) $record[$text_field] : ''
+		];
+	}
+
+	return ['error' => '', 'count' => (int) $count, 'rows' => $out];
+}
+
+/**
+ * Handle the editor's "Test rule" POST: authorize, validate CSRF, compile
+ * the rule from the submitted form values, and return a bounded preview.
+ *
+ * The action is strictly read-only.  It is additionally gated on the
+ * editor realms so a user without the rule pages cannot reach the
+ * compiler with arbitrary filter documents.
+ *
+ * @param string $rule_type Either 'alert' or 'removal'.
+ *
+ * @return string A JSON document with the preview result, or an error.
+ */
+function syslog_rule_test_action(string $rule_type): string {
+	$realm_page = $rule_type === 'removal' ? 'syslog_removal.php' : 'syslog_alerts.php';
+
+	if (!api_plugin_user_realm_auth($realm_page)) {
+		cacti_log("WARNING: syslog rule preview blocked -- missing realm for '$realm_page'", false, 'SYSLOG');
+
+		return (string) json_encode(['error' => __('Permission denied.', 'syslog')]);
+	}
+
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+		return (string) json_encode(['error' => __('Invalid request. Please try again.', 'syslog')]);
+	}
+
+	if (!function_exists('csrf_check') || !csrf_check(false)) {
+		return (string) json_encode(['error' => __('Invalid request. Please try again.', 'syslog')]);
+	}
+
+	$type = (string) get_nfilter_request_var('type');
+	$name = trim((string) get_nfilter_request_var('name'));
+
+	// The filter builder syncs its conditions into the message textarea
+	// before the form posts; SQL expressions arrive in the same field.
+	$message = (string) get_nfilter_request_var('message');
+
+	if ($message === '') {
+		return (string) json_encode(['error' => __('The rule has no match expression to test.', 'syslog')]);
+	}
+
+	if (mb_strlen($message) > 8192) {
+		return (string) json_encode(['error' => __('The match expression is too long to test.', 'syslog')]);
+	}
+
+	$preview_rows = get_filter_request_var('preview_rows', FILTER_VALIDATE_INT);
+
+	if ($preview_rows === false || $preview_rows === null || $preview_rows < 1) {
+		$preview_rows = 10;
+	}
+
+	$rule = [
+		'type'    => $type,
+		'message' => $message,
+		'name'    => $name
+	];
+
+	$result = syslog_rule_preview($rule, $rule_type, (int) $preview_rows);
+
+	// Escape every returned message cell against XSS before the client
+	// renders it; the JSON encoder alone is not an HTML escape.
+	$encoded = syslog_json_safe($result);
+
+	return (string) $encoded;
 }
 
 /**
@@ -4092,7 +4626,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
  *
  * @return array The SQL and the prepared array for the SQL
  */
-function syslog_get_alert_sql(&$alert, $max_seq) {
+function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true) {
 	global $syslogdb_default, $syslog_incoming_config;
 
 	if (defined('SYSLOG_CONFIG')) {
@@ -4133,17 +4667,17 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
 			return [];
 		}
 
-		$filter['params'][] = 1;
-		$filter['params'][] = $max_seq;
+		$sql = "SELECT *
+			FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE ({$filter['sql']})";
 
-		return [
-			'sql' => "SELECT *
-				FROM `$syslogdb_default`.`syslog_incoming`
-				WHERE ({$filter['sql']})
-				AND `status` = ?
-				AND `seq` <= ?",
-			'params' => $filter['params']
-		];
+		if ($processing_boundary) {
+			$filter['params'][] = 1;
+			$filter['params'][] = $max_seq;
+			$sql .= "\n\t\t\t\tAND `status` = ?\n\t\t\t\tAND `seq` <= ?";
+		}
+
+		return ['sql' => $sql, 'params' => $filter['params']];
 	}
 
 	if ($alert['type'] == 'facility') {

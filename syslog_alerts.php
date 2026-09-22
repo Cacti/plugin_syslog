@@ -33,6 +33,14 @@ syslog_connect();
 
 set_default_action();
 
+// The "Test rule" action runs a read-only preview of the rule currently
+// in the editor and returns JSON without touching any database data.
+if (get_request_var('action') == 'test') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_rule_test_action('alert');
+	exit;
+}
+
 if (isset_request_var('import') && syslog_allow_edits()) {
 	set_request_var('action', 'import');
 }
@@ -782,6 +790,11 @@ function syslog_action_edit(): void {
 
 	form_save_button('syslog_alerts.php', '', 'id');
 
+	if (syslog_allow_edits()) {
+		print "<input id='syslog_rule_test' class='ui-button ui-corner-all ui-widget' type='button' value='" . __esc('Test rule', 'syslog') . "'>";
+		print "<div id='syslog_rule_test_dialog' style='display:none;' title='" . __esc('Rule Test Preview', 'syslog') . "'></div>";
+	}
+
 	?>
 	<script type='text/javascript'>
 
@@ -884,6 +897,20 @@ function syslog_action_edit(): void {
 		});
 
 		changeMethod();
+
+		$('#syslog_rule_test').on('click.syslogRuleTest', function() {
+			testSyslogRule('#syslog_edit', '#syslog_rule_test_dialog', <?php print syslog_json_safe(__('Rule Test Preview', 'syslog')); ?>);
+		});
+
+		var testRuleButton = $('#syslog_rule_test');
+		var saveRow = $('#syslog_edit .saveRow');
+		var cancelButton = saveRow.find('.cactiReturnTo');
+
+		if (cancelButton.length) {
+			testRuleButton.insertAfter(cancelButton);
+		} else {
+			testRuleButton.prependTo(saveRow);
+		}
 	});
 
 	</script>

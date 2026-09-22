@@ -1726,6 +1726,47 @@ function syslog_config_settings(): void {
 				'7' => __('%d Days', 7, 'syslog')
 			]
 		],
+		'syslog_partition_recover_limit' => [
+			'friendly_name' => __('Partition Recovery Limit', 'syslog'),
+			'description'   => __('When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '3',
+			'array'         => [
+				'1'  => __('%d Partition per run', 1, 'syslog'),
+				'2'  => __('%d Partitions per run', 2, 'syslog'),
+				'3'  => __('%d Partitions per run', 3, 'syslog'),
+				'5'  => __('%d Partitions per run', 5, 'syslog'),
+				'10' => __('%d Partitions per run', 10, 'syslog'),
+				'31' => __('%d Partitions per run', 31, 'syslog')
+			]
+		],
+		'syslog_stale_threshold' => [
+			'friendly_name' => __('Collector Staleness Threshold', 'syslog'),
+			'description'   => __('The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '300',
+			'array'         => [
+				'0'    => __('Default (300 seconds)', 'syslog'),
+				'120'  => __('%d seconds', 120, 'syslog'),
+				'300'  => __('%d seconds', 300, 'syslog'),
+				'600'  => __('%d seconds', 600, 'syslog'),
+				'1800' => __('%d seconds', 1800, 'syslog'),
+				'3600' => __('%d seconds', 3600, 'syslog')
+			]
+		],
+		'syslog_backlog_threshold' => [
+			'friendly_name' => __('Collector Backlog Threshold', 'syslog'),
+			'description'   => __('The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '10000',
+			'array'         => [
+				'0'     => __('Default (10000 messages)', 'syslog'),
+				'1000'  => __('%d Messages', 1000, 'syslog'),
+				'5000'  => __('%d Messages', 5000, 'syslog'),
+				'10000' => __('%d Messages', 10000, 'syslog'),
+				'50000' => __('%d Messages', 50000, 'syslog')
+			]
+		],
 		'syslog_alert_retention' => [
 			'friendly_name' => __('Syslog Alert Retention', 'syslog'),
 			'description'   => __('This is the number of days to keep alert logs.', 'syslog'),
