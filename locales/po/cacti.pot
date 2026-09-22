@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti 1.2.x\n"
+"Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-21 22:49-0400\n"
+"POT-Creation-Date: 2026-09-21 23:45-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -79,190 +79,190 @@ msgstr ""
 msgid "Unknown rule type."
 msgstr ""
 
-#: functions.php:2850
+#: functions.php:2847
 msgid "The configured incoming field mapping is invalid."
 msgstr ""
 
-#: functions.php:2862
+#: functions.php:2859
 msgid "The facility of this rule is not in the reference table yet."
 msgstr ""
 
-#: functions.php:2897
+#: functions.php:2894
 msgid "Unknown rule match type."
 msgstr ""
 
-#: functions.php:2904
+#: functions.php:2901
 msgid "The rule did not compile to a query."
 msgstr ""
 
-#: functions.php:2915
+#: functions.php:2912
 msgid "The preview query could not be evaluated."
 msgstr ""
 
-#: functions.php:2925
+#: functions.php:2922
 msgid "The preview sample could not be read."
 msgstr ""
 
-#: functions.php:2967 lib/syslog_dashboard.php:653 lib/syslog_dashboard.php:819
+#: functions.php:2964 lib/syslog_dashboard.php:653 lib/syslog_dashboard.php:819
 #: lib/syslog_dashboard.php:902 lib/syslog_dashboard.php:906
 #: lib/syslog_dashboard.php:946 lib/syslog_dashboard.php:1022 syslog.php:1249
 #: syslog.php:1275 syslog_dashboards.php:11 syslog_saved_searches.php:11
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php:2971 functions.php:2975 setup.php:2212 setup.php:2222
+#: functions.php:2968 functions.php:2972 setup.php:2212 setup.php:2222
 #: setup.php:2229
 msgid "Invalid request. Please try again."
 msgstr ""
 
-#: functions.php:2986
+#: functions.php:2983
 msgid "The rule has no match expression to test."
 msgstr ""
 
-#: functions.php:2990
+#: functions.php:2987
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: functions.php:3477 lib/syslog_dashboard.php:243 syslog.php:2171
+#: functions.php:3474 lib/syslog_dashboard.php:243 syslog.php:2171
 #: syslog.php:2176 syslog.php:2177 syslog.php:2204 syslog.php:2207
 #: syslog.php:2208 syslog.php:2265
 msgid "Unknown"
 msgstr ""
 
-#: functions.php:4384
+#: functions.php:4381
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr ""
 
-#: functions.php:4386
+#: functions.php:4383
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr ""
 
-#: functions.php:4394 syslog.php:2242 syslog_alerts.php:1059
+#: functions.php:4391 syslog.php:2242 syslog_alerts.php:1069
 msgid "Alert Name"
 msgstr ""
 
-#: functions.php:4395 functions.php:4422 syslog.php:2241 syslog_alerts.php:630
-#: syslog_alerts.php:1060
+#: functions.php:4392 functions.php:4419 syslog.php:2241 syslog_alerts.php:630
+#: syslog_alerts.php:1070
 msgid "Severity"
 msgstr ""
 
-#: functions.php:4396 syslog_alerts.php:649 syslog_alerts.php:654
-#: syslog_alerts.php:1086
+#: functions.php:4393 syslog_alerts.php:649 syslog_alerts.php:654
+#: syslog_alerts.php:1096
 msgid "Threshold"
 msgstr ""
 
-#: functions.php:4397 syslog.php:2123 syslog.php:2244
+#: functions.php:4394 syslog.php:2123 syslog.php:2244
 msgid "Count"
 msgstr ""
 
-#: functions.php:4398
+#: functions.php:4395
 msgid "Match String"
 msgstr ""
 
-#: functions.php:4409 functions.php:4449
+#: functions.php:4406 functions.php:4446
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr ""
 
-#: functions.php:4411 functions.php:4451
+#: functions.php:4408 functions.php:4448
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr ""
 
-#: functions.php:4420
+#: functions.php:4417
 msgid "Hostname"
 msgstr ""
 
-#: functions.php:4421 functions.php:5345 syslog.php:2114 syslog.php:2239
+#: functions.php:4418 functions.php:5342 syslog.php:2114 syslog.php:2239
 #: syslog.php:2296
 msgid "Date"
 msgstr ""
 
-#: functions.php:4423
+#: functions.php:4420
 msgid "Level"
 msgstr ""
 
-#: functions.php:4424 functions.php:5346 lib/syslog_dashboard.php:1621
+#: functions.php:4421 functions.php:5343 lib/syslog_dashboard.php:1621
 #: syslog.php:1811 syslog.php:1896 syslog.php:2117 syslog.php:2243
 #: syslog.php:2297 syslog_alerts.php:806 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
 msgstr ""
 
-#: functions.php:4432
+#: functions.php:4429
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr ""
 
-#: functions.php:4434
+#: functions.php:4431
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr ""
 
-#: functions.php:4441
+#: functions.php:4438
 msgid "Name:"
 msgstr ""
 
-#: functions.php:4442 functions.php:4498
+#: functions.php:4439 functions.php:4495
 msgid "Severity:"
 msgstr ""
 
-#: functions.php:4443
+#: functions.php:4440
 msgid "Threshold:"
 msgstr ""
 
-#: functions.php:4444
+#: functions.php:4441
 msgid "Count:"
 msgstr ""
 
-#: functions.php:4445
+#: functions.php:4442
 msgid "Message String:"
 msgstr ""
 
-#: functions.php:4496
+#: functions.php:4493
 msgid "Hostname:"
 msgstr ""
 
-#: functions.php:4497
+#: functions.php:4494
 msgid "Date:"
 msgstr ""
 
-#: functions.php:4499
+#: functions.php:4496
 msgid "Level:"
 msgstr ""
 
-#: functions.php:4500
+#: functions.php:4497
 msgid "Message:"
 msgstr ""
 
-#: functions.php:4569
+#: functions.php:4566
 msgid ", Host:"
 msgstr ""
 
-#: functions.php:4569 functions.php:4604
+#: functions.php:4566 functions.php:4601
 msgid ", URL:"
 msgstr ""
 
-#: functions.php:4569 functions.php:4604
+#: functions.php:4566 functions.php:4601
 msgid "Sev:"
 msgstr ""
 
-#: functions.php:4575 functions.php:4600
+#: functions.php:4572 functions.php:4597
 #, php-format
 msgid "Event Alert - %s"
 msgstr ""
 
-#: functions.php:4604
+#: functions.php:4601
 msgid ", Count:"
 msgstr ""
 
-#: functions.php:5344 lib/syslog_dashboard.php:1568 syslog_alerts.php:807
+#: functions.php:5341 lib/syslog_dashboard.php:1568 syslog_alerts.php:807
 #: syslog_removal.php:680
 msgid "Host"
 msgstr ""
 
-#: functions.php:5369
+#: functions.php:5366
 #, php-format
 msgid "Event Report - %s"
 msgstr ""
@@ -1556,8 +1556,8 @@ msgstr ""
 msgid "Display Rows"
 msgstr ""
 
-#: syslog.php:1822 syslog_alerts.php:945 syslog_dashboards.php:237
-#: syslog_removal.php:817 syslog_reports.php:665 syslog_saved_searches.php:229
+#: syslog.php:1822 syslog_alerts.php:955 syslog_dashboards.php:237
+#: syslog_removal.php:827 syslog_reports.php:665 syslog_saved_searches.php:229
 msgid "Default"
 msgstr ""
 
@@ -1614,13 +1614,13 @@ msgstr ""
 msgid "Save Search As"
 msgstr ""
 
-#: syslog.php:1915 syslog_alerts.php:925 syslog_dashboards.php:227
-#: syslog_removal.php:797 syslog_reports.php:645 syslog_saved_searches.php:219
+#: syslog.php:1915 syslog_alerts.php:935 syslog_dashboards.php:227
+#: syslog_removal.php:807 syslog_reports.php:645 syslog_saved_searches.php:219
 msgid "Search"
 msgstr ""
 
-#: syslog.php:1916 syslog_alerts.php:962 syslog_dashboards.php:254
-#: syslog_removal.php:834 syslog_reports.php:682 syslog_saved_searches.php:246
+#: syslog.php:1916 syslog_alerts.php:972 syslog_dashboards.php:254
+#: syslog_removal.php:844 syslog_reports.php:682 syslog_saved_searches.php:246
 msgid "Clear"
 msgstr ""
 
@@ -1822,7 +1822,7 @@ msgstr ""
 msgid "New Alert Rule"
 msgstr ""
 
-#: syslog_alerts.php:585 syslog_alerts.php:1087 syslog_reports.php:479
+#: syslog_alerts.php:585 syslog_alerts.php:1097 syslog_reports.php:479
 msgid "N/A"
 msgstr ""
 
@@ -1858,7 +1858,7 @@ msgstr ""
 msgid "Define how to Alert on the syslog messages."
 msgstr ""
 
-#: syslog_alerts.php:649 syslog_alerts.php:1086
+#: syslog_alerts.php:649 syslog_alerts.php:1096
 msgid "Individual"
 msgstr ""
 
@@ -1866,7 +1866,7 @@ msgstr ""
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr ""
 
-#: syslog_alerts.php:663 syslog_alerts.php:1064 syslog_removal.php:933
+#: syslog_alerts.php:663 syslog_alerts.php:1074 syslog_removal.php:943
 #: syslog_reports.php:781
 msgid "Match Type"
 msgstr ""
@@ -1883,9 +1883,9 @@ msgstr ""
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
 msgstr ""
 
-#: syslog_alerts.php:685 syslog_alerts.php:688 syslog_alerts.php:931
-#: syslog_alerts.php:1063 syslog_removal.php:599 syslog_removal.php:803
-#: syslog_removal.php:932 syslog_reports.php:499 syslog_reports.php:651
+#: syslog_alerts.php:685 syslog_alerts.php:688 syslog_alerts.php:941
+#: syslog_alerts.php:1073 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
 msgstr ""
@@ -1954,15 +1954,15 @@ msgstr ""
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr ""
 
-#: syslog_alerts.php:751 syslog_alerts.php:937 syslog_alerts.php:1088
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:809
-#: syslog_removal.php:954 syslog_reports.php:657 syslog_reports.php:804
+#: syslog_alerts.php:751 syslog_alerts.php:947 syslog_alerts.php:1098
+#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:819
+#: syslog_removal.php:964 syslog_reports.php:657 syslog_reports.php:804
 msgid "No"
 msgstr ""
 
-#: syslog_alerts.php:751 syslog_alerts.php:936 syslog_alerts.php:1088
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:808
-#: syslog_removal.php:954 syslog_reports.php:656 syslog_reports.php:804
+#: syslog_alerts.php:751 syslog_alerts.php:946 syslog_alerts.php:1098
+#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:818
+#: syslog_removal.php:964 syslog_reports.php:656 syslog_reports.php:804
 msgid "Yes"
 msgstr ""
 
@@ -2007,111 +2007,111 @@ msgstr ""
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:935 syslog_removal.php:807 syslog_reports.php:655
+#: syslog_alerts.php:945 syslog_removal.php:817 syslog_reports.php:655
 msgid "All"
 msgstr ""
 
-#: syslog_alerts.php:941 syslog_dashboards.php:233 syslog_reports.php:661
+#: syslog_alerts.php:951 syslog_dashboards.php:233 syslog_reports.php:661
 #: syslog_saved_searches.php:225
 msgid "Rows"
 msgstr ""
 
-#: syslog_alerts.php:961 syslog_dashboards.php:253 syslog_removal.php:833
+#: syslog_alerts.php:971 syslog_dashboards.php:253 syslog_removal.php:843
 #: syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr ""
 
-#: syslog_alerts.php:963 syslog_alerts.php:1224 syslog_dashboards.php:255
-#: syslog_removal.php:835 syslog_removal.php:1090 syslog_reports.php:683
+#: syslog_alerts.php:973 syslog_alerts.php:1234 syslog_dashboards.php:255
+#: syslog_removal.php:845 syslog_removal.php:1100 syslog_reports.php:683
 #: syslog_reports.php:936 syslog_saved_searches.php:247
 msgid "Import"
 msgstr ""
 
-#: syslog_alerts.php:1033
+#: syslog_alerts.php:1043
 msgid "Syslog Alert Filters"
 msgstr ""
 
-#: syslog_alerts.php:1061 syslog_removal.php:935
+#: syslog_alerts.php:1071 syslog_removal.php:945
 msgid "Method"
 msgstr ""
 
-#: syslog_alerts.php:1062
+#: syslog_alerts.php:1072
 msgid "Threshold Count"
 msgstr ""
 
-#: syslog_alerts.php:1065 syslog_removal.php:934 syslog_reports.php:782
+#: syslog_alerts.php:1075 syslog_removal.php:944 syslog_reports.php:782
 msgid "Search String"
 msgstr ""
 
-#: syslog_alerts.php:1066 syslog_reports.php:558
+#: syslog_alerts.php:1076 syslog_reports.php:558
 msgid "Email Addresses"
 msgstr ""
 
-#: syslog_alerts.php:1067 syslog_removal.php:936 syslog_reports.php:786
+#: syslog_alerts.php:1077 syslog_removal.php:946 syslog_reports.php:786
 msgid "Last Modified"
 msgstr ""
 
-#: syslog_alerts.php:1068 syslog_removal.php:937 syslog_reports.php:787
+#: syslog_alerts.php:1078 syslog_removal.php:947 syslog_reports.php:787
 msgid "By User"
 msgstr ""
 
-#: syslog_alerts.php:1071
+#: syslog_alerts.php:1081
 msgid "Alerts"
 msgstr ""
 
-#: syslog_alerts.php:1092
+#: syslog_alerts.php:1102
 msgid "Multiple"
 msgstr ""
 
-#: syslog_alerts.php:1099
+#: syslog_alerts.php:1109
 msgid "No Syslog Alerts Defined"
 msgstr ""
 
-#: syslog_alerts.php:1128
+#: syslog_alerts.php:1138
 msgid "Import Alert Rule from Local File"
 msgstr ""
 
-#: syslog_alerts.php:1129
+#: syslog_alerts.php:1139
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr ""
 
-#: syslog_alerts.php:1134
+#: syslog_alerts.php:1144
 msgid "Import Alert Rule from Text"
 msgstr ""
 
-#: syslog_alerts.php:1135
+#: syslog_alerts.php:1145
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr ""
 
-#: syslog_alerts.php:1146
+#: syslog_alerts.php:1156
 msgid "Import Alert Rule"
 msgstr ""
 
-#: syslog_alerts.php:1173 syslog_dashboards.php:528 syslog_removal.php:1039
+#: syslog_alerts.php:1183 syslog_dashboards.php:528 syslog_removal.php:1049
 #: syslog_saved_searches.php:477
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
 msgstr ""
 
-#: syslog_alerts.php:1222 syslog_removal.php:1088 syslog_reports.php:934
+#: syslog_alerts.php:1232 syslog_removal.php:1098 syslog_reports.php:934
 msgid "Imported"
 msgstr ""
 
-#: syslog_alerts.php:1222
+#: syslog_alerts.php:1232
 #, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr ""
 
-#: syslog_alerts.php:1222 syslog_dashboards.php:192 syslog_dashboards.php:288
-#: syslog_removal.php:1088 syslog_reports.php:934
+#: syslog_alerts.php:1232 syslog_dashboards.php:192 syslog_dashboards.php:288
+#: syslog_removal.php:1098 syslog_reports.php:934
 msgid "Updated"
 msgstr ""
 
-#: syslog_alerts.php:1224
+#: syslog_alerts.php:1234
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr ""
 
-#: syslog_alerts.php:1224 syslog_removal.php:1090 syslog_reports.php:936
+#: syslog_alerts.php:1234 syslog_removal.php:1100 syslog_reports.php:936
 msgid "Update"
 msgstr ""
 
@@ -2350,7 +2350,7 @@ msgstr ""
 msgid "Method of Removal"
 msgstr ""
 
-#: syslog_removal.php:625 syslog_removal.php:957
+#: syslog_removal.php:625 syslog_removal.php:967
 msgid "Deletion"
 msgstr ""
 
@@ -2370,52 +2370,52 @@ msgstr ""
 msgid "Removal filter conditions"
 msgstr ""
 
-#: syslog_removal.php:813 syslog_removal.php:942
+#: syslog_removal.php:823 syslog_removal.php:952
 msgid "Rules"
 msgstr ""
 
-#: syslog_removal.php:905
+#: syslog_removal.php:915
 msgid "Syslog Removal Rule Filters"
 msgstr ""
 
-#: syslog_removal.php:931
+#: syslog_removal.php:941
 msgid "Removal Name"
 msgstr ""
 
-#: syslog_removal.php:957
+#: syslog_removal.php:967
 msgid "Transfer"
 msgstr ""
 
-#: syslog_removal.php:964
+#: syslog_removal.php:974
 msgid "No Syslog Removal Rules Defined"
 msgstr ""
 
-#: syslog_removal.php:993
+#: syslog_removal.php:1003
 msgid "Import Removal Rule from Local File"
 msgstr ""
 
-#: syslog_removal.php:994
+#: syslog_removal.php:1004
 msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
 msgstr ""
 
-#: syslog_removal.php:999
+#: syslog_removal.php:1009
 msgid "Import Removal Rule from Text"
 msgstr ""
 
-#: syslog_removal.php:1000
+#: syslog_removal.php:1010
 msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
 msgstr ""
 
-#: syslog_removal.php:1011
+#: syslog_removal.php:1021
 msgid "Import Removal Rule"
 msgstr ""
 
-#: syslog_removal.php:1088
+#: syslog_removal.php:1098
 #, php-format
 msgid "NOTE: Removal Rule '%s' %s!"
 msgstr ""
 
-#: syslog_removal.php:1090
+#: syslog_removal.php:1100
 #, php-format
 msgid "ERROR: Removal Rule '%s' %s Failed!"
 msgstr ""
