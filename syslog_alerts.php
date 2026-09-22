@@ -104,7 +104,9 @@ function form_save(): void {
 			get_nfilter_request_var('notes'), get_nfilter_request_var('enabled'),
 			get_nfilter_request_var('severity'), get_nfilter_request_var('command'),
 			get_nfilter_request_var('repeat_alert'), get_nfilter_request_var('open_ticket'),
-			get_nfilter_request_var('notify'), get_nfilter_request_var('body'));
+			get_nfilter_request_var('notify'), get_nfilter_request_var('body'),
+			get_nfilter_request_var('cooldown_minutes'), get_nfilter_request_var('deduplication_minutes'),
+			get_nfilter_request_var('suppression_schedule'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -301,11 +303,15 @@ function alert_export(): void {
  * @param string          $open_ticket  'on' to open a help desk ticket, otherwise empty.
  * @param string|int      $notify       The id of the notification list to use, 0 for none.
  * @param string          $body         The body text for the alert email.
+ * @param string|int      $cooldown_minutes Per-rule notification cooldown; 0 inherits the global setting.
+ * @param string|int      $deduplication_minutes Per-rule duplicate suppression window; 0 inherits the global setting.
+ * @param string          $suppression_schedule Per-rule maintenance schedule; empty inherits the global schedule.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
 function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $message, $email, $notes,
-	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = ''): false|null {
+	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
+	$deduplication_minutes = 0, $suppression_schedule = ''): false|null {
 	global $syslogdb_default;
 
 	// get the username
@@ -328,6 +334,9 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['notes']        = form_input_validate($notes,        'notes',    '', true, 3);
 	$save['enabled']      = ($enabled == 'on' ? 'on' : '');
 	$save['repeat_alert'] = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
+	$save['cooldown_minutes'] = max(-1, (int) $cooldown_minutes);
+	$save['deduplication_minutes'] = max(-1, (int) $deduplication_minutes);
+	$save['suppression_schedule'] = form_input_validate(trim($suppression_schedule), 'suppression_schedule', '', true, 3);
 	$save['open_ticket']  = ($open_ticket == 'on' ? 'on' : '');
 	$save['type']         = $type;
 	$save['severity']     = $severity;
@@ -695,6 +704,31 @@ function syslog_action_edit(): void {
 			'default'       => '0',
 			'description'   => __('Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts.', 'syslog'),
 			'value'         => '|arg1:repeat_alert|'
+		],
+		'cooldown_minutes' => [
+			'friendly_name' => __('Notification Cooldown', 'syslog'),
+			'method'        => 'drop_array',
+			'description'   => __('Minutes to suppress every subsequent notification from this rule and reporting scope.', 'syslog'),
+			'array'         => ['-1' => __('Use global setting', 'syslog'), '0' => __('Disabled', 'syslog'), '1' => __('1 minute', 'syslog'), '5' => __('5 minutes', 'syslog'), '15' => __('15 minutes', 'syslog'), '30' => __('30 minutes', 'syslog'), '60' => __('1 hour', 'syslog'), '240' => __('4 hours', 'syslog'), '1440' => __('1 day', 'syslog')],
+			'value'         => '|arg1:cooldown_minutes|',
+			'default'       => '-1'
+		],
+		'deduplication_minutes' => [
+			'friendly_name' => __('Duplicate Suppression', 'syslog'),
+			'method'        => 'drop_array',
+			'description'   => __('Minutes to suppress the same matched message set.', 'syslog'),
+			'array'         => ['-1' => __('Use global setting', 'syslog'), '0' => __('Disabled', 'syslog'), '1' => __('1 minute', 'syslog'), '5' => __('5 minutes', 'syslog'), '15' => __('15 minutes', 'syslog'), '30' => __('30 minutes', 'syslog'), '60' => __('1 hour', 'syslog'), '240' => __('4 hours', 'syslog'), '1440' => __('1 day', 'syslog')],
+			'value'         => '|arg1:deduplication_minutes|',
+			'default'       => '-1'
+		],
+		'suppression_schedule' => [
+			'friendly_name' => __('Maintenance Window Override', 'syslog'),
+			'method'        => 'textarea',
+			'textarea_rows' => '3',
+			'textarea_cols' => '70',
+			'description'   => __('Mute this rule during local-time windows. One per line, for example: Mon-Fri 22:00-06:00. Leave empty to use the global schedule; enter off to ignore it.', 'syslog'),
+			'value'         => '|arg1:suppression_schedule|',
+			'default'       => ''
 		],
 		'notes' => [
 			'friendly_name' => __('Notes', 'syslog'),

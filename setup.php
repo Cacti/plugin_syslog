@@ -593,6 +593,31 @@ function syslog_check_upgrade(): void {
 		);
 	}
 
+	foreach ([
+		['cooldown_minutes', 'int(10)', '-1', 'repeat_alert'],
+		['deduplication_minutes', 'int(10)', '-1', 'cooldown_minutes'],
+		['suppression_schedule', 'text', '', 'deduplication_minutes']
+	] as [$name, $type, $default, $after]) {
+		if (!syslog_db_column_exists('syslog_alert', $name)) {
+			syslog_db_add_column('syslog_alert', [
+				'name'     => $name,
+				'type'     => $type,
+				'NULL'     => false,
+				'default'  => $default,
+				'after'    => $after]
+			);
+		}
+	}
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
+		`alert_id` int(10) unsigned NOT NULL,
+		`scope_key` varchar(255) NOT NULL,
+		`dedup_hash` char(40) NOT NULL,
+		`last_sent` int(10) unsigned NOT NULL default '0',
+		PRIMARY KEY (`alert_id`, `scope_key`, `dedup_hash`),
+		INDEX `last_sent` (`last_sent`))
+		ENGINE=InnoDB");
+
 	// Structured filter JSON can exceed the old VARCHAR limit. TEXT also keeps
 	// the alert table below the InnoDB/MariaDB inline row-size ceiling.
 	syslog_db_execute('ALTER TABLE syslog_alert MODIFY column message TEXT NOT NULL');
@@ -968,6 +993,9 @@ function syslog_setup_table_new(array $options): void {
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
+		`cooldown_minutes` int(10) NOT NULL default '-1',
+		`deduplication_minutes` int(10) NOT NULL default '-1',
+		`suppression_schedule` text NOT NULL,
 		`open_ticket` CHAR(2) default '',
 		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
@@ -998,6 +1026,15 @@ function syslog_setup_table_new(array $options): void {
 		INDEX `status` (`status`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
+		`alert_id` int(10) unsigned NOT NULL,
+		`scope_key` varchar(255) NOT NULL,
+		`dedup_hash` char(40) NOT NULL,
+		`last_sent` int(10) unsigned NOT NULL default '0',
+		PRIMARY KEY (`alert_id`, `scope_key`, `dedup_hash`),
+		INDEX `last_sent` (`last_sent`))
+		ENGINE=InnoDB");
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_remove`");
@@ -1773,6 +1810,35 @@ function syslog_config_settings(): void {
 			'method'        => 'drop_array',
 			'default'       => '30',
 			'array'         => $syslog_alert_retentions
+		],
+		'syslog_alert_suppression_header' => [
+			'friendly_name' => __('Alert Suppression and Maintenance', 'syslog'),
+			'method'        => 'spacer',
+			'collapsible'   => 'true'
+		],
+		'syslog_alert_maintenance_schedule' => [
+			'friendly_name' => __('Maintenance Window Schedule', 'syslog'),
+			'description'   => __('Mute all alert notifications during these local-time windows. One window per line, for example: Mon-Fri 22:00-06:00 or Sat 01:00-03:00. Use * for every day. Per-rule schedules replace this schedule for that rule.', 'syslog'),
+			'method'        => 'textarea',
+			'textarea_rows' => '3',
+			'textarea_cols' => '70',
+			'default'       => ''
+		],
+		'syslog_alert_cooldown_minutes' => [
+			'friendly_name' => __('Default Alert Cooldown', 'syslog'),
+			'description'   => __('Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable.', 'syslog'),
+			'method'        => 'textbox',
+			'size'          => '6',
+			'max_length'    => '6',
+			'default'       => '0'
+		],
+		'syslog_alert_deduplication_minutes' => [
+			'friendly_name' => __('Default Duplicate Suppression', 'syslog'),
+			'description'   => __('Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable.', 'syslog'),
+			'method'        => 'textbox',
+			'size'          => '6',
+			'max_length'    => '6',
+			'default'       => '0'
 		],
 		'syslog_remote_header' => [
 			'friendly_name' => __('Remote Message Processing', 'syslog'),
