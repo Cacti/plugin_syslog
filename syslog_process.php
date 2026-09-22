@@ -246,10 +246,16 @@ syslog_debug('------------------------------------------------------------------
 
 if (!syslog_is_partitioned()) {
 	syslog_debug('Syslog Table is NOT Partitioned');
-	$deleted = syslog_traditional_manage();
+	$phase_start     = time();
+	$phase_micro     = microtime(true);
+	$deleted         = syslog_traditional_manage();
+	syslog_status_record_phase('partition', $phase_start, time(), microtime(true) - $phase_micro, $deleted);
 } else {
 	syslog_debug('Syslog Table IS Partitioned');
-	$deleted = syslog_partition_manage();
+	$phase_start     = time();
+	$phase_micro     = microtime(true);
+	$deleted         = syslog_partition_manage();
+	syslog_status_record_phase('partition', $phase_start, time(), microtime(true) - $phase_micro, $deleted);
 }
 syslog_debug('-------------------------------------------------------------------------------------');
 
@@ -302,24 +308,44 @@ if ($parallel && $max_seq > 0) {
 	 */
 	syslog_wait_workers($launched);
 
+	$phase_start = time();
+	$phase_micro = microtime(true);
+
 	syslog_normalize_reference_tables($max_seq);
+
+	syslog_status_record_phase('references', $phase_start, time(), microtime(true) - $phase_micro, $incoming);
 } else {
+	$phase_start = time();
+	$phase_micro = microtime(true);
+
 	syslog_update_reference_tables($max_seq);
+
+	syslog_status_record_phase('references', $phase_start, time(), microtime(true) - $phase_micro, $incoming);
 }
 
 /**
  * remove records that don't need to to be transferred
  */
+$phase_start = time();
+$phase_micro = microtime(true);
+
 $results = syslog_remove_items('syslog_incoming', $max_seq);
 $removed = $results['removed'];
 $xferred = $results['xferred'];
 
+syslog_status_record_phase('removal', $phase_start, time(), microtime(true) - $phase_micro, $removed + $xferred);
+
 /**
  * process the syslog rules and generate alerts
  */
+$phase_start = time();
+$phase_micro = microtime(true);
+
 $results = syslog_process_alerts($max_seq);
 $alerts  = $results['syslog_alerts'];
 $alarms  = $results['syslog_alarms'];
+
+syslog_status_record_phase('alerts', $phase_start, time(), microtime(true) - $phase_micro, $alarms);
 
 /**
  * Perform any plugin specific actions.  Syslog itself does not use
@@ -354,6 +380,9 @@ if ($parallel && $max_seq > 0) {
 
 		$transfer_slices = syslog_compute_slices($min_seq, $max_seq, $syslog_max_workers);
 
+		$phase_start = time();
+		$phase_micro = microtime(true);
+
 		$launched = syslog_launch_workers('transfer', $transfer_slices, $run_id, $debug);
 
 		/*
@@ -369,23 +398,37 @@ if ($parallel && $max_seq > 0) {
 		$worker_stats = syslog_aggregate_worker_stats($syslog_max_workers);
 
 		$moved = $worker_stats['moved'];
+
+		syslog_status_record_phase('transfer', $phase_start, time(), microtime(true) - $phase_micro, $moved);
 	} else {
 		$moved = 0;
 		$stale = 0;
+
+		syslog_status_record_phase('transfer', time(), time(), 0.0, 0);
 	}
 } else {
+	$phase_start = time();
+	$phase_micro = microtime(true);
+
 	$results = syslog_incoming_to_syslog($max_seq);
 	$moved   = $results['moved'];
 	$stale   = $results['stale'];
+
+	syslog_status_record_phase('transfer', $phase_start, time(), microtime(true) - $phase_micro, $moved);
 }
 
 /**
  * process any syslog reports that are due to be
  * sent.
  */
+$phase_start = time();
+$phase_micro = microtime(true);
+
 $results  = syslog_process_reports();
 $reports  = $results['total_reports'];
 $sentrpts = $results['sent_reports'];
+
+syslog_status_record_phase('reports', $phase_start, time(), microtime(true) - $phase_micro, $sentrpts);
 
 /**
  * prune and optimize any tables that are required to

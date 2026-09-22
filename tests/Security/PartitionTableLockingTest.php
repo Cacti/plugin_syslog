@@ -251,13 +251,31 @@ it('keeps syslog partition table locking and DDL identifiers safe', function () 
 	$manage_body = substr($functions, $manage_start, $manage_end - $manage_start);
 
 	foreach (['syslog', 'syslog_removed'] as $table) {
-		if (!preg_match('/syslog_partition_ensure_ahead\s*\(\s*\'' . $table . '\'/', $manage_body)) {
-			throw new RuntimeException("syslog_partition_manage does not ensure future partitions for '$table'.");
+		if (!preg_match('/syslog_partition_recover\s*\(\s*\'' . $table . '\'/', $manage_body)) {
+			throw new RuntimeException("syslog_partition_manage does not recover future partitions for '$table'.");
 		}
 
 		if (!preg_match('/syslog_partition_remove\s*\(\s*\'' . $table . '\'\s*\)/', $manage_body)) {
 			throw new RuntimeException("syslog_partition_manage does not call syslog_partition_remove('$table').");
 		}
+	}
+
+	// ---- the manage pass must fail safe on invalid partition metadata ----
+
+	if (!preg_match('/syslog_partition_report_state\s*\(\s*\$(\w+)\s*\)/', $manage_body, $state_var)) {
+		throw new RuntimeException('syslog_partition_manage does not verify partition metadata before acting.');
+	}
+
+	$table_var = $state_var[1];
+
+	if (!preg_match('/syslog_partition_report_state\s*\(\s*\$' . preg_quote($table_var, '/') . '\s*\)\s*\)\s*\{[^}]*return\s+0;/s', $manage_body)) {
+		throw new RuntimeException('syslog_partition_manage does not stop when partition metadata is invalid.');
+	}
+
+	// ---- retention must be blocked while the future horizon is missing ----
+
+	if (preg_match('/stop_reason\'\]\s*===\s*\'\'\s*\)/', $manage_body) !== 1) {
+		throw new RuntimeException('syslog_partition_manage does not gate retention pruning on successful recovery.');
 	}
 
 	// ---- syslog_manage_items must exist with the current two-table signature ----

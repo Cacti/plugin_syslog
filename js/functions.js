@@ -1288,3 +1288,102 @@ function initSyslogAutocomplete(formName, callback, onChange) {
 		});
 	});
 }
+
+/* ========================================================================
+ * Rule Preview ("Test rule")
+ * ======================================================================== */
+
+/**
+ * Post the rule editor form to the page's test action and render a
+ * bounded preview dialog.  The endpoint is strictly read-only: it never
+ * saves, enables, disables, deletes, or executes anything.
+ *
+ * @param {string} formSelector  Selector of the editor form.
+ * @param {string} dialogSelector Selector of the preview dialog div.
+ * @param {string} title        Translated dialog title.
+ */
+function testSyslogRule(formSelector, dialogSelector, title) {
+	var form = $(formSelector);
+
+	if (!form.length) {
+		return;
+	}
+
+	var messageField = form.find('#message');
+	var typeField = form.find('#type');
+
+	// Sync the visual filter builder into the message field exactly as
+	// the save path does, so the preview matches what would be stored.
+	var builder = window.alertFilterBuilder || window.removalFilterBuilder;
+
+	if (builder && typeField.val() == 'filter' && !builder.syncTo(messageField[0])) {
+		return;
+	}
+
+	var data = {
+		action: 'test',
+		type: typeField.val() || 'filter',
+		name: form.find('#name').val() || '',
+		message: messageField.val() || '',
+		preview_rows: 10,
+		__csrf_magic: csrfMagicToken
+	};
+
+	$.post(window.location.pathname, data, null, 'json').done(function(result) {
+		var dialog = $(dialogSelector);
+
+		if (!dialog.length) {
+			return;
+		}
+
+		if (result && result.error) {
+			dialog.html($('<div class="syslogRuleTestError"/>').text(result.error));
+		} else if (result) {
+			var container = $('<div class="syslogRuleTestResult"/>');
+
+			container.append($('<p/>').append($('<span class="syslogRuleTestCount"/>').text(
+				(result.count === 1 ? '1 matching message' : result.count + ' matching messages')
+			)));
+
+			var table = $('<table class="syslogRuleTestRows"><thead><tr>' +
+				'<th>Date</th><th>Host</th><th>Program</th><th>Message</th>' +
+				'</tr></thead><tbody></tbody></table>');
+			var tbody = table.find('tbody');
+
+			(result.rows || []).forEach(function(row) {
+				var tr = $('<tr/>');
+				tr.append($('<td/>').text(row.logtime || ''));
+				tr.append($('<td/>').text(row.host || ''));
+				tr.append($('<td/>').text(row.program || ''));
+				tr.append($('<td class="syslogRuleTestMessage"/>').text(row.message || ''));
+				tbody.append(tr);
+			});
+
+			container.append(table);
+			dialog.html(container);
+		} else {
+			dialog.html($('<div class="syslogRuleTestError"/>').text('The preview returned no result.'));
+		}
+
+		dialog.dialog({
+			title: title,
+			minHeight: 80,
+			minWidth: 600,
+			maxWidth: 900,
+			resizable: true,
+			draggable: true,
+			modal: true
+		});
+	}).fail(function() {
+		var dialog = $(dialogSelector);
+
+		if (dialog.length) {
+			dialog.html($('<div class="syslogRuleTestError"/>').text('The preview request failed.'));
+			dialog.dialog({
+				title: title,
+				minHeight: 80,
+				minWidth: 400
+			});
+		}
+	});
+}
