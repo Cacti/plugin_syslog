@@ -2684,7 +2684,7 @@ function syslog_removal_filter_normalize($json, $table) {
  *
  * @return array The SQL and params, or an empty array on failure
  */
-function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $prefix = '') {
+function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $prefix = '', $processing_boundary = true) {
 	global $syslogdb_default;
 
 	if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
@@ -2722,7 +2722,7 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 		return [];
 	}
 
-	if ($table === 'syslog_incoming' && $prefix === '') {
+	if ($table === 'syslog_incoming' && $prefix === '' && $processing_boundary) {
 		$filter['params'][] = 1;
 		$filter['params'][] = $remove['max_seq'];
 
@@ -2734,7 +2734,7 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 		];
 	}
 
-	if ($table === 'syslog_incoming') {
+	if ($table === 'syslog_incoming' && $processing_boundary) {
 		// Aliased shape for the joined transferal INSERT.
 		$filter['params'][] = 1;
 		$filter['params'][] = $remove['max_seq'];
@@ -2804,7 +2804,7 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 			// rule; a preview matches the whole incoming table.
 			$rule['max_seq'] = PHP_INT_MAX;
 
-			$compiled = syslog_get_removal_rule_sql($rule, 'syslog_incoming');
+			$compiled = syslog_get_removal_rule_sql($rule, 'syslog_incoming', '', false);
 
 			if (cacti_sizeof($compiled)) {
 				// The removal compiler returns a bare WHERE clause; the
@@ -2813,17 +2813,14 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 				$params = $compiled['params'];
 			}
 		} else {
-			$sql_data = syslog_get_alert_sql($rule, 0);
+			$sql_data = syslog_get_alert_sql($rule, 0, false);
 
 			$sql    = isset($sql_data['sql']) ? (string) $sql_data['sql'] : '';
 			$params = isset($sql_data['params']) ? (array) $sql_data['params'] : [];
 
-			// The alert compiler bounds preview rows by seq; a preview has
-			// no processing boundary, so drop that predicate by binding an
-			// effectively unbounded seq instead of editing the SQL.
-			if ($sql !== '' && cacti_sizeof($params) && str_contains($sql, '`seq` <= ?')) {
-				$params[cacti_sizeof($params) - 1] = PHP_INT_MAX;
-			}
+			// Preview filters intentionally omit the worker-only status and
+			// sequence boundaries, so they show records waiting for the next
+			// poller pass as well as records currently being processed.
 		}
 	} else {
 		// Legacy match types and hand written SQL.  Every value is bound
@@ -4629,7 +4626,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
  *
  * @return array The SQL and the prepared array for the SQL
  */
-function syslog_get_alert_sql(&$alert, $max_seq) {
+function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true) {
 	global $syslogdb_default, $syslog_incoming_config;
 
 	if (defined('SYSLOG_CONFIG')) {
@@ -4670,17 +4667,17 @@ function syslog_get_alert_sql(&$alert, $max_seq) {
 			return [];
 		}
 
-		$filter['params'][] = 1;
-		$filter['params'][] = $max_seq;
+		$sql = "SELECT *
+			FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE ({$filter['sql']})";
 
-		return [
-			'sql' => "SELECT *
-				FROM `$syslogdb_default`.`syslog_incoming`
-				WHERE ({$filter['sql']})
-				AND `status` = ?
-				AND `seq` <= ?",
-			'params' => $filter['params']
-		];
+		if ($processing_boundary) {
+			$filter['params'][] = 1;
+			$filter['params'][] = $max_seq;
+			$sql .= "\n\t\t\t\tAND `status` = ?\n\t\t\t\tAND `seq` <= ?";
+		}
+
+		return ['sql' => $sql, 'params' => $filter['params']];
 	}
 
 	if ($alert['type'] == 'facility') {

@@ -86,6 +86,39 @@ it('previews a filter rule through the QueryBuilder with bound parameters', func
 	}
 });
 
+it('previews structured filters without the poller-only processing boundary', function () {
+	syslog_load_plugin_source('functions.php');
+
+	$GLOBALS['syslogdb_default']       = 'syslogdb';
+	$GLOBALS['syslog_incoming_config'] = [
+		'timeField'     => 'logtime',
+		'textField'     => 'message',
+		'hostField'     => 'host',
+		'programField'  => 'program',
+		'facilityField' => 'facility_id',
+		'priorityField' => 'priority_id'
+	];
+
+	$rule = [
+		'type'    => 'filter',
+		'message' => json_encode(['version' => 1, 'conditions' => [
+			['join' => 'AND', 'negative' => false, 'field' => 'message', 'operator' => 'contains', 'value' => 'error']
+		]])
+	];
+
+	foreach (['alert', 'removal'] as $rule_type) {
+		$calls = [];
+		rule_preview_capture_db($calls, ['count' => '0']);
+
+		$preview = syslog_rule_preview($rule, $rule_type, 10);
+
+		expect($preview['error'])->toBe('');
+		expect($calls[0]['sql'])->not->toContain('`status`');
+		expect($calls[0]['sql'])->not->toContain('`seq` <= ?');
+		expect($calls[0]['params'])->toBe(['%error%']);
+	}
+});
+
 it('rejects unknown rule types without running any query', function () {
 	syslog_load_plugin_source('functions.php');
 
