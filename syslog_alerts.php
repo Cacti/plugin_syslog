@@ -769,13 +769,13 @@ function syslog_action_edit(): void {
 		],
 		'maintenance_datetime_start' => [
 			'friendly_name' => __('One-time Rule Maintenance Starts', 'syslog'),
-			'method'        => 'textbox', 'size' => '18', 'max_length' => '16',
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16', 'class' => 'syslogMaintenanceDateTime',
 			'description'   => __('Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM.', 'syslog'),
 			'value'         => '|arg1:maintenance_datetime_start|', 'default' => ''
 		],
 		'maintenance_datetime_end' => [
 			'friendly_name' => __('One-time Rule Maintenance Ends', 'syslog'),
-			'method'        => 'textbox', 'size' => '18', 'max_length' => '16',
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16', 'class' => 'syslogMaintenanceDateTime',
 			'description'   => __('Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM.', 'syslog'),
 			'value'         => '|arg1:maintenance_datetime_end|', 'default' => ''
 		],
@@ -936,7 +936,22 @@ function syslog_action_edit(): void {
 		}
 	}
 
+	function changeMaintenanceMode() {
+		var customWindowRows = $('#row_maintenance_days, #row_maintenance_start, #row_maintenance_end, #row_maintenance_datetime_start, #row_maintenance_datetime_end');
+		customWindowRows.toggle($('#maintenance_mode').val() === 'custom');
+	}
+
 	$(function() {
+		$('.syslogMaintenanceDateTime').datetimepicker({
+			minuteGrid: 10,
+			stepMinute: 1,
+			showAnim: 'slideDown',
+			numberOfMonths: 1,
+			timeFormat: 'HH:mm',
+			dateFormat: 'yy-mm-dd',
+			showButtonPanel: false
+		});
+
 		var message = document.getElementById('message');
 		var panel = document.createElement('section');
 		panel.id = 'syslog_alert_filter_panel';
@@ -978,8 +993,10 @@ function syslog_action_edit(): void {
 		$('#report_method').change(function() {
 			changeMethod();
 		});
+		$('#maintenance_mode').on('change.syslogMaintenance', changeMaintenanceMode);
 
 		changeMethod();
+		changeMaintenanceMode();
 
 		$('#syslog_rule_test').on('click.syslogRuleTest', function() {
 			testSyslogRule('#syslog_edit', '#syslog_rule_test_dialog', <?php print syslog_json_safe(__('Rule Test Preview', 'syslog')); ?>);
