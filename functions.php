@@ -2756,7 +2756,7 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
  * The per-request preview row count is additionally clamped so a single
  * response cannot stream unbounded data.
  */
-define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 25);
+define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 10);
 
 /**
  * syslog_rule_preview - Run a read-only preview of a rule against the
