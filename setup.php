@@ -55,6 +55,7 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
+	api_plugin_register_hook('syslog', 'settings_bottom',       'syslog_settings_bottom',      'setup.php', 1);
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
 	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
 	api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
@@ -203,6 +204,7 @@ function plugin_syslog_check_config(): bool {
  */
 function plugin_syslog_upgrade(): bool {
 	// Here we will upgrade to the newest version
+	api_plugin_register_hook('syslog', 'settings_bottom', 'syslog_settings_bottom', 'setup.php', 1);
 	syslog_check_upgrade();
 
 	return false;
@@ -1675,15 +1677,6 @@ function syslog_config_settings(): void {
 
 	$tabs['syslog'] = __('Syslog', 'syslog');
 
-	// Settings fields are rendered by Cacti's generic textbox control, which
-	// does not accept a CSS class. Register click actions so the core form
-	// renderer attaches the standard Cacti date-time picker to both inputs.
-	if (get_nfilter_request_var('tab') == 'syslog') {
-		$picker = "if (!$(this).hasClass('hasDatepicker')) { $(this).datetimepicker({minuteGrid: 10, stepMinute: 1, showAnim: 'slideDown', numberOfMonths: 1, timeFormat: 'HH:mm', dateFormat: 'yy-mm-dd', showButtonPanel: false}); } $(this).datetimepicker('show')";
-		$_SESSION['form_click_actions']['syslog_alert_maintenance_datetime_start'] = $picker;
-		$_SESSION['form_click_actions']['syslog_alert_maintenance_datetime_end']   = $picker;
-	}
-
 	$temp = [
 		'syslog_header' => [
 			'friendly_name' => __('General Settings', 'syslog'),
@@ -1930,6 +1923,28 @@ function syslog_config_settings(): void {
 	} else {
 		$settings['syslog'] = $temp;
 	}
+}
+
+/** Attach Cacti's date-time picker after the Syslog Settings form is drawn. */
+function syslog_settings_bottom(): void {
+	if (get_nfilter_request_var('tab') !== 'syslog') {
+		return;
+	}
+	?>
+	<script type='text/javascript'>
+	$(function() {
+		$('#syslog_alert_maintenance_datetime_start, #syslog_alert_maintenance_datetime_end').datetimepicker({
+			minuteGrid: 10,
+			stepMinute: 1,
+			showAnim: 'slideDown',
+			numberOfMonths: 1,
+			timeFormat: 'HH:mm',
+			dateFormat: 'yy-mm-dd',
+			showButtonPanel: false
+		});
+	});
+	</script>
+	<?php
 }
 
 /**
