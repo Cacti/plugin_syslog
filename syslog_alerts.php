@@ -942,7 +942,7 @@ function syslog_action_edit(): void {
 	}
 
 	$(function() {
-		$('.syslogMaintenanceDateTime').datetimepicker({
+		$('#maintenance_datetime_start, #maintenance_datetime_end').datetimepicker({
 			minuteGrid: 10,
 			stepMinute: 1,
 			showAnim: 'slideDown',
