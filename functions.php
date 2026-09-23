@@ -758,6 +758,19 @@ function syslog_allow_edits(): bool {
 }
 
 /**
+ * Whether the current user can change Syslog alarm, removal, or report rules.
+ *
+ * Rule Administrators are intentionally distinct from Rule Viewers.  Cacti
+ * admits viewers to the real page filenames; all writes additionally require
+ * this permission-only realm.
+ *
+ * @return bool True when rule edits are permitted for this user and poller.
+ */
+function syslog_allow_rule_edits(): bool {
+	return syslog_allow_edits() && api_plugin_user_realm_auth('syslog_rule_administrator.php');
+}
+
+/**
  * Save data with remote sync support.
  *
  * @param array<string, mixed> $data    The data to save.
@@ -3088,7 +3101,7 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 function syslog_rule_test_action(string $rule_type): string {
 	$realm_page = $rule_type === 'removal' ? 'syslog_removal.php' : 'syslog_alerts.php';
 
-	if (!api_plugin_user_realm_auth($realm_page)) {
+	if (!api_plugin_user_realm_auth($realm_page) || !syslog_allow_rule_edits()) {
 		cacti_log("WARNING: syslog rule preview blocked -- missing realm for '$realm_page'", false, 'SYSLOG');
 
 		return (string) json_encode(['error' => __('Permission denied.', 'syslog')]);
@@ -5929,9 +5942,11 @@ function syslog_message_rule_links($id, $source, $received): array {
 	}
 
 	$query = http_build_query(['id' => $id, 'action' => 'newedit', 'type' => '0', 'date' => $received]);
-	foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
-		if (api_plugin_user_realm_auth($page)) {
-			$links[$action] = $page . '?' . $query;
+	if (syslog_allow_rule_edits()) {
+		foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
+			if (api_plugin_user_realm_auth($page)) {
+				$links[$action] = $page . '?' . $query;
+			}
 		}
 	}
 	return $links;

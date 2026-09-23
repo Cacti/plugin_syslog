@@ -69,7 +69,9 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'replicate_out',         'syslog_replicate_out',        'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 1);
+	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
 
@@ -393,6 +395,45 @@ function syslog_upgrade_dashboard_realm(): void {
 }
 
 /**
+ * Preserve existing Syslog Administration grants as Rule Administrator grants.
+ *
+ * Rule pages must be registered to the Rule Viewer realm so Cacti can admit
+ * read-only users before page code runs.  The administrator realm is a
+ * permission-only entry that the rule pages check before every mutation.
+ *
+ * @return void
+ */
+function syslog_upgrade_rule_permissions(): void {
+	global $user_auth_realm_filenames;
+
+	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+
+	if (!is_array($realms)) {
+		return;
+	}
+
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (!in_array('syslog_alerts.php', $files, true) || in_array('syslog_rule_administrator.php', $files, true)) {
+			continue;
+		}
+
+		$files = array_values(array_diff($files, ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php']));
+		$files[] = 'syslog_rule_administrator.php';
+
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
+			[implode(',', $files), $realm['id'], 'syslog'])) {
+			return;
+		}
+
+		api_plugin_replicate_config();
+		$user_auth_realm_filenames['syslog_rule_administrator.php'] = (int) $realm['id'] + 100;
+
+		return;
+	}
+}
+
+/**
  * Upgrade the Syslog database schema for legacy installs.
  *
  * @return void
@@ -403,7 +444,10 @@ function syslog_check_upgrade(): void {
 	syslog_connect();
 	syslog_upgrade_saved_search_realm();
 	syslog_upgrade_dashboard_realm();
+	syslog_upgrade_rule_permissions();
 	// Keep newly introduced permission realms available for existing installs.
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 0);
+	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 0);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
 
@@ -2190,6 +2234,7 @@ function syslog_config_arrays(): void {
 			'syslog_alerts.php',
 			'syslog_removal.php',
 			'syslog_reports.php',
+			'syslog_rule_administrator.php',
 			'syslog_saved_searches.php',
 			'syslog_dashboards.php',
 			'syslog_saved_searches_share.php',
