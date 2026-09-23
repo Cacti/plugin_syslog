@@ -145,7 +145,7 @@ function device_rule_edit(): void {
 	}
 	$fields = [
 		'spacer' => ['method' => 'spacer', 'friendly_name' => __('Device Alert Rule', 'syslog')],
-		'host' => ['method' => 'textbox', 'friendly_name' => __('Device', 'syslog'), 'description' => __('This rule applies to every Syslog alert matching this device.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
+		'host' => ['method' => 'textbox', 'friendly_name' => __('Device', 'syslog'), 'description' => __('This rule applies to every Syslog alert matching this device. Select a current device or enter any IP address or hostname.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
 		'enabled' => ['method' => 'drop_array', 'friendly_name' => __('Enabled', 'syslog'), 'array' => ['on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')], 'value' => '|arg1:enabled|'],
 		'mute_mode' => ['method' => 'drop_array', 'friendly_name' => __('Alert Handling', 'syslog'), 'description' => __('Pause all non-exempt alerts until a date, or indefinitely.', 'syslog'), 'array' => ['none' => __('Do not pause', 'syslog'), 'until' => __('Pause until', 'syslog'), 'indefinite' => __('Pause indefinitely', 'syslog')], 'value' => '|arg1:mute_mode|'],
 		'mute_until' => ['method' => 'textbox', 'friendly_name' => __('Pause Ends', 'syslog'), 'description' => __('Local date and time, YYYY-MM-DD HH:MM.', 'syslog'), 'value' => '|arg1:mute_until|', 'size' => 18, 'max_length' => 16],
@@ -166,6 +166,14 @@ function device_rule_edit(): void {
 	<script>
 	$(function () {
 		$('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
+		$('#host').autocomplete({
+			minLength: 0,
+			delay: 250,
+			source: function (request, respond) {
+				$.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'ajax_search_values', field: 'host', term: request.term, tab: 'syslog', __csrf_magic: csrfMagicToken}}).done(respond).fail(function () { respond([]); });
+			},
+			select: function (event, ui) { this.value = ui.item.value; return false; }
+		}).on('focus', function () { $(this).autocomplete('search', this.value); });
 		function toggleEnd() { $('#row_mute_until').toggle($('#mute_mode').val() === 'until'); }
 		$('#mute_mode').on('change', toggleEnd); toggleEnd();
 		<?php if (!syslog_allow_edits()) { ?>$('#syslog_device_rule_edit').find('select,input,textarea').prop('disabled', true);<?php } ?>
