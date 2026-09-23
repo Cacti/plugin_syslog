@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-22 21:30-0400\n"
+"POT-Creation-Date: 2026-09-22 21:38-0400\n"
 "PO-Revision-Date: 2025-03-07 14:49-0500\n"
 "Last-Translator: The Cacti Group <weblate@cacti.net>\n"
 "Language-Team: Italian <http://translate.cacti.net/projects/cacti/syslog/it-IT/>\n"
@@ -382,7 +382,7 @@ msgstr "Salva"
 
 #: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1662
 #: setup.php:2505 syslog.php:1890 syslog_alerts.php:230
-#: syslog_dashboards.php:428 syslog_device_rules.php:107 syslog_removal.php:248
+#: syslog_dashboards.php:428 syslog_device_rules.php:126 syslog_removal.php:248
 #: syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Cancel"
 msgstr "Annulla"
@@ -393,7 +393,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2092
 #: syslog.php:1798 syslog_dashboards.php:300 syslog_dashboards.php:351
-#: syslog_device_rules.php:105 syslog_removal.php:36
+#: syslog_device_rules.php:124 syslog_removal.php:36
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Delete"
 msgstr "Elimina"
@@ -638,7 +638,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
 #: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:802
-#: syslog_device_rules.php:249 syslog_reports.php:554
+#: syslog_device_rules.php:256 syslog_reports.php:554
 msgid "None"
 msgstr "Nessuno"
 
@@ -842,8 +842,8 @@ msgid "Every day"
 msgstr ""
 
 #: setup.php:1721 syslog_alerts.php:711 syslog_alerts.php:726
-#: syslog_alerts.php:734 syslog_device_rules.php:155
-#: syslog_device_rules.php:251 syslog_removal.php:599 syslog_reports.php:499
+#: syslog_alerts.php:734 syslog_device_rules.php:168
+#: syslog_device_rules.php:258 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
 msgstr "Disabilitato"
 
@@ -1134,16 +1134,16 @@ msgstr "Sincronizzazione delle regole dell'agente di raccolta dati remoto"
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Se i tuoi raccoglitori di dati remoti hanno i propri database Syslog ed elaborano tre messaggi in modo indipendente, seleziona questa casella di controllo se desideri che le regole di avviso, rimozione e rapporto dei database principali di Cacti vengano inviate al sistema di Cacti remoto."
 
-#: setup.php:2093 syslog_device_rules.php:105 syslog_removal.php:37
+#: setup.php:2093 syslog_device_rules.php:124 syslog_removal.php:37
 msgid "Disable"
 msgstr "Disabilita"
 
-#: setup.php:2094 syslog_device_rules.php:105 syslog_removal.php:38
+#: setup.php:2094 syslog_device_rules.php:124 syslog_removal.php:38
 msgid "Enable"
 msgstr "Abilita"
 
 #: setup.php:2095 syslog.php:1918 syslog_dashboards.php:300
-#: syslog_dashboards.php:351 syslog_device_rules.php:105 syslog_removal.php:40
+#: syslog_dashboards.php:351 syslog_device_rules.php:124 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
 msgstr "Esporta"
@@ -1260,7 +1260,7 @@ msgstr "Regole di avviso"
 msgid "Syslog Settings"
 msgstr "Impostazioni syslog"
 
-#: setup.php:2231 syslog_device_rules.php:241
+#: setup.php:2231 syslog_device_rules.php:248
 #, fuzzy
 msgid "Device Alert Rules"
 msgstr "Regole di avviso"
@@ -1329,7 +1329,7 @@ msgid "Confirm Purge"
 msgstr ""
 
 #: setup.php:2512 syslog_alerts.php:230 syslog_dashboards.php:428
-#: syslog_device_rules.php:107 syslog_removal.php:248 syslog_reports.php:213
+#: syslog_device_rules.php:126 syslog_removal.php:248 syslog_reports.php:213
 #: syslog_saved_searches.php:384
 msgid "Continue"
 msgstr "Continua"
@@ -1638,7 +1638,7 @@ msgstr ""
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[ Messaggi non elaborati: %s ]"
 
-#: syslog.php:1728 syslog_device_rules.php:207
+#: syslog.php:1728 syslog_device_rules.php:214
 msgid "Enter a search term"
 msgstr "Inserisci un termine da ricercare"
 
@@ -1727,7 +1727,7 @@ msgid "Display Rows"
 msgstr "Visualizza righe"
 
 #: syslog.php:1822 syslog_alerts.php:1055 syslog_dashboards.php:237
-#: syslog_device_rules.php:209 syslog_removal.php:827 syslog_reports.php:665
+#: syslog_device_rules.php:216 syslog_removal.php:827 syslog_reports.php:665
 #: syslog_saved_searches.php:229
 msgid "Default"
 msgstr "Predefinito"
@@ -1793,13 +1793,13 @@ msgid "Save Search As"
 msgstr "Cerca"
 
 #: syslog.php:1915 syslog_alerts.php:1035 syslog_dashboards.php:227
-#: syslog_device_rules.php:207 syslog_removal.php:807 syslog_reports.php:645
+#: syslog_device_rules.php:214 syslog_removal.php:807 syslog_reports.php:645
 #: syslog_saved_searches.php:219
 msgid "Search"
 msgstr "Cerca"
 
 #: syslog.php:1916 syslog_alerts.php:1072 syslog_dashboards.php:254
-#: syslog_device_rules.php:210 syslog_removal.php:844 syslog_reports.php:682
+#: syslog_device_rules.php:217 syslog_removal.php:844 syslog_reports.php:682
 #: syslog_saved_searches.php:246
 msgid "Clear"
 msgstr "Cancella"
@@ -1851,7 +1851,7 @@ msgid "Informational"
 msgstr "Info"
 
 #: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:664
-#: syslog_device_rules.php:153 syslog_device_rules.php:242
+#: syslog_device_rules.php:167 syslog_device_rules.php:249
 msgid "Device"
 msgstr "Dispositivo"
 
@@ -2077,8 +2077,8 @@ msgid "Build filter conditions or enter an SQL expression to match syslog messag
 msgstr ""
 
 #: syslog_alerts.php:708 syslog_alerts.php:711 syslog_alerts.php:1041
-#: syslog_alerts.php:1173 syslog_device_rules.php:155
-#: syslog_device_rules.php:208 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_alerts.php:1173 syslog_device_rules.php:168
+#: syslog_device_rules.php:215 syslog_removal.php:599 syslog_removal.php:813
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
@@ -2212,7 +2212,7 @@ msgstr ""
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
 msgstr ""
 
-#: syslog_alerts.php:783 syslog_device_rules.php:160 syslog_reports.php:568
+#: syslog_alerts.php:783 syslog_device_rules.php:173 syslog_reports.php:568
 msgid "Notes"
 msgstr "Note"
 
@@ -2262,7 +2262,7 @@ msgstr "Dovrebbe essere aperto un ticket dell'Help Desk per questo avviso.  NOTA
 
 #: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
-#: syslog_device_rules.php:159 syslog_device_rules.php:208
+#: syslog_device_rules.php:172 syslog_device_rules.php:215
 #: syslog_removal.php:819 syslog_removal.php:964 syslog_reports.php:657
 #: syslog_reports.php:804
 msgid "No"
@@ -2270,7 +2270,7 @@ msgstr "No"
 
 #: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
-#: syslog_device_rules.php:159 syslog_device_rules.php:208
+#: syslog_device_rules.php:172 syslog_device_rules.php:215
 #: syslog_removal.php:818 syslog_removal.php:964 syslog_reports.php:656
 #: syslog_reports.php:804
 msgid "Yes"
@@ -2321,7 +2321,7 @@ msgstr "Inserisci un termine da ricercare"
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:1045 syslog_device_rules.php:208 syslog_removal.php:817
+#: syslog_alerts.php:1045 syslog_device_rules.php:215 syslog_removal.php:817
 #: syslog_reports.php:655
 msgid "All"
 msgstr "Tutti"
@@ -2331,7 +2331,7 @@ msgstr "Tutti"
 msgid "Rows"
 msgstr "Righe"
 
-#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:210
+#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:217
 #: syslog_removal.php:843 syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr "Vai"
@@ -2569,159 +2569,146 @@ msgstr ""
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
 msgstr ""
 
-#: syslog_device_rules.php:44
+#: syslog_device_rules.php:63
 msgid "Choose a future pause end date and time."
 msgstr ""
 
-#: syslog_device_rules.php:50
+#: syslog_device_rules.php:69
 msgid "A device name is required."
 msgstr ""
 
-#: syslog_device_rules.php:106
+#: syslog_device_rules.php:125
 #, fuzzy, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
 msgstr "Fare clic su \"Continua\" per disabilitare le seguenti regole di avviso Syslog."
 
-#: syslog_device_rules.php:142
+#: syslog_device_rules.php:161
 msgid "Do not pass any priority"
 msgstr ""
 
-#: syslog_device_rules.php:144
+#: syslog_device_rules.php:163
 #, php-format
 msgid "%s and more urgent"
 msgstr ""
 
-#: syslog_device_rules.php:152
+#: syslog_device_rules.php:166
 #, fuzzy
 msgid "Device Alert Rule"
 msgstr "Nuova regola di avviso"
 
-#: syslog_device_rules.php:153
-msgid "This rule applies to every Syslog alert matching this device. Select a current device or enter any IP address or hostname."
+#: syslog_device_rules.php:167
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
 msgstr ""
 
-#: syslog_device_rules.php:154
-#, fuzzy
-msgid "Current Devices"
-msgstr "Seleziona dispositivo/i"
-
-#: syslog_device_rules.php:154
-msgid "Select a current Syslog device to populate the Device field. To use a new device, enter its IP address or hostname above."
-msgstr ""
-
-#: syslog_device_rules.php:156
+#: syslog_device_rules.php:169
 #, fuzzy
 msgid "Alert Handling"
 msgstr "Gestione della rimozione"
 
-#: syslog_device_rules.php:156
+#: syslog_device_rules.php:169
 msgid "Do not pause"
 msgstr ""
 
-#: syslog_device_rules.php:156
+#: syslog_device_rules.php:169
 msgid "Pause all non-exempt alerts until a date, or indefinitely."
 msgstr ""
 
-#: syslog_device_rules.php:156
+#: syslog_device_rules.php:169
 #, fuzzy
 msgid "Pause indefinitely"
 msgstr "Indefinito"
 
-#: syslog_device_rules.php:156
+#: syslog_device_rules.php:169
 msgid "Pause until"
 msgstr ""
 
-#: syslog_device_rules.php:157
+#: syslog_device_rules.php:170
 msgid "Local date and time, YYYY-MM-DD HH:MM."
 msgstr ""
 
-#: syslog_device_rules.php:157
+#: syslog_device_rules.php:170
 msgid "Pause Ends"
 msgstr ""
 
-#: syslog_device_rules.php:158
+#: syslog_device_rules.php:171
 #, fuzzy
 msgid "Always Allow Priority"
 msgstr "Tutte le priorità"
 
-#: syslog_device_rules.php:158
+#: syslog_device_rules.php:171
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
 msgstr ""
 
-#: syslog_device_rules.php:159
+#: syslog_device_rules.php:172
 #, fuzzy
 msgid "Allow During Maintenance"
 msgstr "Tabella partizionata"
 
-#: syslog_device_rules.php:159
+#: syslog_device_rules.php:172
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
 msgstr ""
 
-#: syslog_device_rules.php:167
+#: syslog_device_rules.php:180
 #, fuzzy
 msgid "Device Alert Rule [edit]"
 msgstr "Nuova regola di avviso"
 
-#: syslog_device_rules.php:167
+#: syslog_device_rules.php:180
 #, fuzzy
 msgid "Device Alert Rule [new]"
 msgstr "Nuova regola di avviso"
 
-#: syslog_device_rules.php:180
-msgid "Select a current device…"
-msgstr ""
-
-#: syslog_device_rules.php:204
+#: syslog_device_rules.php:211
 #, fuzzy
 msgid "Device Alert Rule Filters"
 msgstr "Filtri di avviso Syslog"
 
-#: syslog_device_rules.php:209 syslog_device_rules.php:238
+#: syslog_device_rules.php:216 syslog_device_rules.php:245
 #: syslog_removal.php:823 syslog_removal.php:952
 msgid "Rules"
 msgstr "Regole"
 
-#: syslog_device_rules.php:242
+#: syslog_device_rules.php:249
 #, fuzzy
 msgid "Handling"
 msgstr "Gestione della rimozione"
 
-#: syslog_device_rules.php:242
+#: syslog_device_rules.php:249
 #, fuzzy
 msgid "Maintenance"
 msgstr "Tabella partizionata"
 
-#: syslog_device_rules.php:242
+#: syslog_device_rules.php:249
 msgid "Pass Through"
 msgstr ""
 
-#: syslog_device_rules.php:245
+#: syslog_device_rules.php:252
 msgid "No device alert rules found."
 msgstr ""
 
-#: syslog_device_rules.php:248
+#: syslog_device_rules.php:255
 msgid "Not paused"
 msgstr ""
 
-#: syslog_device_rules.php:248
+#: syslog_device_rules.php:255
 #, fuzzy
 msgid "Paused indefinitely"
 msgstr "Indefinito"
 
-#: syslog_device_rules.php:248
+#: syslog_device_rules.php:255
 #, php-format
 msgid "Paused until %s"
 msgstr ""
 
-#: syslog_device_rules.php:249
+#: syslog_device_rules.php:256
 msgid "and more urgent"
 msgstr ""
 
-#: syslog_device_rules.php:254
+#: syslog_device_rules.php:261
 msgid "Allow all"
 msgstr ""
 
-#: syslog_device_rules.php:254
+#: syslog_device_rules.php:261
 msgid "Use priority exception"
 msgstr ""
 
@@ -3169,6 +3156,10 @@ msgstr ""
 
 #~ msgid "Critical++"
 #~ msgstr "Critica"
+
+#, fuzzy
+#~ msgid "Current Devices"
+#~ msgstr "Seleziona dispositivo/i"
 
 #~ msgid "Custom"
 #~ msgstr "Personalizzato"

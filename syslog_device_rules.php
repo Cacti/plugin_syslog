@@ -8,6 +8,25 @@ include_once(__DIR__ . '/functions.php');
 include_once(__DIR__ . '/database.php');
 
 syslog_connect();
+
+// Return only matching current devices on demand. This keeps the editor
+// usable for installations with many thousands of known hosts.
+if (get_request_var('action') === 'ajax_hosts') {
+	global $syslogdb_default;
+	$term = '%' . get_nfilter_request_var('term') . '%';
+	$limit = (int) read_config_option('autocomplete_rows');
+	if ($limit <= 0) {
+		$limit = 100;
+	}
+	if ($limit > 1000) {
+		$limit = 1000;
+	}
+	header('Content-Type: application/json; charset=UTF-8');
+	$hosts = syslog_db_fetch_assoc_prepared("SELECT host FROM `$syslogdb_default`.`syslog_hosts` WHERE host LIKE ? ORDER BY host LIMIT $limit", [$term]);
+	print json_encode(array_map(static fn($host) => ['label' => $host['host'], 'value' => $host['host']], $hosts));
+	exit;
+}
+
 set_default_action();
 
 switch (get_request_var('action')) {
@@ -143,15 +162,9 @@ function device_rule_edit(): void {
 	foreach ($syslog_levels as $priority => $label) {
 		$priorities[$priority] = __esc('%s and more urgent', ucfirst($label), 'syslog');
 	}
-	$host_options = [];
-	$known_hosts = syslog_db_fetch_assoc("SELECT host FROM `$syslogdb_default`.`syslog_hosts` ORDER BY host LIMIT 1000");
-	foreach ($known_hosts as $known_host) {
-		$host_options[$known_host['host']] = $known_host['host'];
-	}
 	$fields = [
 		'spacer' => ['method' => 'spacer', 'friendly_name' => __('Device Alert Rule', 'syslog')],
-		'host' => ['method' => 'textbox', 'friendly_name' => __('Device', 'syslog'), 'description' => __('This rule applies to every Syslog alert matching this device. Select a current device or enter any IP address or hostname.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
-		'host_selector' => ['method' => 'drop_multi', 'friendly_name' => __('Current Devices', 'syslog'), 'description' => __('Select a current Syslog device to populate the Device field. To use a new device, enter its IP address or hostname above.', 'syslog'), 'array' => $host_options, 'value' => isset($host_options[$rule['host']]) ? [['id' => $rule['host']]] : []],
+		'host' => ['method' => 'textbox', 'friendly_name' => __('Device', 'syslog'), 'description' => __('Search current Syslog devices as you type, or enter any IP address or hostname.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
 		'enabled' => ['method' => 'drop_array', 'friendly_name' => __('Enabled', 'syslog'), 'array' => ['on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')], 'value' => '|arg1:enabled|'],
 		'mute_mode' => ['method' => 'drop_array', 'friendly_name' => __('Alert Handling', 'syslog'), 'description' => __('Pause all non-exempt alerts until a date, or indefinitely.', 'syslog'), 'array' => ['none' => __('Do not pause', 'syslog'), 'until' => __('Pause until', 'syslog'), 'indefinite' => __('Pause indefinitely', 'syslog')], 'value' => '|arg1:mute_mode|'],
 		'mute_until' => ['method' => 'textbox', 'friendly_name' => __('Pause Ends', 'syslog'), 'description' => __('Local date and time, YYYY-MM-DD HH:MM.', 'syslog'), 'value' => '|arg1:mute_until|', 'size' => 18, 'max_length' => 16],
@@ -177,13 +190,7 @@ function device_rule_edit(): void {
 		if (mode) mode.addEventListener('change', toggleEnd); toggleEnd();
 		if (window.jQuery) {
 			if (window.jQuery.fn.datetimepicker) window.jQuery('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
-			if (window.jQuery.fn.multiselect) window.jQuery('#host_selector').multiselect({selectedList: 1, noneSelectedText: <?php print syslog_json_safe(__('Select a current device…', 'syslog')); ?>, header: false, height: 250, menuWidth: 360}).on('multiselectclick', function (event, ui) {
-				if (ui.checked) {
-					document.getElementById('host').value = ui.value;
-					Array.prototype.forEach.call(this.options, function (option) { option.selected = option.value === ui.value; });
-					window.jQuery(this).multiselect('refresh');
-				}
-			});
+			if (window.jQuery.fn.autocomplete) window.jQuery('#host').autocomplete({source: 'syslog_device_rules.php?action=ajax_hosts', minLength: 0, delay: 250}).on('focus', function () { window.jQuery(this).autocomplete('search', this.value); });
 		}
 		<?php if (!syslog_allow_edits()) { ?>document.querySelectorAll('#syslog_device_rule_edit select,#syslog_device_rule_edit input,#syslog_device_rule_edit textarea').forEach(function (field) { field.disabled = true; });<?php } ?>
 	}());
