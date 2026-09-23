@@ -434,6 +434,47 @@ function syslog_upgrade_rule_permissions(): void {
 }
 
 /**
+ * Merge duplicate granular-rule realms created by earlier registrations.
+ *
+ * Cacti renders one permission checkbox per realm record.  If an install has
+ * several records with the same Rule Viewer or Rule Administrator label, the
+ * permissions screen repeats that label.  Merge their files and grants into
+ * the first record so each role has exactly one checkbox.
+ *
+ * @return void
+ */
+function syslog_upgrade_consolidate_rule_realms(): void {
+	global $user_auth_realm_filenames;
+
+	foreach (['Rule Viewer', 'Rule Administrator'] as $display) {
+		$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ? AND display = ? ORDER BY id', ['syslog', $display]);
+
+		if (!is_array($realms) || cacti_sizeof($realms) < 2) {
+			continue;
+		}
+
+		$keeper = array_shift($realms);
+		$files  = array_filter(explode(',', $keeper['file']));
+
+		foreach ($realms as $realm) {
+			$files = array_merge($files, array_filter(explode(',', $realm['file'])));
+			db_execute_prepared('UPDATE IGNORE user_auth_realm SET realm_id = ? WHERE realm_id = ?', [(int) $keeper['id'] + 100, (int) $realm['id'] + 100]);
+			db_execute_prepared('UPDATE IGNORE user_auth_group_realm SET realm_id = ? WHERE realm_id = ?', [(int) $keeper['id'] + 100, (int) $realm['id'] + 100]);
+			db_execute_prepared('DELETE FROM plugin_realms WHERE id = ?', [(int) $realm['id']]);
+		}
+
+		$files = array_values(array_unique($files));
+		db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ?', [implode(',', $files), (int) $keeper['id']]);
+
+		foreach ($files as $file) {
+			$user_auth_realm_filenames[$file] = (int) $keeper['id'] + 100;
+		}
+	}
+
+	api_plugin_replicate_config();
+}
+
+/**
  * Upgrade the Syslog database schema for legacy installs.
  *
  * @return void
@@ -445,6 +486,7 @@ function syslog_check_upgrade(): void {
 	syslog_upgrade_saved_search_realm();
 	syslog_upgrade_dashboard_realm();
 	syslog_upgrade_rule_permissions();
+	syslog_upgrade_consolidate_rule_realms();
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 0);
 	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 0);
