@@ -150,7 +150,7 @@ it('clamps the preview row count to the hard maximum', function () {
 	// The sample query is the second call; its LIMIT must be clamped.
 	$sample_sql = $calls[1]['sql'];
 
-	expect(preg_match('/LIMIT 25$/', $sample_sql) === 1)->toBeTrue('The sample LIMIT must be clamped to the hard maximum.');
+	expect(preg_match('/LIMIT 10$/', $sample_sql) === 1)->toBeTrue('The sample LIMIT must be clamped to the hard maximum.');
 });
 
 it('compiles legacy match types with bound placeholders', function () {
