@@ -2,7 +2,7 @@
 
 --- develop ---
 
-* feature: Add Device Alert Rules for device-wide alert handling: administrators can pause a device's non-exempt alerts until a selected time or indefinitely, choose a priority threshold that always passes through device pauses and maintenance windows, and allow all device alerts during maintenance for critical devices. Device rules include the standard Cacti search, selection, and bulk-action controls, and can be created directly from a message's details pane.
+* feature: Add Device Alert Rules for device-wide alert handling: administrators can pause a device's non-exempt alerts until a selected time or indefinitely, choose a priority threshold that always passes through device pauses and maintenance windows, and allow all device alerts during maintenance for critical devices
 
 * feature: Add a fail-safe for partition maintenance: when the partition metadata for the syslog or syslog_removed table is invalid or incomplete, or a required partition cannot be created, all partition creation and retention pruning stops, the dMaxValue safety partition is never dropped, and the blocked condition with its remediation step is logged and shown on the Syslog Status page
 * feature: Add bounded multi-day partition recovery: a new 'Partition Recovery Limit' setting caps how many missing partitions are created per table per poller run so large gaps heal over several cycles; retention pruning stays deferred until the future write horizon is restored, and each blocked run reports the remaining gap, the stop reason, and whether writes are accumulating in dMaxValue
