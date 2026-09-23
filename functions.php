@@ -4167,6 +4167,122 @@ function syslog_execute_alert_command($alert, $results, $hostname) {
  *
  * @return array An array of the number of alerts processed and the number of alerts generated
  */
+/**
+ * Return true when a day expression contains the given ISO weekday (1=Mon).
+ */
+function syslog_alert_schedule_day_matches(string $expression, int $weekday): bool {
+	$days = ['mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6, 'sun' => 7, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7];
+	$expression = strtolower(trim($expression));
+
+	if ($expression === '*') {
+		return true;
+	}
+
+	foreach (explode(',', $expression) as $part) {
+		$range = array_map('trim', explode('-', $part, 2));
+		$start = $days[substr($range[0], 0, 3)] ?? 0;
+		$end   = $days[substr($range[1] ?? $range[0], 0, 3)] ?? 0;
+		if ($start && $end && (($start <= $end && $weekday >= $start && $weekday <= $end) || ($start > $end && ($weekday >= $start || $weekday <= $end)))) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Determine whether a local-time maintenance schedule is active.
+ * Schedules contain one or more "days HH:MM-HH:MM" windows, separated by
+ * newlines or semicolons; overnight windows apply to the following morning.
+ */
+function syslog_alert_schedule_is_active(string $schedule, ?int $timestamp = null): bool {
+	if (trim($schedule) === '') {
+		return false;
+	}
+
+	$timestamp = $timestamp ?? time();
+	$weekday   = (int) date('N', $timestamp);
+	$minute    = ((int) date('G', $timestamp) * 60) + (int) date('i', $timestamp);
+
+	foreach (preg_split('/[;\r\n]+/', $schedule) ?: [] as $window) {
+		if (!preg_match('/^\s*([^\s]+)\s+(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})\s*$/', $window, $matches)) {
+			continue;
+		}
+		$start = ((int) $matches[2] * 60) + (int) $matches[3];
+		$end   = ((int) $matches[4] * 60) + (int) $matches[5];
+		if ($start > 1439 || $end > 1439) {
+			continue;
+		}
+		if ($start <= $end && syslog_alert_schedule_day_matches($matches[1], $weekday) && $minute >= $start && $minute <= $end) {
+			return true;
+		}
+		if ($start > $end && (($minute >= $start && syslog_alert_schedule_day_matches($matches[1], $weekday)) || ($minute <= $end && syslog_alert_schedule_day_matches($matches[1], $weekday === 1 ? 7 : $weekday - 1)))) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/** Build a single maintenance window from the day and time form controls. */
+function syslog_alert_maintenance_window(string $days, string $start, string $end): string {
+	if ($days === '0' || !preg_match('/^[1-7](,[1-7])*$/', $days) || !preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $start) || !preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $end) || $start === $end) {
+		return '';
+	}
+
+	return "$days $start-$end";
+}
+
+/** Return true while a valid local one-time maintenance interval is active. */
+function syslog_alert_datetime_window_is_active(string $start, string $end, ?int $timestamp = null): bool {
+	if (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $start) || !preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $end)) {
+		return false;
+	}
+	$start_time = strtotime($start);
+	$end_time   = strtotime($end);
+	$timestamp  = $timestamp ?? time();
+
+	return $start_time !== false && $end_time !== false && $end_time > $start_time && $timestamp >= $start_time && $timestamp <= $end_time;
+}
+
+/**
+ * Check cooldown and duplicate state for a rule notification.
+ *
+ * @return array{allowed:bool,scope_key:string,dedup_hash:string}
+ */
+function syslog_alert_suppression_check(array $alert, string $hostname, array $matches): array {
+	$scope_key = $hostname !== '' ? $hostname : 'system';
+	$messages  = array_unique(array_map(static fn($match) => (string) ($match['host'] ?? '') . "\n" . (string) ($match['message'] ?? ''), $matches));
+	sort($messages, SORT_STRING);
+	$dedup_hash = sha1(implode("\n", $messages));
+	$cooldown_value = (int) ($alert['cooldown_minutes'] ?? -1);
+	$dedup_value    = (int) ($alert['deduplication_minutes'] ?? -1);
+	$cooldown = $cooldown_value >= 0 ? $cooldown_value : (int) read_config_option('syslog_alert_cooldown_minutes');
+	$dedup    = $dedup_value >= 0 ? $dedup_value : (int) read_config_option('syslog_alert_deduplication_minutes');
+	$now      = time();
+
+	if ($cooldown > 0) {
+		$last_sent = (int) syslog_db_fetch_cell_prepared('SELECT MAX(last_sent) FROM syslog_alert_suppression WHERE alert_id = ? AND scope_key = ?', [$alert['id'], $scope_key]);
+		if ($last_sent > $now - ($cooldown * 60)) {
+			return ['allowed' => false, 'scope_key' => $scope_key, 'dedup_hash' => $dedup_hash];
+		}
+	}
+
+	if ($dedup > 0) {
+		$last_sent = (int) syslog_db_fetch_cell_prepared('SELECT last_sent FROM syslog_alert_suppression WHERE alert_id = ? AND scope_key = ? AND dedup_hash = ?', [$alert['id'], $scope_key, $dedup_hash]);
+		if ($last_sent > $now - ($dedup * 60)) {
+			return ['allowed' => false, 'scope_key' => $scope_key, 'dedup_hash' => $dedup_hash];
+		}
+	}
+
+	return ['allowed' => true, 'scope_key' => $scope_key, 'dedup_hash' => $dedup_hash];
+}
+
+/** Record a notification after it has been sent. */
+function syslog_alert_suppression_record(array $alert, array $state): void {
+	syslog_db_execute_prepared('INSERT INTO syslog_alert_suppression (alert_id, scope_key, dedup_hash, last_sent) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE last_sent = VALUES(last_sent)', [$alert['id'], $state['scope_key'], $state['dedup_hash'], time()]);
+}
+
 function syslog_process_alerts($max_seq) {
 	global $syslogdb_default;
 
@@ -4193,6 +4309,22 @@ function syslog_process_alerts($max_seq) {
 
 	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
+			$mode = $alert['maintenance_mode'] ?? 'inherit';
+			if ($mode === 'custom') {
+				$schedule = syslog_alert_maintenance_window((string) ($alert['maintenance_days'] ?? ''), (string) ($alert['maintenance_start'] ?? ''), (string) ($alert['maintenance_end'] ?? ''));
+				$dated_window = syslog_alert_datetime_window_is_active((string) ($alert['maintenance_datetime_start'] ?? ''), (string) ($alert['maintenance_datetime_end'] ?? ''));
+			} elseif ($mode === 'disabled') {
+				$schedule = '';
+				$dated_window = false;
+			} else {
+				$schedule = syslog_alert_maintenance_window((string) read_config_option('syslog_alert_maintenance_days'), (string) read_config_option('syslog_alert_maintenance_start'), (string) read_config_option('syslog_alert_maintenance_end'));
+				$dated_window = syslog_alert_datetime_window_is_active((string) read_config_option('syslog_alert_maintenance_datetime_start'), (string) read_config_option('syslog_alert_maintenance_datetime_end'));
+			}
+			if ($dated_window || syslog_alert_schedule_is_active($schedule)) {
+				syslog_debug(sprintf("Alert Rule '%s' is muted by a maintenance window", $alert['name']));
+
+				continue;
+			}
 			$sql      = '';
 			$params   = [];
 
@@ -4533,6 +4665,12 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 				$send = false;
 			}
 
+			$suppression_state = syslog_alert_suppression_check($alert, $hostname, $at);
+			if ($send && !$suppression_state['allowed']) {
+				$send = false;
+				syslog_debug("Alert Rule '" . $alert['name'] . "' notification suppressed by cooldown or duplicate detection");
+			}
+
 			if ($html) {
 				$message .= '</table>';
 			} else {
@@ -4608,6 +4746,10 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						syslog_execute_alert_command($alert, $results, $hostname);
 					}
 				}
+			}
+
+			if ($send) {
+				syslog_alert_suppression_record($alert, $suppression_state);
 			}
 
 			syslog_debug("Alert Rule '" . $alert['name'] . "' has been triggered");

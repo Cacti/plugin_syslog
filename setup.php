@@ -55,6 +55,7 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'setup.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'setup.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'setup.php');
+	api_plugin_register_hook('syslog', 'settings_bottom',       'syslog_settings_bottom',      'setup.php', 1);
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'setup.php');
 	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'setup.php');
 	api_plugin_register_hook('syslog', 'top_graph_refresh',     'syslog_top_graph_refresh',    'setup.php');
@@ -203,6 +204,7 @@ function plugin_syslog_check_config(): bool {
  */
 function plugin_syslog_upgrade(): bool {
 	// Here we will upgrade to the newest version
+	api_plugin_register_hook('syslog', 'settings_bottom', 'syslog_settings_bottom', 'setup.php', 1);
 	syslog_check_upgrade();
 
 	return false;
@@ -593,6 +595,37 @@ function syslog_check_upgrade(): void {
 		);
 	}
 
+	foreach ([
+		['cooldown_minutes', 'int(10)', '-1', 'repeat_alert'],
+		['deduplication_minutes', 'int(10)', '-1', 'cooldown_minutes'],
+		['suppression_schedule', 'text', '', 'deduplication_minutes'],
+		['maintenance_mode', 'varchar(16)', 'inherit', 'suppression_schedule'],
+		['maintenance_days', 'varchar(32)', '1,2,3,4,5', 'maintenance_mode'],
+		['maintenance_start', 'char(5)', '00:00', 'maintenance_days'],
+		['maintenance_end', 'char(5)', '00:00', 'maintenance_start'],
+		['maintenance_datetime_start', 'varchar(16)', '', 'maintenance_end'],
+		['maintenance_datetime_end', 'varchar(16)', '', 'maintenance_datetime_start']
+	] as [$name, $type, $default, $after]) {
+		if (!syslog_db_column_exists('syslog_alert', $name)) {
+			syslog_db_add_column('syslog_alert', [
+				'name'     => $name,
+				'type'     => $type,
+				'NULL'     => false,
+				'default'  => $default,
+				'after'    => $after]
+			);
+		}
+	}
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
+		`alert_id` int(10) unsigned NOT NULL,
+		`scope_key` varchar(255) NOT NULL,
+		`dedup_hash` char(40) NOT NULL,
+		`last_sent` int(10) unsigned NOT NULL default '0',
+		PRIMARY KEY (`alert_id`, `scope_key`, `dedup_hash`),
+		INDEX `last_sent` (`last_sent`))
+		ENGINE=InnoDB");
+
 	// Structured filter JSON can exceed the old VARCHAR limit. TEXT also keeps
 	// the alert table below the InnoDB/MariaDB inline row-size ceiling.
 	syslog_db_execute('ALTER TABLE syslog_alert MODIFY column message TEXT NOT NULL');
@@ -968,6 +1001,15 @@ function syslog_setup_table_new(array $options): void {
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
+		`cooldown_minutes` int(10) NOT NULL default '-1',
+		`deduplication_minutes` int(10) NOT NULL default '-1',
+		`suppression_schedule` text NOT NULL,
+		`maintenance_mode` varchar(16) NOT NULL default 'inherit',
+		`maintenance_days` varchar(32) NOT NULL default '1,2,3,4,5',
+		`maintenance_start` char(5) NOT NULL default '00:00',
+		`maintenance_end` char(5) NOT NULL default '00:00',
+		`maintenance_datetime_start` varchar(16) NOT NULL default '',
+		`maintenance_datetime_end` varchar(16) NOT NULL default '',
 		`open_ticket` CHAR(2) default '',
 		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
@@ -998,6 +1040,15 @@ function syslog_setup_table_new(array $options): void {
 		INDEX `status` (`status`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
+		`alert_id` int(10) unsigned NOT NULL,
+		`scope_key` varchar(255) NOT NULL,
+		`dedup_hash` char(40) NOT NULL,
+		`last_sent` int(10) unsigned NOT NULL default '0',
+		PRIMARY KEY (`alert_id`, `scope_key`, `dedup_hash`),
+		INDEX `last_sent` (`last_sent`))
+		ENGINE=InnoDB");
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_remove`");
@@ -1590,6 +1641,29 @@ function syslog_confirm_button(string $action, string $cancel_url, int $syslog_e
  *
  * @return void
  */
+function syslog_alert_maintenance_time_options(): array {
+	$options = [];
+	for ($hour = 0; $hour < 24; $hour++) {
+		foreach ([0, 30] as $minute) {
+			$value = sprintf('%02d:%02d', $hour, $minute);
+			$options[$value] = $value;
+		}
+	}
+
+	return $options;
+}
+
+function syslog_alert_maintenance_day_options(bool $include_disabled = false): array {
+	$options = [
+		'1' => __('Monday', 'syslog'), '2' => __('Tuesday', 'syslog'), '3' => __('Wednesday', 'syslog'),
+		'4' => __('Thursday', 'syslog'), '5' => __('Friday', 'syslog'), '6' => __('Saturday', 'syslog'), '7' => __('Sunday', 'syslog'),
+		'1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'),
+		'1,2,3,4,5,6,7' => __('Every day', 'syslog')
+	];
+
+	return $include_disabled ? ['0' => __('Disabled', 'syslog')] + $options : $options;
+}
+
 function syslog_config_settings(): void {
 	global $config, $tabs, $formats, $settings, $syslog_retentions, $syslog_alert_retentions, $syslog_refresh;
 
@@ -1774,6 +1848,58 @@ function syslog_config_settings(): void {
 			'default'       => '30',
 			'array'         => $syslog_alert_retentions
 		],
+		'syslog_alert_suppression_header' => [
+			'friendly_name' => __('Alert Suppression and Maintenance', 'syslog'),
+			'method'        => 'spacer',
+			'collapsible'   => 'true'
+		],
+		'syslog_alert_maintenance_days' => [
+			'friendly_name' => __('Maintenance Window Days', 'syslog'),
+			'description'   => __('Days when all alert notifications are muted during the configured maintenance timeframe.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => syslog_alert_maintenance_day_options(true),
+			'default'       => '0'
+		],
+		'syslog_alert_maintenance_start' => [
+			'friendly_name' => __('Maintenance Window Starts', 'syslog'),
+			'description'   => __('Local start time for the global maintenance window.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => syslog_alert_maintenance_time_options(),
+			'default'       => '00:00'
+		],
+		'syslog_alert_maintenance_end' => [
+			'friendly_name' => __('Maintenance Window Ends', 'syslog'),
+			'description'   => __('Local end time for the global maintenance window. An earlier end time continues into the next day.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => syslog_alert_maintenance_time_options(),
+			'default'       => '00:00'
+		],
+		'syslog_alert_maintenance_datetime_start' => [
+			'friendly_name' => __('One-time Maintenance Starts', 'syslog'),
+			'description'   => __('Optional local date and time to start a one-time global maintenance window.', 'syslog'),
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16', 'default' => ''
+		],
+		'syslog_alert_maintenance_datetime_end' => [
+			'friendly_name' => __('One-time Maintenance Ends', 'syslog'),
+			'description'   => __('Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM.', 'syslog'),
+			'method'        => 'textbox', 'size' => '18', 'max_length' => '16', 'default' => ''
+		],
+		'syslog_alert_cooldown_minutes' => [
+			'friendly_name' => __('Default Alert Cooldown', 'syslog'),
+			'description'   => __('Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable.', 'syslog'),
+			'method'        => 'textbox',
+			'size'          => '6',
+			'max_length'    => '6',
+			'default'       => '0'
+		],
+		'syslog_alert_deduplication_minutes' => [
+			'friendly_name' => __('Default Duplicate Suppression', 'syslog'),
+			'description'   => __('Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable.', 'syslog'),
+			'method'        => 'textbox',
+			'size'          => '6',
+			'max_length'    => '6',
+			'default'       => '0'
+		],
 		'syslog_remote_header' => [
 			'friendly_name' => __('Remote Message Processing', 'syslog'),
 			'method'        => 'spacer',
@@ -1797,6 +1923,28 @@ function syslog_config_settings(): void {
 	} else {
 		$settings['syslog'] = $temp;
 	}
+}
+
+/** Attach Cacti's date-time picker after the Syslog Settings form is drawn. */
+function syslog_settings_bottom(): void {
+	if (get_nfilter_request_var('tab') !== 'syslog') {
+		return;
+	}
+	?>
+	<script type='text/javascript'>
+	$(function() {
+		$('#syslog_alert_maintenance_datetime_start, #syslog_alert_maintenance_datetime_end').datetimepicker({
+			minuteGrid: 10,
+			stepMinute: 1,
+			showAnim: 'slideDown',
+			numberOfMonths: 1,
+			timeFormat: 'HH:mm',
+			dateFormat: 'yy-mm-dd',
+			showButtonPanel: false
+		});
+	});
+	</script>
+	<?php
 }
 
 /**
