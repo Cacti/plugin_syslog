@@ -143,9 +143,15 @@ function device_rule_edit(): void {
 	foreach ($syslog_levels as $priority => $label) {
 		$priorities[$priority] = __esc('%s and more urgent', ucfirst($label), 'syslog');
 	}
+	$host_options = [];
+	$known_hosts = syslog_db_fetch_assoc("SELECT host FROM `$syslogdb_default`.`syslog_hosts` ORDER BY host LIMIT 1000");
+	foreach ($known_hosts as $known_host) {
+		$host_options[$known_host['host']] = $known_host['host'];
+	}
 	$fields = [
 		'spacer' => ['method' => 'spacer', 'friendly_name' => __('Device Alert Rule', 'syslog')],
 		'host' => ['method' => 'textbox', 'friendly_name' => __('Device', 'syslog'), 'description' => __('This rule applies to every Syslog alert matching this device. Select a current device or enter any IP address or hostname.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
+		'host_selector' => ['method' => 'drop_multi', 'friendly_name' => __('Current Devices', 'syslog'), 'description' => __('Select a current Syslog device to populate the Device field. To use a new device, enter its IP address or hostname above.', 'syslog'), 'array' => $host_options, 'value' => isset($host_options[$rule['host']]) ? [$rule['host']] : []],
 		'enabled' => ['method' => 'drop_array', 'friendly_name' => __('Enabled', 'syslog'), 'array' => ['on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')], 'value' => '|arg1:enabled|'],
 		'mute_mode' => ['method' => 'drop_array', 'friendly_name' => __('Alert Handling', 'syslog'), 'description' => __('Pause all non-exempt alerts until a date, or indefinitely.', 'syslog'), 'array' => ['none' => __('Do not pause', 'syslog'), 'until' => __('Pause until', 'syslog'), 'indefinite' => __('Pause indefinitely', 'syslog')], 'value' => '|arg1:mute_mode|'],
 		'mute_until' => ['method' => 'textbox', 'friendly_name' => __('Pause Ends', 'syslog'), 'description' => __('Local date and time, YYYY-MM-DD HH:MM.', 'syslog'), 'value' => '|arg1:mute_until|', 'size' => 18, 'max_length' => 16],
@@ -164,20 +170,23 @@ function device_rule_edit(): void {
 	form_save_button('syslog_device_rules.php', '', 'id');
 	?>
 	<script>
-	$(function () {
-		$('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
-		$('#host').autocomplete({
-			minLength: 0,
-			delay: 250,
-			source: function (request, respond) {
-				$.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'ajax_search_values', field: 'host', term: request.term, tab: 'syslog', __csrf_magic: csrfMagicToken}}).done(respond).fail(function () { respond([]); });
-			},
-			select: function (event, ui) { this.value = ui.item.value; return false; }
-		}).on('focus', function () { $(this).autocomplete('search', this.value); });
-		function toggleEnd() { $('#row_mute_until').toggle($('#mute_mode').val() === 'until'); }
-		$('#mute_mode').on('change', toggleEnd); toggleEnd();
-		<?php if (!syslog_allow_edits()) { ?>$('#syslog_device_rule_edit').find('select,input,textarea').prop('disabled', true);<?php } ?>
-	});
+	(function () {
+		var mode = document.getElementById('mute_mode');
+		var endRow = document.getElementById('row_mute_until');
+		function toggleEnd() { if (endRow && mode) endRow.style.display = mode.value === 'until' ? '' : 'none'; }
+		if (mode) mode.addEventListener('change', toggleEnd); toggleEnd();
+		if (window.jQuery) {
+			if (window.jQuery.fn.datetimepicker) window.jQuery('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
+			if (window.jQuery.fn.multiselect) window.jQuery('#host_selector').multiselect({selectedList: 1, noneSelectedText: <?php print syslog_json_safe(__('Select a current device…', 'syslog')); ?>, header: false, height: 250, menuWidth: 360}).on('multiselectclick', function (event, ui) {
+				if (ui.checked) {
+					document.getElementById('host').value = ui.value;
+					Array.prototype.forEach.call(this.options, function (option) { option.selected = option.value === ui.value; });
+					window.jQuery(this).multiselect('refresh');
+				}
+			});
+		}
+		<?php if (!syslog_allow_edits()) { ?>document.querySelectorAll('#syslog_device_rule_edit select,#syslog_device_rule_edit input,#syslog_device_rule_edit textarea').forEach(function (field) { field.disabled = true; });<?php } ?>
+	}());
 	</script>
 	<?php
 }
@@ -202,9 +211,10 @@ function device_rule_list(): void {
 	</tr></table><input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'></form>
 	<script>
 	(function () {
-		function apply(clear) { var query = clear ? {} : {filter: $('#filter').val(), enabled: $('#enabled').val(), rows: $('#rows').val()}; window.location = 'syslog_device_rules.php?' + $.param(query); }
-		$('#refresh').on('click', function () { apply(false); }); $('#clear').on('click', function () { apply(true); });
-		$('#enabled,#rows').on('change', function () { apply(false); }); $('#device_rule_filter').on('submit', function (event) { event.preventDefault(); apply(false); });
+		var filter = document.getElementById('filter'), enabled = document.getElementById('enabled'), rows = document.getElementById('rows');
+		function apply(clear) { var query = clear ? '' : new URLSearchParams({filter: filter.value, enabled: enabled.value, rows: rows.value}).toString(); window.location = 'syslog_device_rules.php' + (query ? '?' + query : ''); }
+		document.getElementById('refresh').addEventListener('click', function () { apply(false); }); document.getElementById('clear').addEventListener('click', function () { apply(true); });
+		enabled.addEventListener('change', function () { apply(false); }); rows.addEventListener('change', function () { apply(false); }); document.getElementById('device_rule_filter').addEventListener('submit', function (event) { event.preventDefault(); apply(false); });
 	}());
 	</script></td></tr>
 	<?php
