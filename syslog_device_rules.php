@@ -192,7 +192,7 @@ function device_rule_edit(): void {
 		// Cacti can render this page as a header=false fragment before jQuery UI
 		// is available. Keep the same searchable select behaviour in that case,
 		// without loading every device into the browser.
-		var menu = document.createElement('ul'), searchTimer;
+		var menu = document.createElement('ul'), searchTimer, hostShell;
 		menu.className = 'ui-menu ui-widget ui-widget-content ui-front';
 		menu.id = 'syslog_device_host_menu';
 		menu.hidden = true;
@@ -212,11 +212,22 @@ function device_rule_edit(): void {
 						button.addEventListener('mousedown', function (event) { event.preventDefault(); host.value = item.value; closeHostMenu(); host.focus(); });
 						choice.appendChild(button); menu.appendChild(choice);
 					});
-					if (items.length) { var bounds = host.getBoundingClientRect(); menu.style.left = bounds.left + 'px'; menu.style.top = bounds.bottom + 'px'; menu.style.minWidth = bounds.width + 'px'; menu.hidden = false; }
+					if (items.length) { var bounds = (hostShell || host).getBoundingClientRect(); menu.style.left = bounds.left + 'px'; menu.style.top = bounds.bottom + 'px'; menu.style.minWidth = bounds.width + 'px'; menu.hidden = false; }
 				});
 		}
 		var hostInput = document.getElementById('host');
 		if (hostInput) {
+			hostShell = document.createElement('span');
+			hostShell.className = 'autodrop ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget';
+			hostShell.style.cssText = 'display:inline-flex;align-items:center;min-width:320px;max-width:100%;box-sizing:border-box;';
+			hostInput.parentNode.insertBefore(hostShell, hostInput);
+			hostShell.appendChild(hostInput);
+			hostInput.style.cssText += ';border:0;background:transparent;flex:1;min-width:0;';
+			var arrow = document.createElement('button');
+			arrow.type = 'button'; arrow.className = 'ui-selectmenu-icon ui-icon ui-icon-triangle-1-s'; arrow.setAttribute('aria-label', <?php print syslog_json_safe(__('Show current devices', 'syslog')); ?>);
+			arrow.style.cssText = 'border:0;background:transparent;cursor:pointer;';
+			arrow.addEventListener('mousedown', function (event) { event.preventDefault(); showHosts(); });
+			hostShell.appendChild(arrow);
 			hostInput.addEventListener('focus', showHosts);
 			hostInput.addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(showHosts, 250); });
 			hostInput.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeHostMenu(); });
