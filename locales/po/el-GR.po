@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-22 20:32-0400\n"
+"POT-Creation-Date: 2026-09-22 21:14-0400\n"
 "PO-Revision-Date: 2025-03-07 14:42-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -112,8 +112,8 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php:2968 functions.php:2972 setup.php:2360 setup.php:2370
-#: setup.php:2377
+#: functions.php:2968 functions.php:2972 setup.php:2421 setup.php:2431
+#: setup.php:2438
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -131,140 +131,140 @@ msgstr ""
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: functions.php:4513
+#: functions.php:4548
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 
-#: functions.php:4515
+#: functions.php:4550
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Ειδοποίηση κατωφλίου Cacti Syslog «%s»"
 
-#: functions.php:4523 syslog.php:2242 syslog_alerts.php:1169
+#: functions.php:4558 syslog.php:2242 syslog_alerts.php:1169
 msgid "Alert Name"
 msgstr "Όνομα ειδοποίησης"
 
-#: functions.php:4524 functions.php:4551 syslog.php:2241 syslog_alerts.php:653
+#: functions.php:4559 functions.php:4586 syslog.php:2241 syslog_alerts.php:653
 #: syslog_alerts.php:1170
 msgid "Severity"
 msgstr "Σοβαρότητα"
 
-#: functions.php:4525 syslog_alerts.php:672 syslog_alerts.php:677
+#: functions.php:4560 syslog_alerts.php:672 syslog_alerts.php:677
 #: syslog_alerts.php:1196
 msgid "Threshold"
 msgstr "Όριο"
 
-#: functions.php:4526 syslog.php:2123 syslog.php:2244
+#: functions.php:4561 syslog.php:2123 syslog.php:2244
 msgid "Count"
 msgstr "Μέτρηση"
 
-#: functions.php:4527
+#: functions.php:4562
 msgid "Match String"
 msgstr "Αντιστοίχιση συμβολοσειράς"
 
-#: functions.php:4538 functions.php:4578
+#: functions.php:4573 functions.php:4613
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Alert '%s' for Host '%s'"
 
-#: functions.php:4540 functions.php:4580
+#: functions.php:4575 functions.php:4615
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Κάκτος Syslog Alert '%s'"
 
-#: functions.php:4549
+#: functions.php:4584
 msgid "Hostname"
 msgstr "Νέο όνομα φιλοξενίας"
 
-#: functions.php:4550 functions.php:5484 syslog.php:2114 syslog.php:2239
+#: functions.php:4585 functions.php:5519 syslog.php:2114 syslog.php:2239
 #: syslog.php:2296
 msgid "Date"
 msgstr "Ημερομηνία"
 
-#: functions.php:4552
+#: functions.php:4587
 msgid "Level"
 msgstr "Επίπεδο"
 
-#: functions.php:4553 functions.php:5485 lib/syslog_dashboard.php:1621
+#: functions.php:4588 functions.php:5520 lib/syslog_dashboard.php:1621
 #: syslog.php:1811 syslog.php:1896 syslog.php:2117 syslog.php:2243
 #: syslog.php:2297 syslog_alerts.php:889 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: functions.php:4561
+#: functions.php:4596
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Έχει ενεργοποιηθεί μια ειδοποίηση κατωφλίου Syslog για το '%s' του κεντρικού υπολογιστή"
 
-#: functions.php:4563
+#: functions.php:4598
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Έχει ενεργοποιηθεί μια ειδοποίηση κατωφλίου Syslog"
 
-#: functions.php:4570
+#: functions.php:4605
 msgid "Name:"
 msgstr "Όνομα:"
 
-#: functions.php:4571 functions.php:4627
+#: functions.php:4606 functions.php:4662
 msgid "Severity:"
 msgstr "Σοβαρότητα"
 
-#: functions.php:4572
+#: functions.php:4607
 msgid "Threshold:"
 msgstr "Όριο"
 
-#: functions.php:4573
+#: functions.php:4608
 msgid "Count:"
 msgstr "Μέτρηση:"
 
-#: functions.php:4574
+#: functions.php:4609
 msgid "Message String:"
 msgstr "Συμβολοσειρά μηνύματος:"
 
-#: functions.php:4625
+#: functions.php:4660
 msgid "Hostname:"
 msgstr "Όνομα κεντρικού υπολογιστή:"
 
-#: functions.php:4626
+#: functions.php:4661
 msgid "Date:"
 msgstr "Ημερομηνία:"
 
-#: functions.php:4628
+#: functions.php:4663
 msgid "Level:"
 msgstr "Συνδρομή"
 
-#: functions.php:4629
+#: functions.php:4664
 msgid "Message:"
 msgstr "Μήνυμα:"
 
-#: functions.php:4704
+#: functions.php:4739
 msgid ", Host:"
 msgstr "Συντονίζει"
 
-#: functions.php:4704 functions.php:4739
+#: functions.php:4739 functions.php:4774
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php:4704 functions.php:4739
+#: functions.php:4739 functions.php:4774
 msgid "Sev:"
 msgstr "Σεβ:"
 
-#: functions.php:4710 functions.php:4735
+#: functions.php:4745 functions.php:4770
 #, php-format
 msgid "Event Alert - %s"
 msgstr "Ειδοποίηση συμβάντος - %s"
 
-#: functions.php:4739
+#: functions.php:4774
 msgid ", Count:"
 msgstr "Μέτρηση"
 
-#: functions.php:5483 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
+#: functions.php:5518 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
 #: syslog_removal.php:680
 msgid "Host"
 msgstr "Διακομιστής"
 
-#: functions.php:5508
+#: functions.php:5543
 #, php-format
 msgid "Event Report - %s"
 msgstr "Αναφορά συμβάντος - %s"
@@ -379,10 +379,10 @@ msgstr ""
 msgid "Save"
 msgstr "Αποθήκευση"
 
-#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1605
-#: setup.php:2444 syslog.php:1890 syslog_alerts.php:230
-#: syslog_dashboards.php:428 syslog_removal.php:248 syslog_reports.php:213
-#: syslog_saved_searches.php:384
+#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1662
+#: setup.php:2505 syslog.php:1890 syslog_alerts.php:230
+#: syslog_dashboards.php:428 syslog_device_rules.php:102 syslog_removal.php:248
+#: syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Cancel"
 msgstr "Ακύρωση"
 
@@ -390,10 +390,10 @@ msgstr "Ακύρωση"
 msgid "Apply"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2035
+#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2092
 #: syslog.php:1798 syslog_dashboards.php:300 syslog_dashboards.php:351
-#: syslog_removal.php:36 syslog_saved_searches.php:271
-#: syslog_saved_searches.php:315
+#: syslog_device_rules.php:100 syslog_removal.php:36
+#: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Delete"
 msgstr "Διαγραφή"
 
@@ -474,7 +474,7 @@ msgstr "% d Μήνας"
 msgid "Refresh"
 msgstr "Ανανέωση"
 
-#: lib/syslog_dashboard.php:1438 setup.php:2177 setup.php:2234
+#: lib/syslog_dashboard.php:1438 setup.php:2235 setup.php:2295
 #: syslog_dashboards.php:201 syslog_dashboards.php:203
 msgid "Dashboards"
 msgstr ""
@@ -637,7 +637,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
 #: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:802
-#: syslog_reports.php:554
+#: syslog_device_rules.php:204 syslog_reports.php:554
 msgid "None"
 msgstr "Κανένα"
 
@@ -678,649 +678,662 @@ msgstr "Όνομα"
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
 msgstr "Μετονομάστε τα αρχεία config.php.dist ή config_local.php.dist στον κατάλογο syslog και αλλάξτε τη ρύθμιση της βάσης δεδομένων σας πριν από την εγκατάσταση."
 
-#: setup.php:1420
+#: setup.php:1477
 msgid "What upgrade/install type do you wish to use"
 msgstr "Τι τύπο αναβάθμισης/εγκατάστασης θέλετε να χρησιμοποιήσετε"
 
-#: setup.php:1421
+#: setup.php:1478
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "Όταν έχετε πολύ μεγάλα τραπέζια, η εκτέλεση ενός Trimuncate θα είναι πολύ πιο γρήγορη.  Εάν ανησυχείτε για τα δεδομένα αρχειοθέτησης, μπορείτε να επιλέξετε είτε Inline, το οποίο θα παγώσει το πρόγραμμα περιήγησής σας για την περίοδο αυτής της αναβάθμισης, είτε φόντο, το οποίο θα δημιουργήσει μια διαδικασία παρασκηνίου για να φέρει τα παλιά δεδομένα syslog από έναν πίνακα αντιγράφων ασφαλείας στη νέα μορφή syslog.  Και πάλι, αυτή η διαδικασία μπορεί να διαρκέσει αρκετές ώρες."
 
-#: setup.php:1424
+#: setup.php:1481
 msgid "Truncate Syslog Table"
 msgstr "Περικοπή πίνακα Syslog"
 
-#: setup.php:1425
+#: setup.php:1482
 msgid "Inline Upgrade"
 msgstr "Ενσωματωμένη αναβάθμιση"
 
-#: setup.php:1426
+#: setup.php:1483
 msgid "Background Upgrade"
 msgstr "Αναβάθμιση φόντου"
 
-#: setup.php:1431
+#: setup.php:1488
 msgid "Database Storage Engine"
 msgstr "Μηχανή αποθήκευσης βάσεων δεδομένων"
 
-#: setup.php:1432
+#: setup.php:1489
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
 msgstr ""
 
-#: setup.php:1435
+#: setup.php:1492
 msgid "InnoDB Storage"
 msgstr "Αποθήκευση InnoDB"
 
-#: setup.php:1436
+#: setup.php:1493
 #, fuzzy
 msgid "Aria Storage"
 msgstr "Αποθήκευση MyISAM"
 
-#: setup.php:1445
+#: setup.php:1502
 msgid "Retention Policy"
 msgstr "Πολιτική διατήρησης"
 
-#: setup.php:1446
+#: setup.php:1503
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "Επιλέξτε πόσες ημέρες τιμών Syslog θέλετε να διατηρήσετε στη βάση δεδομένων."
 
-#: setup.php:1466
+#: setup.php:1523
 msgid "Partitions per Day"
 msgstr "Χωρίσματα ανά ημέρα"
 
-#: setup.php:1467
+#: setup.php:1524
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "Επιλέξτε τον αριθμό των κατατμήσεων ανά ημέρα που θέλετε να δημιουργήσετε."
 
-#: setup.php:1470 setup.php:1471 setup.php:1472 setup.php:1473 setup.php:1474
+#: setup.php:1527 setup.php:1528 setup.php:1529 setup.php:1530 setup.php:1531
 #, php-format
 msgid "%d Per Day"
 msgstr "%d ανά ημέρα"
 
-#: setup.php:1479 setup.php:1593
+#: setup.php:1536 setup.php:1650
 msgid "Upgrade"
 msgstr "Αναβάθμιση"
 
-#: setup.php:1481 setup.php:1595
+#: setup.php:1538 setup.php:1652
 msgid "Install"
 msgstr "Εγκατάσταση"
 
-#: setup.php:1495
+#: setup.php:1552
 #, php-format
 msgid "Syslog %s Advisor"
 msgstr "Syslog %s Σύμβουλος"
 
-#: setup.php:1499
+#: setup.php:1556
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Η αναβάθμιση του Syslog είναι χρονοβόρα!!"
 
-#: setup.php:1500
+#: setup.php:1557
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "Η αναβάθμιση του 'κύριου' πίνακα syslog μπορεί να είναι μια πολύ χρονοβόρα διαδικασία.  Ως εκ τούτου, συνιστάται είτε να μειώσετε το μέγεθος του πίνακα syslog πριν από την αναβάθμιση είτε να επιλέξετε την επιλογή φόντου</p> <p>Εάν ενεργοποιήσετε την επιλογή φόντου, ο πίνακας syslog παλαιού τύπου θα μετονομαστεί και θα δημιουργηθεί ένας νέος πίνακας syslog.  Στη συνέχεια, θα ξεκινήσει μια διαδικασία αναβάθμισης στο παρασκήνιο.  Και πάλι, αυτή η διαδικασία παρασκηνίου μπορεί να έχει αρκετό χρόνο για να ολοκληρωθεί.  Ωστόσο, τα δεδομένα σας θα διατηρηθούν</p> <p>Ανεξάρτητα από την επιλογή σας, όλοι οι υπάρχοντες κανόνες κατάργησης και ειδοποίησης θα διατηρηθούν κατά τη διαδικασία αναβάθμισης.</p> <p><b>Πατήστε 'Αναβάθμιση'</b> για να προχωρήσετε στην αναβάθμιση ή <b>'Ακύρωση'</b> για να επιστρέψετε στο μενού Πρόσθετα."
 
-#: setup.php:1503
+#: setup.php:1560
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
 msgstr "Μπορείτε επίσης να επιλέξετε τη διάρκεια διατήρησης.  Λάβετε υπόψη ότι εάν έχετε πολλούς κεντρικούς υπολογιστές που συνδέονται στο syslog, αυτός ο πίνακας μπορεί να γίνει αρκετά μεγάλος.  Έτσι, εάν δεν χρησιμοποιείτε διαμέριση, ίσως θελήσετε να διατηρήσετε το μέγεθος μικρότερο."
 
-#: setup.php:1503
+#: setup.php:1560
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
 msgstr ""
 
-#: setup.php:1503
+#: setup.php:1560
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
 msgstr "Έχετε πολλές επιλογές για να διαλέξετε κατά την εγκατάσταση του Syslog.  Το πρώτο είναι η αρχιτεκτονική βάσεων δεδομένων.  Θα πρέπει να επιλέξετε να χρησιμοποιήσετε τη διαμέριση πινάκων για να αποτρέψετε το μέγεθος των πινάκων από το να γίνει υπερβολικό, επιβραδύνοντας έτσι τα ερωτήματα."
 
-#: setup.php:1509
+#: setup.php:1566
 #, php-format
 msgid "Syslog %s Settings"
 msgstr "Ρυθμίσεις %s Syslog"
 
-#: setup.php:1541
+#: setup.php:1598
 msgid "What uninstall method do you want to use?"
 msgstr "Ποια μέθοδο απεγκατάστασης θέλετε να χρησιμοποιήσετε;"
 
-#: setup.php:1542
+#: setup.php:1599
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "Κατά την απεγκατάσταση του syslog, μπορείτε να αφαιρέσετε τα πάντα ή μόνο στοιχεία, σε περίπτωση που σκοπεύετε να επανεγκαταστήσετε στο μέλλον."
 
-#: setup.php:1544
+#: setup.php:1601
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "Κατάργηση όλων (αρχεία καταγραφής, πίνακες, ρυθμίσεις)"
 
-#: setup.php:1544
+#: setup.php:1601
 msgid "Syslog Data Only"
 msgstr "Μόνο δεδομένα Syslog"
 
-#: setup.php:1564
+#: setup.php:1621
 msgid "Syslog Uninstall Preferences"
 msgstr "Προτιμήσεις απεγκατάστασης Syslog"
 
-#: setup.php:1598
+#: setup.php:1655
 msgid "Uninstall"
 msgstr "Απεγκατάσταση"
 
-#: setup.php:1658
+#: setup.php:1715
 msgid "Monday"
 msgstr ""
 
-#: setup.php:1658
+#: setup.php:1715
 msgid "Tuesday"
 msgstr ""
 
-#: setup.php:1658
+#: setup.php:1715
 msgid "Wednesday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Friday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Saturday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Sunday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Thursday"
 msgstr ""
 
-#: setup.php:1660
+#: setup.php:1717
 msgid "Monday through Friday"
 msgstr ""
 
-#: setup.php:1660
+#: setup.php:1717
 msgid "Saturday and Sunday"
 msgstr ""
 
-#: setup.php:1661
+#: setup.php:1718
 msgid "Every day"
 msgstr ""
 
-#: setup.php:1664 syslog_alerts.php:711 syslog_alerts.php:726
-#: syslog_alerts.php:734 syslog_removal.php:599 syslog_reports.php:499
+#: setup.php:1721 syslog_alerts.php:711 syslog_alerts.php:726
+#: syslog_alerts.php:734 syslog_device_rules.php:122
+#: syslog_device_rules.php:206 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
-#: setup.php:1678 setup.php:1975 setup.php:1977 setup.php:2188 setup.php:2219
-#: setup.php:2235
+#: setup.php:1735 setup.php:2032 setup.php:2034 setup.php:2246 setup.php:2278
+#: setup.php:2296
 msgid "Syslog"
 msgstr "Syslog"
 
-#: setup.php:1682
+#: setup.php:1739
 msgid "General Settings"
 msgstr "Γενικές Ρυθμίσεις"
 
-#: setup.php:1686
+#: setup.php:1743
 msgid "Syslog Enabled"
 msgstr "Syslog ενεργοποιημένη"
 
-#: setup.php:1687
+#: setup.php:1744
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "Εάν οριστεί αυτό το πλαίσιο ελέγχου, οι εγγραφές θα μεταφερθούν από τον πίνακα εισερχομένων Syslog στον κύριο πίνακα syslog και θα ενεργοποιηθούν οι ειδοποιήσεις και οι αναφορές.  Λάβετε υπόψη ότι εάν το σύστημα είναι απενεργοποιημένο, οι καταχωρήσεις αρχείου καταγραφής θα εξακολουθούν να συσσωρεύονται στον πίνακα εισερχομένων Syslog, όπως ορίζεται από τη διαδικασία rsyslog ή syslog-ng."
 
-#: setup.php:1692
+#: setup.php:1749
 msgid "Strip Domains"
 msgstr "Απογύμνωση τομέων"
 
-#: setup.php:1693
+#: setup.php:1750
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "Μια λίστα οριοθετημένη με κόμμα των τομέων που θέλετε να καταργήσετε από το όνομα κεντρικού υπολογιστή syslog, Παραδείγματα θα ήταν 'mydomain.com, otherdomain.com'"
 
-#: setup.php:1700
+#: setup.php:1757
 msgid "Refresh Interval"
 msgstr "Μεσοδιάστημα ανανέωσης"
 
-#: setup.php:1701
+#: setup.php:1758
 msgid "This is the time in seconds before the page refreshes."
 msgstr "Αυτός είναι ο χρόνος σε δευτερόλεπτα πριν από την ανανέωση της σελίδας."
 
-#: setup.php:1707
+#: setup.php:1764
 msgid "Max Report Records"
 msgstr "Μέγιστες εγγραφές αναφορών"
 
-#: setup.php:1708
+#: setup.php:1765
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "Για ειδοποιήσεις βάσει κατωφλίου, ποιος είναι ο μέγιστος αριθμός που θέλετε να εμφανίζεται στην αναφορά.  Αυτό χρησιμοποιείται για τον περιορισμό του μεγέθους του αρχείου καταγραφής html και του ηλεκτρονικού ταχυδρομείου."
 
-#: setup.php:1712 setup.php:1713 setup.php:1714 setup.php:1715 setup.php:1716
-#: setup.php:1717
+#: setup.php:1769 setup.php:1770 setup.php:1771 setup.php:1772 setup.php:1773
+#: setup.php:1774
 #, php-format
 msgid "%d Records"
 msgstr "%d Εγγραφές"
 
-#: setup.php:1721
+#: setup.php:1778
 msgid "Maximum Syslog Processing Processes"
 msgstr ""
 
-#: setup.php:1722
+#: setup.php:1779
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
 msgstr ""
 
-#: setup.php:1726
+#: setup.php:1783
 #, php-format
 msgid "%d Worker Process"
 msgstr ""
 
-#: setup.php:1727 setup.php:1728 setup.php:1729 setup.php:1730 setup.php:1731
+#: setup.php:1784 setup.php:1785 setup.php:1786 setup.php:1787 setup.php:1788
 #, php-format
 msgid "%d Worker Processes"
 msgstr ""
 
-#: setup.php:1735
+#: setup.php:1792
 msgid "Command for Opening Tickets"
 msgstr "Εντολή για εισιτήρια ανοίγματος"
 
-#: setup.php:1736
+#: setup.php:1793
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "Αυτή η εντολή θα εκτελεστεί για το άνοιγμα εισιτηρίων Help Desk.  Η εντολή θα πρέπει να αναλύσει πολλαπλές παραμέτρους εισόδου ως εξής: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  Η λίστα κεντρικών υπολογιστών θα είναι μια λίστα οριοθετημένη με κόμματα των κεντρικών υπολογιστών που επηρεάζονται από την ειδοποίηση."
 
-#: setup.php:1742
+#: setup.php:1799
 msgid "Host Discovery Options"
 msgstr ""
 
-#: setup.php:1747
+#: setup.php:1804
 msgid "Enable Hostname Resolution"
 msgstr ""
 
-#: setup.php:1748
+#: setup.php:1805
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
 msgstr ""
 
-#: setup.php:1753
+#: setup.php:1810
 msgid "Skip DNS Resolution for incoming hosts"
 msgstr ""
 
-#: setup.php:1754
+#: setup.php:1811
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
 msgstr ""
 
-#: setup.php:1759
+#: setup.php:1816
 msgid "HTML Notification Settings"
 msgstr "Ρυθμίσεις ειδοποιήσεων HTML"
 
-#: setup.php:1764
+#: setup.php:1821
 msgid "Enable HTML Based Email"
 msgstr "Ενεργοποίηση ηλεκτρονικού ταχυδρομείου που βασίζεται σε HTML"
 
-#: setup.php:1765
+#: setup.php:1822
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
 msgstr "Εάν έχει οριστεί αυτό το πλαίσιο ελέγχου, όλα τα μηνύματα ηλεκτρονικού ταχυδρομείου θα αποστέλλονται σε μορφή HTML.  Διαφορετικά, τα μηνύματα ηλεκτρονικού ταχυδρομείου θα αποστέλλονται σε απλό κείμενο."
 
-#: setup.php:1770
+#: setup.php:1827
 msgid "Format File to Use"
 msgstr "Μορφοποίηση αρχείου για χρήση"
 
-#: setup.php:1773
+#: setup.php:1830
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
 msgstr "Επιλέξτε το προσαρμοσμένο πρόγραμμα περιτυλίγματος html και το αρχείο CSS που θα χρησιμοποιήσετε.  Αυτό το αρχείο περιέχει html και CSS για να τυλίξετε γύρω από την αναφορά σας.  Εάν περιέχει περισσότερα από απλά CSS, πρέπει να τοποθετήσετε μια ειδική <REPORT> ετικέτα μέσα στο αρχείο.  Αυτή η ετικέτα μορφής θα αντικατασταθεί από το περιεχόμενο της αναφοράς.  Αυτά τα αρχεία βρίσκονται στον κατάλογο «μορφές».</REPORT>"
 
-#: setup.php:1777
+#: setup.php:1834
 msgid "Data Retention Settings"
 msgstr "Ρυθμίσεις διατήρησης δεδομένων"
 
-#: setup.php:1782
+#: setup.php:1839
 msgid "Syslog Retention"
 msgstr "Διατήρηση Syslog"
 
-#: setup.php:1783
+#: setup.php:1840
 msgid "This is the number of days to keep events."
 msgstr "Αυτός είναι ο αριθμός των ημερών για τη διατήρηση των γεγονότων."
 
-#: setup.php:1789
+#: setup.php:1846
 msgid "Partition Pre-create Window"
 msgstr ""
 
-#: setup.php:1790
+#: setup.php:1847
 msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
 msgstr ""
 
-#: setup.php:1794 setup.php:2082 setup.php:2101 syslog_alerts.php:516
+#: setup.php:1851 setup.php:2139 setup.php:2158 syslog_alerts.php:516
 #, php-format
 msgid "%d Day"
 msgstr "%d ημέρα"
 
-#: setup.php:1795 setup.php:1796 setup.php:1797 setup.php:1798 setup.php:1799
-#: setup.php:1800 setup.php:2083 setup.php:2084 setup.php:2085 setup.php:2086
-#: setup.php:2087 setup.php:2102 setup.php:2103 setup.php:2104 setup.php:2105
-#: setup.php:2106 syslog_alerts.php:517
+#: setup.php:1852 setup.php:1853 setup.php:1854 setup.php:1855 setup.php:1856
+#: setup.php:1857 setup.php:2140 setup.php:2141 setup.php:2142 setup.php:2143
+#: setup.php:2144 setup.php:2159 setup.php:2160 setup.php:2161 setup.php:2162
+#: setup.php:2163 syslog_alerts.php:517
 #, php-format
 msgid "%d Days"
 msgstr "%d Ημέρες"
 
-#: setup.php:1804
+#: setup.php:1861
 #, fuzzy
 msgid "Partition Recovery Limit"
 msgstr "Χωρίσματα ανά ημέρα"
 
-#: setup.php:1805
+#: setup.php:1862
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
 msgstr ""
 
-#: setup.php:1809
+#: setup.php:1866
 #, fuzzy, php-format
 msgid "%d Partition per run"
 msgstr "Χωρίσματα ανά ημέρα"
 
-#: setup.php:1810 setup.php:1811 setup.php:1812 setup.php:1813 setup.php:1814
+#: setup.php:1867 setup.php:1868 setup.php:1869 setup.php:1870 setup.php:1871
 #, fuzzy, php-format
 msgid "%d Partitions per run"
 msgstr "Χωρίσματα ανά ημέρα"
 
-#: setup.php:1818
+#: setup.php:1875
 msgid "Collector Staleness Threshold"
 msgstr ""
 
-#: setup.php:1819
+#: setup.php:1876
 msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
 msgstr ""
 
-#: setup.php:1823
+#: setup.php:1880
 msgid "Default (300 seconds)"
 msgstr ""
 
-#: setup.php:1824 setup.php:1825 setup.php:1826 setup.php:1827 setup.php:1828
+#: setup.php:1881 setup.php:1882 setup.php:1883 setup.php:1884 setup.php:1885
 #, php-format
 msgid "%d seconds"
 msgstr ""
 
-#: setup.php:1832
+#: setup.php:1889
 msgid "Collector Backlog Threshold"
 msgstr ""
 
-#: setup.php:1833
+#: setup.php:1890
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
 msgstr ""
 
-#: setup.php:1837
+#: setup.php:1894
 msgid "Default (10000 messages)"
 msgstr ""
 
-#: setup.php:1838 setup.php:1839 setup.php:1840 setup.php:1841
+#: setup.php:1895 setup.php:1896 setup.php:1897 setup.php:1898
 #, fuzzy, php-format
 msgid "%d Messages"
 msgstr "Μηνύματα"
 
-#: setup.php:1845
+#: setup.php:1902
 msgid "Syslog Alert Retention"
 msgstr "Διατήρηση ειδοποίησης Syslog"
 
-#: setup.php:1846
+#: setup.php:1903
 msgid "This is the number of days to keep alert logs."
 msgstr "Αυτός είναι ο αριθμός των ημερών για τη διατήρηση αρχείων καταγραφής ειδοποιήσεων."
 
-#: setup.php:1852
+#: setup.php:1909
 msgid "Alert Suppression and Maintenance"
 msgstr ""
 
-#: setup.php:1857
+#: setup.php:1914
 msgid "Maintenance Window Days"
 msgstr ""
 
-#: setup.php:1858
+#: setup.php:1915
 msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
 msgstr ""
 
-#: setup.php:1864
+#: setup.php:1921
 msgid "Maintenance Window Starts"
 msgstr ""
 
-#: setup.php:1865
+#: setup.php:1922
 msgid "Local start time for the global maintenance window."
 msgstr ""
 
-#: setup.php:1871
+#: setup.php:1928
 msgid "Maintenance Window Ends"
 msgstr ""
 
-#: setup.php:1872
+#: setup.php:1929
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
 msgstr ""
 
-#: setup.php:1878
+#: setup.php:1935
 msgid "One-time Maintenance Starts"
 msgstr ""
 
-#: setup.php:1879
+#: setup.php:1936
 msgid "Optional local date and time to start a one-time global maintenance window."
 msgstr ""
 
-#: setup.php:1883
+#: setup.php:1940
 msgid "One-time Maintenance Ends"
 msgstr ""
 
-#: setup.php:1884
+#: setup.php:1941
 msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
 msgstr ""
 
-#: setup.php:1888
+#: setup.php:1945
 msgid "Default Alert Cooldown"
 msgstr ""
 
-#: setup.php:1889
+#: setup.php:1946
 msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr ""
 
-#: setup.php:1896
+#: setup.php:1953
 msgid "Default Duplicate Suppression"
 msgstr ""
 
-#: setup.php:1897
+#: setup.php:1954
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr ""
 
-#: setup.php:1904
+#: setup.php:1961
 msgid "Remote Message Processing"
 msgstr "Απομακρυσμένη επεξεργασία μηνυμάτων"
 
-#: setup.php:1908
+#: setup.php:1965
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "Ενεργοποίηση απομακρυσμένης επεξεργασίας μηνυμάτων Συλλογής δεδομένων"
 
-#: setup.php:1909
+#: setup.php:1966
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Εάν οι Απομακρυσμένες συλλογές δεδομένων έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται τα μηνύματά τους ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου.  Επιλέγοντας αυτό το πλαίσιο ελέγχου, οι απομακρυσμένοι συλλέκτες δεδομένων θα πρέπει να διατηρούν το δικό τους αρχείο 'config_local.php' προκειμένου να ενημερώσουν το Syslog να χρησιμοποιήσει μια ανεξάρτητη βάση δεδομένων για την εμφάνιση και επεξεργασία μηνυμάτων.  Χρησιμοποιήστε το αρχείο προτύπου 'config_local.php.dist' για το σκοπό αυτό.  ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Οι πίνακες Syslog θα δημιουργηθούν αυτόματα μόλις ενεργοποιηθεί αυτή η επιλογή."
 
-#: setup.php:1914
+#: setup.php:1971
 msgid "Remote Data Collector Rules Sync"
 msgstr "Απομακρυσμένος συγχρονισμός κανόνων Συλλογής δεδομένων"
 
-#: setup.php:1915
+#: setup.php:1972
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Εάν οι Απομακρυσμένοι Συλλέκτες Δεδομένων σας έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται μέσω μηνυμάτων ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου εάν θέλετε οι κανόνες Ειδοποιήσεις, Αφαίρεση και Αναφορά των κύριων βάσεων δεδομένων Κάκτων να αποστέλλονται στο Σύστημα Απομακρυσμένων Κάκτων."
 
-#: setup.php:2036 syslog_removal.php:37
+#: setup.php:2093 syslog_device_rules.php:100 syslog_removal.php:37
 msgid "Disable"
 msgstr "Απενεργοποίηση"
 
-#: setup.php:2037 syslog_removal.php:38
+#: setup.php:2094 syslog_device_rules.php:100 syslog_removal.php:38
 msgid "Enable"
 msgstr "Ενεργοποίηση"
 
-#: setup.php:2038 syslog.php:1918 syslog_dashboards.php:300
+#: setup.php:2095 syslog.php:1918 syslog_dashboards.php:300
 #: syslog_dashboards.php:351 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
 msgstr "Εξαγωγή"
 
-#: setup.php:2081 setup.php:2100
+#: setup.php:2138 setup.php:2157
 msgid "Indefinite"
 msgstr "Αόριστος"
 
-#: setup.php:2088 setup.php:2107 syslog_alerts.php:518
+#: setup.php:2145 setup.php:2164 syslog_alerts.php:518
 #, php-format
 msgid "%d Week"
 msgstr "%d εβδομάδα"
 
-#: setup.php:2089 setup.php:2108 syslog_alerts.php:519
+#: setup.php:2146 setup.php:2165 syslog_alerts.php:519
 #, php-format
 msgid "%d Weeks"
 msgstr "%d Εβδομάδες"
 
-#: setup.php:2090 setup.php:2109
+#: setup.php:2147 setup.php:2166
 #, php-format
 msgid "%d Month"
 msgstr "% d Μήνα"
 
-#: setup.php:2091 setup.php:2092 setup.php:2093 setup.php:2094 setup.php:2095
-#: setup.php:2110 setup.php:2111 setup.php:2112 setup.php:2113 setup.php:2114
+#: setup.php:2148 setup.php:2149 setup.php:2150 setup.php:2151 setup.php:2152
+#: setup.php:2167 setup.php:2168 setup.php:2169 setup.php:2170 setup.php:2171
 #, php-format
 msgid "%d Months"
 msgstr "% d Μήνας"
 
-#: setup.php:2096 setup.php:2115
+#: setup.php:2153 setup.php:2172
 #, php-format
 msgid "%d Year"
 msgstr "% d Έτος"
 
-#: setup.php:2119 syslog.php:295 syslog.php:310 syslog.php:325
+#: setup.php:2176 syslog.php:295 syslog.php:310 syslog.php:325
 #: syslog_dashboards.php:324 syslog_reports.php:809
 msgid "Never"
 msgstr "Ποτέ"
 
-#: setup.php:2120
+#: setup.php:2177
 #, php-format
 msgid "%d Minute"
 msgstr "%d λεπτό"
 
-#: setup.php:2121 setup.php:2122 setup.php:2123 syslog_alerts.php:503
+#: setup.php:2178 setup.php:2179 setup.php:2180 syslog_alerts.php:503
 #: syslog_alerts.php:504 syslog_alerts.php:505 syslog_alerts.php:506
 #: syslog_alerts.php:507 syslog_alerts.php:508
 #, php-format
 msgid "%d Minutes"
 msgstr "%d λεπτά"
 
-#: setup.php:2127 syslog.php:1978
+#: setup.php:2184 syslog.php:1978
 msgid "Notice"
 msgstr "Σημείωση"
 
-#: setup.php:2128 syslog.php:1977 syslog.php:1996
+#: setup.php:2185 syslog.php:1977 syslog.php:1996
 msgid "Warning"
 msgstr "Προσοχή"
 
-#: setup.php:2129 syslog.php:1974
+#: setup.php:2186 syslog.php:1974
 msgid "Critical"
 msgstr "Κρίσιμο"
 
-#: setup.php:2133
+#: setup.php:2190
 msgid "Begins with"
 msgstr "αρχίζει με"
 
-#: setup.php:2134
+#: setup.php:2191
 msgid "Contains"
 msgstr "Περιέχει"
 
-#: setup.php:2135
+#: setup.php:2192
 msgid "Ends with"
 msgstr "Τελειώνει με"
 
-#: setup.php:2136
+#: setup.php:2193
 msgid "Hostname is"
 msgstr "Όνομα κεντρικού υπολογιστή:"
 
-#: setup.php:2137
+#: setup.php:2194
 msgid "Program is"
 msgstr "Program"
 
-#: setup.php:2138
+#: setup.php:2195
 msgid "Facility is"
 msgstr "Εγκατάσταση"
 
-#: setup.php:2139 syslog_alerts.php:690
+#: setup.php:2196 syslog_alerts.php:690
 msgid "Filter Builder"
 msgstr ""
 
-#: setup.php:2140 syslog_alerts.php:691
+#: setup.php:2197 syslog_alerts.php:691
 msgid "SQL Expression"
 msgstr "Έκφραση SQL"
 
-#: setup.php:2144
+#: setup.php:2201
 msgid "Daily"
 msgstr "Καθημερινά"
 
-#: setup.php:2145
+#: setup.php:2202
 msgid "Weekly"
 msgstr "Εβδομαδιαία"
 
-#: setup.php:2172
+#: setup.php:2229
 msgid "Import/Export"
 msgstr "Εισαγωγή/Εξαγωγή"
 
-#: setup.php:2173
+#: setup.php:2230
 msgid "Alert Rules"
 msgstr "Κανόνες ειδοποίησης"
 
-#: setup.php:2173 setup.php:2174 setup.php:2175 setup.php:2176 setup.php:2177
-#: setup.php:2182
+#: setup.php:2230 setup.php:2231 setup.php:2232 setup.php:2233 setup.php:2234
+#: setup.php:2235 setup.php:2240
 msgid "Syslog Settings"
 msgstr "Ρυθμίσεις Syslog"
 
-#: setup.php:2174
+#: setup.php:2231 syslog_device_rules.php:196
+#, fuzzy
+msgid "Device Alert Rules"
+msgstr "Κανόνες ειδοποίησης"
+
+#: setup.php:2232
 msgid "Removal Rules"
 msgstr "Κανόνες κατάργησης"
 
-#: setup.php:2175
+#: setup.php:2233
 msgid "Report Rules"
 msgstr "Κανόνες αναφοράς"
 
-#: setup.php:2176 setup.php:2233 syslog_saved_searches.php:195
+#: setup.php:2234 setup.php:2294 syslog_saved_searches.php:195
 msgid "Saved Search Templates"
 msgstr ""
 
-#: setup.php:2220
+#: setup.php:2279
 msgid "Syslog Removals"
 msgstr "Καταργήσεις Syslog"
 
-#: setup.php:2221 setup.php:2222 setup.php:2226 setup.php:2227 setup.php:2231
+#: setup.php:2280 setup.php:2281 setup.php:2285 setup.php:2286 setup.php:2289
+#: setup.php:2292
 msgid "(Edit)"
 msgstr "(Eπεξεργασία)"
 
-#: setup.php:2223 setup.php:2228 setup.php:2232
+#: setup.php:2282 setup.php:2287 setup.php:2293
 msgid "(Actions)"
 msgstr "Ενέργειες"
 
-#: setup.php:2225
+#: setup.php:2284
 msgid "Syslog Alerts"
 msgstr "Ειδοποιήσεις Syslog"
 
-#: setup.php:2230
+#: setup.php:2288
+#, fuzzy
+msgid "Syslog Device Alert Rules"
+msgstr "Προβολή κανόνων ειδοποίησης Syslog"
+
+#: setup.php:2291
 msgid "Syslog Reports"
 msgstr "Αναφορές Syslog"
 
-#: setup.php:2334
+#: setup.php:2395
 msgid "Display Syslog in Range"
 msgstr "Εμφάνιση Syslog εντός εμβέλειας"
 
-#: setup.php:2404
+#: setup.php:2465
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "Υπήρχαν %s εγγραφές συσκευών που καταργήθηκαν από τη βάση δεδομένων Syslog"
 
-#: setup.php:2425
+#: setup.php:2486
 msgid "Syslog Utilities"
 msgstr "Βοηθητικά προγράμματα Syslog"
 
-#: setup.php:2429
+#: setup.php:2490
 msgid "Purge Syslog Devices"
 msgstr "Εκκαθάριση συσκευών syslog"
 
-#: setup.php:2431
+#: setup.php:2492
 msgid "Are you sure you want to purge stale Syslog devices?"
 msgstr ""
 
-#: setup.php:2437
+#: setup.php:2498
 msgid "Confirm Purge"
 msgstr ""
 
-#: setup.php:2451 syslog_alerts.php:230 syslog_dashboards.php:428
-#: syslog_removal.php:248 syslog_reports.php:213 syslog_saved_searches.php:384
+#: setup.php:2512 syslog_alerts.php:230 syslog_dashboards.php:428
+#: syslog_device_rules.php:102 syslog_removal.php:248 syslog_reports.php:213
+#: syslog_saved_searches.php:384
 msgid "Continue"
 msgstr "Συνέχεια"
 
-#: setup.php:2477
+#: setup.php:2538
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "Αυτή η επιλογή μενού παρέχει ένα μέσο για την κατάργηση συσκευών που δεν αναφέρουν πλέον στον διακομιστή syslog της Cacti."
 
@@ -1624,7 +1637,7 @@ msgstr ""
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[ Μη επεξεργασμένα μηνύματα: %s ]"
 
-#: syslog.php:1728
+#: syslog.php:1728 syslog_device_rules.php:163
 msgid "Enter a search term"
 msgstr "Εισαγάγετε έναν όρο αναζήτησης"
 
@@ -1713,7 +1726,8 @@ msgid "Display Rows"
 msgstr "Προβολή Σειρών"
 
 #: syslog.php:1822 syslog_alerts.php:1055 syslog_dashboards.php:237
-#: syslog_removal.php:827 syslog_reports.php:665 syslog_saved_searches.php:229
+#: syslog_device_rules.php:165 syslog_removal.php:827 syslog_reports.php:665
+#: syslog_saved_searches.php:229
 msgid "Default"
 msgstr "Προεπιλογή"
 
@@ -1778,12 +1792,14 @@ msgid "Save Search As"
 msgstr "Αναζήτηση"
 
 #: syslog.php:1915 syslog_alerts.php:1035 syslog_dashboards.php:227
-#: syslog_removal.php:807 syslog_reports.php:645 syslog_saved_searches.php:219
+#: syslog_device_rules.php:163 syslog_removal.php:807 syslog_reports.php:645
+#: syslog_saved_searches.php:219
 msgid "Search"
 msgstr "Αναζήτηση"
 
 #: syslog.php:1916 syslog_alerts.php:1072 syslog_dashboards.php:254
-#: syslog_removal.php:844 syslog_reports.php:682 syslog_saved_searches.php:246
+#: syslog_device_rules.php:166 syslog_removal.php:844 syslog_reports.php:682
+#: syslog_saved_searches.php:246
 msgid "Clear"
 msgstr "Καθαρισμός"
 
@@ -1834,6 +1850,7 @@ msgid "Informational"
 msgstr "Ενημερωτικό"
 
 #: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:664
+#: syslog_device_rules.php:121 syslog_device_rules.php:197
 msgid "Device"
 msgstr "Συσκευή"
 
@@ -1887,6 +1904,11 @@ msgstr ""
 #: syslog.php:2299
 #, fuzzy
 msgid "Create Alarm Rule"
+msgstr "Κανόνας ειδοποίησης εισαγωγής"
+
+#: syslog.php:2299
+#, fuzzy
+msgid "Create Device Alert Rule"
 msgstr "Κανόνας ειδοποίησης εισαγωγής"
 
 #: syslog.php:2299
@@ -2054,7 +2076,8 @@ msgid "Build filter conditions or enter an SQL expression to match syslog messag
 msgstr ""
 
 #: syslog_alerts.php:708 syslog_alerts.php:711 syslog_alerts.php:1041
-#: syslog_alerts.php:1173 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_alerts.php:1173 syslog_device_rules.php:122
+#: syslog_device_rules.php:164 syslog_removal.php:599 syslog_removal.php:813
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
@@ -2074,7 +2097,6 @@ msgstr "Μην στείλετε ξανά αυτήν την ειδοποίηση 
 
 #: syslog_alerts.php:723
 #, fuzzy
-#| msgid "Notification List"
 msgid "Notification Cooldown"
 msgstr "Λίστα ειδοποιήσεων"
 
@@ -2093,7 +2115,6 @@ msgstr "%d ώρες"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
 #, fuzzy
-#| msgid "1 Minute"
 msgid "1 minute"
 msgstr "1 λεπτό"
 
@@ -2119,7 +2140,6 @@ msgstr "1 λεπτό"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
 #, fuzzy
-#| msgid "Syslog %s Settings"
 msgid "Use global setting"
 msgstr "Ρυθμίσεις %s Syslog"
 
@@ -2191,7 +2211,7 @@ msgstr ""
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
 msgstr ""
 
-#: syslog_alerts.php:783 syslog_reports.php:568
+#: syslog_alerts.php:783 syslog_device_rules.php:127 syslog_reports.php:568
 msgid "Notes"
 msgstr "Σημειώσεις"
 
@@ -2240,14 +2260,18 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr "Σε περίπτωση ανοίγματος εισιτηρίου Help Desk για αυτήν την ειδοποίηση.  ΣΗΜΕΙΩΣΗ: Η δέσμη ενεργειών εντολών Ticket θα συμπληρωθεί με πολλές μεταβλητές περιβάλλοντος 'ALERT_' για λόγους ευκολίας."
 
 #: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:819
-#: syslog_removal.php:964 syslog_reports.php:657 syslog_reports.php:804
+#: syslog_dashboards.php:322 syslog_dashboards.php:735
+#: syslog_device_rules.php:126 syslog_device_rules.php:164
+#: syslog_removal.php:819 syslog_removal.php:964 syslog_reports.php:657
+#: syslog_reports.php:804
 msgid "No"
 msgstr "Όχι"
 
 #: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:818
-#: syslog_removal.php:964 syslog_reports.php:656 syslog_reports.php:804
+#: syslog_dashboards.php:322 syslog_dashboards.php:735
+#: syslog_device_rules.php:126 syslog_device_rules.php:164
+#: syslog_removal.php:818 syslog_removal.php:964 syslog_reports.php:656
+#: syslog_reports.php:804
 msgid "Yes"
 msgstr "Ναι"
 
@@ -2296,7 +2320,8 @@ msgstr "Εισαγάγετε έναν όρο αναζήτησης"
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:1045 syslog_removal.php:817 syslog_reports.php:655
+#: syslog_alerts.php:1045 syslog_device_rules.php:164 syslog_removal.php:817
+#: syslog_reports.php:655
 msgid "All"
 msgstr "Όλα"
 
@@ -2305,8 +2330,8 @@ msgstr "Όλα"
 msgid "Rows"
 msgstr "Σειρές"
 
-#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_removal.php:843
-#: syslog_reports.php:681 syslog_saved_searches.php:245
+#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:166
+#: syslog_removal.php:843 syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr "Πήγαινε"
 
@@ -2543,6 +2568,149 @@ msgstr ""
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
 msgstr ""
 
+#: syslog_device_rules.php:41
+msgid "Choose a future pause end date and time."
+msgstr ""
+
+#: syslog_device_rules.php:47
+msgid "A device name is required."
+msgstr ""
+
+#: syslog_device_rules.php:101
+#, fuzzy, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Κάντε κλικ στο «Συνέχεια» για να απενεργοποιήσετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+
+#: syslog_device_rules.php:115
+msgid "Do not pass any priority"
+msgstr ""
+
+#: syslog_device_rules.php:117
+#, php-format
+msgid "%s and more urgent"
+msgstr ""
+
+#: syslog_device_rules.php:120
+#, fuzzy
+msgid "Device Alert Rule"
+msgstr "Νέος κανόνας ειδοποίησης"
+
+#: syslog_device_rules.php:121
+msgid "This rule applies to every Syslog alert matching this device."
+msgstr ""
+
+#: syslog_device_rules.php:123
+#, fuzzy
+msgid "Alert Handling"
+msgstr "Χειρισμός αφαίρεσης"
+
+#: syslog_device_rules.php:123
+msgid "Do not pause"
+msgstr ""
+
+#: syslog_device_rules.php:123
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr ""
+
+#: syslog_device_rules.php:123
+#, fuzzy
+msgid "Pause indefinitely"
+msgstr "Αόριστος"
+
+#: syslog_device_rules.php:123
+msgid "Pause until"
+msgstr ""
+
+#: syslog_device_rules.php:124
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: syslog_device_rules.php:124
+msgid "Pause Ends"
+msgstr ""
+
+#: syslog_device_rules.php:125
+#, fuzzy
+msgid "Always Allow Priority"
+msgstr "Όλες οι προτεραιότητες"
+
+#: syslog_device_rules.php:125
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr ""
+
+#: syslog_device_rules.php:126
+#, fuzzy
+msgid "Allow During Maintenance"
+msgstr "Χωρισμένος πίνακας"
+
+#: syslog_device_rules.php:126
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr ""
+
+#: syslog_device_rules.php:134
+#, fuzzy
+msgid "Device Alert Rule [edit]"
+msgstr "Νέος κανόνας ειδοποίησης"
+
+#: syslog_device_rules.php:134
+#, fuzzy
+msgid "Device Alert Rule [new]"
+msgstr "Νέος κανόνας ειδοποίησης"
+
+#: syslog_device_rules.php:160
+#, fuzzy
+msgid "Device Alert Rule Filters"
+msgstr "Φίλτρα ειδοποίησης Syslog"
+
+#: syslog_device_rules.php:165 syslog_device_rules.php:193
+#: syslog_removal.php:823 syslog_removal.php:952
+msgid "Rules"
+msgstr "Κανόνες"
+
+#: syslog_device_rules.php:197
+#, fuzzy
+msgid "Handling"
+msgstr "Χειρισμός αφαίρεσης"
+
+#: syslog_device_rules.php:197
+#, fuzzy
+msgid "Maintenance"
+msgstr "Χωρισμένος πίνακας"
+
+#: syslog_device_rules.php:197
+msgid "Pass Through"
+msgstr ""
+
+#: syslog_device_rules.php:200
+msgid "No device alert rules found."
+msgstr ""
+
+#: syslog_device_rules.php:203
+msgid "Not paused"
+msgstr ""
+
+#: syslog_device_rules.php:203
+#, fuzzy
+msgid "Paused indefinitely"
+msgstr "Αόριστος"
+
+#: syslog_device_rules.php:203
+#, php-format
+msgid "Paused until %s"
+msgstr ""
+
+#: syslog_device_rules.php:204
+msgid "and more urgent"
+msgstr ""
+
+#: syslog_device_rules.php:209
+msgid "Allow all"
+msgstr ""
+
+#: syslog_device_rules.php:209
+msgid "Use priority exception"
+msgstr ""
+
 #: syslog_removal.php:39
 msgid "Reprocess"
 msgstr "Επανεπεξεργασία"
@@ -2669,10 +2837,6 @@ msgstr "Χώρος για σημειώσεις σχετικά με τον καν
 #, fuzzy
 msgid "Removal filter conditions"
 msgstr "Σημειώσεις κανόνων κατάργησης"
-
-#: syslog_removal.php:823 syslog_removal.php:952
-msgid "Rules"
-msgstr "Κανόνες"
 
 #: syslog_removal.php:915
 msgid "Syslog Removal Rule Filters"
@@ -2986,9 +3150,6 @@ msgstr ""
 #~ msgid "All Facilities"
 #~ msgstr "Όλες οι παροχές"
 
-#~ msgid "All Priorities"
-#~ msgstr "Όλες οι προτεραιότητες"
-
 #~ msgid "All Text"
 #~ msgstr "Όλο το κείμενο"
 
@@ -3099,9 +3260,6 @@ msgstr ""
 
 #~ msgid "Validate Hostnames"
 #~ msgstr "Επικύρωση ονομάτων κεντρικών υπολογιστών"
-
-#~ msgid "View Syslog Alert Rules"
-#~ msgstr "Προβολή κανόνων ειδοποίησης Syslog"
 
 #~ msgid "View Syslog Removal Rules"
 #~ msgstr "Προβολή κανόνων κατάργησης Syslog"
