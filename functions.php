@@ -4283,6 +4283,53 @@ function syslog_alert_suppression_record(array $alert, array $state): void {
 	syslog_db_execute_prepared('INSERT INTO syslog_alert_suppression (alert_id, scope_key, dedup_hash, last_sent) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE last_sent = VALUES(last_sent)', [$alert['id'], $state['scope_key'], $state['dedup_hash'], time()]);
 }
 
+/** Return whether this alert's configured maintenance window is active. */
+function syslog_alert_maintenance_is_active(array $alert): bool {
+	$mode = $alert['maintenance_mode'] ?? 'inherit';
+	if ($mode === 'disabled') {
+		return false;
+	}
+	if ($mode === 'custom') {
+		return syslog_alert_datetime_window_is_active((string) ($alert['maintenance_datetime_start'] ?? ''), (string) ($alert['maintenance_datetime_end'] ?? ''))
+			|| syslog_alert_schedule_is_active(syslog_alert_maintenance_window((string) ($alert['maintenance_days'] ?? ''), (string) ($alert['maintenance_start'] ?? ''), (string) ($alert['maintenance_end'] ?? '')));
+	}
+
+	return syslog_alert_datetime_window_is_active((string) read_config_option('syslog_alert_maintenance_datetime_start'), (string) read_config_option('syslog_alert_maintenance_datetime_end'))
+		|| syslog_alert_schedule_is_active(syslog_alert_maintenance_window((string) read_config_option('syslog_alert_maintenance_days'), (string) read_config_option('syslog_alert_maintenance_start'), (string) read_config_option('syslog_alert_maintenance_end')));
+}
+
+/**
+ * Limit an alert query by active device-wide handling rules.
+ *
+ * A pass-through priority of Critical (2), for example, permits priorities
+ * Emergency through Critical even if the host is muted or in maintenance.
+ * A rule applies by hostname to every alert definition, not merely one rule.
+ *
+ * @return array{sql:string,params:array<int,int>}
+ */
+function syslog_device_rule_sql(bool $maintenance_active): array {
+	global $syslogdb_default, $syslog_incoming_config;
+	$host_field = $syslog_incoming_config['hostField'] ?? 'host';
+	$priority_field = $syslog_incoming_config['priorityField'] ?? 'priority_id';
+	$now = time();
+	$active_mute = "(dr.mute_mode = 'indefinite' OR (dr.mute_mode = 'until' AND dr.mute_until > ?))";
+	$pass_through = "(dr.pass_through_priority >= 0 AND COALESCE(`$priority_field`, 99) <= dr.pass_through_priority)";
+	$mute_filter = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
+	if ($maintenance_active) {
+		// Normal maintenance still mutes every device.  Only an explicit device
+		// exception may admit a record, so the absence of a device rule is not
+		// accidentally treated as an exception.
+		$maintenance_filter = "\n\t\t\t\tAND EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `$host_field` AND dr.enabled = 'on' AND (dr.allow_maintenance = 'on' OR $pass_through))";
+	} else {
+		$maintenance_filter = '';
+	}
+
+	return [
+		'sql' => $maintenance_filter . $mute_filter,
+		'params' => [$now]
+	];
+}
+
 function syslog_process_alerts($max_seq) {
 	global $syslogdb_default;
 
@@ -4309,22 +4356,7 @@ function syslog_process_alerts($max_seq) {
 
 	if (cacti_sizeof($alerts)) {
 		foreach ($alerts as $alert) {
-			$mode = $alert['maintenance_mode'] ?? 'inherit';
-			if ($mode === 'custom') {
-				$schedule = syslog_alert_maintenance_window((string) ($alert['maintenance_days'] ?? ''), (string) ($alert['maintenance_start'] ?? ''), (string) ($alert['maintenance_end'] ?? ''));
-				$dated_window = syslog_alert_datetime_window_is_active((string) ($alert['maintenance_datetime_start'] ?? ''), (string) ($alert['maintenance_datetime_end'] ?? ''));
-			} elseif ($mode === 'disabled') {
-				$schedule = '';
-				$dated_window = false;
-			} else {
-				$schedule = syslog_alert_maintenance_window((string) read_config_option('syslog_alert_maintenance_days'), (string) read_config_option('syslog_alert_maintenance_start'), (string) read_config_option('syslog_alert_maintenance_end'));
-				$dated_window = syslog_alert_datetime_window_is_active((string) read_config_option('syslog_alert_maintenance_datetime_start'), (string) read_config_option('syslog_alert_maintenance_datetime_end'));
-			}
-			if ($dated_window || syslog_alert_schedule_is_active($schedule)) {
-				syslog_debug(sprintf("Alert Rule '%s' is muted by a maintenance window", $alert['name']));
-
-				continue;
-			}
+			$maintenance_active = syslog_alert_maintenance_is_active($alert);
 			$sql      = '';
 			$params   = [];
 
@@ -4345,6 +4377,9 @@ function syslog_process_alerts($max_seq) {
 
 			$sql    = $sql_data['sql'];
 			$params = $sql_data['params'];
+			$device_rule = syslog_device_rule_sql($maintenance_active);
+			$sql .= $device_rule['sql'];
+			$params = array_merge($params, $device_rule['params']);
 
 			if ($sql != '') {
 				if ($alert['level'] == '1') {
@@ -5777,7 +5812,7 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = ''): string {
 	$details = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
-	$details['rules'] = syslog_message_rule_links($id, $source, $received);
+	$details['rules'] = syslog_message_rule_links($id, $source, $received, $device);
 	$text = title_trim((string) $message, 100);
 	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
 		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
@@ -5792,7 +5827,7 @@ function syslog_message_button($message, $device, $program, $facility, $severity
  *
  * @return array<string, string> Map of action name to rule editor URL.
  */
-function syslog_message_rule_links($id, $source, $received): array {
+function syslog_message_rule_links($id, $source, $received, $host = ''): array {
 	$links = [];
 	if ($source !== 'main' || !ctype_digit((string) $id) || (int) $id < 1) {
 		return $links;
@@ -5803,6 +5838,9 @@ function syslog_message_rule_links($id, $source, $received): array {
 		if (api_plugin_user_realm_auth($page)) {
 			$links[$action] = $page . '?' . $query;
 		}
+	}
+	if ($host !== '' && api_plugin_user_realm_auth('syslog_device_rules.php')) {
+		$links['device'] = 'syslog_device_rules.php?' . http_build_query(['action' => 'edit', 'host' => $host]);
 	}
 	return $links;
 }

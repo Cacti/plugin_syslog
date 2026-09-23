@@ -69,7 +69,7 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'replicate_out',         'syslog_replicate_out',        'setup.php');
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_device_rules.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
 
@@ -392,6 +392,29 @@ function syslog_upgrade_dashboard_realm(): void {
 	}
 }
 
+/** Give existing Syslog administrators access to device alert rules. */
+function syslog_upgrade_device_rule_realm(): void {
+	global $user_auth_realm_filenames;
+	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	if (!is_array($realms)) {
+		return;
+	}
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (!in_array('syslog_alerts.php', $files, true)) {
+			continue;
+		}
+		if (!in_array('syslog_device_rules.php', $files, true)) {
+			if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?', [$realm['file'] . ',syslog_device_rules.php', $realm['id'], 'syslog'])) {
+				return;
+			}
+			api_plugin_replicate_config();
+		}
+		$user_auth_realm_filenames['syslog_device_rules.php'] = (int) $realm['id'] + 100;
+		return;
+	}
+}
+
 /**
  * Upgrade the Syslog database schema for legacy installs.
  *
@@ -403,12 +426,13 @@ function syslog_check_upgrade(): void {
 	syslog_connect();
 	syslog_upgrade_saved_search_realm();
 	syslog_upgrade_dashboard_realm();
+	syslog_upgrade_device_rule_realm();
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
 
 	// Let's only run this check if we are on a page that actually needs the data
-	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
+	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_device_rules.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
 
 	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
 		return;
@@ -624,6 +648,25 @@ function syslog_check_upgrade(): void {
 		`last_sent` int(10) unsigned NOT NULL default '0',
 		PRIMARY KEY (`alert_id`, `scope_key`, `dedup_hash`),
 		INDEX `last_sent` (`last_sent`))
+		ENGINE=InnoDB");
+
+	// Device rules are evaluated against every matching incoming record, rather
+	// than against a particular alert rule.  This keeps a device mute effective
+	// for every alert definition that could match the device.
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+		`host` varchar(64) NOT NULL,
+		`enabled` char(2) NOT NULL default 'on',
+		`mute_mode` varchar(16) NOT NULL default 'none',
+		`mute_until` int(10) unsigned NOT NULL default '0',
+		`pass_through_priority` tinyint NOT NULL default '-1',
+		`allow_maintenance` char(2) NOT NULL default '',
+		`notes` varchar(255) NOT NULL default '',
+		`user` varchar(64) NOT NULL default '',
+		`date` int(10) unsigned NOT NULL default '0',
+		PRIMARY KEY (`id`),
+		UNIQUE KEY `host` (`host`),
+		KEY `enabled_mute` (`enabled`, `mute_mode`, `mute_until`))
 		ENGINE=InnoDB");
 
 	// Structured filter JSON can exceed the old VARCHAR limit. TEXT also keeps
@@ -1049,6 +1092,20 @@ function syslog_setup_table_new(array $options): void {
 		PRIMARY KEY (`alert_id`, `scope_key`, `dedup_hash`),
 		INDEX `last_sent` (`last_sent`))
 		ENGINE=InnoDB");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule` (
+		`id` int(10) unsigned NOT NULL auto_increment,
+		`host` varchar(64) NOT NULL,
+		`enabled` char(2) NOT NULL default 'on',
+		`mute_mode` varchar(16) NOT NULL default 'none',
+		`mute_until` int(10) unsigned NOT NULL default '0',
+		`pass_through_priority` tinyint NOT NULL default '-1',
+		`allow_maintenance` char(2) NOT NULL default '',
+		`notes` varchar(255) NOT NULL default '',
+		`user` varchar(64) NOT NULL default '',
+		`date` int(10) unsigned NOT NULL default '0',
+		PRIMARY KEY (`id`), UNIQUE KEY `host` (`host`),
+		KEY `enabled_mute` (`enabled`, `mute_mode`, `mute_until`)) ENGINE=InnoDB");
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_remove`");
@@ -2171,6 +2228,7 @@ function syslog_config_arrays(): void {
 
 			if ($temp == __('Import/Export')) {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_device_rules.php'] = __('Device Alert Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
@@ -2188,6 +2246,7 @@ function syslog_config_arrays(): void {
 		auth_augment_roles(__('Syslog', 'syslog'), [
 			'syslog.php',
 			'syslog_alerts.php',
+			'syslog_device_rules.php',
 			'syslog_removal.php',
 			'syslog_reports.php',
 			'syslog_saved_searches.php',
@@ -2226,6 +2285,8 @@ function syslog_draw_navigation_text($nav) {
 	$nav['syslog_alerts.php:edit']     = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2'];
 	$nav['syslog_alerts.php:newedit']  = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2'];
 	$nav['syslog_alerts.php:actions']  = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_alerts.php:', 'url' => 'syslog_alerts.php', 'level' => '2'];
+	$nav['syslog_device_rules.php:']        = ['title' => __('Syslog Device Alert Rules', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_device_rules.php', 'level' => '1'];
+	$nav['syslog_device_rules.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_device_rules.php:', 'url' => 'syslog_device_rules.php', 'level' => '2'];
 
 	$nav['syslog_reports.php:']        = ['title' => __('Syslog Reports', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_reports.php', 'level' => '1'];
 	$nav['syslog_reports.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
