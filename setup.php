@@ -322,12 +322,12 @@ function syslog_upgrade_saved_search_realm(): void {
 
 	$admin = null;
 	$template = null;
-	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (is_array($realms)) {
 		foreach ($realms as $realm) {
 			$files = explode(',', $realm['file']);
-			if (in_array('syslog_alerts.php', $files, true)) {
+			if (in_array('syslog_alerts.php', $files, true) && ($realm['display'] ?? '') !== 'Rule Viewer') {
 				$admin = $realm;
 			}
 			if (in_array('syslog_saved_searches.php', $files, true)) {
@@ -366,12 +366,12 @@ function syslog_upgrade_saved_search_realm(): void {
 function syslog_upgrade_dashboard_realm(): void {
 	global $user_auth_realm_filenames;
 
-	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (is_array($realms)) {
 		foreach ($realms as $realm) {
 			$files = explode(',', $realm['file']);
-			if (!in_array('syslog_alerts.php', $files, true)) {
+			if (!in_array('syslog_alerts.php', $files, true) || ($realm['display'] ?? '') === 'Rule Viewer') {
 				continue;
 			}
 
@@ -406,7 +406,7 @@ function syslog_upgrade_dashboard_realm(): void {
 function syslog_upgrade_rule_permissions(): void {
 	global $user_auth_realm_filenames;
 
-	$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (!is_array($realms)) {
 		return;
@@ -414,7 +414,7 @@ function syslog_upgrade_rule_permissions(): void {
 
 	foreach ($realms as $realm) {
 		$files = explode(',', $realm['file']);
-		if (!in_array('syslog_alerts.php', $files, true) || in_array('syslog_rule_administrator.php', $files, true)) {
+		if (($realm['display'] ?? '') !== 'Syslog Administration' || !in_array('syslog_alerts.php', $files, true) || in_array('syslog_rule_administrator.php', $files, true)) {
 			continue;
 		}
 
@@ -441,10 +441,10 @@ function syslog_upgrade_rule_permissions(): void {
  * permissions screen repeats that label.  Merge their files and grants into
  * the first record so each role has exactly one checkbox.
  *
- * @return void
+ * @return bool Whether duplicate repair succeeded.
  */
-function syslog_upgrade_consolidate_rule_realms(): void {
-	global $user_auth_realm_filenames;
+function syslog_upgrade_consolidate_rule_realms(): bool {
+	$changed = false;
 
 	foreach (['Rule Viewer', 'Rule Administrator'] as $display) {
 		$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ? AND display = ? ORDER BY id', ['syslog', $display]);
@@ -454,24 +454,61 @@ function syslog_upgrade_consolidate_rule_realms(): void {
 		}
 
 		$keeper = array_shift($realms);
-		$files  = array_filter(explode(',', $keeper['file']));
+		if (!db_begin_transaction()) {
+			return false;
+		}
 
 		foreach ($realms as $realm) {
-			$files = array_merge($files, array_filter(explode(',', $realm['file'])));
-			db_execute_prepared('UPDATE IGNORE user_auth_realm SET realm_id = ? WHERE realm_id = ?', [(int) $keeper['id'] + 100, (int) $realm['id'] + 100]);
-			db_execute_prepared('UPDATE IGNORE user_auth_group_realm SET realm_id = ? WHERE realm_id = ?', [(int) $keeper['id'] + 100, (int) $realm['id'] + 100]);
-			db_execute_prepared('DELETE FROM plugin_realms WHERE id = ?', [(int) $realm['id']]);
+			foreach (['user_auth_realm' => 'user_id', 'user_auth_group_realm' => 'group_id'] as $table => $owner) {
+				if (!db_execute_prepared("INSERT IGNORE INTO $table ($owner, realm_id) SELECT $owner, ? FROM $table WHERE realm_id = ?", [(int) $keeper['id'] + 100, (int) $realm['id'] + 100]) ||
+					!db_execute_prepared("DELETE FROM $table WHERE realm_id = ?", [(int) $realm['id'] + 100])) {
+					db_rollback_transaction();
+					return false;
+				}
+			}
+			if (!db_execute_prepared('DELETE FROM plugin_realms WHERE id = ? AND plugin = ?', [(int) $realm['id'], 'syslog'])) {
+				db_rollback_transaction();
+				return false;
+			}
 		}
 
-		$files = array_values(array_unique($files));
-		db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ?', [implode(',', $files), (int) $keeper['id']]);
-
-		foreach ($files as $file) {
-			$user_auth_realm_filenames[$file] = (int) $keeper['id'] + 100;
+		// Broken migrations put the administrator filename in Viewer records.
+		// Never union those files: doing so merges the two permission levels.
+		$files = $display === 'Rule Viewer' ? 'syslog_alerts.php,syslog_removal.php,syslog_reports.php' : 'syslog_rule_administrator.php';
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ?', [$files, (int) $keeper['id']]) || !db_commit_transaction()) {
+			db_rollback_transaction();
+			return false;
 		}
+		$changed = true;
 	}
 
-	api_plugin_replicate_config();
+	if ($changed) {
+		api_plugin_replicate_config();
+	}
+	return true;
+}
+
+/** Refresh permission labels, filenames and grouping from current realm IDs. */
+function syslog_refresh_permission_roles(): void {
+	global $user_auth_realms, $user_auth_realm_filenames, $user_auth_roles;
+
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ? ORDER BY id', ['syslog']);
+	if (!is_array($realms)) {
+		return;
+	}
+	$ids = [];
+	foreach ($realms as $realm) {
+		$id = (int) $realm['id'] + 100;
+		$ids[] = $id;
+		$user_auth_realms[$id] = $realm['display'];
+		foreach (explode(',', $realm['file']) as $file) {
+			$user_auth_realm_filenames[$file] = $id;
+			unset($_SESSION['sess_auth_names'][$file]);
+		}
+	}
+	// Assign actual IDs rather than cached filename lookups. This also removes
+	// deleted duplicate IDs from the Syslog group on the current request.
+	$user_auth_roles[__('Syslog', 'syslog')] = array_values(array_unique($ids));
 }
 
 /**
@@ -486,12 +523,15 @@ function syslog_check_upgrade(): void {
 	syslog_upgrade_saved_search_realm();
 	syslog_upgrade_dashboard_realm();
 	syslog_upgrade_rule_permissions();
-	syslog_upgrade_consolidate_rule_realms();
+	if (!syslog_upgrade_consolidate_rule_realms()) {
+		return;
+	}
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 0);
 	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 0);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
+	syslog_refresh_permission_roles();
 
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
@@ -2268,21 +2308,7 @@ function syslog_config_arrays(): void {
 		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
 	}
 
-	// Group all syslog realms under their own permissions section, as the
-	// audit plugin does, instead of the generic Plugin Permissions section.
-	if (function_exists('auth_augment_roles')) {
-		auth_augment_roles(__('Syslog', 'syslog'), [
-			'syslog.php',
-			'syslog_alerts.php',
-			'syslog_removal.php',
-			'syslog_reports.php',
-			'syslog_rule_administrator.php',
-			'syslog_saved_searches.php',
-			'syslog_dashboards.php',
-			'syslog_saved_searches_share.php',
-			'syslog_dashboards_share.php'
-		]);
-	}
+	syslog_refresh_permission_roles();
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
 		$messages['syslog_info'] = ['message' => $_SESSION['syslog_info'], 'type' => 'info'];
