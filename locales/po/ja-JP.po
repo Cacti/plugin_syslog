@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-21 23:45-0400\n"
+"POT-Creation-Date: 2026-09-22 20:32-0400\n"
 "PO-Revision-Date: 2025-03-07 14:51-0500\n"
 "Last-Translator: Seita Kawamot <seita_sk@yahoo.co.jp>\n"
 "Language-Team: Japanese <http://translate.cacti.net/projects/cacti/syslog/ja/>\n"
@@ -113,8 +113,8 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php:2968 functions.php:2972 setup.php:2212 setup.php:2222
-#: setup.php:2229
+#: functions.php:2968 functions.php:2972 setup.php:2360 setup.php:2370
+#: setup.php:2377
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -132,140 +132,140 @@ msgstr ""
 msgid "Unknown"
 msgstr "不明"
 
-#: functions.php:4381
+#: functions.php:4513
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "ホスト '%s' の Cacti Syslog しきい値アラート '%s'"
 
-#: functions.php:4383
+#: functions.php:4515
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cacti Syslog しきい値アラート「%s」"
 
-#: functions.php:4391 syslog.php:2242 syslog_alerts.php:1069
+#: functions.php:4523 syslog.php:2242 syslog_alerts.php:1169
 msgid "Alert Name"
 msgstr "アラート名"
 
-#: functions.php:4392 functions.php:4419 syslog.php:2241 syslog_alerts.php:630
-#: syslog_alerts.php:1070
+#: functions.php:4524 functions.php:4551 syslog.php:2241 syslog_alerts.php:653
+#: syslog_alerts.php:1170
 msgid "Severity"
 msgstr "深刻度"
 
-#: functions.php:4393 syslog_alerts.php:649 syslog_alerts.php:654
-#: syslog_alerts.php:1096
+#: functions.php:4525 syslog_alerts.php:672 syslog_alerts.php:677
+#: syslog_alerts.php:1196
 msgid "Threshold"
 msgstr "しきい値"
 
-#: functions.php:4394 syslog.php:2123 syslog.php:2244
+#: functions.php:4526 syslog.php:2123 syslog.php:2244
 msgid "Count"
 msgstr "カウント"
 
-#: functions.php:4395
+#: functions.php:4527
 msgid "Match String"
 msgstr "一致文字列"
 
-#: functions.php:4406 functions.php:4446
+#: functions.php:4538 functions.php:4578
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "ホスト '%s' の Cacti Syslog アラート '%s'"
 
-#: functions.php:4408 functions.php:4448
+#: functions.php:4540 functions.php:4580
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Cacti Syslogアラート「%s」"
 
-#: functions.php:4417
+#: functions.php:4549
 msgid "Hostname"
 msgstr "ホスト名"
 
-#: functions.php:4418 functions.php:5342 syslog.php:2114 syslog.php:2239
+#: functions.php:4550 functions.php:5484 syslog.php:2114 syslog.php:2239
 #: syslog.php:2296
 msgid "Date"
 msgstr "日付"
 
-#: functions.php:4420
+#: functions.php:4552
 msgid "Level"
 msgstr "レベル"
 
-#: functions.php:4421 functions.php:5343 lib/syslog_dashboard.php:1621
+#: functions.php:4553 functions.php:5485 lib/syslog_dashboard.php:1621
 #: syslog.php:1811 syslog.php:1896 syslog.php:2117 syslog.php:2243
-#: syslog.php:2297 syslog_alerts.php:806 syslog_removal.php:679
+#: syslog.php:2297 syslog_alerts.php:889 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
 msgstr "メッセージ"
 
-#: functions.php:4429
+#: functions.php:4561
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "警告:ホスト「%s」に対してsyslogしきい値アラートがトリガーされました"
 
-#: functions.php:4431
+#: functions.php:4563
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "警告:syslogしきい値アラートがトリガーされました"
 
-#: functions.php:4438
+#: functions.php:4570
 msgid "Name:"
 msgstr "名前："
 
-#: functions.php:4439 functions.php:4495
+#: functions.php:4571 functions.php:4627
 msgid "Severity:"
 msgstr "重要度:"
 
-#: functions.php:4440
+#: functions.php:4572
 msgid "Threshold:"
 msgstr "しきい値:"
 
-#: functions.php:4441
+#: functions.php:4573
 msgid "Count:"
 msgstr "カウント数"
 
-#: functions.php:4442
+#: functions.php:4574
 msgid "Message String:"
 msgstr "メッセージ文字列:"
 
-#: functions.php:4493
+#: functions.php:4625
 msgid "Hostname:"
 msgstr "ホスト："
 
-#: functions.php:4494
+#: functions.php:4626
 msgid "Date:"
 msgstr "日付:"
 
-#: functions.php:4496
+#: functions.php:4628
 msgid "Level:"
 msgstr "レベル:"
 
-#: functions.php:4497
+#: functions.php:4629
 msgid "Message:"
 msgstr "メッセージ:"
 
-#: functions.php:4566
+#: functions.php:4704
 msgid ", Host:"
 msgstr "ホスト"
 
-#: functions.php:4566 functions.php:4601
+#: functions.php:4704 functions.php:4739
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php:4566 functions.php:4601
+#: functions.php:4704 functions.php:4739
 msgid "Sev:"
 msgstr "セブ:"
 
-#: functions.php:4572 functions.php:4597
+#: functions.php:4710 functions.php:4735
 #, php-format
 msgid "Event Alert - %s"
 msgstr "イベントアラート - %s"
 
-#: functions.php:4601
+#: functions.php:4739
 msgid ", Count:"
 msgstr "カウント数"
 
-#: functions.php:5341 lib/syslog_dashboard.php:1568 syslog_alerts.php:807
+#: functions.php:5483 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
 #: syslog_removal.php:680
 msgid "Host"
 msgstr "ホスト"
 
-#: functions.php:5366
+#: functions.php:5508
 #, php-format
 msgid "Event Report - %s"
 msgstr "イベントレポート - %s"
@@ -380,8 +380,8 @@ msgstr ""
 msgid "Save"
 msgstr "保存"
 
-#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1554
-#: setup.php:2296 syslog.php:1890 syslog_alerts.php:226
+#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1605
+#: setup.php:2444 syslog.php:1890 syslog_alerts.php:230
 #: syslog_dashboards.php:428 syslog_removal.php:248 syslog_reports.php:213
 #: syslog_saved_searches.php:384
 msgid "Cancel"
@@ -391,7 +391,7 @@ msgstr "取り消し"
 msgid "Apply"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:1887
+#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2035
 #: syslog.php:1798 syslog_dashboards.php:300 syslog_dashboards.php:351
 #: syslog_removal.php:36 syslog_saved_searches.php:271
 #: syslog_saved_searches.php:315
@@ -475,7 +475,7 @@ msgstr "%d ヶ月間の"
 msgid "Refresh"
 msgstr "更新"
 
-#: lib/syslog_dashboard.php:1438 setup.php:2029 setup.php:2086
+#: lib/syslog_dashboard.php:1438 setup.php:2177 setup.php:2234
 #: syslog_dashboards.php:201 syslog_dashboards.php:203
 msgid "Dashboards"
 msgstr ""
@@ -597,17 +597,17 @@ msgid "Field"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1569 syslog.php:2116 syslog.php:2296
-#: syslog.php:2371 syslog_alerts.php:808 syslog_removal.php:681
+#: syslog.php:2371 syslog_alerts.php:891 syslog_removal.php:681
 msgid "Program"
 msgstr "プログラム"
 
 #: lib/syslog_dashboard.php:1570 syslog.php:2118 syslog.php:2245
-#: syslog.php:2296 syslog_alerts.php:809 syslog_removal.php:682
+#: syslog.php:2296 syslog_alerts.php:892 syslog_removal.php:682
 msgid "Facility"
 msgstr "概要"
 
 #: lib/syslog_dashboard.php:1571 syslog.php:2119 syslog.php:2246
-#: syslog.php:2296 syslog_alerts.php:810 syslog_removal.php:683
+#: syslog.php:2296 syslog_alerts.php:893 syslog_removal.php:683
 msgid "Priority"
 msgstr "優先"
 
@@ -637,7 +637,7 @@ msgid "Start from Saved Search"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
-#: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:719
+#: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:802
 #: syslog_reports.php:554
 msgid "None"
 msgstr "なし"
@@ -648,7 +648,7 @@ msgid "Enter message text…"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1623 syslog.php:1815 syslog.php:1900
-#: syslog_alerts.php:832 syslog_removal.php:705 syslog_saved_searches.php:666
+#: syslog_alerts.php:915 syslog_removal.php:705 syslog_saved_searches.php:666
 #, fuzzy
 msgid "Remove condition"
 msgstr "削除されたレコード"
@@ -668,555 +668,660 @@ msgstr ""
 msgid "Dashboard Name"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1630 syslog.php:1907 syslog_alerts.php:622
+#: lib/syslog_dashboard.php:1630 syslog.php:1907 syslog_alerts.php:645
 #: syslog_dashboards.php:188 syslog_dashboards.php:284
 #: syslog_dashboards.php:733 syslog_reports.php:489
 #: syslog_saved_searches.php:281 syslog_saved_searches.php:648
 msgid "Name"
 msgstr "名前"
 
-#: setup.php:41 setup.php:187
+#: setup.php:41 setup.php:188
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
 msgstr "インストールする前に、syslogディレクトリ内のconfig.php.distまたはconfig_local.php.distファイルの名前を変更し、データベースの設定を変更してください。"
 
-#: setup.php:1369
+#: setup.php:1420
 msgid "What upgrade/install type do you wish to use"
 msgstr "どの種類のアップグレード/インストールを使用しますか"
 
-#: setup.php:1370
+#: setup.php:1421
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "非常に大きなテーブルがある場合は、切り捨てを実行するほうがはるかに速くなります。アーカイブデータが気になる場合は、このアップグレードの間ブラウザを停止させる「Inline」、またはバックアップテーブルから古いsyslogデータを新しいsyslogフォーマットに変換するバックグラウンドプロセスを作成する「background」のいずれかを選択できます 。このプロセスにも数時間かかることがあります。"
 
-#: setup.php:1373
+#: setup.php:1424
 msgid "Truncate Syslog Table"
 msgstr "Syslogテーブルを切り捨てる"
 
-#: setup.php:1374
+#: setup.php:1425
 msgid "Inline Upgrade"
 msgstr "インラインアップグレード"
 
-#: setup.php:1375
+#: setup.php:1426
 msgid "Background Upgrade"
 msgstr "バックグラウンドアップグレード"
 
-#: setup.php:1380
+#: setup.php:1431
 msgid "Database Storage Engine"
 msgstr "データベースストレージエンジン"
 
-#: setup.php:1381
+#: setup.php:1432
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
 msgstr ""
 
-#: setup.php:1384
+#: setup.php:1435
 msgid "InnoDB Storage"
 msgstr "InnoDBストレージ"
 
-#: setup.php:1385
+#: setup.php:1436
 #, fuzzy
 msgid "Aria Storage"
 msgstr "MyISAMストレージ"
 
-#: setup.php:1394
+#: setup.php:1445
 msgid "Retention Policy"
 msgstr "リテンションポリシー"
 
-#: setup.php:1395
+#: setup.php:1446
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "データベースに保持する Syslog 値の日数を選択します。"
 
-#: setup.php:1415
+#: setup.php:1466
 msgid "Partitions per Day"
 msgstr "日割りパーティション数"
 
-#: setup.php:1416
+#: setup.php:1467
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "作成するパーティションの日あたりの数を選択します。"
 
-#: setup.php:1419 setup.php:1420 setup.php:1421 setup.php:1422 setup.php:1423
+#: setup.php:1470 setup.php:1471 setup.php:1472 setup.php:1473 setup.php:1474
 #, php-format
 msgid "%d Per Day"
 msgstr "%d日あたり"
 
-#: setup.php:1428 setup.php:1542
+#: setup.php:1479 setup.php:1593
 msgid "Upgrade"
 msgstr "アップグレード"
 
-#: setup.php:1430 setup.php:1544
+#: setup.php:1481 setup.php:1595
 msgid "Install"
 msgstr "インストール"
 
-#: setup.php:1444
+#: setup.php:1495
 #, php-format
 msgid "Syslog %s Advisor"
 msgstr "Syslog %s Advisor"
 
-#: setup.php:1448
+#: setup.php:1499
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "警告:Syslogのアップグレードには時間がかかります!!"
 
-#: setup.php:1449
+#: setup.php:1500
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "「メイン」syslogテーブルのアップグレードは、非常に時間のかかるプロセスになる可能性があります。 そのため、アップグレードする前に syslog テーブルのサイズを小さくするか、バックグラウンド オプションを選択することをお勧めします</p> <p>バックグラウンド オプションを選択すると、従来の syslog テーブルの名前が変更され、新しい syslog テーブルが作成されます。 その後、アップグレードプロセスがバックグラウンドで開始されます。 繰り返しになりますが、このバックグラウンドプロセスは完了するまでにかなりの時間がかかる場合があります。 ただし、データは保持されます</p> <p>選択内容に関係なく、アップグレード プロセス中、既存のすべての削除ルールとアラート ルールが維持されます。</p> <p>アップグレードを続行するには <b>「アップグレード」</b> を押すか、「 <b>キャンセル」</b> を押してプラグインメニューに戻ります。"
 
-#: setup.php:1452
+#: setup.php:1503
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
 msgstr "保持期間を選択することもできます。 複数のホストが syslog にログを記録している場合、このテーブルは非常に大きくなる可能性があることに注意してください。 そのため、パーティション分割を使用しない場合は、サイズを小さくしておくことをお勧めします。"
 
-#: setup.php:1452
+#: setup.php:1503
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
 msgstr ""
 
-#: setup.php:1452
+#: setup.php:1503
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
 msgstr "Syslog をインストールするときには、いくつかのオプションから選択できます。 1つ目は、データベースアーキテクチャです。 テーブル パーティション分割を使用して、テーブルのサイズが過度になり、クエリが遅くなるのを防ぐ必要があります。"
 
-#: setup.php:1458
+#: setup.php:1509
 #, php-format
 msgid "Syslog %s Settings"
 msgstr "Syslog %s設定"
 
-#: setup.php:1490
+#: setup.php:1541
 msgid "What uninstall method do you want to use?"
 msgstr "どのアンインストール方法を使用しますか?"
 
-#: setup.php:1491
+#: setup.php:1542
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "syslogをアンインストールするときは、将来再インストールする予定がある場合に備えて、すべてを削除するか、コンポーネントのみを削除することができます。"
 
-#: setup.php:1493
+#: setup.php:1544
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "すべてを削除する (ログ、テーブル、設定)"
 
-#: setup.php:1493
+#: setup.php:1544
 msgid "Syslog Data Only"
 msgstr "Syslog データのみ"
 
-#: setup.php:1513
+#: setup.php:1564
 msgid "Syslog Uninstall Preferences"
 msgstr "Syslog アンインストール設定"
 
-#: setup.php:1547
+#: setup.php:1598
 msgid "Uninstall"
 msgstr "アンインストール"
 
-#: setup.php:1604 setup.php:1827 setup.php:1829 setup.php:2040 setup.php:2071
-#: setup.php:2087
+#: setup.php:1658
+msgid "Monday"
+msgstr ""
+
+#: setup.php:1658
+msgid "Tuesday"
+msgstr ""
+
+#: setup.php:1658
+msgid "Wednesday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Friday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Saturday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Sunday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Thursday"
+msgstr ""
+
+#: setup.php:1660
+msgid "Monday through Friday"
+msgstr ""
+
+#: setup.php:1660
+msgid "Saturday and Sunday"
+msgstr ""
+
+#: setup.php:1661
+msgid "Every day"
+msgstr ""
+
+#: setup.php:1664 syslog_alerts.php:711 syslog_alerts.php:726
+#: syslog_alerts.php:734 syslog_removal.php:599 syslog_reports.php:499
+msgid "Disabled"
+msgstr "無効"
+
+#: setup.php:1678 setup.php:1975 setup.php:1977 setup.php:2188 setup.php:2219
+#: setup.php:2235
 msgid "Syslog"
 msgstr "syslog の"
 
-#: setup.php:1608
+#: setup.php:1682
 msgid "General Settings"
 msgstr "一般設定"
 
-#: setup.php:1612
+#: setup.php:1686
 msgid "Syslog Enabled"
 msgstr "Syslog が有効"
 
-#: setup.php:1613
+#: setup.php:1687
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "このチェックボックスをオンにすると、レコードが Syslog 受信テーブルからメインの syslog テーブルに転送され、アラートとレポートが有効になります。 システムが無効になっている場合でも、ログエントリはrsyslogまたはsyslog-ngプロセスによって定義されるため、Syslog Incomingテーブルに蓄積されることに注意してください。"
 
-#: setup.php:1618
+#: setup.php:1692
 msgid "Strip Domains"
 msgstr "ドメインの削除"
 
-#: setup.php:1619
+#: setup.php:1693
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "syslog ホスト名から削除するドメインのカンマ区切りリスト、例: 'mydomain.com, otherdomain.com'"
 
-#: setup.php:1626
+#: setup.php:1700
 msgid "Refresh Interval"
 msgstr "ãªãã¬ãã·ã¥éé"
 
-#: setup.php:1627
+#: setup.php:1701
 msgid "This is the time in seconds before the page refreshes."
 msgstr "これは、ページが更新されるまでの時間 (秒単位) です。"
 
-#: setup.php:1633
+#: setup.php:1707
 msgid "Max Report Records"
 msgstr "最大レポートレコード"
 
-#: setup.php:1634
+#: setup.php:1708
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "しきい値ベースのアラートの場合、レポートに表示する最大数。 これは、htmlログと電子メールのサイズを制限するために使用されます。"
 
-#: setup.php:1638 setup.php:1639 setup.php:1640 setup.php:1641 setup.php:1642
-#: setup.php:1643
+#: setup.php:1712 setup.php:1713 setup.php:1714 setup.php:1715 setup.php:1716
+#: setup.php:1717
 #, php-format
 msgid "%d Records"
 msgstr "%dレコード"
 
-#: setup.php:1647
+#: setup.php:1721
 msgid "Maximum Syslog Processing Processes"
 msgstr ""
 
-#: setup.php:1648
+#: setup.php:1722
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
 msgstr ""
 
-#: setup.php:1652
+#: setup.php:1726
 #, php-format
 msgid "%d Worker Process"
 msgstr ""
 
-#: setup.php:1653 setup.php:1654 setup.php:1655 setup.php:1656 setup.php:1657
+#: setup.php:1727 setup.php:1728 setup.php:1729 setup.php:1730 setup.php:1731
 #, php-format
 msgid "%d Worker Processes"
 msgstr ""
 
-#: setup.php:1661
+#: setup.php:1735
 msgid "Command for Opening Tickets"
 msgstr "チケットを開くためのコマンド"
 
-#: setup.php:1662
+#: setup.php:1736
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "このコマンドは、ヘルプデスクチケットを開くために実行されます。 このコマンドは、 <b>--alert-name</b>、 <b>--severity</b>、 <b>--hostlist</b>、 <b>--message</b> のように複数の入力パラメーターを解析する必要があります。 hostlistは、アラートの影響を受けるホストのカンマ区切りのリストになります。"
 
-#: setup.php:1668
+#: setup.php:1742
 msgid "Host Discovery Options"
 msgstr ""
 
-#: setup.php:1673
+#: setup.php:1747
 msgid "Enable Hostname Resolution"
 msgstr ""
 
-#: setup.php:1674
+#: setup.php:1748
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
 msgstr ""
 
-#: setup.php:1679
+#: setup.php:1753
 msgid "Skip DNS Resolution for incoming hosts"
 msgstr ""
 
-#: setup.php:1680
+#: setup.php:1754
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
 msgstr ""
 
-#: setup.php:1685
+#: setup.php:1759
 msgid "HTML Notification Settings"
 msgstr "HTML 通知設定"
 
-#: setup.php:1690
+#: setup.php:1764
 msgid "Enable HTML Based Email"
 msgstr "HTML ベースの電子メールを有効にする"
 
-#: setup.php:1691
+#: setup.php:1765
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
 msgstr "このチェックボックスをオンにすると、すべてのメールがHTML形式で送信されます。 それ以外の場合、メールはプレーンテキストで送信されます。"
 
-#: setup.php:1696
+#: setup.php:1770
 msgid "Format File to Use"
 msgstr "使用するファイルの形式"
 
-#: setup.php:1699
+#: setup.php:1773
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
 msgstr "使用するカスタム html ラッパーと CSS ファイルを選択します。 このファイルには、レポートをラップするhtmlとCSSの両方が含まれています。 単にCSS以外のものが含まれている場合は、 <REPORT> ファイル内に特別なタグを配置する必要があります。 この形式タグは、レポートの内容に置き換えられます。 これらのファイルは 'formats' ディレクトリにあります。</REPORT>"
 
-#: setup.php:1703
+#: setup.php:1777
 msgid "Data Retention Settings"
 msgstr "データ保持設定"
 
-#: setup.php:1708
+#: setup.php:1782
 msgid "Syslog Retention"
 msgstr "Syslog の保持"
 
-#: setup.php:1709
+#: setup.php:1783
 msgid "This is the number of days to keep events."
 msgstr "これは、イベントを保持する日数です。"
 
-#: setup.php:1715
+#: setup.php:1789
 msgid "Partition Pre-create Window"
 msgstr ""
 
-#: setup.php:1716
+#: setup.php:1790
 msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
 msgstr ""
 
-#: setup.php:1720 setup.php:1934 setup.php:1953 syslog_alerts.php:493
+#: setup.php:1794 setup.php:2082 setup.php:2101 syslog_alerts.php:516
 #, php-format
 msgid "%d Day"
 msgstr "%d 日間"
 
-#: setup.php:1721 setup.php:1722 setup.php:1723 setup.php:1724 setup.php:1725
-#: setup.php:1726 setup.php:1935 setup.php:1936 setup.php:1937 setup.php:1938
-#: setup.php:1939 setup.php:1954 setup.php:1955 setup.php:1956 setup.php:1957
-#: setup.php:1958 syslog_alerts.php:494
+#: setup.php:1795 setup.php:1796 setup.php:1797 setup.php:1798 setup.php:1799
+#: setup.php:1800 setup.php:2083 setup.php:2084 setup.php:2085 setup.php:2086
+#: setup.php:2087 setup.php:2102 setup.php:2103 setup.php:2104 setup.php:2105
+#: setup.php:2106 syslog_alerts.php:517
 #, php-format
 msgid "%d Days"
 msgstr "%d 日"
 
-#: setup.php:1730
+#: setup.php:1804
 #, fuzzy
 msgid "Partition Recovery Limit"
 msgstr "日割りパーティション数"
 
-#: setup.php:1731
+#: setup.php:1805
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
 msgstr ""
 
-#: setup.php:1735
+#: setup.php:1809
 #, fuzzy, php-format
 msgid "%d Partition per run"
 msgstr "日割りパーティション数"
 
-#: setup.php:1736 setup.php:1737 setup.php:1738 setup.php:1739 setup.php:1740
+#: setup.php:1810 setup.php:1811 setup.php:1812 setup.php:1813 setup.php:1814
 #, fuzzy, php-format
 msgid "%d Partitions per run"
 msgstr "日割りパーティション数"
 
-#: setup.php:1744
+#: setup.php:1818
 msgid "Collector Staleness Threshold"
 msgstr ""
 
-#: setup.php:1745
+#: setup.php:1819
 msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
 msgstr ""
 
-#: setup.php:1749
+#: setup.php:1823
 msgid "Default (300 seconds)"
 msgstr ""
 
-#: setup.php:1750 setup.php:1751 setup.php:1752 setup.php:1753 setup.php:1754
+#: setup.php:1824 setup.php:1825 setup.php:1826 setup.php:1827 setup.php:1828
 #, php-format
 msgid "%d seconds"
 msgstr ""
 
-#: setup.php:1758
+#: setup.php:1832
 msgid "Collector Backlog Threshold"
 msgstr ""
 
-#: setup.php:1759
+#: setup.php:1833
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
 msgstr ""
 
-#: setup.php:1763
+#: setup.php:1837
 msgid "Default (10000 messages)"
 msgstr ""
 
-#: setup.php:1764 setup.php:1765 setup.php:1766 setup.php:1767
+#: setup.php:1838 setup.php:1839 setup.php:1840 setup.php:1841
 #, fuzzy, php-format
 msgid "%d Messages"
 msgstr "メッセージ"
 
-#: setup.php:1771
+#: setup.php:1845
 msgid "Syslog Alert Retention"
 msgstr "Syslog アラートの保持"
 
-#: setup.php:1772
+#: setup.php:1846
 msgid "This is the number of days to keep alert logs."
 msgstr "これは、アラート ログを保持する日数です。"
 
-#: setup.php:1778
+#: setup.php:1852
+msgid "Alert Suppression and Maintenance"
+msgstr ""
+
+#: setup.php:1857
+msgid "Maintenance Window Days"
+msgstr ""
+
+#: setup.php:1858
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr ""
+
+#: setup.php:1864
+msgid "Maintenance Window Starts"
+msgstr ""
+
+#: setup.php:1865
+msgid "Local start time for the global maintenance window."
+msgstr ""
+
+#: setup.php:1871
+msgid "Maintenance Window Ends"
+msgstr ""
+
+#: setup.php:1872
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr ""
+
+#: setup.php:1878
+msgid "One-time Maintenance Starts"
+msgstr ""
+
+#: setup.php:1879
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr ""
+
+#: setup.php:1883
+msgid "One-time Maintenance Ends"
+msgstr ""
+
+#: setup.php:1884
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: setup.php:1888
+msgid "Default Alert Cooldown"
+msgstr ""
+
+#: setup.php:1889
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: setup.php:1896
+msgid "Default Duplicate Suppression"
+msgstr ""
+
+#: setup.php:1897
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: setup.php:1904
 msgid "Remote Message Processing"
 msgstr "リモートメッセージ処理"
 
-#: setup.php:1782
+#: setup.php:1908
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "リモート・データ・コレクター・メッセージ処理の有効化"
 
-#: setup.php:1783
+#: setup.php:1909
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "リモート・データ・コレクタが独自の Syslog データベースを持ち、そのメッセージを独立して処理する場合は、このチェックボックスをオンにします。 このチェックボックスをオンにすると、リモートデータコレクタは、メッセージの表示と処理に独立したデータベースを使用するようにSyslogに通知するために、独自の「config_local.php」ファイルを維持する必要があります。 この目的のために、テンプレートファイル「config_local.php.dist」を使用してください。 警告: Syslog テーブルは、このオプションが有効になるとすぐに自動的に作成されます。"
 
-#: setup.php:1788
+#: setup.php:1914
 msgid "Remote Data Collector Rules Sync"
 msgstr "リモートデータコレクタルールの同期"
 
-#: setup.php:1789
+#: setup.php:1915
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "リモートデータコレクタが独自のSyslogデータベースを持ち、メッセージを個別に処理する場合、メインCactiデータベースのアラート、削除、およびレポートルールをリモートCactiシステムに送信する場合は、このチェックボックスをオンにします。"
 
-#: setup.php:1888 syslog_removal.php:37
+#: setup.php:2036 syslog_removal.php:37
 msgid "Disable"
 msgstr "無効"
 
-#: setup.php:1889 syslog_removal.php:38
+#: setup.php:2037 syslog_removal.php:38
 msgid "Enable"
 msgstr "有効"
 
-#: setup.php:1890 syslog.php:1918 syslog_dashboards.php:300
+#: setup.php:2038 syslog.php:1918 syslog_dashboards.php:300
 #: syslog_dashboards.php:351 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
 msgstr "エクスポート"
 
-#: setup.php:1933 setup.php:1952
+#: setup.php:2081 setup.php:2100
 msgid "Indefinite"
 msgstr "不定"
 
-#: setup.php:1940 setup.php:1959 syslog_alerts.php:495
+#: setup.php:2088 setup.php:2107 syslog_alerts.php:518
 #, php-format
 msgid "%d Week"
 msgstr "%d 週間の"
 
-#: setup.php:1941 setup.php:1960 syslog_alerts.php:496
+#: setup.php:2089 setup.php:2108 syslog_alerts.php:519
 #, php-format
 msgid "%d Weeks"
 msgstr "%d 週間の"
 
-#: setup.php:1942 setup.php:1961
+#: setup.php:2090 setup.php:2109
 #, php-format
 msgid "%d Month"
 msgstr "%d ヶ月間の"
 
-#: setup.php:1943 setup.php:1944 setup.php:1945 setup.php:1946 setup.php:1947
-#: setup.php:1962 setup.php:1963 setup.php:1964 setup.php:1965 setup.php:1966
+#: setup.php:2091 setup.php:2092 setup.php:2093 setup.php:2094 setup.php:2095
+#: setup.php:2110 setup.php:2111 setup.php:2112 setup.php:2113 setup.php:2114
 #, php-format
 msgid "%d Months"
 msgstr "%d ヶ月間の"
 
-#: setup.php:1948 setup.php:1967
+#: setup.php:2096 setup.php:2115
 #, php-format
 msgid "%d Year"
 msgstr "%d 年間の"
 
-#: setup.php:1971 syslog.php:295 syslog.php:310 syslog.php:325
+#: setup.php:2119 syslog.php:295 syslog.php:310 syslog.php:325
 #: syslog_dashboards.php:324 syslog_reports.php:809
 msgid "Never"
 msgstr "決して"
 
-#: setup.php:1972
+#: setup.php:2120
 #, php-format
 msgid "%d Minute"
 msgstr "%dミニッツ"
 
-#: setup.php:1973 setup.php:1974 setup.php:1975 syslog_alerts.php:480
-#: syslog_alerts.php:481 syslog_alerts.php:482 syslog_alerts.php:483
-#: syslog_alerts.php:484 syslog_alerts.php:485
+#: setup.php:2121 setup.php:2122 setup.php:2123 syslog_alerts.php:503
+#: syslog_alerts.php:504 syslog_alerts.php:505 syslog_alerts.php:506
+#: syslog_alerts.php:507 syslog_alerts.php:508
 #, php-format
 msgid "%d Minutes"
 msgstr "%d分"
 
-#: setup.php:1979 syslog.php:1978
+#: setup.php:2127 syslog.php:1978
 msgid "Notice"
 msgstr "通知"
 
-#: setup.php:1980 syslog.php:1977 syslog.php:1996
+#: setup.php:2128 syslog.php:1977 syslog.php:1996
 msgid "Warning"
 msgstr "警告"
 
-#: setup.php:1981 syslog.php:1974
+#: setup.php:2129 syslog.php:1974
 msgid "Critical"
 msgstr "深刻"
 
-#: setup.php:1985
+#: setup.php:2133
 msgid "Begins with"
 msgstr "始まる"
 
-#: setup.php:1986
+#: setup.php:2134
 msgid "Contains"
 msgstr "含む"
 
-#: setup.php:1987
+#: setup.php:2135
 msgid "Ends with"
 msgstr "で終わる"
 
-#: setup.php:1988
+#: setup.php:2136
 msgid "Hostname is"
 msgstr "ホスト名"
 
-#: setup.php:1989
+#: setup.php:2137
 msgid "Program is"
 msgstr "プログラム"
 
-#: setup.php:1990
+#: setup.php:2138
 msgid "Facility is"
 msgstr "概要"
 
-#: setup.php:1991 syslog_alerts.php:667
+#: setup.php:2139 syslog_alerts.php:690
 msgid "Filter Builder"
 msgstr ""
 
-#: setup.php:1992 syslog_alerts.php:668
+#: setup.php:2140 syslog_alerts.php:691
 msgid "SQL Expression"
 msgstr "SQL 式"
 
-#: setup.php:1996
+#: setup.php:2144
 msgid "Daily"
 msgstr "毎日"
 
-#: setup.php:1997
+#: setup.php:2145
 msgid "Weekly"
 msgstr "毎週"
 
-#: setup.php:2024
+#: setup.php:2172
 msgid "Import/Export"
 msgstr "インポート/エクスポート"
 
-#: setup.php:2025
+#: setup.php:2173
 msgid "Alert Rules"
 msgstr "アラートルール"
 
-#: setup.php:2025 setup.php:2026 setup.php:2027 setup.php:2028 setup.php:2029
-#: setup.php:2034
+#: setup.php:2173 setup.php:2174 setup.php:2175 setup.php:2176 setup.php:2177
+#: setup.php:2182
 msgid "Syslog Settings"
 msgstr "Syslog 設定"
 
-#: setup.php:2026
+#: setup.php:2174
 msgid "Removal Rules"
 msgstr "削除ルール"
 
-#: setup.php:2027
+#: setup.php:2175
 msgid "Report Rules"
 msgstr "レポートルール"
 
-#: setup.php:2028 setup.php:2085 syslog_saved_searches.php:195
+#: setup.php:2176 setup.php:2233 syslog_saved_searches.php:195
 msgid "Saved Search Templates"
 msgstr ""
 
-#: setup.php:2072
+#: setup.php:2220
 msgid "Syslog Removals"
 msgstr "syslog の削除"
 
-#: setup.php:2073 setup.php:2074 setup.php:2078 setup.php:2079 setup.php:2083
+#: setup.php:2221 setup.php:2222 setup.php:2226 setup.php:2227 setup.php:2231
 msgid "(Edit)"
 msgstr "(編集)"
 
-#: setup.php:2075 setup.php:2080 setup.php:2084
+#: setup.php:2223 setup.php:2228 setup.php:2232
 msgid "(Actions)"
 msgstr "(操作)"
 
-#: setup.php:2077
+#: setup.php:2225
 msgid "Syslog Alerts"
 msgstr "Syslog アラート"
 
-#: setup.php:2082
+#: setup.php:2230
 msgid "Syslog Reports"
 msgstr "Syslog レポート"
 
-#: setup.php:2186
+#: setup.php:2334
 msgid "Display Syslog in Range"
 msgstr "範囲内の syslog の表示"
 
-#: setup.php:2256
+#: setup.php:2404
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "Syslog データベースから %s つのデバイス レコードが削除されました"
 
-#: setup.php:2277
+#: setup.php:2425
 msgid "Syslog Utilities"
 msgstr "Syslog ユーティリティ"
 
-#: setup.php:2281
+#: setup.php:2429
 msgid "Purge Syslog Devices"
 msgstr "Syslog デバイスの消去"
 
-#: setup.php:2283
+#: setup.php:2431
 msgid "Are you sure you want to purge stale Syslog devices?"
 msgstr ""
 
-#: setup.php:2289
+#: setup.php:2437
 msgid "Confirm Purge"
 msgstr ""
 
-#: setup.php:2303 syslog_alerts.php:226 syslog_dashboards.php:428
+#: setup.php:2451 syslog_alerts.php:230 syslog_dashboards.php:428
 #: syslog_removal.php:248 syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Continue"
 msgstr "続ける"
 
-#: setup.php:2329
+#: setup.php:2477
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "このメニューピックは、Cactiのsyslogサーバーに報告しなくなったデバイスを削除する手段を提供します。"
 
@@ -1608,7 +1713,7 @@ msgstr ""
 msgid "Display Rows"
 msgstr "表示行"
 
-#: syslog.php:1822 syslog_alerts.php:955 syslog_dashboards.php:237
+#: syslog.php:1822 syslog_alerts.php:1055 syslog_dashboards.php:237
 #: syslog_removal.php:827 syslog_reports.php:665 syslog_saved_searches.php:229
 msgid "Default"
 msgstr "デフォルト"
@@ -1673,12 +1778,12 @@ msgstr ""
 msgid "Save Search As"
 msgstr "検索"
 
-#: syslog.php:1915 syslog_alerts.php:935 syslog_dashboards.php:227
+#: syslog.php:1915 syslog_alerts.php:1035 syslog_dashboards.php:227
 #: syslog_removal.php:807 syslog_reports.php:645 syslog_saved_searches.php:219
 msgid "Search"
 msgstr "検索"
 
-#: syslog.php:1916 syslog_alerts.php:972 syslog_dashboards.php:254
+#: syslog.php:1916 syslog_alerts.php:1072 syslog_dashboards.php:254
 #: syslog_removal.php:844 syslog_reports.php:682 syslog_saved_searches.php:246
 msgid "Clear"
 msgstr "クリア"
@@ -1729,7 +1834,7 @@ msgstr "デバッグ"
 msgid "Informational"
 msgstr "情報"
 
-#: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:641
+#: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:664
 msgid "Device"
 msgstr "デバイス"
 
@@ -1802,386 +1907,501 @@ msgstr ""
 msgid "All Programs"
 msgstr "プログラム一覧"
 
-#: syslog_alerts.php:187
+#: syslog_alerts.php:191
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
 msgstr "「続行」をクリックして、次のSyslogアラートルールを削除します。"
 
-#: syslog_alerts.php:193
+#: syslog_alerts.php:197
 msgid "Delete Syslog Alert Rule(s)"
 msgstr "Syslog アラート ルールの削除"
 
-#: syslog_alerts.php:197
+#: syslog_alerts.php:201
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
 msgstr "「続行」をクリックして、次のSyslogアラートルールを無効にします。"
 
-#: syslog_alerts.php:203
+#: syslog_alerts.php:207
 msgid "Disable Syslog Alert Rule(s)"
 msgstr "Syslog アラート ルールの無効化"
 
-#: syslog_alerts.php:207
+#: syslog_alerts.php:211
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
 msgstr "[続行] をクリックして、次の Syslog アラート ルールを有効にします。"
 
-#: syslog_alerts.php:213
+#: syslog_alerts.php:217
 msgid "Enable Syslog Alert Rule(s)"
 msgstr "Syslog アラート ルールの有効化"
 
-#: syslog_alerts.php:217
+#: syslog_alerts.php:221
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
 msgstr "[続行] をクリックして、次の Syslog アラート ルールをエクスポートします。"
 
-#: syslog_alerts.php:223
+#: syslog_alerts.php:227
 msgid "Export Syslog Alert Rule(s)"
 msgstr "Syslog アラート ルールのエクスポート"
 
-#: syslog_alerts.php:352 syslog_reports.php:334
+#: syslog_alerts.php:375 syslog_reports.php:334
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr "入力された SQL 構文が無効です。 SQLを修正してください。<br>"
 
-#: syslog_alerts.php:353 syslog_reports.php:335
+#: syslog_alerts.php:376 syslog_reports.php:335
 #, php-format
 msgid "The Pre-processed SQL is:<br><br> %s"
 msgstr "前処理されたSQLは次のとおりです。<br><br> %s"
 
-#: syslog_alerts.php:365 syslog_removal.php:349
+#: syslog_alerts.php:388 syslog_removal.php:349
 #, php-format
 msgid "The filter is invalid: %s"
 msgstr ""
 
-#: syslog_alerts.php:367 syslog_reports.php:350
+#: syslog_alerts.php:390 syslog_reports.php:350
 msgid "The processed SQL was invalid.  Please correct your SQL"
 msgstr "処理された SQL が無効でした。 SQLを修正してください"
 
-#: syslog_alerts.php:470
+#: syslog_alerts.php:493
 msgid "Not Set"
 msgstr "未設定"
 
-#: syslog_alerts.php:475
+#: syslog_alerts.php:498
 msgid "1 Minute"
 msgstr "1分"
 
-#: syslog_alerts.php:486
+#: syslog_alerts.php:509
 #, php-format
 msgid "%d Hour"
 msgstr "%d 時間"
 
-#: syslog_alerts.php:487 syslog_alerts.php:488 syslog_alerts.php:489
-#: syslog_alerts.php:490 syslog_alerts.php:491 syslog_alerts.php:492
+#: syslog_alerts.php:510 syslog_alerts.php:511 syslog_alerts.php:512
+#: syslog_alerts.php:513 syslog_alerts.php:514 syslog_alerts.php:515
 #, php-format
 msgid "%d Hours"
 msgstr "%d 時間"
 
-#: syslog_alerts.php:497
+#: syslog_alerts.php:520
 msgid "1 Month"
 msgstr "1ヶ月"
 
-#: syslog_alerts.php:539
+#: syslog_alerts.php:562
 #, php-format
 msgid "Alert Edit [edit: %s]"
 msgstr "アラート編集[編集:%s]"
 
-#: syslog_alerts.php:541 syslog_alerts.php:562 syslog_alerts.php:571
+#: syslog_alerts.php:564 syslog_alerts.php:585 syslog_alerts.php:594
 msgid "Alert Edit [new]"
 msgstr "アラート編集[新規]"
 
-#: syslog_alerts.php:543 syslog_alerts.php:568 syslog_alerts.php:573
+#: syslog_alerts.php:566 syslog_alerts.php:591 syslog_alerts.php:596
 msgid "New Alert Rule"
 msgstr "新しいアラート ルール"
 
-#: syslog_alerts.php:585 syslog_alerts.php:1097 syslog_reports.php:479
+#: syslog_alerts.php:608 syslog_alerts.php:1197 syslog_reports.php:479
 msgid "N/A"
 msgstr "該当なし"
 
-#: syslog_alerts.php:618 syslog_reports.php:485
+#: syslog_alerts.php:641 syslog_reports.php:485
 msgid "Details"
 msgstr "詳細"
 
-#: syslog_alerts.php:623
+#: syslog_alerts.php:646
 msgid "Please describe this Alert."
 msgstr "このアラートについて説明してください。"
 
-#: syslog_alerts.php:631
+#: syslog_alerts.php:654
 msgid "What is the Severity Level of this Alert?"
 msgstr "このアラートの重大度レベルはどれくらいですか?"
 
-#: syslog_alerts.php:638
+#: syslog_alerts.php:661
 msgid "Reporting Level"
 msgstr "レポートレベル"
 
-#: syslog_alerts.php:639
+#: syslog_alerts.php:662
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
 msgstr "Re-Alert Cyclesを記録する場合、アラートをシステムレベルまたはデバイスレベルで追跡する必要があります。"
 
-#: syslog_alerts.php:641
+#: syslog_alerts.php:664
 msgid "System"
 msgstr "システム"
 
-#: syslog_alerts.php:646
+#: syslog_alerts.php:669
 msgid "Reporting Method"
 msgstr "報告方法"
 
-#: syslog_alerts.php:647
+#: syslog_alerts.php:670
 msgid "Define how to Alert on the syslog messages."
 msgstr "syslog メッセージに対してアラートを生成する方法を定義します。"
 
-#: syslog_alerts.php:649 syslog_alerts.php:1096
+#: syslog_alerts.php:672 syslog_alerts.php:1196
 msgid "Individual"
 msgstr "単一行"
 
-#: syslog_alerts.php:655
+#: syslog_alerts.php:678
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgstr "「しきい値」方式では、表示される数値がこの値を超えると、アラートがトリガーされます。"
 
-#: syslog_alerts.php:663 syslog_alerts.php:1074 syslog_removal.php:943
+#: syslog_alerts.php:686 syslog_alerts.php:1174 syslog_removal.php:943
 #: syslog_reports.php:781
 msgid "Match Type"
 msgstr "一致タイプ"
 
-#: syslog_alerts.php:664
+#: syslog_alerts.php:687
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
 msgstr ""
 
-#: syslog_alerts.php:674 syslog_reports.php:531
+#: syslog_alerts.php:697 syslog_reports.php:531
 msgid "Message Match String"
 msgstr "メッセージ一致文字列"
 
-#: syslog_alerts.php:675
+#: syslog_alerts.php:698
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
 msgstr ""
 
-#: syslog_alerts.php:685 syslog_alerts.php:688 syslog_alerts.php:941
-#: syslog_alerts.php:1073 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_alerts.php:708 syslog_alerts.php:711 syslog_alerts.php:1041
+#: syslog_alerts.php:1173 syslog_removal.php:599 syslog_removal.php:813
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
 msgstr "有効"
 
-#: syslog_alerts.php:686
+#: syslog_alerts.php:709
 msgid "Is this Alert Enabled?"
 msgstr "このアラートは有効になっていますか?"
 
-#: syslog_alerts.php:688 syslog_removal.php:599 syslog_reports.php:499
-msgid "Disabled"
-msgstr "無効"
-
-#: syslog_alerts.php:692
+#: syslog_alerts.php:715
 msgid "Re-Alert Cycle"
 msgstr "再アラートサイクル"
 
-#: syslog_alerts.php:696
+#: syslog_alerts.php:719
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
 msgstr "この時間が経過するまで、同じホストに対してこのアラートを再送信しないでください。しきい値ベースのアラームの場合、これはすべてのホストに適用されます。"
 
-#: syslog_alerts.php:700 syslog_reports.php:568
+#: syslog_alerts.php:723
+#, fuzzy
+#| msgid "Notification List"
+msgid "Notification Cooldown"
+msgstr "通知リスト"
+
+#: syslog_alerts.php:725
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr ""
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+msgid "1 day"
+msgstr ""
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "1 hour"
+msgstr "%d 時間"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+#| msgid "1 Minute"
+msgid "1 minute"
+msgstr "1分"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "15 minutes"
+msgstr "1分"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "30 minutes"
+msgstr "1分"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "4 hours"
+msgstr "%d 時間"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "5 minutes"
+msgstr "1分"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+#| msgid "Syslog %s Settings"
+msgid "Use global setting"
+msgstr "Syslog %s設定"
+
+#: syslog_alerts.php:731
+msgid "Duplicate Suppression"
+msgstr ""
+
+#: syslog_alerts.php:733
+msgid "Minutes to suppress the same matched message set."
+msgstr ""
+
+#: syslog_alerts.php:739
+msgid "Maintenance Window"
+msgstr ""
+
+#: syslog_alerts.php:741
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr ""
+
+#: syslog_alerts.php:742
+msgid "Do not mute this rule"
+msgstr ""
+
+#: syslog_alerts.php:742
+msgid "Use global timeframe"
+msgstr ""
+
+#: syslog_alerts.php:742
+msgid "Use rule timeframe"
+msgstr ""
+
+#: syslog_alerts.php:747
+msgid "Rule Maintenance Days"
+msgstr ""
+
+#: syslog_alerts.php:749
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr ""
+
+#: syslog_alerts.php:755
+msgid "Rule Maintenance Starts"
+msgstr ""
+
+#: syslog_alerts.php:757
+msgid "Local start time for this rule timeframe."
+msgstr ""
+
+#: syslog_alerts.php:763
+msgid "Rule Maintenance Ends"
+msgstr ""
+
+#: syslog_alerts.php:765
+msgid "Local end time for this rule timeframe."
+msgstr ""
+
+#: syslog_alerts.php:771
+msgid "One-time Rule Maintenance Starts"
+msgstr ""
+
+#: syslog_alerts.php:773
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: syslog_alerts.php:777
+msgid "One-time Rule Maintenance Ends"
+msgstr ""
+
+#: syslog_alerts.php:779
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: syslog_alerts.php:783 syslog_reports.php:568
 msgid "Notes"
 msgstr "ノート"
 
-#: syslog_alerts.php:703
+#: syslog_alerts.php:786
 msgid "Space for Notes on the Alert"
 msgstr "アラートに関するメモ用のスペース"
 
-#: syslog_alerts.php:711
+#: syslog_alerts.php:794
 msgid "Email Options"
 msgstr "メールオプション"
 
-#: syslog_alerts.php:715 syslog_reports.php:550
+#: syslog_alerts.php:798 syslog_reports.php:550
 msgid "Notification List"
 msgstr "通知リスト"
 
-#: syslog_alerts.php:716 syslog_reports.php:551
+#: syslog_alerts.php:799 syslog_reports.php:551
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
 msgstr "この通知リストの内容を使用して、誰にどのように通知するかを指定します。"
 
-#: syslog_alerts.php:724
+#: syslog_alerts.php:807
 msgid "Emails to Notify"
 msgstr "通知するメール"
 
-#: syslog_alerts.php:727
+#: syslog_alerts.php:810
 msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
 msgstr "通知するメールアドレスのカンマ区切りリストを入力してください。 SMS形式で受信者にメールを送信する場合は、受信者のメールアドレスの先頭に <b>「sms@」</b>を付けてください。 たとえば、受信者の SMS アドレスが <b>「2485551212@mycarrier.net」</b>の場合、「 <b>sms@2485551212@mycarrier.net」</b> と入力すると、SMS メッセージとして書式設定されます。"
 
-#: syslog_alerts.php:733 syslog_reports.php:539
+#: syslog_alerts.php:816 syslog_reports.php:539
 msgid "Email Body Text"
 msgstr "メール本文"
 
-#: syslog_alerts.php:736
+#: syslog_alerts.php:819
 msgid "This information will appear in the body of the Alert just before the Alert details."
 msgstr "この情報は、アラートの本文でアラートの詳細の直前に表示されます。"
 
-#: syslog_alerts.php:744
+#: syslog_alerts.php:827
 msgid "Actions"
 msgstr "操作"
 
-#: syslog_alerts.php:748
+#: syslog_alerts.php:831
 msgid "Open Ticket"
 msgstr "新しい課題を提出"
 
-#: syslog_alerts.php:749
+#: syslog_alerts.php:832
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "このアラートのヘルプデスクチケットを開く必要があります。 注:チケットコマンドスクリプトには、便宜上、いくつかの「ALERT_」環境変数が入力されます。"
 
-#: syslog_alerts.php:751 syslog_alerts.php:947 syslog_alerts.php:1098
+#: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:819
 #: syslog_removal.php:964 syslog_reports.php:657 syslog_reports.php:804
 msgid "No"
 msgstr "いいえ"
 
-#: syslog_alerts.php:751 syslog_alerts.php:946 syslog_alerts.php:1098
+#: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:818
 #: syslog_removal.php:964 syslog_reports.php:656 syslog_reports.php:804
 msgid "Yes"
 msgstr "はい"
 
-#: syslog_alerts.php:755
+#: syslog_alerts.php:838
 msgid "Command"
 msgstr "コマンド"
 
-#: syslog_alerts.php:758
+#: syslog_alerts.php:841
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "アラートがトリガーされたら、次のコマンドを実行します。 次の置換変数は、<b>'&lt;HOSTNAME&gt;'、</b><b>'&lt;ALERTID&gt;'</b>、<b>'&lt;MESSAGE&gt;'</b>、<b>'&lt;FACILITY&gt;'</b>、<b>'&lt;PRIORITY&gt;'</b>、<b>'&lt;SEVERITY&gt;'</b> で使用できます。 <b>「&lt;HOSTNAME&gt;」</b>は個々のしきい値でのみ使用できます。 これらの置換値は、コマンド ラインに表示することも、スクリプトの環境から収集することもできます。 環境から使用する場合、これらの変数には「ALERT_」というプレフィックスが付きます。"
 
-#: syslog_alerts.php:794 syslog_removal.php:668
+#: syslog_alerts.php:877 syslog_removal.php:668
 #, fuzzy
 msgid "Test rule"
 msgstr "アラートルール"
 
-#: syslog_alerts.php:795 syslog_alerts.php:902 syslog_removal.php:669
+#: syslog_alerts.php:878 syslog_alerts.php:1002 syslog_removal.php:669
 #: syslog_removal.php:774
 msgid "Rule Test Preview"
 msgstr ""
 
-#: syslog_alerts.php:828 syslog_removal.php:701
+#: syslog_alerts.php:911 syslog_removal.php:701
 msgid "Value"
 msgstr ""
 
-#: syslog_alerts.php:829 syslog_removal.php:702
+#: syslog_alerts.php:912 syslog_removal.php:702
 #, fuzzy
 msgid "Enter a value"
 msgstr "検索語句を入力します"
 
-#: syslog_alerts.php:830 syslog_removal.php:703
+#: syslog_alerts.php:913 syslog_removal.php:703
 #, fuzzy
 msgid "Match"
 msgstr "一致タイプ"
 
-#: syslog_alerts.php:831 syslog_removal.php:704
+#: syslog_alerts.php:914 syslog_removal.php:704
 msgid "Exclude"
 msgstr ""
 
-#: syslog_alerts.php:833 syslog_removal.php:706
+#: syslog_alerts.php:916 syslog_removal.php:706
 #, fuzzy
 msgid "Enter a nonnegative integer"
 msgstr "検索語句を入力します"
 
-#: syslog_alerts.php:861 syslog_alerts.php:865
+#: syslog_alerts.php:959 syslog_alerts.php:963
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:945 syslog_removal.php:817 syslog_reports.php:655
+#: syslog_alerts.php:1045 syslog_removal.php:817 syslog_reports.php:655
 msgid "All"
 msgstr "すべて"
 
-#: syslog_alerts.php:951 syslog_dashboards.php:233 syslog_reports.php:661
+#: syslog_alerts.php:1051 syslog_dashboards.php:233 syslog_reports.php:661
 #: syslog_saved_searches.php:225
 msgid "Rows"
 msgstr "行"
 
-#: syslog_alerts.php:971 syslog_dashboards.php:253 syslog_removal.php:843
+#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_removal.php:843
 #: syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr "Go"
 
-#: syslog_alerts.php:973 syslog_alerts.php:1234 syslog_dashboards.php:255
+#: syslog_alerts.php:1073 syslog_alerts.php:1334 syslog_dashboards.php:255
 #: syslog_removal.php:845 syslog_removal.php:1100 syslog_reports.php:683
 #: syslog_reports.php:936 syslog_saved_searches.php:247
 msgid "Import"
 msgstr "インポート"
 
-#: syslog_alerts.php:1043
+#: syslog_alerts.php:1143
 msgid "Syslog Alert Filters"
 msgstr "Syslog アラート フィルタ"
 
-#: syslog_alerts.php:1071 syslog_removal.php:945
+#: syslog_alerts.php:1171 syslog_removal.php:945
 msgid "Method"
 msgstr "方法"
 
-#: syslog_alerts.php:1072
+#: syslog_alerts.php:1172
 msgid "Threshold Count"
 msgstr "しきい値カウント"
 
-#: syslog_alerts.php:1075 syslog_removal.php:944 syslog_reports.php:782
+#: syslog_alerts.php:1175 syslog_removal.php:944 syslog_reports.php:782
 msgid "Search String"
 msgstr "検索文字列"
 
-#: syslog_alerts.php:1076 syslog_reports.php:558
+#: syslog_alerts.php:1176 syslog_reports.php:558
 msgid "Email Addresses"
 msgstr "E メールアドレス"
 
-#: syslog_alerts.php:1077 syslog_removal.php:946 syslog_reports.php:786
+#: syslog_alerts.php:1177 syslog_removal.php:946 syslog_reports.php:786
 msgid "Last Modified"
 msgstr "最終編集日"
 
-#: syslog_alerts.php:1078 syslog_removal.php:947 syslog_reports.php:787
+#: syslog_alerts.php:1178 syslog_removal.php:947 syslog_reports.php:787
 msgid "By User"
 msgstr "ユーザー"
 
-#: syslog_alerts.php:1081
+#: syslog_alerts.php:1181
 msgid "Alerts"
 msgstr "アラート"
 
-#: syslog_alerts.php:1102
+#: syslog_alerts.php:1202
 msgid "Multiple"
 msgstr "複数"
 
-#: syslog_alerts.php:1109
+#: syslog_alerts.php:1209
 msgid "No Syslog Alerts Defined"
 msgstr "syslog アラートが定義されていません"
 
-#: syslog_alerts.php:1138
+#: syslog_alerts.php:1238
 msgid "Import Alert Rule from Local File"
 msgstr "ローカルファイルからのアラートルールのインポート"
 
-#: syslog_alerts.php:1139
+#: syslog_alerts.php:1239
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
 msgstr "アラート ルール定義データを含む XML ファイルがローカル マシン上にある場合は、ここで選択します。"
 
-#: syslog_alerts.php:1144
+#: syslog_alerts.php:1244
 msgid "Import Alert Rule from Text"
 msgstr "テキストからのアラートルールのインポート"
 
-#: syslog_alerts.php:1145
+#: syslog_alerts.php:1245
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
 msgstr "アラートルール定義データをテキストとして含むXMLファイルがある場合は、このボックスに貼り付けてインポートできます。"
 
-#: syslog_alerts.php:1156
+#: syslog_alerts.php:1256
 msgid "Import Alert Rule"
 msgstr "アラート ルールのインポート"
 
-#: syslog_alerts.php:1183 syslog_dashboards.php:528 syslog_removal.php:1049
+#: syslog_alerts.php:1283 syslog_dashboards.php:528 syslog_removal.php:1049
 #: syslog_saved_searches.php:477
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
 msgstr ""
 
-#: syslog_alerts.php:1232 syslog_removal.php:1098 syslog_reports.php:934
+#: syslog_alerts.php:1332 syslog_removal.php:1098 syslog_reports.php:934
 msgid "Imported"
 msgstr "インポート済み"
 
-#: syslog_alerts.php:1232
+#: syslog_alerts.php:1332
 #, php-format
 msgid "NOTE: Alert '%s' %s!"
 msgstr "注:アラート「%s」%s!"
 
-#: syslog_alerts.php:1232 syslog_dashboards.php:192 syslog_dashboards.php:288
+#: syslog_alerts.php:1332 syslog_dashboards.php:192 syslog_dashboards.php:288
 #: syslog_removal.php:1098 syslog_reports.php:934
 msgid "Updated"
 msgstr "更新しました"
 
-#: syslog_alerts.php:1234
+#: syslog_alerts.php:1334
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
 msgstr "エラー: アラート '%s' %s失敗しました。"
 
-#: syslog_alerts.php:1234 syslog_removal.php:1100 syslog_reports.php:936
+#: syslog_alerts.php:1334 syslog_removal.php:1100 syslog_reports.php:936
 msgid "Update"
 msgstr "更新"
 
