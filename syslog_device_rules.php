@@ -103,10 +103,51 @@ function device_rule_edit(): void {
 }
 
 function device_rule_list(): void {
-	global $syslogdb_default, $syslog_levels;
-	$rules = syslog_db_fetch_assoc("SELECT * FROM `$syslogdb_default`.`syslog_device_rule` ORDER BY host");
+	global $syslogdb_default, $syslog_levels, $item_rows;
+	$filters = [
+		'rows' => ['filter' => FILTER_VALIDATE_INT, 'pageset' => true, 'default' => '-1'],
+		'page' => ['filter' => FILTER_VALIDATE_INT, 'default' => '1'],
+		'enabled' => ['filter' => FILTER_VALIDATE_INT, 'pageset' => true, 'default' => '-1'],
+		'filter' => ['filter' => FILTER_DEFAULT, 'pageset' => true, 'default' => '']
+	];
+	validate_store_request_vars($filters, 'sess_syslog_device_rules');
 	$url = syslog_allow_edits() ? 'syslog_device_rules.php?action=edit' : '';
-	html_start_box(__('Device Alert Rules', 'syslog'), '100%', '', '3', 'center', $url);
+	html_start_box(__('Device Alert Rule Filters', 'syslog'), '100%', '', '3', 'center', $url);
+	?>
+	<tr class='even'><td><form id='device_rule_filter' action='syslog_device_rules.php'><table class='filterTable'><tr>
+		<td><?php print __('Search', 'syslog'); ?></td><td><input type='text' id='filter' size='25' placeholder='<?php print __esc('Enter a search term', 'syslog'); ?>' value='<?php print html_escape_request_var('filter'); ?>'></td>
+		<td><?php print __('Enabled', 'syslog'); ?></td><td><select id='enabled'><option value='-1'><?php print __('All', 'syslog'); ?></option><option value='1'<?php if (get_request_var('enabled') == '1') print ' selected'; ?>><?php print __('Yes', 'syslog'); ?></option><option value='0'<?php if (get_request_var('enabled') == '0') print ' selected'; ?>><?php print __('No', 'syslog'); ?></option></select></td>
+		<td><?php print __('Rules', 'syslog'); ?></td><td><select id='rows'><option value='-1'><?php print __('Default', 'syslog'); ?></option><?php foreach ($item_rows as $key => $value) { print '<option value="' . $key . '"' . (get_request_var('rows') == $key ? ' selected' : '') . '>' . $value . '</option>'; } ?></select></td>
+		<td><span><input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'><input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'></span></td>
+	</tr></table><input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'></form>
+	<script>
+	(function () {
+		function apply(clear) { var query = clear ? {} : {filter: $('#filter').val(), enabled: $('#enabled').val(), rows: $('#rows').val()}; window.location = 'syslog_device_rules.php?' + $.param(query); }
+		$('#refresh').on('click', function () { apply(false); }); $('#clear').on('click', function () { apply(true); });
+		$('#enabled,#rows').on('change', function () { apply(false); }); $('#device_rule_filter').on('submit', function (event) { event.preventDefault(); apply(false); });
+	}());
+	</script></td></tr>
+	<?php
+	html_end_box();
+
+	$sql_where = '';
+	$sql_params = [];
+	if (get_request_var('filter') !== '') {
+		$sql_where = 'WHERE (host LIKE ? OR notes LIKE ?)';
+		$sql_params = ['%' . get_request_var('filter') . '%', '%' . get_request_var('filter') . '%'];
+	}
+	if (get_request_var('enabled') !== '-1') {
+		$sql_where .= ($sql_where === '' ? 'WHERE ' : ' AND ') . "enabled " . (get_request_var('enabled') == '1' ? "= 'on'" : "<> 'on'");
+	}
+	$rows = get_request_var('rows') == '-1' ? (int) read_config_option('num_rows_table') : (int) get_request_var('rows');
+	$rows = max(1, $rows);
+	$total_rows = (int) syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_device_rule` $sql_where", $sql_params);
+	$page = max(1, (int) get_request_var('page'));
+	$offset = ($page - 1) * $rows;
+	$rules = syslog_db_fetch_assoc_prepared("SELECT * FROM `$syslogdb_default`.`syslog_device_rule` $sql_where ORDER BY host LIMIT $offset, $rows", $sql_params);
+	$nav = html_nav_bar('syslog_device_rules.php?filter=' . urlencode(get_request_var('filter')) . '&enabled=' . get_request_var('enabled') . '&rows=' . $rows, MAX_DISPLAY_PAGES, $page, $rows, $total_rows, 5, __('Rules', 'syslog'), 'page', 'main');
+	print $nav;
+	html_start_box(__('Device Alert Rules', 'syslog'), '100%', '', '3', 'center', '');
 	html_header([__('Device', 'syslog'), __('Handling', 'syslog'), __('Pass Through', 'syslog'), __('Maintenance', 'syslog'), __('Actions', 'syslog')], 2);
 	if (!cacti_sizeof($rules)) {
 		print '<tr><td colspan="5"><em>' . __('No device alert rules found.', 'syslog') . '</em></td></tr>';
@@ -120,4 +161,7 @@ function device_rule_list(): void {
 		form_end_row();
 	}
 	html_end_box();
+	if (cacti_sizeof($rules)) {
+		print $nav;
+	}
 }
