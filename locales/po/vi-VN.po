@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-22 21:38-0400\n"
+"POT-Creation-Date: 2026-09-22 21:52-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -653,7 +653,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
 #: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:802
-#: syslog_device_rules.php:256 syslog_reports.php:554
+#: syslog_device_rules.php:265 syslog_reports.php:554
 msgid "None"
 msgstr "Không"
 
@@ -877,7 +877,7 @@ msgstr ""
 
 #: setup.php:1721 syslog_alerts.php:711 syslog_alerts.php:726
 #: syslog_alerts.php:734 syslog_device_rules.php:168
-#: syslog_device_rules.php:258 syslog_removal.php:599 syslog_reports.php:499
+#: syslog_device_rules.php:267 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
 msgstr "Vô hiệu hóa"
 
@@ -1327,7 +1327,7 @@ msgstr "Quy tắc cảnh báo"
 msgid "Syslog Settings"
 msgstr "Cài đặt nhật ký hệ thống"
 
-#: setup.php:2231 syslog_device_rules.php:248
+#: setup.php:2231 syslog_device_rules.php:257
 #, fuzzy
 msgid "Device Alert Rules"
 msgstr "Quy tắc cảnh báo"
@@ -1718,7 +1718,7 @@ msgstr ""
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[Tin nhắn chưa được xử lý: %s]"
 
-#: syslog.php:1728 syslog_device_rules.php:214
+#: syslog.php:1728 syslog_device_rules.php:223
 #, fuzzy
 msgid "Enter a search term"
 msgstr "Nhập một cụm từ tìm kiếm"
@@ -1812,7 +1812,7 @@ msgid "Display Rows"
 msgstr "Hàng hiển thị"
 
 #: syslog.php:1822 syslog_alerts.php:1055 syslog_dashboards.php:237
-#: syslog_device_rules.php:216 syslog_removal.php:827 syslog_reports.php:665
+#: syslog_device_rules.php:225 syslog_removal.php:827 syslog_reports.php:665
 #: syslog_saved_searches.php:229
 msgid "Default"
 msgstr "Mặc định"
@@ -1879,13 +1879,13 @@ msgid "Save Search As"
 msgstr "Tìm kiếm"
 
 #: syslog.php:1915 syslog_alerts.php:1035 syslog_dashboards.php:227
-#: syslog_device_rules.php:214 syslog_removal.php:807 syslog_reports.php:645
+#: syslog_device_rules.php:223 syslog_removal.php:807 syslog_reports.php:645
 #: syslog_saved_searches.php:219
 msgid "Search"
 msgstr "Tìm kiếm"
 
 #: syslog.php:1916 syslog_alerts.php:1072 syslog_dashboards.php:254
-#: syslog_device_rules.php:217 syslog_removal.php:844 syslog_reports.php:682
+#: syslog_device_rules.php:226 syslog_removal.php:844 syslog_reports.php:682
 #: syslog_saved_searches.php:246
 msgid "Clear"
 msgstr "Xóa"
@@ -1940,7 +1940,7 @@ msgid "Informational"
 msgstr "Thông tin"
 
 #: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:664
-#: syslog_device_rules.php:167 syslog_device_rules.php:249
+#: syslog_device_rules.php:167 syslog_device_rules.php:258
 msgid "Device"
 msgstr "Thiết bị"
 
@@ -2190,7 +2190,7 @@ msgstr ""
 
 #: syslog_alerts.php:708 syslog_alerts.php:711 syslog_alerts.php:1041
 #: syslog_alerts.php:1173 syslog_device_rules.php:168
-#: syslog_device_rules.php:215 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_device_rules.php:224 syslog_removal.php:599 syslog_removal.php:813
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
@@ -2385,7 +2385,7 @@ msgstr "Nếu một Vé hỗ trợ được mở cho Thông báo này. LƯU Ý: 
 
 #: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
-#: syslog_device_rules.php:172 syslog_device_rules.php:215
+#: syslog_device_rules.php:172 syslog_device_rules.php:224
 #: syslog_removal.php:819 syslog_removal.php:964 syslog_reports.php:657
 #: syslog_reports.php:804
 msgid "No"
@@ -2393,7 +2393,7 @@ msgstr "Không"
 
 #: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
-#: syslog_device_rules.php:172 syslog_device_rules.php:215
+#: syslog_device_rules.php:172 syslog_device_rules.php:224
 #: syslog_removal.php:818 syslog_removal.php:964 syslog_reports.php:656
 #: syslog_reports.php:804
 msgid "Yes"
@@ -2445,7 +2445,7 @@ msgstr "Nhập một cụm từ tìm kiếm"
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:1045 syslog_device_rules.php:215 syslog_removal.php:817
+#: syslog_alerts.php:1045 syslog_device_rules.php:224 syslog_removal.php:817
 #: syslog_reports.php:655
 msgid "All"
 msgstr "Tất cả"
@@ -2455,7 +2455,7 @@ msgstr "Tất cả"
 msgid "Rows"
 msgstr "Hàng"
 
-#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:217
+#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:226
 #: syslog_removal.php:843 syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr "Đi"
@@ -2792,57 +2792,57 @@ msgstr "Quy tắc cảnh báo mới"
 msgid "Device Alert Rule [new]"
 msgstr "Quy tắc cảnh báo mới"
 
-#: syslog_device_rules.php:211
+#: syslog_device_rules.php:220
 #, fuzzy
 msgid "Device Alert Rule Filters"
 msgstr "Bộ lọc cảnh báo nhật ký hệ thống"
 
-#: syslog_device_rules.php:216 syslog_device_rules.php:245
+#: syslog_device_rules.php:225 syslog_device_rules.php:254
 #: syslog_removal.php:823 syslog_removal.php:952
 msgid "Rules"
 msgstr "Quy tắc"
 
-#: syslog_device_rules.php:249
+#: syslog_device_rules.php:258
 #, fuzzy
 msgid "Handling"
 msgstr "Xử lý loại bỏ"
 
-#: syslog_device_rules.php:249
+#: syslog_device_rules.php:258
 #, fuzzy
 msgid "Maintenance"
 msgstr "Bảng phân vùng"
 
-#: syslog_device_rules.php:249
+#: syslog_device_rules.php:258
 msgid "Pass Through"
 msgstr ""
 
-#: syslog_device_rules.php:252
+#: syslog_device_rules.php:261
 msgid "No device alert rules found."
 msgstr ""
 
-#: syslog_device_rules.php:255
+#: syslog_device_rules.php:264
 msgid "Not paused"
 msgstr ""
 
-#: syslog_device_rules.php:255
+#: syslog_device_rules.php:264
 #, fuzzy
 msgid "Paused indefinitely"
 msgstr "Không xác định"
 
-#: syslog_device_rules.php:255
+#: syslog_device_rules.php:264
 #, php-format
 msgid "Paused until %s"
 msgstr ""
 
-#: syslog_device_rules.php:256
+#: syslog_device_rules.php:265
 msgid "and more urgent"
 msgstr ""
 
-#: syslog_device_rules.php:261
+#: syslog_device_rules.php:270
 msgid "Allow all"
 msgstr ""
 
-#: syslog_device_rules.php:261
+#: syslog_device_rules.php:270
 msgid "Use priority exception"
 msgstr ""
 
