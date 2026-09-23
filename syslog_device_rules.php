@@ -14,6 +14,9 @@ switch (get_request_var('action')) {
 	case 'save':
 		device_rule_save();
 		break;
+	case 'actions':
+		device_rule_actions();
+		break;
 	case 'edit':
 		top_header();
 		syslog_include_js();
@@ -60,6 +63,48 @@ function device_rule_save(): void {
 	header('Location: syslog_device_rules.php?header=false');
 }
 
+/** Render and apply the standard Cacti bulk-action confirmation workflow. */
+function device_rule_actions(): void {
+	global $syslog_actions, $syslogdb_default;
+	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^[1-3]$/']]);
+	if (isset_request_var('selected_items')) {
+		$items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
+		$action = get_request_var('drp_action');
+		if ($items !== false && syslog_allow_edits()) {
+			foreach ($items as $id) {
+				if ((int) $id < 1) continue;
+				if ($action === '1') syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_device_rule` WHERE id = ?", [$id]);
+				if ($action === '2') syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_device_rule` SET enabled = '' WHERE id = ?", [$id]);
+				if ($action === '3') syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_device_rule` SET enabled = 'on' WHERE id = ?", [$id]);
+			}
+		}
+		header('Location: syslog_device_rules.php?header=false');
+		return;
+	}
+	top_header();
+	form_start('syslog_device_rules.php');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	$items = [];
+	$list = '';
+	foreach ($_POST as $name => $value) {
+		if (preg_match('/^chk_([0-9]+)$/', $name, $matches)) {
+			$rule = syslog_db_fetch_cell_prepared("SELECT host FROM `$syslogdb_default`.`syslog_device_rule` WHERE id = ?", [(int) $matches[1]]);
+			if ($rule !== null) { $items[] = $matches[1]; $list .= '<li>' . html_escape($rule) . '</li>'; }
+		}
+	}
+	if (!cacti_sizeof($items)) {
+		raise_message(40);
+		header('Location: syslog_device_rules.php?header=false');
+		return;
+	}
+	$verb = [1 => __('Delete', 'syslog'), 2 => __('Disable', 'syslog'), 3 => __('Enable', 'syslog')][(int) get_request_var('drp_action')];
+	print '<tr><td class="textArea"><p>' . __esc('Click Continue to %s the following Device Alert Rule(s).', strtolower($verb), 'syslog') . '</p><div class="itemlist"><ul>' . $list . '</ul></div></td></tr>';
+	print '<tr><td align="right" class="saveRow"><input type="hidden" name="action" value="actions"><input type="hidden" name="selected_items" value="' . html_escape(serialize($items)) . '"><input type="hidden" name="drp_action" value="' . (int) get_request_var('drp_action') . '"><input type="button" value="' . __esc('Cancel', 'syslog') . '" onClick="cactiReturnTo()">&nbsp;<input type="submit" value="' . __esc('Continue', 'syslog') . '"></td></tr>';
+	html_end_box();
+	form_end();
+	bottom_footer();
+}
+
 function device_rule_edit(): void {
 	global $syslog_levels, $syslogdb_default;
 	$id = get_filter_request_var('id');
@@ -103,7 +148,7 @@ function device_rule_edit(): void {
 }
 
 function device_rule_list(): void {
-	global $syslogdb_default, $syslog_levels, $item_rows;
+	global $syslogdb_default, $syslog_levels, $item_rows, $syslog_actions;
 	$filters = [
 		'rows' => ['filter' => FILTER_VALIDATE_INT, 'pageset' => true, 'default' => '-1'],
 		'page' => ['filter' => FILTER_VALIDATE_INT, 'default' => '1'],
@@ -146,9 +191,11 @@ function device_rule_list(): void {
 	$offset = ($page - 1) * $rows;
 	$rules = syslog_db_fetch_assoc_prepared("SELECT * FROM `$syslogdb_default`.`syslog_device_rule` $sql_where ORDER BY host LIMIT $offset, $rows", $sql_params);
 	$nav = html_nav_bar('syslog_device_rules.php?filter=' . urlencode(get_request_var('filter')) . '&enabled=' . get_request_var('enabled') . '&rows=' . $rows, MAX_DISPLAY_PAGES, $page, $rows, $total_rows, 5, __('Rules', 'syslog'), 'page', 'main');
+	form_start('syslog_device_rules.php', 'chk');
 	print $nav;
 	html_start_box(__('Device Alert Rules', 'syslog'), '100%', '', '3', 'center', '');
-	html_header([__('Device', 'syslog'), __('Handling', 'syslog'), __('Pass Through', 'syslog'), __('Maintenance', 'syslog'), __('Actions', 'syslog')], 2);
+	$display_text = ['host' => [__('Device', 'syslog'), 'ASC'], 'handling' => [__('Handling', 'syslog'), 'ASC'], 'pass' => [__('Pass Through', 'syslog'), 'ASC'], 'maintenance' => [__('Maintenance', 'syslog'), 'ASC'], 'actions' => [__('Actions', 'syslog'), 'ASC']];
+	html_header_sort_checkbox($display_text, 'host', 'ASC');
 	if (!cacti_sizeof($rules)) {
 		print '<tr><td colspan="5"><em>' . __('No device alert rules found.', 'syslog') . '</em></td></tr>';
 	}
@@ -156,12 +203,19 @@ function device_rule_list(): void {
 		$handling = $rule['mute_mode'] === 'until' ? __esc('Paused until %s', date('Y-m-d H:i', (int) $rule['mute_until']), 'syslog') : ($rule['mute_mode'] === 'indefinite' ? __('Paused indefinitely', 'syslog') : __('Not paused', 'syslog'));
 		$pass = (int) $rule['pass_through_priority'] >= 0 ? ucfirst($syslog_levels[$rule['pass_through_priority']]) . ' ' . __('and more urgent', 'syslog') : __('None', 'syslog');
 		$actions = '<a href="syslog_device_rules.php?action=edit&id=' . (int) $rule['id'] . '">' . __('Edit', 'syslog') . '</a>';
-		form_alternate_row();
-		print '<td>' . html_escape($rule['host']) . ($rule['enabled'] === 'on' ? '' : ' (' . __('Disabled', 'syslog') . ')') . '</td><td>' . $handling . '</td><td>' . $pass . '</td><td>' . ($rule['allow_maintenance'] === 'on' ? __('Allow all', 'syslog') : __('Use priority exception', 'syslog')) . '</td><td>' . $actions . '</td>';
+		form_alternate_row('line' . $rule['id'], true);
+		form_selectable_cell(html_escape($rule['host']) . ($rule['enabled'] === 'on' ? '' : ' (' . __('Disabled', 'syslog') . ')'), $rule['id']);
+		form_selectable_cell($handling, $rule['id']);
+		form_selectable_cell($pass, $rule['id']);
+		form_selectable_cell($rule['allow_maintenance'] === 'on' ? __('Allow all', 'syslog') : __('Use priority exception', 'syslog'), $rule['id']);
+		form_selectable_cell($actions, $rule['id']);
+		form_checkbox_cell($rule['host'], $rule['id']);
 		form_end_row();
 	}
-	html_end_box();
+	html_end_box(false);
 	if (cacti_sizeof($rules)) {
 		print $nav;
 	}
+	draw_actions_dropdown(array_slice($syslog_actions, 0, 3, true));
+	form_end();
 }
