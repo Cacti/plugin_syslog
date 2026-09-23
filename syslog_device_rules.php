@@ -148,7 +148,7 @@ function device_rule_edit(): void {
 }
 
 function device_rule_list(): void {
-	global $syslogdb_default, $syslog_levels, $item_rows, $syslog_actions;
+	global $syslogdb_default, $syslog_levels, $item_rows, $syslog_actions, $config;
 	$filters = [
 		'rows' => ['filter' => FILTER_VALIDATE_INT, 'pageset' => true, 'default' => '-1'],
 		'page' => ['filter' => FILTER_VALIDATE_INT, 'default' => '1'],
@@ -190,11 +190,11 @@ function device_rule_list(): void {
 	$page = max(1, (int) get_request_var('page'));
 	$offset = ($page - 1) * $rows;
 	$rules = syslog_db_fetch_assoc_prepared("SELECT * FROM `$syslogdb_default`.`syslog_device_rule` $sql_where ORDER BY host LIMIT $offset, $rows", $sql_params);
-	$nav = html_nav_bar('syslog_device_rules.php?filter=' . urlencode(get_request_var('filter')) . '&enabled=' . get_request_var('enabled') . '&rows=' . $rows, MAX_DISPLAY_PAGES, $page, $rows, $total_rows, 5, __('Rules', 'syslog'), 'page', 'main');
+	$nav = html_nav_bar('syslog_device_rules.php?filter=' . urlencode(get_request_var('filter')) . '&enabled=' . get_request_var('enabled') . '&rows=' . $rows, MAX_DISPLAY_PAGES, $page, $rows, $total_rows, 4, __('Rules', 'syslog'), 'page', 'main');
 	form_start('syslog_device_rules.php', 'chk');
 	print $nav;
 	html_start_box(__('Device Alert Rules', 'syslog'), '100%', '', '3', 'center', '');
-	$display_text = ['host' => [__('Device', 'syslog'), 'ASC'], 'handling' => [__('Handling', 'syslog'), 'ASC'], 'pass' => [__('Pass Through', 'syslog'), 'ASC'], 'maintenance' => [__('Maintenance', 'syslog'), 'ASC'], 'actions' => [__('Actions', 'syslog'), 'ASC']];
+	$display_text = ['host' => [__('Device', 'syslog'), 'ASC'], 'handling' => [__('Handling', 'syslog'), 'ASC'], 'pass' => [__('Pass Through', 'syslog'), 'ASC'], 'maintenance' => [__('Maintenance', 'syslog'), 'ASC']];
 	html_header_sort_checkbox($display_text, 'host', 'ASC');
 	if (!cacti_sizeof($rules)) {
 		print '<tr><td colspan="5"><em>' . __('No device alert rules found.', 'syslog') . '</em></td></tr>';
@@ -202,13 +202,11 @@ function device_rule_list(): void {
 	foreach ($rules as $rule) {
 		$handling = $rule['mute_mode'] === 'until' ? __esc('Paused until %s', date('Y-m-d H:i', (int) $rule['mute_until']), 'syslog') : ($rule['mute_mode'] === 'indefinite' ? __('Paused indefinitely', 'syslog') : __('Not paused', 'syslog'));
 		$pass = (int) $rule['pass_through_priority'] >= 0 ? ucfirst($syslog_levels[$rule['pass_through_priority']]) . ' ' . __('and more urgent', 'syslog') : __('None', 'syslog');
-		$actions = '<a href="syslog_device_rules.php?action=edit&id=' . (int) $rule['id'] . '">' . __('Edit', 'syslog') . '</a>';
 		form_alternate_row('line' . $rule['id'], true);
-		form_selectable_cell(html_escape($rule['host']) . ($rule['enabled'] === 'on' ? '' : ' (' . __('Disabled', 'syslog') . ')'), $rule['id']);
+		form_selectable_cell(filter_value(html_escape($rule['host']) . ($rule['enabled'] === 'on' ? '' : ' (' . __('Disabled', 'syslog') . ')'), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_device_rules.php?action=edit&id=' . $rule['id']), $rule['id']);
 		form_selectable_cell($handling, $rule['id']);
 		form_selectable_cell($pass, $rule['id']);
 		form_selectable_cell($rule['allow_maintenance'] === 'on' ? __('Allow all', 'syslog') : __('Use priority exception', 'syslog'), $rule['id']);
-		form_selectable_cell($actions, $rule['id']);
 		form_checkbox_cell($rule['host'], $rule['id']);
 		form_end_row();
 	}
