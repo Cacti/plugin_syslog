@@ -61,13 +61,13 @@ function device_rule_save(): void {
 	$until = $mode === 'until' ? strtotime(get_nfilter_request_var('mute_until')) : 0;
 	if ($mode === 'until' && ($until === false || $until <= time())) {
 		raise_message('syslog_device_rule_time', __('Choose a future pause end date and time.', 'syslog'), MESSAGE_LEVEL_ERROR);
-		header('Location: syslog_device_rules.php?header=false&action=edit&id=' . get_filter_request_var('id'));
+		header('Location: syslog_device_rules.php?action=edit&id=' . get_filter_request_var('id'));
 		return;
 	}
 	$host = trim(get_nfilter_request_var('host'));
 	if ($host === '') {
 		raise_message('syslog_device_rule_host', __('A device name is required.', 'syslog'), MESSAGE_LEVEL_ERROR);
-		header('Location: syslog_device_rules.php?header=false&action=edit&id=' . get_filter_request_var('id'));
+		header('Location: syslog_device_rules.php?action=edit&id=' . get_filter_request_var('id'));
 		return;
 	}
 	$priority = get_filter_request_var('pass_through_priority');
@@ -82,7 +82,7 @@ function device_rule_save(): void {
 		'user' => get_username($_SESSION['sess_user_id']), 'date' => time()
 	];
 	syslog_sync_save($save, 'syslog_device_rule', 'id');
-	header('Location: syslog_device_rules.php?header=false');
+	header('Location: syslog_device_rules.php');
 }
 
 /** Render and apply the standard Cacti bulk-action confirmation workflow. */
@@ -102,7 +102,7 @@ function device_rule_actions(): void {
 				if ($action === '3') syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_device_rule` SET enabled = 'on' WHERE id = ?", [$id]);
 			}
 		}
-		header('Location: syslog_device_rules.php?header=false');
+		header('Location: syslog_device_rules.php');
 		return;
 	}
 	top_header();
@@ -118,7 +118,7 @@ function device_rule_actions(): void {
 	}
 	if (!cacti_sizeof($items)) {
 		raise_message(40);
-		header('Location: syslog_device_rules.php?header=false');
+		header('Location: syslog_device_rules.php');
 		return;
 	}
 	$verb = [1 => __('Delete', 'syslog'), 2 => __('Disable', 'syslog'), 3 => __('Enable', 'syslog'), 4 => __('Export', 'syslog')][(int) get_request_var('drp_action')];
@@ -164,7 +164,7 @@ function device_rule_edit(): void {
 	}
 	$fields = [
 		'spacer' => ['method' => 'spacer', 'friendly_name' => __('Device Alert Rule', 'syslog')],
-		'host' => ['method' => 'textbox', 'friendly_name' => __('Device', 'syslog'), 'description' => __('Search current Syslog devices as you type, or enter any IP address or hostname.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
+		'host' => ['method' => 'drop_callback', 'action' => 'ajax_hosts', 'id' => $rule['host'], 'sql' => 'SELECT ' . db_qstr($rule['host']) . ' AS id, ' . db_qstr($rule['host']) . ' AS name', 'friendly_name' => __('Device', 'syslog'), 'description' => __('Search current Syslog devices as you type, or enter any IP address or hostname.', 'syslog'), 'value' => '|arg1:host|', 'size' => 50, 'max_length' => 64],
 		'enabled' => ['method' => 'drop_array', 'friendly_name' => __('Enabled', 'syslog'), 'array' => ['on' => __('Enabled', 'syslog'), '' => __('Disabled', 'syslog')], 'value' => '|arg1:enabled|'],
 		'mute_mode' => ['method' => 'drop_array', 'friendly_name' => __('Alert Handling', 'syslog'), 'description' => __('Pause all non-exempt alerts until a date, or indefinitely.', 'syslog'), 'array' => ['none' => __('Do not pause', 'syslog'), 'until' => __('Pause until', 'syslog'), 'indefinite' => __('Pause indefinitely', 'syslog')], 'value' => '|arg1:mute_mode|'],
 		'mute_until' => ['method' => 'textbox', 'friendly_name' => __('Pause Ends', 'syslog'), 'description' => __('Local date and time, YYYY-MM-DD HH:MM.', 'syslog'), 'value' => '|arg1:mute_until|', 'size' => 18, 'max_length' => 16],
@@ -189,49 +189,17 @@ function device_rule_edit(): void {
 		function toggleEnd() { if (endRow && mode) endRow.style.display = mode.value === 'until' ? '' : 'none'; }
 		if (mode) mode.addEventListener('change', toggleEnd); toggleEnd();
 		if (window.jQuery && window.jQuery.fn.datetimepicker) window.jQuery('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
-		// Cacti can render this page as a header=false fragment before jQuery UI
-		// is available. Keep the same searchable select behaviour in that case,
-		// without loading every device into the browser.
-		var menu = document.createElement('ul'), searchTimer, hostShell;
-		menu.className = 'ui-menu ui-widget ui-widget-content ui-front';
-		menu.id = 'syslog_device_host_menu';
-		menu.hidden = true;
-		menu.style.cssText = 'position:fixed;z-index:10000;max-height:250px;overflow-y:auto;min-width:280px;';
-		document.body.appendChild(menu);
-		function closeHostMenu() { menu.hidden = true; }
-		function showHosts() {
-			var host = document.getElementById('host');
-			if (!host) return;
-			fetch('syslog_device_rules.php?action=ajax_hosts&term=' + encodeURIComponent(host.value), {credentials: 'same-origin'})
-				.then(function (response) { return response.ok ? response.json() : []; })
-				.then(function (items) {
-					menu.replaceChildren();
-					items.forEach(function (item) {
-						var choice = document.createElement('li'); choice.className = 'ui-menu-item';
-						var button = document.createElement('button'); button.type = 'button'; button.className = 'ui-menu-item-wrapper'; button.textContent = item.label;
-						button.addEventListener('mousedown', function (event) { event.preventDefault(); host.value = item.value; closeHostMenu(); host.focus(); });
-						choice.appendChild(button); menu.appendChild(choice);
-					});
-					if (items.length) { var bounds = (hostShell || host).getBoundingClientRect(); menu.style.left = bounds.left + 'px'; menu.style.top = bounds.bottom + 'px'; menu.style.minWidth = bounds.width + 'px'; menu.hidden = false; }
-				});
-		}
-		var hostInput = document.getElementById('host');
+		// Cacti's callback control posts a hidden value. Keep arbitrary typed
+		// hostnames in sync as well as values selected from its results.
+		var hostInput = document.getElementById('host_input');
 		if (hostInput) {
-			hostShell = document.createElement('span');
-			hostShell.className = 'autodrop ui-selectmenu-button ui-selectmenu-button-closed ui-corner-all ui-button ui-widget';
-			hostShell.style.cssText = 'display:inline-flex;align-items:center;min-width:320px;max-width:100%;box-sizing:border-box;';
-			hostInput.parentNode.insertBefore(hostShell, hostInput);
-			hostShell.appendChild(hostInput);
-			hostInput.style.cssText += ';border:0;background:transparent;flex:1;min-width:0;';
-			var arrow = document.createElement('button');
-			arrow.type = 'button'; arrow.className = 'ui-selectmenu-icon ui-icon ui-icon-triangle-1-s'; arrow.setAttribute('aria-label', <?php print syslog_json_safe(__('Show current devices', 'syslog')); ?>);
-			arrow.style.cssText = 'border:0;background:transparent;cursor:pointer;';
-			arrow.addEventListener('mousedown', function (event) { event.preventDefault(); showHosts(); });
-			hostShell.appendChild(arrow);
-			hostInput.addEventListener('focus', showHosts);
-			hostInput.addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(showHosts, 250); });
-			hostInput.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeHostMenu(); });
-			document.addEventListener('mousedown', function (event) { if (event.target !== hostInput && !menu.contains(event.target)) closeHostMenu(); });
+			hostInput.maxLength = 64;
+			hostInput.addEventListener('input', function () {
+				document.getElementById('host').value = this.value;
+			});
+			document.getElementById('syslog_device_rule_edit').addEventListener('submit', function () {
+				document.getElementById('host').value = hostInput.value;
+			}, true);
 		}
 		<?php if (!syslog_allow_edits()) { ?>document.querySelectorAll('#syslog_device_rule_edit select,#syslog_device_rule_edit input,#syslog_device_rule_edit textarea').forEach(function (field) { field.disabled = true; });<?php } ?>
 	}());
