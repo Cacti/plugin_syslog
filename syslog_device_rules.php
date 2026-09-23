@@ -188,9 +188,39 @@ function device_rule_edit(): void {
 		var endRow = document.getElementById('row_mute_until');
 		function toggleEnd() { if (endRow && mode) endRow.style.display = mode.value === 'until' ? '' : 'none'; }
 		if (mode) mode.addEventListener('change', toggleEnd); toggleEnd();
-		if (window.jQuery) {
-			if (window.jQuery.fn.datetimepicker) window.jQuery('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
-			if (window.jQuery.fn.autocomplete) window.jQuery('#host').autocomplete({source: 'syslog_device_rules.php?action=ajax_hosts', minLength: 0, delay: 250}).on('focus', function () { window.jQuery(this).autocomplete('search', this.value); });
+		if (window.jQuery && window.jQuery.fn.datetimepicker) window.jQuery('#mute_until').datetimepicker({minuteGrid:10, stepMinute:1, timeFormat:'HH:mm', dateFormat:'yy-mm-dd'});
+		// Cacti can render this page as a header=false fragment before jQuery UI
+		// is available. Keep the same searchable select behaviour in that case,
+		// without loading every device into the browser.
+		var menu = document.createElement('ul'), searchTimer;
+		menu.className = 'ui-menu ui-widget ui-widget-content ui-front';
+		menu.id = 'syslog_device_host_menu';
+		menu.hidden = true;
+		menu.style.cssText = 'position:fixed;z-index:10000;max-height:250px;overflow-y:auto;min-width:280px;';
+		document.body.appendChild(menu);
+		function closeHostMenu() { menu.hidden = true; }
+		function showHosts() {
+			var host = document.getElementById('host');
+			if (!host) return;
+			fetch('syslog_device_rules.php?action=ajax_hosts&term=' + encodeURIComponent(host.value), {credentials: 'same-origin'})
+				.then(function (response) { return response.ok ? response.json() : []; })
+				.then(function (items) {
+					menu.replaceChildren();
+					items.forEach(function (item) {
+						var choice = document.createElement('li'); choice.className = 'ui-menu-item';
+						var button = document.createElement('button'); button.type = 'button'; button.className = 'ui-menu-item-wrapper'; button.textContent = item.label;
+						button.addEventListener('mousedown', function (event) { event.preventDefault(); host.value = item.value; closeHostMenu(); host.focus(); });
+						choice.appendChild(button); menu.appendChild(choice);
+					});
+					if (items.length) { var bounds = host.getBoundingClientRect(); menu.style.left = bounds.left + 'px'; menu.style.top = bounds.bottom + 'px'; menu.style.minWidth = bounds.width + 'px'; menu.hidden = false; }
+				});
+		}
+		var hostInput = document.getElementById('host');
+		if (hostInput) {
+			hostInput.addEventListener('focus', showHosts);
+			hostInput.addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(showHosts, 250); });
+			hostInput.addEventListener('keydown', function (event) { if (event.key === 'Escape') closeHostMenu(); });
+			document.addEventListener('mousedown', function (event) { if (event.target !== hostInput && !menu.contains(event.target)) closeHostMenu(); });
 		}
 		<?php if (!syslog_allow_edits()) { ?>document.querySelectorAll('#syslog_device_rule_edit select,#syslog_device_rule_edit input,#syslog_device_rule_edit textarea').forEach(function (field) { field.disabled = true; });<?php } ?>
 	}());
