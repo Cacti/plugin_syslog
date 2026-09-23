@@ -17,6 +17,9 @@ switch (get_request_var('action')) {
 	case 'actions':
 		device_rule_actions();
 		break;
+	case 'export':
+		device_rule_export();
+		break;
 	case 'edit':
 		top_header();
 		syslog_include_js();
@@ -66,11 +69,13 @@ function device_rule_save(): void {
 /** Render and apply the standard Cacti bulk-action confirmation workflow. */
 function device_rule_actions(): void {
 	global $syslog_actions, $syslogdb_default;
-	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^[1-3]$/']]);
+	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^[1-4]$/']]);
 	if (isset_request_var('selected_items')) {
 		$items = sanitize_unserialize_selected_items(get_request_var('selected_items'));
 		$action = get_request_var('drp_action');
-		if ($items !== false && syslog_allow_edits()) {
+		if ($items !== false && $action === '4') {
+			$_SESSION['syslog_device_rule_exporter'] = rawurlencode(serialize($items));
+		} elseif ($items !== false && syslog_allow_edits()) {
 			foreach ($items as $id) {
 				if ((int) $id < 1) continue;
 				if ($action === '1') syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_device_rule` WHERE id = ?", [$id]);
@@ -97,12 +102,34 @@ function device_rule_actions(): void {
 		header('Location: syslog_device_rules.php?header=false');
 		return;
 	}
-	$verb = [1 => __('Delete', 'syslog'), 2 => __('Disable', 'syslog'), 3 => __('Enable', 'syslog')][(int) get_request_var('drp_action')];
+	$verb = [1 => __('Delete', 'syslog'), 2 => __('Disable', 'syslog'), 3 => __('Enable', 'syslog'), 4 => __('Export', 'syslog')][(int) get_request_var('drp_action')];
 	print '<tr><td class="textArea"><p>' . __esc('Click Continue to %s the following Device Alert Rule(s).', strtolower($verb), 'syslog') . '</p><div class="itemlist"><ul>' . $list . '</ul></div></td></tr>';
 	print '<tr><td align="right" class="saveRow"><input type="hidden" name="action" value="actions"><input type="hidden" name="selected_items" value="' . html_escape(serialize($items)) . '"><input type="hidden" name="drp_action" value="' . (int) get_request_var('drp_action') . '"><input type="button" value="' . __esc('Cancel', 'syslog') . '" onClick="cactiReturnTo()">&nbsp;<input type="submit" value="' . __esc('Continue', 'syslog') . '"></td></tr>';
 	html_end_box();
-	form_end();
+	form_end(false);
 	bottom_footer();
+}
+
+/** Download selected device alert rules as a portable JSON document. */
+function device_rule_export(): void {
+	global $syslogdb_default;
+	$items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
+	if ($items === false) {
+		return;
+	}
+	$rules = [];
+	foreach ($items as $id) {
+		if ((int) $id < 1) continue;
+		$rule = syslog_db_fetch_row_prepared("SELECT * FROM `$syslogdb_default`.`syslog_device_rule` WHERE id = ?", [$id]);
+		if (cacti_sizeof($rule)) {
+			unset($rule['id']);
+			$rules[] = $rule;
+		}
+	}
+	$output = json_encode(['version' => SYSLOG_IMPORT_VERSION, 'generator' => 'syslog', 'table' => 'syslog_device_rule', 'templates' => $rules], JSON_PRETTY_PRINT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+	header('Content-Type: application/json; charset=UTF-8');
+	header('Content-Disposition: attachment; filename=syslog_device_rules_export.json');
+	print $output === false ? '' : $output;
 }
 
 function device_rule_edit(): void {
@@ -214,6 +241,11 @@ function device_rule_list(): void {
 	if (cacti_sizeof($rules)) {
 		print $nav;
 	}
-	draw_actions_dropdown(array_slice($syslog_actions, 0, 3, true));
-	form_end();
+	draw_actions_dropdown($syslog_actions);
+	form_end(false);
+	if (isset($_SESSION['syslog_device_rule_exporter'])) {
+		syslog_download_frame('syslog_device_rules.php?action=export&selected_items=' . $_SESSION['syslog_device_rule_exporter']);
+		kill_session_var('syslog_device_rule_exporter');
+		exit;
+	}
 }
