@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Extend the Syslog Status tab with per-table partition date coverage, estimated dMaxValue occupancy and size, last successful maintenance, recovery progress, and a bounded recent-maintenance history
 * feature: Add a fail-safe for partition maintenance: when the partition metadata for the syslog or syslog_removed table is invalid or incomplete, or a required partition cannot be created, all partition creation and retention pruning stops, the dMaxValue safety partition is never dropped, and the blocked condition with its remediation step is logged and shown on the Syslog Status page
 * feature: Add bounded multi-day partition recovery: a new 'Partition Recovery Limit' setting caps how many missing partitions are created per table per poller run so large gaps heal over several cycles; retention pruning stays deferred until the future write horizon is restored, and each blocked run reports the remaining gap, the stop reason, and whether writes are accumulating in dMaxValue
 * feature: Add collector health metrics to the Syslog Status tab: last received log timestamp, oldest unprocessed incoming message age, current incoming backlog, records processed in the latest run, and a warning when data looks stale or the backlog exceeds the new 'Collector Staleness' and 'Collector Backlog Threshold' settings; unavailable metrics read as Unavailable instead of invented values

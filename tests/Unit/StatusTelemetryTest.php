@@ -118,3 +118,41 @@ it('serializes last run rule activity with names and counts', function () {
 		['name' => 'Drop Noise', 'count' => 15],
 	]);
 });
+
+it('keeps a bounded partition maintenance history and records recovery progress', function () {
+	syslog_load_plugin_source('functions.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$values = [];
+
+	test_override('syslog_db_table_exists', function ($table) {
+		return $table === 'syslog_status';
+	});
+	test_override('syslog_db_fetch_assoc', function () use (&$values) {
+		return array_map(function ($name, $value) {
+			return ['name' => $name, 'value' => $value, 'updated' => time()];
+		}, array_keys($values), $values);
+	});
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$values) {
+		$values[$params[0]] = $params[1];
+
+		return true;
+	});
+
+	for ($i = 0; $i < 11; $i++) {
+		syslog_partition_maintenance_record($i === 10, [
+			'syslog' => ['created' => 1, 'missing' => 0, 'retention_deferred' => false, 'dmax_risk' => false],
+			'syslog_removed' => ['created' => 0, 'missing' => 2, 'retention_deferred' => true, 'dmax_risk' => true],
+		], 3, $i === 10 ? '' : 'recovery in progress');
+	}
+
+	$history = json_decode($values['partition_maintenance_history'], true);
+	$progress = json_decode($values['partition_recovery_progress'], true);
+
+	expect($history)->toHaveCount(10);
+	expect($history[9]['successful'])->toBeTrue();
+	expect($values['partition_maintenance_outcome'])->toBe('success');
+	expect($values['partition_maintenance_last_success'])->not->toBe('');
+	expect($progress['syslog_removed']['missing'])->toBe(2);
+	expect($progress['syslog_removed']['dmax_risk'])->toBeTrue();
+});

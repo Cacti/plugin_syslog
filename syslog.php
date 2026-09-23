@@ -592,16 +592,7 @@ function syslog_status_storage(): array {
 		FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
 		[$syslogdb_default, 'syslog']);
 
-	$size = __('Unavailable', 'syslog');
-	if (is_numeric($bytes) && $bytes >= 0) {
-		$units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
-		$unit = 0;
-		while ($bytes >= 1024 && $unit < count($units) - 1) {
-			$bytes /= 1024;
-			$unit++;
-		}
-		$size = number_format((float) $bytes, $unit === 0 ? 0 : 2) . ' ' . $units[$unit];
-	}
+	$size = syslog_status_format_bytes($bytes);
 
 	$retention = read_config_option('syslog_retention');
 	$alert_retention = read_config_option('syslog_alert_retention');
@@ -612,6 +603,62 @@ function syslog_status_storage(): array {
 		__('Syslog retention', 'syslog') => $syslog_retentions[$retention] ?? __('Unavailable', 'syslog'),
 		__('Alert retention', 'syslog') => $syslog_alert_retentions[$alert_retention] ?? __('Unavailable', 'syslog')
 	];
+}
+
+/** Format a byte count for the Status tab, or Unavailable when unknown. */
+function syslog_status_format_bytes($bytes): string {
+	if (!is_numeric($bytes) || $bytes < 0) {
+		return __('Unavailable', 'syslog');
+	}
+
+	$units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
+	$unit  = 0;
+
+	while ($bytes >= 1024 && $unit < count($units) - 1) {
+		$bytes /= 1024;
+		$unit++;
+	}
+
+	return number_format((float) $bytes, $unit === 0 ? 0 : 2) . ' ' . $units[$unit];
+}
+
+/** Format a dYYYYMMDD partition label as an ISO date. */
+function syslog_status_format_partition_date(string $date): string {
+	if (preg_match('/^\d{8}$/', $date) !== 1) {
+		return __('Unavailable', 'syslog');
+	}
+
+	return substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6, 2);
+}
+
+/** Return a readable summary of the persisted per-table recovery state. */
+function syslog_status_format_partition_progress(string $value): string {
+	$progress = json_decode($value, true);
+
+	if (!is_array($progress)) {
+		return __('No recovery activity recorded yet.', 'syslog');
+	}
+
+	$parts = [];
+
+	foreach (['syslog' => 'syslog', 'syslog_removed' => 'syslog_removed'] as $key => $label) {
+		$state = $progress[$key] ?? null;
+		if (!is_array($state)) {
+			continue;
+		}
+
+		$parts[] = sprintf(
+			'%s: %d %s, %d %s%s',
+			$label,
+			(int) ($state['created'] ?? 0),
+			__('created', 'syslog'),
+			(int) ($state['missing'] ?? 0),
+			__('remaining', 'syslog'),
+			empty($state['deferred']) ? '' : ' — ' . __('retention deferred', 'syslog')
+		);
+	}
+
+	return cacti_sizeof($parts) ? implode('; ', $parts) : __('No recovery activity recorded yet.', 'syslog');
 }
 
 /**
@@ -669,6 +716,69 @@ function syslog_status(): void {
 					<?php print html_escape($partition_block['reason'] !== '' ? $partition_block['reason'] : __('Partition maintenance is stopped; writes continue into the dMaxValue safety partition.', 'syslog')); ?>
 				</p>
 				<?php } ?>
+			</section>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_partitions">
+				<h2 id="syslog_status_partitions" class="syslogStatusHeading ui-widget-header"><?php print __esc('Partition health', 'syslog'); ?></h2>
+				<?php $partition_health = syslog_partition_observability(); ?>
+				<table class="syslogStatusPartitions" aria-labelledby="syslog_status_partitions">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Table', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Date coverage', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('dMaxValue rows (estimated)', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('dMaxValue size', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php foreach (['syslog', 'syslog_removed'] as $table) { ?>
+						<?php $health = $partition_health[$table] ?? []; ?>
+						<?php $coverage = !empty($health['coverage_start']) && !empty($health['coverage_end']) ? syslog_status_format_partition_date((string) $health['coverage_start']) . ' — ' . syslog_status_format_partition_date((string) $health['coverage_end']) . ' (' . number_format((int) $health['partitions']) . ')' : __('Unavailable', 'syslog'); ?>
+						<tr>
+							<th scope="row"><?php print html_escape($table); ?></th>
+							<td><?php print html_escape($coverage); ?></td>
+							<td><?php print html_escape(isset($health['dmax_rows']) && $health['dmax_rows'] !== null ? number_format((float) $health['dmax_rows']) : __('Unavailable', 'syslog')); ?></td>
+							<td><?php print html_escape(syslog_status_format_bytes($health['dmax_bytes'] ?? null)); ?></td>
+						</tr>
+					<?php } ?>
+					</tbody>
+				</table>
+			</section>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_maintenance">
+				<h2 id="syslog_status_maintenance" class="syslogStatusHeading ui-widget-header"><?php print __esc('Partition maintenance activity', 'syslog'); ?></h2>
+				<dl class="syslogStatusTimings">
+					<?php
+					$maintenance = [
+						__('Last attempt', 'syslog') => syslog_status_format_time($status['partition_maintenance_last_attempt']),
+						__('Last successful maintenance', 'syslog') => syslog_status_format_time($status['partition_maintenance_last_success']),
+						__('Latest outcome', 'syslog') => $status['partition_maintenance_outcome'] === 'success' ? __('Complete', 'syslog') : ($status['partition_maintenance_outcome'] === 'deferred' ? __('Deferred', 'syslog') : __('Never', 'syslog')),
+						__('Recovery progress', 'syslog') => syslog_status_format_partition_progress($status['partition_recovery_progress'])
+					];
+					foreach ($maintenance as $label => $value) {
+						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
+					}
+					?>
+				</dl>
+				<?php $history = json_decode($status['partition_maintenance_history'], true); ?>
+				<table class="syslogStatusPartitions" aria-label="<?php print __esc('Recent partition maintenance activity', 'syslog'); ?>">
+					<thead><tr>
+						<th scope="col"><?php print __esc('When', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Outcome', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Recovery', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Details', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php if (!is_array($history) || !cacti_sizeof($history)) { ?>
+						<tr><td colspan="4" class="syslogStatusPhasesEmpty"><?php print __esc('No partition maintenance activity recorded yet. Activity appears after the next poller run.', 'syslog'); ?></td></tr>
+					<?php } else { ?>
+						<?php foreach (array_reverse($history) as $event) { ?>
+							<tr>
+								<td><?php print html_escape(syslog_status_format_time((string) ($event['time'] ?? ''))); ?></td>
+								<td><?php print html_escape(!empty($event['successful']) ? __('Complete', 'syslog') : __('Deferred', 'syslog')); ?></td>
+								<td><?php print html_escape(sprintf(__('%d created, %d remaining, %d pruned', 'syslog'), (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0))); ?></td>
+								<td><?php print html_escape((string) ($event['reason'] ?? '') !== '' ? (string) $event['reason'] : __('No action required.', 'syslog')); ?></td>
+							</tr>
+						<?php } ?>
+					<?php } ?>
+					</tbody>
+				</table>
 			</section>
 			<section class="syslogStatusRun" aria-labelledby="syslog_status_collector">
 				<h2 id="syslog_status_collector" class="syslogStatusHeading ui-widget-header"><?php print __esc('Collector health', 'syslog'); ?></h2>
