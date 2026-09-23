@@ -438,8 +438,8 @@ function syslog_upgrade_rule_permissions(): void {
  *
  * Cacti renders one permission checkbox per realm record.  If an install has
  * several records with the same Rule Viewer or Rule Administrator label, the
- * permissions screen repeats that label.  Merge their files and grants into
- * the first record so each role has exactly one checkbox.
+ * permissions screen repeats that label. Preserve their grants in the first
+ * record and restore canonical filenames so the roles remain separate.
  *
  * @return bool Whether duplicate repair succeeded.
  */
@@ -448,8 +448,9 @@ function syslog_upgrade_consolidate_rule_realms(): bool {
 
 	foreach (['Rule Viewer', 'Rule Administrator'] as $display) {
 		$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ? AND display = ? ORDER BY id', ['syslog', $display]);
+		$files = $display === 'Rule Viewer' ? 'syslog_alerts.php,syslog_removal.php,syslog_reports.php' : 'syslog_rule_administrator.php';
 
-		if (!is_array($realms) || cacti_sizeof($realms) < 2) {
+		if (!is_array($realms) || !$realms || (count($realms) === 1 && $realms[0]['file'] === $files)) {
 			continue;
 		}
 
@@ -474,7 +475,6 @@ function syslog_upgrade_consolidate_rule_realms(): bool {
 
 		// Broken migrations put the administrator filename in Viewer records.
 		// Never union those files: doing so merges the two permission levels.
-		$files = $display === 'Rule Viewer' ? 'syslog_alerts.php,syslog_removal.php,syslog_reports.php' : 'syslog_rule_administrator.php';
 		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ?', [$files, (int) $keeper['id']]) || !db_commit_transaction()) {
 			db_rollback_transaction();
 			return false;
