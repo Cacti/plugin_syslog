@@ -511,6 +511,18 @@ function syslog_refresh_permission_roles(): void {
 	// deleted duplicate IDs from the Syslog group on the current request.
 	$user_auth_roles[__('Syslog', 'syslog')] = array_values(array_unique($ids));
 
+	// Rule Administrator is the write permission paired with Rule Viewer.  Map
+	// the rule page filenames to the administrator realm for an administrator
+	// who does not also have the viewer realm, so Cacti can render the Syslog
+	// Settings menu and admit the rule pages.  Do not include the separate
+	// saved-search or dashboard administration pages here.
+	$rule_administrator = $user_auth_realm_filenames['syslog_rule_administrator.php'] ?? 0;
+	if ($rule_administrator && is_realm_allowed($rule_administrator)) {
+		foreach (['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'] as $file) {
+			$user_auth_realm_filenames[$file] = $rule_administrator;
+		}
+	}
+
 	// Cacti filters console menus and authorizes pages from this map before the
 	// page controllers run. Keep the stored permissions independent, but make
 	// the aggregate administrator permission imply each Syslog capability for

@@ -83,6 +83,20 @@ foreach (['syslog.php', 'syslog_alerts.php', 'syslog_removal.php', 'syslog_repor
 $allowed_realms = [];
 syslog_refresh_permission_roles();
 
+// A Rule Administrator must be able to see and open the rule menu entries
+// without acquiring saved-search or dashboard administration.
+$rule_administrator_id = (int) $db->query("SELECT id FROM plugin_realms WHERE display = 'Rule Administrator'")->fetchColumn() + 100;
+$allowed_realms = [$rule_administrator_id];
+syslog_refresh_permission_roles();
+foreach (['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'] as $page) {
+	check(($user_auth_realm_filenames[$page] ?? 0) === $rule_administrator_id, 'Rule Administrator must imply rule menu access');
+}
+foreach (['syslog_saved_searches.php', 'syslog_dashboards.php'] as $page) {
+	check(($user_auth_realm_filenames[$page] ?? 0) !== $rule_administrator_id, 'Rule Administrator must not acquire template or dashboard administration');
+}
+$allowed_realms = [];
+syslog_refresh_permission_roles();
+
 check($db->query('SELECT user_id,realm_id FROM user_auth_realm ORDER BY user_id')->fetchAll(PDO::FETCH_NUM) === [[1,102],[2,102],[3,104]], 'Preserve all user grants without elevating Viewer');
 check($db->query('SELECT group_id,realm_id FROM user_auth_group_realm ORDER BY group_id')->fetchAll(PDO::FETCH_NUM) === [[9,102],[10,104]], 'Preserve group grants and remove obsolete IDs');
 check(!isset($_SESSION['sess_auth_names']['syslog_alerts.php']), 'Invalidate stale filename cache');
