@@ -39,6 +39,11 @@ it('builds rule-editor links only for permitted, valid main-table records', func
 		expect($query['id'] === '43' && $query['action'] === 'newedit' && $query['date'] === '2026-09-13 00:12:42')->toBeTrue('Editor targets the selected record');
 	}
 
+	$allowed[] = 'syslog_device_rules.php';
+	$links = syslog_message_rule_links(43, 'main', '2026-09-13 00:12:42', 'platinum-router');
+	parse_str(parse_url($links['device'], PHP_URL_QUERY), $query);
+	expect(strpos($links['device'], 'syslog_device_rules.php?') === 0 && $query['host'] === 'platinum-router')->toBeTrue('Permitted users can seed a device-wide rule from the selected message host');
+
 	foreach (['removed', 'alerts', ''] as $source) {
 		expect(syslog_message_rule_links(42, $source, ''))->toBe([], 'Unsupported source must not resolve an unrelated main record');
 	}
