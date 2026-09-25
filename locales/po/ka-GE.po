@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: Cacti\n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-22 20:32-0400\n"
-"PO-Revision-Date: 2026-08-04 11:18+0000\n"
-"Last-Translator: Ekaterine papava <papava.e@gtu.ge>\n"
-"Language-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\n"
-"Language: ka-GE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: Cacti\nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-09-22 20:32-0400\nPO-Revision-Date: 2026-09-25 03:18+0000\nLast-Translator: Ekaterine papava <papava.e@gtu.ge>\nLanguage-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\nLanguage: ka-GE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: functions.php:687
 #, fuzzy
@@ -318,7 +306,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:616
 msgid "Other"
-msgstr ""
+msgstr "სხვა"
 
 #: lib/syslog_dashboard.php:659 lib/syslog_dashboard.php:1044
 msgid "A valid dashboard panel is required."
@@ -430,46 +418,43 @@ msgstr "Syslog ჩართულია"
 #: lib/syslog_dashboard.php:1396 lib/syslog_dashboard.php:1557
 #: lib/syslog_dashboard.php:1581 syslog.php:256
 msgid "Dashboard"
-msgstr ""
+msgstr "სამუშაო დაფა"
 
 #: lib/syslog_dashboard.php:1399 lib/syslog_dashboard.php:1579
 msgid "Time Range"
 msgstr "დროის შუალედი"
 
 #: lib/syslog_dashboard.php:1404 lib/syslog_dashboard.php:1582
-#, fuzzy
 msgid "Last Hour"
-msgstr "%d საათი"
+msgstr "ბოლო საათი"
 
 #: lib/syslog_dashboard.php:1405 lib/syslog_dashboard.php:1583
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Hours"
-msgstr "%d საათი"
+msgstr "ბოლო %d საათი"
 
 #: lib/syslog_dashboard.php:1406 lib/syslog_dashboard.php:1584
 msgid "Last Day"
-msgstr ""
+msgstr "ბოლო დღე"
 
 #: lib/syslog_dashboard.php:1407 lib/syslog_dashboard.php:1585
-#, fuzzy
 msgid "Last Week"
-msgstr "ბოლო გაგზავნილი"
+msgstr "ბოლო კვირა"
 
 #: lib/syslog_dashboard.php:1408 lib/syslog_dashboard.php:1586
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Weeks"
-msgstr "%d კვირა"
+msgstr "ბოლო %dკვირა"
 
 #: lib/syslog_dashboard.php:1409 lib/syslog_dashboard.php:1587
-#, fuzzy
 msgid "Last Month"
-msgstr "ბოლო გაგზავნილი"
+msgstr "ბოლო თვე"
 
 #: lib/syslog_dashboard.php:1410 lib/syslog_dashboard.php:1411
 #: lib/syslog_dashboard.php:1588 lib/syslog_dashboard.php:1589
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Months"
-msgstr "%d თვე"
+msgstr "ბოლო %d თვე"
 
 #: lib/syslog_dashboard.php:1421 syslog.php:1839 syslog.php:1917
 msgid "Refresh"
@@ -495,11 +480,11 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1482 syslog.php:1796
 msgid "New"
-msgstr ""
+msgstr "ახალი"
 
 #: lib/syslog_dashboard.php:1484
 msgid "Rename"
-msgstr ""
+msgstr "სახელის გადარქმევა"
 
 #: lib/syslog_dashboard.php:1495
 msgid "Add Panel"
@@ -519,7 +504,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1529
 msgid "Title"
-msgstr ""
+msgstr "სათაური"
 
 #: lib/syslog_dashboard.php:1533
 msgid "Log Source"
@@ -553,24 +538,23 @@ msgstr "%d სიმბოლო"
 
 #: lib/syslog_dashboard.php:1549
 msgid "Line"
-msgstr ""
+msgstr "ხაზი"
 
 #: lib/syslog_dashboard.php:1550
 msgid "Area"
-msgstr ""
+msgstr "არე"
 
 #: lib/syslog_dashboard.php:1551
 msgid "Bar"
-msgstr ""
+msgstr "პანელი"
 
 #: lib/syslog_dashboard.php:1555
-#, fuzzy
 msgid "Interval"
-msgstr "განახლების შუალედი"
+msgstr "ინტერვალი"
 
 #: lib/syslog_dashboard.php:1558
 msgid "Auto"
-msgstr ""
+msgstr "ავტო"
 
 #: lib/syslog_dashboard.php:1559
 #, fuzzy
@@ -801,31 +785,31 @@ msgstr "წაშლა"
 
 #: setup.php:1658
 msgid "Monday"
-msgstr ""
+msgstr "ორშაბათი"
 
 #: setup.php:1658
 msgid "Tuesday"
-msgstr ""
+msgstr "სამშაბათი"
 
 #: setup.php:1658
 msgid "Wednesday"
-msgstr ""
+msgstr "ოთხშაბათი"
 
 #: setup.php:1659
 msgid "Friday"
-msgstr ""
+msgstr "პარასკევი"
 
 #: setup.php:1659
 msgid "Saturday"
-msgstr ""
+msgstr "შაბათი"
 
 #: setup.php:1659
 msgid "Sunday"
-msgstr ""
+msgstr "კვირა"
 
 #: setup.php:1659
 msgid "Thursday"
-msgstr ""
+msgstr "ხუთშაბათი"
 
 #: setup.php:1660
 msgid "Monday through Friday"
@@ -837,7 +821,7 @@ msgstr ""
 
 #: setup.php:1661
 msgid "Every day"
-msgstr ""
+msgstr "ყოველდღე"
 
 #: setup.php:1664 syslog_alerts.php:711 syslog_alerts.php:726
 #: syslog_alerts.php:734 syslog_removal.php:599 syslog_reports.php:499
@@ -1000,14 +984,14 @@ msgid "When partitions are missing (for example after maintenance downtime), at 
 msgstr ""
 
 #: setup.php:1809
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partition per run"
-msgstr "დანაყოფი დღეში"
+msgstr "%d დანაყოფი გაშვებაზე"
 
 #: setup.php:1810 setup.php:1811 setup.php:1812 setup.php:1813 setup.php:1814
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partitions per run"
-msgstr "დანაყოფი დღეში"
+msgstr "%d დანაყოფი გაშვებაზე"
 
 #: setup.php:1818
 msgid "Collector Staleness Threshold"
@@ -1039,9 +1023,9 @@ msgid "Default (10000 messages)"
 msgstr ""
 
 #: setup.php:1838 setup.php:1839 setup.php:1840 setup.php:1841
-#, fuzzy, php-format
+#, php-format
 msgid "%d Messages"
-msgstr "შეტყობინებები"
+msgstr "%d შეტყობინება"
 
 #: setup.php:1845
 msgid "Syslog Alert Retention"
@@ -1338,7 +1322,7 @@ msgstr "არჩეული განგაში"
 
 #: syslog.php:313 syslog.php:543
 msgid "seconds"
-msgstr ""
+msgstr "წამი"
 
 #: syslog.php:334
 msgid "min/avg/max"
