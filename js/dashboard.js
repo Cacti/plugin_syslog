@@ -581,7 +581,7 @@ function syslogDashboardPanelById(panelId) {
 
 /* ===================== Event wiring ===================== */
 
-$(function() {
+if (window.jQuery) window.jQuery(function() {
 	if (!document.getElementById('syslog_dashboard_grid')) {
 		return;
 	}

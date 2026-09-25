@@ -70,7 +70,7 @@ function plugin_syslog_install() {
 
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 1);
-	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 1);
+	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php,syslog_device_rules.php', 'Rule Administrator', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
@@ -395,6 +395,30 @@ function syslog_upgrade_dashboard_realm(): void {
 	}
 }
 
+/** Give Rule Administrators access to device alert rules. */
+function syslog_upgrade_device_rule_realm(): void {
+	global $user_auth_realm_filenames;
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	if (!is_array($realms)) {
+		return;
+	}
+	foreach ($realms as $realm) {
+		if (($realm['display'] ?? '') !== 'Rule Administrator') {
+			continue;
+		}
+		$files = explode(',', $realm['file']);
+		if (!in_array('syslog_device_rules.php', $files, true)) {
+			$files[] = 'syslog_device_rules.php';
+			if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?', [implode(',', $files), $realm['id'], 'syslog'])) {
+				return;
+			}
+			api_plugin_replicate_config();
+		}
+		$user_auth_realm_filenames['syslog_device_rules.php'] = (int) $realm['id'] + 100;
+		return;
+	}
+}
+
 /**
  * Preserve existing Syslog Administration grants as Rule Administrator grants.
  *
@@ -570,15 +594,16 @@ function syslog_check_upgrade(): void {
 	}
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 0);
-	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 0);
+	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php,syslog_device_rules.php', 'Rule Administrator', 0);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 0);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
 	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 0);
+	syslog_upgrade_device_rule_realm();
 	syslog_refresh_permission_roles();
 
 	// Let's only run this check if we are on a page that actually needs the data
-	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
+	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_device_rules.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
 
 	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
 		return;
@@ -2341,6 +2366,7 @@ function syslog_config_arrays(): void {
 
 			if ($temp == __('Import/Export')) {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_device_rules.php'] = __('Device Alert Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');

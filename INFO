@@ -21,7 +21,7 @@
 
 [info]
 name = syslog
-version = 4.4
+version = 4.5
 longname = Syslog Monitoring
 author = The Cacti Group
 email = 
