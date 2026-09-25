@@ -866,6 +866,38 @@ body.dark #syslog_form .syslogSearchPanel {
 	margin-top: 10px;
 }
 
+.syslogStatus .syslogStatusPartitions {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+	margin-top: 10px;
+}
+
+.syslogStatusPartitions th,
+.syslogStatusPartitions td {
+	padding: 10px 12px;
+	text-align: left;
+	overflow-wrap: anywhere;
+}
+
+.syslogStatusPartitions th:first-child {
+	width: 18%;
+}
+
+/* Cacti's dark theme gives all th cells an !important column divider. */
+.syslogStatus .syslogStatusPartitions th {
+	border-right: none !important;
+}
+
+.syslogStatusPartitions thead th {
+	font-weight: normal;
+}
+
+.syslogStatusPartitions tbody tr > :nth-child(3),
+.syslogStatusPartitions tbody tr > :nth-child(4) {
+	text-align: right;
+}
+
 .syslogStatusWorkers th,
 .syslogStatusWorkers td {
 	padding: 10px 12px;
