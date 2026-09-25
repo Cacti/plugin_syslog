@@ -1817,7 +1817,7 @@ function syslog_partition_manage(): int {
 	// Fail safe: refuse to touch partitions while metadata looks wrong.
 	foreach (['syslog', 'syslog_removed'] as $table) {
 		if (!syslog_partition_report_state($table)) {
-			$reason = __('Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition.', $table, 'syslog');
+			$reason = sprintf(__('Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition.', 'syslog'), $table);
 
 			cacti_log("SYSLOG ERROR: $reason", false, 'SYSLOG');
 
@@ -1863,7 +1863,7 @@ function syslog_partition_manage(): int {
 		'%s: %s; %s; %s',
 		$failed_table,
 		$recovery_failed['stop_reason'],
-		__('remaining partition gap: %d day(s)', $recovery_failed['missing'], 'syslog'),
+		sprintf(__('remaining partition gap: %d day(s)', 'syslog'), $recovery_failed['missing']),
 		$recovery_failed['retention_deferred'] ? __('retention pruning deferred until the future horizon is restored', 'syslog') : __('no retention deferral', 'syslog')
 	);
 
