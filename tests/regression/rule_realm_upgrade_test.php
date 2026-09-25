@@ -105,4 +105,16 @@ check(!isset($_SESSION['sess_auth_names']['syslog_alerts.php']), 'Invalidate sta
 db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ?', [$admin_file, 4]);
 check(syslog_upgrade_consolidate_rule_realms(), 'Repair a single corrupted Viewer');
 check($db->query('SELECT file FROM plugin_realms WHERE id=4')->fetchColumn() === $viewer_files, 'Restore canonical Viewer files');
+
+// A legacy combined administration realm becomes Rule Administrator only;
+// saved-search templates and dashboards must be granted separately.
+db_execute_prepared('INSERT INTO plugin_realms(plugin,file,display) VALUES(?,?,?)', [
+	'syslog',
+	'syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php,syslog_dashboards.php',
+	'Syslog Administration'
+]);
+$legacy_id = (int) $db->lastInsertId();
+syslog_upgrade_rule_permissions();
+$legacy_files = (string) $db->query("SELECT file FROM plugin_realms WHERE id = $legacy_id")->fetchColumn();
+check($legacy_files === $admin_file, 'Legacy rule administration must not retain templates or dashboards');
 print "rule_realm_upgrade_test passed (50 upgrade cycles, grants, rollback, grouping, stale cache)\n";

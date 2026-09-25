@@ -401,6 +401,8 @@ function syslog_upgrade_dashboard_realm(): void {
  * Rule pages must be registered to the Rule Viewer realm so Cacti can admit
  * read-only users before page code runs.  The administrator realm is a
  * permission-only entry that the rule pages check before every mutation.
+ * Legacy combined realms must not retain Saved Search Templates or Dashboards:
+ * those pages belong exclusively to the separate Syslog Administration realm.
  *
  * @return void
  */
@@ -419,7 +421,13 @@ function syslog_upgrade_rule_permissions(): void {
 			continue;
 		}
 
-		$files = array_values(array_diff($files, ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php']));
+		$files = array_values(array_diff($files, [
+			'syslog_alerts.php',
+			'syslog_removal.php',
+			'syslog_reports.php',
+			'syslog_saved_searches.php',
+			'syslog_dashboards.php'
+		]));
 		$files[] = 'syslog_rule_administrator.php';
 
 		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
@@ -563,6 +571,7 @@ function syslog_check_upgrade(): void {
 	// Keep newly introduced permission realms available for existing installs.
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 0);
 	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 0);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 0);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
 	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 0);
