@@ -1,33 +1,35 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR The Cacti Group
-# This file is distributed under the same license as the Cacti package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti \n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2026-09-25 16:58-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
-"Language-Team: Cacti Developers <developers@cacti.net>\n"
-"Language: \n"
+"PO-Revision-Date: 2026-09-12 08:18+0000\n"
+"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
+"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
+"Language: sv-SE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: functions.php:687
+#, fuzzy
 msgid "Syslog download"
-msgstr ""
+msgstr "Syslog aktiverad"
 
 #: functions.php:800
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "Spara misslyckades.  Fjärrdatainsamlare i synkroniseringsläge får inte spara regler.  Spara från huvudservern för Cacti i stället."
 
 #: functions.php:853
 msgid "Please use an HTML Email Client"
-msgstr ""
+msgstr "Vänligen använd en HTML e-postklient"
 
 #: functions.php:878
 msgid "Text import payload exceeds the maximum size"
@@ -72,8 +74,9 @@ msgid "per run recovery limit reached"
 msgstr ""
 
 #: functions.php:1956
+#, fuzzy
 msgid "partition creation failed"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: functions.php:2921
 msgid "Unknown rule type."
@@ -127,145 +130,145 @@ msgstr ""
 #: syslog.php:2286 syslog.php:2287 syslog.php:2314 syslog.php:2317
 #: syslog.php:2318 syslog.php:2375
 msgid "Unknown"
-msgstr ""
+msgstr "Okänd"
 
 #: functions.php:4678
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
-msgstr ""
+msgstr "Cacti Syslog Threshold Alert '%s' för Host '%s'"
 
 #: functions.php:4680
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog Tröskelvärde Varning '%s'"
 
 #: functions.php:4688 syslog.php:2352 syslog_alerts.php:1169
 msgid "Alert Name"
-msgstr ""
+msgstr "Bevakningens namn"
 
 #: functions.php:4689 functions.php:4716 syslog.php:2351 syslog_alerts.php:653
 #: syslog_alerts.php:1170
 msgid "Severity"
-msgstr ""
+msgstr "Allvarlighetsgrad"
 
 #: functions.php:4690 syslog_alerts.php:672 syslog_alerts.php:677
 #: syslog_alerts.php:1196
 msgid "Threshold"
-msgstr ""
+msgstr "Tröskel"
 
 #: functions.php:4691 syslog.php:2233 syslog.php:2354
 msgid "Count"
-msgstr ""
+msgstr "Antal"
 
 #: functions.php:4692
 msgid "Match String"
-msgstr ""
+msgstr "Matcha sträng"
 
 #: functions.php:4703 functions.php:4743
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
-msgstr ""
+msgstr "Cacti Syslog-meddelande '%s' för värd '%s'"
 
 #: functions.php:4705 functions.php:4745
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog-varning '%s'"
 
 #: functions.php:4714
 msgid "Hostname"
-msgstr ""
+msgstr "Värdnamn"
 
 #: functions.php:4715 functions.php:5649 syslog.php:2224 syslog.php:2349
 #: syslog.php:2406
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: functions.php:4717
 msgid "Level"
-msgstr ""
+msgstr "Nivå"
 
 #: functions.php:4718 functions.php:5650 lib/syslog_dashboard.php:1621
 #: syslog.php:1921 syslog.php:2006 syslog.php:2227 syslog.php:2353
 #: syslog.php:2407 syslog_alerts.php:889 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
-msgstr ""
+msgstr "Meddelande"
 
 #: functions.php:4726
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
-msgstr ""
+msgstr "VARNING: En Syslog Threshold Alert har utlösts för Host '%s'"
 
 #: functions.php:4728
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
-msgstr ""
+msgstr "VARNING: Ett tröskelvärde för Syslog har utlösts"
 
 #: functions.php:4735
 msgid "Name:"
-msgstr ""
+msgstr "Namn:"
 
 #: functions.php:4736 functions.php:4792
 msgid "Severity:"
-msgstr ""
+msgstr "Allvarlighetsgrad:"
 
 #: functions.php:4737
 msgid "Threshold:"
-msgstr ""
+msgstr "Tröskelvärde:"
 
 #: functions.php:4738
 msgid "Count:"
-msgstr ""
+msgstr "Antal:"
 
 #: functions.php:4739
 msgid "Message String:"
-msgstr ""
+msgstr "Meddelandesträng:"
 
 #: functions.php:4790
 msgid "Hostname:"
-msgstr ""
+msgstr "& Värddatornamn:"
 
 #: functions.php:4791
 msgid "Date:"
-msgstr ""
+msgstr "Datum:"
 
 #: functions.php:4793
 msgid "Level:"
-msgstr ""
+msgstr "Nivå:"
 
 #: functions.php:4794
 msgid "Message:"
-msgstr ""
+msgstr "Meddelande:"
 
 #: functions.php:4869
 msgid ", Host:"
-msgstr ""
+msgstr ", Värd:"
 
 #: functions.php:4869 functions.php:4904
 msgid ", URL:"
-msgstr ""
+msgstr ", URL:"
 
 #: functions.php:4869 functions.php:4904
 msgid "Sev:"
-msgstr ""
+msgstr "Sev:"
 
 #: functions.php:4875 functions.php:4900
 #, php-format
 msgid "Event Alert - %s"
-msgstr ""
+msgstr "Händelsevarning - %s"
 
 #: functions.php:4904
 msgid ", Count:"
-msgstr ""
+msgstr ", Antal:"
 
 #: functions.php:5648 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
 #: syslog_removal.php:680
 msgid "Host"
-msgstr ""
+msgstr "Värd"
 
 #: functions.php:5673
 #, php-format
 msgid "Event Report - %s"
-msgstr ""
+msgstr "Händelserapport - %s"
 
 #: lib/syslog_dashboard.php:396
 msgid "Invalid dashboard panel source."
@@ -375,14 +378,14 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1369 lib/syslog_dashboard.php:1524 syslog.php:2001
 msgid "Save"
-msgstr ""
+msgstr "Spara"
 
 #: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1662
 #: setup.php:2505 syslog.php:2000 syslog_alerts.php:230
 #: syslog_dashboards.php:428 syslog_device_rules.php:126 syslog_removal.php:248
 #: syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: lib/syslog_dashboard.php:1371 syslog.php:1999
 msgid "Apply"
@@ -393,7 +396,7 @@ msgstr ""
 #: syslog_device_rules.php:124 syslog_removal.php:36
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Delete"
-msgstr ""
+msgstr "Ta bort"
 
 #: lib/syslog_dashboard.php:1373
 msgid "Delete this dashboard panel?"
@@ -420,8 +423,9 @@ msgid "Save as my copy"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1385
+#, fuzzy
 msgid "Syslog Dashboards"
-msgstr ""
+msgstr "Syslog aktiverad"
 
 #: lib/syslog_dashboard.php:1396 lib/syslog_dashboard.php:1557
 #: lib/syslog_dashboard.php:1581 syslog.php:256
@@ -430,43 +434,46 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1399 lib/syslog_dashboard.php:1579
 msgid "Time Range"
-msgstr ""
+msgstr "Tidsintervall"
 
 #: lib/syslog_dashboard.php:1404 lib/syslog_dashboard.php:1582
+#, fuzzy
 msgid "Last Hour"
-msgstr ""
+msgstr "%d timme"
 
 #: lib/syslog_dashboard.php:1405 lib/syslog_dashboard.php:1583
-#, php-format
+#, fuzzy, php-format
 msgid "Last %d Hours"
-msgstr ""
+msgstr "%d timmar"
 
 #: lib/syslog_dashboard.php:1406 lib/syslog_dashboard.php:1584
 msgid "Last Day"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1407 lib/syslog_dashboard.php:1585
+#, fuzzy
 msgid "Last Week"
-msgstr ""
+msgstr "Senast skickat"
 
 #: lib/syslog_dashboard.php:1408 lib/syslog_dashboard.php:1586
-#, php-format
+#, fuzzy, php-format
 msgid "Last %d Weeks"
-msgstr ""
+msgstr "%d veckor"
 
 #: lib/syslog_dashboard.php:1409 lib/syslog_dashboard.php:1587
+#, fuzzy
 msgid "Last Month"
-msgstr ""
+msgstr "Senast skickat"
 
 #: lib/syslog_dashboard.php:1410 lib/syslog_dashboard.php:1411
 #: lib/syslog_dashboard.php:1588 lib/syslog_dashboard.php:1589
-#, php-format
+#, fuzzy, php-format
 msgid "Last %d Months"
-msgstr ""
+msgstr "%d månader"
 
 #: lib/syslog_dashboard.php:1421 syslog.php:1949 syslog.php:2027
 msgid "Refresh"
-msgstr ""
+msgstr "Uppdatera"
 
 #: lib/syslog_dashboard.php:1438 setup.php:2235 setup.php:2295
 #: syslog_dashboards.php:201 syslog_dashboards.php:203
@@ -520,15 +527,16 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1535 syslog.php:252
 msgid "System Logs"
-msgstr ""
+msgstr "Systemloggar"
 
 #: lib/syslog_dashboard.php:1536 syslog.php:254
 msgid "Alert Logs"
-msgstr ""
+msgstr "Varningsloggar"
 
 #: lib/syslog_dashboard.php:1540
+#, fuzzy
 msgid "Panel Type"
-msgstr ""
+msgstr "Typ av matchning"
 
 #: lib/syslog_dashboard.php:1542
 msgid "Time Series"
@@ -539,8 +547,9 @@ msgid "Breakdown"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1547
+#, fuzzy
 msgid "Chart"
-msgstr ""
+msgstr "%d tecken"
 
 #: lib/syslog_dashboard.php:1549
 msgid "Line"
@@ -555,28 +564,33 @@ msgid "Bar"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1555
+#, fuzzy
 msgid "Interval"
-msgstr ""
+msgstr "Ladda om interval"
 
 #: lib/syslog_dashboard.php:1558
 msgid "Auto"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1559
+#, fuzzy
 msgid "Minute"
-msgstr ""
+msgstr "1 minut"
 
 #: lib/syslog_dashboard.php:1560
+#, fuzzy
 msgid "10 Minutes"
-msgstr ""
+msgstr "1 minut"
 
 #: lib/syslog_dashboard.php:1561
+#, fuzzy
 msgid "Hour"
-msgstr ""
+msgstr "%d timme"
 
 #: lib/syslog_dashboard.php:1562
+#, fuzzy
 msgid "Day"
-msgstr ""
+msgstr "Dagligen"
 
 #: lib/syslog_dashboard.php:1566
 msgid "Field"
@@ -585,37 +599,38 @@ msgstr ""
 #: lib/syslog_dashboard.php:1569 syslog.php:2226 syslog.php:2406
 #: syslog.php:2481 syslog_alerts.php:891 syslog_removal.php:681
 msgid "Program"
-msgstr ""
+msgstr "Program"
 
 #: lib/syslog_dashboard.php:1570 syslog.php:2228 syslog.php:2355
 #: syslog.php:2406 syslog_alerts.php:892 syslog_removal.php:682
 msgid "Facility"
-msgstr ""
+msgstr "Anläggning"
 
 #: lib/syslog_dashboard.php:1571 syslog.php:2229 syslog.php:2356
 #: syslog.php:2406 syslog_alerts.php:893 syslog_removal.php:683
 msgid "Priority"
-msgstr ""
+msgstr "Prioritet"
 
 #: lib/syslog_dashboard.php:1575
+#, fuzzy
 msgid "Top Count"
-msgstr ""
+msgstr "Antal"
 
 #: lib/syslog_dashboard.php:1593 syslog.php:1966
 msgid "Record Type"
-msgstr ""
+msgstr "Typ av registrering"
 
 #: lib/syslog_dashboard.php:1595 syslog.php:1968
 msgid "All Records"
-msgstr ""
+msgstr "Alla poster"
 
 #: lib/syslog_dashboard.php:1596 syslog.php:1969
 msgid "Main Records"
-msgstr ""
+msgstr "Huvudregister"
 
 #: lib/syslog_dashboard.php:1597 syslog.php:1970
 msgid "Removed Records"
-msgstr ""
+msgstr "Borttagna poster"
 
 #: lib/syslog_dashboard.php:1601
 msgid "Start from Saved Search"
@@ -625,7 +640,7 @@ msgstr ""
 #: syslog.php:2486 syslog.php:2539 syslog.php:2540 syslog_alerts.php:802
 #: syslog_device_rules.php:265 syslog_reports.php:554
 msgid "None"
-msgstr ""
+msgstr "inget"
 
 #: lib/syslog_dashboard.php:1622 syslog.php:1922 syslog.php:2007
 #: syslog_saved_searches.php:666
@@ -634,13 +649,15 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1623 syslog.php:1925 syslog.php:2010
 #: syslog_alerts.php:915 syslog_removal.php:705 syslog_saved_searches.php:666
+#, fuzzy
 msgid "Remove condition"
-msgstr ""
+msgstr "Borttagna poster"
 
 #: lib/syslog_dashboard.php:1624 syslog.php:1926 syslog.php:2011
 #: syslog_saved_searches.php:666
+#, fuzzy
 msgid "Match group"
-msgstr ""
+msgstr "Typ av matchning"
 
 #: lib/syslog_dashboard.php:1625 syslog.php:1927 syslog.php:2012
 #: syslog_saved_searches.php:666
@@ -656,35 +673,35 @@ msgstr ""
 #: syslog_dashboards.php:733 syslog_reports.php:489
 #: syslog_saved_searches.php:281 syslog_saved_searches.php:648
 msgid "Name"
-msgstr ""
+msgstr "Namn"
 
 #: setup.php:41 setup.php:188
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
-msgstr ""
+msgstr "Byt namn på filerna config.php.dist eller config_local.php.dist i syslog-katalogen och ändra konfigurationen av din databas innan du installerar."
 
 #: setup.php:1477
 msgid "What upgrade/install type do you wish to use"
-msgstr ""
+msgstr "Vilken typ av uppgradering/installation vill du använda"
 
 #: setup.php:1478
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr ""
+msgstr "När du har mycket stora tabeller går det mycket snabbare att utföra en Truncate.  Om du är orolig för arkivdata kan du välja antingen Inline, vilket fryser din webbläsare under uppgraderingsperioden, eller Background, vilket skapar en bakgrundsprocess för att föra över dina gamla syslogdata från en backuptabell till det nya syslogformatet.  Även denna process kan ta flera timmar."
 
 #: setup.php:1481
 msgid "Truncate Syslog Table"
-msgstr ""
+msgstr "Trunkera Syslog-tabell"
 
 #: setup.php:1482
 msgid "Inline Upgrade"
-msgstr ""
+msgstr "Inline-uppgradering"
 
 #: setup.php:1483
 msgid "Background Upgrade"
-msgstr ""
+msgstr "Uppgradering av bakgrund"
 
 #: setup.php:1488
 msgid "Database Storage Engine"
-msgstr ""
+msgstr "Lagringsmotor för databaser"
 
 #: setup.php:1489
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
@@ -692,94 +709,97 @@ msgstr ""
 
 #: setup.php:1492
 msgid "InnoDB Storage"
-msgstr ""
+msgstr "InnoDB-lagring"
 
 #: setup.php:1493
+#, fuzzy
 msgid "Aria Storage"
-msgstr ""
+msgstr "MyISAM-lagring"
 
 #: setup.php:1502
 msgid "Retention Policy"
-msgstr ""
+msgstr "Policy för bevarande"
 
 #: setup.php:1503
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr ""
+msgstr "Välj hur många dagars Syslog-värden som ska sparas i databasen."
 
 #: setup.php:1523
 msgid "Partitions per Day"
-msgstr ""
+msgstr "Partitioner per dag"
 
 #: setup.php:1524
 msgid "Select the number of partitions per day that you wish to create."
-msgstr ""
+msgstr "Välj det antal partitioner per dag som du vill skapa."
 
 #: setup.php:1527 setup.php:1528 setup.php:1529 setup.php:1530 setup.php:1531
 #, php-format
 msgid "%d Per Day"
-msgstr ""
+msgstr "%d per dygn"
 
 #: setup.php:1536 setup.php:1650
 msgid "Upgrade"
-msgstr ""
+msgstr "Uppgradera"
 
 #: setup.php:1538 setup.php:1652
 msgid "Install"
-msgstr ""
+msgstr "Installera"
 
 #: setup.php:1552
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr ""
+msgstr "Syslog %s Rådgivare"
 
 #: setup.php:1556
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr ""
+msgstr "VARNING: Syslog-uppgradering är tidskrävande!!!"
 
 #: setup.php:1557
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr ""
+msgstr "Uppgraderingen av den \"huvudsakliga\" syslog-tabellen kan vara en mycket tidskrävande process.  Därför rekommenderar vi att du antingen minskar storleken på syslog-tabellen före uppgraderingen eller väljer bakgrundsalternativet</p> Om <p>du väljer bakgrundsalternativet kommer din gamla syslog-tabell att byta namn och en ny syslog-tabell att skapas.  Därefter kommer en uppgraderingsprocess att startas i bakgrunden.  Även denna bakgrundsprocess kan ta ganska lång tid att slutföra.  Dina data kommer dock att bevaras</p> <p>Oavsett vad du väljer kommer alla befintliga borttagnings- och varningsregler att bibehållas under uppgraderingsprocessen.</p> <p>Tryck på <b>\"Upgrade</b> \" för att fortsätta med uppgraderingen, eller <b>\"Cancel\"</b> för att återgå till Plugins-menyn."
 
 #: setup.php:1560
+#, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr ""
+msgstr "Du kan också välja lagringstid.  Tänk på att om du har flera värdar som loggar till syslog kan den här tabellen bli ganska stor.  Så om du inte använder partitionering kanske du vill hålla storleken mindre."
 
 #: setup.php:1560
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
 msgstr ""
 
 #: setup.php:1560
+#, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr ""
+msgstr "Du har flera alternativ att välja mellan när du installerar Syslog.  Det första är databasarkitekturen.  Du bör välja att använda tabellpartitionering för att förhindra att tabellernas storlek blir för stor och därmed saktar ner förfrågningar."
 
 #: setup.php:1566
 #, php-format
 msgid "Syslog %s Settings"
-msgstr ""
+msgstr "Syslog %s Inställningar"
 
 #: setup.php:1598
 msgid "What uninstall method do you want to use?"
-msgstr ""
+msgstr "Vilken avinstallationsmetod vill du använda?"
 
 #: setup.php:1599
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr ""
+msgstr "När du avinstallerar syslog kan du ta bort allt, eller bara delar, ifall du planerar att installera om i framtiden."
 
 #: setup.php:1601
 msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr ""
+msgstr "Ta bort allt (loggar, tabeller, inställningar)"
 
 #: setup.php:1601
 msgid "Syslog Data Only"
-msgstr ""
+msgstr "Endast Syslog-data"
 
 #: setup.php:1621
 msgid "Syslog Uninstall Preferences"
-msgstr ""
+msgstr "Syslog avinstallera inställningar"
 
 #: setup.php:1655
 msgid "Uninstall"
-msgstr ""
+msgstr "Avinstallera"
 
 #: setup.php:1715
 msgid "Monday"
@@ -825,54 +845,54 @@ msgstr ""
 #: syslog_alerts.php:734 syslog_device_rules.php:168
 #: syslog_device_rules.php:267 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
-msgstr ""
+msgstr "Inaktiverad"
 
 #: setup.php:1735 setup.php:2032 setup.php:2034 setup.php:2246 setup.php:2278
 #: setup.php:2296
 msgid "Syslog"
-msgstr ""
+msgstr "Syslogg"
 
 #: setup.php:1739
 msgid "General Settings"
-msgstr ""
+msgstr "Allmänna inställningar"
 
 #: setup.php:1743
 msgid "Syslog Enabled"
-msgstr ""
+msgstr "Syslog aktiverad"
 
 #: setup.php:1744
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr ""
+msgstr "Om den här kryssrutan är markerad kommer poster att överföras från tabellen Syslog Incoming till huvudtabellen för syslog och varningar och rapporter kommer att aktiveras.  Tänk på att loggposter fortfarande ackumuleras i tabellen Syslog Incoming om systemet är inaktiverat, eftersom detta definieras av processen rsyslog eller syslog-ng."
 
 #: setup.php:1749
 msgid "Strip Domains"
-msgstr ""
+msgstr "Strip Domains"
 
 #: setup.php:1750
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr ""
+msgstr "En kommaseparerad lista med domäner som du vill ta bort från syslogens värdnamn, exempel kan vara \"mydomain.com, otherdomain.com"
 
 #: setup.php:1757
 msgid "Refresh Interval"
-msgstr ""
+msgstr "Ladda om interval"
 
 #: setup.php:1758
 msgid "This is the time in seconds before the page refreshes."
-msgstr ""
+msgstr "Detta är den tid i sekunder som återstår innan sidan uppdateras."
 
 #: setup.php:1764
 msgid "Max Report Records"
-msgstr ""
+msgstr "Max Report Records"
 
 #: setup.php:1765
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr ""
+msgstr "För tröskelvärdesbaserade varningar, vilket är det högsta antal som du vill visa i rapporten.  Detta används för att begränsa storleken på html-loggen och e-postmeddelandet."
 
 #: setup.php:1769 setup.php:1770 setup.php:1771 setup.php:1772 setup.php:1773
 #: setup.php:1774
 #, php-format
 msgid "%d Records"
-msgstr ""
+msgstr "%d poster"
 
 #: setup.php:1778
 msgid "Maximum Syslog Processing Processes"
@@ -894,11 +914,11 @@ msgstr ""
 
 #: setup.php:1792
 msgid "Command for Opening Tickets"
-msgstr ""
+msgstr "Kommando för att öppna biljetter"
 
 #: setup.php:1793
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr ""
+msgstr "Detta kommando kommer att utföras för att öppna Help Desk-biljetter.  Kommandot kommer att behöva analysera flera inmatningsparametrar enligt följande: - <b>-alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  Värdlistan är en kommaseparerad lista över värddatorer som påverkas av varningen."
 
 #: setup.php:1799
 msgid "Host Discovery Options"
@@ -922,35 +942,35 @@ msgstr ""
 
 #: setup.php:1816
 msgid "HTML Notification Settings"
-msgstr ""
+msgstr "Inställningar för HTML-meddelanden"
 
 #: setup.php:1821
 msgid "Enable HTML Based Email"
-msgstr ""
+msgstr "Aktivera HTML-baserad e-post"
 
 #: setup.php:1822
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr ""
+msgstr "Om den här kryssrutan är markerad skickas alla e-postmeddelanden i HTML-format.  I annat fall skickas e-postmeddelanden i vanlig text."
 
 #: setup.php:1827
 msgid "Format File to Use"
-msgstr ""
+msgstr "Formatera fil som ska användas"
 
 #: setup.php:1830
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "Välj den anpassade HTML-wrapper och CSS-filen som ska användas. Den här filen innehåller både html och CSS för att paketera runt din rapport. Om det innehåller mer än bara CSS, måste du placera en speciell <REPORT> tagga inuti filen. Denna formattag kommer att ersättas med rapportinnehållet. Dessa filer finns i katalogen &quot;format&quot;."
 
 #: setup.php:1834
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "Inställningar för datalagring"
 
 #: setup.php:1839
 msgid "Syslog Retention"
-msgstr ""
+msgstr "Bevarande av Syslog"
 
 #: setup.php:1840
 msgid "This is the number of days to keep events."
-msgstr ""
+msgstr "Detta är det antal dagar som händelserna ska sparas."
 
 #: setup.php:1846
 msgid "Partition Pre-create Window"
@@ -963,7 +983,7 @@ msgstr ""
 #: setup.php:1851 setup.php:2139 setup.php:2158 syslog_alerts.php:516
 #, php-format
 msgid "%d Day"
-msgstr ""
+msgstr "%d Dag"
 
 #: setup.php:1852 setup.php:1853 setup.php:1854 setup.php:1855 setup.php:1856
 #: setup.php:1857 setup.php:2140 setup.php:2141 setup.php:2142 setup.php:2143
@@ -971,25 +991,26 @@ msgstr ""
 #: setup.php:2163 syslog_alerts.php:517
 #, php-format
 msgid "%d Days"
-msgstr ""
+msgstr "%d dygn"
 
 #: setup.php:1861
+#, fuzzy
 msgid "Partition Recovery Limit"
-msgstr ""
+msgstr "Partitioner per dag"
 
 #: setup.php:1862
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
 msgstr ""
 
 #: setup.php:1866
-#, php-format
+#, fuzzy, php-format
 msgid "%d Partition per run"
-msgstr ""
+msgstr "Partitioner per dag"
 
 #: setup.php:1867 setup.php:1868 setup.php:1869 setup.php:1870 setup.php:1871
-#, php-format
+#, fuzzy, php-format
 msgid "%d Partitions per run"
-msgstr ""
+msgstr "Partitioner per dag"
 
 #: setup.php:1875
 msgid "Collector Staleness Threshold"
@@ -1021,17 +1042,17 @@ msgid "Default (10000 messages)"
 msgstr ""
 
 #: setup.php:1895 setup.php:1896 setup.php:1897 setup.php:1898
-#, php-format
+#, fuzzy, php-format
 msgid "%d Messages"
-msgstr ""
+msgstr "Meddelanden"
 
 #: setup.php:1902
 msgid "Syslog Alert Retention"
-msgstr ""
+msgstr "Bevarande av Syslog-varningar"
 
 #: setup.php:1903
 msgid "This is the number of days to keep alert logs."
-msgstr ""
+msgstr "Detta är det antal dagar som varningsloggarna ska sparas."
 
 #: setup.php:1909
 msgid "Alert Suppression and Maintenance"
@@ -1095,120 +1116,120 @@ msgstr ""
 
 #: setup.php:1961
 msgid "Remote Message Processing"
-msgstr ""
+msgstr "Behandling av fjärrmeddelanden"
 
 #: setup.php:1965
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "Aktivera meddelandehantering för fjärrdatainsamlare"
 
 #: setup.php:1966
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och bearbetar sina meddelanden självständigt, markera den här kryssrutan.  Om du markerar den här kryssrutan måste dina fjärruppsamlare underhålla sin egen fil \"config_local.php\" för att informera Syslog om att använda en oberoende databas för visning och bearbetning av meddelanden.  Använd mallfilen \"config_local.php.dist\" för detta ändamål.  VARNING: Syslog-tabeller skapas automatiskt så snart det här alternativet är aktiverat."
 
 #: setup.php:1971
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "Synkronisering av regler för fjärrdatainsamling"
 
 #: setup.php:1972
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar dessa meddelanden oberoende av varandra, markera den här kryssrutan om du vill att reglerna för varningar, borttagning och rapporter i huvuddatabasen ska skickas till fjärrdatasystemet."
 
 #: setup.php:2093 syslog_device_rules.php:124 syslog_removal.php:37
 msgid "Disable"
-msgstr ""
+msgstr "Inaktivera"
 
 #: setup.php:2094 syslog_device_rules.php:124 syslog_removal.php:38
 msgid "Enable"
-msgstr ""
+msgstr "Aktivera"
 
 #: setup.php:2095 syslog.php:2028 syslog_dashboards.php:300
 #: syslog_dashboards.php:351 syslog_device_rules.php:124 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
-msgstr ""
+msgstr "Exportera"
 
 #: setup.php:2138 setup.php:2157
 msgid "Indefinite"
-msgstr ""
+msgstr "Obestämd tid"
 
 #: setup.php:2145 setup.php:2164 syslog_alerts.php:518
 #, php-format
 msgid "%d Week"
-msgstr ""
+msgstr "%d vecka"
 
 #: setup.php:2146 setup.php:2165 syslog_alerts.php:519
 #, php-format
 msgid "%d Weeks"
-msgstr ""
+msgstr "%d veckor"
 
 #: setup.php:2147 setup.php:2166
 #, php-format
 msgid "%d Month"
-msgstr ""
+msgstr "%d månad"
 
 #: setup.php:2148 setup.php:2149 setup.php:2150 setup.php:2151 setup.php:2152
 #: setup.php:2167 setup.php:2168 setup.php:2169 setup.php:2170 setup.php:2171
 #, php-format
 msgid "%d Months"
-msgstr ""
+msgstr "%d månader"
 
 #: setup.php:2153 setup.php:2172
 #, php-format
 msgid "%d Year"
-msgstr ""
+msgstr "%d år"
 
 #: setup.php:2176 syslog.php:295 syslog.php:310 syslog.php:325 syslog.php:751
 #: syslog_dashboards.php:324 syslog_reports.php:809
 msgid "Never"
-msgstr ""
+msgstr "Aldrig"
 
 #: setup.php:2177
 #, php-format
 msgid "%d Minute"
-msgstr ""
+msgstr "%d minut"
 
 #: setup.php:2178 setup.php:2179 setup.php:2180 syslog_alerts.php:503
 #: syslog_alerts.php:504 syslog_alerts.php:505 syslog_alerts.php:506
 #: syslog_alerts.php:507 syslog_alerts.php:508
 #, php-format
 msgid "%d Minutes"
-msgstr ""
+msgstr "%d minuter"
 
 #: setup.php:2184 syslog.php:2088
 msgid "Notice"
-msgstr ""
+msgstr "Notis"
 
 #: setup.php:2185 syslog.php:2087 syslog.php:2106
 msgid "Warning"
-msgstr ""
+msgstr "Varning"
 
 #: setup.php:2186 syslog.php:2084
 msgid "Critical"
-msgstr ""
+msgstr "Kritiskt"
 
 #: setup.php:2190
 msgid "Begins with"
-msgstr ""
+msgstr "Börjar med"
 
 #: setup.php:2191
 msgid "Contains"
-msgstr ""
+msgstr "Innehåller"
 
 #: setup.php:2192
 msgid "Ends with"
-msgstr ""
+msgstr "Slutar med"
 
 #: setup.php:2193
 msgid "Hostname is"
-msgstr ""
+msgstr "Värdnamn är"
 
 #: setup.php:2194
 msgid "Program is"
-msgstr ""
+msgstr "Programmet är"
 
 #: setup.php:2195
 msgid "Facility is"
-msgstr ""
+msgstr "Anläggningen är"
 
 #: setup.php:2196 syslog_alerts.php:690
 msgid "Filter Builder"
@@ -1216,40 +1237,41 @@ msgstr ""
 
 #: setup.php:2197 syslog_alerts.php:691
 msgid "SQL Expression"
-msgstr ""
+msgstr "SQL-uttryck"
 
 #: setup.php:2201
 msgid "Daily"
-msgstr ""
+msgstr "Dagligen"
 
 #: setup.php:2202
 msgid "Weekly"
-msgstr ""
+msgstr "Veckovis"
 
 #: setup.php:2229
 msgid "Import/Export"
-msgstr ""
+msgstr "Importera/Exportera"
 
 #: setup.php:2230
 msgid "Alert Rules"
-msgstr ""
+msgstr "Regler för varning"
 
 #: setup.php:2230 setup.php:2231 setup.php:2232 setup.php:2233 setup.php:2234
 #: setup.php:2235 setup.php:2240
 msgid "Syslog Settings"
-msgstr ""
+msgstr "Syslog-inställningar"
 
 #: setup.php:2231 syslog_device_rules.php:257
+#, fuzzy
 msgid "Device Alert Rules"
-msgstr ""
+msgstr "Regler för varning"
 
 #: setup.php:2232
 msgid "Removal Rules"
-msgstr ""
+msgstr "Regler för borttagning"
 
 #: setup.php:2233
 msgid "Report Rules"
-msgstr ""
+msgstr "Rapportera regler"
 
 #: setup.php:2234 setup.php:2294 syslog_saved_searches.php:195
 msgid "Saved Search Templates"
@@ -1257,45 +1279,46 @@ msgstr ""
 
 #: setup.php:2279
 msgid "Syslog Removals"
-msgstr ""
+msgstr "Flytt av Syslog"
 
 #: setup.php:2280 setup.php:2281 setup.php:2285 setup.php:2286 setup.php:2289
 #: setup.php:2292
 msgid "(Edit)"
-msgstr ""
+msgstr "(Redigera)"
 
 #: setup.php:2282 setup.php:2287 setup.php:2293
 msgid "(Actions)"
-msgstr ""
+msgstr "Åtgärder"
 
 #: setup.php:2284
 msgid "Syslog Alerts"
-msgstr ""
+msgstr "Syslog-varningar"
 
 #: setup.php:2288
+#, fuzzy
 msgid "Syslog Device Alert Rules"
-msgstr ""
+msgstr "Visa regler för Syslog-varningar"
 
 #: setup.php:2291
 msgid "Syslog Reports"
-msgstr ""
+msgstr "Syslog-rapporter"
 
 #: setup.php:2395
 msgid "Display Syslog in Range"
-msgstr ""
+msgstr "Visa Syslog i intervall"
 
 #: setup.php:2465
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
-msgstr ""
+msgstr "Det har tagits bort %s enhetsposter från Syslog-databasen"
 
 #: setup.php:2486
 msgid "Syslog Utilities"
-msgstr ""
+msgstr "Syslog-verktyg"
 
 #: setup.php:2490
 msgid "Purge Syslog Devices"
-msgstr ""
+msgstr "Rensning av Syslog-enheter"
 
 #: setup.php:2492
 msgid "Are you sure you want to purge stale Syslog devices?"
@@ -1309,23 +1332,24 @@ msgstr ""
 #: syslog_device_rules.php:126 syslog_removal.php:248 syslog_reports.php:213
 #: syslog_saved_searches.php:384
 msgid "Continue"
-msgstr ""
+msgstr "Fortsätt"
 
 #: setup.php:2538
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr ""
+msgstr "Detta menyval gör det möjligt att ta bort enheter som inte längre rapporterar till Cactis syslog-server."
 
 #: syslog.php:126
 msgid "Syslog Viewer"
-msgstr ""
+msgstr "Syslog-visningsprogram"
 
 #: syslog.php:258 syslog.php:674
+#, fuzzy
 msgid "Syslog Status"
-msgstr ""
+msgstr "Syslog-inställningar"
 
 #: syslog.php:268
 msgid "Selected Alert"
-msgstr ""
+msgstr "Vald Alert"
 
 #: syslog.php:313 syslog.php:543
 msgid "seconds"
@@ -1342,9 +1366,9 @@ msgid "Unavailable"
 msgstr ""
 
 #: syslog.php:493
-#, php-format
+#, fuzzy, php-format
 msgid "no message received for %s"
-msgstr ""
+msgstr "Filter för Syslog-meddelanden %s"
 
 #: syslog.php:498
 #, php-format
@@ -1356,8 +1380,9 @@ msgid "no incoming data is available to evaluate"
 msgstr ""
 
 #: syslog.php:552
+#, fuzzy
 msgid "day"
-msgstr ""
+msgstr "Dagligen"
 
 #: syslog.php:552
 msgid "days"
@@ -1368,16 +1393,19 @@ msgid "hour"
 msgstr ""
 
 #: syslog.php:559
+#, fuzzy
 msgid "hours"
-msgstr ""
+msgstr "%d timmar"
 
 #: syslog.php:565
+#, fuzzy
 msgid "minute"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog.php:565
+#, fuzzy
 msgid "minutes"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog.php:601
 msgid "Rows in syslog_incoming"
@@ -1388,12 +1416,14 @@ msgid "Syslog table size (data + indexes)"
 msgstr ""
 
 #: syslog.php:603
+#, fuzzy
 msgid "Syslog retention"
-msgstr ""
+msgstr "Bevarande av Syslog"
 
 #: syslog.php:604
+#, fuzzy
 msgid "Alert retention"
-msgstr ""
+msgstr "Bevarande av Syslog-varningar"
 
 #: syslog.php:639 syslog.php:661
 msgid "No recovery activity recorded yet."
@@ -1404,8 +1434,9 @@ msgid "created"
 msgstr ""
 
 #: syslog.php:656
+#, fuzzy
 msgid "remaining"
-msgstr ""
+msgstr "Varning"
 
 #: syslog.php:657
 msgid "retention deferred"
@@ -1416,8 +1447,9 @@ msgid "Latest processing run"
 msgstr ""
 
 #: syslog.php:682
+#, fuzzy
 msgid "Records processed"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog.php:686
 msgid "Polling runtime"
@@ -1444,24 +1476,28 @@ msgid "Maximum runtime"
 msgstr ""
 
 #: syslog.php:706
+#, fuzzy
 msgid "Storage and retention"
-msgstr ""
+msgstr "Bevarande av Syslog"
 
 #: syslog.php:715
+#, fuzzy
 msgid "Partition maintenance blocked"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: syslog.php:716
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
 msgstr ""
 
 #: syslog.php:721
+#, fuzzy
 msgid "Partition health"
-msgstr ""
+msgstr "Partitioner per dag"
 
 #: syslog.php:725
+#, fuzzy
 msgid "Table"
-msgstr ""
+msgstr "Aktivera"
 
 #: syslog.php:726
 msgid "Date coverage"
@@ -1476,12 +1512,14 @@ msgid "dMaxValue size"
 msgstr ""
 
 #: syslog.php:745
+#, fuzzy
 msgid "Partition maintenance activity"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: syslog.php:749
+#, fuzzy
 msgid "Last attempt"
-msgstr ""
+msgstr "Senast skickat"
 
 #: syslog.php:750
 msgid "Last successful maintenance"
@@ -1500,12 +1538,14 @@ msgid "Latest outcome"
 msgstr ""
 
 #: syslog.php:752
+#, fuzzy
 msgid "Recovery progress"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog.php:760
+#, fuzzy
 msgid "Recent partition maintenance activity"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: syslog.php:762
 msgid "When"
@@ -1516,12 +1556,13 @@ msgid "Outcome"
 msgstr ""
 
 #: syslog.php:764
+#, fuzzy
 msgid "Recovery"
-msgstr ""
+msgstr "%d poster"
 
 #: syslog.php:765 syslog_alerts.php:641 syslog_reports.php:485
 msgid "Details"
-msgstr ""
+msgstr "Detaljer"
 
 #: syslog.php:769
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1545,16 +1586,18 @@ msgid "Last received log"
 msgstr ""
 
 #: syslog.php:790
+#, fuzzy
 msgid "Oldest unprocessed message"
-msgstr ""
+msgstr "[ Obearbetade meddelanden: %s ]"
 
 #: syslog.php:791
 msgid "Incoming backlog"
 msgstr ""
 
 #: syslog.php:792
+#, fuzzy
 msgid "Records processed in latest run"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog.php:801
 msgid "Collector warning"
@@ -1573,12 +1616,14 @@ msgid "Configured worker processes"
 msgstr ""
 
 #: syslog.php:822
+#, fuzzy
 msgid "Process"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog.php:823
+#, fuzzy
 msgid "Records handled"
-msgstr ""
+msgstr "Poster"
 
 #: syslog.php:824
 msgid "Hosts resolved"
@@ -1597,40 +1642,46 @@ msgid "Processing phases"
 msgstr ""
 
 #: syslog.php:847
+#, fuzzy
 msgid "Partition maintenance"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: syslog.php:848
 msgid "Reference updates"
 msgstr ""
 
 #: syslog.php:849
+#, fuzzy
 msgid "Removal rules"
-msgstr ""
+msgstr "Regler för borttagning"
 
 #: syslog.php:850
+#, fuzzy
 msgid "Alert evaluation"
-msgstr ""
+msgstr "Bevarande av Syslog-varningar"
 
 #: syslog.php:851
 msgid "Incoming transfer"
 msgstr ""
 
 #: syslog.php:852
+#, fuzzy
 msgid "Report processing"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog.php:871
 msgid "Phase"
 msgstr ""
 
 #: syslog.php:873
+#, fuzzy
 msgid "Duration"
-msgstr ""
+msgstr "Radering"
 
 #: syslog.php:874
+#, fuzzy
 msgid "Records"
-msgstr ""
+msgstr "%d poster"
 
 #: syslog.php:888
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
@@ -1645,24 +1696,28 @@ msgid "Rule activity"
 msgstr ""
 
 #: syslog.php:904
+#, fuzzy
 msgid "Rules processed"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog.php:905
+#, fuzzy
 msgid "Last run"
-msgstr ""
+msgstr "Senast skickat"
 
 #: syslog.php:906
 msgid "Total"
 msgstr ""
 
 #: syslog.php:909
+#, fuzzy
 msgid "Alert rules"
-msgstr ""
+msgstr "Regler för varning"
 
 #: syslog.php:909
+#, fuzzy
 msgid "Delete rules"
-msgstr ""
+msgstr "Regler för varning"
 
 #: syslog.php:916
 msgid "Fired last run"
@@ -1670,7 +1725,7 @@ msgstr ""
 
 #: syslog.php:939
 msgid "Syslog Alert View"
-msgstr ""
+msgstr "Vy för Syslog-varning"
 
 #: syslog.php:1346 syslog.php:1392
 msgid "A valid saved search is required."
@@ -1687,32 +1742,33 @@ msgstr ""
 #: syslog.php:1800
 #, php-format
 msgid "[ Unprocessed Messages: %s ]"
-msgstr ""
+msgstr "[ Obearbetade meddelanden: %s ]"
 
 #: syslog.php:1838 syslog_device_rules.php:223
 msgid "Enter a search term"
-msgstr ""
+msgstr "Ange ett sökbegrepp eller tecken här"
 
 #: syslog.php:1839
 msgid "Select Device(s)"
-msgstr ""
+msgstr "Välj enhet(er)"
 
 #: syslog.php:1840
 msgid "Devices Selected"
-msgstr ""
+msgstr "Valda enheter"
 
 #: syslog.php:1841
 msgid "All Devices Selected"
-msgstr ""
+msgstr "Alla enheter valda"
 
 #: syslog.php:1846
 #, php-format
 msgid "Syslog Message Filter %s"
-msgstr ""
+msgstr "Filter för Syslog-meddelanden %s"
 
 #: syslog.php:1854 syslog.php:1916
+#, fuzzy
 msgid "Search messages"
-msgstr ""
+msgstr "Meddelanden"
 
 #: syslog.php:1858 syslog.php:1859 syslog.php:1860 syslog.php:1862
 msgid "Collapse filters"
@@ -1723,12 +1779,14 @@ msgid "Edit filters"
 msgstr ""
 
 #: syslog.php:1866
+#, fuzzy
 msgid "Saved Searches"
-msgstr ""
+msgstr "Sök"
 
 #: syslog.php:1870 syslog.php:1879
+#, fuzzy
 msgid "My Searches"
-msgstr ""
+msgstr "Sök"
 
 #: syslog.php:1871 syslog.php:1877
 msgid "Global Searches"
@@ -1739,24 +1797,28 @@ msgid "Manage"
 msgstr ""
 
 #: syslog.php:1904
+#, fuzzy
 msgid "Manage saved searches"
-msgstr ""
+msgstr "Ange ett sökbegrepp eller tecken här"
 
 #: syslog.php:1905
+#, fuzzy
 msgid "Save search"
-msgstr ""
+msgstr "Sök"
 
 #: syslog.php:1907
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "(Redigera)"
 
 #: syslog.php:1910
 msgid "Save for all"
 msgstr ""
 
 #: syslog.php:1923 syslog.php:2008
+#, fuzzy
 msgid "contains"
-msgstr ""
+msgstr "Innehåller"
 
 #: syslog.php:1924 syslog.php:2009
 msgid "does not contain"
@@ -1768,37 +1830,41 @@ msgstr ""
 
 #: syslog.php:1931
 msgid "Display Rows"
-msgstr ""
+msgstr "Visa rader"
 
 #: syslog.php:1932 syslog_alerts.php:1055 syslog_dashboards.php:237
 #: syslog_device_rules.php:225 syslog_removal.php:827 syslog_reports.php:665
 #: syslog_saved_searches.php:229
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #: syslog.php:1947
+#, fuzzy
 msgid "View options"
-msgstr ""
+msgstr "E-post Val"
 
 #: syslog.php:1967
 msgid "Removal Handling"
-msgstr ""
+msgstr "Flytthantering"
 
 #: syslog.php:1978
+#, fuzzy
 msgid "Display"
-msgstr ""
+msgstr "Visa rader"
 
 #: syslog.php:1979
 msgid "Group Duplicate Messages"
 msgstr ""
 
 #: syslog.php:1980
+#, fuzzy
 msgid "Individual Messages"
-msgstr ""
+msgstr "Privatperson"
 
 #: syslog.php:1981
+#, fuzzy
 msgid "Grouped Messages"
-msgstr ""
+msgstr "Meddelanden"
 
 #: syslog.php:1991
 #, php-format
@@ -1806,8 +1872,9 @@ msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT ex
 msgstr ""
 
 #: syslog.php:1991
+#, fuzzy
 msgid "Search help"
-msgstr ""
+msgstr "Sök"
 
 #: syslog.php:1996
 msgid "New Saved Search"
@@ -1818,133 +1885,143 @@ msgid "Edit Saved Search"
 msgstr ""
 
 #: syslog.php:1998
+#, fuzzy
 msgid "Save As"
-msgstr ""
+msgstr "Spara"
 
 #: syslog.php:2002
 msgid "Delete the selected saved search?"
 msgstr ""
 
 #: syslog.php:2015
+#, fuzzy
 msgid "Save Search As"
-msgstr ""
+msgstr "Sök"
 
 #: syslog.php:2025 syslog_alerts.php:1035 syslog_dashboards.php:227
 #: syslog_device_rules.php:223 syslog_removal.php:807 syslog_reports.php:645
 #: syslog_saved_searches.php:219
 msgid "Search"
-msgstr ""
+msgstr "Sök"
 
 #: syslog.php:2026 syslog_alerts.php:1072 syslog_dashboards.php:254
 #: syslog_device_rules.php:226 syslog_removal.php:844 syslog_reports.php:682
 #: syslog_saved_searches.php:246
 msgid "Clear"
-msgstr ""
+msgstr "Rensa"
 
 #: syslog.php:2026
 msgid "Return filter values to their user defined defaults"
-msgstr ""
+msgstr "Återställ filtervärdena till deras användardefinierade standardvärden"
 
 #: syslog.php:2027
+#, fuzzy
 msgid "Refresh Results"
-msgstr ""
+msgstr "Ladda om interval"
 
 #: syslog.php:2028
 msgid "Export Records to CSV"
-msgstr ""
+msgstr "Exportera poster till CSV"
 
 #: syslog.php:2029
 msgid "Save Default Settings"
-msgstr ""
+msgstr "Spara standardinställningar"
 
 #: syslog.php:2029
+#, fuzzy
 msgid "Save view defaults"
-msgstr ""
+msgstr "Spara standardinställningar"
 
 #: syslog.php:2083
 msgid "Emergency"
-msgstr ""
+msgstr "Nödsituation"
 
 #: syslog.php:2085 syslog.php:2105
 msgid "Alert"
-msgstr ""
+msgstr "Varning"
 
 #: syslog.php:2086
 msgid "Error"
-msgstr ""
+msgstr "Fel"
 
 #: syslog.php:2089
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: syslog.php:2090
 msgid "Debug"
-msgstr ""
+msgstr "Debugg"
 
 #: syslog.php:2107
 msgid "Informational"
-msgstr ""
+msgstr "Information"
 
 #: syslog.php:2225 syslog.php:2350 syslog.php:2406 syslog_alerts.php:664
 #: syslog_device_rules.php:167 syslog_device_rules.php:258
 msgid "Device"
-msgstr ""
+msgstr "Enhet"
 
 #: syslog.php:2235
 msgid "Messages"
-msgstr ""
+msgstr "Meddelanden"
 
 #: syslog.php:2264
+#, fuzzy
 msgid "Empty message"
-msgstr ""
+msgstr "Meddelande"
 
 #: syslog.php:2330
 msgid "No Syslog Messages"
-msgstr ""
+msgstr "Inga Syslog-meddelanden"
 
 #: syslog.php:2359
 msgid "Alert Log Rows"
-msgstr ""
+msgstr "Rader i varningsloggen"
 
 #: syslog.php:2376
 msgid "Alert Removed"
-msgstr ""
+msgstr "Varning borttagen"
 
 #: syslog.php:2386
 msgid "No Alert Log Messages"
-msgstr ""
+msgstr "Inga meddelanden från varningsloggen"
 
 #: syslog.php:2405
 msgid "Close message details"
 msgstr ""
 
 #: syslog.php:2405
+#, fuzzy
 msgid "Message details"
-msgstr ""
+msgstr "Meddelanden"
 
 #: syslog.php:2408
 msgid "Copied"
 msgstr ""
 
 #: syslog.php:2408
+#, fuzzy
 msgid "Copy message"
-msgstr ""
+msgstr "Meddelande"
 
 #: syslog.php:2408
 msgid "Copy unavailable. Select and copy the message text."
 msgstr ""
 
 #: syslog.php:2409
+#, fuzzy
 msgid "Create Alarm Rule"
-msgstr ""
+msgstr "Importera Alert-regel"
 
 #: syslog.php:2409
+#, fuzzy
 msgid "Create Device Alert Rule"
-msgstr ""
+msgstr "Importera Alert-regel"
 
 #: syslog.php:2409
+#, fuzzy
 msgid "Create Removal Rule"
-msgstr ""
+msgstr "Ny regel för avlägsnande"
 
 #: syslog.php:2410
 msgid "Filter by device"
@@ -1956,48 +2033,48 @@ msgstr ""
 
 #: syslog.php:2477 syslog.php:2500 syslog.php:2531 syslog.php:2532
 msgid "All Programs"
-msgstr ""
+msgstr "Alla program"
 
 #: syslog_alerts.php:191
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog Alert-regel(r)."
 
 #: syslog_alerts.php:197
 msgid "Delete Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Ta bort regler för Syslog-varning"
 
 #: syslog_alerts.php:201
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att inaktivera följande Syslog Alert-regel(r)."
 
 #: syslog_alerts.php:207
 msgid "Disable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Inaktivera regel(er) för Syslog-varning"
 
 #: syslog_alerts.php:211
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att aktivera följande Syslog Alert Rule(s)."
 
 #: syslog_alerts.php:217
 msgid "Enable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Aktivera regel(er) för Syslog-varning"
 
 #: syslog_alerts.php:221
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Alert Rule(s)."
 
 #: syslog_alerts.php:227
 msgid "Export Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Exportera Syslog-varningsregel(er)"
 
 #: syslog_alerts.php:375 syslog_reports.php:334
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
-msgstr ""
+msgstr "Den SQL-syntax som angetts är ogiltig.  Vänligen korrigera din SQL.<br>"
 
 #: syslog_alerts.php:376 syslog_reports.php:335
 #, php-format
 msgid "The Pre-processed SQL is:<br><br> %s"
-msgstr ""
+msgstr "Den förbehandlade SQL är:<br><br> %s"
 
 #: syslog_alerts.php:388 syslog_removal.php:349
 #, php-format
@@ -2006,88 +2083,88 @@ msgstr ""
 
 #: syslog_alerts.php:390 syslog_reports.php:350
 msgid "The processed SQL was invalid.  Please correct your SQL"
-msgstr ""
+msgstr "Den SQL som bearbetades var ogiltig.  Vänligen korrigera din SQL"
 
 #: syslog_alerts.php:493
 msgid "Not Set"
-msgstr ""
+msgstr "Ej inställt"
 
 #: syslog_alerts.php:498
 msgid "1 Minute"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog_alerts.php:509
 #, php-format
 msgid "%d Hour"
-msgstr ""
+msgstr "%d timme"
 
 #: syslog_alerts.php:510 syslog_alerts.php:511 syslog_alerts.php:512
 #: syslog_alerts.php:513 syslog_alerts.php:514 syslog_alerts.php:515
 #, php-format
 msgid "%d Hours"
-msgstr ""
+msgstr "%d timmar"
 
 #: syslog_alerts.php:520
 msgid "1 Month"
-msgstr ""
+msgstr "1 månad"
 
 #: syslog_alerts.php:562
 #, php-format
 msgid "Alert Edit [edit: %s]"
-msgstr ""
+msgstr "Varning Redigera [redigera: %s]"
 
 #: syslog_alerts.php:564 syslog_alerts.php:585 syslog_alerts.php:594
 msgid "Alert Edit [new]"
-msgstr ""
+msgstr "Alert Edit [ny]"
 
 #: syslog_alerts.php:566 syslog_alerts.php:591 syslog_alerts.php:596
 msgid "New Alert Rule"
-msgstr ""
+msgstr "Ny varningsregel"
 
 #: syslog_alerts.php:608 syslog_alerts.php:1197 syslog_reports.php:479
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: syslog_alerts.php:646
 msgid "Please describe this Alert."
-msgstr ""
+msgstr "Vänligen beskriv denna varning."
 
 #: syslog_alerts.php:654
 msgid "What is the Severity Level of this Alert?"
-msgstr ""
+msgstr "Vilken är allvarlighetsgraden för denna varning?"
 
 #: syslog_alerts.php:661
 msgid "Reporting Level"
-msgstr ""
+msgstr "Rapporteringsnivå"
 
 #: syslog_alerts.php:662
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "För registrering av cykler med återkommande larm, ska larmet spåras på system- eller enhetsnivå."
 
 #: syslog_alerts.php:664
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: syslog_alerts.php:669
 msgid "Reporting Method"
-msgstr ""
+msgstr "Rapporteringsmetod"
 
 #: syslog_alerts.php:670
 msgid "Define how to Alert on the syslog messages."
-msgstr ""
+msgstr "Definiera hur syslog-meddelanden ska uppmärksammas."
 
 #: syslog_alerts.php:672 syslog_alerts.php:1196
 msgid "Individual"
-msgstr ""
+msgstr "Privatperson"
 
 #: syslog_alerts.php:678
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
-msgstr ""
+msgstr "För metoden \"Tröskelvärde\" gäller att om det antal som ses är högre än detta värde kommer en varning att utlösas."
 
 #: syslog_alerts.php:686 syslog_alerts.php:1174 syslog_removal.php:943
 #: syslog_reports.php:781
 msgid "Match Type"
-msgstr ""
+msgstr "Typ av matchning"
 
 #: syslog_alerts.php:687
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
@@ -2095,7 +2172,7 @@ msgstr ""
 
 #: syslog_alerts.php:697 syslog_reports.php:531
 msgid "Message Match String"
-msgstr ""
+msgstr "Matchningssträng för meddelande"
 
 #: syslog_alerts.php:698
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
@@ -2107,23 +2184,24 @@ msgstr ""
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiverad"
 
 #: syslog_alerts.php:709
 msgid "Is this Alert Enabled?"
-msgstr ""
+msgstr "Är denna varning aktiverad?"
 
 #: syslog_alerts.php:715
 msgid "Re-Alert Cycle"
-msgstr ""
+msgstr "Cykel för återlarmning"
 
 #: syslog_alerts.php:719
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
-msgstr ""
+msgstr "Skicka inte detta larm igen för samma värd förrän den här tiden har gått. För tröskelbaserade larm gäller detta för alla värddatorer."
 
 #: syslog_alerts.php:723
+#, fuzzy
 msgid "Notification Cooldown"
-msgstr ""
+msgstr "Notifieringslista"
 
 #: syslog_alerts.php:725
 msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
@@ -2134,32 +2212,39 @@ msgid "1 day"
 msgstr ""
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "1 hour"
-msgstr ""
+msgstr "%d timmar"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "1 minute"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "15 minutes"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "30 minutes"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "4 hours"
-msgstr ""
+msgstr "%d timmar"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "5 minutes"
-msgstr ""
+msgstr "1 minut"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "Use global setting"
-msgstr ""
+msgstr "Syslog %s Inställningar"
 
 #: syslog_alerts.php:731
 msgid "Duplicate Suppression"
@@ -2231,51 +2316,51 @@ msgstr ""
 
 #: syslog_alerts.php:783 syslog_device_rules.php:173 syslog_reports.php:568
 msgid "Notes"
-msgstr ""
+msgstr "Anteckningar"
 
 #: syslog_alerts.php:786
 msgid "Space for Notes on the Alert"
-msgstr ""
+msgstr "Utrymme för anteckningar om varningen"
 
 #: syslog_alerts.php:794
 msgid "Email Options"
-msgstr ""
+msgstr "E-post Val"
 
 #: syslog_alerts.php:798 syslog_reports.php:550
 msgid "Notification List"
-msgstr ""
+msgstr "Notifieringslista"
 
 #: syslog_alerts.php:799 syslog_reports.php:551
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "Använd innehållet i denna Notification List för att bestämma vem som ska underrättas och hur."
 
 #: syslog_alerts.php:807
 msgid "Emails to Notify"
-msgstr ""
+msgstr "E-postmeddelanden att meddela"
 
 #: syslog_alerts.php:810
 msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr ""
+msgstr "Ange en kommaseparerad lista med e-postadresser som ska informeras.  Om du vill skicka e-post till en mottagare i SMS-format ska du ange mottagarens e-postadress som prefix med <b>\"sms@</b>\".  Om mottagarens SMS-adress t.ex. är <b>\"2485551212@mycarrier.net\",</b> anger du den som <b>\"sms@2485551212@mycarrier.net</b> \" och den formateras som ett SMS-meddelande."
 
 #: syslog_alerts.php:816 syslog_reports.php:539
 msgid "Email Body Text"
-msgstr ""
+msgstr "E-postens brödtext"
 
 #: syslog_alerts.php:819
 msgid "This information will appear in the body of the Alert just before the Alert details."
-msgstr ""
+msgstr "Denna information kommer att visas i meddelandet strax före uppgifterna om meddelandet."
 
 #: syslog_alerts.php:827
 msgid "Actions"
-msgstr ""
+msgstr "Åtgärder"
 
 #: syslog_alerts.php:831
 msgid "Open Ticket"
-msgstr ""
+msgstr "Öppna biljett"
 
 #: syslog_alerts.php:832
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "Om en Help Desk-biljett öppnas för denna Alert.  OBS: Ticket-kommandot kommer att fyllas med flera \"ALERT_\"-miljövariabler för enkelhetens skull."
 
 #: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
@@ -2283,7 +2368,7 @@ msgstr ""
 #: syslog_removal.php:819 syslog_removal.php:964 syslog_reports.php:657
 #: syslog_reports.php:804
 msgid "No"
-msgstr ""
+msgstr "Nej"
 
 #: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
@@ -2291,19 +2376,20 @@ msgstr ""
 #: syslog_removal.php:818 syslog_removal.php:964 syslog_reports.php:656
 #: syslog_reports.php:804
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
 #: syslog_alerts.php:838
 msgid "Command"
-msgstr ""
+msgstr "Kommando"
 
 #: syslog_alerts.php:841
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
-msgstr ""
+msgstr "När en varning utlöses körs följande kommando.  Följande ersättningsvariabler är tillgängliga: <b>\"&lt;HOSTNAME&gt;</b>\", <b>\"&lt;ALERTID&gt;</b>\", <b>\"&lt;MESSAGE&gt;</b>\", <b>\"&lt;FACILITY&gt;</b>\", <b>\"&lt;PRIORITY&gt;</b>\", <b>\"&lt;SEVERITY&gt;</b>\".  Observera att <b>\"&lt;HOSTNAME&gt;</b> \" endast är tillgängligt för enskilda tröskelvärden.  Dessa ersättningsvärden kan anges på kommandoraden eller hämtas från skriptets miljö.  När de används från miljön kommer dessa variabler att inledas med 'ALERT_'."
 
 #: syslog_alerts.php:877 syslog_removal.php:668
+#, fuzzy
 msgid "Test rule"
-msgstr ""
+msgstr "Regler för varning"
 
 #: syslog_alerts.php:878 syslog_alerts.php:1002 syslog_removal.php:669
 #: syslog_removal.php:774
@@ -2315,20 +2401,23 @@ msgid "Value"
 msgstr ""
 
 #: syslog_alerts.php:912 syslog_removal.php:702
+#, fuzzy
 msgid "Enter a value"
-msgstr ""
+msgstr "Ange ett sökbegrepp eller tecken här"
 
 #: syslog_alerts.php:913 syslog_removal.php:703
+#, fuzzy
 msgid "Match"
-msgstr ""
+msgstr "Typ av matchning"
 
 #: syslog_alerts.php:914 syslog_removal.php:704
 msgid "Exclude"
 msgstr ""
 
 #: syslog_alerts.php:916 syslog_removal.php:706
+#, fuzzy
 msgid "Enter a nonnegative integer"
-msgstr ""
+msgstr "Ange ett sökbegrepp eller tecken här"
 
 #: syslog_alerts.php:959 syslog_alerts.php:963
 msgid "Alarm filter conditions"
@@ -2337,83 +2426,83 @@ msgstr ""
 #: syslog_alerts.php:1045 syslog_device_rules.php:224 syslog_removal.php:817
 #: syslog_reports.php:655
 msgid "All"
-msgstr ""
+msgstr "Alla"
 
 #: syslog_alerts.php:1051 syslog_dashboards.php:233 syslog_reports.php:661
 #: syslog_saved_searches.php:225
 msgid "Rows"
-msgstr ""
+msgstr "Rader"
 
 #: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:226
 #: syslog_removal.php:843 syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
-msgstr ""
+msgstr "Utför"
 
 #: syslog_alerts.php:1073 syslog_alerts.php:1334 syslog_dashboards.php:255
 #: syslog_removal.php:845 syslog_removal.php:1100 syslog_reports.php:683
 #: syslog_reports.php:936 syslog_saved_searches.php:247
 msgid "Import"
-msgstr ""
+msgstr "Importera"
 
 #: syslog_alerts.php:1143
 msgid "Syslog Alert Filters"
-msgstr ""
+msgstr "Filter för Syslog-varningar"
 
 #: syslog_alerts.php:1171 syslog_removal.php:945
 msgid "Method"
-msgstr ""
+msgstr "Metod"
 
 #: syslog_alerts.php:1172
 msgid "Threshold Count"
-msgstr ""
+msgstr "Tröskelvärde för antal"
 
 #: syslog_alerts.php:1175 syslog_removal.php:944 syslog_reports.php:782
 msgid "Search String"
-msgstr ""
+msgstr "Söksträng"
 
 #: syslog_alerts.php:1176 syslog_reports.php:558
 msgid "Email Addresses"
-msgstr ""
+msgstr "E-postadresser"
 
 #: syslog_alerts.php:1177 syslog_removal.php:946 syslog_reports.php:786
 msgid "Last Modified"
-msgstr ""
+msgstr "Senast ändrad"
 
 #: syslog_alerts.php:1178 syslog_removal.php:947 syslog_reports.php:787
 msgid "By User"
-msgstr ""
+msgstr "Efter användare"
 
 #: syslog_alerts.php:1181
 msgid "Alerts"
-msgstr ""
+msgstr "Varningar"
 
 #: syslog_alerts.php:1202
 msgid "Multiple"
-msgstr ""
+msgstr "Flera"
 
 #: syslog_alerts.php:1209
 msgid "No Syslog Alerts Defined"
-msgstr ""
+msgstr "Inga Syslog-varningar definierade"
 
 #: syslog_alerts.php:1238
 msgid "Import Alert Rule from Local File"
-msgstr ""
+msgstr "Importera Alert-regel från lokal fil"
 
 #: syslog_alerts.php:1239
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "Om XML-filen som innehåller data för Alert Rule-definitionen finns på din lokala dator väljer du den här."
 
 #: syslog_alerts.php:1244
 msgid "Import Alert Rule from Text"
-msgstr ""
+msgstr "Importera Alert-regel från text"
 
 #: syslog_alerts.php:1245
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "Om du har XML-filen som innehåller Alert Ruledefinition-data som text kan du klistra in den i den här rutan för att importera den."
 
 #: syslog_alerts.php:1256
 msgid "Import Alert Rule"
-msgstr ""
+msgstr "Importera Alert-regel"
 
 #: syslog_alerts.php:1283 syslog_dashboards.php:528 syslog_removal.php:1049
 #: syslog_saved_searches.php:477
@@ -2422,26 +2511,26 @@ msgstr ""
 
 #: syslog_alerts.php:1332 syslog_removal.php:1098 syslog_reports.php:934
 msgid "Imported"
-msgstr ""
+msgstr "Importerad"
 
 #: syslog_alerts.php:1332
 #, php-format
 msgid "NOTE: Alert '%s' %s!"
-msgstr ""
+msgstr "OBS: Varning '%s' %s!"
 
 #: syslog_alerts.php:1332 syslog_dashboards.php:192 syslog_dashboards.php:288
 #: syslog_removal.php:1098 syslog_reports.php:934
 msgid "Updated"
-msgstr ""
+msgstr "Uppdatera"
 
 #: syslog_alerts.php:1334
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
-msgstr ""
+msgstr "FEL: Varning '%s' %s Misslyckades!"
 
 #: syslog_alerts.php:1334 syslog_removal.php:1100 syslog_reports.php:936
 msgid "Update"
-msgstr ""
+msgstr "Uppdatera"
 
 #: syslog_dashboards.php:30 syslog_saved_searches.php:31
 msgid "Select a valid owner."
@@ -2479,24 +2568,28 @@ msgid "Panels"
 msgstr ""
 
 #: syslog_dashboards.php:317
+#, fuzzy
 msgid "deleted user"
-msgstr ""
+msgstr "Vald Alert"
 
 #: syslog_dashboards.php:329
 msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
 msgstr ""
 
 #: syslog_dashboards.php:411
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog Alert-regel(r)."
 
 #: syslog_dashboards.php:416
+#, fuzzy
 msgid "Delete Dashboard(s)"
-msgstr ""
+msgstr "Ta bort Syslog-rapport(er)"
 
 #: syslog_dashboards.php:420
+#, fuzzy
 msgid "Click 'Continue' to Export the following Dashboard(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Alert Rule(s)."
 
 #: syslog_dashboards.php:425
 msgid "Export Dashboard(s)"
@@ -2513,32 +2606,38 @@ msgid "ERROR: %d Dashboard(s) failed to import."
 msgstr ""
 
 #: syslog_dashboards.php:676
+#, fuzzy
 msgid "Import Dashboard from Local File"
-msgstr ""
+msgstr "Importera rapportregel från lokal fil"
 
 #: syslog_dashboards.php:677
+#, fuzzy
 msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "Om XML-filen som innehåller definitionsdata för rapportregeln finns på din lokala maskin väljer du den här."
 
 #: syslog_dashboards.php:682
+#, fuzzy
 msgid "Import Dashboard from Text"
-msgstr ""
+msgstr "Importera rapportregel från text"
 
 #: syslog_dashboards.php:683
+#, fuzzy
 msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "Om du har XML-filen som innehåller definitionsdata för rapportregeln som text kan du klistra in den i den här rutan för att importera den."
 
 #: syslog_dashboards.php:694
 msgid "Import Dashboard"
 msgstr ""
 
 #: syslog_dashboards.php:727 syslog_saved_searches.php:642
+#, fuzzy
 msgid "All Users"
-msgstr ""
+msgstr "Alla poster"
 
 #: syslog_dashboards.php:728 syslog_saved_searches.php:643
+#, fuzzy
 msgid "All Groups"
-msgstr ""
+msgstr "Alla program"
 
 #: syslog_dashboards.php:731
 msgid "Edit Dashboard"
@@ -2581,9 +2680,9 @@ msgid "A device name is required."
 msgstr ""
 
 #: syslog_device_rules.php:125
-#, php-format
+#, fuzzy, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att inaktivera följande Syslog Alert-regel(r)."
 
 #: syslog_device_rules.php:161
 msgid "Do not pass any priority"
@@ -2595,16 +2694,18 @@ msgid "%s and more urgent"
 msgstr ""
 
 #: syslog_device_rules.php:166
+#, fuzzy
 msgid "Device Alert Rule"
-msgstr ""
+msgstr "Ny varningsregel"
 
 #: syslog_device_rules.php:167
 msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
 msgstr ""
 
 #: syslog_device_rules.php:169
+#, fuzzy
 msgid "Alert Handling"
-msgstr ""
+msgstr "Flytthantering"
 
 #: syslog_device_rules.php:169
 msgid "Do not pause"
@@ -2615,8 +2716,9 @@ msgid "Pause all non-exempt alerts until a date, or indefinitely."
 msgstr ""
 
 #: syslog_device_rules.php:169
+#, fuzzy
 msgid "Pause indefinitely"
-msgstr ""
+msgstr "Obestämd tid"
 
 #: syslog_device_rules.php:169
 msgid "Pause until"
@@ -2631,45 +2733,52 @@ msgid "Pause Ends"
 msgstr ""
 
 #: syslog_device_rules.php:171
+#, fuzzy
 msgid "Always Allow Priority"
-msgstr ""
+msgstr "Alla prioriteringar"
 
 #: syslog_device_rules.php:171
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
 msgstr ""
 
 #: syslog_device_rules.php:172
+#, fuzzy
 msgid "Allow During Maintenance"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: syslog_device_rules.php:172
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
 msgstr ""
 
 #: syslog_device_rules.php:180
+#, fuzzy
 msgid "Device Alert Rule [edit]"
-msgstr ""
+msgstr "Ny varningsregel"
 
 #: syslog_device_rules.php:180
+#, fuzzy
 msgid "Device Alert Rule [new]"
-msgstr ""
+msgstr "Ny varningsregel"
 
 #: syslog_device_rules.php:220
+#, fuzzy
 msgid "Device Alert Rule Filters"
-msgstr ""
+msgstr "Filter för Syslog-varningar"
 
 #: syslog_device_rules.php:225 syslog_device_rules.php:254
 #: syslog_removal.php:823 syslog_removal.php:952
 msgid "Rules"
-msgstr ""
+msgstr "Regler"
 
 #: syslog_device_rules.php:258
+#, fuzzy
 msgid "Handling"
-msgstr ""
+msgstr "Flytthantering"
 
 #: syslog_device_rules.php:258
+#, fuzzy
 msgid "Maintenance"
-msgstr ""
+msgstr "Partitionerad tabell"
 
 #: syslog_device_rules.php:258
 msgid "Pass Through"
@@ -2684,8 +2793,9 @@ msgid "Not paused"
 msgstr ""
 
 #: syslog_device_rules.php:264
+#, fuzzy
 msgid "Paused indefinitely"
-msgstr ""
+msgstr "Obestämd tid"
 
 #: syslog_device_rules.php:264
 #, php-format
@@ -2706,326 +2816,327 @@ msgstr ""
 
 #: syslog_removal.php:39
 msgid "Reprocess"
-msgstr ""
+msgstr "Upparbetning"
 
 #: syslog_removal.php:199
 msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog Removal Rule(s)."
 
 #: syslog_removal.php:205
 msgid "Delete Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Ta bort regel(r) för borttagning av Syslog"
 
 #: syslog_removal.php:209
 msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att inaktivera följande Syslog Removal Rule(s)."
 
 #: syslog_removal.php:215
 msgid "Disable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Inaktivera regel(er) för borttagning av Syslog"
 
 #: syslog_removal.php:219
 msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att aktivera följande Syslog Removal Rule(s)."
 
 #: syslog_removal.php:225
 msgid "Enable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Aktivera regel(er) för borttagning av Syslog"
 
 #: syslog_removal.php:229
 msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att återbehandla följande Syslog Removal Rule(s)."
 
 #: syslog_removal.php:235
 msgid "Retroactively Process Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Retroaktiv behandling av borttagningsregel(er) för Syslog"
 
 #: syslog_removal.php:239
 msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Removal Rule(s)."
 
 #: syslog_removal.php:245
 msgid "Export Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Exportera regel(er) för borttagning av Syslog"
 
 #: syslog_removal.php:424
 #, php-format
 msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
-msgstr ""
+msgstr "Regel '%s' resulterade i att %s/%s meddelanden togs bort/överfördes"
 
 #: syslog_removal.php:494
 #, php-format
 msgid "Removal Rule Edit [edit: %s]"
-msgstr ""
+msgstr "Regel för borttagning Redigera [redigera: %s]"
 
 #: syslog_removal.php:496 syslog_removal.php:514
 msgid "Removal Rule Edit [new]"
-msgstr ""
+msgstr "Borttagningsregel Redigera [ny]"
 
 #: syslog_removal.php:498 syslog_removal.php:525
 msgid "New Removal Record"
-msgstr ""
+msgstr "Ny borttagningsrekord"
 
 #: syslog_removal.php:520
 msgid "New Removal Rule"
-msgstr ""
+msgstr "Ny regel för avlägsnande"
 
 #: syslog_removal.php:584
 msgid "Removal Rule Details"
-msgstr ""
+msgstr "Detaljer om borttagningsregeln"
 
 #: syslog_removal.php:588
 msgid "Removal Rule Name"
-msgstr ""
+msgstr "Namn på regel för borttagning"
 
 #: syslog_removal.php:589
 msgid "Please describe this Removal Rule."
-msgstr ""
+msgstr "Vänligen beskriv denna Removal Rule."
 
 #: syslog_removal.php:596 syslog_reports.php:496
 msgid "Enabled?"
-msgstr ""
+msgstr "Aktiverad?"
 
 #: syslog_removal.php:597
 msgid "Is this Removal Rule Enabled?"
-msgstr ""
+msgstr "Är denna borttagningsregel aktiverad?"
 
 #: syslog_removal.php:604 syslog_reports.php:504
 msgid "String Match Type"
-msgstr ""
+msgstr "Sträng Matchningstyp"
 
 #: syslog_removal.php:605
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
-msgstr ""
+msgstr "Definiera hur du vill att strängen ska matchas.  Om du använder typen SQL-uttryck kan du använda valfritt giltigt SQL-uttryck för att generera larmet.  Tillgängliga fält är bland annat \"message\", \"facility\", \"priority\" och \"host\"."
 
 #: syslog_removal.php:612
 msgid "Syslog Message Match String"
-msgstr ""
+msgstr "Matchningssträng för Syslog-meddelande"
 
 #: syslog_removal.php:613
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
-msgstr ""
+msgstr "Ange den matchande komponenten i syslog-meddelandet, anläggnings- eller värdnamnet eller SQL where-satsen om du använder SQL Expression Match Type."
 
 #: syslog_removal.php:623
 msgid "Method of Removal"
-msgstr ""
+msgstr "Metod för borttagning"
 
 #: syslog_removal.php:625 syslog_removal.php:967
 msgid "Deletion"
-msgstr ""
+msgstr "Radering"
 
 #: syslog_removal.php:625
 msgid "Transferal"
-msgstr ""
+msgstr "Överföring"
 
 #: syslog_removal.php:629
 msgid "Removal Rule Notes"
-msgstr ""
+msgstr "Anmärkningar om borttagningsregler"
 
 #: syslog_removal.php:632
 msgid "Space for Notes on the Removal rule"
-msgstr ""
+msgstr "Utrymme för anteckningar om borttagningsregeln"
 
 #: syslog_removal.php:726 syslog_removal.php:730
+#, fuzzy
 msgid "Removal filter conditions"
-msgstr ""
+msgstr "Anmärkningar om borttagningsregler"
 
 #: syslog_removal.php:915
 msgid "Syslog Removal Rule Filters"
-msgstr ""
+msgstr "Filter för borttagningsregler för Syslog"
 
 #: syslog_removal.php:941
 msgid "Removal Name"
-msgstr ""
+msgstr "Namn på borttagning"
 
 #: syslog_removal.php:967
 msgid "Transfer"
-msgstr ""
+msgstr "Överför"
 
 #: syslog_removal.php:974
 msgid "No Syslog Removal Rules Defined"
-msgstr ""
+msgstr "Inga regler för borttagning av Syslog definierade"
 
 #: syslog_removal.php:1003
 msgid "Import Removal Rule from Local File"
-msgstr ""
+msgstr "Importera borttagningsregel från lokal fil"
 
 #: syslog_removal.php:1004
 msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "Om XML-filen som innehåller data för definitionen av borttagningsregeln finns på din lokala dator väljer du den här."
 
 #: syslog_removal.php:1009
 msgid "Import Removal Rule from Text"
-msgstr ""
+msgstr "Importera borttagningsregel från text"
 
 #: syslog_removal.php:1010
 msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "Om du har XML-filen som innehåller data för definitionen av borttagningsregeln som text kan du klistra in den i den här rutan för att importera den."
 
 #: syslog_removal.php:1021
 msgid "Import Removal Rule"
-msgstr ""
+msgstr "Regel för borttagande av import"
 
 #: syslog_removal.php:1098
 #, php-format
 msgid "NOTE: Removal Rule '%s' %s!"
-msgstr ""
+msgstr "OBS: Borttagningsregel '%s' %s!"
 
 #: syslog_removal.php:1100
 #, php-format
 msgid "ERROR: Removal Rule '%s' %s Failed!"
-msgstr ""
+msgstr "FEL: Borttagningsregel '%s' %s Misslyckades!"
 
 #: syslog_reports.php:174
 msgid "Click 'Continue' to Delete the following Syslog Report(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog-rapport(er)."
 
 #: syslog_reports.php:180
 msgid "Delete Syslog Report(s)"
-msgstr ""
+msgstr "Ta bort Syslog-rapport(er)"
 
 #: syslog_reports.php:184
 msgid "Click 'Continue' to Disable the following Syslog Report(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att inaktivera följande Syslog-rapport(er)."
 
 #: syslog_reports.php:190
 msgid "Disable Syslog Report(s)"
-msgstr ""
+msgstr "Inaktivera Syslog-rapport(er)"
 
 #: syslog_reports.php:194
 msgid "Click 'Continue' to Enable the following Syslog Report(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att aktivera följande Syslog-rapport(er)."
 
 #: syslog_reports.php:200
 msgid "Enable Syslog Report(s)"
-msgstr ""
+msgstr "Aktivera Syslog-rapport(er)"
 
 #: syslog_reports.php:204
 msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Report Rule(s)."
 
 #: syslog_reports.php:210
 msgid "Export Syslog Report Rule(s)"
-msgstr ""
+msgstr "Exportera regel(er) för Syslog-rapport"
 
 #: syslog_reports.php:215
 msgid "You must select at least one Syslog Report."
-msgstr ""
+msgstr "Du måste välja minst en Syslog-rapport."
 
 #: syslog_reports.php:216
 msgid "Return"
-msgstr ""
+msgstr "Tillbaka"
 
 #: syslog_reports.php:459
 #, php-format
 msgid "Report Edit [edit: %s]"
-msgstr ""
+msgstr "Rapportera redigera [redigera: %s]"
 
 #: syslog_reports.php:461 syslog_reports.php:466
 msgid "Report Edit [new]"
-msgstr ""
+msgstr "Rapportera Redigera [ny]"
 
 #: syslog_reports.php:463 syslog_reports.php:468
 msgid "New Report Record"
-msgstr ""
+msgstr "Ny rapportrekord"
 
 #: syslog_reports.php:490
 msgid "Please describe this Report."
-msgstr ""
+msgstr "Vänligen beskriv denna rapport."
 
 #: syslog_reports.php:497
 msgid "Is this Report Enabled?"
-msgstr ""
+msgstr "Är den här rapporten aktiverad?"
 
 #: syslog_reports.php:505
 msgid "Define how you would like this string matched."
-msgstr ""
+msgstr "Ange hur du vill att den här strängen ska matchas."
 
 #: syslog_reports.php:512 syslog_reports.php:783
 msgid "Frequency"
-msgstr ""
+msgstr "Frekvens"
 
 #: syslog_reports.php:513
 msgid "How often should this Report be sent to the distribution list?"
-msgstr ""
+msgstr "Hur ofta ska denna rapport skickas till distributionslistan?"
 
 #: syslog_reports.php:520 syslog_reports.php:784
 msgid "Send Time"
-msgstr ""
+msgstr "Sändningstid"
 
 #: syslog_reports.php:521
 msgid "What time of day should this report be sent?"
-msgstr ""
+msgstr "Vilken tid på dygnet ska rapporten skickas?"
 
 #: syslog_reports.php:528
 msgid "Report Format"
-msgstr ""
+msgstr "Rapportformat"
 
 #: syslog_reports.php:532
 msgid "The matching component of the syslog message."
-msgstr ""
+msgstr "Den matchande komponenten i syslog-meddelandet."
 
 #: syslog_reports.php:542
 msgid "The information that will be contained in the body of the Report."
-msgstr ""
+msgstr "Den information som kommer att ingå i rapportens huvuddel."
 
 #: syslog_reports.php:561
 msgid "Comma delimited list of Email addresses to send the report to."
-msgstr ""
+msgstr "Komma-avgränsad lista med e-postadresser att skicka rapporten till."
 
 #: syslog_reports.php:571
 msgid "Space for Notes on the Report"
-msgstr ""
+msgstr "Utrymme för anteckningar i rapporten"
 
 #: syslog_reports.php:753
 msgid "Syslog Report Filters"
-msgstr ""
+msgstr "Filter för Syslog-rapporter"
 
 #: syslog_reports.php:779
 msgid "Report Name"
-msgstr ""
+msgstr "Rapportnamn"
 
 #: syslog_reports.php:785
 msgid "Last Sent"
-msgstr ""
+msgstr "Senast skickat"
 
 #: syslog_reports.php:790
 msgid "Reports"
-msgstr ""
+msgstr "Rapporter"
 
 #: syslog_reports.php:816
 msgid "No Syslog Reports Defined"
-msgstr ""
+msgstr "Inga Syslog-rapporter definierade"
 
 #: syslog_reports.php:845
 msgid "Import Report Rule from Local File"
-msgstr ""
+msgstr "Importera rapportregel från lokal fil"
 
 #: syslog_reports.php:846
 msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "Om XML-filen som innehåller definitionsdata för rapportregeln finns på din lokala maskin väljer du den här."
 
 #: syslog_reports.php:851
 msgid "Import Report Rule from Text"
-msgstr ""
+msgstr "Importera rapportregel från text"
 
 #: syslog_reports.php:852
 msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "Om du har XML-filen som innehåller definitionsdata för rapportregeln som text kan du klistra in den i den här rutan för att importera den."
 
 #: syslog_reports.php:863
 msgid "Import Report Data"
-msgstr ""
+msgstr "Importera rapportdata"
 
 #: syslog_reports.php:934
 #, php-format
 msgid "NOTE: Report Rule '%s' %s!"
-msgstr ""
+msgstr "OBS: Rapportregel '%s' %s!"
 
 #: syslog_reports.php:936
 #, php-format
 msgid "ERROR: Report Rule '%s' %s Failed!"
-msgstr ""
+msgstr "FEL: Rapportregel '%s' %s Misslyckades!"
 
 #: syslog_saved_searches.php:36
 msgid "Unable to save the template. Please try again."
@@ -3048,12 +3159,14 @@ msgid "No shared search templates. Save a search for all users from Syslog to cr
 msgstr ""
 
 #: syslog_saved_searches.php:376
+#, fuzzy
 msgid "Click 'Continue' to Export the following Saved Search Template(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Alert Rule(s)."
 
 #: syslog_saved_searches.php:377
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
-msgstr ""
+msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog Alert-regel(r)."
 
 #: syslog_saved_searches.php:382
 msgid "Delete Saved Search Template(s)"
@@ -3074,20 +3187,24 @@ msgid "ERROR: %d Saved Search Template(s) failed to import."
 msgstr ""
 
 #: syslog_saved_searches.php:585
+#, fuzzy
 msgid "Import Saved Search Template from Local File"
-msgstr ""
+msgstr "Importera Alert-regel från lokal fil"
 
 #: syslog_saved_searches.php:586
+#, fuzzy
 msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "Om XML-filen som innehåller data för Alert Rule-definitionen finns på din lokala dator väljer du den här."
 
 #: syslog_saved_searches.php:591
+#, fuzzy
 msgid "Import Saved Search Template from Text"
-msgstr ""
+msgstr "Importera Alert-regel från text"
 
 #: syslog_saved_searches.php:592
+#, fuzzy
 msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "Om du har XML-filen som innehåller definitionsdata för rapportregeln som text kan du klistra in den i den här rutan för att importera den."
 
 #: syslog_saved_searches.php:603
 msgid "Import Saved Search Template"
@@ -3114,8 +3231,9 @@ msgid "Groups who can use this template in addition to its owner. All Groups sha
 msgstr ""
 
 #: syslog_saved_searches.php:656
+#, fuzzy
 msgid "Search Query"
-msgstr ""
+msgstr "Sök"
 
 #: syslog_saved_searches.php:663
 msgid "Correct the query syntax to use the query builder."
@@ -3124,3 +3242,142 @@ msgstr ""
 #: syslog_saved_searches.php:668
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
+
+#, php-format
+#~ msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
+#~ msgstr " [ Start: '%s' till Slut: '%s', Obehandlade meddelanden: %s ]"
+
+#~ msgid "Alert++"
+#~ msgstr "Varning++"
+
+#~ msgid "All Facilities"
+#~ msgstr "Alla anläggningar"
+
+#~ msgid "All Text"
+#~ msgstr "All text"
+
+#~ msgid "Critical++"
+#~ msgstr "Systemkritiskt"
+
+#~ msgid "Custom"
+#~ msgstr "Anpassad"
+
+#~ msgid "Database Architecture"
+#~ msgstr "Databasarkitektur"
+
+#~ msgid "Define Shifting Interval"
+#~ msgstr "Definiera växlingsintervall"
+
+#~ msgid "Device Name"
+#~ msgstr "Enhetsnamn"
+
+#~ msgid "Devices"
+#~ msgstr "Enheter"
+
+#~ msgid "Enable Statistics Gathering"
+#~ msgstr "Aktivera statistikinsamling"
+
+#~ msgid "End Date Selector"
+#~ msgstr "Slutdatumväljare"
+
+#~ msgid "Entries"
+#~ msgstr "Poster"
+
+#~ msgid "Error++"
+#~ msgstr "Fel++"
+
+#~ msgid "Facilities to filter on"
+#~ msgstr "Anläggningar att filtrera på"
+
+#~ msgid "From"
+#~ msgstr "Från"
+
+#~ msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
+#~ msgstr "Om den här kryssrutan är markerad valideras alla värdnamn.  Om värdnamnet inte är giltigt. Alla poster tilldelas en speciell värd som kallas \"invalidhost\".  Den här inställningen kan påverka bearbetningstiden för syslog i stora system.  Därför bör den här inställningen endast användas när det inte finns andra sätt att förhindra att detta inträffar."
+
+#~ msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
+#~ msgstr "Om den här kryssrutan är markerad kommer statistik över varifrån syslog-meddelanden kommer att sparas.  Denna statistiska information kan användas för att skapa t.ex. värmekartor."
+
+#~ msgid "Info++"
+#~ msgstr "Info++"
+
+#~ msgid "Message Trim"
+#~ msgstr "Trim för meddelanden"
+
+#~ msgid "No Syslog Statistics Found"
+#~ msgstr "Ingen Syslog-statistik hittades"
+
+#~ msgid "Normal User"
+#~ msgstr "Normal användare"
+
+#~ msgid "Notice++"
+#~ msgstr "Meddelande++"
+
+#~ msgid "Priority Levels"
+#~ msgstr "Prioriterade nivåer"
+
+#~ msgid "Removals"
+#~ msgstr "Flyttning"
+
+#~ msgid "Shift Time Backward"
+#~ msgstr "Växla tiden bakåt"
+
+#~ msgid "Shift Time Forward"
+#~ msgstr "Växla tiden framåt"
+
+#~ msgid "Show All Devices"
+#~ msgstr "Visa alla enheter"
+
+#~ msgid "Show All Logs"
+#~ msgstr "Visa alla loggar"
+
+#~ msgid "Start Date Selector"
+#~ msgstr "Startdatumsväljare"
+
+#~ msgid "Statistics"
+#~ msgstr "Statistik"
+
+#~ msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
+#~ msgstr "Syslog 2.0 kräver en fullständig ominstallation.  Vänligen avinstallera Syslog och ta bort all data innan du installerar.  Migrering är möjlig, men du måste planera detta i förväg.  Ingen automatisk migrering stöds."
+
+#~ msgid "Syslog Statistics Filter"
+#~ msgstr "Filter för Syslog-statistik"
+
+#~ msgid "System Administration"
+#~ msgstr "Systemadministratör"
+
+#~ msgid "Threshold Logs"
+#~ msgstr "Tröskelvärde Loggar"
+
+#~ msgid "Timespan"
+#~ msgstr "Tidsspann"
+
+#~ msgid "To"
+#~ msgstr "Till"
+
+#~ msgid "Traditional Table"
+#~ msgstr "Traditionellt bord"
+
+#~ msgid "Trim"
+#~ msgstr "Trim"
+
+#~ msgid "Validate Hostnames"
+#~ msgstr "Validera värdnamn"
+
+#~ msgid "View Syslog Removal Rules"
+#~ msgstr "Visa regler för borttagning av Syslog"
+
+#~ msgid "View Syslog Reports"
+#~ msgstr "Visa Syslog-rapporter"
+
+#~ msgid "Warning++"
+#~ msgstr "Varning++"
+
+#~ msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
+#~ msgstr "Du kan också ställa in MySQL-lagringsmotorn.  Om du inte har ställt in ditt system för InnoDB-lagringsegenskaper rekommenderas det starkt att du använder MyISAM-lagringsmotorn."
+
+#~ msgid "You have the option to make this a partitioned table by days."
+#~ msgstr "Du har möjlighet att göra detta till en partitionerad tabell efter dagar."
+
+#~ msgid "You have the option to make this a partitioned table by days.  You can create multiple partitions per day."
+#~ msgstr "Du har möjlighet att göra detta till en partitionerad tabell efter dagar.  Du kan skapa flera partitioner per dag."

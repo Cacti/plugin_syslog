@@ -1,33 +1,34 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR The Cacti Group
-# This file is distributed under the same license as the Cacti package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti \n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
 "POT-Creation-Date: 2026-09-25 16:58-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
-"Language-Team: Cacti Developers <developers@cacti.net>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-03-07 14:53-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
 
 #: functions.php:687
+#, fuzzy
 msgid "Syslog download"
-msgstr ""
+msgstr "Syslog 사용"
 
 #: functions.php:800
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr ""
+msgstr "저장에 실패했습니다.  동기화 모드의 원격 데이터 수집기는 규칙을 저장할 수 없습니다.  대신 메인 Cacti 서버에서 저장하십시오."
 
 #: functions.php:853
 msgid "Please use an HTML Email Client"
-msgstr ""
+msgstr "HTML 이메일 클라이언트를 사용하십시오."
 
 #: functions.php:878
 msgid "Text import payload exceeds the maximum size"
@@ -72,8 +73,9 @@ msgid "per run recovery limit reached"
 msgstr ""
 
 #: functions.php:1956
+#, fuzzy
 msgid "partition creation failed"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: functions.php:2921
 msgid "Unknown rule type."
@@ -127,145 +129,145 @@ msgstr ""
 #: syslog.php:2286 syslog.php:2287 syslog.php:2314 syslog.php:2317
 #: syslog.php:2318 syslog.php:2375
 msgid "Unknown"
-msgstr ""
+msgstr "알 수 없음"
 
 #: functions.php:4678
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
-msgstr ""
+msgstr "호스트 '%s'에 대한 Cacti Syslog 임계값 경고 '%s'"
 
 #: functions.php:4680
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog 임계값 경고 '%s'"
 
 #: functions.php:4688 syslog.php:2352 syslog_alerts.php:1169
 msgid "Alert Name"
-msgstr ""
+msgstr "알림 이름"
 
 #: functions.php:4689 functions.php:4716 syslog.php:2351 syslog_alerts.php:653
 #: syslog_alerts.php:1170
 msgid "Severity"
-msgstr ""
+msgstr "중요도"
 
 #: functions.php:4690 syslog_alerts.php:672 syslog_alerts.php:677
 #: syslog_alerts.php:1196
 msgid "Threshold"
-msgstr ""
+msgstr "임계값"
 
 #: functions.php:4691 syslog.php:2233 syslog.php:2354
 msgid "Count"
-msgstr ""
+msgstr "카운트"
 
 #: functions.php:4692
 msgid "Match String"
-msgstr ""
+msgstr "일치하는 문자열"
 
 #: functions.php:4703 functions.php:4743
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
-msgstr ""
+msgstr "호스트 '%s'에 대한 Cacti Syslog 경고 '%s'"
 
 #: functions.php:4705 functions.php:4745
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr ""
+msgstr "Cacti Syslog 경고 '%s'"
 
 #: functions.php:4714
 msgid "Hostname"
-msgstr ""
+msgstr "호스트명"
 
 #: functions.php:4715 functions.php:5649 syslog.php:2224 syslog.php:2349
 #: syslog.php:2406
 msgid "Date"
-msgstr ""
+msgstr "날짜"
 
 #: functions.php:4717
 msgid "Level"
-msgstr ""
+msgstr "레벨"
 
 #: functions.php:4718 functions.php:5650 lib/syslog_dashboard.php:1621
 #: syslog.php:1921 syslog.php:2006 syslog.php:2227 syslog.php:2353
 #: syslog.php:2407 syslog_alerts.php:889 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
-msgstr ""
+msgstr "메시지"
 
 #: functions.php:4726
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
-msgstr ""
+msgstr "경고: 호스트 '%s'에 대해 Syslog 임계값 경고가 트리거되었습니다."
 
 #: functions.php:4728
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
-msgstr ""
+msgstr "경고: Syslog 임계값 경고가 트리거되었습니다."
 
 #: functions.php:4735
 msgid "Name:"
-msgstr ""
+msgstr "이름:"
 
 #: functions.php:4736 functions.php:4792
 msgid "Severity:"
-msgstr ""
+msgstr "중요도"
 
 #: functions.php:4737
 msgid "Threshold:"
-msgstr ""
+msgstr "문턱값:"
 
 #: functions.php:4738
 msgid "Count:"
-msgstr ""
+msgstr "카운트:"
 
 #: functions.php:4739
 msgid "Message String:"
-msgstr ""
+msgstr "메시지 문자열:"
 
 #: functions.php:4790
 msgid "Hostname:"
-msgstr ""
+msgstr "호스트이름:"
 
 #: functions.php:4791
 msgid "Date:"
-msgstr ""
+msgstr "날짜:"
 
 #: functions.php:4793
 msgid "Level:"
-msgstr ""
+msgstr "레벨"
 
 #: functions.php:4794
 msgid "Message:"
-msgstr ""
+msgstr "내용:"
 
 #: functions.php:4869
 msgid ", Host:"
-msgstr ""
+msgstr "호스트"
 
 #: functions.php:4869 functions.php:4904
 msgid ", URL:"
-msgstr ""
+msgstr "URL"
 
 #: functions.php:4869 functions.php:4904
 msgid "Sev:"
-msgstr ""
+msgstr "세브:"
 
 #: functions.php:4875 functions.php:4900
 #, php-format
 msgid "Event Alert - %s"
-msgstr ""
+msgstr "이벤트 경고 - %s"
 
 #: functions.php:4904
 msgid ", Count:"
-msgstr ""
+msgstr "카운트:"
 
 #: functions.php:5648 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
 #: syslog_removal.php:680
 msgid "Host"
-msgstr ""
+msgstr "호스트"
 
 #: functions.php:5673
 #, php-format
 msgid "Event Report - %s"
-msgstr ""
+msgstr "이벤트 리포트 - %s"
 
 #: lib/syslog_dashboard.php:396
 msgid "Invalid dashboard panel source."
@@ -375,14 +377,14 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1369 lib/syslog_dashboard.php:1524 syslog.php:2001
 msgid "Save"
-msgstr ""
+msgstr "저장"
 
 #: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1662
 #: setup.php:2505 syslog.php:2000 syslog_alerts.php:230
 #: syslog_dashboards.php:428 syslog_device_rules.php:126 syslog_removal.php:248
 #: syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: lib/syslog_dashboard.php:1371 syslog.php:1999
 msgid "Apply"
@@ -393,7 +395,7 @@ msgstr ""
 #: syslog_device_rules.php:124 syslog_removal.php:36
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Delete"
-msgstr ""
+msgstr "삭제"
 
 #: lib/syslog_dashboard.php:1373
 msgid "Delete this dashboard panel?"
@@ -420,8 +422,9 @@ msgid "Save as my copy"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1385
+#, fuzzy
 msgid "Syslog Dashboards"
-msgstr ""
+msgstr "Syslog 사용"
 
 #: lib/syslog_dashboard.php:1396 lib/syslog_dashboard.php:1557
 #: lib/syslog_dashboard.php:1581 syslog.php:256
@@ -430,43 +433,46 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1399 lib/syslog_dashboard.php:1579
 msgid "Time Range"
-msgstr ""
+msgstr "시간 범위"
 
 #: lib/syslog_dashboard.php:1404 lib/syslog_dashboard.php:1582
+#, fuzzy
 msgid "Last Hour"
-msgstr ""
+msgstr "%d 시간"
 
 #: lib/syslog_dashboard.php:1405 lib/syslog_dashboard.php:1583
-#, php-format
+#, fuzzy, php-format
 msgid "Last %d Hours"
-msgstr ""
+msgstr "%d 시간"
 
 #: lib/syslog_dashboard.php:1406 lib/syslog_dashboard.php:1584
 msgid "Last Day"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1407 lib/syslog_dashboard.php:1585
+#, fuzzy
 msgid "Last Week"
-msgstr ""
+msgstr "마지막 보낸 날짜"
 
 #: lib/syslog_dashboard.php:1408 lib/syslog_dashboard.php:1586
-#, php-format
+#, fuzzy, php-format
 msgid "Last %d Weeks"
-msgstr ""
+msgstr "%d 주"
 
 #: lib/syslog_dashboard.php:1409 lib/syslog_dashboard.php:1587
+#, fuzzy
 msgid "Last Month"
-msgstr ""
+msgstr "마지막 보낸 날짜"
 
 #: lib/syslog_dashboard.php:1410 lib/syslog_dashboard.php:1411
 #: lib/syslog_dashboard.php:1588 lib/syslog_dashboard.php:1589
-#, php-format
+#, fuzzy, php-format
 msgid "Last %d Months"
-msgstr ""
+msgstr "%d 개월"
 
 #: lib/syslog_dashboard.php:1421 syslog.php:1949 syslog.php:2027
 msgid "Refresh"
-msgstr ""
+msgstr "새로고침"
 
 #: lib/syslog_dashboard.php:1438 setup.php:2235 setup.php:2295
 #: syslog_dashboards.php:201 syslog_dashboards.php:203
@@ -520,15 +526,16 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1535 syslog.php:252
 msgid "System Logs"
-msgstr ""
+msgstr "시스템 로그"
 
 #: lib/syslog_dashboard.php:1536 syslog.php:254
 msgid "Alert Logs"
-msgstr ""
+msgstr "경고 로그"
 
 #: lib/syslog_dashboard.php:1540
+#, fuzzy
 msgid "Panel Type"
-msgstr ""
+msgstr "매치 타입"
 
 #: lib/syslog_dashboard.php:1542
 msgid "Time Series"
@@ -539,8 +546,9 @@ msgid "Breakdown"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1547
+#, fuzzy
 msgid "Chart"
-msgstr ""
+msgstr "%d 문자"
 
 #: lib/syslog_dashboard.php:1549
 msgid "Line"
@@ -555,28 +563,33 @@ msgid "Bar"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1555
+#, fuzzy
 msgid "Interval"
-msgstr ""
+msgstr "새로 고침 간격"
 
 #: lib/syslog_dashboard.php:1558
 msgid "Auto"
 msgstr ""
 
 #: lib/syslog_dashboard.php:1559
+#, fuzzy
 msgid "Minute"
-msgstr ""
+msgstr "1분"
 
 #: lib/syslog_dashboard.php:1560
+#, fuzzy
 msgid "10 Minutes"
-msgstr ""
+msgstr "1분"
 
 #: lib/syslog_dashboard.php:1561
+#, fuzzy
 msgid "Hour"
-msgstr ""
+msgstr "%d 시간"
 
 #: lib/syslog_dashboard.php:1562
+#, fuzzy
 msgid "Day"
-msgstr ""
+msgstr "매일"
 
 #: lib/syslog_dashboard.php:1566
 msgid "Field"
@@ -585,37 +598,38 @@ msgstr ""
 #: lib/syslog_dashboard.php:1569 syslog.php:2226 syslog.php:2406
 #: syslog.php:2481 syslog_alerts.php:891 syslog_removal.php:681
 msgid "Program"
-msgstr ""
+msgstr "프로그램"
 
 #: lib/syslog_dashboard.php:1570 syslog.php:2228 syslog.php:2355
 #: syslog.php:2406 syslog_alerts.php:892 syslog_removal.php:682
 msgid "Facility"
-msgstr ""
+msgstr "시설"
 
 #: lib/syslog_dashboard.php:1571 syslog.php:2229 syslog.php:2356
 #: syslog.php:2406 syslog_alerts.php:893 syslog_removal.php:683
 msgid "Priority"
-msgstr ""
+msgstr "우선순위"
 
 #: lib/syslog_dashboard.php:1575
+#, fuzzy
 msgid "Top Count"
-msgstr ""
+msgstr "카운트"
 
 #: lib/syslog_dashboard.php:1593 syslog.php:1966
 msgid "Record Type"
-msgstr ""
+msgstr "레코드 유형"
 
 #: lib/syslog_dashboard.php:1595 syslog.php:1968
 msgid "All Records"
-msgstr ""
+msgstr "모든 기록"
 
 #: lib/syslog_dashboard.php:1596 syslog.php:1969
 msgid "Main Records"
-msgstr ""
+msgstr "주요 기록"
 
 #: lib/syslog_dashboard.php:1597 syslog.php:1970
 msgid "Removed Records"
-msgstr ""
+msgstr "제거된 레코드"
 
 #: lib/syslog_dashboard.php:1601
 msgid "Start from Saved Search"
@@ -625,7 +639,7 @@ msgstr ""
 #: syslog.php:2486 syslog.php:2539 syslog.php:2540 syslog_alerts.php:802
 #: syslog_device_rules.php:265 syslog_reports.php:554
 msgid "None"
-msgstr ""
+msgstr "없음"
 
 #: lib/syslog_dashboard.php:1622 syslog.php:1922 syslog.php:2007
 #: syslog_saved_searches.php:666
@@ -634,13 +648,15 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1623 syslog.php:1925 syslog.php:2010
 #: syslog_alerts.php:915 syslog_removal.php:705 syslog_saved_searches.php:666
+#, fuzzy
 msgid "Remove condition"
-msgstr ""
+msgstr "제거된 레코드"
 
 #: lib/syslog_dashboard.php:1624 syslog.php:1926 syslog.php:2011
 #: syslog_saved_searches.php:666
+#, fuzzy
 msgid "Match group"
-msgstr ""
+msgstr "매치 타입"
 
 #: lib/syslog_dashboard.php:1625 syslog.php:1927 syslog.php:2012
 #: syslog_saved_searches.php:666
@@ -656,35 +672,35 @@ msgstr ""
 #: syslog_dashboards.php:733 syslog_reports.php:489
 #: syslog_saved_searches.php:281 syslog_saved_searches.php:648
 msgid "Name"
-msgstr ""
+msgstr "이름"
 
 #: setup.php:41 setup.php:188
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
-msgstr ""
+msgstr "syslog 디렉토리에서 config.php.dist 또는 config_local.php.dist 파일의 이름을 바꾸고 설치하기 전에 데이터베이스 설정을 변경하십시오."
 
 #: setup.php:1477
 msgid "What upgrade/install type do you wish to use"
-msgstr ""
+msgstr "어떤 업그레이드/설치 유형을 사용하시겠습니까?"
 
 #: setup.php:1478
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr ""
+msgstr "테이블이 매우 큰 경우 Truncate를 수행하는 것이 훨씬 빠릅니다.  아카이브 데이터가 우려되는 경우 이 업그레이드 기간 동안 브라우저를 정지하는 인라인(Inline) 또는 백업 테이블에서 새 syslog 형식으로 이전 syslog 데이터를 가져오는 백그라운드 프로세스를 생성하는 백그라운드(background)를 선택할 수 있습니다.  다시 말하지만, 이 프로세스는 몇 시간이 걸릴 수 있습니다."
 
 #: setup.php:1481
 msgid "Truncate Syslog Table"
-msgstr ""
+msgstr "Syslog 테이블 자르기"
 
 #: setup.php:1482
 msgid "Inline Upgrade"
-msgstr ""
+msgstr "인라인 업그레이드"
 
 #: setup.php:1483
 msgid "Background Upgrade"
-msgstr ""
+msgstr "백그라운드 업그레이드"
 
 #: setup.php:1488
 msgid "Database Storage Engine"
-msgstr ""
+msgstr "데이터베이스 스토리지 엔진"
 
 #: setup.php:1489
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
@@ -692,94 +708,97 @@ msgstr ""
 
 #: setup.php:1492
 msgid "InnoDB Storage"
-msgstr ""
+msgstr "InnoDB 스토리지"
 
 #: setup.php:1493
+#, fuzzy
 msgid "Aria Storage"
-msgstr ""
+msgstr "MyISAM 스토리지"
 
 #: setup.php:1502
 msgid "Retention Policy"
-msgstr ""
+msgstr "입력내용 보유 정책"
 
 #: setup.php:1503
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr ""
+msgstr "데이터베이스에서 유지하려는 Syslog 값의 일수를 선택합니다."
 
 #: setup.php:1523
 msgid "Partitions per Day"
-msgstr ""
+msgstr "일일 파티션 수"
 
 #: setup.php:1524
 msgid "Select the number of partitions per day that you wish to create."
-msgstr ""
+msgstr "만들려는 하루에 파티션 수를 선택합니다."
 
 #: setup.php:1527 setup.php:1528 setup.php:1529 setup.php:1530 setup.php:1531
 #, php-format
 msgid "%d Per Day"
-msgstr ""
+msgstr "하루 %d"
 
 #: setup.php:1536 setup.php:1650
 msgid "Upgrade"
-msgstr ""
+msgstr "업그레이드"
 
 #: setup.php:1538 setup.php:1652
 msgid "Install"
-msgstr ""
+msgstr "설치"
 
 #: setup.php:1552
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr ""
+msgstr "Syslog %s 어드바이저"
 
 #: setup.php:1556
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr ""
+msgstr "경고: Syslog 업그레이드는 시간이 많이 걸립니다!!"
 
 #: setup.php:1557
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr ""
+msgstr "'기본' syslog 테이블의 업그레이드는 시간이 많이 걸리는 프로세스일 수 있습니다.  따라서 업그레이드하기 전에 syslog 테이블의 크기를 줄이거나 백그라운드 옵션을 선택하는 것이 좋습니다</p> <p>백그라운드 옵션을 선택하면 레거시 syslog 테이블의 이름이 바뀌고 새 syslog 테이블이 생성됩니다.  그런 다음 업그레이드 프로세스가 백그라운드에서 시작됩니다.  다시 말하지만, 이 백그라운드 프로세스는 완료하는 데 상당한 시간이 걸릴 수 있습니다.  그러나 귀하의 데이터는 보존됩니다</p> <p>선택에 관계없이 기존의 모든 제거 및 경고 규칙은 업그레이드 프로세스 중에 유지됩니다.</p> <p><b>'Upgrade'</b>를 눌러 업그레이드를 진행하거나 <b>'Cancel'</b>을 눌러 플러그인 메뉴로 돌아갑니다."
 
 #: setup.php:1560
+#, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr ""
+msgstr "보존 기간을 선택할 수도 있습니다.  syslog에 로깅하는 호스트가 여러 개 있는 경우 이 테이블이 상당히 커질 수 있습니다.  따라서 파티셔닝을 사용하지 않는 경우 크기를 더 작게 유지하는 것이 좋습니다."
 
 #: setup.php:1560
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
 msgstr ""
 
 #: setup.php:1560
+#, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr ""
+msgstr "Syslog를 설치할 때 선택할 수 있는 몇 가지 옵션이 있습니다.  첫 번째는 데이터베이스 아키텍처입니다.  테이블 분할을 사용하여 테이블 크기가 과도하게 커져 쿼리 속도가 느려지는 것을 방지해야 합니다."
 
 #: setup.php:1566
 #, php-format
 msgid "Syslog %s Settings"
-msgstr ""
+msgstr "Syslog %s 설정"
 
 #: setup.php:1598
 msgid "What uninstall method do you want to use?"
-msgstr ""
+msgstr "어떤 제거 방법을 사용하시겠습니까?"
 
 #: setup.php:1599
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr ""
+msgstr "syslog를 제거할 때 나중에 다시 설치할 계획인 경우를 대비하여 모든 것을 제거하거나 구성 요소만 제거할 수 있습니다."
 
 #: setup.php:1601
 msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr ""
+msgstr "모든 항목(로그, 테이블, 설정) 제거"
 
 #: setup.php:1601
 msgid "Syslog Data Only"
-msgstr ""
+msgstr "Syslog 데이터만 해당"
 
 #: setup.php:1621
 msgid "Syslog Uninstall Preferences"
-msgstr ""
+msgstr "Syslog 제거 기본 설정"
 
 #: setup.php:1655
 msgid "Uninstall"
-msgstr ""
+msgstr "언인스톨"
 
 #: setup.php:1715
 msgid "Monday"
@@ -825,54 +844,54 @@ msgstr ""
 #: syslog_alerts.php:734 syslog_device_rules.php:168
 #: syslog_device_rules.php:267 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
-msgstr ""
+msgstr "비활성화"
 
 #: setup.php:1735 setup.php:2032 setup.php:2034 setup.php:2246 setup.php:2278
 #: setup.php:2296
 msgid "Syslog"
-msgstr ""
+msgstr "시스템 로그"
 
 #: setup.php:1739
 msgid "General Settings"
-msgstr ""
+msgstr "일반 설정"
 
 #: setup.php:1743
 msgid "Syslog Enabled"
-msgstr ""
+msgstr "Syslog 사용"
 
 #: setup.php:1744
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr ""
+msgstr "이 확인란을 설정하면 레코드가 Syslog Incoming 테이블에서 기본 syslog 테이블로 전송되고 경고 및 보고서가 활성화됩니다.  시스템이 비활성화된 경우 로그 항목은 rsyslog 또는 syslog-ng 프로세스에 의해 정의된 대로 Syslog 수신 테이블에 계속 누적됩니다."
 
 #: setup.php:1749
 msgid "Strip Domains"
-msgstr ""
+msgstr "스트립 도메인"
 
 #: setup.php:1750
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr ""
+msgstr "syslog 호스트 이름에서 제거하려는 쉼표로 구분된 도메인 목록(예: 'mydomain.com, otherdomain.com')"
 
 #: setup.php:1757
 msgid "Refresh Interval"
-msgstr ""
+msgstr "새로 고침 간격"
 
 #: setup.php:1758
 msgid "This is the time in seconds before the page refreshes."
-msgstr ""
+msgstr "페이지가 새로 고쳐지기 전의 시간(초)입니다."
 
 #: setup.php:1764
 msgid "Max Report Records"
-msgstr ""
+msgstr "최대 보고서 레코드"
 
 #: setup.php:1765
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr ""
+msgstr "임계값 기반 경고의 경우 보고서에 표시하려는 최대 수입니다.  이것은 html 로그 및 이메일의 크기를 제한하는 데 사용됩니다."
 
 #: setup.php:1769 setup.php:1770 setup.php:1771 setup.php:1772 setup.php:1773
 #: setup.php:1774
 #, php-format
 msgid "%d Records"
-msgstr ""
+msgstr "%d 기록"
 
 #: setup.php:1778
 msgid "Maximum Syslog Processing Processes"
@@ -894,11 +913,11 @@ msgstr ""
 
 #: setup.php:1792
 msgid "Command for Opening Tickets"
-msgstr ""
+msgstr "티켓 열기 명령"
 
 #: setup.php:1793
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr ""
+msgstr "이 명령은 헬프 데스크 티켓을 열기 위해 실행됩니다.  이 명령은 <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>와 같이 여러 입력 매개 변수를 구문 분석하는 데 필요합니다.  hostlist는 경고의 영향을 받는 호스트의 쉼표로 구분된 목록입니다."
 
 #: setup.php:1799
 msgid "Host Discovery Options"
@@ -922,35 +941,35 @@ msgstr ""
 
 #: setup.php:1816
 msgid "HTML Notification Settings"
-msgstr ""
+msgstr "HTML 알림 설정"
 
 #: setup.php:1821
 msgid "Enable HTML Based Email"
-msgstr ""
+msgstr "HTML 기반 이메일 사용"
 
 #: setup.php:1822
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr ""
+msgstr "이 확인란을 선택하면 모든 이메일이 HTML 형식으로 전송됩니다.  그렇지 않으면 이메일이 일반 텍스트로 전송됩니다."
 
 #: setup.php:1827
 msgid "Format File to Use"
-msgstr ""
+msgstr "사용할 파일 형식 지정"
 
 #: setup.php:1830
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
+msgstr "사용할 사용자 정의 html 래퍼 및 CSS 파일을 선택합니다.  이 파일에는 보고서를 둘러쌀 html과 CSS가 모두 포함되어 있습니다.  단순히 CSS 이상이 포함된 경우 파일 내부에 특수 태그를 배치해야 합니다 <REPORT> .  이 형식 태그는 보고서 내용으로 대체됩니다.  이러한 파일은 'formats' 디렉토리에 있습니다.</REPORT>"
 
 #: setup.php:1834
 msgid "Data Retention Settings"
-msgstr ""
+msgstr "데이터 보존 설정"
 
 #: setup.php:1839
 msgid "Syslog Retention"
-msgstr ""
+msgstr "Syslog 보존"
 
 #: setup.php:1840
 msgid "This is the number of days to keep events."
-msgstr ""
+msgstr "이벤트를 유지할 일수입니다."
 
 #: setup.php:1846
 msgid "Partition Pre-create Window"
@@ -963,7 +982,7 @@ msgstr ""
 #: setup.php:1851 setup.php:2139 setup.php:2158 syslog_alerts.php:516
 #, php-format
 msgid "%d Day"
-msgstr ""
+msgstr "%d 데이"
 
 #: setup.php:1852 setup.php:1853 setup.php:1854 setup.php:1855 setup.php:1856
 #: setup.php:1857 setup.php:2140 setup.php:2141 setup.php:2142 setup.php:2143
@@ -971,25 +990,26 @@ msgstr ""
 #: setup.php:2163 syslog_alerts.php:517
 #, php-format
 msgid "%d Days"
-msgstr ""
+msgstr "%d일"
 
 #: setup.php:1861
+#, fuzzy
 msgid "Partition Recovery Limit"
-msgstr ""
+msgstr "일일 파티션 수"
 
 #: setup.php:1862
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
 msgstr ""
 
 #: setup.php:1866
-#, php-format
+#, fuzzy, php-format
 msgid "%d Partition per run"
-msgstr ""
+msgstr "일일 파티션 수"
 
 #: setup.php:1867 setup.php:1868 setup.php:1869 setup.php:1870 setup.php:1871
-#, php-format
+#, fuzzy, php-format
 msgid "%d Partitions per run"
-msgstr ""
+msgstr "일일 파티션 수"
 
 #: setup.php:1875
 msgid "Collector Staleness Threshold"
@@ -1021,17 +1041,17 @@ msgid "Default (10000 messages)"
 msgstr ""
 
 #: setup.php:1895 setup.php:1896 setup.php:1897 setup.php:1898
-#, php-format
+#, fuzzy, php-format
 msgid "%d Messages"
-msgstr ""
+msgstr "메시지"
 
 #: setup.php:1902
 msgid "Syslog Alert Retention"
-msgstr ""
+msgstr "Syslog 경고 보존"
 
 #: setup.php:1903
 msgid "This is the number of days to keep alert logs."
-msgstr ""
+msgstr "경고 로그를 보관할 일수입니다."
 
 #: setup.php:1909
 msgid "Alert Suppression and Maintenance"
@@ -1095,120 +1115,120 @@ msgstr ""
 
 #: setup.php:1961
 msgid "Remote Message Processing"
-msgstr ""
+msgstr "원격 메시지 처리"
 
 #: setup.php:1965
 msgid "Enable Remote Data Collector Message Processing"
-msgstr ""
+msgstr "원격 데이터 수집기 메시지 처리 사용"
 
 #: setup.php:1966
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr ""
+msgstr "원격 데이터 수집기에 자체 Syslog 데이터베이스가 있고 메시지를 독립적으로 처리하는 경우 이 확인란을 선택합니다.  이 확인란을 선택하면 원격 데이터 수집기가 자체 'config_local.php' 파일을 유지 관리하여 Syslog에 메시지 표시 및 처리를 위해 독립 데이터베이스를 사용하도록 알려야 합니다.  이를 위해 템플릿 파일 'config_local.php.dist'를 사용하십시오.  경고: Syslog 테이블은 이 옵션이 활성화되는 즉시 자동으로 생성됩니다."
 
 #: setup.php:1971
 msgid "Remote Data Collector Rules Sync"
-msgstr ""
+msgstr "원격 데이터 수집기 규칙 동기화"
 
 #: setup.php:1972
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr ""
+msgstr "원격 데이터 수집기에 자체 Syslog 데이터베이스가 있고 thrie 메시지를 독립적으로 처리하는 경우 Main Cacti 데이터베이스 경고, 제거 및 보고서 규칙을 Remote Cacti 시스템으로 보내려면 이 확인란을 선택합니다."
 
 #: setup.php:2093 syslog_device_rules.php:124 syslog_removal.php:37
 msgid "Disable"
-msgstr ""
+msgstr "비활성화"
 
 #: setup.php:2094 syslog_device_rules.php:124 syslog_removal.php:38
 msgid "Enable"
-msgstr ""
+msgstr "활성화"
 
 #: setup.php:2095 syslog.php:2028 syslog_dashboards.php:300
 #: syslog_dashboards.php:351 syslog_device_rules.php:124 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
-msgstr ""
+msgstr "내보내기"
 
 #: setup.php:2138 setup.php:2157
 msgid "Indefinite"
-msgstr ""
+msgstr "무기한"
 
 #: setup.php:2145 setup.php:2164 syslog_alerts.php:518
 #, php-format
 msgid "%d Week"
-msgstr ""
+msgstr "%d 주"
 
 #: setup.php:2146 setup.php:2165 syslog_alerts.php:519
 #, php-format
 msgid "%d Weeks"
-msgstr ""
+msgstr "%d 주"
 
 #: setup.php:2147 setup.php:2166
 #, php-format
 msgid "%d Month"
-msgstr ""
+msgstr "%d 월"
 
 #: setup.php:2148 setup.php:2149 setup.php:2150 setup.php:2151 setup.php:2152
 #: setup.php:2167 setup.php:2168 setup.php:2169 setup.php:2170 setup.php:2171
 #, php-format
 msgid "%d Months"
-msgstr ""
+msgstr "%d 개월"
 
 #: setup.php:2153 setup.php:2172
 #, php-format
 msgid "%d Year"
-msgstr ""
+msgstr "%d 년"
 
 #: setup.php:2176 syslog.php:295 syslog.php:310 syslog.php:325 syslog.php:751
 #: syslog_dashboards.php:324 syslog_reports.php:809
 msgid "Never"
-msgstr ""
+msgstr "안함"
 
 #: setup.php:2177
 #, php-format
 msgid "%d Minute"
-msgstr ""
+msgstr "%d 분"
 
 #: setup.php:2178 setup.php:2179 setup.php:2180 syslog_alerts.php:503
 #: syslog_alerts.php:504 syslog_alerts.php:505 syslog_alerts.php:506
 #: syslog_alerts.php:507 syslog_alerts.php:508
 #, php-format
 msgid "%d Minutes"
-msgstr ""
+msgstr "%d 분"
 
 #: setup.php:2184 syslog.php:2088
 msgid "Notice"
-msgstr ""
+msgstr "공지"
 
 #: setup.php:2185 syslog.php:2087 syslog.php:2106
 msgid "Warning"
-msgstr ""
+msgstr "경고"
 
 #: setup.php:2186 syslog.php:2084
 msgid "Critical"
-msgstr ""
+msgstr "크리티컬"
 
 #: setup.php:2190
 msgid "Begins with"
-msgstr ""
+msgstr "로 시작"
 
 #: setup.php:2191
 msgid "Contains"
-msgstr ""
+msgstr "포함"
 
 #: setup.php:2192
 msgid "Ends with"
-msgstr ""
+msgstr "로 끝나다"
 
 #: setup.php:2193
 msgid "Hostname is"
-msgstr ""
+msgstr "호스트명"
 
 #: setup.php:2194
 msgid "Program is"
-msgstr ""
+msgstr "프로그램"
 
 #: setup.php:2195
 msgid "Facility is"
-msgstr ""
+msgstr "시설"
 
 #: setup.php:2196 syslog_alerts.php:690
 msgid "Filter Builder"
@@ -1216,40 +1236,41 @@ msgstr ""
 
 #: setup.php:2197 syslog_alerts.php:691
 msgid "SQL Expression"
-msgstr ""
+msgstr "SQL 표현식"
 
 #: setup.php:2201
 msgid "Daily"
-msgstr ""
+msgstr "매일"
 
 #: setup.php:2202
 msgid "Weekly"
-msgstr ""
+msgstr "매주"
 
 #: setup.php:2229
 msgid "Import/Export"
-msgstr ""
+msgstr "가져오기/내보내기"
 
 #: setup.php:2230
 msgid "Alert Rules"
-msgstr ""
+msgstr "경고 규칙"
 
 #: setup.php:2230 setup.php:2231 setup.php:2232 setup.php:2233 setup.php:2234
 #: setup.php:2235 setup.php:2240
 msgid "Syslog Settings"
-msgstr ""
+msgstr "Syslog 설정"
 
 #: setup.php:2231 syslog_device_rules.php:257
+#, fuzzy
 msgid "Device Alert Rules"
-msgstr ""
+msgstr "경고 규칙"
 
 #: setup.php:2232
 msgid "Removal Rules"
-msgstr ""
+msgstr "제거 규칙"
 
 #: setup.php:2233
 msgid "Report Rules"
-msgstr ""
+msgstr "보고서 규칙"
 
 #: setup.php:2234 setup.php:2294 syslog_saved_searches.php:195
 msgid "Saved Search Templates"
@@ -1257,45 +1278,46 @@ msgstr ""
 
 #: setup.php:2279
 msgid "Syslog Removals"
-msgstr ""
+msgstr "Syslog 제거"
 
 #: setup.php:2280 setup.php:2281 setup.php:2285 setup.php:2286 setup.php:2289
 #: setup.php:2292
 msgid "(Edit)"
-msgstr ""
+msgstr "(편집)"
 
 #: setup.php:2282 setup.php:2287 setup.php:2293
 msgid "(Actions)"
-msgstr ""
+msgstr "작업"
 
 #: setup.php:2284
 msgid "Syslog Alerts"
-msgstr ""
+msgstr "Syslog 알림"
 
 #: setup.php:2288
+#, fuzzy
 msgid "Syslog Device Alert Rules"
-msgstr ""
+msgstr "Syslog 경고 규칙 보기"
 
 #: setup.php:2291
 msgid "Syslog Reports"
-msgstr ""
+msgstr "Syslog 보고서"
 
 #: setup.php:2395
 msgid "Display Syslog in Range"
-msgstr ""
+msgstr "범위 내 syslog 표시"
 
 #: setup.php:2465
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
-msgstr ""
+msgstr "Syslog 데이터베이스에서 제거된 %s 디바이스 레코드가 있습니다."
 
 #: setup.php:2486
 msgid "Syslog Utilities"
-msgstr ""
+msgstr "Syslog 유틸리티"
 
 #: setup.php:2490
 msgid "Purge Syslog Devices"
-msgstr ""
+msgstr "Syslog 장치 제거"
 
 #: setup.php:2492
 msgid "Are you sure you want to purge stale Syslog devices?"
@@ -1309,23 +1331,24 @@ msgstr ""
 #: syslog_device_rules.php:126 syslog_removal.php:248 syslog_reports.php:213
 #: syslog_saved_searches.php:384
 msgid "Continue"
-msgstr ""
+msgstr "계속"
 
 #: setup.php:2538
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr ""
+msgstr "이 메뉴 선택은 Cacti의 syslog 서버에 더 이상 보고하지 않는 장치를 제거하는 수단을 제공합니다."
 
 #: syslog.php:126
 msgid "Syslog Viewer"
-msgstr ""
+msgstr "Syslog 뷰어"
 
 #: syslog.php:258 syslog.php:674
+#, fuzzy
 msgid "Syslog Status"
-msgstr ""
+msgstr "Syslog 설정"
 
 #: syslog.php:268
 msgid "Selected Alert"
-msgstr ""
+msgstr "선택한 경고"
 
 #: syslog.php:313 syslog.php:543
 msgid "seconds"
@@ -1342,9 +1365,9 @@ msgid "Unavailable"
 msgstr ""
 
 #: syslog.php:493
-#, php-format
+#, fuzzy, php-format
 msgid "no message received for %s"
-msgstr ""
+msgstr "Syslog 메시지 필터 %s"
 
 #: syslog.php:498
 #, php-format
@@ -1356,8 +1379,9 @@ msgid "no incoming data is available to evaluate"
 msgstr ""
 
 #: syslog.php:552
+#, fuzzy
 msgid "day"
-msgstr ""
+msgstr "매일"
 
 #: syslog.php:552
 msgid "days"
@@ -1368,16 +1392,19 @@ msgid "hour"
 msgstr ""
 
 #: syslog.php:559
+#, fuzzy
 msgid "hours"
-msgstr ""
+msgstr "%d 시간"
 
 #: syslog.php:565
+#, fuzzy
 msgid "minute"
-msgstr ""
+msgstr "1분"
 
 #: syslog.php:565
+#, fuzzy
 msgid "minutes"
-msgstr ""
+msgstr "1분"
 
 #: syslog.php:601
 msgid "Rows in syslog_incoming"
@@ -1388,12 +1415,14 @@ msgid "Syslog table size (data + indexes)"
 msgstr ""
 
 #: syslog.php:603
+#, fuzzy
 msgid "Syslog retention"
-msgstr ""
+msgstr "Syslog 보존"
 
 #: syslog.php:604
+#, fuzzy
 msgid "Alert retention"
-msgstr ""
+msgstr "Syslog 경고 보존"
 
 #: syslog.php:639 syslog.php:661
 msgid "No recovery activity recorded yet."
@@ -1404,8 +1433,9 @@ msgid "created"
 msgstr ""
 
 #: syslog.php:656
+#, fuzzy
 msgid "remaining"
-msgstr ""
+msgstr "경고"
 
 #: syslog.php:657
 msgid "retention deferred"
@@ -1416,8 +1446,9 @@ msgid "Latest processing run"
 msgstr ""
 
 #: syslog.php:682
+#, fuzzy
 msgid "Records processed"
-msgstr ""
+msgstr "재처리"
 
 #: syslog.php:686
 msgid "Polling runtime"
@@ -1444,24 +1475,28 @@ msgid "Maximum runtime"
 msgstr ""
 
 #: syslog.php:706
+#, fuzzy
 msgid "Storage and retention"
-msgstr ""
+msgstr "Syslog 보존"
 
 #: syslog.php:715
+#, fuzzy
 msgid "Partition maintenance blocked"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: syslog.php:716
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
 msgstr ""
 
 #: syslog.php:721
+#, fuzzy
 msgid "Partition health"
-msgstr ""
+msgstr "일일 파티션 수"
 
 #: syslog.php:725
+#, fuzzy
 msgid "Table"
-msgstr ""
+msgstr "활성화"
 
 #: syslog.php:726
 msgid "Date coverage"
@@ -1476,12 +1511,14 @@ msgid "dMaxValue size"
 msgstr ""
 
 #: syslog.php:745
+#, fuzzy
 msgid "Partition maintenance activity"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: syslog.php:749
+#, fuzzy
 msgid "Last attempt"
-msgstr ""
+msgstr "마지막 보낸 날짜"
 
 #: syslog.php:750
 msgid "Last successful maintenance"
@@ -1500,12 +1537,14 @@ msgid "Latest outcome"
 msgstr ""
 
 #: syslog.php:752
+#, fuzzy
 msgid "Recovery progress"
-msgstr ""
+msgstr "재처리"
 
 #: syslog.php:760
+#, fuzzy
 msgid "Recent partition maintenance activity"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: syslog.php:762
 msgid "When"
@@ -1516,12 +1555,13 @@ msgid "Outcome"
 msgstr ""
 
 #: syslog.php:764
+#, fuzzy
 msgid "Recovery"
-msgstr ""
+msgstr "%d 기록"
 
 #: syslog.php:765 syslog_alerts.php:641 syslog_reports.php:485
 msgid "Details"
-msgstr ""
+msgstr "상세정보"
 
 #: syslog.php:769
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1545,16 +1585,18 @@ msgid "Last received log"
 msgstr ""
 
 #: syslog.php:790
+#, fuzzy
 msgid "Oldest unprocessed message"
-msgstr ""
+msgstr "[ 처리되지 않은 메시지: %s ]"
 
 #: syslog.php:791
 msgid "Incoming backlog"
 msgstr ""
 
 #: syslog.php:792
+#, fuzzy
 msgid "Records processed in latest run"
-msgstr ""
+msgstr "재처리"
 
 #: syslog.php:801
 msgid "Collector warning"
@@ -1573,12 +1615,14 @@ msgid "Configured worker processes"
 msgstr ""
 
 #: syslog.php:822
+#, fuzzy
 msgid "Process"
-msgstr ""
+msgstr "재처리"
 
 #: syslog.php:823
+#, fuzzy
 msgid "Records handled"
-msgstr ""
+msgstr "기록"
 
 #: syslog.php:824
 msgid "Hosts resolved"
@@ -1597,40 +1641,46 @@ msgid "Processing phases"
 msgstr ""
 
 #: syslog.php:847
+#, fuzzy
 msgid "Partition maintenance"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: syslog.php:848
 msgid "Reference updates"
 msgstr ""
 
 #: syslog.php:849
+#, fuzzy
 msgid "Removal rules"
-msgstr ""
+msgstr "제거 규칙"
 
 #: syslog.php:850
+#, fuzzy
 msgid "Alert evaluation"
-msgstr ""
+msgstr "Syslog 경고 보존"
 
 #: syslog.php:851
 msgid "Incoming transfer"
 msgstr ""
 
 #: syslog.php:852
+#, fuzzy
 msgid "Report processing"
-msgstr ""
+msgstr "재처리"
 
 #: syslog.php:871
 msgid "Phase"
 msgstr ""
 
 #: syslog.php:873
+#, fuzzy
 msgid "Duration"
-msgstr ""
+msgstr "삭제"
 
 #: syslog.php:874
+#, fuzzy
 msgid "Records"
-msgstr ""
+msgstr "%d 기록"
 
 #: syslog.php:888
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
@@ -1645,24 +1695,28 @@ msgid "Rule activity"
 msgstr ""
 
 #: syslog.php:904
+#, fuzzy
 msgid "Rules processed"
-msgstr ""
+msgstr "재처리"
 
 #: syslog.php:905
+#, fuzzy
 msgid "Last run"
-msgstr ""
+msgstr "마지막 보낸 날짜"
 
 #: syslog.php:906
 msgid "Total"
 msgstr ""
 
 #: syslog.php:909
+#, fuzzy
 msgid "Alert rules"
-msgstr ""
+msgstr "경고 규칙"
 
 #: syslog.php:909
+#, fuzzy
 msgid "Delete rules"
-msgstr ""
+msgstr "경고 규칙"
 
 #: syslog.php:916
 msgid "Fired last run"
@@ -1670,7 +1724,7 @@ msgstr ""
 
 #: syslog.php:939
 msgid "Syslog Alert View"
-msgstr ""
+msgstr "Syslog 경고 보기"
 
 #: syslog.php:1346 syslog.php:1392
 msgid "A valid saved search is required."
@@ -1687,32 +1741,33 @@ msgstr ""
 #: syslog.php:1800
 #, php-format
 msgid "[ Unprocessed Messages: %s ]"
-msgstr ""
+msgstr "[ 처리되지 않은 메시지: %s ]"
 
 #: syslog.php:1838 syslog_device_rules.php:223
 msgid "Enter a search term"
-msgstr ""
+msgstr "검색어를 입력합니다"
 
 #: syslog.php:1839
 msgid "Select Device(s)"
-msgstr ""
+msgstr "장치 선택"
 
 #: syslog.php:1840
 msgid "Devices Selected"
-msgstr ""
+msgstr "선택한 장치"
 
 #: syslog.php:1841
 msgid "All Devices Selected"
-msgstr ""
+msgstr "선택한 모든 장치"
 
 #: syslog.php:1846
 #, php-format
 msgid "Syslog Message Filter %s"
-msgstr ""
+msgstr "Syslog 메시지 필터 %s"
 
 #: syslog.php:1854 syslog.php:1916
+#, fuzzy
 msgid "Search messages"
-msgstr ""
+msgstr "메시지"
 
 #: syslog.php:1858 syslog.php:1859 syslog.php:1860 syslog.php:1862
 msgid "Collapse filters"
@@ -1723,12 +1778,14 @@ msgid "Edit filters"
 msgstr ""
 
 #: syslog.php:1866
+#, fuzzy
 msgid "Saved Searches"
-msgstr ""
+msgstr "검색"
 
 #: syslog.php:1870 syslog.php:1879
+#, fuzzy
 msgid "My Searches"
-msgstr ""
+msgstr "검색"
 
 #: syslog.php:1871 syslog.php:1877
 msgid "Global Searches"
@@ -1739,24 +1796,28 @@ msgid "Manage"
 msgstr ""
 
 #: syslog.php:1904
+#, fuzzy
 msgid "Manage saved searches"
-msgstr ""
+msgstr "검색어를 입력합니다"
 
 #: syslog.php:1905
+#, fuzzy
 msgid "Save search"
-msgstr ""
+msgstr "검색"
 
 #: syslog.php:1907
+#, fuzzy
 msgid "Edit"
-msgstr ""
+msgstr "(편집)"
 
 #: syslog.php:1910
 msgid "Save for all"
 msgstr ""
 
 #: syslog.php:1923 syslog.php:2008
+#, fuzzy
 msgid "contains"
-msgstr ""
+msgstr "포함"
 
 #: syslog.php:1924 syslog.php:2009
 msgid "does not contain"
@@ -1768,37 +1829,41 @@ msgstr ""
 
 #: syslog.php:1931
 msgid "Display Rows"
-msgstr ""
+msgstr "행 표시"
 
 #: syslog.php:1932 syslog_alerts.php:1055 syslog_dashboards.php:237
 #: syslog_device_rules.php:225 syslog_removal.php:827 syslog_reports.php:665
 #: syslog_saved_searches.php:229
 msgid "Default"
-msgstr ""
+msgstr "기본값"
 
 #: syslog.php:1947
+#, fuzzy
 msgid "View options"
-msgstr ""
+msgstr "이메일 옵션"
 
 #: syslog.php:1967
 msgid "Removal Handling"
-msgstr ""
+msgstr "재고 처분 처리"
 
 #: syslog.php:1978
+#, fuzzy
 msgid "Display"
-msgstr ""
+msgstr "행 표시"
 
 #: syslog.php:1979
 msgid "Group Duplicate Messages"
 msgstr ""
 
 #: syslog.php:1980
+#, fuzzy
 msgid "Individual Messages"
-msgstr ""
+msgstr "개별"
 
 #: syslog.php:1981
+#, fuzzy
 msgid "Grouped Messages"
-msgstr ""
+msgstr "메시지"
 
 #: syslog.php:1991
 #, php-format
@@ -1806,8 +1871,9 @@ msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT ex
 msgstr ""
 
 #: syslog.php:1991
+#, fuzzy
 msgid "Search help"
-msgstr ""
+msgstr "검색"
 
 #: syslog.php:1996
 msgid "New Saved Search"
@@ -1818,133 +1884,143 @@ msgid "Edit Saved Search"
 msgstr ""
 
 #: syslog.php:1998
+#, fuzzy
 msgid "Save As"
-msgstr ""
+msgstr "저장"
 
 #: syslog.php:2002
 msgid "Delete the selected saved search?"
 msgstr ""
 
 #: syslog.php:2015
+#, fuzzy
 msgid "Save Search As"
-msgstr ""
+msgstr "검색"
 
 #: syslog.php:2025 syslog_alerts.php:1035 syslog_dashboards.php:227
 #: syslog_device_rules.php:223 syslog_removal.php:807 syslog_reports.php:645
 #: syslog_saved_searches.php:219
 msgid "Search"
-msgstr ""
+msgstr "검색"
 
 #: syslog.php:2026 syslog_alerts.php:1072 syslog_dashboards.php:254
 #: syslog_device_rules.php:226 syslog_removal.php:844 syslog_reports.php:682
 #: syslog_saved_searches.php:246
 msgid "Clear"
-msgstr ""
+msgstr "지우기"
 
 #: syslog.php:2026
 msgid "Return filter values to their user defined defaults"
-msgstr ""
+msgstr "필터 값을 사용자 정의 기본값으로 반환합니다."
 
 #: syslog.php:2027
+#, fuzzy
 msgid "Refresh Results"
-msgstr ""
+msgstr "새로 고침 간격"
 
 #: syslog.php:2028
 msgid "Export Records to CSV"
-msgstr ""
+msgstr "레코드를 CSV로 내보내기"
 
 #: syslog.php:2029
 msgid "Save Default Settings"
-msgstr ""
+msgstr "기본 설정 저장"
 
 #: syslog.php:2029
+#, fuzzy
 msgid "Save view defaults"
-msgstr ""
+msgstr "기본 설정 저장"
 
 #: syslog.php:2083
 msgid "Emergency"
-msgstr ""
+msgstr "긴급"
 
 #: syslog.php:2085 syslog.php:2105
 msgid "Alert"
-msgstr ""
+msgstr "경고"
 
 #: syslog.php:2086
 msgid "Error"
-msgstr ""
+msgstr "오류"
 
 #: syslog.php:2089
 msgid "Info"
-msgstr ""
+msgstr "정보"
 
 #: syslog.php:2090
 msgid "Debug"
-msgstr ""
+msgstr "디버그"
 
 #: syslog.php:2107
 msgid "Informational"
-msgstr ""
+msgstr "정보"
 
 #: syslog.php:2225 syslog.php:2350 syslog.php:2406 syslog_alerts.php:664
 #: syslog_device_rules.php:167 syslog_device_rules.php:258
 msgid "Device"
-msgstr ""
+msgstr "장치"
 
 #: syslog.php:2235
 msgid "Messages"
-msgstr ""
+msgstr "메시지"
 
 #: syslog.php:2264
+#, fuzzy
 msgid "Empty message"
-msgstr ""
+msgstr "메시지"
 
 #: syslog.php:2330
 msgid "No Syslog Messages"
-msgstr ""
+msgstr "Syslog 메시지 없음"
 
 #: syslog.php:2359
 msgid "Alert Log Rows"
-msgstr ""
+msgstr "경고 로그 행"
 
 #: syslog.php:2376
 msgid "Alert Removed"
-msgstr ""
+msgstr "경고가 제거됨"
 
 #: syslog.php:2386
 msgid "No Alert Log Messages"
-msgstr ""
+msgstr "경고 로그 메시지 없음"
 
 #: syslog.php:2405
 msgid "Close message details"
 msgstr ""
 
 #: syslog.php:2405
+#, fuzzy
 msgid "Message details"
-msgstr ""
+msgstr "메시지"
 
 #: syslog.php:2408
 msgid "Copied"
 msgstr ""
 
 #: syslog.php:2408
+#, fuzzy
 msgid "Copy message"
-msgstr ""
+msgstr "메시지"
 
 #: syslog.php:2408
 msgid "Copy unavailable. Select and copy the message text."
 msgstr ""
 
 #: syslog.php:2409
+#, fuzzy
 msgid "Create Alarm Rule"
-msgstr ""
+msgstr "경고 규칙 가져오기"
 
 #: syslog.php:2409
+#, fuzzy
 msgid "Create Device Alert Rule"
-msgstr ""
+msgstr "경고 규칙 가져오기"
 
 #: syslog.php:2409
+#, fuzzy
 msgid "Create Removal Rule"
-msgstr ""
+msgstr "새 제거 규칙"
 
 #: syslog.php:2410
 msgid "Filter by device"
@@ -1956,48 +2032,48 @@ msgstr ""
 
 #: syslog.php:2477 syslog.php:2500 syslog.php:2531 syslog.php:2532
 msgid "All Programs"
-msgstr ""
+msgstr "모든 프로그램"
 
 #: syslog_alerts.php:191
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 삭제합니다."
 
 #: syslog_alerts.php:197
 msgid "Delete Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog 경고 규칙 삭제"
 
 #: syslog_alerts.php:201
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 비활성화합니다."
 
 #: syslog_alerts.php:207
 msgid "Disable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Disable Syslog Alert Rule(s)"
 
 #: syslog_alerts.php:211
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 활성화합니다."
 
 #: syslog_alerts.php:217
 msgid "Enable Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog Alert Rule(s) 활성화"
 
 #: syslog_alerts.php:221
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 내보냅니다."
 
 #: syslog_alerts.php:227
 msgid "Export Syslog Alert Rule(s)"
-msgstr ""
+msgstr "Syslog 경고 규칙 내보내기"
 
 #: syslog_alerts.php:375 syslog_reports.php:334
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
-msgstr ""
+msgstr "입력한 SQL 구문이 유효하지 않습니다.  SQL을 수정하십시오.<br>"
 
 #: syslog_alerts.php:376 syslog_reports.php:335
 #, php-format
 msgid "The Pre-processed SQL is:<br><br> %s"
-msgstr ""
+msgstr "전처리된 SQL은 다음과 같습니다.<br><br> %s"
 
 #: syslog_alerts.php:388 syslog_removal.php:349
 #, php-format
@@ -2006,88 +2082,88 @@ msgstr ""
 
 #: syslog_alerts.php:390 syslog_reports.php:350
 msgid "The processed SQL was invalid.  Please correct your SQL"
-msgstr ""
+msgstr "처리된 SQL이 유효하지 않습니다.  SQL을 수정하십시오."
 
 #: syslog_alerts.php:493
 msgid "Not Set"
-msgstr ""
+msgstr "설정되지 않음"
 
 #: syslog_alerts.php:498
 msgid "1 Minute"
-msgstr ""
+msgstr "1분"
 
 #: syslog_alerts.php:509
 #, php-format
 msgid "%d Hour"
-msgstr ""
+msgstr "%d 시간"
 
 #: syslog_alerts.php:510 syslog_alerts.php:511 syslog_alerts.php:512
 #: syslog_alerts.php:513 syslog_alerts.php:514 syslog_alerts.php:515
 #, php-format
 msgid "%d Hours"
-msgstr ""
+msgstr "%d 시간"
 
 #: syslog_alerts.php:520
 msgid "1 Month"
-msgstr ""
+msgstr "1개월"
 
 #: syslog_alerts.php:562
 #, php-format
 msgid "Alert Edit [edit: %s]"
-msgstr ""
+msgstr "경고 편집 [편집: %s]"
 
 #: syslog_alerts.php:564 syslog_alerts.php:585 syslog_alerts.php:594
 msgid "Alert Edit [new]"
-msgstr ""
+msgstr "경고 편집[신규]"
 
 #: syslog_alerts.php:566 syslog_alerts.php:591 syslog_alerts.php:596
 msgid "New Alert Rule"
-msgstr ""
+msgstr "새 경고 규칙"
 
 #: syslog_alerts.php:608 syslog_alerts.php:1197 syslog_reports.php:479
 msgid "N/A"
-msgstr ""
+msgstr "N/A"
 
 #: syslog_alerts.php:646
 msgid "Please describe this Alert."
-msgstr ""
+msgstr "이 경고에 대해 설명해 주십시오."
 
 #: syslog_alerts.php:654
 msgid "What is the Severity Level of this Alert?"
-msgstr ""
+msgstr "이 경고의 심각도 수준은 무엇입니까?"
 
 #: syslog_alerts.php:661
 msgid "Reporting Level"
-msgstr ""
+msgstr "보고 수준"
 
 #: syslog_alerts.php:662
 msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
-msgstr ""
+msgstr "Re-Alert Cycles를 기록하기 위해 시스템 또는 장치 수준에서 경고를 추적해야 합니다."
 
 #: syslog_alerts.php:664
 msgid "System"
-msgstr ""
+msgstr "시스템"
 
 #: syslog_alerts.php:669
 msgid "Reporting Method"
-msgstr ""
+msgstr "보고 방법"
 
 #: syslog_alerts.php:670
 msgid "Define how to Alert on the syslog messages."
-msgstr ""
+msgstr "syslog 메시지에 대해 경고하는 방법을 정의합니다."
 
 #: syslog_alerts.php:672 syslog_alerts.php:1196
 msgid "Individual"
-msgstr ""
+msgstr "개별"
 
 #: syslog_alerts.php:678
 msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
-msgstr ""
+msgstr "'임계값' 방법의 경우 표시된 숫자가 이 값보다 높으면 경고가 트리거됩니다."
 
 #: syslog_alerts.php:686 syslog_alerts.php:1174 syslog_removal.php:943
 #: syslog_reports.php:781
 msgid "Match Type"
-msgstr ""
+msgstr "매치 타입"
 
 #: syslog_alerts.php:687
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
@@ -2095,7 +2171,7 @@ msgstr ""
 
 #: syslog_alerts.php:697 syslog_reports.php:531
 msgid "Message Match String"
-msgstr ""
+msgstr "메시지 일치 문자열"
 
 #: syslog_alerts.php:698
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
@@ -2107,23 +2183,24 @@ msgstr ""
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
-msgstr ""
+msgstr "활성화"
 
 #: syslog_alerts.php:709
 msgid "Is this Alert Enabled?"
-msgstr ""
+msgstr "이 경고가 활성화되어 있습니까?"
 
 #: syslog_alerts.php:715
 msgid "Re-Alert Cycle"
-msgstr ""
+msgstr "재경고 주기"
 
 #: syslog_alerts.php:719
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
-msgstr ""
+msgstr "이 시간이 경과할 때까지 동일한 호스트에 대해 이 경고를 다시 보내지 마십시오. 임계값 기반 경보의 경우 이는 모든 호스트에 적용됩니다."
 
 #: syslog_alerts.php:723
+#, fuzzy
 msgid "Notification Cooldown"
-msgstr ""
+msgstr "알림 목록"
 
 #: syslog_alerts.php:725
 msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
@@ -2134,32 +2211,39 @@ msgid "1 day"
 msgstr ""
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "1 hour"
-msgstr ""
+msgstr "%d 시간"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "1 minute"
-msgstr ""
+msgstr "1분"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "15 minutes"
-msgstr ""
+msgstr "1분"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "30 minutes"
-msgstr ""
+msgstr "1분"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "4 hours"
-msgstr ""
+msgstr "%d 시간"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "5 minutes"
-msgstr ""
+msgstr "1분"
 
 #: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
 msgid "Use global setting"
-msgstr ""
+msgstr "Syslog %s 설정"
 
 #: syslog_alerts.php:731
 msgid "Duplicate Suppression"
@@ -2231,51 +2315,51 @@ msgstr ""
 
 #: syslog_alerts.php:783 syslog_device_rules.php:173 syslog_reports.php:568
 msgid "Notes"
-msgstr ""
+msgstr "노트"
 
 #: syslog_alerts.php:786
 msgid "Space for Notes on the Alert"
-msgstr ""
+msgstr "경고에 대한 메모를 위한 공간"
 
 #: syslog_alerts.php:794
 msgid "Email Options"
-msgstr ""
+msgstr "이메일 옵션"
 
 #: syslog_alerts.php:798 syslog_reports.php:550
 msgid "Notification List"
-msgstr ""
+msgstr "알림 목록"
 
 #: syslog_alerts.php:799 syslog_reports.php:551
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr ""
+msgstr "이 알림 목록의 내용을 사용하여 누구에게 어떻게 알림을 받아야 하는지 지시합니다."
 
 #: syslog_alerts.php:807
 msgid "Emails to Notify"
-msgstr ""
+msgstr "통지할 이메일"
 
 #: syslog_alerts.php:810
 msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr ""
+msgstr "알릴 이메일 주소의 쉼표로 구분된 목록을 입력하십시오.  수신자에게 SMS 형식으로 이메일을 보내려면 해당 수신자의 이메일 주소 앞에 <b>'sms@'</b>를 붙이십시오.  예를 들어 수신자 SMS 주소가 <b>'2485551212@mycarrier.net'</b>인 경우 <b>'sms@2485551212@mycarrier.net'</b> 으로 입력하면 SMS 메시지 형식이 지정됩니다."
 
 #: syslog_alerts.php:816 syslog_reports.php:539
 msgid "Email Body Text"
-msgstr ""
+msgstr "이메일 본문 텍스트"
 
 #: syslog_alerts.php:819
 msgid "This information will appear in the body of the Alert just before the Alert details."
-msgstr ""
+msgstr "이 정보는 경고 세부 정보 바로 앞에 경고 본문에 표시됩니다."
 
 #: syslog_alerts.php:827
 msgid "Actions"
-msgstr ""
+msgstr "작업"
 
 #: syslog_alerts.php:831
 msgid "Open Ticket"
-msgstr ""
+msgstr "문의하기"
 
 #: syslog_alerts.php:832
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr ""
+msgstr "이 경고에 대해 헬프 데스크 티켓을 열어야 합니다.  참고: 티켓 명령 스크립트는 편의를 위해 여러 'ALERT_' 환경 변수로 채워집니다."
 
 #: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
@@ -2283,7 +2367,7 @@ msgstr ""
 #: syslog_removal.php:819 syslog_removal.php:964 syslog_reports.php:657
 #: syslog_reports.php:804
 msgid "No"
-msgstr ""
+msgstr "아니오"
 
 #: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
 #: syslog_dashboards.php:322 syslog_dashboards.php:735
@@ -2291,19 +2375,20 @@ msgstr ""
 #: syslog_removal.php:818 syslog_removal.php:964 syslog_reports.php:656
 #: syslog_reports.php:804
 msgid "Yes"
-msgstr ""
+msgstr "예"
 
 #: syslog_alerts.php:838
 msgid "Command"
-msgstr ""
+msgstr "명령어"
 
 #: syslog_alerts.php:841
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
-msgstr ""
+msgstr "경고가 트리거되면 다음 명령을 실행합니다.  <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>와 같은 대체 변수를 사용할 수 있습니다.  <b>'&lt;HOSTNAME&gt;'</b> 은 개별 임계값에서만 사용할 수 있습니다.  이러한 대체 값은 명령줄에 표시되거나 스크립트 환경에서 수집될 수 있습니다.  환경에서 사용되는 경우 해당 변수에는 'ALERT_'가 접두사로 붙습니다."
 
 #: syslog_alerts.php:877 syslog_removal.php:668
+#, fuzzy
 msgid "Test rule"
-msgstr ""
+msgstr "경고 규칙"
 
 #: syslog_alerts.php:878 syslog_alerts.php:1002 syslog_removal.php:669
 #: syslog_removal.php:774
@@ -2315,20 +2400,23 @@ msgid "Value"
 msgstr ""
 
 #: syslog_alerts.php:912 syslog_removal.php:702
+#, fuzzy
 msgid "Enter a value"
-msgstr ""
+msgstr "검색어를 입력합니다"
 
 #: syslog_alerts.php:913 syslog_removal.php:703
+#, fuzzy
 msgid "Match"
-msgstr ""
+msgstr "매치 타입"
 
 #: syslog_alerts.php:914 syslog_removal.php:704
 msgid "Exclude"
 msgstr ""
 
 #: syslog_alerts.php:916 syslog_removal.php:706
+#, fuzzy
 msgid "Enter a nonnegative integer"
-msgstr ""
+msgstr "검색어를 입력합니다"
 
 #: syslog_alerts.php:959 syslog_alerts.php:963
 msgid "Alarm filter conditions"
@@ -2337,83 +2425,83 @@ msgstr ""
 #: syslog_alerts.php:1045 syslog_device_rules.php:224 syslog_removal.php:817
 #: syslog_reports.php:655
 msgid "All"
-msgstr ""
+msgstr "모두"
 
 #: syslog_alerts.php:1051 syslog_dashboards.php:233 syslog_reports.php:661
 #: syslog_saved_searches.php:225
 msgid "Rows"
-msgstr ""
+msgstr "행"
 
 #: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:226
 #: syslog_removal.php:843 syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
-msgstr ""
+msgstr "가기"
 
 #: syslog_alerts.php:1073 syslog_alerts.php:1334 syslog_dashboards.php:255
 #: syslog_removal.php:845 syslog_removal.php:1100 syslog_reports.php:683
 #: syslog_reports.php:936 syslog_saved_searches.php:247
 msgid "Import"
-msgstr ""
+msgstr "가져오기"
 
 #: syslog_alerts.php:1143
 msgid "Syslog Alert Filters"
-msgstr ""
+msgstr "Syslog 경고 필터"
 
 #: syslog_alerts.php:1171 syslog_removal.php:945
 msgid "Method"
-msgstr ""
+msgstr "방법"
 
 #: syslog_alerts.php:1172
 msgid "Threshold Count"
-msgstr ""
+msgstr "임계값 수"
 
 #: syslog_alerts.php:1175 syslog_removal.php:944 syslog_reports.php:782
 msgid "Search String"
-msgstr ""
+msgstr "검색 문자열"
 
 #: syslog_alerts.php:1176 syslog_reports.php:558
 msgid "Email Addresses"
-msgstr ""
+msgstr "이메일 주소"
 
 #: syslog_alerts.php:1177 syslog_removal.php:946 syslog_reports.php:786
 msgid "Last Modified"
-msgstr ""
+msgstr "마지막으로 수정된"
 
 #: syslog_alerts.php:1178 syslog_removal.php:947 syslog_reports.php:787
 msgid "By User"
-msgstr ""
+msgstr "회원:"
 
 #: syslog_alerts.php:1181
 msgid "Alerts"
-msgstr ""
+msgstr "경고"
 
 #: syslog_alerts.php:1202
 msgid "Multiple"
-msgstr ""
+msgstr "멀티"
 
 #: syslog_alerts.php:1209
 msgid "No Syslog Alerts Defined"
-msgstr ""
+msgstr "정의된 Syslog 알림이 없습니다."
 
 #: syslog_alerts.php:1238
 msgid "Import Alert Rule from Local File"
-msgstr ""
+msgstr "로컬 파일에서 경고 규칙 가져오기"
 
 #: syslog_alerts.php:1239
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "경고 규칙 정의 데이터가 포함된 XML 파일이 로컬 컴퓨터에 있는 경우 여기에서 선택합니다."
 
 #: syslog_alerts.php:1244
 msgid "Import Alert Rule from Text"
-msgstr ""
+msgstr "텍스트에서 경고 규칙 가져오기"
 
 #: syslog_alerts.php:1245
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "경고 규칙 정의 데이터가 텍스트로 포함된 XML 파일이 있는 경우 이 상자에 붙여 넣어 가져올 수 있습니다."
 
 #: syslog_alerts.php:1256
 msgid "Import Alert Rule"
-msgstr ""
+msgstr "경고 규칙 가져오기"
 
 #: syslog_alerts.php:1283 syslog_dashboards.php:528 syslog_removal.php:1049
 #: syslog_saved_searches.php:477
@@ -2422,26 +2510,26 @@ msgstr ""
 
 #: syslog_alerts.php:1332 syslog_removal.php:1098 syslog_reports.php:934
 msgid "Imported"
-msgstr ""
+msgstr "가져오기 완료"
 
 #: syslog_alerts.php:1332
 #, php-format
 msgid "NOTE: Alert '%s' %s!"
-msgstr ""
+msgstr "알림: '%s' 경고 %s!"
 
 #: syslog_alerts.php:1332 syslog_dashboards.php:192 syslog_dashboards.php:288
 #: syslog_removal.php:1098 syslog_reports.php:934
 msgid "Updated"
-msgstr ""
+msgstr "업데이트됨"
 
 #: syslog_alerts.php:1334
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
-msgstr ""
+msgstr "오류: 경고 '%s' %s 실패했습니다!"
 
 #: syslog_alerts.php:1334 syslog_removal.php:1100 syslog_reports.php:936
 msgid "Update"
-msgstr ""
+msgstr "업데이트"
 
 #: syslog_dashboards.php:30 syslog_saved_searches.php:31
 msgid "Select a valid owner."
@@ -2479,24 +2567,28 @@ msgid "Panels"
 msgstr ""
 
 #: syslog_dashboards.php:317
+#, fuzzy
 msgid "deleted user"
-msgstr ""
+msgstr "선택한 경고"
 
 #: syslog_dashboards.php:329
 msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
 msgstr ""
 
 #: syslog_dashboards.php:411
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 삭제합니다."
 
 #: syslog_dashboards.php:416
+#, fuzzy
 msgid "Delete Dashboard(s)"
-msgstr ""
+msgstr "Syslog 보고서 삭제"
 
 #: syslog_dashboards.php:420
+#, fuzzy
 msgid "Click 'Continue' to Export the following Dashboard(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 내보냅니다."
 
 #: syslog_dashboards.php:425
 msgid "Export Dashboard(s)"
@@ -2513,32 +2605,38 @@ msgid "ERROR: %d Dashboard(s) failed to import."
 msgstr ""
 
 #: syslog_dashboards.php:676
+#, fuzzy
 msgid "Import Dashboard from Local File"
-msgstr ""
+msgstr "로컬 파일에서 보고서 규칙 가져오기"
 
 #: syslog_dashboards.php:677
+#, fuzzy
 msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "보고서 규칙 정의 데이터가 포함된 XML 파일이 로컬 컴퓨터에 있는 경우 여기에서 선택합니다."
 
 #: syslog_dashboards.php:682
+#, fuzzy
 msgid "Import Dashboard from Text"
-msgstr ""
+msgstr "Import Report Rule from Text(텍스트에서 보고서 규칙 가져오기)"
 
 #: syslog_dashboards.php:683
+#, fuzzy
 msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "보고서 규칙 정의 데이터가 텍스트로 포함된 XML 파일이 있는 경우 이 상자에 붙여 넣어 가져올 수 있습니다."
 
 #: syslog_dashboards.php:694
 msgid "Import Dashboard"
 msgstr ""
 
 #: syslog_dashboards.php:727 syslog_saved_searches.php:642
+#, fuzzy
 msgid "All Users"
-msgstr ""
+msgstr "모든 기록"
 
 #: syslog_dashboards.php:728 syslog_saved_searches.php:643
+#, fuzzy
 msgid "All Groups"
-msgstr ""
+msgstr "모든 프로그램"
 
 #: syslog_dashboards.php:731
 msgid "Edit Dashboard"
@@ -2581,9 +2679,9 @@ msgid "A device name is required."
 msgstr ""
 
 #: syslog_device_rules.php:125
-#, php-format
+#, fuzzy, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 비활성화합니다."
 
 #: syslog_device_rules.php:161
 msgid "Do not pass any priority"
@@ -2595,16 +2693,18 @@ msgid "%s and more urgent"
 msgstr ""
 
 #: syslog_device_rules.php:166
+#, fuzzy
 msgid "Device Alert Rule"
-msgstr ""
+msgstr "새 경고 규칙"
 
 #: syslog_device_rules.php:167
 msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
 msgstr ""
 
 #: syslog_device_rules.php:169
+#, fuzzy
 msgid "Alert Handling"
-msgstr ""
+msgstr "재고 처분 처리"
 
 #: syslog_device_rules.php:169
 msgid "Do not pause"
@@ -2615,8 +2715,9 @@ msgid "Pause all non-exempt alerts until a date, or indefinitely."
 msgstr ""
 
 #: syslog_device_rules.php:169
+#, fuzzy
 msgid "Pause indefinitely"
-msgstr ""
+msgstr "무기한"
 
 #: syslog_device_rules.php:169
 msgid "Pause until"
@@ -2631,45 +2732,52 @@ msgid "Pause Ends"
 msgstr ""
 
 #: syslog_device_rules.php:171
+#, fuzzy
 msgid "Always Allow Priority"
-msgstr ""
+msgstr "모든 우선순위"
 
 #: syslog_device_rules.php:171
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
 msgstr ""
 
 #: syslog_device_rules.php:172
+#, fuzzy
 msgid "Allow During Maintenance"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: syslog_device_rules.php:172
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
 msgstr ""
 
 #: syslog_device_rules.php:180
+#, fuzzy
 msgid "Device Alert Rule [edit]"
-msgstr ""
+msgstr "새 경고 규칙"
 
 #: syslog_device_rules.php:180
+#, fuzzy
 msgid "Device Alert Rule [new]"
-msgstr ""
+msgstr "새 경고 규칙"
 
 #: syslog_device_rules.php:220
+#, fuzzy
 msgid "Device Alert Rule Filters"
-msgstr ""
+msgstr "Syslog 경고 필터"
 
 #: syslog_device_rules.php:225 syslog_device_rules.php:254
 #: syslog_removal.php:823 syslog_removal.php:952
 msgid "Rules"
-msgstr ""
+msgstr "규칙"
 
 #: syslog_device_rules.php:258
+#, fuzzy
 msgid "Handling"
-msgstr ""
+msgstr "재고 처분 처리"
 
 #: syslog_device_rules.php:258
+#, fuzzy
 msgid "Maintenance"
-msgstr ""
+msgstr "분할된 테이블"
 
 #: syslog_device_rules.php:258
 msgid "Pass Through"
@@ -2684,8 +2792,9 @@ msgid "Not paused"
 msgstr ""
 
 #: syslog_device_rules.php:264
+#, fuzzy
 msgid "Paused indefinitely"
-msgstr ""
+msgstr "무기한"
 
 #: syslog_device_rules.php:264
 #, php-format
@@ -2706,326 +2815,327 @@ msgstr ""
 
 #: syslog_removal.php:39
 msgid "Reprocess"
-msgstr ""
+msgstr "재처리"
 
 #: syslog_removal.php:199
 msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 제거 규칙을 삭제합니다."
 
 #: syslog_removal.php:205
 msgid "Delete Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog 제거 규칙 삭제"
 
 #: syslog_removal.php:209
 msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 제거 규칙을 비활성화합니다."
 
 #: syslog_removal.php:215
 msgid "Disable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Disable Syslog Removal Rule(s)"
 
 #: syslog_removal.php:219
 msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 제거 규칙을 활성화합니다."
 
 #: syslog_removal.php:225
 msgid "Enable Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Enable Syslog Removal Rule(s)(Syslog 제거 규칙 사용)"
 
 #: syslog_removal.php:229
 msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 제거 규칙을 다시 처리합니다."
 
 #: syslog_removal.php:235
 msgid "Retroactively Process Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog 제거 규칙을 소급하여 처리"
 
 #: syslog_removal.php:239
 msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 제거 규칙을 내보냅니다."
 
 #: syslog_removal.php:245
 msgid "Export Syslog Removal Rule(s)"
-msgstr ""
+msgstr "Syslog 제거 규칙 내보내기"
 
 #: syslog_removal.php:424
 #, php-format
 msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
-msgstr ""
+msgstr "'%s' 규칙으로 인해 %s/%s 메시지가 제거/전송되었습니다."
 
 #: syslog_removal.php:494
 #, php-format
 msgid "Removal Rule Edit [edit: %s]"
-msgstr ""
+msgstr "제거 규칙 편집 [편집: %s]"
 
 #: syslog_removal.php:496 syslog_removal.php:514
 msgid "Removal Rule Edit [new]"
-msgstr ""
+msgstr "제거 규칙 편집 [신규]"
 
 #: syslog_removal.php:498 syslog_removal.php:525
 msgid "New Removal Record"
-msgstr ""
+msgstr "새 재고 처분 레코드"
 
 #: syslog_removal.php:520
 msgid "New Removal Rule"
-msgstr ""
+msgstr "새 제거 규칙"
 
 #: syslog_removal.php:584
 msgid "Removal Rule Details"
-msgstr ""
+msgstr "제거 규칙 세부 정보"
 
 #: syslog_removal.php:588
 msgid "Removal Rule Name"
-msgstr ""
+msgstr "제거 규칙 이름"
 
 #: syslog_removal.php:589
 msgid "Please describe this Removal Rule."
-msgstr ""
+msgstr "이 제거 규칙을 설명하십시오."
 
 #: syslog_removal.php:596 syslog_reports.php:496
 msgid "Enabled?"
-msgstr ""
+msgstr "활성화"
 
 #: syslog_removal.php:597
 msgid "Is this Removal Rule Enabled?"
-msgstr ""
+msgstr "이 제거 규칙이 활성화되어 있습니까?"
 
 #: syslog_removal.php:604 syslog_reports.php:504
 msgid "String Match Type"
-msgstr ""
+msgstr "문자열 일치 유형"
 
 #: syslog_removal.php:605
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
-msgstr ""
+msgstr "이 문자열을 일치시키는 방법을 정의합니다.  SQL 표현식 유형을 사용하는 경우 유효한 SQL 표현식을 사용하여 알람을 생성할 수 있습니다.  사용 가능한 필드에는 'message', 'facility', 'priority' 및 'host'가 있습니다."
 
 #: syslog_removal.php:612
 msgid "Syslog Message Match String"
-msgstr ""
+msgstr "Syslog 메시지 일치 문자열"
 
 #: syslog_removal.php:613
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
-msgstr ""
+msgstr "syslog 메시지의 일치하는 구성 요소, 기능 또는 호스트 이름 또는 SQL 표현식 일치 유형을 사용하는 경우 SQL where 절을 입력합니다."
 
 #: syslog_removal.php:623
 msgid "Method of Removal"
-msgstr ""
+msgstr "제거 방법"
 
 #: syslog_removal.php:625 syslog_removal.php:967
 msgid "Deletion"
-msgstr ""
+msgstr "삭제"
 
 #: syslog_removal.php:625
 msgid "Transferal"
-msgstr ""
+msgstr "트랜스퍼럴"
 
 #: syslog_removal.php:629
 msgid "Removal Rule Notes"
-msgstr ""
+msgstr "제거 규칙 참고 사항"
 
 #: syslog_removal.php:632
 msgid "Space for Notes on the Removal rule"
-msgstr ""
+msgstr "제거 규칙에 대한 메모를 위한 공간"
 
 #: syslog_removal.php:726 syslog_removal.php:730
+#, fuzzy
 msgid "Removal filter conditions"
-msgstr ""
+msgstr "제거 규칙 참고 사항"
 
 #: syslog_removal.php:915
 msgid "Syslog Removal Rule Filters"
-msgstr ""
+msgstr "Syslog 제거 규칙 필터"
 
 #: syslog_removal.php:941
 msgid "Removal Name"
-msgstr ""
+msgstr "제거 이름"
 
 #: syslog_removal.php:967
 msgid "Transfer"
-msgstr ""
+msgstr "전송하기"
 
 #: syslog_removal.php:974
 msgid "No Syslog Removal Rules Defined"
-msgstr ""
+msgstr "정의된 Syslog 제거 규칙 없음"
 
 #: syslog_removal.php:1003
 msgid "Import Removal Rule from Local File"
-msgstr ""
+msgstr "Import Removal Rule from Local File"
 
 #: syslog_removal.php:1004
 msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "제거 규칙 정의 데이터가 포함된 XML 파일이 로컬 컴퓨터에 있는 경우 여기에서 선택합니다."
 
 #: syslog_removal.php:1009
 msgid "Import Removal Rule from Text"
-msgstr ""
+msgstr "Import Removal Rule from Text(텍스트에서 제거 규칙 가져오기)"
 
 #: syslog_removal.php:1010
 msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "제거 규칙 정의 데이터가 텍스트로 포함된 XML 파일이 있는 경우 이 상자에 붙여 넣어 가져올 수 있습니다."
 
 #: syslog_removal.php:1021
 msgid "Import Removal Rule"
-msgstr ""
+msgstr "가져오기 제거 규칙"
 
 #: syslog_removal.php:1098
 #, php-format
 msgid "NOTE: Removal Rule '%s' %s!"
-msgstr ""
+msgstr "참고: 제거 규칙 '%s' %s!"
 
 #: syslog_removal.php:1100
 #, php-format
 msgid "ERROR: Removal Rule '%s' %s Failed!"
-msgstr ""
+msgstr "오류: 제거 규칙 '%s'%s 실패했습니다!"
 
 #: syslog_reports.php:174
 msgid "Click 'Continue' to Delete the following Syslog Report(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 보고서를 삭제합니다."
 
 #: syslog_reports.php:180
 msgid "Delete Syslog Report(s)"
-msgstr ""
+msgstr "Syslog 보고서 삭제"
 
 #: syslog_reports.php:184
 msgid "Click 'Continue' to Disable the following Syslog Report(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 보고서를 비활성화합니다."
 
 #: syslog_reports.php:190
 msgid "Disable Syslog Report(s)"
-msgstr ""
+msgstr "Syslog 보고서 비활성화"
 
 #: syslog_reports.php:194
 msgid "Click 'Continue' to Enable the following Syslog Report(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 보고서를 활성화합니다."
 
 #: syslog_reports.php:200
 msgid "Enable Syslog Report(s)"
-msgstr ""
+msgstr "Syslog 보고서 사용"
 
 #: syslog_reports.php:204
 msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 보고서 규칙을 내보냅니다."
 
 #: syslog_reports.php:210
 msgid "Export Syslog Report Rule(s)"
-msgstr ""
+msgstr "Syslog 보고서 규칙 내보내기"
 
 #: syslog_reports.php:215
 msgid "You must select at least one Syslog Report."
-msgstr ""
+msgstr "하나 이상의 Syslog 보고서를 선택해야 합니다."
 
 #: syslog_reports.php:216
 msgid "Return"
-msgstr ""
+msgstr "반환"
 
 #: syslog_reports.php:459
 #, php-format
 msgid "Report Edit [edit: %s]"
-msgstr ""
+msgstr "보고서 편집 [edit: %s]"
 
 #: syslog_reports.php:461 syslog_reports.php:466
 msgid "Report Edit [new]"
-msgstr ""
+msgstr "보고서 편집[신규]"
 
 #: syslog_reports.php:463 syslog_reports.php:468
 msgid "New Report Record"
-msgstr ""
+msgstr "새 보고서 레코드"
 
 #: syslog_reports.php:490
 msgid "Please describe this Report."
-msgstr ""
+msgstr "이 보고서에 대해 설명해 주세요."
 
 #: syslog_reports.php:497
 msgid "Is this Report Enabled?"
-msgstr ""
+msgstr "이 보고서가 활성화되어 있습니까?"
 
 #: syslog_reports.php:505
 msgid "Define how you would like this string matched."
-msgstr ""
+msgstr "이 문자열을 일치시키는 방법을 정의합니다."
 
 #: syslog_reports.php:512 syslog_reports.php:783
 msgid "Frequency"
-msgstr ""
+msgstr "회수"
 
 #: syslog_reports.php:513
 msgid "How often should this Report be sent to the distribution list?"
-msgstr ""
+msgstr "이 보고서를 배포 목록에 얼마나 자주 보내야 합니까?"
 
 #: syslog_reports.php:520 syslog_reports.php:784
 msgid "Send Time"
-msgstr ""
+msgstr "시간 보내기"
 
 #: syslog_reports.php:521
 msgid "What time of day should this report be sent?"
-msgstr ""
+msgstr "이 보고서는 하루 중 몇 시에 보내야 합니까?"
 
 #: syslog_reports.php:528
 msgid "Report Format"
-msgstr ""
+msgstr "리포트 형식"
 
 #: syslog_reports.php:532
 msgid "The matching component of the syslog message."
-msgstr ""
+msgstr "syslog 메시지의 일치하는 구성 요소입니다."
 
 #: syslog_reports.php:542
 msgid "The information that will be contained in the body of the Report."
-msgstr ""
+msgstr "보고서 본문에 포함될 정보입니다."
 
 #: syslog_reports.php:561
 msgid "Comma delimited list of Email addresses to send the report to."
-msgstr ""
+msgstr "보고서를 보낼 이메일 주소의 쉼표로 구분된 목록입니다."
 
 #: syslog_reports.php:571
 msgid "Space for Notes on the Report"
-msgstr ""
+msgstr "보고서의 메모를 위한 공간"
 
 #: syslog_reports.php:753
 msgid "Syslog Report Filters"
-msgstr ""
+msgstr "Syslog 보고서 필터"
 
 #: syslog_reports.php:779
 msgid "Report Name"
-msgstr ""
+msgstr "이름 보고"
 
 #: syslog_reports.php:785
 msgid "Last Sent"
-msgstr ""
+msgstr "마지막 보낸 날짜"
 
 #: syslog_reports.php:790
 msgid "Reports"
-msgstr ""
+msgstr "보고서"
 
 #: syslog_reports.php:816
 msgid "No Syslog Reports Defined"
-msgstr ""
+msgstr "정의된 Syslog 보고서가 없습니다."
 
 #: syslog_reports.php:845
 msgid "Import Report Rule from Local File"
-msgstr ""
+msgstr "로컬 파일에서 보고서 규칙 가져오기"
 
 #: syslog_reports.php:846
 msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "보고서 규칙 정의 데이터가 포함된 XML 파일이 로컬 컴퓨터에 있는 경우 여기에서 선택합니다."
 
 #: syslog_reports.php:851
 msgid "Import Report Rule from Text"
-msgstr ""
+msgstr "Import Report Rule from Text(텍스트에서 보고서 규칙 가져오기)"
 
 #: syslog_reports.php:852
 msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "보고서 규칙 정의 데이터가 텍스트로 포함된 XML 파일이 있는 경우 이 상자에 붙여 넣어 가져올 수 있습니다."
 
 #: syslog_reports.php:863
 msgid "Import Report Data"
-msgstr ""
+msgstr "보고서 데이터 가져오기"
 
 #: syslog_reports.php:934
 #, php-format
 msgid "NOTE: Report Rule '%s' %s!"
-msgstr ""
+msgstr "참고: 보고서 규칙 '%s' %s!"
 
 #: syslog_reports.php:936
 #, php-format
 msgid "ERROR: Report Rule '%s' %s Failed!"
-msgstr ""
+msgstr "오류: 규칙 '%s' %s 보고하지 못했습니다!"
 
 #: syslog_saved_searches.php:36
 msgid "Unable to save the template. Please try again."
@@ -3048,12 +3158,14 @@ msgid "No shared search templates. Save a search for all users from Syslog to cr
 msgstr ""
 
 #: syslog_saved_searches.php:376
+#, fuzzy
 msgid "Click 'Continue' to Export the following Saved Search Template(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 내보냅니다."
 
 #: syslog_saved_searches.php:377
+#, fuzzy
 msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
-msgstr ""
+msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 삭제합니다."
 
 #: syslog_saved_searches.php:382
 msgid "Delete Saved Search Template(s)"
@@ -3074,20 +3186,24 @@ msgid "ERROR: %d Saved Search Template(s) failed to import."
 msgstr ""
 
 #: syslog_saved_searches.php:585
+#, fuzzy
 msgid "Import Saved Search Template from Local File"
-msgstr ""
+msgstr "로컬 파일에서 경고 규칙 가져오기"
 
 #: syslog_saved_searches.php:586
+#, fuzzy
 msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
-msgstr ""
+msgstr "경고 규칙 정의 데이터가 포함된 XML 파일이 로컬 컴퓨터에 있는 경우 여기에서 선택합니다."
 
 #: syslog_saved_searches.php:591
+#, fuzzy
 msgid "Import Saved Search Template from Text"
-msgstr ""
+msgstr "텍스트에서 경고 규칙 가져오기"
 
 #: syslog_saved_searches.php:592
+#, fuzzy
 msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
-msgstr ""
+msgstr "보고서 규칙 정의 데이터가 텍스트로 포함된 XML 파일이 있는 경우 이 상자에 붙여 넣어 가져올 수 있습니다."
 
 #: syslog_saved_searches.php:603
 msgid "Import Saved Search Template"
@@ -3114,8 +3230,9 @@ msgid "Groups who can use this template in addition to its owner. All Groups sha
 msgstr ""
 
 #: syslog_saved_searches.php:656
+#, fuzzy
 msgid "Search Query"
-msgstr ""
+msgstr "검색"
 
 #: syslog_saved_searches.php:663
 msgid "Correct the query syntax to use the query builder."
@@ -3124,3 +3241,142 @@ msgstr ""
 #: syslog_saved_searches.php:668
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
+
+#, php-format
+#~ msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
+#~ msgstr " [ 시작: '%s'에서 끝까지: '%s', 처리되지 않은 메시지: %s ]"
+
+#~ msgid "Alert++"
+#~ msgstr "경고"
+
+#~ msgid "All Facilities"
+#~ msgstr "모든 부대시설"
+
+#~ msgid "All Text"
+#~ msgstr "전체 글자 "
+
+#~ msgid "Critical++"
+#~ msgstr "크리티컬"
+
+#~ msgid "Custom"
+#~ msgstr "사용자 정의"
+
+#~ msgid "Database Architecture"
+#~ msgstr "데이터베이스 아키텍처"
+
+#~ msgid "Define Shifting Interval"
+#~ msgstr "변속 간격 정의(Define Shifting Interval)"
+
+#~ msgid "Device Name"
+#~ msgstr "장치 이름"
+
+#~ msgid "Devices"
+#~ msgstr "장치"
+
+#~ msgid "Enable Statistics Gathering"
+#~ msgstr "Enable Statistics Collecting 통계 수집"
+
+#~ msgid "End Date Selector"
+#~ msgstr "종료 날짜 선택기"
+
+#~ msgid "Entries"
+#~ msgstr "입력 항목"
+
+#~ msgid "Error++"
+#~ msgstr "오류:"
+
+#~ msgid "Facilities to filter on"
+#~ msgstr "필터링할 수 있는 시설"
+
+#~ msgid "From"
+#~ msgstr "발신자"
+
+#~ msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
+#~ msgstr "이 확인란을 설정하면 모든 호스트 이름의 유효성이 검사됩니다.  호스트 이름이 유효하지 않은 경우. 모든 레코드는 'invalidhost'라는 특수 호스트에 할당됩니다.  이 설정은 대규모 시스템의 syslog 처리 시간에 영향을 줄 수 있습니다.  따라서 이 설정은 이러한 일이 발생하지 않도록 다른 수단이 없는 경우에만 사용해야 합니다."
+
+#~ msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
+#~ msgstr "이 확인란을 설정하면 syslog 메시지가 도착하는 위치에 대한 통계가 유지됩니다.  이 통계 정보는 히트 맵과 같은 항목을 렌더링하는 데 사용할 수 있습니다."
+
+#~ msgid "Info++"
+#~ msgstr "정보"
+
+#~ msgid "Message Trim"
+#~ msgstr "메시지 트리밍"
+
+#~ msgid "No Syslog Statistics Found"
+#~ msgstr "Syslog 통계를 찾을 수 없습니다."
+
+#~ msgid "Normal User"
+#~ msgstr "일반 사용자"
+
+#~ msgid "Notice++"
+#~ msgstr "공지"
+
+#~ msgid "Priority Levels"
+#~ msgstr "우선 순위 수준"
+
+#~ msgid "Removals"
+#~ msgstr "제거"
+
+#~ msgid "Shift Time Backward"
+#~ msgstr "시간을 뒤로 이동"
+
+#~ msgid "Shift Time Forward"
+#~ msgstr "시간을 앞으로 이동"
+
+#~ msgid "Show All Devices"
+#~ msgstr "모든 장치 표시"
+
+#~ msgid "Show All Logs"
+#~ msgstr "모든 로그 표시"
+
+#~ msgid "Start Date Selector"
+#~ msgstr "시작 날짜 선택기"
+
+#~ msgid "Statistics"
+#~ msgstr "통계"
+
+#~ msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
+#~ msgstr "Syslog 2.0을 사용하려면 전체 재설치가 필요합니다.  설치하기 전에 Syslog를 제거하고 모든 데이터를 제거하십시오.  마이그레이션이 가능하지만 미리 계획을 세워야 합니다.  자동 마이그레이션은 지원되지 않습니다."
+
+#~ msgid "Syslog Statistics Filter"
+#~ msgstr "Syslog 통계 필터"
+
+#~ msgid "System Administration"
+#~ msgstr "시스템 관리"
+
+#~ msgid "Threshold Logs"
+#~ msgstr "임계값 로그"
+
+#~ msgid "Timespan"
+#~ msgstr "시간"
+
+#~ msgid "To"
+#~ msgstr "수신"
+
+#~ msgid "Traditional Table"
+#~ msgstr "전통 테이블"
+
+#~ msgid "Trim"
+#~ msgstr "손질"
+
+#~ msgid "Validate Hostnames"
+#~ msgstr "호스트 이름 유효성 검사"
+
+#~ msgid "View Syslog Removal Rules"
+#~ msgstr "Syslog 제거 규칙 보기"
+
+#~ msgid "View Syslog Reports"
+#~ msgstr "Syslog 보고서 보기"
+
+#~ msgid "Warning++"
+#~ msgstr "경고"
+
+#~ msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
+#~ msgstr "MySQL 스토리지 엔진을 설정할 수도 있습니다.  InnoDB 스토리지 속성에 맞게 시스템을 조정하지 않은 경우 MyISAM 스토리지 엔진을 사용하는 것이 좋습니다."
+
+#~ msgid "You have the option to make this a partitioned table by days."
+#~ msgstr "이 테이블을 일 단위로 분할된 테이블로 만들 수 있는 옵션이 있습니다."
+
+#~ msgid "You have the option to make this a partitioned table by days.  You can create multiple partitions per day."
+#~ msgstr "이 테이블을 일 단위로 분할된 테이블로 만들 수 있는 옵션이 있습니다.  하루에 여러 개의 파티션을 만들 수 있습니다."
