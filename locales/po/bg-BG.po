@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-22 20:32-0400\n"
+"POT-Creation-Date: 2026-09-22 21:52-0400\n"
 "PO-Revision-Date: 2025-03-07 15:00-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -112,8 +112,8 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php:2968 functions.php:2972 setup.php:2360 setup.php:2370
-#: setup.php:2377
+#: functions.php:2968 functions.php:2972 setup.php:2421 setup.php:2431
+#: setup.php:2438
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -131,140 +131,140 @@ msgstr ""
 msgid "Unknown"
 msgstr "알려지지 않음"
 
-#: functions.php:4513
+#: functions.php:4548
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Threshold Alert '%s' за хост '%s'"
 
-#: functions.php:4515
+#: functions.php:4550
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cacti Syslog Threshold Alert '%s'"
 
-#: functions.php:4523 syslog.php:2242 syslog_alerts.php:1169
+#: functions.php:4558 syslog.php:2242 syslog_alerts.php:1169
 msgid "Alert Name"
 msgstr "Име за известието"
 
-#: functions.php:4524 functions.php:4551 syslog.php:2241 syslog_alerts.php:653
+#: functions.php:4559 functions.php:4586 syslog.php:2241 syslog_alerts.php:653
 #: syslog_alerts.php:1170
 msgid "Severity"
 msgstr "Суровост"
 
-#: functions.php:4525 syslog_alerts.php:672 syslog_alerts.php:677
+#: functions.php:4560 syslog_alerts.php:672 syslog_alerts.php:677
 #: syslog_alerts.php:1196
 msgid "Threshold"
 msgstr "Предел"
 
-#: functions.php:4526 syslog.php:2123 syslog.php:2244
+#: functions.php:4561 syslog.php:2123 syslog.php:2244
 msgid "Count"
 msgstr "Брой"
 
-#: functions.php:4527
+#: functions.php:4562
 msgid "Match String"
 msgstr "Съвпадение на струна"
 
-#: functions.php:4538 functions.php:4578
+#: functions.php:4573 functions.php:4613
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Alert '%s' за хост '%s'"
 
-#: functions.php:4540 functions.php:4580
+#: functions.php:4575 functions.php:4615
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Предупреждение за системен дневник на кактусите '%s'"
 
-#: functions.php:4549
+#: functions.php:4584
 msgid "Hostname"
 msgstr "Име на хост"
 
-#: functions.php:4550 functions.php:5484 syslog.php:2114 syslog.php:2239
+#: functions.php:4585 functions.php:5519 syslog.php:2114 syslog.php:2239
 #: syslog.php:2296
 msgid "Date"
 msgstr "Дата"
 
-#: functions.php:4552
+#: functions.php:4587
 msgid "Level"
 msgstr "Ниво"
 
-#: functions.php:4553 functions.php:5485 lib/syslog_dashboard.php:1621
+#: functions.php:4588 functions.php:5520 lib/syslog_dashboard.php:1621
 #: syslog.php:1811 syslog.php:1896 syslog.php:2117 syslog.php:2243
 #: syslog.php:2297 syslog_alerts.php:889 syslog_removal.php:679
 #: syslog_saved_searches.php:666
 msgid "Message"
 msgstr "Съобщение"
 
-#: functions.php:4561
+#: functions.php:4596
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: Задействано е предупреждение за прага на системния дневник за хост \"%s\""
 
-#: functions.php:4563
+#: functions.php:4598
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: Задействано е предупреждение за прага на системния дневник"
 
-#: functions.php:4570
+#: functions.php:4605
 msgid "Name:"
 msgstr "Име:"
 
-#: functions.php:4571 functions.php:4627
+#: functions.php:4606 functions.php:4662
 msgid "Severity:"
 msgstr "Суровост"
 
-#: functions.php:4572
+#: functions.php:4607
 msgid "Threshold:"
 msgstr "Предел"
 
-#: functions.php:4573
+#: functions.php:4608
 msgid "Count:"
 msgstr "Брой:"
 
-#: functions.php:4574
+#: functions.php:4609
 msgid "Message String:"
 msgstr "Низ на съобщението:"
 
-#: functions.php:4625
+#: functions.php:4660
 msgid "Hostname:"
 msgstr "Име на хост:"
 
-#: functions.php:4626
+#: functions.php:4661
 msgid "Date:"
 msgstr "Дата:"
 
-#: functions.php:4628
+#: functions.php:4663
 msgid "Level:"
 msgstr "Ниво"
 
-#: functions.php:4629
+#: functions.php:4664
 msgid "Message:"
 msgstr "Съобщение:"
 
-#: functions.php:4704
+#: functions.php:4739
 msgid ", Host:"
 msgstr "Хост"
 
-#: functions.php:4704 functions.php:4739
+#: functions.php:4739 functions.php:4774
 msgid ", URL:"
 msgstr "URL"
 
-#: functions.php:4704 functions.php:4739
+#: functions.php:4739 functions.php:4774
 msgid "Sev:"
 msgstr "Забележка:"
 
-#: functions.php:4710 functions.php:4735
+#: functions.php:4745 functions.php:4770
 #, php-format
 msgid "Event Alert - %s"
 msgstr "Известие за събитие - %s"
 
-#: functions.php:4739
+#: functions.php:4774
 msgid ", Count:"
 msgstr "Брой:"
 
-#: functions.php:5483 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
+#: functions.php:5518 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
 #: syslog_removal.php:680
 msgid "Host"
 msgstr "Хост"
 
-#: functions.php:5508
+#: functions.php:5543
 #, php-format
 msgid "Event Report - %s"
 msgstr "Доклад за събитието - %s"
@@ -379,10 +379,10 @@ msgstr ""
 msgid "Save"
 msgstr "Запази"
 
-#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1605
-#: setup.php:2444 syslog.php:1890 syslog_alerts.php:230
-#: syslog_dashboards.php:428 syslog_removal.php:248 syslog_reports.php:213
-#: syslog_saved_searches.php:384
+#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1662
+#: setup.php:2505 syslog.php:1890 syslog_alerts.php:230
+#: syslog_dashboards.php:428 syslog_device_rules.php:126 syslog_removal.php:248
+#: syslog_reports.php:213 syslog_saved_searches.php:384
 msgid "Cancel"
 msgstr "Отказ"
 
@@ -390,10 +390,10 @@ msgstr "Отказ"
 msgid "Apply"
 msgstr ""
 
-#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2035
+#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2092
 #: syslog.php:1798 syslog_dashboards.php:300 syslog_dashboards.php:351
-#: syslog_removal.php:36 syslog_saved_searches.php:271
-#: syslog_saved_searches.php:315
+#: syslog_device_rules.php:124 syslog_removal.php:36
+#: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Delete"
 msgstr "Изтрий"
 
@@ -474,7 +474,7 @@ msgstr "%d месеца"
 msgid "Refresh"
 msgstr "Обновяване"
 
-#: lib/syslog_dashboard.php:1438 setup.php:2177 setup.php:2234
+#: lib/syslog_dashboard.php:1438 setup.php:2235 setup.php:2295
 #: syslog_dashboards.php:201 syslog_dashboards.php:203
 msgid "Dashboards"
 msgstr ""
@@ -637,7 +637,7 @@ msgstr ""
 
 #: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
 #: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:802
-#: syslog_reports.php:554
+#: syslog_device_rules.php:265 syslog_reports.php:554
 msgid "None"
 msgstr "Няма"
 
@@ -678,649 +678,664 @@ msgstr "Име"
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
 msgstr "Моля, преименувайте вашите файлове config.php.dist или config_local.php.dist в директорията syslog и променете настройката на вашата база данни преди инсталиране."
 
-#: setup.php:1420
+#: setup.php:1477
 msgid "What upgrade/install type do you wish to use"
 msgstr "Какъв тип надстройка/инсталация искате да използвате"
 
-#: setup.php:1421
+#: setup.php:1478
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgstr "Когато имате много големи маси, извършването на Truncate ще бъде много по-бързо.  Ако се притеснявате за архивни данни, можете да изберете или Inline, който ще замрази браузъра ви за периода на тази надстройка, или фон, който ще създаде фонов процес за пренасяне на старите ви данни от архивна таблица в новия формат на системния дневник.  Отново този процес може да отнеме няколко часа."
 
-#: setup.php:1424
+#: setup.php:1481
 msgid "Truncate Syslog Table"
 msgstr "Таблица за системен дневник на съкращаване"
 
-#: setup.php:1425
+#: setup.php:1482
 msgid "Inline Upgrade"
 msgstr "Вградено надграждане"
 
-#: setup.php:1426
+#: setup.php:1483
 msgid "Background Upgrade"
 msgstr "Надграждане на фона"
 
-#: setup.php:1431
+#: setup.php:1488
 msgid "Database Storage Engine"
 msgstr "Двигател за съхранение на бази данни"
 
-#: setup.php:1432
+#: setup.php:1489
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
 msgstr ""
 
-#: setup.php:1435
+#: setup.php:1492
 msgid "InnoDB Storage"
 msgstr "InnoDB съхранение"
 
-#: setup.php:1436
+#: setup.php:1493
 #, fuzzy
 msgid "Aria Storage"
 msgstr "Съхранение на MyISAM"
 
-#: setup.php:1445
+#: setup.php:1502
 msgid "Retention Policy"
 msgstr "Политика за съхранение"
 
-#: setup.php:1446
+#: setup.php:1503
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "Изберете колко дни стойности на Syslog искате да поддържате в базата данни."
 
-#: setup.php:1466
+#: setup.php:1523
 msgid "Partitions per Day"
 msgstr "Дялове на ден"
 
-#: setup.php:1467
+#: setup.php:1524
 msgid "Select the number of partitions per day that you wish to create."
 msgstr "Изберете броя дялове на ден, които искате да създадете."
 
-#: setup.php:1470 setup.php:1471 setup.php:1472 setup.php:1473 setup.php:1474
+#: setup.php:1527 setup.php:1528 setup.php:1529 setup.php:1530 setup.php:1531
 #, php-format
 msgid "%d Per Day"
 msgstr "%d на ден"
 
-#: setup.php:1479 setup.php:1593
+#: setup.php:1536 setup.php:1650
 msgid "Upgrade"
 msgstr "Надграждане"
 
-#: setup.php:1481 setup.php:1595
+#: setup.php:1538 setup.php:1652
 msgid "Install"
 msgstr "Инсталирай"
 
-#: setup.php:1495
+#: setup.php:1552
 #, php-format
 msgid "Syslog %s Advisor"
 msgstr "Syslog %s съветник"
 
-#: setup.php:1499
+#: setup.php:1556
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "ВНИМАНИЕ: Надстройката на системния дневник отнема много време!!"
 
-#: setup.php:1500
+#: setup.php:1557
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
 msgstr "Надграждането на \"основната\" таблица syslog може да отнеме много време.  Поради това се препоръчва или да намалите размера на вашата таблица със системен дневник преди надстройването, или да изберете опцията фон</p> <p>Ако изберете опцията фон, вашата наследена таблица със системен дневник ще бъде преименувана и ще бъде създадена нова таблица със системен дневник.  След това ще бъде стартиран процес на надграждане във фонов режим.  Отново, този фонов процес може да отнеме доста време за завършване.  Вашите данни обаче ще бъдат запазени</p> <p>Независимо от вашия избор, всички съществуващи правила за премахване и предупреждение ще бъдат запазени по време на процеса на надграждане.</p> <p>Натиснете <b>\"Надстройка\",</b> за да продължите с надстройката, или <b>\"Отказ\",</b> за да се върнете в менюто \"Плъгини\"."
 
-#: setup.php:1503
+#: setup.php:1560
 #, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
 msgstr "Можете също да изберете продължителността на задържане.  Моля, имайте предвид, че ако имате няколко хоста, които влизат в syslog, тази таблица може да стане доста голяма.  Така че, ако не използвате разделяне, може да искате да запазите размера по-малък."
 
-#: setup.php:1503
+#: setup.php:1560
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
 msgstr ""
 
-#: setup.php:1503
+#: setup.php:1560
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
 msgstr "Имате няколко опции, от които да избирате, когато инсталирате Syslog.  Първата е архитектурата на базата данни.  Трябва да изберете да използвате разделяне на таблици, за да предотвратите прекомеряването на размера на таблиците, като по този начин забавяте заявките."
 
-#: setup.php:1509
+#: setup.php:1566
 #, php-format
 msgid "Syslog %s Settings"
 msgstr "Настройки на системния дневник %s"
 
-#: setup.php:1541
+#: setup.php:1598
 msgid "What uninstall method do you want to use?"
 msgstr "Какъв метод за деинсталиране искате да използвате?"
 
-#: setup.php:1542
+#: setup.php:1599
 msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
 msgstr "Когато деинсталирате syslog, можете да премахнете всичко или само компоненти, само в случай, че планирате да инсталирате отново в бъдеще."
 
-#: setup.php:1544
+#: setup.php:1601
 msgid "Remove Everything (Logs, Tables, Settings)"
 msgstr "Премахнете всичко (регистрационни файлове, таблици, настройки)"
 
-#: setup.php:1544
+#: setup.php:1601
 msgid "Syslog Data Only"
 msgstr "Само данни от системен дневник"
 
-#: setup.php:1564
+#: setup.php:1621
 msgid "Syslog Uninstall Preferences"
 msgstr "Настройки за деинсталиране на Syslog"
 
-#: setup.php:1598
+#: setup.php:1655
 msgid "Uninstall"
 msgstr "Деинсталиране"
 
-#: setup.php:1658
+#: setup.php:1715
 msgid "Monday"
 msgstr ""
 
-#: setup.php:1658
+#: setup.php:1715
 msgid "Tuesday"
 msgstr ""
 
-#: setup.php:1658
+#: setup.php:1715
 msgid "Wednesday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Friday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Saturday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Sunday"
 msgstr ""
 
-#: setup.php:1659
+#: setup.php:1716
 msgid "Thursday"
 msgstr ""
 
-#: setup.php:1660
+#: setup.php:1717
 msgid "Monday through Friday"
 msgstr ""
 
-#: setup.php:1660
+#: setup.php:1717
 msgid "Saturday and Sunday"
 msgstr ""
 
-#: setup.php:1661
+#: setup.php:1718
 msgid "Every day"
 msgstr ""
 
-#: setup.php:1664 syslog_alerts.php:711 syslog_alerts.php:726
-#: syslog_alerts.php:734 syslog_removal.php:599 syslog_reports.php:499
+#: setup.php:1721 syslog_alerts.php:711 syslog_alerts.php:726
+#: syslog_alerts.php:734 syslog_device_rules.php:168
+#: syslog_device_rules.php:267 syslog_removal.php:599 syslog_reports.php:499
 msgid "Disabled"
 msgstr "Изключен"
 
-#: setup.php:1678 setup.php:1975 setup.php:1977 setup.php:2188 setup.php:2219
-#: setup.php:2235
+#: setup.php:1735 setup.php:2032 setup.php:2034 setup.php:2246 setup.php:2278
+#: setup.php:2296
 msgid "Syslog"
 msgstr "Системен лог"
 
-#: setup.php:1682
+#: setup.php:1739
 msgid "General Settings"
 msgstr "Основни настройки"
 
-#: setup.php:1686
+#: setup.php:1743
 msgid "Syslog Enabled"
 msgstr "Системният дневник е активиран"
 
-#: setup.php:1687
+#: setup.php:1744
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "Ако това квадратче за отметка е зададено, записите ще бъдат прехвърлени от таблицата Incoming на Syslog към основната таблица на системния дневник и ще бъдат активирани предупрежденията и отчетите.  Моля, имайте предвид, че ако системата е деактивирана, записите в дневника все още ще се натрупват в таблицата Syslog Incoming, тъй като това е дефинирано от процеса rsyslog или syslog-ng."
 
-#: setup.php:1692
+#: setup.php:1749
 msgid "Strip Domains"
 msgstr "Strip домейни"
 
-#: setup.php:1693
+#: setup.php:1750
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
 msgstr "Списък с домейни, разделени със запетая, които искате да премахнете от името на хоста на syslog, примерите ще бъдат \"mydomain.com, otherdomain.com\""
 
-#: setup.php:1700
+#: setup.php:1757
 msgid "Refresh Interval"
 msgstr "????‚?µ?Ђ???°?» ???° ???±???????Џ???°???µ"
 
-#: setup.php:1701
+#: setup.php:1758
 msgid "This is the time in seconds before the page refreshes."
 msgstr "Това е времето в секунди преди обновяването на страницата."
 
-#: setup.php:1707
+#: setup.php:1764
 msgid "Max Report Records"
 msgstr "Максимален отчет"
 
-#: setup.php:1708
+#: setup.php:1765
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
 msgstr "За сигнали, базирани на прагове, какъв е максималният брой, който искате да покажете в отчета.  Това се използва за ограничаване на размера на html регистрационния файл и имейла."
 
-#: setup.php:1712 setup.php:1713 setup.php:1714 setup.php:1715 setup.php:1716
-#: setup.php:1717
+#: setup.php:1769 setup.php:1770 setup.php:1771 setup.php:1772 setup.php:1773
+#: setup.php:1774
 #, php-format
 msgid "%d Records"
 msgstr "%d Рекорди"
 
-#: setup.php:1721
+#: setup.php:1778
 msgid "Maximum Syslog Processing Processes"
 msgstr ""
 
-#: setup.php:1722
+#: setup.php:1779
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
 msgstr ""
 
-#: setup.php:1726
+#: setup.php:1783
 #, php-format
 msgid "%d Worker Process"
 msgstr ""
 
-#: setup.php:1727 setup.php:1728 setup.php:1729 setup.php:1730 setup.php:1731
+#: setup.php:1784 setup.php:1785 setup.php:1786 setup.php:1787 setup.php:1788
 #, php-format
 msgid "%d Worker Processes"
 msgstr ""
 
-#: setup.php:1735
+#: setup.php:1792
 msgid "Command for Opening Tickets"
 msgstr "Команда за отваряне на билети"
 
-#: setup.php:1736
+#: setup.php:1793
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
 msgstr "Тази команда ще бъде изпълнена за отваряне на билети за бюро за помощ.  Командата ще трябва да анализира множество входни параметри, както следва: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  Списъкът с хостове ще бъде разделен със запетая списък на хостовете, засегнати от предупреждението."
 
-#: setup.php:1742
+#: setup.php:1799
 msgid "Host Discovery Options"
 msgstr ""
 
-#: setup.php:1747
+#: setup.php:1804
 msgid "Enable Hostname Resolution"
 msgstr ""
 
-#: setup.php:1748
+#: setup.php:1805
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
 msgstr ""
 
-#: setup.php:1753
+#: setup.php:1810
 msgid "Skip DNS Resolution for incoming hosts"
 msgstr ""
 
-#: setup.php:1754
+#: setup.php:1811
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
 msgstr ""
 
-#: setup.php:1759
+#: setup.php:1816
 msgid "HTML Notification Settings"
 msgstr "Настройки за HTML известия"
 
-#: setup.php:1764
+#: setup.php:1821
 msgid "Enable HTML Based Email"
 msgstr "Активиране на имейл, базиран на HTML"
 
-#: setup.php:1765
+#: setup.php:1822
 msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
 msgstr "Ако това квадратче е зададено, всички имейли ще бъдат изпратени в HTML формат.  В противен случай имейлите ще бъдат изпратени в обикновен текст."
 
-#: setup.php:1770
+#: setup.php:1827
 msgid "Format File to Use"
 msgstr "Форматиране на файла за използване"
 
-#: setup.php:1773
+#: setup.php:1830
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
 msgstr "Изберете персонализираната html обвивка и CSS файла, който да използвате.  Този файл съдържа както html, така и CSS, които да обгърнат отчета Ви.  Ако съдържа нещо повече от просто CSS, трябва да поставите специален <REPORT> таг вътре във файла.  Този таг за форматиране ще бъде заменен от съдържанието на отчета.  Тези файлове се намират в директорията \"formats\".</REPORT>"
 
-#: setup.php:1777
+#: setup.php:1834
 msgid "Data Retention Settings"
 msgstr "Настройки за запазване на данни"
 
-#: setup.php:1782
+#: setup.php:1839
 msgid "Syslog Retention"
 msgstr "Запазване на системен дневник"
 
-#: setup.php:1783
+#: setup.php:1840
 msgid "This is the number of days to keep events."
 msgstr "Това е броят на дните за запазване на събитията."
 
-#: setup.php:1789
+#: setup.php:1846
 msgid "Partition Pre-create Window"
 msgstr ""
 
-#: setup.php:1790
+#: setup.php:1847
 msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
 msgstr ""
 
-#: setup.php:1794 setup.php:2082 setup.php:2101 syslog_alerts.php:516
+#: setup.php:1851 setup.php:2139 setup.php:2158 syslog_alerts.php:516
 #, php-format
 msgid "%d Day"
 msgstr "%d ден"
 
-#: setup.php:1795 setup.php:1796 setup.php:1797 setup.php:1798 setup.php:1799
-#: setup.php:1800 setup.php:2083 setup.php:2084 setup.php:2085 setup.php:2086
-#: setup.php:2087 setup.php:2102 setup.php:2103 setup.php:2104 setup.php:2105
-#: setup.php:2106 syslog_alerts.php:517
+#: setup.php:1852 setup.php:1853 setup.php:1854 setup.php:1855 setup.php:1856
+#: setup.php:1857 setup.php:2140 setup.php:2141 setup.php:2142 setup.php:2143
+#: setup.php:2144 setup.php:2159 setup.php:2160 setup.php:2161 setup.php:2162
+#: setup.php:2163 syslog_alerts.php:517
 #, php-format
 msgid "%d Days"
 msgstr "%d дни"
 
-#: setup.php:1804
+#: setup.php:1861
 #, fuzzy
 msgid "Partition Recovery Limit"
 msgstr "Дялове на ден"
 
-#: setup.php:1805
+#: setup.php:1862
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
 msgstr ""
 
-#: setup.php:1809
+#: setup.php:1866
 #, fuzzy, php-format
 msgid "%d Partition per run"
 msgstr "Дялове на ден"
 
-#: setup.php:1810 setup.php:1811 setup.php:1812 setup.php:1813 setup.php:1814
+#: setup.php:1867 setup.php:1868 setup.php:1869 setup.php:1870 setup.php:1871
 #, fuzzy, php-format
 msgid "%d Partitions per run"
 msgstr "Дялове на ден"
 
-#: setup.php:1818
+#: setup.php:1875
 msgid "Collector Staleness Threshold"
 msgstr ""
 
-#: setup.php:1819
+#: setup.php:1876
 msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
 msgstr ""
 
-#: setup.php:1823
+#: setup.php:1880
 msgid "Default (300 seconds)"
 msgstr ""
 
-#: setup.php:1824 setup.php:1825 setup.php:1826 setup.php:1827 setup.php:1828
+#: setup.php:1881 setup.php:1882 setup.php:1883 setup.php:1884 setup.php:1885
 #, php-format
 msgid "%d seconds"
 msgstr ""
 
-#: setup.php:1832
+#: setup.php:1889
 msgid "Collector Backlog Threshold"
 msgstr ""
 
-#: setup.php:1833
+#: setup.php:1890
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
 msgstr ""
 
-#: setup.php:1837
+#: setup.php:1894
 msgid "Default (10000 messages)"
 msgstr ""
 
-#: setup.php:1838 setup.php:1839 setup.php:1840 setup.php:1841
+#: setup.php:1895 setup.php:1896 setup.php:1897 setup.php:1898
 #, fuzzy, php-format
 msgid "%d Messages"
 msgstr "Съобщения"
 
-#: setup.php:1845
+#: setup.php:1902
 msgid "Syslog Alert Retention"
 msgstr "Запазване на сигнали за системен дневник"
 
-#: setup.php:1846
+#: setup.php:1903
 msgid "This is the number of days to keep alert logs."
 msgstr "Това е броят на дните за поддържане на дневници на предупрежденията."
 
-#: setup.php:1852
+#: setup.php:1909
 msgid "Alert Suppression and Maintenance"
 msgstr ""
 
-#: setup.php:1857
+#: setup.php:1914
 msgid "Maintenance Window Days"
 msgstr ""
 
-#: setup.php:1858
+#: setup.php:1915
 msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
 msgstr ""
 
-#: setup.php:1864
+#: setup.php:1921
 msgid "Maintenance Window Starts"
 msgstr ""
 
-#: setup.php:1865
+#: setup.php:1922
 msgid "Local start time for the global maintenance window."
 msgstr ""
 
-#: setup.php:1871
+#: setup.php:1928
 msgid "Maintenance Window Ends"
 msgstr ""
 
-#: setup.php:1872
+#: setup.php:1929
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
 msgstr ""
 
-#: setup.php:1878
+#: setup.php:1935
 msgid "One-time Maintenance Starts"
 msgstr ""
 
-#: setup.php:1879
+#: setup.php:1936
 msgid "Optional local date and time to start a one-time global maintenance window."
 msgstr ""
 
-#: setup.php:1883
+#: setup.php:1940
 msgid "One-time Maintenance Ends"
 msgstr ""
 
-#: setup.php:1884
+#: setup.php:1941
 msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
 msgstr ""
 
-#: setup.php:1888
+#: setup.php:1945
 msgid "Default Alert Cooldown"
 msgstr ""
 
-#: setup.php:1889
+#: setup.php:1946
 msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr ""
 
-#: setup.php:1896
+#: setup.php:1953
 msgid "Default Duplicate Suppression"
 msgstr ""
 
-#: setup.php:1897
+#: setup.php:1954
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr ""
 
-#: setup.php:1904
+#: setup.php:1961
 msgid "Remote Message Processing"
 msgstr "Отдалечена обработка на съобщения"
 
-#: setup.php:1908
+#: setup.php:1965
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "Разрешаване на обработка на съобщения от отдалечен събирач на данни"
 
-#: setup.php:1909
+#: setup.php:1966
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Ако вашите отдалечени събирачи на данни имат свои собствени бази данни на Syslog и обработват съобщенията си независимо, поставете отметка в това квадратче.  Като поставите отметка в това квадратче, вашите отдалечени събирачи на данни ще трябва да поддържат свой собствен файл \"config_local.php\", за да информират Syslog да използва независима база данни за показване и обработка на съобщения.  Моля, използвайте шаблонния файл \"config_local.php.dist\" за тази цел.  ВНИМАНИЕ: Таблиците на системния дневник ще бъдат създадени автоматично веднага щом тази опция бъде активирана."
 
-#: setup.php:1914
+#: setup.php:1971
 msgid "Remote Data Collector Rules Sync"
 msgstr "Синхронизиране на правилата за отдалечен събирач на данни"
 
-#: setup.php:1915
+#: setup.php:1972
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Ако вашите отдалечени събирачи на данни имат свои собствени бази данни на Syslog и обработват три съобщения независимо, поставете отметка в това квадратче, ако искате правилата за предупреждения, премахване и докладване на основните бази данни на Cacti да бъдат изпращани до системата за отдалечени кактуси."
 
-#: setup.php:2036 syslog_removal.php:37
+#: setup.php:2093 syslog_device_rules.php:124 syslog_removal.php:37
 msgid "Disable"
 msgstr "Изключи"
 
-#: setup.php:2037 syslog_removal.php:38
+#: setup.php:2094 syslog_device_rules.php:124 syslog_removal.php:38
 msgid "Enable"
 msgstr "Включи"
 
-#: setup.php:2038 syslog.php:1918 syslog_dashboards.php:300
-#: syslog_dashboards.php:351 syslog_removal.php:40
+#: setup.php:2095 syslog.php:1918 syslog_dashboards.php:300
+#: syslog_dashboards.php:351 syslog_device_rules.php:124 syslog_removal.php:40
 #: syslog_saved_searches.php:271 syslog_saved_searches.php:315
 msgid "Export"
 msgstr "Експортиране"
 
-#: setup.php:2081 setup.php:2100
+#: setup.php:2138 setup.php:2157
 msgid "Indefinite"
 msgstr "Неопределен"
 
-#: setup.php:2088 setup.php:2107 syslog_alerts.php:518
+#: setup.php:2145 setup.php:2164 syslog_alerts.php:518
 #, php-format
 msgid "%d Week"
 msgstr "%d седмица"
 
-#: setup.php:2089 setup.php:2108 syslog_alerts.php:519
+#: setup.php:2146 setup.php:2165 syslog_alerts.php:519
 #, php-format
 msgid "%d Weeks"
 msgstr "%d седмици"
 
-#: setup.php:2090 setup.php:2109
+#: setup.php:2147 setup.php:2166
 #, php-format
 msgid "%d Month"
 msgstr "%d месец"
 
-#: setup.php:2091 setup.php:2092 setup.php:2093 setup.php:2094 setup.php:2095
-#: setup.php:2110 setup.php:2111 setup.php:2112 setup.php:2113 setup.php:2114
+#: setup.php:2148 setup.php:2149 setup.php:2150 setup.php:2151 setup.php:2152
+#: setup.php:2167 setup.php:2168 setup.php:2169 setup.php:2170 setup.php:2171
 #, php-format
 msgid "%d Months"
 msgstr "%d месеца"
 
-#: setup.php:2096 setup.php:2115
+#: setup.php:2153 setup.php:2172
 #, php-format
 msgid "%d Year"
 msgstr "%d година"
 
-#: setup.php:2119 syslog.php:295 syslog.php:310 syslog.php:325
+#: setup.php:2176 syslog.php:295 syslog.php:310 syslog.php:325
 #: syslog_dashboards.php:324 syslog_reports.php:809
 msgid "Never"
 msgstr "Никога"
 
-#: setup.php:2120
+#: setup.php:2177
 #, php-format
 msgid "%d Minute"
 msgstr "%d минута"
 
-#: setup.php:2121 setup.php:2122 setup.php:2123 syslog_alerts.php:503
+#: setup.php:2178 setup.php:2179 setup.php:2180 syslog_alerts.php:503
 #: syslog_alerts.php:504 syslog_alerts.php:505 syslog_alerts.php:506
 #: syslog_alerts.php:507 syslog_alerts.php:508
 #, php-format
 msgid "%d Minutes"
 msgstr "%d минути"
 
-#: setup.php:2127 syslog.php:1978
+#: setup.php:2184 syslog.php:1978
 msgid "Notice"
 msgstr "Известие"
 
-#: setup.php:2128 syslog.php:1977 syslog.php:1996
+#: setup.php:2185 syslog.php:1977 syslog.php:1996
 msgid "Warning"
 msgstr "Внимание"
 
-#: setup.php:2129 syslog.php:1974
+#: setup.php:2186 syslog.php:1974
 msgid "Critical"
 msgstr "Критичен"
 
-#: setup.php:2133
+#: setup.php:2190
 msgid "Begins with"
 msgstr "Започва с"
 
-#: setup.php:2134
+#: setup.php:2191
 msgid "Contains"
 msgstr "Съдържа"
 
-#: setup.php:2135
+#: setup.php:2192
 msgid "Ends with"
 msgstr "завършва с"
 
-#: setup.php:2136
+#: setup.php:2193
 msgid "Hostname is"
 msgstr "Име на хост"
 
-#: setup.php:2137
+#: setup.php:2194
 msgid "Program is"
 msgstr "Програмата е"
 
-#: setup.php:2138
+#: setup.php:2195
 msgid "Facility is"
 msgstr "Условие"
 
-#: setup.php:2139 syslog_alerts.php:690
+#: setup.php:2196 syslog_alerts.php:690
 msgid "Filter Builder"
 msgstr ""
 
-#: setup.php:2140 syslog_alerts.php:691
+#: setup.php:2197 syslog_alerts.php:691
 msgid "SQL Expression"
 msgstr "SQL израз"
 
-#: setup.php:2144
+#: setup.php:2201
 msgid "Daily"
 msgstr "Ежедневно"
 
-#: setup.php:2145
+#: setup.php:2202
 msgid "Weekly"
 msgstr "Седмично"
 
-#: setup.php:2172
+#: setup.php:2229
 msgid "Import/Export"
 msgstr "Импорт/Експорт"
 
-#: setup.php:2173
+#: setup.php:2230
 msgid "Alert Rules"
 msgstr "Правила за предупреждение"
 
-#: setup.php:2173 setup.php:2174 setup.php:2175 setup.php:2176 setup.php:2177
-#: setup.php:2182
+#: setup.php:2230 setup.php:2231 setup.php:2232 setup.php:2233 setup.php:2234
+#: setup.php:2235 setup.php:2240
 msgid "Syslog Settings"
 msgstr "Настройки на системния дневник"
 
-#: setup.php:2174
+#: setup.php:2231 syslog_device_rules.php:257
+#, fuzzy
+#| msgid "Alert Rules"
+msgid "Device Alert Rules"
+msgstr "Правила за предупреждение"
+
+#: setup.php:2232
 msgid "Removal Rules"
 msgstr "Правила за премахване"
 
-#: setup.php:2175
+#: setup.php:2233
 msgid "Report Rules"
 msgstr "Правила за докладване"
 
-#: setup.php:2176 setup.php:2233 syslog_saved_searches.php:195
+#: setup.php:2234 setup.php:2294 syslog_saved_searches.php:195
 msgid "Saved Search Templates"
 msgstr ""
 
-#: setup.php:2220
+#: setup.php:2279
 msgid "Syslog Removals"
 msgstr "Премахване на системен дневник"
 
-#: setup.php:2221 setup.php:2222 setup.php:2226 setup.php:2227 setup.php:2231
+#: setup.php:2280 setup.php:2281 setup.php:2285 setup.php:2286 setup.php:2289
+#: setup.php:2292
 msgid "(Edit)"
 msgstr "(Редактирай)"
 
-#: setup.php:2223 setup.php:2228 setup.php:2232
+#: setup.php:2282 setup.php:2287 setup.php:2293
 msgid "(Actions)"
 msgstr "Действия"
 
-#: setup.php:2225
+#: setup.php:2284
 msgid "Syslog Alerts"
 msgstr "Сигнали за системен дневник"
 
-#: setup.php:2230
+#: setup.php:2288
+#, fuzzy
+#| msgid "View Syslog Alert Rules"
+msgid "Syslog Device Alert Rules"
+msgstr "Преглед на правилата за предупреждение на системен дневник"
+
+#: setup.php:2291
 msgid "Syslog Reports"
 msgstr "Отчети за системен дневник"
 
-#: setup.php:2334
+#: setup.php:2395
 msgid "Display Syslog in Range"
 msgstr "Показване на системен дневник в обхват"
 
-#: setup.php:2404
+#: setup.php:2465
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
 msgstr "Имаше %s записа на устройства, премахнати от базата данни на Syslog"
 
-#: setup.php:2425
+#: setup.php:2486
 msgid "Syslog Utilities"
 msgstr "Помощни програми на Syslog"
 
-#: setup.php:2429
+#: setup.php:2490
 msgid "Purge Syslog Devices"
 msgstr "Прочистване на устройства за системно изчистване"
 
-#: setup.php:2431
+#: setup.php:2492
 msgid "Are you sure you want to purge stale Syslog devices?"
 msgstr ""
 
-#: setup.php:2437
+#: setup.php:2498
 msgid "Confirm Purge"
 msgstr ""
 
-#: setup.php:2451 syslog_alerts.php:230 syslog_dashboards.php:428
-#: syslog_removal.php:248 syslog_reports.php:213 syslog_saved_searches.php:384
+#: setup.php:2512 syslog_alerts.php:230 syslog_dashboards.php:428
+#: syslog_device_rules.php:126 syslog_removal.php:248 syslog_reports.php:213
+#: syslog_saved_searches.php:384
 msgid "Continue"
 msgstr "Продължи"
 
-#: setup.php:2477
+#: setup.php:2538
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
 msgstr "Този избор на меню предоставя средство за премахване на устройства, които вече не се отчитат в сървъра на системния дневник на Cacti."
 
@@ -1624,7 +1639,7 @@ msgstr ""
 msgid "[ Unprocessed Messages: %s ]"
 msgstr "[ Необработени съобщения: %s ]"
 
-#: syslog.php:1728
+#: syslog.php:1728 syslog_device_rules.php:223
 msgid "Enter a search term"
 msgstr "Въведете дума за търсене"
 
@@ -1713,7 +1728,8 @@ msgid "Display Rows"
 msgstr "Показване на редове"
 
 #: syslog.php:1822 syslog_alerts.php:1055 syslog_dashboards.php:237
-#: syslog_removal.php:827 syslog_reports.php:665 syslog_saved_searches.php:229
+#: syslog_device_rules.php:225 syslog_removal.php:827 syslog_reports.php:665
+#: syslog_saved_searches.php:229
 msgid "Default"
 msgstr "По подразбиране"
 
@@ -1778,12 +1794,14 @@ msgid "Save Search As"
 msgstr "Търсене"
 
 #: syslog.php:1915 syslog_alerts.php:1035 syslog_dashboards.php:227
-#: syslog_removal.php:807 syslog_reports.php:645 syslog_saved_searches.php:219
+#: syslog_device_rules.php:223 syslog_removal.php:807 syslog_reports.php:645
+#: syslog_saved_searches.php:219
 msgid "Search"
 msgstr "Търсене"
 
 #: syslog.php:1916 syslog_alerts.php:1072 syslog_dashboards.php:254
-#: syslog_removal.php:844 syslog_reports.php:682 syslog_saved_searches.php:246
+#: syslog_device_rules.php:226 syslog_removal.php:844 syslog_reports.php:682
+#: syslog_saved_searches.php:246
 msgid "Clear"
 msgstr "Изчисти"
 
@@ -1834,6 +1852,7 @@ msgid "Informational"
 msgstr "Информационна"
 
 #: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:664
+#: syslog_device_rules.php:167 syslog_device_rules.php:258
 msgid "Device"
 msgstr "Устройство"
 
@@ -1887,6 +1906,11 @@ msgstr ""
 #: syslog.php:2299
 #, fuzzy
 msgid "Create Alarm Rule"
+msgstr "Правило за предупреждение за импортиране"
+
+#: syslog.php:2299
+#, fuzzy
+msgid "Create Device Alert Rule"
 msgstr "Правило за предупреждение за импортиране"
 
 #: syslog.php:2299
@@ -2054,7 +2078,8 @@ msgid "Build filter conditions or enter an SQL expression to match syslog messag
 msgstr ""
 
 #: syslog_alerts.php:708 syslog_alerts.php:711 syslog_alerts.php:1041
-#: syslog_alerts.php:1173 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_alerts.php:1173 syslog_device_rules.php:168
+#: syslog_device_rules.php:224 syslog_removal.php:599 syslog_removal.php:813
 #: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
 #: syslog_reports.php:780
 msgid "Enabled"
@@ -2191,7 +2216,7 @@ msgstr ""
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
 msgstr ""
 
-#: syslog_alerts.php:783 syslog_reports.php:568
+#: syslog_alerts.php:783 syslog_device_rules.php:173 syslog_reports.php:568
 msgid "Notes"
 msgstr "Бележки"
 
@@ -2240,14 +2265,18 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr "Трябва ли да бъде отворен билет за бюрото за помощ за това предупреждение.  ЗАБЕЛЕЖКА: Командният скрипт Ticket ще бъде попълнен с няколко променливи на средата \"ALERT_\" за удобство."
 
 #: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:819
-#: syslog_removal.php:964 syslog_reports.php:657 syslog_reports.php:804
+#: syslog_dashboards.php:322 syslog_dashboards.php:735
+#: syslog_device_rules.php:172 syslog_device_rules.php:224
+#: syslog_removal.php:819 syslog_removal.php:964 syslog_reports.php:657
+#: syslog_reports.php:804
 msgid "No"
 msgstr "Не"
 
 #: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
-#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:818
-#: syslog_removal.php:964 syslog_reports.php:656 syslog_reports.php:804
+#: syslog_dashboards.php:322 syslog_dashboards.php:735
+#: syslog_device_rules.php:172 syslog_device_rules.php:224
+#: syslog_removal.php:818 syslog_removal.php:964 syslog_reports.php:656
+#: syslog_reports.php:804
 msgid "Yes"
 msgstr "Да"
 
@@ -2296,7 +2325,8 @@ msgstr "Въведете дума за търсене"
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php:1045 syslog_removal.php:817 syslog_reports.php:655
+#: syslog_alerts.php:1045 syslog_device_rules.php:224 syslog_removal.php:817
+#: syslog_reports.php:655
 msgid "All"
 msgstr "Всички"
 
@@ -2305,8 +2335,8 @@ msgstr "Всички"
 msgid "Rows"
 msgstr "Редове"
 
-#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_removal.php:843
-#: syslog_reports.php:681 syslog_saved_searches.php:245
+#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_device_rules.php:226
+#: syslog_removal.php:843 syslog_reports.php:681 syslog_saved_searches.php:245
 msgid "Go"
 msgstr "Търси"
 
@@ -2543,6 +2573,159 @@ msgstr ""
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
 msgstr ""
 
+#: syslog_device_rules.php:63
+msgid "Choose a future pause end date and time."
+msgstr ""
+
+#: syslog_device_rules.php:69
+msgid "A device name is required."
+msgstr ""
+
+#: syslog_device_rules.php:125
+#, fuzzy, php-format
+#| msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Щракнете върху \"Продължи\", за да деактивирате следните правила за предупреждение на системния дневник."
+
+#: syslog_device_rules.php:161
+msgid "Do not pass any priority"
+msgstr ""
+
+#: syslog_device_rules.php:163
+#, php-format
+msgid "%s and more urgent"
+msgstr ""
+
+#: syslog_device_rules.php:166
+#, fuzzy
+#| msgid "New Alert Rule"
+msgid "Device Alert Rule"
+msgstr "Ново правило за предупреждение"
+
+#: syslog_device_rules.php:167
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr ""
+
+#: syslog_device_rules.php:169
+#, fuzzy
+#| msgid "Removal Handling"
+msgid "Alert Handling"
+msgstr "Обработка на премахването"
+
+#: syslog_device_rules.php:169
+msgid "Do not pause"
+msgstr ""
+
+#: syslog_device_rules.php:169
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr ""
+
+#: syslog_device_rules.php:169
+#, fuzzy
+#| msgid "Indefinite"
+msgid "Pause indefinitely"
+msgstr "Неопределен"
+
+#: syslog_device_rules.php:169
+msgid "Pause until"
+msgstr ""
+
+#: syslog_device_rules.php:170
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: syslog_device_rules.php:170
+msgid "Pause Ends"
+msgstr ""
+
+#: syslog_device_rules.php:171
+#, fuzzy
+#| msgid "All Priorities"
+msgid "Always Allow Priority"
+msgstr "Всички приоритети"
+
+#: syslog_device_rules.php:171
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr ""
+
+#: syslog_device_rules.php:172
+#, fuzzy
+msgid "Allow During Maintenance"
+msgstr "Разделена таблица"
+
+#: syslog_device_rules.php:172
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr ""
+
+#: syslog_device_rules.php:180
+#, fuzzy
+#| msgid "New Alert Rule"
+msgid "Device Alert Rule [edit]"
+msgstr "Ново правило за предупреждение"
+
+#: syslog_device_rules.php:180
+#, fuzzy
+#| msgid "New Alert Rule"
+msgid "Device Alert Rule [new]"
+msgstr "Ново правило за предупреждение"
+
+#: syslog_device_rules.php:220
+#, fuzzy
+#| msgid "Syslog Alert Filters"
+msgid "Device Alert Rule Filters"
+msgstr "Филтри за предупреждения на системен дневник"
+
+#: syslog_device_rules.php:225 syslog_device_rules.php:254
+#: syslog_removal.php:823 syslog_removal.php:952
+msgid "Rules"
+msgstr "Правила за съотношението тегло-разходи"
+
+#: syslog_device_rules.php:258
+#, fuzzy
+#| msgid "Removal Handling"
+msgid "Handling"
+msgstr "Обработка на премахването"
+
+#: syslog_device_rules.php:258
+#, fuzzy
+msgid "Maintenance"
+msgstr "Разделена таблица"
+
+#: syslog_device_rules.php:258
+msgid "Pass Through"
+msgstr ""
+
+#: syslog_device_rules.php:261
+msgid "No device alert rules found."
+msgstr ""
+
+#: syslog_device_rules.php:264
+msgid "Not paused"
+msgstr ""
+
+#: syslog_device_rules.php:264
+#, fuzzy
+#| msgid "Indefinite"
+msgid "Paused indefinitely"
+msgstr "Неопределен"
+
+#: syslog_device_rules.php:264
+#, php-format
+msgid "Paused until %s"
+msgstr ""
+
+#: syslog_device_rules.php:265
+msgid "and more urgent"
+msgstr ""
+
+#: syslog_device_rules.php:270
+msgid "Allow all"
+msgstr ""
+
+#: syslog_device_rules.php:270
+msgid "Use priority exception"
+msgstr ""
+
 #: syslog_removal.php:39
 msgid "Reprocess"
 msgstr "Преработка"
@@ -2669,10 +2852,6 @@ msgstr "Място за бележки относно правилото за п
 #, fuzzy
 msgid "Removal filter conditions"
 msgstr "Бележки по правилата за премахване"
-
-#: syslog_removal.php:823 syslog_removal.php:952
-msgid "Rules"
-msgstr "Правила за съотношението тегло-разходи"
 
 #: syslog_removal.php:915
 msgid "Syslog Removal Rule Filters"
@@ -2986,9 +3165,6 @@ msgstr ""
 #~ msgid "All Facilities"
 #~ msgstr "Всички удобства"
 
-#~ msgid "All Priorities"
-#~ msgstr "Всички приоритети"
-
 #~ msgid "All Text"
 #~ msgstr "Целият текст"
 
@@ -3099,9 +3275,6 @@ msgstr ""
 
 #~ msgid "Validate Hostnames"
 #~ msgstr "Проверка на имена на хостове"
-
-#~ msgid "View Syslog Alert Rules"
-#~ msgstr "Преглед на правилата за предупреждение на системен дневник"
 
 #~ msgid "View Syslog Removal Rules"
 #~ msgstr "Преглед на правилата за премахване на системен дневник"
