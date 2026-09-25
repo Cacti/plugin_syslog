@@ -26,6 +26,10 @@ function db_rollback_transaction() { global $db; return $db->rollBack(); }
 function api_plugin_replicate_config() {}
 function api_plugin_valid_entrypoint($plugin, $function) { return true; }
 function api_plugin_user_realm_auth($file) { return false; }
+function is_realm_allowed($realm) {
+	global $allowed_realms;
+	return in_array($realm, $allowed_realms ?? [], true);
+}
 function cacti_sizeof($value) { return count($value); }
 function __($text, $domain = '') { return $text; }
 function check($condition, $message) { if (!$condition) { throw new RuntimeException($message); } }
@@ -38,6 +42,7 @@ eval(substr($source, $start, $end - $start));
 
 $viewer_files = 'syslog_alerts.php,syslog_removal.php,syslog_reports.php';
 $admin_file = 'syslog_rule_administrator.php';
+$syslog_administrator_file = 'syslog_administrator.php';
 foreach ([['syslog.php', 'Syslog User'], [$admin_file, 'Rule Administrator'], [$admin_file, 'Rule Administrator'], [$admin_file, 'Rule Viewer'], [$viewer_files, 'Rule Viewer']] as $row) {
 	db_execute_prepared('INSERT INTO plugin_realms(plugin,file,display) VALUES(?,?,?)', ['syslog', $row[0], $row[1]]);
 }
@@ -61,13 +66,23 @@ for ($request = 0; $request < 50; $request++) {
 	check(syslog_upgrade_consolidate_rule_realms(), 'Repair must succeed');
 	api_plugin_register_realm('syslog', $viewer_files, 'Rule Viewer', false);
 	api_plugin_register_realm('syslog', $admin_file, 'Rule Administrator', false);
+	api_plugin_register_realm('syslog', $syslog_administrator_file, 'Syslog Administrator', false);
 	syslog_refresh_permission_roles();
-	check((int) $db->query('SELECT COUNT(*) FROM plugin_realms')->fetchColumn() === 3, 'Repeated upgrades must not add realms');
-	check($user_auth_roles['Syslog'] === [101, 102, 104], 'Every surviving realm must appear once under Syslog');
+	check((int) $db->query('SELECT COUNT(*) FROM plugin_realms')->fetchColumn() === 4, 'Repeated upgrades must not add realms');
+	check($user_auth_roles['Syslog'] === [101, 102, 104, 106], 'Every surviving realm must appear once under Syslog');
 	check($user_auth_realm_filenames['syslog_alerts.php'] === 104, 'Viewer filename must use the surviving Viewer realm');
 	check($user_auth_realm_filenames[$admin_file] === 102, 'Administrator must remain separate');
 	check(!isset($user_auth_realm_filenames['syslog_dashboards.php']), 'Viewer must not acquire dashboard administration');
 }
+$syslog_administrator_id = (int) $db->query("SELECT id FROM plugin_realms WHERE file = '$syslog_administrator_file'")->fetchColumn() + 100;
+$allowed_realms = [$syslog_administrator_id];
+syslog_refresh_permission_roles();
+foreach (['syslog.php', 'syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', $admin_file, 'syslog_saved_searches.php', 'syslog_saved_searches_share.php', 'syslog_dashboards.php', 'syslog_dashboards_share.php'] as $page) {
+	check(($user_auth_realm_filenames[$page] ?? 0) === $syslog_administrator_id, 'Syslog Administrator must imply every Syslog permission');
+}
+$allowed_realms = [];
+syslog_refresh_permission_roles();
+
 check($db->query('SELECT user_id,realm_id FROM user_auth_realm ORDER BY user_id')->fetchAll(PDO::FETCH_NUM) === [[1,102],[2,102],[3,104]], 'Preserve all user grants without elevating Viewer');
 check($db->query('SELECT group_id,realm_id FROM user_auth_group_realm ORDER BY group_id')->fetchAll(PDO::FETCH_NUM) === [[9,102],[10,104]], 'Preserve group grants and remove obsolete IDs');
 check(!isset($_SESSION['sess_auth_names']['syslog_alerts.php']), 'Invalidate stale filename cache');

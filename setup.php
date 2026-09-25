@@ -74,6 +74,7 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
+	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -509,6 +510,27 @@ function syslog_refresh_permission_roles(): void {
 	// Assign actual IDs rather than cached filename lookups. This also removes
 	// deleted duplicate IDs from the Syslog group on the current request.
 	$user_auth_roles[__('Syslog', 'syslog')] = array_values(array_unique($ids));
+
+	// Cacti filters console menus and authorizes pages from this map before the
+	// page controllers run. Keep the stored permissions independent, but make
+	// the aggregate administrator permission imply each Syslog capability for
+	// the current user.
+	$administrator = $user_auth_realm_filenames['syslog_administrator.php'] ?? 0;
+	if ($administrator && is_realm_allowed($administrator)) {
+		foreach ([
+			'syslog.php',
+			'syslog_alerts.php',
+			'syslog_removal.php',
+			'syslog_reports.php',
+			'syslog_rule_administrator.php',
+			'syslog_saved_searches.php',
+			'syslog_saved_searches_share.php',
+			'syslog_dashboards.php',
+			'syslog_dashboards_share.php'
+		] as $file) {
+			$user_auth_realm_filenames[$file] = $administrator;
+		}
+	}
 }
 
 /**
@@ -531,6 +553,7 @@ function syslog_check_upgrade(): void {
 	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php', 'Rule Administrator', 0);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
+	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 0);
 	syslog_refresh_permission_roles();
 
 	// Let's only run this check if we are on a page that actually needs the data
