@@ -1,0 +1,3120 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-09-22 20:32-0400\n"
+"PO-Revision-Date: 2023-06-26 11:06+0000\n"
+"Last-Translator: Coool (github.com/Coool) <coool@mail.lv>\n"
+"Language-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\n"
+"Language: ru-RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.8.1\n"
+
+#: functions.php:687
+#, fuzzy
+msgid "Syslog download"
+msgstr "Syslog включён"
+
+#: functions.php:800
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Сохранить не удалось. Удаленным сборщикам данных в режиме синхронизации не разрешено сохранять правила. Вместо этого сохраните с основного сервера Cacti."
+
+#: functions.php:853
+msgid "Please use an HTML Email Client"
+msgstr "Пожалуйста, используйте HTML-клиент электронной почты"
+
+#: functions.php:878
+msgid "Text import payload exceeds the maximum size"
+msgstr ""
+
+#: functions.php:895 functions.php:901 functions.php:910
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr ""
+
+#: functions.php:918
+msgid "Select an import file or paste its contents before importing."
+msgstr ""
+
+#: functions.php:1159
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr ""
+
+#: functions.php:1693
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr ""
+
+#: functions.php:1737
+#, php-format
+msgid "remaining partition gap: %d day(s)"
+msgstr ""
+
+#: functions.php:1738
+msgid "no retention deferral"
+msgstr ""
+
+#: functions.php:1738
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr ""
+
+#: functions.php:1742
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr ""
+
+#: functions.php:1818
+msgid "per run recovery limit reached"
+msgstr ""
+
+#: functions.php:1826
+#, fuzzy
+msgid "partition creation failed"
+msgstr "Разделенная таблица"
+
+#: functions.php:2791
+msgid "Unknown rule type."
+msgstr ""
+
+#: functions.php:2847
+msgid "The configured incoming field mapping is invalid."
+msgstr ""
+
+#: functions.php:2859
+msgid "The facility of this rule is not in the reference table yet."
+msgstr ""
+
+#: functions.php:2894
+msgid "Unknown rule match type."
+msgstr ""
+
+#: functions.php:2901
+msgid "The rule did not compile to a query."
+msgstr ""
+
+#: functions.php:2912
+msgid "The preview query could not be evaluated."
+msgstr ""
+
+#: functions.php:2922
+msgid "The preview sample could not be read."
+msgstr ""
+
+#: functions.php:2964 lib/syslog_dashboard.php:653 lib/syslog_dashboard.php:819
+#: lib/syslog_dashboard.php:902 lib/syslog_dashboard.php:906
+#: lib/syslog_dashboard.php:946 lib/syslog_dashboard.php:1022 syslog.php:1249
+#: syslog.php:1275 syslog_dashboards.php:11 syslog_saved_searches.php:11
+msgid "Permission denied."
+msgstr ""
+
+#: functions.php:2968 functions.php:2972 setup.php:2360 setup.php:2370
+#: setup.php:2377
+msgid "Invalid request. Please try again."
+msgstr ""
+
+#: functions.php:2983
+msgid "The rule has no match expression to test."
+msgstr ""
+
+#: functions.php:2987
+msgid "The match expression is too long to test."
+msgstr ""
+
+#: functions.php:3474 lib/syslog_dashboard.php:243 syslog.php:2171
+#: syslog.php:2176 syslog.php:2177 syslog.php:2204 syslog.php:2207
+#: syslog.php:2208 syslog.php:2265
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: functions.php:4513
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Cacti Syslog срабатывание алерта '%s' хоста '%s'"
+
+#: functions.php:4515
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Предупреждение о пороговом значении плагина Cacti Syslog '%s'"
+
+#: functions.php:4523 syslog.php:2242 syslog_alerts.php:1169
+msgid "Alert Name"
+msgstr "Имя оповещения"
+
+#: functions.php:4524 functions.php:4551 syslog.php:2241 syslog_alerts.php:653
+#: syslog_alerts.php:1170
+msgid "Severity"
+msgstr "Важность"
+
+#: functions.php:4525 syslog_alerts.php:672 syslog_alerts.php:677
+#: syslog_alerts.php:1196
+msgid "Threshold"
+msgstr "Порог"
+
+#: functions.php:4526 syslog.php:2123 syslog.php:2244
+msgid "Count"
+msgstr "Количество"
+
+#: functions.php:4527
+msgid "Match String"
+msgstr "Строка соответствия"
+
+#: functions.php:4538 functions.php:4578
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Cacti Syslog срабатывание алерта '%s' хоста '%s'"
+
+#: functions.php:4540 functions.php:4580
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Предупреждение Cacti Syslog '%s'"
+
+#: functions.php:4549
+msgid "Hostname"
+msgstr "Имя хоста"
+
+#: functions.php:4550 functions.php:5484 syslog.php:2114 syslog.php:2239
+#: syslog.php:2296
+msgid "Date"
+msgstr "Дата"
+
+#: functions.php:4552
+msgid "Level"
+msgstr "Уровень"
+
+#: functions.php:4553 functions.php:5485 lib/syslog_dashboard.php:1621
+#: syslog.php:1811 syslog.php:1896 syslog.php:2117 syslog.php:2243
+#: syslog.php:2297 syslog_alerts.php:889 syslog_removal.php:679
+#: syslog_saved_searches.php:666
+msgid "Message"
+msgstr "Сообщение"
+
+#: functions.php:4561
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "ВНИМАНИЕ: Количество сработавших алертов Syslog для хоста '%s'"
+
+#: functions.php:4563
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "ВНИМАНИЕ: Количество сработавших алертов Syslog"
+
+#: functions.php:4570
+msgid "Name:"
+msgstr "Имя:"
+
+#: functions.php:4571 functions.php:4627
+msgid "Severity:"
+msgstr "Важность:"
+
+#: functions.php:4572
+msgid "Threshold:"
+msgstr "Порог:"
+
+#: functions.php:4573
+msgid "Count:"
+msgstr "Количество:"
+
+#: functions.php:4574
+msgid "Message String:"
+msgstr "Строка сообщения:"
+
+#: functions.php:4625
+msgid "Hostname:"
+msgstr "Имя хоста:"
+
+#: functions.php:4626
+msgid "Date:"
+msgstr "Дата:"
+
+#: functions.php:4628
+msgid "Level:"
+msgstr "Уровень:"
+
+#: functions.php:4629
+msgid "Message:"
+msgstr "Сообщение:"
+
+#: functions.php:4704
+msgid ", Host:"
+msgstr ", Host:"
+
+#: functions.php:4704 functions.php:4739
+msgid ", URL:"
+msgstr ", URL-АДРЕС:"
+
+#: functions.php:4704 functions.php:4739
+msgid "Sev:"
+msgstr "Сев:"
+
+#: functions.php:4710 functions.php:4735
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Оповещение о событии - %s"
+
+#: functions.php:4739
+msgid ", Count:"
+msgstr ", Количество:"
+
+#: functions.php:5483 lib/syslog_dashboard.php:1568 syslog_alerts.php:890
+#: syslog_removal.php:680
+msgid "Host"
+msgstr "Хост"
+
+#: functions.php:5508
+#, php-format
+msgid "Event Report - %s"
+msgstr "Отчет о событии - %s"
+
+#: lib/syslog_dashboard.php:396
+msgid "Invalid dashboard panel source."
+msgstr ""
+
+#: lib/syslog_dashboard.php:402
+msgid "Invalid dashboard panel type."
+msgstr ""
+
+#: lib/syslog_dashboard.php:408
+msgid "Invalid dashboard chart type."
+msgstr ""
+
+#: lib/syslog_dashboard.php:414
+msgid "Invalid dashboard breakdown field."
+msgstr ""
+
+#: lib/syslog_dashboard.php:420
+msgid "Invalid dashboard interval."
+msgstr ""
+
+#: lib/syslog_dashboard.php:426
+msgid "Invalid dashboard timespan."
+msgstr ""
+
+#: lib/syslog_dashboard.php:432
+msgid "Invalid dashboard record type."
+msgstr ""
+
+#: lib/syslog_dashboard.php:438
+msgid "Invalid dashboard top count."
+msgstr ""
+
+#: lib/syslog_dashboard.php:450
+msgid "Invalid dashboard panel width."
+msgstr ""
+
+#: lib/syslog_dashboard.php:462
+msgid "Invalid dashboard panel height."
+msgstr ""
+
+#: lib/syslog_dashboard.php:550 lib/syslog_dashboard.php:1130 syslog.php:1102
+#: syslog.php:1198
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr ""
+
+#: lib/syslog_dashboard.php:616
+msgid "Other"
+msgstr ""
+
+#: lib/syslog_dashboard.php:659 lib/syslog_dashboard.php:1044
+msgid "A valid dashboard panel is required."
+msgstr ""
+
+#: lib/syslog_dashboard.php:665 lib/syslog_dashboard.php:1051
+#: lib/syslog_dashboard.php:1138
+msgid "Dashboard panel not found."
+msgstr ""
+
+#: lib/syslog_dashboard.php:826 lib/syslog_dashboard.php:969 syslog.php:1191
+msgid "A name of up to 128 characters is required."
+msgstr ""
+
+#: lib/syslog_dashboard.php:834 lib/syslog_dashboard.php:913
+#: lib/syslog_dashboard.php:953 lib/syslog_dashboard.php:1034
+msgid "A valid dashboard is required."
+msgstr ""
+
+#: lib/syslog_dashboard.php:840 lib/syslog_dashboard.php:860
+#: lib/syslog_dashboard.php:919 lib/syslog_dashboard.php:959
+#: lib/syslog_dashboard.php:1038
+msgid "Dashboard not found."
+msgstr ""
+
+#: lib/syslog_dashboard.php:923
+msgid "You may only share your own dashboards."
+msgstr ""
+
+#: lib/syslog_dashboard.php:965 lib/syslog_dashboard.php:1379
+msgid "copy"
+msgstr ""
+
+#: lib/syslog_dashboard.php:990
+msgid "Dashboard could not be copied."
+msgstr ""
+
+#: lib/syslog_dashboard.php:1064
+msgid "A valid panel position is required."
+msgstr ""
+
+#: lib/syslog_dashboard.php:1121
+msgid "A title of up to 128 characters is required."
+msgstr ""
+
+#: lib/syslog_dashboard.php:1366
+msgid "Chart library unavailable on this Cacti installation."
+msgstr ""
+
+#: lib/syslog_dashboard.php:1367
+msgid "Edit Panel"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1368
+msgid "New Panel"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1369 lib/syslog_dashboard.php:1524 syslog.php:1891
+msgid "Save"
+msgstr "Сохранить"
+
+#: lib/syslog_dashboard.php:1370 lib/syslog_dashboard.php:1525 setup.php:1605
+#: setup.php:2444 syslog.php:1890 syslog_alerts.php:230
+#: syslog_dashboards.php:428 syslog_removal.php:248 syslog_reports.php:213
+#: syslog_saved_searches.php:384
+msgid "Cancel"
+msgstr "Отмена"
+
+#: lib/syslog_dashboard.php:1371 syslog.php:1889
+msgid "Apply"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1372 lib/syslog_dashboard.php:1485 setup.php:2035
+#: syslog.php:1798 syslog_dashboards.php:300 syslog_dashboards.php:351
+#: syslog_removal.php:36 syslog_saved_searches.php:271
+#: syslog_saved_searches.php:315
+msgid "Delete"
+msgstr "Удалить"
+
+#: lib/syslog_dashboard.php:1373
+msgid "Delete this dashboard panel?"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1374
+msgid "Delete this dashboard and all of its panels?"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1375
+msgid "Name your dashboard"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1376 lib/syslog_dashboard.php:1487 syslog.php:1800
+msgid "Make Private"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1377 lib/syslog_dashboard.php:1487
+msgid "Share with all"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1378 lib/syslog_dashboard.php:1491
+msgid "Save as my copy"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1385
+#, fuzzy
+msgid "Syslog Dashboards"
+msgstr "Syslog включён"
+
+#: lib/syslog_dashboard.php:1396 lib/syslog_dashboard.php:1557
+#: lib/syslog_dashboard.php:1581 syslog.php:256
+msgid "Dashboard"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1399 lib/syslog_dashboard.php:1579
+msgid "Time Range"
+msgstr "Временной диапазон"
+
+#: lib/syslog_dashboard.php:1404 lib/syslog_dashboard.php:1582
+#, fuzzy
+msgid "Last Hour"
+msgstr "%d Час"
+
+#: lib/syslog_dashboard.php:1405 lib/syslog_dashboard.php:1583
+#, fuzzy, php-format
+msgid "Last %d Hours"
+msgstr "%d Часа(ов)"
+
+#: lib/syslog_dashboard.php:1406 lib/syslog_dashboard.php:1584
+msgid "Last Day"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1407 lib/syslog_dashboard.php:1585
+#, fuzzy
+msgid "Last Week"
+msgstr "Последняя отправка"
+
+#: lib/syslog_dashboard.php:1408 lib/syslog_dashboard.php:1586
+#, fuzzy, php-format
+msgid "Last %d Weeks"
+msgstr "%d Недели"
+
+#: lib/syslog_dashboard.php:1409 lib/syslog_dashboard.php:1587
+#, fuzzy
+msgid "Last Month"
+msgstr "Последняя отправка"
+
+#: lib/syslog_dashboard.php:1410 lib/syslog_dashboard.php:1411
+#: lib/syslog_dashboard.php:1588 lib/syslog_dashboard.php:1589
+#, fuzzy, php-format
+msgid "Last %d Months"
+msgstr "%d Месяца"
+
+#: lib/syslog_dashboard.php:1421 syslog.php:1839 syslog.php:1917
+msgid "Refresh"
+msgstr "Обновить"
+
+#: lib/syslog_dashboard.php:1438 setup.php:2177 setup.php:2234
+#: syslog_dashboards.php:201 syslog_dashboards.php:203
+msgid "Dashboards"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1445 lib/syslog_dashboard.php:1454
+msgid "My Dashboards"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1446 lib/syslog_dashboard.php:1452
+msgid "Global Dashboards"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1447 lib/syslog_dashboard.php:1456 syslog.php:1762
+#: syslog.php:1771
+msgid "Shared With Me"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1482 syslog.php:1796
+msgid "New"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1484
+msgid "Rename"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1495
+msgid "Add Panel"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1508
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr ""
+
+#: lib/syslog_dashboard.php:1514
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr ""
+
+#: lib/syslog_dashboard.php:1526
+msgid "Dashboard Panel"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1529
+msgid "Title"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1533
+msgid "Log Source"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1535 syslog.php:252
+msgid "System Logs"
+msgstr "Системные журналы"
+
+#: lib/syslog_dashboard.php:1536 syslog.php:254
+msgid "Alert Logs"
+msgstr "Журналы тревог"
+
+#: lib/syslog_dashboard.php:1540
+#, fuzzy
+msgid "Panel Type"
+msgstr "Тип Матча"
+
+#: lib/syslog_dashboard.php:1542
+msgid "Time Series"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1543
+msgid "Breakdown"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1547
+#, fuzzy
+msgid "Chart"
+msgstr "d Шары"
+
+#: lib/syslog_dashboard.php:1549
+msgid "Line"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1550
+msgid "Area"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1551
+msgid "Bar"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1555
+#, fuzzy
+msgid "Interval"
+msgstr "Интервал обновления"
+
+#: lib/syslog_dashboard.php:1558
+msgid "Auto"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1559
+#, fuzzy
+msgid "Minute"
+msgstr "1 минута"
+
+#: lib/syslog_dashboard.php:1560
+#, fuzzy
+msgid "10 Minutes"
+msgstr "1 минута"
+
+#: lib/syslog_dashboard.php:1561
+#, fuzzy
+msgid "Hour"
+msgstr "%d Час"
+
+#: lib/syslog_dashboard.php:1562
+#, fuzzy
+msgid "Day"
+msgstr "Ежедневно"
+
+#: lib/syslog_dashboard.php:1566
+msgid "Field"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1569 syslog.php:2116 syslog.php:2296
+#: syslog.php:2371 syslog_alerts.php:891 syslog_removal.php:681
+msgid "Program"
+msgstr "Программа"
+
+#: lib/syslog_dashboard.php:1570 syslog.php:2118 syslog.php:2245
+#: syslog.php:2296 syslog_alerts.php:892 syslog_removal.php:682
+msgid "Facility"
+msgstr "Объект"
+
+#: lib/syslog_dashboard.php:1571 syslog.php:2119 syslog.php:2246
+#: syslog.php:2296 syslog_alerts.php:893 syslog_removal.php:683
+msgid "Priority"
+msgstr "Приоритет"
+
+#: lib/syslog_dashboard.php:1575
+#, fuzzy
+msgid "Top Count"
+msgstr "Количество"
+
+#: lib/syslog_dashboard.php:1593 syslog.php:1856
+msgid "Record Type"
+msgstr "Тип записи"
+
+#: lib/syslog_dashboard.php:1595 syslog.php:1858
+msgid "All Records"
+msgstr "Все записи"
+
+#: lib/syslog_dashboard.php:1596 syslog.php:1859
+msgid "Main Records"
+msgstr "Основные записи"
+
+#: lib/syslog_dashboard.php:1597 syslog.php:1860
+msgid "Removed Records"
+msgstr "Удаленные записи"
+
+#: lib/syslog_dashboard.php:1601
+msgid "Start from Saved Search"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1603 syslog.php:360 syslog.php:374 syslog.php:2365
+#: syslog.php:2376 syslog.php:2429 syslog.php:2430 syslog_alerts.php:802
+#: syslog_reports.php:554
+msgid "None"
+msgstr "Нет"
+
+#: lib/syslog_dashboard.php:1622 syslog.php:1812 syslog.php:1897
+#: syslog_saved_searches.php:666
+msgid "Enter message text…"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1623 syslog.php:1815 syslog.php:1900
+#: syslog_alerts.php:915 syslog_removal.php:705 syslog_saved_searches.php:666
+#, fuzzy
+msgid "Remove condition"
+msgstr "Удаленные записи"
+
+#: lib/syslog_dashboard.php:1624 syslog.php:1816 syslog.php:1901
+#: syslog_saved_searches.php:666
+#, fuzzy
+msgid "Match group"
+msgstr "Тип Матча"
+
+#: lib/syslog_dashboard.php:1625 syslog.php:1817 syslog.php:1902
+#: syslog_saved_searches.php:666
+msgid "Exclude group"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1628
+msgid "Dashboard Name"
+msgstr ""
+
+#: lib/syslog_dashboard.php:1630 syslog.php:1907 syslog_alerts.php:645
+#: syslog_dashboards.php:188 syslog_dashboards.php:284
+#: syslog_dashboards.php:733 syslog_reports.php:489
+#: syslog_saved_searches.php:281 syslog_saved_searches.php:648
+msgid "Name"
+msgstr "Имя"
+
+#: setup.php:41 setup.php:188
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Пожалуйста, переименуйте файл config.php.dist в каталоге syslog и измените настройки базы данных перед установкой."
+
+#: setup.php:1420
+msgid "What upgrade/install type do you wish to use"
+msgstr "Какой тип обновления/установки вы хотите использовать"
+
+#: setup.php:1421
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgstr "Когда у вас очень большие столы, выполнение Truncate будет намного быстрее.  Если вас беспокоят архивные данные, вы можете выбрать Inline, который заморозит ваш браузер на время обновления, или фон, который создаст фоновый процесс для переноса старых данных syslog из резервной таблицы в новый формат syslog.  Опять же, этот процесс может занять несколько часов."
+
+#: setup.php:1424
+msgid "Truncate Syslog Table"
+msgstr "Обрезать Syslog таблицу"
+
+#: setup.php:1425
+msgid "Inline Upgrade"
+msgstr "Обновление онлайн"
+
+#: setup.php:1426
+msgid "Background Upgrade"
+msgstr "Фоновое обновление"
+
+#: setup.php:1431
+msgid "Database Storage Engine"
+msgstr "Двигатель хранения данных базы данных"
+
+#: setup.php:1432
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
+msgstr ""
+
+#: setup.php:1435
+msgid "InnoDB Storage"
+msgstr "InnoDB Хранилище InnoDB"
+
+#: setup.php:1436
+#, fuzzy
+msgid "Aria Storage"
+msgstr "MyISAM Storage"
+
+#: setup.php:1445
+msgid "Retention Policy"
+msgstr "Политика удержания"
+
+#: setup.php:1446
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Выберите, сколько дней значений Syslog вы хотите поддерживать в базе данных."
+
+#: setup.php:1466
+msgid "Partitions per Day"
+msgstr "Разделы в день"
+
+#: setup.php:1467
+msgid "Select the number of partitions per day that you wish to create."
+msgstr "Выберите количество разделов в день, которое вы хотите создать."
+
+#: setup.php:1470 setup.php:1471 setup.php:1472 setup.php:1473 setup.php:1474
+#, php-format
+msgid "%d Per Day"
+msgstr "%d в день"
+
+#: setup.php:1479 setup.php:1593
+msgid "Upgrade"
+msgstr "Обновить"
+
+#: setup.php:1481 setup.php:1595
+msgid "Install"
+msgstr "Установить"
+
+#: setup.php:1495
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog %s Советник"
+
+#: setup.php:1499
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "ВНИМАНИЕ: Обновление системного журнала отнимает много времени!!!"
+
+#: setup.php:1500
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Обновление \"основной\" таблицы системного журнала может быть очень трудоемким процессом.  Поэтому рекомендуется либо уменьшить размер таблицы syslog перед обновлением, либо выбрать фоновую опцию</p> <p> <p>Если вы выберите фоновую опцию, ваша старая таблица syslog будет переименована, и будет создана новая таблица syslog.  Затем в фоновом режиме будет запущен процесс обновления.  Опять же, этот фоновый процесс может занять довольно много времени.  Однако ваши данные будут сохранены </p> <p> <p>Не зависимо от вашего выбора, все существующие правила удаления и оповещения будут сохранены в процессе обновления.</p> </p>Нажмите <b>'Upgrade' </b> для продолжения обновления или <b>'Cancel' </b> для возврата в меню Plugins."
+
+#: setup.php:1503
+#, fuzzy
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Можно также выбрать продолжительность хранения.  Пожалуйста, имейте в виду, что если у вас есть несколько хостов, регистрирующихся в syslog, эта таблица может стать довольно большой.  Таким образом, если вы не используете разметку, вам, возможно, захочется сохранить размер поменьше."
+
+#: setup.php:1503
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
+msgstr ""
+
+#: setup.php:1503
+#, fuzzy
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "У вас есть несколько вариантов на выбор при установке Syslog.  Первая - это архитектура базы данных.  Начиная с MySQL 5.1.6, вы можете использовать разметку таблиц, чтобы предотвратить избыточный размер таблиц, замедляя тем самым выполнение запросов."
+
+#: setup.php:1509
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Syslog %s Настройки"
+
+#: setup.php:1541
+msgid "What uninstall method do you want to use?"
+msgstr "Какой метод деинсталляции вы хотите использовать?"
+
+#: setup.php:1542
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Удаляя syslog, вы можете удалить все или только отдельные компоненты, на случай, если планируете переустановить его в будущем."
+
+#: setup.php:1544
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Удалить все (журналы, таблицы, настройки)"
+
+#: setup.php:1544
+msgid "Syslog Data Only"
+msgstr "Только данные syslog"
+
+#: setup.php:1564
+msgid "Syslog Uninstall Preferences"
+msgstr "Параметры удаления Syslog"
+
+#: setup.php:1598
+msgid "Uninstall"
+msgstr "Удалить"
+
+#: setup.php:1658
+msgid "Monday"
+msgstr ""
+
+#: setup.php:1658
+msgid "Tuesday"
+msgstr ""
+
+#: setup.php:1658
+msgid "Wednesday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Friday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Saturday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Sunday"
+msgstr ""
+
+#: setup.php:1659
+msgid "Thursday"
+msgstr ""
+
+#: setup.php:1660
+msgid "Monday through Friday"
+msgstr ""
+
+#: setup.php:1660
+msgid "Saturday and Sunday"
+msgstr ""
+
+#: setup.php:1661
+msgid "Every day"
+msgstr ""
+
+#: setup.php:1664 syslog_alerts.php:711 syslog_alerts.php:726
+#: syslog_alerts.php:734 syslog_removal.php:599 syslog_reports.php:499
+msgid "Disabled"
+msgstr "Выключен"
+
+#: setup.php:1678 setup.php:1975 setup.php:1977 setup.php:2188 setup.php:2219
+#: setup.php:2235
+msgid "Syslog"
+msgstr "Системный журнал"
+
+#: setup.php:1682
+msgid "General Settings"
+msgstr "Общие Настройки"
+
+#: setup.php:1686
+msgid "Syslog Enabled"
+msgstr "Syslog включён"
+
+#: setup.php:1687
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Если этот флажок установлен, записи будут переноситься из таблицы входящих сообщений Syslog в основную таблицу системного журнала, а сигналы тревоги и отчеты будут включены. Пожалуйста, имейте в виду, что если система отключена, записи журнала будут накапливаться в таблице входящих сообщений Syslog, как это определено процессом rsyslog или syslog-ng."
+
+#: setup.php:1692
+msgid "Strip Domains"
+msgstr "Обрезать домены"
+
+#: setup.php:1693
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Список доменов через запятую, которые вы хотите удалить из имени syslog хоста. Например 'mydomain.com, otherdomain.com'"
+
+#: setup.php:1700
+msgid "Refresh Interval"
+msgstr "Интервал обновления"
+
+#: setup.php:1701
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Это время в секундах до обновления страницы."
+
+#: setup.php:1707
+msgid "Max Report Records"
+msgstr "Макс. количество отчётов"
+
+#: setup.php:1708
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Для оповещений на основе пороговых значений укажите максимальное число, которое вы хотите показать в отчете.  Используется для ограничения размера журнала html и электронной почты."
+
+#: setup.php:1712 setup.php:1713 setup.php:1714 setup.php:1715 setup.php:1716
+#: setup.php:1717
+#, php-format
+msgid "%d Records"
+msgstr "%d Записи"
+
+#: setup.php:1721
+msgid "Maximum Syslog Processing Processes"
+msgstr ""
+
+#: setup.php:1722
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr ""
+
+#: setup.php:1726
+#, php-format
+msgid "%d Worker Process"
+msgstr ""
+
+#: setup.php:1727 setup.php:1728 setup.php:1729 setup.php:1730 setup.php:1731
+#, php-format
+msgid "%d Worker Processes"
+msgstr ""
+
+#: setup.php:1735
+msgid "Command for Opening Tickets"
+msgstr "Команда для открытия тикета"
+
+#: setup.php:1736
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Эта команда будет выполнена для открытия билетов в службу поддержки. Команда понимать нескольких входных параметров следующим образом: <b>--alert-name</b>, <b>- -severity</b>, <b>--hostlist</b>, <b>--message</b>. Список хостов разделён запятой, на которые распространяется предупреждения(alerts)."
+
+#: setup.php:1742
+msgid "Host Discovery Options"
+msgstr ""
+
+#: setup.php:1747
+msgid "Enable Hostname Resolution"
+msgstr ""
+
+#: setup.php:1748
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr ""
+
+#: setup.php:1753
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr ""
+
+#: setup.php:1754
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr ""
+
+#: setup.php:1759
+msgid "HTML Notification Settings"
+msgstr "Список уведомлений"
+
+#: setup.php:1764
+msgid "Enable HTML Based Email"
+msgstr "Электронная почта на основе HTML"
+
+#: setup.php:1765
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Если этот флажок установлен, все письма будут отправляться в формате HTML. В противном случае письма будут отправляться открытым текстом."
+
+#: setup.php:1770
+msgid "Format File to Use"
+msgstr "Формат файла"
+
+#: setup.php:1773
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Выберите пользовательскую оболочку html и файл CSS для использования. Этот файл содержит как html, так и CSS для обертки вашего отчета. Если он содержит больше, чем просто CSS, вам нужно поместить специальный тег <REPORT> внутри файла. Этот тег будет заменен содержимым отчета. Эти файлы находятся в каталоге 'formats'."
+
+#: setup.php:1777
+msgid "Data Retention Settings"
+msgstr "Настройки хранения данных"
+
+#: setup.php:1782
+msgid "Syslog Retention"
+msgstr "Хранение Syslog"
+
+#: setup.php:1783
+msgid "This is the number of days to keep events."
+msgstr "Это количество дней для хранения событий."
+
+#: setup.php:1789
+msgid "Partition Pre-create Window"
+msgstr ""
+
+#: setup.php:1790
+msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgstr ""
+
+#: setup.php:1794 setup.php:2082 setup.php:2101 syslog_alerts.php:516
+#, php-format
+msgid "%d Day"
+msgstr "%d День"
+
+#: setup.php:1795 setup.php:1796 setup.php:1797 setup.php:1798 setup.php:1799
+#: setup.php:1800 setup.php:2083 setup.php:2084 setup.php:2085 setup.php:2086
+#: setup.php:2087 setup.php:2102 setup.php:2103 setup.php:2104 setup.php:2105
+#: setup.php:2106 syslog_alerts.php:517
+#, php-format
+msgid "%d Days"
+msgstr "%d Дня(ей)"
+
+#: setup.php:1804
+#, fuzzy
+msgid "Partition Recovery Limit"
+msgstr "Разделы в день"
+
+#: setup.php:1805
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr ""
+
+#: setup.php:1809
+#, fuzzy, php-format
+msgid "%d Partition per run"
+msgstr "Разделы в день"
+
+#: setup.php:1810 setup.php:1811 setup.php:1812 setup.php:1813 setup.php:1814
+#, fuzzy, php-format
+msgid "%d Partitions per run"
+msgstr "Разделы в день"
+
+#: setup.php:1818
+msgid "Collector Staleness Threshold"
+msgstr ""
+
+#: setup.php:1819
+msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgstr ""
+
+#: setup.php:1823
+msgid "Default (300 seconds)"
+msgstr ""
+
+#: setup.php:1824 setup.php:1825 setup.php:1826 setup.php:1827 setup.php:1828
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#: setup.php:1832
+msgid "Collector Backlog Threshold"
+msgstr ""
+
+#: setup.php:1833
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr ""
+
+#: setup.php:1837
+msgid "Default (10000 messages)"
+msgstr ""
+
+#: setup.php:1838 setup.php:1839 setup.php:1840 setup.php:1841
+#, fuzzy, php-format
+msgid "%d Messages"
+msgstr "Сообщения"
+
+#: setup.php:1845
+msgid "Syslog Alert Retention"
+msgstr "Сохранение оповещения в системном журнале"
+
+#: setup.php:1846
+msgid "This is the number of days to keep alert logs."
+msgstr "Это количество дней, в течение которых должны храниться журналы предупреждений."
+
+#: setup.php:1852
+msgid "Alert Suppression and Maintenance"
+msgstr ""
+
+#: setup.php:1857
+msgid "Maintenance Window Days"
+msgstr ""
+
+#: setup.php:1858
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr ""
+
+#: setup.php:1864
+msgid "Maintenance Window Starts"
+msgstr ""
+
+#: setup.php:1865
+msgid "Local start time for the global maintenance window."
+msgstr ""
+
+#: setup.php:1871
+msgid "Maintenance Window Ends"
+msgstr ""
+
+#: setup.php:1872
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr ""
+
+#: setup.php:1878
+msgid "One-time Maintenance Starts"
+msgstr ""
+
+#: setup.php:1879
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr ""
+
+#: setup.php:1883
+msgid "One-time Maintenance Ends"
+msgstr ""
+
+#: setup.php:1884
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: setup.php:1888
+msgid "Default Alert Cooldown"
+msgstr ""
+
+#: setup.php:1889
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: setup.php:1896
+msgid "Default Duplicate Suppression"
+msgstr ""
+
+#: setup.php:1897
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: setup.php:1904
+msgid "Remote Message Processing"
+msgstr "Удалённая обработка сообщений"
+
+#: setup.php:1908
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Включить обработку сообщений удаленного Data Collector"
+
+#: setup.php:1909
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают свои сообщения независимо, установите этот флажок. Установив этот флажок, ваши удаленные сборщики данных должны будут поддерживать свой собственный файл «config_local.php», чтобы сообщить Syslog о необходимости использования независимой базы данных для отображения и обработки сообщений. Для этой цели используйте файл шаблона config_local.php.dist. ПРЕДУПРЕЖДЕНИЕ. Таблицы системного журнала будут созданы автоматически, как только эта опция будет включена."
+
+#: setup.php:1914
+msgid "Remote Data Collector Rules Sync"
+msgstr "Синхронизация правил удаленного сборщика данных"
+
+#: setup.php:1915
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Если ваши удаленные сборщики данных имеют свои собственные базы данных Syslog и обрабатывают свои сообщения независимо, установите этот флажок, если вы хотите, чтобы правила предупреждений, удаления и отчетов основных баз данных Cacti отправлялись в удаленную систему Cacti."
+
+#: setup.php:2036 syslog_removal.php:37
+msgid "Disable"
+msgstr "Выключить"
+
+#: setup.php:2037 syslog_removal.php:38
+msgid "Enable"
+msgstr "Включить"
+
+#: setup.php:2038 syslog.php:1918 syslog_dashboards.php:300
+#: syslog_dashboards.php:351 syslog_removal.php:40
+#: syslog_saved_searches.php:271 syslog_saved_searches.php:315
+msgid "Export"
+msgstr "Экспорт"
+
+#: setup.php:2081 setup.php:2100
+msgid "Indefinite"
+msgstr "Всегда"
+
+#: setup.php:2088 setup.php:2107 syslog_alerts.php:518
+#, php-format
+msgid "%d Week"
+msgstr "%d Неделя"
+
+#: setup.php:2089 setup.php:2108 syslog_alerts.php:519
+#, php-format
+msgid "%d Weeks"
+msgstr "%d Недели"
+
+#: setup.php:2090 setup.php:2109
+#, php-format
+msgid "%d Month"
+msgstr "%d Месяц"
+
+#: setup.php:2091 setup.php:2092 setup.php:2093 setup.php:2094 setup.php:2095
+#: setup.php:2110 setup.php:2111 setup.php:2112 setup.php:2113 setup.php:2114
+#, php-format
+msgid "%d Months"
+msgstr "%d Месяца"
+
+#: setup.php:2096 setup.php:2115
+#, php-format
+msgid "%d Year"
+msgstr "%d Год"
+
+#: setup.php:2119 syslog.php:295 syslog.php:310 syslog.php:325
+#: syslog_dashboards.php:324 syslog_reports.php:809
+msgid "Never"
+msgstr "Никогда"
+
+#: setup.php:2120
+#, php-format
+msgid "%d Minute"
+msgstr "%d Минута"
+
+#: setup.php:2121 setup.php:2122 setup.php:2123 syslog_alerts.php:503
+#: syslog_alerts.php:504 syslog_alerts.php:505 syslog_alerts.php:506
+#: syslog_alerts.php:507 syslog_alerts.php:508
+#, php-format
+msgid "%d Minutes"
+msgstr "%d Минут"
+
+#: setup.php:2127 syslog.php:1978
+msgid "Notice"
+msgstr "Уведомление"
+
+#: setup.php:2128 syslog.php:1977 syslog.php:1996
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: setup.php:2129 syslog.php:1974
+msgid "Critical"
+msgstr "Критический"
+
+#: setup.php:2133
+msgid "Begins with"
+msgstr "начинается с"
+
+#: setup.php:2134
+msgid "Contains"
+msgstr "Содержит"
+
+#: setup.php:2135
+msgid "Ends with"
+msgstr "Заканчивается"
+
+#: setup.php:2136
+msgid "Hostname is"
+msgstr "Имя хоста"
+
+#: setup.php:2137
+msgid "Program is"
+msgstr "Программа"
+
+#: setup.php:2138
+msgid "Facility is"
+msgstr "Объект"
+
+#: setup.php:2139 syslog_alerts.php:690
+msgid "Filter Builder"
+msgstr ""
+
+#: setup.php:2140 syslog_alerts.php:691
+msgid "SQL Expression"
+msgstr "Выражение SQL"
+
+#: setup.php:2144
+msgid "Daily"
+msgstr "Ежедневно"
+
+#: setup.php:2145
+msgid "Weekly"
+msgstr "Еженедельно"
+
+#: setup.php:2172
+msgid "Import/Export"
+msgstr "Импорт/Экспорт"
+
+#: setup.php:2173
+msgid "Alert Rules"
+msgstr "Правила оповещения"
+
+#: setup.php:2173 setup.php:2174 setup.php:2175 setup.php:2176 setup.php:2177
+#: setup.php:2182
+msgid "Syslog Settings"
+msgstr "Настройки системного журнала"
+
+#: setup.php:2174
+msgid "Removal Rules"
+msgstr "Правила удаления"
+
+#: setup.php:2175
+msgid "Report Rules"
+msgstr "Правила составления отчетов"
+
+#: setup.php:2176 setup.php:2233 syslog_saved_searches.php:195
+msgid "Saved Search Templates"
+msgstr ""
+
+#: setup.php:2220
+msgid "Syslog Removals"
+msgstr "Удаление системного журнала"
+
+#: setup.php:2221 setup.php:2222 setup.php:2226 setup.php:2227 setup.php:2231
+msgid "(Edit)"
+msgstr "(Редактировать)"
+
+#: setup.php:2223 setup.php:2228 setup.php:2232
+msgid "(Actions)"
+msgstr "(действия)"
+
+#: setup.php:2225
+msgid "Syslog Alerts"
+msgstr "Оповещения системного журнала"
+
+#: setup.php:2230
+msgid "Syslog Reports"
+msgstr "Отчеты Syslog"
+
+#: setup.php:2334
+msgid "Display Syslog in Range"
+msgstr "Отобразить системный журнал в диапазоне"
+
+#: setup.php:2404
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Были удалены %s Записи устройства из базы данных Syslog."
+
+#: setup.php:2425
+msgid "Syslog Utilities"
+msgstr "Утилиты системного журнала"
+
+#: setup.php:2429
+msgid "Purge Syslog Devices"
+msgstr "Устройства системного журнала очистки"
+
+#: setup.php:2431
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr ""
+
+#: setup.php:2437
+msgid "Confirm Purge"
+msgstr ""
+
+#: setup.php:2451 syslog_alerts.php:230 syslog_dashboards.php:428
+#: syslog_removal.php:248 syslog_reports.php:213 syslog_saved_searches.php:384
+msgid "Continue"
+msgstr "Продолжить"
+
+#: setup.php:2477
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Этот пункт меню предоставляет возможность удалить Устройства, которые больше не передаются на сервер системного журнала Cacti."
+
+#: syslog.php:126
+msgid "Syslog Viewer"
+msgstr "Средство просмотра системного журнала"
+
+#: syslog.php:258 syslog.php:627
+#, fuzzy
+msgid "Syslog Status"
+msgstr "Настройки системного журнала"
+
+#: syslog.php:268
+msgid "Selected Alert"
+msgstr "Выбранное предупреждение"
+
+#: syslog.php:313 syslog.php:543
+msgid "seconds"
+msgstr ""
+
+#: syslog.php:334
+msgid "min/avg/max"
+msgstr ""
+
+#: syslog.php:436 syslog.php:452 syslog.php:469 syslog.php:522 syslog.php:595
+#: syslog.php:610 syslog.php:612 syslog.php:613
+msgid "Unavailable"
+msgstr ""
+
+#: syslog.php:493
+#, fuzzy, php-format
+msgid "no message received for %s"
+msgstr "Фильтр сообщений системного журнала %s"
+
+#: syslog.php:498
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr ""
+
+#: syslog.php:503
+msgid "no incoming data is available to evaluate"
+msgstr ""
+
+#: syslog.php:552
+#, fuzzy
+msgid "day"
+msgstr "Ежедневно"
+
+#: syslog.php:552
+msgid "days"
+msgstr ""
+
+#: syslog.php:559
+msgid "hour"
+msgstr ""
+
+#: syslog.php:559
+#, fuzzy
+msgid "hours"
+msgstr "%d Часа(ов)"
+
+#: syslog.php:565
+#, fuzzy
+msgid "minute"
+msgstr "1 минута"
+
+#: syslog.php:565
+#, fuzzy
+msgid "minutes"
+msgstr "1 минута"
+
+#: syslog.php:610
+msgid "Rows in syslog_incoming"
+msgstr ""
+
+#: syslog.php:611
+msgid "Syslog table size (data + indexes)"
+msgstr ""
+
+#: syslog.php:612
+#, fuzzy
+msgid "Syslog retention"
+msgstr "Хранение Syslog"
+
+#: syslog.php:613
+#, fuzzy
+msgid "Alert retention"
+msgstr "Сохранение оповещения в системном журнале"
+
+#: syslog.php:632
+msgid "Latest processing run"
+msgstr ""
+
+#: syslog.php:635
+#, fuzzy
+msgid "Records processed"
+msgstr "Переработка"
+
+#: syslog.php:639
+msgid "Polling runtime"
+msgstr ""
+
+#: syslog.php:646 syslog.php:762
+msgid "Started"
+msgstr ""
+
+#: syslog.php:647
+msgid "Finished"
+msgstr ""
+
+#: syslog.php:648
+msgid "Minimum runtime"
+msgstr ""
+
+#: syslog.php:649
+msgid "Average runtime"
+msgstr ""
+
+#: syslog.php:650
+msgid "Maximum runtime"
+msgstr ""
+
+#: syslog.php:659
+#, fuzzy
+msgid "Storage and retention"
+msgstr "Хранение Syslog"
+
+#: syslog.php:668
+#, fuzzy
+msgid "Partition maintenance blocked"
+msgstr "Разделенная таблица"
+
+#: syslog.php:669
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr ""
+
+#: syslog.php:674
+msgid "Collector health"
+msgstr ""
+
+#: syslog.php:679
+msgid "Last received log"
+msgstr ""
+
+#: syslog.php:680
+#, fuzzy
+msgid "Oldest unprocessed message"
+msgstr "[ Необработанные сообщения: %s ]"
+
+#: syslog.php:681
+msgid "Incoming backlog"
+msgstr ""
+
+#: syslog.php:682
+#, fuzzy
+msgid "Records processed in latest run"
+msgstr "Переработка"
+
+#: syslog.php:691
+msgid "Collector warning"
+msgstr ""
+
+#: syslog.php:697
+msgid "Parallel workers"
+msgstr ""
+
+#: syslog.php:701
+msgid "Worker processes running"
+msgstr ""
+
+#: syslog.php:702
+msgid "Configured worker processes"
+msgstr ""
+
+#: syslog.php:712
+#, fuzzy
+msgid "Process"
+msgstr "Переработка"
+
+#: syslog.php:713
+#, fuzzy
+msgid "Records handled"
+msgstr "Записи"
+
+#: syslog.php:714
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php:715
+msgid "Runtime"
+msgstr ""
+
+#: syslog.php:729
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr ""
+
+#: syslog.php:733
+msgid "Processing phases"
+msgstr ""
+
+#: syslog.php:737
+#, fuzzy
+msgid "Partition maintenance"
+msgstr "Разделенная таблица"
+
+#: syslog.php:738
+msgid "Reference updates"
+msgstr ""
+
+#: syslog.php:739
+#, fuzzy
+msgid "Removal rules"
+msgstr "Правила удаления"
+
+#: syslog.php:740
+#, fuzzy
+msgid "Alert evaluation"
+msgstr "Сохранение оповещения в системном журнале"
+
+#: syslog.php:741
+msgid "Incoming transfer"
+msgstr ""
+
+#: syslog.php:742
+#, fuzzy
+msgid "Report processing"
+msgstr "Переработка"
+
+#: syslog.php:761
+msgid "Phase"
+msgstr ""
+
+#: syslog.php:763
+#, fuzzy
+msgid "Duration"
+msgstr "Удаление"
+
+#: syslog.php:764
+#, fuzzy
+msgid "Records"
+msgstr "%d Записи"
+
+#: syslog.php:778
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr ""
+
+#: syslog.php:784
+msgid "Slowest phase"
+msgstr ""
+
+#: syslog.php:791
+msgid "Rule activity"
+msgstr ""
+
+#: syslog.php:794
+#, fuzzy
+msgid "Rules processed"
+msgstr "Переработка"
+
+#: syslog.php:795
+#, fuzzy
+msgid "Last run"
+msgstr "Последняя отправка"
+
+#: syslog.php:796
+msgid "Total"
+msgstr ""
+
+#: syslog.php:799
+#, fuzzy
+msgid "Alert rules"
+msgstr "Правила оповещения"
+
+#: syslog.php:799
+#, fuzzy
+msgid "Delete rules"
+msgstr "Правила оповещения"
+
+#: syslog.php:806
+msgid "Fired last run"
+msgstr ""
+
+#: syslog.php:829
+msgid "Syslog Alert View"
+msgstr "Вид оповещения в системном журнале"
+
+#: syslog.php:1236 syslog.php:1282
+msgid "A valid saved search is required."
+msgstr ""
+
+#: syslog.php:1245 syslog.php:1291
+msgid "Saved search not found."
+msgstr ""
+
+#: syslog.php:1294
+msgid "You may only share your own saved searches."
+msgstr ""
+
+#: syslog.php:1690
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Необработанные сообщения: %s ]"
+
+#: syslog.php:1728
+msgid "Enter a search term"
+msgstr "Введите поисковый запрос"
+
+#: syslog.php:1729
+msgid "Select Device(s)"
+msgstr "Выберите Устройство (Устройства)"
+
+#: syslog.php:1730
+msgid "Devices Selected"
+msgstr "Выбранные устройства"
+
+#: syslog.php:1731
+msgid "All Devices Selected"
+msgstr "Все выбранные устройства"
+
+#: syslog.php:1736
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Фильтр сообщений системного журнала %s"
+
+#: syslog.php:1744 syslog.php:1806
+#, fuzzy
+msgid "Search messages"
+msgstr "Сообщения"
+
+#: syslog.php:1748 syslog.php:1749 syslog.php:1750 syslog.php:1752
+msgid "Collapse filters"
+msgstr ""
+
+#: syslog.php:1751
+msgid "Edit filters"
+msgstr ""
+
+#: syslog.php:1756
+#, fuzzy
+msgid "Saved Searches"
+msgstr "Поиск"
+
+#: syslog.php:1760 syslog.php:1769
+#, fuzzy
+msgid "My Searches"
+msgstr "Поиск"
+
+#: syslog.php:1761 syslog.php:1767
+msgid "Global Searches"
+msgstr ""
+
+#: syslog.php:1794
+msgid "Manage"
+msgstr ""
+
+#: syslog.php:1794
+#, fuzzy
+msgid "Manage saved searches"
+msgstr "Введите поисковый запрос"
+
+#: syslog.php:1795
+#, fuzzy
+msgid "Save search"
+msgstr "Поиск"
+
+#: syslog.php:1797
+#, fuzzy
+msgid "Edit"
+msgstr "(Редактировать)"
+
+#: syslog.php:1800
+msgid "Save for all"
+msgstr ""
+
+#: syslog.php:1813 syslog.php:1898
+#, fuzzy
+msgid "contains"
+msgstr "Содержит"
+
+#: syslog.php:1814 syslog.php:1899
+msgid "does not contain"
+msgstr ""
+
+#: syslog.php:1820
+msgid "Results limit"
+msgstr ""
+
+#: syslog.php:1821
+msgid "Display Rows"
+msgstr "Отображать строки"
+
+#: syslog.php:1822 syslog_alerts.php:1055 syslog_dashboards.php:237
+#: syslog_removal.php:827 syslog_reports.php:665 syslog_saved_searches.php:229
+msgid "Default"
+msgstr "Стандартно"
+
+#: syslog.php:1837
+#, fuzzy
+msgid "View options"
+msgstr "Параметры Email"
+
+#: syslog.php:1857
+msgid "Removal Handling"
+msgstr "Удаление Обработка удаления"
+
+#: syslog.php:1868
+#, fuzzy
+msgid "Display"
+msgstr "Отображать строки"
+
+#: syslog.php:1869
+msgid "Group Duplicate Messages"
+msgstr ""
+
+#: syslog.php:1870
+#, fuzzy
+msgid "Individual Messages"
+msgstr "Индивидуальный"
+
+#: syslog.php:1871
+#, fuzzy
+msgid "Grouped Messages"
+msgstr "Сообщения"
+
+#: syslog.php:1881
+#, php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr ""
+
+#: syslog.php:1881
+#, fuzzy
+msgid "Search help"
+msgstr "Поиск"
+
+#: syslog.php:1886
+msgid "New Saved Search"
+msgstr ""
+
+#: syslog.php:1887
+msgid "Edit Saved Search"
+msgstr ""
+
+#: syslog.php:1888
+#, fuzzy
+msgid "Save As"
+msgstr "Сохранить"
+
+#: syslog.php:1892
+msgid "Delete the selected saved search?"
+msgstr ""
+
+#: syslog.php:1905
+#, fuzzy
+msgid "Save Search As"
+msgstr "Поиск"
+
+#: syslog.php:1915 syslog_alerts.php:1035 syslog_dashboards.php:227
+#: syslog_removal.php:807 syslog_reports.php:645 syslog_saved_searches.php:219
+msgid "Search"
+msgstr "Поиск"
+
+#: syslog.php:1916 syslog_alerts.php:1072 syslog_dashboards.php:254
+#: syslog_removal.php:844 syslog_reports.php:682 syslog_saved_searches.php:246
+msgid "Clear"
+msgstr "Очистить"
+
+#: syslog.php:1916
+msgid "Return filter values to their user defined defaults"
+msgstr "Возвращает значения фильтров по умолчанию, заданные пользователем."
+
+#: syslog.php:1917
+#, fuzzy
+msgid "Refresh Results"
+msgstr "Интервал обновления"
+
+#: syslog.php:1918
+msgid "Export Records to CSV"
+msgstr "Экспорт записей в CSV"
+
+#: syslog.php:1919
+msgid "Save Default Settings"
+msgstr "Сохранить настройки по умолчанию"
+
+#: syslog.php:1919
+#, fuzzy
+msgid "Save view defaults"
+msgstr "Сохранить настройки по умолчанию"
+
+#: syslog.php:1973
+msgid "Emergency"
+msgstr "Аварийный"
+
+#: syslog.php:1975 syslog.php:1995
+msgid "Alert"
+msgstr "Оповещение"
+
+#: syslog.php:1976
+msgid "Error"
+msgstr "Ошибка"
+
+#: syslog.php:1979
+msgid "Info"
+msgstr "Информация"
+
+#: syslog.php:1980
+msgid "Debug"
+msgstr "Отладка"
+
+#: syslog.php:1997
+msgid "Informational"
+msgstr "Информационный"
+
+#: syslog.php:2115 syslog.php:2240 syslog.php:2296 syslog_alerts.php:664
+msgid "Device"
+msgstr "Устройство"
+
+#: syslog.php:2125
+msgid "Messages"
+msgstr "Сообщения"
+
+#: syslog.php:2154
+#, fuzzy
+msgid "Empty message"
+msgstr "Сообщение"
+
+#: syslog.php:2220
+msgid "No Syslog Messages"
+msgstr "Нет сообщений в системном журнале"
+
+#: syslog.php:2249
+msgid "Alert Log Rows"
+msgstr "Строки журнала оповещений"
+
+#: syslog.php:2266
+msgid "Alert Removed"
+msgstr "Предупреждение Удалено"
+
+#: syslog.php:2276
+msgid "No Alert Log Messages"
+msgstr "Сообщения журнала оповещений отсутствуют"
+
+#: syslog.php:2295
+msgid "Close message details"
+msgstr ""
+
+#: syslog.php:2295
+#, fuzzy
+msgid "Message details"
+msgstr "Сообщения"
+
+#: syslog.php:2298
+msgid "Copied"
+msgstr ""
+
+#: syslog.php:2298
+#, fuzzy
+msgid "Copy message"
+msgstr "Сообщение"
+
+#: syslog.php:2298
+msgid "Copy unavailable. Select and copy the message text."
+msgstr ""
+
+#: syslog.php:2299
+#, fuzzy
+msgid "Create Alarm Rule"
+msgstr "Правило уведомления об импорте"
+
+#: syslog.php:2299
+#, fuzzy
+msgid "Create Removal Rule"
+msgstr "Новое правило высылки"
+
+#: syslog.php:2300
+msgid "Filter by device"
+msgstr ""
+
+#: syslog.php:2300
+msgid "Filter by program"
+msgstr ""
+
+#: syslog.php:2367 syslog.php:2390 syslog.php:2421 syslog.php:2422
+msgid "All Programs"
+msgstr "Все Программы"
+
+#: syslog_alerts.php:191
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы удалить следующее правило (правила) оповещения Syslog."
+
+#: syslog_alerts.php:197
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Удалить правило(ы) оповещения из системного журнала"
+
+#: syslog_alerts.php:201
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы отключить следующее правило (правила) оповещения Syslog."
+
+#: syslog_alerts.php:207
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Отключить правило(ы) оповещения в системном журнале"
+
+#: syslog_alerts.php:211
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы включить следующее правило (правила) оповещения Syslog."
+
+#: syslog_alerts.php:217
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Включить правило(ы) оповещения в системном журнале"
+
+#: syslog_alerts.php:221
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы экспортировать следующее правило (правила) оповещения Syslog."
+
+#: syslog_alerts.php:227
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Правило(ы) уведомления об экспорте в Syslog"
+
+#: syslog_alerts.php:375 syslog_reports.php:334
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr ""
+
+#: syslog_alerts.php:376 syslog_reports.php:335
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr ""
+
+#: syslog_alerts.php:388 syslog_removal.php:349
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr ""
+
+#: syslog_alerts.php:390 syslog_reports.php:350
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr ""
+
+#: syslog_alerts.php:493
+msgid "Not Set"
+msgstr "Не задано"
+
+#: syslog_alerts.php:498
+msgid "1 Minute"
+msgstr "1 минута"
+
+#: syslog_alerts.php:509
+#, php-format
+msgid "%d Hour"
+msgstr "%d Час"
+
+#: syslog_alerts.php:510 syslog_alerts.php:511 syslog_alerts.php:512
+#: syslog_alerts.php:513 syslog_alerts.php:514 syslog_alerts.php:515
+#, php-format
+msgid "%d Hours"
+msgstr "%d Часа(ов)"
+
+#: syslog_alerts.php:520
+msgid "1 Month"
+msgstr "1 месяц"
+
+#: syslog_alerts.php:562
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Предупреждение Редактирование [Изменить: %s]"
+
+#: syslog_alerts.php:564 syslog_alerts.php:585 syslog_alerts.php:594
+msgid "Alert Edit [new]"
+msgstr "Предупредить Редактировать [новый]"
+
+#: syslog_alerts.php:566 syslog_alerts.php:591 syslog_alerts.php:596
+msgid "New Alert Rule"
+msgstr "Новое правило оповещения"
+
+#: syslog_alerts.php:608 syslog_alerts.php:1197 syslog_reports.php:479
+msgid "N/A"
+msgstr "Н/Д"
+
+#: syslog_alerts.php:641 syslog_reports.php:485
+msgid "Details"
+msgstr "Детали"
+
+#: syslog_alerts.php:646
+msgid "Please describe this Alert."
+msgstr "Пожалуйста, опишите эту тревогу."
+
+#: syslog_alerts.php:654
+msgid "What is the Severity Level of this Alert?"
+msgstr "Каков уровень серьезности этой тревоги?"
+
+#: syslog_alerts.php:661
+msgid "Reporting Level"
+msgstr "Метод отчетности"
+
+#: syslog_alerts.php:662
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Для записи циклов повторного оповещения следует отслеживать оповещение на уровне системы или устройства."
+
+#: syslog_alerts.php:664
+msgid "System"
+msgstr "Система"
+
+#: syslog_alerts.php:669
+msgid "Reporting Method"
+msgstr "Метод отчетности"
+
+#: syslog_alerts.php:670
+msgid "Define how to Alert on the syslog messages."
+msgstr "Определите, как оповещать о нарушениях в syslog сообщениях."
+
+#: syslog_alerts.php:672 syslog_alerts.php:1196
+msgid "Individual"
+msgstr "Индивидуальный"
+
+#: syslog_alerts.php:678
+msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+msgstr "Для метода 'Пороговый уровень', если показанное число выше этого значения, будет сработано предупреждение."
+
+#: syslog_alerts.php:686 syslog_alerts.php:1174 syslog_removal.php:943
+#: syslog_reports.php:781
+msgid "Match Type"
+msgstr "Тип Матча"
+
+#: syslog_alerts.php:687
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr ""
+
+#: syslog_alerts.php:697 syslog_reports.php:531
+msgid "Message Match String"
+msgstr "Строка соответствия сообщений системного журнала"
+
+#: syslog_alerts.php:698
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr ""
+
+#: syslog_alerts.php:708 syslog_alerts.php:711 syslog_alerts.php:1041
+#: syslog_alerts.php:1173 syslog_removal.php:599 syslog_removal.php:813
+#: syslog_removal.php:942 syslog_reports.php:499 syslog_reports.php:651
+#: syslog_reports.php:780
+msgid "Enabled"
+msgstr "Включенные"
+
+#: syslog_alerts.php:709
+msgid "Is this Alert Enabled?"
+msgstr "Включено ли это оповещение?"
+
+#: syslog_alerts.php:715
+msgid "Re-Alert Cycle"
+msgstr "Цикл повторного оповещения"
+
+#: syslog_alerts.php:719
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Не отправляйте это предупреждение повторно для того же хоста, пока это время не пройдет. Для сигналов тревоги, основанных на пороговых значениях, это применимо ко всем хостам."
+
+#: syslog_alerts.php:723
+#, fuzzy
+#| msgid "Notification List"
+msgid "Notification Cooldown"
+msgstr "Список уведомлений"
+
+#: syslog_alerts.php:725
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr ""
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+msgid "1 day"
+msgstr ""
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "1 hour"
+msgstr "%d Часа(ов)"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+#| msgid "1 Minute"
+msgid "1 minute"
+msgstr "1 минута"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "15 minutes"
+msgstr "1 минута"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "30 minutes"
+msgstr "1 минута"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "4 hours"
+msgstr "%d Часа(ов)"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+msgid "5 minutes"
+msgstr "1 минута"
+
+#: syslog_alerts.php:726 syslog_alerts.php:734
+#, fuzzy
+#| msgid "Syslog %s Settings"
+msgid "Use global setting"
+msgstr "Syslog %s Настройки"
+
+#: syslog_alerts.php:731
+msgid "Duplicate Suppression"
+msgstr ""
+
+#: syslog_alerts.php:733
+msgid "Minutes to suppress the same matched message set."
+msgstr ""
+
+#: syslog_alerts.php:739
+msgid "Maintenance Window"
+msgstr ""
+
+#: syslog_alerts.php:741
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr ""
+
+#: syslog_alerts.php:742
+msgid "Do not mute this rule"
+msgstr ""
+
+#: syslog_alerts.php:742
+msgid "Use global timeframe"
+msgstr ""
+
+#: syslog_alerts.php:742
+msgid "Use rule timeframe"
+msgstr ""
+
+#: syslog_alerts.php:747
+msgid "Rule Maintenance Days"
+msgstr ""
+
+#: syslog_alerts.php:749
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr ""
+
+#: syslog_alerts.php:755
+msgid "Rule Maintenance Starts"
+msgstr ""
+
+#: syslog_alerts.php:757
+msgid "Local start time for this rule timeframe."
+msgstr ""
+
+#: syslog_alerts.php:763
+msgid "Rule Maintenance Ends"
+msgstr ""
+
+#: syslog_alerts.php:765
+msgid "Local end time for this rule timeframe."
+msgstr ""
+
+#: syslog_alerts.php:771
+msgid "One-time Rule Maintenance Starts"
+msgstr ""
+
+#: syslog_alerts.php:773
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: syslog_alerts.php:777
+msgid "One-time Rule Maintenance Ends"
+msgstr ""
+
+#: syslog_alerts.php:779
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: syslog_alerts.php:783 syslog_reports.php:568
+msgid "Notes"
+msgstr "Заметки"
+
+#: syslog_alerts.php:786
+msgid "Space for Notes on the Alert"
+msgstr "Пространство для заметок в оповещении"
+
+#: syslog_alerts.php:794
+msgid "Email Options"
+msgstr "Параметры Email"
+
+#: syslog_alerts.php:798 syslog_reports.php:550
+msgid "Notification List"
+msgstr "Список уведомлений"
+
+#: syslog_alerts.php:799 syslog_reports.php:551
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Используйте содержимое этого списка уведомлений, чтобы указать, кто и как должен быть уведомлен."
+
+#: syslog_alerts.php:807
+msgid "Emails to Notify"
+msgstr "Электронная почта для уведомления"
+
+#: syslog_alerts.php:810
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Пожалуйста, введите список адресов электронной почты, разделенный запятыми, чтобы сообщить об этом.  Если вы хотите отправить электронную почту получателю в формате SMS, пожалуйста, приставьте адрес электронной почты получателя с помощью SMS <b>'sms@'</b>.  Например, если SMS адрес получателя <b>'2485551212@mycarrier.net'</b>, вы вводите его как <b>'sms@2485551212@mycarrier.net'</b> и форматируете как SMS сообщение."
+
+#: syslog_alerts.php:816 syslog_reports.php:539
+msgid "Email Body Text"
+msgstr "Основной текст"
+
+#: syslog_alerts.php:819
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Информация, которая будет содержаться в основной части доклада."
+
+#: syslog_alerts.php:827
+msgid "Actions"
+msgstr "Действия"
+
+#: syslog_alerts.php:831
+msgid "Open Ticket"
+msgstr "Открыть тикет"
+
+#: syslog_alerts.php:832
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Следует ли открывать билет службы поддержки для этого предупреждения. ПРИМЕЧАНИЕ. Командный сценарий Ticket будет заполнен несколькими переменными среды 'ALERT_' для удобства."
+
+#: syslog_alerts.php:834 syslog_alerts.php:1047 syslog_alerts.php:1198
+#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:819
+#: syslog_removal.php:964 syslog_reports.php:657 syslog_reports.php:804
+msgid "No"
+msgstr "Нет"
+
+#: syslog_alerts.php:834 syslog_alerts.php:1046 syslog_alerts.php:1198
+#: syslog_dashboards.php:322 syslog_dashboards.php:735 syslog_removal.php:818
+#: syslog_removal.php:964 syslog_reports.php:656 syslog_reports.php:804
+msgid "Yes"
+msgstr "Да"
+
+#: syslog_alerts.php:838
+msgid "Command"
+msgstr "Команда"
+
+#: syslog_alerts.php:841
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "При срабатывании сигнала тревоги выполните следующую команду.  Доступны следующие переменные замены <b>'HOSTNAME&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;; </b>, <b>'FACILITY&gt;; </b>, <b>'PRIORITY&gt;;, </b>, <b>'SEVERITY&gt;; </b>'</b>.  Пожалуйста, обратите внимание, что <b>'HOSTNAME&lt;HOSTNAME&gt;;;;; </b> доступен только для отдельных пороговых значений."
+
+#: syslog_alerts.php:877 syslog_removal.php:668
+#, fuzzy
+msgid "Test rule"
+msgstr "Правила оповещения"
+
+#: syslog_alerts.php:878 syslog_alerts.php:1002 syslog_removal.php:669
+#: syslog_removal.php:774
+msgid "Rule Test Preview"
+msgstr ""
+
+#: syslog_alerts.php:911 syslog_removal.php:701
+msgid "Value"
+msgstr ""
+
+#: syslog_alerts.php:912 syslog_removal.php:702
+#, fuzzy
+msgid "Enter a value"
+msgstr "Введите поисковый запрос"
+
+#: syslog_alerts.php:913 syslog_removal.php:703
+#, fuzzy
+msgid "Match"
+msgstr "Тип Матча"
+
+#: syslog_alerts.php:914 syslog_removal.php:704
+msgid "Exclude"
+msgstr ""
+
+#: syslog_alerts.php:916 syslog_removal.php:706
+#, fuzzy
+msgid "Enter a nonnegative integer"
+msgstr "Введите поисковый запрос"
+
+#: syslog_alerts.php:959 syslog_alerts.php:963
+msgid "Alarm filter conditions"
+msgstr ""
+
+#: syslog_alerts.php:1045 syslog_removal.php:817 syslog_reports.php:655
+msgid "All"
+msgstr "Все"
+
+#: syslog_alerts.php:1051 syslog_dashboards.php:233 syslog_reports.php:661
+#: syslog_saved_searches.php:225
+msgid "Rows"
+msgstr "Строк"
+
+#: syslog_alerts.php:1071 syslog_dashboards.php:253 syslog_removal.php:843
+#: syslog_reports.php:681 syslog_saved_searches.php:245
+msgid "Go"
+msgstr "Перейти"
+
+#: syslog_alerts.php:1073 syslog_alerts.php:1334 syslog_dashboards.php:255
+#: syslog_removal.php:845 syslog_removal.php:1100 syslog_reports.php:683
+#: syslog_reports.php:936 syslog_saved_searches.php:247
+msgid "Import"
+msgstr "Импорт"
+
+#: syslog_alerts.php:1143
+msgid "Syslog Alert Filters"
+msgstr "Фильтры оповещений Syslog"
+
+#: syslog_alerts.php:1171 syslog_removal.php:945
+msgid "Method"
+msgstr "Метод"
+
+#: syslog_alerts.php:1172
+msgid "Threshold Count"
+msgstr "Пороговый граф"
+
+#: syslog_alerts.php:1175 syslog_removal.php:944 syslog_reports.php:782
+msgid "Search String"
+msgstr "Строка поиска"
+
+#: syslog_alerts.php:1176 syslog_reports.php:558
+msgid "Email Addresses"
+msgstr "Адрес электронной почты"
+
+#: syslog_alerts.php:1177 syslog_removal.php:946 syslog_reports.php:786
+msgid "Last Modified"
+msgstr "Последнее изменение"
+
+#: syslog_alerts.php:1178 syslog_removal.php:947 syslog_reports.php:787
+msgid "By User"
+msgstr "Пользователем"
+
+#: syslog_alerts.php:1181
+msgid "Alerts"
+msgstr "Оповещения"
+
+#: syslog_alerts.php:1202
+msgid "Multiple"
+msgstr "Множественный"
+
+#: syslog_alerts.php:1209
+msgid "No Syslog Alerts Defined"
+msgstr "Оповещений в системном журнале нет Определено"
+
+#: syslog_alerts.php:1238
+msgid "Import Alert Rule from Local File"
+msgstr "Импорт правила оповещения из локального файла"
+
+#: syslog_alerts.php:1239
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Если XML-файл, содержащий данные определения правила оповещения, расположен на вашей локальной машине, выберите его здесь."
+
+#: syslog_alerts.php:1244
+msgid "Import Alert Rule from Text"
+msgstr "Импорт правила оповещения из текста"
+
+#: syslog_alerts.php:1245
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Если у вас есть XML-файл, содержащий данные Alert Ruledefinition в виде текста, вы можете вставить его в это поле для импорта."
+
+#: syslog_alerts.php:1256
+msgid "Import Alert Rule"
+msgstr "Правило уведомления об импорте"
+
+#: syslog_alerts.php:1283 syslog_dashboards.php:528 syslog_removal.php:1049
+#: syslog_saved_searches.php:477
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr ""
+
+#: syslog_alerts.php:1332 syslog_removal.php:1098 syslog_reports.php:934
+msgid "Imported"
+msgstr "Импортировано"
+
+#: syslog_alerts.php:1332
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "ПРИМЕЧАНИЕ: Предупреждение '%s' %s!"
+
+#: syslog_alerts.php:1332 syslog_dashboards.php:192 syslog_dashboards.php:288
+#: syslog_removal.php:1098 syslog_reports.php:934
+msgid "Updated"
+msgstr "Обновлено"
+
+#: syslog_alerts.php:1334
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "СКОРАЯ ПОМОЩЬ: Предупреждение '%s' %s Неудачно!"
+
+#: syslog_alerts.php:1334 syslog_removal.php:1100 syslog_reports.php:936
+msgid "Update"
+msgstr "Обновить"
+
+#: syslog_dashboards.php:30 syslog_saved_searches.php:31
+msgid "Select a valid owner."
+msgstr ""
+
+#: syslog_dashboards.php:33
+msgid "Unable to save the dashboard. Please try again."
+msgstr ""
+
+#: syslog_dashboards.php:42
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr ""
+
+#: syslog_dashboards.php:99 syslog_saved_searches.php:106
+msgid "Share with users…"
+msgstr ""
+
+#: syslog_dashboards.php:106 syslog_saved_searches.php:113
+msgid "Share with groups…"
+msgstr ""
+
+#: syslog_dashboards.php:189 syslog_dashboards.php:285
+#: syslog_dashboards.php:734 syslog_saved_searches.php:281
+#: syslog_saved_searches.php:649
+msgid "Owner"
+msgstr ""
+
+#: syslog_dashboards.php:190 syslog_dashboards.php:286
+#: syslog_dashboards.php:735
+msgid "Shared"
+msgstr ""
+
+#: syslog_dashboards.php:191 syslog_dashboards.php:287
+msgid "Panels"
+msgstr ""
+
+#: syslog_dashboards.php:317
+#, fuzzy
+msgid "deleted user"
+msgstr "Выбранное предупреждение"
+
+#: syslog_dashboards.php:329
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr ""
+
+#: syslog_dashboards.php:411
+#, fuzzy
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы удалить следующее правило (правила) оповещения Syslog."
+
+#: syslog_dashboards.php:416
+#, fuzzy
+msgid "Delete Dashboard(s)"
+msgstr "Удалить отчет(ы) системного журнала"
+
+#: syslog_dashboards.php:420
+#, fuzzy
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы экспортировать следующее правило (правила) оповещения Syslog."
+
+#: syslog_dashboards.php:425
+msgid "Export Dashboard(s)"
+msgstr ""
+
+#: syslog_dashboards.php:653
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr ""
+
+#: syslog_dashboards.php:657
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr ""
+
+#: syslog_dashboards.php:676
+#, fuzzy
+msgid "Import Dashboard from Local File"
+msgstr "Правило импорта отчета из местного файла"
+
+#: syslog_dashboards.php:677
+#, fuzzy
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Если XML файл, содержащий данные определения правила отчета, расположен на вашей локальной машине, выберите его здесь."
+
+#: syslog_dashboards.php:682
+#, fuzzy
+msgid "Import Dashboard from Text"
+msgstr "Импортировать правило отчета из текста"
+
+#: syslog_dashboards.php:683
+#, fuzzy
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Если у вас есть XML файл, содержащий данные определения правила отчета в виде текста, вы можете вставить его в это поле для импорта."
+
+#: syslog_dashboards.php:694
+msgid "Import Dashboard"
+msgstr ""
+
+#: syslog_dashboards.php:727 syslog_saved_searches.php:642
+#, fuzzy
+msgid "All Users"
+msgstr "Все записи"
+
+#: syslog_dashboards.php:728 syslog_saved_searches.php:643
+#, fuzzy
+msgid "All Groups"
+msgstr "Все Программы"
+
+#: syslog_dashboards.php:731
+msgid "Edit Dashboard"
+msgstr ""
+
+#: syslog_dashboards.php:733
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr ""
+
+#: syslog_dashboards.php:734
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr ""
+
+#: syslog_dashboards.php:736 syslog_saved_searches.php:650
+msgid "Shared With Users"
+msgstr ""
+
+#: syslog_dashboards.php:736
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr ""
+
+#: syslog_dashboards.php:737
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr ""
+
+#: syslog_dashboards.php:737 syslog_saved_searches.php:651
+msgid "Shared With Groups"
+msgstr ""
+
+#: syslog_dashboards.php:745
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr ""
+
+#: syslog_removal.php:39
+msgid "Reprocess"
+msgstr "Переработка"
+
+#: syslog_removal.php:199
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы удалить следующее(ые) правило(ы) удаления системного журнала."
+
+#: syslog_removal.php:205
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Удалить правило(ы) удаления системного журнала"
+
+#: syslog_removal.php:209
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы отключить следующее правило (правила) удаления системного журнала."
+
+#: syslog_removal.php:215
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Отключить правило(ы) удаления системного журнала"
+
+#: syslog_removal.php:219
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы включить следующее(ые) правило(ы) удаления системного журнала."
+
+#: syslog_removal.php:225
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Включить правило(ы) удаления системного журнала"
+
+#: syslog_removal.php:229
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы повторно обработать следующее правило (правила) удаления системного журнала."
+
+#: syslog_removal.php:235
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Обработка правила(ов) удаления системного журнала задним числом"
+
+#: syslog_removal.php:239
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы экспортировать следующее(ые) правило(ы) удаления системного журнала."
+
+#: syslog_removal.php:245
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Экспорт правила(ов) удаления системного журнала"
+
+#: syslog_removal.php:424
+#, fuzzy, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Были удалены %s сообщений, и %s сообщений были переданы"
+
+#: syslog_removal.php:494
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Редактирование правила удаления [редактирование: %s]"
+
+#: syslog_removal.php:496 syslog_removal.php:514
+msgid "Removal Rule Edit [new]"
+msgstr "Редактирование правила удаления [новое]"
+
+#: syslog_removal.php:498 syslog_removal.php:525
+msgid "New Removal Record"
+msgstr "Новая запись удаления"
+
+#: syslog_removal.php:520
+msgid "New Removal Rule"
+msgstr "Новое правило высылки"
+
+#: syslog_removal.php:584
+msgid "Removal Rule Details"
+msgstr "Подробности правила удаления"
+
+#: syslog_removal.php:588
+msgid "Removal Rule Name"
+msgstr "Имя правила удаления"
+
+#: syslog_removal.php:589
+msgid "Please describe this Removal Rule."
+msgstr "Пожалуйста, опишите это правило об удалении."
+
+#: syslog_removal.php:596 syslog_reports.php:496
+msgid "Enabled?"
+msgstr "Включить?"
+
+#: syslog_removal.php:597
+msgid "Is this Removal Rule Enabled?"
+msgstr "Включено ли это правило удаления?"
+
+#: syslog_removal.php:604 syslog_reports.php:504
+msgid "String Match Type"
+msgstr "Тип совпадения строк"
+
+#: syslog_removal.php:605
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Определите, как вы хотите, чтобы эта строка совпала.  При использовании типа SQL Expression вы можете использовать любое допустимое выражение SQL для генерации сигнала тревоги.  Доступные поля включают \"сообщение\", \"средство\", \"приоритет\" и \"хост\"."
+
+#: syslog_removal.php:612
+msgid "Syslog Message Match String"
+msgstr "Строка соответствия сообщений системного журнала"
+
+#: syslog_removal.php:613
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Введите соответствующий компонент сообщения системного журнала, имя объекта или хоста или выражение SQL, если используется SQL Expression Match Type."
+
+#: syslog_removal.php:623
+msgid "Method of Removal"
+msgstr "Метод удаления"
+
+#: syslog_removal.php:625 syslog_removal.php:967
+msgid "Deletion"
+msgstr "Удаление"
+
+#: syslog_removal.php:625
+msgid "Transferal"
+msgstr "Трансфер"
+
+#: syslog_removal.php:629
+msgid "Removal Rule Notes"
+msgstr "Примечания к Правилам удаления"
+
+#: syslog_removal.php:632
+msgid "Space for Notes on the Removal rule"
+msgstr "Место для примечаний по правилу об удалении"
+
+#: syslog_removal.php:726 syslog_removal.php:730
+#, fuzzy
+msgid "Removal filter conditions"
+msgstr "Примечания к Правилам удаления"
+
+#: syslog_removal.php:823 syslog_removal.php:952
+msgid "Rules"
+msgstr "Правила"
+
+#: syslog_removal.php:915
+msgid "Syslog Removal Rule Filters"
+msgstr "Фильтры правила удаления из системного журнала"
+
+#: syslog_removal.php:941
+msgid "Removal Name"
+msgstr "Удаление имени"
+
+#: syslog_removal.php:967
+msgid "Transfer"
+msgstr "Перевод"
+
+#: syslog_removal.php:974
+msgid "No Syslog Removal Rules Defined"
+msgstr "Правила удаления Syslog отсутствуют Определены"
+
+#: syslog_removal.php:1003
+msgid "Import Removal Rule from Local File"
+msgstr "Импорт правила удаления из локального файла"
+
+#: syslog_removal.php:1004
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Если XML файл, содержащий данные определения правила удаления, расположен на вашей локальной машине, выберите его здесь."
+
+#: syslog_removal.php:1009
+msgid "Import Removal Rule from Text"
+msgstr "Импорт правила удаления из текста"
+
+#: syslog_removal.php:1010
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Если у вас есть XML файл, содержащий данные определения правила удаления в виде текста, вы можете вставить его в это поле для импорта."
+
+#: syslog_removal.php:1021
+msgid "Import Removal Rule"
+msgstr "Импортное правило об удалении из страны"
+
+#: syslog_removal.php:1098
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "ПРИМЕЧАНИЕ: Правило удаления '%s' %s!"
+
+#: syslog_removal.php:1100
+#, fuzzy, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "СКОРАЯ ПОМОЩЬ: Правило удаления '%s' %s' %s Неудачно!"
+
+#: syslog_reports.php:174
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы удалить следующий(ые) отчет(ы) системного журнала."
+
+#: syslog_reports.php:180
+msgid "Delete Syslog Report(s)"
+msgstr "Удалить отчет(ы) системного журнала"
+
+#: syslog_reports.php:184
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы отключить следующие отчеты системного журнала."
+
+#: syslog_reports.php:190
+msgid "Disable Syslog Report(s)"
+msgstr "Отключить отчет(ы) системного журнала"
+
+#: syslog_reports.php:194
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы включить следующие отчеты системного журнала."
+
+#: syslog_reports.php:200
+msgid "Enable Syslog Report(s)"
+msgstr "Включить отчет(ы) системного журнала"
+
+#: syslog_reports.php:204
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы экспортировать следующее правило (правила) отчета Syslog."
+
+#: syslog_reports.php:210
+msgid "Export Syslog Report Rule(s)"
+msgstr "Экспорт правила(ов) отчета(ов) системного журнала"
+
+#: syslog_reports.php:215
+msgid "You must select at least one Syslog Report."
+msgstr "Вы должны выбрать хотя бы один Syslog Report."
+
+#: syslog_reports.php:216
+msgid "Return"
+msgstr "Вернуть"
+
+#: syslog_reports.php:459
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Редактирование отчета [редактирование: %s]"
+
+#: syslog_reports.php:461 syslog_reports.php:466
+msgid "Report Edit [new]"
+msgstr "Отчет Редактировать [новый]"
+
+#: syslog_reports.php:463 syslog_reports.php:468
+msgid "New Report Record"
+msgstr "Новый отчет Запись"
+
+#: syslog_reports.php:490
+msgid "Please describe this Report."
+msgstr "Пожалуйста, опишите этот отчет."
+
+#: syslog_reports.php:497
+msgid "Is this Report Enabled?"
+msgstr "Включен ли этот отчет?"
+
+#: syslog_reports.php:505
+msgid "Define how you would like this string matched."
+msgstr "Определите, как вы хотите, чтобы эта строка совпала."
+
+#: syslog_reports.php:512 syslog_reports.php:783
+msgid "Frequency"
+msgstr "Частота"
+
+#: syslog_reports.php:513
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Как часто следует направлять настоящий Отчет в список рассылки?"
+
+#: syslog_reports.php:520 syslog_reports.php:784
+msgid "Send Time"
+msgstr "Время Отправки"
+
+#: syslog_reports.php:521
+msgid "What time of day should this report be sent?"
+msgstr "В какое время суток должен быть отправлен этот отчет?"
+
+#: syslog_reports.php:528
+msgid "Report Format"
+msgstr "Примечания к отчету"
+
+#: syslog_reports.php:532
+msgid "The matching component of the syslog message."
+msgstr "Соответствующий компонент сообщения системного журнала."
+
+#: syslog_reports.php:542
+msgid "The information that will be contained in the body of the Report."
+msgstr "Информация, которая будет содержаться в основной части доклада."
+
+#: syslog_reports.php:561
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Список адресов электронной почты с разделителями команд для отправки отчета."
+
+#: syslog_reports.php:571
+msgid "Space for Notes on the Report"
+msgstr "Место для примечаний к докладу"
+
+#: syslog_reports.php:753
+msgid "Syslog Report Filters"
+msgstr "Фильтры отчетов Syslog"
+
+#: syslog_reports.php:779
+msgid "Report Name"
+msgstr "Название отчета"
+
+#: syslog_reports.php:785
+msgid "Last Sent"
+msgstr "Последняя отправка"
+
+#: syslog_reports.php:790
+msgid "Reports"
+msgstr "Отчеты"
+
+#: syslog_reports.php:816
+msgid "No Syslog Reports Defined"
+msgstr "Отсутствие отчетов в системном журнале Определено"
+
+#: syslog_reports.php:845
+msgid "Import Report Rule from Local File"
+msgstr "Правило импорта отчета из местного файла"
+
+#: syslog_reports.php:846
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Если XML файл, содержащий данные определения правила отчета, расположен на вашей локальной машине, выберите его здесь."
+
+#: syslog_reports.php:851
+msgid "Import Report Rule from Text"
+msgstr "Импортировать правило отчета из текста"
+
+#: syslog_reports.php:852
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Если у вас есть XML файл, содержащий данные определения правила отчета в виде текста, вы можете вставить его в это поле для импорта."
+
+#: syslog_reports.php:863
+msgid "Import Report Data"
+msgstr "Импорт отчетных данных"
+
+#: syslog_reports.php:934
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "ПРИМЕЧАНИЕ: Правило отчета '%s' %s!"
+
+#: syslog_reports.php:936
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "СКОРАЯ ПОМОЩЬ: Правило отчета '%s' %ss Неудачно!"
+
+#: syslog_saved_searches.php:36
+msgid "Unable to save the template. Please try again."
+msgstr ""
+
+#: syslog_saved_searches.php:48
+msgid "Enter a template name between 1 and 128 characters."
+msgstr ""
+
+#: syslog_saved_searches.php:193
+msgid "Templates"
+msgstr ""
+
+#: syslog_saved_searches.php:281
+msgid "Query"
+msgstr ""
+
+#: syslog_saved_searches.php:293
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr ""
+
+#: syslog_saved_searches.php:376
+#, fuzzy
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы экспортировать следующее правило (правила) оповещения Syslog."
+
+#: syslog_saved_searches.php:377
+#, fuzzy
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Нажмите кнопку \"Продолжить\", чтобы удалить следующее правило (правила) оповещения Syslog."
+
+#: syslog_saved_searches.php:382
+msgid "Delete Saved Search Template(s)"
+msgstr ""
+
+#: syslog_saved_searches.php:382
+msgid "Export Saved Search Template(s)"
+msgstr ""
+
+#: syslog_saved_searches.php:562
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr ""
+
+#: syslog_saved_searches.php:566
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr ""
+
+#: syslog_saved_searches.php:585
+#, fuzzy
+msgid "Import Saved Search Template from Local File"
+msgstr "Импорт правила оповещения из локального файла"
+
+#: syslog_saved_searches.php:586
+#, fuzzy
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Если XML-файл, содержащий данные определения правила оповещения, расположен на вашей локальной машине, выберите его здесь."
+
+#: syslog_saved_searches.php:591
+#, fuzzy
+msgid "Import Saved Search Template from Text"
+msgstr "Импорт правила оповещения из текста"
+
+#: syslog_saved_searches.php:592
+#, fuzzy
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Если у вас есть XML файл, содержащий данные определения правила отчета в виде текста, вы можете вставить его в это поле для импорта."
+
+#: syslog_saved_searches.php:603
+msgid "Import Saved Search Template"
+msgstr ""
+
+#: syslog_saved_searches.php:646
+msgid "Edit Saved Search Template"
+msgstr ""
+
+#: syslog_saved_searches.php:648
+msgid "The name shown to all users in Saved Searches."
+msgstr ""
+
+#: syslog_saved_searches.php:649
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr ""
+
+#: syslog_saved_searches.php:650
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr ""
+
+#: syslog_saved_searches.php:651
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr ""
+
+#: syslog_saved_searches.php:656
+#, fuzzy
+msgid "Search Query"
+msgstr "Поиск"
+
+#: syslog_saved_searches.php:663
+msgid "Correct the query syntax to use the query builder."
+msgstr ""
+
+#: syslog_saved_searches.php:668
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr ""
+
+#, php-format
+#~ msgid " [ Start: '%s' to End: '%s', Unprocessed Messages: %s ]"
+#~ msgstr " [ Начать: \"%s\" до конца: \"%s\", Необработанные сообщения: %s ]"
+
+#~ msgid "Alert++"
+#~ msgstr "Оповещение"
+
+#~ msgid "All Facilities"
+#~ msgstr "Все удобства"
+
+#~ msgid "All Priorities"
+#~ msgstr "Все приоритеты"
+
+#~ msgid "All Text"
+#~ msgstr "Весь текст"
+
+#~ msgid "Critical++"
+#~ msgstr "Критический"
+
+#~ msgid "Custom"
+#~ msgstr "Пользовательский"
+
+#~ msgid "Database Architecture"
+#~ msgstr "Архитектура базы данных"
+
+#~ msgid "Define Shifting Interval"
+#~ msgstr "Определить интервал переключения"
+
+#~ msgid "Device Name"
+#~ msgstr "Имя устройства"
+
+#~ msgid "Devices"
+#~ msgstr "Устройства"
+
+#~ msgid "Enable Statistics Gathering"
+#~ msgstr "Включить сбор статистики"
+
+#~ msgid "End Date Selector"
+#~ msgstr "Выбор даты окончания срока действия"
+
+#~ msgid "Entries"
+#~ msgstr "Записи"
+
+#~ msgid "Error++"
+#~ msgstr "Ошибка"
+
+#~ msgid "Facilities to filter on"
+#~ msgstr "Оборудование для фильтрации"
+
+#~ msgid "From"
+#~ msgstr "От"
+
+#~ msgid "If this checkbox is set, all hostnames are validated.  If the hostname is not valid. All records are assigned to a special host called 'invalidhost'.  This setting can impact syslog processing time on large systems.  Therefore, use of this setting should only be used when other means are not in place to prevent this from happening."
+#~ msgstr "Если этот флажок установлен, все имена хостов будут проверяться. Если имя хоста недействительно, все записи закрепляются за специальным хостом под названием 'invalidhost'. Эта настройка может повлиять на время обработки системного журнала на больших системах. Поэтому использование этого параметра следует использовать только в том случае, если отсутствуют другие средства для предотвращения этого."
+
+#~ msgid "If this checkbox is set, statistics on where syslog messages are arriving from will be maintained.  This statistical information can be used to render things such as heat maps."
+#~ msgstr "Если этот флажок установлен, будет вестись статистика о том, откуда приходят сообщения системного журнала. Эта статистическая информация может быть использована для отображения таких объектов, как тепловые карты."
+
+#~ msgid "Info++"
+#~ msgstr "Информация"
+
+#~ msgid "Message Trim"
+#~ msgstr "Обрезка сообщений"
+
+#~ msgid "No Syslog Statistics Found"
+#~ msgstr "Статистика Syslog не найдена"
+
+#~ msgid "Normal User"
+#~ msgstr "Обычный пользователь"
+
+#~ msgid "Notice++"
+#~ msgstr "Уведомление"
+
+#~ msgid "Priority Levels"
+#~ msgstr "Уровни приоритетности"
+
+#~ msgid "Removals"
+#~ msgstr "Удаление"
+
+#~ msgid "Shift Time Backward"
+#~ msgstr "Переключить время назад"
+
+#~ msgid "Shift Time Forward"
+#~ msgstr "Время сдвига вперед"
+
+#~ msgid "Show All Devices"
+#~ msgstr "Показать все устройства"
+
+#~ msgid "Show All Logs"
+#~ msgstr "Показать все журналы"
+
+#~ msgid "Start Date Selector"
+#~ msgstr "Выбор даты запуска"
+
+#~ msgid "Statistics"
+#~ msgstr "Статистика"
+
+#~ msgid "Syslog 2.0 Requires an Entire Reinstall.  Please uninstall Syslog and Remove all Data before Installing.  Migration is possible, but you must plan this in advance.  No automatic migration is supported."
+#~ msgstr "Syslog 2.0 Требуется полная переустановка.  Пожалуйста, удалите Syslog и удалите все данные перед установкой.  Миграция возможна, но вы должны планировать ее заранее.  Автоматическая миграция не поддерживается."
+
+#~ msgid "Syslog Statistics Filter"
+#~ msgstr "Фильтр статистики Syslog"
+
+#~ msgid "System Administration"
+#~ msgstr "Администрирование системы"
+
+#~ msgid "Threshold Logs"
+#~ msgstr "Пороговые журналы"
+
+#~ msgid "Timespan"
+#~ msgstr "Продолжительность"
+
+#~ msgid "To"
+#~ msgstr "Кому"
+
+#~ msgid "Traditional Table"
+#~ msgstr "Традиционная таблица"
+
+#~ msgid "Trim"
+#~ msgstr "Обрезка"
+
+#~ msgid "Validate Hostnames"
+#~ msgstr "Проверка имен хостов"
+
+#~ msgid "View Syslog Alert Rules"
+#~ msgstr "Просмотреть правила оповещения в системном журнале"
+
+#~ msgid "View Syslog Removal Rules"
+#~ msgstr "Просмотреть правила удаления системного журнала"
+
+#~ msgid "View Syslog Reports"
+#~ msgstr "Просмотр отчетов системного журнала"
+
+#~ msgid "Warning++"
+#~ msgstr "Предупреждение"
+
+#~ msgid "You can also set the MySQL storage engine.  If you have not tuned you system for InnoDB storage properties, it is strongly recommended that you utilize the MyISAM storage engine."
+#~ msgstr "Вы также можете установить механизм хранения MySQL.  Если вы не настроили свою систему на свойства хранения InnoDB, настоятельно рекомендуется использовать движок хранения MyISAM."
+
+#~ msgid "You have the option to make this a partitioned table by days.  You can create multiple partitions per day."
+#~ msgstr "В MySQL 5.1.6 и выше, у вас есть возможность сделать эту таблицу разбитой по дням.  До этого выпуска у вас была доступна только традиционная структура стола."
