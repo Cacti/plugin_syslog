@@ -609,6 +609,10 @@ function syslog_check_upgrade(): void {
 
 	if (function_exists('api_plugin_upgrade_register')) {
 		if (!api_plugin_upgrade_register('syslog')) {
+			// This table was introduced after the original remote schema. Ensure
+			// an already-current remote collector can repair the omission without
+			// requiring a plugin version change.
+			syslog_create_device_rule_table();
 			// No upgrade required, but still warn about deprecated table layouts
 			syslog_notice_traditional_tables(true);
 
@@ -634,6 +638,7 @@ function syslog_check_upgrade(): void {
 				]
 			);
 		} else {
+			syslog_create_device_rule_table();
 			// No upgrade required, but still warn about deprecated table layouts
 			syslog_notice_traditional_tables(true);
 
@@ -983,6 +988,8 @@ function syslog_check_upgrade(): void {
 		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
 	}
 
+	syslog_create_device_rule_table();
+
 	syslog_create_replication_output_table();
 	syslog_create_replication_receipts_table();
 	syslog_create_replication_collectors_table();
@@ -1052,6 +1059,28 @@ function syslog_ensure_replication_history_columns(): void {
 	]);
 	syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog`
 		ADD KEY `replication_source` (`replication_source_poller_id`, `replication_source_event_id`)");
+}
+
+/** Create the device-wide alert handling rules table on all Syslog collectors. */
+function syslog_create_device_rule_table(): void {
+	global $syslogdb_default;
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule` (
+		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		`host` varchar(64) NOT NULL,
+		`enabled` char(2) NOT NULL DEFAULT 'on',
+		`mute_mode` varchar(16) NOT NULL DEFAULT 'none',
+		`mute_until` int(10) unsigned NOT NULL DEFAULT '0',
+		`pass_through_priority` int(10) NOT NULL DEFAULT '-1',
+		`allow_maintenance` char(2) NOT NULL DEFAULT '',
+		`notes` varchar(255) NOT NULL DEFAULT '',
+		`user` varchar(32) NOT NULL DEFAULT '',
+		`date` int(10) unsigned NOT NULL DEFAULT '0',
+		PRIMARY KEY (`id`),
+		UNIQUE KEY `host` (`host`),
+		KEY `enabled` (`enabled`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
 }
 
 /**
@@ -1622,6 +1651,8 @@ function syslog_replicate_out($data) {
 		if ($class == 'all') {
 			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_alert');
 			replicate_out_table($rcnn_id, $tdata, 'syslog_alert', $remote_poller_id);
+			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_device_rule');
+			replicate_out_table($rcnn_id, $tdata, 'syslog_device_rule', $remote_poller_id);
 			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_remove');
 			replicate_out_table($rcnn_id, $tdata, 'syslog_remove', $remote_poller_id);
 			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_reports');
