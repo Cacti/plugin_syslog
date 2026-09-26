@@ -720,7 +720,7 @@ function syslog_status(): void {
 				</dl>
 			</section>
 			<?php } ?>
-			<?php if (isset($config['poller_id']) && (int) $config['poller_id'] === 1) { ?>
+			<?php if ((int) ($config['poller_id'] ?? 1) <= 1) { ?>
 			<?php $remote_collectors = syslog_replication_collector_status(); ?>
 			<section class="syslogStatusRun" aria-labelledby="syslog_status_remote_collectors">
 				<h2 id="syslog_status_remote_collectors" class="syslogStatusHeading ui-widget-header"><?php print __esc('Remote collector receipts', 'syslog'); ?></h2>
