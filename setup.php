@@ -983,6 +983,39 @@ function syslog_check_upgrade(): void {
 	} else {
 		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
 	}
+
+	syslog_create_replication_output_table();
+}
+
+/**
+ * Create the durable, Syslog-owned remote collector replication outbox.
+ *
+ * source_poller_id/source_event_id is the immutable distributed identity.
+ * The portable payload uses incoming-table values rather than local
+ * host/program surrogate IDs. Delivery is intentionally deferred.
+ *
+ * @return void
+ */
+function syslog_create_replication_output_table(): void {
+	global $syslogdb_default;
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_replication_output` (
+		`source_poller_id` int(10) unsigned NOT NULL COMMENT 'Originating Cacti data collector ID',
+		`source_event_id` bigint unsigned NOT NULL COMMENT 'Immutable local syslog_incoming sequence',
+		`facility_id` int(10) unsigned default NULL COMMENT 'Portable syslog facility value',
+		`priority_id` int(10) unsigned default NULL COMMENT 'Portable syslog priority value',
+		`program` varchar(40) default NULL COMMENT 'Source program text',
+		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Original event timestamp',
+		`host` varchar(64) default NULL COMMENT 'Source host text',
+		`message` varchar(2048) NOT NULL DEFAULT '' COMMENT 'Source message text',
+		`disposition` varchar(16) NOT NULL COMMENT 'Local archival target: syslog or syslog_removed',
+		`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Outbox creation time',
+		`acknowledged_at` timestamp NULL DEFAULT NULL COMMENT 'Reserved for future destination acknowledgement',
+		`attempts` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Reserved for future delivery retries',
+		PRIMARY KEY (`source_poller_id`, `source_event_id`),
+		KEY `backlog` (`acknowledged_at`, `created_at`, `source_poller_id`, `source_event_id`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
 }
 
 /**
@@ -1235,6 +1268,8 @@ function syslog_setup_table_new(array $options): void {
 		INDEX `status` (`status`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
+
+	syslog_create_replication_output_table();
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
 		`alert_id` int(10) unsigned NOT NULL,
