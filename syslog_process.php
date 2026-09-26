@@ -436,6 +436,12 @@ syslog_status_record_phase('reports', $phase_start, time(), microtime(true) - $p
  */
 syslog_postprocess_tables();
 
+// State is derived from Cacti reachability plus the plugin-owned outbox. One
+// bounded batch may make gradual recovery progress; no recovery loop is used.
+syslog_replication_record_state();
+syslog_replication_deliver_online();
+syslog_replication_record_state();
+
 /**
  * log messages to the Cacti log and save statistics
  * to the settings table

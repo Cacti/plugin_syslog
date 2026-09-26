@@ -985,6 +985,7 @@ function syslog_check_upgrade(): void {
 	}
 
 	syslog_create_replication_output_table();
+	syslog_create_replication_receipts_table();
 }
 
 /**
@@ -1014,6 +1015,34 @@ function syslog_create_replication_output_table(): void {
 		`attempts` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Reserved for future delivery retries',
 		PRIMARY KEY (`source_poller_id`, `source_event_id`),
 		KEY `backlog` (`acknowledged_at`, `created_at`, `source_poller_id`, `source_event_id`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+}
+
+/**
+ * Create the Main Collector receipt boundary for remote Syslog delivery.
+ *
+ * The partitioned history tables deliberately retain their existing keys:
+ * MySQL requires every unique key on a partitioned table to include the
+ * partitioning column. A small unpartitioned receipt table therefore owns
+ * distributed idempotency and is committed with the archival insert.
+ *
+ * @return void
+ */
+function syslog_create_replication_receipts_table(): void {
+	global $config, $syslogdb_default;
+
+	if (isset($config['poller_id']) && (int) $config['poller_id'] > 1) {
+		return;
+	}
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_replication_receipts` (
+		`source_poller_id` int(10) unsigned NOT NULL,
+		`source_event_id` bigint unsigned NOT NULL,
+		`disposition` varchar(16) NOT NULL,
+		`accepted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		PRIMARY KEY (`source_poller_id`, `source_event_id`),
+		KEY `accepted_at` (`accepted_at`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 }
