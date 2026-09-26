@@ -577,14 +577,6 @@ function syslog_refresh_permission_roles(): void {
 	}
 }
 
-/** Register a realm only when its exact persisted definition is absent. */
-function syslog_register_realm_if_missing(string $file, string $display): void {
-	$exists = db_fetch_cell_prepared('SELECT COUNT(*) FROM plugin_realms WHERE plugin = ? AND file = ?', ['syslog', $file], '', false);
-	if (!(int) $exists) {
-		api_plugin_register_realm('syslog', $file, $display, 0);
-	}
-}
-
 /**
  * Upgrade the Syslog database schema for legacy installs.
  *
@@ -600,13 +592,8 @@ function syslog_check_upgrade(): void {
 	if (!syslog_upgrade_consolidate_rule_realms()) {
 		return;
 	}
-	// Keep newly introduced permission realms available for existing installs.
-	syslog_register_realm_if_missing('syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer');
-	syslog_register_realm_if_missing('syslog_rule_administrator.php,syslog_device_rules.php', 'Rule Administrator');
-	syslog_register_realm_if_missing('syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration');
-	syslog_register_realm_if_missing('syslog_saved_searches_share.php', 'Share Saved Templates');
-	syslog_register_realm_if_missing('syslog_dashboards_share.php', 'Share Dashboards');
-	syslog_register_realm_if_missing('syslog_administrator.php', 'Syslog Administrator');
+	// Realm registration is install-only in Cacti. Legacy migrations below preserve
+	// and adjust existing realm IDs without calling the guarded registration API.
 	syslog_upgrade_device_rule_realm();
 	syslog_refresh_permission_roles();
 
