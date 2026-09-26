@@ -1522,6 +1522,10 @@ function set_shift_span(bool|string $shift_span, string $session_prefix): void {
 function get_syslog_messages(string &$sql_where, int|string $rows, string $tab): array {
 	global $sql_where, $hostfilter, $hostfilter_log, $current_tab, $syslog_incoming_config;
 	global $syslogdb_default;
+	// syslog and syslog_removed can legitimately gain independent operational
+	// columns. Keep the combined viewer query on its stable display contract
+	// instead of using SELECT *, which would make UNION depend on identical DDL.
+	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq';
 
 	$sql_where = '';
 
@@ -1745,7 +1749,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 		} else {
 			// Original non-grouped queries
 			if (get_request_var('removal') == '-1') {
-				$query_sql = "SELECT `syslog`.*, `syslog_programs`.`program`, 'main' AS mtype
+				$query_sql = "SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 					FROM `$syslogdb_default`.`syslog`
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
 					ON syslog.program_id = syslog_programs.program_id
@@ -1754,13 +1758,13 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
 				$query_sql = "(
-						SELECT `syslog`.*, `syslog_programs`.`program`, 'main' AS mtype
+						SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
 					) UNION (
-						SELECT `syslog`.*, `syslog_programs`.`program`, 'remove' AS mtype
+						SELECT $message_columns, `syslog_programs`.`program`, 'remove' AS mtype
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id = syslog_programs.program_id
@@ -1769,7 +1773,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					$sql_order
 					$sql_limit";
 			} else {
-				$query_sql = "SELECT `syslog`.*, `syslog_programs`.`program`, 'remove' AS mtype
+				$query_sql = "SELECT $message_columns, `syslog_programs`.`program`, 'remove' AS mtype
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
 					ON syslog.program_id = syslog_programs.program_id

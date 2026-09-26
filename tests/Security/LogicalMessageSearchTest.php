@@ -185,6 +185,8 @@ it('applies the logical search predicate consistently in the real query builder'
 
 				if ($tab === 'syslog' && $removal === '1') {
 					expect(substr_count($GLOBALS['captured_sql'], $predicate))->toBe(2, 'Both union branches filtered');
+					expect(str_contains($GLOBALS['captured_sql'], '`syslog`.*'))->toBeFalse('Union projection must not depend on matching table schemas');
+					expect(substr_count($GLOBALS['captured_sql'], 'syslog.replication_source_event_id'))->toBe(0, 'Operational tracking columns are not part of the display contract');
 				}
 			}
 		}
