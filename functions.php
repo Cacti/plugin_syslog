@@ -3449,6 +3449,17 @@ function syslog_remove_items($table, $max_seq) {
 					$messages_xferred = db_affected_rows($syslog_cnn);
 				}
 
+				if ($table == 'syslog_incoming' && $remove['method'] != 'del') {
+					$replication_where  = $remove['type'] == 'filter' ? $insert_where : $sql_where;
+					$replication_params = $remove['type'] == 'filter' ? $insert_params : $params;
+
+					if (!syslog_replication_enqueue_incoming($replication_where, $replication_params, 'syslog_removed')) {
+						syslog_db_execute('ROLLBACK');
+						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after replication outbox insert failed", false, 'SYSLOG');
+						continue;
+					}
+				}
+
 				if ($table == 'syslog_incoming') {
 					$move_failed = !syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming` $sql_where", $params);
 				} else {
@@ -5373,6 +5384,48 @@ function syslog_delete_stale_incoming() {
 }
 
 /**
+ * Whether this process is a configured Syslog Remote Poller.  Main and
+ * ordinary remote collectors never create an outbox backlog.
+ *
+ * @return bool
+ */
+function syslog_replication_is_enabled(): bool {
+	global $config;
+
+	return isset($config['poller_id']) && (int) $config['poller_id'] > 1
+		&& read_config_option('syslog_remote_enabled') === 'on';
+}
+
+/**
+ * Add a portable incoming event to the plugin-owned outbox.  Callers run
+ * this inside the same transaction as the local archival disposition.
+ * INSERT IGNORE makes retries idempotent on (source_poller_id, source_event_id).
+ *
+ * @param string               $where       A WHERE clause scoped to syslog_incoming AS si.
+ * @param array<int,mixed>     $params      Prepared-statement values for $where.
+ * @param string               $disposition syslog or syslog_removed.
+ *
+ * @return bool
+ */
+function syslog_replication_enqueue_incoming(string $where, array $params, string $disposition): bool {
+	global $config, $syslogdb_default;
+
+	if (!syslog_replication_is_enabled()) {
+		return true;
+	}
+
+	if (!in_array($disposition, ['syslog', 'syslog_removed'], true)) {
+		return false;
+	}
+
+	return syslog_db_execute_prepared("INSERT IGNORE INTO `$syslogdb_default`.`syslog_replication_output`
+		(source_poller_id, source_event_id, facility_id, priority_id, program, logtime, host, message, disposition)
+		SELECT ?, si.seq, si.facility_id, si.priority_id, si.program, si.logtime, si.host, si.message, ?
+		FROM `$syslogdb_default`.`syslog_incoming` AS si $where",
+		array_merge([(int) $config['poller_id'], $disposition], $params));
+}
+
+/**
  * syslog_incoming_to_syslog - Move incoming syslog records to the syslog table
  *
  * Once all Alerts have been processed, we need to move entries first to
@@ -5401,7 +5454,27 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		$slice_param = [$seq_start, $seq_end];
 	}
 
-	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
+	$replication_transaction = false;
+
+	if (syslog_replication_is_enabled()) {
+		if (!syslog_db_execute('START TRANSACTION')) {
+			cacti_log('SYSLOG ERROR: Unable to start transaction for replication outbox', false, 'SYSLOG');
+
+			return ['moved' => 0, 'stale' => 0];
+		}
+
+		$replication_transaction = true;
+		$replication_where = 'WHERE si.`status` = 1 AND si.`seq` <= ?' . $slice_where;
+
+		if (!syslog_replication_enqueue_incoming($replication_where, array_merge([$max_seq], $slice_param), 'syslog')) {
+			syslog_db_execute('ROLLBACK');
+			cacti_log('SYSLOG ERROR: Rolled back transfer after replication outbox insert failed', false, 'SYSLOG');
+
+			return ['moved' => 0, 'stale' => 0];
+		}
+	}
+
+	$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
 		(logtime, priority_id, facility_id, program_id, host_id, message)
 		SELECT logtime, priority_id, facility_id, program_id, host_id, message
 		FROM (
@@ -5417,6 +5490,16 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		) AS merge",
 		array_merge([$max_seq], $slice_param));
 
+	if (!$archived) {
+		if ($replication_transaction) {
+			syslog_db_execute('ROLLBACK');
+		}
+
+		cacti_log('SYSLOG ERROR: Unable to archive incoming records', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0];
+	}
+
 	$moved = db_affected_rows($syslog_cnn);
 
 	syslog_debug('-------------------------------------------------------------------------------------');
@@ -5425,18 +5508,35 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 	syslog_debug(sprintf('Moved   %5s - Message(s) to the syslog table', $moved));
 
 	if ($seq_start > 0 && $seq_end > 0) {
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+		$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
 			WHERE `status` = 1
 			AND `seq` BETWEEN ? AND ?",
 			[$seq_start, $seq_end]);
 	} else {
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+		$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
 			WHERE `status` = 1
 			AND `seq` <= ?",
 			[$max_seq]);
 	}
 
 	syslog_debug(sprintf('Deleted %5s - Already Processed Message(s) from incoming', db_affected_rows($syslog_cnn)));
+
+	if (!$deleted) {
+		if ($replication_transaction) {
+			syslog_db_execute('ROLLBACK');
+		}
+
+		cacti_log('SYSLOG ERROR: Unable to delete archived incoming records', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0];
+	}
+
+	if ($replication_transaction && !syslog_db_execute('COMMIT')) {
+		syslog_db_execute('ROLLBACK');
+		cacti_log('SYSLOG ERROR: Unable to commit transfer and replication outbox transaction', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0];
+	}
 
 	if ($seq_start > 0 && $seq_end > 0) {
 		// The stale record cleanup is owned by the master after all
