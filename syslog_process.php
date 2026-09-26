@@ -442,7 +442,8 @@ $replication_state = syslog_replication_record_state();
 if ($replication_state === 'recovery') {
 	syslog_replication_start_recovery_worker();
 } elseif ($replication_state === 'online') {
-	syslog_replication_deliver_online();
+	$sent_to_main = syslog_replication_deliver_online();
+	if ($sent_to_main > 0) { cacti_log('SYSLOG STATS: Sent ' . $sent_to_main . ' records to the Main Collector', false, 'SYSLOG'); }
 }
 syslog_replication_record_state();
 

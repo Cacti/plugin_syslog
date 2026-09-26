@@ -709,7 +709,7 @@ function syslog_status(): void {
 				<dl class="syslogStatusTimings">
 				<?php foreach ([
 					__('State', 'syslog') => strtoupper((string) $replication['state']),
-					__('Pending events', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
+					__('Queued Recovery Records', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
 					__('Oldest pending', 'syslog') => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
 					__('Last successful synchronization', 'syslog') => syslog_status_format_time((string) $replication['last_success']),
 					__('Recovery worker', 'syslog') => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),

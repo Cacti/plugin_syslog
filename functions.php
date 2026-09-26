@@ -5521,7 +5521,9 @@ function syslog_replication_get_state(): ?string {
 		return 'offline';
 	}
 
-	return syslog_replication_has_backlog() ? 'recovery' : 'online';
+	global $config;
+	$connection = defined('CACTI_CONNECTION') ? CACTI_CONNECTION : ($config['connection'] ?? 'offline');
+	return $connection === 'recovery' && syslog_replication_has_backlog() ? 'recovery' : 'online';
 }
 
 /**
@@ -5777,7 +5779,6 @@ function syslog_replication_deliver_online(): int {
 		return 0;
 	}
 
-	cacti_log('SYSLOG: Delivering ' . cacti_sizeof($events) . ' replication records to the Main Collector', false, 'SYSLOG');
 	if (!db_execute('START TRANSACTION', true, $remote_db_cnn_id)) {
 		syslog_replication_mark_connection_failure();
 		syslog_replication_record_error('Unable to begin central replication transaction');
@@ -5822,7 +5823,6 @@ function syslog_replication_deliver_online(): int {
 		syslog_status_set('replication_last_success', time());
 		syslog_status_set('replication_last_error', '');
 	}
-	cacti_log('SYSLOG: Main Collector accepted and acknowledged ' . $acknowledged . ' replication records', false, 'SYSLOG');
 	return $acknowledged;
 }
 

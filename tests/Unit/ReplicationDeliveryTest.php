@@ -6,7 +6,7 @@
  */
 
 it('delivers an exact remote outbox batch through the central receipt transaction', function () {
-    $GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
+    $GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'recovery'];
     $GLOBALS['remote_db_cnn_id'] = new stdClass();
     $GLOBALS['syslog_cnn'] = new stdClass();
     $GLOBALS['syslogdb_default'] = 'cacti';
@@ -73,7 +73,7 @@ it('derives Syslog delivery state from Main reachability and the durable outbox'
     expect(syslog_replication_get_state())->toBe('online');
 
     test_override('syslog_db_fetch_cell', fn () => '1');
-    expect(syslog_replication_get_state())->toBe('recovery');
+    expect(syslog_replication_get_state())->toBe('online');
 
     // Cacti recovery still has a usable Main connection; only Syslog's own
     // outbox decides whether this is Syslog recovery.
