@@ -5515,7 +5515,7 @@ function syslog_replication_operational_status(): array {
 function syslog_replication_collector_status(): array {
 	global $config, $syslogdb_default;
 
-	if (!isset($config['poller_id']) || (int) $config['poller_id'] !== 1
+	if ((int) ($config['poller_id'] ?? 1) > 1
 		|| !syslog_db_table_exists('syslog_replication_collectors', false)) {
 		return [];
 	}

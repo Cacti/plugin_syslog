@@ -48,6 +48,16 @@ it('reads main collector remote receipt telemetry without scanning syslog histor
         ->not->toContain('`.`syslog`');
 });
 
+it('treats an unset poller ID as the Main Collector for receipt telemetry', function () {
+    $GLOBALS['config'] = [];
+    $GLOBALS['syslogdb_default'] = 'cacti';
+    test_override('syslog_db_table_exists', fn ($table) => $table === 'syslog_replication_collectors');
+    test_override('syslog_db_fetch_assoc', fn () => []);
+    syslog_load_plugin_source('functions.php');
+
+    expect(syslog_replication_collector_status())->toBe([]);
+});
+
 it('removes only temporary remote syslog copies after confirmed central delivery', function () {
     $GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
     $GLOBALS['remote_db_cnn_id'] = new stdClass();
