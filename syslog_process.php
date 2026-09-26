@@ -438,8 +438,12 @@ syslog_postprocess_tables();
 
 // State is derived from Cacti reachability plus the plugin-owned outbox. One
 // bounded batch may make gradual recovery progress; no recovery loop is used.
-syslog_replication_record_state();
-syslog_replication_deliver_online();
+$replication_state = syslog_replication_record_state();
+if ($replication_state === 'recovery') {
+	syslog_replication_start_recovery_worker();
+} elseif ($replication_state === 'online') {
+	syslog_replication_deliver_online();
+}
 syslog_replication_record_state();
 
 /**

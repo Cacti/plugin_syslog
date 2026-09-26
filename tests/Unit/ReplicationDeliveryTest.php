@@ -127,3 +127,40 @@ it('returns to offline state for this process when Main fails during recovery', 
     expect(syslog_replication_deliver_online())->toBe(0)
         ->and(syslog_replication_get_state())->toBe('offline');
 });
+
+
+it('uses an atomic, token-scoped expiring recovery lease', function () {
+    syslog_load_plugin_source('functions.php');
+    $source = file_get_contents(__DIR__ . '/../../functions.php');
+
+    expect($source)->toContain('INSERT INTO `$syslogdb_default`.`syslog_replication_recovery`')
+        ->toContain('ON DUPLICATE KEY UPDATE')
+        ->toContain('heartbeat_at < ?')
+        ->toContain("WHERE name = 'recovery' AND owner_token = ?");
+});
+it('keeps recovery bounded and delegates batch delivery to the Phase 2 primitive', function () {
+    syslog_load_plugin_source('functions.php');
+    $source = file_get_contents(__DIR__ . '/../../functions.php');
+
+    expect($source)->toContain('SYSLOG_REPLICATION_RECOVERY_MAX_BATCHES')
+        ->toContain('syslog_replication_deliver_online()')
+        ->toContain('SYSLOG_REPLICATION_RECOVERY_BATCH_DELAY_US')
+        ->toContain('ORDER BY created_at ASC, source_poller_id ASC, source_event_id ASC');
+});
+
+
+it('returns on-demand operational replication telemetry without remote fan-out', function () {
+    unset($GLOBALS['syslog_replication_connection_failed']);
+    $GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
+    $GLOBALS['remote_db_cnn_id'] = new stdClass();
+    $GLOBALS['syslogdb_default'] = 'cacti';
+    test_override('read_config_option', fn () => 'on');
+    test_override('syslog_db_fetch_row', function ($sql) {
+        return str_contains($sql, 'replication_output') ? ['pending' => '12', 'oldest_pending' => '2026-09-25 10:00:00'] : [];
+    });
+    test_override('syslog_db_fetch_cell', fn () => '1');
+    test_override('syslog_db_fetch_assoc', fn () => []);
+    syslog_load_plugin_source('functions.php');
+    $telemetry = syslog_replication_operational_status();
+    expect($telemetry['enabled'])->toBeTrue()->and($telemetry['state'])->toBe('recovery')->and($telemetry['pending'])->toBe(12);
+});
