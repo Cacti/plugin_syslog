@@ -788,7 +788,7 @@ function syslog_status(): void {
 							<tr>
 								<td><?php print html_escape(syslog_status_format_time((string) ($event['time'] ?? ''))); ?></td>
 								<td><?php print html_escape(!empty($event['successful']) ? __('Complete', 'syslog') : __('Deferred', 'syslog')); ?></td>
-								<td><?php print html_escape(sprintf(__('%d created, %d remaining, %d pruned', 'syslog'), (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0))); ?></td>
+								<td><?php print html_escape(__('%d created, %d remaining, %d pruned', (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0), 'syslog')); ?></td>
 								<td><?php print html_escape((string) ($event['reason'] ?? '') !== '' ? (string) $event['reason'] : __('No action required.', 'syslog')); ?></td>
 							</tr>
 						<?php } ?>

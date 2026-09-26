@@ -5559,11 +5559,31 @@ function syslog_replication_record_state(): ?string {
 	return $state;
 }
 
-/** Recovery execution limits; intentionally conservative and easy to tune. */
-if (!defined('SYSLOG_REPLICATION_RECOVERY_MAX_BATCHES')) {
-	define('SYSLOG_REPLICATION_RECOVERY_MAX_BATCHES', 20);
+/** Recovery execution limits; defaults retain the original conservative behavior. */
+if (!defined('SYSLOG_REPLICATION_RECOVERY_DEFAULT_RECORDS_PER_RUN')) {
+	define('SYSLOG_REPLICATION_RECOVERY_DEFAULT_RECORDS_PER_RUN', 2000);
+	define('SYSLOG_REPLICATION_RECOVERY_DEFAULT_DELAY_MS', 100);
 	define('SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS', 300);
-	define('SYSLOG_REPLICATION_RECOVERY_BATCH_DELAY_US', 100000);
+}
+
+/** Return the administrator-selected bounded recovery budget in records. */
+function syslog_replication_recovery_records_per_run(): int {
+	$records = (int) read_config_option('syslog_replication_recovery_records_per_run');
+	$allowed = [500, 1000, 2000, 3000, 5000, 10000];
+
+	return in_array($records, $allowed, true) ? $records : SYSLOG_REPLICATION_RECOVERY_DEFAULT_RECORDS_PER_RUN;
+}
+
+/** Return the administrator-selected pause between bounded central batches. */
+function syslog_replication_recovery_batch_delay_us(): int {
+	$milliseconds = (int) read_config_option('syslog_replication_recovery_batch_delay_ms');
+	$allowed = [0, 25, 50, 100, 250, 500, 1000];
+
+	if (!in_array($milliseconds, $allowed, true)) {
+		$milliseconds = SYSLOG_REPLICATION_RECOVERY_DEFAULT_DELAY_MS;
+	}
+
+	return $milliseconds * 1000;
 }
 
 /** Atomically acquire the local plugin-owned recovery lease. */
@@ -5627,7 +5647,10 @@ function syslog_replication_recovery_run(): int {
 	$accepted = 0;
 	cacti_log('SYSLOG: Recovery worker acquired lease', false, 'SYSLOG');
 	try {
-		for ($batch = 0; $batch < SYSLOG_REPLICATION_RECOVERY_MAX_BATCHES; $batch++) {
+		$max_batches = (int) ceil(syslog_replication_recovery_records_per_run() / SYSLOG_REPLICATION_BATCH_SIZE);
+		$batch_delay_us = syslog_replication_recovery_batch_delay_us();
+
+		for ($batch = 0; $batch < $max_batches; $batch++) {
 			if (!syslog_replication_delivery_is_online()) {
 				cacti_log('SYSLOG: Recovery worker paused because Main is unavailable', false, 'SYSLOG');
 				break;
@@ -5644,7 +5667,9 @@ function syslog_replication_recovery_run(): int {
 			}
 			$accepted += $delivered;
 			syslog_replication_recovery_heartbeat($token);
-			usleep(SYSLOG_REPLICATION_RECOVERY_BATCH_DELAY_US);
+			if ($batch_delay_us > 0) {
+				usleep($batch_delay_us);
+			}
 		}
 	} finally {
 		syslog_replication_recovery_release($token);

@@ -142,9 +142,9 @@ it('keeps recovery bounded and delegates batch delivery to the Phase 2 primitive
     syslog_load_plugin_source('functions.php');
     $source = file_get_contents(__DIR__ . '/../../functions.php');
 
-    expect($source)->toContain('SYSLOG_REPLICATION_RECOVERY_MAX_BATCHES')
+    expect($source)->toContain('syslog_replication_recovery_records_per_run()')
+        ->toContain('syslog_replication_recovery_batch_delay_us()')
         ->toContain('syslog_replication_deliver_online()')
-        ->toContain('SYSLOG_REPLICATION_RECOVERY_BATCH_DELAY_US')
         ->toContain('ORDER BY created_at ASC, source_poller_id ASC, source_event_id ASC');
 });
 

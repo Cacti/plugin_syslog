@@ -577,6 +577,14 @@ function syslog_refresh_permission_roles(): void {
 	}
 }
 
+/** Register a realm only when its exact persisted definition is absent. */
+function syslog_register_realm_if_missing(string $file, string $display): void {
+	$exists = db_fetch_cell_prepared('SELECT COUNT(*) FROM plugin_realms WHERE plugin = ? AND file = ?', ['syslog', $file], '', false);
+	if (!(int) $exists) {
+		api_plugin_register_realm('syslog', $file, $display, 0);
+	}
+}
+
 /**
  * Upgrade the Syslog database schema for legacy installs.
  *
@@ -593,12 +601,12 @@ function syslog_check_upgrade(): void {
 		return;
 	}
 	// Keep newly introduced permission realms available for existing installs.
-	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 0);
-	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php,syslog_device_rules.php', 'Rule Administrator', 0);
-	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 0);
-	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 0);
-	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 0);
-	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 0);
+	syslog_register_realm_if_missing('syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer');
+	syslog_register_realm_if_missing('syslog_rule_administrator.php,syslog_device_rules.php', 'Rule Administrator');
+	syslog_register_realm_if_missing('syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration');
+	syslog_register_realm_if_missing('syslog_saved_searches_share.php', 'Share Saved Templates');
+	syslog_register_realm_if_missing('syslog_dashboards_share.php', 'Share Dashboards');
+	syslog_register_realm_if_missing('syslog_administrator.php', 'Syslog Administrator');
 	syslog_upgrade_device_rule_realm();
 	syslog_refresh_permission_roles();
 
@@ -726,7 +734,7 @@ function syslog_check_upgrade(): void {
 		}
 	}
 
-	if (syslog_db_column_exists('syslog_saved_searches', 'hash')) {
+	if (syslog_db_table_exists('syslog_saved_searches', false) && syslog_db_column_exists('syslog_saved_searches', 'hash')) {
 		$searches = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_saved_searches
 			WHERE hash IS NULL OR hash = ""');
@@ -742,7 +750,11 @@ function syslog_check_upgrade(): void {
 		}
 	}
 
-	if (syslog_db_column_exists('syslog_dashboards', 'hash')) {
+	// These tables were introduced after the original plugin schema.  On a
+	// partially upgraded remote collector create them below before attempting
+	// their data migration; otherwise the column probe itself emits an SQL
+	// error on every poller invocation.
+	if (syslog_db_table_exists('syslog_dashboards', false) && syslog_db_column_exists('syslog_dashboards', 'hash')) {
 		$dashboards = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_dashboards
 			WHERE hash IS NULL OR hash = ""');
@@ -987,6 +999,36 @@ function syslog_check_upgrade(): void {
 	syslog_create_replication_output_table();
 	syslog_create_replication_receipts_table();
 	syslog_create_replication_recovery_table();
+	syslog_ensure_message_capacity();
+}
+
+/**
+ * Keep a consistent bounded message column across ingestion, the outbox, and history.
+ *
+ * VARCHAR(2048) matches the existing ingest contract without changing the
+ * storage characteristics of the high-volume archive tables.  This is
+ * deliberately type-aware: syslog_check_upgrade() runs from Cacti's
+ * configuration hook, so an ALTER is performed only when required.
+ */
+function syslog_ensure_message_capacity(): void {
+	global $syslogdb_default;
+
+	foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
+		if (!syslog_db_table_exists($table, false)) {
+			continue;
+		}
+
+		$type = syslog_db_fetch_cell_prepared(
+			'SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = \'message\'',
+			[$syslogdb_default, $table],
+			'',
+			false
+		);
+
+		if (strtolower((string) $type) !== 'varchar(2048)') {
+			syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN message VARCHAR(2048) NOT NULL DEFAULT ''");
+		}
+	}
 }
 
 /**
@@ -1108,7 +1150,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		program_id int(10) unsigned default NULL,
 		host_id int(10) unsigned default NULL,
 		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-		message varchar(1024) NOT NULL default '',
+		message varchar(2048) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		PRIMARY KEY(seq, logtime),
 		INDEX `seq` (`seq`),
@@ -1306,7 +1348,7 @@ function syslog_setup_table_new(array $options): void {
 		program varchar(40) default NULL,
 		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(64) default NULL,
-		message varchar(2048) NOT NULL DEFAULT '',
+		message varchar(2048) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
@@ -1343,7 +1385,7 @@ function syslog_setup_table_new(array $options): void {
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
 		method CHAR(5) DEFAULT 'del',
-		message TEXT NOT NULL,
+		message varchar(2048) NOT NULL default '',
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		notes varchar(255) default NULL,
@@ -2191,6 +2233,39 @@ function syslog_config_settings(): void {
 			'description'   => __('If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System.', 'syslog'),
 			'method'        => 'checkbox',
 			'default'       => ''
+		],
+		'syslog_replication_recovery_header' => [
+			'friendly_name' => __('Remote Syslog Recovery', 'syslog'),
+			'method'        => 'spacer',
+		],
+		'syslog_replication_recovery_records_per_run' => [
+			'friendly_name' => __('Maximum Recovery Records Per Execution', 'syslog'),
+			'description'   => __('Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '2000',
+			'array'         => [
+				'500'   => __('%d Records', 500, 'syslog'),
+				'1000'  => __('%d Records', 1000, 'syslog'),
+				'2000'  => __('%d Records', 2000, 'syslog'),
+				'3000'  => __('%d Records', 3000, 'syslog'),
+				'5000'  => __('%d Records', 5000, 'syslog'),
+				'10000' => __('%d Records', 10000, 'syslog')
+			]
+		],
+		'syslog_replication_recovery_batch_delay_ms' => [
+			'friendly_name' => __('Recovery Pause Between Batches', 'syslog'),
+			'description'   => __('Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '100',
+			'array'         => [
+				'0'    => __('No pause', 'syslog'),
+				'25'   => __('%d milliseconds', 25, 'syslog'),
+				'50'   => __('%d milliseconds', 50, 'syslog'),
+				'100'  => __('%d milliseconds', 100, 'syslog'),
+				'250'  => __('%d milliseconds', 250, 'syslog'),
+				'500'  => __('%d milliseconds', 500, 'syslog'),
+				'1000' => __('%d second', 1, 'syslog')
+			]
 		],
 	];
 
