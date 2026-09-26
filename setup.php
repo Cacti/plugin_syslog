@@ -986,6 +986,7 @@ function syslog_check_upgrade(): void {
 
 	syslog_create_replication_output_table();
 	syslog_create_replication_receipts_table();
+	syslog_create_replication_recovery_table();
 }
 
 /**
@@ -1043,6 +1044,22 @@ function syslog_create_replication_receipts_table(): void {
 		`accepted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		PRIMARY KEY (`source_poller_id`, `source_event_id`),
 		KEY `accepted_at` (`accepted_at`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+}
+
+/** Create the plugin-owned, expiring local recovery-worker lease table. */
+function syslog_create_replication_recovery_table(): void {
+	global $syslogdb_default;
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_replication_recovery` (
+		`name` varchar(32) NOT NULL,
+		`owner_token` char(32) NOT NULL,
+		`acquired_at` int(10) unsigned NOT NULL,
+		`heartbeat_at` int(10) unsigned NOT NULL,
+		`pid` int(10) unsigned NOT NULL DEFAULT '0',
+		PRIMARY KEY (`name`),
+		KEY `heartbeat_at` (`heartbeat_at`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 }

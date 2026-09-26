@@ -702,6 +702,22 @@ function syslog_status(): void {
 					?>
 				</dl>
 			</section>
+			<?php $replication = syslog_replication_operational_status(); ?>
+			<?php if (!empty($replication['enabled'])) { ?>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_replication">
+				<h2 id="syslog_status_replication" class="syslogStatusHeading ui-widget-header"><?php print __esc('Distributed synchronization', 'syslog'); ?></h2>
+				<dl class="syslogStatusTimings">
+				<?php foreach ([
+					__('State', 'syslog') => strtoupper((string) $replication['state']),
+					__('Pending events', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
+					__('Oldest pending', 'syslog') => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
+					__('Last successful synchronization', 'syslog') => syslog_status_format_time((string) $replication['last_success']),
+					__('Recovery worker', 'syslog') => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),
+					__('Last synchronization error', 'syslog') => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
+				] as $label => $value) { print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape((string) $value) . '</dd></div>'; } ?>
+				</dl>
+			</section>
+			<?php } ?>
 			<section class="syslogStatusRun" aria-labelledby="syslog_status_storage">
 				<h2 id="syslog_status_storage" class="syslogStatusHeading ui-widget-header"><?php print __esc('Storage and retention', 'syslog'); ?></h2>
 				<dl class="syslogStatusTimings syslogStatusStorage">
