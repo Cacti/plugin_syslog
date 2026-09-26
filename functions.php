@@ -5404,6 +5404,46 @@ function syslog_replication_is_enabled(): bool {
 		&& read_config_option('syslog_remote_enabled') === 'on';
 }
 
+/** Whether an administrator opted into persistent remote history. */
+function syslog_remote_store_records(): bool {
+	return read_config_option('syslog_remote_store_records') === 'on';
+}
+
+/**
+ * Retain a local history copy only while the Main Collector cannot accept it.
+ *
+ * This keeps remote search available through an outage without maintaining a
+ * second permanent copy after successful central delivery.
+ */
+function syslog_replication_should_retain_local_history(): bool {
+	return syslog_replication_is_enabled()
+		&& !syslog_remote_store_records()
+		&& !syslog_replication_delivery_is_online();
+}
+
+/** Remove only locally retained outage copies after central receipt. */
+function syslog_replication_cleanup_local_history(array $events): bool {
+	global $syslogdb_default;
+
+	if (syslog_remote_store_records()) {
+		return true;
+	}
+
+	$clauses = [];
+	$params  = [];
+	foreach ($events as $event) {
+		if (($event['disposition'] ?? '') !== 'syslog') {
+			continue;
+		}
+
+		$clauses[] = '(replication_source_poller_id = ? AND replication_source_event_id = ?)';
+		$params[]  = (int) $event['source_poller_id'];
+		$params[]  = (int) $event['source_event_id'];
+	}
+
+	return empty($clauses) || syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog` WHERE " . implode(' OR ', $clauses), $params);
+}
+
 /**
  * Add a portable incoming event to the plugin-owned outbox.  Callers run
  * this inside the same transaction as the local archival disposition.
@@ -5804,6 +5844,12 @@ function syslog_replication_deliver_online(): int {
 		return 0;
 	}
 
+	if (!syslog_replication_cleanup_local_history($events)) {
+		syslog_replication_record_error('Unable to remove temporary local history after central delivery');
+		cacti_log('SYSLOG ERROR: Main Collector accepted replication batch but temporary local history cleanup failed; retry is safe', false, 'SYSLOG');
+		return 0;
+	}
+
 	$clauses = [];
 	$params  = [];
 	foreach ($events as $event) {
@@ -5845,7 +5891,7 @@ function syslog_replication_deliver_online(): int {
  * @return array Array with the number of rows moved and stale rows deleted
  */
 function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
-	global $syslogdb_default, $syslog_cnn;
+	global $config, $syslogdb_default, $syslog_cnn;
 
 	$slice_where = '';
 	$slice_param = [];
@@ -5875,7 +5921,28 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		}
 	}
 
-	$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
+	$retain_local_history = syslog_replication_should_retain_local_history();
+	if ($retain_local_history) {
+		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
+			(logtime, priority_id, facility_id, program_id, host_id, message, replication_source_poller_id, replication_source_event_id)
+			SELECT logtime, priority_id, facility_id, program_id, host_id, message, replication_source_poller_id, replication_source_event_id
+			FROM (
+				SELECT logtime, priority_id, facility_id, sp.program_id, sh.host_id, message,
+					? AS replication_source_poller_id, si.seq AS replication_source_event_id
+				FROM syslog_incoming AS si
+				INNER JOIN syslog_hosts AS sh
+				ON sh.host = si.host
+				INNER JOIN syslog_programs AS sp
+				ON sp.program = si.program
+				WHERE si.`status` = 1
+				AND si.`seq` <= ?
+				$slice_where
+			) AS merge",
+			array_merge([(int) $config['poller_id'], $max_seq], $slice_param));
+	} elseif (syslog_replication_is_enabled() && !syslog_remote_store_records()) {
+		$archived = true;
+	} else {
+		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
 		(logtime, priority_id, facility_id, program_id, host_id, message)
 		SELECT logtime, priority_id, facility_id, program_id, host_id, message
 		FROM (
@@ -5890,6 +5957,7 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 			$slice_where
 		) AS merge",
 		array_merge([$max_seq], $slice_param));
+	}
 
 	if (!$archived) {
 		if ($replication_transaction) {
@@ -5901,7 +5969,9 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		return ['moved' => 0, 'stale' => 0];
 	}
 
-	$moved = db_affected_rows($syslog_cnn);
+	$moved = $retain_local_history || !syslog_replication_is_enabled() || syslog_remote_store_records()
+		? db_affected_rows($syslog_cnn)
+		: 0;
 
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Moving or Removing Processed Records');

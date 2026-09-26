@@ -987,6 +987,7 @@ function syslog_check_upgrade(): void {
 	syslog_create_replication_receipts_table();
 	syslog_create_replication_recovery_table();
 	syslog_ensure_message_capacity();
+	syslog_ensure_replication_history_columns();
 }
 
 /**
@@ -1016,6 +1017,40 @@ function syslog_ensure_message_capacity(): void {
 			syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN message VARCHAR(2048) NOT NULL DEFAULT ''");
 		}
 	}
+}
+
+/**
+ * Add an immutable remote-event identity to locally retained history.
+ *
+ * A remote collector uses these nullable columns only while the Main
+ * Collector is unavailable and "Store records on remote collector" is off.
+ * They let recovery remove exactly the temporary local copies after central
+ * receipt, without risking removal of otherwise identical log messages.
+ *
+ * @return void
+ */
+function syslog_ensure_replication_history_columns(): void {
+	global $syslogdb_default;
+
+	if (!syslog_db_table_exists('syslog', false)
+		|| syslog_db_column_exists('syslog', 'replication_source_event_id', false)) {
+		return;
+	}
+
+	syslog_db_add_column('syslog', [
+		'name'     => 'replication_source_poller_id',
+		'type'     => 'int(10) unsigned',
+		'NULL'     => true,
+		'after'    => 'seq'
+	]);
+	syslog_db_add_column('syslog', [
+		'name'     => 'replication_source_event_id',
+		'type'     => 'bigint unsigned',
+		'NULL'     => true,
+		'after'    => 'replication_source_poller_id'
+	]);
+	syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog`
+		ADD KEY `replication_source` (`replication_source_poller_id`, `replication_source_event_id`)");
 }
 
 /**
@@ -1139,8 +1174,11 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 		message varchar(2048) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
+		replication_source_poller_id int(10) unsigned default NULL,
+		replication_source_event_id bigint unsigned default NULL,
 		PRIMARY KEY(seq, logtime),
 		INDEX `seq` (`seq`),
+		INDEX `replication_source` (`replication_source_poller_id`, `replication_source_event_id`),
 		INDEX logtime (logtime),
 		INDEX program_id (program_id),
 		INDEX host_id (host_id),
@@ -2218,6 +2256,12 @@ function syslog_config_settings(): void {
 		'syslog_remote_sync_rules' => [
 			'friendly_name' => __('Remote Data Collector Rules Sync', 'syslog'),
 			'description'   => __('If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System.', 'syslog'),
+			'method'        => 'checkbox',
+			'default'       => ''
+		],
+		'syslog_remote_store_records' => [
+			'friendly_name' => __('Store Records on Remote Collector', 'syslog'),
+			'description'   => __('Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery.', 'syslog'),
 			'method'        => 'checkbox',
 			'default'       => ''
 		],

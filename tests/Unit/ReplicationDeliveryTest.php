@@ -32,6 +32,58 @@ it('delivers an exact remote outbox batch through the central receipt transactio
         ->toContain('COMMIT');
 });
 
+it('removes only temporary remote syslog copies after confirmed central delivery', function () {
+    $GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
+    $GLOBALS['remote_db_cnn_id'] = new stdClass();
+    $GLOBALS['syslog_cnn'] = new stdClass();
+    $GLOBALS['syslogdb_default'] = 'cacti';
+    $calls = [];
+
+    test_override('read_config_option', fn ($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
+    test_override('syslog_db_fetch_assoc', fn () => [[
+        'source_poller_id' => 2, 'source_event_id' => 100, 'facility_id' => 16,
+        'priority_id' => 6, 'program' => 'app', 'logtime_epoch' => 1758801600,
+        'host' => 'remote-host', 'message' => 'hello', 'disposition' => 'syslog',
+    ]]);
+    test_override('db_execute', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
+    test_override('db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
+    test_override('db_affected_rows', fn () => 1);
+
+    syslog_load_plugin_source('functions.php');
+
+    expect(syslog_replication_deliver_online())->toBe(1)
+        ->and(implode("\n", $calls))->toContain('DELETE FROM `cacti`.`syslog` WHERE')
+        ->toContain('replication_source_event_id')
+        ->toContain('DELETE FROM `cacti`.`syslog_replication_output`');
+});
+
+it('keeps remote records locally only while Main Collector delivery is unavailable by default', function () {
+    $GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'offline'];
+    $GLOBALS['remote_db_cnn_id'] = new stdClass();
+    test_override('read_config_option', fn ($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
+    syslog_load_plugin_source('functions.php');
+
+    expect(syslog_remote_store_records())->toBeFalse()
+        ->and(syslog_replication_should_retain_local_history())->toBeTrue();
+
+    $GLOBALS['config']['connection'] = 'online';
+    expect(syslog_replication_should_retain_local_history())->toBeFalse();
+});
+
+it('preserves remote history when the administrator enables Store Records', function () {
+    $GLOBALS['syslogdb_default'] = 'cacti';
+    $calls = [];
+    test_override('read_config_option', fn ($name) => $name === 'syslog_remote_store_records' ? 'on' : '');
+    test_override('syslog_db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
+    syslog_load_plugin_source('functions.php');
+
+    expect(syslog_remote_store_records())->toBeTrue()
+        ->and(syslog_replication_cleanup_local_history([[
+            'source_poller_id' => 2, 'source_event_id' => 100, 'disposition' => 'syslog',
+        ]]))->toBeTrue()
+        ->and($calls)->toBeEmpty();
+});
+
 it('treats an existing central receipt as an acknowledged retry without rearchiving', function () {
     $GLOBALS['syslogdb_default'] = 'cacti';
     $central = new stdClass();
