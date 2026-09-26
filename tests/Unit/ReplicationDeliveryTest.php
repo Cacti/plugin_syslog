@@ -15,7 +15,7 @@ it('delivers an exact remote outbox batch through the central receipt transactio
     test_override('read_config_option', fn ($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
     test_override('syslog_db_fetch_assoc', fn () => [[
         'source_poller_id' => 2, 'source_event_id' => 100, 'facility_id' => 16,
-        'priority_id' => 6, 'program' => 'app', 'logtime' => '2026-09-25 12:00:00',
+        'priority_id' => 6, 'program' => 'app', 'logtime' => '2026-09-25 12:00:00', 'logtime_epoch' => 1758801600,
         'host' => 'remote-host', 'message' => 'hello', 'disposition' => 'syslog',
     ]]);
     test_override('db_execute', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
@@ -145,6 +145,8 @@ it('keeps recovery bounded and delegates batch delivery to the Phase 2 primitive
     expect($source)->toContain('syslog_replication_recovery_records_per_run()')
         ->toContain('syslog_replication_recovery_batch_delay_us()')
         ->toContain('syslog_replication_deliver_online()')
+        ->toContain('UNIX_TIMESTAMP(logtime) AS logtime_epoch')
+        ->toContain('FROM_UNIXTIME(?)')
         ->toContain('ORDER BY created_at ASC, source_poller_id ASC, source_event_id ASC');
 });
 

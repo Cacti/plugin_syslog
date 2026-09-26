@@ -5747,11 +5747,11 @@ function syslog_replication_accept_central(array $event, $central): bool {
 	$table = $event['disposition']; // validated fixed identifiers, never caller SQL
 	return db_execute_prepared("INSERT INTO `$syslogdb_default`.`$table`
 		(logtime, priority_id, facility_id, program_id, host_id, message)
-		SELECT ?, ?, ?, sp.program_id, sh.host_id, ?
+		SELECT FROM_UNIXTIME(?), ?, ?, sp.program_id, sh.host_id, ?
 		FROM `$syslogdb_default`.`syslog_programs` AS sp
 		INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 		WHERE sp.program = ? AND sh.host = ?",
-		[$event['logtime'], $event['priority_id'], $event['facility_id'], $event['message'], $event['program'], $event['host']], true, $central);
+		[$event['logtime_epoch'], $event['priority_id'], $event['facility_id'], $event['message'], $event['program'], $event['host']], true, $central);
 }
 
 /**
@@ -5768,7 +5768,8 @@ function syslog_replication_deliver_online(): int {
 		return 0;
 	}
 
-	$events = syslog_db_fetch_assoc("SELECT source_poller_id, source_event_id, facility_id, priority_id, program, logtime, host, message, disposition
+	$events = syslog_db_fetch_assoc("SELECT source_poller_id, source_event_id, facility_id, priority_id, program,
+		UNIX_TIMESTAMP(logtime) AS logtime_epoch, host, message, disposition
 		FROM `$syslogdb_default`.`syslog_replication_output`
 		ORDER BY created_at ASC, source_poller_id ASC, source_event_id ASC
 		LIMIT " . SYSLOG_REPLICATION_BATCH_SIZE);
