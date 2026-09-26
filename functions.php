@@ -5505,6 +5505,27 @@ function syslog_replication_operational_status(): array {
 	];
 }
 
+/**
+ * Read the latest accepted batch for every remote collector on the Main
+ * Collector. The summary table is updated within the central receipt
+ * transaction, avoiding historical syslog-table scans on the Status tab.
+ *
+ * @return array<int,array<string,mixed>>
+ */
+function syslog_replication_collector_status(): array {
+	global $config, $syslogdb_default;
+
+	if (!isset($config['poller_id']) || (int) $config['poller_id'] !== 1
+		|| !syslog_db_table_exists('syslog_replication_collectors', false)) {
+		return [];
+	}
+
+	return syslog_db_fetch_assoc("SELECT source_poller_id, last_batch_count,
+		UNIX_TIMESTAMP(last_received) AS last_received
+		FROM `$syslogdb_default`.`syslog_replication_collectors`
+		ORDER BY last_received DESC, source_poller_id ASC", false);
+}
+
 /** Conservative online delivery limit. Payloads may contain 2KiB messages. */
 if (!defined('SYSLOG_REPLICATION_BATCH_SIZE')) {
 	define('SYSLOG_REPLICATION_BATCH_SIZE', 100);
@@ -5779,6 +5800,17 @@ function syslog_replication_accept_central(array $event, $central): bool {
 		return true;
 	}
 
+	if (!db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_replication_collectors`
+		(source_poller_id, last_batch_id, last_batch_count, last_received)
+		VALUES (?, ?, 1, NOW())
+		ON DUPLICATE KEY UPDATE
+			last_batch_count = IF(last_batch_id = VALUES(last_batch_id), last_batch_count + 1, 1),
+			last_batch_id = VALUES(last_batch_id),
+			last_received = VALUES(last_received)",
+		[(int) $event['source_poller_id'], (string) $event['delivery_batch_id']], true, $central)) {
+		return false;
+	}
+
 	if (!db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_programs` (program, last_updated)
 		VALUES (?, NOW()) ON DUPLICATE KEY UPDATE last_updated = VALUES(last_updated)", [$event['program']], true, $central)
 		|| !db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_hosts` (host, last_updated)
@@ -5818,6 +5850,12 @@ function syslog_replication_deliver_online(): int {
 	if (empty($events)) {
 		return 0;
 	}
+
+	$batch_id = bin2hex(random_bytes(16));
+	foreach ($events as &$event) {
+		$event['delivery_batch_id'] = $batch_id;
+	}
+	unset($event);
 
 	if (!db_execute('START TRANSACTION', true, $remote_db_cnn_id)) {
 		syslog_replication_mark_connection_failure();

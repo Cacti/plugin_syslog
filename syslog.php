@@ -667,6 +667,8 @@ function syslog_status_format_partition_progress(string $value): string {
  * @return void
  */
 function syslog_status(): void {
+	global $config;
+
 	$status = syslog_status_get();
 
 	$worker_stats = syslog_worker_stats_get();
@@ -716,6 +718,30 @@ function syslog_status(): void {
 					__('Last synchronization error', 'syslog') => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
 				] as $label => $value) { print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape((string) $value) . '</dd></div>'; } ?>
 				</dl>
+			</section>
+			<?php } ?>
+			<?php if (isset($config['poller_id']) && (int) $config['poller_id'] === 1) { ?>
+			<?php $remote_collectors = syslog_replication_collector_status(); ?>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_remote_collectors">
+				<h2 id="syslog_status_remote_collectors" class="syslogStatusHeading ui-widget-header"><?php print __esc('Remote collector receipts', 'syslog'); ?></h2>
+				<table class="syslogStatusWorkers" aria-labelledby="syslog_status_remote_collectors">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Remote Poller', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Last Batch Count', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Last Record Received', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php if (cacti_sizeof($remote_collectors)) { foreach ($remote_collectors as $collector) { ?>
+						<tr>
+							<th scope="row"><?php print html_escape(sprintf(__('Poller #%d', 'syslog'), (int) $collector['source_poller_id'])); ?></th>
+							<td><?php print html_escape(number_format((int) $collector['last_batch_count'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_time((string) $collector['last_received'])); ?></td>
+						</tr>
+					<?php } } else { ?>
+						<tr><td colspan="3" class="syslogStatusWorkersEmpty"><?php print __esc('No remote collector records have been received yet.', 'syslog'); ?></td></tr>
+					<?php } ?>
+					</tbody>
+				</table>
 			</section>
 			<?php } ?>
 			<section class="syslogStatusRun" aria-labelledby="syslog_status_storage">

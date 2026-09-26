@@ -27,9 +27,25 @@ it('delivers an exact remote outbox batch through the central receipt transactio
     expect(syslog_replication_deliver_online())->toBe(1)
         ->and(implode("\n", $calls))->toContain('START TRANSACTION')
         ->toContain('syslog_replication_receipts')
+		->toContain('syslog_replication_collectors')
         ->toContain('INSERT INTO `cacti`.`syslog`')
         ->toContain('DELETE FROM `cacti`.`syslog_replication_output`')
         ->toContain('COMMIT');
+});
+
+it('reads main collector remote receipt telemetry without scanning syslog history', function () {
+    $GLOBALS['config'] = ['poller_id' => 1];
+    $GLOBALS['syslogdb_default'] = 'cacti';
+    $sql = '';
+    test_override('syslog_db_table_exists', fn ($table) => $table === 'syslog_replication_collectors');
+    test_override('syslog_db_fetch_assoc', function ($statement) use (&$sql) { $sql = $statement; return [[
+        'source_poller_id' => 2, 'last_batch_count' => 100, 'last_received' => 1758801600,
+    ]]; });
+    syslog_load_plugin_source('functions.php');
+
+    expect(syslog_replication_collector_status())->toHaveCount(1)
+        ->and($sql)->toContain('syslog_replication_collectors')
+        ->not->toContain('`.`syslog`');
 });
 
 it('removes only temporary remote syslog copies after confirmed central delivery', function () {

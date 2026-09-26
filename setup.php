@@ -985,6 +985,7 @@ function syslog_check_upgrade(): void {
 
 	syslog_create_replication_output_table();
 	syslog_create_replication_receipts_table();
+	syslog_create_replication_collectors_table();
 	syslog_create_replication_recovery_table();
 	syslog_ensure_message_capacity();
 	syslog_ensure_replication_history_columns();
@@ -1108,6 +1109,25 @@ function syslog_create_replication_receipts_table(): void {
 		`accepted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		PRIMARY KEY (`source_poller_id`, `source_event_id`),
 		KEY `accepted_at` (`accepted_at`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic");
+}
+
+/** Create main-collector telemetry for the latest batch from each remote poller. */
+function syslog_create_replication_collectors_table(): void {
+	global $config, $syslogdb_default;
+
+	if (isset($config['poller_id']) && (int) $config['poller_id'] > 1) {
+		return;
+	}
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_replication_collectors` (
+		`source_poller_id` int(10) unsigned NOT NULL,
+		`last_batch_id` char(32) NOT NULL,
+		`last_batch_count` int(10) unsigned NOT NULL DEFAULT '0',
+		`last_received` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		PRIMARY KEY (`source_poller_id`),
+		KEY `last_received` (`last_received`))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 }
