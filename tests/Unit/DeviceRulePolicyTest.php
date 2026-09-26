@@ -41,3 +41,11 @@ it('keeps global maintenance closed unless a device rule explicitly permits a pr
 	expect($inactive['sql'])->not->toContain('AND EXISTS')
 		->toContain('AND NOT EXISTS');
 });
+
+it('creates and replicates device rules for remote collectors', function () {
+	$setup = plugin_test_read_source('setup.php');
+
+	expect($setup)->toContain('CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule`')
+		->toContain("replicate_out_table(\$rcnn_id, \$tdata, 'syslog_device_rule', \$remote_poller_id)")
+		->toContain('syslog_create_device_rule_table();');
+});

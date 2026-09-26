@@ -251,6 +251,9 @@ function device_rule_list(): void {
 	$page = max(1, (int) get_request_var('page'));
 	$offset = ($page - 1) * $rows;
 	$rules = syslog_db_fetch_assoc_prepared("SELECT * FROM `$syslogdb_default`.`syslog_device_rule` $sql_where ORDER BY host LIMIT $offset, $rows", $sql_params);
+	if (!is_array($rules)) {
+		$rules = [];
+	}
 	$nav = html_nav_bar('syslog_device_rules.php?filter=' . urlencode(get_request_var('filter')) . '&enabled=' . get_request_var('enabled') . '&rows=' . $rows, MAX_DISPLAY_PAGES, $page, $rows, $total_rows, 4, __('Rules', 'syslog'), 'page', 'main');
 	form_start('syslog_device_rules.php', 'chk');
 	print $nav;
