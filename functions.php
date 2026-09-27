@@ -1427,6 +1427,11 @@ function syslog_status_get(): array {
 		'total_delete_rules_processed' => '',
 		'last_alert_rules_fired'       => '',
 		'last_delete_rules_fired'      => '',
+		'partition_maintenance_last_attempt' => '',
+		'partition_maintenance_last_success' => '',
+		'partition_maintenance_outcome'      => '',
+		'partition_recovery_progress'        => '',
+		'partition_maintenance_history'      => '',
 	];
 
 	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
@@ -1447,7 +1452,12 @@ function syslog_status_get(): array {
 			'last_delete_rules_processed',
 			'total_delete_rules_processed',
 			'last_alert_rules_fired',
-			'last_delete_rules_fired'
+			'last_delete_rules_fired',
+			'partition_maintenance_last_attempt',
+			'partition_maintenance_last_success',
+			'partition_maintenance_outcome',
+			'partition_recovery_progress',
+			'partition_maintenance_history'
 		)");
 
 	foreach ($rows as $row) {
@@ -1664,6 +1674,122 @@ function syslog_partition_blocked_state(): array {
 }
 
 /**
+ * Return live partition coverage and dMaxValue occupancy for the Status tab.
+ * TABLE_ROWS is an engine estimate, so callers must not present it as an exact
+ * count. This is read-only and safe to call while maintenance is blocked.
+ *
+ * @return array<string, array{coverage_start:string,coverage_end:string,partitions:int,dmax_rows:int|float|null,dmax_bytes:int|float|null}>
+ */
+function syslog_partition_observability(): array {
+	global $syslogdb_default;
+
+	$observability = [];
+
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		$observability[$table] = [
+			'coverage_start' => '',
+			'coverage_end'   => '',
+			'partitions'     => 0,
+			'dmax_rows'      => null,
+			'dmax_bytes'     => null
+		];
+
+		$rows = syslog_db_fetch_assoc_prepared('SELECT partition_name, table_rows, data_length, index_length
+			FROM information_schema.PARTITIONS
+			WHERE table_schema = ? AND table_name = ?
+			ORDER BY partition_ordinal_position',
+			[$syslogdb_default, $table]);
+
+		if (!is_array($rows)) {
+			continue;
+		}
+
+		$dates = [];
+
+		foreach ($rows as $row) {
+			$name = (string) ($row['partition_name'] ?? $row['PARTITION_NAME'] ?? '');
+
+			if (preg_match('/^d(\d{8})$/', $name, $matches) === 1) {
+				$dates[] = $matches[1];
+			}
+
+			if ($name !== 'dMaxValue') {
+				continue;
+			}
+
+			$dmax_rows = $row['table_rows'] ?? $row['TABLE_ROWS'] ?? null;
+			$data       = $row['data_length'] ?? $row['DATA_LENGTH'] ?? null;
+			$index      = $row['index_length'] ?? $row['INDEX_LENGTH'] ?? null;
+
+			$observability[$table]['dmax_rows']  = is_numeric($dmax_rows) ? $dmax_rows + 0 : null;
+			$observability[$table]['dmax_bytes'] = is_numeric($data) && is_numeric($index) ? $data + $index : null;
+		}
+
+		sort($dates, SORT_STRING);
+		$observability[$table]['partitions']     = count($dates);
+		$observability[$table]['coverage_start'] = $dates[0] ?? '';
+		$observability[$table]['coverage_end']   = $dates[count($dates) - 1] ?? '';
+	}
+
+	return $observability;
+}
+
+/**
+ * Persist the latest partition-maintenance outcome and a bounded history.
+ *
+ * @param bool                 $successful True when both tables reached the configured horizon.
+ * @param array<string, array> $recovery   Per-table syslog_partition_recover() results.
+ * @param int                  $pruned     Partitions pruned in this run.
+ * @param string               $reason     Failure or deferral reason.
+ *
+ * @return void
+ */
+function syslog_partition_maintenance_record(bool $successful, array $recovery, int $pruned, string $reason = ''): void {
+	$status   = syslog_status_get();
+	$now      = time();
+	$created  = 0;
+	$missing  = 0;
+	$progress = [];
+
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		$state         = is_array($recovery[$table] ?? null) ? $recovery[$table] : [];
+		$table_created = isset($state['created']) && is_numeric($state['created']) ? (int) $state['created'] : 0;
+		$table_missing = isset($state['missing']) && is_numeric($state['missing']) ? (int) $state['missing'] : 0;
+
+		$created += $table_created;
+		$missing += $table_missing;
+		$progress[$table] = [
+			'created'   => $table_created,
+			'missing'   => $table_missing,
+			'deferred'  => !empty($state['retention_deferred']),
+			'dmax_risk' => !empty($state['dmax_risk'])
+		];
+	}
+
+	$event = [
+		'time'       => $now,
+		'successful' => $successful,
+		'created'    => $created,
+		'missing'    => $missing,
+		'pruned'     => $pruned,
+		'reason'     => $reason
+	];
+	$history = json_decode($status['partition_maintenance_history'] ?? '', true);
+	$history = is_array($history) ? $history : [];
+	$history[] = $event;
+	$history = array_slice($history, -10);
+
+	syslog_status_set('partition_maintenance_last_attempt', $now);
+	syslog_status_set('partition_maintenance_outcome', $successful ? 'success' : 'deferred');
+	syslog_status_set('partition_recovery_progress', (string) json_encode($progress));
+	syslog_status_set('partition_maintenance_history', (string) json_encode($history));
+
+	if ($successful) {
+		syslog_status_set('partition_maintenance_last_success', $now);
+	}
+}
+
+/**
  * syslog_partition_manage - Manage the partitions for both syslog tables.
  *
  * The run is fail-safe: when syslog_partition_report_state() reports an
@@ -1683,6 +1809,7 @@ function syslog_partition_blocked_state(): array {
 function syslog_partition_manage(): int {
 	$syslog_deleted = 0;
 	$ahead_days     = syslog_partition_ahead_days();
+	syslog_status_set('partition_maintenance_last_attempt', time());
 
 	// Always create partitions ahead of time to avoid midnight races.
 	$base_time = time() + 7200;
@@ -1696,6 +1823,7 @@ function syslog_partition_manage(): int {
 
 			syslog_status_set('partition_maintenance_blocked', 1);
 			syslog_status_set('partition_maintenance_reason', $reason);
+			syslog_partition_maintenance_record(false, [], 0, $reason);
 
 			return 0;
 		}
@@ -1722,6 +1850,7 @@ function syslog_partition_manage(): int {
 		// All partitions for both tables are healthy; clear any block.
 		syslog_status_set('partition_maintenance_blocked', 0);
 		syslog_status_set('partition_maintenance_reason', '');
+		syslog_partition_maintenance_record(true, ['syslog' => $recovery, 'syslog_removed' => $recovery2], $recovery_removed + $recovery2_removed);
 
 		return $recovery_removed + $recovery2_removed;
 	}
@@ -1746,6 +1875,7 @@ function syslog_partition_manage(): int {
 
 	syslog_status_set('partition_maintenance_blocked', 1);
 	syslog_status_set('partition_maintenance_reason', $reason);
+	syslog_partition_maintenance_record(false, ['syslog' => $recovery, 'syslog_removed' => $recovery2], $recovery_removed + $recovery2_removed, $reason);
 
 	return $recovery_removed + $recovery2_removed;
 }

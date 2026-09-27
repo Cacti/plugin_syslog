@@ -20,13 +20,13 @@
 it('keeps syslog partition table locking and DDL identifiers safe', function () {
 	$functions = plugin_test_read_source('functions.php');
 
-	// All four information_schema queries must be prepared statements
+	// All five information_schema queries must be prepared statements
 	// scoped to the requested table via a placeholder. Match only calls
 	// whose first argument contains 'information_schema' to exclude the
 	// GET_LOCK / RELEASE_LOCK uses of syslog_db_fetch_cell_prepared.
 	$partition_query_count = preg_match_all('/syslog_db_fetch_(?:row|assoc|cell)_prepared\s*\([^)]*information_schema/', $functions);
 
-	if ($partition_query_count === false || $partition_query_count !== 4) {
+	if ($partition_query_count === false || $partition_query_count !== 5) {
 		throw new RuntimeException('Partition queries are not consistently scoped to the requested table.');
 	}
 
