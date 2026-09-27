@@ -379,7 +379,9 @@ if (!function_exists('html_escape')) {
 
 if (!function_exists('__')) {
 	function __($text, ...$args) {
-		return test_call_override('__', array_merge([$text], $args), $text);
+		/* Match Cacti core: substitute sprintf placeholders and ignore the
+		 * trailing text-domain argument, so translated text is testable. */
+		return test_call_override('__', array_merge([$text], $args), $args ? vsprintf($text, $args) : $text);
 	}
 }
 
