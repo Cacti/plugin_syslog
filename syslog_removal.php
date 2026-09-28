@@ -51,7 +51,7 @@ if (get_request_var('action') == 'test') {
 	exit;
 }
 
-if (isset_request_var('import') && syslog_allow_edits()) {
+if (isset_request_var('import') && syslog_allow_rule_edits()) {
 	set_request_var('action', 'import');
 }
 
@@ -69,6 +69,10 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'import':
+		if (!syslog_allow_rule_edits()) {
+			die(__('Permission denied.', 'syslog'));
+		}
+
 		top_header();
 		syslog_include_js();
 		import();
@@ -110,6 +114,10 @@ switch (get_request_var('action')) {
  * @return void
  */
 function form_save(): void {
+	if (!syslog_allow_rule_edits()) {
+		die(__('Permission denied.', 'syslog'));
+	}
+
 	if ((isset_request_var('save_component_removal')) && (isempty_request_var('add_dq_y'))) {
 		$removalid = api_syslog_removal_save(get_filter_request_var('id'), get_nfilter_request_var('name'),
 			get_nfilter_request_var('type'), get_nfilter_request_var('message'),
@@ -135,6 +143,10 @@ function form_save(): void {
 function form_actions(): void {
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 	global $syslogdb_default;
+
+	if (!syslog_allow_rule_edits()) {
+		die(__('Permission denied.', 'syslog'));
+	}
 
 	get_filter_request_var('drp_action', FILTER_VALIDATE_REGEXP,
 		['options' => ['regexp' => '/^([a-zA-Z0-9_]+)$/']]);
@@ -662,9 +674,11 @@ function syslog_action_edit(): void {
 
 	html_end_box();
 
-	form_save_button('syslog_removal.php', '', 'id');
+	if (syslog_allow_rule_edits()) {
+		form_save_button('syslog_removal.php', '', 'id');
+	}
 
-	if (syslog_allow_edits()) {
+	if (syslog_allow_rule_edits()) {
 		print "<input id='syslog_rule_test' class='ui-button ui-corner-all ui-widget' type='button' value='" . __esc('Test rule', 'syslog') . "'>";
 		print "<div id='syslog_rule_test_dialog' style='display:none;' title='" . __esc('Rule Test Preview', 'syslog') . "'></div>";
 	}
@@ -672,7 +686,7 @@ function syslog_action_edit(): void {
 	?>
 	<script type='text/javascript'>
 
-	var allowEdits=<?php print syslog_allow_edits() ? 'true' : 'false'; ?>;
+	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
 	var removalFilterBuilder;
 	var removalFilterConfig = {
 		fields: <?php print syslog_json_safe([
@@ -842,7 +856,7 @@ function syslog_removal_filter(): void {
 						<span>
 							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
 							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'>
-							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
+							<?php if (syslog_allow_rule_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
 						</span>
 					</td>
 				</tr>
@@ -850,7 +864,7 @@ function syslog_removal_filter(): void {
 			<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 		</form>
 		<script type='text/javascript'>
-		initSyslogRemoval(<?php print syslog_allow_edits() ? 'true' : 'false'; ?>);
+		initSyslogRemoval(<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>);
 		</script>
 		</td>
 	</tr>
@@ -906,7 +920,7 @@ function syslog_removal(): void {
 	validate_store_request_vars($filters, 'sess_syslogr');
 	// ================= input validation =================
 
-	if (syslog_allow_edits()) {
+	if (syslog_allow_rule_edits()) {
 		$url = 'syslog_removal.php?action=edit&type=1';
 	} else {
 		$url = '';
@@ -1040,6 +1054,10 @@ function import(): void {
  * @return void
  */
 function removal_import(): void {
+	if (!syslog_allow_rule_edits()) {
+		die(__('Permission denied.', 'syslog'));
+	}
+
 	$import_data = syslog_get_import_xml_payload('syslog_removal.php');
 
 	// obtain debug information if it's set

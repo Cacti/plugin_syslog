@@ -23,12 +23,7 @@ it('builds rule-editor links only for permitted, valid main-table records', func
 
 	expect(syslog_message_rule_links(42, 'main', '2026-09-13 00:12:42'))->toBe([], 'Readers have no rule actions');
 
-	$allowed = ['syslog_alerts.php'];
-	$links = syslog_message_rule_links(42, 'main', '2026-09-13 00:12:42');
-
-	expect(isset($links['alarm']) && !isset($links['removal']))->toBeTrue('Each rule action checks its own realm');
-
-	$allowed[] = 'syslog_removal.php';
+	$allowed = ['syslog_alerts.php', 'syslog_removal.php', 'syslog_rule_administrator.php'];
 	$links = syslog_message_rule_links(43, 'main', '2026-09-13 00:12:42');
 
 	foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {

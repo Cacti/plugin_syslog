@@ -33,7 +33,7 @@ syslog_connect();
 
 set_default_action();
 
-if (isset_request_var('import') && syslog_allow_edits()) {
+if (isset_request_var('import') && syslog_allow_rule_edits()) {
 	set_request_var('action', 'import');
 }
 
@@ -51,6 +51,10 @@ switch (get_request_var('action')) {
 
 		break;
 	case 'import':
+		if (!syslog_allow_rule_edits()) {
+			die(__('Permission denied.', 'syslog'));
+		}
+
 		top_header();
 		syslog_include_js();
 		import();
@@ -87,6 +91,10 @@ switch (get_request_var('action')) {
  * @return void
  */
 function form_save(): void {
+	if (!syslog_allow_rule_edits()) {
+		die(__('Permission denied.', 'syslog'));
+	}
+
 	if ((isset_request_var('save_component_report')) && (isempty_request_var('add_dq_y'))) {
 		$reportid = api_syslog_report_save(get_filter_request_var('id'), get_nfilter_request_var('name'),
 			get_nfilter_request_var('type'), get_nfilter_request_var('message'),
@@ -109,6 +117,10 @@ function form_save(): void {
  * @return void
  */
 function form_actions(): void {
+	if (!syslog_allow_rule_edits()) {
+		die(__('Permission denied.', 'syslog'));
+	}
+
 	global $config, $syslog_actions, $fields_syslog_action_edit;
 	global $syslogdb_default;
 
@@ -601,12 +613,14 @@ function syslog_action_edit(): void {
 
 	html_end_box();
 
-	form_save_button('syslog_reports.php', '', 'id');
+	if (syslog_allow_rule_edits()) {
+		form_save_button('syslog_reports.php', '', 'id');
+	}
 
 	?>
 	<script type='text/javascript'>
 
-	var allowEdits=<?php print syslog_allow_edits() ? 'true' : 'false'; ?>;
+	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
 	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
 
 	$(function() {
@@ -680,7 +694,7 @@ function syslog_reports_filter(): void {
 						<span>
 							<input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'>
 							<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'>
-							<?php if (syslog_allow_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
+							<?php if (syslog_allow_rule_edits()) {?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
 						</span>
 					</td>
 				</tr>
@@ -744,7 +758,7 @@ function syslog_report(): void {
 	validate_store_request_vars($filters, 'sess_syslogrep');
 	// ================= input validation =================
 
-	if (syslog_allow_edits()) {
+	if (syslog_allow_rule_edits()) {
 		$url = 'syslog_reports.php?action=edit&type=1';
 	} else {
 		$url = '';
@@ -882,6 +896,10 @@ function import(): void {
  * @return void
  */
 function report_import(): void {
+	if (!syslog_allow_rule_edits()) {
+		die(__('Permission denied.', 'syslog'));
+	}
+
 	$xml_data = syslog_get_import_xml_payload('syslog_reports.php?header=false');
 
 	// obtain debug information if it's set
