@@ -69,3 +69,5 @@ phpstan.neon
 phpstan-baseline.neon
 phpstan-stubs.php
 graphify-out/**
+locales/po/*.po
+locales/LC_MESSAGES/*.mo
