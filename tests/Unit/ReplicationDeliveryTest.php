@@ -39,12 +39,14 @@ it('reads main collector remote receipt telemetry without scanning syslog histor
     $sql = '';
     test_override('syslog_db_table_exists', fn ($table) => $table === 'syslog_replication_collectors');
     test_override('syslog_db_fetch_assoc', function ($statement) use (&$sql) { $sql = $statement; return [[
-        'source_poller_id' => 2, 'last_batch_count' => 100, 'last_received' => 1758801600,
+        'source_poller_id' => 2, 'hostname' => 'remote-poller.example.com', 'last_batch_count' => 100, 'last_received' => 1758801600,
     ]]; });
     syslog_load_plugin_source('functions.php');
 
     expect(syslog_replication_collector_status())->toHaveCount(1)
         ->and($sql)->toContain('syslog_replication_collectors')
+        ->toContain('LEFT JOIN poller AS p')
+        ->toContain('p.hostname')
         ->not->toContain('`.`syslog`');
 });
 
