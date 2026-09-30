@@ -733,7 +733,7 @@ function syslog_status(): void {
 					<tbody>
 					<?php if (cacti_sizeof($remote_collectors)) { foreach ($remote_collectors as $collector) { ?>
 						<tr>
-							<th scope="row"><?php print html_escape(sprintf(__('Poller #%d', 'syslog'), (int) $collector['source_poller_id'])); ?></th>
+							<th scope="row"><?php print html_escape(!empty($collector['hostname']) ? $collector['hostname'] : __('Unknown remote poller', 'syslog')); ?></th>
 							<td><?php print html_escape(number_format((int) $collector['last_batch_count'])); ?></td>
 							<td><?php print html_escape(syslog_status_format_time((string) $collector['last_received'])); ?></td>
 						</tr>

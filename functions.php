@@ -5520,10 +5520,12 @@ function syslog_replication_collector_status(): array {
 		return [];
 	}
 
-	return syslog_db_fetch_assoc("SELECT source_poller_id, last_batch_count,
-		UNIX_TIMESTAMP(last_received) AS last_received
-		FROM `$syslogdb_default`.`syslog_replication_collectors`
-		ORDER BY last_received DESC, source_poller_id ASC", false);
+	return syslog_db_fetch_assoc("SELECT rc.source_poller_id, p.hostname,
+		rc.last_batch_count, UNIX_TIMESTAMP(rc.last_received) AS last_received
+		FROM `$syslogdb_default`.`syslog_replication_collectors` AS rc
+		LEFT JOIN poller AS p
+		ON p.id = rc.source_poller_id
+		ORDER BY rc.last_received DESC, rc.source_poller_id ASC", false);
 }
 
 /** Conservative online delivery limit. Payloads may contain 2KiB messages. */
