@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-28 16:08-0400\n"
+"POT-Creation-Date: 2026-10-06 15:14-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,255 +17,292 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Syslog download"
 msgstr "Syslog kích hoạt"
 
-#: functions.php
+#: includes/functions.php
+msgid "Emergency"
+msgstr "Khẩn cấp"
+
+#: includes/functions.php setup.php
+msgid "Critical"
+msgstr "Chỉ trích"
+
+#: includes/functions.php
+msgid "Alert"
+msgstr "Cảnh báo"
+
+#: includes/functions.php
+msgid "Error"
+msgstr "Lỗi"
+
+#: includes/functions.php setup.php
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#: includes/functions.php setup.php
+msgid "Notice"
+msgstr "Thông báo"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Thông tin"
+
+#: includes/functions.php
+msgid "Debug"
+msgstr "Gỡ rối"
+
+#: includes/functions.php
+msgid "Informational"
+msgstr "Thông tin"
+
+#: includes/functions.php
 #, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "Lưu không thành công. Người thu thập dữ liệu từ xa ở Chế độ đồng bộ hóa không được phép Lưu quy tắc. Thay vào đó, hãy lưu từ Máy chủ Xương rồng Chính."
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "Vui lòng sử dụng ứng dụng email HTML"
 
-#: functions.php
+#: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d day(s)"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "no retention deferral"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "per run recovery limit reached"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "partition creation failed"
 msgstr "Bảng phân vùng"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule match type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule did not compile to a query."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview query could not be evaluated."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php setup.php
+#: includes/functions.php setup.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule has no match expression to test."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php
 msgid "Unknown"
 msgstr "Không xác định"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cảnh báo ngưỡng của Cacti Syslog ' %s'"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cảnh báo ngưỡng của Cacti Syslog ' %s'"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
 msgstr "Tên cảnh báo"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
 msgstr "Mức độ nghiêm trọng"
 
-#: functions.php syslog_alerts.php
+#: includes/functions.php syslog_alerts.php
 msgid "Threshold"
 msgstr "Ngưỡng"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Count"
 msgstr "Đếm"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Match String"
 msgstr "Chuỗi kết hợp"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cảnh báo ngưỡng của Cacti Syslog ' %s'"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Thông báo về plugin Cacti Syslog ' %s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname"
 msgstr "Tên máy chủ"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Date"
 msgstr "Ngày"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level"
 msgstr "Cấp độ"
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_removal.php syslog_saved_searches.php
 msgid "Message"
 msgstr "Tin nhắn"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "CẢNH BÁO: Thông báo Đếm Syslog Plugin Đã được kích hoạt"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "CẢNH BÁO: Thông báo Đếm Syslog Plugin Đã được kích hoạt"
 
-#: functions.php
+#: includes/functions.php
 msgid "Name:"
 msgstr "Tên:"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Severity:"
 msgstr "Mức độ nghiêm trọng"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Threshold:"
 msgstr "Ngưỡng"
 
-#: functions.php
+#: includes/functions.php
 msgid "Count:"
 msgstr "Đếm:"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Message String:"
 msgstr "Chuỗi tin nhắn:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname:"
 msgstr "Tên máy:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Date:"
 msgstr "Ngày:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level:"
 msgstr "Cấp độ:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message:"
 msgstr "Tin nhắn:"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid ", Host:"
 msgstr "Chủ:"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Sev:"
 msgstr "Thứ bảy:"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "Thông báo sự kiện - %s"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid ", Count:"
 msgstr "Đếm:"
 
-#: functions.php lib/syslog_dashboard.php syslog_alerts.php syslog_removal.php
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php
 msgid "Host"
 msgstr "Host"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "Báo cáo sự kiện - %s"
@@ -1155,6 +1192,49 @@ msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thông báo thu thập một cách độc lập, hãy chọn hộp kiểm này nếu bạn muốn các quy tắc Cảnh báo, Xóa và Báo cáo của Cơ sở dữ liệu Xương rồng Chính được gửi đến Hệ thống Xương rồng Từ xa."
 
+#: setup.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: setup.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+msgid "Remote Syslog Recovery"
+msgstr "Xóa báo cáo nhật ký hệ thống"
+
+#: setup.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: setup.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: setup.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: setup.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: setup.php
+msgid "No pause"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
 #: setup.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
 msgstr "Vô hiệu hóa"
@@ -1211,18 +1291,6 @@ msgstr "%d phút"
 #, php-format
 msgid "%d Minutes"
 msgstr "%d phút"
-
-#: setup.php syslog.php
-msgid "Notice"
-msgstr "Thông báo"
-
-#: setup.php syslog.php
-msgid "Warning"
-msgstr "Cảnh báo"
-
-#: setup.php syslog.php
-msgid "Critical"
-msgstr "Chỉ trích"
 
 #: setup.php
 #, fuzzy
@@ -1500,6 +1568,74 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
+msgstr ""
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "State"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Queued Recovery Records"
+msgstr "Hồ sơ bị xóa"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr ""
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Actions"
+msgid "Active"
+msgstr "Hành động"
+
+#: syslog.php
+msgid "Inactive"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Recovery worker"
+msgstr "Tái chế"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Remote collector receipts"
+msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Last Batch Count"
+msgstr "Gửi lần cuối"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last Modified"
+msgid "Last Record Received"
+msgstr "Sửa đổi lần cuối"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr ""
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
 msgstr ""
 
 #: syslog.php
@@ -1965,30 +2101,6 @@ msgstr "Lưu cài đặt mặc định"
 #, fuzzy
 msgid "Save view defaults"
 msgstr "Lưu cài đặt mặc định"
-
-#: syslog.php
-msgid "Emergency"
-msgstr "Khẩn cấp"
-
-#: syslog.php
-msgid "Alert"
-msgstr "Cảnh báo"
-
-#: syslog.php
-msgid "Error"
-msgstr "Lỗi"
-
-#: syslog.php
-msgid "Info"
-msgstr "Thông tin"
-
-#: syslog.php
-msgid "Debug"
-msgstr "Gỡ rối"
-
-#: syslog.php
-msgid "Informational"
-msgstr "Thông tin"
 
 #: syslog.php syslog_alerts.php syslog_device_rules.php
 msgid "Device"
