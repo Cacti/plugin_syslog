@@ -47,7 +47,7 @@ function preview_setup(): void {
 }
 
 it('projects preview rows onto the configured incoming fields', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -80,7 +80,7 @@ it('projects preview rows onto the configured incoming fields', function () {
 });
 
 it('returns empty rows for a rule that matches nothing', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -94,7 +94,7 @@ it('returns empty rows for a rule that matches nothing', function () {
 });
 
 it('reports an error when the filter document is invalid', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -109,7 +109,7 @@ it('reports an error when the filter document is invalid', function () {
 });
 
 it('reports an error when the count query fails', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -122,7 +122,7 @@ it('reports an error when the count query fails', function () {
 });
 
 it('previews removal rules against the incoming table', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -152,7 +152,7 @@ it('previews removal rules against the incoming table', function () {
 });
 
 it('previews a structured removal filter through the shared compiler', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -181,7 +181,7 @@ it('previews a structured removal filter through the shared compiler', function 
 });
 
 it('resolves legacy facility rules through the reference table', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];
@@ -204,7 +204,7 @@ it('resolves legacy facility rules through the reference table', function () {
 });
 
 it('previews the sql type under the trusted-admin model', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	preview_setup();
 
 	$calls = [];

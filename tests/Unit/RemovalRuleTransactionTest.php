@@ -13,7 +13,7 @@
  */
 
 it('wraps syslog_remove_items archive and delete operations in a transaction', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	if (!preg_match('/function\s+syslog_remove_items\s*\(\s*\$table\s*,\s*\$max_seq\s*\)\s*\{(.+?)\nfunction\s+syslog_log_row_color/s', $functions, $match)) {
 		throw new RuntimeException('syslog_remove_items function not found.');
@@ -29,7 +29,7 @@ it('wraps syslog_remove_items archive and delete operations in a transaction', f
 });
 
 it('wraps syslog_manage_items move and delete operations in a transaction', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	if (!preg_match('/function\s+syslog_manage_items\s*\(\s*\$from_table\s*,\s*\$to_table\s*\)\s*\{(.+?)\nfunction\s+get_hash_syslog/s', $functions, $match)) {
 		throw new RuntimeException('syslog_manage_items function not found.');

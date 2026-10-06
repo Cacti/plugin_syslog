@@ -16,7 +16,7 @@
 
 it('preserves import text trim semantics in the shared payload helper', function () {
 	$root    = dirname(__DIR__, 2);
-	$helper  = file_get_contents($root . '/functions.php');
+	$helper  = file_get_contents($root . '/includes/functions.php');
 	$targets = [
 		$root . '/syslog_alerts.php',
 		$root . '/syslog_reports.php',

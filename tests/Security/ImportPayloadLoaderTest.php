@@ -14,7 +14,7 @@
  */
 
 it('validates uploads before reading and rejects zero-byte imports', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	if (substr_count($functions, 'function syslog_get_import_xml_payload(') !== 1 ||
 		preg_match('/^function syslog_get_import_xml_payload\([^)]*\)\s*\{.*?^\}/ms', $functions, $matches) !== 1) {
@@ -52,7 +52,7 @@ it('validates uploads before reading and rejects zero-byte imports', function ()
 		throw new RuntimeException('Shared import payload loader must validate an upload before opening it.');
 	}
 
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$emptyFixture    = tempnam(sys_get_temp_dir(), 'syslog-empty-import-');
 	$payloadFixture  = tempnam(sys_get_temp_dir(), 'syslog-import-');

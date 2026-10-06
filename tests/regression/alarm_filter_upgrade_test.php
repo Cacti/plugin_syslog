@@ -1,7 +1,7 @@
 <?php
 
 $root      = dirname(__DIR__, 2);
-$functions = file_get_contents($root . '/functions.php');
+$functions = file_get_contents($root . '/includes/functions.php');
 $setup     = file_get_contents($root . '/setup.php');
 
 if (preg_match_all('/function\s+syslog_json_safe\s*\(/', $functions) !== 1) {

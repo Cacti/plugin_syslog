@@ -6,7 +6,7 @@
  */
 
 it('recognizes same-day and overnight maintenance windows', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$mondayLate = strtotime('2024-01-01 23:00:00');
 	$tuesdayEarly = strtotime('2024-01-02 01:00:00');
@@ -18,7 +18,7 @@ it('recognizes same-day and overnight maintenance windows', function () {
 });
 
 it('accepts wildcard and weekday ranges in maintenance windows', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$wednesday = strtotime('2024-01-03 12:30:00');
 
@@ -28,7 +28,7 @@ it('accepts wildcard and weekday ranges in maintenance windows', function () {
 });
 
 it('builds maintenance schedules from day and time controls', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$wednesdayEarly = strtotime('2024-01-03 02:00:00');
 	$schedule = syslog_alert_maintenance_window('1,2,3,4,5', '00:00', '06:00');
@@ -39,7 +39,7 @@ it('builds maintenance schedules from day and time controls', function () {
 });
 
 it('recognizes one-time date and time maintenance windows', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_alert_datetime_window_is_active('2024-02-14 09:00', '2024-02-14 12:00', strtotime('2024-02-14 10:00')))->toBeTrue();
 	expect(syslog_alert_datetime_window_is_active('2024-02-14 09:00', '2024-02-14 12:00', strtotime('2024-02-14 12:30')))->toBeFalse();

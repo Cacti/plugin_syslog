@@ -8,7 +8,7 @@
 */
 
 it('defaults partition pre-create window to three days and clamps invalid values', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('read_config_option', function ($name) {
 		return $name === 'syslog_partition_ahead_days' ? '' : '';
@@ -32,7 +32,7 @@ it('defaults partition pre-create window to three days and clamps invalid values
 });
 
 it('ensures partitions sequentially through the configured future horizon', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$created = [];
 	$last_partition = '20260914';
@@ -95,7 +95,7 @@ it('ensures partitions sequentially through the configured future horizon', func
 });
 
 it('keeps retention plus future partitions when pruning', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$dropped = [];

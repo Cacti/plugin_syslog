@@ -1,6 +1,6 @@
 <?php
 namespace SyslogImportTest;
-require_once dirname(__DIR__, 2) . '/functions.php';
+require_once dirname(__DIR__, 2) . '/includes/functions.php';
 const MESSAGE_LEVEL_ERROR = 1;
 const MESSAGE_LEVEL_INFO = 2;
 function check($ok, $message) { if (!$ok) { throw new \RuntimeException($message); } }

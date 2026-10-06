@@ -23,7 +23,7 @@
 */
 
 it('keeps global maintenance closed unless a device rule explicitly permits a priority', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$GLOBALS['syslog_incoming_config'] = ['hostField' => 'host', 'priorityField' => 'priority_id'];
 

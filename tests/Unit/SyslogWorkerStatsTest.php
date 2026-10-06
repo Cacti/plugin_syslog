@@ -14,7 +14,7 @@
  * parallel run.  Malformed statistics rows must be ignored, not fatal.
  */
 
-syslog_load_plugin_source('functions.php');
+syslog_load_plugin_source('includes/functions.php');
 
 it('reports running workers, configured workers, and per child records', function () {
 	test_override('read_config_option', function ($name, $force = false) {

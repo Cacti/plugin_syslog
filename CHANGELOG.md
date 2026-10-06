@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* dev: Move the shared function library to includes/functions.php, load it once from setup.php, and point the coverage source, entry-point includes, and tests at the new path
 * feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to css/syslog.css)
 * dev: Measure CI coverage with xdebug instead of pcov so the plugin's own sources are instrumented (pcov auto-scopes to the Composer root and skipped cacti/plugins/, leaving the patch-coverage gate with nothing to measure)
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step

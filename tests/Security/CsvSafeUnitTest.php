@@ -15,7 +15,7 @@
  */
 
 it('prefixes only values a spreadsheet would treat as a formula', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	if (!preg_match('/function\s+syslog_csv_safe\s*\([^)]*\)\s*(?::\s*mixed\s*)?\{.*?\n\}/s', $functions, $m)) {
 		throw new RuntimeException('Could not extract syslog_csv_safe from functions.php');

@@ -18,7 +18,7 @@
  */
 
 it('keeps syslog partition table locking and DDL identifiers safe', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	// All five information_schema queries must be prepared statements
 	// scoped to the requested table via a placeholder. Match only calls

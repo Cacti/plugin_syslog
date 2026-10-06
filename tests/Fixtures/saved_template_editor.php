@@ -26,7 +26,7 @@ $_REQUEST = ['edit' => 7];
 require $cacti . '/lib/html.php';
 require $cacti . '/lib/html_form.php';
 require $cacti . '/lib/html_utility.php';
-require dirname(__DIR__, 2) . '/functions.php';
+require dirname(__DIR__, 2) . '/includes/functions.php';
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog_saved_searches.php');
 eval(substr($source, strpos($source, 'function syslog_template_list(')));
 $row = ['id' => 7, 'name' => 'Router errors', 'user' => 'admin', 'search' => 'host = "router-1" AND (message contains "error" OR priority = "warning") AND logtime last "86400"'];

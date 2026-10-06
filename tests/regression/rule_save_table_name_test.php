@@ -17,7 +17,7 @@ function syslog_sql_save($data, $table, $primary = '') {
 function raise_message($message) {
 }
 
-require_once dirname(__DIR__, 2) . '/functions.php';
+require_once dirname(__DIR__, 2) . '/includes/functions.php';
 
 syslog_sync_save(['id' => '', 'name' => 'test'], 'syslog_alert', 'id');
 

@@ -19,7 +19,7 @@
  */
 
 it('renders one chip per severity for the system log legend', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	ob_start();
 	syslog_syslog_legend();
@@ -37,7 +37,7 @@ it('renders one chip per severity for the system log legend', function () {
 });
 
 it('renders the smaller alert log legend', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	ob_start();
 	syslog_log_legend();
@@ -52,7 +52,7 @@ it('renders the smaller alert log legend', function () {
 });
 
 it('links the theme legend stylesheet when the theme ships one', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('get_selected_theme', function () {
 		return 'modern';
@@ -67,7 +67,7 @@ it('links the theme legend stylesheet when the theme ships one', function () {
 });
 
 it('falls back to syslog.css when the theme ships no legend stylesheet', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('get_selected_theme', function () {
 		return 'carrot';
@@ -82,7 +82,7 @@ it('falls back to syslog.css when the theme ships no legend stylesheet', functio
 });
 
 it('sanitises the theme name before building the stylesheet path', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('get_selected_theme', function () {
 		return '../../etc/passwd';

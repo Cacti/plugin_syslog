@@ -116,7 +116,7 @@ it('denies panel writes for panels outside the owned dashboard', function () {
 });
 
 it('treats another user\'s shared dashboard as view-only', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
@@ -182,7 +182,7 @@ it('treats another user\'s shared dashboard as view-only', function () {
 });
 
 it('lets an administrator edit a shared dashboard', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
@@ -227,7 +227,7 @@ it('lets an administrator edit a shared dashboard', function () {
 });
 
 it('rejects panel definitions that fail validation or the search DSL', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';

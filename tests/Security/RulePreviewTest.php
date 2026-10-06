@@ -41,7 +41,7 @@ function rule_preview_capture_db(array &$calls, array $overrides = []): void {
 }
 
 it('previews a filter rule through the QueryBuilder with bound parameters', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = [
@@ -87,7 +87,7 @@ it('previews a filter rule through the QueryBuilder with bound parameters', func
 });
 
 it('previews structured filters without the poller-only processing boundary', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = [
@@ -120,7 +120,7 @@ it('previews structured filters without the poller-only processing boundary', fu
 });
 
 it('rejects unknown rule types without running any query', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$calls = [];
 	rule_preview_capture_db($calls);
@@ -132,7 +132,7 @@ it('rejects unknown rule types without running any query', function () {
 });
 
 it('clamps the preview row count to the hard maximum', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = ['timeField' => 'logtime', 'textField' => 'message'];
@@ -154,7 +154,7 @@ it('clamps the preview row count to the hard maximum', function () {
 });
 
 it('compiles legacy match types with bound placeholders', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = [
@@ -184,7 +184,7 @@ it('compiles legacy match types with bound placeholders', function () {
 });
 
 it('rejects unsafe configured column mappings', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = [
@@ -202,7 +202,7 @@ it('rejects unsafe configured column mappings', function () {
 });
 
 it('blocks the test action for users without the editor realm', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['request'] = [];
 	$GLOBALS['__test_db_calls'] = [];
@@ -224,7 +224,7 @@ it('blocks the test action for users without the editor realm', function () {
 });
 
 it('blocks the test action when CSRF validation fails', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['request'] = [];
 	$GLOBALS['__test_db_calls'] = [];
@@ -246,7 +246,7 @@ it('blocks the test action when CSRF validation fails', function () {
 });
 
 it('blocks the test action for non-POST requests', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['request'] = [];
 	$GLOBALS['__test_db_calls'] = [];

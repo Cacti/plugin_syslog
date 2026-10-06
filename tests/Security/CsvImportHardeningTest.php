@@ -13,7 +13,7 @@
  */
 
 it('defuses CSV formula injection and enforces the import size limit', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	foreach ([
 		'SYSLOG_IMPORT_MAX_BYTES',
@@ -154,7 +154,7 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 		syslog_get_import_xml_payload('/blocked');
 		print 'UNREACHABLE';
 		PHP,
-		var_export($root . '/functions.php', true)
+		var_export($root . '/includes/functions.php', true)
 	);
 
 	$pipes   = [];

@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-$syslog_query_builder = __DIR__ . '/lib/QueryBuilder.php';
+$syslog_query_builder = dirname(__DIR__) . '/lib/QueryBuilder.php';
 if (file_exists($syslog_query_builder)) {
 	require_once $syslog_query_builder;
 }
@@ -724,14 +724,14 @@ function syslog_include_js(): void {
 	// syslog.css when the theme ships no dedicated file. The theme name is a
 	// user/DB setting, so it is sanitised before it reaches the filesystem.
 	$theme      = preg_replace('/[^a-z0-9_-]/i', '', (string) get_selected_theme());
-	$legend_css = ($theme !== '' && file_exists(__DIR__ . '/css/' . $theme . '.css')) ? $theme . '.css' : 'syslog.css';
+	$legend_css = ($theme !== '' && file_exists(dirname(__DIR__) . '/css/' . $theme . '.css')) ? $theme . '.css' : 'syslog.css';
 	?>
-	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
-	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/dashboard.css?v=<?php print filemtime(__DIR__ . '/css/dashboard.css'); ?>'>
-	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/<?php print $legend_css; ?>?v=<?php print filemtime(__DIR__ . '/css/' . $legend_css); ?>'>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(__DIR__ . '/js/filter-builder.js'); ?>'></script>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/dashboard.js?v=<?php print filemtime(__DIR__ . '/js/dashboard.js'); ?>'></script>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(__DIR__ . '/js/functions.js'); ?>'></script>
+	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(dirname(__DIR__) . '/css/search.css'); ?>'>
+	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/dashboard.css?v=<?php print filemtime(dirname(__DIR__) . '/css/dashboard.css'); ?>'>
+	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/<?php print $legend_css; ?>?v=<?php print filemtime(dirname(__DIR__) . '/css/' . $legend_css); ?>'>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(dirname(__DIR__) . '/js/filter-builder.js'); ?>'></script>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/dashboard.js?v=<?php print filemtime(dirname(__DIR__) . '/js/dashboard.js'); ?>'></script>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(dirname(__DIR__) . '/js/functions.js'); ?>'></script>
 	<?php
 }
 

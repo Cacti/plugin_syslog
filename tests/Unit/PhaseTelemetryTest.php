@@ -27,7 +27,7 @@ function phase_telemetry_status_store(array &$values): void {
 }
 
 it('records phase telemetry through the syslog status mechanism', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = [];
@@ -48,7 +48,7 @@ it('records phase telemetry through the syslog status mechanism', function () {
 });
 
 it('rejects unknown phase names and inverted time ranges', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$values = [];
 	phase_telemetry_status_store($values);
@@ -59,7 +59,7 @@ it('rejects unknown phase names and inverted time ranges', function () {
 });
 
 it('rounds the phase duration to three decimals', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$values = [];
 	phase_telemetry_status_store($values);
@@ -72,7 +72,7 @@ it('rounds the phase duration to three decimals', function () {
 });
 
 it('exposes the full phase list including all six processing phases', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_status_phase_names())->toBe([
 		'partition',
@@ -85,7 +85,7 @@ it('exposes the full phase list including all six processing phases', function (
 });
 
 it('reads back recorded telemetry and leaves unrecorded phases empty', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 
@@ -117,7 +117,7 @@ it('reads back recorded telemetry and leaves unrecorded phases empty', function 
 });
 
 it('ignores malformed stored phase documents', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 
@@ -141,7 +141,7 @@ it('ignores malformed stored phase documents', function () {
 });
 
 it('renders phase timings with the slowest phase highlighted', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 

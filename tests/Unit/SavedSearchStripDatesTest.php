@@ -15,7 +15,7 @@
  */
 
 it('strips only the auto-appended date clause from a saved search expression', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('syslog_db_fetch_assoc', function ($sql) {
 		return [];

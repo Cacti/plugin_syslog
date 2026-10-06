@@ -116,7 +116,7 @@ function collector_health_capture_db(array &$calls, array $overrides = []): void
 }
 
 it('formats healthy collector metrics from the configured incoming table', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 	collector_health_setup_config();
 
@@ -159,7 +159,7 @@ it('formats healthy collector metrics from the configured incoming table', funct
 });
 
 it('marks collector metrics unavailable when the database cannot answer', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 	collector_health_setup_config();
 
@@ -181,7 +181,7 @@ it('marks collector metrics unavailable when the database cannot answer', functi
 });
 
 it('warns when the incoming backlog exceeds the configured threshold', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 	collector_health_setup_config();
 
@@ -201,7 +201,7 @@ it('warns when the incoming backlog exceeds the configured threshold', function 
 });
 
 it('uses the default thresholds when the settings are unset', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 	collector_health_setup_config();
 
@@ -222,7 +222,7 @@ it('uses the default thresholds when the settings are unset', function () {
 });
 
 it('does not warn when metrics are within thresholds', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 	collector_health_setup_config();
 
@@ -242,7 +242,7 @@ it('does not warn when metrics are within thresholds', function () {
 });
 
 it('rejects unsafe incoming table column mappings as unavailable', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
@@ -260,7 +260,7 @@ it('rejects unsafe incoming table column mappings as unavailable', function () {
 });
 
 it('formats compact human readable ages', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	collector_health_load_functions();
 
 	expect(syslog_status_format_age(45))->toContain('second');
