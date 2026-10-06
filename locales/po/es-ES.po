@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-28 16:08-0400\n"
+"POT-Creation-Date: 2026-10-06 15:14-0400\n"
 "PO-Revision-Date: 2025-03-07 14:43-0500\n"
 "Last-Translator: Tadeo Briceño <tadeobriceno@vencable.com>\n"
 "Language-Team: Spanish <http://translate.cacti.net/projects/cacti/syslog/es/>\n"
@@ -18,244 +18,281 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 3.5\n"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Syslog download"
 msgstr "Syslog habilitado"
 
-#: functions.php
+#: includes/functions.php
+msgid "Emergency"
+msgstr "Emergencia"
+
+#: includes/functions.php setup.php
+msgid "Critical"
+msgstr "Crítica"
+
+#: includes/functions.php
+msgid "Alert"
+msgstr "Alerta"
+
+#: includes/functions.php
+msgid "Error"
+msgstr "Error"
+
+#: includes/functions.php setup.php
+msgid "Warning"
+msgstr "Advertencia"
+
+#: includes/functions.php setup.php
+msgid "Notice"
+msgstr "Aviso"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Información"
+
+#: includes/functions.php
+msgid "Debug"
+msgstr "Depuraración"
+
+#: includes/functions.php
+msgid "Informational"
+msgstr "Información"
+
+#: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "Error al guardar.  Los recopiladores de datos remotos en modo de sincronización no pueden guardar reglas.  En su lugar, guarde desde el servidor principal de Cactus."
 
-#: functions.php
+#: includes/functions.php
 msgid "Please use an HTML Email Client"
 msgstr "Por favor, utilice un cliente de correo electrónico HTML"
 
-#: functions.php
+#: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d day(s)"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "no retention deferral"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "per run recovery limit reached"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "partition creation failed"
 msgstr "Tabla particionada"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule match type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule did not compile to a query."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview query could not be evaluated."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php setup.php
+#: includes/functions.php setup.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule has no match expression to test."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Alerta de umbral de Cacti Syslog '%s' para el host '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Alerta de umbral de Cacti Syslog '%s'"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
 msgstr "Nombre de alerta"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
 msgstr "Severidad"
 
-#: functions.php syslog_alerts.php
+#: includes/functions.php syslog_alerts.php
 msgid "Threshold"
 msgstr "Límite"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Count"
 msgstr "Cuenta"
 
-#: functions.php
+#: includes/functions.php
 msgid "Match String"
 msgstr "Coincidir Cadena"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Alerta de Cacti Syslog '%s' para el host '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Alerta de Cacti Syslog '%s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname"
 msgstr "Nombre de equipo"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Date"
 msgstr "Fecha"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level"
 msgstr "Nivel"
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_removal.php syslog_saved_searches.php
 msgid "Message"
 msgstr "Mensaje:"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "ADVERTENCIA: Se ha activado una alerta de umbral de syslog para el host '%s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "ADVERTENCIA: Se ha activado una alerta de umbral de Syslog"
 
-#: functions.php
+#: includes/functions.php
 msgid "Name:"
 msgstr "Nombre:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Severity:"
 msgstr "Severidad"
 
-#: functions.php
+#: includes/functions.php
 msgid "Threshold:"
 msgstr "Límite"
 
-#: functions.php
+#: includes/functions.php
 msgid "Count:"
 msgstr "Cantidad:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message String:"
 msgstr "Cadena de mensaje:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname:"
 msgstr "Nombre de equipo:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Date:"
 msgstr "Fecha:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level:"
 msgstr "Nivel:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message:"
 msgstr "Mensaje:"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Host:"
 msgstr "Equipo:"
 
-#: functions.php
+#: includes/functions.php
 msgid ", URL:"
 msgstr "URL:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Sev:"
 msgstr "Sev:"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
 msgstr "Alerta de evento - %s"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Count:"
 msgstr "Cantidad:"
 
-#: functions.php lib/syslog_dashboard.php syslog_alerts.php syslog_removal.php
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php
 msgid "Host"
 msgstr "Equipo"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Report - %s"
 msgstr "Informe de eventos - %s"
@@ -1097,6 +1134,50 @@ msgstr "Sincronización de reglas de recopilador de datos remotos"
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Si sus recolectores de datos remotos tienen sus propias bases de datos Syslog y procesan tres mensajes de forma independiente, marque esta casilla de verificación si desea que las reglas de alertas, eliminación e informes de las bases de datos principales de Cacti se envíen al sistema de cactus remoto."
 
+#: setup.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: setup.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Delete Syslog Report(s)"
+msgid "Remote Syslog Recovery"
+msgstr "Eliminar informe(s) de Syslog"
+
+#: setup.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: setup.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: setup.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: setup.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: setup.php
+msgid "No pause"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
 #: setup.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
 msgstr "Deshabilitar"
@@ -1152,18 +1233,6 @@ msgstr "%d Minuto"
 #, php-format
 msgid "%d Minutes"
 msgstr "%d Minutos"
-
-#: setup.php syslog.php
-msgid "Notice"
-msgstr "Aviso"
-
-#: setup.php syslog.php
-msgid "Warning"
-msgstr "Advertencia"
-
-#: setup.php syslog.php
-msgid "Critical"
-msgstr "Crítica"
 
 #: setup.php
 msgid "Begins with"
@@ -1421,6 +1490,76 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
+msgstr ""
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "State"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Removed Records"
+msgid "Queued Recovery Records"
+msgstr "Registros eliminados"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr ""
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Actions"
+msgid "Active"
+msgstr "Acciones"
+
+#: syslog.php
+msgid "Inactive"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Recovery worker"
+msgstr "Reprocesar"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Remote Data Collector Rules Sync"
+msgid "Remote collector receipts"
+msgstr "Sincronización de reglas de recopilador de datos remotos"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Last Batch Count"
+msgstr "Último Enviado"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last Modified"
+msgid "Last Record Received"
+msgstr "Ultima modificación"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr ""
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
 msgstr ""
 
 #: syslog.php
@@ -1876,30 +2015,6 @@ msgstr "Guardar configuración predeterminada"
 #, fuzzy
 msgid "Save view defaults"
 msgstr "Guardar configuración predeterminada"
-
-#: syslog.php
-msgid "Emergency"
-msgstr "Emergencia"
-
-#: syslog.php
-msgid "Alert"
-msgstr "Alerta"
-
-#: syslog.php
-msgid "Error"
-msgstr "Error"
-
-#: syslog.php
-msgid "Info"
-msgstr "Información"
-
-#: syslog.php
-msgid "Debug"
-msgstr "Depuraración"
-
-#: syslog.php
-msgid "Informational"
-msgstr "Información"
 
 #: syslog.php syslog_alerts.php syslog_device_rules.php
 msgid "Device"
