@@ -1431,7 +1431,10 @@ function syslog_setup_table_new(array $options): void {
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_create_replication_output_table();
+syslog_create_replication_output_table();
+syslog_create_replication_receipts_table();
+syslog_create_replication_collectors_table();
+syslog_create_replication_recovery_table();
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
 		`alert_id` int(10) unsigned NOT NULL,
