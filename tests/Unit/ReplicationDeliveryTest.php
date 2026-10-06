@@ -23,7 +23,7 @@ it('delivers an exact remote outbox batch through the central receipt transactio
 	test_override('db_execute_prepared', function ($sql, $params) use (&$calls) { $calls[] = $sql; return true; });
 	test_override('db_affected_rows', fn () => 1);
 
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_deliver_online())->toBe(1)
 		->and(implode("\n", $calls))->toContain('START TRANSACTION')
@@ -40,7 +40,7 @@ it('returns an explicit transfer failure when outbox insertion fails', function 
 	test_override('read_config_option', fn ($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
 	test_override('syslog_db_execute', fn () => true);
 	test_override('syslog_db_execute_prepared', fn () => false);
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_incoming_to_syslog(100, 1, 100))->toBe([
 		'moved' => 0,
@@ -57,7 +57,7 @@ it('reads main collector remote receipt telemetry without scanning syslog histor
 	test_override('syslog_db_fetch_assoc', function ($statement) use (&$sql) { $sql = $statement; return [[
 		'source_poller_id' => 2, 'hostname' => 'remote-poller.example.com', 'last_batch_count' => 100, 'last_received' => 1758801600,
 	]]; });
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_collector_status())->toHaveCount(1)
 		->and($sql)->toContain('syslog_replication_collectors')
@@ -71,7 +71,7 @@ it('treats an unset poller ID as the Main Collector for receipt telemetry', func
 	$GLOBALS['syslogdb_default'] = 'cacti';
 	test_override('syslog_db_table_exists', fn ($table) => $table === 'syslog_replication_collectors');
 	test_override('syslog_db_fetch_assoc', fn () => []);
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_collector_status())->toBe([]);
 });
@@ -93,7 +93,7 @@ it('removes only temporary remote syslog copies after confirmed central delivery
 	test_override('db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
 	test_override('db_affected_rows', fn () => 1);
 
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_deliver_online())->toBe(1)
 		->and(implode("\n", $calls))->toContain('DELETE FROM `remote_syslog`.`syslog` WHERE')
@@ -105,7 +105,7 @@ it('keeps remote records locally only while Main Collector delivery is unavailab
 	$GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'offline'];
 	$GLOBALS['remote_db_cnn_id'] = new stdClass();
 	test_override('read_config_option', fn ($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_remote_store_records())->toBeFalse()
 		->and(syslog_replication_should_retain_local_history())->toBeTrue();
@@ -119,7 +119,7 @@ it('preserves remote history when the administrator enables Store Records', func
 	$calls = [];
 	test_override('read_config_option', fn ($name) => $name === 'syslog_remote_store_records' ? 'on' : '');
 	test_override('syslog_db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_remote_store_records())->toBeTrue()
 		->and(syslog_replication_cleanup_local_history([[
@@ -136,7 +136,7 @@ it('treats an existing central receipt as an acknowledged retry without rearchiv
 	test_override('db_execute_prepared', function ($statement) use (&$sql) { $sql[] = $statement; return true; });
 	test_override('db_affected_rows', fn () => 0);
 
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_accept_central([
 		'source_poller_id' => 2, 'source_event_id' => 100, 'disposition' => 'syslog',
@@ -152,7 +152,7 @@ it('never enables central delivery on the Main Collector', function () {
 	$GLOBALS['remote_db_cnn_id'] = new stdClass();
 
 	test_override('read_config_option', fn () => 'on');
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_delivery_is_online())->toBeFalse();
 });
@@ -164,7 +164,7 @@ it('derives Syslog delivery state from Main reachability and the durable outbox'
 	$GLOBALS['syslogdb_default'] = 'cacti';
 	test_override('read_config_option', fn () => 'on');
 	test_override('syslog_db_fetch_cell', fn () => '');
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_get_state())->toBe('online');
 
@@ -184,7 +184,7 @@ it('does not assign a synchronization state to Main or non-Syslog remote collect
 	$GLOBALS['remote_db_cnn_id'] = new stdClass();
 	$GLOBALS['config'] = ['poller_id' => 1, 'connection' => 'online'];
 	test_override('read_config_option', fn () => 'on');
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	expect(syslog_replication_get_state())->toBeNull();
 
 	$GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
@@ -199,7 +199,7 @@ it('keeps the outbox untouched when central delivery is unavailable', function (
 	$calls = [];
 	test_override('read_config_option', fn () => 'on');
 	test_override('syslog_db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_deliver_online())->toBe(0)
 		->and($calls)->toBeEmpty();
@@ -218,7 +218,7 @@ it('returns to offline state for this process when Main fails during recovery', 
 		'host' => 'remote-host', 'message' => 'hello', 'disposition' => 'syslog',
 	]]);
 	test_override('db_execute', fn ($sql) => $sql !== 'START TRANSACTION');
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_replication_deliver_online())->toBe(0)
 		->and(syslog_replication_get_state())->toBe('offline');
@@ -226,8 +226,8 @@ it('returns to offline state for this process when Main fails during recovery', 
 
 
 it('uses an atomic, token-scoped expiring recovery lease', function () {
-	syslog_load_plugin_source('functions.php');
-	$source = file_get_contents(__DIR__ . '/../../functions.php');
+	syslog_load_plugin_source('includes/functions.php');
+	$source = file_get_contents(__DIR__ . '/../../includes/functions.php');
 
 	expect($source)->toContain('INSERT INTO `$syslogdb_default`.`syslog_replication_recovery`')
 		->toContain('ON DUPLICATE KEY UPDATE')
@@ -235,8 +235,8 @@ it('uses an atomic, token-scoped expiring recovery lease', function () {
 		->toContain("WHERE name = 'recovery' AND owner_token = ?");
 });
 it('keeps recovery bounded and delegates batch delivery to the Phase 2 primitive', function () {
-	syslog_load_plugin_source('functions.php');
-	$source = file_get_contents(__DIR__ . '/../../functions.php');
+	syslog_load_plugin_source('includes/functions.php');
+	$source = file_get_contents(__DIR__ . '/../../includes/functions.php');
 
 	expect($source)->toContain('syslog_replication_recovery_records_per_run()')
 		->toContain('syslog_replication_recovery_batch_delay_us()')
@@ -258,7 +258,7 @@ it('returns on-demand operational replication telemetry without remote fan-out',
 	});
 	test_override('syslog_db_fetch_cell', fn () => '1');
 	test_override('syslog_db_fetch_assoc', fn () => []);
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	$telemetry = syslog_replication_operational_status();
 	expect($telemetry['enabled'])->toBeTrue()->and($telemetry['state'])->toBe('recovery')->and($telemetry['pending'])->toBe(12);
 });
