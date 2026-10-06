@@ -393,11 +393,15 @@ if ($parallel && $max_seq > 0) {
 		 */
 		syslog_wait_workers($launched);
 
-		$stale = syslog_delete_stale_incoming();
-
-		$worker_stats = syslog_aggregate_worker_stats($syslog_max_workers);
+		$worker_stats = syslog_aggregate_worker_stats($launched);
 
 		$moved = $worker_stats['moved'];
+		if ($worker_stats['success']) {
+			$stale = syslog_delete_stale_incoming();
+		} else {
+			$stale = 0;
+			cacti_log('SYSLOG ERROR: One or more transfer workers failed; stale incoming records were retained', false, 'SYSLOG');
+		}
 
 		syslog_status_record_phase('transfer', $phase_start, time(), microtime(true) - $phase_micro, $moved);
 	} else {
@@ -435,6 +439,17 @@ syslog_status_record_phase('reports', $phase_start, time(), microtime(true) - $p
  * be optimized.  This should be done once a day
  */
 syslog_postprocess_tables();
+
+// State is derived from Cacti reachability plus the plugin-owned outbox. One
+// bounded batch may make gradual recovery progress; no recovery loop is used.
+$replication_state = syslog_replication_record_state();
+if ($replication_state === 'recovery') {
+	syslog_replication_start_recovery_worker();
+} elseif ($replication_state === 'online') {
+	$sent_to_main = syslog_replication_deliver_online();
+	if ($sent_to_main > 0) { cacti_log('SYSLOG STATS: Sent ' . $sent_to_main . ' records to the Main Collector', false, 'SYSLOG'); }
+}
+syslog_replication_record_state();
 
 /**
  * log messages to the Cacti log and save statistics
@@ -542,9 +557,12 @@ function syslog_worker_main($debug = false) {
 		case 'transfer':
 			$results = syslog_incoming_to_syslog($seq_end, $seq_start, $seq_end);
 			$moved   = $results['moved'];
-			$success = true;
+			$success = $results['success'];
 
 			syslog_debug(sprintf('Moved   %5s - Message(s) in slice %d-%d', $moved, $seq_start, $seq_end));
+			if (!$success) {
+				cacti_log("ERROR: Syslog child $child failed transfer slice $seq_start-$seq_end", false, 'SYSLOG');
+			}
 
 			break;
 		default:
@@ -560,6 +578,7 @@ function syslog_worker_main($debug = false) {
 		'phase'    => $phase,
 		'moved'    => $moved,
 		'resolved' => isset($resolved) ? $resolved : 0,
+		'success'  => $success,
 		'runtime'  => round($child_end - $child_start, 3),
 	];
 

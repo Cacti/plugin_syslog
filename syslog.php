@@ -667,6 +667,8 @@ function syslog_status_format_partition_progress(string $value): string {
  * @return void
  */
 function syslog_status(): void {
+	global $config;
+
 	$status = syslog_status_get();
 
 	$worker_stats = syslog_worker_stats_get();
@@ -702,6 +704,46 @@ function syslog_status(): void {
 					?>
 				</dl>
 			</section>
+			<?php $replication = syslog_replication_operational_status(); ?>
+			<?php if (!empty($replication['enabled'])) { ?>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_replication">
+				<h2 id="syslog_status_replication" class="syslogStatusHeading ui-widget-header"><?php print __esc('Distributed synchronization', 'syslog'); ?></h2>
+				<dl class="syslogStatusTimings">
+				<?php foreach ([
+					__('State', 'syslog') => strtoupper((string) $replication['state']),
+					__('Queued Recovery Records', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
+					__('Oldest pending', 'syslog') => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
+					__('Last successful synchronization', 'syslog') => syslog_status_format_time((string) $replication['last_success']),
+					__('Recovery worker', 'syslog') => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),
+					__('Last synchronization error', 'syslog') => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
+				] as $label => $value) { print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape((string) $value) . '</dd></div>'; } ?>
+				</dl>
+			</section>
+			<?php } ?>
+			<?php if ((int) ($config['poller_id'] ?? 1) <= 1) { ?>
+			<?php $remote_collectors = syslog_replication_collector_status(); ?>
+			<section class="syslogStatusRun" aria-labelledby="syslog_status_remote_collectors">
+				<h2 id="syslog_status_remote_collectors" class="syslogStatusHeading ui-widget-header"><?php print __esc('Remote collector receipts', 'syslog'); ?></h2>
+				<table class="syslogStatusWorkers" aria-labelledby="syslog_status_remote_collectors">
+					<thead><tr>
+						<th scope="col"><?php print __esc('Remote Poller', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Last Batch Count', 'syslog'); ?></th>
+						<th scope="col"><?php print __esc('Last Record Received', 'syslog'); ?></th>
+					</tr></thead>
+					<tbody>
+					<?php if (cacti_sizeof($remote_collectors)) { foreach ($remote_collectors as $collector) { ?>
+						<tr>
+							<th scope="row"><?php print html_escape(!empty($collector['hostname']) ? $collector['hostname'] : __('Unknown remote poller', 'syslog')); ?></th>
+							<td><?php print html_escape(number_format((int) $collector['last_batch_count'])); ?></td>
+							<td><?php print html_escape(syslog_status_format_time((string) $collector['last_received'])); ?></td>
+						</tr>
+					<?php } } else { ?>
+						<tr><td colspan="3" class="syslogStatusWorkersEmpty"><?php print __esc('No remote collector records have been received yet.', 'syslog'); ?></td></tr>
+					<?php } ?>
+					</tbody>
+				</table>
+			</section>
+			<?php } ?>
 			<section class="syslogStatusRun" aria-labelledby="syslog_status_storage">
 				<h2 id="syslog_status_storage" class="syslogStatusHeading ui-widget-header"><?php print __esc('Storage and retention', 'syslog'); ?></h2>
 				<dl class="syslogStatusTimings syslogStatusStorage">
@@ -772,7 +814,7 @@ function syslog_status(): void {
 							<tr>
 								<td><?php print html_escape(syslog_status_format_time((string) ($event['time'] ?? ''))); ?></td>
 								<td><?php print html_escape(!empty($event['successful']) ? __('Complete', 'syslog') : __('Deferred', 'syslog')); ?></td>
-								<td><?php print html_escape(sprintf(__('%d created, %d remaining, %d pruned', 'syslog'), (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0))); ?></td>
+								<td><?php print html_escape(__('%d created, %d remaining, %d pruned', (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0), 'syslog')); ?></td>
 								<td><?php print html_escape((string) ($event['reason'] ?? '') !== '' ? (string) $event['reason'] : __('No action required.', 'syslog')); ?></td>
 							</tr>
 						<?php } ?>
@@ -1506,6 +1548,10 @@ function set_shift_span(bool|string $shift_span, string $session_prefix): void {
 function get_syslog_messages(string &$sql_where, int|string $rows, string $tab): array {
 	global $sql_where, $hostfilter, $hostfilter_log, $current_tab, $syslog_incoming_config;
 	global $syslogdb_default;
+	// syslog and syslog_removed can legitimately gain independent operational
+	// columns. Keep the combined viewer query on its stable display contract
+	// instead of using SELECT *, which would make UNION depend on identical DDL.
+	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq';
 
 	$sql_where = '';
 
@@ -1729,7 +1775,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 		} else {
 			// Original non-grouped queries
 			if (get_request_var('removal') == '-1') {
-				$query_sql = "SELECT `syslog`.*, `syslog_programs`.`program`, 'main' AS mtype
+				$query_sql = "SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 					FROM `$syslogdb_default`.`syslog`
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
 					ON syslog.program_id = syslog_programs.program_id
@@ -1738,13 +1784,13 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
 				$query_sql = "(
-						SELECT `syslog`.*, `syslog_programs`.`program`, 'main' AS mtype
+						SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
 					) UNION (
-						SELECT `syslog`.*, `syslog_programs`.`program`, 'remove' AS mtype
+						SELECT $message_columns, `syslog_programs`.`program`, 'remove' AS mtype
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id = syslog_programs.program_id
@@ -1753,7 +1799,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					$sql_order
 					$sql_limit";
 			} else {
-				$query_sql = "SELECT `syslog`.*, `syslog_programs`.`program`, 'remove' AS mtype
+				$query_sql = "SELECT $message_columns, `syslog_programs`.`program`, 'remove' AS mtype
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
 					ON syslog.program_id = syslog_programs.program_id

@@ -170,6 +170,14 @@ You will also need to ensure the cacti user is granted select on the syslog data
 GRANT SELECT ON syslog.* TO 'cacti'@'localhost';
 ```
 
+Remote collectors deliver records to the Main Collector's Syslog database.
+By default, delivery uses the Main Collector Cacti connection and
+`$database_default`. If the Main Collector stores Syslog in a different
+database on that server, set `$syslog_replication_main_db_default` in the
+remote collector's Syslog config file. If it uses a separate database server or
+credentials, also set `$syslog_replication_main_db_hostname`, username,
+password, and any required port or SSL options there.
+
 
 ### Cacti Configuration for RSYSLOG
 

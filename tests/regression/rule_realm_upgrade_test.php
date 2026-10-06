@@ -34,6 +34,30 @@ function cacti_sizeof($value) { return count($value); }
 function __($text, $domain = '') { return $text; }
 function check($condition, $message) { if (!$condition) { throw new RuntimeException($message); } }
 
+// Upgrade an installation that only has the legacy User and combined Admin realms.
+$db->exec("INSERT INTO plugin_realms(plugin,file,display) VALUES
+	('syslog','syslog.php','Syslog User'),
+	('syslog','syslog_alerts.php,syslog_removal.php,syslog_reports.php,syslog_saved_searches.php,syslog_dashboards.php','Syslog Administration')");
+$db->exec('INSERT INTO user_auth_realm VALUES (1,101),(2,102)');
+$db->exec('INSERT INTO user_auth_group_realm VALUES (10,101),(20,102)');
+check(syslog_upgrade_create_permission_realms(), 'Legacy realm migration must succeed');
+$upgrade_realms = $db->query('SELECT id,file,display FROM plugin_realms')->fetchAll(PDO::FETCH_ASSOC);
+$realm_ids = [];
+foreach ($upgrade_realms as $realm) {
+	$realm_ids[$realm['display']] = (int) $realm['id'] + 100;
+}
+check(isset($realm_ids['Rule Viewer'], $realm_ids['Rule Administrator'], $realm_ids['Syslog Administration'], $realm_ids['Syslog Administrator']), 'All granular realm records must be created');
+check((int) $db->query('SELECT COUNT(*) FROM user_auth_realm WHERE user_id=1 AND realm_id=' . $realm_ids['Rule Viewer'])->fetchColumn() === 1, 'Legacy Syslog User grant must become Rule Viewer');
+check((int) $db->query('SELECT COUNT(*) FROM user_auth_realm WHERE user_id=2 AND realm_id=' . $realm_ids['Rule Administrator'])->fetchColumn() === 1, 'Legacy admin grant must become Rule Administrator');
+check((int) $db->query('SELECT COUNT(*) FROM user_auth_realm WHERE user_id=2 AND realm_id=' . $realm_ids['Syslog Administration'])->fetchColumn() === 1, 'Legacy admin grant must retain Syslog Administration');
+check((int) $db->query('SELECT COUNT(*) FROM user_auth_group_realm WHERE group_id=20 AND realm_id=' . $realm_ids['Syslog Administration'])->fetchColumn() === 1, 'Legacy group grant must retain Syslog Administration');
+$before_realms = $db->query('SELECT * FROM plugin_realms ORDER BY id')->fetchAll(PDO::FETCH_ASSOC);
+$before_users = $db->query('SELECT * FROM user_auth_realm ORDER BY user_id,realm_id')->fetchAll(PDO::FETCH_ASSOC);
+check(syslog_upgrade_create_permission_realms(), 'Repeated realm migration must succeed');
+check($before_realms === $db->query('SELECT * FROM plugin_realms ORDER BY id')->fetchAll(PDO::FETCH_ASSOC), 'Realm creation must be idempotent');
+check($before_users === $db->query('SELECT * FROM user_auth_realm ORDER BY user_id,realm_id')->fetchAll(PDO::FETCH_ASSOC), 'Grant mapping must not reapply on later requests');
+$db->exec('DELETE FROM plugin_realms; DELETE FROM user_auth_realm; DELETE FROM user_auth_group_realm; DELETE FROM sqlite_sequence WHERE name = "plugin_realms"');
+
 // Exercise Cacti's actual filename-overlap registration algorithm.
 $source = file_get_contents($argv[1]);
 $start = strpos($source, 'function api_plugin_register_realm(');

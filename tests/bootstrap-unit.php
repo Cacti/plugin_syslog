@@ -87,6 +87,7 @@ $GLOBALS['config'] = [
 	'cacti_version'   => $cacti_version,
 	'cacti_server_os' => 'unix',
 ];
+$GLOBALS['__test_config'] = $GLOBALS['config'];
 
 /*
  * Per-test override registry. See the file-level comment above.
@@ -104,6 +105,7 @@ function test_call_override($name, array $args, $default) {
 }
 
 function syslog_test_reset_globals() {
+	$GLOBALS['config']          = $GLOBALS['__test_config'];
 	$GLOBALS['__test_overrides'] = [];
 	$GLOBALS['__test_db_calls']  = [];
 	$GLOBALS['request']          = [];

@@ -22,30 +22,11 @@
  +-------------------------------------------------------------------------+
 */
 
-it('keeps global maintenance closed unless a device rule explicitly permits a priority', function () {
-	syslog_load_plugin_source('includes/functions.php');
-	$GLOBALS['syslogdb_default'] = 'syslog';
-	$GLOBALS['syslog_incoming_config'] = ['hostField' => 'host', 'priorityField' => 'priority_id'];
+/* Plugin-owned bounded Syslog outbox recovery worker. */
+include(__DIR__ . '/../../include/cli_check.php');
+include_once(__DIR__ . '/setup.php');
+include_once(__DIR__ . '/functions.php');
+include_once(__DIR__ . '/database.php');
 
-	$active = syslog_device_rule_sql(true);
-	// Maintenance must not let a host with no device rule through: an EXISTS
-	// filter is required while maintenance is active.
-	expect($active['sql'])->toContain('AND EXISTS')
-		->toContain("dr.allow_maintenance = 'on'")
-		->toContain('pass_through_priority')
-		// An active device pause still applies during maintenance.
-		->toContain('AND NOT EXISTS');
-	expect($active['params'])->toHaveCount(1);
-
-	$inactive = syslog_device_rule_sql(false);
-	expect($inactive['sql'])->not->toContain('AND EXISTS')
-		->toContain('AND NOT EXISTS');
-});
-
-it('creates and replicates device rules for remote collectors', function () {
-	$setup = plugin_test_read_source('setup.php');
-
-	expect($setup)->toContain('CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule`')
-		->toContain("replicate_out_table(\$rcnn_id, \$tdata, 'syslog_device_rule', \$remote_poller_id)")
-		->toContain('syslog_create_device_rule_table();');
-});
+syslog_connect();
+syslog_replication_recovery_run();

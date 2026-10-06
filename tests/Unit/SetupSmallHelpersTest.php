@@ -38,6 +38,17 @@ it('parses the plugin INFO file into an info array', function () {
 	expect($info['name'])->toBe('syslog');
 });
 
+it('restores the Cacti config when resetting test globals', function () {
+	$GLOBALS['config'] = ['poller_id' => 2];
+
+	syslog_test_reset_globals();
+
+	expect($GLOBALS['config'])->toMatchArray([
+		'base_path' => dirname(__DIR__, 4),
+		'url_path'  => '/cacti/',
+	]);
+});
+
 it('reports its dependencies as always satisfied', function () {
 	expect(syslog_check_dependencies())->toBeTrue();
 });

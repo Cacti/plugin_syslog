@@ -1502,6 +1502,10 @@ function syslog_status_get(): array {
 		'partition_maintenance_outcome'      => '',
 		'partition_recovery_progress'        => '',
 		'partition_maintenance_history'      => '',
+		'replication_state' => '',
+		'replication_last_success' => '',
+		'replication_last_error' => '',
+		'replication_last_error_time' => '',
 	];
 
 	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
@@ -1527,7 +1531,11 @@ function syslog_status_get(): array {
 			'partition_maintenance_last_success',
 			'partition_maintenance_outcome',
 			'partition_recovery_progress',
-			'partition_maintenance_history'
+			'partition_maintenance_history',
+			'replication_state',
+			'replication_last_success',
+			'replication_last_error',
+			'replication_last_error_time'
 		)");
 
 	foreach ($rows as $row) {
@@ -1618,6 +1626,7 @@ function syslog_worker_stats_get() {
 function syslog_aggregate_worker_stats($workers) {
 	$moved    = 0;
 	$resolved = 0;
+	$reported = [];
 
 	$rows = db_fetch_assoc("SELECT `name`, `value`
 		FROM settings
@@ -1638,12 +1647,14 @@ function syslog_aggregate_worker_stats($workers) {
 
 		if (!is_array($data)) {
 			cacti_log('WARNING: Ignoring malformed Syslog worker statistics.', false, 'SYSLOG');
+			$reported[$child] = false;
 
 			continue;
 		}
 
 		$moved    += isset($data['moved']) ? (int) $data['moved'] : 0;
 		$resolved += isset($data['resolved']) ? (int) $data['resolved'] : 0;
+		$reported[$child] = ($data['success'] ?? false) === true;
 	}
 
 	// The settings table lives in the main Cacti database, not the
@@ -1651,10 +1662,17 @@ function syslog_aggregate_worker_stats($workers) {
 	db_execute("DELETE FROM settings
 		WHERE name LIKE 'stats_syslog_child_%'");
 
+	$success = $workers > 0;
+	for ($worker = 1; $worker <= $workers; $worker++) {
+		if (empty($reported[$worker])) {
+			$success = false;
+		}
+	}
+
 	syslog_status_set('last_worker_moved', $moved);
 	syslog_status_set('last_worker_resolved', $resolved);
 
-	return ['moved' => $moved, 'resolved' => $resolved];
+	return ['moved' => $moved, 'resolved' => $resolved, 'success' => $success];
 }
 
 /**
@@ -3504,6 +3522,17 @@ function syslog_remove_items($table, $max_seq) {
 					}
 
 					$messages_xferred = db_affected_rows($syslog_cnn);
+				}
+
+				if ($table == 'syslog_incoming' && $remove['method'] != 'del') {
+					$replication_where  = $remove['type'] == 'filter' ? $insert_where : $sql_where;
+					$replication_params = $remove['type'] == 'filter' ? $insert_params : $params;
+
+					if (!syslog_replication_enqueue_incoming($replication_where, $replication_params, 'syslog_removed')) {
+						syslog_db_execute('ROLLBACK');
+						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after replication outbox insert failed", false, 'SYSLOG');
+						continue;
+					}
 				}
 
 				if ($table == 'syslog_incoming') {
@@ -5430,6 +5459,585 @@ function syslog_delete_stale_incoming() {
 }
 
 /**
+ * Whether this process is a configured Syslog Remote Poller.  Main and
+ * ordinary remote collectors never create an outbox backlog.
+ *
+ * @return bool
+ */
+function syslog_replication_is_enabled(): bool {
+	global $config;
+
+	return isset($config['poller_id']) && (int) $config['poller_id'] > 1
+		&& read_config_option('syslog_remote_enabled') === 'on';
+}
+
+/** Whether an administrator opted into persistent remote history. */
+function syslog_remote_store_records(): bool {
+	return read_config_option('syslog_remote_store_records') === 'on';
+}
+
+/**
+ * Retain a local history copy only while the Main Collector cannot accept it.
+ *
+ * This keeps remote search available through an outage without maintaining a
+ * second permanent copy after successful central delivery.
+ */
+function syslog_replication_should_retain_local_history(): bool {
+	return syslog_replication_is_enabled()
+		&& !syslog_remote_store_records()
+		&& !syslog_replication_delivery_is_online();
+}
+
+/** Remove only locally retained outage copies after central receipt. */
+function syslog_replication_cleanup_local_history(array $events): bool {
+	global $syslogdb_default;
+
+	if (syslog_remote_store_records()) {
+		return true;
+	}
+
+	$clauses = [];
+	$params  = [];
+	foreach ($events as $event) {
+		if (($event['disposition'] ?? '') !== 'syslog') {
+			continue;
+		}
+
+		$clauses[] = '(replication_source_poller_id = ? AND replication_source_event_id = ?)';
+		$params[]  = (int) $event['source_poller_id'];
+		$params[]  = (int) $event['source_event_id'];
+	}
+
+	return empty($clauses) || syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog` WHERE " . implode(' OR ', $clauses), $params);
+}
+
+/**
+ * Add a portable incoming event to the plugin-owned outbox.  Callers run
+ * this inside the same transaction as the local archival disposition.
+ * INSERT IGNORE makes retries idempotent on (source_poller_id, source_event_id).
+ *
+ * @param string               $where       A WHERE clause scoped to syslog_incoming AS si.
+ * @param array<int,mixed>     $params      Prepared-statement values for $where.
+ * @param string               $disposition syslog or syslog_removed.
+ *
+ * @return bool
+ */
+function syslog_replication_enqueue_incoming(string $where, array $params, string $disposition): bool {
+	global $config, $syslogdb_default;
+
+	if (!syslog_replication_is_enabled()) {
+		return true;
+	}
+
+	if (!in_array($disposition, ['syslog', 'syslog_removed'], true)) {
+		return false;
+	}
+
+	return syslog_db_execute_prepared("INSERT IGNORE INTO `$syslogdb_default`.`syslog_replication_output`
+		(source_poller_id, source_event_id, facility_id, priority_id, program, logtime, host, message, disposition)
+		SELECT ?, si.seq, si.facility_id, si.priority_id, si.program, si.logtime, si.host, si.message, ?
+		FROM `$syslogdb_default`.`syslog_incoming` AS si $where",
+		array_merge([(int) $config['poller_id'], $disposition], $params));
+}
+
+/** Record concise, non-sensitive operational replication failure metadata. */
+function syslog_replication_record_error(string $message): void {
+	$message = preg_replace('/[\r\n]+/', ' ', $message) ?? '';
+	syslog_status_set('replication_last_error', substr($message, 0, 255));
+	syslog_status_set('replication_last_error_time', time());
+}
+
+/** Read on-demand, indexed operational status for this local collector. */
+function syslog_replication_operational_status(): array {
+	global $syslogdb_default;
+	if (!syslog_replication_is_enabled()) {
+		return ['enabled' => false];
+	}
+
+	$row = syslog_db_fetch_row("SELECT COUNT(*) AS pending, MIN(created_at) AS oldest_pending
+		FROM `$syslogdb_default`.`syslog_replication_output`", false);
+	$lease = syslog_db_fetch_row("SELECT acquired_at, heartbeat_at FROM `$syslogdb_default`.`syslog_replication_recovery`
+		WHERE name = 'recovery'", false);
+	$status = syslog_status_get();
+	return [
+		'enabled' => true,
+		'state' => syslog_replication_get_state(),
+		'pending' => isset($row['pending']) ? (int) $row['pending'] : null,
+		'oldest_pending' => (string) ($row['oldest_pending'] ?? ''),
+		'recovery_active' => !empty($lease) && isset($lease['heartbeat_at']) && (int) $lease['heartbeat_at'] >= time() - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS,
+		'recovery_started' => (string) ($lease['acquired_at'] ?? ''),
+		'last_success' => $status['replication_last_success'] ?? '',
+		'last_error' => $status['replication_last_error'] ?? '',
+		'last_error_time' => $status['replication_last_error_time'] ?? '',
+	];
+}
+
+/**
+ * Read the latest accepted batch for every remote collector on the Main
+ * Collector. The summary table is updated within the central receipt
+ * transaction, avoiding historical syslog-table scans on the Status tab.
+ *
+ * @return array<int,array<string,mixed>>
+ */
+function syslog_replication_collector_status(): array {
+	global $config, $syslogdb_default;
+
+	if ((int) ($config['poller_id'] ?? 1) > 1
+		|| !syslog_db_table_exists('syslog_replication_collectors', false)) {
+		return [];
+	}
+
+	return syslog_db_fetch_assoc("SELECT rc.source_poller_id, p.hostname,
+		rc.last_batch_count, UNIX_TIMESTAMP(rc.last_received) AS last_received
+		FROM `$syslogdb_default`.`syslog_replication_collectors` AS rc
+		LEFT JOIN poller AS p
+		ON p.id = rc.source_poller_id
+		ORDER BY rc.last_received DESC, rc.source_poller_id ASC", false);
+}
+
+/** Conservative online delivery limit. Payloads may contain 2KiB messages. */
+if (!defined('SYSLOG_REPLICATION_BATCH_SIZE')) {
+	define('SYSLOG_REPLICATION_BATCH_SIZE', 100);
+}
+
+/**
+ * Return whether Cacti has a usable Main Collector connection. Cacti's
+ * recovery mode still has a live central connection; its Boost backlog does
+ * not determine the separate Syslog synchronization state.
+ *
+ * @return bool
+ */
+function syslog_replication_delivery_is_online(): bool {
+	global $config, $remote_db_cnn_id;
+
+	if (!empty($GLOBALS['syslog_replication_connection_failed'])
+		|| !syslog_replication_is_enabled() || !isset($remote_db_cnn_id) || !is_object($remote_db_cnn_id)) {
+		return false;
+	}
+
+	$connection = defined('CACTI_CONNECTION') ? CACTI_CONNECTION : ($config['connection'] ?? 'offline');
+
+	return in_array($connection, ['online', 'recovery'], true);
+}
+
+/**
+ * Return the Main Collector Syslog database connection and schema.
+ *
+ * @return array{connection:object,database:string}|false Main database target or false when unavailable.
+ */
+function syslog_replication_main_database() {
+	global $database_default, $database_type, $remote_db_cnn_id;
+	global $syslog_replication_main_db_default, $syslog_replication_main_db_hostname;
+	global $syslog_replication_main_db_username, $syslog_replication_main_db_password;
+	global $syslog_replication_main_db_type, $syslog_replication_main_db_port;
+	global $syslog_replication_main_db_retries, $syslog_replication_main_db_ssl;
+	global $syslog_replication_main_db_ssl_key, $syslog_replication_main_db_ssl_cert;
+	global $syslog_replication_main_db_ssl_ca;
+
+	$database = (string) ($syslog_replication_main_db_default ?? $database_default ?? '');
+	if (!preg_match('/^[A-Za-z0-9_$-]+$/', $database)) {
+		return false;
+	}
+
+	if (!empty($syslog_replication_main_db_hostname)) {
+		if (!array_key_exists('syslog_replication_main_db_connection', $GLOBALS)) {
+			$GLOBALS['syslog_replication_main_db_connection'] = syslog_db_connect_real(
+				$syslog_replication_main_db_hostname,
+				$syslog_replication_main_db_username ?? '',
+				$syslog_replication_main_db_password ?? '',
+				$database,
+				$syslog_replication_main_db_type ?? $database_type ?? 'mysql',
+				$syslog_replication_main_db_port ?? '3306',
+				$syslog_replication_main_db_retries ?? 5,
+				$syslog_replication_main_db_ssl ?? false,
+				$syslog_replication_main_db_ssl_key ?? '',
+				$syslog_replication_main_db_ssl_cert ?? '',
+				$syslog_replication_main_db_ssl_ca ?? ''
+			);
+		}
+		$connection = $GLOBALS['syslog_replication_main_db_connection'];
+	} else {
+		$connection = $remote_db_cnn_id ?? false;
+	}
+
+	if (!is_object($connection)) {
+		return false;
+	}
+
+	return ['connection' => $connection, 'database' => $database];
+}
+
+/**
+ * Check for pending plugin-owned replication work without counting a possibly
+ * large backlog. Main and ordinary remote collectors have no Syslog state.
+ *
+ * @return bool
+ */
+function syslog_replication_has_backlog(): bool {
+	global $syslogdb_default;
+
+	if (!syslog_replication_is_enabled()) {
+		return false;
+	}
+
+	return (bool) syslog_db_fetch_cell("SELECT 1 FROM `$syslogdb_default`.`syslog_replication_output` LIMIT 1", '', false);
+}
+
+/**
+ * Derive the current Syslog synchronization state from Cacti connectivity and
+ * the durable outbox. A null state means this collector does not participate.
+ *
+ * @return string|null online, offline, recovery, or null when not applicable
+ */
+function syslog_replication_get_state(): ?string {
+	if (!syslog_replication_is_enabled()) {
+		return null;
+	}
+
+	if (!syslog_replication_delivery_is_online()) {
+		return 'offline';
+	}
+
+	global $config;
+	$connection = defined('CACTI_CONNECTION') ? CACTI_CONNECTION : ($config['connection'] ?? 'offline');
+	return $connection === 'recovery' && syslog_replication_has_backlog() ? 'recovery' : 'online';
+}
+
+/**
+ * Persist only the last observed state to suppress outage log storms. The
+ * state itself remains derived and restart-safe from connectivity plus outbox.
+ *
+ * @return string|null
+ */
+/** Mark a failed central operation unavailable for the current process only. */
+function syslog_replication_mark_connection_failure(): void {
+	$GLOBALS['syslog_replication_connection_failed'] = true;
+}
+
+function syslog_replication_record_state(): ?string {
+	$state = syslog_replication_get_state();
+	if ($state === null) {
+		return null;
+	}
+
+	$status = syslog_status_get();
+	$prior  = $status['replication_state'] ?? '';
+	if ($prior === $state) {
+		return $state;
+	}
+
+	syslog_status_set('replication_state', $state);
+	if ($state === 'offline') {
+		cacti_log('SYSLOG: Central synchronization unavailable; local processing and outbox retention continue', false, 'SYSLOG');
+	} elseif ($state === 'recovery') {
+		cacti_log('SYSLOG: Central synchronization entering recovery with pending outbox backlog', false, 'SYSLOG');
+	} else {
+		cacti_log('SYSLOG: Central synchronization recovered; Syslog outbox is empty', false, 'SYSLOG');
+	}
+
+	return $state;
+}
+
+/** Recovery execution limits; defaults retain the original conservative behavior. */
+if (!defined('SYSLOG_REPLICATION_RECOVERY_DEFAULT_RECORDS_PER_RUN')) {
+	define('SYSLOG_REPLICATION_RECOVERY_DEFAULT_RECORDS_PER_RUN', 2000);
+	define('SYSLOG_REPLICATION_RECOVERY_DEFAULT_DELAY_MS', 100);
+	define('SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS', 300);
+}
+
+/** Return the administrator-selected bounded recovery budget in records. */
+function syslog_replication_recovery_records_per_run(): int {
+	$records = (int) read_config_option('syslog_replication_recovery_records_per_run');
+	$allowed = [500, 1000, 2000, 3000, 5000, 10000];
+
+	return in_array($records, $allowed, true) ? $records : SYSLOG_REPLICATION_RECOVERY_DEFAULT_RECORDS_PER_RUN;
+}
+
+/** Return the administrator-selected pause between bounded central batches. */
+function syslog_replication_recovery_batch_delay_us(): int {
+	$milliseconds = (int) read_config_option('syslog_replication_recovery_batch_delay_ms');
+	$allowed = [0, 25, 50, 100, 250, 500, 1000];
+
+	if (!in_array($milliseconds, $allowed, true)) {
+		$milliseconds = SYSLOG_REPLICATION_RECOVERY_DEFAULT_DELAY_MS;
+	}
+
+	return $milliseconds * 1000;
+}
+
+/** Atomically acquire the local plugin-owned recovery lease. */
+function syslog_replication_recovery_acquire(string $token): bool {
+	global $syslogdb_default;
+
+	if (!syslog_replication_delivery_is_online()) {
+		return false;
+	}
+
+	$now = time();
+	$stale = $now - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS;
+	if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_replication_recovery`
+		(name, owner_token, acquired_at, heartbeat_at, pid) VALUES ('recovery', ?, ?, ?, ?)
+		ON DUPLICATE KEY UPDATE
+			owner_token = IF(heartbeat_at < ?, VALUES(owner_token), owner_token),
+			acquired_at = IF(heartbeat_at < ?, VALUES(acquired_at), acquired_at),
+			heartbeat_at = IF(heartbeat_at < ?, VALUES(heartbeat_at), heartbeat_at),
+			pid = IF(heartbeat_at < ?, VALUES(pid), pid)",
+		[$token, $now, $now, (int) getmypid(), $stale, $stale, $stale, $stale])) {
+		return false;
+	}
+
+	$owner = syslog_db_fetch_cell("SELECT owner_token FROM `$syslogdb_default`.`syslog_replication_recovery` WHERE name = 'recovery'", '', false);
+	return hash_equals($token, (string) $owner);
+}
+
+/** Refresh an owned lease without extending another worker's ownership. */
+function syslog_replication_recovery_heartbeat(string $token): bool {
+	global $syslogdb_default;
+	return syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_replication_recovery`
+		SET heartbeat_at = ? WHERE name = 'recovery' AND owner_token = ?", [time(), $token]);
+}
+
+/** Release only this worker's lease. Crashes are recovered through expiry. */
+function syslog_replication_recovery_release(string $token): void {
+	global $syslogdb_default;
+	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_replication_recovery`
+		WHERE name = 'recovery' AND owner_token = ?", [$token], false);
+}
+
+/**
+ * Converge the outbox within a finite worker budget. Each iteration delegates
+ * to the Phase 2 primitive; no local transaction is held over central I/O.
+ * A zero-result nonempty batch is retained as a visible poison/failure and
+ * pauses the worker rather than creating a tight retry loop.
+ *
+ * @return int Number of acknowledged records in this execution.
+ */
+function syslog_replication_recovery_run(): int {
+	if (syslog_replication_get_state() !== 'recovery') {
+		return 0;
+	}
+
+	$token = bin2hex(random_bytes(16));
+	if (!syslog_replication_recovery_acquire($token)) {
+		cacti_log('SYSLOG: Recovery worker skipped; an active lease already owns backlog convergence', false, 'SYSLOG');
+		return 0;
+	}
+
+	$accepted = 0;
+	cacti_log('SYSLOG: Recovery worker acquired lease', false, 'SYSLOG');
+	try {
+		$max_batches = (int) ceil(syslog_replication_recovery_records_per_run() / SYSLOG_REPLICATION_BATCH_SIZE);
+		$batch_delay_us = syslog_replication_recovery_batch_delay_us();
+
+		for ($batch = 0; $batch < $max_batches; $batch++) {
+			if (!syslog_replication_delivery_is_online()) {
+				cacti_log('SYSLOG: Recovery worker paused because Main is unavailable', false, 'SYSLOG');
+				break;
+			}
+			if (!syslog_replication_has_backlog()) {
+				cacti_log('SYSLOG: Recovery worker completed; Syslog outbox is empty', false, 'SYSLOG');
+				break;
+			}
+
+			$delivered = syslog_replication_deliver_online();
+			if ($delivered <= 0) {
+				cacti_log('SYSLOG ERROR: Recovery worker retained the oldest unaccepted batch; retry will occur on a future execution', false, 'SYSLOG');
+				break;
+			}
+			$accepted += $delivered;
+			syslog_replication_recovery_heartbeat($token);
+			if ($batch_delay_us > 0) {
+				usleep($batch_delay_us);
+			}
+		}
+	} finally {
+		syslog_replication_recovery_release($token);
+	}
+
+	if ($accepted > 0 && syslog_replication_has_backlog()) {
+		cacti_log('SYSLOG: Recovery worker execution budget reached after ' . $accepted . ' records; a future execution will continue', false, 'SYSLOG');
+	}
+
+	return $accepted;
+}
+
+/** Return whether a non-stale local recovery lease already exists. */
+function syslog_replication_recovery_is_active(): bool {
+	global $syslogdb_default;
+	$heartbeat = syslog_db_fetch_cell("SELECT heartbeat_at FROM `$syslogdb_default`.`syslog_replication_recovery` WHERE name = 'recovery'", '', false);
+	return is_numeric($heartbeat) && (int) $heartbeat >= time() - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS;
+}
+
+/** Start a detached recovery worker only when this collector has backlog. */
+function syslog_replication_start_recovery_worker(): bool {
+	global $config;
+	if (syslog_replication_get_state() !== 'recovery' || syslog_replication_recovery_is_active()) {
+		return false;
+	}
+
+	$php = (string) read_config_option('path_php_binary');
+	if ($php === '') {
+		cacti_log('SYSLOG ERROR: Recovery worker was not started because path_php_binary is empty', false, 'SYSLOG');
+		return false;
+	}
+
+	exec_background($php, ' -q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/syslog/syslog_recovery.php'));
+	return true;
+}
+
+/**
+ * Archive one portable outbox record on the Main Collector. This writes
+ * directly to historical tables, so central alerts and removal rules do not
+ * run again.
+ *
+ * @param array<string,mixed> $event
+ * @param PDO                 $central
+ * @param string              $database
+ *
+ * @return bool
+ */
+function syslog_replication_accept_central(array $event, $central, string $database): bool {
+
+	if (!in_array($event['disposition'], ['syslog', 'syslog_removed'], true)) {
+		cacti_log('SYSLOG ERROR: Replication event has an invalid disposition', false, 'SYSLOG');
+		return false;
+	}
+
+	$receipt = db_execute_prepared("INSERT IGNORE INTO `$database`.`syslog_replication_receipts`
+		(source_poller_id, source_event_id, disposition) VALUES (?, ?, ?)",
+		[(int) $event['source_poller_id'], (int) $event['source_event_id'], $event['disposition']], true, $central);
+	if (!$receipt) {
+		return false;
+	}
+
+	// An existing receipt was committed with its archive row in an earlier
+	// attempt, including the ambiguous 'commit succeeded, response lost' case.
+	if (db_affected_rows($central) === 0) {
+		return true;
+	}
+
+	if (!db_execute_prepared("INSERT INTO `$database`.`syslog_replication_collectors`
+		(source_poller_id, last_batch_id, last_batch_count, last_received)
+		VALUES (?, ?, 1, NOW())
+		ON DUPLICATE KEY UPDATE
+			last_batch_count = IF(last_batch_id = VALUES(last_batch_id), last_batch_count + 1, 1),
+			last_batch_id = VALUES(last_batch_id),
+			last_received = VALUES(last_received)",
+		[(int) $event['source_poller_id'], (string) $event['delivery_batch_id']], true, $central)) {
+		return false;
+	}
+
+	if (!db_execute_prepared("INSERT INTO `$database`.`syslog_programs` (program, last_updated)
+		VALUES (?, NOW()) ON DUPLICATE KEY UPDATE last_updated = VALUES(last_updated)", [$event['program']], true, $central)
+		|| !db_execute_prepared("INSERT INTO `$database`.`syslog_hosts` (host, last_updated)
+		VALUES (?, NOW()) ON DUPLICATE KEY UPDATE last_updated = VALUES(last_updated)", [$event['host']], true, $central)) {
+		return false;
+	}
+
+	$table = $event['disposition']; // validated fixed identifiers, never caller SQL
+	return db_execute_prepared("INSERT INTO `$database`.`$table`
+		(logtime, priority_id, facility_id, program_id, host_id, message)
+		SELECT FROM_UNIXTIME(?), ?, ?, sp.program_id, sh.host_id, ?
+		FROM `$database`.`syslog_programs` AS sp
+		INNER JOIN `$database`.`syslog_hosts` AS sh
+		WHERE sp.program = ? AND sh.host = ?",
+		[$event['logtime_epoch'], $event['priority_id'], $event['facility_id'], $event['message'], $event['program'], $event['host']], true, $central);
+}
+
+/**
+ * Deliver one bounded oldest-first outbox batch. Central acceptance is one
+ * transaction: any failure rolls back the whole batch and retains its local
+ * rows. Exact identities are deleted only after a confirmed central commit.
+ *
+ * @return int
+ */
+function syslog_replication_deliver_online(): int {
+	global $syslogdb_default, $syslog_cnn;
+
+	if (!syslog_replication_delivery_is_online()) {
+		return 0;
+	}
+
+	$main_database = syslog_replication_main_database();
+	if ($main_database === false) {
+		syslog_replication_mark_connection_failure();
+		syslog_replication_record_error('Main Collector Syslog database connection is unavailable');
+		cacti_log('SYSLOG ERROR: Main Collector Syslog database connection is unavailable; retaining local outbox', false, 'SYSLOG');
+
+		return 0;
+	}
+	$central  = $main_database['connection'];
+	$database = $main_database['database'];
+
+	$events = syslog_db_fetch_assoc("SELECT source_poller_id, source_event_id, facility_id, priority_id, program,
+		UNIX_TIMESTAMP(logtime) AS logtime_epoch, host, message, disposition
+		FROM `$syslogdb_default`.`syslog_replication_output`
+		ORDER BY created_at ASC, source_poller_id ASC, source_event_id ASC
+		LIMIT " . SYSLOG_REPLICATION_BATCH_SIZE);
+	if (empty($events)) {
+		return 0;
+	}
+
+	$batch_id = bin2hex(random_bytes(16));
+	foreach ($events as &$event) {
+		$event['delivery_batch_id'] = $batch_id;
+	}
+	unset($event);
+
+	if (!db_execute('START TRANSACTION', true, $central)) {
+		syslog_replication_mark_connection_failure();
+		syslog_replication_record_error('Unable to begin central replication transaction');
+		cacti_log('SYSLOG ERROR: Unable to begin central replication transaction; retaining local outbox', false, 'SYSLOG');
+		return 0;
+	}
+
+	foreach ($events as $event) {
+		if (!syslog_replication_accept_central($event, $central, $database)) {
+			syslog_replication_mark_connection_failure();
+			db_execute('ROLLBACK', false, $central);
+			syslog_replication_record_error('Main Collector rejected replication batch');
+			cacti_log('SYSLOG ERROR: Main Collector rejected replication batch; retaining local outbox', false, 'SYSLOG');
+			return 0;
+		}
+	}
+
+	if (!db_execute('COMMIT', true, $central)) {
+		syslog_replication_mark_connection_failure();
+		db_execute('ROLLBACK', false, $central);
+		syslog_replication_record_error('Central replication commit was not confirmed');
+		cacti_log('SYSLOG ERROR: Central replication commit was not confirmed; retaining local outbox for idempotent retry', false, 'SYSLOG');
+		return 0;
+	}
+
+	if (!syslog_replication_cleanup_local_history($events)) {
+		syslog_replication_record_error('Unable to remove temporary local history after central delivery');
+		cacti_log('SYSLOG ERROR: Main Collector accepted replication batch but temporary local history cleanup failed; retry is safe', false, 'SYSLOG');
+		return 0;
+	}
+
+	$clauses = [];
+	$params  = [];
+	foreach ($events as $event) {
+		$clauses[] = '(source_poller_id = ? AND source_event_id = ?)';
+		$params[]  = (int) $event['source_poller_id'];
+		$params[]  = (int) $event['source_event_id'];
+	}
+
+	if (!syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_replication_output` WHERE " . implode(' OR ', $clauses), $params)) {
+		syslog_replication_record_error('Local replication acknowledgement failed');
+		cacti_log('SYSLOG ERROR: Main Collector accepted replication batch but local acknowledgement failed; retry is safe', false, 'SYSLOG');
+		return 0;
+	}
+
+	$acknowledged = db_affected_rows($syslog_cnn);
+	if ($acknowledged > 0) {
+		syslog_status_set('replication_last_success', time());
+		syslog_status_set('replication_last_error', '');
+	}
+	return $acknowledged;
+}
+
+/**
  * syslog_incoming_to_syslog - Move incoming syslog records to the syslog table
  *
  * Once all Alerts have been processed, we need to move entries first to
@@ -5445,10 +6053,10 @@ function syslog_delete_stale_incoming() {
  * @param int $seq_start Optional first seq of a slice (0 for no bound)
  * @param int $seq_end   Optional last seq of a slice (0 for no bound)
  *
- * @return array Array with the number of rows moved and stale rows deleted
+ * @return array{moved:int,stale:int,success:bool} Transfer totals and completion status
  */
 function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
-	global $syslogdb_default, $syslog_cnn;
+	global $config, $syslogdb_default, $syslog_cnn;
 
 	$slice_where = '';
 	$slice_param = [];
@@ -5458,7 +6066,48 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		$slice_param = [$seq_start, $seq_end];
 	}
 
-	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
+	$replication_transaction = false;
+
+	if (syslog_replication_is_enabled()) {
+		if (!syslog_db_execute('START TRANSACTION')) {
+			cacti_log('SYSLOG ERROR: Unable to start transaction for replication outbox', false, 'SYSLOG');
+
+			return ['moved' => 0, 'stale' => 0, 'success' => false];
+		}
+
+		$replication_transaction = true;
+		$replication_where = 'WHERE si.`status` = 1 AND si.`seq` <= ?' . $slice_where;
+
+		if (!syslog_replication_enqueue_incoming($replication_where, array_merge([$max_seq], $slice_param), 'syslog')) {
+			syslog_db_execute('ROLLBACK');
+			cacti_log('SYSLOG ERROR: Rolled back transfer after replication outbox insert failed', false, 'SYSLOG');
+
+			return ['moved' => 0, 'stale' => 0, 'success' => false];
+		}
+	}
+
+	$retain_local_history = syslog_replication_should_retain_local_history();
+	if ($retain_local_history) {
+		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
+			(logtime, priority_id, facility_id, program_id, host_id, message, replication_source_poller_id, replication_source_event_id)
+			SELECT logtime, priority_id, facility_id, program_id, host_id, message, replication_source_poller_id, replication_source_event_id
+			FROM (
+				SELECT logtime, priority_id, facility_id, sp.program_id, sh.host_id, message,
+					? AS replication_source_poller_id, si.seq AS replication_source_event_id
+				FROM syslog_incoming AS si
+				INNER JOIN syslog_hosts AS sh
+				ON sh.host = si.host
+				INNER JOIN syslog_programs AS sp
+				ON sp.program = si.program
+				WHERE si.`status` = 1
+				AND si.`seq` <= ?
+				$slice_where
+			) AS merge",
+			array_merge([(int) $config['poller_id'], $max_seq], $slice_param));
+	} elseif (syslog_replication_is_enabled() && !syslog_remote_store_records()) {
+		$archived = true;
+	} else {
+		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
 		(logtime, priority_id, facility_id, program_id, host_id, message)
 		SELECT logtime, priority_id, facility_id, program_id, host_id, message
 		FROM (
@@ -5473,8 +6122,21 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 			$slice_where
 		) AS merge",
 		array_merge([$max_seq], $slice_param));
+	}
 
-	$moved = db_affected_rows($syslog_cnn);
+	if (!$archived) {
+		if ($replication_transaction) {
+			syslog_db_execute('ROLLBACK');
+		}
+
+		cacti_log('SYSLOG ERROR: Unable to archive incoming records', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0, 'success' => false];
+	}
+
+	$moved = $retain_local_history || !syslog_replication_is_enabled() || syslog_remote_store_records()
+		? db_affected_rows($syslog_cnn)
+		: 0;
 
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Moving or Removing Processed Records');
@@ -5482,18 +6144,35 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 	syslog_debug(sprintf('Moved   %5s - Message(s) to the syslog table', $moved));
 
 	if ($seq_start > 0 && $seq_end > 0) {
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+		$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
 			WHERE `status` = 1
 			AND `seq` BETWEEN ? AND ?",
 			[$seq_start, $seq_end]);
 	} else {
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+		$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
 			WHERE `status` = 1
 			AND `seq` <= ?",
 			[$max_seq]);
 	}
 
 	syslog_debug(sprintf('Deleted %5s - Already Processed Message(s) from incoming', db_affected_rows($syslog_cnn)));
+
+	if (!$deleted) {
+		if ($replication_transaction) {
+			syslog_db_execute('ROLLBACK');
+		}
+
+		cacti_log('SYSLOG ERROR: Unable to delete archived incoming records', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0, 'success' => false];
+	}
+
+	if ($replication_transaction && !syslog_db_execute('COMMIT')) {
+		syslog_db_execute('ROLLBACK');
+		cacti_log('SYSLOG ERROR: Unable to commit transfer and replication outbox transaction', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0, 'success' => false];
+	}
 
 	if ($seq_start > 0 && $seq_end > 0) {
 		// The stale record cleanup is owned by the master after all
@@ -5503,7 +6182,7 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		$stale = syslog_delete_stale_incoming();
 	}
 
-	return ['moved' => $moved, 'stale' => $stale];
+	return ['moved' => $moved, 'stale' => $stale, 'success' => true];
 }
 
 /**
