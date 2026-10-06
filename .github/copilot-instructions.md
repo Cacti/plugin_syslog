@@ -17,7 +17,7 @@ When generating code for this repository:
 
 ### Key Dependencies
 - Cacti core framework (`api_plugin_*`, `db_*`, `read_config_option()`, `get_filter_request_var()`, etc.).
-- This plugin's own `syslog_db_*` wrapper layer (`database.php`) instead of core `db_*` for syslog tables.
+- This plugin's own `syslog_db_*` wrapper layer (`includes/database.php`) instead of core `db_*` for syslog tables.
 - Optional: `gettext` for internationalization.
 
 ## Project Context
@@ -31,8 +31,8 @@ This is the **Syslog Plugin** for Cacti, a PHP-based network monitoring and grap
 plugin_syslog/
 ├── setup.php                  # Compatibility facade, lifecycle and upgrade orchestration
 ├── includes/                  # Owned setup modules: schema, processing, settings, UI hooks
-├── database.php                # syslog_db_* wrapper layer (dual-database support)
-├── functions.php                # Core logic: search DSL, CSV export, partitions, alerts
+├── includes/database.php       # syslog_db_* wrapper layer (dual-database support)
+├── includes/functions.php      # Core logic: search DSL, CSV export, partitions, alerts
 ├── syslog.php                   # Main UI entry point (System Logs / Alert Logs tabs)
 ├── syslog_alerts.php            # Alert rule administration
 ├── syslog_removal.php           # Removal rule administration
@@ -50,7 +50,7 @@ plugin_syslog/
 
 ## Architecture & Data Flow
 - **Dual Database Support:** The plugin can store data in the main Cacti database OR a dedicated syslog database.
-  - **Critical:** ALWAYS use the `syslog_db_*` wrapper functions (defined in `database.php`) for all database operations. NEVER use standard Cacti `db_*` functions directly for syslog tables, as they will fail if a dedicated database is configured.
+  - **Critical:** ALWAYS use the `syslog_db_*` wrapper functions (defined in `includes/database.php`) for all database operations. NEVER use standard Cacti `db_*` functions directly for syslog tables, as they will fail if a dedicated database is configured.
 - **Integration:** `setup.php` is the compatibility bootstrap; Cacti hooks are
   registered there but point at the module that owns each callback.
 - **Poller Integration:** Background processes (`syslog_process.php`, `syslog_removal.php`) are triggered by Cacti's poller or run independently.
@@ -179,9 +179,13 @@ integer/numeric context (e.g. arithmetic, strict `===` comparisons).
 
 - Keep `setup.php` as the compatibility facade: lifecycle entry points,
   `plugin_syslog_version()`, `syslog_check_upgrade()` and its realm/permission
-  orchestration, `syslog_connect()`, and ordered module bootstrap only.
-- Put schema creation and migrations in `includes/schema.php`; retain the
-  root `database.php` as the `syslog_db_*` wrapper layer.
+  orchestration, `syslog_connect()`, and config-file discovery only.
+- Load modules lazily with `require_once` at the lifecycle or callback boundary
+  that needs them. Do not eagerly load every `includes/*.php` module from
+  `setup.php`; Cacti hook registration already identifies and loads the owning
+  callback module.
+- Put schema creation and migrations in `includes/schema.php`; retain
+  `includes/database.php` as the `syslog_db_*` wrapper layer.
 - Put poller and replication callbacks in `includes/processing.php`; settings
   hooks in `includes/settings.php`; tabs/navigation/graph buttons in
   `includes/navigation.php`; install adviser UI in `includes/installer.php`;
@@ -250,9 +254,9 @@ Document all changes in `CHANGELOG.md` under `--- develop ---`, prefixed by type
 
 ## Key Files
 - `setup.php`: Plugin installation, hook registration, and schema updates.
-- `database.php`: Database abstraction layer wrappers (`syslog_db_*`).
+- `includes/database.php`: Database abstraction layer wrappers (`syslog_db_*`).
 - `config.php.dist`: Template for database configuration.
-- `functions.php`: Core logic and utility functions.
+- `includes/functions.php`: Core logic and utility functions.
 - `syslog.php`: Main UI entry point.
 
 ## CI & Dependency Baselines
