@@ -29,7 +29,7 @@ change SQL, or change hook ownership in the same commit.
 | `includes/installer.php` | Install/uninstall advisor and confirmation rendering |
 | `includes/utilities.php` | Utilities menu/action callbacks and the purge dialog |
 
-The root `database.php` remains the dual-database `syslog_db_*` wrapper layer;
+The `includes/database.php` file remains the dual-database `syslog_db_*` wrapper layer;
 it is not replaced by `includes/schema.php`.
 
 ## Hook ownership
