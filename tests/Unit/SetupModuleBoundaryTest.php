@@ -41,9 +41,18 @@ it('keeps config-array dependencies in the directly loaded settings module', fun
 	expect($settings)->toContain('function syslog_refresh_permission_roles(): void');
 });
 
-it('boots the compatibility facade in callback modules that use its functions', function () {
-	foreach (['includes/settings.php', 'includes/navigation.php', 'includes/processing.php', 'includes/utilities.php'] as $module) {
-		expect(plugin_test_read_source($module))->toContain("require_once(dirname(__DIR__) . '/setup.php');");
+it('boots the compatibility facade before Cacti can invoke registered callbacks', function () {
+	$setup = plugin_test_read_source('setup.php');
+
+	preg_match_all("/api_plugin_register_hook\\([^\\n]*['\"]includes\\/([^'\"]+\\.php)['\"]/", $setup, $matches);
+
+	foreach (array_unique($matches[1]) as $module) {
+		$source    = plugin_test_read_source('includes/' . $module);
+		$bootstrap = strpos($source, "require_once(dirname(__DIR__) . '/setup.php');");
+		$callback  = strpos($source, 'function ');
+
+		expect($bootstrap)->not->toBeFalse()
+			->toBeLessThan($callback);
 	}
 });
 

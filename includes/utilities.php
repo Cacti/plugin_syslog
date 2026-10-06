@@ -9,6 +9,8 @@
 
 /* Utilities callbacks. */
 
+require_once(dirname(__DIR__) . '/setup.php');
+
 /**
  * Handle the Syslog utilities actions.
  *
@@ -18,8 +20,6 @@
  *                     nothing when the Syslog config file is not available.
  */
 function syslog_utilities_action($action) {
-	require_once(dirname(__DIR__) . '/setup.php');
-
 	if (!syslog_config_safe()) {
 		return;
 	}
@@ -86,8 +86,6 @@ function syslog_utilities_action($action) {
  * @return void
  */
 function syslog_utilities_list(): void {
-	require_once(dirname(__DIR__) . '/setup.php');
-
 	if (!syslog_config_safe()) {
 		return;
 	}
