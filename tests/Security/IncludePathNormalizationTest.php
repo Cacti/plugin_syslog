@@ -110,8 +110,8 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		throw new RuntimeException('functions.php missing syslog_apply_selected_items_action');
 	}
 
-	if (!preg_match('/require_once\s+__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]/', $setup)) {
-		throw new RuntimeException('setup.php must require includes/functions.php via __DIR__');
+	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/functions.php include');
 	}
 
 	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/database\.php[\'"]\s*\)/', $setup)) {

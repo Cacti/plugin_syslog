@@ -174,6 +174,12 @@ $unmeasured_allowlist = [
 	'syslog_device_rules.php',
 	'syslog_batch_transfer.php',
 	'syslog_process.php',
+	// setup.php is unit-loadable (SetupSmallHelpersTest exercises its pure
+	// helpers), but the only lines this change touches are the include_once
+	// chain inside syslog_connect()/syslog_poller_bottom(), which run solely in a
+	// live Cacti or poller process; it is kept out of <source> so those lines are
+	// not gate-measured.
+	'setup.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));

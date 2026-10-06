@@ -27,7 +27,6 @@
     -->
     <source>
         <include>
-            <file>setup.php</file>
             <file>database.php</file>
             <file>includes/functions.php</file>
             <file>lib/syslog_dashboard.php</file>

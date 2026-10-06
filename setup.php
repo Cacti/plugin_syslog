@@ -22,11 +22,6 @@
  +-------------------------------------------------------------------------+
 */
 
-// The shared function library is required by every Syslog hook and page; load
-// it once here so setup.php's hooks (including the poller bottom hook) always
-// have it available without per-callsite include_once guards.
-require_once __DIR__ . '/includes/functions.php';
-
 /**
  * Install the Syslog plugin, registering its hooks, realms and database tables.
  *
@@ -233,6 +228,7 @@ function syslog_connect(): bool {
 		include(SYSLOG_CONFIG);
 	}
 
+	include_once(__DIR__ . '/includes/functions.php');
 	include_once(__DIR__ . '/database.php');
 
 	$connect_remote = false;
@@ -1585,6 +1581,7 @@ function syslog_poller_bottom(): void {
 	global $config;
 
 	if (syslog_config_safe()) {
+		include_once(__DIR__ . '/includes/functions.php');
 		include_once(__DIR__ . '/database.php');
 
 		syslog_connect();
