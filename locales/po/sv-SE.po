@@ -4,244 +4,293 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-09-28 16:08-0400\nPO-Revision-Date: 2026-10-06 08:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-10-06 15:14-0400\n"
+"PO-Revision-Date: 2026-10-06 08:18+0000\n"
+"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
+"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
+"Language: sv-SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 
-#: functions.php
+#: includes/functions.php
 msgid "Syslog download"
 msgstr "Hämta Syslog"
 
-#: functions.php
+#: includes/functions.php
+msgid "Emergency"
+msgstr "Nödsituation"
+
+#: includes/functions.php setup.php
+msgid "Critical"
+msgstr "Kritiskt"
+
+#: includes/functions.php
+msgid "Alert"
+msgstr "Varning"
+
+#: includes/functions.php
+msgid "Error"
+msgstr "Fel"
+
+#: includes/functions.php setup.php
+msgid "Warning"
+msgstr "Varning"
+
+#: includes/functions.php setup.php
+msgid "Notice"
+msgstr "Notis"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Info"
+
+#: includes/functions.php
+msgid "Debug"
+msgstr "Debugg"
+
+#: includes/functions.php
+msgid "Informational"
+msgstr "Information"
+
+#: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "Spara misslyckades.  Fjärrdatainsamlare i synkroniseringsläge får inte spara regler.  Spara från huvudservern för Cacti i stället."
 
-#: functions.php
+#: includes/functions.php
 msgid "Please use an HTML Email Client"
 msgstr "Vänligen använd en HTML e-postklient"
 
-#: functions.php
+#: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
 msgstr "Textimportens datamängd överskrider den högsta tillåtna storleken"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
 msgstr "Det gick inte att läsa den uppladdade importfilen. Kontrollera filen och gränsen för uppladdningsstorlek."
 
-#: functions.php
+#: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
 msgstr "Välj en importfil eller klistra in dess innehåll före importen."
 
-#: functions.php
+#: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr "Syslog-tabellerna är inte partitionerade. Traditionella tabeller utan partitionering är föråldrade och partitionerade tabeller krävs för nya installationer. Data fortsätter att samlas in, men du bör migrera Syslog-tabellen till en partitionerad arkitektur."
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr "Partitionslayouten för %s är ogiltig eller ofullständig; partitionsunderhållet har stoppats. Kontrollera partitionsmetadata med SHOW CREATE TABLE och bygg vid behov om partitionerna. Skrivningar fortsätter i säkerhetspartitionen dMaxValue."
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d day(s)"
 msgstr "återstående partitionslucka: %d dag(ar)"
 
-#: functions.php
+#: includes/functions.php
 msgid "no retention deferral"
 msgstr "ingen uppskjutning av gallring"
 
-#: functions.php
+#: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
 msgstr "gallring enligt bevarandeperioden har skjutits upp tills den framtida tidshorisonten har återställts"
 
-#: functions.php
+#: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
 msgstr "nya poster samlas i säkerhetspartitionen dMaxValue"
 
-#: functions.php
+#: includes/functions.php
 msgid "per run recovery limit reached"
 msgstr "återställningsgränsen per körning har nåtts"
 
-#: functions.php
+#: includes/functions.php
 msgid "partition creation failed"
 msgstr "det gick inte att skapa partition"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr "Okänd regeltyp."
 
-#: functions.php
+#: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
 msgstr "Den konfigurerade fältmappningen för inkommande data är ogiltig."
 
-#: functions.php
+#: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
 msgstr "Faciliteten för den här regeln finns ännu inte i referenstabellen."
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule match type."
 msgstr "Okänd matchningstyp för regel."
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule did not compile to a query."
 msgstr "Regeln kunde inte kompileras till en fråga."
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview query could not be evaluated."
 msgstr "Förhandsgranskningsfrågan kunde inte utvärderas."
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr "Förhandsgranskningsexemplet kunde inte läsas."
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Permission denied."
 msgstr "Åtkomst nekas."
 
-#: functions.php setup.php
+#: includes/functions.php setup.php
 msgid "Invalid request. Please try again."
 msgstr "Ogiltig begäran. Försök igen."
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule has no match expression to test."
 msgstr "Regeln har inget matchningsuttryck att testa."
 
-#: functions.php
+#: includes/functions.php
 msgid "The match expression is too long to test."
 msgstr "Matchningsuttrycket är för långt för att testas."
 
-#: functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php
 msgid "Unknown"
 msgstr "Okänd"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Threshold Alert '%s' för Host '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cacti Syslog Tröskelvärde Varning '%s'"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
 msgstr "Bevakningens namn"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
 msgstr "Allvarlighetsgrad"
 
-#: functions.php syslog_alerts.php
+#: includes/functions.php syslog_alerts.php
 msgid "Threshold"
 msgstr "Tröskel"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Count"
 msgstr "Antal"
 
-#: functions.php
+#: includes/functions.php
 msgid "Match String"
 msgstr "Matcha sträng"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog-meddelande '%s' för värd '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Cacti Syslog-varning '%s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname"
 msgstr "Värdnamn"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Date"
 msgstr "Datum"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level"
 msgstr "Nivå"
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_removal.php syslog_saved_searches.php
 msgid "Message"
 msgstr "Meddelande"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "VARNING: En Syslog Threshold Alert har utlösts för Host '%s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "VARNING: Ett tröskelvärde för Syslog har utlösts"
 
-#: functions.php
+#: includes/functions.php
 msgid "Name:"
 msgstr "Namn:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Severity:"
 msgstr "Allvarlighetsgrad:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Threshold:"
 msgstr "Tröskelvärde:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Count:"
 msgstr "Antal:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message String:"
 msgstr "Meddelandesträng:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname:"
 msgstr "& Värddatornamn:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Date:"
 msgstr "Datum:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level:"
 msgstr "Nivå:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message:"
 msgstr "Meddelande:"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Host:"
 msgstr ", Värd:"
 
-#: functions.php
+#: includes/functions.php
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Sev:"
 msgstr "Sev:"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
 msgstr "Händelsevarning - %s"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Count:"
 msgstr ", Antal:"
 
-#: functions.php lib/syslog_dashboard.php syslog_alerts.php syslog_removal.php
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php
 msgid "Host"
 msgstr "Värd"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Report - %s"
 msgstr "Händelserapport - %s"
@@ -1065,6 +1114,54 @@ msgstr "Synkronisering av regler för fjärrdatainsamling"
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar dessa meddelanden oberoende av varandra, markera den här kryssrutan om du vill att reglerna för varningar, borttagning och rapporter i huvuddatabasen ska skickas till fjärrdatasystemet."
 
+#: setup.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: setup.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Delete Syslog Report(s)"
+msgid "Remote Syslog Recovery"
+msgstr "Ta bort Syslog-rapport(er)"
+
+#: setup.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: setup.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: setup.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: setup.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Not paused"
+msgid "No pause"
+msgstr "Inte pausad"
+
+#: setup.php
+#, fuzzy, php-format
+#| msgid "%d seconds"
+msgid "%d milliseconds"
+msgstr "%d sekunder"
+
+#: setup.php
+#, fuzzy, php-format
+#| msgid "%d seconds"
+msgid "%d second"
+msgstr "%d sekunder"
+
 #: setup.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
 msgstr "Inaktivera"
@@ -1120,18 +1217,6 @@ msgstr "%d minut"
 #, php-format
 msgid "%d Minutes"
 msgstr "%d minuter"
-
-#: setup.php syslog.php
-msgid "Notice"
-msgstr "Notis"
-
-#: setup.php syslog.php
-msgid "Warning"
-msgstr "Varning"
-
-#: setup.php syslog.php
-msgid "Critical"
-msgstr "Kritiskt"
 
 #: setup.php
 msgid "Begins with"
@@ -1380,6 +1465,82 @@ msgstr "Genomsnittlig körtid"
 #: syslog.php
 msgid "Maximum runtime"
 msgstr "Längsta körtid"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "State"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Removed Records"
+msgid "Queued Recovery Records"
+msgstr "Borttagna poster"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last successful maintenance"
+msgid "Last successful synchronization"
+msgstr "Senaste lyckade underhåll"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Actions"
+msgid "Active"
+msgstr "Åtgärder"
+
+#: syslog.php
+msgid "Inactive"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Recovery progress"
+msgid "Recovery worker"
+msgstr "Återställningsförlopp"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Remote Data Collector Rules Sync"
+msgid "Remote collector receipts"
+msgstr "Synkronisering av regler för fjärrdatainsamling"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last Month"
+msgid "Last Batch Count"
+msgstr "Senaste månaden"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last received log"
+msgid "Last Record Received"
+msgstr "Senast mottagna logg"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Unknown rule type."
+msgid "Unknown remote poller"
+msgstr "Okänd regeltyp."
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr ""
 
 #: syslog.php
 msgid "Storage and retention"
@@ -1795,30 +1956,6 @@ msgstr "Spara standardinställningar"
 #: syslog.php
 msgid "Save view defaults"
 msgstr "Spara visningens standardinställningar"
-
-#: syslog.php
-msgid "Emergency"
-msgstr "Nödsituation"
-
-#: syslog.php
-msgid "Alert"
-msgstr "Varning"
-
-#: syslog.php
-msgid "Error"
-msgstr "Fel"
-
-#: syslog.php
-msgid "Info"
-msgstr "Info"
-
-#: syslog.php
-msgid "Debug"
-msgstr "Debugg"
-
-#: syslog.php
-msgid "Informational"
-msgstr "Information"
 
 #: syslog.php syslog_alerts.php syslog_device_rules.php
 msgid "Device"
