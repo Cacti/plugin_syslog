@@ -2071,45 +2071,6 @@ function syslog_strip_domain(string $hostname): string {
 }
 
 /**
- * Display the foreground and background colors for the syslog legend.
- *
- * @return void
- */
-function syslog_syslog_legend(): void {
-	global $disabled_color, $notmon_color, $database_default;
-
-	html_start_box('', '100%', '', '3', 'center', '');
-	print '<tr class="">';
-	print "<td width='10%' class='logEmergency'>" . __('Emergency', 'syslog') . '</td>';
-	print "<td width='10%' class='logCritical'>" . __('Critical', 'syslog') . '</td>';
-	print "<td width='10%' class='logAlert'>" . __('Alert', 'syslog') . '</td>';
-	print "<td width='10%' class='logError'>" . __('Error', 'syslog') . '</td>';
-	print "<td width='10%' class='logWarning'>" . __('Warning', 'syslog') . '</td>';
-	print "<td width='10%' class='logNotice'>" . __('Notice', 'syslog') . '</td>';
-	print "<td width='10%' class='logInfo'>" . __('Info', 'syslog') . '</td>';
-	print "<td width='10%' class='logDebug'>" . __('Debug', 'syslog') . '</td>';
-	print '</tr>';
-	html_end_box(false);
-}
-
-/**
- * Display the foreground and background colors for the alert log legend.
- *
- * @return void
- */
-function syslog_log_legend(): void {
-	global $disabled_color, $notmon_color, $database_default;
-
-	html_start_box('', '100%', '', '3', 'center', '');
-	print '<tr class="">';
-	print "<td width='10%' class='logAlert'>" . __('Alert', 'syslog') . '</td>';
-	print "<td width='10%' class='logWarning'>" . __('Warning', 'syslog') . '</td>';
-	print "<td width='10%' class='logInfo'>" . __('Informational', 'syslog') . '</td>';
-	print '</tr>';
-	html_end_box(false);
-}
-
-/**
  * Display the main log results table for syslog or alert messages.
  *
  * This is the main page display function in Syslog.  Displays all the

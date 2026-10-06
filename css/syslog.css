@@ -118,3 +118,38 @@ p {
 	/* Slightly highlight on hover but keep parent coloring visible */
 	background: rgba(0,0,0,0.02) !important;
 }
+
+/*
+ * Status legend. Laid out as an evenly sized, wrapping flex row (flex: 1 1 0
+ * gives every chip the same width) with rounded corners and spacing between
+ * chips. A legend is a colour key, so the chips use their own solid, opaque
+ * colours with light text so they stay legible rather than inheriting the
+ * subtle row tints. This base palette is the fallback used by themes that do
+ * not ship a dedicated legend stylesheet; see css/<theme>.css for the
+ * per-theme variants.
+ */
+.syslogLegend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	width: 100%;
+}
+
+.syslogLegend .syslogLegendItem {
+	flex: 1 1 0;
+	text-align: center;
+	white-space: nowrap;
+	padding: 4px 6px;
+	border-radius: 3px;
+	color: #ffffff;
+	font-size: 11px;
+}
+
+.syslogLegend .logEmergency { background-color: #8e1f18; }
+.syslogLegend .logCritical  { background-color: #a5281f; }
+.syslogLegend .logAlert     { background-color: #b23a2f; }
+.syslogLegend .logError     { background-color: #c0483c; }
+.syslogLegend .logWarning   { background-color: #b5730e; }
+.syslogLegend .logNotice    { background-color: #2f6fa8; }
+.syslogLegend .logInfo      { background-color: #3f8f4a; }
+.syslogLegend .logDebug     { background-color: #6c7a72; }

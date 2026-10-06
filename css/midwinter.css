@@ -1,0 +1,34 @@
+/*
+ * Syslog status-legend palette for the midwinter theme (dark surface).
+ *
+ * Rounded, evenly spaced, solid-colour severity chips that line up with the
+ * Thold status legends. Backgrounds are muted to sit on the dark surface and
+ * the chip text is lightened for contrast. Loaded by syslog_include_js() when
+ * this theme is active; themes without a matching file fall back to
+ * css/syslog.css.
+ */
+.syslogLegend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	width: 100%;
+}
+
+.syslogLegend .syslogLegendItem {
+	flex: 1 1 0;
+	text-align: center;
+	white-space: nowrap;
+	padding: 4px 6px;
+	border-radius: 3px;
+	color: #edf3ef;
+	font-size: 11px;
+}
+
+.syslogLegend .logEmergency { background-color: #8a2f2f; }
+.syslogLegend .logCritical  { background-color: #863a3c; }
+.syslogLegend .logAlert     { background-color: #8f4339; }
+.syslogLegend .logError     { background-color: #8a5244; }
+.syslogLegend .logWarning   { background-color: #86682f; }
+.syslogLegend .logNotice    { background-color: #35607f; }
+.syslogLegend .logInfo      { background-color: #3a6e46; }
+.syslogLegend .logDebug     { background-color: #4a534e; }

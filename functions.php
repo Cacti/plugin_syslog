@@ -719,13 +719,70 @@ function syslog_export_form_end(bool $export): void {
  */
 function syslog_include_js(): void {
 	global $config;
+
+	// Load the legend palette for the active theme, falling back to the base
+	// syslog.css when the theme ships no dedicated file. The theme name is a
+	// user/DB setting, so it is sanitised before it reaches the filesystem.
+	$theme      = preg_replace('/[^a-z0-9_-]/i', '', (string) get_selected_theme());
+	$legend_css = ($theme !== '' && file_exists(__DIR__ . '/css/' . $theme . '.css')) ? $theme . '.css' : 'syslog.css';
 	?>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(__DIR__ . '/css/search.css'); ?>'>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/dashboard.css?v=<?php print filemtime(__DIR__ . '/css/dashboard.css'); ?>'>
+	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/<?php print $legend_css; ?>?v=<?php print filemtime(__DIR__ . '/css/' . $legend_css); ?>'>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(__DIR__ . '/js/filter-builder.js'); ?>'></script>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/dashboard.js?v=<?php print filemtime(__DIR__ . '/js/dashboard.js'); ?>'></script>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(__DIR__ . '/js/functions.js'); ?>'></script>
 	<?php
+}
+
+/**
+ * Display the severity legend for the System Logs tab.
+ *
+ * Renders one rounded, evenly spaced, solid-colour chip per syslog severity.
+ * The chips carry the same log* severity classes used for the result rows, so
+ * their background colours are supplied by the active theme's legend CSS.
+ *
+ * @return void
+ */
+function syslog_syslog_legend(): void {
+	html_start_box('', '100%', '', '3', 'center', '');
+
+	print '<tr class="tableRow"><td>';
+	print '<div class="syslogLegend">';
+	print '<div class="syslogLegendItem logEmergency">' . __('Emergency', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logCritical">' . __('Critical', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logAlert">' . __('Alert', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logError">' . __('Error', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logWarning">' . __('Warning', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logNotice">' . __('Notice', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logInfo">' . __('Info', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logDebug">' . __('Debug', 'syslog') . '</div>';
+	print '</div>';
+	print '</td></tr>';
+
+	html_end_box(false);
+}
+
+/**
+ * Display the severity legend for the Alert Logs tab.
+ *
+ * Mirrors syslog_syslog_legend() with the smaller set of severities carried by
+ * alert log rows.
+ *
+ * @return void
+ */
+function syslog_log_legend(): void {
+	html_start_box('', '100%', '', '3', 'center', '');
+
+	print '<tr class="tableRow"><td>';
+	print '<div class="syslogLegend">';
+	print '<div class="syslogLegendItem logAlert">' . __('Alert', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logWarning">' . __('Warning', 'syslog') . '</div>';
+	print '<div class="syslogLegendItem logInfo">' . __('Informational', 'syslog') . '</div>';
+	print '</div>';
+	print '</td></tr>';
+
+	html_end_box(false);
 }
 
 /**
