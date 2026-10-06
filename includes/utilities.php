@@ -18,7 +18,7 @@
  *                     nothing when the Syslog config file is not available.
  */
 function syslog_utilities_action($action) {
-	include_once(dirname(__DIR__) . '/setup.php');
+	require_once(dirname(__DIR__) . '/setup.php');
 
 	if (!syslog_config_safe()) {
 		return;
@@ -86,7 +86,7 @@ function syslog_utilities_action($action) {
  * @return void
  */
 function syslog_utilities_list(): void {
-	include_once(dirname(__DIR__) . '/setup.php');
+	require_once(dirname(__DIR__) . '/setup.php');
 
 	if (!syslog_config_safe()) {
 		return;

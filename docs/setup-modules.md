@@ -1,8 +1,9 @@
 # `setup.php` module ownership
 
-`setup.php` is the Syslog plugin's compatibility entry point.  Page and worker
-entry points may continue to include it directly, so it must load every module
-needed by its public API before returning.
+`setup.php` is the Syslog plugin's compatibility entry point. Page and worker
+entry points may continue to include it directly; lifecycle code loads only
+the module it needs, while Cacti loads hook callback modules by their registered
+path.
 
 This is a relocation refactor.  A module move must not rename a function,
 change SQL, or change hook ownership in the same commit.
@@ -16,6 +17,7 @@ change SQL, or change hook ownership in the same commit.
 - `plugin_syslog_version()` and `syslog_check_upgrade()`
 - `syslog_connect()` as the compatibility facade for direct `setup.php`
   consumers
+- `syslog_determine_config()` and `syslog_config_safe()`
 - realm/permission upgrade helpers called by `syslog_check_upgrade()`
 
 ## Module map
@@ -24,12 +26,12 @@ change SQL, or change hook ownership in the same commit.
 | --- | --- |
 | `includes/schema.php` | Schema creation, migration helpers, capacity checks, and table setup |
 | `includes/processing.php` | Poller and replication callbacks |
-| `includes/settings.php` | Settings definitions, configuration helpers, and Settings-page assets |
+| `includes/settings.php` | Settings definitions, permission configuration, and Settings-page assets |
 | `includes/navigation.php` | Tabs, navigation text, refresh handling, and graph buttons |
 | `includes/installer.php` | Install/uninstall advisor and confirmation rendering |
 | `includes/utilities.php` | Utilities menu/action callbacks and the purge dialog |
 
-The `includes/database.php` file remains the dual-database `syslog_db_*` wrapper layer;
+`includes/database.php` remains the dual-database `syslog_db_*` wrapper layer;
 it is not replaced by `includes/schema.php`.
 
 ## Hook ownership

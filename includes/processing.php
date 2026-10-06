@@ -19,7 +19,7 @@
  * @return array<string, mixed> The replication data, unmodified.
  */
 function syslog_replicate_out($data) {
-	include_once(dirname(__DIR__) . '/setup.php');
+	require_once(dirname(__DIR__) . '/setup.php');
 	syslog_connect();
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -50,7 +50,7 @@ function syslog_replicate_out($data) {
  * @return void
  */
 function syslog_replicate_in(): void {
-	include_once(dirname(__DIR__) . '/setup.php');
+	require_once(dirname(__DIR__) . '/setup.php');
 	syslog_connect();
 
 	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
@@ -77,7 +77,7 @@ function syslog_poller_bottom(): void {
 	global $config;
 
 	if (syslog_config_safe()) {
-		include_once(dirname(__DIR__) . '/setup.php');
+		require_once(dirname(__DIR__) . '/setup.php');
 
 		syslog_connect();
 		syslog_status_set('last_polling_time', time());

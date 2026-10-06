@@ -65,7 +65,7 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		'plugin_syslog_install'       => 'setup.php',
 		'plugin_syslog_check_config'  => 'setup.php',
 		'syslog_connect'              => 'setup.php',
-		'syslog_determine_config'     => 'includes/settings.php',
+		'syslog_determine_config'     => 'setup.php',
 	];
 
 	foreach ($expected_functions as $func => $owner) {
@@ -91,12 +91,12 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		throw new RuntimeException('functions.php missing syslog_apply_selected_items_action');
 	}
 
-	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]\s*\)/', $setup)) {
-		throw new RuntimeException('setup.php must use __DIR__ for the includes/functions.php include');
+	if (!preg_match('/require_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/functions.php require');
 	}
 
-	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/database\.php[\'"]\s*\)/', $setup)) {
-		throw new RuntimeException('setup.php must use __DIR__ for the includes/database.php include');
+	if (!preg_match('/require_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/database\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/database.php require');
 	}
 
 	expect(true)->toBeTrue();

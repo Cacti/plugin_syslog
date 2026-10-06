@@ -18,6 +18,8 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'plugin_syslog_uninstall',
 		'plugin_syslog_check_config',
 		'plugin_syslog_upgrade',
+		'syslog_determine_config',
+		'syslog_config_safe',
 		'syslog_connect',
 		'syslog_upgrade_saved_search_realm',
 		'syslog_upgrade_dashboard_realm',
@@ -41,16 +43,19 @@ it('keeps config-array dependencies in the directly loaded settings module', fun
 
 it('boots the compatibility facade in callback modules that use its functions', function () {
 	foreach (['includes/settings.php', 'includes/navigation.php', 'includes/processing.php', 'includes/utilities.php'] as $module) {
-		expect(plugin_test_read_source($module))->toContain("include_once(dirname(__DIR__) . '/setup.php');");
+		expect(plugin_test_read_source($module))->toContain("require_once(dirname(__DIR__) . '/setup.php');");
 	}
 });
 
-it('loads every extracted module from the setup compatibility facade', function () {
+it('loads extracted modules only at the lifecycle boundary that needs them', function () {
 	$setup = plugin_test_read_source('setup.php');
 
-	foreach (['schema.php', 'processing.php', 'settings.php', 'navigation.php', 'installer.php', 'utilities.php'] as $module) {
-		expect($setup)->toContain("include_once(__DIR__ . '/includes/$module');");
-	}
+	expect($setup)->toContain("require_once(__DIR__ . '/includes/schema.php');")
+		->toContain("require_once(__DIR__ . '/includes/settings.php');")
+		->toContain("require_once(__DIR__ . '/includes/installer.php');")
+		->not->toContain("require_once(__DIR__ . '/includes/processing.php');")
+		->not->toContain("require_once(__DIR__ . '/includes/navigation.php');")
+		->not->toContain("require_once(__DIR__ . '/includes/utilities.php');");
 });
 
 it('boots CLI entrypoints through the setup compatibility facade', function () {

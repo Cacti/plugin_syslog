@@ -21,10 +21,10 @@ function syslog_ensure_message_text(): void {
 	global $syslogdb_default;
 
 	$tables = [
-		'syslog'                    => "TEXT NOT NULL DEFAULT ''",
-		'syslog_removed'            => "TEXT NOT NULL DEFAULT ''",
-		'syslog_incoming'           => "TEXT NOT NULL DEFAULT ''",
-		'syslog_replication_output' => "TEXT NOT NULL DEFAULT ''",
+		'syslog'                    => 'TEXT NOT NULL',
+		'syslog_removed'            => 'TEXT NOT NULL',
+		'syslog_incoming'           => 'TEXT NOT NULL',
+		'syslog_replication_output' => 'TEXT NOT NULL',
 		'syslog_reports'            => 'TEXT DEFAULT NULL',
 	];
 
@@ -78,6 +78,28 @@ function syslog_ensure_replication_history_columns(): void {
 	]);
 	syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog`
 		ADD KEY `replication_source` (`replication_source_poller_id`, `replication_source_event_id`)");
+}
+
+/** Ensure remote replication transactions use transactional tables. */
+function syslog_ensure_replication_storage_engine(): void {
+	global $config, $syslogdb_default;
+
+	if (!isset($config['poller_id']) || (int) $config['poller_id'] <= 1 || !syslog_remote_collector_requires_innodb()) {
+		return;
+	}
+
+	foreach (['syslog_incoming', 'syslog', 'syslog_removed'] as $table) {
+		$engine = syslog_db_fetch_cell_prepared(
+			'SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
+			[$syslogdb_default, $table],
+			'',
+			false
+		);
+
+		if (is_string($engine) && strcasecmp($engine, 'InnoDB') !== 0) {
+			syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` ENGINE=InnoDB");
+		}
+	}
 }
 
 /** Create the device-wide alert handling rules table on all Syslog collectors. */
@@ -147,7 +169,7 @@ function syslog_create_replication_output_table(): void {
 		`program` varchar(40) default NULL COMMENT 'Source program text',
 		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Original event timestamp',
 		`host` varchar(64) default NULL COMMENT 'Source host text',
-		`message` TEXT NOT NULL DEFAULT '' COMMENT 'Source message text',
+		`message` TEXT NOT NULL COMMENT 'Source message text',
 		`disposition` varchar(16) NOT NULL COMMENT 'Local archival target: syslog or syslog_removed',
 		`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Outbox creation time',
 		`acknowledged_at` timestamp NULL DEFAULT NULL COMMENT 'Reserved for future destination acknowledgement',
@@ -265,7 +287,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		program_id int(10) unsigned default NULL,
 		host_id int(10) unsigned default NULL,
 		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-		message TEXT NOT NULL default '',
+		message TEXT NOT NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		replication_source_poller_id int(10) unsigned default NULL,
 		replication_source_event_id bigint unsigned default NULL,
@@ -458,6 +480,7 @@ function syslog_setup_table_new(array $options): void {
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_incoming`");
+		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_output`");
 	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_incoming` (
@@ -466,7 +489,7 @@ function syslog_setup_table_new(array $options): void {
 		program varchar(40) default NULL,
 		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(64) default NULL,
-		message TEXT NOT NULL default '',
+		message TEXT NOT NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),

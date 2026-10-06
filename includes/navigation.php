@@ -77,7 +77,7 @@ function syslog_graph_buttons($graph_elements = []): void {
 		return;
 	}
 
-	include_once(dirname(__DIR__) . '/setup.php');
+	require_once(dirname(__DIR__) . '/setup.php');
 	syslog_connect();
 
 	if (get_nfilter_request_var('action') == 'view') {

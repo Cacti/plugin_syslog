@@ -338,46 +338,6 @@ function syslog_config_settings(): void {
 	}
 }
 
-/**
- * Determine which Syslog config file is present, and if it is for a remote database.
- *
- * @return void
- */
-function syslog_determine_config(): void {
-	global $config;
-
-	// Setup the syslog database settings path
-	if (!defined('SYSLOG_CONFIG')) {
-		if (file_exists(dirname(__DIR__) . '/config_local.php')) {
-			define('SYSLOG_CONFIG', dirname(__DIR__) . '/config_local.php');
-			$config['syslog_remote_db'] = true;
-		} elseif (file_exists(dirname(__DIR__) . '/config.php')) {
-			define('SYSLOG_CONFIG', dirname(__DIR__) . '/config.php');
-			$config['syslog_remote_db'] = false;
-		}
-	}
-}
-
-/**
- * Check that either Syslog config file exists and is readable.
- *
- * @return bool True when a Syslog config file is available, false otherwise.
- */
-function syslog_config_safe(): bool {
-	$files = [
-		dirname(__DIR__) . '/config_local.php',
-		dirname(__DIR__) . '/config.php'
-	];
-
-	foreach ($files as $file) {
-		if (file_exists($file) && is_readable($file)) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
 /** Refresh permission labels, filenames and grouping from current realm IDs. */
 function syslog_refresh_permission_roles(): void {
 	global $user_auth_realms, $user_auth_realm_filenames, $user_auth_roles;
@@ -628,8 +588,10 @@ function syslog_config_insert(): void {
 		return;
 	}
 
-	include_once(dirname(__DIR__) . '/setup.php');
+	require_once(dirname(__DIR__) . '/setup.php');
+	require_once(__DIR__ . '/schema.php');
 	syslog_connect();
+	syslog_ensure_replication_storage_engine();
 
 	syslog_check_upgrade();
 }

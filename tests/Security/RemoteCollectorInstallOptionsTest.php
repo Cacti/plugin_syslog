@@ -50,6 +50,26 @@ it('requires InnoDB when any Remote Data Collector option is enabled', function 
 	expect(syslog_install_storage_engine('Aria', ['syslog_remote_enabled' => '']))->toBe('Aria');
 });
 
+it('normalizes transactional remote tables to InnoDB before replication runs', function () {
+	$GLOBALS['config']          = ['poller_id' => 2];
+	$GLOBALS['syslogdb_default'] = 'remote_syslog';
+	$calls = [];
+
+	test_override('read_config_option', fn ($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
+	test_override('syslog_db_fetch_cell_prepared', fn ($sql, $params) => $params[1] === 'syslog' ? 'Aria' : 'InnoDB');
+	test_override('syslog_db_execute', function ($sql) use (&$calls) {
+		$calls[] = $sql;
+
+		return true;
+	});
+	syslog_load_plugin_source('includes/schema.php');
+
+	syslog_ensure_replication_storage_engine();
+
+	expect($calls)->toHaveCount(1)
+		->and($calls[0])->toContain('ALTER TABLE `remote_syslog`.`syslog` ENGINE=InnoDB');
+});
+
 it('includes the Remote Data Collector options in the install advisor and saves them', function () {
 	$installer = plugin_test_read_source('includes/installer.php');
 	$setup     = plugin_test_read_function_source('syslog_setup_table_new');
@@ -78,4 +98,6 @@ it('includes the Remote Data Collector options in the install advisor and saves 
 	$notice = strpos($installer, 'syslog_engine_compatibility_notice');
 	$settings_box = strpos($installer, "html_start_box(__('Syslog %s Settings'");
 	expect($notice)->toBeLessThan($settings_box);
+	expect($setup)->toContain('syslog_replication_output`');
+	expect($setup)->toContain('syslog_replication_recovery`');
 });

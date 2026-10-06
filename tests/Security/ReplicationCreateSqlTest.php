@@ -43,7 +43,7 @@ it('executes the captured CREATE TABLE SQL during replication sync', function ()
 		$GLOBALS['issue258_logs'][] = $message;
 	});
 
-	syslog_load_plugin_source('setup.php');
+	syslog_load_plugin_source('includes/processing.php');
 
 	$data = [
 		['id' => 1, 'hash' => 'abc123', 'name' => 'sample'],

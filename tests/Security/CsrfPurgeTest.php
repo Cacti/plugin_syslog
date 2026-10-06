@@ -130,7 +130,7 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		}
 
 		require_once __DIR__ . '/includes/functions.php';
-		require_once __DIR__ . '/setup.php';
+		require_once __DIR__ . '/includes/utilities.php';
 
 		switch ($scenario) {
 			case 'render':

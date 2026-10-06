@@ -22,18 +22,6 @@
  +-------------------------------------------------------------------------+
 */
 
-/*
- * Keep setup.php as the compatibility entry point for page and poller
- * scripts. Module files contain only declarations, so this ordered bootstrap
- * does not execute plugin behavior while setup.php is being loaded.
- */
-include_once(__DIR__ . '/includes/schema.php');
-include_once(__DIR__ . '/includes/processing.php');
-include_once(__DIR__ . '/includes/settings.php');
-include_once(__DIR__ . '/includes/navigation.php');
-include_once(__DIR__ . '/includes/installer.php');
-include_once(__DIR__ . '/includes/utilities.php');
-
 /**
  * Install the Syslog plugin, registering its hooks, realms and database tables.
  *
@@ -44,6 +32,10 @@ include_once(__DIR__ . '/includes/utilities.php');
 function plugin_syslog_install() {
 	global $config, $syslog_upgrade;
 	static $bg_inprocess = false;
+
+	require_once(__DIR__ . '/includes/installer.php');
+	require_once(__DIR__ . '/includes/schema.php');
+	require_once(__DIR__ . '/includes/settings.php');
 
 	syslog_determine_config();
 
@@ -123,6 +115,9 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 	global $config;
 	$remote_options = ['syslog_remote_enabled', 'syslog_remote_sync_rules', 'syslog_remote_store_records'];
 
+	require_once(__DIR__ . '/includes/installer.php');
+	require_once(__DIR__ . '/includes/schema.php');
+
 	if (isset($options['cancel'])) {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
 		exit;
@@ -177,6 +172,8 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 function plugin_syslog_uninstall(): void {
 	global $config, $syslogdb_default;
 
+	require_once(__DIR__ . '/includes/installer.php');
+
 	syslog_determine_config();
 	syslog_connect();
 
@@ -207,6 +204,10 @@ function plugin_syslog_uninstall(): void {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboards`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_dashboards_perm`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_saved_searches_perm`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_output`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_receipts`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_collectors`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_recovery`");
 		} else {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");
@@ -243,9 +244,45 @@ function plugin_syslog_check_config(): bool {
  * @return bool Always false, the upgrade is handled by syslog_check_upgrade().
  */
 function plugin_syslog_upgrade(): bool {
+	require_once(__DIR__ . '/includes/settings.php');
+
 	// Here we will upgrade to the newest version
 	api_plugin_register_hook('syslog', 'settings_bottom', 'syslog_settings_bottom', 'includes/settings.php', 1);
 	syslog_check_upgrade();
+
+	return false;
+}
+
+/**
+ * Determine which Syslog config file is present, and if it is for a remote database.
+ *
+ * @return void
+ */
+function syslog_determine_config(): void {
+	global $config;
+
+	if (!defined('SYSLOG_CONFIG')) {
+		if (file_exists(__DIR__ . '/config_local.php')) {
+			define('SYSLOG_CONFIG', __DIR__ . '/config_local.php');
+			$config['syslog_remote_db'] = true;
+		} elseif (file_exists(__DIR__ . '/config.php')) {
+			define('SYSLOG_CONFIG', __DIR__ . '/config.php');
+			$config['syslog_remote_db'] = false;
+		}
+	}
+}
+
+/**
+ * Check that either Syslog config file exists and is readable.
+ *
+ * @return bool True when a Syslog config file is available, false otherwise.
+ */
+function syslog_config_safe(): bool {
+	foreach ([__DIR__ . '/config_local.php', __DIR__ . '/config.php'] as $file) {
+		if (file_exists($file) && is_readable($file)) {
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -265,8 +302,8 @@ function syslog_connect(): bool {
 		include(SYSLOG_CONFIG);
 	}
 
-	include_once(__DIR__ . '/includes/functions.php');
-	include_once(__DIR__ . '/includes/database.php');
+	require_once(__DIR__ . '/includes/functions.php');
+	require_once(__DIR__ . '/includes/database.php');
 
 	$connect_remote = false;
 	$connected      = true;
@@ -343,6 +380,7 @@ function syslog_connect(): bool {
 				$syslog_install_options = [];
 			}
 
+			require_once(__DIR__ . '/includes/schema.php');
 			syslog_setup_table_new($syslog_install_options);
 		}
 	}
@@ -664,6 +702,9 @@ function syslog_upgrade_create_permission_realms(): bool {
  */
 function syslog_check_upgrade(): void {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
+
+	require_once(__DIR__ . '/includes/schema.php');
+	require_once(__DIR__ . '/includes/settings.php');
 
 	syslog_connect();
 	if (!syslog_upgrade_create_permission_realms()) {
@@ -1068,8 +1109,7 @@ function syslog_check_upgrade(): void {
  *                              empty array when the file cannot be parsed.
  */
 function plugin_syslog_version(): array {
-	global $config;
-	$info = parse_ini_file($config['base_path'] . '/plugins/syslog/INFO', true);
+	$info = parse_ini_file(__DIR__ . '/INFO', true);
 
 	if (is_array($info) && isset($info['info']) && is_array($info['info'])) {
 		return $info['info'];
