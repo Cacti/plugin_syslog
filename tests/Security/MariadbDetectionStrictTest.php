@@ -14,16 +14,16 @@
  */
 
 it('uses a strict comparison for MariaDB detection', function () {
-	$setup = plugin_test_read_source('setup.php');
+	$schema = plugin_test_read_source('includes/schema.php');
 
-	$legacyPattern = '/stripos\s*\(\s*\$database\s*\[\s*[\'"]{1}Value[\'"]{1}\s*\]\s*,\s*[\'"]{1}mariadb[\'"]{1}\s*\)\s*==\s*false/';
-	$fixedPattern  = '/stripos\s*\(\s*\$database\s*\[\s*[\'"]{1}Value[\'"]{1}\s*\]\s*,\s*[\'"]{1}mariadb[\'"]{1}\s*\)\s*===\s*false/';
+	$legacyPattern = '/stripos\s*\(\s*\$version\s*,\s*[\'"]{1}mariadb[\'"]{1}\s*\)\s*==\s*false/';
+	$fixedPattern  = '/stripos\s*\(\s*\$version\s*,\s*[\'"]{1}mariadb[\'"]{1}\s*\)\s*===\s*false/';
 
-	if (preg_match($legacyPattern, $setup)) {
+	if (preg_match($legacyPattern, $schema)) {
 		throw new RuntimeException('Legacy loose MariaDB stripos comparison is still present.');
 	}
 
-	if (!preg_match($fixedPattern, $setup)) {
+	if (!preg_match($fixedPattern, $schema)) {
 		throw new RuntimeException('Strict MariaDB stripos comparison is missing.');
 	}
 

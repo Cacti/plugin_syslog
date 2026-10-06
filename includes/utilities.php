@@ -24,8 +24,6 @@ function syslog_utilities_action($action) {
 		return;
 	}
 
-	syslog_connect();
-
 	if ($action === 'purge_syslog_hosts') {
 		if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 			cacti_log('WARNING: syslog purge blocked -- non-POST request', false, 'SYSLOG');
@@ -93,8 +91,6 @@ function syslog_utilities_list(): void {
 	if (!syslog_config_safe()) {
 		return;
 	}
-
-	syslog_connect();
 
 	html_header([__('Syslog Utilities', 'syslog')], 2); ?>
 
