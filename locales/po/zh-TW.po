@@ -4,263 +4,315 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-09-28 16:08-0400\nPO-Revision-Date: 2026-10-06 08:18+0000\nLast-Translator: YU HAO HUANG <mix@b51.tw>\nLanguage-Team: Chinese (Traditional Han script) <https://translate.cacti.net/projects/cacti/syslog/zh_Hant/>\nLanguage: zh-TW\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 5.11.4\n"
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-10-06 15:14-0400\n"
+"PO-Revision-Date: 2026-10-06 20:43+0000\n"
+"Last-Translator: YU HAO HUANG <mix@b51.tw>\n"
+"Language-Team: Chinese (Traditional Han script) <https://translate.cacti.net/projects/cacti/syslog/zh_Hant/>\n"
+"Language: zh-TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.11.4\n"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Syslog download"
 msgstr "已啟用Syslog"
 
-#: functions.php
+#: includes/functions.php
+msgid "Emergency"
+msgstr "緊急"
+
+#: includes/functions.php setup.php
+msgid "Critical"
+msgstr "嚴重"
+
+#: includes/functions.php
+msgid "Alert"
+msgstr "警報"
+
+#: includes/functions.php
+#, fuzzy
+msgid "Error"
+msgstr "錯誤"
+
+#: includes/functions.php setup.php
+#, fuzzy
+msgid "Warning"
+msgstr "警告"
+
+#: includes/functions.php setup.php
+msgid "Notice"
+msgstr "通知"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "資訊"
+
+#: includes/functions.php
+#, fuzzy
+msgid "Debug"
+msgstr "除錯"
+
+#: includes/functions.php
+msgid "Informational"
+msgstr "資訊"
+
+#: includes/functions.php
 #, fuzzy
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "保存失敗。同步模式下的遠程數據收集器不允許保存規則。而是從主 Cacti 服務器保存。"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Please use an HTML Email Client"
 msgstr "請使用HTML電子郵件客戶端"
 
-#: functions.php
+#: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d day(s)"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "no retention deferral"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "per run recovery limit reached"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "partition creation failed"
 msgstr "分區表"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule match type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule did not compile to a query."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview query could not be evaluated."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php setup.php
+#: includes/functions.php setup.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule has no match expression to test."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php
 #, fuzzy
 msgid "Unknown"
 msgstr "未知"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog插件閾值警報'%s'"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cacti Syslog插件閾值警報'%s'"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 #, fuzzy
 msgid "Alert Name"
 msgstr "警報名稱"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 #, fuzzy
 msgid "Severity"
 msgstr "重要性"
 
-#: functions.php syslog_alerts.php
+#: includes/functions.php syslog_alerts.php
 #, fuzzy
 msgid "Threshold"
 msgstr "閾值"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Count"
 msgstr "計數"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Match String"
 msgstr "匹配字符串"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog插件閾值警報'%s'"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Cacti Syslog插件警報'%s'"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Hostname"
 msgstr "主機名稱"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 #, fuzzy
 msgid "Date"
 msgstr "日期"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level"
 msgstr "等級"
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_removal.php syslog_saved_searches.php
 msgid "Message"
 msgstr "訊息"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "警告：已觸發Syslog插件實例計數警報"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "警告：已觸發Syslog插件實例計數警報"
 
-#: functions.php
+#: includes/functions.php
 msgid "Name:"
 msgstr "名稱："
 
-#: functions.php
+#: includes/functions.php
 msgid "Severity:"
 msgstr "嚴重性："
 
-#: functions.php
+#: includes/functions.php
 msgid "Threshold:"
 msgstr "閾值："
 
-#: functions.php
+#: includes/functions.php
 msgid "Count:"
 msgstr "計數："
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Message String:"
 msgstr "消息字符串："
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Hostname:"
 msgstr "主機名稱："
 
-#: functions.php
+#: includes/functions.php
 msgid "Date:"
 msgstr "日期："
 
-#: functions.php
+#: includes/functions.php
 msgid "Level:"
 msgstr "等級:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message:"
 msgstr "訊息："
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid ", Host:"
 msgstr "主辦："
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid ", URL:"
 msgstr "，URL："
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Sev:"
 msgstr "西弗："
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Event Alert - %s"
 msgstr "事件警報 - %s"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid ", Count:"
 msgstr "計數："
 
-#: functions.php lib/syslog_dashboard.php syslog_alerts.php syslog_removal.php
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php
 #, fuzzy
 msgid "Host"
 msgstr "主機"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "活動報告 - %s"
@@ -1163,6 +1215,49 @@ msgstr "遠程數據收集器規則同步"
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "如果您的遠程數據收集器有自己的系統日誌數據庫並獨立處理三個消息，如果您希望將主要 Cacti 數據庫警報、刪除和報告規則發送到遠程 Cacti 系統，請選中此復選框。"
 
+#: setup.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: setup.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+msgid "Remote Syslog Recovery"
+msgstr "刪除系統日誌報告"
+
+#: setup.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: setup.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: setup.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: setup.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: setup.php
+msgid "No pause"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
 #: setup.php syslog_device_rules.php syslog_removal.php
 #, fuzzy
 msgid "Disable"
@@ -1175,7 +1270,6 @@ msgstr "啟用"
 
 #: setup.php syslog.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_removal.php syslog_saved_searches.php
-#, fuzzy
 msgid "Export"
 msgstr "匯出"
 
@@ -1222,19 +1316,6 @@ msgstr "%d 分鐘"
 #, fuzzy, php-format
 msgid "%d Minutes"
 msgstr "%d 分鐘"
-
-#: setup.php syslog.php
-msgid "Notice"
-msgstr "通知"
-
-#: setup.php syslog.php
-#, fuzzy
-msgid "Warning"
-msgstr "警告"
-
-#: setup.php syslog.php
-msgid "Critical"
-msgstr "嚴重"
 
 #: setup.php
 #, fuzzy
@@ -1518,6 +1599,72 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
+msgstr ""
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "State"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Queued Recovery Records"
+msgstr "刪除了記錄"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr ""
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Active"
+msgstr "動作"
+
+#: syslog.php
+msgid "Inactive"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Recovery worker"
+msgstr "重新處理"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Remote collector receipts"
+msgstr "遠程數據收集器規則同步"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Last Batch Count"
+msgstr "最後發送"
+
+#: syslog.php
+#, fuzzy
+msgid "Last Record Received"
+msgstr "最後修改"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr ""
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
 msgstr ""
 
 #: syslog.php
@@ -1886,9 +2033,8 @@ msgstr "顯示行"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Default"
-msgstr "默认"
+msgstr "預設"
 
 #: syslog.php
 #, fuzzy
@@ -1953,13 +2099,11 @@ msgstr "搜尋"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Search"
 msgstr "搜尋"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Clear"
 msgstr "清除"
 
@@ -1987,32 +2131,6 @@ msgstr "保存默認設置"
 #, fuzzy
 msgid "Save view defaults"
 msgstr "保存默認設置"
-
-#: syslog.php
-msgid "Emergency"
-msgstr "緊急"
-
-#: syslog.php
-msgid "Alert"
-msgstr "警報"
-
-#: syslog.php
-#, fuzzy
-msgid "Error"
-msgstr "錯誤"
-
-#: syslog.php
-msgid "Info"
-msgstr "資訊"
-
-#: syslog.php
-#, fuzzy
-msgid "Debug"
-msgstr "除錯"
-
-#: syslog.php
-msgid "Informational"
-msgstr "資訊"
 
 #: syslog.php syslog_alerts.php syslog_device_rules.php
 #, fuzzy
@@ -2195,9 +2313,8 @@ msgid "New Alert Rule"
 msgstr "新警報規則"
 
 #: syslog_alerts.php syslog_reports.php
-#, fuzzy
 msgid "N/A"
-msgstr "不适用"
+msgstr "N/A"
 
 #: syslog_alerts.php
 #, fuzzy
@@ -2516,7 +2633,6 @@ msgstr ""
 
 #: syslog_alerts.php syslog_device_rules.php syslog_removal.php
 #: syslog_reports.php
-#, fuzzy
 msgid "All"
 msgstr "全部"
 
@@ -2528,7 +2644,6 @@ msgstr "行"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Go"
 msgstr "送出"
 
