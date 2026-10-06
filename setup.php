@@ -454,8 +454,8 @@ function syslog_upgrade_rule_permissions(): void {
 		]));
 		$files[] = 'syslog_rule_administrator.php';
 
-		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
-			[implode(',', $files), $realm['id'], 'syslog'])) {
+		if (!db_execute_prepared('UPDATE plugin_realms SET file = ?, display = ? WHERE id = ? AND plugin = ?',
+			[implode(',', $files), 'Rule Administrator', $realm['id'], 'syslog'])) {
 			return;
 		}
 
@@ -518,6 +518,105 @@ function syslog_upgrade_consolidate_rule_realms(): bool {
 	if ($changed) {
 		api_plugin_replicate_config();
 	}
+	return true;
+}
+
+/**
+ * Create granular realms on existing installations and preserve legacy grants.
+ *
+ * @return bool Whether realm creation and grant migration succeeded.
+ */
+function syslog_upgrade_create_permission_realms(): bool {
+	$targets = [
+		'Rule Viewer' => 'syslog_alerts.php,syslog_removal.php,syslog_reports.php',
+		'Rule Administrator' => 'syslog_rule_administrator.php',
+		'Syslog Administration' => 'syslog_saved_searches.php,syslog_dashboards.php',
+		'Syslog Administrator' => 'syslog_administrator.php'
+	];
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	if (!is_array($realms)) {
+		return false;
+	}
+
+	$legacy_viewers = [];
+	$legacy_admins  = [];
+	$missing        = [];
+	foreach ($realms as $realm) {
+		$files = explode(',', $realm['file']);
+		if (in_array('syslog.php', $files, true) && ($realm['display'] ?? '') === 'Syslog User') {
+			$legacy_viewers[] = (int) $realm['id'] + 100;
+		}
+		if (array_intersect($files, ['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'])
+			&& !in_array($realm['display'] ?? '', ['Rule Viewer', 'Rule Administrator'], true)) {
+			$legacy_admins[] = (int) $realm['id'] + 100;
+		}
+	}
+
+	foreach ($targets as $display => $files) {
+		$found = false;
+		foreach ($realms as $realm) {
+			if (($realm['display'] ?? '') === $display && $realm['file'] === $files) {
+				$found = true;
+				break;
+			}
+		}
+		if (!$found) {
+			$missing[$display] = $files;
+		}
+	}
+	if (!$missing) {
+		return true;
+	}
+
+	if (!db_begin_transaction()) {
+		return false;
+	}
+	foreach ($missing as $display => $files) {
+		if (!db_execute_prepared('INSERT INTO plugin_realms (plugin, file, display) VALUES (?, ?, ?)', ['syslog', $files, $display])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
+	$updated_realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	if (!is_array($updated_realms)) {
+		db_rollback_transaction();
+		return false;
+	}
+	$target_ids = [];
+	foreach ($updated_realms as $realm) {
+		foreach ($targets as $display => $files) {
+			if (($realm['display'] ?? '') === $display && $realm['file'] === $files) {
+				$target_ids[$display] = (int) $realm['id'] + 100;
+			}
+		}
+	}
+
+	$sources = [
+		'Rule Viewer' => $legacy_viewers,
+		'Rule Administrator' => $legacy_admins,
+		'Syslog Administration' => $legacy_admins
+	];
+	foreach ($sources as $display => $source_ids) {
+		if (!isset($missing[$display], $target_ids[$display])) {
+			continue;
+		}
+		foreach ($source_ids as $source_id) {
+			foreach (['user_auth_realm' => 'user_id', 'user_auth_group_realm' => 'group_id'] as $table => $owner) {
+				if (!db_execute_prepared("INSERT IGNORE INTO $table ($owner, realm_id) SELECT $owner, ? FROM $table WHERE realm_id = ?", [$target_ids[$display], $source_id])) {
+					db_rollback_transaction();
+					return false;
+				}
+			}
+		}
+	}
+
+	if (!db_commit_transaction()) {
+		db_rollback_transaction();
+		return false;
+	}
+	api_plugin_replicate_config();
+
 	return true;
 }
 
@@ -586,6 +685,9 @@ function syslog_check_upgrade(): void {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	syslog_connect();
+	if (!syslog_upgrade_create_permission_realms()) {
+		return;
+	}
 	syslog_upgrade_saved_search_realm();
 	syslog_upgrade_dashboard_realm();
 	syslog_upgrade_rule_permissions();

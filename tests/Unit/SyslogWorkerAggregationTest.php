@@ -30,8 +30,8 @@ it('sums moved and resolved counts from a fresh settings table read', function (
 		$executed[] = ['fn' => 'db_fetch_assoc', 'sql' => $sql];
 
 		return [
-			['name' => 'stats_syslog_child_1', 'value' => json_encode(['child' => 1, 'phase' => 'transfer', 'moved' => 1200, 'resolved' => 2])],
-			['name' => 'stats_syslog_child_2', 'value' => json_encode(['child' => 2, 'phase' => 'transfer', 'moved' => 300, 'resolved' => 0])]
+			['name' => 'stats_syslog_child_1', 'value' => json_encode(['child' => 1, 'phase' => 'transfer', 'moved' => 1200, 'resolved' => 2, 'success' => true])],
+			['name' => 'stats_syslog_child_2', 'value' => json_encode(['child' => 2, 'phase' => 'transfer', 'moved' => 300, 'resolved' => 0, 'success' => true])]
 		];
 	});
 
@@ -43,7 +43,7 @@ it('sums moved and resolved counts from a fresh settings table read', function (
 
 	$totals = syslog_aggregate_worker_stats(2);
 
-	expect($totals)->toBe(['moved' => 1500, 'resolved' => 2], 'Transfer totals must sum every reporting worker');
+	expect($totals)->toBe(['moved' => 1500, 'resolved' => 2, 'success' => true], 'Transfer totals must sum every reporting worker');
 	expect($executed[0])->toBe(['fn' => 'db_fetch_assoc', 'sql' => "SELECT `name`, `value`
 		FROM settings
 		WHERE `name` LIKE 'stats_syslog_child_%'"], 'Statistics must come from a fresh SELECT, not the read_config_option() cache');
@@ -77,7 +77,7 @@ it('ignores malformed rows and rows outside the configured worker range', functi
 	test_override('db_fetch_assoc', function () {
 		return [
 			['name' => 'stats_syslog_child_1', 'value' => 'not-json-at-all'],
-			['name' => 'stats_syslog_child_2', 'value' => json_encode(['moved' => 7, 'resolved' => 1])],
+			['name' => 'stats_syslog_child_2', 'value' => json_encode(['moved' => 7, 'resolved' => 1, 'success' => true])],
 			['name' => 'stats_syslog_child_9', 'value' => json_encode(['moved' => 500])]
 		];
 	});
@@ -92,8 +92,17 @@ it('ignores malformed rows and rows outside the configured worker range', functi
 
 	$totals = syslog_aggregate_worker_stats(2);
 
-	expect($totals)->toBe(['moved' => 7, 'resolved' => 1], 'Malformed rows are skipped and unknown child numbers ignored');
+	expect($totals)->toBe(['moved' => 7, 'resolved' => 1, 'success' => false], 'Malformed or incomplete worker reports fail the phase');
 	expect($warnings)->toBe(1, 'Exactly one malformed row warning is logged');
+});
+
+it('reports a failed transfer slice through the child result and skips stale cleanup', function () {
+	$process = file_get_contents(dirname(__DIR__, 2) . '/syslog_process.php');
+
+	expect($process)->toContain('$success = $results[\'success\'];')
+		->toContain('\'success\'  => $success,')
+		->toContain('if ($worker_stats[\'success\'])')
+		->toContain('stale incoming records were retained');
 });
 
 it('does not read worker stats through the cached config option helper', function () {

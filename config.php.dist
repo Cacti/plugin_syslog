@@ -55,6 +55,19 @@ if (!$use_cacti_db) {
 	$syslogdb_ssl_ca   = $database_ssl_ca;
 }
 
+/* Optional Main Collector Syslog database target for remote delivery. */
+$syslog_replication_main_db_default  = $database_default;
+$syslog_replication_main_db_hostname = '';
+$syslog_replication_main_db_username = '';
+$syslog_replication_main_db_password = '';
+$syslog_replication_main_db_type     = $database_type;
+$syslog_replication_main_db_port     = $database_port;
+$syslog_replication_main_db_retries  = $database_retries;
+$syslog_replication_main_db_ssl      = $database_ssl;
+$syslog_replication_main_db_ssl_key  = $database_ssl_key;
+$syslog_replication_main_db_ssl_cert = $database_ssl_cert;
+$syslog_replication_main_db_ssl_ca   = $database_ssl_ca;
+
 /* Uncomment lines below to enable options for silent installation during install plugin */
 //$syslog_install_options['upgrade_type'] = 'truncate';
 //$syslog_install_options['engine']       = 'innodb';
@@ -71,4 +84,3 @@ $syslog_incoming_config['timeField']          = 'logtime';
 $syslog_incoming_config['hostField']          = 'host';
 $syslog_incoming_config['textField']          = 'message';
 $syslog_incoming_config['id']                 = 'seq';
-
