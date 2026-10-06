@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* ci: Drop Ruby from the CodeQL language matrix; the plugin ships no Ruby source, so the Ruby database build failed with "no source code seen"
 * dev: Move the shared function library to includes/functions.php and point the entry-point includes, coverage source, and tests at the new path
 * feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to a theme-neutral css/legend.css)
 * dev: Measure CI coverage with xdebug instead of pcov so the plugin's own sources are instrumented (pcov auto-scopes to the Composer root and skipped cacti/plugins/, leaving the patch-coverage gate with nothing to measure)
