@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-28 16:08-0400\n"
+"POT-Creation-Date: 2026-10-06 15:14-0400\n"
 "PO-Revision-Date: 2025-03-07 14:42-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,244 +17,281 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Syslog download"
 msgstr "Syslog ενεργοποιημένη"
 
-#: functions.php
+#: includes/functions.php
+msgid "Emergency"
+msgstr "Επείγον"
+
+#: includes/functions.php setup.php
+msgid "Critical"
+msgstr "Κρίσιμο"
+
+#: includes/functions.php
+msgid "Alert"
+msgstr "Ειδοποίηση"
+
+#: includes/functions.php
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: includes/functions.php setup.php
+msgid "Warning"
+msgstr "Προσοχή"
+
+#: includes/functions.php setup.php
+msgid "Notice"
+msgstr "Σημείωση"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Πληροφορίες"
+
+#: includes/functions.php
+msgid "Debug"
+msgstr "Εντοπισμός σφαλμάτων"
+
+#: includes/functions.php
+msgid "Informational"
+msgstr "Ενημερωτικό"
+
+#: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "Η αποθήκευση απέτυχε.  Οι απομακρυσμένες Συλλογές δεδομένων σε λειτουργία συγχρονισμού δεν επιτρέπεται να αποθηκεύουν κανόνες.  Αποθηκεύστε από τον κύριο διακομιστή κάκτων αντ 'αυτού."
 
-#: functions.php
+#: includes/functions.php
 msgid "Please use an HTML Email Client"
 msgstr "Χρησιμοποιήστε ένα πρόγραμμα-πελάτη ηλεκτρονικού ταχυδρομείου HTML"
 
-#: functions.php
+#: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d day(s)"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "no retention deferral"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "per run recovery limit reached"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "partition creation failed"
 msgstr "Χωρισμένος πίνακας"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule match type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule did not compile to a query."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview query could not be evaluated."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php setup.php
+#: includes/functions.php setup.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule has no match expression to test."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Ειδοποίηση κατωφλίου Cacti Syslog «%s»"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
 msgstr "Όνομα ειδοποίησης"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
 msgstr "Σοβαρότητα"
 
-#: functions.php syslog_alerts.php
+#: includes/functions.php syslog_alerts.php
 msgid "Threshold"
 msgstr "Όριο"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Count"
 msgstr "Μέτρηση"
 
-#: functions.php
+#: includes/functions.php
 msgid "Match String"
 msgstr "Αντιστοίχιση συμβολοσειράς"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "Cacti Syslog Alert '%s' for Host '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Κάκτος Syslog Alert '%s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname"
 msgstr "Νέο όνομα φιλοξενίας"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Date"
 msgstr "Ημερομηνία"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level"
 msgstr "Επίπεδο"
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_removal.php syslog_saved_searches.php
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Έχει ενεργοποιηθεί μια ειδοποίηση κατωφλίου Syslog για το '%s' του κεντρικού υπολογιστή"
 
-#: functions.php
+#: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Έχει ενεργοποιηθεί μια ειδοποίηση κατωφλίου Syslog"
 
-#: functions.php
+#: includes/functions.php
 msgid "Name:"
 msgstr "Όνομα:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Severity:"
 msgstr "Σοβαρότητα"
 
-#: functions.php
+#: includes/functions.php
 msgid "Threshold:"
 msgstr "Όριο"
 
-#: functions.php
+#: includes/functions.php
 msgid "Count:"
 msgstr "Μέτρηση:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message String:"
 msgstr "Συμβολοσειρά μηνύματος:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname:"
 msgstr "Όνομα κεντρικού υπολογιστή:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Date:"
 msgstr "Ημερομηνία:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level:"
 msgstr "Συνδρομή"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message:"
 msgstr "Μήνυμα:"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Host:"
 msgstr "Συντονίζει"
 
-#: functions.php
+#: includes/functions.php
 msgid ", URL:"
 msgstr ", URL:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Sev:"
 msgstr "Σεβ:"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
 msgstr "Ειδοποίηση συμβάντος - %s"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Count:"
 msgstr "Μέτρηση"
 
-#: functions.php lib/syslog_dashboard.php syslog_alerts.php syslog_removal.php
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php
 msgid "Host"
 msgstr "Διακομιστής"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Report - %s"
 msgstr "Αναφορά συμβάντος - %s"
@@ -1096,6 +1133,50 @@ msgstr "Απομακρυσμένος συγχρονισμός κανόνων Σ�
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Εάν οι Απομακρυσμένοι Συλλέκτες Δεδομένων σας έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται μέσω μηνυμάτων ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου εάν θέλετε οι κανόνες Ειδοποιήσεις, Αφαίρεση και Αναφορά των κύριων βάσεων δεδομένων Κάκτων να αποστέλλονται στο Σύστημα Απομακρυσμένων Κάκτων."
 
+#: setup.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: setup.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Delete Syslog Report(s)"
+msgid "Remote Syslog Recovery"
+msgstr "Διαγραφή αναφορών Syslog"
+
+#: setup.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: setup.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: setup.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: setup.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: setup.php
+msgid "No pause"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
 #: setup.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
 msgstr "Απενεργοποίηση"
@@ -1151,18 +1232,6 @@ msgstr "%d λεπτό"
 #, php-format
 msgid "%d Minutes"
 msgstr "%d λεπτά"
-
-#: setup.php syslog.php
-msgid "Notice"
-msgstr "Σημείωση"
-
-#: setup.php syslog.php
-msgid "Warning"
-msgstr "Προσοχή"
-
-#: setup.php syslog.php
-msgid "Critical"
-msgstr "Κρίσιμο"
 
 #: setup.php
 msgid "Begins with"
@@ -1420,6 +1489,76 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
+msgstr ""
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "State"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Removed Records"
+msgid "Queued Recovery Records"
+msgstr "Καταργημένες εγγραφές"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr ""
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Actions"
+msgid "Active"
+msgstr "Ενέργειες"
+
+#: syslog.php
+msgid "Inactive"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Recovery worker"
+msgstr "Επανεπεξεργασία"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Remote Data Collector Rules Sync"
+msgid "Remote collector receipts"
+msgstr "Απομακρυσμένος συγχρονισμός κανόνων Συλλογής δεδομένων"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Last Batch Count"
+msgstr "Τελευταία αποστολή"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last Modified"
+msgid "Last Record Received"
+msgstr "Τελευταία τροποποίηση"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr ""
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
 msgstr ""
 
 #: syslog.php
@@ -1875,30 +2014,6 @@ msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
 #, fuzzy
 msgid "Save view defaults"
 msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
-
-#: syslog.php
-msgid "Emergency"
-msgstr "Επείγον"
-
-#: syslog.php
-msgid "Alert"
-msgstr "Ειδοποίηση"
-
-#: syslog.php
-msgid "Error"
-msgstr "Σφάλμα"
-
-#: syslog.php
-msgid "Info"
-msgstr "Πληροφορίες"
-
-#: syslog.php
-msgid "Debug"
-msgstr "Εντοπισμός σφαλμάτων"
-
-#: syslog.php
-msgid "Informational"
-msgstr "Ενημερωτικό"
 
 #: syslog.php syslog_alerts.php syslog_device_rules.php
 msgid "Device"
