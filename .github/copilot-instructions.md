@@ -29,7 +29,8 @@ This is the **Syslog Plugin** for Cacti, a PHP-based network monitoring and grap
 ## Project Structure
 ```
 plugin_syslog/
-├── setup.php                  # Install/uninstall/upgrade hooks, schema, realms, menu entries
+├── setup.php                  # Compatibility facade, lifecycle and upgrade orchestration
+├── includes/                  # Owned setup modules: schema, processing, settings, UI hooks
 ├── database.php                # syslog_db_* wrapper layer (dual-database support)
 ├── functions.php                # Core logic: search DSL, CSV export, partitions, alerts
 ├── syslog.php                   # Main UI entry point (System Logs / Alert Logs tabs)
@@ -50,7 +51,8 @@ plugin_syslog/
 ## Architecture & Data Flow
 - **Dual Database Support:** The plugin can store data in the main Cacti database OR a dedicated syslog database.
   - **Critical:** ALWAYS use the `syslog_db_*` wrapper functions (defined in `database.php`) for all database operations. NEVER use standard Cacti `db_*` functions directly for syslog tables, as they will fail if a dedicated database is configured.
-- **Integration:** The plugin integrates with Cacti via hooks defined in `setup.php`.
+- **Integration:** `setup.php` is the compatibility bootstrap; Cacti hooks are
+  registered there but point at the module that owns each callback.
 - **Poller Integration:** Background processes (`syslog_process.php`, `syslog_removal.php`) are triggered by Cacti's poller or run independently.
 - **Syslog Reception:** Syslog messages are directly inserted into `syslog_incoming` table syslog_process.php then processes them.
 
@@ -63,8 +65,9 @@ plugin_syslog/
 - **Schema:** Tables are defined/updated in `setup.php` (`syslog_setup_table_new`).
 
 ### Cacti Integration Patterns
-- **Hooks:** Register hooks in `plugin_syslog_install()` in `setup.php`.
-  - Example: `api_plugin_register_hook('syslog', 'top_header_tabs', 'syslog_show_tab', 'setup.php');`
+- **Hooks:** Register hooks in `plugin_syslog_install()` in `setup.php`, but
+  point each registration to the owning module (for example,
+  `includes/navigation.php` for `syslog_show_tab`).
 - **Permissions:** Register realms in `setup.php`.
   - Example: `api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);`
 - **UI:** Follow Cacti's UI patterns (top tabs, breadcrumbs, filter bars).
@@ -171,6 +174,22 @@ integer/numeric context (e.g. arithmetic, strict `===` comparisons).
 - **Refactoring:** When touching legacy code, modernize it where safe (e.g., replace `array()` with `[]`, improve variable naming).
 - **Type Safety:** Add type hints to function arguments and return types where possible, ensuring backward compatibility with supported PHP versions.
 - **Cleanup:** Remove unused variables and commented-out code blocks found in the modified sections.
+
+## `setup.php` Module Boundaries
+
+- Keep `setup.php` as the compatibility facade: lifecycle entry points,
+  `plugin_syslog_version()`, `syslog_check_upgrade()` and its realm/permission
+  orchestration, `syslog_connect()`, and ordered module bootstrap only.
+- Put schema creation and migrations in `includes/schema.php`; retain the
+  root `database.php` as the `syslog_db_*` wrapper layer.
+- Put poller and replication callbacks in `includes/processing.php`; settings
+  hooks in `includes/settings.php`; tabs/navigation/graph buttons in
+  `includes/navigation.php`; install adviser UI in `includes/installer.php`;
+  and utilities callbacks in `includes/utilities.php`.
+- Preserve public function names, signatures, SQL, and include order during a
+  move. Never combine a function move with a hook-path change or logic change.
+- Source-inspection tests must use the central function-owner map in
+  `tests/bootstrap-unit.php`; update that map in the same commit as a move.
 
 ## DBA & Query Optimization
 - **Query Analysis:** Always review SQL queries for performance. Suggest indexes if filtering by non-indexed columns.

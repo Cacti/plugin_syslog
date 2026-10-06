@@ -43,9 +43,14 @@ it('keeps global maintenance closed unless a device rule explicitly permits a pr
 });
 
 it('creates and replicates device rules for remote collectors', function () {
-	$setup = plugin_test_read_source('setup.php');
+	$schema     = plugin_test_read_source('includes/schema.php');
+	$processing = plugin_test_read_source('includes/processing.php');
+	$setup      = plugin_test_read_source('setup.php');
 
-	expect($setup)->toContain('CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule`')
+	expect($schema)->toContain('CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule`');
+	expect($setup)->toContain('syslog_create_device_rule_table();');
+	expect($processing)
 		->toContain("replicate_out_table(\$rcnn_id, \$tdata, 'syslog_device_rule', \$remote_poller_id)")
-		->toContain('syslog_create_device_rule_table();');
+		->toContain("db_fetch_assoc('SELECT * FROM syslog_device_rule')")
+		->toContain("syslog_replace_data('syslog_device_rule', \$data)");
 });

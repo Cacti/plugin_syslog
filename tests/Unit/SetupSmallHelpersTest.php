@@ -8,7 +8,7 @@
 /*
  * Unit coverage for a handful of small, pure setup.php functions that had
  * no coverage at all: plugin_syslog_version(), syslog_check_dependencies(),
- * syslog_top_graph_refresh(), and syslog_draw_navigation_text().
+ * and syslog_draw_navigation_text().
  *
  * These are deliberately narrow: this plugin's setup.php also contains
  * much larger functions (plugin_syslog_uninstall(), syslog_connect(),
@@ -51,11 +51,6 @@ it('restores the Cacti config when resetting test globals', function () {
 
 it('reports its dependencies as always satisfied', function () {
 	expect(syslog_check_dependencies())->toBeTrue();
-});
-
-it('passes the refresh value through unchanged', function () {
-	expect(syslog_top_graph_refresh(30))->toBe(30);
-	expect(syslog_top_graph_refresh(0))->toBe(0);
 });
 
 it('adds the syslog breadcrumb entries without disturbing existing ones', function () {

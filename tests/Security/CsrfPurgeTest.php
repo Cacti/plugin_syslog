@@ -42,7 +42,9 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		}
 
 		foreach (glob($sandbox . '/*') as $file) {
-			unlink($file);
+			if (is_file($file)) {
+				unlink($file);
+			}
 		}
 
 		rmdir($sandbox);
@@ -57,6 +59,12 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 	$staged = [
 		$root . '/setup.php'              => $sandbox . '/setup.php',
 		$root . '/includes/functions.php' => $sandbox . '/includes/functions.php',
+		$root . '/includes/schema.php'    => $sandbox . '/includes/schema.php',
+		$root . '/includes/processing.php' => $sandbox . '/includes/processing.php',
+		$root . '/includes/settings.php'  => $sandbox . '/includes/settings.php',
+		$root . '/includes/navigation.php' => $sandbox . '/includes/navigation.php',
+		$root . '/includes/installer.php' => $sandbox . '/includes/installer.php',
+		$root . '/includes/utilities.php' => $sandbox . '/includes/utilities.php',
 	];
 
 	foreach ($staged as $src => $dst) {

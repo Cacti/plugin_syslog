@@ -30,8 +30,6 @@ if (function_exists('pcntl_async_signals')) {
 
 include(__DIR__ . '/../../include/cli_check.php');
 include_once(__DIR__ . '/setup.php');
-include_once(__DIR__ . '/includes/functions.php');
-include_once(__DIR__ . '/includes/database.php');
 
 syslog_connect();
 
