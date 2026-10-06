@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-09-28 16:08-0400\n"
+"POT-Creation-Date: 2026-10-06 15:14-0400\n"
 "PO-Revision-Date: 2025-03-07 14:53-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -17,244 +17,281 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "Syslog download"
 msgstr "Syslog 사용"
 
-#: functions.php
+#: includes/functions.php
+msgid "Emergency"
+msgstr "긴급"
+
+#: includes/functions.php setup.php
+msgid "Critical"
+msgstr "크리티컬"
+
+#: includes/functions.php
+msgid "Alert"
+msgstr "경고"
+
+#: includes/functions.php
+msgid "Error"
+msgstr "오류"
+
+#: includes/functions.php setup.php
+msgid "Warning"
+msgstr "경고"
+
+#: includes/functions.php setup.php
+msgid "Notice"
+msgstr "공지"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "정보"
+
+#: includes/functions.php
+msgid "Debug"
+msgstr "디버그"
+
+#: includes/functions.php
+msgid "Informational"
+msgstr "정보"
+
+#: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
 msgstr "저장에 실패했습니다.  동기화 모드의 원격 데이터 수집기는 규칙을 저장할 수 없습니다.  대신 메인 Cacti 서버에서 저장하십시오."
 
-#: functions.php
+#: includes/functions.php
 msgid "Please use an HTML Email Client"
 msgstr "HTML 이메일 클라이언트를 사용하십시오."
 
-#: functions.php
+#: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d day(s)"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "no retention deferral"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "per run recovery limit reached"
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 #, fuzzy
 msgid "partition creation failed"
 msgstr "분할된 테이블"
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "Unknown rule match type."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule did not compile to a query."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview query could not be evaluated."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Permission denied."
 msgstr ""
 
-#: functions.php setup.php
+#: includes/functions.php setup.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The rule has no match expression to test."
 msgstr ""
 
-#: functions.php
+#: includes/functions.php
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
 msgstr "호스트 '%s'에 대한 Cacti Syslog 임계값 경고 '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
 msgstr "Cacti Syslog 임계값 경고 '%s'"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
 msgstr "알림 이름"
 
-#: functions.php syslog.php syslog_alerts.php
+#: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
 msgstr "중요도"
 
-#: functions.php syslog_alerts.php
+#: includes/functions.php syslog_alerts.php
 msgid "Threshold"
 msgstr "임계값"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Count"
 msgstr "카운트"
 
-#: functions.php
+#: includes/functions.php
 msgid "Match String"
 msgstr "일치하는 문자열"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
 msgstr "호스트 '%s'에 대한 Cacti Syslog 경고 '%s'"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
 msgstr "Cacti Syslog 경고 '%s'"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname"
 msgstr "호스트명"
 
-#: functions.php syslog.php
+#: includes/functions.php syslog.php
 msgid "Date"
 msgstr "날짜"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level"
 msgstr "레벨"
 
-#: functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_removal.php syslog_saved_searches.php
 msgid "Message"
 msgstr "메시지"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
 msgstr "경고: 호스트 '%s'에 대해 Syslog 임계값 경고가 트리거되었습니다."
 
-#: functions.php
+#: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
 msgstr "경고: Syslog 임계값 경고가 트리거되었습니다."
 
-#: functions.php
+#: includes/functions.php
 msgid "Name:"
 msgstr "이름:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Severity:"
 msgstr "중요도"
 
-#: functions.php
+#: includes/functions.php
 msgid "Threshold:"
 msgstr "문턱값:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Count:"
 msgstr "카운트:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message String:"
 msgstr "메시지 문자열:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Hostname:"
 msgstr "호스트이름:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Date:"
 msgstr "날짜:"
 
-#: functions.php
+#: includes/functions.php
 msgid "Level:"
 msgstr "레벨"
 
-#: functions.php
+#: includes/functions.php
 msgid "Message:"
 msgstr "내용:"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Host:"
 msgstr "호스트"
 
-#: functions.php
+#: includes/functions.php
 msgid ", URL:"
 msgstr "URL"
 
-#: functions.php
+#: includes/functions.php
 msgid "Sev:"
 msgstr "세브:"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
 msgstr "이벤트 경고 - %s"
 
-#: functions.php
+#: includes/functions.php
 msgid ", Count:"
 msgstr "카운트:"
 
-#: functions.php lib/syslog_dashboard.php syslog_alerts.php syslog_removal.php
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php
 msgid "Host"
 msgstr "호스트"
 
-#: functions.php
+#: includes/functions.php
 #, php-format
 msgid "Event Report - %s"
 msgstr "이벤트 리포트 - %s"
@@ -1096,6 +1133,50 @@ msgstr "원격 데이터 수집기 규칙 동기화"
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "원격 데이터 수집기에 자체 Syslog 데이터베이스가 있고 thrie 메시지를 독립적으로 처리하는 경우 Main Cacti 데이터베이스 경고, 제거 및 보고서 규칙을 Remote Cacti 시스템으로 보내려면 이 확인란을 선택합니다."
 
+#: setup.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: setup.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Delete Syslog Report(s)"
+msgid "Remote Syslog Recovery"
+msgstr "Syslog 보고서 삭제"
+
+#: setup.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: setup.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: setup.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: setup.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: setup.php
+msgid "No pause"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: setup.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
 #: setup.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
 msgstr "비활성화"
@@ -1151,18 +1232,6 @@ msgstr "%d 분"
 #, php-format
 msgid "%d Minutes"
 msgstr "%d 분"
-
-#: setup.php syslog.php
-msgid "Notice"
-msgstr "공지"
-
-#: setup.php syslog.php
-msgid "Warning"
-msgstr "경고"
-
-#: setup.php syslog.php
-msgid "Critical"
-msgstr "크리티컬"
 
 #: setup.php
 msgid "Begins with"
@@ -1420,6 +1489,76 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
+msgstr ""
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "State"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Removed Records"
+msgid "Queued Recovery Records"
+msgstr "제거된 레코드"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr ""
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Actions"
+msgid "Active"
+msgstr "작업"
+
+#: syslog.php
+msgid "Inactive"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Recovery worker"
+msgstr "재처리"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Remote Data Collector Rules Sync"
+msgid "Remote collector receipts"
+msgstr "원격 데이터 수집기 규칙 동기화"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Last Batch Count"
+msgstr "마지막 보낸 날짜"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last Modified"
+msgid "Last Record Received"
+msgstr "마지막으로 수정된"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr ""
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
 msgstr ""
 
 #: syslog.php
@@ -1875,30 +2014,6 @@ msgstr "기본 설정 저장"
 #, fuzzy
 msgid "Save view defaults"
 msgstr "기본 설정 저장"
-
-#: syslog.php
-msgid "Emergency"
-msgstr "긴급"
-
-#: syslog.php
-msgid "Alert"
-msgstr "경고"
-
-#: syslog.php
-msgid "Error"
-msgstr "오류"
-
-#: syslog.php
-msgid "Info"
-msgstr "정보"
-
-#: syslog.php
-msgid "Debug"
-msgstr "디버그"
-
-#: syslog.php
-msgid "Informational"
-msgstr "정보"
 
 #: syslog.php syslog_alerts.php syslog_device_rules.php
 msgid "Device"
