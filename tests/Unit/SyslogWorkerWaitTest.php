@@ -31,7 +31,7 @@
  * scenario's snapshot list accounts for.
  */
 
-syslog_load_plugin_source('functions.php');
+syslog_load_plugin_source('includes/functions.php');
 
 /**
  * Install fakes that replay a fixed snapshot of the process table on

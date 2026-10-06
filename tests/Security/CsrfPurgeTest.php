@@ -33,6 +33,14 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 	}
 
 	register_shutdown_function(function () use ($sandbox) {
+		foreach (glob($sandbox . '/includes/*') as $file) {
+			unlink($file);
+		}
+
+		if (is_dir($sandbox . '/includes')) {
+			rmdir($sandbox . '/includes');
+		}
+
 		foreach (glob($sandbox . '/*') as $file) {
 			unlink($file);
 		}
@@ -40,9 +48,20 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		rmdir($sandbox);
 	});
 
-	foreach (['setup.php', 'functions.php'] as $file) {
-		if (!copy($root . '/' . $file, $sandbox . '/' . $file)) {
-			throw new RuntimeException("Unable to stage $file");
+	if (!mkdir($sandbox . '/includes', 0700)) {
+		throw new RuntimeException('Unable to create the sandbox includes directory');
+	}
+
+	// functions.php lives under includes/; mirror that layout so the copied
+	// setup.php resolves its require_once __DIR__ . '/includes/functions.php'.
+	$staged = [
+		$root . '/setup.php'              => $sandbox . '/setup.php',
+		$root . '/includes/functions.php' => $sandbox . '/includes/functions.php',
+	];
+
+	foreach ($staged as $src => $dst) {
+		if (!copy($src, $dst)) {
+			throw new RuntimeException("Unable to stage $src");
 		}
 	}
 
@@ -102,7 +121,7 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 			}
 		}
 
-		require_once __DIR__ . '/functions.php';
+		require_once __DIR__ . '/includes/functions.php';
 		require_once __DIR__ . '/setup.php';
 
 		switch ($scenario) {
@@ -156,7 +175,7 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 	};
 
 	// The encoder, on its own.
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$encoded = syslog_json_safe($payload);
 

@@ -8,7 +8,7 @@
 */
 
 it('stores syslog status values in the telemetry table', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$executed = [];
@@ -30,7 +30,7 @@ it('stores syslog status values in the telemetry table', function () {
 });
 
 it('rejects invalid syslog status field names', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$executed = false;
 
@@ -45,7 +45,7 @@ it('rejects invalid syslog status field names', function () {
 });
 
 it('records polling runtime min average and max values', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = [];
@@ -77,7 +77,7 @@ it('records polling runtime min average and max values', function () {
 });
 
 it('increments rule processing totals from existing status values', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = ['total_alert_rules_processed' => '3'];
@@ -106,7 +106,7 @@ it('increments rule processing totals from existing status values', function () 
 });
 
 it('serializes last run rule activity with names and counts', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$json = syslog_status_rule_activity_json([
 		['name' => 'Disk Full', 'count' => 2],
@@ -120,7 +120,7 @@ it('serializes last run rule activity with names and counts', function () {
 });
 
 it('keeps a bounded partition maintenance history and records recovery progress', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = [];

@@ -8,7 +8,7 @@
 */
 
 it('reports suspicious partition metadata without changing partition state', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$GLOBALS['partition_logs']   = [];

@@ -20,7 +20,7 @@
  * generated DDL so the partition list can be asserted without a database.
  */
 function partition_precreate_extract_function() {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$setup = plugin_test_read_source('setup.php');
 

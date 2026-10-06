@@ -27,7 +27,7 @@ function syslog_slice_coverage(array $slices): array {
 	return array_keys($covered);
 }
 
-syslog_load_plugin_source('functions.php');
+syslog_load_plugin_source('includes/functions.php');
 
 it('splits a seq range into disjoint contiguous slices', function (int $start, int $end, int $workers) {
 	$slices = syslog_compute_slices($start, $end, $workers);

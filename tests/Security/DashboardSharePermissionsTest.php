@@ -18,7 +18,7 @@ it('only allows the owner or an admin to toggle a dashboard share', function () 
 	// api_plugin_user_realm_auth(), which is overridden below; loading them
 	// here keeps this test correct regardless of what other test files
 	// already loaded.
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	test_override('get_username', function ($id) {

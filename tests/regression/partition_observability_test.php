@@ -28,7 +28,7 @@ function check_value($actual, $expected) {
 	}
 }
 
-$source = file_get_contents(__DIR__ . '/../../functions.php');
+$source = file_get_contents(__DIR__ . '/../../includes/functions.php');
 $start = strpos($source, 'function syslog_partition_observability()');
 $end = strpos($source, '/**', $start + strlen('function syslog_partition_observability()'));
 eval(substr($source, $start, $end - $start));

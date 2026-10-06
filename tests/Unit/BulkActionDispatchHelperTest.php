@@ -15,7 +15,7 @@
 
 it('routes bulk selected-item actions through the shared dispatch helper', function () {
 	$root      = dirname(__DIR__, 2);
-	$functions = file_get_contents($root . '/functions.php');
+	$functions = file_get_contents($root . '/includes/functions.php');
 
 	if ($functions === false) {
 		throw new RuntimeException('Failed to load functions.php');

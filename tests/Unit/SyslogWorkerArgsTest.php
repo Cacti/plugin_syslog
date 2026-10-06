@@ -15,7 +15,7 @@
  * bounds.
  */
 
-syslog_load_plugin_source('functions.php');
+syslog_load_plugin_source('includes/functions.php');
 
 it('accepts a fully valid worker argument set', function () {
 	expect(syslog_validate_worker_args(1, str_repeat('a', 32), 'references', 1, 100))->toBeTrue();

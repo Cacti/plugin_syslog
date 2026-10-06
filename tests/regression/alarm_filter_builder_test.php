@@ -9,7 +9,7 @@ $GLOBALS['syslog_incoming_config'] = [
 	'textField'     => 'message'
 ];
 
-require_once dirname(__DIR__, 2) . '/functions.php';
+require_once dirname(__DIR__, 2) . '/includes/functions.php';
 
 function alarm_filter_assert($condition, $message) {
 	if (!$condition) {

@@ -13,7 +13,7 @@
  */
 
 it('builds rule-editor links only for permitted, valid main-table records', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$allowed = [];
 

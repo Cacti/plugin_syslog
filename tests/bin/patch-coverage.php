@@ -160,6 +160,26 @@ foreach ($clover->xpath('//file') as $file) {
  * Empty by default; add entries per repository as the need arises.
  */
 $unmeasured_allowlist = [
+	// Web and CLI entry points: each chdir()s and includes auth.php (or runs
+	// at the top level) before defining anything, so they cannot be loaded
+	// into the isolated unit process. Their only coverage-relevant content is
+	// the CWD-independent include chain, which tests/Security/
+	// IncludePathNormalizationTest.php verifies by static inspection instead.
+	'syslog.php',
+	'syslog_alerts.php',
+	'syslog_removal.php',
+	'syslog_reports.php',
+	'syslog_saved_searches.php',
+	'syslog_dashboards.php',
+	'syslog_device_rules.php',
+	'syslog_batch_transfer.php',
+	'syslog_process.php',
+	// setup.php is unit-loadable (SetupSmallHelpersTest exercises its pure
+	// helpers), but the only lines this change touches are the include_once
+	// chain inside syslog_connect()/syslog_poller_bottom(), which run solely in a
+	// live Cacti or poller process; it is kept out of <source> so those lines are
+	// not gate-measured.
+	'setup.php',
 ];
 $unmeasured            = array_values(array_diff(array_keys($changed), array_keys($measured)));
 $unexpected_unmeasured = array_values(array_diff($unmeasured, $unmeasured_allowlist));

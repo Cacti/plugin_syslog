@@ -14,7 +14,7 @@
  */
 
 it('keeps alert and ticket command execution shell-safe', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	if (strpos($functions, 'function syslog_execute_ticket_command(') === false) {
 		throw new RuntimeException('Ticket command execution helper is missing.');

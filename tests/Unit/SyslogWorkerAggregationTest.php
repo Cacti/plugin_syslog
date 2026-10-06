@@ -20,7 +20,7 @@
  * wiring inside syslog_process.php is pinned by the last test.
  */
 
-syslog_load_plugin_source('functions.php');
+syslog_load_plugin_source('includes/functions.php');
 
 it('sums moved and resolved counts from a fresh settings table read', function () {
 	$GLOBALS['syslogdb_default'] = 'syslog';
@@ -98,7 +98,7 @@ it('ignores malformed rows and rows outside the configured worker range', functi
 
 it('does not read worker stats through the cached config option helper', function () {
 	$root    = dirname(__DIR__, 2);
-	$functions = file_get_contents($root . '/functions.php');
+	$functions = file_get_contents($root . '/includes/functions.php');
 
 	// The regression: read_config_option() caches per process, so the
 	// master re-read its references phase numbers instead of the fresh

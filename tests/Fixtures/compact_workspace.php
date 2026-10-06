@@ -12,7 +12,7 @@ function html_escape_request_var($key) { return html_escape(get_request_var($key
 function cacti_sizeof($value) { return count($value); }
 function api_plugin_hook($name) {}
 function api_plugin_user_realm_auth($page) { return true; }
-require dirname(__DIR__, 2) . '/functions.php';
+require dirname(__DIR__, 2) . '/includes/functions.php';
 $saved_choices_json = '{}';
 $saved_fields_json = html_escape(json_encode(['host'=>'Host','message'=>'Message','program'=>'Program','logtime'=>'Date','priority'=>'Priority']));
 $saved_tree_json = html_escape(json_encode(['AND',['predicate','host','=','10.0.0.5'],['predicate','logtime','last','86400']]));

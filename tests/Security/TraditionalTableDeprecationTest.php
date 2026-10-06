@@ -25,7 +25,7 @@
  */
 
 it('restricts the storage engine choice to InnoDB and Aria', function () {
-	$functions = plugin_test_read_source('functions.php');
+	$functions = plugin_test_read_source('includes/functions.php');
 
 	if (!preg_match('/function\s+syslog_validate_storage_engine\s*\([^)]*\)\s*\{.*?\n\}/s', $functions, $m)) {
 		throw new RuntimeException('Could not extract syslog_validate_storage_engine from functions.php');
@@ -94,7 +94,7 @@ it('coerces a legacy trad db_type setting to partitioned', function () {
 
 it('warns about traditional tables but keeps them working', function () {
 	$root      = dirname(__DIR__, 2);
-	$functions = file_get_contents($root . '/functions.php');
+	$functions = file_get_contents($root . '/includes/functions.php');
 	$setup     = file_get_contents($root . '/setup.php');
 	$process   = file_get_contents($root . '/syslog_process.php');
 
@@ -177,7 +177,7 @@ it('notifies about traditional tables with throttling and safe messages', functi
 		return null;
 	});
 
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	// Table exists and is not partitioned: warn, and raise when asked.
 	expect(syslog_notice_traditional_tables(true))->toBeTrue('A traditional table must be reported');
@@ -232,7 +232,7 @@ it('stays silent for partitioned or missing tables', function () {
 		return null;
 	});
 
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	expect(syslog_notice_traditional_tables(true))->toBeFalse('A partitioned table must not raise the notice');
 	expect($calls['logs'])->toHaveCount(0, 'No log line is expected for a partitioned table');

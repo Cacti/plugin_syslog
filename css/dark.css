@@ -1,4 +1,3 @@
-<?php
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
@@ -13,7 +12,7 @@
  | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
  | GNU General Public License for more details.                            |
  +-------------------------------------------------------------------------+
- | Cacti: The Complete RRDTool-based Graphing Solution                     |
+ | Cacti: The Complete RRDtool-based Graphing Solution                     |
  +-------------------------------------------------------------------------+
  | This code is designed, written, and maintained by the Cacti Group. See  |
  | about.php and/or the AUTHORS file for specific developer information.   |
@@ -22,22 +21,30 @@
  +-------------------------------------------------------------------------+
 */
 
-it('keeps global maintenance closed unless a device rule explicitly permits a priority', function () {
-	syslog_load_plugin_source('includes/functions.php');
-	$GLOBALS['syslogdb_default'] = 'syslog';
-	$GLOBALS['syslog_incoming_config'] = ['hostField' => 'host', 'priorityField' => 'priority_id'];
+/* Syslog status-legend palette for the dark (dark surface) theme. */
 
-	$active = syslog_device_rule_sql(true);
-	// Maintenance must not let a host with no device rule through: an EXISTS
-	// filter is required while maintenance is active.
-	expect($active['sql'])->toContain('AND EXISTS')
-		->toContain("dr.allow_maintenance = 'on'")
-		->toContain('pass_through_priority')
-		// An active device pause still applies during maintenance.
-		->toContain('AND NOT EXISTS');
-	expect($active['params'])->toHaveCount(1);
+.syslogLegend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	width: 100%;
+}
 
-	$inactive = syslog_device_rule_sql(false);
-	expect($inactive['sql'])->not->toContain('AND EXISTS')
-		->toContain('AND NOT EXISTS');
-});
+.syslogLegend .syslogLegendItem {
+	flex: 1 1 0;
+	text-align: center;
+	white-space: nowrap;
+	padding: 4px 6px;
+	border-radius: 3px;
+	color: #edf3ef;
+	font-size: 11px;
+}
+
+.syslogLegend .logEmergency { background-color: #8a2f2f; }
+.syslogLegend .logCritical  { background-color: #863a3c; }
+.syslogLegend .logAlert     { background-color: #8f4339; }
+.syslogLegend .logError     { background-color: #8a5244; }
+.syslogLegend .logWarning   { background-color: #86682f; }
+.syslogLegend .logNotice    { background-color: #35607f; }
+.syslogLegend .logInfo      { background-color: #3a6e46; }
+.syslogLegend .logDebug     { background-color: #4a534e; }

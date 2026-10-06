@@ -228,8 +228,8 @@ function syslog_connect(): bool {
 		include(SYSLOG_CONFIG);
 	}
 
-	include_once(__DIR__ . '/functions.php');
-	include_once(__DIR__ . '/database.php');
+	include_once(__DIR__ . '/includes/functions.php');
+	include_once(__DIR__ . '/includes/database.php');
 
 	$connect_remote = false;
 	$connected      = true;
@@ -1581,8 +1581,8 @@ function syslog_poller_bottom(): void {
 	global $config;
 
 	if (syslog_config_safe()) {
-		include_once(__DIR__ . '/functions.php');
-		include_once(__DIR__ . '/database.php');
+		include_once(__DIR__ . '/includes/functions.php');
+		include_once(__DIR__ . '/includes/database.php');
 
 		syslog_connect();
 		syslog_status_set('last_polling_time', time());

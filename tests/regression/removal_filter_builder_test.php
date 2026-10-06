@@ -9,7 +9,7 @@ $GLOBALS['syslog_incoming_config'] = [
 	'textField'     => 'message'
 ];
 
-require_once dirname(__DIR__, 2) . '/functions.php';
+require_once dirname(__DIR__, 2) . '/includes/functions.php';
 /** Retroactive translation runs against reference tables; stub them here. */
 $GLOBALS['syslog_reference_hosts']    = ['router01' => 12, 'core-sw' => 15];
 $GLOBALS['syslog_reference_programs'] = ['snmpd' => 3, 'sshd' => 9];

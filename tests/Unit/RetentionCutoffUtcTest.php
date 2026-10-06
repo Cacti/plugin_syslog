@@ -32,7 +32,7 @@ function syslog_extract_function(string $file, string $function): string {
 
 it('computes the traditional retention cutoff in UTC', function () {
 	$root  = dirname(__DIR__, 2);
-	$function = syslog_extract_function($root . '/functions.php', 'syslog_traditional_manage');
+	$function = syslog_extract_function($root . '/includes/functions.php', 'syslog_traditional_manage');
 
 	expect(str_contains($function, "gmdate('Y-m-d'"))->toBeTrue();
 
@@ -45,7 +45,7 @@ it('computes the traditional retention cutoff in UTC', function () {
 
 it('computes the reference table retention cutoff in UTC', function () {
 	$root  = dirname(__DIR__, 2);
-	$function = syslog_extract_function($root . '/functions.php', 'syslog_postprocess_tables');
+	$function = syslog_extract_function($root . '/includes/functions.php', 'syslog_postprocess_tables');
 
 	expect(str_contains($function, "gmdate('Y-m-d H:i:s'"))->toBeTrue();
 
@@ -54,7 +54,7 @@ it('computes the reference table retention cutoff in UTC', function () {
 
 it('keeps the daily optimize window in local time on purpose', function () {
 	$root  = dirname(__DIR__, 2);
-	$function = syslog_extract_function($root . '/functions.php', 'syslog_postprocess_tables');
+	$function = syslog_extract_function($root . '/includes/functions.php', 'syslog_postprocess_tables');
 
 	// The optimize gate is a scheduling concern tied to the server's local
 	// calendar; converting it to UTC would move the window.  It must remain

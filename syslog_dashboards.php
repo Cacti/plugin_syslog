@@ -1,8 +1,8 @@
 <?php
 chdir('../../');
 include('./include/auth.php');
-include_once('./plugins/syslog/functions.php');
-include_once('./plugins/syslog/database.php');
+include_once('./plugins/syslog/includes/functions.php');
+include_once('./plugins/syslog/includes/database.php');
 include_once(__DIR__ . '/lib/syslog_dashboard.php');
 
 // The page is part of the Syslog Administration realm. Accept the explicit

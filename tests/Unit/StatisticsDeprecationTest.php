@@ -18,7 +18,7 @@ it('fully removes the deprecated Statistics tab and its data collection', functi
 
 	$viewer     = file_get_contents($root . '/syslog.php');
 	$setup      = file_get_contents($root . '/setup.php');
-	$functions  = file_get_contents($root . '/functions.php');
+	$functions  = file_get_contents($root . '/includes/functions.php');
 	$process    = file_get_contents($root . '/syslog_process.php');
 	$javascript = file_get_contents($root . '/js/functions.js');
 

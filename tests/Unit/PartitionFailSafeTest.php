@@ -53,7 +53,7 @@ function partition_failsafe_healthy_state(): void {
 }
 
 it('stops all partition maintenance when partition metadata is invalid', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = partition_failsafe_install_status_capture();
@@ -86,7 +86,7 @@ it('stops all partition maintenance when partition metadata is invalid', functio
 });
 
 it('defers retention pruning and reports the gap when partition creation fails', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = partition_failsafe_install_status_capture();
@@ -149,7 +149,7 @@ it('defers retention pruning and reports the gap when partition creation fails',
 });
 
 it('creates only the bounded number of missing partitions per run', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = partition_failsafe_install_status_capture();
@@ -211,7 +211,7 @@ it('creates only the bounded number of missing partitions per run', function () 
 });
 
 it('runs retention pruning and clears the block when recovery completes', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$values = partition_failsafe_install_status_capture();
@@ -270,7 +270,7 @@ it('runs retention pruning and clears the block when recovery completes', functi
 });
 
 it('never removes the dMaxValue safety partition', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';
 	$dropped = [];

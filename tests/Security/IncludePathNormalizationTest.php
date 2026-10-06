@@ -29,8 +29,8 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 
 	$plugin_includes = [
 		'setup.php',
-		'functions.php',
-		'database.php',
+		'includes/functions.php',
+		'includes/database.php',
 	];
 
 	foreach ($plugin_includes as $inc) {
@@ -42,7 +42,7 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 	// setup.php is not part of the standard per-entrypoint include chain; it is
 	// pulled in on demand via $config['base_path'] where a runtime setup step is
 	// actually needed, so only functions.php and database.php are required here.
-	$required_includes = ['functions.php', 'database.php'];
+	$required_includes = ['includes/functions.php', 'includes/database.php'];
 
 	foreach ($entrypoints as $file) {
 		$path = $root . '/' . $file;
@@ -95,8 +95,8 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		}
 	}
 
-	$functions = file_get_contents($root . '/functions.php');
-	$database  = file_get_contents($root . '/database.php');
+	$functions = file_get_contents($root . '/includes/functions.php');
+	$database  = file_get_contents($root . '/includes/database.php');
 
 	if ($functions === false || $database === false) {
 		throw new RuntimeException('Failed to read functions.php or database.php');
@@ -110,12 +110,12 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		throw new RuntimeException('functions.php missing syslog_apply_selected_items_action');
 	}
 
-	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/functions\.php[\'"]\s*\)/', $setup)) {
-		throw new RuntimeException('setup.php must use __DIR__ for functions.php include');
+	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/functions.php include');
 	}
 
-	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/database\.php[\'"]\s*\)/', $setup)) {
-		throw new RuntimeException('setup.php must use __DIR__ for database.php include');
+	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/database\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/database.php include');
 	}
 
 	expect(true)->toBeTrue();

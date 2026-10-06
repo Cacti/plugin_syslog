@@ -93,7 +93,7 @@ it('rejects every invalid panel dimension', function () {
 });
 
 it('folds breakdown rows beyond the top-n into an Other slice', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslog';

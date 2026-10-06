@@ -16,7 +16,7 @@
  */
 
 it('parses the logical search grammar and rejects malformed or oversized input', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('db_qstr', function ($value) {
 		return "'" . str_replace(['\\', "'"], ['\\\\', "''"], $value) . "'";
@@ -116,7 +116,7 @@ it('parses the logical search grammar and rejects malformed or oversized input',
 });
 
 it('applies the logical search predicate consistently in the real query builder', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('db_qstr', function ($value) {
 		return "'" . str_replace(['\\', "'"], ['\\\\', "''"], $value) . "'";
@@ -232,7 +232,7 @@ it('applies the logical search predicate consistently in the real query builder'
 		echo 'CODE:' . http_response_code() . "\n";
 		echo 'BODY:' . $error;
 		PHP,
-		var_export($root . '/functions.php', true)
+		var_export($root . '/includes/functions.php', true)
 	);
 
 	$process = proc_open([PHP_BINARY, '-r', $code], [

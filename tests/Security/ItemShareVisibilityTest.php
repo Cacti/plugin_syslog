@@ -15,7 +15,7 @@
  */
 
 it('resolves shared ids from user and group grants', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
 		return [['group_id' => '3'], ['group_id' => '5']];
@@ -53,7 +53,7 @@ it('resolves shared ids from user and group grants', function () {
 });
 
 it('keeps unknown kinds, anonymous sessions, and ungranted ids out', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$queried = false;
 
@@ -91,7 +91,7 @@ it('keeps unknown kinds, anonymous sessions, and ungranted ids out', function ()
 });
 
 it('replaces share rows and validates posted selections', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$statements = [];
 
@@ -139,7 +139,7 @@ it('replaces share rows and validates posted selections', function () {
 	expect($shares)->toBe(['users' => [['id' => 4]], 'groups' => [['id' => 7]]], 'Grants read back shaped for the multiselects');
 });
 it('grants everyone through the all sentinel', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 
 	$captured = [];
 

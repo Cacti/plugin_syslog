@@ -16,7 +16,7 @@
  */
 
 it('builds timeseries SQL with fixed aliases and integer literals', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
@@ -53,7 +53,7 @@ it('builds timeseries SQL with fixed aliases and integer literals', function () 
 });
 
 it('resolves breakdown dimensions through lookup subqueries', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
@@ -78,7 +78,7 @@ it('resolves breakdown dimensions through lookup subqueries', function () {
 });
 
 it('resolves dashboard loads by id and classifies ownership client-side', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
@@ -118,7 +118,7 @@ it('resolves dashboard loads by id and classifies ownership client-side', functi
 });
 
 it('repositions panels within one dashboard only', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
@@ -157,7 +157,7 @@ it('repositions panels within one dashboard only', function () {
 });
 
 it('repositions panels by absolute drag position', function () {
-	syslog_load_plugin_source('functions.php');
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
 	$GLOBALS['syslogdb_default'] = 'syslogdb';

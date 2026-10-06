@@ -1,8 +1,8 @@
 <?php
 chdir('../../');
 include('./include/auth.php');
-include_once('./plugins/syslog/functions.php');
-include_once('./plugins/syslog/database.php');
+include_once('./plugins/syslog/includes/functions.php');
+include_once('./plugins/syslog/includes/database.php');
 
 // The page was originally registered in its own realm and is now part of
 // Syslog Administration. Accept both mappings so existing installations do
