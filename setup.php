@@ -1462,7 +1462,7 @@ syslog_create_replication_recovery_table();
 		`type` varchar(16) NOT NULL default '',
 		enabled CHAR(2) DEFAULT 'on',
 		method CHAR(5) DEFAULT 'del',
-		message varchar(2048) NOT NULL default '',
+		message TEXT NOT NULL,
 		`user` varchar(32) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		notes varchar(255) default NULL,
