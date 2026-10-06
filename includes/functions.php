@@ -720,11 +720,11 @@ function syslog_export_form_end(bool $export): void {
 function syslog_include_js(): void {
 	global $config;
 
-	// Load the legend palette for the active theme, falling back to the base
-	// syslog.css when the theme ships no dedicated file. The theme name is a
-	// user/DB setting, so it is sanitised before it reaches the filesystem.
+	// Load the legend palette for the active theme, falling back to the
+	// theme-neutral legend.css when the theme ships no dedicated file. The theme
+	// name is a user/DB setting, so it is sanitised before it reaches the filesystem.
 	$theme      = preg_replace('/[^a-z0-9_-]/i', '', (string) get_selected_theme());
-	$legend_css = ($theme !== '' && file_exists(dirname(__DIR__) . '/css/' . $theme . '.css')) ? $theme . '.css' : 'syslog.css';
+	$legend_css = ($theme !== '' && file_exists(dirname(__DIR__) . '/css/' . $theme . '.css')) ? $theme . '.css' : 'legend.css';
 	?>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(dirname(__DIR__) . '/css/search.css'); ?>'>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/dashboard.css?v=<?php print filemtime(dirname(__DIR__) . '/css/dashboard.css'); ?>'>

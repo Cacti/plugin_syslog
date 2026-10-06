@@ -63,10 +63,10 @@ it('links the theme legend stylesheet when the theme ships one', function () {
 	$output = ob_get_clean();
 
 	expect($output)->toContain('plugins/syslog/css/modern.css?v=');
-	expect($output)->not->toContain('plugins/syslog/css/syslog.css?v=');
+	expect($output)->not->toContain('plugins/syslog/css/legend.css?v=');
 });
 
-it('falls back to syslog.css when the theme ships no legend stylesheet', function () {
+it('falls back to legend.css when the theme ships no legend stylesheet', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('get_selected_theme', function () {
@@ -77,7 +77,7 @@ it('falls back to syslog.css when the theme ships no legend stylesheet', functio
 	syslog_include_js();
 	$output = ob_get_clean();
 
-	expect($output)->toContain('plugins/syslog/css/syslog.css?v=');
+	expect($output)->toContain('plugins/syslog/css/legend.css?v=');
 	expect($output)->not->toContain('plugins/syslog/css/carrot.css?v=');
 });
 
@@ -92,6 +92,6 @@ it('sanitises the theme name before building the stylesheet path', function () {
 	syslog_include_js();
 	$output = ob_get_clean();
 
-	expect($output)->toContain('plugins/syslog/css/syslog.css?v=');
+	expect($output)->toContain('plugins/syslog/css/legend.css?v=');
 	expect($output)->not->toContain('..');
 });

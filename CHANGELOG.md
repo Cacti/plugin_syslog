@@ -3,7 +3,7 @@
 --- develop ---
 
 * dev: Move the shared function library to includes/functions.php and point the entry-point includes, coverage source, and tests at the new path
-* feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to css/syslog.css)
+* feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to a theme-neutral css/legend.css)
 * dev: Measure CI coverage with xdebug instead of pcov so the plugin's own sources are instrumented (pcov auto-scopes to the Composer root and skipped cacti/plugins/, leaving the patch-coverage gate with nothing to measure)
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
 * feature: Add Device Alert Rules for device-wide alert handling: administrators can pause a device's non-exempt alerts until a selected time or indefinitely, choose a priority threshold that always passes through device pauses and maintenance windows, and allow all device alerts during maintenance for critical devices
