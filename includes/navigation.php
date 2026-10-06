@@ -9,6 +9,8 @@
 
 /* Navigation callbacks. */
 
+require_once(dirname(__DIR__) . '/setup.php');
+
 /**
  * Draw the Syslog tab in the top header.
  *
@@ -77,7 +79,6 @@ function syslog_graph_buttons($graph_elements = []): void {
 		return;
 	}
 
-	require_once(dirname(__DIR__) . '/setup.php');
 	syslog_connect();
 
 	if (get_nfilter_request_var('action') == 'view') {

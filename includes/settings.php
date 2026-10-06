@@ -9,6 +9,7 @@
 
 /* Settings callbacks. */
 
+require_once(dirname(__DIR__) . '/setup.php');
 
 /**
  * Register the Syslog settings in the Cacti settings table.
