@@ -5824,7 +5824,7 @@ function syslog_replication_start_recovery_worker(): bool {
 		return false;
 	}
 
-	exec_background($php, ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_recovery.php');
+	exec_background($php, ' -q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/syslog/syslog_recovery.php'));
 	return true;
 }
 
