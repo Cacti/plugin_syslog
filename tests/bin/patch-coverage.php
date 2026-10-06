@@ -173,8 +173,18 @@ $unmeasured_allowlist = [
 	'syslog_dashboards.php',
 	'syslog_device_rules.php',
 	'syslog_batch_transfer.php',
+	'syslog_counter.php',
 	'syslog_process.php',
 	'syslog_recovery.php',
+	// Setup modules are loaded by Cacti hook paths rather than directly by the
+	// isolated Pest bootstrap. Their behavior is covered by targeted tests, but
+	// they are intentionally absent from Clover's source list.
+	'includes/installer.php',
+	'includes/navigation.php',
+	'includes/processing.php',
+	'includes/schema.php',
+	'includes/settings.php',
+	'includes/utilities.php',
 	// setup.php is unit-loadable (SetupSmallHelpersTest exercises its pure
 	// helpers), but the only lines this change touches are the include_once
 	// chain inside syslog_connect()/syslog_poller_bottom(), which run solely in a
