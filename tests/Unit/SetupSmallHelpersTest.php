@@ -44,7 +44,7 @@ it('restores the Cacti config when resetting test globals', function () {
 	syslog_test_reset_globals();
 
 	expect($GLOBALS['config'])->toMatchArray([
-		'base_path' => dirname(__DIR__, 3),
+		'base_path' => dirname(__DIR__, 4),
 		'url_path'  => '/cacti/',
 	]);
 });

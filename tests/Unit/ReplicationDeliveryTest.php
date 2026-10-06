@@ -77,7 +77,9 @@ it('treats an unset poller ID as the Main Collector for receipt telemetry', func
 });
 
 it('removes only temporary remote syslog copies after confirmed central delivery', function () {
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	$GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
+	$GLOBALS['database_default'] = 'main_syslog';
 	$GLOBALS['remote_db_cnn_id'] = new stdClass();
 	$GLOBALS['syslog_cnn'] = new stdClass();
 	$GLOBALS['syslogdb_default'] = 'remote_syslog';
@@ -91,6 +93,7 @@ it('removes only temporary remote syslog copies after confirmed central delivery
 	]]);
 	test_override('db_execute', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
 	test_override('db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
+	test_override('syslog_db_execute_prepared', function ($sql) use (&$calls) { $calls[] = $sql; return true; });
 	test_override('db_affected_rows', fn () => 1);
 
 	syslog_load_plugin_source('includes/functions.php');
@@ -249,7 +252,7 @@ it('keeps recovery bounded and delegates batch delivery to the Phase 2 primitive
 
 it('returns on-demand operational replication telemetry without remote fan-out', function () {
 	unset($GLOBALS['syslog_replication_connection_failed']);
-	$GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'online'];
+	$GLOBALS['config'] = ['poller_id' => 2, 'connection' => 'recovery'];
 	$GLOBALS['remote_db_cnn_id'] = new stdClass();
 	$GLOBALS['syslogdb_default'] = 'cacti';
 	test_override('read_config_option', fn () => 'on');
