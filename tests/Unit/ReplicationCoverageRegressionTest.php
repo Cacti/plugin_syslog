@@ -609,7 +609,9 @@ it('covers online delivery failure handling around the central transaction', fun
 		->and($logs[0])->toContain('database connection is unavailable');
 
 	$GLOBALS['database_default'] = 'main_syslog';
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	test_override('syslog_db_fetch_assoc', fn () => []);
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	expect(syslog_replication_deliver_online())->toBe(0);
 
 	test_override('syslog_db_fetch_assoc', fn () => [[
@@ -625,6 +627,7 @@ it('covers online delivery failure handling around the central transaction', fun
 	]]);
 
 	$GLOBALS['__delivery_failure'] = 'begin';
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	expect(syslog_replication_deliver_online())->toBe(0);
 
 	$GLOBALS['__accept_failure'] = 'receipt';
@@ -636,16 +639,20 @@ it('covers online delivery failure handling around the central transaction', fun
 
 		return true;
 	});
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	expect(syslog_replication_deliver_online())->toBe(0);
 
 	test_override('db_execute_prepared', fn () => true);
 	$GLOBALS['__delivery_failure'] = 'commit';
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	expect(syslog_replication_deliver_online())->toBe(0);
 
 	$GLOBALS['__delivery_failure'] = 'cleanup';
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	expect(syslog_replication_deliver_online())->toBe(0);
 
 	$GLOBALS['__delivery_failure'] = 'ack';
+	unset($GLOBALS['syslog_replication_connection_failed']);
 	expect(syslog_replication_deliver_online())->toBe(0);
 });
 
