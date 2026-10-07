@@ -712,8 +712,8 @@ msgstr "बैकग्राउंड अपग्रेड"
 msgid "Database Storage Engine"
 msgstr "डेटाबेस संग्रहण इंजन"
 
-#: setup.php
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
 msgstr ""
 
 #: setup.php
@@ -772,8 +772,8 @@ msgstr "'मुख्य' syslog तालिका का उन्नयन �
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
 msgstr "आप अवधारण अवधि का चयन भी कर सकते हैं।  कृपया ध्यान रखें कि यदि आपके पास syslog में लॉग इन करने वाले कई होस्ट हैं, तो यह तालिका काफी बड़ी हो सकती है।  इसलिए, यदि विभाजन का उपयोग नहीं कर रहे हैं, तो आप आकार को छोटा रखना चाह सकते हैं।"
 
-#: setup.php
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
 msgstr ""
 
 #: setup.php
@@ -1113,32 +1113,40 @@ msgstr ""
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr ""
 
-#: setup.php
+#: includes/installer.php
 msgid "Remote Message Processing"
 msgstr "दूरस्थ संदेश संसाधन"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "दूरस्थ डेटा संग्राहक संदेश संसाधन सक्षम करें"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "यदि आपके दूरस्थ डेटा संग्राहकों के पास अपने स्वयं के Syslog डेटाबेस हैं और उनके संदेशों को स्वतंत्र रूप से संसाधित करते हैं, तो इस चेकबॉक्स को चेक करें।  इस चेकबॉक्स को चेक करके, आपके रिमोट डेटा कलेक्टरों को संदेश प्रदर्शन और प्रसंस्करण के लिए एक स्वतंत्र डेटाबेस का उपयोग करने के लिए Syslog को सूचित करने के लिए अपनी 'config_local.php' फ़ाइल बनाए रखने की आवश्यकता होगी।  कृपया इस उद्देश्य के लिए टेम्पलेट फ़ाइल 'config_local.php.dist' का उपयोग करें।  चेतावनी: इस विकल्प के सक्षम होते ही Syslog टेबल स्वचालित रूप से बन जाएंगी।"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Remote Data Collector Rules Sync"
 msgstr "दूरस्थ डेटा संग्राहक नियम सिंक्रनाइज़ेशन"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "यदि आपके दूरस्थ डेटा संग्राहकों के पास अपने स्वयं के Syslog डेटाबेस हैं और स्वतंत्र रूप से संदेशों को संसाधित करते हैं, तो इस चेकबॉक्स को चेक करें यदि आप चाहते हैं कि मुख्य कैक्टि डेटाबेस अलर्ट, निष्कासन और रिपोर्ट नियम दूरस्थ कैक्टि सिस्टम को भेजे जाएं।"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
 msgstr ""
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
 
 #: setup.php

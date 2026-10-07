@@ -22,10 +22,10 @@
 function partition_precreate_extract_function() {
 	syslog_load_plugin_source('includes/functions.php');
 
-	$setup = plugin_test_read_source('setup.php');
+	$setup = plugin_test_read_function_source('syslog_create_partitioned_syslog_table');
 
 	if (!preg_match('/function\s+syslog_create_partitioned_syslog_table\s*\(.*?\n\}/s', $setup, $m)) {
-		throw new RuntimeException('Could not extract syslog_create_partitioned_syslog_table from setup.php');
+		throw new RuntimeException('Could not extract syslog_create_partitioned_syslog_table from its declared source');
 	}
 
 	$source = $m[0];

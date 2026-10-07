@@ -697,8 +697,10 @@ msgstr "Uppgradering av bakgrund"
 msgid "Database Storage Engine"
 msgstr "Lagringsmotor för databaser"
 
-#: setup.php
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
+#: includes/installer.php
+#, fuzzy
+#| msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
 msgstr "Lagringsmotorn för de analytiska tabellerna. Endast lagringsmotorerna InnoDB och, för MariaDB, Aria stöds."
 
 #: setup.php
@@ -755,8 +757,10 @@ msgstr "Uppgraderingen av den \"huvudsakliga\" syslog-tabellen kan vara en mycke
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
 msgstr "Du kan även välja bevarandeperiod. Tänk på att den här tabellen kan bli ganska stor om flera värddatorer loggar till Syslog."
 
-#: setup.php
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
+#: includes/installer.php
+#, fuzzy
+#| msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
 msgstr "Du kan även ange databasens lagringsmotor för de analytiska tabellerna syslog och syslog_remove. Endast lagringsmotorn InnoDB och, för MariaDB, lagringsmotorn Aria stöds. Om du använder MariaDB rekommenderar vi Aria Storage Engine eftersom den är avsedd för analytiska frågor."
 
 #: setup.php
@@ -1094,32 +1098,40 @@ msgstr "Standardundertryckning av dubbletter"
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr "Undertryck en avisering med samma matchade meddelandeuppsättning under så här många minuter. Värden per regel åsidosätter den här inställningen. Ange 0 för att inaktivera."
 
-#: setup.php
+#: includes/installer.php
 msgid "Remote Message Processing"
 msgstr "Behandling av fjärrmeddelanden"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "Aktivera meddelandehantering för fjärrdatainsamlare"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och bearbetar sina meddelanden självständigt, markera den här kryssrutan.  Om du markerar den här kryssrutan måste dina fjärruppsamlare underhålla sin egen fil \"config_local.php\" för att informera Syslog om att använda en oberoende databas för visning och bearbetning av meddelanden.  Använd mallfilen \"config_local.php.dist\" för detta ändamål.  VARNING: Syslog-tabeller skapas automatiskt så snart det här alternativet är aktiverat."
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Remote Data Collector Rules Sync"
 msgstr "Synkronisering av regler för fjärrdatainsamling"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar dessa meddelanden oberoende av varandra, markera den här kryssrutan om du vill att reglerna för varningar, borttagning och rapporter i huvuddatabasen ska skickas till fjärrdatasystemet."
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
 msgstr ""
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
 
 #: setup.php

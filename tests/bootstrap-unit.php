@@ -646,6 +646,28 @@ if (!function_exists('plugin_test_read_source')) {
 	}
 }
 
+if (!function_exists('plugin_test_read_function_source')) {
+	/**
+	 * Read the declared source file for a public Syslog function.
+	 *
+	 * @param string $function Function name.
+	 *
+	 * @return string
+	 */
+	function plugin_test_read_function_source($function) {
+		$owners = [
+			'syslog_create_partitioned_syslog_table' => 'includes/schema.php',
+			'syslog_setup_table_new'                 => 'includes/schema.php',
+		];
+
+		if (!isset($owners[$function])) {
+			throw new RuntimeException("No source owner registered for function: {$function}");
+		}
+
+		return plugin_test_read_source($owners[$function]);
+	}
+}
+
 /**
  * Load a plugin source file at global scope.
  *

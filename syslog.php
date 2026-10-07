@@ -33,8 +33,6 @@ chdir('../../');
 include('./include/auth.php');
 include_once('./lib/html_tree.php');
 include_once(__DIR__ . '/setup.php');
-include_once(__DIR__ . '/includes/functions.php');
-include_once(__DIR__ . '/includes/database.php');
 include_once(__DIR__ . '/lib/syslog_dashboard.php');
 
 global $config;
@@ -314,28 +312,6 @@ function syslog_status_format_seconds(string $value): string {
 }
 
 /**
- * Summarize the last polling runtime together with its min/avg/max values.
- *
- * @param array<string, string> $status The status values.
- *
- * @return string The formatted runtime statistics.
- */
-function syslog_status_format_runtime_stats(array $status): string {
-	if ($status['polling_runtime_last'] === '' || !is_numeric($status['polling_runtime_last'])) {
-		return __('Never', 'syslog');
-	}
-
-	return sprintf(
-		'%s (%s / %s / %s %s)',
-		syslog_status_format_seconds($status['polling_runtime_last']),
-		number_format((float) $status['polling_runtime_min'], 3),
-		number_format((float) $status['polling_runtime_avg'], 3),
-		number_format((float) $status['polling_runtime_max'], 3),
-		__('min/avg/max', 'syslog')
-	);
-}
-
-/**
  * Format a counter for the status tab, or '0' when it is unset.
  *
  * @param string $value The raw status value.
@@ -566,17 +542,6 @@ function syslog_status_format_age(int $seconds): string {
 	}
 
 	return implode(' ', array_slice($parts, 0, 2));
-}
-
-/**
- * Format an age value for the collector health display.
- *
- * @param int $seconds The age in seconds.
- *
- * @return string The formatted age.
- */
-function syslog_status_format_age_value(int $seconds): string {
-	return syslog_status_format_age($seconds);
 }
 
 /**
@@ -2087,33 +2052,6 @@ function syslog_filter(string $sql_where, string $tab): void {
 			</td>
 		</tr>
 	<?php html_end_box(false);
-}
-
-/**
- * Strip the domain from a hostname for rule matching.
- *
- * @param string $hostname The hostname or IP address.
- *
- * @return string The bare hostname, or the original address.
- */
-function syslog_strip_domain(string $hostname): string {
-	if (strpos($hostname, '.') === false) {
-		return $hostname;
-	}
-
-	if (filter_var($hostname, FILTER_VALIDATE_IP)) {
-		return $hostname;
-	} else {
-		$parts = explode('.', $hostname);
-
-		foreach ($parts as $part) {
-			if (is_numeric($part)) {
-				return $hostname;
-			}
-		}
-
-		return $parts[0];
-	}
 }
 
 /**

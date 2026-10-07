@@ -113,15 +113,6 @@ function syslog_dashboard_width_cap(): int {
 }
 
 /**
- * Minimum chart height in pixels; 0 follows the default.
- *
- * @return int Minimum chart height.
- */
-function syslog_dashboard_height_min(): int {
-	return 140;
-}
-
-/**
  * Maximum chart height in pixels.
  *
  * @return int Maximum chart height.

@@ -61,7 +61,6 @@ $helpers = [
 	'function syslog_dashboard_removals()',
 	'function syslog_dashboard_top_n_cap()',
 	'function syslog_dashboard_width_cap()',
-	'function syslog_dashboard_height_min()',
 	'function syslog_dashboard_height_cap()',
 	'function syslog_dashboard_panel_settings(',
 	'function syslog_dashboard_username(',
