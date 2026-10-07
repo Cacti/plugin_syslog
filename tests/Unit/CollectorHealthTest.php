@@ -48,7 +48,7 @@ function collector_health_load_functions(): void {
 		return;
 	}
 
-	foreach (['syslog_status_collector_health', 'syslog_status_collector_unavailable', 'syslog_status_format_age', 'syslog_status_format_age_value', 'syslog_status_format_count'] as $name) {
+	foreach (['syslog_status_collector_health', 'syslog_status_collector_unavailable', 'syslog_status_format_age', 'syslog_status_format_count'] as $name) {
 		$code = collector_health_extract_function($name);
 
 		if (!function_exists($name)) {

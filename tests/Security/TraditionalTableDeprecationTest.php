@@ -53,10 +53,10 @@ it('no longer offers traditional tables or MyISAM in the installer', function ()
 });
 
 it('always creates partitioned tables regardless of legacy options', function () {
-	$setup = plugin_test_read_source('setup.php');
+	$setup = plugin_test_read_function_source('syslog_setup_table_new');
 
 	if (!preg_match('/function\s+syslog_setup_table_new\s*\(.*?\n\}/s', $setup, $m)) {
-		throw new RuntimeException('Could not extract syslog_setup_table_new from setup.php');
+		throw new RuntimeException('Could not extract syslog_setup_table_new from its declared source');
 	}
 
 	$function = $m[0];
@@ -70,16 +70,16 @@ it('always creates partitioned tables regardless of legacy options', function ()
 	expect(strpos($function, 'syslog_create_partitioned_syslog_table('))
 		->not->toBeFalse('Partitioned table creation is missing from syslog_setup_table_new');
 
-	// The engine must flow through the validation helper.
-	expect(strpos($function, 'syslog_validate_storage_engine('))
-		->not->toBeFalse('Storage engine validation is missing from syslog_setup_table_new');
+	// The engine must flow through the install policy helper.
+	expect(strpos($function, 'syslog_install_storage_engine('))
+		->not->toBeFalse('Storage engine policy is missing from syslog_setup_table_new');
 });
 
 it('coerces a legacy trad db_type setting to partitioned', function () {
-	$setup = plugin_test_read_source('setup.php');
+	$setup = plugin_test_read_function_source('syslog_setup_table_new');
 
 	if (!preg_match('/function\s+syslog_setup_table_new\s*\(.*?\n\}/s', $setup, $m)) {
-		throw new RuntimeException('Could not extract syslog_setup_table_new from setup.php');
+		throw new RuntimeException('Could not extract syslog_setup_table_new from its declared source');
 	}
 
 	$function = $m[0];

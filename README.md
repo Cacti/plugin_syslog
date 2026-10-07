@@ -63,7 +63,8 @@ tables, but the plugin does not migrate the table automatically.
 
 Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are
 supported.  Other engines, including MyISAM, are no longer offered and fall
-back to InnoDB when legacy settings request them.
+back to InnoDB when legacy settings request them.  Enabling any Remote Data
+Collector option requires InnoDB; the setup advisor selects it automatically.
 
 ## Important Version 4.0 Release Notes
 

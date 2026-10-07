@@ -26,8 +26,6 @@ chdir('../../');
 include('./include/auth.php');
 include_once('./lib/xml.php');
 include_once(__DIR__ . '/setup.php');
-include_once(__DIR__ . '/includes/functions.php');
-include_once(__DIR__ . '/includes/database.php');
 
 syslog_connect();
 

@@ -8,11 +8,8 @@
 */
 
 /*
- * Regression coverage for the include-path hardening: every plugin
- * entrypoint must include functions.php/database.php via an __DIR__-based
- * path (or the chdir('../../') CWD-relative style paired with the chdir
- * call), never a bare CWD-relative include that silently depends on the
- * working directory the script happened to be launched from.
+ * Entrypoints must load setup.php through a CWD-independent path.
+ * syslog_connect() loads functions.php and database.php from setup.php's directory.
  */
 
 it('includes plugin sources via a CWD-independent path from every entrypoint', function () {
@@ -23,6 +20,7 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		'syslog_alerts.php',
 		'syslog_removal.php',
 		'syslog_batch_transfer.php',
+		'syslog_device_rules.php',
 		'syslog_reports.php',
 		'syslog_process.php',
 	];
@@ -39,11 +37,6 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		}
 	}
 
-	// setup.php is not part of the standard per-entrypoint include chain; it is
-	// pulled in on demand via $config['base_path'] where a runtime setup step is
-	// actually needed, so only functions.php and database.php are required here.
-	$required_includes = ['includes/functions.php', 'includes/database.php'];
-
 	foreach ($entrypoints as $file) {
 		$path = $root . '/' . $file;
 
@@ -57,22 +50,8 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 			throw new RuntimeException("Failed to read $file");
 		}
 
-		foreach ($required_includes as $inc) {
-			// Entrypoints use one of two equivalent styles: __DIR__-based (no
-			// chdir) or chdir('../../') plus a CWD-relative plugin path. Either
-			// resolves to the same file; only require that one of them is used.
-			$dir_pattern = '/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/\s*' . preg_quote($inc, '/') . '[\'"]\s*\)/';
-			$cwd_pattern = '/include_once\s*\(\s*[\'"]\.\/plugins\/syslog\/' . preg_quote($inc, '/') . '[\'"]\s*\)/';
-
-			if (!preg_match($dir_pattern, $content) && !preg_match($cwd_pattern, $content)) {
-				throw new RuntimeException("$file must include $inc via __DIR__ or the chdir('../../') CWD-relative style");
-			}
-
-			// The CWD-relative style is only safe when paired with a chdir to
-			// the Cacti base path; without it the include is CWD-dependent.
-			if (preg_match($cwd_pattern, $content) && !preg_match('/chdir\s*\(\s*[\'"]\.\.\/\.\.\/[\'"]\s*\)/', $content)) {
-				throw new RuntimeException("$file uses CWD-relative include for $inc without chdir('../../')");
-			}
+		if (!str_contains($content, "include_once(__DIR__ . '/setup.php');")) {
+			throw new RuntimeException("$file must load setup.php through __DIR__");
 		}
 	}
 
@@ -83,15 +62,17 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 	}
 
 	$expected_functions = [
-		'plugin_syslog_install',
-		'plugin_syslog_check_config',
-		'syslog_connect',
-		'syslog_determine_config',
+		'plugin_syslog_install'       => 'setup.php',
+		'plugin_syslog_check_config'  => 'setup.php',
+		'syslog_connect'              => 'setup.php',
+		'syslog_determine_config'     => 'setup.php',
 	];
 
-	foreach ($expected_functions as $func) {
-		if (!preg_match('/function\s+' . preg_quote($func, '/') . '\s*\(/', $setup)) {
-			throw new RuntimeException("setup.php missing expected function: $func");
+	foreach ($expected_functions as $func => $owner) {
+		$source = plugin_test_read_source($owner);
+
+		if (!preg_match('/function\s+' . preg_quote($func, '/') . '\s*\(/', $source)) {
+			throw new RuntimeException("$owner missing expected function: $func");
 		}
 	}
 
@@ -110,12 +91,12 @@ it('includes plugin sources via a CWD-independent path from every entrypoint', f
 		throw new RuntimeException('functions.php missing syslog_apply_selected_items_action');
 	}
 
-	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]\s*\)/', $setup)) {
-		throw new RuntimeException('setup.php must use __DIR__ for the includes/functions.php include');
+	if (!preg_match('/require_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/functions\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/functions.php require');
 	}
 
-	if (!preg_match('/include_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/database\.php[\'"]\s*\)/', $setup)) {
-		throw new RuntimeException('setup.php must use __DIR__ for the includes/database.php include');
+	if (!preg_match('/require_once\s*\(\s*__DIR__\s*\.\s*[\'"]\/includes\/database\.php[\'"]\s*\)/', $setup)) {
+		throw new RuntimeException('setup.php must use __DIR__ for the includes/database.php require');
 	}
 
 	expect(true)->toBeTrue();

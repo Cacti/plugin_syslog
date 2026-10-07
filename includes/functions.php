@@ -1190,6 +1190,58 @@ function syslog_validate_storage_engine($engine) {
 }
 
 /**
+ * Whether any Remote Data Collector option requires InnoDB storage.
+ *
+ * @param array<string, mixed> $options The install options, when supplied.
+ *
+ * @return bool
+ */
+function syslog_remote_collector_requires_innodb(array $options = []): bool {
+	foreach (['syslog_remote_enabled', 'syslog_remote_sync_rules', 'syslog_remote_store_records'] as $option) {
+		$value = array_key_exists($option, $options) ? $options[$option] : read_config_option($option);
+
+		if ($value === 'on') {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Resolve the install storage engine, enforcing InnoDB for collector options.
+ *
+ * @param mixed                $engine  The requested storage engine name.
+ * @param array<string, mixed> $options The install options, when supplied.
+ *
+ * @return string
+ */
+function syslog_install_storage_engine($engine, array $options = []): string {
+	$engine = syslog_validate_storage_engine($engine);
+
+	if (syslog_remote_collector_requires_innodb($options) && $engine !== 'InnoDB') {
+		cacti_log('SYSLOG WARNING: Remote Data Collector options require InnoDB storage.  Falling back to InnoDB', false, 'SYSLOG');
+
+		return 'InnoDB';
+	}
+
+	return $engine;
+}
+
+/**
+ * Whether the requested storage engine is compatible with install options.
+ *
+ * @param mixed                $engine  The requested storage engine name.
+ * @param array<string, mixed> $options The install options.
+ *
+ * @return bool
+ */
+function syslog_install_storage_engine_is_compatible($engine, array $options = []): bool {
+	return !syslog_remote_collector_requires_innodb($options)
+		|| syslog_validate_storage_engine($engine) === 'InnoDB';
+}
+
+/**
  * syslog_notice_traditional_tables - Raise the deprecation notice for
  * traditional (non-partitioned) Syslog tables.
  *
@@ -2702,24 +2754,6 @@ function syslog_partition_check($table, $time = null) {
 	} else {
 		return false;
 	}
-}
-
-/**
- * Report whether a request variable differs from its remembered session value.
- *
- * @param string $request The request variable name to check.
- * @param string $session The session variable name to compare against.
- *
- * @return int|null 1 when the value changed, or null when unchanged or unset.
- */
-function syslog_check_changed(string $request, string $session): ?int {
-	if ((isset_request_var($request)) && (isset($_SESSION[$session]))) {
-		if (get_request_var($request) != $_SESSION[$session]) {
-			return 1;
-		}
-	}
-
-	return null;
 }
 
 /**

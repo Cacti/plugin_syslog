@@ -23,6 +23,12 @@
 */
 
 include(__DIR__ . '/../../include/cli_check.php');
+include_once(__DIR__ . '/setup.php');
+
+if (!syslog_connect()) {
+	fwrite(STDERR, "Unable to connect to the Syslog database.\n");
+	exit(1);
+}
 
 $sli = read_config_option('syslog_last_incoming');
 $slt = read_config_option('syslog_last_total');
