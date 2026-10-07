@@ -747,7 +747,7 @@ function syslog_include_js(): void {
 function syslog_syslog_legend(): void {
 	html_start_box('', '100%', '', '3', 'center', '');
 
-	$items = array(
+	$items = [
 		'logEmergency' => __('Emergency', 'syslog'),
 		'logCritical'  => __('Critical', 'syslog'),
 		'logAlert'     => __('Alert', 'syslog'),
@@ -756,7 +756,7 @@ function syslog_syslog_legend(): void {
 		'logNotice'    => __('Notice', 'syslog'),
 		'logInfo'      => __('Info', 'syslog'),
 		'logDebug'     => __('Debug', 'syslog'),
-	);
+	];
 
 	$chip_min = 0;
 	foreach ($items as $label) {
@@ -787,11 +787,11 @@ function syslog_syslog_legend(): void {
 function syslog_log_legend(): void {
 	html_start_box('', '100%', '', '3', 'center', '');
 
-	$items = array(
+	$items = [
 		'logAlert'   => __('Alert', 'syslog'),
 		'logWarning' => __('Warning', 'syslog'),
 		'logInfo'    => __('Informational', 'syslog'),
-	);
+	];
 
 	$chip_min = 0;
 	foreach ($items as $label) {

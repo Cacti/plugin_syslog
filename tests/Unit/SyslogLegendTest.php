@@ -81,6 +81,25 @@ it('renders the smaller alert log legend', function () {
 	}
 });
 
+it('sizes the chips from the translated labels, not the English source', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$long = 'A very long translated error label';
+
+	// 'Error' is short in English; its translation is the longest label, so the
+	// chip minimum must follow the translated (emitted) output, not the source.
+	test_override('__', function ($text) use ($long) {
+		return $text === 'Error' ? $long : $text;
+	});
+
+	ob_start();
+	syslog_syslog_legend();
+	$output = ob_get_clean();
+
+	expect($output)->toContain('--syslog-chip-min: calc(' . mb_strlen($long) . 'ch + 1.5rem)');
+	expect($output)->toContain('<div class="syslogLegendItem logError">' . $long . '</div>');
+});
+
 it('links the theme legend stylesheet when the theme ships one', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
