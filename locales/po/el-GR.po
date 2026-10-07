@@ -712,8 +712,8 @@ msgstr "Αναβάθμιση φόντου"
 msgid "Database Storage Engine"
 msgstr "Μηχανή αποθήκευσης βάσεων δεδομένων"
 
-#: setup.php
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
 msgstr ""
 
 #: setup.php
@@ -772,8 +772,8 @@ msgstr "Η αναβάθμιση του 'κύριου' πίνακα syslog μπο
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
 msgstr "Μπορείτε επίσης να επιλέξετε τη διάρκεια διατήρησης.  Λάβετε υπόψη ότι εάν έχετε πολλούς κεντρικούς υπολογιστές που συνδέονται στο syslog, αυτός ο πίνακας μπορεί να γίνει αρκετά μεγάλος.  Έτσι, εάν δεν χρησιμοποιείτε διαμέριση, ίσως θελήσετε να διατηρήσετε το μέγεθος μικρότερο."
 
-#: setup.php
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
 msgstr ""
 
 #: setup.php
@@ -1113,32 +1113,40 @@ msgstr ""
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
 msgstr ""
 
-#: setup.php
+#: includes/installer.php
 msgid "Remote Message Processing"
 msgstr "Απομακρυσμένη επεξεργασία μηνυμάτων"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Enable Remote Data Collector Message Processing"
 msgstr "Ενεργοποίηση απομακρυσμένης επεξεργασίας μηνυμάτων Συλλογής δεδομένων"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
 msgstr "Εάν οι Απομακρυσμένες συλλογές δεδομένων έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται τα μηνύματά τους ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου.  Επιλέγοντας αυτό το πλαίσιο ελέγχου, οι απομακρυσμένοι συλλέκτες δεδομένων θα πρέπει να διατηρούν το δικό τους αρχείο 'config_local.php' προκειμένου να ενημερώσουν το Syslog να χρησιμοποιήσει μια ανεξάρτητη βάση δεδομένων για την εμφάνιση και επεξεργασία μηνυμάτων.  Χρησιμοποιήστε το αρχείο προτύπου 'config_local.php.dist' για το σκοπό αυτό.  ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Οι πίνακες Syslog θα δημιουργηθούν αυτόματα μόλις ενεργοποιηθεί αυτή η επιλογή."
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Remote Data Collector Rules Sync"
 msgstr "Απομακρυσμένος συγχρονισμός κανόνων Συλλογής δεδομένων"
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
 msgstr "Εάν οι Απομακρυσμένοι Συλλέκτες Δεδομένων σας έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται μέσω μηνυμάτων ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου εάν θέλετε οι κανόνες Ειδοποιήσεις, Αφαίρεση και Αναφορά των κύριων βάσεων δεδομένων Κάκτων να αποστέλλονται στο Σύστημα Απομακρυσμένων Κάκτων."
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
 msgstr ""
 
-#: setup.php
+#: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
 
 #: setup.php
