@@ -41,7 +41,7 @@ it('renders one chip per severity for the system log legend', function () {
 	$output = ob_get_clean();
 
 	expect($output)->toContain('<tr class="tableRow"><td>');
-	expect($output)->toContain('<div class="syslogLegend">');
+	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min:');
 	expect(substr_count($output, 'syslogLegendItem'))->toBe(8);
 
 	foreach (['logEmergency' => 'Emergency', 'logCritical' => 'Critical', 'logAlert' => 'Alert',
@@ -58,7 +58,7 @@ it('renders the smaller alert log legend', function () {
 	syslog_log_legend();
 	$output = ob_get_clean();
 
-	expect($output)->toContain('<div class="syslogLegend">');
+	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min:');
 	expect(substr_count($output, 'syslogLegendItem'))->toBe(3);
 
 	foreach (['logAlert' => 'Alert', 'logWarning' => 'Warning', 'logInfo' => 'Informational'] as $class => $label) {

@@ -5,6 +5,7 @@
 * ci: Drop Ruby from the CodeQL language matrix; the plugin ships no Ruby source, so the Ruby database build failed with "no source code seen"
 * dev: Move the shared function and database libraries to includes/ and point the entry-point includes, coverage source, and tests at the new path
 * feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to a theme-neutral css/legend.css)
+* dev: Keep the severity-legend chips equal width (sized to the longest label) as the legend wraps responsively
 * dev: Measure CI coverage with xdebug instead of pcov so the plugin's own sources are instrumented (pcov auto-scopes to the Composer root and skipped cacti/plugins/, leaving the patch-coverage gate with nothing to measure)
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
 * feature: Add a Syslog-owned durable replication outbox for configured Remote Data Collectors; processed events are delivered idempotently to the Main Collector for centralized viewing, retained through outages, and retried during recovery, while intentionally discarded records remain unreplicated
