@@ -41,12 +41,20 @@ it('renders one chip per severity for the system log legend', function () {
 	$output = ob_get_clean();
 
 	expect($output)->toContain('<tr class="tableRow"><td>');
-	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min:');
+
+	$items = ['logEmergency' => 'Emergency', 'logCritical' => 'Critical', 'logAlert' => 'Alert',
+		'logError' => 'Error', 'logWarning' => 'Warning', 'logNotice' => 'Notice',
+		'logInfo' => 'Info', 'logDebug' => 'Debug'];
+
+	$expected = 0;
+	foreach ($items as $label) {
+		$expected = max($expected, mb_strlen($label));
+	}
+
+	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min: calc(' . $expected . 'ch + 1.5rem)">');
 	expect(substr_count($output, 'syslogLegendItem'))->toBe(8);
 
-	foreach (['logEmergency' => 'Emergency', 'logCritical' => 'Critical', 'logAlert' => 'Alert',
-		'logError' => 'Error', 'logWarning' => 'Warning', 'logNotice' => 'Notice',
-		'logInfo' => 'Info', 'logDebug' => 'Debug'] as $class => $label) {
+	foreach ($items as $class => $label) {
 		expect($output)->toContain('<div class="syslogLegendItem ' . $class . '">' . $label . '</div>');
 	}
 });
@@ -58,12 +66,38 @@ it('renders the smaller alert log legend', function () {
 	syslog_log_legend();
 	$output = ob_get_clean();
 
-	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min:');
+	$items = ['logAlert' => 'Alert', 'logWarning' => 'Warning', 'logInfo' => 'Informational'];
+
+	$expected = 0;
+	foreach ($items as $label) {
+		$expected = max($expected, mb_strlen($label));
+	}
+
+	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min: calc(' . $expected . 'ch + 1.5rem)">');
 	expect(substr_count($output, 'syslogLegendItem'))->toBe(3);
 
-	foreach (['logAlert' => 'Alert', 'logWarning' => 'Warning', 'logInfo' => 'Informational'] as $class => $label) {
+	foreach ($items as $class => $label) {
 		expect($output)->toContain('<div class="syslogLegendItem ' . $class . '">' . $label . '</div>');
 	}
+});
+
+it('sizes the chips from the translated labels, not the English source', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$long = 'A very long translated error label';
+
+	// 'Error' is short in English; its translation is the longest label, so the
+	// chip minimum must follow the translated (emitted) output, not the source.
+	test_override('__', function ($text) use ($long) {
+		return $text === 'Error' ? $long : $text;
+	});
+
+	ob_start();
+	syslog_syslog_legend();
+	$output = ob_get_clean();
+
+	expect($output)->toContain('--syslog-chip-min: calc(' . mb_strlen($long) . 'ch + 1.5rem)');
+	expect($output)->toContain('<div class="syslogLegendItem logError">' . $long . '</div>');
 });
 
 it('links the theme legend stylesheet when the theme ships one', function () {

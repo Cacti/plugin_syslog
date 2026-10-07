@@ -24,15 +24,13 @@
 /* Syslog status-legend palette for the modern (light surface) theme. */
 
 .syslogLegend {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(var(--syslog-chip-min, 8ch), 1fr));
 	gap: 4px;
 	width: 100%;
 }
 
 .syslogLegend .syslogLegendItem {
-	flex: 1 1 0;
-	min-width: var(--syslog-chip-min, max-content);
 	text-align: center;
 	white-space: nowrap;
 	padding: 4px 6px;

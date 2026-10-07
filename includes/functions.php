@@ -759,7 +759,6 @@ function syslog_syslog_legend(): void {
 	];
 
 	$chip_min = 0;
-
 	foreach ($items as $label) {
 		$chip_min = max($chip_min, mb_strlen($label));
 	}
@@ -768,7 +767,7 @@ function syslog_syslog_legend(): void {
 	print '<div class="syslogLegend" style="--syslog-chip-min: calc(' . $chip_min . 'ch + 1.5rem)">';
 
 	foreach ($items as $class => $label) {
-		print '<div class="syslogLegendItem ' . $class . '">' . $label . '</div>';
+		print '<div class="syslogLegendItem ' . $class . '">' . html_escape($label) . '</div>';
 	}
 
 	print '</div>';
@@ -795,7 +794,6 @@ function syslog_log_legend(): void {
 	];
 
 	$chip_min = 0;
-
 	foreach ($items as $label) {
 		$chip_min = max($chip_min, mb_strlen($label));
 	}
@@ -804,7 +802,7 @@ function syslog_log_legend(): void {
 	print '<div class="syslogLegend" style="--syslog-chip-min: calc(' . $chip_min . 'ch + 1.5rem)">';
 
 	foreach ($items as $class => $label) {
-		print '<div class="syslogLegendItem ' . $class . '">' . $label . '</div>';
+		print '<div class="syslogLegendItem ' . $class . '">' . html_escape($label) . '</div>';
 	}
 
 	print '</div>';
