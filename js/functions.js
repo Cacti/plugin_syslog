@@ -103,6 +103,8 @@ function initSyslogWorkspace() {
 		var workspace = document.getElementById('syslog_workspace');
 		var pane = document.getElementById('syslog_message_details');
 		if (!workspace || !pane) return;
+		pane.hidden = true;
+		workspace.classList.remove('has-details');
 		var active, details;
 		function close() {
 			pane.hidden = true;
@@ -164,9 +166,9 @@ function initSyslogWorkspace() {
 				open();
 			});
 		});
-		document.getElementById('syslog_details_close').addEventListener('click', close);
-		pane.addEventListener('keydown', function(event) { if (event.key === 'Escape') close(); });
-		document.getElementById('syslog_details_copy').addEventListener('click', async function() {
+		document.getElementById('syslog_details_close').onclick = close;
+		pane.onkeydown = function(event) { if (event.key === 'Escape') close(); };
+		document.getElementById('syslog_details_copy').onclick = async function() {
 			var status = document.getElementById('syslog_copy_status');
 			try {
 				if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(details.message);
@@ -182,9 +184,9 @@ function initSyslogWorkspace() {
 				status.textContent = status.dataset.success;
 			} catch (error) { status.textContent = status.dataset.error; }
 			this.focus();
-		});
+		};
 		pane.querySelectorAll('[data-filter-detail]').forEach(function(button) {
-			button.addEventListener('click', function() {
+			button.onclick = function() {
 				var builder = document.getElementById('syslog_search_builder');
 				var expression = syslogBuilderSync(builder);
 				if (expression === null) return;
@@ -194,7 +196,7 @@ function initSyslogWorkspace() {
 				var data = syslogFilterData();
 				data.rfilter = query;
 				postSyslog(data);
-			});
+			};
 		});
 	});
 }
@@ -663,7 +665,72 @@ function applyFilter() {
 
 /** Reload results with the current filter, keeping the active page. */
 function refreshResults() {
+	if (window.syslogDataTable) {
+		window.syslogDataTable.ajax.reload(null, false);
+		return;
+	}
 	postSyslog({page: parseInt($('#page').val(), 10) || 1, refresh: $('#refresh').val()});
+}
+
+/** Keep Cacti's filters and row markup while DataTables owns the two log result tables. */
+function initSyslogDataTable() {
+	var table = document.querySelector('#syslog_workspace .syslogResultsMain table');
+	if (!table || !$.fn.DataTable) return;
+	if ($.fn.DataTable.isDataTable(table)) return;
+	if (window.syslogDataTableRefresh) clearInterval(window.syslogDataTableRefresh);
+	window.syslogDataTable = null;
+	var header = table.querySelector('tr.tableHeader');
+	if (!header) return;
+	var headings = Array.from(header.children);
+	headings.forEach(function(cell) { cell.textContent = cell.textContent.trim(); });
+	var thead = table.createTHead();
+	thead.append(header);
+	Array.from(table.querySelectorAll('tr')).forEach(function(row) { if (row !== header) row.remove(); });
+	var body = table.tBodies[0] || table.createTBody();
+	body.replaceChildren();
+	document.querySelectorAll('#syslog_workspace .navBarNavigation').forEach(function(nav) { nav.remove(); });
+	var length = parseInt($('#rows').val(), 10);
+	if (!Number.isInteger(length) || length < 1) length = 25;
+	length = Math.min(length, 750);
+	var pageSizes = Array.from(document.querySelectorAll('#rows option')).map(function(option) { return parseInt(option.value, 10); })
+		.filter(function(size) { return Number.isInteger(size) && size > 0 && size <= 750; });
+	if (!pageSizes.includes(length)) pageSizes.push(length);
+	pageSizes.sort(function(a, b) { return a - b; });
+	window.syslogDataTable = $(table).DataTable({
+		processing: true,
+		serverSide: true,
+		searching: false,
+		language: {emptyTable: window.pageTab === 'alerts' ? 'No Alert Log Messages' : 'No Syslog Messages'},
+		pageLength: length,
+		lengthMenu: pageSizes,
+		order: [[0, 'desc']],
+		columns: headings.map(function(_, index) { return {data: 'cells.' + index}; }),
+		ajax: {
+			url: 'syslog.php',
+			type: 'POST',
+			data: function(data) {
+				data.action = 'datatable';
+				data.tab = window.pageTab;
+				data.__csrf_magic = csrfMagicToken;
+			}
+		},
+		drawCallback: function() {
+			this.api().rows({page: 'current'}).every(function() {
+				var sibling = $(this.node());
+				(this.data().details || []).forEach(function(html) { sibling = $(html).insertAfter(sibling); });
+			});
+			initSyslogMessagesDisplay();
+			initSyslogValueFilters();
+			initSyslogWorkspace();
+		}
+	});
+	$(table).on('length.dt', function(event, settings, size) { $('#rows').val(size); });
+	var seconds = parseInt($('#refresh').val(), 10);
+	if (seconds > 0) {
+		window.syslogDataTableRefresh = setInterval(function() {
+			if (!document.hidden) refreshResults();
+		}, seconds * 1000);
+	}
 }
 
 function exportRecords() {
@@ -895,6 +962,7 @@ function initSyslogMain(config) {
 		initSyslogSearchBuilder(document.getElementById('syslog_search_builder'));
 		initSavedSearches();
 		initSyslogCompactSearch();
+		initSyslogDataTable();
 		$('#syslog_form').submit(function(event) {
 			event.preventDefault();
 			event.stopImmediatePropagation();
@@ -937,7 +1005,7 @@ function initSyslogMessagesDisplay() {
 		});
 
 		// Initialize tooltips for buttons
-		$('button').tooltip({
+		$('#syslog_workspace .syslogResultsMain button').tooltip({
 			closed: true
 		}).on('focus', function() {
 			$('#filter').tooltip('close');

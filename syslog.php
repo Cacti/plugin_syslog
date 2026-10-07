@@ -138,7 +138,18 @@ if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard
 // validate the syslog post/get/request information
 syslog_request_validation($current_tab);
 
-if (isset_request_var('refresh')) {
+if (get_request_var('action') === 'datatable') {
+	header('Content-Type: application/json; charset=UTF-8');
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !in_array($current_tab, ['syslog', 'alerts'], true)) {
+		http_response_code(400);
+		print json_encode(['error' => __('Invalid table request.', 'syslog')]);
+	} else {
+		print json_encode(syslog_datatable_response($current_tab), JSON_INVALID_UTF8_SUBSTITUTE);
+	}
+	exit;
+}
+
+if (isset_request_var('refresh') && !in_array($current_tab, ['syslog', 'alerts'], true)) {
 	$refresh['seconds'] = get_request_var('refresh');
 	$refresh['page']	   = $config['url_path'] . 'plugins/syslog/syslog.php?header=false&tab=' . $current_tab;
 	$refresh['logout']  = 'false';
@@ -156,7 +167,7 @@ if (isset_request_var('export')) {
 } else {
 	general_header();
 
-	syslog_include_js();
+	syslog_include_js(in_array($current_tab, ['syslog', 'alerts'], true));
 
 	syslog_display_tabs($current_tab);
 
@@ -1510,7 +1521,7 @@ function set_shift_span(bool|string $shift_span, string $session_prefix): void {
  *
  * @return list<array<string, mixed>> The matching log records.
  */
-function get_syslog_messages(string &$sql_where, int|string $rows, string $tab): array {
+function get_syslog_messages(string &$sql_where, int|string $rows, string $tab, ?int $offset = null): array {
 	global $sql_where, $hostfilter, $hostfilter_log, $current_tab, $syslog_incoming_config;
 	global $syslogdb_default;
 	// syslog and syslog_removed can legitimately gain independent operational
@@ -1669,9 +1680,12 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);
 
 	$sql_order = get_order_string();
+	// Equal timestamps are common in syslog; keep pages stable while sorting.
+	$sql_order = $sql_order === '' ? 'ORDER BY logtime DESC' : $sql_order;
+	$sql_order .= ', seq DESC' . ($tab === 'syslog' ? ', mtype ASC' : '');
 
 	if (!isset_request_var('export')) {
-		$sql_limit = ' LIMIT ' . ((int) $rows * (get_request_var('page') - 1)) . ',' . $rows;
+		$sql_limit = ' LIMIT ' . ($offset ?? ((int) $rows * (get_request_var('page') - 1))) . ',' . $rows;
 	} else {
 		$sql_limit = ' LIMIT 10000';
 	}
@@ -1943,6 +1957,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 							<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 							foreach ($item_rows as $rows => $display_text) {
+								if ($rows > 750) continue;
 								print "<option value='" . $rows . "'";
 
 								if (get_request_var('rows') == $rows) {
@@ -2054,6 +2069,79 @@ function syslog_filter(string $sql_where, string $tab): void {
 	<?php html_end_box(false);
 }
 
+/** Validate DataTables paging and sorting without accepting client SQL identifiers. */
+function syslog_datatable_request(array $request, string $tab): array {
+	$columns = $tab === 'alerts'
+		? ['logtime', 'host', 'severity', 'name', 'logmsg', 'count', 'facility_id', 'priority_id']
+		: ['logtime', 'host_id', 'program', 'message', 'facility_id', 'priority_id'];
+	if ($tab === 'syslog' && get_request_var('grouping') == '1') {
+		$columns[] = 'occurrence_count';
+	}
+	$start = filter_var($request['start'] ?? 0, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+	$length = filter_var($request['length'] ?? 25, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
+	$index = filter_var($request['order'][0]['column'] ?? 0, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+	$direction = strtolower((string) ($request['order'][0]['dir'] ?? 'desc'));
+	if ($start === false || $length === false || $index === false || !isset($columns[$index]) || !in_array($direction, ['asc', 'desc'], true)) {
+		throw new InvalidArgumentException(__('Invalid table paging or sorting.', 'syslog'));
+	}
+	return [$start, min($length, 750), $columns[$index], strtoupper($direction)];
+}
+
+/** Return one bounded, server-rendered page using the normal viewer query and cells. */
+function syslog_datatable_response(string $tab): array {
+	$draw = filter_var($_POST['draw'] ?? 0, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]);
+	$draw = $draw === false ? 0 : $draw;
+	try {
+		[$start, $length, $column, $direction] = syslog_datatable_request($_POST, $tab);
+		set_request_var('rows', $length);
+		set_request_var('page', intdiv($start, $length) + 1);
+		set_request_var('sort_column', $column);
+		set_request_var('sort_direction', $direction);
+		ob_start();
+		try {
+			syslog_messages($tab, $start);
+			$html = ob_get_clean();
+		} catch (Throwable $error) {
+			ob_end_clean();
+			throw $error;
+		}
+		$document = new DOMDocument();
+		$previous = libxml_use_internal_errors(true);
+		try {
+			$document->loadHTML('<meta charset="UTF-8">' . $html);
+		} finally {
+			libxml_clear_errors();
+			libxml_use_internal_errors($previous);
+		}
+		$xpath = new DOMXPath($document);
+		$data = [];
+		foreach ($xpath->query("//*[@id='syslog_workspace']//tr[contains(concat(' ', normalize-space(@class), ' '), ' syslogRow ')][not(@data-parent)]") as $row) {
+			$cells = [];
+			foreach ($xpath->query('./td', $row) as $cell) {
+				$contents = '';
+				foreach ($cell->childNodes as $child) {
+					$contents .= $document->saveHTML($child);
+				}
+				$cells[] = $contents;
+			}
+			$details = [];
+			for ($next = $row->nextSibling; $next; $next = $next->nextSibling) {
+				if ($next->nodeType === XML_TEXT_NODE) continue;
+				if ($next->nodeName !== 'tr' || !$next->hasAttribute('data-parent')) break;
+				$details[] = $document->saveHTML($next);
+			}
+			$data[] = ['cells' => $cells, 'details' => $details, 'DT_RowClass' => $row->getAttribute('class')];
+		}
+		$count = (int) ($GLOBALS['syslog_datatable_filtered'] ?? 0);
+		return ['draw' => $draw, 'recordsTotal' => $count, 'recordsFiltered' => $count, 'data' => $data];
+	} catch (InvalidArgumentException $error) {
+		return ['draw' => $draw, 'recordsTotal' => 0, 'recordsFiltered' => 0, 'data' => [], 'error' => $error->getMessage()];
+	} catch (Throwable $error) {
+		cacti_log('Syslog DataTables request failed: ' . $error->getMessage(), false, 'SYSLOG');
+		return ['draw' => $draw, 'recordsTotal' => 0, 'recordsFiltered' => 0, 'data' => [], 'error' => __('Unable to load log rows.', 'syslog')];
+	}
+}
+
 /**
  * Display the main log results table for syslog or alert messages.
  *
@@ -2064,7 +2152,7 @@ function syslog_filter(string $sql_where, string $tab): void {
  *
  * @return void
  */
-function syslog_messages(string $tab = 'syslog'): void {
+function syslog_messages(string $tab = 'syslog', ?int $offset = null): void {
 	global $sql_where, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 	global $syslogdb_default;
@@ -2088,14 +2176,15 @@ function syslog_messages(string $tab = 'syslog'): void {
 	if (get_request_var('rows') == -1) {
 		$rows = read_config_option('num_rows_table');
 	} elseif (get_request_var('rows') == -2) {
-		$rows = 999999;
+		$rows = 750;
 	} else {
 		$rows = get_request_var('rows');
 	}
+	$rows = max(1, min(750, (int) $rows));
 
-	$syslog_messages = get_syslog_messages($sql_where, $rows, $tab);
+	$syslog_messages = get_syslog_messages($sql_where, $rows, $tab, $offset);
 
-	syslog_filter($sql_where, $tab);
+	if ($offset === null) syslog_filter($sql_where, $tab);
 	print "<div id='syslog_workspace' data-theme='" . html_escape(get_selected_theme()) . "'><div class='syslogResultsMain'>";
 
 	if ($tab == 'syslog') {
@@ -2110,7 +2199,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
-						UNION
+						UNION ALL
 						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
@@ -2132,7 +2221,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 						SELECT COUNT(*) AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
-						UNION
+						UNION ALL
 						SELECT COUNT(*) AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
@@ -2160,6 +2249,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 			ON syslog.program_id=spr.program_id
 			$sql_where");
 	}
+	$GLOBALS['syslog_datatable_filtered'] = (int) $total_rows;
 
 	if ($tab == 'syslog') {
 		// Check if grouping is enabled for display
@@ -2218,9 +2308,9 @@ function syslog_messages(string $tab = 'syslog'): void {
 				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1) {
 					// Grouped message display with expand/collapse
 					$expand_icon = "<i class='fas fa-chevron-down syslog-group-toggle' data-seq='" . html_escape($sm['seq']) . "' style='cursor:pointer; margin-right:5px;'></i>";
-					form_selectable_cell($expand_icon . $sm['logtime'], $sm['seq'], '', 'left');
+					form_selectable_cell($expand_icon . html_escape($sm['logtime']), $sm['seq'], '', 'left');
 				} else {
-					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
+					form_selectable_cell(html_escape($sm['logtime']), $sm['seq'], '', 'left');
 				}
 
 				print "<td class='nowrap left syslogMeta'>" . syslog_value_filter_button($hosts[$sm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
@@ -2315,14 +2405,14 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				syslog_log_row_color($log['severity'], $title);
 
-				form_selectable_cell($log['logtime'], $log['seq'], '', 'left');
+					form_selectable_cell(html_escape($log['logtime']), $log['seq'], '', 'left');
 				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
 				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime']), $log['seq'], '', 'syslogMessage left');
 
-				form_selectable_cell($log['count'], $log['seq'], '', 'right');
-				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'left');
+					form_selectable_cell((int) $log['count'], $log['seq'], '', 'right');
+					form_selectable_cell(html_escape(ucfirst($log['facility'])), $log['seq'], '', 'left');
 				print "<td class='nowrap left'>" . syslog_value_filter_button(ucfirst($log['priority']), 'priority') . '</td>';
 
 				form_end_row();

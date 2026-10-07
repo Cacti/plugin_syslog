@@ -717,7 +717,7 @@ function syslog_export_form_end(bool $export): void {
  *
  * @return void
  */
-function syslog_include_js(): void {
+function syslog_include_js(bool $datatable = false): void {
 	global $config;
 
 	// Load the legend palette for the active theme, falling back to the
@@ -726,10 +726,12 @@ function syslog_include_js(): void {
 	$theme      = preg_replace('/[^a-z0-9_-]/i', '', (string) get_selected_theme());
 	$legend_css = ($theme !== '' && file_exists(dirname(__DIR__) . '/css/' . $theme . '.css')) ? $theme . '.css' : 'legend.css';
 	?>
+	<?php if ($datatable) { ?><link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/vendor/datatables/dataTables.dataTables.min.css?v=3.1.3'><?php } ?>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(dirname(__DIR__) . '/css/search.css'); ?>'>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/dashboard.css?v=<?php print filemtime(dirname(__DIR__) . '/css/dashboard.css'); ?>'>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/<?php print $legend_css; ?>?v=<?php print filemtime(dirname(__DIR__) . '/css/' . $legend_css); ?>'>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(dirname(__DIR__) . '/js/filter-builder.js'); ?>'></script>
+	<?php if ($datatable) { ?><script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/vendor/datatables/dataTables.min.js?v=3.1.3'></script><?php } ?>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/dashboard.js?v=<?php print filemtime(dirname(__DIR__) . '/js/dashboard.js'); ?>'></script>
 	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(dirname(__DIR__) . '/js/functions.js'); ?>'></script>
 	<?php

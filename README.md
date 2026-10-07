@@ -24,6 +24,10 @@ be quieted using syslog's 'Re-Alert' setting.
 
 ## Core Features
 
+The System Logs and Alert Logs result tables use locally vendored DataTables 3.1.3 with server-side paging, sorting, and in-place refresh. The existing Cacti search builder, saved searches, export, message details, and row actions remain in place. The `syslog.php` `action=datatable` POST endpoint uses Cacti authentication and CSRF validation, the same filtered SQL and row renderer as the normal viewer, and returns the DataTables `draw`, count, and page data response. Pages are capped at 750 rows, matching Syslog's supported large page setting. No DataTables global search field is shown because the existing search builder supplies filtering.
+
+Counts remain exact for the current filtered view and are computed on every draw. Complex filters, grouped views, and deep offset pages can therefore still be expensive on large databases; use a narrow time range where possible. DataTables assets and upgrade instructions are in [`vendor/datatables/README.md`](vendor/datatables/README.md).
+
 * Message filtering
 
 * Message searching

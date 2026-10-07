@@ -63,6 +63,8 @@ node_modules/**
 package-lock.json
 package.json
 vendor/**
+!vendor/datatables/
+!vendor/datatables/**
 composer.json
 composer.lock
 phpstan.neon
