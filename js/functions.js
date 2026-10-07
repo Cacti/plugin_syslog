@@ -682,27 +682,27 @@ function initSyslogDataTable() {
 	var header = table.querySelector('tr.tableHeader');
 	if (!header) return;
 	var headings = Array.from(header.children);
-	headings.forEach(function(cell) { cell.textContent = cell.textContent.trim(); });
+	headings.forEach(function(cell) {
+		cell.textContent = cell.textContent.trim();
+		cell.classList.remove('sortable', 'primarySort', 'secondarySort');
+	});
 	var thead = table.createTHead();
 	thead.append(header);
 	Array.from(table.querySelectorAll('tr')).forEach(function(row) { if (row !== header) row.remove(); });
 	var body = table.tBodies[0] || table.createTBody();
 	body.replaceChildren();
 	document.querySelectorAll('#syslog_workspace .navBarNavigation').forEach(function(nav) { nav.remove(); });
-	var length = parseInt($('#rows').val(), 10);
-	if (!Number.isInteger(length) || length < 1) length = 25;
+	var rows = document.querySelector('#rows');
+	var length = parseInt(rows.value, 10);
+	if (!Number.isInteger(length) || length < 1) length = parseInt(rows.dataset.defaultRows, 10) || 25;
 	length = Math.min(length, 750);
-	var pageSizes = Array.from(document.querySelectorAll('#rows option')).map(function(option) { return parseInt(option.value, 10); })
-		.filter(function(size) { return Number.isInteger(size) && size > 0 && size <= 750; });
-	if (!pageSizes.includes(length)) pageSizes.push(length);
-	pageSizes.sort(function(a, b) { return a - b; });
 	window.syslogDataTable = $(table).DataTable({
 		processing: true,
 		serverSide: true,
 		searching: false,
 		language: {emptyTable: window.pageTab === 'alerts' ? 'No Alert Log Messages' : 'No Syslog Messages'},
 		pageLength: length,
-		lengthMenu: pageSizes,
+		layout: {topStart: null},
 		order: [[0, 'desc']],
 		columns: headings.map(function(_, index) { return {data: 'cells.' + index}; }),
 		ajax: {
@@ -724,7 +724,11 @@ function initSyslogDataTable() {
 			initSyslogWorkspace();
 		}
 	});
-	$(table).on('length.dt', function(event, settings, size) { $('#rows').val(size); });
+	$(rows).removeAttr('onchange').off('change.syslogDatatable').on('change.syslogDatatable', function() {
+		var size = parseInt(this.value, 10);
+		if (!Number.isInteger(size) || size < 1) size = parseInt(this.dataset.defaultRows, 10) || 25;
+		window.syslogDataTable.page.len(Math.min(size, 750)).draw();
+	});
 	var seconds = parseInt($('#refresh').val(), 10);
 	if (seconds > 0) {
 		window.syslogDataTableRefresh = setInterval(function() {

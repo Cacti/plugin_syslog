@@ -589,6 +589,8 @@
 #syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) minmax(300px, 26%); }
 .syslogResultsMain { min-width: 0; overflow-x: auto; }
 #syslog_workspace table { width: 100%; }
+#syslog_workspace .dt-column-order::before,
+#syslog_workspace .dt-column-order::after { color: inherit; opacity: 0.8; }
 /* Kiwi-style pastel row tints: one soft shade per priority, white for Info. */
 #syslog_workspace tr.syslogRow { --syslog-tint: transparent; --syslog-tint-even: #f7f9f8; --syslog-tint-hover: #edf3f0; background: var(--syslog-tint); }
 #syslog_workspace tr.syslogRow:nth-child(even) { background: var(--syslog-tint-even); }

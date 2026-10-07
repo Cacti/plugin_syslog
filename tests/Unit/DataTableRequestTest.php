@@ -2,9 +2,13 @@
 
 if (!function_exists('syslog_messages')) {
 	function syslog_messages($tab = 'syslog', $offset = null): void {
-		$GLOBALS['syslog_datatable_filtered'] = 2;
-		print '<div id="syslog_workspace"><table><tr class="syslogRow logWarning"><td>2026-01-01</td><td>&lt;script&gt;</td></tr>' .
-			'<tr class="syslog-detail-row" data-parent="1"><td>detail</td></tr></table></div>';
+		$GLOBALS['syslog_datatable_filtered'] = !empty($GLOBALS['datatable_empty']) ? 0 : 2;
+		print '<div id="syslog_workspace"><table>';
+		if (empty($GLOBALS['datatable_empty'])) {
+			print '<tr class="syslogRow logWarning"><td>2026-01-01</td><td>&lt;script&gt;</td></tr>' .
+				'<tr class="syslog-detail-row" data-parent="1"><td>detail</td></tr>';
+		}
+		print '</table></div>';
 	}
 }
 
@@ -46,4 +50,10 @@ it('bounds DataTables pages and allowlists sorting for both log tabs', function 
 		->and($response['recordsFiltered'])->toBe(2)
 		->and($response['data'][0]['cells'])->toBe(['2026-01-01', '&lt;script&gt;'])
 		->and(count($response['data'][0]['details']))->toBe(1);
+	$_POST['order'][0]['column'] = '7';
+	expect(syslog_datatable_response('alerts')['recordsFiltered'])->toBe(2);
+	$GLOBALS['datatable_empty'] = true;
+	expect(syslog_datatable_response('alerts')['data'])->toBe([]);
+	$_POST['order'][0]['column'] = '99';
+	expect(syslog_datatable_response('alerts')['error'])->toBeString();
 });

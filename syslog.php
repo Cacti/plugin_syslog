@@ -1953,7 +1953,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 					</div>
 					<div class='syslogSearchOption syslogResultsLimit'>
 						<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
-						<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
+						<select id='rows' onChange='applyFilter()' data-default-rows='<?php print (int) read_config_option('num_rows_table'); ?>' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 							foreach ($item_rows as $rows => $display_text) {

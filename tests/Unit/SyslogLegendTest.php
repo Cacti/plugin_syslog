@@ -110,3 +110,18 @@ it('sanitises the theme name before building the stylesheet path', function () {
 	expect($output)->toContain('plugins/syslog/css/legend.css?v=');
 	expect($output)->not->toContain('..');
 });
+
+it('loads DataTables assets only for the two log result tabs', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	test_override('get_selected_theme', fn() => 'modern');
+	ob_start();
+	syslog_include_js();
+	$other_page = ob_get_clean();
+	ob_start();
+	syslog_include_js(true);
+	$log_page = ob_get_clean();
+	expect($other_page)->not->toContain('vendor/datatables/');
+	expect($log_page)->toContain('vendor/datatables/dataTables.min.js?v=3.1.3')
+		->toContain('vendor/datatables/dataTables.dataTables.min.css?v=3.1.3')
+		->not->toContain('jquery.js');
+});
