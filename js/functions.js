@@ -1387,3 +1387,21 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 		}
 	});
 }
+
+jQuery(function() {
+jQuery(document).off('change.syslogFilter', '.syslogFilter')
+.on('change.syslogFilter', '.syslogFilter', function() {
+var fn = jQuery(this).data('onchange');
+
+if (fn && typeof window[fn] === 'function') {
+window[fn]();
+}
+});
+
+jQuery(document).off('click.syslogToggle', '#syslog_search_toggle')
+.on('click.syslogToggle', '#syslog_search_toggle', function() {
+if (typeof toggleSyslogSearch === 'function') {
+toggleSyslogSearch();
+}
+});
+});

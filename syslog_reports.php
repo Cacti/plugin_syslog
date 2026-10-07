@@ -220,10 +220,10 @@ function form_actions(): void {
 			$title = __esc('Export Syslog Report Rule(s)', 'syslog');
 		}
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
+		$save_html = "<input class='cactiReturnTo' type='button' value='" . __esc('Cancel', 'syslog') . "'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
 	} else {
 		print "<tr><td class='odd'><span class='textError'>" . __('You must select at least one Syslog Report.', 'syslog') . "</span></td></tr>\n";
-		$save_html = "<input type='button' value='" . __esc('Return', 'syslog') . "' onClick='cactiReturnTo()'>";
+		$save_html = "<input class='cactiReturnTo' type='button' value='" . __esc('Return', 'syslog') . "'>";
 	}
 
 	print "<tr>
@@ -663,7 +663,7 @@ function syslog_reports_filter(): void {
 						<?php print __('Enabled', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='enabled' onChange='applyFilterReports()'>
+						<select id='enabled' class='syslogFilter' data-onchange='applyFilterReports'>
 							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>><?php print __('All', 'syslog'); ?></option>
 							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>><?php print __('Yes', 'syslog'); ?></option>
 							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>><?php print __('No', 'syslog'); ?></option>
@@ -673,7 +673,7 @@ function syslog_reports_filter(): void {
 						<?php print __('Rows', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilterReports()'>
+						<select id='rows' class='syslogFilter' data-onchange='applyFilterReports'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 								if (cacti_sizeof($item_rows)) {

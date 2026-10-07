@@ -225,7 +225,7 @@ function syslog_saved_search_filter() {
 						<?php print __('Rows', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilterSavedSearches()'>
+						<select id='rows' class='syslogFilter' data-onchange='applyFilterSavedSearches'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 							if (cacti_sizeof($item_rows)) {
@@ -381,7 +381,7 @@ function syslog_template_actions() {
 
 		$title = $export ? __esc('Export Saved Search Template(s)', 'syslog') : __esc('Delete Saved Search Template(s)', 'syslog');
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' class='export' value='" . __esc('Continue', 'syslog') . "' title='$title'>";
+		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "'>&nbsp;<input type='submit' class='export cactiReturnTo' value='" . __esc('Continue', 'syslog') . "' title='$title'>";
 	} else {
 		raise_message(40);
 		header('Location: syslog_saved_searches.php');

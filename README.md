@@ -129,6 +129,20 @@ exercises the syslog poller end-to-end on the PHP 8.2-8.4 matrix on Linux. The
 Docker E2E runner refuses unsafe temporary-directory paths before performing
 recursive cleanup.
 
+## Cacti compatibility
+
+If you are running a version of Cacti below 1.2.31, please add the function
+below to the `applySkin()` function in `include/layout.js` to enable the Cancel
+buttons on forms to work:
+
+```js
+$(document).off('click.cactiReturnTo', '.cactiReturnTo')
+    .on('click.cactiReturnTo', '.cactiReturnTo', function(event) {
+        event.preventDefault();
+        cactiReturnTo($(this).attr('data-url'));
+    });
+```
+
 ## Installation
 
 To install the syslog plugin, simply copy the plugin_syslog directory to Cacti's
