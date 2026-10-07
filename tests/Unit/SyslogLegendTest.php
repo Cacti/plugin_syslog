@@ -41,12 +41,20 @@ it('renders one chip per severity for the system log legend', function () {
 	$output = ob_get_clean();
 
 	expect($output)->toContain('<tr class="tableRow"><td>');
-	expect($output)->toContain('<div class="syslogLegend">');
+
+	$items = ['logEmergency' => 'Emergency', 'logCritical' => 'Critical', 'logAlert' => 'Alert',
+		'logError' => 'Error', 'logWarning' => 'Warning', 'logNotice' => 'Notice',
+		'logInfo' => 'Info', 'logDebug' => 'Debug'];
+
+	$expected = 0;
+	foreach ($items as $label) {
+		$expected = max($expected, mb_strlen($label));
+	}
+
+	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min: calc(' . $expected . 'ch + 1.5rem)">');
 	expect(substr_count($output, 'syslogLegendItem'))->toBe(8);
 
-	foreach (['logEmergency' => 'Emergency', 'logCritical' => 'Critical', 'logAlert' => 'Alert',
-		'logError' => 'Error', 'logWarning' => 'Warning', 'logNotice' => 'Notice',
-		'logInfo' => 'Info', 'logDebug' => 'Debug'] as $class => $label) {
+	foreach ($items as $class => $label) {
 		expect($output)->toContain('<div class="syslogLegendItem ' . $class . '">' . $label . '</div>');
 	}
 });
@@ -58,10 +66,17 @@ it('renders the smaller alert log legend', function () {
 	syslog_log_legend();
 	$output = ob_get_clean();
 
-	expect($output)->toContain('<div class="syslogLegend">');
+	$items = ['logAlert' => 'Alert', 'logWarning' => 'Warning', 'logInfo' => 'Informational'];
+
+	$expected = 0;
+	foreach ($items as $label) {
+		$expected = max($expected, mb_strlen($label));
+	}
+
+	expect($output)->toContain('<div class="syslogLegend" style="--syslog-chip-min: calc(' . $expected . 'ch + 1.5rem)">');
 	expect(substr_count($output, 'syslogLegendItem'))->toBe(3);
 
-	foreach (['logAlert' => 'Alert', 'logWarning' => 'Warning', 'logInfo' => 'Informational'] as $class => $label) {
+	foreach ($items as $class => $label) {
 		expect($output)->toContain('<div class="syslogLegendItem ' . $class . '">' . $label . '</div>');
 	}
 });

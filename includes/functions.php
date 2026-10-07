@@ -747,16 +747,29 @@ function syslog_include_js(): void {
 function syslog_syslog_legend(): void {
 	html_start_box('', '100%', '', '3', 'center', '');
 
+	$items = array(
+		'logEmergency' => __('Emergency', 'syslog'),
+		'logCritical'  => __('Critical', 'syslog'),
+		'logAlert'     => __('Alert', 'syslog'),
+		'logError'     => __('Error', 'syslog'),
+		'logWarning'   => __('Warning', 'syslog'),
+		'logNotice'    => __('Notice', 'syslog'),
+		'logInfo'      => __('Info', 'syslog'),
+		'logDebug'     => __('Debug', 'syslog'),
+	);
+
+	$chip_min = 0;
+	foreach ($items as $label) {
+		$chip_min = max($chip_min, mb_strlen($label));
+	}
+
 	print '<tr class="tableRow"><td>';
-	print '<div class="syslogLegend">';
-	print '<div class="syslogLegendItem logEmergency">' . __('Emergency', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logCritical">' . __('Critical', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logAlert">' . __('Alert', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logError">' . __('Error', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logWarning">' . __('Warning', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logNotice">' . __('Notice', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logInfo">' . __('Info', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logDebug">' . __('Debug', 'syslog') . '</div>';
+	print '<div class="syslogLegend" style="--syslog-chip-min: calc(' . $chip_min . 'ch + 1.5rem)">';
+
+	foreach ($items as $class => $label) {
+		print '<div class="syslogLegendItem ' . $class . '">' . $label . '</div>';
+	}
+
 	print '</div>';
 	print '</td></tr>';
 
@@ -774,11 +787,24 @@ function syslog_syslog_legend(): void {
 function syslog_log_legend(): void {
 	html_start_box('', '100%', '', '3', 'center', '');
 
+	$items = array(
+		'logAlert'   => __('Alert', 'syslog'),
+		'logWarning' => __('Warning', 'syslog'),
+		'logInfo'    => __('Informational', 'syslog'),
+	);
+
+	$chip_min = 0;
+	foreach ($items as $label) {
+		$chip_min = max($chip_min, mb_strlen($label));
+	}
+
 	print '<tr class="tableRow"><td>';
-	print '<div class="syslogLegend">';
-	print '<div class="syslogLegendItem logAlert">' . __('Alert', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logWarning">' . __('Warning', 'syslog') . '</div>';
-	print '<div class="syslogLegendItem logInfo">' . __('Informational', 'syslog') . '</div>';
+	print '<div class="syslogLegend" style="--syslog-chip-min: calc(' . $chip_min . 'ch + 1.5rem)">';
+
+	foreach ($items as $class => $label) {
+		print '<div class="syslogLegendItem ' . $class . '">' . $label . '</div>';
+	}
+
 	print '</div>';
 	print '</td></tr>';
 

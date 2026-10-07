@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* dev: Size the severity-legend chips to the longest label and lay them out as a CSS grid so every chip stays equal width as the legend wraps (matching the thold/monitor/servcheck/mactrack legends)
 * ci: Drop Ruby from the CodeQL language matrix; the plugin ships no Ruby source, so the Ruby database build failed with "no source code seen"
 * dev: Move the shared function and database libraries to includes/ and point the entry-point includes, coverage source, and tests at the new path
 * feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to a theme-neutral css/legend.css)
