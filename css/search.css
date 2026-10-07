@@ -1017,3 +1017,11 @@ body.dark #syslog_form .syslogSearchPanel {
 .syslogRuleTestCount {
 	font-weight: 600;
 }
+
+/* Legend footer: keeps each legend centered beneath the results in normal
+   document flow, so it never overlays the bottom pagination or final rows. */
+.syslogLegendFooter {
+	display: table;
+	width: 100%;
+	margin: 8px auto 0;
+}

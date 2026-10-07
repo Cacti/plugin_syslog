@@ -2282,7 +2282,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		}
 
 
-		print '<div class="center" style="position:fixed;left:0;bottom:0;display:table;margin-left:auto;margin-right:auto;width:100%;">';
+		print '<div class="center syslogLegendFooter">';
 		syslog_syslog_legend();
 		print '</div>';
 		?>
@@ -2339,7 +2339,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 			print $nav;
 		}
 
-		print '<div class="center" style="position:fixed;left:0;bottom:0;display:table;margin-left:auto;margin-right:auto;width:100%;">';
+		print '<div class="center syslogLegendFooter">';
 		syslog_log_legend();
 		print '</div>';
 		?>
