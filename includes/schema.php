@@ -131,6 +131,7 @@ function syslog_ensure_saved_search_tables(): void {
 	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
 			`id` int(10) NOT NULL auto_increment,
+			`hash` varchar(32) NOT NULL default '',
 			`name` varchar(128) NOT NULL default '',
 			`search` text NOT NULL,
 			`removal` int(10) NOT NULL default '1',
@@ -142,6 +143,16 @@ function syslog_ensure_saved_search_tables(): void {
 			KEY owner (`user`))
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
+	}
+
+	if (!syslog_db_column_exists('syslog_saved_searches', 'hash')) {
+		syslog_db_add_column('syslog_saved_searches', [
+			'name'    => 'hash',
+			'type'    => 'varchar(32)',
+			'NULL'    => false,
+			'default' => '',
+			'after'   => 'id'
+		]);
 	}
 }
 
@@ -413,7 +424,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
  *
  * @return void
  */
-function syslog_setup_table_new(array $options): void {
+function syslog_setup_table_new(array $options, bool $repair = false): void {
 	global $config, $settings, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
@@ -469,7 +480,7 @@ function syslog_setup_table_new(array $options): void {
 	}
 
 	// validate some simple information
-	$truncate     = isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate' ? true : false;
+	$truncate     = !$repair && isset($options['upgrade_type']) && $options['upgrade_type'] == 'truncate';
 	$engine       = syslog_install_storage_engine(isset($options['engine']) ? $options['engine'] : 'InnoDB', $options);
 	$syslogexists = sizeof(syslog_db_fetch_row("SHOW TABLES FROM `$syslogdb_default` LIKE 'syslog'"));
 
@@ -682,7 +693,12 @@ syslog_create_replication_recovery_table();
 		ROW_FORMAT=Dynamic
 		COMMENT='Contains all hosts currently in the syslog table'");
 
-	syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_facilities`");
+	$facilities_exists = syslog_db_table_exists('syslog_facilities', false);
+
+	if (!$repair) {
+		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_facilities`");
+		$facilities_exists = false;
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_facilities` (
 		`facility_id` int(10) unsigned NOT NULL,
@@ -693,13 +709,20 @@ syslog_create_replication_recovery_table();
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_db_execute("INSERT INTO `$syslogdb_default`.`syslog_facilities` (facility_id, facility) VALUES
+	if (!$facilities_exists) {
+		syslog_db_execute("INSERT INTO `$syslogdb_default`.`syslog_facilities` (facility_id, facility) VALUES
 		(0,'kern'), (1,'user'), (2,'mail'), (3,'daemon'), (4,'auth'), (5,'syslog'), (6,'lpd'), (7,'news'),
 		(8,'uucp'), (9,'crond'), (10,'authpriv'), (11,'ftpd'), (12,'ntpd'), (13,'logaudit'), (14,'logalert'),
 		(15,'crond'), (16,'local0'), (17,'local1'), (18,'local2'), (19,'local3'), (20,'local4'), (21,'local5'),
 		(22,'local6'), (23,'local7')");
+	}
 
-	syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_priorities`");
+	$priorities_exists = syslog_db_table_exists('syslog_priorities', false);
+
+	if (!$repair) {
+		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_priorities`");
+		$priorities_exists = false;
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_priorities` (
 		`priority_id` int(10) unsigned NOT NULL,
@@ -710,8 +733,10 @@ syslog_create_replication_recovery_table();
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_db_execute("INSERT INTO `$syslogdb_default`.`syslog_priorities` (priority_id, priority) VALUES
+	if (!$priorities_exists) {
+		syslog_db_execute("INSERT INTO `$syslogdb_default`.`syslog_priorities` (priority_id, priority) VALUES
 		(0,'emerg'), (1,'alert'), (2,'crit'), (3,'err'), (4,'warning'), (5,'notice'), (6,'info'), (7,'debug'), (8,'other')");
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_host_facilities` (
 		`host_id` int(10) unsigned NOT NULL,
@@ -750,7 +775,9 @@ syslog_create_replication_recovery_table();
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
+	syslog_ensure_saved_search_tables();
 	syslog_ensure_share_tables();
+	syslog_ensure_dashboard_tables();
 
 	if (!isset($settings['syslog'])) {
 		syslog_config_settings();
@@ -764,4 +791,27 @@ syslog_create_replication_recovery_table();
 
 	// ensure that the setting if set previously to truncate is switched to upgrade
 	set_config_option('syslog_install_upgrade_type', 'upgrade');
+}
+
+/** Repair any missing plugin-owned table without dropping existing data. */
+function syslog_ensure_table_structures(): void {
+	$tables = [
+		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression',
+		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
+		'syslog_hosts', 'syslog_facilities', 'syslog_priorities', 'syslog_host_facilities',
+		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
+		'syslog_replication_output', 'syslog_replication_receipts',
+		'syslog_replication_collectors', 'syslog_replication_recovery'
+	];
+
+	foreach ($tables as $table) {
+		if (!syslog_db_table_exists($table, false)) {
+			syslog_setup_table_new([], true);
+			break;
+		}
+	}
+
+	syslog_ensure_saved_search_tables();
+	syslog_ensure_share_tables();
+	syslog_ensure_dashboard_tables();
 }

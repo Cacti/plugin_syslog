@@ -69,6 +69,19 @@ it('repairs the saved-search table even when no version upgrade is pending', fun
 		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
 });
 
+it('rebuilds the complete core schema when any core table is absent', function () {
+	$schema = plugin_test_read_source('includes/schema.php');
+
+	expect($schema)->toContain("function syslog_ensure_table_structures(): void")
+		->and($schema)->toContain("syslog_setup_table_new([], true);")
+		->and($schema)->toContain("'syslog_replication_recovery'")
+		->and($schema)->toContain("syslog_ensure_dashboard_tables();");
+
+	$setup = plugin_test_read_source('setup.php');
+	expect(strpos($setup, 'syslog_ensure_table_structures();'))
+		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
+});
+
 it('resolves shared ids from user and group grants', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
