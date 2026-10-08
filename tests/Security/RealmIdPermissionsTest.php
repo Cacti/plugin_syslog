@@ -21,3 +21,21 @@ it('checks Cacti realm IDs and fails closed without a realm', function () {
 	$allowed = [];
 	expect(syslog_saved_search_admin())->toBeFalse('No implicit filename fallback');
 });
+
+it('allows sharing saved searches through either the admin or share realm', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$allowed = [109];
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$id = ['Syslog Administration' => 7, 'Share Saved Templates' => 9][$params[1] ?? ''] ?? 0;
+		return $id ? [['id' => $id]] : [];
+	});
+	test_override('is_realm_allowed', function ($id) use (&$allowed) {
+		return in_array($id, $allowed, true);
+	});
+
+	expect(syslog_saved_search_share())->toBeTrue();
+	$allowed = [107];
+	expect(syslog_saved_search_share())->toBeTrue();
+	$allowed = [];
+	expect(syslog_saved_search_share())->toBeFalse();
+});
