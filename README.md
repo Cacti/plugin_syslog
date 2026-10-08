@@ -131,7 +131,9 @@ recursive cleanup.
 
 ## Cacti compatibility
 
-If you are running a version of Cacti below 1.2.31, please add the function
+This plugin supports Cacti 1.2.29 and later. On Cacti 1.2.31 and later the
+confirmation-page Cancel buttons work automatically. If you are running Cacti
+between 1.2.29 and 1.2.31 (i.e. 1.2.29 or 1.2.30), please add the function
 below to the `applySkin()` function in `include/layout.js` to enable the Cancel
 buttons on forms to work:
 

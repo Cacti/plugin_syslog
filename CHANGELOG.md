@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* compat: Lower the minimum Cacti compatibility floor (INFO `compat`) from 1.2.23 to 1.2.29. On Cacti 1.2.31+ the CSP-safe `cactiReturnTo` Cancel buttons bind automatically; on 1.2.29/1.2.30 the README documents the one-time `applySkin()` snippet needed
 * security: Move the syslog pages' inline event handlers to CSP-safe bindings so the pages no longer trip Cacti's Content-Security-Policy script-src-attr directive: the confirmation Cancel buttons use the `cactiReturnTo` class, and the filter selects (plus the collapse-filters toggle) are bound via a delegated handler in `js/functions.js` keyed off a `data-onchange` attribute so each select still calls its own `applyFilter*` function
 * feature: Add Remote Data Collector processing, rules-sync, and record-storage options to the setup advisor; reject Aria selections whenever any collector option is enabled
 * change: Use TEXT for message columns previously limited to VARCHAR(2048), including existing installations
