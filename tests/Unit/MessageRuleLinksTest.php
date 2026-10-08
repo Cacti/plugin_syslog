@@ -16,14 +16,17 @@ it('builds rule-editor links only for permitted, valid main-table records', func
 	syslog_load_plugin_source('includes/functions.php');
 
 	$allowed = [];
-
-	test_override('api_plugin_user_realm_auth', function ($page) use (&$allowed) {
-		return in_array($page, $allowed, true);
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$id = ['Rule Viewer' => 1, 'Rule Administrator' => 2][$params[1] ?? ''] ?? 0;
+		return $id ? [['id' => $id]] : [];
+	});
+	test_override('is_realm_allowed', function ($id) use (&$allowed) {
+		return in_array($id, $allowed, true);
 	});
 
 	expect(syslog_message_rule_links(42, 'main', '2026-09-13 00:12:42'))->toBe([], 'Readers have no rule actions');
 
-	$allowed = ['syslog_alerts.php', 'syslog_removal.php', 'syslog_rule_administrator.php'];
+	$allowed = [101, 102];
 	$links = syslog_message_rule_links(43, 'main', '2026-09-13 00:12:42');
 
 	foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
@@ -34,7 +37,6 @@ it('builds rule-editor links only for permitted, valid main-table records', func
 		expect($query['id'] === '43' && $query['action'] === 'newedit' && $query['date'] === '2026-09-13 00:12:42')->toBeTrue('Editor targets the selected record');
 	}
 
-	$allowed[] = 'syslog_device_rules.php';
 	$links = syslog_message_rule_links(43, 'main', '2026-09-13 00:12:42', 'platinum-router');
 	parse_str(parse_url($links['device'], PHP_URL_QUERY), $query);
 	expect(strpos($links['device'], 'syslog_device_rules.php?') === 0 && $query['host'] === 'platinum-router')->toBeTrue('Permitted users can seed a device-wide rule from the selected message host');

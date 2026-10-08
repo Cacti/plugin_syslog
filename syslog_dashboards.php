@@ -5,9 +5,7 @@ include_once('./plugins/syslog/includes/functions.php');
 include_once('./plugins/syslog/includes/database.php');
 include_once(__DIR__ . '/lib/syslog_dashboard.php');
 
-// The page is part of the Syslog Administration realm. Accept the explicit
-// realm lookup too so pre-existing installs work before realm repair runs.
-if (!api_plugin_user_realm_auth('syslog_dashboards.php') && !api_plugin_user_realm_auth('syslog_alerts.php')) {
+if (!syslog_realm_allowed('Syslog Administration')) {
 	die(__('Permission denied.', 'syslog'));
 }
 

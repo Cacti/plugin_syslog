@@ -139,9 +139,8 @@ it('treats another user\'s shared dashboard as view-only', function () {
 		return $global_dashboard;
 	});
 
-	test_override('api_plugin_user_realm_auth', function ($file) {
-		return false;
-	});
+	test_override('db_fetch_assoc_prepared', fn ($sql, $params) => ($params[1] ?? '') === 'Syslog Administration' ? [['id' => 7]] : []);
+	test_override('is_realm_allowed', fn ($id) => false);
 
 	$executed = [];
 
@@ -203,9 +202,8 @@ it('lets an administrator edit a shared dashboard', function () {
 		return false;
 	});
 
-	test_override('api_plugin_user_realm_auth', function ($file) {
-		return true;
-	});
+	test_override('db_fetch_assoc_prepared', fn ($sql, $params) => ($params[1] ?? '') === 'Syslog Administration' ? [['id' => 7]] : []);
+	test_override('is_realm_allowed', fn ($id) => $id === 107);
 
 	$executed = [];
 

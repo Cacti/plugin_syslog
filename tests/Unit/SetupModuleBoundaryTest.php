@@ -26,6 +26,7 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'syslog_upgrade_device_rule_realm',
 		'syslog_upgrade_rule_permissions',
 		'syslog_upgrade_consolidate_rule_realms',
+		'syslog_upgrade_explicit_realm_grants',
 		'syslog_upgrade_create_permission_realms',
 		'syslog_check_upgrade',
 		'plugin_syslog_version',
@@ -37,10 +38,10 @@ it('keeps setup.php limited to its compatibility facade', function () {
 	expect($matches[1])->toEqualCanonicalizing($allowed);
 });
 
-it('keeps config-array dependencies in the directly loaded settings module', function () {
+it('leaves Cacti realm maps to the plugin API', function () {
 	$settings = plugin_test_read_source('includes/settings.php');
 
-	expect($settings)->toContain('function syslog_refresh_permission_roles(): void');
+	expect($settings)->not->toContain('user_auth_realm_filenames');
 });
 
 it('runs realm and version reconciliation only during install or upgrade', function () {

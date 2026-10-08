@@ -76,7 +76,6 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
-	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -412,8 +411,6 @@ function syslog_connect(): bool {
  * @return void
  */
 function syslog_upgrade_saved_search_realm(): void {
-	global $user_auth_realm_filenames;
-
 	$admin = null;
 	$template = null;
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
@@ -443,12 +440,6 @@ function syslog_upgrade_saved_search_realm(): void {
 		$template = $admin;
 	}
 
-	// A legacy standalone realm retains its grants. Administrators can also
-	// access Templates, without granting legacy template users other admin pages.
-	// Update the already-loaded map so the repair works on this request too.
-	if ($template['id'] == $admin['id'] || api_plugin_user_realm_auth('syslog_alerts.php')) {
-		$user_auth_realm_filenames['syslog_saved_searches.php'] = (int) $admin['id'] + 100;
-	}
 }
 
 /**
@@ -457,8 +448,6 @@ function syslog_upgrade_saved_search_realm(): void {
  * @return void
  */
 function syslog_upgrade_dashboard_realm(): void {
-	global $user_auth_realm_filenames;
-
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (is_array($realms)) {
@@ -478,9 +467,6 @@ function syslog_upgrade_dashboard_realm(): void {
 				return;
 			}
 
-			// Update the already-loaded map so the repair works on this request too.
-			$user_auth_realm_filenames['syslog_dashboards.php'] = (int) $realm['id'] + 100;
-
 			return;
 		}
 	}
@@ -488,7 +474,6 @@ function syslog_upgrade_dashboard_realm(): void {
 
 /** Give Rule Administrators access to device alert rules. */
 function syslog_upgrade_device_rule_realm(): void {
-	global $user_auth_realm_filenames;
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 	if (!is_array($realms)) {
 		return;
@@ -504,7 +489,6 @@ function syslog_upgrade_device_rule_realm(): void {
 				return;
 			}
 		}
-		$user_auth_realm_filenames['syslog_device_rules.php'] = (int) $realm['id'] + 100;
 		return;
 	}
 }
@@ -521,8 +505,6 @@ function syslog_upgrade_device_rule_realm(): void {
  * @return void
  */
 function syslog_upgrade_rule_permissions(): void {
-	global $user_auth_realm_filenames;
-
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (!is_array($realms)) {
@@ -549,8 +531,6 @@ function syslog_upgrade_rule_permissions(): void {
 			[implode(',', $files), $realm['id'], 'syslog'])) {
 			return;
 		}
-
-		$user_auth_realm_filenames['syslog_rule_administrator.php'] = (int) $realm['id'] + 100;
 
 		return;
 	}
@@ -604,6 +584,113 @@ function syslog_upgrade_consolidate_rule_realms(): bool {
 	return true;
 }
 
+/** Replace synthetic role inheritance with explicit Cacti realm grants. */
+function syslog_upgrade_explicit_realm_grants(): bool {
+	$realms = db_fetch_assoc_prepared('SELECT id, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	if (!is_array($realms)) {
+		return false;
+	}
+
+	$ids = [];
+	foreach ($realms as $realm) {
+		$ids[$realm['display']][] = (int) $realm['id'] + 100;
+	}
+	$viewer = $ids['Rule Viewer'][0] ?? 0;
+	$administrator = $ids['Rule Administrator'][0] ?? 0;
+	$umbrella = $ids['Syslog Administrator'] ?? [];
+	if (!$viewer || !$administrator || !db_begin_transaction()) {
+		return false;
+	}
+
+	$source_ids = array_merge([$viewer, $administrator], $umbrella);
+	$placeholders = implode(',', array_fill(0, count($source_ids), '?'));
+	$direct = db_fetch_assoc_prepared("SELECT user_id, realm_id FROM user_auth_realm WHERE realm_id IN ($placeholders)", $source_ids);
+	$groups = db_fetch_assoc_prepared("SELECT group_id, realm_id FROM user_auth_group_realm WHERE realm_id IN ($placeholders)", $source_ids);
+	if (!is_array($direct) || !is_array($groups)) {
+		db_rollback_transaction();
+		return false;
+	}
+	$direct_grants = [];
+	$group_grants = [];
+	foreach ($direct as $grant) {
+		$direct_grants[(int) $grant['user_id']][(int) $grant['realm_id']] = true;
+	}
+	foreach ($groups as $grant) {
+		$group_grants[(int) $grant['group_id']][(int) $grant['realm_id']] = true;
+	}
+	$affected = [];
+	foreach ($direct_grants as $user_id => $granted) {
+		if (array_intersect($umbrella, array_keys($granted)) || (isset($granted[$administrator]) && !isset($granted[$viewer]))) {
+			$affected[$user_id] = true;
+		}
+	}
+	foreach ($group_grants as $group_id => $granted) {
+		if (array_intersect($umbrella, array_keys($granted)) || (isset($granted[$administrator]) && !isset($granted[$viewer]))) {
+			$members = db_fetch_assoc_prepared('SELECT user_id FROM user_auth_group_members WHERE group_id = ?', [$group_id]);
+			if (!is_array($members)) {
+				db_rollback_transaction();
+				return false;
+			}
+			foreach ($members as $member) {
+				$affected[(int) $member['user_id']] = true;
+			}
+		}
+	}
+
+	$grants = [$administrator => [$viewer]];
+	$all_pages = [];
+	foreach ($ids as $display => $realm_ids) {
+		if ($display !== 'Syslog Administrator') {
+			$all_pages = array_merge($all_pages, $realm_ids);
+		}
+	}
+	foreach ($umbrella as $source) {
+		$grants[$source] = array_values(array_unique($all_pages));
+	}
+
+	foreach ($grants as $source => $targets) {
+		foreach ($targets as $target) {
+			foreach (['user_auth_realm' => 'user_id', 'user_auth_group_realm' => 'group_id'] as $table => $owner) {
+				if (!db_execute_prepared("INSERT IGNORE INTO $table ($owner, realm_id) SELECT $owner, ? FROM $table WHERE realm_id = ?", [$target, $source])) {
+					db_rollback_transaction();
+					return false;
+				}
+			}
+		}
+	}
+
+	foreach ($umbrella as $source) {
+		foreach (['user_auth_realm', 'user_auth_group_realm'] as $table) {
+			if (!db_execute_prepared("DELETE FROM $table WHERE realm_id = ?", [$source])) {
+				db_rollback_transaction();
+				return false;
+			}
+		}
+		if (!db_execute_prepared('DELETE FROM plugin_realms WHERE plugin = ? AND id = ?', ['syslog', $source - 100])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
+	foreach (array_keys($affected) as $user_id) {
+		if (!db_execute_prepared('DELETE FROM user_auth_cache WHERE user_id = ?', [$user_id]) ||
+			!db_execute_prepared('UPDATE user_auth SET reset_perms = FLOOR(RAND() * 4294967295) + 1 WHERE id = ?', [$user_id])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
+	if (!db_commit_transaction()) {
+		db_rollback_transaction();
+		return false;
+	}
+	if (isset($_SESSION['sess_user_id'], $affected[(int) $_SESSION['sess_user_id']])) {
+		unset($_SESSION['sess_user_realms'], $_SESSION['sess_auth_names']);
+	}
+
+	return true;
+}
+
 /**
  * Create granular realms on existing installations and preserve legacy grants.
  *
@@ -614,7 +701,8 @@ function syslog_upgrade_create_permission_realms(): bool {
 		'Rule Viewer' => 'syslog_alerts.php,syslog_removal.php,syslog_reports.php',
 		'Rule Administrator' => 'syslog_rule_administrator.php,syslog_device_rules.php',
 		'Syslog Administration' => 'syslog_saved_searches.php,syslog_dashboards.php',
-		'Syslog Administrator' => 'syslog_administrator.php'
+		'Share Saved Templates' => 'syslog_saved_searches_share.php',
+		'Share Dashboards' => 'syslog_dashboards_share.php'
 	];
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 	if (!is_array($realms)) {
@@ -694,9 +782,38 @@ function syslog_upgrade_create_permission_realms(): bool {
 		}
 	}
 
+	$new_ids = array_values(array_intersect_key($target_ids, $missing));
+	if (!$new_ids) {
+		db_rollback_transaction();
+		return false;
+	}
+	$placeholders = implode(',', array_fill(0, count($new_ids), '?'));
+	$affected = db_fetch_assoc_prepared("SELECT user_id FROM user_auth_realm WHERE realm_id IN ($placeholders)
+		UNION SELECT ugm.user_id FROM user_auth_group_realm AS ugr
+		INNER JOIN user_auth_group_members AS ugm ON ugm.group_id = ugr.group_id
+		WHERE ugr.realm_id IN ($placeholders)", array_merge($new_ids, $new_ids));
+	if (!is_array($affected)) {
+		db_rollback_transaction();
+		return false;
+	}
+	foreach ($affected as $row) {
+		$user_id = (int) $row['user_id'];
+		if (!db_execute_prepared('DELETE FROM user_auth_cache WHERE user_id = ?', [$user_id]) ||
+			!db_execute_prepared('UPDATE user_auth SET reset_perms = FLOOR(RAND() * 4294967295) + 1 WHERE id = ?', [$user_id])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
 	if (!db_commit_transaction()) {
 		db_rollback_transaction();
 		return false;
+	}
+	foreach ($affected as $row) {
+		if (isset($_SESSION['sess_user_id']) && (int) $_SESSION['sess_user_id'] === (int) $row['user_id']) {
+			unset($_SESSION['sess_user_realms'], $_SESSION['sess_auth_names']);
+			break;
+		}
 	}
 
 	return true;
@@ -721,10 +838,12 @@ function syslog_check_upgrade(): bool {
 	if (!syslog_upgrade_consolidate_rule_realms()) {
 		return false;
 	}
-	// Realm registration is install-only in Cacti. Legacy migrations below preserve
-	// and adjust existing realm IDs without calling the guarded registration API.
+	// Cacti's registration API merges overlapping filenames; preserve legacy
+	// realm IDs and grants while moving those pages to their explicit realms.
 	syslog_upgrade_device_rule_realm();
-	syslog_refresh_permission_roles();
+	if (!syslog_upgrade_explicit_realm_grants()) {
+		return false;
+	}
 
 	if (!syslog_ensure_table_structures()) {
 		return false;
