@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-06 15:14-0400\n"
+"POT-Creation-Date: 2026-10-07 22:13-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -26,7 +26,7 @@ msgstr "Syslog kích hoạt"
 msgid "Emergency"
 msgstr "Khẩn cấp"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Critical"
 msgstr "Chỉ trích"
 
@@ -38,11 +38,11 @@ msgstr "Cảnh báo"
 msgid "Error"
 msgstr "Lỗi"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Warning"
 msgstr "Cảnh báo"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Notice"
 msgstr "Thông báo"
 
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/utilities.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -307,6 +307,770 @@ msgstr "Host"
 msgid "Event Report - %s"
 msgstr "Báo cáo sự kiện - %s"
 
+#: includes/installer.php
+#, fuzzy
+msgid "Syslog Upgrade Advisor"
+msgstr "Syslog %s Cố vấn"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "What upgrade/install type do you wish to use"
+msgstr "Bạn muốn sử dụng loại nâng cấp / cài đặt nào"
+
+#: includes/installer.php
+#, fuzzy
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgstr "Khi bạn có các bảng rất lớn, việc thực hiện Truncate sẽ nhanh hơn nhiều. Nếu bạn lo lắng về dữ liệu lưu trữ, bạn có thể chọn Inline, nó sẽ đóng băng trình duyệt của bạn trong giai đoạn nâng cấp này hoặc nền sẽ tạo quy trình nền để đưa dữ liệu nhật ký hệ thống cũ của bạn từ bảng sao lưu sang định dạng nhật ký hệ thống mới . Một lần nữa quá trình này có thể mất vài giờ."
+
+#: includes/installer.php
+#, fuzzy
+msgid "Truncate Syslog Table"
+msgstr "Bảng rút gọn Syslog"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Inline Upgrade"
+msgstr "Nâng cấp nội tuyến"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Background Upgrade"
+msgstr "Nâng cấp nền"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Database Storage Engine"
+msgstr "Cơ sở dữ liệu lưu trữ"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "InnoDB Storage"
+msgstr "Lưu trữ InnoDB"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Aria Storage"
+msgstr "Lưu trữ MyISAM"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Remote Message Processing"
+msgstr "Chuỗi tin nhắn:"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Bật xử lý tin nhắn của trình thu thập dữ liệu từ xa"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thư của họ một cách độc lập, hãy chọn hộp kiểm này. Bằng cách chọn Hộp kiểm này, Bộ thu thập dữ liệu từ xa của bạn sẽ cần duy trì tệp 'config_local.php' của riêng họ để thông báo cho Syslog sử dụng cơ sở dữ liệu độc lập để hiển thị và xử lý thông báo. Vui lòng sử dụng tệp mẫu 'config_local.php.dist' cho mục đích này. CẢNH BÁO: Bảng nhật ký sẽ tự động được tạo ngay sau khi tùy chọn này được bật."
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Remote Data Collector Rules Sync"
+msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thông báo thu thập một cách độc lập, hãy chọn hộp kiểm này nếu bạn muốn các quy tắc Cảnh báo, Xóa và Báo cáo của Cơ sở dữ liệu Xương rồng Chính được gửi đến Hệ thống Xương rồng Từ xa."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "Retention Policy"
+msgstr "Duy trì chính sách"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Chọn số ngày giá trị Syslog bạn muốn duy trì trong cơ sở dữ liệu."
+
+#: includes/installer.php
+#, fuzzy
+msgid "Partitions per Day"
+msgstr "Phân vùng mỗi ngày"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Select the number of partitions per day that you wish to create."
+msgstr "Chọn số lượng phân vùng mỗi ngày mà bạn muốn tạo."
+
+#: includes/installer.php
+#, fuzzy, php-format
+msgid "%d Per Day"
+msgstr "% d mỗi ngày"
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Nâng cấp"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Cài đặt"
+
+#: includes/installer.php
+#, fuzzy, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog %s Cố vấn"
+
+#: includes/installer.php
+#, fuzzy
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "CẢNH BÁO: Nâng cấp Syslog là thời gian tiêu thụ !!!"
+
+#: includes/installer.php
+#, fuzzy
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Việc nâng cấp bảng nhật ký hệ thống 'chính' có thể là một quá trình rất tốn thời gian. Do đó, bạn nên giảm kích thước của bảng nhật ký hệ thống trước khi nâng cấp hoặc chọn tùy chọn nền </p><p> Nếu bạn chọn tùy chọn nền, bảng syslog cũ của bạn sẽ được đổi tên và bảng syslog mới sẽ được tạo. Sau đó, một quá trình nâng cấp sẽ được đưa ra trong nền. Một lần nữa, quá trình nền này có thể mất một chút thời gian để hoàn thành. Tuy nhiên, dữ liệu của bạn sẽ được bảo tồn </p><p> Bất kể lựa chọn của bạn là gì, tất cả các quy tắc loại bỏ và cảnh báo hiện có sẽ được duy trì trong quá trình nâng cấp. </p><p> Nhấn <b>'Nâng cấp'</b> để tiến hành nâng cấp hoặc <b>'Hủy'</b> để quay lại menu Plugins."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Bạn có một số tùy chọn để lựa chọn khi cài đặt Syslog. Đầu tiên là Kiến trúc cơ sở dữ liệu. Bắt đầu với MySQL 5.1.6, bạn có thể chọn sử dụng Phân vùng bảng để ngăn kích thước của các bảng trở nên quá mức do đó làm chậm truy vấn."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Bạn cũng có thể chọn thời gian duy trì. Xin lưu ý rằng nếu bạn có một vài máy chủ đăng nhập vào syslog, bảng này có thể trở nên khá lớn. Vì vậy, nếu không sử dụng phân vùng, bạn có thể muốn giữ kích thước nhỏ hơn."
+
+#: includes/installer.php
+#, fuzzy, php-format
+msgid "Syslog %s Settings"
+msgstr "Cài đặt Syslog %s"
+
+#: includes/installer.php
+#, fuzzy
+msgid "What uninstall method do you want to use?"
+msgstr "Phương pháp gỡ cài đặt nào bạn muốn sử dụng?"
+
+#: includes/installer.php
+#, fuzzy
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Khi gỡ cài đặt syslog, bạn có thể xóa mọi thứ hoặc chỉ các thành phần, trong trường hợp bạn dự định cài đặt lại trong tương lai."
+
+#: includes/installer.php
+#, fuzzy
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Xóa mọi thứ (Nhật ký, bảng, cài đặt)"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Syslog Data Only"
+msgstr "Chỉ dữ liệu nhật ký hệ thống"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Syslog Uninstall Preferences"
+msgstr "Tùy chọn gỡ cài đặt nhật ký hệ thống"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Gỡ cài đặt"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Hủy"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Syslog Removals"
+msgstr "Xóa nhật ký hệ thống"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Sửa)"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "(Actions)"
+msgstr "Hành động"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Syslog Alerts"
+msgstr "Cảnh báo nhật ký hệ thống"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Syslog Reports"
+msgstr "Báo cáo nhật ký hệ thống"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr ""
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr ""
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Display Syslog in Range"
+msgstr "Hiển thị Syslog trong Phạm vi"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Friday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Every day"
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Vô hiệu hóa"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Cài đặt chung"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Enabled"
+msgstr "Syslog kích hoạt"
+
+#: includes/settings.php
+#, fuzzy
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Nếu hộp kiểm này được đặt, các bản ghi sẽ được chuyển từ bảng Syslog đến bảng syslog chính và Cảnh báo và Báo cáo sẽ được bật. Xin lưu ý rằng nếu hệ thống bị vô hiệu hóa, các mục nhật ký sẽ vẫn tích lũy vào bảng Syslog In chuẩn vì điều này được xác định bởi quy trình rsyslog hoặc syslog-ng."
+
+#: includes/settings.php
+#, fuzzy
+msgid "Strip Domains"
+msgstr "Dải tên miền"
+
+#: includes/settings.php
+#, fuzzy
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Danh sách các tên miền được phân tách bằng dấu phẩy mà bạn muốn xóa khỏi tên máy chủ syslog, Ví dụ sẽ là 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Thời gian cập nhật"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Đây là thời gian tính bằng giây trước khi trang làm mới."
+
+#: includes/settings.php
+#, fuzzy
+msgid "Max Report Records"
+msgstr "Hồ sơ báo cáo tối đa"
+
+#: includes/settings.php
+#, fuzzy
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Đối với Cảnh báo dựa trên Ngưỡng, số lượng tối đa bạn muốn hiển thị trong báo cáo là bao nhiêu. Điều này được sử dụng để giới hạn kích thước của nhật ký html và Email."
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Records"
+msgstr "% d Hồ sơ"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr ""
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+msgid "Command for Opening Tickets"
+msgstr "Lệnh mở vé"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Lệnh này sẽ được thực thi để mở Vé trợ giúp. Lệnh sẽ được yêu cầu để phân tích nhiều thông số đầu vào như sau: <b>--alert-tên,</b> <b>--severity,</b> <b>--hostlist,</b> <b>--message.</b> Danh sách máy chủ lưu trữ sẽ là một danh sách được phân tách bằng dấu phẩy của các máy chủ bị ảnh hưởng bởi cảnh báo."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr ""
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr ""
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+msgid "HTML Notification Settings"
+msgstr "Danh sách thông báo"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Enable HTML Based Email"
+msgstr "Email dựa trên HTML"
+
+#: includes/settings.php
+#, fuzzy
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Nếu hộp kiểm này được đặt, tất cả các Email sẽ được gửi ở định dạng HTML. Nếu không, Email sẽ được gửi bằng văn bản thuần túy."
+
+#: includes/settings.php
+#, fuzzy
+msgid "Format File to Use"
+msgstr "Người dùng bình thường"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Chọn trình bao bọc html và tệp CSS tùy chỉnh để sử dụng. Tệp này chứa cả html và CSS để bao quanh báo cáo của bạn. Nếu nó chứa nhiều hơn chỉ là CSS, bạn cần phải đặt một<REPORT> thẻ bên trong của tệp. Thẻ định dạng này sẽ được thay thế bằng nội dung báo cáo. Các tệp này nằm trong thư mục 'định dạng'."
+
+#: includes/settings.php
+#, fuzzy
+msgid "Data Retention Settings"
+msgstr "Cài đặt lưu giữ dữ liệu"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Retention"
+msgstr "Duy trì nhật ký hệ thống"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This is the number of days to keep events."
+msgstr "Đây là số ngày để giữ sự kiện."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr ""
+
+#: includes/settings.php
+msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d Ngày"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d Ngày"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Partition Recovery Limit"
+msgstr "Phân vùng mỗi ngày"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Partition per run"
+msgstr "Phân vùng mỗi ngày"
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Partitions per run"
+msgstr "Phân vùng mỗi ngày"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Messages"
+msgstr "Tin nhắn"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Alert Retention"
+msgstr "Lưu giữ thông báo nhật ký hệ thống"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This is the number of days to keep alert logs."
+msgstr "Đây là số ngày để giữ nhật ký cảnh báo."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr ""
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr ""
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr ""
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr ""
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr ""
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr ""
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr ""
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr ""
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr ""
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+msgid "Remote Syslog Recovery"
+msgstr "Xóa báo cáo nhật ký hệ thống"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: includes/settings.php
+msgid "No pause"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Delete"
+msgstr "Xóa"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Vô hiệu hóa"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Bật"
+
+#: includes/settings.php syslog.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Xuất ra"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Indefinite"
+msgstr "Không xác định"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "% d Tuần"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "% d Tuần"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "% d Tháng"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "% d Tháng"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "% d Năm"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Không bao giờ"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d phút"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d phút"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Begins with"
+msgstr "bắt đầu là"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Chứa"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Ends with"
+msgstr "kết thúc với"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Hostname is"
+msgstr "Tên máy:"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Program is"
+msgstr "Chương trình"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Facility is"
+msgstr "Tiện ích"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php
+#, fuzzy
+msgid "SQL Expression"
+msgstr "Biểu thức SQL"
+
+#: includes/settings.php
+msgid "Daily"
+msgstr "Hàng ngày"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Hàng tuần"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Nhập vào/Xuất ra"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Alert Rules"
+msgstr "Quy tắc cảnh báo"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Settings"
+msgstr "Cài đặt nhật ký hệ thống"
+
+#: includes/settings.php syslog_device_rules.php
+#, fuzzy
+msgid "Device Alert Rules"
+msgstr "Quy tắc cảnh báo"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Removal Rules"
+msgstr "Quy tắc loại bỏ"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Report Rules"
+msgstr "Quy tắc báo cáo"
+
+#: includes/utilities.php
+#, fuzzy, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Đã có %s hồ sơ thiết bị bị xóa khỏi cơ sở dữ liệu Syslog"
+
+#: includes/utilities.php
+#, fuzzy
+msgid "Syslog Utilities"
+msgstr "Syslog tiện ích"
+
+#: includes/utilities.php
+#, fuzzy
+msgid "Purge Syslog Devices"
+msgstr "Thanh lọc các thiết bị Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr ""
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr ""
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Continue"
+msgstr "Tiếp tục"
+
+#: includes/utilities.php
+#, fuzzy
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Lựa chọn menu này cung cấp một phương tiện để xóa các Thiết bị không còn báo cáo vào máy chủ nhật ký hệ thống của Cacti."
+
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
 msgstr ""
@@ -412,20 +1176,9 @@ msgstr ""
 msgid "Save"
 msgstr "Lưu"
 
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_alerts.php
-#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php syslog_saved_searches.php
-msgid "Cancel"
-msgstr "Hủy"
-
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
 msgstr ""
-
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
-msgid "Delete"
-msgstr "Xóa"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
@@ -501,10 +1254,6 @@ msgstr "% d Tháng"
 #: lib/syslog_dashboard.php syslog.php
 msgid "Refresh"
 msgstr "Làm mới"
-
-#: lib/syslog_dashboard.php setup.php syslog_dashboards.php
-msgid "Dashboards"
-msgstr ""
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -702,744 +1451,8 @@ msgid "Please rename either your config.php.dist or config_local.php.dist files 
 msgstr "Vui lòng đổi tên tệp config.php.dist trong thư mục syslog và thay đổi thiết lập cơ sở dữ liệu của bạn trước khi cài đặt."
 
 #: setup.php
-msgid "Syslog"
-msgstr "Syslog"
-
-#: setup.php
-#, fuzzy
-msgid "What upgrade/install type do you wish to use"
-msgstr "Bạn muốn sử dụng loại nâng cấp / cài đặt nào"
-
-#: setup.php
-#, fuzzy
-msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr "Khi bạn có các bảng rất lớn, việc thực hiện Truncate sẽ nhanh hơn nhiều. Nếu bạn lo lắng về dữ liệu lưu trữ, bạn có thể chọn Inline, nó sẽ đóng băng trình duyệt của bạn trong giai đoạn nâng cấp này hoặc nền sẽ tạo quy trình nền để đưa dữ liệu nhật ký hệ thống cũ của bạn từ bảng sao lưu sang định dạng nhật ký hệ thống mới . Một lần nữa quá trình này có thể mất vài giờ."
-
-#: setup.php
-#, fuzzy
-msgid "Truncate Syslog Table"
-msgstr "Bảng rút gọn Syslog"
-
-#: setup.php
-#, fuzzy
-msgid "Inline Upgrade"
-msgstr "Nâng cấp nội tuyến"
-
-#: setup.php
-#, fuzzy
-msgid "Background Upgrade"
-msgstr "Nâng cấp nền"
-
-#: setup.php
-#, fuzzy
-msgid "Database Storage Engine"
-msgstr "Cơ sở dữ liệu lưu trữ"
-
-#: includes/installer.php
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "InnoDB Storage"
-msgstr "Lưu trữ InnoDB"
-
-#: setup.php
-#, fuzzy
-msgid "Aria Storage"
-msgstr "Lưu trữ MyISAM"
-
-#: setup.php
-#, fuzzy
-msgid "Retention Policy"
-msgstr "Duy trì chính sách"
-
-#: setup.php
-#, fuzzy
-msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr "Chọn số ngày giá trị Syslog bạn muốn duy trì trong cơ sở dữ liệu."
-
-#: setup.php
-#, fuzzy
-msgid "Partitions per Day"
-msgstr "Phân vùng mỗi ngày"
-
-#: setup.php
-#, fuzzy
-msgid "Select the number of partitions per day that you wish to create."
-msgstr "Chọn số lượng phân vùng mỗi ngày mà bạn muốn tạo."
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Per Day"
-msgstr "% d mỗi ngày"
-
-#: setup.php
-msgid "Upgrade"
-msgstr "Nâng cấp"
-
-#: setup.php
-msgid "Install"
-msgstr "Cài đặt"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "Syslog %s Advisor"
-msgstr "Syslog %s Cố vấn"
-
-#: setup.php
-#, fuzzy
-msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr "CẢNH BÁO: Nâng cấp Syslog là thời gian tiêu thụ !!!"
-
-#: setup.php
-#, fuzzy
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Việc nâng cấp bảng nhật ký hệ thống 'chính' có thể là một quá trình rất tốn thời gian. Do đó, bạn nên giảm kích thước của bảng nhật ký hệ thống trước khi nâng cấp hoặc chọn tùy chọn nền </p><p> Nếu bạn chọn tùy chọn nền, bảng syslog cũ của bạn sẽ được đổi tên và bảng syslog mới sẽ được tạo. Sau đó, một quá trình nâng cấp sẽ được đưa ra trong nền. Một lần nữa, quá trình nền này có thể mất một chút thời gian để hoàn thành. Tuy nhiên, dữ liệu của bạn sẽ được bảo tồn </p><p> Bất kể lựa chọn của bạn là gì, tất cả các quy tắc loại bỏ và cảnh báo hiện có sẽ được duy trì trong quá trình nâng cấp. </p><p> Nhấn <b>'Nâng cấp'</b> để tiến hành nâng cấp hoặc <b>'Hủy'</b> để quay lại menu Plugins."
-
-#: setup.php
-#, fuzzy
-msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "Bạn cũng có thể chọn thời gian duy trì. Xin lưu ý rằng nếu bạn có một vài máy chủ đăng nhập vào syslog, bảng này có thể trở nên khá lớn. Vì vậy, nếu không sử dụng phân vùng, bạn có thể muốn giữ kích thước nhỏ hơn."
-
-#: includes/installer.php
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "Bạn có một số tùy chọn để lựa chọn khi cài đặt Syslog. Đầu tiên là Kiến trúc cơ sở dữ liệu. Bắt đầu với MySQL 5.1.6, bạn có thể chọn sử dụng Phân vùng bảng để ngăn kích thước của các bảng trở nên quá mức do đó làm chậm truy vấn."
-
-#: setup.php
-#, fuzzy, php-format
-msgid "Syslog %s Settings"
-msgstr "Cài đặt Syslog %s"
-
-#: setup.php
-#, fuzzy
-msgid "What uninstall method do you want to use?"
-msgstr "Phương pháp gỡ cài đặt nào bạn muốn sử dụng?"
-
-#: setup.php
-#, fuzzy
-msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr "Khi gỡ cài đặt syslog, bạn có thể xóa mọi thứ hoặc chỉ các thành phần, trong trường hợp bạn dự định cài đặt lại trong tương lai."
-
-#: setup.php
-#, fuzzy
-msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr "Xóa mọi thứ (Nhật ký, bảng, cài đặt)"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Data Only"
-msgstr "Chỉ dữ liệu nhật ký hệ thống"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Uninstall Preferences"
-msgstr "Tùy chọn gỡ cài đặt nhật ký hệ thống"
-
-#: setup.php
-msgid "Uninstall"
-msgstr "Gỡ cài đặt"
-
-#: setup.php
-msgid "Monday"
-msgstr ""
-
-#: setup.php
-msgid "Tuesday"
-msgstr ""
-
-#: setup.php
-msgid "Wednesday"
-msgstr ""
-
-#: setup.php
-msgid "Friday"
-msgstr ""
-
-#: setup.php
-msgid "Saturday"
-msgstr ""
-
-#: setup.php
-msgid "Sunday"
-msgstr ""
-
-#: setup.php
-msgid "Thursday"
-msgstr ""
-
-#: setup.php
-msgid "Monday through Friday"
-msgstr ""
-
-#: setup.php
-msgid "Saturday and Sunday"
-msgstr ""
-
-#: setup.php
-msgid "Every day"
-msgstr ""
-
-#: setup.php syslog_alerts.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php
-msgid "Disabled"
-msgstr "Vô hiệu hóa"
-
-#: setup.php
-msgid "General Settings"
-msgstr "Cài đặt chung"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Enabled"
-msgstr "Syslog kích hoạt"
-
-#: setup.php
-#, fuzzy
-msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr "Nếu hộp kiểm này được đặt, các bản ghi sẽ được chuyển từ bảng Syslog đến bảng syslog chính và Cảnh báo và Báo cáo sẽ được bật. Xin lưu ý rằng nếu hệ thống bị vô hiệu hóa, các mục nhật ký sẽ vẫn tích lũy vào bảng Syslog In chuẩn vì điều này được xác định bởi quy trình rsyslog hoặc syslog-ng."
-
-#: setup.php
-#, fuzzy
-msgid "Strip Domains"
-msgstr "Dải tên miền"
-
-#: setup.php
-#, fuzzy
-msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "Danh sách các tên miền được phân tách bằng dấu phẩy mà bạn muốn xóa khỏi tên máy chủ syslog, Ví dụ sẽ là 'mydomain.com, otherdomain.com'"
-
-#: setup.php
-msgid "Refresh Interval"
-msgstr "Thời gian cập nhật"
-
-#: setup.php
-#, fuzzy
-msgid "This is the time in seconds before the page refreshes."
-msgstr "Đây là thời gian tính bằng giây trước khi trang làm mới."
-
-#: setup.php
-#, fuzzy
-msgid "Max Report Records"
-msgstr "Hồ sơ báo cáo tối đa"
-
-#: setup.php
-#, fuzzy
-msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr "Đối với Cảnh báo dựa trên Ngưỡng, số lượng tối đa bạn muốn hiển thị trong báo cáo là bao nhiêu. Điều này được sử dụng để giới hạn kích thước của nhật ký html và Email."
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Records"
-msgstr "% d Hồ sơ"
-
-#: setup.php
-msgid "Maximum Syslog Processing Processes"
-msgstr ""
-
-#: setup.php
-msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d Worker Process"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d Worker Processes"
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "Command for Opening Tickets"
-msgstr "Lệnh mở vé"
-
-#: setup.php
-#, fuzzy
-msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr "Lệnh này sẽ được thực thi để mở Vé trợ giúp. Lệnh sẽ được yêu cầu để phân tích nhiều thông số đầu vào như sau: <b>--alert-tên,</b> <b>--severity,</b> <b>--hostlist,</b> <b>--message.</b> Danh sách máy chủ lưu trữ sẽ là một danh sách được phân tách bằng dấu phẩy của các máy chủ bị ảnh hưởng bởi cảnh báo."
-
-#: setup.php
-msgid "Host Discovery Options"
-msgstr ""
-
-#: setup.php
-msgid "Enable Hostname Resolution"
-msgstr ""
-
-#: setup.php
-msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
-
-#: setup.php
-msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
-
-#: setup.php
-msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "HTML Notification Settings"
-msgstr "Danh sách thông báo"
-
-#: setup.php
-#, fuzzy
-msgid "Enable HTML Based Email"
-msgstr "Email dựa trên HTML"
-
-#: setup.php
-#, fuzzy
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "Nếu hộp kiểm này được đặt, tất cả các Email sẽ được gửi ở định dạng HTML. Nếu không, Email sẽ được gửi bằng văn bản thuần túy."
-
-#: setup.php
-#, fuzzy
-msgid "Format File to Use"
-msgstr "Người dùng bình thường"
-
-#: setup.php
-#, fuzzy
-msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Chọn trình bao bọc html và tệp CSS tùy chỉnh để sử dụng. Tệp này chứa cả html và CSS để bao quanh báo cáo của bạn. Nếu nó chứa nhiều hơn chỉ là CSS, bạn cần phải đặt một<REPORT> thẻ bên trong của tệp. Thẻ định dạng này sẽ được thay thế bằng nội dung báo cáo. Các tệp này nằm trong thư mục 'định dạng'."
-
-#: setup.php
-#, fuzzy
-msgid "Data Retention Settings"
-msgstr "Cài đặt lưu giữ dữ liệu"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Retention"
-msgstr "Duy trì nhật ký hệ thống"
-
-#: setup.php
-#, fuzzy
-msgid "This is the number of days to keep events."
-msgstr "Đây là số ngày để giữ sự kiện."
-
-#: setup.php
-msgid "Partition Pre-create Window"
-msgstr ""
-
-#: setup.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
-msgstr ""
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Day"
-msgstr "%d Ngày"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Days"
-msgstr "%d Ngày"
-
-#: setup.php
-#, fuzzy
-msgid "Partition Recovery Limit"
-msgstr "Phân vùng mỗi ngày"
-
-#: setup.php
-msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Partition per run"
-msgstr "Phân vùng mỗi ngày"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Partitions per run"
-msgstr "Phân vùng mỗi ngày"
-
-#: setup.php
-msgid "Collector Staleness Threshold"
-msgstr ""
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
-msgstr ""
-
-#: setup.php
-msgid "Default (300 seconds)"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d seconds"
-msgstr ""
-
-#: setup.php
-msgid "Collector Backlog Threshold"
-msgstr ""
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
-
-#: setup.php
-msgid "Default (10000 messages)"
-msgstr ""
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Messages"
-msgstr "Tin nhắn"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Alert Retention"
-msgstr "Lưu giữ thông báo nhật ký hệ thống"
-
-#: setup.php
-#, fuzzy
-msgid "This is the number of days to keep alert logs."
-msgstr "Đây là số ngày để giữ nhật ký cảnh báo."
-
-#: setup.php
-msgid "Alert Suppression and Maintenance"
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Days"
-msgstr ""
-
-#: setup.php
-msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Starts"
-msgstr ""
-
-#: setup.php
-msgid "Local start time for the global maintenance window."
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Ends"
-msgstr ""
-
-#: setup.php
-msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
-
-#: setup.php
-msgid "One-time Maintenance Starts"
-msgstr ""
-
-#: setup.php
-msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
-
-#: setup.php
-msgid "One-time Maintenance Ends"
-msgstr ""
-
-#: setup.php
-msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
-
-#: setup.php
-msgid "Default Alert Cooldown"
-msgstr ""
-
-#: setup.php
-msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
-
-#: setup.php
-msgid "Default Duplicate Suppression"
-msgstr ""
-
-#: setup.php
-msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
-
-#: includes/installer.php
-#, fuzzy
-msgid "Remote Message Processing"
-msgstr "Chuỗi tin nhắn:"
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "Enable Remote Data Collector Message Processing"
-msgstr "Bật xử lý tin nhắn của trình thu thập dữ liệu từ xa"
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thư của họ một cách độc lập, hãy chọn hộp kiểm này. Bằng cách chọn Hộp kiểm này, Bộ thu thập dữ liệu từ xa của bạn sẽ cần duy trì tệp 'config_local.php' của riêng họ để thông báo cho Syslog sử dụng cơ sở dữ liệu độc lập để hiển thị và xử lý thông báo. Vui lòng sử dụng tệp mẫu 'config_local.php.dist' cho mục đích này. CẢNH BÁO: Bảng nhật ký sẽ tự động được tạo ngay sau khi tùy chọn này được bật."
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "Remote Data Collector Rules Sync"
-msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "Nếu Bộ thu thập dữ liệu từ xa của bạn có cơ sở dữ liệu Syslog của riêng họ và xử lý thông báo thu thập một cách độc lập, hãy chọn hộp kiểm này nếu bạn muốn các quy tắc Cảnh báo, Xóa và Báo cáo của Cơ sở dữ liệu Xương rồng Chính được gửi đến Hệ thống Xương rồng Từ xa."
-
-#: includes/installer.php includes/settings.php
-msgid "Store Records on Remote Collector"
-msgstr ""
-
-#: includes/installer.php includes/settings.php
-msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
-
-#: includes/installer.php
-msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
-
-#: includes/installer.php setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "Remote Syslog Recovery"
-msgstr "Xóa báo cáo nhật ký hệ thống"
-
-#: setup.php
-msgid "Maximum Recovery Records Per Execution"
-msgstr ""
-
-#: setup.php
-msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
-
-#: setup.php
-msgid "Recovery Pause Between Batches"
-msgstr ""
-
-#: setup.php
-msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
-
-#: setup.php
-msgid "No pause"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d milliseconds"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d second"
-msgstr ""
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Disable"
-msgstr "Vô hiệu hóa"
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Enable"
-msgstr "Bật"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_saved_searches.php
-msgid "Export"
-msgstr "Xuất ra"
-
-#: setup.php
-#, fuzzy
-msgid "Indefinite"
-msgstr "Không xác định"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Week"
-msgstr "% d Tuần"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Weeks"
-msgstr "% d Tuần"
-
-#: setup.php
-#, php-format
-msgid "%d Month"
-msgstr "% d Tháng"
-
-#: setup.php
-#, php-format
-msgid "%d Months"
-msgstr "% d Tháng"
-
-#: setup.php
-#, php-format
-msgid "%d Year"
-msgstr "% d Năm"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_reports.php
-msgid "Never"
-msgstr "Không bao giờ"
-
-#: setup.php
-#, php-format
-msgid "%d Minute"
-msgstr "%d phút"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Minutes"
-msgstr "%d phút"
-
-#: setup.php
-#, fuzzy
-msgid "Begins with"
-msgstr "bắt đầu là"
-
-#: setup.php
-msgid "Contains"
-msgstr "Chứa"
-
-#: setup.php
-#, fuzzy
-msgid "Ends with"
-msgstr "kết thúc với"
-
-#: setup.php
-#, fuzzy
-msgid "Hostname is"
-msgstr "Tên máy:"
-
-#: setup.php
-#, fuzzy
-msgid "Program is"
-msgstr "Chương trình"
-
-#: setup.php
-#, fuzzy
-msgid "Facility is"
-msgstr "Tiện ích"
-
-#: setup.php syslog_alerts.php
-msgid "Filter Builder"
-msgstr ""
-
-#: setup.php syslog_alerts.php
-#, fuzzy
-msgid "SQL Expression"
-msgstr "Biểu thức SQL"
-
-#: setup.php
-msgid "Daily"
-msgstr "Hàng ngày"
-
-#: setup.php
-msgid "Weekly"
-msgstr "Hàng tuần"
-
-#: setup.php
-msgid "Import/Export"
-msgstr "Nhập vào/Xuất ra"
-
-#: setup.php
-#, fuzzy
-msgid "Alert Rules"
-msgstr "Quy tắc cảnh báo"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Settings"
-msgstr "Cài đặt nhật ký hệ thống"
-
-#: setup.php syslog_device_rules.php
-#, fuzzy
-msgid "Device Alert Rules"
-msgstr "Quy tắc cảnh báo"
-
-#: setup.php
-#, fuzzy
-msgid "Removal Rules"
-msgstr "Quy tắc loại bỏ"
-
-#: setup.php
-#, fuzzy
-msgid "Report Rules"
-msgstr "Quy tắc báo cáo"
-
-#: setup.php syslog_saved_searches.php
-msgid "Saved Search Templates"
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Removals"
-msgstr "Xóa nhật ký hệ thống"
-
-#: setup.php
-msgid "(Edit)"
-msgstr "(Sửa)"
-
-#: setup.php
-#, fuzzy
-msgid "(Actions)"
-msgstr "Hành động"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Alerts"
-msgstr "Cảnh báo nhật ký hệ thống"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Reports"
-msgstr "Báo cáo nhật ký hệ thống"
-
-#: setup.php
-#, fuzzy
-msgid "Display Syslog in Range"
-msgstr "Hiển thị Syslog trong Phạm vi"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "There were %s Device records removed from the Syslog database"
-msgstr "Đã có %s hồ sơ thiết bị bị xóa khỏi cơ sở dữ liệu Syslog"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Utilities"
-msgstr "Syslog tiện ích"
-
-#: setup.php
-#, fuzzy
-msgid "Purge Syslog Devices"
-msgstr "Thanh lọc các thiết bị Syslog"
-
-#: setup.php
-msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
-
-#: setup.php
-msgid "Confirm Purge"
-msgstr ""
-
-#: setup.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-msgid "Continue"
-msgstr "Tiếp tục"
-
-#: setup.php
-#, fuzzy
-msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr "Lựa chọn menu này cung cấp một phương tiện để xóa các Thiết bị không còn báo cáo vào máy chủ nhật ký hệ thống của Cacti."
 
 #: syslog.php
 #, fuzzy
@@ -1458,10 +1471,6 @@ msgstr "Thông báo được chọn"
 
 #: syslog.php
 msgid "seconds"
-msgstr ""
-
-#: syslog.php
-msgid "min/avg/max"
 msgstr ""
 
 #: syslog.php
