@@ -119,7 +119,7 @@ it('falls back to legend.css when the theme ships no legend stylesheet', functio
 	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('get_selected_theme', function () {
-		return 'carrot';
+		return 'nosuchtheme';
 	});
 
 	ob_start();
@@ -127,7 +127,7 @@ it('falls back to legend.css when the theme ships no legend stylesheet', functio
 	$output = ob_get_clean();
 
 	expect($output)->toContain('plugins/syslog/css/legend.css?v=');
-	expect($output)->not->toContain('plugins/syslog/css/carrot.css?v=');
+	expect($output)->not->toContain('plugins/syslog/css/nosuchtheme.css?v=');
 });
 
 it('sanitises the theme name before building the stylesheet path', function () {

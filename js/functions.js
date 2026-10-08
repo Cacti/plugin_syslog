@@ -90,7 +90,10 @@ function initSyslogCompactSearch() {
 	$('#refresh_results').off('click').on('click', refreshResults);
 	var summary = document.getElementById('syslog_search_summary');
 	summary.textContent = document.getElementById('rfilter').value || builder.dataset.message;
-	try { if (localStorage.getItem('syslog.search.collapsed') === 'true') toggleSyslogSearch(false); } catch (error) { /* Storage may be disabled. */ }
+	// Collapse the filter by default; only a saved 'false' preference keeps it open.
+	var keepSearchOpen = false;
+	try { keepSearchOpen = localStorage.getItem('syslog.search.collapsed') === 'false'; } catch (error) { /* Storage may be disabled. */ }
+	if (!keepSearchOpen) toggleSyslogSearch(false);
 	if (document.getElementById('logical_search_error').textContent.trim()) toggleSyslogSearch(true);
 	form.addEventListener('keydown', function(event) {
 		if (event.key === 'Escape') form.querySelectorAll('details[open]').forEach(function(menu) { menu.open = false; });

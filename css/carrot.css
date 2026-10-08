@@ -21,9 +21,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Syslog status-legend palette for the paper-plane theme. Its page chrome is
-   dark, but the data tables render on a light surface, so this uses the light
-   palette and the scoped log view keeps the search.css light defaults. */
+/* Syslog status-legend palette for the carrot (light surface) theme. */
 
 .syslogLegend {
 	display: grid;

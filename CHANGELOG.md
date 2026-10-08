@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Make the System Logs view theme-aware across the Cacti theme fleet by moving the dark-surface row, label, details, and search-panel palette out of the shared css/search.css and into each dark theme's css/<theme>.css (dark, deepness, midwinter, sunrise), so themes beyond dark and midwinter no longer render light row tints under the theme's light text; correct paper-plane to the light palette to match its light data tables and add css/<theme>.css for the remaining packaged themes (cacti, carrot, hollyberry, raspberry)
+* change: Collapse the System Logs filter panel by default and recoup vertical space with tighter result-row padding and message line-height; a saved expanded preference or an active search error still opens the panel
 * dev: Make the severity-legend chips actually fill the row by giving each chip `box-sizing: border-box; width: 100%; min-width: 0` (so a severity class's leaked width no longer keeps it small) and the legend footer a full-width table wrapper, across every per-theme `css/<theme>.css` and the `css/legend.css` fallback (matching the thold legend)
 * bug: Pass a boolean (not the integer 1) to api_plugin_register_hook()'s $enable argument so the hook registration stays type-correct under Cacti 1.3's strict bool type-hint (the int only coerces while the file lacks declare(strict_types=1))
 * feature: Add Remote Data Collector processing, rules-sync, and record-storage options to the setup advisor; reject Aria selections whenever any collector option is enabled
