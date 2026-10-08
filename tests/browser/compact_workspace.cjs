@@ -19,11 +19,16 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  };
  await page.route('http://fixture/**', r => {
   const url = new URL(r.request().url());
-  if (url.pathname === '/') return r.fulfill({body: fixture, contentType: 'text/html; charset=utf-8'});
+  if (url.pathname === '/') return r.fulfill({body: url.searchParams.has('error') ? fixture.replace("id='logical_search_error' role='alert'>", "id='logical_search_error' role='alert'>Invalid search") : fixture, contentType: 'text/html; charset=utf-8'});
   return routes[url.pathname] ? r.fulfill({path: routes[url.pathname], contentType: url.pathname.endsWith('.js') ? 'text/javascript' : 'text/css'}) : r.fulfill({status: 404, body: ''});
  });
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
  assert.deepEqual(errors,[]);
+ // The filter panel is collapsed by default; open it before exercising its controls.
+ assert.equal(await page.locator('#syslog_search_content').isVisible(), false, 'Filter panel starts collapsed');
+ assert.equal(await page.locator('#syslog_search_summary').isVisible(), true, 'Collapsed panel shows the query summary');
+ await page.locator('#syslog_search_toggle').click();
+ assert.equal(await page.locator('#syslog_search_content').isVisible(), true, 'Toggle opens the filter panel');
  assert.equal(await page.locator('#saved_saveas').isVisible(), false);
  await page.locator('.syslogSearchSavedBar summary').click();
  assert.equal(await page.locator('#saved_saveas').isVisible(), true);
@@ -77,5 +82,13 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.setViewportSize({width:390,height:844});if (process.env.TEST_ARTIFACT_DIR) await page.screenshot({path:path.join(process.env.TEST_ARTIFACT_DIR, 'syslog-workspace-mobile.png'),fullPage:true});
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,'Page must not overflow horizontally');
  await page.locator('#refresh_results').click();assert.equal(await page.evaluate(()=>Object.hasOwn(posts.at(-1),'rfilter')),false);
+ // A saved expanded preference reopens the panel on reload; an active search error forces it open even when collapse is stored.
+ await page.setViewportSize({width:1600,height:950});
+ await page.evaluate(()=>localStorage.setItem('syslog.search.collapsed','false'));
+ await page.goto('http://fixture/'); await page.waitForTimeout(250);
+ assert.equal(await page.locator('#syslog_search_content').isVisible(), true, 'Saved expanded preference reopens the panel');
+ await page.evaluate(()=>localStorage.setItem('syslog.search.collapsed','true'));
+ await page.goto('http://fixture/?error=1'); await page.waitForTimeout(250);
+ assert.equal(await page.locator('#syslog_search_content').isVisible(), true, 'Active search error expands the collapsed panel');
  assert.deepEqual(errors,[]);console.log('Workspace browser checks passed');await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
