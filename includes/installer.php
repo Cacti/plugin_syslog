@@ -20,7 +20,7 @@ function syslog_upgrade_advisor(string $installed, string $current): void {
 	form_hidden_box('mode', 'enable', '');
 	form_hidden_box('id', 'syslog', '');
 	form_hidden_box('syslog_upgrade_confirm', '1', '');
-	syslog_confirm_button('install', 'plugins.php', 1);
+	syslog_confirm_button('install', 'plugins.php', 1, true);
 	print '</td></tr></table>';
 	bottom_footer();
 	exit;
@@ -285,7 +285,7 @@ function syslog_uninstall_advisor(): void {
  *
  * @return void
  */
-function syslog_confirm_button(string $action, string $cancel_url, int $syslog_exists): void {
+function syslog_confirm_button(string $action, string $cancel_url, int $syslog_exists, bool $full_page = false): void {
 	if ($action == 'install') {
 		if ($syslog_exists) {
 			$value = __('Upgrade', 'syslog');
@@ -306,6 +306,10 @@ function syslog_confirm_button(string $action, string $cancel_url, int $syslog_e
 				$(function() {
 					$('#syslog_install').submit(function(event) {
 						event.preventDefault();
+						<?php if ($full_page) { ?>
+						submitPageUsingPost('plugins.php?mode=enable&id=syslog&syslog_upgrade_confirm=1');
+						return;
+						<?php } ?>
 
 						/* set the URL */
 						var strURL = $(this).attr('action');

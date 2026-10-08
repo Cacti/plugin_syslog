@@ -79,8 +79,11 @@ it('confirms a version upgrade on re-enable without using Cacti installation', f
 		->toContain('syslog_upgrade_advisor(');
 	expect($advisor)->toContain("form_hidden_box('mode', 'enable'")
 		->toContain("form_hidden_box('syslog_upgrade_confirm', '1'")
+		->toContain("syslog_confirm_button('install', 'plugins.php', 1, true)")
 		->not->toContain("form_hidden_box('mode', 'install'")
 		->not->toContain('syslog_setup_table_new(');
+	expect(plugin_test_read_source('includes/installer.php'))
+		->toContain("submitPageUsingPost('plugins.php?mode=enable&id=syslog&syslog_upgrade_confirm=1')");
 });
 
 it('boots the compatibility facade before Cacti can invoke registered callbacks', function () {
