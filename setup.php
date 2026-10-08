@@ -729,6 +729,7 @@ function syslog_check_upgrade(): void {
 	}
 
 	syslog_ensure_share_tables();
+	syslog_ensure_dashboard_tables();
 
 	// don't let this script timeout
 	ini_set('max_execution_time', 0);

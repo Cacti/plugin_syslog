@@ -149,6 +149,50 @@ function syslog_ensure_share_tables(): void {
 	}
 }
 
+/** Repair dashboard storage on installs whose plugin version is already current. */
+function syslog_ensure_dashboard_tables(): void {
+	global $syslogdb_default;
+
+	if (!syslog_db_table_exists('syslog_dashboards', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
+			`id` int(10) NOT NULL auto_increment,
+			`hash` varchar(32) NOT NULL default '',
+			`name` varchar(128) NOT NULL default '',
+			`user` varchar(32) NOT NULL default '',
+			`is_global` char(2) NOT NULL default '',
+			`date` int(16) NOT NULL default '0',
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`id`),
+			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+
+	if (!syslog_db_table_exists('syslog_dashboard_panels', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboard_panels` (
+			`id` int(10) NOT NULL auto_increment,
+			`dashboard_id` int(10) NOT NULL default '0',
+			`title` varchar(128) NOT NULL default '',
+			`expression` text NOT NULL,
+			`source` varchar(16) NOT NULL default 'syslog',
+			`removal` int(10) NOT NULL default '1',
+			`kind` varchar(16) NOT NULL default 'timeseries',
+			`chart` varchar(16) NOT NULL default 'line',
+			`field` varchar(16) NOT NULL default 'host',
+			`interval` varchar(16) NOT NULL default 'dashboard',
+			`timespan` varchar(16) NOT NULL default 'dashboard',
+			`top_n` int(10) NOT NULL default '10',
+			`width` smallint(5) unsigned NOT NULL default '1',
+			`height` smallint(5) unsigned NOT NULL default '0',
+			`position` int(10) NOT NULL default '0',
+			`date` int(16) NOT NULL default '0',
+			PRIMARY KEY (`id`),
+			KEY dashboard (`dashboard_id`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+}
+
 /**
  * Create the durable, Syslog-owned remote collector replication outbox.
  *
