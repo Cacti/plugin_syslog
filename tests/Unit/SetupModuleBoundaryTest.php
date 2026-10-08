@@ -65,6 +65,24 @@ it('runs realm and version reconciliation only during install or upgrade', funct
 	expect($setup)->toContain("'config_arrays'         => ['syslog_config_arrays', 'includes/settings.php']");
 });
 
+it('confirms a version upgrade on re-enable without using Cacti installation', function () {
+	$setup = plugin_test_read_source('setup.php');
+	$check_config = substr($setup, strpos($setup, 'function plugin_syslog_check_config'),
+		strpos($setup, 'function plugin_syslog_upgrade') - strpos($setup, 'function plugin_syslog_check_config'));
+	$advisor = plugin_test_read_source('includes/installer.php');
+	$advisor = substr($advisor, strpos($advisor, 'function syslog_upgrade_advisor'),
+		strpos($advisor, 'function syslog_install_advisor') - strpos($advisor, 'function syslog_upgrade_advisor'));
+
+	expect($check_config)->toContain("get_nfilter_request_var('mode') === 'enable'")
+		->toContain('version_compare((string) $installed, $version[\'version\'], \'<\')')
+		->toContain("!isset_request_var('syslog_upgrade_confirm')")
+		->toContain('syslog_upgrade_advisor(');
+	expect($advisor)->toContain("form_hidden_box('mode', 'enable'")
+		->toContain("form_hidden_box('syslog_upgrade_confirm', '1'")
+		->not->toContain("form_hidden_box('mode', 'install'")
+		->not->toContain('syslog_setup_table_new(');
+});
+
 it('boots the compatibility facade before Cacti can invoke registered callbacks', function () {
 	$setup = plugin_test_read_source('setup.php');
 

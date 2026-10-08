@@ -227,6 +227,15 @@ function plugin_syslog_check_config(): bool {
 		return false;
 	}
 
+	$version = plugin_syslog_version();
+	$installed = db_fetch_cell_prepared('SELECT version FROM plugin_config WHERE directory = ?', ['syslog']);
+	if (get_current_page() === 'plugins.php' && get_nfilter_request_var('mode') === 'enable' &&
+		$installed !== false && isset($version['version']) && version_compare((string) $installed, $version['version'], '<') &&
+		!isset_request_var('syslog_upgrade_confirm')) {
+		require_once(__DIR__ . '/includes/installer.php');
+		syslog_upgrade_advisor((string) $installed, $version['version']);
+	}
+
 	require_once(__DIR__ . '/includes/settings.php');
 	syslog_upgrade_hook_module_paths();
 	return syslog_check_upgrade();

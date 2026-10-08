@@ -9,6 +9,23 @@
 
 /* Install and uninstall adviser UI. */
 
+/** Confirm an existing plugin upgrade without sending it through Cacti's install action. */
+function syslog_upgrade_advisor(string $installed, string $current): void {
+	top_header();
+	print "<table align='center' width='80%'><tr><td>";
+	html_start_box(__('Syslog Upgrade Advisor', 'syslog'), '100%', '', '3', 'center', '');
+	print '<tr><td>' . __('Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time.', html_escape($installed), html_escape($current), 'syslog') . '</td></tr>';
+	html_end_box();
+	print "<form id='syslog_install' action='plugins.php' method='post'>";
+	form_hidden_box('mode', 'enable', '');
+	form_hidden_box('id', 'syslog', '');
+	form_hidden_box('syslog_upgrade_confirm', '1', '');
+	syslog_confirm_button('install', 'plugins.php', 1);
+	print '</td></tr></table>';
+	bottom_footer();
+	exit;
+}
+
 /**
  * Display the install/upgrade advisor form.
  *
