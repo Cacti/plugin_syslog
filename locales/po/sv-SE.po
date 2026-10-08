@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-06 15:14-0400\n"
+"POT-Creation-Date: 2026-10-07 22:13-0400\n"
 "PO-Revision-Date: 2026-10-06 08:18+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
@@ -26,7 +26,7 @@ msgstr "Hämta Syslog"
 msgid "Emergency"
 msgstr "Nödsituation"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Critical"
 msgstr "Kritiskt"
 
@@ -38,11 +38,11 @@ msgstr "Varning"
 msgid "Error"
 msgstr "Fel"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Warning"
 msgstr "Varning"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Notice"
 msgstr "Notis"
 
@@ -146,7 +146,7 @@ msgstr "Förhandsgranskningsexemplet kunde inte läsas."
 msgid "Permission denied."
 msgstr "Åtkomst nekas."
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/utilities.php
 msgid "Invalid request. Please try again."
 msgstr "Ogiltig begäran. Försök igen."
 
@@ -295,6 +295,714 @@ msgstr "Värd"
 msgid "Event Report - %s"
 msgstr "Händelserapport - %s"
 
+#: includes/installer.php
+#, fuzzy
+#| msgid "Syslog %s Advisor"
+msgid "Syslog Upgrade Advisor"
+msgstr "Syslog %s Rådgivare"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr ""
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Vilken typ av uppgradering/installation vill du använda"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgstr "När du har mycket stora tabeller går det mycket snabbare att utföra en Truncate.  Om du är orolig för arkivdata kan du välja antingen Inline, vilket fryser din webbläsare under uppgraderingsperioden, eller Background, vilket skapar en bakgrundsprocess för att föra över dina gamla syslogdata från en backuptabell till det nya syslogformatet.  Även denna process kan ta flera timmar."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Trunkera Syslog-tabell"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Inline-uppgradering"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Uppgradering av bakgrund"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Lagringsmotor för databaser"
+
+#: includes/installer.php
+#, fuzzy
+#| msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Lagringsmotorn för de analytiska tabellerna. Endast lagringsmotorerna InnoDB och, för MariaDB, Aria stöds."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "InnoDB-lagring"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Aria-lagring"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Behandling av fjärrmeddelanden"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Aktivera meddelandehantering för fjärrdatainsamlare"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och bearbetar sina meddelanden självständigt, markera den här kryssrutan.  Om du markerar den här kryssrutan måste dina fjärruppsamlare underhålla sin egen fil \"config_local.php\" för att informera Syslog om att använda en oberoende databas för visning och bearbetning av meddelanden.  Använd mallfilen \"config_local.php.dist\" för detta ändamål.  VARNING: Syslog-tabeller skapas automatiskt så snart det här alternativet är aktiverat."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Synkronisering av regler för fjärrdatainsamling"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar dessa meddelanden oberoende av varandra, markera den här kryssrutan om du vill att reglerna för varningar, borttagning och rapporter i huvuddatabasen ska skickas till fjärrdatasystemet."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Policy för bevarande"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Välj hur många dagars Syslog-värden som ska sparas i databasen."
+
+#: includes/installer.php
+msgid "Partitions per Day"
+msgstr "Partitioner per dag"
+
+#: includes/installer.php
+msgid "Select the number of partitions per day that you wish to create."
+msgstr "Välj det antal partitioner per dag som du vill skapa."
+
+#: includes/installer.php
+#, php-format
+msgid "%d Per Day"
+msgstr "%d per dygn"
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Uppgradera"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Installera"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog %s Rådgivare"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "VARNING: Syslog-uppgradering är tidskrävande!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Uppgraderingen av den \"huvudsakliga\" syslog-tabellen kan vara en mycket tidskrävande process.  Därför rekommenderar vi att du antingen minskar storleken på syslog-tabellen före uppgraderingen eller väljer bakgrundsalternativet</p> Om <p>du väljer bakgrundsalternativet kommer din gamla syslog-tabell att byta namn och en ny syslog-tabell att skapas.  Därefter kommer en uppgraderingsprocess att startas i bakgrunden.  Även denna bakgrundsprocess kan ta ganska lång tid att slutföra.  Dina data kommer dock att bevaras</p> <p>Oavsett vad du väljer kommer alla befintliga borttagnings- och varningsregler att bibehållas under uppgraderingsprocessen.</p> <p>Tryck på <b>\"Upgrade</b> \" för att fortsätta med uppgraderingen, eller <b>\"Cancel\"</b> för att återgå till Plugins-menyn."
+
+#: includes/installer.php
+#, fuzzy
+#| msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Du kan även ange databasens lagringsmotor för de analytiska tabellerna syslog och syslog_remove. Endast lagringsmotorn InnoDB och, för MariaDB, lagringsmotorn Aria stöds. Om du använder MariaDB rekommenderar vi Aria Storage Engine eftersom den är avsedd för analytiska frågor."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Du har flera alternativ att välja mellan när du installerar Syslog. Det första är databasarkitekturen. Partitionerade tabeller är den enda arkitektur som stöds, eftersom de hindrar tabellerna från att bli alltför stora och därmed sakta ned frågor. Traditionella tabeller utan partitionering är föråldrade och erbjuds inte längre för nya installationer."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Du kan även välja bevarandeperiod. Tänk på att den här tabellen kan bli ganska stor om flera värddatorer loggar till Syslog."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Syslog %s Inställningar"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Vilken avinstallationsmetod vill du använda?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "När du avinstallerar syslog kan du ta bort allt, eller bara delar, ifall du planerar att installera om i framtiden."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Ta bort allt (loggar, tabeller, inställningar)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Endast Syslog-data"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Syslog avinstallera inställningar"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Avinstallera"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslogg"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Flytt av Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Redigera)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(åtgärder)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Syslog-varningar"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Syslog-rapporter"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Mallar för sparade sökningar"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Instrumentpaneler"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Visa Syslog i intervall"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Måndag"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Fredag"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Lördag"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Söndag"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Måndag till fredag"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Lördag och söndag"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Varje dag"
+
+#: includes/settings.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Inaktiverad"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Allmänna inställningar"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog aktiverad"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Om den här kryssrutan är markerad kommer poster att överföras från tabellen Syslog Incoming till huvudtabellen för syslog och varningar och rapporter kommer att aktiveras.  Tänk på att loggposter fortfarande ackumuleras i tabellen Syslog Incoming om systemet är inaktiverat, eftersom detta definieras av processen rsyslog eller syslog-ng."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Ta bort domäner"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "En kommaseparerad lista med domäner som du vill ta bort från syslogens värdnamn, exempel kan vara \"mydomain.com, otherdomain.com"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Uppdateringsintervall"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Detta är den tid i sekunder som återstår innan sidan uppdateras."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Maximalt antal rapportposter"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "För tröskelvärdesbaserade varningar, vilket är det högsta antal som du vill visa i rapporten.  Detta används för att begränsa storleken på html-loggen och e-postmeddelandet."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d poster"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Högsta antal Syslog-processer"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "När värdet är högre än 1 fördelas bearbetningen av inkommande meddelanden över parallella arbetsprocesser. Varje arbetsprocess hanterar ett separat intervall av inkommande meddelanden, vilket snabbar upp namnuppslagning för värddatorer och meddelandeöverföring vid hög belastning. Värdet 1 bearbetar alla meddelanden i en enda process. Arbetsprocesser stöds inte i Windows eller när PHP-tilläggen pcntl och POSIX saknas. Bearbetningen återgår då till en enda process."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d arbetsprocess"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d arbetsprocesser"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Kommando för att öppna biljetter"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Detta kommando kommer att utföras för att öppna Help Desk-biljetter.  Kommandot kommer att behöva analysera flera inmatningsparametrar enligt följande: - <b>-alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  Värdlistan är en kommaseparerad lista över värddatorer som påverkas av varningen."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Alternativ för värdidentifiering"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Aktivera namnuppslagning för värddatorer"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Om den här kryssrutan är markerad slås alla värddatornamn först upp med DNS, om DNS-uppslagning är aktiverad. Om DNS-uppslagningen misslyckas försöker systemet slå upp värddatornamnet i Cactis värdtabell och ersätta det med Cactis värdbeskrivning. Om både DNS-uppslagningen och Cacti-uppslagningen misslyckas får poster prefixet 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Hoppa över DNS-uppslagning för inkommande värddatorer"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Om den här kryssrutan är markerad försöker systemet inte slå upp värddatorer med DNS. Det är användbart i miljöer där DNS-uppslagning inte är möjlig eller önskvärd."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Inställningar för HTML-meddelanden"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Aktivera HTML-baserad e-post"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Om den här kryssrutan är markerad skickas alla e-postmeddelanden i HTML-format.  I annat fall skickas e-postmeddelanden i vanlig text."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Formatera fil som ska användas"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Välj den anpassade HTML-wrapper och CSS-filen som ska användas. Den här filen innehåller både html och CSS för att paketera runt din rapport. Om det innehåller mer än bara CSS, måste du placera en speciell <REPORT> tagga inuti filen. Denna formattag kommer att ersättas med rapportinnehållet. Dessa filer finns i katalogen &quot;format&quot;."
+
+#: includes/settings.php
+msgid "Data Retention Settings"
+msgstr "Inställningar för datalagring"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Bevarande av Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Detta är det antal dagar som händelserna ska sparas."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Fönster för förskapande av partitioner"
+
+#: includes/settings.php
+msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgstr "Det här är antalet framtida dagliga partitioner som ska underhållas för partitionerade Syslog-tabeller."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d Dag"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d dygn"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Gräns för partitionsåterställning"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "När partitioner saknas, till exempel efter stillestånd för underhåll, skapas högst så här många saknade partitioner per tabell vid varje körning av insamlaren. Den återstående luckan åtgärdas i efterföljande körningar; gallring enligt bevarandeperioden förblir uppskjuten tills den framtida tidshorisonten för partitioner är helt återställd. Gäller endast partitionerade Syslog-tabeller."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d partition per körning"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d partitioner per körning"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Tröskelvärde för inaktiv insamlare"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgstr "Sidan Syslog-status visar en varning när inget nytt meddelande har anlänt inom så här många sekunder. Ange 0 för att använda standardvärdet 300 sekunder."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Standardvärde (300 sekunder)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d sekunder"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Tröskelvärde för kö hos insamlare"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Sidan Syslog-status visar en varning när fler än så här många meddelanden ligger obearbetade i tabellen Syslog Incoming. Ange 0 för att använda standardvärdet 10 000 meddelanden."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Standardvärde (10 000 meddelanden)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d meddelanden"
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Bevarande av Syslog-varningar"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Detta är det antal dagar som varningsloggarna ska sparas."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Undertryckning av larm och underhåll"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Dagar för underhållsfönster"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Dagar då alla larmaviseringar tystas under den konfigurerade underhållsperioden."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Underhållsfönstret börjar"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Lokal starttid för det globala underhållsfönstret."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Underhållsfönstret slutar"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Lokal sluttid för det globala underhållsfönstret. En tidigare sluttid fortsätter in på nästa dag."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Engångsunderhåll börjar"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Valfritt lokalt datum och lokal tid då ett globalt engångsunderhållsfönster börjar."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Engångsunderhåll slutar"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Valfritt lokalt datum och lokal tid då ett globalt engångsunderhållsfönster slutar. Format: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Standardtid mellan upprepade larm"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Undertryck alla upprepade aviseringar för samma regel och rapporteringsomfång under så här många minuter. Värden per regel åsidosätter den här inställningen. Ange 0 för att inaktivera."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Standardundertryckning av dubbletter"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Undertryck en avisering med samma matchade meddelandeuppsättning under så här många minuter. Värden per regel åsidosätter den här inställningen. Ange 0 för att inaktivera."
+
+#: includes/settings.php
+#, fuzzy
+#| msgid "Delete Syslog Report(s)"
+msgid "Remote Syslog Recovery"
+msgstr "Ta bort Syslog-rapport(er)"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+#| msgid "Not paused"
+msgid "No pause"
+msgstr "Inte pausad"
+
+#: includes/settings.php
+#, fuzzy, php-format
+#| msgid "%d seconds"
+msgid "%d milliseconds"
+msgstr "%d sekunder"
+
+#: includes/settings.php
+#, fuzzy, php-format
+#| msgid "%d seconds"
+msgid "%d second"
+msgstr "%d sekunder"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Delete"
+msgstr "Radera"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Inaktivera"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Aktivera"
+
+#: includes/settings.php syslog.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Exportera"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Obestämd tid"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d vecka"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d veckor"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d månad"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d månader"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d år"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Aldrig"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d minut"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d minuter"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Börjar med"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Innehåller"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Slutar med"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Värdnamn är"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Programmet är"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Anläggningen är"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Filterbyggare"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "SQL-uttryck"
+
+#: includes/settings.php
+msgid "Daily"
+msgstr "Dagligen"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Veckovis"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Importera/Exportera"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Regler för varning"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Syslog-inställningar"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Larmregler för enheter"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Regler för borttagning"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Rapportera regler"
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Det har tagits bort %s enhetsposter från Syslog-databasen"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Syslog-verktyg"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Rensning av Syslog-enheter"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Vill du verkligen rensa inaktuella Syslog-enheter?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Bekräfta rensning"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Continue"
+msgstr "Fortsätt"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Detta menyval gör det möjligt att ta bort enheter som inte längre rapporterar till Cactis syslog-server."
+
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
 msgstr "Ogiltig källa för instrumentpanelruta."
@@ -400,20 +1108,9 @@ msgstr "Ny ruta"
 msgid "Save"
 msgstr "Spara"
 
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_alerts.php
-#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php syslog_saved_searches.php
-msgid "Cancel"
-msgstr "Avbryt"
-
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
 msgstr "Verkställ"
-
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
-msgid "Delete"
-msgstr "Radera"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
@@ -485,10 +1182,6 @@ msgstr "Senaste %d månaderna"
 #: lib/syslog_dashboard.php syslog.php
 msgid "Refresh"
 msgstr "Uppdatera"
-
-#: lib/syslog_dashboard.php setup.php syslog_dashboards.php
-msgid "Dashboards"
-msgstr "Instrumentpaneler"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -670,687 +1363,8 @@ msgid "Please rename either your config.php.dist or config_local.php.dist files 
 msgstr "Byt namn på filerna config.php.dist eller config_local.php.dist i syslog-katalogen och ändra konfigurationen av din databas innan du installerar."
 
 #: setup.php
-msgid "Syslog"
-msgstr "Syslogg"
-
-#: setup.php
-msgid "What upgrade/install type do you wish to use"
-msgstr "Vilken typ av uppgradering/installation vill du använda"
-
-#: setup.php
-msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr "När du har mycket stora tabeller går det mycket snabbare att utföra en Truncate.  Om du är orolig för arkivdata kan du välja antingen Inline, vilket fryser din webbläsare under uppgraderingsperioden, eller Background, vilket skapar en bakgrundsprocess för att föra över dina gamla syslogdata från en backuptabell till det nya syslogformatet.  Även denna process kan ta flera timmar."
-
-#: setup.php
-msgid "Truncate Syslog Table"
-msgstr "Trunkera Syslog-tabell"
-
-#: setup.php
-msgid "Inline Upgrade"
-msgstr "Inline-uppgradering"
-
-#: setup.php
-msgid "Background Upgrade"
-msgstr "Uppgradering av bakgrund"
-
-#: setup.php
-msgid "Database Storage Engine"
-msgstr "Lagringsmotor för databaser"
-
-#: includes/installer.php
-#, fuzzy
-#| msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr "Lagringsmotorn för de analytiska tabellerna. Endast lagringsmotorerna InnoDB och, för MariaDB, Aria stöds."
-
-#: setup.php
-msgid "InnoDB Storage"
-msgstr "InnoDB-lagring"
-
-#: setup.php
-msgid "Aria Storage"
-msgstr "Aria-lagring"
-
-#: setup.php
-msgid "Retention Policy"
-msgstr "Policy för bevarande"
-
-#: setup.php
-msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr "Välj hur många dagars Syslog-värden som ska sparas i databasen."
-
-#: setup.php
-msgid "Partitions per Day"
-msgstr "Partitioner per dag"
-
-#: setup.php
-msgid "Select the number of partitions per day that you wish to create."
-msgstr "Välj det antal partitioner per dag som du vill skapa."
-
-#: setup.php
-#, php-format
-msgid "%d Per Day"
-msgstr "%d per dygn"
-
-#: setup.php
-msgid "Upgrade"
-msgstr "Uppgradera"
-
-#: setup.php
-msgid "Install"
-msgstr "Installera"
-
-#: setup.php
-#, php-format
-msgid "Syslog %s Advisor"
-msgstr "Syslog %s Rådgivare"
-
-#: setup.php
-msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr "VARNING: Syslog-uppgradering är tidskrävande!!!"
-
-#: setup.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Uppgraderingen av den \"huvudsakliga\" syslog-tabellen kan vara en mycket tidskrävande process.  Därför rekommenderar vi att du antingen minskar storleken på syslog-tabellen före uppgraderingen eller väljer bakgrundsalternativet</p> Om <p>du väljer bakgrundsalternativet kommer din gamla syslog-tabell att byta namn och en ny syslog-tabell att skapas.  Därefter kommer en uppgraderingsprocess att startas i bakgrunden.  Även denna bakgrundsprocess kan ta ganska lång tid att slutföra.  Dina data kommer dock att bevaras</p> <p>Oavsett vad du väljer kommer alla befintliga borttagnings- och varningsregler att bibehållas under uppgraderingsprocessen.</p> <p>Tryck på <b>\"Upgrade</b> \" för att fortsätta med uppgraderingen, eller <b>\"Cancel\"</b> för att återgå till Plugins-menyn."
-
-#: setup.php
-msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "Du kan även välja bevarandeperiod. Tänk på att den här tabellen kan bli ganska stor om flera värddatorer loggar till Syslog."
-
-#: includes/installer.php
-#, fuzzy
-#| msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr "Du kan även ange databasens lagringsmotor för de analytiska tabellerna syslog och syslog_remove. Endast lagringsmotorn InnoDB och, för MariaDB, lagringsmotorn Aria stöds. Om du använder MariaDB rekommenderar vi Aria Storage Engine eftersom den är avsedd för analytiska frågor."
-
-#: setup.php
-msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "Du har flera alternativ att välja mellan när du installerar Syslog. Det första är databasarkitekturen. Partitionerade tabeller är den enda arkitektur som stöds, eftersom de hindrar tabellerna från att bli alltför stora och därmed sakta ned frågor. Traditionella tabeller utan partitionering är föråldrade och erbjuds inte längre för nya installationer."
-
-#: setup.php
-#, php-format
-msgid "Syslog %s Settings"
-msgstr "Syslog %s Inställningar"
-
-#: setup.php
-msgid "What uninstall method do you want to use?"
-msgstr "Vilken avinstallationsmetod vill du använda?"
-
-#: setup.php
-msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr "När du avinstallerar syslog kan du ta bort allt, eller bara delar, ifall du planerar att installera om i framtiden."
-
-#: setup.php
-msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr "Ta bort allt (loggar, tabeller, inställningar)"
-
-#: setup.php
-msgid "Syslog Data Only"
-msgstr "Endast Syslog-data"
-
-#: setup.php
-msgid "Syslog Uninstall Preferences"
-msgstr "Syslog avinstallera inställningar"
-
-#: setup.php
-msgid "Uninstall"
-msgstr "Avinstallera"
-
-#: setup.php
-msgid "Monday"
-msgstr "Måndag"
-
-#: setup.php
-msgid "Tuesday"
-msgstr "Tisdag"
-
-#: setup.php
-msgid "Wednesday"
-msgstr "Onsdag"
-
-#: setup.php
-msgid "Friday"
-msgstr "Fredag"
-
-#: setup.php
-msgid "Saturday"
-msgstr "Lördag"
-
-#: setup.php
-msgid "Sunday"
-msgstr "Söndag"
-
-#: setup.php
-msgid "Thursday"
-msgstr "Torsdag"
-
-#: setup.php
-msgid "Monday through Friday"
-msgstr "Måndag till fredag"
-
-#: setup.php
-msgid "Saturday and Sunday"
-msgstr "Lördag och söndag"
-
-#: setup.php
-msgid "Every day"
-msgstr "Varje dag"
-
-#: setup.php syslog_alerts.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php
-msgid "Disabled"
-msgstr "Inaktiverad"
-
-#: setup.php
-msgid "General Settings"
-msgstr "Allmänna inställningar"
-
-#: setup.php
-msgid "Syslog Enabled"
-msgstr "Syslog aktiverad"
-
-#: setup.php
-msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr "Om den här kryssrutan är markerad kommer poster att överföras från tabellen Syslog Incoming till huvudtabellen för syslog och varningar och rapporter kommer att aktiveras.  Tänk på att loggposter fortfarande ackumuleras i tabellen Syslog Incoming om systemet är inaktiverat, eftersom detta definieras av processen rsyslog eller syslog-ng."
-
-#: setup.php
-msgid "Strip Domains"
-msgstr "Ta bort domäner"
-
-#: setup.php
-msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "En kommaseparerad lista med domäner som du vill ta bort från syslogens värdnamn, exempel kan vara \"mydomain.com, otherdomain.com"
-
-#: setup.php
-msgid "Refresh Interval"
-msgstr "Uppdateringsintervall"
-
-#: setup.php
-msgid "This is the time in seconds before the page refreshes."
-msgstr "Detta är den tid i sekunder som återstår innan sidan uppdateras."
-
-#: setup.php
-msgid "Max Report Records"
-msgstr "Maximalt antal rapportposter"
-
-#: setup.php
-msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr "För tröskelvärdesbaserade varningar, vilket är det högsta antal som du vill visa i rapporten.  Detta används för att begränsa storleken på html-loggen och e-postmeddelandet."
-
-#: setup.php
-#, php-format
-msgid "%d Records"
-msgstr "%d poster"
-
-#: setup.php
-msgid "Maximum Syslog Processing Processes"
-msgstr "Högsta antal Syslog-processer"
-
-#: setup.php
-msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr "När värdet är högre än 1 fördelas bearbetningen av inkommande meddelanden över parallella arbetsprocesser. Varje arbetsprocess hanterar ett separat intervall av inkommande meddelanden, vilket snabbar upp namnuppslagning för värddatorer och meddelandeöverföring vid hög belastning. Värdet 1 bearbetar alla meddelanden i en enda process. Arbetsprocesser stöds inte i Windows eller när PHP-tilläggen pcntl och POSIX saknas. Bearbetningen återgår då till en enda process."
-
-#: setup.php
-#, php-format
-msgid "%d Worker Process"
-msgstr "%d arbetsprocess"
-
-#: setup.php
-#, php-format
-msgid "%d Worker Processes"
-msgstr "%d arbetsprocesser"
-
-#: setup.php
-msgid "Command for Opening Tickets"
-msgstr "Kommando för att öppna biljetter"
-
-#: setup.php
-msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr "Detta kommando kommer att utföras för att öppna Help Desk-biljetter.  Kommandot kommer att behöva analysera flera inmatningsparametrar enligt följande: - <b>-alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  Värdlistan är en kommaseparerad lista över värddatorer som påverkas av varningen."
-
-#: setup.php
-msgid "Host Discovery Options"
-msgstr "Alternativ för värdidentifiering"
-
-#: setup.php
-msgid "Enable Hostname Resolution"
-msgstr "Aktivera namnuppslagning för värddatorer"
-
-#: setup.php
-msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr "Om den här kryssrutan är markerad slås alla värddatornamn först upp med DNS, om DNS-uppslagning är aktiverad. Om DNS-uppslagningen misslyckas försöker systemet slå upp värddatornamnet i Cactis värdtabell och ersätta det med Cactis värdbeskrivning. Om både DNS-uppslagningen och Cacti-uppslagningen misslyckas får poster prefixet 'unresolved-Original_hostname'."
-
-#: setup.php
-msgid "Skip DNS Resolution for incoming hosts"
-msgstr "Hoppa över DNS-uppslagning för inkommande värddatorer"
-
-#: setup.php
-msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr "Om den här kryssrutan är markerad försöker systemet inte slå upp värddatorer med DNS. Det är användbart i miljöer där DNS-uppslagning inte är möjlig eller önskvärd."
-
-#: setup.php
-msgid "HTML Notification Settings"
-msgstr "Inställningar för HTML-meddelanden"
-
-#: setup.php
-msgid "Enable HTML Based Email"
-msgstr "Aktivera HTML-baserad e-post"
-
-#: setup.php
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "Om den här kryssrutan är markerad skickas alla e-postmeddelanden i HTML-format.  I annat fall skickas e-postmeddelanden i vanlig text."
-
-#: setup.php
-msgid "Format File to Use"
-msgstr "Formatera fil som ska användas"
-
-#: setup.php
-msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Välj den anpassade HTML-wrapper och CSS-filen som ska användas. Den här filen innehåller både html och CSS för att paketera runt din rapport. Om det innehåller mer än bara CSS, måste du placera en speciell <REPORT> tagga inuti filen. Denna formattag kommer att ersättas med rapportinnehållet. Dessa filer finns i katalogen &quot;format&quot;."
-
-#: setup.php
-msgid "Data Retention Settings"
-msgstr "Inställningar för datalagring"
-
-#: setup.php
-msgid "Syslog Retention"
-msgstr "Bevarande av Syslog"
-
-#: setup.php
-msgid "This is the number of days to keep events."
-msgstr "Detta är det antal dagar som händelserna ska sparas."
-
-#: setup.php
-msgid "Partition Pre-create Window"
-msgstr "Fönster för förskapande av partitioner"
-
-#: setup.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
-msgstr "Det här är antalet framtida dagliga partitioner som ska underhållas för partitionerade Syslog-tabeller."
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Day"
-msgstr "%d Dag"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Days"
-msgstr "%d dygn"
-
-#: setup.php
-msgid "Partition Recovery Limit"
-msgstr "Gräns för partitionsåterställning"
-
-#: setup.php
-msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr "När partitioner saknas, till exempel efter stillestånd för underhåll, skapas högst så här många saknade partitioner per tabell vid varje körning av insamlaren. Den återstående luckan åtgärdas i efterföljande körningar; gallring enligt bevarandeperioden förblir uppskjuten tills den framtida tidshorisonten för partitioner är helt återställd. Gäller endast partitionerade Syslog-tabeller."
-
-#: setup.php
-#, php-format
-msgid "%d Partition per run"
-msgstr "%d partition per körning"
-
-#: setup.php
-#, php-format
-msgid "%d Partitions per run"
-msgstr "%d partitioner per körning"
-
-#: setup.php
-msgid "Collector Staleness Threshold"
-msgstr "Tröskelvärde för inaktiv insamlare"
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
-msgstr "Sidan Syslog-status visar en varning när inget nytt meddelande har anlänt inom så här många sekunder. Ange 0 för att använda standardvärdet 300 sekunder."
-
-#: setup.php
-msgid "Default (300 seconds)"
-msgstr "Standardvärde (300 sekunder)"
-
-#: setup.php
-#, php-format
-msgid "%d seconds"
-msgstr "%d sekunder"
-
-#: setup.php
-msgid "Collector Backlog Threshold"
-msgstr "Tröskelvärde för kö hos insamlare"
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr "Sidan Syslog-status visar en varning när fler än så här många meddelanden ligger obearbetade i tabellen Syslog Incoming. Ange 0 för att använda standardvärdet 10 000 meddelanden."
-
-#: setup.php
-msgid "Default (10000 messages)"
-msgstr "Standardvärde (10 000 meddelanden)"
-
-#: setup.php
-#, php-format
-msgid "%d Messages"
-msgstr "%d meddelanden"
-
-#: setup.php
-msgid "Syslog Alert Retention"
-msgstr "Bevarande av Syslog-varningar"
-
-#: setup.php
-msgid "This is the number of days to keep alert logs."
-msgstr "Detta är det antal dagar som varningsloggarna ska sparas."
-
-#: setup.php
-msgid "Alert Suppression and Maintenance"
-msgstr "Undertryckning av larm och underhåll"
-
-#: setup.php
-msgid "Maintenance Window Days"
-msgstr "Dagar för underhållsfönster"
-
-#: setup.php
-msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr "Dagar då alla larmaviseringar tystas under den konfigurerade underhållsperioden."
-
-#: setup.php
-msgid "Maintenance Window Starts"
-msgstr "Underhållsfönstret börjar"
-
-#: setup.php
-msgid "Local start time for the global maintenance window."
-msgstr "Lokal starttid för det globala underhållsfönstret."
-
-#: setup.php
-msgid "Maintenance Window Ends"
-msgstr "Underhållsfönstret slutar"
-
-#: setup.php
-msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr "Lokal sluttid för det globala underhållsfönstret. En tidigare sluttid fortsätter in på nästa dag."
-
-#: setup.php
-msgid "One-time Maintenance Starts"
-msgstr "Engångsunderhåll börjar"
-
-#: setup.php
-msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr "Valfritt lokalt datum och lokal tid då ett globalt engångsunderhållsfönster börjar."
-
-#: setup.php
-msgid "One-time Maintenance Ends"
-msgstr "Engångsunderhåll slutar"
-
-#: setup.php
-msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr "Valfritt lokalt datum och lokal tid då ett globalt engångsunderhållsfönster slutar. Format: YYYY-MM-DD HH:MM."
-
-#: setup.php
-msgid "Default Alert Cooldown"
-msgstr "Standardtid mellan upprepade larm"
-
-#: setup.php
-msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr "Undertryck alla upprepade aviseringar för samma regel och rapporteringsomfång under så här många minuter. Värden per regel åsidosätter den här inställningen. Ange 0 för att inaktivera."
-
-#: setup.php
-msgid "Default Duplicate Suppression"
-msgstr "Standardundertryckning av dubbletter"
-
-#: setup.php
-msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr "Undertryck en avisering med samma matchade meddelandeuppsättning under så här många minuter. Värden per regel åsidosätter den här inställningen. Ange 0 för att inaktivera."
-
-#: includes/installer.php
-msgid "Remote Message Processing"
-msgstr "Behandling av fjärrmeddelanden"
-
-#: includes/installer.php includes/settings.php
-msgid "Enable Remote Data Collector Message Processing"
-msgstr "Aktivera meddelandehantering för fjärrdatainsamlare"
-
-#: includes/installer.php includes/settings.php
-msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och bearbetar sina meddelanden självständigt, markera den här kryssrutan.  Om du markerar den här kryssrutan måste dina fjärruppsamlare underhålla sin egen fil \"config_local.php\" för att informera Syslog om att använda en oberoende databas för visning och bearbetning av meddelanden.  Använd mallfilen \"config_local.php.dist\" för detta ändamål.  VARNING: Syslog-tabeller skapas automatiskt så snart det här alternativet är aktiverat."
-
-#: includes/installer.php includes/settings.php
-msgid "Remote Data Collector Rules Sync"
-msgstr "Synkronisering av regler för fjärrdatainsamling"
-
-#: includes/installer.php includes/settings.php
-msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar dessa meddelanden oberoende av varandra, markera den här kryssrutan om du vill att reglerna för varningar, borttagning och rapporter i huvuddatabasen ska skickas till fjärrdatasystemet."
-
-#: includes/installer.php includes/settings.php
-msgid "Store Records on Remote Collector"
-msgstr ""
-
-#: includes/installer.php includes/settings.php
-msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
-
-#: includes/installer.php
-msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
-
-#: includes/installer.php setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
-
-#: setup.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
-msgid "Remote Syslog Recovery"
-msgstr "Ta bort Syslog-rapport(er)"
-
-#: setup.php
-msgid "Maximum Recovery Records Per Execution"
-msgstr ""
-
-#: setup.php
-msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
-
-#: setup.php
-msgid "Recovery Pause Between Batches"
-msgstr ""
-
-#: setup.php
-msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-#| msgid "Not paused"
-msgid "No pause"
-msgstr "Inte pausad"
-
-#: setup.php
-#, fuzzy, php-format
-#| msgid "%d seconds"
-msgid "%d milliseconds"
-msgstr "%d sekunder"
-
-#: setup.php
-#, fuzzy, php-format
-#| msgid "%d seconds"
-msgid "%d second"
-msgstr "%d sekunder"
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Disable"
-msgstr "Inaktivera"
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Enable"
-msgstr "Aktivera"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_saved_searches.php
-msgid "Export"
-msgstr "Exportera"
-
-#: setup.php
-msgid "Indefinite"
-msgstr "Obestämd tid"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Week"
-msgstr "%d vecka"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Weeks"
-msgstr "%d veckor"
-
-#: setup.php
-#, php-format
-msgid "%d Month"
-msgstr "%d månad"
-
-#: setup.php
-#, php-format
-msgid "%d Months"
-msgstr "%d månader"
-
-#: setup.php
-#, php-format
-msgid "%d Year"
-msgstr "%d år"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_reports.php
-msgid "Never"
-msgstr "Aldrig"
-
-#: setup.php
-#, php-format
-msgid "%d Minute"
-msgstr "%d minut"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Minutes"
-msgstr "%d minuter"
-
-#: setup.php
-msgid "Begins with"
-msgstr "Börjar med"
-
-#: setup.php
-msgid "Contains"
-msgstr "Innehåller"
-
-#: setup.php
-msgid "Ends with"
-msgstr "Slutar med"
-
-#: setup.php
-msgid "Hostname is"
-msgstr "Värdnamn är"
-
-#: setup.php
-msgid "Program is"
-msgstr "Programmet är"
-
-#: setup.php
-msgid "Facility is"
-msgstr "Anläggningen är"
-
-#: setup.php syslog_alerts.php
-msgid "Filter Builder"
-msgstr "Filterbyggare"
-
-#: setup.php syslog_alerts.php
-msgid "SQL Expression"
-msgstr "SQL-uttryck"
-
-#: setup.php
-msgid "Daily"
-msgstr "Dagligen"
-
-#: setup.php
-msgid "Weekly"
-msgstr "Veckovis"
-
-#: setup.php
-msgid "Import/Export"
-msgstr "Importera/Exportera"
-
-#: setup.php
-msgid "Alert Rules"
-msgstr "Regler för varning"
-
-#: setup.php
-msgid "Syslog Settings"
-msgstr "Syslog-inställningar"
-
-#: setup.php syslog_device_rules.php
-msgid "Device Alert Rules"
-msgstr "Larmregler för enheter"
-
-#: setup.php
-msgid "Removal Rules"
-msgstr "Regler för borttagning"
-
-#: setup.php
-msgid "Report Rules"
-msgstr "Rapportera regler"
-
-#: setup.php syslog_saved_searches.php
-msgid "Saved Search Templates"
-msgstr "Mallar för sparade sökningar"
-
-#: setup.php
-msgid "Syslog Removals"
-msgstr "Flytt av Syslog"
-
-#: setup.php
-msgid "(Edit)"
-msgstr "(Redigera)"
-
-#: setup.php
-msgid "(Actions)"
-msgstr "(åtgärder)"
-
-#: setup.php
-msgid "Syslog Alerts"
-msgstr "Syslog-varningar"
-
-#: setup.php
-msgid "Syslog Reports"
-msgstr "Syslog-rapporter"
-
-#: setup.php
-msgid "Display Syslog in Range"
-msgstr "Visa Syslog i intervall"
-
-#: setup.php
-#, php-format
-msgid "There were %s Device records removed from the Syslog database"
-msgstr "Det har tagits bort %s enhetsposter från Syslog-databasen"
-
-#: setup.php
-msgid "Syslog Utilities"
-msgstr "Syslog-verktyg"
-
-#: setup.php
-msgid "Purge Syslog Devices"
-msgstr "Rensning av Syslog-enheter"
-
-#: setup.php
-msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr "Vill du verkligen rensa inaktuella Syslog-enheter?"
-
-#: setup.php
-msgid "Confirm Purge"
-msgstr "Bekräfta rensning"
-
-#: setup.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-msgid "Continue"
-msgstr "Fortsätt"
-
-#: setup.php
-msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr "Detta menyval gör det möjligt att ta bort enheter som inte längre rapporterar till Cactis syslog-server."
 
 #: syslog.php
 msgid "Syslog Viewer"
@@ -1367,10 +1381,6 @@ msgstr "Vald Alert"
 #: syslog.php
 msgid "seconds"
 msgstr "sekunder"
-
-#: syslog.php
-msgid "min/avg/max"
-msgstr "min/medel/max"
 
 #: syslog.php
 msgid "Unavailable"
@@ -3190,6 +3200,9 @@ msgstr "Rätta frågesyntaxen så att den kan användas med frågebyggaren."
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller Grupp för att skapa frågan. Ändringarna gäller den här delade mallen för alla användare."
+
+#~ msgid "min/avg/max"
+#~ msgstr "min/medel/max"
 
 #, fuzzy
 #~ msgid "Syslog Device Alert Rules"
