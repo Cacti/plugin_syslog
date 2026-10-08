@@ -16,16 +16,18 @@
 
 it('repairs missing share tables even when no version upgrade is pending', function () {
 	syslog_load_plugin_source('includes/schema.php');
-	$GLOBALS['syslogdb_default'] = 'cacti';
-	$created = [];
-
-	test_override('syslog_db_table_exists', fn ($table) => $table === 'syslog_dashboards_perm');
-	test_override('syslog_db_execute', function ($sql) use (&$created) { $created[] = $sql; return true; });
+	$GLOBALS['syslog_cnn'] = new stdClass();
+	$updated = [];
+	test_override('db_update_table', function ($table, $definition, $remove, $log, $connection) use (&$updated) {
+		$updated[$table] = $definition;
+		expect($remove)->toBeFalse()->and($connection)->toBe($GLOBALS['syslog_cnn']);
+		return true;
+	});
 
 	syslog_ensure_share_tables();
 
-	expect($created)->toHaveCount(1)
-		->and($created[0])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_saved_searches_perm`');
+	expect(array_keys($updated))->toBe(['syslog_dashboards_perm', 'syslog_saved_searches_perm'])
+		->and($updated['syslog_saved_searches_perm']['primary'])->toBe(['search_id', 'type', 'item_id']);
 
 	$setup = plugin_test_read_source('setup.php');
 	expect(strpos($setup, 'syslog_ensure_table_structures();'))
@@ -34,17 +36,18 @@ it('repairs missing share tables even when no version upgrade is pending', funct
 
 it('repairs missing dashboard tables even when no version upgrade is pending', function () {
 	syslog_load_plugin_source('includes/schema.php');
-	$GLOBALS['syslogdb_default'] = 'cacti';
-	$created = [];
-
-	test_override('syslog_db_table_exists', fn () => false);
-	test_override('syslog_db_execute', function ($sql) use (&$created) { $created[] = $sql; return true; });
+	$GLOBALS['syslog_cnn'] = new stdClass();
+	$updated = [];
+	test_override('db_update_table', function ($table, $definition, $remove, $log, $connection) use (&$updated) {
+		$updated[$table] = $definition;
+		expect($remove)->toBeFalse()->and($connection)->toBe($GLOBALS['syslog_cnn']);
+		return true;
+	});
 
 	syslog_ensure_dashboard_tables();
 
-	expect($created)->toHaveCount(2)
-		->and($created[0])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_dashboards`')
-		->and($created[1])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_dashboard_panels`');
+	expect(array_keys($updated))->toBe(['syslog_dashboards', 'syslog_dashboard_panels'])
+		->and(array_column($updated['syslog_dashboard_panels']['columns'], 'name'))->toContain('width', 'height');
 
 	$setup = plugin_test_read_source('setup.php');
 	expect(strpos($setup, 'syslog_ensure_table_structures();'))
@@ -53,20 +56,40 @@ it('repairs missing dashboard tables even when no version upgrade is pending', f
 
 it('repairs the saved-search table even when no version upgrade is pending', function () {
 	syslog_load_plugin_source('includes/schema.php');
-	$GLOBALS['syslogdb_default'] = 'cacti';
-	$created = [];
-
-	test_override('syslog_db_table_exists', fn () => false);
-	test_override('syslog_db_execute', function ($sql) use (&$created) { $created[] = $sql; return true; });
+	$GLOBALS['syslog_cnn'] = new stdClass();
+	$updated = [];
+	test_override('db_update_table', function ($table, $definition, $remove, $log, $connection) use (&$updated) {
+		$updated[$table] = $definition;
+		expect($remove)->toBeFalse()->and($connection)->toBe($GLOBALS['syslog_cnn']);
+		return true;
+	});
 
 	syslog_ensure_saved_search_tables();
 
-	expect($created)->toHaveCount(1)
-		->and($created[0])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_saved_searches`');
+	expect(array_keys($updated))->toBe(['syslog_saved_searches'])
+		->and(array_column($updated['syslog_saved_searches']['columns'], 'name'))->toContain('hash');
 
 	$setup = plugin_test_read_source('setup.php');
 	expect(strpos($setup, 'syslog_ensure_table_structures();'))
 		->toBeLessThan(strpos($setup, 'syslog_refresh_plugin_version();'));
+});
+
+it('updates status storage through Cacti schema metadata', function () {
+	syslog_load_plugin_source('includes/schema.php');
+	$GLOBALS['syslog_cnn'] = new stdClass();
+	$definition = null;
+	test_override('db_update_table', function ($table, $data, $remove, $log, $connection) use (&$definition) {
+		expect($table)->toBe('syslog_status')
+			->and($remove)->toBeFalse()
+			->and($connection)->toBe($GLOBALS['syslog_cnn']);
+		$definition = $data;
+		return true;
+	});
+
+	syslog_ensure_status_table();
+
+	expect($definition['primary'])->toBe(['name'])
+		->and($definition['columns'][1]['type'])->toBe('text');
 });
 
 it('rebuilds the complete core schema when any core table is absent', function () {

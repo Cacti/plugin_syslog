@@ -124,129 +124,102 @@ function syslog_create_device_rule_table(): void {
 		ROW_FORMAT=Dynamic");
 }
 
-/** Repair saved-search storage on installs whose plugin version is already current. */
+/** Create or update saved-search storage. */
 function syslog_ensure_saved_search_tables(): void {
-	global $syslogdb_default;
+	global $syslog_cnn;
 
-	$exists = syslog_db_table_exists('syslog_saved_searches', false);
-	if (!$exists) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
-			`id` int(10) NOT NULL auto_increment,
-			`hash` varchar(32) NOT NULL default '',
-			`name` varchar(128) NOT NULL default '',
-			`search` text NOT NULL,
-			`removal` int(10) NOT NULL default '1',
-			`grouping` int(10) NOT NULL default '0',
-			`user` varchar(32) NOT NULL default '',
-			`is_global` char(2) NOT NULL default '',
-			`date` int(16) NOT NULL default '0',
-			PRIMARY KEY (`id`),
-			KEY owner (`user`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
-
-	if ($exists && !syslog_db_column_exists('syslog_saved_searches', 'hash')) {
-		syslog_db_add_column('syslog_saved_searches', [
-			'name'    => 'hash',
-			'type'    => 'varchar(32)',
-			'NULL'    => false,
-			'default' => '',
-			'after'   => 'id'
-		]);
-	}
+	db_update_table('syslog_saved_searches', [
+		'type' => 'InnoDB',
+		'columns' => [
+			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
+			['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
+			['name' => 'name', 'type' => 'varchar(128)', 'NULL' => false, 'default' => ''],
+			['name' => 'search', 'type' => 'text', 'NULL' => false],
+			['name' => 'removal', 'type' => 'int(10)', 'NULL' => false, 'default' => '1'],
+			['name' => 'grouping', 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
+			['name' => 'user', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
+			['name' => 'is_global', 'type' => 'char(2)', 'NULL' => false, 'default' => ''],
+			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
+		],
+		'primary' => ['id'],
+		'keys' => [['name' => 'owner', 'columns' => ['user']]]
+	], false, true, $syslog_cnn);
 }
 
-/** Repair share-grant tables on installs whose plugin version is already current. */
+/** Create or update share-grant tables. */
 function syslog_ensure_share_tables(): void {
-	global $syslogdb_default;
+	global $syslog_cnn;
 
-	if (!syslog_db_table_exists('syslog_dashboards_perm', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards_perm` (
-			`dashboard_id` int(10) NOT NULL default '0',
-			`type` varchar(5) NOT NULL default '',
-			`item_id` int(10) NOT NULL default '0',
-			PRIMARY KEY (`dashboard_id`, `type`, `item_id`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
-
-	if (!syslog_db_table_exists('syslog_saved_searches_perm', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches_perm` (
-			`search_id` int(10) NOT NULL default '0',
-			`type` varchar(5) NOT NULL default '',
-			`item_id` int(10) NOT NULL default '0',
-			PRIMARY KEY (`search_id`, `type`, `item_id`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
+	foreach (['syslog_dashboards_perm' => 'dashboard_id', 'syslog_saved_searches_perm' => 'search_id'] as $table => $id) {
+		db_update_table($table, [
+			'type' => 'InnoDB',
+			'columns' => [
+				['name' => $id, 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
+				['name' => 'type', 'type' => 'varchar(5)', 'NULL' => false, 'default' => ''],
+				['name' => 'item_id', 'type' => 'int(10)', 'NULL' => false, 'default' => '0']
+			],
+			'primary' => [$id, 'type', 'item_id']
+		], false, true, $syslog_cnn);
 	}
 }
 
-/** Repair dashboard storage on installs whose plugin version is already current. */
+/** Create or update dashboard storage. */
 function syslog_ensure_dashboard_tables(): void {
-	global $syslogdb_default;
+	global $syslog_cnn;
 
-	$dashboards_exist = syslog_db_table_exists('syslog_dashboards', false);
-	if (!$dashboards_exist) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
-			`id` int(10) NOT NULL auto_increment,
-			`hash` varchar(32) NOT NULL default '',
-			`name` varchar(128) NOT NULL default '',
-			`user` varchar(32) NOT NULL default '',
-			`is_global` char(2) NOT NULL default '',
-			`date` int(16) NOT NULL default '0',
-			`updated` int(16) NOT NULL default '0',
-			PRIMARY KEY (`id`),
-			KEY owner (`user`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
+	db_update_table('syslog_dashboards', [
+		'type' => 'InnoDB',
+		'columns' => [
+			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
+			['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
+			['name' => 'name', 'type' => 'varchar(128)', 'NULL' => false, 'default' => ''],
+			['name' => 'user', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
+			['name' => 'is_global', 'type' => 'char(2)', 'NULL' => false, 'default' => ''],
+			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0'],
+			['name' => 'updated', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
+		],
+		'primary' => ['id'],
+		'keys' => [['name' => 'owner', 'columns' => ['user']]]
+	], false, true, $syslog_cnn);
 
-	$panels_exist = syslog_db_table_exists('syslog_dashboard_panels', false);
-	if (!$panels_exist) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboard_panels` (
-			`id` int(10) NOT NULL auto_increment,
-			`dashboard_id` int(10) NOT NULL default '0',
-			`title` varchar(128) NOT NULL default '',
-			`expression` text NOT NULL,
-			`source` varchar(16) NOT NULL default 'syslog',
-			`removal` int(10) NOT NULL default '1',
-			`kind` varchar(16) NOT NULL default 'timeseries',
-			`chart` varchar(16) NOT NULL default 'line',
-			`field` varchar(16) NOT NULL default 'host',
-			`interval` varchar(16) NOT NULL default 'dashboard',
-			`timespan` varchar(16) NOT NULL default 'dashboard',
-			`top_n` int(10) NOT NULL default '10',
-			`width` smallint(5) unsigned NOT NULL default '1',
-			`height` smallint(5) unsigned NOT NULL default '0',
-			`position` int(10) NOT NULL default '0',
-			`date` int(16) NOT NULL default '0',
-			PRIMARY KEY (`id`),
-			KEY dashboard (`dashboard_id`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
+	db_update_table('syslog_dashboard_panels', [
+		'type' => 'InnoDB',
+		'columns' => [
+			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
+			['name' => 'dashboard_id', 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
+			['name' => 'title', 'type' => 'varchar(128)', 'NULL' => false, 'default' => ''],
+			['name' => 'expression', 'type' => 'text', 'NULL' => false],
+			['name' => 'source', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'syslog'],
+			['name' => 'removal', 'type' => 'int(10)', 'NULL' => false, 'default' => '1'],
+			['name' => 'kind', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'timeseries'],
+			['name' => 'chart', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'line'],
+			['name' => 'field', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'host'],
+			['name' => 'interval', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'dashboard'],
+			['name' => 'timespan', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'dashboard'],
+			['name' => 'top_n', 'type' => 'int(10)', 'NULL' => false, 'default' => '10'],
+			['name' => 'width', 'type' => 'smallint(5)', 'unsigned' => true, 'NULL' => false, 'default' => '1'],
+			['name' => 'height', 'type' => 'smallint(5)', 'unsigned' => true, 'NULL' => false, 'default' => '0'],
+			['name' => 'position', 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
+			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
+		],
+		'primary' => ['id'],
+		'keys' => [['name' => 'dashboard', 'columns' => ['dashboard_id']]]
+	], false, true, $syslog_cnn);
+}
 
-	if ($dashboards_exist) {
-		foreach (['hash' => ['varchar(32)', 'id'], 'is_global' => ['char(2)', 'user']] as $name => [$type, $after]) {
-			if (!syslog_db_column_exists('syslog_dashboards', $name)) {
-				syslog_db_add_column('syslog_dashboards', [
-					'name' => $name, 'type' => $type, 'NULL' => false, 'default' => '', 'after' => $after
-				]);
-			}
-		}
-	}
+/** Create or update status storage. */
+function syslog_ensure_status_table(): void {
+	global $syslog_cnn;
 
-	if ($panels_exist) {
-		foreach (['width' => ['1', 'top_n'], 'height' => ['0', 'width']] as $name => [$default, $after]) {
-			if (!syslog_db_column_exists('syslog_dashboard_panels', $name)) {
-				syslog_db_add_column('syslog_dashboard_panels', [
-					'name' => $name, 'type' => 'smallint(5) unsigned', 'NULL' => false,
-					'default' => $default, 'after' => $after
-				]);
-			}
-		}
-	}
+	db_update_table('syslog_status', [
+		'type' => 'InnoDB',
+		'columns' => [
+			['name' => 'name', 'type' => 'varchar(64)', 'NULL' => false, 'default' => ''],
+			['name' => 'value', 'type' => 'text', 'NULL' => false],
+			['name' => 'updated', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
+		],
+		'primary' => ['name']
+	], false, true, $syslog_cnn);
 }
 
 /**
@@ -449,7 +422,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
  * @return void
  */
 function syslog_setup_table_new(array $options, bool $repair = false): void {
-	global $config, $settings, $syslogdb_default, $syslog_levels;
+	global $config, $settings, $syslogdb_default, $syslog_levels, $syslog_cnn;
 
 	syslog_connect();
 
@@ -639,15 +612,7 @@ syslog_create_replication_recovery_table();
 		ENGINE=$engine
 		$row_format");
 
-	$present = syslog_db_fetch_row("SHOW TABLES FROM `$syslogdb_default` LIKE 'syslog_reports'");
-
-	if (cacti_sizeof($present)) {
-		$newreport = syslog_db_column_exists('syslog_reports', 'body');
-	} else {
-		$newreport = true;
-	}
-
-	if ($truncate || !$newreport) {
+	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_reports`");
 	}
 
@@ -670,14 +635,12 @@ syslog_create_replication_recovery_table();
 		PRIMARY KEY (id))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
+	db_update_table('syslog_reports', [
+		'columns' => [['name' => 'body', 'type' => 'varchar(8192)', 'NULL' => false, 'default' => '0', 'after' => 'lastsent']],
+		'primary' => ['id']
+	], false, true, $syslog_cnn);
 
-	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
-		`name` varchar(64) NOT NULL default '',
-		`value` text NOT NULL,
-		`updated` int(16) NOT NULL default '0',
-		PRIMARY KEY (`name`))
-		ENGINE=InnoDB
-		ROW_FORMAT=Dynamic");
+	syslog_ensure_status_table();
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_hosts`");
@@ -817,17 +780,22 @@ function syslog_ensure_table_structures(): bool {
 		'syslog_replication_output', 'syslog_replication_receipts',
 		'syslog_replication_collectors', 'syslog_replication_recovery'
 	];
+	$rebuilt = false;
 
 	foreach ($tables as $table) {
 		if (!syslog_db_table_exists($table, false)) {
 			syslog_setup_table_new([], true);
+			$rebuilt = true;
 			break;
 		}
 	}
 
-	syslog_ensure_saved_search_tables();
-	syslog_ensure_share_tables();
-	syslog_ensure_dashboard_tables();
+	if (!$rebuilt) {
+		syslog_ensure_status_table();
+		syslog_ensure_saved_search_tables();
+		syslog_ensure_share_tables();
+		syslog_ensure_dashboard_tables();
+	}
 	$tables = array_merge($tables, [
 		'syslog_saved_searches', 'syslog_saved_searches_perm',
 		'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_dashboard_panels'

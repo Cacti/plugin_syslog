@@ -704,7 +704,7 @@ function syslog_upgrade_create_permission_realms(): bool {
 
 /** Upgrade the Syslog schema and permissions at install/upgrade time. */
 function syslog_check_upgrade(): bool {
-	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
+	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade, $syslog_cnn;
 
 	require_once(__DIR__ . '/includes/schema.php');
 	require_once(__DIR__ . '/includes/settings.php');
@@ -743,30 +743,11 @@ function syslog_check_upgrade(): bool {
 		return true;
 	}
 
-	if (!syslog_db_column_exists('syslog_alert', 'hash')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'hash',
-			'type'     => 'varchar(32)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'id']
-		);
-
-		syslog_db_add_column('syslog_remove', [
-			'name'     => 'hash',
-			'type'     => 'varchar(32)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'id']
-		);
-
-		syslog_db_add_column('syslog_reports', [
-			'name'     => 'hash',
-			'type'     => 'varchar(32)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'id']
-		);
+	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports'] as $table) {
+		db_update_table($table, [
+			'columns' => [['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => '', 'after' => 'id']],
+			'primary' => ['id']
+		], false, true, $syslog_cnn);
 	}
 
 	if (syslog_db_column_exists('syslog_incoming', 'date')) {
@@ -775,143 +756,93 @@ function syslog_check_upgrade(): bool {
 			CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
 	}
 
-	if (syslog_db_column_exists('syslog_alert', 'hash')) {
-		$alerts = syslog_db_fetch_assoc('SELECT *
+	$alerts = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_alert
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($alerts)) {
-			foreach ($alerts as $a) {
-				$hash = get_hash_syslog($a['id'], 'syslog_alert');
-				syslog_db_execute_prepared('UPDATE syslog_alert
+	if (cacti_sizeof($alerts)) {
+		foreach ($alerts as $a) {
+			$hash = get_hash_syslog($a['id'], 'syslog_alert');
+			syslog_db_execute_prepared('UPDATE syslog_alert
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $a['id']]);
-			}
+				[$hash, $a['id']]);
 		}
 	}
 
-	if (syslog_db_column_exists('syslog_remove', 'hash')) {
-		$removes = syslog_db_fetch_assoc('SELECT *
+	$removes = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_remove
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($removes)) {
-			foreach ($removes as $r) {
-				$hash = get_hash_syslog($r['id'], 'syslog_remove');
-				syslog_db_execute_prepared('UPDATE syslog_remove
+	if (cacti_sizeof($removes)) {
+		foreach ($removes as $r) {
+			$hash = get_hash_syslog($r['id'], 'syslog_remove');
+			syslog_db_execute_prepared('UPDATE syslog_remove
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $r['id']]);
-			}
+				[$hash, $r['id']]);
 		}
 	}
 
-	if (syslog_db_column_exists('syslog_reports', 'hash')) {
-		$reports = syslog_db_fetch_assoc('SELECT *
+	$reports = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_reports
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($reports)) {
-			foreach ($reports as $r) {
-				$hash = get_hash_syslog($r['id'], 'syslog_reports');
-				syslog_db_execute_prepared('UPDATE syslog_reports
+	if (cacti_sizeof($reports)) {
+		foreach ($reports as $r) {
+			$hash = get_hash_syslog($r['id'], 'syslog_reports');
+			syslog_db_execute_prepared('UPDATE syslog_reports
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $r['id']]);
-			}
+				[$hash, $r['id']]);
 		}
 	}
 
-	if (syslog_db_table_exists('syslog_saved_searches', false) && syslog_db_column_exists('syslog_saved_searches', 'hash')) {
-		$searches = syslog_db_fetch_assoc('SELECT *
+	$searches = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_saved_searches
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($searches)) {
-			foreach ($searches as $s) {
-				$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
-				syslog_db_execute_prepared('UPDATE syslog_saved_searches
+	if (cacti_sizeof($searches)) {
+		foreach ($searches as $s) {
+			$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
+			syslog_db_execute_prepared('UPDATE syslog_saved_searches
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $s['id']]);
-			}
+				[$hash, $s['id']]);
 		}
 	}
 
-	// These tables were introduced after the original plugin schema.  On a
-	// partially upgraded remote collector create them below before attempting
-	// their data migration; otherwise the column probe itself emits an SQL
-	// error on every poller invocation.
-	if (syslog_db_table_exists('syslog_dashboards', false) && syslog_db_column_exists('syslog_dashboards', 'hash')) {
-		$dashboards = syslog_db_fetch_assoc('SELECT *
+	$dashboards = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_dashboards
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($dashboards)) {
-			foreach ($dashboards as $d) {
-				$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
-				syslog_db_execute_prepared('UPDATE syslog_dashboards
+	if (cacti_sizeof($dashboards)) {
+		foreach ($dashboards as $d) {
+			$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
+			syslog_db_execute_prepared('UPDATE syslog_dashboards
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $d['id']]);
-			}
+				[$hash, $d['id']]);
 		}
 	}
 
-	if (!syslog_db_column_exists('syslog_alert', 'level')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'level',
-			'type'     => 'int(10)',
-			'unsigned' => true,
-			'NULL'     => false,
-			'default'  => '0',
-			'after'    => 'method']
-		);
-	}
-
-	if (!syslog_db_column_exists('syslog_alert', 'notify')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'notify',
-			'type'     => 'int(10)',
-			'unsigned' => true,
-			'NULL'     => false,
-			'default'  => '0',
-			'after'    => 'email']
-		);
-	}
-
-	if (!syslog_db_column_exists('syslog_alert', 'body')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'body',
-			'type'     => 'varchar(8192)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'message']
-		);
-	}
-
-	foreach ([
-		['cooldown_minutes', 'int(10)', '-1', 'repeat_alert'],
-		['deduplication_minutes', 'int(10)', '-1', 'cooldown_minutes'],
-		['suppression_schedule', 'text', '', 'deduplication_minutes'],
-		['maintenance_mode', 'varchar(16)', 'inherit', 'suppression_schedule'],
-		['maintenance_days', 'varchar(32)', '1,2,3,4,5', 'maintenance_mode'],
-		['maintenance_start', 'char(5)', '00:00', 'maintenance_days'],
-		['maintenance_end', 'char(5)', '00:00', 'maintenance_start'],
-		['maintenance_datetime_start', 'varchar(16)', '', 'maintenance_end'],
-		['maintenance_datetime_end', 'varchar(16)', '', 'maintenance_datetime_start']
-	] as [$name, $type, $default, $after]) {
-		if (!syslog_db_column_exists('syslog_alert', $name)) {
-			syslog_db_add_column('syslog_alert', [
-				'name'     => $name,
-				'type'     => $type,
-				'NULL'     => false,
-				'default'  => $default,
-				'after'    => $after]
-			);
-		}
-	}
+	db_update_table('syslog_alert', [
+		'columns' => [
+			['name' => 'level', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'method'],
+			['name' => 'notify', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'email'],
+			['name' => 'body', 'type' => 'varchar(8192)', 'NULL' => false, 'default' => '', 'after' => 'message'],
+			['name' => 'cooldown_minutes', 'type' => 'int(10)', 'NULL' => false, 'default' => '-1', 'after' => 'repeat_alert'],
+			['name' => 'deduplication_minutes', 'type' => 'int(10)', 'NULL' => false, 'default' => '-1', 'after' => 'cooldown_minutes'],
+			['name' => 'suppression_schedule', 'type' => 'text', 'NULL' => false, 'default' => '', 'after' => 'deduplication_minutes'],
+			['name' => 'maintenance_mode', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'inherit', 'after' => 'suppression_schedule'],
+			['name' => 'maintenance_days', 'type' => 'varchar(32)', 'NULL' => false, 'default' => '1,2,3,4,5', 'after' => 'maintenance_mode'],
+			['name' => 'maintenance_start', 'type' => 'char(5)', 'NULL' => false, 'default' => '00:00', 'after' => 'maintenance_days'],
+			['name' => 'maintenance_end', 'type' => 'char(5)', 'NULL' => false, 'default' => '00:00', 'after' => 'maintenance_start'],
+			['name' => 'maintenance_datetime_start', 'type' => 'varchar(16)', 'NULL' => false, 'default' => '', 'after' => 'maintenance_end'],
+			['name' => 'maintenance_datetime_end', 'type' => 'varchar(16)', 'NULL' => false, 'default' => '', 'after' => 'maintenance_datetime_start']
+		],
+		'primary' => ['id']
+	], false, true, $syslog_cnn);
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
 		`alert_id` int(10) unsigned NOT NULL,
@@ -929,30 +860,12 @@ function syslog_check_upgrade(): bool {
 	// Removal rules now store the same structured filter JSON as alert rules.
 	syslog_db_execute('ALTER TABLE syslog_remove MODIFY column message TEXT NOT NULL');
 
-	if (!syslog_db_column_exists('syslog_reports', 'notify')) {
-		syslog_db_add_column('syslog_reports', [
-			'name'     => 'notify',
-			'type'     => 'int(10)',
-			'unsigned' => true,
-			'NULL'     => false,
-			'default'  => '0',
-			'after'    => 'email']
-		);
-	}
+	db_update_table('syslog_reports', [
+		'columns' => [['name' => 'notify', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'email']],
+		'primary' => ['id']
+	], false, true, $syslog_cnn);
 
 	syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
-
-	if (!syslog_db_table_exists('syslog_status', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
-			`name` varchar(64) NOT NULL default '',
-			`value` text NOT NULL,
-			`updated` int(16) NOT NULL default '0',
-			PRIMARY KEY (`name`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	} else {
-		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
-	}
 
 	syslog_create_device_rule_table();
 

@@ -1748,19 +1748,24 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
-				$query_sql = "(
+				$branch_limit = isset_request_var('export') ? 10000 : (int) $rows * get_request_var('page');
+				$query_sql = "SELECT * FROM (
 						SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
-					) UNION (
+						$sql_order
+						LIMIT $branch_limit
+					) AS main_rows UNION ALL SELECT * FROM (
 						SELECT $message_columns, `syslog_programs`.`program`, 'remove' AS mtype
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id = syslog_programs.program_id
 						$sql_where
-					)
+						$sql_order
+						LIMIT $branch_limit
+					) AS removed_rows
 					$sql_order
 					$sql_limit";
 			} else {

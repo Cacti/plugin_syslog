@@ -185,6 +185,10 @@ it('applies the logical search predicate consistently in the real query builder'
 
 				if ($tab === 'syslog' && $removal === '1') {
 					expect(substr_count($GLOBALS['captured_sql'], $predicate))->toBe(2, 'Both union branches filtered');
+					if ($grouping === '0') {
+						expect(substr_count($GLOBALS['captured_sql'], 'LIMIT 20'))->toBe(2, 'Each source is bounded before the union');
+						expect(str_contains($GLOBALS['captured_sql'], 'UNION ALL'))->toBeTrue('Disjoint record types need no deduplication');
+					}
 					expect(str_contains($GLOBALS['captured_sql'], '`syslog`.*'))->toBeFalse('Union projection must not depend on matching table schemas');
 					expect(substr_count($GLOBALS['captured_sql'], 'syslog.replication_source_event_id'))->toBe(0, 'Operational tracking columns are not part of the display contract');
 				}
@@ -196,6 +200,12 @@ it('applies the logical search predicate consistently in the real query builder'
 		get_syslog_messages($sql_where, 20, $tab);
 
 		expect(str_contains($GLOBALS['captured_sql'], 'LIMIT 10000'))->toBeTrue('Export limit retained');
+		if ($tab === 'syslog') {
+			$GLOBALS['request']['removal'] = '1';
+			$GLOBALS['request']['grouping'] = '0';
+			get_syslog_messages($sql_where, 20, $tab);
+			expect(substr_count($GLOBALS['captured_sql'], 'LIMIT 10000'))->toBe(3, 'Export keeps the full cap in both sources and the result');
+		}
 
 		unset($GLOBALS['request']['export']);
 	}
