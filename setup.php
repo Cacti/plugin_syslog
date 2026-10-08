@@ -59,7 +59,7 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'includes/settings.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'includes/navigation.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'includes/settings.php');
-	api_plugin_register_hook('syslog', 'settings_bottom',       'syslog_settings_bottom',      'includes/settings.php', 1);
+	api_plugin_register_hook('syslog', 'settings_bottom',       'syslog_settings_bottom',      'includes/settings.php', true);
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'includes/navigation.php');
 	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'includes/navigation.php');
 	api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'includes/processing.php');
