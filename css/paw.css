@@ -30,14 +30,6 @@
 	width: 100%;
 }
 
-/* Legend footer: full-width wrapper so the grid fills the row rather than
-   shrink-wrapping to its chips. */
-.syslogLegendFooter {
-	display: table;
-	width: 100%;
-	margin: 8px auto 0;
-}
-
 .syslogLegend .syslogLegendItem {
 	box-sizing: border-box;
 	width: 100%;
