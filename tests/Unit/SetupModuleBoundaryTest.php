@@ -29,6 +29,8 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'syslog_upgrade_create_permission_realms',
 		'syslog_check_upgrade',
 		'plugin_syslog_version',
+		'syslog_refresh_plugin_version',
+		'syslog_upgrade_hook_module_paths',
 		'syslog_check_dependencies',
 	];
 
@@ -39,6 +41,21 @@ it('keeps config-array dependencies in the directly loaded settings module', fun
 	$settings = plugin_test_read_source('includes/settings.php');
 
 	expect($settings)->toContain('function syslog_refresh_permission_roles(): void');
+});
+
+it('runs realm and version reconciliation on existing installs without FlowView', function () {
+	$setup = plugin_test_read_source('setup.php');
+	$check_config = substr($setup, strpos($setup, 'function plugin_syslog_check_config'));
+	$check_upgrade = substr($setup, strpos($setup, 'function syslog_check_upgrade'));
+	$plugin_upgrade = substr($setup, strpos($setup, 'function plugin_syslog_upgrade'));
+
+	expect($check_config)->toContain('syslog_upgrade_hook_module_paths();')
+		->toContain('syslog_check_upgrade();')
+		->not->toContain("api_plugin_installed('flowview')");
+	expect($plugin_upgrade)->toContain('syslog_upgrade_hook_module_paths();');
+	expect($check_upgrade)->toContain('syslog_refresh_plugin_version();')
+		->toContain('syslog_upgrade_create_permission_realms()');
+	expect($setup)->toContain("'config_arrays'         => ['syslog_config_arrays', 'includes/settings.php']");
 });
 
 it('boots the compatibility facade before Cacti can invoke registered callbacks', function () {

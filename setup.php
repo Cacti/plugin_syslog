@@ -231,9 +231,9 @@ function plugin_syslog_check_config(): bool {
 		return false;
 	}
 
-	if (api_plugin_installed('flowview')) {
-		syslog_check_upgrade();
-	}
+	require_once(__DIR__ . '/includes/settings.php');
+	syslog_upgrade_hook_module_paths();
+	syslog_check_upgrade();
 
 	return true;
 }
@@ -246,11 +246,44 @@ function plugin_syslog_check_config(): bool {
 function plugin_syslog_upgrade(): bool {
 	require_once(__DIR__ . '/includes/settings.php');
 
-	// Here we will upgrade to the newest version
-	api_plugin_register_hook('syslog', 'settings_bottom', 'syslog_settings_bottom', 'includes/settings.php', 1);
+	syslog_upgrade_hook_module_paths();
 	syslog_check_upgrade();
 
 	return false;
+}
+
+/** Move existing Cacti hook rows from the old setup.php facade to their modules. */
+function syslog_upgrade_hook_module_paths(): void {
+	$hooks = [
+		'config_arrays'         => ['syslog_config_arrays', 'includes/settings.php'],
+		'draw_navigation_text'  => ['syslog_draw_navigation_text', 'includes/navigation.php'],
+		'config_settings'       => ['syslog_config_settings', 'includes/settings.php'],
+		'settings_bottom'       => ['syslog_settings_bottom', 'includes/settings.php'],
+		'top_header_tabs'       => ['syslog_show_tab', 'includes/navigation.php'],
+		'top_graph_header_tabs' => ['syslog_show_tab', 'includes/navigation.php'],
+		'poller_bottom'         => ['syslog_poller_bottom', 'includes/processing.php'],
+		'graph_buttons'         => ['syslog_graph_buttons', 'includes/navigation.php'],
+		'config_insert'         => ['syslog_config_insert', 'includes/settings.php'],
+		'utilities_list'        => ['syslog_utilities_list', 'includes/utilities.php'],
+		'utilities_action'      => ['syslog_utilities_action', 'includes/utilities.php'],
+		'replicate_out'         => ['syslog_replicate_out', 'includes/processing.php']
+	];
+	$registered = db_fetch_assoc_prepared('SELECT hook FROM plugin_hooks WHERE name = ? AND file = ?', ['syslog', 'setup.php']);
+	if (!is_array($registered) || !$registered) {
+		return;
+	}
+	$modules = [];
+	foreach ($registered as $row) {
+		if (isset($hooks[$row['hook']])) {
+			[$function, $file] = $hooks[$row['hook']];
+			db_execute_prepared('UPDATE plugin_hooks SET `function` = ?, file = ? WHERE name = ? AND hook = ? AND file = ?', [$function, $file, 'syslog', $row['hook'], 'setup.php']);
+			$modules[$file] = true;
+		}
+	}
+
+	foreach (array_keys($modules) as $file) {
+		require_once(__DIR__ . '/' . $file);
+	}
 }
 
 /**
@@ -714,6 +747,8 @@ function syslog_check_upgrade(): void {
 	require_once(__DIR__ . '/includes/schema.php');
 	require_once(__DIR__ . '/includes/settings.php');
 
+	syslog_refresh_plugin_version();
+
 	syslog_connect();
 	if (!syslog_upgrade_create_permission_realms()) {
 		return;
@@ -1124,6 +1159,28 @@ function plugin_syslog_version(): array {
 	}
 
 	return [];
+}
+
+/** Keep the installed plugin metadata aligned with INFO without reinstalling. */
+function syslog_refresh_plugin_version(): void {
+	$version = plugin_syslog_version();
+	$stored_version = db_fetch_cell_prepared('SELECT version FROM plugin_config WHERE directory = ?', ['syslog']);
+	if (!isset($version['version']) || $stored_version === $version['version']) {
+		return;
+	}
+
+	db_execute_prepared('UPDATE plugin_config SET version = ?, name = ?, author = ?, webpage = ? WHERE directory = ?', [
+		$version['version'],
+		$version['longname'] ?? '',
+		$version['author'] ?? '',
+		$version['homepage'] ?? '',
+		'syslog'
+	]);
+}
+
+// Older installs may still point hooks at this facade after the modules moved.
+if (!defined('IN_PLUGIN_INSTALL') && function_exists('api_plugin_is_enabled') && api_plugin_is_enabled('syslog') && function_exists('db_table_exists') && db_table_exists('plugin_hooks')) {
+	syslog_upgrade_hook_module_paths();
 }
 
 /**
