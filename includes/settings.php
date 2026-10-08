@@ -339,51 +339,6 @@ function syslog_config_settings(): void {
 	}
 }
 
-/** Refresh permission labels, filenames and grouping from current realm IDs. */
-function syslog_refresh_permission_roles(): void {
-	global $user_auth_realms, $user_auth_realm_filenames, $user_auth_roles;
-
-	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ? ORDER BY id', ['syslog']);
-	if (!is_array($realms)) {
-		return;
-	}
-	$ids = [];
-	foreach ($realms as $realm) {
-		$id = (int) $realm['id'] + 100;
-		$ids[] = $id;
-		$user_auth_realms[$id] = $realm['display'];
-		foreach (explode(',', $realm['file']) as $file) {
-			$user_auth_realm_filenames[$file] = $id;
-			unset($_SESSION['sess_auth_names'][$file]);
-		}
-	}
-	$user_auth_roles[__('Syslog', 'syslog')] = array_values(array_unique($ids));
-
-	$rule_administrator = $user_auth_realm_filenames['syslog_rule_administrator.php'] ?? 0;
-	if ($rule_administrator && is_realm_allowed($rule_administrator)) {
-		foreach (['syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php'] as $file) {
-			$user_auth_realm_filenames[$file] = $rule_administrator;
-		}
-	}
-
-	$administrator = $user_auth_realm_filenames['syslog_administrator.php'] ?? 0;
-	if ($administrator && is_realm_allowed($administrator)) {
-		foreach ([
-			'syslog.php',
-			'syslog_alerts.php',
-			'syslog_removal.php',
-			'syslog_reports.php',
-			'syslog_rule_administrator.php',
-			'syslog_saved_searches.php',
-			'syslog_saved_searches_share.php',
-			'syslog_dashboards.php',
-			'syslog_dashboards_share.php'
-		] as $file) {
-			$user_auth_realm_filenames[$file] = $administrator;
-		}
-	}
-}
-
 /**
  * Setup the Syslog specific global arrays used throughout the plugin.
  *
@@ -546,8 +501,6 @@ function syslog_config_arrays(): void {
 		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
 	}
 
-	syslog_refresh_permission_roles();
-
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
 		$messages['syslog_info'] = ['message' => $_SESSION['syslog_info'], 'type' => 'info'];
 	}
@@ -579,20 +532,6 @@ function syslog_settings_bottom(): void {
 	<?php
 }
 
-/**
- * Upgrade the Syslog database when the plugin config is loaded.
- *
- * @return void
- */
+/** Legacy callback for hook rows awaiting the explicit plugin upgrade. */
 function syslog_config_insert(): void {
-	if (!syslog_config_safe()) {
-		return;
-	}
-
-	require_once(dirname(__DIR__) . '/setup.php');
-	require_once(__DIR__ . '/schema.php');
-	syslog_connect();
-	syslog_ensure_replication_storage_engine();
-
-	syslog_check_upgrade();
 }

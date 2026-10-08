@@ -26,19 +26,64 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'syslog_upgrade_device_rule_realm',
 		'syslog_upgrade_rule_permissions',
 		'syslog_upgrade_consolidate_rule_realms',
+		'syslog_upgrade_explicit_realm_grants',
 		'syslog_upgrade_create_permission_realms',
 		'syslog_check_upgrade',
 		'plugin_syslog_version',
+		'syslog_refresh_plugin_version',
+		'syslog_upgrade_hook_module_paths',
 		'syslog_check_dependencies',
 	];
 
 	expect($matches[1])->toEqualCanonicalizing($allowed);
 });
 
-it('keeps config-array dependencies in the directly loaded settings module', function () {
+it('leaves Cacti realm maps to the plugin API', function () {
 	$settings = plugin_test_read_source('includes/settings.php');
 
-	expect($settings)->toContain('function syslog_refresh_permission_roles(): void');
+	expect($settings)->not->toContain('user_auth_realm_filenames');
+});
+
+it('runs realm and version reconciliation only during install or upgrade', function () {
+	$setup = plugin_test_read_source('setup.php');
+	$check_config = substr($setup, strpos($setup, 'function plugin_syslog_check_config'));
+	$check_upgrade = substr($setup, strpos($setup, 'function syslog_check_upgrade'));
+	$plugin_upgrade = substr($setup, strpos($setup, 'function plugin_syslog_upgrade'));
+
+	expect($check_config)->toContain('syslog_upgrade_hook_module_paths();')
+		->toContain('syslog_check_upgrade();')
+		->not->toContain("api_plugin_installed('flowview')");
+	expect($plugin_upgrade)->toContain('syslog_upgrade_hook_module_paths();');
+	expect($check_upgrade)->toContain('syslog_refresh_plugin_version();')
+		->toContain('syslog_upgrade_create_permission_realms()');
+	expect(strpos($check_upgrade, 'syslog_refresh_plugin_version();'))
+		->toBeGreaterThan(strpos($check_upgrade, 'syslog_ensure_replication_history_columns();'));
+	expect($setup)->not->toContain("api_plugin_register_hook('syslog', 'config_insert'")
+		->not->toContain('if (!defined(\'IN_PLUGIN_INSTALL\')');
+	expect(plugin_test_read_source('includes/settings.php'))
+		->not->toContain('$permission_realms_repaired = syslog_upgrade_create_permission_realms();');
+	expect($setup)->toContain("'config_arrays'         => ['syslog_config_arrays', 'includes/settings.php']");
+});
+
+it('confirms a version upgrade on re-enable without using Cacti installation', function () {
+	$setup = plugin_test_read_source('setup.php');
+	$check_config = substr($setup, strpos($setup, 'function plugin_syslog_check_config'),
+		strpos($setup, 'function plugin_syslog_upgrade') - strpos($setup, 'function plugin_syslog_check_config'));
+	$advisor = plugin_test_read_source('includes/installer.php');
+	$advisor = substr($advisor, strpos($advisor, 'function syslog_upgrade_advisor'),
+		strpos($advisor, 'function syslog_install_advisor') - strpos($advisor, 'function syslog_upgrade_advisor'));
+
+	expect($check_config)->toContain("get_nfilter_request_var('mode') === 'enable'")
+		->toContain('version_compare((string) $installed, $version[\'version\'], \'<\')')
+		->toContain("!isset_request_var('syslog_upgrade_confirm')")
+		->toContain('syslog_upgrade_advisor(');
+	expect($advisor)->toContain("form_hidden_box('mode', 'enable'")
+		->toContain("form_hidden_box('syslog_upgrade_confirm', '1'")
+		->toContain("syslog_confirm_button('install', 'plugins.php', 1, true)")
+		->not->toContain("form_hidden_box('mode', 'install'")
+		->not->toContain('syslog_setup_table_new(');
+	expect(plugin_test_read_source('includes/installer.php'))
+		->toContain("submitPageUsingPost('plugins.php?mode=enable&id=syslog&syslog_upgrade_confirm=1')");
 });
 
 it('boots the compatibility facade before Cacti can invoke registered callbacks', function () {
@@ -84,7 +129,6 @@ it('registers extracted callbacks against their owning module', function () {
 		'syslog_config_arrays'         => 'settings.php',
 		'syslog_config_settings'       => 'settings.php',
 		'syslog_settings_bottom'       => 'settings.php',
-		'syslog_config_insert'         => 'settings.php',
 		'syslog_show_tab'              => 'navigation.php',
 		'syslog_draw_navigation_text'  => 'navigation.php',
 		'syslog_graph_buttons'         => 'navigation.php',

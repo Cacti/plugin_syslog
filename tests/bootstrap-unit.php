@@ -235,6 +235,12 @@ if (!function_exists('db_table_exists')) {
 	}
 }
 
+if (!function_exists('db_update_table')) {
+	function db_update_table($table, $data, $removecolumns = false, $log = true, $connection = false) {
+		return test_call_override('db_update_table', [$table, $data, $removecolumns, $log, $connection], true);
+	}
+}
+
 if (!function_exists('syslog_db_table_exists')) {
 	function syslog_db_table_exists($table, $log = true) {
 		return test_call_override('syslog_db_table_exists', [$table, $log], db_table_exists($table));

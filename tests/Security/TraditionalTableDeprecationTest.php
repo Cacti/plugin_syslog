@@ -110,9 +110,9 @@ it('warns about traditional tables but keeps them working', function () {
 	expect(strpos($m[0], 'syslog_notice_traditional_tables(false)'))
 		->not->toBeFalse('Traditional maintenance path must raise the throttled notice');
 
-	// The UI check raises the notice when no version upgrade is required.
+	// The explicit upgrade check raises the notice when no version upgrade is required.
 	expect(substr_count($setup, 'syslog_notice_traditional_tables(true)'))
-		->toBeGreaterThanOrEqual(2, 'The UI upgrade check must raise the notice on both no-upgrade paths');
+		->toBeGreaterThanOrEqual(1, 'The upgrade check must raise the notice when already current');
 
 	// The notice is throttled through the settings table, not spamming.
 	expect(strpos($functions, 'syslog_traditional_notice'))

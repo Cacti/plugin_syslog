@@ -207,9 +207,7 @@ it('blocks the test action for users without the editor realm', function () {
 	$GLOBALS['request'] = [];
 	$GLOBALS['__test_db_calls'] = [];
 
-	test_override('api_plugin_user_realm_auth', function ($page) {
-		return false;
-	});
+	test_override('db_fetch_assoc_prepared', fn () => []);
 
 	test_override('csrf_check', function ($fatal = true) {
 		return true;
@@ -229,9 +227,11 @@ it('blocks the test action when CSRF validation fails', function () {
 	$GLOBALS['request'] = [];
 	$GLOBALS['__test_db_calls'] = [];
 
-	test_override('api_plugin_user_realm_auth', function ($page) {
-		return true;
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$id = ['Rule Viewer' => 1, 'Rule Administrator' => 2][$params[1] ?? ''] ?? 0;
+		return $id ? [['id' => $id]] : [];
 	});
+	test_override('is_realm_allowed', fn ($id) => true);
 
 	test_override('csrf_check', function ($fatal = true) {
 		return false;
@@ -251,9 +251,11 @@ it('blocks the test action for non-POST requests', function () {
 	$GLOBALS['request'] = [];
 	$GLOBALS['__test_db_calls'] = [];
 
-	test_override('api_plugin_user_realm_auth', function ($page) {
-		return true;
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$id = ['Rule Viewer' => 1, 'Rule Administrator' => 2][$params[1] ?? ''] ?? 0;
+		return $id ? [['id' => $id]] : [];
 	});
+	test_override('is_realm_allowed', fn ($id) => true);
 
 	$_SERVER['REQUEST_METHOD'] = 'GET';
 
