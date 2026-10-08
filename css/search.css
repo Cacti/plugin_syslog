@@ -609,27 +609,15 @@
 #syslog_workspace tr.syslogRow.logNotice td:first-child { border-left-color: #3478b5; }
 #syslog_workspace tr.syslogRow.logInfo td:first-child { border-left-color: #5b9b4b; }
 #syslog_workspace tr.syslogRow.logDebug td:first-child { border-left-color: #8b9690; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow { --syslog-tint-even: #2b3530; --syslog-tint-hover: #34443a; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logEmergency { --syslog-tint: #5c2626; --syslog-tint-even: #552424; --syslog-tint-hover: #663030; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logAlert { --syslog-tint: #57302a; --syslog-tint-even: #502c27; --syslog-tint-hover: #613832; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logCritical { --syslog-tint: #533434; --syslog-tint-even: #4c3131; --syslog-tint-hover: #5d3b3b; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logError { --syslog-tint: #4b393a; --syslog-tint-even: #443436; --syslog-tint-hover: #554144; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logWarning { --syslog-tint: #54482a; --syslog-tint-even: #4c4127; --syslog-tint-hover: #5e5132; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logNotice { --syslog-tint: #2e4a3c; --syslog-tint-even: #2a4438; --syslog-tint-hover: #355444; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow.logDebug { --syslog-tint: #3b423e; --syslog-tint-even: #363c39; --syslog-tint-hover: #434b46; }
-#syslog_workspace tr:has(.syslogMessageOpen) td { padding: 7px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
+#syslog_workspace tr:has(.syslogMessageOpen) td { padding: 3px 8px; border-bottom: 1px solid #dce3df; white-space: nowrap; color: inherit; }
 #syslog_workspace tr:has(.syslogMessageOpen) td.syslogMeta { color: #5d6b65; font-size: 12px; }
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
-.syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+.syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 .syslogValueFilter { padding: 2px 5px; margin: -2px -5px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
 .syslogValueFilter:hover, .syslogValueFilter:focus-visible { border-color: #79a98a; background: #e4f1e7; color: #174d31; text-decoration-style: solid; }
 .syslogHostLabel { border-color: #c7d8e8; background: #eef5fb; color: #285477; text-decoration: none; }
 .syslogProgramLabel { border-color: #ddd0e8; background: #f6f0fa; color: #654477; text-decoration: none; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogValueFilter:hover,
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogValueFilter:focus-visible { border-color: #70ae85; background: #354f3e; color: #edf3ef; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogHostLabel { border-color: #526f8a; background: #2f4354; color: #d7e8f7; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) .syslogProgramLabel { border-color: #765d88; background: #473752; color: #eadcf2; }
 /* Cacti themes run .button() on every button, so the theme's .ui-button:hover
    paints the message like an editable input; keep it inert. Match the theme's
    selector weight (.ui-button:hover = 0,2,0) and then some. */
@@ -677,12 +665,6 @@
 	#syslog_form .syslogMenuBody.syslogSearchOptions { left: 0; right: auto; width: 280px; }
 	#syslog_workspace table { min-width: 850px; }
 }
-/* Keep scoped surfaces legible when the host Cacti theme is dark. */
-html[data-theme='dark'] #syslog_form .syslogSearchPanel,
-body.dark #syslog_form .syslogSearchPanel {
-	--search-surface: #252d29; --search-card: #303a34; --search-text: #edf3ef;
-	--search-muted: #bacabd; --search-border: #596d60; --search-accent: #70ae85; --search-tint: #3a5142;
-}
 #syslog_form .syslogSearchPanel { position: relative; }
 #syslog_form .syslogSearchHeader { position: absolute; top: 10px; right: 12px; }
 #syslog_form .syslogSearchHeading { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
@@ -699,14 +681,6 @@ body.dark #syslog_form .syslogSearchPanel {
 	min-width: 0;
 }
 #syslog_message_details { resize: horizontal; min-width: 280px; max-width: 50vw; }
-#syslog_form[data-theme='dark'] .syslogSearchPanel,
-#syslog_form[data-theme='midwinter'] .syslogSearchPanel {
-	--search-surface: #252d29; --search-card: #303a34; --search-text: #edf3ef;
-	--search-muted: #bacabd; --search-border: #596d60; --search-accent: #70ae85; --search-tint: #3a5142;
-}
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) #syslog_message_details { background: #252d29; color: #edf3ef; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) #syslog_details_raw { background: #303a34; color: #edf3ef; }
-#syslog_workspace:is([data-theme='dark'], [data-theme='midwinter']) tr.syslogRow td.syslogMeta { color: #bacabd; }
 @media (max-width: 1000px) { #syslog_message_details { max-width: 100vw; resize: none; } }
 @media (max-width: 700px) {
 	#syslog_form .syslogSearchSavedBar { padding-right: 0; padding-top: 34px; }
