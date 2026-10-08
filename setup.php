@@ -294,6 +294,7 @@ function syslog_config_safe(): bool {
  */
 function syslog_connect(): bool {
 	global $config, $syslog_cnn, $syslogdb_default, $local_db_cnn_id, $remote_db_cnn_id, $syslog_incoming_config;
+	static $schema_repaired = false;
 
 	syslog_determine_config();
 
@@ -383,6 +384,13 @@ function syslog_connect(): bool {
 			require_once(__DIR__ . '/includes/schema.php');
 			syslog_setup_table_new($syslog_install_options);
 		}
+	}
+
+	// Repair the configured Syslog database before page code queries plugin tables.
+	if ($connected && !$schema_repaired && api_plugin_is_enabled('syslog') && syslog_db_table_exists('syslog', false)) {
+		require_once(__DIR__ . '/includes/schema.php');
+		$schema_repaired = true;
+		syslog_ensure_table_structures();
 	}
 
 	return $connected;

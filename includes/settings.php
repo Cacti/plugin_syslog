@@ -393,6 +393,7 @@ function syslog_config_arrays(): void {
 	global $syslog_actions, $config, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
+	static $permission_realms_repaired = false;
 
 	$syslog_actions = [
 		1 => __('Delete', 'syslog'),
@@ -544,6 +545,10 @@ function syslog_config_arrays(): void {
 		$menu = $menu2;
 
 		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
+	}
+
+	if (!$permission_realms_repaired) {
+		$permission_realms_repaired = syslog_upgrade_create_permission_realms();
 	}
 
 	syslog_refresh_permission_roles();

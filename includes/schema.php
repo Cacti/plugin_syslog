@@ -795,6 +795,8 @@ syslog_create_replication_recovery_table();
 
 /** Repair any missing plugin-owned table without dropping existing data. */
 function syslog_ensure_table_structures(): void {
+	require_once(__DIR__ . '/settings.php');
+
 	$tables = [
 		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression',
 		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
