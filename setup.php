@@ -995,8 +995,6 @@ function syslog_check_upgrade(): bool {
 
 	syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
 
-	syslog_create_device_rule_table();
-
 	syslog_create_replication_output_table();
 	syslog_create_replication_receipts_table();
 	syslog_create_replication_collectors_table();
