@@ -18,7 +18,7 @@ it('folds the saved-search realm into the admin realm without widening existing 
 	// syslog_upgrade_saved_search_realm() (setup.php) reads/writes this by
 	// `global`; binding it here up front keeps every reference below on the
 	// same storage instead of a closure-local shadow.
-	global $user_auth_realm_filenames, $test_realms, $test_grants, $test_writes, $test_replications;
+	global $user_auth_realm_filenames, $test_realms, $test_grants, $test_writes;
 
 	syslog_load_plugin_source('setup.php');
 
@@ -40,12 +40,6 @@ it('folds the saved-search realm into the admin realm without widening existing 
 		$test_writes++;
 
 		return true;
-	});
-
-	test_override('api_plugin_replicate_config', function () {
-		global $test_replications;
-
-		$test_replications++;
 	});
 
 	test_override('api_plugin_user_realm_auth', function ($file) {
@@ -70,7 +64,6 @@ it('folds the saved-search realm into the admin realm without widening existing 
 			$before             = $test_realms;
 			$test_grants        = $grants;
 			$test_writes        = 0;
-			$test_replications  = 0;
 
 			syslog_upgrade_saved_search_realm();
 
@@ -104,9 +97,6 @@ it('folds the saved-search realm into the admin realm without widening existing 
 				throw new RuntimeException('Migration is idempotent');
 			}
 
-			if ($test_replications !== $test_writes) {
-				throw new RuntimeException('Only changed mappings replicated');
-			}
 		}
 	}
 

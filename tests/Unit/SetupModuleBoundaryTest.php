@@ -43,7 +43,7 @@ it('keeps config-array dependencies in the directly loaded settings module', fun
 	expect($settings)->toContain('function syslog_refresh_permission_roles(): void');
 });
 
-it('runs realm and version reconciliation on existing installs without FlowView', function () {
+it('runs realm and version reconciliation only during install or upgrade', function () {
 	$setup = plugin_test_read_source('setup.php');
 	$check_config = substr($setup, strpos($setup, 'function plugin_syslog_check_config'));
 	$check_upgrade = substr($setup, strpos($setup, 'function syslog_check_upgrade'));
@@ -55,6 +55,12 @@ it('runs realm and version reconciliation on existing installs without FlowView'
 	expect($plugin_upgrade)->toContain('syslog_upgrade_hook_module_paths();');
 	expect($check_upgrade)->toContain('syslog_refresh_plugin_version();')
 		->toContain('syslog_upgrade_create_permission_realms()');
+	expect(strpos($check_upgrade, 'syslog_refresh_plugin_version();'))
+		->toBeGreaterThan(strpos($check_upgrade, 'syslog_ensure_replication_history_columns();'));
+	expect($setup)->not->toContain("api_plugin_register_hook('syslog', 'config_insert'")
+		->not->toContain('if (!defined(\'IN_PLUGIN_INSTALL\')');
+	expect(plugin_test_read_source('includes/settings.php'))
+		->not->toContain('$permission_realms_repaired = syslog_upgrade_create_permission_realms();');
 	expect($setup)->toContain("'config_arrays'         => ['syslog_config_arrays', 'includes/settings.php']");
 });
 
@@ -101,7 +107,6 @@ it('registers extracted callbacks against their owning module', function () {
 		'syslog_config_arrays'         => 'settings.php',
 		'syslog_config_settings'       => 'settings.php',
 		'syslog_settings_bottom'       => 'settings.php',
-		'syslog_config_insert'         => 'settings.php',
 		'syslog_show_tab'              => 'navigation.php',
 		'syslog_draw_navigation_text'  => 'navigation.php',
 		'syslog_graph_buttons'         => 'navigation.php',

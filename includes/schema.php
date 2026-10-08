@@ -128,7 +128,8 @@ function syslog_create_device_rule_table(): void {
 function syslog_ensure_saved_search_tables(): void {
 	global $syslogdb_default;
 
-	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
+	$exists = syslog_db_table_exists('syslog_saved_searches', false);
+	if (!$exists) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
 			`id` int(10) NOT NULL auto_increment,
 			`hash` varchar(32) NOT NULL default '',
@@ -145,7 +146,7 @@ function syslog_ensure_saved_search_tables(): void {
 			ROW_FORMAT=Dynamic");
 	}
 
-	if (!syslog_db_column_exists('syslog_saved_searches', 'hash')) {
+	if ($exists && !syslog_db_column_exists('syslog_saved_searches', 'hash')) {
 		syslog_db_add_column('syslog_saved_searches', [
 			'name'    => 'hash',
 			'type'    => 'varchar(32)',
@@ -185,7 +186,8 @@ function syslog_ensure_share_tables(): void {
 function syslog_ensure_dashboard_tables(): void {
 	global $syslogdb_default;
 
-	if (!syslog_db_table_exists('syslog_dashboards', false)) {
+	$dashboards_exist = syslog_db_table_exists('syslog_dashboards', false);
+	if (!$dashboards_exist) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
 			`id` int(10) NOT NULL auto_increment,
 			`hash` varchar(32) NOT NULL default '',
@@ -200,7 +202,8 @@ function syslog_ensure_dashboard_tables(): void {
 			ROW_FORMAT=Dynamic");
 	}
 
-	if (!syslog_db_table_exists('syslog_dashboard_panels', false)) {
+	$panels_exist = syslog_db_table_exists('syslog_dashboard_panels', false);
+	if (!$panels_exist) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboard_panels` (
 			`id` int(10) NOT NULL auto_increment,
 			`dashboard_id` int(10) NOT NULL default '0',
@@ -222,6 +225,27 @@ function syslog_ensure_dashboard_tables(): void {
 			KEY dashboard (`dashboard_id`))
 			ENGINE=InnoDB
 			ROW_FORMAT=Dynamic");
+	}
+
+	if ($dashboards_exist) {
+		foreach (['hash' => ['varchar(32)', 'id'], 'is_global' => ['char(2)', 'user']] as $name => [$type, $after]) {
+			if (!syslog_db_column_exists('syslog_dashboards', $name)) {
+				syslog_db_add_column('syslog_dashboards', [
+					'name' => $name, 'type' => $type, 'NULL' => false, 'default' => '', 'after' => $after
+				]);
+			}
+		}
+	}
+
+	if ($panels_exist) {
+		foreach (['width' => ['1', 'top_n'], 'height' => ['0', 'width']] as $name => [$default, $after]) {
+			if (!syslog_db_column_exists('syslog_dashboard_panels', $name)) {
+				syslog_db_add_column('syslog_dashboard_panels', [
+					'name' => $name, 'type' => 'smallint(5) unsigned', 'NULL' => false,
+					'default' => $default, 'after' => $after
+				]);
+			}
+		}
 	}
 }
 
@@ -505,10 +529,12 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	}
 
 	// set table construction settings for the remote pollers
-	set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type']) ? '' : $options['upgrade_type'], true);
-	set_config_option('syslog_install_engine',       $engine, true);
-	set_config_option('syslog_install_db_type',      empty($options['db_type']) ? '' : $options['db_type'], true);
-	set_config_option('syslog_install_days',         empty($options['days']) ? '' : $options['days'], true);
+	if (!$repair) {
+		set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type']) ? '' : $options['upgrade_type'], true);
+		set_config_option('syslog_install_engine',       $engine, true);
+		set_config_option('syslog_install_db_type',      empty($options['db_type']) ? '' : $options['db_type'], true);
+		set_config_option('syslog_install_days',         empty($options['days']) ? '' : $options['days'], true);
+	}
 
 	if ($truncate) {
 		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
@@ -645,20 +671,6 @@ syslog_create_replication_recovery_table();
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
-		`id` int(10) NOT NULL auto_increment,
-		`name` varchar(128) NOT NULL default '',
-		`search` text NOT NULL,
-		`removal` int(10) NOT NULL default '1',
-		`grouping` int(10) NOT NULL default '0',
-		`user` varchar(32) NOT NULL default '',
-		`is_global` char(2) NOT NULL default '',
-		`date` int(16) NOT NULL default '0',
-		PRIMARY KEY (`id`),
-		KEY owner (`user`))
-		ENGINE=InnoDB
-		ROW_FORMAT=Dynamic");
-
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
 		`name` varchar(64) NOT NULL default '',
 		`value` text NOT NULL,
@@ -779,22 +791,22 @@ syslog_create_replication_recovery_table();
 	syslog_ensure_share_tables();
 	syslog_ensure_dashboard_tables();
 
-	if (!isset($settings['syslog'])) {
-		syslog_config_settings();
-	}
-
-	foreach ($settings['syslog'] as $name => $values) {
-		if (isset($values['default'])) {
-			set_config_option($name, $values['default']);
+	if (!$repair) {
+		if (!isset($settings['syslog'])) {
+			syslog_config_settings();
 		}
-	}
 
-	// ensure that the setting if set previously to truncate is switched to upgrade
-	set_config_option('syslog_install_upgrade_type', 'upgrade');
+		foreach ($settings['syslog'] as $name => $values) {
+			if (isset($values['default']) && db_fetch_cell_prepared('SELECT value FROM settings WHERE name = ?', [$name]) === false) {
+				set_config_option($name, $values['default']);
+			}
+		}
+		set_config_option('syslog_install_upgrade_type', 'upgrade');
+	}
 }
 
-/** Repair any missing plugin-owned table without dropping existing data. */
-function syslog_ensure_table_structures(): void {
+/** Complete an interrupted install or upgrade without dropping existing data. */
+function syslog_ensure_table_structures(): bool {
 	require_once(__DIR__ . '/settings.php');
 
 	$tables = [
@@ -816,4 +828,17 @@ function syslog_ensure_table_structures(): void {
 	syslog_ensure_saved_search_tables();
 	syslog_ensure_share_tables();
 	syslog_ensure_dashboard_tables();
+	$tables = array_merge($tables, [
+		'syslog_saved_searches', 'syslog_saved_searches_perm',
+		'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_dashboard_panels'
+	]);
+
+	foreach ($tables as $table) {
+		if (!syslog_db_table_exists($table, false)) {
+			cacti_log("SYSLOG ERROR: Schema upgrade did not create $table", false, 'SYSLOG');
+			return false;
+		}
+	}
+
+	return true;
 }

@@ -374,6 +374,7 @@ function syslog_refresh_permission_roles(): void {
 			'syslog_removal.php',
 			'syslog_reports.php',
 			'syslog_rule_administrator.php',
+			'syslog_device_rules.php',
 			'syslog_saved_searches.php',
 			'syslog_saved_searches_share.php',
 			'syslog_dashboards.php',
@@ -393,7 +394,6 @@ function syslog_config_arrays(): void {
 	global $syslog_actions, $config, $menu, $message_types, $severities, $messages;
 	global $syslog_levels, $syslog_facilities, $syslog_freqs, $syslog_times, $syslog_refresh;
 	global $syslog_retentions, $syslog_alert_retentions, $menu_glyphs;
-	static $permission_realms_repaired = false;
 
 	$syslog_actions = [
 		1 => __('Delete', 'syslog'),
@@ -547,10 +547,6 @@ function syslog_config_arrays(): void {
 		$menu_glyphs[__('Syslog Settings', 'syslog')] = 'fa fa-life-ring';
 	}
 
-	if (!$permission_realms_repaired) {
-		$permission_realms_repaired = syslog_upgrade_create_permission_realms();
-	}
-
 	syslog_refresh_permission_roles();
 
 	if (isset($_SESSION['syslog_info']) && $_SESSION['syslog_info'] != '') {
@@ -584,20 +580,6 @@ function syslog_settings_bottom(): void {
 	<?php
 }
 
-/**
- * Upgrade the Syslog database when the plugin config is loaded.
- *
- * @return void
- */
+/** Legacy callback for hook rows awaiting the explicit plugin upgrade. */
 function syslog_config_insert(): void {
-	if (!syslog_config_safe()) {
-		return;
-	}
-
-	require_once(dirname(__DIR__) . '/setup.php');
-	require_once(__DIR__ . '/schema.php');
-	syslog_connect();
-	syslog_ensure_replication_storage_engine();
-
-	syslog_check_upgrade();
 }

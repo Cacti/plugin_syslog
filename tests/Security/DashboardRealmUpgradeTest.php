@@ -19,7 +19,7 @@ it('folds the dashboards realm into the admin realm without changing the realm i
 	// syslog_upgrade_dashboard_realm() (setup.php) reads/writes this by
 	// `global`; binding it here up front keeps every reference below on the
 	// same storage instead of a closure-local shadow.
-	global $user_auth_realm_filenames, $test_realms, $test_writes, $test_replications;
+	global $user_auth_realm_filenames, $test_realms, $test_writes;
 
 	syslog_load_plugin_source('setup.php');
 
@@ -43,12 +43,6 @@ it('folds the dashboards realm into the admin realm without changing the realm i
 		return true;
 	});
 
-	test_override('api_plugin_replicate_config', function () {
-		global $test_replications;
-
-		$test_replications++;
-	});
-
 	test_override('api_plugin_user_realm_auth', function ($file) {
 		global $user_auth_realm_filenames;
 
@@ -60,7 +54,6 @@ it('folds the dashboards realm into the admin realm without changing the realm i
 	$user_auth_realm_filenames = ['syslog_alerts.php' => 107];
 
 	$test_writes       = 0;
-	$test_replications = 0;
 
 	syslog_upgrade_dashboard_realm();
 
@@ -74,10 +67,6 @@ it('folds the dashboards realm into the admin realm without changing the realm i
 
 	if (($user_auth_realm_filenames['syslog_dashboards.php'] ?? 0) !== 107) {
 		throw new RuntimeException('Current request can reach the dashboards page');
-	}
-
-	if ($test_replications !== $test_writes) {
-		throw new RuntimeException('Only changed mappings replicated');
 	}
 
 	syslog_upgrade_dashboard_realm();

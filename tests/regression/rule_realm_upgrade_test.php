@@ -3,6 +3,7 @@
  * Run: php tests/regression/rule_realm_upgrade_test.php /path/to/cacti/lib/plugins.php
  */
 require dirname(__DIR__, 2) . '/setup.php';
+require dirname(__DIR__, 2) . '/includes/settings.php';
 
 $db = new PDO('sqlite::memory:');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -65,7 +66,7 @@ $end = strpos($source, 'function api_plugin_remove_realms(', $start);
 eval(substr($source, $start, $end - $start));
 
 $viewer_files = 'syslog_alerts.php,syslog_removal.php,syslog_reports.php';
-$admin_file = 'syslog_rule_administrator.php';
+$admin_file = 'syslog_rule_administrator.php,syslog_device_rules.php';
 $syslog_administrator_file = 'syslog_administrator.php';
 foreach ([['syslog.php', 'Syslog User'], [$admin_file, 'Rule Administrator'], [$admin_file, 'Rule Administrator'], [$admin_file, 'Rule Viewer'], [$viewer_files, 'Rule Viewer']] as $row) {
 	db_execute_prepared('INSERT INTO plugin_realms(plugin,file,display) VALUES(?,?,?)', ['syslog', $row[0], $row[1]]);
@@ -95,13 +96,13 @@ for ($request = 0; $request < 50; $request++) {
 	check((int) $db->query('SELECT COUNT(*) FROM plugin_realms')->fetchColumn() === 4, 'Repeated upgrades must not add realms');
 	check($user_auth_roles['Syslog'] === [101, 102, 104, 106], 'Every surviving realm must appear once under Syslog');
 	check($user_auth_realm_filenames['syslog_alerts.php'] === 104, 'Viewer filename must use the surviving Viewer realm');
-	check($user_auth_realm_filenames[$admin_file] === 102, 'Administrator must remain separate');
+	check($user_auth_realm_filenames['syslog_rule_administrator.php'] === 102, 'Administrator must remain separate');
 	check(!isset($user_auth_realm_filenames['syslog_dashboards.php']), 'Viewer must not acquire dashboard administration');
 }
 $syslog_administrator_id = (int) $db->query("SELECT id FROM plugin_realms WHERE file = '$syslog_administrator_file'")->fetchColumn() + 100;
 $allowed_realms = [$syslog_administrator_id];
 syslog_refresh_permission_roles();
-foreach (['syslog.php', 'syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', $admin_file, 'syslog_saved_searches.php', 'syslog_saved_searches_share.php', 'syslog_dashboards.php', 'syslog_dashboards_share.php'] as $page) {
+foreach (['syslog.php', 'syslog_alerts.php', 'syslog_removal.php', 'syslog_reports.php', 'syslog_rule_administrator.php', 'syslog_device_rules.php', 'syslog_saved_searches.php', 'syslog_saved_searches_share.php', 'syslog_dashboards.php', 'syslog_dashboards_share.php'] as $page) {
 	check(($user_auth_realm_filenames[$page] ?? 0) === $syslog_administrator_id, 'Syslog Administrator must imply every Syslog permission');
 }
 $allowed_realms = [];

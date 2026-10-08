@@ -28,8 +28,8 @@ it('repairs missing share tables even when no version upgrade is pending', funct
 		->and($created[0])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_saved_searches_perm`');
 
 	$setup = plugin_test_read_source('setup.php');
-	expect(strpos($setup, 'syslog_ensure_share_tables();'))
-		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
+	expect(strpos($setup, 'syslog_ensure_table_structures();'))
+		->toBeLessThan(strpos($setup, 'syslog_refresh_plugin_version();'));
 });
 
 it('repairs missing dashboard tables even when no version upgrade is pending', function () {
@@ -47,8 +47,8 @@ it('repairs missing dashboard tables even when no version upgrade is pending', f
 		->and($created[1])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_dashboard_panels`');
 
 	$setup = plugin_test_read_source('setup.php');
-	expect(strpos($setup, 'syslog_ensure_dashboard_tables();'))
-		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
+	expect(strpos($setup, 'syslog_ensure_table_structures();'))
+		->toBeLessThan(strpos($setup, 'syslog_refresh_plugin_version();'));
 });
 
 it('repairs the saved-search table even when no version upgrade is pending', function () {
@@ -65,21 +65,33 @@ it('repairs the saved-search table even when no version upgrade is pending', fun
 		->and($created[0])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_saved_searches`');
 
 	$setup = plugin_test_read_source('setup.php');
-	expect(strpos($setup, 'syslog_ensure_saved_search_tables();'))
-		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
+	expect(strpos($setup, 'syslog_ensure_table_structures();'))
+		->toBeLessThan(strpos($setup, 'syslog_refresh_plugin_version();'));
 });
 
 it('rebuilds the complete core schema when any core table is absent', function () {
 	$schema = plugin_test_read_source('includes/schema.php');
 
-	expect($schema)->toContain("function syslog_ensure_table_structures(): void")
+	expect($schema)->toContain("function syslog_ensure_table_structures(): bool")
 		->and($schema)->toContain("syslog_setup_table_new([], true);")
 		->and($schema)->toContain("'syslog_replication_recovery'")
 		->and($schema)->toContain("syslog_ensure_dashboard_tables();");
 
 	$setup = plugin_test_read_source('setup.php');
 	expect(strpos($setup, 'syslog_ensure_table_structures();'))
-		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
+		->toBeLessThan(strpos($setup, 'syslog_refresh_plugin_version();'));
+});
+
+it('tracks every plugin table in the upgrade completeness check', function () {
+	$schema = plugin_test_read_source('includes/schema.php');
+	preg_match_all('/CREATE TABLE IF NOT EXISTS `\$syslogdb_default`\.`(syslog[^`]+)`/', $schema, $created);
+	preg_match('/function syslog_ensure_table_structures\(\): bool \{(.*?)foreach \(\$tables as \$table\) \{/s', $schema, $inventory);
+	preg_match_all("/'(syslog[^']+)'/", $inventory[1], $checked);
+	preg_match('/\$tables = array_merge\(\$tables, \[(.*?)\]\);/s', $schema, $additional);
+	preg_match_all("/'(syslog[^']+)'/", $additional[1], $extras);
+
+	expect(array_values(array_diff(array_unique($created[1]), array_merge($checked[1], $extras[1]))))
+		->toBe([], 'Every CREATE TABLE target is verified before the upgrade succeeds');
 });
 
 it('resolves shared ids from user and group grants', function () {
