@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* dev: Make the severity-legend chips actually fill the row by giving each chip `box-sizing: border-box; width: 100%; min-width: 0` (so a severity class's leaked width no longer keeps it small) and the legend footer a full-width table wrapper, across every per-theme `css/<theme>.css` and the `css/legend.css` fallback (matching the thold legend)
 * feature: Add Remote Data Collector processing, rules-sync, and record-storage options to the setup advisor; reject Aria selections whenever any collector option is enabled
 * change: Use TEXT for message columns previously limited to VARCHAR(2048), including existing installations
 * dev: Size the severity-legend chips to the longest label and lay them out as a CSS grid so every chip stays equal width as the legend wraps (matching the thold/monitor/servcheck/mactrack legends)
