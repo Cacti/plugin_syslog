@@ -728,6 +728,7 @@ function syslog_check_upgrade(): void {
 		return;
 	}
 
+	syslog_ensure_saved_search_tables();
 	syslog_ensure_share_tables();
 	syslog_ensure_dashboard_tables();
 

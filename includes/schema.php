@@ -124,6 +124,27 @@ function syslog_create_device_rule_table(): void {
 		ROW_FORMAT=Dynamic");
 }
 
+/** Repair saved-search storage on installs whose plugin version is already current. */
+function syslog_ensure_saved_search_tables(): void {
+	global $syslogdb_default;
+
+	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
+			`id` int(10) NOT NULL auto_increment,
+			`name` varchar(128) NOT NULL default '',
+			`search` text NOT NULL,
+			`removal` int(10) NOT NULL default '1',
+			`grouping` int(10) NOT NULL default '0',
+			`user` varchar(32) NOT NULL default '',
+			`is_global` char(2) NOT NULL default '',
+			`date` int(16) NOT NULL default '0',
+			PRIMARY KEY (`id`),
+			KEY owner (`user`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	}
+}
+
 /** Repair share-grant tables on installs whose plugin version is already current. */
 function syslog_ensure_share_tables(): void {
 	global $syslogdb_default;

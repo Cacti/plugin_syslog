@@ -51,6 +51,24 @@ it('repairs missing dashboard tables even when no version upgrade is pending', f
 		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
 });
 
+it('repairs the saved-search table even when no version upgrade is pending', function () {
+	syslog_load_plugin_source('includes/schema.php');
+	$GLOBALS['syslogdb_default'] = 'cacti';
+	$created = [];
+
+	test_override('syslog_db_table_exists', fn () => false);
+	test_override('syslog_db_execute', function ($sql) use (&$created) { $created[] = $sql; return true; });
+
+	syslog_ensure_saved_search_tables();
+
+	expect($created)->toHaveCount(1)
+		->and($created[0])->toContain('CREATE TABLE IF NOT EXISTS `cacti`.`syslog_saved_searches`');
+
+	$setup = plugin_test_read_source('setup.php');
+	expect(strpos($setup, 'syslog_ensure_saved_search_tables();'))
+		->toBeLessThan(strpos($setup, "api_plugin_upgrade_register('syslog')"));
+});
+
 it('resolves shared ids from user and group grants', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
