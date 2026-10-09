@@ -399,8 +399,110 @@ function initSyslogDashboards() {
  *  whatever Cacti theme is active instead of search.css's light fallbacks. */
 function initSyslogStatus() {
 	$(function() {
-		applySyslogTheme(document.getElementById('syslog_status'));
+		var grid = document.getElementById('syslog_status');
+		if (!grid) {
+			return;
+		}
+		applySyslogTheme(grid);
+		initSyslogStatusReorder(grid);
 	});
+}
+
+/** Drag-to-reorder the Status cards by their header handle, persisting the new
+ *  order server-side (settings_user) so it survives page revisits. */
+function initSyslogStatusReorder(grid) {
+	var dragging = null;
+
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		var handle = card.querySelector('.syslogStatusCardDrag');
+		if (!handle) {
+			return;
+		}
+
+		// HTML5 drag only fires when draggable is set before mousedown; arm it
+		// from the handle so the rest of the card stays selectable.
+		handle.addEventListener('mousedown', function() { card.draggable = true; });
+		handle.addEventListener('touchstart', function() { card.draggable = true; }, {passive: true});
+
+		// Keyboard-accessible reordering: move the card with the arrow keys.
+		handle.addEventListener('keydown', function(event) {
+			var back = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
+			var fwd  = event.key === 'ArrowRight' || event.key === 'ArrowDown';
+			if (!back && !fwd) {
+				return;
+			}
+			event.preventDefault();
+			if (back && card.previousElementSibling) {
+				grid.insertBefore(card, card.previousElementSibling);
+			} else if (fwd && card.nextElementSibling) {
+				grid.insertBefore(card.nextElementSibling, card);
+			} else {
+				return;
+			}
+			handle.focus();
+			syslogStatusSaveOrder(grid);
+		});
+
+		card.addEventListener('dragstart', function(event) {
+			dragging = card;
+			card.classList.add('syslogStatusCardDragging');
+			event.dataTransfer.effectAllowed = 'move';
+			try { event.dataTransfer.setData('text/plain', card.dataset.card || ''); } catch (error) { /* IE guard */ }
+		});
+
+		card.addEventListener('dragend', function() {
+			card.draggable = false;
+			card.classList.remove('syslogStatusCardDragging');
+			if (dragging) {
+				dragging = null;
+				syslogStatusSaveOrder(grid);
+			}
+		});
+	});
+
+	grid.addEventListener('dragover', function(event) {
+		if (!dragging) {
+			return;
+		}
+		event.preventDefault();
+		event.dataTransfer.dropEffect = 'move';
+		var before = syslogStatusDragReference(grid, event.clientX, event.clientY);
+		if (before == null) {
+			grid.appendChild(dragging);
+		} else if (before !== dragging) {
+			grid.insertBefore(dragging, before);
+		}
+	});
+}
+
+/** The card the dragged card should be inserted before for the current pointer
+ *  position, or null to append at the end. */
+function syslogStatusDragReference(grid, x, y) {
+	var cards = Array.prototype.slice.call(grid.querySelectorAll('.syslogStatusCard:not(.syslogStatusCardDragging)'));
+	for (var i = 0; i < cards.length; i++) {
+		var rect = cards[i].getBoundingClientRect();
+		if (y < rect.top - 1) {
+			return cards[i];
+		}
+		if (y <= rect.bottom && x < rect.left + rect.width / 2) {
+			return cards[i];
+		}
+	}
+	return null;
+}
+
+/** POST the current DOM card order to settings_user via syslog.php. */
+function syslogStatusSaveOrder(grid) {
+	var order = Array.prototype.map.call(grid.querySelectorAll('.syslogStatusCard'), function(card) {
+		return card.dataset.card;
+	}).filter(Boolean);
+
+	$.post('syslog.php', {
+		action: 'status_card_order',
+		tab: 'status',
+		order: JSON.stringify(order),
+		__csrf_magic: csrfMagicToken
+	}, null, 'json');
 }
 
 function initSyslogSearchDates(container) {

@@ -727,19 +727,26 @@
    tokens that js applies to #syslog_status, so the cards differentiate from the
    page surface on both light and dark themes. */
 #syslog_status.syslogStatusGrid {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
+	display: grid;
+	/* a 6-column grid; each card occupies a number of columns via a span class */
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+	align-items: start;
 	gap: 14px;
 	margin: 10px 4px;
 	font-variant-numeric: tabular-nums;
 }
 
+/* Column span out of 6 (Bootstrap-like, but 6 columns). Default cards span 2;
+   wide tables span 4. The card rendering API chooses the span per card. */
+.syslogStatusSpan1 { grid-column: span 1; }
+.syslogStatusSpan2 { grid-column: span 2; }
+.syslogStatusSpan3 { grid-column: span 3; }
+.syslogStatusSpan4 { grid-column: span 4; }
+.syslogStatusSpan5 { grid-column: span 5; }
+.syslogStatusSpan6 { grid-column: span 6; }
+
 .syslogStatusCard {
 	box-sizing: border-box;
-	/* grow and shrink from a ~340px basis so cards reflow from several across
-	   on wide screens down to one per row on narrow ones */
-	flex: 1 1 340px;
 	min-width: 0;
 	display: flex;
 	flex-direction: column;
@@ -753,16 +760,69 @@
 }
 
 .syslogStatusCardHeader {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	padding: 10px 14px;
 	border-bottom: 1px solid var(--search-border, #cbd8d1);
 	background: color-mix(in srgb, var(--search-text, #23362f) 7%, var(--search-card, #fff));
 }
 
+/* Drag handle: grab the card by its header to reorder it. */
+.syslogStatusCardDrag {
+	flex: 0 0 auto;
+	padding: 2px 5px;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: color-mix(in srgb, currentColor 50%, transparent);
+	font-size: 13px;
+	line-height: 1;
+	cursor: grab;
+}
+
+.syslogStatusCardDrag:hover,
+.syslogStatusCardDrag:focus-visible {
+	color: currentColor;
+	background: color-mix(in srgb, currentColor 12%, transparent);
+	outline: none;
+}
+
+.syslogStatusCardDrag:active {
+	cursor: grabbing;
+}
+
 .syslogStatusCardTitle {
+	flex: 1 1 auto;
+	min-width: 0;
 	margin: 0;
 	font-size: 13px;
 	font-weight: 600;
 	line-height: 1.3;
+}
+
+.syslogStatusCardDragging {
+	opacity: 0.5;
+}
+
+/* Optional status-coloured header variants for callers to flag anomalous cards
+   (good / warning / in-trouble). The status hue - matching the severity palette
+   - is mixed over the themed header so it stays readable on light and dark; the
+   title keeps the card's own text colour. The card API exposes these; callers
+   decide when to apply one. */
+.syslogStatusCardHeader--up {
+	background: color-mix(in srgb, #3f9b4b 22%, var(--search-card, #fff));
+	border-bottom-color: color-mix(in srgb, #3f9b4b 55%, transparent);
+}
+
+.syslogStatusCardHeader--recovering {
+	background: color-mix(in srgb, #d9a406 26%, var(--search-card, #fff));
+	border-bottom-color: color-mix(in srgb, #d9a406 60%, transparent);
+}
+
+.syslogStatusCardHeader--down {
+	background: color-mix(in srgb, #e5484d 24%, var(--search-card, #fff));
+	border-bottom-color: color-mix(in srgb, #e5484d 60%, transparent);
 }
 
 .syslogStatusCardBody {
@@ -832,13 +892,33 @@
 	font-weight: 600;
 }
 
-@media (max-width: 600px) {
+/* Narrow the grid before cards get cramped: halve to 4 columns (wide span-4+
+   cards fill the row), then collapse to a single column on small screens. */
+@media (max-width: 1200px) {
 	#syslog_status.syslogStatusGrid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.syslogStatusSpan4,
+	.syslogStatusSpan5,
+	.syslogStatusSpan6 {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (max-width: 760px) {
+	#syslog_status.syslogStatusGrid {
+		grid-template-columns: 1fr;
 		gap: 10px;
 	}
 
-	.syslogStatusCard {
-		flex-basis: 100%;
+	.syslogStatusSpan1,
+	.syslogStatusSpan2,
+	.syslogStatusSpan3,
+	.syslogStatusSpan4,
+	.syslogStatusSpan5,
+	.syslogStatusSpan6 {
+		grid-column: 1 / -1;
 	}
 }
 

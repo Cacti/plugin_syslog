@@ -121,6 +121,12 @@ if (get_request_var('action') == 'dashboard_copy') {
 	exit;
 }
 
+if (get_request_var('action') == 'status_card_order') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_status_card_order_save();
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab
@@ -627,6 +633,68 @@ function syslog_status_format_partition_progress(string $value): string {
 }
 
 /**
+ * The stable identifiers of every Status card, in default render order. Used to
+ * validate and bound a saved order so only known cards can be persisted.
+ *
+ * @return string[]
+ */
+function syslog_status_card_keys(): array {
+	return [
+		'latest_run', 'replication', 'remote_collectors', 'storage',
+		'partition_health', 'maintenance', 'maintenance_recent',
+		'collector_health', 'workers', 'worker_processes', 'phases', 'rules'
+	];
+}
+
+/**
+ * Filters a list of card keys to the known set, dropping unknowns and duplicates
+ * while preserving order.
+ *
+ * @param mixed $keys The candidate list of card keys.
+ *
+ * @return string[]
+ */
+function syslog_status_filter_card_order($keys): array {
+	if (!is_array($keys)) {
+		return [];
+	}
+
+	$known = syslog_status_card_keys();
+	$order = [];
+
+	foreach ($keys as $key) {
+		if (is_string($key) && in_array($key, $known, true) && !in_array($key, $order, true)) {
+			$order[] = $key;
+		}
+	}
+
+	return $order;
+}
+
+/**
+ * The current user's saved Status card order, filtered to known card keys.
+ *
+ * @return string[]
+ */
+function syslog_status_card_order(): array {
+	return syslog_status_filter_card_order(json_decode((string) read_user_setting('syslog_status_card_order', '', true), true));
+}
+
+/**
+ * Persists the posted Status card order for the current user in settings_user.
+ *
+ * @return string A JSON status document.
+ */
+function syslog_status_card_order_save(): string {
+	$raw   = isset_request_var('order') ? (string) get_nfilter_request_var('order') : '';
+	$order = syslog_status_filter_card_order(json_decode($raw, true));
+
+	set_user_setting('syslog_status_card_order', json_encode($order));
+
+	return json_encode(['ok' => true, 'order' => $order]);
+}
+
+/**
  * Display the syslog processing status tab.
  *
  * @return void
@@ -650,29 +718,44 @@ function syslog_status(): void {
 		print '<tr><th class="syslogStatusKvLabel">' . html_escape($label) . '</th><td>' . html_escape($value) . '</td></tr>';
 	};
 
+	// Each card is buffered under a stable key so a saved per-user order can
+	// re-sequence them; keys not in the saved order fall back to this default.
+	$cards   = [];
+	$current = '';
+
 	/**
-	 * Open a status card with a titled header and start its body.
+	 * Open a status card (buffered under $key) with a drag handle and title.
 	 *
+	 * @param string $key   Stable card identifier used for saved ordering.
 	 * @param string $title The card heading.
+	 * @param int    $span  Columns the card occupies in the 6-column grid (1-6).
+	 * @param string $state Optional header status variant for anomalous cards:
+	 *                      'up' (good), 'recovering' (warning) or 'down' (trouble);
+	 *                      '' leaves the neutral themed header.
 	 *
 	 * @return void
 	 */
-	$card_open = function(string $title): void {
-		print '<section class="syslogStatusCard"><header class="syslogStatusCardHeader"><h2 class="syslogStatusCardTitle">' . html_escape($title) . '</h2></header><div class="syslogStatusCardBody">';
+	$card_open = function(string $key, string $title, int $span = 2, string $state = '') use (&$cards, &$current): void {
+		$current      = $key;
+		$cards[$key]  = '';
+		$span         = max(1, min(6, $span));
+		$state        = preg_replace('/[^a-z]/', '', strtolower($state));
+		$header_class = $state !== '' ? ' syslogStatusCardHeader--' . $state : '';
+		ob_start();
+		print '<section class="syslogStatusCard syslogStatusSpan' . $span . '" data-card="' . html_escape($key) . '"><header class="syslogStatusCardHeader' . $header_class . '"><button type="button" class="syslogStatusCardDrag" aria-label="' . __esc('Drag to reorder card', 'syslog') . '"><i class="fa fa-bars" aria-hidden="true"></i></button><h2 class="syslogStatusCardTitle">' . html_escape($title) . '</h2></header><div class="syslogStatusCardBody">';
 	};
 
 	/**
-	 * Close the body and section opened by $card_open().
+	 * Close the card opened by $card_open() and bank its buffered HTML.
 	 *
 	 * @return void
 	 */
-	$card_close = function(): void {
+	$card_close = function() use (&$cards, &$current): void {
 		print '</div></section>';
+		$cards[$current] = ob_get_clean();
 	};
 
-	print '<div id="syslog_status" class="syslogStatusGrid">';
-
-	$card_open(__('Latest processing run', 'syslog'));
+	$card_open('latest_run', __('Latest processing run', 'syslog'));
 	print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 	$kv(__('Records processed', 'syslog'), syslog_status_format_count($status['last_record_count']));
 	$kv(__('Polling runtime', 'syslog'), syslog_status_format_seconds($status['polling_runtime_last']));
@@ -687,7 +770,7 @@ function syslog_status(): void {
 	$replication = syslog_replication_operational_status();
 
 	if (!empty($replication['enabled'])) {
-		$card_open(__('Distributed synchronization', 'syslog'));
+		$card_open('replication', __('Distributed synchronization', 'syslog'));
 		print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 		foreach ([
 			__('State', 'syslog') => strtoupper((string) $replication['state']),
@@ -703,7 +786,7 @@ function syslog_status(): void {
 
 	if ((int) ($config['poller_id'] ?? 1) <= 1) {
 		$remote_collectors = syslog_replication_collector_status();
-		$card_open(__('Remote collector receipts', 'syslog'));
+		$card_open('remote_collectors', __('Remote collector receipts', 'syslog'));
 		print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Remote Poller', 'syslog')) . '</th><th>' . html_escape(__('Last Batch Count', 'syslog')) . '</th><th>' . html_escape(__('Last Record Received', 'syslog')) . '</th></tr></thead><tbody>';
 		if (cacti_sizeof($remote_collectors)) {
 			foreach ($remote_collectors as $collector) {
@@ -716,7 +799,7 @@ function syslog_status(): void {
 		$card_close();
 	}
 
-	$card_open(__('Storage and retention', 'syslog'));
+	$card_open('storage', __('Storage and retention', 'syslog'));
 	print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 	foreach (syslog_status_storage() as $label => $value) { $kv((string) $label, (string) $value); }
 	print '</tbody></table>';
@@ -726,7 +809,7 @@ function syslog_status(): void {
 	}
 	$card_close();
 
-	$card_open(__('Partition health', 'syslog'));
+	$card_open('partition_health', __('Partition health', 'syslog'), 4);
 	print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Table', 'syslog')) . '</th><th>' . html_escape(__('Date coverage', 'syslog')) . '</th><th>' . html_escape(__('dMaxValue rows (estimated)', 'syslog')) . '</th><th>' . html_escape(__('dMaxValue size', 'syslog')) . '</th></tr></thead><tbody>';
 	$partition_health = syslog_partition_observability();
 	foreach (['syslog', 'syslog_removed'] as $table) {
@@ -737,7 +820,7 @@ function syslog_status(): void {
 	print '</tbody></table>';
 	$card_close();
 
-	$card_open(__('Partition maintenance activity', 'syslog'));
+	$card_open('maintenance', __('Partition maintenance activity', 'syslog'));
 	print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 	$kv(__('Last attempt', 'syslog'), syslog_status_format_time($status['partition_maintenance_last_attempt']));
 	$kv(__('Last successful maintenance', 'syslog'), syslog_status_format_time($status['partition_maintenance_last_success']));
@@ -746,7 +829,7 @@ function syslog_status(): void {
 	print '</tbody></table>';
 	$card_close();
 
-	$card_open(__('Recent partition maintenance activity', 'syslog'));
+	$card_open('maintenance_recent', __('Recent partition maintenance activity', 'syslog'), 4);
 	print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('When', 'syslog')) . '</th><th>' . html_escape(__('Outcome', 'syslog')) . '</th><th>' . html_escape(__('Recovery', 'syslog')) . '</th><th>' . html_escape(__('Details', 'syslog')) . '</th></tr></thead><tbody>';
 	$history = json_decode($status['partition_maintenance_history'], true);
 	if (!is_array($history) || !cacti_sizeof($history)) {
@@ -759,7 +842,7 @@ function syslog_status(): void {
 	print '</tbody></table>';
 	$card_close();
 
-	$card_open(__('Collector health', 'syslog'));
+	$card_open('collector_health', __('Collector health', 'syslog'));
 	$health = syslog_status_collector_health();
 	print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 	$kv(__('Last received log', 'syslog'), (string) $health['last_received']);
@@ -772,14 +855,14 @@ function syslog_status(): void {
 	}
 	$card_close();
 
-	$card_open(__('Parallel workers', 'syslog'));
+	$card_open('workers', __('Parallel workers', 'syslog'));
 	print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 	$kv(__('Worker processes running', 'syslog'), syslog_status_format_count($worker_stats['running']));
 	$kv(__('Configured worker processes', 'syslog'), syslog_status_format_count($worker_stats['workers']));
 	print '</tbody></table>';
 	$card_close();
 
-	$card_open(__('Worker processes', 'syslog'));
+	$card_open('worker_processes', __('Worker processes', 'syslog'));
 	print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Process', 'syslog')) . '</th><th>' . html_escape(__('Records handled', 'syslog')) . '</th><th>' . html_escape(__('Hosts resolved', 'syslog')) . '</th><th>' . html_escape(__('Runtime', 'syslog')) . '</th></tr></thead><tbody>';
 	if (cacti_sizeof($worker_stats['children'])) {
 		foreach ($worker_stats['children'] as $child) {
@@ -791,7 +874,7 @@ function syslog_status(): void {
 	print '</tbody></table>';
 	$card_close();
 
-	$card_open(__('Processing phases', 'syslog'));
+	$card_open('phases', __('Processing phases', 'syslog'), 4);
 	print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Phase', 'syslog')) . '</th><th>' . html_escape(__('Started', 'syslog')) . '</th><th>' . html_escape(__('Duration', 'syslog')) . '</th><th>' . html_escape(__('Records', 'syslog')) . '</th></tr></thead><tbody>';
 
 	$phase_telemetry = syslog_status_phase_telemetry();
@@ -830,7 +913,7 @@ function syslog_status(): void {
 	print '</tbody></table>';
 	$card_close();
 
-	$card_open(__('Rule activity', 'syslog'));
+	$card_open('rules', __('Rule activity', 'syslog'));
 	print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Rules processed', 'syslog')) . '</th><th>' . html_escape(__('Last run', 'syslog')) . '</th><th>' . html_escape(__('Total', 'syslog')) . '</th></tr></thead><tbody>';
 	foreach (['alert' => __('Alert rules', 'syslog'), 'delete' => __('Delete rules', 'syslog')] as $type => $label) {
 		print '<tr><th scope="row">' . html_escape($label) . '</th><td>' . html_escape(syslog_status_format_count($status['last_' . $type . '_rules_processed'])) . '</td><td>' . html_escape(syslog_status_format_count($status['total_' . $type . '_rules_processed'])) . '</td></tr>';
@@ -839,6 +922,21 @@ function syslog_status(): void {
 	print '</tbody></table>';
 	$card_close();
 
+	$order   = syslog_status_card_order();
+	$emitted = [];
+
+	print '<div id="syslog_status" class="syslogStatusGrid">';
+	foreach ($order as $key) {
+		if (isset($cards[$key]) && !isset($emitted[$key])) {
+			print $cards[$key];
+			$emitted[$key] = true;
+		}
+	}
+	foreach ($cards as $key => $html) {
+		if (!isset($emitted[$key])) {
+			print $html;
+		}
+	}
 	print '</div>';
 	print "<script type='text/javascript'>initSyslogStatus();</script>";
 }
