@@ -754,11 +754,15 @@
 
 .syslogStatusCardHeader {
 	padding: 10px 14px;
+	border-bottom: 1px solid var(--search-border, #cbd8d1);
+	background: color-mix(in srgb, var(--search-text, #23362f) 7%, var(--search-card, #fff));
+}
+
+.syslogStatusCardTitle {
+	margin: 0;
 	font-size: 13px;
 	font-weight: 600;
 	line-height: 1.3;
-	border-bottom: 1px solid var(--search-border, #cbd8d1);
-	background: color-mix(in srgb, var(--search-text, #23362f) 7%, var(--search-card, #fff));
 }
 
 .syslogStatusCardBody {
@@ -784,6 +788,11 @@
 	font-weight: 600;
 	white-space: nowrap;
 	border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+}
+
+/* identifying first-cell row headers read as normal data, not bold labels */
+.syslogStatusTable tbody th {
+	font-weight: normal;
 }
 
 .syslogStatusTable tbody tr + tr > th,
