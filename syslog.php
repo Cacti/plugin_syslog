@@ -638,298 +638,195 @@ function syslog_status(): void {
 
 	$worker_stats = syslog_worker_stats_get();
 
-	html_start_box(__('Syslog Status', 'syslog'), '100%', false, '3', 'center', '');
-	?>
-	<tr><td>
-		<div class="syslogStatus">
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_run">
-				<h2 id="syslog_status_run" class="syslogStatusHeading ui-widget-header"><?php print __esc('Latest processing run', 'syslog'); ?></h2>
-				<dl class="syslogStatusMetrics">
-					<div>
-						<dt><?php print __esc('Records processed', 'syslog'); ?></dt>
-						<dd class="syslogStatusValue"><?php print html_escape(syslog_status_format_count($status['last_record_count'])); ?></dd>
-					</div>
-					<div>
-						<dt><?php print __esc('Polling runtime', 'syslog'); ?></dt>
-						<dd class="syslogStatusValue"><?php print html_escape(syslog_status_format_seconds($status['polling_runtime_last'])); ?></dd>
-					</div>
-				</dl>
-				<dl class="syslogStatusTimings">
-					<?php
-					$timings = [
-						__('Started', 'syslog') => syslog_status_format_time($status['last_start_time']),
-						__('Finished', 'syslog') => syslog_status_format_time($status['last_end_time']),
-						__('Minimum runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_min']),
-						__('Average runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_avg']),
-						__('Maximum runtime', 'syslog') => syslog_status_format_seconds($status['polling_runtime_max'])
-					];
-					foreach ($timings as $label => $value) {
-						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
-					}
-					?>
-				</dl>
-			</section>
-			<?php $replication = syslog_replication_operational_status(); ?>
-			<?php if (!empty($replication['enabled'])) { ?>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_replication">
-				<h2 id="syslog_status_replication" class="syslogStatusHeading ui-widget-header"><?php print __esc('Distributed synchronization', 'syslog'); ?></h2>
-				<dl class="syslogStatusTimings">
-				<?php foreach ([
-					__('State', 'syslog') => strtoupper((string) $replication['state']),
-					__('Queued Recovery Records', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
-					__('Oldest pending', 'syslog') => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
-					__('Last successful synchronization', 'syslog') => syslog_status_format_time((string) $replication['last_success']),
-					__('Recovery worker', 'syslog') => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),
-					__('Last synchronization error', 'syslog') => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
-				] as $label => $value) { print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape((string) $value) . '</dd></div>'; } ?>
-				</dl>
-			</section>
-			<?php } ?>
-			<?php if ((int) ($config['poller_id'] ?? 1) <= 1) { ?>
-			<?php $remote_collectors = syslog_replication_collector_status(); ?>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_remote_collectors">
-				<h2 id="syslog_status_remote_collectors" class="syslogStatusHeading ui-widget-header"><?php print __esc('Remote collector receipts', 'syslog'); ?></h2>
-				<table class="syslogStatusWorkers" aria-labelledby="syslog_status_remote_collectors">
-					<thead><tr>
-						<th scope="col"><?php print __esc('Remote Poller', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Last Batch Count', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Last Record Received', 'syslog'); ?></th>
-					</tr></thead>
-					<tbody>
-					<?php if (cacti_sizeof($remote_collectors)) { foreach ($remote_collectors as $collector) { ?>
-						<tr>
-							<th scope="row"><?php print html_escape(!empty($collector['hostname']) ? $collector['hostname'] : __('Unknown remote poller', 'syslog')); ?></th>
-							<td><?php print html_escape(number_format((int) $collector['last_batch_count'])); ?></td>
-							<td><?php print html_escape(syslog_status_format_time((string) $collector['last_received'])); ?></td>
-						</tr>
-					<?php } } else { ?>
-						<tr><td colspan="3" class="syslogStatusWorkersEmpty"><?php print __esc('No remote collector records have been received yet.', 'syslog'); ?></td></tr>
-					<?php } ?>
-					</tbody>
-				</table>
-			</section>
-			<?php } ?>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_storage">
-				<h2 id="syslog_status_storage" class="syslogStatusHeading ui-widget-header"><?php print __esc('Storage and retention', 'syslog'); ?></h2>
-				<dl class="syslogStatusTimings syslogStatusStorage">
-					<?php foreach (syslog_status_storage() as $label => $value) {
-						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
-					} ?>
-				</dl>
-				<?php $partition_block = syslog_partition_blocked_state(); ?>
-				<?php if ($partition_block['blocked']) { ?>
-				<p class="syslogStatusPartitionBlocked">
-					<span class="syslogStatusWarningLabel"><?php print __esc('Partition maintenance blocked', 'syslog'); ?>:</span>
-					<?php print html_escape($partition_block['reason'] !== '' ? $partition_block['reason'] : __('Partition maintenance is stopped; writes continue into the dMaxValue safety partition.', 'syslog')); ?>
-				</p>
-				<?php } ?>
-			</section>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_partitions">
-				<h2 id="syslog_status_partitions" class="syslogStatusHeading ui-widget-header"><?php print __esc('Partition health', 'syslog'); ?></h2>
-				<?php $partition_health = syslog_partition_observability(); ?>
-				<table class="syslogStatusPartitions" aria-labelledby="syslog_status_partitions">
-					<thead><tr>
-						<th scope="col"><?php print __esc('Table', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Date coverage', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('dMaxValue rows (estimated)', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('dMaxValue size', 'syslog'); ?></th>
-					</tr></thead>
-					<tbody>
-					<?php foreach (['syslog', 'syslog_removed'] as $table) { ?>
-						<?php $health = $partition_health[$table] ?? []; ?>
-						<?php $coverage = !empty($health['coverage_start']) && !empty($health['coverage_end']) ? syslog_status_format_partition_date((string) $health['coverage_start']) . ' — ' . syslog_status_format_partition_date((string) $health['coverage_end']) . ' (' . number_format((int) $health['partitions']) . ')' : __('Unavailable', 'syslog'); ?>
-						<tr>
-							<th scope="row"><?php print html_escape($table); ?></th>
-							<td><?php print html_escape($coverage); ?></td>
-							<td><?php print html_escape(isset($health['dmax_rows']) && $health['dmax_rows'] !== null ? number_format((float) $health['dmax_rows']) : __('Unavailable', 'syslog')); ?></td>
-							<td><?php print html_escape(syslog_status_format_bytes($health['dmax_bytes'] ?? null)); ?></td>
-						</tr>
-					<?php } ?>
-					</tbody>
-				</table>
-			</section>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_maintenance">
-				<h2 id="syslog_status_maintenance" class="syslogStatusHeading ui-widget-header"><?php print __esc('Partition maintenance activity', 'syslog'); ?></h2>
-				<dl class="syslogStatusTimings">
-					<?php
-					$maintenance = [
-						__('Last attempt', 'syslog') => syslog_status_format_time($status['partition_maintenance_last_attempt']),
-						__('Last successful maintenance', 'syslog') => syslog_status_format_time($status['partition_maintenance_last_success']),
-						__('Latest outcome', 'syslog') => $status['partition_maintenance_outcome'] === 'success' ? __('Complete', 'syslog') : ($status['partition_maintenance_outcome'] === 'deferred' ? __('Deferred', 'syslog') : __('Never', 'syslog')),
-						__('Recovery progress', 'syslog') => syslog_status_format_partition_progress($status['partition_recovery_progress'])
-					];
-					foreach ($maintenance as $label => $value) {
-						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
-					}
-					?>
-				</dl>
-				<?php $history = json_decode($status['partition_maintenance_history'], true); ?>
-				<table class="syslogStatusPartitions" aria-label="<?php print __esc('Recent partition maintenance activity', 'syslog'); ?>">
-					<thead><tr>
-						<th scope="col"><?php print __esc('When', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Outcome', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Recovery', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Details', 'syslog'); ?></th>
-					</tr></thead>
-					<tbody>
-					<?php if (!is_array($history) || !cacti_sizeof($history)) { ?>
-						<tr><td colspan="4" class="syslogStatusPhasesEmpty"><?php print __esc('No partition maintenance activity recorded yet. Activity appears after the next poller run.', 'syslog'); ?></td></tr>
-					<?php } else { ?>
-						<?php foreach (array_reverse($history) as $event) { ?>
-							<tr>
-								<td><?php print html_escape(syslog_status_format_time((string) ($event['time'] ?? ''))); ?></td>
-								<td><?php print html_escape(!empty($event['successful']) ? __('Complete', 'syslog') : __('Deferred', 'syslog')); ?></td>
-								<td><?php print html_escape(__('%d created, %d remaining, %d pruned', (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0), 'syslog')); ?></td>
-								<td><?php print html_escape((string) ($event['reason'] ?? '') !== '' ? (string) $event['reason'] : __('No action required.', 'syslog')); ?></td>
-							</tr>
-						<?php } ?>
-					<?php } ?>
-					</tbody>
-				</table>
-			</section>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_collector">
-				<h2 id="syslog_status_collector" class="syslogStatusHeading ui-widget-header"><?php print __esc('Collector health', 'syslog'); ?></h2>
-				<?php $health = syslog_status_collector_health(); ?>
-				<dl class="syslogStatusTimings syslogStatusCollector">
-					<?php
-					$health_metrics = [
-						__('Last received log', 'syslog') => $health['last_received'],
-						__('Oldest unprocessed message', 'syslog') => $health['oldest_age'],
-						__('Incoming backlog', 'syslog') => $health['backlog'],
-						__('Records processed in latest run', 'syslog') => $health['processed']
-					];
-					foreach ($health_metrics as $label => $value) {
-						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
-					}
-					?>
-				</dl>
-				<?php if ($health['warning']) { ?>
-				<p class="syslogStatusHealthWarning">
-					<span class="syslogStatusWarningLabel"><?php print __esc('Collector warning', 'syslog'); ?>:</span>
-					<?php print html_escape($health['warning_text']); ?>
-				</p>
-				<?php } ?>
-			</section>
-			<section class="syslogStatusRun" aria-labelledby="syslog_status_workers">
-				<h2 id="syslog_status_workers" class="syslogStatusHeading ui-widget-header"><?php print __esc('Parallel workers', 'syslog'); ?></h2>
-				<dl class="syslogStatusTimings syslogStatusWorkerSummary">
-					<?php
-					$workers_summary = [
-						__('Worker processes running', 'syslog') => syslog_status_format_count($worker_stats['running']),
-						__('Configured worker processes', 'syslog') => syslog_status_format_count($worker_stats['workers'])
-					];
-					foreach ($workers_summary as $label => $value) {
-						print '<div><dt>' . html_escape($label) . '</dt><dd>' . html_escape($value) . '</dd></div>';
-					}
-					?>
-				</dl>
-				<?php if (cacti_sizeof($worker_stats['children'])) { ?>
-				<table class="syslogStatusWorkers" aria-labelledby="syslog_status_workers">
-					<thead><tr>
-						<th scope="col"><?php print __esc('Process', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Records handled', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Hosts resolved', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Runtime', 'syslog'); ?></th>
-					</tr></thead>
-					<tbody>
-					<?php foreach ($worker_stats['children'] as $child) { ?>
-						<tr>
-							<th scope="row"><?php print html_escape(syslog_status_format_count($child['child'])); ?></th>
-							<td><?php print html_escape(syslog_status_format_count($child['moved'])); ?></td>
-							<td><?php print html_escape(syslog_status_format_count($child['resolved'])); ?></td>
-							<td><?php print html_escape(syslog_status_format_seconds($child['runtime'])); ?></td>
-						</tr>
-					<?php } ?>
-					</tbody>
-				</table>
-				<?php } else { ?>
-				<p class="syslogStatusWorkersEmpty"><?php print __esc('No per process statistics recorded yet.  Worker statistics appear after the first parallel run.', 'syslog'); ?></p>
-				<?php } ?>
-			</section>
-			<section aria-labelledby="syslog_status_phases">
-				<h2 id="syslog_status_phases" class="syslogStatusHeading ui-widget-header"><?php print __esc('Processing phases', 'syslog'); ?></h2>
-				<?php
-				$phase_telemetry = syslog_status_phase_telemetry();
-				$phase_labels = [
-					'partition'  => __('Partition maintenance', 'syslog'),
-					'references' => __('Reference updates', 'syslog'),
-					'removal'    => __('Removal rules', 'syslog'),
-					'alerts'     => __('Alert evaluation', 'syslog'),
-					'transfer'   => __('Incoming transfer', 'syslog'),
-					'reports'    => __('Report processing', 'syslog')
-				];
+	// Renders a label/value pair as an alternating cactiTable row.
+	$kv = function(string $label, string $value): void {
+		form_alternate_row('', true);
+		print '<td class="nowrap" style="width:40%;">' . html_escape($label) . '</td>';
+		print '<td>' . html_escape($value) . '</td>';
+		form_end_row();
+	};
 
-				$slowest_phase = '';
-				$slowest_seconds = -1.0;
+	html_start_box(__('Latest processing run', 'syslog'), '100%', '', '3', 'center', '');
+	$kv(__('Records processed', 'syslog'), syslog_status_format_count($status['last_record_count']));
+	$kv(__('Polling runtime', 'syslog'), syslog_status_format_seconds($status['polling_runtime_last']));
+	$kv(__('Started', 'syslog'), syslog_status_format_time($status['last_start_time']));
+	$kv(__('Finished', 'syslog'), syslog_status_format_time($status['last_end_time']));
+	$kv(__('Minimum runtime', 'syslog'), syslog_status_format_seconds($status['polling_runtime_min']));
+	$kv(__('Average runtime', 'syslog'), syslog_status_format_seconds($status['polling_runtime_avg']));
+	$kv(__('Maximum runtime', 'syslog'), syslog_status_format_seconds($status['polling_runtime_max']));
+	html_end_box(false);
 
-				foreach ($phase_telemetry as $phase => $telemetry) {
-					if ($telemetry === null) {
-						continue;
-					}
+	$replication = syslog_replication_operational_status();
 
-					if ($telemetry['seconds'] > $slowest_seconds) {
-						$slowest_seconds = $telemetry['seconds'];
-						$slowest_phase   = $phase;
-					}
-				}
-				?>
-				<table class="syslogStatusPhases" aria-labelledby="syslog_status_phases">
-					<thead><tr>
-						<th scope="col"><?php print __esc('Phase', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Started', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Duration', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Records', 'syslog'); ?></th>
-					</tr></thead>
-					<tbody>
-					<?php $any_phase = false; ?>
-					<?php foreach ($phase_telemetry as $phase => $telemetry) { ?>
-						<?php if ($telemetry === null) { continue; } $any_phase = true; ?>
-						<tr<?php if ($phase === $slowest_phase) { print ' class="syslogStatusPhaseSlowest"'; } ?>>
-							<th scope="row"><?php print html_escape($phase_labels[$phase] ?? $phase); ?></th>
-							<td><?php print html_escape(syslog_status_format_time((string) $telemetry['start'])); ?></td>
-							<td><?php print html_escape(syslog_status_format_seconds((string) $telemetry['seconds'])); ?></td>
-							<td><?php print html_escape(syslog_status_format_count((string) $telemetry['count'])); ?></td>
-						</tr>
-					<?php } ?>
-					<?php if (!$any_phase) { ?>
-					<tr><td colspan="4" class="syslogStatusPhasesEmpty"><?php print __esc('No phase timings recorded yet.  Phase timings appear after the next poller run.', 'syslog'); ?></td></tr>
-					<?php } ?>
-					</tbody>
-				</table>
-				<?php if ($slowest_phase !== '') { ?>
-				<p class="syslogStatusPhaseSlowestSummary">
-					<span class="syslogStatusDetailLabel"><?php print __esc('Slowest phase', 'syslog'); ?>:</span>
-					<?php print html_escape($phase_labels[$slowest_phase] ?? $slowest_phase); ?>
-					(<?php print html_escape(syslog_status_format_seconds((string) $slowest_seconds)); ?>)
-				</p>
-				<?php } ?>
-			</section>
-			<section aria-labelledby="syslog_status_rules">
-				<h2 id="syslog_status_rules" class="syslogStatusHeading ui-widget-header"><?php print __esc('Rule activity', 'syslog'); ?></h2>
-				<table class="syslogStatusRules" aria-labelledby="syslog_status_rules">
-					<thead><tr>
-						<th scope="col"><?php print __esc('Rules processed', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Last run', 'syslog'); ?></th>
-						<th scope="col"><?php print __esc('Total', 'syslog'); ?></th>
-					</tr></thead>
-					<tbody>
-					<?php foreach (['alert' => __('Alert rules', 'syslog'), 'delete' => __('Delete rules', 'syslog')] as $type => $label) { ?>
-						<tr class="syslogStatusRuleCounts">
-							<th scope="row"><?php print html_escape($label); ?></th>
-							<td><?php print html_escape(syslog_status_format_count($status['last_' . $type . '_rules_processed'])); ?></td>
-							<td><?php print html_escape(syslog_status_format_count($status['total_' . $type . '_rules_processed'])); ?></td>
-						</tr>
-						<tr class="syslogStatusRuleDetails"><td colspan="3">
-							<span class="syslogStatusDetailLabel"><?php print __esc('Fired last run', 'syslog'); ?>:</span>
-							<?php print html_escape(syslog_status_format_rule_activity($status['last_' . $type . '_rules_fired'])); ?>
-						</td></tr>
-					<?php } ?>
-					</tbody>
-				</table>
-			</section>
-		</div>
-	</td></tr>
-	<?php
+	if (!empty($replication['enabled'])) {
+		html_start_box(__('Distributed synchronization', 'syslog'), '100%', '', '3', 'center', '');
+		foreach ([
+			__('State', 'syslog') => strtoupper((string) $replication['state']),
+			__('Queued Recovery Records', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
+			__('Oldest pending', 'syslog') => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
+			__('Last successful synchronization', 'syslog') => syslog_status_format_time((string) $replication['last_success']),
+			__('Recovery worker', 'syslog') => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),
+			__('Last synchronization error', 'syslog') => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
+		] as $label => $value) { $kv($label, (string) $value); }
+		html_end_box(false);
+	}
+
+	if ((int) ($config['poller_id'] ?? 1) <= 1) {
+		$remote_collectors = syslog_replication_collector_status();
+		html_start_box(__('Remote collector receipts', 'syslog'), '100%', '', '3', 'center', '');
+		html_header([__('Remote Poller', 'syslog'), __('Last Batch Count', 'syslog'), __('Last Record Received', 'syslog')]);
+		if (cacti_sizeof($remote_collectors)) {
+			foreach ($remote_collectors as $collector) {
+				form_alternate_row('', true);
+				print '<td>' . html_escape(!empty($collector['hostname']) ? $collector['hostname'] : __('Unknown remote poller', 'syslog')) . '</td>';
+				print '<td>' . html_escape(number_format((int) $collector['last_batch_count'])) . '</td>';
+				print '<td>' . html_escape(syslog_status_format_time((string) $collector['last_received'])) . '</td>';
+				form_end_row();
+			}
+		} else {
+			print '<tr><td colspan="3"><em>' . __esc('No remote collector records have been received yet.', 'syslog') . '</em></td></tr>';
+		}
+		html_end_box(false);
+	}
+
+	html_start_box(__('Storage and retention', 'syslog'), '100%', '', '3', 'center', '');
+	foreach (syslog_status_storage() as $label => $value) { $kv((string) $label, (string) $value); }
+	$partition_block = syslog_partition_blocked_state();
+	if ($partition_block['blocked']) {
+		form_alternate_row('', true);
+		print '<td colspan="2"><span style="font-weight:600;">' . __esc('Partition maintenance blocked', 'syslog') . ':</span> ' . html_escape($partition_block['reason'] !== '' ? $partition_block['reason'] : __('Partition maintenance is stopped; writes continue into the dMaxValue safety partition.', 'syslog')) . '</td>';
+		form_end_row();
+	}
+	html_end_box(false);
+
+	html_start_box(__('Partition health', 'syslog'), '100%', '', '3', 'center', '');
+	html_header([__('Table', 'syslog'), __('Date coverage', 'syslog'), __('dMaxValue rows (estimated)', 'syslog'), __('dMaxValue size', 'syslog')]);
+	$partition_health = syslog_partition_observability();
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		$health = $partition_health[$table] ?? [];
+		$coverage = !empty($health['coverage_start']) && !empty($health['coverage_end']) ? syslog_status_format_partition_date((string) $health['coverage_start']) . ' — ' . syslog_status_format_partition_date((string) $health['coverage_end']) . ' (' . number_format((int) $health['partitions']) . ')' : __('Unavailable', 'syslog');
+		form_alternate_row('', true);
+		print '<td>' . html_escape($table) . '</td>';
+		print '<td>' . html_escape($coverage) . '</td>';
+		print '<td>' . html_escape(isset($health['dmax_rows']) && $health['dmax_rows'] !== null ? number_format((float) $health['dmax_rows']) : __('Unavailable', 'syslog')) . '</td>';
+		print '<td>' . html_escape(syslog_status_format_bytes($health['dmax_bytes'] ?? null)) . '</td>';
+		form_end_row();
+	}
+	html_end_box(false);
+
+	html_start_box(__('Partition maintenance activity', 'syslog'), '100%', '', '3', 'center', '');
+	$kv(__('Last attempt', 'syslog'), syslog_status_format_time($status['partition_maintenance_last_attempt']));
+	$kv(__('Last successful maintenance', 'syslog'), syslog_status_format_time($status['partition_maintenance_last_success']));
+	$kv(__('Latest outcome', 'syslog'), $status['partition_maintenance_outcome'] === 'success' ? __('Complete', 'syslog') : ($status['partition_maintenance_outcome'] === 'deferred' ? __('Deferred', 'syslog') : __('Never', 'syslog')));
+	$kv(__('Recovery progress', 'syslog'), syslog_status_format_partition_progress($status['partition_recovery_progress']));
+	html_end_box(false);
+
+	html_start_box(__('Recent partition maintenance activity', 'syslog'), '100%', '', '3', 'center', '');
+	html_header([__('When', 'syslog'), __('Outcome', 'syslog'), __('Recovery', 'syslog'), __('Details', 'syslog')]);
+	$history = json_decode($status['partition_maintenance_history'], true);
+	if (!is_array($history) || !cacti_sizeof($history)) {
+		print '<tr><td colspan="4"><em>' . __esc('No partition maintenance activity recorded yet. Activity appears after the next poller run.', 'syslog') . '</em></td></tr>';
+	} else {
+		foreach (array_reverse($history) as $event) {
+			form_alternate_row('', true);
+			print '<td>' . html_escape(syslog_status_format_time((string) ($event['time'] ?? ''))) . '</td>';
+			print '<td>' . html_escape(!empty($event['successful']) ? __('Complete', 'syslog') : __('Deferred', 'syslog')) . '</td>';
+			print '<td>' . html_escape(__('%d created, %d remaining, %d pruned', (int) ($event['created'] ?? 0), (int) ($event['missing'] ?? 0), (int) ($event['pruned'] ?? 0), 'syslog')) . '</td>';
+			print '<td>' . html_escape((string) ($event['reason'] ?? '') !== '' ? (string) $event['reason'] : __('No action required.', 'syslog')) . '</td>';
+			form_end_row();
+		}
+	}
+	html_end_box(false);
+
+	html_start_box(__('Collector health', 'syslog'), '100%', '', '3', 'center', '');
+	$health = syslog_status_collector_health();
+	$kv(__('Last received log', 'syslog'), (string) $health['last_received']);
+	$kv(__('Oldest unprocessed message', 'syslog'), (string) $health['oldest_age']);
+	$kv(__('Incoming backlog', 'syslog'), (string) $health['backlog']);
+	$kv(__('Records processed in latest run', 'syslog'), (string) $health['processed']);
+	if ($health['warning']) {
+		form_alternate_row('', true);
+		print '<td colspan="2"><span style="font-weight:600;">' . __esc('Collector warning', 'syslog') . ':</span> ' . html_escape($health['warning_text']) . '</td>';
+		form_end_row();
+	}
+	html_end_box(false);
+
+	html_start_box(__('Parallel workers', 'syslog'), '100%', '', '3', 'center', '');
+	$kv(__('Worker processes running', 'syslog'), syslog_status_format_count($worker_stats['running']));
+	$kv(__('Configured worker processes', 'syslog'), syslog_status_format_count($worker_stats['workers']));
+	html_end_box(false);
+
+	html_start_box(__('Worker processes', 'syslog'), '100%', '', '3', 'center', '');
+	html_header([__('Process', 'syslog'), __('Records handled', 'syslog'), __('Hosts resolved', 'syslog'), __('Runtime', 'syslog')]);
+	if (cacti_sizeof($worker_stats['children'])) {
+		foreach ($worker_stats['children'] as $child) {
+			form_alternate_row('', true);
+			print '<td>' . html_escape(syslog_status_format_count($child['child'])) . '</td>';
+			print '<td>' . html_escape(syslog_status_format_count($child['moved'])) . '</td>';
+			print '<td>' . html_escape(syslog_status_format_count($child['resolved'])) . '</td>';
+			print '<td>' . html_escape(syslog_status_format_seconds($child['runtime'])) . '</td>';
+			form_end_row();
+		}
+	} else {
+		print '<tr><td colspan="4"><em>' . __esc('No per process statistics recorded yet.  Worker statistics appear after the first parallel run.', 'syslog') . '</em></td></tr>';
+	}
+	html_end_box(false);
+
+	html_start_box(__('Processing phases', 'syslog'), '100%', '', '3', 'center', '');
+	html_header([__('Phase', 'syslog'), __('Started', 'syslog'), __('Duration', 'syslog'), __('Records', 'syslog')]);
+
+	$phase_telemetry = syslog_status_phase_telemetry();
+	$phase_labels = [
+		'partition'  => __('Partition maintenance', 'syslog'),
+		'references' => __('Reference updates', 'syslog'),
+		'removal'    => __('Removal rules', 'syslog'),
+		'alerts'     => __('Alert evaluation', 'syslog'),
+		'transfer'   => __('Incoming transfer', 'syslog'),
+		'reports'    => __('Report processing', 'syslog')
+	];
+
+	$slowest_phase = '';
+	$slowest_seconds = -1.0;
+
+	foreach ($phase_telemetry as $phase => $telemetry) {
+		if ($telemetry === null) {
+			continue;
+		}
+
+		if ($telemetry['seconds'] > $slowest_seconds) {
+			$slowest_seconds = $telemetry['seconds'];
+			$slowest_phase   = $phase;
+		}
+	}
+
+	$any_phase = false;
+	foreach ($phase_telemetry as $phase => $telemetry) {
+		if ($telemetry === null) { continue; }
+		$any_phase = true;
+		form_alternate_row('', true);
+		print '<td>' . html_escape($phase_labels[$phase] ?? $phase) . ($phase === $slowest_phase ? ' <em>(' . __esc('slowest', 'syslog') . ')</em>' : '') . '</td>';
+		print '<td>' . html_escape(syslog_status_format_time((string) $telemetry['start'])) . '</td>';
+		print '<td>' . html_escape(syslog_status_format_seconds((string) $telemetry['seconds'])) . '</td>';
+		print '<td>' . html_escape(syslog_status_format_count((string) $telemetry['count'])) . '</td>';
+		form_end_row();
+	}
+	if (!$any_phase) {
+		print '<tr><td colspan="4"><em>' . __esc('No phase timings recorded yet.  Phase timings appear after the next poller run.', 'syslog') . '</em></td></tr>';
+	}
+	html_end_box(false);
+
+	html_start_box(__('Rule activity', 'syslog'), '100%', '', '3', 'center', '');
+	html_header([__('Rules processed', 'syslog'), __('Last run', 'syslog'), __('Total', 'syslog')]);
+	foreach (['alert' => __('Alert rules', 'syslog'), 'delete' => __('Delete rules', 'syslog')] as $type => $label) {
+		form_alternate_row('', true);
+		print '<td>' . html_escape($label) . '</td>';
+		print '<td>' . html_escape(syslog_status_format_count($status['last_' . $type . '_rules_processed'])) . '</td>';
+		print '<td>' . html_escape(syslog_status_format_count($status['total_' . $type . '_rules_processed'])) . '</td>';
+		form_end_row();
+		form_alternate_row('', true);
+		print '<td colspan="3"><span style="font-weight:600;">' . __esc('Fired last run', 'syslog') . ':</span> ' . html_escape(syslog_status_format_rule_activity($status['last_' . $type . '_rules_fired'])) . '</td>';
+		form_end_row();
+	}
 	html_end_box(false);
 }
 
