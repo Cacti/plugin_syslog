@@ -44,7 +44,7 @@
    Cacti theme onto #syslog_form / #syslog_workspace at runtime (inline styles
    that override these), so the view follows whatever theme is active; these
    values are only the light fallback when scripting has not run yet. */
-#syslog_form, #syslog_workspace, .syslogSavedDialog {
+#syslog_form, #syslog_workspace, .syslogSavedDialog, .syslogSavedPrompt {
 	--search-surface: #f3f6f5;
 	--search-card: #fff;
 	--search-text: #23362f;
