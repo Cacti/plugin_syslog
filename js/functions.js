@@ -281,10 +281,12 @@ function syslogThemeTokens() {
 	var title     = box.find('.cactiTableTitle');
 	var headerBg  = titleRow.css('background-color');
 	var headerImg = titleRow.css('background-image');
+	var headerFg  = title.css('color');
 	var transparent = (!headerBg || /rgba?\([^)]*,\s*0\s*\)/.test(headerBg));
 	if ((!headerImg || headerImg === 'none') && transparent) {
 		headerBg  = header.css('background-color');
 		headerImg = header.css('background-image');
+		headerFg  = header.css('color');
 	}
 
 	var tokens = {
@@ -293,7 +295,7 @@ function syslogThemeTokens() {
 		'border': sample.css('border-top-color'), 'accent': button.css('color'),
 		'tint': button.css('background-color'),
 		'primary': header.css('background-color'), 'on-primary': header.css('color'),
-		'header-bg': headerBg, 'header-image': headerImg, 'header-fg': title.css('color')
+		'header-bg': headerBg, 'header-image': headerImg, 'header-fg': headerFg
 	};
 	box.remove();
 	sample.remove();

@@ -640,7 +640,7 @@ function syslog_status_format_partition_progress(string $value): string {
 
 /**
  * Metadata for every Status card keyed by its stable id, in default order:
- * title, column span (of 6) and whether it supports show-more/less (expandable).
+ * title, column span (of 8) and whether it supports show-more/less (expandable).
  * A card may also carry an optional 'state' ('up' | 'recovering' | 'down') that
  * syslog_status_render_card() turns into a themed header variant for flagging
  * anomalous cards; it is left unset here for callers to apply as needed.

@@ -929,20 +929,20 @@
    title keeps the card's own text colour. The card API exposes these; callers
    decide when to apply one. */
 .syslogStatusCardHeader--up {
-	background-color: color-mix(in srgb, #94b36b 30%, var(--search-header-bg, #e5ece8));
-	background-image: linear-gradient(rgba(148, 179, 107, 0.28), rgba(148, 179, 107, 0.28)), var(--search-header-image, none);
+	background-color: var(--search-header-bg, #e5ece8);
+	background-image: linear-gradient(rgba(148, 179, 107, 0.32), rgba(148, 179, 107, 0.32)), var(--search-header-image, none);
 	border-bottom-color: color-mix(in srgb, #94b36b 60%, transparent);
 }
 
 .syslogStatusCardHeader--recovering {
-	background-color: color-mix(in srgb, #ff8f1e 30%, var(--search-header-bg, #e5ece8));
-	background-image: linear-gradient(rgba(255, 143, 30, 0.28), rgba(255, 143, 30, 0.28)), var(--search-header-image, none);
+	background-color: var(--search-header-bg, #e5ece8);
+	background-image: linear-gradient(rgba(255, 143, 30, 0.32), rgba(255, 143, 30, 0.32)), var(--search-header-image, none);
 	border-bottom-color: color-mix(in srgb, #ff8f1e 60%, transparent);
 }
 
 .syslogStatusCardHeader--down {
-	background-color: color-mix(in srgb, #cc0000 32%, var(--search-header-bg, #e5ece8));
-	background-image: linear-gradient(rgba(204, 0, 0, 0.30), rgba(204, 0, 0, 0.30)), var(--search-header-image, none);
+	background-color: var(--search-header-bg, #e5ece8);
+	background-image: linear-gradient(rgba(204, 0, 0, 0.34), rgba(204, 0, 0, 0.34)), var(--search-header-image, none);
 	border-bottom-color: color-mix(in srgb, #cc0000 60%, transparent);
 }
 
