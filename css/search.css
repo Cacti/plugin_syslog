@@ -235,7 +235,7 @@
 .syslogSavedPrompt .syslogSavedNameRow label {
 	font-size: 12px;
 	font-weight: 600;
-	color: #23362f;
+	color: var(--search-text);
 	white-space: nowrap;
 }
 
@@ -244,10 +244,10 @@
 	width: 100%;
 	min-width: 0;
 	padding: 4px 8px;
-	border: 1px solid #cbd8d1;
+	border: 1px solid var(--search-border);
 	border-radius: 5px;
-	background: #fff;
-	color: #23362f;
+	background: var(--search-card);
+	color: var(--search-text);
 }
 
 .syslogSearchBuilder .syslogSearchRow {
@@ -534,6 +534,15 @@
 	background: var(--search-tint);
 }
 
+/* Active (filter panel expanded): ID-level specificity above sets the toggle's
+   own background/border/color and would otherwise swallow .ui-state-active, so
+   paint the active look here from the sampled theme accent. */
+#syslog_form .syslogSearchToggle.ui-state-active {
+	border-color: var(--search-accent);
+	background: var(--search-tint);
+	color: var(--search-accent);
+}
+
 /* Cacti themes set a fixed autocomplete height; short search lists should fit. */
 .ui-autocomplete.syslogSearchSuggestions {
 	height: auto;
@@ -568,8 +577,9 @@
 .syslogQueryActions { display: flex; align-items: flex-end; gap: 6px; padding-top: 4px; }
 .syslogQueryActions .syslogResultsLimit { gap: 0; }
 .syslogQueryActions .syslogResultsLimit label { margin-bottom: 1px; }
-/* The theme paints the primary Search button via its ui-priority-primary class. */
-#syslog_form #go { padding: 6px 22px; font-weight: 600; }
+/* Painted from the sampled theme's header/accent pair (--search-primary /
+   --search-on-primary), falling back to the scope accent before JS has run. */
+#syslog_form #go { background: var(--search-primary, var(--search-accent)); border: 1px solid var(--search-primary, var(--search-accent)); color: var(--search-on-primary, #fff); padding: 6px 22px; font-weight: 600; }
 #syslog_form .syslogSearchRow { border-radius: 4px; }
 #syslog_form .syslogSearchFooter { border: 0; margin: 2px 0 0; padding: 0; }
 .syslogMenu { position: relative; }
@@ -616,11 +626,12 @@
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 .syslogValueFilter { padding: 2px 5px; margin: -2px -5px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
-/* Pills read like GitHub labels: a translucent hue whose text blends with the
-   theme's own text color, so they stay legible on light and dark surfaces. */
+/* Pills read like GitHub labels: a translucent hue carries the identity in the
+   background and border, while the text stays the theme's own foreground color
+   so contrast holds up on both light and dark surfaces. */
 .syslogValueFilter:hover, .syslogValueFilter:focus-visible { border-color: color-mix(in srgb, currentColor 32%, transparent); background: color-mix(in srgb, currentColor 10%, transparent); color: inherit; text-decoration-style: solid; }
-.syslogHostLabel { --pill-hue: #3b82c4; border-color: color-mix(in srgb, var(--pill-hue) 40%, transparent); background: color-mix(in srgb, var(--pill-hue) 18%, transparent); color: color-mix(in srgb, var(--pill-hue) 68%, var(--search-text, currentColor)); text-decoration: none; }
-.syslogProgramLabel { --pill-hue: #8257b5; border-color: color-mix(in srgb, var(--pill-hue) 40%, transparent); background: color-mix(in srgb, var(--pill-hue) 18%, transparent); color: color-mix(in srgb, var(--pill-hue) 68%, var(--search-text, currentColor)); text-decoration: none; }
+.syslogHostLabel { --pill-hue: #3b82c4; border-color: color-mix(in srgb, var(--pill-hue) 48%, transparent); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); color: var(--search-text, currentColor); text-decoration: none; }
+.syslogProgramLabel { --pill-hue: #8257b5; border-color: color-mix(in srgb, var(--pill-hue) 48%, transparent); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); color: var(--search-text, currentColor); text-decoration: none; }
 /* Cacti themes run .button() on every button, so the theme's .ui-button:hover
    paints the message like an editable input; keep it inert. Match the theme's
    selector weight (.ui-button:hover = 0,2,0) and then some. */
@@ -634,7 +645,7 @@
 	color: inherit;
 }
 .syslogMessageOpen:focus-visible, #syslog_message_details button:focus-visible, .syslogMenu > summary:focus-visible { outline: 2px solid #276448; outline-offset: 2px; }
-.syslogSeverity, .syslogFacility { --pill-hue: #8b9690; display: inline-block; border: 1px solid color-mix(in srgb, var(--pill-hue) 40%, transparent); border-radius: 4px; padding: 3px 8px; color: color-mix(in srgb, var(--pill-hue) 68%, var(--search-text, currentColor)); background: color-mix(in srgb, var(--pill-hue) 18%, transparent); font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+.syslogSeverity, .syslogFacility { --pill-hue: #8b9690; display: inline-block; border: 1px solid color-mix(in srgb, var(--pill-hue) 48%, transparent); border-radius: 4px; padding: 3px 8px; color: var(--search-text, currentColor); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); font-size: 12px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
 .syslogSeverity-err, .syslogSeverity-error, .syslogSeverity-emerg, .syslogSeverity-alert, .syslogSeverity-crit { --pill-hue: #e5484d; }
 .syslogSeverity-warning, .syslogSeverity-warn { --pill-hue: #d9a406; }
 .syslogSeverity-info { --pill-hue: #3f9b4b; }
