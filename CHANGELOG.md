@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* dev: Render the Syslog Status tab as a responsive flex grid of theme-aware cards (a Bootstrap-style card layout without Bootstrap) with a differentiated card surface and rounded corners, replacing the stacked Cacti boxes; the card-layout CSS is kept inside the plugin for now and is ready to hold charts per card later
 * bug: Make the Dashboard tab theme-aware so its labels and the empty-state and panel cards follow the active Cacti theme instead of a baked light palette (unreadable on dark themes), order the Add Panel and Dashboard Name dialog buttons so Save sits to the right of Cancel, and rebuild the Syslog Status tab with native Cacti sub-header boxes and cactiTable rows
 * bug: Make the System Logs view theme-aware across the Cacti theme fleet by moving the dark-surface row, label, details, and search-panel palette out of the shared css/search.css and into each dark theme's css/<theme>.css (dark, deepness, midwinter, sunrise), so themes beyond dark and midwinter no longer render light row tints under the theme's light text; correct paper-plane to the light palette to match its light data tables and add css/<theme>.css for the remaining packaged themes (cacti, carrot, hollyberry, raspberry)
 * change: Collapse the System Logs filter panel by default and recoup vertical space with tighter result-row padding and message line-height; a saved expanded preference or an active search error still opens the panel

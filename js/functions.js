@@ -395,6 +395,14 @@ function initSyslogDashboards() {
 	});
 }
 
+/** Sample the live theme onto the Status tab card grid so the cards follow
+ *  whatever Cacti theme is active instead of search.css's light fallbacks. */
+function initSyslogStatus() {
+	$(function() {
+		applySyslogTheme(document.getElementById('syslog_status'));
+	});
+}
+
 function initSyslogSearchDates(container) {
 	container.querySelectorAll('.syslogSearchDate').forEach(function(input) {
 		$(input).datetimepicker({

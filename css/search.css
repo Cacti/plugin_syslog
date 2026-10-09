@@ -721,6 +721,127 @@
 	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) .syslogSearchRemove { grid-column: 4; }
 }
 
+/* Syslog Status cards: a responsive flex grid of theme-aware cards (a
+   Bootstrap-style card layout without Bootstrap). Kept in the plugin for now;
+   intended to move into Cacti core later. Colours follow the sampled theme
+   tokens that js applies to #syslog_status, so the cards differentiate from the
+   page surface on both light and dark themes. */
+#syslog_status.syslogStatusGrid {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	gap: 14px;
+	margin: 10px 4px;
+	font-variant-numeric: tabular-nums;
+}
+
+.syslogStatusCard {
+	box-sizing: border-box;
+	/* grow and shrink from a ~340px basis so cards reflow from several across
+	   on wide screens down to one per row on narrow ones */
+	flex: 1 1 340px;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--search-border, #cbd8d1);
+	border-radius: 10px;
+	/* lift the card off the page surface on both light and dark themes */
+	background: color-mix(in srgb, var(--search-text, #23362f) 4%, var(--search-card, #fff));
+	color: var(--search-text, #23362f);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+	overflow: hidden;
+}
+
+.syslogStatusCardHeader {
+	padding: 10px 14px;
+	border-bottom: 1px solid var(--search-border, #cbd8d1);
+	background: color-mix(in srgb, var(--search-text, #23362f) 7%, var(--search-card, #fff));
+}
+
+.syslogStatusCardTitle {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.syslogStatusCardBody {
+	padding: 4px 12px 10px;
+	overflow-x: auto;
+}
+
+.syslogStatusTable {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.syslogStatusTable th,
+.syslogStatusTable td {
+	padding: 7px 8px;
+	text-align: left;
+	vertical-align: top;
+	overflow-wrap: anywhere;
+}
+
+.syslogStatusTable thead th {
+	font-weight: 600;
+	white-space: nowrap;
+	border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+}
+
+/* identifying first-cell row headers read as normal data, not bold labels */
+.syslogStatusTable tbody th {
+	font-weight: normal;
+}
+
+.syslogStatusTable tbody tr + tr > th,
+.syslogStatusTable tbody tr + tr > td {
+	border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent);
+}
+
+.syslogStatusKv th.syslogStatusKvLabel {
+	width: 45%;
+	font-weight: normal;
+	color: color-mix(in srgb, currentColor 72%, transparent);
+}
+
+.syslogStatusKv td {
+	font-weight: 600;
+}
+
+.syslogStatusRuleDetail {
+	color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+.syslogStatusEmpty {
+	color: color-mix(in srgb, currentColor 65%, transparent);
+	font-style: italic;
+}
+
+.syslogStatusNote {
+	margin: 8px 2px 2px;
+	padding: 8px 10px;
+	border-radius: 6px;
+	border-inline-start: 3px solid var(--search-accent, #276448);
+	background: color-mix(in srgb, var(--search-accent, #276448) 10%, transparent);
+	font-size: 12px;
+}
+
+.syslogStatusNoteLabel {
+	font-weight: 600;
+}
+
+@media (max-width: 600px) {
+	#syslog_status.syslogStatusGrid {
+		gap: 10px;
+	}
+
+	.syslogStatusCard {
+		flex-basis: 100%;
+	}
+}
+
 /* Rule preview ("Test rule") */
 .syslogRuleTestResult {
 	max-height: 420px;
