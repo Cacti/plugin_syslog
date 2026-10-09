@@ -51,24 +51,8 @@
 .syslogLegend .logInfo      { background-color: #3a6e46; }
 .syslogLegend .logDebug     { background-color: #4a534e; }
 
-/* Dark-surface overrides for the scoped Syslog log view and filter panel.
-   Loaded only for this theme, so the rules need no theme-name guard. */
-#syslog_workspace tr.syslogRow { --syslog-tint-even: #2b3530; --syslog-tint-hover: #34443a; }
-#syslog_workspace tr.syslogRow.logEmergency { --syslog-tint: #5c2626; --syslog-tint-even: #552424; --syslog-tint-hover: #663030; }
-#syslog_workspace tr.syslogRow.logAlert { --syslog-tint: #57302a; --syslog-tint-even: #502c27; --syslog-tint-hover: #613832; }
-#syslog_workspace tr.syslogRow.logCritical { --syslog-tint: #533434; --syslog-tint-even: #4c3131; --syslog-tint-hover: #5d3b3b; }
-#syslog_workspace tr.syslogRow.logError { --syslog-tint: #4b393a; --syslog-tint-even: #443436; --syslog-tint-hover: #554144; }
-#syslog_workspace tr.syslogRow.logWarning { --syslog-tint: #54482a; --syslog-tint-even: #4c4127; --syslog-tint-hover: #5e5132; }
-#syslog_workspace tr.syslogRow.logNotice { --syslog-tint: #2e4a3c; --syslog-tint-even: #2a4438; --syslog-tint-hover: #355444; }
-#syslog_workspace tr.syslogRow.logDebug { --syslog-tint: #3b423e; --syslog-tint-even: #363c39; --syslog-tint-hover: #434b46; }
-#syslog_workspace tr.syslogRow td.syslogMeta { color: #bacabd; }
-#syslog_workspace .syslogValueFilter:hover,
-#syslog_workspace .syslogValueFilter:focus-visible { border-color: #70ae85; background: #354f3e; color: #edf3ef; }
-#syslog_workspace .syslogHostLabel { border-color: #526f8a; background: #2f4354; color: #d7e8f7; }
-#syslog_workspace .syslogProgramLabel { border-color: #765d88; background: #473752; color: #eadcf2; }
-#syslog_workspace #syslog_message_details { background: #252d29; color: #edf3ef; }
-#syslog_workspace #syslog_details_raw { background: #303a34; color: #edf3ef; }
-#syslog_form .syslogSearchPanel {
-	--search-surface: #252d29; --search-card: #303a34; --search-text: #edf3ef;
-	--search-muted: #bacabd; --search-border: #596d60; --search-accent: #70ae85; --search-tint: #3a5142;
-}
+/* The scoped Syslog log view and filter panel now derive their surfaces,
+   borders, pills and row tints from the live Cacti theme at runtime
+   (see css/search.css and js/functions.js applySyslogTheme), so no per-theme
+   color overrides belong here; only the status-legend palette above is
+   theme-specific. */
