@@ -520,6 +520,9 @@ function syslogPanelDialogOpen(panelId) {
 		height: $(window).height() - 100,
 		title: dialog.dataset.title,
 		open: function() {
+			// Appended to <body>, outside the form's token scope, so re-sample the
+			// theme onto the dialog to keep it readable in dark themes.
+			applySyslogTheme(this);
 			// The builder renders before .dialog() creates its wrapper, so
 			// suggestion and selectmenu menus appended to <body> stack outside
 			// the modal's focus containment. The dialog would blur them on
@@ -540,6 +543,10 @@ function syslogPanelDialogOpen(panelId) {
 			});
 		},
 		buttons: [
+			{
+				text: dialog.dataset.cancel,
+				click: function() { $(this).dialog('close'); }
+			},
 			{
 				text: dialog.dataset.save,
 				click: function() {
@@ -562,10 +569,6 @@ function syslogPanelDialogOpen(panelId) {
 						syslogDashboardLoad({dashboard_id: syslogDashboard.dashboardId});
 					});
 				}
-			},
-			{
-				text: dialog.dataset.cancel,
-				click: function() { $(this).dialog('close'); }
 			}
 		]
 	});
@@ -585,6 +588,12 @@ if (window.jQuery) window.jQuery(function() {
 	if (!document.getElementById('syslog_dashboard_grid')) {
 		return;
 	}
+
+	// Sample the live Cacti theme onto the dashboard scopes so labels and cards
+	// follow the active theme instead of dashboard.css's light fallback tokens.
+	['syslog_dashboard_form', 'syslog_dashboard_grid', 'syslog_dashboard_empty', 'syslog_dashboard_nopanels'].forEach(function(id) {
+		applySyslogTheme(document.getElementById(id));
+	});
 
 	$('#syslog_dashboard_new').click(function() {
 		syslogDashboardPrompt('', function(name) {
@@ -751,7 +760,13 @@ function syslogDashboardPrompt(name, accept) {
 		appendTo: 'body',
 		width: 420,
 		autoOpen: true,
+		open: function() {
+			// Appended to <body>, outside the form's token scope, so re-sample the
+			// theme onto the prompt to keep it readable in dark themes.
+			applySyslogTheme(this);
+		},
 		buttons: [
+			{text: syslogDashboard.text.cancel, click: function() { $(this).dialog('close'); }},
 			{text: syslogDashboard.text.save, click: function() {
 				var value = input.value.trim();
 				if (!value) {
@@ -760,8 +775,7 @@ function syslogDashboardPrompt(name, accept) {
 				}
 				$(this).dialog('close');
 				accept(value);
-			}},
-			{text: syslogDashboard.text.cancel, click: function() { $(this).dialog('close'); }}
+			}}
 		]
 	});
 }

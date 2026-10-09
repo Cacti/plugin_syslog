@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* bug: Make the Dashboard tab theme-aware so its labels and the empty-state and panel cards follow the active Cacti theme instead of a baked light palette (unreadable on dark themes), order the Add Panel and Dashboard Name dialog buttons so Save sits to the right of Cancel, and rebuild the Syslog Status tab with native Cacti sub-header boxes and cactiTable rows
 * bug: Make the System Logs view theme-aware across the Cacti theme fleet by moving the dark-surface row, label, details, and search-panel palette out of the shared css/search.css and into each dark theme's css/<theme>.css (dark, deepness, midwinter, sunrise), so themes beyond dark and midwinter no longer render light row tints under the theme's light text; correct paper-plane to the light palette to match its light data tables and add css/<theme>.css for the remaining packaged themes (cacti, carrot, hollyberry, raspberry)
 * change: Collapse the System Logs filter panel by default and recoup vertical space with tighter result-row padding and message line-height; a saved expanded preference or an active search error still opens the panel
 * dev: Make the severity-legend chips actually fill the row by giving each chip `box-sizing: border-box; width: 100%; min-width: 0` (so a severity class's leaked width no longer keeps it small) and the legend footer a full-width table wrapper, across every per-theme `css/<theme>.css` and the `css/legend.css` fallback (matching the thold legend)
