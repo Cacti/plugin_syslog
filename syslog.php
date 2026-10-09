@@ -638,7 +638,14 @@ function syslog_status(): void {
 
 	$worker_stats = syslog_worker_stats_get();
 
-	// Renders a label/value pair as an alternating cactiTable row.
+	/**
+	 * Render a label/value pair as an alternating cactiTable row.
+	 *
+	 * @param string $label The row label cell contents.
+	 * @param string $value The row value cell contents.
+	 *
+	 * @return void
+	 */
 	$kv = function(string $label, string $value): void {
 		form_alternate_row('', true);
 		print '<td class="nowrap" style="width:40%;">' . html_escape($label) . '</td>';
