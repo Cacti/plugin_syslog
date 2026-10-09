@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1633,10 +1633,6 @@ msgid "Remote collector receipts"
 msgstr "Đồng bộ hóa quy tắc của trình thu thập dữ liệu từ xa"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "Gửi lần cuối"
@@ -1646,6 +1642,10 @@ msgstr "Gửi lần cuối"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "Sửa đổi lần cuối"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1675,13 +1675,13 @@ msgid "Partition health"
 msgstr "Phân vùng mỗi ngày"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "Bật"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1727,9 +1727,9 @@ msgstr "Tái chế"
 msgid "Recent partition maintenance activity"
 msgstr "Bảng phân vùng"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Chi tiết"
 
 #: syslog.php
 msgid "Outcome"
@@ -1740,9 +1740,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "% d Hồ sơ"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "Chi tiết"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1797,6 +1797,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "Tái chế"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "Tái chế"
 
@@ -1804,10 +1813,6 @@ msgstr "Tái chế"
 #, fuzzy
 msgid "Records handled"
 msgstr "Bản ghi"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1820,6 +1825,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "Xóa"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "% d Hồ sơ"
 
 #: syslog.php
 #, fuzzy
@@ -1850,25 +1869,11 @@ msgid "Report processing"
 msgstr "Tái chế"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "Xóa"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "% d Hồ sơ"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1877,13 +1882,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "Tái chế"
+msgid "Last run"
+msgstr "Gửi lần cuối"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "Gửi lần cuối"
+msgid "Rules processed"
+msgstr "Tái chế"
 
 #: syslog.php
 msgid "Total"
