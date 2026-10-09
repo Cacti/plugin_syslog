@@ -273,13 +273,31 @@ function syslogThemeTokens() {
 	var sample = $('<div class="ui-widget-content"><button class="ui-button ui-widget ui-state-default" type="button"></button><div class="ui-widget-header"></div></div>').hide().appendTo(document.body);
 	var button = sample.find('button');
 	var header = sample.find('.ui-widget-header');
+
+	// Sample the live html_start_box title bar so Status card headers paint with
+	// the active theme's native Cacti table header instead of a generic tint.
+	var box       = $('<div class="cactiTable"><div class="cactiTableTitleRow"><div class="cactiTableTitle"><span></span></div></div></div>').hide().appendTo(document.body);
+	var titleRow  = box.find('.cactiTableTitleRow');
+	var title     = box.find('.cactiTableTitle');
+	var headerBg  = titleRow.css('background-color');
+	var headerImg = titleRow.css('background-image');
+	var headerFg  = title.css('color');
+	var transparent = (!headerBg || /rgba?\([^)]*,\s*0\s*\)/.test(headerBg));
+	if ((!headerImg || headerImg === 'none') && transparent) {
+		headerBg  = header.css('background-color');
+		headerImg = header.css('background-image');
+		headerFg  = header.css('color');
+	}
+
 	var tokens = {
 		'surface': sample.css('background-color'), 'card': sample.css('background-color'),
 		'text': sample.css('color'), 'muted': sample.css('color'),
 		'border': sample.css('border-top-color'), 'accent': button.css('color'),
 		'tint': button.css('background-color'),
-		'primary': header.css('background-color'), 'on-primary': header.css('color')
+		'primary': header.css('background-color'), 'on-primary': header.css('color'),
+		'header-bg': headerBg, 'header-image': headerImg, 'header-fg': headerFg
 	};
+	box.remove();
 	sample.remove();
 	return tokens;
 }
