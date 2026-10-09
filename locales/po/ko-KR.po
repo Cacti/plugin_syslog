@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2025-03-07 14:53-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1557,10 +1557,6 @@ msgid "Remote collector receipts"
 msgstr "원격 데이터 수집기 규칙 동기화"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "마지막 보낸 날짜"
@@ -1570,6 +1566,10 @@ msgstr "마지막 보낸 날짜"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "마지막으로 수정된"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1599,13 +1599,13 @@ msgid "Partition health"
 msgstr "일일 파티션 수"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "활성화"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1651,9 +1651,9 @@ msgstr "재처리"
 msgid "Recent partition maintenance activity"
 msgstr "분할된 테이블"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "상세정보"
 
 #: syslog.php
 msgid "Outcome"
@@ -1664,9 +1664,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d 기록"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "상세정보"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1721,6 +1721,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "재처리"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "재처리"
 
@@ -1728,10 +1737,6 @@ msgstr "재처리"
 #, fuzzy
 msgid "Records handled"
 msgstr "기록"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1744,6 +1749,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "삭제"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d 기록"
 
 #: syslog.php
 #, fuzzy
@@ -1774,25 +1793,11 @@ msgid "Report processing"
 msgstr "재처리"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "삭제"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d 기록"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1801,13 +1806,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "재처리"
+msgid "Last run"
+msgstr "마지막 보낸 날짜"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "마지막 보낸 날짜"
+msgid "Rules processed"
+msgstr "재처리"
 
 #: syslog.php
 msgid "Total"
