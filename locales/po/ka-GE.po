@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2026-09-25 03:18+0000\n"
 "Last-Translator: Ekaterine papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\n"
@@ -1552,10 +1552,6 @@ msgid "Remote collector receipts"
 msgstr ""
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 #| msgid "Last Month"
 msgid "Last Batch Count"
@@ -1566,6 +1562,10 @@ msgstr "ბოლო თვე"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "ბოლო ცვლილება"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1595,13 +1595,13 @@ msgid "Partition health"
 msgstr "დანაყოფი დღეში"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "ჩართვა"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1647,9 +1647,9 @@ msgstr "თავიდან დამუშავება"
 msgid "Recent partition maintenance activity"
 msgstr "დაყოფილი ცხრილი"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "დეტალები"
 
 #: syslog.php
 msgid "Outcome"
@@ -1660,9 +1660,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d ჩანაწერი"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "დეტალები"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1717,6 +1717,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "თავიდან დამუშავება"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "თავიდან დამუშავება"
 
@@ -1724,10 +1733,6 @@ msgstr "თავიდან დამუშავება"
 #, fuzzy
 msgid "Records handled"
 msgstr "ჩანაწერები"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1740,6 +1745,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "წაშლა"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d ჩანაწერი"
 
 #: syslog.php
 #, fuzzy
@@ -1770,25 +1789,11 @@ msgid "Report processing"
 msgstr "თავიდან დამუშავება"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "წაშლა"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d ჩანაწერი"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1797,13 +1802,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "თავიდან დამუშავება"
+msgid "Last run"
+msgstr "ბოლო გაგზავნილი"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "ბოლო გაგზავნილი"
+msgid "Rules processed"
+msgstr "თავიდან დამუშავება"
 
 #: syslog.php
 msgid "Total"
