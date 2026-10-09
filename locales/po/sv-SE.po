@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 11:20-0400\n"
+"POT-Creation-Date: 2026-10-09 15:06-0400\n"
 "PO-Revision-Date: 2026-10-09 15:32+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
@@ -1449,6 +1449,52 @@ msgid "Latest processing run"
 msgstr "Senaste bearbetningskörning"
 
 #: syslog.php
+msgid "Distributed synchronization"
+msgstr "Distribuerad synkronisering"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Kvitton från fjärrdatainsamlare"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Lagring och bevarande"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Partitionsstatus"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Partitionsunderhållsaktivitet"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Senaste partitionsunderhållsaktivitet"
+
+#: syslog.php
+msgid "Collector health"
+msgstr "Insamlarens status"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Parallella arbetsprocesser"
+
+#: syslog.php
+#, fuzzy
+#| msgid "%d Worker Processes"
+msgid "Worker processes"
+msgstr "%d arbetsprocesser"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Bearbetningsfaser"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Regelaktivitet"
+
+#: syslog.php
 msgid "Records processed"
 msgstr "Bearbetade poster"
 
@@ -1475,10 +1521,6 @@ msgstr "Genomsnittlig körtid"
 #: syslog.php
 msgid "Maximum runtime"
 msgstr "Längsta körtid"
-
-#: syslog.php
-msgid "Distributed synchronization"
-msgstr "Distribuerad synkronisering"
 
 #: syslog.php
 msgid "State"
@@ -1513,10 +1555,6 @@ msgid "Last synchronization error"
 msgstr "Senaste synkroniseringsfelet"
 
 #: syslog.php
-msgid "Remote collector receipts"
-msgstr "Kvitton från fjärrdatainsamlare"
-
-#: syslog.php
 msgid "Last Batch Count"
 msgstr "Antal i senaste batchen"
 
@@ -1537,20 +1575,12 @@ msgid "No remote collector records have been received yet."
 msgstr "Inga poster från fjärrdatainsamlare har tagits emot ännu."
 
 #: syslog.php
-msgid "Storage and retention"
-msgstr "Lagring och bevarande"
-
-#: syslog.php
 msgid "Partition maintenance blocked"
 msgstr "Partitionsunderhåll blockerat"
 
 #: syslog.php
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
 msgstr "Partitionsunderhållet har stoppats; skrivningar fortsätter i säkerhetspartitionen dMaxValue."
-
-#: syslog.php
-msgid "Partition health"
-msgstr "Partitionsstatus"
 
 #: syslog.php
 msgid "Date coverage"
@@ -1567,10 +1597,6 @@ msgstr "dMaxValue-rader (uppskattat antal)"
 #: syslog.php
 msgid "dMaxValue size"
 msgstr "Storlek på dMaxValue"
-
-#: syslog.php
-msgid "Partition maintenance activity"
-msgstr "Partitionsunderhållsaktivitet"
 
 #: syslog.php
 msgid "Last attempt"
@@ -1595,10 +1621,6 @@ msgstr "Senaste resultat"
 #: syslog.php
 msgid "Recovery progress"
 msgstr "Återställningsförlopp"
-
-#: syslog.php
-msgid "Recent partition maintenance activity"
-msgstr "Senaste partitionsunderhållsaktivitet"
 
 #: syslog.php syslog_alerts.php syslog_reports.php
 msgid "Details"
@@ -1630,10 +1652,6 @@ msgid "No action required."
 msgstr "Ingen åtgärd krävs."
 
 #: syslog.php
-msgid "Collector health"
-msgstr "Insamlarens status"
-
-#: syslog.php
 msgid "Last received log"
 msgstr "Senast mottagna logg"
 
@@ -1654,22 +1672,12 @@ msgid "Collector warning"
 msgstr "Varning från insamlare"
 
 #: syslog.php
-msgid "Parallel workers"
-msgstr "Parallella arbetsprocesser"
-
-#: syslog.php
 msgid "Worker processes running"
 msgstr "Arbetsprocesser som körs"
 
 #: syslog.php
 msgid "Configured worker processes"
 msgstr "Konfigurerade arbetsprocesser"
-
-#: syslog.php
-#, fuzzy
-#| msgid "%d Worker Processes"
-msgid "Worker processes"
-msgstr "%d arbetsprocesser"
 
 #: syslog.php
 msgid "Hosts resolved"
@@ -1690,10 +1698,6 @@ msgstr "Körtid"
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
 msgstr "Ingen statistik per process har registrerats ännu. Statistik för arbetsprocesser visas efter den första parallella körningen."
-
-#: syslog.php
-msgid "Processing phases"
-msgstr "Bearbetningsfaser"
 
 #: syslog.php
 msgid "Duration"
@@ -1742,10 +1746,6 @@ msgid "No phase timings recorded yet.  Phase timings appear after the next polle
 msgstr "Inga fasers tidsuppgifter har registrerats ännu. Fasernas tidsuppgifter visas efter nästa körning av insamlaren."
 
 #: syslog.php
-msgid "Rule activity"
-msgstr "Regelaktivitet"
-
-#: syslog.php
 msgid "Last run"
 msgstr "Senaste körning"
 
@@ -1768,6 +1768,42 @@ msgstr "Ta bort regler"
 #: syslog.php
 msgid "Fired last run"
 msgstr "Utlöstes vid senaste körningen"
+
+#: syslog.php
+msgid "Show more"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Show All Devices"
+msgid "Show less"
+msgstr "Visa alla enheter"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr ""
+
+#: syslog.php
+msgid "Remove from page"
+msgstr ""
+
+#: syslog.php
+msgid "Drag to reorder card"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown card."
+msgstr "Okänd"
+
+#: syslog.php
+msgid "Add card"
+msgstr ""
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr ""
 
 #: syslog.php
 msgid "Syslog Alert View"
@@ -3269,9 +3305,6 @@ msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller 
 
 #~ msgid "Shift Time Forward"
 #~ msgstr "Växla tiden framåt"
-
-#~ msgid "Show All Devices"
-#~ msgstr "Visa alla enheter"
 
 #~ msgid "Show All Logs"
 #~ msgstr "Visa alla loggar"
