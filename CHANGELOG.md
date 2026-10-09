@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* change: Repaint the Syslog Status card headers with the active theme's native html_start_box title bar (sampled from the live cactiTableTitle at runtime) instead of a flat surface tint so they match Cacti on every theme, widen the card grid from 6 to 8 columns, drop the card corner radius, and fold intropage's good / warning / error palette (#94b36b / #ff8f1e / #cc0000) into the status-coloured header variants
 * feature: Manage the Syslog Status cards like intropage panels: per-card header tools show more / show less (only for cards that support it), open the card in a large dialog, refresh its data in place, or remove it; an "Add card" catalogue lists any cards not on the page and injects them back on demand, and the whole layout (which cards are present, their order and expanded state) is saved per-user in a single settings_user row
 * feature: Let users drag the Syslog Status cards by a header handle to reorder them; the chosen order is saved per-user in the settings_user table and restored on the next visit
 * dev: Give the Syslog Status cards a 6-column span layout: a card rendering API that sets how many of the 6 columns each card occupies (most span 2, while Partition health, Recent partition maintenance activity and Processing phases span 4), reflowing to fewer columns and then a single column as the viewport narrows; also add an optional status-coloured header variant (good / warning / in-trouble) to the card API for callers to flag anomalous cards

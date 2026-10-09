@@ -728,15 +728,15 @@
    page surface on both light and dark themes. */
 #syslog_status.syslogStatusGrid {
 	display: grid;
-	/* a 6-column grid; each card occupies a number of columns via a span class */
-	grid-template-columns: repeat(6, minmax(0, 1fr));
+	/* an 8-column grid; each card occupies a number of columns via a span class */
+	grid-template-columns: repeat(8, minmax(0, 1fr));
 	align-items: start;
 	gap: 14px;
 	margin: 10px 4px;
 	font-variant-numeric: tabular-nums;
 }
 
-/* Column span out of 6 (Bootstrap-like, but 6 columns). Default cards span 2;
+/* Column span out of 8 (Bootstrap-like, but 8 columns). Default cards span 2;
    wide tables span 4. The card rendering API chooses the span per card. */
 .syslogStatusSpan1 { grid-column: span 1; }
 .syslogStatusSpan2 { grid-column: span 2; }
@@ -744,6 +744,8 @@
 .syslogStatusSpan4 { grid-column: span 4; }
 .syslogStatusSpan5 { grid-column: span 5; }
 .syslogStatusSpan6 { grid-column: span 6; }
+.syslogStatusSpan7 { grid-column: span 7; }
+.syslogStatusSpan8 { grid-column: span 8; }
 
 .syslogStatusCard {
 	box-sizing: border-box;
@@ -751,7 +753,6 @@
 	display: flex;
 	flex-direction: column;
 	border: 1px solid var(--search-border, #cbd8d1);
-	border-radius: 10px;
 	/* lift the card off the page surface on both light and dark themes */
 	background: color-mix(in srgb, var(--search-text, #23362f) 4%, var(--search-card, #fff));
 	color: var(--search-text, #23362f);
@@ -763,9 +764,13 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding: 10px 14px;
+	padding: 7px 10px;
 	border-bottom: 1px solid var(--search-border, #cbd8d1);
-	background: color-mix(in srgb, var(--search-text, #23362f) 7%, var(--search-card, #fff));
+	/* paint like the active theme's native html_start_box title bar */
+	background-color: var(--search-header-bg, #e5ece8);
+	background-image: var(--search-header-image, none);
+	background-repeat: repeat-x;
+	color: var(--search-header-fg, var(--search-text, #23362f));
 }
 
 /* Drag handle: grab the card by its header to reorder it. */
@@ -924,18 +929,21 @@
    title keeps the card's own text colour. The card API exposes these; callers
    decide when to apply one. */
 .syslogStatusCardHeader--up {
-	background: color-mix(in srgb, #3f9b4b 22%, var(--search-card, #fff));
-	border-bottom-color: color-mix(in srgb, #3f9b4b 55%, transparent);
+	background-color: color-mix(in srgb, #94b36b 30%, var(--search-header-bg, #e5ece8));
+	background-image: linear-gradient(rgba(148, 179, 107, 0.28), rgba(148, 179, 107, 0.28)), var(--search-header-image, none);
+	border-bottom-color: color-mix(in srgb, #94b36b 60%, transparent);
 }
 
 .syslogStatusCardHeader--recovering {
-	background: color-mix(in srgb, #d9a406 26%, var(--search-card, #fff));
-	border-bottom-color: color-mix(in srgb, #d9a406 60%, transparent);
+	background-color: color-mix(in srgb, #ff8f1e 30%, var(--search-header-bg, #e5ece8));
+	background-image: linear-gradient(rgba(255, 143, 30, 0.28), rgba(255, 143, 30, 0.28)), var(--search-header-image, none);
+	border-bottom-color: color-mix(in srgb, #ff8f1e 60%, transparent);
 }
 
 .syslogStatusCardHeader--down {
-	background: color-mix(in srgb, #e5484d 24%, var(--search-card, #fff));
-	border-bottom-color: color-mix(in srgb, #e5484d 60%, transparent);
+	background-color: color-mix(in srgb, #cc0000 32%, var(--search-header-bg, #e5ece8));
+	background-image: linear-gradient(rgba(204, 0, 0, 0.30), rgba(204, 0, 0, 0.30)), var(--search-header-image, none);
+	border-bottom-color: color-mix(in srgb, #cc0000 60%, transparent);
 }
 
 .syslogStatusCardBody {
@@ -1014,7 +1022,9 @@
 
 	.syslogStatusSpan4,
 	.syslogStatusSpan5,
-	.syslogStatusSpan6 {
+	.syslogStatusSpan6,
+	.syslogStatusSpan7,
+	.syslogStatusSpan8 {
 		grid-column: 1 / -1;
 	}
 }
@@ -1030,7 +1040,9 @@
 	.syslogStatusSpan3,
 	.syslogStatusSpan4,
 	.syslogStatusSpan5,
-	.syslogStatusSpan6 {
+	.syslogStatusSpan6,
+	.syslogStatusSpan7,
+	.syslogStatusSpan8 {
 		grid-column: 1 / -1;
 	}
 }
