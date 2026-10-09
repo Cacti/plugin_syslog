@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 11:20-0400\n"
+"POT-Creation-Date: 2026-10-09 15:06-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
@@ -1529,6 +1529,56 @@ msgid "Latest processing run"
 msgstr ""
 
 #: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Remote collector receipts"
+msgstr "远程数据收集器规则同步"
+
+#: syslog.php
+#, fuzzy
+msgid "Storage and retention"
+msgstr "Syslog保留"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition health"
+msgstr "每天分区"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition maintenance activity"
+msgstr "分区表"
+
+#: syslog.php
+#, fuzzy
+msgid "Recent partition maintenance activity"
+msgstr "分区表"
+
+#: syslog.php
+msgid "Collector health"
+msgstr ""
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Worker processes"
+msgstr "正在重新处理"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr ""
+
+#: syslog.php
+msgid "Rule activity"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Records processed"
 msgstr "正在重新处理"
@@ -1555,10 +1605,6 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
-
-#: syslog.php
-msgid "Distributed synchronization"
 msgstr ""
 
 #: syslog.php
@@ -1599,11 +1645,6 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Remote collector receipts"
-msgstr "远程数据收集器规则同步"
-
-#: syslog.php
-#, fuzzy
 msgid "Last Batch Count"
 msgstr "最后发送的邮件"
 
@@ -1627,22 +1668,12 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Storage and retention"
-msgstr "Syslog保留"
-
-#: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
 msgstr "分区表"
 
 #: syslog.php
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Partition health"
-msgstr "每天分区"
 
 #: syslog.php
 msgid "Date coverage"
@@ -1660,11 +1691,6 @@ msgstr ""
 #: syslog.php
 msgid "dMaxValue size"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Partition maintenance activity"
-msgstr "分区表"
 
 #: syslog.php
 #, fuzzy
@@ -1691,11 +1717,6 @@ msgstr ""
 #, fuzzy
 msgid "Recovery progress"
 msgstr "正在重新处理"
-
-#: syslog.php
-#, fuzzy
-msgid "Recent partition maintenance activity"
-msgstr "分区表"
 
 #: syslog.php syslog_alerts.php syslog_reports.php
 msgid "Details"
@@ -1728,10 +1749,6 @@ msgid "No action required."
 msgstr ""
 
 #: syslog.php
-msgid "Collector health"
-msgstr ""
-
-#: syslog.php
 msgid "Last received log"
 msgstr ""
 
@@ -1754,21 +1771,12 @@ msgid "Collector warning"
 msgstr ""
 
 #: syslog.php
-msgid "Parallel workers"
-msgstr ""
-
-#: syslog.php
 msgid "Worker processes running"
 msgstr ""
 
 #: syslog.php
 msgid "Configured worker processes"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Worker processes"
-msgstr "正在重新处理"
 
 #: syslog.php
 msgid "Hosts resolved"
@@ -1790,10 +1798,6 @@ msgstr ""
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
-msgstr ""
-
-#: syslog.php
-msgid "Processing phases"
 msgstr ""
 
 #: syslog.php
@@ -1847,10 +1851,6 @@ msgid "No phase timings recorded yet.  Phase timings appear after the next polle
 msgstr ""
 
 #: syslog.php
-msgid "Rule activity"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last run"
 msgstr "最后发送的邮件"
@@ -1876,6 +1876,41 @@ msgstr "警报规则"
 
 #: syslog.php
 msgid "Fired last run"
+msgstr ""
+
+#: syslog.php
+msgid "Show more"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Show less"
+msgstr "显示所有设备"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr ""
+
+#: syslog.php
+msgid "Remove from page"
+msgstr ""
+
+#: syslog.php
+msgid "Drag to reorder card"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown card."
+msgstr "未知"
+
+#: syslog.php
+msgid "Add card"
+msgstr ""
+
+#: syslog.php
+msgid "Add a status card…"
 msgstr ""
 
 #: syslog.php
@@ -3557,10 +3592,6 @@ msgstr ""
 
 #~ msgid "Shift Time Forward"
 #~ msgstr "向前移动时间"
-
-#, fuzzy
-#~ msgid "Show All Devices"
-#~ msgstr "显示所有设备"
 
 #~ msgid "Show All Logs"
 #~ msgstr "显示所有日志"
