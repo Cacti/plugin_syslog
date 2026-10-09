@@ -228,6 +228,7 @@ function toggleSyslogSearch(expanded) {
 	if (summary) summary.hidden = expanded;
 	try { localStorage.setItem('syslog.search.collapsed', String(!expanded)); } catch (error) { /* Storage may be disabled. */ }
 	button.setAttribute('aria-expanded', String(expanded));
+	button.classList.toggle('ui-state-active', expanded);
 	button.title = expanded ? button.dataset.hide : button.dataset.show;
 	button.setAttribute('aria-label', button.title);
 	var label = button.querySelector('span');
@@ -265,21 +266,46 @@ function syncSyslogSearchBuilder() {
 	return true;
 }
 
+/** Read the active jQuery UI theme into plugin color tokens, so the scoped
+ *  Syslog surfaces follow whatever Cacti theme is live instead of a baked
+ *  plugin palette. */
+function syslogThemeTokens() {
+	var sample = $('<div class="ui-widget-content"><button class="ui-button ui-widget ui-state-default" type="button"></button></div>').hide().appendTo(document.body);
+	var button = sample.find('button');
+	var tokens = {
+		'surface': sample.css('background-color'), 'card': sample.css('background-color'),
+		'text': sample.css('color'), 'muted': sample.css('color'),
+		'border': sample.css('border-top-color'), 'accent': button.css('color'),
+		'tint': button.css('background-color')
+	};
+	sample.remove();
+	return tokens;
+}
+
+/** True when a sampled surface color is dark, so scoped CSS can flip tint sets. */
+function syslogSurfaceIsDark(color) {
+	var m = /rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/.exec(color || '');
+	if (!m) {
+		return false;
+	}
+	return (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) < 128;
+}
+
+/** Apply the sampled theme tokens (and a light/dark flag) to a scope element. */
+function applySyslogTheme(el) {
+	if (!el) {
+		return;
+	}
+	var tokens = syslogThemeTokens();
+	Object.keys(tokens).forEach(function(key) { el.style.setProperty('--search-' + key, tokens[key]); });
+	el.setAttribute('data-mode', syslogSurfaceIsDark(tokens.surface) ? 'dark' : 'light');
+}
+
 /** Shared-template administration uses the same builder as the log view. */
 function initSyslogTemplates() {
 	var builder = document.getElementById('syslog_template_builder');
 	if (builder) {
-		// Read the active jQuery UI theme rather than imposing a plugin palette.
-		var sample = $('<div class="ui-widget-content"><button class="ui-button ui-widget ui-state-default" type="button"></button></div>').hide().appendTo(document.body);
-		var button = sample.find('button');
-		var tokens = {
-			'surface': sample.css('background-color'), 'card': sample.css('background-color'),
-			'text': sample.css('color'), 'muted': sample.css('color'),
-			'border': sample.css('border-top-color'), 'accent': button.css('color'),
-			'tint': button.css('background-color')
-		};
-		Object.keys(tokens).forEach(function(key) { builder.style.setProperty('--search-' + key, tokens[key]); });
-		sample.remove();
+		applySyslogTheme(builder);
 		initSyslogSearchBuilder(builder);
 	}
 	$('#syslog_template_form').attr('novalidate', 'novalidate').off('submit.syslogTemplates').on('submit.syslogTemplates', function(event) {
@@ -847,6 +873,9 @@ function openSavedSearchDialog(mode) {
 		width: Math.min(1040, $(window).width() - 40),
 		title: mode === 'new' ? text.newTitle : text.editTitle,
 		open: function() {
+			// Dialog is appended to <body>, outside the form's token scope, so
+			// re-sample the theme onto it to keep it readable in dark themes.
+			applySyslogTheme(dialog);
 			// The builder renders before .dialog() creates its wrapper, so
 			// suggestions appended to <body> stack behind the raised dialog;
 			// move them inside the dialog's own stacking context.
@@ -895,9 +924,18 @@ function initSyslogMain(config) {
 	window.pageTab = pageTab;
 
 	$(function() {
+		applySyslogTheme(document.getElementById('syslog_form'));
+		applySyslogTheme(document.getElementById('syslog_workspace'));
 		initSyslogSearchBuilder(document.getElementById('syslog_search_builder'));
 		initSavedSearches();
 		initSyslogCompactSearch();
+
+		// Let the active theme paint the primary action and the filter-edit
+		// toggle, rather than imposing a plugin accent color.
+		$('#go').addClass('ui-priority-primary');
+		var toggle = $('#syslog_search_toggle');
+		toggle.toggleClass('ui-state-active', toggle.attr('aria-expanded') === 'true');
+
 		$('#syslog_form').submit(function(event) {
 			event.preventDefault();
 			event.stopImmediatePropagation();
@@ -928,6 +966,7 @@ function initSyslogMain(config) {
  */
 function initSyslogMessagesDisplay() {
 	$(function() {
+		applySyslogTheme(document.getElementById('syslog_workspace'));
 		// Initialize tooltips for syslog rows
 		$('.syslogRow').tooltip({
 			track: true,
