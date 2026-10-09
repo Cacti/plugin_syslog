@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2022-06-21 05:25+0000\n"
 "Last-Translator: San IPE <sanipe1949@krunsea.com>\n"
 "Language-Team: Turkish <http://translate.cacti.net/projects/cacti/syslog/tr/>\n"
@@ -1558,10 +1558,6 @@ msgid "Remote collector receipts"
 msgstr "Uzak Veri Toplayıcı Kuralları Senkronizasyonu"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "Son Gönderilen"
@@ -1571,6 +1567,10 @@ msgstr "Son Gönderilen"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "Son Düzenleme"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1600,13 +1600,13 @@ msgid "Partition health"
 msgstr "Gün başına bölümleri"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "Etkinleştir"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1652,9 +1652,9 @@ msgstr "Yeniden işle"
 msgid "Recent partition maintenance activity"
 msgstr "Bölümlenmiş Tablo"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Detaylar"
 
 #: syslog.php
 msgid "Outcome"
@@ -1665,9 +1665,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "% d Kayıt"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "Detaylar"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1722,6 +1722,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "Yeniden işle"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "Yeniden işle"
 
@@ -1729,10 +1738,6 @@ msgstr "Yeniden işle"
 #, fuzzy
 msgid "Records handled"
 msgstr "Kayıtlar"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1745,6 +1750,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "silme"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "% d Kayıt"
 
 #: syslog.php
 #, fuzzy
@@ -1775,25 +1794,11 @@ msgid "Report processing"
 msgstr "Yeniden işle"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "silme"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "% d Kayıt"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1802,13 +1807,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "Yeniden işle"
+msgid "Last run"
+msgstr "Son Gönderilen"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "Son Gönderilen"
+msgid "Rules processed"
+msgstr "Yeniden işle"
 
 #: syslog.php
 msgid "Total"
