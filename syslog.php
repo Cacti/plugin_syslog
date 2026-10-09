@@ -1003,6 +1003,10 @@ function syslog_status_layout(): array {
  * @return string A JSON status document.
  */
 function syslog_status_layout_save(): string {
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !function_exists('csrf_check') || !csrf_check(false)) {
+		return (string) json_encode(['error' => __('Invalid request. Please try again.', 'syslog')]);
+	}
+
 	$available = syslog_status_available_cards();
 	$posted    = json_decode(isset_request_var('layout') ? (string) get_nfilter_request_var('layout') : '', true);
 
@@ -1039,6 +1043,10 @@ function syslog_status_layout_save(): string {
  * @return string A JSON document with the card key and rendered HTML.
  */
 function syslog_status_card_ajax(): string {
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !function_exists('csrf_check') || !csrf_check(false)) {
+		return (string) json_encode(['error' => __('Invalid request. Please try again.', 'syslog')]);
+	}
+
 	$key = isset_request_var('card') ? (string) get_nfilter_request_var('card') : '';
 
 	if (!in_array($key, syslog_status_available_cards(), true)) {

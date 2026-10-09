@@ -463,10 +463,18 @@ function syslogStatusBindCard(grid, card) {
 		return;
 	}
 
-	// HTML5 drag only fires when draggable is set before mousedown; arm it from
-	// the handle so the rest of the card stays selectable.
-	handle.addEventListener('mousedown', function() { card.draggable = true; });
-	handle.addEventListener('touchstart', function() { card.draggable = true; }, {passive: true});
+	// Arm HTML5 drag only from the handle, and disarm on release when no drag
+	// began (a plain click/tap) so selecting content elsewhere can't drag the card.
+	var disarm = function() { card.draggable = false; };
+	handle.addEventListener('mousedown', function() {
+		card.draggable = true;
+		document.addEventListener('mouseup', disarm, {once: true});
+	});
+	handle.addEventListener('touchstart', function() {
+		card.draggable = true;
+		document.addEventListener('touchend', disarm, {once: true});
+		document.addEventListener('touchcancel', disarm, {once: true});
+	}, {passive: true});
 
 	// Keyboard-accessible reordering: move the card with the arrow keys.
 	handle.addEventListener('keydown', function(event) {
