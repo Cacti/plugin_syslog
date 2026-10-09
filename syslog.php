@@ -2734,7 +2734,9 @@ function syslog_form_callback(string $form_name, string $classic_sql, string $co
 	$theme = get_selected_theme();
 
 	if ($theme == 'classic' || read_config_option('autocomplete') > 0) {
-		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . '>';
+		$data_on_change = ($on_change != '' ? " data-on-change='" . html_escape($on_change) . "'" : '');
+
+		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . $data_on_change . '>';
 
 		if (!empty($none_entry)) {
 			print "<option value='-2'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>";
@@ -2745,12 +2747,6 @@ function syslog_form_callback(string $form_name, string $classic_sql, string $co
 		html_create_list($form_data, $column_display, $column_id, html_escape((string) $previous_id));
 
 		print '</select>';
-
-		if ($on_change != '') {
-			// JSON_HEX_TAG escapes </script>; the other flags block HTML context escapes.
-			$js_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR;
-			print "<script type='text/javascript'>$(function(){ $('#" . html_escape($form_name) . "').change(function(){ syslogInvokeCallback(" . json_encode($on_change, $js_flags) . "); }); });</script>";
-		}
 	} else {
 		if (empty($previous_id) && $previous_value == '') {
 			$previous_value = $none_entry;

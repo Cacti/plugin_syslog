@@ -1283,6 +1283,12 @@ function initSyslogMain(config) {
 		$('#rows, #refresh, #removal, #grouping').change(function() {
 			applyFilter();
 		});
+
+		// Delegated so classic/autocomplete dropdowns injected via AJAX keep working
+		// without an inline per-select script under nonce-enforced CSP.
+		$(document).off('change.syslogCallback').on('change.syslogCallback', 'select[data-on-change]', function() {
+			syslogInvokeCallback($(this).attr('data-on-change'));
+		});
 	});
 }
 
