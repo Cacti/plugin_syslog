@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
-"PO-Revision-Date: 2026-10-06 08:18+0000\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
+"PO-Revision-Date: 2026-10-09 15:32+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
 "Language: sv-SE\n"
@@ -296,15 +296,13 @@ msgid "Event Report - %s"
 msgstr "Händelserapport - %s"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "Syslog %s Advisor"
 msgid "Syslog Upgrade Advisor"
-msgstr "Syslog %s Rådgivare"
+msgstr "Uppgraderingsrådgivare för Syslog"
 
 #: includes/installer.php
 #, php-format
 msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
-msgstr ""
+msgstr "Uppgradera Syslog från %s till %s? Befintliga meddelanden och regler bevaras. Schemaändringar kan ta tid."
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
@@ -331,10 +329,8 @@ msgid "Database Storage Engine"
 msgstr "Lagringsmotor för databaser"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported."
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr "Lagringsmotorn för de analytiska tabellerna. Endast lagringsmotorerna InnoDB och, för MariaDB, Aria stöds."
+msgstr "Lagringsmotorn för de analytiska tabellerna. Endast InnoDB och, i MariaDB, Aria stöds. Alla alternativ för fjärrdatainsamlare kräver InnoDB; inkompatibla kombinationer kan inte sparas."
 
 #: includes/installer.php
 msgid "InnoDB Storage"
@@ -366,11 +362,11 @@ msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar
 
 #: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
-msgstr ""
+msgstr "Lagra poster på fjärrdatainsamlaren"
 
 #: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
+msgstr "Behåll behandlade meddelanden i fjärrdatainsamlarens syslog-tabell efter att de har levererats till huvuddatasamlaren. När alternativet är inaktiverat behålls poster lokalt bara medan huvuddatasamlaren inte är tillgänglig och tas bort efter bekräftad återställningsleverans."
 
 #: includes/installer.php
 msgid "Retention Policy"
@@ -415,10 +411,8 @@ msgid "The upgrade of the 'main' syslog table can be a very time consuming proce
 msgstr "Uppgraderingen av den \"huvudsakliga\" syslog-tabellen kan vara en mycket tidskrävande process.  Därför rekommenderar vi att du antingen minskar storleken på syslog-tabellen före uppgraderingen eller väljer bakgrundsalternativet</p> Om <p>du väljer bakgrundsalternativet kommer din gamla syslog-tabell att byta namn och en ny syslog-tabell att skapas.  Därefter kommer en uppgraderingsprocess att startas i bakgrunden.  Även denna bakgrundsprocess kan ta ganska lång tid att slutföra.  Dina data kommer dock att bevaras</p> <p>Oavsett vad du väljer kommer alla befintliga borttagnings- och varningsregler att bibehållas under uppgraderingsprocessen.</p> <p>Tryck på <b>\"Upgrade</b> \" för att fortsätta med uppgraderingen, eller <b>\"Cancel\"</b> för att återgå till Plugins-menyn."
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine as it is designed for analytical queries."
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr "Du kan även ange databasens lagringsmotor för de analytiska tabellerna syslog och syslog_remove. Endast lagringsmotorn InnoDB och, för MariaDB, lagringsmotorn Aria stöds. Om du använder MariaDB rekommenderar vi Aria Storage Engine eftersom den är avsedd för analytiska frågor."
+msgstr "Du kan också ange databasens lagringsmotor för de analytiska tabellerna syslog och syslog_remove. Endast lagringsmotorerna InnoDB och, i MariaDB, Aria stöds. Om du använder MariaDB rekommenderas Aria när inga alternativ för fjärrdatainsamlare är aktiverade; alternativ för datainsamlare kräver InnoDB."
 
 #: includes/installer.php
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
@@ -426,7 +420,7 @@ msgstr "Du har flera alternativ att välja mellan när du installerar Syslog. De
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
+msgstr "Aria-lagring är inte tillgänglig när något alternativ för fjärrdatainsamlare är aktiverat. InnoDB har valts."
 
 #: includes/installer.php
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
@@ -807,44 +801,38 @@ msgid "Suppress a notification with the same matched message set for this many m
 msgstr "Undertryck en avisering med samma matchade meddelandeuppsättning under så här många minuter. Värden per regel åsidosätter den här inställningen. Ange 0 för att inaktivera."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
 msgid "Remote Syslog Recovery"
-msgstr "Ta bort Syslog-rapport(er)"
+msgstr "Återställning av fjärr-Syslog"
 
 #: includes/settings.php
 msgid "Maximum Recovery Records Per Execution"
-msgstr ""
+msgstr "Högsta antal återställningsposter per körning"
 
 #: includes/settings.php
 msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
+msgstr "Högsta antal bevarade Syslog-händelser från fjärrsystem som en återställningsarbetare skickar till huvuddatasamlaren per körning. Varje central databastransaktion begränsas fortfarande till 100 poster. Öka gradvis medan du övervakar belastning och låsväntan i huvuddatasamlaren."
 
 #: includes/settings.php
 msgid "Recovery Pause Between Batches"
-msgstr ""
+msgstr "Återställningspaus mellan batchar"
 
 #: includes/settings.php
 msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
+msgstr "Paus mellan varje leveranstransaktion med 100 poster till huvuddatasamlaren. En längre paus minskar belastningen på huvuddatasamlaren, medan en kortare paus snabbare minskar eftersläpningen."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Not paused"
 msgid "No pause"
-msgstr "Inte pausad"
+msgstr "Ingen paus"
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d seconds"
+#, php-format
 msgid "%d milliseconds"
-msgstr "%d sekunder"
+msgstr "%d millisekunder"
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d seconds"
+#, php-format
 msgid "%d second"
-msgstr "%d sekunder"
+msgstr "%d sekund"
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
@@ -1364,7 +1352,7 @@ msgstr "Byt namn på filerna config.php.dist eller config_local.php.dist i syslo
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
-msgstr ""
+msgstr "Aria-lagring kan inte användas när något alternativ för fjärrdatainsamlare är aktiverat. Välj InnoDB eller inaktivera alla alternativ för fjärrdatainsamlare."
 
 #: syslog.php
 msgid "Syslog Viewer"
@@ -1490,79 +1478,63 @@ msgstr "Längsta körtid"
 
 #: syslog.php
 msgid "Distributed synchronization"
-msgstr ""
+msgstr "Distribuerad synkronisering"
 
 #: syslog.php
 msgid "State"
-msgstr ""
+msgstr "Status"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Removed Records"
 msgid "Queued Recovery Records"
-msgstr "Borttagna poster"
+msgstr "Köade återställningsposter"
 
 #: syslog.php
 msgid "Oldest pending"
-msgstr ""
+msgstr "Äldst väntande"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last successful maintenance"
 msgid "Last successful synchronization"
-msgstr "Senaste lyckade underhåll"
+msgstr "Senaste lyckade synkronisering"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Actions"
 msgid "Active"
-msgstr "Åtgärder"
+msgstr "Aktiv"
 
 #: syslog.php
 msgid "Inactive"
-msgstr ""
+msgstr "Inaktiv"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Recovery progress"
 msgid "Recovery worker"
-msgstr "Återställningsförlopp"
+msgstr "Återställningsarbetare"
 
 #: syslog.php
 msgid "Last synchronization error"
-msgstr ""
+msgstr "Senaste synkroniseringsfelet"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Remote Data Collector Rules Sync"
 msgid "Remote collector receipts"
-msgstr "Synkronisering av regler för fjärrdatainsamling"
+msgstr "Kvitton från fjärrdatainsamlare"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Antal i senaste batchen"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Senast mottagna post"
 
 #: syslog.php
 msgid "Remote Poller"
-msgstr ""
+msgstr "Fjärrpollare"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Month"
-msgid "Last Batch Count"
-msgstr "Senaste månaden"
-
-#: syslog.php
-#, fuzzy
-#| msgid "Last received log"
-msgid "Last Record Received"
-msgstr "Senast mottagna logg"
-
-#: syslog.php
-#, fuzzy
-#| msgid "Unknown rule type."
 msgid "Unknown remote poller"
-msgstr "Okänd regeltyp."
+msgstr "Okänd fjärrpollare"
 
 #: syslog.php
 msgid "No remote collector records have been received yet."
-msgstr ""
+msgstr "Inga poster från fjärrdatainsamlare har tagits emot ännu."
 
 #: syslog.php
 msgid "Storage and retention"
@@ -1581,12 +1553,12 @@ msgid "Partition health"
 msgstr "Partitionsstatus"
 
 #: syslog.php
-msgid "Table"
-msgstr "Tabell"
-
-#: syslog.php
 msgid "Date coverage"
 msgstr "Datumtäckning"
+
+#: syslog.php
+msgid "Table"
+msgstr "Tabell"
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1628,9 +1600,9 @@ msgstr "Återställningsförlopp"
 msgid "Recent partition maintenance activity"
 msgstr "Senaste partitionsunderhållsaktivitet"
 
-#: syslog.php
-msgid "When"
-msgstr "När"
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Detaljer"
 
 #: syslog.php
 msgid "Outcome"
@@ -1640,9 +1612,9 @@ msgstr "Resultat"
 msgid "Recovery"
 msgstr "Återställning"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "Detaljer"
+#: syslog.php
+msgid "When"
+msgstr "När"
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1694,16 +1666,22 @@ msgid "Configured worker processes"
 msgstr "Konfigurerade arbetsprocesser"
 
 #: syslog.php
+#, fuzzy
+#| msgid "%d Worker Processes"
+msgid "Worker processes"
+msgstr "%d arbetsprocesser"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Värddatorer med uppslagna namn"
+
+#: syslog.php
 msgid "Process"
 msgstr "Process"
 
 #: syslog.php
 msgid "Records handled"
 msgstr "Hanterade poster"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr "Värddatorer med uppslagna namn"
 
 #: syslog.php
 msgid "Runtime"
@@ -1716,6 +1694,18 @@ msgstr "Ingen statistik per process har registrerats ännu. Statistik för arbet
 #: syslog.php
 msgid "Processing phases"
 msgstr "Bearbetningsfaser"
+
+#: syslog.php
+msgid "Duration"
+msgstr "Varaktighet"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Fas"
+
+#: syslog.php
+msgid "Records"
+msgstr "Poster"
 
 #: syslog.php
 msgid "Partition maintenance"
@@ -1742,36 +1732,26 @@ msgid "Report processing"
 msgstr "Rapportbearbetning"
 
 #: syslog.php
-msgid "Phase"
-msgstr "Fas"
-
-#: syslog.php
-msgid "Duration"
-msgstr "Varaktighet"
-
-#: syslog.php
-msgid "Records"
-msgstr "Poster"
+#, fuzzy
+#| msgid "Slowest phase"
+msgid "slowest"
+msgstr "Långsammaste fas"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
 msgstr "Inga fasers tidsuppgifter har registrerats ännu. Fasernas tidsuppgifter visas efter nästa körning av insamlaren."
 
 #: syslog.php
-msgid "Slowest phase"
-msgstr "Långsammaste fas"
-
-#: syslog.php
 msgid "Rule activity"
 msgstr "Regelaktivitet"
 
 #: syslog.php
-msgid "Rules processed"
-msgstr "Bearbetade regler"
-
-#: syslog.php
 msgid "Last run"
 msgstr "Senaste körning"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Bearbetade regler"
 
 #: syslog.php
 msgid "Total"
