@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2026-10-06 20:43+0000\n"
 "Last-Translator: YU HAO HUANG <mix@b51.tw>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.cacti.net/projects/cacti/syslog/zh_Hant/>\n"
@@ -1663,10 +1663,6 @@ msgid "Remote collector receipts"
 msgstr "遠程數據收集器規則同步"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "最後發送"
@@ -1675,6 +1671,10 @@ msgstr "最後發送"
 #, fuzzy
 msgid "Last Record Received"
 msgstr "最後修改"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1704,13 +1704,13 @@ msgid "Partition health"
 msgstr "每天分區"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "啟用"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1756,9 +1756,10 @@ msgstr "重新處理"
 msgid "Recent partition maintenance activity"
 msgstr "分區表"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+#, fuzzy
+msgid "Details"
+msgstr "詳細資料"
 
 #: syslog.php
 msgid "Outcome"
@@ -1769,10 +1770,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d記錄"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-#, fuzzy
-msgid "Details"
-msgstr "詳細資料"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1827,6 +1827,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "重新處理"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "重新處理"
 
@@ -1834,10 +1843,6 @@ msgstr "重新處理"
 #, fuzzy
 msgid "Records handled"
 msgstr "資料"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1850,6 +1855,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "刪除"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d記錄"
 
 #: syslog.php
 #, fuzzy
@@ -1880,25 +1899,11 @@ msgid "Report processing"
 msgstr "重新處理"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "刪除"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d記錄"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1907,13 +1912,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "重新處理"
+msgid "Last run"
+msgstr "最後發送"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "最後發送"
+msgid "Rules processed"
+msgstr "重新處理"
 
 #: syslog.php
 msgid "Total"
