@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2025-03-07 14:42-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1557,10 +1557,6 @@ msgid "Remote collector receipts"
 msgstr "Απομακρυσμένος συγχρονισμός κανόνων Συλλογής δεδομένων"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "Τελευταία αποστολή"
@@ -1570,6 +1566,10 @@ msgstr "Τελευταία αποστολή"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "Τελευταία τροποποίηση"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1599,13 +1599,13 @@ msgid "Partition health"
 msgstr "Χωρίσματα ανά ημέρα"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "Ενεργοποίηση"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1651,9 +1651,9 @@ msgstr "Επανεπεξεργασία"
 msgid "Recent partition maintenance activity"
 msgstr "Χωρισμένος πίνακας"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Λεπτομέρειες"
 
 #: syslog.php
 msgid "Outcome"
@@ -1664,9 +1664,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d Εγγραφές"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "Λεπτομέρειες"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1721,6 +1721,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "Επανεπεξεργασία"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "Επανεπεξεργασία"
 
@@ -1728,10 +1737,6 @@ msgstr "Επανεπεξεργασία"
 #, fuzzy
 msgid "Records handled"
 msgstr "Μητρώα"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1744,6 +1749,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "Διαγραφή"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d Εγγραφές"
 
 #: syslog.php
 #, fuzzy
@@ -1774,25 +1793,11 @@ msgid "Report processing"
 msgstr "Επανεπεξεργασία"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "Διαγραφή"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d Εγγραφές"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1801,13 +1806,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "Επανεπεξεργασία"
+msgid "Last run"
+msgstr "Τελευταία αποστολή"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "Τελευταία αποστολή"
+msgid "Rules processed"
+msgstr "Επανεπεξεργασία"
 
 #: syslog.php
 msgid "Total"
