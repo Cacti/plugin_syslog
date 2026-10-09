@@ -923,11 +923,16 @@
 	border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent);
 }
 
-/* Optional status-coloured header variants for callers to flag anomalous cards
-   (good / warning / in-trouble). The status hue - matching the severity palette
-   - is mixed over the themed header so it stays readable on light and dark; the
-   title keeps the card's own text colour. The card API exposes these; callers
-   decide when to apply one. */
+/* Header severity variants. Every card header carries exactly one: a neutral
+   grey "no severity" default, or good / warning / in-trouble. A single
+   translucent colour layer is drawn over the sampled native theme header so the
+   strength stays consistent on solid and gradient themes, light and dark. */
+.syslogStatusCardHeader--none {
+	background-color: var(--search-header-bg, #e5ece8);
+	background-image: linear-gradient(rgba(140, 149, 159, 0.20), rgba(140, 149, 159, 0.20)), var(--search-header-image, none);
+	border-bottom-color: color-mix(in srgb, #8c959f 45%, transparent);
+}
+
 .syslogStatusCardHeader--up {
 	background-color: var(--search-header-bg, #e5ece8);
 	background-image: linear-gradient(rgba(148, 179, 107, 0.32), rgba(148, 179, 107, 0.32)), var(--search-header-image, none);

@@ -643,7 +643,8 @@ function syslog_status_format_partition_progress(string $value): string {
  * title, column span (of 8) and whether it supports show-more/less (expandable).
  * A card may also carry an optional 'state' ('up' | 'recovering' | 'down') that
  * syslog_status_render_card() turns into a themed header variant for flagging
- * anomalous cards; it is left unset here for callers to apply as needed.
+ * anomalous cards; left unset, the header renders in the neutral grey ('none')
+ * no-severity style.
  * Availability (some cards exist only on a Main Collector or when distributed
  * synchronization is enabled) is applied by syslog_status_available_cards().
  *
@@ -954,9 +955,13 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 		$classes .= ' syslogStatusCardExpanded';
 	}
 
-	// Optional per-card header status variant for anomalous cards.
-	$state        = isset($def['state']) ? preg_replace('/[^a-z]/', '', strtolower((string) $def['state'])) : '';
-	$header_class = 'syslogStatusCardHeader' . (in_array($state, ['up', 'recovering', 'down'], true) ? ' syslogStatusCardHeader--' . $state : '');
+	// Header severity variant: up / recovering / down, or a neutral grey when the
+	// card carries no severity.
+	$state = isset($def['state']) ? preg_replace('/[^a-z]/', '', strtolower((string) $def['state'])) : '';
+	if (!in_array($state, ['up', 'recovering', 'down'], true)) {
+		$state = 'none';
+	}
+	$header_class = 'syslogStatusCardHeader syslogStatusCardHeader--' . $state;
 
 	return '<section class="' . $classes . '" data-card="' . html_escape($key) . '">'
 		. '<header class="' . $header_class . '">'
