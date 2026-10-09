@@ -805,6 +805,119 @@
 	opacity: 0.5;
 }
 
+/* "Add card" toolbar above the grid. */
+.syslogStatusToolbar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 4px 0;
+}
+
+.syslogStatusToolbarLabel {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--search-text, #23362f);
+}
+
+.syslogStatusAdd {
+	box-sizing: border-box;
+	min-width: 220px;
+	padding: 4px 8px;
+	border: 1px solid var(--search-border, #cbd8d1);
+	border-radius: 7px;
+	background: var(--search-card, #fff);
+	color: var(--search-text, #23362f);
+	font-size: 12px;
+}
+
+/* Per-card header tools: show more/less, maximize, refresh, remove. */
+.syslogStatusCardTools {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	gap: 1px;
+}
+
+.syslogStatusCardTool {
+	padding: 2px 5px;
+	border: 0;
+	border-radius: 4px;
+	background: transparent;
+	color: color-mix(in srgb, currentColor 50%, transparent);
+	font-size: 12px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.syslogStatusCardTool:hover,
+.syslogStatusCardTool:focus-visible {
+	color: currentColor;
+	background: color-mix(in srgb, currentColor 12%, transparent);
+	outline: none;
+}
+
+/* Only the control matching the card's current state is shown. */
+.syslogStatusCard:not(.syslogStatusCardExpanded) .syslogStatusCardTool[data-tool="collapse"],
+.syslogStatusCardExpanded .syslogStatusCardTool[data-tool="expand"] {
+	display: none;
+}
+
+/* Expandable cards clip to a fixed height until "show more"; a fade hints at the
+   clipped content. */
+.syslogStatusCardExpandable:not(.syslogStatusCardExpanded) .syslogStatusCardBody {
+	position: relative;
+	max-height: 210px;
+	overflow: hidden;
+}
+
+.syslogStatusCardExpandable:not(.syslogStatusCardExpanded) .syslogStatusCardBody::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 30px;
+	pointer-events: none;
+	background: linear-gradient(transparent, color-mix(in srgb, var(--search-text, #23362f) 4%, var(--search-card, #fff)));
+}
+
+/* Maximize dialog: reuse the card body typography on the themed dialog surface. */
+.syslogStatusDialog {
+	font-variant-numeric: tabular-nums;
+}
+
+.syslogStatusDialogBody {
+	color: var(--search-text, #23362f);
+}
+
+.syslogStatusDialogBody .syslogStatusTable {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+.syslogStatusDialogBody .syslogStatusTable th,
+.syslogStatusDialogBody .syslogStatusTable td {
+	padding: 8px 10px;
+	text-align: left;
+	vertical-align: top;
+	overflow-wrap: anywhere;
+}
+
+.syslogStatusDialogBody .syslogStatusTable thead th {
+	font-weight: 600;
+	border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+}
+
+.syslogStatusDialogBody .syslogStatusTable tbody th {
+	font-weight: normal;
+}
+
+.syslogStatusDialogBody .syslogStatusTable tbody tr + tr > th,
+.syslogStatusDialogBody .syslogStatusTable tbody tr + tr > td {
+	border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent);
+}
+
 /* Optional status-coloured header variants for callers to flag anomalous cards
    (good / warning / in-trouble). The status hue - matching the severity palette
    - is mixed over the themed header so it stays readable on light and dark; the

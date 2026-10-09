@@ -395,82 +395,111 @@ function initSyslogDashboards() {
 	});
 }
 
-/** Sample the live theme onto the Status tab card grid so the cards follow
- *  whatever Cacti theme is active instead of search.css's light fallbacks. */
+/** Sample the live theme onto the Status tab card grid, enable drag/keyboard
+ *  reordering, the per-card tools (show more/less, maximize, refresh, remove)
+ *  and the "Add card" catalogue. Layout changes persist server-side
+ *  (settings_user) so they survive page revisits. */
+var syslogStatusDragging = null;
+
 function initSyslogStatus() {
 	$(function() {
 		var grid = document.getElementById('syslog_status');
 		if (!grid) {
 			return;
 		}
-		applySyslogTheme(grid);
-		initSyslogStatusReorder(grid);
-	});
-}
 
-/** Drag-to-reorder the Status cards by their header handle, persisting the new
- *  order server-side (settings_user) so it survives page revisits. */
-function initSyslogStatusReorder(grid) {
-	var dragging = null;
+		applySyslogTheme(document.getElementById('syslog_status_panel') || grid);
 
-	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
-		var handle = card.querySelector('.syslogStatusCardDrag');
-		if (!handle) {
-			return;
-		}
+		grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+			syslogStatusBindCard(grid, card);
+		});
 
-		// HTML5 drag only fires when draggable is set before mousedown; arm it
-		// from the handle so the rest of the card stays selectable.
-		handle.addEventListener('mousedown', function() { card.draggable = true; });
-		handle.addEventListener('touchstart', function() { card.draggable = true; }, {passive: true});
-
-		// Keyboard-accessible reordering: move the card with the arrow keys.
-		handle.addEventListener('keydown', function(event) {
-			var back = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
-			var fwd  = event.key === 'ArrowRight' || event.key === 'ArrowDown';
-			if (!back && !fwd) {
+		grid.addEventListener('dragover', function(event) {
+			if (!syslogStatusDragging) {
 				return;
 			}
 			event.preventDefault();
-			if (back && card.previousElementSibling) {
-				grid.insertBefore(card, card.previousElementSibling);
-			} else if (fwd && card.nextElementSibling) {
-				grid.insertBefore(card.nextElementSibling, card);
-			} else {
+			event.dataTransfer.dropEffect = 'move';
+			var before = syslogStatusDragReference(grid, event.clientX, event.clientY);
+			if (before == null) {
+				grid.appendChild(syslogStatusDragging);
+			} else if (before !== syslogStatusDragging) {
+				grid.insertBefore(syslogStatusDragging, before);
+			}
+		});
+
+		// Per-card tool buttons bubble to the grid.
+		$(grid).off('click.syslogstatus').on('click.syslogstatus', '.syslogStatusCardTool', function() {
+			var card = this.closest('.syslogStatusCard');
+			if (!card) {
 				return;
 			}
-			handle.focus();
-			syslogStatusSaveOrder(grid);
-		});
-
-		card.addEventListener('dragstart', function(event) {
-			dragging = card;
-			card.classList.add('syslogStatusCardDragging');
-			event.dataTransfer.effectAllowed = 'move';
-			try { event.dataTransfer.setData('text/plain', card.dataset.card || ''); } catch (error) { /* IE guard */ }
-		});
-
-		card.addEventListener('dragend', function() {
-			card.draggable = false;
-			card.classList.remove('syslogStatusCardDragging');
-			if (dragging) {
-				dragging = null;
-				syslogStatusSaveOrder(grid);
+			switch (this.dataset.tool) {
+				case 'expand':   card.classList.add('syslogStatusCardExpanded'); syslogStatusSaveLayout(grid); break;
+				case 'collapse': card.classList.remove('syslogStatusCardExpanded'); syslogStatusSaveLayout(grid); break;
+				case 'maximize': syslogStatusMaximize(card); break;
+				case 'refresh':  syslogStatusRefreshCard(grid, card); break;
+				case 'remove':   syslogStatusRemoveCard(grid, card); break;
 			}
 		});
-	});
 
-	grid.addEventListener('dragover', function(event) {
-		if (!dragging) {
+		var add = document.getElementById('syslog_status_add');
+		if (add) {
+			$(add).off('change.syslogstatus').on('change.syslogstatus', function() {
+				var key = this.value;
+				this.value = '';
+				if (key) {
+					syslogStatusAddCard(grid, key);
+				}
+			});
+		}
+	});
+}
+
+/** Wire a single card's drag handle (mouse + keyboard) and drag events. */
+function syslogStatusBindCard(grid, card) {
+	var handle = card.querySelector('.syslogStatusCardDrag');
+	if (!handle) {
+		return;
+	}
+
+	// HTML5 drag only fires when draggable is set before mousedown; arm it from
+	// the handle so the rest of the card stays selectable.
+	handle.addEventListener('mousedown', function() { card.draggable = true; });
+	handle.addEventListener('touchstart', function() { card.draggable = true; }, {passive: true});
+
+	// Keyboard-accessible reordering: move the card with the arrow keys.
+	handle.addEventListener('keydown', function(event) {
+		var back = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
+		var fwd  = event.key === 'ArrowRight' || event.key === 'ArrowDown';
+		if (!back && !fwd) {
 			return;
 		}
 		event.preventDefault();
-		event.dataTransfer.dropEffect = 'move';
-		var before = syslogStatusDragReference(grid, event.clientX, event.clientY);
-		if (before == null) {
-			grid.appendChild(dragging);
-		} else if (before !== dragging) {
-			grid.insertBefore(dragging, before);
+		if (back && card.previousElementSibling) {
+			grid.insertBefore(card, card.previousElementSibling);
+		} else if (fwd && card.nextElementSibling) {
+			grid.insertBefore(card.nextElementSibling, card);
+		} else {
+			return;
+		}
+		handle.focus();
+		syslogStatusSaveLayout(grid);
+	});
+
+	card.addEventListener('dragstart', function(event) {
+		syslogStatusDragging = card;
+		card.classList.add('syslogStatusCardDragging');
+		event.dataTransfer.effectAllowed = 'move';
+		try { event.dataTransfer.setData('text/plain', card.dataset.card || ''); } catch (error) { /* IE guard */ }
+	});
+
+	card.addEventListener('dragend', function() {
+		card.draggable = false;
+		card.classList.remove('syslogStatusCardDragging');
+		if (syslogStatusDragging) {
+			syslogStatusDragging = null;
+			syslogStatusSaveLayout(grid);
 		}
 	});
 }
@@ -491,16 +520,117 @@ function syslogStatusDragReference(grid, x, y) {
 	return null;
 }
 
-/** POST the current DOM card order to settings_user via syslog.php. */
-function syslogStatusSaveOrder(grid) {
-	var order = Array.prototype.map.call(grid.querySelectorAll('.syslogStatusCard'), function(card) {
-		return card.dataset.card;
-	}).filter(Boolean);
+/** Add a card from the catalogue: fetch its HTML, append it, persist and refresh
+ *  the "Add" options. */
+function syslogStatusAddCard(grid, key) {
+	$.post('syslog.php', {action: 'status_card', tab: 'status', card: key, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
+		if (!data || !data.html) {
+			return;
+		}
+		var card = syslogStatusParseCard(data.html);
+		if (!card) {
+			return;
+		}
+		grid.appendChild(card);
+		applySyslogTheme(grid);
+		syslogStatusBindCard(grid, card);
+		syslogStatusSaveLayout(grid);
+		syslogStatusSyncAddOptions(grid);
+	});
+}
 
+/** Remove a card from the page and return it to the "Add" catalogue. */
+function syslogStatusRemoveCard(grid, card) {
+	card.parentNode.removeChild(card);
+	syslogStatusSaveLayout(grid);
+	syslogStatusSyncAddOptions(grid);
+}
+
+/** Re-fetch a single card's HTML and swap it in place, keeping expanded state. */
+function syslogStatusRefreshCard(grid, card) {
+	var expanded = card.classList.contains('syslogStatusCardExpanded') ? '1' : '0';
+	$.post('syslog.php', {action: 'status_card', tab: 'status', card: card.dataset.card, expanded: expanded, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
+		if (!data || !data.html) {
+			return;
+		}
+		var fresh = syslogStatusParseCard(data.html);
+		if (!fresh) {
+			return;
+		}
+		card.parentNode.replaceChild(fresh, card);
+		applySyslogTheme(grid);
+		syslogStatusBindCard(grid, fresh);
+	});
+}
+
+/** Open a copy of a card's body in a large modal dialog. */
+function syslogStatusMaximize(card) {
+	var dialog = document.getElementById('syslog_status_dialog');
+	if (!dialog) {
+		return;
+	}
+	var title = card.querySelector('.syslogStatusCardTitle');
+	var body  = card.querySelector('.syslogStatusCardBody');
+	dialog.innerHTML = '<div class="syslogStatusDialogBody">' + (body ? body.innerHTML : '') + '</div>';
+	applySyslogTheme(dialog);
+	$(dialog).dialog({
+		modal: true,
+		appendTo: 'body',
+		width: Math.min(900, $(window).width() - 40),
+		title: title ? title.textContent : '',
+		open: function() { applySyslogTheme(this); }
+	});
+}
+
+/** Parse a card HTML string into its <section> element. */
+function syslogStatusParseCard(html) {
+	var tmp = document.createElement('div');
+	tmp.innerHTML = html;
+	return tmp.querySelector('.syslogStatusCard');
+}
+
+/** Rebuild the "Add" dropdown so it lists only cards not currently on the page. */
+function syslogStatusSyncAddOptions(grid) {
+	var add = document.getElementById('syslog_status_add');
+	if (!add || typeof syslogStatusCatalog === 'undefined') {
+		return;
+	}
+	var present = {};
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		if (card.dataset.card) {
+			present[card.dataset.card] = true;
+		}
+	});
+	while (add.options.length > 1) {
+		add.remove(1);
+	}
+	Object.keys(syslogStatusCatalog).forEach(function(key) {
+		if (!present[key]) {
+			var option = document.createElement('option');
+			option.value = key;
+			option.textContent = syslogStatusCatalog[key];
+			add.appendChild(option);
+		}
+	});
+}
+
+/** POST the current card order and expanded state to settings_user. */
+function syslogStatusSaveLayout(grid) {
+	var order = [];
+	var expanded = {};
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		if (!card.dataset.card) {
+			return;
+		}
+		order.push(card.dataset.card);
+		if (card.classList.contains('syslogStatusCardExpanded')) {
+			expanded[card.dataset.card] = true;
+		}
+	});
 	$.post('syslog.php', {
-		action: 'status_card_order',
+		action: 'status_layout',
 		tab: 'status',
-		order: JSON.stringify(order),
+		layout: JSON.stringify({order: order, expanded: expanded}),
 		__csrf_magic: csrfMagicToken
 	}, null, 'json');
 }
