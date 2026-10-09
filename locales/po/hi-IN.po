@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2025-03-07 14:48-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1557,10 +1557,6 @@ msgid "Remote collector receipts"
 msgstr "दूरस्थ डेटा संग्राहक नियम सिंक्रनाइज़ेशन"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "अंतिम बार भेजा गया"
@@ -1570,6 +1566,10 @@ msgstr "अंतिम बार भेजा गया"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "पिछली मर्तबा परिवर्धित"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1599,13 +1599,13 @@ msgid "Partition health"
 msgstr "प्रति दिन विभाजन"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "सक्षम करें"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1651,9 +1651,9 @@ msgstr "पुन: प्रक्रिया"
 msgid "Recent partition maintenance activity"
 msgstr "विभाजित तालिका"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "विवरण"
 
 #: syslog.php
 msgid "Outcome"
@@ -1664,9 +1664,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d रिकॉर्ड्स"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "विवरण"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1721,6 +1721,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "पुन: प्रक्रिया"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "पुन: प्रक्रिया"
 
@@ -1728,10 +1737,6 @@ msgstr "पुन: प्रक्रिया"
 #, fuzzy
 msgid "Records handled"
 msgstr "रिकॉर्ड"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1744,6 +1749,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "हटाने"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d रिकॉर्ड्स"
 
 #: syslog.php
 #, fuzzy
@@ -1774,25 +1793,11 @@ msgid "Report processing"
 msgstr "पुन: प्रक्रिया"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "हटाने"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d रिकॉर्ड्स"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1801,13 +1806,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "पुन: प्रक्रिया"
+msgid "Last run"
+msgstr "अंतिम बार भेजा गया"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "अंतिम बार भेजा गया"
+msgid "Rules processed"
+msgstr "पुन: प्रक्रिया"
 
 #: syslog.php
 msgid "Total"
