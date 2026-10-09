@@ -531,8 +531,15 @@ function syslogStatusDragReference(grid, x, y) {
 /** Add a card from the catalogue: fetch its HTML, append it, persist and refresh
  *  the "Add" options. */
 function syslogStatusAddCard(grid, key) {
+	if (syslogStatusHasCard(grid, key)) {
+		return;
+	}
 	$.post('syslog.php', {action: 'status_card', tab: 'status', card: key, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
 		if (!data || !data.html) {
+			return;
+		}
+		// A concurrent add for the same card may have landed first.
+		if (syslogStatusHasCard(grid, key)) {
 			return;
 		}
 		var card = syslogStatusParseCard(data.html);
@@ -547,6 +554,17 @@ function syslogStatusAddCard(grid, key) {
 	});
 }
 
+/** Whether a card with the given key is currently on the grid. */
+function syslogStatusHasCard(grid, key) {
+	var present = false;
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		if (card.dataset.card === key) {
+			present = true;
+		}
+	});
+	return present;
+}
+
 /** Remove a card from the page and return it to the "Add" catalogue. */
 function syslogStatusRemoveCard(grid, card) {
 	card.parentNode.removeChild(card);
@@ -558,7 +576,8 @@ function syslogStatusRemoveCard(grid, card) {
 function syslogStatusRefreshCard(grid, card) {
 	var expanded = card.classList.contains('syslogStatusCardExpanded') ? '1' : '0';
 	$.post('syslog.php', {action: 'status_card', tab: 'status', card: card.dataset.card, expanded: expanded, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
-		if (!data || !data.html) {
+		// The card may have been removed or already replaced while we waited.
+		if (!data || !data.html || !card.parentNode) {
 			return;
 		}
 		var fresh = syslogStatusParseCard(data.html);
@@ -622,8 +641,19 @@ function syslogStatusSyncAddOptions(grid) {
 	});
 }
 
-/** POST the current card order and expanded state to settings_user. */
+/** Serialize layout POSTs so rapid actions can't persist out of order: one
+ *  request is in flight at a time, and a save requested meanwhile is coalesced
+ *  into a single follow-up that reads the latest DOM, so the final state wins. */
+var syslogStatusSaveInFlight = false;
+var syslogStatusSaveQueued = false;
+
 function syslogStatusSaveLayout(grid) {
+	if (syslogStatusSaveInFlight) {
+		syslogStatusSaveQueued = true;
+		return;
+	}
+	syslogStatusSaveInFlight = true;
+
 	var order = [];
 	var expanded = {};
 	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
@@ -635,12 +665,19 @@ function syslogStatusSaveLayout(grid) {
 			expanded[card.dataset.card] = true;
 		}
 	});
+
 	$.post('syslog.php', {
 		action: 'status_layout',
 		tab: 'status',
 		layout: JSON.stringify({order: order, expanded: expanded}),
 		__csrf_magic: csrfMagicToken
-	}, null, 'json');
+	}, null, 'json').always(function() {
+		syslogStatusSaveInFlight = false;
+		if (syslogStatusSaveQueued) {
+			syslogStatusSaveQueued = false;
+			syslogStatusSaveLayout(grid);
+		}
+	});
 }
 
 function initSyslogSearchDates(container) {

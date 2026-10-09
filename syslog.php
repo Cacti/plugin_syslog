@@ -641,10 +641,13 @@ function syslog_status_format_partition_progress(string $value): string {
 /**
  * Metadata for every Status card keyed by its stable id, in default order:
  * title, column span (of 6) and whether it supports show-more/less (expandable).
+ * A card may also carry an optional 'state' ('up' | 'recovering' | 'down') that
+ * syslog_status_render_card() turns into a themed header variant for flagging
+ * anomalous cards; it is left unset here for callers to apply as needed.
  * Availability (some cards exist only on a Main Collector or when distributed
  * synchronization is enabled) is applied by syslog_status_available_cards().
  *
- * @return array<string, array{title: string, span: int, expandable: bool}>
+ * @return array<string, array{title: string, span: int, expandable: bool, state?: string}>
  */
 function syslog_status_card_meta(): array {
 	return [
@@ -951,8 +954,12 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 		$classes .= ' syslogStatusCardExpanded';
 	}
 
+	// Optional per-card header status variant for anomalous cards.
+	$state        = isset($def['state']) ? preg_replace('/[^a-z]/', '', strtolower((string) $def['state'])) : '';
+	$header_class = 'syslogStatusCardHeader' . (in_array($state, ['up', 'recovering', 'down'], true) ? ' syslogStatusCardHeader--' . $state : '');
+
 	return '<section class="' . $classes . '" data-card="' . html_escape($key) . '">'
-		. '<header class="syslogStatusCardHeader">'
+		. '<header class="' . $header_class . '">'
 		. '<button type="button" class="syslogStatusCardDrag" aria-label="' . __esc('Drag to reorder card', 'syslog') . '"><i class="fa fa-bars" aria-hidden="true"></i></button>'
 		. '<h2 class="syslogStatusCardTitle">' . html_escape($def['title']) . '</h2>'
 		. '<span class="syslogStatusCardTools">' . $tools . '</span>'
