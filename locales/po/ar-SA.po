@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-07 22:13-0400\n"
+"POT-Creation-Date: 2026-10-09 11:20-0400\n"
 "PO-Revision-Date: 2025-03-07 15:01-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -1557,10 +1557,6 @@ msgid "Remote collector receipts"
 msgstr "مزامنة قواعد جامع البيانات عن بعد"
 
 #: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Last Batch Count"
 msgstr "آخر إرسال"
@@ -1570,6 +1566,10 @@ msgstr "آخر إرسال"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "آخر تعديل"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1599,13 +1599,13 @@ msgid "Partition health"
 msgstr "أقسام في اليوم"
 
 #: syslog.php
+msgid "Date coverage"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "تفعيل"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1651,9 +1651,9 @@ msgstr "إعادة المعالجة"
 msgid "Recent partition maintenance activity"
 msgstr "جدول مقسم"
 
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "التفاصيل"
 
 #: syslog.php
 msgid "Outcome"
@@ -1664,9 +1664,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "سجلات %d"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "التفاصيل"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1721,6 +1721,15 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Worker processes"
+msgstr "إعادة المعالجة"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Process"
 msgstr "إعادة المعالجة"
 
@@ -1728,10 +1737,6 @@ msgstr "إعادة المعالجة"
 #, fuzzy
 msgid "Records handled"
 msgstr "المواد"
-
-#: syslog.php
-msgid "Hosts resolved"
-msgstr ""
 
 #: syslog.php
 msgid "Runtime"
@@ -1744,6 +1749,20 @@ msgstr ""
 #: syslog.php
 msgid "Processing phases"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Duration"
+msgstr "حذف"
+
+#: syslog.php
+msgid "Phase"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "سجلات %d"
 
 #: syslog.php
 #, fuzzy
@@ -1774,25 +1793,11 @@ msgid "Report processing"
 msgstr "إعادة المعالجة"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "حذف"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "سجلات %d"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
-
-#: syslog.php
-msgid "Slowest phase"
 msgstr ""
 
 #: syslog.php
@@ -1801,13 +1806,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Rules processed"
-msgstr "إعادة المعالجة"
+msgid "Last run"
+msgstr "آخر إرسال"
 
 #: syslog.php
 #, fuzzy
-msgid "Last run"
-msgstr "آخر إرسال"
+msgid "Rules processed"
+msgstr "إعادة المعالجة"
 
 #: syslog.php
 msgid "Total"
