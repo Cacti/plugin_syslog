@@ -944,7 +944,7 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 		$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="collapse" aria-label="' . __esc('Show less', 'syslog') . '" title="' . __esc('Show less', 'syslog') . '"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>';
 	}
 	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'syslog') . '" title="' . __esc('Open in a dialog', 'syslog') . '"><i class="fa fa-window-maximize" aria-hidden="true"></i></button>';
-	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-refresh" aria-hidden="true"></i></button>';
+	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-sync-alt" aria-hidden="true"></i></button>';
 	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'syslog') . '" title="' . __esc('Remove from page', 'syslog') . '"><i class="fa fa-times" aria-hidden="true"></i></button>';
 
 	$classes = 'syslogStatusCard syslogStatusSpan' . (int) $def['span'];
@@ -1076,6 +1076,8 @@ function syslog_status_card_ajax(): string {
  * @return void
  */
 function syslog_status(): void {
+	global $page_refresh_interval;
+
 	$layout = syslog_status_layout();
 	$meta   = syslog_status_card_meta();
 	$absent = array_values(array_diff(syslog_status_available_cards(), $layout['order']));
@@ -1089,6 +1091,19 @@ function syslog_status(): void {
 		print '<option value="' . html_escape($key) . '">' . html_escape($meta[$key]['title']) . '</option>';
 	}
 	print '</select>';
+
+	// Auto-refresh interval picker plus a manual refresh, mirroring the log view's
+	// header refresh.  The interval persists through the page's auto-reload.
+	$current_refresh = get_request_var('refresh');
+	print '<div class="syslogStatusRefresh">';
+	print '<label class="syslogStatusToolbarLabel" for="syslog_status_refresh">' . __esc('Refresh', 'syslog') . '</label>';
+	print '<select id="syslog_status_refresh" class="syslogStatusRefreshInterval">';
+	foreach ($page_refresh_interval as $seconds => $display_text) {
+		print '<option value="' . (int) $seconds . '"' . ($current_refresh == $seconds ? ' selected' : '') . '>' . html_escape($display_text) . '</option>';
+	}
+	print '</select>';
+	print '<button type="button" id="syslog_status_refresh_now" class="syslogStatusCardTool syslogStatusRefreshNow" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-sync-alt" aria-hidden="true"></i></button>';
+	print '</div>';
 	print '</div>';
 
 	print '<div id="syslog_status" class="syslogStatusGrid">';
