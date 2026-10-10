@@ -23,7 +23,7 @@
 */
 
 // Plugin CLI scripts are one directory deeper than plugin entry points.
-include(__DIR__ . '/../../include/cli_check.php');
+include(__DIR__ . '/../../../include/cli_check.php');
 require_once(dirname(__DIR__) . '/setup.php');
 require_once(dirname(__DIR__) . '/includes/schema.php');
 require_once(dirname(__DIR__) . '/includes/settings.php');
@@ -31,7 +31,7 @@ require_once(dirname(__DIR__) . '/includes/settings.php');
 $action_requested = false;
 foreach (array_slice($_SERVER['argv'], 1) as $argument) {
 	if (in_array($argument, ['--help', '-h', '-H'], true)) {
-		print "Usage: php upgrade_database.php --repair|--upgrade\n  --repair   Repair missing tables and rerun schema migrations.\n  --upgrade  Upgrade the schema, including missing-table repair.\nBoth switches preserve existing data and preferences.\n";
+		print "Usage: php syslog_schema.php --repair|--upgrade\n  --repair   Repair missing tables and rerun schema migrations.\n  --upgrade  Upgrade the schema, including missing-table repair.\nBoth switches preserve existing data and preferences.\n";
 		exit(0);
 	}
 

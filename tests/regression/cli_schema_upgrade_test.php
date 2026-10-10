@@ -51,7 +51,7 @@ $fixture = sys_get_temp_dir() . '/syslog-cli-' . bin2hex(random_bytes(6));
 mkdir($fixture . '/include', 0700, true);
 mkdir($fixture . '/plugins/syslog/cli', 0700, true);
 mkdir($fixture . '/plugins/syslog/includes', 0700, true);
-copy($root . '/cli/upgrade_database.php', $fixture . '/plugins/syslog/cli/upgrade_database.php');
+copy($root . '/cli/syslog_schema.php', $fixture . '/plugins/syslog/cli/syslog_schema.php');
 file_put_contents($fixture . '/include/cli_check.php', '<?php $config = ["poller_id" => getenv("SYSLOG_TEST_REMOTE") ? 2 : 1];');
 file_put_contents($fixture . '/plugins/syslog/setup.php', <<<'STUB'
 <?php
@@ -78,7 +78,7 @@ STUB
 file_put_contents($fixture . '/plugins/syslog/includes/schema.php', '<?php');
 file_put_contents($fixture . '/plugins/syslog/includes/settings.php', '<?php');
 function run_cli($fixture, $arguments = ['--repair']) {
-	$process = proc_open(array_merge([PHP_BINARY, $fixture . '/plugins/syslog/cli/upgrade_database.php'], $arguments),
+	$process = proc_open(array_merge([PHP_BINARY, $fixture . '/plugins/syslog/cli/syslog_schema.php'], $arguments),
 		[1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
 	$output = stream_get_contents($pipes[1]) . stream_get_contents($pipes[2]);
 	fclose($pipes[1]);
