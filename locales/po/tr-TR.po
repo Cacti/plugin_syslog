@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 15:06-0400\n"
+"POT-Creation-Date: 2026-10-10 09:25-0400\n"
 "PO-Revision-Date: 2022-06-21 05:25+0000\n"
 "Last-Translator: San IPE <sanipe1949@krunsea.com>\n"
 "Language-Team: Turkish <http://translate.cacti.net/projects/cacti/syslog/tr/>\n"
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: includes/functions.php includes/utilities.php
+#: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -1092,6 +1092,17 @@ msgid "A title of up to 128 characters is required."
 msgstr ""
 
 #: lib/syslog_dashboard.php
+#, fuzzy
+#| msgid "Refresh Interval"
+msgid "Refresh Panel"
+msgstr "Yenileme aralığı"
+
+#: lib/syslog_dashboard.php
+#, fuzzy
+msgid "Total messages"
+msgstr "Mesaj"
+
+#: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
 msgstr ""
 
@@ -1377,6 +1388,32 @@ msgstr "Lütfen syslog dizinindeki config.php.dist dosyanızı yeniden adlandır
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr ""
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Syslog Message Match String"
+msgid "Syslog Messages - Past Hour"
+msgstr "Syslog İleti Eşleştirme Dizesi"
+
+#: setup.php
+#, fuzzy
+#| msgid "Message String:"
+msgid "Messages by Severity"
+msgstr "Mesaj dizesi:"
+
+#: setup.php
+#, fuzzy
+#| msgid "All Programs"
+msgid "Top 10 Programs"
+msgstr "Tüm Programlar"
+
+#: setup.php
+msgid "Alert Activity"
 msgstr ""
 
 #: syslog.php
