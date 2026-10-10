@@ -761,6 +761,9 @@
 }
 
 .syslogStatusCardHeader {
+	box-sizing: border-box;
+	/* fixed row height so a tool/handle hover highlight never reflows the header */
+	min-height: 34px;
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -776,8 +779,10 @@
 /* Drag handle: grab the card by its header to reorder it. */
 .syslogStatusCardDrag {
 	flex: 0 0 auto;
+	box-sizing: border-box;
 	padding: 2px 5px;
-	border: 0;
+	/* reserve the border so a hover/focus highlight recolours it instead of resizing the header */
+	border: 1px solid transparent;
 	border-radius: 4px;
 	background: transparent;
 	color: color-mix(in srgb, currentColor 50%, transparent);
@@ -789,6 +794,7 @@
 .syslogStatusCardDrag:hover,
 .syslogStatusCardDrag:focus-visible {
 	color: currentColor;
+	border-color: transparent;
 	background: color-mix(in srgb, currentColor 12%, transparent);
 	outline: none;
 }
@@ -867,8 +873,10 @@
 }
 
 .syslogStatusCardTool {
+	box-sizing: border-box;
 	padding: 2px 5px;
-	border: 0;
+	/* reserve the border so a hover/focus highlight recolours it instead of resizing the header */
+	border: 1px solid transparent;
 	border-radius: 4px;
 	background: transparent;
 	color: color-mix(in srgb, currentColor 50%, transparent);
@@ -880,6 +888,7 @@
 .syslogStatusCardTool:hover,
 .syslogStatusCardTool:focus-visible {
 	color: currentColor;
+	border-color: transparent;
 	background: color-mix(in srgb, currentColor 12%, transparent);
 	outline: none;
 }
