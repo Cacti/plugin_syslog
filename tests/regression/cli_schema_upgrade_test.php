@@ -62,6 +62,7 @@ copy($root . '/cli/syslog_schema.php', $fixture . '/plugins/syslog/cli/syslog_sc
 file_put_contents($fixture . '/include/cli_check.php', '<?php $config = ["poller_id" => getenv("SYSLOG_TEST_REMOTE") ? 2 : 1];');
 file_put_contents($fixture . '/plugins/syslog/setup.php', <<<'STUB'
 <?php
+function cacti_sizeof($value) { return count($value); }
 function syslog_determine_config() { define('SYSLOG_CONFIG', __FILE__); }
 function syslog_connect($repair) { if (!$repair) { throw new Exception('Unsafe connect'); } return true; }
 function read_config_option($name) { return $name === 'syslog_install_days' ? '0' : ''; }
@@ -112,7 +113,10 @@ try {
 	check(run_cli($fixture, ['--upgrade'])[0] === 0, 'CLI upgrade failed');
 	check(run_cli($fixture, ['--repair', '--upgrade'])[0] === 0, 'Combined switches failed');
 	check(run_cli($fixture, [])[0] === 1, 'CLI ran without an explicit action');
-	check(run_cli($fixture, ['--help'])[0] === 0, 'CLI help failed');
+	foreach (['--help', '-h', '-H'] as $flag) {
+		[$status, $output] = run_cli($fixture, [$flag]);
+		check($status === 0 && strpos($output, 'Usage: php syslog_schema.php') !== false, 'CLI help failed: ' . $flag);
+	}
 	check(run_cli($fixture, ['--truncate'])[0] === 1, 'CLI accepted destructive option');
 	putenv('SYSLOG_TEST_MISSING=syslog_dashboards');
 	[$status, $output] = run_cli($fixture);

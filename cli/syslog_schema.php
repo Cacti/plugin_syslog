@@ -25,58 +25,78 @@
 // Suppress automatic Syslog migrations during Cacti bootstrap.
 define('SYSLOG_SCHEMA_CLI', true);
 
-// Plugin CLI scripts are one directory deeper than plugin entry points.
 include(__DIR__ . '/../../../include/cli_check.php');
 require_once(dirname(__DIR__) . '/setup.php');
 require_once(dirname(__DIR__) . '/includes/schema.php');
 require_once(dirname(__DIR__) . '/includes/settings.php');
 
-$action_requested = false;
-$audit = false;
-foreach (array_slice($_SERVER['argv'], 1) as $argument) {
-	if (in_array($argument, ['--help', '-h', '-H'], true)) {
-		print "Usage: php syslog_schema.php --audit|--repair|--upgrade\n  --audit    Report missing tables without changing the schema.\n  --repair   Repair missing tables and rerun schema migrations.\n  --upgrade  Upgrade the schema, including missing-table repair.\nRepair and upgrade preserve existing data and preferences.\n";
-		exit(0);
-	}
+/* process calling arguments */
+$parms = $_SERVER['argv'];
+array_shift($parms);
 
-	if ($argument === '--audit') {
-		$audit = true;
-		continue;
-	}
+$audit   = false;
+$repair  = false;
+$upgrade = false;
 
-	if (in_array($argument, ['--repair', '--upgrade'], true)) {
-		$action_requested = true;
-		continue;
-	}
-
-	fwrite(STDERR, "ERROR: Unknown argument: $argument\n");
+if (!cacti_sizeof($parms)) {
+	fwrite(STDERR, 'ERROR: Specify --audit, --repair or --upgrade. Use --help for usage.' . PHP_EOL);
 	exit(1);
 }
 
-if ($audit && $action_requested) {
-	fwrite(STDERR, "ERROR: --audit cannot be combined with --repair or --upgrade.\n");
-	exit(1);
+foreach ($parms as $arg) {
+	switch ($arg) {
+		case '--audit':
+			$audit = true;
+			break;
+		case '--repair':
+			$repair = true;
+			break;
+		case '--upgrade':
+			$upgrade = true;
+			break;
+		case '--help':
+		case '-H':
+		case '-h':
+			syslog_schema_display_help();
+			exit(0);
+		default:
+			fwrite(STDERR, "ERROR: Unknown argument: $arg" . PHP_EOL);
+			exit(1);
+	}
 }
 
-if (!$action_requested && !$audit) {
-	fwrite(STDERR, "ERROR: Specify --audit, --repair or --upgrade. Use --help for usage.\n");
+if ($audit && ($repair || $upgrade)) {
+	fwrite(STDERR, 'ERROR: --audit cannot be combined with --repair or --upgrade.' . PHP_EOL);
 	exit(1);
 }
 
 syslog_determine_config();
 if (!defined('SYSLOG_CONFIG')) {
-	fwrite(STDERR, "ERROR: Syslog database configuration is missing.\n");
+	fwrite(STDERR, 'ERROR: Syslog database configuration is missing.' . PHP_EOL);
 	exit(1);
 }
 
 $database_last_error = '';
 if (!syslog_connect(true)) {
-	fwrite(STDERR, "ERROR: Unable to connect to the Syslog database.\n");
+	fwrite(STDERR, 'ERROR: Unable to connect to the Syslog database.' . PHP_EOL);
 	exit(1);
 }
 
-if (!$audit) {
-	print "Upgrading Syslog schema and repairing missing tables...\n";
+if ($repair || $upgrade) {
+	$exit_code = syslog_schema_repair_database() ? 0 : 1;
+} else {
+	$exit_code = syslog_schema_report_audit_results() ? 0 : 1;
+}
+
+exit($exit_code);
+
+/**
+ * Repair missing tables and rerun the existing Syslog schema migrations.
+ *
+ * @return bool Whether the migrations and final table audit succeeded.
+ */
+function syslog_schema_repair_database(): bool {
+	print 'Upgrading Syslog schema and repairing missing tables...' . PHP_EOL;
 	syslog_setup_table_new([
 		'upgrade_type' => 'upgrade',
 		'engine'       => read_config_option('syslog_install_engine') ?: 'InnoDB',
@@ -84,37 +104,70 @@ if (!$audit) {
 		'days'         => read_config_option('syslog_install_days')
 	], true);
 	syslog_check_upgrade(true);
-}
 
-$tables = [
-	'syslog', 'syslog_alert', 'syslog_alert_suppression', 'syslog_incoming',
-	'syslog_remove', 'syslog_reports', 'syslog_saved_searches', 'syslog_status',
-	'syslog_programs', 'syslog_hosts', 'syslog_facilities', 'syslog_priorities',
-	'syslog_host_facilities', 'syslog_removed', 'syslog_logs',
-	'syslog_dashboards', 'syslog_dashboard_panels', 'syslog_dashboards_perm',
-	'syslog_saved_searches_perm', 'syslog_device_rule', 'syslog_replication_output',
-	'syslog_replication_recovery'
-];
-if ((int) $config['poller_id'] <= 1) {
-	$tables[] = 'syslog_replication_receipts';
-	$tables[] = 'syslog_replication_collectors';
-}
-
-$missing = [];
-foreach ($tables as $table) {
-	if (!syslog_db_table_exists($table, false)) {
-		$missing[] = $table;
+	$success = syslog_schema_report_audit_results(false);
+	if ($success) {
+		print 'Syslog schema upgrade completed; all required tables exist.' . PHP_EOL;
 	}
-}
-if (!empty($database_last_error)) {
-	fwrite(STDERR, "ERROR: Schema check encountered a database error; check the Cacti log.\n");
-	exit(1);
-}
-if ($missing) {
-	fwrite(STDERR, 'ERROR: Missing tables: ' . implode(', ', $missing) . "\n");
-	exit(1);
+
+	return $success;
 }
 
-print $audit
-	? "Syslog schema audit passed; all required tables exist.\n"
-	: "Syslog schema upgrade completed; all required tables exist.\n";
+/**
+ * Report missing Syslog tables for the configured Data Collector without repairing them.
+ *
+ * @param bool $audit Print the audit success message for read-only runs.
+ *
+ * @return bool Whether all required tables exist and the audit queries succeeded.
+ */
+function syslog_schema_report_audit_results(bool $audit = true): bool {
+	global $config, $database_last_error;
+
+	$tables = [
+		'syslog', 'syslog_alert', 'syslog_alert_suppression', 'syslog_incoming',
+		'syslog_remove', 'syslog_reports', 'syslog_saved_searches', 'syslog_status',
+		'syslog_programs', 'syslog_hosts', 'syslog_facilities', 'syslog_priorities',
+		'syslog_host_facilities', 'syslog_removed', 'syslog_logs',
+		'syslog_dashboards', 'syslog_dashboard_panels', 'syslog_dashboards_perm',
+		'syslog_saved_searches_perm', 'syslog_device_rule', 'syslog_replication_output',
+		'syslog_replication_recovery'
+	];
+	if ((int) $config['poller_id'] <= 1) {
+		$tables[] = 'syslog_replication_receipts';
+		$tables[] = 'syslog_replication_collectors';
+	}
+
+	$missing = [];
+	foreach ($tables as $table) {
+		if (!syslog_db_table_exists($table, false)) {
+			$missing[] = $table;
+		}
+	}
+
+	if (!empty($database_last_error)) {
+		fwrite(STDERR, 'ERROR: Schema check encountered a database error; check the Cacti log.' . PHP_EOL);
+		return false;
+	}
+	if ($missing) {
+		fwrite(STDERR, 'ERROR: Missing tables: ' . implode(', ', $missing) . PHP_EOL);
+		return false;
+	}
+
+	if ($audit) {
+		print 'Syslog schema audit passed; all required tables exist.' . PHP_EOL;
+	}
+	return true;
+}
+
+/**
+ * Display the Syslog schema utility usage and options.
+ *
+ * @return void
+ */
+function syslog_schema_display_help(): void {
+	print 'Usage: php syslog_schema.php --audit|--repair|--upgrade' . PHP_EOL;
+	print '  --audit    Report missing tables without changing the schema.' . PHP_EOL;
+	print '  --repair   Repair missing tables and rerun schema migrations.' . PHP_EOL;
+	print '  --upgrade  Upgrade the schema, including missing-table repair.' . PHP_EOL;
+	print 'Repair and upgrade preserve existing data and preferences.' . PHP_EOL;
+}

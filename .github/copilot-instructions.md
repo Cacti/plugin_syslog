@@ -62,7 +62,8 @@ plugin_syslog/
 - **Read:** `syslog_db_fetch_assoc($sql)`, `syslog_db_fetch_cell($sql)`
 - **Write:** `syslog_db_execute($sql)`, `syslog_db_execute_prepared($sql, $params)`
 - **Connection:** Managed via `$syslog_cnn` global.
-- **Schema:** Tables are defined/updated in `setup.php` (`syslog_setup_table_new`).
+- **Schema:** Table creation is defined in `includes/schema.php` (`syslog_setup_table_new`); upgrade orchestration is in `setup.php`.
+- **New Tables:** Whenever adding a Syslog table, you MUST update `cli/syslog_schema.php` in the same change. Include the table in its required-table list with the correct main/remote collector scope so `--audit` detects its absence, and ensure `--repair` and `--upgrade` can create it. Update the CLI schema regression checks accordingly.
 
 ### Cacti Integration Patterns
 - **Hooks:** Register hooks in `plugin_syslog_install()` in `setup.php`, but
