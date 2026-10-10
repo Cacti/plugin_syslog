@@ -46,6 +46,13 @@ foreach ($queries as $sql) {
 check(!isset($options_saved['syslog_rows']), 'Repair reset an existing preference');
 check(substr_count(implode("\n", $queries), 'INSERT IGNORE INTO') === 4, 'Lookup seeds must tolerate repeat repairs');
 
+// The real configuration hook must not migrate during schema CLI bootstrap.
+define('SYSLOG_SCHEMA_CLI', true);
+function syslog_config_safe() { throw new RuntimeException('CLI bootstrap ran the migration hook'); }
+preg_match('/function syslog_config_insert\(\): void \{.*?^\}/ms', file_get_contents($root . '/includes/settings.php'), $hook);
+eval($hook[0]);
+syslog_config_insert();
+
 // Run the actual CLI in an isolated Cacti layout with bootstrap/schema fixtures.
 $fixture = sys_get_temp_dir() . '/syslog-cli-' . bin2hex(random_bytes(6));
 mkdir($fixture . '/include', 0700, true);
@@ -59,11 +66,13 @@ function syslog_determine_config() { define('SYSLOG_CONFIG', __FILE__); }
 function syslog_connect($repair) { if (!$repair) { throw new Exception('Unsafe connect'); } return true; }
 function read_config_option($name) { return $name === 'syslog_install_days' ? '0' : ''; }
 function syslog_setup_table_new($options, $repair) {
+	if (getenv('SYSLOG_TEST_AUDIT')) { throw new Exception('Audit attempted table repair'); }
 	if (!$repair || $options['upgrade_type'] !== 'upgrade' || $options['days'] !== '0') {
 		throw new Exception('Unsafe repair options');
 	}
 }
 function syslog_check_upgrade($force) {
+	if (getenv('SYSLOG_TEST_AUDIT')) { throw new Exception('Audit attempted migrations'); }
 	if (!$force) { throw new Exception('Migrations were not forced'); }
 	if (getenv('SYSLOG_TEST_SQL_ERROR')) { $GLOBALS['database_last_error'] = 'fixture error'; }
 }
@@ -86,6 +95,19 @@ function run_cli($fixture, $arguments = ['--repair']) {
 	return [proc_close($process), $output];
 }
 try {
+	putenv('SYSLOG_TEST_AUDIT=1');
+	[$status, $output] = run_cli($fixture, ['--audit']);
+	check($status === 0 && strpos($output, 'audit passed') !== false, 'Read-only audit failed');
+	putenv('SYSLOG_TEST_MISSING=syslog_dashboards');
+	[$status, $output] = run_cli($fixture, ['--audit']);
+	check($status === 1 && strpos($output, 'syslog_dashboards') !== false, 'Audit did not report missing table');
+	putenv('SYSLOG_TEST_MISSING');
+	check(run_cli($fixture, ['--audit', '--repair'])[0] === 1, 'Audit accepted repair');
+	check(run_cli($fixture, ['--audit', '--upgrade'])[0] === 1, 'Audit accepted upgrade');
+	putenv('SYSLOG_TEST_REMOTE=1');
+	check(run_cli($fixture, ['--audit'])[0] === 0, 'Remote audit required main-only tables');
+	putenv('SYSLOG_TEST_REMOTE');
+	putenv('SYSLOG_TEST_AUDIT');
 	check(run_cli($fixture)[0] === 0, 'CLI repair failed');
 	check(run_cli($fixture, ['--upgrade'])[0] === 0, 'CLI upgrade failed');
 	check(run_cli($fixture, ['--repair', '--upgrade'])[0] === 0, 'Combined switches failed');
@@ -102,6 +124,7 @@ try {
 	putenv('SYSLOG_TEST_REMOTE=1');
 	check(run_cli($fixture)[0] === 0, 'Remote CLI required main-only tables');
 } finally {
+	putenv('SYSLOG_TEST_AUDIT');
 	putenv('SYSLOG_TEST_REMOTE');
 	putenv('SYSLOG_TEST_SQL_ERROR');
 	putenv('SYSLOG_TEST_MISSING');

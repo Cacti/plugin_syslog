@@ -585,6 +585,10 @@ function syslog_settings_bottom(): void {
  * @return void
  */
 function syslog_config_insert(): void {
+	if (defined('SYSLOG_SCHEMA_CLI') && SYSLOG_SCHEMA_CLI) {
+		return;
+	}
+
 	if (!syslog_config_safe()) {
 		return;
 	}

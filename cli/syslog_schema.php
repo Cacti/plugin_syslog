@@ -22,6 +22,9 @@
  +-------------------------------------------------------------------------+
 */
 
+// Suppress automatic Syslog migrations during Cacti bootstrap.
+define('SYSLOG_SCHEMA_CLI', true);
+
 // Plugin CLI scripts are one directory deeper than plugin entry points.
 include(__DIR__ . '/../../../include/cli_check.php');
 require_once(dirname(__DIR__) . '/setup.php');
@@ -29,10 +32,16 @@ require_once(dirname(__DIR__) . '/includes/schema.php');
 require_once(dirname(__DIR__) . '/includes/settings.php');
 
 $action_requested = false;
+$audit = false;
 foreach (array_slice($_SERVER['argv'], 1) as $argument) {
 	if (in_array($argument, ['--help', '-h', '-H'], true)) {
-		print "Usage: php syslog_schema.php --repair|--upgrade\n  --repair   Repair missing tables and rerun schema migrations.\n  --upgrade  Upgrade the schema, including missing-table repair.\nBoth switches preserve existing data and preferences.\n";
+		print "Usage: php syslog_schema.php --audit|--repair|--upgrade\n  --audit    Report missing tables without changing the schema.\n  --repair   Repair missing tables and rerun schema migrations.\n  --upgrade  Upgrade the schema, including missing-table repair.\nRepair and upgrade preserve existing data and preferences.\n";
 		exit(0);
+	}
+
+	if ($argument === '--audit') {
+		$audit = true;
+		continue;
 	}
 
 	if (in_array($argument, ['--repair', '--upgrade'], true)) {
@@ -44,8 +53,13 @@ foreach (array_slice($_SERVER['argv'], 1) as $argument) {
 	exit(1);
 }
 
-if (!$action_requested) {
-	fwrite(STDERR, "ERROR: Specify --repair or --upgrade. Use --help for usage.\n");
+if ($audit && $action_requested) {
+	fwrite(STDERR, "ERROR: --audit cannot be combined with --repair or --upgrade.\n");
+	exit(1);
+}
+
+if (!$action_requested && !$audit) {
+	fwrite(STDERR, "ERROR: Specify --audit, --repair or --upgrade. Use --help for usage.\n");
 	exit(1);
 }
 
@@ -61,14 +75,16 @@ if (!syslog_connect(true)) {
 	exit(1);
 }
 
-print "Upgrading Syslog schema and repairing missing tables...\n";
-syslog_setup_table_new([
-	'upgrade_type' => 'upgrade',
-	'engine'       => read_config_option('syslog_install_engine') ?: 'InnoDB',
-	'db_type'      => 'part',
-	'days'         => read_config_option('syslog_install_days')
-], true);
-syslog_check_upgrade(true);
+if (!$audit) {
+	print "Upgrading Syslog schema and repairing missing tables...\n";
+	syslog_setup_table_new([
+		'upgrade_type' => 'upgrade',
+		'engine'       => read_config_option('syslog_install_engine') ?: 'InnoDB',
+		'db_type'      => 'part',
+		'days'         => read_config_option('syslog_install_days')
+	], true);
+	syslog_check_upgrade(true);
+}
 
 $tables = [
 	'syslog', 'syslog_alert', 'syslog_alert_suppression', 'syslog_incoming',
@@ -91,12 +107,14 @@ foreach ($tables as $table) {
 	}
 }
 if (!empty($database_last_error)) {
-	fwrite(STDERR, "ERROR: Schema upgrade encountered a database error; check the Cacti log.\n");
+	fwrite(STDERR, "ERROR: Schema check encountered a database error; check the Cacti log.\n");
 	exit(1);
 }
 if ($missing) {
-	fwrite(STDERR, 'ERROR: Tables still missing: ' . implode(', ', $missing) . "\n");
+	fwrite(STDERR, 'ERROR: Missing tables: ' . implode(', ', $missing) . "\n");
 	exit(1);
 }
 
-print "Syslog schema upgrade completed; all required tables exist.\n";
+print $audit
+	? "Syslog schema audit passed; all required tables exist.\n"
+	: "Syslog schema upgrade completed; all required tables exist.\n";
