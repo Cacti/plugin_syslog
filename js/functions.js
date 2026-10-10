@@ -370,6 +370,10 @@ function initSyslogSavedSearches() {
 			importSavedSearch();
 		});
 
+		$('#rows').change(function() {
+			applyFilterSavedSearches();
+		});
+
 		$('#saved_searches').submit(function(event) {
 			event.preventDefault();
 			applyFilterSavedSearches();
@@ -404,6 +408,10 @@ function initSyslogDashboards() {
 
 		$('#import').click(function() {
 			importDashboard();
+		});
+
+		$('#rows').change(function() {
+			applyFilterDashboards();
 		});
 
 		$('#dashboards').submit(function(event) {
@@ -1267,6 +1275,20 @@ function initSyslogMain(config) {
 		$('#export').click(function() {
 			exportRecords();
 		});
+
+		$('#syslog_search_toggle').click(function() {
+			toggleSyslogSearch();
+		});
+
+		$('#rows, #refresh, #removal, #grouping').change(function() {
+			applyFilter();
+		});
+
+		// Delegated so classic/autocomplete dropdowns injected via AJAX keep working
+		// without an inline per-select script under nonce-enforced CSP.
+		$(document).off('change.syslogCallback').on('change.syslogCallback', 'select[data-on-change]', function() {
+			syslogInvokeCallback($(this).attr('data-on-change'));
+		});
 	});
 }
 
@@ -1385,6 +1407,10 @@ function initSyslogRemoval(allowEdits) {
 			importRemoval();
 		});
 
+		$('#enabled, #rows').change(function() {
+			applyFilterRemoval();
+		});
+
 		$('#removal').submit(function(event) {
 			event.preventDefault();
 			applyFilterRemoval();
@@ -1440,6 +1466,10 @@ function initSyslogAlerts() {
 			importAlert();
 		});
 
+		$('#enabled, #rows').change(function() {
+			applyFilterAlerts();
+		});
+
 		$('#alert').submit(function(event) {
 			event.preventDefault();
 			applyFilterAlerts();
@@ -1493,6 +1523,10 @@ function initSyslogReports() {
 
 		$('#import').click(function() {
 			importReport();
+		});
+
+		$('#enabled, #rows').change(function() {
+			applyFilterReports();
 		});
 
 		$('#reports').submit(function(event) {

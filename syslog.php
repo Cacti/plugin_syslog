@@ -2051,8 +2051,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 							aria-label='<?php print __esc('Collapse filters', 'syslog'); ?>'
 							title='<?php print __esc('Collapse filters', 'syslog'); ?>'
 							data-hide='<?php print __esc('Collapse filters', 'syslog'); ?>'
-							data-show='<?php print __esc('Edit filters', 'syslog'); ?>'
-							onclick='toggleSyslogSearch()'><span><?php print __esc('Collapse filters', 'syslog'); ?></span><i class='fa fa-chevron-up' aria-hidden='true'></i></button>
+							data-show='<?php print __esc('Edit filters', 'syslog'); ?>'><span><?php print __esc('Collapse filters', 'syslog'); ?></span><i class='fa fa-chevron-up' aria-hidden='true'></i></button>
 						<input type='hidden' id='search_mode' value='logical'>
 					</div>
 					<div class='syslogSearchSavedBar'>
@@ -2121,7 +2120,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 					</div>
 					<div class='syslogSearchOption syslogResultsLimit'>
 						<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
-						<select id='rows' onChange='applyFilter()' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
+						<select id='rows' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 							foreach ($item_rows as $rows => $display_text) {
@@ -2140,7 +2139,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 					<details id='syslog_view_options' class='syslogMenu'><summary><?php print __esc('View options', 'syslog'); ?></summary><div class='syslogMenuBody syslogSearchOptions'>
 						<div class='syslogSearchOption'>
 							<label for='refresh'><?php print __('Refresh', 'syslog'); ?></label>
-							<select id='refresh' onChange='applyFilter()'>
+							<select id='refresh'>
 								<?php
 								foreach ($page_refresh_interval as $seconds => $display_text) {
 									print "<option value='" . $seconds . "'";
@@ -2157,7 +2156,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
 						<div class='syslogSearchOption'>
 							<label for='removal'><?php print __('Record Type', 'syslog'); ?></label>
-							<select id='removal' onChange='applyFilter()' title='<?php print __esc('Removal Handling', 'syslog'); ?>'>
+							<select id='removal' title='<?php print __esc('Removal Handling', 'syslog'); ?>'>
 								<option value='1'<?php if (get_request_var('removal') == '1') { ?> selected<?php } ?>><?php print __('All Records', 'syslog'); ?></option>
 								<option value='-1'<?php if (get_request_var('removal') == '-1') { ?> selected<?php } ?>><?php print __('Main Records', 'syslog'); ?></option>
 								<option value='2'<?php if (get_request_var('removal') == '2') { ?> selected<?php } ?>><?php print __('Removed Records', 'syslog'); ?></option>
@@ -2169,7 +2168,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
 						<div class='syslogSearchOption'>
 							<label for='grouping'><?php print __('Display', 'syslog'); ?></label>
-							<select id='grouping' onChange='applyFilter()' title='<?php print __esc('Group Duplicate Messages', 'syslog'); ?>'>
+							<select id='grouping' title='<?php print __esc('Group Duplicate Messages', 'syslog'); ?>'>
 								<option value='0'<?php if (get_request_var('grouping') == '0') { ?> selected<?php } ?>><?php print __('Individual Messages', 'syslog'); ?></option>
 								<option value='1'<?php if (get_request_var('grouping') == '1') { ?> selected<?php } ?>><?php print __('Grouped Messages', 'syslog'); ?></option>
 							</select>
@@ -2735,7 +2734,9 @@ function syslog_form_callback(string $form_name, string $classic_sql, string $co
 	$theme = get_selected_theme();
 
 	if ($theme == 'classic' || read_config_option('autocomplete') > 0) {
-		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . ($on_change != '' ? "onChange='$on_change'" : '') . '>';
+		$data_on_change = ($on_change != '' ? " data-on-change='" . html_escape($on_change) . "'" : '');
+
+		print "<select id='" . html_escape($form_name) . "' name='" . html_escape($form_name) . "'" . $class . $data_on_change . '>';
 
 		if (!empty($none_entry)) {
 			print "<option value='-2'" . (empty($previous_value) ? ' selected' : '') . ">$none_entry</option>";
