@@ -729,6 +729,7 @@ function syslog_check_upgrade(): void {
 	}
 
 	syslog_ensure_share_tables();
+	syslog_dashboard_seed_default();
 
 	// don't let this script timeout
 	ini_set('max_execution_time', 0);
@@ -998,6 +999,33 @@ function syslog_check_upgrade(): void {
 		);
 	}
 
+	if (!syslog_db_table_exists('syslog_status', false)) {
+		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
+			`name` varchar(64) NOT NULL default '',
+			`value` text NOT NULL,
+			`updated` int(16) NOT NULL default '0',
+			PRIMARY KEY (`name`))
+			ENGINE=InnoDB
+			ROW_FORMAT=Dynamic");
+	} else {
+		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
+	}
+
+	syslog_create_device_rule_table();
+
+	syslog_create_replication_output_table();
+	syslog_create_replication_receipts_table();
+	syslog_create_replication_collectors_table();
+	syslog_create_replication_recovery_table();
+	syslog_ensure_message_text();
+	syslog_ensure_replication_history_columns();
+}
+
+
+/** Create dashboard structures and seed the shared starter during install/upgrade. */
+function syslog_dashboard_seed_default(): void {
+	global $syslogdb_default;
+
 	if (!syslog_db_table_exists('syslog_dashboards', false)) {
 		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
 			`id` int(10) NOT NULL auto_increment,
@@ -1079,26 +1107,61 @@ function syslog_check_upgrade(): void {
 		);
 	}
 
-	if (!syslog_db_table_exists('syslog_status', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
-			`name` varchar(64) NOT NULL default '',
-			`value` text NOT NULL,
-			`updated` int(16) NOT NULL default '0',
-			PRIMARY KEY (`name`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	} else {
-		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
+	$lock = 'syslog_dashboard_' . md5($syslogdb_default);
+	if (!syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 5)', [$lock])) {
+		return;
 	}
 
-	syslog_create_device_rule_table();
+	try {
+		if (syslog_db_fetch_cell_prepared("SELECT id FROM `$syslogdb_default`.`syslog_dashboards` WHERE hash = ? LIMIT 1", [md5('syslog_default_dashboard')])) {
+			return;
+		}
 
-	syslog_create_replication_output_table();
-	syslog_create_replication_receipts_table();
-	syslog_create_replication_collectors_table();
-	syslog_create_replication_recovery_table();
-	syslog_ensure_message_text();
-	syslog_ensure_replication_history_columns();
+		if (!syslog_db_execute('START TRANSACTION')) {
+			return;
+		}
+
+		$now = time();
+		if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
+			(hash, name, `user`, is_global, `date`, updated) VALUES (?, ?, ?, ?, ?, ?)", [md5('syslog_default_dashboard'), 'default', '', 'on', $now, $now])) {
+			syslog_db_execute('ROLLBACK');
+			return;
+		}
+
+		$id = (int) syslog_db_fetch_insert_id();
+		if ($id <= 0) {
+			syslog_db_execute('ROLLBACK');
+			return;
+		}
+
+		$panels = [
+			[__('Top 10 Hosts', 'syslog'), 'syslog', 'breakdown', 'donut', 'host', 'dashboard'],
+			[__('Syslog Messages - Past Hour', 'syslog'), 'syslog', 'timeseries', 'area', 'host', '3600'],
+			[__('Messages by Severity', 'syslog'), 'syslog', 'breakdown', 'donut', 'priority', 'dashboard'],
+			[__('Top 10 Programs', 'syslog'), 'syslog', 'breakdown', 'donut', 'program', 'dashboard'],
+			[__('Alert Activity', 'syslog'), 'alerts', 'timeseries', 'bar', 'host', 'dashboard']
+		];
+
+		foreach ($panels as $position => [$title, $source, $kind, $chart, $field, $timespan]) {
+			if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
+				(dashboard_id, title, expression, source, removal, kind, chart, field,
+				`interval`, timespan, top_n, width, height, position, `date`)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				[$id, $title, '', $source, 1, $kind, $chart, $field, 'auto', $timespan, 10, 1, 0, $position + 1, $now])) {
+				syslog_db_execute('ROLLBACK');
+				return;
+			}
+		}
+
+		if (!syslog_db_execute('COMMIT')) {
+			syslog_db_execute('ROLLBACK');
+		}
+	} catch (Throwable $error) {
+		syslog_db_execute('ROLLBACK');
+		throw $error;
+	} finally {
+		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
+	}
 }
 
 

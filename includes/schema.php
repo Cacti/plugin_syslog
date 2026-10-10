@@ -686,6 +686,7 @@ syslog_create_replication_recovery_table();
 		ROW_FORMAT=Dynamic");
 
 	syslog_ensure_share_tables();
+	syslog_dashboard_seed_default();
 
 	if (!isset($settings['syslog'])) {
 		syslog_config_settings();

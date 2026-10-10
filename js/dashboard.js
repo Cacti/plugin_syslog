@@ -254,7 +254,10 @@ function syslogDashboardRenderChart(panel, data) {
 		return;
 	}
 
-	if (status) status.hidden = true;
+	if (status) {
+		status.hidden = false;
+		status.textContent = syslogDashboard.text.totalMessages + ': ' + Number(data.total).toLocaleString();
+	}
 
 	var config;
 
