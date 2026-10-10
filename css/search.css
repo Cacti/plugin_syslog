@@ -813,6 +813,7 @@
 /* "Add card" toolbar above the grid. */
 .syslogStatusToolbar {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 8px;
 	margin: 10px 4px 0;
@@ -833,6 +834,28 @@
 	background: var(--search-card, #fff);
 	color: var(--search-text, #23362f);
 	font-size: 12px;
+}
+
+/* Auto-refresh interval + manual refresh, pushed to the right of the toolbar. */
+.syslogStatusRefresh {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-left: auto;
+}
+
+.syslogStatusRefreshInterval {
+	box-sizing: border-box;
+	padding: 4px 8px;
+	border: 1px solid var(--search-border, #cbd8d1);
+	border-radius: 7px;
+	background: var(--search-card, #fff);
+	color: var(--search-text, #23362f);
+	font-size: 12px;
+}
+
+.syslogStatusRefreshNow {
+	font-size: 14px;
 }
 
 /* Per-card header tools: show more/less, maximize, refresh, remove. */

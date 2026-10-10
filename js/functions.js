@@ -479,6 +479,22 @@ function initSyslogStatus() {
 				}
 			});
 		}
+
+		// Changing the interval reloads the page so Cacti's page refresh picks up the
+		// new value; it persists in the session for subsequent auto-reloads.
+		var interval = document.getElementById('syslog_status_refresh');
+		if (interval) {
+			$(interval).off('change.syslogstatus').on('change.syslogstatus', function() {
+				window.location = 'syslog.php?tab=status&refresh=' + encodeURIComponent(this.value);
+			});
+		}
+
+		var refreshNow = document.getElementById('syslog_status_refresh_now');
+		if (refreshNow) {
+			$(refreshNow).off('click.syslogstatus').on('click.syslogstatus', function() {
+				syslogStatusRefreshAll(grid, this);
+			});
+		}
 	});
 }
 
@@ -599,20 +615,58 @@ function syslogStatusRemoveCard(grid, card) {
 }
 
 /** Re-fetch a single card's HTML and swap it in place, keeping expanded state. */
-function syslogStatusRefreshCard(grid, card) {
+function syslogStatusRefreshCard(grid, card, done) {
+	var icon = card.querySelector('.syslogStatusCardTool[data-tool="refresh"] .fa');
+	if (icon) {
+		icon.classList.add('fa-spin');
+	}
+	var settle = function() {
+		if (icon) {
+			icon.classList.remove('fa-spin');
+		}
+		if (done) {
+			done();
+		}
+	};
 	var expanded = card.classList.contains('syslogStatusCardExpanded') ? '1' : '0';
 	$.post('syslog.php', {action: 'status_card', tab: 'status', card: card.dataset.card, expanded: expanded, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
 		// The card may have been removed or already replaced while we waited.
 		if (!data || !data.html || !card.parentNode) {
+			settle();
 			return;
 		}
 		var fresh = syslogStatusParseCard(data.html);
 		if (!fresh) {
+			settle();
 			return;
 		}
 		card.parentNode.replaceChild(fresh, card);
 		applySyslogTheme(grid);
 		syslogStatusBindCard(grid, fresh);
+		if (done) {
+			done();
+		}
+	}).fail(settle);
+}
+
+/** Refresh every card on the page, spinning the toolbar glyph until all land. */
+function syslogStatusRefreshAll(grid, button) {
+	var icon = button ? button.querySelector('.fa') : null;
+	var cards = Array.prototype.slice.call(grid.querySelectorAll('.syslogStatusCard'));
+	var pending = cards.length;
+	if (!pending) {
+		return;
+	}
+	if (icon) {
+		icon.classList.add('fa-spin');
+	}
+	cards.forEach(function(card) {
+		syslogStatusRefreshCard(grid, card, function() {
+			pending--;
+			if (pending <= 0 && icon) {
+				icon.classList.remove('fa-spin');
+			}
+		});
 	});
 }
 
