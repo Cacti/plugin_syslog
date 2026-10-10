@@ -176,6 +176,9 @@ $unmeasured_allowlist = [
 	'syslog_counter.php',
 	'syslog_process.php',
 	'syslog_recovery.php',
+	// CLI bootstrap and top-level execution require Cacti; behavior is checked
+	// by tests/regression/cli_schema_upgrade_test.php in an isolated CLI fixture.
+	'cli/syslog_schema.php',
 	// Setup modules are loaded by Cacti hook paths rather than directly by the
 	// isolated Pest bootstrap. Their behavior is covered by targeted tests, but
 	// they are intentionally absent from Clover's source list.

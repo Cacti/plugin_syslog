@@ -829,7 +829,7 @@ function syslog_upgrade_create_permission_realms(): bool {
 }
 
 /** Upgrade the Syslog schema and permissions at install/upgrade time. */
-function syslog_check_upgrade(): bool {
+function syslog_check_upgrade(bool $force = false): bool {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade, $syslog_cnn;
 
 	require_once(__DIR__ . '/includes/schema.php');
@@ -864,7 +864,7 @@ function syslog_check_upgrade(): bool {
 
 	$version = plugin_syslog_version();
 	$installed = db_fetch_cell_prepared('SELECT version FROM plugin_config WHERE directory = ?', ['syslog']);
-	if ($installed !== false && version_compare((string) $installed, $version['version'], '>=')) {
+	if (!$force && $installed !== false && version_compare((string) $installed, $version['version'], '>=')) {
 		syslog_notice_traditional_tables(true);
 		include_once($config['base_path'] . '/lib/poller.php');
 		api_plugin_replicate_config();

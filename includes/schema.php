@@ -771,6 +771,8 @@ syslog_create_replication_recovery_table();
 
 /** Complete an interrupted install or upgrade without dropping existing data. */
 function syslog_ensure_table_structures(): bool {
+	global $config;
+
 	require_once(__DIR__ . '/settings.php');
 
 	$tables = [
@@ -778,9 +780,12 @@ function syslog_ensure_table_structures(): bool {
 		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
 		'syslog_hosts', 'syslog_facilities', 'syslog_priorities', 'syslog_host_facilities',
 		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
-		'syslog_replication_output', 'syslog_replication_receipts',
-		'syslog_replication_collectors', 'syslog_replication_recovery'
+		'syslog_replication_output', 'syslog_replication_recovery'
 	];
+	if ((int) $config['poller_id'] <= 1) {
+		$tables[] = 'syslog_replication_receipts';
+		$tables[] = 'syslog_replication_collectors';
+	}
 	$rebuilt = false;
 
 	foreach ($tables as $table) {
