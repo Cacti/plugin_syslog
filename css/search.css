@@ -810,6 +810,10 @@
 	font-size: 13px;
 	font-weight: 600;
 	line-height: 1.3;
+	/* keep the title to one line so a long title (or a width change mid-drag) never reflows the header */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .syslogStatusCardDragging {
