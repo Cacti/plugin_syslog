@@ -83,7 +83,7 @@ it('includes the Remote Data Collector options in the install advisor and saves 
 	expect(strpos($setup, 'syslog_install_storage_engine('))->not->toBeFalse();
 	$compatibility_check = strpos($update, 'if (!syslog_install_storage_engine_is_compatible(');
 	$settings_save       = strpos($update, 'set_config_option($option', $compatibility_check);
-	$table_setup         = strpos($update, 'syslog_setup_table_new($options)', $compatibility_check);
+	$table_setup         = strpos($update, 'syslog_setup_table_new($options, $syslog_exists', $compatibility_check);
 
 	expect($compatibility_check)->not->toBeFalse();
 	expect($settings_save)->toBeGreaterThan($compatibility_check);

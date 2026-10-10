@@ -21,7 +21,9 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Syslog status-legend palette for the paper-plane (dark surface) theme. */
+/* Syslog status-legend palette for the paper-plane theme. Its page chrome is
+   dark, but the data tables render on a light surface, so this uses the light
+   palette and the scoped log view keeps the search.css light defaults. */
 
 .syslogLegend {
 	display: grid;
@@ -31,19 +33,22 @@
 }
 
 .syslogLegend .syslogLegendItem {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
 	text-align: center;
 	white-space: nowrap;
 	padding: 4px 6px;
 	border-radius: 3px;
-	color: #edf3ef;
+	color: #ffffff;
 	font-size: 11px;
 }
 
-.syslogLegend .logEmergency { background-color: #8a2f2f; }
-.syslogLegend .logCritical  { background-color: #863a3c; }
-.syslogLegend .logAlert     { background-color: #8f4339; }
-.syslogLegend .logError     { background-color: #8a5244; }
-.syslogLegend .logWarning   { background-color: #86682f; }
-.syslogLegend .logNotice    { background-color: #35607f; }
-.syslogLegend .logInfo      { background-color: #3a6e46; }
-.syslogLegend .logDebug     { background-color: #4a534e; }
+.syslogLegend .logEmergency { background-color: #8e1f18; }
+.syslogLegend .logCritical  { background-color: #a5281f; }
+.syslogLegend .logAlert     { background-color: #b23a2f; }
+.syslogLegend .logError     { background-color: #c0483c; }
+.syslogLegend .logWarning   { background-color: #9c5d0a; }
+.syslogLegend .logNotice    { background-color: #2f6fa8; }
+.syslogLegend .logInfo      { background-color: #2f7d3a; }
+.syslogLegend .logDebug     { background-color: #6c7a72; }

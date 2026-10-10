@@ -48,7 +48,10 @@ it('creates and replicates device rules for remote collectors', function () {
 	$setup      = plugin_test_read_source('setup.php');
 
 	expect($schema)->toContain('CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_device_rule`');
-	expect($setup)->toContain('syslog_create_device_rule_table();');
+	expect(substr($schema, strpos($schema, 'function syslog_setup_table_new'),
+		strpos($schema, 'function syslog_ensure_table_structures') - strpos($schema, 'function syslog_setup_table_new')))
+		->toContain('syslog_create_device_rule_table();');
+	expect($setup)->not->toContain('syslog_create_device_rule_table();');
 	expect($processing)
 		->toContain("replicate_out_table(\$rcnn_id, \$tdata, 'syslog_device_rule', \$remote_poller_id)")
 		->toContain("db_fetch_assoc('SELECT * FROM syslog_device_rule')")

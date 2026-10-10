@@ -160,6 +160,11 @@ foreach ($clover->xpath('//file') as $file) {
  * Empty by default; add entries per repository as the need arises.
  */
 $unmeasured_allowlist = [
+	// Directory index redirects run at the top level and send HTTP headers.
+	'cli/index.php',
+	'contrib/index.php',
+	'includes/index.php',
+	'lib/index.php',
 	// Web and CLI entry points: each chdir()s and includes auth.php (or runs
 	// at the top level) before defining anything, so they cannot be loaded
 	// into the isolated unit process. Their only coverage-relevant content is
@@ -176,6 +181,9 @@ $unmeasured_allowlist = [
 	'syslog_counter.php',
 	'syslog_process.php',
 	'syslog_recovery.php',
+	// CLI bootstrap and top-level execution require Cacti; behavior is checked
+	// by tests/regression/cli_schema_upgrade_test.php in an isolated CLI fixture.
+	'cli/syslog_schema.php',
 	// Setup modules are loaded by Cacti hook paths rather than directly by the
 	// isolated Pest bootstrap. Their behavior is covered by targeted tests, but
 	// they are intentionally absent from Clover's source list.

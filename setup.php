@@ -59,12 +59,11 @@ function plugin_syslog_install() {
 	api_plugin_register_hook('syslog', 'config_arrays',         'syslog_config_arrays',        'includes/settings.php');
 	api_plugin_register_hook('syslog', 'draw_navigation_text',  'syslog_draw_navigation_text', 'includes/navigation.php');
 	api_plugin_register_hook('syslog', 'config_settings',       'syslog_config_settings',      'includes/settings.php');
-	api_plugin_register_hook('syslog', 'settings_bottom',       'syslog_settings_bottom',      'includes/settings.php', 1);
+	api_plugin_register_hook('syslog', 'settings_bottom',       'syslog_settings_bottom',      'includes/settings.php', true);
 	api_plugin_register_hook('syslog', 'top_header_tabs',       'syslog_show_tab',             'includes/navigation.php');
 	api_plugin_register_hook('syslog', 'top_graph_header_tabs', 'syslog_show_tab',             'includes/navigation.php');
 	api_plugin_register_hook('syslog', 'poller_bottom',         'syslog_poller_bottom',        'includes/processing.php');
 	api_plugin_register_hook('syslog', 'graph_buttons',         'syslog_graph_buttons',        'includes/navigation.php');
-	api_plugin_register_hook('syslog', 'config_insert',         'syslog_config_insert',        'includes/settings.php');
 	api_plugin_register_hook('syslog', 'utilities_list',        'syslog_utilities_list',       'includes/utilities.php');
 	api_plugin_register_hook('syslog', 'utilities_action',      'syslog_utilities_action',     'includes/utilities.php');
 
@@ -77,7 +76,6 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
-	api_plugin_register_realm('syslog', 'syslog_administrator.php', 'Syslog Administrator', 1);
 
 	if (isset_request_var('install')) {
 		if (!$bg_inprocess) {
@@ -153,15 +151,13 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 		db_execute('DELETE FROM plugin_realms WHERE plugin="syslog"');
 		db_execute('DELETE FROM plugin_db_changes WHERE plugin="syslog"');
 		db_execute('DELETE FROM plugin_hooks WHERE name="syslog"');
-	} elseif (isset($options['upgrade_type'])) {
-		if ($options['upgrade_type'] == 'truncate') {
-			syslog_setup_table_new($options);
-		}
 	} else {
-		syslog_setup_table_new($options);
+		syslog_setup_table_new($options, $syslog_exists && ($options['upgrade_type'] ?? '') !== 'truncate');
 	}
 
-	set_config_option('syslog_retention', $options['days']);
+	if (isset($options['days'])) {
+		set_config_option('syslog_retention', $options['days']);
+	}
 }
 
 /**
@@ -231,11 +227,18 @@ function plugin_syslog_check_config(): bool {
 		return false;
 	}
 
-	if (api_plugin_installed('flowview')) {
-		syslog_check_upgrade();
+	$version = plugin_syslog_version();
+	$installed = db_fetch_cell_prepared('SELECT version FROM plugin_config WHERE directory = ?', ['syslog']);
+	if (get_current_page() === 'plugins.php' && get_nfilter_request_var('mode') === 'enable' &&
+		$installed !== false && isset($version['version']) && version_compare((string) $installed, $version['version'], '<') &&
+		!isset_request_var('syslog_upgrade_confirm')) {
+		require_once(__DIR__ . '/includes/installer.php');
+		syslog_upgrade_advisor((string) $installed, $version['version']);
 	}
 
-	return true;
+	require_once(__DIR__ . '/includes/settings.php');
+	syslog_upgrade_hook_module_paths();
+	return syslog_check_upgrade();
 }
 
 /**
@@ -246,11 +249,44 @@ function plugin_syslog_check_config(): bool {
 function plugin_syslog_upgrade(): bool {
 	require_once(__DIR__ . '/includes/settings.php');
 
-	// Here we will upgrade to the newest version
-	api_plugin_register_hook('syslog', 'settings_bottom', 'syslog_settings_bottom', 'includes/settings.php', 1);
+	syslog_upgrade_hook_module_paths();
 	syslog_check_upgrade();
 
 	return false;
+}
+
+/** Move existing Cacti hook rows from the old setup.php facade to their modules. */
+function syslog_upgrade_hook_module_paths(): void {
+	$hooks = [
+		'config_arrays'         => ['syslog_config_arrays', 'includes/settings.php'],
+		'draw_navigation_text'  => ['syslog_draw_navigation_text', 'includes/navigation.php'],
+		'config_settings'       => ['syslog_config_settings', 'includes/settings.php'],
+		'settings_bottom'       => ['syslog_settings_bottom', 'includes/settings.php'],
+		'top_header_tabs'       => ['syslog_show_tab', 'includes/navigation.php'],
+		'top_graph_header_tabs' => ['syslog_show_tab', 'includes/navigation.php'],
+		'poller_bottom'         => ['syslog_poller_bottom', 'includes/processing.php'],
+		'graph_buttons'         => ['syslog_graph_buttons', 'includes/navigation.php'],
+		'config_insert'         => ['syslog_config_insert', 'includes/settings.php'],
+		'utilities_list'        => ['syslog_utilities_list', 'includes/utilities.php'],
+		'utilities_action'      => ['syslog_utilities_action', 'includes/utilities.php'],
+		'replicate_out'         => ['syslog_replicate_out', 'includes/processing.php']
+	];
+	$registered = db_fetch_assoc_prepared('SELECT hook FROM plugin_hooks WHERE name = ? AND file = ?', ['syslog', 'setup.php']);
+	if (!is_array($registered) || !$registered) {
+		return;
+	}
+	$modules = [];
+	foreach ($registered as $row) {
+		if (isset($hooks[$row['hook']])) {
+			[$function, $file] = $hooks[$row['hook']];
+			db_execute_prepared('UPDATE plugin_hooks SET `function` = ?, file = ? WHERE name = ? AND hook = ? AND file = ?', [$function, $file, 'syslog', $row['hook'], 'setup.php']);
+			$modules[$file] = true;
+		}
+	}
+
+	foreach (array_keys($modules) as $file) {
+		require_once(__DIR__ . '/' . $file);
+	}
 }
 
 /**
@@ -373,16 +409,6 @@ function syslog_connect(): bool {
 			}
 		}
 
-		if ($connected && !syslog_db_table_exists('syslog') && api_plugin_is_enabled('syslog')) {
-			cacti_log('Setting Up Database Tables Since they do not exist', false, 'SYSLOG');
-
-			if (!isset($syslog_install_options)) {
-				$syslog_install_options = [];
-			}
-
-			require_once(__DIR__ . '/includes/schema.php');
-			syslog_setup_table_new($syslog_install_options);
-		}
 	}
 
 	return $connected;
@@ -394,8 +420,6 @@ function syslog_connect(): bool {
  * @return void
  */
 function syslog_upgrade_saved_search_realm(): void {
-	global $user_auth_realm_filenames;
-
 	$admin = null;
 	$template = null;
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
@@ -423,15 +447,8 @@ function syslog_upgrade_saved_search_realm(): void {
 			return;
 		}
 		$template = $admin;
-		api_plugin_replicate_config();
 	}
 
-	// A legacy standalone realm retains its grants. Administrators can also
-	// access Templates, without granting legacy template users other admin pages.
-	// Update the already-loaded map so the repair works on this request too.
-	if ($template['id'] == $admin['id'] || api_plugin_user_realm_auth('syslog_alerts.php')) {
-		$user_auth_realm_filenames['syslog_saved_searches.php'] = (int) $admin['id'] + 100;
-	}
 }
 
 /**
@@ -440,8 +457,6 @@ function syslog_upgrade_saved_search_realm(): void {
  * @return void
  */
 function syslog_upgrade_dashboard_realm(): void {
-	global $user_auth_realm_filenames;
-
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (is_array($realms)) {
@@ -460,10 +475,6 @@ function syslog_upgrade_dashboard_realm(): void {
 				[$realm['file'] . ',syslog_dashboards.php', $realm['id'], 'syslog'])) {
 				return;
 			}
-			api_plugin_replicate_config();
-
-			// Update the already-loaded map so the repair works on this request too.
-			$user_auth_realm_filenames['syslog_dashboards.php'] = (int) $realm['id'] + 100;
 
 			return;
 		}
@@ -472,7 +483,6 @@ function syslog_upgrade_dashboard_realm(): void {
 
 /** Give Rule Administrators access to device alert rules. */
 function syslog_upgrade_device_rule_realm(): void {
-	global $user_auth_realm_filenames;
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 	if (!is_array($realms)) {
 		return;
@@ -487,9 +497,7 @@ function syslog_upgrade_device_rule_realm(): void {
 			if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?', [implode(',', $files), $realm['id'], 'syslog'])) {
 				return;
 			}
-			api_plugin_replicate_config();
 		}
-		$user_auth_realm_filenames['syslog_device_rules.php'] = (int) $realm['id'] + 100;
 		return;
 	}
 }
@@ -506,8 +514,6 @@ function syslog_upgrade_device_rule_realm(): void {
  * @return void
  */
 function syslog_upgrade_rule_permissions(): void {
-	global $user_auth_realm_filenames;
-
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 
 	if (!is_array($realms)) {
@@ -528,14 +534,12 @@ function syslog_upgrade_rule_permissions(): void {
 			'syslog_dashboards.php'
 		]));
 		$files[] = 'syslog_rule_administrator.php';
+		$files[] = 'syslog_device_rules.php';
 
 		if (!db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?',
 			[implode(',', $files), $realm['id'], 'syslog'])) {
 			return;
 		}
-
-		api_plugin_replicate_config();
-		$user_auth_realm_filenames['syslog_rule_administrator.php'] = (int) $realm['id'] + 100;
 
 		return;
 	}
@@ -552,11 +556,9 @@ function syslog_upgrade_rule_permissions(): void {
  * @return bool Whether duplicate repair succeeded.
  */
 function syslog_upgrade_consolidate_rule_realms(): bool {
-	$changed = false;
-
 	foreach (['Rule Viewer', 'Rule Administrator'] as $display) {
 		$realms = db_fetch_assoc_prepared('SELECT id, file FROM plugin_realms WHERE plugin = ? AND display = ? ORDER BY id', ['syslog', $display]);
-		$files = $display === 'Rule Viewer' ? 'syslog_alerts.php,syslog_removal.php,syslog_reports.php' : 'syslog_rule_administrator.php';
+		$files = $display === 'Rule Viewer' ? 'syslog_alerts.php,syslog_removal.php,syslog_reports.php' : 'syslog_rule_administrator.php,syslog_device_rules.php';
 
 		if (!is_array($realms) || !$realms || (count($realms) === 1 && $realms[0]['file'] === $files)) {
 			continue;
@@ -587,12 +589,114 @@ function syslog_upgrade_consolidate_rule_realms(): bool {
 			db_rollback_transaction();
 			return false;
 		}
-		$changed = true;
+	}
+	return true;
+}
+
+/** Replace synthetic role inheritance with explicit Cacti realm grants. */
+function syslog_upgrade_explicit_realm_grants(): bool {
+	$realms = db_fetch_assoc_prepared('SELECT id, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
+	if (!is_array($realms)) {
+		return false;
 	}
 
-	if ($changed) {
-		api_plugin_replicate_config();
+	$ids = [];
+	foreach ($realms as $realm) {
+		$ids[$realm['display']][] = (int) $realm['id'] + 100;
 	}
+	$viewer = $ids['Rule Viewer'][0] ?? 0;
+	$administrator = $ids['Rule Administrator'][0] ?? 0;
+	$umbrella = $ids['Syslog Administrator'] ?? [];
+	if (!$viewer || !$administrator || !db_begin_transaction()) {
+		return false;
+	}
+
+	$source_ids = array_merge([$viewer, $administrator], $umbrella);
+	$placeholders = implode(',', array_fill(0, count($source_ids), '?'));
+	$direct = db_fetch_assoc_prepared("SELECT user_id, realm_id FROM user_auth_realm WHERE realm_id IN ($placeholders)", $source_ids);
+	$groups = db_fetch_assoc_prepared("SELECT group_id, realm_id FROM user_auth_group_realm WHERE realm_id IN ($placeholders)", $source_ids);
+	if (!is_array($direct) || !is_array($groups)) {
+		db_rollback_transaction();
+		return false;
+	}
+	$direct_grants = [];
+	$group_grants = [];
+	foreach ($direct as $grant) {
+		$direct_grants[(int) $grant['user_id']][(int) $grant['realm_id']] = true;
+	}
+	foreach ($groups as $grant) {
+		$group_grants[(int) $grant['group_id']][(int) $grant['realm_id']] = true;
+	}
+	$affected = [];
+	foreach ($direct_grants as $user_id => $granted) {
+		if (array_intersect($umbrella, array_keys($granted)) || (isset($granted[$administrator]) && !isset($granted[$viewer]))) {
+			$affected[$user_id] = true;
+		}
+	}
+	foreach ($group_grants as $group_id => $granted) {
+		if (array_intersect($umbrella, array_keys($granted)) || (isset($granted[$administrator]) && !isset($granted[$viewer]))) {
+			$members = db_fetch_assoc_prepared('SELECT user_id FROM user_auth_group_members WHERE group_id = ?', [$group_id]);
+			if (!is_array($members)) {
+				db_rollback_transaction();
+				return false;
+			}
+			foreach ($members as $member) {
+				$affected[(int) $member['user_id']] = true;
+			}
+		}
+	}
+
+	$grants = [$administrator => [$viewer]];
+	$all_pages = [];
+	foreach ($ids as $display => $realm_ids) {
+		if ($display !== 'Syslog Administrator') {
+			$all_pages = array_merge($all_pages, $realm_ids);
+		}
+	}
+	foreach ($umbrella as $source) {
+		$grants[$source] = array_values(array_unique($all_pages));
+	}
+
+	foreach ($grants as $source => $targets) {
+		foreach ($targets as $target) {
+			foreach (['user_auth_realm' => 'user_id', 'user_auth_group_realm' => 'group_id'] as $table => $owner) {
+				if (!db_execute_prepared("INSERT IGNORE INTO $table ($owner, realm_id) SELECT $owner, ? FROM $table WHERE realm_id = ?", [$target, $source])) {
+					db_rollback_transaction();
+					return false;
+				}
+			}
+		}
+	}
+
+	foreach ($umbrella as $source) {
+		foreach (['user_auth_realm', 'user_auth_group_realm'] as $table) {
+			if (!db_execute_prepared("DELETE FROM $table WHERE realm_id = ?", [$source])) {
+				db_rollback_transaction();
+				return false;
+			}
+		}
+		if (!db_execute_prepared('DELETE FROM plugin_realms WHERE plugin = ? AND id = ?', ['syslog', $source - 100])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
+	foreach (array_keys($affected) as $user_id) {
+		if (!db_execute_prepared('DELETE FROM user_auth_cache WHERE user_id = ?', [$user_id]) ||
+			!db_execute_prepared('UPDATE user_auth SET reset_perms = FLOOR(RAND() * 4294967295) + 1 WHERE id = ?', [$user_id])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
+	if (!db_commit_transaction()) {
+		db_rollback_transaction();
+		return false;
+	}
+	if (isset($_SESSION['sess_user_id'], $affected[(int) $_SESSION['sess_user_id']])) {
+		unset($_SESSION['sess_user_realms'], $_SESSION['sess_auth_names']);
+	}
+
 	return true;
 }
 
@@ -604,9 +708,10 @@ function syslog_upgrade_consolidate_rule_realms(): bool {
 function syslog_upgrade_create_permission_realms(): bool {
 	$targets = [
 		'Rule Viewer' => 'syslog_alerts.php,syslog_removal.php,syslog_reports.php',
-		'Rule Administrator' => 'syslog_rule_administrator.php',
+		'Rule Administrator' => 'syslog_rule_administrator.php,syslog_device_rules.php',
 		'Syslog Administration' => 'syslog_saved_searches.php,syslog_dashboards.php',
-		'Syslog Administrator' => 'syslog_administrator.php'
+		'Share Saved Templates' => 'syslog_saved_searches_share.php',
+		'Share Dashboards' => 'syslog_dashboards_share.php'
 	];
 	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
 	if (!is_array($realms)) {
@@ -686,117 +791,92 @@ function syslog_upgrade_create_permission_realms(): bool {
 		}
 	}
 
+	$new_ids = array_values(array_intersect_key($target_ids, $missing));
+	if (!$new_ids) {
+		db_rollback_transaction();
+		return false;
+	}
+	$placeholders = implode(',', array_fill(0, count($new_ids), '?'));
+	$affected = db_fetch_assoc_prepared("SELECT user_id FROM user_auth_realm WHERE realm_id IN ($placeholders)
+		UNION SELECT ugm.user_id FROM user_auth_group_realm AS ugr
+		INNER JOIN user_auth_group_members AS ugm ON ugm.group_id = ugr.group_id
+		WHERE ugr.realm_id IN ($placeholders)", array_merge($new_ids, $new_ids));
+	if (!is_array($affected)) {
+		db_rollback_transaction();
+		return false;
+	}
+	foreach ($affected as $row) {
+		$user_id = (int) $row['user_id'];
+		if (!db_execute_prepared('DELETE FROM user_auth_cache WHERE user_id = ?', [$user_id]) ||
+			!db_execute_prepared('UPDATE user_auth SET reset_perms = FLOOR(RAND() * 4294967295) + 1 WHERE id = ?', [$user_id])) {
+			db_rollback_transaction();
+			return false;
+		}
+	}
+
 	if (!db_commit_transaction()) {
 		db_rollback_transaction();
 		return false;
 	}
-	api_plugin_replicate_config();
+	foreach ($affected as $row) {
+		if (isset($_SESSION['sess_user_id']) && (int) $_SESSION['sess_user_id'] === (int) $row['user_id']) {
+			unset($_SESSION['sess_user_realms'], $_SESSION['sess_auth_names']);
+			break;
+		}
+	}
 
 	return true;
 }
 
-/**
- * Upgrade the Syslog database schema for legacy installs.
- *
- * @return void
- */
-function syslog_check_upgrade(): void {
-	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
+/** Upgrade the Syslog schema and permissions at install/upgrade time. */
+function syslog_check_upgrade(bool $force = false): bool {
+	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade, $syslog_cnn;
 
 	require_once(__DIR__ . '/includes/schema.php');
 	require_once(__DIR__ . '/includes/settings.php');
 
-	syslog_connect();
+	if (!syslog_connect()) {
+		return false;
+	}
 	if (!syslog_upgrade_create_permission_realms()) {
-		return;
+		return false;
 	}
 	syslog_upgrade_saved_search_realm();
 	syslog_upgrade_dashboard_realm();
 	syslog_upgrade_rule_permissions();
 	if (!syslog_upgrade_consolidate_rule_realms()) {
-		return;
+		return false;
 	}
-	// Realm registration is install-only in Cacti. Legacy migrations below preserve
-	// and adjust existing realm IDs without calling the guarded registration API.
+	// Cacti's registration API merges overlapping filenames; preserve legacy
+	// realm IDs and grants while moving those pages to their explicit realms.
 	syslog_upgrade_device_rule_realm();
-	syslog_refresh_permission_roles();
-
-	// Let's only run this check if we are on a page that actually needs the data
-	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_device_rules.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
-
-	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
-		return;
+	if (!syslog_upgrade_explicit_realm_grants()) {
+		return false;
 	}
 
-	syslog_ensure_share_tables();
+	if (!syslog_ensure_table_structures()) {
+		return false;
+	}
 	syslog_dashboard_seed_default();
+	db_execute_prepared('DELETE FROM plugin_hooks WHERE name = ? AND hook = ?', ['syslog', 'config_insert']);
 
 	// don't let this script timeout
 	ini_set('max_execution_time', 0);
 
-	if (function_exists('api_plugin_upgrade_register')) {
-		if (!api_plugin_upgrade_register('syslog')) {
-			// This table was introduced after the original remote schema. Ensure
-			// an already-current remote collector can repair the omission without
-			// requiring a plugin version change.
-			syslog_create_device_rule_table();
-			// No upgrade required, but still warn about deprecated table layouts
-			syslog_notice_traditional_tables(true);
-
-			return;
-		}
-	} else {
-		$version = plugin_syslog_version();
-		$current = $version['version'];
-		$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
-
-		if ($current != $old) {
-				api_plugin_register_hook('syslog', 'replicate_out', 'syslog_replicate_out', 'includes/processing.php', 1);
-
-			db_execute_prepared('UPDATE plugin_config SET
-				version = ?, name = ?, author = ?, webpage = ?
-				WHERE directory = ?',
-				[
-					$version['version'],
-					$version['longname'],
-					$version['author'],
-					$version['homepage'],
-					$version['name']
-				]
-			);
-		} else {
-			syslog_create_device_rule_table();
-			// No upgrade required, but still warn about deprecated table layouts
-			syslog_notice_traditional_tables(true);
-
-			return;
-		}
+	$version = plugin_syslog_version();
+	$installed = db_fetch_cell_prepared('SELECT version FROM plugin_config WHERE directory = ?', ['syslog']);
+	if (!$force && $installed !== false && version_compare((string) $installed, $version['version'], '>=')) {
+		syslog_notice_traditional_tables(true);
+		include_once($config['base_path'] . '/lib/poller.php');
+		api_plugin_replicate_config();
+		return true;
 	}
 
-	if (!syslog_db_column_exists('syslog_alert', 'hash')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'hash',
-			'type'     => 'varchar(32)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'id']
-		);
-
-		syslog_db_add_column('syslog_remove', [
-			'name'     => 'hash',
-			'type'     => 'varchar(32)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'id']
-		);
-
-		syslog_db_add_column('syslog_reports', [
-			'name'     => 'hash',
-			'type'     => 'varchar(32)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'id']
-		);
+	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports'] as $table) {
+		db_update_table($table, [
+			'columns' => [['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => '', 'after' => 'id']],
+			'primary' => ['id']
+		], false, true, $syslog_cnn);
 	}
 
 	if (syslog_db_column_exists('syslog_incoming', 'date')) {
@@ -805,143 +885,93 @@ function syslog_check_upgrade(): void {
 			CHANGE COLUMN `time` logtime timestamp default '0000-00-00';");
 	}
 
-	if (syslog_db_column_exists('syslog_alert', 'hash')) {
-		$alerts = syslog_db_fetch_assoc('SELECT *
+	$alerts = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_alert
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($alerts)) {
-			foreach ($alerts as $a) {
-				$hash = get_hash_syslog($a['id'], 'syslog_alert');
-				syslog_db_execute_prepared('UPDATE syslog_alert
+	if (cacti_sizeof($alerts)) {
+		foreach ($alerts as $a) {
+			$hash = get_hash_syslog($a['id'], 'syslog_alert');
+			syslog_db_execute_prepared('UPDATE syslog_alert
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $a['id']]);
-			}
+				[$hash, $a['id']]);
 		}
 	}
 
-	if (syslog_db_column_exists('syslog_remove', 'hash')) {
-		$removes = syslog_db_fetch_assoc('SELECT *
+	$removes = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_remove
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($removes)) {
-			foreach ($removes as $r) {
-				$hash = get_hash_syslog($r['id'], 'syslog_remove');
-				syslog_db_execute_prepared('UPDATE syslog_remove
+	if (cacti_sizeof($removes)) {
+		foreach ($removes as $r) {
+			$hash = get_hash_syslog($r['id'], 'syslog_remove');
+			syslog_db_execute_prepared('UPDATE syslog_remove
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $r['id']]);
-			}
+				[$hash, $r['id']]);
 		}
 	}
 
-	if (syslog_db_column_exists('syslog_reports', 'hash')) {
-		$reports = syslog_db_fetch_assoc('SELECT *
+	$reports = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_reports
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($reports)) {
-			foreach ($reports as $r) {
-				$hash = get_hash_syslog($r['id'], 'syslog_reports');
-				syslog_db_execute_prepared('UPDATE syslog_reports
+	if (cacti_sizeof($reports)) {
+		foreach ($reports as $r) {
+			$hash = get_hash_syslog($r['id'], 'syslog_reports');
+			syslog_db_execute_prepared('UPDATE syslog_reports
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $r['id']]);
-			}
+				[$hash, $r['id']]);
 		}
 	}
 
-	if (syslog_db_table_exists('syslog_saved_searches', false) && syslog_db_column_exists('syslog_saved_searches', 'hash')) {
-		$searches = syslog_db_fetch_assoc('SELECT *
+	$searches = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_saved_searches
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($searches)) {
-			foreach ($searches as $s) {
-				$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
-				syslog_db_execute_prepared('UPDATE syslog_saved_searches
+	if (cacti_sizeof($searches)) {
+		foreach ($searches as $s) {
+			$hash = get_hash_syslog($s['id'], 'syslog_saved_searches');
+			syslog_db_execute_prepared('UPDATE syslog_saved_searches
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $s['id']]);
-			}
+				[$hash, $s['id']]);
 		}
 	}
 
-	// These tables were introduced after the original plugin schema.  On a
-	// partially upgraded remote collector create them below before attempting
-	// their data migration; otherwise the column probe itself emits an SQL
-	// error on every poller invocation.
-	if (syslog_db_table_exists('syslog_dashboards', false) && syslog_db_column_exists('syslog_dashboards', 'hash')) {
-		$dashboards = syslog_db_fetch_assoc('SELECT *
+	$dashboards = syslog_db_fetch_assoc('SELECT *
 			FROM syslog_dashboards
 			WHERE hash IS NULL OR hash = ""');
 
-		if (cacti_sizeof($dashboards)) {
-			foreach ($dashboards as $d) {
-				$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
-				syslog_db_execute_prepared('UPDATE syslog_dashboards
+	if (cacti_sizeof($dashboards)) {
+		foreach ($dashboards as $d) {
+			$hash = get_hash_syslog($d['id'], 'syslog_dashboards');
+			syslog_db_execute_prepared('UPDATE syslog_dashboards
 					SET hash = ?
 					WHERE id = ?',
-					[$hash, $d['id']]);
-			}
+				[$hash, $d['id']]);
 		}
 	}
 
-	if (!syslog_db_column_exists('syslog_alert', 'level')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'level',
-			'type'     => 'int(10)',
-			'unsigned' => true,
-			'NULL'     => false,
-			'default'  => '0',
-			'after'    => 'method']
-		);
-	}
-
-	if (!syslog_db_column_exists('syslog_alert', 'notify')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'notify',
-			'type'     => 'int(10)',
-			'unsigned' => true,
-			'NULL'     => false,
-			'default'  => '0',
-			'after'    => 'email']
-		);
-	}
-
-	if (!syslog_db_column_exists('syslog_alert', 'body')) {
-		syslog_db_add_column('syslog_alert', [
-			'name'     => 'body',
-			'type'     => 'varchar(8192)',
-			'NULL'     => false,
-			'default'  => '',
-			'after'    => 'message']
-		);
-	}
-
-	foreach ([
-		['cooldown_minutes', 'int(10)', '-1', 'repeat_alert'],
-		['deduplication_minutes', 'int(10)', '-1', 'cooldown_minutes'],
-		['suppression_schedule', 'text', '', 'deduplication_minutes'],
-		['maintenance_mode', 'varchar(16)', 'inherit', 'suppression_schedule'],
-		['maintenance_days', 'varchar(32)', '1,2,3,4,5', 'maintenance_mode'],
-		['maintenance_start', 'char(5)', '00:00', 'maintenance_days'],
-		['maintenance_end', 'char(5)', '00:00', 'maintenance_start'],
-		['maintenance_datetime_start', 'varchar(16)', '', 'maintenance_end'],
-		['maintenance_datetime_end', 'varchar(16)', '', 'maintenance_datetime_start']
-	] as [$name, $type, $default, $after]) {
-		if (!syslog_db_column_exists('syslog_alert', $name)) {
-			syslog_db_add_column('syslog_alert', [
-				'name'     => $name,
-				'type'     => $type,
-				'NULL'     => false,
-				'default'  => $default,
-				'after'    => $after]
-			);
-		}
-	}
+	db_update_table('syslog_alert', [
+		'columns' => [
+			['name' => 'level', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'method'],
+			['name' => 'notify', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'email'],
+			['name' => 'body', 'type' => 'varchar(8192)', 'NULL' => false, 'default' => '', 'after' => 'message'],
+			['name' => 'cooldown_minutes', 'type' => 'int(10)', 'NULL' => false, 'default' => '-1', 'after' => 'repeat_alert'],
+			['name' => 'deduplication_minutes', 'type' => 'int(10)', 'NULL' => false, 'default' => '-1', 'after' => 'cooldown_minutes'],
+			['name' => 'suppression_schedule', 'type' => 'text', 'NULL' => false, 'default' => '', 'after' => 'deduplication_minutes'],
+			['name' => 'maintenance_mode', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'inherit', 'after' => 'suppression_schedule'],
+			['name' => 'maintenance_days', 'type' => 'varchar(32)', 'NULL' => false, 'default' => '1,2,3,4,5', 'after' => 'maintenance_mode'],
+			['name' => 'maintenance_start', 'type' => 'char(5)', 'NULL' => false, 'default' => '00:00', 'after' => 'maintenance_days'],
+			['name' => 'maintenance_end', 'type' => 'char(5)', 'NULL' => false, 'default' => '00:00', 'after' => 'maintenance_start'],
+			['name' => 'maintenance_datetime_start', 'type' => 'varchar(16)', 'NULL' => false, 'default' => '', 'after' => 'maintenance_end'],
+			['name' => 'maintenance_datetime_end', 'type' => 'varchar(16)', 'NULL' => false, 'default' => '', 'after' => 'maintenance_datetime_start']
+		],
+		'primary' => ['id']
+	], false, true, $syslog_cnn);
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
 		`alert_id` int(10) unsigned NOT NULL,
@@ -959,59 +989,12 @@ function syslog_check_upgrade(): void {
 	// Removal rules now store the same structured filter JSON as alert rules.
 	syslog_db_execute('ALTER TABLE syslog_remove MODIFY column message TEXT NOT NULL');
 
-	if (!syslog_db_column_exists('syslog_reports', 'notify')) {
-		syslog_db_add_column('syslog_reports', [
-			'name'     => 'notify',
-			'type'     => 'int(10)',
-			'unsigned' => true,
-			'NULL'     => false,
-			'default'  => '0',
-			'after'    => 'email']
-		);
-	}
+	db_update_table('syslog_reports', [
+		'columns' => [['name' => 'notify', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'email']],
+		'primary' => ['id']
+	], false, true, $syslog_cnn);
 
 	syslog_db_execute('ALTER TABLE syslog_reports MODIFY column body VARCHAR(8192) NOT NULL default ""');
-
-	if (!syslog_db_table_exists('syslog_saved_searches', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_saved_searches` (
-			`id` int(10) NOT NULL auto_increment,
-			`hash` varchar(32) NOT NULL default '',
-			`name` varchar(128) NOT NULL default '',
-			`search` text NOT NULL,
-			`removal` int(10) NOT NULL default '1',
-			`grouping` int(10) NOT NULL default '0',
-			`user` varchar(32) NOT NULL default '',
-			`is_global` char(2) NOT NULL default '',
-			`date` int(16) NOT NULL default '0',
-			PRIMARY KEY (`id`),
-			KEY owner (`user`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
-
-	if (!syslog_db_column_exists('syslog_saved_searches', 'hash')) {
-		syslog_db_add_column('syslog_saved_searches', [
-			'name'    => 'hash',
-			'type'    => 'varchar(32)',
-			'NULL'    => false,
-			'default' => '',
-			'after'   => 'id']
-		);
-	}
-
-	if (!syslog_db_table_exists('syslog_status', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_status` (
-			`name` varchar(64) NOT NULL default '',
-			`value` text NOT NULL,
-			`updated` int(16) NOT NULL default '0',
-			PRIMARY KEY (`name`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	} else {
-		syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_status` MODIFY column `value` TEXT NOT NULL");
-	}
-
-	syslog_create_device_rule_table();
 
 	syslog_create_replication_output_table();
 	syslog_create_replication_receipts_table();
@@ -1019,6 +1002,10 @@ function syslog_check_upgrade(): void {
 	syslog_create_replication_recovery_table();
 	syslog_ensure_message_text();
 	syslog_ensure_replication_history_columns();
+	syslog_refresh_plugin_version();
+	include_once($config['base_path'] . '/lib/poller.php');
+	api_plugin_replicate_config();
+	return true;
 }
 
 
@@ -1026,86 +1013,7 @@ function syslog_check_upgrade(): void {
 function syslog_dashboard_seed_default(): void {
 	global $syslogdb_default;
 
-	if (!syslog_db_table_exists('syslog_dashboards', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboards` (
-			`id` int(10) NOT NULL auto_increment,
-			`hash` varchar(32) NOT NULL default '',
-			`name` varchar(128) NOT NULL default '',
-			`user` varchar(32) NOT NULL default '',
-			`is_global` char(2) NOT NULL default '',
-			`date` int(16) NOT NULL default '0',
-			`updated` int(16) NOT NULL default '0',
-			PRIMARY KEY (`id`),
-			KEY owner (`user`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
-
-	if (!syslog_db_column_exists('syslog_dashboards', 'hash')) {
-		syslog_db_add_column('syslog_dashboards', [
-			'name'    => 'hash',
-			'type'    => 'varchar(32)',
-			'NULL'    => false,
-			'default' => '',
-			'after'   => 'id']
-		);
-	}
-
-	if (!syslog_db_table_exists('syslog_dashboard_panels', false)) {
-		syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_dashboard_panels` (
-			`id` int(10) NOT NULL auto_increment,
-			`dashboard_id` int(10) NOT NULL default '0',
-			`title` varchar(128) NOT NULL default '',
-			`expression` text NOT NULL,
-			`source` varchar(16) NOT NULL default 'syslog',
-			`removal` int(10) NOT NULL default '1',
-			`kind` varchar(16) NOT NULL default 'timeseries',
-			`chart` varchar(16) NOT NULL default 'line',
-			`field` varchar(16) NOT NULL default 'host',
-			`interval` varchar(16) NOT NULL default 'dashboard',
-			`timespan` varchar(16) NOT NULL default 'dashboard',
-			`top_n` int(10) NOT NULL default '10',
-			`width` smallint(5) unsigned NOT NULL default '1',
-			`height` smallint(5) unsigned NOT NULL default '0',
-			`position` int(10) NOT NULL default '0',
-			`date` int(16) NOT NULL default '0',
-			PRIMARY KEY (`id`),
-			KEY dashboard (`dashboard_id`))
-			ENGINE=InnoDB
-			ROW_FORMAT=Dynamic");
-	}
-
-	// Panel resizing persists a grid span and chart height per panel.
-	if (!syslog_db_column_exists('syslog_dashboard_panels', 'width')) {
-		syslog_db_add_column('syslog_dashboard_panels', [
-			'name'    => 'width',
-			'type'    => 'smallint(5) unsigned',
-			'NULL'    => false,
-			'default' => '1',
-			'after'   => 'top_n']
-		);
-	}
-
-	if (!syslog_db_column_exists('syslog_dashboard_panels', 'height')) {
-		syslog_db_add_column('syslog_dashboard_panels', [
-			'name'    => 'height',
-			'type'    => 'smallint(5) unsigned',
-			'NULL'    => false,
-			'default' => '0',
-			'after'   => 'width']
-		);
-	}
-
-	// Sharing persists a global flag on the dashboard itself.
-	if (!syslog_db_column_exists('syslog_dashboards', 'is_global')) {
-		syslog_db_add_column('syslog_dashboards', [
-			'name'    => 'is_global',
-			'type'    => 'char(2)',
-			'NULL'    => false,
-			'default' => '',
-			'after'   => 'user']
-		);
-	}
+	syslog_ensure_dashboard_tables();
 
 	$lock = 'syslog_dashboard_' . md5($syslogdb_default);
 	if (!syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 5)', [$lock])) {
@@ -1179,6 +1087,23 @@ function plugin_syslog_version(): array {
 	}
 
 	return [];
+}
+
+/** Keep the installed plugin metadata aligned with INFO without reinstalling. */
+function syslog_refresh_plugin_version(): void {
+	$version = plugin_syslog_version();
+	$stored_version = db_fetch_cell_prepared('SELECT version FROM plugin_config WHERE directory = ?', ['syslog']);
+	if (!isset($version['version']) || ($stored_version !== false && version_compare((string) $stored_version, $version['version'], '>='))) {
+		return;
+	}
+
+	db_execute_prepared('UPDATE plugin_config SET version = ?, name = ?, author = ?, webpage = ? WHERE directory = ?', [
+		$version['version'],
+		$version['longname'] ?? '',
+		$version['author'] ?? '',
+		$version['homepage'] ?? '',
+		'syslog'
+	]);
 }
 
 /**

@@ -255,7 +255,7 @@ function form_actions(): void {
 			$title = __esc('Export Syslog Removal Rule(s)', 'syslog');
 		}
 
-		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' onClick='cactiReturnTo()'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
+		$save_html = "<input type='button' value='" . __esc('Cancel', 'syslog') . "' class='cactiReturnTo'>&nbsp;<input type='submit' value='" . __esc('Continue', 'syslog') . "' title='$title'";
 	} else {
 		raise_message(40);
 		header('Location: syslog_removal.php?header=false');
@@ -825,7 +825,7 @@ function syslog_removal_filter(): void {
 						<?php print __('Enabled', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='enabled' onChange='applyFilterRemoval()'>
+						<select id='enabled'>
 							<option value='-1'<?php if (get_request_var('enabled') == '-1') {?> selected<?php }?>><?php print __('All', 'syslog'); ?></option>
 							<option value='1'<?php if (get_request_var('enabled') == '1') {?> selected<?php }?>><?php print __('Yes', 'syslog'); ?></option>
 							<option value='0'<?php if (get_request_var('enabled') == '0') {?> selected<?php }?>><?php print __('No', 'syslog'); ?></option>
@@ -835,7 +835,7 @@ function syslog_removal_filter(): void {
 						<?php print __('Rules', 'syslog'); ?>
 					</td>
 					<td>
-						<select id='rows' onChange='applyFilterRemoval()'>
+						<select id='rows'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') {?> selected<?php }?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
 								if (cacti_sizeof($item_rows)) {

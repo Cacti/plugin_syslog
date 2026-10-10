@@ -90,7 +90,10 @@ function initSyslogCompactSearch() {
 	$('#refresh_results').off('click').on('click', refreshResults);
 	var summary = document.getElementById('syslog_search_summary');
 	summary.textContent = document.getElementById('rfilter').value || builder.dataset.message;
-	try { if (localStorage.getItem('syslog.search.collapsed') === 'true') toggleSyslogSearch(false); } catch (error) { /* Storage may be disabled. */ }
+	// Collapse the filter by default; only a saved 'false' preference keeps it open.
+	var keepSearchOpen = false;
+	try { keepSearchOpen = localStorage.getItem('syslog.search.collapsed') === 'false'; } catch (error) { /* Storage may be disabled. */ }
+	if (!keepSearchOpen) toggleSyslogSearch(false);
 	if (document.getElementById('logical_search_error').textContent.trim()) toggleSyslogSearch(true);
 	form.addEventListener('keydown', function(event) {
 		if (event.key === 'Escape') form.querySelectorAll('details[open]').forEach(function(menu) { menu.open = false; });
@@ -225,6 +228,7 @@ function toggleSyslogSearch(expanded) {
 	if (summary) summary.hidden = expanded;
 	try { localStorage.setItem('syslog.search.collapsed', String(!expanded)); } catch (error) { /* Storage may be disabled. */ }
 	button.setAttribute('aria-expanded', String(expanded));
+	button.classList.toggle('ui-state-active', expanded);
 	button.title = expanded ? button.dataset.hide : button.dataset.show;
 	button.setAttribute('aria-label', button.title);
 	var label = button.querySelector('span');
@@ -262,21 +266,66 @@ function syncSyslogSearchBuilder() {
 	return true;
 }
 
+/** Read the active jQuery UI theme into plugin color tokens, so the scoped
+ *  Syslog surfaces follow whatever Cacti theme is live instead of a baked
+ *  plugin palette. */
+function syslogThemeTokens() {
+	var sample = $('<div class="ui-widget-content"><button class="ui-button ui-widget ui-state-default" type="button"></button><div class="ui-widget-header"></div></div>').hide().appendTo(document.body);
+	var button = sample.find('button');
+	var header = sample.find('.ui-widget-header');
+
+	// Sample the live html_start_box title bar so Status card headers paint with
+	// the active theme's native Cacti table header instead of a generic tint.
+	var box       = $('<div class="cactiTable"><div class="cactiTableTitleRow"><div class="cactiTableTitle"><span></span></div></div></div>').hide().appendTo(document.body);
+	var titleRow  = box.find('.cactiTableTitleRow');
+	var title     = box.find('.cactiTableTitle');
+	var headerBg  = titleRow.css('background-color');
+	var headerImg = titleRow.css('background-image');
+	var headerFg  = title.css('color');
+	var transparent = (!headerBg || /rgba?\([^)]*,\s*0\s*\)/.test(headerBg));
+	if ((!headerImg || headerImg === 'none') && transparent) {
+		headerBg  = header.css('background-color');
+		headerImg = header.css('background-image');
+		headerFg  = header.css('color');
+	}
+
+	var tokens = {
+		'surface': sample.css('background-color'), 'card': sample.css('background-color'),
+		'text': sample.css('color'), 'muted': sample.css('color'),
+		'border': sample.css('border-top-color'), 'accent': button.css('color'),
+		'tint': button.css('background-color'),
+		'primary': header.css('background-color'), 'on-primary': header.css('color'),
+		'header-bg': headerBg, 'header-image': headerImg, 'header-fg': headerFg
+	};
+	box.remove();
+	sample.remove();
+	return tokens;
+}
+
+/** True when a sampled surface color is dark, so scoped CSS can flip tint sets. */
+function syslogSurfaceIsDark(color) {
+	var m = /rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/.exec(color || '');
+	if (!m) {
+		return false;
+	}
+	return (0.299 * +m[1] + 0.587 * +m[2] + 0.114 * +m[3]) < 128;
+}
+
+/** Apply the sampled theme tokens (and a light/dark flag) to a scope element. */
+function applySyslogTheme(el) {
+	if (!el) {
+		return;
+	}
+	var tokens = syslogThemeTokens();
+	Object.keys(tokens).forEach(function(key) { el.style.setProperty('--search-' + key, tokens[key]); });
+	el.setAttribute('data-mode', syslogSurfaceIsDark(tokens.surface) ? 'dark' : 'light');
+}
+
 /** Shared-template administration uses the same builder as the log view. */
 function initSyslogTemplates() {
 	var builder = document.getElementById('syslog_template_builder');
 	if (builder) {
-		// Read the active jQuery UI theme rather than imposing a plugin palette.
-		var sample = $('<div class="ui-widget-content"><button class="ui-button ui-widget ui-state-default" type="button"></button></div>').hide().appendTo(document.body);
-		var button = sample.find('button');
-		var tokens = {
-			'surface': sample.css('background-color'), 'card': sample.css('background-color'),
-			'text': sample.css('color'), 'muted': sample.css('color'),
-			'border': sample.css('border-top-color'), 'accent': button.css('color'),
-			'tint': button.css('background-color')
-		};
-		Object.keys(tokens).forEach(function(key) { builder.style.setProperty('--search-' + key, tokens[key]); });
-		sample.remove();
+		applySyslogTheme(builder);
 		initSyslogSearchBuilder(builder);
 	}
 	$('#syslog_template_form').attr('novalidate', 'novalidate').off('submit.syslogTemplates').on('submit.syslogTemplates', function(event) {
@@ -321,6 +370,10 @@ function initSyslogSavedSearches() {
 			importSavedSearch();
 		});
 
+		$('#rows').change(function() {
+			applyFilterSavedSearches();
+		});
+
 		$('#saved_searches').submit(function(event) {
 			event.preventDefault();
 			applyFilterSavedSearches();
@@ -357,10 +410,353 @@ function initSyslogDashboards() {
 			importDashboard();
 		});
 
+		$('#rows').change(function() {
+			applyFilterDashboards();
+		});
+
 		$('#dashboards').submit(function(event) {
 			event.preventDefault();
 			applyFilterDashboards();
 		});
+	});
+}
+
+/** Sample the live theme onto the Status tab card grid, enable drag/keyboard
+ *  reordering, the per-card tools (show more/less, maximize, refresh, remove)
+ *  and the "Add card" catalogue. Layout changes persist server-side
+ *  (settings_user) so they survive page revisits. */
+var syslogStatusDragging = null;
+
+function initSyslogStatus() {
+	$(function() {
+		var grid = document.getElementById('syslog_status');
+		if (!grid) {
+			return;
+		}
+
+		applySyslogTheme(document.getElementById('syslog_status_panel') || grid);
+
+		grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+			syslogStatusBindCard(grid, card);
+		});
+
+		grid.addEventListener('dragover', function(event) {
+			if (!syslogStatusDragging) {
+				return;
+			}
+			event.preventDefault();
+			event.dataTransfer.dropEffect = 'move';
+			var before = syslogStatusDragReference(grid, event.clientX, event.clientY);
+			if (before == null) {
+				grid.appendChild(syslogStatusDragging);
+			} else if (before !== syslogStatusDragging) {
+				grid.insertBefore(syslogStatusDragging, before);
+			}
+		});
+
+		// Per-card tool buttons bubble to the grid.
+		$(grid).off('click.syslogstatus').on('click.syslogstatus', '.syslogStatusCardTool', function() {
+			var card = this.closest('.syslogStatusCard');
+			if (!card) {
+				return;
+			}
+			switch (this.dataset.tool) {
+				case 'expand':   card.classList.add('syslogStatusCardExpanded'); syslogStatusSaveLayout(grid); break;
+				case 'collapse': card.classList.remove('syslogStatusCardExpanded'); syslogStatusSaveLayout(grid); break;
+				case 'maximize': syslogStatusMaximize(card); break;
+				case 'refresh':  syslogStatusRefreshCard(grid, card); break;
+				case 'remove':   syslogStatusRemoveCard(grid, card); break;
+			}
+		});
+
+		var add = document.getElementById('syslog_status_add');
+		if (add) {
+			$(add).off('change.syslogstatus').on('change.syslogstatus', function() {
+				var key = this.value;
+				this.value = '';
+				if (key) {
+					syslogStatusAddCard(grid, key);
+				}
+			});
+		}
+
+		// Changing the interval reloads the page so Cacti's page refresh picks up the
+		// new value; it persists in the session for subsequent auto-reloads.
+		var interval = document.getElementById('syslog_status_refresh');
+		if (interval) {
+			$(interval).off('change.syslogstatus').on('change.syslogstatus', function() {
+				window.location = 'syslog.php?tab=status&refresh=' + encodeURIComponent(this.value);
+			});
+		}
+
+		var refreshNow = document.getElementById('syslog_status_refresh_now');
+		if (refreshNow) {
+			$(refreshNow).off('click.syslogstatus').on('click.syslogstatus', function() {
+				syslogStatusRefreshAll(grid, this);
+			});
+		}
+	});
+}
+
+/** Wire a single card's drag handle (mouse + keyboard) and drag events. */
+function syslogStatusBindCard(grid, card) {
+	var handle = card.querySelector('.syslogStatusCardDrag');
+	if (!handle) {
+		return;
+	}
+
+	// Arm HTML5 drag only from the handle, and disarm on release when no drag
+	// began (a plain click/tap) so selecting content elsewhere can't drag the card.
+	var disarm = function() { card.draggable = false; };
+	handle.addEventListener('mousedown', function() {
+		card.draggable = true;
+		document.addEventListener('mouseup', disarm, {once: true});
+	});
+	handle.addEventListener('touchstart', function() {
+		card.draggable = true;
+		document.addEventListener('touchend', disarm, {once: true});
+		document.addEventListener('touchcancel', disarm, {once: true});
+	}, {passive: true});
+
+	// Keyboard-accessible reordering: move the card with the arrow keys.
+	handle.addEventListener('keydown', function(event) {
+		var back = event.key === 'ArrowLeft' || event.key === 'ArrowUp';
+		var fwd  = event.key === 'ArrowRight' || event.key === 'ArrowDown';
+		if (!back && !fwd) {
+			return;
+		}
+		event.preventDefault();
+		if (back && card.previousElementSibling) {
+			grid.insertBefore(card, card.previousElementSibling);
+		} else if (fwd && card.nextElementSibling) {
+			grid.insertBefore(card.nextElementSibling, card);
+		} else {
+			return;
+		}
+		handle.focus();
+		syslogStatusSaveLayout(grid);
+	});
+
+	card.addEventListener('dragstart', function(event) {
+		syslogStatusDragging = card;
+		card.classList.add('syslogStatusCardDragging');
+		event.dataTransfer.effectAllowed = 'move';
+		try { event.dataTransfer.setData('text/plain', card.dataset.card || ''); } catch (error) { /* IE guard */ }
+	});
+
+	card.addEventListener('dragend', function() {
+		card.draggable = false;
+		card.classList.remove('syslogStatusCardDragging');
+		if (syslogStatusDragging) {
+			syslogStatusDragging = null;
+			syslogStatusSaveLayout(grid);
+		}
+	});
+}
+
+/** The card the dragged card should be inserted before for the current pointer
+ *  position, or null to append at the end. */
+function syslogStatusDragReference(grid, x, y) {
+	var cards = Array.prototype.slice.call(grid.querySelectorAll('.syslogStatusCard:not(.syslogStatusCardDragging)'));
+	for (var i = 0; i < cards.length; i++) {
+		var rect = cards[i].getBoundingClientRect();
+		if (y < rect.top - 1) {
+			return cards[i];
+		}
+		if (y <= rect.bottom && x < rect.left + rect.width / 2) {
+			return cards[i];
+		}
+	}
+	return null;
+}
+
+/** Add a card from the catalogue: fetch its HTML, append it, persist and refresh
+ *  the "Add" options. */
+function syslogStatusAddCard(grid, key) {
+	if (syslogStatusHasCard(grid, key)) {
+		return;
+	}
+	$.post('syslog.php', {action: 'status_card', tab: 'status', card: key, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
+		if (!data || !data.html) {
+			return;
+		}
+		// A concurrent add for the same card may have landed first.
+		if (syslogStatusHasCard(grid, key)) {
+			return;
+		}
+		var card = syslogStatusParseCard(data.html);
+		if (!card) {
+			return;
+		}
+		grid.appendChild(card);
+		applySyslogTheme(grid);
+		syslogStatusBindCard(grid, card);
+		syslogStatusSaveLayout(grid);
+		syslogStatusSyncAddOptions(grid);
+	});
+}
+
+/** Whether a card with the given key is currently on the grid. */
+function syslogStatusHasCard(grid, key) {
+	var present = false;
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		if (card.dataset.card === key) {
+			present = true;
+		}
+	});
+	return present;
+}
+
+/** Remove a card from the page and return it to the "Add" catalogue. */
+function syslogStatusRemoveCard(grid, card) {
+	card.parentNode.removeChild(card);
+	syslogStatusSaveLayout(grid);
+	syslogStatusSyncAddOptions(grid);
+}
+
+/** Re-fetch a single card's HTML and swap it in place, keeping expanded state. */
+function syslogStatusRefreshCard(grid, card, done) {
+	var icon = card.querySelector('.syslogStatusCardTool[data-tool="refresh"] .fa');
+	if (icon) {
+		icon.classList.add('fa-spin');
+	}
+	var settle = function() {
+		if (icon) {
+			icon.classList.remove('fa-spin');
+		}
+		if (done) {
+			done();
+		}
+	};
+	var expanded = card.classList.contains('syslogStatusCardExpanded') ? '1' : '0';
+	$.post('syslog.php', {action: 'status_card', tab: 'status', card: card.dataset.card, expanded: expanded, __csrf_magic: csrfMagicToken}, null, 'json').done(function(data) {
+		// The card may have been removed or already replaced while we waited.
+		if (!data || !data.html || !card.parentNode) {
+			settle();
+			return;
+		}
+		var fresh = syslogStatusParseCard(data.html);
+		if (!fresh) {
+			settle();
+			return;
+		}
+		card.parentNode.replaceChild(fresh, card);
+		applySyslogTheme(grid);
+		syslogStatusBindCard(grid, fresh);
+		if (done) {
+			done();
+		}
+	}).fail(settle);
+}
+
+/** Refresh every card on the page, spinning the toolbar glyph until all land. */
+function syslogStatusRefreshAll(grid, button) {
+	var icon = button ? button.querySelector('.fa') : null;
+	var cards = Array.prototype.slice.call(grid.querySelectorAll('.syslogStatusCard'));
+	var pending = cards.length;
+	if (!pending) {
+		return;
+	}
+	if (icon) {
+		icon.classList.add('fa-spin');
+	}
+	cards.forEach(function(card) {
+		syslogStatusRefreshCard(grid, card, function() {
+			pending--;
+			if (pending <= 0 && icon) {
+				icon.classList.remove('fa-spin');
+			}
+		});
+	});
+}
+
+/** Open a copy of a card's body in a large modal dialog. */
+function syslogStatusMaximize(card) {
+	var dialog = document.getElementById('syslog_status_dialog');
+	if (!dialog) {
+		return;
+	}
+	var title = card.querySelector('.syslogStatusCardTitle');
+	var body  = card.querySelector('.syslogStatusCardBody');
+	dialog.innerHTML = '<div class="syslogStatusDialogBody">' + (body ? body.innerHTML : '') + '</div>';
+	applySyslogTheme(dialog);
+	$(dialog).dialog({
+		modal: true,
+		appendTo: 'body',
+		width: Math.min(900, $(window).width() - 40),
+		title: title ? title.textContent : '',
+		open: function() { applySyslogTheme(this); }
+	});
+}
+
+/** Parse a card HTML string into its <section> element. */
+function syslogStatusParseCard(html) {
+	var tmp = document.createElement('div');
+	tmp.innerHTML = html;
+	return tmp.querySelector('.syslogStatusCard');
+}
+
+/** Rebuild the "Add" dropdown so it lists only cards not currently on the page. */
+function syslogStatusSyncAddOptions(grid) {
+	var add = document.getElementById('syslog_status_add');
+	if (!add || typeof syslogStatusCatalog === 'undefined') {
+		return;
+	}
+	var present = {};
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		if (card.dataset.card) {
+			present[card.dataset.card] = true;
+		}
+	});
+	while (add.options.length > 1) {
+		add.remove(1);
+	}
+	Object.keys(syslogStatusCatalog).forEach(function(key) {
+		if (!present[key]) {
+			var option = document.createElement('option');
+			option.value = key;
+			option.textContent = syslogStatusCatalog[key];
+			add.appendChild(option);
+		}
+	});
+}
+
+/** Serialize layout POSTs so rapid actions can't persist out of order: one
+ *  request is in flight at a time, and a save requested meanwhile is coalesced
+ *  into a single follow-up that reads the latest DOM, so the final state wins. */
+var syslogStatusSaveInFlight = false;
+var syslogStatusSaveQueued = false;
+
+function syslogStatusSaveLayout(grid) {
+	if (syslogStatusSaveInFlight) {
+		syslogStatusSaveQueued = true;
+		return;
+	}
+	syslogStatusSaveInFlight = true;
+
+	var order = [];
+	var expanded = {};
+	grid.querySelectorAll('.syslogStatusCard').forEach(function(card) {
+		if (!card.dataset.card) {
+			return;
+		}
+		order.push(card.dataset.card);
+		if (card.classList.contains('syslogStatusCardExpanded')) {
+			expanded[card.dataset.card] = true;
+		}
+	});
+
+	$.post('syslog.php', {
+		action: 'status_layout',
+		tab: 'status',
+		layout: JSON.stringify({order: order, expanded: expanded}),
+		__csrf_magic: csrfMagicToken
+	}, null, 'json').always(function() {
+		syslogStatusSaveInFlight = false;
+		if (syslogStatusSaveQueued) {
+			syslogStatusSaveQueued = false;
+			syslogStatusSaveLayout(grid);
+		}
 	});
 }
 
@@ -798,6 +1194,11 @@ function savedSearchPrompt(name, accept) {
 		appendTo: 'body',
 		width: 420,
 		autoOpen: true,
+		open: function() {
+			// Appended to <body>, outside the form's token scope, so re-sample the
+			// theme onto the prompt to keep it readable in dark themes.
+			applySyslogTheme(this);
+		},
 		buttons: [
 			{text: text.save, click: function() {
 				var value = input.value.trim();
@@ -844,6 +1245,9 @@ function openSavedSearchDialog(mode) {
 		width: Math.min(1040, $(window).width() - 40),
 		title: mode === 'new' ? text.newTitle : text.editTitle,
 		open: function() {
+			// Dialog is appended to <body>, outside the form's token scope, so
+			// re-sample the theme onto it to keep it readable in dark themes.
+			applySyslogTheme(dialog);
 			// The builder renders before .dialog() creates its wrapper, so
 			// suggestions appended to <body> stack behind the raised dialog;
 			// move them inside the dialog's own stacking context.
@@ -892,9 +1296,18 @@ function initSyslogMain(config) {
 	window.pageTab = pageTab;
 
 	$(function() {
+		applySyslogTheme(document.getElementById('syslog_form'));
+		applySyslogTheme(document.getElementById('syslog_workspace'));
 		initSyslogSearchBuilder(document.getElementById('syslog_search_builder'));
 		initSavedSearches();
 		initSyslogCompactSearch();
+
+		// Let the active theme paint the filter-edit toggle's active state; the
+		// primary Search button is painted from the sampled --search-primary pair
+		// in search.css rather than a plugin accent color.
+		var toggle = $('#syslog_search_toggle');
+		toggle.toggleClass('ui-state-active', toggle.attr('aria-expanded') === 'true');
+
 		$('#syslog_form').submit(function(event) {
 			event.preventDefault();
 			event.stopImmediatePropagation();
@@ -916,6 +1329,20 @@ function initSyslogMain(config) {
 		$('#export').click(function() {
 			exportRecords();
 		});
+
+		$('#syslog_search_toggle').click(function() {
+			toggleSyslogSearch();
+		});
+
+		$('#rows, #refresh, #removal, #grouping').change(function() {
+			applyFilter();
+		});
+
+		// Delegated so classic/autocomplete dropdowns injected via AJAX keep working
+		// without an inline per-select script under nonce-enforced CSP.
+		$(document).off('change.syslogCallback').on('change.syslogCallback', 'select[data-on-change]', function() {
+			syslogInvokeCallback($(this).attr('data-on-change'));
+		});
 	});
 }
 
@@ -925,6 +1352,7 @@ function initSyslogMain(config) {
  */
 function initSyslogMessagesDisplay() {
 	$(function() {
+		applySyslogTheme(document.getElementById('syslog_workspace'));
 		// Initialize tooltips for syslog rows
 		$('.syslogRow').tooltip({
 			track: true,
@@ -1033,6 +1461,10 @@ function initSyslogRemoval(allowEdits) {
 			importRemoval();
 		});
 
+		$('#enabled, #rows').change(function() {
+			applyFilterRemoval();
+		});
+
 		$('#removal').submit(function(event) {
 			event.preventDefault();
 			applyFilterRemoval();
@@ -1088,6 +1520,10 @@ function initSyslogAlerts() {
 			importAlert();
 		});
 
+		$('#enabled, #rows').change(function() {
+			applyFilterAlerts();
+		});
+
 		$('#alert').submit(function(event) {
 			event.preventDefault();
 			applyFilterAlerts();
@@ -1141,6 +1577,10 @@ function initSyslogReports() {
 
 		$('#import').click(function() {
 			importReport();
+		});
+
+		$('#enabled, #rows').change(function() {
+			applyFilterReports();
 		});
 
 		$('#reports').submit(function(event) {

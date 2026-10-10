@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-06 15:14-0400\n"
+"POT-Creation-Date: 2026-10-09 15:06-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
@@ -27,7 +27,7 @@ msgstr "已启用Syslog"
 msgid "Emergency"
 msgstr "紧急"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Critical"
 msgstr "严重"
 
@@ -39,11 +39,11 @@ msgstr "警报"
 msgid "Error"
 msgstr "错误"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Warning"
 msgstr "警告"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Notice"
 msgstr "注意"
 
@@ -149,7 +149,7 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/utilities.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -304,6 +304,746 @@ msgstr "主机"
 msgid "Event Report - %s"
 msgstr "活动报告 - %s"
 
+#: includes/installer.php
+#, fuzzy
+msgid "Syslog Upgrade Advisor"
+msgstr "Syslog%s顾问"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr ""
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "您希望使用哪种升级/安装类型"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgstr "当你有非常大的表时，执行截断将更快。如果您担心存档数据，可以选择Inline（这将在此升级期间冻结浏览器）或后台，这将创建后台进程以将旧的syslog数据从备份表转换为新的syslog格式。这个过程可能需要几个小时。"
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "截断Syslog表"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "内联升级"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "后台升级"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "数据库存储引擎"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "InnoDB Storage"
+msgstr "使用InnoDB 存储引擎时,保持表空间的独立性很重要. 对于 %s 的长期用户,表管理会变得更简单.如果您尚未开启此功能, 可以通过在所有InnoDB 表上运行alter 语句来开启此功能."
+
+#: includes/installer.php
+#, fuzzy
+msgid "Aria Storage"
+msgstr "MyISAM存储"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Remote Message Processing"
+msgstr "消息字符串："
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "启用远程数据收集器消息处理"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "如果您的远程数据收集器有自己的 Syslog 数据库并独立处理它们的消息，请选中此复选框。通过选中此复选框，您的远程数据收集器将需要维护自己的“config_local.php”文件，以便通知 Syslog 使用独立数据库进行消息显示和处理。为此请使用模板文件“config_local.php.dist”。警告：启用此选项后，系统日志表将自动创建。"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Remote Data Collector Rules Sync"
+msgstr "远程数据收集器规则同步"
+
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "如果您的远程数据收集器有自己的系统日志数据库并独立处理三个消息，如果您希望将主要 Cacti 数据库警报、删除和报告规则发送到远程 Cacti 系统，请选中此复选框。"
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "保留策略"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "选择要在数据库中维护的Syslog值的天数。"
+
+#: includes/installer.php
+msgid "Partitions per Day"
+msgstr "每天分区"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Select the number of partitions per day that you wish to create."
+msgstr "选择您希望每天创建的分区数。"
+
+#: includes/installer.php
+#, php-format
+msgid "%d Per Day"
+msgstr "%d 每天"
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "升级"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "安装"
+
+#: includes/installer.php
+#, fuzzy, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog%s顾问"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "警告：Syslog升级是耗时的！"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "'main'系统日志表的升级可能是一个非常耗时的过程。因此，建议您在升级之前减小syslog表的大小，或者选择后台选项</p><p>如果选择后台选项，则将重命名旧的syslog表，并将创建新的syslog表。然后，将在后台启动升级过程。同样，这个后台进程可能需要相当多的时间才能完成。但是，您的数据将被保留</p><p>无论您的选择如何，在升级过程中都将保留所有现有的删除和警报规则。 </p><p>按<b>“升级”</b>继续升级，或按<b>“取消”</b>返回“插件”菜单。"
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "安装Syslog时有几个选项可供选择。第一个是数据库架构。从MySQL 5.1.6开始，您可以选择使用表分区来防止表的大小变得过大，从而减慢查询速度。"
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "您也可以选择保留期限。请记住，如果您有多个主机登录到syslog，则此表可能会变得非常大。因此，如果不使用分区，您可能希望保持较小的大小。"
+
+#: includes/installer.php
+#, fuzzy, php-format
+msgid "Syslog %s Settings"
+msgstr "Syslog%s设置"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "你想用什么卸载方法？"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "卸载syslog时，您可以删除所有内容或仅删除组件，以防您计划将来重新安装。"
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "删除所有内容（日志，表格，设置）"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Syslog Data Only"
+msgstr "仅限Syslog数据"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Syslog卸载首选项"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "卸载"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Cancel"
+msgstr "取消"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "系统日志"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Syslog Removals"
+msgstr "Syslog删除"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "（编辑）"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "操作"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Syslog Alerts"
+msgstr "Syslog提醒"
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Syslog Reports"
+msgstr "系统日志报告"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr ""
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr ""
+
+#: includes/navigation.php
+#, fuzzy
+msgid "Display Syslog in Range"
+msgstr "在范围内显示Syslog"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Friday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Every day"
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "已禁用"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "常规设置"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Enabled"
+msgstr "已启用Syslog"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "如果设置了此复选框，则记录将从Syslog Incoming表传输到主syslog表，并且将启用Alerts and Reports。请记住，如果系统被禁用，日志条目仍会累积到Syslog Incoming表中，因为这是由rsyslog或syslog-ng进程定义的。"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Strip Domains"
+msgstr "剥离域"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "您希望从syslog主机名中删除的以逗号分隔的域列表，例如'mydomain.com，otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "刷新频率"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "这是页面刷新前的秒数。"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Max Report Records"
+msgstr "最大报告记录"
+
+#: includes/settings.php
+#, fuzzy
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "对于基于阈值的警报，您希望在报告中显示的最大数量是多少。这用于限制html日志和电子邮件的大小。"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d 记录"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr ""
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+msgid "Command for Opening Tickets"
+msgstr "打开门票的命令"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "将执行此命令以打开帮助台票证。该命令将需要解析多个输入参数如下<b>：--alert名</b> <b><b><b>，--severity，--hostlist，--message。</b></b></b>主机列表将是受警报影响的逗号分隔的主机列表。"
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr ""
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr ""
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+msgid "HTML Notification Settings"
+msgstr "通知列表"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Enable HTML Based Email"
+msgstr "HTML电子邮件"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "如果设置了此复选框，则所有电子邮件都将以HTML格式发送。否则，电子邮件将以纯文本形式发送。"
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "格式化文件以使用"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr ""
+"择要使用的自定义html包装器和CSS文件. 该文件包含html和CSS.以包装您的报告.如果它包含的不仅仅是CSS.你需要在文件中放置一个特殊的<REPORT>标签.此格式标签将被报告内容替换.\n"
+"这些文件位于'formats'目录."
+
+#: includes/settings.php
+#, fuzzy
+msgid "Data Retention Settings"
+msgstr "数据保留设置"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Retention"
+msgstr "Syslog保留"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This is the number of days to keep events."
+msgstr "这是保留事件的天数。"
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr ""
+
+#: includes/settings.php
+msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d 天"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d 天"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Partition Recovery Limit"
+msgstr "每天分区"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Partition per run"
+msgstr "每天分区"
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Partitions per run"
+msgstr "每天分区"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Messages"
+msgstr "消息"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Syslog Alert Retention"
+msgstr "系统日志警报保留"
+
+#: includes/settings.php
+#, fuzzy
+msgid "This is the number of days to keep alert logs."
+msgstr "这是保留警报日志的天数。"
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr ""
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr ""
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr ""
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr ""
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr ""
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr ""
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr ""
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr ""
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr ""
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+msgid "Remote Syslog Recovery"
+msgstr "删除系统日志报告"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: includes/settings.php
+msgid "No pause"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Delete"
+msgstr "删除"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "禁用"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "启用"
+
+#: includes/settings.php syslog.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "导出"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "无限制"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d 周"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d 周"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d 月"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d 月"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d 年"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "从不"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d 分钟"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d分钟"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Begins with"
+msgstr "开始于"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "包含"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "以此结尾"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Hostname is"
+msgstr "主机名: "
+
+#: includes/settings.php
+#, fuzzy
+msgid "Program is"
+msgstr "程序"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Facility is"
+msgstr "设施"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "SQL表达式"
+
+#: includes/settings.php
+msgid "Daily"
+msgstr "每日"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "每周"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "导入/导出"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Alert Rules"
+msgstr "警报规则"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Syslog 设置"
+
+#: includes/settings.php syslog_device_rules.php
+#, fuzzy
+msgid "Device Alert Rules"
+msgstr "警报规则"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Removal Rules"
+msgstr "搬迁规则"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Report Rules"
+msgstr "报告规则"
+
+#: includes/utilities.php
+#, fuzzy, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "从Syslog数据库中删除了%s设备记录"
+
+#: includes/utilities.php
+#, fuzzy
+msgid "Syslog Utilities"
+msgstr "Syslog实用工具"
+
+#: includes/utilities.php
+#, fuzzy
+msgid "Purge Syslog Devices"
+msgstr "清除Syslog设备"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr ""
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr ""
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Continue"
+msgstr "继续"
+
+#: includes/utilities.php
+#, fuzzy
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "此菜单选项提供了一种删除不再向Cacti的syslog服务器报告的设备的方法。"
+
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
 msgstr ""
@@ -409,20 +1149,9 @@ msgstr ""
 msgid "Save"
 msgstr "保存"
 
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_alerts.php
-#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php syslog_saved_searches.php
-msgid "Cancel"
-msgstr "取消"
-
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
 msgstr ""
-
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
-msgid "Delete"
-msgstr "删除"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
@@ -498,10 +1227,6 @@ msgstr "%d 月"
 #: lib/syslog_dashboard.php syslog.php
 msgid "Refresh"
 msgstr "刷新"
-
-#: lib/syslog_dashboard.php setup.php syslog_dashboards.php
-msgid "Dashboards"
-msgstr ""
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -696,720 +1421,8 @@ msgid "Please rename either your config.php.dist or config_local.php.dist files 
 msgstr "请重命名syslog目录中的config.php.dist文件，并在安装之前更改数据库设置。"
 
 #: setup.php
-msgid "Syslog"
-msgstr "系统日志"
-
-#: setup.php
-msgid "What upgrade/install type do you wish to use"
-msgstr "您希望使用哪种升级/安装类型"
-
-#: setup.php
-msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr "当你有非常大的表时，执行截断将更快。如果您担心存档数据，可以选择Inline（这将在此升级期间冻结浏览器）或后台，这将创建后台进程以将旧的syslog数据从备份表转换为新的syslog格式。这个过程可能需要几个小时。"
-
-#: setup.php
-msgid "Truncate Syslog Table"
-msgstr "截断Syslog表"
-
-#: setup.php
-msgid "Inline Upgrade"
-msgstr "内联升级"
-
-#: setup.php
-msgid "Background Upgrade"
-msgstr "后台升级"
-
-#: setup.php
-msgid "Database Storage Engine"
-msgstr "数据库存储引擎"
-
-#: includes/installer.php
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "InnoDB Storage"
-msgstr "使用InnoDB 存储引擎时,保持表空间的独立性很重要. 对于 %s 的长期用户,表管理会变得更简单.如果您尚未开启此功能, 可以通过在所有InnoDB 表上运行alter 语句来开启此功能."
-
-#: setup.php
-#, fuzzy
-msgid "Aria Storage"
-msgstr "MyISAM存储"
-
-#: setup.php
-msgid "Retention Policy"
-msgstr "保留策略"
-
-#: setup.php
-msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr "选择要在数据库中维护的Syslog值的天数。"
-
-#: setup.php
-msgid "Partitions per Day"
-msgstr "每天分区"
-
-#: setup.php
-#, fuzzy
-msgid "Select the number of partitions per day that you wish to create."
-msgstr "选择您希望每天创建的分区数。"
-
-#: setup.php
-#, php-format
-msgid "%d Per Day"
-msgstr "%d 每天"
-
-#: setup.php
-msgid "Upgrade"
-msgstr "升级"
-
-#: setup.php
-msgid "Install"
-msgstr "安装"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "Syslog %s Advisor"
-msgstr "Syslog%s顾问"
-
-#: setup.php
-msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr "警告：Syslog升级是耗时的！"
-
-#: setup.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "'main'系统日志表的升级可能是一个非常耗时的过程。因此，建议您在升级之前减小syslog表的大小，或者选择后台选项</p><p>如果选择后台选项，则将重命名旧的syslog表，并将创建新的syslog表。然后，将在后台启动升级过程。同样，这个后台进程可能需要相当多的时间才能完成。但是，您的数据将被保留</p><p>无论您的选择如何，在升级过程中都将保留所有现有的删除和警报规则。 </p><p>按<b>“升级”</b>继续升级，或按<b>“取消”</b>返回“插件”菜单。"
-
-#: setup.php
-#, fuzzy
-msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "您也可以选择保留期限。请记住，如果您有多个主机登录到syslog，则此表可能会变得非常大。因此，如果不使用分区，您可能希望保持较小的大小。"
-
-#: includes/installer.php
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "安装Syslog时有几个选项可供选择。第一个是数据库架构。从MySQL 5.1.6开始，您可以选择使用表分区来防止表的大小变得过大，从而减慢查询速度。"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "Syslog %s Settings"
-msgstr "Syslog%s设置"
-
-#: setup.php
-msgid "What uninstall method do you want to use?"
-msgstr "你想用什么卸载方法？"
-
-#: setup.php
-msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr "卸载syslog时，您可以删除所有内容或仅删除组件，以防您计划将来重新安装。"
-
-#: setup.php
-msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr "删除所有内容（日志，表格，设置）"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Data Only"
-msgstr "仅限Syslog数据"
-
-#: setup.php
-msgid "Syslog Uninstall Preferences"
-msgstr "Syslog卸载首选项"
-
-#: setup.php
-msgid "Uninstall"
-msgstr "卸载"
-
-#: setup.php
-msgid "Monday"
-msgstr ""
-
-#: setup.php
-msgid "Tuesday"
-msgstr ""
-
-#: setup.php
-msgid "Wednesday"
-msgstr ""
-
-#: setup.php
-msgid "Friday"
-msgstr ""
-
-#: setup.php
-msgid "Saturday"
-msgstr ""
-
-#: setup.php
-msgid "Sunday"
-msgstr ""
-
-#: setup.php
-msgid "Thursday"
-msgstr ""
-
-#: setup.php
-msgid "Monday through Friday"
-msgstr ""
-
-#: setup.php
-msgid "Saturday and Sunday"
-msgstr ""
-
-#: setup.php
-msgid "Every day"
-msgstr ""
-
-#: setup.php syslog_alerts.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php
-msgid "Disabled"
-msgstr "已禁用"
-
-#: setup.php
-msgid "General Settings"
-msgstr "常规设置"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Enabled"
-msgstr "已启用Syslog"
-
-#: setup.php
-msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr "如果设置了此复选框，则记录将从Syslog Incoming表传输到主syslog表，并且将启用Alerts and Reports。请记住，如果系统被禁用，日志条目仍会累积到Syslog Incoming表中，因为这是由rsyslog或syslog-ng进程定义的。"
-
-#: setup.php
-#, fuzzy
-msgid "Strip Domains"
-msgstr "剥离域"
-
-#: setup.php
-msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "您希望从syslog主机名中删除的以逗号分隔的域列表，例如'mydomain.com，otherdomain.com'"
-
-#: setup.php
-msgid "Refresh Interval"
-msgstr "刷新频率"
-
-#: setup.php
-msgid "This is the time in seconds before the page refreshes."
-msgstr "这是页面刷新前的秒数。"
-
-#: setup.php
-#, fuzzy
-msgid "Max Report Records"
-msgstr "最大报告记录"
-
-#: setup.php
-#, fuzzy
-msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr "对于基于阈值的警报，您希望在报告中显示的最大数量是多少。这用于限制html日志和电子邮件的大小。"
-
-#: setup.php
-#, php-format
-msgid "%d Records"
-msgstr "%d 记录"
-
-#: setup.php
-msgid "Maximum Syslog Processing Processes"
-msgstr ""
-
-#: setup.php
-msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d Worker Process"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d Worker Processes"
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "Command for Opening Tickets"
-msgstr "打开门票的命令"
-
-#: setup.php
-#, fuzzy
-msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr "将执行此命令以打开帮助台票证。该命令将需要解析多个输入参数如下<b>：--alert名</b> <b><b><b>，--severity，--hostlist，--message。</b></b></b>主机列表将是受警报影响的逗号分隔的主机列表。"
-
-#: setup.php
-msgid "Host Discovery Options"
-msgstr ""
-
-#: setup.php
-msgid "Enable Hostname Resolution"
-msgstr ""
-
-#: setup.php
-msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
-
-#: setup.php
-msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
-
-#: setup.php
-msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "HTML Notification Settings"
-msgstr "通知列表"
-
-#: setup.php
-#, fuzzy
-msgid "Enable HTML Based Email"
-msgstr "HTML电子邮件"
-
-#: setup.php
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "如果设置了此复选框，则所有电子邮件都将以HTML格式发送。否则，电子邮件将以纯文本形式发送。"
-
-#: setup.php
-msgid "Format File to Use"
-msgstr "格式化文件以使用"
-
-#: setup.php
-msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr ""
-"择要使用的自定义html包装器和CSS文件. 该文件包含html和CSS.以包装您的报告.如果它包含的不仅仅是CSS.你需要在文件中放置一个特殊的<REPORT>标签.此格式标签将被报告内容替换.\n"
-"这些文件位于'formats'目录."
-
-#: setup.php
-#, fuzzy
-msgid "Data Retention Settings"
-msgstr "数据保留设置"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Retention"
-msgstr "Syslog保留"
-
-#: setup.php
-#, fuzzy
-msgid "This is the number of days to keep events."
-msgstr "这是保留事件的天数。"
-
-#: setup.php
-msgid "Partition Pre-create Window"
-msgstr ""
-
-#: setup.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
-msgstr ""
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Day"
-msgstr "%d 天"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Days"
-msgstr "%d 天"
-
-#: setup.php
-#, fuzzy
-msgid "Partition Recovery Limit"
-msgstr "每天分区"
-
-#: setup.php
-msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Partition per run"
-msgstr "每天分区"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Partitions per run"
-msgstr "每天分区"
-
-#: setup.php
-msgid "Collector Staleness Threshold"
-msgstr ""
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
-msgstr ""
-
-#: setup.php
-msgid "Default (300 seconds)"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d seconds"
-msgstr ""
-
-#: setup.php
-msgid "Collector Backlog Threshold"
-msgstr ""
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
-
-#: setup.php
-msgid "Default (10000 messages)"
-msgstr ""
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Messages"
-msgstr "消息"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Alert Retention"
-msgstr "系统日志警报保留"
-
-#: setup.php
-#, fuzzy
-msgid "This is the number of days to keep alert logs."
-msgstr "这是保留警报日志的天数。"
-
-#: setup.php
-msgid "Alert Suppression and Maintenance"
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Days"
-msgstr ""
-
-#: setup.php
-msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Starts"
-msgstr ""
-
-#: setup.php
-msgid "Local start time for the global maintenance window."
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Ends"
-msgstr ""
-
-#: setup.php
-msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
-
-#: setup.php
-msgid "One-time Maintenance Starts"
-msgstr ""
-
-#: setup.php
-msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
-
-#: setup.php
-msgid "One-time Maintenance Ends"
-msgstr ""
-
-#: setup.php
-msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
-
-#: setup.php
-msgid "Default Alert Cooldown"
-msgstr ""
-
-#: setup.php
-msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
-
-#: setup.php
-msgid "Default Duplicate Suppression"
-msgstr ""
-
-#: setup.php
-msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
-
-#: includes/installer.php
-#, fuzzy
-msgid "Remote Message Processing"
-msgstr "消息字符串："
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "Enable Remote Data Collector Message Processing"
-msgstr "启用远程数据收集器消息处理"
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr "如果您的远程数据收集器有自己的 Syslog 数据库并独立处理它们的消息，请选中此复选框。通过选中此复选框，您的远程数据收集器将需要维护自己的“config_local.php”文件，以便通知 Syslog 使用独立数据库进行消息显示和处理。为此请使用模板文件“config_local.php.dist”。警告：启用此选项后，系统日志表将自动创建。"
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "Remote Data Collector Rules Sync"
-msgstr "远程数据收集器规则同步"
-
-#: includes/installer.php includes/settings.php
-#, fuzzy
-msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "如果您的远程数据收集器有自己的系统日志数据库并独立处理三个消息，如果您希望将主要 Cacti 数据库警报、删除和报告规则发送到远程 Cacti 系统，请选中此复选框。"
-
-#: includes/installer.php includes/settings.php
-msgid "Store Records on Remote Collector"
-msgstr ""
-
-#: includes/installer.php includes/settings.php
-msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
-
-#: includes/installer.php
-msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
-
-#: includes/installer.php setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "Remote Syslog Recovery"
-msgstr "删除系统日志报告"
-
-#: setup.php
-msgid "Maximum Recovery Records Per Execution"
-msgstr ""
-
-#: setup.php
-msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
-
-#: setup.php
-msgid "Recovery Pause Between Batches"
-msgstr ""
-
-#: setup.php
-msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
-
-#: setup.php
-msgid "No pause"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d milliseconds"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d second"
-msgstr ""
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Disable"
-msgstr "禁用"
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Enable"
-msgstr "启用"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_saved_searches.php
-msgid "Export"
-msgstr "导出"
-
-#: setup.php
-msgid "Indefinite"
-msgstr "无限制"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Week"
-msgstr "%d 周"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Weeks"
-msgstr "%d 周"
-
-#: setup.php
-#, php-format
-msgid "%d Month"
-msgstr "%d 月"
-
-#: setup.php
-#, php-format
-msgid "%d Months"
-msgstr "%d 月"
-
-#: setup.php
-#, php-format
-msgid "%d Year"
-msgstr "%d 年"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_reports.php
-msgid "Never"
-msgstr "从不"
-
-#: setup.php
-#, php-format
-msgid "%d Minute"
-msgstr "%d 分钟"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Minutes"
-msgstr "%d分钟"
-
-#: setup.php
-#, fuzzy
-msgid "Begins with"
-msgstr "开始于"
-
-#: setup.php
-msgid "Contains"
-msgstr "包含"
-
-#: setup.php
-msgid "Ends with"
-msgstr "以此结尾"
-
-#: setup.php
-#, fuzzy
-msgid "Hostname is"
-msgstr "主机名: "
-
-#: setup.php
-#, fuzzy
-msgid "Program is"
-msgstr "程序"
-
-#: setup.php
-#, fuzzy
-msgid "Facility is"
-msgstr "设施"
-
-#: setup.php syslog_alerts.php
-msgid "Filter Builder"
-msgstr ""
-
-#: setup.php syslog_alerts.php
-msgid "SQL Expression"
-msgstr "SQL表达式"
-
-#: setup.php
-msgid "Daily"
-msgstr "每日"
-
-#: setup.php
-msgid "Weekly"
-msgstr "每周"
-
-#: setup.php
-msgid "Import/Export"
-msgstr "导入/导出"
-
-#: setup.php
-#, fuzzy
-msgid "Alert Rules"
-msgstr "警报规则"
-
-#: setup.php
-msgid "Syslog Settings"
-msgstr "Syslog 设置"
-
-#: setup.php syslog_device_rules.php
-#, fuzzy
-msgid "Device Alert Rules"
-msgstr "警报规则"
-
-#: setup.php
-#, fuzzy
-msgid "Removal Rules"
-msgstr "搬迁规则"
-
-#: setup.php
-#, fuzzy
-msgid "Report Rules"
-msgstr "报告规则"
-
-#: setup.php syslog_saved_searches.php
-msgid "Saved Search Templates"
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Removals"
-msgstr "Syslog删除"
-
-#: setup.php
-msgid "(Edit)"
-msgstr "（编辑）"
-
-#: setup.php
-msgid "(Actions)"
-msgstr "操作"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Alerts"
-msgstr "Syslog提醒"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Reports"
-msgstr "系统日志报告"
-
-#: setup.php
-#, fuzzy
-msgid "Display Syslog in Range"
-msgstr "在范围内显示Syslog"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "There were %s Device records removed from the Syslog database"
-msgstr "从Syslog数据库中删除了%s设备记录"
-
-#: setup.php
-#, fuzzy
-msgid "Syslog Utilities"
-msgstr "Syslog实用工具"
-
-#: setup.php
-#, fuzzy
-msgid "Purge Syslog Devices"
-msgstr "清除Syslog设备"
-
-#: setup.php
-msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
-
-#: setup.php
-msgid "Confirm Purge"
-msgstr ""
-
-#: setup.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-msgid "Continue"
-msgstr "继续"
-
-#: setup.php
-#, fuzzy
-msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr "此菜单选项提供了一种删除不再向Cacti的syslog服务器报告的设备的方法。"
 
 #: syslog.php
 #, fuzzy
@@ -1428,10 +1441,6 @@ msgstr "选定的警报"
 
 #: syslog.php
 msgid "seconds"
-msgstr ""
-
-#: syslog.php
-msgid "min/avg/max"
 msgstr ""
 
 #: syslog.php
@@ -1520,6 +1529,56 @@ msgid "Latest processing run"
 msgstr ""
 
 #: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Remote collector receipts"
+msgstr "远程数据收集器规则同步"
+
+#: syslog.php
+#, fuzzy
+msgid "Storage and retention"
+msgstr "Syslog保留"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition health"
+msgstr "每天分区"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition maintenance activity"
+msgstr "分区表"
+
+#: syslog.php
+#, fuzzy
+msgid "Recent partition maintenance activity"
+msgstr "分区表"
+
+#: syslog.php
+msgid "Collector health"
+msgstr ""
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Worker processes"
+msgstr "正在重新处理"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr ""
+
+#: syslog.php
+msgid "Rule activity"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Records processed"
 msgstr "正在重新处理"
@@ -1546,10 +1605,6 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
-
-#: syslog.php
-msgid "Distributed synchronization"
 msgstr ""
 
 #: syslog.php
@@ -1590,15 +1645,6 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Remote collector receipts"
-msgstr "远程数据收集器规则同步"
-
-#: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
-#, fuzzy
 msgid "Last Batch Count"
 msgstr "最后发送的邮件"
 
@@ -1607,6 +1653,10 @@ msgstr "最后发送的邮件"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "上一次更改"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1618,11 +1668,6 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Storage and retention"
-msgstr "Syslog保留"
-
-#: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
 msgstr "分区表"
 
@@ -1631,18 +1676,13 @@ msgid "Partition maintenance is stopped; writes continue into the dMaxValue safe
 msgstr ""
 
 #: syslog.php
-#, fuzzy
-msgid "Partition health"
-msgstr "每天分区"
+msgid "Date coverage"
+msgstr ""
 
 #: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "启用"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1651,11 +1691,6 @@ msgstr ""
 #: syslog.php
 msgid "dMaxValue size"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Partition maintenance activity"
-msgstr "分区表"
 
 #: syslog.php
 #, fuzzy
@@ -1683,14 +1718,9 @@ msgstr ""
 msgid "Recovery progress"
 msgstr "正在重新处理"
 
-#: syslog.php
-#, fuzzy
-msgid "Recent partition maintenance activity"
-msgstr "分区表"
-
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "详情"
 
 #: syslog.php
 msgid "Outcome"
@@ -1701,9 +1731,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d 记录"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "详情"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1716,10 +1746,6 @@ msgstr ""
 
 #: syslog.php
 msgid "No action required."
-msgstr ""
-
-#: syslog.php
-msgid "Collector health"
 msgstr ""
 
 #: syslog.php
@@ -1745,15 +1771,15 @@ msgid "Collector warning"
 msgstr ""
 
 #: syslog.php
-msgid "Parallel workers"
-msgstr ""
-
-#: syslog.php
 msgid "Worker processes running"
 msgstr ""
 
 #: syslog.php
 msgid "Configured worker processes"
+msgstr ""
+
+#: syslog.php
+msgid "Hosts resolved"
 msgstr ""
 
 #: syslog.php
@@ -1767,10 +1793,6 @@ msgid "Records handled"
 msgstr "记录"
 
 #: syslog.php
-msgid "Hosts resolved"
-msgstr ""
-
-#: syslog.php
 msgid "Runtime"
 msgstr ""
 
@@ -1779,8 +1801,18 @@ msgid "No per process statistics recorded yet.  Worker statistics appear after t
 msgstr ""
 
 #: syslog.php
-msgid "Processing phases"
+#, fuzzy
+msgid "Duration"
+msgstr "删除插件"
+
+#: syslog.php
+msgid "Phase"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d 记录"
 
 #: syslog.php
 #, fuzzy
@@ -1811,40 +1843,22 @@ msgid "Report processing"
 msgstr "正在重新处理"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "删除插件"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d 记录"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
 msgstr ""
 
 #: syslog.php
-msgid "Slowest phase"
-msgstr ""
-
-#: syslog.php
-msgid "Rule activity"
-msgstr ""
+#, fuzzy
+msgid "Last run"
+msgstr "最后发送的邮件"
 
 #: syslog.php
 #, fuzzy
 msgid "Rules processed"
 msgstr "正在重新处理"
-
-#: syslog.php
-#, fuzzy
-msgid "Last run"
-msgstr "最后发送的邮件"
 
 #: syslog.php
 msgid "Total"
@@ -1862,6 +1876,41 @@ msgstr "警报规则"
 
 #: syslog.php
 msgid "Fired last run"
+msgstr ""
+
+#: syslog.php
+msgid "Show more"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Show less"
+msgstr "显示所有设备"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr ""
+
+#: syslog.php
+msgid "Remove from page"
+msgstr ""
+
+#: syslog.php
+msgid "Drag to reorder card"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown card."
+msgstr "未知"
+
+#: syslog.php
+msgid "Add card"
+msgstr ""
+
+#: syslog.php
+msgid "Add a status card…"
 msgstr ""
 
 #: syslog.php
@@ -3543,10 +3592,6 @@ msgstr ""
 
 #~ msgid "Shift Time Forward"
 #~ msgstr "向前移动时间"
-
-#, fuzzy
-#~ msgid "Show All Devices"
-#~ msgstr "显示所有设备"
 
 #~ msgid "Show All Logs"
 #~ msgstr "显示所有日志"

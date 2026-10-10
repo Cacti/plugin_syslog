@@ -214,6 +214,7 @@ if ($config['poller_id'] > 1) {
 	}
 
 	// replicate in syslog tables sync is enabled
+	require_once(__DIR__ . '/includes/processing.php');
 	syslog_replicate_in();
 }
 

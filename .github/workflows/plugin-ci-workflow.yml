@@ -206,6 +206,10 @@ jobs:
         include/vendor/bin/pest --configuration=plugins/syslog/phpunit.xml \
           --coverage-clover=plugins/syslog/coverage/clover.xml
 
+    - name: Run Syslog schema CLI regression checks
+      run: php tests/regression/cli_schema_upgrade_test.php
+      working-directory: ${{ github.workspace }}/cacti/plugins/syslog
+
     # Whole-file coverage is meaningless here: most of the plugin only runs
     # inside a live Cacti. What is enforceable is that a change covers the
     # lines it adds.

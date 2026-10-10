@@ -31,6 +31,9 @@
 }
 
 .syslogLegend .syslogLegendItem {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
 	text-align: center;
 	white-space: nowrap;
 	padding: 4px 6px;
@@ -47,3 +50,9 @@
 .syslogLegend .logNotice    { background-color: #35607f; }
 .syslogLegend .logInfo      { background-color: #3a6e46; }
 .syslogLegend .logDebug     { background-color: #4a534e; }
+
+/* The scoped Syslog log view and filter panel now derive their surfaces,
+   borders, pills and row tints from the live Cacti theme at runtime
+   (see css/search.css and js/functions.js applySyslogTheme), so no per-theme
+   color overrides belong here; only the status-legend palette above is
+   theme-specific. */

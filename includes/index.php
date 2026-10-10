@@ -1,3 +1,4 @@
+<?php
 /*
  +-------------------------------------------------------------------------+
  | Copyright (C) 2004-2026 The Cacti Group                                 |
@@ -21,38 +22,4 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Syslog status-legend palette for the sunrise (dark surface) theme. */
-
-.syslogLegend {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(var(--syslog-chip-min, 8ch), 1fr));
-	gap: 4px;
-	width: 100%;
-}
-
-.syslogLegend .syslogLegendItem {
-	box-sizing: border-box;
-	width: 100%;
-	min-width: 0;
-	text-align: center;
-	white-space: nowrap;
-	padding: 4px 6px;
-	border-radius: 3px;
-	color: #edf3ef;
-	font-size: 11px;
-}
-
-.syslogLegend .logEmergency { background-color: #8a2f2f; }
-.syslogLegend .logCritical  { background-color: #863a3c; }
-.syslogLegend .logAlert     { background-color: #8f4339; }
-.syslogLegend .logError     { background-color: #8a5244; }
-.syslogLegend .logWarning   { background-color: #86682f; }
-.syslogLegend .logNotice    { background-color: #35607f; }
-.syslogLegend .logInfo      { background-color: #3a6e46; }
-.syslogLegend .logDebug     { background-color: #4a534e; }
-
-/* The scoped Syslog log view and filter panel now derive their surfaces,
-   borders, pills and row tints from the live Cacti theme at runtime
-   (see css/search.css and js/functions.js applySyslogTheme), so no per-theme
-   color overrides belong here; only the status-legend palette above is
-   theme-specific. */
+header('Location:../index.php');
