@@ -754,6 +754,9 @@ syslog_create_replication_recovery_table();
 	syslog_ensure_share_tables();
 	syslog_ensure_dashboard_tables();
 	syslog_create_device_rule_table();
+	if (!$repair) {
+		syslog_dashboard_seed_default();
+	}
 
 	if (!$repair) {
 		if (!isset($settings['syslog'])) {

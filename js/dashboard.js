@@ -213,13 +213,14 @@ function syslogDashboardBindResize(handle, card, panel, axis) {
 }
 
 function actionButtons() {
-	// Shared dashboards are view-only for non-owners.
-	if (!syslogDashboard.canManage) return [];
-
 	var buttons = [];
+	var actions = [['refresh', 'fa-sync', syslogDashboard.text.refreshPanel]];
+	if (syslogDashboard.canManage) {
+		actions.push(['edit', 'fa-pen', 'Edit'], ['delete', 'fa-trash', 'Delete']);
+	}
 	// fa-pen: Font Awesome 5 (Cacti 1.2) dropped the FA4 fa-pencil name,
 	// which rendered an empty glyph and made the button look missing.
-	[['edit', 'fa-pen', 'Edit'], ['up', 'fa-arrow-up', 'Move up'], ['down', 'fa-arrow-down', 'Move down'], ['delete', 'fa-trash', 'Delete']].forEach(function(entry) {
+	actions.forEach(function(entry) {
 		var button = document.createElement('button');
 		button.type = 'button';
 		button.className = 'syslogDashboardCardButton';
@@ -254,7 +255,10 @@ function syslogDashboardRenderChart(panel, data) {
 		return;
 	}
 
-	if (status) status.hidden = true;
+	if (status) {
+		status.hidden = false;
+		status.textContent = syslogDashboard.text.totalMessages + ': ' + Number(data.total).toLocaleString();
+	}
 
 	var config;
 
@@ -724,7 +728,10 @@ if (window.jQuery) window.jQuery(function() {
 		var panelId = parseInt(this.closest('.syslogDashboardCard').id.replace('syslog_panel_', ''), 10);
 		if (!panelId) return;
 
-		if (action === 'edit') {
+		if (action === 'refresh') {
+			var panel = syslogDashboardPanelById(panelId);
+			if (panel) syslogDashboardLoadPanel(panel);
+		} else if (action === 'edit') {
 			syslogPanelDialogOpen(panelId);
 		} else if (action === 'up' || action === 'down') {
 			syslogDashboardPost({

@@ -857,6 +857,7 @@ function syslog_check_upgrade(bool $force = false): bool {
 	if (!syslog_ensure_table_structures()) {
 		return false;
 	}
+	syslog_dashboard_seed_default();
 	db_execute_prepared('DELETE FROM plugin_hooks WHERE name = ? AND hook = ?', ['syslog', 'config_insert']);
 
 	// don't let this script timeout
@@ -1005,6 +1006,70 @@ function syslog_check_upgrade(bool $force = false): bool {
 	include_once($config['base_path'] . '/lib/poller.php');
 	api_plugin_replicate_config();
 	return true;
+}
+
+
+/** Create dashboard structures and seed the shared starter during install/upgrade. */
+function syslog_dashboard_seed_default(): void {
+	global $syslogdb_default;
+
+	syslog_ensure_dashboard_tables();
+
+	$lock = 'syslog_dashboard_' . md5($syslogdb_default);
+	if (!syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 5)', [$lock])) {
+		return;
+	}
+
+	try {
+		if (syslog_db_fetch_cell_prepared("SELECT id FROM `$syslogdb_default`.`syslog_dashboards` WHERE hash = ? LIMIT 1", [md5('syslog_default_dashboard')])) {
+			return;
+		}
+
+		if (!syslog_db_execute('START TRANSACTION')) {
+			return;
+		}
+
+		$now = time();
+		if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
+			(hash, name, `user`, is_global, `date`, updated) VALUES (?, ?, ?, ?, ?, ?)", [md5('syslog_default_dashboard'), 'default', '', 'on', $now, $now])) {
+			syslog_db_execute('ROLLBACK');
+			return;
+		}
+
+		$id = (int) syslog_db_fetch_insert_id();
+		if ($id <= 0) {
+			syslog_db_execute('ROLLBACK');
+			return;
+		}
+
+		$panels = [
+			[__('Top 10 Hosts', 'syslog'), 'syslog', 'breakdown', 'donut', 'host', 'dashboard'],
+			[__('Syslog Messages - Past Hour', 'syslog'), 'syslog', 'timeseries', 'area', 'host', '3600'],
+			[__('Messages by Severity', 'syslog'), 'syslog', 'breakdown', 'donut', 'priority', 'dashboard'],
+			[__('Top 10 Programs', 'syslog'), 'syslog', 'breakdown', 'donut', 'program', 'dashboard'],
+			[__('Alert Activity', 'syslog'), 'alerts', 'timeseries', 'bar', 'host', 'dashboard']
+		];
+
+		foreach ($panels as $position => [$title, $source, $kind, $chart, $field, $timespan]) {
+			if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
+				(dashboard_id, title, expression, source, removal, kind, chart, field,
+				`interval`, timespan, top_n, width, height, position, `date`)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				[$id, $title, '', $source, 1, $kind, $chart, $field, 'auto', $timespan, 10, 1, 0, $position + 1, $now])) {
+				syslog_db_execute('ROLLBACK');
+				return;
+			}
+		}
+
+		if (!syslog_db_execute('COMMIT')) {
+			syslog_db_execute('ROLLBACK');
+		}
+	} catch (Throwable $error) {
+		syslog_db_execute('ROLLBACK');
+		throw $error;
+	} finally {
+		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
+	}
 }
 
 

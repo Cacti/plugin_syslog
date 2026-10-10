@@ -1264,12 +1264,21 @@ function syslog_dashboard(): void {
 		$dashboard_id = 0;
 	}
 
-	// Never auto-select a shared dashboard; only an owned one opens by default.
+	// Prefer an owned dashboard, then the built-in shared default.
 	if ($dashboard_id === 0 && cacti_sizeof($dashboards)) {
 		$username = syslog_dashboard_username();
 
 		foreach ($dashboards as $dashboard) {
 			if ($dashboard['user'] === $username) {
+				$dashboard_id = (int) $dashboard['id'];
+				break;
+			}
+		}
+	}
+
+	if ($dashboard_id === 0) {
+		foreach ($dashboards as $dashboard) {
+			if ($dashboard['user'] === '' && $dashboard['is_global'] === 'on' && $dashboard['name'] === 'default') {
 				$dashboard_id = (int) $dashboard['id'];
 				break;
 			}
@@ -1354,6 +1363,8 @@ function syslog_dashboard(): void {
 		canShare: <?php print $can_share ? 'true' : 'false'; ?>,
 		shared: <?php print $is_shared ? 'true' : 'false'; ?>,
 		text: {
+			refreshPanel: <?php print syslog_json_safe(__('Refresh Panel', 'syslog')); ?>,
+			totalMessages: <?php print syslog_json_safe(__('Total messages', 'syslog')); ?>,
 			libraryUnavailable: <?php print syslog_json_safe(__('Chart library unavailable on this Cacti installation.', 'syslog')); ?>,
 			editPanel: <?php print syslog_json_safe(__('Edit Panel', 'syslog')); ?>,
 			newPanel: <?php print syslog_json_safe(__('New Panel', 'syslog')); ?>,
