@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 15:06-0400\n"
+"POT-Creation-Date: 2026-10-10 09:25-0400\n"
 "PO-Revision-Date: 2026-10-09 15:32+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
@@ -146,7 +146,7 @@ msgstr "Förhandsgranskningsexemplet kunde inte läsas."
 msgid "Permission denied."
 msgstr "Åtkomst nekas."
 
-#: includes/functions.php includes/utilities.php
+#: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
 msgstr "Ogiltig begäran. Försök igen."
 
@@ -1081,6 +1081,18 @@ msgid "A title of up to 128 characters is required."
 msgstr "En titel med högst 128 tecken krävs."
 
 #: lib/syslog_dashboard.php
+#, fuzzy
+#| msgid "Refresh Interval"
+msgid "Refresh Panel"
+msgstr "Uppdateringsintervall"
+
+#: lib/syslog_dashboard.php
+#, fuzzy
+#| msgid "Copy message"
+msgid "Total messages"
+msgstr "Kopiera meddelande"
+
+#: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
 msgstr "Diagram-biblioteket är inte tillgängligt i den här Cacti-installationen."
 
@@ -1353,6 +1365,34 @@ msgstr "Byt namn på filerna config.php.dist eller config_local.php.dist i syslo
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr "Aria-lagring kan inte användas när något alternativ för fjärrdatainsamlare är aktiverat. Välj InnoDB eller inaktivera alla alternativ för fjärrdatainsamlare."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "Syslog Message Match String"
+msgid "Syslog Messages - Past Hour"
+msgstr "Matchningssträng för Syslog-meddelande"
+
+#: setup.php
+#, fuzzy
+#| msgid "Message String:"
+msgid "Messages by Severity"
+msgstr "Meddelandesträng:"
+
+#: setup.php
+#, fuzzy
+#| msgid "All Programs"
+msgid "Top 10 Programs"
+msgstr "Alla program"
+
+#: setup.php
+#, fuzzy
+#| msgid "Rule activity"
+msgid "Alert Activity"
+msgstr "Regelaktivitet"
 
 #: syslog.php
 msgid "Syslog Viewer"
