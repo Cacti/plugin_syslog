@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-09 15:06-0400\n"
+"POT-Creation-Date: 2026-10-10 09:25-0400\n"
 "PO-Revision-Date: 2026-09-25 03:18+0000\n"
 "Last-Translator: Ekaterine papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\n"
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: includes/functions.php includes/utilities.php
+#: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -1092,6 +1092,17 @@ msgid "A title of up to 128 characters is required."
 msgstr ""
 
 #: lib/syslog_dashboard.php
+#, fuzzy
+#| msgid "Refresh Interval"
+msgid "Refresh Panel"
+msgstr "განახლების შუალედი"
+
+#: lib/syslog_dashboard.php
+#, fuzzy
+msgid "Total messages"
+msgstr "შეტყობინება"
+
+#: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
 msgstr ""
 
@@ -1373,6 +1384,32 @@ msgstr ""
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr ""
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr ""
+
+#: setup.php
+#, fuzzy
+#| msgid "No Syslog Messages"
+msgid "Syslog Messages - Past Hour"
+msgstr "Syslog-ის შეტყობინებების გარეშე"
+
+#: setup.php
+#, fuzzy
+#| msgid "Message String:"
+msgid "Messages by Severity"
+msgstr "შეტყობინების სტრიქონი:"
+
+#: setup.php
+#, fuzzy
+#| msgid "All Programs"
+msgid "Top 10 Programs"
+msgstr "ყველა პროგრამა"
+
+#: setup.php
+msgid "Alert Activity"
 msgstr ""
 
 #: syslog.php
