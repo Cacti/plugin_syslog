@@ -14,10 +14,7 @@
  */
 
 it('only allows the owner or an admin to toggle a dashboard share', function () {
-	// Real syslog_dashboard_admin() and syslog_dashboard_share() delegate to
-	// api_plugin_user_realm_auth(), which is overridden below; loading them
-	// here keeps this test correct regardless of what other test files
-	// already loaded.
+	// Exercise the real realm-ID checks, not filename mappings.
 	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
 
@@ -33,9 +30,11 @@ it('only allows the owner or an admin to toggle a dashboard share', function () 
 		return $GLOBALS['row'];
 	});
 
-	test_override('api_plugin_user_realm_auth', function ($file) {
-		return $GLOBALS['admin'] || ($GLOBALS['share'] && $file === 'syslog_dashboards_share.php');
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$id = ['Syslog Administration' => 7, 'Share Dashboards' => 8][$params[1] ?? ''] ?? 0;
+		return $id ? [['id' => $id]] : [];
 	});
+	test_override('is_realm_allowed', fn ($id) => ($id === 107 && $GLOBALS['admin']) || ($id === 108 && $GLOBALS['share']));
 
 	test_override('syslog_db_execute_prepared', function ($sql, $params) {
 		$GLOBALS['writes']++;

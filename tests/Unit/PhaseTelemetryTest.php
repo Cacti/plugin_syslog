@@ -146,12 +146,12 @@ it('renders phase timings with the slowest phase highlighted', function () {
 	$GLOBALS['syslogdb_default'] = 'syslog';
 
 	// The rendering path is a view over syslog_status_phase_telemetry();
-	// assert the source renders the slowest phase summary and row class.
+	// assert the source renders each phase and marks the slowest one inline.
 	$source = plugin_test_read_source('syslog.php');
 
-	expect(str_contains($source, 'syslogStatusPhaseSlowest'))->toBeTrue();
 	expect(str_contains($source, 'syslog_status_phase_telemetry()'))->toBeTrue();
-	expect(str_contains($source, __('Slowest phase', 'syslog') === 'Slowest phase' ? 'Slowest phase' : 'Slowest phase'))->toBeTrue();
+	expect(str_contains($source, '$slowest_phase'))->toBeTrue();
+	expect(str_contains($source, "__esc('slowest', 'syslog')"))->toBeTrue();
 
 	// And the worker script records every phase.
 	$process_source = plugin_test_read_source('syslog_process.php');

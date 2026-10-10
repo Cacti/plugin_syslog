@@ -339,12 +339,30 @@ function syslog_strip_auto_dates(string $search, mixed $date1, mixed $date2): st
 }
 
 /**
+ * Check a Syslog realm by its Cacti-assigned ID, not a filename mapping.
+ */
+function syslog_realm_allowed(string $display): bool {
+	$realms = db_fetch_assoc_prepared(
+		'SELECT id FROM plugin_realms WHERE plugin = ? AND display = ?',
+		['syslog', $display]
+	);
+
+	foreach (is_array($realms) ? $realms : [] as $realm) {
+		if (is_realm_allowed((int) $realm['id'] + 100)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
  * Permission to make saved searches global and to manage other users' global searches.
  *
  * @return bool True if the user has admin permission.
  */
 function syslog_saved_search_admin(): bool {
-	return api_plugin_user_realm_auth('syslog_saved_searches.php');
+	return syslog_realm_allowed('Syslog Administration');
 }
 
 /**
@@ -353,7 +371,7 @@ function syslog_saved_search_admin(): bool {
  * @return bool True if the user has share permission.
  */
 function syslog_saved_search_share(): bool {
-	return syslog_saved_search_admin() || api_plugin_user_realm_auth('syslog_saved_searches_share.php');
+	return syslog_saved_search_admin() || syslog_realm_allowed('Share Saved Templates');
 }
 
 /**
@@ -362,7 +380,7 @@ function syslog_saved_search_share(): bool {
  * @return bool True if the user has dashboard admin permission.
  */
 function syslog_dashboard_admin(): bool {
-	return api_plugin_user_realm_auth('syslog_alerts.php');
+	return syslog_realm_allowed('Syslog Administration');
 }
 
 /**
@@ -371,7 +389,7 @@ function syslog_dashboard_admin(): bool {
  * @return bool True if the user has dashboard share permission.
  */
 function syslog_dashboard_share(): bool {
-	return syslog_dashboard_admin() || api_plugin_user_realm_auth('syslog_dashboards_share.php');
+	return syslog_dashboard_admin() || syslog_realm_allowed('Share Dashboards');
 }
 
 /**
@@ -850,7 +868,7 @@ function syslog_allow_edits(): bool {
  * @return bool True when rule edits are permitted for this user and poller.
  */
 function syslog_allow_rule_edits(): bool {
-	return syslog_allow_edits() && api_plugin_user_realm_auth('syslog_rule_administrator.php');
+	return syslog_allow_edits() && syslog_realm_allowed('Rule Administrator');
 }
 
 /**
@@ -3234,10 +3252,8 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
  * @return string A JSON document with the preview result, or an error.
  */
 function syslog_rule_test_action(string $rule_type): string {
-	$realm_page = $rule_type === 'removal' ? 'syslog_removal.php' : 'syslog_alerts.php';
-
-	if (!api_plugin_user_realm_auth($realm_page) || !syslog_allow_rule_edits()) {
-		cacti_log("WARNING: syslog rule preview blocked -- missing realm for '$realm_page'", false, 'SYSLOG');
+	if (!syslog_realm_allowed('Rule Viewer') || !syslog_allow_rule_edits()) {
+		cacti_log('WARNING: syslog rule preview blocked -- missing rule realm', false, 'SYSLOG');
 
 		return (string) json_encode(['error' => __('Permission denied.', 'syslog')]);
 	}
@@ -6773,14 +6789,12 @@ function syslog_message_rule_links($id, $source, $received, $host = ''): array {
 	}
 
 	$query = http_build_query(['id' => $id, 'action' => 'newedit', 'type' => '0', 'date' => $received]);
-	if (syslog_allow_rule_edits()) {
+	if (syslog_realm_allowed('Rule Viewer') && syslog_allow_rule_edits()) {
 		foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
-			if (api_plugin_user_realm_auth($page)) {
-				$links[$action] = $page . '?' . $query;
-			}
+			$links[$action] = $page . '?' . $query;
 		}
 	}
-	if ($host !== '' && api_plugin_user_realm_auth('syslog_device_rules.php')) {
+	if ($host !== '' && syslog_allow_rule_edits()) {
 		$links['device'] = 'syslog_device_rules.php?' . http_build_query(['action' => 'edit', 'host' => $host]);
 	}
 	return $links;

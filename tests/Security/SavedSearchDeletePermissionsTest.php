@@ -14,8 +14,7 @@
  */
 
 it('only allows the owner or an admin to delete a shared saved search', function () {
-	// Real syslog_saved_search_admin() (from functions.php) delegates to
-	// api_plugin_user_realm_auth(), which is overridden below; loading it
+	// Real syslog_saved_search_admin() checks Cacti's realm ID; loading it
 	// here (rather than faking syslog_saved_search_admin directly) keeps
 	// this test correct regardless of what other test files already loaded.
 	syslog_load_plugin_source('includes/functions.php');
@@ -46,9 +45,8 @@ it('only allows the owner or an admin to delete a shared saved search', function
 		return $GLOBALS['row'];
 	});
 
-	test_override('api_plugin_user_realm_auth', function ($file) {
-		return $GLOBALS['admin'];
-	});
+	test_override('db_fetch_assoc_prepared', fn ($sql, $params) => ($params[1] ?? '') === 'Syslog Administration' ? [['id' => 7]] : []);
+	test_override('is_realm_allowed', fn ($id) => $id === 107 && $GLOBALS['admin']);
 
 	test_override('syslog_db_execute_prepared', function ($sql, $params) {
 		$GLOBALS['writes']++;

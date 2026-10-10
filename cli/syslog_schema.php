@@ -22,9 +22,6 @@
  +-------------------------------------------------------------------------+
 */
 
-// Suppress automatic Syslog migrations during Cacti bootstrap.
-define('SYSLOG_SCHEMA_CLI', true);
-
 include(__DIR__ . '/../../../include/cli_check.php');
 require_once(dirname(__DIR__) . '/setup.php');
 require_once(dirname(__DIR__) . '/includes/schema.php');
@@ -77,7 +74,7 @@ if (!defined('SYSLOG_CONFIG')) {
 }
 
 $database_last_error = '';
-if (!syslog_connect(true)) {
+if (!syslog_connect()) {
 	fwrite(STDERR, 'ERROR: Unable to connect to the Syslog database.' . PHP_EOL);
 	exit(1);
 }
@@ -103,7 +100,10 @@ function syslog_schema_repair_database(): bool {
 		'db_type'      => 'part',
 		'days'         => read_config_option('syslog_install_days')
 	], true);
-	syslog_check_upgrade(true);
+	if (!syslog_check_upgrade(true)) {
+		fwrite(STDERR, 'ERROR: Syslog schema upgrade failed; check the Cacti log.' . PHP_EOL);
+		return false;
+	}
 
 	$success = syslog_schema_report_audit_results(false);
 	if ($success) {

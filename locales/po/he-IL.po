@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-06 15:14-0400\n"
+"POT-Creation-Date: 2026-10-09 15:06-0400\n"
 "PO-Revision-Date: 2025-03-07 14:47-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -26,7 +26,7 @@ msgstr "Syslog מופעל"
 msgid "Emergency"
 msgstr "בקר בפורום תמיכת לקוח"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Critical"
 msgstr "קריטי"
 
@@ -38,11 +38,11 @@ msgstr "התראה"
 msgid "Error"
 msgstr "שגיאה"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Warning"
 msgstr "אזהרה"
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/settings.php
 msgid "Notice"
 msgstr "הודעה"
 
@@ -147,7 +147,7 @@ msgstr ""
 msgid "Permission denied."
 msgstr ""
 
-#: includes/functions.php setup.php
+#: includes/functions.php includes/utilities.php
 msgid "Invalid request. Please try again."
 msgstr ""
 
@@ -296,6 +296,711 @@ msgstr "שרת מארח"
 msgid "Event Report - %s"
 msgstr "דוח אירוע - %s"
 
+#: includes/installer.php
+#, fuzzy
+#| msgid "Syslog %s Advisor"
+msgid "Syslog Upgrade Advisor"
+msgstr "Syslog %s Advisor"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr ""
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "באיזה סוג שדרוג/התקנה ברצונך להשתמש"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgstr "כאשר יש לך טבלאות גדולות מאוד, ביצוע חיתוך יהיה הרבה יותר מהיר.  אם אתה מודאג לגבי נתוני ארכיון, תוכל לבחור Inline, אשר יקפיא את הדפדפן שלך למשך תקופת שדרוג זה, או רקע, אשר ייצור תהליך רקע כדי להביא את נתוני syslog הישן שלך מטבלת גיבוי לפורמט syslog החדש.  שוב, תהליך זה יכול להימשך מספר שעות."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "חיתוך טבלת Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "שדרוג מוטבע"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "שדרוג ברקע"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "מנוע אחסון מסד נתונים"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr ""
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "אחסון InnoDB"
+
+#: includes/installer.php
+#, fuzzy
+msgid "Aria Storage"
+msgstr "אחסון MyISAM"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "עיבוד הודעות מרחוק"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "הפיכת עיבוד הודעות של אספן נתונים מרוחק לזמין"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "אם לאספני הנתונים המרוחקים שלך יש מסדי נתונים Syslog משלהם והם מעבדים את ההודעות שלהם באופן עצמאי, סמן תיבת סימון זו.  על-ידי סימון תיבת סימון זו, אוספי הנתונים המרוחקים שלך יצטרכו לתחזק קובץ 'config_local.php' משלהם כדי ליידע את Syslog להשתמש במסד נתונים עצמאי להצגה ועיבוד של הודעות.  אנא השתמש בקובץ התבנית 'config_local.php.dist' למטרה זו.  אזהרה: טבלאות Syslog ייווצרו באופן אוטומטי ברגע שאפשרות זו תופעל."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "סינכרון כללים של אספן נתונים מרוחק"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "אם לאספני הנתונים המרוחקים שלך יש מסדי נתונים Syslog משלהם והם מעבדים הודעות באופן עצמאי, סמן תיבת סימון זו אם ברצונך שכללי ההתראות, ההסרה והדוח של מסדי הנתונים הראשיים של Cacti יישלחו למערכת הקקטוסים המרוחקת."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr ""
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr ""
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "מדיניות שמירה"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "בחר כמה ימים של ערכי Syslog ברצונך לשמור במסד הנתונים."
+
+#: includes/installer.php
+msgid "Partitions per Day"
+msgstr "מחיצות ליום"
+
+#: includes/installer.php
+msgid "Select the number of partitions per day that you wish to create."
+msgstr "בחר את מספר המחיצות ליום שברצונך ליצור."
+
+#: includes/installer.php
+#, php-format
+msgid "%d Per Day"
+msgstr "%d ליום"
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "עדכון"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "התקן"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Syslog %s Advisor"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "אזהרה: שדרוג Syslog גוזל זמן!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "השדרוג של טבלת הסיסלוג 'הראשית' יכול להיות תהליך שלוקח זמן רב.  לכן, מומלץ להקטין את גודל טבלת syslog לפני השדרוג, או לבחור באפשרות רקע</p> <p>אם תבחר באפשרות הרקע, שם טבלת syslog מדור קודם ישתנה ותיווצר טבלת syslog חדשה.  לאחר מכן, יושק תהליך שדרוג ברקע.  שוב, תהליך הרקע הזה יכול לקחת לא מעט זמן להשלים.  עם זאת, הנתונים שלך יישמרו</p> <p>ללא קשר לבחירתך, כל כללי ההסרה וההתראה הקיימים יישמרו במהלך תהליך השדרוג.</p> <p>לחץ על <b>'שדרוג'</b> כדי להמשיך בשדרוג, או <b>על 'ביטול'</b> כדי לחזור לתפריט התוספים."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "יש לך מספר אפשרויות לבחירה בעת התקנת Syslog.  הראשון הוא ארכיטקטורת מסד הנתונים.  עליך לבחור להשתמש בחלוקת טבלאות כדי למנוע מגודל הטבלאות להפוך למוגזם ובכך להאט את השאילתות."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr ""
+
+#: includes/installer.php
+#, fuzzy
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "באפשרותך גם לבחור את משך השמירה.  זכור שאם יש לך כמה מארחים שמתחברים ל- syslog, טבלה זו יכולה להיות גדולה למדי.  לכן, אם אינך משתמש במחיצות, ייתכן שתרצה לשמור על גודל קטן יותר."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "הגדרות %s Syslog"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "באיזו שיטת הסרת התקנה ברצונך להשתמש?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "בעת הסרת ההתקנה של syslog, אתה יכול להסיר הכל, או רק רכיבים, רק במקרה שאתה מתכנן להתקין מחדש בעתיד."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "הסר הכל (יומנים, טבלאות, הגדרות)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "נתוני Syslog בלבד"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "העדפות הסרת ההתקנה של Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "הסרת התקנה"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Cancel"
+msgstr "ביטול"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "סיסלוג"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "הסרות סיסלוג"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(עריכה)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "פעולות"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "התראות Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "דוחות Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr ""
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr ""
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "הצג Syslog בטווח"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Friday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr ""
+
+#: includes/settings.php
+msgid "Every day"
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "לא זמין"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "הגדרות כלליות"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog מופעל"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "אם תיבת סימון זו מוגדרת, רשומות יועברו מהטבלה Syslog Incoming לטבלת syslog הראשית והתראות ודוחות יופעלו.  זכור שאם המערכת מושבתת, ערכי יומן הרישום עדיין יצטברו בטבלה Syslog Incoming כפי שהיא מוגדרת על-ידי תהליך rsyslog או syslog-ng."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "תחומי רצועה"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "רשימה מופרדת בפסיקים של תחומים שברצונך להסיר משם המארח syslog, דוגמאות יהיו 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "מרווח רענון"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "זה הזמן בשניות לפני רענון הדף."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "רשומות דוח מקסימליות"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "עבור התראות מבוססות סף, מהו המספר המרבי שברצונך להציג בדוח.  פעולה זו משמשת להגבלת הגודל של יומן HTML ודואר אלקטרוני."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d רקורדס"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr ""
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr ""
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "פקודה לפתיחת כרטיסים"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "פקודה זו תבוצע לפתיחת כרטיסי Help Desk.  הפקודה תידרש לנתח פרמטרי קלט מרובים באופן הבא: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  רשימת המארחים תהיה רשימה מופרדת בפסיקים של מארחים שהושפעו מההתראה."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr ""
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr ""
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr ""
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "הגדרות הודעת HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "הפיכת דואר אלקטרוני מבוסס HTML לזמין"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "אם תיבת סימון זו מוגדרת, כל הודעות הדוא\"ל יישלחו בתבנית HTML.  אחרת, הודעות דוא\"ל יישלחו בטקסט רגיל."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "עיצוב קובץ לשימוש"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "בחר בעטיפת HTML ובקובץ CSS מותאמים אישית לשימוש.  קובץ זה מכיל הן HTML והן CSS כדי להקיף את הדוח.  אם הוא מכיל יותר מסתם CSS, עליך למקם תג מיוחד <REPORT> בתוך הקובץ.  תג תבנית זה יוחלף בתוכן הדוח.  קבצים אלה ממוקמים בספריית 'פורמטים'.</REPORT>"
+
+#: includes/settings.php
+msgid "Data Retention Settings"
+msgstr "הגדרות שמירת נתונים"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "שימור סיסלוג"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "זהו מספר הימים לשמירת אירועים."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr ""
+
+#: includes/settings.php
+msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "יום %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d ימים"
+
+#: includes/settings.php
+#, fuzzy
+msgid "Partition Recovery Limit"
+msgstr "מחיצות ליום"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Partition per run"
+msgstr "מחיצות ליום"
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Partitions per run"
+msgstr "מחיצות ליום"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr ""
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+msgid "%d Messages"
+msgstr "הודעות"
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Syslog Alert Retention"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "זהו מספר הימים לשמירת יומני התראות."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr ""
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr ""
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr ""
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr ""
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr ""
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr ""
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr ""
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr ""
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr ""
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr ""
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+#| msgid "Delete Syslog Report(s)"
+msgid "Remote Syslog Recovery"
+msgstr "מחיקת דוחות Syslog"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr ""
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr ""
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr ""
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr ""
+
+#: includes/settings.php
+msgid "No pause"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr ""
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Delete"
+msgstr "מחק"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "כיבוי"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "אפשר"
+
+#: includes/settings.php syslog.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "ייצא"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "ללא הגבלת זמן"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "שבוע %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d שבועות"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d חודש"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d חודשים"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d שנה"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "לעולם לא"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "‫%d דקה"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "דקות %d"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "מתחיל ב"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "מכיל"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "מסתיים ב"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "שם מארח:"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "התוכנית היא"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "שירות"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr ""
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "ביטוי SQL"
+
+#: includes/settings.php
+msgid "Daily"
+msgstr "יומי"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "שבועי"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "ייבוא/ייצוא"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "כללי התראה"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "הגדרות Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+#, fuzzy
+msgid "Device Alert Rules"
+msgstr "כללי התראה"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "כללי הסרה"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "כללי דוח"
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "היו רשומות התקן %s שהוסרו ממסד הנתונים של Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Syslog כלי עזר"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "ניקוי התקני סיסלוג"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr ""
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr ""
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Continue"
+msgstr "המשך"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "בחירת תפריט זו מספקת אמצעי להסרת התקנים שאינם מדווחים עוד לשרת syslog של Cacti."
+
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
 msgstr ""
@@ -401,20 +1106,9 @@ msgstr ""
 msgid "Save"
 msgstr "שמור"
 
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_alerts.php
-#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php syslog_saved_searches.php
-msgid "Cancel"
-msgstr "ביטול"
-
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
 msgstr ""
-
-#: lib/syslog_dashboard.php setup.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
-msgid "Delete"
-msgstr "מחק"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
@@ -490,10 +1184,6 @@ msgstr "%d חודשים"
 #: lib/syslog_dashboard.php syslog.php
 msgid "Refresh"
 msgstr "רענן"
-
-#: lib/syslog_dashboard.php setup.php syslog_dashboards.php
-msgid "Dashboards"
-msgstr ""
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -685,684 +1375,8 @@ msgid "Please rename either your config.php.dist or config_local.php.dist files 
 msgstr "שנה את שמם של קבצי config.php.dist או config_local.php.dist בספריית syslog ושנה את הגדרת מסד הנתונים לפני ההתקנה."
 
 #: setup.php
-msgid "Syslog"
-msgstr "סיסלוג"
-
-#: setup.php
-msgid "What upgrade/install type do you wish to use"
-msgstr "באיזה סוג שדרוג/התקנה ברצונך להשתמש"
-
-#: setup.php
-msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
-msgstr "כאשר יש לך טבלאות גדולות מאוד, ביצוע חיתוך יהיה הרבה יותר מהיר.  אם אתה מודאג לגבי נתוני ארכיון, תוכל לבחור Inline, אשר יקפיא את הדפדפן שלך למשך תקופת שדרוג זה, או רקע, אשר ייצור תהליך רקע כדי להביא את נתוני syslog הישן שלך מטבלת גיבוי לפורמט syslog החדש.  שוב, תהליך זה יכול להימשך מספר שעות."
-
-#: setup.php
-msgid "Truncate Syslog Table"
-msgstr "חיתוך טבלת Syslog"
-
-#: setup.php
-msgid "Inline Upgrade"
-msgstr "שדרוג מוטבע"
-
-#: setup.php
-msgid "Background Upgrade"
-msgstr "שדרוג ברקע"
-
-#: setup.php
-msgid "Database Storage Engine"
-msgstr "מנוע אחסון מסד נתונים"
-
-#: includes/installer.php
-msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
-
-#: setup.php
-msgid "InnoDB Storage"
-msgstr "אחסון InnoDB"
-
-#: setup.php
-#, fuzzy
-msgid "Aria Storage"
-msgstr "אחסון MyISAM"
-
-#: setup.php
-msgid "Retention Policy"
-msgstr "מדיניות שמירה"
-
-#: setup.php
-msgid "Choose how many days of Syslog values you wish to maintain in the database."
-msgstr "בחר כמה ימים של ערכי Syslog ברצונך לשמור במסד הנתונים."
-
-#: setup.php
-msgid "Partitions per Day"
-msgstr "מחיצות ליום"
-
-#: setup.php
-msgid "Select the number of partitions per day that you wish to create."
-msgstr "בחר את מספר המחיצות ליום שברצונך ליצור."
-
-#: setup.php
-#, php-format
-msgid "%d Per Day"
-msgstr "%d ליום"
-
-#: setup.php
-msgid "Upgrade"
-msgstr "עדכון"
-
-#: setup.php
-msgid "Install"
-msgstr "התקן"
-
-#: setup.php
-#, php-format
-msgid "Syslog %s Advisor"
-msgstr "Syslog %s Advisor"
-
-#: setup.php
-msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
-msgstr "אזהרה: שדרוג Syslog גוזל זמן!!"
-
-#: setup.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "השדרוג של טבלת הסיסלוג 'הראשית' יכול להיות תהליך שלוקח זמן רב.  לכן, מומלץ להקטין את גודל טבלת syslog לפני השדרוג, או לבחור באפשרות רקע</p> <p>אם תבחר באפשרות הרקע, שם טבלת syslog מדור קודם ישתנה ותיווצר טבלת syslog חדשה.  לאחר מכן, יושק תהליך שדרוג ברקע.  שוב, תהליך הרקע הזה יכול לקחת לא מעט זמן להשלים.  עם זאת, הנתונים שלך יישמרו</p> <p>ללא קשר לבחירתך, כל כללי ההסרה וההתראה הקיימים יישמרו במהלך תהליך השדרוג.</p> <p>לחץ על <b>'שדרוג'</b> כדי להמשיך בשדרוג, או <b>על 'ביטול'</b> כדי לחזור לתפריט התוספים."
-
-#: setup.php
-#, fuzzy
-msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "באפשרותך גם לבחור את משך השמירה.  זכור שאם יש לך כמה מארחים שמתחברים ל- syslog, טבלה זו יכולה להיות גדולה למדי.  לכן, אם אינך משתמש במחיצות, ייתכן שתרצה לשמור על גודל קטן יותר."
-
-#: includes/installer.php
-msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
-
-#: setup.php
-#, fuzzy
-msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "יש לך מספר אפשרויות לבחירה בעת התקנת Syslog.  הראשון הוא ארכיטקטורת מסד הנתונים.  עליך לבחור להשתמש בחלוקת טבלאות כדי למנוע מגודל הטבלאות להפוך למוגזם ובכך להאט את השאילתות."
-
-#: setup.php
-#, php-format
-msgid "Syslog %s Settings"
-msgstr "הגדרות %s Syslog"
-
-#: setup.php
-msgid "What uninstall method do you want to use?"
-msgstr "באיזו שיטת הסרת התקנה ברצונך להשתמש?"
-
-#: setup.php
-msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
-msgstr "בעת הסרת ההתקנה של syslog, אתה יכול להסיר הכל, או רק רכיבים, רק במקרה שאתה מתכנן להתקין מחדש בעתיד."
-
-#: setup.php
-msgid "Remove Everything (Logs, Tables, Settings)"
-msgstr "הסר הכל (יומנים, טבלאות, הגדרות)"
-
-#: setup.php
-msgid "Syslog Data Only"
-msgstr "נתוני Syslog בלבד"
-
-#: setup.php
-msgid "Syslog Uninstall Preferences"
-msgstr "העדפות הסרת ההתקנה של Syslog"
-
-#: setup.php
-msgid "Uninstall"
-msgstr "הסרת התקנה"
-
-#: setup.php
-msgid "Monday"
-msgstr ""
-
-#: setup.php
-msgid "Tuesday"
-msgstr ""
-
-#: setup.php
-msgid "Wednesday"
-msgstr ""
-
-#: setup.php
-msgid "Friday"
-msgstr ""
-
-#: setup.php
-msgid "Saturday"
-msgstr ""
-
-#: setup.php
-msgid "Sunday"
-msgstr ""
-
-#: setup.php
-msgid "Thursday"
-msgstr ""
-
-#: setup.php
-msgid "Monday through Friday"
-msgstr ""
-
-#: setup.php
-msgid "Saturday and Sunday"
-msgstr ""
-
-#: setup.php
-msgid "Every day"
-msgstr ""
-
-#: setup.php syslog_alerts.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php
-msgid "Disabled"
-msgstr "לא זמין"
-
-#: setup.php
-msgid "General Settings"
-msgstr "הגדרות כלליות"
-
-#: setup.php
-msgid "Syslog Enabled"
-msgstr "Syslog מופעל"
-
-#: setup.php
-msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr "אם תיבת סימון זו מוגדרת, רשומות יועברו מהטבלה Syslog Incoming לטבלת syslog הראשית והתראות ודוחות יופעלו.  זכור שאם המערכת מושבתת, ערכי יומן הרישום עדיין יצטברו בטבלה Syslog Incoming כפי שהיא מוגדרת על-ידי תהליך rsyslog או syslog-ng."
-
-#: setup.php
-msgid "Strip Domains"
-msgstr "תחומי רצועה"
-
-#: setup.php
-msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "רשימה מופרדת בפסיקים של תחומים שברצונך להסיר משם המארח syslog, דוגמאות יהיו 'mydomain.com, otherdomain.com'"
-
-#: setup.php
-msgid "Refresh Interval"
-msgstr "מרווח רענון"
-
-#: setup.php
-msgid "This is the time in seconds before the page refreshes."
-msgstr "זה הזמן בשניות לפני רענון הדף."
-
-#: setup.php
-msgid "Max Report Records"
-msgstr "רשומות דוח מקסימליות"
-
-#: setup.php
-msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr "עבור התראות מבוססות סף, מהו המספר המרבי שברצונך להציג בדוח.  פעולה זו משמשת להגבלת הגודל של יומן HTML ודואר אלקטרוני."
-
-#: setup.php
-#, php-format
-msgid "%d Records"
-msgstr "%d רקורדס"
-
-#: setup.php
-msgid "Maximum Syslog Processing Processes"
-msgstr ""
-
-#: setup.php
-msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d Worker Process"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d Worker Processes"
-msgstr ""
-
-#: setup.php
-msgid "Command for Opening Tickets"
-msgstr "פקודה לפתיחת כרטיסים"
-
-#: setup.php
-msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr "פקודה זו תבוצע לפתיחת כרטיסי Help Desk.  הפקודה תידרש לנתח פרמטרי קלט מרובים באופן הבא: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  רשימת המארחים תהיה רשימה מופרדת בפסיקים של מארחים שהושפעו מההתראה."
-
-#: setup.php
-msgid "Host Discovery Options"
-msgstr ""
-
-#: setup.php
-msgid "Enable Hostname Resolution"
-msgstr ""
-
-#: setup.php
-msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
-
-#: setup.php
-msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
-
-#: setup.php
-msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
-
-#: setup.php
-msgid "HTML Notification Settings"
-msgstr "הגדרות הודעת HTML"
-
-#: setup.php
-msgid "Enable HTML Based Email"
-msgstr "הפיכת דואר אלקטרוני מבוסס HTML לזמין"
-
-#: setup.php
-msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
-msgstr "אם תיבת סימון זו מוגדרת, כל הודעות הדוא\"ל יישלחו בתבנית HTML.  אחרת, הודעות דוא\"ל יישלחו בטקסט רגיל."
-
-#: setup.php
-msgid "Format File to Use"
-msgstr "עיצוב קובץ לשימוש"
-
-#: setup.php
-msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "בחר בעטיפת HTML ובקובץ CSS מותאמים אישית לשימוש.  קובץ זה מכיל הן HTML והן CSS כדי להקיף את הדוח.  אם הוא מכיל יותר מסתם CSS, עליך למקם תג מיוחד <REPORT> בתוך הקובץ.  תג תבנית זה יוחלף בתוכן הדוח.  קבצים אלה ממוקמים בספריית 'פורמטים'.</REPORT>"
-
-#: setup.php
-msgid "Data Retention Settings"
-msgstr "הגדרות שמירת נתונים"
-
-#: setup.php
-msgid "Syslog Retention"
-msgstr "שימור סיסלוג"
-
-#: setup.php
-msgid "This is the number of days to keep events."
-msgstr "זהו מספר הימים לשמירת אירועים."
-
-#: setup.php
-msgid "Partition Pre-create Window"
-msgstr ""
-
-#: setup.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
-msgstr ""
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Day"
-msgstr "יום %d"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Days"
-msgstr "%d ימים"
-
-#: setup.php
-#, fuzzy
-msgid "Partition Recovery Limit"
-msgstr "מחיצות ליום"
-
-#: setup.php
-msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Partition per run"
-msgstr "מחיצות ליום"
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Partitions per run"
-msgstr "מחיצות ליום"
-
-#: setup.php
-msgid "Collector Staleness Threshold"
-msgstr ""
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
-msgstr ""
-
-#: setup.php
-msgid "Default (300 seconds)"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d seconds"
-msgstr ""
-
-#: setup.php
-msgid "Collector Backlog Threshold"
-msgstr ""
-
-#: setup.php
-msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
-
-#: setup.php
-msgid "Default (10000 messages)"
-msgstr ""
-
-#: setup.php
-#, fuzzy, php-format
-msgid "%d Messages"
-msgstr "הודעות"
-
-#: setup.php
-msgid "Syslog Alert Retention"
-msgstr "Syslog Alert Retention"
-
-#: setup.php
-msgid "This is the number of days to keep alert logs."
-msgstr "זהו מספר הימים לשמירת יומני התראות."
-
-#: setup.php
-msgid "Alert Suppression and Maintenance"
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Days"
-msgstr ""
-
-#: setup.php
-msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Starts"
-msgstr ""
-
-#: setup.php
-msgid "Local start time for the global maintenance window."
-msgstr ""
-
-#: setup.php
-msgid "Maintenance Window Ends"
-msgstr ""
-
-#: setup.php
-msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
-
-#: setup.php
-msgid "One-time Maintenance Starts"
-msgstr ""
-
-#: setup.php
-msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
-
-#: setup.php
-msgid "One-time Maintenance Ends"
-msgstr ""
-
-#: setup.php
-msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
-
-#: setup.php
-msgid "Default Alert Cooldown"
-msgstr ""
-
-#: setup.php
-msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
-
-#: setup.php
-msgid "Default Duplicate Suppression"
-msgstr ""
-
-#: setup.php
-msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
-
-#: includes/installer.php
-msgid "Remote Message Processing"
-msgstr "עיבוד הודעות מרחוק"
-
-#: includes/installer.php includes/settings.php
-msgid "Enable Remote Data Collector Message Processing"
-msgstr "הפיכת עיבוד הודעות של אספן נתונים מרוחק לזמין"
-
-#: includes/installer.php includes/settings.php
-msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr "אם לאספני הנתונים המרוחקים שלך יש מסדי נתונים Syslog משלהם והם מעבדים את ההודעות שלהם באופן עצמאי, סמן תיבת סימון זו.  על-ידי סימון תיבת סימון זו, אוספי הנתונים המרוחקים שלך יצטרכו לתחזק קובץ 'config_local.php' משלהם כדי ליידע את Syslog להשתמש במסד נתונים עצמאי להצגה ועיבוד של הודעות.  אנא השתמש בקובץ התבנית 'config_local.php.dist' למטרה זו.  אזהרה: טבלאות Syslog ייווצרו באופן אוטומטי ברגע שאפשרות זו תופעל."
-
-#: includes/installer.php includes/settings.php
-msgid "Remote Data Collector Rules Sync"
-msgstr "סינכרון כללים של אספן נתונים מרוחק"
-
-#: includes/installer.php includes/settings.php
-msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "אם לאספני הנתונים המרוחקים שלך יש מסדי נתונים Syslog משלהם והם מעבדים הודעות באופן עצמאי, סמן תיבת סימון זו אם ברצונך שכללי ההתראות, ההסרה והדוח של מסדי הנתונים הראשיים של Cacti יישלחו למערכת הקקטוסים המרוחקת."
-
-#: includes/installer.php includes/settings.php
-msgid "Store Records on Remote Collector"
-msgstr ""
-
-#: includes/installer.php includes/settings.php
-msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
-
-#: includes/installer.php
-msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
-
-#: includes/installer.php setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
 msgstr ""
-
-#: setup.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
-msgid "Remote Syslog Recovery"
-msgstr "מחיקת דוחות Syslog"
-
-#: setup.php
-msgid "Maximum Recovery Records Per Execution"
-msgstr ""
-
-#: setup.php
-msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
-
-#: setup.php
-msgid "Recovery Pause Between Batches"
-msgstr ""
-
-#: setup.php
-msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
-
-#: setup.php
-msgid "No pause"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d milliseconds"
-msgstr ""
-
-#: setup.php
-#, php-format
-msgid "%d second"
-msgstr ""
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Disable"
-msgstr "כיבוי"
-
-#: setup.php syslog_device_rules.php syslog_removal.php
-msgid "Enable"
-msgstr "אפשר"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_saved_searches.php
-msgid "Export"
-msgstr "ייצא"
-
-#: setup.php
-msgid "Indefinite"
-msgstr "ללא הגבלת זמן"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Week"
-msgstr "שבוע %d"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Weeks"
-msgstr "%d שבועות"
-
-#: setup.php
-#, php-format
-msgid "%d Month"
-msgstr "%d חודש"
-
-#: setup.php
-#, php-format
-msgid "%d Months"
-msgstr "%d חודשים"
-
-#: setup.php
-#, php-format
-msgid "%d Year"
-msgstr "%d שנה"
-
-#: setup.php syslog.php syslog_dashboards.php syslog_reports.php
-msgid "Never"
-msgstr "לעולם לא"
-
-#: setup.php
-#, php-format
-msgid "%d Minute"
-msgstr "‫%d דקה"
-
-#: setup.php syslog_alerts.php
-#, php-format
-msgid "%d Minutes"
-msgstr "דקות %d"
-
-#: setup.php
-msgid "Begins with"
-msgstr "מתחיל ב"
-
-#: setup.php
-msgid "Contains"
-msgstr "מכיל"
-
-#: setup.php
-msgid "Ends with"
-msgstr "מסתיים ב"
-
-#: setup.php
-msgid "Hostname is"
-msgstr "שם מארח:"
-
-#: setup.php
-msgid "Program is"
-msgstr "התוכנית היא"
-
-#: setup.php
-msgid "Facility is"
-msgstr "שירות"
-
-#: setup.php syslog_alerts.php
-msgid "Filter Builder"
-msgstr ""
-
-#: setup.php syslog_alerts.php
-msgid "SQL Expression"
-msgstr "ביטוי SQL"
-
-#: setup.php
-msgid "Daily"
-msgstr "יומי"
-
-#: setup.php
-msgid "Weekly"
-msgstr "שבועי"
-
-#: setup.php
-msgid "Import/Export"
-msgstr "ייבוא/ייצוא"
-
-#: setup.php
-msgid "Alert Rules"
-msgstr "כללי התראה"
-
-#: setup.php
-msgid "Syslog Settings"
-msgstr "הגדרות Syslog"
-
-#: setup.php syslog_device_rules.php
-#, fuzzy
-msgid "Device Alert Rules"
-msgstr "כללי התראה"
-
-#: setup.php
-msgid "Removal Rules"
-msgstr "כללי הסרה"
-
-#: setup.php
-msgid "Report Rules"
-msgstr "כללי דוח"
-
-#: setup.php syslog_saved_searches.php
-msgid "Saved Search Templates"
-msgstr ""
-
-#: setup.php
-msgid "Syslog Removals"
-msgstr "הסרות סיסלוג"
-
-#: setup.php
-msgid "(Edit)"
-msgstr "(עריכה)"
-
-#: setup.php
-msgid "(Actions)"
-msgstr "פעולות"
-
-#: setup.php
-msgid "Syslog Alerts"
-msgstr "התראות Syslog"
-
-#: setup.php
-msgid "Syslog Reports"
-msgstr "דוחות Syslog"
-
-#: setup.php
-msgid "Display Syslog in Range"
-msgstr "הצג Syslog בטווח"
-
-#: setup.php
-#, php-format
-msgid "There were %s Device records removed from the Syslog database"
-msgstr "היו רשומות התקן %s שהוסרו ממסד הנתונים של Syslog"
-
-#: setup.php
-msgid "Syslog Utilities"
-msgstr "Syslog כלי עזר"
-
-#: setup.php
-msgid "Purge Syslog Devices"
-msgstr "ניקוי התקני סיסלוג"
-
-#: setup.php
-msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
-
-#: setup.php
-msgid "Confirm Purge"
-msgstr ""
-
-#: setup.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
-msgid "Continue"
-msgstr "המשך"
-
-#: setup.php
-msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
-msgstr "בחירת תפריט זו מספקת אמצעי להסרת התקנים שאינם מדווחים עוד לשרת syslog של Cacti."
 
 #: syslog.php
 msgid "Syslog Viewer"
@@ -1379,10 +1393,6 @@ msgstr "התראה שנבחרה"
 
 #: syslog.php
 msgid "seconds"
-msgstr ""
-
-#: syslog.php
-msgid "min/avg/max"
 msgstr ""
 
 #: syslog.php
@@ -1471,6 +1481,57 @@ msgid "Latest processing run"
 msgstr ""
 
 #: syslog.php
+msgid "Distributed synchronization"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Remote Data Collector Rules Sync"
+msgid "Remote collector receipts"
+msgstr "סינכרון כללים של אספן נתונים מרוחק"
+
+#: syslog.php
+#, fuzzy
+msgid "Storage and retention"
+msgstr "שימור סיסלוג"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition health"
+msgstr "מחיצות ליום"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition maintenance activity"
+msgstr "טבלה מחולקת למחיצות"
+
+#: syslog.php
+#, fuzzy
+msgid "Recent partition maintenance activity"
+msgstr "טבלה מחולקת למחיצות"
+
+#: syslog.php
+msgid "Collector health"
+msgstr ""
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Worker processes"
+msgstr "עיבוד מחדש"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr ""
+
+#: syslog.php
+msgid "Rule activity"
+msgstr ""
+
+#: syslog.php
 #, fuzzy
 msgid "Records processed"
 msgstr "עיבוד מחדש"
@@ -1497,10 +1558,6 @@ msgstr ""
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
-
-#: syslog.php
-msgid "Distributed synchronization"
 msgstr ""
 
 #: syslog.php
@@ -1542,16 +1599,6 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-#| msgid "Remote Data Collector Rules Sync"
-msgid "Remote collector receipts"
-msgstr "סינכרון כללים של אספן נתונים מרוחק"
-
-#: syslog.php
-msgid "Remote Poller"
-msgstr ""
-
-#: syslog.php
-#, fuzzy
 msgid "Last Batch Count"
 msgstr "נשלח לאחרונה"
 
@@ -1560,6 +1607,10 @@ msgstr "נשלח לאחרונה"
 #| msgid "Last Modified"
 msgid "Last Record Received"
 msgstr "תאריך שינוי"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr ""
 
 #: syslog.php
 msgid "Unknown remote poller"
@@ -1571,11 +1622,6 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
-msgid "Storage and retention"
-msgstr "שימור סיסלוג"
-
-#: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
 msgstr "טבלה מחולקת למחיצות"
 
@@ -1584,18 +1630,13 @@ msgid "Partition maintenance is stopped; writes continue into the dMaxValue safe
 msgstr ""
 
 #: syslog.php
-#, fuzzy
-msgid "Partition health"
-msgstr "מחיצות ליום"
+msgid "Date coverage"
+msgstr ""
 
 #: syslog.php
 #, fuzzy
 msgid "Table"
 msgstr "אפשר"
-
-#: syslog.php
-msgid "Date coverage"
-msgstr ""
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1604,11 +1645,6 @@ msgstr ""
 #: syslog.php
 msgid "dMaxValue size"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Partition maintenance activity"
-msgstr "טבלה מחולקת למחיצות"
 
 #: syslog.php
 #, fuzzy
@@ -1636,14 +1672,9 @@ msgstr ""
 msgid "Recovery progress"
 msgstr "עיבוד מחדש"
 
-#: syslog.php
-#, fuzzy
-msgid "Recent partition maintenance activity"
-msgstr "טבלה מחולקת למחיצות"
-
-#: syslog.php
-msgid "When"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "פרטים"
 
 #: syslog.php
 msgid "Outcome"
@@ -1654,9 +1685,9 @@ msgstr ""
 msgid "Recovery"
 msgstr "%d רקורדס"
 
-#: syslog.php syslog_alerts.php syslog_reports.php
-msgid "Details"
-msgstr "פרטים"
+#: syslog.php
+msgid "When"
+msgstr ""
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
@@ -1669,10 +1700,6 @@ msgstr ""
 
 #: syslog.php
 msgid "No action required."
-msgstr ""
-
-#: syslog.php
-msgid "Collector health"
 msgstr ""
 
 #: syslog.php
@@ -1698,15 +1725,15 @@ msgid "Collector warning"
 msgstr ""
 
 #: syslog.php
-msgid "Parallel workers"
-msgstr ""
-
-#: syslog.php
 msgid "Worker processes running"
 msgstr ""
 
 #: syslog.php
 msgid "Configured worker processes"
+msgstr ""
+
+#: syslog.php
+msgid "Hosts resolved"
 msgstr ""
 
 #: syslog.php
@@ -1720,10 +1747,6 @@ msgid "Records handled"
 msgstr "הסוכן רשומות יומן עבור הפניה זו"
 
 #: syslog.php
-msgid "Hosts resolved"
-msgstr ""
-
-#: syslog.php
 msgid "Runtime"
 msgstr ""
 
@@ -1732,8 +1755,18 @@ msgid "No per process statistics recorded yet.  Worker statistics appear after t
 msgstr ""
 
 #: syslog.php
-msgid "Processing phases"
+#, fuzzy
+msgid "Duration"
+msgstr "מחיקה"
+
+#: syslog.php
+msgid "Phase"
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Records"
+msgstr "%d רקורדס"
 
 #: syslog.php
 #, fuzzy
@@ -1764,40 +1797,22 @@ msgid "Report processing"
 msgstr "עיבוד מחדש"
 
 #: syslog.php
-msgid "Phase"
+msgid "slowest"
 msgstr ""
-
-#: syslog.php
-#, fuzzy
-msgid "Duration"
-msgstr "מחיקה"
-
-#: syslog.php
-#, fuzzy
-msgid "Records"
-msgstr "%d רקורדס"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
 msgstr ""
 
 #: syslog.php
-msgid "Slowest phase"
-msgstr ""
-
-#: syslog.php
-msgid "Rule activity"
-msgstr ""
+#, fuzzy
+msgid "Last run"
+msgstr "נשלח לאחרונה"
 
 #: syslog.php
 #, fuzzy
 msgid "Rules processed"
 msgstr "עיבוד מחדש"
-
-#: syslog.php
-#, fuzzy
-msgid "Last run"
-msgstr "נשלח לאחרונה"
 
 #: syslog.php
 msgid "Total"
@@ -1815,6 +1830,42 @@ msgstr "כללי התראה"
 
 #: syslog.php
 msgid "Fired last run"
+msgstr ""
+
+#: syslog.php
+msgid "Show more"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Show All Devices"
+msgid "Show less"
+msgstr "הצג את כל המכשירים"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr ""
+
+#: syslog.php
+msgid "Remove from page"
+msgstr ""
+
+#: syslog.php
+msgid "Drag to reorder card"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Unknown"
+msgid "Unknown card."
+msgstr "לא ידוע"
+
+#: syslog.php
+msgid "Add card"
+msgstr ""
+
+#: syslog.php
+msgid "Add a status card…"
 msgstr ""
 
 #: syslog.php
@@ -3377,9 +3428,6 @@ msgstr ""
 
 #~ msgid "Shift Time Forward"
 #~ msgstr "העברת זמן קדימה"
-
-#~ msgid "Show All Devices"
-#~ msgstr "הצג את כל המכשירים"
 
 #~ msgid "Show All Logs"
 #~ msgstr "הצג את כל יומני הרישום"

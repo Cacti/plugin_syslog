@@ -121,7 +121,7 @@ function device_rule_actions(): void {
 	}
 	$verb = [1 => __('Delete', 'syslog'), 2 => __('Disable', 'syslog'), 3 => __('Enable', 'syslog'), 4 => __('Export', 'syslog')][(int) get_request_var('drp_action')];
 	print '<tr><td class="textArea"><p>' . __esc('Click Continue to %s the following Device Alert Rule(s).', strtolower($verb), 'syslog') . '</p><div class="itemlist"><ul>' . $list . '</ul></div></td></tr>';
-	print '<tr><td align="right" class="saveRow"><input type="hidden" name="action" value="actions"><input type="hidden" name="selected_items" value="' . html_escape(serialize($items)) . '"><input type="hidden" name="drp_action" value="' . (int) get_request_var('drp_action') . '"><input type="button" value="' . __esc('Cancel', 'syslog') . '" onClick="cactiReturnTo()">&nbsp;<input type="submit" value="' . __esc('Continue', 'syslog') . '"></td></tr>';
+	print '<tr><td align="right" class="saveRow"><input type="hidden" name="action" value="actions"><input type="hidden" name="selected_items" value="' . html_escape(serialize($items)) . '"><input type="hidden" name="drp_action" value="' . (int) get_request_var('drp_action') . '"><input type="button" value="' . __esc('Cancel', 'syslog') . '" class="cactiReturnTo">&nbsp;<input type="submit" value="' . __esc('Continue', 'syslog') . '"></td></tr>';
 	html_end_box();
 	form_end(false);
 	bottom_footer();
