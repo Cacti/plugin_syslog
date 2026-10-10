@@ -290,9 +290,11 @@ function syslog_config_safe(): bool {
 /**
  * Connect to the Syslog database, either the local Cacti database or a remote one.
  *
+ * @param bool $repair Skip automatic install so the CLI can repair non-destructively.
+ *
  * @return bool True when a Syslog database connection is available, false otherwise.
  */
-function syslog_connect(): bool {
+function syslog_connect(bool $repair = false): bool {
 	global $config, $syslog_cnn, $syslogdb_default, $local_db_cnn_id, $remote_db_cnn_id, $syslog_incoming_config;
 
 	syslog_determine_config();
@@ -373,7 +375,7 @@ function syslog_connect(): bool {
 			}
 		}
 
-		if ($connected && !syslog_db_table_exists('syslog') && api_plugin_is_enabled('syslog')) {
+		if (!$repair && $connected && !syslog_db_table_exists('syslog') && api_plugin_is_enabled('syslog')) {
 			cacti_log('Setting Up Database Tables Since they do not exist', false, 'SYSLOG');
 
 			if (!isset($syslog_install_options)) {
@@ -698,9 +700,11 @@ function syslog_upgrade_create_permission_realms(): bool {
 /**
  * Upgrade the Syslog database schema for legacy installs.
  *
+ * @param bool $force Run migrations even when the version is current, for CLI repair.
+ *
  * @return void
  */
-function syslog_check_upgrade(): void {
+function syslog_check_upgrade(bool $force = false): void {
 	global $config, $syslogdb_default, $syslog_levels, $syslog_upgrade;
 
 	require_once(__DIR__ . '/includes/schema.php');
@@ -724,7 +728,7 @@ function syslog_check_upgrade(): void {
 	// Let's only run this check if we are on a page that actually needs the data
 	$files = ['plugins.php', 'syslog.php', 'syslog_removal.php', 'syslog_alerts.php', 'syslog_device_rules.php', 'syslog_reports.php', 'syslog_saved_searches.php', 'syslog_dashboards.php'];
 
-	if (substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
+	if (!$force && substr($_SERVER['SCRIPT_FILENAME'], -18) != 'syslog_process.php' && !in_array(get_current_page(), $files, true)) {
 		return;
 	}
 
@@ -734,7 +738,7 @@ function syslog_check_upgrade(): void {
 	ini_set('max_execution_time', 0);
 
 	if (function_exists('api_plugin_upgrade_register')) {
-		if (!api_plugin_upgrade_register('syslog')) {
+		if (!api_plugin_upgrade_register('syslog') && !$force) {
 			// This table was introduced after the original remote schema. Ensure
 			// an already-current remote collector can repair the omission without
 			// requiring a plugin version change.
@@ -749,7 +753,7 @@ function syslog_check_upgrade(): void {
 		$current = $version['version'];
 		$old     = db_fetch_cell("SELECT version FROM plugin_config WHERE directory='syslog'");
 
-		if ($current != $old) {
+		if ($current != $old || $force) {
 				api_plugin_register_hook('syslog', 'replicate_out', 'syslog_replicate_out', 'includes/processing.php', 1);
 
 			db_execute_prepared('UPDATE plugin_config SET

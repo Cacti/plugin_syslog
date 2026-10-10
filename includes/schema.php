@@ -345,10 +345,11 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
  * @param array<string, mixed> $options The install options, either from the
  *                                      request, saved settings, or the Syslog
  *                                      config file.
+ * @param bool $repair Preserve existing lookup tables and configured defaults.
  *
  * @return void
  */
-function syslog_setup_table_new(array $options): void {
+function syslog_setup_table_new(array $options, bool $repair = false): void {
 	global $config, $settings, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
@@ -389,6 +390,10 @@ function syslog_setup_table_new(array $options): void {
 		if (empty($options['days'])) {
 			$options['days'] = 30;
 		}
+	}
+
+	if ($repair) {
+		$options['upgrade_type'] = 'upgrade';
 	}
 
 	// Partitioned tables are the only supported architecture.  Traditional
@@ -617,7 +622,9 @@ syslog_create_replication_recovery_table();
 		ROW_FORMAT=Dynamic
 		COMMENT='Contains all hosts currently in the syslog table'");
 
-	syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_facilities`");
+	if (!$repair) {
+		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_facilities`");
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_facilities` (
 		`facility_id` int(10) unsigned NOT NULL,
@@ -628,13 +635,15 @@ syslog_create_replication_recovery_table();
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_db_execute("INSERT INTO `$syslogdb_default`.`syslog_facilities` (facility_id, facility) VALUES
+	syslog_db_execute("INSERT IGNORE INTO `$syslogdb_default`.`syslog_facilities` (facility_id, facility) VALUES
 		(0,'kern'), (1,'user'), (2,'mail'), (3,'daemon'), (4,'auth'), (5,'syslog'), (6,'lpd'), (7,'news'),
 		(8,'uucp'), (9,'crond'), (10,'authpriv'), (11,'ftpd'), (12,'ntpd'), (13,'logaudit'), (14,'logalert'),
 		(15,'crond'), (16,'local0'), (17,'local1'), (18,'local2'), (19,'local3'), (20,'local4'), (21,'local5'),
 		(22,'local6'), (23,'local7')");
 
-	syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_priorities`");
+	if (!$repair) {
+		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_priorities`");
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_priorities` (
 		`priority_id` int(10) unsigned NOT NULL,
@@ -645,7 +654,7 @@ syslog_create_replication_recovery_table();
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-	syslog_db_execute("INSERT INTO `$syslogdb_default`.`syslog_priorities` (priority_id, priority) VALUES
+	syslog_db_execute("INSERT IGNORE INTO `$syslogdb_default`.`syslog_priorities` (priority_id, priority) VALUES
 		(0,'emerg'), (1,'alert'), (2,'crit'), (3,'err'), (4,'warning'), (5,'notice'), (6,'info'), (7,'debug'), (8,'other')");
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_host_facilities` (
@@ -691,7 +700,7 @@ syslog_create_replication_recovery_table();
 		syslog_config_settings();
 	}
 
-	foreach ($settings['syslog'] as $name => $values) {
+	foreach ($repair ? [] : $settings['syslog'] as $name => $values) {
 		if (isset($values['default'])) {
 			set_config_option($name, $values['default']);
 		}
