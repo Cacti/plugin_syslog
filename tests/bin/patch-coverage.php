@@ -160,6 +160,11 @@ foreach ($clover->xpath('//file') as $file) {
  * Empty by default; add entries per repository as the need arises.
  */
 $unmeasured_allowlist = [
+	// Directory index redirects run at the top level and send HTTP headers.
+	'cli/index.php',
+	'contrib/index.php',
+	'includes/index.php',
+	'lib/index.php',
 	// Web and CLI entry points: each chdir()s and includes auth.php (or runs
 	// at the top level) before defining anything, so they cannot be loaded
 	// into the isolated unit process. Their only coverage-relevant content is
