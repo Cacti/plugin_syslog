@@ -1363,6 +1363,7 @@ function syslog_dashboard(): void {
 		canShare: <?php print $can_share ? 'true' : 'false'; ?>,
 		shared: <?php print $is_shared ? 'true' : 'false'; ?>,
 		text: {
+			refreshPanel: <?php print syslog_json_safe(__('Refresh Panel', 'syslog')); ?>,
 			totalMessages: <?php print syslog_json_safe(__('Total messages', 'syslog')); ?>,
 			libraryUnavailable: <?php print syslog_json_safe(__('Chart library unavailable on this Cacti installation.', 'syslog')); ?>,
 			editPanel: <?php print syslog_json_safe(__('Edit Panel', 'syslog')); ?>,
