@@ -77,6 +77,14 @@ it('boots CLI entrypoints through the setup compatibility facade', function () {
 	}
 });
 
+it('loads the processing module before remote CLI replication', function () {
+	$source = plugin_test_read_source('syslog_process.php');
+	$include = strpos($source, "require_once(__DIR__ . '/includes/processing.php');");
+	$call = strpos($source, 'syslog_replicate_in();');
+
+	expect($include)->not->toBeFalse()->toBeLessThan($call);
+});
+
 it('registers extracted callbacks against their owning module', function () {
 	$setup = plugin_test_read_source('setup.php');
 
