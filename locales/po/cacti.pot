@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.2.32\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-10 09:25-0400\n"
+"POT-Creation-Date: 2026-10-12 16:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -1079,6 +1079,10 @@ msgstr ""
 msgid "A title of up to 128 characters is required."
 msgstr ""
 
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr ""
+
 #: lib/syslog_dashboard.php
 msgid "Refresh Panel"
 msgstr ""
@@ -1806,10 +1810,6 @@ msgstr ""
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
-
-#: syslog.php
-msgid "Drag to reorder card"
 msgstr ""
 
 #: syslog.php
