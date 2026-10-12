@@ -340,11 +340,13 @@ it('offers existing notification lists and a None choice in pipeline settings', 
 	test_override('db_fetch_assoc', fn () => [['id' => 7, 'name' => 'Operations']]);
 	eval(substr($source, $start, $end - $start));
 	preg_match("/'syslog_pipeline_health_notify' => \\[.*?\\n\\t\\t\\],/s", $source, $match);
-	$field = eval('return [' . $match[0] . '];')['syslog_pipeline_health_notify'];
+	$fields = eval('return [' . $match[0] . '];');
+	$field = $fields['syslog_pipeline_health_notify'];
 	expect($field['method'])->toBe('drop_array')->and($field['default'])->toBe('0')
 		->and($field['array'])->toBe([0 => 'None', 7 => 'Operations']);
 	test_override('db_table_exists', fn () => false);
 	test_override('db_fetch_assoc', function () { throw new RuntimeException('Must not query missing notification lists'); });
 	eval(substr($source, $start, $end - $start));
 	expect($notification_lists)->toBe([0 => 'None']);
+	syslog_test_reset_globals();
 });

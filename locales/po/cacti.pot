@@ -616,6 +616,11 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_reports.php
+msgid "None"
+msgstr ""
+
 #: includes/settings.php
 msgid "General Settings"
 msgstr ""
@@ -810,11 +815,19 @@ msgid "Pipeline Health Alerts"
 msgstr ""
 
 #: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr ""
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr ""
+
+#: includes/settings.php
 msgid "Pipeline Health Email Recipients"
 msgstr ""
 
 #: includes/settings.php
-msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
 msgstr ""
 
 #: includes/settings.php
@@ -1435,11 +1448,6 @@ msgstr ""
 msgid "Start from Saved Search"
 msgstr ""
 
-#: lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_device_rules.php syslog_reports.php
-msgid "None"
-msgstr ""
-
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Enter message text…"
 msgstr ""
@@ -1806,10 +1814,6 @@ msgid "Attention required"
 msgstr ""
 
 #: syslog.php
-msgid "Health"
-msgstr ""
-
-#: syslog.php
 msgid "Healthy"
 msgstr ""
 
@@ -1822,11 +1826,7 @@ msgid "Waiting for processing"
 msgstr ""
 
 #: syslog.php
-msgid "Failed; retry pending"
-msgstr ""
-
-#: syslog.php
-msgid "Pending; next poller check"
+msgid "Health"
 msgstr ""
 
 #: syslog.php
@@ -1835,6 +1835,14 @@ msgstr ""
 
 #: syslog.php
 msgid "Sent"
+msgstr ""
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr ""
+
+#: syslog.php
+msgid "Pending; next poller check"
 msgstr ""
 
 #: syslog.php
