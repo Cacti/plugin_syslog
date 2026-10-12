@@ -29,6 +29,7 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'syslog_upgrade_explicit_realm_grants',
 		'syslog_upgrade_create_permission_realms',
 		'syslog_check_upgrade',
+		'syslog_dashboard_seed_default',
 		'plugin_syslog_version',
 		'syslog_refresh_plugin_version',
 		'syslog_upgrade_hook_module_paths',
