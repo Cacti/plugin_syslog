@@ -1577,6 +1577,7 @@ function syslog_status_get(): array {
 	syslog_status_ensure_table();
 
 	$status = [
+		'pipeline_health_monitor' => '',
 		'last_polling_time' => '',
 		'last_start_time'   => '',
 		'last_end_time'     => '',
@@ -1596,6 +1597,8 @@ function syslog_status_get(): array {
 		'partition_maintenance_last_attempt' => '',
 		'partition_maintenance_last_success' => '',
 		'partition_maintenance_outcome'      => '',
+		'partition_maintenance_blocked'      => '',
+		'partition_maintenance_reason'       => '',
 		'partition_recovery_progress'        => '',
 		'partition_maintenance_history'      => '',
 		'replication_state' => '',
@@ -1607,6 +1610,7 @@ function syslog_status_get(): array {
 	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
 		FROM `$syslogdb_default`.`syslog_status`
 		WHERE `name` IN (
+			'pipeline_health_monitor',
 			'last_polling_time',
 			'last_start_time',
 			'last_end_time',
@@ -1626,6 +1630,8 @@ function syslog_status_get(): array {
 			'partition_maintenance_last_attempt',
 			'partition_maintenance_last_success',
 			'partition_maintenance_outcome',
+			'partition_maintenance_blocked',
+			'partition_maintenance_reason',
 			'partition_recovery_progress',
 			'partition_maintenance_history',
 			'replication_state',
@@ -1639,6 +1645,153 @@ function syslog_status_get(): array {
 	}
 
 	return $status;
+}
+
+/** Read pipeline health without changing state or sending notifications. */
+function syslog_pipeline_health(): array {
+	global $config, $syslogdb_default, $syslog_incoming_config;
+
+	$status = syslog_status_get();
+	$monitor = json_decode($status['pipeline_health_monitor'], true);
+	$monitor = is_array($monitor) ? $monitor : [];
+	$health = ['state' => 'up', 'issues' => [], 'checks' => [], 'monitor' => $monitor];
+
+	if (read_config_option('syslog_enabled') !== 'on'
+		|| ((int) ($config['poller_id'] ?? 1) > 1 && read_config_option('syslog_remote_enabled') !== 'on')) {
+		$health['state'] = 'disabled';
+		return $health;
+	}
+
+	$now = time();
+	$interval = max(60, (int) read_config_option('poller_interval'));
+	$delay = max($interval * 3, (int) read_config_option('syslog_stale_threshold'), 300);
+	$limit = (int) read_config_option('syslog_backlog_threshold');
+	$limit = $limit > 0 ? $limit : 10000;
+	$completed = (int) $status['last_end_time'];
+	$baseline = max($completed, (int) ($monitor['first_checked'] ?? 0));
+	if (($monitor['signature'] ?? '') === 'disabled:') {
+		$baseline = 0;
+	}
+	$health['checks']['processing'] = $completed === 0 || $baseline === 0
+		? __('Waiting for a completed processing run.', 'syslog')
+		: __('Processing is completing within the allowed delay.', 'syslog');
+	if ($baseline > 0 && $now - $baseline > $delay) {
+		$health['issues']['processing'] = __('No processing run has completed for more than %d seconds.', $delay, 'syslog');
+	}
+
+	$column = $syslog_incoming_config['timeField'] ?? 'logtime';
+	$incoming = [];
+	if (is_string($column) && preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column)) {
+		$incoming = syslog_db_fetch_row("SELECT COUNT(*) AS pending, UNIX_TIMESTAMP(MIN(`$column`)) AS oldest
+			FROM `$syslogdb_default`.`syslog_incoming`", false);
+	}
+	$health['checks']['backlog'] = __('Incoming messages are within the configured limits.', 'syslog');
+	if (!isset($incoming['pending']) || !is_numeric($incoming['pending'])) {
+		$health['issues']['backlog'] = __('Incoming queue metrics are unavailable.', 'syslog');
+	} elseif ((int) $incoming['pending'] > $limit) {
+		$health['issues']['backlog'] = __('Incoming backlog of %s messages exceeds the limit of %s.', number_format((int) $incoming['pending']), number_format($limit), 'syslog');
+	} elseif ((int) $incoming['pending'] > 0) {
+		if (!isset($incoming['oldest']) || !is_numeric($incoming['oldest'])) {
+			$health['issues']['backlog'] = __('The oldest incoming message timestamp is unavailable.', 'syslog');
+		} elseif ($now - (int) $incoming['oldest'] > $delay) {
+			$health['issues']['backlog'] = __('Unprocessed messages are older than %d seconds.', $delay, 'syslog');
+		}
+	}
+
+	$replication = syslog_replication_operational_status();
+	$health['checks']['replication'] = __('Synchronization is not enabled on this collector.', 'syslog');
+	if (!empty($replication['enabled'])) {
+		$health['checks']['replication'] = __('Synchronization is within the allowed delay.', 'syslog');
+		$oldest = strtotime($replication['oldest_pending']);
+		if ($replication['pending'] === null) {
+			$health['issues']['replication'] = __('Synchronization queue metrics are unavailable.', 'syslog');
+		} elseif ($replication['pending'] > 0 && $oldest === false) {
+			$health['issues']['replication'] = __('The oldest synchronization record timestamp is unavailable.', 'syslog');
+		} elseif ($replication['pending'] > 0 && ($replication['last_error'] !== ''
+			|| ($oldest !== false && $now - $oldest > $delay))) {
+			$health['issues']['replication'] = __('Synchronization has failed or queued records exceed the allowed delay (%s pending).', number_format($replication['pending']), 'syslog');
+		}
+	}
+
+	$health['checks']['partition'] = __('Partition maintenance is not blocked.', 'syslog');
+	if ((int) ($status['partition_maintenance_blocked'] ?? 0) === 1) {
+		$health['issues']['partition'] = __('Partition maintenance is blocked: %s', $status['partition_maintenance_reason'] ?? '', 'syslog');
+	}
+
+	if ($health['issues']) {
+		$health['state'] = 'down';
+	} elseif ($completed === 0 || $baseline === 0) {
+		$health['state'] = 'recovering';
+	}
+	return $health;
+}
+
+/** Check independently of the Syslog processor; serialize notifications per collector. */
+function syslog_pipeline_health_check(): void {
+	global $config, $syslogdb_default;
+
+	$lock = 'syslog_health_' . sha1($syslogdb_default . ':' . (int) ($config['poller_id'] ?? 1));
+	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock], false) !== 1) {
+		return;
+	}
+
+	try {
+		$health = syslog_pipeline_health();
+		$monitor = $health['monitor'];
+		$now = time();
+		$keys = array_keys($health['issues']);
+		sort($keys);
+		$signature = $health['state'] . ':' . implode(',', $keys);
+		$prior = $monitor['signature'] ?? '';
+		$monitor['first_checked'] = $prior === 'disabled:' ? $now : ($monitor['first_checked'] ?? $now);
+		$monitor['checked'] = $now;
+		$monitor['signature'] = $signature;
+
+		if ($signature !== $prior && $health['state'] !== 'disabled' && ($health['issues'] || str_starts_with($prior, 'down:'))) {
+			cacti_log('SYSLOG PIPELINE: ' . ($health['issues'] ? implode(' ', $health['issues']) : 'Pipeline recovered'), false, 'SYSLOG');
+		}
+
+		$recipients = trim((string) read_config_option('syslog_pipeline_health_email'));
+		if ($recipients === '' || $health['state'] === 'disabled') {
+			$monitor['notification'] = 'disabled';
+			unset($monitor['notified_signature']);
+		} else {
+			$notified = $monitor['notified_signature'] ?? '';
+			$repeat = max(300, (int) (read_config_option('syslog_pipeline_health_repeat') ?: 3600));
+			$due = ($health['issues'] && ($signature !== $notified || $now - (int) ($monitor['last_notified'] ?? 0) >= $repeat))
+				|| (!$health['issues'] && str_starts_with($notified, 'down:'));
+			// Bound failed mail retries even if poller hooks overlap or run more often.
+			if ($due && $now - (int) ($monitor['last_attempt'] ?? 0) >= 300) {
+				$monitor['last_attempt'] = $now;
+				$monitor['notification'] = 'pending';
+				if (!syslog_status_set('pipeline_health_monitor', (string) json_encode($monitor))) {
+					return;
+				}
+				$subject = __('Syslog pipeline health - collector %d', (int) ($config['poller_id'] ?? 1), 'syslog');
+				$message = $health['issues'] ? implode("\n", $health['issues']) : __('The Syslog pipeline has recovered.', 'syslog');
+				$from = [(string) (read_config_option('settings_from_email') ?: 'Cacti@cacti.net'), (string) (read_config_option('settings_from_name') ?: 'Cacti')];
+				try {
+					$error = mailer($from, $recipients, '', '', '', $subject, '', $message, '', '', false);
+					$monitor['notification'] = $error === '' ? 'sent' : 'failed';
+				} catch (Throwable $error) {
+					$monitor['notification'] = 'failed';
+				}
+				if ($monitor['notification'] === 'sent') {
+					$monitor['notified_signature'] = $signature;
+					$monitor['last_notified'] = $now;
+				} else {
+					cacti_log('SYSLOG PIPELINE: Health notification failed; retrying on a later poller run', false, 'SYSLOG');
+				}
+			} elseif ($due && ($monitor['notification'] ?? '') !== 'failed') {
+				$monitor['notification'] = 'pending';
+			} elseif (!isset($monitor['notification']) || $monitor['notification'] === 'disabled') {
+				$monitor['notification'] = 'ready';
+			}
+		}
+		syslog_status_set('pipeline_health_monitor', (string) json_encode($monitor));
+	} finally {
+		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock], false);
+	}
 }
 
 /**

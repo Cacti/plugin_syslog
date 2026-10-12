@@ -422,14 +422,13 @@ function syslog_status_collector_health(): array {
 		FROM `$syslogdb_default`.`syslog_incoming`");
 
 	$last_received = __('Unavailable', 'syslog');
-	$seconds_since = null;
+	$oldest_seconds = null;
 
 	if (is_string($last_received_raw) && $last_received_raw !== '' && $last_received_raw !== 'NULL') {
 		$epoch = strtotime($last_received_raw);
 
 		if ($epoch !== false) {
 			$last_received = date('Y-m-d H:i:s', $epoch);
-			$seconds_since = time() - $epoch;
 		}
 	}
 
@@ -446,6 +445,7 @@ function syslog_status_collector_health(): array {
 			$age = time() - $oldest_epoch;
 
 			if ($age >= 0) {
+				$oldest_seconds = $age;
 				$oldest_age = syslog_status_format_age($age);
 			}
 		}
@@ -476,19 +476,14 @@ function syslog_status_collector_health(): array {
 		$backlog_threshold = SYSLOG_COLLECTOR_BACKLOG_THRESHOLD;
 	}
 
-	if ($seconds_since !== null && $seconds_since > $stale_threshold) {
+	if (is_numeric($backlog_raw) && (int) $backlog_raw > 0 && $oldest_seconds !== null && $oldest_seconds > $stale_threshold) {
 		$warning    = true;
-		$warn_parts[] = sprintf(__('no message received for %s', 'syslog'), syslog_status_format_age($seconds_since));
+		$warn_parts[] = __('unprocessed messages are %s old', syslog_status_format_age($oldest_seconds), 'syslog');
 	}
 
 	if (is_numeric($backlog_raw) && (int) $backlog_raw > $backlog_threshold) {
 		$warning      = true;
-		$warn_parts[] = sprintf(__('incoming backlog of %s messages', 'syslog'), number_format((int) $backlog_raw));
-	}
-
-	if (is_numeric($backlog_raw) && (int) $backlog_raw === 0 && $seconds_since === null) {
-		$warning    = true;
-		$warn_parts[] = __('no incoming data is available to evaluate', 'syslog');
+		$warn_parts[] = __('incoming backlog of %s messages', number_format((int) $backlog_raw), 'syslog');
 	}
 
 	return [
@@ -659,7 +654,7 @@ function syslog_status_card_meta(): array {
 		'partition_health'   => ['title' => __('Partition health', 'syslog'),                      'span' => 4, 'expandable' => false],
 		'maintenance'        => ['title' => __('Partition maintenance activity', 'syslog'),        'span' => 2, 'expandable' => false],
 		'maintenance_recent' => ['title' => __('Recent partition maintenance activity', 'syslog'), 'span' => 4, 'expandable' => true],
-		'collector_health'   => ['title' => __('Collector health', 'syslog'),                      'span' => 2, 'expandable' => false],
+		'collector_health'   => ['title' => __('Pipeline health', 'syslog'),                       'span' => 4, 'expandable' => false, 'state' => syslog_status_pipeline()['state']],
 		'workers'            => ['title' => __('Parallel workers', 'syslog'),                      'span' => 2, 'expandable' => false],
 		'worker_processes'   => ['title' => __('Worker processes', 'syslog'),                      'span' => 2, 'expandable' => true],
 		'phases'             => ['title' => __('Processing phases', 'syslog'),                     'span' => 4, 'expandable' => true],
@@ -739,6 +734,12 @@ function syslog_status_replication(): array {
 	}
 
 	return $replication;
+}
+
+/** Share the same live health snapshot between the card header and body. */
+function syslog_status_pipeline(): array {
+	static $health = null;
+	return $health ??= syslog_pipeline_health();
 }
 
 /**
@@ -842,6 +843,29 @@ function syslog_status_card_body(string $key): string {
 
 			break;
 		case 'collector_health':
+			$pipeline = syslog_status_pipeline();
+			$labels = [
+				'processing' => __('Processing', 'syslog'), 'backlog' => __('Incoming backlog', 'syslog'),
+				'replication' => __('Synchronization', 'syslog'), 'partition' => __('Partition maintenance', 'syslog')
+			];
+			print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
+			$states = [
+				'up' => __('Healthy', 'syslog'), 'down' => __('Attention required', 'syslog'),
+				'disabled' => __('Processing disabled', 'syslog'), 'recovering' => __('Waiting for processing', 'syslog')
+			];
+			$kv(__('Health', 'syslog'), $states[$pipeline['state']]);
+			foreach ($pipeline['checks'] as $check => $detail) {
+				$kv($labels[$check], $pipeline['issues'][$check] ?? $detail);
+			}
+			$monitor = $pipeline['monitor'];
+			$notifications = [
+				'disabled' => __('Disabled', 'syslog'), 'ready' => __('Ready', 'syslog'), 'sent' => __('Sent', 'syslog'),
+				'failed' => __('Failed; retry pending', 'syslog'), 'pending' => __('Pending; next poller check', 'syslog')
+			];
+			$kv(__('Last health check', 'syslog'), syslog_status_format_time((string) ($monitor['checked'] ?? '')));
+			$kv(__('Email notifications', 'syslog'), $notifications[$monitor['notification'] ?? ''] ?? __('Not checked yet', 'syslog'));
+			$kv(__('Last notification sent', 'syslog'), syslog_status_format_time((string) ($monitor['last_notified'] ?? '')));
+			print '</tbody></table>';
 			$health = syslog_status_collector_health();
 			print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 			$kv(__('Last received log', 'syslog'), (string) $health['last_received']);
@@ -849,9 +873,6 @@ function syslog_status_card_body(string $key): string {
 			$kv(__('Incoming backlog', 'syslog'), (string) $health['backlog']);
 			$kv(__('Records processed in latest run', 'syslog'), (string) $health['processed']);
 			print '</tbody></table>';
-			if ($health['warning']) {
-				print '<p class="syslogStatusNote"><span class="syslogStatusNoteLabel">' . __esc('Collector warning', 'syslog') . ':</span> ' . html_escape($health['warning_text']) . '</p>';
-			}
 
 			break;
 		case 'workers':

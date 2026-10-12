@@ -78,6 +78,7 @@ function syslog_poller_bottom(): void {
 
 	if (syslog_config_safe()) {
 		syslog_connect();
+		syslog_pipeline_health_check();
 		syslog_status_set('last_polling_time', time());
 
 		$command_string = (string) read_config_option('path_php_binary');

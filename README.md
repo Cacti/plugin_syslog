@@ -53,6 +53,35 @@ be quieted using syslog's 'Re-Alert' setting.
 
 * Ability to run alert specific commands at Alert and Re-alert times
 
+## Pipeline Health Alerts
+
+The Status tab includes a **Pipeline health** card in the existing Collector
+health card position. It reports stalled processing, excessive or old incoming
+backlogs, failed or delayed remote synchronization, and blocked partition
+maintenance. An empty incoming queue is healthy when processing is completing;
+quiet devices do not trigger source-silence alerts. Unavailable queue metrics
+are reported as problems rather than healthy values.
+
+Checks run from Cacti's poller before launching the Syslog processor, so a
+stalled processor can still be detected. The delay is the greater of the
+Collector Staleness Threshold, three poller intervals, and 300 seconds. New or
+re-enabled monitoring gets a startup grace period. Incoming age uses the
+configured incoming timestamp field; delayed historical events or incorrect
+source clocks can therefore trigger an old-backlog warning.
+
+In **Settings > Syslog**, set **Pipeline Health Email Recipients** to enable
+problem, changed-problem, reminder, and recovery emails using Cacti's mail
+settings. Email is disabled by default. Persistent problems repeat at the
+configured reminder interval, and failed delivery attempts retry no more than
+once every five minutes. The card shows the last health check, email attempt
+status, and last successful send. Health state changes also appear in Cacti's
+log. Intentionally disabled processing does not generate health notifications.
+
+Monitoring requires a running Cacti poller and an accessible Syslog database.
+Use external monitoring for a complete Cacti or database outage. Remote health
+checks run on each enabled remote collector; this does not infer a collector
+outage merely from a quiet stream of device messages.
+
 ## Table Architecture and Storage Engine Support
 
 New installs always create partitioned `syslog` tables.  The traditional

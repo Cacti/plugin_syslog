@@ -399,6 +399,12 @@ if (!function_exists('__esc')) {
 	}
 }
 
+if (!function_exists('mailer')) {
+	function mailer(...$args) {
+		return test_call_override('mailer', $args, '');
+	}
+}
+
 if (!function_exists('cacti_log')) {
 	function cacti_log($message, $output = false, $environ = '', $level = 0) {
 		return test_call_override('cacti_log', [$message, $output, $environ, $level], null);

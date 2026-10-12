@@ -191,7 +191,7 @@ function syslog_config_settings(): void {
 		],
 		'syslog_stale_threshold' => [
 			'friendly_name' => __('Collector Staleness Threshold', 'syslog'),
-			'description'   => __('The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds.', 'syslog'),
+			'description'   => __('Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds.', 'syslog'),
 			'method'        => 'drop_array',
 			'default'       => '300',
 			'array'         => [
@@ -214,6 +214,30 @@ function syslog_config_settings(): void {
 				'5000'  => __('%d Messages', 5000, 'syslog'),
 				'10000' => __('%d Messages', 10000, 'syslog'),
 				'50000' => __('%d Messages', 50000, 'syslog')
+			]
+		],
+		'syslog_pipeline_health_header' => [
+			'friendly_name' => __('Pipeline Health Alerts', 'syslog'),
+			'method'        => 'spacer',
+		],
+		'syslog_pipeline_health_email' => [
+			'friendly_name' => __('Pipeline Health Email Recipients', 'syslog'),
+			'description'   => __('Comma-separated email recipients for pipeline failures and recovery. Leave blank to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run.', 'syslog'),
+			'method'        => 'textbox',
+			'size'          => 80,
+			'max_length'    => 255,
+			'default'       => ''
+		],
+		'syslog_pipeline_health_repeat' => [
+			'friendly_name' => __('Pipeline Health Reminder Interval', 'syslog'),
+			'description'   => __('Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => '3600',
+			'array'         => [
+				'900' => __('%d minutes', 15, 'syslog'),
+				'3600' => __('%d hours', 1, 'syslog'),
+				'21600' => __('%d hours', 6, 'syslog'),
+				'86400' => __('%d days', 1, 'syslog')
 			]
 		],
 		'syslog_alert_retention' => [
