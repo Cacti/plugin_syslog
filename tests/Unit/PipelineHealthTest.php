@@ -86,6 +86,12 @@ it('detects old queued events even when fresh messages are arriving', function (
 	expect(syslog_pipeline_health()['issues'])->toHaveKey('backlog');
 });
 
+it('reports queued events when the oldest message timestamp is unavailable', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['incoming'] = ['pending' => 10, 'oldest' => null];
+	expect(syslog_pipeline_health()['issues']['backlog'])->toContain('timestamp is unavailable');
+});
+
 it('uses the configured backlog threshold', function () {
 	pipeline_health_fixture();
 	$GLOBALS['pipeline_fixture']['settings']['syslog_backlog_threshold'] = '1000';
@@ -117,6 +123,14 @@ it('detects failed and delayed remote delivery without treating ordinary recover
 	expect(syslog_pipeline_health()['issues'])->toHaveKey('replication');
 	$GLOBALS['pipeline_fixture']['outbox']['pending'] = null;
 	expect(syslog_pipeline_health()['issues']['replication'])->toContain('unavailable');
+});
+
+it('reports queued replication records when the oldest timestamp is invalid', function () {
+	pipeline_health_fixture();
+	$GLOBALS['config']['poller_id'] = 2;
+	$GLOBALS['pipeline_fixture']['settings']['syslog_remote_enabled'] = 'on';
+	$GLOBALS['pipeline_fixture']['outbox'] = ['pending' => 10, 'oldest_pending' => 'not-a-timestamp'];
+	expect(syslog_pipeline_health()['issues']['replication'])->toContain('timestamp is unavailable');
 });
 
 it('reports blocked partition maintenance with its reason', function () {
@@ -173,6 +187,24 @@ it('reminds for ongoing problems only after the configured interval', function (
 	$GLOBALS['pipeline_fixture']['status']['pipeline_health_monitor'] = json_encode($monitor);
 	syslog_pipeline_health_check();
 	expect($GLOBALS['pipeline_fixture']['mails'])->toHaveCount(2);
+});
+
+it('keeps a due notification pending while the retry cooldown is active', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['settings']['syslog_pipeline_health_email'] = 'ops@example.test';
+	$GLOBALS['pipeline_fixture']['incoming']['pending'] = 20000;
+	$GLOBALS['pipeline_fixture']['status']['pipeline_health_monitor'] = json_encode([
+		'signature' => 'up:',
+		'notified_signature' => 'previous:issue',
+		'last_attempt' => time(),
+		'notification' => 'ready',
+	]);
+
+	syslog_pipeline_health_check();
+
+	$monitor = json_decode($GLOBALS['pipeline_fixture']['status']['pipeline_health_monitor'], true);
+	expect($monitor['notification'])->toBe('pending')
+		->and($GLOBALS['pipeline_fixture']['mails'])->toBeEmpty();
 });
 
 it('checks and logs health with email disabled', function () {
