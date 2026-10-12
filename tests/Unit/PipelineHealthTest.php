@@ -251,3 +251,100 @@ it('renders pipeline problems and notification status in the existing Status car
 		->toContain('Failed; retry pending')->toContain('Last health check')
 		->toContain('&lt;script&gt;')->not->toContain('<script>');
 });
+
+it('uses an enabled notification list without requiring explicit recipients and preserves BCC', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['settings']['syslog_pipeline_health_notify'] = '7';
+	$GLOBALS['pipeline_fixture']['incoming']['pending'] = 20000;
+	test_override('db_table_exists', fn ($table) => $table === 'plugin_notification_lists');
+	test_override('db_column_exists', fn () => true);
+	test_override('db_fetch_row_prepared', function ($sql, $params) {
+		expect($sql)->toContain('plugin_notification_lists')->toContain('enabled = ?');
+		expect($params)->toBe([7, 'on']);
+		return ['emails' => 'list@example.test', 'bcc_emails' => 'private@example.test'];
+	});
+	syslog_pipeline_health_check();
+	expect($GLOBALS['pipeline_fixture']['mails'])->toHaveCount(1)
+		->and($GLOBALS['pipeline_fixture']['mails'][0][1])->toBe('list@example.test')
+		->and($GLOBALS['pipeline_fixture']['mails'][0][3])->toBe('private@example.test');
+});
+
+it('combines explicit addresses with the current list membership on each check', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['settings'] += ['syslog_pipeline_health_notify' => '7', 'syslog_pipeline_health_email' => ' extra@example.test, '];
+	$GLOBALS['pipeline_fixture']['incoming']['pending'] = 20000;
+	$list_email = 'old@example.test';
+	test_override('db_table_exists', fn () => true);
+	test_override('db_column_exists', fn () => true);
+	test_override('db_fetch_row_prepared', function () use (&$list_email) { return ['emails' => $list_email]; });
+	syslog_pipeline_health_check();
+	$list_email = 'new@example.test';
+	$monitor = json_decode($GLOBALS['pipeline_fixture']['status']['pipeline_health_monitor'], true);
+	$monitor['last_attempt'] -= 3601;
+	$monitor['last_notified'] -= 3601;
+	$GLOBALS['pipeline_fixture']['status']['pipeline_health_monitor'] = json_encode($monitor);
+	syslog_pipeline_health_check();
+	expect($GLOBALS['pipeline_fixture']['mails'][0][1])->toBe('extra@example.test, old@example.test')
+		->and($GLOBALS['pipeline_fixture']['mails'][1][1])->toBe('extra@example.test, new@example.test');
+});
+
+it('supports a BCC-only notification list', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['settings']['syslog_pipeline_health_notify'] = '7';
+	$GLOBALS['pipeline_fixture']['incoming']['pending'] = 20000;
+	test_override('db_table_exists', fn () => true);
+	test_override('db_column_exists', fn () => true);
+	test_override('db_fetch_row_prepared', fn () => ['emails' => '', 'bcc_emails' => 'private@example.test']);
+	syslog_pipeline_health_check();
+	expect($GLOBALS['pipeline_fixture']['mails'])->toHaveCount(1)
+		->and($GLOBALS['pipeline_fixture']['mails'][0][1])->toBe('')
+		->and($GLOBALS['pipeline_fixture']['mails'][0][3])->toBe('private@example.test');
+});
+
+it('does not notify through a missing or disabled list and keeps explicit recipients working without Thold', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['settings']['syslog_pipeline_health_notify'] = '7';
+	$GLOBALS['pipeline_fixture']['incoming']['pending'] = 20000;
+	test_override('db_table_exists', fn () => true);
+	test_override('db_fetch_row_prepared', fn () => []);
+	syslog_pipeline_health_check();
+	expect($GLOBALS['pipeline_fixture']['mails'])->toBeEmpty();
+	test_override('db_table_exists', fn () => false);
+	test_override('db_fetch_row_prepared', function () { throw new RuntimeException('Must not query a missing Thold table'); });
+	$GLOBALS['pipeline_fixture']['settings']['syslog_pipeline_health_email'] = 'extra@example.test';
+	syslog_pipeline_health_check();
+	expect($GLOBALS['pipeline_fixture']['mails'])->toHaveCount(1)
+		->and($GLOBALS['pipeline_fixture']['mails'][0][1])->toBe('extra@example.test');
+});
+
+it('supports older notification tables without a BCC column', function () {
+	pipeline_health_fixture();
+	$GLOBALS['pipeline_fixture']['settings']['syslog_pipeline_health_notify'] = '7';
+	$GLOBALS['pipeline_fixture']['incoming']['pending'] = 20000;
+	test_override('db_table_exists', fn () => true);
+	test_override('db_column_exists', fn () => false);
+	test_override('db_fetch_row_prepared', function ($sql) {
+		expect($sql)->toContain("'' AS bcc_emails");
+		return ['emails' => 'list@example.test', 'bcc_emails' => ''];
+	});
+	syslog_pipeline_health_check();
+	expect($GLOBALS['pipeline_fixture']['mails'][0][1])->toBe('list@example.test');
+});
+
+it('offers existing notification lists and a None choice in pipeline settings', function () {
+	pipeline_health_fixture();
+	$source = plugin_test_read_source('includes/settings.php');
+	$start = strpos($source, '$notification_lists =');
+	$end = strpos($source, '$temp =', $start);
+	test_override('db_table_exists', fn () => true);
+	test_override('db_fetch_assoc', fn () => [['id' => 7, 'name' => 'Operations']]);
+	eval(substr($source, $start, $end - $start));
+	preg_match("/'syslog_pipeline_health_notify' => \\[.*?\\n\\t\\t\\],/s", $source, $match);
+	$field = eval('return [' . $match[0] . '];')['syslog_pipeline_health_notify'];
+	expect($field['method'])->toBe('drop_array')->and($field['default'])->toBe('0')
+		->and($field['array'])->toBe([0 => 'None', 7 => 'Operations']);
+	test_override('db_table_exists', fn () => false);
+	test_override('db_fetch_assoc', function () { throw new RuntimeException('Must not query missing notification lists'); });
+	eval(substr($source, $start, $end - $start));
+	expect($notification_lists)->toBe([0 => 'None']);
+});

@@ -2,6 +2,7 @@
 
 --- develop ---
 
+
 * feature: Add poller-driven pipeline health alerts for stalled processing, incoming backlogs, remote synchronization failures or delays, and blocked partition maintenance; expand the existing Status health card with check results and email delivery status, with optional problem, reminder, and recovery notifications
 * bug: Treat an empty incoming queue as drained rather than missing data, and evaluate stale queued messages even when new messages continue arriving
 

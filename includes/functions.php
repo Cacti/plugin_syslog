@@ -1751,8 +1751,16 @@ function syslog_pipeline_health_check(): void {
 			cacti_log('SYSLOG PIPELINE: ' . ($health['issues'] ? implode(' ', $health['issues']) : 'Pipeline recovered'), false, 'SYSLOG');
 		}
 
-		$recipients = trim((string) read_config_option('syslog_pipeline_health_email'));
-		if ($recipients === '' || $health['state'] === 'disabled') {
+		$recipients = trim((string) read_config_option('syslog_pipeline_health_email'), ' ,');
+		$bcc = '';
+		$list_id = (int) read_config_option('syslog_pipeline_health_notify');
+		if ($list_id > 0 && db_table_exists('plugin_notification_lists')) {
+			$bcc_column = db_column_exists('plugin_notification_lists', 'bcc_emails') ? 'bcc_emails' : "'' AS bcc_emails";
+			$list = db_fetch_row_prepared("SELECT emails, $bcc_column FROM plugin_notification_lists WHERE id = ? AND enabled = ?", [$list_id, 'on']);
+			$recipients = implode(', ', array_filter([$recipients, trim((string) ($list['emails'] ?? ''), ' ,')]));
+			$bcc = trim((string) ($list['bcc_emails'] ?? ''), ' ,');
+		}
+		if (($recipients === '' && $bcc === '') || $health['state'] === 'disabled') {
 			$monitor['notification'] = 'disabled';
 			unset($monitor['notified_signature']);
 		} else {
@@ -1771,7 +1779,7 @@ function syslog_pipeline_health_check(): void {
 				$message = $health['issues'] ? implode("\n", $health['issues']) : __('The Syslog pipeline has recovered.', 'syslog');
 				$from = [(string) (read_config_option('settings_from_email') ?: 'Cacti@cacti.net'), (string) (read_config_option('settings_from_name') ?: 'Cacti')];
 				try {
-					$error = mailer($from, $recipients, '', '', '', $subject, '', $message, '', '', false);
+					$error = mailer($from, $recipients, '', $bcc, '', $subject, '', $message, '', '', false);
 					$monitor['notification'] = $error === '' ? 'sent' : 'failed';
 				} catch (Throwable $error) {
 					$monitor['notification'] = 'failed';

@@ -52,6 +52,13 @@ function syslog_config_settings(): void {
 
 	$tabs['syslog'] = __('Syslog', 'syslog');
 
+	$notification_lists = [0 => __('None', 'syslog')];
+	if (db_table_exists('plugin_notification_lists')) {
+		foreach (db_fetch_assoc('SELECT id, name FROM plugin_notification_lists ORDER BY name') as $list) {
+			$notification_lists[(int) $list['id']] = $list['name'];
+		}
+	}
+
 	$temp = [
 		'syslog_header' => [
 			'friendly_name' => __('General Settings', 'syslog'),
@@ -220,9 +227,16 @@ function syslog_config_settings(): void {
 			'friendly_name' => __('Pipeline Health Alerts', 'syslog'),
 			'method'        => 'spacer',
 		],
+		'syslog_pipeline_health_notify' => [
+			'friendly_name' => __('Pipeline Health Notification List', 'syslog'),
+			'description'   => __('Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table.', 'syslog'),
+			'method'        => 'drop_array',
+			'array'         => $notification_lists,
+			'default'       => '0'
+		],
 		'syslog_pipeline_health_email' => [
 			'friendly_name' => __('Pipeline Health Email Recipients', 'syslog'),
-			'description'   => __('Comma-separated email recipients for pipeline failures and recovery. Leave blank to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run.', 'syslog'),
+			'description'   => __('Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run.', 'syslog'),
 			'method'        => 'textbox',
 			'size'          => 80,
 			'max_length'    => 255,

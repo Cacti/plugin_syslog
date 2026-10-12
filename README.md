@@ -69,9 +69,12 @@ re-enabled monitoring gets a startup grace period. Incoming age uses the
 configured incoming timestamp field; delayed historical events or incorrect
 source clocks can therefore trigger an old-backlog warning.
 
-In **Settings > Syslog**, set **Pipeline Health Email Recipients** to enable
-problem, changed-problem, reminder, and recovery emails using Cacti's mail
-settings. Email is disabled by default. Persistent problems repeat at the
+In **Settings > Syslog**, select a **Pipeline Health Notification List** from
+Thold and/or set **Pipeline Health Email Recipients** to enable problem,
+changed-problem, reminder, and recovery emails using Cacti's mail settings.
+Enabled lists add their current recipients on each check, preserving BCC
+recipients; disabled or missing lists contribute no addresses. Direct email
+recipients work without Thold. Email is disabled by default. Persistent problems repeat at the
 configured reminder interval, and failed delivery attempts retry no more than
 once every five minutes. The card shows the last health check, email attempt
 status, and last successful send. Health state changes also appear in Cacti's
