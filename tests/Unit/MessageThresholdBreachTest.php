@@ -46,8 +46,9 @@ it('appends nullable message breach columns without a backfill during schema rep
 		return true;
 	});
 	test_override('syslog_db_add_column', function ($table, $column) use (&$columns) {
-		$columns[$table] = $column['NULL'];
-		expect($column['name'])->toBe('threshold_breached');
+		if ($column['name'] === 'threshold_breached') {
+			$columns[$table] = $column['NULL'];
+		}
 		expect($column)->not->toHaveKey('default')->not->toHaveKey('after');
 		return true;
 	});
@@ -72,9 +73,9 @@ it('preserves marked and unmarked messages during central replication', function
 	}
 	expect($archives)->toHaveCount(3)
 		->and($archives[0][0])->toContain('message, threshold_breached')
-		->and($archives[0][1])->toBe([1000, 3, 1, 'error', 0, 'app', 'router'])
-		->and($archives[1][1])->toBe([1000, 3, 1, 'error', 1, 'app', 'router'])
-		->and($archives[2][1])->toBe([1000, 3, 1, 'error', null, 'app', 'router']);
+		->and($archives[0][1])->toBe([1000, 3, 1, 'error', 0, 2, 10, 'app', 'router'])
+		->and($archives[1][1])->toBe([1000, 3, 1, 'error', 1, 2, 10, 'app', 'router'])
+		->and($archives[2][1])->toBe([1000, 3, 1, 'error', null, 2, 10, 'app', 'router']);
 });
 
 it('carries message breach flags through local archival and the replication outbox', function () {

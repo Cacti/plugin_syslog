@@ -184,9 +184,9 @@ it('applies the logical search predicate consistently in the real query builder'
 				expect(str_contains($GLOBALS['captured_sql'], 'LIMIT 0,20'))->toBeTrue('Pagination retained');
 
 				if ($tab === 'syslog') {
-					expect($GLOBALS['captured_sql'])->toContain('syslog.threshold_breached');
+					expect($GLOBALS['captured_sql'])->toContain('syslog_threshold_state')->toContain('ts.expires_at > UNIX_TIMESTAMP()');
 					if ($grouping === '1') {
-						expect($GLOBALS['captured_sql'])->toContain('MAX(syslog.threshold_breached) AS threshold_breached');
+						expect($GLOBALS['captured_sql'])->toContain('MAX(EXISTS (SELECT 1')->toContain('AS threshold_breached');
 					}
 				}
 
@@ -197,7 +197,7 @@ it('applies the logical search predicate consistently in the real query builder'
 						expect(str_contains($GLOBALS['captured_sql'], 'UNION ALL'))->toBeTrue('Disjoint record types need no deduplication');
 					}
 					expect(str_contains($GLOBALS['captured_sql'], '`syslog`.*'))->toBeFalse('Union projection must not depend on matching table schemas');
-					expect(substr_count($GLOBALS['captured_sql'], 'syslog.replication_source_event_id'))->toBe(0, 'Operational tracking columns are not part of the display contract');
+					expect($GLOBALS['captured_sql'])->not->toContain('syslog.seq, syslog.replication_source_event_id');
 				}
 			}
 		}

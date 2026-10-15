@@ -1708,7 +1708,8 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 	// syslog and syslog_removed can legitimately gain independent operational
 	// columns. Keep the combined viewer query on its stable display contract
 	// instead of using SELECT *, which would make UNION depend on identical DDL.
-	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq, syslog.threshold_breached';
+	$breach_sql = syslog_message_breach_sql();
+	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq, ' . $breach_sql . ' AS threshold_breached';
 
 	$sql_where = '';
 
@@ -1878,7 +1879,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
-					MAX(syslog.threshold_breached) AS threshold_breached,
+					MAX($breach_sql) AS threshold_breached,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 					FROM `$syslogdb_default`.`syslog`
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1895,7 +1896,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
-						MAX(syslog.threshold_breached) AS threshold_breached,
+						MAX($breach_sql) AS threshold_breached,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1907,7 +1908,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
-						MAX(syslog.threshold_breached) AS threshold_breached,
+						MAX($breach_sql) AS threshold_breached,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1923,7 +1924,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
-					MAX(syslog.threshold_breached) AS threshold_breached,
+					MAX($breach_sql) AS threshold_breached,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
@@ -2265,6 +2266,7 @@ function syslog_filter(string $sql_where, string $tab): void {
  * @return void
  */
 function syslog_messages(string $tab = 'syslog'): void {
+	$breach_sql = syslog_message_breach_sql();
 	global $sql_where, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 	global $syslogdb_default;
@@ -2446,7 +2448,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 					$seq_array = explode(',', $sm['seq_list']);
 
 					// Get individual messages for this group
-					$detail_messages = syslog_db_fetch_assoc("SELECT `syslog`.*, `syslog_programs`.`program`
+					$detail_messages = syslog_db_fetch_assoc("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
 						FROM `$syslogdb_default`.`" . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id = syslog_programs.program_id

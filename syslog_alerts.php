@@ -115,7 +115,8 @@ function form_save(): void {
 			get_nfilter_request_var('maintenance_mode'), get_nfilter_request_var('maintenance_days'),
 			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'),
 			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'),
-			get_nfilter_request_var('threshold_window'), get_nfilter_request_var('threshold_unit'));
+			get_nfilter_request_var('threshold_window'), get_nfilter_request_var('threshold_unit'),
+			get_nfilter_request_var('threshold_recovery_minutes'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -326,6 +327,7 @@ function alert_export(): void {
  * @param string          $maintenance_datetime_end Optional one-time local end date/time.
  * @param string|int      $threshold_window Rolling window length; zero counts only the current cycle.
  * @param string          $threshold_unit Window unit: minute, hour, or day.
+ * @param string|int      $threshold_recovery_minutes Quiet minutes required to recover and rearm.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
@@ -333,7 +335,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
 	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
-	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute') {
+	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5) {
 	global $syslogdb_default;
 
 	// get the username
@@ -354,6 +356,12 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 		raise_message('threshold_window', __('Enter a whole number of minutes, hours, or days for the threshold window.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		return false;
 	}
+	$threshold_recovery_minutes = $threshold_recovery_minutes === '' || $threshold_recovery_minutes === null ? '5' : (string) $threshold_recovery_minutes;
+	if (!ctype_digit($threshold_recovery_minutes) || (float) $threshold_recovery_minutes < 1 || (float) $threshold_recovery_minutes > 4294967295) {
+		raise_message('threshold_recovery_minutes', __('Enter a positive whole number of minutes for threshold recovery.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		return false;
+	}
+	$save['threshold_recovery_minutes'] = (int) $threshold_recovery_minutes;
 	$save['threshold_window'] = (int) $threshold_window;
 	$save['threshold_unit'] = $threshold_unit;
 	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
@@ -716,6 +724,12 @@ function syslog_action_edit(): void {
 			'description' => __('Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle.', 'syslog'),
 			'value' => $threshold_window_controls
 		],
+		'threshold_recovery_minutes' => [
+			'method' => 'textbox',
+			'friendly_name' => __('Recover After Quiet Period', 'syslog'),
+			'description' => __('Minutes with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer.', 'syslog'),
+			'value' => '|arg1:threshold_recovery_minutes|', 'default' => '5', 'size' => '8', 'max_length' => '10'
+		],
 		'type' => [
 			'method'        => 'drop_array',
 			'friendly_name' => __('Match Type', 'syslog'),
@@ -966,7 +980,7 @@ function syslog_action_edit(): void {
 	}
 
 	function changeMethod() {
-		$('#row_num, #row_threshold_window').toggle($('#report_method').val() == '1');
+		$('#row_num, #row_threshold_window, #row_threshold_recovery_minutes').toggle($('#report_method').val() == '1');
 	}
 
 	function changeMaintenanceMode() {

@@ -210,6 +210,13 @@ jobs:
       run: php tests/regression/cli_schema_upgrade_test.php
       working-directory: ${{ github.workspace }}/cacti/plugins/syslog
 
+    - name: Run threshold recovery database checks
+      run: php tests/regression/threshold_recovery_database_test.php
+      working-directory: ${{ github.workspace }}/cacti/plugins/syslog
+      env:
+        SYSLOG_TEST_MYSQL_DSN: 'mysql:host=127.0.0.1;port=3306'
+        SYSLOG_TEST_MYSQL_PASSWORD: cactiroot
+
     # Whole-file coverage is meaningless here: most of the plugin only runs
     # inside a live Cacti. What is enforceable is that a change covers the
     # lines it adds.

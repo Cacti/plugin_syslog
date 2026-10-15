@@ -22,15 +22,18 @@ For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
 be quieted using syslog's 'Re-Alert' setting.
 
-The Syslog Messages view shows **Threshold breached** as **Yes** for messages
-matching a threshold rule in the collector batch that reaches its count, even
-when a notification is suppressed. Other messages default to **No**, including
-existing history; old breaches are not reconstructed. Unmarked messages are
-stored as NULL and displayed as No. The flag survives archival
-and replication. Grouped rows show **Yes** if any message in the group is marked. The migration
-appends a nullable column without backfilling history, allowing instant column
-addition where the database supports it. Other server versions or table formats
-may still rebuild or lock the table during ALTER TABLE.
+Threshold rules count matching messages within their rolling window. **Recover
+After Quiet Period** defaults to 5 minutes: each match during an active breach
+restarts that timer. A complete quiet period clears the breach, resets its count
+to zero, and rearms it. The initial alert is sent once per breach; the existing
+Re-Alert setting controls subsequent notifications while it remains active.
+
+The Messages view shows **Breach = Yes** for messages associated with an active
+breach and **No** after recovery. Grouped rows show Yes if any member is associated
+with an active breach. Recovery updates indexed state and message associations,
+without scanning or updating historical message rows. Existing historical flags
+are not converted into active breaches. See [threshold recovery](docs/THRESHOLD_RECOVERY.md)
+for lifecycle and deployment details.
 
 ## Core Features
 

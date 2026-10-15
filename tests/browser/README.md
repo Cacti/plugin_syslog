@@ -19,3 +19,7 @@ node tests/browser/threshold_messages.cjs
 
 It uses the same `PLAYWRIGHT_MODULE` and `CHROMIUM_PATH` overrides and does not
 connect to a live Cacti server or database.
+
+Threshold recovery state and its expiry are tested against MariaDB separately:
+`SYSLOG_TEST_MYSQL_SOCKET=/path/to/test.sock php tests/regression/threshold_recovery_database_test.php`.
+The disposable database check also runs in CI against the MariaDB service.

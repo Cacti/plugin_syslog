@@ -12,6 +12,7 @@ $start = strpos($source, "\t\tif (cacti_sizeof(\$syslog_messages)) {");
 $end = strpos($source, "\n\t\thtml_end_box(false);", $start);
 $rows = substr($source, $start, $end - $start);
 $syslogdb_default = 'syslog';
+$breach_sql = syslog_message_breach_sql();
 $hosts = [1 => 'router']; $facilities = [1 => 'user']; $priorities = [3 => 'err'];
 $syslog_incoming_config = ['id' => 'seq', 'textField' => 'message'];
 $base = ['seq' => 101, 'facility_id' => 1, 'priority_id' => 3, 'program' => 'app', 'host_id' => 1, 'logtime' => '2026-10-15 12:00:00', 'message' => 'Example message', 'mtype' => 'main'];
