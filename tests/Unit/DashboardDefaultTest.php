@@ -2,12 +2,10 @@
 
 it('seeds valid starter panels atomically and does not reseed an existing default', function () {
 	syslog_load_plugin_source('setup.php');
+	syslog_load_plugin_source('includes/schema.php');
 	syslog_load_plugin_source('lib/syslog_dashboard.php');
-	test_override('syslog_ensure_dashboard_tables', fn () => null);
-	test_override('syslog_db_table_exists', fn () => true);
-	test_override('syslog_db_column_exists', fn () => true);
+	test_override('db_update_table', fn () => true);
 	$GLOBALS['syslogdb_default'] = 'syslog';
-	test_override('syslog_dashboard_username', fn () => 'admin');
 	test_override('syslog_db_fetch_insert_id', fn () => 42);
 	$existing = false;
 	$calls = [];

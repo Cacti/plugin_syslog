@@ -9,3 +9,13 @@ CACTI_ROOT=/path/to/cacti node tests/browser/compact_workspace.cjs
 Optional environment variables: `PLAYWRIGHT_MODULE` (installed module path), `CHROMIUM_PATH` (browser executable), and `TEST_ARTIFACT_DIR` (existing screenshot directory).
 
 Covers builder date and negation submission, severity color preservation, opening the message details from any cell of a row, selected-message rule links and unavailable actions, escaped raw messages, inspector keyboard close, filter collapse, the results limit beside the search buttons, view options, refresh without detaching a saved search, and narrow-screen overflow.
+
+The Dashboard card fixture checks shared Status styling in light/dark themes,
+existing tools, drag/keyboard ordering requests, and narrow-screen panel sizing:
+
+```sh
+node tests/browser/dashboard_cards.cjs
+```
+
+It uses the actual Dashboard renderer and styles with fixture panels and records
+ordering requests; it does not verify a live database or chart data.
