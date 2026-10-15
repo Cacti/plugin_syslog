@@ -4078,7 +4078,7 @@ function syslog_log_alert($alert_id, $alert_name, $severity, array $msg, int $co
 		$save['logseq']      = 0;
 		$save['logtime']     = date('Y-m-d H:i:s');
 		$save['logmsg']      = $alert_name;
-		$save['host']        = 'N/A';
+		$save['host']        = count($hosts) === 1 ? reset($hosts) : 'N/A';
 		$save['facility_id'] = $msg['facility_id'];
 		$save['priority_id'] = $msg['priority_id'];
 		$save['count']       = $count;
