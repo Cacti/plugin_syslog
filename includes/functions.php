@@ -4618,13 +4618,13 @@ function syslog_device_rule_sql(bool $maintenance_active): array {
 	$priority_field = $syslog_incoming_config['priorityField'] ?? 'priority_id';
 	$now = time();
 	$active_mute = "(dr.mute_mode = 'indefinite' OR (dr.mute_mode = 'until' AND dr.mute_until > ?))";
-	$pass_through = "(dr.pass_through_priority >= 0 AND COALESCE(`$priority_field`, 99) <= dr.pass_through_priority)";
-	$mute_filter = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
+	$pass_through = "(dr.pass_through_priority >= 0 AND COALESCE(`syslog_incoming`.`$priority_field`, 99) <= dr.pass_through_priority)";
+	$mute_filter = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `syslog_incoming`.`$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
 	if ($maintenance_active) {
 		// Normal maintenance still mutes every device.  Only an explicit device
 		// exception may admit a record, so the absence of a device rule is not
 		// accidentally treated as an exception.
-		$maintenance_filter = "\n\t\t\t\tAND EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `$host_field` AND dr.enabled = 'on' AND (dr.allow_maintenance = 'on' OR $pass_through))";
+		$maintenance_filter = "\n\t\t\t\tAND EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `syslog_incoming`.`$host_field` AND dr.enabled = 'on' AND (dr.allow_maintenance = 'on' OR $pass_through))";
 	} else {
 		$maintenance_filter = '';
 	}

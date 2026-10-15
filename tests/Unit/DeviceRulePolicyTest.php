@@ -57,3 +57,16 @@ it('creates and replicates device rules for remote collectors', function () {
 		->toContain("db_fetch_assoc('SELECT * FROM syslog_device_rule')")
 		->toContain("syslog_replace_data('syslog_device_rule', \$data)");
 });
+
+it('correlates device suppression and maintenance exceptions with the incoming message host', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$GLOBALS['syslog_incoming_config'] = ['hostField' => 'host', 'priorityField' => 'priority_id'];
+	foreach ([false, true] as $maintenance) {
+		$filter = syslog_device_rule_sql($maintenance);
+		expect($filter['sql'])->toContain('dr.host = `syslog_incoming`.`host`')
+			->toContain('COALESCE(`syslog_incoming`.`priority_id`, 99)')
+			->not->toContain('dr.host = `host`');
+		expect(substr_count($filter['sql'], 'dr.host = `syslog_incoming`.`host`'))->toBe($maintenance ? 2 : 1);
+	}
+});
