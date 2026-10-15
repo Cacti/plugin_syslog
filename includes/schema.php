@@ -821,9 +821,9 @@ function syslog_ensure_table_structures(): bool {
 
 	// Append the column so eligible servers can add it instantly; do not backfill history.
 	foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
-		if (db_update_table($table, ['columns' => [
-			['name' => 'threshold_breached', 'type' => 'tinyint(1)', 'unsigned' => true, 'NULL' => true]
-		]], false, true, $syslog_cnn) === false) {
+		if (!syslog_db_add_column($table, [
+			'name' => 'threshold_breached', 'type' => 'tinyint(1)', 'unsigned' => true, 'NULL' => true
+		])) {
 			return false;
 		}
 	}

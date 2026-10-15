@@ -1,5 +1,9 @@
 <?php
 
+afterEach(function () {
+	syslog_test_reset_globals();
+});
+
 it('marks only messages in a threshold-breaching batch with bounded prepared updates', function () {
 	syslog_load_plugin_source('includes/functions.php');
 	$updates = [];
@@ -36,13 +40,15 @@ it('appends nullable message breach columns without a backfill during schema rep
 	syslog_load_plugin_source('includes/schema.php');
 	$columns = [];
 	test_override('syslog_db_table_exists', static fn() => true);
-	test_override('db_update_table', function ($table, $definition) use (&$columns) {
-		foreach ($definition['columns'] as $column) {
-			if ($column['name'] === 'threshold_breached') {
-				$columns[$table] = $column['NULL'];
-				expect($column)->not->toHaveKey('default')->not->toHaveKey('after');
-			}
-		}
+	test_override('db_update_table', function ($table) {
+		// The general table reconciler may drop an omitted primary key.
+		expect($table)->not->toBeIn(['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output']);
+		return true;
+	});
+	test_override('syslog_db_add_column', function ($table, $column) use (&$columns) {
+		$columns[$table] = $column['NULL'];
+		expect($column['name'])->toBe('threshold_breached');
+		expect($column)->not->toHaveKey('default')->not->toHaveKey('after');
 		return true;
 	});
 	expect(syslog_ensure_table_structures())->toBeTrue();
@@ -84,4 +90,18 @@ it('carries message breach flags through local archival and the replication outb
 	test_override('read_config_option', static fn($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
 	expect(syslog_replication_enqueue_incoming('WHERE si.status = 1 AND si.seq <= ?', [100], 'syslog'))->toBeTrue();
 	expect(implode("\n", $statements))->toContain('message, threshold_breached, disposition')->toContain('si.threshold_breached');
+});
+
+
+it('stops schema repair if the add-only message column migration fails', function () {
+	$GLOBALS['config']['poller_id'] = 1;
+	syslog_load_plugin_source('includes/schema.php');
+	$attempted = [];
+	test_override('syslog_db_table_exists', static fn() => true);
+	test_override('syslog_db_add_column', function ($table) use (&$attempted) {
+		$attempted[] = $table;
+		return false;
+	});
+	expect(syslog_ensure_table_structures())->toBeFalse();
+	expect($attempted)->toBe(['syslog']);
 });
