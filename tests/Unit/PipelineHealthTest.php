@@ -114,11 +114,11 @@ it('detects failed and delayed remote delivery without treating ordinary recover
 	$GLOBALS['config']['poller_id'] = 2;
 	$GLOBALS['config']['connection'] = 'offline';
 	$GLOBALS['pipeline_fixture']['settings']['syslog_remote_enabled'] = 'on';
-	$GLOBALS['pipeline_fixture']['outbox'] = ['pending' => 10, 'oldest_pending' => date('Y-m-d H:i:s')];
+	$GLOBALS['pipeline_fixture']['outbox'] = ['pending' => 1, 'oldest_pending' => '2099-01-01 00:00:00', 'oldest_pending_epoch' => time()];
 	expect(syslog_pipeline_health()['issues'])->toBeEmpty();
-	$GLOBALS['pipeline_fixture']['outbox']['oldest_pending'] = date('Y-m-d H:i:s', time() - 1000);
+	$GLOBALS['pipeline_fixture']['outbox']['oldest_pending_epoch'] = time() - 1000;
 	expect(syslog_pipeline_health()['issues'])->toHaveKey('replication');
-	$GLOBALS['pipeline_fixture']['outbox']['oldest_pending'] = date('Y-m-d H:i:s');
+	$GLOBALS['pipeline_fixture']['outbox']['oldest_pending_epoch'] = time();
 	$GLOBALS['pipeline_fixture']['status']['replication_last_error'] = 'Central commit failed';
 	expect(syslog_pipeline_health()['issues'])->toHaveKey('replication');
 	$GLOBALS['pipeline_fixture']['outbox']['pending'] = null;
@@ -267,7 +267,7 @@ it('renders pipeline problems and notification status in the existing Status car
 	$GLOBALS['pipeline_fixture']['status']['partition_maintenance_reason'] = '<script>alert(1)</script>';
 	$GLOBALS['pipeline_fixture']['status']['pipeline_health_monitor'] = json_encode(['checked' => time(), 'notification' => 'failed']);
 	$source = plugin_test_read_source('syslog.php');
-	foreach (['syslog_status_data', 'syslog_status_workers', 'syslog_status_pipeline', 'syslog_status_card_meta', 'syslog_status_card_body', 'syslog_status_collector_health', 'syslog_status_collector_unavailable', 'syslog_status_format_age', 'syslog_status_format_count', 'syslog_status_format_time'] as $name) {
+	foreach (['syslog_status_data', 'syslog_status_workers', 'syslog_status_pipeline', 'syslog_status_card_meta', 'syslog_status_available_cards', 'syslog_status_replication', 'syslog_status_render_card', 'syslog_status_card_body', 'syslog_status_collector_health', 'syslog_status_collector_unavailable', 'syslog_status_format_age', 'syslog_status_format_count', 'syslog_status_format_time'] as $name) {
 		if (!function_exists($name)) {
 			$start = strpos($source, "function $name(");
 			$end = strpos($source, "\n}", $start);
@@ -276,10 +276,13 @@ it('renders pipeline problems and notification status in the existing Status car
 	}
 	if (!defined('SYSLOG_COLLECTOR_STALE_SECONDS')) define('SYSLOG_COLLECTOR_STALE_SECONDS', 300);
 	if (!defined('SYSLOG_COLLECTOR_BACKLOG_THRESHOLD')) define('SYSLOG_COLLECTOR_BACKLOG_THRESHOLD', 10000);
-	$html = syslog_status_card_body('collector_health');
+	$GLOBALS['pipeline_fixture']['queries'] = [];
+	syslog_status_card_meta();
+	expect($GLOBALS['pipeline_fixture']['queries'])->toBeEmpty();
+	$html = syslog_status_render_card('collector_health');
 	expect(syslog_status_card_meta()['collector_health']['title'])->toBe('Pipeline health')
-		->and(syslog_status_card_meta()['collector_health']['state'])->toBe('down')
-		->and($html)->toContain('Attention required')->toContain('Partition maintenance')
+		->and(syslog_status_card_meta()['collector_health'])->not->toHaveKey('state')
+		->and($html)->toContain('syslogStatusCardHeader--down')->toContain('Attention required')->toContain('Partition maintenance')
 		->toContain('Failed; retry pending')->toContain('Last health check')
 		->toContain('&lt;script&gt;')->not->toContain('<script>');
 });
@@ -381,4 +384,15 @@ it('offers existing notification lists and a None choice in pipeline settings', 
 	eval(substr($source, $start, $end - $start));
 	expect($notification_lists)->toBe([0 => 'None']);
 	syslog_test_reset_globals();
+});
+
+it('bounds automatic queue queries and uses the replication backlog index order', function () {
+	pipeline_health_fixture();
+	$GLOBALS['config']['poller_id'] = 2;
+	$GLOBALS['pipeline_fixture']['settings']['syslog_remote_enabled'] = 'on';
+	syslog_pipeline_health();
+	$sql = implode(' ', $GLOBALS['pipeline_fixture']['queries']);
+	expect($sql)->toContain('LIMIT 10001) AS incoming_sample')
+		->toContain('WHERE acknowledged_at IS NULL ORDER BY created_at LIMIT 1')
+		->toContain('UNIX_TIMESTAMP(MIN(created_at)) AS oldest_pending_epoch');
 });

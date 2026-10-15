@@ -104,7 +104,7 @@ msgstr ""
 
 #: includes/functions.php
 #, php-format
-msgid "Incoming backlog of %s messages exceeds the limit of %s."
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
 msgstr ""
 
 #: includes/functions.php
@@ -134,7 +134,7 @@ msgstr ""
 
 #: includes/functions.php
 #, php-format
-msgid "Synchronization has failed or queued records exceed the allowed delay (%s pending)."
+msgid "Synchronization has failed or queued records exceed the allowed delay."
 msgstr ""
 
 #: includes/functions.php

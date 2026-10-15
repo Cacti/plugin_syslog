@@ -1682,14 +1682,16 @@ function syslog_pipeline_health(): array {
 	$column = $syslog_incoming_config['timeField'] ?? 'logtime';
 	$incoming = [];
 	if (is_string($column) && preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column)) {
+		// Above the threshold, the exact count and oldest timestamp cannot change the verdict.
+		$sample_limit = $limit + 1;
 		$incoming = syslog_db_fetch_row("SELECT COUNT(*) AS pending, UNIX_TIMESTAMP(MIN(`$column`)) AS oldest
-			FROM `$syslogdb_default`.`syslog_incoming`", false);
+			FROM (SELECT `$column` FROM `$syslogdb_default`.`syslog_incoming` LIMIT $sample_limit) AS incoming_sample", false);
 	}
 	$health['checks']['backlog'] = __('Incoming messages are within the configured limits.', 'syslog');
 	if (!isset($incoming['pending']) || !is_numeric($incoming['pending'])) {
 		$health['issues']['backlog'] = __('Incoming queue metrics are unavailable.', 'syslog');
 	} elseif ((int) $incoming['pending'] > $limit) {
-		$health['issues']['backlog'] = __('Incoming backlog of %s messages exceeds the limit of %s.', number_format((int) $incoming['pending']), number_format($limit), 'syslog');
+		$health['issues']['backlog'] = __('Incoming backlog of at least %s messages exceeds the limit of %s.', number_format((int) $incoming['pending']), number_format($limit), 'syslog');
 	} elseif ((int) $incoming['pending'] > 0) {
 		if (!isset($incoming['oldest']) || !is_numeric($incoming['oldest'])) {
 			$health['issues']['backlog'] = __('The oldest incoming message timestamp is unavailable.', 'syslog');
@@ -1698,18 +1700,18 @@ function syslog_pipeline_health(): array {
 		}
 	}
 
-	$replication = syslog_replication_operational_status();
+	$replication = syslog_replication_operational_status(true);
 	$health['checks']['replication'] = __('Synchronization is not enabled on this collector.', 'syslog');
 	if (!empty($replication['enabled'])) {
 		$health['checks']['replication'] = __('Synchronization is within the allowed delay.', 'syslog');
-		$oldest = strtotime($replication['oldest_pending']);
+		$oldest = $replication['oldest_pending_epoch'];
 		if ($replication['pending'] === null) {
 			$health['issues']['replication'] = __('Synchronization queue metrics are unavailable.', 'syslog');
-		} elseif ($replication['pending'] > 0 && $oldest === false) {
+		} elseif ($replication['pending'] > 0 && $oldest === null) {
 			$health['issues']['replication'] = __('The oldest synchronization record timestamp is unavailable.', 'syslog');
 		} elseif ($replication['pending'] > 0 && ($replication['last_error'] !== ''
-			|| ($oldest !== false && $now - $oldest > $delay))) {
-			$health['issues']['replication'] = __('Synchronization has failed or queued records exceed the allowed delay (%s pending).', number_format($replication['pending']), 'syslog');
+			|| ($oldest !== null && $now - $oldest > $delay))) {
+			$health['issues']['replication'] = __('Synchronization has failed or queued records exceed the allowed delay.', 'syslog');
 		}
 	}
 
@@ -5785,14 +5787,19 @@ function syslog_replication_record_error(string $message): void {
 }
 
 /** Read on-demand, indexed operational status for this local collector. */
-function syslog_replication_operational_status(): array {
+function syslog_replication_operational_status(bool $bounded = false): array {
 	global $syslogdb_default;
 	if (!syslog_replication_is_enabled()) {
 		return ['enabled' => false];
 	}
 
-	$row = syslog_db_fetch_row("SELECT COUNT(*) AS pending, MIN(created_at) AS oldest_pending
-		FROM `$syslogdb_default`.`syslog_replication_output`", false);
+	// The backlog index starts with acknowledged_at, created_at; health only needs the oldest pending row.
+	$queue = $bounded
+		? "(SELECT created_at FROM `$syslogdb_default`.`syslog_replication_output`
+			WHERE acknowledged_at IS NULL ORDER BY created_at LIMIT 1) AS pending_sample"
+		: "`$syslogdb_default`.`syslog_replication_output`";
+	$row = syslog_db_fetch_row("SELECT COUNT(*) AS pending, MIN(created_at) AS oldest_pending,
+		UNIX_TIMESTAMP(MIN(created_at)) AS oldest_pending_epoch FROM $queue", false);
 	$lease = syslog_db_fetch_row("SELECT acquired_at, heartbeat_at FROM `$syslogdb_default`.`syslog_replication_recovery`
 		WHERE name = 'recovery'", false);
 	$status = syslog_status_get();
@@ -5801,6 +5808,7 @@ function syslog_replication_operational_status(): array {
 		'state' => syslog_replication_get_state(),
 		'pending' => isset($row['pending']) ? (int) $row['pending'] : null,
 		'oldest_pending' => (string) ($row['oldest_pending'] ?? ''),
+		'oldest_pending_epoch' => isset($row['oldest_pending_epoch']) ? (int) $row['oldest_pending_epoch'] : null,
 		'recovery_active' => !empty($lease) && isset($lease['heartbeat_at']) && (int) $lease['heartbeat_at'] >= time() - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS,
 		'recovery_started' => (string) ($lease['acquired_at'] ?? ''),
 		'last_success' => $status['replication_last_success'] ?? '',

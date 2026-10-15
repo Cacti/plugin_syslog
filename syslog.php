@@ -654,7 +654,7 @@ function syslog_status_card_meta(): array {
 		'partition_health'   => ['title' => __('Partition health', 'syslog'),                      'span' => 4, 'expandable' => false],
 		'maintenance'        => ['title' => __('Partition maintenance activity', 'syslog'),        'span' => 2, 'expandable' => false],
 		'maintenance_recent' => ['title' => __('Recent partition maintenance activity', 'syslog'), 'span' => 4, 'expandable' => true],
-		'collector_health'   => ['title' => __('Pipeline health', 'syslog'),                       'span' => 4, 'expandable' => false, 'state' => syslog_status_pipeline()['state']],
+		'collector_health'   => ['title' => __('Pipeline health', 'syslog'),                       'span' => 4, 'expandable' => false],
 		'workers'            => ['title' => __('Parallel workers', 'syslog'),                      'span' => 2, 'expandable' => false],
 		'worker_processes'   => ['title' => __('Worker processes', 'syslog'),                      'span' => 2, 'expandable' => true],
 		'phases'             => ['title' => __('Processing phases', 'syslog'),                     'span' => 4, 'expandable' => true],
@@ -958,6 +958,9 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 	}
 
 	$def = $meta[$key];
+	if ($key === 'collector_health') {
+		$def['state'] = syslog_status_pipeline()['state'];
+	}
 
 	$tools = '';
 	if ($def['expandable']) {
