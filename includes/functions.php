@@ -4650,7 +4650,7 @@ function syslog_alert_window_seconds(array $alert): int {
 
 /** Hash the rule settings that define a threshold episode. */
 function syslog_threshold_rule_hash(array $alert): string {
-	return sha1(json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'date']))));
+	return sha1(json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'date']))));
 }
 
 /** Recover quiet breaches without scanning or rewriting message history. */
@@ -4701,7 +4701,10 @@ function syslog_threshold_evaluate(array &$alert, int $batch_count, string $host
 	}
 	$new = !$state;
 	$key = $state['breach_key'] ?? bin2hex(random_bytes(16));
-	$expires = $now + max(1, (int) ($alert['threshold_recovery_minutes'] ?? 5)) * 60;
+	$expires = $now + max(60, syslog_alert_window_seconds([
+		'threshold_window' => $alert['threshold_recovery_minutes'] ?? 5,
+		'threshold_unit' => $alert['threshold_recovery_unit'] ?? 'minute'
+	]));
 	if (!syslog_db_execute_prepared('INSERT INTO syslog_threshold_state (source_poller_id, alert_id, scope_key, rule_hash, rule_date, breach_key, last_match, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE rule_hash = VALUES(rule_hash), rule_date = VALUES(rule_date), breach_key = VALUES(breach_key), last_match = VALUES(last_match), expires_at = VALUES(expires_at)', [$source, $alert['id'], $scope, $hash, (int) ($alert['date'] ?? 0), $key, $now, $expires])) {
 		return 0;
 	}

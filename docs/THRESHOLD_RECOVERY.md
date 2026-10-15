@@ -1,5 +1,9 @@
 # Threshold recovery
 
+Recover After Quiet Period accepts a positive value and Minutes, Hours, or Days
+on the same row, just like Threshold Window. Existing settings remain in minutes;
+the default is 5 minutes.
+
 For 5 matching messages in 10 minutes and a 5-minute quiet period:
 
 1. The collector batch that reaches 5 opens a breach and generates the initial alert.

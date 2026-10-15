@@ -116,7 +116,7 @@ function form_save(): void {
 			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'),
 			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'),
 			get_nfilter_request_var('threshold_window'), get_nfilter_request_var('threshold_unit'),
-			get_nfilter_request_var('threshold_recovery_minutes'));
+			get_nfilter_request_var('threshold_recovery_minutes'), get_nfilter_request_var('threshold_recovery_unit') ?: 'minute');
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -327,7 +327,8 @@ function alert_export(): void {
  * @param string          $maintenance_datetime_end Optional one-time local end date/time.
  * @param string|int      $threshold_window Rolling window length; zero counts only the current cycle.
  * @param string          $threshold_unit Window unit: minute, hour, or day.
- * @param string|int      $threshold_recovery_minutes Quiet minutes required to recover and rearm.
+ * @param string|int      $threshold_recovery_minutes Quiet duration in the selected recovery unit (legacy field name).
+ * @param string         $threshold_recovery_unit Minute, hour, or day.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
@@ -335,7 +336,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
 	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
-	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5) {
+	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5, $threshold_recovery_unit = 'minute') {
 	global $syslogdb_default;
 
 	// get the username
@@ -357,11 +358,13 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 		return false;
 	}
 	$threshold_recovery_minutes = $threshold_recovery_minutes === '' || $threshold_recovery_minutes === null ? '5' : (string) $threshold_recovery_minutes;
-	if (!ctype_digit($threshold_recovery_minutes) || (float) $threshold_recovery_minutes < 1 || (float) $threshold_recovery_minutes > 4294967295) {
-		raise_message('threshold_recovery_minutes', __('Enter a positive whole number of minutes for threshold recovery.', 'syslog'), MESSAGE_LEVEL_ERROR);
+	if (!ctype_digit($threshold_recovery_minutes) || (float) $threshold_recovery_minutes < 1 || (float) $threshold_recovery_minutes > 4294967295
+		|| !in_array($threshold_recovery_unit, ['minute', 'hour', 'day'], true)) {
+		raise_message('threshold_recovery_minutes', __('Enter a positive whole number of minutes, hours, or days for threshold recovery.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		return false;
 	}
 	$save['threshold_recovery_minutes'] = (int) $threshold_recovery_minutes;
+	$save['threshold_recovery_unit'] = $threshold_recovery_unit;
 	$save['threshold_window'] = (int) $threshold_window;
 	$save['threshold_unit'] = $threshold_unit;
 	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
@@ -672,6 +675,14 @@ function syslog_action_edit(): void {
 	print '</div>';
 	$threshold_window_controls = ob_get_clean();
 
+	ob_start();
+	print '<div style="display: inline-flex; align-items: center; gap: 0.5em">';
+	form_text_box('threshold_recovery_minutes', $alert['threshold_recovery_minutes'] ?? '5', '5', 10, 8);
+	print '<label for="threshold_recovery_unit" hidden>' . __esc('Time unit', 'syslog') . '</label>';
+	form_dropdown('threshold_recovery_unit', ['minute' => __('Minutes', 'syslog'), 'hour' => __('Hours', 'syslog'), 'day' => __('Days', 'syslog')], '', '', $alert['threshold_recovery_unit'] ?? 'minute', '', 'minute');
+	print '</div>';
+	$threshold_recovery_controls = ob_get_clean();
+
 	$fields_syslog_alert_edit = [
 		'spacer0' => [
 			'method'        => 'spacer',
@@ -725,10 +736,10 @@ function syslog_action_edit(): void {
 			'value' => $threshold_window_controls
 		],
 		'threshold_recovery_minutes' => [
-			'method' => 'textbox',
+			'method' => 'custom',
 			'friendly_name' => __('Recover After Quiet Period', 'syslog'),
-			'description' => __('Minutes with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer.', 'syslog'),
-			'value' => '|arg1:threshold_recovery_minutes|', 'default' => '5', 'size' => '8', 'max_length' => '10'
+			'description' => __('Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer.', 'syslog'),
+			'value' => $threshold_recovery_controls
 		],
 		'type' => [
 			'method'        => 'drop_array',

@@ -128,6 +128,12 @@ try {
 	$rule['threshold_recovery_minutes'] = 1;
 	check_recovery(syslog_threshold_evaluate($rule, 1, 'host-a', $base + 2400) === 1 && empty($rule['_threshold_state']), 'Changing recovery settings invalidates the previous episode');
 	check_recovery((int) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM syslog_threshold_state WHERE scope_key = ?', ['host-a']) === 0, 'A changed rule cannot leave its old breach active');
+	foreach (['minute' => 60, 'hour' => 3600, 'day' => 86400] as $unit => $seconds) {
+		$rule['threshold_recovery_unit'] = $unit;
+		syslog_threshold_evaluate($rule, 2, 'unit-test', $base + 2500);
+		$expiry = (int) syslog_db_fetch_cell_prepared('SELECT expires_at FROM syslog_threshold_state WHERE scope_key = ?', ['unit-test']);
+		check_recovery($expiry === $base + 2500 + $seconds, "Recovery unit $unit sets the correct quiet deadline");
+	}
 	$plan = $pdo->query('EXPLAIN SELECT ' . syslog_message_breach_sql() . ' FROM syslog AS syslog LIMIT 30')->fetchAll();
 	$lookup = array_values(array_filter($plan, static fn($row) => $row['table'] === 'tm'));
 	check_recovery($lookup && in_array($lookup[0]['key'], ['PRIMARY', 'episode'], true), 'Message associations use the identity index');

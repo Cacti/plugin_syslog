@@ -534,6 +534,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`threshold_window` int(10) unsigned NOT NULL default '0',
 		`threshold_unit` varchar(6) NOT NULL default 'minute',
 		`threshold_recovery_minutes` int(10) unsigned NOT NULL default '5',
+		`threshold_recovery_unit` varchar(6) NOT NULL default 'minute',
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
@@ -861,7 +862,8 @@ function syslog_ensure_table_structures(): bool {
 	if (db_update_table('syslog_alert', ['columns' => [
 		['name' => 'threshold_window', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'num'],
 		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window'],
-		['name' => 'threshold_recovery_minutes', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '5', 'after' => 'threshold_unit']
+		['name' => 'threshold_recovery_minutes', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '5', 'after' => 'threshold_unit'],
+		['name' => 'threshold_recovery_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_recovery_minutes']
 	], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
 		return false;
 	}
