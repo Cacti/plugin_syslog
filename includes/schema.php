@@ -799,6 +799,7 @@ function syslog_create_alert_counts_table(): void {
 		`rule_hash` char(40) NOT NULL,
 		`rule_date` bigint unsigned NOT NULL,
 		`breach_key` char(32) NOT NULL,
+		`breached_at` bigint unsigned DEFAULT NULL,
 		`last_match` bigint unsigned NOT NULL,
 		`expires_at` bigint unsigned NOT NULL,
 		PRIMARY KEY (`source_poller_id`, `alert_id`, `scope_key`),
@@ -856,6 +857,10 @@ function syslog_ensure_table_structures(): bool {
 				return false;
 			}
 		}
+	}
+
+	if (!syslog_db_add_column('syslog_threshold_state', ['name' => 'breached_at', 'type' => 'bigint', 'unsigned' => true, 'NULL' => true])) {
+		return false;
 	}
 
 	// Repair these columns even when the installed plugin version is unchanged.

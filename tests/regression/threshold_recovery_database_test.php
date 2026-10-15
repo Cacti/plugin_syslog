@@ -21,10 +21,12 @@ function syslog_db_execute_prepared($sql, $params = [], ...$args) { $q = $GLOBAL
 function syslog_db_fetch_assoc_prepared($sql, $params = [], ...$args) { $q = $GLOBALS['pdo']->prepare($sql); $q->execute($params); return $q->fetchAll(); }
 function syslog_db_fetch_row_prepared($sql, $params = [], ...$args) { return syslog_db_fetch_assoc_prepared($sql, $params)[0] ?? []; }
 function syslog_db_fetch_cell_prepared($sql, $params = [], ...$args) { $q = $GLOBALS['pdo']->prepare($sql); $q->execute($params); return $q->fetchColumn(); }
+function syslog_db_fetch_cell($sql) { return syslog_db_fetch_cell_prepared($sql); }
 function db_execute_prepared($sql, $params = [], ...$args) { return syslog_db_execute_prepared($sql, $params); }
 function cacti_log(...$args) {}
 require dirname(__DIR__, 2) . '/includes/functions.php';
 require dirname(__DIR__, 2) . '/includes/schema.php';
+require dirname(__DIR__, 2) . '/lib/syslog_thresholds.php';
 function displayed_breach($event) {
 	$sql = syslog_message_breach_sql();
 	return (int) syslog_db_fetch_cell_prepared("SELECT $sql FROM syslog AS syslog WHERE replication_source_event_id = ?", [$event]);
@@ -50,21 +52,26 @@ try {
 		$pdo->exec('CREATE TABLE syslog (seq BIGINT AUTO_INCREMENT PRIMARY KEY, replication_source_poller_id INT, replication_source_event_id BIGINT, threshold_breached TINYINT DEFAULT NULL)');
 	}
 	$pdo->exec("USE `$syslogdb_default`");
+	check_recovery(syslog_thresholds_enabled(), 'Threshold tab is available with an enabled threshold rule');
+	check_recovery(syslog_breached_threshold_count() === 0, 'Healthy threshold rules keep the tab with zero breaches');
 	$base = time();
 	$pdo->exec('SET timestamp = ' . $base);
 	$rule = ['id' => 1, 'method' => 1, 'level' => 0, 'num' => 5, 'threshold_window' => 10, 'threshold_unit' => 'minute', 'threshold_recovery_minutes' => 5, 'date' => 100, 'type' => 'sql', 'message' => '123'];
 	check_recovery(syslog_threshold_evaluate($rule, 3, '', $base) === 3 && empty($rule['_threshold_state']), 'Three messages must not breach');
 	check_recovery(syslog_threshold_evaluate($rule, 2, '', $base + 60) === 5 && $rule['_threshold_state']['new_breach'], 'The fifth message opens the breach');
+	check_recovery(syslog_breached_threshold_count() === 1, 'Active breach is counted without requiring a notification');
 	$first_key = $rule['_threshold_state']['breach_key'];
 	syslog_mark_threshold_messages($rule, 5, add_test_messages([4, 5]));
 	check_recovery(displayed_breach(4) === 1, 'Breach-associated messages display Yes');
 	check_recovery((int) $pdo->query('SELECT MAX(' . syslog_message_breach_sql() . ') FROM syslog AS syslog')->fetchColumn() === 1, 'Grouped messages show an active breach');
 	check_recovery(syslog_threshold_evaluate($rule, 1, '', $base + 300) === 6 && !$rule['_threshold_state']['new_breach'], 'Another match extends the existing episode without a new alert');
 	$state = syslog_db_fetch_row_prepared('SELECT * FROM syslog_threshold_state WHERE alert_id = 1');
+	check_recovery((int) $state['breached_at'] === $base + 60, 'Breach start remains fixed when the quiet timer extends');
 	check_recovery((int) $state['expires_at'] === $base + 600, 'Recovery timer restarts on the latest match');
 	syslog_threshold_recover($base + 360);
 	check_recovery(displayed_breach(4) === 1, 'The original timer must not clear an extended breach');
 	$pdo->exec('SET timestamp = ' . ($base + 600));
+	check_recovery(syslog_breached_threshold_count() === 0, 'Expired episodes leave the active list before cleanup');
 	check_recovery(displayed_breach(4) === 0, 'The view clears an expired breach even before the next poller');
 	check_recovery((int) $pdo->query('SELECT MAX(' . syslog_message_breach_sql() . ') FROM syslog AS syslog')->fetchColumn() === 0, 'Grouped messages also clear after recovery');
 	syslog_threshold_recover($base + 600);
@@ -92,6 +99,7 @@ try {
 	$local_db = $syslogdb_default;
 	$syslogdb_default = $central_db;
 	$pdo->exec("USE `$central_db`");
+	check_recovery((int) $pdo->query('SELECT breached_at FROM syslog_threshold_state WHERE alert_id = 1')->fetchColumn() === $base + 660, 'Collector replication preserves the breach start time');
 	check_recovery(displayed_breach(7) === 1, 'Central messages display an active remote breach');
 	$origin = array_values(array_filter($states['1:7'], static fn($state) => (int) $state['alert_id'] === 1))[0];
 	$old = $origin;
@@ -137,6 +145,12 @@ try {
 	$plan = $pdo->query('EXPLAIN SELECT ' . syslog_message_breach_sql() . ' FROM syslog AS syslog LIMIT 30')->fetchAll();
 	$lookup = array_values(array_filter($plan, static fn($row) => $row['table'] === 'tm'));
 	check_recovery($lookup && in_array($lookup[0]['key'], ['PRIMARY', 'episode'], true), 'Message associations use the identity index');
+	$pdo->exec('UPDATE syslog_alert SET date = 101');
+	check_recovery(syslog_breached_threshold_count() === 0, 'Editing a rule removes its previous episodes from the active list');
+	$pdo->exec("UPDATE syslog_alert SET enabled = ''");
+	check_recovery(!syslog_thresholds_enabled() && syslog_breached_threshold_count() === 0, 'Disabled rules hide the tab and their episodes');
+	$pdo->exec("UPDATE syslog_alert SET enabled = 'on', method = 0");
+	check_recovery(!syslog_thresholds_enabled(), 'Individual reporting does not show the threshold tab');
 	print "Threshold recovery MariaDB checks passed: $checks\n";
 } finally {
 	foreach ($databases as $database) {

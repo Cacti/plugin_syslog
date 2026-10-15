@@ -34,6 +34,7 @@ include('./include/auth.php');
 include_once('./lib/html_tree.php');
 include_once(__DIR__ . '/setup.php');
 include_once(__DIR__ . '/lib/syslog_dashboard.php');
+include_once(__DIR__ . '/lib/syslog_thresholds.php');
 
 global $config;
 
@@ -141,7 +142,13 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
-if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard'], true)) {
+if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard', 'breached'], true)) {
+	$current_tab = 'syslog';
+	set_request_var('tab', $current_tab);
+	$_SESSION['sess_syslog_tab'] = $current_tab;
+}
+
+if ($current_tab === 'breached' && !syslog_thresholds_enabled()) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
@@ -176,6 +183,8 @@ if (isset_request_var('export')) {
 		syslog_view_alarm();
 	} elseif ($current_tab == 'status') {
 		syslog_status();
+	} elseif ($current_tab == 'breached') {
+		syslog_breached_thresholds();
 	} elseif ($current_tab == 'dashboard') {
 		syslog_dashboard();
 	} else {
@@ -262,6 +271,10 @@ function syslog_display_tabs(string $current_tab): void {
 	$tabs_syslog['syslog'] = __('System Logs', 'syslog');
 
 	$tabs_syslog['alerts'] = __('Alert Logs', 'syslog');
+
+	if (syslog_thresholds_enabled()) {
+		$tabs_syslog['breached'] = __('Breached Thresholds', 'syslog') . ' (' . syslog_breached_threshold_count() . ')';
+	}
 
 	$tabs_syslog['dashboard'] = __('Dashboard', 'syslog');
 
@@ -1164,6 +1177,10 @@ function syslog_view_alarm(): void {
  */
 function syslog_request_validation(string $current_tab, bool $force = false): void {
 	global $title, $rows, $config, $reset_multi;
+
+	if ($current_tab === 'breached') {
+		return;
+	}
 
 	// Cacti validation populates $_POST even for values restored from the session.
 	// Capture the original submission before any request helpers mutate it.

@@ -51,3 +51,17 @@ SYSLOG_TEST_MYSQL_SOCKET=/path/to/test.sock php tests/regression/threshold_recov
 The test creates randomly named databases and removes them afterward. It checks
 quiet timer extension, count reset, rearming, multiple rules, per-device recovery,
 central state expiry, and indexed message lookups without contacting a provider.
+
+## Breached Thresholds tab
+
+The viewer shows Breached Thresholds when at least one enabled rule uses threshold
+reporting. Its badge counts active episodes; healthy rules keep the tab visible
+with an explicit empty state. The list is independent of notification delivery.
+It shows the rule, device, collector, breach start, last match, and the recovery
+deadline. Device rules have separate rows per host; shared rules show All matching
+devices. Results are paginated in groups of 50. Expired, disabled, deleted, or
+edited rules are excluded without waiting for episode cleanup.
+
+Breach start is recorded in the small episode table and carried through collector
+replication. Episodes already active before this upgrade display Unknown for their
+start time until the next breach. Existing syslog message tables are unchanged.

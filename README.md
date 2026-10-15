@@ -28,6 +28,9 @@ restarts that timer. A complete quiet period clears the breach, resets its count
 to zero, and rearms it. The initial alert is sent once per breach; the existing
 Re-Alert setting controls subsequent notifications while it remains active.
 
+The **Breached Thresholds** tab appears when enabled threshold rules exist and
+lists active breaches by rule and device, independently of notification history.
+
 The Messages view shows **Breach = Yes** for messages associated with an active
 breach and **No** after recovery. Grouped rows show Yes if any member is associated
 with an active breach. Recovery updates indexed state and message associations,
