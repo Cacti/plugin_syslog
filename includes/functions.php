@@ -4459,7 +4459,7 @@ function syslog_execute_alert_command($alert, $results, $hostname) {
  *
  * System Wide non-threshold alerts - These alerts are simply alerts that match the pattern defined by the alert
  * System Wide threshold alerts     - These alerts are syslog messages that both match the pattern and have more than the
- *                                    threshold amount that take place every collector cycle (30 seconds, 1 minutes, 5 minutes, etc)
+ *                                    threshold amount within the configured rolling window (or collector cycle when unset)
  * Host based non-threshold alerts  - Alerts that happen on a per host basis, so you can alert for each host that the syslog message
  *                                    occurred to.
  * Host based threshold alerts      - Like the system level alert, it's an alert that happens more than x times per host.
@@ -4635,12 +4635,51 @@ function syslog_device_rule_sql(bool $maintenance_active): array {
 	];
 }
 
+/** Convert a configured threshold window to seconds; zero preserves per-cycle counting. */
+function syslog_alert_window_seconds(array $alert): int {
+	$units = ['minute' => 60, 'hour' => 3600, 'day' => 86400];
+	$value = (string) ($alert['threshold_window'] ?? '0');
+	$unit = $alert['threshold_unit'] ?? 'minute';
+
+	if (!ctype_digit($value) || (float) $value > 4294967295 || !isset($units[$unit])) {
+		return 0;
+	}
+
+	return (int) $value * $units[$unit];
+}
+
+/** Persist one batch count and return the rolling total for this reporting scope. */
+function syslog_alert_window_count(array $alert, int $count, string $hostname = '', ?int $now = null): int {
+	$seconds = syslog_alert_window_seconds($alert);
+	if ((int) $alert['method'] !== 1 || $seconds === 0 || $count <= 0) {
+		return $count;
+	}
+
+	$now = $now ?? time();
+	// A changed match definition or window must not inherit counts from the old rule.
+	$hash = sha1(json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'date']))));
+	$scope = (int) $alert['level'] === 1 ? $hostname : '';
+	if (!syslog_db_execute_prepared('DELETE FROM syslog_alert_counts WHERE alert_id = ? AND (observed_at <= ? OR rule_hash <> ?)', [$alert['id'], $now - $seconds, $hash])) {
+		return 0;
+	}
+	if (!syslog_db_execute_prepared('INSERT INTO syslog_alert_counts (alert_id, rule_hash, scope_key, observed_at, matches) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE matches = matches + VALUES(matches)', [$alert['id'], $hash, $scope, $now, $count])) {
+		return 0;
+	}
+
+	return (int) syslog_db_fetch_cell_prepared('SELECT SUM(matches) FROM syslog_alert_counts WHERE alert_id = ? AND rule_hash = ? AND scope_key = ? AND observed_at > ? AND observed_at <= ?', [$alert['id'], $hash, $scope, $now - $seconds, $now]);
+}
+
 function syslog_process_alerts($max_seq) {
 	global $syslogdb_default;
 
 	$syslog_alarms = 0;
 	$syslog_alerts = 0;
 	$fired         = [];
+
+	// Retire counts for deleted, disabled, and per-cycle rules even on quiet collectors.
+	syslog_db_execute("DELETE c FROM syslog_alert_counts AS c LEFT JOIN syslog_alert AS a ON a.id = c.alert_id
+		WHERE a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR a.threshold_window = 0
+		OR c.observed_at <= UNIX_TIMESTAMP() - a.threshold_window * CASE a.threshold_unit WHEN 'day' THEN 86400 WHEN 'hour' THEN 3600 ELSE 60 END");
 
 	// send out the alerts
 	$alerts = syslog_db_fetch_assoc("SELECT *
@@ -4698,6 +4737,7 @@ function syslog_process_alerts($max_seq) {
 
 							$asql = $sql . ' AND host = ?';
 
+							$result['count'] = syslog_alert_window_count($alert, (int) $result['count'], $result['host']);
 							$triggered = syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
 							$syslog_alarms += $triggered;
 
@@ -4709,7 +4749,8 @@ function syslog_process_alerts($max_seq) {
 				} elseif ($alert['method'] == '1') {
 					$th_sql = str_replace('*', 'COUNT(*)', $sql);
 					$count  = syslog_db_fetch_cell_prepared($th_sql . $groupBy, $params);
-					$triggered = syslog_process_alert($alert, $sql, $params, $count);
+					$count = syslog_alert_window_count($alert, (int) $count);
+					$triggered = $count > 0 ? syslog_process_alert($alert, $sql, $params, $count) : 0;
 					$syslog_alarms += $triggered;
 
 					if ($triggered > 0) {
@@ -4870,7 +4911,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					$message .= '<tr><td>' . html_escape($alert['name']) . '</td>';
 					$message .= '<td>' . $severities[$alert['severity']] . '</td>';
 					$message .= '<td>' . $alert['num'] . '</td>';
-					$message .= '<td>' . sizeof($at) . '</td>';
+					$message .= '<td>' . (int) $count . '</td>';
 					$message .= '<td>' . html_escape($alert['message']) . '</td></tr></table><br>';
 				} else {
 					if ($alert['body'] == '') {
@@ -4910,7 +4951,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 					$message .= __('Name:', 'syslog') . ' ' . html_escape($alert['name']) . PHP_EOL;
 					$message .= __('Severity:', 'syslog') . ' ' . $severities[$alert['severity']] . PHP_EOL;
 					$message .= __('Threshold:', 'syslog') . ' ' . $alert['num'] . PHP_EOL;
-					$message .= __('Count:', 'syslog') . ' ' . sizeof($at) . PHP_EOL;
+					$message .= __('Count:', 'syslog') . ' ' . (int) $count . PHP_EOL;
 					$message .= __('Message String:', 'syslog') . ' ' . html_escape($alert['message']) . PHP_EOL;
 				} else {
 					if ($alert['body'] == '') {
@@ -5075,8 +5116,8 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 						syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), $message, $smsalert);
 					}
 
-					$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $at[0], sizeof($at), $message, $hostlist);
-					$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Count:', 'syslog') . sizeof($at) . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
+					$sequence = syslog_log_alert($alert['id'], $alert['name'], $alert['severity'], $at[0], (int) $count, $message, $hostlist);
+					$smsalert = __('Sev:', 'syslog') . $severities[$alert['severity']] . __(', Count:', 'syslog') . (int) $count . __(', URL:', 'syslog') . read_config_option('base_url', true) . '/plugins/syslog/syslog.php?tab=current&id=' . $sequence;
 
 					alert_setup_environment($alert, $results, $hostlist, $hostname);
 

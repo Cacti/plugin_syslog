@@ -529,6 +529,8 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`method` int(10) unsigned NOT NULL default '0',
 		`level` int(10) unsigned NOT NULL default '0',
 		`num` int(10) unsigned NOT NULL default '1',
+		`threshold_window` int(10) unsigned NOT NULL default '0',
+		`threshold_unit` varchar(6) NOT NULL default 'minute',
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
@@ -573,6 +575,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
+syslog_create_alert_counts_table();
 syslog_create_replication_output_table();
 syslog_create_replication_receipts_table();
 syslog_create_replication_collectors_table();
@@ -772,14 +775,28 @@ syslog_create_replication_recovery_table();
 	}
 }
 
+/** Create collector-local rolling threshold counts. */
+function syslog_create_alert_counts_table(): void {
+	global $syslogdb_default;
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_counts` (
+		`alert_id` int(10) unsigned NOT NULL,
+		`rule_hash` char(40) NOT NULL,
+		`scope_key` varchar(64) NOT NULL,
+		`observed_at` bigint unsigned NOT NULL,
+		`matches` bigint unsigned NOT NULL,
+		PRIMARY KEY (`alert_id`, `rule_hash`, `scope_key`, `observed_at`),
+		INDEX `observed_at` (`observed_at`)) ENGINE=InnoDB");
+}
+
 /** Complete an interrupted install or upgrade without dropping existing data. */
 function syslog_ensure_table_structures(): bool {
-	global $config;
+	global $config, $syslog_cnn;
 
 	require_once(__DIR__ . '/settings.php');
 
 	$tables = [
-		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression',
+		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression', 'syslog_alert_counts',
 		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
 		'syslog_hosts', 'syslog_facilities', 'syslog_priorities', 'syslog_host_facilities',
 		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
@@ -797,6 +814,14 @@ function syslog_ensure_table_structures(): bool {
 			$rebuilt = true;
 			break;
 		}
+	}
+
+	// Repair these columns even when the installed plugin version is unchanged.
+	if (db_update_table('syslog_alert', ['columns' => [
+		['name' => 'threshold_window', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'num'],
+		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window']
+	], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
+		return false;
 	}
 
 	if (!$rebuilt) {

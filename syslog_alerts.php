@@ -114,7 +114,8 @@ function form_save(): void {
 			get_nfilter_request_var('cooldown_minutes'), get_nfilter_request_var('deduplication_minutes'),
 			get_nfilter_request_var('maintenance_mode'), get_nfilter_request_var('maintenance_days'),
 			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'),
-			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'));
+			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'),
+			get_nfilter_request_var('threshold_window'), get_nfilter_request_var('threshold_unit'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -323,6 +324,8 @@ function alert_export(): void {
  * @param string          $maintenance_end Local end time for the rule maintenance window.
  * @param string          $maintenance_datetime_start Optional one-time local start date/time.
  * @param string          $maintenance_datetime_end Optional one-time local end date/time.
+ * @param string|int      $threshold_window Rolling window length; zero counts only the current cycle.
+ * @param string          $threshold_unit Window unit: minute, hour, or day.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
@@ -330,7 +333,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
 	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
-	$maintenance_datetime_end = '') {
+	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute') {
 	global $syslogdb_default;
 
 	// get the username
@@ -345,6 +348,14 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['hash']         = get_hash_syslog($save['id'], 'syslog_alert');
 
 	$save['name']         = form_input_validate($name,         'name',     '', false, 3);
+	$threshold_window = $threshold_window === '' || $threshold_window === null ? '0' : (string) $threshold_window;
+	if (!ctype_digit($threshold_window) || (float) $threshold_window > 4294967295
+		|| !in_array($threshold_unit, ['minute', 'hour', 'day'], true)) {
+		raise_message('threshold_window', __('Enter a whole number of minutes, hours, or days for the threshold window.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		return false;
+	}
+	$save['threshold_window'] = (int) $threshold_window;
+	$save['threshold_unit'] = $threshold_unit;
 	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
 	$save['message']      = form_input_validate($message,      'message',  '', false, 3);
 	$save['body']         = form_input_validate($body,         'body',     '', true, 3);
@@ -685,11 +696,24 @@ function syslog_action_edit(): void {
 		'num' => [
 			'method'        => 'textbox',
 			'friendly_name' => __('Threshold', 'syslog'),
-			'description'   => __('For the \'Threshold\' method, If the number seen is above this value an Alert will be triggered.', 'syslog'),
+			'description'   => __('For the \'Threshold\' method, an Alert is triggered when the number seen reaches this value.', 'syslog'),
 			'value'         => '|arg1:num|',
 			'size'          => '4',
 			'max_length'    => '10',
 			'default'       => '1'
+		],
+		'threshold_window' => [
+			'method' => 'textbox',
+			'friendly_name' => __('Threshold Window', 'syslog'),
+			'description' => __('Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle.', 'syslog'),
+			'value' => '|arg1:threshold_window|', 'default' => '0', 'size' => '8', 'max_length' => '10'
+		],
+		'threshold_unit' => [
+			'method' => 'drop_array',
+			'friendly_name' => __('Threshold Window Unit', 'syslog'),
+			'description' => __('Time unit for the threshold window. Applies to the Threshold reporting method.', 'syslog'),
+			'value' => '|arg1:threshold_unit|', 'default' => 'minute',
+			'array' => ['minute' => __('Minutes', 'syslog'), 'hour' => __('Hours', 'syslog'), 'day' => __('Days', 'syslog')]
 		],
 		'type' => [
 			'method'        => 'drop_array',
