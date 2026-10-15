@@ -386,6 +386,7 @@ function syslogDashboardInitDrag(card, panel) {
 	});
 
 	card.addEventListener('dragstart', function(event) {
+		if (!card.draggable) return;
 		event.dataTransfer.effectAllowed = 'move';
 		event.dataTransfer.setData('text/plain', String(panel.id));
 		card.classList.add('syslogDashboardCardDragging');
