@@ -531,6 +531,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`num` int(10) unsigned NOT NULL default '1',
 		`threshold_window` int(10) unsigned NOT NULL default '0',
 		`threshold_unit` varchar(6) NOT NULL default 'minute',
+		`threshold_breached` tinyint(1) unsigned NOT NULL default '0',
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
@@ -819,7 +820,8 @@ function syslog_ensure_table_structures(): bool {
 	// Repair these columns even when the installed plugin version is unchanged.
 	if (db_update_table('syslog_alert', ['columns' => [
 		['name' => 'threshold_window', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'num'],
-		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window']
+		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window'],
+		['name' => 'threshold_breached', 'type' => 'tinyint(1)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'threshold_unit']
 	], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
 		return false;
 	}
