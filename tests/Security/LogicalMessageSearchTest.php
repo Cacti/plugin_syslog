@@ -183,6 +183,13 @@ it('applies the logical search predicate consistently in the real query builder'
 				expect(str_contains($GLOBALS['captured_sql'], $sql_where))->toBeTrue('Predicate in results query');
 				expect(str_contains($GLOBALS['captured_sql'], 'LIMIT 0,20'))->toBeTrue('Pagination retained');
 
+				if ($tab === 'syslog') {
+					expect($GLOBALS['captured_sql'])->toContain('syslog.threshold_breached');
+					if ($grouping === '1') {
+						expect($GLOBALS['captured_sql'])->toContain('MAX(syslog.threshold_breached) AS threshold_breached');
+					}
+				}
+
 				if ($tab === 'syslog' && $removal === '1') {
 					expect(substr_count($GLOBALS['captured_sql'], $predicate))->toBe(2, 'Both union branches filtered');
 					if ($grouping === '0') {

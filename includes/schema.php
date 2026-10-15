@@ -243,6 +243,7 @@ function syslog_create_replication_output_table(): void {
 		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Original event timestamp',
 		`host` varchar(64) default NULL COMMENT 'Source host text',
 		`message` TEXT NOT NULL COMMENT 'Source message text',
+		`threshold_breached` tinyint(1) unsigned DEFAULT NULL,
 		`disposition` varchar(16) NOT NULL COMMENT 'Local archival target: syslog or syslog_removed',
 		`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Outbox creation time',
 		`acknowledged_at` timestamp NULL DEFAULT NULL COMMENT 'Reserved for future destination acknowledgement',
@@ -361,6 +362,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		host_id int(10) unsigned default NULL,
 		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 		message TEXT NOT NULL,
+		threshold_breached tinyint(1) unsigned DEFAULT NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		replication_source_poller_id int(10) unsigned default NULL,
 		replication_source_event_id bigint unsigned default NULL,
@@ -567,6 +569,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(64) default NULL,
 		message TEXT NOT NULL,
+		threshold_breached tinyint(1) unsigned DEFAULT NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
@@ -813,6 +816,15 @@ function syslog_ensure_table_structures(): bool {
 			syslog_setup_table_new([], true);
 			$rebuilt = true;
 			break;
+		}
+	}
+
+	// Append the column so eligible servers can add it instantly; do not backfill history.
+	foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
+		if (db_update_table($table, ['columns' => [
+			['name' => 'threshold_breached', 'type' => 'tinyint(1)', 'unsigned' => true, 'NULL' => true]
+		]], false, true, $syslog_cnn) === false) {
+			return false;
 		}
 	}
 

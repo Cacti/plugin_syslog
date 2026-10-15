@@ -22,6 +22,16 @@ For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
 be quieted using syslog's 'Re-Alert' setting.
 
+The Syslog Messages view shows **Threshold breached** as **Yes** for messages
+matching a threshold rule in the collector batch that reaches its count, even
+when a notification is suppressed. Other messages default to **No**, including
+existing history; old breaches are not reconstructed. Unmarked messages are
+stored as NULL and displayed as No. The flag survives archival
+and replication. Grouped rows show **Yes** if any message in the group is marked. The migration
+appends a nullable column without backfilling history, allowing instant column
+addition where the database supports it. Other server versions or table formats
+may still rebuild or lock the table during ALTER TABLE.
+
 ## Core Features
 
 * Message filtering

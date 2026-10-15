@@ -1708,7 +1708,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 	// syslog and syslog_removed can legitimately gain independent operational
 	// columns. Keep the combined viewer query on its stable display contract
 	// instead of using SELECT *, which would make UNION depend on identical DDL.
-	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq';
+	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq, syslog.threshold_breached';
 
 	$sql_where = '';
 
@@ -1878,6 +1878,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+					MAX(syslog.threshold_breached) AS threshold_breached,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 					FROM `$syslogdb_default`.`syslog`
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1894,6 +1895,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+						MAX(syslog.threshold_breached) AS threshold_breached,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1905,6 +1907,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+						MAX(syslog.threshold_breached) AS threshold_breached,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1920,6 +1923,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+					MAX(syslog.threshold_breached) AS threshold_breached,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
@@ -2367,7 +2371,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 			'program'     => [__('Program', 'syslog'), 'ASC'],
 			'message'     => [__('Message', 'syslog'), 'ASC'],
 			'facility_id' => [__('Facility', 'syslog'), 'ASC'],
-			'priority_id' => [__('Priority', 'syslog'), 'ASC']];
+			'priority_id' => [__('Priority', 'syslog'), 'ASC'],
+			'threshold_breached' => [__('Threshold breached', 'syslog'), 'ASC']];
 
 		// Add count column if grouping is enabled
 		if ($grouping_enabled) {
@@ -2427,6 +2432,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 				form_selectable_cell(syslog_metadata_label(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), 'facility'), $sm['seq'], '', 'left');
 				form_selectable_cell(syslog_value_filter_button($priorities[$sm['priority_id']] ?? __('Unknown', 'syslog'), 'priority'), $sm['seq'], '', 'left');
 
+				form_selectable_cell(!empty($sm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog'), $sm['seq'], '', 'left');
+
 				// Add occurrence count if grouping is enabled
 				if ($grouping_enabled) {
 					form_selectable_cell(isset($sm['occurrence_count']) ? $sm['occurrence_count'] : 1, $sm['seq'], '', 'right');
@@ -2457,6 +2464,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
 							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
 							print "<td class='left'>" . syslog_value_filter_button($priorities[$dm['priority_id']] ?? __('Unknown', 'syslog'), 'priority') . '</td>';
+
+							print "<td class='left'>" . (!empty($dm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog')) . '</td>';
 
 							if ($grouping_enabled) {
 								print "<td class='right'></td>";
