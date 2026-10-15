@@ -2372,7 +2372,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 			'message'     => [__('Message', 'syslog'), 'ASC'],
 			'facility_id' => [__('Facility', 'syslog'), 'ASC'],
 			'priority_id' => [__('Priority', 'syslog'), 'ASC'],
-			'threshold_breached' => [__('Threshold breached', 'syslog'), 'ASC']];
+			'threshold_breached' => ['display' => __('Breach', 'syslog'), 'sort' => 'ASC', 'align' => 'center', 'tip' => __('Threshold breached', 'syslog')]];
 
 		// Add count column if grouping is enabled
 		if ($grouping_enabled) {
@@ -2432,7 +2432,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 				form_selectable_cell(syslog_metadata_label(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), 'facility'), $sm['seq'], '', 'left');
 				form_selectable_cell(syslog_value_filter_button($priorities[$sm['priority_id']] ?? __('Unknown', 'syslog'), 'priority'), $sm['seq'], '', 'left');
 
-				form_selectable_cell(!empty($sm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog'), $sm['seq'], '', 'left');
+				form_selectable_cell(!empty($sm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog'), $sm['seq'], '1%', 'center');
 
 				// Add occurrence count if grouping is enabled
 				if ($grouping_enabled) {
@@ -2465,7 +2465,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
 							print "<td class='left'>" . syslog_value_filter_button($priorities[$dm['priority_id']] ?? __('Unknown', 'syslog'), 'priority') . '</td>';
 
-							print "<td class='left'>" . (!empty($dm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog')) . '</td>';
+							print "<td class='center' style='width:1%;'>" . (!empty($dm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog')) . '</td>';
 
 							if ($grouping_enabled) {
 								print "<td class='right'></td>";

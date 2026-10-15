@@ -8,7 +8,9 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/threshold_me
  try {
   const page = await browser.newPage({viewport: {width: 1600, height: 900}});
   await page.setContent(html);
-  assert.equal(await page.locator('#individual th').last().textContent(), 'Threshold breached');
+  assert.equal(await page.locator('#individual th').last().textContent(), 'Breach');
+  assert.equal(await page.locator('#individual th').last().getAttribute('title'), 'Threshold breached');
+  assert.ok((await page.locator('#individual th').last().boundingBox()).width < 90, 'Breach column stays compact');
   const rows = page.locator('#individual tbody tr');
   assert.equal(await rows.count(), 2);
   assert.equal(await rows.nth(0).locator('td').last().textContent(), 'Yes');
