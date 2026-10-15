@@ -656,6 +656,14 @@ function syslog_action_edit(): void {
 		}
 	}
 
+	ob_start();
+	print '<div style="display: inline-flex; align-items: center; gap: 0.5em">';
+	form_text_box('threshold_window', $alert['threshold_window'] ?? '0', '0', 10, 8);
+	print '<label for="threshold_unit" hidden>' . __esc('Time unit', 'syslog') . '</label>';
+	form_dropdown('threshold_unit', ['minute' => __('Minutes', 'syslog'), 'hour' => __('Hours', 'syslog'), 'day' => __('Days', 'syslog')], '', '', $alert['threshold_unit'] ?? 'minute', '', 'minute');
+	print '</div>';
+	$threshold_window_controls = ob_get_clean();
+
 	$fields_syslog_alert_edit = [
 		'spacer0' => [
 			'method'        => 'spacer',
@@ -703,17 +711,10 @@ function syslog_action_edit(): void {
 			'default'       => '1'
 		],
 		'threshold_window' => [
-			'method' => 'textbox',
+			'method' => 'custom',
 			'friendly_name' => __('Threshold Window', 'syslog'),
 			'description' => __('Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle.', 'syslog'),
-			'value' => '|arg1:threshold_window|', 'default' => '0', 'size' => '8', 'max_length' => '10'
-		],
-		'threshold_unit' => [
-			'method' => 'drop_array',
-			'friendly_name' => __('Threshold Window Unit', 'syslog'),
-			'description' => __('Time unit for the threshold window. Applies to the Threshold reporting method.', 'syslog'),
-			'value' => '|arg1:threshold_unit|', 'default' => 'minute',
-			'array' => ['minute' => __('Minutes', 'syslog'), 'hour' => __('Hours', 'syslog'), 'day' => __('Days', 'syslog')]
+			'value' => $threshold_window_controls
 		],
 		'type' => [
 			'method'        => 'drop_array',
@@ -965,7 +966,7 @@ function syslog_action_edit(): void {
 	}
 
 	function changeMethod() {
-		$('#row_num, #row_threshold_window, #row_threshold_unit').toggle($('#report_method').val() == '1');
+		$('#row_num, #row_threshold_window').toggle($('#report_method').val() == '1');
 	}
 
 	function changeMaintenanceMode() {
