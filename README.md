@@ -22,11 +22,6 @@ For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
 be quieted using syslog's 'Re-Alert' setting.
 
-The Alert Rules list shows **Threshold breached**, initially **No**. It becomes
-**Yes** once a threshold rule reaches its configured count, even if notification
-suppression prevents a resend. This persistent, collector-local indicator does
-not reset when the window expires and is excluded from rule exports and imports.
-
 ## Core Features
 
 * Message filtering

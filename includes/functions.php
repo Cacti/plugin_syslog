@@ -1077,7 +1077,7 @@ function syslog_rules_array2json(string $table, array $rules): string {
 			continue;
 		}
 
-		unset($rule['id'], $rule['threshold_breached']);
+		unset($rule['id']);
 
 		if (!isset($rule['hash']) || $rule['hash'] === '') {
 			cacti_log("SYSLOG WARNING: Exported $table rule is missing a hash", false, 'SYSTEM');
@@ -4779,13 +4779,6 @@ function syslog_process_alerts($max_seq) {
 	return ['syslog_alerts' => $syslog_alerts, 'syslog_alarms' => $syslog_alarms];
 }
 
-/** Latch the rule's breach indicator independently of notification suppression. */
-function syslog_alert_record_threshold_breach(array $alert, int $count): void {
-	if ((int) $alert['method'] === 1 && $count > 0 && $count >= (int) $alert['num'] && empty($alert['threshold_breached'])) {
-		syslog_db_execute_prepared('UPDATE syslog_alert SET threshold_breached = 1 WHERE id = ? AND threshold_breached = 0', [$alert['id']]);
-	}
-}
-
 /**
  * syslog_process_alert - Process the Alert and generate notifications, execute commands, etc.
  *
@@ -4801,8 +4794,6 @@ function syslog_alert_record_threshold_breach(array $alert, int $count): void {
  */
 function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 	global $config, $severities, $syslog_levels;
-
-	syslog_alert_record_threshold_breach($alert, (int) $count);
 
 	include_once($config['base_path'] . '/lib/reports.php');
 

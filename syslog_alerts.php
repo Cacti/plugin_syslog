@@ -1203,7 +1203,6 @@ function syslog_alerts(): void {
 		'severity' => [__('Severity', 'syslog'), 'ASC'],
 		'method'   => [__('Method', 'syslog'), 'ASC'],
 		'num'      => [__('Threshold Count', 'syslog'), 'ASC'],
-		'threshold_breached' => [__('Threshold breached', 'syslog'), 'ASC'],
 		'enabled'  => [__('Enabled', 'syslog'), 'ASC'],
 		'type'     => [__('Match Type', 'syslog'), 'ASC'],
 		'message'  => [__('Search String', 'syslog'), 'ASC'],
@@ -1229,7 +1228,6 @@ function syslog_alerts(): void {
 			form_selectable_cell($severities[$alert['severity']], $alert['id']);
 			form_selectable_cell(($alert['method'] == 1 ? __('Threshold', 'syslog') : __('Individual', 'syslog')), $alert['id']);
 			form_selectable_cell(($alert['method'] == 1 ? $alert['num'] : __('N/A', 'syslog')), $alert['id']);
-			form_selectable_cell(!empty($alert['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog'), $alert['id']);
 			form_selectable_cell((($alert['enabled'] == 'on') ? __('Yes', 'syslog') : __('No', 'syslog')), $alert['id']);
 			form_selectable_cell($message_types[$alert['type']], $alert['id']);
 			form_selectable_cell(title_trim(html_escape($alert['message']),60), $alert['id']);
@@ -1334,9 +1332,6 @@ function alert_import(): void {
 			if (cacti_sizeof($contents)) {
 				foreach ($contents as $name => $value) {
 					switch($name) {
-						case 'threshold_breached':
-							// Runtime state belongs to this installation, not the imported rule.
-							break;
 						case 'hash':
 							// See if the hash exists, if it does, update the alert
 							$found = db_fetch_cell_prepared('SELECT id
