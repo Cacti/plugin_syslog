@@ -965,11 +965,7 @@ function syslog_action_edit(): void {
 	}
 
 	function changeMethod() {
-		if ($('#report_method').val() == 0) {
-			$('#row_num').hide();
-		} else {
-			$('#row_num').show();
-		}
+		$('#row_num, #row_threshold_window, #row_threshold_unit').toggle($('#report_method').val() == '1');
 	}
 
 	function changeMaintenanceMode() {
