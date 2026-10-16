@@ -3593,6 +3593,15 @@ msgstr "Rätta frågesyntaxen så att den kan användas med frågebyggaren."
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller Grupp för att skapa frågan. Ändringarna gäller den här delade mallen för alla användare."
 
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr ""
+
 #~ msgid "Command"
 #~ msgstr "Kommando"
 
