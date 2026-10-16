@@ -5,6 +5,26 @@ beforeEach(function () {
 	$GLOBALS['config']['url_path'] = '/cacti/';
 });
 
+it('keeps the threshold tab available only when enabled threshold rules exist', function () {
+	test_override('syslog_db_fetch_cell', static function ($query) {
+		expect($query)->toContain("enabled = 'on' AND method = 1");
+		return 1;
+	});
+	expect(syslog_thresholds_enabled())->toBeTrue();
+	test_override('syslog_db_fetch_cell', static fn() => 0);
+	expect(syslog_thresholds_enabled())->toBeFalse();
+});
+
+it('offers the next page when more breaches remain', function () {
+	test_override('syslog_db_fetch_cell', static fn() => 51);
+	test_override('get_filter_request_var', static fn() => 1);
+	test_override('syslog_db_fetch_assoc', static fn() => []);
+	ob_start();
+	syslog_breached_thresholds();
+	$html = ob_get_clean();
+	expect($html)->toContain('breach_page=2', '>Next<')->not->toContain('>Previous<');
+});
+
 it('renders device and shared scopes with escaped values and recovery deadlines', function () {
 	$rows = 0;
 	test_override('form_alternate_row', static function ($id, $light) use (&$rows) {
