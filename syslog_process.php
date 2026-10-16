@@ -377,8 +377,7 @@ syslog_status_record_phase('alerts', $phase_start, time(), microtime(true) - $ph
 api_plugin_hook('plugin_syslog_after_processing');
 
 /**
- * move records from incoming to syslog table and remove
- * any stale records to to a poller crash
+ * move records from incoming to syslog table, retaining unarchived rows
  *
  * In parallel mode the transfer is spread across workers
  * over disjoint seq slices.  Slices are recomputed after
@@ -407,8 +406,8 @@ if ($parallel && $max_seq > 0) {
 		$launched = syslog_launch_workers('transfer', $transfer_slices, $run_id, $debug);
 
 		/*
-		 * The stale record cleanup, the stats aggregation and the
-		 * master's own exit all assume the transfer is complete, so
+		 * The stats aggregation and the master's own exit assume the transfer
+		 * is complete, so
 		 * block until every child has recorded its statistics and
 		 * unregistered itself.
 		 */
@@ -418,10 +417,9 @@ if ($parallel && $max_seq > 0) {
 
 		$moved = $worker_stats['moved'];
 
-		if ($worker_stats['success']) {
-			$stale = syslog_delete_stale_incoming();
-		} else {
-			$stale = 0;
+		$stale = 0;
+
+		if (!$worker_stats['success']) {
 			cacti_log('SYSLOG ERROR: One or more transfer workers failed; stale incoming records were retained', false, 'SYSLOG');
 		}
 

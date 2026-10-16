@@ -2360,8 +2360,8 @@ function syslog_partition_recover($table, $base_time, $ahead_days) {
 
 		$missing = $need_ahead - $created;
 
-		if (!syslog_partition_create($table, $time)) {
-			$stop = __('partition creation failed', 'syslog');
+		if (!syslog_partition_create($table, $time, $create_reason)) {
+			$stop = $create_reason !== '' ? $create_reason : __('partition creation failed', 'syslog');
 			/*
 			 * When the next concrete partition is still missing, every new
 			 * write lands in dMaxValue until the gap is healed; the
@@ -2725,13 +2725,16 @@ function syslog_partition_report_state($table) {
 /**
  * Create a new partition for the specified table.
  *
- * @param mixed $table The table to rotate
- * @param int   $time  Assume this time for the partition rotation
+ * @param mixed       $table  The table to rotate.
+ * @param int         $time   Assume this time for the partition rotation.
+ * @param string|null $reason Receives an overflow deferral reason, otherwise an empty string.
  *
  * @return bool true on success, false on lock failure or disallowed table.
  */
-function syslog_partition_create($table, $time = null) {
+function syslog_partition_create($table, $time = null, &$reason = null) {
 	global $syslogdb_default;
+
+	$reason = '';
 
 	if (!syslog_partition_table_allowed($table)) {
 		return false;
@@ -2817,6 +2820,34 @@ function syslog_partition_create($table, $time = null) {
 			[$syslogdb_default, $cformat, $table]);
 
 		if (!cacti_sizeof($exists)) {
+			$overflow = syslog_db_fetch_row_prepared('SELECT TABLE_ROWS AS overflow_rows,
+				DATA_LENGTH + INDEX_LENGTH AS overflow_bytes
+				FROM information_schema.PARTITIONS
+				WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND PARTITION_NAME = ?',
+				[$syslogdb_default, $table, 'dMaxValue']);
+
+			if (!isset($overflow['overflow_rows'], $overflow['overflow_bytes'])
+				|| !is_numeric($overflow['overflow_rows']) || !is_numeric($overflow['overflow_bytes'])
+				|| $overflow['overflow_rows'] < 0 || $overflow['overflow_bytes'] < 0) {
+				$reason = __(
+					'Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required.',
+					'syslog'
+				);
+			} elseif ($overflow['overflow_rows'] > 100000 || $overflow['overflow_bytes'] > 134217728) {
+				$reason = __(
+					'Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; '
+					. 'limits are 100000 rows and 134217728 bytes. Operator intervention required.',
+					$overflow['overflow_rows'], $overflow['overflow_bytes'], 'syslog'
+				);
+			}
+
+			// shortcut: estimates and concurrent writes cannot bound ALTER duration; use staged recovery for strict bounds.
+			if ($reason !== '') {
+				cacti_log("SYSLOG WARNING: $table: $reason", false, 'SYSLOG');
+
+				return false;
+			}
+
 			cacti_log("SYSLOG: Creating new partition '$cformat'", false, 'SYSTEM');
 
 			syslog_debug("Creating new partition '$cformat'");
@@ -2916,63 +2947,74 @@ function syslog_partition_remove($table) {
 	$syslog_deleted = 0;
 
 	try {
-		$number_of_partitions = syslog_db_fetch_assoc_prepared('SELECT *
+		$partitions = syslog_db_fetch_assoc_prepared('SELECT PARTITION_NAME, PARTITION_DESCRIPTION, PARTITION_EXPRESSION
 			FROM `information_schema`.`partitions`
 			WHERE table_schema = ? AND table_name = ?
 			ORDER BY partition_ordinal_position',
 			[$syslogdb_default, $table]);
 
-		$days       = read_config_option('syslog_retention');
-		$ahead_days = syslog_partition_ahead_days();
+		$days = read_config_option('syslog_retention');
 
-		syslog_debug("There are currently '" . sizeof($number_of_partitions) . "' Syslog Partitions, We will keep '$days' retention partition(s) plus '$ahead_days' future partition(s).");
-
-		if ($days > 0) {
-			$user_partitions = sizeof($number_of_partitions) - 1;
-			$keep_partitions = (int) $days + $ahead_days;
-
-			if ($user_partitions >= $keep_partitions) {
-				$i = 0;
-
-				while ($user_partitions > $keep_partitions) {
-					$oldest = $number_of_partitions[$i];
-
-					$part_name = $oldest['PARTITION_NAME'];
-
-					if (preg_match('/^[a-zA-Z0-9_]+$/', $part_name) !== 1) {
-						cacti_log("SYSLOG ERROR: Invalid partition name '$part_name' for '$table'; skipping drop", false, 'SYSLOG');
-
-						break;
-					}
-
-					if ($part_name === 'dMaxValue') {
-						// The dMaxValue partition is the write-path fail
-						// safe and must never be dropped.
-						cacti_log("SYSLOG ERROR: Refusing to drop the dMaxValue safety partition on '$table'; stopping retention prune", false, 'SYSLOG');
-
-						break;
-					}
-
-					cacti_log("SYSLOG: Removing old partition '" . $part_name . "'", false, 'SYSTEM');
-
-					syslog_debug("Removing partition '" . $part_name . "'");
-
-					// $table passed syslog_partition_table_allowed() at function entry;
-					// $part_name is regex-validated above. DDL identifiers cannot be parameterized.
-					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`", []);
-
-					if ($result === false) {
-						cacti_log("SYSLOG ERROR: Failed to drop partition '$part_name' from '$table' after $i successful drop(s); aborting further drops", false, 'SYSLOG');
-
-						break;
-					}
-
-					$i++;
-					$user_partitions--;
-					$syslog_deleted++;
-				}
-			}
+		if (!is_array($partitions) || !ctype_digit((string) $days) || (int) $days < 1) {
+			return 0;
 		}
+
+		// Retention counts today as one UTC calendar day, matching new-table creation.
+		$cutoff = max(0, intdiv(time(), 86400) - ((int) $days - 1)) * 86400;
+		$day_cutoff = null;
+
+		foreach ($partitions as $partition) {
+			$part_name = $partition['PARTITION_NAME'] ?? '';
+			$boundary  = $partition['PARTITION_DESCRIPTION'] ?? '';
+			$expression = strtolower(str_replace(['`', ' '], '', $partition['PARTITION_EXPRESSION'] ?? ''));
+
+			if ($part_name === 'dMaxValue' || $boundary === 'MAXVALUE') {
+				break;
+			}
+
+			if (preg_match('/^[a-zA-Z0-9_]+$/', $part_name) !== 1
+				|| !ctype_digit((string) $boundary)
+				|| !in_array($expression, ['unix_timestamp(logtime)', 'to_days(logtime)'], true)) {
+				cacti_log("SYSLOG ERROR: Invalid partition metadata for '$part_name' on '$table'; stopping retention prune", false, 'SYSLOG');
+
+				break;
+			}
+
+			$expiry = $cutoff;
+
+			if ($expression === 'to_days(logtime)') {
+				if ($day_cutoff === null) {
+					$day_cutoff = syslog_db_fetch_cell_prepared('SELECT TO_DAYS(?)', [gmdate('Y-m-d', $cutoff)]);
+				}
+
+				if (!ctype_digit((string) $day_cutoff)) {
+					cacti_log("SYSLOG ERROR: Unable to compute UTC day cutoff for '$table'; stopping retention prune", false, 'SYSLOG');
+
+					break;
+				}
+
+				$expiry = (int) $day_cutoff;
+			}
+
+			// The upper boundary is exclusive: keep any partition spanning the cutoff.
+			if ((int) $boundary > $expiry) {
+				break;
+			}
+
+			cacti_log("SYSLOG: Removing expired partition '$part_name'", false, 'SYSTEM');
+
+			// Both identifiers are validated; DDL identifiers cannot be parameterized.
+			$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`", []);
+
+			if ($result === false) {
+				cacti_log("SYSLOG ERROR: Failed to drop partition '$part_name' from '$table'; aborting further drops", false, 'SYSLOG');
+
+				break;
+			}
+
+			$syslog_deleted++;
+		}
+
 	} finally {
 		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock_name]);
 	}
@@ -5984,7 +6026,9 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 function syslog_preprocess_incoming_records(): array {
 	global $syslogdb_default;
 
-	$max_seq = syslog_db_fetch_cell("SELECT MAX(seq) FROM `$syslogdb_default`.`syslog_incoming` WHERE status = 0");
+	$max_seq = syslog_db_fetch_cell("SELECT MAX(seq)
+		FROM `$syslogdb_default`.`syslog_incoming`
+		WHERE status IN (0, 1)");
 
 	if ($max_seq > 0) {
 		// flag all records with the status = 1 prior to moving
@@ -6365,25 +6409,6 @@ function syslog_normalize_reference_tables($max_seq) {
 			host_id = VALUES(host_id),
 			last_updated = NOW()",
 		[$max_seq]);
-}
-
-/**
- * syslog_delete_stale_incoming - Delete records left in the incoming table
- * that are older than one hour.  These are records whose owning poller
- * crashed before they were transferred.
- *
- * @return int|false The number of stale records deleted
- */
-function syslog_delete_stale_incoming() {
-	global $syslogdb_default, $syslog_cnn;
-
-	syslog_db_execute("DELETE FROM `$syslogdb_default`.`syslog_incoming` WHERE logtime < DATE_SUB(NOW(), INTERVAL 1 HOUR)");
-
-	$stale = db_affected_rows($syslog_cnn);
-
-	syslog_debug(sprintf('Deleted %5s - Stale Message(s) from incoming', $stale));
-
-	return $stale;
 }
 
 /**
@@ -7042,8 +7067,8 @@ function syslog_replication_deliver_online(): int {
  *
  * When seq bounds are supplied, only records within the inclusive seq
  * slice are transferred which allows parallel workers to operate on
- * disjoint slices.  The stale record deletion is intentionally left to
- * the caller in that case.
+ * disjoint slices. Incoming rows are deleted only after their source
+ * identity is present in history or the durable replication outbox.
  *
  * @param int $max_seq   The max_seq for rows in the syslog table
  * @param int $seq_start Optional first seq of a slice (0 for no bound)
@@ -7062,17 +7087,24 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		$slice_param = [$seq_start, $seq_end];
 	}
 
-	$replication_transaction = false;
+	if (!syslog_db_execute('START TRANSACTION')) {
+		cacti_log('SYSLOG ERROR: Unable to start incoming transfer transaction', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0, 'success' => false];
+	}
+
+	// Lock the incoming slice so overlapping retries cannot archive it twice.
+	if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming` AS si
+		SET status = 1
+		WHERE si.status = 1 AND si.seq <= ? $slice_where", array_merge([$max_seq], $slice_param))) {
+		syslog_db_execute('ROLLBACK');
+		cacti_log('SYSLOG ERROR: Unable to lock incoming transfer rows', false, 'SYSLOG');
+
+		return ['moved' => 0, 'stale' => 0, 'success' => false];
+	}
 
 	if (syslog_replication_is_enabled()) {
-		if (!syslog_db_execute('START TRANSACTION')) {
-			cacti_log('SYSLOG ERROR: Unable to start transaction for replication outbox', false, 'SYSLOG');
-
-			return ['moved' => 0, 'stale' => 0, 'success' => false];
-		}
-
-		$replication_transaction = true;
-		$replication_where       = 'WHERE si.`status` = 1 AND si.`seq` <= ?' . $slice_where;
+		$replication_where = 'WHERE si.`status` = 1 AND si.`seq` <= ?' . $slice_where;
 
 		if (!syslog_replication_enqueue_incoming($replication_where, array_merge([$max_seq], $slice_param), 'syslog')) {
 			syslog_db_execute('ROLLBACK');
@@ -7091,24 +7123,28 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 			(logtime, priority_id, facility_id, program_id, host_id, message, message_digest, threshold_breached, replication_source_poller_id, replication_source_event_id)
 			SELECT logtime, priority_id, facility_id, program_id, host_id, message, MD5(message), threshold_breached, replication_source_poller_id, replication_source_event_id
 			FROM (
-				SELECT logtime, priority_id, facility_id, sp.program_id, sh.host_id, message, si.threshold_breached,
+				SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id,
+					si.message, si.threshold_breached,
 					? AS replication_source_poller_id, si.seq AS replication_source_event_id
-				FROM syslog_incoming AS si
-				INNER JOIN syslog_hosts AS sh
+				FROM `$syslogdb_default`.`syslog_incoming` AS si
+				INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 				ON sh.host = si.host
-				INNER JOIN syslog_programs AS sp
+				INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 				ON sp.program = si.program
-				WHERE si.`status` = 1
+				LEFT JOIN `$syslogdb_default`.`syslog` AS archived
+				ON archived.replication_source_poller_id = ?
+				AND archived.replication_source_event_id = si.seq
+				AND archived.logtime = si.logtime
+				WHERE archived.seq IS NULL
+				AND si.`status` = 1
 				AND si.`seq` <= ?
 				$slice_where
 			) AS merge",
-			array_merge([(int) $config['poller_id'], $max_seq], $slice_param));
+			array_merge([(int) $config['poller_id'], (int) $config['poller_id'], $max_seq], $slice_param));
 	}
 
 	if (!$archived) {
-		if ($replication_transaction) {
-			syslog_db_execute('ROLLBACK');
-		}
+		syslog_db_execute('ROLLBACK');
 
 		cacti_log('SYSLOG ERROR: Unable to archive incoming records', false, 'SYSLOG');
 
@@ -7124,46 +7160,38 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 
 	syslog_debug(sprintf('Moved   %5s - Message(s) to the syslog table', $moved));
 
-	if ($seq_start > 0 && $seq_end > 0) {
-		$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
-			WHERE `status` = 1
-			AND `seq` BETWEEN ? AND ?",
-			[$seq_start, $seq_end]);
-	} else {
-		$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
-			WHERE `status` = 1
-			AND `seq` <= ?",
-			[$max_seq]);
-	}
+	// A successful INSERT can skip rows whose reference joins did not match.
+	$receipt_table  = syslog_replication_is_enabled() ? 'syslog_replication_output' : 'syslog';
+	$receipt_poller = syslog_replication_is_enabled() ? 'source_poller_id' : 'replication_source_poller_id';
+	$receipt_event  = syslog_replication_is_enabled() ? 'source_event_id' : 'replication_source_event_id';
+	$deleted = syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_incoming`
+		WHERE `status` = 1
+		AND `seq` <= ?" . ($seq_start > 0 && $seq_end > 0 ? ' AND `seq` BETWEEN ? AND ?' : '') . "
+		AND EXISTS (
+			SELECT 1 FROM `$syslogdb_default`.`$receipt_table` AS receipt
+			WHERE receipt.`$receipt_poller` = ?
+			AND receipt.`$receipt_event` = syslog_incoming.seq
+			AND receipt.logtime = syslog_incoming.logtime
+		)", array_merge([$max_seq], $slice_param, [(int) $config['poller_id']]));
 
 	syslog_debug(sprintf('Deleted %5s - Already Processed Message(s) from incoming', db_affected_rows($syslog_cnn)));
 
 	if (!$deleted) {
-		if ($replication_transaction) {
-			syslog_db_execute('ROLLBACK');
-		}
+		syslog_db_execute('ROLLBACK');
 
 		cacti_log('SYSLOG ERROR: Unable to delete archived incoming records', false, 'SYSLOG');
 
 		return ['moved' => 0, 'stale' => 0, 'success' => false];
 	}
 
-	if ($replication_transaction && !syslog_db_execute('COMMIT')) {
+	if (!syslog_db_execute('COMMIT')) {
 		syslog_db_execute('ROLLBACK');
-		cacti_log('SYSLOG ERROR: Unable to commit transfer and replication outbox transaction', false, 'SYSLOG');
+		cacti_log('SYSLOG ERROR: Unable to confirm incoming transfer commit; retry is safe', false, 'SYSLOG');
 
 		return ['moved' => 0, 'stale' => 0, 'success' => false];
 	}
 
-	if ($seq_start > 0 && $seq_end > 0) {
-		// The stale record cleanup is owned by the master after all
-		// transfer workers complete to avoid interleaved DELETEs.
-		$stale = 0;
-	} else {
-		$stale = syslog_delete_stale_incoming();
-	}
-
-	return ['moved' => $moved, 'stale' => $stale, 'success' => true];
+	return ['moved' => $moved, 'stale' => 0, 'success' => true];
 }
 
 /**

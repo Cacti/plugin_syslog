@@ -36,12 +36,6 @@ it('balances prepared placeholders with bound parameters in the archival stateme
 			return true;
 		}
 
-		// The unprepared stale-cleanup DELETE carries no placeholders,
-		// so it cannot trip HY093; anything else is unexpected here.
-		if ($sql === "DELETE FROM `syslog`.`syslog_incoming` WHERE logtime < DATE_SUB(NOW(), INTERVAL 1 HOUR)") {
-			return true;
-		}
-
 		throw new ExpectationFailedException("Unexpected syslog_db_execute() query: $sql");
 	});
 
@@ -52,12 +46,12 @@ it('balances prepared placeholders with bound parameters in the archival stateme
 	});
 
 	// No placeholder may arrive without a bound parameter: the archival
-	// INSERT pairs one bound poller_id with the max_seq bound, while the
+	// INSERT binds poller_id for both the new row and the retry check, while the
 	// digest is computed in SQL and never bound.
 	expect(syslog_incoming_to_syslog(100)['success'])->toBeTrue()
 		->and(syslog_incoming_to_syslog(100, 51, 100)['success'])->toBeTrue();
 
-	expect($statements)->toHaveCount(4);
+	expect($statements)->toHaveCount(6);
 
 	foreach ($statements as [$sql, $params]) {
 		$tokens = syslog_test_count_placeholders($sql);
@@ -67,17 +61,17 @@ it('balances prepared placeholders with bound parameters in the archival stateme
 	}
 
 	// Both archival variants must keep an unbound MD5(message) digest and
-	// exactly one bound poller_id; the sliced variant adds one bound
+	// two bound poller_id values; the sliced variant adds one bound
 	// seq pair.
-	[$archive_sql, $archive_params] = $statements[0];
-	$slice_sql = $statements[2][0];
+	[$archive_sql, $archive_params] = $statements[1];
+	$slice_sql = $statements[4][0];
 
 	expect($archive_sql)->toContain('INSERT INTO `syslog`.`syslog`')
 		->toContain('message_digest')
 		->toContain('MD5(message)');
-	expect(substr_count($archive_sql, '?'))->toBe(2)
-		->and($archive_params)->toBe([1, 100])
-		->and(substr_count($slice_sql, '?'))->toBe(4);
+	expect(substr_count($archive_sql, '?'))->toBe(3)
+		->and($archive_params)->toBe([1, 1, 100])
+		->and(substr_count($slice_sql, '?'))->toBe(5);
 });
 
 /**
