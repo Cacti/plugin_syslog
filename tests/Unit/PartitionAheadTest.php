@@ -59,6 +59,10 @@ it('ensures partitions sequentially through the configured future horizon', func
 	});
 
 	test_override('syslog_db_fetch_row_prepared', function ($sql, $params = []) {
+		if (str_contains($sql, 'AS overflow_rows')) {
+			return ['overflow_rows' => 0, 'overflow_bytes' => 0];
+		}
+
 		if (str_contains($sql, 'information_schema')) {
 			return [];
 		}
@@ -117,16 +121,18 @@ it('keeps retention plus future partitions when pruning', function () {
 	});
 
 	test_override('syslog_db_fetch_assoc_prepared', function () {
-		return [
-			['PARTITION_NAME' => 'd20260910'],
-			['PARTITION_NAME' => 'd20260911'],
-			['PARTITION_NAME' => 'd20260912'],
-			['PARTITION_NAME' => 'd20260913'],
-			['PARTITION_NAME' => 'd20260914'],
-			['PARTITION_NAME' => 'd20260915'],
-			['PARTITION_NAME' => 'd20260916'],
-			['PARTITION_NAME' => 'dMaxValue']
-		];
+		$today = intdiv(time(), 86400) * 86400;
+		$partitions = [];
+		for ($day = -3; $day <= 3; $day++) {
+			$partitions[] = [
+				'PARTITION_NAME' => 'd' . gmdate('Ymd', $today + $day * 86400),
+				'PARTITION_DESCRIPTION' => (string) ($today + ($day + 1) * 86400),
+				'PARTITION_EXPRESSION' => 'unix_timestamp(`logtime`)',
+			];
+		}
+		$partitions[] = ['PARTITION_NAME' => 'dMaxValue'];
+
+		return $partitions;
 	});
 
 	test_override('syslog_db_execute_prepared', function ($sql) use (&$dropped) {
@@ -138,5 +144,5 @@ it('keeps retention plus future partitions when pruning', function () {
 	});
 
 	expect(syslog_partition_remove('syslog'))->toBe(1);
-	expect($dropped)->toBe(['d20260910']);
+	expect($dropped)->toBe(['d' . gmdate('Ymd', time() - 3 * 86400)]);
 });

@@ -161,7 +161,42 @@ Cacti core release.
   not grant rule-management permissions to untrusted users, and review custom
   SQL expressions before enabling them.
 
+### Incoming Transfer Recovery
+
+Incoming transfers lock their processing slice and commit history, incoming
+acknowledgement, and any remote outbox writes in one transaction. With InnoDB
+history, a failed or disconnected transfer rolls back and can be retried.
+Retries skip history identities already stored for the same collector, incoming
+sequence, and event timestamp, while separate incoming events remain separate.
+
+Aria history does not participate in transaction rollback. The identity check
+prevents duplicate history on a transfer retry, but full atomic recovery across
+a database or host crash requires InnoDB. Unarchived incoming rows are retained
+regardless of their event age, including rows missing host or program references.
+
 ### Partition Maintenance
+
+Partition retention uses actual upper boundaries against a UTC calendar cutoff,
+with today counted as one retained day. A seven-day setting retains today plus
+the previous six UTC dates, independently of partition count or the future
+pre-create window. Fully expired partitions are dropped even after gaps in
+maintenance. A partition spanning the cutoff is kept whole to protect newer
+messages, so some older messages may remain until that partition fully expires.
+Unknown boundaries or partition expressions stop pruning safely; indefinite
+retention and the `dMaxValue` safety partition remain preserved.
+
+
+Before each automatic reorganization, maintenance checks `dMaxValue` partition
+statistics under its creation lock. Recovery stops if estimated occupancy exceeds
+100,000 rows or 128 MiB of data plus indexes, or if size metadata is unavailable.
+The Status tab and pipeline health report the deferral and request operator
+intervention. The safety partition remains writable and retention pruning for
+the affected table stays deferred. An operator must plan recovery outside the
+poller; automatic recovery resumes when the overflow falls within these limits.
+These checks contain large recovery operations but do not impose an ALTER
+execution-time limit: statistics are estimates and concurrent writes can grow
+overflow after the check.
+
 
 Partition boundaries are calculated with integer UTC epoch arithmetic. When a
 new partition cannot be created safely, maintenance leaves the `dMaxValue`

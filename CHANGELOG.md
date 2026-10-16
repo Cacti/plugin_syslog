@@ -2,6 +2,14 @@
 
 --- develop ---
 
+* issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
+
+* issue#317: Defer automatic partition reorganization when overflow estimates exceed 100,000 rows or 128 MiB, or cannot be read; preserve the safety partition and report the reason through maintenance health.
+
+* issue#317: Make incoming transfers transactional, lock overlapping slices, and skip existing source identities on retry to prevent duplicate local archival.
+
+* issue#317: Preserve unarchived incoming messages regardless of age, retry crash-stranded rows, and require a matching history or durable outbox identity before removing incoming data.
+
 * style: Keep all SonarCloud-reported lines within the 120-character limit by reflowing long SQL calls, ternaries, mappings and misaligned PHPDoc comment blocks, and associate the Device Alert Rule filter controls (Search, Enabled, Rules) with accessible labels
 * bug: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
 

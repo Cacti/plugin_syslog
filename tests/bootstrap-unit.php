@@ -355,6 +355,12 @@ if (!function_exists('api_plugin_register_realm')) {
 	}
 }
 
+if (!function_exists('api_plugin_hook')) {
+	function api_plugin_hook($name) {
+		return test_call_override('api_plugin_hook', [$name], null);
+	}
+}
+
 if (!function_exists('api_plugin_hook_function')) {
 	function api_plugin_hook_function($name, $value = null) {
 		return test_call_override('api_plugin_hook_function', [$name, $value], $value);

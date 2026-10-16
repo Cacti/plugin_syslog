@@ -418,10 +418,8 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 	 *
 	 * $days counts today as one of the retained days, so the historical
 	 * loop bound is $days - 1 (today plus $days - 1 prior days = $days
-	 * total). This must stay in lockstep with the $days + $ahead_days
-	 * "keep_partitions" math in syslog_partition_remove(), or newly
-	 * installed tables over-provision by one partition and the very next
-	 * retention prune immediately deletes the oldest one.
+	 * total). This matches the UTC calendar cutoff in syslog_partition_remove(),
+	 * so the initial oldest partition still contains retained events.
 	 *
 	 * $days = 0 is a valid "Indefinite" retention setting (never pruned by
 	 * syslog_partition_remove(), which only prunes when $days > 0), but

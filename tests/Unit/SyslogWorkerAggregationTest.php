@@ -101,7 +101,7 @@ it('reports a failed transfer slice through the child result and skips stale cle
 
 	expect($process)->toContain('$success = $results[\'success\'];')
 		->toContain('\'success\'  => $success,')
-		->toContain('if ($worker_stats[\'success\'])')
+		->toContain('if (!$worker_stats[\'success\'])')
 		->toContain('stale incoming records were retained');
 });
 
