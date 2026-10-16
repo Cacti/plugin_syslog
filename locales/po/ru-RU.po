@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-15 17:38-0400\n"
+"POT-Creation-Date: 2026-10-16 14:29-0400\n"
 "PO-Revision-Date: 2023-06-26 11:06+0000\n"
 "Last-Translator: Coool (github.com/Coool) <coool@mail.lv>\n"
 "Language-Team: Russian <http://translate.cacti.net/projects/cacti/syslog/ru/>\n"
@@ -135,7 +135,6 @@ msgid "The oldest synchronization record timestamp is unavailable."
 msgstr ""
 
 #: includes/functions.php
-#, php-format
 msgid "Synchronization has failed or queued records exceed the allowed delay."
 msgstr ""
 
@@ -1197,6 +1196,10 @@ msgstr ""
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard not found."
+msgstr ""
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
 msgstr ""
 
 #: lib/syslog_dashboard.php
