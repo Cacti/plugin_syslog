@@ -73,6 +73,10 @@ function syslog_replicate_in(): bool {
 function syslog_poller_bottom(): void {
 	global $config;
 
+	if (!api_plugin_is_enabled('syslog')) {
+		return;
+	}
+
 	if (syslog_config_safe()) {
 		if (!syslog_connect()) {
 			cacti_log('ERROR: Syslog database or schema is unavailable; skipping processing.', false, 'SYSLOG');

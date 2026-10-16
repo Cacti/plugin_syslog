@@ -469,7 +469,7 @@ function syslog_connect(): bool {
 
 	// Repair missing tables before any main or enabled remote collector queries.
 	if ($connected && ((int) $config['poller_id'] <= 1 || read_config_option('syslog_remote_enabled') === 'on')
-		&& !$schema_inprocess && !$schema_ready) {
+		&& !$schema_inprocess && !$schema_ready && !defined('IN_PLUGIN_INSTALL') && api_plugin_is_enabled('syslog')) {
 		$schema_inprocess = true;
 
 		try {

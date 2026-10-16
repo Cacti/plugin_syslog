@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
+
 * bug: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails
 
 * bug: Resolve Cacti 1.2.x main-poller default database connections explicitly for Syslog rule replication

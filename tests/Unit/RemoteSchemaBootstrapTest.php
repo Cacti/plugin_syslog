@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-it('initializes collector schema before returning a usable connection without recursive repair', function ($poller, $enabled, $repair_ok, $expected, $calls, $legacy_main = false) {
+it('initializes collector schema before returning a usable connection without recursive repair', function ($poller, $enabled, $repair_ok, $expected, $calls, $legacy_main = false, $plugin_enabled = true, $lifecycle = false) {
 	$source = plugin_test_read_source('setup.php');
 	preg_match('/^function syslog_connect\(\): bool \{.*?^\}/ms', $source, $match);
 	$dir = sys_get_temp_dir() . '/syslog-connect-' . bin2hex(random_bytes(6));
@@ -33,9 +33,9 @@ it('initializes collector schema before returning a usable connection without re
 	file_put_contents($dir . '/includes/schema.php', '<?php function syslog_ensure_table_structures() { $GLOBALS["repairs"]++; if (!syslog_connect()) { throw new RuntimeException("Recursive connection failed"); } return ' . var_export($repair_ok, true) . '; }');
 	file_put_contents($dir . '/config.php', '<?php $use_cacti_db = true;');
 	$body = str_replace('__DIR__', var_export($dir, true), $match[0]);
-	$script = '<?php define("SYSLOG_CONFIG", ' . var_export($dir . '/config.php', true) . '); ' .
+	$script = '<?php ' . ($lifecycle ? 'define("IN_PLUGIN_INSTALL", 1); ' : '') . 'define("SYSLOG_CONFIG", ' . var_export($dir . '/config.php', true) . '); ' .
 		'$config = ["poller_id" => ' . $poller . ', "syslog_remote_db" => true]; $expected_cnn = (object) []; $local_db_cnn_id = ' . ($legacy_main ? 'null' : '$expected_cnn') . '; $database_hostname = "localhost"; $database_port = 3306; $database_default = "cacti"; $database_sessions = ["localhost:3306:cacti" => $expected_cnn]; $repairs = 0; ' .
-		'function syslog_determine_config() {} function read_config_option($name) { return ' . var_export($enabled, true) . '; } ' .
+		'function api_plugin_is_enabled($name) { return ' . var_export($plugin_enabled, true) . '; } function syslog_determine_config() {} function read_config_option($name) { return ' . var_export($enabled, true) . '; } ' .
 		$body . ' echo json_encode([syslog_connect(), syslog_connect(), $repairs, $syslog_cnn === $expected_cnn]);';
 	file_put_contents($dir . '/run.php', $script);
 	try {
@@ -56,14 +56,18 @@ it('initializes collector schema before returning a usable connection without re
 	[3, '', true, true, 0],
 	[1, '', true, true, 1],
 	[1, 'on', false, false, 2],
+	[1, 'on', true, true, 0, false, false],
+	[3, 'on', true, true, 0, false, false],
+	[1, 'on', true, true, 0, false, true, true],
+	[3, 'on', true, true, 0, false, true, true],
 ]);
 
 
-it('does not launch processing or query pipeline state when database repair fails', function ($connected, $expected) {
+it('does not launch processing or query pipeline state when database repair fails', function ($connected, $expected, $plugin_enabled = true) {
 	$source = plugin_test_read_source('includes/processing.php');
 	preg_match('/^function syslog_poller_bottom\(\): void \{.*?^\}/ms', $source, $match);
 	$script = '<?php $config = ["base_path" => "/cacti"]; $calls = []; ' .
-		'function syslog_config_safe() { return true; } ' .
+		'function api_plugin_is_enabled($name) { return ' . var_export($plugin_enabled, true) . '; } function syslog_config_safe() { return true; } ' .
 		'function syslog_connect() { return ' . var_export($connected, true) . '; } ' .
 		'function cacti_log(...$args) { $GLOBALS["calls"][] = "error"; } ' .
 		'function syslog_pipeline_health_check() { $GLOBALS["calls"][] = "health"; } ' .
@@ -84,4 +88,5 @@ it('does not launch processing or query pipeline state when database repair fail
 })->with([
 	[false, ['error']],
 	[true, ['health', 'status', 'launch']],
+	[true, [], false],
 ]);

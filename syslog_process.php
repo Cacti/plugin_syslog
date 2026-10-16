@@ -31,6 +31,10 @@ if (function_exists('pcntl_async_signals')) {
 include(__DIR__ . '/../../include/cli_check.php');
 include_once(__DIR__ . '/setup.php');
 
+if (!api_plugin_is_enabled('syslog')) {
+	exit(0);
+}
+
 if (!syslog_connect()) {
 	cacti_log('ERROR: Syslog database or schema is unavailable; skipping processing.', false, 'SYSLOG');
 
