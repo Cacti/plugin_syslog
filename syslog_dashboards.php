@@ -13,17 +13,19 @@ syslog_connect();
 set_default_action();
 
 global $syslogdb_default;
-$db = $syslogdb_default;
+$db    = $syslogdb_default;
 $error = '';
-$edit = get_filter_request_var('edit', FILTER_VALIDATE_INT);
+$edit  = get_filter_request_var('edit', FILTER_VALIDATE_INT);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_dashboard')) {
-	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
-	$name = trim((string) get_nfilter_request_var('name'));
+	$id    = get_filter_request_var('id', FILTER_VALIDATE_INT);
+	$name  = trim((string) get_nfilter_request_var('name'));
 	$owner = trim((string) get_nfilter_request_var('owner'));
-	$edit = $id;
+	$edit  = $id;
+
 	if ($id > 0 && $name !== '' && strlen($name) <= 128) {
 		$usernames = array_rekey(db_fetch_assoc('SELECT username FROM user_auth'), 'username', 'username');
+
 		if ($owner === '' || !isset($usernames[$owner])) {
 			$error = __('Select a valid owner.', 'syslog');
 		} else {
@@ -39,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_dashboard')
 	} else {
 		$error = __('Enter a dashboard name between 1 and 128 characters.', 'syslog');
 	}
+
 	if ($error === '') {
 		header('Location: syslog_dashboards.php');
 		exit;
@@ -50,6 +53,7 @@ if ((isset_request_var('import') || isset_request_var('save_component_import')) 
 }
 
 $row = $edit > 0 ? syslog_db_fetch_row_prepared("SELECT id, name, `user`, is_global, updated FROM $db.syslog_dashboards WHERE id = ?", [$edit]) : false;
+
 if ($row && $error !== '') {
 	$row['name'] = $name;
 }
@@ -164,7 +168,7 @@ function syslog_dashboards() {
 
 	if (get_request_var('filter') != '') {
 		$sql_where .= ' AND (d.name LIKE ? OR d.`user` LIKE ?)';
-		$filter = '%' . get_request_var('filter') . '%';
+		$filter     = '%' . get_request_var('filter') . '%';
 		$sql_params = [$filter, $filter];
 	}
 
@@ -198,7 +202,7 @@ function syslog_dashboards() {
 
 	$nav = html_nav_bar('syslog_dashboards.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text) + 1, __('Dashboards', 'syslog'), 'page', 'main');
 
-	html_start_box(__('Dashboards', 'syslog'), '100%', '', '3', 'center', $url);
+	html_start_box(__('Dashboards', 'syslog'), '100%', false, 3, 'center', $url);
 
 	syslog_dashboard_filter();
 
@@ -290,7 +294,8 @@ function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 	// Flag dashboards whose owner no longer exists so admins can clean up
 	// after deleting a Cacti user.
 	$usernames = [];
-	$known = db_fetch_assoc('SELECT username FROM user_auth');
+	$known     = db_fetch_assoc('SELECT username FROM user_auth');
+
 	if ($known) {
 		$usernames = array_rekey($known, 'username', 'username');
 	}
@@ -303,14 +308,15 @@ function syslog_dashboard_table($rows, $nav = '', $display_text = []) {
 		print $nav;
 	}
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'), false);
 
 	if (cacti_sizeof($rows)) {
 		foreach ($rows as $dashboard) {
-			$id = (int) $dashboard['id'];
+			$id    = (int) $dashboard['id'];
 			$owner = html_escape($dashboard['user']);
+
 			if (isset($usernames) && cacti_sizeof($usernames) && !isset($usernames[$dashboard['user']])) {
 				$owner .= ' (' . __('deleted user', 'syslog') . ')';
 			}
@@ -378,7 +384,7 @@ function syslog_dashboard_actions() {
 
 	form_start('syslog_dashboards.php');
 
-	html_start_box($actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($actions[get_request_var('drp_action')], '60%', false, 3, 'center', '');
 
 	// loop through each of the dashboards selected on the previous page and get more info about them
 	$dashboard_list  = '';
@@ -455,11 +461,9 @@ function syslog_dashboard_actions() {
  * @return void
  */
 function api_syslog_dashboard_remove($id) {
-	global $db;
-	// Panels first, then the dashboard itself.
-	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id]);
-	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards WHERE id = ?", [$id]);
-	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards_perm WHERE dashboard_id = ?", [$id]);
+	if (!syslog_dashboard_delete((int) $id)) {
+		raise_message('syslog_dashboard_error', __('Unable to save dashboard changes.', 'syslog'), MESSAGE_LEVEL_ERROR);
+	}
 }
 
 /**
@@ -519,12 +523,13 @@ function syslog_dashboard_export() {
 function syslog_dashboard_import() {
 	global $db;
 
-	$import_data = syslog_get_import_xml_payload('syslog_dashboards.php');
+	$import_data  = syslog_get_import_xml_payload('syslog_dashboards.php');
 	$import_array = syslog_parse_rule_import($import_data, 'syslog_dashboards');
 
 	if ($import_array === false || !$import_array) {
 		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location: syslog_dashboards.php');
+
 		return;
 	}
 
@@ -548,7 +553,7 @@ function syslog_dashboard_import() {
 
 			if (isset($contents['hash']) && $contents['hash'] !== '') {
 				$save['hash'] = $contents['hash'];
-				$found = syslog_db_fetch_cell_prepared("SELECT id
+				$found        = syslog_db_fetch_cell_prepared("SELECT id
 					FROM $db.syslog_dashboards
 					WHERE hash = ?",
 					[$contents['hash']]);
@@ -565,6 +570,7 @@ function syslog_dashboard_import() {
 
 			if ($save['name'] === '' || strlen($save['name']) > 128) {
 				$failed++;
+
 				continue;
 			}
 
@@ -584,17 +590,18 @@ function syslog_dashboard_import() {
 
 			if (!$id) {
 				$failed++;
+
 				continue;
 			}
 
 			// An exported empty dashboard must also clear existing panels.
 			if (!syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id])) {
 				$failed++;
+
 				continue;
 			}
 
 			if (cacti_sizeof($panels)) {
-
 				foreach ($panels as $panel) {
 					if (!is_array($panel)) {
 						continue;
@@ -630,6 +637,7 @@ function syslog_dashboard_import() {
 							$panel_save['height'], $panel_save['position'], $panel_save['date'],
 						])) {
 						$failed++;
+
 						continue 2;
 					}
 				}
@@ -689,7 +697,7 @@ function syslog_dashboard_import_form() {
 
 	print "<form method='post' action='syslog_dashboards.php' enctype='multipart/form-data'>";
 
-	html_start_box(__('Import Dashboard', 'syslog'), '100%', false, '3', 'center', '');
+	html_start_box(__('Import Dashboard', 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -718,25 +726,26 @@ function syslog_dashboard_edit($row, $error) {
 	// and the global share flag. The 'all' entry shares it with every
 	// signed-in user.
 	$usernames = array_rekey(db_fetch_assoc('SELECT username FROM user_auth ORDER BY username'), 'username', 'username');
-	$users  = array_rekey(db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username'), 'id', 'username');
-	$groups = array_rekey(db_fetch_assoc('SELECT id, name FROM user_auth_group ORDER BY name'), 'id', 'name');
-	$shares = syslog_fetch_item_shares('dashboard', (int) $row['id']);
+	$users     = array_rekey(db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username'), 'id', 'username');
+	$groups    = array_rekey(db_fetch_assoc('SELECT id, name FROM user_auth_group ORDER BY name'), 'id', 'name');
+	$shares    = syslog_fetch_item_shares('dashboard', (int) $row['id']);
 
 	$users  = ['all' => __('All Users', 'syslog')] + $users;
 	$groups = ['all' => __('All Groups', 'syslog')] + $groups;
 
 	form_start('syslog_dashboards.php', 'syslog_dashboard_form');
-	html_start_box(__('Edit Dashboard', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Edit Dashboard', 'syslog'), '100%', false, 3, 'center', '');
 	draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => [
-		'name' => ['friendly_name' => __('Name', 'syslog'), 'method' => 'textbox', 'value' => $row['name'], 'max_length' => 128, 'size' => 60, 'description' => __('The name shown in the Dashboards select of the Syslog Dashboard tab.', 'syslog')],
-		'owner' => ['friendly_name' => __('Owner', 'syslog'), 'method' => 'drop_array', 'array' => $usernames, 'value' => $row['user'], 'description' => __('The account that owns this dashboard and can manage its panels.', 'syslog')],
-		'shared' => ['friendly_name' => __('Shared', 'syslog'), 'method' => 'static', 'value' => $row['is_global'] === 'on' ? __('Yes', 'syslog') : __('No', 'syslog')],
-		'shared_users' => ['friendly_name' => __('Shared With Users', 'syslog'), 'method' => 'drop_multi', 'array' => $users, 'value' => $shares['users'], 'description' => __('Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone.', 'syslog')],
-		'shared_groups' => ['friendly_name' => __('Shared With Groups', 'syslog'), 'method' => 'drop_multi', 'array' => $groups, 'value' => $shares['groups'], 'description' => __('Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone.', 'syslog')],
-		'id' => ['method' => 'hidden', 'value' => (int) $row['id']],
+		'name'           => ['friendly_name' => __('Name', 'syslog'), 'method' => 'textbox', 'value' => $row['name'], 'max_length' => 128, 'size' => 60, 'description' => __('The name shown in the Dashboards select of the Syslog Dashboard tab.', 'syslog')],
+		'owner'          => ['friendly_name' => __('Owner', 'syslog'), 'method' => 'drop_array', 'array' => $usernames, 'value' => $row['user'], 'description' => __('The account that owns this dashboard and can manage its panels.', 'syslog')],
+		'shared'         => ['friendly_name' => __('Shared', 'syslog'), 'method' => 'static', 'value' => $row['is_global'] === 'on' ? __('Yes', 'syslog') : __('No', 'syslog')],
+		'shared_users'   => ['friendly_name' => __('Shared With Users', 'syslog'), 'method' => 'drop_multi', 'array' => $users, 'value' => $shares['users'], 'description' => __('Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone.', 'syslog')],
+		'shared_groups'  => ['friendly_name' => __('Shared With Groups', 'syslog'), 'method' => 'drop_multi', 'array' => $groups, 'value' => $shares['groups'], 'description' => __('Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone.', 'syslog')],
+		'id'             => ['method' => 'hidden', 'value' => (int) $row['id']],
 		'save_dashboard' => ['method' => 'hidden', 'value' => '1']
 	]]);
 	html_end_box();
+
 	if ($error !== '') {
 		print "<p class='ui-state-error ui-corner-all' role='alert'>" . html_escape($error) . '</p>';
 	}

@@ -7,13 +7,13 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Install and uninstall adviser UI. */
+// Install and uninstall adviser UI.
 
 /** Confirm an existing plugin upgrade without sending it through Cacti's install action. */
 function syslog_upgrade_advisor(string $installed, string $current): void {
 	top_header();
 	print "<table align='center' width='80%'><tr><td>";
-	html_start_box(__('Syslog Upgrade Advisor', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog Upgrade Advisor', 'syslog'), '100%', false, 3, 'center', '');
 	print '<tr><td>' . __('Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time.', html_escape($installed), html_escape($current), 'syslog') . '</td></tr>';
 	html_end_box();
 	print "<form id='syslog_install' action='plugins.php' method='post'>";
@@ -145,7 +145,7 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 	}
 
 	print "<table align='center' width='80%'><tr><td>";
-	html_start_box(__('Syslog %s Advisor', $type, 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog %s Advisor', $type, 'syslog'), '100%', false, 3, 'center', '');
 	print '<tr><td>';
 
 	if ($syslog_exists) {
@@ -161,7 +161,7 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 
 	print "<form id='syslog_install' action='plugins.php' method='get'>";
 
-	html_start_box(__('Syslog %s Settings', $type, 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog %s Settings', $type, 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form([
 		'config' => ['no_form_tag' => true],
@@ -259,7 +259,7 @@ function syslog_uninstall_advisor(): void {
 
 	print "<table align='center' width='80%'><tr><td>";
 
-	html_start_box(__('Syslog Uninstall Preferences', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog Uninstall Preferences', 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form([
 		'config' => [],

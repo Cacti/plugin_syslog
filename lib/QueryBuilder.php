@@ -16,12 +16,12 @@ use InvalidArgumentException;
 
 /** Compile versioned visual-filter documents into parameterized SQL. */
 class QueryBuilder {
-	private const MAX_DEPTH = 16;
+	private const MAX_DEPTH      = 16;
 	private const MAX_CONDITIONS = 128;
 	private const MAX_JSON_BYTES = 8192;
 
 	/**
-	 * @param string $json Versioned filter document.
+	 * @param string $json   Versioned filter document.
 	 * @param array  $fields Map of logical field names to trusted SQL columns.
 	 *
 	 * @return array{sql:string,params:array<int, string>}
@@ -52,11 +52,11 @@ class QueryBuilder {
 	/**
 	 * Recursively compile a condition list into SQL.
 	 *
-	 * @param mixed $conditions The condition list from the untrusted filter document.
-	 * @param array<string, mixed> $fields Map of logical field names to trusted SQL columns.
-	 * @param array<int, string> $params The bound parameters, accumulated by reference.
-	 * @param int $count The number of conditions compiled so far, passed by reference.
-	 * @param int $depth The current nesting depth.
+	 * @param mixed                $conditions The condition list from the untrusted filter document.
+	 * @param array<string, mixed> $fields     Map of logical field names to trusted SQL columns.
+	 * @param array<int, string>   $params     The bound parameters, accumulated by reference.
+	 * @param int                  $count      The number of conditions compiled so far, passed by reference.
+	 * @param int                  $depth      The current nesting depth.
 	 *
 	 * @return string The compiled SQL fragment.
 	 *
@@ -68,15 +68,18 @@ class QueryBuilder {
 		}
 
 		$parts = [];
+
 		foreach (array_values($conditions) as $index => $condition) {
 			if (!is_array($condition)) {
 				throw new InvalidArgumentException('Each filter condition must be an object.');
 			}
+
 			if (++$count > self::MAX_CONDITIONS) {
 				throw new InvalidArgumentException('The filter contains too many conditions.');
 			}
 
 			$join = $index === 0 ? '' : strtoupper((string) ($condition['join'] ?? ''));
+
 			if ($index > 0 && !in_array($join, ['AND', 'OR'], true)) {
 				throw new InvalidArgumentException('A filter connector must be AND or OR.');
 			}
@@ -112,28 +115,35 @@ class QueryBuilder {
 
 		$definition = $fields[$field];
 		$allowed    = $definition['operators'] ?? [];
+
 		if (!in_array($operator, $allowed, true)) {
 			throw new InvalidArgumentException('The selected operator is not allowed for this field.');
 		}
 
 		$value = (string) $value;
+
 		if ($value === '' || strlen($value) > 2048) {
 			throw new InvalidArgumentException('Filter values must contain between 1 and 2048 bytes.');
 		}
+
 		if (($definition['type'] ?? 'string') === 'integer' && !ctype_digit($value)) {
 			throw new InvalidArgumentException('The selected field requires a nonnegative integer.');
 		}
 
 		$column = $definition['column'];
+
 		switch ($operator) {
 			case 'contains':
 				$params[] = '%' . self::escapeLike($value) . '%';
+
 				return "($column LIKE ? ESCAPE '!')";
 			case 'begins':
 				$params[] = self::escapeLike($value) . '%';
+
 				return "($column LIKE ? ESCAPE '!')";
 			case 'ends':
 				$params[] = '%' . self::escapeLike($value);
+
 				return "($column LIKE ? ESCAPE '!')";
 			case '=':
 			case '!=':
@@ -142,6 +152,7 @@ class QueryBuilder {
 			case '<':
 			case '<=':
 				$params[] = $value;
+
 				return "($column $operator ?)";
 		}
 

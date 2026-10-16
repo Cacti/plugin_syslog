@@ -180,7 +180,7 @@ function syslog_dashboard_bucket_seconds(int $seconds, string $interval): int {
 	// (minute → 10 minutes → hour → day) until the chart stays under the
 	// bucket cap.
 	$ladder = [60, 600, 3600, 86400];
-	$cap = syslog_dashboard_bucket_cap();
+	$cap    = syslog_dashboard_bucket_cap();
 
 	foreach ($ladder as $step) {
 		if ($step > $bucket) {
@@ -198,8 +198,8 @@ function syslog_dashboard_bucket_seconds(int $seconds, string $interval): int {
 /**
  * Format a bucket epoch for chart labels.
  *
- * @param int $epoch   Bucket start as a Unix timestamp.
- * @param int $bucket  Bucket size in seconds.
+ * @param int $epoch  Bucket start as a Unix timestamp.
+ * @param int $bucket Bucket size in seconds.
  *
  * @return string Human-readable local time label.
  */
@@ -245,8 +245,8 @@ function syslog_dashboard_label_safe($label) {
  * @param string $source Panel source ('syslog' or 'alerts').
  *
  * @return array<int, string>|null [table, id_column, name_column], or null
- *                                   when the dimension reads the log row
- *                                   directly.
+ *                                 when the dimension reads the log row
+ *                                 directly.
  */
 function syslog_dashboard_breakdown_lookup(string $field, string $source): ?array {
 	if ($source === 'alerts' && $field === 'host') {
@@ -336,7 +336,7 @@ function syslog_dashboard_breakdown_sql(string $source, string $field, string $r
 		$dimension = 'syslog.host';
 	} else {
 		[$table, $id_column, $name_column] = $lookup;
-		$dimension = "(SELECT lookup.$name_column FROM `$syslogdb_default`.`$table` AS lookup
+		$dimension                         = "(SELECT lookup.$name_column FROM `$syslogdb_default`.`$table` AS lookup
 			WHERE lookup.$id_column = syslog.$id_column)";
 	}
 
@@ -475,7 +475,7 @@ function syslog_dashboard_panel_settings(array $panel) {
  * @param int $panel_id Panel id.
  *
  * @return array<string, mixed>|null Panel row joined with dashboard ownership,
- *                                    or null.
+ *                                   or null.
  */
 function syslog_dashboard_load_panel(int $panel_id): ?array {
 	global $syslogdb_default;
@@ -499,7 +499,7 @@ function syslog_dashboard_load_panel(int $panel_id): ?array {
  * @param array<string, mixed> $panel Row from syslog_dashboard_load_panel().
  *
  * @return array<string, mixed>|null ['id' => ..., 'user' => ..., 'is_global' => ...],
- *                                    or null.
+ *                                   or null.
  */
 function syslog_dashboard_panel_owner(?array $panel): ?array {
 	if ($panel === null || !isset($panel['dashboard_user'])) {
@@ -534,8 +534,8 @@ function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): arr
 	$expression = (string) $panel['expression'];
 
 	try {
-		$tree = syslog_parse_logical_search($expression);
-		$column = $settings['source'] === 'alerts' ? 'logmsg' : 'message';
+		$tree      = syslog_parse_logical_search($expression);
+		$column    = $settings['source'] === 'alerts' ? 'logmsg' : 'message';
 		$predicate = syslog_logical_search_sql($tree, $column);
 	} catch (InvalidArgumentException $error) {
 		return ['error' => __('Invalid logical search: %s', $error->getMessage(), 'syslog')];
@@ -554,7 +554,7 @@ function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): arr
 
 		$sql = syslog_dashboard_timeseries_sql($settings['source'], $settings['removal'], $where, $bucket, $start);
 
-		$rows = syslog_db_fetch_assoc($sql);
+		$rows   = syslog_db_fetch_assoc($sql);
 		$labels = [];
 		$values = [];
 
@@ -584,7 +584,7 @@ function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): arr
 
 	$labels = [];
 	$values = [];
-	$total = 0;
+	$total  = 0;
 
 	if (cacti_sizeof($rows)) {
 		$rank = 0;
@@ -798,6 +798,47 @@ function syslog_dashboard_next_position(int $dashboard_id): int {
 }
 
 /**
+ * Delete a dashboard, its panels and shares as one transaction.
+ *
+ * @param int $id Authorized dashboard id.
+ *
+ * @return bool Whether every delete committed.
+ */
+function syslog_dashboard_delete(int $id): bool {
+	global $syslogdb_default;
+
+	if (!syslog_db_execute('START TRANSACTION')) {
+		return false;
+	}
+
+	$committed = false;
+
+	try {
+		foreach ([
+			'syslog_dashboard_panels' => 'dashboard_id',
+			'syslog_dashboards_perm'  => 'dashboard_id',
+			'syslog_dashboards'       => 'id'
+		] as $table => $key) {
+			if (!syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`$table` WHERE `$key` = ?", [$id])) {
+				return false;
+			}
+		}
+
+		if (!syslog_db_execute('COMMIT')) {
+			return false;
+		}
+
+		$committed = true;
+
+		return true;
+	} finally {
+		if (!$committed) {
+			syslog_db_execute('ROLLBACK');
+		}
+	}
+}
+
+/**
  * JSON endpoint: create or rename a dashboard (upsert by name), or delete
  * one (with its panels). All actions are scoped to the current user.
  *
@@ -817,7 +858,7 @@ function syslog_dashboard_save() {
 		return json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
 	}
 
-	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
+	$id     = get_filter_request_var('id', FILTER_VALIDATE_INT);
 	$delete = get_nfilter_request_var('dashboard_delete') === '1';
 
 	if ($delete) {
@@ -831,15 +872,9 @@ function syslog_dashboard_save() {
 			return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 		}
 
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboard_panels`
-			WHERE dashboard_id = ?",
-			[$id]);
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboards`
-			WHERE id = ?",
-			[$id]);
-		syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboards_perm`
-			WHERE dashboard_id = ?",
-			[$id]);
+		if (!syslog_dashboard_delete((int) $id)) {
+			return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+		}
 
 		return json_encode(['id' => (int) $id, 'deleted' => true]);
 	}
@@ -851,18 +886,22 @@ function syslog_dashboard_save() {
 			return json_encode(['error' => __('Dashboard not found.', 'syslog')]);
 		}
 
-		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboards`
+		if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboards`
 			SET name = ?, updated = ?
 			WHERE id = ?",
-			[$name, time(), $id]);
+			[$name, time(), $id])) {
+			return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+		}
 
 		return json_encode(['id' => (int) $id]);
 	}
 
-	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
+	if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
 		(name, `user`, `date`, updated)
 		VALUES (?, ?, ?, ?)",
-		[$name, $username, time(), time()]);
+		[$name, $username, time(), time()])) {
+		return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+	}
 
 	// Upsert semantics: resolve the row by owner and name when the
 	// connection's insert id is unavailable on some Cacti builds.
@@ -876,7 +915,7 @@ function syslog_dashboard_save() {
 			[$username, $name]);
 	}
 
-	return json_encode(['id' => $id]);
+	return json_encode($id > 0 ? ['id' => $id] : ['error' => __('Unable to save dashboard changes.', 'syslog')]);
 }
 
 /**
@@ -916,10 +955,12 @@ function syslog_dashboard_global() {
 
 	$is_global = $row['is_global'] === 'on' ? '' : 'on';
 
-	syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboards`
+	if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboards`
 		SET is_global = ?, updated = ?
 		WHERE id = ?",
-		[$is_global, time(), $id]);
+		[$is_global, time(), $id])) {
+		return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+	}
 
 	return json_encode(['id' => (int) $id, 'is_global' => $is_global]);
 }
@@ -960,44 +1001,68 @@ function syslog_dashboard_copy() {
 		return json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
 	}
 
-	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
-		(name, `user`, is_global, `date`, updated)
-		VALUES (?, ?, '', ?, ?)",
-		[$name, $username, time(), time()]);
-
-	// Resolve the new id before copying: some Cacti builds do not expose a
-	// reliable insert id, so fall back to an owner-scoped lookup.
-	$new_id = (int) syslog_db_fetch_insert_id();
-
-	if ($new_id <= 0) {
-		$new_id = (int) syslog_db_fetch_cell_prepared("SELECT id
-			FROM `$syslogdb_default`.`syslog_dashboards`
-			WHERE `user` = ? AND name = ?
-			ORDER BY id DESC",
-			[$username, $name]);
+	if (!syslog_db_execute('START TRANSACTION')) {
+		return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
 	}
 
-	if ($new_id <= 0) {
-		return json_encode(['error' => __('Dashboard could not be copied.', 'syslog')]);
-	}
+	$committed = false;
 
-	$panels = syslog_dashboard_panels($id);
+	try {
+		if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboards`
+			(name, `user`, is_global, `date`, updated)
+			VALUES (?, ?, '', ?, ?)",
+			[$name, $username, time(), time()])) {
+			return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+		}
 
-	if (cacti_sizeof($panels)) {
-		foreach ($panels as $panel) {
-			syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
-				(dashboard_id, title, expression, source, removal, kind, chart, field,
-				`interval`, timespan, top_n, width, height, position, `date`)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				[$new_id, $panel['title'], $panel['expression'], $panel['source'],
-					(int) $panel['removal'], $panel['kind'], $panel['chart'], $panel['field'],
-					$panel['interval'], $panel['timespan'], (int) $panel['top_n'],
-					(int) $panel['width'], (int) $panel['height'],
-					(int) $panel['position'], time()]);
+		// Resolve the new id before copying: some Cacti builds do not expose a
+		// reliable insert id, so fall back to an owner-scoped lookup.
+		$new_id = (int) syslog_db_fetch_insert_id();
+
+		if ($new_id <= 0) {
+			$new_id = (int) syslog_db_fetch_cell_prepared("SELECT id
+				FROM `$syslogdb_default`.`syslog_dashboards`
+				WHERE `user` = ? AND name = ?
+				ORDER BY id DESC",
+				[$username, $name]);
+		}
+
+		if ($new_id <= 0) {
+			return json_encode(['error' => __('Dashboard could not be copied.', 'syslog')]);
+		}
+
+		$panels = syslog_dashboard_panels($id);
+
+		if (cacti_sizeof($panels)) {
+			foreach ($panels as $panel) {
+				if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
+					(dashboard_id, title, expression, source, removal, kind, chart, field,
+					`interval`, timespan, top_n, width, height, position, `date`)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+					[$new_id, $panel['title'], $panel['expression'], $panel['source'],
+						(int) $panel['removal'], $panel['kind'], $panel['chart'], $panel['field'],
+						$panel['interval'], $panel['timespan'], (int) $panel['top_n'],
+						(int) $panel['width'], (int) $panel['height'],
+						(int) $panel['position'], time()])) {
+					return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+				}
+			}
+		}
+
+		if (!syslog_db_execute('COMMIT')) {
+			return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+		}
+
+		$committed = true;
+
+		return json_encode(['id' => $new_id]);
+	} catch (Throwable $error) {
+		return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+	} finally {
+		if (!$committed) {
+			syslog_db_execute('ROLLBACK');
 		}
 	}
-
-	return json_encode(['id' => $new_id]);
 }
 
 /**
@@ -1016,8 +1081,8 @@ function syslog_dashboard_panel_save() {
 	$dashboard_id = get_filter_request_var('dashboard_id', FILTER_VALIDATE_INT);
 	$panel_id     = get_filter_request_var('panel_id', FILTER_VALIDATE_INT);
 	$move         = (string) get_nfilter_request_var('panel_move');
-	$delete       = get_nfilter_request_var('panel_delete') === '1';
-	$resize       = get_nfilter_request_var('panel_resize') === '1';
+	$delete       = get_nfilter_request_var('panel_delete')   === '1';
+	$resize       = get_nfilter_request_var('panel_resize')   === '1';
 	$reposition   = get_nfilter_request_var('panel_position') === '1';
 	$position     = get_filter_request_var('position', FILTER_VALIDATE_INT);
 
@@ -1043,9 +1108,11 @@ function syslog_dashboard_panel_save() {
 		}
 
 		if ($delete) {
-			syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboard_panels`
+			if (!syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_dashboard_panels`
 				WHERE id = ?",
-				[$panel_id]);
+				[$panel_id])) {
+				return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+			}
 
 			return json_encode(['id' => (int) $panel_id, 'deleted' => true]);
 		}
@@ -1055,33 +1122,39 @@ function syslog_dashboard_panel_save() {
 				return json_encode(['error' => __('A valid panel position is required.', 'syslog')]);
 			}
 
-			syslog_dashboard_panel_reposition($panel, $dashboard_id, (int) $position);
+			if (!syslog_dashboard_panel_reposition($panel, $dashboard_id, (int) $position)) {
+				return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+			}
 
 			return json_encode(['id' => (int) $panel_id, 'position' => (int) $position]);
 		}
 
 		if ($resize) {
 			$size = syslog_dashboard_panel_settings([
-				'source' => $panel['source'], 'kind' => $panel['kind'], 'chart' => $panel['chart'],
-				'field' => $panel['field'], 'interval' => $panel['interval'], 'timespan' => $panel['timespan'],
+				'source'  => $panel['source'], 'kind' => $panel['kind'], 'chart' => $panel['chart'],
+				'field'   => $panel['field'], 'interval' => $panel['interval'], 'timespan' => $panel['timespan'],
 				'removal' => $panel['removal'], 'top_n' => $panel['top_n'],
-				'width'  => (string) get_nfilter_request_var('width'),
-				'height' => (string) get_nfilter_request_var('height')
+				'width'   => (string) get_nfilter_request_var('width'),
+				'height'  => (string) get_nfilter_request_var('height')
 			]);
 
 			if (is_string($size)) {
 				return json_encode(['error' => $size]);
 			}
 
-			syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
+			if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
 				SET width = ?, height = ?
 				WHERE id = ?",
-				[$size['width'], $size['height'], $panel_id]);
+				[$size['width'], $size['height'], $panel_id])) {
+				return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+			}
 
 			return json_encode(['id' => (int) $panel_id, 'width' => $size['width'], 'height' => $size['height']]);
 		}
 
-		syslog_dashboard_panel_move($panel, $dashboard_id, $move === 'up' ? -1 : 1);
+		if (!syslog_dashboard_panel_move($panel, $dashboard_id, $move === 'up' ? -1 : 1)) {
+			return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+		}
 
 		return json_encode(['id' => (int) $panel_id, 'moved' => $move]);
 	}
@@ -1140,7 +1213,7 @@ function syslog_dashboard_panel_save() {
 			$settings['height'] = (int) $existing['height'];
 		}
 
-		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
+		if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
 			SET title = ?, expression = ?, source = ?, removal = ?, kind = ?,
 			chart = ?, field = ?, `interval` = ?, timespan = ?, top_n = ?,
 			width = ?, height = ?
@@ -1148,20 +1221,24 @@ function syslog_dashboard_panel_save() {
 			[$title, $expression, $settings['source'], (int) $settings['removal'],
 				$settings['kind'], $settings['chart'], $settings['field'],
 				$settings['interval'], $settings['timespan'], $settings['top_n'],
-				$settings['width'], $settings['height'], $panel_id]);
+				$settings['width'], $settings['height'], $panel_id])) {
+			return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+		}
 
 		return json_encode(['id' => (int) $panel_id]);
 	}
 
 	$position = syslog_dashboard_next_position($dashboard_id);
 
-	syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
+	if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_dashboard_panels`
 		(dashboard_id, title, expression, source, removal, kind, chart, field, `interval`, timespan, top_n, width, height, position, `date`)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		[$dashboard_id, $title, $expression, $settings['source'], (int) $settings['removal'],
 			$settings['kind'], $settings['chart'], $settings['field'], $settings['interval'],
 			$settings['timespan'], $settings['top_n'], $settings['width'], $settings['height'],
-			$position, time()]);
+			$position, time()])) {
+		return json_encode(['error' => __('Unable to save dashboard changes.', 'syslog')]);
+	}
 
 	// Fall back to a positional lookup when the connection's insert id is
 	// unavailable on some Cacti builds.
@@ -1175,7 +1252,7 @@ function syslog_dashboard_panel_save() {
 			[$dashboard_id]);
 	}
 
-	return json_encode(['id' => $id]);
+	return json_encode($id > 0 ? ['id' => $id] : ['error' => __('Unable to save dashboard changes.', 'syslog')]);
 }
 
 /**
@@ -1186,30 +1263,59 @@ function syslog_dashboard_panel_save() {
  * @param int                  $dashboard_id Owning dashboard id.
  * @param int                  $direction    -1 for up, 1 for down.
  */
-function syslog_dashboard_panel_move(array $panel, int $dashboard_id, int $direction): void {
+function syslog_dashboard_panel_move(array $panel, int $dashboard_id, int $direction): bool {
 	global $syslogdb_default;
 
-	$panels = syslog_dashboard_panels($dashboard_id);
-	$ids = [];
-
-	foreach ($panels as $row) {
-		$ids[] = (int) $row['id'];
+	if (!syslog_db_execute('START TRANSACTION')) {
+		return false;
 	}
 
-	$index = array_search((int) $panel['id'], $ids, true);
-	$swap  = $index + $direction;
+	$committed = false;
 
-	if ($index === false || $swap < 0 || $swap >= cacti_sizeof($ids)) {
-		return;
-	}
+	try {
+		$panels = syslog_db_fetch_assoc_prepared("SELECT id FROM `$syslogdb_default`.`syslog_dashboard_panels`
+			WHERE dashboard_id = ? ORDER BY position, id FOR UPDATE", [$dashboard_id]);
 
-	[$ids[$index], $ids[$swap]] = [$ids[$swap], $ids[$index]];
+		if (!is_array($panels)) {
+			return false;
+		}
+		$ids    = [];
 
-	foreach ($ids as $position => $id) {
-		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
-			SET position = ?
-			WHERE id = ?",
-			[$position + 1, $id]);
+		foreach ($panels as $row) {
+			$ids[] = (int) $row['id'];
+		}
+
+		$index = array_search((int) $panel['id'], $ids, true);
+		$swap  = $index + $direction;
+
+		if ($index === false || $swap < 0 || $swap >= cacti_sizeof($ids)) {
+			$committed = syslog_db_execute('COMMIT');
+
+			return $committed;
+		}
+
+		[$ids[$index], $ids[$swap]] = [$ids[$swap], $ids[$index]];
+
+		foreach ($ids as $position => $id) {
+			if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
+				SET position = ?
+				WHERE id = ?",
+				[$position + 1, $id])) {
+				return false;
+			}
+		}
+
+		if (!syslog_db_execute('COMMIT')) {
+			return false;
+		}
+
+		$committed = true;
+
+		return true;
+	} finally {
+		if (!$committed) {
+			syslog_db_execute('ROLLBACK');
+		}
 	}
 }
 
@@ -1221,27 +1327,54 @@ function syslog_dashboard_panel_move(array $panel, int $dashboard_id, int $direc
  * @param int                  $dashboard_id Owning dashboard id.
  * @param int                  $position     Requested 1-based position.
  */
-function syslog_dashboard_panel_reposition(array $panel, int $dashboard_id, int $position): void {
+function syslog_dashboard_panel_reposition(array $panel, int $dashboard_id, int $position): bool {
 	global $syslogdb_default;
 
-	$panels = syslog_dashboard_panels($dashboard_id);
-	$ids = [];
-
-	foreach ($panels as $row) {
-		if ((int) $row['id'] !== (int) $panel['id']) {
-			$ids[] = (int) $row['id'];
-		}
+	if (!syslog_db_execute('START TRANSACTION')) {
+		return false;
 	}
 
-	// Clamp into the valid range, then splice the panel in.
-	$position = min(max($position, 1), cacti_sizeof($ids) + 1);
-	array_splice($ids, $position - 1, 0, [(int) $panel['id']]);
+	$committed = false;
 
-	foreach ($ids as $index => $id) {
-		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
-			SET position = ?
-			WHERE id = ?",
-			[$index + 1, $id]);
+	try {
+		$panels = syslog_db_fetch_assoc_prepared("SELECT id FROM `$syslogdb_default`.`syslog_dashboard_panels`
+			WHERE dashboard_id = ? ORDER BY position, id FOR UPDATE", [$dashboard_id]);
+
+		if (!is_array($panels)) {
+			return false;
+		}
+		$ids    = [];
+
+		foreach ($panels as $row) {
+			if ((int) $row['id'] !== (int) $panel['id']) {
+				$ids[] = (int) $row['id'];
+			}
+		}
+
+		// Clamp into the valid range, then splice the panel in.
+		$position = min(max($position, 1), cacti_sizeof($ids) + 1);
+		array_splice($ids, $position - 1, 0, [(int) $panel['id']]);
+
+		foreach ($ids as $index => $id) {
+			if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_dashboard_panels`
+				SET position = ?
+				WHERE id = ?",
+				[$index + 1, $id])) {
+				return false;
+			}
+		}
+
+		if (!syslog_db_execute('COMMIT')) {
+			return false;
+		}
+
+		$committed = true;
+
+		return true;
+	} finally {
+		if (!$committed) {
+			syslog_db_execute('ROLLBACK');
+		}
 	}
 }
 
@@ -1271,6 +1404,7 @@ function syslog_dashboard(): void {
 		foreach ($dashboards as $dashboard) {
 			if ($dashboard['user'] === $username) {
 				$dashboard_id = (int) $dashboard['id'];
+
 				break;
 			}
 		}
@@ -1280,6 +1414,7 @@ function syslog_dashboard(): void {
 		foreach ($dashboards as $dashboard) {
 			if ($dashboard['user'] === '' && $dashboard['is_global'] === 'on' && $dashboard['name'] === 'default') {
 				$dashboard_id = (int) $dashboard['id'];
+
 				break;
 			}
 		}
@@ -1328,7 +1463,7 @@ function syslog_dashboard(): void {
 
 	$username = isset($_SESSION['sess_user_id']) ? get_username($_SESSION['sess_user_id']) : '';
 
-	$sql_where = "`user` = ? OR is_global = 'on'";
+	$sql_where       = "`user` = ? OR is_global = 'on'";
 	$shared_searches = $username === '' ? [] : syslog_shared_item_ids('saved_search');
 
 	if (cacti_sizeof($shared_searches)) {
@@ -1385,7 +1520,7 @@ function syslog_dashboard(): void {
 	</script>
 	<?php
 
-	html_start_box(__('Syslog Dashboards', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog Dashboards', 'syslog'), '100%', false, 3, 'center', '');
 	?>
 	<tr class='even noprint syslogFilterRow'>
 		<td class='noprint'>
@@ -1403,37 +1538,37 @@ function syslog_dashboard(): void {
 							<select id='syslog_dashboard_timespan'>
 								<?php
 								$selected_timespan = (string) get_nfilter_request_var('dashboard_timespan') ?: '86400';
-								$timespans = [
-									'3600'     => __('Last Hour', 'syslog'),
-									'21600'    => __('Last %d Hours', 6, 'syslog'),
-									'86400'    => __('Last Day', 'syslog'),
-									'604800'   => __('Last Week', 'syslog'),
-									'1209600'  => __('Last %d Weeks', 2, 'syslog'),
-									'2592000'  => __('Last Month', 'syslog'),
-									'3months'  => __('Last %d Months', 3, 'syslog'),
-									'6months'  => __('Last %d Months', 6, 'syslog')
-								];
+	$timespans                = [
+		'3600'     => __('Last Hour', 'syslog'),
+		'21600'    => __('Last %d Hours', 6, 'syslog'),
+		'86400'    => __('Last Day', 'syslog'),
+		'604800'   => __('Last Week', 'syslog'),
+		'1209600'  => __('Last %d Weeks', 2, 'syslog'),
+		'2592000'  => __('Last Month', 'syslog'),
+		'3months'  => __('Last %d Months', 3, 'syslog'),
+		'6months'  => __('Last %d Months', 6, 'syslog')
+	];
 
-								foreach ($timespans as $value => $label) {
-									print "<option value='" . html_escape((string) $value) . "'" . ((string) $value === $selected_timespan ? ' selected' : '') . '>' . html_escape($label) . '</option>';
-								}
-								?>
+	foreach ($timespans as $value => $label) {
+		print "<option value='" . html_escape((string) $value) . "'" . ((string) $value === $selected_timespan ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+	}
+	?>
 							</select>
 						</div>
 						<div class='syslogDashboardRefresh'>
 							<label for='syslog_dashboard_refresh'><?php print __esc('Refresh', 'syslog'); ?></label>
 							<select id='syslog_dashboard_refresh'>
 								<?php
-								foreach ($page_refresh_interval as $seconds => $display_text) {
-									print "<option value='" . $seconds . "'";
+	foreach ($page_refresh_interval as $seconds => $display_text) {
+		print "<option value='" . $seconds . "'";
 
-									if (get_request_var('refresh') == $seconds) {
-										print ' selected';
-									}
+		if (get_request_var('refresh') == $seconds) {
+			print ' selected';
+		}
 
-									print '>' . html_escape($display_text) . '</option>';
-								}
-								?>
+		print '>' . html_escape($display_text) . '</option>';
+	}
+	?>
 							</select>
 						</div>
 					</div>
@@ -1480,7 +1615,7 @@ function syslog_dashboard(): void {
 									print '</optgroup>';
 								}
 							}
-							?>
+	?>
 						</select>
 						<input type='button' id='syslog_dashboard_new' value='<?php print __esc('New', 'syslog'); ?>'>
 						<?php if ($can_manage) { ?>
@@ -1520,7 +1655,7 @@ function syslog_dashboard(): void {
 	}
 
 	// Panel editor dialog scaffold (SyslogFilterBuilder attaches here).
-	$fields = syslog_search_fields();
+	$fields  = syslog_search_fields();
 	$choices = syslog_search_choices();
 	?>
 	<div id='syslog_panel_dialog' class='syslogPanelDialog' style='display:none'
@@ -1613,7 +1748,7 @@ function syslog_dashboard(): void {
 								. html_escape((string) $saved['name']) . '</option>';
 						}
 					}
-					?>
+	?>
 				</select>
 			</div>
 		</div>

@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Utilities callbacks. */
+// Utilities callbacks.
 
 require_once(dirname(__DIR__) . '/setup.php');
 require_once(__DIR__ . '/functions.php');
@@ -17,12 +17,11 @@ require_once(__DIR__ . '/functions.php');
  *
  * @param string $action The action requested from the utilities page.
  *
- * @return string|void The action, unmodified when it is not a Syslog action, or
- *                     nothing when the Syslog config file is not available.
+ * @return string The action, unmodified for other plugins in the hook chain.
  */
 function syslog_utilities_action($action) {
 	if (!syslog_config_safe()) {
-		return;
+		return $action;
 	}
 
 	if ($action === 'purge_syslog_hosts') {

@@ -52,10 +52,8 @@ it('creates and replicates device rules for remote collectors', function () {
 		strpos($schema, 'function syslog_ensure_table_structures') - strpos($schema, 'function syslog_setup_table_new')))
 		->toContain('syslog_create_device_rule_table();');
 	expect($setup)->not->toContain('syslog_create_device_rule_table();');
-	expect($processing)
-		->toContain("replicate_out_table(\$rcnn_id, \$tdata, 'syslog_device_rule', \$remote_poller_id)")
-		->toContain("db_fetch_assoc('SELECT * FROM syslog_device_rule')")
-		->toContain("syslog_replace_data('syslog_device_rule', \$data)");
+	expect($processing)->toContain("['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports']")
+		->toContain("syslog_replace_data(\$table, \$rows, \$data['rcnn_id'], \$syslog_cnn)");
 });
 
 it('correlates device suppression and maintenance exceptions with the incoming message host', function () {

@@ -74,9 +74,9 @@ function syslog_db_execute($sql, $log = true): bool {
 /**
  * syslog_db_execute_prepared - run an sql query and do not return any output
  *
- * @param string       $sql   The sql query to execute
+ * @param string           $sql   The sql query to execute
  * @param array<int,mixed> $parms The sql params for the prepare
- * @param bool         $log   Whether to log error messages, defaults to true
+ * @param bool             $log   Whether to log error messages, defaults to true
  *
  * @return bool true for success, false for error
  */
@@ -106,10 +106,10 @@ function syslog_db_fetch_cell($sql, $col_name = '', $log = true) {
  * syslog_db_fetch_cell_prepared - run a 'select' sql query and return the first column of the
  * first row found
  *
- * @param string       $sql      The sql query to execute
+ * @param string           $sql      The sql query to execute
  * @param array<int,mixed> $params   An array of parameters
- * @param string       $col_name Use this column name instead of the first one
- * @param bool         $log      Whether to log error messages, defaults to true
+ * @param string           $col_name Use this column name instead of the first one
+ * @param bool             $log      Whether to log error messages, defaults to true
  *
  * @return mixed The output of the sql query as a single variable
  */
@@ -136,9 +136,9 @@ function syslog_db_fetch_row($sql, $log = true) {
 /**
  * syslog_db_fetch_row_prepared - run a 'select' sql query and return the first row found
  *
- * @param string       $sql    The sql query to execute
+ * @param string           $sql    The sql query to execute
  * @param array<int,mixed> $params An array of parameters
- * @param bool         $log    Whether to log error messages, defaults to true
+ * @param bool             $log    Whether to log error messages, defaults to true
  *
  * @return array<string, mixed>|false The first row of the result as a hash
  */
@@ -165,9 +165,9 @@ function syslog_db_fetch_assoc($sql, $log = true) {
 /**
  * syslog_db_fetch_assoc_prepared - run a 'select' sql query and return all rows found
  *
- * @param string       $sql    The sql query to execute
+ * @param string           $sql    The sql query to execute
  * @param array<int,mixed> $params An array of parameters
- * @param bool         $log    Whether to log error messages, defaults to true
+ * @param bool             $log    Whether to log error messages, defaults to true
  *
  * @return list<array<string, mixed>>|false The entire result set as a multi-dimensional hash
  */
@@ -191,9 +191,9 @@ function syslog_db_fetch_insert_id(): int {
 /**
  * syslog_db_replace - replaces the data contained in a particular row
  *
- * @param string                $table_name  The name of the table to make the replacement in
- * @param array<string, mixed>  $array_items An array containing each column -> value mapping in the row
- * @param string|array<string>  $keyCols     The name of the column containing the primary key
+ * @param string               $table_name  The name of the table to make the replacement in
+ * @param array<string, mixed> $array_items An array containing each column -> value mapping in the row
+ * @param string|array<string> $keyCols     The name of the column containing the primary key
  *
  * @return int|false The auto incriment id column (if applicable), or false for error
  */
@@ -272,9 +272,9 @@ function syslog_db_column_exists($table, $column, $log = true): bool {
 /**
  * syslog_db_add_column - adds a column to a table
  *
- * @param string       $table  The name of the table
+ * @param string               $table  The name of the table
  * @param array<string, mixed> $column The column definition
- * @param bool         $log    Whether to log error messages, defaults to true
+ * @param bool                 $log    Whether to log error messages, defaults to true
  *
  * @return bool true if the column was added, false otherwise
  */

@@ -31,14 +31,15 @@ if (function_exists('pcntl_async_signals')) {
 include(__DIR__ . '/../../include/cli_check.php');
 include_once(__DIR__ . '/setup.php');
 
-syslog_connect();
+if (!api_plugin_is_enabled('syslog')) {
+	exit(0);
+}
 
-// Add the message digest grouping columns and backfill a bounded slice of
-// pre-upgrade rows each cycle.  The archival statements write digests from
-// the first run after the columns exist, so only the stored backlog is left.
-require_once(__DIR__ . '/includes/schema.php');
-syslog_ensure_message_digest_columns();
-syslog_backfill_message_digest();
+if (!syslog_connect()) {
+	cacti_log('ERROR: Syslog database or schema is unavailable; skipping processing.', false, 'SYSLOG');
+
+	exit(1);
+}
 
 /**
  * Let it run for an hour if it has to, to clear up any big
@@ -167,7 +168,7 @@ if (function_exists('pcntl_signal')) {
 }
 
 // record the start time
-$start_time = microtime(true);
+$start_time      = microtime(true);
 $start_timestamp = time();
 
 /**
@@ -219,10 +220,6 @@ if ($config['poller_id'] > 1) {
 
 		exit(1);
 	}
-
-	// replicate in syslog tables sync is enabled
-	require_once(__DIR__ . '/includes/processing.php');
-	syslog_replicate_in();
 }
 
 /**
@@ -231,6 +228,24 @@ if ($config['poller_id'] > 1) {
  */
 if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
 	exit(0);
+}
+
+// Only the registered master may migrate history or replace synchronized rules.
+if ($config['poller_id'] > 1) {
+	require_once(__DIR__ . '/includes/processing.php');
+
+	if (!syslog_replicate_in()) {
+		cacti_log('ERROR: Syslog rule synchronization failed; skipping processing.', false, 'SYSLOG');
+		unregister_process('syslog', 'master', $config['poller_id']);
+		exit(1);
+	}
+}
+
+require_once(__DIR__ . '/includes/schema.php');
+syslog_ensure_message_digest_columns();
+
+if (syslog_backfill_message_digest() < 0) {
+	cacti_log('WARNING: Syslog message digest migration paused; it will retry next cycle.', false, 'SYSLOG');
 }
 
 syslog_status_set('last_polling_time', $start_timestamp);
@@ -402,6 +417,7 @@ if ($parallel && $max_seq > 0) {
 		$worker_stats = syslog_aggregate_worker_stats($launched);
 
 		$moved = $worker_stats['moved'];
+
 		if ($worker_stats['success']) {
 			$stale = syslog_delete_stale_incoming();
 		} else {
@@ -449,11 +465,15 @@ syslog_postprocess_tables();
 // State is derived from Cacti reachability plus the plugin-owned outbox. One
 // bounded batch may make gradual recovery progress; no recovery loop is used.
 $replication_state = syslog_replication_record_state();
+
 if ($replication_state === 'recovery') {
 	syslog_replication_start_recovery_worker();
 } elseif ($replication_state === 'online') {
 	$sent_to_main = syslog_replication_deliver_online();
-	if ($sent_to_main > 0) { cacti_log('SYSLOG STATS: Sent ' . $sent_to_main . ' records to the Main Collector', false, 'SYSLOG'); }
+
+	if ($sent_to_main > 0) {
+		cacti_log('SYSLOG STATS: Sent ' . $sent_to_main . ' records to the Main Collector', false, 'SYSLOG');
+	}
 }
 syslog_replication_record_state();
 
@@ -566,6 +586,7 @@ function syslog_worker_main($debug = false) {
 			$success = $results['success'];
 
 			syslog_debug(sprintf('Moved   %5s - Message(s) in slice %d-%d', $moved, $seq_start, $seq_end));
+
 			if (!$success) {
 				cacti_log("ERROR: Syslog child $child failed transfer slice $seq_start-$seq_end", false, 'SYSLOG');
 			}

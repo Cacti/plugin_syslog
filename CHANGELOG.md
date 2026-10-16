@@ -2,6 +2,25 @@
 
 --- develop ---
 
+* style: Keep all SonarCloud-reported lines within the 120-character limit by reflowing long SQL calls, ternaries, mappings and misaligned PHPDoc comment blocks, and associate the Device Alert Rule filter controls (Search, Enabled, Rules) with accessible labels
+* bug: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
+
+* bug: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails
+
+* bug: Resolve Cacti 1.2.x main-poller default database connections explicitly for Syslog rule replication
+
+* bug: Automatically repair collector-local schema before remote Syslog queries and processing after reinstall; keep failed message queries from disabling the plugin with a return-type error
+
+* bug: Remove all plugin-owned tables from remote collectors through Cacti's native API when uninstalling all Syslog data
+
+* security: Escape stored removal and report rule names in all bulk-action confirmations
+* bug: Route rule imports to the configured Syslog database and publish complete remote rule snapshots with source-aware schema transfer and failure-safe replacement
+* bug: Bound digest backfill to the registered master and a fixed migration range, retaining the last durable cursor when a batch or progress write fails
+* bug: Report dashboard write failures and roll back partial deletes, copies and panel ordering changes
+* bug: Count equal retained and removed log totals correctly and remove all plugin-owned tables during uninstall-all
+* test: Repair the schema CLI fixture and add dedicated-database, rule synchronization, migration, output escaping and dashboard rollback regression coverage
+* test: Measure lib/QueryBuilder.php in the patch-coverage gate and cover the QueryBuilder availability guards, the timeseries dashboard panel branch, invalid-database partition guards, retroactive removal-rule field maps, dMaxValue metadata extraction and the metadata label/filter button renderers
+
 * bug: Restore the incoming-to-syslog archive INSERT so its outer SELECT no longer redeclares a second unbound poller_id placeholder (SQLSTATE HY093 "Invalid parameter number" made every transfer fail with "Unable to archive incoming records") and reads the derived table's columns instead of the out-of-scope syslog_incoming alias
 * feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
 * feature: Add poller-driven pipeline health alerts for stalled processing, incoming backlogs, remote synchronization failures or delays, and blocked partition maintenance; expand the existing Status health card with check results and email delivery status, with optional problem, reminder, and recovery notifications

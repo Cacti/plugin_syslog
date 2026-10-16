@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Plugin-owned bounded Syslog outbox recovery worker. */
+// Plugin-owned bounded Syslog outbox recovery worker.
 include(__DIR__ . '/../../include/cli_check.php');
 include_once(__DIR__ . '/setup.php');
 

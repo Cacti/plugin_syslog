@@ -238,6 +238,7 @@ it('skips notifications when another monitor owns the lock', function () {
 it('runs the monitor from the independent poller before launching the processor', function () {
 	$source = plugin_test_read_source('includes/processing.php');
 	expect(strpos($source, 'syslog_pipeline_health_check();'))->toBeLessThan(strpos($source, 'exec_background($command_string, $extra_args);'));
+	expect($source)->toContain("cacti_escapeshellarg(\$config['base_path'] . '/plugins/syslog/syslog_process.php')");
 });
 
 
@@ -395,4 +396,20 @@ it('bounds automatic queue queries and uses the replication backlog index order'
 	expect($sql)->toContain('LIMIT 10001) AS incoming_sample')
 		->toContain('WHERE acknowledged_at IS NULL ORDER BY created_at LIMIT 1')
 		->toContain('UNIX_TIMESTAMP(MIN(created_at)) AS oldest_pending_epoch');
+});
+
+it('passes lock logging flags in the database helper logging argument', function () {
+	pipeline_health_fixture();
+	$locks = [];
+	test_override('syslog_db_fetch_cell_prepared', function ($sql, $params, $column, $log) use (&$locks) {
+		$locks[] = [$sql, $column, $log];
+		return 1;
+	});
+
+	syslog_pipeline_health_check();
+
+	expect($locks)->toBe([
+		['SELECT GET_LOCK(?, 0)', '', false],
+		['SELECT RELEASE_LOCK(?)', '', false]
+	]);
 });

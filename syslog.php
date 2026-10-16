@@ -217,7 +217,7 @@ function get_ajax_hosts(): string {
 	// Step 1: candidate syslog host rows, resolved straight from the
 	// syslog_hosts primary key.  This is the fast path both with and
 	// without the Cacti host table present.
-	$hosts = syslog_db_fetch_assoc_prepared("SELECT sh.host_id, sh.host, " .
+	$hosts = syslog_db_fetch_assoc_prepared('SELECT sh.host_id, sh.host, ' .
 		($has_host_table ? 'NULL' : "'0'") . " AS id
 		FROM `$syslogdb_default`.`syslog_hosts` AS sh
 		WHERE sh.host LIKE ?
@@ -273,7 +273,7 @@ function get_ajax_hosts(): string {
 
 			$extra_hosts = syslog_db_fetch_assoc_prepared("SELECT sh.host_id, sh.host, NULL AS id
 				FROM `$syslogdb_default`.`syslog_hosts` AS sh
-				WHERE sh.host IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ")",
+				WHERE sh.host IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ')',
 				$bind);
 
 			foreach ($extra_hosts as $extra_host) {
@@ -532,7 +532,7 @@ function syslog_status_collector_health(): array {
 	$last_received_raw = syslog_db_fetch_cell("SELECT MAX(`$time_field`)
 		FROM `$syslogdb_default`.`syslog_incoming`");
 
-	$last_received = __('Unavailable', 'syslog');
+	$last_received  = __('Unavailable', 'syslog');
 	$oldest_seconds = null;
 
 	if (is_string($last_received_raw) && $last_received_raw !== '' && $last_received_raw !== 'NULL') {
@@ -557,7 +557,7 @@ function syslog_status_collector_health(): array {
 
 			if ($age >= 0) {
 				$oldest_seconds = $age;
-				$oldest_age = syslog_status_format_age($age);
+				$oldest_age     = syslog_status_format_age($age);
 			}
 		}
 	}
@@ -588,7 +588,7 @@ function syslog_status_collector_health(): array {
 	}
 
 	if (is_numeric($backlog_raw) && (int) $backlog_raw > 0 && $oldest_seconds !== null && $oldest_seconds > $stale_threshold) {
-		$warning    = true;
+		$warning      = true;
 		$warn_parts[] = __('unprocessed messages are %s old', syslog_status_format_age($oldest_seconds), 'syslog');
 	}
 
@@ -671,20 +671,21 @@ function syslog_status_storage(): array {
 	global $syslogdb_default, $syslog_retentions, $syslog_alert_retentions;
 
 	$incoming = syslog_db_fetch_cell("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_incoming`");
-	$bytes = syslog_db_fetch_cell_prepared('SELECT DATA_LENGTH + INDEX_LENGTH
+	$bytes    = syslog_db_fetch_cell_prepared('SELECT DATA_LENGTH + INDEX_LENGTH
 		FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?',
 		[$syslogdb_default, 'syslog']);
 
 	$size = syslog_status_format_bytes($bytes);
 
-	$retention = read_config_option('syslog_retention');
+	$retention       = read_config_option('syslog_retention');
 	$alert_retention = read_config_option('syslog_alert_retention');
 
 	return [
-		__('Rows in syslog_incoming', 'syslog') => is_numeric($incoming) ? number_format((int) $incoming) : __('Unavailable', 'syslog'),
+		__('Rows in syslog_incoming', 'syslog')            => is_numeric($incoming) ? number_format((int) $incoming) : __('Unavailable', 'syslog'),
 		__('Syslog table size (data + indexes)', 'syslog') => $size,
-		__('Syslog retention', 'syslog') => $syslog_retentions[$retention] ?? __('Unavailable', 'syslog'),
-		__('Alert retention', 'syslog') => $syslog_alert_retentions[$alert_retention] ?? __('Unavailable', 'syslog')
+		__('Syslog retention', 'syslog')                   => $syslog_retentions[$retention] ?? __('Unavailable', 'syslog'),
+		__('Alert retention', 'syslog')                    => $syslog_alert_retentions[$alert_retention]
+			?? __('Unavailable', 'syslog')
 	];
 }
 
@@ -726,6 +727,7 @@ function syslog_status_format_partition_progress(string $value): string {
 
 	foreach (['syslog' => 'syslog', 'syslog_removed' => 'syslog_removed'] as $key => $label) {
 		$state = $progress[$key] ?? null;
+
 		if (!is_array($state)) {
 			continue;
 		}
@@ -850,6 +852,7 @@ function syslog_status_replication(): array {
 /** Share the same live health snapshot between the card header and body. */
 function syslog_status_pipeline(): array {
 	static $health = null;
+
 	return $health ??= syslog_pipeline_health();
 }
 
@@ -864,7 +867,7 @@ function syslog_status_card_body(string $key): string {
 	$status       = syslog_status_data();
 	$worker_stats = syslog_status_workers();
 
-	$kv = function(string $label, string $value): void {
+	$kv = function (string $label, string $value): void {
 		print '<tr><th class="syslogStatusKvLabel">' . html_escape($label) . '</th><td>' . html_escape($value) . '</td></tr>';
 	};
 
@@ -886,20 +889,24 @@ function syslog_status_card_body(string $key): string {
 		case 'replication':
 			$replication = syslog_status_replication();
 			print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
+
 			foreach ([
-				__('State', 'syslog') => strtoupper((string) $replication['state']),
-				__('Queued Recovery Records', 'syslog') => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
-				__('Oldest pending', 'syslog') => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
+				__('State', 'syslog')                           => strtoupper((string) $replication['state']),
+				__('Queued Recovery Records', 'syslog')         => $replication['pending'] === null ? __('Unavailable', 'syslog') : number_format((int) $replication['pending']),
+				__('Oldest pending', 'syslog')                  => $replication['oldest_pending'] !== '' ? (string) $replication['oldest_pending'] : __('None', 'syslog'),
 				__('Last successful synchronization', 'syslog') => syslog_status_format_time((string) $replication['last_success']),
-				__('Recovery worker', 'syslog') => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),
-				__('Last synchronization error', 'syslog') => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
-			] as $label => $value) { $kv($label, (string) $value); }
+				__('Recovery worker', 'syslog')                 => !empty($replication['recovery_active']) ? __('Active', 'syslog') : __('Inactive', 'syslog'),
+				__('Last synchronization error', 'syslog')      => $replication['last_error'] !== '' ? $replication['last_error'] : __('None', 'syslog')
+			] as $label => $value) {
+				$kv($label, (string) $value);
+			}
 			print '</tbody></table>';
 
 			break;
 		case 'remote_collectors':
 			$remote_collectors = syslog_replication_collector_status();
 			print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Remote Poller', 'syslog')) . '</th><th>' . html_escape(__('Last Batch Count', 'syslog')) . '</th><th>' . html_escape(__('Last Record Received', 'syslog')) . '</th></tr></thead><tbody>';
+
 			if (cacti_sizeof($remote_collectors)) {
 				foreach ($remote_collectors as $collector) {
 					print '<tr><th scope="row">' . html_escape(!empty($collector['hostname']) ? $collector['hostname'] : __('Unknown remote poller', 'syslog')) . '</th><td>' . html_escape(number_format((int) $collector['last_batch_count'])) . '</td><td>' . html_escape(syslog_status_format_time((string) $collector['last_received'])) . '</td></tr>';
@@ -912,9 +919,13 @@ function syslog_status_card_body(string $key): string {
 			break;
 		case 'storage':
 			print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
-			foreach (syslog_status_storage() as $label => $value) { $kv((string) $label, (string) $value); }
+
+			foreach (syslog_status_storage() as $label => $value) {
+				$kv((string) $label, (string) $value);
+			}
 			print '</tbody></table>';
 			$partition_block = syslog_partition_blocked_state();
+
 			if ($partition_block['blocked']) {
 				print '<p class="syslogStatusNote"><span class="syslogStatusNoteLabel">' . __esc('Partition maintenance blocked', 'syslog') . ':</span> ' . html_escape($partition_block['reason'] !== '' ? $partition_block['reason'] : __('Partition maintenance is stopped; writes continue into the dMaxValue safety partition.', 'syslog')) . '</p>';
 			}
@@ -923,8 +934,9 @@ function syslog_status_card_body(string $key): string {
 		case 'partition_health':
 			print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Table', 'syslog')) . '</th><th>' . html_escape(__('Date coverage', 'syslog')) . '</th><th>' . html_escape(__('dMaxValue rows (estimated)', 'syslog')) . '</th><th>' . html_escape(__('dMaxValue size', 'syslog')) . '</th></tr></thead><tbody>';
 			$partition_health = syslog_partition_observability();
+
 			foreach (['syslog', 'syslog_removed'] as $table) {
-				$health = $partition_health[$table] ?? [];
+				$health   = $partition_health[$table] ?? [];
 				$coverage = !empty($health['coverage_start']) && !empty($health['coverage_end']) ? syslog_status_format_partition_date((string) $health['coverage_start']) . ' — ' . syslog_status_format_partition_date((string) $health['coverage_end']) . ' (' . number_format((int) $health['partitions']) . ')' : __('Unavailable', 'syslog');
 				print '<tr><th scope="row">' . html_escape($table) . '</th><td>' . html_escape($coverage) . '</td><td>' . html_escape(isset($health['dmax_rows']) && $health['dmax_rows'] !== null ? number_format((float) $health['dmax_rows']) : __('Unavailable', 'syslog')) . '</td><td>' . html_escape(syslog_status_format_bytes($health['dmax_bytes'] ?? null)) . '</td></tr>';
 			}
@@ -943,6 +955,7 @@ function syslog_status_card_body(string $key): string {
 		case 'maintenance_recent':
 			print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('When', 'syslog')) . '</th><th>' . html_escape(__('Outcome', 'syslog')) . '</th><th>' . html_escape(__('Recovery', 'syslog')) . '</th><th>' . html_escape(__('Details', 'syslog')) . '</th></tr></thead><tbody>';
 			$history = json_decode($status['partition_maintenance_history'], true);
+
 			if (!is_array($history) || !cacti_sizeof($history)) {
 				print '<tr><td colspan="4" class="syslogStatusEmpty">' . __esc('No partition maintenance activity recorded yet. Activity appears after the next poller run.', 'syslog') . '</td></tr>';
 			} else {
@@ -955,23 +968,24 @@ function syslog_status_card_body(string $key): string {
 			break;
 		case 'collector_health':
 			$pipeline = syslog_status_pipeline();
-			$labels = [
-				'processing' => __('Processing', 'syslog'), 'backlog' => __('Incoming backlog', 'syslog'),
+			$labels   = [
+				'processing'  => __('Processing', 'syslog'), 'backlog' => __('Incoming backlog', 'syslog'),
 				'replication' => __('Synchronization', 'syslog'), 'partition' => __('Partition maintenance', 'syslog')
 			];
 			print '<table class="syslogStatusTable syslogStatusKv"><tbody>';
 			$states = [
-				'up' => __('Healthy', 'syslog'), 'down' => __('Attention required', 'syslog'),
+				'up'       => __('Healthy', 'syslog'), 'down' => __('Attention required', 'syslog'),
 				'disabled' => __('Processing disabled', 'syslog'), 'recovering' => __('Waiting for processing', 'syslog')
 			];
 			$kv(__('Health', 'syslog'), $states[$pipeline['state']]);
+
 			foreach ($pipeline['checks'] as $check => $detail) {
 				$kv($labels[$check], $pipeline['issues'][$check] ?? $detail);
 			}
-			$monitor = $pipeline['monitor'];
+			$monitor       = $pipeline['monitor'];
 			$notifications = [
 				'disabled' => __('Disabled', 'syslog'), 'ready' => __('Ready', 'syslog'), 'sent' => __('Sent', 'syslog'),
-				'failed' => __('Failed; retry pending', 'syslog'), 'pending' => __('Pending; next poller check', 'syslog')
+				'failed'   => __('Failed; retry pending', 'syslog'), 'pending' => __('Pending; next poller check', 'syslog')
 			];
 			$kv(__('Last health check', 'syslog'), syslog_status_format_time((string) ($monitor['checked'] ?? '')));
 			$kv(__('Email notifications', 'syslog'), $notifications[$monitor['notification'] ?? ''] ?? __('Not checked yet', 'syslog'));
@@ -995,6 +1009,7 @@ function syslog_status_card_body(string $key): string {
 			break;
 		case 'worker_processes':
 			print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Process', 'syslog')) . '</th><th>' . html_escape(__('Records handled', 'syslog')) . '</th><th>' . html_escape(__('Hosts resolved', 'syslog')) . '</th><th>' . html_escape(__('Runtime', 'syslog')) . '</th></tr></thead><tbody>';
+
 			if (cacti_sizeof($worker_stats['children'])) {
 				foreach ($worker_stats['children'] as $child) {
 					print '<tr><th scope="row">' . html_escape(syslog_status_format_count($child['child'])) . '</th><td>' . html_escape(syslog_status_format_count($child['moved'])) . '</td><td>' . html_escape(syslog_status_format_count($child['resolved'])) . '</td><td>' . html_escape(syslog_status_format_seconds($child['runtime'])) . '</td></tr>';
@@ -1008,7 +1023,7 @@ function syslog_status_card_body(string $key): string {
 		case 'phases':
 			print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Phase', 'syslog')) . '</th><th>' . html_escape(__('Started', 'syslog')) . '</th><th>' . html_escape(__('Duration', 'syslog')) . '</th><th>' . html_escape(__('Records', 'syslog')) . '</th></tr></thead><tbody>';
 			$phase_telemetry = syslog_status_phase_telemetry();
-			$phase_labels = [
+			$phase_labels    = [
 				'partition'  => __('Partition maintenance', 'syslog'),
 				'references' => __('Reference updates', 'syslog'),
 				'removal'    => __('Removal rules', 'syslog'),
@@ -1018,21 +1033,27 @@ function syslog_status_card_body(string $key): string {
 			];
 			$slowest_phase   = '';
 			$slowest_seconds = -1.0;
+
 			foreach ($phase_telemetry as $phase => $telemetry) {
 				if ($telemetry === null) {
 					continue;
 				}
+
 				if ($telemetry['seconds'] > $slowest_seconds) {
 					$slowest_seconds = $telemetry['seconds'];
 					$slowest_phase   = $phase;
 				}
 			}
 			$any_phase = false;
+
 			foreach ($phase_telemetry as $phase => $telemetry) {
-				if ($telemetry === null) { continue; }
+				if ($telemetry === null) {
+					continue;
+				}
 				$any_phase = true;
 				print '<tr><th scope="row">' . html_escape($phase_labels[$phase] ?? $phase) . ($phase === $slowest_phase ? ' <em>(' . __esc('slowest', 'syslog') . ')</em>' : '') . '</th><td>' . html_escape(syslog_status_format_time((string) $telemetry['start'])) . '</td><td>' . html_escape(syslog_status_format_seconds((string) $telemetry['seconds'])) . '</td><td>' . html_escape(syslog_status_format_count((string) $telemetry['count'])) . '</td></tr>';
 			}
+
 			if (!$any_phase) {
 				print '<tr><td colspan="4" class="syslogStatusEmpty">' . __esc('No phase timings recorded yet.  Phase timings appear after the next poller run.', 'syslog') . '</td></tr>';
 			}
@@ -1041,6 +1062,7 @@ function syslog_status_card_body(string $key): string {
 			break;
 		case 'rules':
 			print '<table class="syslogStatusTable"><thead><tr><th>' . html_escape(__('Rules processed', 'syslog')) . '</th><th>' . html_escape(__('Last run', 'syslog')) . '</th><th>' . html_escape(__('Total', 'syslog')) . '</th></tr></thead><tbody>';
+
 			foreach (['alert' => __('Alert rules', 'syslog'), 'delete' => __('Delete rules', 'syslog')] as $type => $label) {
 				print '<tr><th scope="row">' . html_escape($label) . '</th><td>' . html_escape(syslog_status_format_count($status['last_' . $type . '_rules_processed'])) . '</td><td>' . html_escape(syslog_status_format_count($status['total_' . $type . '_rules_processed'])) . '</td></tr>';
 				print '<tr><td colspan="3" class="syslogStatusRuleDetail"><span class="syslogStatusNoteLabel">' . __esc('Fired last run', 'syslog') . ':</span> ' . html_escape(syslog_status_format_rule_activity($status['last_' . $type . '_rules_fired'])) . '</td></tr>';
@@ -1069,11 +1091,13 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 	}
 
 	$def = $meta[$key];
+
 	if ($key === 'collector_health') {
 		$def['state'] = syslog_status_pipeline()['state'];
 	}
 
 	$tools = '';
+
 	if ($def['expandable']) {
 		$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="expand" aria-label="' . __esc('Show more', 'syslog') . '" title="' . __esc('Show more', 'syslog') . '"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>';
 		$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="collapse" aria-label="' . __esc('Show less', 'syslog') . '" title="' . __esc('Show less', 'syslog') . '"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>';
@@ -1083,9 +1107,11 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'syslog') . '" title="' . __esc('Remove from page', 'syslog') . '"><i class="fa fa-times" aria-hidden="true"></i></button>';
 
 	$classes = 'syslogStatusCard syslogStatusSpan' . (int) $def['span'];
+
 	if ($def['expandable']) {
 		$classes .= ' syslogStatusCardExpandable';
 	}
+
 	if ($expanded) {
 		$classes .= ' syslogStatusCardExpanded';
 	}
@@ -1093,6 +1119,7 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 	// Header severity variant: up / recovering / down, or a neutral grey when the
 	// card carries no severity.
 	$state = isset($def['state']) ? preg_replace('/[^a-z]/', '', strtolower((string) $def['state'])) : '';
+
 	if (!in_array($state, ['up', 'recovering', 'down'], true)) {
 		$state = 'none';
 	}
@@ -1125,6 +1152,7 @@ function syslog_status_layout(): array {
 	}
 
 	$order = [];
+
 	foreach ($saved['order'] as $key) {
 		if (is_string($key) && in_array($key, $available, true) && !in_array($key, $order, true)) {
 			$order[] = $key;
@@ -1132,6 +1160,7 @@ function syslog_status_layout(): array {
 	}
 
 	$expanded = [];
+
 	if (isset($saved['expanded']) && is_array($saved['expanded'])) {
 		foreach ($saved['expanded'] as $key => $on) {
 			if ($on && in_array($key, $available, true)) {
@@ -1222,6 +1251,7 @@ function syslog_status(): void {
 	print '<div class="syslogStatusToolbar">';
 	print '<label class="syslogStatusToolbarLabel" for="syslog_status_add">' . __esc('Add card', 'syslog') . '</label>';
 	print '<select id="syslog_status_add" class="syslogStatusAdd"><option value="">' . __esc('Add a status card…', 'syslog') . '</option>';
+
 	foreach ($absent as $key) {
 		print '<option value="' . html_escape($key) . '">' . html_escape($meta[$key]['title']) . '</option>';
 	}
@@ -1233,6 +1263,7 @@ function syslog_status(): void {
 	print '<div class="syslogStatusRefresh">';
 	print '<label class="syslogStatusToolbarLabel" for="syslog_status_refresh">' . __esc('Refresh', 'syslog') . '</label>';
 	print '<select id="syslog_status_refresh" class="syslogStatusRefreshInterval">';
+
 	foreach ($page_refresh_interval as $seconds => $display_text) {
 		print '<option value="' . (int) $seconds . '"' . ($current_refresh == $seconds ? ' selected' : '') . '>' . html_escape($display_text) . '</option>';
 	}
@@ -1242,6 +1273,7 @@ function syslog_status(): void {
 	print '</div>';
 
 	print '<div id="syslog_status" class="syslogStatusGrid">';
+
 	foreach ($layout['order'] as $key) {
 		print syslog_status_render_card($key, !empty($layout['expanded'][$key]));
 	}
@@ -1253,11 +1285,13 @@ function syslog_status(): void {
 	print '</div>';
 
 	$catalog = [];
+
 	foreach (syslog_status_available_cards() as $key) {
 		$catalog[$key] = $meta[$key]['title'];
 	}
 
-	print "<script type='text/javascript'>var syslogStatusCatalog = " . syslog_json_safe($catalog) . "; initSyslogStatus();</script>";
+	print "<script type='text/javascript'>var syslogStatusCatalog = "
+		. syslog_json_safe($catalog) . '; initSyslogStatus();</script>';
 }
 
 /**
@@ -1423,7 +1457,7 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 			'default' => read_user_setting('syslog_grouping', '0', $force),
 		],
 		'search_mode' => [
-			'filter' => FILTER_CALLBACK,
+			'filter'  => FILTER_CALLBACK,
 			'options' => ['options' => function ($value) { return $value === 'logical' ? 'logical' : 'regex'; }],
 			'pageset' => true,
 			'default' => 'logical'
@@ -1459,6 +1493,7 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 
 	$logical_input = $search_mode === 'logical' && isset_request_var('rfilter') && !isset_request_var('clear') ? get_nfilter_request_var('rfilter') : null;
 	validate_store_request_vars($filters, 'sess_sl_' . $current_tab);
+
 	// Preserve literal text, including Cacti's special 'undefined' sentinel.
 	if (is_string($logical_input)) {
 		set_request_var('rfilter', $logical_input);
@@ -1481,19 +1516,24 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 		set_request_var('rfilter', $legacy === '' ? '' : 'message contains ' . '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $legacy) . '"');
 		set_request_var('search_mode', 'logical');
 	}
+
 	// New submissions contain the entire query. Convert old saved dropdown state only on entry.
 	if (!$filter_submitted && !isset_request_var('clear')) {
 		$conditions = [];
+
 		foreach (['eprogram' => 'program_id', 'efacility' => 'facility_id', 'epriority' => 'priority_id'] as $old => $field) {
 			$value = (string) get_request_var($old);
+
 			if ($value !== '-1' && $value !== '') {
-				$operator = $old === 'epriority' && substr($value, -1) !== 'o' ? '<=' : '=';
+				$operator     = $old === 'epriority' && substr($value, -1) !== 'o' ? '<=' : '=';
 				$conditions[] = $field . ' ' . $operator . ' "' . (int) $value . '"';
 			}
 		}
 		$hosts = (string) get_request_var('host');
+
 		if ($hosts !== '' && $hosts !== '0') {
 			$host_conditions = [];
+
 			foreach (explode(',', $hosts) as $host) {
 				if (ctype_digit($host)) {
 					if ($current_tab === 'syslog') {
@@ -1501,30 +1541,39 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 					} else {
 						global $syslogdb_default;
 						$hostname = syslog_db_fetch_cell_prepared("SELECT host FROM `$syslogdb_default`.`syslog_hosts` WHERE host_id = ?", [$host]);
+
 						if ($hostname !== false && $hostname !== '') {
 							$host_conditions[] = 'host = "' . str_replace(['\\', '"'], ['\\\\', '\\"'], $hostname) . '"';
 						}
 					}
 				}
 			}
-			if ($host_conditions) { $conditions[] = '(' . implode(' OR ', $host_conditions) . ')'; }
+
+			if ($host_conditions) {
+				$conditions[] = '(' . implode(' OR ', $host_conditions) . ')';
+			}
 		}
+
 		if ($conditions) {
 			$query = get_request_var('rfilter');
 			set_request_var('rfilter', ($query === '' ? '' : '(' . $query . ') AND ') . implode(' AND ', $conditions));
 		}
 	}
+
 	foreach (['host' => '0', 'eprogram' => '-1', 'efacility' => '-1', 'epriority' => '-1'] as $key => $value) {
 		set_request_var($key, $value);
 		$_SESSION['sess_sl_' . $current_tab . '_' . $key] = $value;
 	}
+
 	foreach (['rfilter', 'search_mode'] as $key) {
 		$_SESSION['sess_sl_' . $current_tab . '_' . $key] = get_request_var($key);
 	}
 
 	set_shift_span($shift_span, 'sess_sl_' . $current_tab);
+
 	if (get_request_var('search_mode') === 'logical') {
 		$query = get_request_var('rfilter');
+
 		// Keep authored date conditions intact; the default last-day limit is
 		// reapplied whenever the search carries no date condition of its own.
 		try {
@@ -1532,6 +1581,7 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 		} catch (InvalidArgumentException $error) {
 			$has_dates = true; // Leave invalid input intact for the validation error below.
 		}
+
 		if (!$has_dates) {
 			$dates = $shift_span === false ? 'logtime last "86400"' :
 				'logtime >= "' . get_request_var('date1') . '" AND logtime <= "' . get_request_var('date2') . '"';
@@ -1540,8 +1590,9 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 		$_SESSION['sess_sl_' . $current_tab . '_rfilter'] = get_request_var('rfilter');
 	}
 
-	$GLOBALS['syslog_search_tree'] = null;
+	$GLOBALS['syslog_search_tree']  = null;
 	$GLOBALS['syslog_search_error'] = '';
+
 	if (get_request_var('search_mode') === 'logical') {
 		try {
 			$GLOBALS['syslog_search_tree'] = syslog_parse_logical_search(get_request_var('rfilter'));
@@ -1552,7 +1603,6 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 	}
 
 	// ================= input validation =================
-
 
 	api_plugin_hook_function('syslog_request_val');
 
@@ -1581,7 +1631,7 @@ function saved_search_apply(string $tab, int $saved_id): void {
 	$username = get_username($_SESSION['sess_user_id']);
 
 	$sql_where = "`user` = ? OR is_global = 'on'";
-	$shared = syslog_shared_item_ids('saved_search');
+	$shared    = syslog_shared_item_ids('saved_search');
 
 	if (cacti_sizeof($shared)) {
 		$sql_where .= ' OR id IN (' . implode(',', $shared) . ')';
@@ -1666,7 +1716,7 @@ function saved_search_save(): string {
 		VALUES (?, ?, ?, ?, ?, '', ?)",
 		[$name, $search, $removal, $grouping, $username, time()]);
 
-		return (string) json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
+	return (string) json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
 }
 
 /**
@@ -1723,7 +1773,7 @@ function saved_search_global(): string {
 		return (string) json_encode(['error' => __('Permission denied.', 'syslog')]);
 	}
 
-	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
+	$id       = get_filter_request_var('id', FILTER_VALIDATE_INT);
 	$username = get_username($_SESSION['sess_user_id']);
 
 	if ($id === false || $id === null || $id <= 0) {
@@ -1738,6 +1788,7 @@ function saved_search_global(): string {
 	if ($row === false) {
 		return (string) json_encode(['error' => __('Saved search not found.', 'syslog')]);
 	}
+
 	if ($row['user'] !== $username && !syslog_saved_search_admin()) {
 		return (string) json_encode(['error' => __('You may only share your own saved searches.', 'syslog')]);
 	}
@@ -1755,7 +1806,7 @@ function saved_search_global(): string {
 /**
  * Apply a timespan or timeshift selection and store the resulting dates.
  *
- * @param bool|string $shift_span       The shift mode: 'span', 'shift', 'custom', or false for page navigation.
+ * @param bool|string $shift_span     The shift mode: 'span', 'shift', 'custom', or false for page navigation.
  * @param string      $session_prefix The session key prefix of the tab.
  *
  * @return void
@@ -1847,7 +1898,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 	// syslog and syslog_removed can legitimately gain independent operational
 	// columns. Keep the combined viewer query on its stable display contract
 	// instead of using SELECT *, which would make UNION depend on identical DDL.
-	$breach_sql = syslog_message_breach_sql();
+	$breach_sql      = syslog_message_breach_sql();
 	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq, ' . $breach_sql . ' AS threshold_breached';
 
 	$sql_where = '';
@@ -1908,7 +1959,6 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 				AND '" . get_request_var('date2') . "'";
 	}
 
-
 	if (isset_request_var('id') && $current_tab == 'current') {
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') .
 			'sa.id=' . get_request_var('id');
@@ -1917,6 +1967,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 	if (get_request_var('search_mode') === 'logical') {
 		$predicate = !empty($GLOBALS['syslog_search_error']) ? '(1 = 0)' :
 			syslog_logical_search_sql($GLOBALS['syslog_search_tree'] ?? null, $tab == 'syslog' ? 'message' : 'logmsg');
+
 		if ($predicate !== '') {
 			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . $predicate;
 		}
@@ -2096,7 +2147,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
 				$branch_limit = isset_request_var('export') ? 10000 : (int) $rows * get_request_var('page');
-				$query_sql = "SELECT * FROM (
+				$query_sql    = "SELECT * FROM (
 						SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -2141,9 +2192,9 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 			$sql_limit";
 	}
 
-	//print $query_sql;
+	// print $query_sql;
 
-	return syslog_db_fetch_assoc($query_sql);
+	return syslog_db_fetch_assoc($query_sql) ?: [];
 }
 
 /**
@@ -2177,7 +2228,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 
 	// Note: $sql_where is this function's message filter; the saved search
 	// visibility clause is separate.
-	$saved_where = "`user` = ? OR is_global = 'on'";
+	$saved_where     = "`user` = ? OR is_global = 'on'";
 	$shared_searches = syslog_shared_item_ids('saved_search');
 
 	if (cacti_sizeof($shared_searches)) {
@@ -2206,7 +2257,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 	</script>
 	<?php
 
-	html_start_box(__('Syslog Message Filter %s', $filter_text, 'syslog'), '100%', '', '3', 'center', ''); ?>
+	html_start_box(__('Syslog Message Filter %s', $filter_text, 'syslog'), '100%', false, 3, 'center', ''); ?>
 		<tr class='even noprint syslogFilterRow'>
 			<td class='noprint'>
 			<form id='syslog_form' data-theme='<?php print html_escape(get_selected_theme()); ?>' action='syslog.php' method='post'>
@@ -2229,39 +2280,39 @@ function syslog_filter(string $sql_where, string $tab): void {
 						<select id='saved_search' data-user='<?php print html_escape($username); ?>' data-admin='<?php print $saved_admin ? '1' : '0'; ?>'>
 							<?php
 							$saved_groups = [
-								__('My Searches', 'syslog')   => [],
+								__('My Searches', 'syslog')     => [],
 								__('Global Searches', 'syslog') => [],
 								__('Shared With Me', 'syslog')  => []
 							];
 
-							foreach ($saved_searches as $saved) {
-								if ($saved['is_global'] === 'on') {
-									$label = __('Global Searches', 'syslog');
-								} elseif ($saved['user'] === $username) {
-									$label = __('My Searches', 'syslog');
-								} else {
-									$label = __('Shared With Me', 'syslog');
-								}
+	foreach ($saved_searches as $saved) {
+		if ($saved['is_global'] === 'on') {
+			$label = __('Global Searches', 'syslog');
+		} elseif ($saved['user'] === $username) {
+			$label = __('My Searches', 'syslog');
+		} else {
+			$label = __('Shared With Me', 'syslog');
+		}
 
-								$saved_groups[$label][] = $saved;
-							}
+		$saved_groups[$label][] = $saved;
+	}
 
-							foreach ($saved_groups as $saved_label => $saved_group) {
-								if (cacti_sizeof($saved_group)) {
-									print "<optgroup label='" . html_escape($saved_label) . "'>";
+	foreach ($saved_groups as $saved_label => $saved_group) {
+		if (cacti_sizeof($saved_group)) {
+			print "<optgroup label='" . html_escape($saved_label) . "'>";
 
-									foreach ($saved_group as $saved) {
-										// Match the server-side delete permission in saved_search_delete().
-										$can_manage = $saved['user'] === $username || ($saved['is_global'] === 'on' && $saved_admin);
+			foreach ($saved_group as $saved) {
+				// Match the server-side delete permission in saved_search_delete().
+				$can_manage = $saved['user'] === $username || ($saved['is_global'] === 'on' && $saved_admin);
 
-										print "<option value='" . $saved['id'] . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "' data-manage='" . ($can_manage ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
-											html_escape($saved['name']) . '</option>';
-									}
+				print "<option value='" . $saved['id'] . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "' data-manage='" . ($can_manage ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
+					html_escape($saved['name']) . '</option>';
+			}
 
-									print '</optgroup>';
-								}
-							}
-							?>
+			print '</optgroup>';
+		}
+	}
+	?>
 						</select>
 						<details class='syslogMenu'><summary aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>' title='<?php print __esc('Manage saved searches', 'syslog'); ?>'><?php print __esc('Manage', 'syslog'); ?></summary><div class='syslogMenuBody'>
 							<input id='saved_saveas' type='button' value='<?php print __esc('Save search', 'syslog'); ?>'>
@@ -2293,16 +2344,16 @@ function syslog_filter(string $sql_where, string $tab): void {
 						<select id='rows' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
-							foreach ($item_rows as $rows => $display_text) {
-								print "<option value='" . $rows . "'";
+	foreach ($item_rows as $rows => $display_text) {
+		print "<option value='" . $rows . "'";
 
-								if (get_request_var('rows') == $rows) {
-									print ' selected';
-								}
+		if (get_request_var('rows') == $rows) {
+			print ' selected';
+		}
 
-								print '>' . $display_text . '</option>';
-							}
-							?>
+		print '>' . $display_text . '</option>';
+	}
+	?>
 						</select>
 					</div>
 					<div id='logical_search_error' role='alert'><?php print html_escape($GLOBALS['syslog_search_error'] ?? ''); ?></div>
@@ -2311,16 +2362,16 @@ function syslog_filter(string $sql_where, string $tab): void {
 							<label for='refresh'><?php print __('Refresh', 'syslog'); ?></label>
 							<select id='refresh'>
 								<?php
-								foreach ($page_refresh_interval as $seconds => $display_text) {
-									print "<option value='" . $seconds . "'";
+		foreach ($page_refresh_interval as $seconds => $display_text) {
+			print "<option value='" . $seconds . "'";
 
-									if (get_request_var('refresh') == $seconds) {
-										print ' selected';
-									}
+			if (get_request_var('refresh') == $seconds) {
+				print ' selected';
+			}
 
-									print '>' . $display_text . '</option>';
-								}
-								?>
+			print '>' . $display_text . '</option>';
+		}
+	?>
 							</select>
 						</div>
 						<?php if (get_nfilter_request_var('tab') == 'syslog') { ?>
@@ -2469,7 +2520,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
-						UNION
+						UNION ALL
 						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
@@ -2491,7 +2542,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 						SELECT COUNT(*) AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
-						UNION
+						UNION ALL
 						SELECT COUNT(*) AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
@@ -2525,12 +2576,12 @@ function syslog_messages(string $tab = 'syslog'): void {
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 		$display_text = [
-			'logtime'     => [__('Date', 'syslog'), 'ASC'],
-			'host_id'     => [__('Device', 'syslog'), 'ASC'],
-			'program'     => [__('Program', 'syslog'), 'ASC'],
-			'message'     => [__('Message', 'syslog'), 'ASC'],
-			'facility_id' => [__('Facility', 'syslog'), 'ASC'],
-			'priority_id' => [__('Priority', 'syslog'), 'ASC'],
+			'logtime'            => [__('Date', 'syslog'), 'ASC'],
+			'host_id'            => [__('Device', 'syslog'), 'ASC'],
+			'program'            => [__('Program', 'syslog'), 'ASC'],
+			'message'            => [__('Message', 'syslog'), 'ASC'],
+			'facility_id'        => [__('Facility', 'syslog'), 'ASC'],
+			'priority_id'        => [__('Priority', 'syslog'), 'ASC'],
 			'threshold_breached' => ['display' => __('Breach', 'syslog'), 'sort' => 'ASC', 'align' => 'center', 'tip' => __('Threshold breached', 'syslog')]];
 
 		// Add count column if grouping is enabled
@@ -2541,7 +2592,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 		print $nav;
 
-		html_start_box('', '100%', '', '3', 'center', '');
+		html_start_box('', '100%', false, 3, 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -2561,7 +2612,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 			$hosts = array_rekey(
 				syslog_db_fetch_assoc_prepared("SELECT host_id, host
 					FROM `$syslogdb_default`.`syslog_hosts`
-					WHERE host_id IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ")",
+					WHERE host_id IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ')',
 					$bind),
 				'host_id', 'host'
 			);
@@ -2590,7 +2641,6 @@ function syslog_messages(string $tab = 'syslog'): void {
 				$title = html_escape($sm['message']);
 
 				syslog_row_color($sm['priority_id'], $sm['message']);
-
 
 				// Display grouped or individual messages
 				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1) {
@@ -2634,7 +2684,6 @@ function syslog_messages(string $tab = 'syslog'): void {
 						foreach ($detail_messages as $dm) {
 							print "<tr class='tableRow syslogRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
 
-
 							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
@@ -2663,7 +2712,6 @@ function syslog_messages(string $tab = 'syslog'): void {
 			print $nav;
 		}
 
-
 		print '<div class="center syslogLegendFooter">';
 		syslog_syslog_legend();
 		print '</div>';
@@ -2689,7 +2737,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 		print $nav;
 
-		html_start_box('', '100%', '', '3', 'center', '');
+		html_start_box('', '100%', false, 3, 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -2734,7 +2782,15 @@ function syslog_messages(string $tab = 'syslog'): void {
 	?>
 	<aside id='syslog_message_details' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
 		<header class='ui-widget-header'><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' class='ui-state-default' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
-		<dl><?php foreach (['received' => __('Date', 'syslog'), 'device' => __('Device', 'syslog'), 'program' => __('Program', 'syslog'), 'facility' => __('Facility', 'syslog'), 'severity' => __('Priority', 'syslog')] as $key => $label) { print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>"; } ?></dl>
+		<dl><?php foreach ([
+			'received' => __('Date', 'syslog'),
+			'device'   => __('Device', 'syslog'),
+			'program'  => __('Program', 'syslog'),
+			'facility' => __('Facility', 'syslog'),
+			'severity' => __('Priority', 'syslog')
+		] as $key => $label) {
+			print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>";
+		} ?></dl>
 		<h4><?php print __esc('Message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>
 		<div class='syslogDetailsActions'><button type='button' id='syslog_details_copy'><?php print __esc('Copy message', 'syslog'); ?></button><span id='syslog_copy_status' role='status' data-success='<?php print __esc('Copied', 'syslog'); ?>' data-error='<?php print __esc('Copy unavailable. Select and copy the message text.', 'syslog'); ?>'></span></div>
 		<div class='syslogDetailsRules'><a data-rule='alarm' class='syslogRuleButton' hidden><?php print __esc('Create Alarm Rule', 'syslog'); ?></a><a data-rule='device' class='syslogRuleButton' hidden><?php print __esc('Create Device Alert Rule', 'syslog'); ?></a><a data-rule='removal' class='syslogRuleButton' hidden><?php print __esc('Create Removal Rule', 'syslog'); ?></a></div>

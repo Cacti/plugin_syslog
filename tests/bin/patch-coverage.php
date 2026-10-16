@@ -37,6 +37,62 @@ $clover_path = $argv[1];
 $base_ref    = $argv[2];
 $minimum     = isset($argv[3]) ? (float) $argv[3] : 100.0;
 
+/**
+ * Merge every report matching the primary path's directory alongside it.
+ *
+ * Subprocess contributors (for example the QueryBuilder availability-guard
+ * test, which runs the plugin against a shimmed tree without
+ * lib/QueryBuilder.php) dump a sibling clover fragment.  Counts for the same
+ * file and line are OR'ed: a line executed anywhere counts as covered.
+ *
+ * Paths are bucketed by their trailing two components
+ * (includes/functions.php) so a report generated against a copy of the tree
+ * credits the real file.
+ *
+ * @param string $clover_path The primary Clover report path.
+ *
+ * @return array<string, array<int, int>> Line hit counts keyed by two-segment path.
+ */
+function read_hits($clover_path) {
+	$reports = glob(dirname($clover_path) . '/*.xml');
+
+	usort($reports, function ($a, $b) use ($clover_path) {
+		return ($a === $clover_path ? 0 : 1) <=> ($b === $clover_path ? 0 : 1);
+	});
+
+	$hits = [];
+
+	foreach ($reports as $report) {
+		$xml = @simplexml_load_file($report);
+
+		if ($xml === false) {
+			if ($report === $clover_path) {
+				fwrite(STDERR, "cannot parse coverage report: $clover_path\n");
+
+				exit(2);
+			}
+
+			continue;
+		}
+
+		foreach ($xml->xpath('//file') as $file) {
+			$parts = explode('/', str_replace('\\', '/', (string) $file['name']));
+			$key   = implode('/', array_slice($parts, -2));
+
+			foreach ($file->line as $line) {
+				$number = (int) $line['num'];
+				$count  = (int) $line['count'];
+
+				if ((string) $line['type'] === 'stmt' && $count > 0 && (!isset($hits[$key][$number]) || $count > $hits[$key][$number])) {
+					$hits[$key][$number] = $count;
+				}
+			}
+		}
+	}
+
+	return $hits;
+}
+
 if (!is_readable($clover_path)) {
 	fwrite(STDERR, "cannot read coverage report: $clover_path\n");
 
@@ -109,6 +165,8 @@ if ($clover === false) {
 	exit(2);
 }
 
+$hits = read_hits($clover_path);
+
 $covered  = 0;
 $total    = 0;
 $missing  = [];
@@ -136,13 +194,18 @@ foreach ($clover->xpath('//file') as $file) {
 		$number = (int) $line['num'];
 
 		// Only statement lines are measurable; method markers double-count.
+		// Subprocess fragments bucket paths by trailing two components; only
+		// trust them for plugin-owned files (tests are excluded from the
+		// changed set already, so a collision cannot fake coverage there).
 		if ((string) $line['type'] !== 'stmt' || !isset($changed[$relative][$number])) {
 			continue;
 		}
 
 		$total++;
 
-		if ((int) $line['count'] > 0) {
+		$two = implode('/', array_slice(explode('/', str_replace('\\', '/', $path)), -2));
+
+		if ((int) $line['count'] > 0 || ($hits[$two][$number] ?? 0) > 0) {
 			$covered++;
 		} else {
 			$missing[] = $relative . ':' . $number;

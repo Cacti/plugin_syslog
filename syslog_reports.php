@@ -153,7 +153,7 @@ function form_actions(): void {
 
 	form_start('syslog_reports.php');
 
-	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', false, 3, 'center', '');
 
 	// setup some variables
 	$report_array = [];
@@ -172,7 +172,7 @@ function form_actions(): void {
 				WHERE id = ?",
 				[$matches[1]]);
 
-			$report_list .= '<li>' . $report_info . '</li>';
+			$report_list .= '<li>' . html_escape($report_info) . '</li>';
 			$report_array[] = $matches[1];
 		}
 	}
@@ -280,16 +280,16 @@ function report_export(): void {
 /**
  * Validate and save a Syslog Report rule.
  *
- * @param int|string $id        The id of the Report rule, '' for a new rule.
- * @param string $name     The name of the Report.
- * @param string $type     The match type of the Report.
- * @param string $message  The match string of the Report.
- * @param int    $timespan The frequency of the Report.
- * @param int    $timepart The time of day the Report is sent.
- * @param string $body     The email body text of the Report.
- * @param string $email    The comma delimited email addresses of the Report.
- * @param string $notes    The notes of the Report.
- * @param string $enabled  'on' when the Report is enabled, otherwise ''.
+ * @param int|string $id       The id of the Report rule, '' for a new rule.
+ * @param string     $name     The name of the Report.
+ * @param string     $type     The match type of the Report.
+ * @param string     $message  The match string of the Report.
+ * @param int        $timespan The frequency of the Report.
+ * @param int        $timepart The time of day the Report is sent.
+ * @param string     $body     The email body text of the Report.
+ * @param string     $email    The comma delimited email addresses of the Report.
+ * @param string     $notes    The notes of the Report.
+ * @param string     $enabled  'on' when the Report is enabled, otherwise ''.
  * @param int|string $notify   The notification list id of the Report.
  *
  * @return int|false The id of the saved Report, or false when the save failed.
@@ -406,9 +406,9 @@ function api_syslog_report_enable(int $id): void {
  * Fetch the Syslog Report rules matching the current filter, appending the
  * generated where clause and parameters to the given references.
  *
- * @param string              $sql_where The where clause, passed by reference.
- * @param array<int, mixed>   $sql_params The prepared SQL parameters, passed by reference.
- * @param int                 $rows      The number of rows to fetch.
+ * @param string            $sql_where  The where clause, passed by reference.
+ * @param array<int, mixed> $sql_params The prepared SQL parameters, passed by reference.
+ * @param int               $rows       The number of rows to fetch.
  *
  * @return array<int, array<string, mixed>> The matching Report rules.
  */
@@ -600,7 +600,7 @@ function syslog_action_edit(): void {
 
 	form_start('syslog_reports.php', 'syslog_edit');
 
-	html_start_box($header_label, '100%', '', '3', 'center', '');
+	html_start_box($header_label, '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -762,7 +762,7 @@ function syslog_report(): void {
 		$url = '';
 	}
 
-	html_start_box(__('Syslog Report Filters', 'syslog'), '100%', '', '3', 'center', $url);
+	html_start_box(__('Syslog Report Filters', 'syslog'), '100%', false, 3, 'center', $url);
 
 	syslog_reports_filter();
 
@@ -805,7 +805,7 @@ function syslog_report(): void {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -872,7 +872,7 @@ function import(): void {
 
 	print "<form method='post' action='syslog_reports.php' enctype='multipart/form-data'>";
 
-	html_start_box(__('Import Report Data', 'syslog'), '100%', false, '3', 'center', '');
+	html_start_box(__('Import Report Data', 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -915,7 +915,7 @@ function report_import(): void {
 					switch($name) {
 						case 'hash':
 							// See if the hash exists, if it does, update the alert
-							$found = db_fetch_cell_prepared('SELECT id
+							$found = syslog_db_fetch_cell_prepared('SELECT id
 							FROM syslog_reports
 							WHERE hash = ?',
 								[$value]);
@@ -944,7 +944,7 @@ function report_import(): void {
 				}
 			}
 
-			$id = sql_save($save, 'syslog_reports');
+			$id = syslog_sql_save($save, 'syslog_reports');
 
 			if ($id) {
 				raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
