@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 16:41-0400\n"
+"POT-Creation-Date: 2026-10-15 17:38-0400\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
@@ -236,7 +236,8 @@ msgstr ""
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
 msgid "Unknown"
 msgstr "未知"
 
@@ -1366,7 +1367,7 @@ msgstr "最后发送的邮件"
 msgid "Last %d Months"
 msgstr "%d 月"
 
-#: lib/syslog_dashboard.php syslog.php
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
 msgstr "刷新"
 
@@ -1551,6 +1552,60 @@ msgstr ""
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Name"
 msgstr "名称"
+
+#: lib/syslog_thresholds.php syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Breached Thresholds"
+msgstr "阈值"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr ""
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "设备"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+msgid "Recovers After"
+msgstr "正在重新处理"
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+#| msgid "Rules"
+msgid "Rule"
+msgstr "规则"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Previous"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Next"
+msgstr ""
 
 #: setup.php
 #, fuzzy
@@ -2347,9 +2402,15 @@ msgstr "保存默认设置"
 msgid "Save view defaults"
 msgstr "保存默认设置"
 
-#: syslog.php syslog_alerts.php syslog_device_rules.php
-msgid "Device"
-msgstr "设备"
+#: syslog.php
+msgid "Breach"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Threshold breached"
+msgstr "阈值"
 
 #: syslog.php
 msgid "Messages"
@@ -2359,6 +2420,17 @@ msgstr "消息"
 #, fuzzy
 msgid "Empty message"
 msgstr "信息"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+#, fuzzy
+msgid "No"
+msgstr "否"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Yes"
+msgstr "是"
 
 #: syslog.php
 #, fuzzy
@@ -2470,6 +2542,14 @@ msgstr "单击“继续”以导出以下Syslog警报规则。"
 msgid "Export Syslog Alert Rule(s)"
 msgstr "导出系统日志警报规则"
 
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr ""
+
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr ""
@@ -2530,6 +2610,28 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php
+#, fuzzy
+#| msgid "Time Range"
+msgid "Time unit"
+msgstr "时间范围"
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "%d Days"
+msgid "Days"
+msgstr "%d 天"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Hours"
+msgstr "%d 小时"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Minutes"
+msgstr "1 分钟"
+
+#: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "请描述此警报。"
 
@@ -2568,8 +2670,25 @@ msgstr "个人"
 
 #: syslog_alerts.php
 #, fuzzy
-msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
 msgstr "对于“阈值”方法，如果看到的数字高于此值，将触发警报。"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Threshold Window"
+msgstr "保持这个天数的阈值日志。"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -2778,25 +2897,24 @@ msgstr "创建工单"
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "是否应为此警报打开帮助台工单。注意：为方便起见，Ticket 命令脚本将填充几个“ALERT_”环境变量。"
 
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-#, fuzzy
-msgid "No"
-msgstr "否"
-
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr "是"
-
 #: syslog_alerts.php
-msgid "Command"
-msgstr "命令"
+#, fuzzy
+msgid "Alert command"
+msgstr "搬运处理"
 
 #: syslog_alerts.php
 #, fuzzy
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "触发警报时，请运行以下命令。以下替换变量可用于<b>“&lt;HOSTNAME&gt;”</b> ， <b>“&lt;ALERTID&gt;”</b> ， <b>“&lt;MESSAGE&gt;”</b> ， <b>“&lt;FACILITY&gt;”</b> ， <b>“&lt;PRIORITY&gt;”</b> ， <b>“&lt;SEVERITY&gt;”</b> 。请注意， <b>&#39;&lt;HOSTNAME&gt;&#39;</b>仅适用于各个阈值。"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Recovery command"
+msgstr "%d 记录"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php
 #, fuzzy
@@ -3716,6 +3834,9 @@ msgstr ""
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
 
+#~ msgid "Command"
+#~ msgstr "命令"
+
 #, fuzzy, php-format
 #~ msgid "no message received for %s"
 #~ msgstr "系统日志消息过滤器%s"
@@ -3834,10 +3955,6 @@ msgstr ""
 
 #~ msgid "System Administration"
 #~ msgstr "系统管理"
-
-#, fuzzy
-#~ msgid "Threshold Logs"
-#~ msgstr "保持这个天数的阈值日志。"
 
 #~ msgid "Timespan"
 #~ msgstr "时间跨度"
