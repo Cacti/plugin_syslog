@@ -6,6 +6,13 @@ beforeEach(function () {
 });
 
 it('renders device and shared scopes with escaped values and recovery deadlines', function () {
+	$rows = 0;
+	test_override('form_alternate_row', static function ($id, $light) use (&$rows) {
+		expect($id)->toBe('');
+		expect($light)->toBeTrue();
+		$rows++;
+		print '<tr class="tableRow">';
+	});
 	test_override('syslog_db_fetch_cell', static fn() => 2);
 	test_override('syslog_db_fetch_assoc', static fn() => [
 		['name' => '<rule>', 'alert_id' => 7, 'level' => 1, 'scope_key' => 'host<a>', 'host_id' => 3, 'source_poller_id' => 2, 'breached_at' => 1000, 'last_match' => 1200, 'expires_at' => 1500],
@@ -14,7 +21,8 @@ it('renders device and shared scopes with escaped values and recovery deadlines'
 	ob_start();
 	syslog_breached_thresholds();
 	$html = ob_get_clean();
-	expect($html)->toContain('&lt;rule&gt;', 'host&lt;a&gt;', 'All matching devices', 'Unknown', 'syslog_alerts.php?action=edit&amp;id=7', 'reset=1', 'rfilter=host')
+	expect($rows)->toBe(2);
+	expect($html)->toContain('<tr class="tableRow"><td colspan="6" class="left">', '&lt;rule&gt;', 'host&lt;a&gt;', 'All matching devices', 'Unknown', 'syslog_alerts.php?action=edit&amp;id=7', 'reset=1', 'rfilter=host')
 		->not->toContain('<rule>', '<a>');
 });
 

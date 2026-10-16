@@ -11,6 +11,7 @@ $count = 0;
 test_override('syslog_db_fetch_cell', static function ($sql) use (&$enabled, &$count) { return str_contains($sql, 'EXISTS') ? $enabled : $count; });
 test_override('html_start_box', static function ($title) { print '<table><caption>' . html_escape($title) . '</caption>'; });
 test_override('html_header', static function ($headers) { print '<tr>'; foreach ($headers as $header) { print '<th>' . html_escape($header) . '</th>'; } print '</tr>'; });
+test_override('form_alternate_row', static function () { print '<tr class="tableRow">'; });
 test_override('html_end_box', static function () { print '</table>'; });
 print '<!doctype html><html><head><meta charset="utf-8"><style>body{font:14px Arial}table{width:100%;border-collapse:collapse}td,th{padding:8px;text-align:left;border-bottom:1px solid #ddd}.tabs ul{display:flex;gap:16px;list-style:none}.selected{font-weight:bold}</style></head><body><section id="disabled">';
 syslog_display_tabs('syslog');

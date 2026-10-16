@@ -13,7 +13,9 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/breached_thr
   assert.match(await page.locator('#healthy table').textContent(), /No thresholds are currently breached/);
   assert.equal(await page.locator('#active a.selected').textContent(), 'Breached Thresholds (2)');
   assert.equal(await page.locator('#active th').count(), 6);
-  assert.equal(await page.locator('#active table tr').count(), 3);
+  assert.equal(await page.locator('#active tr.tableRow').count(), 3);
+  assert.match(await page.locator('#active td[colspan="6"].left').textContent(), /Recovery requires.*Refresh/s);
+  assert.equal(await page.locator('#active table tr').count(), 4);
   assert.equal(await page.locator('#active a[href*="action=edit"]').first().textContent(), 'Authentication failures');
   assert.match(await page.locator('#active a').filter({hasText: 'server01'}).getAttribute('href'), /reset=1.*rfilter=host/);
   assert.match(await page.locator('#active table').textContent(), /All matching devices/);

@@ -45,7 +45,8 @@ function syslog_breached_thresholds(): void {
 		if ((int) $breach['level'] === 1 && !empty($breach['host_id'])) {
 			$device = '<a href="' . html_escape($base . 'syslog.php?' . http_build_query(['tab' => 'syslog', 'reset' => 1, 'search_mode' => 'logical', 'rfilter' => 'host = ' . json_encode($breach['scope_key'])])) . '">' . $device . '</a>';
 		}
-		print '<tr><td>' . $rule . '</td><td>' . $device . '</td><td>' . (int) $breach['source_poller_id'] . '</td>';
+		form_alternate_row('', true);
+		print '<td>' . $rule . '</td><td>' . $device . '</td><td>' . (int) $breach['source_poller_id'] . '</td>';
 		foreach (['breached_at', 'last_match', 'expires_at'] as $field) {
 			print '<td class="nowrap">' . html_escape(empty($breach[$field]) ? __('Unknown', 'syslog') : date('Y-m-d H:i:s', (int) $breach[$field])) . '</td>';
 		}
@@ -54,7 +55,7 @@ function syslog_breached_thresholds(): void {
 	if (!$breaches) {
 		print '<tr><td colspan="6">' . __('No thresholds are currently breached.', 'syslog') . '</td></tr>';
 	}
-	html_end_box(false);
+	print '<tr class="tableRow"><td colspan="6" class="left">';
 	print '<p>' . __('Recovery requires no matching messages until the displayed time. Every match restarts the quiet period.', 'syslog') . '</p>';
 	print '<p><a href="' . html_escape($base . 'syslog.php?tab=breached&breach_page=' . $page) . '">' . __('Refresh', 'syslog') . '</a>';
 	if ($page > 1) {
@@ -63,5 +64,6 @@ function syslog_breached_thresholds(): void {
 	if ($offset + 50 < $total) {
 		print ' | <a href="' . html_escape($base . 'syslog.php?tab=breached&breach_page=' . ($page + 1)) . '">' . __('Next', 'syslog') . '</a>';
 	}
-	print '</p>';
+	print '</p></td></tr>';
+	html_end_box(false);
 }
