@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 16:41-0400\n"
+"POT-Creation-Date: 2026-10-15 17:38-0400\n"
 "PO-Revision-Date: 2025-03-07 14:53-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -234,7 +234,8 @@ msgstr ""
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -1323,7 +1324,7 @@ msgstr "마지막 보낸 날짜"
 msgid "Last %d Months"
 msgstr "%d 개월"
 
-#: lib/syslog_dashboard.php syslog.php
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
 msgstr "새로고침"
 
@@ -1506,6 +1507,60 @@ msgstr ""
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Name"
 msgstr "이름"
+
+#: lib/syslog_thresholds.php syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Breached Thresholds"
+msgstr "임계값"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr ""
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "장치"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+msgid "Recovers After"
+msgstr "재처리"
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+#| msgid "Rules"
+msgid "Rule"
+msgstr "규칙"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Previous"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Next"
+msgstr ""
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -2296,9 +2351,15 @@ msgstr "기본 설정 저장"
 msgid "Save view defaults"
 msgstr "기본 설정 저장"
 
-#: syslog.php syslog_alerts.php syslog_device_rules.php
-msgid "Device"
-msgstr "장치"
+#: syslog.php
+msgid "Breach"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Threshold breached"
+msgstr "임계값"
 
 #: syslog.php
 msgid "Messages"
@@ -2308,6 +2369,16 @@ msgstr "메시지"
 #, fuzzy
 msgid "Empty message"
 msgstr "메시지"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "No"
+msgstr "아니오"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Yes"
+msgstr "예"
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2406,6 +2477,14 @@ msgstr "'Continue(계속)'를 클릭하여 다음 Syslog 경고 규칙을 내보
 msgid "Export Syslog Alert Rule(s)"
 msgstr "Syslog 경고 규칙 내보내기"
 
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr ""
+
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr "입력한 SQL 구문이 유효하지 않습니다.  SQL을 수정하십시오.<br>"
@@ -2464,6 +2543,28 @@ msgid "N/A"
 msgstr "N/A"
 
 #: syslog_alerts.php
+#, fuzzy
+#| msgid "Time Range"
+msgid "Time unit"
+msgstr "시간 범위"
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "%d Days"
+msgid "Days"
+msgstr "%d일"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Hours"
+msgstr "%d 시간"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Minutes"
+msgstr "1분"
+
+#: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "이 경고에 대해 설명해 주십시오."
 
@@ -2496,8 +2597,28 @@ msgid "Individual"
 msgstr "개별"
 
 #: syslog_alerts.php
-msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+#, fuzzy
+#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
 msgstr "'임계값' 방법의 경우 표시된 숫자가 이 값보다 높으면 경고가 트리거됩니다."
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Threshold Logs"
+msgid "Threshold Window"
+msgstr "임계값 로그"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -2696,23 +2817,23 @@ msgstr "문의하기"
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "이 경고에 대해 헬프 데스크 티켓을 열어야 합니다.  참고: 티켓 명령 스크립트는 편의를 위해 여러 'ALERT_' 환경 변수로 채워집니다."
 
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "No"
-msgstr "아니오"
-
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr "예"
-
 #: syslog_alerts.php
-msgid "Command"
-msgstr "명령어"
+#, fuzzy
+msgid "Alert command"
+msgstr "재고 처분 처리"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "경고가 트리거되면 다음 명령을 실행합니다.  <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>와 같은 대체 변수를 사용할 수 있습니다.  <b>'&lt;HOSTNAME&gt;'</b> 은 개별 임계값에서만 사용할 수 있습니다.  이러한 대체 값은 명령줄에 표시되거나 스크립트 환경에서 수집될 수 있습니다.  환경에서 사용되는 경우 해당 변수에는 'ALERT_'가 접두사로 붙습니다."
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Recovery command"
+msgstr "%d 기록"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php
 #, fuzzy
@@ -3565,6 +3686,9 @@ msgstr ""
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
 
+#~ msgid "Command"
+#~ msgstr "명령어"
+
 #, fuzzy, php-format
 #~ msgid "no message received for %s"
 #~ msgstr "Syslog 메시지 필터 %s"
@@ -3672,9 +3796,6 @@ msgstr ""
 
 #~ msgid "System Administration"
 #~ msgstr "시스템 관리"
-
-#~ msgid "Threshold Logs"
-#~ msgstr "임계값 로그"
 
 #~ msgid "Timespan"
 #~ msgstr "시간"
