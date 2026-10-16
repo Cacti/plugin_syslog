@@ -247,6 +247,12 @@ if (!function_exists('syslog_db_add_column')) {
 	}
 }
 
+if (!function_exists('syslog_db_column_exists')) {
+	function syslog_db_column_exists($table, $column, $log = true) {
+		return test_call_override('syslog_db_column_exists', [$table, $column, $log], db_column_exists($table, $column));
+	}
+}
+
 if (!function_exists('syslog_db_table_exists')) {
 	function syslog_db_table_exists($table, $log = true) {
 		return test_call_override('syslog_db_table_exists', [$table, $log], db_table_exists($table));

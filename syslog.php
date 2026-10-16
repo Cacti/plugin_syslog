@@ -2013,6 +2013,17 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 		if ($grouping_enabled) {
+			// Group by a stored 32 byte digest of the message instead of the
+			// full TEXT column; the temporary tables used for grouping shrink
+			// accordingly.  Rows stored before the digest column existed fall
+			// back to hashing the message at query time, and the digest group
+			// key is not used at all while the schema upgrade has not run.  All
+			// grouped queries below expose their source table under the
+			// 'syslog' alias.
+			$message_group_key = syslog_message_digest_ready()
+				? "GROUP BY syslog.host_id, IF(syslog.message_digest = '', MD5(syslog.message), syslog.message_digest), syslog.program_id, syslog.facility_id, syslog.priority_id"
+				: 'GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id';
+
 			if (get_request_var('removal') == '-1') {
 				$query_sql = "SELECT syslog.host_id, syslog.message, syslog.program_id,
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
@@ -2024,7 +2035,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
 					ON syslog.program_id=syslog_programs.program_id
 					$sql_where
-					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					$message_group_key
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
@@ -2041,7 +2052,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
-						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+						$message_group_key
 					) UNION (
 						SELECT syslog.host_id, syslog.message, syslog.program_id,
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
@@ -2053,7 +2064,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
-						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+						$message_group_key
 					)
 				) AS grouped_results
 				$sql_order
@@ -2069,7 +2080,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
 					ON syslog.program_id = syslog_programs.program_id
 					$sql_where
-					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					$message_group_key
 					$sql_order
 					$sql_limit";
 			}
@@ -2444,24 +2455,31 @@ function syslog_messages(string $tab = 'syslog'): void {
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 		if ($grouping_enabled) {
-			// When grouping, count distinct groups instead of individual rows
+			// When grouping, count distinct groups instead of individual rows.
+			// Keyed by the stored message digest like the grouped view above,
+			// so the DISTINCT temporary table never has to compare full
+			// message text; empty digests fall back to hashing per row.
+			$digest_count_key = syslog_message_digest_ready()
+				? "COUNT(DISTINCT CONCAT(host_id, '|', IF(message_digest = '', MD5(message), message_digest), '|', program_id, '|', facility_id, '|', priority_id))"
+				: "COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))";
+
 			if (get_request_var('removal') == 1) {
 				$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
 					FROM (
-						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
+						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
 						UNION
-						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
+						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
 					) AS rowcount");
 			} elseif (get_request_var('removal') == -1) {
-				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
+				$total_rows = syslog_db_fetch_cell("SELECT $digest_count_key
 					FROM `$syslogdb_default`.`syslog` AS syslog
 					$sql_where");
 			} else {
-				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
+				$total_rows = syslog_db_fetch_cell("SELECT $digest_count_key
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					$sql_where");
 			}
@@ -2527,11 +2545,29 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-		$hosts = array_rekey(
-			syslog_db_fetch_assoc("SELECT host_id, host
-				FROM `$syslogdb_default`.`syslog_hosts`"),
-			'host_id', 'host'
-		);
+		// Only the host names for the rows actually shown; never fetch the
+		// entire syslog_hosts table into memory on every render.
+		$host_ids = [];
+
+		foreach ($syslog_messages as $sm) {
+			$host_ids[$sm['host_id']] = true;
+		}
+
+		unset($host_ids['']);
+
+		if (cacti_sizeof($host_ids)) {
+			$bind = array_keys($host_ids);
+
+			$hosts = array_rekey(
+				syslog_db_fetch_assoc_prepared("SELECT host_id, host
+					FROM `$syslogdb_default`.`syslog_hosts`
+					WHERE host_id IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ")",
+					$bind),
+				'host_id', 'host'
+			);
+		} else {
+			$hosts = [];
+		}
 
 		$facilities = array_rekey(
 			syslog_db_fetch_assoc("SELECT facility_id, facility

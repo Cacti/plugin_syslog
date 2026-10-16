@@ -40,6 +40,8 @@ it('appends nullable message breach columns without a backfill during schema rep
 	syslog_load_plugin_source('includes/schema.php');
 	$columns = [];
 	test_override('syslog_db_table_exists', static fn() => true);
+	// the digest migration hooks run inside the same repair pass
+	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('db_update_table', function ($table) {
 		// The general table reconciler may drop an omitted primary key.
 		expect($table)->not->toBeIn(['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output']);
@@ -85,7 +87,7 @@ it('carries message breach flags through local archival and the replication outb
 	test_override('syslog_db_execute_prepared', function ($sql) use (&$statements) { $statements[] = $sql; return true; });
 	expect(syslog_incoming_to_syslog(100)['success'])->toBeTrue();
 	$archive = implode("\n", $statements);
-	expect($archive)->toContain('message, threshold_breached')->toContain('si.threshold_breached');
+	expect($archive)->toContain('message, message_digest, threshold_breached')->toContain('si.threshold_breached');
 	$statements = [];
 	$GLOBALS['config']['poller_id'] = 2;
 	test_override('read_config_option', static fn($name) => $name === 'syslog_remote_enabled' ? 'on' : '');
