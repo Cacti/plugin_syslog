@@ -50,35 +50,47 @@ function syslogDashboardLoad(data) {
 
 function syslogDashboardPanelCard(panel) {
 	var card = document.createElement('article');
-	card.className = 'syslogDashboardCard';
+	card.className = 'syslogDashboardCard syslogStatusCard';
 	card.id = 'syslog_panel_' + panel.id;
 
 	var header = document.createElement('header');
-	header.className = 'syslogDashboardCardHeader';
-	if (syslogDashboard.canManage) header.setAttribute('draggable', 'true');
+	header.className = 'syslogDashboardCardHeader syslogStatusCardHeader syslogStatusCardHeader--none';
+	if (syslogDashboard.canManage) {
+		var handle = document.createElement('button');
+		handle.type = 'button';
+		handle.className = 'syslogStatusCardDrag';
+		handle.setAttribute('aria-label', syslogDashboard.text.dragPanel);
+		handle.innerHTML = '<i class="fa fa-bars" aria-hidden="true"></i>';
+		header.append(handle);
+	}
 
 	var title = document.createElement('h3');
-	title.className = 'syslogDashboardCardTitle';
+	title.className = 'syslogDashboardCardTitle syslogStatusCardTitle';
 	title.textContent = panel.title;
 	header.append(title);
 
 	var actions = document.createElement('div');
+	actions.className = 'syslogStatusCardTools';
 	actionButtons().forEach(function(button) {
 		actions.append(button);
 	});
 	header.append(actions);
 	card.append(header);
 
+	var body = document.createElement('div');
+	body.className = 'syslogStatusCardBody';
+	card.append(body);
+
 	var chart = document.createElement('div');
 	chart.className = 'syslogChart';
 	chart.id = 'syslog_chart_' + panel.id;
-	card.append(chart);
+	body.append(chart);
 
 	var status = document.createElement('p');
 	status.className = 'syslogDashboardCardStatus';
 	status.setAttribute('role', 'status');
 	status.textContent = '...';
-	card.append(status);
+	body.append(status);
 
 	// Shared dashboards are view-only: no resize or drag affordances.
 	if (syslogDashboard.canManage) {
@@ -223,7 +235,7 @@ function actionButtons() {
 	actions.forEach(function(entry) {
 		var button = document.createElement('button');
 		button.type = 'button';
-		button.className = 'syslogDashboardCardButton';
+		button.className = 'syslogDashboardCardButton syslogStatusCardTool';
 		button.dataset.action = entry[0];
 		button.innerHTML = '<i class="fa ' + entry[1] + '" aria-hidden="true"></i>';
 		button.title = entry[2];
@@ -337,7 +349,7 @@ function syslogDashboardRenderGrid() {
 /* ===================== Drag-and-drop reorder ===================== */
 
 /**
- * Make a card reorderable: dragging its header shows a placeholder, and
+ * Make a card reorderable: dragging its handle shows a placeholder, and
  * dropping posts the new 1-based position. Drop targets are the card
  * midpoints, so moving a panel underneath another works in both
  * directions without up/down buttons.
@@ -345,19 +357,46 @@ function syslogDashboardRenderGrid() {
 function syslogDashboardInitDrag(card, panel) {
 	if (!syslogDashboard.canManage) return;
 
-	var header = card.querySelector('.syslogDashboardCardHeader');
-	if (!header) return;
+	var handle = card.querySelector('.syslogStatusCardDrag');
+	if (!handle) return;
 
-	header.addEventListener('dragstart', function(event) {
+	var disarm = function() { card.draggable = false; };
+	handle.addEventListener('mousedown', function() {
+		card.draggable = true;
+		document.addEventListener('mouseup', disarm, {once: true});
+	});
+	handle.addEventListener('touchstart', function() {
+		card.draggable = true;
+		document.addEventListener('touchend', disarm, {once: true});
+		document.addEventListener('touchcancel', disarm, {once: true});
+	}, {passive: true});
+	handle.addEventListener('keydown', function(event) {
+		var direction = ['ArrowLeft', 'ArrowUp'].includes(event.key) ? -1
+			: (['ArrowRight', 'ArrowDown'].includes(event.key) ? 1 : 0);
+		if (!direction) return;
+		event.preventDefault();
+		var order = syslogDashboard.panels.map(function(item) { return item.id; });
+		var from = order.indexOf(panel.id);
+		var to = from + direction;
+		if (from < 0 || to < 0 || to >= order.length) return;
+		order.splice(from, 1);
+		order.splice(to, 0, panel.id);
+		syslogDashboardApplyOrder(order, panel.id, to + 1);
+		handle.focus();
+	});
+
+	card.addEventListener('dragstart', function(event) {
+		if (!card.draggable) return;
 		event.dataTransfer.effectAllowed = 'move';
 		event.dataTransfer.setData('text/plain', String(panel.id));
 		card.classList.add('syslogDashboardCardDragging');
 	});
 
-	header.addEventListener('dragend', function() {
+	card.addEventListener('dragend', function() {
+		card.draggable = false;
 		card.classList.remove('syslogDashboardCardDragging');
-		document.querySelectorAll('.syslogDashboardCardDropBefore')
-			.forEach(function(el) { el.classList.remove('syslogDashboardCardDropBefore'); });
+		document.querySelectorAll('.syslogDashboardCardDropBefore, .syslogDashboardCardDropAfter')
+			.forEach(function(el) { el.classList.remove('syslogDashboardCardDropBefore', 'syslogDashboardCardDropAfter'); });
 	});
 
 	card.addEventListener('dragover', function(event) {
@@ -366,7 +405,7 @@ function syslogDashboardInitDrag(card, panel) {
 		event.dataTransfer.dropEffect = 'move';
 
 		var rect = card.getBoundingClientRect();
-		var before = event.clientY < rect.top + rect.height / 2;
+		var before = event.clientY < rect.top || (event.clientY <= rect.bottom && event.clientX < rect.left + rect.width / 2);
 		card.classList.toggle('syslogDashboardCardDropBefore', before);
 		card.classList.toggle('syslogDashboardCardDropAfter', !before);
 	});
@@ -390,7 +429,7 @@ function syslogDashboardInitDrag(card, panel) {
 		if (draggedId === panel.id) return;
 
 		var rect = card.getBoundingClientRect();
-		var before = event.clientY < rect.top + rect.height / 2;
+		var before = event.clientY < rect.top || (event.clientY <= rect.bottom && event.clientX < rect.left + rect.width / 2);
 		var panels = syslogDashboard.panels || [];
 		var order = panels.map(function(p) { return p.id; });
 		var from = order.indexOf(draggedId);

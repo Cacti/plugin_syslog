@@ -1080,6 +1080,10 @@ msgstr ""
 msgid "A title of up to 128 characters is required."
 msgstr ""
 
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr ""
+
 #: lib/syslog_dashboard.php
 msgid "Refresh Panel"
 msgstr ""
@@ -1856,10 +1860,6 @@ msgstr ""
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
-
-#: syslog.php
-msgid "Drag to reorder card"
 msgstr ""
 
 #: syslog.php

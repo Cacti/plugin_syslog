@@ -23,3 +23,13 @@ connect to a live Cacti server or database.
 Threshold recovery state and its expiry are tested against MariaDB separately:
 `SYSLOG_TEST_MYSQL_SOCKET=/path/to/test.sock php tests/regression/threshold_recovery_database_test.php`.
 The disposable database check also runs in CI against the MariaDB service.
+
+The Dashboard card fixture checks shared Status styling in light/dark themes,
+existing tools, drag/keyboard ordering requests, and narrow-screen panel sizing:
+
+```sh
+node tests/browser/dashboard_cards.cjs
+```
+
+It uses the actual Dashboard renderer and styles with fixture panels and records
+ordering requests; it does not verify a live database or chart data.
