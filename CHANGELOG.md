@@ -18,6 +18,7 @@
 * bug: Report dashboard write failures and roll back partial deletes, copies and panel ordering changes
 * bug: Count equal retained and removed log totals correctly and remove all plugin-owned tables during uninstall-all
 * test: Repair the schema CLI fixture and add dedicated-database, rule synchronization, migration, output escaping and dashboard rollback regression coverage
+* test: Measure lib/QueryBuilder.php in the patch-coverage gate and cover the QueryBuilder availability guards, the timeseries dashboard panel branch, invalid-database partition guards, retroactive removal-rule field maps, dMaxValue metadata extraction and the metadata label/filter button renderers
 
 * bug: Restore the incoming-to-syslog archive INSERT so its outer SELECT no longer redeclares a second unbound poller_id placeholder (SQLSTATE HY093 "Invalid parameter number" made every transfer fail with "Unable to archive incoming records") and reads the derived table's columns instead of the out-of-scope syslog_incoming alias
 * feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
