@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Poller and replication callbacks. */
+// Poller and replication callbacks.
 
 require_once(dirname(__DIR__) . '/setup.php');
 
@@ -82,7 +82,7 @@ function syslog_poller_bottom(): void {
 		syslog_status_set('last_polling_time', time());
 
 		$command_string = (string) read_config_option('path_php_binary');
-		$extra_args     = ' -q ' . $config['base_path'] . '/plugins/syslog/syslog_process.php';
+		$extra_args     = ' -q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/syslog/syslog_process.php');
 		exec_background($command_string, $extra_args);
 	} else {
 		cacti_log('WARNING: You have installed the Syslog plugin, but you have not properly set a config.php or config_local.php', false, 'POLLER');

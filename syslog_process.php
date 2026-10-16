@@ -167,7 +167,7 @@ if (function_exists('pcntl_signal')) {
 }
 
 // record the start time
-$start_time = microtime(true);
+$start_time      = microtime(true);
 $start_timestamp = time();
 
 /**
@@ -402,6 +402,7 @@ if ($parallel && $max_seq > 0) {
 		$worker_stats = syslog_aggregate_worker_stats($launched);
 
 		$moved = $worker_stats['moved'];
+
 		if ($worker_stats['success']) {
 			$stale = syslog_delete_stale_incoming();
 		} else {
@@ -449,11 +450,15 @@ syslog_postprocess_tables();
 // State is derived from Cacti reachability plus the plugin-owned outbox. One
 // bounded batch may make gradual recovery progress; no recovery loop is used.
 $replication_state = syslog_replication_record_state();
+
 if ($replication_state === 'recovery') {
 	syslog_replication_start_recovery_worker();
 } elseif ($replication_state === 'online') {
 	$sent_to_main = syslog_replication_deliver_online();
-	if ($sent_to_main > 0) { cacti_log('SYSLOG STATS: Sent ' . $sent_to_main . ' records to the Main Collector', false, 'SYSLOG'); }
+
+	if ($sent_to_main > 0) {
+		cacti_log('SYSLOG STATS: Sent ' . $sent_to_main . ' records to the Main Collector', false, 'SYSLOG');
+	}
 }
 syslog_replication_record_state();
 
@@ -566,6 +571,7 @@ function syslog_worker_main($debug = false) {
 			$success = $results['success'];
 
 			syslog_debug(sprintf('Moved   %5s - Message(s) in slice %d-%d', $moved, $seq_start, $seq_end));
+
 			if (!$success) {
 				cacti_log("ERROR: Syslog child $child failed transfer slice $seq_start-$seq_end", false, 'SYSLOG');
 			}

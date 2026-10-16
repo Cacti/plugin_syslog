@@ -18,9 +18,9 @@ it('reapplies the default last-day limit whenever a search has no date condition
 
 	$source = plugin_test_read_source('syslog.php');
 	$start  = strpos($source, "set_shift_span(\$shift_span, 'sess_sl_' . \$current_tab);");
-	$end    = strpos($source, "\t\$GLOBALS['syslog_search_tree'] = null;", $start);
+	$end = strpos($source, "\$GLOBALS['syslog_search_tree']", $start);
 
-	if (!$start || !$end) {
+	if ($start === false || $end === false) {
 		throw new RuntimeException('Default date block not found in syslog.php');
 	}
 

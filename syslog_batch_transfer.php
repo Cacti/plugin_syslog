@@ -78,7 +78,7 @@ if (cacti_sizeof($parms)) {
 }
 
 // record the start time
-$start_time = microtime(true);
+$start_time      = microtime(true);
 $start_timestamp = time();
 
 // Connect to the Syslog Database

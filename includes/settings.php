@@ -7,20 +7,21 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Settings callbacks. */
+// Settings callbacks.
 
 require_once(dirname(__DIR__) . '/setup.php');
 
 /**
- * Register the Syslog settings in the Cacti settings table.
+ * Build the half-hour choices for alert maintenance schedules.
  *
- * @return void
+ * @return array<string, string>
  */
 function syslog_alert_maintenance_time_options(): array {
 	$options = [];
+
 	for ($hour = 0; $hour < 24; $hour++) {
 		foreach ([0, 30] as $minute) {
-			$value = sprintf('%02d:%02d', $hour, $minute);
+			$value           = sprintf('%02d:%02d', $hour, $minute);
 			$options[$value] = $value;
 		}
 	}
@@ -30,9 +31,9 @@ function syslog_alert_maintenance_time_options(): array {
 
 function syslog_alert_maintenance_day_options(bool $include_disabled = false): array {
 	$options = [
-		'1' => __('Monday', 'syslog'), '2' => __('Tuesday', 'syslog'), '3' => __('Wednesday', 'syslog'),
-		'4' => __('Thursday', 'syslog'), '5' => __('Friday', 'syslog'), '6' => __('Saturday', 'syslog'), '7' => __('Sunday', 'syslog'),
-		'1,2,3,4,5' => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'),
+		'1'             => __('Monday', 'syslog'), '2' => __('Tuesday', 'syslog'), '3' => __('Wednesday', 'syslog'),
+		'4'             => __('Thursday', 'syslog'), '5' => __('Friday', 'syslog'), '6' => __('Saturday', 'syslog'), '7' => __('Sunday', 'syslog'),
+		'1,2,3,4,5'     => __('Monday through Friday', 'syslog'), '6,7' => __('Saturday and Sunday', 'syslog'),
 		'1,2,3,4,5,6,7' => __('Every day', 'syslog')
 	];
 
@@ -53,6 +54,7 @@ function syslog_config_settings(): void {
 	$tabs['syslog'] = __('Syslog', 'syslog');
 
 	$notification_lists = [0 => __('None', 'syslog')];
+
 	if (db_table_exists('plugin_notification_lists')) {
 		foreach (db_fetch_assoc('SELECT id, name FROM plugin_notification_lists ORDER BY name') as $list) {
 			$notification_lists[(int) $list['id']] = $list['name'];
@@ -248,8 +250,8 @@ function syslog_config_settings(): void {
 			'method'        => 'drop_array',
 			'default'       => '3600',
 			'array'         => [
-				'900' => __('%d minutes', 15, 'syslog'),
-				'3600' => __('%d hours', 1, 'syslog'),
+				'900'   => __('%d minutes', 15, 'syslog'),
+				'3600'  => __('%d hours', 1, 'syslog'),
 				'21600' => __('%d hours', 6, 'syslog'),
 				'86400' => __('%d days', 1, 'syslog')
 			]
@@ -526,12 +528,12 @@ function syslog_config_arrays(): void {
 			$menu2[$temp] = $temp2;
 
 			if ($temp == __('Import/Export')) {
-				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']  = __('Alert Rules', 'syslog');
-				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_device_rules.php'] = __('Device Alert Rules', 'syslog');
-				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php'] = __('Removal Rules', 'syslog');
-				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php'] = __('Report Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_alerts.php']         = __('Alert Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_device_rules.php']   = __('Device Alert Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_removal.php']        = __('Removal Rules', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php']        = __('Report Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
-				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_dashboards.php'] = __('Dashboards', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_dashboards.php']     = __('Dashboards', 'syslog');
 			}
 		}
 		$menu = $menu2;

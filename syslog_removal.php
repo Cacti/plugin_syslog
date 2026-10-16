@@ -178,7 +178,7 @@ function form_actions(): void {
 
 	form_start('syslog_removal.php');
 
-	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', false, 3, 'center', '');
 
 	// setup some variables
 	$removal_array = [];
@@ -318,12 +318,12 @@ function removal_export(): void {
  * Validate and save a Syslog Removal Rule.
  *
  * @param int|string $id      The id of the Removal Rule, '' for a new rule.
- * @param string $name    The name of the Removal Rule.
- * @param string $type    The match type of the Removal Rule.
- * @param string $message The match string of the Removal Rule.
- * @param string $rmethod The method of removal, 'del' or 'trans'.
- * @param string $notes   The notes of the Removal Rule.
- * @param string $enabled 'on' when the Removal Rule is enabled, otherwise ''.
+ * @param string     $name    The name of the Removal Rule.
+ * @param string     $type    The match type of the Removal Rule.
+ * @param string     $message The match string of the Removal Rule.
+ * @param string     $rmethod The method of removal, 'del' or 'trans'.
+ * @param string     $notes   The notes of the Removal Rule.
+ * @param string     $enabled 'on' when the Removal Rule is enabled, otherwise ''.
  *
  * @return int|false The id of the saved Removal Rule, or false when the save failed.
  */
@@ -513,7 +513,7 @@ function syslog_action_edit(): void {
 		$sql_params[] = get_request_var('id');
 
 		if (isset_request_var('date')) {
-			$sql_where   .= ' AND logtime = ?';
+			$sql_where .= ' AND logtime = ?';
 			$sql_params[] = get_request_var('date');
 		}
 
@@ -537,17 +537,19 @@ function syslog_action_edit(): void {
 	}
 
 	$filter_conditions = [];
+
 	if (($removal['type'] ?? '') === 'filter') {
 		$filter_document = json_decode($removal['message'] ?? '', true);
+
 		if (is_array($filter_document) && ($filter_document['version'] ?? null) === 1 && is_array($filter_document['conditions'] ?? null)) {
 			$filter_conditions = $filter_document['conditions'];
 		} elseif (get_nfilter_request_var('action') === 'newedit' && !empty($removal['message'])) {
 			$filter_conditions = [[
-				'join' => 'AND',
+				'join'     => 'AND',
 				'negative' => false,
-				'field' => 'message',
+				'field'    => 'message',
 				'operator' => 'contains',
-				'value' => $removal['message']
+				'value'    => $removal['message']
 			]];
 		}
 	}
@@ -661,7 +663,7 @@ function syslog_action_edit(): void {
 
 	form_start('syslog_removal.php', 'syslog_edit');
 
-	html_start_box($header_label, '100%', '', '3', 'center', '');
+	html_start_box($header_label, '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -688,9 +690,9 @@ function syslog_action_edit(): void {
 	var removalFilterBuilder;
 	var removalFilterConfig = {
 		fields: <?php print syslog_json_safe([
-			'message' => __('Message', 'syslog'),
-			'host' => __('Host', 'syslog'),
-			'program' => __('Program', 'syslog'),
+			'message'     => __('Message', 'syslog'),
+			'host'        => __('Host', 'syslog'),
+			'program'     => __('Program', 'syslog'),
 			'facility_id' => __('Facility', 'syslog'),
 			'priority_id' => __('Priority', 'syslog')
 		]); ?>,
@@ -703,11 +705,11 @@ function syslog_action_edit(): void {
 		},
 		choices: <?php
 			$filter_choices = syslog_search_choices();
-			print syslog_json_safe([
-				'facility_id' => $filter_choices['facility_id'] ?? [],
-				'priority_id' => $filter_choices['priority_id'] ?? []
-			]);
-		?>,
+	print syslog_json_safe([
+		'facility_id' => $filter_choices['facility_id'] ?? [],
+		'priority_id' => $filter_choices['priority_id'] ?? []
+	]);
+	?>,
 		conditions: <?php print syslog_json_safe($filter_conditions); ?>,
 		labels: {
 			message: <?php print syslog_json_safe(__('Value', 'syslog')); ?>,
@@ -924,7 +926,7 @@ function syslog_removal(): void {
 		$url = '';
 	}
 
-	html_start_box(__('Syslog Removal Rule Filters', 'syslog'), '100%', '', '3', 'center', $url);
+	html_start_box(__('Syslog Removal Rule Filters', 'syslog'), '100%', false, 3, 'center', $url);
 
 	syslog_removal_filter();
 
@@ -965,7 +967,7 @@ function syslog_removal(): void {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -1030,7 +1032,7 @@ function import(): void {
 
 	print "<form method='post' action='syslog_removal.php' enctype='multipart/form-data'>";
 
-	html_start_box(__('Import Removal Rule', 'syslog'), '100%', false, '3', 'center', '');
+	html_start_box(__('Import Removal Rule', 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -1064,6 +1066,7 @@ function removal_import(): void {
 	if ($import_array === false || !$import_array) {
 		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location: syslog_removal.php');
+
 		return;
 	}
 

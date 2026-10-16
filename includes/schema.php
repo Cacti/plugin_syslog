@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Schema and migration helpers. */
+// Schema and migration helpers.
 
 /**
  * Ensure message columns use TEXT storage.
@@ -156,7 +156,7 @@ function syslog_ensure_saved_search_tables(): void {
 	global $syslog_cnn;
 
 	db_update_table('syslog_saved_searches', [
-		'type' => 'InnoDB',
+		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
 			['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
@@ -169,7 +169,7 @@ function syslog_ensure_saved_search_tables(): void {
 			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
 		],
 		'primary' => ['id'],
-		'keys' => [['name' => 'owner', 'columns' => ['user']]]
+		'keys'    => [['name' => 'owner', 'columns' => ['user']]]
 	], false, true, $syslog_cnn);
 }
 
@@ -179,7 +179,7 @@ function syslog_ensure_share_tables(): void {
 
 	foreach (['syslog_dashboards_perm' => 'dashboard_id', 'syslog_saved_searches_perm' => 'search_id'] as $table => $id) {
 		db_update_table($table, [
-			'type' => 'InnoDB',
+			'type'    => 'InnoDB',
 			'columns' => [
 				['name' => $id, 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
 				['name' => 'type', 'type' => 'varchar(5)', 'NULL' => false, 'default' => ''],
@@ -195,7 +195,7 @@ function syslog_ensure_dashboard_tables(): void {
 	global $syslog_cnn;
 
 	db_update_table('syslog_dashboards', [
-		'type' => 'InnoDB',
+		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
 			['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
@@ -206,11 +206,11 @@ function syslog_ensure_dashboard_tables(): void {
 			['name' => 'updated', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
 		],
 		'primary' => ['id'],
-		'keys' => [['name' => 'owner', 'columns' => ['user']]]
+		'keys'    => [['name' => 'owner', 'columns' => ['user']]]
 	], false, true, $syslog_cnn);
 
 	db_update_table('syslog_dashboard_panels', [
-		'type' => 'InnoDB',
+		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
 			['name' => 'dashboard_id', 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
@@ -230,7 +230,7 @@ function syslog_ensure_dashboard_tables(): void {
 			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
 		],
 		'primary' => ['id'],
-		'keys' => [['name' => 'dashboard', 'columns' => ['dashboard_id']]]
+		'keys'    => [['name' => 'dashboard', 'columns' => ['dashboard_id']]]
 	], false, true, $syslog_cnn);
 }
 
@@ -239,7 +239,7 @@ function syslog_ensure_status_table(): void {
 	global $syslog_cnn;
 
 	db_update_table('syslog_status', [
-		'type' => 'InnoDB',
+		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'name', 'type' => 'varchar(64)', 'NULL' => false, 'default' => ''],
 			['name' => 'value', 'type' => 'text', 'NULL' => false],
@@ -609,11 +609,11 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
-syslog_create_alert_counts_table();
-syslog_create_replication_output_table();
-syslog_create_replication_receipts_table();
-syslog_create_replication_collectors_table();
-syslog_create_replication_recovery_table();
+	syslog_create_alert_counts_table();
+	syslog_create_replication_output_table();
+	syslog_create_replication_receipts_table();
+	syslog_create_replication_collectors_table();
+	syslog_create_replication_recovery_table();
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_suppression` (
 		`alert_id` int(10) unsigned NOT NULL,
@@ -791,6 +791,7 @@ syslog_create_replication_recovery_table();
 	syslog_ensure_share_tables();
 	syslog_ensure_dashboard_tables();
 	syslog_create_device_rule_table();
+
 	if (!$repair) {
 		syslog_dashboard_seed_default();
 	}
@@ -852,7 +853,6 @@ function syslog_create_alert_counts_table(): void {
 		`available_at` bigint unsigned NOT NULL,
 		PRIMARY KEY (`source_poller_id`, `breach_key`),
 		KEY `available_at` (`source_poller_id`, `available_at`)) ENGINE=InnoDB");
-
 }
 
 /** Complete an interrupted install or upgrade without dropping existing data. */
@@ -869,6 +869,7 @@ function syslog_ensure_table_structures(): bool {
 		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
 		'syslog_replication_output', 'syslog_replication_recovery'
 	];
+
 	if ((int) $config['poller_id'] <= 1) {
 		$tables[] = 'syslog_replication_receipts';
 		$tables[] = 'syslog_replication_collectors';
@@ -879,6 +880,7 @@ function syslog_ensure_table_structures(): bool {
 		if (!syslog_db_table_exists($table, false)) {
 			syslog_setup_table_new([], true);
 			$rebuilt = true;
+
 			break;
 		}
 	}
@@ -934,6 +936,7 @@ function syslog_ensure_table_structures(): bool {
 	foreach ($tables as $table) {
 		if (!syslog_db_table_exists($table, false)) {
 			cacti_log("SYSLOG ERROR: Schema upgrade did not create $table", false, 'SYSLOG');
+
 			return false;
 		}
 	}

@@ -27,7 +27,7 @@ require_once(dirname(__DIR__) . '/setup.php');
 require_once(dirname(__DIR__) . '/includes/schema.php');
 require_once(dirname(__DIR__) . '/includes/settings.php');
 
-/* process calling arguments */
+// process calling arguments
 $parms = $_SERVER['argv'];
 array_shift($parms);
 
@@ -44,12 +44,15 @@ foreach ($parms as $arg) {
 	switch ($arg) {
 		case '--audit':
 			$audit = true;
+
 			break;
 		case '--repair':
 			$repair = true;
+
 			break;
 		case '--upgrade':
 			$upgrade = true;
+
 			break;
 		case '--help':
 		case '-H':
@@ -68,12 +71,14 @@ if ($audit && ($repair || $upgrade)) {
 }
 
 syslog_determine_config();
+
 if (!defined('SYSLOG_CONFIG')) {
 	fwrite(STDERR, 'ERROR: Syslog database configuration is missing.' . PHP_EOL);
 	exit(1);
 }
 
 $database_last_error = '';
+
 if (!syslog_connect()) {
 	fwrite(STDERR, 'ERROR: Unable to connect to the Syslog database.' . PHP_EOL);
 	exit(1);
@@ -100,12 +105,15 @@ function syslog_schema_repair_database(): bool {
 		'db_type'      => 'part',
 		'days'         => read_config_option('syslog_install_days')
 	], true);
+
 	if (!syslog_check_upgrade(true)) {
 		fwrite(STDERR, 'ERROR: Syslog schema upgrade failed; check the Cacti log.' . PHP_EOL);
+
 		return false;
 	}
 
 	$success = syslog_schema_report_audit_results(false);
+
 	if ($success) {
 		print 'Syslog schema upgrade completed; all required tables exist.' . PHP_EOL;
 	}
@@ -132,12 +140,14 @@ function syslog_schema_report_audit_results(bool $audit = true): bool {
 		'syslog_saved_searches_perm', 'syslog_device_rule', 'syslog_replication_output',
 		'syslog_replication_recovery'
 	];
+
 	if ((int) $config['poller_id'] <= 1) {
 		$tables[] = 'syslog_replication_receipts';
 		$tables[] = 'syslog_replication_collectors';
 	}
 
 	$missing = [];
+
 	foreach ($tables as $table) {
 		if (!syslog_db_table_exists($table, false)) {
 			$missing[] = $table;
@@ -146,16 +156,20 @@ function syslog_schema_report_audit_results(bool $audit = true): bool {
 
 	if (!empty($database_last_error)) {
 		fwrite(STDERR, 'ERROR: Schema check encountered a database error; check the Cacti log.' . PHP_EOL);
+
 		return false;
 	}
+
 	if ($missing) {
 		fwrite(STDERR, 'ERROR: Missing tables: ' . implode(', ', $missing) . PHP_EOL);
+
 		return false;
 	}
 
 	if ($audit) {
 		print 'Syslog schema audit passed; all required tables exist.' . PHP_EOL;
 	}
+
 	return true;
 }
 

@@ -180,7 +180,7 @@ function syslog_dashboard_bucket_seconds(int $seconds, string $interval): int {
 	// (minute → 10 minutes → hour → day) until the chart stays under the
 	// bucket cap.
 	$ladder = [60, 600, 3600, 86400];
-	$cap = syslog_dashboard_bucket_cap();
+	$cap    = syslog_dashboard_bucket_cap();
 
 	foreach ($ladder as $step) {
 		if ($step > $bucket) {
@@ -198,8 +198,8 @@ function syslog_dashboard_bucket_seconds(int $seconds, string $interval): int {
 /**
  * Format a bucket epoch for chart labels.
  *
- * @param int $epoch   Bucket start as a Unix timestamp.
- * @param int $bucket  Bucket size in seconds.
+ * @param int $epoch  Bucket start as a Unix timestamp.
+ * @param int $bucket Bucket size in seconds.
  *
  * @return string Human-readable local time label.
  */
@@ -245,8 +245,8 @@ function syslog_dashboard_label_safe($label) {
  * @param string $source Panel source ('syslog' or 'alerts').
  *
  * @return array<int, string>|null [table, id_column, name_column], or null
- *                                   when the dimension reads the log row
- *                                   directly.
+ *                                 when the dimension reads the log row
+ *                                 directly.
  */
 function syslog_dashboard_breakdown_lookup(string $field, string $source): ?array {
 	if ($source === 'alerts' && $field === 'host') {
@@ -336,7 +336,7 @@ function syslog_dashboard_breakdown_sql(string $source, string $field, string $r
 		$dimension = 'syslog.host';
 	} else {
 		[$table, $id_column, $name_column] = $lookup;
-		$dimension = "(SELECT lookup.$name_column FROM `$syslogdb_default`.`$table` AS lookup
+		$dimension                         = "(SELECT lookup.$name_column FROM `$syslogdb_default`.`$table` AS lookup
 			WHERE lookup.$id_column = syslog.$id_column)";
 	}
 
@@ -475,7 +475,7 @@ function syslog_dashboard_panel_settings(array $panel) {
  * @param int $panel_id Panel id.
  *
  * @return array<string, mixed>|null Panel row joined with dashboard ownership,
- *                                    or null.
+ *                                   or null.
  */
 function syslog_dashboard_load_panel(int $panel_id): ?array {
 	global $syslogdb_default;
@@ -499,7 +499,7 @@ function syslog_dashboard_load_panel(int $panel_id): ?array {
  * @param array<string, mixed> $panel Row from syslog_dashboard_load_panel().
  *
  * @return array<string, mixed>|null ['id' => ..., 'user' => ..., 'is_global' => ...],
- *                                    or null.
+ *                                   or null.
  */
 function syslog_dashboard_panel_owner(?array $panel): ?array {
 	if ($panel === null || !isset($panel['dashboard_user'])) {
@@ -534,8 +534,8 @@ function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): arr
 	$expression = (string) $panel['expression'];
 
 	try {
-		$tree = syslog_parse_logical_search($expression);
-		$column = $settings['source'] === 'alerts' ? 'logmsg' : 'message';
+		$tree      = syslog_parse_logical_search($expression);
+		$column    = $settings['source'] === 'alerts' ? 'logmsg' : 'message';
 		$predicate = syslog_logical_search_sql($tree, $column);
 	} catch (InvalidArgumentException $error) {
 		return ['error' => __('Invalid logical search: %s', $error->getMessage(), 'syslog')];
@@ -554,7 +554,7 @@ function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): arr
 
 		$sql = syslog_dashboard_timeseries_sql($settings['source'], $settings['removal'], $where, $bucket, $start);
 
-		$rows = syslog_db_fetch_assoc($sql);
+		$rows   = syslog_db_fetch_assoc($sql);
 		$labels = [];
 		$values = [];
 
@@ -584,7 +584,7 @@ function syslog_dashboard_panel_data(array $panel, int $dashboard_timespan): arr
 
 	$labels = [];
 	$values = [];
-	$total = 0;
+	$total  = 0;
 
 	if (cacti_sizeof($rows)) {
 		$rank = 0;
@@ -817,7 +817,7 @@ function syslog_dashboard_save() {
 		return json_encode(['error' => __('A name of up to 128 characters is required.', 'syslog')]);
 	}
 
-	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
+	$id     = get_filter_request_var('id', FILTER_VALIDATE_INT);
 	$delete = get_nfilter_request_var('dashboard_delete') === '1';
 
 	if ($delete) {
@@ -1016,8 +1016,8 @@ function syslog_dashboard_panel_save() {
 	$dashboard_id = get_filter_request_var('dashboard_id', FILTER_VALIDATE_INT);
 	$panel_id     = get_filter_request_var('panel_id', FILTER_VALIDATE_INT);
 	$move         = (string) get_nfilter_request_var('panel_move');
-	$delete       = get_nfilter_request_var('panel_delete') === '1';
-	$resize       = get_nfilter_request_var('panel_resize') === '1';
+	$delete       = get_nfilter_request_var('panel_delete')   === '1';
+	$resize       = get_nfilter_request_var('panel_resize')   === '1';
 	$reposition   = get_nfilter_request_var('panel_position') === '1';
 	$position     = get_filter_request_var('position', FILTER_VALIDATE_INT);
 
@@ -1062,11 +1062,11 @@ function syslog_dashboard_panel_save() {
 
 		if ($resize) {
 			$size = syslog_dashboard_panel_settings([
-				'source' => $panel['source'], 'kind' => $panel['kind'], 'chart' => $panel['chart'],
-				'field' => $panel['field'], 'interval' => $panel['interval'], 'timespan' => $panel['timespan'],
+				'source'  => $panel['source'], 'kind' => $panel['kind'], 'chart' => $panel['chart'],
+				'field'   => $panel['field'], 'interval' => $panel['interval'], 'timespan' => $panel['timespan'],
 				'removal' => $panel['removal'], 'top_n' => $panel['top_n'],
-				'width'  => (string) get_nfilter_request_var('width'),
-				'height' => (string) get_nfilter_request_var('height')
+				'width'   => (string) get_nfilter_request_var('width'),
+				'height'  => (string) get_nfilter_request_var('height')
 			]);
 
 			if (is_string($size)) {
@@ -1190,7 +1190,7 @@ function syslog_dashboard_panel_move(array $panel, int $dashboard_id, int $direc
 	global $syslogdb_default;
 
 	$panels = syslog_dashboard_panels($dashboard_id);
-	$ids = [];
+	$ids    = [];
 
 	foreach ($panels as $row) {
 		$ids[] = (int) $row['id'];
@@ -1225,7 +1225,7 @@ function syslog_dashboard_panel_reposition(array $panel, int $dashboard_id, int 
 	global $syslogdb_default;
 
 	$panels = syslog_dashboard_panels($dashboard_id);
-	$ids = [];
+	$ids    = [];
 
 	foreach ($panels as $row) {
 		if ((int) $row['id'] !== (int) $panel['id']) {
@@ -1271,6 +1271,7 @@ function syslog_dashboard(): void {
 		foreach ($dashboards as $dashboard) {
 			if ($dashboard['user'] === $username) {
 				$dashboard_id = (int) $dashboard['id'];
+
 				break;
 			}
 		}
@@ -1280,6 +1281,7 @@ function syslog_dashboard(): void {
 		foreach ($dashboards as $dashboard) {
 			if ($dashboard['user'] === '' && $dashboard['is_global'] === 'on' && $dashboard['name'] === 'default') {
 				$dashboard_id = (int) $dashboard['id'];
+
 				break;
 			}
 		}
@@ -1328,7 +1330,7 @@ function syslog_dashboard(): void {
 
 	$username = isset($_SESSION['sess_user_id']) ? get_username($_SESSION['sess_user_id']) : '';
 
-	$sql_where = "`user` = ? OR is_global = 'on'";
+	$sql_where       = "`user` = ? OR is_global = 'on'";
 	$shared_searches = $username === '' ? [] : syslog_shared_item_ids('saved_search');
 
 	if (cacti_sizeof($shared_searches)) {
@@ -1385,7 +1387,7 @@ function syslog_dashboard(): void {
 	</script>
 	<?php
 
-	html_start_box(__('Syslog Dashboards', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Syslog Dashboards', 'syslog'), '100%', false, 3, 'center', '');
 	?>
 	<tr class='even noprint syslogFilterRow'>
 		<td class='noprint'>
@@ -1403,37 +1405,37 @@ function syslog_dashboard(): void {
 							<select id='syslog_dashboard_timespan'>
 								<?php
 								$selected_timespan = (string) get_nfilter_request_var('dashboard_timespan') ?: '86400';
-								$timespans = [
-									'3600'     => __('Last Hour', 'syslog'),
-									'21600'    => __('Last %d Hours', 6, 'syslog'),
-									'86400'    => __('Last Day', 'syslog'),
-									'604800'   => __('Last Week', 'syslog'),
-									'1209600'  => __('Last %d Weeks', 2, 'syslog'),
-									'2592000'  => __('Last Month', 'syslog'),
-									'3months'  => __('Last %d Months', 3, 'syslog'),
-									'6months'  => __('Last %d Months', 6, 'syslog')
-								];
+	$timespans                = [
+		'3600'     => __('Last Hour', 'syslog'),
+		'21600'    => __('Last %d Hours', 6, 'syslog'),
+		'86400'    => __('Last Day', 'syslog'),
+		'604800'   => __('Last Week', 'syslog'),
+		'1209600'  => __('Last %d Weeks', 2, 'syslog'),
+		'2592000'  => __('Last Month', 'syslog'),
+		'3months'  => __('Last %d Months', 3, 'syslog'),
+		'6months'  => __('Last %d Months', 6, 'syslog')
+	];
 
-								foreach ($timespans as $value => $label) {
-									print "<option value='" . html_escape((string) $value) . "'" . ((string) $value === $selected_timespan ? ' selected' : '') . '>' . html_escape($label) . '</option>';
-								}
-								?>
+	foreach ($timespans as $value => $label) {
+		print "<option value='" . html_escape((string) $value) . "'" . ((string) $value === $selected_timespan ? ' selected' : '') . '>' . html_escape($label) . '</option>';
+	}
+	?>
 							</select>
 						</div>
 						<div class='syslogDashboardRefresh'>
 							<label for='syslog_dashboard_refresh'><?php print __esc('Refresh', 'syslog'); ?></label>
 							<select id='syslog_dashboard_refresh'>
 								<?php
-								foreach ($page_refresh_interval as $seconds => $display_text) {
-									print "<option value='" . $seconds . "'";
+	foreach ($page_refresh_interval as $seconds => $display_text) {
+		print "<option value='" . $seconds . "'";
 
-									if (get_request_var('refresh') == $seconds) {
-										print ' selected';
-									}
+		if (get_request_var('refresh') == $seconds) {
+			print ' selected';
+		}
 
-									print '>' . html_escape($display_text) . '</option>';
-								}
-								?>
+		print '>' . html_escape($display_text) . '</option>';
+	}
+	?>
 							</select>
 						</div>
 					</div>
@@ -1480,7 +1482,7 @@ function syslog_dashboard(): void {
 									print '</optgroup>';
 								}
 							}
-							?>
+	?>
 						</select>
 						<input type='button' id='syslog_dashboard_new' value='<?php print __esc('New', 'syslog'); ?>'>
 						<?php if ($can_manage) { ?>
@@ -1520,7 +1522,7 @@ function syslog_dashboard(): void {
 	}
 
 	// Panel editor dialog scaffold (SyslogFilterBuilder attaches here).
-	$fields = syslog_search_fields();
+	$fields  = syslog_search_fields();
 	$choices = syslog_search_choices();
 	?>
 	<div id='syslog_panel_dialog' class='syslogPanelDialog' style='display:none'
@@ -1613,7 +1615,7 @@ function syslog_dashboard(): void {
 								. html_escape((string) $saved['name']) . '</option>';
 						}
 					}
-					?>
+	?>
 				</select>
 			</div>
 		</div>

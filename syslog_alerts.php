@@ -173,7 +173,7 @@ function form_actions(): void {
 
 	form_start('syslog_alerts.php');
 
-	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($syslog_actions[get_request_var('drp_action')], '60%', false, 3, 'center', '');
 
 	// setup some variables
 	$alert_array = [];
@@ -302,35 +302,35 @@ function alert_export(): void {
 /**
  * Validate and save a syslog alert rule.
  *
- * @param string|int|null $id           The id of the alert rule to update, empty for a new rule.
- * @param string          $name         The name of the alert rule.
- * @param string|int      $method       The reporting method, 0 for Individual, 1 for Threshold.
- * @param string|int|null $level        The reporting level, 0 for System, 1 for Device.
- * @param string|int      $num          The threshold count for the Threshold method.
- * @param string          $type         The match type, either 'filter' or 'sql'.
- * @param string          $message      The match string or the filter rule document.
- * @param string          $email        The comma delimited list of email addresses to notify.
- * @param string          $notes        The notes for the alert rule.
- * @param string          $enabled      'on' when the alert rule is enabled, otherwise empty.
- * @param string|int      $severity     The severity level of the alert rule.
- * @param string          $command      The command to run when the alert is triggered.
- * @param string|int      $repeat_alert The re-alert cycle in poller cycles.
- * @param string          $open_ticket  'on' to open a help desk ticket, otherwise empty.
- * @param string|int      $notify       The id of the notification list to use, 0 for none.
- * @param string          $body         The body text for the alert email.
- * @param string|int      $cooldown_minutes Per-rule notification cooldown; 0 inherits the global setting.
- * @param string|int      $deduplication_minutes Per-rule duplicate suppression window; 0 inherits the global setting.
- * @param string          $maintenance_mode Whether this rule inherits, overrides, or disables maintenance muting.
- * @param string          $maintenance_days Weekdays selected for the rule maintenance window.
- * @param string          $maintenance_start Local start time for the rule maintenance window.
- * @param string          $maintenance_end Local end time for the rule maintenance window.
+ * @param string|int|null $id                         The id of the alert rule to update, empty for a new rule.
+ * @param string          $name                       The name of the alert rule.
+ * @param string|int      $method                     The reporting method, 0 for Individual, 1 for Threshold.
+ * @param string|int|null $level                      The reporting level, 0 for System, 1 for Device.
+ * @param string|int      $num                        The threshold count for the Threshold method.
+ * @param string          $type                       The match type, either 'filter' or 'sql'.
+ * @param string          $message                    The match string or the filter rule document.
+ * @param string          $email                      The comma delimited list of email addresses to notify.
+ * @param string          $notes                      The notes for the alert rule.
+ * @param string          $enabled                    'on' when the alert rule is enabled, otherwise empty.
+ * @param string|int      $severity                   The severity level of the alert rule.
+ * @param string          $command                    The command to run when the alert is triggered.
+ * @param string|int      $repeat_alert               The re-alert cycle in poller cycles.
+ * @param string          $open_ticket                'on' to open a help desk ticket, otherwise empty.
+ * @param string|int      $notify                     The id of the notification list to use, 0 for none.
+ * @param string          $body                       The body text for the alert email.
+ * @param string|int      $cooldown_minutes           Per-rule notification cooldown; 0 inherits the global setting.
+ * @param string|int      $deduplication_minutes      Per-rule duplicate suppression window; 0 inherits the global setting.
+ * @param string          $maintenance_mode           Whether this rule inherits, overrides, or disables maintenance muting.
+ * @param string          $maintenance_days           Weekdays selected for the rule maintenance window.
+ * @param string          $maintenance_start          Local start time for the rule maintenance window.
+ * @param string          $maintenance_end            Local end time for the rule maintenance window.
  * @param string          $maintenance_datetime_start Optional one-time local start date/time.
- * @param string          $maintenance_datetime_end Optional one-time local end date/time.
- * @param string|int      $threshold_window Rolling window length; zero counts only the current cycle.
- * @param string          $threshold_unit Window unit: minute, hour, or day.
+ * @param string          $maintenance_datetime_end   Optional one-time local end date/time.
+ * @param string|int      $threshold_window           Rolling window length; zero counts only the current cycle.
+ * @param string          $threshold_unit             Window unit: minute, hour, or day.
  * @param string|int      $threshold_recovery_minutes Quiet duration in the selected recovery unit (legacy field name).
- * @param string         $threshold_recovery_unit Minute, hour, or day.
- * @param string         $recovery_command Optional command run after quiet recovery.
+ * @param string          $threshold_recovery_unit    Minute, hour, or day.
+ * @param string          $recovery_command           Optional command run after quiet recovery.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
@@ -353,47 +353,51 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['hash']         = get_hash_syslog($save['id'], 'syslog_alert');
 
 	$save['name']         = form_input_validate($name,         'name',     '', false, 3);
-	$threshold_window = $threshold_window === '' || $threshold_window === null ? '0' : (string) $threshold_window;
+	$threshold_window     = $threshold_window === '' || $threshold_window === null ? '0' : (string) $threshold_window;
+
 	if (!ctype_digit($threshold_window) || (float) $threshold_window > 4294967295
 		|| !in_array($threshold_unit, ['minute', 'hour', 'day'], true)) {
 		raise_message('threshold_window', __('Enter a whole number of minutes, hours, or days for the threshold window.', 'syslog'), MESSAGE_LEVEL_ERROR);
+
 		return false;
 	}
 	$threshold_recovery_minutes = $threshold_recovery_minutes === '' || $threshold_recovery_minutes === null ? '5' : (string) $threshold_recovery_minutes;
+
 	if (!ctype_digit($threshold_recovery_minutes) || (float) $threshold_recovery_minutes < 1 || (float) $threshold_recovery_minutes > 4294967295
 		|| !in_array($threshold_recovery_unit, ['minute', 'hour', 'day'], true)) {
 		raise_message('threshold_recovery_minutes', __('Enter a positive whole number of minutes, hours, or days for threshold recovery.', 'syslog'), MESSAGE_LEVEL_ERROR);
+
 		return false;
 	}
 	$save['threshold_recovery_minutes'] = (int) $threshold_recovery_minutes;
-	$save['threshold_recovery_unit'] = $threshold_recovery_unit;
-	$save['threshold_window'] = (int) $threshold_window;
-	$save['threshold_unit'] = $threshold_unit;
-	$save['num']          = form_input_validate($num,          'num',      '', false, 3);
-	$save['message']      = form_input_validate($message,      'message',  '', false, 3);
-	$save['body']         = form_input_validate($body,         'body',     '', true, 3);
-	$save['email']        = form_input_validate(trim($email),  'email',    '', true, 3);
-	$save['command']      = form_input_validate($command,      'command',  '', true, 3);
-	$save['recovery_command'] = form_input_validate($recovery_command, 'recovery_command', '', true, 3);
-	$save['notes']        = form_input_validate($notes,        'notes',    '', true, 3);
-	$save['enabled']      = ($enabled == 'on' ? 'on' : '');
-	$save['repeat_alert'] = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
-	$save['cooldown_minutes'] = max(-1, (int) $cooldown_minutes);
-	$save['deduplication_minutes'] = max(-1, (int) $deduplication_minutes);
-	$save['maintenance_mode']  = in_array($maintenance_mode, ['inherit', 'custom', 'disabled'], true) ? $maintenance_mode : 'inherit';
-	$save['maintenance_days']  = preg_match('/^[1-7](,[1-7])*$/', $maintenance_days) ? $maintenance_days : '1,2,3,4,5';
-	$save['maintenance_start'] = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_start) ? $maintenance_start : '00:00';
-	$save['maintenance_end']   = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_end) ? $maintenance_end : '00:00';
+	$save['threshold_recovery_unit']    = $threshold_recovery_unit;
+	$save['threshold_window']           = (int) $threshold_window;
+	$save['threshold_unit']             = $threshold_unit;
+	$save['num']                        = form_input_validate($num,          'num',      '', false, 3);
+	$save['message']                    = form_input_validate($message,      'message',  '', false, 3);
+	$save['body']                       = form_input_validate($body,         'body',     '', true, 3);
+	$save['email']                      = form_input_validate(trim($email),  'email',    '', true, 3);
+	$save['command']                    = form_input_validate($command,      'command',  '', true, 3);
+	$save['recovery_command']           = form_input_validate($recovery_command, 'recovery_command', '', true, 3);
+	$save['notes']                      = form_input_validate($notes,        'notes',    '', true, 3);
+	$save['enabled']                    = ($enabled == 'on' ? 'on' : '');
+	$save['repeat_alert']               = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
+	$save['cooldown_minutes']           = max(-1, (int) $cooldown_minutes);
+	$save['deduplication_minutes']      = max(-1, (int) $deduplication_minutes);
+	$save['maintenance_mode']           = in_array($maintenance_mode, ['inherit', 'custom', 'disabled'], true) ? $maintenance_mode : 'inherit';
+	$save['maintenance_days']           = preg_match('/^[1-7](,[1-7])*$/', $maintenance_days) ? $maintenance_days : '1,2,3,4,5';
+	$save['maintenance_start']          = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_start) ? $maintenance_start : '00:00';
+	$save['maintenance_end']            = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_end) ? $maintenance_end : '00:00';
 	$save['maintenance_datetime_start'] = preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $maintenance_datetime_start) ? $maintenance_datetime_start : '';
 	$save['maintenance_datetime_end']   = preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $maintenance_datetime_end) ? $maintenance_datetime_end : '';
-	$save['open_ticket']  = ($open_ticket == 'on' ? 'on' : '');
-	$save['type']         = $type;
-	$save['severity']     = $severity;
-	$save['method']       = $method;
-	$save['level']        = $level;
-	$save['notify']       = $notify;
-	$save['user']         = $username;
-	$save['date']         = time();
+	$save['open_ticket']                = ($open_ticket == 'on' ? 'on' : '');
+	$save['type']                       = $type;
+	$save['severity']                   = $severity;
+	$save['method']                     = $method;
+	$save['level']                      = $level;
+	$save['notify']                     = $notify;
+	$save['user']                       = $username;
+	$save['date']                       = time();
 
 	if (!is_error_message()) {
 		$sql = syslog_get_alert_sql($save, 100);
@@ -525,34 +529,34 @@ function get_repeat_array(): array {
 	$multiplier = 300 / $poller_interval;
 
 	$repeatarray = [
-		$multiplier * 0    => __('Not Set', 'syslog'),
+		(int) ($multiplier * 0)    => __('Not Set', 'syslog'),
 	];
 
 	if ($multiplier > 1) {
 		$repeatarray += [
-			round($multiplier / 5,0) => __('1 Minute', 'syslog'),
+			(int) round($multiplier / 5, 0) => __('1 Minute', 'syslog'),
 		];
 	}
 
 	$repeatarray += [
-		$multiplier * 1    => __('%d Minutes', 5, 'syslog'),
-		$multiplier * 2    => __('%d Minutes', 10, 'syslog'),
-		$multiplier * 3    => __('%d Minutes', 15, 'syslog'),
-		$multiplier * 4    => __('%d Minutes', 20, 'syslog'),
-		$multiplier * 6    => __('%d Minutes', 30, 'syslog'),
-		$multiplier * 8    => __('%d Minutes', 45, 'syslog'),
-		$multiplier * 12   => __('%d Hour', 1, 'syslog'),
-		$multiplier * 24   => __('%d Hours', 2, 'syslog'),
-		$multiplier * 36   => __('%d Hours', 3, 'syslog'),
-		$multiplier * 48   => __('%d Hours', 4, 'syslog'),
-		$multiplier * 72   => __('%d Hours', 6, 'syslog'),
-		$multiplier * 96   => __('%d Hours', 8, 'syslog'),
-		$multiplier * 144  => __('%d Hours', 12, 'syslog'),
-		$multiplier * 288  => __('%d Day', 1, 'syslog'),
-		$multiplier * 576  => __('%d Days', 2, 'syslog'),
-		$multiplier * 2016 => __('%d Week', 1, 'syslog'),
-		$multiplier * 4032 => __('%d Weeks', 2, 'syslog'),
-		$multiplier * 8640 => __('1 Month', 'syslog')
+		(int) ($multiplier * 1)    => __('%d Minutes', 5, 'syslog'),
+		(int) ($multiplier * 2)    => __('%d Minutes', 10, 'syslog'),
+		(int) ($multiplier * 3)    => __('%d Minutes', 15, 'syslog'),
+		(int) ($multiplier * 4)    => __('%d Minutes', 20, 'syslog'),
+		(int) ($multiplier * 6)    => __('%d Minutes', 30, 'syslog'),
+		(int) ($multiplier * 8)    => __('%d Minutes', 45, 'syslog'),
+		(int) ($multiplier * 12)   => __('%d Hour', 1, 'syslog'),
+		(int) ($multiplier * 24)   => __('%d Hours', 2, 'syslog'),
+		(int) ($multiplier * 36)   => __('%d Hours', 3, 'syslog'),
+		(int) ($multiplier * 48)   => __('%d Hours', 4, 'syslog'),
+		(int) ($multiplier * 72)   => __('%d Hours', 6, 'syslog'),
+		(int) ($multiplier * 96)   => __('%d Hours', 8, 'syslog'),
+		(int) ($multiplier * 144)  => __('%d Hours', 12, 'syslog'),
+		(int) ($multiplier * 288)  => __('%d Day', 1, 'syslog'),
+		(int) ($multiplier * 576)  => __('%d Days', 2, 'syslog'),
+		(int) ($multiplier * 2016) => __('%d Week', 1, 'syslog'),
+		(int) ($multiplier * 4032) => __('%d Weeks', 2, 'syslog'),
+		(int) ($multiplier * 8640) => __('1 Month', 'syslog')
 	];
 
 	$alert_retention = read_config_option('syslog_alert_retention');
@@ -597,7 +601,7 @@ function syslog_action_edit(): void {
 			$header_label = __esc('Alert Edit [edit: %s]', $alert['name'], 'syslog');
 		} else {
 			$header_label = __('Alert Edit [new]', 'syslog');
-			$alert = [
+			$alert        = [
 				'name' => __('New Alert Rule', 'syslog'),
 				'type' => 'filter'
 			];
@@ -608,7 +612,7 @@ function syslog_action_edit(): void {
 		$sql_params[] = get_request_var('id');
 
 		if (isset_request_var('date')) {
-			$sql_where   .= ' AND logtime = ?';
+			$sql_where .= ' AND logtime = ?';
 			$sql_params[] = get_request_var('date');
 		}
 
@@ -644,28 +648,32 @@ function syslog_action_edit(): void {
 	}
 
 	$repeatarray = get_repeat_array();
+
 	// Present older simple rules as their equivalent SQL expression. Reuse the
 	// existing compiler so configured columns and LIKE wildcard semantics are
 	// preserved. This changes the editor only; storage changes on explicit Save.
 	if (in_array($alert['type'] ?? '', ['messageb', 'messagec', 'messagee', 'host', 'program', 'facility'], true)) {
 		$legacy_query = syslog_get_alert_sql($alert, 0);
+
 		if (preg_match('/WHERE\s+(`[^`]+`\s+(?:LIKE|=)\s+)\?/', $legacy_query['sql'], $legacy_match)) {
 			$alert['message'] = $legacy_match[1] . db_qstr($legacy_query['params'][0]);
-			$alert['type'] = 'sql';
+			$alert['type']    = 'sql';
 		}
 	}
 	$filter_conditions = [];
+
 	if (($alert['type'] ?? '') === 'filter') {
 		$filter_document = json_decode($alert['message'] ?? '', true);
+
 		if (is_array($filter_document) && ($filter_document['version'] ?? null) === 1 && is_array($filter_document['conditions'] ?? null)) {
 			$filter_conditions = $filter_document['conditions'];
 		} elseif (get_nfilter_request_var('action') === 'newedit' && !empty($alert['message'])) {
 			$filter_conditions = [[
-				'join' => 'AND',
+				'join'     => 'AND',
 				'negative' => false,
-				'field' => 'message',
+				'field'    => 'message',
 				'operator' => 'contains',
-				'value' => $alert['message']
+				'value'    => $alert['message']
 			]];
 		}
 	}
@@ -733,16 +741,16 @@ function syslog_action_edit(): void {
 			'default'       => '1'
 		],
 		'threshold_window' => [
-			'method' => 'custom',
+			'method'        => 'custom',
 			'friendly_name' => __('Threshold Window', 'syslog'),
-			'description' => __('Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle.', 'syslog'),
-			'value' => $threshold_window_controls
+			'description'   => __('Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle.', 'syslog'),
+			'value'         => $threshold_window_controls
 		],
 		'threshold_recovery_minutes' => [
-			'method' => 'custom',
+			'method'        => 'custom',
 			'friendly_name' => __('Recover After Quiet Period', 'syslog'),
-			'description' => __('Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer.', 'syslog'),
-			'value' => $threshold_recovery_controls
+			'description'   => __('Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer.', 'syslog'),
+			'value'         => $threshold_recovery_controls
 		],
 		'type' => [
 			'method'        => 'drop_array',
@@ -751,7 +759,7 @@ function syslog_action_edit(): void {
 			'value'         => '|arg1:type|',
 			'array'         => [
 				'filter' => __('Filter Builder', 'syslog'),
-				'sql' => __('SQL Expression', 'syslog')
+				'sql'    => __('SQL Expression', 'syslog')
 			],
 			'on_change'     => 'changeTypes()',
 			'default'       => 'filter'
@@ -933,7 +941,7 @@ function syslog_action_edit(): void {
 
 	form_start('syslog_alerts.php', 'syslog_edit');
 
-	html_start_box($header_label, '100%', '', '3', 'center', '');
+	html_start_box($header_label, '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -961,9 +969,9 @@ function syslog_action_edit(): void {
 	var alertFilterBuilder;
 	var alertFilterConfig = {
 		fields: <?php print syslog_json_safe([
-			'message' => __('Message', 'syslog'),
-			'host' => __('Host', 'syslog'),
-			'program' => __('Program', 'syslog'),
+			'message'     => __('Message', 'syslog'),
+			'host'        => __('Host', 'syslog'),
+			'program'     => __('Program', 'syslog'),
 			'facility_id' => __('Facility', 'syslog'),
 			'priority_id' => __('Priority', 'syslog')
 		]); ?>,
@@ -976,11 +984,11 @@ function syslog_action_edit(): void {
 		},
 		choices: <?php
 			$filter_choices = syslog_search_choices();
-			print syslog_json_safe([
-				'facility_id' => $filter_choices['facility_id'] ?? [],
-				'priority_id' => $filter_choices['priority_id'] ?? []
-			]);
-		?>,
+	print syslog_json_safe([
+		'facility_id' => $filter_choices['facility_id'] ?? [],
+		'priority_id' => $filter_choices['priority_id'] ?? []
+	]);
+	?>,
 		conditions: <?php print syslog_json_safe($filter_conditions); ?>,
 		labels: {
 			message: <?php print syslog_json_safe(__('Value', 'syslog')); ?>,
@@ -1211,7 +1219,7 @@ function syslog_alerts(): void {
 		$url = '';
 	}
 
-	html_start_box(__('Syslog Alert Filters', 'syslog'), '100%', '', '3', 'center', $url);
+	html_start_box(__('Syslog Alert Filters', 'syslog'), '100%', false, 3, 'center', $url);
 
 	syslog_alerts_filter();
 
@@ -1255,7 +1263,7 @@ function syslog_alerts(): void {
 
 	print $nav;
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_sort_checkbox($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
@@ -1324,7 +1332,7 @@ function import(): void {
 
 	print "<form method='post' action='syslog_alerts.php' enctype='multipart/form-data'>";
 
-	html_start_box(__('Import Alert Rule', 'syslog'), '100%', false, '3', 'center', '');
+	html_start_box(__('Import Alert Rule', 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -1357,6 +1365,7 @@ function alert_import(): void {
 	if ($import_array === false || !$import_array) {
 		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location: syslog_alerts.php');
+
 		return;
 	}
 
@@ -1364,7 +1373,7 @@ function alert_import(): void {
 
 	if ($import_array !== false && cacti_sizeof($import_array)) {
 		foreach ($import_array as $template => $contents) {
-			$save  = [];;
+			$save  = [];
 			$tname = '';
 
 			if (cacti_sizeof($contents)) {

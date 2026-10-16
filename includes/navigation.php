@@ -7,7 +7,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Navigation callbacks. */
+// Navigation callbacks.
 
 require_once(dirname(__DIR__) . '/setup.php');
 
@@ -31,7 +31,6 @@ function syslog_show_tab(): void {
 		}
 	}
 }
-
 
 /**
  * Add the Syslog pages to the Cacti navigation structure.
@@ -63,7 +62,6 @@ function syslog_draw_navigation_text($nav) {
 
 	return $nav;
 }
-
 
 /**
  * Display a link to the Syslog page filtered for the graphed device.

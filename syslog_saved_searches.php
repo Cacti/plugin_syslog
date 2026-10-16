@@ -12,23 +12,26 @@ syslog_connect();
 set_default_action();
 
 global $syslogdb_default;
-$db = $syslogdb_default;
+$db    = $syslogdb_default;
 $error = '';
-$edit = get_filter_request_var('edit', FILTER_VALIDATE_INT);
+$edit  = get_filter_request_var('edit', FILTER_VALIDATE_INT);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_template')) {
-	$id = get_filter_request_var('id', FILTER_VALIDATE_INT);
-	$name = trim((string) get_nfilter_request_var('name'));
+	$id     = get_filter_request_var('id', FILTER_VALIDATE_INT);
+	$name   = trim((string) get_nfilter_request_var('name'));
 	$search = (string) get_nfilter_request_var('search');
-	$owner = trim((string) get_nfilter_request_var('owner'));
-	$edit = $id;
+	$owner  = trim((string) get_nfilter_request_var('owner'));
+	$edit   = $id;
+
 	if ($id > 0 && $name !== '' && strlen($name) <= 128) {
 		$usernames = array_rekey(db_fetch_assoc('SELECT username FROM user_auth'), 'username', 'username');
+
 		if ($owner === '' || !isset($usernames[$owner])) {
 			$error = __('Select a valid owner.', 'syslog');
 		} else {
 			try {
 				syslog_parse_logical_search($search);
+
 				if (!syslog_db_execute_prepared("UPDATE $db.syslog_saved_searches SET name = ?, search = ?, `user` = ? WHERE id = ? AND is_global = 'on'", [$name, $search, $owner, $id])) {
 					$error = __('Unable to save the template. Please try again.', 'syslog');
 				} else {
@@ -44,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset_request_var('save_template'))
 	} else {
 		$error = __('Enter a template name between 1 and 128 characters.', 'syslog');
 	}
+
 	if ($error === '') {
 		header('Location: syslog_saved_searches.php');
 		exit;
@@ -55,8 +59,9 @@ if ((isset_request_var('import') || isset_request_var('save_component_import')) 
 }
 
 $row = $edit > 0 ? syslog_db_fetch_row_prepared("SELECT id, name, search, removal, grouping, user FROM $db.syslog_saved_searches WHERE id = ? AND is_global = 'on'", [$edit]) : false;
+
 if ($row && $error !== '') {
-	$row['name'] = $name;
+	$row['name']   = $name;
 	$row['search'] = $search;
 }
 
@@ -170,7 +175,7 @@ function syslog_saved_searches() {
 
 	if (get_request_var('filter') != '') {
 		$sql_where .= ' AND (name LIKE ? OR `user` LIKE ? OR search LIKE ?)';
-		$filter = '%' . get_request_var('filter') . '%';
+		$filter     = '%' . get_request_var('filter') . '%';
 		$sql_params = [$filter, $filter, $filter];
 	}
 
@@ -189,7 +194,7 @@ function syslog_saved_searches() {
 
 	$nav = html_nav_bar('syslog_saved_searches.php?filter=' . get_request_var('filter'), MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, 4, __('Templates', 'syslog'), 'page', 'main');
 
-	html_start_box(__('Saved Search Templates', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Saved Search Templates', 'syslog'), '100%', false, 3, 'center', '');
 
 	syslog_saved_search_filter();
 
@@ -260,7 +265,7 @@ function syslog_saved_search_filter() {
  * Render the saved search templates table.
  *
  * @param list<array<string, mixed>> $rows The template rows to display.
- * @param string                           $nav  The navigation bar HTML to print above and below the table.
+ * @param string                     $nav  The navigation bar HTML to print above and below the table.
  *
  * @return void
  */
@@ -273,7 +278,7 @@ function syslog_template_list($rows, $nav = '') {
 		print $nav;
 	}
 
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	html_header_checkbox([__('Name', 'syslog'), __('Owner', 'syslog'), __('Query', 'syslog')], false);
 
@@ -341,7 +346,7 @@ function syslog_template_actions() {
 
 	form_start('syslog_saved_searches.php');
 
-	html_start_box($actions[get_request_var('drp_action')], '60%', '', '3', 'center', '');
+	html_start_box($actions[get_request_var('drp_action')], '60%', false, 3, 'center', '');
 
 	// loop through each of the templates selected on the previous page and get more info about them
 	$template_list  = '';
@@ -467,12 +472,13 @@ function syslog_saved_search_export() {
 function syslog_saved_search_import() {
 	global $db;
 
-	$import_data = syslog_get_import_xml_payload('syslog_saved_searches.php');
+	$import_data  = syslog_get_import_xml_payload('syslog_saved_searches.php');
 	$import_array = syslog_parse_rule_import($import_data, 'syslog_saved_searches');
 
 	if ($import_array === false || !$import_array) {
 		raise_message('syslog_import_error', __('Import rejected: the file is empty, invalid, or contains a different type of Syslog object.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location: syslog_saved_searches.php');
+
 		return;
 	}
 
@@ -498,7 +504,7 @@ function syslog_saved_search_import() {
 
 			if (isset($contents['hash']) && $contents['hash'] !== '') {
 				$save['hash'] = $contents['hash'];
-				$found = syslog_db_fetch_cell_prepared("SELECT id
+				$found        = syslog_db_fetch_cell_prepared("SELECT id
 					FROM $db.syslog_saved_searches
 					WHERE hash = ? AND is_global = 'on'",
 					[$contents['hash']]);
@@ -515,6 +521,7 @@ function syslog_saved_search_import() {
 
 			if ($save['name'] === '' || strlen($save['name']) > 128) {
 				$failed++;
+
 				continue;
 			}
 
@@ -542,6 +549,7 @@ function syslog_saved_search_import() {
 
 			if (!$id) {
 				$failed++;
+
 				continue;
 			}
 
@@ -597,7 +605,7 @@ function syslog_saved_search_import_form() {
 
 	print "<form method='post' action='syslog_saved_searches.php' enctype='multipart/form-data'>";
 
-	html_start_box(__('Import Saved Search Template', 'syslog'), '100%', false, '3', 'center', '');
+	html_start_box(__('Import Saved Search Template', 'syslog'), '100%', false, 3, 'center', '');
 
 	draw_edit_form(
 		[
@@ -623,6 +631,7 @@ function syslog_saved_search_import_form() {
  */
 function syslog_template_edit($row, $error) {
 	$tree = null;
+
 	try {
 		$tree = syslog_parse_logical_search($row['search']);
 	} catch (InvalidArgumentException $exception) {
@@ -632,29 +641,31 @@ function syslog_template_edit($row, $error) {
 	// Cacti accounts and groups to grant this template to, beyond global
 	// availability. The 'all' entry shares it with every signed-in user.
 	$usernames = array_rekey(db_fetch_assoc('SELECT username FROM user_auth ORDER BY username'), 'username', 'username');
-	$users  = array_rekey(db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username'), 'id', 'username');
-	$groups = array_rekey(db_fetch_assoc('SELECT id, name FROM user_auth_group ORDER BY name'), 'id', 'name');
-	$shares = syslog_fetch_item_shares('saved_search', (int) $row['id']);
+	$users     = array_rekey(db_fetch_assoc('SELECT id, username FROM user_auth ORDER BY username'), 'id', 'username');
+	$groups    = array_rekey(db_fetch_assoc('SELECT id, name FROM user_auth_group ORDER BY name'), 'id', 'name');
+	$shares    = syslog_fetch_item_shares('saved_search', (int) $row['id']);
 
 	$users  = ['all' => __('All Users', 'syslog')] + $users;
 	$groups = ['all' => __('All Groups', 'syslog')] + $groups;
 
 	form_start('syslog_saved_searches.php', 'syslog_template_form');
-	html_start_box(__('Edit Saved Search Template', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Edit Saved Search Template', 'syslog'), '100%', false, 3, 'center', '');
 	draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => [
-		'name' => ['friendly_name' => __('Name', 'syslog'), 'method' => 'textbox', 'value' => $row['name'], 'max_length' => 128, 'size' => 60, 'description' => __('The name shown to all users in Saved Searches.', 'syslog')],
-		'owner' => ['friendly_name' => __('Owner', 'syslog'), 'method' => 'drop_array', 'array' => $usernames, 'value' => $row['user'], 'description' => __('The account that owns this template and can manage it in Saved Searches.', 'syslog')],
-		'shared_users' => ['friendly_name' => __('Shared With Users', 'syslog'), 'method' => 'drop_multi', 'array' => $users, 'value' => $shares['users'], 'description' => __('Users who can use this template in addition to its owner. All Users shares it with everyone.', 'syslog')],
+		'name'          => ['friendly_name' => __('Name', 'syslog'), 'method' => 'textbox', 'value' => $row['name'], 'max_length' => 128, 'size' => 60, 'description' => __('The name shown to all users in Saved Searches.', 'syslog')],
+		'owner'         => ['friendly_name' => __('Owner', 'syslog'), 'method' => 'drop_array', 'array' => $usernames, 'value' => $row['user'], 'description' => __('The account that owns this template and can manage it in Saved Searches.', 'syslog')],
+		'shared_users'  => ['friendly_name' => __('Shared With Users', 'syslog'), 'method' => 'drop_multi', 'array' => $users, 'value' => $shares['users'], 'description' => __('Users who can use this template in addition to its owner. All Users shares it with everyone.', 'syslog')],
 		'shared_groups' => ['friendly_name' => __('Shared With Groups', 'syslog'), 'method' => 'drop_multi', 'array' => $groups, 'value' => $shares['groups'], 'description' => __('Groups who can use this template in addition to its owner. All Groups shares it with everyone.', 'syslog')],
-		'id' => ['method' => 'hidden', 'value' => (int) $row['id']],
+		'id'            => ['method' => 'hidden', 'value' => (int) $row['id']],
 		'save_template' => ['method' => 'hidden', 'value' => '1']
 	]]);
 	html_end_box();
-	html_start_box(__('Search Query', 'syslog'), '100%', '', '3', 'center', '');
+	html_start_box(__('Search Query', 'syslog'), '100%', false, 3, 'center', '');
 	print "<tr><td class='syslogTemplateEditor'>";
+
 	if ($error !== '') {
 		print "<p class='ui-state-error ui-corner-all' role='alert'>" . html_escape($error) . '</p>';
 	}
+
 	// Keep malformed legacy expressions editable instead of silently replacing them.
 	if ($tree === null && trim($row['search']) !== '') {
 		print "<label for='template_search'>" . __('Correct the query syntax to use the query builder.', 'syslog') . "</label><textarea id='template_search' name='search' rows='4' class='textAreaNotes'>" . html_escape($row['search']) . '</textarea>';

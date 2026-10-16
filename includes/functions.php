@@ -23,6 +23,7 @@
 */
 
 $syslog_query_builder = dirname(__DIR__) . '/lib/QueryBuilder.php';
+
 if (file_exists($syslog_query_builder)) {
 	require_once $syslog_query_builder;
 }
@@ -34,9 +35,9 @@ if (file_exists($syslog_query_builder)) {
  */
 function syslog_search_fields(): array {
 	return ['message' => 'Message', 'host' => 'Host', 'program' => 'Program',
-		'facility' => 'Facility', 'priority' => 'Priority', 'logtime' => 'Date',
-		'seq' => 'Sequence', 'host_id' => 'Host ID', 'program_id' => 'Program ID',
-		'facility_id' => 'Facility ID', 'priority_id' => 'Priority ID'];
+		'facility'       => 'Facility', 'priority' => 'Priority', 'logtime' => 'Date',
+		'seq'            => 'Sequence', 'host_id' => 'Host ID', 'program_id' => 'Program ID',
+		'facility_id'    => 'Facility ID', 'priority_id' => 'Priority ID'];
 }
 
 /**
@@ -47,14 +48,23 @@ function syslog_search_fields(): array {
 function syslog_search_choices(): array {
 	global $syslogdb_default;
 	$choices = [];
+
 	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities', 'program' => 'syslog_programs'] as $field => $table) {
 		$choices[$field . '_id'] = [];
-		if ($field !== 'program') { $choices[$field] = []; }
+
+		if ($field !== 'program') {
+			$choices[$field] = [];
+		}
+
 		foreach (syslog_db_fetch_assoc("SELECT {$field}_id AS id, $field AS name FROM `$syslogdb_default`.`$table` ORDER BY $field") as $record) {
 			$choices[$field . '_id'][] = [(string) $record['id'], $record['name'] . ' (' . $record['id'] . ')'];
-			if ($field !== 'program') { $choices[$field][] = [$record['name'], $record['name']]; }
+
+			if ($field !== 'program') {
+				$choices[$field][] = [$record['name'], $record['name']];
+			}
 		}
 	}
+
 	return $choices;
 }
 
@@ -70,28 +80,34 @@ function syslog_search_choices(): array {
  */
 function syslog_search_suggestions(string $field, string $term, string $tab, string $removal): array {
 	global $syslogdb_default;
+
 	if (!isset(syslog_search_fields()[$field]) || $field === 'logtime' || strlen($term) > 1024) {
 		return [];
 	}
 	$pattern = '%' . str_replace(['!', '%', '_'], ['!!', '!%', '!_'], $term) . '%';
-	$base = substr($field, -3) === '_id' ? substr($field, 0, -3) : $field;
-	$tables = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'];
+	$base    = substr($field, -3) === '_id' ? substr($field, 0, -3) : $field;
+	$tables  = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'];
+
 	if (isset($tables[$base]) && !($base === 'host' && $tab === 'alerts')) {
-		$table = $tables[$base];
+		$table   = $tables[$base];
 		$records = syslog_db_fetch_assoc_prepared("SELECT $field AS value, $base AS label
 			FROM `$syslogdb_default`.`$table`
 			WHERE $base LIKE ? ESCAPE '!' OR CAST($field AS CHAR) LIKE ? ESCAPE '!'
 			ORDER BY $base LIMIT 30", [$pattern, $pattern]);
 	} else {
-		if (!in_array($field, ['message', 'seq', 'host'], true)) { return []; }
-		$column = $field === 'message' && $tab === 'alerts' ? 'logmsg' : $field;
-		$tables = $tab === 'alerts' ? ['syslog_logs'] : ($removal === '1' ? ['syslog', 'syslog_removed'] : [$removal === '-1' ? 'syslog' : 'syslog_removed']);
+		if (!in_array($field, ['message', 'seq', 'host'], true)) {
+			return [];
+		}
+		$column  = $field === 'message' && $tab === 'alerts' ? 'logmsg' : $field;
+		$tables  = $tab   === 'alerts' ? ['syslog_logs'] : ($removal === '1' ? ['syslog', 'syslog_removed'] : [$removal === '-1' ? 'syslog' : 'syslog_removed']);
 		$queries = [];
+
 		foreach ($tables as $table) {
 			$queries[] = "SELECT $column AS value FROM (SELECT $column FROM `$syslogdb_default`.`$table` ORDER BY seq DESC LIMIT 1000) AS recent_$table";
 		}
 		$records = syslog_db_fetch_assoc_prepared('SELECT DISTINCT value, value AS label FROM (' . implode(' UNION ALL ', $queries) . ") AS suggestions WHERE value LIKE ? ESCAPE '!' ORDER BY value LIMIT 30", [$pattern]);
 	}
+
 	return array_map(function ($record) {
 		return ['value' => (string) $record['value'], 'label' => (string) $record['label']];
 	}, $records);
@@ -105,7 +121,10 @@ function syslog_search_suggestions(string $field, string $term, string $tab, str
  * @return array<int, string> Array of operator strings.
  */
 function syslog_search_operators(string $field): array {
-	if ($field === 'logtime') { return ['=', '!=', '>', '>=', '<', '<=', 'last']; }
+	if ($field === 'logtime') {
+		return ['=', '!=', '>', '>=', '<', '<=', 'last'];
+	}
+
 	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
 		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
 }
@@ -126,35 +145,44 @@ function syslog_parse_logical_search(string $input): ?array {
 
 	$tokens = [];
 	$length = strlen($input);
+
 	for ($i = 0; $i < $length;) {
 		if (ctype_space($input[$i])) {
 			$i++;
+
 			continue;
 		}
+
 		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
 			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
 				throw new InvalidArgumentException('Invalid field or operator.');
 			}
 			$tokens[] = ['field', $match[1], $match[2]];
 			$i += strlen($match[0]);
+
 			continue;
 		}
+
 		if ($input[$i] == '(' || $input[$i] == ')') {
 			$tokens[] = [$input[$i++], ''];
 		} elseif ($input[$i] == '"') {
-			$value = '';
+			$value  = '';
 			$closed = false;
+
 			for ($i++; $i < $length; $i++) {
 				if ($input[$i] == '"') {
 					$i++;
 					$closed = true;
+
 					break;
 				}
+
 				if ($input[$i] == '\\' && $i + 1 < $length && ($input[$i + 1] == '"' || $input[$i + 1] == '\\')) {
 					$i++;
 				}
 				$value .= $input[$i];
 			}
+
 			if (!$closed || $value === '') {
 				throw new InvalidArgumentException('Use a nonempty phrase with a closing double quote.');
 			}
@@ -164,6 +192,7 @@ function syslog_parse_logical_search(string $input): ?array {
 			$i += strlen($match[1]);
 		} else {
 			$start = $i++;
+
 			while ($i < $length && strpos('()"', $input[$i]) === false) {
 				if (ctype_space($input[$i - 1]) && preg_match('/\G(AND|OR|NOT)(?=\s|[()"]|$)/', $input, $match, 0, $i)) {
 					break;
@@ -173,37 +202,45 @@ function syslog_parse_logical_search(string $input): ?array {
 			$tokens[] = ['term', trim(substr($input, $start, $i - $start))];
 		}
 	}
+
 	if (!$tokens) {
 		return null;
 	}
+
 	if (count($tokens) > 256) {
 		throw new InvalidArgumentException('Search is too complex (maximum 256 tokens).');
 	}
 	$position = 0;
-	$parse = function ($minimum = 0, $depth = 0) use (&$parse, &$position, $tokens) {
+	$parse    = function ($minimum = 0, $depth = 0) use (&$parse, &$position, $tokens) {
 		if ($depth > 32) {
 			throw new InvalidArgumentException('Search nesting is too deep (maximum 32 levels).');
 		}
 		/** @var array<int, string> $token A token: ['field', name, operator], ['term', value], ['NOT'|'AND'|'OR'|'('|')', '']. */
 		$token = $tokens[$position++] ?? ['', ''];
+
 		if ($token[0] == 'NOT') {
 			$node = ['NOT', $parse(3, $depth + 1)];
 		} elseif ($token[0] == '(') {
 			$node = $parse(0, $depth + 1);
+
 			if (($tokens[$position++][0] ?? '') != ')') {
 				throw new InvalidArgumentException('Expected a closing parenthesis.');
 			}
 		} elseif ($token[0] == 'field') {
 			$value = $tokens[$position++] ?? [];
+
 			if (($value[0] ?? '') !== 'term') {
 				throw new InvalidArgumentException('Expected a quoted field value.');
 			}
+
 			if (($token[1] === 'seq' || substr($token[1], -3) === '_id') && !ctype_digit($value[1])) {
 				throw new InvalidArgumentException('IDs must be nonnegative integers.');
 			}
+
 			if ($token[2] === 'last' && !in_array($value[1], ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
 				throw new InvalidArgumentException('Invalid date preset.');
 			}
+
 			if ($token[1] === 'logtime' && $token[2] !== 'last' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
 				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
 			}
@@ -213,21 +250,26 @@ function syslog_parse_logical_search(string $input): ?array {
 		} else {
 			throw new InvalidArgumentException('Expected a search term, NOT, or an opening parenthesis.');
 		}
+
 		while (isset($tokens[$position])) {
-			$operator = $tokens[$position][0];
+			$operator   = $tokens[$position][0];
 			$precedence = ['OR' => 1, 'AND' => 2][$operator] ?? 0;
+
 			if (!$precedence || $precedence < $minimum) {
 				break;
 			}
 			$position++;
 			$node = [$operator, $node, $parse($precedence + 1, $depth + 1)];
 		}
+
 		return $node;
 	};
 	$tree = $parse();
+
 	if ($position != count($tokens)) {
 		throw new InvalidArgumentException('Expected AND or OR between terms, or found an extra closing parenthesis.');
 	}
+
 	return $tree;
 }
 
@@ -235,7 +277,7 @@ function syslog_parse_logical_search(string $input): ?array {
  * LOCATE treats wildcard and regex characters literally and uses column collation.
  *
  * @param array<int|string, mixed>|null $tree   The parsed search tree.
- * @param string                    $column The column name ('message' or 'logmsg').
+ * @param string                        $column The column name ('message' or 'logmsg').
  *
  * @return string The SQL WHERE clause fragment.
  *
@@ -245,46 +287,58 @@ function syslog_logical_search_sql(?array $tree, string $column): string {
 	if (!in_array($column, ['message', 'logmsg'], true)) {
 		throw new InvalidArgumentException('Invalid message column.');
 	}
+
 	if ($tree === null) {
 		return '';
 	}
+
 	if ($tree[0] === 'predicate') {
 		global $syslogdb_default;
 		[, $field, $operator, $value] = $tree;
+
 		if (!isset(syslog_search_fields()[$field]) || !in_array($operator, syslog_search_operators($field), true)) {
 			throw new InvalidArgumentException('Invalid field or operator.');
 		}
+
 		if ($field === 'host_id' && $column === 'logmsg') {
 			throw new InvalidArgumentException('Host ID is only available for system logs.');
 		}
+
 		if ($operator === 'last') {
 			if (!in_array($value, ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
 				throw new InvalidArgumentException('Invalid date preset.');
 			}
 			$interval = ['3months' => '3 MONTH', '6months' => '6 MONTH'][$value] ?? ((int) $value . ' SECOND');
+
 			return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
 		}
 		$target = $field === 'message' ? $column : 'syslog.' . $field;
+
 		if (in_array($field, ['host', 'program', 'facility', 'priority'], true)) {
 			if ($field === 'host' && $column === 'logmsg') {
 				$target = 'syslog.host';
 			} else {
-				$table = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'][$field];
+				$table  = ['host' => 'syslog_hosts', 'program' => 'syslog_programs', 'facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'][$field];
 				$target = "(SELECT search_lookup.$field FROM `$syslogdb_default`.`$table` AS search_lookup WHERE search_lookup.{$field}_id = syslog.{$field}_id)";
 			}
 		}
+
 		if ($operator === 'contains') {
 			return '(LOCATE(' . db_qstr($value) . ', ' . $target . ') > 0)';
 		}
 		$operator = ['like' => 'LIKE'][$operator] ?? $operator;
+
 		return '(' . $target . ' ' . $operator . ' ' . db_qstr($value) . ')';
 	}
+
 	if ($tree[0] == 'term') {
 		return '(LOCATE(' . db_qstr($tree[1]) . ', ' . $column . ') > 0)';
 	}
+
 	if ($tree[0] == 'NOT') {
 		return '(NOT ' . syslog_logical_search_sql($tree[1], $column) . ')';
 	}
+
 	return '(' . syslog_logical_search_sql($tree[1], $column) . ' ' . $tree[0] . ' ' . syslog_logical_search_sql($tree[2], $column) . ')';
 }
 
@@ -292,7 +346,7 @@ function syslog_logical_search_sql(?array $tree, string $column): string {
  * Extract positive terms from a parsed search tree.
  *
  * @param array<int|string, mixed>|null $tree     The parsed search tree.
- * @param bool                      $negative Whether to extract negative terms.
+ * @param bool                          $negative Whether to extract negative terms.
  *
  * @return array<int, string> Array of search terms.
  */
@@ -300,15 +354,19 @@ function syslog_logical_positive_terms(?array $tree, bool $negative = false): ar
 	if ($tree === null) {
 		return [];
 	}
+
 	if ($tree[0] === 'predicate') {
 		return !$negative && $tree[1] === 'message' && in_array($tree[2], ['contains', '='], true) ? [$tree[3]] : [];
 	}
+
 	if ($tree[0] == 'term') {
 		return $negative ? [] : [$tree[1]];
 	}
+
 	if ($tree[0] == 'NOT') {
 		return syslog_logical_positive_terms($tree[1], !$negative);
 	}
+
 	return array_merge(syslog_logical_positive_terms($tree[1], $negative), syslog_logical_positive_terms($tree[2], $negative));
 }
 
@@ -323,8 +381,8 @@ function syslog_logical_positive_terms(?array $tree, bool $negative = false): ar
  * @return string The search string with auto dates removed.
  */
 function syslog_strip_auto_dates(string $search, mixed $date1, mixed $date2): string {
-	$d1 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
-	$d2 = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
+	$d1     = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
+	$d2     = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
 	$suffix = 'logtime >= "' . $d1 . '" AND logtime <= "' . $d2 . '"';
 
 	if (substr($search, -strlen($suffix)) === $suffix) {
@@ -472,7 +530,7 @@ function syslog_shared_item_ids(string $item): array {
 		return [];
 	}
 
-	list($table, $column) = $share_table;
+	[$table, $column] = $share_table;
 
 	$group_ids = syslog_user_group_ids($user_id);
 
@@ -509,7 +567,7 @@ function syslog_shared_item_ids(string $item): array {
 /**
  * Current grants on one item, shaped for the drop_multi form fields.
  *
- * @param string $item   The item kind.
+ * @param string $item    The item kind.
  * @param int    $item_id The item ID.
  *
  * @return array{users: array<int, array{id: string|int}>, groups: array<int, array{id: string|int}>}
@@ -525,7 +583,7 @@ function syslog_fetch_item_shares(string $item, int $item_id): array {
 		return $shares;
 	}
 
-	list($table, $column) = $share_table;
+	[$table, $column] = $share_table;
 
 	$rows = syslog_db_fetch_assoc_prepared("SELECT type, item_id
 		FROM `$syslogdb_default`.`$table`
@@ -585,10 +643,10 @@ function syslog_parse_share_ids(string $name): array {
  * they simply never match a real user or group. The 'all' sentinel grants
  * the item to every signed-in user with a single row (item_id 0).
  *
- * @param string       $item    The item kind.
- * @param int          $item_id The item ID.
- * @param array<int|string> $users Array of user IDs or 'all'.
- * @param array<int|string> $groups Array of group IDs or 'all'.
+ * @param string            $item    The item kind.
+ * @param int               $item_id The item ID.
+ * @param array<int|string> $users   Array of user IDs or 'all'.
+ * @param array<int|string> $groups  Array of group IDs or 'all'.
  *
  * @return void
  */
@@ -601,7 +659,7 @@ function syslog_save_item_shares(string $item, int $item_id, array $users, array
 		return;
 	}
 
-	list($table, $column) = $share_table;
+	[$table, $column] = $share_table;
 
 	syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`$table`
 		WHERE $column = ?",
@@ -653,26 +711,29 @@ function syslog_message_filter_value(string $value, string $filter, string $href
 	$terms = syslog_logical_positive_terms($GLOBALS['syslog_search_tree'] ?? null);
 	usort($terms, function ($a, $b) { return strlen($b) - strlen($a); });
 	$pattern = $terms ? '~(' . implode('|', array_map(function ($term) { return preg_quote($term, '~'); }, $terms)) . ')~iu' : '';
-	$parts = $pattern ? preg_split($pattern, $value, -1, PREG_SPLIT_DELIM_CAPTURE) : [$value];
+	$parts   = $pattern ? preg_split($pattern, $value, -1, PREG_SPLIT_DELIM_CAPTURE) : [$value];
+
 	if ($parts === false) {
 		$parts = [$value];
 	}
 	$output = '';
+
 	foreach ($parts as $index => $part) {
 		$escaped = htmlspecialchars($part, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 		$output .= $index % 2 ? '<span class="filteredValue">' . $escaped . '</span>' : $escaped;
 	}
+
 	return $href === '' ? $output : '<a class="linkEditMain" href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '">' . $output . '</a>';
 }
 
 /**
  * Apply a bulk action to selected items.
  *
- * @param array<int, mixed>|false $selected_items Array of selected item IDs, or false.
- * @param string                  $drp_action     The selected action.
+ * @param array<int, mixed>|false   $selected_items Array of selected item IDs, or false.
+ * @param string                    $drp_action     The selected action.
  * @param array<int|string, string> $action_map     Map of actions to function names.
- * @param string                  $export_action  Optional export action name.
- * @param string                  $export_items   Optional export items config.
+ * @param string                    $export_action  Optional export action name.
+ * @param string                    $export_items   Optional export items config.
  *
  * @return void
  */
@@ -716,6 +777,7 @@ function syslog_export_form_end(bool $export): void {
 	global $form_id;
 
 	form_end(false);
+
 	if (!$export) {
 		return;
 	}
@@ -763,7 +825,7 @@ function syslog_include_js(): void {
  * @return void
  */
 function syslog_syslog_legend(): void {
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	$items = [
 		'logEmergency' => __('Emergency', 'syslog'),
@@ -777,6 +839,7 @@ function syslog_syslog_legend(): void {
 	];
 
 	$chip_min = 0;
+
 	foreach ($items as $label) {
 		$chip_min = max($chip_min, mb_strlen($label));
 	}
@@ -803,7 +866,7 @@ function syslog_syslog_legend(): void {
  * @return void
  */
 function syslog_log_legend(): void {
-	html_start_box('', '100%', '', '3', 'center', '');
+	html_start_box('', '100%', false, 3, 'center', '');
 
 	$items = [
 		'logAlert'   => __('Alert', 'syslog'),
@@ -812,6 +875,7 @@ function syslog_log_legend(): void {
 	];
 
 	$chip_min = 0;
+
 	foreach ($items as $label) {
 		$chip_min = max($chip_min, mb_strlen($label));
 	}
@@ -883,11 +947,13 @@ function syslog_allow_rule_edits(): bool {
 function syslog_sync_save(array $data, string $table, string $primary = ''): void {
 	if (!syslog_allow_edits()) {
 		raise_message('syslog_denied', __('Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead.', 'syslog'), MESSAGE_LEVEL_ERROR);
+
 		return;
 	}
 
 	// Cacti's full replication invokes syslog_replicate_out() for remote rules.
 	$id = syslog_sql_save($data, $table, $primary);
+
 	if ($id > 0) {
 		raise_message(1);
 	} else {
@@ -898,11 +964,11 @@ function syslog_sync_save(array $data, string $table, string $primary = ''): voi
 /**
  * Send email alert with optional SMS support.
  *
- * @param string $to         Recipient email address (may include sms@ addresses).
- * @param array<int, string> $from Sender email and name as a list: [email, name].
- * @param string $subject    Email subject.
- * @param string $message    Email message body (HTML).
- * @param string $smsmessage SMS message body.
+ * @param string             $to         Recipient email address (may include sms@ addresses).
+ * @param array<int, string> $from       Sender email and name as a list: [email, name].
+ * @param string             $subject    Email subject.
+ * @param string             $message    Email message body (HTML).
+ * @param string             $smsmessage SMS message body.
  *
  * @return void
  */
@@ -1035,8 +1101,8 @@ function syslog_read_import_file(string $filename): string|false {
 /**
  * syslog_rules_array2json - encode a list of rule rows as a JSON export document
  *
- * @param string $table                     Source rule table, used for uniqueness/version metadata
- * @param array<int, array<string, mixed>>  $rules Rule rows (the 'id' key is removed before export)
+ * @param string                           $table Source rule table, used for uniqueness/version metadata
+ * @param array<int, array<string, mixed>> $rules Rule rows (the 'id' key is removed before export)
  *
  * @return string JSON document suitable for download
  */
@@ -1102,6 +1168,7 @@ function syslog_parse_rule_import(string $payload, string $expected_table): arra
 		if (isset($decoded['table']) && $decoded['table'] !== $expected_table) {
 			return false;
 		}
+
 		if (isset($decoded['version']) && $decoded['version'] !== SYSLOG_IMPORT_VERSION) {
 			return false;
 		}
@@ -1135,14 +1202,17 @@ function syslog_parse_rule_import(string $payload, string $expected_table): arra
 		return false;
 	}
 	$templates = xml2array($payload);
+
 	if (!is_array($templates)) {
 		return false;
 	}
+
 	foreach ($templates as $template) {
 		if (!is_array($template) || !syslog_import_matches_table($template, $expected_table)) {
 			return false;
 		}
 	}
+
 	return $templates;
 }
 
@@ -1158,6 +1228,7 @@ function syslog_import_matches_table(array $template, string $table): bool {
 	if (!isset($template['name']) || !is_string($template['name']) || trim($template['name']) === '') {
 		return false;
 	}
+
 	switch ($table) {
 		case 'syslog_alert':
 			return isset($template['severity'], $template['method'], $template['message']) &&
@@ -1170,6 +1241,7 @@ function syslog_import_matches_table(array $template, string $table): bool {
 		case 'syslog_dashboards':
 			return isset($template['panels']) && is_array($template['panels']);
 	}
+
 	return false;
 }
 
@@ -1491,8 +1563,8 @@ function syslog_status_record_phase(string $phase, int $start, int $end, float $
  * that have never run.
  *
  * @return array<string, array{start:int,end:int,seconds:float,count:int}|null>
- *               Map of phase name to its telemetry document, or null when
- *               the phase has not recorded a run yet.
+ *                                                                              Map of phase name to its telemetry document, or null when
+ *                                                                              the phase has not recorded a run yet.
  */
 function syslog_status_phase_telemetry(): array {
 	global $syslogdb_default;
@@ -1548,23 +1620,23 @@ function syslog_status_get(): array {
 	syslog_status_ensure_table();
 
 	$status = [
-		'pipeline_health_monitor' => '',
-		'last_polling_time' => '',
-		'last_start_time'   => '',
-		'last_end_time'     => '',
-		'last_record_count' => '',
-		'polling_runtime_last'  => '',
-		'polling_runtime_min'   => '',
-		'polling_runtime_avg'   => '',
-		'polling_runtime_max'   => '',
-		'polling_runtime_count' => '',
-		'polling_runtime_sum'   => '',
-		'last_alert_rules_processed'   => '',
-		'total_alert_rules_processed'  => '',
-		'last_delete_rules_processed'  => '',
-		'total_delete_rules_processed' => '',
-		'last_alert_rules_fired'       => '',
-		'last_delete_rules_fired'      => '',
+		'pipeline_health_monitor'            => '',
+		'last_polling_time'                  => '',
+		'last_start_time'                    => '',
+		'last_end_time'                      => '',
+		'last_record_count'                  => '',
+		'polling_runtime_last'               => '',
+		'polling_runtime_min'                => '',
+		'polling_runtime_avg'                => '',
+		'polling_runtime_max'                => '',
+		'polling_runtime_count'              => '',
+		'polling_runtime_sum'                => '',
+		'last_alert_rules_processed'         => '',
+		'total_alert_rules_processed'        => '',
+		'last_delete_rules_processed'        => '',
+		'total_delete_rules_processed'       => '',
+		'last_alert_rules_fired'             => '',
+		'last_delete_rules_fired'            => '',
 		'partition_maintenance_last_attempt' => '',
 		'partition_maintenance_last_success' => '',
 		'partition_maintenance_outcome'      => '',
@@ -1572,10 +1644,10 @@ function syslog_status_get(): array {
 		'partition_maintenance_reason'       => '',
 		'partition_recovery_progress'        => '',
 		'partition_maintenance_history'      => '',
-		'replication_state' => '',
-		'replication_last_success' => '',
-		'replication_last_error' => '',
-		'replication_last_error_time' => '',
+		'replication_state'                  => '',
+		'replication_last_success'           => '',
+		'replication_last_error'             => '',
+		'replication_last_error_time'        => '',
 	];
 
 	$rows = syslog_db_fetch_assoc("SELECT `name`, `value`, `updated`
@@ -1622,43 +1694,48 @@ function syslog_status_get(): array {
 function syslog_pipeline_health(): array {
 	global $config, $syslogdb_default, $syslog_incoming_config;
 
-	$status = syslog_status_get();
+	$status  = syslog_status_get();
 	$monitor = json_decode($status['pipeline_health_monitor'], true);
 	$monitor = is_array($monitor) ? $monitor : [];
-	$health = ['state' => 'up', 'issues' => [], 'checks' => [], 'monitor' => $monitor];
+	$health  = ['state' => 'up', 'issues' => [], 'checks' => [], 'monitor' => $monitor];
 
 	if (read_config_option('syslog_enabled') !== 'on'
 		|| ((int) ($config['poller_id'] ?? 1) > 1 && read_config_option('syslog_remote_enabled') !== 'on')) {
 		$health['state'] = 'disabled';
+
 		return $health;
 	}
 
-	$now = time();
-	$interval = max(60, (int) read_config_option('poller_interval'));
-	$delay = max($interval * 3, (int) read_config_option('syslog_stale_threshold'), 300);
-	$limit = (int) read_config_option('syslog_backlog_threshold');
-	$limit = $limit > 0 ? $limit : 10000;
+	$now       = time();
+	$interval  = max(60, (int) read_config_option('poller_interval'));
+	$delay     = max($interval * 3, (int) read_config_option('syslog_stale_threshold'), 300);
+	$limit     = (int) read_config_option('syslog_backlog_threshold');
+	$limit     = $limit > 0 ? $limit : 10000;
 	$completed = (int) $status['last_end_time'];
-	$baseline = max($completed, (int) ($monitor['first_checked'] ?? 0));
+	$baseline  = max($completed, (int) ($monitor['first_checked'] ?? 0));
+
 	if (($monitor['signature'] ?? '') === 'disabled:') {
 		$baseline = 0;
 	}
 	$health['checks']['processing'] = $completed === 0 || $baseline === 0
 		? __('Waiting for a completed processing run.', 'syslog')
 		: __('Processing is completing within the allowed delay.', 'syslog');
+
 	if ($baseline > 0 && $now - $baseline > $delay) {
 		$health['issues']['processing'] = __('No processing run has completed for more than %d seconds.', $delay, 'syslog');
 	}
 
-	$column = $syslog_incoming_config['timeField'] ?? 'logtime';
+	$column   = $syslog_incoming_config['timeField'] ?? 'logtime';
 	$incoming = [];
+
 	if (is_string($column) && preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column)) {
 		// Above the threshold, the exact count and oldest timestamp cannot change the verdict.
 		$sample_limit = $limit + 1;
-		$incoming = syslog_db_fetch_row("SELECT COUNT(*) AS pending, UNIX_TIMESTAMP(MIN(`$column`)) AS oldest
+		$incoming     = syslog_db_fetch_row("SELECT COUNT(*) AS pending, UNIX_TIMESTAMP(MIN(`$column`)) AS oldest
 			FROM (SELECT `$column` FROM `$syslogdb_default`.`syslog_incoming` LIMIT $sample_limit) AS incoming_sample", false);
 	}
 	$health['checks']['backlog'] = __('Incoming messages are within the configured limits.', 'syslog');
+
 	if (!isset($incoming['pending']) || !is_numeric($incoming['pending'])) {
 		$health['issues']['backlog'] = __('Incoming queue metrics are unavailable.', 'syslog');
 	} elseif ((int) $incoming['pending'] > $limit) {
@@ -1671,11 +1748,13 @@ function syslog_pipeline_health(): array {
 		}
 	}
 
-	$replication = syslog_replication_operational_status(true);
+	$replication                     = syslog_replication_operational_status(true);
 	$health['checks']['replication'] = __('Synchronization is not enabled on this collector.', 'syslog');
+
 	if (!empty($replication['enabled'])) {
 		$health['checks']['replication'] = __('Synchronization is within the allowed delay.', 'syslog');
-		$oldest = $replication['oldest_pending_epoch'];
+		$oldest                          = $replication['oldest_pending_epoch'];
+
 		if ($replication['pending'] === null) {
 			$health['issues']['replication'] = __('Synchronization queue metrics are unavailable.', 'syslog');
 		} elseif ($replication['pending'] > 0 && $oldest === null) {
@@ -1687,6 +1766,7 @@ function syslog_pipeline_health(): array {
 	}
 
 	$health['checks']['partition'] = __('Partition maintenance is not blocked.', 'syslog');
+
 	if ((int) ($status['partition_maintenance_blocked'] ?? 0) === 1) {
 		$health['issues']['partition'] = __('Partition maintenance is blocked: %s', $status['partition_maintenance_reason'] ?? '', 'syslog');
 	}
@@ -1696,6 +1776,7 @@ function syslog_pipeline_health(): array {
 	} elseif ($completed === 0 || $baseline === 0) {
 		$health['state'] = 'recovering';
 	}
+
 	return $health;
 }
 
@@ -1704,62 +1785,69 @@ function syslog_pipeline_health_check(): void {
 	global $config, $syslogdb_default;
 
 	$lock = 'syslog_health_' . sha1($syslogdb_default . ':' . (int) ($config['poller_id'] ?? 1));
-	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock], false) !== 1) {
+
+	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock], '', false) !== 1) {
 		return;
 	}
 
 	try {
-		$health = syslog_pipeline_health();
+		$health  = syslog_pipeline_health();
 		$monitor = $health['monitor'];
-		$now = time();
-		$keys = array_keys($health['issues']);
+		$now     = time();
+		$keys    = array_keys($health['issues']);
 		sort($keys);
-		$signature = $health['state'] . ':' . implode(',', $keys);
-		$prior = $monitor['signature'] ?? '';
+		$signature                = $health['state'] . ':' . implode(',', $keys);
+		$prior                    = $monitor['signature'] ?? '';
 		$monitor['first_checked'] = $prior === 'disabled:' ? $now : ($monitor['first_checked'] ?? $now);
-		$monitor['checked'] = $now;
-		$monitor['signature'] = $signature;
+		$monitor['checked']       = $now;
+		$monitor['signature']     = $signature;
 
 		if ($signature !== $prior && $health['state'] !== 'disabled' && ($health['issues'] || str_starts_with($prior, 'down:'))) {
 			cacti_log('SYSLOG PIPELINE: ' . ($health['issues'] ? implode(' ', $health['issues']) : 'Pipeline recovered'), false, 'SYSLOG');
 		}
 
 		$recipients = trim((string) read_config_option('syslog_pipeline_health_email'), ' ,');
-		$bcc = '';
-		$list_id = (int) read_config_option('syslog_pipeline_health_notify');
+		$bcc        = '';
+		$list_id    = (int) read_config_option('syslog_pipeline_health_notify');
+
 		if ($list_id > 0 && db_table_exists('plugin_notification_lists')) {
 			$bcc_column = db_column_exists('plugin_notification_lists', 'bcc_emails') ? 'bcc_emails' : "'' AS bcc_emails";
-			$list = db_fetch_row_prepared("SELECT emails, $bcc_column FROM plugin_notification_lists WHERE id = ? AND enabled = ?", [$list_id, 'on']);
+			$list       = db_fetch_row_prepared("SELECT emails, $bcc_column FROM plugin_notification_lists WHERE id = ? AND enabled = ?", [$list_id, 'on']);
 			$recipients = implode(', ', array_filter([$recipients, trim((string) ($list['emails'] ?? ''), ' ,')]));
-			$bcc = trim((string) ($list['bcc_emails'] ?? ''), ' ,');
+			$bcc        = trim((string) ($list['bcc_emails'] ?? ''), ' ,');
 		}
+
 		if (($recipients === '' && $bcc === '') || $health['state'] === 'disabled') {
 			$monitor['notification'] = 'disabled';
 			unset($monitor['notified_signature']);
 		} else {
 			$notified = $monitor['notified_signature'] ?? '';
-			$repeat = max(300, (int) (read_config_option('syslog_pipeline_health_repeat') ?: 3600));
-			$due = ($health['issues'] && ($signature !== $notified || $now - (int) ($monitor['last_notified'] ?? 0) >= $repeat))
+			$repeat   = max(300, (int) (read_config_option('syslog_pipeline_health_repeat') ?: 3600));
+			$due      = ($health['issues'] && ($signature !== $notified || $now - (int) ($monitor['last_notified'] ?? 0) >= $repeat))
 				|| (!$health['issues'] && str_starts_with($notified, 'down:'));
+
 			// Bound failed mail retries even if poller hooks overlap or run more often.
 			if ($due && $now - (int) ($monitor['last_attempt'] ?? 0) >= 300) {
 				$monitor['last_attempt'] = $now;
 				$monitor['notification'] = 'pending';
+
 				if (!syslog_status_set('pipeline_health_monitor', (string) json_encode($monitor))) {
 					return;
 				}
 				$subject = __('Syslog pipeline health - collector %d', (int) ($config['poller_id'] ?? 1), 'syslog');
 				$message = $health['issues'] ? implode("\n", $health['issues']) : __('The Syslog pipeline has recovered.', 'syslog');
-				$from = [(string) (read_config_option('settings_from_email') ?: 'Cacti@cacti.net'), (string) (read_config_option('settings_from_name') ?: 'Cacti')];
+				$from    = [(string) (read_config_option('settings_from_email') ?: 'Cacti@cacti.net'), (string) (read_config_option('settings_from_name') ?: 'Cacti')];
+
 				try {
-					$error = mailer($from, $recipients, '', $bcc, '', $subject, '', $message, '', '', false);
+					$error                   = mailer($from, $recipients, '', $bcc, '', $subject, '', $message, '', '', false);
 					$monitor['notification'] = $error === '' ? 'sent' : 'failed';
 				} catch (Throwable $error) {
 					$monitor['notification'] = 'failed';
 				}
+
 				if ($monitor['notification'] === 'sent') {
 					$monitor['notified_signature'] = $signature;
-					$monitor['last_notified'] = $now;
+					$monitor['last_notified']      = $now;
 				} else {
 					cacti_log('SYSLOG PIPELINE: Health notification failed; retrying on a later poller run', false, 'SYSLOG');
 				}
@@ -1771,7 +1859,7 @@ function syslog_pipeline_health_check(): void {
 		}
 		syslog_status_set('pipeline_health_monitor', (string) json_encode($monitor));
 	} finally {
-		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock], false);
+		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock], '', false);
 	}
 }
 
@@ -1786,7 +1874,7 @@ function syslog_pipeline_health_check(): void {
  * db helper is required here.
  *
  * @return array Array with running workers, configured workers, and per
- *              child stats keyed by child number
+ *               child stats keyed by child number
  */
 function syslog_worker_stats_get() {
 	$stats = [
@@ -1893,6 +1981,7 @@ function syslog_aggregate_worker_stats($workers) {
 		WHERE name LIKE 'stats_syslog_child_%'");
 
 	$success = $workers > 0;
+
 	for ($worker = 1; $worker <= $workers; $worker++) {
 		if (empty($reported[$worker])) {
 			$success = false;
@@ -2035,7 +2124,7 @@ function syslog_partition_observability(): array {
 				continue;
 			}
 
-			$dmax_rows = $row['table_rows'] ?? $row['TABLE_ROWS'] ?? null;
+			$dmax_rows  = $row['table_rows'] ?? $row['TABLE_ROWS'] ?? null;
 			$data       = $row['data_length'] ?? $row['DATA_LENGTH'] ?? null;
 			$index      = $row['index_length'] ?? $row['INDEX_LENGTH'] ?? null;
 
@@ -2092,10 +2181,10 @@ function syslog_partition_maintenance_record(bool $successful, array $recovery, 
 		'pruned'     => $pruned,
 		'reason'     => $reason
 	];
-	$history = json_decode($status['partition_maintenance_history'] ?? '', true);
-	$history = is_array($history) ? $history : [];
+	$history   = json_decode($status['partition_maintenance_history'] ?? '', true);
+	$history   = is_array($history) ? $history : [];
 	$history[] = $event;
-	$history = array_slice($history, -10);
+	$history   = array_slice($history, -10);
 
 	syslog_status_set('partition_maintenance_last_attempt', $now);
 	syslog_status_set('partition_maintenance_outcome', $successful ? 'success' : 'deferred');
@@ -2213,9 +2302,9 @@ function syslog_partition_manage(): int {
  * @param int    $ahead_days Number of future days to maintain.
  *
  * @return array{created: int, missing: int, stop_reason: string, retention_deferred: bool, dmax_risk: bool}
- *               Recovery telemetry: partitions created this run, the
- *               remaining gap, why the run stopped, whether retention
- *               was deferred, and whether writes landed in dMaxValue.
+ *                                                                                                           Recovery telemetry: partitions created this run, the
+ *                                                                                                           remaining gap, why the run stopped, whether retention
+ *                                                                                                           was deferred, and whether writes landed in dMaxValue.
  */
 function syslog_partition_recover($table, $base_time, $ahead_days) {
 	$limit = read_config_option('syslog_partition_recover_limit');
@@ -2372,7 +2461,7 @@ function syslog_compute_slices($seq_start, $seq_end, $workers) {
 		return [];
 	}
 
-	$total    = $seq_end - $seq_start + 1;
+	$total     = $seq_end - $seq_start + 1;
 	$per_slice = (int) ceil($total / $workers);
 
 	$slices = [];
@@ -2561,7 +2650,7 @@ function syslog_partition_report_state($table) {
 	}
 
 	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
-		cacti_log("SYSLOG ERROR: Invalid database name; partition state check aborted", false, 'SYSLOG');
+		cacti_log('SYSLOG ERROR: Invalid database name; partition state check aborted', false, 'SYSLOG');
 
 		return false;
 	}
@@ -2636,7 +2725,7 @@ function syslog_partition_report_state($table) {
  * Create a new partition for the specified table.
  *
  * @param mixed $table The table to rotate
- * @param int   $time Assume this time for the partition rotation
+ * @param int   $time  Assume this time for the partition rotation
  *
  * @return bool true on success, false on lock failure or disallowed table.
  */
@@ -2648,7 +2737,7 @@ function syslog_partition_create($table, $time = null) {
 	}
 
 	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
-		cacti_log("SYSLOG ERROR: Invalid database name; partition create aborted", false, 'SYSLOG');
+		cacti_log('SYSLOG ERROR: Invalid database name; partition create aborted', false, 'SYSLOG');
 
 		return false;
 	}
@@ -2802,7 +2891,7 @@ function syslog_partition_remove($table) {
 	}
 
 	if (preg_match('/^[a-zA-Z0-9_]+$/', $syslogdb_default) !== 1) {
-		cacti_log("SYSLOG ERROR: Invalid database name; partition remove aborted", false, 'SYSLOG');
+		cacti_log('SYSLOG ERROR: Invalid database name; partition remove aborted', false, 'SYSLOG');
 
 		return 0;
 	}
@@ -2851,6 +2940,7 @@ function syslog_partition_remove($table) {
 
 					if (preg_match('/^[a-zA-Z0-9_]+$/', $part_name) !== 1) {
 						cacti_log("SYSLOG ERROR: Invalid partition name '$part_name' for '$table'; skipping drop", false, 'SYSLOG');
+
 						break;
 					}
 
@@ -2858,6 +2948,7 @@ function syslog_partition_remove($table) {
 						// The dMaxValue partition is the write-path fail
 						// safe and must never be dropped.
 						cacti_log("SYSLOG ERROR: Refusing to drop the dMaxValue safety partition on '$table'; stopping retention prune", false, 'SYSLOG');
+
 						break;
 					}
 
@@ -2865,11 +2956,12 @@ function syslog_partition_remove($table) {
 
 					syslog_debug("Removing partition '" . $part_name . "'");
 
-					/* $table passed syslog_partition_table_allowed() at function entry; $part_name is regex-validated above. DDL identifiers cannot be parameterized. */
+					// $table passed syslog_partition_table_allowed() at function entry; $part_name is regex-validated above. DDL identifiers cannot be parameterized.
 					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`", []);
 
 					if ($result === false) {
 						cacti_log("SYSLOG ERROR: Failed to drop partition '$part_name' from '$table' after $i successful drop(s); aborting further drops", false, 'SYSLOG');
+
 						break;
 					}
 
@@ -2954,6 +3046,7 @@ function syslog_get_removal_rule_fields($table = 'syslog_incoming', $prefix = ''
 		if (!isset($syslog_incoming_config['programField'])) {
 			$syslog_incoming_config['programField'] = 'program';
 		}
+
 		foreach (['textField' => 'message', 'hostField' => 'host', 'facilityField' => 'facility_id', 'priorityField' => 'priority_id'] as $setting => $default) {
 			if (!isset($syslog_incoming_config[$setting])) {
 				$syslog_incoming_config[$setting] = $default;
@@ -2961,9 +3054,9 @@ function syslog_get_removal_rule_fields($table = 'syslog_incoming', $prefix = ''
 		}
 
 		return [
-			'message' => ['column' => $column($syslog_incoming_config['textField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-			'host' => ['column' => $column($syslog_incoming_config['hostField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-			'program' => ['column' => $column($syslog_incoming_config['programField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'message'     => ['column' => $column($syslog_incoming_config['textField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host'        => ['column' => $column($syslog_incoming_config['hostField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'program'     => ['column' => $column($syslog_incoming_config['programField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 			'facility_id' => ['column' => $column($syslog_incoming_config['facilityField']), 'operators' => ['=', '!='], 'type' => 'integer'],
 			'priority_id' => ['column' => $column($syslog_incoming_config['priorityField']), 'operators' => ['=', '!='], 'type' => 'integer']
 		];
@@ -2971,9 +3064,9 @@ function syslog_get_removal_rule_fields($table = 'syslog_incoming', $prefix = ''
 
 	// The syslog (and syslog_removed) tables store normalized id columns.
 	return [
-		'message' => ['column' => $column('message'), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-		'host_id' => ['column' => $column('host_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
-		'program_id' => ['column' => $column('program_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
+		'message'     => ['column' => $column('message'), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+		'host_id'     => ['column' => $column('host_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
+		'program_id'  => ['column' => $column('program_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
 		'facility_id' => ['column' => $column('facility_id'), 'operators' => ['=', '!='], 'type' => 'integer'],
 		'priority_id' => ['column' => $column('priority_id'), 'operators' => ['=', '!='], 'type' => 'integer']
 	];
@@ -3007,7 +3100,7 @@ function syslog_removal_filter_normalize($json, $table) {
 	}
 
 	$maps = [
-		'host' => ['table' => 'syslog_hosts',    'name' => 'host',    'id' => 'host_id'],
+		'host'    => ['table' => 'syslog_hosts',    'name' => 'host',    'id' => 'host_id'],
 		'program' => ['table' => 'syslog_programs', 'name' => 'program', 'id' => 'program_id']
 	];
 
@@ -3022,24 +3115,30 @@ function syslog_removal_filter_normalize($json, $table) {
 		switch ($operator) {
 			case '=':
 				$pattern = $value;
+
 				break;
 			case '!=':
 				$pattern = $value;
+
 				break;
 			case 'contains':
 				$pattern = '%' . $value . '%';
+
 				break;
 			case 'begins':
 				$pattern = $value . '%';
+
 				break;
 			case 'ends':
 				$pattern = '%' . $value;
+
 				break;
 			default:
 				return null;
 		}
 
 		$ids = [];
+
 		foreach (syslog_db_fetch_assoc_prepared("SELECT {$map['id']} AS id
 			FROM `{$map['table']}`
 			WHERE `{$map['name']}` LIKE ? ESCAPE '!'",
@@ -3054,6 +3153,7 @@ function syslog_removal_filter_normalize($json, $table) {
 		}
 
 		$rows = [];
+
 		foreach ($ids as $index => $id) {
 			$rows[] = [
 				'join'     => $index === 0 ? 'AND' : 'OR',
@@ -3108,9 +3208,10 @@ function syslog_removal_filter_normalize($json, $table) {
  * syslog_get_removal_rule_sql - Compile a structured filter removal rule
  * into parameterized SQL for the given table.
  *
- * @param array  $remove The removal rule attributes
- * @param string $table  The syslog table the rule will run against
- * @param string $prefix Optional table alias prefixed to each column
+ * @param array  $remove              The removal rule attributes
+ * @param string $table               The syslog table the rule will run against
+ * @param string $prefix              Optional table alias prefixed to each column
+ * @param mixed  $processing_boundary
  *
  * @return array The SQL and params, or an empty array on failure
  */
@@ -3210,7 +3311,7 @@ define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 10);
  * @param int    $rows      Maximum number of matching messages to return.
  *
  * @return array{error: string, count: int, rows: array<int, array<string, string>>}
- *               The bounded preview result, or an error message.
+ *                                                                                   The bounded preview result, or an error message.
  */
 function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows = 10): array {
 	global $syslogdb_default, $syslog_incoming_config;
@@ -3221,7 +3322,7 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		return ['error' => __('Unknown rule type.', 'syslog'), 'count' => 0, 'rows' => []];
 	}
 
-	$type = isset($rule['type']) ? (string) $rule['type'] : '';
+	$type            = isset($rule['type']) ? (string) $rule['type'] : '';
 	$rule['message'] = isset($rule['message']) ? (string) $rule['message'] : '';
 
 	$sql    = '';
@@ -3536,7 +3637,7 @@ function syslog_remove_items($table, $max_seq) {
 			// alias, so the shared WHERE would be ambiguous there while
 			// the plain DELETE needs unqualified columns.  Compile both
 			// shapes up front and track them separately.
-			$insert_where = '';
+			$insert_where  = '';
 			$insert_params = [];
 
 			if ($remove['type'] == 'filter') {
@@ -3559,7 +3660,7 @@ function syslog_remove_items($table, $max_seq) {
 							$insert_where  = $insert_compiled['sql'];
 							$insert_params = $insert_compiled['params'];
 						} else {
-							$insert_where = '';
+							$insert_where  = '';
 							$insert_params = [];
 						}
 					}
@@ -3686,6 +3787,7 @@ function syslog_remove_items($table, $max_seq) {
 				if ($remove['method'] != 'del') {
 					if (!syslog_db_execute('START TRANSACTION')) {
 						cacti_log("SYSLOG ERROR: Unable to start transaction for removal rule '" . $remove['name'] . "'", false, 'SYSLOG');
+
 						continue;
 					}
 
@@ -3697,6 +3799,7 @@ function syslog_remove_items($table, $max_seq) {
 							// for this joined INSERT separately.
 							if ($insert_where == '') {
 								syslog_db_execute('ROLLBACK');
+
 								continue;
 							}
 
@@ -3728,6 +3831,7 @@ function syslog_remove_items($table, $max_seq) {
 					if ($move_failed) {
 						syslog_db_execute('ROLLBACK');
 						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after archive insert failed", false, 'SYSLOG');
+
 						continue;
 					}
 
@@ -3741,6 +3845,7 @@ function syslog_remove_items($table, $max_seq) {
 					if (!syslog_replication_enqueue_incoming($replication_where, $replication_params, 'syslog_removed')) {
 						syslog_db_execute('ROLLBACK');
 						cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['name'] . "' after replication outbox insert failed", false, 'SYSLOG');
+
 						continue;
 					}
 				}
@@ -3765,6 +3870,7 @@ function syslog_remove_items($table, $max_seq) {
 				if ($transaction_started && !syslog_db_execute('COMMIT')) {
 					syslog_db_execute('ROLLBACK');
 					cacti_log("SYSLOG ERROR: Unable to commit transaction for removal rule '" . $remove['name'] . "'", false, 'SYSLOG');
+
 					continue;
 				}
 
@@ -3779,7 +3885,7 @@ function syslog_remove_items($table, $max_seq) {
 				}
 			}
 		}
-		}
+	}
 
 	syslog_status_set('last_delete_rules_fired', syslog_status_rule_activity_json($fired));
 
@@ -3794,7 +3900,7 @@ function syslog_remove_items($table, $max_seq) {
  * displayed. The classes reuse the same Kiwi-style pastel tints that the
  * main syslog table applies per priority, so both tables share one look.
  *
- * @param mixed $severity The alert severity of the row.
+ * @param mixed $severity  The alert severity of the row.
  * @param mixed $tip_title The row tooltip title (unused, kept for compatibility).
  *
  * @return void
@@ -3888,13 +3994,13 @@ function syslog_row_color($priority, $message): string {
  * Render compact metadata labels without changing the surrounding table theme.
  *
  * @param mixed  $value The facility or priority value to display.
- * @param string $type The label type ('priority' or 'facility').
+ * @param string $type  The label type ('priority' or 'facility').
  *
  * @return string The formatted HTML label.
  */
 function syslog_metadata_label($value, string $type): string {
-	$value = (string) $value;
-	$class = $type === 'priority' ? 'syslogSeverity' : 'syslogFacility';
+	$value    = (string) $value;
+	$class    = $type === 'priority' ? 'syslogSeverity' : 'syslogFacility';
 	$modifier = preg_replace('/[^a-z]/', '', strtolower($value));
 
 	return '<span class="' . $class . ' ' . $class . '-' . html_escape($modifier) . '">' . html_escape($value) . '</span>';
@@ -3910,13 +4016,24 @@ function syslog_metadata_label($value, string $type): string {
  */
 function syslog_value_filter_button($value, string $field): string {
 	$value = (string) $value;
-	if ($value === '') return html_escape(__('Unknown', 'syslog'));
+
+	if ($value === '') {
+		return html_escape(__('Unknown', 'syslog'));
+	}
 	$class = 'syslogValueFilter';
-	if ($field === 'host') $class .= ' syslogHostLabel';
-	if ($field === 'program') $class .= ' syslogProgramLabel';
+
+	if ($field === 'host') {
+		$class .= ' syslogHostLabel';
+	}
+
+	if ($field === 'program') {
+		$class .= ' syslogProgramLabel';
+	}
+
 	if ($field === 'priority') {
 		$class .= ' syslogSeverity syslogSeverity-' . html_escape(preg_replace('/[^a-z]/', '', strtolower($value)));
 	}
+
 	return '<button type="button" class="' . $class . '" data-filter-field="' . html_escape($field) . '" data-filter-value="' . html_escape($value) . '">' . html_escape($value) . '</button>';
 }
 
@@ -3973,7 +4090,7 @@ function sql_hosts_where($tab) {
  * itself a formula trigger in some importers and must stay detectable as
  * the first character rather than being treated as skippable whitespace.
  *
- * @param mixed $value Value destined for CSV output.
+ * @param  mixed $value Value destined for CSV output.
  * @return mixed Sanitized CSV value.
  */
 function syslog_csv_safe(mixed $value): mixed {
@@ -4011,6 +4128,7 @@ function syslog_export($tab) {
 		http_response_code(400);
 		header('Content-Type: text/plain; charset=UTF-8');
 		print $GLOBALS['syslog_search_error'];
+
 		return;
 	}
 
@@ -4103,7 +4221,6 @@ function syslog_export($tab) {
 
 				fputcsv($fp, $line, ',', '"', '');
 			}
-
 		}
 
 		fclose($fp);
@@ -4170,13 +4287,13 @@ function syslog_debug(string $message): void {
  * Log a triggered alert to the syslog_logs table and notify the host alarm
  * hook. Both single message alerts and threshold alerts are supported.
  *
- * @param mixed                  $alert_id   The alert rule ID.
- * @param mixed                  $alert_name The alert rule name.
- * @param mixed                  $severity   The alert severity.
- * @param array<string, mixed>   $msg        The matching syslog message record.
- * @param int                    $count      The number of matching messages.
- * @param string                 $html       The HTML body for the alert log entry.
- * @param array<int, mixed>      $hosts      The hosts to associate with the alarm.
+ * @param mixed                $alert_id   The alert rule ID.
+ * @param mixed                $alert_name The alert rule name.
+ * @param mixed                $severity   The alert severity.
+ * @param array<string, mixed> $msg        The matching syslog message record.
+ * @param int                  $count      The number of matching messages.
+ * @param string               $html       The HTML body for the alert log entry.
+ * @param array<int, mixed>    $hosts      The hosts to associate with the alarm.
  *
  * @return int|false The sequence of the new alert log entry, or false on failure.
  */
@@ -4364,6 +4481,7 @@ function syslog_manage_items($from_table, $to_table) {
 
 						if (!syslog_db_execute('START TRANSACTION')) {
 							cacti_log("SYSLOG ERROR: Unable to start transaction for removal rule '" . $remove['message'] . "'", false, 'SYSLOG');
+
 							continue;
 						}
 
@@ -4374,6 +4492,7 @@ function syslog_manage_items($from_table, $to_table) {
 							WHERE seq IN (" . $all_seq . '))')) {
 							syslog_db_execute('ROLLBACK');
 							cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['message'] . "' after move insert failed", false, 'SYSLOG');
+
 							continue;
 						}
 
@@ -4384,6 +4503,7 @@ function syslog_manage_items($from_table, $to_table) {
 								WHERE seq IN ($all_seq)")) {
 								syslog_db_execute('ROLLBACK');
 								cacti_log("SYSLOG ERROR: Rolled back removal rule '" . $remove['message'] . "' after move delete failed", false, 'SYSLOG');
+
 								continue;
 							}
 						}
@@ -4391,6 +4511,7 @@ function syslog_manage_items($from_table, $to_table) {
 						if (!syslog_db_execute('COMMIT')) {
 							syslog_db_execute('ROLLBACK');
 							cacti_log("SYSLOG ERROR: Unable to commit transaction for removal rule '" . $remove['message'] . "'", false, 'SYSLOG');
+
 							continue;
 						}
 
@@ -4565,23 +4686,25 @@ function syslog_execute_alert_command($alert, $results, $hostname, string $event
 	$cparts     = preg_split('/\s+/', trim($command)) ?: [''];
 	$executable = trim($cparts[0], '"\'');
 
-	$label = $event === 'clear' ? 'Recovery' : 'Alert';
+	$label  = $event === 'clear' ? 'Recovery' : 'Alert';
 	$output = [];
 	$return = 0;
 
 	if (cacti_sizeof($cparts) && is_executable($executable)) {
 		$environment = [
-			'SYSLOG_EVENT' => $event,
+			'SYSLOG_EVENT'     => $event,
 			'SYSLOG_BREACH_ID' => $alert['_threshold_state']['breach_key'] ?? '',
-			'SYSLOG_ALERT_ID' => (string) $alert['id'],
-			'SYSLOG_HOSTNAME' => $hostname,
+			'SYSLOG_ALERT_ID'  => (string) $alert['id'],
+			'SYSLOG_HOSTNAME'  => $hostname,
 			'SYSLOG_POLLER_ID' => (string) ($alert['_threshold_state']['source_poller_id'] ?? ($GLOBALS['config']['poller_id'] ?? 1))
 		];
 		$previous = [];
+
 		foreach ($environment as $name => $value) {
 			$previous[$name] = getenv($name);
 			putenv($name . '=' . $value);
 		}
+
 		try {
 			exec($command, $output, $return);
 		} finally {
@@ -4597,6 +4720,7 @@ function syslog_execute_alert_command($alert, $results, $hostname, string $event
 		if ($return !== 0) {
 			cacti_log(sprintf('ERROR: %s command failed.  Alert:%s, Exit:%s, Output:%s', $label, $alert['name'], $return, implode(', ', $output)), false, 'SYSLOG');
 		}
+
 		return $return === 0;
 	} else {
 		$reason = (strpos($executable, DIRECTORY_SEPARATOR) === false)
@@ -4604,6 +4728,7 @@ function syslog_execute_alert_command($alert, $results, $hostname, string $event
 			: 'file not found or not marked executable';
 		cacti_log("SYSLOG ERROR: $label command is not executable: '$command' -- $reason", false, 'SYSTEM');
 	}
+
 	return false;
 }
 
@@ -4623,7 +4748,7 @@ function syslog_execute_alert_command($alert, $results, $hostname, string $event
  * and more importantly, to be able to have a separate re-alert cycles for that very same message as there can be similar messages
  * happening all the time at the system level, so it's hard to target a single host for re-alert rules.
  *
- * @param int  $max_seq The max_seq to process
+ * @param int $max_seq The max_seq to process
  *
  * @return array An array of the number of alerts processed and the number of alerts generated
  */
@@ -4631,7 +4756,7 @@ function syslog_execute_alert_command($alert, $results, $hostname, string $event
  * Return true when a day expression contains the given ISO weekday (1=Mon).
  */
 function syslog_alert_schedule_day_matches(string $expression, int $weekday): bool {
-	$days = ['mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6, 'sun' => 7, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7];
+	$days       = ['mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6, 'sun' => 7, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7];
 	$expression = strtolower(trim($expression));
 
 	if ($expression === '*') {
@@ -4642,6 +4767,7 @@ function syslog_alert_schedule_day_matches(string $expression, int $weekday): bo
 		$range = array_map('trim', explode('-', $part, 2));
 		$start = $days[substr($range[0], 0, 3)] ?? 0;
 		$end   = $days[substr($range[1] ?? $range[0], 0, 3)] ?? 0;
+
 		if ($start && $end && (($start <= $end && $weekday >= $start && $weekday <= $end) || ($start > $end && ($weekday >= $start || $weekday <= $end)))) {
 			return true;
 		}
@@ -4670,12 +4796,15 @@ function syslog_alert_schedule_is_active(string $schedule, ?int $timestamp = nul
 		}
 		$start = ((int) $matches[2] * 60) + (int) $matches[3];
 		$end   = ((int) $matches[4] * 60) + (int) $matches[5];
+
 		if ($start > 1439 || $end > 1439) {
 			continue;
 		}
+
 		if ($start <= $end && syslog_alert_schedule_day_matches($matches[1], $weekday) && $minute >= $start && $minute <= $end) {
 			return true;
 		}
+
 		if ($start > $end && (($minute >= $start && syslog_alert_schedule_day_matches($matches[1], $weekday)) || ($minute <= $end && syslog_alert_schedule_day_matches($matches[1], $weekday === 1 ? 7 : $weekday - 1)))) {
 			return true;
 		}
@@ -4712,17 +4841,18 @@ function syslog_alert_datetime_window_is_active(string $start, string $end, ?int
  */
 function syslog_alert_suppression_check(array $alert, string $hostname, array $matches): array {
 	$scope_key = $hostname !== '' ? $hostname : 'system';
-	$messages  = array_unique(array_map(static fn($match) => (string) ($match['host'] ?? '') . "\n" . (string) ($match['message'] ?? ''), $matches));
+	$messages  = array_unique(array_map(static fn ($match) => (string) ($match['host'] ?? '') . "\n" . (string) ($match['message'] ?? ''), $matches));
 	sort($messages, SORT_STRING);
-	$dedup_hash = sha1(implode("\n", $messages));
+	$dedup_hash     = sha1(implode("\n", $messages));
 	$cooldown_value = (int) ($alert['cooldown_minutes'] ?? -1);
 	$dedup_value    = (int) ($alert['deduplication_minutes'] ?? -1);
-	$cooldown = $cooldown_value >= 0 ? $cooldown_value : (int) read_config_option('syslog_alert_cooldown_minutes');
-	$dedup    = $dedup_value >= 0 ? $dedup_value : (int) read_config_option('syslog_alert_deduplication_minutes');
-	$now      = time();
+	$cooldown       = $cooldown_value >= 0 ? $cooldown_value : (int) read_config_option('syslog_alert_cooldown_minutes');
+	$dedup          = $dedup_value >= 0 ? $dedup_value : (int) read_config_option('syslog_alert_deduplication_minutes');
+	$now            = time();
 
 	if ($cooldown > 0) {
 		$last_sent = (int) syslog_db_fetch_cell_prepared('SELECT MAX(last_sent) FROM syslog_alert_suppression WHERE alert_id = ? AND scope_key = ?', [$alert['id'], $scope_key]);
+
 		if ($last_sent > $now - ($cooldown * 60)) {
 			return ['allowed' => false, 'scope_key' => $scope_key, 'dedup_hash' => $dedup_hash];
 		}
@@ -4730,6 +4860,7 @@ function syslog_alert_suppression_check(array $alert, string $hostname, array $m
 
 	if ($dedup > 0) {
 		$last_sent = (int) syslog_db_fetch_cell_prepared('SELECT last_sent FROM syslog_alert_suppression WHERE alert_id = ? AND scope_key = ? AND dedup_hash = ?', [$alert['id'], $scope_key, $dedup_hash]);
+
 		if ($last_sent > $now - ($dedup * 60)) {
 			return ['allowed' => false, 'scope_key' => $scope_key, 'dedup_hash' => $dedup_hash];
 		}
@@ -4746,9 +4877,11 @@ function syslog_alert_suppression_record(array $alert, array $state): void {
 /** Return whether this alert's configured maintenance window is active. */
 function syslog_alert_maintenance_is_active(array $alert): bool {
 	$mode = $alert['maintenance_mode'] ?? 'inherit';
+
 	if ($mode === 'disabled') {
 		return false;
 	}
+
 	if ($mode === 'custom') {
 		return syslog_alert_datetime_window_is_active((string) ($alert['maintenance_datetime_start'] ?? ''), (string) ($alert['maintenance_datetime_end'] ?? ''))
 			|| syslog_alert_schedule_is_active(syslog_alert_maintenance_window((string) ($alert['maintenance_days'] ?? ''), (string) ($alert['maintenance_start'] ?? ''), (string) ($alert['maintenance_end'] ?? '')));
@@ -4769,15 +4902,16 @@ function syslog_alert_maintenance_is_active(array $alert): bool {
  */
 function syslog_device_rule_sql(bool $maintenance_active): array {
 	global $syslogdb_default, $syslog_incoming_config;
-	$host_field = $syslog_incoming_config['hostField'] ?? 'host';
+	$host_field     = $syslog_incoming_config['hostField'] ?? 'host';
 	$priority_field = $syslog_incoming_config['priorityField'] ?? 'priority_id';
-	$now = time();
+	$now            = time();
 	// Qualify the outer staging columns explicitly: an unqualified `host`
 	// inside these correlated EXISTS resolves to dr.host (the innermost
 	// scope wins), which turns the mute filter into a silent tautology.
-	$active_mute = "(dr.mute_mode = 'indefinite' OR (dr.mute_mode = 'until' AND dr.mute_until > ?))";
+	$active_mute  = "(dr.mute_mode = 'indefinite' OR (dr.mute_mode = 'until' AND dr.mute_until > ?))";
 	$pass_through = "(dr.pass_through_priority >= 0 AND COALESCE(`syslog_incoming`.`$priority_field`, 99) <= dr.pass_through_priority)";
-	$mute_filter = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `syslog_incoming`.`$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
+	$mute_filter  = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `syslog_incoming`.`$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
+
 	if ($maintenance_active) {
 		// Normal maintenance still mutes every device.  Only an explicit device
 		// exception may admit a record, so the absence of a device rule is not
@@ -4788,7 +4922,7 @@ function syslog_device_rule_sql(bool $maintenance_active): array {
 	}
 
 	return [
-		'sql' => $maintenance_filter . $mute_filter,
+		'sql'    => $maintenance_filter . $mute_filter,
 		'params' => [$now]
 	];
 }
@@ -4797,7 +4931,7 @@ function syslog_device_rule_sql(bool $maintenance_active): array {
 function syslog_alert_window_seconds(array $alert): int {
 	$units = ['minute' => 60, 'hour' => 3600, 'day' => 86400];
 	$value = (string) ($alert['threshold_window'] ?? '0');
-	$unit = $alert['threshold_unit'] ?? 'minute';
+	$unit  = $alert['threshold_unit'] ?? 'minute';
 
 	if (!ctype_digit($value) || (float) $value > 4294967295 || !isset($units[$unit])) {
 		return 0;
@@ -4814,9 +4948,10 @@ function syslog_threshold_rule_hash(array $alert): string {
 /** Recover quiet breaches without scanning or rewriting message history. */
 function syslog_threshold_recover(?int $now = null): void {
 	global $config;
-	$now = $now ?? time();
+	$now    = $now ?? time();
 	$source = max(1, (int) ($config['poller_id'] ?? 1));
-	$ended = "(s.expires_at <= ? OR a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR s.rule_date <> a.date)";
+	$ended  = "(s.expires_at <= ? OR a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR s.rule_date <> a.date)";
+
 	if (!syslog_db_execute('START TRANSACTION')) {
 		return;
 	}
@@ -4831,12 +4966,15 @@ function syslog_threshold_recover(?int $now = null): void {
 		["DELETE m FROM syslog_threshold_state AS s JOIN syslog_threshold_messages AS m ON m.source_poller_id = s.source_poller_id AND m.breach_key = s.breach_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now]],
 		["DELETE s FROM syslog_threshold_state AS s LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now]]
 	];
+
 	foreach ($queries as [$sql, $params]) {
 		if (!syslog_db_execute_prepared($sql, $params)) {
 			syslog_db_execute('ROLLBACK');
+
 			return;
 		}
 	}
+
 	if (!syslog_db_execute('COMMIT')) {
 		syslog_db_execute('ROLLBACK');
 	}
@@ -4845,28 +4983,34 @@ function syslog_threshold_recover(?int $now = null): void {
 /** Deliver only origin-owned clears; the connection lock also covers slow commands. */
 function syslog_threshold_deliver_recoveries(?int $now = null): void {
 	global $config, $syslogdb_default;
-	$now = $now ?? time();
+	$now    = $now ?? time();
 	$source = max(1, (int) ($config['poller_id'] ?? 1));
-	$lock = 'syslog-clear:' . sha1($syslogdb_default . ':' . $source);
+	$lock   = 'syslog-clear:' . sha1($syslogdb_default . ':' . $source);
+
 	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock]) !== 1) {
 		return;
 	}
+
 	try {
 		if (!syslog_db_execute_prepared("DELETE q FROM syslog_threshold_recovery_queue AS q LEFT JOIN syslog_alert AS a ON a.id = q.alert_id
 			WHERE q.source_poller_id = ? AND (a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR a.date <> q.rule_date OR COALESCE(a.recovery_command, '') = '')", [$source])) {
 			return;
 		}
 		$pending = syslog_db_fetch_assoc_prepared('SELECT breach_key, context, attempts FROM syslog_threshold_recovery_queue WHERE source_poller_id = ? AND available_at <= ? ORDER BY available_at, breach_key LIMIT 25', [$source, $now]);
+
 		foreach ($pending ?: [] as $row) {
 			$context = json_decode($row['context'], true);
+
 			if (is_array($context['alert'] ?? null) && is_array($context['results'] ?? null)
 				&& is_array($context['hostlist'] ?? null) && is_string($context['hostname'] ?? null)
 				&& isset($context['alert']['id'], $context['alert']['name'], $context['alert']['message'], $context['alert']['severity'], $context['alert']['command'],
 					$context['alert']['_threshold_state']['breach_key'], $context['alert']['_threshold_state']['source_poller_id'],
 					$context['results']['message'], $context['results']['priority_id'], $context['results']['facility_id'])) {
 				alert_setup_environment($context['alert'], $context['results'], $context['hostlist'], $context['hostname']);
+
 				if (syslog_execute_alert_command($context['alert'], $context['results'], $context['hostname'], 'clear')) {
 					syslog_db_execute_prepared('DELETE FROM syslog_threshold_recovery_queue WHERE source_poller_id = ? AND breach_key = ?', [$source, $row['breach_key']]);
+
 					continue;
 				}
 			} else {
@@ -4884,78 +5028,93 @@ function syslog_threshold_deliver_recoveries(?int $now = null): void {
 function syslog_threshold_evaluate(array &$alert, int $batch_count, string $hostname = '', ?int $now = null): int {
 	global $config;
 	unset($alert['_threshold_state']);
+
 	if ((int) $alert['method'] !== 1 || $batch_count <= 0) {
 		return $batch_count;
 	}
-	$now = $now ?? time();
+	$now    = $now ?? time();
 	$source = max(1, (int) ($config['poller_id'] ?? 1));
-	$scope = (int) $alert['level'] === 1 ? $hostname : '';
-	$hash = syslog_threshold_rule_hash($alert);
-	$state = syslog_db_fetch_row_prepared('SELECT * FROM syslog_threshold_state WHERE source_poller_id = ? AND alert_id = ? AND scope_key = ?', [$source, $alert['id'], $scope]);
+	$scope  = (int) $alert['level'] === 1 ? $hostname : '';
+	$hash   = syslog_threshold_rule_hash($alert);
+	$state  = syslog_db_fetch_row_prepared('SELECT * FROM syslog_threshold_state WHERE source_poller_id = ? AND alert_id = ? AND scope_key = ?', [$source, $alert['id'], $scope]);
+
 	if ($state === false) {
 		return 0;
 	}
+
 	// Preserve an undelivered clear if transactional recovery failed this cycle.
 	if ($state && (int) $state['expires_at'] <= $now && $state['rule_hash'] === $hash && !empty($state['recovery_context'])) {
 		return 0;
 	}
+
 	if ($state && ((int) $state['expires_at'] <= $now || $state['rule_hash'] !== $hash)) {
 		if (!syslog_db_execute_prepared('DELETE FROM syslog_alert_counts WHERE alert_id = ? AND scope_key = ?', [$alert['id'], $scope])) {
 			return 0;
 		}
+
 		if (!syslog_db_execute_prepared('DELETE FROM syslog_threshold_messages WHERE source_poller_id = ? AND breach_key = ?', [$source, $state['breach_key']])) {
 			return 0;
 		}
+
 		if (!syslog_db_execute_prepared('DELETE FROM syslog_threshold_state WHERE source_poller_id = ? AND alert_id = ? AND scope_key = ?', [$source, $alert['id'], $scope])) {
 			return 0;
 		}
 		$state = [];
 	}
 	$count = syslog_alert_window_count($alert, $batch_count, $hostname, $now);
+
 	if ($count <= 0 || (!$state && $count < (int) $alert['num'])) {
 		return $count;
 	}
-	$new = !$state;
-	$key = $state['breach_key'] ?? bin2hex(random_bytes(16));
+	$new     = !$state;
+	$key     = $state['breach_key'] ?? bin2hex(random_bytes(16));
 	$expires = $now + max(60, syslog_alert_window_seconds([
 		'threshold_window' => $alert['threshold_recovery_minutes'] ?? 5,
-		'threshold_unit' => $alert['threshold_recovery_unit'] ?? 'minute'
+		'threshold_unit'   => $alert['threshold_recovery_unit'] ?? 'minute'
 	]));
+
 	if (!syslog_db_execute_prepared('INSERT INTO syslog_threshold_state (source_poller_id, alert_id, scope_key, rule_hash, rule_date, breach_key, breached_at, last_match, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE rule_hash = VALUES(rule_hash), rule_date = VALUES(rule_date), breach_key = VALUES(breach_key), breached_at = VALUES(breached_at), last_match = VALUES(last_match), expires_at = VALUES(expires_at)', [$source, $alert['id'], $scope, $hash, (int) ($alert['date'] ?? 0), $key, $new ? $now : ($state['breached_at'] ?? null), $now, $expires])) {
 		return 0;
 	}
 	$alert['_threshold_state'] = ['source_poller_id' => $source, 'breach_key' => $key, 'new_breach' => $new];
+
 	return $count;
 }
 
 /** Indexed active-state lookup; NULL identities from older history display No. */
 function syslog_message_breach_sql(): string {
 	global $syslogdb_default;
+
 	return "EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_threshold_messages` AS tm JOIN `$syslogdb_default`.`syslog_threshold_state` AS ts ON ts.source_poller_id = tm.source_poller_id AND ts.breach_key = tm.breach_key WHERE tm.source_poller_id = syslog.replication_source_poller_id AND tm.source_event_id = syslog.replication_source_event_id AND ts.expires_at > UNIX_TIMESTAMP())";
 }
 
 /** Fetch active state for an entire replication batch, avoiding per-message queries. */
 function syslog_threshold_replication_states(array $events): array|false {
-	$where = [];
+	$where  = [];
 	$params = [];
+
 	foreach ($events as $event) {
 		if (!empty($event['threshold_breached'])) {
-			$where[] = '(m.source_poller_id = ? AND m.source_event_id = ?)';
+			$where[]  = '(m.source_poller_id = ? AND m.source_event_id = ?)';
 			$params[] = $event['source_poller_id'];
 			$params[] = $event['source_event_id'];
 		}
 	}
+
 	if (!$where) {
 		return [];
 	}
 	$rows = syslog_db_fetch_assoc_prepared('SELECT m.source_event_id, s.source_poller_id, s.alert_id, s.scope_key, s.rule_hash, s.rule_date, s.breach_key, s.breached_at, s.last_match, s.expires_at FROM syslog_threshold_messages AS m JOIN syslog_threshold_state AS s ON s.source_poller_id = m.source_poller_id AND s.breach_key = m.breach_key WHERE s.expires_at > UNIX_TIMESTAMP() AND (' . implode(' OR ', $where) . ')', $params);
+
 	if ($rows === false) {
 		return false;
 	}
 	$result = [];
+
 	foreach ($rows as $row) {
 		$result[$row['source_poller_id'] . ':' . $row['source_event_id']][] = $row;
 	}
+
 	return $result;
 }
 
@@ -4965,28 +5124,33 @@ function syslog_threshold_accept_central(array $event, $central, string $databas
 		if (!db_execute_prepared("DELETE m FROM `$database`.`syslog_threshold_state` AS s JOIN `$database`.`syslog_threshold_messages` AS m ON m.source_poller_id = s.source_poller_id AND m.breach_key = s.breach_key WHERE s.source_poller_id = ? AND s.alert_id = ? AND s.scope_key = ? AND s.breach_key <> ? AND s.last_match <= ?", [$event['source_poller_id'], $state['alert_id'], $state['scope_key'], $state['breach_key'], $state['last_match']], true, $central)) {
 			return false;
 		}
+
 		if (!db_execute_prepared("INSERT INTO `$database`.`syslog_threshold_state` (source_poller_id, alert_id, scope_key, rule_hash, rule_date, breach_key, breached_at, last_match, expires_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE rule_hash = IF(VALUES(last_match) >= last_match, VALUES(rule_hash), rule_hash), rule_date = IF(VALUES(last_match) >= last_match, VALUES(rule_date), rule_date), breached_at = IF(VALUES(last_match) >= last_match, VALUES(breached_at), breached_at), breach_key = IF(VALUES(last_match) >= last_match, VALUES(breach_key), breach_key), expires_at = IF(VALUES(last_match) >= last_match, VALUES(expires_at), expires_at), last_match = GREATEST(last_match, VALUES(last_match))", [$event['source_poller_id'], $state['alert_id'], $state['scope_key'], $state['rule_hash'], $state['rule_date'], $state['breach_key'], $state['breached_at'] ?? null, $state['last_match'], $state['expires_at']], true, $central)
 			|| !db_execute_prepared("INSERT IGNORE INTO `$database`.`syslog_threshold_messages` (source_poller_id, source_event_id, breach_key) SELECT source_poller_id, ?, breach_key FROM `$database`.`syslog_threshold_state` WHERE source_poller_id = ? AND breach_key = ?", [$event['source_event_id'], $event['source_poller_id'], $state['breach_key']], true, $central)) {
 			return false;
 		}
 	}
+
 	return true;
 }
 
 /** Persist one batch count and return the rolling total for this reporting scope. */
 function syslog_alert_window_count(array $alert, int $count, string $hostname = '', ?int $now = null): int {
 	$seconds = syslog_alert_window_seconds($alert);
+
 	if ((int) $alert['method'] !== 1 || $seconds === 0 || $count <= 0) {
 		return $count;
 	}
 
 	$now = $now ?? time();
 	// A changed match definition or window must not inherit counts from the old rule.
-	$hash = syslog_threshold_rule_hash($alert);
+	$hash  = syslog_threshold_rule_hash($alert);
 	$scope = (int) $alert['level'] === 1 ? $hostname : '';
+
 	if (!syslog_db_execute_prepared('DELETE FROM syslog_alert_counts WHERE alert_id = ? AND (observed_at <= ? OR rule_hash <> ?)', [$alert['id'], $now - $seconds, $hash])) {
 		return 0;
 	}
+
 	if (!syslog_db_execute_prepared('INSERT INTO syslog_alert_counts (alert_id, rule_hash, scope_key, observed_at, matches) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE matches = matches + VALUES(matches)', [$alert['id'], $hash, $scope, $now, $count])) {
 		return 0;
 	}
@@ -5030,9 +5194,9 @@ function syslog_process_alerts($max_seq) {
 		// Phase 1 - compile every rule once and evaluate all rule conditions
 		// together in a single scan of the staging table.  One scan per rule
 		// does not scale with the number of enabled alert rules.
-		$compiled = [];
-		$sums     = [];
-		$counts   = [];
+		$compiled   = [];
+		$sums       = [];
+		$counts     = [];
 		$all_params = [];
 
 		foreach ($alerts as $alert) {
@@ -5058,7 +5222,7 @@ function syslog_process_alerts($max_seq) {
 				'device_params' => $device_rule['params']
 			];
 
-			$sums[]     = "SUM(CASE WHEN (" . $sql_data['sql'] . $device_rule['sql'] . ") THEN 1 ELSE 0 END) AS m$index";
+			$sums[]     = 'SUM(CASE WHEN (' . $sql_data['sql'] . $device_rule['sql'] . ") THEN 1 ELSE 0 END) AS m$index";
 			$all_params = array_merge($all_params, $sql_data['params'], $device_rule['params']);
 		}
 
@@ -5089,9 +5253,9 @@ function syslog_process_alerts($max_seq) {
 				continue;
 			}
 
-			$alert = $rule['alert'];
-			$count = isset($counts[$index]) ? $counts[$index] : 0;
-			$sql   = '';
+			$alert    = $rule['alert'];
+			$count    = isset($counts[$index]) ? $counts[$index] : 0;
+			$sql      = '';
 			$params   = [];
 
 			// we roll up statistics depending on the level
@@ -5125,7 +5289,7 @@ function syslog_process_alerts($max_seq) {
 
 			$sql    = $sql_data['sql'];
 			$params = $sql_data['params'];
-			$sql   .= $rule['device_sql'];
+			$sql .= $rule['device_sql'];
 			$params = array_merge($params, $rule['device_params']);
 
 			if ($sql != '') {
@@ -5141,7 +5305,7 @@ function syslog_process_alerts($max_seq) {
 							$asql = $sql . ' AND host = ?';
 
 							$result['count'] = syslog_threshold_evaluate($alert, (int) $result['count'], $result['host']);
-							$triggered = syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
+							$triggered       = syslog_process_alert($alert, $asql, $aparams, $result['count'], $result['host']);
 							$syslog_alarms += $triggered;
 
 							if ($triggered > 0) {
@@ -5157,7 +5321,7 @@ function syslog_process_alerts($max_seq) {
 					// Windowed thresholds need every cycle's count recorded,
 					// and their state machine decides what may fire, so
 					// evaluation must run even below the per-cycle threshold.
-					$count = syslog_threshold_evaluate($alert, $count);
+					$count     = syslog_threshold_evaluate($alert, $count);
 					$triggered = $count > 0 ? syslog_process_alert($alert, $sql, $params, $count) : 0;
 					$syslog_alarms += $triggered;
 
@@ -5167,7 +5331,7 @@ function syslog_process_alerts($max_seq) {
 				} else {
 					// method 0 fires on any match; skip the matching-record
 					// fetch when the consolidated count already proved zero
-					$at = $count > 0 ? null : [];
+					$at        = $count > 0 ? null : [];
 					$triggered = syslog_process_alert($alert, $sql, $params, 0, '', $at);
 					$syslog_alarms += $triggered;
 
@@ -5180,6 +5344,7 @@ function syslog_process_alerts($max_seq) {
 	}
 
 	$activity = [];
+
 	foreach ($fired as $name => $count) {
 		$activity[] = ['name' => $name, 'count' => $count];
 	}
@@ -5196,13 +5361,14 @@ function syslog_mark_threshold_messages(array $alert, int $count, array $matches
 	}
 
 	if ($matches && !empty($alert['_threshold_state']) && trim($alert['recovery_command'] ?? '') !== '') {
-		$state = $alert['_threshold_state'];
+		$state   = $alert['_threshold_state'];
 		$context = json_encode([
-			'alert' => ['id' => $alert['id'], 'name' => $alert['name'], 'severity' => $alert['severity'], 'message' => $alert['message'], 'command' => $alert['recovery_command'], '_threshold_state' => $state],
-			'results' => ['priority_id' => $matches[0]['priority_id'], 'facility_id' => $matches[0]['facility_id'], 'message' => $matches[0]['message']],
+			'alert'    => ['id' => $alert['id'], 'name' => $alert['name'], 'severity' => $alert['severity'], 'message' => $alert['message'], 'command' => $alert['recovery_command'], '_threshold_state' => $state],
+			'results'  => ['priority_id' => $matches[0]['priority_id'], 'facility_id' => $matches[0]['facility_id'], 'message' => $matches[0]['message']],
 			'hostname' => (int) $alert['level'] === 1 ? $matches[0]['host'] : '',
 			'hostlist' => array_values(array_unique(array_column($matches, 'host')))
 		], JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR);
+
 		if (!syslog_db_execute_prepared('UPDATE syslog_threshold_state SET recovery_context = ? WHERE source_poller_id = ? AND breach_key = ? AND recovery_context IS NULL', [$context, $state['source_poller_id'], $state['breach_key']])) {
 			return false;
 		}
@@ -5210,39 +5376,44 @@ function syslog_mark_threshold_messages(array $alert, int $count, array $matches
 
 	foreach (array_chunk(array_column($matches, 'seq'), 1000) as $sequences) {
 		if (!empty($alert['_threshold_state'])) {
-			$state = $alert['_threshold_state'];
+			$state  = $alert['_threshold_state'];
 			$values = implode(',', array_fill(0, count($sequences), '(?, ?, ?)'));
 			$params = [];
+
 			foreach ($sequences as $sequence) {
 				array_push($params, $state['source_poller_id'], $sequence, $state['breach_key']);
 			}
+
 			if (!syslog_db_execute_prepared('INSERT IGNORE INTO syslog_threshold_messages (source_poller_id, source_event_id, breach_key) VALUES ' . $values, $params)) {
 				return false;
 			}
 		}
 
 		$placeholders = implode(',', array_fill(0, count($sequences), '?'));
+
 		if (!syslog_db_execute_prepared("UPDATE syslog_incoming SET threshold_breached = 1 WHERE status = 1 AND seq IN ($placeholders)", $sequences)) {
 			cacti_log('SYSLOG ERROR: Unable to mark threshold-breaching messages for alert ' . (int) $alert['id'], false, 'SYSLOG');
+
 			return false;
 		}
 	}
+
 	return true;
 }
 
 /**
  * syslog_process_alert - Process the Alert and generate notifications, execute commands, etc.
  *
- * @param array  $alert The alert to process
- * @param string $sql The SQL to search for the Alert
- * @param array  $params The SQL parameters to be prepared into the SQL
- * @param int    $count In the case of a threshold alert, the number of occurrents
- *                      of hosts with occurrences that were encountered through
- *                      pre-processing the message
- * @param string $hostname The hostname that this alert rule is for
- * @param array|null $at Pre-fetched matching records; an empty array means
- *                      zero matches are known and the fetch is skipped, and
- *                      null fetches the records from $sql/$params
+ * @param array      $alert    The alert to process
+ * @param string     $sql      The SQL to search for the Alert
+ * @param array      $params   The SQL parameters to be prepared into the SQL
+ * @param int        $count    In the case of a threshold alert, the number of occurrents
+ *                             of hosts with occurrences that were encountered through
+ *                             pre-processing the message
+ * @param string     $hostname The hostname that this alert rule is for
+ * @param array|null $at       Pre-fetched matching records; an empty array means
+ *                             zero matches are known and the fetch is skipped, and
+ *                             null fetches the records from $sql/$params
  *
  * @return int 1 if the alert triggered, else 0
  */
@@ -5252,6 +5423,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 	if (!empty($alert['_threshold_state']) && !$alert['_threshold_state']['new_breach'] && (int) $alert['repeat_alert'] <= 0) {
 		$matches = syslog_db_fetch_assoc_prepared($sql, $params);
 		syslog_mark_threshold_messages($alert, (int) $count, $matches ?: []);
+
 		return 0;
 	}
 
@@ -5514,6 +5686,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 			}
 
 			$suppression_state = syslog_alert_suppression_check($alert, $hostname, $at);
+
 			if ($send && !$suppression_state['allowed']) {
 				$send = false;
 				syslog_debug("Alert Rule '" . $alert['name'] . "' notification suppressed by cooldown or duplicate detection");
@@ -5611,11 +5784,11 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
  * syslog_get_alert_sql - Get the SQL and params for the alert to
  * checi.
  *
- * @param array $alert The alert attributes to process
- * @param int   $max_seq The max sequence
+ * @param array $alert               The alert attributes to process
+ * @param int   $max_seq             The max sequence
  * @param bool  $processing_boundary Include the status/seq processing gate
- * @param bool  $condition_only Return only the WHERE condition and its
- *                              params, without SELECT/columns/boundary
+ * @param bool  $condition_only      Return only the WHERE condition and its
+ *                                   params, without SELECT/columns/boundary
  *
  * @return array The SQL and the prepared array for the SQL
  */
@@ -5629,6 +5802,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 	if (!isset($syslog_incoming_config['programField'])) {
 		$syslog_incoming_config['programField'] = 'program';
 	}
+
 	foreach (['textField' => 'message', 'hostField' => 'host', 'facilityField' => 'facility_id', 'priorityField' => 'priority_id'] as $setting => $default) {
 		if (!isset($syslog_incoming_config[$setting])) {
 			$syslog_incoming_config[$setting] = $default;
@@ -5648,9 +5822,9 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 					return [];
 				}
 				$fields = [
-					'message' => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-					'host' => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-					'program' => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'message'     => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'host'        => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'program'     => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 					'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
 					'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
 				];
@@ -5690,9 +5864,9 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 			return [];
 		}
 		$fields = [
-			'message' => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-			'host' => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-			'program' => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'message'     => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host'        => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'program'     => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 			'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
 			'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
 		];
@@ -5791,9 +5965,9 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
  * then if syslog is configured to strip domains, perform that first.
  *
  * @return array{max_seq: int, incoming: int} The maximum sequence id, allowing
- *             syslog messages that come in randomly to be differentiated
- *             between messages to process and messages to be left till the
- *             next polling cycle, and the number of incoming records found.
+ *                                            syslog messages that come in randomly to be differentiated
+ *                                            between messages to process and messages to be left till the
+ *                                            next polling cycle, and the number of incoming records found.
  */
 function syslog_preprocess_incoming_records(): array {
 	global $syslogdb_default;
@@ -5994,13 +6168,14 @@ function syslog_backfill_message_digest(int $rows_per_run = 50000): int {
 
 		if ($rows_remaining == 0) {
 			set_config_option($option . '_done', (string) $max_seq);
+
 			continue;
 		}
 
 		// Chunk along the primary key so each pass is one index range scan
 		// instead of rescanning the entire table for the empty digest flag.
 		$left_to_digest = $rows_per_run;
-		$chunk = max($rows_per_run, 10000);
+		$chunk          = max($rows_per_run, 10000);
 
 		while ($left_to_digest > 0 && $cursor < $max_seq) {
 			$stop = min($cursor + $chunk, $max_seq);
@@ -6237,6 +6412,7 @@ function syslog_replication_cleanup_local_history(array $events): bool {
 
 	$clauses = [];
 	$params  = [];
+
 	foreach ($events as $event) {
 		if (($event['disposition'] ?? '') !== 'syslog') {
 			continue;
@@ -6255,9 +6431,9 @@ function syslog_replication_cleanup_local_history(array $events): bool {
  * this inside the same transaction as the local archival disposition.
  * INSERT IGNORE makes retries idempotent on (source_poller_id, source_event_id).
  *
- * @param string               $where       A WHERE clause scoped to syslog_incoming AS si.
- * @param array<int,mixed>     $params      Prepared-statement values for $where.
- * @param string               $disposition syslog or syslog_removed.
+ * @param string           $where       A WHERE clause scoped to syslog_incoming AS si.
+ * @param array<int,mixed> $params      Prepared-statement values for $where.
+ * @param string           $disposition syslog or syslog_removed.
  *
  * @return bool
  */
@@ -6289,6 +6465,7 @@ function syslog_replication_record_error(string $message): void {
 /** Read on-demand, indexed operational status for this local collector. */
 function syslog_replication_operational_status(bool $bounded = false): array {
 	global $syslogdb_default;
+
 	if (!syslog_replication_is_enabled()) {
 		return ['enabled' => false];
 	}
@@ -6303,17 +6480,18 @@ function syslog_replication_operational_status(bool $bounded = false): array {
 	$lease = syslog_db_fetch_row("SELECT acquired_at, heartbeat_at FROM `$syslogdb_default`.`syslog_replication_recovery`
 		WHERE name = 'recovery'", false);
 	$status = syslog_status_get();
+
 	return [
-		'enabled' => true,
-		'state' => syslog_replication_get_state(),
-		'pending' => isset($row['pending']) ? (int) $row['pending'] : null,
-		'oldest_pending' => (string) ($row['oldest_pending'] ?? ''),
+		'enabled'              => true,
+		'state'                => syslog_replication_get_state(),
+		'pending'              => isset($row['pending']) ? (int) $row['pending'] : null,
+		'oldest_pending'       => (string) ($row['oldest_pending'] ?? ''),
 		'oldest_pending_epoch' => isset($row['oldest_pending_epoch']) ? (int) $row['oldest_pending_epoch'] : null,
-		'recovery_active' => !empty($lease) && isset($lease['heartbeat_at']) && (int) $lease['heartbeat_at'] >= time() - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS,
-		'recovery_started' => (string) ($lease['acquired_at'] ?? ''),
-		'last_success' => $status['replication_last_success'] ?? '',
-		'last_error' => $status['replication_last_error'] ?? '',
-		'last_error_time' => $status['replication_last_error_time'] ?? '',
+		'recovery_active'      => !empty($lease) && isset($lease['heartbeat_at']) && (int) $lease['heartbeat_at'] >= time() - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS,
+		'recovery_started'     => (string) ($lease['acquired_at'] ?? ''),
+		'last_success'         => $status['replication_last_success'] ?? '',
+		'last_error'           => $status['replication_last_error'] ?? '',
+		'last_error_time'      => $status['replication_last_error_time'] ?? '',
 	];
 }
 
@@ -6380,6 +6558,7 @@ function syslog_replication_main_database() {
 	global $syslog_replication_main_db_ssl_ca;
 
 	$database = (string) ($syslog_replication_main_db_default ?? $database_default ?? '');
+
 	if (!preg_match('/^[A-Za-z0-9_$-]+$/', $database)) {
 		return false;
 	}
@@ -6445,6 +6624,7 @@ function syslog_replication_get_state(): ?string {
 
 	global $config;
 	$connection = defined('CACTI_CONNECTION') ? CACTI_CONNECTION : ($config['connection'] ?? 'offline');
+
 	return $connection === 'recovery' && syslog_replication_has_backlog() ? 'recovery' : 'online';
 }
 
@@ -6461,17 +6641,20 @@ function syslog_replication_mark_connection_failure(): void {
 
 function syslog_replication_record_state(): ?string {
 	$state = syslog_replication_get_state();
+
 	if ($state === null) {
 		return null;
 	}
 
 	$status = syslog_status_get();
 	$prior  = $status['replication_state'] ?? '';
+
 	if ($prior === $state) {
 		return $state;
 	}
 
 	syslog_status_set('replication_state', $state);
+
 	if ($state === 'offline') {
 		cacti_log('SYSLOG: Central synchronization unavailable; local processing and outbox retention continue', false, 'SYSLOG');
 	} elseif ($state === 'recovery') {
@@ -6501,7 +6684,7 @@ function syslog_replication_recovery_records_per_run(): int {
 /** Return the administrator-selected pause between bounded central batches. */
 function syslog_replication_recovery_batch_delay_us(): int {
 	$milliseconds = (int) read_config_option('syslog_replication_recovery_batch_delay_ms');
-	$allowed = [0, 25, 50, 100, 250, 500, 1000];
+	$allowed      = [0, 25, 50, 100, 250, 500, 1000];
 
 	if (!in_array($milliseconds, $allowed, true)) {
 		$milliseconds = SYSLOG_REPLICATION_RECOVERY_DEFAULT_DELAY_MS;
@@ -6518,8 +6701,9 @@ function syslog_replication_recovery_acquire(string $token): bool {
 		return false;
 	}
 
-	$now = time();
+	$now   = time();
 	$stale = $now - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS;
+
 	if (!syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_replication_recovery`
 		(name, owner_token, acquired_at, heartbeat_at, pid) VALUES ('recovery', ?, ?, ?, ?)
 		ON DUPLICATE KEY UPDATE
@@ -6532,12 +6716,14 @@ function syslog_replication_recovery_acquire(string $token): bool {
 	}
 
 	$owner = syslog_db_fetch_cell("SELECT owner_token FROM `$syslogdb_default`.`syslog_replication_recovery` WHERE name = 'recovery'", '', false);
+
 	return hash_equals($token, (string) $owner);
 }
 
 /** Refresh an owned lease without extending another worker's ownership. */
 function syslog_replication_recovery_heartbeat(string $token): bool {
 	global $syslogdb_default;
+
 	return syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_replication_recovery`
 		SET heartbeat_at = ? WHERE name = 'recovery' AND owner_token = ?", [time(), $token]);
 }
@@ -6563,34 +6749,43 @@ function syslog_replication_recovery_run(): int {
 	}
 
 	$token = bin2hex(random_bytes(16));
+
 	if (!syslog_replication_recovery_acquire($token)) {
 		cacti_log('SYSLOG: Recovery worker skipped; an active lease already owns backlog convergence', false, 'SYSLOG');
+
 		return 0;
 	}
 
 	$accepted = 0;
 	cacti_log('SYSLOG: Recovery worker acquired lease', false, 'SYSLOG');
+
 	try {
-		$max_batches = (int) ceil(syslog_replication_recovery_records_per_run() / SYSLOG_REPLICATION_BATCH_SIZE);
+		$max_batches    = (int) ceil(syslog_replication_recovery_records_per_run() / SYSLOG_REPLICATION_BATCH_SIZE);
 		$batch_delay_us = syslog_replication_recovery_batch_delay_us();
 
 		for ($batch = 0; $batch < $max_batches; $batch++) {
 			if (!syslog_replication_delivery_is_online()) {
 				cacti_log('SYSLOG: Recovery worker paused because Main is unavailable', false, 'SYSLOG');
+
 				break;
 			}
+
 			if (!syslog_replication_has_backlog()) {
 				cacti_log('SYSLOG: Recovery worker completed; Syslog outbox is empty', false, 'SYSLOG');
+
 				break;
 			}
 
 			$delivered = syslog_replication_deliver_online();
+
 			if ($delivered <= 0) {
 				cacti_log('SYSLOG ERROR: Recovery worker retained the oldest unaccepted batch; retry will occur on a future execution', false, 'SYSLOG');
+
 				break;
 			}
 			$accepted += $delivered;
 			syslog_replication_recovery_heartbeat($token);
+
 			if ($batch_delay_us > 0) {
 				usleep($batch_delay_us);
 			}
@@ -6610,23 +6805,28 @@ function syslog_replication_recovery_run(): int {
 function syslog_replication_recovery_is_active(): bool {
 	global $syslogdb_default;
 	$heartbeat = syslog_db_fetch_cell("SELECT heartbeat_at FROM `$syslogdb_default`.`syslog_replication_recovery` WHERE name = 'recovery'", '', false);
+
 	return is_numeric($heartbeat) && (int) $heartbeat >= time() - SYSLOG_REPLICATION_RECOVERY_LEASE_SECONDS;
 }
 
 /** Start a detached recovery worker only when this collector has backlog. */
 function syslog_replication_start_recovery_worker(): bool {
 	global $config;
+
 	if (syslog_replication_get_state() !== 'recovery' || syslog_replication_recovery_is_active()) {
 		return false;
 	}
 
 	$php = (string) read_config_option('path_php_binary');
+
 	if ($php === '') {
 		cacti_log('SYSLOG ERROR: Recovery worker was not started because path_php_binary is empty', false, 'SYSLOG');
+
 		return false;
 	}
 
 	exec_background($php, ' -q ' . cacti_escapeshellarg($config['base_path'] . '/plugins/syslog/syslog_recovery.php'));
+
 	return true;
 }
 
@@ -6642,15 +6842,16 @@ function syslog_replication_start_recovery_worker(): bool {
  * @return bool
  */
 function syslog_replication_accept_central(array $event, $central, string $database): bool {
-
 	if (!in_array($event['disposition'], ['syslog', 'syslog_removed'], true)) {
 		cacti_log('SYSLOG ERROR: Replication event has an invalid disposition', false, 'SYSLOG');
+
 		return false;
 	}
 
 	$receipt = db_execute_prepared("INSERT IGNORE INTO `$database`.`syslog_replication_receipts`
 		(source_poller_id, source_event_id, disposition) VALUES (?, ?, ?)",
 		[(int) $event['source_poller_id'], (int) $event['source_event_id'], $event['disposition']], true, $central);
+
 	if (!$receipt) {
 		return false;
 	}
@@ -6723,6 +6924,7 @@ function syslog_replication_deliver_online(): int {
 	}
 
 	$main_database = syslog_replication_main_database();
+
 	if ($main_database === false) {
 		syslog_replication_mark_connection_failure();
 		syslog_replication_record_error('Main Collector Syslog database connection is unavailable');
@@ -6738,18 +6940,21 @@ function syslog_replication_deliver_online(): int {
 		FROM `$syslogdb_default`.`syslog_replication_output`
 		ORDER BY created_at ASC, source_poller_id ASC, source_event_id ASC
 		LIMIT " . SYSLOG_REPLICATION_BATCH_SIZE);
+
 	if (empty($events)) {
 		return 0;
 	}
 
 	$threshold_states = syslog_threshold_replication_states($events);
+
 	if ($threshold_states === false) {
 		return 0;
 	}
 	$batch_id = bin2hex(random_bytes(16));
+
 	foreach ($events as &$event) {
 		$event['delivery_batch_id'] = $batch_id;
-		$event['threshold_states'] = $threshold_states[$event['source_poller_id'] . ':' . $event['source_event_id']] ?? [];
+		$event['threshold_states']  = $threshold_states[$event['source_poller_id'] . ':' . $event['source_event_id']] ?? [];
 	}
 	unset($event);
 
@@ -6757,6 +6962,7 @@ function syslog_replication_deliver_online(): int {
 		syslog_replication_mark_connection_failure();
 		syslog_replication_record_error('Unable to begin central replication transaction');
 		cacti_log('SYSLOG ERROR: Unable to begin central replication transaction; retaining local outbox', false, 'SYSLOG');
+
 		return 0;
 	}
 
@@ -6766,6 +6972,7 @@ function syslog_replication_deliver_online(): int {
 			db_execute('ROLLBACK', false, $central);
 			syslog_replication_record_error('Main Collector rejected replication batch');
 			cacti_log('SYSLOG ERROR: Main Collector rejected replication batch; retaining local outbox', false, 'SYSLOG');
+
 			return 0;
 		}
 	}
@@ -6775,17 +6982,20 @@ function syslog_replication_deliver_online(): int {
 		db_execute('ROLLBACK', false, $central);
 		syslog_replication_record_error('Central replication commit was not confirmed');
 		cacti_log('SYSLOG ERROR: Central replication commit was not confirmed; retaining local outbox for idempotent retry', false, 'SYSLOG');
+
 		return 0;
 	}
 
 	if (!syslog_replication_cleanup_local_history($events)) {
 		syslog_replication_record_error('Unable to remove temporary local history after central delivery');
 		cacti_log('SYSLOG ERROR: Main Collector accepted replication batch but temporary local history cleanup failed; retry is safe', false, 'SYSLOG');
+
 		return 0;
 	}
 
 	$clauses = [];
 	$params  = [];
+
 	foreach ($events as $event) {
 		$clauses[] = '(source_poller_id = ? AND source_event_id = ?)';
 		$params[]  = (int) $event['source_poller_id'];
@@ -6795,14 +7005,17 @@ function syslog_replication_deliver_online(): int {
 	if (!syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`syslog_replication_output` WHERE " . implode(' OR ', $clauses), $params)) {
 		syslog_replication_record_error('Local replication acknowledgement failed');
 		cacti_log('SYSLOG ERROR: Main Collector accepted replication batch but local acknowledgement failed; retry is safe', false, 'SYSLOG');
+
 		return 0;
 	}
 
 	$acknowledged = db_affected_rows($syslog_cnn);
+
 	if ($acknowledged > 0) {
 		syslog_status_set('replication_last_success', time());
 		syslog_status_set('replication_last_error', '');
 	}
+
 	return $acknowledged;
 }
 
@@ -6845,7 +7058,7 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		}
 
 		$replication_transaction = true;
-		$replication_where = 'WHERE si.`status` = 1 AND si.`seq` <= ?' . $slice_where;
+		$replication_where       = 'WHERE si.`status` = 1 AND si.`seq` <= ?' . $slice_where;
 
 		if (!syslog_replication_enqueue_incoming($replication_where, array_merge([$max_seq], $slice_param), 'syslog')) {
 			syslog_db_execute('ROLLBACK');
@@ -6856,6 +7069,7 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 	}
 
 	$retain_local_history = syslog_replication_should_retain_local_history();
+
 	if (!$retain_local_history && syslog_replication_is_enabled() && !syslog_remote_store_records()) {
 		$archived = true;
 	} else {
@@ -7257,14 +7471,14 @@ function syslog_get_report_sql(&$report) {
  * generate a Cacti log message and save settings in the settings table for use
  * by various graph templates
  *
- * @param float  $start_time The start time of the polling process
- * @param int    $deleted The number of syslog messages deleted
- * @param int    $incoming The number of syslog incoming messages
- * @param int    $removed The number of syslog messages removed
- * @param int    $xferred The number of syslog messages transferred
- * @param int    $alerts The number of alerts processed
- * @param int    $alarms The number of alerts triggered
- * @param int    $reports The number of reports sent
+ * @param float $start_time The start time of the polling process
+ * @param int   $deleted    The number of syslog messages deleted
+ * @param int   $incoming   The number of syslog incoming messages
+ * @param int   $removed    The number of syslog messages removed
+ * @param int   $xferred    The number of syslog messages transferred
+ * @param int   $alerts     The number of alerts processed
+ * @param int   $alarms     The number of alerts triggered
+ * @param int   $reports    The number of reports sent
  *
  * @return void
  */
@@ -7442,10 +7656,11 @@ function alert_replace_variables($alert, $results, $hostname = '') {
  * @return string The details trigger button HTML.
  */
 function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = ''): string {
-	$details = compact('device', 'program', 'facility', 'severity', 'received');
+	$details            = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
-	$details['rules'] = syslog_message_rule_links($id, $source, $received, $device);
-	$text = title_trim((string) $message, 100);
+	$details['rules']   = syslog_message_rule_links($id, $source, $received, $device);
+	$text               = title_trim((string) $message, 100);
+
 	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
 		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
 }
@@ -7456,24 +7671,29 @@ function syslog_message_button($message, $device, $program, $facility, $severity
  * @param int|string $id       The sequence id of the record.
  * @param string     $source   The table the record came from.
  * @param string     $received The logtime of the record.
+ * @param mixed      $host
  *
  * @return array<string, string> Map of action name to rule editor URL.
  */
 function syslog_message_rule_links($id, $source, $received, $host = ''): array {
 	$links = [];
+
 	if ($source !== 'main' || !ctype_digit((string) $id) || (int) $id < 1) {
 		return $links;
 	}
 
 	$query = http_build_query(['id' => $id, 'action' => 'newedit', 'type' => '0', 'date' => $received]);
+
 	if (syslog_realm_allowed('Rule Viewer') && syslog_allow_rule_edits()) {
 		foreach (['alarm' => 'syslog_alerts.php', 'removal' => 'syslog_removal.php'] as $action => $page) {
 			$links[$action] = $page . '?' . $query;
 		}
 	}
+
 	if ($host !== '' && syslog_allow_rule_edits()) {
 		$links['device'] = 'syslog_device_rules.php?' . http_build_query(['action' => 'edit', 'host' => $host]);
 	}
+
 	return $links;
 }
 

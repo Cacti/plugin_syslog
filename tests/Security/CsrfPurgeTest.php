@@ -137,6 +137,15 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 				syslog_utilities_list();
 
 				break;
+			case 'unconfigured':
+				unlink(__DIR__ . '/config.php');
+				print syslog_utilities_action('other_plugin_action');
+
+				break;
+			case 'unrelated':
+				print syslog_utilities_action('other_plugin_action');
+
+				break;
 			case 'action_get':
 				$_SERVER['REQUEST_METHOD'] = 'GET';
 				syslog_utilities_action('purge_syslog_hosts');
@@ -181,6 +190,11 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 
 		return $stdout . $stderr;
 	};
+
+	foreach (['unrelated', 'unconfigured'] as $scenario) {
+		expect($runHarness($scenario))->toBe("other_plugin_actionREACHED_END\n");
+	}
+	file_put_contents($sandbox . '/config.php', "<?php\n");
 
 	// The encoder, on its own.
 	syslog_load_plugin_source('includes/functions.php');
