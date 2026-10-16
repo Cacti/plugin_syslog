@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Load the shared JSON helper when Cacti invokes Syslog Utilities directly, preventing a fatal error that disables the plugin
+
 * bug: Save rules only to Syslog tables and let Cacti's existing full-replication hook synchronize collectors, removing the invalid save-time pollers lookup
 
 * feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
