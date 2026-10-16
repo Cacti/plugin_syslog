@@ -3567,8 +3567,8 @@ function syslog_remove_items($table, $max_seq) {
 							}
 
 							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
-								(logtime, priority_id, facility_id, program_id, host_id, message)
-								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
+								(logtime, priority_id, facility_id, program_id, host_id, message, message_digest)
+								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message, MD5(si.message)
 								FROM `$syslogdb_default`.`syslog_incoming` AS si
 								INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 								ON sh.host = si.host
@@ -3576,8 +3576,8 @@ function syslog_remove_items($table, $max_seq) {
 								ON sp.program = si.program $insert_where", $insert_params);
 						} else {
 							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
-								(logtime, priority_id, facility_id, program_id, host_id, message)
-								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message
+								(logtime, priority_id, facility_id, program_id, host_id, message, message_digest)
+								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message, MD5(si.message)
 								FROM `$syslogdb_default`.`syslog_incoming` AS si
 								INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 								ON sh.host = si.host
@@ -3586,8 +3586,8 @@ function syslog_remove_items($table, $max_seq) {
 						}
 					} else {
 						$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
-							(logtime, priority_id, facility_id, program_id, host_id, message)
-							SELECT logtime, priority_id, facility_id, program_id, host_id, message
+							(logtime, priority_id, facility_id, program_id, host_id, message, message_digest)
+							SELECT logtime, priority_id, facility_id, program_id, host_id, message, MD5(message)
 							FROM `$syslogdb_default`.`syslog` $sql_where", $params);
 					}
 
@@ -4234,8 +4234,8 @@ function syslog_manage_items($from_table, $to_table) {
 						}
 
 						if (!syslog_db_execute("INSERT INTO `$syslogdb_default`.`$to_table`
-							(facility_id, priority_id, host_id, logtime, message)
-							(SELECT facility_id, priority_id, host_id, logtime, message
+							(facility_id, priority_id, host_id, logtime, message, message_digest)
+							(SELECT facility_id, priority_id, host_id, logtime, message, MD5(message)
 							FROM `$syslogdb_default`.`$from_table`
 							WHERE seq IN (" . $all_seq . '))')) {
 							syslog_db_execute('ROLLBACK');
@@ -4617,14 +4617,18 @@ function syslog_device_rule_sql(bool $maintenance_active): array {
 	$host_field = $syslog_incoming_config['hostField'] ?? 'host';
 	$priority_field = $syslog_incoming_config['priorityField'] ?? 'priority_id';
 	$now = time();
+	// Qualify the outer staging columns explicitly: an unqualified `host`
+	// inside these correlated EXISTS resolves to dr.host (the innermost
+	// scope wins), which turns the mute filter into a silent tautology.
+	$staging = "`$syslogdb_default`.`syslog_incoming`";
 	$active_mute = "(dr.mute_mode = 'indefinite' OR (dr.mute_mode = 'until' AND dr.mute_until > ?))";
-	$pass_through = "(dr.pass_through_priority >= 0 AND COALESCE(`$priority_field`, 99) <= dr.pass_through_priority)";
-	$mute_filter = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
+	$pass_through = "(dr.pass_through_priority >= 0 AND COALESCE($staging.`$priority_field`, 99) <= dr.pass_through_priority)";
+	$mute_filter = "\n\t\t\t\tAND NOT EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = $staging.`$host_field` AND dr.enabled = 'on' AND NOT $pass_through AND $active_mute)";
 	if ($maintenance_active) {
 		// Normal maintenance still mutes every device.  Only an explicit device
 		// exception may admit a record, so the absence of a device rule is not
 		// accidentally treated as an exception.
-		$maintenance_filter = "\n\t\t\t\tAND EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = `$host_field` AND dr.enabled = 'on' AND (dr.allow_maintenance = 'on' OR $pass_through))";
+		$maintenance_filter = "\n\t\t\t\tAND EXISTS (SELECT 1 FROM `$syslogdb_default`.`syslog_device_rule` AS dr WHERE dr.host = $staging.`$host_field` AND dr.enabled = 'on' AND (dr.allow_maintenance = 'on' OR $pass_through))";
 	} else {
 		$maintenance_filter = '';
 	}
@@ -4660,9 +4664,71 @@ function syslog_process_alerts($max_seq) {
 	syslog_status_increment('total_alert_rules_processed', $syslog_alerts);
 
 	if (cacti_sizeof($alerts)) {
+		// Phase 1 - compile every rule once and evaluate all rule conditions
+		// together in a single scan of the staging table.  One scan per rule
+		// does not scale with the number of enabled alert rules.
+		$compiled = [];
+		$sums     = [];
+		$counts   = [];
+		$all_params = [];
+
 		foreach ($alerts as $alert) {
+			$sql_data = syslog_get_alert_sql($alert, $max_seq, true, true);
+
+			if (!cacti_sizeof($sql_data) || $sql_data['sql'] == '') {
+				syslog_debug(sprintf('Error       - Unable to determine SQL for Alert \'%s\'', $alert['name']));
+
+				$compiled[] = null;
+
+				continue;
+			}
+
 			$maintenance_active = syslog_alert_maintenance_is_active($alert);
-			$sql      = '';
+			$device_rule        = syslog_device_rule_sql($maintenance_active);
+			$index              = cacti_sizeof($compiled);
+
+			$compiled[$index] = [
+				'alert'         => $alert,
+				'cond'          => $sql_data['sql'],
+				'cond_params'   => $sql_data['params'],
+				'device_sql'    => $device_rule['sql'],
+				'device_params' => $device_rule['params']
+			];
+
+			$sums[]     = "SUM(CASE WHEN (" . $sql_data['sql'] . $device_rule['sql'] . ") THEN 1 ELSE 0 END) AS m$index";
+			$all_params = array_merge($all_params, $sql_data['params'], $device_rule['params']);
+		}
+
+		if (cacti_sizeof($sums)) {
+			$count_sql =
+				"SELECT\n\t\t\t\t" . implode(",\n\t\t\t\t", $sums) . "\n" .
+				"\t\t\t\tFROM `$syslogdb_default`.`syslog_incoming`\n" .
+				"\t\t\t\tWHERE `status` = 1\n\t\t\t\tAND `seq` <= ?";
+
+			$all_params[] = $max_seq;
+
+			$rows = syslog_db_fetch_assoc_prepared($count_sql, $all_params);
+			$row  = isset($rows[0]) ? $rows[0] : [];
+
+			foreach ($compiled as $index => $rule) {
+				if ($rule === null) {
+					continue;
+				}
+
+				$counts[$index] = isset($row["m$index"]) ? (int)$row["m$index"] : 0;
+			}
+		}
+
+		// Phase 2 - only rules whose consolidated count can trigger fetch
+		// their matching records; the rest skip their staging scan entirely.
+		foreach ($compiled as $index => $rule) {
+			if ($rule === null) {
+				continue;
+			}
+
+			$alert = $rule['alert'];
+			$count = isset($counts[$index]) ? $counts[$index] : 0;
+			$sql   = '';
 			$params   = [];
 
 			// we roll up statistics depending on the level
@@ -4672,19 +4738,26 @@ function syslog_process_alerts($max_seq) {
 				$groupBy = '';
 			}
 
+			if ($alert['level'] != 1 && $alert['method'] == '1' && $count < $alert['num']) {
+				syslog_debug(sprintf('Skipping     - Alert \'%s\' below threshold (%d of %d)', $alert['name'], $count, $alert['num']));
+
+				continue;
+			}
+
+			if ($alert['level'] == 1 && $count == 0) {
+				continue;
+			}
+
 			$sql_data = syslog_get_alert_sql($alert, $max_seq);
 
-			if (!cacti_sizeof($sql_data)) {
-				syslog_debug(sprintf('Error       - Unable to determine SQL for Alert \'%s\'', $alert['name']));
-
+			if (!cacti_sizeof($sql_data) || $sql_data['sql'] == '') {
 				continue;
 			}
 
 			$sql    = $sql_data['sql'];
 			$params = $sql_data['params'];
-			$device_rule = syslog_device_rule_sql($maintenance_active);
-			$sql .= $device_rule['sql'];
-			$params = array_merge($params, $device_rule['params']);
+			$sql   .= $rule['device_sql'];
+			$params = array_merge($params, $rule['device_params']);
 
 			if ($sql != '') {
 				if ($alert['level'] == '1') {
@@ -4707,8 +4780,10 @@ function syslog_process_alerts($max_seq) {
 						}
 					}
 				} elseif ($alert['method'] == '1') {
-					$th_sql = str_replace('*', 'COUNT(*)', $sql);
-					$count  = syslog_db_fetch_cell_prepared($th_sql . $groupBy, $params);
+					// the consolidated count is the same number the per-rule
+					// COUNT(*) scan would return; keep it instead of
+					// scanning the staging table a second time
+					$count  = isset($counts[$index]) ? $counts[$index] : syslog_db_fetch_cell_prepared(str_replace('*', 'COUNT(*)', $sql) . $groupBy, $params);
 					$triggered = syslog_process_alert($alert, $sql, $params, $count);
 					$syslog_alarms += $triggered;
 
@@ -4716,8 +4791,10 @@ function syslog_process_alerts($max_seq) {
 						$fired[$alert['name']] = ($fired[$alert['name']] ?? 0) + $triggered;
 					}
 				} else {
-					$count = 0;
-					$triggered = syslog_process_alert($alert, $sql, $params, $count);
+					// method 0 fires on any match; skip the matching-record
+					// fetch when the consolidated count already proved zero
+					$at = $count > 0 ? null : [];
+					$triggered = syslog_process_alert($alert, $sql, $params, 0, '', $at);
 					$syslog_alarms += $triggered;
 
 					if ($triggered > 0) {
@@ -4748,10 +4825,13 @@ function syslog_process_alerts($max_seq) {
  *                      of hosts with occurrences that were encountered through
  *                      pre-processing the message
  * @param string $hostname The hostname that this alert rule is for
+ * @param array|null $at Pre-fetched matching records; an empty array means
+ *                      zero matches are known and the fetch is skipped, and
+ *                      null fetches the records from $sql/$params
  *
  * @return int 1 if the alert triggered, else 0
  */
-function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
+function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at = null) {
 	global $config, $severities, $syslog_levels;
 
 	include_once($config['base_path'] . '/lib/reports.php');
@@ -4816,7 +4896,11 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 	 * process the alert now.
 	 */
 	if (($alert['method'] == '1' && $count >= $alert['num']) || $alert['method'] == '0') {
-		$at = syslog_db_fetch_assoc_prepared($sql, $params);
+		if ($at === null) {
+			$at = syslog_db_fetch_assoc_prepared($sql, $params);
+		} elseif ($at === []) {
+			// the caller already knows there are no matching records
+		}
 
 		/**
 		 * get a date for the repeat alert
@@ -5105,10 +5189,13 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
  *
  * @param array $alert The alert attributes to process
  * @param int   $max_seq The max sequence
+ * @param bool  $processing_boundary Include the status/seq processing gate
+ * @param bool  $condition_only Return only the WHERE condition and its
+ *                              params, without SELECT/columns/boundary
  *
  * @return array The SQL and the prepared array for the SQL
  */
-function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true) {
+function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $condition_only = false) {
 	global $syslogdb_default, $syslog_incoming_config;
 
 	if (defined('SYSLOG_CONFIG')) {
@@ -5126,6 +5213,51 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true) {
 
 	$params = [];
 	$sql    = '';
+
+	if ($condition_only) {
+		// Bare WHERE condition and its params, without the processing
+		// boundary.  Lets the caller evaluate many rules in one staging
+		// scan and apply `status`/`seq` gating a single time.
+		switch ($alert['type']) {
+			case 'filter':
+				if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
+					return [];
+				}
+				$fields = [
+					'message' => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'host' => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'program' => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
+					'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
+				];
+
+				try {
+					$filter = \Cacti\Syslog\QueryBuilder::compile($alert['message'], $fields);
+				} catch (InvalidArgumentException $error) {
+					$GLOBALS['syslog_rule_filter_error'] = $error->getMessage();
+
+					return [];
+				}
+
+				return ['sql' => "({$filter['sql']})", 'params' => $filter['params']];
+			case 'facility':
+				return ['sql' => "`{$syslog_incoming_config['facilityField']}` = ?", 'params' => [$alert['message']]];
+			case 'messageb':
+				return ['sql' => "`{$syslog_incoming_config['textField']}` LIKE ?", 'params' => [$alert['message'] . '%']];
+			case 'messagec':
+				return ['sql' => "`{$syslog_incoming_config['textField']}` LIKE ?", 'params' => ['%' . $alert['message'] . '%']];
+			case 'messagee':
+				return ['sql' => "`{$syslog_incoming_config['textField']}` LIKE ?", 'params' => ['%' . $alert['message']]];
+			case 'host':
+				return ['sql' => "`{$syslog_incoming_config['hostField']}` = ?", 'params' => [$alert['message']]];
+			case 'program':
+				return ['sql' => "`{$syslog_incoming_config['programField']}` = ?", 'params' => [$alert['message']]];
+			case 'sql':
+				return ['sql' => "({$alert['message']})", 'params' => []];
+			default:
+				return [];
+		}
+	}
 
 	if ($alert['type'] == 'filter') {
 		if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
@@ -5363,6 +5495,113 @@ function syslog_check_cacti_hosts($host, $max_seq, $seq_start = 0, $seq_end = 0)
  *
  * @return void
  */
+/**
+ * syslog_message_digest_ready - whether both archived message tables carry
+ * the digest grouping column.  Checked once per request and used by the
+ * grouped viewer and its row counts to fall back to the message column
+ * while the schema upgrade has not run yet.
+ *
+ * @param string $table Optional single table to check
+ *
+ * @return bool
+ */
+function syslog_message_digest_ready(string $table = ''): bool {
+	static $ready_cache = [];
+
+	$tables = $table != '' ? [$table] : ['syslog', 'syslog_removed'];
+
+	foreach ($tables as $check_table) {
+		if (!isset($ready_cache[$check_table])) {
+			$ready_cache[$check_table] = syslog_db_table_exists($check_table, false)
+				&& syslog_db_column_exists($check_table, 'message_digest', false);
+		}
+	}
+
+	foreach ($tables as $check_table) {
+		if (!$ready_cache[$check_table]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * syslog_backfill_message_digest - fill the digest column for rows stored
+ * before the column existed.
+ *
+ * Processes a bounded seq range per poller run so the migration never
+ * blocks ingest; progress is kept per table in the settings table.  New
+ * rows are written with their digest by the archival statements, so the
+ * backfill only ever has to look behind its cursor once.
+ *
+ * @param int $rows_per_run Maximum rows to digest per call
+ *
+ * @return int Rows still awaiting a digest
+ */
+function syslog_backfill_message_digest(int $rows_per_run = 50000): int {
+	global $syslogdb_default;
+
+	$remaining = 0;
+
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		if (!syslog_db_table_exists($table, false)
+			|| !syslog_db_column_exists($table, 'message_digest', false)) {
+			continue;
+		}
+
+		$max_seq = (int) syslog_db_fetch_cell("SELECT COALESCE(MAX(seq), 0) FROM `$syslogdb_default`.`$table`");
+
+		if ($max_seq == 0) {
+			continue;
+		}
+
+		$option    = 'syslog_digest_backfill_seq_' . $table;
+		$cursor    = (int) read_config_option($option, true);
+		$done      = (int) read_config_option($option . '_done', true);
+
+		// A completed migration holds whenever the cursor has reached the
+		// high-water mark once; archival keeps writing digests from there.
+		if ($done && $cursor >= $max_seq) {
+			continue;
+		}
+
+		$rows_remaining = (int) syslog_db_fetch_cell("SELECT COUNT(seq) FROM `$syslogdb_default`.`$table` WHERE `message_digest` = ''");
+
+		if ($rows_remaining == 0) {
+			write_config_option($option . '_done', (string) $max_seq);
+			continue;
+		}
+
+		// Chunk along the primary key so each pass is one index range scan
+		// instead of rescanning the entire table for the empty digest flag.
+		$left_to_digest = $rows_per_run;
+		$chunk = max($rows_per_run, 10000);
+
+		while ($left_to_digest > 0 && $cursor < $max_seq) {
+			$stop = min($cursor + $chunk, $max_seq);
+
+			syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`$table`
+				SET `message_digest` = MD5(`message`)
+				WHERE `seq` > ? AND `seq` <= ? AND `message_digest` = ''", [$cursor, $stop]);
+
+			$left_to_digest -= ($stop - $cursor);
+			$cursor = $stop;
+		}
+
+		write_config_option($option, (string) $cursor);
+
+		$rows_remaining = (int) syslog_db_fetch_cell("SELECT COUNT(seq) FROM `$syslogdb_default`.`$table` WHERE `message_digest` = ''");
+		$remaining     += $rows_remaining;
+
+		if ($rows_remaining == 0) {
+			write_config_option($option . '_done', (string) $max_seq);
+		}
+	}
+
+	return $remaining;
+}
+
 function syslog_update_reference_tables($max_seq) {
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Updating Reference Tables from New Syslog Records');
@@ -6011,6 +6250,18 @@ function syslog_replication_accept_central(array $event, $central, string $datab
 	}
 
 	$table = $event['disposition']; // validated fixed identifiers, never caller SQL
+	// The central database may run an older plugin schema, so the digest
+	// column is only written when that table already carries it.
+	if (db_column_exists($table, 'message_digest', false, $central)) {
+		return db_execute_prepared("INSERT INTO `$database`.`$table`
+			(logtime, priority_id, facility_id, program_id, host_id, message, message_digest)
+			SELECT FROM_UNIXTIME(?), ?, ?, sp.program_id, sh.host_id, ?, MD5(?)
+			FROM `$database`.`syslog_programs` AS sp
+			INNER JOIN `$database`.`syslog_hosts` AS sh
+			WHERE sp.program = ? AND sh.host = ?",
+			[$event['logtime_epoch'], $event['priority_id'], $event['facility_id'], $event['message'], $event['message'], $event['program'], $event['host']], true, $central);
+	}
+
 	return db_execute_prepared("INSERT INTO `$database`.`$table`
 		(logtime, priority_id, facility_id, program_id, host_id, message)
 		SELECT FROM_UNIXTIME(?), ?, ?, sp.program_id, sh.host_id, ?
@@ -6165,8 +6416,8 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 	$retain_local_history = syslog_replication_should_retain_local_history();
 	if ($retain_local_history) {
 		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
-			(logtime, priority_id, facility_id, program_id, host_id, message, replication_source_poller_id, replication_source_event_id)
-			SELECT logtime, priority_id, facility_id, program_id, host_id, message, replication_source_poller_id, replication_source_event_id
+			(logtime, priority_id, facility_id, program_id, host_id, message, message_digest, replication_source_poller_id, replication_source_event_id)
+			SELECT logtime, priority_id, facility_id, program_id, host_id, message, MD5(message), replication_source_poller_id, replication_source_event_id
 			FROM (
 				SELECT logtime, priority_id, facility_id, sp.program_id, sh.host_id, message,
 					? AS replication_source_poller_id, si.seq AS replication_source_event_id
@@ -6184,8 +6435,8 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 		$archived = true;
 	} else {
 		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
-		(logtime, priority_id, facility_id, program_id, host_id, message)
-		SELECT logtime, priority_id, facility_id, program_id, host_id, message
+		(logtime, priority_id, facility_id, program_id, host_id, message, message_digest)
+		SELECT logtime, priority_id, facility_id, program_id, host_id, message, MD5(message)
 		FROM (
 			SELECT logtime, priority_id, facility_id, sp.program_id, sh.host_id, message
 			FROM syslog_incoming AS si

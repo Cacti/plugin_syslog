@@ -80,7 +80,34 @@ function syslog_ensure_replication_history_columns(): void {
 		ADD KEY `replication_source` (`replication_source_poller_id`, `replication_source_event_id`)");
 }
 
-/** Ensure remote replication transactions use transactional tables. */
+/**
+ * Add the digest grouping key to the archived message tables.
+ *
+ * Grouped views and their row counts key their results by this 32 byte
+ * digest of the message instead of the full TEXT column, which keeps the
+ * temporary tables used for grouping small.  Rows stored before the
+ * column existed carry the empty default and fall back to computing
+ * MD5(message) per row until the bounded backfill reaches them, so the
+ * queries stay correct at every point of the migration.
+ *
+ * @return void
+ */
+function syslog_ensure_message_digest_columns(): void {
+	global $syslogdb_default;
+
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		if (syslog_db_table_exists($table, false)
+			&& !syslog_db_column_exists($table, 'message_digest', false)) {
+			syslog_db_add_column($table, [
+				'name'    => 'message_digest',
+				'type'    => 'char(32)',
+				'NULL'    => false,
+				'default' => '',
+				'after'   => 'message'
+			], false);
+		}
+	}
+}
 function syslog_ensure_replication_storage_engine(): void {
 	global $config, $syslogdb_default;
 
@@ -361,6 +388,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		host_id int(10) unsigned default NULL,
 		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 		message TEXT NOT NULL,
+		message_digest char(32) NOT NULL default '',
 		seq bigint unsigned NOT NULL auto_increment,
 		replication_source_poller_id int(10) unsigned default NULL,
 		replication_source_event_id bigint unsigned default NULL,
@@ -805,6 +833,7 @@ function syslog_ensure_table_structures(): bool {
 		syslog_ensure_share_tables();
 		syslog_ensure_dashboard_tables();
 	}
+	syslog_ensure_message_digest_columns();
 	$tables = array_merge($tables, [
 		'syslog_saved_searches', 'syslog_saved_searches_perm',
 		'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_dashboard_panels'
