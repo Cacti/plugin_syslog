@@ -214,9 +214,39 @@ function plugin_syslog_uninstall(): void {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_collectors`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_recovery`");
 
-			// Cacti replicates these rules into each collector's local database.
+			// Remote collectors may also own message history and operational tables.
 			if ($config['poller_id'] == 1) {
-				foreach (['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports'] as $table) {
+				foreach ([
+					'syslog',
+					'syslog_removed',
+					'syslog_programs',
+					'syslog_status',
+					'syslog_device_rule',
+					'syslog_alert_counts',
+					'syslog_alert_suppression',
+					'syslog_threshold_state',
+					'syslog_threshold_messages',
+					'syslog_incoming',
+					'syslog_threshold_recovery_queue',
+					'syslog_alert',
+					'syslog_remove',
+					'syslog_reports',
+					'syslog_facilities',
+					'syslog_statistics',
+					'syslog_host_facilities',
+					'syslog_priorities',
+					'syslog_logs',
+					'syslog_hosts',
+					'syslog_saved_searches',
+					'syslog_dashboard_panels',
+					'syslog_dashboards',
+					'syslog_dashboards_perm',
+					'syslog_saved_searches_perm',
+					'syslog_replication_output',
+					'syslog_replication_receipts',
+					'syslog_replication_collectors',
+					'syslog_replication_recovery'
+				] as $table) {
 					api_plugin_drop_remote_table($table);
 				}
 			}

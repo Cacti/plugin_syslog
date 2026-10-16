@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-it('drops remote rule snapshots only for a full uninstall on the main poller', function ($method, $poller, $expected) {
+it('drops all remote plugin tables only for a full uninstall on the main poller', function ($method, $poller, $expected) {
 	$setup = plugin_test_read_source('setup.php');
 	preg_match('/^function plugin_syslog_uninstall\(\): void \{.*?^\}/ms', $setup, $match);
 	$body = str_replace('__DIR__', var_export(dirname(__DIR__, 2), true), $match[0]);
@@ -43,7 +43,7 @@ it('drops remote rule snapshots only for a full uninstall on the main poller', f
 		unlink($file);
 	}
 })->with([
-	['all', 1, ['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports']],
+	['all', 1, ['syslog', 'syslog_removed', 'syslog_programs', 'syslog_status', 'syslog_device_rule', 'syslog_alert_counts', 'syslog_alert_suppression', 'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_incoming', 'syslog_threshold_recovery_queue', 'syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_facilities', 'syslog_statistics', 'syslog_host_facilities', 'syslog_priorities', 'syslog_logs', 'syslog_hosts', 'syslog_saved_searches', 'syslog_dashboard_panels', 'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_saved_searches_perm', 'syslog_replication_output', 'syslog_replication_receipts', 'syslog_replication_collectors', 'syslog_replication_recovery']],
 	['data', 1, []],
 	['all', 2, []],
 ]);
