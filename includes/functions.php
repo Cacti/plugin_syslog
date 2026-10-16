@@ -5569,7 +5569,7 @@ function syslog_backfill_message_digest(int $rows_per_run = 50000): int {
 		$rows_remaining = (int) syslog_db_fetch_cell("SELECT COUNT(seq) FROM `$syslogdb_default`.`$table` WHERE `message_digest` = ''");
 
 		if ($rows_remaining == 0) {
-			write_config_option($option . '_done', (string) $max_seq);
+			set_config_option($option . '_done', (string) $max_seq);
 			continue;
 		}
 
@@ -5589,13 +5589,13 @@ function syslog_backfill_message_digest(int $rows_per_run = 50000): int {
 			$cursor = $stop;
 		}
 
-		write_config_option($option, (string) $cursor);
+		set_config_option($option, (string) $cursor);
 
 		$rows_remaining = (int) syslog_db_fetch_cell("SELECT COUNT(seq) FROM `$syslogdb_default`.`$table` WHERE `message_digest` = ''");
 		$remaining     += $rows_remaining;
 
 		if ($rows_remaining == 0) {
-			write_config_option($option . '_done', (string) $max_seq);
+			set_config_option($option . '_done', (string) $max_seq);
 		}
 	}
 
