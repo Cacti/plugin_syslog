@@ -2518,7 +2518,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
-						UNION
+						UNION ALL
 						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
@@ -2540,7 +2540,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 						SELECT COUNT(*) AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
-						UNION
+						UNION ALL
 						SELECT COUNT(*) AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where

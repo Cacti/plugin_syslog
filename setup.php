@@ -186,6 +186,13 @@ function plugin_syslog_uninstall(): void {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");
 
 			// do the settings tables last
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_programs`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_status`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_device_rule`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert_counts`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert_suppression`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_threshold_state`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_threshold_messages`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_incoming`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_threshold_recovery_queue`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert`");

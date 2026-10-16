@@ -172,7 +172,7 @@ function form_actions(): void {
 				WHERE id = ?",
 				[$matches[1]]);
 
-			$report_list .= '<li>' . $report_info . '</li>';
+			$report_list .= '<li>' . html_escape($report_info) . '</li>';
 			$report_array[] = $matches[1];
 		}
 	}
@@ -915,7 +915,7 @@ function report_import(): void {
 					switch($name) {
 						case 'hash':
 							// See if the hash exists, if it does, update the alert
-							$found = db_fetch_cell_prepared('SELECT id
+							$found = syslog_db_fetch_cell_prepared('SELECT id
 							FROM syslog_reports
 							WHERE hash = ?',
 								[$value]);
@@ -944,7 +944,7 @@ function report_import(): void {
 				}
 			}
 
-			$id = sql_save($save, 'syslog_reports');
+			$id = syslog_sql_save($save, 'syslog_reports');
 
 			if ($id) {
 				raise_message('syslog_info' . $id, __('NOTE: Report Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);

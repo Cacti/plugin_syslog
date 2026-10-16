@@ -2,6 +2,13 @@
 
 --- develop ---
 
+* security: Escape stored removal and report rule names in all bulk-action confirmations
+* bug: Route rule imports to the configured Syslog database and publish complete remote rule snapshots with source-aware schema transfer and failure-safe replacement
+* bug: Bound digest backfill to the registered master and a fixed migration range, retaining the last durable cursor when a batch or progress write fails
+* bug: Report dashboard write failures and roll back partial deletes, copies and panel ordering changes
+* bug: Count equal retained and removed log totals correctly and remove all plugin-owned tables during uninstall-all
+* test: Repair the schema CLI fixture and add dedicated-database, rule synchronization, migration, output escaping and dashboard rollback regression coverage
+
 * feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
 * feature: Add poller-driven pipeline health alerts for stalled processing, incoming backlogs, remote synchronization failures or delays, and blocked partition maintenance; expand the existing Status health card with check results and email delivery status, with optional problem, reminder, and recovery notifications
 * bug: Treat an empty incoming queue as drained rather than missing data, and evaluate stale queued messages even when new messages continue arriving

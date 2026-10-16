@@ -62,3 +62,10 @@ rule changes reach remote collectors during Cacti's next full replication cycle,
 through the registered `syslog_replicate_out` hook. The save handler does not
 query or change Cacti's collector tables, or discover and connect to collectors.
 Synchronized remote collectors continue to reject local rule edits.
+
+The rule snapshot helper uses the main Syslog connection for source schema and
+Cacti's supplied remote connection for delivery. It builds each snapshot in a
+plugin-owned staging table and publishes it with an atomic table rename, so an
+empty source clears deleted rules and a failed copy preserves the live table.
+Remote collectors copy Cacti's local rule snapshot into a dedicated Syslog
+database only from the registered master process.

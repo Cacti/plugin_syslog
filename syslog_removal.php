@@ -197,7 +197,7 @@ function form_actions(): void {
 				WHERE id = ?",
 				[$matches[1]]);
 
-			$removal_list .= '<li>' . $removal_info . '</li>';
+			$removal_list .= '<li>' . html_escape($removal_info) . '</li>';
 			$removal_array[] = $matches[1];
 		}
 	}
@@ -1111,7 +1111,7 @@ function removal_import(): void {
 				}
 			}
 
-			$id = sql_save($save, 'syslog_remove');
+			$id = syslog_sql_save($save, 'syslog_remove');
 
 			if ($id) {
 				raise_message('syslog_info' . $id, __('NOTE: Removal Rule \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);

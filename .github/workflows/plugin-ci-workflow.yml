@@ -210,8 +210,10 @@ jobs:
       run: php tests/regression/cli_schema_upgrade_test.php
       working-directory: ${{ github.workspace }}/cacti/plugins/syslog
 
-    - name: Run threshold recovery database checks
-      run: php tests/regression/threshold_recovery_database_test.php
+    - name: Run Syslog database regression checks
+      run: |
+        php tests/regression/threshold_recovery_database_test.php
+        php tests/regression/quality_must_fix_database_test.php
       working-directory: ${{ github.workspace }}/cacti/plugins/syslog
       env:
         SYSLOG_TEST_MYSQL_DSN: 'mysql:host=127.0.0.1;port=3306'

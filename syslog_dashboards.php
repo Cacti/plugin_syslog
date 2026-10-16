@@ -461,11 +461,9 @@ function syslog_dashboard_actions() {
  * @return void
  */
 function api_syslog_dashboard_remove($id) {
-	global $db;
-	// Panels first, then the dashboard itself.
-	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboard_panels WHERE dashboard_id = ?", [$id]);
-	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards WHERE id = ?", [$id]);
-	syslog_db_execute_prepared("DELETE FROM $db.syslog_dashboards_perm WHERE dashboard_id = ?", [$id]);
+	if (!syslog_dashboard_delete((int) $id)) {
+		raise_message('syslog_dashboard_error', __('Unable to save dashboard changes.', 'syslog'), MESSAGE_LEVEL_ERROR);
+	}
 }
 
 /**

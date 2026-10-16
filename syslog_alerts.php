@@ -1381,7 +1381,7 @@ function alert_import(): void {
 					switch($name) {
 						case 'hash':
 							// See if the hash exists, if it does, update the alert
-							$found = db_fetch_cell_prepared('SELECT id
+							$found = syslog_db_fetch_cell_prepared('SELECT id
 							FROM syslog_alert
 							WHERE hash = ?',
 								[$value]);
@@ -1410,7 +1410,7 @@ function alert_import(): void {
 				}
 			}
 
-			$id = sql_save($save, 'syslog_alert');
+			$id = syslog_sql_save($save, 'syslog_alert');
 
 			if ($id) {
 				raise_message('syslog_info' . $id, __esc('NOTE: Alert \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);

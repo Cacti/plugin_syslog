@@ -33,13 +33,6 @@ include_once(__DIR__ . '/setup.php');
 
 syslog_connect();
 
-// Add the message digest grouping columns and backfill a bounded slice of
-// pre-upgrade rows each cycle.  The archival statements write digests from
-// the first run after the columns exist, so only the stored backlog is left.
-require_once(__DIR__ . '/includes/schema.php');
-syslog_ensure_message_digest_columns();
-syslog_backfill_message_digest();
-
 /**
  * Let it run for an hour if it has to, to clear up any big
  * bursts of incoming syslog events
@@ -219,10 +212,6 @@ if ($config['poller_id'] > 1) {
 
 		exit(1);
 	}
-
-	// replicate in syslog tables sync is enabled
-	require_once(__DIR__ . '/includes/processing.php');
-	syslog_replicate_in();
 }
 
 /**
@@ -231,6 +220,24 @@ if ($config['poller_id'] > 1) {
  */
 if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
 	exit(0);
+}
+
+// Only the registered master may migrate history or replace synchronized rules.
+if ($config['poller_id'] > 1) {
+	require_once(__DIR__ . '/includes/processing.php');
+
+	if (!syslog_replicate_in()) {
+		cacti_log('ERROR: Syslog rule synchronization failed; skipping processing.', false, 'SYSLOG');
+		unregister_process('syslog', 'master', $config['poller_id']);
+		exit(1);
+	}
+}
+
+require_once(__DIR__ . '/includes/schema.php');
+syslog_ensure_message_digest_columns();
+
+if (syslog_backfill_message_digest() < 0) {
+	cacti_log('WARNING: Syslog message digest migration paused; it will retry next cycle.', false, 'SYSLOG');
 }
 
 syslog_status_set('last_polling_time', $start_timestamp);

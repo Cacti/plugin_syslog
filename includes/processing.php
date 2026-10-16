@@ -21,24 +21,18 @@ require_once(dirname(__DIR__) . '/setup.php');
  * @return array<string, mixed> The replication data, unmodified.
  */
 function syslog_replicate_out($data) {
-	syslog_connect();
+	global $syslog_cnn;
 
-	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
-		$remote_poller_id = $data['remote_poller_id'];
-		$rcnn_id          = $data['rcnn_id'];
-		$class            = $data['class'];
+	if (syslog_connect() && read_config_option('syslog_remote_enabled') == 'on'
+		&& read_config_option('syslog_remote_sync_rules') == 'on' && $data['class'] == 'all') {
+		foreach (['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports'] as $table) {
+			$rows = syslog_db_fetch_assoc("SELECT * FROM `$table`");
 
-		cacti_log('INFO: Replicating for the Syslog Plugin', false, 'REPLICATE');
+			if (!syslog_replace_data($table, $rows, $data['rcnn_id'], $syslog_cnn)) {
+				cacti_log("ERROR: Unable to replicate Syslog rule table $table", false, 'REPLICATE');
 
-		if ($class == 'all') {
-			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_alert');
-			replicate_out_table($rcnn_id, $tdata, 'syslog_alert', $remote_poller_id);
-			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_device_rule');
-			replicate_out_table($rcnn_id, $tdata, 'syslog_device_rule', $remote_poller_id);
-			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_remove');
-			replicate_out_table($rcnn_id, $tdata, 'syslog_remove', $remote_poller_id);
-			$tdata = syslog_db_fetch_assoc('SELECT * FROM syslog_reports');
-			replicate_out_table($rcnn_id, $tdata, 'syslog_reports', $remote_poller_id);
+				break;
+			}
 		}
 	}
 
@@ -46,26 +40,29 @@ function syslog_replicate_out($data) {
 }
 
 /**
- * Pull the Syslog rules tables from the main Cacti database.
+ * Pull the authoritative rule snapshot from Cacti's local replicated tables.
  *
- * @return void
+ * @return bool Whether every rule table was synchronized successfully.
  */
-function syslog_replicate_in(): void {
-	syslog_connect();
+function syslog_replicate_in(): bool {
+	global $local_db_cnn_id, $syslog_cnn;
 
-	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
-		$data = db_fetch_assoc('SELECT * FROM syslog_alert');
-		syslog_replace_data('syslog_alert', $data);
-
-		$data = db_fetch_assoc('SELECT * FROM syslog_device_rule');
-		syslog_replace_data('syslog_device_rule', $data);
-
-		$data = db_fetch_assoc('SELECT * FROM syslog_remove');
-		syslog_replace_data('syslog_remove', $data);
-
-		$data = db_fetch_assoc('SELECT * FROM syslog_reports');
-		syslog_replace_data('syslog_reports', $data);
+	if (!syslog_connect()) {
+		return false;
 	}
+
+	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on'
+		&& $syslog_cnn !== $local_db_cnn_id) {
+		foreach (['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports'] as $table) {
+			$rows = db_fetch_assoc("SELECT * FROM `$table`", true, $local_db_cnn_id);
+
+			if (!syslog_replace_data($table, $rows)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 /**
@@ -90,63 +87,101 @@ function syslog_poller_bottom(): void {
 }
 
 /**
- * Replace the data in the local table with the replicated data.
+ * Publish a complete rule snapshot, including an empty table, atomically.
  *
- * @param string                           $table The name of the table to replace.
- * @param array<int, array<string, mixed>> $data  The replicated rows, passed by reference.
+ * Cacti's replicate_out_table() reads schema from its default connection.
+ * Explicit connections here also support a dedicated main Syslog database.
  *
- * @return void
+ * @param string      $table  Allowlisted plugin-owned rule table.
+ * @param array|false $data   Source rows; false must never clear a table.
+ * @param object|null $target Destination, defaulting to the local Syslog DB.
+ * @param object|null $source Schema source, defaulting to Cacti's local DB.
+ *
+ * @return bool Whether the full snapshot was published.
  */
-function syslog_replace_data($table, &$data) {
-	if (cacti_sizeof($data)) {
-		$sqlData    = [];
-		$sqlQuery   = [];
-		$columns    = array_keys($data[0]);
-		$create_sql = '';
+function syslog_replace_data($table, &$data, $target = null, $source = null): bool {
+	global $syslog_cnn, $local_db_cnn_id;
 
-		$create = db_fetch_row('SHOW CREATE TABLE ' . $table);
+	if (!in_array($table, ['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports'], true)
+		|| !is_array($data)) {
+		return false;
+	}
 
-		if (is_array($create)) {
-			if (isset($create["CREATE TABLE `$table`"])) {
-				$create_sql = $create["CREATE TABLE `$table`"];
-			} elseif (isset($create['Create Table'])) {
-				$create_sql = $create['Create Table'];
+	$target = $target ?? $syslog_cnn;
+	$source = $source ?? $local_db_cnn_id;
+
+	if (!is_object($target) || !is_object($source)) {
+		return false;
+	}
+
+	if ($target === $source) {
+		return true;
+	}
+
+	$create     = db_fetch_row("SHOW CREATE TABLE `$table`", true, $source);
+	$create_sql = is_array($create) ? ($create['Create Table'] ?? $create["CREATE TABLE `$table`"] ?? '') : '';
+	$stage      = $table . '_sync_' . bin2hex(random_bytes(6));
+	$backup     = $stage . '_old';
+	$create_sql = preg_replace('/^CREATE TABLE `' . preg_quote($table, '/') . '`/', 'CREATE TABLE `' . $stage . '`', $create_sql, 1, $replaced);
+
+	if ($replaced !== 1) {
+		return false;
+	}
+
+	if ($data && (!isset($data[0]) || !is_array($data[0]) || !$data[0])) {
+		return false;
+	}
+
+	$columns = $data ? array_keys($data[0]) : [];
+
+	foreach ($columns as $column) {
+		if (!is_string($column) || !preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column)) {
+			return false;
+		}
+	}
+
+	foreach ($data as $row) {
+		if (!is_array($row) || array_keys($row) !== $columns) {
+			return false;
+		}
+	}
+
+	$lock = 'syslog_rule_snapshot_' . $table;
+
+	if (!db_fetch_cell_prepared('SELECT GET_LOCK(?, 5)', [$lock], '', true, $target)) {
+		return false;
+	}
+
+	try {
+		if (!db_execute($create_sql, true, $target)) {
+			return false;
+		}
+
+		foreach (array_chunk($data, 250) as $rows) {
+			$values = [];
+			$params = [];
+
+			foreach ($rows as $row) {
+				$values[] = '(' . implode(', ', array_fill(0, cacti_sizeof($columns), '?')) . ')';
+				$params   = array_merge($params, array_values($row));
+			}
+
+			if (!db_execute_prepared("INSERT INTO `$stage` (`" . implode('`, `', $columns) . '`) VALUES ' . implode(', ', $values), $params, true, $target)) {
+				return false;
 			}
 		}
 
-		if (!syslog_db_table_exists($table)) {
-			if ($create_sql == '') {
-				cacti_log('WARNING: Unable to derive CREATE TABLE SQL for `' . $table . '` during Syslog replication.', false, 'REPLICATE');
+		$exists = db_fetch_cell_prepared('SELECT EXISTS (SELECT 1 FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?)', [$table], '', true, $target);
 
-				return;
-			}
-
-			syslog_db_execute($create_sql);
-			syslog_db_execute("TRUNCATE TABLE $table");
+		if ($exists === false) {
+			return false;
 		}
 
-		// Make the prefix
-		$sql_prefix = "INSERT INTO $table (`" . implode('`,`', $columns) . '`) VALUES ';
+		$rename = $exists ? "`$table` TO `$backup`, " : '';
 
-		// Make the suffix
-		$sql_suffix = ' ON DUPLICATE KEY UPDATE ';
-
-		foreach ($columns as $c) {
-			$sql_suffix .= " $c = VALUES($c),";
-		}
-		$sql_suffix = trim($sql_suffix, ',');
-
-		// Construct the prepared statement
-		foreach ($data as $row) {
-			$sqlQuery[] = '(' . trim(str_repeat('?, ', cacti_sizeof($columns)), ', ') . ')';
-
-			foreach ($row as $col) {
-				$sqlData[] = $col;
-			}
-		}
-
-		$sql = implode(', ', $sqlQuery);
-
-		syslog_db_execute_prepared($sql_prefix . $sql . $sql_suffix, $sqlData);
+		return db_execute("RENAME TABLE $rename`$stage` TO `$table`", true, $target);
+	} finally {
+		db_execute("DROP TABLE IF EXISTS `$stage`, `$backup`", true, $target);
+		db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock], '', true, $target);
 	}
 }

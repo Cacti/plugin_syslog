@@ -6125,21 +6125,23 @@ function syslog_message_digest_ready(string $table = ''): bool {
 }
 
 /**
- * syslog_backfill_message_digest - fill the digest column for rows stored
- * before the column existed.
+ * Backfill at most one bounded primary-key range per archived table.
  *
- * Processes a bounded seq range per poller run so the migration never
- * blocks ingest; progress is kept per table in the settings table.  New
- * rows are written with their digest by the archival statements, so the
- * backfill only ever has to look behind its cursor once.
+ * Progress is plugin-owned and independent of later archival inserts. Restart
+ * the older settings-based migration once, since it could skip failed batches.
  *
- * @param int $rows_per_run Maximum rows to digest per call
+ * @param int $rows_per_run Maximum sequence range per table and call.
  *
- * @return int Rows still awaiting a digest
+ * @return int Remaining sequence span, or -1 when progress could not be saved.
  */
 function syslog_backfill_message_digest(int $rows_per_run = 50000): int {
 	global $syslogdb_default;
 
+	if ($rows_per_run < 1) {
+		return -1;
+	}
+
+	syslog_status_ensure_table();
 	$remaining = 0;
 
 	foreach (['syslog', 'syslog_removed'] as $table) {
@@ -6148,54 +6150,54 @@ function syslog_backfill_message_digest(int $rows_per_run = 50000): int {
 			continue;
 		}
 
-		$max_seq = (int) syslog_db_fetch_cell("SELECT COALESCE(MAX(seq), 0) FROM `$syslogdb_default`.`$table`");
+		$option = 'digest_backfill_' . $table;
+		$saved  = syslog_db_fetch_cell_prepared("SELECT COALESCE((SELECT value FROM `$syslogdb_default`.`syslog_status` WHERE name = ?), '')", [$option]);
 
-		if ($max_seq == 0) {
+		if ($saved === false) {
+			return -1;
+		}
+
+		if ($saved === '' || $saved === null) {
+			$target = syslog_db_fetch_cell("SELECT COALESCE(MAX(seq), 0) FROM `$syslogdb_default`.`$table`");
+
+			if ($target === false) {
+				return -1;
+			}
+
+			$state = ['cursor' => 0, 'target' => (int) $target];
+
+			if (!syslog_status_set($option, json_encode($state))) {
+				return -1;
+			}
+		} else {
+			$state = json_decode($saved, true);
+
+			if (!is_array($state) || !isset($state['cursor'], $state['target'])
+				|| !is_int($state['cursor']) || !is_int($state['target'])
+				|| $state['cursor'] < 0 || $state['target'] < $state['cursor']) {
+				return -1;
+			}
+		}
+
+		if ($state['cursor'] >= $state['target']) {
 			continue;
 		}
 
-		$option    = 'syslog_digest_backfill_seq_' . $table;
-		$cursor    = (int) read_config_option($option, true);
-		$done      = (int) read_config_option($option . '_done', true);
+		$stop = min($state['cursor'] + $rows_per_run, $state['target']);
 
-		// A completed migration holds whenever the cursor has reached the
-		// high-water mark once; archival keeps writing digests from there.
-		if ($done && $cursor >= $max_seq) {
-			continue;
+		if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`$table`
+			SET `message_digest` = MD5(`message`)
+			WHERE `seq` > ? AND `seq` <= ? AND `message_digest` = ''", [$state['cursor'], $stop])) {
+			return -1;
 		}
 
-		$rows_remaining = (int) syslog_db_fetch_cell("SELECT COUNT(seq) FROM `$syslogdb_default`.`$table` WHERE `message_digest` = ''");
+		$state['cursor'] = $stop;
 
-		if ($rows_remaining == 0) {
-			set_config_option($option . '_done', (string) $max_seq);
-
-			continue;
+		if (!syslog_status_set($option, json_encode($state))) {
+			return -1;
 		}
 
-		// Chunk along the primary key so each pass is one index range scan
-		// instead of rescanning the entire table for the empty digest flag.
-		$left_to_digest = $rows_per_run;
-		$chunk          = max($rows_per_run, 10000);
-
-		while ($left_to_digest > 0 && $cursor < $max_seq) {
-			$stop = min($cursor + $chunk, $max_seq);
-
-			syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`$table`
-				SET `message_digest` = MD5(`message`)
-				WHERE `seq` > ? AND `seq` <= ? AND `message_digest` = ''", [$cursor, $stop]);
-
-			$left_to_digest -= ($stop - $cursor);
-			$cursor = $stop;
-		}
-
-		set_config_option($option, (string) $cursor);
-
-		$rows_remaining = (int) syslog_db_fetch_cell("SELECT COUNT(seq) FROM `$syslogdb_default`.`$table` WHERE `message_digest` = ''");
-		$remaining     += $rows_remaining;
-
-		if ($rows_remaining == 0) {
-			set_config_option($option . '_done', (string) $max_seq);
-		}
+		$remaining += $state['target'] - $stop;
 	}
 
 	return $remaining;

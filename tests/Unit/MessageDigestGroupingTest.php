@@ -41,5 +41,5 @@ it('writes digests at every archived message entry point', function () {
 		->toContain('function syslog_message_digest_ready');
 
 	expect($process)->toContain('syslog_ensure_message_digest_columns();')
-		->toContain('syslog_backfill_message_digest();');
+		->toContain('syslog_backfill_message_digest() < 0');
 });

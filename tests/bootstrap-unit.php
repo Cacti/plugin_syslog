@@ -761,3 +761,36 @@ if (!function_exists('clean_up_name')) {
 		return $value;
 	}
 }
+
+/** Load one real page handler without running its authenticated entry point. */
+function syslog_test_page_function(string $file, string $name): string {
+	$alias = 'syslog_test_' . str_replace('.php', '', $file) . '_' . $name;
+
+	if (!function_exists($alias)) {
+		$source = plugin_test_read_source($file);
+
+		if (!preg_match('/^function ' . preg_quote($name, '/') . '\\(.*?^\\}/ms', $source, $match)) {
+			throw new RuntimeException("Unable to load $file::$name");
+		}
+
+		eval(str_replace('function ' . $name . '(', 'function ' . $alias . '(', $match[0]));
+	}
+
+	return $alias;
+}
+
+if (!function_exists('top_header')) {
+	function top_header() {}
+}
+
+if (!function_exists('bottom_footer')) {
+	function bottom_footer() {}
+}
+
+if (!function_exists('input_validate_input_number')) {
+	function input_validate_input_number($value) {
+		if (!ctype_digit((string) $value)) {
+			throw new InvalidArgumentException('Invalid numeric input');
+		}
+	}
+}
