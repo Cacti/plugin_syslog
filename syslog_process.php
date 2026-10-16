@@ -31,7 +31,11 @@ if (function_exists('pcntl_async_signals')) {
 include(__DIR__ . '/../../include/cli_check.php');
 include_once(__DIR__ . '/setup.php');
 
-syslog_connect();
+if (!syslog_connect()) {
+	cacti_log('ERROR: Syslog database or schema is unavailable; skipping processing.', false, 'SYSLOG');
+
+	exit(1);
+}
 
 /**
  * Let it run for an hour if it has to, to clear up any big

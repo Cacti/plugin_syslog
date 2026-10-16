@@ -467,8 +467,8 @@ function syslog_connect(): bool {
 		}
 	}
 
-	// Collector history is local state, so initialize it without copying main history.
-	if ($connected && (int) $config['poller_id'] > 1 && read_config_option('syslog_remote_enabled') === 'on'
+	// Repair missing tables before any main or enabled remote collector queries.
+	if ($connected && ((int) $config['poller_id'] <= 1 || read_config_option('syslog_remote_enabled') === 'on')
 		&& !$schema_inprocess && !$schema_ready) {
 		$schema_inprocess = true;
 

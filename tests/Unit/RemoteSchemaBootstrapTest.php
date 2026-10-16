@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-it('initializes remote schema before returning a usable connection without recursive repair', function ($poller, $enabled, $repair_ok, $expected, $calls, $legacy_main = false) {
+it('initializes collector schema before returning a usable connection without recursive repair', function ($poller, $enabled, $repair_ok, $expected, $calls, $legacy_main = false) {
 	$source = plugin_test_read_source('setup.php');
 	preg_match('/^function syslog_connect\(\): bool \{.*?^\}/ms', $source, $match);
 	$dir = sys_get_temp_dir() . '/syslog-connect-' . bin2hex(random_bytes(6));
@@ -51,7 +51,37 @@ it('initializes remote schema before returning a usable connection without recur
 })->with([
 	[3, 'on', true, true, 1],
 	[3, 'on', false, false, 2],
-	[1, 'on', true, true, 0],
-	[1, 'on', true, true, 0, true],
+	[1, 'on', true, true, 1],
+	[1, 'on', true, true, 1, true],
 	[3, '', true, true, 0],
+	[1, '', true, true, 1],
+	[1, 'on', false, false, 2],
+]);
+
+
+it('does not launch processing or query pipeline state when database repair fails', function ($connected, $expected) {
+	$source = plugin_test_read_source('includes/processing.php');
+	preg_match('/^function syslog_poller_bottom\(\): void \{.*?^\}/ms', $source, $match);
+	$script = '<?php $config = ["base_path" => "/cacti"]; $calls = []; ' .
+		'function syslog_config_safe() { return true; } ' .
+		'function syslog_connect() { return ' . var_export($connected, true) . '; } ' .
+		'function cacti_log(...$args) { $GLOBALS["calls"][] = "error"; } ' .
+		'function syslog_pipeline_health_check() { $GLOBALS["calls"][] = "health"; } ' .
+		'function syslog_status_set(...$args) { $GLOBALS["calls"][] = "status"; } ' .
+		'function read_config_option($name) { return "/usr/bin/php"; } ' .
+		'function cacti_escapeshellarg($value) { return escapeshellarg($value); } ' .
+		'function exec_background(...$args) { $GLOBALS["calls"][] = "launch"; } ' .
+		$match[0] . ' syslog_poller_bottom(); echo json_encode($calls);';
+	$file = tempnam(sys_get_temp_dir(), 'syslog-schema-gate-');
+	try {
+		file_put_contents($file, $script);
+		exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($file), $output, $status);
+		expect($status)->toBe(0)
+			->and(json_decode(implode("\n", $output), true))->toBe($expected);
+	} finally {
+		unlink($file);
+	}
+})->with([
+	[false, ['error']],
+	[true, ['health', 'status', 'launch']],
 ]);

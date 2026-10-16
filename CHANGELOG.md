@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails
+
 * bug: Resolve Cacti 1.2.x main-poller default database connections explicitly for Syslog rule replication
 
 * bug: Automatically repair collector-local schema before remote Syslog queries and processing after reinstall; keep failed message queries from disabling the plugin with a return-type error

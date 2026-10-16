@@ -74,7 +74,11 @@ function syslog_poller_bottom(): void {
 	global $config;
 
 	if (syslog_config_safe()) {
-		syslog_connect();
+		if (!syslog_connect()) {
+			cacti_log('ERROR: Syslog database or schema is unavailable; skipping processing.', false, 'SYSLOG');
+
+			return;
+		}
 		syslog_pipeline_health_check();
 		syslog_status_set('last_polling_time', time());
 
