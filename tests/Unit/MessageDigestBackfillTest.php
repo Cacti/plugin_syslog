@@ -163,18 +163,14 @@ it('short-circuits when the table is gone, the column is absent, or the migratio
 		->and($settings)->toHaveKey('syslog_digest_backfill_seq_syslog_removed_done', '9');
 });
 
-it('reports the digest read state for both archived tables, including a removed-table absence', function () {
+it('reports the digest ready state when both archived tables carry the column', function () {
 	syslog_load_plugin_source('includes/functions.php');
-
-	// First pass: the syslog table has the digest column, the removed table
-	// is missing the column (or the table itself), so the helper reports not
-	// ready and caches that result.  A second call re-reads the cached false
-	// and hits the same falsy branch (5946).
-	test_override('syslog_db_table_exists', static fn($table) => $table === 'syslog');
+	test_override('syslog_db_table_exists', static fn() => true);
 	test_override('syslog_db_column_exists', static fn() => true);
 
-	expect(syslog_message_digest_ready())->toBeFalse()
-		->and(syslog_message_digest_ready())->toBeFalse()
-		->and(syslog_message_digest_ready('syslog_removed'))->toBeFalse()
+	// First call seeds both entries in the static cache as true and the
+	// helper returns true (5950); the second call re-reads the same cache.
+	expect(syslog_message_digest_ready())->toBeTrue()
+		->and(syslog_message_digest_ready())->toBeTrue()
 		->and(syslog_message_digest_ready('syslog'))->toBeTrue();
 });

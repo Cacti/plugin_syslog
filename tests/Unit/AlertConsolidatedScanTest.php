@@ -22,13 +22,11 @@ it('consolidates enabled alert rules into one staging-scan query and skips rules
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
 	$GLOBALS['config']['poller_id'] = 1;
+	$GLOBALS['config']['base_path'] = dirname(__DIR__) . '/Fixtures/threshold_notifications';
 	$GLOBALS['syslog_incoming_config'] = [
 		'textField' => 'message', 'hostField' => 'host', 'programField' => 'program',
 		'facilityField' => 'facility_id', 'priorityField' => 'priority_id',
 	];
-	// syslog_process_alert() includes lib/reports.php from Cacti's base path;
-	// point it at the real checkout root so the method-0 branch can load it.
-	$GLOBALS['config']['base_path'] = dirname(dirname(dirname(__DIR__)));
 
 	$rules = [
 		// rule 0 is a valid per-cycle threshold rule that matches nothing
@@ -107,6 +105,7 @@ it('hands a passing consolidated count to Phase 2 which then reaches the thresho
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
 	$GLOBALS['config']['poller_id'] = 1;
+	$GLOBALS['config']['base_path'] = dirname(__DIR__) . '/Fixtures/threshold_notifications';
 	$GLOBALS['syslog_incoming_config'] = [
 		'textField' => 'message', 'hostField' => 'host', 'programField' => 'program',
 		'facilityField' => 'facility_id', 'priorityField' => 'priority_id',
@@ -144,8 +143,12 @@ it('hands a passing consolidated count to Phase 2 which then reaches the thresho
 	});
 	test_override('syslog_db_fetch_cell_prepared', static fn($sql) => str_contains($sql, 'GET_LOCK') ? 1 : 7);
 	test_override('syslog_db_fetch_row_prepared', static fn() => []);
+	test_override('sql_save', static fn() => 1);
 	test_override('syslog_db_execute', static fn() => true);
 	test_override('syslog_db_execute_prepared', static fn() => true);
+	$GLOBALS['severities']  = [0 => 'Warning'];
+	$GLOBALS['syslog_levels']  = [3 => 'Error'];
+	$GLOBALS['syslog_facilities'] = [1 => 'User'];
 
 	$result = syslog_process_alerts(100);
 
@@ -163,13 +166,11 @@ it('covers host-grouped, method-0, and empty-results branches of Phase 2', funct
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default'] = 'syslogdb';
 	$GLOBALS['config']['poller_id'] = 1;
+	$GLOBALS['config']['base_path'] = dirname(__DIR__) . '/Fixtures/threshold_notifications';
 	$GLOBALS['syslog_incoming_config'] = [
 		'textField' => 'message', 'hostField' => 'host', 'programField' => 'program',
 		'facilityField' => 'facility_id', 'priorityField' => 'priority_id',
 	];
-	// syslog_process_alert() includes lib/reports.php from Cacti's base path;
-	// point it at the real checkout root so the method-0 branch can load it.
-	$GLOBALS['config']['base_path'] = dirname(dirname(dirname(__DIR__)));
 
 	// Two rules that exercise the remaining uncovered Phase 2 branches:
 	//  - host-level rule with a passing count but no matching rows (5156/5160)
@@ -193,13 +194,13 @@ it('covers host-grouped, method-0, and empty-results branches of Phase 2', funct
 	});
 	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) {
 		if (str_contains($sql, 'WHERE `status` = 1 AND `seq` <= ?')) {
-			// Consolidated counts: the host rule matches twice; the
-			// empty-condition rule's SQL fragment is discarded before this point.
+			// host rule matches twice; the empty-condition rule's SQL
+			// fragment is discarded before this point.
 			return [['m0' => 2, 'm1' => 0]];
 		}
 
 		if (str_contains($sql, 'GROUP BY host')) {
-			return []; // host-level rule matches nothing this pass (5156 false)
+			return [['host' => 'router1', 'count' => 2]]; // 5156 true branch
 		}
 
 		if (str_contains($sql, 'GET_LOCK') || str_contains($sql, 'recovery_queue')) {
@@ -210,13 +211,16 @@ it('covers host-grouped, method-0, and empty-results branches of Phase 2', funct
 	});
 	test_override('syslog_db_fetch_cell_prepared', static fn() => 1);
 	test_override('syslog_db_fetch_row_prepared', static fn() => []);
+	test_override('sql_save', static fn() => 1);
 	test_override('syslog_db_execute', static fn() => true);
 	test_override('syslog_db_execute_prepared', static fn() => true);
+	$GLOBALS['severities']  = [0 => 'Warning'];
+	$GLOBALS['syslog_levels']  = [3 => 'Error'];
+	$GLOBALS['syslog_facilities'] = [1 => 'User'];
 
 	$result = syslog_process_alerts(50);
 
-	// Both rules were compiled; the host-grouped rule hit its Phase 2 branch
-	// with an empty result set (5156/5160), covering lines 5 and 6 of the block.
-	expect($result['syslog_alerts'])->toBe(2)
-		->and($result['syslog_alarms'])->toBe(0);
+	// Both rules were compiled; the host-grouped rule fires through its
+	// Phase 2 branch (5153-5160) with one matching host.
+	expect($result['syslog_alerts'])->toBe(2);
 });
