@@ -872,7 +872,7 @@ function syslog_allow_rule_edits(): bool {
 }
 
 /**
- * Save data with remote sync support.
+ * Save Syslog data locally; Cacti owns remote collector replication.
  *
  * @param array<string, mixed> $data    The data to save.
  * @param string               $table   The table name.
@@ -881,46 +881,17 @@ function syslog_allow_rule_edits(): bool {
  * @return void
  */
 function syslog_sync_save(array $data, string $table, string $primary = ''): void {
-	global $config, $syslogdb_default;
+	if (!syslog_allow_edits()) {
+		raise_message('syslog_denied', __('Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		return;
+	}
 
-	if (read_config_option('syslog_remote_enabled') == 'on' && read_config_option('syslog_remote_sync_rules') == 'on') {
-		if ($config['poller_id'] == 1) {
-			$id = syslog_sql_save($data, $table, $primary);
-
-			if ($id > 0) {
-				raise_message(1);
-			} else {
-				raise_message(2);
-			}
-
-			$pollers = array_rekey(
-				db_fetch_assoc('SELECT poller_id
-					FROM pollers
-					WHERE disabled = ""
-					AND id > 1'),
-				'id', 'id'
-			);
-
-			if (cacti_sizeof($pollers)) {
-				foreach ($pollers as $poller_id) {
-					$rcnn_id = poller_connect_to_remote($poller_id);
-
-					if ($rcnn_id !== false) {
-						$id = sql_save($data, $table, $primary, true, $rcnn_id);
-					}
-				}
-			}
-		} else {
-			raise_message('syslog_denied', __('Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead.', 'syslog'), MESSAGE_LEVEL_ERROR);
-		}
+	// Cacti's full replication invokes syslog_replicate_out() for remote rules.
+	$id = syslog_sql_save($data, $table, $primary);
+	if ($id > 0) {
+		raise_message(1);
 	} else {
-		$id = syslog_sql_save($data, $table, $primary);
-
-		if ($id > 0) {
-			raise_message(1);
-		} else {
-			raise_message(2);
-		}
+		raise_message(2);
 	}
 }
 

@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Save rules only to Syslog tables and let Cacti's existing full-replication hook synchronize collectors, removing the invalid save-time pollers lookup
+
 * feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
 
 * feature: Add an auto-refresh interval dropdown and a manual refresh glyph to the Syslog Status toolbar (mirroring the intropage refresh concept); the interval persists through the page's auto-reload and the refresh glyphs spin while their cards reload
