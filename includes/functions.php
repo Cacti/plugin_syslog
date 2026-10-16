@@ -3205,6 +3205,20 @@ function syslog_removal_filter_normalize($json, $table) {
 }
 
 /**
+ * syslog_query_builder_unavailable - Guard body shared by every structured
+ * filter compile: record the reason and hand back an unusable fragment.
+ * Hoisted so the partial-deploy degradation stays observable and testable
+ * when the QueryBuilder class itself is always loaded in-process.
+ *
+ * @return array Always an empty array.
+ */
+function syslog_query_builder_unavailable(): array {
+	$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
+
+	return [];
+}
+
+/**
  * syslog_get_removal_rule_sql - Compile a structured filter removal rule
  * into parameterized SQL for the given table.
  *
@@ -3219,9 +3233,7 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
 	global $syslogdb_default;
 
 	if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
-		$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
-
-		return [];
+		return syslog_query_builder_unavailable();
 	}
 
 	$document = syslog_removal_filter_normalize($remove['message'], $table);
@@ -5819,7 +5831,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 		switch ($alert['type']) {
 			case 'filter':
 				if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
-					return [];
+					return syslog_query_builder_unavailable();
 				}
 				$fields = [
 					'message'     => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
@@ -5859,9 +5871,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 
 	if ($alert['type'] == 'filter') {
 		if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
-			$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
-
-			return [];
+			return syslog_query_builder_unavailable();
 		}
 		$fields = [
 			'message'     => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
