@@ -7077,7 +7077,7 @@ function syslog_incoming_to_syslog($max_seq, $seq_start = 0, $seq_end = 0) {
 	} else {
 		$archived = syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog`
 			(logtime, priority_id, facility_id, program_id, host_id, message, message_digest, threshold_breached, replication_source_poller_id, replication_source_event_id)
-			SELECT logtime, priority_id, facility_id, program_id, host_id, message, MD5(message), si.threshold_breached, ? AS replication_source_poller_id, si.seq AS replication_source_event_id
+			SELECT logtime, priority_id, facility_id, program_id, host_id, message, MD5(message), threshold_breached, replication_source_poller_id, replication_source_event_id
 			FROM (
 				SELECT logtime, priority_id, facility_id, sp.program_id, sh.host_id, message, si.threshold_breached,
 					? AS replication_source_poller_id, si.seq AS replication_source_event_id
