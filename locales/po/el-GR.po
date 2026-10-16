@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 16:41-0400\n"
+"POT-Creation-Date: 2026-10-15 17:38-0400\n"
 "PO-Revision-Date: 2025-03-07 14:42-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -234,7 +234,8 @@ msgstr ""
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
 msgid "Unknown"
 msgstr "Άγνωστο"
 
@@ -1323,7 +1324,7 @@ msgstr "Τελευταία αποστολή"
 msgid "Last %d Months"
 msgstr "% d Μήνας"
 
-#: lib/syslog_dashboard.php syslog.php
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
 msgstr "Ανανέωση"
 
@@ -1506,6 +1507,60 @@ msgstr ""
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Name"
 msgstr "Όνομα"
+
+#: lib/syslog_thresholds.php syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Breached Thresholds"
+msgstr "Όριο"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr ""
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Συσκευή"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+msgid "Recovers After"
+msgstr "Επανεπεξεργασία"
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+#| msgid "Rules"
+msgid "Rule"
+msgstr "Κανόνες"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Previous"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Next"
+msgstr ""
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -2296,9 +2351,15 @@ msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
 msgid "Save view defaults"
 msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
 
-#: syslog.php syslog_alerts.php syslog_device_rules.php
-msgid "Device"
-msgstr "Συσκευή"
+#: syslog.php
+msgid "Breach"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Threshold breached"
+msgstr "Όριο"
 
 #: syslog.php
 msgid "Messages"
@@ -2308,6 +2369,16 @@ msgstr "Μηνύματα"
 #, fuzzy
 msgid "Empty message"
 msgstr "Μήνυμα"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "No"
+msgstr "Όχι"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Yes"
+msgstr "Ναι"
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2406,6 +2477,14 @@ msgstr "Κάντε κλικ στο «Συνέχεια» για να εξαγάγ
 msgid "Export Syslog Alert Rule(s)"
 msgstr "Εξαγωγή κανόνων ειδοποίησης Syslog"
 
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr ""
+
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr "Η σύνταξη SQL που πληκτρολογήσατε δεν είναι έγκυρη.  Διορθώστε την SQL σας.<br>"
@@ -2464,6 +2543,28 @@ msgid "N/A"
 msgstr "Μη Διαθέσιμο"
 
 #: syslog_alerts.php
+#, fuzzy
+#| msgid "Time Range"
+msgid "Time unit"
+msgstr "Εύρος Ώρας"
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "%d Days"
+msgid "Days"
+msgstr "%d Ημέρες"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Hours"
+msgstr "%d ώρα"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Minutes"
+msgstr "1 λεπτό"
+
+#: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "Περιγράψτε αυτήν την ειδοποίηση."
 
@@ -2496,8 +2597,28 @@ msgid "Individual"
 msgstr "Ιδιώτες"
 
 #: syslog_alerts.php
-msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+#, fuzzy
+#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
 msgstr "Για τη μέθοδο «Κατώφλι», εάν ο αριθμός που εμφανίζεται υπερβαίνει αυτήν την τιμή, ενεργοποιείται μια ειδοποίηση."
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Threshold Logs"
+msgid "Threshold Window"
+msgstr "Αρχεία καταγραφής κατωφλίου"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -2696,23 +2817,23 @@ msgstr "Δημιουργία Αιτήματος Υποστήριξης"
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "Σε περίπτωση ανοίγματος εισιτηρίου Help Desk για αυτήν την ειδοποίηση.  ΣΗΜΕΙΩΣΗ: Η δέσμη ενεργειών εντολών Ticket θα συμπληρωθεί με πολλές μεταβλητές περιβάλλοντος 'ALERT_' για λόγους ευκολίας."
 
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "No"
-msgstr "Όχι"
-
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr "Ναι"
-
 #: syslog_alerts.php
-msgid "Command"
-msgstr "Εντολή"
+#, fuzzy
+msgid "Alert command"
+msgstr "Χειρισμός αφαίρεσης"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Όταν ενεργοποιείται μια ειδοποίηση, εκτελέστε την ακόλουθη εντολή.  Οι ακόλουθες μεταβλητές αντικατάστασης είναι διαθέσιμες <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Λάβετε υπόψη ότι <b>το \"&lt;HOSTNAME&gt;\"</b> είναι διαθέσιμο μόνο σε μεμονωμένα όρια.  Αυτές οι τιμές αντικατάστασης μπορούν να εμφανιστούν στη γραμμή εντολών ή να συγκεντρωθούν από το περιβάλλον της δέσμης ενεργειών.  Όταν χρησιμοποιούνται από το περιβάλλον, αυτές οι μεταβλητές θα έχουν πρόθεμα «ALERT_»."
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Recovery command"
+msgstr "%d Εγγραφές"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php
 #, fuzzy
@@ -3565,6 +3686,9 @@ msgstr ""
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
 
+#~ msgid "Command"
+#~ msgstr "Εντολή"
+
 #, fuzzy, php-format
 #~ msgid "no message received for %s"
 #~ msgstr "Φίλτρο μηνυμάτων Syslog %s"
@@ -3672,9 +3796,6 @@ msgstr ""
 
 #~ msgid "System Administration"
 #~ msgstr "Διαχείριση συστήματος"
-
-#~ msgid "Threshold Logs"
-#~ msgstr "Αρχεία καταγραφής κατωφλίου"
 
 #~ msgid "Timespan"
 #~ msgstr "Χρόνος"
