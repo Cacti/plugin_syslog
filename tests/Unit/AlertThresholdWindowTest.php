@@ -74,6 +74,8 @@ it('repairs window columns without requiring a version change', function () {
 	syslog_load_plugin_source('includes/schema.php');
 	$columns = [];
 	test_override('syslog_db_table_exists', static fn() => true);
+	// the digest migration hooks run inside the same repair pass
+	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('db_update_table', function ($table, $definition) use (&$columns) {
 		if ($table === 'syslog_alert') {
 			$columns = array_column($definition['columns'], 'name');

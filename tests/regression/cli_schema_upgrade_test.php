@@ -47,6 +47,7 @@ function syslog_ensure_share_tables() {}
 function syslog_ensure_saved_search_tables() {}
 function syslog_ensure_dashboard_tables() {}
 function syslog_ensure_status_table() {}
+function syslog_ensure_message_digest_columns() {}
 function syslog_create_device_rule_table() {}
 function syslog_db_add_column($table, $column, $log = true) { return true; }
 function db_update_table($table, $definition, $create, $upgrade, $connection) { return true; }

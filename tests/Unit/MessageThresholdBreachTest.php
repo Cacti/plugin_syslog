@@ -40,6 +40,8 @@ it('appends nullable message breach columns without a backfill during schema rep
 	syslog_load_plugin_source('includes/schema.php');
 	$columns = [];
 	test_override('syslog_db_table_exists', static fn() => true);
+	// the digest migration hooks run inside the same repair pass
+	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('db_update_table', function ($table) {
 		// The general table reconciler may drop an omitted primary key.
 		expect($table)->not->toBeIn(['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output']);
@@ -78,6 +80,30 @@ it('preserves marked and unmarked messages during central replication', function
 		->and($archives[2][1])->toBe([1000, 3, 1, 'error', null, 2, 10, 'app', 'router']);
 });
 
+it('writes the message digest into central replication when the column exists there', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$archives = [];
+	test_override('db_affected_rows', static fn() => 1);
+	// Central schema already carries the digest column; its INSERT gains the
+	// extra placeholder and the spliced MD5 parameter.
+	test_override('db_column_exists', static fn() => true);
+	test_override('db_execute_prepared', function ($sql, $params) use (&$archives) {
+		if (str_contains($sql, 'INSERT INTO `central`.`syslog`')) {
+			$archives[] = [$sql, $params];
+		}
+		return true;
+	});
+
+	$event = ['source_poller_id' => 2, 'source_event_id' => 10, 'delivery_batch_id' => 'batch', 'disposition' => 'syslog', 'program' => 'app', 'host' => 'router', 'message' => 'error', 'logtime_epoch' => 1000, 'priority_id' => 3, 'facility_id' => 1, 'threshold_breached' => 1];
+
+	expect(syslog_replication_accept_central($event, new stdClass(), 'central'))->toBeTrue();
+	expect($archives)->toHaveCount(1)
+		->and($archives[0][0])->toContain('message_digest')
+		->and($archives[0][1])->toBe([
+			1000, 3, 1, 'error', md5('error'), 1, 2, 10, 'app', 'router',
+		]);
+});
+
 it('carries message breach flags through local archival and the replication outbox', function () {
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['config']['poller_id'] = 1;
@@ -85,7 +111,7 @@ it('carries message breach flags through local archival and the replication outb
 	test_override('syslog_db_execute_prepared', function ($sql) use (&$statements) { $statements[] = $sql; return true; });
 	expect(syslog_incoming_to_syslog(100)['success'])->toBeTrue();
 	$archive = implode("\n", $statements);
-	expect($archive)->toContain('message, threshold_breached')->toContain('si.threshold_breached');
+	expect($archive)->toContain('message, message_digest, threshold_breached')->toContain('si.threshold_breached');
 	$statements = [];
 	$GLOBALS['config']['poller_id'] = 2;
 	test_override('read_config_option', static fn($name) => $name === 'syslog_remote_enabled' ? 'on' : '');

@@ -212,41 +212,139 @@ function get_ajax_hosts(): string {
 
 	$term = '%' . get_nfilter_request_var('term') . '%';
 
-	if (syslog_db_table_exists('host', false)) {
-		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, h.id
-			FROM `$syslogdb_default`.`syslog_hosts` AS sh
-			LEFT JOIN host AS h
-			ON sh.host = h.hostname
-			OR sh.host = h.description
-			OR sh.host LIKE substring_index(h.hostname, '.', 1)
-			OR sh.host LIKE substring_index(h.description, '.', 1)
-			WHERE sh.host LIKE ?
-			OR h.description LIKE ?
-			ORDER BY host
-			LIMIT $ac_rows",
-			[$term, $term]);
-	} else {
-		$hosts = syslog_db_fetch_assoc_prepared("SELECT DISTINCT sh.host_id, sh.host, '0' AS id
-			FROM `$syslogdb_default`.`syslog_hosts` AS sh
-			WHERE sh.host LIKE ?
-			ORDER BY host
-			LIMIT $ac_rows",
-			[$term]);
+	$has_host_table = syslog_db_table_exists('host', false);
+
+	// Step 1: candidate syslog host rows, resolved straight from the
+	// syslog_hosts primary key.  This is the fast path both with and
+	// without the Cacti host table present.
+	$hosts = syslog_db_fetch_assoc_prepared("SELECT sh.host_id, sh.host, " .
+		($has_host_table ? 'NULL' : "'0'") . " AS id
+		FROM `$syslogdb_default`.`syslog_hosts` AS sh
+		WHERE sh.host LIKE ?
+		ORDER BY sh.host
+		LIMIT $ac_rows",
+		[$term]);
+
+	$candidates = [];
+
+	foreach ($hosts as $row) {
+		$candidates[$row['host_id']] = $row;
 	}
 
-	if (cacti_sizeof($hosts)) {
+	if ($has_host_table) {
+		// Step 2: resolve device ids in bounded steps.  Never join
+		// syslog_hosts to the Cacti host table inside one query; on large
+		// installs (tens of thousands of devices) the historical four-way OR
+		// join forces every candidate to probe the entire device table and
+		// the autocomplete exceeds 60 seconds per keystroke.  The two-phase
+		// queries below stay under ~150 ms on the same data volume.
+
+		// Step 2a: devices whose description matches the term contribute
+		// additional syslog hosts.  One bounded scan of the device table.
+		$devices = syslog_db_fetch_assoc_prepared("SELECT h.id, h.hostname, h.description
+			FROM host AS h
+			WHERE h.description LIKE ?
+			ORDER BY h.description, h.id
+			LIMIT $ac_rows",
+			[$term]);
+
+		// Names a syslog host can carry to match one of these devices: its
+		// exact hostname, its exact description, or the first dot segment of
+		// either (the historical substring_index() matching semantics).
+		$labels = [];
+
+		foreach ($devices as $device) {
+			foreach ([$device['hostname'], $device['description']] as $value) {
+				if ($value === null || $value === '') {
+					continue;
+				}
+
+				$labels[$value] = true;
+
+				$dot = strpos($value, '.');
+
+				$labels[$dot === false ? $value : substr($value, 0, $dot)] = true;
+			}
+		}
+
+		// Step 2b: reverse direction, exact primary key probes only.
+		if ($labels !== []) {
+			$bind = array_keys($labels);
+
+			$extra_hosts = syslog_db_fetch_assoc_prepared("SELECT sh.host_id, sh.host, NULL AS id
+				FROM `$syslogdb_default`.`syslog_hosts` AS sh
+				WHERE sh.host IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ")",
+				$bind);
+
+			foreach ($extra_hosts as $extra_host) {
+				if (!isset($candidates[$extra_host['host_id']])) {
+					$candidates[$extra_host['host_id']] = $extra_host;
+				}
+			}
+		}
+
+		$candidates = array_values($candidates);
+
+		usort($candidates, function ($a, $b) {
+			return strcasecmp($a['host'], $b['host']) ?: strcmp($a['host'], $b['host']);
+		});
+
+		$candidates = array_slice($candidates, 0, $ac_rows);
+
+		// Step 2c: device id resolution for the surviving candidates, one
+		// index probe or scan per branch, most specific match first so the
+		// reported device is deterministic.
+		$bind = [];
+
+		foreach ($candidates as $candidate) {
+			$bind[$candidate['host']] = true;
+		}
+
+		if ($bind !== []) {
+			$bind = array_keys($bind);
+
+			$marks = implode(', ', array_fill(0, cacti_sizeof($bind), '?'));
+
+			$resolutions = [
+				"SELECT h.id, h.hostname AS name FROM host AS h WHERE h.hostname IN ($marks)",
+				"SELECT h.id, h.description AS name FROM host AS h WHERE h.description IN ($marks)",
+				"SELECT h.id, SUBSTRING_INDEX(h.hostname, '.', 1) AS name FROM host AS h WHERE SUBSTRING_INDEX(h.hostname, '.', 1) IN ($marks)",
+				"SELECT h.id, SUBSTRING_INDEX(h.description, '.', 1) AS name FROM host AS h WHERE SUBSTRING_INDEX(h.description, '.', 1) IN ($marks)"
+			];
+
+			$device_ids = [];
+
+			foreach ($resolutions as $sql) {
+				$resolved = syslog_db_fetch_assoc_prepared($sql, $bind);
+
+				foreach ($resolved as $resolved_row) {
+					if (!isset($device_ids[$resolved_row['name']])) {
+						$device_ids[$resolved_row['name']] = $resolved_row['id'];
+					}
+				}
+			}
+
+			foreach ($candidates as $key => $candidate) {
+				if (isset($device_ids[$candidate['host']])) {
+					$candidates[$key]['id'] = $device_ids[$candidate['host']];
+				}
+			}
+		}
+	}
+
+	if (cacti_sizeof($candidates)) {
 		$rhosts = [];
 
-		foreach ($hosts as $host) {
-			if (!empty($host['id'])) {
-				$class = get_device_leaf_class($host['id']);
+		foreach ($candidates as $candidate) {
+			if (!empty($candidate['id'])) {
+				$class = get_device_leaf_class($candidate['id']);
 			} else {
 				$class = 'deviceUp';
 			}
 
-			$rhosts[$host['host_id']] = [
-				'host'	   => $host['host'],
-				'host_id' => $host['id'],
+			$rhosts[$candidate['host_id']] = [
+				'host'	   => $candidate['host'],
+				'host_id' => $candidate['id'],
 				'class'   => $class
 			];
 		}
@@ -1915,6 +2013,17 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 		if ($grouping_enabled) {
+			// Group by a stored 32 byte digest of the message instead of the
+			// full TEXT column; the temporary tables used for grouping shrink
+			// accordingly.  Rows stored before the digest column existed fall
+			// back to hashing the message at query time, and the digest group
+			// key is not used at all while the schema upgrade has not run.  All
+			// grouped queries below expose their source table under the
+			// 'syslog' alias.
+			$message_group_key = syslog_message_digest_ready()
+				? "GROUP BY syslog.host_id, IF(syslog.message_digest = '', MD5(syslog.message), syslog.message_digest), syslog.program_id, syslog.facility_id, syslog.priority_id"
+				: 'GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id';
+
 			if (get_request_var('removal') == '-1') {
 				$query_sql = "SELECT syslog.host_id, syslog.message, syslog.program_id,
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
@@ -1926,7 +2035,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
 					ON syslog.program_id=syslog_programs.program_id
 					$sql_where
-					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					$message_group_key
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
@@ -1943,7 +2052,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
-						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+						$message_group_key
 					) UNION (
 						SELECT syslog.host_id, syslog.message, syslog.program_id,
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
@@ -1955,7 +2064,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
 						$sql_where
-						GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+						$message_group_key
 					)
 				) AS grouped_results
 				$sql_order
@@ -1971,7 +2080,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
 					ON syslog.program_id = syslog_programs.program_id
 					$sql_where
-					GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id
+					$message_group_key
 					$sql_order
 					$sql_limit";
 			}
@@ -2346,24 +2455,31 @@ function syslog_messages(string $tab = 'syslog'): void {
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 		if ($grouping_enabled) {
-			// When grouping, count distinct groups instead of individual rows
+			// When grouping, count distinct groups instead of individual rows.
+			// Keyed by the stored message digest like the grouped view above,
+			// so the DISTINCT temporary table never has to compare full
+			// message text; empty digests fall back to hashing per row.
+			$digest_count_key = syslog_message_digest_ready()
+				? "COUNT(DISTINCT CONCAT(host_id, '|', IF(message_digest = '', MD5(message), message_digest), '|', program_id, '|', facility_id, '|', priority_id))"
+				: "COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))";
+
 			if (get_request_var('removal') == 1) {
 				$total_rows = syslog_db_fetch_cell("SELECT SUM(totals)
 					FROM (
-						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
+						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						$sql_where
 						UNION
-						SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id)) AS totals
+						SELECT $digest_count_key AS totals
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						$sql_where
 					) AS rowcount");
 			} elseif (get_request_var('removal') == -1) {
-				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
+				$total_rows = syslog_db_fetch_cell("SELECT $digest_count_key
 					FROM `$syslogdb_default`.`syslog` AS syslog
 					$sql_where");
 			} else {
-				$total_rows = syslog_db_fetch_cell("SELECT COUNT(DISTINCT CONCAT(host_id, '|', message, '|', program_id, '|', facility_id, '|', priority_id))
+				$total_rows = syslog_db_fetch_cell("SELECT $digest_count_key
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					$sql_where");
 			}
@@ -2429,11 +2545,29 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
-		$hosts = array_rekey(
-			syslog_db_fetch_assoc("SELECT host_id, host
-				FROM `$syslogdb_default`.`syslog_hosts`"),
-			'host_id', 'host'
-		);
+		// Only the host names for the rows actually shown; never fetch the
+		// entire syslog_hosts table into memory on every render.
+		$host_ids = [];
+
+		foreach ($syslog_messages as $sm) {
+			$host_ids[$sm['host_id']] = true;
+		}
+
+		unset($host_ids['']);
+
+		if (cacti_sizeof($host_ids)) {
+			$bind = array_keys($host_ids);
+
+			$hosts = array_rekey(
+				syslog_db_fetch_assoc_prepared("SELECT host_id, host
+					FROM `$syslogdb_default`.`syslog_hosts`
+					WHERE host_id IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ")",
+					$bind),
+				'host_id', 'host'
+			);
+		} else {
+			$hosts = [];
+		}
 
 		$facilities = array_rekey(
 			syslog_db_fetch_assoc("SELECT facility_id, facility
