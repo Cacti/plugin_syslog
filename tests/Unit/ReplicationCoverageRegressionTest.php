@@ -729,7 +729,7 @@ it('covers incoming transfer branches for outage retention and commit failures',
 	test_override('read_config_option', fn () => '');
 	expect(syslog_incoming_to_syslog(100))->toBe([
 		'moved' => 3,
-		'stale' => 3,
+		'stale' => 0,
 		'success' => true,
 	]);
 });

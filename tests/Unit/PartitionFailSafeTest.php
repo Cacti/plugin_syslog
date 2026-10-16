@@ -108,6 +108,10 @@ it('defers retention pruning and reports the gap when partition creation fails',
 	});
 
 	test_override('syslog_db_fetch_row_prepared', function ($sql, $params = []) {
+		if (str_contains($sql, 'AS overflow_rows')) {
+			return ['overflow_rows' => 0, 'overflow_bytes' => 0];
+		}
+
 		if (str_contains($sql, 'information_schema')) {
 			return [];
 		}
@@ -178,6 +182,10 @@ it('creates only the bounded number of missing partitions per run', function () 
 	});
 
 	test_override('syslog_db_fetch_row_prepared', function ($sql, $params = []) {
+		if (str_contains($sql, 'AS overflow_rows')) {
+			return ['overflow_rows' => 0, 'overflow_bytes' => 0];
+		}
+
 		if (str_contains($sql, 'information_schema')) {
 			return [];
 		}
@@ -266,7 +274,7 @@ it('runs retention pruning and clears the block when recovery completes', functi
 
 	expect(syslog_partition_manage())->toBeGreaterThanOrEqual(0);
 	expect($values['partition_maintenance_blocked'])->toBe('0');
-	expect($dropped)->toBe([], 'No retention drop is due when the partition count is within the keep window.');
+	expect($dropped)->toBe([], 'No retention drop is due when retention is unset.');
 });
 
 it('never removes the dMaxValue safety partition', function () {
