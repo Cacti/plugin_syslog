@@ -2505,7 +2505,7 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr ""
 
 #: syslog_alerts.php
-msgid "Command"
+msgid "Alert command"
 msgstr ""
 
 #: syslog_alerts.php
@@ -2517,7 +2517,7 @@ msgid "Recovery command"
 msgstr ""
 
 #: syslog_alerts.php
-msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
 msgstr ""
 
 #: syslog_alerts.php syslog_removal.php

@@ -898,7 +898,7 @@ function syslog_action_edit(): void {
 			'default'       => ''
 		],
 		'command' => [
-			'friendly_name' => __('Command', 'syslog'),
+			'friendly_name' => __('Alert command', 'syslog'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '70',
 			'description'   => __('When an Alert is triggered, run the following command.  The following replacement variables are available <b>\'&lt;HOSTNAME&gt;\'</b>, <b>\'&lt;ALERTID&gt;\'</b>, <b>\'&lt;MESSAGE&gt;\'</b>, <b>\'&lt;FACILITY&gt;\'</b>, <b>\'&lt;PRIORITY&gt;\'</b>, <b>\'&lt;SEVERITY&gt;\'</b>.  Please note that <b>\'&lt;HOSTNAME&gt;\'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with \'ALERT_\'.', 'syslog'),
@@ -911,7 +911,7 @@ function syslog_action_edit(): void {
 			'friendly_name' => __('Recovery command', 'syslog'),
 			'textarea_rows' => '5',
 			'textarea_cols' => '70',
-			'description'   => __('Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable.', 'syslog'),
+			'description'   => __('Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable.', 'syslog'),
 			'method'        => 'textarea',
 			'class'         => 'textAreaNotes',
 			'value'         => '|arg1:recovery_command|',

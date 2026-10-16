@@ -12,6 +12,7 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/threshold_ru
   await page.setContent(html);
   await page.addScriptTag({path: path.join(cacti, 'include/js/jquery.js')});
   await page.evaluate(() => changeMethod());
+  assert.match(await page.locator('#row_command').textContent(), /Alert command/);
   assert.equal(await page.locator('#row_recovery_command').isVisible(), true);
   assert.equal(await page.locator('#recovery_command').inputValue(), '/usr/local/bin/notify.sh clear <HOSTNAME>');
   assert.equal(await page.locator('#command').inputValue(), '/usr/local/bin/notify.sh raise');

@@ -68,7 +68,7 @@ start time until the next breach. Existing syslog message tables are unchanged.
 
 ## Alert and recovery commands
 
-Configure both commands on the **same alert rule**. The existing **Command** runs
+Configure both commands on the **same alert rule**. The existing **Alert command** runs
 when the threshold breaches. The optional **Recovery command** appears when the
 Reporting Method is Threshold and runs after the quiet period completes. Leave it
 blank to keep the existing behavior. No separate clear rule is required.
