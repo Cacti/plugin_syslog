@@ -10,6 +10,7 @@
 /* Utilities callbacks. */
 
 require_once(dirname(__DIR__) . '/setup.php');
+require_once(__DIR__ . '/functions.php');
 
 /**
  * Handle the Syslog utilities actions.

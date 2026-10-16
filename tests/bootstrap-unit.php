@@ -241,6 +241,12 @@ if (!function_exists('db_update_table')) {
 	}
 }
 
+if (!function_exists('syslog_db_add_column')) {
+	function syslog_db_add_column($table, $column, $log = true) {
+		return test_call_override('syslog_db_add_column', [$table, $column, $log], true);
+	}
+}
+
 if (!function_exists('syslog_db_table_exists')) {
 	function syslog_db_table_exists($table, $log = true) {
 		return test_call_override('syslog_db_table_exists', [$table, $log], db_table_exists($table));
@@ -722,4 +728,30 @@ function syslog_test_load($path) {
  */
 function syslog_load_plugin_source($file) {
 	syslog_test_load(dirname(__DIR__) . '/' . $file);
+}
+
+if (!function_exists('reports_load_format_file')) {
+	function reports_load_format_file($file, &$output, &$report_tag, &$theme) {
+		$output = '<REPORT>';
+		$report_tag = true;
+		return true;
+	}
+}
+
+if (!function_exists('syslog_sql_save')) {
+	function syslog_sql_save($row, $table, $key = 'id', $autoinc = true) {
+		return sql_save($row, $table, $key);
+	}
+}
+
+if (!function_exists('cacti_escapeshellarg')) {
+	function cacti_escapeshellarg($value) {
+		return escapeshellarg((string) $value);
+	}
+}
+
+if (!function_exists('clean_up_name')) {
+	function clean_up_name($value) {
+		return $value;
+	}
 }

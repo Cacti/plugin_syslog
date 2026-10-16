@@ -54,3 +54,11 @@ Source-inspection tests must obtain a function's source through
 `plugin_test_read_function_source()` instead of hard-coding `setup.php`.
 Whenever ownership changes, update that central map and the test in the same
 commit.
+
+## Rule saves and collector replication
+
+Rule saves write to Syslog's own tables. With remote rule synchronization enabled,
+rule changes reach remote collectors during Cacti's next full replication cycle,
+through the registered `syslog_replicate_out` hook. The save handler does not
+query or change Cacti's collector tables, or discover and connect to collectors.
+Synchronized remote collectors continue to reject local rule edits.

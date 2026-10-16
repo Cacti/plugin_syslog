@@ -34,6 +34,7 @@ include('./include/auth.php');
 include_once('./lib/html_tree.php');
 include_once(__DIR__ . '/setup.php');
 include_once(__DIR__ . '/lib/syslog_dashboard.php');
+include_once(__DIR__ . '/lib/syslog_thresholds.php');
 
 global $config;
 
@@ -141,7 +142,13 @@ get_filter_request_var('tab', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' =>
 load_current_session_value('tab', 'sess_syslog_tab', 'syslog');
 $current_tab = get_request_var('tab');
 
-if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard'], true)) {
+if (!in_array($current_tab, ['syslog', 'alerts', 'current', 'status', 'dashboard', 'breached'], true)) {
+	$current_tab = 'syslog';
+	set_request_var('tab', $current_tab);
+	$_SESSION['sess_syslog_tab'] = $current_tab;
+}
+
+if ($current_tab === 'breached' && !syslog_thresholds_enabled()) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
@@ -176,6 +183,8 @@ if (isset_request_var('export')) {
 		syslog_view_alarm();
 	} elseif ($current_tab == 'status') {
 		syslog_status();
+	} elseif ($current_tab == 'breached') {
+		syslog_breached_thresholds();
 	} elseif ($current_tab == 'dashboard') {
 		syslog_dashboard();
 	} else {
@@ -262,6 +271,10 @@ function syslog_display_tabs(string $current_tab): void {
 	$tabs_syslog['syslog'] = __('System Logs', 'syslog');
 
 	$tabs_syslog['alerts'] = __('Alert Logs', 'syslog');
+
+	if (syslog_thresholds_enabled()) {
+		$tabs_syslog['breached'] = __('Breached Thresholds', 'syslog') . ' (' . syslog_breached_threshold_count() . ')';
+	}
 
 	$tabs_syslog['dashboard'] = __('Dashboard', 'syslog');
 
@@ -1189,6 +1202,10 @@ function syslog_view_alarm(): void {
 function syslog_request_validation(string $current_tab, bool $force = false): void {
 	global $title, $rows, $config, $reset_multi;
 
+	if ($current_tab === 'breached') {
+		return;
+	}
+
 	// Cacti validation populates $_POST even for values restored from the session.
 	// Capture the original submission before any request helpers mutate it.
 	$filter_submitted = isset($_POST['rfilter']);
@@ -1732,7 +1749,8 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 	// syslog and syslog_removed can legitimately gain independent operational
 	// columns. Keep the combined viewer query on its stable display contract
 	// instead of using SELECT *, which would make UNION depend on identical DDL.
-	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq';
+	$breach_sql = syslog_message_breach_sql();
+	$message_columns = 'syslog.facility_id, syslog.priority_id, syslog.program_id, syslog.host_id, syslog.logtime, syslog.message, syslog.seq, ' . $breach_sql . ' AS threshold_breached';
 
 	$sql_where = '';
 
@@ -1902,6 +1920,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+					MAX($breach_sql) AS threshold_breached,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 					FROM `$syslogdb_default`.`syslog`
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1918,6 +1937,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+						MAX($breach_sql) AS threshold_breached,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1929,6 +1949,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 						syslog.facility_id, syslog.priority_id, syslog_programs.program,
 						'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+						MAX($breach_sql) AS threshold_breached,
 						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
@@ -1944,6 +1965,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
+					MAX($breach_sql) AS threshold_breached,
 					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
@@ -2285,6 +2307,7 @@ function syslog_filter(string $sql_where, string $tab): void {
  * @return void
  */
 function syslog_messages(string $tab = 'syslog'): void {
+	$breach_sql = syslog_message_breach_sql();
 	global $sql_where, $hostfilter, $severities;
 	global $config, $syslog_incoming_config, $reset_multi, $syslog_levels;
 	global $syslogdb_default;
@@ -2391,7 +2414,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 			'program'     => [__('Program', 'syslog'), 'ASC'],
 			'message'     => [__('Message', 'syslog'), 'ASC'],
 			'facility_id' => [__('Facility', 'syslog'), 'ASC'],
-			'priority_id' => [__('Priority', 'syslog'), 'ASC']];
+			'priority_id' => [__('Priority', 'syslog'), 'ASC'],
+			'threshold_breached' => ['display' => __('Breach', 'syslog'), 'sort' => 'ASC', 'align' => 'center', 'tip' => __('Threshold breached', 'syslog')]];
 
 		// Add count column if grouping is enabled
 		if ($grouping_enabled) {
@@ -2451,6 +2475,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 				form_selectable_cell(syslog_metadata_label(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), 'facility'), $sm['seq'], '', 'left');
 				form_selectable_cell(syslog_value_filter_button($priorities[$sm['priority_id']] ?? __('Unknown', 'syslog'), 'priority'), $sm['seq'], '', 'left');
 
+				form_selectable_cell(!empty($sm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog'), $sm['seq'], '1%', 'center');
+
 				// Add occurrence count if grouping is enabled
 				if ($grouping_enabled) {
 					form_selectable_cell(isset($sm['occurrence_count']) ? $sm['occurrence_count'] : 1, $sm['seq'], '', 'right');
@@ -2463,7 +2489,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 					$seq_array = explode(',', $sm['seq_list']);
 
 					// Get individual messages for this group
-					$detail_messages = syslog_db_fetch_assoc("SELECT `syslog`.*, `syslog_programs`.`program`
+					$detail_messages = syslog_db_fetch_assoc("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
 						FROM `$syslogdb_default`.`" . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id = syslog_programs.program_id
@@ -2481,6 +2507,8 @@ function syslog_messages(string $tab = 'syslog'): void {
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
 							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
 							print "<td class='left'>" . syslog_value_filter_button($priorities[$dm['priority_id']] ?? __('Unknown', 'syslog'), 'priority') . '</td>';
+
+							print "<td class='center' style='width:1%;'>" . (!empty($dm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog')) . '</td>';
 
 							if ($grouping_enabled) {
 								print "<td class='right'></td>";

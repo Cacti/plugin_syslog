@@ -124,7 +124,7 @@ function syslog_schema_report_audit_results(bool $audit = true): bool {
 	global $config, $database_last_error;
 
 	$tables = [
-		'syslog', 'syslog_alert', 'syslog_alert_suppression', 'syslog_incoming',
+		'syslog', 'syslog_alert', 'syslog_alert_suppression', 'syslog_alert_counts', 'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_threshold_recovery_queue', 'syslog_incoming',
 		'syslog_remove', 'syslog_reports', 'syslog_saved_searches', 'syslog_status',
 		'syslog_programs', 'syslog_hosts', 'syslog_facilities', 'syslog_priorities',
 		'syslog_host_facilities', 'syslog_removed', 'syslog_logs',

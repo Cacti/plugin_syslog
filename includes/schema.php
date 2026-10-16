@@ -243,6 +243,7 @@ function syslog_create_replication_output_table(): void {
 		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Original event timestamp',
 		`host` varchar(64) default NULL COMMENT 'Source host text',
 		`message` TEXT NOT NULL COMMENT 'Source message text',
+		`threshold_breached` tinyint(1) unsigned DEFAULT NULL,
 		`disposition` varchar(16) NOT NULL COMMENT 'Local archival target: syslog or syslog_removed',
 		`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Outbox creation time',
 		`acknowledged_at` timestamp NULL DEFAULT NULL COMMENT 'Reserved for future destination acknowledgement',
@@ -361,6 +362,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		host_id int(10) unsigned default NULL,
 		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
 		message TEXT NOT NULL,
+		threshold_breached tinyint(1) unsigned DEFAULT NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		replication_source_poller_id int(10) unsigned default NULL,
 		replication_source_event_id bigint unsigned default NULL,
@@ -529,6 +531,10 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`method` int(10) unsigned NOT NULL default '0',
 		`level` int(10) unsigned NOT NULL default '0',
 		`num` int(10) unsigned NOT NULL default '1',
+		`threshold_window` int(10) unsigned NOT NULL default '0',
+		`threshold_unit` varchar(6) NOT NULL default 'minute',
+		`threshold_recovery_minutes` int(10) unsigned NOT NULL default '5',
+		`threshold_recovery_unit` varchar(6) NOT NULL default 'minute',
 		`type` varchar(16) NOT NULL default '',
 		`enabled` CHAR(2) default 'on',
 		`repeat_alert` int(10) unsigned NOT NULL default '0',
@@ -549,6 +555,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`email` varchar(255) default NULL,
 		`notify` int(10) unsigned NOT NULL default '0',
 		`command` varchar(255) default NULL,
+		`recovery_command` varchar(255) default NULL,
 		`notes` varchar(255) default NULL,
 		PRIMARY KEY (id))
 		ENGINE=InnoDB");
@@ -565,6 +572,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
 		host varchar(64) default NULL,
 		message TEXT NOT NULL,
+		threshold_breached tinyint(1) unsigned DEFAULT NULL,
 		seq bigint unsigned NOT NULL auto_increment,
 		`status` tinyint(4) NOT NULL default '0',
 		PRIMARY KEY (seq),
@@ -573,6 +581,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
 
+syslog_create_alert_counts_table();
 syslog_create_replication_output_table();
 syslog_create_replication_receipts_table();
 syslog_create_replication_collectors_table();
@@ -772,14 +781,61 @@ syslog_create_replication_recovery_table();
 	}
 }
 
+/** Create collector-local threshold counts and active-episode storage. */
+function syslog_create_alert_counts_table(): void {
+	global $syslogdb_default;
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert_counts` (
+		`alert_id` int(10) unsigned NOT NULL,
+		`rule_hash` char(40) NOT NULL,
+		`scope_key` varchar(64) NOT NULL,
+		`observed_at` bigint unsigned NOT NULL,
+		`matches` bigint unsigned NOT NULL,
+		PRIMARY KEY (`alert_id`, `rule_hash`, `scope_key`, `observed_at`),
+		INDEX `observed_at` (`observed_at`)) ENGINE=InnoDB");
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_threshold_state` (
+		`source_poller_id` int(10) unsigned NOT NULL,
+		`alert_id` int(10) unsigned NOT NULL,
+		`scope_key` varchar(64) NOT NULL,
+		`rule_hash` char(40) NOT NULL,
+		`rule_date` bigint unsigned NOT NULL,
+		`breach_key` char(32) NOT NULL,
+		`breached_at` bigint unsigned DEFAULT NULL,
+		`recovery_context` mediumtext DEFAULT NULL,
+		`last_match` bigint unsigned NOT NULL,
+		`expires_at` bigint unsigned NOT NULL,
+		PRIMARY KEY (`source_poller_id`, `alert_id`, `scope_key`),
+		UNIQUE KEY `episode` (`source_poller_id`, `breach_key`),
+		KEY `expires_at` (`expires_at`)) ENGINE=InnoDB");
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_threshold_messages` (
+		`source_poller_id` int(10) unsigned NOT NULL,
+		`source_event_id` bigint unsigned NOT NULL,
+		`breach_key` char(32) NOT NULL,
+		PRIMARY KEY (`source_poller_id`, `source_event_id`, `breach_key`),
+		KEY `episode` (`source_poller_id`, `breach_key`)) ENGINE=InnoDB");
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_threshold_recovery_queue` (
+		`source_poller_id` int(10) unsigned NOT NULL,
+		`breach_key` char(32) NOT NULL,
+		`alert_id` int(10) unsigned NOT NULL,
+		`rule_date` bigint unsigned NOT NULL,
+		`context` mediumtext NOT NULL,
+		`attempts` int(10) unsigned NOT NULL DEFAULT 0,
+		`available_at` bigint unsigned NOT NULL,
+		PRIMARY KEY (`source_poller_id`, `breach_key`),
+		KEY `available_at` (`source_poller_id`, `available_at`)) ENGINE=InnoDB");
+
+}
+
 /** Complete an interrupted install or upgrade without dropping existing data. */
 function syslog_ensure_table_structures(): bool {
-	global $config;
+	global $config, $syslog_cnn;
 
 	require_once(__DIR__ . '/settings.php');
 
 	$tables = [
-		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression',
+		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression', 'syslog_alert_counts',
+		'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_threshold_recovery_queue',
 		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
 		'syslog_hosts', 'syslog_facilities', 'syslog_priorities', 'syslog_host_facilities',
 		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
@@ -797,6 +853,42 @@ function syslog_ensure_table_structures(): bool {
 			$rebuilt = true;
 			break;
 		}
+	}
+
+	// Append the column so eligible servers can add it instantly; do not backfill history.
+	foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
+		if (!syslog_db_add_column($table, [
+			'name' => 'threshold_breached', 'type' => 'tinyint(1)', 'unsigned' => true, 'NULL' => true
+		])) {
+			return false;
+		}
+	}
+
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		foreach (['replication_source_poller_id' => 'int(10)', 'replication_source_event_id' => 'bigint'] as $name => $type) {
+			if (!syslog_db_add_column($table, ['name' => $name, 'type' => $type, 'unsigned' => true, 'NULL' => true])) {
+				return false;
+			}
+		}
+	}
+
+	if (!syslog_db_add_column('syslog_threshold_state', ['name' => 'breached_at', 'type' => 'bigint', 'unsigned' => true, 'NULL' => true])) {
+		return false;
+	}
+
+	if (!syslog_db_add_column('syslog_threshold_state', ['name' => 'recovery_context', 'type' => 'mediumtext', 'NULL' => true])) {
+		return false;
+	}
+
+	// Repair these columns even when the installed plugin version is unchanged.
+	if (db_update_table('syslog_alert', ['columns' => [
+		['name' => 'threshold_window', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'num'],
+		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window'],
+		['name' => 'threshold_recovery_minutes', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '5', 'after' => 'threshold_unit'],
+		['name' => 'threshold_recovery_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_recovery_minutes'],
+		['name' => 'recovery_command', 'type' => 'varchar(255)', 'NULL' => true]
+	], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
+		return false;
 	}
 
 	if (!$rebuilt) {

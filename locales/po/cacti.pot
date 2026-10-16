@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.2.32\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 16:41-0400\n"
+"POT-Creation-Date: 2026-10-15 17:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -231,7 +231,8 @@ msgstr ""
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
 msgid "Unknown"
 msgstr ""
 
@@ -1300,7 +1301,7 @@ msgstr ""
 msgid "Last %d Months"
 msgstr ""
 
-#: lib/syslog_dashboard.php syslog.php
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
 msgstr ""
 
@@ -1472,6 +1473,55 @@ msgstr ""
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Name"
+msgstr ""
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr ""
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Previous"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Next"
 msgstr ""
 
 #: setup.php
@@ -2183,8 +2233,12 @@ msgstr ""
 msgid "Save view defaults"
 msgstr ""
 
-#: syslog.php syslog_alerts.php syslog_device_rules.php
-msgid "Device"
+#: syslog.php
+msgid "Breach"
+msgstr ""
+
+#: syslog.php
+msgid "Threshold breached"
 msgstr ""
 
 #: syslog.php
@@ -2193,6 +2247,16 @@ msgstr ""
 
 #: syslog.php
 msgid "Empty message"
+msgstr ""
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "No"
+msgstr ""
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Yes"
 msgstr ""
 
 #: syslog.php
@@ -2287,6 +2351,14 @@ msgstr ""
 msgid "Export Syslog Alert Rule(s)"
 msgstr ""
 
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr ""
+
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr ""
@@ -2345,6 +2417,22 @@ msgid "N/A"
 msgstr ""
 
 #: syslog_alerts.php
+msgid "Time unit"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr ""
+
+#: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr ""
 
@@ -2377,7 +2465,23 @@ msgid "Individual"
 msgstr ""
 
 #: syslog_alerts.php
-msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
 msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
@@ -2569,22 +2673,20 @@ msgstr ""
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr ""
 
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "No"
-msgstr ""
-
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr ""
-
 #: syslog_alerts.php
-msgid "Command"
+msgid "Alert command"
 msgstr ""
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
 msgstr ""
 
 #: syslog_alerts.php syslog_removal.php
