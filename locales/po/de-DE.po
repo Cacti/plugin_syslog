@@ -83,6 +83,81 @@ msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tab
 msgstr ""
 
 #: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr ""
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr ""
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr ""
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr ""
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr ""
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr ""
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr ""
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr ""
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy
+msgid "Partition maintenance is not blocked."
+msgstr "Partitionierte Tabelle"
+
+#: includes/functions.php
+#, fuzzy, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Partitionierte Tabelle"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr ""
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr ""
+
+#: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
 msgstr ""
@@ -544,10 +619,15 @@ msgstr ""
 msgid "Every day"
 msgstr ""
 
-#: includes/settings.php syslog_alerts.php syslog_device_rules.php
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php
 msgid "Disabled"
 msgstr "Deaktiviert"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_reports.php
+msgid "None"
+msgstr "Nichts"
 
 #: includes/settings.php
 msgid "General Settings"
@@ -710,7 +790,7 @@ msgid "Collector Staleness Threshold"
 msgstr ""
 
 #: includes/settings.php
-msgid "The Syslog Status page shows a warning when no new message has arrived within this many seconds.  Set to 0 to use the default of 300 seconds."
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
 msgstr ""
 
 #: includes/settings.php
@@ -738,6 +818,53 @@ msgstr ""
 #, fuzzy, php-format
 msgid "%d Messages"
 msgstr "Nachrichten"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+#| msgid "Notification List"
+msgid "Pipeline Health Notification List"
+msgstr "Benachrichtigungsliste"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr ""
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr ""
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr ""
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr ""
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy, php-format
+#| msgid "%d Minutes"
+msgid "%d minutes"
+msgstr "%d Minuten"
+
+#: includes/settings.php
+#, fuzzy, php-format
+#| msgid "%d Hours"
+msgid "%d hours"
+msgstr "%d Stunden"
+
+#: includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr ""
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -1352,11 +1479,6 @@ msgstr "Entfernte Datensätze"
 msgid "Start from Saved Search"
 msgstr ""
 
-#: lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_device_rules.php syslog_reports.php
-msgid "None"
-msgstr "Nichts"
-
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Enter message text…"
 msgstr ""
@@ -1442,16 +1564,13 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy, php-format
-msgid "no message received for %s"
-msgstr "Syslog-Meldungsfilter %s"
+#| msgid "[ Unprocessed Messages: %s ]"
+msgid "unprocessed messages are %s old"
+msgstr "[ Unverarbeitete Nachrichten: %s ]"
 
 #: syslog.php
 #, php-format
 msgid "incoming backlog of %s messages"
-msgstr ""
-
-#: syslog.php
-msgid "no incoming data is available to evaluate"
 msgstr ""
 
 #: syslog.php
@@ -1552,8 +1671,9 @@ msgid "Recent partition maintenance activity"
 msgstr "Partitionierte Tabelle"
 
 #: syslog.php
-msgid "Collector health"
-msgstr ""
+#, fuzzy
+msgid "Pipeline health"
+msgstr "Partitionen pro Tag"
 
 #: syslog.php
 msgid "Parallel workers"
@@ -1744,6 +1864,84 @@ msgid "No action required."
 msgstr ""
 
 #: syslog.php
+msgid "Incoming backlog"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Processing"
+msgstr "Verarbeiten"
+
+#: syslog.php
+#, fuzzy
+msgid "Partition maintenance"
+msgstr "Partitionierte Tabelle"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr ""
+
+#: syslog.php
+msgid "Attention required"
+msgstr ""
+
+#: syslog.php
+msgid "Healthy"
+msgstr ""
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Waiting for processing"
+msgstr "Verarbeiten"
+
+#: syslog.php
+msgid "Health"
+msgstr ""
+
+#: syslog.php
+msgid "Ready"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Last Sent"
+msgid "Sent"
+msgstr "Zuletzt verschickt"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr ""
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Last health check"
+msgstr "Zuletzt verschickt"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Email Options"
+msgid "Email notifications"
+msgstr "E-Mails Einstellungen"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Notification List"
+msgid "Last notification sent"
+msgstr "Benachrichtigungsliste"
+
+#: syslog.php
 msgid "Last received log"
 msgstr ""
 
@@ -1753,17 +1951,9 @@ msgid "Oldest unprocessed message"
 msgstr "[ Unverarbeitete Nachrichten: %s ]"
 
 #: syslog.php
-msgid "Incoming backlog"
-msgstr ""
-
-#: syslog.php
 #, fuzzy
 msgid "Records processed in latest run"
 msgstr "Verarbeiten"
-
-#: syslog.php
-msgid "Collector warning"
-msgstr ""
 
 #: syslog.php
 msgid "Worker processes running"
@@ -1808,11 +1998,6 @@ msgstr ""
 #, fuzzy
 msgid "Records"
 msgstr "%d Datensätze"
-
-#: syslog.php
-#, fuzzy
-msgid "Partition maintenance"
-msgstr "Partitionierte Tabelle"
 
 #: syslog.php
 msgid "Reference updates"
@@ -3379,6 +3564,10 @@ msgstr ""
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
+
+#, fuzzy, php-format
+#~ msgid "no message received for %s"
+#~ msgstr "Syslog-Meldungsfilter %s"
 
 #, fuzzy
 #~ msgid "Syslog Device Alert Rules"

@@ -2,12 +2,9 @@
 
 --- develop ---
 
-* bug: Load the shared JSON helper when Cacti invokes Syslog Utilities directly, preventing a fatal error that disables the plugin
-
-* bug: Save rules only to Syslog tables and let Cacti's existing full-replication hook synchronize collectors, removing the invalid save-time pollers lookup
-
 * feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
-
+* feature: Add poller-driven pipeline health alerts for stalled processing, incoming backlogs, remote synchronization failures or delays, and blocked partition maintenance; expand the existing Status health card with check results and email delivery status, with optional problem, reminder, and recovery notifications
+* bug: Treat an empty incoming queue as drained rather than missing data, and evaluate stale queued messages even when new messages continue arriving
 * feature: Add an auto-refresh interval dropdown and a manual refresh glyph to the Syslog Status toolbar (mirroring the intropage refresh concept); the interval persists through the page's auto-reload and the refresh glyphs spin while their cards reload
 * bug: Show the Syslog Status card refresh glyph again by using Font Awesome's fa-sync-alt (the bundled Font Awesome 6 no longer renders the Font Awesome 4 fa-refresh alias)
 * change: Repaint the Syslog Status card headers with the active theme's native html_start_box title bar (sampled from the live cactiTableTitle at runtime) instead of a flat surface tint so they match Cacti on every theme, widen the card grid from 6 to 8 columns, drop the card corner radius, and give each header one of four translucent severity overlays - a neutral grey "no severity" default plus intropage's good / warning / error palette (#94b36b / #ff8f1e / #cc0000)
