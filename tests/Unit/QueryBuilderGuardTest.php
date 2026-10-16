@@ -42,8 +42,15 @@ it('fails each filter compile closed when lib/QueryBuilder.php is missing', func
 
 	// Collect this degraded-run coverage into a fragment the
 	// patch-coverage gate merges, so the guard bodies count for the real
-	// includes/functions.php (identical line numbers).
-	$fragment = ' . var_export(dirname(__DIR__, 2) . '/coverage/clover-guard.xml', true) . ';
+	// includes/functions.php (identical line numbers).  Pest creates the
+	// coverage directory only after the suite finishes, so create it here.
+	$coverage_dir = ' . var_export(dirname(__DIR__, 2) . '/coverage', true) . ';
+
+	if (!is_dir($coverage_dir)) {
+		mkdir($coverage_dir, 0777, true);
+	}
+
+	$fragment = $coverage_dir . "/clover-guard.xml";
 
 	if (function_exists("xdebug_start_code_coverage")) {
 		xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
@@ -109,7 +116,8 @@ it('fails each filter compile closed when lib/QueryBuilder.php is missing', func
 			->and($report['alert_full_error'])->toBe('The structured query builder is unavailable.')
 			->and($report['removal'])->toBe([])
 			->and($report['removal_error'])->toBe('The structured query builder is unavailable.')
-			->and($report['normalize'])->toBe($document, 'The normalize guard must pass the raw document through.');
+			->and($report['normalize'])->toBe($document, 'The normalize guard must pass the raw document through.')
+			->and(is_file(dirname(__DIR__, 2) . '/coverage/clover-guard.xml'))->toBeTrue('The guard fragment must be written for the patch-coverage gate.');
 	} finally {
 		foreach (['includes/functions.php', 'run.php'] as $relative) {
 			$file = $shim . '/' . $relative;
