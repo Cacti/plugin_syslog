@@ -2192,7 +2192,7 @@ function get_syslog_messages(string &$sql_where, int|string $rows, string $tab):
 
 	// print $query_sql;
 
-	return syslog_db_fetch_assoc($query_sql);
+	return syslog_db_fetch_assoc($query_sql) ?: [];
 }
 
 /**

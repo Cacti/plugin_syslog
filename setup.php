@@ -383,6 +383,9 @@ function syslog_connect(): bool {
 
 	syslog_determine_config();
 
+	static $schema_inprocess = false;
+	static $schema_ready     = false;
+
 	// Handle remote syslog processing
 	if (defined('SYSLOG_CONFIG')) {
 		include(SYSLOG_CONFIG);
@@ -457,6 +460,20 @@ function syslog_connect(): bool {
 				print "FATAL Can not connect\n";
 				$connected = false;
 			}
+		}
+	}
+
+	// Collector history is local state, so initialize it without copying main history.
+	if ($connected && (int) $config['poller_id'] > 1 && read_config_option('syslog_remote_enabled') === 'on'
+		&& !$schema_inprocess && !$schema_ready) {
+		$schema_inprocess = true;
+
+		try {
+			require_once(__DIR__ . '/includes/schema.php');
+			$schema_ready = syslog_ensure_table_structures();
+			$connected    = $schema_ready;
+		} finally {
+			$schema_inprocess = false;
 		}
 	}
 

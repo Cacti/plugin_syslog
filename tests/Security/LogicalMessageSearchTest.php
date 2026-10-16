@@ -278,4 +278,8 @@ it('applies the logical search predicate consistently in the real query builder'
 	get_syslog_messages($sql_where, 20, 'syslog');
 
 	expect(str_contains($sql_where, "message RLIKE 'error|warning'"))->toBeTrue('Regex query retained');
+
+	test_override('syslog_db_fetch_assoc', static fn () => false);
+	expect(get_syslog_messages($sql_where, 20, 'syslog'))->toBe([]);
+
 });
