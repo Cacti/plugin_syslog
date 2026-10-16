@@ -4417,9 +4417,9 @@ function syslog_execute_ticket_command($alert, $hostlist, $error_message) {
  * @param array  $results  The matched syslog result row
  * @param string $hostname Resolved hostname for the source device
  *
- * @return void
+ * @return bool True when the command exits successfully.
  */
-function syslog_execute_alert_command($alert, $results, $hostname) {
+function syslog_execute_alert_command($alert, $results, $hostname, string $event = 'breach'): bool {
 	/* alert_replace_variables() escapes each substituted token (<ALERTID>,
 	 * <HOSTNAME>, <PRIORITY>, <FACILITY>, <MESSAGE>, <SEVERITY>) with
 	 * cacti_escapeshellarg(). The command template itself comes from admin
@@ -4431,25 +4431,46 @@ function syslog_execute_alert_command($alert, $results, $hostname) {
 	$cparts     = preg_split('/\s+/', trim($command)) ?: [''];
 	$executable = trim($cparts[0], '"\'');
 
+	$label = $event === 'clear' ? 'Recovery' : 'Alert';
 	$output = [];
 	$return = 0;
 
 	if (cacti_sizeof($cparts) && is_executable($executable)) {
-		exec($command, $output, $return);
+		$environment = [
+			'SYSLOG_EVENT' => $event,
+			'SYSLOG_BREACH_ID' => $alert['_threshold_state']['breach_key'] ?? '',
+			'SYSLOG_ALERT_ID' => (string) $alert['id'],
+			'SYSLOG_HOSTNAME' => $hostname,
+			'SYSLOG_POLLER_ID' => (string) ($alert['_threshold_state']['source_poller_id'] ?? ($GLOBALS['config']['poller_id'] ?? 1))
+		];
+		$previous = [];
+		foreach ($environment as $name => $value) {
+			$previous[$name] = getenv($name);
+			putenv($name . '=' . $value);
+		}
+		try {
+			exec($command, $output, $return);
+		} finally {
+			foreach ($previous as $name => $value) {
+				putenv($value === false ? $name : $name . '=' . $value);
+			}
+		}
 
 		if ($return !== 0 && !empty($output)) {
-			cacti_log('SYSLOG NOTICE: Alert command output: ' . implode(', ', $output), true, 'SYSTEM');
+			cacti_log('SYSLOG NOTICE: ' . $label . ' command output: ' . implode(', ', $output), true, 'SYSTEM');
 		}
 
 		if ($return !== 0) {
-			cacti_log(sprintf('ERROR: Alert command failed.  Alert:%s, Exit:%s, Output:%s', $alert['name'], $return, implode(', ', $output)), false, 'SYSLOG');
+			cacti_log(sprintf('ERROR: %s command failed.  Alert:%s, Exit:%s, Output:%s', $label, $alert['name'], $return, implode(', ', $output)), false, 'SYSLOG');
 		}
+		return $return === 0;
 	} else {
 		$reason = (strpos($executable, DIRECTORY_SEPARATOR) === false)
 			? 'PATH-based lookups are not supported; use an absolute path'
 			: 'file not found or not marked executable';
-		cacti_log("SYSLOG ERROR: Alert command is not executable: '$command' -- $reason", false, 'SYSTEM');
+		cacti_log("SYSLOG ERROR: $label command is not executable: '$command' -- $reason", false, 'SYSTEM');
 	}
+	return false;
 }
 
 /**
@@ -4650,7 +4671,7 @@ function syslog_alert_window_seconds(array $alert): int {
 
 /** Hash the rule settings that define a threshold episode. */
 function syslog_threshold_rule_hash(array $alert): string {
-	return sha1(json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'date']))));
+	return sha1(json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command', 'date']))));
 }
 
 /** Recover quiet breaches without scanning or rewriting message history. */
@@ -4659,13 +4680,67 @@ function syslog_threshold_recover(?int $now = null): void {
 	$now = $now ?? time();
 	$source = max(1, (int) ($config['poller_id'] ?? 1));
 	$ended = "(s.expires_at <= ? OR a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR s.rule_date <> a.date)";
-	if (!syslog_db_execute_prepared("DELETE c FROM syslog_alert_counts AS c JOIN syslog_threshold_state AS s ON s.alert_id = c.alert_id AND s.scope_key = c.scope_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE s.source_poller_id = ? AND $ended", [$source, $now])) {
+	if (!syslog_db_execute('START TRANSACTION')) {
 		return;
 	}
-	if (!syslog_db_execute_prepared("DELETE m FROM syslog_threshold_state AS s JOIN syslog_threshold_messages AS m ON m.source_poller_id = s.source_poller_id AND m.breach_key = s.breach_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now])) {
+	$queries = [
+		["INSERT INTO syslog_threshold_recovery_queue (source_poller_id, breach_key, alert_id, rule_date, context, available_at)
+			SELECT s.source_poller_id, s.breach_key, s.alert_id, s.rule_date, s.recovery_context, ?
+			FROM syslog_threshold_state AS s JOIN syslog_alert AS a ON a.id = s.alert_id
+			WHERE s.source_poller_id = ? AND s.expires_at <= ? AND a.enabled = 'on' AND a.method = 1
+			AND s.rule_date = a.date AND s.recovery_context IS NOT NULL AND COALESCE(a.recovery_command, '') <> ''
+			ON DUPLICATE KEY UPDATE breach_key = VALUES(breach_key)", [$now, $source, $now]],
+		["DELETE c FROM syslog_alert_counts AS c JOIN syslog_threshold_state AS s ON s.alert_id = c.alert_id AND s.scope_key = c.scope_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE s.source_poller_id = ? AND $ended", [$source, $now]],
+		["DELETE m FROM syslog_threshold_state AS s JOIN syslog_threshold_messages AS m ON m.source_poller_id = s.source_poller_id AND m.breach_key = s.breach_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now]],
+		["DELETE s FROM syslog_threshold_state AS s LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now]]
+	];
+	foreach ($queries as [$sql, $params]) {
+		if (!syslog_db_execute_prepared($sql, $params)) {
+			syslog_db_execute('ROLLBACK');
+			return;
+		}
+	}
+	if (!syslog_db_execute('COMMIT')) {
+		syslog_db_execute('ROLLBACK');
+	}
+}
+
+/** Deliver only origin-owned clears; the connection lock also covers slow commands. */
+function syslog_threshold_deliver_recoveries(?int $now = null): void {
+	global $config, $syslogdb_default;
+	$now = $now ?? time();
+	$source = max(1, (int) ($config['poller_id'] ?? 1));
+	$lock = 'syslog-clear:' . sha1($syslogdb_default . ':' . $source);
+	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock]) !== 1) {
 		return;
 	}
-	syslog_db_execute_prepared("DELETE s FROM syslog_threshold_state AS s LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now]);
+	try {
+		if (!syslog_db_execute_prepared("DELETE q FROM syslog_threshold_recovery_queue AS q LEFT JOIN syslog_alert AS a ON a.id = q.alert_id
+			WHERE q.source_poller_id = ? AND (a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR a.date <> q.rule_date OR COALESCE(a.recovery_command, '') = '')", [$source])) {
+			return;
+		}
+		$pending = syslog_db_fetch_assoc_prepared('SELECT breach_key, context, attempts FROM syslog_threshold_recovery_queue WHERE source_poller_id = ? AND available_at <= ? ORDER BY available_at, breach_key LIMIT 25', [$source, $now]);
+		foreach ($pending ?: [] as $row) {
+			$context = json_decode($row['context'], true);
+			if (is_array($context['alert'] ?? null) && is_array($context['results'] ?? null)
+				&& is_array($context['hostlist'] ?? null) && is_string($context['hostname'] ?? null)
+				&& isset($context['alert']['id'], $context['alert']['name'], $context['alert']['message'], $context['alert']['severity'], $context['alert']['command'],
+					$context['alert']['_threshold_state']['breach_key'], $context['alert']['_threshold_state']['source_poller_id'],
+					$context['results']['message'], $context['results']['priority_id'], $context['results']['facility_id'])) {
+				alert_setup_environment($context['alert'], $context['results'], $context['hostlist'], $context['hostname']);
+				if (syslog_execute_alert_command($context['alert'], $context['results'], $context['hostname'], 'clear')) {
+					syslog_db_execute_prepared('DELETE FROM syslog_threshold_recovery_queue WHERE source_poller_id = ? AND breach_key = ?', [$source, $row['breach_key']]);
+					continue;
+				}
+			} else {
+				cacti_log('SYSLOG ERROR: Invalid threshold recovery context for breach ' . $row['breach_key'], false, 'SYSLOG');
+			}
+			$delay = min(3600, 60 * (2 ** min(6, (int) $row['attempts'])));
+			syslog_db_execute_prepared('UPDATE syslog_threshold_recovery_queue SET attempts = attempts + 1, available_at = ? WHERE source_poller_id = ? AND breach_key = ?', [$now + $delay, $source, $row['breach_key']]);
+		}
+	} finally {
+		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
+	}
 }
 
 /** Count a batch, open one breach, and extend its timer on every subsequent match. */
@@ -4681,6 +4756,10 @@ function syslog_threshold_evaluate(array &$alert, int $batch_count, string $host
 	$hash = syslog_threshold_rule_hash($alert);
 	$state = syslog_db_fetch_row_prepared('SELECT * FROM syslog_threshold_state WHERE source_poller_id = ? AND alert_id = ? AND scope_key = ?', [$source, $alert['id'], $scope]);
 	if ($state === false) {
+		return 0;
+	}
+	// Preserve an undelivered clear if transactional recovery failed this cycle.
+	if ($state && (int) $state['expires_at'] <= $now && $state['rule_hash'] === $hash && !empty($state['recovery_context'])) {
 		return 0;
 	}
 	if ($state && ((int) $state['expires_at'] <= $now || $state['rule_hash'] !== $hash)) {
@@ -4732,7 +4811,7 @@ function syslog_threshold_replication_states(array $events): array|false {
 	if (!$where) {
 		return [];
 	}
-	$rows = syslog_db_fetch_assoc_prepared('SELECT m.source_event_id, s.* FROM syslog_threshold_messages AS m JOIN syslog_threshold_state AS s ON s.source_poller_id = m.source_poller_id AND s.breach_key = m.breach_key WHERE s.expires_at > UNIX_TIMESTAMP() AND (' . implode(' OR ', $where) . ')', $params);
+	$rows = syslog_db_fetch_assoc_prepared('SELECT m.source_event_id, s.source_poller_id, s.alert_id, s.scope_key, s.rule_hash, s.rule_date, s.breach_key, s.breached_at, s.last_match, s.expires_at FROM syslog_threshold_messages AS m JOIN syslog_threshold_state AS s ON s.source_poller_id = m.source_poller_id AND s.breach_key = m.breach_key WHERE s.expires_at > UNIX_TIMESTAMP() AND (' . implode(' OR ', $where) . ')', $params);
 	if ($rows === false) {
 		return false;
 	}
@@ -4786,6 +4865,7 @@ function syslog_process_alerts($max_seq) {
 	$fired         = [];
 
 	syslog_threshold_recover();
+	syslog_threshold_deliver_recoveries();
 
 	// Retire counts for deleted, disabled, and per-cycle rules even on quiet collectors.
 	syslog_db_execute("DELETE c FROM syslog_alert_counts AS c LEFT JOIN syslog_alert AS a ON a.id = c.alert_id
@@ -4891,9 +4971,22 @@ function syslog_process_alerts($max_seq) {
 }
 
 /** Mark this batch's matching messages when a threshold is reached. */
-function syslog_mark_threshold_messages(array $alert, int $count, array $matches): void {
+function syslog_mark_threshold_messages(array $alert, int $count, array $matches): bool {
 	if ((int) $alert['method'] !== 1 || $count <= 0 || ($count < (int) $alert['num'] && empty($alert['_threshold_state']))) {
-		return;
+		return true;
+	}
+
+	if ($matches && !empty($alert['_threshold_state']) && trim($alert['recovery_command'] ?? '') !== '') {
+		$state = $alert['_threshold_state'];
+		$context = json_encode([
+			'alert' => ['id' => $alert['id'], 'name' => $alert['name'], 'severity' => $alert['severity'], 'message' => $alert['message'], 'command' => $alert['recovery_command'], '_threshold_state' => $state],
+			'results' => ['priority_id' => $matches[0]['priority_id'], 'facility_id' => $matches[0]['facility_id'], 'message' => $matches[0]['message']],
+			'hostname' => (int) $alert['level'] === 1 ? $matches[0]['host'] : '',
+			'hostlist' => array_values(array_unique(array_column($matches, 'host')))
+		], JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR);
+		if (!syslog_db_execute_prepared('UPDATE syslog_threshold_state SET recovery_context = ? WHERE source_poller_id = ? AND breach_key = ? AND recovery_context IS NULL', [$context, $state['source_poller_id'], $state['breach_key']])) {
+			return false;
+		}
 	}
 
 	foreach (array_chunk(array_column($matches, 'seq'), 1000) as $sequences) {
@@ -4905,16 +4998,17 @@ function syslog_mark_threshold_messages(array $alert, int $count, array $matches
 				array_push($params, $state['source_poller_id'], $sequence, $state['breach_key']);
 			}
 			if (!syslog_db_execute_prepared('INSERT IGNORE INTO syslog_threshold_messages (source_poller_id, source_event_id, breach_key) VALUES ' . $values, $params)) {
-				return;
+				return false;
 			}
 		}
 
 		$placeholders = implode(',', array_fill(0, count($sequences), '?'));
 		if (!syslog_db_execute_prepared("UPDATE syslog_incoming SET threshold_breached = 1 WHERE status = 1 AND seq IN ($placeholders)", $sequences)) {
 			cacti_log('SYSLOG ERROR: Unable to mark threshold-breaching messages for alert ' . (int) $alert['id'], false, 'SYSLOG');
-			return;
+			return false;
 		}
 	}
+	return true;
 }
 
 /**
@@ -5002,7 +5096,9 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '') {
 	 */
 	if (($alert['method'] == '1' && ($count >= $alert['num'] || !empty($alert['_threshold_state']))) || $alert['method'] == '0') {
 		$at = syslog_db_fetch_assoc_prepared($sql, $params);
-		syslog_mark_threshold_messages($alert, (int) $count, $at ?: []);
+		if (!syslog_mark_threshold_messages($alert, (int) $count, $at ?: [])) {
+			return 0;
+		}
 
 		/**
 		 * get a date for the repeat alert

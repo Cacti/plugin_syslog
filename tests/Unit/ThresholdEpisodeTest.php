@@ -40,13 +40,13 @@ it('bypasses episode changes for empty batches and individual rules', function (
 	expect(syslog_threshold_evaluate($rule, 0))->toBe(0);
 });
 
-it('stops quiet recovery at the first failed deletion', function ($failure, $expected) {
+it('stops quiet recovery at the first failed queue or cleanup write', function ($failure, $expected) {
 	$calls = [];
 	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$calls, $failure) { $calls[] = [$sql, $params]; return count($calls) !== $failure; });
 	syslog_threshold_recover(1000);
 	expect($calls)->toHaveCount($expected);
-	expect($calls[0][1])->toBe([1, 1000]);
-})->with([[1, 1], [2, 2], [0, 3]]);
+	expect($calls[0][1])->toBe([1000, 1, 1000]);
+})->with([[1, 1], [2, 2], [3, 3], [4, 4], [0, 4]]);
 
 it('fetches replication episodes in a batch and propagates lookup failures', function () {
 	$event = ['source_poller_id' => 2, 'source_event_id' => 3, 'threshold_breached' => 1];
@@ -96,7 +96,7 @@ it('evaluates device and shared threshold rules through the poller', function ($
 	$GLOBALS['config']['base_path'] = dirname(__DIR__) . '/Fixtures/threshold_notifications';
 	$rule = ['id' => 7, 'name' => 'Threshold', 'method' => 1, 'level' => $level, 'num' => 5, 'type' => 'messagec', 'message' => 'error', 'maintenance_mode' => 'disabled', 'email' => '', 'notify' => 0, 'repeat_alert' => 0];
 	test_override('syslog_db_fetch_assoc', static fn($sql) => str_contains($sql, 'syslog_status') ? [] : [$rule]);
-	test_override('syslog_db_fetch_assoc_prepared', static fn() => [['host' => 'router', 'count' => 1]]);
+	test_override('syslog_db_fetch_assoc_prepared', static fn($sql) => str_contains($sql, 'syslog_threshold_recovery_queue') ? [] : [['host' => 'router', 'count' => 1]]);
 	test_override('syslog_db_fetch_cell_prepared', static fn() => 1);
 	expect(syslog_process_alerts(100))->toBe(['syslog_alerts' => 1, 'syslog_alarms' => 0]);
 })->with([0, 1]);

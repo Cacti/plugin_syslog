@@ -555,6 +555,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`email` varchar(255) default NULL,
 		`notify` int(10) unsigned NOT NULL default '0',
 		`command` varchar(255) default NULL,
+		`recovery_command` varchar(255) default NULL,
 		`notes` varchar(255) default NULL,
 		PRIMARY KEY (id))
 		ENGINE=InnoDB");
@@ -800,6 +801,7 @@ function syslog_create_alert_counts_table(): void {
 		`rule_date` bigint unsigned NOT NULL,
 		`breach_key` char(32) NOT NULL,
 		`breached_at` bigint unsigned DEFAULT NULL,
+		`recovery_context` mediumtext DEFAULT NULL,
 		`last_match` bigint unsigned NOT NULL,
 		`expires_at` bigint unsigned NOT NULL,
 		PRIMARY KEY (`source_poller_id`, `alert_id`, `scope_key`),
@@ -812,6 +814,17 @@ function syslog_create_alert_counts_table(): void {
 		PRIMARY KEY (`source_poller_id`, `source_event_id`, `breach_key`),
 		KEY `episode` (`source_poller_id`, `breach_key`)) ENGINE=InnoDB");
 
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_threshold_recovery_queue` (
+		`source_poller_id` int(10) unsigned NOT NULL,
+		`breach_key` char(32) NOT NULL,
+		`alert_id` int(10) unsigned NOT NULL,
+		`rule_date` bigint unsigned NOT NULL,
+		`context` mediumtext NOT NULL,
+		`attempts` int(10) unsigned NOT NULL DEFAULT 0,
+		`available_at` bigint unsigned NOT NULL,
+		PRIMARY KEY (`source_poller_id`, `breach_key`),
+		KEY `available_at` (`source_poller_id`, `available_at`)) ENGINE=InnoDB");
+
 }
 
 /** Complete an interrupted install or upgrade without dropping existing data. */
@@ -822,7 +835,7 @@ function syslog_ensure_table_structures(): bool {
 
 	$tables = [
 		'syslog', 'syslog_alert', 'syslog_incoming', 'syslog_alert_suppression', 'syslog_alert_counts',
-		'syslog_threshold_state', 'syslog_threshold_messages',
+		'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_threshold_recovery_queue',
 		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
 		'syslog_hosts', 'syslog_facilities', 'syslog_priorities', 'syslog_host_facilities',
 		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
@@ -863,12 +876,17 @@ function syslog_ensure_table_structures(): bool {
 		return false;
 	}
 
+	if (!syslog_db_add_column('syslog_threshold_state', ['name' => 'recovery_context', 'type' => 'mediumtext', 'NULL' => true])) {
+		return false;
+	}
+
 	// Repair these columns even when the installed plugin version is unchanged.
 	if (db_update_table('syslog_alert', ['columns' => [
 		['name' => 'threshold_window', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'num'],
 		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window'],
 		['name' => 'threshold_recovery_minutes', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '5', 'after' => 'threshold_unit'],
-		['name' => 'threshold_recovery_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_recovery_minutes']
+		['name' => 'threshold_recovery_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_recovery_minutes'],
+		['name' => 'recovery_command', 'type' => 'varchar(255)', 'NULL' => true]
 	], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
 		return false;
 	}

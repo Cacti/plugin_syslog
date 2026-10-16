@@ -116,7 +116,8 @@ function form_save(): void {
 			get_nfilter_request_var('maintenance_start'), get_nfilter_request_var('maintenance_end'),
 			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'),
 			get_nfilter_request_var('threshold_window'), get_nfilter_request_var('threshold_unit'),
-			get_nfilter_request_var('threshold_recovery_minutes'), get_nfilter_request_var('threshold_recovery_unit') ?: 'minute');
+			get_nfilter_request_var('threshold_recovery_minutes'), get_nfilter_request_var('threshold_recovery_unit') ?: 'minute',
+			get_nfilter_request_var('recovery_command'));
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -329,6 +330,7 @@ function alert_export(): void {
  * @param string          $threshold_unit Window unit: minute, hour, or day.
  * @param string|int      $threshold_recovery_minutes Quiet duration in the selected recovery unit (legacy field name).
  * @param string         $threshold_recovery_unit Minute, hour, or day.
+ * @param string         $recovery_command Optional command run after quiet recovery.
  *
  * @return false|null Null when the alert rule was saved, false when validation or the SQL check failed.
  */
@@ -336,7 +338,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
 	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
-	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5, $threshold_recovery_unit = 'minute') {
+	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5, $threshold_recovery_unit = 'minute', $recovery_command = '') {
 	global $syslogdb_default;
 
 	// get the username
@@ -372,6 +374,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['body']         = form_input_validate($body,         'body',     '', true, 3);
 	$save['email']        = form_input_validate(trim($email),  'email',    '', true, 3);
 	$save['command']      = form_input_validate($command,      'command',  '', true, 3);
+	$save['recovery_command'] = form_input_validate($recovery_command, 'recovery_command', '', true, 3);
 	$save['notes']        = form_input_validate($notes,        'notes',    '', true, 3);
 	$save['enabled']      = ($enabled == 'on' ? 'on' : '');
 	$save['repeat_alert'] = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
@@ -904,6 +907,16 @@ function syslog_action_edit(): void {
 			'value'         => '|arg1:command|',
 			'default'       => '',
 		],
+		'recovery_command' => [
+			'friendly_name' => __('Recovery command', 'syslog'),
+			'textarea_rows' => '5',
+			'textarea_cols' => '70',
+			'description'   => __('Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable.', 'syslog'),
+			'method'        => 'textarea',
+			'class'         => 'textAreaNotes',
+			'value'         => '|arg1:recovery_command|',
+			'default'       => ''
+		],
 		'id' => [
 			'method' => 'hidden_zero',
 			'value'  => '|arg1:id|'
@@ -991,7 +1004,7 @@ function syslog_action_edit(): void {
 	}
 
 	function changeMethod() {
-		$('#row_num, #row_threshold_window, #row_threshold_recovery_minutes').toggle($('#report_method').val() == '1');
+		$('#row_num, #row_threshold_window, #row_threshold_recovery_minutes, #row_recovery_command').toggle($('#report_method').val() == '1');
 	}
 
 	function changeMaintenanceMode() {

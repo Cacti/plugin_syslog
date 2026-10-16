@@ -12,18 +12,22 @@ $central_db = $syslogdb_default . '_central';
 $databases = [$syslogdb_default, $central_db];
 $config = ['poller_id' => 1];
 $checks = 0;
+$command_log = tempnam(sys_get_temp_dir(), 'syslog-clear-');
 function check_recovery($condition, $message) {
 	$GLOBALS['checks']++;
 	if (!$condition) { throw new RuntimeException($message); }
 }
 function syslog_db_execute($sql, ...$args) { return $GLOBALS['pdo']->exec($sql) !== false; }
-function syslog_db_execute_prepared($sql, $params = [], ...$args) { $q = $GLOBALS['pdo']->prepare($sql); return $q->execute($params); }
+function syslog_db_execute_prepared($sql, $params = [], ...$args) { if (!empty($GLOBALS['fail_recovery_sql']) && str_starts_with($sql, $GLOBALS['fail_recovery_sql'])) { return false; } $q = $GLOBALS['pdo']->prepare($sql); return $q->execute($params); }
 function syslog_db_fetch_assoc_prepared($sql, $params = [], ...$args) { $q = $GLOBALS['pdo']->prepare($sql); $q->execute($params); return $q->fetchAll(); }
 function syslog_db_fetch_row_prepared($sql, $params = [], ...$args) { return syslog_db_fetch_assoc_prepared($sql, $params)[0] ?? []; }
 function syslog_db_fetch_cell_prepared($sql, $params = [], ...$args) { $q = $GLOBALS['pdo']->prepare($sql); $q->execute($params); return $q->fetchColumn(); }
 function syslog_db_fetch_cell($sql) { return syslog_db_fetch_cell_prepared($sql); }
 function db_execute_prepared($sql, $params = [], ...$args) { return syslog_db_execute_prepared($sql, $params); }
 function cacti_log(...$args) {}
+function cacti_sizeof($items) { return is_array($items) ? count($items) : 0; }
+function cacti_escapeshellarg($value) { return escapeshellarg((string) $value); }
+function clean_up_name($value) { return $value; }
 require dirname(__DIR__, 2) . '/includes/functions.php';
 require dirname(__DIR__, 2) . '/includes/schema.php';
 require dirname(__DIR__, 2) . '/lib/syslog_thresholds.php';
@@ -46,8 +50,8 @@ try {
 		$syslogdb_default = $database;
 		syslog_create_alert_counts_table();
 		$syslogdb_default = $local_db;
-		$pdo->exec('CREATE TABLE syslog_alert (id INT PRIMARY KEY, enabled CHAR(2), method INT, date BIGINT)');
-		$pdo->exec("INSERT INTO syslog_alert VALUES (1,'on',1,100),(2,'on',1,100)");
+		$pdo->exec('CREATE TABLE syslog_alert (id INT PRIMARY KEY, enabled CHAR(2), method INT, date BIGINT, recovery_command VARCHAR(255))');
+		$pdo->exec("INSERT INTO syslog_alert (id,enabled,method,date) VALUES (1,'on',1,100),(2,'on',1,100)");
 		$pdo->exec('CREATE TABLE syslog_incoming (seq BIGINT PRIMARY KEY, status INT, threshold_breached TINYINT DEFAULT NULL)');
 		$pdo->exec('CREATE TABLE syslog (seq BIGINT AUTO_INCREMENT PRIMARY KEY, replication_source_poller_id INT, replication_source_event_id BIGINT, threshold_breached TINYINT DEFAULT NULL)');
 	}
@@ -151,8 +155,90 @@ try {
 	check_recovery(!syslog_thresholds_enabled() && syslog_breached_threshold_count() === 0, 'Disabled rules hide the tab and their episodes');
 	$pdo->exec("UPDATE syslog_alert SET enabled = 'on', method = 0");
 	check_recovery(!syslog_thresholds_enabled(), 'Individual reporting does not show the threshold tab');
+
+	// Exercise real recovery scripts using a local recording fixture only.
+	$config['poller_id'] = 2;
+	$severities = [1 => 'Warning'];
+	$syslog_levels = [3 => 'Error'];
+	$syslog_facilities = [1 => 'User'];
+	foreach (['syslog_threshold_state', 'syslog_threshold_messages', 'syslog_alert_counts'] as $table) {
+		$pdo->exec("TRUNCATE TABLE `$table`");
+	}
+	$command = PHP_BINARY . ' ' . escapeshellarg(dirname(__DIR__) . '/Fixtures/threshold_command.php') . ' ' . escapeshellarg($command_log) . ' --fail-clear-once <HOSTNAME>';
+	$pdo->prepare("UPDATE syslog_alert SET enabled = 'on', method = 1, date = 100, recovery_command = ?")->execute([$command]);
+	$pdo->prepare("UPDATE `$central_db`.syslog_alert SET recovery_command = ?")->execute([$command]);
+	$rule = ['id' => 1, 'name' => 'Device errors', 'method' => 1, 'level' => 1, 'num' => 2, 'date' => 100,
+		'severity' => 1, 'message' => 'error', 'command' => $command, 'recovery_command' => $command, 'threshold_recovery_minutes' => 1];
+	$start = $base + 10000;
+	$keys = [];
+	foreach (['host-a', 'host-b'] as $i => $host) {
+		check_recovery(syslog_threshold_evaluate($rule, 2, $host, $start + $i * 10) === 2, "Open $host with a recovery command");
+		$keys[$host] = $rule['_threshold_state']['breach_key'];
+		$matches = [['seq' => 50 + $i, 'host' => $host, 'message' => 'device error', 'priority_id' => 3, 'facility_id' => 1]];
+		check_recovery(syslog_mark_threshold_messages($rule, 2, $matches), "Save $host recovery context");
+		check_recovery(syslog_execute_alert_command($rule, $matches[0], $host), "Run $host breach command");
+	}
+	$states = syslog_threshold_replication_states([['source_poller_id' => 2, 'source_event_id' => 50, 'threshold_breached' => 1]]);
+	check_recovery(!array_key_exists('recovery_context', $states['2:50'][0]), 'Script context stays on its owning collector');
+	check_recovery(syslog_threshold_accept_central(['source_poller_id' => 2, 'source_event_id' => 50, 'threshold_states' => $states['2:50']], $pdo, $central_db), 'Replicate the visible episode without its command');
+	$pdo->exec("USE `$central_db`");
+	$syslogdb_default = $central_db;
+	$config['poller_id'] = 1;
+	syslog_threshold_recover($start + 60);
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 0, 'Central expiry never queues a remote clear');
+	$pdo->exec("USE `$local_db`");
+	$syslogdb_default = $local_db;
+	$config['poller_id'] = 2;
+	syslog_threshold_recover($start + 60);
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 1, 'Queue one quiet recovery');
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_state')->fetchColumn() === 1, 'The other device remains breached');
+	syslog_threshold_deliver_recoveries($start + 60);
+	$pending = syslog_db_fetch_row_prepared('SELECT * FROM syslog_threshold_recovery_queue');
+	check_recovery((int) $pending['attempts'] === 1 && (int) $pending['available_at'] === $start + 120, 'Failed clear is retained with a one-minute retry');
+	syslog_threshold_deliver_recoveries($start + 90);
+	check_recovery(count(file($command_log)) === 3, 'No retry before its due time');
+	syslog_threshold_deliver_recoveries($start + 120);
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 0, 'Successful retry removes the queued clear');
+	syslog_threshold_deliver_recoveries($start + 120);
+	check_recovery(count(file($command_log)) === 4, 'Delivered clear is not sent again');
+	syslog_threshold_recover($start + 70);
+	syslog_threshold_deliver_recoveries($start + 120);
+	$records = array_map(static fn($line) => json_decode($line, true), file($command_log, FILE_IGNORE_NEW_LINES));
+	check_recovery(array_column($records, 'event') === ['breach', 'breach', 'clear', 'clear', 'clear'], 'Each device receives its own breach and clear');
+	check_recovery($records[0]['breach_id'] === $records[2]['breach_id'] && $records[2]['breach_id'] === $records[3]['breach_id'], 'Retry and clear retain the original breach identity');
+	check_recovery($records[1]['breach_id'] === $records[4]['breach_id'] && $records[0]['breach_id'] !== $records[1]['breach_id'], 'Device identities cannot clear each other');
+	check_recovery($records[4]['hostname'] === 'host-b' && $records[4]['poller_id'] === '2', 'Clear script receives the origin and device');
+
+	foreach (["date = 101", "enabled = ''", 'method = 0'] as $change) {
+		$pdo->exec("UPDATE syslog_alert SET enabled = 'on', method = 1, date = 100");
+		syslog_threshold_evaluate($rule, 2, 'cancelled', $start + 200);
+		syslog_mark_threshold_messages($rule, 2, [['seq' => 60, 'host' => 'cancelled', 'message' => 'error', 'priority_id' => 3, 'facility_id' => 1]]);
+		$pdo->exec("UPDATE syslog_alert SET $change");
+		syslog_threshold_recover($start + 260);
+		check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 0, "Rule change $change does not send a healthy event");
+	}
+	$pdo->exec("UPDATE syslog_alert SET enabled = 'on', method = 1, date = 100");
+	syslog_threshold_evaluate($rule, 2, 'transaction', $start + 300);
+	syslog_mark_threshold_messages($rule, 2, [['seq' => 61, 'host' => 'transaction', 'message' => 'error', 'priority_id' => 3, 'facility_id' => 1]]);
+	$fail_recovery_sql = 'DELETE m FROM';
+	syslog_threshold_recover($start + 360);
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 0, 'Cleanup failure rolls back the queued clear');
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_state')->fetchColumn() === 1, 'Cleanup failure retains the episode for retry');
+	check_recovery(syslog_threshold_evaluate($rule, 2, 'transaction', $start + 361) === 0, 'New matches cannot discard an unqueued expired clear');
+	$fail_recovery_sql = '';
+	syslog_threshold_recover($start + 360);
+	$lock = 'syslog-clear:' . sha1($syslogdb_default . ':2');
+	$other = new PDO($dsn, 'root', getenv('SYSLOG_TEST_MYSQL_PASSWORD') ?: '');
+	$other->prepare('SELECT GET_LOCK(?, 0)')->execute([$lock]);
+	syslog_threshold_deliver_recoveries($start + 360);
+	check_recovery(count(file($command_log)) === 5, 'Another delivery owner prevents concurrent script execution');
+	$other->prepare('SELECT RELEASE_LOCK(?)')->execute([$lock]);
+	$pdo->exec('UPDATE syslog_alert SET date = 101');
+	syslog_threshold_deliver_recoveries($start + 360);
+	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 0 && count(file($command_log)) === 5, 'Editing a rule cancels a pending clear before execution');
 	print "Threshold recovery MariaDB checks passed: $checks\n";
 } finally {
+	unlink($command_log);
 	foreach ($databases as $database) {
 		$pdo->exec("DROP DATABASE IF EXISTS `$database`");
 	}
