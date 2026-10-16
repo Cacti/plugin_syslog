@@ -5644,9 +5644,6 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 		// scan and apply `status`/`seq` gating a single time.
 		switch ($alert['type']) {
 			case 'filter':
-				if (!class_exists('Cacti\\Syslog\\QueryBuilder')) {
-					return [];
-				}
 				$fields = [
 					'message' => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 					'host' => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
