@@ -69,6 +69,7 @@ function collector_health_load_functions(): void {
 }
 
 function collector_health_setup_config(): void {
+	syslog_test_reset_globals();
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = [
 		'timeField'     => 'logtime',
@@ -267,4 +268,23 @@ it('formats compact human readable ages', function () {
 	expect(syslog_status_format_age(90))->toContain('minute');
 	expect(syslog_status_format_age(5400))->toContain('hour');
 	expect(syslog_status_format_age(90000))->toContain('day');
+});
+
+
+it('does not warn for an empty queue after processing drains incoming messages', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	collector_health_load_functions();
+	collector_health_setup_config();
+	$calls = [];
+	collector_health_capture_db($calls, ['count' => '0']);
+	expect(syslog_status_collector_health()['warning'])->toBeFalse();
+});
+
+it('warns about old queued messages even while new messages arrive', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	collector_health_load_functions();
+	collector_health_setup_config();
+	$calls = [];
+	collector_health_capture_db($calls, ['max' => date('Y-m-d H:i:s'), 'min' => date('Y-m-d H:i:s', time() - 600), 'count' => '2']);
+	expect(syslog_status_collector_health()['warning'])->toBeTrue();
 });
