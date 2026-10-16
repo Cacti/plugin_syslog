@@ -383,6 +383,8 @@ function syslog_connect(): bool {
 
 	syslog_determine_config();
 
+	global $database_sessions, $database_hostname, $database_port, $database_default;
+
 	static $schema_inprocess = false;
 	static $schema_ready     = false;
 
@@ -394,6 +396,8 @@ function syslog_connect(): bool {
 	require_once(__DIR__ . '/includes/functions.php');
 	require_once(__DIR__ . '/includes/database.php');
 
+	$cacti_local_cnn = $local_db_cnn_id ?? ($database_sessions["$database_hostname:$database_port:$database_default"] ?? false);
+
 	$connect_remote = false;
 	$connected      = true;
 
@@ -402,22 +406,22 @@ function syslog_connect(): bool {
 		/** @var bool $use_cacti_db Whether the Syslog tables live in the local Cacti database, defined in the Syslog config file. */
 		if ($config['poller_id'] == 1) {
 			if ($use_cacti_db == true) {
-				$syslog_cnn = $local_db_cnn_id;
-				$connected  = true;
+				$syslog_cnn = $cacti_local_cnn;
+				$connected  = is_object($syslog_cnn);
 			} else {
 				$connect_remote = true;
 			}
 		} elseif (isset($config['syslog_remote_db'])) {
 			if ($use_cacti_db == true) {
-				$syslog_cnn = $local_db_cnn_id;
-				$connected  = true;
+				$syslog_cnn = $cacti_local_cnn;
+				$connected  = is_object($syslog_cnn);
 			} else {
 				$connect_remote = true;
 			}
 		} else {
 			if ($use_cacti_db == true) {
 				$syslog_cnn = $remote_db_cnn_id;
-				$connected  = true;
+				$connected  = is_object($syslog_cnn);
 			} else {
 				$connect_remote = true;
 			}

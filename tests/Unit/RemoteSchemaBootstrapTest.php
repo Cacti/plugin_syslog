@@ -22,7 +22,7 @@
  +-------------------------------------------------------------------------+
 */
 
-it('initializes remote schema before returning a usable connection without recursive repair', function ($poller, $enabled, $repair_ok, $expected, $calls) {
+it('initializes remote schema before returning a usable connection without recursive repair', function ($poller, $enabled, $repair_ok, $expected, $calls, $legacy_main = false) {
 	$source = plugin_test_read_source('setup.php');
 	preg_match('/^function syslog_connect\(\): bool \{.*?^\}/ms', $source, $match);
 	$dir = sys_get_temp_dir() . '/syslog-connect-' . bin2hex(random_bytes(6));
@@ -34,9 +34,9 @@ it('initializes remote schema before returning a usable connection without recur
 	file_put_contents($dir . '/config.php', '<?php $use_cacti_db = true;');
 	$body = str_replace('__DIR__', var_export($dir, true), $match[0]);
 	$script = '<?php define("SYSLOG_CONFIG", ' . var_export($dir . '/config.php', true) . '); ' .
-		'$config = ["poller_id" => ' . $poller . ', "syslog_remote_db" => true]; $local_db_cnn_id = (object) []; $repairs = 0; ' .
+		'$config = ["poller_id" => ' . $poller . ', "syslog_remote_db" => true]; $expected_cnn = (object) []; $local_db_cnn_id = ' . ($legacy_main ? 'null' : '$expected_cnn') . '; $database_hostname = "localhost"; $database_port = 3306; $database_default = "cacti"; $database_sessions = ["localhost:3306:cacti" => $expected_cnn]; $repairs = 0; ' .
 		'function syslog_determine_config() {} function read_config_option($name) { return ' . var_export($enabled, true) . '; } ' .
-		$body . ' echo json_encode([syslog_connect(), syslog_connect(), $repairs, $syslog_cnn === $local_db_cnn_id]);';
+		$body . ' echo json_encode([syslog_connect(), syslog_connect(), $repairs, $syslog_cnn === $expected_cnn]);';
 	file_put_contents($dir . '/run.php', $script);
 	try {
 		exec(escapeshellarg(PHP_BINARY) . ' ' . escapeshellarg($dir . '/run.php'), $output, $status);
@@ -52,5 +52,6 @@ it('initializes remote schema before returning a usable connection without recur
 	[3, 'on', true, true, 1],
 	[3, 'on', false, false, 2],
 	[1, 'on', true, true, 0],
+	[1, 'on', true, true, 0, true],
 	[3, '', true, true, 0],
 ]);
