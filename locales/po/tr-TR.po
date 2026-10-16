@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-12 16:41-0400\n"
+"POT-Creation-Date: 2026-10-15 17:38-0400\n"
 "PO-Revision-Date: 2022-06-21 05:25+0000\n"
 "Last-Translator: San IPE <sanipe1949@krunsea.com>\n"
 "Language-Team: Turkish <http://translate.cacti.net/projects/cacti/syslog/tr/>\n"
@@ -235,7 +235,8 @@ msgstr ""
 msgid "The match expression is too long to test."
 msgstr ""
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
@@ -1324,7 +1325,7 @@ msgstr "Son Gönderilen"
 msgid "Last %d Months"
 msgstr "%d Ay"
 
-#: lib/syslog_dashboard.php syslog.php
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
 msgstr "Yenile"
 
@@ -1507,6 +1508,60 @@ msgstr ""
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Name"
 msgstr "İsim"
+
+#: lib/syslog_thresholds.php syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Breached Thresholds"
+msgstr "Eşik"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr ""
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Cihaz"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+msgid "Recovers After"
+msgstr "Yeniden işle"
+
+#: lib/syslog_thresholds.php
+#, fuzzy
+#| msgid "Rules"
+msgid "Rule"
+msgstr "Kurallar"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Previous"
+msgstr ""
+
+#: lib/syslog_thresholds.php
+msgid "Next"
+msgstr ""
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -2297,9 +2352,15 @@ msgstr "Varsayılan Ayarları Kaydet"
 msgid "Save view defaults"
 msgstr "Varsayılan Ayarları Kaydet"
 
-#: syslog.php syslog_alerts.php syslog_device_rules.php
-msgid "Device"
-msgstr "Cihaz"
+#: syslog.php
+msgid "Breach"
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+#| msgid "Threshold"
+msgid "Threshold breached"
+msgstr "Eşik"
 
 #: syslog.php
 msgid "Messages"
@@ -2309,6 +2370,16 @@ msgstr "Mesajlar"
 #, fuzzy
 msgid "Empty message"
 msgstr "Mesaj"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "No"
+msgstr "Hayır"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Yes"
+msgstr "Evet"
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2407,6 +2478,14 @@ msgstr "Aşağıdaki Syslog Uyarı Kurallarını Vermek için 'Devam Et'i tıkla
 msgid "Export Syslog Alert Rule(s)"
 msgstr "Syslog Uyarı Kurallarını Dışa Aktar"
 
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr ""
+
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
 msgstr ""
@@ -2465,6 +2544,28 @@ msgid "N/A"
 msgstr "Yok"
 
 #: syslog_alerts.php
+#, fuzzy
+#| msgid "Time Range"
+msgid "Time unit"
+msgstr "Zaman aralığı"
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "%d Days"
+msgid "Days"
+msgstr "%d Gün"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Hours"
+msgstr "%d Saat"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Minutes"
+msgstr "1 dakika boyu"
+
+#: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "Lütfen bu Uyarıyı açıklayın."
 
@@ -2497,8 +2598,28 @@ msgid "Individual"
 msgstr "Bireysel"
 
 #: syslog_alerts.php
-msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+#, fuzzy
+#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
 msgstr "'Eşik' yöntemi için, Görülen sayı bu değerin üzerindeyse bir Uyarı tetiklenir."
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Threshold Logs"
+msgid "Threshold Window"
+msgstr "Eşik Günlükleri"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -2697,23 +2818,23 @@ msgstr "Destek Talebi"
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
 msgstr "Bu Uyarı için bir Yardım Masası Bileti açılırsa. NOT: Bilet komut komut dosyası, kolaylık sağlamak için birkaç 'ALERT_' ortam değişkeniyle doldurulacaktır."
 
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "No"
-msgstr "Hayır"
-
-#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr "Evet"
-
 #: syslog_alerts.php
-msgid "Command"
-msgstr "Komut"
+#, fuzzy
+msgid "Alert command"
+msgstr "Kaldırma taşıma"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Bir Uyarı tetiklendiğinde, aşağıdaki komutu çalıştırın. Aşağıdaki değiştirme değişkenleri <b>&#39;&lt;HOSTNAME&gt;&#39;</b> , <b>&#39;&lt;ALERTID&gt;&#39;</b> , <b>&#39;&lt;MESSAGE&gt;&#39;</b> , <b>&#39;&lt;FACILITY&gt;&#39;</b> , <b>&#39;&lt;PRIORITY&gt;&#39;</b> , <b>&#39;&lt;SEVERITY&gt;&#39;</b> . Lütfen <b>&#39;&lt;HOSTNAME&gt;&#39; ün</b> sadece bireysel eşiklerde mevcut olduğunu unutmayın."
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Recovery command"
+msgstr "% d Kayıt"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php
 #, fuzzy
@@ -3566,6 +3687,9 @@ msgstr ""
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
 
+#~ msgid "Command"
+#~ msgstr "Komut"
+
 #, fuzzy, php-format
 #~ msgid "no message received for %s"
 #~ msgstr "Syslog İleti Filtresi %s"
@@ -3673,9 +3797,6 @@ msgstr ""
 
 #~ msgid "System Administration"
 #~ msgstr "Sistem Yönetimi"
-
-#~ msgid "Threshold Logs"
-#~ msgstr "Eşik Günlükleri"
 
 #~ msgid "Timespan"
 #~ msgstr "Zaman Süreci"
