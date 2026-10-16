@@ -119,7 +119,8 @@ function device_rule_actions(): void {
 				}
 
 				if ($action === '3') {
-					syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_device_rule` SET enabled = 'on' WHERE id = ?", [$id]);
+					syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_device_rule`
+						SET enabled = 'on' WHERE id = ?", [$id]);
 				}
 			}
 		}
@@ -214,7 +215,8 @@ function device_rule_edit(): void {
 		$rule['mute_until'] = date('Y-m-d H:i', (int) $rule['mute_until']);
 	}
 	form_start('syslog_device_rules.php', 'syslog_device_rule_edit');
-	html_start_box($id ? __('Device Alert Rule [edit]', 'syslog') : __('Device Alert Rule [new]', 'syslog'), '100%', false, 3, 'center', '');
+	html_start_box($id ? __('Device Alert Rule [edit]', 'syslog') : __('Device Alert Rule [new]', 'syslog'),
+		'100%', false, 3, 'center', '');
 	draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => inject_form_variables($fields, $rule)]);
 	html_end_box();
 	form_save_button('syslog_device_rules.php', '', 'id');
@@ -257,14 +259,19 @@ function device_rule_list(): void {
 	html_start_box(__('Device Alert Rule Filters', 'syslog'), '100%', false, 3, 'center', $url);
 	?>
 	<tr class='even'><td><form id='device_rule_filter' action='syslog_device_rules.php'><table class='filterTable'><tr>
-		<td><?php print __('Search', 'syslog'); ?></td><td><input type='text' id='filter' size='25' placeholder='<?php print __esc('Enter a search term', 'syslog'); ?>' value='<?php print html_escape_request_var('filter'); ?>'></td>
-		<td><?php print __('Enabled', 'syslog'); ?></td><td><select id='enabled'><option value='-1'><?php print __('All', 'syslog'); ?></option><option value='1'<?php if (get_request_var('enabled') == '1') {
+		<td><label for='filter'><?php print __('Search', 'syslog'); ?></label></td>
+		<td><input type='text' id='filter' size='25' placeholder='<?php print __esc('Enter a search term', 'syslog'); ?>' value='<?php print html_escape_request_var('filter'); ?>'></td>
+		<td><label for='enabled'><?php print __('Enabled', 'syslog'); ?></label></td>
+		<td><select id='enabled'><option value='-1'><?php print __('All', 'syslog'); ?></option><option value='1'<?php if (get_request_var('enabled') == '1') {
 			print ' selected';
 		} ?>><?php print __('Yes', 'syslog'); ?></option><option value='0'<?php if (get_request_var('enabled') == '0') {
 			print ' selected';
 		} ?>><?php print __('No', 'syslog'); ?></option></select></td>
-		<td><?php print __('Rules', 'syslog'); ?></td><td><select id='rows'><option value='-1'><?php print __('Default', 'syslog'); ?></option><?php foreach ($item_rows as $key => $value) {
-			print '<option value="' . $key . '"' . (get_request_var('rows') == $key ? ' selected' : '') . '>' . $value . '</option>';
+		<td><label for='rows'><?php print __('Rules', 'syslog'); ?></label></td>
+		<td><select id='rows'><option value='-1'><?php print __('Default', 'syslog'); ?></option><?php foreach ($item_rows as $key => $value) {
+			print '<option value="' . $key . '"'
+				. (get_request_var('rows') == $key ? ' selected' : '') . '>'
+				. $value . '</option>';
 		} ?></select></td>
 		<td><span><input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'><input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'></span></td>
 	</tr></table><input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'></form>
@@ -288,10 +295,13 @@ function device_rule_list(): void {
 	}
 
 	if (get_request_var('enabled') !== '-1') {
-		$sql_where .= ($sql_where === '' ? 'WHERE ' : ' AND ') . 'enabled ' . (get_request_var('enabled') == '1' ? "= 'on'" : "<> 'on'");
+		$enabled   = (get_request_var('enabled') == '1' ? "= 'on'" : "<> 'on'");
+		$sql_where .= ($sql_where === '' ? 'WHERE ' : ' AND ') . 'enabled ' . $enabled;
 	}
-	$rows       = get_request_var('rows') == '-1' ? (int) read_config_option('num_rows_table') : (int) get_request_var('rows');
-	$rows       = max(1, $rows);
+	$rows = get_request_var('rows') == '-1'
+		? (int) read_config_option('num_rows_table')
+		: (int) get_request_var('rows');
+	$rows = max(1, $rows);
 	$total_rows = (int) syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM `$syslogdb_default`.`syslog_device_rule` $sql_where", $sql_params);
 	$page       = max(1, (int) get_request_var('page'));
 	$offset     = ($page - 1) * $rows;

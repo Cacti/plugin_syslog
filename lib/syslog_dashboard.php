@@ -814,7 +814,11 @@ function syslog_dashboard_delete(int $id): bool {
 	$committed = false;
 
 	try {
-		foreach (['syslog_dashboard_panels' => 'dashboard_id', 'syslog_dashboards_perm' => 'dashboard_id', 'syslog_dashboards' => 'id'] as $table => $key) {
+		foreach ([
+			'syslog_dashboard_panels' => 'dashboard_id',
+			'syslog_dashboards_perm'  => 'dashboard_id',
+			'syslog_dashboards'       => 'id'
+		] as $table => $key) {
 			if (!syslog_db_execute_prepared("DELETE FROM `$syslogdb_default`.`$table` WHERE `$key` = ?", [$id])) {
 				return false;
 			}

@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* style: Keep all SonarCloud-reported lines within the 120-character limit by reflowing long SQL calls, ternaries, mappings and misaligned PHPDoc comment blocks, and associate the Device Alert Rule filter controls (Search, Enabled, Rules) with accessible labels
 * bug: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
 
 * bug: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails

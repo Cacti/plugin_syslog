@@ -1563,8 +1563,8 @@ function syslog_status_record_phase(string $phase, int $start, int $end, float $
  * that have never run.
  *
  * @return array<string, array{start:int,end:int,seconds:float,count:int}|null>
- *                                                                              Map of phase name to its telemetry document, or null when
- *                                                                              the phase has not recorded a run yet.
+ *         Map of phase name to its telemetry document, or null when the
+ *         phase has not recorded a run yet.
  */
 function syslog_status_phase_telemetry(): array {
 	global $syslogdb_default;
@@ -1823,7 +1823,8 @@ function syslog_pipeline_health_check(): void {
 		} else {
 			$notified = $monitor['notified_signature'] ?? '';
 			$repeat   = max(300, (int) (read_config_option('syslog_pipeline_health_repeat') ?: 3600));
-			$due      = ($health['issues'] && ($signature !== $notified || $now - (int) ($monitor['last_notified'] ?? 0) >= $repeat))
+			$due      = ($health['issues']
+				&& ($signature !== $notified || $now - (int) ($monitor['last_notified'] ?? 0) >= $repeat))
 				|| (!$health['issues'] && str_starts_with($notified, 'down:'));
 
 			// Bound failed mail retries even if poller hooks overlap or run more often.
@@ -2302,9 +2303,9 @@ function syslog_partition_manage(): int {
  * @param int    $ahead_days Number of future days to maintain.
  *
  * @return array{created: int, missing: int, stop_reason: string, retention_deferred: bool, dmax_risk: bool}
- *                                                                                                           Recovery telemetry: partitions created this run, the
- *                                                                                                           remaining gap, why the run stopped, whether retention
- *                                                                                                           was deferred, and whether writes landed in dMaxValue.
+ *         Recovery telemetry: partitions created this run, the remaining
+ *         gap, why the run stopped, whether retention was deferred, and
+ *         whether writes landed in dMaxValue.
  */
 function syslog_partition_recover($table, $base_time, $ahead_days) {
 	$limit = read_config_option('syslog_partition_recover_limit');
@@ -2956,7 +2957,8 @@ function syslog_partition_remove($table) {
 
 					syslog_debug("Removing partition '" . $part_name . "'");
 
-					// $table passed syslog_partition_table_allowed() at function entry; $part_name is regex-validated above. DDL identifiers cannot be parameterized.
+					// $table passed syslog_partition_table_allowed() at function entry;
+					// $part_name is regex-validated above. DDL identifiers cannot be parameterized.
 					$result = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` DROP PARTITION `$part_name`", []);
 
 					if ($result === false) {
@@ -3323,7 +3325,7 @@ define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 10);
  * @param int    $rows      Maximum number of matching messages to return.
  *
  * @return array{error: string, count: int, rows: array<int, array<string, string>>}
- *                                                                                   The bounded preview result, or an error message.
+ *         The bounded preview result, or an error message.
  */
 function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows = 10): array {
 	global $syslogdb_default, $syslog_incoming_config;

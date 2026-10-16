@@ -684,7 +684,8 @@ function syslog_status_storage(): array {
 		__('Rows in syslog_incoming', 'syslog')            => is_numeric($incoming) ? number_format((int) $incoming) : __('Unavailable', 'syslog'),
 		__('Syslog table size (data + indexes)', 'syslog') => $size,
 		__('Syslog retention', 'syslog')                   => $syslog_retentions[$retention] ?? __('Unavailable', 'syslog'),
-		__('Alert retention', 'syslog')                    => $syslog_alert_retentions[$alert_retention] ?? __('Unavailable', 'syslog')
+		__('Alert retention', 'syslog')                    => $syslog_alert_retentions[$alert_retention]
+			?? __('Unavailable', 'syslog')
 	];
 }
 
@@ -1289,7 +1290,8 @@ function syslog_status(): void {
 		$catalog[$key] = $meta[$key]['title'];
 	}
 
-	print "<script type='text/javascript'>var syslogStatusCatalog = " . syslog_json_safe($catalog) . '; initSyslogStatus();</script>';
+	print "<script type='text/javascript'>var syslogStatusCatalog = "
+		. syslog_json_safe($catalog) . '; initSyslogStatus();</script>';
 }
 
 /**
@@ -2780,7 +2782,13 @@ function syslog_messages(string $tab = 'syslog'): void {
 	?>
 	<aside id='syslog_message_details' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
 		<header class='ui-widget-header'><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' class='ui-state-default' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
-		<dl><?php foreach (['received' => __('Date', 'syslog'), 'device' => __('Device', 'syslog'), 'program' => __('Program', 'syslog'), 'facility' => __('Facility', 'syslog'), 'severity' => __('Priority', 'syslog')] as $key => $label) {
+		<dl><?php foreach ([
+			'received' => __('Date', 'syslog'),
+			'device'   => __('Device', 'syslog'),
+			'program'  => __('Program', 'syslog'),
+			'facility' => __('Facility', 'syslog'),
+			'severity' => __('Priority', 'syslog')
+		] as $key => $label) {
 			print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>";
 		} ?></dl>
 		<h4><?php print __esc('Message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>

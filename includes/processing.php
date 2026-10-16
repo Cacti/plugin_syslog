@@ -130,7 +130,13 @@ function syslog_replace_data($table, &$data, $target = null, $source = null): bo
 	$create_sql = is_array($create) ? ($create['Create Table'] ?? $create["CREATE TABLE `$table`"] ?? '') : '';
 	$stage      = $table . '_sync_' . bin2hex(random_bytes(6));
 	$backup     = $stage . '_old';
-	$create_sql = preg_replace('/^CREATE TABLE `' . preg_quote($table, '/') . '`/', 'CREATE TABLE `' . $stage . '`', $create_sql, 1, $replaced);
+	$create_sql = preg_replace(
+		'/^CREATE TABLE `' . preg_quote($table, '/') . '`/',
+		'CREATE TABLE `' . $stage . '`',
+		$create_sql,
+		1,
+		$replaced
+	);
 
 	if ($replaced !== 1) {
 		return false;
@@ -174,12 +180,23 @@ function syslog_replace_data($table, &$data, $target = null, $source = null): bo
 				$params   = array_merge($params, array_values($row));
 			}
 
-			if (!db_execute_prepared("INSERT INTO `$stage` (`" . implode('`, `', $columns) . '`) VALUES ' . implode(', ', $values), $params, true, $target)) {
+			if (!db_execute_prepared(
+				"INSERT INTO `$stage` (`" . implode('`, `', $columns) . '`) VALUES ' . implode(', ', $values),
+				$params,
+				true,
+				$target
+			)) {
 				return false;
 			}
 		}
 
-		$exists = db_fetch_cell_prepared('SELECT EXISTS (SELECT 1 FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?)', [$table], '', true, $target);
+		$exists = db_fetch_cell_prepared(
+			'SELECT EXISTS (SELECT 1 FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?)',
+			[$table],
+			'',
+			true,
+			$target
+		);
 
 		if ($exists === false) {
 			return false;

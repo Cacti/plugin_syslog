@@ -319,8 +319,10 @@ function alert_export(): void {
  * @param string|int      $notify                     The id of the notification list to use, 0 for none.
  * @param string          $body                       The body text for the alert email.
  * @param string|int      $cooldown_minutes           Per-rule notification cooldown; 0 inherits the global setting.
- * @param string|int      $deduplication_minutes      Per-rule duplicate suppression window; 0 inherits the global setting.
- * @param string          $maintenance_mode           Whether this rule inherits, overrides, or disables maintenance muting.
+ * @param string|int      $deduplication_minutes      Per-rule duplicate suppression
+ *                                                      window; 0 inherits the global setting.
+ * @param string          $maintenance_mode           Whether this rule inherits, overrides,
+ *                                                      or disables maintenance muting.
  * @param string          $maintenance_days           Weekdays selected for the rule maintenance window.
  * @param string          $maintenance_start          Local start time for the rule maintenance window.
  * @param string          $maintenance_end            Local end time for the rule maintenance window.
@@ -384,8 +386,12 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$save['repeat_alert']               = form_input_validate($repeat_alert, 'repeat_alert', '', true, 3);
 	$save['cooldown_minutes']           = max(-1, (int) $cooldown_minutes);
 	$save['deduplication_minutes']      = max(-1, (int) $deduplication_minutes);
-	$save['maintenance_mode']           = in_array($maintenance_mode, ['inherit', 'custom', 'disabled'], true) ? $maintenance_mode : 'inherit';
-	$save['maintenance_days']           = preg_match('/^[1-7](,[1-7])*$/', $maintenance_days) ? $maintenance_days : '1,2,3,4,5';
+	$save['maintenance_mode']           = in_array($maintenance_mode, ['inherit', 'custom', 'disabled'], true)
+		? $maintenance_mode
+		: 'inherit';
+	$save['maintenance_days']           = preg_match('/^[1-7](,[1-7])*$/', $maintenance_days)
+		? $maintenance_days
+		: '1,2,3,4,5';
 	$save['maintenance_start']          = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_start) ? $maintenance_start : '00:00';
 	$save['maintenance_end']            = preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $maintenance_end) ? $maintenance_end : '00:00';
 	$save['maintenance_datetime_start'] = preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/', $maintenance_datetime_start) ? $maintenance_datetime_start : '';

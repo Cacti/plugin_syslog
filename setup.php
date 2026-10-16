@@ -396,7 +396,8 @@ function syslog_connect(): bool {
 	require_once(__DIR__ . '/includes/functions.php');
 	require_once(__DIR__ . '/includes/database.php');
 
-	$cacti_local_cnn = $local_db_cnn_id ?? ($database_sessions["$database_hostname:$database_port:$database_default"] ?? false);
+	$cacti_local_cnn = $local_db_cnn_id
+		?? ($database_sessions["$database_hostname:$database_port:$database_default"] ?? false);
 
 	$connect_remote = false;
 	$connected      = true;
