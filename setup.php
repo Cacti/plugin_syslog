@@ -213,6 +213,13 @@ function plugin_syslog_uninstall(): void {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_receipts`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_collectors`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_replication_recovery`");
+
+			// Cacti replicates these rules into each collector's local database.
+			if ($config['poller_id'] == 1) {
+				foreach (['syslog_alert', 'syslog_device_rule', 'syslog_remove', 'syslog_reports'] as $table) {
+					api_plugin_drop_remote_table($table);
+				}
+			}
 		} else {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_removed`");

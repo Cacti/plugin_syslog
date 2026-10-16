@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Remove replicated rule tables from remote collectors through Cacti's native API when uninstalling all Syslog data
+
 * security: Escape stored removal and report rule names in all bulk-action confirmations
 * bug: Route rule imports to the configured Syslog database and publish complete remote rule snapshots with source-aware schema transfer and failure-safe replacement
 * bug: Bound digest backfill to the registered master and a fixed migration range, retaining the last durable cursor when a batch or progress write fails
