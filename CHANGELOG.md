@@ -1,7 +1,6 @@
 ## ChangeLog
 
 --- develop ---
-* security: Pin CI fixtures and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 
 * issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
 
@@ -55,6 +54,7 @@
 * dev: Keep the severity-legend chips equal width (sized to the longest label) as the legend wraps responsively
 * dev: Measure CI coverage with xdebug instead of pcov so the plugin's own sources are instrumented (pcov auto-scopes to the Composer root and skipped cacti/plugins/, leaving the patch-coverage gate with nothing to measure)
 * dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
+* dev: Pin CI fixtures and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
 * feature: Add a Syslog-owned durable replication outbox for configured Remote Data Collectors; processed events are delivered idempotently to the Main Collector for centralized viewing, retained through outages, and retried during recovery, while intentionally discarded records remain unreplicated
 * feature: Add Device Alert Rules for device-wide alert handling: administrators can pause a device's non-exempt alerts until a selected time or indefinitely, choose a priority threshold that always passes through device pauses and maintenance windows, and allow all device alerts during maintenance for critical devices
 * feature: Extend the Syslog Status tab with per-table partition date coverage, estimated dMaxValue occupancy and size, last successful maintenance, recovery progress, and a bounded recent-maintenance history
