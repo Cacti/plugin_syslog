@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-16 14:29-0400\n"
-"PO-Revision-Date: 2026-10-09 15:32+0000\n"
-"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
-"Language: sv-SE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-19 08:45+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -763,7 +751,7 @@ msgstr "%d Dag"
 #: includes/settings.php syslog_alerts.php
 #, php-format
 msgid "%d Days"
-msgstr "%d dygn"
+msgstr "%d dagar"
 
 #: includes/settings.php
 msgid "Partition Recovery Limit"
@@ -789,7 +777,7 @@ msgstr "Tröskelvärde för inaktiv insamlare"
 
 #: includes/settings.php
 msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
-msgstr ""
+msgstr "Varningar om pipelinehälsa visas när obearbetade meddelanden, slutförd bearbetning eller synkronisering i kö överskrider denna fördröjning. Den faktiska fördröjningen är minst tre insamlarintervall och 300 sekunder. Ange 0 för att använda 300 sekunder."
 
 #: includes/settings.php
 msgid "Default (300 seconds)"
@@ -819,33 +807,31 @@ msgstr "%d meddelanden"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
-msgstr ""
+msgstr "Varningar om pipelinehälsa"
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Pipeline Health Notification List"
-msgstr "Notifieringslista"
+msgstr "Notifieringslista för pipelinehälsa"
 
 #: includes/settings.php
 msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
-msgstr ""
+msgstr "Välj en befintlig Thold-notifieringslista för varningar om pipelinehälsa. Mottagare i aktiva listor kombineras med e-postadresserna nedan, samtidigt som BCC-mottagare bevaras. Listor kräver Tholds tabell för notifieringslistor."
 
 #: includes/settings.php
 msgid "Pipeline Health Email Recipients"
-msgstr ""
+msgstr "E-postmottagare för pipelinehälsa"
 
 #: includes/settings.php
 msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
-msgstr ""
+msgstr "Kommaseparerade e-postmottagare vid pipelinefel och återhämtning. Lämna fältet tomt och välj ingen notifieringslista om du vill inaktivera e-post. Hälsan visas fortfarande på fliken Status och tillståndsändringar loggas. Kontrollerna kräver att Cacti-insamlaren körs."
 
 #: includes/settings.php
 msgid "Pipeline Health Reminder Interval"
-msgstr ""
+msgstr "Påminnelseintervall för pipelinehälsa"
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
+msgstr "Upprepa aviseringar om kvarstående pipelineproblem efter detta intervall. Misslyckade e-postförsök görs om högst en gång var femte minut."
 
 #: includes/settings.php
 #, fuzzy, php-format
@@ -860,10 +846,9 @@ msgid "%d hours"
 msgstr "%d timmar"
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "days"
+#, php-format
 msgid "%d days"
-msgstr "dagar"
+msgstr "%d dagar"
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -1221,7 +1206,7 @@ msgstr "En titel med högst 128 tecken krävs."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Drag to reorder card"
-msgstr ""
+msgstr "Dra för att ändra kortens ordning"
 
 #: lib/syslog_dashboard.php
 #, fuzzy
@@ -2081,31 +2066,27 @@ msgstr "Utlöstes vid senaste körningen"
 
 #: syslog.php
 msgid "Show more"
-msgstr ""
+msgstr "Visa mer"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Show All Devices"
 msgid "Show less"
-msgstr "Visa alla enheter"
+msgstr "Visa mindre"
 
 #: syslog.php
 msgid "Open in a dialog"
-msgstr ""
+msgstr "Öppna i dialogruta"
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
+msgstr "Ta bort från sidan"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown card."
-msgstr "Okänd"
+msgstr "Okänt kort."
 
 #: syslog.php
 msgid "Add card"
-msgstr ""
+msgstr "Lägg till kort"
 
 #: syslog.php
 msgid "Add a status card…"
@@ -2449,7 +2430,7 @@ msgstr "Den SQL som bearbetades var ogiltig.  Vänligen korrigera din SQL"
 
 #: syslog_alerts.php
 msgid "Not Set"
-msgstr "Ej inställt"
+msgstr "Inte angiven"
 
 #: syslog_alerts.php
 msgid "1 Minute"
@@ -2484,7 +2465,7 @@ msgstr "Ny varningsregel"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
-msgstr "Ej tillämpligt"
+msgstr "Inte tillämpligt"
 
 #: syslog_alerts.php
 #, fuzzy
