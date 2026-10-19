@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-19 08:45+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-19 08:50+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -71,83 +71,77 @@ msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tab
 msgstr "Syslog-tabellerna är inte partitionerade. Traditionella tabeller utan partitionering är föråldrade och partitionerade tabeller krävs för nya installationer. Data fortsätter att samlas in, men du bör migrera Syslog-tabellen till en partitionerad arkitektur."
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Latest processing run"
 msgid "Waiting for a completed processing run."
-msgstr "Senaste bearbetningskörning"
+msgstr "Väntar på att en bearbetningskörning ska slutföras."
 
 #: includes/functions.php
 msgid "Processing is completing within the allowed delay."
-msgstr ""
+msgstr "Bearbetningen slutförs inom den tillåtna fördröjningen."
 
 #: includes/functions.php
 #, php-format
 msgid "No processing run has completed for more than %d seconds."
-msgstr ""
+msgstr "Ingen bearbetningskörning har slutförts på över %d sekunder."
 
 #: includes/functions.php
 msgid "Incoming messages are within the configured limits."
-msgstr ""
+msgstr "Inkommande meddelanden ligger inom de konfigurerade gränserna."
 
 #: includes/functions.php
 msgid "Incoming queue metrics are unavailable."
-msgstr ""
+msgstr "Mått för den inkommande kön är inte tillgängliga."
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "incoming backlog of %s messages"
+#, php-format
 msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
-msgstr "inkommande kö med %s meddelanden"
+msgstr "En inkommande kö med minst %s meddelanden överskrider gränsen %s."
 
 #: includes/functions.php
 msgid "The oldest incoming message timestamp is unavailable."
-msgstr ""
+msgstr "Tidsstämpeln för det äldsta inkommande meddelandet är inte tillgänglig."
 
 #: includes/functions.php
 #, php-format
 msgid "Unprocessed messages are older than %d seconds."
-msgstr ""
+msgstr "Obearbetade meddelanden är äldre än %d sekunder."
 
 #: includes/functions.php
 msgid "Synchronization is not enabled on this collector."
-msgstr ""
+msgstr "Synkronisering är inte aktiverad på den här insamlaren."
 
 #: includes/functions.php
 msgid "Synchronization is within the allowed delay."
-msgstr ""
+msgstr "Synkroniseringen ligger inom den tillåtna fördröjningen."
 
 #: includes/functions.php
 msgid "Synchronization queue metrics are unavailable."
-msgstr ""
+msgstr "Mått för synkroniseringskön är inte tillgängliga."
 
 #: includes/functions.php
 msgid "The oldest synchronization record timestamp is unavailable."
-msgstr ""
+msgstr "Tidsstämpeln för den äldsta synkroniseringsposten är inte tillgänglig."
 
 #: includes/functions.php
 msgid "Synchronization has failed or queued records exceed the allowed delay."
-msgstr ""
+msgstr "Synkroniseringen har misslyckats eller poster i kön överskrider den tillåtna fördröjningen."
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Partition maintenance blocked"
 msgid "Partition maintenance is not blocked."
-msgstr "Partitionsunderhåll blockerat"
+msgstr "Partitionsunderhåll är inte blockerat."
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "Partition maintenance blocked"
+#, php-format
 msgid "Partition maintenance is blocked: %s"
-msgstr "Partitionsunderhåll blockerat"
+msgstr "Partitionsunderhåll är blockerat: %s"
 
 #: includes/functions.php
 #, php-format
 msgid "Syslog pipeline health - collector %d"
-msgstr ""
+msgstr "Syslog-pipelineens status – insamlare %d"
 
 #: includes/functions.php
 msgid "The Syslog pipeline has recovered."
-msgstr ""
+msgstr "Syslog-pipelinen har återhämtat sig."
 
 #: includes/functions.php
 #, php-format
@@ -834,14 +828,12 @@ msgid "Repeat notifications for ongoing pipeline problems after this interval. F
 msgstr "Upprepa aviseringar om kvarstående pipelineproblem efter detta intervall. Misslyckade e-postförsök görs om högst en gång var femte minut."
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Minutes"
+#, php-format
 msgid "%d minutes"
 msgstr "%d minuter"
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hours"
 msgstr "%d timmar"
 
@@ -1179,10 +1171,8 @@ msgid "Dashboard not found."
 msgstr "Instrumentpanelen hittades inte."
 
 #: lib/syslog_dashboard.php syslog_dashboards.php
-#, fuzzy
-#| msgid "Unable to save the dashboard. Please try again."
 msgid "Unable to save dashboard changes."
-msgstr "Det gick inte att spara instrumentpanelen. Försök igen."
+msgstr "Det gick inte att spara ändringarna på översikten."
 
 #: lib/syslog_dashboard.php
 msgid "You may only share your own dashboards."
@@ -1209,16 +1199,12 @@ msgid "Drag to reorder card"
 msgstr "Dra för att ändra kortens ordning"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Refresh Panel"
-msgstr "Uppdateringsintervall"
+msgstr "Uppdatera panel"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
-#| msgid "Copy message"
 msgid "Total messages"
-msgstr "Kopiera meddelande"
+msgstr "Totalt antal meddelanden"
 
 #: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
@@ -1482,20 +1468,16 @@ msgid "Name"
 msgstr "Namn"
 
 #: lib/syslog_thresholds.php syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Breached Thresholds"
-msgstr "Tröskel"
+msgstr "Överskridna tröskelvärden"
 
 #: lib/syslog_thresholds.php
 msgid "Breached Since"
-msgstr ""
+msgstr "Överskriden sedan"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Collector health"
 msgid "Collector"
-msgstr "Insamlarens status"
+msgstr "Insamlare"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -1504,39 +1486,35 @@ msgstr "Enhet"
 
 #: lib/syslog_thresholds.php
 msgid "Last Matching Message"
-msgstr ""
+msgstr "Senaste matchande meddelande"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Recovery worker"
 msgid "Recovers After"
-msgstr "Återställningsarbetare"
+msgstr "Återhämtas efter"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Rules"
 msgid "Rule"
-msgstr "Regler"
+msgstr "Regel"
 
 #: lib/syslog_thresholds.php
 msgid "All matching devices"
-msgstr ""
+msgstr "Alla matchande enheter"
 
 #: lib/syslog_thresholds.php
 msgid "No thresholds are currently breached."
-msgstr ""
+msgstr "Inga tröskelvärden är för närvarande överskridna."
 
 #: lib/syslog_thresholds.php
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
-msgstr ""
+msgstr "Återställning kräver att inga meddelanden matchar fram till den angivna tidpunkten. Varje matchning startar om den tysta perioden."
 
 #: lib/syslog_thresholds.php
 msgid "Previous"
-msgstr ""
+msgstr "Föregående"
 
 #: lib/syslog_thresholds.php
 msgid "Next"
-msgstr ""
+msgstr "Nästa"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -1548,31 +1526,23 @@ msgstr "Aria-lagring kan inte användas när något alternativ för fjärrdatain
 
 #: setup.php
 msgid "Top 10 Hosts"
-msgstr ""
+msgstr "Tio främsta värdar"
 
 #: setup.php
-#, fuzzy
-#| msgid "Syslog Message Match String"
 msgid "Syslog Messages - Past Hour"
-msgstr "Matchningssträng för Syslog-meddelande"
+msgstr "Syslogmeddelanden – senaste timmen"
 
 #: setup.php
-#, fuzzy
-#| msgid "Message String:"
 msgid "Messages by Severity"
-msgstr "Meddelandesträng:"
+msgstr "Meddelanden efter allvarlighetsgrad"
 
 #: setup.php
-#, fuzzy
-#| msgid "All Programs"
 msgid "Top 10 Programs"
-msgstr "Alla program"
+msgstr "Tio främsta program"
 
 #: setup.php
-#, fuzzy
-#| msgid "Rule activity"
 msgid "Alert Activity"
-msgstr "Regelaktivitet"
+msgstr "Larmaktivitet"
 
 #: syslog.php
 msgid "Syslog Viewer"
@@ -1595,10 +1565,9 @@ msgid "Unavailable"
 msgstr "Inte tillgänglig"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "[ Unprocessed Messages: %s ]"
+#, php-format
 msgid "unprocessed messages are %s old"
-msgstr "[ Obearbetade meddelanden: %s ]"
+msgstr "obearbetade meddelanden är %s gamla"
 
 #: syslog.php
 #, php-format
@@ -1690,20 +1659,16 @@ msgid "Recent partition maintenance activity"
 msgstr "Senaste partitionsunderhållsaktivitet"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Partition health"
 msgid "Pipeline health"
-msgstr "Partitionsstatus"
+msgstr "Pipelinestatus"
 
 #: syslog.php
 msgid "Parallel workers"
 msgstr "Parallella arbetsprocesser"
 
 #: syslog.php
-#, fuzzy
-#| msgid "%d Worker Processes"
 msgid "Worker processes"
-msgstr "%d arbetsprocesser"
+msgstr "Arbetsprocesser"
 
 #: syslog.php
 msgid "Processing phases"
@@ -1875,88 +1840,68 @@ msgid "Incoming backlog"
 msgstr "Inkommande kö"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Process"
 msgid "Processing"
-msgstr "Process"
+msgstr "Bearbetning"
 
 #: syslog.php
 msgid "Partition maintenance"
 msgstr "Partitionsunderhåll"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last synchronization error"
 msgid "Synchronization"
-msgstr "Senaste synkroniseringsfelet"
+msgstr "Synkronisering"
 
 #: syslog.php
-#, fuzzy
-#| msgid "No action required."
 msgid "Attention required"
-msgstr "Ingen åtgärd krävs."
+msgstr "Åtgärd krävs"
 
 #: syslog.php
 msgid "Healthy"
-msgstr ""
+msgstr "Fungerar"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Processing phases"
 msgid "Processing disabled"
-msgstr "Bearbetningsfaser"
+msgstr "Bearbetning är inaktiverad"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Report processing"
 msgid "Waiting for processing"
-msgstr "Rapportbearbetning"
+msgstr "Väntar på bearbetning"
 
 #: syslog.php
 msgid "Health"
-msgstr ""
+msgstr "Hälsa"
 
 #: syslog.php
 msgid "Ready"
-msgstr ""
+msgstr "Klar"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Sent"
 msgid "Sent"
-msgstr "Senast skickat"
+msgstr "Skickat"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Oldest pending"
 msgid "Failed; retry pending"
-msgstr "Äldst väntande"
+msgstr "Misslyckades; nytt försök väntar"
 
 #: syslog.php
 msgid "Pending; next poller check"
-msgstr ""
+msgstr "Väntar; nästa kontroll av insamlaren"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Week"
 msgid "Last health check"
-msgstr "Senaste veckan"
+msgstr "Senaste hälsokontroll"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Email Options"
 msgid "Email notifications"
-msgstr "E-post Val"
+msgstr "E-postaviseringar"
 
 #: syslog.php
 msgid "Not checked yet"
-msgstr ""
+msgstr "Har inte kontrollerats ännu"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Last notification sent"
-msgstr "Notifieringslista"
+msgstr "Senaste aviseringen skickades"
 
 #: syslog.php
 msgid "Last received log"
@@ -2031,10 +1976,8 @@ msgid "Report processing"
 msgstr "Rapportbearbetning"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Slowest phase"
 msgid "slowest"
-msgstr "Långsammaste fas"
+msgstr "långsammaste"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
@@ -2090,7 +2033,7 @@ msgstr "Lägg till kort"
 
 #: syslog.php
 msgid "Add a status card…"
-msgstr ""
+msgstr "Lägg till ett statuskort…"
 
 #: syslog.php
 msgid "Syslog Alert View"
@@ -2284,13 +2227,11 @@ msgstr "Spara visningens standardinställningar"
 
 #: syslog.php
 msgid "Breach"
-msgstr ""
+msgstr "Överskridande"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Threshold breached"
-msgstr "Tröskel"
+msgstr "Tröskelvärde överskridet"
 
 #: syslog.php
 msgid "Messages"
@@ -2404,11 +2345,11 @@ msgstr "Exportera Syslog-varningsregel(er)"
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
-msgstr ""
+msgstr "Ange ett helt antal minuter, timmar eller dagar för tröskelfönstret."
 
 #: syslog_alerts.php
 msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
-msgstr ""
+msgstr "Ange ett positivt helt antal minuter, timmar eller dagar för tröskelvärdets återhämtning."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
@@ -2468,28 +2409,20 @@ msgid "N/A"
 msgstr "Inte tillämpligt"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Time Range"
 msgid "Time unit"
-msgstr "Tidsintervall"
+msgstr "Tidsenhet"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "%d Days"
 msgid "Days"
-msgstr "%d dygn"
+msgstr "Dagar"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Hour"
 msgid "Hours"
-msgstr "Timme"
+msgstr "Timmar"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Minute"
 msgid "Minutes"
-msgstr "Minut"
+msgstr "Minuter"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
@@ -2524,28 +2457,24 @@ msgid "Individual"
 msgstr "Privatperson"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
-msgstr "För metoden \"Tröskelvärde\" gäller att om det antal som ses är högre än detta värde kommer en varning att utlösas."
+msgstr "För metoden ”Tröskelvärde” utlöses ett larm när antalet träffar når detta värde."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Threshold Logs"
 msgid "Threshold Window"
-msgstr "Tröskelvärde Loggar"
+msgstr "Tröskelfönster"
 
 #: syslog_alerts.php
 msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
-msgstr ""
+msgstr "Räkna matchningar mellan insamlarcykler inom det här rullande fönstret med insamlarens bearbetningstid. Ange 0 om endast den aktuella cykeln ska räknas."
 
 #: syslog_alerts.php
 msgid "Recover After Quiet Period"
-msgstr ""
+msgstr "Återställ efter tyst period"
 
 #: syslog_alerts.php
 msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
-msgstr ""
+msgstr "Tid utan matchande meddelanden innan överskridandet rensas, räknaren återställs och regeln aktiveras igen. Varje matchande meddelande startar om timern."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -2737,24 +2666,20 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr "Om en Help Desk-biljett öppnas för denna Alert.  OBS: Ticket-kommandot kommer att fyllas med flera \"ALERT_\"-miljövariabler för enkelhetens skull."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Alert Handling"
 msgid "Alert command"
-msgstr "Larmhantering"
+msgstr "Larmkommando"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "När en varning utlöses körs följande kommando.  Följande ersättningsvariabler är tillgängliga: <b>\"&lt;HOSTNAME&gt;</b>\", <b>\"&lt;ALERTID&gt;</b>\", <b>\"&lt;MESSAGE&gt;</b>\", <b>\"&lt;FACILITY&gt;</b>\", <b>\"&lt;PRIORITY&gt;</b>\", <b>\"&lt;SEVERITY&gt;</b>\".  Observera att <b>\"&lt;HOSTNAME&gt;</b> \" endast är tillgängligt för enskilda tröskelvärden.  Dessa ersättningsvärden kan anges på kommandoraden eller hämtas från skriptets miljö.  När de används från miljön kommer dessa variabler att inledas med 'ALERT_'."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Recovery"
 msgid "Recovery command"
-msgstr "Återställning"
+msgstr "Återställningskommando"
 
 #: syslog_alerts.php
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
-msgstr ""
+msgstr "Valfritt kommando som körs när tröskelvärdet återställs efter sin tysta period. Det använder samma ersättningsvariabler som larmkommandot. SYSLOG_EVENT är ”clear”; SYSLOG_BREACH_ID motsvarar kommandot för överskridandet. Misslyckade kommandon försöks igen. Lämna fältet tomt för att inaktivera."
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Test rule"
@@ -3576,12 +3501,12 @@ msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller 
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
+msgstr "Automatisk partitionsåterställning har skjutits upp: storleken för dMaxValue är inte tillgänglig; operatörsåtgärd krävs."
 
 #: includes/functions.php
 #, php-format
 msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
-msgstr ""
+msgstr "Automatisk partitionsåterställning har skjutits upp: dMaxValue uppskattas till %s rader och %s byte; gränserna är 100000 rader och 134217728 byte. Operatörsåtgärd krävs."
 
 #~ msgid "Command"
 #~ msgstr "Kommando"
