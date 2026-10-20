@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-19 08:50+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-20 09:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -20,7 +20,7 @@ msgstr "Kritiskt"
 
 #: includes/functions.php
 msgid "Alert"
-msgstr "Varning"
+msgstr "Larm"
 
 #: includes/functions.php
 msgid "Error"
@@ -715,7 +715,7 @@ msgstr "Formatera fil som ska användas"
 
 #: includes/settings.php
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Välj den anpassade HTML-wrapper och CSS-filen som ska användas. Den här filen innehåller både html och CSS för att paketera runt din rapport. Om det innehåller mer än bara CSS, måste du placera en speciell <REPORT> tagga inuti filen. Denna formattag kommer att ersättas med rapportinnehållet. Dessa filer finns i katalogen &quot;format&quot;."
+msgstr "Välj den anpassade HTML-omslutningen och CSS-filen som ska användas. Filen innehåller HTML och CSS som omsluter rapporten. Om den innehåller mer än CSS måste du placera en särskild <REPORT>-tagg i filen. Formattaggen ersätts med rapportens innehåll. Filerna finns i katalogen ”formats”."
 
 #: includes/settings.php
 msgid "Data Retention Settings"
@@ -1411,7 +1411,7 @@ msgstr "Program"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 msgid "Facility"
-msgstr "Anläggning"
+msgstr "Facilitet"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 msgid "Priority"
@@ -2503,7 +2503,7 @@ msgstr "Är denna varning aktiverad?"
 
 #: syslog_alerts.php
 msgid "Re-Alert Cycle"
-msgstr "Cykel för återlarmning"
+msgstr "Cykel för upprepat larm"
 
 #: syslog_alerts.php
 msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
@@ -2631,7 +2631,7 @@ msgstr "E-post Val"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Notification List"
-msgstr "Notifieringslista"
+msgstr "Aviseringslista"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
@@ -2810,7 +2810,7 @@ msgstr "OBS: Varning '%s' %s!"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
 msgid "Updated"
-msgstr "Uppdatera"
+msgstr "Uppdaterad"
 
 #: syslog_alerts.php
 #, php-format
