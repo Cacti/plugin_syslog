@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-20 09:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-21 16:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -711,7 +711,7 @@ msgstr "Om den här kryssrutan är markerad skickas alla e-postmeddelanden i HTM
 
 #: includes/settings.php
 msgid "Format File to Use"
-msgstr "Formatera fil som ska användas"
+msgstr "Formatfil att använda"
 
 #: includes/settings.php
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
@@ -1180,7 +1180,7 @@ msgstr "Du får endast dela dina egna instrumentpaneler."
 
 #: lib/syslog_dashboard.php
 msgid "copy"
-msgstr "kopia"
+msgstr "Kopiera"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard could not be copied."
@@ -1411,7 +1411,7 @@ msgstr "Program"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 msgid "Facility"
-msgstr "Facilitet"
+msgstr "Syslog-facilitet"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 msgid "Priority"
@@ -2371,7 +2371,7 @@ msgstr "Den SQL som bearbetades var ogiltig.  Vänligen korrigera din SQL"
 
 #: syslog_alerts.php
 msgid "Not Set"
-msgstr "Inte angiven"
+msgstr "Ej inställt"
 
 #: syslog_alerts.php
 msgid "1 Minute"
