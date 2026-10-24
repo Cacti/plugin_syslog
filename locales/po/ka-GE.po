@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: Cacti\n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-16 14:29-0400\n"
-"PO-Revision-Date: 2026-09-25 03:18+0000\n"
-"Last-Translator: Ekaterine papava <papava.e@gtu.ge>\n"
-"Language-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\n"
-"Language: ka-GE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: Cacti\nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-24 02:18+0000\nLast-Translator: Ekaterine papava <papava.e@gtu.ge>\nLanguage-Team: Georgian <https://translate.cacti.net/projects/cacti/syslog/ka/>\nLanguage: ka-GE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 #, fuzzy
@@ -139,14 +127,13 @@ msgid "Synchronization has failed or queued records exceed the allowed delay."
 msgstr ""
 
 #: includes/functions.php
-#, fuzzy
 msgid "Partition maintenance is not blocked."
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფის რემონტი დაბლოკილი არაა."
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "Partition maintenance is blocked: %s"
-msgstr "დაყოფილი ცხრილი"
+msgstr "დანაყოფის რემონტი დაბლოკილი არაა: %s"
 
 #: includes/functions.php
 #, php-format
@@ -799,7 +786,7 @@ msgstr ""
 #: includes/settings.php
 #, php-format
 msgid "%d seconds"
-msgstr ""
+msgstr "%d წამი"
 
 #: includes/settings.php
 msgid "Collector Backlog Threshold"
@@ -849,21 +836,19 @@ msgid "Repeat notifications for ongoing pipeline problems after this interval. F
 msgstr ""
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Minutes"
+#, php-format
 msgid "%d minutes"
 msgstr "%d წუთი"
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hours"
 msgstr "%d საათი"
 
 #: includes/settings.php
 #, php-format
 msgid "%d days"
-msgstr ""
+msgstr "%d დღე"
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -960,16 +945,14 @@ msgid "No pause"
 msgstr ""
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "seconds"
+#, php-format
 msgid "%d milliseconds"
-msgstr "წამი"
+msgstr "%d მილიწამი"
 
 #: includes/settings.php
-#, fuzzy, php-format
-#| msgid "seconds"
+#, php-format
 msgid "%d second"
-msgstr "წამი"
+msgstr "%d წამი"
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
@@ -1420,19 +1403,16 @@ msgid "Auto"
 msgstr "ავტო"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Minute"
-msgstr "1 წთ"
+msgstr "წუთი"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "10 Minutes"
-msgstr "1 წთ"
+msgstr "10 წუთი"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Hour"
-msgstr "%d საათი"
+msgstr "საათი"
 
 #: lib/syslog_dashboard.php
 #, fuzzy
@@ -1520,7 +1500,7 @@ msgstr ""
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
-msgstr ""
+msgstr "მომგროვებელი"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -1556,11 +1536,11 @@ msgstr ""
 
 #: lib/syslog_thresholds.php
 msgid "Previous"
-msgstr ""
+msgstr "წინა"
 
 #: lib/syslog_thresholds.php
 msgid "Next"
-msgstr ""
+msgstr "შემდეგი"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -1581,10 +1561,8 @@ msgid "Syslog Messages - Past Hour"
 msgstr "Syslog-ის შეტყობინებების გარეშე"
 
 #: setup.php
-#, fuzzy
-#| msgid "Message String:"
 msgid "Messages by Severity"
-msgstr "შეტყობინების სტრიქონი:"
+msgstr "შეტყობინებების სიმძიმის მიხედვით"
 
 #: setup.php
 #, fuzzy
@@ -1615,12 +1593,12 @@ msgstr "წამი"
 
 #: syslog.php
 msgid "Unavailable"
-msgstr ""
+msgstr "ხელმიუწვდომელია"
 
 #: syslog.php
-#, fuzzy, php-format
+#, php-format
 msgid "unprocessed messages are %s old"
-msgstr "თავიდან დამუშავება"
+msgstr "დაუმუშავებელი შეტყობინებები %s ხნისაა"
 
 #: syslog.php
 #, php-format
@@ -1634,26 +1612,23 @@ msgstr "ყოველდღიური"
 
 #: syslog.php
 msgid "days"
-msgstr ""
+msgstr "დღე"
 
 #: syslog.php
 msgid "hour"
-msgstr ""
+msgstr "საათი"
 
 #: syslog.php
-#, fuzzy
 msgid "hours"
-msgstr "%d საათი"
+msgstr "საათი"
 
 #: syslog.php
-#, fuzzy
 msgid "minute"
-msgstr "1 წთ"
+msgstr "წუთი"
 
 #: syslog.php
-#, fuzzy
 msgid "minutes"
-msgstr "1 წთ"
+msgstr "წუთი"
 
 #: syslog.php
 msgid "Rows in syslog_incoming"
@@ -1755,11 +1730,11 @@ msgstr ""
 
 #: syslog.php
 msgid "Started"
-msgstr ""
+msgstr "გაეშვა"
 
 #: syslog.php
 msgid "Finished"
-msgstr ""
+msgstr "დასრულდა"
 
 #: syslog.php
 msgid "Minimum runtime"
@@ -1775,7 +1750,7 @@ msgstr ""
 
 #: syslog.php
 msgid "State"
-msgstr ""
+msgstr "მდგომარეობა"
 
 #: syslog.php
 #, fuzzy
@@ -1792,14 +1767,12 @@ msgid "Last successful synchronization"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
-#| msgid "Actions"
 msgid "Active"
-msgstr "ქმედებები"
+msgstr "აქტიური"
 
 #: syslog.php
 msgid "Inactive"
-msgstr ""
+msgstr "არააქტიური"
 
 #: syslog.php
 #, fuzzy
@@ -1848,9 +1821,8 @@ msgid "Date coverage"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
 msgid "Table"
-msgstr "ჩართვა"
+msgstr "ცხრილი"
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
@@ -1871,7 +1843,7 @@ msgstr ""
 
 #: syslog.php
 msgid "Complete"
-msgstr ""
+msgstr "დასრულებულია"
 
 #: syslog.php
 msgid "Deferred"
@@ -1895,9 +1867,8 @@ msgid "Outcome"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery"
-msgstr "%d ჩანაწერი"
+msgstr "აღდგენა"
 
 #: syslog.php
 msgid "When"
@@ -2022,36 +1993,32 @@ msgid "Hosts resolved"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
 msgid "Process"
-msgstr "თავიდან დამუშავება"
+msgstr "პროცესი"
 
 #: syslog.php
-#, fuzzy
 msgid "Records handled"
-msgstr "ჩანაწერები"
+msgstr "დამუშავებული ჩანაწერები"
 
 #: syslog.php
 msgid "Runtime"
-msgstr ""
+msgstr "შესრულების დრო"
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
 msgstr ""
 
 #: syslog.php
-#, fuzzy
 msgid "Duration"
-msgstr "წაშლა"
+msgstr "ხანგრძლივობა"
 
 #: syslog.php
 msgid "Phase"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
 msgid "Records"
-msgstr "%d ჩანაწერი"
+msgstr "ჩანაწერები"
 
 #: syslog.php
 msgid "Reference updates"
@@ -2096,7 +2063,7 @@ msgstr "თავიდან დამუშავება"
 
 #: syslog.php
 msgid "Total"
-msgstr ""
+msgstr "სულ"
 
 #: syslog.php
 #, fuzzy
@@ -2114,7 +2081,7 @@ msgstr ""
 
 #: syslog.php
 msgid "Show more"
-msgstr ""
+msgstr "მეტის ჩვენება"
 
 #: syslog.php
 #, fuzzy
@@ -2131,10 +2098,8 @@ msgid "Remove from page"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown card."
-msgstr "უცნობი"
+msgstr "უცნობი ბარათი."
 
 #: syslog.php
 msgid "Add card"
@@ -2227,9 +2192,8 @@ msgid "Save search"
 msgstr "ძებნა"
 
 #: syslog.php
-#, fuzzy
 msgid "Edit"
-msgstr "(ჩასწორება)"
+msgstr "ჩასწორება"
 
 #: syslog.php
 msgid "Save for all"
@@ -2267,9 +2231,8 @@ msgid "Removal Handling"
 msgstr "წაშლის დამუშავება"
 
 #: syslog.php
-#, fuzzy
 msgid "Display"
-msgstr "მწკრივების ჩვენება"
+msgstr "ჩვენება"
 
 #: syslog.php
 msgid "Group Duplicate Messages"
@@ -2304,9 +2267,8 @@ msgid "Edit Saved Search"
 msgstr ""
 
 #: syslog.php
-#, fuzzy
 msgid "Save As"
-msgstr "შენახვა"
+msgstr "შენახვა, როგორც"
 
 #: syslog.php
 msgid "Delete the selected saved search?"
@@ -2546,20 +2508,16 @@ msgid "Time unit"
 msgstr "დროის შუალედი"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "%d Days"
 msgid "Days"
-msgstr "%d დღე"
+msgstr "დღე"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Hours"
-msgstr "%d საათი"
+msgstr "საათი"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Minutes"
-msgstr "1 წთ"
+msgstr "წუთი"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
@@ -2659,37 +2617,31 @@ msgstr ""
 
 #: syslog_alerts.php
 msgid "1 day"
-msgstr ""
+msgstr "1 დღე"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 hour"
-msgstr "%d საათი"
+msgstr "1 საათი"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 minute"
 msgstr "1 წთ"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "15 minutes"
-msgstr "1 წთ"
+msgstr "15 წუთი"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "30 minutes"
-msgstr "1 წთ"
+msgstr "30 წთ"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "4 hours"
-msgstr "%d საათი"
+msgstr "4 საათი"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "5 minutes"
-msgstr "1 წთ"
+msgstr "5 წუთი"
 
 #: syslog_alerts.php
 #, fuzzy
@@ -2841,7 +2793,7 @@ msgstr ""
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Value"
-msgstr ""
+msgstr "მნიშვნელობა"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Enter a value"
@@ -2854,7 +2806,7 @@ msgstr "დამთხვევის ტიპი"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Exclude"
-msgstr ""
+msgstr "ამოღება"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Enter a nonnegative integer"
@@ -2994,7 +2946,7 @@ msgstr ""
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
-msgstr ""
+msgstr "მფლობელი"
 
 #: syslog_dashboards.php
 msgid "Shared"
@@ -3002,7 +2954,7 @@ msgstr ""
 
 #: syslog_dashboards.php
 msgid "Panels"
-msgstr ""
+msgstr "პანელები"
 
 #: syslog_dashboards.php
 #, fuzzy
@@ -3578,11 +3530,11 @@ msgstr ""
 
 #: syslog_saved_searches.php
 msgid "Templates"
-msgstr ""
+msgstr "ნიმუშები"
 
 #: syslog_saved_searches.php
 msgid "Query"
-msgstr ""
+msgstr "მოთხოვნა"
 
 #: syslog_saved_searches.php
 msgid "No shared search templates. Save a search for all users from Syslog to create one."
