@@ -5350,7 +5350,7 @@ function syslog_process_alerts($max_seq) {
 
 			if ($sql != '') {
 				if ($alert['level'] == '1') {
-					$th_sql  = str_replace('*', 'host, COUNT(*) AS count', $sql);
+					$th_sql  = preg_replace('/^SELECT \*/', 'SELECT host, COUNT(*) AS count', $sql, 1);
 					$results = syslog_db_fetch_assoc_prepared($th_sql . $groupBy, $params);
 
 					if (cacti_sizeof($results)) {
@@ -5373,7 +5373,7 @@ function syslog_process_alerts($max_seq) {
 					// the consolidated Phase 1 count is the same number the
 					// per-rule COUNT(*) scan would return; keep it instead
 					// of scanning the staging table a second time
-					$count = isset($counts[$index]) ? (int) $counts[$index] : (int) syslog_db_fetch_cell_prepared(str_replace('*', 'COUNT(*)', $sql) . $groupBy, $params);
+					$count = isset($counts[$index]) ? (int) $counts[$index] : (int) syslog_db_fetch_cell_prepared(preg_replace('/^SELECT \*/', 'SELECT COUNT(*)', $sql, 1) . $groupBy, $params);
 					// Windowed thresholds need every cycle's count recorded,
 					// and their state machine decides what may fire, so
 					// evaluation must run even below the per-cycle threshold.

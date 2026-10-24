@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Keep asterisks inside a host-level alert rule expression intact when the grouped query is built
+
 * bug: Keep alert, removal and report rules when the upgrade type Truncate is chosen; it now discards stored messages only
 
 * security: Substitute alert command tokens in a single pass so values containing a token name are not expanded again
