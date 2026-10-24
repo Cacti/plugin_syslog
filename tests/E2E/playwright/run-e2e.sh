@@ -7,6 +7,8 @@ PW_PREFIX=(
   docker run --rm
   --network cacti-syslog-e2e_default
   --ipc=host
+  -e E2E_SCHEME=http
+  -e E2E_HOST=cacti_web
   -v "${ROOT_DIR}/tests/E2E/playwright:/work" \
   -w /work
 )

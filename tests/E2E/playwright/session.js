@@ -1,7 +1,19 @@
 const { chromium } = require('playwright');
 
+// The address is built from the environment set by run-e2e.sh.
+function url(path = '') {
+  const scheme = process.env.E2E_SCHEME;
+  const host = process.env.E2E_HOST;
+
+  if (!scheme || !host) {
+    throw new Error('E2E_SCHEME and E2E_HOST must be set');
+  }
+
+  return `${scheme}://${host}/cacti/${path}`;
+}
+
 async function login(page) {
-  await page.goto('http://cacti_web/cacti/', { waitUntil: 'domcontentloaded' });
+  await page.goto(url(), { waitUntil: 'domcontentloaded' });
   await page.locator('#login_username').fill('admin');
   await page.locator('#login_password').fill('Admin123!');
   await Promise.all([
@@ -29,4 +41,4 @@ function fail(message) {
   throw new Error(message);
 }
 
-module.exports = { withSession, fail };
+module.exports = { withSession, fail, url };

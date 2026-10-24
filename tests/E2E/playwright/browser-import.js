@@ -1,8 +1,8 @@
 // Pastes an import document into a rule import form and checks the outcome message.
-const { withSession, fail } = require('./session');
+const { withSession, fail, url } = require('./session');
 
 withSession(async (page) => {
-  await page.goto(`http://cacti_web/cacti/${process.env.PAGE_PATH}`, { waitUntil: 'domcontentloaded' });
+  await page.goto(url(process.env.PAGE_PATH), { waitUntil: 'domcontentloaded' });
   await page.locator('#import_text').fill(process.env.IMPORT_TEXT || '');
   // On newer Cacti cores the Import button and the action field are rendered with
   // an empty form attribute, which detaches them from the form. The form is

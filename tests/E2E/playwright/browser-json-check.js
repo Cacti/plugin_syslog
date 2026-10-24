@@ -1,12 +1,12 @@
 // Fetches a JSON endpoint as the logged in admin and checks the labels it returns.
-const { withSession, fail } = require('./session');
+const { withSession, fail, url } = require('./session');
 
 withSession(async (page) => {
   const path = process.env.JSON_PATH || '';
   const response = await page.evaluate(async (url) => {
     const result = await fetch(url, { credentials: 'same-origin' });
     return { status: result.status, text: await result.text() };
-  }, `http://cacti_web/cacti/${path}`);
+  }, url(path));
 
   if (response.status !== 200) {
     fail(`Expected HTTP 200 from ${path}, got ${response.status}`);
