@@ -1423,7 +1423,7 @@ function alert_import(): void {
 			$check = isset($save['type'], $save['message']) ? syslog_get_alert_sql($save, 100) : [];
 
 			// Imports are held to the same compile and syntax check as the editor.
-			if (cacti_sizeof($check) && syslog_db_fetch_assoc_prepared($check['sql'], $check['params'], false) !== false) {
+			if (cacti_sizeof($check) && $check['sql'] != '' && syslog_db_fetch_assoc_prepared($check['sql'], $check['params'], false) !== false) {
 				$id = syslog_sql_save($save, 'syslog_alert');
 			}
 

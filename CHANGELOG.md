@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Reject imported alert rules whose match type produces no query
+
 * test: Extend the browser E2E run with dashboard, archiving removal rule, alert rule isolation, import validation and single-rule reprocess checks
 
 * test: Load functions extracted from plugin pages through temporary files instead of evaluating source strings

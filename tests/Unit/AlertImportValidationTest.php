@@ -88,3 +88,11 @@ it('imports an alert whose query runs', function () {
 	expect($saved)->toHaveCount(1)
 		->and($saved[0]['name'])->toBe('Fine');
 });
+
+it('rejects an imported alert with an unknown match type', function () {
+	$saved = alert_import_run([[
+		'name' => 'Unknown', 'severity' => 3, 'method' => 0, 'type' => 'nonsense', 'message' => 'error',
+	]]);
+
+	expect($saved)->toBe([]);
+});
