@@ -3646,17 +3646,24 @@ function syslog_filter_rule_summary($json) {
  *
  * @param string $table   The table to process ('syslog' or 'syslog_incoming').
  * @param int    $max_seq The highest incoming sequence number to consider.
+ * @param int    $rule_id Limit processing to this removal rule, or 0 for every enabled rule.
  *
  * @return array{removed: int, xferred: int} Counts of removed and transferred records.
  */
-function syslog_remove_items($table, $max_seq) {
+function syslog_remove_items($table, $max_seq, $rule_id = 0) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
 
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Processing Removal Rules...');
 
-	if ($table == 'syslog') {
+	if ($rule_id > 0) {
+		$rows = syslog_db_fetch_assoc_prepared("SELECT *
+			FROM `$syslogdb_default`.`syslog_remove`
+			WHERE enabled = 'on'
+			AND id = ?",
+			[$rule_id]);
+	} elseif ($table == 'syslog') {
 		$rows = syslog_db_fetch_assoc("SELECT *
 			FROM `$syslogdb_default`.`syslog_remove`
 			WHERE enabled = 'on'");

@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Reprocess only the selected removal rule instead of every enabled rule
+
 * bug: Archive host and program removal rules without an ambiguous column error
 
 * bug: Group the All records dashboard queries per log table so panels show every host, program and time bucket
