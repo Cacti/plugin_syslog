@@ -756,6 +756,12 @@ if (!function_exists('syslog_sql_save')) {
 	}
 }
 
+if (!function_exists('generate_hash')) {
+	function generate_hash() {
+		return md5(uniqid('', true));
+	}
+}
+
 if (!function_exists('cacti_escapeshellarg')) {
 	function cacti_escapeshellarg($value) {
 		return escapeshellarg((string) $value);

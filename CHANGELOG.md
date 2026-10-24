@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Validate imported saved search templates like edited ones
+
 * bug: Stop hostname lookups after a time budget per processing run so senders cannot stall the poller
 
 * bug: Widen rule owner columns to the 50 character Cacti username limit
