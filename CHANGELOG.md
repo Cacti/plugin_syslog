@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* test: Load functions extracted from plugin pages through temporary files instead of evaluating source strings
+
 * test: Add database regression checks for the dashboard queries, archiving removal rules, rule reprocessing, alert rule isolation and upgrade truncate scope
 
 * bug: Validate imported saved search templates like edited ones

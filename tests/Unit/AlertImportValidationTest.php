@@ -15,7 +15,6 @@ afterEach(function () {
 	syslog_test_reset_globals();
 });
 
-
 function alert_import_setup(): void {
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default']       = 'syslogdb';
@@ -30,19 +29,10 @@ function alert_import_setup(): void {
 	];
 }
 
-
 function alert_import_run(array $templates, array $dependencies = []): array {
 	alert_import_setup();
 
-	$source = plugin_test_read_source('syslog_alerts.php');
-
-	if (!preg_match('/^function alert_import\(\): void \{.*?^\}/ms', $source, $match)) {
-		throw new RuntimeException('Could not extract alert_import');
-	}
-
-	if (!function_exists('alert_import_under_test')) {
-		eval(str_replace('function alert_import()', 'function alert_import_under_test()', $match[0]));
-	}
+	$import = syslog_test_extract_function('syslog_alerts.php', 'alert_import');
 
 	$GLOBALS['request']['import_text'] = json_encode(['version' => 1, 'table' => 'syslog_alert', 'templates' => $templates]);
 
@@ -59,11 +49,10 @@ function alert_import_run(array $templates, array $dependencies = []): array {
 		return 1;
 	});
 
-	alert_import_under_test();
+	$import();
 
 	return $saved;
 }
-
 
 it('does not let an imported file choose the row id', function () {
 	$saved = alert_import_run([[
@@ -75,7 +64,6 @@ it('does not let an imported file choose the row id', function () {
 		->and((int) $saved[0]['id'])->toBe(9);
 });
 
-
 it('rejects an imported alert whose query does not run', function () {
 	$saved = alert_import_run([[
 		'name' => 'Broken', 'severity' => 3, 'method' => 0, 'type' => 'sql', 'message' => 'message LIKE (',
@@ -84,7 +72,6 @@ it('rejects an imported alert whose query does not run', function () {
 	expect($saved)->toBe([]);
 });
 
-
 it('rejects an imported alert without a usable match type', function () {
 	$saved = alert_import_run([[
 		'name' => 'Untyped', 'severity' => 3, 'method' => 0, 'message' => 'error',
@@ -92,7 +79,6 @@ it('rejects an imported alert without a usable match type', function () {
 
 	expect($saved)->toBe([]);
 });
-
 
 it('imports an alert whose query runs', function () {
 	$saved = alert_import_run([[

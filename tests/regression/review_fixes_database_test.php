@@ -216,7 +216,18 @@ function clean_up_name($value) {
 
 require dirname(__DIR__, 2) . '/includes/functions.php';
 // settings.php pulls in the full plugin bootstrap, which a bare database run does not have.
-eval('?>' . str_replace("require_once(__DIR__ . '/settings.php');", '', file_get_contents(dirname(__DIR__, 2) . '/includes/schema.php')));
+$schema_dir  = sys_get_temp_dir() . '/syslog-review-' . bin2hex(random_bytes(6));
+$schema_file = $schema_dir . '/schema.php';
+
+mkdir($schema_dir, 0700);
+file_put_contents($schema_file, str_replace("require_once(__DIR__ . '/settings.php');", '', file_get_contents(dirname(__DIR__, 2) . '/includes/schema.php')));
+chmod($schema_file, 0600);
+register_shutdown_function(static function () use ($schema_file, $schema_dir) {
+	unlink($schema_file);
+	rmdir($schema_dir);
+});
+
+require $schema_file;
 require dirname(__DIR__, 2) . '/lib/syslog_dashboard.php';
 
 function table_count($table) {
