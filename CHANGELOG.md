@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Keep alert, removal and report rules when the upgrade type Truncate is chosen; it now discards stored messages only
+
 * security: Substitute alert command tokens in a single pass so values containing a token name are not expanded again
 
 * issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.

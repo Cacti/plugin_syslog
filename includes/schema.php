@@ -545,10 +545,6 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	// matching ROW_FORMAT for the chosen engine.
 	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'));
 
-	if ($truncate) {
-		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert`");
-	}
-
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,
 		`hash` varchar(32) NOT NULL default '',
@@ -622,10 +618,6 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		INDEX `last_sent` (`last_sent`))
 		ENGINE=InnoDB");
 
-	if ($truncate) {
-		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_remove`");
-	}
-
 	if (stripos($engine, 'aria') !== false) {
 		$row_format = 'ROW_FORMAT=Page';
 	} else {
@@ -646,10 +638,6 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		PRIMARY KEY (id))
 		ENGINE=$engine
 		$row_format");
-
-	if ($truncate) {
-		syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_reports`");
-	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_reports` (
 		id int(10) NOT NULL auto_increment,
