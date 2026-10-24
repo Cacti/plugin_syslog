@@ -6122,6 +6122,95 @@ function syslog_strip_incoming_domains($max_seq) {
 }
 
 /**
+ * Return the canonical text of an IPv4 or IPv6 address, or false when the
+ * sender name is not an address literal.
+ *
+ * IPv6 text is normalized (lower case, compressed, no brackets) so that one
+ * address arriving in several spellings is stored under one host name. A zone
+ * suffix such as %eth0 is kept as sent.
+ *
+ * @param string $name The host name as sent by the remote system
+ *
+ * @return string|false The canonical address text, or false for a name
+ */
+function syslog_host_address(string $name): string|false {
+	if (preg_match('/^\[?([^\]%]+)(%[A-Za-z0-9_.-]+)?\]?$/', trim($name), $match) !== 1 || !filter_var($match[1], FILTER_VALIDATE_IP)) {
+		return false;
+	}
+
+	$zone = $match[2] ?? '';
+
+	// Only an IPv6 address can carry a zone.
+	if ($zone !== '' && strpos($match[1], ':') === false) {
+		return false;
+	}
+
+	return inet_ntop(inet_pton($match[1])) . $zone;
+}
+
+/**
+ * Whether a host name has an address record. Looks for A and AAAA records so a
+ * sender that only has an IPv6 address counts, and falls back to the system
+ * resolver, which also reads the hosts file.
+ *
+ * @param string   $name    The host name to look up
+ * @param callable $records Returns the A and AAAA records for a name, like dns_get_record()
+ * @param callable $legacy  Returns the IPv4 address for a name, or the name itself, like gethostbyname()
+ *
+ * @return bool True when the name resolves
+ */
+function syslog_host_has_address(string $name, ?callable $records = null, ?callable $legacy = null): bool {
+	$records ??= 'dns_get_record';
+	$legacy  ??= 'gethostbyname';
+
+	// A failed query is an answer here, not a PHP warning for the Cacti log.
+	set_error_handler(static fn() => true);
+
+	try {
+		$found = $records($name, DNS_A | DNS_AAAA);
+	} finally {
+		restore_error_handler();
+	}
+
+	if (is_array($found) && cacti_sizeof($found)) {
+		return true;
+	}
+
+	return $name != $legacy($name);
+}
+
+/**
+ * Point the unprocessed messages of one sender name at another name.
+ *
+ * @param string $from      The name currently stored
+ * @param string $to        The name to store
+ * @param int    $max_seq   The max_seq for syslog_incoming messages to process
+ * @param int    $seq_start Optional first seq of a slice (0 for no bound)
+ * @param int    $seq_end   Optional last seq of a slice (0 for no bound)
+ *
+ * @return void
+ */
+function syslog_set_incoming_host(string $from, string $to, $max_seq, $seq_start = 0, $seq_end = 0): void {
+	global $syslogdb_default;
+
+	if ($seq_start > 0 && $seq_end > 0) {
+		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+			SET host = ?
+			WHERE host = ?
+			AND `status` = 1
+			AND `seq` BETWEEN ? AND ?",
+			[$to, $from, $seq_start, $seq_end]);
+	} else {
+		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+			SET host = ?
+			WHERE host = ?
+			AND `status` = 1
+			AND `seq` <= ?",
+			[$to, $from, $max_seq]);
+	}
+}
+
+/**
  * Check if the hostname is in the cacti hosts table
  * Some devices only send IP addresses in syslog messages, and may not be in the DNS
  * however they may be in the cacti hosts table as monitored devices.
@@ -6318,10 +6407,11 @@ function syslog_update_reference_tables($max_seq) {
  * @param int $seq_end   Optional last seq of a slice (0 for no bound)
  * @param int $budget_seconds Seconds after which DNS lookups stop for this call;
  *                            hosts not found in Cacti are then left as received
+ * @param callable|null $dns_records Replacement for dns_get_record(), used by tests
  *
  * @return int The number of distinct hosts resolved
  */
-function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0, $budget_seconds = SYSLOG_RESOLVE_BUDGET_SECONDS) {
+function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0, $budget_seconds = SYSLOG_RESOLVE_BUDGET_SECONDS, ?callable $dns_records = null) {
 	global $syslogdb_default;
 
 	if (read_config_option('syslog_resolve_hostname') != 'on') {
@@ -6353,6 +6443,23 @@ function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0, $
 
 		$resolved  = false;
 		$dns_asked = false;
+		$address   = syslog_host_address($host['host']);
+
+		if ($address !== false) {
+			// An address needs no lookup. A device in Cacti may still give it a
+			// better name, matched as sent first and then in canonical form.
+			if (!syslog_check_cacti_hosts($host['host'], $max_seq, $seq_start, $seq_end)) {
+				if ($address !== $host['host']) {
+					syslog_set_incoming_host($host['host'], $address, $max_seq, $seq_start, $seq_end);
+				}
+
+				syslog_check_cacti_hosts($address, $max_seq, $seq_start, $seq_end);
+			}
+
+			$resolved_count++;
+
+			continue;
+		}
 
 		// Check if hostname resolves via DNS (only if DNS is enabled). Senders
 		// choose these names, so lookups stop once the time budget is spent.
@@ -6362,7 +6469,7 @@ function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0, $
 			} else {
 				$dns_asked = true;
 
-				if ($host['host'] != gethostbyname($host['host'])) {
+				if (syslog_host_has_address($host['host'], $dns_records)) {
 					// DNS resolved successfully
 					$resolved = true;
 				}
