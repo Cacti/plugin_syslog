@@ -47,8 +47,9 @@ it('still evaluates the other rules when the combined count query fails', functi
 
 	$good = isolation_rule(33, "message LIKE 'good'");
 	$bad  = isolation_rule(34, "message LIKE 'bad' AND (");
+	$none = ['type' => 'unknown'] + isolation_rule(36, 'unused');
 
-	test_override('syslog_db_fetch_assoc', static fn($sql) => str_contains($sql, "enabled = 'on'") ? [$good, $bad] : []);
+	test_override('syslog_db_fetch_assoc', static fn($sql) => str_contains($sql, "enabled = 'on'") ? [$good, $bad, $none] : []);
 	test_override('syslog_db_fetch_assoc_prepared', function ($sql) {
 		if (str_contains($sql, 'SUM(CASE WHEN')) {
 			return false;
@@ -78,6 +79,6 @@ it('still evaluates the other rules when the combined count query fails', functi
 
 	$result = syslog_process_alerts(100);
 
-	expect($result['syslog_alerts'])->toBe(2)
+	expect($result['syslog_alerts'])->toBe(3)
 		->and($result['syslog_alarms'])->toBe(1);
 });
