@@ -3868,14 +3868,17 @@ function syslog_remove_items($table, $max_seq) {
 								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 								ON sp.program = si.program $insert_where", $insert_params);
 						} else {
+							// The shared WHERE names host and program unqualified, which
+							// the joined reference tables would make ambiguous, so it
+							// filters the staging rows before the join.
 							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 								(logtime, priority_id, facility_id, program_id, host_id, message, message_digest, threshold_breached, replication_source_poller_id, replication_source_event_id)
 								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message, MD5(si.message), si.threshold_breached, {$config['poller_id']}, si.seq
-								FROM `$syslogdb_default`.`syslog_incoming` AS si
+								FROM (SELECT * FROM `$syslogdb_default`.`syslog_incoming` $sql_where) AS si
 								INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 								ON sh.host = si.host
 								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
-								ON sp.program = si.program $sql_where", $params);
+								ON sp.program = si.program", $params);
 						}
 					} else {
 						$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`

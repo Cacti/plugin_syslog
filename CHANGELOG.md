@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Archive host and program removal rules without an ambiguous column error
+
 * bug: Group the All records dashboard queries per log table so panels show every host, program and time bucket
 
 * bug: Validate imported alert rules like edited ones and ignore row ids in import files
