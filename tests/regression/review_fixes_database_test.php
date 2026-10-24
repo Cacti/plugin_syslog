@@ -26,7 +26,7 @@ if (!$dsn) {
 
 $pdo = new PDO($dsn, 'root', getenv('SYSLOG_TEST_MYSQL_PASSWORD') ?: '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-$syslogdb_default = 'syslog_review_' . bin2hex(random_bytes(4));
+$syslogdb_default = 'syslog_review_check';
 $config           = ['poller_id' => 1, 'base_path' => sys_get_temp_dir()];
 $syslog_cnn       = new stdClass();
 $options          = [];
@@ -125,12 +125,24 @@ function syslog_db_column_exists($table, $column, ...$args) {
 	return (bool) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?', [$table, $column]);
 }
 
+function quoted_identifier($name) {
+	if (!preg_match('/^[A-Za-z0-9_]+$/', (string) $name)) {
+		throw new InvalidArgumentException('Unexpected identifier in a test statement');
+	}
+
+	return '`' . $name . '`';
+}
+
 function syslog_sql_save($row, $table, $key = 'id', $autoinc = true) {
+	if (!preg_match('/^`?(\w+)`?\.`?(\w+)`?$/', $table, $parts)) {
+		throw new InvalidArgumentException('Unexpected table name in a test statement');
+	}
+
 	$row     = array_filter($row, static fn($value) => $value !== '');
-	$columns = '`' . implode('`, `', array_keys($row)) . '`';
+	$columns = implode(', ', array_map('quoted_identifier', array_keys($row)));
 	$marks   = implode(', ', array_fill(0, count($row), '?'));
 
-	run_sql("INSERT INTO $table ($columns) VALUES ($marks)", array_values($row));
+	run_sql('INSERT INTO ' . quoted_identifier($parts[1]) . '.' . quoted_identifier($parts[2]) . ' (' . $columns . ') VALUES (' . $marks . ')', array_values($row));
 
 	return (int) $GLOBALS['pdo']->lastInsertId();
 }
@@ -203,7 +215,7 @@ function db_qstr($value) {
 }
 
 function generate_hash() {
-	return md5(uniqid('', true));
+	return bin2hex(random_bytes(16));
 }
 
 function cacti_escapeshellarg($value) {
@@ -231,12 +243,34 @@ require $schema_file;
 require dirname(__DIR__, 2) . '/lib/syslog_dashboard.php';
 
 function table_count($table) {
-	return (int) $GLOBALS['pdo']->query("SELECT COUNT(*) FROM `$table`")->fetchColumn();
+	$queries = [
+		'syslog'          => 'SELECT COUNT(*) FROM syslog',
+		'syslog_alert'    => 'SELECT COUNT(*) FROM syslog_alert',
+		'syslog_remove'   => 'SELECT COUNT(*) FROM syslog_remove',
+		'syslog_reports'  => 'SELECT COUNT(*) FROM syslog_reports',
+		'syslog_removed'  => 'SELECT COUNT(*) FROM syslog_removed',
+		'syslog_incoming' => 'SELECT COUNT(*) FROM syslog_incoming',
+	];
+
+	return (int) $GLOBALS['pdo']->query($queries[$table])->fetchColumn();
+}
+
+function owner_column_type($table) {
+	$statement = $GLOBALS['pdo']->prepare('SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?');
+	$statement->execute([$table, 'user']);
+
+	return $statement->fetchColumn();
+}
+
+function set_sql_mode($mode) {
+	$statement = $GLOBALS['pdo']->prepare('SET SESSION sql_mode = ?');
+	$statement->execute([$mode]);
 }
 
 try {
-	$pdo->exec("CREATE DATABASE `$syslogdb_default`");
-	$pdo->exec("USE `$syslogdb_default`");
+	$pdo->exec('DROP DATABASE IF EXISTS syslog_review_check');
+	$pdo->exec('CREATE DATABASE syslog_review_check');
+	$pdo->exec('USE syslog_review_check');
 	$pdo->exec("SET SESSION sql_mode = ''");
 
 	// ---- Upgrade truncate keeps the rule tables --------------------------------
@@ -256,21 +290,27 @@ try {
 
 	// ---- Owner columns hold a full Cacti username ------------------------------
 	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'] as $table) {
-		$type = $pdo->query("SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$table' AND COLUMN_NAME = 'user'")->fetchColumn();
+		$type = owner_column_type($table);
 		check($type === 'varchar(50)', "$table.user must be varchar(50), found $type");
 	}
 
 	$pdo->exec('ALTER TABLE syslog_alert MODIFY COLUMN `user` varchar(32) NOT NULL DEFAULT \'\'');
 	$pdo->exec('ALTER TABLE syslog_device_rule MODIFY COLUMN `user` varchar(32) NOT NULL DEFAULT \'\'');
 	// Cacti's table reconciler creates these in a live install; this run has no Cacti.
-	foreach (['syslog_saved_searches', 'syslog_saved_searches_perm', 'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_dashboard_panels'] as $table) {
-		$pdo->exec("CREATE TABLE IF NOT EXISTS `$table` (id INT)");
+	foreach ([
+		'CREATE TABLE IF NOT EXISTS syslog_saved_searches (id INT)',
+		'CREATE TABLE IF NOT EXISTS syslog_saved_searches_perm (id INT)',
+		'CREATE TABLE IF NOT EXISTS syslog_dashboards (id INT)',
+		'CREATE TABLE IF NOT EXISTS syslog_dashboards_perm (id INT)',
+		'CREATE TABLE IF NOT EXISTS syslog_dashboard_panels (id INT)',
+	] as $statement) {
+		$pdo->exec($statement);
 	}
 
 	check(syslog_ensure_table_structures(), 'Schema repair must succeed on a 32 character owner column');
 
 	foreach (['syslog_alert', 'syslog_device_rule'] as $table) {
-		$type = $pdo->query("SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$table' AND COLUMN_NAME = 'user'")->fetchColumn();
+		$type = owner_column_type($table);
 		check($type === 'varchar(50)', "Repair must widen $table.user, found $type");
 	}
 
@@ -289,7 +329,7 @@ try {
 	$range = "syslog.logtime BETWEEN '2026-09-01 00:00:00' AND '2026-12-01 00:00:00'";
 
 	foreach (['', 'ONLY_FULL_GROUP_BY'] as $mode) {
-		$pdo->exec("SET SESSION sql_mode = '$mode'");
+		set_sql_mode($mode);
 
 		$rows   = syslog_db_fetch_assoc(syslog_dashboard_breakdown_sql('syslog', 'host', '1', $range, 0));
 		$byhost = $rows === false ? [] : array_column($rows, 'records', 'label');
@@ -315,7 +355,8 @@ try {
 		$pdo->exec('DELETE FROM syslog_incoming');
 		$pdo->exec('DELETE FROM syslog_removed');
 		$pdo->exec('DELETE FROM syslog_remove');
-		$pdo->exec("INSERT INTO syslog_remove (name, type, message, method, enabled, user) VALUES ('archive', '$type', '$value', 'trans', 'on', 'u')");
+		$insert = $pdo->prepare("INSERT INTO syslog_remove (name, type, message, method, enabled, user) VALUES ('archive', ?, ?, 'trans', 'on', 'u')");
+		$insert->execute([$type, $value]);
 		$pdo->exec("INSERT INTO syslog_incoming (status, logtime, host, program, message, facility_id, priority_id) VALUES
 			(1, NOW(), 'router1', 'app', 'one', 1, 3), (1, NOW(), 'router2', 'daemon', 'two', 1, 3), (1, NOW(), 'router2', 'app', 'three', 1, 3)");
 		$max = (int) $pdo->query('SELECT MAX(seq) FROM syslog_incoming')->fetchColumn();
@@ -386,7 +427,7 @@ try {
 	fwrite(STDERR, 'FAIL: ' . $error->getMessage() . ' (' . basename($error->getFile()) . ':' . $error->getLine() . ")\n");
 	$GLOBALS['failed'] = true;
 } finally {
-	$pdo->exec("DROP DATABASE IF EXISTS `$syslogdb_default`");
+	$pdo->exec('DROP DATABASE IF EXISTS syslog_review_check');
 }
 
 exit(empty($GLOBALS['failed']) ? 0 : 1);
