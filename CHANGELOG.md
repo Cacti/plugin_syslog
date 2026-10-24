@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Group the All records dashboard queries per log table so panels show every host, program and time bucket
+
 * bug: Validate imported alert rules like edited ones and ignore row ids in import files
 
 * bug: Apply the Max Report Records setting to threshold alert messages
