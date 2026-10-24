@@ -7671,16 +7671,16 @@ function alert_setup_environment(&$alert, $results, $hostlist = [], $hostname = 
 function alert_replace_variables($alert, $results, $hostname = '') {
 	global $severities, $syslog_levels, $syslog_facilities;
 
-	$command = (string) $alert['command'];
-
-	$command = str_replace('<ALERTID>',  cacti_escapeshellarg($alert['id']), $command);
-	$command = str_replace('<HOSTNAME>', cacti_escapeshellarg($hostname), $command);
-	$command = str_replace('<PRIORITY>', cacti_escapeshellarg($syslog_levels[$results['priority_id']]), $command);
-	$command = str_replace('<FACILITY>', cacti_escapeshellarg($syslog_facilities[$results['facility_id']]), $command);
-	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($results['message']), $command);
-	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
-
-	return $command;
+	// One pass: a substituted value that contains another token must not be
+	// expanded again, or the later value lands inside the earlier quotes.
+	return strtr((string) $alert['command'], [
+		'<ALERTID>'  => cacti_escapeshellarg($alert['id']),
+		'<HOSTNAME>' => cacti_escapeshellarg($hostname),
+		'<PRIORITY>' => cacti_escapeshellarg($syslog_levels[$results['priority_id']]),
+		'<FACILITY>' => cacti_escapeshellarg($syslog_facilities[$results['facility_id']]),
+		'<MESSAGE>'  => cacti_escapeshellarg($results['message']),
+		'<SEVERITY>' => cacti_escapeshellarg($severities[$alert['severity']])
+	]);
 }
 
 /**
