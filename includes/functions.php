@@ -5293,6 +5293,26 @@ function syslog_process_alerts($max_seq) {
 			$rows = syslog_db_fetch_assoc_prepared($count_sql, $all_params);
 			$row  = isset($rows[0]) ? $rows[0] : [];
 
+			if ($rows === false) {
+				// One rule that does not compile must not silence the others.
+				foreach ($compiled as $index => $rule) {
+					if ($rule === null) {
+						continue;
+					}
+
+					$single = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
+						FROM `$syslogdb_default`.`syslog_incoming`
+						WHERE ({$rule['cond']}{$rule['device_sql']})
+						AND `status` = 1
+						AND `seq` <= ?",
+						array_merge($rule['cond_params'], $rule['device_params'], [$max_seq]));
+
+					if ($single !== false) {
+						$row["m$index"] = $single;
+					}
+				}
+			}
+
 			foreach ($compiled as $index => $rule) {
 				if ($rule === null) {
 					continue;
