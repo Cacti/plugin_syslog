@@ -62,10 +62,10 @@ it('resolves a hostname within the lookup budget', function () {
 
 
 it('still marks a name unresolved when the lookup was made and failed', function () {
-	$state = resolve_setup([['host' => '192.0.2.1']]);
+	$state = resolve_setup([['host' => 'no-such-sender.invalid']]);
 
 	expect(syslog_resolve_incoming_hosts(100))->toBe(0)
-		->and($state->updates)->toBe([['unresolved-192.0.2.1', '192.0.2.1', 100]]);
+		->and($state->updates)->toBe([['unresolved-no-such-sender.invalid', 'no-such-sender.invalid', 100]]);
 });
 
 
