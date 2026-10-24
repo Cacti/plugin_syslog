@@ -14,11 +14,12 @@ function url(path = '') {
 
 async function login(page) {
   await page.goto(url(), { waitUntil: 'domcontentloaded' });
-  await page.locator('#login_username').fill('admin');
-  await page.locator('#login_password').fill('Admin123!');
+  // The form limits the field to 25 characters; setting the value directly sends the full name.
+  await page.locator('#login_username').evaluate((field, name) => { field.value = name; }, process.env.E2E_USER || 'admin');
+  await page.locator('#login_password').fill(process.env.E2E_PASSWORD || 'Admin123!');
   await Promise.all([
     page.waitForURL(/\/cacti\/index\.php/, { timeout: 30000 }),
-    page.locator('form#auth').evaluate((form) => form.submit())
+    page.locator('#login_password').evaluate((field) => HTMLFormElement.prototype.submit.call(field.form))
   ]);
 }
 

@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* test: Extend the browser E2E run with import, reprocess, dashboard and long owner name paths, and make its login work on Cacti 1.2.x and develop
+
 * test: Add an optional Xdebug dump and merge report that list which changed lines the real entry points executed
 
 * test: Run the real processor over alert command, removal rule and invalid alert rule cases against an installed Cacti in CI

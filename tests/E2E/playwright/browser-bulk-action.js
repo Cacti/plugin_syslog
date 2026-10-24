@@ -5,18 +5,18 @@ const { withSession, fail, url } = require('./session');
 withSession(async (page) => {
   await page.goto(url(process.env.PAGE_PATH), { waitUntil: 'domcontentloaded' });
 
-  const rowId = await page.evaluate((text) => {
+  const rowIds = await page.evaluate((texts) => texts.map((text) => {
     const row = Array.from(document.querySelectorAll('tr')).find((candidate) => candidate.innerText.includes(text));
     const box = row ? row.querySelector('input[type="checkbox"]') : null;
 
     return box ? box.name : null;
-  }, process.env.ROW_TEXT);
+  }), process.env.ROW_TEXT.split(','));
 
-  if (!rowId) {
+  if (rowIds.includes(null)) {
     fail(`No row contains ${process.env.ROW_TEXT}`);
   }
 
-  const result = await page.evaluate(async ({ url, rowId, action }) => {
+  const result = await page.evaluate(async ({ url, rowIds, action }) => {
     const send = async (fields) => {
       const body = new URLSearchParams({ __csrf_magic: csrfMagicToken, drp_action: action, action: 'actions', ...fields });
       const response = await fetch(url, { method: 'POST', body, credentials: 'same-origin' });
@@ -24,7 +24,7 @@ withSession(async (page) => {
       return { status: response.status, text: await response.text() };
     };
 
-    const confirm = await send({ [rowId]: 'on' });
+    const confirm = await send(Object.fromEntries(rowIds.map((name) => [name, 'on'])));
     const selected = new DOMParser().parseFromString(confirm.text, 'text/html').querySelector('input[name="selected_items"]');
 
     if (!selected) {
@@ -34,7 +34,7 @@ withSession(async (page) => {
     const done = await send({ selected_items: selected.value });
 
     return { status: done.status };
-  }, { url: url(process.env.PAGE_PATH), rowId, action: process.env.ACTION_VALUE });
+  }, { url: url(process.env.PAGE_PATH), rowIds, action: process.env.ACTION_VALUE });
 
   if (result.error || result.status !== 200) {
     fail(result.error || `Unexpected status ${result.status}`);
