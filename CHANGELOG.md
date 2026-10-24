@@ -42,6 +42,8 @@
 
 * security: Substitute alert command tokens in a single pass so values containing a token name are not expanded again
 
+* test: Insert a valid alert rule in the CI test data and assert in the workflow that the processor evaluates and fires it
+
 * bug: Check sender names with A and AAAA records, accept IPv4 and IPv6 addresses without a lookup and store IPv6 addresses in one canonical form
 
 * issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
