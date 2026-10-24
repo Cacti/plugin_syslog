@@ -1009,8 +1009,9 @@ function syslog_sendemail(string $to, array $from, string $subject, string $mess
 	}
 }
 
-const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
-const SYSLOG_IMPORT_VERSION   = 1;
+const SYSLOG_IMPORT_MAX_BYTES       = 5 * 1024 * 1024;
+const SYSLOG_IMPORT_VERSION         = 1;
+const SYSLOG_RESOLVE_BUDGET_SECONDS = 60;
 
 /**
  * Get import payload from text input or uploaded file.
@@ -6315,10 +6316,12 @@ function syslog_update_reference_tables($max_seq) {
  * @param int $max_seq   The max_seq for syslog_incoming messages to process
  * @param int $seq_start Optional first seq of a slice (0 for no bound)
  * @param int $seq_end   Optional last seq of a slice (0 for no bound)
+ * @param int $budget_seconds Seconds after which DNS lookups stop for this call;
+ *                            hosts not found in Cacti are then left as received
  *
  * @return int The number of distinct hosts resolved
  */
-function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
+function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0, $budget_seconds = SYSLOG_RESOLVE_BUDGET_SECONDS) {
 	global $syslogdb_default;
 
 	if (read_config_option('syslog_resolve_hostname') != 'on') {
@@ -6340,25 +6343,40 @@ function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
 	}
 
 	$resolved_count = 0;
+	$deadline       = microtime(true) + $budget_seconds;
+	$dns_skipped    = false;
 
 	foreach ($hosts as $host) {
 		if (!isset($host['host']) || empty($host['host'])) {
 			continue;
 		}
 
-		$resolved = false;
+		$resolved  = false;
+		$dns_asked = false;
 
-		// Check if hostname resolves via DNS (only if DNS is enabled)
+		// Check if hostname resolves via DNS (only if DNS is enabled). Senders
+		// choose these names, so lookups stop once the time budget is spent.
 		if (read_config_option('syslog_no_dns') != 'on') {
-			if ($host['host'] != gethostbyname($host['host'])) {
-				// DNS resolved successfully
-				$resolved = true;
+			if (microtime(true) >= $deadline) {
+				$dns_skipped = true;
+			} else {
+				$dns_asked = true;
+
+				if ($host['host'] != gethostbyname($host['host'])) {
+					// DNS resolved successfully
+					$resolved = true;
+				}
 			}
 		}
 
 		// Check if hostname exists in Cacti hosts table (only if not already resolved via DNS)
 		if (!$resolved) {
 			$resolved = syslog_check_cacti_hosts($host['host'], $max_seq, $seq_start, $seq_end);
+		}
+
+		// Without a DNS answer the name cannot be called unresolved
+		if (!$resolved && !$dns_asked && read_config_option('syslog_no_dns') != 'on') {
+			continue;
 		}
 
 		// If not resolved via DNS or found in Cacti, prefix the hostname
@@ -6384,6 +6402,10 @@ function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
 		} else {
 			$resolved_count++;
 		}
+	}
+
+	if ($dns_skipped) {
+		cacti_log('SYSLOG WARNING: Hostname resolution budget of ' . $budget_seconds . ' seconds was spent; remaining hostnames were left as received', false, 'SYSLOG');
 	}
 
 	return $resolved_count;
