@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Validate imported alert rules like edited ones and ignore row ids in import files
+
 * bug: Apply the Max Report Records setting to threshold alert messages
 
 * bug: Evaluate the remaining alert rules when one rule fails to compile instead of silencing all of them

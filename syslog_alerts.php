@@ -1379,12 +1379,15 @@ function alert_import(): void {
 
 	if ($import_array !== false && cacti_sizeof($import_array)) {
 		foreach ($import_array as $template => $contents) {
-			$save  = [];
+			$save  = ['id' => 0];
 			$tname = '';
 
 			if (cacti_sizeof($contents)) {
 				foreach ($contents as $name => $value) {
 					switch($name) {
+						case 'id':
+							// The row to update is chosen by hash, never by the file.
+							break;
 						case 'hash':
 							// See if the hash exists, if it does, update the alert
 							$found = syslog_db_fetch_cell_prepared('SELECT id
@@ -1416,7 +1419,13 @@ function alert_import(): void {
 				}
 			}
 
-			$id = syslog_sql_save($save, 'syslog_alert');
+			$id    = false;
+			$check = isset($save['type'], $save['message']) ? syslog_get_alert_sql($save, 100) : [];
+
+			// Imports are held to the same compile and syntax check as the editor.
+			if (cacti_sizeof($check) && syslog_db_fetch_assoc_prepared($check['sql'], $check['params'], false) !== false) {
+				$id = syslog_sql_save($save, 'syslog_alert');
+			}
 
 			if ($id) {
 				raise_message('syslog_info' . $id, __esc('NOTE: Alert \'%s\' %s!', $tname, ($save['id'] > 0 ? __('Updated', 'syslog') : __('Imported', 'syslog')), 'syslog'), MESSAGE_LEVEL_INFO);
