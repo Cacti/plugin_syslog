@@ -351,7 +351,7 @@ try {
 	$untouched = (int) scalar("SELECT COUNT(*) FROM syslog_incoming WHERE host LIKE 'unresolvable-%'");
 	check($prefixed + $untouched === 40 && $prefixed > 0, "A generous budget looks names up and marks the failures: $prefixed marked, $untouched left");
 
-	$options['syslog_no_dns'] = 'on';
+	$options = array_merge($options, ['syslog_no_dns' => 'on']);
 	$pdo->exec("UPDATE syslog_incoming SET host = CONCAT('late-', seq)");
 	syslog_resolve_incoming_hosts($max, 0, 0, 60);
 	check((int) scalar("SELECT COUNT(*) FROM syslog_incoming WHERE host LIKE 'unresolved-late-%'") === 42, 'With lookups disabled every unknown name is marked unresolved');
