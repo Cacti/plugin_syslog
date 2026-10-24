@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* test: Add real-database checks for each upgrade choice, every dashboard record type and dimension, every removal rule type and method, alert evaluation with invalid rules, owner column limits, hostname lookup budget and rule imports
+
 * bug: Reject imported alert rules whose match type produces no query
 
 * test: Extend the browser E2E run with dashboard, archiving removal rule, alert rule isolation, import validation and single-rule reprocess checks
