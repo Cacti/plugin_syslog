@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* test: Add an optional Xdebug dump and merge report that list which changed lines the real entry points executed
+
 * test: Run the real processor over alert command, removal rule and invalid alert rule cases against an installed Cacti in CI
 
 * test: Add real-database checks for each upgrade choice, every dashboard record type and dimension, every removal rule type and method, alert evaluation with invalid rules, owner column limits, hostname lookup budget and rule imports
