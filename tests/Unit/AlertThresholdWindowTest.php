@@ -13,6 +13,10 @@ beforeEach(function () {
 		return true;
 	});
 	test_override('syslog_db_fetch_cell_prepared', function ($sql, $params) {
+		if (count($params) !== 5) {
+			return '';
+		}
+
 		[$id, $hash, $scope, $cutoff, $now] = $params;
 		return array_sum(array_map(static fn($b) => $b[4], array_filter($GLOBALS['threshold_buckets'], static fn($b) => $b[0] === $id && $b[1] === $hash && $b[2] === $scope && $b[3] > $cutoff && $b[3] <= $now)));
 	});

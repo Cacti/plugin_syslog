@@ -756,6 +756,12 @@ if (!function_exists('syslog_sql_save')) {
 	}
 }
 
+if (!function_exists('generate_hash')) {
+	function generate_hash() {
+		return bin2hex(random_bytes(16));
+	}
+}
+
 if (!function_exists('cacti_escapeshellarg')) {
 	function cacti_escapeshellarg($value) {
 		return escapeshellarg((string) $value);
@@ -781,6 +787,47 @@ function syslog_test_page_function(string $file, string $name): string {
 
 		eval(str_replace('function ' . $name . '(', 'function ' . $alias . '(', $match[0]));
 	}
+
+	return $alias;
+}
+
+/**
+ * Load one real function from a plugin file without running the file.
+ *
+ * The extracted source is written to a private temporary file, required once
+ * and removed at shutdown; nothing is evaluated from a string.
+ */
+function syslog_test_extract_function(string $file, string $name): string {
+	$alias = 'syslog_test_' . preg_replace('/\W/', '_', $file) . '_' . $name;
+
+	if (function_exists($alias)) {
+		return $alias;
+	}
+
+	$source = plugin_test_read_source($file);
+
+	if (!preg_match('/^function ' . preg_quote($name, '/') . '\\(.*?^\\}/ms', $source, $match)) {
+		throw new RuntimeException("Unable to load $file::$name");
+	}
+
+	$directory = sys_get_temp_dir() . '/syslog-test-' . bin2hex(random_bytes(6));
+	$path      = $directory . '/function.php';
+
+	mkdir($directory, 0700);
+	file_put_contents($path, '<?php ' . "\n" . preg_replace('/^function ' . preg_quote($name, '/') . '\\(/', 'function ' . $alias . '(', $match[0]) . "\n");
+	chmod($path, 0600);
+
+	register_shutdown_function(static function () use ($path, $directory) {
+		if (is_file($path)) {
+			unlink($path);
+		}
+
+		if (is_dir($directory)) {
+			rmdir($directory);
+		}
+	});
+
+	require_once $path;
 
 	return $alias;
 }
