@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Widen rule owner columns to the 50 character Cacti username limit
+
 * bug: Reprocess only the selected removal rule instead of every enabled rule
 
 * bug: Archive host and program removal rules without an ambiguous column error

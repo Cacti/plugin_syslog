@@ -113,11 +113,14 @@ it('does not deliver concurrently or when cancellation cleanup fails', function 
 })->with([true, false]);
 
 it('repairs recovery storage without replacing historical message tables', function ($failed_table) {
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('includes/schema.php');
 	test_override('syslog_db_table_exists', static fn() => true);
 	// the digest migration hooks run inside the same repair pass
 	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('syslog_db_add_column', static fn($table, $column) => !($table === $failed_table && $column['name'] === 'recovery_context'));
+	test_override('syslog_db_execute', static fn() => true);
+	test_override('syslog_db_execute_prepared', static fn() => true);
 	expect(syslog_ensure_table_structures())->toBe($failed_table === 'none');
 })->with(['syslog_threshold_state', 'none']);
 

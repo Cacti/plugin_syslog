@@ -142,7 +142,7 @@ function syslog_create_device_rule_table(): void {
 		`pass_through_priority` int(10) NOT NULL DEFAULT '-1',
 		`allow_maintenance` char(2) NOT NULL DEFAULT '',
 		`notes` varchar(255) NOT NULL DEFAULT '',
-		`user` varchar(32) NOT NULL DEFAULT '',
+		`user` varchar(50) NOT NULL DEFAULT '',
 		`date` int(10) unsigned NOT NULL DEFAULT '0',
 		PRIMARY KEY (`id`),
 		UNIQUE KEY `host` (`host`),
@@ -164,7 +164,7 @@ function syslog_ensure_saved_search_tables(): void {
 			['name' => 'search', 'type' => 'text', 'NULL' => false],
 			['name' => 'removal', 'type' => 'int(10)', 'NULL' => false, 'default' => '1'],
 			['name' => 'grouping', 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
-			['name' => 'user', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
+			['name' => 'user', 'type' => 'varchar(50)', 'NULL' => false, 'default' => ''],
 			['name' => 'is_global', 'type' => 'char(2)', 'NULL' => false, 'default' => ''],
 			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
 		],
@@ -200,7 +200,7 @@ function syslog_ensure_dashboard_tables(): void {
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
 			['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
 			['name' => 'name', 'type' => 'varchar(128)', 'NULL' => false, 'default' => ''],
-			['name' => 'user', 'type' => 'varchar(32)', 'NULL' => false, 'default' => ''],
+			['name' => 'user', 'type' => 'varchar(50)', 'NULL' => false, 'default' => ''],
 			['name' => 'is_global', 'type' => 'char(2)', 'NULL' => false, 'default' => ''],
 			['name' => 'date', 'type' => 'int(16)', 'NULL' => false, 'default' => '0'],
 			['name' => 'updated', 'type' => 'int(16)', 'NULL' => false, 'default' => '0']
@@ -572,7 +572,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`open_ticket` CHAR(2) default '',
 		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
-		`user` varchar(32) NOT NULL default '',
+		`user` varchar(50) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		`email` varchar(255) default NULL,
 		`notify` int(10) unsigned NOT NULL default '0',
@@ -632,7 +632,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		enabled CHAR(2) DEFAULT 'on',
 		method CHAR(5) DEFAULT 'del',
 		message TEXT NOT NULL,
-		`user` varchar(32) NOT NULL default '',
+		`user` varchar(50) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		notes varchar(255) default NULL,
 		PRIMARY KEY (id))
@@ -650,7 +650,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		lastsent int(16) NOT NULL default '0',
 		body varchar(8192) NOT NULL default '0',
 		message TEXT default NULL,
-		`user` varchar(32) NOT NULL default '',
+		`user` varchar(50) NOT NULL default '',
 		`date` int(16) NOT NULL default '0',
 		email varchar(255) default NULL,
 		notify int(10) unsigned NOT NULL default '0',
@@ -843,7 +843,7 @@ function syslog_create_alert_counts_table(): void {
 
 /** Complete an interrupted install or upgrade without dropping existing data. */
 function syslog_ensure_table_structures(): bool {
-	global $config, $syslog_cnn;
+	global $config, $syslog_cnn, $syslogdb_default;
 
 	require_once(__DIR__ . '/settings.php');
 
@@ -913,6 +913,22 @@ function syslog_ensure_table_structures(): bool {
 		syslog_ensure_share_tables();
 		syslog_ensure_dashboard_tables();
 	}
+	// Rule owners are Cacti usernames, which allow 50 characters. The marker is
+	// written only after every table was widened, so a failed run is retried.
+	$widened = syslog_db_fetch_cell_prepared("SELECT value FROM `$syslogdb_default`.`syslog_status` WHERE name = ?", ['schema_user_width']);
+
+	if ($widened !== '50') {
+		foreach (['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'] as $table) {
+			if (!syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN `user` varchar(50) NOT NULL DEFAULT ''")) {
+				return false;
+			}
+		}
+
+		if (!syslog_status_set('schema_user_width', '50')) {
+			return false;
+		}
+	}
+
 	syslog_ensure_message_digest_columns();
 	$tables = array_merge($tables, [
 		'syslog_saved_searches', 'syslog_saved_searches_perm',
