@@ -4,9 +4,20 @@ const { withSession, fail } = require('./session');
 withSession(async (page) => {
   await page.goto(`http://cacti_web/cacti/${process.env.PAGE_PATH}`, { waitUntil: 'domcontentloaded' });
   await page.locator('#import_text').fill(process.env.IMPORT_TEXT || '');
+  // On newer Cacti cores the Import button and the action field are rendered with
+  // an empty form attribute, which detaches them from the form. The form is
+  // submitted directly with the action field added back.
   await Promise.all([
-    page.waitForLoadState('domcontentloaded'),
-    page.locator('form:has(#import_text) input[type="submit"], form:has(#import_text) button[type="submit"]').first().click()
+    page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+    page.locator('#import_text').evaluate((field) => {
+      const action = document.createElement('input');
+
+      action.type = 'hidden';
+      action.name = 'action';
+      action.value = 'save';
+      field.form.appendChild(action);
+      field.form.submit();
+    })
   ]);
   await page.waitForLoadState('networkidle');
 

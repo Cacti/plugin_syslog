@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* test: Extend the browser E2E run with dashboard, archiving removal rule, alert rule isolation, import validation and single-rule reprocess checks
+
 * test: Load functions extracted from plugin pages through temporary files instead of evaluating source strings
 
 * test: Add database regression checks for the dashboard queries, archiving removal rules, rule reprocessing, alert rule isolation and upgrade truncate scope
