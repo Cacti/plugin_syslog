@@ -63,7 +63,7 @@ normalize_admin() {
 }
 
 reset_syslog_data() {
-  db_exec "TRUNCATE syslog_incoming; TRUNCATE syslog; TRUNCATE syslog_removed; TRUNCATE syslog_statistics; TRUNCATE syslog_hosts; TRUNCATE syslog_programs; TRUNCATE syslog_host_facilities; DELETE FROM syslog_remove;"
+  db_exec "TRUNCATE syslog_incoming; TRUNCATE syslog; TRUNCATE syslog_removed; TRUNCATE syslog_hosts; TRUNCATE syslog_programs; TRUNCATE syslog_host_facilities; DELETE FROM syslog_remove;"
 }
 
 seed_incoming() {
@@ -83,7 +83,7 @@ test_login_console() {
 
 test_syslog_empty_page() {
   reset_syslog_data
-  browser_check "plugins/syslog/syslog.php" "Console > Syslog" "No Syslog Messages" "Unprocessed Messages: 0"
+  browser_check "plugins/syslog/syslog.php" "Syslog" "No Syslog Messages" "Unprocessed Messages: 0"
 }
 
 test_alerts_page() {
@@ -111,7 +111,7 @@ test_plain_ingest_normalization() {
 }
 
 test_plain_ingest_visible_in_ui() {
-  browser_check "plugins/syslog/syslog.php?rfilter=E2E-TOKEN-ONE" "Console > Syslog" "E2E-TOKEN-ONE" "e2e-host-1" "e2e-prog-1"
+  browser_check "plugins/syslog/syslog.php?rfilter=E2E-TOKEN-ONE" "Syslog" "E2E-TOKEN-ONE" "e2e-host-1" "e2e-prog-1"
 }
 
 test_second_ingest_accumulates() {
@@ -123,7 +123,7 @@ test_second_ingest_accumulates() {
 }
 
 test_second_ingest_visible_in_ui() {
-  browser_check "plugins/syslog/syslog.php?rfilter=E2E-TOKEN-TWO" "Console > Syslog" "E2E-TOKEN-TWO" "e2e-host-2" "e2e-prog-2"
+  browser_check "plugins/syslog/syslog.php?rfilter=E2E-TOKEN-TWO" "Syslog" "E2E-TOKEN-TWO" "e2e-host-2" "e2e-prog-2"
 }
 
 normalize_admin
