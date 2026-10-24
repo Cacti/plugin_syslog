@@ -5511,7 +5511,8 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 	$alert_count   = 0;
 	$syslog_alarms = 0;
 	$hostlist      = [];
-	$max_alerts    = read_config_option('syslog_maxrecords');
+	$max_alerts    = (int) read_config_option('syslog_maxrecords');
+	$rows_shown    = 0;
 	$report_tag    = false;
 	$theme         = false;
 	$format_ok     = false;
@@ -5703,7 +5704,9 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 				$results['priority_id'] = $a['priority_id'];
 				$results['facility_id'] = $a['facility_id'];
 
-				if (($alert['method'] == 1 && $alert_count < $max_alerts) || $alert['method'] == 0) {
+				if (($alert['method'] == 1 && ($max_alerts < 1 || $rows_shown < $max_alerts)) || $alert['method'] == 0) {
+					$rows_shown++;
+
 					if ($alert['method'] == 0) {
 						$message = $hmessage;
 					}

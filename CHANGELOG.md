@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Apply the Max Report Records setting to threshold alert messages
+
 * bug: Evaluate the remaining alert rules when one rule fails to compile instead of silencing all of them
 
 * bug: Keep asterisks inside a host-level alert rule expression intact when the grouped query is built
