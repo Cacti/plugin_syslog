@@ -313,6 +313,18 @@ jobs:
           cat log/cacti.log
           exit 1
         fi
+        # The populated alert rule (id 1) must have been evaluated and have fired
+        # for the host "bob": the processor logs it and stores it in syslog_logs.
+        if ! grep -q "The Syslog Alert 'interface down alert' with Severity 'Warning', has been Triggered on Host 'bob'" log/cacti.log; then
+          echo "The populated alert rule did not fire"
+          cat log/cacti.log
+          exit 1
+        fi
+        alerts=$(mysql --defaults-file="$HOME/.my.cnf" cacti -N -e "SELECT COUNT(*) FROM syslog_logs WHERE alert_id = 1 AND host = 'bob'")
+        if [ "$alerts" -lt 1 ]; then
+          echo "The populated alert rule left no alert log row"
+          exit 1
+        fi
 
     # Runs the real processor over queued messages and reads the results back.
     # The script removes its rows and restores cacti.log to its starting size.
@@ -333,14 +345,17 @@ jobs:
       if: always()
       run: |
         if [ -f ${{ github.workspace }}/cacti/log/cacti.log ]; then
-          if sudo grep -E "FATAL:|ERROR:|WARNING:" "${{ github.workspace }}/cacti/log/cacti.log"; then
+          status=0
+          matches=$(sudo grep -E "FATAL:|ERROR:|WARNING:" "${{ github.workspace }}/cacti/log/cacti.log") || status=$?
+          if [ "$status" -gt 1 ]; then
+            echo "Unable to inspect Cacti log"
+            exit "$status"
+          fi
+          # The only entry allowed is the alert the populated rule is meant to raise.
+          unexpected=$(printf '%s\n' "$matches" | grep -v -F "The Syslog Alert 'interface down alert' with Severity 'Warning', has been Triggered on Host 'bob'" | grep -v '^$') || true
+          if [ -n "$unexpected" ]; then
+            printf '%s\n' "$unexpected"
             echo "Found FATAL/ERROR/WARNING entries in Cacti log"
             exit 1
-          else
-            status=$?
-            if [ "$status" -ne 1 ]; then
-              echo "Unable to inspect Cacti log"
-              exit "$status"
-            fi
           fi
         fi
