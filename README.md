@@ -51,11 +51,12 @@ for lifecycle and deployment details.
 
 * Message Alerting
 
-* Alert Levels of System and Host
+* Alert Reporting Levels of System and Device
 
 * Alert Methods of Individual and Threshold Based
 
-* Message Removal Rules to Delete or Hide Messages
+* Message Removal Rules that either Delete messages or Transfer them to the
+  `syslog_removed` table
 
 * Filter Messages by Cacti Graph window from Cacti's Graph View pages
 
@@ -119,8 +120,8 @@ Collector option requires InnoDB; the setup advisor selects it automatically.
 In prior releases of Syslog, the Individual Alert Method would send an Email,
 open a ticket or run a command per line in the Syslog that matches the pattern.
 However, in Syslog Version 4, if you want an alert per Host, you will have to
-move your Alerts from the `System Level` to the `Host Level` as `System Level`
-Alerts will generate one command execution for all matching messages.
+move your Alerts from the `System` to the `Device` Reporting Level as `System`
+level Alerts will generate one command execution for all matching messages.
 
 ## Develop Branch Compatibility and Hardening Notes
 
@@ -130,10 +131,12 @@ item yet.
 
 ### Runtime and Test Baseline
 
-The hardened code paths use PHP 8.0-compatible language features and require
-PHP 8.0 or later. The Linux integration workflow currently exercises PHP 8.1,
-8.2, and 8.3 against Cacti `release/1.2.31`, including installation, plugin
-enablement, polling, and sample Syslog processing.
+The plugin declares `compat = 1.2.23` in `INFO`, so it needs Cacti 1.2.23 or
+later, and PHP 8.0 or later. Every non-test PHP file passes `php -l` on PHP 8.0
+and 8.1. The Linux integration workflow runs PHP 8.2, 8.3, and 8.4 against the
+Cacti `1.2.x` branch on MariaDB 11.8, including installation, plugin enablement,
+polling, and sample Syslog processing. Other PHP, Cacti, and database versions
+are not exercised by CI.
 
 This plugin does not ship its own `composer.json`. Composer validation and
 dependency installation in CI use the manifest supplied by the checked-out
@@ -207,52 +210,91 @@ partition in place and skips retention pruning rather than risking a write gap.
 The repository includes a Pest test suite (`tests/Security`, `tests/Unit`)
 run against Cacti's own Composer-managed vendor tree, plus a disposable
 Docker/Playwright end-to-end harness. GitHub CI runs a single integration-test
-workflow that installs a pinned Cacti checkout, runs the Pest suite, and
-exercises the syslog poller end-to-end on the PHP 8.2-8.4 matrix on Linux. The
+workflow that checks out the Cacti `1.2.x` branch, runs the Pest suite, the
+regression scripts, and the changed-line coverage check, and exercises the
+syslog poller end-to-end on the PHP 8.2-8.4 matrix on Linux. The
 Docker E2E runner refuses unsafe temporary-directory paths before performing
 recursive cleanup.
 
 ## Installation
 
-To install the syslog plugin, simply copy the plugin_syslog directory to Cacti's
-plugins directory and rename it to simply 'syslog'. Once you have done this,
-goto Cacti's Plugin Management page, and Install and Enable the plugin. Once
-this is complete, you can grant users permission to view syslog messages, as
-well as create Alert, Removal and Report Rules.
+Requirements: Cacti 1.2.23 or later, PHP 8.0 or later, and MySQL or MariaDB
+using InnoDB, or Aria on MariaDB (see the notes on SQL mode below).
+
+To install the syslog plugin, copy the plugin directory to Cacti's plugins
+directory and name it `syslog`. Then go to Cacti's Plugin Management page, and
+Install and Enable the plugin, or run:
+
+```shell
+php cli/plugin_manage.php --plugin=syslog --install --enable --allperms
+```
+
+`--allperms` grants every syslog realm to the administrative accounts. Other
+users need a realm assigned under Console > Users or User Groups:
+
+| Realm | Grants |
+| --- | --- |
+| Syslog User | The Syslog tabs and message search |
+| Rule Viewer | View the Alert, Removal, and Report rule pages |
+| Rule Administrator | Edit rules, including device rules |
+| Syslog Administration | Manage saved searches and dashboards |
+| Share Saved Templates | Share saved searches with other users |
+| Share Dashboards | Share dashboards with other users |
+
+Installing creates the syslog tables (see Tables below). The installer shows the
+Upgrade Advisor when it finds existing syslog tables. Its upgrade type is
+`Truncate Syslog Table`, `Inline Upgrade`, or `Background Upgrade`; they only
+change how a legacy non-partitioned `syslog` table is converted. An existing
+partitioned install keeps its messages, rules, and hosts with each choice.
 
 Note: You must rename config.php.dist in the syslog plugin directory to
 config.php and make changes there for the location of the database, user,
 password, and host.  This is especially important if you are using a remote
 logging database server.
 
-If you are upgrading to 2.0 from a prior install, you must first uninstall
-syslog and insure both the syslog, syslog_removal, and syslog_incoming tables
-are removed, and recreated at install time.
+To upgrade, replace the plugin files and run the Upgrade Advisor from Plugin
+Management, or check the schema with the CLI:
 
-In addition, the rsyslog configuration has changed in 2.5.  So, for example, to
-configure modern rsyslog for Cacti, you MUST create a file called cacti.conf in
-the /etc/rsyslog.d/ directory that includes the following:
+```shell
+php plugins/syslog/cli/syslog_schema.php --audit
+```
+
+`--audit` reports missing tables without changing anything. `--repair` creates
+missing tables and reruns schema migrations, and `--upgrade` also upgrades the
+schema. Repair and upgrade keep existing data and preferences.
+
+To uninstall, use Uninstall in Plugin Management and choose a method. `Remove
+Everything` drops every syslog table, including rules and hosts; `Syslog Data
+Only` drops the `syslog` and `syslog_removed` tables and keeps the rest. Neither
+removes the `syslog_*` rows in Cacti's `settings` table. Either way the plugin
+hooks and realms are removed.
 
 You have two options for storing syslog information you can either use the existing
 Cacti Database or use a dedicated database for syslog as syslog databases especially
 for large networks can grow pretty quick it may be wise to create a dedicated database.
-To use a dedicated DB first create a database in mysql and assign a user you will then change
+To use a dedicated DB, first create a database in MySQL or MariaDB and assign a
+user. Then change
 
 ```console
-$use_cacti_db = true; 
+$use_cacti_db = true;
 ```
 
 to 
 
-``console
+```console
 $use_cacti_db = false;
 ```
 
-You will also need to ensure the cacti user is granted select on the syslog database
+Set the `$syslogdb_*` values below it to the new database and a user that can
+create and write its tables; the shipped defaults are database `syslog` and user
+`cactiuser` on `localhost`. The Cacti database user also needs read access:
 
-```shell
-GRANT SELECT ON syslog.* TO 'cacti'@'localhost';
+```sql
+GRANT SELECT ON syslog.* TO 'cactiuser'@'localhost';
 ```
+
+Replace `cactiuser` with the account in Cacti's `config.php`. The tables are
+created in the database named by `$syslogdb_default` when the plugin is enabled.
 
 Remote collectors deliver records to the Main Collector's Syslog database.
 By default, delivery uses the Main Collector Cacti connection and
@@ -364,6 +406,94 @@ configuration.  If it does not, please search for the configuration that is
 making this SQL mode other than what you required.  More recent versions of
 MySQL and MariaDB will source multiple database configuration files.
 
+## Tables
+
+A completed install has 28 tables, all prefixed `syslog`: `syslog`,
+`syslog_removed`, `syslog_incoming`, `syslog_logs`, `syslog_status`,
+`syslog_hosts`, `syslog_programs`, `syslog_facilities`, `syslog_priorities`,
+`syslog_host_facilities`, `syslog_alert`, `syslog_alert_counts`,
+`syslog_alert_suppression`, `syslog_remove`, `syslog_reports`,
+`syslog_device_rule`, `syslog_saved_searches`, `syslog_saved_searches_perm`,
+`syslog_dashboards`, `syslog_dashboard_panels`, `syslog_dashboards_perm`,
+`syslog_threshold_state`, `syslog_threshold_messages`,
+`syslog_threshold_recovery_queue`, and the replication tables
+`syslog_replication_collectors`, `syslog_replication_output`,
+`syslog_replication_receipts`, and `syslog_replication_recovery`.
+
+Senders write to `syslog_incoming`; the processor moves rows into `syslog`,
+evaluates the rules, and records fired alerts in `syslog_logs`.
+
+## Rules
+
+* **Alert rules** have a Reporting Level of System or Device, a Reporting Method
+  of Individual or Threshold, and a Match Type of Filter Builder or SQL
+  Expression. SQL Expression is kept for legacy rules.
+* **Removal rules** use a Method of Removal of Deletion or Transferal. Deletion
+  discards the message; Transferal moves it to `syslog_removed`.
+* **Report rules** send matching messages by email on a schedule.
+* **Device rules** are managed from the Device Rules page and need the Rule
+  Administrator realm.
+
+## Settings
+
+The settings are under Settings > Syslog. Selected names and defaults:
+
+| Setting | Default |
+| --- | --- |
+| Syslog Enabled (`syslog_enabled`) | on |
+| Refresh Interval (`syslog_refresh`) | 300 |
+| Max Report Records (`syslog_maxrecords`) | 100 |
+| Maximum Syslog Processing Processes (`syslog_max_workers`) | 1 |
+| Enable Hostname Resolution (`syslog_resolve_hostname`) | off |
+| Skip DNS Resolution for incoming hosts (`syslog_no_dns`) | off |
+| Syslog Retention (`syslog_retention`) | 30 days |
+| Syslog Alert Retention (`syslog_alert_retention`) | 30 days |
+| Partition Pre-create Window (`syslog_partition_ahead_days`) | 3 days |
+| Collector Staleness Threshold (`syslog_stale_threshold`) | 300 seconds |
+| Collector Backlog Threshold (`syslog_backlog_threshold`) | 10000 rows |
+| Pipeline Health Reminder Interval (`syslog_pipeline_health_repeat`) | 3600 seconds |
+
+## Command Line
+
+`syslog_process.php` runs from Cacti's poller. To run it by hand:
+
+```shell
+php plugins/syslog/syslog_process.php [--debug] [--force-report]
+```
+
+`--debug` prints verbose output and `--force-report` sends the email reports
+now. `--help` and `--version` print usage and the plugin version. The options
+`--child`, `--run-id`, `--phase`, `--seq-start`, and `--seq-end` are used by the
+master process for its workers.
+
+`cli/syslog_schema.php` takes `--audit`, `--repair`, or `--upgrade`, as
+described under Installation.
+
+## Development and Testing
+
+The commands below are the ones the CI workflow runs, from the plugin directory
+inside a Cacti `1.2.x` checkout with the plugin installed:
+
+```shell
+php tests/regression/cli_schema_upgrade_test.php
+SYSLOG_TEST_MYSQL_DSN='mysql:host=127.0.0.1;port=3306' \
+  SYSLOG_TEST_MYSQL_PASSWORD=<root password> \
+  php tests/regression/threshold_recovery_database_test.php
+php tests/bin/check-i18n-pot.php <base commit>
+php tests/bin/patch-coverage.php coverage/clover.xml <base commit> 100
+```
+
+The same `SYSLOG_TEST_MYSQL_*` variables apply to
+`quality_must_fix_database_test.php` and `incoming_preservation_database_test.php`.
+The database tests need a MariaDB or MySQL account that can create databases.
+The Pest suite is run from the Cacti directory with
+`--configuration=plugins/syslog/phpunit.xml`, using the test dependencies
+installed by the CI setup action. The Playwright scripts in `tests/browser` are
+described in `tests/browser/README.md`; CI does not run them.
+
+Translatable strings live in `locales/po/cacti.pot`; the CI i18n check fails a
+pull request that changes translatable strings without updating it.
+
 ## Possible Bugs and Feature Enhancements
 
 Bug and feature enhancements for the syslog plugin are handled in GitHub. If you
@@ -374,7 +504,7 @@ GitHub.
 
 The syslog plugin has been in development for well over a decade with increasing
 functionality and stibility over that time. There have been several contributors
-to thold over the years. Chief amongst them are Jimmy Conner, Larry Adams,
+to syslog over the years. Chief amongst them are Jimmy Conner, Larry Adams,
 SideWinder, and Harlequin. We hope that version 2.0 and beyond are the most
 stable and robust versions of syslog ever published. We are always looking for
 new ideas. So, this won't be the last release of syslog, you can rest assured of
