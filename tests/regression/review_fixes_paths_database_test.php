@@ -303,23 +303,17 @@ try {
 
 	$pdo->exec("SET SESSION sql_mode = ''");
 
-	// ---- The widening is retried until it fully succeeds ----------------------------
-	$marker = static fn() => scalar("SELECT value FROM syslog_status WHERE name = 'schema_user_width'");
+	// ---- The schema helper can repeat and retry failed owner updates ----------------
+	check(syslog_ensure_table_structures() === true, 'A repeated schema check succeeds');
+	check(owner_column_type('syslog_device_rule') === 'varchar(50)', 'Repeated checks retain the owner width');
 
-	$pdo->exec("DELETE FROM syslog_status WHERE name = 'schema_user_width'");
-	$pdo->exec("CREATE TRIGGER block_marker BEFORE INSERT ON syslog_status FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'blocked'");
-	check(syslog_ensure_table_structures() === false && $marker() === false, 'A marker that cannot be stored makes the check fail and leaves no marker');
-	$pdo->exec('DROP TRIGGER block_marker');
-	check(syslog_ensure_table_structures() === true && $marker() === '50', 'The next check widens again and stores the marker');
-	check(syslog_ensure_table_structures() === true && (int) scalar('SELECT COUNT(*) FROM syslog_status WHERE name = \'schema_user_width\'') === 1, 'A later check does nothing more');
-
-	$pdo->exec("DELETE FROM syslog_status WHERE name = 'schema_user_width'");
+	$pdo->exec("ALTER TABLE syslog_device_rule MODIFY COLUMN `user` varchar(32) NOT NULL DEFAULT ''");
 	$pdo->exec('RENAME TABLE syslog_device_rule TO syslog_device_rule_real');
 	$pdo->exec('CREATE VIEW syslog_device_rule AS SELECT * FROM syslog_device_rule_real');
-	check(syslog_ensure_table_structures() === false && $marker() === false, 'A table that cannot be altered makes the check fail and leaves no marker');
+	check(syslog_ensure_table_structures() === false, 'An owner column that cannot be altered fails the upgrade');
 	$pdo->exec('DROP VIEW syslog_device_rule');
 	$pdo->exec('RENAME TABLE syslog_device_rule_real TO syslog_device_rule');
-	check(syslog_ensure_table_structures() === true && $marker() === '50', 'Once the table can be altered the widening completes');
+	check(syslog_ensure_table_structures() === true && owner_column_type('syslog_device_rule') === 'varchar(50)', 'Once the table can be altered the widening completes');
 
 	// ---- Hostname lookup budget ----------------------------------------------------
 	reset_rules_and_data($pdo);

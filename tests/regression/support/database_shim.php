@@ -34,8 +34,8 @@ $checks           = 0;
 $failures         = [];
 error_reporting(E_ALL & ~E_DEPRECATED);
 $settings         = ['syslog' => []];
-$severities       = [3 => 'Error'];
-$syslog_levels    = [3 => 'err'];
+$severities       = [1 => 'Test severity', 3 => 'Error'];
+$syslog_levels    = [1 => 'alert', 3 => 'err'];
 $syslog_facilities = [1 => 'user'];
 $syslog_incoming_config = [
 	'textField' => 'message', 'hostField' => 'host', 'programField' => 'program',
@@ -205,7 +205,27 @@ function syslog_connect() {
 function syslog_dashboard_seed_default() {
 }
 
-function db_update_table(...$args) {
+function db_update_table($table, $definition, ...$args) {
+	if ($table === 'syslog_status') {
+		syslog_status_ensure_table();
+	}
+
+	// Apply owner-column requests to MariaDB; the other Cacti schema APIs
+	// remain stubbed in this standalone plugin harness.
+	if (in_array($table, ['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'], true)) {
+		foreach ($definition['columns'] ?? [] as $column) {
+			if ($column['name'] === 'user') {
+				check($column === ['name' => 'user', 'type' => 'varchar(50)', 'NULL' => false, 'default' => ''], 'Owner upgrade must use the supported Cacti column definition');
+
+				if (owner_column_type($table) === 'varchar(50)') {
+					return true;
+				}
+
+				return run_sql('ALTER TABLE ' . quoted_identifier($table) . " MODIFY COLUMN `user` varchar(50) NOT NULL DEFAULT ''");
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -243,9 +263,14 @@ $schema_dir  = sys_get_temp_dir() . '/syslog-review-' . bin2hex(random_bytes(6))
 $schema_file = $schema_dir . '/schema.php';
 
 mkdir($schema_dir, 0700);
+mkdir($schema_dir . '/lib', 0700);
+file_put_contents($schema_dir . '/lib/reports.php', "<?php\n");
+$config['base_path'] = $schema_dir;
 file_put_contents($schema_file, str_replace("require_once(__DIR__ . '/settings.php');", '', file_get_contents(dirname(__DIR__, 3) . '/includes/schema.php')));
 chmod($schema_file, 0600);
 register_shutdown_function(static function () use ($schema_file, $schema_dir) {
+	unlink($schema_dir . '/lib/reports.php');
+	rmdir($schema_dir . '/lib');
 	unlink($schema_file);
 	rmdir($schema_dir);
 });

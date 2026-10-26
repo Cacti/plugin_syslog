@@ -55,8 +55,8 @@ try {
 		check($type === 'varchar(50)', "Repair must widen $table.user, found $type");
 	}
 
-	$marker = syslog_db_fetch_cell_prepared("SELECT value FROM syslog_status WHERE name = 'schema_user_width'");
-	check($marker === '50', 'Widening must be recorded once it succeeded');
+	check(syslog_ensure_table_structures(), 'Repeating schema repair must succeed without a separate migration marker');
+	check(table_count('syslog_alert') === 1, 'Repeated schema repair must retain the alert rule');
 
 	// ---- All records dashboard queries -----------------------------------------
 	$pdo->exec('DELETE FROM syslog_hosts');
