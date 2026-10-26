@@ -34,6 +34,15 @@ function syslog_alarmmanager_forward(array $alert, array $matches, int $count, b
 				throw new RuntimeException('source_identity_missing');
 			}
 		}
+		if ((int) $alert['method'] === 0 && !$recovered && !$state && count($matches) > 1) {
+			$accepted = true;
+			foreach ($matches as $match) {
+				if (!syslog_alarmmanager_forward($alert, [$match], 1)) {
+					$accepted = false;
+				}
+			}
+			return $accepted;
+		}
 		usort($matches, static fn($a, $b) => (int) $a['seq'] <=> (int) $b['seq']);
 		$first = $matches[0];
 		$identity = hash('sha256', json_encode([$alert['id'], $collector, array_map(static fn($m) => [$m['seq'], $m['logtime']], $matches)], JSON_THROW_ON_ERROR));
