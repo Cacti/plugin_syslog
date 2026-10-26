@@ -48,7 +48,7 @@ try {
     check_preview(syslog_rule_preview(preview_rule([$prefix,$host,$program]))['count']===1, 'Shared normalized compiler handles host and program conditions');
     $syslog_incoming_config['textField']='raw_message'; $syslog_incoming_config['timeField']='raw_time';
     check_preview(syslog_rule_preview($rule)['rows'][0]['message']===$result['rows'][0]['message'], 'History uses canonical fields with custom incoming mappings');
-    $syslog_incoming_config['textField']='message'; $syslog_incoming_config['timeField']='logtime';
+    unset($syslog_incoming_config['textField'], $syslog_incoming_config['timeField']);
     $pdo->exec("INSERT INTO syslog_incoming(seq,logtime,message,host,program) VALUES (1,'2026-10-26 13:00:00','Disconnected incoming','router01','sshd')");
     $incoming = syslog_rule_preview($rule);
     check_preview($incoming['count']===1 && !isset($incoming['history_limit']) && $incoming['rows'][0]['message']==='Disconnected incoming', 'Incoming matches keep existing priority and shape');
