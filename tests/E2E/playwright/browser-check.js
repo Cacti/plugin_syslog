@@ -12,7 +12,7 @@ async function login(page) {
   await page.locator('#login_password').fill('Admin123!');
   await Promise.all([
     page.waitForURL(/\/cacti\/index\.php/, { timeout: 30000 }),
-    page.locator('form#auth').evaluate((form) => form.submit())
+    page.locator('#login_password').evaluate((field) => HTMLFormElement.prototype.submit.call(field.form))
   ]);
 }
 

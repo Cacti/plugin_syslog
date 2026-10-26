@@ -1011,8 +1011,9 @@ function syslog_sendemail(string $to, array $from, string $subject, string $mess
 	}
 }
 
-const SYSLOG_IMPORT_MAX_BYTES = 5 * 1024 * 1024;
-const SYSLOG_IMPORT_VERSION   = 1;
+const SYSLOG_IMPORT_MAX_BYTES       = 5 * 1024 * 1024;
+const SYSLOG_IMPORT_VERSION         = 1;
+const SYSLOG_RESOLVE_BUDGET_SECONDS = 60;
 
 /**
  * Get import payload from text input or uploaded file.
@@ -3674,17 +3675,24 @@ function syslog_filter_rule_summary($json) {
  *
  * @param string $table   The table to process ('syslog' or 'syslog_incoming').
  * @param int    $max_seq The highest incoming sequence number to consider.
+ * @param int    $rule_id Limit processing to this removal rule, or 0 for every enabled rule.
  *
  * @return array{removed: int, xferred: int} Counts of removed and transferred records.
  */
-function syslog_remove_items($table, $max_seq) {
+function syslog_remove_items($table, $max_seq, $rule_id = 0) {
 	global $config, $syslog_cnn, $syslog_incoming_config;
 	global $syslogdb_default;
 
 	syslog_debug('-------------------------------------------------------------------------------------');
 	syslog_debug('Processing Removal Rules...');
 
-	if ($table == 'syslog') {
+	if ($rule_id > 0) {
+		$rows = syslog_db_fetch_assoc_prepared("SELECT *
+			FROM `$syslogdb_default`.`syslog_remove`
+			WHERE enabled = 'on'
+			AND id = ?",
+			[$rule_id]);
+	} elseif ($table == 'syslog') {
 		$rows = syslog_db_fetch_assoc("SELECT *
 			FROM `$syslogdb_default`.`syslog_remove`
 			WHERE enabled = 'on'");
@@ -3896,14 +3904,17 @@ function syslog_remove_items($table, $max_seq) {
 								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 								ON sp.program = si.program $insert_where", $insert_params);
 						} else {
+							// The shared WHERE names host and program unqualified, which
+							// the joined reference tables would make ambiguous, so it
+							// filters the staging rows before the join.
 							$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
 								(logtime, priority_id, facility_id, program_id, host_id, message, message_digest, threshold_breached, replication_source_poller_id, replication_source_event_id)
 								SELECT si.logtime, si.priority_id, si.facility_id, sp.program_id, sh.host_id, si.message, MD5(si.message), si.threshold_breached, {$config['poller_id']}, si.seq
-								FROM `$syslogdb_default`.`syslog_incoming` AS si
+								FROM (SELECT * FROM `$syslogdb_default`.`syslog_incoming` $sql_where) AS si
 								INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 								ON sh.host = si.host
 								INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
-								ON sp.program = si.program $sql_where", $params);
+								ON sp.program = si.program", $params);
 						}
 					} else {
 						$move_failed = !syslog_db_execute_prepared("INSERT INTO `$syslogdb_default`.`syslog_removed`
@@ -5333,6 +5344,26 @@ function syslog_process_alerts($max_seq) {
 			$rows = syslog_db_fetch_assoc_prepared($count_sql, $all_params);
 			$row  = isset($rows[0]) ? $rows[0] : [];
 
+			if ($rows === false) {
+				// One rule that does not compile must not silence the others.
+				foreach ($compiled as $index => $rule) {
+					if ($rule === null) {
+						continue;
+					}
+
+					$single = syslog_db_fetch_cell_prepared("SELECT COUNT(*)
+						FROM `$syslogdb_default`.`syslog_incoming`
+						WHERE ({$rule['cond']}{$rule['device_sql']})
+						AND `status` = 1
+						AND `seq` <= ?",
+						array_merge($rule['cond_params'], $rule['device_params'], [$max_seq]));
+
+					if ($single !== false) {
+						$row["m$index"] = $single;
+					}
+				}
+			}
+
 			foreach ($compiled as $index => $rule) {
 				if ($rule === null) {
 					continue;
@@ -5390,7 +5421,7 @@ function syslog_process_alerts($max_seq) {
 
 			if ($sql != '') {
 				if ($alert['level'] == '1') {
-					$th_sql  = str_replace('*', 'host, COUNT(*) AS count', $sql);
+					$th_sql  = preg_replace('/^SELECT \*/', 'SELECT host, COUNT(*) AS count', $sql, 1);
 					$results = syslog_db_fetch_assoc_prepared($th_sql . $groupBy, $params);
 
 					if (cacti_sizeof($results)) {
@@ -5413,7 +5444,7 @@ function syslog_process_alerts($max_seq) {
 					// the consolidated Phase 1 count is the same number the
 					// per-rule COUNT(*) scan would return; keep it instead
 					// of scanning the staging table a second time
-					$count = isset($counts[$index]) ? (int) $counts[$index] : (int) syslog_db_fetch_cell_prepared(str_replace('*', 'COUNT(*)', $sql) . $groupBy, $params);
+					$count = isset($counts[$index]) ? (int) $counts[$index] : (int) syslog_db_fetch_cell_prepared(preg_replace('/^SELECT \*/', 'SELECT COUNT(*)', $sql, 1) . $groupBy, $params);
 					// Windowed thresholds need every cycle's count recorded,
 					// and their state machine decides what may fire, so
 					// evaluation must run even below the per-cycle threshold.
@@ -5532,7 +5563,8 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 	$alert_count   = 0;
 	$syslog_alarms = 0;
 	$hostlist      = [];
-	$max_alerts    = read_config_option('syslog_maxrecords');
+	$max_alerts    = (int) read_config_option('syslog_maxrecords');
+	$rows_shown    = 0;
 	$report_tag    = false;
 	$theme         = false;
 	$format_ok     = false;
@@ -5724,7 +5756,9 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 				$results['priority_id'] = $a['priority_id'];
 				$results['facility_id'] = $a['facility_id'];
 
-				if (($alert['method'] == 1 && $alert_count < $max_alerts) || $alert['method'] == 0) {
+				if (($alert['method'] == 1 && ($max_alerts < 1 || $rows_shown < $max_alerts)) || $alert['method'] == 0) {
+					$rows_shown++;
+
 					if ($alert['method'] == 0) {
 						$message = $hmessage;
 					}
@@ -6129,6 +6163,95 @@ function syslog_strip_incoming_domains($max_seq) {
 }
 
 /**
+ * Return the canonical text of an IPv4 or IPv6 address, or false when the
+ * sender name is not an address literal.
+ *
+ * IPv6 text is normalized (lower case, compressed, no brackets) so that one
+ * address arriving in several spellings is stored under one host name. A zone
+ * suffix such as %eth0 is kept as sent.
+ *
+ * @param string $name The host name as sent by the remote system
+ *
+ * @return string|false The canonical address text, or false for a name
+ */
+function syslog_host_address(string $name): string|false {
+	if (preg_match('/^\[?([^\]%]+)(%[A-Za-z0-9_.-]+)?\]?$/', trim($name), $match) !== 1 || !filter_var($match[1], FILTER_VALIDATE_IP)) {
+		return false;
+	}
+
+	$zone = $match[2] ?? '';
+
+	// Only an IPv6 address can carry a zone.
+	if ($zone !== '' && strpos($match[1], ':') === false) {
+		return false;
+	}
+
+	return inet_ntop(inet_pton($match[1])) . $zone;
+}
+
+/**
+ * Whether a host name has an address record. Looks for A and AAAA records so a
+ * sender that only has an IPv6 address counts, and falls back to the system
+ * resolver, which also reads the hosts file.
+ *
+ * @param string   $name    The host name to look up
+ * @param callable $records Returns the A and AAAA records for a name, like dns_get_record()
+ * @param callable $legacy  Returns the IPv4 address for a name, or the name itself, like gethostbyname()
+ *
+ * @return bool True when the name resolves
+ */
+function syslog_host_has_address(string $name, ?callable $records = null, ?callable $legacy = null): bool {
+	$records ??= 'dns_get_record';
+	$legacy  ??= 'gethostbyname';
+
+	// A failed query is an answer here, not a PHP warning for the Cacti log.
+	set_error_handler(static fn() => true);
+
+	try {
+		$found = $records($name, DNS_A | DNS_AAAA);
+	} finally {
+		restore_error_handler();
+	}
+
+	if (is_array($found) && cacti_sizeof($found)) {
+		return true;
+	}
+
+	return $name != $legacy($name);
+}
+
+/**
+ * Point the unprocessed messages of one sender name at another name.
+ *
+ * @param string $from      The name currently stored
+ * @param string $to        The name to store
+ * @param int    $max_seq   The max_seq for syslog_incoming messages to process
+ * @param int    $seq_start Optional first seq of a slice (0 for no bound)
+ * @param int    $seq_end   Optional last seq of a slice (0 for no bound)
+ *
+ * @return void
+ */
+function syslog_set_incoming_host(string $from, string $to, $max_seq, $seq_start = 0, $seq_end = 0): void {
+	global $syslogdb_default;
+
+	if ($seq_start > 0 && $seq_end > 0) {
+		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+			SET host = ?
+			WHERE host = ?
+			AND `status` = 1
+			AND `seq` BETWEEN ? AND ?",
+			[$to, $from, $seq_start, $seq_end]);
+	} else {
+		syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+			SET host = ?
+			WHERE host = ?
+			AND `status` = 1
+			AND `seq` <= ?",
+			[$to, $from, $max_seq]);
+	}
+}
+
+/**
  * Check if the hostname is in the cacti hosts table
  * Some devices only send IP addresses in syslog messages, and may not be in the DNS
  * however they may be in the cacti hosts table as monitored devices.
@@ -6323,10 +6446,13 @@ function syslog_update_reference_tables($max_seq) {
  * @param int $max_seq   The max_seq for syslog_incoming messages to process
  * @param int $seq_start Optional first seq of a slice (0 for no bound)
  * @param int $seq_end   Optional last seq of a slice (0 for no bound)
+ * @param int $budget_seconds Seconds after which DNS lookups stop for this call;
+ *                            hosts not found in Cacti are then left as received
+ * @param callable|null $dns_records Replacement for dns_get_record(), used by tests
  *
  * @return int The number of distinct hosts resolved
  */
-function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
+function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0, $budget_seconds = SYSLOG_RESOLVE_BUDGET_SECONDS, ?callable $dns_records = null) {
 	global $syslogdb_default;
 
 	if (read_config_option('syslog_resolve_hostname') != 'on') {
@@ -6348,25 +6474,57 @@ function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
 	}
 
 	$resolved_count = 0;
+	$deadline       = microtime(true) + $budget_seconds;
+	$dns_skipped    = false;
 
 	foreach ($hosts as $host) {
 		if (!isset($host['host']) || empty($host['host'])) {
 			continue;
 		}
 
-		$resolved = false;
+		$resolved  = false;
+		$dns_asked = false;
+		$address   = syslog_host_address($host['host']);
 
-		// Check if hostname resolves via DNS (only if DNS is enabled)
+		if ($address !== false) {
+			// An address needs no lookup. A device in Cacti may still give it a
+			// better name, matched as sent first and then in canonical form.
+			if (!syslog_check_cacti_hosts($host['host'], $max_seq, $seq_start, $seq_end)) {
+				if ($address !== $host['host']) {
+					syslog_set_incoming_host($host['host'], $address, $max_seq, $seq_start, $seq_end);
+				}
+
+				syslog_check_cacti_hosts($address, $max_seq, $seq_start, $seq_end);
+			}
+
+			$resolved_count++;
+
+			continue;
+		}
+
+		// Check if hostname resolves via DNS (only if DNS is enabled). Senders
+		// choose these names, so lookups stop once the time budget is spent.
 		if (read_config_option('syslog_no_dns') != 'on') {
-			if ($host['host'] != gethostbyname($host['host'])) {
-				// DNS resolved successfully
-				$resolved = true;
+			if (microtime(true) >= $deadline) {
+				$dns_skipped = true;
+			} else {
+				$dns_asked = true;
+
+				if (syslog_host_has_address($host['host'], $dns_records)) {
+					// DNS resolved successfully
+					$resolved = true;
+				}
 			}
 		}
 
 		// Check if hostname exists in Cacti hosts table (only if not already resolved via DNS)
 		if (!$resolved) {
 			$resolved = syslog_check_cacti_hosts($host['host'], $max_seq, $seq_start, $seq_end);
+		}
+
+		// Without a DNS answer the name cannot be called unresolved
+		if (!$resolved && !$dns_asked && read_config_option('syslog_no_dns') != 'on') {
+			continue;
 		}
 
 		// If not resolved via DNS or found in Cacti, prefix the hostname
@@ -6392,6 +6550,10 @@ function syslog_resolve_incoming_hosts($max_seq, $seq_start = 0, $seq_end = 0) {
 		} else {
 			$resolved_count++;
 		}
+	}
+
+	if ($dns_skipped) {
+		cacti_log('SYSLOG WARNING: Hostname resolution budget of ' . $budget_seconds . ' seconds was spent; remaining hostnames were left as received', false, 'SYSLOG');
 	}
 
 	return $resolved_count;
@@ -7712,16 +7874,16 @@ function alert_setup_environment(&$alert, $results, $hostlist = [], $hostname = 
 function alert_replace_variables($alert, $results, $hostname = '') {
 	global $severities, $syslog_levels, $syslog_facilities;
 
-	$command = (string) $alert['command'];
-
-	$command = str_replace('<ALERTID>',  cacti_escapeshellarg($alert['id']), $command);
-	$command = str_replace('<HOSTNAME>', cacti_escapeshellarg($hostname), $command);
-	$command = str_replace('<PRIORITY>', cacti_escapeshellarg($syslog_levels[$results['priority_id']]), $command);
-	$command = str_replace('<FACILITY>', cacti_escapeshellarg($syslog_facilities[$results['facility_id']]), $command);
-	$command = str_replace('<MESSAGE>',  cacti_escapeshellarg($results['message']), $command);
-	$command = str_replace('<SEVERITY>', cacti_escapeshellarg($severities[$alert['severity']]), $command);
-
-	return $command;
+	// One pass: a substituted value that contains another token must not be
+	// expanded again, or the later value lands inside the earlier quotes.
+	return strtr((string) $alert['command'], [
+		'<ALERTID>'  => cacti_escapeshellarg($alert['id']),
+		'<HOSTNAME>' => cacti_escapeshellarg($hostname),
+		'<PRIORITY>' => cacti_escapeshellarg($syslog_levels[$results['priority_id']]),
+		'<FACILITY>' => cacti_escapeshellarg($syslog_facilities[$results['facility_id']]),
+		'<MESSAGE>'  => cacti_escapeshellarg($results['message']),
+		'<SEVERITY>' => cacti_escapeshellarg($severities[$alert['severity']])
+	]);
 }
 
 /**

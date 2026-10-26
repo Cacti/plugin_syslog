@@ -102,7 +102,7 @@ it('delivers successful clears and retains failed or malformed events with bound
 		expect($writes[1][0])->toStartWith('UPDATE syslog_threshold_recovery_queue SET attempts = attempts + 1');
 		expect($writes[1][1])->toBe([1000 + $delay, 2, str_repeat('a', 32)]);
 	}
-})->with([['/bin/true', 0, 0], ['/bin/false', 0, 60], ['/bin/false', 10, 3600], ['malformed', 1, 120]]);
+})->with([[PHP_BINARY . ' -r ' . escapeshellarg('exit(0);'), 0, 0], [PHP_BINARY . ' -r ' . escapeshellarg('exit(1);'), 0, 60], [PHP_BINARY . ' -r ' . escapeshellarg('exit(1);'), 10, 3600], ['malformed', 1, 120]]);
 
 it('does not deliver concurrently or when cancellation cleanup fails', function ($locked) {
 	$reads = [];
@@ -113,11 +113,14 @@ it('does not deliver concurrently or when cancellation cleanup fails', function 
 })->with([true, false]);
 
 it('repairs recovery storage without replacing historical message tables', function ($failed_table) {
+	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('includes/schema.php');
 	test_override('syslog_db_table_exists', static fn() => true);
 	// the digest migration hooks run inside the same repair pass
 	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('syslog_db_add_column', static fn($table, $column) => !($table === $failed_table && $column['name'] === 'recovery_context'));
+	test_override('syslog_db_execute', static fn() => true);
+	test_override('syslog_db_execute_prepared', static fn() => true);
 	expect(syslog_ensure_table_structures())->toBe($failed_table === 'none');
 })->with(['syslog_threshold_state', 'none']);
 
