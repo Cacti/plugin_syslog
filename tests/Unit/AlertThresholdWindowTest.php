@@ -89,3 +89,12 @@ it('repairs window columns without requiring a version change', function () {
 	expect(syslog_ensure_table_structures())->toBeTrue();
 	expect($columns)->toBe(['threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command']);
 });
+
+it('fingerprints threshold settings within the existing storage width', function () {
+	$rule = threshold_rule_fixture();
+	$hash = syslog_threshold_rule_hash($rule);
+
+	expect($hash)->toMatch('/^[a-f0-9]{40}$/')
+		->and(syslog_threshold_rule_hash($rule + ['name' => 'Renamed alert']))->toBe($hash)
+		->and(syslog_threshold_rule_hash(array_replace($rule, ['threshold_window' => $rule['threshold_window'] + 1])))->not->toBe($hash);
+});
