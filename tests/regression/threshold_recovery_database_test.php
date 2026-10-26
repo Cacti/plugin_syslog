@@ -274,12 +274,12 @@ try {
 		check_recovery(count(file($command_log)) === $commands_before, 'Alarm Manager recovery does not run configured commands');
 		$clear = end($am_events);
 		check_recovery($clear['transition'] === 'recovered' && $clear['episode_id'] === $raised['episode_id'], 'Queued recovery correlates to raise');
-		check_recovery((int) $pdo->query("SELECT COUNT(*) FROM syslog_threshold_recovery_queue WHERE breach_key = '" . $rule['_threshold_state']['breach_key'] . "'")->fetchColumn() === 1, 'Failed clear remains queued');
+		check_recovery((int) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM syslog_threshold_recovery_queue WHERE breach_key = ?', [$rule['_threshold_state']['breach_key']]) === 1, 'Failed clear remains queued');
 		$am_status = 'already_accepted';
 		syslog_threshold_deliver_recoveries($when + 120);
 		check_recovery(end($am_events) === $clear, 'Queued recovery retry retains identical event and time');
 		check_recovery(count(file($command_log)) === $commands_before, 'Forwarding retry does not run hidden recovery command');
-		check_recovery((int) $pdo->query("SELECT COUNT(*) FROM syslog_threshold_recovery_queue WHERE breach_key = '" . $rule['_threshold_state']['breach_key'] . "'")->fetchColumn() === 0, 'Durable duplicate completes queued recovery');
+		check_recovery((int) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM syslog_threshold_recovery_queue WHERE breach_key = ?', [$rule['_threshold_state']['breach_key']]) === 0, 'Durable duplicate completes queued recovery');
 	} else {
 		print "SKIP: Alarm Manager recovery cases require its event validator.\n";
 	}

@@ -5006,7 +5006,9 @@ function syslog_alert_window_seconds(array $alert): int {
 
 /** Hash the rule settings that define a threshold episode. */
 function syslog_threshold_rule_hash(array $alert): string {
-	return sha1(json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command', 'alarm_destination', 'date']))));
+	$settings = array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command', 'alarm_destination', 'date']));
+
+	return substr(hash('sha256', json_encode($settings)), 0, 40);
 }
 
 /** Recover quiet breaches without scanning or rewriting message history. */

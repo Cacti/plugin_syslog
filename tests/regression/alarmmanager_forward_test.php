@@ -122,7 +122,6 @@ try {
 	syslog_execute_ticket_command($rule, ['router.example'], 'ticket failure %s %s %s');
 	check(count($logs) === $before_logs, 'Alarm Manager skips configured ticket commands');
 	$rule['open_ticket'] = '';
-	$options['syslog_ticket_command'] = '';
 	$before = $emails;
 	$rule['alarm_destination'] = 'syslog';
 	$rule['command'] = '';

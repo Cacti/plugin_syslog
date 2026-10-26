@@ -43,4 +43,4 @@ form_start('syslog_alerts.php', 'syslog_edit');
 draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => inject_form_variables($fields_syslog_alert_edit, $alert)]);
 print '</form>';
 preg_match('/function changeMethod\(\) \{.*?\n\t\}/s', $source, $script);
-print '<script>var notifyExists = true;' . $script[0] . '</script>';
+print '<script>' . file_get_contents(dirname(__DIR__, 2) . '/js/alarm-destination.js') . 'var notifyExists = true;' . $script[0] . '</script>';

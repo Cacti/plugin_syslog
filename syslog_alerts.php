@@ -594,7 +594,7 @@ function get_repeat_array(): array {
  * @return void
  */
 function syslog_action_edit(): void {
-	global $message_types, $severities;
+	global $message_types, $severities, $config;
 	global $syslogdb_default;
 
 	// ================= input validation =================
@@ -982,6 +982,7 @@ function syslog_action_edit(): void {
 	}
 
 	?>
+	<script src='<?php print $config['url_path']; ?>plugins/syslog/js/alarm-destination.js?v=<?php print filemtime(__DIR__ . '/js/alarm-destination.js'); ?>'></script>
 	<script type='text/javascript'>
 
 	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
@@ -1032,12 +1033,7 @@ function syslog_action_edit(): void {
 	}
 
 	function changeMethod() {
-		var threshold = $('#report_method').val() == '1';
-		var syslogAlarming = $('#alarm_destination').val() !== 'alarmmanager';
-		$('#row_num, #row_threshold_window, #row_threshold_recovery_minutes').toggle(threshold);
-		$('#row_spacer1, #row_open_ticket, #row_command, #row_header_email, #row_email, #row_body').toggle(syslogAlarming);
-		$('#row_notify').toggle(syslogAlarming && notifyExists);
-		$('#row_recovery_command').toggle(threshold && syslogAlarming);
+		syslogAlertDestinationVisibility(jQuery, notifyExists);
 	}
 
 	function changeMaintenanceMode() {

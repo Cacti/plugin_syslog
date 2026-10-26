@@ -361,6 +361,18 @@ if (!function_exists('api_plugin_hook')) {
 	}
 }
 
+if (!function_exists('api_plugin_installed')) {
+	function api_plugin_installed($plugin) {
+		return test_call_override('api_plugin_installed', [$plugin], false);
+	}
+}
+
+if (!function_exists('api_plugin_is_enabled')) {
+	function api_plugin_is_enabled($plugin) {
+		return test_call_override('api_plugin_is_enabled', [$plugin], false);
+	}
+}
+
 if (!function_exists('api_plugin_hook_function')) {
 	function api_plugin_hook_function($name, $value = null) {
 		return test_call_override('api_plugin_hook_function', [$name, $value], $value);

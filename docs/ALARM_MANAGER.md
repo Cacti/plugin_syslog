@@ -52,7 +52,6 @@ command can cancel queued recovery under the existing lifecycle rules.
 Local checks:
 
 ```sh
-php tests/regression/alarm_destination_save_test.php
 node tests/regression/alarm_destination_ui_test.js
 php tests/regression/alarmmanager_forward_test.php
 SYSLOG_TEST_MYSQL_SOCKET=/path/to/disposable/mysql.sock php tests/regression/threshold_recovery_database_test.php

@@ -83,5 +83,5 @@ it('repairs window columns without requiring a version change', function () {
 		return true;
 	});
 	expect(syslog_ensure_table_structures())->toBeTrue();
-	expect($columns)->toBe(['threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command']);
+	expect($columns)->toBe(['threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'alarm_destination', 'recovery_command']);
 });
