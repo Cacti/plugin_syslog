@@ -22,7 +22,7 @@
 
 * bug: Stop hostname lookups after a time budget per processing run so senders cannot stall the poller
 
-* bug: Widen rule owner columns to the 50 character Cacti username limit
+* bug: Widen rule owner columns to the 50 character Cacti username limit through the standard schema upgrade helper
 
 * bug: Reprocess only the selected removal rule instead of every enabled rule
 

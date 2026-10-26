@@ -8,39 +8,34 @@
 */
 
 /*
- * Rule owner columns hold a full Cacti username and are widened once on existing installs.
+ * Rule owners use the Cacti username width on the Syslog database connection.
  */
 
 afterEach(function () {
 	syslog_test_reset_globals();
 });
 
-
-function owner_width_setup(?string $marker, ?callable $execute = null): stdClass {
+function owner_width_setup(?string $failed_table = null): stdClass {
 	$GLOBALS['config']['poller_id'] = 1;
-	$GLOBALS['syslogdb_default']    = 'syslogdb';
+	$GLOBALS['syslogdb_default'] = 'syslogdb';
+	$GLOBALS['syslog_cnn'] = new stdClass();
 
 	syslog_load_plugin_source('includes/functions.php');
 	syslog_load_plugin_source('includes/schema.php');
 
 	$state = new stdClass();
-
-	$state->alters = [];
-	$state->status = [];
+	$state->updates = [];
 
 	test_override('syslog_db_table_exists', static fn() => true);
 	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('syslog_db_add_column', static fn() => true);
-	test_override('db_update_table', static fn() => true);
-	test_override('syslog_db_fetch_cell_prepared', static fn($sql, $params) => ($params[0] ?? '') === 'schema_user_width' ? $marker : '');
-	test_override('syslog_db_execute', function ($sql) use ($state, $execute) {
-		$state->alters[] = $sql;
+	test_override('db_update_table', function ($table, $data, $remove, $log, $connection) use ($state, $failed_table) {
+		foreach ($data['columns'] ?? [] as $column) {
+			if ($column['name'] === 'user' && in_array($table, ['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'], true)) {
+				$state->updates[$table] = compact('column', 'remove', 'connection');
 
-		return $execute ? $execute($sql) : true;
-	});
-	test_override('syslog_db_execute_prepared', function ($sql, $params) use ($state) {
-		if (str_contains($sql, 'syslog_status') && ($params[0] ?? '') === 'schema_user_width') {
-			$state->status[] = $params[1];
+				return $table !== $failed_table;
+			}
 		}
 
 		return true;
@@ -49,45 +44,25 @@ function owner_width_setup(?string $marker, ?callable $execute = null): stdClass
 	return $state;
 }
 
-
-it('widens the owner column of every rule table once', function () {
-	$state = owner_width_setup(null);
-
-	expect(syslog_ensure_table_structures())->toBeTrue();
-
-	$alters = array_values(array_filter($state->alters, static fn($sql) => str_starts_with($sql, 'ALTER TABLE') && str_contains($sql, '`user` varchar(50)')));
-
-	expect($alters)->toHaveCount(4)
-		->and($alters[0])->toContain('`syslogdb`.`syslog_alert`')
-		->and($alters[3])->toContain('`syslogdb`.`syslog_device_rule`')
-		->and($state->status)->toBe(['50']);
-});
-
-
-it('does not repeat the owner column change after it succeeded', function () {
-	$state = owner_width_setup('50');
+it('upgrades every rule owner column through the standard schema helper', function () {
+	$state = owner_width_setup();
 
 	expect(syslog_ensure_table_structures())->toBeTrue()
-		->and(array_filter($state->alters, static fn($sql) => str_starts_with($sql, 'ALTER TABLE') && str_contains($sql, '`user` varchar(50)')))->toBe([])
-		->and($state->status)->toBe([]);
+		->and(array_keys($state->updates))->toBe(['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule']);
+
+	foreach ($state->updates as $update) {
+		expect($update['column'])->toBe(['name' => 'user', 'type' => 'varchar(50)', 'NULL' => false, 'default' => ''])
+			->and($update['remove'])->toBeFalse()
+			->and($update['connection'])->toBe($GLOBALS['syslog_cnn']);
+	}
 });
 
-
-it('does not record the owner column change when a table cannot be altered', function () {
-	$state = owner_width_setup(null, static fn($sql) => !str_contains($sql, 'syslog_reports'));
+it('fails the upgrade when an owner column cannot be updated', function () {
+	$state = owner_width_setup('syslog_reports');
 
 	expect(syslog_ensure_table_structures())->toBeFalse()
-		->and($state->status)->toBe([]);
+		->and(array_keys($state->updates))->toBe(['syslog_alert', 'syslog_remove', 'syslog_reports']);
 });
-
-
-it('does not record the owner column change when the marker cannot be stored', function () {
-	owner_width_setup(null);
-	test_override('syslog_db_execute_prepared', static fn() => false);
-
-	expect(syslog_ensure_table_structures())->toBeFalse();
-});
-
 
 it('creates the owner columns at the Cacti username width', function () {
 	$schema = plugin_test_read_source('includes/schema.php');

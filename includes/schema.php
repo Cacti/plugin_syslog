@@ -913,18 +913,11 @@ function syslog_ensure_table_structures(): bool {
 		syslog_ensure_share_tables();
 		syslog_ensure_dashboard_tables();
 	}
-	// Rule owners are Cacti usernames, which allow 50 characters. The marker is
-	// written only after every table was widened, so a failed run is retried.
-	$widened = syslog_db_fetch_cell_prepared("SELECT value FROM `$syslogdb_default`.`syslog_status` WHERE name = ?", ['schema_user_width']);
-
-	if ($widened !== '50') {
-		foreach (['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'] as $table) {
-			if (!syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN `user` varchar(50) NOT NULL DEFAULT ''")) {
-				return false;
-			}
-		}
-
-		if (!syslog_status_set('schema_user_width', '50')) {
+	// Match the 50-character username limit in supported Cacti 1.2 releases.
+	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'] as $table) {
+		if (db_update_table($table, ['columns' => [
+			['name' => 'user', 'type' => 'varchar(50)', 'NULL' => false, 'default' => '']
+		], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
 			return false;
 		}
 	}
