@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-16 14:29-0400\n"
+"POT-Creation-Date: 2026-10-26 13:53-0400\n"
 "PO-Revision-Date: 2025-03-07 14:57-0500\n"
 "Last-Translator: Ede Willians dos Santos Cavalcante <edewillians10@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <http://translate.cacti.net/projects/cacti/syslog/pt_BR/>\n"
@@ -189,6 +189,15 @@ msgid "partition creation failed"
 msgstr "Tabela particionada"
 
 #: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr ""
+
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
@@ -210,6 +219,14 @@ msgstr ""
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
+msgstr ""
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr ""
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
 msgstr ""
 
 #: includes/functions.php
@@ -641,6 +658,14 @@ msgstr "Syslog habilitado"
 #: includes/settings.php
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "Se essa caixa de seleção estiver definida, os registros serão transferidos da tabela Entrada do Syslog para a tabela principal do Syslog e os Alertas e Relatórios serão ativados.  Lembre-se de que, se o sistema estiver desabilitado, as entradas de log ainda se acumularão na tabela de entrada do Syslog, pois isso é definido pelo processo rsyslog ou syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr ""
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr ""
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -2482,6 +2507,10 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "Exportar regra de alerta de syslog"
 
 #: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr ""
+
+#: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
 msgstr ""
 
@@ -2571,6 +2600,25 @@ msgstr "1 Minuto"
 #: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "Por favor, descreva este alerta."
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Alarm Destination"
+msgstr "Retenção de alerta de syslog"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr ""
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Syslog Alerts"
+msgid "Syslog Alarming"
+msgstr "Alertas de Syslog"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -2958,6 +3006,10 @@ msgstr "Regra de alerta de importação"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
 msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
@@ -3688,15 +3740,6 @@ msgstr ""
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
-
-#: includes/functions.php
-msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
-
-#: includes/functions.php
-#, php-format
-msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
 msgstr ""
 
 #~ msgid "Command"

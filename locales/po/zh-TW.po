@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-16 14:29-0400\n"
+"POT-Creation-Date: 2026-10-26 13:53-0400\n"
 "PO-Revision-Date: 2026-10-06 20:43+0000\n"
 "Last-Translator: YU HAO HUANG <mix@b51.tw>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.cacti.net/projects/cacti/syslog/zh_Hant/>\n"
@@ -194,6 +194,15 @@ msgid "partition creation failed"
 msgstr "分區表"
 
 #: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr ""
+
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr ""
 
@@ -215,6 +224,14 @@ msgstr ""
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
+msgstr ""
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr ""
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
 msgstr ""
 
 #: includes/functions.php
@@ -699,6 +716,14 @@ msgstr "已啟用Syslog"
 #, fuzzy
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
 msgstr "如果設置了此復選框，則記錄將從Syslog Incoming表傳輸到主syslog表，並且將啟用Alerts and Reports。請記住，如果系統被禁用，日誌條目仍會累積到Syslog Incoming表中，因為這是由rsyslog或syslog-ng進程定義的。"
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr ""
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr ""
 
 #: includes/settings.php
 #, fuzzy
@@ -2599,6 +2624,10 @@ msgid "Export Syslog Alert Rule(s)"
 msgstr "導出系統日誌警報規則"
 
 #: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr ""
+
+#: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
 msgstr ""
 
@@ -2691,6 +2720,24 @@ msgstr "1 分鐘"
 #, fuzzy
 msgid "Please describe this Alert."
 msgstr "請描述此警報。"
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Alarm Destination"
+msgstr "系統日誌警報保留"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr ""
+
+#: syslog_alerts.php
+#, fuzzy
+msgid "Syslog Alarming"
+msgstr "Syslog提醒"
 
 #: syslog_alerts.php
 #, fuzzy
@@ -3113,6 +3160,10 @@ msgstr "導入警報規則"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr ""
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
 msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
@@ -3912,15 +3963,6 @@ msgstr ""
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
-
-#: includes/functions.php
-msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
-
-#: includes/functions.php
-#, php-format
-msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
 msgstr ""
 
 #, fuzzy

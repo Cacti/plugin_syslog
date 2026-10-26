@@ -569,6 +569,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		`maintenance_end` char(5) NOT NULL default '00:00',
 		`maintenance_datetime_start` varchar(16) NOT NULL default '',
 		`maintenance_datetime_end` varchar(16) NOT NULL default '',
+		`alarm_destination` varchar(16) NOT NULL default 'syslog',
 		`open_ticket` CHAR(2) default '',
 		`message` TEXT NOT NULL,
 		`body` VARCHAR(8192) NOT NULL default '',
@@ -902,6 +903,7 @@ function syslog_ensure_table_structures(): bool {
 		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window'],
 		['name' => 'threshold_recovery_minutes', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '5', 'after' => 'threshold_unit'],
 		['name' => 'threshold_recovery_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_recovery_minutes'],
+		['name' => 'alarm_destination', 'type' => 'varchar(16)', 'NULL' => false, 'default' => 'syslog'],
 		['name' => 'recovery_command', 'type' => 'varchar(255)', 'NULL' => true]
 	], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
 		return false;

@@ -117,7 +117,7 @@ function form_save(): void {
 			get_nfilter_request_var('maintenance_datetime_start'), get_nfilter_request_var('maintenance_datetime_end'),
 			get_nfilter_request_var('threshold_window'), get_nfilter_request_var('threshold_unit'),
 			get_nfilter_request_var('threshold_recovery_minutes'), get_nfilter_request_var('threshold_recovery_unit') ?: 'minute',
-			get_nfilter_request_var('recovery_command'));
+			get_nfilter_request_var('recovery_command'), get_nfilter_request_var('alarm_destination') ?: 'syslog');
 
 		if ((is_error_message()) || (get_filter_request_var('id') != get_filter_request_var('_id')) || $alertid === false) {
 			header('Location: syslog_alerts.php?header=false&action=edit&id=' . (empty($alertid) ? get_filter_request_var('id') : $alertid));
@@ -340,7 +340,7 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	$enabled, $severity, $command, $repeat_alert, $open_ticket, $notify = 0, $body = '', $cooldown_minutes = 0,
 	$deduplication_minutes = 0, $maintenance_mode = 'inherit', $maintenance_days = '1,2,3,4,5',
 	$maintenance_start = '00:00', $maintenance_end = '00:00', $maintenance_datetime_start = '',
-	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5, $threshold_recovery_unit = 'minute', $recovery_command = '') {
+	$maintenance_datetime_end = '', $threshold_window = 0, $threshold_unit = 'minute', $threshold_recovery_minutes = 5, $threshold_recovery_unit = 'minute', $recovery_command = '', $alarm_destination = 'syslog') {
 	global $syslogdb_default;
 
 	// get the username
@@ -351,6 +351,12 @@ function api_syslog_alert_save($id, $name, $method, $level, $num, $type, $messag
 	} else {
 		$save['id'] = '';
 	}
+
+	if (!in_array($alarm_destination, ['syslog', 'alarmmanager'], true)) {
+		raise_message('alarm_destination', __('Select Syslog Alarming or Alarm Manager.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		return false;
+	}
+	$save['alarm_destination'] = $alarm_destination;
 
 	$save['hash']         = get_hash_syslog($save['id'], 'syslog_alert');
 
@@ -588,7 +594,7 @@ function get_repeat_array(): array {
  * @return void
  */
 function syslog_action_edit(): void {
-	global $message_types, $severities;
+	global $message_types, $severities, $config;
 	global $syslogdb_default;
 
 	// ================= input validation =================
@@ -712,6 +718,14 @@ function syslog_action_edit(): void {
 			'value'         => '|arg1:name|',
 			'max_length'    => '250',
 			'size'          => 80
+		],
+		'alarm_destination' => [
+			'method' => api_plugin_installed('alarmmanager') ? 'drop_array' : 'hidden',
+			'friendly_name' => __('Alarm Destination', 'syslog'),
+			'description' => __('Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules.', 'syslog'),
+			'value' => '|arg1:alarm_destination|',
+			'array' => ['syslog' => __('Syslog Alarming', 'syslog'), 'alarmmanager' => __('Alarm Manager', 'syslog')],
+			'default' => 'syslog'
 		],
 		'severity' => [
 			'method'        => 'drop_array',
@@ -968,6 +982,7 @@ function syslog_action_edit(): void {
 	}
 
 	?>
+	<script src='<?php print $config['url_path']; ?>plugins/syslog/js/alarm-destination.js?v=<?php print filemtime(__DIR__ . '/js/alarm-destination.js'); ?>'></script>
 	<script type='text/javascript'>
 
 	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
@@ -1018,7 +1033,7 @@ function syslog_action_edit(): void {
 	}
 
 	function changeMethod() {
-		$('#row_num, #row_threshold_window, #row_threshold_recovery_minutes, #row_recovery_command').toggle($('#report_method').val() == '1');
+		syslogAlertDestinationVisibility(jQuery, notifyExists);
 	}
 
 	function changeMaintenanceMode() {
@@ -1078,6 +1093,7 @@ function syslog_action_edit(): void {
 		$('#report_method').change(function() {
 			changeMethod();
 		});
+		$('#alarm_destination').on('change.syslogDestination', changeMethod);
 		$('#maintenance_mode').on('change.syslogMaintenance', changeMaintenanceMode);
 
 		changeMethod();
@@ -1419,6 +1435,11 @@ function alert_import(): void {
 				}
 			}
 
+			$save['alarm_destination'] = $save['alarm_destination'] ?? 'syslog';
+			if (!in_array($save['alarm_destination'], ['syslog', 'alarmmanager'], true)) {
+				raise_message('alarm_destination', __('Import rejected: invalid alarm destination.', 'syslog'), MESSAGE_LEVEL_ERROR);
+				continue;
+			}
 			$id    = false;
 			$check = isset($save['type'], $save['message']) ? syslog_get_alert_sql($save, 100) : [];
 

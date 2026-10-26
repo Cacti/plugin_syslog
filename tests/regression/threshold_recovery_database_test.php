@@ -24,6 +24,19 @@ function syslog_db_fetch_row_prepared($sql, $params = [], ...$args) { return sys
 function syslog_db_fetch_cell_prepared($sql, $params = [], ...$args) { $q = $GLOBALS['pdo']->prepare($sql); $q->execute($params); return $q->fetchColumn(); }
 function syslog_db_fetch_cell($sql) { return syslog_db_fetch_cell_prepared($sql); }
 function db_execute_prepared($sql, $params = [], ...$args) { return syslog_db_execute_prepared($sql, $params); }
+function read_config_option($name) { return $GLOBALS['am_options'][$name] ?? ''; }
+function api_plugin_installed($name) { return true; }
+function api_plugin_is_enabled($name) { return true; }
+function db_fetch_cell_prepared(...$args) { return 1; }
+function api_plugin_hook_function($name, $envelope) {
+	$GLOBALS['am_events'][] = $envelope['event'];
+	alarmmanager_validate_event($envelope['event']);
+	$envelope['status'] = $GLOBALS['am_status'];
+	$envelope['event_row_id'] = 42;
+	return $envelope;
+}
+$am_validator = getenv('SYSLOG_TEST_ALARMMANAGER_VALIDATOR') ?: dirname(__DIR__, 3) . '/plugin_alarmmanager/includes/events.php';
+if (is_file($am_validator)) { require $am_validator; }
 function cacti_log(...$args) {}
 function cacti_sizeof($items) { return is_array($items) ? count($items) : 0; }
 function cacti_escapeshellarg($value) { return escapeshellarg((string) $value); }
@@ -50,7 +63,7 @@ try {
 		$syslogdb_default = $database;
 		syslog_create_alert_counts_table();
 		$syslogdb_default = $local_db;
-		$pdo->exec('CREATE TABLE syslog_alert (id INT PRIMARY KEY, enabled CHAR(2), method INT, date BIGINT, recovery_command VARCHAR(255))');
+		$pdo->exec('CREATE TABLE syslog_alert (id INT PRIMARY KEY, enabled CHAR(2), method INT, date BIGINT, recovery_command VARCHAR(255), alarm_destination VARCHAR(16) NOT NULL DEFAULT \'syslog\')');
 		$pdo->exec("INSERT INTO syslog_alert (id,enabled,method,date) VALUES (1,'on',1,100),(2,'on',1,100)");
 		$pdo->exec('CREATE TABLE syslog_incoming (seq BIGINT PRIMARY KEY, status INT, threshold_breached TINYINT DEFAULT NULL)');
 		$pdo->exec('CREATE TABLE syslog (seq BIGINT AUTO_INCREMENT PRIMARY KEY, replication_source_poller_id INT, replication_source_event_id BIGINT, threshold_breached TINYINT DEFAULT NULL)');
@@ -236,6 +249,40 @@ try {
 	$pdo->exec('UPDATE syslog_alert SET date = 101');
 	syslog_threshold_deliver_recoveries($start + 360);
 	check_recovery((int) $pdo->query('SELECT COUNT(*) FROM syslog_threshold_recovery_queue')->fetchColumn() === 0 && count(file($command_log)) === 5, 'Editing a rule cancels a pending clear before execution');
+	if (is_file($am_validator)) {
+		// Real queue SQL and recovery commands; only the Alarm Manager ingestion boundary is stubbed.
+		$am_options = ['syslog_alarmmanager_enabled' => 'on', 'base_url' => 'https://fixture.invalid/'];
+		$am_status = 'accepted';
+		$am_events = [];
+		$command = PHP_BINARY . ' ' . escapeshellarg(dirname(__DIR__) . '/Fixtures/threshold_command.php') . ' ' . escapeshellarg($command_log) . ' <HOSTNAME>';
+		$pdo->prepare("UPDATE syslog_alert SET enabled = 'on', method = 1, date = 100, recovery_command = ?")->execute([$command]);
+		$pdo->exec("UPDATE syslog_alert SET alarm_destination = 'alarmmanager'");
+		$rule['alarm_destination'] = 'alarmmanager';
+		$rule['date'] = 100;
+		$rule['recovery_command'] = $command;
+		$rule['command'] = $command;
+		$when = $start + 5000;
+		$matches = [['seq' => 900, 'logtime' => date('Y-m-d H:i:s', $when), 'host' => 'host-am', 'message' => 'fixture', 'priority_id' => 3, 'facility_id' => 1]];
+		check_recovery(syslog_threshold_evaluate($rule, 2, 'host-am', $when) === 2, 'Open Alarm Manager threshold episode');
+		check_recovery(syslog_mark_threshold_messages($rule, 2, $matches), 'Retain immutable recovery context');
+		check_recovery(syslog_alarmmanager_forward($rule, $matches, 2), 'Accepted raise records recovery ownership');
+		$raised = end($am_events);
+		syslog_threshold_recover($when + 60);
+		$am_status = 'failed';
+		$commands_before = count(file($command_log));
+		syslog_threshold_deliver_recoveries($when + 60);
+		check_recovery(count(file($command_log)) === $commands_before, 'Alarm Manager recovery does not run configured commands');
+		$clear = end($am_events);
+		check_recovery($clear['transition'] === 'recovered' && $clear['episode_id'] === $raised['episode_id'], 'Queued recovery correlates to raise');
+		check_recovery((int) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM syslog_threshold_recovery_queue WHERE breach_key = ?', [$rule['_threshold_state']['breach_key']]) === 1, 'Failed clear remains queued');
+		$am_status = 'already_accepted';
+		syslog_threshold_deliver_recoveries($when + 120);
+		check_recovery(end($am_events) === $clear, 'Queued recovery retry retains identical event and time');
+		check_recovery(count(file($command_log)) === $commands_before, 'Forwarding retry does not run hidden recovery command');
+		check_recovery((int) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM syslog_threshold_recovery_queue WHERE breach_key = ?', [$rule['_threshold_state']['breach_key']]) === 0, 'Durable duplicate completes queued recovery');
+	} else {
+		print "SKIP: Alarm Manager recovery cases require its event validator.\n";
+	}
 	print "Threshold recovery MariaDB checks passed: $checks\n";
 } finally {
 	unlink($command_log);

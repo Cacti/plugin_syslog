@@ -22,6 +22,8 @@
  +-------------------------------------------------------------------------+
 */
 
+require_once(__DIR__ . '/alarmmanager.php');
+
 $syslog_query_builder = dirname(__DIR__) . '/lib/QueryBuilder.php';
 
 if (file_exists($syslog_query_builder)) {
@@ -3345,10 +3347,11 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
  * response cannot stream unbounded data.
  */
 define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 10);
+define('SYSLOG_RULE_PREVIEW_HISTORY_ROWS', 10000);
 
 /**
  * syslog_rule_preview - Run a read-only preview of a rule against the
- * incoming table.
+ * incoming table, with recent stored history as a structured-alert fallback.
  *
  * The rule is compiled through the same QueryBuilder/compiler paths the
  * poller uses, so the preview reflects exactly what the rule would match
@@ -3503,6 +3506,27 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		];
 	}
 
+	$history = false;
+	if ((int) $count === 0 && $rule_type === 'alert' && $type === 'filter' && syslog_db_table_exists('syslog', false)) {
+		// Reuse normalized host/program matching; never reinterpret hand-written SQL.
+		$compiled = syslog_get_removal_rule_sql($rule, 'syslog', 's.', false);
+		if (!$compiled) {
+			return ['error' => __('The historical preview filter could not be compiled.', 'syslog'), 'count' => 0, 'rows' => []];
+		}
+		$limit = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
+		$sql = "SELECT s.*, h.host, p.program
+			FROM (SELECT * FROM `$syslogdb_default`.`syslog` ORDER BY seq DESC LIMIT $limit) AS s
+			LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS h ON h.host_id = s.host_id
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS p ON p.program_id = s.program_id
+			{$compiled['sql']}";
+		$params = $compiled['params'];
+		$count = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM ($sql) AS preview", $params);
+		if (!is_numeric($count)) {
+			return ['error' => __('The historical preview query could not be evaluated.', 'syslog'), 'count' => 0, 'rows' => []];
+		}
+		$history = true;
+	}
+
 	$sample = syslog_db_fetch_assoc_prepared("$sql ORDER BY seq DESC LIMIT $rows", $params);
 
 	if (!is_array($sample)) {
@@ -3513,8 +3537,8 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		];
 	}
 
-	$time_field = isset($syslog_incoming_config['timeField']) ? $syslog_incoming_config['timeField'] : 'logtime';
-	$text_field = isset($syslog_incoming_config['textField']) ? $syslog_incoming_config['textField'] : 'message';
+	$time_field = !$history && isset($syslog_incoming_config['timeField']) ? $syslog_incoming_config['timeField'] : 'logtime';
+	$text_field = !$history && isset($syslog_incoming_config['textField']) ? $syslog_incoming_config['textField'] : 'message';
 
 	$out = [];
 
@@ -3528,7 +3552,11 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		];
 	}
 
-	return ['error' => '', 'count' => (int) $count, 'rows' => $out];
+	$result = ['error' => '', 'count' => (int) $count, 'rows' => $out];
+	if ($history) {
+		$result['history_limit'] = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
+	}
+	return $result;
 }
 
 /**
@@ -4697,6 +4725,9 @@ function syslog_array2xml(array $array, string $tag = 'template'): string {
  * @return void
  */
 function syslog_execute_ticket_command($alert, $hostlist, $error_message) {
+	if (syslog_alarmmanager_selected($alert)) {
+		return;
+	}
 	$command = read_config_option('syslog_ticket_command');
 
 	if ($command != '') {
@@ -4742,6 +4773,9 @@ function syslog_execute_ticket_command($alert, $hostlist, $error_message) {
  * @return bool True when the command exits successfully.
  */
 function syslog_execute_alert_command($alert, $results, $hostname, string $event = 'breach'): bool {
+	if (syslog_alarmmanager_selected($alert)) {
+		return true;
+	}
 	/* alert_replace_variables() escapes each substituted token (<ALERTID>,
 	 * <HOSTNAME>, <PRIORITY>, <FACILITY>, <MESSAGE>, <SEVERITY>) with
 	 * cacti_escapeshellarg(). The command template itself comes from admin
@@ -5009,8 +5043,9 @@ function syslog_alert_window_seconds(array $alert): int {
 
 /** Hash the rule settings that define a threshold episode. */
 function syslog_threshold_rule_hash(array $alert): string {
-	// Keep the existing 40-character schema width for this settings fingerprint.
-	return substr(hash('sha256', json_encode(array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command', 'date'])))), 0, 40);
+	$settings = array_intersect_key($alert, array_flip(['type', 'message', 'level', 'num', 'threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'recovery_command', 'alarm_destination', 'date']));
+
+	return substr(hash('sha256', json_encode($settings)), 0, 40);
 }
 
 /** Recover quiet breaches without scanning or rewriting message history. */
@@ -5025,10 +5060,10 @@ function syslog_threshold_recover(?int $now = null): void {
 	}
 	$queries = [
 		["INSERT INTO syslog_threshold_recovery_queue (source_poller_id, breach_key, alert_id, rule_date, context, available_at)
-			SELECT s.source_poller_id, s.breach_key, s.alert_id, s.rule_date, s.recovery_context, ?
+			SELECT s.source_poller_id, s.breach_key, s.alert_id, s.rule_date, JSON_SET(s.recovery_context, '$.cleared_at', s.expires_at), ?
 			FROM syslog_threshold_state AS s JOIN syslog_alert AS a ON a.id = s.alert_id
 			WHERE s.source_poller_id = ? AND s.expires_at <= ? AND a.enabled = 'on' AND a.method = 1
-			AND s.rule_date = a.date AND s.recovery_context IS NOT NULL AND COALESCE(a.recovery_command, '') <> ''
+			AND s.rule_date = a.date AND s.recovery_context IS NOT NULL AND ((a.alarm_destination = 'syslog' AND COALESCE(a.recovery_command, '') <> '') OR (a.alarm_destination = 'alarmmanager' AND '" . (read_config_option('syslog_alarmmanager_enabled') === 'on' ? 'on' : '') . "' = 'on'))
 			ON DUPLICATE KEY UPDATE breach_key = VALUES(breach_key)", [$now, $source, $now]],
 		["DELETE c FROM syslog_alert_counts AS c JOIN syslog_threshold_state AS s ON s.alert_id = c.alert_id AND s.scope_key = c.scope_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE s.source_poller_id = ? AND $ended", [$source, $now]],
 		["DELETE m FROM syslog_threshold_state AS s JOIN syslog_threshold_messages AS m ON m.source_poller_id = s.source_poller_id AND m.breach_key = s.breach_key LEFT JOIN syslog_alert AS a ON a.id = s.alert_id WHERE (s.source_poller_id = ? AND $ended) OR s.expires_at <= ?", [$source, $now, $now]],
@@ -5061,7 +5096,7 @@ function syslog_threshold_deliver_recoveries(?int $now = null): void {
 
 	try {
 		if (!syslog_db_execute_prepared("DELETE q FROM syslog_threshold_recovery_queue AS q LEFT JOIN syslog_alert AS a ON a.id = q.alert_id
-			WHERE q.source_poller_id = ? AND (a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR a.date <> q.rule_date OR COALESCE(a.recovery_command, '') = '')", [$source])) {
+			WHERE q.source_poller_id = ? AND (a.id IS NULL OR a.enabled <> 'on' OR a.method <> 1 OR a.date <> q.rule_date OR ((a.alarm_destination = 'alarmmanager' OR COALESCE(a.recovery_command, '') = '') AND (a.alarm_destination <> 'alarmmanager' OR '" . (read_config_option('syslog_alarmmanager_enabled') === 'on' ? 'on' : '') . "' <> 'on')))", [$source])) {
 			return;
 		}
 		$pending = syslog_db_fetch_assoc_prepared('SELECT breach_key, context, attempts FROM syslog_threshold_recovery_queue WHERE source_poller_id = ? AND available_at <= ? ORDER BY available_at, breach_key LIMIT 25', [$source, $now]);
@@ -5074,9 +5109,13 @@ function syslog_threshold_deliver_recoveries(?int $now = null): void {
 				&& isset($context['alert']['id'], $context['alert']['name'], $context['alert']['message'], $context['alert']['severity'], $context['alert']['command'],
 					$context['alert']['_threshold_state']['breach_key'], $context['alert']['_threshold_state']['source_poller_id'],
 					$context['results']['message'], $context['results']['priority_id'], $context['results']['facility_id'])) {
+				$forwarded = true;
+				if (syslog_alarmmanager_selected($context['alert']) && !empty($context['alarmmanager_accepted']) && isset($context['alarmmanager_matches'], $context['cleared_at']) && read_config_option('syslog_alarmmanager_enabled') === 'on') {
+					$forwarded = syslog_alarmmanager_forward($context['alert'], $context['alarmmanager_matches'], 0, true, (int) $context['cleared_at']);
+				}
 				alert_setup_environment($context['alert'], $context['results'], $context['hostlist'], $context['hostname']);
-
-				if (syslog_execute_alert_command($context['alert'], $context['results'], $context['hostname'], 'clear')) {
+				$command_done = trim($context['alert']['command']) === '' || syslog_execute_alert_command($context['alert'], $context['results'], $context['hostname'], 'clear');
+				if ($command_done && $forwarded) {
 					syslog_db_execute_prepared('DELETE FROM syslog_threshold_recovery_queue WHERE source_poller_id = ? AND breach_key = ?', [$source, $row['breach_key']]);
 
 					continue;
@@ -5448,11 +5487,12 @@ function syslog_mark_threshold_messages(array $alert, int $count, array $matches
 		return true;
 	}
 
-	if ($matches && !empty($alert['_threshold_state']) && trim($alert['recovery_command'] ?? '') !== '') {
-		$state   = $alert['_threshold_state'];
+	if ($matches && !empty($alert['_threshold_state']) && (syslog_alarmmanager_selected($alert) ? read_config_option('syslog_alarmmanager_enabled') === 'on' : trim($alert['recovery_command'] ?? '') !== '')) {
+		$state = $alert['_threshold_state'];
 		$context = json_encode([
-			'alert'    => ['id' => $alert['id'], 'name' => $alert['name'], 'severity' => $alert['severity'], 'message' => $alert['message'], 'command' => $alert['recovery_command'], '_threshold_state' => $state],
-			'results'  => ['priority_id' => $matches[0]['priority_id'], 'facility_id' => $matches[0]['facility_id'], 'message' => $matches[0]['message']],
+			'alert' => ['id' => $alert['id'], 'name' => $alert['name'], 'severity' => $alert['severity'], 'message' => $alert['message'], 'alarm_destination' => $alert['alarm_destination'] ?? 'syslog', 'method' => $alert['method'], 'num' => $alert['num'], 'command' => $alert['recovery_command'] ?? '', '_threshold_state' => $state],
+			'results' => ['priority_id' => $matches[0]['priority_id'], 'facility_id' => $matches[0]['facility_id'], 'message' => $matches[0]['message']],
+			'alarmmanager_matches' => [$matches[0]],
 			'hostname' => (int) $alert['level'] === 1 ? $matches[0]['host'] : '',
 			'hostlist' => array_values(array_unique(array_column($matches, 'host')))
 		], JSON_INVALID_UTF8_SUBSTITUTE | JSON_THROW_ON_ERROR);
@@ -5818,7 +5858,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 					/**
 					 * Send the Email notification
 					 */
-					if ($alert['email'] != '' || $smsalert != '') {
+					if (!syslog_alarmmanager_forward($alert, $at, (int) $count) && ($alert['email'] != '' || $smsalert != '')) {
 						syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), $message, $smsalert);
 					}
 
@@ -5843,7 +5883,7 @@ function syslog_process_alert($alert, $sql, $params, $count, $hostname = '', $at
 					 * so a threshold alert emails out only when a recipient
 					 * is configured.
 					 */
-					if ($alert['email'] != '') {
+					if (!syslog_alarmmanager_forward($alert, $at, (int) $count) && $alert['email'] != '') {
 						syslog_sendemail(trim($alert['email']), $from, __esc('Event Alert - %s', $alert['name'], 'syslog'), $message, $smsalert);
 					}
 

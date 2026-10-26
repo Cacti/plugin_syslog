@@ -4,7 +4,19 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-21 16:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-10-26 13:53-0400\n"
+"PO-Revision-Date: 2026-10-26 18:16+0000\n"
+"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
+"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
+"Language: sv-SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -40,7 +52,7 @@ msgstr "Info"
 
 #: includes/functions.php
 msgid "Debug"
-msgstr "Debugg"
+msgstr "Felsökning"
 
 #: includes/functions.php
 msgid "Informational"
@@ -48,11 +60,11 @@ msgstr "Information"
 
 #: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr "Spara misslyckades.  Fjärrdatainsamlare i synkroniseringsläge får inte spara regler.  Spara från huvudservern för Cacti i stället."
+msgstr "Det gick inte att spara. Fjärrdatainsamlare i synkroniseringsläge får inte spara regler. Spara från Cactis huvudserver i stället."
 
 #: includes/functions.php
 msgid "Please use an HTML Email Client"
-msgstr "Vänligen använd en HTML e-postklient"
+msgstr "Använd en HTML-baserad e-postklient"
 
 #: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
@@ -137,7 +149,7 @@ msgstr "Partitionsunderhåll är blockerat: %s"
 #: includes/functions.php
 #, php-format
 msgid "Syslog pipeline health - collector %d"
-msgstr "Syslog-pipelineens status – insamlare %d"
+msgstr "Status för Syslog-pipelinen – insamlare %d"
 
 #: includes/functions.php
 msgid "The Syslog pipeline has recovered."
@@ -174,6 +186,15 @@ msgid "partition creation failed"
 msgstr "det gick inte att skapa partition"
 
 #: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Automatisk partitionsåterställning har skjutits upp: storleken för dMaxValue är inte tillgänglig; operatörsåtgärd krävs."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Automatisk partitionsåterställning har skjutits upp: dMaxValue uppskattas till %s rader och %s byte. Gränserna är 100 000 rader och 134 217 728 byte. En operatör måste ingripa."
+
+#: includes/functions.php
 msgid "Unknown rule type."
 msgstr "Okänd regeltyp."
 
@@ -195,6 +216,18 @@ msgstr "Regeln kunde inte kompileras till en fråga."
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
+msgstr "Förhandsgranskningsfrågan kunde inte utvärderas."
+
+#: includes/functions.php
+#, fuzzy
+#| msgid "The preview sample could not be read."
+msgid "The historical preview filter could not be compiled."
+msgstr "Förhandsgranskningsexemplet kunde inte läsas."
+
+#: includes/functions.php
+#, fuzzy
+#| msgid "The preview query could not be evaluated."
+msgid "The historical preview query could not be evaluated."
 msgstr "Förhandsgranskningsfrågan kunde inte utvärderas."
 
 #: includes/functions.php
@@ -227,16 +260,16 @@ msgstr "Okänd"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
-msgstr "Cacti Syslog Threshold Alert '%s' för Host '%s'"
+msgstr "Cacti Syslog-tröskellarm '%s' för värden '%s'"
 
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr "Cacti Syslog Tröskelvärde Varning '%s'"
+msgstr "Cacti Syslog-tröskellarm '%s'"
 
 #: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
-msgstr "Bevakningens namn"
+msgstr "Larmnamn"
 
 #: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
@@ -244,7 +277,7 @@ msgstr "Allvarlighetsgrad"
 
 #: includes/functions.php syslog_alerts.php
 msgid "Threshold"
-msgstr "Tröskel"
+msgstr "Tröskelvärde"
 
 #: includes/functions.php syslog.php
 msgid "Count"
@@ -257,12 +290,12 @@ msgstr "Matcha sträng"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
-msgstr "Cacti Syslog-meddelande '%s' för värd '%s'"
+msgstr "Cacti Syslog-larm '%s' för värden '%s'"
 
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Cacti Syslog-varning '%s'"
+msgstr "Cacti Syslog-larm '%s'"
 
 #: includes/functions.php
 msgid "Hostname"
@@ -284,11 +317,11 @@ msgstr "Meddelande"
 #: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
-msgstr "VARNING: En Syslog Threshold Alert har utlösts för Host '%s'"
+msgstr "VARNING: Ett Syslog-tröskellarm har utlösts för värden '%s'"
 
 #: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
-msgstr "VARNING: Ett tröskelvärde för Syslog har utlösts"
+msgstr "VARNING: Ett Syslog-tröskellarm har utlösts"
 
 #: includes/functions.php
 msgid "Name:"
@@ -312,7 +345,7 @@ msgstr "Meddelandesträng:"
 
 #: includes/functions.php
 msgid "Hostname:"
-msgstr "& Värddatornamn:"
+msgstr "Värdnamn:"
 
 #: includes/functions.php
 msgid "Date:"
@@ -341,7 +374,7 @@ msgstr "Sev:"
 #: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
-msgstr "Händelsevarning - %s"
+msgstr "Händelselarm – %s"
 
 #: includes/functions.php
 msgid ", Count:"
@@ -384,7 +417,7 @@ msgstr "Inline-uppgradering"
 
 #: includes/installer.php
 msgid "Background Upgrade"
-msgstr "Uppgradering av bakgrund"
+msgstr "Uppgradering i bakgrunden"
 
 #: includes/installer.php
 msgid "Database Storage Engine"
@@ -412,15 +445,15 @@ msgstr "Aktivera meddelandehantering för fjärrdatainsamlare"
 
 #: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
-msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och bearbetar sina meddelanden självständigt, markera den här kryssrutan.  Om du markerar den här kryssrutan måste dina fjärruppsamlare underhålla sin egen fil \"config_local.php\" för att informera Syslog om att använda en oberoende databas för visning och bearbetning av meddelanden.  Använd mallfilen \"config_local.php.dist\" för detta ändamål.  VARNING: Syslog-tabeller skapas automatiskt så snart det här alternativet är aktiverat."
+msgstr "Markera den här rutan om fjärrdatainsamlarna har egna Syslog-databaser och bearbetar meddelandena självständigt. Då måste varje fjärrdatainsamlare ha en egen fil 'config_local.php' som anger att Syslog ska använda en separat databas för visning och bearbetning. Använd mallfilen 'config_local.php.dist'. VARNING: Syslog-tabeller skapas automatiskt när alternativet aktiveras."
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Data Collector Rules Sync"
-msgstr "Synkronisering av regler för fjärrdatainsamling"
+msgstr "Synkronisering av regler för fjärrdatainsamlare"
 
 #: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "Om dina fjärrdatainsamlare har sina egna Syslog-databaser och behandlar dessa meddelanden oberoende av varandra, markera den här kryssrutan om du vill att reglerna för varningar, borttagning och rapporter i huvuddatabasen ska skickas till fjärrdatasystemet."
+msgstr "Om fjärrdatainsamlarna har egna Syslog-databaser och bearbetar meddelandena självständigt, markera den här rutan för att skicka huvuddatabasens larm-, borttagnings- och rapportregler till fjärrsystemet."
 
 #: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
@@ -428,7 +461,7 @@ msgstr "Lagra poster på fjärrdatainsamlaren"
 
 #: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr "Behåll behandlade meddelanden i fjärrdatainsamlarens syslog-tabell efter att de har levererats till huvuddatasamlaren. När alternativet är inaktiverat behålls poster lokalt bara medan huvuddatasamlaren inte är tillgänglig och tas bort efter bekräftad återställningsleverans."
+msgstr "Behåll bearbetade meddelanden i fjärrinsamlarens Syslog-tabell efter att de har levererats till huvudinsamlaren. När alternativet är inaktiverat behålls poster lokalt endast medan huvudinsamlaren inte är tillgänglig och tas bort när leveransen efter återställning har bekräftats."
 
 #: includes/installer.php
 msgid "Retention Policy"
@@ -470,7 +503,7 @@ msgstr "VARNING: Syslog-uppgradering är tidskrävande!!!"
 
 #: includes/installer.php
 msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Uppgraderingen av den \"huvudsakliga\" syslog-tabellen kan vara en mycket tidskrävande process.  Därför rekommenderar vi att du antingen minskar storleken på syslog-tabellen före uppgraderingen eller väljer bakgrundsalternativet</p> Om <p>du väljer bakgrundsalternativet kommer din gamla syslog-tabell att byta namn och en ny syslog-tabell att skapas.  Därefter kommer en uppgraderingsprocess att startas i bakgrunden.  Även denna bakgrundsprocess kan ta ganska lång tid att slutföra.  Dina data kommer dock att bevaras</p> <p>Oavsett vad du väljer kommer alla befintliga borttagnings- och varningsregler att bibehållas under uppgraderingsprocessen.</p> <p>Tryck på <b>\"Upgrade</b> \" för att fortsätta med uppgraderingen, eller <b>\"Cancel\"</b> för att återgå till Plugins-menyn."
+msgstr "Uppgraderingen av den huvudsakliga syslog-tabellen kan ta mycket lång tid. Därför rekommenderas att du antingen minskar tabellens storlek före uppgraderingen eller väljer bakgrundsalternativet.</p> <p>Om du väljer bakgrundsalternativet byter den gamla syslog-tabellen namn och en ny skapas. Därefter startas uppgraderingen i bakgrunden. Även den kan ta lång tid, men dina data bevaras.</p> <p>Alla befintliga borttagnings- och larmregler bevaras under uppgraderingen, oavsett vilket alternativ du väljer.</p> <p>Tryck på <b>'Uppgradera'</b> för att fortsätta eller <b>'Avbryt'</b> för att återgå till menyn för insticksmoduler."
 
 #: includes/installer.php
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
@@ -511,7 +544,7 @@ msgstr "Endast Syslog-data"
 
 #: includes/installer.php
 msgid "Syslog Uninstall Preferences"
-msgstr "Syslog avinstallera inställningar"
+msgstr "Inställningar för avinstallation av Syslog"
 
 #: includes/installer.php
 msgid "Uninstall"
@@ -525,11 +558,11 @@ msgstr "Avbryt"
 
 #: includes/navigation.php includes/settings.php
 msgid "Syslog"
-msgstr "Syslogg"
+msgstr "Syslog"
 
 #: includes/navigation.php
 msgid "Syslog Removals"
-msgstr "Flytt av Syslog"
+msgstr "Borttagning av Syslog-poster"
 
 #: includes/navigation.php
 msgid "(Edit)"
@@ -541,7 +574,7 @@ msgstr "(åtgärder)"
 
 #: includes/navigation.php
 msgid "Syslog Alerts"
-msgstr "Syslog-varningar"
+msgstr "Syslog-larm"
 
 #: includes/navigation.php
 msgid "Syslog Reports"
@@ -620,7 +653,15 @@ msgstr "Syslog aktiverad"
 
 #: includes/settings.php
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
-msgstr "Om den här kryssrutan är markerad kommer poster att överföras från tabellen Syslog Incoming till huvudtabellen för syslog och varningar och rapporter kommer att aktiveras.  Tänk på att loggposter fortfarande ackumuleras i tabellen Syslog Incoming om systemet är inaktiverat, eftersom detta definieras av processen rsyslog eller syslog-ng."
+msgstr "Om den här rutan är markerad överförs poster från tabellen Syslog Incoming till huvudtabellen för Syslog och larm och rapporter aktiveras. Loggposter fortsätter att samlas i tabellen Syslog Incoming även när systemet är inaktiverat, eftersom detta styrs av processen rsyslog eller syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr ""
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr ""
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -628,7 +669,7 @@ msgstr "Ta bort domäner"
 
 #: includes/settings.php
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "En kommaseparerad lista med domäner som du vill ta bort från syslogens värdnamn, exempel kan vara \"mydomain.com, otherdomain.com"
+msgstr "En kommaseparerad lista över domäner som ska tas bort från Syslogs värdnamn, till exempel ”mydomain.com, otherdomain.com”"
 
 #: includes/settings.php
 msgid "Refresh Interval"
@@ -636,7 +677,7 @@ msgstr "Uppdateringsintervall"
 
 #: includes/settings.php
 msgid "This is the time in seconds before the page refreshes."
-msgstr "Detta är den tid i sekunder som återstår innan sidan uppdateras."
+msgstr "Tiden i sekunder mellan siduppdateringar."
 
 #: includes/settings.php
 msgid "Max Report Records"
@@ -644,7 +685,7 @@ msgstr "Maximalt antal rapportposter"
 
 #: includes/settings.php
 msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
-msgstr "För tröskelvärdesbaserade varningar, vilket är det högsta antal som du vill visa i rapporten.  Detta används för att begränsa storleken på html-loggen och e-postmeddelandet."
+msgstr "Högsta antal tröskelbaserade larm som ska visas i rapporten. Detta begränsar storleken på HTML-loggen och e-postmeddelandet."
 
 #: includes/settings.php
 #, php-format
@@ -671,11 +712,11 @@ msgstr "%d arbetsprocesser"
 
 #: includes/settings.php
 msgid "Command for Opening Tickets"
-msgstr "Kommando för att öppna biljetter"
+msgstr "Kommando för att öppna ärenden"
 
 #: includes/settings.php
 msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
-msgstr "Detta kommando kommer att utföras för att öppna Help Desk-biljetter.  Kommandot kommer att behöva analysera flera inmatningsparametrar enligt följande: - <b>-alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  Värdlistan är en kommaseparerad lista över värddatorer som påverkas av varningen."
+msgstr "Det här kommandot körs för att öppna supportärenden. Kommandot måste kunna tolka följande parametrar: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Värdlistan är en kommaseparerad lista över värdar som berörs av larmet."
 
 #: includes/settings.php
 msgid "Host Discovery Options"
@@ -719,11 +760,11 @@ msgstr "Välj den anpassade HTML-omslutningen och CSS-filen som ska användas. F
 
 #: includes/settings.php
 msgid "Data Retention Settings"
-msgstr "Inställningar för datalagring"
+msgstr "Inställningar för lagringstid"
 
 #: includes/settings.php
 msgid "Syslog Retention"
-msgstr "Bevarande av Syslog"
+msgstr "Lagringstid för Syslog"
 
 #: includes/settings.php
 msgid "This is the number of days to keep events."
@@ -740,7 +781,7 @@ msgstr "Det här är antalet framtida dagliga partitioner som ska underhållas f
 #: includes/settings.php syslog_alerts.php
 #, php-format
 msgid "%d Day"
-msgstr "%d Dag"
+msgstr "%d dag"
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -771,7 +812,7 @@ msgstr "Tröskelvärde för inaktiv insamlare"
 
 #: includes/settings.php
 msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
-msgstr "Varningar om pipelinehälsa visas när obearbetade meddelanden, slutförd bearbetning eller synkronisering i kö överskrider denna fördröjning. Den faktiska fördröjningen är minst tre insamlarintervall och 300 sekunder. Ange 0 för att använda 300 sekunder."
+msgstr "Larm om pipeline-status visas när obearbetade meddelanden, tiden sedan bearbetningen slutfördes eller synkronisering i kö överskrider denna fördröjning. Den faktiska fördröjningen är minst tre insamlingsintervall och 300 sekunder. Ange 0 för att använda 300 sekunder."
 
 #: includes/settings.php
 msgid "Default (300 seconds)"
@@ -801,27 +842,27 @@ msgstr "%d meddelanden"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
-msgstr "Varningar om pipelinehälsa"
+msgstr "Larm om pipeline-status"
 
 #: includes/settings.php
 msgid "Pipeline Health Notification List"
-msgstr "Notifieringslista för pipelinehälsa"
+msgstr "Aviseringslista för pipeline-status"
 
 #: includes/settings.php
 msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
-msgstr "Välj en befintlig Thold-notifieringslista för varningar om pipelinehälsa. Mottagare i aktiva listor kombineras med e-postadresserna nedan, samtidigt som BCC-mottagare bevaras. Listor kräver Tholds tabell för notifieringslistor."
+msgstr "Välj en befintlig aviseringslista i Thold för larm om pipeline-status. Mottagare i aktiverade listor kombineras med e-postadresserna nedan, och mottagare av dolda kopior behålls. Listor kräver Tholds tabell för aviseringslistor."
 
 #: includes/settings.php
 msgid "Pipeline Health Email Recipients"
-msgstr "E-postmottagare för pipelinehälsa"
+msgstr "E-postmottagare för pipeline-status"
 
 #: includes/settings.php
 msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
-msgstr "Kommaseparerade e-postmottagare vid pipelinefel och återhämtning. Lämna fältet tomt och välj ingen notifieringslista om du vill inaktivera e-post. Hälsan visas fortfarande på fliken Status och tillståndsändringar loggas. Kontrollerna kräver att Cacti-insamlaren körs."
+msgstr "Kommaseparerade e-postmottagare vid pipelinefel och återhämtning. Lämna fältet tomt och välj ingen aviseringslista om du vill inaktivera e-post. Pipelinens status visas fortfarande på fliken Status och tillståndsändringar loggas. Kontrollerna kräver att Cactis insamlingsprocess körs."
 
 #: includes/settings.php
 msgid "Pipeline Health Reminder Interval"
-msgstr "Påminnelseintervall för pipelinehälsa"
+msgstr "Påminnelseintervall för pipeline-status"
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
@@ -844,11 +885,11 @@ msgstr "%d dagar"
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
-msgstr "Bevarande av Syslog-varningar"
+msgstr "Lagringstid för Syslog-larm"
 
 #: includes/settings.php
 msgid "This is the number of days to keep alert logs."
-msgstr "Detta är det antal dagar som varningsloggarna ska sparas."
+msgstr "Antal dagar som larmloggar ska sparas."
 
 #: includes/settings.php
 msgid "Alert Suppression and Maintenance"
@@ -876,7 +917,7 @@ msgstr "Underhållsfönstret slutar"
 
 #: includes/settings.php
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr "Lokal sluttid för det globala underhållsfönstret. En tidigare sluttid fortsätter in på nästa dag."
+msgstr "Lokal sluttid för det globala underhållsfönstret. Om sluttiden är tidigare än starttiden fortsätter underhållet till nästa dag."
 
 #: includes/settings.php
 msgid "One-time Maintenance Starts"
@@ -920,7 +961,7 @@ msgstr "Högsta antal återställningsposter per körning"
 
 #: includes/settings.php
 msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr "Högsta antal bevarade Syslog-händelser från fjärrsystem som en återställningsarbetare skickar till huvuddatasamlaren per körning. Varje central databastransaktion begränsas fortfarande till 100 poster. Öka gradvis medan du övervakar belastning och låsväntan i huvuddatasamlaren."
+msgstr "Högsta antal bevarade Syslog-händelser från fjärrsystem som en återställningsprocess skickar till huvudinsamlaren per körning. Varje central databastransaktion begränsas till 100 poster. Öka gradvis medan du övervakar belastningen på huvudinsamlaren och väntan på lås."
 
 #: includes/settings.php
 msgid "Recovery Pause Between Batches"
@@ -928,7 +969,7 @@ msgstr "Återställningspaus mellan batchar"
 
 #: includes/settings.php
 msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr "Paus mellan varje leveranstransaktion med 100 poster till huvuddatasamlaren. En längre paus minskar belastningen på huvuddatasamlaren, medan en kortare paus snabbare minskar eftersläpningen."
+msgstr "Paus mellan leveranstransaktioner med 100 poster till huvudinsamlaren. En längre paus minskar belastningen på huvudinsamlaren, medan en kortare paus snabbare minskar kön."
 
 #: includes/settings.php
 msgid "No pause"
@@ -948,7 +989,7 @@ msgstr "%d sekund"
 #: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Delete"
-msgstr "Radera"
+msgstr "Ta bort"
 
 #: includes/settings.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
@@ -1028,7 +1069,7 @@ msgstr "Programmet är"
 
 #: includes/settings.php
 msgid "Facility is"
-msgstr "Anläggningen är"
+msgstr "Syslog-facilitet är"
 
 #: includes/settings.php syslog_alerts.php
 msgid "Filter Builder"
@@ -1048,11 +1089,11 @@ msgstr "Veckovis"
 
 #: includes/settings.php
 msgid "Import/Export"
-msgstr "Importera/Exportera"
+msgstr "Import/export"
 
 #: includes/settings.php
 msgid "Alert Rules"
-msgstr "Regler för varning"
+msgstr "Larmregler"
 
 #: includes/settings.php
 msgid "Syslog Settings"
@@ -1068,7 +1109,7 @@ msgstr "Regler för borttagning"
 
 #: includes/settings.php
 msgid "Report Rules"
-msgstr "Rapportera regler"
+msgstr "Rapportregler"
 
 #: includes/utilities.php
 #, php-format
@@ -1172,7 +1213,7 @@ msgstr "Instrumentpanelen hittades inte."
 
 #: lib/syslog_dashboard.php syslog_dashboards.php
 msgid "Unable to save dashboard changes."
-msgstr "Det gick inte att spara ändringarna på översikten."
+msgstr "Det gick inte att spara ändringarna i instrumentpanelen."
 
 #: lib/syslog_dashboard.php
 msgid "You may only share your own dashboards."
@@ -1200,7 +1241,7 @@ msgstr "Dra för att ändra kortens ordning"
 
 #: lib/syslog_dashboard.php
 msgid "Refresh Panel"
-msgstr "Uppdatera panel"
+msgstr "Uppdatera ruta"
 
 #: lib/syslog_dashboard.php
 msgid "Total messages"
@@ -1208,7 +1249,7 @@ msgstr "Totalt antal meddelanden"
 
 #: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
-msgstr "Diagram-biblioteket är inte tillgängligt i den här Cacti-installationen."
+msgstr "Diagrambiblioteket är inte tillgängligt i den här Cacti-installationen."
 
 #: lib/syslog_dashboard.php
 msgid "Edit Panel"
@@ -1347,7 +1388,7 @@ msgstr "Systemloggar"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Alert Logs"
-msgstr "Varningsloggar"
+msgstr "Larmloggar"
 
 #: lib/syslog_dashboard.php
 msgid "Panel Type"
@@ -1371,7 +1412,7 @@ msgstr "Linje"
 
 #: lib/syslog_dashboard.php
 msgid "Area"
-msgstr "Område"
+msgstr "Yta"
 
 #: lib/syslog_dashboard.php
 msgid "Bar"
@@ -1423,7 +1464,7 @@ msgstr "Antal topprader"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Record Type"
-msgstr "Typ av registrering"
+msgstr "Posttyp"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "All Records"
@@ -1431,7 +1472,7 @@ msgstr "Alla poster"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Main Records"
-msgstr "Huvudregister"
+msgstr "Huvudposter"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Removed Records"
@@ -1477,7 +1518,7 @@ msgstr "Överskriden sedan"
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
-msgstr "Insamlare"
+msgstr "Datainsamlare"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -1518,7 +1559,7 @@ msgstr "Nästa"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
-msgstr "Byt namn på filerna config.php.dist eller config_local.php.dist i syslog-katalogen och ändra konfigurationen av din databas innan du installerar."
+msgstr "Byt namn på antingen config.php.dist eller config_local.php.dist i syslog-katalogen och konfigurera databasen före installationen."
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
@@ -1526,7 +1567,7 @@ msgstr "Aria-lagring kan inte användas när något alternativ för fjärrdatain
 
 #: setup.php
 msgid "Top 10 Hosts"
-msgstr "Tio främsta värdar"
+msgstr "De 10 främsta värdarna"
 
 #: setup.php
 msgid "Syslog Messages - Past Hour"
@@ -1538,7 +1579,7 @@ msgstr "Meddelanden efter allvarlighetsgrad"
 
 #: setup.php
 msgid "Top 10 Programs"
-msgstr "Tio främsta program"
+msgstr "De 10 främsta programmen"
 
 #: setup.php
 msgid "Alert Activity"
@@ -1554,7 +1595,7 @@ msgstr "Syslog-status"
 
 #: syslog.php
 msgid "Selected Alert"
-msgstr "Vald Alert"
+msgstr "Valt larm"
 
 #: syslog.php
 msgid "seconds"
@@ -1608,11 +1649,11 @@ msgstr "Storlek på Syslog-tabell (data + index)"
 
 #: syslog.php
 msgid "Syslog retention"
-msgstr "Bevarande av Syslog"
+msgstr "Lagringstid för Syslog"
 
 #: syslog.php
 msgid "Alert retention"
-msgstr "Larms bevarandeperiod"
+msgstr "Lagringstid för larm"
 
 #: syslog.php
 msgid "No recovery activity recorded yet."
@@ -1644,7 +1685,7 @@ msgstr "Kvitton från fjärrdatainsamlare"
 
 #: syslog.php
 msgid "Storage and retention"
-msgstr "Lagring och bevarande"
+msgstr "Lagring och lagringstid"
 
 #: syslog.php
 msgid "Partition health"
@@ -1708,7 +1749,7 @@ msgstr "Längsta körtid"
 
 #: syslog.php
 msgid "State"
-msgstr "Status"
+msgstr "Delstat/region"
 
 #: syslog.php
 msgid "Queued Recovery Records"
@@ -1732,7 +1773,7 @@ msgstr "Inaktiv"
 
 #: syslog.php
 msgid "Recovery worker"
-msgstr "Återställningsarbetare"
+msgstr "Återställningsprocess"
 
 #: syslog.php
 msgid "Last synchronization error"
@@ -1748,11 +1789,11 @@ msgstr "Senast mottagna post"
 
 #: syslog.php
 msgid "Remote Poller"
-msgstr "Fjärrpollare"
+msgstr "Fjärransluten datainsamlare"
 
 #: syslog.php
 msgid "Unknown remote poller"
-msgstr "Okänd fjärrpollare"
+msgstr "Okänd fjärransluten datainsamlare"
 
 #: syslog.php
 msgid "No remote collector records have been received yet."
@@ -1981,7 +2022,7 @@ msgstr "långsammaste"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr "Inga fasers tidsuppgifter har registrerats ännu. Fasernas tidsuppgifter visas efter nästa körning av insamlaren."
+msgstr "Inga tider för bearbetningsfaserna har registrerats ännu. De visas efter nästa körning av insamlingsprocessen."
 
 #: syslog.php
 msgid "Last run"
@@ -1997,11 +2038,11 @@ msgstr "Totalt"
 
 #: syslog.php
 msgid "Alert rules"
-msgstr "Regler för varning"
+msgstr "Larmregler"
 
 #: syslog.php
 msgid "Delete rules"
-msgstr "Ta bort regler"
+msgstr "Borttagningsregler"
 
 #: syslog.php
 msgid "Fired last run"
@@ -2037,7 +2078,7 @@ msgstr "Lägg till ett statuskort…"
 
 #: syslog.php
 msgid "Syslog Alert View"
-msgstr "Vy för Syslog-varning"
+msgstr "Vy för Syslog-larm"
 
 #: syslog.php
 msgid "A valid saved search is required."
@@ -2058,7 +2099,7 @@ msgstr "[ Obearbetade meddelanden: %s ]"
 
 #: syslog.php syslog_device_rules.php
 msgid "Enter a search term"
-msgstr "Ange ett sökbegrepp eller tecken här"
+msgstr "Ange ett sökord"
 
 #: syslog.php
 msgid "Select Device(s)"
@@ -2148,7 +2189,7 @@ msgstr "Visningsalternativ"
 
 #: syslog.php
 msgid "Removal Handling"
-msgstr "Flytthantering"
+msgstr "Hantering av borttagning"
 
 #: syslog.php
 msgid "Display"
@@ -2257,15 +2298,15 @@ msgstr "Inga Syslog-meddelanden"
 
 #: syslog.php
 msgid "Alert Log Rows"
-msgstr "Rader i varningsloggen"
+msgstr "Rader i larmloggen"
 
 #: syslog.php
 msgid "Alert Removed"
-msgstr "Varning borttagen"
+msgstr "Larm borttaget"
 
 #: syslog.php
 msgid "No Alert Log Messages"
-msgstr "Inga meddelanden från varningsloggen"
+msgstr "Inga meddelanden i larmloggen"
 
 #: syslog.php
 msgid "Close message details"
@@ -2313,35 +2354,39 @@ msgstr "Alla program"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog Alert-regel(r)."
+msgstr "Klicka på ”Fortsätt” för att ta bort följande Syslog-larmregler."
 
 #: syslog_alerts.php
 msgid "Delete Syslog Alert Rule(s)"
-msgstr "Ta bort regler för Syslog-varning"
+msgstr "Ta bort Syslog-larmregler"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att inaktivera följande Syslog Alert-regel(r)."
+msgstr "Klicka på ”Fortsätt” för att inaktivera följande Syslog-larmregler."
 
 #: syslog_alerts.php
 msgid "Disable Syslog Alert Rule(s)"
-msgstr "Inaktivera regel(er) för Syslog-varning"
+msgstr "Inaktivera Syslog-larmregler"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att aktivera följande Syslog Alert Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att aktivera följande Syslog-larmregler."
 
 #: syslog_alerts.php
 msgid "Enable Syslog Alert Rule(s)"
-msgstr "Aktivera regel(er) för Syslog-varning"
+msgstr "Aktivera Syslog-larmregler"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Alert Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att exportera följande Syslog-larmregler."
 
 #: syslog_alerts.php
 msgid "Export Syslog Alert Rule(s)"
-msgstr "Exportera Syslog-varningsregel(er)"
+msgstr "Exportera Syslog-larmregler"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr ""
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
@@ -2394,15 +2439,15 @@ msgstr "1 månad"
 #: syslog_alerts.php
 #, php-format
 msgid "Alert Edit [edit: %s]"
-msgstr "Varning Redigera [redigera: %s]"
+msgstr "Redigera larm [redigera: %s]"
 
 #: syslog_alerts.php
 msgid "Alert Edit [new]"
-msgstr "Alert Edit [ny]"
+msgstr "Redigera larm [nytt]"
 
 #: syslog_alerts.php
 msgid "New Alert Rule"
-msgstr "Ny varningsregel"
+msgstr "Ny larmregel"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
@@ -2426,11 +2471,33 @@ msgstr "Minuter"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
-msgstr "Vänligen beskriv denna varning."
+msgstr "Beskriv det här larmet."
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Alert retention"
+msgid "Alarm Destination"
+msgstr "Lagringstid för larm"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr ""
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Manage"
+msgid "Alarm Manager"
+msgstr "Hantera"
+
+#: syslog_alerts.php
+#, fuzzy
+#| msgid "Syslog Alerts"
+msgid "Syslog Alarming"
+msgstr "Syslog-larm"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
-msgstr "Vilken är allvarlighetsgraden för denna varning?"
+msgstr "Vilken allvarlighetsgrad har det här larmet?"
 
 #: syslog_alerts.php
 msgid "Reporting Level"
@@ -2450,11 +2517,11 @@ msgstr "Rapporteringsmetod"
 
 #: syslog_alerts.php
 msgid "Define how to Alert on the syslog messages."
-msgstr "Definiera hur syslog-meddelanden ska uppmärksammas."
+msgstr "Ange hur larm ska utlösas för Syslog-meddelandena."
 
 #: syslog_alerts.php
 msgid "Individual"
-msgstr "Privatperson"
+msgstr "Enskild"
 
 #: syslog_alerts.php
 msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
@@ -2499,7 +2566,7 @@ msgstr "Aktiverad"
 
 #: syslog_alerts.php
 msgid "Is this Alert Enabled?"
-msgstr "Är denna varning aktiverad?"
+msgstr "Är det här larmet aktiverat?"
 
 #: syslog_alerts.php
 msgid "Re-Alert Cycle"
@@ -2623,11 +2690,11 @@ msgstr "Anteckningar"
 
 #: syslog_alerts.php
 msgid "Space for Notes on the Alert"
-msgstr "Utrymme för anteckningar om varningen"
+msgstr "Utrymme för anteckningar om larmet"
 
 #: syslog_alerts.php
 msgid "Email Options"
-msgstr "E-post Val"
+msgstr "E-postalternativ"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Notification List"
@@ -2635,15 +2702,15 @@ msgstr "Aviseringslista"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
-msgstr "Använd innehållet i denna Notification List för att bestämma vem som ska underrättas och hur."
+msgstr "Använd aviseringslistan för att ange vem som ska meddelas och hur."
 
 #: syslog_alerts.php
 msgid "Emails to Notify"
-msgstr "E-postmeddelanden att meddela"
+msgstr "E-postadresser som ska meddelas"
 
 #: syslog_alerts.php
 msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
-msgstr "Ange en kommaseparerad lista med e-postadresser som ska informeras.  Om du vill skicka e-post till en mottagare i SMS-format ska du ange mottagarens e-postadress som prefix med <b>\"sms@</b>\".  Om mottagarens SMS-adress t.ex. är <b>\"2485551212@mycarrier.net\",</b> anger du den som <b>\"sms@2485551212@mycarrier.net</b> \" och den formateras som ett SMS-meddelande."
+msgstr "Ange en kommaseparerad lista över e-postadresser som ska meddelas. Om du vill skicka e-post till en mottagare i SMS-format, lägg till <b>'sms@'</b> före mottagarens e-postadress. Om mottagarens SMS-adress exempelvis är <b>'2485551212@mycarrier.net'</b> anger du <b>'sms@2485551212@mycarrier.net'</b>, så formateras meddelandet som SMS."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Email Body Text"
@@ -2651,7 +2718,7 @@ msgstr "E-postens brödtext"
 
 #: syslog_alerts.php
 msgid "This information will appear in the body of the Alert just before the Alert details."
-msgstr "Denna information kommer att visas i meddelandet strax före uppgifterna om meddelandet."
+msgstr "Den här informationen visas i larmmeddelandet strax före uppgifterna om larmet."
 
 #: syslog_alerts.php
 msgid "Actions"
@@ -2659,11 +2726,11 @@ msgstr "Åtgärder"
 
 #: syslog_alerts.php
 msgid "Open Ticket"
-msgstr "Öppna biljett"
+msgstr "Öppna ärende"
 
 #: syslog_alerts.php
 msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
-msgstr "Om en Help Desk-biljett öppnas för denna Alert.  OBS: Ticket-kommandot kommer att fyllas med flera \"ALERT_\"-miljövariabler för enkelhetens skull."
+msgstr "Ange om ett supportärende ska öppnas för larmet. OBS: Skriptet för ärendekommandot får tillgång till flera miljövariabler med prefixet 'ALERT_'."
 
 #: syslog_alerts.php
 msgid "Alert command"
@@ -2671,7 +2738,7 @@ msgstr "Larmkommando"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
-msgstr "När en varning utlöses körs följande kommando.  Följande ersättningsvariabler är tillgängliga: <b>\"&lt;HOSTNAME&gt;</b>\", <b>\"&lt;ALERTID&gt;</b>\", <b>\"&lt;MESSAGE&gt;</b>\", <b>\"&lt;FACILITY&gt;</b>\", <b>\"&lt;PRIORITY&gt;</b>\", <b>\"&lt;SEVERITY&gt;</b>\".  Observera att <b>\"&lt;HOSTNAME&gt;</b> \" endast är tillgängligt för enskilda tröskelvärden.  Dessa ersättningsvärden kan anges på kommandoraden eller hämtas från skriptets miljö.  När de används från miljön kommer dessa variabler att inledas med 'ALERT_'."
+msgstr "När ett larm utlöses körs följande kommando. Följande ersättningsvariabler finns tillgängliga: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Observera att <b>'&lt;HOSTNAME&gt;'</b> endast är tillgänglig för enskilda tröskelvärden. Värdena kan anges på kommandoraden eller hämtas från skriptets miljö. I miljön har variablerna prefixet 'ALERT_'."
 
 #: syslog_alerts.php
 msgid "Recovery command"
@@ -2735,7 +2802,7 @@ msgstr "Importera"
 
 #: syslog_alerts.php
 msgid "Syslog Alert Filters"
-msgstr "Filter för Syslog-varningar"
+msgstr "Filter för Syslog-larm"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Method"
@@ -2759,11 +2826,11 @@ msgstr "Senast ändrad"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "By User"
-msgstr "Efter användare"
+msgstr "Av användare"
 
 #: syslog_alerts.php
 msgid "Alerts"
-msgstr "Varningar"
+msgstr "Larm"
 
 #: syslog_alerts.php
 msgid "Multiple"
@@ -2771,32 +2838,36 @@ msgstr "Flera"
 
 #: syslog_alerts.php
 msgid "No Syslog Alerts Defined"
-msgstr "Inga Syslog-varningar definierade"
+msgstr "Inga Syslog-larm har definierats"
 
 #: syslog_alerts.php
 msgid "Import Alert Rule from Local File"
-msgstr "Importera Alert-regel från lokal fil"
+msgstr "Importera larmregel från lokal fil"
 
 #: syslog_alerts.php
 msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
-msgstr "Om XML-filen som innehåller data för Alert Rule-definitionen finns på din lokala dator väljer du den här."
+msgstr "Välj XML-filen med larmregelns definition här om den finns på din lokala dator."
 
 #: syslog_alerts.php
 msgid "Import Alert Rule from Text"
-msgstr "Importera Alert-regel från text"
+msgstr "Importera larmregel från text"
 
 #: syslog_alerts.php
 msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
-msgstr "Om du har XML-filen som innehåller Alert Ruledefinition-data som text kan du klistra in den i den här rutan för att importera den."
+msgstr "Om du har XML-filen med larmregelns definition som text kan du klistra in den här för att importera den."
 
 #: syslog_alerts.php
 msgid "Import Alert Rule"
-msgstr "Importera Alert-regel"
+msgstr "Importera larmregel"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
 msgstr "Importen nekades: filen är tom, ogiltig eller innehåller en annan typ av Syslog-objekt."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr ""
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
@@ -2805,7 +2876,7 @@ msgstr "Importerad"
 #: syslog_alerts.php
 #, php-format
 msgid "NOTE: Alert '%s' %s!"
-msgstr "OBS: Varning '%s' %s!"
+msgstr "OBS: Larm '%s' %s!"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
@@ -2815,7 +2886,7 @@ msgstr "Uppdaterad"
 #: syslog_alerts.php
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
-msgstr "FEL: Varning '%s' %s Misslyckades!"
+msgstr "FEL: Larm '%s' %s misslyckades!"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Update"
@@ -2933,11 +3004,11 @@ msgstr "Delad med användare"
 
 #: syslog_dashboards.php
 msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
-msgstr "Användare som kan visa den här instrumentpanelen utöver ägaren och eventuell global delning. Alla användare delar den med alla."
+msgstr "Användare som kan visa instrumentpanelen utöver ägaren och eventuell global delning. Alternativet Alla användare delar den med alla."
 
 #: syslog_dashboards.php
 msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
-msgstr "Grupper som kan visa den här instrumentpanelen utöver ägaren och eventuell global delning. Alla grupper delar den med alla."
+msgstr "Grupper som kan visa instrumentpanelen utöver ägaren och eventuell global delning. Alternativet Alla grupper delar den med alla."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Groups"
@@ -3080,47 +3151,47 @@ msgstr "Använd prioritetsundantag"
 
 #: syslog_removal.php
 msgid "Reprocess"
-msgstr "Upparbetning"
+msgstr "Bearbeta på nytt"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog Removal Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att ta bort följande Syslog-borttagningsregler."
 
 #: syslog_removal.php
 msgid "Delete Syslog Removal Rule(s)"
-msgstr "Ta bort regel(r) för borttagning av Syslog"
+msgstr "Ta bort Syslog-borttagningsregler"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att inaktivera följande Syslog Removal Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att inaktivera följande Syslog-borttagningsregler."
 
 #: syslog_removal.php
 msgid "Disable Syslog Removal Rule(s)"
-msgstr "Inaktivera regel(er) för borttagning av Syslog"
+msgstr "Inaktivera Syslog-borttagningsregler"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att aktivera följande Syslog Removal Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att aktivera följande Syslog-borttagningsregler."
 
 #: syslog_removal.php
 msgid "Enable Syslog Removal Rule(s)"
-msgstr "Aktivera regel(er) för borttagning av Syslog"
+msgstr "Aktivera Syslog-borttagningsregler"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att återbehandla följande Syslog Removal Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att bearbeta följande Syslog-borttagningsregler på nytt."
 
 #: syslog_removal.php
 msgid "Retroactively Process Syslog Removal Rule(s)"
-msgstr "Retroaktiv behandling av borttagningsregel(er) för Syslog"
+msgstr "Bearbeta Syslog-borttagningsregler retroaktivt"
 
 #: syslog_removal.php
 msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Removal Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att exportera följande Syslog-borttagningsregler."
 
 #: syslog_removal.php
 msgid "Export Syslog Removal Rule(s)"
-msgstr "Exportera regel(er) för borttagning av Syslog"
+msgstr "Exportera Syslog-borttagningsregler"
 
 #: syslog_removal.php
 #, php-format
@@ -3130,19 +3201,19 @@ msgstr "Regel '%s' resulterade i att %s/%s meddelanden togs bort/överfördes"
 #: syslog_removal.php
 #, php-format
 msgid "Removal Rule Edit [edit: %s]"
-msgstr "Regel för borttagning Redigera [redigera: %s]"
+msgstr "Redigera borttagningsregel [redigera: %s]"
 
 #: syslog_removal.php
 msgid "Removal Rule Edit [new]"
-msgstr "Borttagningsregel Redigera [ny]"
+msgstr "Redigera borttagningsregel [ny]"
 
 #: syslog_removal.php
 msgid "New Removal Record"
-msgstr "Ny borttagningsrekord"
+msgstr "Ny borttagningspost"
 
 #: syslog_removal.php
 msgid "New Removal Rule"
-msgstr "Ny regel för avlägsnande"
+msgstr "Ny borttagningsregel"
 
 #: syslog_removal.php
 msgid "Removal Rule Details"
@@ -3154,7 +3225,7 @@ msgstr "Namn på regel för borttagning"
 
 #: syslog_removal.php
 msgid "Please describe this Removal Rule."
-msgstr "Vänligen beskriv denna Removal Rule."
+msgstr "Beskriv den här borttagningsregeln."
 
 #: syslog_removal.php syslog_reports.php
 msgid "Enabled?"
@@ -3166,7 +3237,7 @@ msgstr "Är denna borttagningsregel aktiverad?"
 
 #: syslog_removal.php syslog_reports.php
 msgid "String Match Type"
-msgstr "Sträng Matchningstyp"
+msgstr "Typ av strängmatchning"
 
 #: syslog_removal.php
 msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
@@ -3178,7 +3249,7 @@ msgstr "Matchningssträng för Syslog-meddelande"
 
 #: syslog_removal.php
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
-msgstr "Ange den matchande komponenten i syslog-meddelandet, anläggnings- eller värdnamnet eller SQL where-satsen om du använder SQL Expression Match Type."
+msgstr "Ange den del av Syslog-meddelandet som ska matchas, Syslog-faciliteten eller värdnamnet. Om matchningstypen SQL-uttryck används anger du SQL-satsens WHERE-villkor."
 
 #: syslog_removal.php
 msgid "Method of Removal"
@@ -3194,7 +3265,7 @@ msgstr "Överföring"
 
 #: syslog_removal.php
 msgid "Removal Rule Notes"
-msgstr "Anmärkningar om borttagningsregler"
+msgstr "Anteckningar om borttagningsregeln"
 
 #: syslog_removal.php
 msgid "Space for Notes on the Removal rule"
@@ -3210,7 +3281,7 @@ msgstr "Filter för borttagningsregler för Syslog"
 
 #: syslog_removal.php
 msgid "Removal Name"
-msgstr "Namn på borttagning"
+msgstr "Namn på borttagningsregel"
 
 #: syslog_removal.php
 msgid "Transfer"
@@ -3218,7 +3289,7 @@ msgstr "Överför"
 
 #: syslog_removal.php
 msgid "No Syslog Removal Rules Defined"
-msgstr "Inga regler för borttagning av Syslog definierade"
+msgstr "Inga Syslog-borttagningsregler har definierats"
 
 #: syslog_removal.php
 msgid "Import Removal Rule from Local File"
@@ -3238,7 +3309,7 @@ msgstr "Om du har XML-filen som innehåller data för definitionen av borttagnin
 
 #: syslog_removal.php
 msgid "Import Removal Rule"
-msgstr "Regel för borttagande av import"
+msgstr "Importera borttagningsregel"
 
 #: syslog_removal.php
 #, php-format
@@ -3276,7 +3347,7 @@ msgstr "Aktivera Syslog-rapport(er)"
 
 #: syslog_reports.php
 msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
-msgstr "Klicka på \"Fortsätt\" för att exportera följande Syslog Report Rule(s)."
+msgstr "Klicka på ”Fortsätt” för att exportera följande Syslog-rapportregler."
 
 #: syslog_reports.php
 msgid "Export Syslog Report Rule(s)"
@@ -3293,19 +3364,19 @@ msgstr "Tillbaka"
 #: syslog_reports.php
 #, php-format
 msgid "Report Edit [edit: %s]"
-msgstr "Rapportera redigera [redigera: %s]"
+msgstr "Redigera rapport [redigera: %s]"
 
 #: syslog_reports.php
 msgid "Report Edit [new]"
-msgstr "Rapportera Redigera [ny]"
+msgstr "Redigera rapport [ny]"
 
 #: syslog_reports.php
 msgid "New Report Record"
-msgstr "Ny rapportrekord"
+msgstr "Ny rapportpost"
 
 #: syslog_reports.php
 msgid "Please describe this Report."
-msgstr "Vänligen beskriv denna rapport."
+msgstr "Beskriv den här rapporten."
 
 #: syslog_reports.php
 msgid "Is this Report Enabled?"
@@ -3321,7 +3392,7 @@ msgstr "Frekvens"
 
 #: syslog_reports.php
 msgid "How often should this Report be sent to the distribution list?"
-msgstr "Hur ofta ska denna rapport skickas till distributionslistan?"
+msgstr "Hur ofta ska rapporten skickas till distributionslistan?"
 
 #: syslog_reports.php
 msgid "Send Time"
@@ -3345,7 +3416,7 @@ msgstr "Den information som kommer att ingå i rapportens huvuddel."
 
 #: syslog_reports.php
 msgid "Comma delimited list of Email addresses to send the report to."
-msgstr "Komma-avgränsad lista med e-postadresser att skicka rapporten till."
+msgstr "Kommaseparerad lista över e-postadresser som rapporten ska skickas till."
 
 #: syslog_reports.php
 msgid "Space for Notes on the Report"
@@ -3481,11 +3552,11 @@ msgstr "Kontot som äger den här mallen och kan hantera den i Sparade sökninga
 
 #: syslog_saved_searches.php
 msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
-msgstr "Användare som kan använda den här mallen utöver ägaren. Alla användare delar den med alla."
+msgstr "Användare som kan använda mallen utöver ägaren. Alternativet Alla användare delar den med alla."
 
 #: syslog_saved_searches.php
 msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
-msgstr "Grupper som kan använda den här mallen utöver ägaren. Alla grupper delar den med alla."
+msgstr "Grupper som kan använda mallen utöver ägaren. Alternativet Alla grupper delar den med alla."
 
 #: syslog_saved_searches.php
 msgid "Search Query"
@@ -3498,15 +3569,6 @@ msgstr "Rätta frågesyntaxen så att den kan användas med frågebyggaren."
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller Grupp för att skapa frågan. Ändringarna gäller den här delade mallen för alla användare."
-
-#: includes/functions.php
-msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr "Automatisk partitionsåterställning har skjutits upp: storleken för dMaxValue är inte tillgänglig; operatörsåtgärd krävs."
-
-#: includes/functions.php
-#, php-format
-msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
-msgstr "Automatisk partitionsåterställning har skjutits upp: dMaxValue uppskattas till %s rader och %s byte; gränserna är 100000 rader och 134217728 byte. Operatörsåtgärd krävs."
 
 #~ msgid "Command"
 #~ msgstr "Kommando"

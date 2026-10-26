@@ -102,7 +102,7 @@ it('delivers successful clears and retains failed or malformed events with bound
 		expect($writes[1][0])->toStartWith('UPDATE syslog_threshold_recovery_queue SET attempts = attempts + 1');
 		expect($writes[1][1])->toBe([1000 + $delay, 2, str_repeat('a', 32)]);
 	}
-})->with([['/bin/true', 0, 0], ['/bin/false', 0, 60], ['/bin/false', 10, 3600], ['malformed', 1, 120]]);
+})->with([[PHP_BINARY . ' -r ' . escapeshellarg('exit(0);'), 0, 0], [PHP_BINARY . ' -r ' . escapeshellarg('exit(1);'), 0, 60], [PHP_BINARY . ' -r ' . escapeshellarg('exit(1);'), 10, 3600], ['malformed', 1, 120]]);
 
 it('does not deliver concurrently or when cancellation cleanup fails', function ($locked) {
 	$reads = [];

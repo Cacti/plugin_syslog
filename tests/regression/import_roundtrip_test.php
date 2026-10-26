@@ -31,7 +31,7 @@ function load_function($file, $name) {
 }
 
 $fixtures = [
-	'syslog_alert' => ['name' => 'Alert', 'hash' => 'a', 'method' => '0', 'severity' => '1', 'message' => 'error'],
+	'syslog_alert' => ['name' => 'Alert', 'hash' => 'a', 'alarm_destination' => 'alarmmanager', 'method' => '0', 'severity' => '1', 'message' => 'error'],
 	'syslog_remove' => ['name' => 'Removal', 'hash' => 'r', 'method' => 'trans', 'message' => 'noise'],
 	'syslog_saved_searches' => ['name' => 'Search', 'hash' => 's', 'search' => 'error AND router'],
 	'syslog_dashboards' => ['name' => 'Dashboard', 'hash' => 'd', 'panels' => []]
@@ -43,6 +43,8 @@ foreach ($fixtures as $source => $fixture) {
 		check((\syslog_parse_rule_import(json_encode([$fixture]), $target) !== false) === ($source === $target), "$source -> $target legacy JSON check");
 	}
 }
+$roundtrip = \syslog_parse_rule_import(\syslog_rules_array2json('syslog_alert', [$fixtures['syslog_alert']]), 'syslog_alert');
+check(reset($roundtrip)['alarm_destination'] === 'alarmmanager', 'Alarm destination survives JSON export and import');
 check(\syslog_parse_rule_import('{invalid', 'syslog_alert') === false, 'Malformed JSON rejected');
 check(\syslog_parse_rule_import(json_encode(['templates' => [$fixtures['syslog_alert'], $fixtures['syslog_remove']]]), 'syslog_alert') === false, 'Mixed imports rejected before writes');
 
