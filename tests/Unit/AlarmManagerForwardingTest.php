@@ -91,6 +91,43 @@ it('keeps retry payloads stable and gives independent occurrences independent st
 	expect($first['alarm_key'])->not->toBe($next['alarm_key']);
 });
 
+it('submits traditional matches separately with stable identities across batches', function () {
+	$rule = array_replace(alarmmanager_test_rule(), ['method' => 0]);
+	$matches = alarmmanager_test_matches();
+	$matches[] = array_replace($matches[0], ['seq' => 10, 'host' => 'other-router', 'message' => 'second message']);
+	expect(syslog_alarmmanager_forward($rule, $matches, 2))->toBeTrue();
+	[$first, $second] = $GLOBALS['alarmmanager_test_events'];
+	expect($GLOBALS['alarmmanager_test_events'])->toHaveCount(2);
+	expect($first['transition'])->toBe('occurrence');
+	expect($first['details'])->not->toContain('second message');
+	expect($second['device']['hostname'])->toBe('other-router');
+	expect($second['details'])->not->toContain('fixture');
+	expect($second['context']['metric_value'])->toBe('1');
+	expect($first['alarm_key'])->not->toBe($second['alarm_key']);
+	expect(syslog_alarmmanager_forward($rule, [$matches[0]], 1))->toBeTrue();
+	expect($GLOBALS['alarmmanager_test_events'][2])->toBe($first);
+});
+
+it('attempts every traditional match and retains fallback after partial acceptance', function () {
+	$rule = array_replace(alarmmanager_test_rule(), ['method' => 0]);
+	$matches = alarmmanager_test_matches();
+	$matches[] = array_replace($matches[0], ['seq' => 10]);
+	test_override('api_plugin_hook_function', static function ($hook, $envelope) {
+		$GLOBALS['alarmmanager_test_events'][] = $envelope['event'];
+		return $envelope + ['status' => $envelope['event']['sequence'] === 9 ? 'failed' : 'accepted', 'event_row_id' => 42];
+	});
+	expect(syslog_alarmmanager_forward($rule, $matches, 2))->toBeFalse();
+	expect($GLOBALS['alarmmanager_test_events'])->toHaveCount(2);
+});
+
+it('keeps threshold matches grouped', function () {
+	$matches = alarmmanager_test_matches();
+	$matches[] = array_replace($matches[0], ['seq' => 10, 'message' => 'second message']);
+	expect(syslog_alarmmanager_forward(alarmmanager_test_rule(), $matches, 5))->toBeTrue();
+	expect($GLOBALS['alarmmanager_test_events'])->toHaveCount(1);
+	expect($GLOBALS['alarmmanager_test_events'][0]['details'])->toContain('fixture', 'second message');
+});
+
 it('correlates threshold recovery and records acceptance without resending on local failure', function ($write) {
 	$rule = alarmmanager_test_rule();
 	$rule['_threshold_state'] = ['source_poller_id' => 2, 'breach_key' => str_repeat('a', 40)];
