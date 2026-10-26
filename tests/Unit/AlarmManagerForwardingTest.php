@@ -144,3 +144,46 @@ it('uses a stable schema-width change fingerprint including the destination', fu
 	$rule['alarm_destination'] = 'syslog';
 	expect(syslog_threshold_rule_hash($rule))->not->toBe($hash);
 });
+
+it('forwards a queued threshold recovery to Alarm Manager and completes the queue entry', function () {
+	$GLOBALS['severities'] = [2 => 'Warning'];
+	$GLOBALS['syslog_levels'] = [3 => 'Error'];
+	$GLOBALS['syslog_facilities'] = [1 => 'User'];
+	$rule = alarmmanager_test_rule() + ['message' => 'fixture', 'command' => '', 'severity' => 2,
+		'_threshold_state' => ['source_poller_id' => 2, 'breach_key' => str_repeat('a', 40)]];
+	$context = json_encode([
+		'alert' => $rule, 'results' => alarmmanager_test_matches()[0], 'hostname' => 'router', 'hostlist' => ['router'],
+		'alarmmanager_accepted' => true, 'alarmmanager_matches' => alarmmanager_test_matches(), 'cleared_at' => 1793010000
+	]);
+	$writes = [];
+	test_override('syslog_db_fetch_cell_prepared', static fn() => 1);
+	test_override('syslog_db_fetch_assoc_prepared', static fn() => [['breach_key' => str_repeat('a', 40), 'context' => $context, 'attempts' => 0]]);
+	test_override('syslog_db_execute_prepared', function ($sql) use (&$writes) { $writes[] = $sql; return true; });
+	syslog_threshold_deliver_recoveries(1000);
+	expect($GLOBALS['alarmmanager_test_events'][0]['transition'])->toBe('recovered');
+	expect(end($writes))->toStartWith('DELETE FROM syslog_threshold_recovery_queue WHERE');
+});
+
+it('sends fallback email only when Alarm Manager does not accept a message alert', function ($status, $emails) {
+	$GLOBALS['severities'] = [2 => 'Warning'];
+	$GLOBALS['syslog_levels'] = [3 => 'Error'];
+	$GLOBALS['syslog_facilities'] = [1 => 'User'];
+	$GLOBALS['config']['base_path'] = dirname(__DIR__) . '/Fixtures/threshold_notifications';
+	$sent = 0;
+	$rule = array_replace(alarmmanager_test_rule(), ['method' => 0, 'num' => 1, 'type' => 'messagec', 'message' => 'fixture',
+		'repeat_alert' => 0, 'notify' => 0, 'email' => 'ops@example.com', 'body' => '', 'command' => '', 'open_ticket' => '',
+		'maintenance_mode' => 'disabled', 'level' => 0, 'date' => 1]);
+	$matches = alarmmanager_test_matches();
+	test_override('read_config_option', static fn($name) => match ($name) {
+		'syslog_alarmmanager_enabled' => 'on', 'syslog_html' => '', 'poller_interval' => 300, default => ''
+	});
+	test_override('api_plugin_hook_function', static fn($hook, $envelope) => $hook === 'alarmmanager_submit' ? $envelope + ['status' => $status, 'event_row_id' => 42] : $envelope);
+	test_override('syslog_db_execute_prepared', static fn() => true);
+	test_override('syslog_db_fetch_row_prepared', static fn() => []);
+	test_override('syslog_db_fetch_assoc_prepared', static fn() => []);
+	test_override('syslog_db_fetch_cell_prepared', static fn() => 1);
+	test_override('sql_save', static fn() => 1);
+	test_override('mailer', function () use (&$sent) { $sent++; });
+	syslog_process_alert($rule, 'SELECT 1', [], 1, 'router', $matches);
+	expect($sent)->toBe($emails);
+})->with([['accepted', 0], ['rejected', 1]]);
