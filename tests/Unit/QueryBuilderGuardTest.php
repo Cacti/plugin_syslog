@@ -36,6 +36,7 @@ it('fails each filter compile closed when lib/QueryBuilder.php is missing', func
 	mkdir($shim . '/lib', 0700, true);
 
 	copy(dirname(__DIR__, 2) . '/includes/functions.php', $shim . '/includes/functions.php');
+	copy(dirname(__DIR__, 2) . '/includes/alarmmanager.php', $shim . '/includes/alarmmanager.php');
 
 	file_put_contents($shim . '/run.php', '<?php
 	$shim = ' . var_export($shim, true) . ';
@@ -119,7 +120,7 @@ it('fails each filter compile closed when lib/QueryBuilder.php is missing', func
 			->and($report['normalize'])->toBe($document, 'The normalize guard must pass the raw document through.')
 			->and(is_file(dirname(__DIR__, 2) . '/coverage/clover-guard.xml'))->toBeTrue('The guard fragment must be written for the patch-coverage gate.');
 	} finally {
-		foreach (['includes/functions.php', 'run.php'] as $relative) {
+		foreach (['includes/functions.php', 'includes/alarmmanager.php', 'run.php'] as $relative) {
 			$file = $shim . '/' . $relative;
 
 			if (is_file($file)) {

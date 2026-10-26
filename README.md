@@ -552,7 +552,4 @@ nesting levels. Invalid searches return no results and CSV export rejects them.
 -----------------------------------------------
 Copyright (c) 2004-2026 - The Cacti Group, Inc.
 
-The Alert Rule condition-builder tester checks incoming messages first. If none
-match, it previews the newest 10,000 stored messages and labels that scope.
-It never replays historical messages as alarms. SQL and removal previews retain
-their existing incoming-only scope.
+Optional [Alarm Manager forwarding](docs/ALARM_MANAGER.md) uses Cacti native in-process hooks with existing Syslog email as fallback.

@@ -72,6 +72,12 @@ function syslog_config_settings(): void {
 			'method'        => 'checkbox',
 			'default'       => 'on'
 		],
+		'syslog_alarmmanager_enabled' => [
+			'friendly_name' => __('Forward alarms to Alarm Manager', 'syslog'),
+			'description' => __('Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules.', 'syslog'),
+			'method' => 'checkbox',
+			'default' => ''
+		],
 		'syslog_domains' => [
 			'friendly_name' => __('Strip Domains', 'syslog'),
 			'description'   => __('A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be \'mydomain.com, otherdomain.com\'', 'syslog'),
