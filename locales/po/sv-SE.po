@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-26 10:54+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-26 11:54+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -236,7 +236,7 @@ msgstr "Cacti Syslog Tröskelvärde Varning '%s'"
 
 #: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
-msgstr "Bevakningens namn"
+msgstr "Larmnamn"
 
 #: includes/functions.php syslog.php syslog_alerts.php
 msgid "Severity"
@@ -719,7 +719,7 @@ msgstr "Välj den anpassade HTML-omslutningen och CSS-filen som ska användas. F
 
 #: includes/settings.php
 msgid "Data Retention Settings"
-msgstr "Inställningar för datalagring"
+msgstr "Inställningar för lagringstid"
 
 #: includes/settings.php
 msgid "Syslog Retention"
