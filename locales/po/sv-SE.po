@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-21 16:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-16 14:29-0400\nPO-Revision-Date: 2026-10-26 10:54+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -40,7 +40,7 @@ msgstr "Info"
 
 #: includes/functions.php
 msgid "Debug"
-msgstr "Debugg"
+msgstr "Felsökning"
 
 #: includes/functions.php
 msgid "Informational"
@@ -312,7 +312,7 @@ msgstr "Meddelandesträng:"
 
 #: includes/functions.php
 msgid "Hostname:"
-msgstr "& Värddatornamn:"
+msgstr "Värdnamn:"
 
 #: includes/functions.php
 msgid "Date:"
@@ -948,7 +948,7 @@ msgstr "%d sekund"
 #: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Delete"
-msgstr "Radera"
+msgstr "Ta bort"
 
 #: includes/settings.php syslog_device_rules.php syslog_removal.php
 msgid "Disable"
@@ -1048,7 +1048,7 @@ msgstr "Veckovis"
 
 #: includes/settings.php
 msgid "Import/Export"
-msgstr "Importera/Exportera"
+msgstr "Import/export"
 
 #: includes/settings.php
 msgid "Alert Rules"
@@ -1708,7 +1708,7 @@ msgstr "Längsta körtid"
 
 #: syslog.php
 msgid "State"
-msgstr "Status"
+msgstr "Tillstånd"
 
 #: syslog.php
 msgid "Queued Recovery Records"
@@ -2058,7 +2058,7 @@ msgstr "[ Obearbetade meddelanden: %s ]"
 
 #: syslog.php syslog_device_rules.php
 msgid "Enter a search term"
-msgstr "Ange ett sökbegrepp eller tecken här"
+msgstr "Ange ett sökord"
 
 #: syslog.php
 msgid "Select Device(s)"
@@ -2763,7 +2763,7 @@ msgstr "Efter användare"
 
 #: syslog_alerts.php
 msgid "Alerts"
-msgstr "Varningar"
+msgstr "Larm"
 
 #: syslog_alerts.php
 msgid "Multiple"
