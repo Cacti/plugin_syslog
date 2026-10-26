@@ -68,6 +68,7 @@ composer.lock
 phpstan.neon
 phpstan-baseline.neon
 phpstan-stubs.php
+/tests/E2E/playwright/artifacts/
 graphify-out/**
 locales/po/*.po
 locales/LC_MESSAGES/*.mo

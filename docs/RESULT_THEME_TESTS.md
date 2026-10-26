@@ -19,7 +19,7 @@ node tests/E2E/playwright/theme-contrast-check.cjs
 
 Set `CHROMIUM_EXECUTABLE` to use an existing Chromium installation and
 `THEME_TEST_OUTPUT` to choose the artifact directory (default
-`/tmp/syslog-theme-contrast`). The test checks both palettes in resting,
+`tests/E2E/playwright/artifacts/theme-contrast`). The test checks light, dark, and muted dark palettes in resting,
 hovered, selected, and selected-hovered rows. It also writes Chromium CSS
 coverage to `changed-coverage.json`.
 

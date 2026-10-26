@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
 
 (async () => {
   const root = resolve(__dirname, '../../..');
-  const output = resolve(process.env.THEME_TEST_OUTPUT || '/tmp/syslog-theme-contrast');
+  const output = resolve(process.env.THEME_TEST_OUTPUT || resolve(__dirname, 'artifacts/theme-contrast'));
   mkdirSync(output, { recursive: true });
   const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE || undefined });
   const page = await browser.newPage();
@@ -35,7 +35,7 @@ const { chromium } = require('playwright');
       await page.screenshot({ path: resolve(output, `syslog-${mode}.png`), fullPage: true });
     }
     writeFileSync(resolve(output, 'changed-coverage.json'), JSON.stringify({ css: await page.coverage.stopCSSCoverage(), js: [] }));
-    console.log('PASS: light/dark result links and severity buttons in four row states');
+    console.log('PASS: three palettes of result links and severity buttons in four row states');
   } finally {
     await browser.close();
   }

@@ -349,7 +349,7 @@ jobs:
       - name: Install existing browser tooling
         working-directory: tests/E2E/playwright
         run: |
-          npm install --ignore-scripts --package-lock=false
+          npm ci --ignore-scripts
           npx --no-install playwright install --with-deps chromium
       - name: Check result foregrounds across theme row states
         env:
