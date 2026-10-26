@@ -3344,10 +3344,11 @@ function syslog_get_removal_rule_sql(&$remove, $table = 'syslog_incoming', $pref
  * response cannot stream unbounded data.
  */
 define('SYSLOG_RULE_PREVIEW_MAX_ROWS', 10);
+define('SYSLOG_RULE_PREVIEW_HISTORY_ROWS', 10000);
 
 /**
  * syslog_rule_preview - Run a read-only preview of a rule against the
- * incoming table.
+ * incoming table, with recent stored history as a structured-alert fallback.
  *
  * The rule is compiled through the same QueryBuilder/compiler paths the
  * poller uses, so the preview reflects exactly what the rule would match
@@ -3502,6 +3503,27 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		];
 	}
 
+	$history = false;
+	if ((int) $count === 0 && $rule_type === 'alert' && $type === 'filter' && syslog_db_table_exists('syslog', false)) {
+		// Reuse normalized host/program matching; never reinterpret hand-written SQL.
+		$compiled = syslog_get_removal_rule_sql($rule, 'syslog', 's.', false);
+		if (!$compiled) {
+			return ['error' => __('The historical preview filter could not be compiled.', 'syslog'), 'count' => 0, 'rows' => []];
+		}
+		$limit = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
+		$sql = "SELECT s.*, h.host, p.program
+			FROM (SELECT * FROM `$syslogdb_default`.`syslog` ORDER BY seq DESC LIMIT $limit) AS s
+			LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS h ON h.host_id = s.host_id
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS p ON p.program_id = s.program_id
+			{$compiled['sql']}";
+		$params = $compiled['params'];
+		$count = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM ($sql) AS preview", $params);
+		if (!is_numeric($count)) {
+			return ['error' => __('The historical preview query could not be evaluated.', 'syslog'), 'count' => 0, 'rows' => []];
+		}
+		$history = true;
+	}
+
 	$sample = syslog_db_fetch_assoc_prepared("$sql ORDER BY seq DESC LIMIT $rows", $params);
 
 	if (!is_array($sample)) {
@@ -3512,8 +3534,8 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		];
 	}
 
-	$time_field = isset($syslog_incoming_config['timeField']) ? $syslog_incoming_config['timeField'] : 'logtime';
-	$text_field = isset($syslog_incoming_config['textField']) ? $syslog_incoming_config['textField'] : 'message';
+	$time_field = !$history && isset($syslog_incoming_config['timeField']) ? $syslog_incoming_config['timeField'] : 'logtime';
+	$text_field = !$history && isset($syslog_incoming_config['textField']) ? $syslog_incoming_config['textField'] : 'message';
 
 	$out = [];
 
@@ -3527,7 +3549,11 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 		];
 	}
 
-	return ['error' => '', 'count' => (int) $count, 'rows' => $out];
+	$result = ['error' => '', 'count' => (int) $count, 'rows' => $out];
+	if ($history) {
+		$result['history_limit'] = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
+	}
+	return $result;
 }
 
 /**
