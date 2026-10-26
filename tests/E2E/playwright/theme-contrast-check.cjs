@@ -13,11 +13,12 @@ const { chromium } = require('playwright');
   await page.route('http://syslog-fixture.test/css/search.css', route => route.fulfill({ contentType: 'text/css', body: readFileSync(resolve(root, 'css/search.css'), 'utf8') }));
   await page.coverage.startCSSCoverage({ resetOnNavigation: false });
   try {
-    for (const [mode, foreground, surface] of [['light', 'rgb(35, 54, 47)', 'rgb(255, 255, 255)'], ['dark', 'rgb(238, 238, 238)', 'rgb(32, 32, 32)']]) {
+    for (const [mode, foreground, surface] of [['light', 'rgb(35, 54, 47)', 'rgb(255, 255, 255)'], ['dark', 'rgb(238, 238, 238)', 'rgb(32, 32, 32)'], ['muted-dark', 'rgb(150, 155, 163)', 'rgb(0, 0, 0)']]) {
       await page.setContent(`<!DOCTYPE html><style>
+        * { transition: none !important; }
         body { background: ${surface}; }
-        tr.selected { color: white; background: blue; }
-        tr.selected a, tr.selected a:hover { color: white; }
+        tr.selected { color: white !important; background: blue !important; }
+        tr.selected a, tr.selected a:hover { color: white !important; }
         button:hover { color: red; background: yellow; }
       </style><div id="syslog_workspace" style="--search-text:${foreground};--search-card:${surface}">
         <table><tbody>${[1, 2].map(id => `<tr class="syslogRow logWarning" id="row${id}"><td><a href="#device">edge-rtr-0${id}</a></td><td><button class="syslogSeverity syslogSeverity-warning">Warning</button></td><td>ifDown Gi1/0/24</td></tr>`).join('')}</tbody></table></div>`);

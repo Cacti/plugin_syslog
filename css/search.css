@@ -603,7 +603,7 @@
    surface, so the same rules read correctly on both light and dark themes. */
 #syslog_workspace tr.syslogRow { --syslog-sev: transparent; color: var(--search-text); background: color-mix(in srgb, var(--syslog-sev) 16%, var(--search-card)); }
 #syslog_workspace tr.syslogRow:nth-child(even) { background: color-mix(in srgb, var(--syslog-sev) 22%, var(--search-card)); }
-#syslog_workspace tr.syslogRow:hover { background: color-mix(in srgb, var(--syslog-sev) 32%, var(--search-card)); }
+#syslog_workspace tr.syslogRow:hover { background: color-mix(in srgb, var(--syslog-sev) 20%, var(--search-card)); }
 #syslog_workspace tr.syslogRow td:first-child { border-left: 4px solid transparent; }
 #syslog_workspace tr.syslogRow.logEmergency { --syslog-sev: #e5484d; }
 #syslog_workspace tr.syslogRow.logAlert { --syslog-sev: #e5533b; }
@@ -1128,10 +1128,18 @@
 
 #syslog_workspace tr.syslogRow a,
 #syslog_workspace tr.syslogRow a:hover {
-	color: var(--search-text);
+	color: var(--search-text) !important;
 }
 #syslog_workspace tr.syslogRow .syslogSeverity,
 #syslog_workspace tr.syslogRow .syslogSeverity:hover {
 	color: var(--search-text);
 	background: var(--search-card);
+}
+
+/* Some host themes force their selected foreground and background. */
+#syslog_workspace tr.syslogRow.selected {
+	color: var(--search-text) !important;
+	background: var(--search-card) !important;
+	outline: 1px solid var(--search-text);
+	outline-offset: -1px;
 }
