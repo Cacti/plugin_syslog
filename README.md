@@ -553,3 +553,10 @@ nesting levels. Invalid searches return no results and CSV export rejects them.
 Copyright (c) 2004-2026 - The Cacti Group, Inc.
 
 Optional [Alarm Manager forwarding](docs/ALARM_MANAGER.md) uses Cacti native in-process hooks with existing Syslog email as fallback.
+
+## Result theme regression fixture
+
+![Synthetic Syslog interface alerts on a dark result surface](docs/images/result-theme-dark.png)
+
+See [result theme tests](docs/RESULT_THEME_TESTS.md) for the populated light
+fixture and browser reproduction command.
