@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* feature: Add optional Alarm Manager forwarding per alert rule, retain Syslog Alarming as the default and fallback, and preserve threshold episode recovery behavior.
+
 * issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
 
 * issue#317: Defer automatic partition reorganization when overflow estimates exceed 100,000 rows or 128 MiB, or cannot be read; preserve the safety partition and report the reason through maintenance health.

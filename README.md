@@ -551,3 +551,5 @@ nesting levels. Invalid searches return no results and CSV export rejects them.
 
 -----------------------------------------------
 Copyright (c) 2004-2026 - The Cacti Group, Inc.
+
+Optional [Alarm Manager forwarding](docs/ALARM_MANAGER.md) uses Cacti native in-process hooks with existing Syslog email as fallback.
