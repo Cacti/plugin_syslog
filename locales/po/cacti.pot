@@ -209,6 +209,14 @@ msgid "The preview query could not be evaluated."
 msgstr ""
 
 #: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr ""
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr ""
+
+#: includes/functions.php
 msgid "The preview sample could not be read."
 msgstr ""
 
