@@ -818,6 +818,41 @@ function syslog_include_js(): void {
 }
 
 /**
+ * Emit the shared template-page initialisation script used by the Saved
+ * Searches and Dashboards management pages.
+ *
+ * @param bool $show_sharing Whether to wire up the share-with-users/groups
+ *                           multiselect controls for an editable record.
+ *
+ * @return void
+ */
+function syslog_templates_inline_script(bool $show_sharing): void {
+	?>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
+	$(function() {
+		initSyslogTemplates();
+		<?php if ($show_sharing) { ?>
+		$('#shared_users').multiselect({
+			selectedList: 7,
+			noneSelectedText: '<?php print __esc('Share with users…', 'syslog'); ?>',
+			header: false,
+			height: 200,
+			menuWidth: 300
+		});
+		$('#shared_groups').multiselect({
+			selectedList: 7,
+			noneSelectedText: '<?php print __esc('Share with groups…', 'syslog'); ?>',
+			header: false,
+			height: 200,
+			menuWidth: 300
+		});
+		<?php } ?>
+	});
+	</script>
+	<?php
+}
+
+/**
  * Display the severity legend for the System Logs tab.
  *
  * Renders one rounded, evenly spaced, solid-colour chip per syslog severity.
