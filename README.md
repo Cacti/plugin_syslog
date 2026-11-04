@@ -355,6 +355,13 @@ If you are upgrading to version 2.5 from an earlier version, make sure that you
 update this template format and restart rsyslog.  You may loose some syslog
 data, but doing this in a timely fashion, will minimize data loss.
 
+Senders that only have an IPv6 address are supported.  With hostname resolution
+enabled the plugin accepts an IPv4 or IPv6 address as it is, and stores an IPv6
+address in its compressed lower case form (for example `2001:db8::1`) so one
+address is kept under one device name.  Names are looked up with A and AAAA
+records.  The `host` columns hold 64 characters, which is enough for any IPv6
+address.
+
 Ensure you restart rsyslog after these changes are completed.  Other logging
 servers such as Syslog-NG are also supported with this plugin.  Please see some
 additional documentation here: [Cacti Documentation

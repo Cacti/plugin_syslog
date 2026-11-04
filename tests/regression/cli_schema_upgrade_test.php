@@ -50,6 +50,8 @@ function syslog_ensure_status_table() {}
 function syslog_create_device_rule_table() {}
 function syslog_ensure_message_digest_columns() {}
 function syslog_db_add_column($table, $column, $log = true) { return true; }
+function syslog_db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) { return '50'; }
+function syslog_status_set($name, $value) { return true; }
 function db_update_table($table, $definition, $create, $upgrade, $connection) { return true; }
 function syslog_db_table_exists($table, $log = true) {
 	if (($GLOBALS['config']['poller_id'] ?? 1) > 1 && in_array($table, ['syslog_replication_receipts', 'syslog_replication_collectors'], true)) {

@@ -422,7 +422,7 @@ function api_syslog_removal_enable(int $id): void {
  */
 function api_syslog_removal_reprocess(int $id): void {
 	// remove records retroactively
-	$syslog_items   = syslog_remove_items('syslog', $id);
+	$syslog_items   = syslog_remove_items('syslog', 0, $id);
 	$syslog_removed = $syslog_items['removed'];
 	$syslog_xferred = $syslog_items['xferred'];
 

@@ -2,6 +2,50 @@
 
 --- develop ---
 
+* test: Extend the browser E2E run with import, reprocess, dashboard and long owner name paths, and make its login work on Cacti 1.2.x and develop
+
+* test: Add an optional Xdebug dump and merge report that list which changed lines the real entry points executed
+
+* test: Run the real processor over alert command, removal rule and invalid alert rule cases against an installed Cacti in CI
+
+* test: Add real-database checks for each upgrade choice, every dashboard record type and dimension, every removal rule type and method, alert evaluation with invalid rules, owner column limits, hostname lookup budget and rule imports
+
+* bug: Reject imported alert rules whose match type produces no query
+
+* test: Extend the browser E2E run with dashboard, archiving removal rule, alert rule isolation, import validation and single-rule reprocess checks
+
+* test: Load functions extracted from plugin pages through temporary files instead of evaluating source strings
+
+* test: Add database regression checks for the dashboard queries, archiving removal rules, rule reprocessing, alert rule isolation and upgrade truncate scope
+
+* bug: Validate imported saved search templates like edited ones
+
+* bug: Stop hostname lookups after a time budget per processing run so senders cannot stall the poller
+
+* bug: Widen rule owner columns to the 50 character Cacti username limit through the standard schema upgrade helper
+
+* bug: Reprocess only the selected removal rule instead of every enabled rule
+
+* bug: Archive host and program removal rules without an ambiguous column error
+
+* bug: Group the All records dashboard queries per log table so panels show every host, program and time bucket
+
+* bug: Validate imported alert rules like edited ones and ignore row ids in import files
+
+* bug: Apply the Max Report Records setting to threshold alert messages
+
+* bug: Evaluate the remaining alert rules when one rule fails to compile instead of silencing all of them
+
+* bug: Keep asterisks inside a host-level alert rule expression intact when the grouped query is built
+
+* bug: Keep alert, removal and report rules when the upgrade type Truncate is chosen; it now discards stored messages only
+
+* security: Substitute alert command tokens in a single pass so values containing a token name are not expanded again
+
+* test: Insert a valid alert rule in the CI test data and assert in the workflow that the processor evaluates and fires it
+
+* bug: Check sender names with A and AAAA records, accept IPv4 and IPv6 addresses without a lookup and store IPv6 addresses in one canonical form
+
 * feature: Add optional Alarm Manager forwarding per alert rule, retain Syslog Alarming as the default and fallback, and preserve threshold episode recovery behavior.
 
 * issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.

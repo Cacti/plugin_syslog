@@ -15,7 +15,7 @@
 it('wraps syslog_remove_items archive and delete operations in a transaction', function () {
 	$functions = plugin_test_read_source('includes/functions.php');
 
-	if (!preg_match('/function\s+syslog_remove_items\s*\(\s*\$table\s*,\s*\$max_seq\s*\)\s*\{(.+?)\nfunction\s+syslog_log_row_color/s', $functions, $match)) {
+	if (!preg_match('/function\s+syslog_remove_items\s*\(\s*\$table\s*,\s*\$max_seq\s*,\s*\$rule_id\s*=\s*0\s*\)\s*\{(.+?)\nfunction\s+syslog_log_row_color/s', $functions, $match)) {
 		throw new RuntimeException('syslog_remove_items function not found.');
 	}
 

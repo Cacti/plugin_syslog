@@ -13,6 +13,10 @@ beforeEach(function () {
 		return true;
 	});
 	test_override('syslog_db_fetch_cell_prepared', function ($sql, $params) {
+		if (count($params) !== 5) {
+			return '';
+		}
+
 		[$id, $hash, $scope, $cutoff, $now] = $params;
 		return array_sum(array_map(static fn($b) => $b[4], array_filter($GLOBALS['threshold_buckets'], static fn($b) => $b[0] === $id && $b[1] === $hash && $b[2] === $scope && $b[3] > $cutoff && $b[3] <= $now)));
 	});
@@ -77,11 +81,20 @@ it('repairs window columns without requiring a version change', function () {
 	// the digest migration hooks run inside the same repair pass
 	test_override('syslog_db_column_exists', static fn() => true);
 	test_override('db_update_table', function ($table, $definition) use (&$columns) {
-		if ($table === 'syslog_alert') {
+		if ($table === 'syslog_alert' && in_array('threshold_window', array_column($definition['columns'], 'name'), true)) {
 			$columns = array_column($definition['columns'], 'name');
 		}
 		return true;
 	});
 	expect(syslog_ensure_table_structures())->toBeTrue();
 	expect($columns)->toBe(['threshold_window', 'threshold_unit', 'threshold_recovery_minutes', 'threshold_recovery_unit', 'alarm_destination', 'recovery_command']);
+});
+
+it('fingerprints threshold settings within the existing storage width', function () {
+	$rule = threshold_rule_fixture();
+	$hash = syslog_threshold_rule_hash($rule);
+
+	expect($hash)->toMatch('/^[a-f0-9]{40}$/')
+		->and(syslog_threshold_rule_hash($rule + ['name' => 'Renamed alert']))->toBe($hash)
+		->and(syslog_threshold_rule_hash(array_replace($rule, ['threshold_window' => $rule['threshold_window'] + 1])))->not->toBe($hash);
 });

@@ -1,14 +1,21 @@
 #!/bin/bash
 # filepath: insert_syslog_test_data.sh
 
+# A failed insert must fail the CI step instead of leaving the run without data.
+set -euo pipefail
+
 # Number of iterations
 ITERATIONS=100
 
 
-SQL_ALERT_RULE_INSERT="INSERT INTO syslog_alert (id,hash,name,severity,method,level,num,type,enabled,repeat_alert,open_ticket,message,body,user,date,email,notify,command,notes)
-                        VALUES (1,'8f440030d3425e37cb66e5df54902bb0','interface down alert',1,0,1,1,'messageb','on',0,'','interface down','admin',1767376990,NULL,0,NULL,NULL);"
+# Every NOT NULL column without a default must be listed (message and
+# suppression_schedule), or the insert fails under strict SQL mode. Empty
+# strings are used for the text columns the processor reads, because a NULL
+# there raises a PHP deprecation notice in the Cacti log.
+SQL_ALERT_RULE_INSERT="REPLACE INTO syslog_alert (id,hash,name,severity,method,level,num,type,enabled,repeat_alert,open_ticket,message,body,user,date,email,notify,command,recovery_command,notes,suppression_schedule)
+                        VALUES (1,'8f440030d3425e37cb66e5df54902bb0','interface down alert',1,0,1,1,'messageb','on',0,'','interface down','','admin',1767376990,'',0,'','','','');"
 
-SQL_REMOVAL_RULE_INSERT="INSERT INTO syslog_remove (id,hash,name,type,enabled,method,message,user,date,notes)
+SQL_REMOVAL_RULE_INSERT="REPLACE INTO syslog_remove (id,hash,name,type,enabled,method,message,user,date,notes)
                           VALUES (1,'0faf589f7b6b7da1bcec40b92340487d','exploded','messageb','on','del',
                           'the box exploded','admin',1767376604,NULL);"
 

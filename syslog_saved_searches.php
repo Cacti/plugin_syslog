@@ -525,6 +525,21 @@ function syslog_saved_search_import() {
 				continue;
 			}
 
+			// Imports are held to the same checks as the editor and the save action.
+			try {
+				syslog_parse_logical_search((string) $save['search']);
+			} catch (InvalidArgumentException $error) {
+				$failed++;
+
+				continue;
+			}
+
+			if (!in_array((string) $save['removal'], ['-1', '1', '2'], true) || !in_array((string) $save['grouping'], ['0', '1'], true)) {
+				$failed++;
+
+				continue;
+			}
+
 			if (isset($contents['shared_users']) && is_array($contents['shared_users'])) {
 				$shared_users = $contents['shared_users'];
 			} else {

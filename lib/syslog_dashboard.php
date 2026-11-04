@@ -303,11 +303,13 @@ function syslog_dashboard_timeseries_sql(string $source, string $removal, string
 		$sql = "SELECT bucket, SUM(records) AS records FROM (
 			(SELECT $select, 'main' AS mtype
 				FROM `$syslogdb_default`.`syslog` AS syslog
-				WHERE $predicate)
+				WHERE $predicate
+				GROUP BY bucket)
 			UNION ALL
 			(SELECT $select, 'remove' AS mtype
 				FROM `$syslogdb_default`.`syslog_removed` AS syslog
-				WHERE $predicate)
+				WHERE $predicate
+				GROUP BY bucket)
 		) AS buckets GROUP BY bucket ORDER BY bucket";
 
 		return $sql;
@@ -353,11 +355,13 @@ function syslog_dashboard_breakdown_sql(string $source, string $field, string $r
 		return "SELECT label, SUM(records) AS records FROM (
 			(SELECT $dimension AS label, COUNT(*) AS records, 'main' AS mtype
 				FROM `$syslogdb_default`.`syslog` AS syslog
-				WHERE $predicate)
+				WHERE $predicate
+				GROUP BY label)
 			UNION ALL
 			(SELECT $dimension AS label, COUNT(*) AS records, 'remove' AS mtype
 				FROM `$syslogdb_default`.`syslog_removed` AS syslog
-				WHERE $predicate)
+				WHERE $predicate
+				GROUP BY label)
 		) AS grouped GROUP BY label ORDER BY records DESC, label ASC";
 	}
 

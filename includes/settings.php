@@ -135,7 +135,7 @@ function syslog_config_settings(): void {
 		],
 		'syslog_resolve_hostname' => [
 			'friendly_name' => __('Enable Hostname Resolution', 'syslog'),
-			'description'   => __('If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix \'unresolved-Original_hostname\'.', 'syslog'),
+			'description'   => __('If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix \'unresolved-Original_hostname\'.', 'syslog'),
 			'method'        => 'checkbox',
 			'default'       => ''
 		],
