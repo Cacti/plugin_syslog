@@ -416,7 +416,7 @@ msgstr "Bạn muốn sử dụng loại nâng cấp / cài đặt nào"
 
 #: includes/installer.php
 #, fuzzy
-msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
 msgstr "Khi bạn có các bảng rất lớn, việc thực hiện Truncate sẽ nhanh hơn nhiều. Nếu bạn lo lắng về dữ liệu lưu trữ, bạn có thể chọn Inline, nó sẽ đóng băng trình duyệt của bạn trong giai đoạn nâng cấp này hoặc nền sẽ tạo quy trình nền để đưa dữ liệu nhật ký hệ thống cũ của bạn từ bảng sao lưu sang định dạng nhật ký hệ thống mới . Một lần nữa quá trình này có thể mất vài giờ."
 
 #: includes/installer.php
@@ -777,7 +777,7 @@ msgid "Enable Hostname Resolution"
 msgstr ""
 
 #: includes/settings.php
-msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
 msgstr ""
 
 #: includes/settings.php
