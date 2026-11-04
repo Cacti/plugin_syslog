@@ -1492,7 +1492,7 @@ function syslog_dashboard(): void {
 		}
 	}
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 	var syslogDashboard = {
 		panels: <?php print syslog_json_safe($panel_json); ?>,
 		dashboardId: <?php print (int) $dashboard_id; ?>,

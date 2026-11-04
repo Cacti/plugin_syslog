@@ -616,7 +616,7 @@ function syslog_action_edit(): void {
 	}
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 
 	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
 	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
@@ -700,7 +700,7 @@ function syslog_reports_filter(): void {
 		</td>
 		<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 		</form>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogReports();
 		</script>
 	</tr>

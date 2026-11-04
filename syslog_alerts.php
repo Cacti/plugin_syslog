@@ -982,8 +982,8 @@ function syslog_action_edit(): void {
 	}
 
 	?>
-	<script src='<?php print $config['url_path']; ?>plugins/syslog/js/alarm-destination.js?v=<?php print filemtime(__DIR__ . '/js/alarm-destination.js'); ?>'></script>
-	<script type='text/javascript'>
+	<script src='<?php print $config['url_path']; ?>plugins/syslog/js/alarm-destination.js?v=<?php print filemtime(__DIR__ . '/js/alarm-destination.js'); ?>' <?php print plugin_syslog_csp_nonce(); ?>></script>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 
 	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
 	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
@@ -1178,7 +1178,7 @@ function syslog_alerts_filter(): void {
 			</table>
 			<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 		</form>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogAlerts();
 		</script>
 		</td>

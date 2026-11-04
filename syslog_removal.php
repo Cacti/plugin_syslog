@@ -684,7 +684,7 @@ function syslog_action_edit(): void {
 	}
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 
 	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
 	var removalFilterBuilder;
@@ -863,7 +863,7 @@ function syslog_removal_filter(): void {
 			</table>
 			<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 		</form>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogRemoval(<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>);
 		</script>
 		</td>

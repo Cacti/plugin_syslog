@@ -98,7 +98,7 @@ function syslog_utilities_list(): void {
 			<div id='syslog_purge_dialog' style='display:none;'>
 				<p><?php print __esc('Are you sure you want to purge stale Syslog devices?', 'syslog'); ?></p>
 			</div>
-			<script type='text/javascript'>
+			<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 			$(function() {
 				$('#syslog_purge_hosts').on('click', function() {
 					$('#syslog_purge_dialog').dialog({

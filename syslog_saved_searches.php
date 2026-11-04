@@ -99,7 +99,7 @@ switch (get_request_var('action')) {
 		break;
 }
 ?>
-<script type='text/javascript'>
+<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 $(function() {
 	initSyslogTemplates();
 	<?php if ($row) { ?>
@@ -253,7 +253,7 @@ function syslog_saved_search_filter() {
 			</table>
 			<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
 		</form>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogSavedSearches();
 		</script>
 		</td>

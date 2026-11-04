@@ -785,7 +785,7 @@ function syslog_export_form_end(bool $export): void {
 	}
 	syslog_download_frame();
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 	(function() {
 		var form = document.getElementById(<?php print syslog_json_safe($form_id); ?>);
 		if (form) form.target = 'syslog_download';
@@ -811,9 +811,9 @@ function syslog_include_js(): void {
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/search.css?v=<?php print filemtime(dirname(__DIR__) . '/css/search.css'); ?>'>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/dashboard.css?v=<?php print filemtime(dirname(__DIR__) . '/css/dashboard.css'); ?>'>
 	<link rel='stylesheet' href='<?php print $config['url_path']; ?>plugins/syslog/css/<?php print $legend_css; ?>?v=<?php print filemtime(dirname(__DIR__) . '/css/' . $legend_css); ?>'>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(dirname(__DIR__) . '/js/filter-builder.js'); ?>'></script>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/dashboard.js?v=<?php print filemtime(dirname(__DIR__) . '/js/dashboard.js'); ?>'></script>
-	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(dirname(__DIR__) . '/js/functions.js'); ?>'></script>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/filter-builder.js?v=<?php print filemtime(dirname(__DIR__) . '/js/filter-builder.js'); ?>' <?php print plugin_syslog_csp_nonce(); ?>></script>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/dashboard.js?v=<?php print filemtime(dirname(__DIR__) . '/js/dashboard.js'); ?>' <?php print plugin_syslog_csp_nonce(); ?>></script>
+	<script type='text/javascript' src='<?php print $config['url_path']; ?>plugins/syslog/js/functions.js?v=<?php print filemtime(dirname(__DIR__) . '/js/functions.js'); ?>' <?php print plugin_syslog_csp_nonce(); ?>></script>
 	<?php
 }
 

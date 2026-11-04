@@ -13,6 +13,7 @@ it('keeps setup.php limited to its compatibility facade', function () {
 	preg_match_all('/^function\s+([a-zA-Z0-9_]+)\s*\(/m', $setup, $matches);
 
 	$allowed = [
+		'plugin_syslog_csp_nonce',
 		'plugin_syslog_install',
 		'syslog_execute_update',
 		'plugin_syslog_uninstall',
