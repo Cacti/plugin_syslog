@@ -34,6 +34,7 @@ require $cacti . '/include/global_constants.php';
 require $cacti . '/lib/database.php';
 function cacti_log(...$args) {}
 function cacti_debug_backtrace(...$args) {}
+function cacti_object_hash($object) { return is_object($object) ? (string) sprintf('%016x0000000000000000', spl_object_id($object)) : false; }
 function clean_up_lines($value) { return $value; }
 function cacti_count($value) { return is_countable($value) ? count($value) : 0; }
 function cacti_sizeof($value) { return is_array($value) ? count($value) : 0; }
