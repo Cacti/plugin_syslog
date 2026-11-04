@@ -404,7 +404,9 @@ msgid "What upgrade/install type do you wish to use"
 msgstr "Vilken typ av uppgradering/installation vill du använda"
 
 #: includes/installer.php
-msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+#, fuzzy
+#| msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
 msgstr "När du har mycket stora tabeller går det mycket snabbare att utföra en Truncate.  Om du är orolig för arkivdata kan du välja antingen Inline, vilket fryser din webbläsare under uppgraderingsperioden, eller Background, vilket skapar en bakgrundsprocess för att föra över dina gamla syslogdata från en backuptabell till det nya syslogformatet.  Även denna process kan ta flera timmar."
 
 #: includes/installer.php
@@ -727,7 +729,9 @@ msgid "Enable Hostname Resolution"
 msgstr "Aktivera namnuppslagning för värddatorer"
 
 #: includes/settings.php
-msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+#, fuzzy
+#| msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
 msgstr "Om den här kryssrutan är markerad slås alla värddatornamn först upp med DNS, om DNS-uppslagning är aktiverad. Om DNS-uppslagningen misslyckas försöker systemet slå upp värddatornamnet i Cactis värdtabell och ersätta det med Cactis värdbeskrivning. Om både DNS-uppslagningen och Cacti-uppslagningen misslyckas får poster prefixet 'unresolved-Original_hostname'."
 
 #: includes/settings.php
