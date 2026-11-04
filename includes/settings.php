@@ -562,7 +562,7 @@ function syslog_settings_bottom(): void {
 		return;
 	}
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 	$(function() {
 		$('#syslog_alert_maintenance_datetime_start, #syslog_alert_maintenance_datetime_end').datetimepicker({
 			minuteGrid: 10,

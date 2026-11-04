@@ -169,7 +169,7 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 	);
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 	$(function() {
 		var remoteOptions = $('#syslog_remote_enabled, #syslog_remote_sync_rules, #syslog_remote_store_records');
 		var engine = $('#engine');
@@ -302,7 +302,7 @@ function syslog_confirm_button(string $action, string $cancel_url, int $syslog_e
 			<td class='saveRow' align='right'>
 				<input id='<?php print ($syslog_exists ? 'return' : 'cancel')?>' type='button' value='<?php print __('Cancel', 'syslog'); ?>'>
 				<input id='<?php print $action; ?>' type='submit' value='<?php print $value; ?>'>
-				<script type='text/javascript'>
+				<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 				$(function() {
 					$('#syslog_install').submit(function(event) {
 						event.preventDefault();

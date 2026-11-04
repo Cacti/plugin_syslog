@@ -221,7 +221,7 @@ function device_rule_edit(): void {
 	html_end_box();
 	form_save_button('syslog_device_rules.php', '', 'id');
 	?>
-	<script>
+	<script <?php print plugin_syslog_csp_nonce(); ?>>
 	(function () {
 		var mode = document.getElementById('mute_mode');
 		var endRow = document.getElementById('row_mute_until');
@@ -275,7 +275,7 @@ function device_rule_list(): void {
 		} ?></select></td>
 		<td><span><input id='refresh' type='button' value='<?php print __esc('Go', 'syslog'); ?>'><input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>'></span></td>
 	</tr></table><input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'></form>
-	<script>
+	<script <?php print plugin_syslog_csp_nonce(); ?>>
 	(function () {
 		var filter = document.getElementById('filter'), enabled = document.getElementById('enabled'), rows = document.getElementById('rows');
 		function apply(clear) { var query = clear ? '' : new URLSearchParams({filter: filter.value, enabled: enabled.value, rows: rows.value}).toString(); window.location = 'syslog_device_rules.php' + (query ? '?' + query : ''); }

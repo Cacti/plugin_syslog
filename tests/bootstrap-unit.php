@@ -751,6 +751,13 @@ function syslog_test_load($path) {
  * @return void
  */
 function syslog_load_plugin_source($file) {
+	// Rendered plugin pages call helpers defined in setup.php (for example
+	// plugin_syslog_csp_nonce()); Cacti always loads setup.php in production.
+	// Load it once here so focused/isolated test runs match that contract.
+	if (!function_exists('plugin_syslog_csp_nonce')) {
+		require_once dirname(__DIR__) . '/setup.php';
+	}
+
 	syslog_test_load(dirname(__DIR__) . '/' . $file);
 }
 

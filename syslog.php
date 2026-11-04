@@ -1290,7 +1290,7 @@ function syslog_status(): void {
 		$catalog[$key] = $meta[$key]['title'];
 	}
 
-	print "<script type='text/javascript'>var syslogStatusCatalog = "
+	print "<script type='text/javascript' " . plugin_syslog_csp_nonce() . ">var syslogStatusCatalog = "
 		. syslog_json_safe($catalog) . '; initSyslogStatus();</script>';
 }
 
@@ -2246,7 +2246,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 	$saved_admin  = syslog_saved_search_admin();
 
 	?>
-	<script type='text/javascript'>
+	<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 	initSyslogMain({
 		pageTab: <?php print syslog_json_safe(get_request_var('tab')); ?>,
 		placeHolder: <?php print syslog_json_safe(__('Enter a search term', 'syslog')); ?>,
@@ -2716,7 +2716,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		syslog_syslog_legend();
 		print '</div>';
 		?>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogMessagesDisplay();
 		initSyslogValueFilters();
 		</script>
@@ -2773,7 +2773,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		syslog_log_legend();
 		print '</div>';
 		?>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogValueFilters();
 		</script>
 		<?php
@@ -2796,7 +2796,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		<div class='syslogDetailsRules'><a data-rule='alarm' class='syslogRuleButton' hidden><?php print __esc('Create Alarm Rule', 'syslog'); ?></a><a data-rule='device' class='syslogRuleButton' hidden><?php print __esc('Create Device Alert Rule', 'syslog'); ?></a><a data-rule='removal' class='syslogRuleButton' hidden><?php print __esc('Create Removal Rule', 'syslog'); ?></a></div>
 		<div class='syslogDetailsFilters'><button type='button' data-filter-detail='host'><?php print __esc('Filter by device', 'syslog'); ?></button><button type='button' data-filter-detail='program'><?php print __esc('Filter by program', 'syslog'); ?></button></div>
 	</aside></div>
-	<script>initSyslogWorkspace();</script>
+	<script <?php print plugin_syslog_csp_nonce(); ?>>initSyslogWorkspace();</script>
 	<?php
 }
 
@@ -3032,7 +3032,7 @@ function syslog_form_callback(string $form_name, string $classic_sql, string $co
 		// escapes if the script block ever runs under unusual content types.
 		$js_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_THROW_ON_ERROR;
 		?>
-		<script type='text/javascript'>
+		<script type='text/javascript' <?php print plugin_syslog_csp_nonce(); ?>>
 		initSyslogAutocomplete(<?php print json_encode($form_name, $js_flags); ?>, <?php print json_encode($callback, $js_flags); ?>, <?php print json_encode($on_change, $js_flags); ?>);
 		</script>
 		<?php

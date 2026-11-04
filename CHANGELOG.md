@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
+
 * test: Extend the browser E2E run with import, reprocess, dashboard and long owner name paths, and make its login work on Cacti 1.2.x and develop
 
 * test: Add an optional Xdebug dump and merge report that list which changed lines the real entry points executed
