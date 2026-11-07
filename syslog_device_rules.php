@@ -7,6 +7,8 @@ include_once(__DIR__ . '/setup.php');
 
 syslog_connect();
 
+set_default_action();
+
 // Return only matching current devices on demand. This keeps the editor
 // usable for installations with many thousands of known hosts.
 if (get_request_var('action') === 'ajax_hosts') {
@@ -26,8 +28,6 @@ if (get_request_var('action') === 'ajax_hosts') {
 	print json_encode(array_map(static fn ($host) => ['label' => $host['host'], 'value' => $host['host']], $hosts));
 	exit;
 }
-
-set_default_action();
 
 switch (get_request_var('action')) {
 	case 'save':
