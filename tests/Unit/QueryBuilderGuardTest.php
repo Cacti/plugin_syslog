@@ -117,8 +117,19 @@ it('fails each filter compile closed when lib/QueryBuilder.php is missing', func
 			->and($report['alert_full_error'])->toBe('The structured query builder is unavailable.')
 			->and($report['removal'])->toBe([])
 			->and($report['removal_error'])->toBe('The structured query builder is unavailable.')
-			->and($report['normalize'])->toBe($document, 'The normalize guard must pass the raw document through.')
-			->and(is_file(dirname(__DIR__, 2) . '/coverage/clover-guard.xml'))->toBeTrue('The guard fragment must be written for the patch-coverage gate.');
+			->and($report['normalize'])->toBe($document, 'The normalize guard must pass the raw document through.');
+
+		/*
+		 * The subprocess writes the clover-guard fragment only when an
+		 * xdebug code-coverage driver is available (see run.php above and
+		 * tests/bin/coverage-prepend.php). PHP 8.6 currently ships no
+		 * coverage driver (no xdebug/pcov build yet), so the fragment is
+		 * never produced there. Assert it only when a driver is present,
+		 * so 8.2-8.5 still enforce the patch-coverage gate unchanged.
+		 */
+		if (function_exists('xdebug_start_code_coverage')) {
+			expect(is_file(dirname(__DIR__, 2) . '/coverage/clover-guard.xml'))->toBeTrue('The guard fragment must be written for the patch-coverage gate.');
+		}
 	} finally {
 		foreach (['includes/functions.php', 'includes/alarmmanager.php', 'run.php'] as $relative) {
 			$file = $shim . '/' . $relative;
