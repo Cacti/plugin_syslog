@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-26 13:53-0400\n"
-"PO-Revision-Date: 2026-10-26 18:16+0000\n"
-"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
-"Language: sv-SE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-26 13:53-0400\nPO-Revision-Date: 2026-11-09 22:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -219,16 +207,12 @@ msgid "The preview query could not be evaluated."
 msgstr "Förhandsgranskningsfrågan kunde inte utvärderas."
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "The preview sample could not be read."
 msgid "The historical preview filter could not be compiled."
-msgstr "Förhandsgranskningsexemplet kunde inte läsas."
+msgstr "Det gick inte att kompilera filtret för historisk förhandsgranskning."
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "The preview query could not be evaluated."
 msgid "The historical preview query could not be evaluated."
-msgstr "Förhandsgranskningsfrågan kunde inte utvärderas."
+msgstr "Det gick inte att utvärdera frågan för historisk förhandsgranskning."
 
 #: includes/functions.php
 msgid "The preview sample could not be read."
@@ -404,10 +388,8 @@ msgid "What upgrade/install type do you wish to use"
 msgstr "Vilken typ av uppgradering/installation vill du använda"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
-msgstr "När du har mycket stora tabeller går det mycket snabbare att utföra en Truncate.  Om du är orolig för arkivdata kan du välja antingen Inline, vilket fryser din webbläsare under uppgraderingsperioden, eller Background, vilket skapar en bakgrundsprocess för att föra över dina gamla syslogdata från en backuptabell till det nya syslogformatet.  Även denna process kan ta flera timmar."
+msgstr "När du har mycket stora tabeller går en trunkering mycket snabbare. Om du behöver arkivdata kan du välja Inline, som låser webbläsaren under uppgraderingen, eller Background, som skapar en bakgrundsprocess för att föra gamla syslogdata från en säkerhetskopieringstabell till det nya syslogformatet. Processen kan ta flera timmar. En trunkering tar endast bort lagrade syslog- och borttagna meddelanden. Regler för larm, borttagning och rapportering behålls alltid."
 
 #: includes/installer.php
 msgid "Truncate Syslog Table"
@@ -659,11 +641,11 @@ msgstr "Om den här rutan är markerad överförs poster från tabellen Syslog I
 
 #: includes/settings.php
 msgid "Forward alarms to Alarm Manager"
-msgstr ""
+msgstr "Vidarebefordra larm till larmhanteraren"
 
 #: includes/settings.php
 msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
-msgstr ""
+msgstr "Tillåt regler som använder larmhanteraren att vidarebefordra larm. Syslogs e-post är reservväg och kommandoåtgärder körs endast för Syslog-larmregler."
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -729,10 +711,8 @@ msgid "Enable Hostname Resolution"
 msgstr "Aktivera namnuppslagning för värddatorer"
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled). If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr "Om den här kryssrutan är markerad slås alla värddatornamn först upp med DNS, om DNS-uppslagning är aktiverad. Om DNS-uppslagningen misslyckas försöker systemet slå upp värddatornamnet i Cactis värdtabell och ersätta det med Cactis värdbeskrivning. Om både DNS-uppslagningen och Cacti-uppslagningen misslyckas får poster prefixet 'unresolved-Original_hostname'."
+msgstr "När kryssrutan är markerad slås alla värdnamn först upp via DNS med A- och AAAA-poster, om DNS-uppslagning är aktiverad. IPv4- och IPv6-adresser behöver inte slås upp och IPv6-adresser lagras komprimerade med gemener. Misslyckas DNS-uppslagningen försöker systemet slå upp värdnamnet i Cactis värdtabell och ersätta det med Cactis värdbeskrivning. Misslyckas båda uppslagningarna får poster prefixet unresolved-Original_hostname."
 
 #: includes/settings.php
 msgid "Skip DNS Resolution for incoming hosts"
@@ -2390,7 +2370,7 @@ msgstr "Exportera Syslog-larmregler"
 
 #: syslog_alerts.php
 msgid "Select Syslog Alarming or Alarm Manager."
-msgstr ""
+msgstr "Välj Syslog-larm eller larmhanteraren."
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
@@ -2478,26 +2458,20 @@ msgid "Please describe this Alert."
 msgstr "Beskriv det här larmet."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Alert retention"
 msgid "Alarm Destination"
-msgstr "Lagringstid för larm"
+msgstr "Larmdestination"
 
 #: syslog_alerts.php
 msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
-msgstr ""
+msgstr "Välj Syslog-larm eller larmhanteraren. Larmhanteraren kräver också att vidarebefordran är aktiverad i Syslogs inställningar. E-post används som reservväg och kommandoåtgärder körs inte för larmhanterarregler."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Manage"
 msgid "Alarm Manager"
-msgstr "Hantera"
+msgstr "Larmhanteraren"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Syslog Alerts"
 msgid "Syslog Alarming"
-msgstr "Syslog-larm"
+msgstr "Syslog-larmfunktion"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -2797,7 +2771,7 @@ msgstr "Rader"
 #: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php syslog_saved_searches.php
 msgid "Go"
-msgstr "Start"
+msgstr "Gå"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
@@ -2871,7 +2845,7 @@ msgstr "Importen nekades: filen är tom, ogiltig eller innehåller en annan typ 
 
 #: syslog_alerts.php
 msgid "Import rejected: invalid alarm destination."
-msgstr ""
+msgstr "Importen avvisades: ogiltig larmdestination."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
