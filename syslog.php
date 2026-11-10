@@ -177,6 +177,14 @@ if (isset_request_var('export')) {
 
 	syslog_include_js();
 
+	// Shared card chrome stylesheet: load the plugin's bundled copy only on
+	// cores that do not already ship include/css/cards.css globally (Cacti
+	// < 1.2.32). Both the Status tab and the chart Dashboards render with the
+	// .cc* chrome, so this loads for every tab alongside the other assets.
+	if (!file_exists($config['base_path'] . '/include/css/cards.css')) {
+		print "<link rel='stylesheet' href='" . $config['url_path'] . 'plugins/syslog/css/cards.css?v=' . filemtime($config['base_path'] . '/plugins/syslog/css/cards.css') . "'>\n";
+	}
+
 	syslog_display_tabs($current_tab);
 
 	if ($current_tab == 'current') {
@@ -1099,39 +1107,37 @@ function syslog_status_render_card(string $key, bool $expanded = false): string 
 	$tools = '';
 
 	if ($def['expandable']) {
-		$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="expand" aria-label="' . __esc('Show more', 'syslog') . '" title="' . __esc('Show more', 'syslog') . '"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>';
-		$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="collapse" aria-label="' . __esc('Show less', 'syslog') . '" title="' . __esc('Show less', 'syslog') . '"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="ccTool" data-tool="expand" aria-label="' . __esc('Show more', 'syslog') . '" title="' . __esc('Show more', 'syslog') . '"><i class="fa fa-chevron-down" aria-hidden="true"></i></button>';
+		$tools .= '<button type="button" class="ccTool" data-tool="collapse" aria-label="' . __esc('Show less', 'syslog') . '" title="' . __esc('Show less', 'syslog') . '"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>';
 	}
-	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'syslog') . '" title="' . __esc('Open in a dialog', 'syslog') . '"><i class="fa fa-window-maximize" aria-hidden="true"></i></button>';
-	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-sync-alt" aria-hidden="true"></i></button>';
-	$tools .= '<button type="button" class="syslogStatusCardTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'syslog') . '" title="' . __esc('Remove from page', 'syslog') . '"><i class="fa fa-times" aria-hidden="true"></i></button>';
+	$tools .= '<button type="button" class="ccTool" data-tool="maximize" aria-label="' . __esc('Open in a dialog', 'syslog') . '" title="' . __esc('Open in a dialog', 'syslog') . '"><i class="fa fa-window-maximize" aria-hidden="true"></i></button>';
+	$tools .= '<button type="button" class="ccTool" data-tool="refresh" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-sync-alt" aria-hidden="true"></i></button>';
+	$tools .= '<button type="button" class="ccTool" data-tool="remove" aria-label="' . __esc('Remove from page', 'syslog') . '" title="' . __esc('Remove from page', 'syslog') . '"><i class="fa fa-times" aria-hidden="true"></i></button>';
 
-	$classes = 'syslogStatusCard syslogStatusSpan' . (int) $def['span'];
+	$classes = 'ccCard ccW' . (int) $def['span'];
 
 	if ($def['expandable']) {
-		$classes .= ' syslogStatusCardExpandable';
+		$classes .= ' ccCardExpandable';
 	}
 
 	if ($expanded) {
-		$classes .= ' syslogStatusCardExpanded';
+		$classes .= ' ccCardExpanded';
 	}
 
-	// Header severity variant: up / recovering / down, or a neutral grey when the
-	// card carries no severity.
+	// Header severity accent: up / recovering->warn / down, or neutral (none).
 	$state = isset($def['state']) ? preg_replace('/[^a-z]/', '', strtolower((string) $def['state'])) : '';
 
-	if (!in_array($state, ['up', 'recovering', 'down'], true)) {
-		$state = 'none';
-	}
-	$header_class = 'syslogStatusCardHeader syslogStatusCardHeader--' . $state;
+	$severity = ($state === 'recovering') ? 'warn' : (($state === 'up' || $state === 'down') ? $state : 'none');
 
-	return '<section class="' . $classes . '" data-card="' . html_escape($key) . '">'
-		. '<header class="' . $header_class . '">'
-		. '<button type="button" class="syslogStatusCardDrag" aria-label="' . __esc('Drag to reorder card', 'syslog') . '"><i class="fa fa-bars" aria-hidden="true"></i></button>'
-		. '<h2 class="syslogStatusCardTitle">' . html_escape($def['title']) . '</h2>'
-		. '<span class="syslogStatusCardTools">' . $tools . '</span>'
+	return '<section class="' . $classes . '" data-card="' . html_escape($key) . '" data-severity="' . $severity . '"'
+		. ($def['expandable'] ? ' data-expandable="1"' : '')
+		. ' data-expanded="' . ($expanded ? '1' : '0') . '">'
+		. '<header class="ccCardHeader">'
+		. '<button type="button" class="ccDrag" aria-label="' . __esc('Drag to reorder card', 'syslog') . '"><i class="fa fa-bars" aria-hidden="true"></i></button>'
+		. '<h2 class="ccTitle">' . html_escape($def['title']) . '</h2>'
+		. '<span class="ccTools">' . $tools . '</span>'
 		. '</header>'
-		. '<div class="syslogStatusCardBody">' . syslog_status_card_body($key) . '</div>'
+		. '<div class="ccCardBody">' . syslog_status_card_body($key) . '</div>'
 		. '</section>';
 }
 
@@ -1240,7 +1246,17 @@ function syslog_status_card_ajax(): string {
  * @return void
  */
 function syslog_status(): void {
-	global $page_refresh_interval;
+	global $config, $page_refresh_interval;
+
+	// The shared card chrome script loads first: when Cacti loads this page
+	// through ajax the scripts run in order, and the adapter below needs the
+	// CactiCards controller it defines.
+	// @codeCoverageIgnoreStart -- bundled copy loads only on cores lacking it.
+	if (!file_exists($config['base_path'] . '/include/js/cards.js')) {
+		print '<script type="text/javascript" ' . plugin_syslog_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/syslog/js/cards.js?v=' . filemtime($config['base_path'] . '/plugins/syslog/js/cards.js') . '"></script>';
+	}
+	// @codeCoverageIgnoreEnd
+	print '<script type="text/javascript" ' . plugin_syslog_csp_nonce() . ' src="' . $config['url_path'] . 'plugins/syslog/js/syslog_dashboard.js?v=' . filemtime($config['base_path'] . '/plugins/syslog/js/syslog_dashboard.js') . '"></script>';
 
 	$layout = syslog_status_layout();
 	$meta   = syslog_status_card_meta();
@@ -1248,9 +1264,9 @@ function syslog_status(): void {
 
 	print '<div id="syslog_status_panel" class="syslogStatusPanel">';
 
-	print '<div class="syslogStatusToolbar">';
-	print '<label class="syslogStatusToolbarLabel" for="syslog_status_add">' . __esc('Add card', 'syslog') . '</label>';
-	print '<select id="syslog_status_add" class="syslogStatusAdd"><option value="">' . __esc('Add a status card…', 'syslog') . '</option>';
+	print '<div class="ccToolbar">';
+	print '<label class="ccToolbarLabel" for="syslog_status_add">' . __esc('Add card', 'syslog') . '</label>';
+	print '<select id="syslog_status_add" class="ccAdd"><option value="">' . __esc('Add a status card…', 'syslog') . '</option>';
 
 	foreach ($absent as $key) {
 		print '<option value="' . html_escape($key) . '">' . html_escape($meta[$key]['title']) . '</option>';
@@ -1260,19 +1276,19 @@ function syslog_status(): void {
 	// Auto-refresh interval picker plus a manual refresh, mirroring the log view's
 	// header refresh.  The interval persists through the page's auto-reload.
 	$current_refresh = get_request_var('refresh');
-	print '<div class="syslogStatusRefresh">';
-	print '<label class="syslogStatusToolbarLabel" for="syslog_status_refresh">' . __esc('Refresh', 'syslog') . '</label>';
-	print '<select id="syslog_status_refresh" class="syslogStatusRefreshInterval">';
+	print '<div class="ccRefresh">';
+	print '<label class="ccToolbarLabel" for="syslog_status_refresh">' . __esc('Refresh', 'syslog') . '</label>';
+	print '<select id="syslog_status_refresh" class="ccRefreshInterval">';
 
 	foreach ($page_refresh_interval as $seconds => $display_text) {
 		print '<option value="' . (int) $seconds . '"' . ($current_refresh == $seconds ? ' selected' : '') . '>' . html_escape($display_text) . '</option>';
 	}
 	print '</select>';
-	print '<button type="button" id="syslog_status_refresh_now" class="syslogStatusCardTool syslogStatusRefreshNow" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-sync-alt" aria-hidden="true"></i></button>';
+	print '<button type="button" id="syslog_status_refresh_now" class="ccTool syslogStatusRefreshNow" aria-label="' . __esc('Refresh', 'syslog') . '" title="' . __esc('Refresh', 'syslog') . '"><i class="fa fa-sync-alt" aria-hidden="true"></i></button>';
 	print '</div>';
 	print '</div>';
 
-	print '<div id="syslog_status" class="syslogStatusGrid">';
+	print '<div id="syslog_status_grid" class="ccGrid">';
 
 	foreach ($layout['order'] as $key) {
 		print syslog_status_render_card($key, !empty($layout['expanded'][$key]));

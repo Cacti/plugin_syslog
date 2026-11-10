@@ -50,27 +50,28 @@ function syslogDashboardLoad(data) {
 
 function syslogDashboardPanelCard(panel) {
 	var card = document.createElement('article');
-	card.className = 'syslogDashboardCard syslogStatusCard';
+	card.className = 'ccCard syslogDashboardCard';
 	card.id = 'syslog_panel_' + panel.id;
+	card.setAttribute('data-severity', 'none');
 
 	var header = document.createElement('header');
-	header.className = 'syslogDashboardCardHeader syslogStatusCardHeader syslogStatusCardHeader--none';
+	header.className = 'ccCardHeader';
 	if (syslogDashboard.canManage) {
 		var handle = document.createElement('button');
 		handle.type = 'button';
-		handle.className = 'syslogStatusCardDrag';
+		handle.className = 'ccDrag';
 		handle.setAttribute('aria-label', syslogDashboard.text.dragPanel);
 		handle.innerHTML = '<i class="fa fa-bars" aria-hidden="true"></i>';
 		header.append(handle);
 	}
 
 	var title = document.createElement('h3');
-	title.className = 'syslogDashboardCardTitle syslogStatusCardTitle';
+	title.className = 'ccTitle';
 	title.textContent = panel.title;
 	header.append(title);
 
 	var actions = document.createElement('div');
-	actions.className = 'syslogStatusCardTools';
+	actions.className = 'ccTools';
 	actionButtons().forEach(function(button) {
 		actions.append(button);
 	});
@@ -78,7 +79,7 @@ function syslogDashboardPanelCard(panel) {
 	card.append(header);
 
 	var body = document.createElement('div');
-	body.className = 'syslogStatusCardBody';
+	body.className = 'ccCardBody';
 	card.append(body);
 
 	var chart = document.createElement('div');
@@ -235,7 +236,7 @@ function actionButtons() {
 	actions.forEach(function(entry) {
 		var button = document.createElement('button');
 		button.type = 'button';
-		button.className = 'syslogDashboardCardButton syslogStatusCardTool';
+		button.className = 'ccTool syslogDashboardCardButton';
 		button.dataset.action = entry[0];
 		button.innerHTML = '<i class="fa ' + entry[1] + '" aria-hidden="true"></i>';
 		button.title = entry[2];
@@ -357,7 +358,7 @@ function syslogDashboardRenderGrid() {
 function syslogDashboardInitDrag(card, panel) {
 	if (!syslogDashboard.canManage) return;
 
-	var handle = card.querySelector('.syslogStatusCardDrag');
+	var handle = card.querySelector('.ccDrag');
 	if (!handle) return;
 
 	var disarm = function() { card.draggable = false; };

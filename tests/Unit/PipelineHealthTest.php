@@ -283,7 +283,7 @@ it('renders pipeline problems and notification status in the existing Status car
 	$html = syslog_status_render_card('collector_health');
 	expect(syslog_status_card_meta()['collector_health']['title'])->toBe('Pipeline health')
 		->and(syslog_status_card_meta()['collector_health'])->not->toHaveKey('state')
-		->and($html)->toContain('syslogStatusCardHeader--down')->toContain('Attention required')->toContain('Partition maintenance')
+		->and($html)->toContain('data-severity="down"')->toContain('Attention required')->toContain('Partition maintenance')
 		->toContain('Failed; retry pending')->toContain('Last health check')
 		->toContain('&lt;script&gt;')->not->toContain('<script>');
 });
