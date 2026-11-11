@@ -721,205 +721,22 @@
 	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) .syslogSearchRemove { grid-column: 4; }
 }
 
-/* Syslog Status cards: a responsive flex grid of theme-aware cards (a
-   Bootstrap-style card layout without Bootstrap). Kept in the plugin for now;
-   intended to move into Cacti core later. Colours follow the sampled theme
-   tokens that js applies to #syslog_status, so the cards differentiate from the
-   page surface on both light and dark themes. */
-#syslog_status.syslogStatusGrid {
-	display: grid;
-	/* an 8-column grid; each card occupies a number of columns via a span class */
-	grid-template-columns: repeat(8, minmax(0, 1fr));
-	align-items: start;
-	gap: 14px;
-	margin: 10px 4px;
-	font-variant-numeric: tabular-nums;
-}
-
-/* Column span out of 8 (Bootstrap-like, but 8 columns). Default cards span 2;
-   wide tables span 4. The card rendering API chooses the span per card. */
-.syslogStatusSpan1 { grid-column: span 1; }
-.syslogStatusSpan2 { grid-column: span 2; }
-.syslogStatusSpan3 { grid-column: span 3; }
-.syslogStatusSpan4 { grid-column: span 4; }
-.syslogStatusSpan5 { grid-column: span 5; }
-.syslogStatusSpan6 { grid-column: span 6; }
-.syslogStatusSpan7 { grid-column: span 7; }
-.syslogStatusSpan8 { grid-column: span 8; }
-
-.syslogStatusCard {
-	box-sizing: border-box;
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	border: 1px solid var(--search-border, #cbd8d1);
-	/* lift the card off the page surface on both light and dark themes */
-	background: color-mix(in srgb, var(--search-text, #23362f) 4%, var(--search-card, #fff));
-	color: var(--search-text, #23362f);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-	overflow: hidden;
-}
-
-.syslogStatusCardHeader {
-	box-sizing: border-box;
-	/* fixed row height so a tool/handle hover highlight never reflows the header */
-	min-height: 34px;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding: 7px 10px;
-	border-bottom: 1px solid var(--search-border, #cbd8d1);
-	/* paint like the active theme's native html_start_box title bar */
-	background-color: var(--search-header-bg, #e5ece8);
-	background-image: var(--search-header-image, none);
-	background-repeat: repeat-x;
-	color: var(--search-header-fg, var(--search-text, #23362f));
-}
-
-/* Drag handle: grab the card by its header to reorder it. */
-.syslogStatusCardDrag {
-	flex: 0 0 auto;
-	box-sizing: border-box;
-	padding: 2px 5px;
-	/* reserve the border so a hover/focus highlight recolours it instead of resizing the header */
-	border: 1px solid transparent;
-	border-radius: 4px;
-	background: transparent;
-	color: color-mix(in srgb, currentColor 50%, transparent);
-	font-size: 13px;
-	line-height: 1;
-	cursor: grab;
-}
-
-.syslogStatusCardDrag:hover,
-.syslogStatusCardDrag:focus-visible {
-	color: currentColor;
-	border-color: transparent;
-	background: color-mix(in srgb, currentColor 12%, transparent);
-	outline: none;
-}
-
-.syslogStatusCardDrag:active {
-	cursor: grabbing;
-}
-
-.syslogStatusCardTitle {
-	flex: 1 1 auto;
-	min-width: 0;
-	margin: 0;
-	font-size: 13px;
-	font-weight: 600;
-	line-height: 1.3;
-	/* keep the title to one line so a long title (or a width change mid-drag) never reflows the header */
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.syslogStatusCardDragging {
-	opacity: 0.5;
-}
-
-/* "Add card" toolbar above the grid. */
-.syslogStatusToolbar {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 8px;
-	margin: 10px 4px 0;
-}
-
-.syslogStatusToolbarLabel {
-	font-size: 12px;
-	font-weight: 600;
-	color: var(--search-text, #23362f);
-}
-
-.syslogStatusAdd {
-	box-sizing: border-box;
-	min-width: 220px;
-	padding: 4px 8px;
-	border: 1px solid var(--search-border, #cbd8d1);
-	border-radius: 7px;
-	background: var(--search-card, #fff);
-	color: var(--search-text, #23362f);
-	font-size: 12px;
-}
-
-/* Auto-refresh interval + manual refresh, pushed to the right of the toolbar. */
-.syslogStatusRefresh {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-left: auto;
-}
-
-.syslogStatusRefreshInterval {
-	box-sizing: border-box;
-	padding: 4px 8px;
-	border: 1px solid var(--search-border, #cbd8d1);
-	border-radius: 7px;
-	background: var(--search-card, #fff);
-	color: var(--search-text, #23362f);
-	font-size: 12px;
-}
-
-.syslogStatusRefreshNow {
-	font-size: 14px;
-}
-
-/* Per-card header tools: show more/less, maximize, refresh, remove. */
-.syslogStatusCardTools {
-	flex: 0 0 auto;
-	display: flex;
-	align-items: center;
-	gap: 1px;
-}
-
-.syslogStatusCardTool {
-	box-sizing: border-box;
-	padding: 2px 5px;
-	/* reserve the border so a hover/focus highlight recolours it instead of resizing the header */
-	border: 1px solid transparent;
-	border-radius: 4px;
-	background: transparent;
-	color: color-mix(in srgb, currentColor 50%, transparent);
-	font-size: 12px;
-	line-height: 1;
-	cursor: pointer;
-}
-
-.syslogStatusCardTool:hover,
-.syslogStatusCardTool:focus-visible {
-	color: currentColor;
-	border-color: transparent;
-	background: color-mix(in srgb, currentColor 12%, transparent);
-	outline: none;
-}
-
-/* Only the control matching the card's current state is shown. */
-.syslogStatusCard:not(.syslogStatusCardExpanded) .syslogStatusCardTool[data-tool="collapse"],
-.syslogStatusCardExpanded .syslogStatusCardTool[data-tool="expand"] {
-	display: none;
-}
-
-/* Expandable cards clip to a fixed height until "show more"; a fade hints at the
-   clipped content. */
-.syslogStatusCardExpandable:not(.syslogStatusCardExpanded) .syslogStatusCardBody {
-	position: relative;
-	max-height: 210px;
-	overflow: hidden;
-}
-
-.syslogStatusCardExpandable:not(.syslogStatusCardExpanded) .syslogStatusCardBody::after {
-	content: '';
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 30px;
-	pointer-events: none;
-	background: linear-gradient(transparent, color-mix(in srgb, var(--search-text, #23362f) 4%, var(--search-card, #fff)));
+/* Syslog card dashboards (Status tab + user chart Dashboards). The card chrome
+   itself is painted by the shared stylesheet (core include/css/cards.css, or the
+   plugin's bundled css/cards.css on older cores); these rules only bind the
+   shared --cc-* custom properties to syslog's theme and keep the plugin-specific
+   card *content* (status tables, notes, chart panels). The palette derives from
+   currentColor so the cards follow every Cacti theme; it is applied to the
+   toolbar, grids and the maximize dialog (which jQuery UI reparents under
+   <body>) so all three paint consistently. The grids are eight columns wide. */
+#syslog_status_panel,
+#syslog_status_grid.ccGrid,
+#syslog_status_dialog {
+	--cc-cols: 8;
+	--cc-card: transparent;
+	--cc-text: currentColor;
+	--cc-border: color-mix(in srgb, currentColor 18%, transparent);
+	--cc-header-bg: color-mix(in srgb, currentColor 9%, transparent);
 }
 
 /* Maximize dialog: reuse the card body typography on the themed dialog surface. */
@@ -957,39 +774,6 @@
 .syslogStatusDialogBody .syslogStatusTable tbody tr + tr > th,
 .syslogStatusDialogBody .syslogStatusTable tbody tr + tr > td {
 	border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent);
-}
-
-/* Header severity variants. Every card header carries exactly one: a neutral
-   grey "no severity" default, or good / warning / in-trouble. A single
-   translucent colour layer is drawn over the sampled native theme header so the
-   strength stays consistent on solid and gradient themes, light and dark. */
-.syslogStatusCardHeader--none {
-	background-color: var(--search-header-bg, #e5ece8);
-	background-image: linear-gradient(rgba(140, 149, 159, 0.20), rgba(140, 149, 159, 0.20)), var(--search-header-image, none);
-	border-bottom-color: color-mix(in srgb, #8c959f 45%, transparent);
-}
-
-.syslogStatusCardHeader--up {
-	background-color: var(--search-header-bg, #e5ece8);
-	background-image: linear-gradient(rgba(148, 179, 107, 0.32), rgba(148, 179, 107, 0.32)), var(--search-header-image, none);
-	border-bottom-color: color-mix(in srgb, #94b36b 60%, transparent);
-}
-
-.syslogStatusCardHeader--recovering {
-	background-color: var(--search-header-bg, #e5ece8);
-	background-image: linear-gradient(rgba(255, 143, 30, 0.32), rgba(255, 143, 30, 0.32)), var(--search-header-image, none);
-	border-bottom-color: color-mix(in srgb, #ff8f1e 60%, transparent);
-}
-
-.syslogStatusCardHeader--down {
-	background-color: var(--search-header-bg, #e5ece8);
-	background-image: linear-gradient(rgba(204, 0, 0, 0.34), rgba(204, 0, 0, 0.34)), var(--search-header-image, none);
-	border-bottom-color: color-mix(in srgb, #cc0000 60%, transparent);
-}
-
-.syslogStatusCardBody {
-	padding: 4px 12px 10px;
-	overflow-x: auto;
 }
 
 .syslogStatusTable {
@@ -1054,36 +838,29 @@
 	font-weight: 600;
 }
 
-/* Narrow the grid before cards get cramped: halve to 4 columns (wide span-4+
-   cards fill the row), then collapse to a single column on small screens. */
+/* Narrow the grid before cards get cramped: halve to 4 columns, then collapse
+   to a single column on small screens. The shared .ccGrid derives its column
+   count from --cc-cols and the .ccW* spans clamp to the available tracks. */
 @media (max-width: 1200px) {
-	#syslog_status.syslogStatusGrid {
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+	#syslog_status_grid.ccGrid {
+		--cc-cols: 4;
 	}
 
-	.syslogStatusSpan4,
-	.syslogStatusSpan5,
-	.syslogStatusSpan6,
-	.syslogStatusSpan7,
-	.syslogStatusSpan8 {
+	#syslog_status_grid.ccGrid .ccW5,
+	#syslog_status_grid.ccGrid .ccW6,
+	#syslog_status_grid.ccGrid .ccW7,
+	#syslog_status_grid.ccGrid .ccW8 {
 		grid-column: 1 / -1;
 	}
 }
 
 @media (max-width: 760px) {
-	#syslog_status.syslogStatusGrid {
-		grid-template-columns: 1fr;
+	#syslog_status_grid.ccGrid {
+		--cc-cols: 1;
 		gap: 10px;
 	}
 
-	.syslogStatusSpan1,
-	.syslogStatusSpan2,
-	.syslogStatusSpan3,
-	.syslogStatusSpan4,
-	.syslogStatusSpan5,
-	.syslogStatusSpan6,
-	.syslogStatusSpan7,
-	.syslogStatusSpan8 {
+	#syslog_status_grid.ccGrid > .ccCard {
 		grid-column: 1 / -1;
 	}
 }
