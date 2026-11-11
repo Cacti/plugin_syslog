@@ -1827,7 +1827,7 @@ function saved_search_global(): string {
  *
  * @return void
  */
-function set_shift_span(bool|string $shift_span, string $session_prefix): void {
+function set_shift_span($shift_span, string $session_prefix): void {
 	global $graph_timeshifts;
 
 	if ($shift_span === 'span') {
@@ -1908,7 +1908,7 @@ function set_shift_span(bool|string $shift_span, string $session_prefix): void {
  *
  * @return list<array<string, mixed>> The matching log records.
  */
-function get_syslog_messages(string &$sql_where, int|string $rows, string $tab): array {
+function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 	global $sql_where, $hostfilter, $hostfilter_log, $current_tab, $syslog_incoming_config;
 	global $syslogdb_default;
 	// syslog and syslog_removed can legitimately gain independent operational
@@ -2864,7 +2864,7 @@ function save_settings(): void {
  *
  * @return void
  */
-function html_program_filter(int|string $program_id = '-1', string $none_entry = '', string $action = 'ajax_programs', string $call_back = 'applyFilter', string $sql_where = ''): void {
+function html_program_filter($program_id = '-1', string $none_entry = '', string $action = 'ajax_programs', string $call_back = 'applyFilter', string $sql_where = ''): void {
 	if (strpos($call_back, '()') === false) {
 		$call_back .= '()';
 	}
@@ -2982,7 +2982,7 @@ function get_ajax_programs(bool $include_any = true, bool $include_none = false,
  *
  * @return void
  */
-function syslog_form_callback(string $form_name, string $classic_sql, string $column_display, string $column_id, string $callback, int|string $previous_id, string $previous_value, string $none_entry, string $default_value, string $class = '', string $on_change = ''): void {
+function syslog_form_callback(string $form_name, string $classic_sql, string $column_display, string $column_id, string $callback, $previous_id, string $previous_value, string $none_entry, string $default_value, string $class = '', string $on_change = ''): void {
 	if ($previous_value == '') {
 		$previous_value = $default_value;
 	}

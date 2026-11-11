@@ -327,7 +327,7 @@ function removal_export(): void {
  *
  * @return int|false The id of the saved Removal Rule, or false when the save failed.
  */
-function api_syslog_removal_save(int|string $id, string $name, string $type, string $message, string $rmethod, string $notes, string $enabled): int|false {
+function api_syslog_removal_save($id, string $name, string $type, string $message, string $rmethod, string $notes, string $enabled) {
 	global $config;
 	global $syslogdb_default;
 

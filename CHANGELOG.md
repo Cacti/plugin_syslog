@@ -2,7 +2,7 @@
 
 --- develop ---
 
-* bug: Replace the PHP 8.0 match() expressions in includes/functions.php and syslog_removal.php with switch statements, so includes/functions.php (loaded on every page) parses under PHP 7.4 web servers instead of fataling with a blank 503, restoring the declared 1.2.23 compatibility floor
+* bug: Backport the PHP 8.0 syntax that prevented the Syslog pages from parsing under a PHP 7.4 web server (match() expressions, union type declarations such as string|false and int|string, and mixed type declarations) across includes/functions.php, syslog.php, syslog_reports.php and syslog_removal.php; includes/functions.php loads on every page, so on PHP 7.4 the file failed to compile and the page returned a blank 503 while the CLI poller on a newer PHP kept working. The documented parameter/return types are retained in the PHPDoc blocks, restoring the declared 1.2.23 compatibility floor
 * bug: Create dashboard, status, saved-search and share tables with a string primary key on Cacti older than 1.2.32, whose db_table_create() fataled on an array primary key, so the 4.2 to 4.11 upgrade completes on the 1.2.23+ compatibility floor
 * bug: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist; the fallbacks validate the PID range and confirm command identity through procfs like the native helpers
 * test: Extract the procfs cmdline parser into syslog_compat_script_from_cmdline() and let syslog_compat_pid_identity_matches() accept an injectable reader, so the process-helper fallbacks reach full changed-line coverage of their PID-range, identity-match and signal paths

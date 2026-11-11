@@ -552,7 +552,7 @@ function syslog_logical_positive_terms(?array $tree, bool $negative = false): ar
  *
  * @return string The search string with auto dates removed.
  */
-function syslog_strip_auto_dates(string $search, mixed $date1, mixed $date2): string {
+function syslog_strip_auto_dates(string $search, $date1, $date2): string {
 	$d1     = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date1);
 	$d2     = str_replace(['\\', '"'], ['\\\\', '\\"'], (string) $date2);
 	$suffix = 'logtime >= "' . $d1 . '" AND logtime <= "' . $d2 . '"';
@@ -1286,7 +1286,7 @@ function syslog_get_import_xml_payload($redirect_url) {
  *
  * @return string|false The file contents, or false on failure.
  */
-function syslog_read_import_file(string $filename): string|false {
+function syslog_read_import_file(string $filename) {
 	$size = filesize($filename);
 
 	if ($size === false || $size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES) {
@@ -1355,7 +1355,7 @@ function syslog_rules_array2json(string $table, array $rules): string {
  *
  * @return array<string, array<string, mixed>>|false Parsed templates, or false on failure.
  */
-function syslog_parse_rule_import(string $payload, string $expected_table): array|false {
+function syslog_parse_rule_import(string $payload, string $expected_table) {
 	$trimmed = trim($payload);
 
 	if ($trimmed === '') {
@@ -1614,7 +1614,7 @@ function syslog_status_ensure_table(): void {
  *
  * @return bool True when the row was written.
  */
-function syslog_status_set(string $name, string|int|float|bool $value): bool {
+function syslog_status_set(string $name, $value): bool {
 	global $syslogdb_default;
 
 	if (!preg_match('/^[a-z0-9_]{1,64}$/', $name)) {
@@ -1641,7 +1641,7 @@ function syslog_status_set(string $name, string|int|float|bool $value): bool {
  *
  * @return bool True when the row was written.
  */
-function syslog_status_increment(string $name, int|float|string $amount): bool {
+function syslog_status_increment(string $name, $amount): bool {
 	if (!is_numeric($amount)) {
 		return false;
 	}
@@ -1660,7 +1660,7 @@ function syslog_status_increment(string $name, int|float|string $amount): bool {
  *
  * @return bool True when the samples were written.
  */
-function syslog_status_record_runtime(int|float|string $seconds): bool {
+function syslog_status_record_runtime($seconds): bool {
 	if (!is_numeric($seconds)) {
 		return false;
 	}
@@ -1747,7 +1747,7 @@ function syslog_status_phase_names(): array {
  *
  * @return bool True when the telemetry row was written.
  */
-function syslog_status_record_phase(string $phase, int $start, int $end, float $seconds, int|string $count): bool {
+function syslog_status_record_phase(string $phase, int $start, int $end, float $seconds, $count): bool {
 	if (!in_array($phase, syslog_status_phase_names(), true)) {
 		return false;
 	}
@@ -4401,7 +4401,7 @@ function sql_hosts_where($tab) {
  * @param  mixed $value Value destined for CSV output.
  * @return mixed Sanitized CSV value.
  */
-function syslog_csv_safe(mixed $value): mixed {
+function syslog_csv_safe($value) {
 	if (!is_string($value) || $value === '') {
 		return $value;
 	}
@@ -5409,7 +5409,7 @@ function syslog_message_breach_sql(): string {
 }
 
 /** Fetch active state for an entire replication batch, avoiding per-message queries. */
-function syslog_threshold_replication_states(array $events): array|false {
+function syslog_threshold_replication_states(array $events) {
 	$where  = [];
 	$params = [];
 
@@ -6387,7 +6387,7 @@ function syslog_strip_incoming_domains($max_seq) {
  *
  * @return string|false The canonical address text, or false for a name
  */
-function syslog_host_address(string $name): string|false {
+function syslog_host_address(string $name) {
 	if (preg_match('/^\[?([^\]%]+)(%[A-Za-z0-9_.-]+)?\]?$/', trim($name), $match) !== 1 || !filter_var($match[1], FILTER_VALIDATE_IP)) {
 		return false;
 	}

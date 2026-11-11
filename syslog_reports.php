@@ -294,8 +294,8 @@ function report_export(): void {
  *
  * @return int|false The id of the saved Report, or false when the save failed.
  */
-function api_syslog_report_save(int|string $id, string $name, string $type, string $message, int $timespan, int $timepart, string $body,
-	string $email, string $notes, string $enabled, int|string $notify = 0): int|false {
+function api_syslog_report_save($id, string $name, string $type, string $message, int $timespan, int $timepart, string $body,
+	string $email, string $notes, string $enabled, $notify = 0) {
 	global $config, $syslogdb_default;
 
 	// get the username
