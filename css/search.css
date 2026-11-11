@@ -845,12 +845,23 @@
 	#syslog_status_grid.ccGrid {
 		--cc-cols: 4;
 	}
+
+	#syslog_status_grid.ccGrid .ccW5,
+	#syslog_status_grid.ccGrid .ccW6,
+	#syslog_status_grid.ccGrid .ccW7,
+	#syslog_status_grid.ccGrid .ccW8 {
+		grid-column: 1 / -1;
+	}
 }
 
 @media (max-width: 760px) {
 	#syslog_status_grid.ccGrid {
 		--cc-cols: 1;
 		gap: 10px;
+	}
+
+	#syslog_status_grid.ccGrid > .ccCard {
+		grid-column: 1 / -1;
 	}
 }
 

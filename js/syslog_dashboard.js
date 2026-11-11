@@ -66,7 +66,16 @@ function initSyslogStatus() {
 			});
 		}
 
+		// A per-card-id request generation shared by the per-card refresh (routed
+		// through the controller) and the toolbar's Refresh all (which calls
+		// replaceCard directly). Both refresh paths pass through this helper, so
+		// tracking the generation here lets an earlier response resolve to null
+		// instead of overwriting the markup of a newer refresh for the same card.
+		var fetchGen = {};
+
 		function fetchCard(id, expanded) {
+			var gen = (fetchGen[id] = (fetchGen[id] || 0) + 1);
+
 			return $.post('syslog.php', {
 				action: 'status_card',
 				tab: 'status',
@@ -74,6 +83,10 @@ function initSyslogStatus() {
 				expanded: expanded ? '1' : '0',
 				__csrf_magic: csrfMagicToken
 			}, null, 'json').then(function(d) {
+				if (fetchGen[id] !== gen) {
+					return null;
+				}
+
 				return d && d.html ? d.html : null;
 			});
 		}
