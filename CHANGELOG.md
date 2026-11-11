@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* bug: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
 

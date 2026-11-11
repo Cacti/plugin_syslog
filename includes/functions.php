@@ -30,6 +30,55 @@ if (file_exists($syslog_query_builder)) {
 	require_once $syslog_query_builder;
 }
 
+/*
+ * Compatibility shims for Cacti process helpers.
+ *
+ * cacti_process_still_running() and cacti_process_kill() were added to Cacti
+ * core (lib/poller.php) after the 1.2.31 release and ship in 1.2.32+. This
+ * plugin declares compat 1.2.23, so calling them unguarded fataled with
+ * "Call to undefined function" on every current release and disabled the
+ * plugin. Provide minimal posix_kill() based fallbacks only when core does
+ * not supply the helpers; on 1.2.32+ the native implementations are used.
+ */
+if (!function_exists('cacti_process_still_running')) {
+	/**
+	 * Determine whether a registered worker PID is still alive.
+	 *
+	 * @param int $pid The PID recorded in the processes table.
+	 *
+	 * @return bool True when the PID is live, false otherwise.
+	 */
+	function cacti_process_still_running($pid) {
+		$pid = (int) $pid;
+
+		if ($pid <= 0 || !function_exists('posix_kill')) {
+			return false;
+		}
+
+		return posix_kill($pid, 0);
+	}
+}
+
+if (!function_exists('cacti_process_kill')) {
+	/**
+	 * Send a signal to a worker PID owned by this plugin.
+	 *
+	 * @param int $pid    The PID to signal.
+	 * @param int $signal The signal to send, defaulting to SIGTERM.
+	 *
+	 * @return bool True when the signal was delivered, false otherwise.
+	 */
+	function cacti_process_kill($pid, $signal = SIGTERM) {
+		$pid = (int) $pid;
+
+		if ($pid <= 1 || !function_exists('posix_kill')) {
+			return false;
+		}
+
+		return posix_kill($pid, $signal);
+	}
+}
+
 /**
  * Allowlisted fields and operators shared by validation and the builder.
  *
