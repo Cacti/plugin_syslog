@@ -3632,12 +3632,20 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 			}
 		}
 
-		$column = match ($type) {
-			'facility' => $syslog_incoming_config['facilityField'],
-			'host'     => $syslog_incoming_config['hostField'],
-			'program'  => $syslog_incoming_config['programField'],
-			default    => $syslog_incoming_config['textField']
-		};
+		switch ($type) {
+			case 'facility':
+				$column = $syslog_incoming_config['facilityField'];
+				break;
+			case 'host':
+				$column = $syslog_incoming_config['hostField'];
+				break;
+			case 'program':
+				$column = $syslog_incoming_config['programField'];
+				break;
+			default:
+				$column = $syslog_incoming_config['textField'];
+				break;
+		}
 
 		if (!is_string($column) || preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $column) !== 1) {
 			return ['error' => __('The configured incoming field mapping is invalid.', 'syslog'), 'count' => 0, 'rows' => []];

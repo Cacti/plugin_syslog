@@ -557,12 +557,20 @@ function syslog_action_edit(): void {
 	// Present older simple rules as their equivalent SQL expression. This
 	// changes the editor only; storage changes on explicit Save.
 	if (in_array($removal['type'] ?? '', ['messageb', 'messagec', 'messagee', 'host', 'program', 'facility'], true)) {
-		$column = match ($removal['type']) {
-			'host'     => 'host',
-			'program'  => 'program',
-			'facility' => 'facility_id',
-			default    => 'message'
-		};
+		switch ($removal['type']) {
+			case 'host':
+				$column = 'host';
+				break;
+			case 'program':
+				$column = 'program';
+				break;
+			case 'facility':
+				$column = 'facility_id';
+				break;
+			default:
+				$column = 'message';
+				break;
+		}
 
 		if ($removal['type'] === 'facility') {
 			// Facility rules store a name; resolve it to the normalized id.
