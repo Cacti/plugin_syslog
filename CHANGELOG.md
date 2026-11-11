@@ -2,6 +2,9 @@
 
 --- develop ---
 
+* feature: Converge the Syslog Status cards and the user chart Dashboards on the shared Cacti dashboarding Card API (js/cards.js + css/cards.css), so both render with the standardized .cc* card chrome (drag/keyboard reorder, show more/less, maximize, refresh, remove) and the bundle stays byte-identical across plugins for promotion into Cacti core; the Status-tab controller moves out of js/functions.js into a thin js/syslog_dashboard.js adapter over the shared controller, and the chart panels adopt the same chrome while keeping their continuous drag-resize
+* dev: Load the bundled css/cards.css and js/cards.js only on cores that do not ship them globally, gated with file_exists so newer cores use the core copy
+
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
 

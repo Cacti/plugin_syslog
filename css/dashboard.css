@@ -23,6 +23,24 @@
 
 /* Scoped dashboard surfaces; follows the search.css conventions. */
 
+/*
+ * Bind the shared card chrome (core include/css/cards.css, bundled by the plugin
+ * on older cores) to syslog's theme for the user chart Dashboards. The panels
+ * carry the shared .cc* chrome classes and inherit these --cc-* custom
+ * properties from the grid and the panel-editor dialog (reparented under <body>
+ * by jQuery UI when open). The palette derives from currentColor so the panels
+ * follow every Cacti theme. The grid itself keeps its own responsive auto-fill
+ * layout (below); the panels span columns via an inline grid-column so a saved
+ * width still reflows on narrow screens.
+ */
+#syslog_dashboard_grid,
+.syslogPanelDialog {
+	--cc-card: transparent;
+	--cc-text: currentColor;
+	--cc-border: color-mix(in srgb, currentColor 18%, transparent);
+	--cc-header-bg: color-mix(in srgb, currentColor 9%, transparent);
+}
+
 /* Dashboard bar header: heading on the left, Time Range/Refresh on the right. */
 #syslog_dashboard_form .syslogSearchHeader {
 	display: flex;
@@ -86,7 +104,9 @@
 	align-items: start;
 }
 
-/* Card surfaces, headers, titles and tools reuse the Status tab classes. */
+/* Card surfaces, headers, titles and tools are painted by the shared card
+   chrome (css/cards.css); only the resize affordances and chart body remain
+   plugin-specific. */
 .syslogDashboardCard {
 	position: relative;
 }
