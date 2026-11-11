@@ -3,7 +3,7 @@
 --- develop ---
 
 * bug: Create dashboard, status, saved-search and share tables with a string primary key on Cacti older than 1.2.32, whose db_table_create() fataled on an array primary key, so the 4.2 to 4.11 upgrade completes on the 1.2.23+ compatibility floor
-* bug: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist
+* bug: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist; the fallbacks validate the PID range and confirm command identity through procfs like the native helpers
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
 
