@@ -9,11 +9,6 @@ function check($condition, $message) {
 
 // Exercise the real table builder with SQL captured instead of sent to a database.
 $source = file_get_contents($root . '/includes/schema.php');
-// Pull in the real array-primary compatibility wrapper so the regression test
-// covers syslog_db_update_table() instead of leaving it undefined.
-$helper_start = strpos($source, 'function syslog_cacti_db_array_primary_safe(');
-$helper_end = strpos($source, 'function syslog_ensure_message_text(', $helper_start);
-eval(substr($source, $helper_start, $helper_end - $helper_start));
 $start = strpos($source, 'function syslog_setup_table_new(');
 $end = strpos($source, '/** Complete an interrupted install', $start);
 eval(substr($source, $start, $end - $start));
@@ -58,6 +53,11 @@ function syslog_db_add_column($table, $column, $log = true) { return true; }
 function syslog_db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) { return '50'; }
 function syslog_status_set($name, $value) { return true; }
 function db_update_table($table, $definition, $create, $upgrade, $connection) { return true; }
+// syslog_setup_table_new() routes table creation through this wrapper; forward
+// to the stubbed db_update_table() so the real builder runs without a database.
+function syslog_db_update_table($table, $data, $removecolumns = false, $log = true, $db_conn = false) {
+	return db_update_table($table, $data, $removecolumns, $log, $db_conn);
+}
 function syslog_db_table_exists($table, $log = true) {
 	if (($GLOBALS['config']['poller_id'] ?? 1) > 1 && in_array($table, ['syslog_replication_receipts', 'syslog_replication_collectors'], true)) {
 		throw new RuntimeException('Remote schema repair required a main-only table');
