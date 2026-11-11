@@ -9,6 +9,11 @@ function check($condition, $message) {
 
 // Exercise the real table builder with SQL captured instead of sent to a database.
 $source = file_get_contents($root . '/includes/schema.php');
+// Pull in the real array-primary compatibility wrapper so the regression test
+// covers syslog_db_update_table() instead of leaving it undefined.
+$helper_start = strpos($source, 'function syslog_cacti_db_array_primary_safe(');
+$helper_end = strpos($source, 'function syslog_ensure_message_text(', $helper_start);
+eval(substr($source, $helper_start, $helper_end - $helper_start));
 $start = strpos($source, 'function syslog_setup_table_new(');
 $end = strpos($source, '/** Complete an interrupted install', $start);
 eval(substr($source, $start, $end - $start));
