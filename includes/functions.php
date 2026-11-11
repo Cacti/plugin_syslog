@@ -77,45 +77,67 @@ if (!function_exists('syslog_compat_pid_is_valid')) {
 	}
 }
 
+if (!function_exists('syslog_compat_script_from_cmdline')) {
+	/**
+	 * Resolve the PHP script path from a NUL-delimited procfs cmdline.
+	 *
+	 * The first argument ending in .php identifies the running script; it is
+	 * resolved through realpath() so two processes started with different
+	 * relative paths to the same script still compare equal. Returns false when
+	 * the cmdline carries no script argument (for example `php -r`).
+	 *
+	 * @param string $cmdline The raw /proc/<pid>/cmdline contents.
+	 *
+	 * @return string|false The resolved script path, or false when absent.
+	 */
+	function syslog_compat_script_from_cmdline($cmdline) {
+		foreach (explode("\0", (string) $cmdline) as $argument) {
+			if (preg_match('/\.php\z/i', $argument)) {
+				$resolved = realpath($argument);
+
+				return $resolved !== false ? $resolved : $argument;
+			}
+		}
+
+		return false;
+	}
+}
+
 if (!function_exists('syslog_compat_pid_identity_matches')) {
 	/**
 	 * Best-effort check that a live PID shares this caller's command identity,
 	 * using procfs cmdline. A dead worker's PID can be reused by an unrelated
 	 * process, so bare liveness alone would misreport it as a live worker.
 	 *
-	 * @param int $pid The live PID to compare against the current process.
+	 * @param int           $pid    The live PID to compare against the current process.
+	 * @param callable|null $reader Optional cmdline reader keyed by PID; defaults to
+	 *                              reading /proc/<pid>/cmdline. Injected by tests.
 	 *
 	 * @return bool|null True/false when identity can be established, null when
 	 *                   it cannot (the caller then falls back to bare liveness).
 	 */
-	function syslog_compat_pid_identity_matches($pid) {
+	function syslog_compat_pid_identity_matches($pid, $reader = null) {
 		$pid = (int) $pid;
 
 		if ($pid === getmypid()) {
 			return true;
 		}
 
-		$self  = @file_get_contents('/proc/' . getmypid() . '/cmdline');
-		$other = @file_get_contents('/proc/' . $pid . '/cmdline');
+		if ($reader === null) {
+			$reader = static function ($target) {
+				return @file_get_contents('/proc/' . $target . '/cmdline');
+			};
+		}
+
+		$self  = $reader(getmypid());
+		$other = $reader($pid);
 
 		if ($self === false || $self === '' || $other === false || $other === '') {
 			return null;
 		}
 
-		$script = static function ($cmdline) {
-			foreach (explode("\0", $cmdline) as $argument) {
-				if (preg_match('/\.php\z/i', $argument)) {
-					$resolved = realpath($argument);
-
-					return $resolved !== false ? $resolved : $argument;
-				}
-			}
-
-			return false;
-		};
-
-		$mine   = $script($self);
-		$theirs = $script($other);
+		$mine   = syslog_compat_script_from_cmdline($self);
+		$theirs = syslog_compat_script_from_cmdline($other);
 
 		if ($mine === false || $theirs === false) {
 			return null;
