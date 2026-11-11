@@ -327,7 +327,7 @@ function removal_export(): void {
  *
  * @return int|false The id of the saved Removal Rule, or false when the save failed.
  */
-function api_syslog_removal_save(int|string $id, string $name, string $type, string $message, string $rmethod, string $notes, string $enabled): int|false {
+function api_syslog_removal_save($id, string $name, string $type, string $message, string $rmethod, string $notes, string $enabled) {
 	global $config;
 	global $syslogdb_default;
 
@@ -557,12 +557,13 @@ function syslog_action_edit(): void {
 	// Present older simple rules as their equivalent SQL expression. This
 	// changes the editor only; storage changes on explicit Save.
 	if (in_array($removal['type'] ?? '', ['messageb', 'messagec', 'messagee', 'host', 'program', 'facility'], true)) {
-		$column = match ($removal['type']) {
+		$column_map = [
 			'host'     => 'host',
 			'program'  => 'program',
 			'facility' => 'facility_id',
-			default    => 'message'
-		};
+		];
+
+		$column = $column_map[$removal['type']] ?? 'message';
 
 		if ($removal['type'] === 'facility') {
 			// Facility rules store a name; resolve it to the normalized id.
