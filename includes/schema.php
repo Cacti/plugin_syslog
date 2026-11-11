@@ -10,6 +10,62 @@
 // Schema and migration helpers.
 
 /**
+ * Whether Cacti core's db_table_create() accepts an array primary key.
+ *
+ * Cacti core mishandled an array primary key in db_table_create() before the
+ * 1.2.32 release: a typo passed implode() the glue string concatenated with
+ * the array instead of the column list, so creating a table with an array
+ * primary fataled with "implode(): Argument #1 must be of type array, string
+ * given". The fix shipped in 1.2.32, so earlier releases (back to the
+ * plugin's 1.2.23 floor) need the string workaround on table creation.
+ *
+ * @return bool True when the running Cacti is 1.2.32 or newer.
+ */
+function syslog_cacti_db_array_primary_safe(): bool {
+	global $config;
+
+	if (isset($config['cacti_version']) && $config['cacti_version'] !== '') {
+		$version = (string) $config['cacti_version'];
+	} elseif (defined('CACTI_VERSION')) {
+		$version = (string) CACTI_VERSION;
+	} else {
+		// Unknown version: assume the string workaround is still required.
+		return false;
+	}
+
+	return version_compare($version, '1.2.32', '>=');
+}
+
+/**
+ * Plugin wrapper around Cacti's db_update_table() that keeps table creation
+ * working on every supported Cacti release.
+ *
+ * When a table does not yet exist on a Cacti older than 1.2.32, the array
+ * primary key is rewritten to the back-tick joined string form the create
+ * path accepts, dodging the core implode() typo. The array form is preserved
+ * when the table already exists (db_update_table() reconciles the primary
+ * with array_diff(), which requires an array) and on Cacti 1.2.32+ where the
+ * create path is fixed.
+ *
+ * @param string       $table         The table to create or update.
+ * @param array        $data          The Cacti table definition array.
+ * @param bool         $removecolumns Whether to drop columns not in $data.
+ * @param bool         $log           Whether to log failures.
+ * @param object|false $db_conn       The database connection to use.
+ *
+ * @return bool True on success, false on failure.
+ */
+function syslog_db_update_table($table, $data, $removecolumns = false, $log = true, $db_conn = false) {
+	if (isset($data['primary']) && is_array($data['primary'])
+		&& !syslog_cacti_db_array_primary_safe()
+		&& !syslog_db_table_exists($table, false)) {
+		$data['primary'] = implode('`,`', $data['primary']);
+	}
+
+	return db_update_table($table, $data, $removecolumns, $log, $db_conn);
+}
+
+/**
  * Ensure message columns use TEXT storage.
  *
  * This type-aware migration runs from Cacti's configuration hook and alters
@@ -155,7 +211,7 @@ function syslog_create_device_rule_table(): void {
 function syslog_ensure_saved_search_tables(): void {
 	global $syslog_cnn;
 
-	db_update_table('syslog_saved_searches', [
+	syslog_db_update_table('syslog_saved_searches', [
 		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
@@ -178,7 +234,7 @@ function syslog_ensure_share_tables(): void {
 	global $syslog_cnn;
 
 	foreach (['syslog_dashboards_perm' => 'dashboard_id', 'syslog_saved_searches_perm' => 'search_id'] as $table => $id) {
-		db_update_table($table, [
+		syslog_db_update_table($table, [
 			'type'    => 'InnoDB',
 			'columns' => [
 				['name' => $id, 'type' => 'int(10)', 'NULL' => false, 'default' => '0'],
@@ -194,7 +250,7 @@ function syslog_ensure_share_tables(): void {
 function syslog_ensure_dashboard_tables(): void {
 	global $syslog_cnn;
 
-	db_update_table('syslog_dashboards', [
+	syslog_db_update_table('syslog_dashboards', [
 		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
@@ -209,7 +265,7 @@ function syslog_ensure_dashboard_tables(): void {
 		'keys'    => [['name' => 'owner', 'columns' => ['user']]]
 	], false, true, $syslog_cnn);
 
-	db_update_table('syslog_dashboard_panels', [
+	syslog_db_update_table('syslog_dashboard_panels', [
 		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'id', 'type' => 'int(10)', 'NULL' => false, 'auto_increment' => true],
@@ -238,7 +294,7 @@ function syslog_ensure_dashboard_tables(): void {
 function syslog_ensure_status_table(): void {
 	global $syslog_cnn;
 
-	db_update_table('syslog_status', [
+	syslog_db_update_table('syslog_status', [
 		'type'    => 'InnoDB',
 		'columns' => [
 			['name' => 'name', 'type' => 'varchar(64)', 'NULL' => false, 'default' => ''],
@@ -659,7 +715,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		PRIMARY KEY (id))
 		ENGINE=InnoDB
 		ROW_FORMAT=Dynamic");
-	db_update_table('syslog_reports', [
+	syslog_db_update_table('syslog_reports', [
 		'columns' => [['name' => 'body', 'type' => 'varchar(8192)', 'NULL' => false, 'default' => '0', 'after' => 'lastsent']],
 		'primary' => ['id']
 	], false, true, $syslog_cnn);
@@ -898,7 +954,7 @@ function syslog_ensure_table_structures(): bool {
 	}
 
 	// Repair these columns even when the installed plugin version is unchanged.
-	if (db_update_table('syslog_alert', ['columns' => [
+	if (syslog_db_update_table('syslog_alert', ['columns' => [
 		['name' => 'threshold_window', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '0', 'after' => 'num'],
 		['name' => 'threshold_unit', 'type' => 'varchar(6)', 'NULL' => false, 'default' => 'minute', 'after' => 'threshold_window'],
 		['name' => 'threshold_recovery_minutes', 'type' => 'int(10)', 'unsigned' => true, 'NULL' => false, 'default' => '5', 'after' => 'threshold_unit'],
@@ -917,7 +973,7 @@ function syslog_ensure_table_structures(): bool {
 	}
 	// Match the 50-character username limit in supported Cacti 1.2 releases.
 	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_device_rule'] as $table) {
-		if (db_update_table($table, ['columns' => [
+		if (syslog_db_update_table($table, ['columns' => [
 			['name' => 'user', 'type' => 'varchar(50)', 'NULL' => false, 'default' => '']
 		], 'primary' => ['id']], false, true, $syslog_cnn) === false) {
 			return false;
