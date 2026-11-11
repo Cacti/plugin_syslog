@@ -30,6 +30,176 @@ if (file_exists($syslog_query_builder)) {
 	require_once $syslog_query_builder;
 }
 
+/*
+ * Compatibility shims for Cacti process helpers.
+ *
+ * cacti_process_still_running() and cacti_process_kill() were added to Cacti
+ * core (lib/poller.php) after the 1.2.31 release and ship in 1.2.32+. This
+ * plugin declares compat 1.2.23, so calling them unguarded fataled with
+ * "Call to undefined function" on every current release and disabled the
+ * plugin. Provide posix_kill() based fallbacks only when core does not supply
+ * the helpers; on 1.2.32+ the native implementations are used. The fallbacks
+ * mirror the native PID-range validation and procfs command-identity checks so
+ * a reused or oversized PID is not mistaken for a live worker or signalled.
+ */
+if (!function_exists('syslog_compat_pid_is_valid')) {
+	/**
+	 * Validate a processes.pid value before narrowing it to the signed pid_t
+	 * range used by posix_kill(). Mirrors Cacti core cacti_process_pid_is_valid()
+	 * for releases that predate it: a positive, in-range integer only. An
+	 * oversized value would otherwise reach the kernel as pid_t -1 and signal
+	 * every process the poller user can reach.
+	 *
+	 * @param mixed $pid The PID value to validate.
+	 *
+	 * @return bool True when the value is a positive, in-range PID.
+	 */
+	function syslog_compat_pid_is_valid($pid) {
+		if (!is_int($pid) && !is_float($pid) && !is_string($pid)) {
+			return false;
+		}
+
+		$value = (string) $pid;
+
+		if (!preg_match('/\A[0-9]+\z/', $value)) {
+			return false;
+		}
+
+		$value = ltrim($value, '0');
+		$value = $value === '' ? '0' : $value;
+		$max   = PHP_OS_FAMILY === 'Windows' && PHP_INT_SIZE >= 8 ? '4294967295' : '2147483647';
+
+		if (strlen($value) > strlen($max) || (strlen($value) === strlen($max) && strcmp($value, $max) > 0)) {
+			return false;
+		}
+
+		return (int) $value > 0;
+	}
+}
+
+if (!function_exists('syslog_compat_script_from_cmdline')) {
+	/**
+	 * Resolve the PHP script path from a NUL-delimited procfs cmdline.
+	 *
+	 * The first argument ending in .php identifies the running script; it is
+	 * resolved through realpath() so two processes started with different
+	 * relative paths to the same script still compare equal. Returns false when
+	 * the cmdline carries no script argument (for example `php -r`).
+	 *
+	 * @param string $cmdline The raw /proc/<pid>/cmdline contents.
+	 *
+	 * @return string|false The resolved script path, or false when absent.
+	 */
+	function syslog_compat_script_from_cmdline($cmdline) {
+		foreach (explode("\0", (string) $cmdline) as $argument) {
+			if (preg_match('/\.php\z/i', $argument)) {
+				$resolved = realpath($argument);
+
+				return $resolved !== false ? $resolved : $argument;
+			}
+		}
+
+		return false;
+	}
+}
+
+if (!function_exists('syslog_compat_pid_identity_matches')) {
+	/**
+	 * Best-effort check that a live PID shares this caller's command identity,
+	 * using procfs cmdline. A dead worker's PID can be reused by an unrelated
+	 * process, so bare liveness alone would misreport it as a live worker.
+	 *
+	 * @param int           $pid    The live PID to compare against the current process.
+	 * @param callable|null $reader Optional cmdline reader keyed by PID; defaults to
+	 *                              reading /proc/<pid>/cmdline. Injected by tests.
+	 *
+	 * @return bool|null True/false when identity can be established, null when
+	 *                   it cannot (the caller then falls back to bare liveness).
+	 */
+	function syslog_compat_pid_identity_matches($pid, $reader = null) {
+		$pid = (int) $pid;
+
+		if ($pid === getmypid()) {
+			return true;
+		}
+
+		if ($reader === null) {
+			$reader = static function ($target) {
+				return @file_get_contents('/proc/' . $target . '/cmdline');
+			};
+		}
+
+		$self  = $reader(getmypid());
+		$other = $reader($pid);
+
+		if ($self === false || $self === '' || $other === false || $other === '') {
+			return null;
+		}
+
+		$mine   = syslog_compat_script_from_cmdline($self);
+		$theirs = syslog_compat_script_from_cmdline($other);
+
+		if ($mine === false || $theirs === false) {
+			return null;
+		}
+
+		return hash_equals($mine, $theirs);
+	}
+}
+
+if (!function_exists('cacti_process_still_running')) {
+	/**
+	 * Determine whether a registered worker PID is still alive and shares this
+	 * caller's command identity.
+	 *
+	 * @param int $pid The PID recorded in the processes table.
+	 *
+	 * @return bool True when the PID is live, false otherwise.
+	 */
+	function cacti_process_still_running($pid) {
+		if (!syslog_compat_pid_is_valid($pid) || !function_exists('posix_kill')) {
+			return false;
+		}
+
+		$pid = (int) $pid;
+
+		if (!posix_kill($pid, 0)) {
+			return false;
+		}
+
+		// A reused PID can belong to an unrelated process. Prefer a command
+		// identity match through procfs and fall back to bare liveness only
+		// when that identity cannot be determined.
+		$identity = syslog_compat_pid_identity_matches($pid);
+
+		if ($identity !== null) {
+			return $identity;
+		}
+
+		return posix_kill($pid, 0);
+	}
+}
+
+if (!function_exists('cacti_process_kill')) {
+	/**
+	 * Send a signal to a worker PID owned by this plugin.
+	 *
+	 * @param int $pid    The PID to signal.
+	 * @param int $signal The signal to send, defaulting to SIGTERM.
+	 *
+	 * @return bool True when the signal was delivered, false otherwise.
+	 */
+	function cacti_process_kill($pid, $signal = SIGTERM) {
+		// Reject out-of-range PIDs (which posix_kill() would narrow to pid_t -1,
+		// signalling every reachable process) and PID 1 before signalling.
+		if (!syslog_compat_pid_is_valid($pid) || (int) $pid === 1 || !function_exists('posix_kill')) {
+			return false;
+		}
+
+		return posix_kill((int) $pid, $signal);
+	}
+}
+
 /**
  * Allowlisted fields and operators shared by validation and the builder.
  *

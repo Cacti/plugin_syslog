@@ -2,9 +2,11 @@
 
 --- develop ---
 
+* bug: Create dashboard, status, saved-search and share tables with a string primary key on Cacti older than 1.2.32, whose db_table_create() fataled on an array primary key, so the 4.2 to 4.11 upgrade completes on the 1.2.23+ compatibility floor
+* bug: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist; the fallbacks validate the PID range and confirm command identity through procfs like the native helpers
+* test: Extract the procfs cmdline parser into syslog_compat_script_from_cmdline() and let syslog_compat_pid_identity_matches() accept an injectable reader, so the process-helper fallbacks reach full changed-line coverage of their PID-range, identity-match and signal paths
 * feature: Converge the Syslog Status cards and the user chart Dashboards on the shared Cacti dashboarding Card API (js/cards.js + css/cards.css), so both render with the standardized .cc* card chrome (drag/keyboard reorder, show more/less, maximize, refresh, remove) and the bundle stays byte-identical across plugins for promotion into Cacti core; the Status-tab controller moves out of js/functions.js into a thin js/syslog_dashboard.js adapter over the shared controller, and the chart panels adopt the same chrome while keeping their continuous drag-resize
 * dev: Load the bundled css/cards.css and js/cards.js only on cores that do not ship them globally, gated with file_exists so newer cores use the core copy
-
 * dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
 
