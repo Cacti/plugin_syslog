@@ -20,7 +20,7 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 		"\$import_text = (string) get_nfilter_request_var('import_text')",
 		'strlen($import_text) > SYSLOG_IMPORT_MAX_BYTES',
 		'$size === false || $size <= 0 || $size > SYSLOG_IMPORT_MAX_BYTES',
-		'function syslog_csv_safe(mixed $value): mixed',
+		'function syslog_csv_safe($value)',
 	] as $needle) {
 		if (!str_contains($functions, $needle)) {
 			throw new RuntimeException("Missing import/export hardening: $needle");
@@ -69,7 +69,7 @@ it('defuses CSV formula injection and enforces the import size limit', function 
 		throw new RuntimeException('CSV hardening must not mutate exported message data');
 	}
 
-	if (!preg_match('/function\s+syslog_csv_safe\s*\([^)]*\)\s*:\s*mixed\s*\{.*?\n\}/s', $functions, $match)) {
+	if (!preg_match('/function\s+syslog_csv_safe\s*\([^)]*\)\s*(?::\s*\S+\s*)?\{.*?\n\}/s', $functions, $match)) {
 		throw new RuntimeException('Unable to extract syslog_csv_safe()');
 	}
 
