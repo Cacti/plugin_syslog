@@ -244,9 +244,10 @@ function initSyslogStatus() {
 				}
 
 				cards.forEach(function(card) {
-					fetchCard(card.dataset.card, card.classList.contains('ccCardExpanded')).then(function(html) {
+					var wasExpanded = card.classList.contains('ccCardExpanded');
+					fetchCard(card.dataset.card, wasExpanded).then(function(html) {
 						if (html && card.parentNode && window.CactiCards) {
-							CactiCards.replaceCard(grid, adapter, card, html);
+							CactiCards.replaceCard(grid, adapter, card, html, wasExpanded);
 						}
 					}).always(function() {
 						pending--;
