@@ -34,7 +34,8 @@ it('builds search choices and suggestions safely, rejecting unknown fields', fun
 
 	expect($choices['priority_id'])->toBe([['4', 'warning (4)']], 'Dropdown stores ID with readable label');
 	expect($choices['facility'])->toBe([['warning', 'warning']], 'Named dropdown stores database name');
-	expect(isset($choices['program_id'], $choices['facility_id']))->toBeTrue('ID dropdowns populated');
+	expect(isset($choices['facility_id'], $choices['priority_id']))->toBeTrue('Bounded ID dropdowns populated');
+	expect(isset($choices['program_id']))->toBeFalse('Unbounded program list is not preloaded; it uses bounded AJAX suggestions');
 
 	$results = syslog_search_suggestions('host', "a%_!'", 'syslog', '-1');
 
