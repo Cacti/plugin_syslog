@@ -63,6 +63,16 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 				'aria'   => __('Aria Storage', 'syslog')
 			]
 		],
+		'logtime_precision' => [
+			'method'        => 'drop_array',
+			'friendly_name' => __('Timestamp Precision', 'syslog'),
+			'description'   => __('Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages.', 'syslog'),
+			'value'         => isset($submitted_options['logtime_precision']) ? $submitted_options['logtime_precision'] : 'ms',
+			'array'         => [
+				'ms'  => __('Millisecond - TIMESTAMP(3) (MariaDB only)', 'syslog'),
+				'sec' => __('Second - TIMESTAMP', 'syslog')
+			]
+		],
 		'syslog_remote_header' => [
 			'method'        => 'spacer',
 			'friendly_name' => __('Remote Message Processing', 'syslog')
@@ -136,6 +146,13 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 	// remove Aria as a storage engine if this is mysql
 	if (!is_array($database) || !isset($database['Value']) || stripos($database['Value'], 'mariadb') === false) {
 		unset($fields_syslog_update['engine']['array']['aria']);
+
+		// Millisecond (TIMESTAMP(3)) logtime storage is only supported on
+		// MariaDB; force second precision on MySQL.
+		$fields_syslog_update['logtime_precision'] = [
+			'method' => 'hidden',
+			'value'  => 'sec'
+		];
 	} elseif (!isset($submitted_options['engine'])) {
 		$fields_syslog_update['engine']['value'] = 'aria';
 	}
@@ -149,11 +166,13 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 	print '<tr><td>';
 
 	if ($syslog_exists) {
+		unset($fields_syslog_update['logtime_precision']);
 		print "<h2 style='color:red;'>" . __('WARNING: Syslog Upgrade is Time Consuming!!!', 'syslog') . '</h2>';
 		print '<p>' . __('The upgrade of the \'main\' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>\'Upgrade\'</b> to proceed with the upgrade, or <b>\'Cancel\'</b> to return to the Plugins menu.', 'syslog') . '</p></td></tr>';
 	} else {
 		unset($fields_syslog_update['upgrade_type']);
 		print '<p>' . __('You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs.', 'syslog') . '</p><p>' . __('You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB.', 'syslog') . '</p>';
+		print '<p>' . __('You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages.', 'syslog') . '</p>';
 		print '<p id=\'syslog_engine_compatibility_notice\' role=\'status\' style=\'display:none;color:#000;font-weight:bold;\'>' . __('Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected.', 'syslog') . '</p>';
 		print '<p>' . __('You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large.', 'syslog') . '</p></td></tr>';
 	}

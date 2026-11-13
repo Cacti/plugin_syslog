@@ -115,6 +115,82 @@ supported.  Other engines, including MyISAM, are no longer offered and fall
 back to InnoDB when legacy settings request them.  Enabling any Remote Data
 Collector option requires InnoDB; the setup advisor selects it automatically.
 
+## Millisecond Timestamps
+
+The `logtime` column can be stored either at second precision (a `TIMESTAMP`
+column) or at millisecond precision (a `TIMESTAMP(3)` column).  Millisecond
+precision preserves the sub-second ordering of high-rate messages.
+
+**Millisecond precision is only supported on MariaDB.**  MariaDB can still
+`RANGE` partition a `TIMESTAMP(3)` column by `UNIX_TIMESTAMP(logtime)` and prune
+partitions; MySQL rejects that partition function on a fractional column, so
+MySQL installs always use second precision.
+
+### Choosing the precision
+
+* **New installs** – the setup advisor shows a *Timestamp Precision* option.
+  On MariaDB it defaults to *Millisecond - TIMESTAMP(3)*; on MySQL it is fixed
+  to second precision.  Silent installs can set
+  `$syslog_install_options['logtime_precision'] = 'ms';` (or `'sec'`) in
+  `config.php` / `config_local.php`; a millisecond request on MySQL is rejected
+  with a log message rather than silently downgraded.
+* **Upgrades** – the existing schema is authoritative and is **never** migrated
+  automatically, even if the configured precision changes.  This avoids the
+  long, blocking table rewrite that an in-place precision change would require.
+* **Existing production systems** – switch precision only with the CLI utility
+  below, during a maintenance window, after accepting that stored messages are
+  destroyed.
+
+### Converting an existing MariaDB install
+
+```console
+php plugins/syslog/cli/updatedb_convert_ms.php
+```
+
+The utility is **MariaDB only** and **destructive**: it truncates the
+`syslog`, `syslog_incoming`, and `syslog_removed` tables (deleting all stored
+messages) and changes their `logtime` column to `TIMESTAMP(3)`. The replication
+outbox (`syslog_replication_output`) is widened in place so any undelivered rows
+are preserved, and the sequence high-water marks of the truncated tables are kept
+so remote replication identities are never reused. Alert, removal, and report
+rules and all settings are preserved. The conversion is all-or-nothing and
+re-runnable: the stored precision is only recorded once every target column is
+`TIMESTAMP(3)`. It prompts for confirmation; pass `--confirm` to skip the prompt
+in automation, and `--help` for usage.  Take a database backup first.
+
+### Delivering sub-second timestamps from your log forwarders
+
+Storing a `TIMESTAMP(3)` column only helps when the forwarder actually writes a
+sub-second value into `logtime`.  The default rsyslog template in
+[Cacti Configuration for RSYSLOG](#cacti-configuration-for-rsyslog) uses
+`date-mysql`, which has no fractional part.  To capture milliseconds, write a
+high-precision timestamp instead.  For an rsyslog `ommysql` template, use the
+RFC3339 timestamp trimmed to a MySQL compatible `YYYY-MM-DD HH:MM:SS.mmm`:
+
+```console
+$template cacti_syslog_ms,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message) \
+  values (%syslogfacility%, %syslogpriority%, '%programname%', \
+  REPLACE(SUBSTRING('%timereported:::date-rfc3339%',1,23),'T',' '), '%HOSTNAME%', TRIM('%msg%'))", SQL
+```
+
+Use `timereported` (the sender's own timestamp) when you want the device's
+sub-second time; use `timegenerated` for the rsyslog receipt time.  The
+sender-reported time is only as precise as the device emits, so enable
+millisecond timestamps on the originating devices:
+
+| Platform | Directive |
+| --- | --- |
+| Cisco IOS / IOS-XE | `service timestamps log datetime msec` (add `localtime show-timezone year` as needed) |
+| Cisco NX-OS | `logging timestamp milliseconds` |
+| Juniper Junos | `set system syslog time-format millisecond` (optionally `... time-format year millisecond`) |
+| Arista EOS | `logging format timestamp high-resolution` |
+| syslog-ng (forwarding) | `ts-format(iso)` with `frac-digits(3)` on the destination |
+| rsyslog relay (RFC5424) | forward with the `RSYSLOG_SyslogProtocol23Format` template, which carries fractional seconds |
+
+For devices that cannot emit sub-second timestamps, `timegenerated` on the Cacti
+collector still records millisecond receipt times, which preserves ordering for
+messages arriving in the same second.
+
 ## Important Version 4.0 Release Notes
 
 In prior releases of Syslog, the Individual Alert Method would send an Email,
@@ -468,6 +544,11 @@ master process for its workers.
 
 `cli/syslog_schema.php` takes `--audit`, `--repair`, or `--upgrade`, as
 described under Installation.
+
+`cli/updatedb_convert_ms.php` converts an existing MariaDB install to
+millisecond (`TIMESTAMP(3)`) timestamps.  It is destructive (it truncates the
+message tables) and takes `--confirm` and `--help`; see
+[Millisecond Timestamps](#millisecond-timestamps).
 
 ## Development and Testing
 
