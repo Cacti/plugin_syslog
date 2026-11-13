@@ -208,3 +208,46 @@ it('spends the recovery budget only on the genuine gap and stays stable across r
 	expect($run2['missing'])->toBe(0);
 	expect($alters)->toBe(['d20261115'], 'Repeated recovery issues no further DDL');
 });
+
+it('resolves UNIX_TIMESTAMP coverage by boundary, not partition name', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'syslog_test';
+
+	// Highest existing boundary is the next UTC midnight after 1767398400.
+	$max_boundary = (intdiv(1767398400, 86400) + 1) * 86400;
+
+	test_override('syslog_db_fetch_cell_prepared', function ($sql) use ($max_boundary) {
+		if (str_contains($sql, 'partition_expression')) {
+			return 'unix_timestamp(`logtime`)';
+		}
+
+		if (str_contains($sql, 'MAX(CAST(partition_description')) {
+			return $max_boundary;
+		}
+
+		return '';
+	});
+
+	// That day's boundary equals the highest existing boundary: covered.
+	expect(syslog_partition_check('syslog', 1767398400))->toBeFalse();
+
+	// A week later the boundary extends past the range: a real gap.
+	expect(syslog_partition_check('syslog', 1767398400 + 7 * 86400))->toBeTrue();
+});
+
+it('requests creation when the existing boundary metadata is not numeric', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'syslog_test';
+
+	test_override('syslog_db_fetch_cell_prepared', function ($sql) {
+		if (str_contains($sql, 'partition_expression')) {
+			return 'unix_timestamp(`logtime`)';
+		}
+
+		// Unreadable max boundary forces the conservative "create" path,
+		// which syslog_partition_create()'s own guard keeps safe.
+		return 'MAXVALUE';
+	});
+
+	expect(syslog_partition_check('syslog', 1767398400))->toBeTrue();
+});
