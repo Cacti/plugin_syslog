@@ -1,219 +1,14 @@
 ## ChangeLog
 
---- develop ---
+--- 5.0 ---
 
 * security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
-
-* test: Extend the browser E2E run with import, reprocess, dashboard and long owner name paths, and make its login work on Cacti 1.2.x and develop
-
-* test: Add an optional Xdebug dump and merge report that list which changed lines the real entry points executed
-
-* test: Run the real processor over alert command, removal rule and invalid alert rule cases against an installed Cacti in CI
-
-* test: Add real-database checks for each upgrade choice, every dashboard record type and dimension, every removal rule type and method, alert evaluation with invalid rules, owner column limits, hostname lookup budget and rule imports
-
-* bug: Reject imported alert rules whose match type produces no query
-
-* test: Extend the browser E2E run with dashboard, archiving removal rule, alert rule isolation, import validation and single-rule reprocess checks
-
-* test: Load functions extracted from plugin pages through temporary files instead of evaluating source strings
-
-* test: Add database regression checks for the dashboard queries, archiving removal rules, rule reprocessing, alert rule isolation and upgrade truncate scope
-
-* bug: Validate imported saved search templates like edited ones
-
-* bug: Stop hostname lookups after a time budget per processing run so senders cannot stall the poller
-
-* bug: Widen rule owner columns to the 50 character Cacti username limit through the standard schema upgrade helper
-
-* bug: Reprocess only the selected removal rule instead of every enabled rule
-
-* bug: Archive host and program removal rules without an ambiguous column error
-
-* bug: Group the All records dashboard queries per log table so panels show every host, program and time bucket
-
-* bug: Validate imported alert rules like edited ones and ignore row ids in import files
-
-* bug: Apply the Max Report Records setting to threshold alert messages
-
-* bug: Evaluate the remaining alert rules when one rule fails to compile instead of silencing all of them
-
-* bug: Keep asterisks inside a host-level alert rule expression intact when the grouped query is built
-
-* bug: Keep alert, removal and report rules when the upgrade type Truncate is chosen; it now discards stored messages only
-
-* security: Substitute alert command tokens in a single pass so values containing a token name are not expanded again
-
-* test: Insert a valid alert rule in the CI test data and assert in the workflow that the processor evaluates and fires it
-
-* bug: Check sender names with A and AAAA records, accept IPv4 and IPv6 addresses without a lookup and store IPv6 addresses in one canonical form
-
-* feature: Add optional Alarm Manager forwarding per alert rule, retain Syslog Alarming as the default and fallback, and preserve threshold episode recovery behavior.
-
-* issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
-
-* issue#317: Defer automatic partition reorganization when overflow estimates exceed 100,000 rows or 128 MiB, or cannot be read; preserve the safety partition and report the reason through maintenance health.
-
-* issue#317: Make incoming transfers transactional, lock overlapping slices, and skip existing source identities on retry to prevent duplicate local archival.
-
-* issue#317: Preserve unarchived incoming messages regardless of age, retry crash-stranded rows, and require a matching history or durable outbox identity before removing incoming data.
-
-* style: Keep all SonarCloud-reported lines within the 120-character limit by reflowing long SQL calls, ternaries, mappings and misaligned PHPDoc comment blocks, and associate the Device Alert Rule filter controls (Search, Enabled, Rules) with accessible labels
-* bug: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
-
-* bug: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails
-
-* bug: Resolve Cacti 1.2.x main-poller default database connections explicitly for Syslog rule replication
-
-* bug: Automatically repair collector-local schema before remote Syslog queries and processing after reinstall; keep failed message queries from disabling the plugin with a return-type error
-
-* bug: Remove all plugin-owned tables from remote collectors through Cacti's native API when uninstalling all Syslog data
-
+* security: Defuse spreadsheet formulas in CSV output while retaining `fputcsv()` quoting
+* security: Escape HTML and JavaScript output contexts and restrict callback dispatch to bare identifiers
 * security: Escape stored removal and report rule names in all bulk-action confirmations
-* bug: Route rule imports to the configured Syslog database and publish complete remote rule snapshots with source-aware schema transfer and failure-safe replacement
-* bug: Bound digest backfill to the registered master and a fixed migration range, retaining the last durable cursor when a batch or progress write fails
-* bug: Report dashboard write failures and roll back partial deletes, copies and panel ordering changes
-* bug: Count equal retained and removed log totals correctly and remove all plugin-owned tables during uninstall-all
-* test: Repair the schema CLI fixture and add dedicated-database, rule synchronization, migration, output escaping and dashboard rollback regression coverage
-* test: Measure lib/QueryBuilder.php in the patch-coverage gate and cover the QueryBuilder availability guards, the timeseries dashboard panel branch, invalid-database partition guards, retroactive removal-rule field maps, dMaxValue metadata extraction and the metadata label/filter button renderers
-
-* bug: Restore the incoming-to-syslog archive INSERT so its outer SELECT no longer redeclares a second unbound poller_id placeholder (SQLSTATE HY093 "Invalid parameter number" made every transfer fail with "Unable to archive incoming records") and reads the derived table's columns instead of the out-of-scope syslog_incoming alias
-* feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
-* feature: Add poller-driven pipeline health alerts for stalled processing, incoming backlogs, remote synchronization failures or delays, and blocked partition maintenance; expand the existing Status health card with check results and email delivery status, with optional problem, reminder, and recovery notifications
-* bug: Treat an empty incoming queue as drained rather than missing data, and evaluate stale queued messages even when new messages continue arriving
-* feature: Add an auto-refresh interval dropdown and a manual refresh glyph to the Syslog Status toolbar (mirroring the intropage refresh concept); the interval persists through the page's auto-reload and the refresh glyphs spin while their cards reload
-* bug: Show the Syslog Status card refresh glyph again by using Font Awesome's fa-sync-alt (the bundled Font Awesome 6 no longer renders the Font Awesome 4 fa-refresh alias)
-* change: Repaint the Syslog Status card headers with the active theme's native html_start_box title bar (sampled from the live cactiTableTitle at runtime) instead of a flat surface tint so they match Cacti on every theme, widen the card grid from 6 to 8 columns, drop the card corner radius, and give each header one of four translucent severity overlays - a neutral grey "no severity" default plus intropage's good / warning / error palette (#94b36b / #ff8f1e / #cc0000)
-* feature: Manage the Syslog Status cards like intropage panels: per-card header tools show more / show less (only for cards that support it), open the card in a large dialog, refresh its data in place, or remove it; an "Add card" catalogue lists any cards not on the page and injects them back on demand, and the whole layout (which cards are present, their order and expanded state) is saved per-user in a single settings_user row
-* feature: Let users drag the Syslog Status cards by a header handle to reorder them; the chosen order is saved per-user in the settings_user table and restored on the next visit
-* dev: Give the Syslog Status cards a 6-column span layout: a card rendering API that sets how many of the 6 columns each card occupies (most span 2, while Partition health, Recent partition maintenance activity and Processing phases span 4), reflowing to fewer columns and then a single column as the viewport narrows; also add an optional status-coloured header variant (good / warning / in-trouble) to the card API for callers to flag anomalous cards
-* dev: Render the Syslog Status tab as a responsive flex grid of theme-aware cards (a Bootstrap-style card layout without Bootstrap) with a differentiated card surface and rounded corners, replacing the stacked Cacti boxes; the card-layout CSS is kept inside the plugin for now and is ready to hold charts per card later
-* bug: Make the Dashboard tab theme-aware so its labels and the empty-state and panel cards follow the active Cacti theme instead of a baked light palette (unreadable on dark themes), order the Add Panel and Dashboard Name dialog buttons so Save sits to the right of Cancel, and rebuild the Syslog Status tab with native Cacti sub-header boxes and cactiTable rows
-* bug: Make the System Logs view theme-aware across the Cacti theme fleet by moving the dark-surface row, label, details, and search-panel palette out of the shared css/search.css and into each dark theme's css/<theme>.css (dark, deepness, midwinter, sunrise), so themes beyond dark and midwinter no longer render light row tints under the theme's light text; correct paper-plane to the light palette to match its light data tables and add css/<theme>.css for the remaining packaged themes (cacti, carrot, hollyberry, raspberry)
-* change: Collapse the System Logs filter panel by default and recoup vertical space with tighter result-row padding and message line-height; a saved expanded preference or an active search error still opens the panel
-* dev: Make the severity-legend chips actually fill the row by giving each chip `box-sizing: border-box; width: 100%; min-width: 0` (so a severity class's leaked width no longer keeps it small) and the legend footer a full-width table wrapper, across every per-theme `css/<theme>.css` and the `css/legend.css` fallback (matching the thold legend)
-* bug: Pass a boolean (not the integer 1) to api_plugin_register_hook()'s $enable argument so the hook registration stays type-correct under Cacti 1.3's strict bool type-hint (the int only coerces while the file lacks declare(strict_types=1))
-* feature: Add Remote Data Collector processing, rules-sync, and record-storage options to the setup advisor; reject Aria selections whenever any collector option is enabled
-* change: Use TEXT for message columns previously limited to VARCHAR(2048), including existing installations
-* dev: Size the severity-legend chips to the longest label and lay them out as a CSS grid so every chip stays equal width as the legend wraps (matching the thold/monitor/servcheck/mactrack legends)
-* ci: Drop Ruby from the CodeQL language matrix; the plugin ships no Ruby source, so the Ruby database build failed with "no source code seen"
-* dev: Move the shared function and database libraries to includes/ and point the entry-point includes, coverage source, and tests at the new path
-* feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to a theme-neutral css/legend.css)
-* dev: Keep the severity-legend chips equal width (sized to the longest label) as the legend wraps responsively
-* dev: Measure CI coverage with xdebug instead of pcov so the plugin's own sources are instrumented (pcov auto-scopes to the Composer root and skipped cacti/plugins/, leaving the patch-coverage gate with nothing to measure)
-* dev: Enforce patch coverage of changed lines in CI and remove the inert COMPOSER_ROOT_VERSION env from the Pest step
-* dev: Pin the CI database image and shared test dependencies, disable persisted checkout credentials, and limit workflow permissions and runtime
-* feature: Add a Syslog-owned durable replication outbox for configured Remote Data Collectors; processed events are delivered idempotently to the Main Collector for centralized viewing, retained through outages, and retried during recovery, while intentionally discarded records remain unreplicated
-* feature: Add Device Alert Rules for device-wide alert handling: administrators can pause a device's non-exempt alerts until a selected time or indefinitely, choose a priority threshold that always passes through device pauses and maintenance windows, and allow all device alerts during maintenance for critical devices
-* feature: Extend the Syslog Status tab with per-table partition date coverage, estimated dMaxValue occupancy and size, last successful maintenance, recovery progress, and a bounded recent-maintenance history
-* feature: Add a fail-safe for partition maintenance: when the partition metadata for the syslog or syslog_removed table is invalid or incomplete, or a required partition cannot be created, all partition creation and retention pruning stops, the dMaxValue safety partition is never dropped, and the blocked condition with its remediation step is logged and shown on the Syslog Status page
-* feature: Add bounded multi-day partition recovery: a new 'Partition Recovery Limit' setting caps how many missing partitions are created per table per poller run so large gaps heal over several cycles; retention pruning stays deferred until the future write horizon is restored, and each blocked run reports the remaining gap, the stop reason, and whether writes are accumulating in dMaxValue
-* feature: Add collector health metrics to the Syslog Status tab: last received log timestamp, oldest unprocessed incoming message age, current incoming backlog, records processed in the latest run, and a warning when data looks stale or the backlog exceeds the new 'Collector Staleness' and 'Collector Backlog Threshold' settings; unavailable metrics read as Unavailable instead of invented values
-* feature: Add per phase processing telemetry: the poller records start time, end time, duration, and processed count for partition maintenance, reference updates, removal rules, alert evaluation, incoming transfer, and report processing through the syslog_status table; the Syslog Status tab shows the latest phase timings and highlights the slowest phase
-* feature: Add a 'Test rule' action to the Alert and Removal rule editors: a read-only preview compiled through the existing QueryBuilder and parameterized SQL paths returns the matching count plus a bounded sample of escaped messages, without saving, enabling, deleting, alerting, emailing, executing commands, or altering any data; the action respects realms and CSRF protection
-* feature: Add JSON export and a matching Import form to the Saved Search Templates and Dashboards admin pages, and give both pages the same filter/header bar (search, rows, Go, Clear, Import) used on Alert Rules, Removal Rules, and Reports
-* issue: Fix upgrade-time "Unknown column 'hash' in 'WHERE'" errors by guarding hash backfill queries with syslog_db_column_exists(); existing saved searches, dashboards, alerts, removal rules, and reports now get hash values backfilled before later upgrade steps reference the column
-* feature: Add an All Users / All Groups option to the Shared With Users and
-  Shared With Groups selects of the admin Dashboards and Saved Search
-  Templates pages: a single stored "all" grant makes the item visible to
-  every signed-in user, instead of selecting each account one by one
-
-* feature: Let administrators reassign the owner of a dashboard or saved
-  search template from the admin edit pages through an owner dropdown
-  instead of the read-only owner display
-
-* feature: Replace the inline Delete buttons on the admin Dashboards and
-  Saved Search Templates pages with Cacti's standard selection checkboxes
-  and bulk actions dropdown, matching the Alert Rules page: deleting now
-  asks for confirmation, lists the selected items, and runs through the
-  shared selected-items dispatch helper
-
-* feature: Add per-user and per-group dashboard and saved-search sharing to
-  the admin Dashboards and Saved Search Templates pages with Cacti's jQuery
-  multiselect widget: grants are stored in new syslog_dashboards_perm and
-  syslog_saved_searches_perm tables, granted dashboards and searches appear
-  to their users in a new "Shared With Me" group of the viewer's selects,
-  and share rows are cleared when their item is deleted
-
-* change: Group all syslog permission realms under their own "Syslog"
-  section on the User and Group Permissions pages, as the audit plugin
-  does, instead of the generic Plugin Permissions section; this also
-  moves the Share Saved Templates and Share Dashboards realms, which
-  previously fell under the generic section
-
-* feature: Add dashboard sharing, gated by a new "Share Dashboards" user and
-  group permission realm: owners with the permission can share a dashboard
-  with all syslog users, shared dashboards are view-only for other users and
-  offer "Save as my copy" to clone one into their own list, and
-  administrators manage every dashboard (including those of deleted users)
-  from a new Console page under Syslog Settings
-* feature: Add drag-and-drop panel reordering: drag a panel header and
-  drop it above or below another panel; the placement line previews the
-  target and the server renumbers positions gaplessly
-* feature: Add a right-edge resize strip so panel width can be dragged
-  directly (ew-resize) instead of only the small corner grip
-* feature: Make dashboard panels resizable: drag the corner handle to span
-  up to three grid columns and set the chart height; sizes persist per
-  panel and dialog saves keep a user's custom sizing
-* feature: Add a Dashboard tab with per-user dashboards of chart panels:
-  timeseries (line/area/bar) and breakdown (donut by host, program,
-  facility, or priority) panels chart System Logs and Alert Logs through
-  the same logical search DSL as the log viewer; panels can start from a
-  saved search and every write re-verifies dashboard ownership
-* feature: Log per worker SYSLOG STATS lines in the boost poller style
-  (Time, ProcessNumber, Records, Resolved) so parallel processing work
-  is attributable per process in the Cacti log
-* feature: Show parallel worker activity on the Syslog Status tab: worker
-  processes currently running and the records and hostnames each worker
-  handled during the last parallel run
-* feature: Add parallel syslog processing: a new 'Maximum Syslog Processing
-  Processes' setting splits hostname resolution and incoming message transfer
-  across worker processes on disjoint seq ranges, following Cacti's boost
-  poller model, with signal-safe teardown and single-process fallback
-* issue: Compute syslog and reference-table retention cutoffs in UTC with
-  gmdate() so they agree with the integer UTC epoch partition boundaries and
-  cannot drift with the server timezone or DST transitions (issue#317)
-* bug: Fix a fresh install with "Indefinite" retention (days = 0) never creating today's concrete
-  partition, since the off-by-one fix in the historical loop bound would otherwise start the loop
-  one day before today; the starting bound is now clamped so today's partition is always created
-* bug: Fix an off-by-one in partitioned syslog table creation that over-provisioned one extra
-  historical partition, causing the first retention prune after install to immediately drop a
-  freshly created partition
-* bug: Drop the syslog_saved_searches table during a full uninstall; it was previously left behind
-* feature: Deprecate traditional (non-partitioned) tables: new installs always create partitioned tables and only offer InnoDB and Aria storage engines; existing traditional installs keep working with a notice advising migration
-* feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
-* ci: Rebuild the CI workflow around a single integration-test job that runs
-  the test suite with Pest against Cacti's own Composer-managed vendor tree,
-  matching the plugin_evidence workflow; standalone tests/regression/*.php
-  scripts are replaced by tests/Security and tests/Unit Pest test suites
-* feature: Deprecate the Statistics tab and remove statistics data collection and database setup
-* security: Require POST and CSRF validation for unused-host purge
-  operations
-* security: Escape HTML and JavaScript output contexts and restrict callback
-  dispatch to bare identifiers
-* security: Defuse spreadsheet formulas in CSV output while retaining
-  `fputcsv()` quoting
-* security: Limit pasted and uploaded XML rule imports to 5 MiB before
-  parsing
-* issue: Use integer UTC partition boundaries and preserve `dMaxValue` as a
-  fail-safe write partition
-* test: Add standalone security regressions and Docker/Playwright end-to-end
-  coverage
-* ci: Validate the plugin on Linux with PHP 8.1-8.3 and pinned Cacti
-  `release/1.2.31`
-* feature: Add saved searches: store named filter definitions (conditions plus record type and grouping), apply them from a dropdown, and manage them with New/Edit/Delete/Save As; a new 'Syslog Saved Searches Admin' realm gates Make Global. Saved searches keep the date range dynamic (last day by default)
-* feature: Allow users to share saved searches with each other, gated by a new 'Syslog Saved Searches Share' realm; admins get a Console search admin page to manage all saved searches, and the delete button for global searches is hidden from unauthorized users (new realms added to upgrade)
-* feature: Rebuild the search area: support custom searches, allow users to hide/show the search box, add date range presets, and move the row limit into the search area; redirect-only buttons (Alerts, Removals, Reports) removed
-* feature: Allow filtering the log view by clicking a device or program in the results
-* feature: Improve message readability: label facility, host, and program columns,
-
-* issue: Fix PHP 8.2+ compatibility
-* issue: Fix date filter not being respected when searching
-* issue: Correct validation error when creating an Alert Rule
-* issue: Fix Statistics page redirecting to logs
-* issue: Fix DOM race condition and dropdown rendering in modals
-* issue: Make HTML escaping behavior explicit across PHP 8 versions
-
+* security: Limit pasted and uploaded XML rule imports to 5 MiB before parsing
+* security: Require POST and CSRF validation for unused-host purge operations
+* security: Substitute alert command tokens in a single pass so values containing a token name are not expanded again
 * issue#199: Duplicate Partition name errors
 * issue#250: Fix date filter persistence by validating before shift_span detection
 * issue#252: hardening: escape device hostname output in syslog view; parameterize alert API functions
@@ -222,19 +17,105 @@
 * issue#259: hardening: require POST and a CSRF token for the purge syslog devices utility
 * issue#260: hardening: replace eval-based callback execution in syslog autocomplete JS
 * issue#262: Harden CSV exports and XML import payload handling
-* issue#278: Extract duplicated alert command execution paths in syslog_process_alerts
 * issue#278: Extract alert command execution into shared helper in functions.php; command tokenization now uses preg_split (handles tabs and consecutive spaces); /bin/sh fallback for non-executable command templates removed (use absolute paths with execute bit set)
+* issue#278: Extract duplicated alert command execution paths in syslog_process_alerts
 * issue#298: syslog poller: lock timeout, signal handler, and earlier partition rotation
 * issue#300: Syslog table drop with no apparent reason
-* issue: Repair plugin integration CI, execute regression tests, and reject empty import files safely
-* issue: Making changes to support Cacti 1.3
+* issue#317: Defer automatic partition reorganization when overflow estimates exceed 100,000 rows or 128 MiB, or cannot be read; preserve the safety partition and report the reason through maintenance health.
+* issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
+* issue#317: Make incoming transfers transactional, lock overlapping slices, and skip existing source identities on retry to prevent duplicate local archival.
+* issue#317: Preserve unarchived incoming messages regardless of age, retry crash-stranded rows, and require a matching history or durable outbox identity before removing incoming data.
+* issue: Apply the Max Report Records setting to threshold alert messages
+* issue: Archive host and program removal rules without an ambiguous column error
+* issue: Automatically repair collector-local schema before remote Syslog queries and processing after reinstall; keep failed message queries from disabling the plugin with a return-type error
+* issue: Bound digest backfill to the registered master and a fixed migration range, retaining the last durable cursor when a batch or progress write fails
+* issue: Check sender names with A and AAAA records, accept IPv4 and IPv6 addresses without a lookup and store IPv6 addresses in one canonical form
+* issue: Compute syslog and reference-table retention cutoffs in UTC with gmdate() so they agree with the integer UTC epoch partition boundaries and cannot drift with the server timezone or DST transitions (issue#317)
+* issue: Correct validation error when creating an Alert Rule
+* issue: Count equal retained and removed log totals correctly and remove all plugin-owned tables during uninstall-all
 * issue: Don't use MyISAM for non-analytical tables
+* issue: Drop the syslog_saved_searches table during a full uninstall; it was previously left behind
+* issue: Evaluate the remaining alert rules when one rule fails to compile instead of silencing all of them
+* issue: Fix a fresh install with "Indefinite" retention (days = 0) never creating today's concrete partition, since the off-by-one fix in the historical loop bound would otherwise start the loop one day before today; the starting bound is now clamped so today's partition is always created
+* issue: Fix an off-by-one in partitioned syslog table creation that over-provisioned one extra historical partition, causing the first retention prune after install to immediately drop a freshly created partition
+* issue: Fix date filter not being respected when searching
+* issue: Fix DOM race condition and dropdown rendering in modals
+* issue: Fix PHP 8.2+ compatibility
+* issue: Fix Statistics page redirecting to logs
+* issue: Fix upgrade-time "Unknown column 'hash' in 'WHERE'" errors by guarding hash backfill queries with syslog_db_column_exists(); existing saved searches, dashboards, alerts, removal rules, and reports now get hash values backfilled before later upgrade steps reference the column
+* issue: Group the All records dashboard queries per log table so panels show every host, program and time bucket
+* issue: Keep alert, removal and report rules when the upgrade type Truncate is chosen; it now discards stored messages only
+* issue: Keep asterisks inside a host-level alert rule expression intact when the grouped query is built
+* issue: Make HTML escaping behavior explicit across PHP 8 versions
+* issue: Make the Dashboard tab theme-aware so its labels and the empty-state and panel cards follow the active Cacti theme instead of a baked light palette (unreadable on dark themes), order the Add Panel and Dashboard Name dialog buttons so Save sits to the right of Cancel, and rebuild the Syslog Status tab with native Cacti sub-header boxes and cactiTable rows
+* issue: Make the System Logs view theme-aware across the Cacti theme fleet by moving the dark-surface row, label, details, and search-panel palette out of the shared css/search.css and into each dark theme's css/<theme>.css (dark, deepness, midwinter, sunrise), so themes beyond dark and midwinter no longer render light row tints under the theme's light text; correct paper-plane to the light palette to match its light data tables and add css/<theme>.css for the remaining packaged themes (cacti, carrot, hollyberry, raspberry)
+* issue: Making changes to support Cacti 1.3
+* issue: Pass a boolean (not the integer 1) to api_plugin_register_hook()'s $enable argument so the hook registration stays type-correct under Cacti 1.3's strict bool type-hint (the int only coerces while the file lacks declare(strict_types=1))
+* issue: Reject imported alert rules whose match type produces no query
+* issue: Remove all plugin-owned tables from remote collectors through Cacti's native API when uninstalling all Syslog data
+* issue: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails
+* issue: Repair plugin integration CI, execute regression tests, and reject empty import files safely
+* issue: Report dashboard write failures and roll back partial deletes, copies and panel ordering changes
+* issue: Reprocess only the selected removal rule instead of every enabled rule
+* issue: Resolve Cacti 1.2.x main-poller default database connections explicitly for Syslog rule replication
+* issue: Restore the incoming-to-syslog archive INSERT so its outer SELECT no longer redeclares a second unbound poller_id placeholder (SQLSTATE HY093 "Invalid parameter number" made every transfer fail with "Unable to archive incoming records") and reads the derived table's columns instead of the out-of-scope syslog_incoming alias
+* issue: Route rule imports to the configured Syslog database and publish complete remote rule snapshots with source-aware schema transfer and failure-safe replacement
+* issue: Show the Syslog Status card refresh glyph again by using Font Awesome's fa-sync-alt (the bundled Font Awesome 6 no longer renders the Font Awesome 4 fa-refresh alias)
+* issue: Stop hostname lookups after a time budget per processing run so senders cannot stall the poller
+* issue: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
 * issue: The install advisor for Syslog was broken in current Cacti releases
-* feature: Allow the use of Aria Storage Engine for MariaDB databases
+* issue: Treat an empty incoming queue as drained rather than missing data, and evaluate stale queued messages even when new messages continue arriving
+* issue: Use integer UTC partition boundaries and preserve `dMaxValue` as a fail-safe write partition
+* issue: Validate imported alert rules like edited ones and ignore row ids in import files
+* issue: Validate imported saved search templates like edited ones
+* issue: Widen rule owner columns to the 50 character Cacti username limit through the standard schema upgrade helper
+* feature: Add a 'Test rule' action to the Alert and Removal rule editors: a read-only preview compiled through the existing QueryBuilder and parameterized SQL paths returns the matching count plus a bounded sample of escaped messages, without saving, enabling, deleting, alerting, emailing, executing commands, or altering any data; the action respects realms and CSRF protection
+* feature: Add a Dashboard tab with per-user dashboards of chart panels: timeseries (line/area/bar) and breakdown (donut by host, program, facility, or priority) panels chart System Logs and Alert Logs through the same logical search DSL as the log viewer; panels can start from a saved search and every write re-verifies dashboard ownership
+* feature: Add a fail-safe for partition maintenance: when the partition metadata for the syslog or syslog_removed table is invalid or incomplete, or a required partition cannot be created, all partition creation and retention pruning stops, the dMaxValue safety partition is never dropped, and the blocked condition with its remediation step is logged and shown on the Syslog Status page
+* feature: Add a right-edge resize strip so panel width can be dragged directly (ew-resize) instead of only the small corner grip
+* feature: Add a Syslog-owned durable replication outbox for configured Remote Data Collectors; processed events are delivered idempotently to the Main Collector for centralized viewing, retained through outages, and retried during recovery, while intentionally discarded records remain unreplicated
+* feature: Add an All Users / All Groups option to the Shared With Users and Shared With Groups selects of the admin Dashboards and Saved Search Templates pages: a single stored "all" grant makes the item visible to every signed-in user, instead of selecting each account one by one
+* feature: Add an auto-refresh interval dropdown and a manual refresh glyph to the Syslog Status toolbar (mirroring the intropage refresh concept); the interval persists through the page's auto-reload and the refresh glyphs spin while their cards reload
+* feature: Add an optional Recovery command to threshold alert rules, with correlated breach/clear script context and durable collector-owned clear retries
+* feature: Add bounded multi-day partition recovery: a new 'Partition Recovery Limit' setting caps how many missing partitions are created per table per poller run so large gaps heal over several cycles; retention pruning stays deferred until the future write horizon is restored, and each blocked run reports the remaining gap, the stop reason, and whether writes are accumulating in dMaxValue
+* feature: Add collector health metrics to the Syslog Status tab: last received log timestamp, oldest unprocessed incoming message age, current incoming backlog, records processed in the latest run, and a warning when data looks stale or the backlog exceeds the new 'Collector Staleness' and 'Collector Backlog Threshold' settings; unavailable metrics read as Unavailable instead of invented values
+* feature: Add dashboard sharing, gated by a new "Share Dashboards" user and group permission realm: owners with the permission can share a dashboard with all syslog users, shared dashboards are view-only for other users and offer "Save as my copy" to clone one into their own list, and administrators manage every dashboard (including those of deleted users) from a new Console page under Syslog Settings
+* feature: Add Device Alert Rules for device-wide alert handling: administrators can pause a device's non-exempt alerts until a selected time or indefinitely, choose a priority threshold that always passes through device pauses and maintenance windows, and allow all device alerts during maintenance for critical devices
+* feature: Add drag-and-drop panel reordering: drag a panel header and drop it above or below another panel; the placement line previews the target and the server renumbers positions gaplessly
+* feature: Add JSON export and a matching Import form to the Saved Search Templates and Dashboards admin pages, and give both pages the same filter/header bar (search, rows, Go, Clear, Import) used on Alert Rules, Removal Rules, and Reports
 * feature: Add message grouping functionality to collapse duplicate syslog messages and display occurrence counts
+* feature: Add optional Alarm Manager forwarding per alert rule, retain Syslog Alarming as the default and fallback, and preserve threshold episode recovery behavior.
+* feature: Add parallel syslog processing: a new 'Maximum Syslog Processing Processes' setting splits hostname resolution and incoming message transfer across worker processes on disjoint seq ranges, following Cacti's boost poller model, with signal-safe teardown and single-process fallback
+* feature: Add per phase processing telemetry: the poller records start time, end time, duration, and processed count for partition maintenance, reference updates, removal rules, alert evaluation, incoming transfer, and report processing through the syslog_status table; the Syslog Status tab shows the latest phase timings and highlights the slowest phase
+* feature: Add per-user and per-group dashboard and saved-search sharing to the admin Dashboards and Saved Search Templates pages with Cacti's jQuery multiselect widget: grants are stored in new syslog_dashboards_perm and syslog_saved_searches_perm tables, granted dashboards and searches appear to their users in a new "Shared With Me" group of the viewer's selects, and share rows are cleared when their item is deleted
+* feature: Add poller-driven pipeline health alerts for stalled processing, incoming backlogs, remote synchronization failures or delays, and blocked partition maintenance; expand the existing Status health card with check results and email delivery status, with optional problem, reminder, and recovery notifications
 * feature: Add Refresh button to reload the current results page without resetting the filter or pagination
+* feature: Add Remote Data Collector processing, rules-sync, and record-storage options to the setup advisor; reject Aria selections whenever any collector option is enabled
+* feature: Add saved searches: store named filter definitions (conditions plus record type and grouping), apply them from a dropdown, and manage them with New/Edit/Delete/Save As; a new 'Syslog Saved Searches Admin' realm gates Make Global. Saved searches keep the date range dynamic (last day by default)
+* feature: Allow filtering the log view by clicking a device or program in the results
+* feature: Allow the use of Aria Storage Engine for MariaDB databases
+* feature: Allow users to share saved searches with each other, gated by a new 'Syslog Saved Searches Share' realm; admins get a Console search admin page to manage all saved searches, and the delete button for global searches is hidden from unauthorized users (new realms added to upgrade)
+* feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
+* feature: Collapse the System Logs filter panel by default and recoup vertical space with tighter result-row padding and message line-height; a saved expanded preference or an active search error still opens the panel
+* feature: Deprecate the Statistics tab and remove statistics data collection and database setup
+* feature: Deprecate traditional (non-partitioned) tables: new installs always create partitioned tables and only offer InnoDB and Aria storage engines; existing traditional installs keep working with a notice advising migration
+* feature: Enhanced hostname validation to resolve against Cacti host table when DNS lookup fails, replacing hostname with Cacti host description
+* feature: Extend the Syslog Status tab with per-table partition date coverage, estimated dMaxValue occupancy and size, last successful maintenance, recovery progress, and a bounded recent-maintenance history
+* feature: Group all syslog permission realms under their own "Syslog" section on the User and Group Permissions pages, as the audit plugin does, instead of the generic Plugin Permissions section; this also moves the Share Saved Templates and Share Dashboards realms, which previously fell under the generic section
+* feature: Improve message readability: label facility, host, and program columns,
+* feature: Keep all SonarCloud-reported lines within the 120-character limit by reflowing long SQL calls, ternaries, mappings and misaligned PHPDoc comment blocks, and associate the Device Alert Rule filter controls (Search, Enabled, Rules) with accessible labels
+* feature: Let administrators reassign the owner of a dashboard or saved search template from the admin edit pages through an owner dropdown instead of the read-only owner display
+* feature: Let users drag the Syslog Status cards by a header handle to reorder them; the chosen order is saved per-user in the settings_user table and restored on the next visit
+* feature: Log per worker SYSLOG STATS lines in the boost poller style (Time, ProcessNumber, Records, Resolved) so parallel processing work is attributable per process in the Cacti log
+* feature: Make dashboard panels resizable: drag the corner handle to span up to three grid columns and set the chart height; sizes persist per panel and dialog saves keep a user's custom sizing
+* feature: Manage the Syslog Status cards like intropage panels: per-card header tools show more / show less (only for cards that support it), open the card in a large dialog, refresh its data in place, or remove it; an "Add card" catalogue lists any cards not on the page and injects them back on demand, and the whole layout (which cards are present, their order and expanded state) is saved per-user in a single settings_user row
+* feature: Rebuild the search area: support custom searches, allow users to hide/show the search box, add date range presets, and move the row limit into the search area; redirect-only buttons (Alerts, Removals, Reports) removed
 * feature: Refactor JavaScript by consolidating inline code from PHP files into centralized js/functions.js
-* feature: Enhanced hostname validation to resolve against Cacti host table when DNS lookup fails, replacing hostname with Cacti host description 
+* feature: Repaint the Syslog Status card headers with the active theme's native html_start_box title bar (sampled from the live cactiTableTitle at runtime) instead of a flat surface tint so they match Cacti on every theme, widen the card grid from 6 to 8 columns, drop the card corner radius, and give each header one of four translucent severity overlays - a neutral grey "no severity" default plus intropage's good / warning / error palette (#94b36b / #ff8f1e / #cc0000)
+* feature: Replace the inline Delete buttons on the admin Dashboards and Saved Search Templates pages with Cacti's standard selection checkboxes and bulk actions dropdown, matching the Alert Rules page: deleting now asks for confirmation, lists the selected items, and runs through the shared selected-items dispatch helper
+* feature: Restyle the System Logs and Alert Logs severity legends as rounded, evenly spaced, solid-colour chips that line up with the Thold status legends, with theme-appropriate backgrounds loaded from a per-theme css/<theme>.css file (falling back to a theme-neutral css/legend.css)
+* feature: Show parallel worker activity on the Syslog Status tab: worker processes currently running and the records and hostnames each worker handled during the last parallel run
+* feature: Use TEXT for message columns previously limited to VARCHAR(2048), including existing installations
 
 --- 4.2 ---
 
