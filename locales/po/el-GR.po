@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-10-26 13:53-0400\n"
+"POT-Creation-Date: 2026-11-13 11:06-0500\n"
 "PO-Revision-Date: 2025-03-07 14:42-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,6 +21,14 @@ msgstr ""
 #, fuzzy
 msgid "Syslog download"
 msgstr "Syslog ενεργοποιημένη"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr ""
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr ""
 
 #: includes/functions.php
 msgid "Emergency"
@@ -438,6 +446,22 @@ msgstr "Αποθήκευση InnoDB"
 msgid "Aria Storage"
 msgstr "Αποθήκευση MyISAM"
 
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr ""
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
+msgstr ""
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr ""
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr ""
+
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
 msgstr "Απομακρυσμένη επεξεργασία μηνυμάτων"
@@ -516,6 +540,10 @@ msgstr ""
 #, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
 msgstr "Έχετε πολλές επιλογές για να διαλέξετε κατά την εγκατάσταση του Syslog.  Το πρώτο είναι η αρχιτεκτονική βάσεων δεδομένων.  Θα πρέπει να επιλέξετε να χρησιμοποιήσετε τη διαμέριση πινάκων για να αποτρέψετε το μέγεθος των πινάκων από το να γίνει υπερβολικό, επιβραδύνοντας έτσι τα ερωτήματα."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr ""
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
@@ -1595,6 +1623,10 @@ msgstr ""
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
 msgstr "Μετονομάστε τα αρχεία config.php.dist ή config_local.php.dist στον κατάλογο syslog και αλλάξτε τη ρύθμιση της βάσης δεδομένων σας πριν από την εγκατάσταση."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr ""
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
@@ -3046,14 +3078,6 @@ msgstr ""
 
 #: syslog_dashboards.php
 msgid "Enter a dashboard name between 1 and 128 characters."
-msgstr ""
-
-#: syslog_dashboards.php syslog_saved_searches.php
-msgid "Share with users…"
-msgstr ""
-
-#: syslog_dashboards.php syslog_saved_searches.php
-msgid "Share with groups…"
 msgstr ""
 
 #: syslog_dashboards.php syslog_saved_searches.php
