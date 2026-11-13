@@ -1025,6 +1025,18 @@ function syslog_check_upgrade(bool $force = false): bool {
 		return true;
 	}
 
+	// Housekeeping: when genuinely upgrading from an older version (never on a
+	// fresh install or a same-version repair), remove files tombstoned in
+	// manifest.json before the stored version is bumped below. This runs on
+	// every version-aware entry point - plugin_syslog_upgrade(), the re-enable
+	// path and cli/syslog_schema.php - so a stale top-level module left by an
+	// older layout cannot redeclare a function now living under includes/ and
+	// fatal the plugin on load. Gating on an older installed version keeps the
+	// dev-only tests/ tree intact on a same-version checkout.
+	if ($installed !== false && version_compare((string) $installed, $version['version'], '<')) {
+		syslog_prune_files();
+	}
+
 	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports'] as $table) {
 		db_update_table($table, [
 			'columns' => [['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => '', 'after' => 'id']],
@@ -1273,4 +1285,196 @@ function syslog_refresh_plugin_version(): void {
  */
 function syslog_check_dependencies(): bool {
 	return true;
+}
+
+/**
+ * Remove files and directories that a previous version of this plugin shipped
+ * but that have since moved or been deleted, using the tombstone and whitelist
+ * lists in manifest.json. This "housecleaning" stops stale top-level modules
+ * (for example the old database.php/functions.php that now live under
+ * includes/) from redeclaring functions and fataling the plugin on load after
+ * an upgrade. Whitelisted (user-data) paths and any VCS metadata (.git*) are
+ * never touched; the dev-only tests/ tree and phpunit.xml are removed. Any path
+ * that resolves outside the plugin directory (a tampered manifest.json) is
+ * refused, and any file/directory that cannot be removed (for example
+ * read-only) is reported to the Cacti log. Any top-level entry that is neither
+ * expected nor a tombstone nor whitelisted is logged and left in place. Called
+ * on a plugin version change from plugin_syslog_upgrade().
+ *
+ * @return void
+ */
+function syslog_prune_files(): void {
+	global $config;
+
+	$plugin_dir    = $config['base_path'] . '/plugins/syslog';
+	$manifest_path = $plugin_dir . '/manifest.json';
+
+	if (!is_readable($manifest_path)) {
+		return;
+	}
+
+	$manifest = json_decode((string) file_get_contents($manifest_path), true);
+
+	if (!is_array($manifest)) {
+		cacti_log('WARNING: syslog manifest.json could not be parsed; skipping file prune', false, 'SYSLOG');
+
+		return;
+	}
+
+	$tombstones = isset($manifest['tombstones']) && is_array($manifest['tombstones']) ? $manifest['tombstones'] : [];
+	$expected   = isset($manifest['expected'])   && is_array($manifest['expected'])   ? $manifest['expected']   : [];
+	$whitelist  = isset($manifest['whitelist'])  && is_array($manifest['whitelist'])  ? $manifest['whitelist']  : [];
+
+	$protected = function (string $rel) use ($whitelist): bool {
+		if (strncmp($rel, '.git', 4) === 0 || strncmp($rel, '.md', 3) === 0) {
+			return true;
+		}
+
+		foreach ($whitelist as $entry) {
+			$entry = trim((string) $entry, '/');
+
+			if ($entry !== '' && ($rel === $entry
+				|| strncmp($rel, $entry . '/', strlen($entry) + 1) === 0
+				|| strncmp($entry, $rel . '/', strlen($rel) + 1) === 0)) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	// Security: resolve the plugin directory so a tampered manifest.json
+	// cannot steer the prune outside of it.
+	$plugin_real = realpath($plugin_dir);
+
+	// Remove tombstoned (moved/deleted) paths plus the dev-only tests/ tree
+	// and the phpunit.xml test configuration.
+	$remove   = $tombstones;
+	$remove[] = 'tests/';
+	$remove[] = 'phpunit.xml';
+
+	foreach ($remove as $rel) {
+		$rel = trim((string) $rel, '/');
+
+		if ($rel === '' || $protected($rel)) {
+			continue;
+		}
+
+		// A tombstone must never contain '.'/'..' segments; a tampered manifest
+		// could use them to escape the plugin directory or target its root.
+		$segments = explode('/', $rel);
+
+		if (in_array('.', $segments, true) || in_array('..', $segments, true)) {
+			cacti_log(sprintf('WARNING: syslog prune refused to remove %s: path contains a traversal segment (tampered manifest.json?)', $rel), false, 'SYSLOG');
+
+			continue;
+		}
+
+		$path = $plugin_dir . '/' . $rel;
+
+		if (!is_link($path) && !file_exists($path)) {
+			continue;
+		}
+
+		// Reject any tombstone reached through a symlinked parent directory:
+		// each parent must resolve to its own lexical location inside the
+		// plugin. This stops a tombstone like 'alias/config.php' (where alias
+		// is a symlink to the plugin root) from aliasing - and deleting - a
+		// protected, whitelisted file, and also refuses a parent that escapes
+		// the plugin entirely. A tombstone that is *itself* a symlink is still
+		// allowed; only the link is unlinked, never its target.
+		$parent_rel  = (strpos($rel, '/') !== false) ? substr($rel, 0, strrpos($rel, '/')) : '';
+		$parent_real = realpath($parent_rel === '' ? $plugin_dir : $plugin_dir . '/' . $parent_rel);
+		$expected_parent = $parent_rel === '' ? $plugin_real : $plugin_real . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $parent_rel);
+
+		if ($plugin_real === false || $parent_real === false || $parent_real !== $expected_parent) {
+			cacti_log(sprintf('WARNING: syslog prune refused to remove %s: path resolves outside the plugin directory (tampered manifest.json?)', $rel), false, 'SYSLOG');
+
+			continue;
+		}
+
+		$target = $parent_real . DIRECTORY_SEPARATOR . basename($rel);
+
+		if (is_dir($target) && !is_link($target)) {
+			$removed = syslog_rmtree($target);
+		} else {
+			$removed = @unlink($target);
+		}
+
+		if (!$removed) {
+			cacti_log(sprintf('WARNING: syslog upgrade could not remove %s (check file/directory permissions)', $rel), false, 'SYSLOG');
+		}
+	}
+
+	// Surface any top-level entry the manifest does not account for.
+	$known = [];
+
+	foreach (array_merge($expected, $tombstones) as $entry) {
+		$top = explode('/', trim((string) $entry, '/'))[0];
+
+		if ($top !== '') {
+			$known[$top] = true;
+		}
+	}
+
+	$entries = scandir($plugin_dir);
+
+	foreach (($entries !== false ? $entries : []) as $entry) {
+		if ($entry === '.' || $entry === '..' || $entry === 'tests' || $entry === 'phpunit.xml' || $protected($entry) || isset($known[$entry])) {
+			continue;
+		}
+
+		cacti_log(sprintf('WARNING: syslog upgrade found a file/directory not described in manifest.json: %s (left in place)', $entry), false, 'SYSLOG');
+	}
+}
+
+/**
+ * Recursively delete a directory and its contents. Symlinks are removed without
+ * being followed. VCS metadata (.git*) and dot-markdown config (.md*) are never
+ * deleted, even when nested inside a tombstoned directory; a directory that is
+ * deliberately retained because it still holds such protected content is not
+ * reported as a failure. Helper for syslog_prune_files().
+ *
+ * @param string $dir Absolute path to the directory to remove.
+ *
+ * @return bool True if everything that should be removed was removed; false if
+ *              an entry that should have been deleted could not be.
+ */
+function syslog_rmtree(string $dir): bool {
+	$entries = scandir($dir);
+	$ok      = true;
+
+	foreach (($entries !== false ? $entries : []) as $entry) {
+		if ($entry === '.' || $entry === '..') {
+			continue;
+		}
+
+		// Never remove VCS metadata or dot-markdown config, even when nested
+		// inside a tombstoned directory (for example include/.git/config). The
+		// directory holding them is retained below.
+		if (strncmp($entry, '.git', 4) === 0 || strncmp($entry, '.md', 3) === 0) {
+			continue;
+		}
+
+		$path = $dir . '/' . $entry;
+
+		if (is_dir($path) && !is_link($path)) {
+			if (!syslog_rmtree($path)) {
+				$ok = false;
+			}
+		} elseif (!@unlink($path)) {
+			$ok = false;
+		}
+	}
+
+	// Remove the directory itself only once it is genuinely empty. A directory
+	// intentionally kept because it still holds protected content (its own or a
+	// child's) is left in place and is not treated as a removal failure.
+	$remaining = scandir($dir);
+
+	if ($remaining !== false && count($remaining) <= 2 && !@rmdir($dir)) {
+		$ok = false;
+	}
+
+	return $ok;
 }
