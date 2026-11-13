@@ -313,11 +313,6 @@ function plugin_syslog_check_config(): bool {
 function plugin_syslog_upgrade(): bool {
 	require_once(__DIR__ . '/includes/settings.php');
 
-	// Remove files tombstoned in manifest.json (plus the dev-only tests/ tree)
-	// so stale modules left behind by an older layout cannot redeclare
-	// functions now living under includes/ and fatal the plugin on load.
-	syslog_prune_files();
-
 	syslog_upgrade_hook_module_paths();
 	syslog_check_upgrade();
 
@@ -1030,6 +1025,18 @@ function syslog_check_upgrade(bool $force = false): bool {
 		return true;
 	}
 
+	// Housekeeping: when genuinely upgrading from an older version (never on a
+	// fresh install or a same-version repair), remove files tombstoned in
+	// manifest.json before the stored version is bumped below. This runs on
+	// every version-aware entry point - plugin_syslog_upgrade(), the re-enable
+	// path and cli/syslog_schema.php - so a stale top-level module left by an
+	// older layout cannot redeclare a function now living under includes/ and
+	// fatal the plugin on load. Gating on an older installed version keeps the
+	// dev-only tests/ tree intact on a same-version checkout.
+	if ($installed !== false && version_compare((string) $installed, $version['version'], '<')) {
+		syslog_prune_files();
+	}
+
 	foreach (['syslog_alert', 'syslog_remove', 'syslog_reports'] as $table) {
 		db_update_table($table, [
 			'columns' => [['name' => 'hash', 'type' => 'varchar(32)', 'NULL' => false, 'default' => '', 'after' => 'id']],
@@ -1369,22 +1376,29 @@ function syslog_prune_files(): void {
 			continue;
 		}
 
-		// Refuse any path that, after resolving symlinks and ../ segments,
-		// escapes the plugin directory (protects user data from a tampered
-		// manifest.json).
-		$anchor = is_link($path) ? dirname($path) : $path;
-		$real   = realpath($anchor);
+		// Reject any tombstone reached through a symlinked parent directory:
+		// each parent must resolve to its own lexical location inside the
+		// plugin. This stops a tombstone like 'alias/config.php' (where alias
+		// is a symlink to the plugin root) from aliasing - and deleting - a
+		// protected, whitelisted file, and also refuses a parent that escapes
+		// the plugin entirely. A tombstone that is *itself* a symlink is still
+		// allowed; only the link is unlinked, never its target.
+		$parent_rel  = (strpos($rel, '/') !== false) ? substr($rel, 0, strrpos($rel, '/')) : '';
+		$parent_real = realpath($parent_rel === '' ? $plugin_dir : $plugin_dir . '/' . $parent_rel);
+		$expected_parent = $parent_rel === '' ? $plugin_real : $plugin_real . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $parent_rel);
 
-		if ($real === false || ($real !== $plugin_real && strncmp($real, $plugin_real . DIRECTORY_SEPARATOR, strlen((string) $plugin_real) + 1) !== 0)) {
+		if ($plugin_real === false || $parent_real === false || $parent_real !== $expected_parent) {
 			cacti_log(sprintf('WARNING: syslog prune refused to remove %s: path resolves outside the plugin directory (tampered manifest.json?)', $rel), false, 'SYSLOG');
 
 			continue;
 		}
 
-		if (is_dir($path) && !is_link($path)) {
-			$removed = syslog_rmtree($path);
+		$target = $parent_real . DIRECTORY_SEPARATOR . basename($rel);
+
+		if (is_dir($target) && !is_link($target)) {
+			$removed = syslog_rmtree($target);
 		} else {
-			$removed = @unlink($path);
+			$removed = @unlink($target);
 		}
 
 		if (!$removed) {
@@ -1416,12 +1430,15 @@ function syslog_prune_files(): void {
 
 /**
  * Recursively delete a directory and its contents. Symlinks are removed without
- * being followed. Helper for syslog_prune_files().
+ * being followed. VCS metadata (.git*) and dot-markdown config (.md*) are never
+ * deleted, even when nested inside a tombstoned directory; a directory that is
+ * deliberately retained because it still holds such protected content is not
+ * reported as a failure. Helper for syslog_prune_files().
  *
  * @param string $dir Absolute path to the directory to remove.
  *
- * @return bool True if the directory and everything under it was removed; false
- *              if any entry could not be deleted.
+ * @return bool True if everything that should be removed was removed; false if
+ *              an entry that should have been deleted could not be.
  */
 function syslog_rmtree(string $dir): bool {
 	$entries = scandir($dir);
@@ -1429,6 +1446,13 @@ function syslog_rmtree(string $dir): bool {
 
 	foreach (($entries !== false ? $entries : []) as $entry) {
 		if ($entry === '.' || $entry === '..') {
+			continue;
+		}
+
+		// Never remove VCS metadata or dot-markdown config, even when nested
+		// inside a tombstoned directory (for example include/.git/config). The
+		// directory holding them is retained below.
+		if (strncmp($entry, '.git', 4) === 0 || strncmp($entry, '.md', 3) === 0) {
 			continue;
 		}
 
@@ -1443,7 +1467,12 @@ function syslog_rmtree(string $dir): bool {
 		}
 	}
 
-	if (!@rmdir($dir)) {
+	// Remove the directory itself only once it is genuinely empty. A directory
+	// intentionally kept because it still holds protected content (its own or a
+	// child's) is left in place and is not treated as a removal failure.
+	$remaining = scandir($dir);
+
+	if ($remaining !== false && count($remaining) <= 2 && !@rmdir($dir)) {
 		$ok = false;
 	}
 

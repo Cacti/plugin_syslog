@@ -220,3 +220,90 @@ it('refuses a tombstone that escapes through a symlinked directory', function ()
 
 	return $ok === false;
 }, 'symlinks are not supported on this filesystem');
+
+it('refuses a tombstone whose parent is a symlink aliasing a protected file', function () {
+	// 'alias' points back at the plugin root, so 'alias/config.php' resolves,
+	// through the symlinked parent, to the whitelisted config.php. The literal
+	// whitelist check does not catch the aliased path, so the parent-symlink
+	// guard must reject it before deletion.
+	$manifest = [
+		'tombstones' => ['alias/config.php'],
+		'expected'   => ['manifest.json', 'config.php'],
+		'whitelist'  => ['config.php'],
+	];
+
+	$base   = syslog_prune_fixture($manifest);
+	$plugin = $base . '/plugins/syslog';
+	@symlink($plugin, $plugin . '/alias');
+	$restore = $GLOBALS['config']['base_path'];
+
+	$GLOBALS['config']['base_path'] = $base;
+
+	try {
+		syslog_prune_files();
+	} finally {
+		$GLOBALS['config']['base_path'] = $restore;
+	}
+
+	// The protected configuration reached through the symlinked parent survives.
+	expect(is_file($plugin . '/config.php'))->toBeTrue();
+	expect(implode("\n", $GLOBALS['__prune_log']))->toContain('outside the plugin directory');
+})->skip(function () {
+	$probe = sys_get_temp_dir() . '/.prune-symlink-probe-' . uniqid();
+	$ok    = @symlink(__FILE__, $probe);
+	@unlink($probe);
+
+	return $ok === false;
+}, 'symlinks are not supported on this filesystem');
+
+it('preserves nested .git metadata while removing a tombstoned directory', function () {
+	$manifest = [
+		'tombstones' => ['include/'],
+		'expected'   => ['manifest.json'],
+		'whitelist'  => [],
+	];
+
+	$base   = syslog_prune_fixture($manifest);
+	$plugin = $base . '/plugins/syslog';
+	mkdir($plugin . '/include/.git', 0777, true);
+	file_put_contents($plugin . '/include/.git/config', 'nested checkout');
+	$restore = $GLOBALS['config']['base_path'];
+
+	$GLOBALS['config']['base_path'] = $base;
+
+	try {
+		syslog_prune_files();
+	} finally {
+		$GLOBALS['config']['base_path'] = $restore;
+	}
+
+	// Non-protected content is removed, the nested VCS metadata and its parent
+	// are retained, and the intentional retention is not logged as a failure.
+	expect(is_file($plugin . '/include/old.php'))->toBeFalse();
+	expect(is_file($plugin . '/include/.git/config'))->toBeTrue();
+	expect(is_dir($plugin . '/include'))->toBeTrue();
+	expect(implode("\n", $GLOBALS['__prune_log']))->not->toContain('could not remove');
+});
+
+it('prunes from the shared version-aware upgrade path, gated to a genuine upgrade', function () {
+	// The re-enable path and cli/syslog_schema.php call syslog_check_upgrade()
+	// directly; pruning lives there (before the version bump) rather than only
+	// in plugin_syslog_upgrade() so no entry point can record a new version
+	// while leaving stale modules behind. It is gated on an older installed
+	// version so a fresh install or same-version repair never removes the
+	// dev-only tests/ tree.
+	$check_upgrade = plugin_test_read_source('setup.php');
+	$check_upgrade = substr($check_upgrade, strpos($check_upgrade, 'function syslog_check_upgrade'));
+	$check_upgrade = substr($check_upgrade, 0, strpos($check_upgrade, "\nfunction "));
+
+	$prune_pos = strpos($check_upgrade, 'syslog_prune_files();');
+
+	expect($prune_pos)->not->toBeFalse();
+	expect($prune_pos)->toBeLessThan(strpos($check_upgrade, 'syslog_refresh_plugin_version();'));
+
+	// The prune call must be guarded by an older-version check.
+	$guard = substr($check_upgrade, 0, $prune_pos);
+	$guard = substr($guard, strrpos($guard, 'if ('));
+
+	expect($guard)->toContain("version_compare((string) \$installed, \$version['version'], '<')");
+});
