@@ -3031,6 +3031,52 @@ function syslog_partition_create($table, $time = null, &$reason = null) {
 			[$syslogdb_default, $cformat, $table]);
 
 		if (!cacti_sizeof($exists)) {
+			/*
+			 * The target partition name is absent, but an existing concrete
+			 * partition may already cover this day under a different name or
+			 * boundary. Tables carried over from an older schema, or left
+			 * inconsistent by an interrupted upgrade, can hold a partition
+			 * whose boundary already reaches or exceeds the target while using
+			 * a name the lookup above does not match. Splitting dMaxValue only
+			 * succeeds when the new boundary is strictly greater than every
+			 * existing concrete boundary; otherwise MySQL rejects it with
+			 * error 1493 ('VALUES LESS THAN value must be strictly
+			 * increasing'), which wedges recovery and parks writes in
+			 * dMaxValue indefinitely. Compare the target boundary against the
+			 * highest existing boundary first and treat an already-covered day
+			 * as a successful no-op instead of emitting a doomed REORGANIZE.
+			 */
+			$boundary_info = syslog_db_fetch_row_prepared('SELECT
+				MAX(CAST(partition_description AS SIGNED)) AS max_boundary,
+				MAX(partition_expression) AS partition_expression
+				FROM `information_schema`.`partitions`
+				WHERE table_schema = ?
+				AND table_name = ?
+				AND partition_description IS NOT NULL
+				AND partition_description != ?',
+				[$syslogdb_default, $table, 'MAXVALUE']);
+
+			$max_boundary         = isset($boundary_info['max_boundary']) ? $boundary_info['max_boundary'] : null;
+			$partition_expression = isset($boundary_info['partition_expression']) ? (string) $boundary_info['partition_expression'] : '';
+
+			if (stripos($partition_expression, 'to_days') !== false) {
+				$target_boundary = syslog_db_fetch_cell_prepared('SELECT TO_DAYS(?)', [$boundary_date]);
+			} elseif (stripos($partition_expression, 'unix_timestamp') !== false) {
+				$target_boundary = $boundary_epoch;
+			} else {
+				$target_boundary = null;
+			}
+
+			if ($target_boundary !== null && $max_boundary !== null
+				&& is_numeric($target_boundary) && is_numeric($max_boundary)
+				&& (float) $target_boundary <= (float) $max_boundary) {
+				cacti_log("SYSLOG: Partition '$cformat' on '$table' is already covered by an existing partition boundary ($max_boundary); skipping creation", false, 'SYSTEM');
+
+				$success = true;
+
+				return true;
+			}
+
 			$overflow = syslog_db_fetch_row_prepared('SELECT TABLE_ROWS AS overflow_rows,
 				DATA_LENGTH + INDEX_LENGTH AS overflow_bytes
 				FROM information_schema.PARTITIONS
@@ -3262,23 +3308,55 @@ function syslog_partition_check($table, $time = null) {
 		$time = time() + 3600;
 	}
 
-	// find date of last partition
-	$last_part = syslog_db_fetch_cell_prepared('SELECT PARTITION_NAME
+	/*
+	 * Decide whether a concrete partition still needs to be created for
+	 * $time by comparing boundaries, not partition names. A legacy or
+	 * partly-upgraded table can carry partition names that no longer line up
+	 * with their upper boundaries, so a name-only comparison both misses real
+	 * gaps and flags days an existing boundary already covers. Flagging a
+	 * covered day as missing would make recovery spend its bounded per-run
+	 * budget on no-op creations and starve the genuine gap. Mirror
+	 * syslog_partition_create(): the day needs a new partition only when its
+	 * target boundary is strictly greater than every existing concrete
+	 * boundary.
+	 */
+	$partition_expression = syslog_db_fetch_cell_prepared('SELECT partition_expression
 		FROM `information_schema`.`partitions`
 		WHERE table_schema = ?
 		AND table_name = ?
+		AND partition_description IS NOT NULL
+		AND partition_description != ?
 		ORDER BY partition_ordinal_position DESC
-		LIMIT 1,1',
-		[$syslogdb_default, $table]);
+		LIMIT 1',
+		[$syslogdb_default, $table, 'MAXVALUE']);
 
-	$lformat   = str_replace('d', '', $last_part);
-	$cformat   = gmdate('Ymd', $time);
+	$boundary_epoch = (intdiv((int) $time, 86400) + 1) * 86400;
 
-	if ($cformat > $lformat) {
-		return true;
+	if (stripos((string) $partition_expression, 'to_days') !== false) {
+		$target_boundary = syslog_db_fetch_cell_prepared('SELECT TO_DAYS(?)', [gmdate('Y-m-d', $boundary_epoch)]);
+	} elseif (stripos((string) $partition_expression, 'unix_timestamp') !== false) {
+		$target_boundary = $boundary_epoch;
 	} else {
-		return false;
+		// Boundary units are unknown (unpartitioned or unreadable metadata):
+		// conservatively request creation so a real gap is never ignored.
+		// syslog_partition_create() applies the same boundary guard before
+		// issuing DDL, so a covered day is still a safe no-op there.
+		return true;
 	}
+
+	$max_boundary = syslog_db_fetch_cell_prepared('SELECT MAX(CAST(partition_description AS SIGNED))
+		FROM `information_schema`.`partitions`
+		WHERE table_schema = ?
+		AND table_name = ?
+		AND partition_description IS NOT NULL
+		AND partition_description != ?',
+		[$syslogdb_default, $table, 'MAXVALUE']);
+
+	if (!is_numeric($max_boundary) || !is_numeric($target_boundary)) {
+		return true;
+	}
+
+	return (float) $target_boundary > (float) $max_boundary;
 }
 
 /**
