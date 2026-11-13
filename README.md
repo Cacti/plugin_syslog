@@ -149,10 +149,14 @@ php plugins/syslog/cli/updatedb_convert_ms.php
 
 The utility is **MariaDB only** and **destructive**: it truncates the
 `syslog`, `syslog_incoming`, and `syslog_removed` tables (deleting all stored
-messages) and changes their `logtime` column to `TIMESTAMP(3)`.  Alert, removal,
-and report rules and all settings are preserved.  It prompts for confirmation;
-pass `--confirm` to skip the prompt in automation, and `--help` for usage.  Take
-a database backup first.
+messages) and changes their `logtime` column to `TIMESTAMP(3)`. The replication
+outbox (`syslog_replication_output`) is widened in place so any undelivered rows
+are preserved, and the sequence high-water marks of the truncated tables are kept
+so remote replication identities are never reused. Alert, removal, and report
+rules and all settings are preserved. The conversion is all-or-nothing and
+re-runnable: the stored precision is only recorded once every target column is
+`TIMESTAMP(3)`. It prompts for confirmation; pass `--confirm` to skip the prompt
+in automation, and `--help` for usage.  Take a database backup first.
 
 ### Delivering sub-second timestamps from your log forwarders
 

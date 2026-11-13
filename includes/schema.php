@@ -317,13 +317,18 @@ function syslog_ensure_status_table(): void {
 function syslog_create_replication_output_table(): void {
 	global $syslogdb_default;
 
+	// The outbox carries the original event logtime and is archived on the
+	// Main Collector by an exact logtime match, so it must share the message
+	// tables' precision or milliseconds would be lost and the match would fail.
+	$logtime_col = syslog_logtime_sql_type(syslog_resolve_logtime_precision());
+
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_replication_output` (
 		`source_poller_id` int(10) unsigned NOT NULL COMMENT 'Originating Cacti data collector ID',
 		`source_event_id` bigint unsigned NOT NULL COMMENT 'Immutable local syslog_incoming sequence',
 		`facility_id` int(10) unsigned default NULL COMMENT 'Portable syslog facility value',
 		`priority_id` int(10) unsigned default NULL COMMENT 'Portable syslog priority value',
 		`program` varchar(40) default NULL COMMENT 'Source program text',
-		`logtime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Original event timestamp',
+		`logtime` $logtime_col COMMENT 'Original event timestamp',
 		`host` varchar(64) default NULL COMMENT 'Source host text',
 		`message` TEXT NOT NULL COMMENT 'Source message text',
 		`threshold_breached` tinyint(1) unsigned DEFAULT NULL,

@@ -22,6 +22,15 @@ $syslogdb_default = 'syslog';
 function syslog_connect() { return true; }
 function cacti_sizeof($value) { return count($value); }
 function read_config_option($name) { return ''; }
+// The precision helpers live above syslog_setup_table_new() in schema.php and
+// are not part of the evaluated slice, so stub them. Repair runs assert plain
+// second-precision table construction.
+function syslog_resolve_logtime_precision($requested = '') { return 'sec'; }
+function syslog_logtime_sql_type($precision) {
+	return $precision === 'ms'
+		? "timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'"
+		: "timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'";
+}
 function set_config_option($name, $value, $force = false) {
 	global $options_saved;
 	$options_saved[$name] = $value;
