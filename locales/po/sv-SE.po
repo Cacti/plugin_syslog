@@ -4,11 +4,31 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-10-26 13:53-0400\nPO-Revision-Date: 2026-11-09 22:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-13 11:06-0500\n"
+"PO-Revision-Date: 2026-11-09 22:18+0000\n"
+"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
+"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
+"Language: sv-SE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
 msgstr "Hämta Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Dela med användare …"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Dela med grupper …"
 
 #: includes/functions.php
 msgid "Emergency"
@@ -419,6 +439,22 @@ msgstr "InnoDB-lagring"
 msgid "Aria Storage"
 msgstr "Aria-lagring"
 
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr ""
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
+msgstr ""
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr ""
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr ""
+
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
 msgstr "Behandling av fjärrmeddelanden"
@@ -496,6 +532,10 @@ msgstr "Du kan också ange databasens lagringsmotor för de analytiska tabellern
 #: includes/installer.php
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
 msgstr "Du har flera alternativ att välja mellan när du installerar Syslog. Det första är databasarkitekturen. Partitionerade tabeller är den enda arkitektur som stöds, eftersom de hindrar tabellerna från att bli alltför stora och därmed sakta ned frågor. Traditionella tabeller utan partitionering är föråldrade och erbjuds inte längre för nya installationer."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr ""
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
@@ -1544,6 +1584,10 @@ msgstr "Nästa"
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
 msgstr "Byt namn på antingen config.php.dist eller config_local.php.dist i syslog-katalogen och konfigurera databasen före installationen."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr ""
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
@@ -2881,14 +2925,6 @@ msgstr "Det gick inte att spara instrumentpanelen. Försök igen."
 #: syslog_dashboards.php
 msgid "Enter a dashboard name between 1 and 128 characters."
 msgstr "Ange ett namn på instrumentpanelen med mellan 1 och 128 tecken."
-
-#: syslog_dashboards.php syslog_saved_searches.php
-msgid "Share with users…"
-msgstr "Dela med användare …"
-
-#: syslog_dashboards.php syslog_saved_searches.php
-msgid "Share with groups…"
-msgstr "Dela med grupper …"
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
