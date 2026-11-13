@@ -35,6 +35,8 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'syslog_refresh_plugin_version',
 		'syslog_upgrade_hook_module_paths',
 		'syslog_check_dependencies',
+		'syslog_prune_files',
+		'syslog_rmtree',
 	];
 
 	expect($matches[1])->toEqualCanonicalizing($allowed);

@@ -146,6 +146,9 @@ jobs:
     - name: Check PHP version
       run: php -v
 
+    - name: Validate plugin manifest (expected-file drift)
+      run: php ${{ github.workspace }}/cacti/plugins/syslog/tests/bin/validate-manifest.php
+
     - name: Run apt-get update
       run: sudo apt-get update
 
