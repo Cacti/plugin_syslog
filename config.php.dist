@@ -76,6 +76,14 @@ $syslog_replication_main_db_ssl_ca   = $database_ssl_ca;
 //$syslog_install_options['mode']         = 'install';
 //$syslog_install_options['id']           = 'syslog';
 
+/* Timestamp precision for the logtime column on a NEW install:
+ *   'ms'  - millisecond TIMESTAMP(3), preserves sub-second ordering (MariaDB only, default)
+ *   'sec' - second granularity TIMESTAMP
+ * Millisecond precision is only supported on MariaDB; a 'ms' request on MySQL is
+ * rejected.  On a production system this cannot be changed in place later without
+ * destroying the stored messages (see cli/updatedb_convert_ms.php). */
+//$syslog_install_options['logtime_precision'] = 'ms';
+
 /* field in the incoming table */
 $syslog_incoming_config['priorityField']      = 'priority_id';
 $syslog_incoming_config['facilityField']      = 'facility_id';

@@ -137,6 +137,21 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 		exit;
 	}
 
+	// Millisecond (TIMESTAMP(3)) logtime storage is only supported on MariaDB,
+	// where a fractional column can still be RANGE partitioned and pruned.
+	// Reject an explicit millisecond request on MySQL rather than silently
+	// downgrading it, so the operator understands why.
+	if (isset($options['logtime_precision']) && $options['logtime_precision'] === 'ms' && !syslog_db_is_mariadb()) {
+		raise_message('syslog_error', __('Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		cacti_log('SYSLOG ERROR: Install rejected because millisecond timestamps were requested on MySQL, which cannot partition-prune a fractional logtime column', false, 'SYSLOG');
+
+		if (isset($options['install'])) {
+			syslog_install_advisor($syslog_exists, $options);
+		}
+
+		return;
+	}
+
 	$requested_engine      = isset($options['engine']) ? $options['engine'] : 'InnoDB';
 	$compatibility_options = $options;
 

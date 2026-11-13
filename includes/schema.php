@@ -401,16 +401,123 @@ function syslog_create_replication_recovery_table(): void {
 }
 
 /**
+ * Report whether the Syslog database server is MariaDB (as opposed to MySQL).
+ *
+ * Millisecond (fractional second) logtime storage relies on MariaDB being able
+ * to RANGE partition a TIMESTAMP(3) column by UNIX_TIMESTAMP(logtime) and still
+ * prune partitions.  MySQL rejects that partition function on a fractional
+ * column, so millisecond precision is only ever offered on MariaDB.
+ *
+ * @return bool True when the server identifies itself as MariaDB.
+ */
+function syslog_db_is_mariadb(): bool {
+	syslog_connect();
+
+	$database = syslog_db_fetch_row('SHOW GLOBAL VARIABLES LIKE "version"');
+	$version  = is_array($database) && isset($database['Value']) ? (string) $database['Value'] : '';
+
+	return stripos($version, 'mariadb') !== false;
+}
+
+/**
+ * Return the SQL column definition for the logtime column at a given precision.
+ *
+ * 'ms' yields a millisecond TIMESTAMP(3); anything else yields a second
+ * granularity TIMESTAMP, matching the historical definition.  The result is a
+ * pure string so it can be interpolated into CREATE/ALTER statements.
+ *
+ * @param string $precision Either 'ms' for TIMESTAMP(3) or 'sec' for TIMESTAMP.
+ *
+ * @return string The column type and default clause, without the column name.
+ */
+function syslog_logtime_sql_type(string $precision): string {
+	if ($precision === 'ms') {
+		return "timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'";
+	}
+
+	return "timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'";
+}
+
+/**
+ * Detect the logtime precision of an existing table from its real column type.
+ *
+ * The actual schema is authoritative on upgrade: a fractional column type
+ * (for example timestamp(3)) means 'ms', anything else means 'sec'.
+ *
+ * @param string $table The table whose logtime column should be inspected.
+ *
+ * @return string 'ms', 'sec', or '' when the column could not be read.
+ */
+function syslog_detect_logtime_precision(string $table): string {
+	global $syslogdb_default;
+
+	$type = syslog_db_fetch_cell_prepared(
+		'SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = \'logtime\'',
+		[$syslogdb_default, $table],
+		'',
+		false
+	);
+
+	$type = strtolower((string) $type);
+
+	if ($type === '') {
+		return '';
+	}
+
+	return (strpos($type, 'timestamp(') !== false || strpos($type, 'datetime(') !== false) ? 'ms' : 'sec';
+}
+
+/**
+ * Resolve the effective logtime precision for table creation and storage.
+ *
+ * The existing syslog table is authoritative so an upgrade never silently
+ * migrates the schema, even if the configured precision changed (that switch is
+ * a deliberate, data destroying CLI operation).  For a fresh install the
+ * requested value (or stored setting) is used, defaulting to 'ms', and is
+ * clamped to 'sec' on MySQL where fractional partitioning cannot prune.
+ *
+ * @param string $requested The requested precision ('ms'/'sec'), or '' to use
+ *                          the stored setting / default.
+ *
+ * @return string Either 'ms' or 'sec'.
+ */
+function syslog_resolve_logtime_precision(string $requested = ''): string {
+	if (syslog_db_table_exists('syslog', false)) {
+		$detected = syslog_detect_logtime_precision('syslog');
+
+		if ($detected !== '') {
+			return $detected;
+		}
+	}
+
+	if ($requested === '') {
+		$requested = (string) read_config_option('syslog_install_logtime_precision');
+	}
+
+	$precision = ($requested === 'sec') ? 'sec' : 'ms';
+
+	// MySQL cannot RANGE partition-prune a fractional TIMESTAMP(3); only
+	// MariaDB supports millisecond logtime storage.
+	if ($precision === 'ms' && !syslog_db_is_mariadb()) {
+		$precision = 'sec';
+	}
+
+	return $precision;
+}
+
+/**
  * Create the partitioned Syslog table, including past and future partitions.
  *
  * @param string           $engine     The storage engine to create the table with.
  * @param float|int|string $days       The number of days of retention to provision.
  * @param int|string|false $ahead_days The number of days of partitions to create
  *                                     ahead of today, or false when unconfigured.
+ * @param string           $precision  The logtime precision, 'ms' for TIMESTAMP(3)
+ *                                     or 'sec' for TIMESTAMP (the default).
  *
  * @return void
  */
-function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3) {
+function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3, $precision = 'sec') {
 	global $config, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
@@ -432,6 +539,14 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 
 	$ahead_days = (int) $ahead_days;
 
+	// Inlined rather than delegated to syslog_logtime_sql_type() so this
+	// function's body stays self-contained for the source-extraction tests.
+	if ($precision === 'ms') {
+		$logtime_col = "timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'";
+	} else {
+		$logtime_col = "timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'";
+	}
+
 	if (stripos($engine, 'aria') !== false) {
 		$row_format = 'ROW_FORMAT=Page';
 	} else {
@@ -443,7 +558,7 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 		priority_id int(10) unsigned default NULL,
 		program_id int(10) unsigned default NULL,
 		host_id int(10) unsigned default NULL,
-		logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+		logtime $logtime_col,
 		message TEXT NOT NULL,
 		message_digest char(32) NOT NULL default '',
 		threshold_breached tinyint(1) unsigned DEFAULT NULL,
@@ -585,12 +700,20 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		$options['days'] = 30;
 	}
 
+	// Resolve the effective logtime precision.  On upgrade the existing
+	// schema is authoritative (never auto-migrated here); on a fresh install
+	// the requested/stored value is used, defaulting to millisecond on
+	// MariaDB and clamped to second precision on MySQL.
+	$precision   = syslog_resolve_logtime_precision(isset($options['logtime_precision']) ? (string) $options['logtime_precision'] : '');
+	$logtime_col = syslog_logtime_sql_type($precision);
+
 	// set table construction settings for the remote pollers
 	if (!$repair) {
 		set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type']) ? '' : $options['upgrade_type'], true);
 		set_config_option('syslog_install_engine',       $engine, true);
 		set_config_option('syslog_install_db_type',      empty($options['db_type']) ? '' : $options['db_type'], true);
 		set_config_option('syslog_install_days',         empty($options['days']) ? '' : $options['days'], true);
+		set_config_option('syslog_install_logtime_precision', $precision, true);
 	}
 
 	if ($truncate) {
@@ -599,7 +722,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 
 	// The syslog table is created partitioned; the helper also selects the
 	// matching ROW_FORMAT for the chosen engine.
-	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'));
+	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'), $precision);
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,
@@ -648,7 +771,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 		facility_id int(10) unsigned default NULL,
 		priority_id int(10) unsigned default NULL,
 		program varchar(40) default NULL,
-		logtime TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
+		logtime $logtime_col,
 		host varchar(64) default NULL,
 		message TEXT NOT NULL,
 		threshold_breached tinyint(1) unsigned DEFAULT NULL,
