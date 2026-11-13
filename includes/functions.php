@@ -215,25 +215,28 @@ function syslog_search_fields(): array {
 /**
  * Database-backed values used by query-builder dropdowns.
  *
+ * Facilities and priorities are small, fixed enumerations, so they are safe to
+ * preload as full dropdown choices. Programs are intentionally excluded: a busy
+ * collector can accumulate an effectively unbounded number of distinct program
+ * names, and eagerly loading them all here built a very large choice array that
+ * could exhaust the PHP memory limit and fatal (HTTP 503) when rendering the
+ * Alert, Removal, and Dashboard editors. The program and program_id fields
+ * resolve through the bounded AJAX suggestion endpoint (syslog_search_suggestions)
+ * instead, so they never need to be materialized up front.
+ *
  * @return array<string, array<int, array<int, string>>> Map of field names to choice arrays.
  */
 function syslog_search_choices(): array {
 	global $syslogdb_default;
 	$choices = [];
 
-	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities', 'program' => 'syslog_programs'] as $field => $table) {
+	foreach (['facility' => 'syslog_facilities', 'priority' => 'syslog_priorities'] as $field => $table) {
+		$choices[$field]         = [];
 		$choices[$field . '_id'] = [];
-
-		if ($field !== 'program') {
-			$choices[$field] = [];
-		}
 
 		foreach (syslog_db_fetch_assoc("SELECT {$field}_id AS id, $field AS name FROM `$syslogdb_default`.`$table` ORDER BY $field") as $record) {
 			$choices[$field . '_id'][] = [(string) $record['id'], $record['name'] . ' (' . $record['id'] . ')'];
-
-			if ($field !== 'program') {
-				$choices[$field][] = [$record['name'], $record['name']];
-			}
+			$choices[$field][]         = [$record['name'], $record['name']];
 		}
 	}
 
