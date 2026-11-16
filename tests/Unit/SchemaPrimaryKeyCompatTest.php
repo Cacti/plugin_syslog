@@ -118,3 +118,24 @@ it('does not replay a successful definition but retries failures and changed def
 	expect(syslog_db_update_table('syslog_repeat_probe', $definition, false, true, $connection))->toBeTrue();
 	expect($calls)->toBe(4);
 });
+
+
+it('always reaches db_update_table() for repeated updates of an existing table and propagates failures', function () {
+	syslog_load_plugin_source('includes/schema.php');
+	$GLOBALS['config']['cacti_version'] = '1.2.32';
+	$connection = new stdClass();
+	$results = [true, true, false];
+	$calls = 0;
+	test_override('syslog_db_table_exists', fn () => true);
+	test_override('db_update_table', function () use (&$calls, &$results) {
+		$calls++;
+		return array_shift($results);
+	});
+	$definition = ['columns' => [['name' => 'user', 'type' => 'varchar(50)']], 'primary' => ['id']];
+
+	expect(syslog_db_update_table('syslog_existing_probe', $definition, false, true, $connection))->toBeTrue();
+	expect(syslog_db_update_table('syslog_existing_probe', $definition, false, true, $connection))->toBeTrue();
+	expect($calls)->toBe(2);
+	expect(syslog_db_update_table('syslog_existing_probe', $definition, false, true, $connection))->toBeFalse();
+	expect($calls)->toBe(3);
+});
