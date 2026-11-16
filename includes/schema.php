@@ -56,13 +56,33 @@ function syslog_cacti_db_array_primary_safe(): bool {
  * @return bool True on success, false on failure.
  */
 function syslog_db_update_table($table, $data, $removecolumns = false, $log = true, $db_conn = false) {
+	global $syslog_cnn;
+
+	static $applied = [];
+
+	// Core caches missing tables even after CREATE. Do not repeat an identical
+	// successful schema operation in this request (connect and upgrade can overlap).
+	$connection = is_object($db_conn) ? $db_conn : $syslog_cnn;
+	$key        = (is_object($connection) ? spl_object_hash($connection) : 'default') . ':' . $table;
+	$definition = [$connection, $data, $removecolumns];
+
+	if (isset($applied[$key]) && $applied[$key] === $definition && syslog_db_table_exists($table, false)) {
+		return true;
+	}
+
 	if (isset($data['primary']) && is_array($data['primary'])
 		&& !syslog_cacti_db_array_primary_safe()
 		&& !syslog_db_table_exists($table, false)) {
 		$data['primary'] = implode('`,`', $data['primary']);
 	}
 
-	return db_update_table($table, $data, $removecolumns, $log, $db_conn);
+	$result = db_update_table($table, $data, $removecolumns, $log, $db_conn);
+
+	if ($result) {
+		$applied[$key] = $definition;
+	}
+
+	return $result;
 }
 
 /**

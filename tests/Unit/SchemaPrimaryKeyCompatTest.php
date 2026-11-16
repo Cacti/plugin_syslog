@@ -90,3 +90,31 @@ it('joins a composite primary with back-ticks on older Cacti during creation', f
 	expect(syslog_db_update_table('syslog_dashboards_perm', $definition, false, true, new stdClass()))->toBeTrue()
 		->and($captured->primary)->toBe('dashboard_id`,`type`,`item_id');
 });
+
+
+it('does not replay a successful definition but retries failures and changed definitions', function () {
+	syslog_load_plugin_source('includes/schema.php');
+	$GLOBALS['config']['cacti_version'] = '1.2.32';
+	$connection = new stdClass();
+	$exists = false;
+	$succeed = false;
+	$calls = 0;
+	test_override('syslog_db_table_exists', function () use (&$exists) { return $exists; });
+	test_override('db_update_table', function () use (&$calls, &$succeed, &$exists) {
+		$calls++;
+		$exists = $succeed;
+		return $succeed;
+	});
+	$definition = ['columns' => [['name' => 'id', 'type' => 'int']], 'primary' => ['id']];
+	expect(syslog_db_update_table('syslog_repeat_probe', $definition, false, true, $connection))->toBeFalse();
+	$succeed = true;
+	expect(syslog_db_update_table('syslog_repeat_probe', $definition, false, true, $connection))->toBeTrue();
+	expect(syslog_db_update_table('syslog_repeat_probe', $definition, false, true, $connection))->toBeTrue();
+	expect($calls)->toBe(2);
+	$definition['columns'][] = ['name' => 'label', 'type' => 'text'];
+	expect(syslog_db_update_table('syslog_repeat_probe', $definition, false, true, $connection))->toBeTrue();
+	expect($calls)->toBe(3);
+	$exists = false;
+	expect(syslog_db_update_table('syslog_repeat_probe', $definition, false, true, $connection))->toBeTrue();
+	expect($calls)->toBe(4);
+});
