@@ -56,6 +56,21 @@ it('creates and replicates device rules for remote collectors', function () {
 		->toContain("syslog_replace_data(\$table, \$rows, \$data['rcnn_id'], \$syslog_cnn)");
 });
 
+it('maps the legacy host_id hostField to the incoming host column', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$GLOBALS['syslog_incoming_config'] = ['hostField' => 'host_id', 'priorityField' => 'priority_id'];
+
+	expect(syslog_incoming_host_field())->toBe('host');
+
+	$filter = syslog_device_rule_sql(true);
+	expect($filter['sql'])->toContain('dr.host = `syslog_incoming`.`host`')
+		->not->toContain('`host_id`');
+
+	$GLOBALS['syslog_incoming_config'] = ['hostField' => 'src_host'];
+	expect(syslog_incoming_host_field())->toBe('src_host');
+});
+
 it('correlates device suppression and maintenance exceptions with the incoming message host', function () {
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default'] = 'syslog';

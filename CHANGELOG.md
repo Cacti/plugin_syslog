@@ -2,6 +2,9 @@
 
 --- 5.0 ---
 
+* issue#451: Treat the stale hostField value 'host_id' (shipped in config_local.php.dist since 2022) as the syslog_incoming 'host' column, and correct config_local.php.dist, so the device-rule mute/maintenance filter and host alerts no longer fail with "Unknown column 'syslog_incoming.host_id'" during alert processing
+* issue#452, issue#453: Resolve remote collector hostnames from the Cacti poller table over the Cacti connection instead of joining it on the Syslog connection, and tolerate a failed query, so the Syslog Status and Dashboard tabs no longer throw a TypeError that disabled the plugin when the Syslog tables live in a separate database
+
 * issue#440: Avoid repeating successful schema operations and seed the default dashboard after schema setup, preventing duplicate table creation during installation and upgrade
 
 * feature: Add an install-time timestamp precision choice for the logtime column (issue #325). New MariaDB installs default to millisecond TIMESTAMP(3), which preserves sub-second ordering and still RANGE partition-prunes; MySQL installs are fixed to second precision because MySQL cannot prune a fractional partitioned column, and an explicit millisecond request on MySQL is rejected. Upgrades never migrate the schema automatically; switch an existing MariaDB install with the destructive cli/updatedb_convert_ms.php utility during a maintenance window. README documents forwarder configuration (rsyslog, Cisco, Juniper, Arista, syslog-ng) for delivering sub-second timestamps

@@ -106,6 +106,6 @@ $syslog_install_options['id']           = 'syslog';
 $syslog_incoming_config['timeField']     = 'logtime';
 $syslog_incoming_config['priorityField'] = 'priority_id';
 $syslog_incoming_config['facilityField'] = 'facility_id';
-$syslog_incoming_config['hostField']     = 'host_id';
+$syslog_incoming_config['hostField']     = 'host';
 $syslog_incoming_config['textField']     = 'message';
 $syslog_incoming_config['id']            = 'seq';
