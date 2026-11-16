@@ -1189,12 +1189,12 @@ function syslog_check_upgrade(bool $force = false): bool {
 	return true;
 }
 
-/** Create dashboard structures and seed the shared starter during install/upgrade. */
+/** Seed the shared starter after the install/upgrade caller creates its tables. */
 function syslog_dashboard_seed_default(): void {
 	global $syslogdb_default;
 
-	syslog_ensure_dashboard_tables();
-
+	// Both callers already ensured the schema. Repeating that work can reuse
+	// Cacti's cached missing-table result and try to create the tables twice.
 	$lock = 'syslog_dashboard_' . md5($syslogdb_default);
 
 	if (!syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 5)', [$lock])) {
