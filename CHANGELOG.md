@@ -2,6 +2,7 @@
 
 --- 5.0 ---
 
+* issue#440: Remember only a successful table creation (not updates of existing tables) when avoiding repeated schema operations, so schema drift on an existing table, such as a narrowed owner column, is still detected and repaired within the same request
 * issue#451: Treat the stale hostField value 'host_id' (shipped in config_local.php.dist since 2022) as the syslog_incoming 'host' column, and correct config_local.php.dist, so the device-rule mute/maintenance filter and host alerts no longer fail with "Unknown column 'syslog_incoming.host_id'" during alert processing
 * issue#452, issue#453: Resolve remote collector hostnames from the Cacti poller table over the Cacti connection instead of joining it on the Syslog connection, and tolerate a failed query, so the Syslog Status and Dashboard tabs no longer throw a TypeError that disabled the plugin when the Syslog tables live in a separate database
 
