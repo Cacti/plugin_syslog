@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-13 11:06-0500\n"
-"PO-Revision-Date: 2026-11-09 22:18+0000\n"
-"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
-"Language: sv-SE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-13 11:06-0500\nPO-Revision-Date: 2026-11-16 08:18+0000\nLast-Translator: Daniel Nylander <daniel@danielnylander.se>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -441,19 +429,19 @@ msgstr "Aria-lagring"
 
 #: includes/installer.php
 msgid "Timestamp Precision"
-msgstr ""
+msgstr "Tidsstämpelprecision"
 
 #: includes/installer.php
 msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
-msgstr ""
+msgstr "Millisekundprecision lagrar syslog-tidsstämplar med bråkdelar av sekunder i en TIMESTAMP(3)-kolumn och är endast tillgänglig i MariaDB. Sekundprecision använder en vanlig TIMESTAMP-kolumn. I ett produktionssystem kan detta senare endast ändras genom att köra konverteringsverktyget cli/updatedb_convert_ms.php, som trunkerar de lagrade meddelandena."
 
 #: includes/installer.php
 msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
-msgstr ""
+msgstr "Millisekund, TIMESTAMP(3), endast MariaDB"
 
 #: includes/installer.php
 msgid "Second - TIMESTAMP"
-msgstr ""
+msgstr "Sekund, TIMESTAMP"
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
@@ -535,7 +523,7 @@ msgstr "Du har flera alternativ att välja mellan när du installerar Syslog. De
 
 #: includes/installer.php
 msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
-msgstr ""
+msgstr "Du kan även välja tidsstämpelprecision. Millisekundprecision, TIMESTAMP(3), bevarar ordningen mellan inkommande meddelanden inom samma sekund och är endast tillgänglig i MariaDB. MySQL-installationer använder sekundprecision. Detta kan senare inte ändras på plats utan att de lagrade meddelandena förstörs."
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
@@ -1587,7 +1575,7 @@ msgstr "Byt namn på antingen config.php.dist eller config_local.php.dist i sysl
 
 #: setup.php
 msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
-msgstr ""
+msgstr "Tidsstämplar med millisekundprecision, TIMESTAMP(3), stöds endast i MariaDB. Den här servern är MySQL, så installera med tidsstämplar med sekundprecision i stället."
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
@@ -1938,7 +1926,7 @@ msgstr "Väntar på bearbetning"
 
 #: syslog.php
 msgid "Health"
-msgstr "Hälsa"
+msgstr "Status"
 
 #: syslog.php
 msgid "Ready"
