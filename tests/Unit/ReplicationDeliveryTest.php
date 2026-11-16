@@ -53,17 +53,45 @@ it('reads main collector remote receipt telemetry without scanning syslog histor
 	$GLOBALS['config'] = ['poller_id' => 1];
 	$GLOBALS['syslogdb_default'] = 'cacti';
 	$sql = '';
+	$poller_sql = '';
 	test_override('syslog_db_table_exists', fn ($table) => $table === 'syslog_replication_collectors');
 	test_override('syslog_db_fetch_assoc', function ($statement) use (&$sql) { $sql = $statement; return [[
-		'source_poller_id' => 2, 'hostname' => 'remote-poller.example.com', 'last_batch_count' => 100, 'last_received' => 1758801600,
+		'source_poller_id' => 2, 'last_batch_count' => 100, 'last_received' => 1758801600,
 	]]; });
+	test_override('db_fetch_assoc_prepared', function ($statement) use (&$poller_sql) { $poller_sql = $statement; return [['id' => 2, 'hostname' => 'remote-poller.example.com']]; });
 	syslog_load_plugin_source('includes/functions.php');
 
-	expect(syslog_replication_collector_status())->toHaveCount(1)
+	$collectors = syslog_replication_collector_status();
+
+	expect($collectors)->toHaveCount(1)
+		->and($collectors[0]['hostname'])->toBe('remote-poller.example.com')
 		->and($sql)->toContain('syslog_replication_collectors')
-		->toContain('LEFT JOIN poller AS p')
-		->toContain('p.hostname')
-		->not->toContain('`.`syslog`');
+		->not->toContain('poller AS p')
+		->not->toContain('`.`syslog`')
+		->and($poller_sql)->toContain('FROM poller');
+});
+
+it('returns no collectors instead of a TypeError when the receipt query fails', function () {
+	$GLOBALS['config'] = ['poller_id' => 1];
+	$GLOBALS['syslogdb_default'] = 'syslog_db';
+	test_override('syslog_db_table_exists', fn () => true);
+	test_override('syslog_db_fetch_assoc', fn () => false);
+	syslog_load_plugin_source('includes/functions.php');
+
+	expect(syslog_replication_collector_status())->toBe([]);
+});
+
+it('keeps collectors listed when the poller hostname lookup fails', function () {
+	$GLOBALS['config'] = ['poller_id' => 1];
+	$GLOBALS['syslogdb_default'] = 'syslog_db';
+	test_override('syslog_db_table_exists', fn () => true);
+	test_override('syslog_db_fetch_assoc', fn () => [['source_poller_id' => 3, 'last_batch_count' => 5, 'last_received' => 1]]);
+	test_override('db_fetch_assoc_prepared', fn () => false);
+	syslog_load_plugin_source('includes/functions.php');
+
+	$collectors = syslog_replication_collector_status();
+
+	expect($collectors)->toHaveCount(1)->and($collectors[0]['hostname'])->toBeNull();
 });
 
 it('treats an unset poller ID as the Main Collector for receipt telemetry', function () {

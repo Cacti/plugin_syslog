@@ -60,26 +60,31 @@ function syslog_db_update_table($table, $data, $removecolumns = false, $log = tr
 
 	static $applied = [];
 
-	// Core caches missing tables even after CREATE. Do not repeat an identical
-	// successful schema operation in this request (connect and upgrade can overlap).
+	// Core caches missing tables even after CREATE, so a second db_update_table()
+	// in this request would try to create the table again. Only a successful
+	// creation is remembered; updates of existing tables always run so schema
+	// drift is still repaired (connect and upgrade can overlap).
 	$connection = is_object($db_conn) ? $db_conn : $syslog_cnn;
 	$key        = (is_object($connection) ? spl_object_hash($connection) : 'default') . ':' . $table;
 	$definition = [$connection, $data, $removecolumns];
+	$exists     = syslog_db_table_exists($table, false);
 
-	if (isset($applied[$key]) && $applied[$key] === $definition && syslog_db_table_exists($table, false)) {
+	if ($exists && isset($applied[$key]) && $applied[$key] === $definition) {
 		return true;
 	}
 
 	if (isset($data['primary']) && is_array($data['primary'])
 		&& !syslog_cacti_db_array_primary_safe()
-		&& !syslog_db_table_exists($table, false)) {
+		&& !$exists) {
 		$data['primary'] = implode('`,`', $data['primary']);
 	}
 
 	$result = db_update_table($table, $data, $removecolumns, $log, $db_conn);
 
-	if ($result) {
+	if ($result && !$exists) {
 		$applied[$key] = $definition;
+	} else {
+		unset($applied[$key]);
 	}
 
 	return $result;

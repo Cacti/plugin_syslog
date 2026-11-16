@@ -3388,7 +3388,7 @@ function syslog_get_removal_rule_fields($table = 'syslog_incoming', $prefix = ''
 
 		return [
 			'message'     => ['column' => $column($syslog_incoming_config['textField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-			'host'        => ['column' => $column($syslog_incoming_config['hostField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host'        => ['column' => $column(syslog_incoming_host_field()), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 			'program'     => ['column' => $column($syslog_incoming_config['programField']), 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 			'facility_id' => ['column' => $column($syslog_incoming_config['facilityField']), 'operators' => ['=', '!='], 'type' => 'integer'],
 			'priority_id' => ['column' => $column($syslog_incoming_config['priorityField']), 'operators' => ['=', '!='], 'type' => 'integer']
@@ -3715,7 +3715,7 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 
 		$incoming_fields = [
 			'facility' => $syslog_incoming_config['facilityField'],
-			'host'     => $syslog_incoming_config['hostField'],
+			'host'     => syslog_incoming_host_field(),
 			'program'  => $syslog_incoming_config['programField'],
 		];
 
@@ -5280,6 +5280,23 @@ function syslog_alert_maintenance_is_active(array $alert): bool {
 }
 
 /**
+ * Return the column that holds the hostname in the syslog_incoming table.
+ *
+ * Releases before 4.11 shipped config_local.php.dist with hostField set to
+ * 'host_id', which is not a syslog_incoming column; the staging table has
+ * always stored the hostname in 'host'. Treat that stale value as 'host'.
+ *
+ * @return string
+ */
+function syslog_incoming_host_field(): string {
+	global $syslog_incoming_config;
+
+	$field = $syslog_incoming_config['hostField'] ?? 'host';
+
+	return ($field === '' || $field === 'host_id') ? 'host' : (string) $field;
+}
+
+/**
  * Limit an alert query by active device-wide handling rules.
  *
  * A pass-through priority of Critical (2), for example, permits priorities
@@ -5290,7 +5307,7 @@ function syslog_alert_maintenance_is_active(array $alert): bool {
  */
 function syslog_device_rule_sql(bool $maintenance_active): array {
 	global $syslogdb_default, $syslog_incoming_config;
-	$host_field     = $syslog_incoming_config['hostField'] ?? 'host';
+	$host_field     = syslog_incoming_host_field();
 	$priority_field = $syslog_incoming_config['priorityField'] ?? 'priority_id';
 	$now            = time();
 	// Qualify the outer staging columns explicitly: an unqualified `host`
@@ -6241,7 +6258,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 				}
 				$fields = [
 					'message'     => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-					'host'        => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+					'host'        => ['column' => '`' . syslog_incoming_host_field() . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 					'program'     => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 					'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
 					'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
@@ -6265,7 +6282,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 			case 'messagee':
 				return ['sql' => "`{$syslog_incoming_config['textField']}` LIKE ?", 'params' => ['%' . $alert['message']]];
 			case 'host':
-				return ['sql' => "`{$syslog_incoming_config['hostField']}` = ?", 'params' => [$alert['message']]];
+				return ['sql' => '`' . syslog_incoming_host_field() . '` = ?', 'params' => [$alert['message']]];
 			case 'program':
 				return ['sql' => "`{$syslog_incoming_config['programField']}` = ?", 'params' => [$alert['message']]];
 			case 'sql':
@@ -6281,7 +6298,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 		}
 		$fields = [
 			'message'     => ['column' => '`' . $syslog_incoming_config['textField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
-			'host'        => ['column' => '`' . $syslog_incoming_config['hostField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
+			'host'        => ['column' => '`' . syslog_incoming_host_field() . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 			'program'     => ['column' => '`' . $syslog_incoming_config['programField'] . '`', 'operators' => ['contains', 'begins', 'ends', '=', '!=']],
 			'facility_id' => ['column' => '`' . $syslog_incoming_config['facilityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer'],
 			'priority_id' => ['column' => '`' . $syslog_incoming_config['priorityField'] . '`', 'operators' => ['=', '!='], 'type' => 'integer']
@@ -6347,7 +6364,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 	} elseif ($alert['type'] == 'host') {
 		$sql = "SELECT *
 			FROM `$syslogdb_default`.`syslog_incoming`
-			WHERE `{$syslog_incoming_config['hostField']}` = ?
+			WHERE `" . syslog_incoming_host_field() . "` = ?
 			AND `status` = 1
 			AND `seq` <= ?";
 
@@ -7039,12 +7056,33 @@ function syslog_replication_collector_status(): array {
 		return [];
 	}
 
-	return syslog_db_fetch_assoc("SELECT rc.source_poller_id, p.hostname,
+	$collectors = syslog_db_fetch_assoc("SELECT rc.source_poller_id,
 		rc.last_batch_count, UNIX_TIMESTAMP(rc.last_received) AS last_received
 		FROM `$syslogdb_default`.`syslog_replication_collectors` AS rc
-		LEFT JOIN poller AS p
-		ON p.id = rc.source_poller_id
 		ORDER BY rc.last_received DESC, rc.source_poller_id ASC", false);
+
+	if (!is_array($collectors) || !cacti_sizeof($collectors)) {
+		return [];
+	}
+
+	// The poller table lives in the Cacti database, which may differ from the
+	// dedicated Syslog database, so resolve hostnames over the Cacti connection.
+	$poller_ids = array_values(array_unique(array_map('intval', array_column($collectors, 'source_poller_id'))));
+	$hostnames  = [];
+	$pollers    = db_fetch_assoc_prepared('SELECT id, hostname FROM poller WHERE id IN (' . implode(',', array_fill(0, cacti_sizeof($poller_ids), '?')) . ')', $poller_ids, false);
+
+	if (is_array($pollers)) {
+		foreach ($pollers as $poller) {
+			$hostnames[(int) $poller['id']] = $poller['hostname'];
+		}
+	}
+
+	foreach ($collectors as &$collector) {
+		$collector['hostname'] = $hostnames[(int) $collector['source_poller_id']] ?? null;
+	}
+	unset($collector);
+
+	return $collectors;
 }
 
 /** Conservative online delivery limit. Payloads may contain 2KiB messages. */
