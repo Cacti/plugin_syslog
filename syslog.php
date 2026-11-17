@@ -129,6 +129,12 @@ if (get_request_var('action') == 'status_layout') {
 	exit;
 }
 
+if (get_request_var('action') == 'recommendation') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_recommendations_lookup_json((string) get_nfilter_request_var('message'));
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab

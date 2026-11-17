@@ -137,7 +137,7 @@ function syslog_schema_report_audit_results(bool $audit = true): bool {
 		'syslog_programs', 'syslog_hosts', 'syslog_facilities', 'syslog_priorities',
 		'syslog_host_facilities', 'syslog_removed', 'syslog_logs',
 		'syslog_dashboards', 'syslog_dashboard_panels', 'syslog_dashboards_perm',
-		'syslog_saved_searches_perm', 'syslog_device_rule', 'syslog_replication_output',
+		'syslog_saved_searches_perm', 'syslog_device_rule', 'syslog_recommendations', 'syslog_replication_output',
 		'syslog_replication_recovery'
 	];
 

@@ -43,7 +43,7 @@ it('drops all remote plugin tables only for a full uninstall on the main poller'
 		unlink($file);
 	}
 })->with([
-	['all', 1, ['syslog', 'syslog_removed', 'syslog_programs', 'syslog_status', 'syslog_device_rule', 'syslog_alert_counts', 'syslog_alert_suppression', 'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_incoming', 'syslog_threshold_recovery_queue', 'syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_facilities', 'syslog_statistics', 'syslog_host_facilities', 'syslog_priorities', 'syslog_logs', 'syslog_hosts', 'syslog_saved_searches', 'syslog_dashboard_panels', 'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_saved_searches_perm', 'syslog_replication_output', 'syslog_replication_receipts', 'syslog_replication_collectors', 'syslog_replication_recovery']],
+	['all', 1, ['syslog', 'syslog_removed', 'syslog_programs', 'syslog_status', 'syslog_device_rule', 'syslog_recommendations', 'syslog_alert_counts', 'syslog_alert_suppression', 'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_incoming', 'syslog_threshold_recovery_queue', 'syslog_alert', 'syslog_remove', 'syslog_reports', 'syslog_facilities', 'syslog_statistics', 'syslog_host_facilities', 'syslog_priorities', 'syslog_logs', 'syslog_hosts', 'syslog_saved_searches', 'syslog_dashboard_panels', 'syslog_dashboards', 'syslog_dashboards_perm', 'syslog_saved_searches_perm', 'syslog_replication_output', 'syslog_replication_receipts', 'syslog_replication_collectors', 'syslog_replication_recovery']],
 	['data', 1, []],
 	['all', 2, []],
 ]);

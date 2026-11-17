@@ -57,6 +57,7 @@ function syslog_ensure_saved_search_tables() {}
 function syslog_ensure_dashboard_tables() {}
 function syslog_ensure_status_table() {}
 function syslog_create_device_rule_table() {}
+function syslog_create_recommendations_table() {}
 function syslog_ensure_message_digest_columns() {}
 function syslog_db_add_column($table, $column, $log = true) { return true; }
 function syslog_db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) { return '50'; }
@@ -142,6 +143,14 @@ try {
 	putenv('SYSLOG_TEST_MISSING=syslog_dashboards');
 	[$status, $output] = run_cli($fixture, ['--audit']);
 	check($status === 1 && strpos($output, 'syslog_dashboards') !== false, 'Audit did not report missing table');
+	putenv('SYSLOG_TEST_MISSING');
+	putenv('SYSLOG_TEST_MISSING=syslog_recommendations');
+	[$status, $output] = run_cli($fixture, ['--audit']);
+	check($status === 1 && strpos($output, 'syslog_recommendations') !== false, 'Audit did not report the missing recommendations table');
+	putenv('SYSLOG_TEST_REMOTE=1');
+	[$status, $output] = run_cli($fixture, ['--audit']);
+	check($status === 1 && strpos($output, 'syslog_recommendations') !== false, 'Remote audit did not report the missing recommendations table');
+	putenv('SYSLOG_TEST_REMOTE');
 	putenv('SYSLOG_TEST_MISSING');
 	check(run_cli($fixture, ['--audit', '--repair'])[0] === 1, 'Audit accepted repair');
 	check(run_cli($fixture, ['--audit', '--upgrade'])[0] === 1, 'Audit accepted upgrade');

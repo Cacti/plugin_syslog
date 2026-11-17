@@ -240,6 +240,7 @@ $unmeasured_allowlist = [
 	'syslog_saved_searches.php',
 	'syslog_dashboards.php',
 	'syslog_device_rules.php',
+	'syslog_recommendations.php',
 	'syslog_batch_transfer.php',
 	'syslog_counter.php',
 	'syslog_process.php',

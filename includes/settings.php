@@ -540,6 +540,7 @@ function syslog_config_arrays(): void {
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_reports.php']        = __('Report Rules', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_saved_searches.php'] = __('Saved Search Templates', 'syslog');
 				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_dashboards.php']     = __('Dashboards', 'syslog');
+				$menu2[__('Syslog Settings', 'syslog')]['plugins/syslog/syslog_recommendations.php'] = __('Recommendations', 'syslog');
 			}
 		}
 		$menu = $menu2;

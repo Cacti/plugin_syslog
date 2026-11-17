@@ -25,6 +25,7 @@ it('keeps setup.php limited to its compatibility facade', function () {
 		'syslog_upgrade_saved_search_realm',
 		'syslog_upgrade_dashboard_realm',
 		'syslog_upgrade_device_rule_realm',
+		'syslog_upgrade_recommendations_realm',
 		'syslog_upgrade_rule_permissions',
 		'syslog_upgrade_consolidate_rule_realms',
 		'syslog_upgrade_explicit_realm_grants',
