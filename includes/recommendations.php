@@ -343,6 +343,7 @@ function syslog_recommendations_export(string $where = '', array $params = []): 
  * @return string|false The contents, or false when the file is unusable.
  */
 function syslog_recommendations_read_file(string $path) {
+	clearstatcache(true, $path);
 	$size = is_file($path) ? filesize($path) : false;
 
 	return $size === false || $size <= 0 || $size > SYSLOG_RECOMMENDATIONS_MAX_BYTES ? false : file_get_contents($path);
