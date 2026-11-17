@@ -139,3 +139,25 @@ it('always reaches db_update_table() for repeated updates of an existing table a
 	expect(syslog_db_update_table('syslog_existing_probe', $definition, false, true, $connection))->toBeFalse();
 	expect($calls)->toBe(3);
 });
+
+it('keeps remembered schema creation separate for each connection', function () {
+	syslog_load_plugin_source('includes/schema.php');
+	$GLOBALS['config']['cacti_version'] = '1.2.32';
+	$first = new stdClass();
+	$second = new stdClass();
+	$exists = false;
+	$connections = [];
+	test_override('syslog_db_table_exists', function () use (&$exists) { return $exists; });
+	test_override('db_update_table', function ($table, $data, $remove, $log, $connection) use (&$connections, &$exists) {
+		$connections[] = $connection;
+		$exists = true;
+
+		return true;
+	});
+	$definition = ['columns' => [['name' => 'id', 'type' => 'int']], 'primary' => ['id']];
+
+	expect(syslog_db_update_table('syslog_connection_probe', $definition, false, true, $first))->toBeTrue();
+	expect(syslog_db_update_table('syslog_connection_probe', $definition, false, true, $first))->toBeTrue();
+	expect(syslog_db_update_table('syslog_connection_probe', $definition, false, true, $second))->toBeTrue();
+	expect($connections)->toBe([$first, $second]);
+});

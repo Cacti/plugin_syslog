@@ -65,7 +65,7 @@ function syslog_db_update_table($table, $data, $removecolumns = false, $log = tr
 	// creation is remembered; updates of existing tables always run so schema
 	// drift is still repaired (connect and upgrade can overlap).
 	$connection = is_object($db_conn) ? $db_conn : $syslog_cnn;
-	$key        = (is_object($connection) ? spl_object_hash($connection) : 'default') . ':' . $table;
+	$key        = (is_object($connection) ? spl_object_id($connection) : 'default') . ':' . $table;
 	$definition = [$connection, $data, $removecolumns];
 	$exists     = syslog_db_table_exists($table, false);
 
