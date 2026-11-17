@@ -58,6 +58,10 @@ function syslog_draw_navigation_text($nav) {
 	$nav['syslog_reports.php:actions'] = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_reports.php:', 'url' => 'syslog_reports.php', 'level' => '2'];
 	$nav['syslog_saved_searches.php:'] = ['title' => __('Saved Search Templates', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_saved_searches.php', 'level' => '1'];
 	$nav['syslog_dashboards.php:']     = ['title' => __('Dashboards', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_dashboards.php', 'level' => '1'];
+	$nav['syslog_recommendations.php:']        = ['title' => __('Syslog Recommendations', 'syslog'), 'mapping' => 'index.php:', 'url' => $config['url_path'] . 'plugins/syslog/syslog_recommendations.php', 'level' => '1'];
+	$nav['syslog_recommendations.php:edit']    = ['title' => __('(Edit)', 'syslog'), 'mapping' => 'index.php:,syslog_recommendations.php:', 'url' => 'syslog_recommendations.php', 'level' => '2'];
+	$nav['syslog_recommendations.php:import']  = ['title' => __('(Import)', 'syslog'), 'mapping' => 'index.php:,syslog_recommendations.php:', 'url' => 'syslog_recommendations.php', 'level' => '2'];
+	$nav['syslog_recommendations.php:actions'] = ['title' => __('(Actions)', 'syslog'), 'mapping' => 'index.php:,syslog_recommendations.php:', 'url' => 'syslog_recommendations.php', 'level' => '2'];
 	$nav['syslog.php:actions']         = ['title' => __('Syslog', 'syslog'), 'mapping' => '', 'url' => $config['url_path'] . 'plugins/syslog/syslog.php', 'level' => '1'];
 
 	return $nav;

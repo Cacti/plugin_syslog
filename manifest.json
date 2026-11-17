@@ -49,6 +49,7 @@
         "syslog_dashboards.php",
         "syslog_device_rules.php",
         "syslog_process.php",
+        "syslog_recommendations.php",
         "syslog_recovery.php",
         "syslog_removal.php",
         "syslog_reports.php",

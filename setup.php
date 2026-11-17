@@ -89,7 +89,7 @@ function plugin_syslog_install() {
 	api_plugin_register_realm('syslog', 'syslog.php', 'Syslog User', 1);
 	api_plugin_register_realm('syslog', 'syslog_alerts.php,syslog_removal.php,syslog_reports.php', 'Rule Viewer', 1);
 	api_plugin_register_realm('syslog', 'syslog_rule_administrator.php,syslog_device_rules.php', 'Rule Administrator', 1);
-	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php', 'Syslog Administration', 1);
+	api_plugin_register_realm('syslog', 'syslog_saved_searches.php,syslog_dashboards.php,syslog_recommendations.php', 'Syslog Administration', 1);
 	api_plugin_register_realm('syslog', 'syslog_saved_searches_share.php', 'Share Saved Templates', 1);
 	api_plugin_register_realm('syslog', 'syslog_dashboards_share.php', 'Share Dashboards', 1);
 
@@ -220,6 +220,7 @@ function plugin_syslog_uninstall(): void {
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_programs`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_status`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_device_rule`");
+			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_recommendations`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert_counts`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_alert_suppression`");
 			syslog_db_execute("DROP TABLE IF EXISTS `$syslogdb_default`.`syslog_threshold_state`");
@@ -253,6 +254,7 @@ function plugin_syslog_uninstall(): void {
 					'syslog_programs',
 					'syslog_status',
 					'syslog_device_rule',
+					'syslog_recommendations',
 					'syslog_alert_counts',
 					'syslog_alert_suppression',
 					'syslog_threshold_state',
@@ -426,6 +428,7 @@ function syslog_connect(): bool {
 
 	require_once(__DIR__ . '/includes/functions.php');
 	require_once(__DIR__ . '/includes/database.php');
+	require_once(__DIR__ . '/includes/recommendations.php');
 
 	$cacti_local_cnn = $local_db_cnn_id
 		?? ($database_sessions["$database_hostname:$database_port:$database_default"] ?? false);
@@ -582,6 +585,32 @@ function syslog_upgrade_dashboard_realm(): void {
 
 			return;
 		}
+	}
+}
+
+/** Give pre-existing installs the Recommendations console page inside the Syslog Administration realm. */
+function syslog_upgrade_recommendations_realm(): void {
+	$realms = db_fetch_assoc_prepared('SELECT id, file, display FROM plugin_realms WHERE plugin = ?', ['syslog']);
+
+	if (!is_array($realms)) {
+		return;
+	}
+
+	foreach ($realms as $realm) {
+		if (($realm['display'] ?? '') !== 'Syslog Administration') {
+			continue;
+		}
+		$files = explode(',', $realm['file']);
+
+		if (in_array('syslog_recommendations.php', $files, true)) {
+			return;
+		}
+		$files[] = 'syslog_recommendations.php';
+
+		// Keep the realm ID: existing user and group grants must not change.
+		db_execute_prepared('UPDATE plugin_realms SET file = ? WHERE id = ? AND plugin = ?', [implode(',', $files), $realm['id'], 'syslog']);
+
+		return;
 	}
 }
 
@@ -846,7 +875,7 @@ function syslog_upgrade_create_permission_realms(): bool {
 	$targets = [
 		'Rule Viewer'           => 'syslog_alerts.php,syslog_removal.php,syslog_reports.php',
 		'Rule Administrator'    => 'syslog_rule_administrator.php,syslog_device_rules.php',
-		'Syslog Administration' => 'syslog_saved_searches.php,syslog_dashboards.php',
+		'Syslog Administration' => 'syslog_saved_searches.php,syslog_dashboards.php,syslog_recommendations.php',
 		'Share Saved Templates' => 'syslog_saved_searches_share.php',
 		'Share Dashboards'      => 'syslog_dashboards_share.php'
 	];
@@ -1002,6 +1031,9 @@ function syslog_check_upgrade(bool $force = false): bool {
 		return false;
 	}
 
+	// Must precede the realm creation below, which matches realms by their exact file list.
+	syslog_upgrade_recommendations_realm();
+
 	if (!syslog_upgrade_create_permission_realms()) {
 		return false;
 	}
@@ -1024,6 +1056,11 @@ function syslog_check_upgrade(bool $force = false): bool {
 		return false;
 	}
 	syslog_dashboard_seed_default();
+
+	// Load the bundled recommendations once; records already present are kept.
+	if ((int) $config['poller_id'] <= 1) {
+		syslog_recommendations_seed();
+	}
 	db_execute_prepared('DELETE FROM plugin_hooks WHERE name = ? AND hook = ?', ['syslog', 'config_insert']);
 
 	// don't let this script timeout

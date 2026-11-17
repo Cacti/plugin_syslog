@@ -70,6 +70,10 @@ for lifecycle and deployment details.
 
 * Ability to run alert specific commands at Alert and Re-alert times
 
+* Recommendations: hover over a message to see an explanation and a recommended
+  action from a vendor-neutral knowledge base that you can edit, import, and
+  export (see Recommendations below)
+
 ## Pipeline Health Alerts
 
 The Status tab includes a **Pipeline health** card in the existing Collector
@@ -313,7 +317,7 @@ users need a realm assigned under Console > Users or User Groups:
 | Syslog User | The Syslog tabs and message search |
 | Rule Viewer | View the Alert, Removal, and Report rule pages |
 | Rule Administrator | Edit rules, including device rules |
-| Syslog Administration | Manage saved searches and dashboards |
+| Syslog Administration | Manage saved searches, dashboards, and recommendations |
 | Share Saved Templates | Share saved searches with other users |
 | Share Dashboards | Share dashboards with other users |
 
@@ -484,12 +488,13 @@ MySQL and MariaDB will source multiple database configuration files.
 
 ## Tables
 
-A completed install has 28 tables, all prefixed `syslog`: `syslog`,
+A completed install has 29 tables, all prefixed `syslog`: `syslog`,
 `syslog_removed`, `syslog_incoming`, `syslog_logs`, `syslog_status`,
 `syslog_hosts`, `syslog_programs`, `syslog_facilities`, `syslog_priorities`,
 `syslog_host_facilities`, `syslog_alert`, `syslog_alert_counts`,
 `syslog_alert_suppression`, `syslog_remove`, `syslog_reports`,
-`syslog_device_rule`, `syslog_saved_searches`, `syslog_saved_searches_perm`,
+`syslog_device_rule`, `syslog_recommendations`, `syslog_saved_searches`,
+`syslog_saved_searches_perm`,
 `syslog_dashboards`, `syslog_dashboard_panels`, `syslog_dashboards_perm`,
 `syslog_threshold_state`, `syslog_threshold_messages`,
 `syslog_threshold_recovery_queue`, and the replication tables
@@ -509,6 +514,60 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
 * **Report rules** send matching messages by email on a schedule.
 * **Device rules** are managed from the Device Rules page and need the Rule
   Administrator realm.
+
+## Recommendations
+
+Recommendations explain what a message means and what to do about it. When you
+hover over a row on the Syslog tab, the plugin looks for a recommendation whose
+identifier appears in the message (for example `%LINK-3-UPDOWN` or
+`RPD_OSPF_NBRDOWN`, with or without a leading `%`, not case sensitive) and shows
+its explanation and recommended action next to the message. Rows without a
+match keep the plain message tooltip.
+
+Manage them under Console > Syslog Settings > Recommendations (the
+Syslog Administration realm). You can add, edit, and delete records, filter by
+vendor and severity, and import or export them as JSON. A recommendation is
+identified by its vendor and identifier.
+
+The bundled data in `docs/recommendations.sql.gz` is loaded once, the first time
+the plugin is installed or upgraded to 5.0. It is read with PHP's zlib extension;
+without it the load is skipped and a warning is logged. Records that already exist
+are never overwritten and records you delete are not restored by later upgrades.
+To reload it manually, run `zcat docs/recommendations.sql.gz | mysql <syslog database>`;
+existing records are kept.
+
+The import and export format is a JSON document. Its field names follow the
+vocabulary of existing rule and event catalogues (Sigma's description and level,
+the Elastic Common Schema's event code and severity, and the explanation and
+recommended action of vendor message references):
+
+```json
+{
+  "format": "syslog-recommendations",
+  "version": 1,
+  "recommendations": [
+    {
+      "vendor": "Cisco",
+      "identifier": "%LINK-3-UPDOWN",
+      "component": "LINK",
+      "severity": "error",
+      "message": "Interface [chars], changed state to [chars]",
+      "explanation": "The interface hardware has gone either up or down.",
+      "recommended_action": "If the state change was unexpected, check the cable.",
+      "reference": "https://example.com/message-reference"
+    }
+  ]
+}
+```
+
+`identifier` and at least one of `explanation` or `recommended_action` are
+required. `severity` is a syslog level 0-7 or a keyword (`emergency`, `alert`,
+`critical`, `error`, `warning`, `notice`, `informational`, `debug`; the Sigma
+levels `high`, `medium`, `low` are also accepted). A bare JSON list of records
+is accepted too, as are the alternative field names `name`/`code`/`event_code`
+(identifier), `description` (explanation), `action` (recommended action), `level`
+(severity) and `references` (reference). On import choose whether existing
+records are kept or replaced.
 
 ## Settings
 

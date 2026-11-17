@@ -27,7 +27,7 @@ it('initializes collector schema before returning a usable connection without re
 	preg_match('/^function syslog_connect\(\): bool \{.*?^\}/ms', $source, $match);
 	$dir = sys_get_temp_dir() . '/syslog-connect-' . bin2hex(random_bytes(6));
 	mkdir($dir . '/includes', 0700, true);
-	foreach (['functions.php', 'database.php'] as $name) {
+	foreach (['functions.php', 'database.php', 'recommendations.php'] as $name) {
 		file_put_contents($dir . '/includes/' . $name, '<?php');
 	}
 	file_put_contents($dir . '/includes/schema.php', '<?php function syslog_ensure_table_structures() { $GLOBALS["repairs"]++; if (!syslog_connect()) { throw new RuntimeException("Recursive connection failed"); } return ' . var_export($repair_ok, true) . '; }');

@@ -232,6 +232,33 @@ function syslog_create_device_rule_table(): void {
 		ROW_FORMAT=Dynamic");
 }
 
+/**
+ * Create the recommendations table when it does not exist.
+ *
+ * @return void
+ */
+function syslog_create_recommendations_table(): void {
+	global $syslogdb_default;
+
+	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_recommendations` (
+		`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+		`vendor` varchar(64) NOT NULL DEFAULT '',
+		`identifier` varchar(190) NOT NULL DEFAULT '',
+		`component` varchar(64) NOT NULL DEFAULT '',
+		`severity` tinyint(3) unsigned DEFAULT NULL,
+		`message` text,
+		`explanation` text,
+		`recommended_action` text,
+		`reference` text,
+		`last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		PRIMARY KEY (`id`),
+		UNIQUE KEY `vendor_identifier` (`vendor`, `identifier`),
+		KEY `identifier` (`identifier`))
+		ENGINE=InnoDB
+		ROW_FORMAT=Dynamic
+		COMMENT='Syslog message recommendations'");
+}
+
 /** Create or update saved-search storage. */
 function syslog_ensure_saved_search_tables(): void {
 	global $syslog_cnn;
@@ -987,6 +1014,7 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	syslog_ensure_share_tables();
 	syslog_ensure_dashboard_tables();
 	syslog_create_device_rule_table();
+	syslog_create_recommendations_table();
 
 	if (!$repair) {
 		syslog_dashboard_seed_default();
@@ -1062,7 +1090,7 @@ function syslog_ensure_table_structures(): bool {
 		'syslog_threshold_state', 'syslog_threshold_messages', 'syslog_threshold_recovery_queue',
 		'syslog_remove', 'syslog_reports', 'syslog_status', 'syslog_programs',
 		'syslog_hosts', 'syslog_facilities', 'syslog_priorities', 'syslog_host_facilities',
-		'syslog_removed', 'syslog_logs', 'syslog_device_rule',
+		'syslog_removed', 'syslog_logs', 'syslog_device_rule', 'syslog_recommendations',
 		'syslog_replication_output', 'syslog_replication_recovery'
 	];
 

@@ -920,3 +920,20 @@
 	outline: 1px solid var(--search-text);
 	outline-offset: -1px;
 }
+
+/* Hover message for syslog rows: the message plus any matching recommendation. */
+.ui-tooltip.syslogRecommendationTip { max-width: 520px; padding: 0; overflow: hidden; }
+.syslogRecTip { padding: 8px 10px; font-size: 12px; line-height: 1.4; }
+.syslogRecSection + .syslogRecSection { margin-top: 6px; }
+.syslogRecLabel { font-weight: 700; opacity: .75; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
+.syslogRecText { white-space: pre-line; overflow-wrap: anywhere; }
+.syslogRecCard { margin-top: 8px; padding-top: 8px; border-top: 1px solid currentColor; border-top-color: color-mix(in srgb, currentColor 30%, transparent); }
+.syslogRecHead { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 6px; }
+.syslogRecId { font-weight: 700; font-family: monospace; overflow-wrap: anywhere; }
+.syslogRecBadge { display: inline-block; padding: 1px 7px; border: 1px solid color-mix(in srgb, currentColor 40%, transparent); border-radius: 10px; font-size: 11px; font-weight: 600; line-height: 1.4; }
+.syslogRecSev0, .syslogRecSev1, .syslogRecSev2, .syslogRecSev3 { border-color: #e5484d; color: #e5484d; }
+.syslogRecSev4 { border-color: #d9a406; color: #d9a406; }
+.syslogRecSev5 { border-color: #3b82c4; color: #3b82c4; }
+.syslogRecSev6 { border-color: #3f9b4b; color: #3f9b4b; }
+.syslogRecSev7 { border-color: #8b9690; color: #8b9690; }
+.syslogRecAction .syslogRecText { font-weight: 600; }

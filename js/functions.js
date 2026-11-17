@@ -1008,6 +1008,119 @@ function initSyslogMain(config) {
 }
 
 /**
+ * Cache of recommendation lookups keyed by the syslog message text, so
+ * hovering the same row again does not repeat the request.
+ */
+var syslogRecommendationCache = {};
+var syslogRecommendationCacheSize = 0;
+
+/**
+ * Build the hover message for a syslog row: the message itself followed by
+ * the explanation and recommended action of every recommendation found.
+ * All server data is inserted as text, never as markup.
+ *
+ * @param {string} message The syslog message shown in the row.
+ * @param {Object|null} result The decoded recommendation lookup response.
+ * @returns {jQuery} The tooltip content.
+ */
+function syslogRecommendationContent(message, result) {
+	var $tip = $('<div class="syslogRecTip"></div>');
+	var labels = (result && result.labels) || {};
+	var limit = 700;
+
+	function clip(text) {
+		text = String(text || '');
+
+		return text.length > limit ? text.substring(0, limit) + '\u2026' : text;
+	}
+
+	function section($parent, label, text, extra) {
+		if (!text) {
+			return;
+		}
+
+		var $section = $('<div class="syslogRecSection ' + (extra || '') + '"></div>').appendTo($parent);
+		$('<div class="syslogRecLabel"></div>').text(label).appendTo($section);
+		$('<div class="syslogRecText"></div>').text(clip(text)).appendTo($section);
+	}
+
+	section($tip, labels.message || '', message, 'syslogRecMessage');
+
+	if (result && Array.isArray(result.recommendations)) {
+		$.each(result.recommendations, function(i, rec) {
+			var $card = $('<div class="syslogRecCard"></div>').appendTo($tip);
+			var $head = $('<div class="syslogRecHead"></div>').appendTo($card);
+
+			$('<span class="syslogRecId"></span>').text(rec.identifier).appendTo($head);
+
+			if (rec.vendor) {
+				$('<span class="syslogRecBadge"></span>').text(rec.vendor).appendTo($head);
+			}
+
+			if (rec.severity_name) {
+				$('<span class="syslogRecBadge syslogRecSev' + (Number.parseInt(rec.severity, 10) || 0) + '"></span>').text(rec.severity_name).appendTo($head);
+			}
+
+			section($card, labels.explanation || '', rec.explanation);
+			section($card, labels.action || '', rec.recommended_action, 'syslogRecAction');
+			section($card, labels.reference || '', rec.reference);
+		});
+	}
+
+	return $tip;
+}
+
+/**
+ * jQuery UI tooltip content callback for syslog rows. It asks the server for
+ * a recommendation matching the row's message and shows the decoded JSON
+ * response; rows without one keep the plain message tooltip.
+ *
+ * @param {Function} callback Delivers the content when the lookup completes.
+ * @returns {jQuery|undefined} Immediate content, or undefined while the lookup runs.
+ */
+function syslogRowTooltip(callback) {
+	var $row = $(this);
+	var message = $row.data('syslogMessage');
+
+	if (message === undefined) {
+		// jQuery UI removes the title while the tooltip is open, so keep our own copy.
+		message = $row.attr('title') || '';
+		$row.data('syslogMessage', message);
+	}
+
+	if (message === '') {
+		return;
+	}
+
+	if (!$row.is('[data-recommendations]')) {
+		return syslogRecommendationContent(message, null);
+	}
+
+	if (syslogRecommendationCache.hasOwnProperty(message)) {
+		return syslogRecommendationContent(message, syslogRecommendationCache[message]);
+	}
+
+	$.ajax({
+		url: 'syslog.php', type: 'POST', dataType: 'json',
+		data: {action: 'recommendation', message: message}
+	}).done(function(result) {
+		if (!result || !result.found) {
+			result = null;
+		}
+
+		if (syslogRecommendationCacheSize++ > 500) {
+			syslogRecommendationCache = {};
+			syslogRecommendationCacheSize = 0;
+		}
+
+		syslogRecommendationCache[message] = result;
+		callback(syslogRecommendationContent(message, result));
+	}).fail(function() {
+		callback(syslogRecommendationContent(message, null));
+	});
+}
+
+/**
  * Initialize syslog message tooltips and group expand/collapse functionality
  * Call this after the syslog message table is rendered or updated
  */
@@ -1022,7 +1135,9 @@ function initSyslogMessagesDisplay() {
 				duration: 250,
 				delay: 125
 			},
-			position: { my: 'left+15 center', at: 'right center' }
+			position: { my: 'left+15 center', at: 'right center' },
+			classes: { 'ui-tooltip': 'syslogRecommendationTip' },
+			content: syslogRowTooltip
 		});
 
 		// Initialize tooltips for buttons
