@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-13 11:06-0500\n"
+"POT-Creation-Date: 2026-11-17 16:26-0500\n"
 "PO-Revision-Date: 2026-11-16 08:18+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
@@ -30,27 +30,27 @@ msgstr "Dela med användare …"
 msgid "Share with groups…"
 msgstr "Dela med grupper …"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Emergency"
 msgstr "Nödsituation"
 
-#: includes/functions.php includes/settings.php
+#: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Critical"
 msgstr "Kritiskt"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Alert"
 msgstr "Larm"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Error"
 msgstr "Fel"
 
-#: includes/functions.php includes/settings.php
+#: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Warning"
 msgstr "Varning"
 
-#: includes/functions.php includes/settings.php
+#: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Notice"
 msgstr "Notis"
 
@@ -58,11 +58,11 @@ msgstr "Notis"
 msgid "Info"
 msgstr "Info"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Debug"
 msgstr "Felsökning"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Informational"
 msgstr "Information"
 
@@ -238,9 +238,13 @@ msgstr "Det gick inte att utvärdera frågan för historisk förhandsgranskning.
 msgid "The preview sample could not be read."
 msgstr "Förhandsgranskningsexemplet kunde inte läsas."
 
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr ""
+
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_dashboards.php syslog_removal.php syslog_reports.php
-#: syslog_saved_searches.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Permission denied."
 msgstr "Åtkomst nekas."
 
@@ -276,6 +280,7 @@ msgid "Alert Name"
 msgstr "Larmnamn"
 
 #: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
 msgid "Severity"
 msgstr "Allvarlighetsgrad"
 
@@ -313,8 +318,9 @@ msgstr "Datum"
 msgid "Level"
 msgstr "Nivå"
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_removal.php syslog_saved_searches.php
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_saved_searches.php
 msgid "Message"
 msgstr "Meddelande"
 
@@ -576,7 +582,8 @@ msgstr "Avinstallera"
 
 #: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Cancel"
 msgstr "Avbryt"
 
@@ -613,9 +620,35 @@ msgstr "Mallar för sparade sökningar"
 msgid "Dashboards"
 msgstr "Instrumentpaneler"
 
+#: includes/navigation.php syslog_recommendations.php
+#, fuzzy
+#| msgid "Syslog Retention"
+msgid "Syslog Recommendations"
+msgstr "Lagringstid för Syslog"
+
+#: includes/navigation.php
+#, fuzzy
+#| msgid "Import"
+msgid "(Import)"
+msgstr "Importera"
+
 #: includes/navigation.php
 msgid "Display Syslog in Range"
 msgstr "Visa Syslog i intervall"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr ""
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr ""
+
+#: includes/recommendations.php syslog_recommendations.php
+#, fuzzy
+#| msgid "Reference updates"
+msgid "Reference"
+msgstr "Referensuppdateringar"
 
 #: includes/settings.php
 msgid "Monday"
@@ -663,7 +696,7 @@ msgid "Disabled"
 msgstr "Inaktiverad"
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_device_rules.php syslog_reports.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
 msgid "None"
 msgstr "Ingen"
 
@@ -1010,8 +1043,8 @@ msgid "%d second"
 msgstr "%d sekund"
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
-#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
-#: syslog_saved_searches.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
 msgid "Delete"
 msgstr "Ta bort"
 
@@ -1024,7 +1057,8 @@ msgid "Enable"
 msgstr "Aktivera"
 
 #: includes/settings.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_saved_searches.php
 msgid "Export"
 msgstr "Exportera"
 
@@ -1135,6 +1169,12 @@ msgstr "Regler för borttagning"
 msgid "Report Rules"
 msgstr "Rapportregler"
 
+#: includes/settings.php syslog_recommendations.php
+#, fuzzy
+#| msgid "Remove condition"
+msgid "Recommendations"
+msgstr "Ta bort villkor"
+
 #: includes/utilities.php
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
@@ -1157,8 +1197,8 @@ msgid "Confirm Purge"
 msgstr "Bekräfta rensning"
 
 #: includes/utilities.php syslog_alerts.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_reports.php
-#: syslog_saved_searches.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Continue"
 msgstr "Fortsätt"
 
@@ -2207,7 +2247,8 @@ msgid "Display Rows"
 msgstr "Visa rader"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Default"
 msgstr "Standard"
 
@@ -2265,12 +2306,14 @@ msgid "Save Search As"
 msgstr "Spara sökning som"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Search"
 msgstr "Sök"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Clear"
 msgstr "Rensa"
 
@@ -2802,8 +2845,8 @@ msgstr "Ange ett icke-negativt heltal"
 msgid "Alarm filter conditions"
 msgstr "Filtervillkor för larm"
 
-#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
 msgid "All"
 msgstr "Alla"
 
@@ -2813,12 +2856,13 @@ msgid "Rows"
 msgstr "Rader"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Go"
 msgstr "Gå"
 
-#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
-#: syslog_reports.php syslog_saved_searches.php
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
 msgid "Import"
 msgstr "Importera"
 
@@ -3162,6 +3206,162 @@ msgstr "Tillåt alla"
 #: syslog_device_rules.php
 msgid "Use priority exception"
 msgstr "Använd prioritetsundantag"
+
+#: syslog_recommendations.php
+msgid "Enter an identifier made of letters, digits and the characters _ . - / (it may start with %), and at least an explanation or a recommended action."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Klicka på ”Fortsätt” för att exportera följande instrumentpanel(er)."
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog-rapport(er)."
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgid "Import rejected: the file is empty, too large, not valid JSON, or contains no usable recommendations."
+msgstr "Importen nekades: filen är tom, ogiltig eller innehåller en annan typ av Syslog-objekt."
+
+#: syslog_recommendations.php
+#, fuzzy, php-format
+#| msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgid "NOTE: Imported %d, updated %d and skipped %d existing Recommendation(s)."
+msgstr "OBS: %d mall(ar) för sparade sökningar importerades och %d uppdaterades."
+
+#: syslog_recommendations.php
+#, fuzzy, php-format
+#| msgid "ERROR: %d Dashboard(s) failed to import."
+msgid "ERROR: %d Recommendation(s) were invalid or failed to import."
+msgstr "FEL: Det gick inte att importera %d instrumentpanel(er)."
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Import Report Rule from Local File"
+msgid "Import Recommendations from Local File"
+msgstr "Importera rapportregel från lokal fil"
+
+#: syslog_recommendations.php
+msgid "Select a JSON file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Import Report Rule from Text"
+msgid "Import Recommendations from Text"
+msgstr "Importera rapportregel från text"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Import Report Data"
+msgid "Import Recommendations"
+msgstr "Importera rapportdata"
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Not paused"
+msgid "Not specified"
+msgstr "Inte pausad"
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Remove condition"
+msgid "Recommendation"
+msgstr "Ta bort villkor"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The message code that appears in the syslog message, for example %LINK-3-UPDOWN or RPD_OSPF_NBRDOWN. The match is not case sensitive."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Complete"
+msgid "Component"
+msgstr "Slutförd"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "No device alert rules found."
+msgid "No recommendations found."
+msgstr "Inga larmregler för enheter hittades."
 
 #: syslog_removal.php
 msgid "Reprocess"
@@ -3583,10 +3783,6 @@ msgstr "Rätta frågesyntaxen så att den kan användas med frågebyggaren."
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller Grupp för att skapa frågan. Ändringarna gäller den här delade mallen för alla användare."
-
-#: includes/functions.php
-msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
-msgstr ""
 
 #~ msgid "Command"
 #~ msgstr "Kommando"
