@@ -1011,8 +1011,7 @@ function initSyslogMain(config) {
  * Cache of recommendation lookups keyed by the syslog message text, so
  * hovering the same row again does not repeat the request.
  */
-var syslogRecommendationCache = {};
-var syslogRecommendationCacheSize = 0;
+var syslogRecommendationCache = new Map();
 
 /**
  * Build the hover message for a syslog row: the message itself followed by
@@ -1034,17 +1033,18 @@ function syslogRecommendationContent(message, result) {
 		return text.length > limit ? text.substring(0, limit) + '\u2026' : text;
 	}
 
-	function section($parent, label, text, extra) {
+	function section($parent, label, text, extra, clipped) {
 		if (!text) {
 			return;
 		}
 
 		var $section = $('<div class="syslogRecSection ' + (extra || '') + '"></div>').appendTo($parent);
 		$('<div class="syslogRecLabel"></div>').text(label).appendTo($section);
-		$('<div class="syslogRecText"></div>').text(clip(text)).appendTo($section);
+		$('<div class="syslogRecText"></div>').text(clipped ? clip(text) : String(text)).appendTo($section);
 	}
 
-	section($tip, labels.message || '', message, 'syslogRecMessage');
+	// The syslog message is shown in full; only recommendation text is clipped.
+	section($tip, labels.message || '', message, 'syslogRecMessage', false);
 
 	if (result && Array.isArray(result.recommendations)) {
 		$.each(result.recommendations, function(i, rec) {
@@ -1061,9 +1061,9 @@ function syslogRecommendationContent(message, result) {
 				$('<span class="syslogRecBadge syslogRecSev' + (Number.parseInt(rec.severity, 10) || 0) + '"></span>').text(rec.severity_name).appendTo($head);
 			}
 
-			section($card, labels.explanation || '', rec.explanation);
-			section($card, labels.action || '', rec.recommended_action, 'syslogRecAction');
-			section($card, labels.reference || '', rec.reference);
+			section($card, labels.explanation || '', rec.explanation, '', true);
+			section($card, labels.action || '', rec.recommended_action, 'syslogRecAction', true);
+			section($card, labels.reference || '', rec.reference, '', true);
 		});
 	}
 
@@ -1096,8 +1096,8 @@ function syslogRowTooltip(callback) {
 		return syslogRecommendationContent(message, null);
 	}
 
-	if (syslogRecommendationCache.hasOwnProperty(message)) {
-		return syslogRecommendationContent(message, syslogRecommendationCache[message]);
+	if (syslogRecommendationCache.has(message)) {
+		return syslogRecommendationContent(message, syslogRecommendationCache.get(message));
 	}
 
 	$.ajax({
@@ -1108,12 +1108,11 @@ function syslogRowTooltip(callback) {
 			result = null;
 		}
 
-		if (syslogRecommendationCacheSize++ > 500) {
-			syslogRecommendationCache = {};
-			syslogRecommendationCacheSize = 0;
+		if (syslogRecommendationCache.size > 500) {
+			syslogRecommendationCache.clear();
 		}
 
-		syslogRecommendationCache[message] = result;
+		syslogRecommendationCache.set(message, result);
 		callback(syslogRecommendationContent(message, result));
 	}).fail(function() {
 		callback(syslogRecommendationContent(message, null));

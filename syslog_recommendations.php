@@ -126,11 +126,26 @@ function recommendation_where(): array {
 }
 
 /**
+ * Refuse to change data from anything but a POST, so Cacti's CSRF check covers every mutation.
+ *
+ * @return void
+ */
+function recommendation_require_post(): void {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+		header('Location: syslog_recommendations.php');
+
+		exit;
+	}
+}
+
+/**
  * Add or update a recommendation from the edit form.
  *
  * @return void
  */
 function recommendation_save(): void {
+	recommendation_require_post();
+
 	if (!syslog_allow_edits() || !isset_request_var('save_component_recommendation')) {
 		header('Location: syslog_recommendations.php');
 
@@ -147,7 +162,7 @@ function recommendation_save(): void {
 	$record = syslog_recommendation_normalize($input);
 
 	if ($record === null) {
-		raise_message('syslog_recommendation_invalid', __('Enter an identifier and at least an explanation or a recommended action.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		raise_message('syslog_recommendation_invalid', __('Enter an identifier made of letters, digits and the characters _ . - / (it may start with %), and at least an explanation or a recommended action.', 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location: ' . $return);
 
 		return;
@@ -201,6 +216,8 @@ function recommendation_actions(): void {
 	}
 
 	if (isset_request_var('selected_items')) {
+		recommendation_require_post();
+
 		$items = sanitize_unserialize_selected_items(get_nfilter_request_var('selected_items'));
 
 		if (is_array($items)) {
@@ -288,6 +305,8 @@ function recommendation_export_all(): void {
  * @return void
  */
 function recommendation_import(): void {
+	recommendation_require_post();
+
 	if (!syslog_allow_edits()) {
 		header('Location: syslog_recommendations.php');
 

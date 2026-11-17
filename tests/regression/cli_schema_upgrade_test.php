@@ -144,6 +144,14 @@ try {
 	[$status, $output] = run_cli($fixture, ['--audit']);
 	check($status === 1 && strpos($output, 'syslog_dashboards') !== false, 'Audit did not report missing table');
 	putenv('SYSLOG_TEST_MISSING');
+	putenv('SYSLOG_TEST_MISSING=syslog_recommendations');
+	[$status, $output] = run_cli($fixture, ['--audit']);
+	check($status === 1 && strpos($output, 'syslog_recommendations') !== false, 'Audit did not report the missing recommendations table');
+	putenv('SYSLOG_TEST_REMOTE=1');
+	[$status, $output] = run_cli($fixture, ['--audit']);
+	check($status === 1 && strpos($output, 'syslog_recommendations') !== false, 'Remote audit did not report the missing recommendations table');
+	putenv('SYSLOG_TEST_REMOTE');
+	putenv('SYSLOG_TEST_MISSING');
 	check(run_cli($fixture, ['--audit', '--repair'])[0] === 1, 'Audit accepted repair');
 	check(run_cli($fixture, ['--audit', '--upgrade'])[0] === 1, 'Audit accepted upgrade');
 	putenv('SYSLOG_TEST_REMOTE=1');

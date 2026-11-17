@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti 1.2.32\n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-17 15:57-0500\n"
+"POT-Creation-Date: 2026-11-17 16:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -3199,7 +3199,7 @@ msgid "Use priority exception"
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "Enter an identifier and at least an explanation or a recommended action."
+msgid "Enter an identifier made of letters, digits and the characters _ . - / (it may start with %), and at least an explanation or a recommended action."
 msgstr ""
 
 #: syslog_recommendations.php

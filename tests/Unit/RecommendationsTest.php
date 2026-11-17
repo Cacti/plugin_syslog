@@ -55,8 +55,16 @@ it('rejects records that are not usable recommendations', function (array $input
 	'no identifier'         => [['explanation' => 'text']],
 	'nothing to show'       => [['identifier' => 'X-1-Y']],
 	'identifier too long'   => [['identifier' => str_repeat('a', 191), 'explanation' => 'text']],
-	'multi-line identifier' => [['identifier' => "a\nb", 'explanation' => 'text']]
+	'multi-line identifier' => [['identifier' => "a\nb", 'explanation' => 'text']],
+	'identifier with space' => [['identifier' => 'LINK UPDOWN', 'explanation' => 'text']]
 ]);
+
+it('accepts numeric event IDs and short codes, and finds them in a message', function () {
+	expect(syslog_recommendation_normalize(['identifier' => '4625', 'explanation' => 'x']))->toMatchArray(['identifier' => '4625'])
+		->and(syslog_recommendation_normalize(['identifier' => 'B', 'explanation' => 'x']))->toMatchArray(['identifier' => 'B'])
+		->and(syslog_recommendation_candidates('EventID 4625: An account failed to log on'))->toContain('4625')->toContain('%4625')
+		->and(syslog_recommendation_candidates('code B reported'))->toContain('B');
+});
 
 it('maps severity numbers, syslog keywords and Sigma levels', function () {
 	expect(syslog_recommendation_severity(0))->toBe(0)
@@ -177,7 +185,7 @@ it('reports no recommendation without touching the database for messages with no
 		return [];
 	});
 
-	$response = json_decode(syslog_recommendations_lookup_json('12 34 56'), true);
+	$response = json_decode(syslog_recommendations_lookup_json(' - : , '), true);
 
 	expect($response['found'])->toBeFalse()
 		->and($response['recommendations'])->toBe([])
@@ -283,10 +291,16 @@ it('reads import files but refuses missing or empty ones', function () {
 	unlink($file);
 });
 
+it('ignores message tokens longer than any identifier', function () {
+	$candidates = syslog_recommendation_candidates(str_repeat('a', 200) . ' ok_token');
+
+	expect($candidates)->toContain('ok_token')->and($candidates)->not->toContain(str_repeat('a', 200));
+});
+
 it('limits how many candidate identifiers one message can produce', function () {
 	$message = implode(' ', array_map(static fn ($n) => 'Word' . $n, range(1, 100)));
 
-	expect(syslog_recommendation_candidates($message))->toHaveCount(80);
+	expect(syslog_recommendation_candidates($message))->toHaveCount(120);
 });
 
 it('remembers the bundled seed was applied', function () {

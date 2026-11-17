@@ -45,6 +45,11 @@ const SYSLOG_RECOMMENDATIONS_MAX_BYTES = 64 * 1024 * 1024;
 const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
 
+// The one identifier format shared by validation and by the hover lookup: an
+// optional leading %, then letters, digits and _ . - / starting and ending with
+// a letter, digit or underscore. Numeric event IDs and short codes qualify.
+const SYSLOG_RECOMMENDATIONS_IDENTIFIER = '%?[A-Za-z0-9_](?:[A-Za-z0-9_.\/-]*[A-Za-z0-9_])?';
+
 /**
  * Syslog severity names indexed by their RFC 5424 number.
  *
@@ -143,7 +148,7 @@ function syslog_recommendation_normalize(array $input): ?array {
 
 	$identifier = rtrim(syslog_recommendation_text($pick(['identifier', 'name', 'code', 'event_code', 'mnemonic']), 191), ": \t");
 
-	if ($identifier === '' || strlen($identifier) > 190 || str_contains($identifier, "\n")) {
+	if (strlen($identifier) > 190 || !preg_match('/^' . SYSLOG_RECOMMENDATIONS_IDENTIFIER . '$/D', $identifier)) {
 		return null;
 	}
 
@@ -381,23 +386,21 @@ function syslog_recommendations_read_payload() {
  * @return list<string> The distinct candidate identifiers.
  */
 function syslog_recommendation_candidates(string $message): array {
-	if (!preg_match_all('/%?[A-Za-z][A-Za-z0-9_]*(?:[-.][A-Za-z0-9_]+)*/', substr($message, 0, 2048), $matches)) {
+	if (!preg_match_all('/' . SYSLOG_RECOMMENDATIONS_IDENTIFIER . '/', substr($message, 0, 2048), $matches)) {
 		return [];
 	}
 
 	$out = [];
 
 	foreach ($matches[0] as $token) {
-		$len = strlen($token);
-
-		if ($len < 4 || $len > 190) {
+		if (strlen($token) > 190) {
 			continue;
 		}
 		$bare       = ltrim($token, '%');
 		$out[$bare] = true;
 		$out['%' . $bare] = true;
 
-		if (count($out) >= 80) {
+		if (count($out) >= 120) {
 			break;
 		}
 	}
