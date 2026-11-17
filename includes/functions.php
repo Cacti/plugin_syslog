@@ -8232,10 +8232,9 @@ function syslog_message_button($message, $device, $program, $facility, $severity
 	$details            = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
 	$details['rules']   = syslog_message_rule_links($id, $source, $received, $device);
-	$text               = title_trim((string) $message, 100);
 
 	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
-		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($text) . '</button>';
+		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($details['message']) . '</button>';
 }
 
 /**

@@ -12,12 +12,15 @@ function html_escape_request_var($key) { return html_escape(get_request_var($key
 function cacti_sizeof($value) { return count($value); }
 function api_plugin_hook($name) {}
 function api_plugin_user_realm_auth($page) { return true; }
+function db_fetch_assoc_prepared($sql, $params = []) { return [['id' => 1]]; }
+function is_realm_allowed($realm) { return true; }
+function read_config_option($name, $force = false) { return ''; }
 require dirname(__DIR__, 2) . '/includes/functions.php';
 $saved_choices_json = '{}';
 $saved_fields_json = html_escape(json_encode(['host'=>'Host','message'=>'Message','program'=>'Program','logtime'=>'Date','priority'=>'Priority']));
 $saved_tree_json = html_escape(json_encode(['AND',['predicate','host','=','10.0.0.5'],['predicate','logtime','last','86400']]));
 $saved_searches = [['id'=>7,'name'=>'Router investigation','is_global'=>'','user'=>'tester']];
-$saved_active = 7; $saved_admin = true;
+$saved_active = 7; $saved_admin = true; $saved_share = true; $username = 'tester';
 $item_rows = [50=>'50',100=>'100'];$trimvals = [0=>'Fit column',75=>'75 Chars',1024=>'All Text'];$page_refresh_interval = [0=>'Paused',300=>'5 Minutes'];
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
 $start = strpos($source, "<form id='syslog_form'"); $end = strpos($source, '</form>', $start)+7;
@@ -25,7 +28,9 @@ echo '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" con
 eval('?>'.substr($source,$start,$end-$start));
 echo '<div id="syslog_workspace"><div class="syslogResultsMain"><table><thead><tr><th>Time</th><th>Device</th><th>Program</th><th>Message</th><th>Facility</th><th>Severity</th></tr></thead><tbody>';
 $priorities = ['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'];
-foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i % 8).'"><td>2026-09-13 00:12:42</td><td>10.0.0.5</td><td>kernel</td><td class="syslogMessage">'.syslog_message_button('nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>','10.0.0.5','kernel','kern',$priorities[$i % 8],'2026-09-13 00:12:42', 100 + $i, $i === 17 ? 'removed' : 'main').'</td><td>kern</td><td>'.$priorities[$i % 8].'</td></tr>';
+$message = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
+$long_message = $message . ' ' . str_repeat('width preview ', 4);
+foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i % 8).'"><td>2026-09-13 00:12:42</td><td>10.0.0.5</td><td>kernel</td><td class="syslogMessage">'.syslog_message_button($i === 1 ? $long_message : $message,'10.0.0.5','kernel','kern',$priorities[$i % 8],'2026-09-13 00:12:42', 100 + $i, $i === 17 ? 'removed' : 'main').'</td><td>kern</td><td>'.$priorities[$i % 8].'</td></tr>';
 echo '</tbody></table></div>';
 $start = strpos($source,"<aside id='syslog_message_details'");$end = strpos($source,'</aside></div>', $start)+strlen('</aside></div>');
 eval('?>'.substr($source,$start,$end-$start));
