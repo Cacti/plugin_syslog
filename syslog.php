@@ -69,11 +69,6 @@ if (get_request_var('action') == 'ajax_hosts') {
 	exit;
 }
 
-if (get_request_var('action') == 'save') {
-	save_settings();
-	exit;
-}
-
 if (get_request_var('action') == 'saved_search_save') {
 	header('Content-Type: application/json; charset=UTF-8');
 	print saved_search_save();
@@ -152,6 +147,11 @@ if ($current_tab === 'breached' && !syslog_thresholds_enabled()) {
 	$current_tab = 'syslog';
 	set_request_var('tab', $current_tab);
 	$_SESSION['sess_syslog_tab'] = $current_tab;
+}
+
+if (get_request_var('action') == 'save') {
+	save_settings();
+	exit;
 }
 
 // validate the syslog post/get/request information
@@ -2823,8 +2823,6 @@ function syslog_messages(string $tab = 'syslog'): void {
  */
 function save_settings(): void {
 	global $current_tab;
-
-//	syslog_request_validation($current_tab);
 
 	$variables = [
 		'rows',

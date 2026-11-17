@@ -1446,6 +1446,10 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 				(result.count === 1 ? '1 matching message' : result.count + ' matching messages')
 			)));
 
+			if (result.notice) {
+				container.append($('<p/>').text(result.notice));
+			}
+
 			if (result.history_limit) {
 				container.append($('<p/>').text('No matches in incoming data. Results are from the most recent ' + result.history_limit + ' stored messages. Testing does not send alarms.'));
 			}

@@ -116,6 +116,12 @@ test_syslog_empty_page() {
   browser_check "plugins/syslog/syslog.php" "Syslog" "No Syslog Messages" "Unprocessed Messages: 0"
 }
 
+test_save_view_defaults() {
+  node_check browser-save-defaults.js
+  assert_equals "$(db_scalar "SELECT value FROM settings_user WHERE user_id=1 AND name='syslog_removal'")" "-1" "main-record defaults should persist"
+  assert_equals "$(db_scalar "SELECT status FROM plugin_config WHERE directory='syslog'")" "1" "saving defaults must leave Syslog enabled"
+}
+
 test_alerts_page() {
   browser_check "plugins/syslog/syslog_alerts.php" "Console > Syslog Alerts" "No Syslog Alerts Defined"
 }
@@ -328,6 +334,7 @@ normalize_admin
 
 run_test "1 login console" test_login_console
 run_test "2 syslog empty page" test_syslog_empty_page
+run_test "Save view defaults" test_save_view_defaults
 run_test "3 alerts page" test_alerts_page
 run_test "4 removal page" test_removal_page
 run_test "5 reports page" test_reports_page

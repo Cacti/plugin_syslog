@@ -3840,6 +3840,9 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 	}
 
 	$result = ['error' => '', 'count' => (int) $count, 'rows' => $out];
+	if ($rule_type === 'alert' && $type === 'sql') {
+		$result['notice'] = __('SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms.', 'syslog');
+	}
 	if ($history) {
 		$result['history_limit'] = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
 	}
