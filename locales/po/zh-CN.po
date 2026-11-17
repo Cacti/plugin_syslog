@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-13 11:06-0500\n"
+"POT-Creation-Date: 2026-11-17 16:26-0500\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: tomcat <luis_126@126.com>\n"
 "Language-Team: Chinese (Simplified) <http://translate.cacti.net/projects/cacti/syslog/zh-CN/>\n"
@@ -31,27 +31,27 @@ msgstr ""
 msgid "Share with groups…"
 msgstr ""
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Emergency"
 msgstr "紧急"
 
-#: includes/functions.php includes/settings.php
+#: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Critical"
 msgstr "严重"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Alert"
 msgstr "警报"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Error"
 msgstr "错误"
 
-#: includes/functions.php includes/settings.php
+#: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Warning"
 msgstr "警告"
 
-#: includes/functions.php includes/settings.php
+#: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Notice"
 msgstr "注意"
 
@@ -59,11 +59,11 @@ msgstr "注意"
 msgid "Info"
 msgstr "信息"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Debug"
 msgstr "Debug"
 
-#: includes/functions.php
+#: includes/functions.php includes/recommendations.php
 msgid "Informational"
 msgstr "信息"
 
@@ -242,9 +242,13 @@ msgstr ""
 msgid "The preview sample could not be read."
 msgstr ""
 
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr ""
+
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_dashboards.php syslog_removal.php syslog_reports.php
-#: syslog_saved_searches.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Permission denied."
 msgstr ""
 
@@ -280,6 +284,7 @@ msgid "Alert Name"
 msgstr "提醒名称"
 
 #: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
 msgid "Severity"
 msgstr "严重"
 
@@ -317,8 +322,9 @@ msgstr "日期"
 msgid "Level"
 msgstr "级别"
 
-#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_removal.php syslog_saved_searches.php
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_saved_searches.php
 msgid "Message"
 msgstr "信息"
 
@@ -600,7 +606,8 @@ msgstr "卸载"
 
 #: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Cancel"
 msgstr "取消"
 
@@ -640,10 +647,33 @@ msgstr ""
 msgid "Dashboards"
 msgstr ""
 
+#: includes/navigation.php syslog_recommendations.php
+#, fuzzy
+msgid "Syslog Recommendations"
+msgstr "Syslog保留"
+
+#: includes/navigation.php
+#, fuzzy
+#| msgid "Import"
+msgid "(Import)"
+msgstr "导入"
+
 #: includes/navigation.php
 #, fuzzy
 msgid "Display Syslog in Range"
 msgstr "在范围内显示Syslog"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr ""
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr ""
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr ""
 
 #: includes/settings.php
 msgid "Monday"
@@ -691,7 +721,7 @@ msgid "Disabled"
 msgstr "已禁用"
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
-#: syslog_device_rules.php syslog_reports.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
 msgid "None"
 msgstr "无"
 
@@ -1059,8 +1089,8 @@ msgid "%d second"
 msgstr ""
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
-#: syslog_dashboards.php syslog_device_rules.php syslog_removal.php
-#: syslog_saved_searches.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
 msgid "Delete"
 msgstr "删除"
 
@@ -1073,7 +1103,8 @@ msgid "Enable"
 msgstr "启用"
 
 #: includes/settings.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_saved_searches.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_saved_searches.php
 msgid "Export"
 msgstr "导出"
 
@@ -1192,6 +1223,11 @@ msgstr "搬迁规则"
 msgid "Report Rules"
 msgstr "报告规则"
 
+#: includes/settings.php syslog_recommendations.php
+#, fuzzy
+msgid "Recommendations"
+msgstr "删除了记录"
+
 #: includes/utilities.php
 #, fuzzy, php-format
 msgid "There were %s Device records removed from the Syslog database"
@@ -1216,8 +1252,8 @@ msgid "Confirm Purge"
 msgstr ""
 
 #: includes/utilities.php syslog_alerts.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_removal.php syslog_reports.php
-#: syslog_saved_searches.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Continue"
 msgstr "继续"
 
@@ -2364,7 +2400,8 @@ msgid "Display Rows"
 msgstr "显示行"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Default"
 msgstr "默认"
 
@@ -2430,12 +2467,14 @@ msgid "Save Search As"
 msgstr "搜索"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Search"
 msgstr "搜索"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Clear"
 msgstr "清除"
 
@@ -3036,8 +3075,8 @@ msgstr "请输入搜索词"
 msgid "Alarm filter conditions"
 msgstr ""
 
-#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
-#: syslog_reports.php
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
 msgid "All"
 msgstr "所有"
 
@@ -3047,12 +3086,13 @@ msgid "Rows"
 msgstr "行数:"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
 msgid "Go"
 msgstr "Go"
 
-#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
-#: syslog_reports.php syslog_saved_searches.php
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
 msgid "Import"
 msgstr "导入"
 
@@ -3424,6 +3464,147 @@ msgstr ""
 
 #: syslog_device_rules.php
 msgid "Use priority exception"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Enter an identifier made of letters, digits and the characters _ . - / (it may start with %), and at least an explanation or a recommended action."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "单击“继续”以导出以下Syslog警报规则。"
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "单击“继续”以删除以下Syslog报告。"
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, not valid JSON, or contains no usable recommendations."
+msgstr ""
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Imported %d, updated %d and skipped %d existing Recommendation(s)."
+msgstr ""
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were invalid or failed to import."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "Import Recommendations from Local File"
+msgstr "从本地文件导入报告规则"
+
+#: syslog_recommendations.php
+msgid "Select a JSON file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "Import Recommendations from Text"
+msgstr "从文本导入报告规则"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+#| msgid "Import Report Data"
+msgid "Import Recommendations"
+msgstr "导入报告数据"
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "Recommendation"
+msgstr "删除了记录"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The message code that appears in the syslog message, for example %LINK-3-UPDOWN or RPD_OSPF_NBRDOWN. The match is not case sensitive."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
 msgstr ""
 
 #: syslog_removal.php
@@ -3912,10 +4093,6 @@ msgstr ""
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
-
-#: includes/functions.php
-msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
 msgstr ""
 
 #~ msgid "Command"
