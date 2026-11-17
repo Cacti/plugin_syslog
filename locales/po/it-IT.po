@@ -3768,6 +3768,10 @@ msgstr ""
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
 
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr ""
+
 #~ msgid "Command"
 #~ msgstr "Comando"
 
