@@ -224,3 +224,22 @@ it('previews the sql type under the trusted-admin model', function () {
 	// existing trusted-admin model for stored rules.
 	expect(str_contains($calls[0]['sql'], "LIKE '%keepalive%'"))->toBeTrue();
 });
+
+it('explains the incoming-only scope of SQL alert previews', function ($count) {
+	syslog_load_plugin_source('includes/functions.php');
+	preview_setup();
+
+	$calls = [];
+	preview_capture($calls, ['count' => (string) $count]);
+
+	$preview = syslog_rule_preview(['type' => 'sql', 'message' => "message LIKE '%SYS-5-CONFIG_I: Configured from%'"], 'alert');
+
+	expect($preview['error'])->toBe('')
+		->and($preview['count'])->toBe($count)
+		->and($preview['notice'])->toBe('SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms.')
+		->and($calls)->toHaveCount(2);
+
+	foreach ($calls as $call) {
+		expect($call['sql'])->toContain('`syslogdb`.`syslog_incoming`');
+	}
+})->with([0, 1]);

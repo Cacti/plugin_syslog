@@ -2,6 +2,9 @@
 
 --- 5.0 ---
 
+* issue#458: Initialize and validate the active tab before saving view defaults, avoiding a TypeError that disables Syslog and stops processing
+* issue#459: Explain that SQL Expression rule previews search only queued incoming messages, so an empty preview is not mistaken for an alert-processing failure
+
 * issue#456: Avoid PHP 8.6 deprecation warnings during schema checks by using object IDs for the connection cache key
 
 * issue#440: Remember only a successful table creation (not updates of existing tables) when avoiding repeated schema operations, so schema drift on an existing table, such as a narrowed owner column, is still detected and repaired within the same request
