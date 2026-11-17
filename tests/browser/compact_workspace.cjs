@@ -4,6 +4,7 @@ const {execFileSync} = require('node:child_process');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '../..');
 const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
+const longMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script> ' + 'width preview '.repeat(4);
 const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_workspace.php')], {encoding: 'utf8'});
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
@@ -24,6 +25,15 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  });
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
  assert.deepEqual(errors,[]);
+ const messageButton = page.locator('.syslogMessageOpen').first();
+ assert.equal(await messageButton.textContent(), longMessage, 'Preview retains text beyond 100 characters');
+ const widePreview = await messageButton.evaluate(button => {
+  const range = document.createRange();
+  range.setStart(button.firstChild, 110);
+  range.setEnd(button.firstChild, 111);
+  return { characterRight: range.getBoundingClientRect().right, buttonRight: button.getBoundingClientRect().right };
+ });
+ assert(widePreview.characterRight <= widePreview.buttonRight, 'Characters beyond 100 are visible when the column has room');
  // The filter panel is collapsed by default; open it before exercising its controls.
  assert.equal(await page.locator('#syslog_search_content').isVisible(), false, 'Filter panel starts collapsed');
  assert.equal(await page.locator('#syslog_search_summary').isVisible(), true, 'Collapsed panel shows the query summary');
@@ -44,8 +54,10 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  const originalColor = await page.locator('.syslogRow').first().evaluate(row=>getComputedStyle(row).backgroundColor);
  assert.notEqual(originalColor,'rgb(255, 255, 255)');
  await page.locator('.syslogMessageOpen').first().click();
- assert.equal(await page.locator('#syslog_details_raw').textContent(),'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>');
+ assert.equal(await page.locator('#syslog_details_raw').textContent(),longMessage);
  assert.equal(await page.locator('#syslog_message_details script').count(),0);
+ await page.mouse.move(0, 0);
+ await page.waitForFunction(color => getComputedStyle(document.querySelector('.syslogRow')).backgroundColor === color, originalColor);
  assert.equal(await page.locator('.syslogRow').first().evaluate(row=>getComputedStyle(row).backgroundColor),originalColor,'Selection retains severity color');
  const alarm = page.locator('[data-rule="alarm"]');
  const removal = page.locator('[data-rule="removal"]');
@@ -80,6 +92,10 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('#syslog_view_options #rows').count(),0,'Results limit no longer hides in view options');
  await page.keyboard.press('Escape');assert.equal(await page.locator('#save').isVisible(),false);
  await page.setViewportSize({width:390,height:844});if (process.env.TEST_ARTIFACT_DIR) await page.screenshot({path:path.join(process.env.TEST_ARTIFACT_DIR, 'syslog-workspace-mobile.png'),fullPage:true});
+ assert.equal(await messageButton.textContent(), longMessage, 'Narrow layouts retain the complete preview text');
+ const narrowPreview = await messageButton.evaluate(button => ({width: button.clientWidth, content: button.scrollWidth, ellipsis: getComputedStyle(button).textOverflow}));
+ assert(narrowPreview.content > narrowPreview.width, 'Long previews overflow their own button on narrow screens');
+ assert.equal(narrowPreview.ellipsis, 'ellipsis', 'The browser controls visual truncation');
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,'Page must not overflow horizontally');
  await page.locator('#refresh_results').click();assert.equal(await page.evaluate(()=>Object.hasOwn(posts.at(-1),'rfilter')),false);
  // A saved expanded preference reopens the panel on reload; an active search error forces it open even when collapse is stored.

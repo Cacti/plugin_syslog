@@ -29,3 +29,20 @@ it('escapes hostile log and device text in the message-details button', function
 	expect($data['message'])->toBe($message, 'Complete log details must survive serialization');
 	expect($data['device'])->toBe('router" onmouseover="bad', 'Complete log details must survive serialization');
 });
+
+it('preserves long escaped messages in both the preview and details', function ($message) {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$html = syslog_message_button($message, 'router', 'kernel', 'kern', 'warning', '2026-11-17 00:00:00');
+
+	preg_match('/<button[^>]*>(.*?)<\/button>/s', $html, $preview);
+	preg_match('/data-message="([^"]*)"/', $html, $details);
+
+	expect(html_entity_decode($preview[1], ENT_QUOTES, 'UTF-8'))->toBe($message)
+		->and(strpos($preview[1], '<script>'))->toBeFalse()
+		->and(json_decode(html_entity_decode($details[1], ENT_QUOTES, 'UTF-8'), true)['message'])->toBe($message);
+})->with([
+	'ASCII'   => str_repeat('message text ', 30),
+	'Unicode' => str_repeat('接口状态正常 ', 30),
+	'HTML'    => str_repeat('message text ', 12) . '<script>alert("log")</script> & "quoted"'
+]);

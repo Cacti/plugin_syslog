@@ -4,6 +4,7 @@
 
 * issue#458: Initialize and validate the active tab before saving view defaults, avoiding a TypeError that disables Syslog and stops processing
 * issue#459: Explain that SQL Expression rule previews search only queued incoming messages, so an empty preview is not mistaken for an alert-processing failure
+* issue#461: Fit message previews to the available column width instead of cutting them to 100 characters
 
 * issue#456: Avoid PHP 8.6 deprecation warnings during schema checks by using object IDs for the connection cache key
 
