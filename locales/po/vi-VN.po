@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-17 16:26-0500\n"
+"POT-Creation-Date: 2026-11-18 13:15-0500\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,6 +16,107 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.0.1\n"
+
+#: includes/functions.php includes/settings.php
+#, fuzzy, php-format
+#| msgid "%d Minutes"
+msgid "%d minutes"
+msgstr "%d phút"
+
+#: includes/functions.php
+#, fuzzy, php-format
+msgid "%d hour"
+msgstr "%d giờ"
+
+#: includes/functions.php includes/settings.php
+#, fuzzy, php-format
+msgid "%d hours"
+msgstr "%d giờ"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr ""
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy, php-format
+#| msgid "%d Weeks"
+msgid "%d weeks"
+msgstr "% d Tuần"
+
+#: includes/functions.php
+#, fuzzy, php-format
+#| msgid "%d Month"
+msgid "%d month"
+msgstr "% d Tháng"
+
+#: includes/functions.php
+#, fuzzy, php-format
+#| msgid "%d Months"
+msgid "%d months"
+msgstr "% d Tháng"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr ""
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr ""
+
+#: includes/functions.php
+msgid "This Day"
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy
+msgid "This Week"
+msgstr "Gửi lần cuối"
+
+#: includes/functions.php
+#, fuzzy
+#| msgid "1 Month"
+msgid "This Month"
+msgstr "1 Tháng"
+
+#: includes/functions.php
+#, fuzzy
+#| msgid "%d Year"
+msgid "This Year"
+msgstr "% d Năm"
+
+#: includes/functions.php
+#, fuzzy
+msgid "Previous Day"
+msgstr "Phân vùng mỗi ngày"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr ""
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr ""
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr ""
 
 #: includes/functions.php
 #, fuzzy
@@ -325,7 +426,7 @@ msgstr "Cấp độ"
 
 #: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
 #: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
-#: syslog_saved_searches.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Message"
 msgstr "Tin nhắn"
 
@@ -404,7 +505,7 @@ msgid ", Count:"
 msgstr "Đếm:"
 
 #: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
-#: syslog_removal.php
+#: syslog_removal.php syslog_reports.php
 msgid "Host"
 msgstr "Host"
 
@@ -412,6 +513,25 @@ msgstr "Host"
 #, fuzzy, php-format
 msgid "Event Report - %s"
 msgstr "Báo cáo sự kiện - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy
+msgid "All Text"
+msgstr "Tất cả văn bản"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy, php-format
+msgid "%d Chars"
+msgstr "% d"
 
 #: includes/installer.php
 #, fuzzy
@@ -680,6 +800,26 @@ msgstr "Nhập"
 msgid "Display Syslog in Range"
 msgstr "Hiển thị Syslog trong Phạm vi"
 
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr ""
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr ""
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr ""
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr ""
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr ""
+
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Explanation"
 msgstr ""
@@ -782,6 +922,14 @@ msgstr "Thời gian cập nhật"
 #, fuzzy
 msgid "This is the time in seconds before the page refreshes."
 msgstr "Đây là thời gian tính bằng giây trước khi trang làm mới."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr ""
 
 #: includes/settings.php
 #, fuzzy
@@ -984,22 +1132,6 @@ msgstr ""
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
-
-#: includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Minutes"
-msgid "%d minutes"
-msgstr "%d phút"
-
-#: includes/settings.php
-#, fuzzy, php-format
-msgid "%d hours"
-msgstr "%d giờ"
-
-#: includes/settings.php
-#, php-format
-msgid "%d days"
 msgstr ""
 
 #: includes/settings.php
@@ -1246,7 +1378,7 @@ msgstr "Quy tắc loại bỏ"
 msgid "Report Rules"
 msgstr "Quy tắc báo cáo"
 
-#: includes/settings.php syslog_recommendations.php
+#: includes/settings.php syslog.php syslog_recommendations.php
 #, fuzzy
 msgid "Recommendations"
 msgstr "Hồ sơ bị xóa"
@@ -1606,14 +1738,17 @@ msgid "Field"
 msgstr ""
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
 msgid "Program"
 msgstr "Chương trình"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
 msgid "Facility"
 msgstr "Tiện ích"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
 msgid "Priority"
 msgstr "Ưu tiên"
 
@@ -1650,7 +1785,7 @@ msgid "Enter message text…"
 msgstr ""
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
-#: syslog_saved_searches.php
+#: syslog_reports.php syslog_saved_searches.php
 #, fuzzy
 msgid "Remove condition"
 msgstr "Hồ sơ bị xóa"
@@ -2385,6 +2520,12 @@ msgid "Global Searches"
 msgstr ""
 
 #: syslog.php
+#, fuzzy, php-format
+#| msgid "Default"
+msgid "%s (Default)"
+msgstr "Mặc định"
+
+#: syslog.php
 msgid "Manage"
 msgstr ""
 
@@ -2416,9 +2557,10 @@ msgstr "Chứa"
 msgid "does not contain"
 msgstr ""
 
-#: syslog.php
-msgid "Results limit"
-msgstr ""
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Hàng"
 
 #: syslog.php
 #, fuzzy
@@ -2435,6 +2577,16 @@ msgstr "Mặc định"
 #, fuzzy
 msgid "View options"
 msgstr "Tùy chọn email"
+
+#: syslog.php
+#, fuzzy
+msgid "Trim"
+msgstr "Xén"
+
+#: syslog.php
+#, fuzzy
+msgid "Message Trim"
+msgstr "Tin nhắn Trim"
 
 #: syslog.php
 #, fuzzy
@@ -2491,6 +2643,10 @@ msgstr ""
 #, fuzzy
 msgid "Save Search As"
 msgstr "Tìm kiếm"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr ""
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
@@ -2549,12 +2705,12 @@ msgid "Empty message"
 msgstr "Tin nhắn"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
 msgid "No"
 msgstr "Không"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_removal.php syslog_reports.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
 msgid "Yes"
 msgstr "Có"
 
@@ -2588,7 +2744,28 @@ msgid "Message details"
 msgstr "Tin nhắn"
 
 #: syslog.php
+#, fuzzy
+#| msgid "General Settings"
+msgid "General"
+msgstr "Cài đặt chung"
+
+#: syslog.php
+#, fuzzy
+msgid "Alert Rule"
+msgstr "Quy tắc cảnh báo"
+
+#: syslog.php
+#, fuzzy
+#| msgid "Frequency"
+msgid "Sequence"
+msgstr "Tần số"
+
+#: syslog.php
 msgid "Copied"
+msgstr ""
+
+#: syslog.php
+msgid "Copy link"
 msgstr ""
 
 #: syslog.php
@@ -2599,6 +2776,23 @@ msgstr "Tin nhắn"
 #: syslog.php
 msgid "Copy unavailable. Select and copy the message text."
 msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "Looking up recommendations…"
+msgstr "Duy trì nhật ký hệ thống"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr ""
+
+#: syslog.php
+msgid "Recommendations could not be loaded."
+msgstr ""
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Hành động"
 
 #: syslog.php
 #, fuzzy
@@ -3036,10 +3230,6 @@ msgid "This information will appear in the body of the Alert just before the Ale
 msgstr "Thông tin sẽ được chứa trong phần thân của báo cáo."
 
 #: syslog_alerts.php
-msgid "Actions"
-msgstr "Hành động"
-
-#: syslog_alerts.php
 msgid "Open Ticket"
 msgstr "Mở Ticket"
 
@@ -3067,7 +3257,7 @@ msgstr "% d Hồ sơ"
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 #, fuzzy
 msgid "Test rule"
 msgstr "Quy tắc cảnh báo"
@@ -3076,25 +3266,25 @@ msgstr "Quy tắc cảnh báo"
 msgid "Rule Test Preview"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Value"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 #, fuzzy
 msgid "Enter a value"
 msgstr "Nhập một cụm từ tìm kiếm"
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 #, fuzzy
 msgid "Match"
 msgstr "Loại so khớp"
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 #, fuzzy
 msgid "Enter a nonnegative integer"
 msgstr "Nhập một cụm từ tìm kiếm"
@@ -3107,11 +3297,6 @@ msgstr ""
 #: syslog_removal.php syslog_reports.php
 msgid "All"
 msgstr "Tất cả"
-
-#: syslog_alerts.php syslog_dashboards.php syslog_reports.php
-#: syslog_saved_searches.php
-msgid "Rows"
-msgstr "Hàng"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
@@ -3497,11 +3682,17 @@ msgid "Use priority exception"
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "Enter an identifier made of letters, digits and the characters _ . - / (it may start with %), and at least an explanation or a recommended action."
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
 msgstr ""
 
 #: syslog_recommendations.php
 msgid "A recommendation for this vendor and identifier already exists."
+msgstr ""
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3515,17 +3706,27 @@ msgid "Click 'Continue' to Delete the following Recommendation(s)."
 msgstr "Nhấp vào 'Tiếp tục' để xóa (các) Báo cáo nhật ký hệ thống sau đây."
 
 #: syslog_recommendations.php
-msgid "Import rejected: the file is empty, too large, not valid JSON, or contains no usable recommendations."
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
 msgstr ""
 
 #: syslog_recommendations.php
 #, php-format
-msgid "NOTE: Imported %d, updated %d and skipped %d existing Recommendation(s)."
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
 msgstr ""
 
 #: syslog_recommendations.php
 #, php-format
-msgid "ERROR: %d Recommendation(s) were invalid or failed to import."
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr ""
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr ""
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3568,6 +3769,10 @@ msgid "Import Recommendations"
 msgstr "Nhập dữ liệu báo cáo"
 
 #: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr ""
+
+#: syslog_recommendations.php
 msgid "Not specified"
 msgstr ""
 
@@ -3589,7 +3794,7 @@ msgid "Identifier"
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "The message code that appears in the syslog message, for example %LINK-3-UPDOWN or RPD_OSPF_NBRDOWN. The match is not case sensitive."
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3626,6 +3831,44 @@ msgstr ""
 
 #: syslog_recommendations.php
 msgid "Recommendation [new]"
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the hover message but are never searched."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "When you hover over a row on the Syslog tab, the first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "All vendors are checked. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr ""
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "How Recommendations Are Matched"
+msgstr "Nhập quy tắc báo cáo từ văn bản"
+
+#: syslog_recommendations.php
+#, fuzzy
+msgid "Can Match"
+msgstr "Loại so khớp"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the hover lookup can ever find it"
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3919,9 +4162,8 @@ msgid "Is this Report Enabled?"
 msgstr "Báo cáo này đã được bật chưa?"
 
 #: syslog_reports.php
-#, fuzzy
-msgid "Define how you would like this string matched."
-msgstr "Xác định cách bạn muốn chuỗi này khớp."
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr ""
 
 #: syslog_reports.php
 msgid "Frequency"
@@ -3948,9 +4190,8 @@ msgid "Report Format"
 msgstr "Báo cáo ghi chú"
 
 #: syslog_reports.php
-#, fuzzy
-msgid "The matching component of the syslog message."
-msgstr "Các thành phần phù hợp của thông báo nhật ký hệ thống."
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr ""
 
 #: syslog_reports.php
 #, fuzzy
@@ -3966,6 +4207,16 @@ msgstr "Danh sách địa chỉ Email được phân cách bằng dấu phẩy �
 #, fuzzy
 msgid "Space for Notes on the Report"
 msgstr "Không gian cho ghi chú trên báo cáo"
+
+#: syslog_reports.php
+#, fuzzy
+msgid "Report Test Preview"
+msgstr "Chỉnh sửa báo cáo [mới]"
+
+#: syslog_reports.php
+#, fuzzy
+msgid "Report filter conditions"
+msgstr "Ghi chú quy tắc loại bỏ"
 
 #: syslog_reports.php
 #, fuzzy
@@ -4129,6 +4380,14 @@ msgstr ""
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
 
+#, fuzzy
+#~ msgid "Define how you would like this string matched."
+#~ msgstr "Xác định cách bạn muốn chuỗi này khớp."
+
+#, fuzzy
+#~ msgid "The matching component of the syslog message."
+#~ msgstr "Các thành phần phù hợp của thông báo nhật ký hệ thống."
+
 #~ msgid "Command"
 #~ msgstr "Command"
 
@@ -4151,10 +4410,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "All Facilities"
 #~ msgstr "Tất cả các tiện nghi"
-
-#, fuzzy
-#~ msgid "All Text"
-#~ msgstr "Tất cả văn bản"
 
 #, fuzzy
 #~ msgid "Critical++"
@@ -4210,10 +4465,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Info++"
 #~ msgstr "Thông tin"
-
-#, fuzzy
-#~ msgid "Message Trim"
-#~ msgstr "Tin nhắn Trim"
 
 #, fuzzy
 #~ msgid "No Syslog Statistics Found"
@@ -4273,10 +4524,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Traditional Table"
 #~ msgstr "Bảng truyền thống"
-
-#, fuzzy
-#~ msgid "Trim"
-#~ msgstr "Xén"
 
 #, fuzzy
 #~ msgid "Validate Hostnames"
