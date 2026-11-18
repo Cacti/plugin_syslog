@@ -276,10 +276,11 @@ item yet.
 
 The plugin declares `compat = 1.2.23` in `INFO`, so it needs Cacti 1.2.23 or
 later, and PHP 8.0 or later. Every non-test PHP file passes `php -l` on PHP 8.0
-and 8.1. The Linux integration workflow runs PHP 8.2, 8.3, and 8.4 against the
-Cacti `1.2.x` branch on MariaDB 11.8, including installation, plugin enablement,
-polling, and sample Syslog processing. Other PHP, Cacti, and database versions
-are not exercised by CI.
+and 8.1. The [Linux integration workflow](.github/workflows/plugin-ci-workflow.yml)
+runs PHP 8.2 through 8.5 against Cacti `1.2.x` on MariaDB 11.8, including
+installation, plugin enablement, polling, and sample Syslog processing. PHP 8.6
+is a non-blocking experimental job. Use the PHP version required by your Cacti
+release even when the plugin's syntax supports an older interpreter.
 
 This plugin does not ship its own `composer.json`. Composer validation and
 dependency installation in CI use the manifest supplied by the checked-out
@@ -355,8 +356,8 @@ run against Cacti's own Composer-managed vendor tree, plus a disposable
 Docker/Playwright end-to-end harness. GitHub CI runs a single integration-test
 workflow that checks out the Cacti `1.2.x` branch, runs the Pest suite, the
 regression scripts, and the changed-line coverage check, and exercises the
-syslog poller end-to-end on the PHP 8.2-8.4 matrix on Linux. The
-Docker E2E runner refuses unsafe temporary-directory paths before performing
+syslog poller end-to-end on Linux. PHP 8.2 through 8.5 are the regular matrix;
+PHP 8.6 is experimental. The Docker E2E runner refuses unsafe temporary-directory paths before performing
 recursive cleanup.
 
 ## Installation
@@ -390,10 +391,11 @@ Upgrade Advisor when it finds existing syslog tables. Its upgrade type is
 change how a legacy non-partitioned `syslog` table is converted. An existing
 partitioned install keeps its messages, rules, and hosts with each choice.
 
-Note: You must rename config.php.dist in the syslog plugin directory to
-config.php and make changes there for the location of the database, user,
-password, and host.  This is especially important if you are using a remote
-logging database server.
+Before installing, copy `config.php.dist` to `config.php` and configure the
+database connection. Preserve this file during upgrades. A collector with an
+independent Syslog database uses `config_local.php.dist` as the template for
+`config_local.php`; when both configuration files exist, `config_local.php`
+takes precedence.
 
 To upgrade an existing install, replacing the files is not enough: follow
 [Important: Upgrading the Plugin](#important-upgrading-the-plugin), which
@@ -468,40 +470,24 @@ $template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, pr
 *.* >localhost,my_database,my_user,my_password;cacti_syslog
 ```
 
-For version below 2.0 it should be:
+The template above targets the current `logtime` schema. Examples for
+pre-2.5 releases used a different incoming schema and must not be copied into a
+current install. See the README at the matching tag for a legacy migration.
+
+Install your distribution's rsyslog MySQL output module, replace the database
+and credential placeholders, then validate and restart rsyslog:
 
 ```console
-$ModLoad imudp
-$UDPServerRun 514
-$ModLoad ommysql
-
-$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message)
-values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated:::date-mysql%', '%HOSTNAME%', TRIM('%msg%'))", SQL
-
-. >localhost,my_database,my_user,my_password;cacti_syslog
-```
-
-For version 2.4 and above it should be:
-
-```console
-module(load="ommysql")
-action(type="ommysql" server="localhost" serverport="3306"
-db="syslogDB" uid="userID" pwd="passwdID")
-
-$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, logtime, host, message)
-values (%syslogfacility%, %syslogpriority%, '%programname%', '%timegenerated:::date-mysql%', '%HOSTNAME%', TRIM('%msg%'))", SQL
-```
-
-For CentOS/RHEL systems you will all need to install the rsyslog-mysql package
-
-```
-yum install rsyslog-mysql
+rsyslogd -N1
 systemctl restart rsyslog
 ```
 
-If you are upgrading to version 2.5 from an earlier version, make sure that you
-update this template format and restart rsyslog.  You may loose some syslog
-data, but doing this in a timely fashion, will minimize data loss.
+Do not load a module or listener twice if another configuration file already
+loads it. A modern `ommysql` action must explicitly select the Cacti template;
+its default template does not target `syslog_incoming`. See the
+[rsyslog module reference](https://docs.rsyslog.com/doc/configuration/modules/ommysql.html)
+for current configuration options. Protect the configuration file because it
+contains database credentials.
 
 Senders that only have an IPv6 address are supported.  With hostname resolution
 enabled the plugin accepts an IPv4 or IPv6 address as it is, and stores an IPv6
@@ -513,7 +499,7 @@ address.
 Ensure you restart rsyslog after these changes are completed.  Other logging
 servers such as Syslog-NG are also supported with this plugin.  Please see some
 additional documentation here: [Cacti Documentation
-Site](https://docs.cacti.net/plugin:syslog.config)
+Site](https://github.com/Cacti/documentation/blob/develop/Plugin-Syslog.md)
 
 We are using the pure integer values that rsyslog provides to both the priority
 and facility in this version syslog, which makes the data collection must less
@@ -524,35 +510,25 @@ To setup log forwarding from your network switches and routers, and from your
 various Linux, UNIX, and other operating system devices, please see their
 respective documentation.
 
-Finally, it's important, especially in more recent versions of MySQL and MariaDB
-to set a correct SQL Mode.  These more recent SQL's prevent certain previously
-allowable syntax such as an empty data and certain group by limitations in the
-SQL itself.  Therefore, you need to ensure that the SQL mode of the database is
-correct.  To do this, first start by editing either `/etc/my.cnf` or
-`/etc/my.cnf.d/server.cnf` and inserting the SQL mode variable into the database
-configuration.  For example:
+### Database SQL mode and grouping
 
-```ini
-[mysqld]
-sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
+Older instructions set `sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER`.
+Do not copy that setting into a current MySQL configuration:
+[MySQL removed `NO_AUTO_CREATE_USER` in 8.0](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html).
+Inspect the actual modes when diagnosing a schema or migration failure:
+
+```sql
+SELECT @@GLOBAL.sql_mode, @@SESSION.sql_mode;
 ```
+
+Follow the migration guidance for your database and plugin release rather than
+changing the server-wide modes for all applications.
 
 ### Special Note for the Grouping feature
-Syslog now supports the ability to group similar messages from a specific host together
-for easy summarization for larger systems you may need to expand the default mariadb group_concat_max_len
-The default is 1MB you may need to raise it much higher depending on your needs
 
-After this change, you should log into the mysql server and run the following
-command:
-
-```console
-mysql> show global variables like 'sql_mode';
-```
-
-And ensure that it matches the setting that you placed in the database
-configuration.  If it does not, please search for the configuration that is
-making this SQL mode other than what you required.  More recent versions of
-MySQL and MariaDB will source multiple database configuration files.
+Syslog can group similar messages from a host. For large groups, inspect
+`group_concat_max_len` and raise it only as required by the query output and
+available memory; its default depends on the database product and version.
 
 ## Tables
 
