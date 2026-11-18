@@ -297,11 +297,113 @@ function syslog_search_suggestions(string $field, string $term, string $tab, str
  */
 function syslog_search_operators(string $field): array {
 	if ($field === 'logtime') {
-		return ['=', '!=', '>', '>=', '<', '<=', 'last'];
+		return ['=', '!=', '>', '>=', '<', '<=', 'last', 'during'];
 	}
 
 	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
 		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+}
+
+/**
+ * The date presets of the logtime operators, aligned with Cacti's timespan
+ * selector: 'last' holds the rolling spans ("In the last"), 'during' the
+ * calendar spans ("In the range").
+ *
+ * @return array{last: array<string, string>, during: array<string, string>} Preset values and labels.
+ */
+function syslog_search_time_presets(): array {
+	return [
+		'last' => [
+			'1800'     => __('%d minutes', 30, 'syslog'),
+			'3600'     => __('%d hour', 1, 'syslog'),
+			'7200'     => __('%d hours', 2, 'syslog'),
+			'14400'    => __('%d hours', 4, 'syslog'),
+			'21600'    => __('%d hours', 6, 'syslog'),
+			'43200'    => __('%d hours', 12, 'syslog'),
+			'86400'    => __('%d day', 1, 'syslog'),
+			'172800'   => __('%d days', 2, 'syslog'),
+			'259200'   => __('%d days', 3, 'syslog'),
+			'345600'   => __('%d days', 4, 'syslog'),
+			'604800'   => __('%d week', 1, 'syslog'),
+			'1209600'  => __('%d weeks', 2, 'syslog'),
+			'2592000'  => __('%d days', 30, 'syslog'),
+			'1months'  => __('%d month', 1, 'syslog'),
+			'2months'  => __('%d months', 2, 'syslog'),
+			'3months'  => __('%d months', 3, 'syslog'),
+			'4months'  => __('%d months', 4, 'syslog'),
+			'6months'  => __('%d months', 6, 'syslog'),
+			'1years'   => __('%d year', 1, 'syslog'),
+			'2years'   => __('%d years', 2, 'syslog')
+		],
+		'during' => [
+			'day_shift'      => __('Day Shift', 'syslog'),
+			'this_day'       => __('This Day', 'syslog'),
+			'this_week'      => __('This Week', 'syslog'),
+			'this_month'     => __('This Month', 'syslog'),
+			'this_year'      => __('This Year', 'syslog'),
+			'previous_day'   => __('Previous Day', 'syslog'),
+			'previous_week'  => __('Previous Week', 'syslog'),
+			'previous_month' => __('Previous Month', 'syslog'),
+			'previous_year'  => __('Previous Year', 'syslog')
+		]
+	];
+}
+
+/**
+ * The SQL condition for a logtime preset, relative to the database clock like
+ * the rest of the search. Calendar spans honor Cacti's First Day of the Week
+ * and Day Shift settings.
+ *
+ * @param string $operator 'last' or 'during'.
+ * @param string $value    A preset value of that operator.
+ *
+ * @return string The condition on syslog.logtime.
+ *
+ * @throws InvalidArgumentException When the preset is unknown.
+ */
+function syslog_search_time_sql(string $operator, string $value): string {
+	$presets = syslog_search_time_presets();
+
+	if (!isset($presets[$operator][$value])) {
+		throw new InvalidArgumentException('Invalid date preset.');
+	}
+
+	if ($operator === 'last') {
+		if (preg_match('/^(\d+)(months|years)$/', $value, $match)) {
+			$interval = (int) $match[1] . ($match[2] === 'months' ? ' MONTH' : ' YEAR');
+		} else {
+			$interval = (int) $value . ' SECOND';
+		}
+
+		return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+	}
+
+	// Days counted back from today to the configured first day of the week (0 = Sunday).
+	$first = function_exists('read_user_setting') ? (int) read_user_setting('first_weekdayid', 1) : 1;
+	$week  = 'DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + ' . (8 - max(0, min(6, $first))) . ') % 7 DAY)';
+	$month = "CAST(DATE_FORMAT(CURDATE(), '%Y-%m-01') AS DATE)";
+	$year  = 'MAKEDATE(YEAR(CURDATE()), 1)';
+
+	if ($value === 'day_shift') {
+		$minutes = function (string $setting, string $default): int {
+			$time = function_exists('read_user_setting') ? (string) read_user_setting($setting, $default) : $default;
+			$time = preg_match('/^([01]?\d|2[0-3]):([0-5]\d)/', $time, $match) ? $match : explode(':', '0:' . $default);
+
+			return (int) $time[1] * 60 + (int) $time[2];
+		};
+
+		$range = [
+			'CURDATE() + INTERVAL ' . $minutes('day_shift_start', '07:00') . ' MINUTE',
+			'CURDATE() + INTERVAL ' . $minutes('day_shift_end', '18:00') . ' MINUTE'
+		];
+	} else {
+		[$when, $unit] = explode('_', $value);
+		$start         = ['day' => 'CURDATE()', 'week' => $week, 'month' => $month, 'year' => $year][$unit];
+		$step          = ' INTERVAL 1 ' . strtoupper($unit);
+		$range         = $when === 'this' ? [$start, $start . ' +' . $step] : [$start . ' -' . $step, $start];
+	}
+
+	return '(syslog.logtime >= ' . $range[0] . ' AND syslog.logtime < ' . $range[1] . ')';
 }
 
 /**
@@ -328,7 +430,7 @@ function syslog_parse_logical_search(string $input): ?array {
 			continue;
 		}
 
-		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
+		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|during|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
 			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
 				throw new InvalidArgumentException('Invalid field or operator.');
 			}
@@ -412,11 +514,11 @@ function syslog_parse_logical_search(string $input): ?array {
 				throw new InvalidArgumentException('IDs must be nonnegative integers.');
 			}
 
-			if ($token[2] === 'last' && !in_array($value[1], ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+			if (in_array($token[2], ['last', 'during'], true) && !isset(syslog_search_time_presets()[$token[2]][$value[1]])) {
 				throw new InvalidArgumentException('Invalid date preset.');
 			}
 
-			if ($token[1] === 'logtime' && $token[2] !== 'last' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
+			if ($token[1] === 'logtime' && !in_array($token[2], ['last', 'during'], true) && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
 				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
 			}
 			$node = ['predicate', $token[1], $token[2], $value[1]];
@@ -479,13 +581,8 @@ function syslog_logical_search_sql(?array $tree, string $column): string {
 			throw new InvalidArgumentException('Host ID is only available for system logs.');
 		}
 
-		if ($operator === 'last') {
-			if (!in_array($value, ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
-				throw new InvalidArgumentException('Invalid date preset.');
-			}
-			$interval = ['3months' => '3 MONTH', '6months' => '6 MONTH'][$value] ?? ((int) $value . ' SECOND');
-
-			return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+		if ($operator === 'last' || $operator === 'during') {
+			return syslog_search_time_sql($operator, (string) $value);
 		}
 		$target = $field === 'message' ? $column : 'syslog.' . $field;
 
@@ -8361,7 +8458,7 @@ function alert_replace_variables($alert, $results, $hostname = '') {
  *
  * @return string The details trigger button HTML.
  */
-function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = ''): string {
+function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = '', int $trim = 0): string {
 	$details            = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
 	$details['rules']   = syslog_message_rule_links($id, $source, $received, $device);
@@ -8372,8 +8469,43 @@ function syslog_message_button($message, $device, $program, $facility, $severity
 		$details['source'] = $source;
 	}
 
-	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
-		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($details['message']) . '</button>';
+	// The details keep the complete message whatever the row shows.
+	$class = 'syslogMessageOpen' . ($trim < 0 ? ' syslogMessageWrap' : '');
+
+	return '<button type="button" class="' . $class . '" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
+		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape(syslog_trim_message($details['message'], $trim)) . '</button>';
+}
+
+/**
+ * The message Trim choices of the log view: fit the column with an ellipsis
+ * (0), show all text wrapped (-1), or cut after a number of characters.
+ *
+ * @return array<int, string> Trim values and labels.
+ */
+function syslog_trim_options(): array {
+	$options = [0 => __('Fit Column', 'syslog'), -1 => __('All Text', 'syslog')];
+
+	foreach ([30, 50, 75, 100, 150, 300] as $chars) {
+		$options[$chars] = __('%d Chars', $chars, 'syslog');
+	}
+
+	return $options;
+}
+
+/**
+ * Cut a message after the chosen number of characters for display.
+ *
+ * @param string $message The message text.
+ * @param int    $trim    The Trim value; 0 and below keep the whole text.
+ *
+ * @return string The text to show in the row.
+ */
+function syslog_trim_message(string $message, int $trim): string {
+	if ($trim <= 0 || mb_strlen($message, 'UTF-8') <= $trim) {
+		return $message;
+	}
+
+	return rtrim(mb_substr($message, 0, $trim, 'UTF-8')) . '…';
 }
 
 /**

@@ -259,6 +259,16 @@
 	color: var(--search-text);
 }
 
+/* Aligns the Default checkbox under the name field. */
+.syslogSavedPrompt .syslogSavedDefaultRow {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-left: 52px;
+	color: var(--search-text);
+	font-size: 12px;
+}
+
 .syslogSearchBuilder .syslogSearchRow {
 	display: grid;
 	grid-template-columns: 66px 120px 100px 110px minmax(100px, 1fr) 26px;
@@ -583,12 +593,12 @@
 #syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
 #syslog_search_summary { padding: 8px 0; overflow-wrap: anywhere; font-family: monospace; }
 .syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
-.syslogQueryActions { display: flex; align-items: flex-end; gap: 6px; padding-top: 4px; }
-.syslogQueryActions .syslogResultsLimit { gap: 0; }
-.syslogQueryActions .syslogResultsLimit label { margin-bottom: 1px; }
-/* Painted from the sampled theme's header/accent pair (--search-primary /
-   --search-on-primary), falling back to the scope accent before JS has run. */
-#syslog_form #go { background: var(--search-primary, var(--search-accent)); border: 1px solid var(--search-primary, var(--search-accent)); color: var(--search-on-primary, #fff); padding: 6px 22px; font-weight: 600; }
+.syslogQueryActions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 4px; }
+/* Rows sits on the same line as Search and Clear, its label beside the select. */
+#syslog_form .syslogQueryActions .syslogResultsLimit { flex-direction: row; align-items: center; gap: 6px; margin-left: 4px; }
+/* Search is the form's submit button; the theme paints it as its primary
+   action and every other control as a standard button, at the same size. */
+#syslog_form .syslogQueryActions button { margin: 0; }
 #syslog_form .syslogSearchRow { border-radius: 4px; }
 #syslog_form .syslogSearchFooter { border: 0; margin: 2px 0 0; padding: 0; }
 .syslogMenu { position: relative; }
@@ -597,7 +607,7 @@
 .syslogMenu > summary::after { content: ' ▾'; }
 .syslogMenuBody { position: absolute; z-index: 100; top: 100%; right: 0; min-width: 180px; padding: 10px; border: 1px solid var(--search-border); border-radius: 4px; background: var(--search-card); color: var(--search-text); box-shadow: 0 4px 16px #0006; }
 .syslogSearchSavedBar .syslogMenuBody { left: 0; right: auto; }
-.syslogSearchSavedBar .syslogMenuBody input { display: block; width: 100%; margin-bottom: 6px; text-align: left; }
+.syslogSearchSavedBar .syslogMenuBody button { display: block; width: 100%; margin: 0 0 6px; text-align: left; }
 #syslog_form .syslogMenuBody.syslogSearchOptions { width: 350px; max-width: calc(100vw - 40px); margin: 0; display: flex; }
 .syslogResultsToolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 8px 12px; }
 #syslog_view_summary { margin-right: auto; opacity: .85; }
@@ -643,6 +653,8 @@
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+/* Trim "All Text": the whole message wraps inside its column. */
+.syslogMessageOpen.syslogMessageWrap { white-space: pre-wrap; overflow-wrap: anywhere; text-overflow: clip; }
 .syslogValueFilter { padding: 2px 5px; margin: -2px -5px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
 /* Pills read like GitHub labels: a translucent hue carries the identity in the
    background and border, while the text stays the theme's own foreground color

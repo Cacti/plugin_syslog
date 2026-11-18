@@ -42,6 +42,20 @@ function syslogSearchRows(tree) {
 	return rows;
 }
 
+/**
+ * Logtime presets, aligned with Cacti's timespan selector; the server's
+ * syslog_search_time_presets() is the authority, and the log view passes its
+ * translated labels in the builder's data-times attribute.
+ */
+var SYSLOG_TIME_PRESETS = {
+	last: {'1800': '30 minutes', '3600': '1 hour', '7200': '2 hours', '14400': '4 hours', '21600': '6 hours', '43200': '12 hours',
+		'86400': '1 day', '172800': '2 days', '259200': '3 days', '345600': '4 days', '604800': '1 week', '1209600': '2 weeks',
+		'2592000': '30 days', '1months': '1 month', '2months': '2 months', '3months': '3 months', '4months': '4 months',
+		'6months': '6 months', '1years': '1 year', '2years': '2 years'},
+	during: {day_shift: 'Day Shift', this_day: 'This Day', this_week: 'This Week', this_month: 'This Month', this_year: 'This Year',
+		previous_day: 'Previous Day', previous_week: 'Previous Week', previous_month: 'Previous Month', previous_year: 'Previous Year'}
+};
+
 /** Serialize literal row values; users never have to quote search syntax. */
 function syslogSearchExpression(rows) {
 	return rows.map(function(row, index) {
@@ -81,7 +95,10 @@ function initSyslogCompactSearch() {
 	options.querySelector('.syslogMenuBody').append(document.getElementById('save'), document.getElementById('text'));
 	document.getElementById('text').setAttribute('role', 'status');
 	var refresh = document.getElementById('refresh').closest('.syslogSearchOption');
-	toolbar.append(refresh, document.getElementById('refresh_results'), document.getElementById('export'));
+	var trim = document.getElementById('trimval');
+	toolbar.append(refresh);
+	if (trim) toolbar.append(trim.closest('.syslogSearchOption'));
+	toolbar.append(document.getElementById('refresh_results'), document.getElementById('export'));
 	var summaries = ['rows', 'removal', 'grouping'].map(function(id) {
 		var select = document.getElementById(id);
 		return select && select.selectedOptions ? select.selectedOptions[0].textContent : '';
@@ -97,6 +114,45 @@ function initSyslogCompactSearch() {
 	if (document.getElementById('logical_search_error').textContent.trim()) toggleSyslogSearch(true);
 	form.addEventListener('keydown', function(event) {
 		if (event.key === 'Escape') form.querySelectorAll('details[open]').forEach(function(menu) { menu.open = false; });
+	});
+	syslogSingleOpenMenu(form);
+}
+
+/**
+ * Keep one menu open at a time, like select menus: opening a Manage or View
+ * options menu closes the other and any open dropdown, and pressing anywhere
+ * outside an open menu closes it. Cacti renders selects with Select2 or jQuery
+ * UI selectmenu, which both append their option lists to <body>, so a press
+ * inside one does not count as outside.
+ */
+function syslogSingleOpenMenu(form) {
+	function closeSelects() {
+		$(form).find('select').each(function() {
+			if ($(this).data('select2')) $(this).select2('close');
+			else if ($(this).selectmenu('instance')) $(this).selectmenu('close');
+		});
+	}
+	form.querySelectorAll('details.syslogMenu').forEach(function(menu) {
+		menu.addEventListener('toggle', function() {
+			if (!menu.open) return;
+			form.querySelectorAll('details.syslogMenu[open]').forEach(function(other) { if (other !== menu) other.open = false; });
+			closeSelects();
+		});
+	});
+	$(document).off('mousedown.syslogMenus').on('mousedown.syslogMenus', function(event) {
+		if (!document.body.contains(form)) {
+			$(document).off('mousedown.syslogMenus');
+			return;
+		}
+		if ($(event.target).closest('.ui-selectmenu-menu, .select2-container, .select2-dropdown').length) return;
+		form.querySelectorAll('details.syslogMenu[open]').forEach(function(menu) {
+			if (!menu.contains(event.target)) menu.open = false;
+		});
+	});
+	// A dropdown opening closes any open Manage or View options menu that does not contain it.
+	$(form).off('selectmenuopen.syslogMenus select2:opening.syslogMenus').on('selectmenuopen.syslogMenus select2:opening.syslogMenus', 'select', function() {
+		var select = this;
+		form.querySelectorAll('details.syslogMenu[open]').forEach(function(menu) { if (!menu.contains(select)) menu.open = false; });
 	});
 }
 
@@ -308,13 +364,13 @@ function initSyslogWorkspace() {
 		}
 
 		document.getElementById('syslog_details_copy').addEventListener('click', function() {
-			copy(details.message || '', this);
+			void copy(details.message || '', this);
 		});
 		linkButton.addEventListener('click', function() {
 			var url = new URL(window.location.pathname, window.location.origin);
 			url.searchParams.set('tab', details.source === 'alert' ? 'alerts' : 'syslog');
 			url.searchParams.set('details', details.source + ':' + details.id);
-			copy(url.toString(), this);
+			void copy(url.toString(), this);
 		});
 		pane.querySelectorAll('[data-filter-detail]').forEach(function(button) {
 			button.addEventListener('click', function() {
@@ -324,6 +380,9 @@ function initSyslogWorkspace() {
 		});
 	});
 }
+
+// The message header sorts on message in System Logs and logmsg in Alert Logs.
+var SYSLOG_MESSAGE_SORT = '.sortinfo[sort-column="message"], .sortinfo[sort-column="logmsg"]';
 
 /**
  * Make Cacti's column resizing work on the log tables.
@@ -345,7 +404,7 @@ function syslogEnableColumnResize(workspace) {
 		var cells = Array.from(header.children);
 		var widths = cells.map(function(cell) { return Math.ceil(cell.getBoundingClientRect().width); });
 		cells.forEach(function(cell, index) {
-			var message = cell.querySelector('.sortinfo[sort-column="message"]');
+			var message = cell.querySelector(SYSLOG_MESSAGE_SORT);
 			if (message) cell.style.removeProperty('width');
 			else if (!cell.style.width) cell.style.width = widths[index] + 'px';
 		});
@@ -359,7 +418,7 @@ function syslogEnableColumnResize(workspace) {
 		$(header).on('resizestart', 'th', function() {
 			resized = Date.now();
 			var next = this.nextElementSibling;
-			keep = next && !next.querySelector('.sortinfo[sort-column="message"]') ? {cell: next, width: next.style.width} : null;
+			keep = next && !next.querySelector(SYSLOG_MESSAGE_SORT) ? {cell: next, width: next.style.width} : null;
 		}).on('resize', 'th', function() {
 			resized = Date.now();
 			if (keep) {
@@ -777,12 +836,12 @@ function initSyslogSearchBuilder(builder, rows) {
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
 				var operators = configuredOperators[row.field] ||
-					(row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like']);
+					(row.field === 'logtime' ? ['last', 'during', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like']);
 				var inverse = {'=': '!=', '!=': '=', '>': '<=', '>=': '<', '<': '>=', '<=': '>'};
 				var operatorOptions = [];
 				if (row.operator && !operators.includes(row.operator)) operators.push(row.operator);
 				operators.forEach(function(op) {
-					var name = op === 'last' ? 'In the last' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op;
+					var name = op === 'last' ? 'In the last' : op === 'during' ? 'In the range' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op;
 					operatorOptions.push([op, name]);
 					if (!inverse[op]) operatorOptions.push(['NOT ' + op, op === 'contains' ? 'does not contain' : op === 'like' ? 'does not match pattern' : 'NOT ' + name]);
 				});
@@ -792,8 +851,9 @@ function initSyslogSearchBuilder(builder, rows) {
 					var previous = row.operator;
 					row.negative = value.startsWith('NOT ');
 					row.operator = row.negative ? value.slice(4) : value;
-					if (row.field === 'logtime' && previous !== row.operator && (previous === 'last' || row.operator === 'last')) {
-						row.value = row.operator === 'last' ? '86400' : '';
+					var presetOperator = function(op) { return op === 'last' || op === 'during'; };
+					if (row.field === 'logtime' && previous !== row.operator && (presetOperator(previous) || presetOperator(row.operator))) {
+						row.value = row.operator === 'last' ? '86400' : row.operator === 'during' ? 'this_day' : '';
 						render(container, rows);
 						initSyslogSearchDates(container);
 					}
@@ -813,8 +873,9 @@ function initSyslogSearchBuilder(builder, rows) {
 				}
 				input.addEventListener('input', function() { row.value = input.value; });
 				input.addEventListener('change', function() { row.value = input.value; });
-				if (row.field === 'logtime' && row.operator === 'last') {
-					input = select([['3600', '1 hour'], ['21600', '6 hours'], ['86400', '24 hours'], ['604800', '7 days'], ['1209600', '2 weeks'], ['2592000', '30 days'], ['3months', '3 months'], ['6months', '6 months']], row.value, 'Date range', function(value) { row.value = value; });
+				if (row.field === 'logtime' && (row.operator === 'last' || row.operator === 'during')) {
+					var times = labels.times ? JSON.parse(labels.times) : SYSLOG_TIME_PRESETS;
+					input = select(Object.entries(times[row.operator] || {}), row.value, 'Date range', function(value) { row.value = value; });
 					input.className = 'syslogSearchText';
 					input.required = true;
 				} else if (row.field === 'logtime') {
@@ -964,7 +1025,7 @@ function syslogAddFilterCondition(field, value) {
 
 function syslogFilterData() {
 	var data = {search_mode: 'logical', rfilter: $('#rfilter').val(), page: 1};
-	['rows', 'removal', 'refresh', 'grouping'].forEach(function(name) {
+	['rows', 'removal', 'refresh', 'grouping', 'trimval'].forEach(function(name) {
 		if ($('#' + name).length) data[name] = $('#' + name).val();
 	});
 	return data;
@@ -976,7 +1037,7 @@ function applyFilter() {
 
 /** Reload results with the current filter, keeping the active page. */
 function refreshResults() {
-	postSyslog({page: parseInt($('#page').val(), 10) || 1, refresh: $('#refresh').val()});
+	postSyslog({page: parseInt($('#page').val(), 10) || 1, refresh: $('#refresh').val(), trimval: $('#trimval').val()});
 }
 
 function exportRecords() {
@@ -1000,6 +1061,7 @@ function saveSettings() {
 	data.rows         = $('#rows').val();
 	data.removal      = $('#removal').val();
 	data.refresh      = $('#refresh').val();
+	data.trimval      = $('#trimval').val();
 	data.__csrf_magic = csrfMagicToken;
 
 
@@ -1086,10 +1148,10 @@ function initSavedSearches() {
 	$('#saved_saveas').click(function() {
 		$(this).closest('details').prop('open', false);
 		if (!syncSyslogSearchBuilder()) return;
-		savedSearchPrompt('', function(name) {
+		savedSearchPrompt('', function(name, isDefault) {
 			savedSearchSave(savedSearchExpression(document.getElementById('syslog_search_builder')), name, function(id) {
 				postSyslog({saved: id});
-			});
+			}, isDefault);
 		});
 	});
 	$('#saved_global').click(function() {
@@ -1105,9 +1167,13 @@ function initSavedSearches() {
 function savedSearchPrompt(name, accept) {
 	var text = savedSearchText();
 	var input = document.getElementById('syslog_saved_prompt_name');
+	var makeDefault = document.getElementById('syslog_saved_prompt_default');
 	input.value = name || '';
+	// Saving the default search again keeps it the default unless unticked.
+	var selected = document.getElementById('saved_search').selectedOptions[0];
+	makeDefault.checked = !!(name && selected && selected.dataset.default === '1');
 	$('#syslog_saved_prompt').dialog({
-		modal: true,
+		modal: false,
 		appendTo: 'body',
 		width: 420,
 		autoOpen: true,
@@ -1124,17 +1190,18 @@ function savedSearchPrompt(name, accept) {
 					return;
 				}
 				$(this).dialog('close');
-				accept(value);
+				accept(value, makeDefault.checked);
 			}},
 			{text: text.cancel, click: function() { $(this).dialog('close'); }}
 		]
 	});
 }
 
-function savedSearchSave(expression, name, done) {
+function savedSearchSave(expression, name, done, isDefault) {
 	savedSearchPost({
 		action: 'saved_search_save', name: name, rfilter: expression,
-		removal: $('#removal').val() || '1', grouping: $('#grouping').val() || '0'
+		removal: $('#removal').val() || '1', grouping: $('#grouping').val() || '0',
+		default: isDefault ? 'on' : ''
 	}, done);
 }
 
@@ -1154,7 +1221,7 @@ function openSavedSearchDialog(mode) {
 	initSyslogSearchBuilder(builder, rows);
 
 	var selected = document.getElementById('saved_search').selectedOptions;
-	var name = mode === 'edit' && selected && selected.length && selected[0].value !== '0' ? selected[0].textContent : '';
+	var name = mode === 'edit' && selected && selected.length && selected[0].value !== '0' ? (selected[0].dataset.name || selected[0].textContent) : '';
 
 	$('#syslog_saved_dialog').dialog({
 		modal: true,
@@ -1182,10 +1249,10 @@ function openSavedSearchDialog(mode) {
 				if (expression === null) return;
 				// Close the editor first; stacking a second modal over it is unreliable.
 				$(dialog).dialog('close');
-				savedSearchPrompt(mode === 'edit' ? name : '', function(chosen) {
+				savedSearchPrompt(mode === 'edit' ? name : '', function(chosen, isDefault) {
 					savedSearchSave(savedSearchExpression(builder), chosen, function(id) {
 						postSyslog({saved: id});
-					});
+					}, isDefault);
 				});
 			}},
 			{text: text.apply, click: function() {
@@ -1235,9 +1302,7 @@ function initSyslogMain(config) {
 			saveSettings();
 		});
 
-		$('#go').click(function() {
-			applyFilter();
-		});
+		// Search is the form's submit button, so the submit handler above runs it.
 
 		$('#clear').click(function() {
 			clearFilter();
@@ -1251,7 +1316,7 @@ function initSyslogMain(config) {
 			toggleSyslogSearch();
 		});
 
-		$('#rows, #refresh, #removal, #grouping').change(function() {
+		$('#rows, #refresh, #trimval, #removal, #grouping').change(function() {
 			applyFilter();
 		});
 

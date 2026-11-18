@@ -1452,6 +1452,10 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 			'filter'  => FILTER_VALIDATE_INT,
 			'default' => read_user_setting('syslog_refresh', read_config_option('syslog_refresh'), $force)
 		],
+		'trimval' => [
+			'filter'  => FILTER_VALIDATE_INT,
+			'default' => read_user_setting('syslog_trimval', '0', $force)
+		],
 		'enabled' => [
 			'filter'  => FILTER_VALIDATE_INT,
 			'pageset' => true,
@@ -1520,7 +1524,14 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 	];
 
 	$logical_input = $search_mode === 'logical' && isset_request_var('rfilter') && !isset_request_var('clear') ? get_nfilter_request_var('rfilter') : null;
+	// Entering the page with no search in the session applies the default saved search.
+	$first_entry = !isset($_SESSION['sess_sl_' . $current_tab . '_rfilter']);
 	validate_store_request_vars($filters, 'sess_sl_' . $current_tab);
+
+	if (!array_key_exists((int) get_request_var('trimval'), syslog_trim_options())) {
+		set_request_var('trimval', '0');
+		$_SESSION['sess_sl_' . $current_tab . '_trimval'] = '0';
+	}
 
 	// Preserve literal text, including Cacti's special 'undefined' sentinel.
 	if (is_string($logical_input)) {
@@ -1529,11 +1540,14 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 	}
 
 	// ================= saved searches =================
-	$saved_id = get_filter_request_var('saved', FILTER_VALIDATE_INT);
+	$saved_id      = get_filter_request_var('saved', FILTER_VALIDATE_INT);
+	$saved_default = (int) read_user_setting(saved_search_default_setting($current_tab), 0);
 
 	if ($saved_id > 0 && !$filter_submitted) {
 		// Applying a saved search restores its expression and standard filters.
 		saved_search_apply($current_tab, $saved_id);
+	} elseif ($first_entry && $saved_default > 0 && !$filter_submitted && !isset_request_var('clear') && !isset_request_var('reset')) {
+		saved_search_apply($current_tab, $saved_default);
 	} elseif ($filter_submitted || isset_request_var('clear') || isset_request_var('reset')) {
 		// Manual edits detach the active saved search.
 		kill_session_var('sess_sl_' . $current_tab . '_saved');
@@ -1736,6 +1750,8 @@ function saved_search_save(): string {
 			WHERE id = ?",
 			[$search, $removal, $grouping, time(), $existing_id]);
 
+		saved_search_set_default((int) $existing_id, get_nfilter_request_var('default') === 'on');
+
 		return (string) json_encode(['id' => (int) $existing_id]);
 	}
 
@@ -1744,7 +1760,42 @@ function saved_search_save(): string {
 		VALUES (?, ?, ?, ?, ?, '', ?)",
 		[$name, $search, $removal, $grouping, $username, time()]);
 
-	return (string) json_encode(['id' => (int) syslog_db_fetch_insert_id()]);
+	$id = (int) syslog_db_fetch_insert_id();
+
+	saved_search_set_default($id, get_nfilter_request_var('default') === 'on');
+
+	return (string) json_encode(['id' => $id]);
+}
+
+/**
+ * The user setting that holds a tab's default saved search.
+ *
+ * @param string $tab The log view tab.
+ *
+ * @return string The setting name.
+ */
+function saved_search_default_setting(string $tab): string {
+	return 'syslog_default_search_' . ($tab === 'alerts' ? 'alerts' : 'syslog');
+}
+
+/**
+ * Make a saved search the user's default for the current tab, or stop it
+ * being the default. The default is applied when the page is entered while
+ * no search is active in the session.
+ *
+ * @param int  $id      The saved search id.
+ * @param bool $default Whether it becomes the default.
+ *
+ * @return void
+ */
+function saved_search_set_default(int $id, bool $default): void {
+	$setting = saved_search_default_setting((string) get_nfilter_request_var('tab'));
+
+	if ($default) {
+		set_user_setting($setting, $id);
+	} elseif ((int) read_user_setting($setting, 0, true) === $id) {
+		set_user_setting($setting, 0);
+	}
 }
 
 /**
@@ -1785,6 +1836,8 @@ function saved_search_delete(): string {
 	if ((int) ($_SESSION['sess_sl_' . get_request_var('tab') . '_saved'] ?? 0) === (int) $id) {
 		kill_session_var('sess_sl_' . get_request_var('tab') . '_saved');
 	}
+
+	saved_search_set_default((int) $id, false);
 
 	return (string) json_encode(['id' => (int) $id]);
 }
@@ -2327,6 +2380,8 @@ function syslog_filter(string $sql_where, string $tab): void {
 		$saved_groups[$label][] = $saved;
 	}
 
+	$saved_default = (int) read_user_setting(saved_search_default_setting((string) get_request_var('tab')), 0);
+
 	foreach ($saved_groups as $saved_label => $saved_group) {
 		if (cacti_sizeof($saved_group)) {
 			print "<optgroup label='" . html_escape($saved_label) . "'>";
@@ -2334,9 +2389,10 @@ function syslog_filter(string $sql_where, string $tab): void {
 			foreach ($saved_group as $saved) {
 				// Match the server-side delete permission in saved_search_delete().
 				$can_manage = $saved['user'] === $username || ($saved['is_global'] === 'on' && $saved_admin);
+				$is_default = $saved_default === (int) $saved['id'];
 
-				print "<option value='" . $saved['id'] . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "' data-manage='" . ($can_manage ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
-					html_escape($saved['name']) . '</option>';
+				print "<option value='" . $saved['id'] . "' data-name='" . html_escape($saved['name']) . "' data-owner='" . html_escape($saved['user']) . "' data-global='" . ($saved['is_global'] === 'on' ? '1' : '0') . "' data-manage='" . ($can_manage ? '1' : '0') . "' data-default='" . ($is_default ? '1' : '0') . "'" . ($saved_active === (int) $saved['id'] ? ' selected' : '') . '>' .
+					html_escape($is_default ? __('%s (Default)', $saved['name'], 'syslog') : $saved['name']) . '</option>';
 			}
 
 			print '</optgroup>';
@@ -2345,12 +2401,12 @@ function syslog_filter(string $sql_where, string $tab): void {
 	?>
 						</select>
 						<details class='syslogMenu'><summary aria-label='<?php print __esc('Manage saved searches', 'syslog'); ?>' title='<?php print __esc('Manage saved searches', 'syslog'); ?>'><?php print __esc('Manage', 'syslog'); ?></summary><div class='syslogMenuBody'>
-							<input id='saved_saveas' type='button' value='<?php print __esc('Save search', 'syslog'); ?>'>
-							<input id='saved_new' type='button' value='<?php print __esc('New', 'syslog'); ?>'>
-							<input id='saved_edit' type='button' value='<?php print __esc('Edit', 'syslog'); ?>'>
-							<input id='saved_delete' type='button' value='<?php print __esc('Delete', 'syslog'); ?>'>
+							<button type='button' id='saved_saveas'><?php print __esc('Save search', 'syslog'); ?></button>
+							<button type='button' id='saved_new'><?php print __esc('New', 'syslog'); ?></button>
+							<button type='button' id='saved_edit'><?php print __esc('Edit', 'syslog'); ?></button>
+							<button type='button' id='saved_delete'><?php print __esc('Delete', 'syslog'); ?></button>
 							<?php if ($saved_share) { ?>
-							<input id='saved_global' type='button' value='<?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Save for all', 'syslog'); ?>'>
+							<button type='button' id='saved_global'><?php print $saved_active ? __esc('Make Private', 'syslog') : __esc('Save for all', 'syslog'); ?></button>
 							<?php } ?>
 						</div></details>
 					</div>
@@ -2360,6 +2416,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 					<div id='syslog_search_builder' class='syslogSearchBuilder'
 						data-choices='<?php print $saved_choices_json; ?>'
 						data-fields='<?php print $saved_fields_json; ?>'
+						data-times='<?php print html_escape(json_encode(syslog_search_time_presets())); ?>'
 						data-tree='<?php print $saved_tree_json; ?>'
 						data-message='<?php print __esc('Message', 'syslog'); ?>'
 						data-placeholder='<?php print __esc('Enter message text…', 'syslog'); ?>'
@@ -2370,7 +2427,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
 					</div>
 					<div class='syslogSearchOption syslogResultsLimit'>
-						<label for='rows'><?php print __('Results limit', 'syslog'); ?></label>
+						<label for='rows'><?php print __('Rows', 'syslog'); ?></label>
 						<select id='rows' title='<?php print __esc('Display Rows', 'syslog'); ?>'>
 							<option value='-1'<?php if (get_request_var('rows') == '-1') { ?> selected<?php } ?>><?php print __('Default', 'syslog'); ?></option>
 							<?php
@@ -2400,6 +2457,16 @@ function syslog_filter(string $sql_where, string $tab): void {
 			}
 
 			print '>' . $display_text . '</option>';
+		}
+	?>
+							</select>
+						</div>
+						<div class='syslogSearchOption syslogTrimOption'>
+							<label for='trimval'><?php print __('Trim', 'syslog'); ?></label>
+							<select id='trimval' title='<?php print __esc('Message Trim', 'syslog'); ?>'>
+								<?php
+		foreach (syslog_trim_options() as $chars => $display_text) {
+			print "<option value='" . $chars . "'" . ((int) get_request_var('trimval') === $chars ? ' selected' : '') . '>' . html_escape($display_text) . '</option>';
 		}
 	?>
 							</select>
@@ -2446,6 +2513,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 					<div id='syslog_saved_builder' class='syslogSearchBuilder'
 						data-choices='<?php print $saved_choices_json; ?>'
 						data-fields='<?php print $saved_fields_json; ?>'
+						data-times='<?php print html_escape(json_encode(syslog_search_time_presets())); ?>'
 						data-message='<?php print __esc('Message', 'syslog'); ?>'
 						data-placeholder='<?php print __esc('Enter message text…', 'syslog'); ?>'
 						data-contains='<?php print __esc('contains', 'syslog'); ?>'
@@ -2460,16 +2528,20 @@ function syslog_filter(string $sql_where, string $tab): void {
 						<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
 						<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
 					</div>
+					<div class='syslogSavedDefaultRow'>
+						<input type='checkbox' id='syslog_saved_prompt_default'>
+						<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
+					</div>
 				</div>
 				<table class='filterTable syslogSearchButtons'>
 					<tr>
 						<td>
 							<span>
-								<input id='go' type='button' value='<?php print __esc('Search', 'syslog'); ?>'>
-								<input id='clear' type='button' value='<?php print __esc('Clear', 'syslog'); ?>' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'>
-								<input id='refresh_results' type='button' value='<?php print __esc('Refresh', 'syslog'); ?>' title='<?php print __esc('Refresh Results', 'syslog'); ?>'>
-								<input id='export' type='button' value='<?php print __esc('Export', 'syslog'); ?>' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'>
-								<input id='save' type='button' value='<?php print __esc('Save view defaults', 'syslog'); ?>' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'>
+								<button type='submit' id='go'><?php print __esc('Search', 'syslog'); ?></button>
+								<button type='button' id='clear' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'><?php print __esc('Clear', 'syslog'); ?></button>
+								<button type='button' id='refresh_results' title='<?php print __esc('Refresh Results', 'syslog'); ?>'><?php print __esc('Refresh', 'syslog'); ?></button>
+								<button type='button' id='export' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'><?php print __esc('Export', 'syslog'); ?></button>
+								<button type='button' id='save' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'><?php print __esc('Save view defaults', 'syslog'); ?></button>
 							</span>
 						</td>
 						<td>
@@ -2532,6 +2604,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 	print "<div id='syslog_workspace' data-theme='" . html_escape(get_selected_theme()) . "'><div class='syslogResultsMain'>";
 
 	$page_count       = true;
+	$trim             = (int) get_request_var('trimval');
 	$grouping_enabled = $tab == 'syslog' && isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 	if (syslog_row_count_disabled()) {
@@ -2689,7 +2762,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 				print "<td class='nowrap left syslogMeta'>" . syslog_value_filter_button($sm['program'], 'program') . '</td>';
 				// Group summaries show the latest timestamp; use its matching sequence ID.
 				$rule_id = $grouping_enabled && !empty($sm['seq_list']) ? explode(',', $sm['seq_list'])[0] : $sm[$syslog_incoming_config['id']];
-				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype']), $sm['seq'], '', 'left syslogMessage');
+				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype'], $trim), $sm['seq'], '', 'left syslogMessage');
 				form_selectable_cell(syslog_metadata_label(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), 'facility'), $sm['seq'], '', 'left');
 				form_selectable_cell(syslog_value_filter_button($priorities[$sm['priority_id']] ?? __('Unknown', 'syslog'), 'priority'), $sm['seq'], '', 'left');
 
@@ -2721,7 +2794,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
-							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype']) . '</td>';
+							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype'], $trim) . '</td>';
 							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
 							print "<td class='left'>" . syslog_value_filter_button($priorities[$dm['priority_id']] ?? __('Unknown', 'syslog'), 'priority') . '</td>';
 
@@ -2785,7 +2858,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
-				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime'], $log['seq'], 'alert'), $log['seq'], '', 'syslogMessage left');
+				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime'], $log['seq'], 'alert', $trim), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
 				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'left');
@@ -2849,6 +2922,7 @@ function save_settings(): void {
 	$variables = [
 		'rows',
 		'refresh',
+		'trimval',
 		'removal',
 		'efacility',
 		'priority',

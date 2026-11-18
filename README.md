@@ -807,13 +807,35 @@ remove a condition, then Enter or Search to apply the query.
 
 The standalone device, program, facility, and priority filters are replaced by
 builder conditions. The only standalone dropdowns are Record Type, Display,
-Results limit, Trim, and Refresh. From and To are Date conditions in the builder
+Rows, Trim, and Refresh. From and To are Date conditions in the builder
 (`>=` and `<=`), with the date/time picker available when their values are focused.
 The current date range is migrated into these editable conditions. Removing them
-removes the time restriction. Action buttons (Search, Clear, Refresh, Export, Save) appear below the collapsible search panel.
-For rolling date ranges, select Date → In the last → Hour, 6 hours, Day, Week,
-2 weeks, 30 days, 3 months, or 6 months. Month presets use calendar months. These ranges are recalculated by the database on each search or refresh.
-Use the comparison operators for custom dates with the date picker.
+removes the time restriction. Action buttons (Search, Clear, Refresh, Export, Save)
+are real `<button>` elements on one row with Rows, below the collapsible search
+panel; Search uses the theme's primary button color. Opening one menu or dropdown
+closes any other, and clicking elsewhere closes them all.
+
+Date conditions follow Cacti's timespan selector:
+
+* **In the last** — 30 minutes, 1, 2, 4, 6, and 12 hours, 1–4 days, 1 and 2
+  weeks, 30 days, 1, 2, 3, 4, and 6 months, and 1 and 2 years. Month and year
+  presets use calendar months.
+* **In the range** — Day Shift, This Day/Week/Month/Year, and Previous
+  Day/Week/Month/Year. Weeks start on your Cacti *First Weekday* setting, and
+  Day Shift uses the *Day Shift Start/End* settings (default 07:00–18:00).
+
+Both are recalculated by the database clock on each search or refresh. Use the
+comparison operators for custom dates with the date picker.
+
+**Trim** controls how much of each message the table shows: Fit Column (the
+default, truncated with an ellipsis to the column width), All Text (wrapped), or
+a fixed 30–300 character limit. The full message is always available in the
+details flyout. Trim is remembered with **Save Settings**.
+
+When saving a search, tick **Default** to apply it automatically the first time
+you open the tab in a new session (when no filter has been set yet). Only one
+search per tab is the default; saving another search as default replaces it, and
+deleting the default search clears it. The save prompt is non-modal.
 Legacy regex searches become literal message contains conditions. Searches persist per tab across
 pagination, refresh, grouping, and CSV export. The Refresh button reloads the current page of results without resetting the filter or pagination. Search, export, and clear
 controls submit values through CSRF-protected POST bodies instead of URL queries.

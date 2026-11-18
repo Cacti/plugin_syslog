@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-18 12:54-0500\n"
+"POT-Creation-Date: 2026-11-18 13:15-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -16,6 +16,97 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr ""
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr ""
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr ""
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr ""
+
+#: includes/functions.php
+msgid "This Day"
+msgstr ""
+
+#: includes/functions.php
+msgid "This Week"
+msgstr ""
+
+#: includes/functions.php
+msgid "This Month"
+msgstr ""
+
+#: includes/functions.php
+msgid "This Year"
+msgstr ""
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr ""
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr ""
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr ""
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr ""
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -402,6 +493,19 @@ msgstr ""
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr ""
+
+#: includes/functions.php
+msgid "All Text"
+msgstr ""
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
 msgstr ""
 
 #: includes/installer.php
@@ -949,21 +1053,6 @@ msgstr ""
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
-
-#: includes/settings.php
-#, php-format
-msgid "%d minutes"
-msgstr ""
-
-#: includes/settings.php
-#, php-format
-msgid "%d hours"
-msgstr ""
-
-#: includes/settings.php
-#, php-format
-msgid "%d days"
 msgstr ""
 
 #: includes/settings.php
@@ -2238,6 +2327,11 @@ msgid "Global Searches"
 msgstr ""
 
 #: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr ""
+
+#: syslog.php
 msgid "Manage"
 msgstr ""
 
@@ -2265,8 +2359,9 @@ msgstr ""
 msgid "does not contain"
 msgstr ""
 
-#: syslog.php
-msgid "Results limit"
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
 msgstr ""
 
 #: syslog.php
@@ -2281,6 +2376,14 @@ msgstr ""
 
 #: syslog.php
 msgid "View options"
+msgstr ""
+
+#: syslog.php
+msgid "Trim"
+msgstr ""
+
+#: syslog.php
+msgid "Message Trim"
 msgstr ""
 
 #: syslog.php
@@ -2330,6 +2433,10 @@ msgstr ""
 
 #: syslog.php
 msgid "Save Search As"
+msgstr ""
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
 msgstr ""
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
@@ -2903,11 +3010,6 @@ msgstr ""
 #: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_reports.php
 msgid "All"
-msgstr ""
-
-#: syslog_alerts.php syslog_dashboards.php syslog_reports.php
-#: syslog_saved_searches.php
-msgid "Rows"
 msgstr ""
 
 #: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php

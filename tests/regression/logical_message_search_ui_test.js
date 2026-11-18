@@ -201,6 +201,18 @@ const dateOperator = builder.querySelector('.syslogSearchRow').children[2];
 dateOperator.value = '>=';
 context.$(dateOperator).trigger('change');
 assert.ok(builder.querySelector('.syslogSearchDate').datepickerOptions, 'Custom date picker restored after leaving preset');
+// "In the range" offers Cacti's calendar spans and starts at This Day.
+dateOperator.value = 'during';
+context.$(dateOperator).trigger('change');
+const range = builder.querySelector('.syslogSearchText');
+assert.equal(range.tag, 'select');
+assert.deepEqual(range.children.map(option => option.value), ['day_shift', 'this_day', 'this_week', 'this_month', 'this_year', 'previous_day', 'previous_week', 'previous_month', 'previous_year']);
+context.syncSyslogSearchBuilder();
+assert.equal(nodes.rfilter.value, 'logtime during "this_day"');
+range.value = 'previous_month';
+context.$(range).trigger('change');
+context.syncSyslogSearchBuilder();
+assert.equal(nodes.rfilter.value, 'logtime during "previous_month"');
 console.log('logical_message_search_ui_test passed');
 // Negation is selected with the operator; != must not duplicate NOT =.
 builder.dataset.tree = JSON.stringify(['NOT', ['predicate', 'host', '=', 'router']]);

@@ -32,7 +32,9 @@ it('applies a saved search on selection but detaches it on manual edits', functi
 	$end   = strpos($source, 'function saved_search_save(', $start);
 
 	eval(substr($source, $start, $end - $start));
+	plugin_test_eval_function($source, 'saved_search_default_setting', 'saved_search_set_default');
 
+	test_override('read_user_setting', fn ($name, $default) => $name === 'syslog_default_search_syslog' ? $GLOBALS['default_search'] : $default);
 	test_override('set_request_var', function ($name, $value) {
 		$_REQUEST[$name] = $_POST[$name] = $value;
 	});
@@ -60,6 +62,8 @@ it('applies a saved search on selection but detaches it on manual edits', functi
 	foreach ([false, true] as $manual) {
 		$_SESSION = ['sess_user_id' => 1, 'sess_sl_syslog_saved' => 7];
 		$_POST = $_REQUEST = ['saved' => 7];
+		$GLOBALS['default_search'] = 0;
+		$first_entry = false;
 
 		if ($manual) {
 			$_POST['rfilter'] = $_REQUEST['rfilter'] = 'manual';
@@ -82,6 +86,27 @@ it('applies a saved search on selection but detaches it on manual edits', functi
 			expect($_REQUEST['removal'] === '2' && $_REQUEST['grouping'] === '1')->toBeTrue('Saved display filters are restored');
 			expect($_SESSION['sess_sl_syslog_saved'])->toBe(7, 'Active selection keeps Edit and Delete enabled');
 			expect($filter_submitted)->toBeFalse('Helper writes must not turn selection into a manual submission');
+		}
+	}
+
+	// The default saved search applies only when the tab is first entered.
+	foreach ([true, false] as $first_entry) {
+		$_SESSION = ['sess_user_id' => 1];
+		$_POST = $_REQUEST = [];
+		$GLOBALS['default_search'] = 7;
+		$current_tab = 'syslog';
+
+		eval($capture[0]);
+		set_request_var('rfilter', 'session query');
+
+		eval($dispatch);
+
+		if ($first_entry) {
+			expect($_REQUEST['rfilter'])->toBe('host = "router" AND message contains "error"', 'Default search applies on first entry');
+			expect($_SESSION['sess_sl_syslog_saved'])->toBe(7, 'Default search becomes the active selection');
+		} else {
+			expect($_REQUEST['rfilter'])->toBe('session query', 'An existing session filter wins over the default');
+			expect(isset($_SESSION['sess_sl_syslog_saved']))->toBeFalse('Default is not reapplied');
 		}
 	}
 });

@@ -28,6 +28,13 @@ it('only allows the owner or an admin to delete a shared saved search', function
 	}
 
 	eval(substr($source, $start, $end - $start));
+	plugin_test_eval_function($source, 'saved_search_default_setting', 'saved_search_set_default');
+	plugin_test_eval_function($source, 'saved_search_set_default', 'saved_search_delete');
+
+	test_override('read_user_setting', fn ($name, $default, $force) => $name === 'syslog_default_search_syslog' ? 7 : $default);
+	test_override('set_user_setting', function ($name, $value) {
+		$GLOBALS['defaults'][$name] = $value;
+	});
 
 	test_override('get_username', function ($id) {
 		return 'tester';
@@ -71,6 +78,7 @@ it('only allows the owner or an admin to delete a shared saved search', function
 				$GLOBALS['row']    = ['user' => $owner, 'is_global' => $global];
 				$GLOBALS['admin']  = $admin;
 				$GLOBALS['writes'] = 0;
+				$GLOBALS['defaults'] = [];
 
 				$result  = json_decode(saved_search_delete(), true);
 				$allowed = $owner === 'tester' || ($global === 'on' && $admin);
@@ -79,6 +87,11 @@ it('only allows the owner or an admin to delete a shared saved search', function
 				// saved-searches statement rather than an exact total.
 				if (($GLOBALS['writes'] > 0) !== $allowed || isset($result['error']) === $allowed) {
 					throw new RuntimeException('Deletion permissions do not match ownership and administration');
+				}
+
+				// Deleting the user's default search (id 7) stops it being the default.
+				if ($GLOBALS['defaults'] !== ($allowed ? ['syslog_default_search_syslog' => 0] : [])) {
+					throw new RuntimeException('Deleting the default saved search must clear the default');
 				}
 			}
 		}
