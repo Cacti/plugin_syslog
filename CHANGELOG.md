@@ -18,6 +18,9 @@
 
 * issue#458: Initialize and validate the active tab before saving view defaults, avoiding a TypeError that disables Syslog and stops processing
 * issue#459: Explain that SQL Expression rule previews search only queued incoming messages, so an empty preview is not mistaken for an alert-processing failure
+* issue#459: Legacy "Facility is" removal and alert rules compared the facility name (for example `local7`) with the numeric `facility_id` column of the incoming table, which MySQL evaluates as facility 0 (kern). Removal rules therefore discarded or transferred kern messages instead of their own facility, and facility alerts never fired. The name is now resolved through the facility reference table, as the rule preview, rule editor and stored-table removal already did. `syslog_process.php --debug` now names each removal rule that matched and how many messages it took, and notes host-level alerts skipped for having no matches, so a removal rule that takes messages before an alert sees them is visible
+* bug: Filter Builder conditions such as `Host != router01` or `Program != sshd` on Report Rules and retroactive removal against stored messages selected only the excluded host or program, because mapping names to ids dropped the negation
+* bug: Testing a Filter Builder report after visiting the Alert or Removal Rules page could send the previous page's conditions; Test now uses the builder that belongs to the form being tested
 * issue#461: Fit message previews to the available column width instead of cutting them to 100 characters
 
 * issue#456: Avoid PHP 8.6 deprecation warnings during schema checks by using object IDs for the connection cache key

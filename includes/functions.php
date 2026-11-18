@@ -3524,8 +3524,12 @@ function syslog_removal_filter_normalize($json, $table) {
 				$replacement = $resolve($condition['field'], $condition['operator'], $condition['value']);
 
 				if (is_array($replacement)) {
+					// The replacement is a positive id match, so "!=" becomes a
+					// negation; an explicit NOT on a "!=" cancels it out.
+					$negative = $condition['negative'] ?? false;
+
 					$replacement['join']     = $condition['join'] ?? 'AND';
-					$replacement['negative'] = $condition['negative'] ?? false;
+					$replacement['negative'] = $condition['operator'] === '!=' && is_bool($negative) ? !$negative : $negative;
 					$conditions[$index]      = $replacement;
 				}
 			}
@@ -3549,6 +3553,35 @@ function syslog_query_builder_unavailable(): array {
 	$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
 
 	return [];
+}
+
+/**
+ * syslog_incoming_facility_condition - Match a legacy "Facility is" rule
+ * against the incoming table.
+ *
+ * Legacy rules store the facility name, but the incoming table stores the
+ * numeric facility_id, and MySQL compares a name such as 'local7' with an
+ * integer column as 0 (kern). Resolve the name through the reference table
+ * so a rule matches its own facility; a rule that already holds an id is
+ * compared directly.
+ *
+ * @param string $facility The facility name, or id, stored with the rule
+ *
+ * @return array{sql: string, params: array<int, string>} The condition and its bound value
+ */
+function syslog_incoming_facility_condition(string $facility): array {
+	global $syslogdb_default, $syslog_incoming_config;
+
+	$column = '`' . ($syslog_incoming_config['facilityField'] ?? 'facility_id') . '`';
+
+	if (ctype_digit($facility)) {
+		return ['sql' => "$column = ?", 'params' => [$facility]];
+	}
+
+	return [
+		'sql'    => "$column IN (SELECT sf.facility_id FROM `$syslogdb_default`.`syslog_facilities` AS sf WHERE sf.facility = ?)",
+		'params' => [$facility]
+	];
 }
 
 /**
@@ -4063,11 +4096,12 @@ function syslog_remove_items($table, $max_seq, $rule_id = 0) {
 				}
 			} elseif ($remove['type'] == 'facility') {
 				if ($table == 'syslog_incoming') {
-					$sql_where = 'WHERE `' . $syslog_incoming_config['facilityField'] . '` = ?
+					$facility  = syslog_incoming_facility_condition((string) $remove['message']);
+					$sql_where = 'WHERE ' . $facility['sql'] . '
 						AND `status` = 1
 						AND `seq` <= ?';
 
-					$params[] = $remove['message'];
+					$params   = $facility['params'];
 					$params[] = $max_seq;
 				} else {
 					$facility_id = syslog_db_fetch_cell_prepared("SELECT facility_id
@@ -4268,6 +4302,8 @@ function syslog_remove_items($table, $max_seq, $rule_id = 0) {
 				$removed += $messages_removed;
 
 				if (($messages_xferred + $messages_removed) > 0) {
+					syslog_debug(sprintf("Matched %5s - Record(s) for Removal Rule '%s'", $messages_removed, $remove['name']));
+
 					$fired[] = [
 						'name'  => $remove['name'],
 						'count' => $messages_xferred + $messages_removed
@@ -5718,6 +5754,8 @@ function syslog_process_alerts($max_seq) {
 			}
 
 			if ($alert['level'] == 1 && $count == 0) {
+				syslog_debug(sprintf('Skipping     - Alert \'%s\' has no matching records', $alert['name']));
+
 				continue;
 			}
 
@@ -6283,7 +6321,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 
 				return ['sql' => "({$filter['sql']})", 'params' => $filter['params']];
 			case 'facility':
-				return ['sql' => "`{$syslog_incoming_config['facilityField']}` = ?", 'params' => [$alert['message']]];
+				return syslog_incoming_facility_condition((string) $alert['message']);
 			case 'messageb':
 				return ['sql' => "`{$syslog_incoming_config['textField']}` LIKE ?", 'params' => [$alert['message'] . '%']];
 			case 'messagec':
@@ -6335,13 +6373,15 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 	}
 
 	if ($alert['type'] == 'facility') {
+		$facility = syslog_incoming_facility_condition((string) $alert['message']);
+
 		$sql = "SELECT *
 			FROM `$syslogdb_default`.`syslog_incoming`
-			WHERE `{$syslog_incoming_config['facilityField']}` = ?
+			WHERE {$facility['sql']}
 			AND `status` = 1
 			AND `seq` <= ?";
 
-		$params[] = $alert['message'];
+		$params   = $facility['params'];
 		$params[] = $max_seq;
 	} elseif ($alert['type'] == 'messageb') {
 		$sql = "SELECT *

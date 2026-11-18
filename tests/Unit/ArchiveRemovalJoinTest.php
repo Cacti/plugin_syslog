@@ -58,3 +58,29 @@ it('filters staging rows before joining the reference tables for archiving rules
 		->and($insert[0][0])->not->toMatch('/AS sp\s+ON sp\.program = si\.program\s+WHERE/')
 		->and($insert[0][1])->toBe(['router1', 100]);
 })->with(['host', 'program']);
+
+it('removes only the named facility instead of comparing its name with the numeric column (#459)', function ($method) {
+	archive_join_setup();
+
+	$rule = ['id' => 6, 'name' => 'Drop local7', 'type' => 'facility', 'message' => 'local7', 'method' => $method, 'enabled' => 'on'];
+
+	test_override('syslog_db_fetch_assoc', static fn($sql) => str_contains($sql, '`syslog_remove`') ? [$rule] : []);
+
+	$executed = [];
+
+	test_override('syslog_db_execute', static fn() => true);
+	test_override('syslog_db_execute_prepared', function ($sql, $params = []) use (&$executed) {
+		$executed[] = [$sql, $params];
+
+		return true;
+	});
+	test_override('db_affected_rows', static fn() => 2);
+
+	expect(syslog_remove_items('syslog_incoming', 100)['removed'])->toBe(2);
+
+	$delete = array_values(array_filter($executed, static fn($call) => str_starts_with($call[0], 'DELETE FROM `syslogdb`.`syslog_incoming`')));
+
+	expect($delete)->toHaveCount(1)
+		->and($delete[0][0])->toContain('`facility_id` IN (SELECT sf.facility_id FROM `syslogdb`.`syslog_facilities` AS sf WHERE sf.facility = ?)')
+		->and($delete[0][1])->toBe(['local7', 100]);
+})->with(['del', 'trans']);

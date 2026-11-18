@@ -1662,7 +1662,11 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 
 	// Sync the visual filter builder into the message field exactly as
 	// the save path does, so the preview matches what would be stored.
-	var builder = window.alertFilterBuilder || window.removalFilterBuilder || window.reportFilterBuilder;
+	// Builders from rule pages visited earlier through AJAX navigation stay
+	// on window, so only accept the one whose element is inside this form.
+	var builder = [window.alertFilterBuilder, window.removalFilterBuilder, window.reportFilterBuilder].filter(function(candidate) {
+		return candidate && candidate.element && $.contains(form[0], candidate.element);
+	})[0];
 
 	if (builder && typeField.val() == 'filter' && !builder.syncTo(messageField[0])) {
 		return;
