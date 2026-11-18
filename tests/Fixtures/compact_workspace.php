@@ -16,7 +16,6 @@ function db_fetch_assoc_prepared($sql, $params = []) { return [['id' => 1]]; }
 function is_realm_allowed($realm) { return true; }
 function read_config_option($name, $force = false) { return ''; }
 function read_user_setting($name, $default = false, $force = false) { return $default; }
-function saved_search_default_setting($tab) { return 'syslog_default_search_' . $tab; }
 require dirname(__DIR__, 2) . '/includes/functions.php';
 $saved_choices_json = '{}';
 $saved_fields_json = html_escape(json_encode(['host'=>'Host','message'=>'Message','program'=>'Program','logtime'=>'Date','priority'=>'Priority']));

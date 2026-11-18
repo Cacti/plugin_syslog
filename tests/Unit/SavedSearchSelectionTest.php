@@ -32,9 +32,13 @@ it('applies a saved search on selection but detaches it on manual edits', functi
 	$end   = strpos($source, 'function saved_search_save(', $start);
 
 	eval(substr($source, $start, $end - $start));
-	plugin_test_eval_function($source, 'saved_search_default_setting', 'saved_search_set_default');
+	syslog_load_plugin_source('includes/functions.php');
 
 	test_override('read_user_setting', fn ($name, $default) => $name === 'syslog_default_search_syslog' ? $GLOBALS['default_search'] : $default);
+	test_override('set_user_setting', function ($name, $value) {
+		$GLOBALS['default_search'] = $value;
+	});
+
 	test_override('set_request_var', function ($name, $value) {
 		$_REQUEST[$name] = $_POST[$name] = $value;
 	});
@@ -55,17 +59,25 @@ it('applies a saved search on selection but detaches it on manual edits', functi
 		return 'tester';
 	});
 
+	// Saved search 9 has been deleted (or is no longer shared).
 	test_override('syslog_db_fetch_row_prepared', function ($sql, $params) {
-		return ['id' => 7, 'search' => 'host = "router" AND message contains "error"', 'removal' => '2', 'grouping' => '1'];
+		return $params[0] === 9 ? false : ['id' => 7, 'search' => 'host = "router" AND message contains "error"', 'removal' => '2', 'grouping' => '1'];
 	});
 
-	foreach ([false, true] as $manual) {
-		$_SESSION = ['sess_user_id' => 1, 'sess_sl_syslog_saved' => 7];
-		$_POST = $_REQUEST = ['saved' => 7];
-		$GLOBALS['default_search'] = 0;
-		$first_entry = false;
+	$saved_query = 'host = "router" AND message contains "error"';
 
-		if ($manual) {
+	// selected/manual: a saved search chosen from the list, then edited.
+	// default/stale/later: the tab's default on first entry, a default that no
+	// longer exists, and a later visit with a filter already in the session.
+	foreach (['selected', 'manual', 'default', 'stale', 'later'] as $case) {
+		$selection = $case === 'selected' || $case === 'manual';
+
+		$_SESSION = $selection ? ['sess_user_id' => 1, 'sess_sl_syslog_saved' => 7] : ['sess_user_id' => 1];
+		$_POST = $_REQUEST = $selection ? ['saved' => 7] : [];
+		$GLOBALS['default_search'] = ['default' => 7, 'stale' => 9, 'later' => 7][$case] ?? 0;
+		$first_entry = $case === 'default' || $case === 'stale';
+
+		if ($case === 'manual') {
 			$_POST['rfilter'] = $_REQUEST['rfilter'] = 'manual';
 		}
 
@@ -74,39 +86,43 @@ it('applies a saved search on selection but detaches it on manual edits', functi
 		eval($capture[0]);
 
 		// validate_store_request_vars restores rfilter through set_request_var.
-		set_request_var('rfilter', $manual ? 'manual' : 'previous query');
+		set_request_var('rfilter', $case === 'manual' ? 'manual' : 'previous query');
 
 		eval($dispatch);
 
-		if ($manual) {
+		if ($case === 'manual') {
 			expect(isset($_SESSION['sess_sl_syslog_saved']))->toBeFalse('Manual edits detach the saved search');
 			expect($_REQUEST['rfilter'])->toBe('manual', 'Manual expression is retained');
-		} else {
-			expect($_REQUEST['rfilter'])->toBe('host = "router" AND message contains "error"', 'Selected expression is restored');
+		} elseif ($case === 'selected') {
+			expect($_REQUEST['rfilter'])->toBe($saved_query, 'Selected expression is restored');
 			expect($_REQUEST['removal'] === '2' && $_REQUEST['grouping'] === '1')->toBeTrue('Saved display filters are restored');
 			expect($_SESSION['sess_sl_syslog_saved'])->toBe(7, 'Active selection keeps Edit and Delete enabled');
 			expect($filter_submitted)->toBeFalse('Helper writes must not turn selection into a manual submission');
-		}
-	}
-
-	// The default saved search applies only when the tab is first entered.
-	foreach ([true, false] as $first_entry) {
-		$_SESSION = ['sess_user_id' => 1];
-		$_POST = $_REQUEST = [];
-		$GLOBALS['default_search'] = 7;
-		$current_tab = 'syslog';
-
-		eval($capture[0]);
-		set_request_var('rfilter', 'session query');
-
-		eval($dispatch);
-
-		if ($first_entry) {
-			expect($_REQUEST['rfilter'])->toBe('host = "router" AND message contains "error"', 'Default search applies on first entry');
+		} elseif ($case === 'default') {
+			expect($_REQUEST['rfilter'])->toBe($saved_query, 'Default search applies on first entry');
 			expect($_SESSION['sess_sl_syslog_saved'])->toBe(7, 'Default search becomes the active selection');
+		} elseif ($case === 'stale') {
+			expect($_REQUEST['rfilter'])->toBe('previous query', 'A missing default leaves the filter alone');
+			expect($GLOBALS['default_search'])->toBe(0, 'A missing default is dropped');
 		} else {
-			expect($_REQUEST['rfilter'])->toBe('session query', 'An existing session filter wins over the default');
+			expect($_REQUEST['rfilter'])->toBe('previous query', 'An existing session filter wins over the default');
 			expect(isset($_SESSION['sess_sl_syslog_saved']))->toBeFalse('Default is not reapplied');
 		}
 	}
+});
+it('sets a tab default and clears it only when it still points at the search', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$GLOBALS['settings'] = ['syslog_default_search_alerts' => 4];
+	test_override('read_user_setting', fn ($name, $default) => $GLOBALS['settings'][$name] ?? $default);
+	test_override('set_user_setting', function ($name, $value) {
+		$GLOBALS['settings'][$name] = $value;
+	});
+
+	syslog_saved_search_set_default(7, true, 'syslog');
+	syslog_saved_search_set_default(9, false, 'syslog');
+	expect($GLOBALS['settings'])->toBe(['syslog_default_search_alerts' => 4, 'syslog_default_search_syslog' => 7]);
+
+	syslog_saved_search_set_default(7, false, 'syslog');
+	expect($GLOBALS['settings']['syslog_default_search_syslog'])->toBe(0);
 });

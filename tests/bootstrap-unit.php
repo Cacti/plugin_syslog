@@ -415,25 +415,6 @@ if (!function_exists('set_user_setting')) {
 	}
 }
 
-/**
- * Evaluate a function excerpt of a plugin source once, so tests sharing it
- * do not redeclare it.
- */
-function plugin_test_eval_function(string $source, string $name, string $next): void {
-	if (function_exists($name)) {
-		return;
-	}
-
-	$start = strpos($source, 'function ' . $name . '(');
-	$end   = $start === false ? false : strpos($source, 'function ' . $next . '(', $start);
-
-	if ($start === false || $end === false) {
-		throw new RuntimeException('Unable to isolate ' . $name . '()');
-	}
-
-	eval(substr($source, $start, $end - $start));
-}
-
 if (!function_exists('html_escape')) {
 	function html_escape($string) {
 		return test_call_override('html_escape', [$string], htmlspecialchars((string) $string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));

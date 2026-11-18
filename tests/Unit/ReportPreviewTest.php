@@ -156,6 +156,25 @@ it('previews a report against the most recent stored messages', function () {
 	expect($calls[1]['sql'])->toEndWith('ORDER BY logtime DESC LIMIT 10');
 });
 
+it('names the host and program of legacy report previews', function (string $type, array $record) {
+	$calls = [];
+	report_preview_capture($calls, [
+		'count'  => '1',
+		'sample' => [$record + ['seq' => '4', 'logtime' => '2026-11-18 10:00:00', 'message' => 'link down', 'host_id' => '2', 'program_id' => '5', 'preview_host' => 'edge-rtr2', 'preview_program' => 'ifmgr']]
+	]);
+
+	$preview = syslog_rule_preview(['type' => $type, 'message' => 'link'], 'report', 10);
+
+	expect($preview['rows'][0]['host'])->toBe('edge-rtr2')
+		->and($preview['rows'][0]['program'])->toBe('ifmgr')
+		->and($calls[1]['sql'])->toContain('sh.host_id = preview.host_id')
+		->and($calls[1]['sql'])->toContain('sp.program_id = preview.program_id');
+})->with([
+	'contains (neither name)' => ['messagec', []],
+	'host (no program)'       => ['host', ['host' => 'edge-rtr2']],
+	'program (no host)'       => ['program', ['program' => 'ifmgr']]
+]);
+
 it('reports report-preview failures without guessing at results', function (array $rule, array $overrides, string $error, int $count, int $queries) {
 	$calls = [];
 	report_preview_capture($calls, $overrides);

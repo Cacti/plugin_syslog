@@ -1541,13 +1541,18 @@ function syslog_request_validation(string $current_tab, bool $force = false): vo
 
 	// ================= saved searches =================
 	$saved_id      = get_filter_request_var('saved', FILTER_VALIDATE_INT);
-	$saved_default = (int) read_user_setting(saved_search_default_setting($current_tab), 0);
+	$saved_default = (int) read_user_setting(syslog_saved_search_default_setting($current_tab), 0);
 
 	if ($saved_id > 0 && !$filter_submitted) {
 		// Applying a saved search restores its expression and standard filters.
 		saved_search_apply($current_tab, $saved_id);
 	} elseif ($first_entry && $saved_default > 0 && !$filter_submitted && !isset_request_var('clear') && !isset_request_var('reset')) {
 		saved_search_apply($current_tab, $saved_default);
+
+		// A default that was deleted or unshared since is dropped.
+		if (!isset($_SESSION['sess_sl_' . $current_tab . '_saved'])) {
+			syslog_saved_search_set_default($saved_default, false, $current_tab);
+		}
 	} elseif ($filter_submitted || isset_request_var('clear') || isset_request_var('reset')) {
 		// Manual edits detach the active saved search.
 		kill_session_var('sess_sl_' . $current_tab . '_saved');
@@ -1750,7 +1755,7 @@ function saved_search_save(): string {
 			WHERE id = ?",
 			[$search, $removal, $grouping, time(), $existing_id]);
 
-		saved_search_set_default((int) $existing_id, get_nfilter_request_var('default') === 'on');
+		syslog_saved_search_set_default((int) $existing_id, get_nfilter_request_var('default') === 'on', (string) get_nfilter_request_var('tab'));
 
 		return (string) json_encode(['id' => (int) $existing_id]);
 	}
@@ -1762,40 +1767,9 @@ function saved_search_save(): string {
 
 	$id = (int) syslog_db_fetch_insert_id();
 
-	saved_search_set_default($id, get_nfilter_request_var('default') === 'on');
+	syslog_saved_search_set_default($id, get_nfilter_request_var('default') === 'on', (string) get_nfilter_request_var('tab'));
 
 	return (string) json_encode(['id' => $id]);
-}
-
-/**
- * The user setting that holds a tab's default saved search.
- *
- * @param string $tab The log view tab.
- *
- * @return string The setting name.
- */
-function saved_search_default_setting(string $tab): string {
-	return 'syslog_default_search_' . ($tab === 'alerts' ? 'alerts' : 'syslog');
-}
-
-/**
- * Make a saved search the user's default for the current tab, or stop it
- * being the default. The default is applied when the page is entered while
- * no search is active in the session.
- *
- * @param int  $id      The saved search id.
- * @param bool $default Whether it becomes the default.
- *
- * @return void
- */
-function saved_search_set_default(int $id, bool $default): void {
-	$setting = saved_search_default_setting((string) get_nfilter_request_var('tab'));
-
-	if ($default) {
-		set_user_setting($setting, $id);
-	} elseif ((int) read_user_setting($setting, 0, true) === $id) {
-		set_user_setting($setting, 0);
-	}
 }
 
 /**
@@ -1837,7 +1811,7 @@ function saved_search_delete(): string {
 		kill_session_var('sess_sl_' . get_request_var('tab') . '_saved');
 	}
 
-	saved_search_set_default((int) $id, false);
+	syslog_saved_search_clear_default((int) $id);
 
 	return (string) json_encode(['id' => (int) $id]);
 }
@@ -2380,7 +2354,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 		$saved_groups[$label][] = $saved;
 	}
 
-	$saved_default = (int) read_user_setting(saved_search_default_setting((string) get_request_var('tab')), 0);
+	$saved_default = (int) read_user_setting(syslog_saved_search_default_setting((string) get_request_var('tab')), 0);
 
 	foreach ($saved_groups as $saved_label => $saved_group) {
 		if (cacti_sizeof($saved_group)) {

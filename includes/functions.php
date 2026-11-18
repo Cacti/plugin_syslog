@@ -705,6 +705,52 @@ function syslog_saved_search_share(): bool {
 }
 
 /**
+ * The user setting that holds a log view tab's default saved search.
+ *
+ * @param string $tab The log view tab.
+ *
+ * @return string The setting name.
+ */
+function syslog_saved_search_default_setting(string $tab): string {
+	return 'syslog_default_search_' . ($tab === 'alerts' ? 'alerts' : 'syslog');
+}
+
+/**
+ * Make a saved search the user's default for a tab, or stop it being the
+ * default. The default is applied when the tab is entered while no search is
+ * active in the session.
+ *
+ * @param int    $id      The saved search id.
+ * @param bool   $default Whether it becomes the default.
+ * @param string $tab     The log view tab.
+ *
+ * @return void
+ */
+function syslog_saved_search_set_default(int $id, bool $default, string $tab): void {
+	$setting = syslog_saved_search_default_setting($tab);
+
+	if ($default) {
+		set_user_setting($setting, $id);
+	} elseif ((int) read_user_setting($setting, 0, true) === $id) {
+		set_user_setting($setting, 0);
+	}
+}
+
+/**
+ * Stop a deleted saved search being the default of either log view tab;
+ * saved searches are selectable from both.
+ *
+ * @param int $id The saved search id.
+ *
+ * @return void
+ */
+function syslog_saved_search_clear_default(int $id): void {
+	foreach (['syslog', 'alerts'] as $tab) {
+		syslog_saved_search_set_default($id, false, $tab);
+	}
+}
+
+/**
  * Permission to manage all dashboards, including other users' shared dashboards.
  *
  * @return bool True if the user has dashboard admin permission.
@@ -8244,7 +8290,11 @@ function syslog_report_preview(array $rule, int $rows): array {
 		return ['error' => __('The preview query could not be evaluated.', 'syslog'), 'count' => 0, 'rows' => []];
 	}
 
-	$sample = syslog_db_fetch_assoc_prepared("SELECT * FROM ($sql) AS preview ORDER BY logtime DESC LIMIT $rows", $params);
+	// Legacy match types select only some of the names, so resolve both here.
+	$sample = syslog_db_fetch_assoc_prepared("SELECT preview.*,
+		(SELECT sh.host FROM `$syslogdb_default`.`syslog_hosts` AS sh WHERE sh.host_id = preview.host_id LIMIT 1) AS preview_host,
+		(SELECT sp.program FROM `$syslogdb_default`.`syslog_programs` AS sp WHERE sp.program_id = preview.program_id LIMIT 1) AS preview_program
+		FROM ($sql) AS preview ORDER BY logtime DESC LIMIT $rows", $params);
 
 	if (!is_array($sample)) {
 		return ['error' => __('The preview sample could not be read.', 'syslog'), 'count' => (int) $count, 'rows' => []];
@@ -8256,8 +8306,8 @@ function syslog_report_preview(array $rule, int $rows): array {
 		$out[] = [
 			'seq'     => (string) ($record['seq'] ?? ''),
 			'logtime' => (string) ($record['logtime'] ?? ''),
-			'host'    => (string) ($record['host'] ?? ''),
-			'program' => (string) ($record['program'] ?? ''),
+			'host'    => (string) (($record['host'] ?? '') !== '' ? $record['host'] : ($record['preview_host'] ?? '')),
+			'program' => (string) (($record['program'] ?? '') !== '' ? $record['program'] : ($record['preview_program'] ?? '')),
 			'message' => (string) ($record['message'] ?? '')
 		];
 	}
