@@ -698,6 +698,11 @@
 	width: min(100%, 860px);
 	grid-template-columns: 60px 120px 170px minmax(220px, 420px) 26px;
 }
+/* Rule edit pages place the builder in Cacti's narrower right form column,
+   where the fixed log-view columns overflowed past the page edge. */
+.syslogRuleFilterBuilder .syslogSearchRow:not(.syslogSearchGroupRow) {
+	grid-template-columns: 60px minmax(90px, 120px) minmax(100px, 170px) minmax(120px, 420px) 26px;
+}
 .syslogSearchBuilder .syslogSearchRow > .ui-selectmenu-button {
 	box-sizing: border-box;
 	width: 100% !important;

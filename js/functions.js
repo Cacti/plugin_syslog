@@ -297,9 +297,49 @@ function syslogThemeTokens() {
 		'primary': header.css('background-color'), 'on-primary': header.css('color'),
 		'header-bg': headerBg, 'header-image': headerImg, 'header-fg': headerFg
 	};
+
+	// Themes such as Paper Plane draw buttons as light text on a dark fill, so
+	// the sampled button text vanishes on the panel surface. Fall back to the
+	// body text and a faint text-colored tint when the accent is unreadable.
+	if (syslogColorContrast(tokens.accent, tokens.surface) < 3) {
+		var text = syslogParseColor(tokens.text);
+		tokens.accent = tokens.text;
+		if (text) {
+			tokens.tint = 'rgba(' + text.join(', ') + ', 0.1)';
+		}
+	}
+
 	box.remove();
 	sample.remove();
 	return tokens;
+}
+
+/** Parse an rgb()/rgba() color string into [r, g, b], or null when unusable. */
+function syslogParseColor(color) {
+	var m = /rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)(?:[\s,/]+([\d.]+))?/.exec(color || '');
+	if (!m || (m[4] !== undefined && +m[4] === 0)) {
+		return null;
+	}
+	return [+m[1], +m[2], +m[3]];
+}
+
+/** WCAG contrast ratio of two colors; Infinity when either cannot be parsed. */
+function syslogColorContrast(a, b) {
+	var ca = syslogParseColor(a);
+	var cb = syslogParseColor(b);
+	if (!ca || !cb) {
+		return Infinity;
+	}
+	function luminance(c) {
+		return c.reduce(function(sum, v, i) {
+			v /= 255;
+			v = v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+			return sum + v * [0.2126, 0.7152, 0.0722][i];
+		}, 0);
+	}
+	var la = luminance(ca);
+	var lb = luminance(cb);
+	return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
 /** True when a sampled surface color is dark, so scoped CSS can flip tint sets. */
@@ -1622,7 +1662,7 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 
 	// Sync the visual filter builder into the message field exactly as
 	// the save path does, so the preview matches what would be stored.
-	var builder = window.alertFilterBuilder || window.removalFilterBuilder;
+	var builder = window.alertFilterBuilder || window.removalFilterBuilder || window.reportFilterBuilder;
 
 	if (builder && typeField.val() == 'filter' && !builder.syncTo(messageField[0])) {
 		return;
@@ -1681,6 +1721,7 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 			dialog.html($('<div class="syslogRuleTestError"/>').text('The preview returned no result.'));
 		}
 
+		// Modeless, so the rule can be edited and re-tested while the preview stays open.
 		dialog.dialog({
 			title: title,
 			minHeight: 80,
@@ -1688,7 +1729,7 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 			maxWidth: 900,
 			resizable: true,
 			draggable: true,
-			modal: true
+			modal: false
 		});
 	}).fail(function() {
 		var dialog = $(dialogSelector);
@@ -1698,7 +1739,8 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 			dialog.dialog({
 				title: title,
 				minHeight: 80,
-				minWidth: 400
+				minWidth: 400,
+				modal: false
 			});
 		}
 	});

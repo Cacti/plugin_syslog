@@ -571,7 +571,17 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
   Expression. SQL Expression is kept for legacy rules.
 * **Removal rules** use a Method of Removal of Deletion or Transferal. Deletion
   discards the message; Transferal moves it to `syslog_removed`.
-* **Report rules** send matching messages by email on a schedule.
+* **Report rules** send matching messages by email on a schedule. Their Match
+  Type can be the Filter Builder, an SQL Expression, or one of the legacy
+  begins/contains/ends/host/facility/program matches. Reports search stored
+  messages (`syslog`), so an SQL Expression uses `host_id` and `program_id`
+  rather than host and program names.
+* Every rule edit page has a **Test rule** button that previews the messages
+  the rule matches without sending anything. Alert and removal previews search
+  queued incoming messages (Filter Builder alerts fall back to recent stored
+  messages); report previews search the most recent 10,000 stored messages. The
+  preview dialog is not modal, so the rule can be changed and tested again
+  while it stays open.
 * **Device rules** are managed from the Device Rules page and need the Rule
   Administrator realm.
 

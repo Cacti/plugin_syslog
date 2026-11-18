@@ -3653,7 +3653,7 @@ define('SYSLOG_RULE_PREVIEW_HISTORY_ROWS', 10000);
  * @param array  $rule      The rule attributes: 'type', 'message' and, for
  *                          removal rules, 'method'.  The 'filter' and
  *                          legacy match types are compiled safely.
- * @param string $rule_type Either 'alert' or 'removal'.
+ * @param string $rule_type Either 'alert', 'removal' or 'report'.
  * @param int    $rows      Maximum number of matching messages to return.
  *
  * @return array{error: string, count: int, rows: array<int, array<string, string>>}
@@ -3664,12 +3664,17 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 
 	$rows = max(1, min($rows, SYSLOG_RULE_PREVIEW_MAX_ROWS));
 
-	if (!in_array($rule_type, ['alert', 'removal'], true)) {
+	if (!in_array($rule_type, ['alert', 'removal', 'report'], true)) {
 		return ['error' => __('Unknown rule type.', 'syslog'), 'count' => 0, 'rows' => []];
 	}
 
 	$type            = isset($rule['type']) ? (string) $rule['type'] : '';
 	$rule['message'] = isset($rule['message']) ? (string) $rule['message'] : '';
+
+	// Reports run against stored messages, not the incoming queue.
+	if ($rule_type === 'report') {
+		return syslog_report_preview($rule, $rows);
+	}
 
 	$sql    = '';
 	$params = [];
@@ -3857,7 +3862,7 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
  * editor realms so a user without the rule pages cannot reach the
  * compiler with arbitrary filter documents.
  *
- * @param string $rule_type Either 'alert' or 'removal'.
+ * @param string $rule_type Either 'alert', 'removal' or 'report'.
  *
  * @return string A JSON document with the preview result, or an error.
  */
@@ -7889,14 +7894,15 @@ function syslog_process_reports() {
 
 				$reptext = '';
 
-				$sql = syslog_get_report_sql($report);
+				$params = [];
+				$sql    = syslog_get_report_sql($report, $params);
 
 				if ($sql != '') {
 					$date2 = date('Y-m-d H:i:s', $current_time);
 					$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
 					$sql .= ' AND logtime BETWEEN ? AND ?';
 					$sql .= ' ORDER BY logtime DESC';
-					$items = syslog_db_fetch_assoc_prepared($sql, [$date1, $date2]);
+					$items = syslog_db_fetch_assoc_prepared($sql, array_merge($params, [$date1, $date2]));
 
 					syslog_debug('We have ' . cacti_sizeof($items) . ' items for the Report');
 
@@ -7975,18 +7981,26 @@ function syslog_process_reports() {
 /**
  * syslog_get_report_sql - Return the SQL syntax for the report query
  *
- * @param array<string, mixed> $report The report to process, passed by reference
+ * Filter Builder reports are compiled to a parameterized WHERE clause whose
+ * values are returned through $params; the other match types embed their
+ * quoted value and leave $params empty.
  *
- * @return string The unprepared SQL, empty for an unknown report type
+ * @param array<string, mixed> $report The report to process, passed by reference
+ * @param array<int, mixed>    $params Set to the bind values of the returned SQL
+ * @param string               $source The table, or derived table, to read; the stored syslog table by default
+ *
+ * @return string The SQL, empty for an unknown report type or a filter that does not compile
  */
-function syslog_get_report_sql(&$report) {
+function syslog_get_report_sql(&$report, &$params = [], string $source = '') {
 	global $syslogdb_default;
 
-	$sql = '';
+	$sql    = '';
+	$params = [];
+	$source = $source !== '' ? $source : "`$syslogdb_default`.`syslog`";
 
 	if ($report['type'] == 'messageb') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE message LIKE " . db_qstr($report['message'] . '%');
@@ -7994,7 +8008,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'messagec') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE message LIKE " . db_qstr('%' . $report['message'] . '%');
@@ -8002,7 +8016,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'messagee') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE message LIKE " . db_qstr('%' . $report['message']);
@@ -8010,7 +8024,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'host') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE sh.host = " . db_qstr($report['message']);
@@ -8018,7 +8032,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'facility') {
 		$sql = "SELECT sl.*, sf.facility
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_facilities` AS sf
 			ON sl.facility_id = sf.facility_id
 			WHERE sf.facility = " . db_qstr($report['message']);
@@ -8026,19 +8040,97 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'program') {
 		$sql = "SELECT sl.*, sp.program
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 			ON sl.program_id = sp.program_id
 			WHERE sp.program = " . db_qstr($report['message']);
 	}
 
+	if ($report['type'] == 'filter') {
+		// The stored table keeps host and program ids; the compiler resolves names to ids.
+		$compiled = syslog_get_removal_rule_sql($report, 'syslog', 'sl.', false);
+
+		if (cacti_sizeof($compiled)) {
+			$sql = "SELECT sl.*, sh.host, sp.program
+				FROM $source AS sl
+				LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS sh
+				ON sl.host_id = sh.host_id
+				LEFT JOIN `$syslogdb_default`.`syslog_programs` AS sp
+				ON sl.program_id = sp.program_id
+				" . $compiled['sql'];
+			$params = $compiled['params'];
+		}
+	}
+
 	if ($report['type'] == 'sql') {
-		$sql = "SELECT *
-			FROM `$syslogdb_default`.`syslog`
+		// Hand written expressions may qualify columns with the table name. The
+		// names are resolved in the select list, not joined, so unqualified
+		// columns such as host_id in the expression stay unambiguous.
+		$sql = "SELECT syslog.*,
+			(SELECT sh.host FROM `$syslogdb_default`.`syslog_hosts` AS sh WHERE sh.host_id = syslog.host_id) AS host,
+			(SELECT sp.program FROM `$syslogdb_default`.`syslog_programs` AS sp WHERE sp.program_id = syslog.program_id) AS program
+			FROM $source AS syslog
 			WHERE (" . $report['message'] . ')';
 	}
 
 	return $sql;
+}
+
+/**
+ * syslog_report_preview - Run a read-only preview of a report rule against the
+ * most recent stored messages, using the same query the report sends.
+ *
+ * @param array<string, mixed> $rule The report attributes: 'type' and 'message'.
+ * @param int                  $rows Maximum number of matching messages to return.
+ *
+ * @return array{error: string, count: int, rows: array<int, array<string, string>>, notice?: string}
+ *         The bounded preview result, or an error message.
+ */
+function syslog_report_preview(array $rule, int $rows): array {
+	global $syslogdb_default;
+
+	$limit  = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
+	$params = [];
+	$sql    = syslog_get_report_sql($rule, $params, "(SELECT * FROM `$syslogdb_default`.`syslog` ORDER BY seq DESC LIMIT $limit)");
+
+	if ($sql === '') {
+		$error = isset($GLOBALS['syslog_rule_filter_error']) && $GLOBALS['syslog_rule_filter_error'] !== ''
+			? (string) $GLOBALS['syslog_rule_filter_error']
+			: __('The rule did not compile to a query.', 'syslog');
+
+		return ['error' => $error, 'count' => 0, 'rows' => []];
+	}
+
+	$count = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM ($sql) AS preview", $params);
+
+	if (!is_numeric($count)) {
+		return ['error' => __('The preview query could not be evaluated.', 'syslog'), 'count' => 0, 'rows' => []];
+	}
+
+	$sample = syslog_db_fetch_assoc_prepared("SELECT * FROM ($sql) AS preview ORDER BY logtime DESC LIMIT $rows", $params);
+
+	if (!is_array($sample)) {
+		return ['error' => __('The preview sample could not be read.', 'syslog'), 'count' => (int) $count, 'rows' => []];
+	}
+
+	$out = [];
+
+	foreach ($sample as $record) {
+		$out[] = [
+			'seq'     => (string) ($record['seq'] ?? ''),
+			'logtime' => (string) ($record['logtime'] ?? ''),
+			'host'    => (string) ($record['host'] ?? ''),
+			'program' => (string) ($record['program'] ?? ''),
+			'message' => (string) ($record['message'] ?? '')
+		];
+	}
+
+	return [
+		'error'  => '',
+		'count'  => (int) $count,
+		'rows'   => $out,
+		'notice' => __('Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email.', $limit, 'syslog')
+	];
 }
 
 /**

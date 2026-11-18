@@ -6,11 +6,11 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cacti 1.2.32\n"
+"Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-18 09:33-0500\n"
+"POT-Creation-Date: 2026-11-18 10:11-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Cacti Developers <developers@cacti.net>\n"
+"Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -319,7 +319,7 @@ msgstr ""
 
 #: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
 #: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
-#: syslog_saved_searches.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Message"
 msgstr ""
 
@@ -390,13 +390,18 @@ msgid ", Count:"
 msgstr ""
 
 #: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
-#: syslog_removal.php
+#: syslog_removal.php syslog_reports.php
 msgid "Host"
 msgstr ""
 
 #: includes/functions.php
 #, php-format
 msgid "Event Report - %s"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
 msgstr ""
 
 #: includes/installer.php
@@ -1522,14 +1527,17 @@ msgid "Field"
 msgstr ""
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
 msgid "Program"
 msgstr ""
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
 msgid "Facility"
 msgstr ""
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
 msgid "Priority"
 msgstr ""
 
@@ -1562,7 +1570,7 @@ msgid "Enter message text…"
 msgstr ""
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
-#: syslog_saved_searches.php
+#: syslog_reports.php syslog_saved_searches.php
 msgid "Remove condition"
 msgstr ""
 
@@ -2824,7 +2832,7 @@ msgstr ""
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Test rule"
 msgstr ""
 
@@ -2832,23 +2840,23 @@ msgstr ""
 msgid "Rule Test Preview"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Value"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Enter a value"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
 msgstr ""
 
-#: syslog_alerts.php syslog_removal.php
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Enter a nonnegative integer"
 msgstr ""
 
@@ -3642,7 +3650,7 @@ msgid "Is this Report Enabled?"
 msgstr ""
 
 #: syslog_reports.php
-msgid "Define how you would like this string matched."
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
 msgstr ""
 
 #: syslog_reports.php
@@ -3666,7 +3674,7 @@ msgid "Report Format"
 msgstr ""
 
 #: syslog_reports.php
-msgid "The matching component of the syslog message."
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
 msgstr ""
 
 #: syslog_reports.php
@@ -3679,6 +3687,14 @@ msgstr ""
 
 #: syslog_reports.php
 msgid "Space for Notes on the Report"
+msgstr ""
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr ""
+
+#: syslog_reports.php
+msgid "Report filter conditions"
 msgstr ""
 
 #: syslog_reports.php
