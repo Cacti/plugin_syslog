@@ -46,11 +46,12 @@ const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
 
 // The shape of a "word" in a syslog message that the hover lookup compares with
-// identifiers: an optional leading %, then letters, digits and _ . - / starting
-// and ending with a letter, digit or underscore. Numeric event IDs and short
-// codes qualify. Identifiers outside this shape can be stored and exported (the
-// bundled data has some, such as %ASA|PIX-3-331001 or %FCDD-SLOT#-3-LOG_FCDD_ERR),
-// but can never match a message until they are edited.
+// identifiers: an optional literal leading %, then letters, digits and _ . - /
+// starting and ending with a letter, digit or underscore. The percent sign is
+// retained when matching. Numeric event IDs and short codes qualify. Identifiers
+// outside this shape can be stored and exported (the bundled data has some, such
+// as %ASA|PIX-3-331001 or %FCDD-SLOT#-3-LOG_FCDD_ERR), but can never match a
+// message until they are edited.
 const SYSLOG_RECOMMENDATIONS_IDENTIFIER = '%?[A-Za-z0-9_](?:[A-Za-z0-9_.\/-]*[A-Za-z0-9_])?';
 
 // The same shape as a POSIX expression for SQL REGEXP, which MySQL 5.7, MySQL 8
@@ -431,8 +432,8 @@ function syslog_recommendations_read_payload() {
  *
  * A candidate is a word that looks like a message code: it starts with a
  * letter (optionally after a leading %) and may contain digits, underscores,
- * dashes and dots. Each is returned together with its %-prefixed or
- * %-stripped counterpart because vendors differ on the prefix.
+ * dashes and dots. A leading % is retained as part of the candidate and must
+ * match the identifier as stored.
  *
  * @param string $message The syslog message text.
  *
@@ -449,9 +450,7 @@ function syslog_recommendation_candidates(string $message): array {
 		if (strlen($token) > 190) {
 			continue;
 		}
-		$bare       = ltrim($token, '%');
-		$out[$bare] = true;
-		$out['%' . $bare] = true;
+		$out[$token] = true;
 
 		if (count($out) >= 120) {
 			break;

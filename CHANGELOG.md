@@ -3,6 +3,7 @@
 --- 5.0 ---
 
 * bug: Re-importing a full Recommendations export rejected the 860 bundled records whose identifiers contain characters such as `|`, `#` or brackets (an over-strict identifier check). Imports now accept any identifier without spaces, write each rejected record to the Cacti log with its position, identifier and reason plus a one-line summary, and warn about identifiers that can never match a message
+* bug: Keep a leading `%` as a literal part of a Cisco recommendation identifier; it must match the message word as written instead of being silently added or removed
 * feature: The Recommendations Import button, filters and import submission now run as callbacks instead of full page loads, like the other Syslog Settings pages; the list explains how recommendations are matched
 * bug: The Alert and Removal rule filter panel no longer shows the Dark theme's tiled jQuery UI background in Dark and Deepness, and Deepness gets its own Syslog surface colors instead of Dark's (Deepness reuses Dark's jQuery UI styles, which the Syslog views sample)
 * feature: Report Rules gain the Filter Builder (previously listed but never shown) and a Test button that previews matches against the most recent stored messages; Filter Builder reports are compiled to bound SQL and processed like the other match types

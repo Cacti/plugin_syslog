@@ -83,7 +83,7 @@ it('accepts every identifier shape found in the bundled data, flagging the ones 
 it('accepts numeric event IDs and short codes, and finds them in a message', function () {
 	expect(syslog_recommendation_normalize(['identifier' => '4625', 'explanation' => 'x']))->toMatchArray(['identifier' => '4625'])
 		->and(syslog_recommendation_normalize(['identifier' => 'B', 'explanation' => 'x']))->toMatchArray(['identifier' => 'B'])
-		->and(syslog_recommendation_candidates('EventID 4625: An account failed to log on'))->toContain('4625')->toContain('%4625')
+		->and(syslog_recommendation_candidates('EventID 4625: An account failed to log on'))->toContain('4625')->not->toContain('%4625')
 		->and(syslog_recommendation_candidates('code B reported'))->toContain('B');
 });
 
@@ -198,11 +198,11 @@ it('counts imported and updated records when overwriting', function () {
 	expect($result)->toBe(['imported' => 1, 'updated' => 1, 'skipped' => 0, 'failed' => 0]);
 });
 
-it('extracts message identifiers with and without the percent prefix', function () {
+it('preserves a literal percent prefix in message identifiers', function () {
 	$candidates = syslog_recommendation_candidates('%LINEPROTO-5-UPDOWN: Line protocol on Interface Gi0/1, changed state to up');
 
-	expect($candidates)->toContain('%LINEPROTO-5-UPDOWN')->toContain('LINEPROTO-5-UPDOWN')
-		->and(syslog_recommendation_candidates('RPD_OSPF_NBRDOWN: neighbor down'))->toContain('%RPD_OSPF_NBRDOWN');
+	expect($candidates)->toContain('%LINEPROTO-5-UPDOWN')->not->toContain('LINEPROTO-5-UPDOWN')
+		->and(syslog_recommendation_candidates('RPD_OSPF_NBRDOWN: neighbor down'))->toContain('RPD_OSPF_NBRDOWN')->not->toContain('%RPD_OSPF_NBRDOWN');
 });
 
 it('looks messages up by their identifiers and returns the localized JSON', function () {
@@ -215,7 +215,7 @@ it('looks messages up by their identifiers and returns the localized JSON', func
 
 	$response = json_decode(syslog_recommendations_lookup_json('%LINK-3-UPDOWN: Interface Gi0/1, changed state to down'), true);
 
-	expect($bound)->toContain('%LINK-3-UPDOWN')
+	expect($bound)->toContain('%LINK-3-UPDOWN')->not->toContain('LINK-3-UPDOWN')
 		->and($response['found'])->toBeTrue()
 		->and($response['recommendations'][0]['severity_name'])->toBe('Error')
 		->and($response['recommendations'][0]['recommended_action'])->toBe('Check the cable.')

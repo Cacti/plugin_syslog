@@ -3375,7 +3375,7 @@ msgstr ""
 
 #: syslog_recommendations.php
 #, php-format
-msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3471,7 +3471,7 @@ msgid "Identifier"
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); the leading % is optional and the match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3523,7 +3523,7 @@ msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, 
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "The leading <b>%</b> is optional on both sides. Cisco prints it in front of the message code, other vendors do not, so <code>%LINK-3-UPDOWN</code> and <code>LINK-3-UPDOWN</code> are treated as the same identifier. It is not a wildcard and does not mean \"ends with\"."
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
 msgstr ""
 
 #: syslog_recommendations.php

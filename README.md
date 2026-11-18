@@ -616,9 +616,10 @@ which returns JSON.
   case. It is not a contains, starts-with or ends-with search, and there are no
   wildcards: `LINK-3-UPDOWN` does not match `LINK-3-UPDOWN-EXT`, and `UPDOWN`
   does not match `%LINK-3-UPDOWN`.
-* The leading `%` is optional on both sides. Cisco prints it in front of the
-  message code and other vendors do not, so `%LINK-3-UPDOWN` and
-  `LINK-3-UPDOWN` are the same identifier. It is not a wildcard.
+* A leading `%` is a literal part of the identifier, not a wildcard. It must
+  match the message word as written: `%LINK-3-UPDOWN` matches
+  `%LINK-3-UPDOWN`, not `LINK-3-UPDOWN`. A recommendation stored as
+  `LINK-3-UPDOWN` matches only that unprefixed message word.
 * All vendors are checked. When several recommendations match, the longest
   identifiers are shown first, up to three.
 * Identifiers containing other characters, such as the `#` slot placeholder or

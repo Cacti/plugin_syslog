@@ -203,7 +203,7 @@ function recommendation_save(): void {
 		raise_message(1);
 
 		if (!syslog_recommendation_matchable($record['identifier'])) {
-			raise_message('syslog_recommendation_unmatchable', __esc('NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code.', $record['identifier'], 'syslog'), MESSAGE_LEVEL_INFO);
+			raise_message('syslog_recommendation_unmatchable', __esc('NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code.', $record['identifier'], 'syslog'), MESSAGE_LEVEL_INFO);
 		}
 
 		header('Location: syslog_recommendations.php');
@@ -470,7 +470,7 @@ function recommendation_edit(): void {
 	$fields = [
 		'spacer0'    => ['method' => 'spacer', 'friendly_name' => __('Recommendation', 'syslog')],
 		'vendor'     => ['method' => 'textbox', 'friendly_name' => __('Vendor', 'syslog'), 'description' => __('The supplier of the device or software that logs this message, for example Cisco or Juniper.', 'syslog'), 'value' => '|arg1:vendor|', 'size' => 40, 'max_length' => 64],
-		'identifier' => ['method' => 'textbox', 'friendly_name' => __('Identifier', 'syslog'), 'description' => __('The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); the leading % is optional and the match is not case sensitive. See How Recommendations Are Matched on the list page.', 'syslog'), 'value' => '|arg1:identifier|', 'size' => 60, 'max_length' => 190],
+		'identifier' => ['method' => 'textbox', 'friendly_name' => __('Identifier', 'syslog'), 'description' => __('The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page.', 'syslog'), 'value' => '|arg1:identifier|', 'size' => 60, 'max_length' => 190],
 		'component'  => ['method' => 'textbox', 'friendly_name' => __('Component', 'syslog'), 'description' => __('The facility, module or subsystem that raises the message.', 'syslog'), 'value' => '|arg1:component|', 'size' => 40, 'max_length' => 64],
 		'severity'   => ['method' => 'drop_array', 'friendly_name' => __('Severity', 'syslog'), 'description' => __('The severity the vendor documents for this message.', 'syslog'), 'array' => $severities, 'value' => '|arg1:severity|', 'default' => ''],
 		'message'            => $text('message', __('Message', 'syslog'), __('The message format as documented, including its variable placeholders.', 'syslog'), 3),
@@ -508,7 +508,7 @@ function recommendation_matching_help(): void {
 		__('Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the hover message but are never searched.', 'syslog'),
 		__('When you hover over a row on the Syslog tab, the first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>.', 'syslog'),
 		__('An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a "contains", "starts with" or "ends with" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>.', 'syslog'),
-		__('The leading <b>%</b> is optional on both sides. Cisco prints it in front of the message code, other vendors do not, so <code>%LINK-3-UPDOWN</code> and <code>LINK-3-UPDOWN</code> are treated as the same identifier. It is not a wildcard and does not mean "ends with".', 'syslog'),
+		__('A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word.', 'syslog'),
 		__('All vendors are checked. When several recommendations match, the longest identifiers are shown first, up to three.', 'syslog'),
 		__('Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>.', 'syslog')
 	];
