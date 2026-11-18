@@ -204,12 +204,13 @@ messages arriving in the same second.
 > and pages added by the new version (for example **Recommendations** in 5.0)
 > return **Permission Denied**.
 
-The upgrade only runs when you start it. This is deliberate, for performance:
-an upgrade can change the schema of large tables, load bundled data, and update
-permissions, and that work must not run inside the page requests of Cacti users
-or the poller, where it would slow down or stall the website. Starting it
-yourself lets you choose when it runs, and the command line method keeps it out
-of the web server entirely.
+The upgrade never starts by itself. This is deliberate, for performance: an
+upgrade can change the schema of large tables, load bundled data, and update
+permissions, and that work must not run automatically inside the ordinary page
+requests of Cacti users or the poller, where it would slow down or stall the
+website. Starting it yourself lets you choose when it runs. Only the command
+line method keeps it out of the web server entirely; the Upgrade Advisor runs
+it inside the web request that confirms it.
 
 Use one of these methods:
 
@@ -234,9 +235,12 @@ Use one of these methods:
    and are processed once it is enabled again.
 
 Both methods run the same upgrade and keep existing messages, rules, and
-preferences. To confirm the upgrade worked, check that Plugin Management shows
-the new version, or run `php plugins/syslog/cli/syslog_schema.php --audit`,
-which reports any missing tables without changing anything.
+preferences. The upgrade has completed when Plugin Management shows the new
+version: the stored version is the last thing the upgrade updates. Do not rely
+on `php plugins/syslog/cli/syslog_schema.php --audit` for this. It only checks
+that the Syslog tables exist, and missing tables can be created automatically
+when the plugin connects to its database, so an installation that has not been
+upgraded can still pass the audit.
 
 When upgrading to 5.0, the upgrade also:
 
@@ -385,16 +389,19 @@ logging database server.
 
 To upgrade an existing install, replacing the files is not enough: follow
 [Important: Upgrading the Plugin](#important-upgrading-the-plugin), which
-explains the two supported methods. You can check the schema at any time with
-the CLI:
+explains the two supported methods. You can check that the Syslog tables exist
+at any time with the CLI:
 
 ```shell
 php plugins/syslog/cli/syslog_schema.php --audit
 ```
 
-`--audit` reports missing tables without changing anything. `--repair` creates
-missing tables and reruns schema migrations, and `--upgrade` also upgrades the
-schema. Repair and upgrade keep existing data and preferences.
+`--audit` reports missing tables and runs no migrations itself, although while
+the plugin is enabled, connecting to the database can create missing tables
+first. It does not tell you whether an upgrade has completed; the version in
+Plugin Management does. `--repair` creates missing tables and reruns schema
+migrations, and `--upgrade` also upgrades the schema. Repair and upgrade keep
+existing data and preferences.
 
 To uninstall, use Uninstall in Plugin Management and choose a method. `Remove
 Everything` drops every syslog table, including rules and hosts; `Syslog Data
