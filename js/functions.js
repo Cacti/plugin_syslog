@@ -1366,6 +1366,99 @@ function initSyslogReports() {
 }
 
 /* ========================================================================
+ * Recommendations Functions (syslog_recommendations.php)
+ * ======================================================================== */
+
+/**
+ * Build the list URL for the current recommendation filters.
+ *
+ * @param {Object} extra Additional query parameters.
+ * @returns {string} The relative URL.
+ */
+function syslogRecommendationsUrl(extra) {
+	var params = $.extend({
+		filter: $('#filter').val(), vendor: $('#vendor').val(), severity: $('#severity').val(),
+		matchable: $('#matchable').val(), rows: $('#rows').val(), page: $('#page').val()
+	}, extra || {});
+
+	return 'syslog_recommendations.php?' + $.param(params);
+}
+
+/**
+ * Initialize the recommendations list: filters, import and export run as
+ * callbacks instead of full page loads.
+ */
+function initSyslogRecommendations() {
+	$(function() {
+		$('#refresh').off('click').on('click', function() {
+			loadPageNoHeader(syslogRecommendationsUrl({page: 1, header: 'false'}));
+		});
+
+		$('#clear').off('click').on('click', function() {
+			loadPageNoHeader('syslog_recommendations.php?clear=1&header=false');
+		});
+
+		$('#vendor, #severity, #matchable, #rows').off('change').on('change', function() {
+			loadPageNoHeader(syslogRecommendationsUrl({page: 1, header: 'false'}));
+		});
+
+		$('#recommendation_filter').off('submit').on('submit', function(event) {
+			event.preventDefault();
+			loadPageNoHeader(syslogRecommendationsUrl({page: 1, header: 'false'}));
+		});
+
+		$('#import').off('click').on('click', function() {
+			loadPageNoHeader('syslog_recommendations.php?action=import&header=false');
+		});
+
+		// Download in a hidden frame so Cacti's page-unload spinner never starts.
+		$('#export').off('click').on('click', function() {
+			$('#syslog_download').attr('src', syslogRecommendationsUrl({action: 'export_all'}));
+		});
+	});
+}
+
+/**
+ * Submit the recommendations import as a callback. The form carries a file,
+ * which Cacti's own AJAX form handler cannot send, so it is posted as
+ * FormData; the server answers with the page to show next, whose session
+ * messages report the outcome.
+ *
+ * @param {string} busyText Text shown on the button while the import runs.
+ */
+function initSyslogRecommendationImport(busyText) {
+	$(function() {
+		var form = $('#syslog_recommendation_import');
+
+		form.off('submit').on('submit', function(event) {
+			event.preventDefault();
+
+			var data = new FormData(this);
+			var submit = form.find('input[type="submit"]');
+
+			data.append('callback', '1');
+
+			if (!data.has('__csrf_magic') && typeof csrfMagicToken !== 'undefined') {
+				data.append('__csrf_magic', csrfMagicToken);
+			}
+
+			submit.prop('disabled', true).val(busyText);
+
+			$.ajax({
+				url: 'syslog_recommendations.php', type: 'POST', data: data,
+				processData: false, contentType: false, dataType: 'json'
+			}).done(function(result) {
+				var next = (result && result.next) ? result.next : 'syslog_recommendations.php';
+
+				loadPageNoHeader(next + (next.indexOf('?') >= 0 ? '&' : '?') + 'header=false');
+			}).fail(function() {
+				loadPageNoHeader('syslog_recommendations.php?header=false');
+			});
+		});
+	});
+}
+
+/* ========================================================================
  * Autocomplete Form Callback Functions
  * ======================================================================== */
 

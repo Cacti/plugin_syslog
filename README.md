@@ -571,11 +571,38 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
 ## Recommendations
 
 Recommendations explain what a message means and what to do about it. When you
-hover over a row on the Syslog tab, the plugin looks for a recommendation whose
-identifier appears in the message (for example `%LINK-3-UPDOWN` or
-`RPD_OSPF_NBRDOWN`, with or without a leading `%`, not case sensitive) and shows
-its explanation and recommended action next to the message. Rows without a
-match keep the plain message tooltip.
+hover over a row on the Syslog tab, the plugin looks for recommendations that
+match the message and shows their explanation and recommended action next to
+the message. Rows without a match keep the plain message tooltip.
+
+### How recommendations are matched
+
+* Only the `identifier` column is matched. The vendor, component, severity,
+  message and explanation are shown but never searched.
+* The first 2,048 characters of the syslog message are split into words. A word
+  is a run of letters, digits and `_ . - /` that may start with `%`; any other
+  character (space, colon, comma, bracket, and so on) ends a word. In
+  `%LINK-3-UPDOWN: Interface Gi0/1, changed state to down` the words are
+  `%LINK-3-UPDOWN`, `Interface`, `Gi0/1`, `changed`, `state`, `to` and `down`.
+* An identifier matches when it is exactly equal to one whole word, ignoring
+  case. It is not a contains, starts-with or ends-with search, and there are no
+  wildcards: `LINK-3-UPDOWN` does not match `LINK-3-UPDOWN-EXT`, and `UPDOWN`
+  does not match `%LINK-3-UPDOWN`.
+* The leading `%` is optional on both sides. Cisco prints it in front of the
+  message code and other vendors do not, so `%LINK-3-UPDOWN` and
+  `LINK-3-UPDOWN` are the same identifier. It is not a wildcard.
+* All vendors are checked. When several recommendations match, the longest
+  identifiers are shown first, up to three.
+* Identifiers containing other characters, such as the `#` slot placeholder or
+  the `|` alternatives in some vendor documentation (`%ASA|PIX-3-331001`), are
+  stored and exported but can never match. The bundled data has 860 of them;
+  set **Can Match** to No on the Recommendations page to list them, and edit
+  them into the exact code (for
+  example `%ASA-3-331001`). Saving or importing such an identifier shows a
+  note saying it cannot match.
+
+The same rules are summarised under **How Recommendations Are Matched** on the
+Recommendations page.
 
 Manage them under Console > Syslog Settings > Recommendations (the
 Syslog Administration realm). You can add, edit, and delete records, filter by
@@ -616,13 +643,21 @@ recommended action of vendor message references):
 ```
 
 `identifier` and at least one of `explanation` or `recommended_action` are
-required. `severity` is a syslog level 0-7 or a keyword (`emergency`, `alert`,
+required; an identifier may be up to 190 characters with no spaces or line
+breaks. `severity` is a syslog level 0-7 or a keyword (`emergency`, `alert`,
 `critical`, `error`, `warning`, `notice`, `informational`, `debug`; the Sigma
 levels `high`, `medium`, `low` are also accepted). A bare JSON list of records
 is accepted too, as are the alternative field names `name`/`code`/`event_code`
 (identifier), `description` (explanation), `action` (recommended action), `level`
 (severity) and `references` (reference). On import choose whether existing
-records are kept or replaced.
+records are kept or replaced. Any export can be imported again unchanged.
+
+The import runs without reloading the page. When it finishes, the page shows
+how many records were added, updated and left unchanged. Every rejected record is
+written to the Cacti log with its position in the file, its identifier and the
+reason, for example `SYSLOG WARNING: Recommendation import rejected record 12
+(identifier 'LINK UPDOWN'): the identifier contains spaces or line breaks`,
+followed by a one-line summary of the whole import.
 
 ## Settings
 

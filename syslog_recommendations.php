@@ -92,6 +92,7 @@ function recommendation_filters(): array {
 		'filter'         => ['filter' => FILTER_DEFAULT, 'pageset' => true, 'default' => ''],
 		'vendor'         => ['filter' => FILTER_DEFAULT, 'pageset' => true, 'default' => '-1'],
 		'severity'       => ['filter' => FILTER_VALIDATE_INT, 'pageset' => true, 'default' => '-1'],
+		'matchable'      => ['filter' => FILTER_VALIDATE_INT, 'pageset' => true, 'default' => '-1'],
 		'sort_column'    => ['filter' => FILTER_CALLBACK, 'default' => 'identifier', 'options' => ['options' => 'sanitize_search_string']],
 		'sort_direction' => ['filter' => FILTER_CALLBACK, 'default' => 'ASC', 'options' => ['options' => 'sanitize_search_string']]
 	];
@@ -120,6 +121,13 @@ function recommendation_where(): array {
 	if ((string) get_request_var('severity') !== '-1') {
 		$where[]  = 'severity = ?';
 		$params[] = (int) get_request_var('severity');
+	}
+
+	// The same word shape the hover lookup uses, so "No" lists exactly the
+	// identifiers that can never match a message.
+	if ((string) get_request_var('matchable') !== '-1') {
+		$where[]  = 'identifier ' . ((string) get_request_var('matchable') === '1' ? '' : 'NOT ') . 'REGEXP ?';
+		$params[] = SYSLOG_RECOMMENDATIONS_IDENTIFIER_SQL;
 	}
 
 	return [$where ? 'WHERE ' . implode(' AND ', $where) : '', $params];
@@ -159,10 +167,11 @@ function recommendation_save(): void {
 	foreach (['vendor', 'identifier', 'component', 'severity', 'message', 'explanation', 'recommended_action', 'reference'] as $field) {
 		$input[$field] = trim((string) get_nfilter_request_var($field));
 	}
-	$record = syslog_recommendation_normalize($input);
+	$reason = null;
+	$record = syslog_recommendation_normalize($input, $reason);
 
 	if ($record === null) {
-		raise_message('syslog_recommendation_invalid', __('Enter an identifier made of letters, digits and the characters _ . - / (it may start with %), and at least an explanation or a recommended action.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		raise_message('syslog_recommendation_invalid', __esc('The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action.', $reason, 'syslog'), MESSAGE_LEVEL_ERROR);
 		header('Location: ' . $return);
 
 		return;
@@ -192,6 +201,11 @@ function recommendation_save(): void {
 
 	if ($ok) {
 		raise_message(1);
+
+		if (!syslog_recommendation_matchable($record['identifier'])) {
+			raise_message('syslog_recommendation_unmatchable', __esc('NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code.', $record['identifier'], 'syslog'), MESSAGE_LEVEL_INFO);
+		}
+
 		header('Location: syslog_recommendations.php');
 	} else {
 		raise_message(2);
@@ -300,7 +314,29 @@ function recommendation_export_all(): void {
 }
 
 /**
+ * Finish an import request: answer the import callback with where to go next,
+ * or redirect a plain form post there.
+ *
+ * @param string $url The page to show next.
+ *
+ * @return void
+ */
+function recommendation_import_done(string $url): void {
+	if (isset_request_var('callback')) {
+		header('Content-Type: application/json; charset=UTF-8');
+		print json_encode(['next' => $url]);
+
+		return;
+	}
+
+	header('Location: ' . $url);
+}
+
+/**
  * Receive an import and report what happened.
+ *
+ * Every rejected record is written to the Cacti log with its position,
+ * identifier and reason; the on-screen messages summarise the counts.
  *
  * @return void
  */
@@ -308,7 +344,7 @@ function recommendation_import(): void {
 	recommendation_require_post();
 
 	if (!syslog_allow_edits()) {
-		header('Location: syslog_recommendations.php');
+		recommendation_import_done('syslog_recommendations.php');
 
 		return;
 	}
@@ -320,22 +356,37 @@ function recommendation_import(): void {
 	$payload = syslog_recommendations_read_payload();
 	$parsed  = $payload === false ? false : syslog_recommendations_parse($payload);
 
-	if ($parsed === false || !$parsed['records']) {
-		raise_message('syslog_import_error', __('Import rejected: the file is empty, too large, not valid JSON, or contains no usable recommendations.', 'syslog'), MESSAGE_LEVEL_ERROR);
-		header('Location: syslog_recommendations.php?action=import');
+	if ($parsed === false) {
+		raise_message('syslog_import_error', __('Import rejected: the file is empty, too large, or not a valid recommendations JSON document.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		recommendation_import_done('syslog_recommendations.php?action=import');
 
 		return;
 	}
 
-	$result = syslog_recommendations_store($parsed['records'], get_nfilter_request_var('duplicates') === 'overwrite');
+	syslog_recommendations_log_rejected($parsed['rejected']);
 
-	raise_message('syslog_info', __esc('NOTE: Imported %d, updated %d and skipped %d existing Recommendation(s).', $result['imported'], $result['updated'], $result['skipped'], 'syslog'), MESSAGE_LEVEL_INFO);
+	$result      = syslog_recommendations_store($parsed['records'], get_nfilter_request_var('duplicates') === 'overwrite');
+	$unmatchable = count(array_filter($parsed['records'], static fn ($r) => !syslog_recommendation_matchable($r['identifier'])));
 
-	if ($result['failed'] || $parsed['invalid']) {
-		raise_message('syslog_error', __esc('ERROR: %d Recommendation(s) were invalid or failed to import.', $result['failed'] + $parsed['invalid'], 'syslog'), MESSAGE_LEVEL_ERROR);
+	cacti_log(sprintf('NOTE: Recommendation import: %d added, %d updated, %d unchanged, %d rejected, %d failed to store, %d with identifiers that cannot match a message',
+		$result['imported'], $result['updated'], $result['skipped'], $parsed['invalid'], $result['failed'], $unmatchable), false, 'SYSLOG');
+
+	raise_message('syslog_info', __esc('NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged.', $result['imported'], $result['updated'], $result['skipped'], 'syslog'), MESSAGE_LEVEL_INFO);
+
+	if ($parsed['invalid']) {
+		$sample = implode(', ', array_map(static fn ($r) => $r['identifier'] === '' ? '#' . $r['index'] : $r['identifier'], array_slice($parsed['rejected'], 0, 3)));
+		raise_message('syslog_import_rejected', __esc('ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log.', $parsed['invalid'], $sample, 'syslog'), MESSAGE_LEVEL_ERROR);
 	}
 
-	header('Location: syslog_recommendations.php');
+	if ($result['failed']) {
+		raise_message('syslog_import_failed', __esc('ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log.', $result['failed'], 'syslog'), MESSAGE_LEVEL_ERROR);
+	}
+
+	if ($unmatchable) {
+		raise_message('syslog_import_unmatchable', __esc('NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them.', $unmatchable, 'syslog'), MESSAGE_LEVEL_INFO);
+	}
+
+	recommendation_import_done('syslog_recommendations.php');
 }
 
 /**
@@ -375,7 +426,7 @@ function recommendation_import_form(): void {
 		]
 	];
 
-	print "<form method='post' action='syslog_recommendations.php' enctype='multipart/form-data'>";
+	print "<form id='syslog_recommendation_import' method='post' action='syslog_recommendations.php' enctype='multipart/form-data'>";
 
 	html_start_box(__('Import Recommendations', 'syslog'), '100%', false, 3, 'center', '');
 	draw_edit_form(['config' => ['no_form_tag' => true], 'fields' => $fields]);
@@ -383,6 +434,11 @@ function recommendation_import_form(): void {
 
 	form_hidden_box('save_component_import', '1', '');
 	form_save_button('', 'import', 'id', false);
+	?>
+	<script <?php print plugin_syslog_csp_nonce(); ?>>
+	initSyslogRecommendationImport(<?php print syslog_json_safe(__('Importing, please wait...', 'syslog')); ?>);
+	</script>
+	<?php
 }
 
 /**
@@ -414,7 +470,7 @@ function recommendation_edit(): void {
 	$fields = [
 		'spacer0'    => ['method' => 'spacer', 'friendly_name' => __('Recommendation', 'syslog')],
 		'vendor'     => ['method' => 'textbox', 'friendly_name' => __('Vendor', 'syslog'), 'description' => __('The supplier of the device or software that logs this message, for example Cisco or Juniper.', 'syslog'), 'value' => '|arg1:vendor|', 'size' => 40, 'max_length' => 64],
-		'identifier' => ['method' => 'textbox', 'friendly_name' => __('Identifier', 'syslog'), 'description' => __('The message code that appears in the syslog message, for example %LINK-3-UPDOWN or RPD_OSPF_NBRDOWN. The match is not case sensitive.', 'syslog'), 'value' => '|arg1:identifier|', 'size' => 60, 'max_length' => 190],
+		'identifier' => ['method' => 'textbox', 'friendly_name' => __('Identifier', 'syslog'), 'description' => __('The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); the leading % is optional and the match is not case sensitive. See How Recommendations Are Matched on the list page.', 'syslog'), 'value' => '|arg1:identifier|', 'size' => 60, 'max_length' => 190],
 		'component'  => ['method' => 'textbox', 'friendly_name' => __('Component', 'syslog'), 'description' => __('The facility, module or subsystem that raises the message.', 'syslog'), 'value' => '|arg1:component|', 'size' => 40, 'max_length' => 64],
 		'severity'   => ['method' => 'drop_array', 'friendly_name' => __('Severity', 'syslog'), 'description' => __('The severity the vendor documents for this message.', 'syslog'), 'array' => $severities, 'value' => '|arg1:severity|', 'default' => ''],
 		'message'            => $text('message', __('Message', 'syslog'), __('The message format as documented, including its variable placeholders.', 'syslog'), 3),
@@ -440,6 +496,30 @@ function recommendation_edit(): void {
 		</script>
 		<?php
 	}
+}
+
+/**
+ * Explain, on the list page, how a syslog message finds its recommendations.
+ *
+ * @return void
+ */
+function recommendation_matching_help(): void {
+	$items = [
+		__('Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the hover message but are never searched.', 'syslog'),
+		__('When you hover over a row on the Syslog tab, the first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>.', 'syslog'),
+		__('An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a "contains", "starts with" or "ends with" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>.', 'syslog'),
+		__('The leading <b>%</b> is optional on both sides. Cisco prints it in front of the message code, other vendors do not, so <code>%LINK-3-UPDOWN</code> and <code>LINK-3-UPDOWN</code> are treated as the same identifier. It is not a wildcard and does not mean "ends with".', 'syslog'),
+		__('All vendors are checked. When several recommendations match, the longest identifiers are shown first, up to three.', 'syslog'),
+		__('Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>.', 'syslog')
+	];
+
+	print "<details class='syslogRecHelp'><summary>" . __('How Recommendations Are Matched', 'syslog') . '</summary><ul>';
+
+	foreach ($items as $item) {
+		print '<li>' . $item . '</li>';
+	}
+
+	print '</ul></details>';
 }
 
 /**
@@ -485,6 +565,12 @@ function recommendation_list(): void {
 			<option value='<?php print $level; ?>'<?php print (string) get_request_var('severity') === (string) $level ? ' selected' : ''; ?>><?php print html_escape($name); ?></option>
 			<?php } ?>
 		</select></td>
+		<td><label for='matchable' title='<?php print __esc('Whether the identifier has the shape of a message word, so the hover lookup can ever find it', 'syslog'); ?>'><?php print __('Can Match', 'syslog'); ?></label></td>
+		<td><select id='matchable'>
+			<?php foreach (['-1' => __('All', 'syslog'), '1' => __('Yes', 'syslog'), '0' => __('No', 'syslog')] as $value => $label) { ?>
+			<option value='<?php print $value; ?>'<?php print (string) get_request_var('matchable') === (string) $value ? ' selected' : ''; ?>><?php print $label; ?></option>
+			<?php } ?>
+		</select></td>
 		<td><label for='rows'><?php print __('Recommendations', 'syslog'); ?></label></td>
 		<td><select id='rows'><option value='-1'<?php print get_request_var('rows') == '-1' ? ' selected' : ''; ?>><?php print __('Default', 'syslog'); ?></option><?php
 			foreach ($item_rows as $key => $value) {
@@ -497,31 +583,11 @@ function recommendation_list(): void {
 			<?php if ($edits) { ?><input id='import' type='button' value='<?php print __esc('Import', 'syslog'); ?>'><?php } ?>
 			<input id='export' type='button' value='<?php print __esc('Export', 'syslog'); ?>' title='<?php print __esc('Export every recommendation that matches the filters', 'syslog'); ?>'>
 		</span></td>
-	</tr></table></form>
+	</tr></table><input type='hidden' id='page' value='<?php print (int) get_request_var('page'); ?>'></form>
 	<script <?php print plugin_syslog_csp_nonce(); ?>>
-	(function () {
-		var filter = document.getElementById('filter'), vendor = document.getElementById('vendor'),
-			severity = document.getElementById('severity'), rows = document.getElementById('rows');
-		function query() {
-			return new URLSearchParams({filter: filter.value, vendor: vendor.value, severity: severity.value, rows: rows.value});
-		}
-		function apply(clear) {
-			var q = clear ? 'clear=1' : query().toString();
-			window.location = 'syslog_recommendations.php?' + q;
-		}
-		document.getElementById('refresh').addEventListener('click', function () { apply(false); });
-		document.getElementById('clear').addEventListener('click', function () { apply(true); });
-		[vendor, severity, rows].forEach(function (el) { el.addEventListener('change', function () { apply(false); }); });
-		document.getElementById('recommendation_filter').addEventListener('submit', function (event) { event.preventDefault(); apply(false); });
-		var importButton = document.getElementById('import');
-		if (importButton) importButton.addEventListener('click', function () { window.location = 'syslog_recommendations.php?action=import'; });
-		// Download in a hidden frame so Cacti's page-unload spinner never starts.
-		document.getElementById('export').addEventListener('click', function () {
-			var q = query(); q.set('action', 'export_all');
-			document.getElementById('syslog_download').src = 'syslog_recommendations.php?' + q.toString();
-		});
-	}());
+	initSyslogRecommendations();
 	</script></td></tr>
+	<tr class='odd'><td><?php recommendation_matching_help(); ?></td></tr>
 	<?php
 	html_end_box();
 

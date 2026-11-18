@@ -125,6 +125,15 @@
 	border-style: solid;
 }
 
+/* Sit on the form row's own surface. jQuery UI's ui-widget-content background
+   is a tiled texture in the Dark theme, and Deepness reuses Dark's jQuery UI
+   styles, so the panel stood out from those themes' flat form rows. The theme
+   still supplies the border color. */
+.syslogRuleFilterPanel.ui-widget-content {
+	background: transparent;
+	color: inherit;
+}
+
 .syslogRuleFilterPanel[hidden] {
 	display: none;
 }
@@ -937,3 +946,9 @@
 .syslogRecSev6 { border-color: #3f9b4b; color: #3f9b4b; }
 .syslogRecSev7 { border-color: #8b9690; color: #8b9690; }
 .syslogRecAction .syslogRecText { font-weight: 600; }
+/* Recommendations page: collapsible matching help. */
+.syslogRecHelp { padding: 4px 2px; line-height: 1.5; }
+.syslogRecHelp summary { cursor: pointer; font-weight: 700; }
+.syslogRecHelp ul { margin: 6px 0 2px; padding-left: 20px; max-width: 1100px; }
+.syslogRecHelp li + li { margin-top: 4px; }
+.syslogRecHelp code { font-family: monospace; overflow-wrap: anywhere; }
