@@ -195,6 +195,57 @@ For devices that cannot emit sub-second timestamps, `timegenerated` on the Cacti
 collector still records millisecond receipt times, which preserves ordering for
 messages arriving in the same second.
 
+## Important: Upgrading the Plugin
+
+> [!IMPORTANT]
+> Replacing the plugin files does **not** upgrade the plugin. After you copy in
+> a new version you must start the upgrade yourself, using one of the two
+> methods below. Until you do, Plugin Management keeps showing the old version,
+> and pages added by the new version (for example **Recommendations** in 5.0)
+> return **Permission Denied**.
+
+The upgrade only runs when you start it. This is deliberate, for performance:
+an upgrade can change the schema of large tables, load bundled data, and update
+permissions, and that work must not run inside the page requests of Cacti users
+or the poller, where it would slow down or stall the website. Starting it
+yourself lets you choose when it runs, and the command line method keeps it out
+of the web server entirely.
+
+Use one of these methods:
+
+1. **Command line (recommended, especially for large installs).** From the
+   Cacti base directory, as the user that runs the Cacti poller, run:
+
+   ```shell
+   php plugins/syslog/cli/syslog_schema.php --upgrade
+   ```
+
+   This runs the upgrade outside the web server, so it does not occupy a web
+   server process or slow down the website while it works. It prints the
+   result and exits with a non-zero status if the upgrade fails; the details
+   are in the Cacti log.
+
+2. **Plugin Management (Upgrade Advisor).** Under Console > Configuration >
+   Plugins, **Disable** the Syslog plugin and then **Enable** it again. Enabling
+   a plugin whose files are newer than the installed version opens the
+   **Syslog Upgrade Advisor**; confirm the upgrade there. The upgrade runs
+   inside that web request, so use this method on small installs or at a quiet
+   time. While the plugin is disabled, new messages wait in `syslog_incoming`
+   and are processed once it is enabled again.
+
+Both methods run the same upgrade and keep existing messages, rules, and
+preferences. To confirm the upgrade worked, check that Plugin Management shows
+the new version, or run `php plugins/syslog/cli/syslog_schema.php --audit`,
+which reports any missing tables without changing anything.
+
+When upgrading to 5.0, the upgrade also:
+
+* adds the Recommendations page to the existing Syslog Administration realm,
+  keeping existing user and group grants
+* creates the `syslog_recommendations` table and loads the bundled
+  recommendations from `docs/recommendations.sql.gz` once (about 27,000
+  records, a few seconds; requires the PHP zlib extension)
+
 ## Important Version 4.0 Release Notes
 
 In prior releases of Syslog, the Individual Alert Method would send an Email,
@@ -332,8 +383,10 @@ config.php and make changes there for the location of the database, user,
 password, and host.  This is especially important if you are using a remote
 logging database server.
 
-To upgrade, replace the plugin files and run the Upgrade Advisor from Plugin
-Management, or check the schema with the CLI:
+To upgrade an existing install, replacing the files is not enough: follow
+[Important: Upgrading the Plugin](#important-upgrading-the-plugin), which
+explains the two supported methods. You can check the schema at any time with
+the CLI:
 
 ```shell
 php plugins/syslog/cli/syslog_schema.php --audit
@@ -530,7 +583,9 @@ vendor and severity, and import or export them as JSON. A recommendation is
 identified by its vendor and identifier.
 
 The bundled data in `docs/recommendations.sql.gz` is loaded once, the first time
-the plugin is installed or upgraded to 5.0. It is read with PHP's zlib extension;
+the plugin is installed or upgraded to 5.0 (see
+[Important: Upgrading the Plugin](#important-upgrading-the-plugin); the page
+returns Permission Denied until the upgrade has run). It is read with PHP's zlib extension;
 without it the load is skipped and a warning is logged. Records that already exist
 are never overwritten and records you delete are not restored by later upgrades.
 To reload it manually, run `zcat docs/recommendations.sql.gz | mysql <syslog database>`;

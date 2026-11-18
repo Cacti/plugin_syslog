@@ -2,6 +2,8 @@
 
 --- 5.0 ---
 
+* docs: State plainly in the README that replacing the plugin files does not upgrade the plugin. Upgrades run only when started with `cli/syslog_schema.php --upgrade` (recommended) or by disabling and enabling the plugin to open the Upgrade Advisor, so schema changes and data loads never run inside website or poller requests; until then Plugin Management shows the old version and new pages return Permission Denied
+
 * feature: Add Recommendations (issue #46). A vendor-neutral `syslog_recommendations` table maps a message identifier (a Cisco `%FACILITY-SEV-MNEMONIC`, a Juniper `RPD_OSPF_NBRDOWN`, and so on) to an explanation and a recommended action. Hovering over a row in the Syslog tab now asks the server for a matching recommendation and shows its explanation and recommended action in the tooltip. Console > Syslog Settings > Recommendations (Syslog Administration realm) adds, edits and deletes records and imports and exports them as JSON, using field names drawn from Sigma and the Elastic Common Schema so catalogues from other suppliers can be converted. docs/recommendations.sql.gz, converted from the Cisco Error Message Database (CEMDB) shipped with php-syslog-ng, is loaded once on install or upgrade without overwriting existing records
 
 * issue#458: Initialize and validate the active tab before saving view defaults, avoiding a TypeError that disables Syslog and stops processing
