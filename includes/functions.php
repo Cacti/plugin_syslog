@@ -8466,6 +8466,47 @@ function syslog_message_details(string $source, $id, string $logtime = ''): arra
 }
 
 /**
+ * Whether the log views skip counting every matching record, which can be
+ * very expensive on large installations.
+ *
+ * @return bool True when the Skip Total Row Count setting is on.
+ */
+function syslog_row_count_disabled(): bool {
+	return read_config_option('syslog_skip_row_count') == 'on';
+}
+
+/**
+ * syslog_uncounted_page - Page through records without a total row count.
+ *
+ * The query fetched one row more than a page holds, so a surplus row shows
+ * that a further page exists. The surplus row is dropped from $records, and
+ * the returned total and page_count drive Cacti's html_nav_bar(): it offers
+ * Next only while the total reaches a full page, and a first page that holds
+ * everything still reports its exact count.
+ *
+ * @param array<int, mixed> $records The fetched records, trimmed to one page.
+ * @param int               $rows    The records shown per page.
+ * @param int               $page    The current page, starting at 1.
+ *
+ * @return array{total: int, page_count: bool} The html_nav_bar() total and page_count arguments.
+ */
+function syslog_uncounted_page(array &$records, int $rows, int $page): array {
+	$more = cacti_sizeof($records) > $rows;
+
+	if ($more) {
+		$records = array_slice($records, 0, $rows);
+	}
+
+	$shown = cacti_sizeof($records);
+
+	if ($page <= 1 && !$more) {
+		return ['total' => $shown, 'page_count' => true];
+	}
+
+	return ['total' => $more ? $rows : min($shown, $rows - 1), 'page_count' => false];
+}
+
+/**
  * The JSON document the message details flyout requests through
  * syslog.php?action=message_details.
  *

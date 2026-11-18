@@ -29,7 +29,7 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
    const id = url.searchParams.get('id');
    const query = 'id=' + id + '&action=newedit&type=0&date=2026-09-13+00%3A12%3A42';
    return r.fulfill({contentType: 'application/json', body: JSON.stringify({found: true,
-    record: {id, source: 'main', received: '2026-09-13 00:12:42', device: '10.0.0.5', program: 'kernel', facility: 'kern', severity: 'warning', message: id === '101' ? longMessage : shortMessage, alert: ''},
+    record: {id, source: 'main', received: '2026-09-13 00:12:42', device: 'fixture-router', program: 'kernel', facility: 'kern', severity: 'warning', message: id === '101' ? longMessage : shortMessage, alert: ''},
     rules: {alarm: 'syslog_alerts.php?' + query, removal: 'syslog_removal.php?' + query},
     recommendations: [{identifier: '%NF-4-TABLE_FULL', vendor: 'Acme', severity: 4, severity_name: 'Warning', explanation: '<img src=x onerror=alert(1)> explained', recommended_action: 'Raise the table size', reference: ''}],
     labels: {explanation: 'Explanation', action: 'Recommended Action', reference: 'Reference'}})});
@@ -64,6 +64,16 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('.syslogSearchNegate').count(),0);
  await page.locator('#go').click();
  assert.match(await page.evaluate(()=>posts.at(-1).rfilter),/host = "10.0.0.5".*logtime last "86400"/);
+ // A value the search is already limited to is not added a second time; a new
+ // value, or one under an OR, still narrows the search.
+ assert.equal(await page.evaluate(()=>syslogFilterInScope([{join:'AND',field:'host',operator:'=',value:'Router1'}],'host','router1')),true,'Hostnames compare without case');
+ assert.equal(await page.evaluate(()=>syslogFilterInScope([{join:'AND',field:'host',operator:'=',value:'a'},{join:'OR',field:'host',operator:'=',value:'b'}],'host','a')),false,'A condition under OR does not limit the search');
+ assert.equal(await page.evaluate(()=>syslogFilterInScope([{join:'AND',negative:true,field:'host',operator:'=',value:'a'}],'host','a')),false,'A negated condition does not count');
+ const postCount = await page.evaluate(()=>posts.length);
+ await page.evaluate(()=>syslogAddFilterCondition('host',document.getElementById('syslog_search_builder').searchRows.find(row=>row.field==='host').value));
+ assert.equal(await page.evaluate(()=>posts.length),postCount,'Clicking a host already in the search adds nothing');
+ await page.evaluate(()=>syslogAddFilterCondition('host','edge-router'));
+ assert.match(await page.evaluate(()=>posts.at(-1).rfilter),/AND host = "edge-router"$/);
  const originalColor = await page.locator('.syslogRow').first().evaluate(row=>getComputedStyle(row).backgroundColor);
  assert.notEqual(originalColor,'rgb(255, 255, 255)');
  await page.locator('.syslogMessageOpen').first().click();

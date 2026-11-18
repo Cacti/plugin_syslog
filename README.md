@@ -695,6 +695,7 @@ The settings are under Settings > Syslog. Selected names and defaults:
 | --- | --- |
 | Syslog Enabled (`syslog_enabled`) | on |
 | Refresh Interval (`syslog_refresh`) | 300 |
+| Skip Total Row Count (`syslog_skip_row_count`) | off |
 | Max Report Records (`syslog_maxrecords`) | 100 |
 | Maximum Syslog Processing Processes (`syslog_max_workers`) | 1 |
 | Enable Hostname Resolution (`syslog_resolve_hostname`) | off |
@@ -705,6 +706,13 @@ The settings are under Settings > Syslog. Selected names and defaults:
 | Collector Staleness Threshold (`syslog_stale_threshold`) | 300 seconds |
 | Collector Backlog Threshold (`syslog_backlog_threshold`) | 10000 rows |
 | Pipeline Health Reminder Interval (`syslog_pipeline_health_repeat`) | 3600 seconds |
+
+On large installations counting every matching record for the page navigation
+can be the most expensive query on the System Logs and Alert Logs tabs. Turn on
+**Skip Total Row Count** under Settings > Syslog > General Settings to skip it.
+The page then shows Previous and Next links with the current page number
+instead of a total and a page list. Next is offered while more records remain,
+which the page detects by reading one record beyond the page.
 
 ## Command Line
 

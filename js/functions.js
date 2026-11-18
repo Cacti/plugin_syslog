@@ -275,6 +275,8 @@ function initSyslogWorkspace() {
 		var linked = /^(main|remove|alert):(\d+)$/.exec(reopen || new URLSearchParams(window.location.search).get('details') || '');
 		if (linked) window.syslogShowMessageDetails(linked[1], linked[2]);
 
+		syslogEnableColumnResize(workspace);
+
 		$(window).off('resize.syslogFlyout').on('resize.syslogFlyout', function() { if (!pane.hidden) place(); });
 		// Cacti's AJAX navigation replaces #main but not <body>, so drop the
 		// flyout once the Syslog page is gone. A refreshed Syslog page takes the
@@ -316,17 +318,65 @@ function initSyslogWorkspace() {
 		});
 		pane.querySelectorAll('[data-filter-detail]').forEach(function(button) {
 			button.addEventListener('click', function() {
-				var builder = document.getElementById('syslog_search_builder');
-				var expression = syslogBuilderSync(builder);
-				if (expression === null) return;
-				var condition = syslogSearchExpression([{field: button.dataset.filterDetail, operator: '=', value: button.dataset.filterDetail === 'host' ? details.device : details.program}]);
-				var query = (expression ? '(' + expression + ') AND ' : '') + condition;
-				if (query === null) return;
-				var data = syslogFilterData();
-				data.rfilter = query;
-				postSyslog(data);
+				var field = button.dataset.filterDetail;
+				syslogAddFilterCondition(field, field === 'host' ? details.device : details.program);
 			});
 		});
+	});
+}
+
+/**
+ * Make Cacti's column resizing work on the log tables.
+ *
+ * The message cell claims all spare width (width 100%, which also gives long
+ * messages their ellipsis), and under the automatic table layout that squeezes
+ * every other column to its content, so widths set by dragging were ignored.
+ * Pin each column at its rendered width, leave the message column free and
+ * switch to the fixed layout, which honors header widths. The message column
+ * then absorbs any change.
+ *
+ * Releasing a drag over the header text also fires a click, which Cacti's
+ * sortable headers treat as a sort, so that one click is swallowed.
+ */
+function syslogEnableColumnResize(workspace) {
+	workspace.querySelectorAll('tr.tableHeader').forEach(function(header) {
+		var table = header.closest('table');
+		if (!table || table.classList.contains('syslogFixedColumns')) return;
+		var cells = Array.from(header.children);
+		var widths = cells.map(function(cell) { return Math.ceil(cell.getBoundingClientRect().width); });
+		cells.forEach(function(cell, index) {
+			var message = cell.querySelector('.sortinfo[sort-column="message"]');
+			if (message) cell.style.removeProperty('width');
+			else if (!cell.style.width) cell.style.width = widths[index] + 'px';
+		});
+		table.classList.add('syslogFixedColumns');
+
+		var resized = 0;
+		var keep = null;
+		// Cacti's resize hands the width change to the next column, which can
+		// squeeze it to nothing; here the message column absorbs it instead.
+		// The core callback runs after these handlers, so restore on the next frame.
+		$(header).on('resizestart', 'th', function() {
+			resized = Date.now();
+			var next = this.nextElementSibling;
+			keep = next && !next.querySelector('.sortinfo[sort-column="message"]') ? {cell: next, width: next.style.width} : null;
+		}).on('resize', 'th', function() {
+			resized = Date.now();
+			if (keep) {
+				var restore = keep;
+				window.requestAnimationFrame(function() { restore.cell.style.width = restore.width; });
+			}
+		}).on('resizestop', 'th', function() {
+			// Restore before the core stop callback saves the column widths.
+			resized = Date.now();
+			if (keep) keep.cell.style.width = keep.width;
+		});
+		header.addEventListener('click', function(event) {
+			if (Date.now() - resized < 500) {
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		}, true);
 	});
 }
 
@@ -334,14 +384,17 @@ function initSyslogValueFilters() {
 	document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
 		button.addEventListener('click', function(event) {
 			event.stopPropagation();
-			var builder = document.getElementById('syslog_search_builder');
-			if (!builder) return;
-			var expression = syslogBuilderSync(builder);
-			if (expression === null) return;
-			var condition = syslogSearchExpression([{field: button.dataset.filterField, operator: '=', value: button.dataset.filterValue}]);
-			var data = syslogFilterData();
-			data.rfilter = (expression ? '(' + expression + ') AND ' : '') + condition;
-			postSyslog(data);
+			syslogAddFilterCondition(button.dataset.filterField, button.dataset.filterValue);
+		});
+	});
+	// Mark values the search is already limited to; clicking them adds nothing.
+	// The search builder initializes on document ready, so mark after it.
+	$(function() {
+		var builder = document.getElementById('syslog_search_builder');
+		document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+			var active = builder && syslogFilterInScope(builder.searchRows, button.dataset.filterField, button.dataset.filterValue);
+			button.classList.toggle('syslogValueFilterActive', !!active);
+			button.setAttribute('aria-pressed', active ? 'true' : 'false');
 		});
 	});
 }
@@ -844,24 +897,33 @@ function initSyslogSearchBuilder(builder, rows) {
 	}
 }
 
-/** Submit filter values in a CSRF-protected POST body, including downloads. */
+/**
+ * Submit filter values in a CSRF-protected POST body. Results reload as a
+ * callback into #main, the way Cacti's own page loads work; only exports use
+ * a form, which streams the download into a hidden frame.
+ */
 function postSyslog(data) {
+	data.tab = window.pageTab || 'syslog';
+	data.__csrf_magic = csrfMagicToken;
+	if (data.export !== 'true') {
+		$.post('syslog.php?header=false', data).done(function(html) {
+			$('#main').empty().html(html);
+			if (typeof applySkin === 'function') applySkin();
+		});
+		return;
+	}
 	var form = document.createElement('form');
 	form.method = 'post';
 	form.action = 'syslog.php';
-	if (data.export === 'true') {
-		var frame = document.getElementById('syslog_download');
-		if (!frame) {
-			frame = document.createElement('iframe');
-			frame.id = frame.name = 'syslog_download';
-			frame.hidden = true;
-			frame.title = 'Syslog download';
-			document.body.appendChild(frame);
-		}
-		form.target = frame.name;
+	var frame = document.getElementById('syslog_download');
+	if (!frame) {
+		frame = document.createElement('iframe');
+		frame.id = frame.name = 'syslog_download';
+		frame.hidden = true;
+		frame.title = 'Syslog download';
+		document.body.appendChild(frame);
 	}
-	data.tab = window.pageTab || 'syslog';
-	data.__csrf_magic = csrfMagicToken;
+	form.target = frame.name;
 	Object.keys(data).forEach(function(name) {
 		var input = document.createElement('input');
 		input.type = 'hidden';
@@ -872,6 +934,32 @@ function postSyslog(data) {
 	document.body.appendChild(form);
 	form.submit();
 	form.remove();
+}
+
+/**
+ * Whether "field = value" already limits the whole search: a plain top-level
+ * condition while every top-level connector is AND. Under an OR the same
+ * condition would not narrow the results, so it does not count.
+ */
+function syslogFilterInScope(rows, field, value) {
+	if (!Array.isArray(rows) || rows.some(function(row, index) { return index > 0 && row.join === 'OR'; })) {
+		return false;
+	}
+	value = String(value).toLowerCase();
+	return rows.some(function(row) {
+		return !row.rows && !row.negative && row.field === field && row.operator === '=' && String(row.value).toLowerCase() === value;
+	});
+}
+
+/** Narrow the search to "field = value" unless it is already in scope. */
+function syslogAddFilterCondition(field, value) {
+	var builder = document.getElementById('syslog_search_builder');
+	if (!builder) return;
+	var expression = syslogBuilderSync(builder);
+	if (expression === null || syslogFilterInScope(builder.searchRows, field, value)) return;
+	var data = syslogFilterData();
+	data.rfilter = (expression ? '(' + expression + ') AND ' : '') + syslogSearchExpression([{field: field, operator: '=', value: value}]);
+	postSyslog(data);
 }
 
 function syslogFilterData() {

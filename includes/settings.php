@@ -93,6 +93,12 @@ function syslog_config_settings(): void {
 			'default'       => '300',
 			'array'         => $syslog_refresh
 		],
+		'syslog_skip_row_count' => [
+			'friendly_name' => __('Skip Total Row Count', 'syslog'),
+			'description'   => __('If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain.', 'syslog'),
+			'method'        => 'checkbox',
+			'default'       => ''
+		],
 		'syslog_maxrecords' => [
 			'friendly_name' => __('Max Report Records', 'syslog'),
 			'description'   => __('For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email.', 'syslog'),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-18 12:16-0500\n"
+"POT-Creation-Date: 2026-11-18 12:54-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -752,6 +752,14 @@ msgstr ""
 
 #: includes/settings.php
 msgid "This is the time in seconds before the page refreshes."
+msgstr ""
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr ""
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
 msgstr ""
 
 #: includes/settings.php

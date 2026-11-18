@@ -613,6 +613,10 @@
    sideways even when the table fits. Keep that one handle inside the cell. */
 .syslogResultsMain th:last-child > .ui-resizable-e { right: 0; }
 #syslog_workspace table { width: 100%; }
+/* Set by syslogEnableColumnResize: header widths are honored so columns can be
+   resized, and cells clip instead of spilling into their neighbors. */
+#syslog_workspace table.syslogFixedColumns { table-layout: fixed; }
+#syslog_workspace table.syslogFixedColumns td { overflow: hidden; text-overflow: ellipsis; }
 /* Severity row tints: a translucent hue per priority mixed over the live theme
    surface, so the same rules read correctly on both light and dark themes. */
 #syslog_workspace tr.syslogRow { --syslog-sev: transparent; color: var(--search-text); background: color-mix(in srgb, var(--syslog-sev) 16%, var(--search-card)); }
@@ -646,6 +650,8 @@
 .syslogValueFilter:hover, .syslogValueFilter:focus-visible { border-color: color-mix(in srgb, currentColor 32%, transparent); background: color-mix(in srgb, currentColor 10%, transparent); color: inherit; text-decoration-style: solid; }
 .syslogHostLabel { --pill-hue: #3b82c4; border-color: color-mix(in srgb, var(--pill-hue) 48%, transparent); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); color: var(--search-text, currentColor); text-decoration: none; }
 .syslogProgramLabel { --pill-hue: #8257b5; border-color: color-mix(in srgb, var(--pill-hue) 48%, transparent); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); color: var(--search-text, currentColor); text-decoration: none; }
+/* The search is already limited to this value, so clicking it adds nothing. */
+.syslogValueFilter.syslogValueFilterActive { border-width: 2px; border-color: color-mix(in srgb, var(--pill-hue, currentColor) 85%, transparent); font-weight: 700; cursor: default; }
 /* Cacti themes run .button() on every button, so the theme's .ui-button:hover
    paints the message like an editable input; keep it inert. Match the theme's
    selector weight (.ui-button:hover = 0,2,0) and then some. */

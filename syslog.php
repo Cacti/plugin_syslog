@@ -2082,7 +2082,9 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 	$sql_order = get_order_string();
 
 	if (!isset_request_var('export')) {
-		$sql_limit = ' LIMIT ' . ((int) $rows * (get_request_var('page') - 1)) . ',' . $rows;
+		// Without a total row count, one extra row shows whether a next page exists.
+		$fetch_rows = (int) $rows + (syslog_row_count_disabled() ? 1 : 0);
+		$sql_limit  = ' LIMIT ' . ((int) $rows * (get_request_var('page') - 1)) . ',' . $fetch_rows;
 	} else {
 		$sql_limit = ' LIMIT 10000';
 	}
@@ -2174,7 +2176,7 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 					$sql_order
 					$sql_limit";
 			} elseif (get_request_var('removal') == '1') {
-				$branch_limit = isset_request_var('export') ? 10000 : (int) $rows * get_request_var('page');
+				$branch_limit = isset_request_var('export') ? 10000 : (int) $rows * get_request_var('page') + (syslog_row_count_disabled() ? 1 : 0);
 				$query_sql    = "SELECT * FROM (
 						SELECT $message_columns, `syslog_programs`.`program`, 'main' AS mtype
 						FROM `$syslogdb_default`.`syslog` AS syslog
@@ -2529,10 +2531,14 @@ function syslog_messages(string $tab = 'syslog'): void {
 	syslog_filter($sql_where, $tab);
 	print "<div id='syslog_workspace' data-theme='" . html_escape(get_selected_theme()) . "'><div class='syslogResultsMain'>";
 
-	if ($tab == 'syslog') {
-		// Check if grouping is enabled for row count
-		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
+	$page_count       = true;
+	$grouping_enabled = $tab == 'syslog' && isset_request_var('grouping') && get_request_var('grouping') == '1';
 
+	if (syslog_row_count_disabled()) {
+		$uncounted  = syslog_uncounted_page($syslog_messages, (int) $rows, (int) get_request_var('page'));
+		$total_rows = $uncounted['total'];
+		$page_count = $uncounted['page_count'];
+	} elseif ($tab == 'syslog') {
 		if ($grouping_enabled) {
 			// When grouping, count distinct groups instead of individual rows.
 			// Keyed by the stored message digest like the grouped view above,
@@ -2616,7 +2622,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		if ($grouping_enabled) {
 			$display_text['occurrence_count'] = [__('Count', 'syslog'), 'DESC'];
 		}
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text), __('Messages', 'syslog'), 'page', 'main');
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, (int) get_request_var('page'), (int) $rows, (int) $total_rows, cacti_sizeof($display_text), __('Messages', 'syslog'), 'page', 'main', $page_count);
 
 		print $nav;
 
@@ -2691,7 +2697,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				// Add occurrence count if grouping is enabled
 				if ($grouping_enabled) {
-					form_selectable_cell(isset($sm['occurrence_count']) ? $sm['occurrence_count'] : 1, $sm['seq'], '', 'right');
+					form_selectable_cell(number_format_i18n(isset($sm['occurrence_count']) ? (int) $sm['occurrence_count'] : 1, 0), $sm['seq'], '', 'right');
 				}
 
 				form_end_row();
@@ -2761,7 +2767,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 			'priority_id' => ['display' => __('Priority', 'syslog'),   'sort' => 'ASC', 'align' => 'left']
 		];
 
-		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, get_request_var('page'), $rows, $total_rows, cacti_sizeof($display_text), __('Alert Log Rows', 'syslog'), 'page', 'main');
+		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, (int) get_request_var('page'), (int) $rows, (int) $total_rows, cacti_sizeof($display_text), __('Alert Log Rows', 'syslog'), 'page', 'main', $page_count);
 
 		print $nav;
 
