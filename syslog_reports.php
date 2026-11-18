@@ -31,6 +31,14 @@ syslog_connect();
 
 set_default_action();
 
+// The "Test rule" action runs a read-only preview of the report currently
+// in the editor and returns JSON without touching any database data.
+if (get_request_var('action') == 'test') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_rule_test_action('report');
+	exit;
+}
+
 if (isset_request_var('import') && syslog_allow_rule_edits()) {
 	set_request_var('action', 'import');
 }
@@ -512,10 +520,10 @@ function syslog_action_edit(): void {
 		'type' => [
 			'method'        => 'drop_array',
 			'friendly_name' => __('String Match Type', 'syslog'),
-			'description'   => __('Define how you would like this string matched.', 'syslog'),
+			'description'   => __('Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority.', 'syslog'),
 			'value'         => '|arg1:type|',
 			'array'         => $message_types,
-			'default'       => 'matchesc'
+			'default'       => 'filter'
 		],
 		'timespan' => [
 			'method'        => 'drop_array',
@@ -539,9 +547,11 @@ function syslog_action_edit(): void {
 		],
 		'message' => [
 			'friendly_name' => __('Message Match String', 'syslog'),
-			'description'   => __('The matching component of the syslog message.', 'syslog'),
-			'method'        => 'textbox',
-			'max_length'    => '255',
+			'description'   => __('Build filter conditions, or enter the text or SQL expression to match syslog messages.', 'syslog'),
+			'textarea_rows' => '2',
+			'textarea_cols' => '70',
+			'method'        => 'textarea',
+			'class'         => 'textAreaNotes',
 			'value'         => '|arg1:message|',
 			'default'       => '',
 		],
@@ -598,6 +608,18 @@ function syslog_action_edit(): void {
 		]
 	];
 
+	$filter_conditions = [];
+
+	if (($report['type'] ?? '') === 'filter') {
+		$filter_document = json_decode($report['message'] ?? '', true);
+
+		if (is_array($filter_document) && ($filter_document['version'] ?? null) === 1 && is_array($filter_document['conditions'] ?? null)) {
+			$filter_conditions = $filter_document['conditions'];
+		}
+	}
+
+	$filter_choices = syslog_search_choices();
+
 	form_start('syslog_reports.php', 'syslog_edit');
 
 	html_start_box($header_label, '100%', false, 3, 'center', '');
@@ -613,6 +635,8 @@ function syslog_action_edit(): void {
 
 	if (syslog_allow_rule_edits()) {
 		form_save_button('syslog_reports.php', '', 'id');
+		print "<input id='syslog_rule_test' class='ui-button ui-corner-all ui-widget' type='button' value='" . __esc('Test rule', 'syslog') . "'>";
+		print "<div id='syslog_rule_test_dialog' style='display:none;' title='" . __esc('Report Test Preview', 'syslog') . "'></div>";
 	}
 
 	?>
@@ -620,10 +644,78 @@ function syslog_action_edit(): void {
 
 	var allowEdits=<?php print syslog_allow_rule_edits() ? 'true' : 'false'; ?>;
 	var notifyExists=<?php print db_table_exists('plugin_notification_lists') ? 'true' : 'false'; ?>;
+	var reportFilterBuilder;
+	var reportFilterConfig = {
+		fields: <?php print syslog_json_safe([
+			'message'     => __('Message', 'syslog'),
+			'host'        => __('Host', 'syslog'),
+			'program'     => __('Program', 'syslog'),
+			'facility_id' => __('Facility', 'syslog'),
+			'priority_id' => __('Priority', 'syslog')
+		]); ?>,
+		operators: {
+			message: ['contains', 'begins', 'ends', '=', '!='],
+			host: ['=', '!=', 'contains', 'begins', 'ends'],
+			program: ['=', '!=', 'contains', 'begins', 'ends'],
+			facility_id: ['=', '!='],
+			priority_id: ['=', '!=']
+		},
+		choices: <?php print syslog_json_safe([
+			'facility_id' => $filter_choices['facility_id'] ?? [],
+			'priority_id' => $filter_choices['priority_id'] ?? []
+		]); ?>,
+		conditions: <?php print syslog_json_safe($filter_conditions); ?>,
+		labels: {
+			message: <?php print syslog_json_safe(__('Value', 'syslog')); ?>,
+			placeholder: <?php print syslog_json_safe(__('Enter a value', 'syslog')); ?>,
+			match: <?php print syslog_json_safe(__('Match', 'syslog')); ?>,
+			exclude: <?php print syslog_json_safe(__('Exclude', 'syslog')); ?>,
+			remove: <?php print syslog_json_safe(__('Remove condition', 'syslog')); ?>,
+			integer: <?php print syslog_json_safe(__('Enter a nonnegative integer', 'syslog')); ?>
+		}
+	};
+
+	function changeTypes() {
+		var filterMode = $('#type').val() == 'filter';
+		$('#message').toggle(!filterMode);
+		$('#syslog_report_filter_panel').prop('hidden', !filterMode);
+		// A hidden builder's required inputs would otherwise block the browser's
+		// form validation ("An invalid form control is not focusable").
+		if (reportFilterBuilder) {
+			reportFilterBuilder.setDisabled(!filterMode || !allowEdits);
+		}
+		$('#message').prop('rows', $('#type').val() == 'sql' ? 6 : 2);
+	}
 
 	$(function() {
+		var message = document.getElementById('message');
+		var panel = document.createElement('section');
+		panel.id = 'syslog_report_filter_panel';
+		panel.className = 'syslogRuleFilterPanel ui-widget-content ui-corner-all';
+		panel.setAttribute('aria-label', <?php print syslog_json_safe(__('Report filter conditions', 'syslog')); ?>);
+		var builder = document.createElement('div');
+		builder.id = 'syslog_report_filter_builder';
+		builder.className = 'syslogSearchBuilder syslogRuleFilterBuilder';
+		builder.setAttribute('aria-label', <?php print syslog_json_safe(__('Report filter conditions', 'syslog')); ?>);
+		panel.appendChild(builder);
+		message.insertAdjacentElement('afterend', panel);
+		// Switching an existing text rule to Filter Builder starts from its text.
+		if (!reportFilterConfig.conditions.length && message.value && $('#type').val() != 'filter') {
+			reportFilterConfig.conditions = [{join: 'AND', negative: false, field: 'message', operator: 'contains', value: message.value}];
+		}
+		reportFilterBuilder = new SyslogFilterBuilder(builder, reportFilterConfig);
+		$('#type').off('change.syslogReportFilter').on('change.syslogReportFilter', changeTypes);
+		document.getElementById('syslog_edit').addEventListener('submit', function(event) {
+			if ($('#type').val() == 'filter' && !reportFilterBuilder.syncTo(message)) {
+				event.preventDefault();
+				event.stopImmediatePropagation();
+			}
+		}, true);
+		changeTypes();
+
 		if (!allowEdits) {
 			$('#syslog_edit').find('select, input, textarea, submit').not(':button').prop('disabled', true);
+			reportFilterBuilder.setDisabled(true);
 			$('#syslog_edit').find('select').each(function() {
 				if ($(this).selectmenu('instance')) {
 					$(this).selectmenu('refresh');
@@ -633,6 +725,19 @@ function syslog_action_edit(): void {
 
 		if (!notifyExists) {
 			$('#row_notify').hide();
+		}
+
+		$('#syslog_rule_test').on('click.syslogRuleTest', function() {
+			testSyslogRule('#syslog_edit', '#syslog_rule_test_dialog', <?php print syslog_json_safe(__('Report Test Preview', 'syslog')); ?>);
+		});
+
+		var testRuleButton = $('#syslog_rule_test');
+		var cancelButton = $('#syslog_edit .saveRow .cactiReturnTo');
+
+		if (cancelButton.length) {
+			testRuleButton.insertAfter(cancelButton);
+		} else {
+			testRuleButton.prependTo($('#syslog_edit .saveRow'));
 		}
 	});
 
@@ -815,7 +920,7 @@ function syslog_report(): void {
 			form_selectable_cell(filter_value(title_trim($report['name'], read_config_option('max_title_length')), get_request_var('filter'), $config['url_path'] . 'plugins/syslog/syslog_reports.php?action=edit&id=' . $report['id']), $report['id']);
 			form_selectable_cell((($report['enabled'] == 'on') ? __('Yes', 'syslog') : __('No', 'syslog')), $report['id']);
 			form_selectable_cell($message_types[$report['type']], $report['id']);
-			form_selectable_cell($report['message'], $report['id']);
+			form_selectable_ecell(($report['type'] == 'filter' ? syslog_filter_rule_summary($report['message']) : $report['message']), $report['id']);
 			form_selectable_cell($syslog_freqs[$report['timespan']], $report['id']);
 			form_selectable_cell($syslog_times[$report['timepart']], $report['id']);
 			form_selectable_cell(($report['lastsent'] == 0 ? __('Never', 'syslog') : date('Y-m-d H:i:s', $report['lastsent'])), $report['id']);

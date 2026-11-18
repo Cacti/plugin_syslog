@@ -409,6 +409,12 @@ if (!function_exists('read_user_setting')) {
 	}
 }
 
+if (!function_exists('set_user_setting')) {
+	function set_user_setting($name, $value, $user = -1) {
+		return test_call_override('set_user_setting', [$name, $value, $user], null);
+	}
+}
+
 if (!function_exists('html_escape')) {
 	function html_escape($string) {
 		return test_call_override('html_escape', [$string], htmlspecialchars((string) $string, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));

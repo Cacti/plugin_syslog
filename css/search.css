@@ -125,6 +125,15 @@
 	border-style: solid;
 }
 
+/* Sit on the form row's own surface. jQuery UI's ui-widget-content background
+   is a tiled texture in the Dark theme, and Deepness reuses Dark's jQuery UI
+   styles, so the panel stood out from those themes' flat form rows. The theme
+   still supplies the border color. */
+.syslogRuleFilterPanel.ui-widget-content {
+	background: transparent;
+	color: inherit;
+}
+
 .syslogRuleFilterPanel[hidden] {
 	display: none;
 }
@@ -248,6 +257,16 @@
 	border-radius: 5px;
 	background: var(--search-card);
 	color: var(--search-text);
+}
+
+/* Aligns the Default checkbox under the name field. */
+.syslogSavedPrompt .syslogSavedDefaultRow {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-left: 52px;
+	color: var(--search-text);
+	font-size: 12px;
 }
 
 .syslogSearchBuilder .syslogSearchRow {
@@ -574,12 +593,12 @@
 #syslog_search_summary[hidden], #syslog_message_details[hidden] { display: none; }
 #syslog_search_summary { padding: 8px 0; overflow-wrap: anywhere; font-family: monospace; }
 .syslogQueryLayout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; align-items: start; }
-.syslogQueryActions { display: flex; align-items: flex-end; gap: 6px; padding-top: 4px; }
-.syslogQueryActions .syslogResultsLimit { gap: 0; }
-.syslogQueryActions .syslogResultsLimit label { margin-bottom: 1px; }
-/* Painted from the sampled theme's header/accent pair (--search-primary /
-   --search-on-primary), falling back to the scope accent before JS has run. */
-#syslog_form #go { background: var(--search-primary, var(--search-accent)); border: 1px solid var(--search-primary, var(--search-accent)); color: var(--search-on-primary, #fff); padding: 6px 22px; font-weight: 600; }
+.syslogQueryActions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding-top: 4px; }
+/* Rows sits on the same line as Search and Clear, its label beside the select. */
+#syslog_form .syslogQueryActions .syslogResultsLimit { flex-direction: row; align-items: center; gap: 6px; margin-left: 4px; }
+/* Search is the form's submit button; the theme paints it as its primary
+   action and every other control as a standard button, at the same size. */
+#syslog_form .syslogQueryActions button { margin: 0; }
 #syslog_form .syslogSearchRow { border-radius: 4px; }
 #syslog_form .syslogSearchFooter { border: 0; margin: 2px 0 0; padding: 0; }
 .syslogMenu { position: relative; }
@@ -588,17 +607,26 @@
 .syslogMenu > summary::after { content: ' ▾'; }
 .syslogMenuBody { position: absolute; z-index: 100; top: 100%; right: 0; min-width: 180px; padding: 10px; border: 1px solid var(--search-border); border-radius: 4px; background: var(--search-card); color: var(--search-text); box-shadow: 0 4px 16px #0006; }
 .syslogSearchSavedBar .syslogMenuBody { left: 0; right: auto; }
-.syslogSearchSavedBar .syslogMenuBody input { display: block; width: 100%; margin-bottom: 6px; text-align: left; }
+.syslogSearchSavedBar .syslogMenuBody button { display: block; width: 100%; margin: 0 0 6px; text-align: left; }
 #syslog_form .syslogMenuBody.syslogSearchOptions { width: 350px; max-width: calc(100vw - 40px); margin: 0; display: flex; }
 .syslogResultsToolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; padding: 8px 12px; }
 #syslog_view_summary { margin-right: auto; opacity: .85; }
 #syslog_form .syslogResultsToolbar .syslogSearchOption { flex-direction: row; align-items: center; gap: 8px; }
 #syslog_form .syslogResultsToolbar .syslogSearchOption label { font-size: 12px; }
 #syslog_form .syslogSearchButtons { display: none; }
-#syslog_workspace { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; }
-#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) minmax(300px, 26%); }
+/* Midwinter floats its full-width tab bar; the grid would otherwise squeeze
+   beside the float to zero width and push the whole table off the page. */
+#syslog_workspace { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; clear: both; }
 .syslogResultsMain { min-width: 0; overflow-x: auto; }
+/* Cacti's column-resize handle sits 5px outside its header cell, so on the
+   last column it overhangs the table and forces this wrapper to scroll
+   sideways even when the table fits. Keep that one handle inside the cell. */
+.syslogResultsMain th:last-child > .ui-resizable-e { right: 0; }
 #syslog_workspace table { width: 100%; }
+/* Set by syslogEnableColumnResize: header widths are honored so columns can be
+   resized, and cells clip instead of spilling into their neighbors. */
+#syslog_workspace table.syslogFixedColumns { table-layout: fixed; }
+#syslog_workspace table.syslogFixedColumns td { overflow: hidden; text-overflow: ellipsis; }
 /* Severity row tints: a translucent hue per priority mixed over the live theme
    surface, so the same rules read correctly on both light and dark themes. */
 #syslog_workspace tr.syslogRow { --syslog-sev: transparent; color: var(--search-text); background: color-mix(in srgb, var(--syslog-sev) 16%, var(--search-card)); }
@@ -625,6 +653,8 @@
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+/* Trim "All Text": the whole message wraps inside its column. */
+.syslogMessageOpen.syslogMessageWrap { white-space: pre-wrap; overflow-wrap: anywhere; text-overflow: clip; }
 .syslogValueFilter { padding: 2px 5px; margin: -2px -5px; border: 1px solid transparent; border-radius: 4px; background: transparent; color: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px; transition: background-color .15s ease, border-color .15s ease, color .15s ease; }
 /* Pills read like GitHub labels: a translucent hue carries the identity in the
    background and border, while the text stays the theme's own foreground color
@@ -632,6 +662,8 @@
 .syslogValueFilter:hover, .syslogValueFilter:focus-visible { border-color: color-mix(in srgb, currentColor 32%, transparent); background: color-mix(in srgb, currentColor 10%, transparent); color: inherit; text-decoration-style: solid; }
 .syslogHostLabel { --pill-hue: #3b82c4; border-color: color-mix(in srgb, var(--pill-hue) 48%, transparent); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); color: var(--search-text, currentColor); text-decoration: none; }
 .syslogProgramLabel { --pill-hue: #8257b5; border-color: color-mix(in srgb, var(--pill-hue) 48%, transparent); background: color-mix(in srgb, var(--pill-hue) 20%, transparent); color: var(--search-text, currentColor); text-decoration: none; }
+/* The search is already limited to this value, so clicking it adds nothing. */
+.syslogValueFilter.syslogValueFilterActive { border-width: 2px; border-color: color-mix(in srgb, var(--pill-hue, currentColor) 85%, transparent); font-weight: 700; cursor: default; }
 /* Cacti themes run .button() on every button, so the theme's .ui-button:hover
    paints the message like an editable input; keep it inert. Match the theme's
    selector weight (.ui-button:hover = 0,2,0) and then some. */
@@ -656,22 +688,32 @@
 #syslog_workspace tr.syslogRow.logAlert .syslogSeverity,
 #syslog_workspace tr.syslogRow.logCritical .syslogSeverity,
 #syslog_workspace tr.syslogRow.logError .syslogSeverity { font-weight: 700; box-shadow: 0 0 0 1px #c0392b33; }
-#syslog_message_details { position: sticky; top: 0; box-sizing: border-box; max-height: 90vh; overflow: auto; padding: 0 16px 16px; border: 1px solid var(--search-border); background: var(--search-card); color: var(--search-text); box-shadow: -2px 2px 8px #0003; }
-#syslog_message_details header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 -16px 16px; padding: 12px 16px; }
-#syslog_message_details h3 { margin: 0; font-size: 16px; }
-#syslog_details_close { min-width: 28px; min-height: 28px; margin: 0; padding: 2px 7px; border-radius: 3px; font-size: 20px; line-height: 1; cursor: pointer; }
-#syslog_message_details dl { display: grid; grid-template-columns: minmax(80px, auto) minmax(0, 1fr); gap: 12px; margin: 0 0 20px; }
-#syslog_message_details dt { font-weight: 600; }
-#syslog_message_details dd { margin: 0; overflow-wrap: anywhere; }
-#syslog_message_details h4 { margin: 0 0 8px; padding-top: 16px; border-top: 1px solid color-mix(in srgb, currentColor 16%, transparent); font-size: 13px; }
-#syslog_details_raw { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid var(--search-border); background: color-mix(in srgb, currentColor 6%, transparent); font: 13px/1.6 monospace; user-select: text; }
-.syslogDetailsActions, .syslogDetailsFilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; }
-#syslog_copy_status { display: block; padding-top: 8px; }
-@media (max-width: 1000px) {
-	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
-	#syslog_message_details { position: fixed; z-index: 101; right: 0; top: 10vh; bottom: 0; width: min(420px, 100%); box-shadow: -4px 0 18px #0003; }
-	.syslogQueryLayout { grid-template-columns: minmax(0, 1fr); }
-}
+/* Message details flyout: fixed to the right edge below Cacti's header, over
+   the results, in the live theme's surface colors (the tokens come from
+   applySyslogTheme on #syslog_workspace, which contains the flyout). */
+#syslog_message_details { position: fixed; z-index: 1001; top: var(--syslog-flyout-top, 0px); right: 0; bottom: 0; box-sizing: border-box; width: min(480px, 100vw); overflow: auto; overscroll-behavior: contain; padding: 0 20px 24px; border-left: 1px solid var(--search-border); background: var(--search-card); color: var(--search-text); box-shadow: -10px 0 28px #0006; font-size: 13px; }
+#syslog_message_details .syslogFlyoutHead { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px; margin: 0 -20px; padding: 14px 20px; border-bottom: 1px solid color-mix(in srgb, var(--search-text) 14%, transparent); background: var(--search-card); }
+#syslog_message_details .syslogFlyoutHead > i { opacity: .8; }
+#syslog_message_details .syslogFlyoutTitle { flex: 1; min-width: 0; }
+#syslog_message_details h3 { margin: 0; font-size: 15px; font-weight: 700; }
+#syslog_details_subtitle { display: block; margin-top: 2px; color: var(--search-muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#syslog_details_close { min-width: 28px; min-height: 28px; margin: 0; padding: 2px 7px; border: 0; border-radius: 4px; background: transparent; color: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
+#syslog_details_close:hover { background: color-mix(in srgb, var(--search-text) 10%, transparent); }
+#syslog_message_details .syslogFlyoutSection { padding: 18px 0; border-bottom: 1px solid color-mix(in srgb, var(--search-text) 12%, transparent); }
+#syslog_message_details .syslogFlyoutSection:last-child { border-bottom: 0; }
+#syslog_message_details h4 { margin: 0 0 12px; color: var(--search-muted); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+#syslog_message_details dl { display: grid; grid-template-columns: minmax(90px, auto) minmax(0, 1fr); gap: 10px 16px; margin: 0; }
+#syslog_message_details dt { color: var(--search-muted); }
+#syslog_message_details dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+#syslog_message_details dt[hidden], #syslog_message_details dd[hidden] { display: none; }
+#syslog_details_raw { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; border: 1px solid var(--search-border); border-radius: 4px; background: color-mix(in srgb, var(--search-text) 6%, transparent); font: 12px/1.6 monospace; user-select: text; }
+#syslog_message_details .syslogFlyoutNote { margin: 0; color: var(--search-muted); }
+#syslog_message_details .syslogRecCard { margin: 0; padding: 12px; border: 1px solid color-mix(in srgb, var(--search-text) 16%, transparent); border-radius: 4px; }
+#syslog_message_details .syslogRecCard + .syslogRecCard { margin-top: 10px; }
+#syslog_message_details .syslogRecSection + .syslogRecSection { margin-top: 8px; }
+.syslogDetailsActions, .syslogDetailsFilters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+#syslog_message_details .syslogDetailsActions button[hidden] { display: none; }
+#syslog_copy_status { flex-basis: 100%; }
 @media (max-width: 700px) {
 	#syslog_form .syslogSearchPanel { padding: 8px; }
 	.syslogResultsToolbar { padding: 8px; }
@@ -689,22 +731,22 @@
 	width: min(100%, 860px);
 	grid-template-columns: 60px 120px 170px minmax(220px, 420px) 26px;
 }
+/* Rule edit pages place the builder in Cacti's narrower right form column,
+   where the fixed log-view columns overflowed past the page edge. */
+.syslogRuleFilterBuilder .syslogSearchRow:not(.syslogSearchGroupRow) {
+	grid-template-columns: 60px minmax(90px, 120px) minmax(100px, 170px) minmax(120px, 420px) 26px;
+}
 .syslogSearchBuilder .syslogSearchRow > .ui-selectmenu-button {
 	box-sizing: border-box;
 	width: 100% !important;
 	min-width: 0;
 }
-#syslog_message_details { resize: horizontal; min-width: 280px; max-width: 50vw; }
-@media (max-width: 1000px) { #syslog_message_details { max-width: 100vw; resize: none; } }
+@media (max-width: 1000px) {
+	.syslogQueryLayout { grid-template-columns: minmax(0, 1fr); }
+}
 @media (max-width: 700px) {
 	#syslog_form .syslogSearchSavedBar { padding-right: 0; padding-top: 34px; }
 	.syslogSearchBuilder .syslogSearchRow:not(.syslogSearchGroupRow) { grid-template-columns: 45px minmax(65px, 1fr) minmax(120px, 1fr) 28px; }
-}
-#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr) auto; }
-#syslog_message_details { width: clamp(300px, 26vw, 480px); }
-@media (max-width: 1000px) {
-	#syslog_workspace.has-details { grid-template-columns: minmax(0, 1fr); }
-	#syslog_message_details { width: min(420px, 100%); }
 }
 
 /* Selection must not replace the severity background supplied by Cacti. */
@@ -937,3 +979,9 @@
 .syslogRecSev6 { border-color: #3f9b4b; color: #3f9b4b; }
 .syslogRecSev7 { border-color: #8b9690; color: #8b9690; }
 .syslogRecAction .syslogRecText { font-weight: 600; }
+/* Recommendations page: collapsible matching help. */
+.syslogRecHelp { padding: 4px 2px; line-height: 1.5; }
+.syslogRecHelp summary { cursor: pointer; font-weight: 700; }
+.syslogRecHelp ul { margin: 6px 0 2px; padding-left: 20px; max-width: 1100px; }
+.syslogRecHelp li + li { margin-top: 4px; }
+.syslogRecHelp code { font-family: monospace; overflow-wrap: anywhere; }

@@ -21,7 +21,7 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Syslog status-legend palette for the dark (dark surface) theme. */
+/* Syslog styles for the Deepness theme. */
 
 .syslogLegend {
 	display: grid;
@@ -51,8 +51,27 @@
 .syslogLegend .logInfo      { background-color: #3a6e46; }
 .syslogLegend .logDebug     { background-color: #4a534e; }
 
-/* The scoped Syslog log view and filter panel now derive their surfaces,
-   borders, pills and row tints from the live Cacti theme at runtime
-   (see css/search.css and js/functions.js applySyslogTheme), so no per-theme
-   color overrides belong here; only the status-legend palette above is
-   theme-specific. */
+/* The scoped Syslog log view and filter panel derive their surfaces, borders,
+   pills and row tints from the live Cacti theme at runtime by sampling jQuery
+   UI's widget classes (see css/search.css and js/functions.js
+   applySyslogTheme). Deepness ships Dark's jQuery UI styles, so that sampling
+   returns Dark's black surface instead of Deepness's own palette. Map the
+   tokens to the Deepness palette instead; !important lets these win over the
+   inline values the sampling sets. The fallbacks are Deepness's defaults. */
+#syslog_form, #syslog_workspace, #syslog_message_details, .syslogSavedDialog, .syslogSavedPrompt,
+.syslogTemplateEditor, .syslogPanelDialog {
+	--search-surface: var(--dp-panel, #11161d) !important;
+	--search-card: var(--dp-panel-alt, #161c25) !important;
+	--search-text: var(--dp-text, #e6edf3) !important;
+	--search-muted: var(--dp-text-muted, #97a3b0) !important;
+	--search-border: var(--dp-border-strong, #32415a) !important;
+	--search-accent: var(--dp-accent, #18b981) !important;
+	--search-tint: var(--dp-elevated, #1b2330) !important;
+	--search-primary: var(--dp-accent-deep, #0c5f44) !important;
+	--search-on-primary: var(--dp-text, #e6edf3) !important;
+}
+
+/* Alert and removal rule filter panel: Deepness border on the row surface. */
+.syslogRuleFilterPanel.ui-widget-content {
+	border-color: var(--dp-border-strong, #32415a);
+}

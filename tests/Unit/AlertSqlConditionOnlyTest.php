@@ -61,6 +61,7 @@ it('returns an empty fragment for invalid filter JSON in condition-only mode', f
 
 it('returns a prepared fragment for facility/message/host/program alerts in condition-only mode', function ($type, $message, $expected_sql, $expected_params) {
 	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default']       = 'syslogdb';
 	$GLOBALS['syslog_incoming_config'] = [
 		'textField' => 'message', 'hostField' => 'host', 'programField' => 'program',
 		'facilityField' => 'facility_id', 'priorityField' => 'priority_id',
@@ -72,7 +73,8 @@ it('returns a prepared fragment for facility/message/host/program alerts in cond
 	expect($out['sql'])->toBe($expected_sql)
 		->and($out['params'])->toBe($expected_params);
 })->with([
-	['facility', 3, '`facility_id` = ?', [3]],
+	['facility', 3, '`facility_id` = ?', ['3']],
+	['facility', 'local7', '`facility_id` IN (SELECT sf.facility_id FROM `syslogdb`.`syslog_facilities` AS sf WHERE sf.facility = ?)', ['local7']],
 	['messageb', 'error', '`message` LIKE ?', ['error%']],
 	['messagec', 'error', '`message` LIKE ?', ['%error%']],
 	['messagee', 'error', '`message` LIKE ?', ['%error']],
@@ -86,4 +88,17 @@ it('returns an empty fragment for unknown alert types in condition-only mode', f
 	$alert = ['type' => 'notatype', 'message' => 'm'];
 
 	expect(syslog_get_alert_sql($alert, 1, false, true))->toBe([]);
+});
+
+it('resolves a facility alert name before the processing boundary (#459)', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default']       = 'syslogdb';
+	$GLOBALS['syslog_incoming_config'] = ['facilityField' => 'facility_id'];
+
+	$alert = ['type' => 'facility', 'message' => 'local7'];
+	$out   = syslog_get_alert_sql($alert, 99);
+
+	expect($out['sql'])->toContain('WHERE `facility_id` IN (SELECT sf.facility_id FROM `syslogdb`.`syslog_facilities` AS sf WHERE sf.facility = ?)')
+		->and($out['sql'])->toContain('AND `seq` <= ?')
+		->and($out['params'])->toBe(['local7', 99]);
 });

@@ -64,6 +64,26 @@ it('maps host and program names to their normalized id tables', function () {
 		->and($programs[0]['value'])->toBe('9');
 });
 
+it('keeps "!=" host and program conditions negated after mapping them to ids', function (bool $negative, bool $expected) {
+	syslog_load_plugin_source('includes/functions.php');
+
+	test_override('syslog_db_fetch_assoc_prepared', static fn () => [['id' => 12]]);
+
+	$json = json_encode([
+		'version'    => 1,
+		'conditions' => [
+			['join' => 'AND', 'negative' => $negative, 'field' => 'host', 'operator' => '!=', 'value' => 'router01']
+		]
+	]);
+
+	$condition = syslog_removal_filter_normalize($json, 'syslog')['conditions'][0];
+
+	expect($condition)->toBe(['join' => 'AND', 'negative' => $expected, 'field' => 'host_id', 'operator' => '=', 'value' => '12']);
+})->with([
+	'host != router01'       => [false, true],
+	'NOT (host != router01)' => [true, false]
+]);
+
 it('compiles a retroactive filter rule against the syslog table', function () {
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['syslogdb_default'] = 'syslogdb';

@@ -49,20 +49,41 @@ it('normalizes the field names used by other catalogues', function () {
 	]);
 });
 
-it('rejects records that are not usable recommendations', function (array $input) {
-	expect(syslog_recommendation_normalize($input))->toBeNull();
+it('rejects records that are not usable recommendations, saying why', function (array $input, string $why) {
+	$reason = null;
+
+	expect(syslog_recommendation_normalize($input, $reason))->toBeNull()
+		->and($reason)->toBe($why);
 })->with([
-	'no identifier'         => [['explanation' => 'text']],
-	'nothing to show'       => [['identifier' => 'X-1-Y']],
-	'identifier too long'   => [['identifier' => str_repeat('a', 191), 'explanation' => 'text']],
-	'multi-line identifier' => [['identifier' => "a\nb", 'explanation' => 'text']],
-	'identifier with space' => [['identifier' => 'LINK UPDOWN', 'explanation' => 'text']]
+	'no identifier'         => [['explanation' => 'text'], 'the identifier is empty'],
+	'nothing to show'       => [['identifier' => 'X-1-Y'], 'it has neither an explanation nor a recommended action'],
+	'identifier too long'   => [['identifier' => str_repeat('a', 191), 'explanation' => 'text'], 'the identifier is longer than 190 characters'],
+	'multi-line identifier' => [['identifier' => "a\nb", 'explanation' => 'text'], 'the identifier contains spaces or line breaks'],
+	'identifier with space' => [['identifier' => 'LINK UPDOWN', 'explanation' => 'text'], 'the identifier contains spaces or line breaks']
+]);
+
+it('accepts every identifier shape found in the bundled data, flagging the ones that cannot match', function (string $identifier, bool $matchable) {
+	$record = syslog_recommendation_normalize(['identifier' => $identifier, 'explanation' => 'x']);
+
+	expect($record)->not->toBeNull()
+		->and($record['identifier'])->toBe($identifier)
+		->and(syslog_recommendation_matchable($identifier))->toBe($matchable)
+		// The SQL form behind the list's Can Match filter must agree with the PHP check.
+		->and(preg_match('~' . SYSLOG_RECOMMENDATIONS_IDENTIFIER_SQL . '~', $identifier) === 1)->toBe($matchable);
+})->with([
+	'cisco mnemonic'     => ['%LINK-3-UPDOWN', true],
+	'path-like code'     => ['%AUTH/84', true],
+	'alternatives'       => ['%ASA|PIX-3-331001', false],
+	'slot placeholder'   => ['%FCDD-SLOT#-3-LOG_FCDD_ERR', false],
+	'documented value'   => ['%DHCPD-2-(-1)', false],
+	'quoted placeholder' => ['%DSXPNM-3-"NULL"', false],
+	'inner colon'        => ['%AUTH/84:LAN-to-LAN', false]
 ]);
 
 it('accepts numeric event IDs and short codes, and finds them in a message', function () {
 	expect(syslog_recommendation_normalize(['identifier' => '4625', 'explanation' => 'x']))->toMatchArray(['identifier' => '4625'])
 		->and(syslog_recommendation_normalize(['identifier' => 'B', 'explanation' => 'x']))->toMatchArray(['identifier' => 'B'])
-		->and(syslog_recommendation_candidates('EventID 4625: An account failed to log on'))->toContain('4625')->toContain('%4625')
+		->and(syslog_recommendation_candidates('EventID 4625: An account failed to log on'))->toContain('4625')->not->toContain('%4625')
 		->and(syslog_recommendation_candidates('code B reported'))->toContain('B');
 });
 
@@ -77,16 +98,40 @@ it('maps severity numbers, syslog keywords and Sigma levels', function () {
 		->and(syslog_recommendation_severity(''))->toBeNull();
 });
 
-it('parses the export envelope and a bare list, counting rejected records', function () {
+it('parses the export envelope and a bare list, recording why each rejected record was refused', function () {
 	$record = recommendation_sample();
 	$wrapped = syslog_recommendations_parse(json_encode([
-		'format' => 'syslog-recommendations', 'version' => 1, 'recommendations' => [$record, ['explanation' => 'no id']]
+		'format' => 'syslog-recommendations', 'version' => 1,
+		'recommendations' => [$record, ['explanation' => 'no id'], 'not an object', ['identifier' => 'NO_TEXT']]
 	]));
 	$bare = syslog_recommendations_parse(json_encode([$record]));
 
 	expect($wrapped['records'])->toHaveCount(1)
-		->and($wrapped['invalid'])->toBe(1)
-		->and($bare['records'][0]['identifier'])->toBe('%LINK-3-UPDOWN');
+		->and($wrapped['invalid'])->toBe(3)
+		->and($wrapped['rejected'])->toBe([
+			['index' => 2, 'identifier' => '', 'reason' => 'the identifier is empty'],
+			['index' => 3, 'identifier' => '', 'reason' => 'it is not a JSON object'],
+			['index' => 4, 'identifier' => 'NO_TEXT', 'reason' => 'it has neither an explanation nor a recommended action']
+		])
+		->and($bare['records'][0]['identifier'])->toBe('%LINK-3-UPDOWN')
+		->and($bare['rejected'])->toBe([]);
+});
+
+it('logs every rejected record with its position, identifier and reason', function () {
+	$logged = [];
+	test_override('cacti_log', function ($message) use (&$logged) {
+		$logged[] = $message;
+	});
+
+	syslog_recommendations_log_rejected([
+		['index' => 2, 'identifier' => 'A B', 'reason' => 'the identifier contains spaces or line breaks'],
+		['index' => 7, 'identifier' => '', 'reason' => 'the identifier is empty']
+	]);
+
+	expect($logged)->toBe([
+		"WARNING: Recommendation import rejected record 2 (identifier 'A B'): the identifier contains spaces or line breaks",
+		"WARNING: Recommendation import rejected record 7 (identifier ''): the identifier is empty"
+	]);
 });
 
 it('refuses documents that are not recommendations', function (string $payload) {
@@ -153,11 +198,11 @@ it('counts imported and updated records when overwriting', function () {
 	expect($result)->toBe(['imported' => 1, 'updated' => 1, 'skipped' => 0, 'failed' => 0]);
 });
 
-it('extracts message identifiers with and without the percent prefix', function () {
+it('preserves a literal percent prefix in message identifiers', function () {
 	$candidates = syslog_recommendation_candidates('%LINEPROTO-5-UPDOWN: Line protocol on Interface Gi0/1, changed state to up');
 
-	expect($candidates)->toContain('%LINEPROTO-5-UPDOWN')->toContain('LINEPROTO-5-UPDOWN')
-		->and(syslog_recommendation_candidates('RPD_OSPF_NBRDOWN: neighbor down'))->toContain('%RPD_OSPF_NBRDOWN');
+	expect($candidates)->toContain('%LINEPROTO-5-UPDOWN')->not->toContain('LINEPROTO-5-UPDOWN')
+		->and(syslog_recommendation_candidates('RPD_OSPF_NBRDOWN: neighbor down'))->toContain('RPD_OSPF_NBRDOWN')->not->toContain('%RPD_OSPF_NBRDOWN');
 });
 
 it('looks messages up by their identifiers and returns the localized JSON', function () {
@@ -170,7 +215,7 @@ it('looks messages up by their identifiers and returns the localized JSON', func
 
 	$response = json_decode(syslog_recommendations_lookup_json('%LINK-3-UPDOWN: Interface Gi0/1, changed state to down'), true);
 
-	expect($bound)->toContain('%LINK-3-UPDOWN')
+	expect($bound)->toContain('%LINK-3-UPDOWN')->not->toContain('LINK-3-UPDOWN')
 		->and($response['found'])->toBeTrue()
 		->and($response['recommendations'][0]['severity_name'])->toBe('Error')
 		->and($response['recommendations'][0]['recommended_action'])->toBe('Check the cable.')
@@ -256,10 +301,15 @@ it('does not remember a bundled seed that had failing statements', function () {
 	expect(syslog_recommendations_seed())->toBe(0)->and($flag)->toBe([]);
 });
 
-it('counts statements that fail to store as failures', function () {
+it('counts and logs statements that fail to store', function () {
+	$logged = [];
 	test_override('syslog_db_execute_prepared', static fn () => false);
+	test_override('cacti_log', function ($message) use (&$logged) {
+		$logged[] = $message;
+	});
 
-	expect(syslog_recommendations_store([recommendation_sample()], false))->toBe(['imported' => 0, 'updated' => 0, 'skipped' => 0, 'failed' => 1]);
+	expect(syslog_recommendations_store([recommendation_sample()], false))->toBe(['imported' => 0, 'updated' => 0, 'skipped' => 0, 'failed' => 1])
+		->and($logged[0])->toContain("could not store '%LINK-3-UPDOWN' (vendor 'Cisco')");
 });
 
 it('treats non-scalar and non-list input as unusable', function () {

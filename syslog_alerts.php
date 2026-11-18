@@ -1025,6 +1025,11 @@ function syslog_action_edit(): void {
 		var filterMode = $('#type').val() == 'filter';
 		$('#message').toggle(!filterMode);
 		$('#syslog_alert_filter_panel').prop('hidden', !filterMode);
+		// A hidden builder's required inputs would otherwise block the browser's
+		// form validation ("An invalid form control is not focusable").
+		if (alertFilterBuilder) {
+			alertFilterBuilder.setDisabled(!filterMode || !allowEdits);
+		}
 		if ($('#type').val() == 'sql') {
 			$('#message').prop('rows', 6);
 		} else {

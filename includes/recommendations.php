@@ -45,10 +45,18 @@ const SYSLOG_RECOMMENDATIONS_MAX_BYTES = 64 * 1024 * 1024;
 const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
 
-// The one identifier format shared by validation and by the hover lookup: an
-// optional leading %, then letters, digits and _ . - / starting and ending with
-// a letter, digit or underscore. Numeric event IDs and short codes qualify.
+// The shape of a "word" in a syslog message that the hover lookup compares with
+// identifiers: an optional literal leading %, then letters, digits and _ . - /
+// starting and ending with a letter, digit or underscore. The percent sign is
+// retained when matching. Numeric event IDs and short codes qualify. Identifiers
+// outside this shape can be stored and exported (the bundled data has some, such
+// as %ASA|PIX-3-331001 or %FCDD-SLOT#-3-LOG_FCDD_ERR), but can never match a
+// message until they are edited.
 const SYSLOG_RECOMMENDATIONS_IDENTIFIER = '%?[A-Za-z0-9_](?:[A-Za-z0-9_.\/-]*[A-Za-z0-9_])?';
+
+// The same shape as a POSIX expression for SQL REGEXP, which MySQL 5.7, MySQL 8
+// and MariaDB all accept (no non-capturing groups or escapes).
+const SYSLOG_RECOMMENDATIONS_IDENTIFIER_SQL = '^%?[A-Za-z0-9_]([A-Za-z0-9_./-]*[A-Za-z0-9_])?$';
 
 /**
  * Syslog severity names indexed by their RFC 5424 number.
@@ -131,12 +139,14 @@ function syslog_recommendation_text($value, int $max = SYSLOG_RECOMMENDATIONS_MA
  * are accepted (name/code/event_code, description/cause, action/resolution,
  * level, references).
  *
- * @param array<string, mixed> $input The raw record.
+ * @param array<string, mixed> $input  The raw record.
+ * @param string|null          $reason Set to why the record was rejected.
  *
  * @return array<string, mixed>|null The normalized record, or null when it is unusable.
  */
-function syslog_recommendation_normalize(array $input): ?array {
-	$pick = static function (array $keys) use ($input) {
+function syslog_recommendation_normalize(array $input, ?string &$reason = null): ?array {
+	$reason = null;
+	$pick   = static function (array $keys) use ($input) {
 		foreach ($keys as $key) {
 			if (isset($input[$key]) && $input[$key] !== '' && $input[$key] !== []) {
 				return $input[$key];
@@ -148,7 +158,15 @@ function syslog_recommendation_normalize(array $input): ?array {
 
 	$identifier = rtrim(syslog_recommendation_text($pick(['identifier', 'name', 'code', 'event_code', 'mnemonic']), 191), ": \t");
 
-	if (strlen($identifier) > 190 || !preg_match('/^' . SYSLOG_RECOMMENDATIONS_IDENTIFIER . '$/D', $identifier)) {
+	if ($identifier === '') {
+		$reason = __('the identifier is empty', 'syslog');
+	} elseif (strlen($identifier) > 190) {
+		$reason = __('the identifier is longer than 190 characters', 'syslog');
+	} elseif (preg_match('/\s/u', $identifier)) {
+		$reason = __('the identifier contains spaces or line breaks', 'syslog');
+	}
+
+	if ($reason !== null) {
 		return null;
 	}
 
@@ -165,10 +183,37 @@ function syslog_recommendation_normalize(array $input): ?array {
 
 	// A record with nothing to show a user is not a recommendation.
 	if ($record['explanation'] === '' && $record['recommended_action'] === '') {
+		$reason = __('it has neither an explanation nor a recommended action', 'syslog');
+
 		return null;
 	}
 
 	return $record;
+}
+
+/**
+ * Whether an identifier can ever match a word of a syslog message.
+ *
+ * @param string $identifier The stored identifier.
+ *
+ * @return bool True when the hover lookup can find it.
+ */
+function syslog_recommendation_matchable(string $identifier): bool {
+	return strlen($identifier) <= 190 && preg_match('/^' . SYSLOG_RECOMMENDATIONS_IDENTIFIER . '$/D', $identifier) === 1;
+}
+
+/**
+ * Write one Cacti log line for every record an import rejected.
+ *
+ * @param list<array{index: int, identifier: string, reason: string}> $rejected The rejected records.
+ *
+ * @return void
+ */
+function syslog_recommendations_log_rejected(array $rejected): void {
+	foreach ($rejected as $r) {
+		cacti_log(sprintf("WARNING: Recommendation import rejected record %d (identifier '%s'): %s",
+			$r['index'], $r['identifier'], $r['reason']), false, 'SYSLOG');
+	}
 }
 
 /**
@@ -179,9 +224,9 @@ function syslog_recommendation_normalize(array $input): ?array {
  *
  * @param string $payload The raw JSON text.
  *
- * @return array{records: list<array<string, mixed>>, invalid: int}|false The usable records and the number
- *                                                                        of rejected ones, or false when the
- *                                                                        document is not a recommendations file.
+ * @return array{records: list<array<string, mixed>>, invalid: int, rejected: list<array{index: int, identifier: string, reason: string}>}|false
+ *         The usable records, the number of rejected ones with the position, identifier and reason of each,
+ *         or false when the document is not a recommendations file.
  */
 function syslog_recommendations_parse(string $payload) {
 	$payload = trim(preg_replace('/^\xEF\xBB\xBF/', '', $payload) ?? '');
@@ -215,20 +260,27 @@ function syslog_recommendations_parse(string $payload) {
 		return false;
 	}
 
-	$records = [];
-	$invalid = 0;
+	$records  = [];
+	$rejected = [];
 
-	foreach ($items as $item) {
-		$record = is_array($item) ? syslog_recommendation_normalize($item) : null;
+	foreach (array_values($items) as $position => $item) {
+		$reason = null;
+		$record = is_array($item) ? syslog_recommendation_normalize($item, $reason) : null;
 
 		if ($record === null) {
-			$invalid++;
+			$id = is_array($item) ? ($item['identifier'] ?? $item['name'] ?? $item['code'] ?? $item['event_code'] ?? '') : '';
+
+			$rejected[] = [
+				'index'      => $position + 1,
+				'identifier' => is_scalar($id) ? substr((string) $id, 0, 200) : '',
+				'reason'     => $reason ?? __('it is not a JSON object', 'syslog')
+			];
 		} else {
 			$records[] = $record;
 		}
 	}
 
-	return ['records' => $records, 'invalid' => $invalid];
+	return ['records' => $records, 'invalid' => count($rejected), 'rejected' => $rejected];
 }
 
 /**
@@ -261,6 +313,8 @@ function syslog_recommendations_store(array $records, bool $overwrite): array {
 
 		if (!syslog_db_execute_prepared($sql, $params)) {
 			$result['failed']++;
+			cacti_log(sprintf("WARNING: Recommendation import could not store '%s' (vendor '%s'); see the database error above",
+				$r['identifier'], $r['vendor']), false, 'SYSLOG');
 
 			continue;
 		}
@@ -378,8 +432,8 @@ function syslog_recommendations_read_payload() {
  *
  * A candidate is a word that looks like a message code: it starts with a
  * letter (optionally after a leading %) and may contain digits, underscores,
- * dashes and dots. Each is returned together with its %-prefixed or
- * %-stripped counterpart because vendors differ on the prefix.
+ * dashes and dots. A leading % is retained as part of the candidate and must
+ * match the identifier as stored.
  *
  * @param string $message The syslog message text.
  *
@@ -396,9 +450,7 @@ function syslog_recommendation_candidates(string $message): array {
 		if (strlen($token) > 190) {
 			continue;
 		}
-		$bare       = ltrim($token, '%');
-		$out[$bare] = true;
-		$out['%' . $bare] = true;
+		$out[$token] = true;
 
 		if (count($out) >= 120) {
 			break;
@@ -437,18 +489,18 @@ function syslog_recommendations_lookup(string $message, int $limit = 3): array {
 }
 
 /**
- * Build the JSON response the hover tooltip requests for a message.
+ * Shape recommendation rows for the browser: severity names resolved and
+ * every column a string, so the client inserts them as plain text.
  *
- * @param string $message The syslog message text.
+ * @param list<array<string, mixed>> $rows Rows from syslog_recommendations_lookup().
  *
- * @return string The JSON document. It always carries the localized labels so
- *                the browser needs no translation catalogue of its own.
+ * @return list<array<string, mixed>> The rows ready for JSON encoding.
  */
-function syslog_recommendations_lookup_json(string $message): string {
+function syslog_recommendations_format(array $rows): array {
 	$severities = syslog_recommendation_severity_names();
 	$matches    = [];
 
-	foreach (syslog_recommendations_lookup($message) as $row) {
+	foreach ($rows as $row) {
 		$severity  = $row['severity'] === null ? null : (int) $row['severity'];
 		$matches[] = [
 			'vendor'             => (string) $row['vendor'],
@@ -463,15 +515,39 @@ function syslog_recommendations_lookup_json(string $message): string {
 		];
 	}
 
+	return $matches;
+}
+
+/**
+ * The localized section labels shown with recommendations, so the browser
+ * needs no translation catalogue of its own.
+ *
+ * @return array<string, string> The labels keyed by section.
+ */
+function syslog_recommendations_labels(): array {
+	return [
+		'message'     => __('Message', 'syslog'),
+		'explanation' => __('Explanation', 'syslog'),
+		'action'      => __('Recommended Action', 'syslog'),
+		'reference'   => __('Reference', 'syslog')
+	];
+}
+
+/**
+ * Build the JSON response the hover tooltip requests for a message.
+ *
+ * @param string $message The syslog message text.
+ *
+ * @return string The JSON document. It always carries the localized labels so
+ *                the browser needs no translation catalogue of its own.
+ */
+function syslog_recommendations_lookup_json(string $message): string {
+	$matches = syslog_recommendations_format(syslog_recommendations_lookup($message));
+
 	return (string) json_encode([
 		'found'           => $matches !== [],
 		'recommendations' => $matches,
-		'labels'          => [
-			'message'     => __('Message', 'syslog'),
-			'explanation' => __('Explanation', 'syslog'),
-			'action'      => __('Recommended Action', 'syslog'),
-			'reference'   => __('Reference', 'syslog')
-		]
+		'labels'          => syslog_recommendations_labels()
 	], JSON_INVALID_UTF8_SUBSTITUTE);
 }
 

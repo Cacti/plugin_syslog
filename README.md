@@ -195,6 +195,61 @@ For devices that cannot emit sub-second timestamps, `timegenerated` on the Cacti
 collector still records millisecond receipt times, which preserves ordering for
 messages arriving in the same second.
 
+## Important: Upgrading the Plugin
+
+> [!IMPORTANT]
+> Replacing the plugin files does **not** upgrade the plugin. After you copy in
+> a new version you must start the upgrade yourself, using one of the two
+> methods below. Until you do, Plugin Management keeps showing the old version,
+> and pages added by the new version (for example **Recommendations** in 5.0)
+> return **Permission Denied**.
+
+The upgrade never starts by itself. This is deliberate, for performance: an
+upgrade can change the schema of large tables, load bundled data, and update
+permissions, and that work must not run automatically inside the ordinary page
+requests of Cacti users or the poller, where it would slow down or stall the
+website. Starting it yourself lets you choose when it runs. Only the command
+line method keeps it out of the web server entirely; the Upgrade Advisor runs
+it inside the web request that confirms it.
+
+Use one of these methods:
+
+1. **Command line (recommended, especially for large installs).** From the
+   Cacti base directory, as the user that runs the Cacti poller, run:
+
+   ```shell
+   php plugins/syslog/cli/syslog_schema.php --upgrade
+   ```
+
+   This runs the upgrade outside the web server, so it does not occupy a web
+   server process or slow down the website while it works. It prints the
+   result and exits with a non-zero status if the upgrade fails; the details
+   are in the Cacti log.
+
+2. **Plugin Management (Upgrade Advisor).** Under Console > Configuration >
+   Plugins, **Disable** the Syslog plugin and then **Enable** it again. Enabling
+   a plugin whose files are newer than the installed version opens the
+   **Syslog Upgrade Advisor**; confirm the upgrade there. The upgrade runs
+   inside that web request, so use this method on small installs or at a quiet
+   time. While the plugin is disabled, new messages wait in `syslog_incoming`
+   and are processed once it is enabled again.
+
+Both methods run the same upgrade and keep existing messages, rules, and
+preferences. The upgrade has completed when Plugin Management shows the new
+version: the stored version is the last thing the upgrade updates. Do not rely
+on `php plugins/syslog/cli/syslog_schema.php --audit` for this. It only checks
+that the Syslog tables exist, and missing tables can be created automatically
+when the plugin connects to its database, so an installation that has not been
+upgraded can still pass the audit.
+
+When upgrading to 5.0, the upgrade also:
+
+* adds the Recommendations page to the existing Syslog Administration realm,
+  keeping existing user and group grants
+* creates the `syslog_recommendations` table and loads the bundled
+  recommendations from `docs/recommendations.sql.gz` once (about 27,000
+  records, a few seconds; requires the PHP zlib extension)
+
 ## Important Version 4.0 Release Notes
 
 In prior releases of Syslog, the Individual Alert Method would send an Email,
@@ -332,16 +387,21 @@ config.php and make changes there for the location of the database, user,
 password, and host.  This is especially important if you are using a remote
 logging database server.
 
-To upgrade, replace the plugin files and run the Upgrade Advisor from Plugin
-Management, or check the schema with the CLI:
+To upgrade an existing install, replacing the files is not enough: follow
+[Important: Upgrading the Plugin](#important-upgrading-the-plugin), which
+explains the two supported methods. You can check that the Syslog tables exist
+at any time with the CLI:
 
 ```shell
 php plugins/syslog/cli/syslog_schema.php --audit
 ```
 
-`--audit` reports missing tables without changing anything. `--repair` creates
-missing tables and reruns schema migrations, and `--upgrade` also upgrades the
-schema. Repair and upgrade keep existing data and preferences.
+`--audit` reports missing tables and runs no migrations itself, although while
+the plugin is enabled, connecting to the database can create missing tables
+first. It does not tell you whether an upgrade has completed; the version in
+Plugin Management does. `--repair` creates missing tables and reruns schema
+migrations, and `--upgrade` also upgrades the schema. Repair and upgrade keep
+existing data and preferences.
 
 To uninstall, use Uninstall in Plugin Management and choose a method. `Remove
 Everything` drops every syslog table, including rules and hosts; `Syslog Data
@@ -511,18 +571,67 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
   Expression. SQL Expression is kept for legacy rules.
 * **Removal rules** use a Method of Removal of Deletion or Transferal. Deletion
   discards the message; Transferal moves it to `syslog_removed`.
-* **Report rules** send matching messages by email on a schedule.
+* **Report rules** send matching messages by email on a schedule. Their Match
+  Type can be the Filter Builder, an SQL Expression, or one of the legacy
+  begins/contains/ends/host/facility/program matches. Reports search stored
+  messages (`syslog`), so an SQL Expression uses `host_id` and `program_id`
+  rather than host and program names.
+* Every rule edit page has a **Test rule** button that previews the messages
+  the rule matches without sending anything. Alert and removal previews search
+  queued incoming messages (Filter Builder alerts fall back to recent stored
+  messages); report previews search the most recent 10,000 stored messages. The
+  preview dialog is not modal, so the rule can be changed and tested again
+  while it stays open.
 * **Device rules** are managed from the Device Rules page and need the Rule
   Administrator realm.
 
 ## Recommendations
 
 Recommendations explain what a message means and what to do about it. When you
-hover over a row on the Syslog tab, the plugin looks for a recommendation whose
-identifier appears in the message (for example `%LINK-3-UPDOWN` or
-`RPD_OSPF_NBRDOWN`, with or without a leading `%`, not case sensitive) and shows
-its explanation and recommended action next to the message. Rows without a
-match keep the plain message tooltip.
+hover over a row on the Syslog tab, the plugin looks for recommendations that
+match the message and shows their explanation and recommended action next to
+the message. Rows without a match keep the plain message tooltip.
+
+Clicking a row on the System Logs or Alert Logs tab opens a **Message details**
+flyout on the right. The flyout fetches the record from the server and shows
+its date, device, program, facility, priority and sequence (plus the alert rule
+for alert log entries), the full message, every matching recommendation, and
+actions to create rules or filter by the device or program. Press Escape or the
+close button to dismiss it. **Copy link** copies an address such as
+`syslog.php?tab=syslog&details=main:12345` that reopens the same record, even
+when it is not on the current page. The same lookup is available to other tools
+as `syslog.php?action=message_details&source=main|remove|alert&id=<sequence>`,
+which returns JSON.
+
+### How recommendations are matched
+
+* Only the `identifier` column is matched. The vendor, component, severity,
+  message and explanation are shown but never searched.
+* The first 2,048 characters of the syslog message are split into words. A word
+  is a run of letters, digits and `_ . - /` that may start with `%`; any other
+  character (space, colon, comma, bracket, and so on) ends a word. In
+  `%LINK-3-UPDOWN: Interface Gi0/1, changed state to down` the words are
+  `%LINK-3-UPDOWN`, `Interface`, `Gi0/1`, `changed`, `state`, `to` and `down`.
+* An identifier matches when it is exactly equal to one whole word, ignoring
+  case. It is not a contains, starts-with or ends-with search, and there are no
+  wildcards: `LINK-3-UPDOWN` does not match `LINK-3-UPDOWN-EXT`, and `UPDOWN`
+  does not match `%LINK-3-UPDOWN`.
+* A leading `%` is a literal part of the identifier, not a wildcard. It must
+  match the message word as written: `%LINK-3-UPDOWN` matches
+  `%LINK-3-UPDOWN`, not `LINK-3-UPDOWN`. A recommendation stored as
+  `LINK-3-UPDOWN` matches only that unprefixed message word.
+* All vendors are checked. When several recommendations match, the longest
+  identifiers are shown first, up to three.
+* Identifiers containing other characters, such as the `#` slot placeholder or
+  the `|` alternatives in some vendor documentation (`%ASA|PIX-3-331001`), are
+  stored and exported but can never match. The bundled data has 860 of them;
+  set **Can Match** to No on the Recommendations page to list them, and edit
+  them into the exact code (for
+  example `%ASA-3-331001`). Saving or importing such an identifier shows a
+  note saying it cannot match.
+
+The same rules are summarised under **How Recommendations Are Matched** on the
+Recommendations page.
 
 Manage them under Console > Syslog Settings > Recommendations (the
 Syslog Administration realm). You can add, edit, and delete records, filter by
@@ -530,7 +639,9 @@ vendor and severity, and import or export them as JSON. A recommendation is
 identified by its vendor and identifier.
 
 The bundled data in `docs/recommendations.sql.gz` is loaded once, the first time
-the plugin is installed or upgraded to 5.0. It is read with PHP's zlib extension;
+the plugin is installed or upgraded to 5.0 (see
+[Important: Upgrading the Plugin](#important-upgrading-the-plugin); the page
+returns Permission Denied until the upgrade has run). It is read with PHP's zlib extension;
 without it the load is skipped and a warning is logged. Records that already exist
 are never overwritten and records you delete are not restored by later upgrades.
 To reload it manually, run `zcat docs/recommendations.sql.gz | mysql <syslog database>`;
@@ -561,13 +672,21 @@ recommended action of vendor message references):
 ```
 
 `identifier` and at least one of `explanation` or `recommended_action` are
-required. `severity` is a syslog level 0-7 or a keyword (`emergency`, `alert`,
+required; an identifier may be up to 190 characters with no spaces or line
+breaks. `severity` is a syslog level 0-7 or a keyword (`emergency`, `alert`,
 `critical`, `error`, `warning`, `notice`, `informational`, `debug`; the Sigma
 levels `high`, `medium`, `low` are also accepted). A bare JSON list of records
 is accepted too, as are the alternative field names `name`/`code`/`event_code`
 (identifier), `description` (explanation), `action` (recommended action), `level`
 (severity) and `references` (reference). On import choose whether existing
-records are kept or replaced.
+records are kept or replaced. Any export can be imported again unchanged.
+
+The import runs without reloading the page. When it finishes, the page shows
+how many records were added, updated and left unchanged. Every rejected record is
+written to the Cacti log with its position in the file, its identifier and the
+reason, for example `SYSLOG WARNING: Recommendation import rejected record 12
+(identifier 'LINK UPDOWN'): the identifier contains spaces or line breaks`,
+followed by a one-line summary of the whole import.
 
 ## Settings
 
@@ -577,6 +696,7 @@ The settings are under Settings > Syslog. Selected names and defaults:
 | --- | --- |
 | Syslog Enabled (`syslog_enabled`) | on |
 | Refresh Interval (`syslog_refresh`) | 300 |
+| Skip Total Row Count (`syslog_skip_row_count`) | off |
 | Max Report Records (`syslog_maxrecords`) | 100 |
 | Maximum Syslog Processing Processes (`syslog_max_workers`) | 1 |
 | Enable Hostname Resolution (`syslog_resolve_hostname`) | off |
@@ -587,6 +707,13 @@ The settings are under Settings > Syslog. Selected names and defaults:
 | Collector Staleness Threshold (`syslog_stale_threshold`) | 300 seconds |
 | Collector Backlog Threshold (`syslog_backlog_threshold`) | 10000 rows |
 | Pipeline Health Reminder Interval (`syslog_pipeline_health_repeat`) | 3600 seconds |
+
+On large installations counting every matching record for the page navigation
+can be the most expensive query on the System Logs and Alert Logs tabs. Turn on
+**Skip Total Row Count** under Settings > Syslog > General Settings to skip it.
+The page then shows Previous and Next links with the current page number
+instead of a total and a page list. Next is offered while more records remain,
+which the page detects by reading one record beyond the page.
 
 ## Command Line
 
@@ -681,13 +808,35 @@ remove a condition, then Enter or Search to apply the query.
 
 The standalone device, program, facility, and priority filters are replaced by
 builder conditions. The only standalone dropdowns are Record Type, Display,
-Results limit, Trim, and Refresh. From and To are Date conditions in the builder
+Rows, Trim, and Refresh. From and To are Date conditions in the builder
 (`>=` and `<=`), with the date/time picker available when their values are focused.
 The current date range is migrated into these editable conditions. Removing them
-removes the time restriction. Action buttons (Search, Clear, Refresh, Export, Save) appear below the collapsible search panel.
-For rolling date ranges, select Date → In the last → Hour, 6 hours, Day, Week,
-2 weeks, 30 days, 3 months, or 6 months. Month presets use calendar months. These ranges are recalculated by the database on each search or refresh.
-Use the comparison operators for custom dates with the date picker.
+removes the time restriction. Action buttons (Search, Clear, Refresh, Export, Save)
+are real `<button>` elements on one row with Rows, below the collapsible search
+panel; Search uses the theme's primary button color. Opening one menu or dropdown
+closes any other, and clicking elsewhere closes them all.
+
+Date conditions follow Cacti's timespan selector:
+
+* **In the last** — 30 minutes, 1, 2, 4, 6, and 12 hours, 1–4 days, 1 and 2
+  weeks, 30 days, 1, 2, 3, 4, and 6 months, and 1 and 2 years. Month and year
+  presets use calendar months.
+* **In the range** — Day Shift, This Day/Week/Month/Year, and Previous
+  Day/Week/Month/Year. Weeks start on your Cacti *First Weekday* setting, and
+  Day Shift uses the *Day Shift Start/End* settings (default 07:00–18:00).
+
+Both are recalculated by the database clock on each search or refresh. Use the
+comparison operators for custom dates with the date picker.
+
+**Trim** controls how much of each message the table shows: Fit Column (the
+default, truncated with an ellipsis to the column width), All Text (wrapped), or
+a fixed 30–300 character limit. The full message is always available in the
+details flyout. Trim is remembered with **Save Settings**.
+
+When saving a search, tick **Default** to apply it automatically the first time
+you open the tab in a new session (when no filter has been set yet). Only one
+search per tab is the default; saving another search as default replaces it, and
+deleting the default search clears it. The save prompt is non-modal.
 Legacy regex searches become literal message contains conditions. Searches persist per tab across
 pagination, refresh, grouping, and CSV export. The Refresh button reloads the current page of results without resetting the filter or pagination. Search, export, and clear
 controls submit values through CSRF-protected POST bodies instead of URL queries.

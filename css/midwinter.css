@@ -21,7 +21,9 @@
  +-------------------------------------------------------------------------+
 */
 
-/* Syslog status-legend palette for the midwinter (dark surface) theme. */
+/* Syslog status-legend palette for the midwinter theme. Midwinter defaults to
+   a dark surface; its light color mode is selected through
+   html[data-theme-color='light'] and uses the light palette further below. */
 
 .syslogLegend {
 	display: grid;
@@ -51,8 +53,37 @@
 .syslogLegend .logInfo      { background-color: #3a6e46; }
 .syslogLegend .logDebug     { background-color: #4a534e; }
 
-/* The scoped Syslog log view and filter panel now derive their surfaces,
-   borders, pills and row tints from the live Cacti theme at runtime
-   (see css/search.css and js/functions.js applySyslogTheme), so no per-theme
-   color overrides belong here; only the status-legend palette above is
-   theme-specific. */
+/* The scoped Syslog log view and filter panel derive their surfaces, borders,
+   pills and row tints from the live Cacti theme at runtime (see css/search.css
+   and js/functions.js applySyslogTheme).
+   The alert, removal and report rule builders are not sampled, so without the
+   tokens below they inherit Midwinter's mid-grey base text and the builder
+   controls drop to about 3.5:1 contrast. Map them to Midwinter's own palette
+   variables, which follow the active color mode. */
+.syslogRuleFilterBuilder {
+	--search-surface: var(--background-content, #1a1b29);
+	--search-card: var(--background-lowlight, #161722);
+	--search-text: var(--text-color-lighter, #d6d7db);
+	--search-muted: var(--text-color-medium, #9294a3);
+	--search-border: var(--separator, #85879a);
+	--search-accent: var(--text-color-highlight-a, #4ca6e0);
+	--search-tint: var(--background-highlight, #232534);
+}
+
+html[data-theme-color='light'] .syslogRuleFilterBuilder {
+	--search-accent: var(--background-navigation, #106fbc);
+	--search-tint: var(--background-lowlight, #f9f9fa);
+}
+
+html[data-theme-color='light'] .syslogLegend .syslogLegendItem {
+	color: #ffffff;
+}
+
+html[data-theme-color='light'] .syslogLegend .logEmergency { background-color: #8e1f18; }
+html[data-theme-color='light'] .syslogLegend .logCritical  { background-color: #a5281f; }
+html[data-theme-color='light'] .syslogLegend .logAlert     { background-color: #b23a2f; }
+html[data-theme-color='light'] .syslogLegend .logError     { background-color: #c0483c; }
+html[data-theme-color='light'] .syslogLegend .logWarning   { background-color: #9c5d0a; }
+html[data-theme-color='light'] .syslogLegend .logNotice    { background-color: #2f6fa8; }
+html[data-theme-color='light'] .syslogLegend .logInfo      { background-color: #2f7d3a; }
+html[data-theme-color='light'] .syslogLegend .logDebug     { background-color: #6c7a72; }

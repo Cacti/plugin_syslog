@@ -297,11 +297,113 @@ function syslog_search_suggestions(string $field, string $term, string $tab, str
  */
 function syslog_search_operators(string $field): array {
 	if ($field === 'logtime') {
-		return ['=', '!=', '>', '>=', '<', '<=', 'last'];
+		return ['=', '!=', '>', '>=', '<', '<=', 'last', 'during'];
 	}
 
 	return $field === 'seq' || substr($field, -3) === '_id' || $field === 'logtime'
 		? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like'];
+}
+
+/**
+ * The date presets of the logtime operators, aligned with Cacti's timespan
+ * selector: 'last' holds the rolling spans ("In the last"), 'during' the
+ * calendar spans ("In the range").
+ *
+ * @return array{last: array<string, string>, during: array<string, string>} Preset values and labels.
+ */
+function syslog_search_time_presets(): array {
+	return [
+		'last' => [
+			'1800'     => __('%d minutes', 30, 'syslog'),
+			'3600'     => __('%d hour', 1, 'syslog'),
+			'7200'     => __('%d hours', 2, 'syslog'),
+			'14400'    => __('%d hours', 4, 'syslog'),
+			'21600'    => __('%d hours', 6, 'syslog'),
+			'43200'    => __('%d hours', 12, 'syslog'),
+			'86400'    => __('%d day', 1, 'syslog'),
+			'172800'   => __('%d days', 2, 'syslog'),
+			'259200'   => __('%d days', 3, 'syslog'),
+			'345600'   => __('%d days', 4, 'syslog'),
+			'604800'   => __('%d week', 1, 'syslog'),
+			'1209600'  => __('%d weeks', 2, 'syslog'),
+			'2592000'  => __('%d days', 30, 'syslog'),
+			'1months'  => __('%d month', 1, 'syslog'),
+			'2months'  => __('%d months', 2, 'syslog'),
+			'3months'  => __('%d months', 3, 'syslog'),
+			'4months'  => __('%d months', 4, 'syslog'),
+			'6months'  => __('%d months', 6, 'syslog'),
+			'1years'   => __('%d year', 1, 'syslog'),
+			'2years'   => __('%d years', 2, 'syslog')
+		],
+		'during' => [
+			'day_shift'      => __('Day Shift', 'syslog'),
+			'this_day'       => __('This Day', 'syslog'),
+			'this_week'      => __('This Week', 'syslog'),
+			'this_month'     => __('This Month', 'syslog'),
+			'this_year'      => __('This Year', 'syslog'),
+			'previous_day'   => __('Previous Day', 'syslog'),
+			'previous_week'  => __('Previous Week', 'syslog'),
+			'previous_month' => __('Previous Month', 'syslog'),
+			'previous_year'  => __('Previous Year', 'syslog')
+		]
+	];
+}
+
+/**
+ * The SQL condition for a logtime preset, relative to the database clock like
+ * the rest of the search. Calendar spans honor Cacti's First Day of the Week
+ * and Day Shift settings.
+ *
+ * @param string $operator 'last' or 'during'.
+ * @param string $value    A preset value of that operator.
+ *
+ * @return string The condition on syslog.logtime.
+ *
+ * @throws InvalidArgumentException When the preset is unknown.
+ */
+function syslog_search_time_sql(string $operator, string $value): string {
+	$presets = syslog_search_time_presets();
+
+	if (!isset($presets[$operator][$value])) {
+		throw new InvalidArgumentException('Invalid date preset.');
+	}
+
+	if ($operator === 'last') {
+		if (preg_match('/^(\d+)(months|years)$/', $value, $match)) {
+			$interval = (int) $match[1] . ($match[2] === 'months' ? ' MONTH' : ' YEAR');
+		} else {
+			$interval = (int) $value . ' SECOND';
+		}
+
+		return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+	}
+
+	// Days counted back from today to the configured first day of the week (0 = Sunday).
+	$first = function_exists('read_user_setting') ? (int) read_user_setting('first_weekdayid', 1) : 1;
+	$week  = 'DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + ' . (8 - max(0, min(6, $first))) . ') % 7 DAY)';
+	$month = "CAST(DATE_FORMAT(CURDATE(), '%Y-%m-01') AS DATE)";
+	$year  = 'MAKEDATE(YEAR(CURDATE()), 1)';
+
+	if ($value === 'day_shift') {
+		$minutes = function (string $setting, string $default): int {
+			$time = function_exists('read_user_setting') ? (string) read_user_setting($setting, $default) : $default;
+			$time = preg_match('/^([01]?\d|2[0-3]):([0-5]\d)/', $time, $match) ? $match : explode(':', '0:' . $default);
+
+			return (int) $time[1] * 60 + (int) $time[2];
+		};
+
+		$range = [
+			'CURDATE() + INTERVAL ' . $minutes('day_shift_start', '07:00') . ' MINUTE',
+			'CURDATE() + INTERVAL ' . $minutes('day_shift_end', '18:00') . ' MINUTE'
+		];
+	} else {
+		[$when, $unit] = explode('_', $value);
+		$start         = ['day' => 'CURDATE()', 'week' => $week, 'month' => $month, 'year' => $year][$unit];
+		$step          = ' INTERVAL 1 ' . strtoupper($unit);
+		$range         = $when === 'this' ? [$start, $start . ' +' . $step] : [$start . ' -' . $step, $start];
+	}
+
+	return '(syslog.logtime >= ' . $range[0] . ' AND syslog.logtime < ' . $range[1] . ')';
 }
 
 /**
@@ -328,7 +430,7 @@ function syslog_parse_logical_search(string $input): ?array {
 			continue;
 		}
 
-		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
+		if (preg_match('/\G([a-z_]+)\s+(contains|like|last|during|regex|!=|>=|<=|=|>|<)\s+(?=")/', $input, $match, 0, $i)) {
 			if (!isset(syslog_search_fields()[$match[1]]) || !in_array($match[2], syslog_search_operators($match[1]), true)) {
 				throw new InvalidArgumentException('Invalid field or operator.');
 			}
@@ -412,11 +514,11 @@ function syslog_parse_logical_search(string $input): ?array {
 				throw new InvalidArgumentException('IDs must be nonnegative integers.');
 			}
 
-			if ($token[2] === 'last' && !in_array($value[1], ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
+			if (in_array($token[2], ['last', 'during'], true) && !isset(syslog_search_time_presets()[$token[2]][$value[1]])) {
 				throw new InvalidArgumentException('Invalid date preset.');
 			}
 
-			if ($token[1] === 'logtime' && $token[2] !== 'last' && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
+			if ($token[1] === 'logtime' && !in_array($token[2], ['last', 'during'], true) && (!preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $value[1]) || strtotime($value[1]) === false)) {
 				throw new InvalidArgumentException('Use a date in YYYY-MM-DD HH:MM:SS format.');
 			}
 			$node = ['predicate', $token[1], $token[2], $value[1]];
@@ -479,13 +581,8 @@ function syslog_logical_search_sql(?array $tree, string $column): string {
 			throw new InvalidArgumentException('Host ID is only available for system logs.');
 		}
 
-		if ($operator === 'last') {
-			if (!in_array($value, ['3600', '21600', '86400', '604800', '1209600', '2592000', '3months', '6months'], true)) {
-				throw new InvalidArgumentException('Invalid date preset.');
-			}
-			$interval = ['3months' => '3 MONTH', '6months' => '6 MONTH'][$value] ?? ((int) $value . ' SECOND');
-
-			return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+		if ($operator === 'last' || $operator === 'during') {
+			return syslog_search_time_sql($operator, (string) $value);
 		}
 		$target = $field === 'message' ? $column : 'syslog.' . $field;
 
@@ -605,6 +702,52 @@ function syslog_saved_search_admin(): bool {
  */
 function syslog_saved_search_share(): bool {
 	return syslog_saved_search_admin() || syslog_realm_allowed('Share Saved Templates');
+}
+
+/**
+ * The user setting that holds a log view tab's default saved search.
+ *
+ * @param string $tab The log view tab.
+ *
+ * @return string The setting name.
+ */
+function syslog_saved_search_default_setting(string $tab): string {
+	return 'syslog_default_search_' . ($tab === 'alerts' ? 'alerts' : 'syslog');
+}
+
+/**
+ * Make a saved search the user's default for a tab, or stop it being the
+ * default. The default is applied when the tab is entered while no search is
+ * active in the session.
+ *
+ * @param int    $id      The saved search id.
+ * @param bool   $default Whether it becomes the default.
+ * @param string $tab     The log view tab.
+ *
+ * @return void
+ */
+function syslog_saved_search_set_default(int $id, bool $default, string $tab): void {
+	$setting = syslog_saved_search_default_setting($tab);
+
+	if ($default) {
+		set_user_setting($setting, $id);
+	} elseif ((int) read_user_setting($setting, 0, true) === $id) {
+		set_user_setting($setting, 0);
+	}
+}
+
+/**
+ * Stop a deleted saved search being the default of either log view tab;
+ * saved searches are selectable from both.
+ *
+ * @param int $id The saved search id.
+ *
+ * @return void
+ */
+function syslog_saved_search_clear_default(int $id): void {
+	foreach (['syslog', 'alerts'] as $tab) {
+		syslog_saved_search_set_default($id, false, $tab);
+	}
 }
 
 /**
@@ -3524,8 +3667,12 @@ function syslog_removal_filter_normalize($json, $table) {
 				$replacement = $resolve($condition['field'], $condition['operator'], $condition['value']);
 
 				if (is_array($replacement)) {
+					// The replacement is a positive id match, so "!=" becomes a
+					// negation; an explicit NOT on a "!=" cancels it out.
+					$negative = $condition['negative'] ?? false;
+
 					$replacement['join']     = $condition['join'] ?? 'AND';
-					$replacement['negative'] = $condition['negative'] ?? false;
+					$replacement['negative'] = $condition['operator'] === '!=' && is_bool($negative) ? !$negative : $negative;
 					$conditions[$index]      = $replacement;
 				}
 			}
@@ -3549,6 +3696,35 @@ function syslog_query_builder_unavailable(): array {
 	$GLOBALS['syslog_rule_filter_error'] = 'The structured query builder is unavailable.';
 
 	return [];
+}
+
+/**
+ * syslog_incoming_facility_condition - Match a legacy "Facility is" rule
+ * against the incoming table.
+ *
+ * Legacy rules store the facility name, but the incoming table stores the
+ * numeric facility_id, and MySQL compares a name such as 'local7' with an
+ * integer column as 0 (kern). Resolve the name through the reference table
+ * so a rule matches its own facility; a rule that already holds an id is
+ * compared directly.
+ *
+ * @param string $facility The facility name, or id, stored with the rule
+ *
+ * @return array{sql: string, params: array<int, string>} The condition and its bound value
+ */
+function syslog_incoming_facility_condition(string $facility): array {
+	global $syslogdb_default, $syslog_incoming_config;
+
+	$column = '`' . ($syslog_incoming_config['facilityField'] ?? 'facility_id') . '`';
+
+	if (ctype_digit($facility)) {
+		return ['sql' => "$column = ?", 'params' => [$facility]];
+	}
+
+	return [
+		'sql'    => "$column IN (SELECT sf.facility_id FROM `$syslogdb_default`.`syslog_facilities` AS sf WHERE sf.facility = ?)",
+		'params' => [$facility]
+	];
 }
 
 /**
@@ -3653,7 +3829,7 @@ define('SYSLOG_RULE_PREVIEW_HISTORY_ROWS', 10000);
  * @param array  $rule      The rule attributes: 'type', 'message' and, for
  *                          removal rules, 'method'.  The 'filter' and
  *                          legacy match types are compiled safely.
- * @param string $rule_type Either 'alert' or 'removal'.
+ * @param string $rule_type Either 'alert', 'removal' or 'report'.
  * @param int    $rows      Maximum number of matching messages to return.
  *
  * @return array{error: string, count: int, rows: array<int, array<string, string>>}
@@ -3664,12 +3840,17 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
 
 	$rows = max(1, min($rows, SYSLOG_RULE_PREVIEW_MAX_ROWS));
 
-	if (!in_array($rule_type, ['alert', 'removal'], true)) {
+	if (!in_array($rule_type, ['alert', 'removal', 'report'], true)) {
 		return ['error' => __('Unknown rule type.', 'syslog'), 'count' => 0, 'rows' => []];
 	}
 
 	$type            = isset($rule['type']) ? (string) $rule['type'] : '';
 	$rule['message'] = isset($rule['message']) ? (string) $rule['message'] : '';
+
+	// Reports run against stored messages, not the incoming queue.
+	if ($rule_type === 'report') {
+		return syslog_report_preview($rule, $rows);
+	}
 
 	$sql    = '';
 	$params = [];
@@ -3857,7 +4038,7 @@ function syslog_rule_preview(array $rule, string $rule_type = 'alert', int $rows
  * editor realms so a user without the rule pages cannot reach the
  * compiler with arbitrary filter documents.
  *
- * @param string $rule_type Either 'alert' or 'removal'.
+ * @param string $rule_type Either 'alert', 'removal' or 'report'.
  *
  * @return string A JSON document with the preview result, or an error.
  */
@@ -4058,11 +4239,12 @@ function syslog_remove_items($table, $max_seq, $rule_id = 0) {
 				}
 			} elseif ($remove['type'] == 'facility') {
 				if ($table == 'syslog_incoming') {
-					$sql_where = 'WHERE `' . $syslog_incoming_config['facilityField'] . '` = ?
+					$facility  = syslog_incoming_facility_condition((string) $remove['message']);
+					$sql_where = 'WHERE ' . $facility['sql'] . '
 						AND `status` = 1
 						AND `seq` <= ?';
 
-					$params[] = $remove['message'];
+					$params   = $facility['params'];
 					$params[] = $max_seq;
 				} else {
 					$facility_id = syslog_db_fetch_cell_prepared("SELECT facility_id
@@ -4263,6 +4445,8 @@ function syslog_remove_items($table, $max_seq, $rule_id = 0) {
 				$removed += $messages_removed;
 
 				if (($messages_xferred + $messages_removed) > 0) {
+					syslog_debug(sprintf("Matched %5s - Record(s) for Removal Rule '%s'", $messages_removed, $remove['name']));
+
 					$fired[] = [
 						'name'  => $remove['name'],
 						'count' => $messages_xferred + $messages_removed
@@ -5713,6 +5897,8 @@ function syslog_process_alerts($max_seq) {
 			}
 
 			if ($alert['level'] == 1 && $count == 0) {
+				syslog_debug(sprintf('Skipping     - Alert \'%s\' has no matching records', $alert['name']));
+
 				continue;
 			}
 
@@ -6278,7 +6464,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 
 				return ['sql' => "({$filter['sql']})", 'params' => $filter['params']];
 			case 'facility':
-				return ['sql' => "`{$syslog_incoming_config['facilityField']}` = ?", 'params' => [$alert['message']]];
+				return syslog_incoming_facility_condition((string) $alert['message']);
 			case 'messageb':
 				return ['sql' => "`{$syslog_incoming_config['textField']}` LIKE ?", 'params' => [$alert['message'] . '%']];
 			case 'messagec':
@@ -6330,13 +6516,15 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 	}
 
 	if ($alert['type'] == 'facility') {
+		$facility = syslog_incoming_facility_condition((string) $alert['message']);
+
 		$sql = "SELECT *
 			FROM `$syslogdb_default`.`syslog_incoming`
-			WHERE `{$syslog_incoming_config['facilityField']}` = ?
+			WHERE {$facility['sql']}
 			AND `status` = 1
 			AND `seq` <= ?";
 
-		$params[] = $alert['message'];
+		$params   = $facility['params'];
 		$params[] = $max_seq;
 	} elseif ($alert['type'] == 'messageb') {
 		$sql = "SELECT *
@@ -7889,14 +8077,15 @@ function syslog_process_reports() {
 
 				$reptext = '';
 
-				$sql = syslog_get_report_sql($report);
+				$params = [];
+				$sql    = syslog_get_report_sql($report, $params);
 
 				if ($sql != '') {
 					$date2 = date('Y-m-d H:i:s', $current_time);
 					$date1 = date('Y-m-d H:i:s', $current_time - $time_span);
 					$sql .= ' AND logtime BETWEEN ? AND ?';
 					$sql .= ' ORDER BY logtime DESC';
-					$items = syslog_db_fetch_assoc_prepared($sql, [$date1, $date2]);
+					$items = syslog_db_fetch_assoc_prepared($sql, array_merge($params, [$date1, $date2]));
 
 					syslog_debug('We have ' . cacti_sizeof($items) . ' items for the Report');
 
@@ -7975,18 +8164,26 @@ function syslog_process_reports() {
 /**
  * syslog_get_report_sql - Return the SQL syntax for the report query
  *
- * @param array<string, mixed> $report The report to process, passed by reference
+ * Filter Builder reports are compiled to a parameterized WHERE clause whose
+ * values are returned through $params; the other match types embed their
+ * quoted value and leave $params empty.
  *
- * @return string The unprepared SQL, empty for an unknown report type
+ * @param array<string, mixed> $report The report to process, passed by reference
+ * @param array<int, mixed>    $params Set to the bind values of the returned SQL
+ * @param string               $source The table, or derived table, to read; the stored syslog table by default
+ *
+ * @return string The SQL, empty for an unknown report type or a filter that does not compile
  */
-function syslog_get_report_sql(&$report) {
+function syslog_get_report_sql(&$report, &$params = [], string $source = '') {
 	global $syslogdb_default;
 
-	$sql = '';
+	$sql    = '';
+	$params = [];
+	$source = $source !== '' ? $source : "`$syslogdb_default`.`syslog`";
 
 	if ($report['type'] == 'messageb') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE message LIKE " . db_qstr($report['message'] . '%');
@@ -7994,7 +8191,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'messagec') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE message LIKE " . db_qstr('%' . $report['message'] . '%');
@@ -8002,7 +8199,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'messagee') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE message LIKE " . db_qstr('%' . $report['message']);
@@ -8010,7 +8207,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'host') {
 		$sql = "SELECT sl.*, sh.host
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_hosts` AS sh
 			ON sl.host_id = sh.host_id
 			WHERE sh.host = " . db_qstr($report['message']);
@@ -8018,7 +8215,7 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'facility') {
 		$sql = "SELECT sl.*, sf.facility
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_facilities` AS sf
 			ON sl.facility_id = sf.facility_id
 			WHERE sf.facility = " . db_qstr($report['message']);
@@ -8026,19 +8223,101 @@ function syslog_get_report_sql(&$report) {
 
 	if ($report['type'] == 'program') {
 		$sql = "SELECT sl.*, sp.program
-			FROM `$syslogdb_default`.`syslog` AS sl
+			FROM $source AS sl
 			INNER JOIN `$syslogdb_default`.`syslog_programs` AS sp
 			ON sl.program_id = sp.program_id
 			WHERE sp.program = " . db_qstr($report['message']);
 	}
 
+	if ($report['type'] == 'filter') {
+		// The stored table keeps host and program ids; the compiler resolves names to ids.
+		$compiled = syslog_get_removal_rule_sql($report, 'syslog', 'sl.', false);
+
+		if (cacti_sizeof($compiled)) {
+			$sql = "SELECT sl.*, sh.host, sp.program
+				FROM $source AS sl
+				LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS sh
+				ON sl.host_id = sh.host_id
+				LEFT JOIN `$syslogdb_default`.`syslog_programs` AS sp
+				ON sl.program_id = sp.program_id
+				" . $compiled['sql'];
+			$params = $compiled['params'];
+		}
+	}
+
 	if ($report['type'] == 'sql') {
-		$sql = "SELECT *
-			FROM `$syslogdb_default`.`syslog`
+		// Hand written expressions may qualify columns with the table name. The
+		// names are resolved in the select list, not joined, so unqualified
+		// columns such as host_id in the expression stay unambiguous.
+		$sql = "SELECT syslog.*,
+			(SELECT sh.host FROM `$syslogdb_default`.`syslog_hosts` AS sh WHERE sh.host_id = syslog.host_id) AS host,
+			(SELECT sp.program FROM `$syslogdb_default`.`syslog_programs` AS sp WHERE sp.program_id = syslog.program_id) AS program
+			FROM $source AS syslog
 			WHERE (" . $report['message'] . ')';
 	}
 
 	return $sql;
+}
+
+/**
+ * syslog_report_preview - Run a read-only preview of a report rule against the
+ * most recent stored messages, using the same query the report sends.
+ *
+ * @param array<string, mixed> $rule The report attributes: 'type' and 'message'.
+ * @param int                  $rows Maximum number of matching messages to return.
+ *
+ * @return array{error: string, count: int, rows: array<int, array<string, string>>, notice?: string}
+ *         The bounded preview result, or an error message.
+ */
+function syslog_report_preview(array $rule, int $rows): array {
+	global $syslogdb_default;
+
+	$limit  = SYSLOG_RULE_PREVIEW_HISTORY_ROWS;
+	$params = [];
+	$sql    = syslog_get_report_sql($rule, $params, "(SELECT * FROM `$syslogdb_default`.`syslog` ORDER BY seq DESC LIMIT $limit)");
+
+	if ($sql === '') {
+		$error = isset($GLOBALS['syslog_rule_filter_error']) && $GLOBALS['syslog_rule_filter_error'] !== ''
+			? (string) $GLOBALS['syslog_rule_filter_error']
+			: __('The rule did not compile to a query.', 'syslog');
+
+		return ['error' => $error, 'count' => 0, 'rows' => []];
+	}
+
+	$count = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM ($sql) AS preview", $params);
+
+	if (!is_numeric($count)) {
+		return ['error' => __('The preview query could not be evaluated.', 'syslog'), 'count' => 0, 'rows' => []];
+	}
+
+	// Legacy match types select only some of the names, so resolve both here.
+	$sample = syslog_db_fetch_assoc_prepared("SELECT preview.*,
+		(SELECT sh.host FROM `$syslogdb_default`.`syslog_hosts` AS sh WHERE sh.host_id = preview.host_id LIMIT 1) AS preview_host,
+		(SELECT sp.program FROM `$syslogdb_default`.`syslog_programs` AS sp WHERE sp.program_id = preview.program_id LIMIT 1) AS preview_program
+		FROM ($sql) AS preview ORDER BY logtime DESC LIMIT $rows", $params);
+
+	if (!is_array($sample)) {
+		return ['error' => __('The preview sample could not be read.', 'syslog'), 'count' => (int) $count, 'rows' => []];
+	}
+
+	$out = [];
+
+	foreach ($sample as $record) {
+		$out[] = [
+			'seq'     => (string) ($record['seq'] ?? ''),
+			'logtime' => (string) ($record['logtime'] ?? ''),
+			'host'    => (string) (($record['host'] ?? '') !== '' ? $record['host'] : ($record['preview_host'] ?? '')),
+			'program' => (string) (($record['program'] ?? '') !== '' ? $record['program'] : ($record['preview_program'] ?? '')),
+			'message' => (string) ($record['message'] ?? '')
+		];
+	}
+
+	return [
+		'error'  => '',
+		'count'  => (int) $count,
+		'rows'   => $out,
+		'notice' => __('Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email.', $limit, 'syslog')
+	];
 }
 
 /**
@@ -8229,13 +8508,204 @@ function alert_replace_variables($alert, $results, $hostname = '') {
  *
  * @return string The details trigger button HTML.
  */
-function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = ''): string {
+function syslog_message_button($message, $device, $program, $facility, $severity, $received, $id = 0, $source = '', int $trim = 0): string {
 	$details            = compact('device', 'program', 'facility', 'severity', 'received');
 	$details['message'] = (string) $message;
 	$details['rules']   = syslog_message_rule_links($id, $source, $received, $device);
 
-	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
-		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($details['message']) . '</button>';
+	// The flyout asks the server for the full record by table and sequence id.
+	if (in_array($source, SYSLOG_MESSAGE_DETAIL_SOURCES, true) && ctype_digit((string) $id) && (int) $id > 0) {
+		$details['id']     = (string) $id;
+		$details['source'] = $source;
+	}
+
+	// The details keep the complete message whatever the row shows.
+	$class = 'syslogMessageOpen' . ($trim < 0 ? ' syslogMessageWrap' : '');
+
+	return '<button type="button" class="' . $class . '" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
+		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape(syslog_trim_message($details['message'], $trim)) . '</button>';
+}
+
+/**
+ * The message Trim choices of the log view: fit the column with an ellipsis
+ * (0), show all text wrapped (-1), or cut after a number of characters.
+ *
+ * @return array<int, string> Trim values and labels.
+ */
+function syslog_trim_options(): array {
+	$options = [0 => __('Fit Column', 'syslog'), -1 => __('All Text', 'syslog')];
+
+	foreach ([30, 50, 75, 100, 150, 300] as $chars) {
+		$options[$chars] = __('%d Chars', $chars, 'syslog');
+	}
+
+	return $options;
+}
+
+/**
+ * Cut a message after the chosen number of characters for display.
+ *
+ * @param string $message The message text.
+ * @param int    $trim    The Trim value; 0 and below keep the whole text.
+ *
+ * @return string The text to show in the row.
+ */
+function syslog_trim_message(string $message, int $trim): string {
+	if ($trim <= 0 || mb_strlen($message, 'UTF-8') <= $trim) {
+		return $message;
+	}
+
+	return rtrim(mb_substr($message, 0, $trim, 'UTF-8')) . '…';
+}
+
+/**
+ * The tables the message details flyout can read a record from, keyed as the
+ * log view's mtype column names them: stored ('main') and removed ('remove')
+ * messages, and the alert log ('alert').
+ */
+define('SYSLOG_MESSAGE_DETAIL_SOURCES', ['main', 'remove', 'alert']);
+
+/**
+ * syslog_message_details - Look up one syslog record for the message details
+ * flyout, with the recommendations that match its message.
+ *
+ * @param string     $source  'main' (syslog), 'remove' (syslog_removed) or 'alert' (syslog_logs).
+ * @param int|string $id      The sequence id of the record.
+ * @param string     $logtime Optional logtime of the record, which lets partitioned tables prune.
+ *
+ * @return array<string, mixed> 'found' false for an unknown source, id or record; otherwise the
+ *                              record, rule editor links and matching recommendations.
+ */
+function syslog_message_details(string $source, $id, string $logtime = ''): array {
+	global $syslogdb_default;
+
+	if (!in_array($source, SYSLOG_MESSAGE_DETAIL_SOURCES, true) || !ctype_digit((string) $id) || (int) $id < 1) {
+		return ['found' => false];
+	}
+
+	$params = [(int) $id];
+
+	if ($source === 'alert') {
+		$row = syslog_db_fetch_row_prepared("SELECT l.seq, l.logtime, l.logmsg AS message, l.host, l.count,
+			sp.program, sf.facility, spr.priority, sa.name AS alert
+			FROM `$syslogdb_default`.`syslog_logs` AS l
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS sp ON sp.program_id = l.program_id
+			LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf ON sf.facility_id = l.facility_id
+			LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS spr ON spr.priority_id = l.priority_id
+			LEFT JOIN `$syslogdb_default`.`syslog_alert` AS sa ON sa.id = l.alert_id
+			WHERE l.seq = ?
+			LIMIT 1", $params);
+	} else {
+		$table = $source === 'main' ? 'syslog' : 'syslog_removed';
+		$where = 's.seq = ?';
+
+		if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d{1,6})?$/', $logtime)) {
+			$where   .= ' AND s.logtime = ?';
+			$params[] = $logtime;
+		}
+
+		$row = syslog_db_fetch_row_prepared("SELECT s.seq, s.logtime, s.message, s.threshold_breached,
+			sh.host, sp.program, sf.facility, spr.priority
+			FROM `$syslogdb_default`.`$table` AS s
+			LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS sh ON sh.host_id = s.host_id
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS sp ON sp.program_id = s.program_id
+			LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf ON sf.facility_id = s.facility_id
+			LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS spr ON spr.priority_id = s.priority_id
+			WHERE $where
+			LIMIT 1", $params);
+	}
+
+	if (!is_array($row) || !cacti_sizeof($row)) {
+		return ['found' => false];
+	}
+
+	$record = [
+		'id'       => (string) $row['seq'],
+		'source'   => $source,
+		'received' => (string) $row['logtime'],
+		'device'   => (string) ($row['host'] ?? ''),
+		'program'  => (string) ($row['program'] ?? ''),
+		'facility' => (string) ($row['facility'] ?? ''),
+		'severity' => (string) ($row['priority'] ?? ''),
+		'message'  => (string) $row['message'],
+		'breached' => !empty($row['threshold_breached']),
+		'alert'    => (string) ($row['alert'] ?? ''),
+		'count'    => isset($row['count']) ? (int) $row['count'] : null
+	];
+
+	$recommendations = [];
+
+	if (function_exists('syslog_recommendations_lookup')) {
+		$recommendations = syslog_recommendations_format(syslog_recommendations_lookup($record['message']));
+	}
+
+	return [
+		'found'           => true,
+		'record'          => $record,
+		'rules'           => syslog_message_rule_links($record['id'], $source, $record['received'], $record['device']),
+		'recommendations' => $recommendations
+	];
+}
+
+/**
+ * Whether the log views skip counting every matching record, which can be
+ * very expensive on large installations.
+ *
+ * @return bool True when the Skip Total Row Count setting is on.
+ */
+function syslog_row_count_disabled(): bool {
+	return read_config_option('syslog_skip_row_count') == 'on';
+}
+
+/**
+ * syslog_uncounted_page - Page through records without a total row count.
+ *
+ * The query fetched one row more than a page holds, so a surplus row shows
+ * that a further page exists. The surplus row is dropped from $records, and
+ * the returned total and page_count drive Cacti's html_nav_bar(): it offers
+ * Next only while the total reaches a full page, and a first page that holds
+ * everything still reports its exact count.
+ *
+ * @param array<int, mixed> $records The fetched records, trimmed to one page.
+ * @param int               $rows    The records shown per page.
+ * @param int               $page    The current page, starting at 1.
+ *
+ * @return array{total: int, page_count: bool} The html_nav_bar() total and page_count arguments.
+ */
+function syslog_uncounted_page(array &$records, int $rows, int $page): array {
+	$more = cacti_sizeof($records) > $rows;
+
+	if ($more) {
+		$records = array_slice($records, 0, $rows);
+	}
+
+	$shown = cacti_sizeof($records);
+
+	if ($page <= 1 && !$more) {
+		return ['total' => $shown, 'page_count' => true];
+	}
+
+	return ['total' => $more ? $rows : min($shown, $rows - 1), 'page_count' => false];
+}
+
+/**
+ * The JSON document the message details flyout requests through
+ * syslog.php?action=message_details.
+ *
+ * @param string     $source  The table of the record; see syslog_message_details().
+ * @param int|string $id      The sequence id of the record.
+ * @param string     $logtime Optional logtime of the record.
+ *
+ * @return string The JSON document, with the localized recommendation labels.
+ */
+function syslog_message_details_json(string $source, $id, string $logtime = ''): string {
+	$details = syslog_message_details($source, $id, $logtime);
+
+	if (function_exists('syslog_recommendations_labels')) {
+		$details['labels'] = syslog_recommendations_labels();
+	}
+
+	return (string) json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE);
 }
 
 /**

@@ -42,6 +42,20 @@ function syslogSearchRows(tree) {
 	return rows;
 }
 
+/**
+ * Logtime presets, aligned with Cacti's timespan selector; the server's
+ * syslog_search_time_presets() is the authority, and the log view passes its
+ * translated labels in the builder's data-times attribute.
+ */
+var SYSLOG_TIME_PRESETS = {
+	last: {'1800': '30 minutes', '3600': '1 hour', '7200': '2 hours', '14400': '4 hours', '21600': '6 hours', '43200': '12 hours',
+		'86400': '1 day', '172800': '2 days', '259200': '3 days', '345600': '4 days', '604800': '1 week', '1209600': '2 weeks',
+		'2592000': '30 days', '1months': '1 month', '2months': '2 months', '3months': '3 months', '4months': '4 months',
+		'6months': '6 months', '1years': '1 year', '2years': '2 years'},
+	during: {day_shift: 'Day Shift', this_day: 'This Day', this_week: 'This Week', this_month: 'This Month', this_year: 'This Year',
+		previous_day: 'Previous Day', previous_week: 'Previous Week', previous_month: 'Previous Month', previous_year: 'Previous Year'}
+};
+
 /** Serialize literal row values; users never have to quote search syntax. */
 function syslogSearchExpression(rows) {
 	return rows.map(function(row, index) {
@@ -81,7 +95,10 @@ function initSyslogCompactSearch() {
 	options.querySelector('.syslogMenuBody').append(document.getElementById('save'), document.getElementById('text'));
 	document.getElementById('text').setAttribute('role', 'status');
 	var refresh = document.getElementById('refresh').closest('.syslogSearchOption');
-	toolbar.append(refresh, document.getElementById('refresh_results'), document.getElementById('export'));
+	var trim = document.getElementById('trimval');
+	toolbar.append(refresh);
+	if (trim) toolbar.append(trim.closest('.syslogSearchOption'));
+	toolbar.append(document.getElementById('refresh_results'), document.getElementById('export'));
 	var summaries = ['rows', 'removal', 'grouping'].map(function(id) {
 		var select = document.getElementById(id);
 		return select && select.selectedOptions ? select.selectedOptions[0].textContent : '';
@@ -98,24 +115,171 @@ function initSyslogCompactSearch() {
 	form.addEventListener('keydown', function(event) {
 		if (event.key === 'Escape') form.querySelectorAll('details[open]').forEach(function(menu) { menu.open = false; });
 	});
+	syslogSingleOpenMenu(form);
 }
 
-/** Inspect complete messages locally; never inject log content as HTML. */
+/**
+ * Keep one menu open at a time, like select menus: opening a Manage or View
+ * options menu closes the other and any open dropdown, and pressing anywhere
+ * outside an open menu closes it. Cacti renders selects with Select2 or jQuery
+ * UI selectmenu, which both append their option lists to <body>, so a press
+ * inside one does not count as outside.
+ */
+function syslogSingleOpenMenu(form) {
+	function closeSelects() {
+		$(form).find('select').each(function() {
+			if ($(this).data('select2')) $(this).select2('close');
+			else if ($(this).selectmenu('instance')) $(this).selectmenu('close');
+		});
+	}
+	form.querySelectorAll('details.syslogMenu').forEach(function(menu) {
+		menu.addEventListener('toggle', function() {
+			if (!menu.open) return;
+			form.querySelectorAll('details.syslogMenu[open]').forEach(function(other) { if (other !== menu) other.open = false; });
+			closeSelects();
+		});
+	});
+	$(document).off('mousedown.syslogMenus').on('mousedown.syslogMenus', function(event) {
+		if (!document.body.contains(form)) {
+			$(document).off('mousedown.syslogMenus');
+			return;
+		}
+		if ($(event.target).closest('.ui-selectmenu-menu, .select2-container, .select2-dropdown').length) return;
+		form.querySelectorAll('details.syslogMenu[open]').forEach(function(menu) {
+			if (!menu.contains(event.target)) menu.open = false;
+		});
+	});
+	// A dropdown opening closes any open Manage or View options menu that does not contain it.
+	$(form).off('selectmenuopen.syslogMenus select2:opening.syslogMenus').on('selectmenuopen.syslogMenus select2:opening.syslogMenus', 'select', function() {
+		var select = this;
+		form.querySelectorAll('details.syslogMenu[open]').forEach(function(menu) { if (!menu.contains(select)) menu.open = false; });
+	});
+}
+
+/**
+ * Message details flyout. Clicking a row shows the row's own data at once,
+ * then dispatches syslog.php?action=message_details for the stored record and
+ * its matching recommendations. Log content is only ever inserted as text.
+ */
 function initSyslogWorkspace() {
 	$(function() {
 		var workspace = document.getElementById('syslog_workspace');
-		var pane = document.getElementById('syslog_message_details');
+		// A flyout left on <body> by the previous Syslog page is stale now; a
+		// refresh reopens the record it was showing.
+		var reopen = '';
+		document.querySelectorAll('body > #syslog_message_details').forEach(function(stale) {
+			if (!stale.hidden && stale.dataset.record) reopen = stale.dataset.record;
+			stale.remove();
+		});
+		var pane = workspace ? workspace.querySelector('#syslog_message_details') : null;
 		if (!workspace || !pane) return;
-		var active, details;
+		// Themes such as Midwinter lift parts of the page above #main's stacking
+		// context, which would cover a flyout nested inside it, so the flyout
+		// lives on <body> and takes the theme tokens there.
+		document.body.append(pane);
+		applySyslogTheme(pane);
+		var active, details = {}, request = 0;
+		var recSection = document.getElementById('syslog_details_recommendations');
+		var recBody = document.getElementById('syslog_details_rec_body');
+		var linkButton = document.getElementById('syslog_details_link');
+		var status = document.getElementById('syslog_copy_status');
+
+		// Start at the top of Cacti's content column, below every theme's
+		// header and breadcrumb bar, so the navigation stays usable.
+		function place() {
+			var anchor = document.getElementById('navigation_right') || document.getElementById('cactiPageHead');
+			var top = anchor ? anchor.getBoundingClientRect()[anchor.id === 'navigation_right' ? 'top' : 'bottom'] : 0;
+			pane.style.setProperty('--syslog-flyout-top', Math.max(0, Math.round(top)) + 'px');
+		}
+
+		function deselect() {
+			if (!active) return;
+			active.setAttribute('aria-expanded', 'false');
+			active.closest('tr').classList.remove('syslogSelected');
+		}
+
 		function close() {
+			request++;
 			pane.hidden = true;
 			workspace.classList.remove('has-details');
-			if (active) {
-				active.setAttribute('aria-expanded', 'false');
-				active.closest('tr').classList.remove('syslogSelected');
-				active.focus();
-			}
+			deselect();
+			if (active) active.focus();
+			active = null;
 		}
+
+		function badge(node, value, kind) {
+			var pill = document.createElement('span');
+			pill.className = kind + ' ' + kind + '-' + value.toLowerCase().replace(/[^a-z]/g, '');
+			pill.textContent = value;
+			node.replaceChildren(pill);
+		}
+
+		function render(data) {
+			details = data;
+			pane.querySelectorAll('[data-detail]').forEach(function(node) {
+				var key = node.dataset.detail;
+				var value = data[key] === undefined || data[key] === null ? '' : String(data[key]);
+				var optional = key === 'alert' || key === 'id';
+				node.hidden = optional && value === '';
+				pane.querySelector('[data-detail-row="' + key + '"]').hidden = node.hidden;
+				if (value !== '' && key === 'severity') badge(node, value, 'syslogSeverity');
+				else if (value !== '' && key === 'facility') badge(node, value, 'syslogFacility');
+				else node.textContent = value || '—';
+			});
+			document.getElementById('syslog_details_subtitle').textContent = [data.device, data.received].filter(Boolean).join(' · ');
+			pane.querySelectorAll('[data-rule]').forEach(function(link) {
+				var url = (data.rules || {})[link.dataset.rule];
+				link.hidden = !url;
+				if (url) link.setAttribute('href', url);
+				else link.removeAttribute('href');
+			});
+			document.getElementById('syslog_details_raw').textContent = data.message || '';
+			status.textContent = '';
+			pane.querySelector('[data-filter-detail="program"]').disabled = !data.program;
+			pane.querySelector('[data-filter-detail="host"]').disabled = !data.device;
+			linkButton.hidden = !(data.source && data.id);
+		}
+
+		function note(text) {
+			var paragraph = document.createElement('p');
+			paragraph.className = 'syslogFlyoutNote';
+			paragraph.textContent = text;
+			recBody.replaceChildren(paragraph);
+		}
+
+		// Rows that name their record are dispatched by id; anything else falls
+		// back to the message-only recommendation lookup the tooltip uses.
+		function load(data) {
+			var token = ++request;
+			note(recSection.dataset.loading);
+			var call = data.source && data.id
+				? $.ajax({url: 'syslog.php', type: 'GET', dataType: 'json', data: {action: 'message_details', source: data.source, id: data.id, logtime: data.received || ''}})
+				: $.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'recommendation', message: data.message || ''}});
+			call.done(function(result) {
+				if (token !== request) return;
+				if (result && result.record) render($.extend({}, result.record, {rules: result.rules || {}}));
+				var matches = result && Array.isArray(result.recommendations) ? result.recommendations : [];
+				if (!matches.length) {
+					note(recSection.dataset.none);
+					return;
+				}
+				recBody.replaceChildren();
+				syslogRecommendationCards($(recBody), matches, result.labels || {}, false);
+			}).fail(function() {
+				if (token === request) note(recSection.dataset.error);
+			});
+		}
+
+		function show(data) {
+			place();
+			render(data);
+			pane.dataset.record = data.source && data.id ? data.source + ':' + data.id : '';
+			pane.hidden = false;
+			workspace.classList.add('has-details');
+			load(data);
+			pane.focus({preventScroll: true});
+		}
+
 		workspace.querySelectorAll('.syslogMessageOpen').forEach(function(button) {
 			var row = button.closest('tr');
 			row.removeAttribute('title');
@@ -137,25 +301,11 @@ function initSyslogWorkspace() {
 				});
 			});
 			function open() {
-				if (active) { active.setAttribute('aria-expanded', 'false'); active.closest('tr').classList.remove('syslogSelected'); }
+				deselect();
 				active = button;
-				details = data;
-				pane.querySelectorAll('[data-detail]').forEach(function(node) { node.textContent = data[node.dataset.detail] || '—'; });
-				pane.querySelectorAll('[data-rule]').forEach(function(link) {
-					var url = (data.rules || {})[link.dataset.rule];
-					link.hidden = !url;
-					if (url) link.setAttribute('href', url);
-					else link.removeAttribute('href');
-				});
-				document.getElementById('syslog_details_raw').textContent = data.message;
-				document.getElementById('syslog_copy_status').textContent = '';
-				pane.querySelector('[data-filter-detail="program"]').disabled = !data.program;
-				pane.querySelector('[data-filter-detail="host"]').disabled = !data.device;
-				pane.hidden = false;
-				workspace.classList.add('has-details');
 				row.classList.add('syslogSelected');
 				button.setAttribute('aria-expanded', 'true');
-				pane.focus({preventScroll: true});
+				show(data);
 			}
 			// The message button keeps keyboard access; the rest of the row opens the pane too.
 			button.addEventListener('click', function(event) {
@@ -167,38 +317,125 @@ function initSyslogWorkspace() {
 				open();
 			});
 		});
+
+		/**
+		 * Open the flyout for any record by table and sequence id, for example
+		 * from a shared link, even when it is not on the current page.
+		 */
+		window.syslogShowMessageDetails = function(source, id, logtime) {
+			deselect();
+			active = null;
+			show({source: String(source), id: String(id), received: logtime || '', message: ''});
+		};
+
+		var linked = /^(main|remove|alert):(\d+)$/.exec(reopen || new URLSearchParams(window.location.search).get('details') || '');
+		if (linked) window.syslogShowMessageDetails(linked[1], linked[2]);
+
+		syslogEnableColumnResize(workspace);
+
+		$(window).off('resize.syslogFlyout').on('resize.syslogFlyout', function() { if (!pane.hidden) place(); });
+		// Cacti's AJAX navigation replaces #main but not <body>, so drop the
+		// flyout once the Syslog page is gone. A refreshed Syslog page takes the
+		// flyout over itself and reopens its record.
+		$(document).off('ajaxComplete.syslogFlyout').on('ajaxComplete.syslogFlyout', function() {
+			if (!document.getElementById('syslog_workspace')) {
+				pane.remove();
+				$(document).off('ajaxComplete.syslogFlyout');
+			}
+		});
 		document.getElementById('syslog_details_close').addEventListener('click', close);
 		pane.addEventListener('keydown', function(event) { if (event.key === 'Escape') close(); });
-		document.getElementById('syslog_details_copy').addEventListener('click', async function() {
-			var status = document.getElementById('syslog_copy_status');
+
+		async function copy(text, button) {
 			try {
-				if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(details.message);
+				if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
 				else {
-					var text = document.createElement('textarea');
-					text.value = details.message;
-					pane.append(text);
-					text.select();
+					var area = document.createElement('textarea');
+					area.value = text;
+					pane.append(area);
+					area.select();
 					var copied = document.execCommand('copy');
-					text.remove();
+					area.remove();
 					if (!copied) throw new Error('Copy failed');
 				}
 				status.textContent = status.dataset.success;
 			} catch (error) { status.textContent = status.dataset.error; }
-			this.focus();
+			button.focus();
+		}
+
+		document.getElementById('syslog_details_copy').addEventListener('click', function() {
+			void copy(details.message || '', this);
+		});
+		linkButton.addEventListener('click', function() {
+			var url = new URL(window.location.pathname, window.location.origin);
+			url.searchParams.set('tab', details.source === 'alert' ? 'alerts' : 'syslog');
+			url.searchParams.set('details', details.source + ':' + details.id);
+			void copy(url.toString(), this);
 		});
 		pane.querySelectorAll('[data-filter-detail]').forEach(function(button) {
 			button.addEventListener('click', function() {
-				var builder = document.getElementById('syslog_search_builder');
-				var expression = syslogBuilderSync(builder);
-				if (expression === null) return;
-				var condition = syslogSearchExpression([{field: button.dataset.filterDetail, operator: '=', value: button.dataset.filterDetail === 'host' ? details.device : details.program}]);
-				var query = (expression ? '(' + expression + ') AND ' : '') + condition;
-				if (query === null) return;
-				var data = syslogFilterData();
-				data.rfilter = query;
-				postSyslog(data);
+				var field = button.dataset.filterDetail;
+				syslogAddFilterCondition(field, field === 'host' ? details.device : details.program);
 			});
 		});
+	});
+}
+
+// The message header sorts on message in System Logs and logmsg in Alert Logs.
+var SYSLOG_MESSAGE_SORT = '.sortinfo[sort-column="message"], .sortinfo[sort-column="logmsg"]';
+
+/**
+ * Make Cacti's column resizing work on the log tables.
+ *
+ * The message cell claims all spare width (width 100%, which also gives long
+ * messages their ellipsis), and under the automatic table layout that squeezes
+ * every other column to its content, so widths set by dragging were ignored.
+ * Pin each column at its rendered width, leave the message column free and
+ * switch to the fixed layout, which honors header widths. The message column
+ * then absorbs any change.
+ *
+ * Releasing a drag over the header text also fires a click, which Cacti's
+ * sortable headers treat as a sort, so that one click is swallowed.
+ */
+function syslogEnableColumnResize(workspace) {
+	workspace.querySelectorAll('tr.tableHeader').forEach(function(header) {
+		var table = header.closest('table');
+		if (!table || table.classList.contains('syslogFixedColumns')) return;
+		var cells = Array.from(header.children);
+		var widths = cells.map(function(cell) { return Math.ceil(cell.getBoundingClientRect().width); });
+		cells.forEach(function(cell, index) {
+			var message = cell.querySelector(SYSLOG_MESSAGE_SORT);
+			if (message) cell.style.removeProperty('width');
+			else if (!cell.style.width) cell.style.width = widths[index] + 'px';
+		});
+		table.classList.add('syslogFixedColumns');
+
+		var resized = 0;
+		var keep = null;
+		// Cacti's resize hands the width change to the next column, which can
+		// squeeze it to nothing; here the message column absorbs it instead.
+		// The core callback runs after these handlers, so restore on the next frame.
+		$(header).on('resizestart', 'th', function() {
+			resized = Date.now();
+			var next = this.nextElementSibling;
+			keep = next && !next.querySelector(SYSLOG_MESSAGE_SORT) ? {cell: next, width: next.style.width} : null;
+		}).on('resize', 'th', function() {
+			resized = Date.now();
+			if (keep) {
+				var restore = keep;
+				window.requestAnimationFrame(function() { restore.cell.style.width = restore.width; });
+			}
+		}).on('resizestop', 'th', function() {
+			// Restore before the core stop callback saves the column widths.
+			resized = Date.now();
+			if (keep) keep.cell.style.width = keep.width;
+		});
+		header.addEventListener('click', function(event) {
+			if (Date.now() - resized < 500) {
+				event.stopPropagation();
+				event.preventDefault();
+			}
+		}, true);
 	});
 }
 
@@ -206,14 +443,17 @@ function initSyslogValueFilters() {
 	document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
 		button.addEventListener('click', function(event) {
 			event.stopPropagation();
-			var builder = document.getElementById('syslog_search_builder');
-			if (!builder) return;
-			var expression = syslogBuilderSync(builder);
-			if (expression === null) return;
-			var condition = syslogSearchExpression([{field: button.dataset.filterField, operator: '=', value: button.dataset.filterValue}]);
-			var data = syslogFilterData();
-			data.rfilter = (expression ? '(' + expression + ') AND ' : '') + condition;
-			postSyslog(data);
+			syslogAddFilterCondition(button.dataset.filterField, button.dataset.filterValue);
+		});
+	});
+	// Mark values the search is already limited to; clicking them adds nothing.
+	// The search builder initializes on document ready, so mark after it.
+	$(function() {
+		var builder = document.getElementById('syslog_search_builder');
+		document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+			var active = builder && syslogFilterInScope(builder.searchRows, button.dataset.filterField, button.dataset.filterValue);
+			button.classList.toggle('syslogValueFilterActive', !!active);
+			button.setAttribute('aria-pressed', active ? 'true' : 'false');
 		});
 	});
 }
@@ -297,9 +537,49 @@ function syslogThemeTokens() {
 		'primary': header.css('background-color'), 'on-primary': header.css('color'),
 		'header-bg': headerBg, 'header-image': headerImg, 'header-fg': headerFg
 	};
+
+	// Themes such as Paper Plane draw buttons as light text on a dark fill, so
+	// the sampled button text vanishes on the panel surface. Fall back to the
+	// body text and a faint text-colored tint when the accent is unreadable.
+	if (syslogColorContrast(tokens.accent, tokens.surface) < 3) {
+		var text = syslogParseColor(tokens.text);
+		tokens.accent = tokens.text;
+		if (text) {
+			tokens.tint = 'rgba(' + text.join(', ') + ', 0.1)';
+		}
+	}
+
 	box.remove();
 	sample.remove();
 	return tokens;
+}
+
+/** Parse an rgb()/rgba() color string into [r, g, b], or null when unusable. */
+function syslogParseColor(color) {
+	var m = /rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)(?:[\s,/]+([\d.]+))?/.exec(color || '');
+	if (!m || (m[4] !== undefined && +m[4] === 0)) {
+		return null;
+	}
+	return [+m[1], +m[2], +m[3]];
+}
+
+/** WCAG contrast ratio of two colors; Infinity when either cannot be parsed. */
+function syslogColorContrast(a, b) {
+	var ca = syslogParseColor(a);
+	var cb = syslogParseColor(b);
+	if (!ca || !cb) {
+		return Infinity;
+	}
+	function luminance(c) {
+		return c.reduce(function(sum, v, i) {
+			v /= 255;
+			v = v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+			return sum + v * [0.2126, 0.7152, 0.0722][i];
+		}, 0);
+	}
+	var la = luminance(ca);
+	var lb = luminance(cb);
+	return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
 /** True when a sampled surface color is dark, so scoped CSS can flip tint sets. */
@@ -556,12 +836,12 @@ function initSyslogSearchBuilder(builder, rows) {
 				}));
 				var numeric = row.field === 'seq' || (row.field || '').endsWith('_id') || row.field === 'logtime';
 				var operators = configuredOperators[row.field] ||
-					(row.field === 'logtime' ? ['last', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like']);
+					(row.field === 'logtime' ? ['last', 'during', '=', '!=', '>', '>=', '<', '<='] : numeric ? ['=', '!=', '>', '>=', '<', '<='] : ['contains', '=', '!=', 'like']);
 				var inverse = {'=': '!=', '!=': '=', '>': '<=', '>=': '<', '<': '>=', '<=': '>'};
 				var operatorOptions = [];
 				if (row.operator && !operators.includes(row.operator)) operators.push(row.operator);
 				operators.forEach(function(op) {
-					var name = op === 'last' ? 'In the last' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op;
+					var name = op === 'last' ? 'In the last' : op === 'during' ? 'In the range' : row.field === 'logtime' && op === '>=' ? 'From (>=)' : row.field === 'logtime' && op === '<=' ? 'To (<=)' : op;
 					operatorOptions.push([op, name]);
 					if (!inverse[op]) operatorOptions.push(['NOT ' + op, op === 'contains' ? 'does not contain' : op === 'like' ? 'does not match pattern' : 'NOT ' + name]);
 				});
@@ -571,8 +851,9 @@ function initSyslogSearchBuilder(builder, rows) {
 					var previous = row.operator;
 					row.negative = value.startsWith('NOT ');
 					row.operator = row.negative ? value.slice(4) : value;
-					if (row.field === 'logtime' && previous !== row.operator && (previous === 'last' || row.operator === 'last')) {
-						row.value = row.operator === 'last' ? '86400' : '';
+					var presetOperator = function(op) { return op === 'last' || op === 'during'; };
+					if (row.field === 'logtime' && previous !== row.operator && (presetOperator(previous) || presetOperator(row.operator))) {
+						row.value = row.operator === 'last' ? '86400' : row.operator === 'during' ? 'this_day' : '';
 						render(container, rows);
 						initSyslogSearchDates(container);
 					}
@@ -592,8 +873,9 @@ function initSyslogSearchBuilder(builder, rows) {
 				}
 				input.addEventListener('input', function() { row.value = input.value; });
 				input.addEventListener('change', function() { row.value = input.value; });
-				if (row.field === 'logtime' && row.operator === 'last') {
-					input = select([['3600', '1 hour'], ['21600', '6 hours'], ['86400', '24 hours'], ['604800', '7 days'], ['1209600', '2 weeks'], ['2592000', '30 days'], ['3months', '3 months'], ['6months', '6 months']], row.value, 'Date range', function(value) { row.value = value; });
+				if (row.field === 'logtime' && (row.operator === 'last' || row.operator === 'during')) {
+					var times = labels.times ? JSON.parse(labels.times) : SYSLOG_TIME_PRESETS;
+					input = select(Object.entries(times[row.operator] || {}), row.value, 'Date range', function(value) { row.value = value; });
 					input.className = 'syslogSearchText';
 					input.required = true;
 				} else if (row.field === 'logtime') {
@@ -676,24 +958,33 @@ function initSyslogSearchBuilder(builder, rows) {
 	}
 }
 
-/** Submit filter values in a CSRF-protected POST body, including downloads. */
+/**
+ * Submit filter values in a CSRF-protected POST body. Results reload as a
+ * callback into #main, the way Cacti's own page loads work; only exports use
+ * a form, which streams the download into a hidden frame.
+ */
 function postSyslog(data) {
+	data.tab = window.pageTab || 'syslog';
+	data.__csrf_magic = csrfMagicToken;
+	if (data.export !== 'true') {
+		$.post('syslog.php?header=false', data).done(function(html) {
+			$('#main').empty().html(html);
+			if (typeof applySkin === 'function') applySkin();
+		});
+		return;
+	}
 	var form = document.createElement('form');
 	form.method = 'post';
 	form.action = 'syslog.php';
-	if (data.export === 'true') {
-		var frame = document.getElementById('syslog_download');
-		if (!frame) {
-			frame = document.createElement('iframe');
-			frame.id = frame.name = 'syslog_download';
-			frame.hidden = true;
-			frame.title = 'Syslog download';
-			document.body.appendChild(frame);
-		}
-		form.target = frame.name;
+	var frame = document.getElementById('syslog_download');
+	if (!frame) {
+		frame = document.createElement('iframe');
+		frame.id = frame.name = 'syslog_download';
+		frame.hidden = true;
+		frame.title = 'Syslog download';
+		document.body.appendChild(frame);
 	}
-	data.tab = window.pageTab || 'syslog';
-	data.__csrf_magic = csrfMagicToken;
+	form.target = frame.name;
 	Object.keys(data).forEach(function(name) {
 		var input = document.createElement('input');
 		input.type = 'hidden';
@@ -706,9 +997,35 @@ function postSyslog(data) {
 	form.remove();
 }
 
+/**
+ * Whether "field = value" already limits the whole search: a plain top-level
+ * condition while every top-level connector is AND. Under an OR the same
+ * condition would not narrow the results, so it does not count.
+ */
+function syslogFilterInScope(rows, field, value) {
+	if (!Array.isArray(rows) || rows.some(function(row, index) { return index > 0 && row.join === 'OR'; })) {
+		return false;
+	}
+	value = String(value).toLowerCase();
+	return rows.some(function(row) {
+		return !row.rows && !row.negative && row.field === field && row.operator === '=' && String(row.value).toLowerCase() === value;
+	});
+}
+
+/** Narrow the search to "field = value" unless it is already in scope. */
+function syslogAddFilterCondition(field, value) {
+	var builder = document.getElementById('syslog_search_builder');
+	if (!builder) return;
+	var expression = syslogBuilderSync(builder);
+	if (expression === null || syslogFilterInScope(builder.searchRows, field, value)) return;
+	var data = syslogFilterData();
+	data.rfilter = (expression ? '(' + expression + ') AND ' : '') + syslogSearchExpression([{field: field, operator: '=', value: value}]);
+	postSyslog(data);
+}
+
 function syslogFilterData() {
 	var data = {search_mode: 'logical', rfilter: $('#rfilter').val(), page: 1};
-	['rows', 'removal', 'refresh', 'grouping'].forEach(function(name) {
+	['rows', 'removal', 'refresh', 'grouping', 'trimval'].forEach(function(name) {
 		if ($('#' + name).length) data[name] = $('#' + name).val();
 	});
 	return data;
@@ -720,7 +1037,7 @@ function applyFilter() {
 
 /** Reload results with the current filter, keeping the active page. */
 function refreshResults() {
-	postSyslog({page: parseInt($('#page').val(), 10) || 1, refresh: $('#refresh').val()});
+	postSyslog({page: parseInt($('#page').val(), 10) || 1, refresh: $('#refresh').val(), trimval: $('#trimval').val()});
 }
 
 function exportRecords() {
@@ -744,6 +1061,7 @@ function saveSettings() {
 	data.rows         = $('#rows').val();
 	data.removal      = $('#removal').val();
 	data.refresh      = $('#refresh').val();
+	data.trimval      = $('#trimval').val();
 	data.__csrf_magic = csrfMagicToken;
 
 
@@ -830,10 +1148,10 @@ function initSavedSearches() {
 	$('#saved_saveas').click(function() {
 		$(this).closest('details').prop('open', false);
 		if (!syncSyslogSearchBuilder()) return;
-		savedSearchPrompt('', function(name) {
+		savedSearchPrompt('', function(name, isDefault) {
 			savedSearchSave(savedSearchExpression(document.getElementById('syslog_search_builder')), name, function(id) {
 				postSyslog({saved: id});
-			});
+			}, isDefault);
 		});
 	});
 	$('#saved_global').click(function() {
@@ -849,9 +1167,13 @@ function initSavedSearches() {
 function savedSearchPrompt(name, accept) {
 	var text = savedSearchText();
 	var input = document.getElementById('syslog_saved_prompt_name');
+	var makeDefault = document.getElementById('syslog_saved_prompt_default');
 	input.value = name || '';
+	// Saving the default search again keeps it the default unless unticked.
+	var selected = document.getElementById('saved_search').selectedOptions[0];
+	makeDefault.checked = !!(name && selected && selected.dataset.default === '1');
 	$('#syslog_saved_prompt').dialog({
-		modal: true,
+		modal: false,
 		appendTo: 'body',
 		width: 420,
 		autoOpen: true,
@@ -868,17 +1190,18 @@ function savedSearchPrompt(name, accept) {
 					return;
 				}
 				$(this).dialog('close');
-				accept(value);
+				accept(value, makeDefault.checked);
 			}},
 			{text: text.cancel, click: function() { $(this).dialog('close'); }}
 		]
 	});
 }
 
-function savedSearchSave(expression, name, done) {
+function savedSearchSave(expression, name, done, isDefault) {
 	savedSearchPost({
 		action: 'saved_search_save', name: name, rfilter: expression,
-		removal: $('#removal').val() || '1', grouping: $('#grouping').val() || '0'
+		removal: $('#removal').val() || '1', grouping: $('#grouping').val() || '0',
+		default: isDefault ? 'on' : ''
 	}, done);
 }
 
@@ -898,7 +1221,7 @@ function openSavedSearchDialog(mode) {
 	initSyslogSearchBuilder(builder, rows);
 
 	var selected = document.getElementById('saved_search').selectedOptions;
-	var name = mode === 'edit' && selected && selected.length && selected[0].value !== '0' ? selected[0].textContent : '';
+	var name = mode === 'edit' && selected && selected.length && selected[0].value !== '0' ? (selected[0].dataset.name || selected[0].textContent) : '';
 
 	$('#syslog_saved_dialog').dialog({
 		modal: true,
@@ -926,10 +1249,10 @@ function openSavedSearchDialog(mode) {
 				if (expression === null) return;
 				// Close the editor first; stacking a second modal over it is unreliable.
 				$(dialog).dialog('close');
-				savedSearchPrompt(mode === 'edit' ? name : '', function(chosen) {
+				savedSearchPrompt(mode === 'edit' ? name : '', function(chosen, isDefault) {
 					savedSearchSave(savedSearchExpression(builder), chosen, function(id) {
 						postSyslog({saved: id});
-					});
+					}, isDefault);
 				});
 			}},
 			{text: text.apply, click: function() {
@@ -979,9 +1302,7 @@ function initSyslogMain(config) {
 			saveSettings();
 		});
 
-		$('#go').click(function() {
-			applyFilter();
-		});
+		// Search is the form's submit button, so the submit handler above runs it.
 
 		$('#clear').click(function() {
 			clearFilter();
@@ -995,7 +1316,7 @@ function initSyslogMain(config) {
 			toggleSyslogSearch();
 		});
 
-		$('#rows, #refresh, #removal, #grouping').change(function() {
+		$('#rows, #refresh, #trimval, #removal, #grouping').change(function() {
 			applyFilter();
 		});
 
@@ -1014,6 +1335,55 @@ function initSyslogMain(config) {
 var syslogRecommendationCache = new Map();
 
 /**
+ * Append one card per recommendation: identifier, vendor and severity badges,
+ * then the explanation, recommended action and reference. All server data is
+ * inserted as text, never as markup.
+ *
+ * @param {jQuery} $parent The element the cards are appended to.
+ * @param {Array} recommendations The recommendations from the lookup response.
+ * @param {Object} labels The localized section labels from the response.
+ * @param {boolean} clipped Whether long texts are shortened, as in the tooltip.
+ */
+function syslogRecommendationCards($parent, recommendations, labels, clipped) {
+	var limit = 700;
+
+	function clip(text) {
+		text = String(text || '');
+
+		return clipped && text.length > limit ? text.substring(0, limit) + '\u2026' : text;
+	}
+
+	function section($card, label, text, extra) {
+		if (!text) {
+			return;
+		}
+
+		var $section = $('<div class="syslogRecSection ' + (extra || '') + '"></div>').appendTo($card);
+		$('<div class="syslogRecLabel"></div>').text(label).appendTo($section);
+		$('<div class="syslogRecText"></div>').text(clip(text)).appendTo($section);
+	}
+
+	$.each(recommendations, function(i, rec) {
+		var $card = $('<div class="syslogRecCard"></div>').appendTo($parent);
+		var $head = $('<div class="syslogRecHead"></div>').appendTo($card);
+
+		$('<span class="syslogRecId"></span>').text(rec.identifier).appendTo($head);
+
+		if (rec.vendor) {
+			$('<span class="syslogRecBadge"></span>').text(rec.vendor).appendTo($head);
+		}
+
+		if (rec.severity_name) {
+			$('<span class="syslogRecBadge syslogRecSev' + (Number.parseInt(rec.severity, 10) || 0) + '"></span>').text(rec.severity_name).appendTo($head);
+		}
+
+		section($card, labels.explanation || '', rec.explanation);
+		section($card, labels.action || '', rec.recommended_action, 'syslogRecAction');
+		section($card, labels.reference || '', rec.reference);
+	});
+}
+
+/**
  * Build the hover message for a syslog row: the message itself followed by
  * the explanation and recommended action of every recommendation found.
  * All server data is inserted as text, never as markup.
@@ -1025,46 +1395,14 @@ var syslogRecommendationCache = new Map();
 function syslogRecommendationContent(message, result) {
 	var $tip = $('<div class="syslogRecTip"></div>');
 	var labels = (result && result.labels) || {};
-	var limit = 700;
-
-	function clip(text) {
-		text = String(text || '');
-
-		return text.length > limit ? text.substring(0, limit) + '\u2026' : text;
-	}
-
-	function section($parent, label, text, extra, clipped) {
-		if (!text) {
-			return;
-		}
-
-		var $section = $('<div class="syslogRecSection ' + (extra || '') + '"></div>').appendTo($parent);
-		$('<div class="syslogRecLabel"></div>').text(label).appendTo($section);
-		$('<div class="syslogRecText"></div>').text(clipped ? clip(text) : String(text)).appendTo($section);
-	}
 
 	// The syslog message is shown in full; only recommendation text is clipped.
-	section($tip, labels.message || '', message, 'syslogRecMessage', false);
+	var $message = $('<div class="syslogRecSection syslogRecMessage"></div>').appendTo($tip);
+	$('<div class="syslogRecLabel"></div>').text(labels.message || '').appendTo($message);
+	$('<div class="syslogRecText"></div>').text(String(message)).appendTo($message);
 
 	if (result && Array.isArray(result.recommendations)) {
-		$.each(result.recommendations, function(i, rec) {
-			var $card = $('<div class="syslogRecCard"></div>').appendTo($tip);
-			var $head = $('<div class="syslogRecHead"></div>').appendTo($card);
-
-			$('<span class="syslogRecId"></span>').text(rec.identifier).appendTo($head);
-
-			if (rec.vendor) {
-				$('<span class="syslogRecBadge"></span>').text(rec.vendor).appendTo($head);
-			}
-
-			if (rec.severity_name) {
-				$('<span class="syslogRecBadge syslogRecSev' + (Number.parseInt(rec.severity, 10) || 0) + '"></span>').text(rec.severity_name).appendTo($head);
-			}
-
-			section($card, labels.explanation || '', rec.explanation, '', true);
-			section($card, labels.action || '', rec.recommended_action, 'syslogRecAction', true);
-			section($card, labels.reference || '', rec.reference, '', true);
-		});
+		syslogRecommendationCards($tip, result.recommendations, labels, true);
 	}
 
 	return $tip;
@@ -1366,6 +1704,99 @@ function initSyslogReports() {
 }
 
 /* ========================================================================
+ * Recommendations Functions (syslog_recommendations.php)
+ * ======================================================================== */
+
+/**
+ * Build the list URL for the current recommendation filters.
+ *
+ * @param {Object} extra Additional query parameters.
+ * @returns {string} The relative URL.
+ */
+function syslogRecommendationsUrl(extra) {
+	var params = $.extend({
+		filter: $('#filter').val(), vendor: $('#vendor').val(), severity: $('#severity').val(),
+		matchable: $('#matchable').val(), rows: $('#rows').val(), page: $('#page').val()
+	}, extra || {});
+
+	return 'syslog_recommendations.php?' + $.param(params);
+}
+
+/**
+ * Initialize the recommendations list: filters, import and export run as
+ * callbacks instead of full page loads.
+ */
+function initSyslogRecommendations() {
+	$(function() {
+		$('#refresh').off('click').on('click', function() {
+			loadPageNoHeader(syslogRecommendationsUrl({page: 1, header: 'false'}));
+		});
+
+		$('#clear').off('click').on('click', function() {
+			loadPageNoHeader('syslog_recommendations.php?clear=1&header=false');
+		});
+
+		$('#vendor, #severity, #matchable, #rows').off('change').on('change', function() {
+			loadPageNoHeader(syslogRecommendationsUrl({page: 1, header: 'false'}));
+		});
+
+		$('#recommendation_filter').off('submit').on('submit', function(event) {
+			event.preventDefault();
+			loadPageNoHeader(syslogRecommendationsUrl({page: 1, header: 'false'}));
+		});
+
+		$('#import').off('click').on('click', function() {
+			loadPageNoHeader('syslog_recommendations.php?action=import&header=false');
+		});
+
+		// Download in a hidden frame so Cacti's page-unload spinner never starts.
+		$('#export').off('click').on('click', function() {
+			$('#syslog_download').attr('src', syslogRecommendationsUrl({action: 'export_all'}));
+		});
+	});
+}
+
+/**
+ * Submit the recommendations import as a callback. The form carries a file,
+ * which Cacti's own AJAX form handler cannot send, so it is posted as
+ * FormData; the server answers with the page to show next, whose session
+ * messages report the outcome.
+ *
+ * @param {string} busyText Text shown on the button while the import runs.
+ */
+function initSyslogRecommendationImport(busyText) {
+	$(function() {
+		var form = $('#syslog_recommendation_import');
+
+		form.off('submit').on('submit', function(event) {
+			event.preventDefault();
+
+			var data = new FormData(this);
+			var submit = form.find('input[type="submit"]');
+
+			data.append('callback', '1');
+
+			if (!data.has('__csrf_magic') && typeof csrfMagicToken !== 'undefined') {
+				data.append('__csrf_magic', csrfMagicToken);
+			}
+
+			submit.prop('disabled', true).val(busyText);
+
+			$.ajax({
+				url: 'syslog_recommendations.php', type: 'POST', data: data,
+				processData: false, contentType: false, dataType: 'json'
+			}).done(function(result) {
+				var next = (result && result.next) ? result.next : 'syslog_recommendations.php';
+
+				loadPageNoHeader(next + (next.indexOf('?') >= 0 ? '&' : '?') + 'header=false');
+			}).fail(function() {
+				loadPageNoHeader('syslog_recommendations.php?header=false');
+			});
+		});
+	});
+}
+
+/* ========================================================================
  * Autocomplete Form Callback Functions
  * ======================================================================== */
 
@@ -1529,7 +1960,11 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 
 	// Sync the visual filter builder into the message field exactly as
 	// the save path does, so the preview matches what would be stored.
-	var builder = window.alertFilterBuilder || window.removalFilterBuilder;
+	// Builders from rule pages visited earlier through AJAX navigation stay
+	// on window, so only accept the one whose element is inside this form.
+	var builder = [window.alertFilterBuilder, window.removalFilterBuilder, window.reportFilterBuilder].filter(function(candidate) {
+		return candidate && candidate.element && $.contains(form[0], candidate.element);
+	})[0];
 
 	if (builder && typeField.val() == 'filter' && !builder.syncTo(messageField[0])) {
 		return;
@@ -1588,6 +2023,7 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 			dialog.html($('<div class="syslogRuleTestError"/>').text('The preview returned no result.'));
 		}
 
+		// Modeless, so the rule can be edited and re-tested while the preview stays open.
 		dialog.dialog({
 			title: title,
 			minHeight: 80,
@@ -1595,7 +2031,7 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 			maxWidth: 900,
 			resizable: true,
 			draggable: true,
-			modal: true
+			modal: false
 		});
 	}).fail(function() {
 		var dialog = $(dialogSelector);
@@ -1605,7 +2041,8 @@ function testSyslogRule(formSelector, dialogSelector, title) {
 			dialog.dialog({
 				title: title,
 				minHeight: 80,
-				minWidth: 400
+				minWidth: 400,
+				modal: false
 			});
 		}
 	});
