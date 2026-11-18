@@ -4,6 +4,8 @@
 
 [Version 5.0 release notes and upgrade guidance](docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](docs/COMMITS_5.0.md)
 
+[Setup module ownership](docs/setup-modules.md) describes how `setup.php` and the `includes/` modules divide the plugin code.
+
 Syslog collects and searches log messages inside Cacti, applies alert and removal
 rules, and sends notifications or runs configured commands when rules match.
 It can also consume SNMP traps and informs forwarded as Syslog messages by SNMPTT.
