@@ -36,48 +36,67 @@ The release also includes theme and message-readability improvements, security
 hardening and fixes for installations using a separate Syslog database. See the
 [full changelog](../CHANGELOG.md) for individual changes.
 
-## Before upgrading
+## Try the investigation workflow
 
-The documented runtime floor is **Cacti 1.2.23 or later and PHP 8.0 or later**;
-Cacti itself may require a newer PHP version. See the [runtime and test baseline](../README.md#runtime-and-test-baseline)
-for the versions exercised by CI.
+For example, filter recurring interface-down messages, save the conditions, add a
+chart based on that search and share the dashboard with the operations team.
+Before enabling a new alert, use **Test rule** to inspect matching queued messages.
+An empty queue preview does not search previously archived history.
 
-Back up the Syslog database and local configuration. Replace the plugin files and
-run the Upgrade Advisor from Plugin Management, following the
-[installation and upgrade instructions](../README.md#installation). Review the
-advisor's selected upgrade type: **Truncate Syslog Table** discards stored
-messages, while rules are preserved. The release does not require truncating an
-existing installation merely to obtain the new interface features.
+![Syslog saved-search sharing and queued-rule preview workflows](images/release-workflow-5.0.svg)
 
-### Compatibility and operator actions
+## Upgrade decision guide
 
-- **Sharing permissions:** review the new dashboard and saved-search sharing
-  realms before granting access to shared investigations.
-- **Statistics and storage:** the Statistics tab and its collection are deprecated.
-  New installations use partitioned tables; existing traditional tables continue
-  working with a migration notice. See [storage support](../README.md#table-architecture-and-storage-engine-support).
-- **Alert commands:** use absolute executable paths with the execute bit set;
-  the earlier `/bin/sh` fallback for non-executable templates has been removed.
-- **Threshold recovery:** review the [quiet-period recovery behavior](THRESHOLD_RECOVERY.md)
-  and any configured recovery command before deployment.
+| Check | What to plan |
+| --- | --- |
+| Release status | 5.0 is unreleased. This page describes a fixed development snapshot, not the published 4.2 package. |
+| Runtime | The documented floor is Cacti 1.2.23+ and PHP 8.0+; Cacti may require a newer PHP version. See the linked CI baseline. |
+| Storage | InnoDB, or Aria on MariaDB; Remote Data Collector options require InnoDB. Existing traditional tables remain usable with a migration notice. |
+| Ordinary upgrade | Preserve the database and local config. Existing timestamp precision stays unchanged. |
+| Legacy table conversion | Review the Upgrade Advisor mode. For a legacy non-partitioned table, **Truncate Syslog Table** discards messages; existing partitioned installs retain their data with each advisor choice. |
+| Optional timestamp conversion | MariaDB only. The CLI millisecond conversion deletes stored messages from three log tables; it is not needed for the new interface features. |
 
-### Optional millisecond timestamp conversion
+### Upgrade and verify before deployment
 
-Normal upgrades keep the existing timestamp precision. New MariaDB installations
-can use millisecond timestamps; MySQL uses second precision for partition pruning.
+1. Back up the Syslog database and plugin/local configuration files together.
+   Check the [runtime and test baseline](../README.md#runtime-and-test-baseline).
+2. Follow the [upgrade instructions](../README.md#installation) and review the
+   Upgrade Advisor choice before confirming it. Use a maintenance window for
+   any table conversion; duration depends on the data and selected conversion.
+3. Run the read-only schema audit from the Cacti directory:
 
-**Converting an existing MariaDB installation is optional and destructive.**
-`cli/updatedb_convert_ms.php` deletes stored messages from `syslog`,
-`syslog_incoming` and `syslog_removed`. It preserves rules and settings and widens
-the remote-delivery outbox in place. Take a backup and schedule a maintenance
-window before using it. Read the [conversion instructions](../README.md#converting-an-existing-mariadb-install)
-first; this is not a routine upgrade step.
+   ```sh
+   php plugins/syslog/cli/syslog_schema.php --audit
+   ```
 
-## Contributors and complete history
+4. Confirm incoming messages reach the viewer, the processing backlog drains,
+   and the Status page shows recent processing. Check each enabled remote
+   collector as well as the main collector.
+5. Test a representative saved search and queued-rule preview, review sharing
+   realms, and confirm existing notifications still reach their intended recipients.
 
-Thank you to the community members who developed, translated, tested and reviewed
-these changes. The [commit index](COMMITS_5.0.md) records the current 5.0 snapshot
-since v4.2, with links to commits and their associated contributors. It is a fixed
-snapshot, not a claim that 5.0 has been published; refresh it when the release is finalized.
+Also review [storage support](../README.md#table-architecture-and-storage-engine-support),
+[threshold recovery](THRESHOLD_RECOVERY.md), and alert command paths. Command
+templates now need absolute executable paths; the `/bin/sh` fallback is removed.
+The Statistics tab and its collection are deprecated.
 
-[Browse the snapshot comparison](https://github.com/Cacti/plugin_syslog/compare/v4.2...2489d3d73555ac8b914e5768da55f1f15621b97c).
+### Optional millisecond conversion: stored messages are deleted
+
+`cli/updatedb_convert_ms.php` is MariaDB-only and truncates `syslog`,
+`syslog_incoming` and `syslog_removed`. Rules and settings are preserved and the
+remote-delivery outbox is widened in place. Back up first and read the
+[conversion instructions](../README.md#converting-an-existing-mariadb-install).
+Normal upgrades never run this conversion automatically.
+
+If rollback is needed, restore plugin files and the database from the same
+pre-upgrade backup; do not assume a binary-only downgrade reverses migrations.
+Rehearse the checklist against a copy of your production configuration before
+rollout.
+
+## Contributors and change history
+
+Thank you to the developers, translators, testers and reviewers who kept this
+plugin moving forward. See the [linked contributor credits and selected commits](COMMITS_5.0.md).
+Those links include the comparison, paginated history and original author records.
+
+Development snapshot: [`2489d3d735`](https://github.com/Cacti/plugin_syslog/commit/2489d3d73555ac8b914e5768da55f1f15621b97c). Refresh and validate these notes when 5.0 is finalized.
