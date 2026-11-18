@@ -1,5 +1,7 @@
 ## ChangeLog
 
+[Version 5.0 release notes and upgrade guidance](docs/RELEASE_NOTES_5.0.md) · [Commits and contributors](docs/COMMITS_5.0.md)
+
 --- 5.0 ---
 
 * bug: Re-importing a full Recommendations export rejected the 860 bundled records whose identifiers contain characters such as `|`, `#` or brackets (an over-strict identifier check). Imports now accept any identifier without spaces, write each rejected record to the Cacti log with its position, identifier and reason plus a one-line summary, and warn about identifiers that can never match a message

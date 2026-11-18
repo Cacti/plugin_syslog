@@ -1,5 +1,7 @@
 # syslog
 
+[Version 5.0 release notes and upgrade guidance](docs/RELEASE_NOTES_5.0.md) · [Commits and contributors](docs/COMMITS_5.0.md)
+
 The syslog plugin is a Cacti plugin that has been around for more than a decade.
 It was inspired by the 'aloe' and 'h.aloe' plugins originally developed by the
 Cacti users sidewinder and Harlequin in the early 2000's.  As you will be able
