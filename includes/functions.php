@@ -8366,8 +8366,123 @@ function syslog_message_button($message, $device, $program, $facility, $severity
 	$details['message'] = (string) $message;
 	$details['rules']   = syslog_message_rule_links($id, $source, $received, $device);
 
+	// The flyout asks the server for the full record by table and sequence id.
+	if (in_array($source, SYSLOG_MESSAGE_DETAIL_SOURCES, true) && ctype_digit((string) $id) && (int) $id > 0) {
+		$details['id']     = (string) $id;
+		$details['source'] = $source;
+	}
+
 	return '<button type="button" class="syslogMessageOpen" aria-controls="syslog_message_details" aria-expanded="false" data-message="' .
 		html_escape(json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE)) . '">' . html_escape($details['message']) . '</button>';
+}
+
+/**
+ * The tables the message details flyout can read a record from, keyed as the
+ * log view's mtype column names them: stored ('main') and removed ('remove')
+ * messages, and the alert log ('alert').
+ */
+define('SYSLOG_MESSAGE_DETAIL_SOURCES', ['main', 'remove', 'alert']);
+
+/**
+ * syslog_message_details - Look up one syslog record for the message details
+ * flyout, with the recommendations that match its message.
+ *
+ * @param string     $source  'main' (syslog), 'remove' (syslog_removed) or 'alert' (syslog_logs).
+ * @param int|string $id      The sequence id of the record.
+ * @param string     $logtime Optional logtime of the record, which lets partitioned tables prune.
+ *
+ * @return array<string, mixed> 'found' false for an unknown source, id or record; otherwise the
+ *                              record, rule editor links and matching recommendations.
+ */
+function syslog_message_details(string $source, $id, string $logtime = ''): array {
+	global $syslogdb_default;
+
+	if (!in_array($source, SYSLOG_MESSAGE_DETAIL_SOURCES, true) || !ctype_digit((string) $id) || (int) $id < 1) {
+		return ['found' => false];
+	}
+
+	$params = [(int) $id];
+
+	if ($source === 'alert') {
+		$row = syslog_db_fetch_row_prepared("SELECT l.seq, l.logtime, l.logmsg AS message, l.host, l.count,
+			sp.program, sf.facility, spr.priority, sa.name AS alert
+			FROM `$syslogdb_default`.`syslog_logs` AS l
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS sp ON sp.program_id = l.program_id
+			LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf ON sf.facility_id = l.facility_id
+			LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS spr ON spr.priority_id = l.priority_id
+			LEFT JOIN `$syslogdb_default`.`syslog_alert` AS sa ON sa.id = l.alert_id
+			WHERE l.seq = ?
+			LIMIT 1", $params);
+	} else {
+		$table = $source === 'main' ? 'syslog' : 'syslog_removed';
+		$where = 's.seq = ?';
+
+		if (preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d{1,6})?$/', $logtime)) {
+			$where   .= ' AND s.logtime = ?';
+			$params[] = $logtime;
+		}
+
+		$row = syslog_db_fetch_row_prepared("SELECT s.seq, s.logtime, s.message, s.threshold_breached,
+			sh.host, sp.program, sf.facility, spr.priority
+			FROM `$syslogdb_default`.`$table` AS s
+			LEFT JOIN `$syslogdb_default`.`syslog_hosts` AS sh ON sh.host_id = s.host_id
+			LEFT JOIN `$syslogdb_default`.`syslog_programs` AS sp ON sp.program_id = s.program_id
+			LEFT JOIN `$syslogdb_default`.`syslog_facilities` AS sf ON sf.facility_id = s.facility_id
+			LEFT JOIN `$syslogdb_default`.`syslog_priorities` AS spr ON spr.priority_id = s.priority_id
+			WHERE $where
+			LIMIT 1", $params);
+	}
+
+	if (!is_array($row) || !cacti_sizeof($row)) {
+		return ['found' => false];
+	}
+
+	$record = [
+		'id'       => (string) $row['seq'],
+		'source'   => $source,
+		'received' => (string) $row['logtime'],
+		'device'   => (string) ($row['host'] ?? ''),
+		'program'  => (string) ($row['program'] ?? ''),
+		'facility' => (string) ($row['facility'] ?? ''),
+		'severity' => (string) ($row['priority'] ?? ''),
+		'message'  => (string) $row['message'],
+		'breached' => !empty($row['threshold_breached']),
+		'alert'    => (string) ($row['alert'] ?? ''),
+		'count'    => isset($row['count']) ? (int) $row['count'] : null
+	];
+
+	$recommendations = [];
+
+	if (function_exists('syslog_recommendations_lookup')) {
+		$recommendations = syslog_recommendations_format(syslog_recommendations_lookup($record['message']));
+	}
+
+	return [
+		'found'           => true,
+		'record'          => $record,
+		'rules'           => syslog_message_rule_links($record['id'], $source, $record['received'], $record['device']),
+		'recommendations' => $recommendations
+	];
+}
+
+/**
+ * The JSON document the message details flyout requests through
+ * syslog.php?action=message_details.
+ *
+ * @param string     $source  The table of the record; see syslog_message_details().
+ * @param int|string $id      The sequence id of the record.
+ * @param string     $logtime Optional logtime of the record.
+ *
+ * @return string The JSON document, with the localized recommendation labels.
+ */
+function syslog_message_details_json(string $source, $id, string $logtime = ''): string {
+	$details = syslog_message_details($source, $id, $logtime);
+
+	if (function_exists('syslog_recommendations_labels')) {
+		$details['labels'] = syslog_recommendations_labels();
+	}
+
+	return (string) json_encode($details, JSON_INVALID_UTF8_SUBSTITUTE);
 }
 
 /**

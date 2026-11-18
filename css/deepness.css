@@ -58,7 +58,7 @@
    returns Dark's black surface instead of Deepness's own palette. Map the
    tokens to the Deepness palette instead; !important lets these win over the
    inline values the sampling sets. The fallbacks are Deepness's defaults. */
-#syslog_form, #syslog_workspace, .syslogSavedDialog, .syslogSavedPrompt,
+#syslog_form, #syslog_workspace, #syslog_message_details, .syslogSavedDialog, .syslogSavedPrompt,
 .syslogTemplateEditor, .syslogPanelDialog {
 	--search-surface: var(--dp-panel, #11161d) !important;
 	--search-card: var(--dp-panel-alt, #161c25) !important;

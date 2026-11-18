@@ -5,6 +5,8 @@ const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '../..');
 const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 const longMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script> ' + 'width preview '.repeat(4);
+const shortMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
+const dispatched = [];
 const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_workspace.php')], {encoding: 'utf8'});
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
@@ -21,6 +23,17 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.route('http://fixture/**', r => {
   const url = new URL(r.request().url());
   if (url.pathname === '/') return r.fulfill({body: url.searchParams.has('error') ? fixture.replace("id='logical_search_error' role='alert'>", "id='logical_search_error' role='alert'>Invalid search") : fixture, contentType: 'text/html; charset=utf-8'});
+  if (url.pathname === '/syslog.php') {
+   dispatched.push(r.request().method() + ' ' + (url.searchParams.get('action') || new URLSearchParams(r.request().postData() || '').get('action')) + ' ' + (url.searchParams.get('source') || '') + ':' + (url.searchParams.get('id') || ''));
+   if (url.searchParams.get('action') !== 'message_details') return r.fulfill({body: JSON.stringify({found: false, recommendations: []}), contentType: 'application/json'});
+   const id = url.searchParams.get('id');
+   const query = 'id=' + id + '&action=newedit&type=0&date=2026-09-13+00%3A12%3A42';
+   return r.fulfill({contentType: 'application/json', body: JSON.stringify({found: true,
+    record: {id, source: 'main', received: '2026-09-13 00:12:42', device: '10.0.0.5', program: 'kernel', facility: 'kern', severity: 'warning', message: id === '101' ? longMessage : shortMessage, alert: ''},
+    rules: {alarm: 'syslog_alerts.php?' + query, removal: 'syslog_removal.php?' + query},
+    recommendations: [{identifier: '%NF-4-TABLE_FULL', vendor: 'Acme', severity: 4, severity_name: 'Warning', explanation: '<img src=x onerror=alert(1)> explained', recommended_action: 'Raise the table size', reference: ''}],
+    labels: {explanation: 'Explanation', action: 'Recommended Action', reference: 'Reference'}})});
+  }
   return routes[url.pathname] ? r.fulfill({path: routes[url.pathname], contentType: url.pathname.endsWith('.js') ? 'text/javascript' : 'text/css'}) : r.fulfill({status: 404, body: ''});
  });
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
@@ -56,6 +69,18 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.locator('.syslogMessageOpen').first().click();
  assert.equal(await page.locator('#syslog_details_raw').textContent(),longMessage);
  assert.equal(await page.locator('#syslog_message_details script').count(),0);
+ // The flyout dispatches the record by table and id, then lists the matching
+ // recommendations as text, from a <body>-level panel no theme layer can cover.
+ await page.locator('#syslog_details_rec_body .syslogRecCard').waitFor();
+ assert.equal(dispatched.at(-1), 'GET message_details main:101');
+ assert.equal(await page.evaluate(() => document.getElementById('syslog_message_details').parentElement.tagName), 'BODY');
+ assert.equal(await page.locator('#syslog_details_rec_body .syslogRecId').textContent(), '%NF-4-TABLE_FULL');
+ assert.equal(await page.locator('#syslog_details_rec_body img').count(), 0, 'Recommendation text is never parsed as HTML');
+ assert.equal(await page.locator('#syslog_details_link').isVisible(), true, 'Dispatchable records can be shared by link');
+ assert.equal(await page.locator('[data-detail="id"]').textContent(), '101');
+ assert.equal(await page.locator('[data-detail="alert"]').isVisible(), false, 'Rows without an alert rule hide that field');
+ const flyout = await page.locator('#syslog_message_details').boundingBox();
+ assert(flyout.x + flyout.width <= 1600 && flyout.x > 1000, 'The flyout docks to the right edge');
  await page.mouse.move(0, 0);
  await page.waitForFunction(color => getComputedStyle(document.querySelector('.syslogRow')).backgroundColor === color, originalColor);
  assert.equal(await page.locator('.syslogRow').first().evaluate(row=>getComputedStyle(row).backgroundColor),originalColor,'Selection retains severity color');
@@ -71,6 +96,10 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await alarm.isVisible(),false);
  assert.equal(await removal.isVisible(),false);
  assert.equal(await alarm.getAttribute('href'),null,'Unavailable rows clear stale links');
+ // Rows that do not name a dispatchable record fall back to the message lookup.
+ await page.waitForFunction(() => /No recommendation|could not/.test(document.getElementById('syslog_details_rec_body').textContent));
+ assert.equal(dispatched.at(-1), 'POST recommendation :');
+ assert.equal(await page.locator('#syslog_details_link').isVisible(), false);
  await page.locator('.syslogMessageOpen').first().click();
  // Clicking anywhere on the row, not only the message, opens the details pane.
  await page.locator('.syslogRow').first().locator('td').nth(1).click();

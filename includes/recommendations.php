@@ -490,18 +490,18 @@ function syslog_recommendations_lookup(string $message, int $limit = 3): array {
 }
 
 /**
- * Build the JSON response the hover tooltip requests for a message.
+ * Shape recommendation rows for the browser: severity names resolved and
+ * every column a string, so the client inserts them as plain text.
  *
- * @param string $message The syslog message text.
+ * @param list<array<string, mixed>> $rows Rows from syslog_recommendations_lookup().
  *
- * @return string The JSON document. It always carries the localized labels so
- *                the browser needs no translation catalogue of its own.
+ * @return list<array<string, mixed>> The rows ready for JSON encoding.
  */
-function syslog_recommendations_lookup_json(string $message): string {
+function syslog_recommendations_format(array $rows): array {
 	$severities = syslog_recommendation_severity_names();
 	$matches    = [];
 
-	foreach (syslog_recommendations_lookup($message) as $row) {
+	foreach ($rows as $row) {
 		$severity  = $row['severity'] === null ? null : (int) $row['severity'];
 		$matches[] = [
 			'vendor'             => (string) $row['vendor'],
@@ -516,15 +516,39 @@ function syslog_recommendations_lookup_json(string $message): string {
 		];
 	}
 
+	return $matches;
+}
+
+/**
+ * The localized section labels shown with recommendations, so the browser
+ * needs no translation catalogue of its own.
+ *
+ * @return array<string, string> The labels keyed by section.
+ */
+function syslog_recommendations_labels(): array {
+	return [
+		'message'     => __('Message', 'syslog'),
+		'explanation' => __('Explanation', 'syslog'),
+		'action'      => __('Recommended Action', 'syslog'),
+		'reference'   => __('Reference', 'syslog')
+	];
+}
+
+/**
+ * Build the JSON response the hover tooltip requests for a message.
+ *
+ * @param string $message The syslog message text.
+ *
+ * @return string The JSON document. It always carries the localized labels so
+ *                the browser needs no translation catalogue of its own.
+ */
+function syslog_recommendations_lookup_json(string $message): string {
+	$matches = syslog_recommendations_format(syslog_recommendations_lookup($message));
+
 	return (string) json_encode([
 		'found'           => $matches !== [],
 		'recommendations' => $matches,
-		'labels'          => [
-			'message'     => __('Message', 'syslog'),
-			'explanation' => __('Explanation', 'syslog'),
-			'action'      => __('Recommended Action', 'syslog'),
-			'reference'   => __('Reference', 'syslog')
-		]
+		'labels'          => syslog_recommendations_labels()
 	], JSON_INVALID_UTF8_SUBSTITUTE);
 }
 

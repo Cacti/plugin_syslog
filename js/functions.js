@@ -100,22 +100,130 @@ function initSyslogCompactSearch() {
 	});
 }
 
-/** Inspect complete messages locally; never inject log content as HTML. */
+/**
+ * Message details flyout. Clicking a row shows the row's own data at once,
+ * then dispatches syslog.php?action=message_details for the stored record and
+ * its matching recommendations. Log content is only ever inserted as text.
+ */
 function initSyslogWorkspace() {
 	$(function() {
 		var workspace = document.getElementById('syslog_workspace');
-		var pane = document.getElementById('syslog_message_details');
+		// A flyout left on <body> by the previous Syslog page is stale now; a
+		// refresh reopens the record it was showing.
+		var reopen = '';
+		document.querySelectorAll('body > #syslog_message_details').forEach(function(stale) {
+			if (!stale.hidden && stale.dataset.record) reopen = stale.dataset.record;
+			stale.remove();
+		});
+		var pane = workspace ? workspace.querySelector('#syslog_message_details') : null;
 		if (!workspace || !pane) return;
-		var active, details;
+		// Themes such as Midwinter lift parts of the page above #main's stacking
+		// context, which would cover a flyout nested inside it, so the flyout
+		// lives on <body> and takes the theme tokens there.
+		document.body.append(pane);
+		applySyslogTheme(pane);
+		var active, details = {}, request = 0;
+		var recSection = document.getElementById('syslog_details_recommendations');
+		var recBody = document.getElementById('syslog_details_rec_body');
+		var linkButton = document.getElementById('syslog_details_link');
+		var status = document.getElementById('syslog_copy_status');
+
+		// Start at the top of Cacti's content column, below every theme's
+		// header and breadcrumb bar, so the navigation stays usable.
+		function place() {
+			var anchor = document.getElementById('navigation_right') || document.getElementById('cactiPageHead');
+			var top = anchor ? anchor.getBoundingClientRect()[anchor.id === 'navigation_right' ? 'top' : 'bottom'] : 0;
+			pane.style.setProperty('--syslog-flyout-top', Math.max(0, Math.round(top)) + 'px');
+		}
+
+		function deselect() {
+			if (!active) return;
+			active.setAttribute('aria-expanded', 'false');
+			active.closest('tr').classList.remove('syslogSelected');
+		}
+
 		function close() {
+			request++;
 			pane.hidden = true;
 			workspace.classList.remove('has-details');
-			if (active) {
-				active.setAttribute('aria-expanded', 'false');
-				active.closest('tr').classList.remove('syslogSelected');
-				active.focus();
-			}
+			deselect();
+			if (active) active.focus();
+			active = null;
 		}
+
+		function badge(node, value, kind) {
+			var pill = document.createElement('span');
+			pill.className = kind + ' ' + kind + '-' + value.toLowerCase().replace(/[^a-z]/g, '');
+			pill.textContent = value;
+			node.replaceChildren(pill);
+		}
+
+		function render(data) {
+			details = data;
+			pane.querySelectorAll('[data-detail]').forEach(function(node) {
+				var key = node.dataset.detail;
+				var value = data[key] === undefined || data[key] === null ? '' : String(data[key]);
+				var optional = key === 'alert' || key === 'id';
+				node.hidden = optional && value === '';
+				pane.querySelector('[data-detail-row="' + key + '"]').hidden = node.hidden;
+				if (value !== '' && key === 'severity') badge(node, value, 'syslogSeverity');
+				else if (value !== '' && key === 'facility') badge(node, value, 'syslogFacility');
+				else node.textContent = value || '—';
+			});
+			document.getElementById('syslog_details_subtitle').textContent = [data.device, data.received].filter(Boolean).join(' · ');
+			pane.querySelectorAll('[data-rule]').forEach(function(link) {
+				var url = (data.rules || {})[link.dataset.rule];
+				link.hidden = !url;
+				if (url) link.setAttribute('href', url);
+				else link.removeAttribute('href');
+			});
+			document.getElementById('syslog_details_raw').textContent = data.message || '';
+			status.textContent = '';
+			pane.querySelector('[data-filter-detail="program"]').disabled = !data.program;
+			pane.querySelector('[data-filter-detail="host"]').disabled = !data.device;
+			linkButton.hidden = !(data.source && data.id);
+		}
+
+		function note(text) {
+			var paragraph = document.createElement('p');
+			paragraph.className = 'syslogFlyoutNote';
+			paragraph.textContent = text;
+			recBody.replaceChildren(paragraph);
+		}
+
+		// Rows that name their record are dispatched by id; anything else falls
+		// back to the message-only recommendation lookup the tooltip uses.
+		function load(data) {
+			var token = ++request;
+			note(recSection.dataset.loading);
+			var call = data.source && data.id
+				? $.ajax({url: 'syslog.php', type: 'GET', dataType: 'json', data: {action: 'message_details', source: data.source, id: data.id, logtime: data.received || ''}})
+				: $.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'recommendation', message: data.message || ''}});
+			call.done(function(result) {
+				if (token !== request) return;
+				if (result && result.record) render($.extend({}, result.record, {rules: result.rules || {}}));
+				var matches = result && Array.isArray(result.recommendations) ? result.recommendations : [];
+				if (!matches.length) {
+					note(recSection.dataset.none);
+					return;
+				}
+				recBody.replaceChildren();
+				syslogRecommendationCards($(recBody), matches, result.labels || {}, false);
+			}).fail(function() {
+				if (token === request) note(recSection.dataset.error);
+			});
+		}
+
+		function show(data) {
+			place();
+			render(data);
+			pane.dataset.record = data.source && data.id ? data.source + ':' + data.id : '';
+			pane.hidden = false;
+			workspace.classList.add('has-details');
+			load(data);
+			pane.focus({preventScroll: true});
+		}
+
 		workspace.querySelectorAll('.syslogMessageOpen').forEach(function(button) {
 			var row = button.closest('tr');
 			row.removeAttribute('title');
@@ -137,25 +245,11 @@ function initSyslogWorkspace() {
 				});
 			});
 			function open() {
-				if (active) { active.setAttribute('aria-expanded', 'false'); active.closest('tr').classList.remove('syslogSelected'); }
+				deselect();
 				active = button;
-				details = data;
-				pane.querySelectorAll('[data-detail]').forEach(function(node) { node.textContent = data[node.dataset.detail] || '—'; });
-				pane.querySelectorAll('[data-rule]').forEach(function(link) {
-					var url = (data.rules || {})[link.dataset.rule];
-					link.hidden = !url;
-					if (url) link.setAttribute('href', url);
-					else link.removeAttribute('href');
-				});
-				document.getElementById('syslog_details_raw').textContent = data.message;
-				document.getElementById('syslog_copy_status').textContent = '';
-				pane.querySelector('[data-filter-detail="program"]').disabled = !data.program;
-				pane.querySelector('[data-filter-detail="host"]').disabled = !data.device;
-				pane.hidden = false;
-				workspace.classList.add('has-details');
 				row.classList.add('syslogSelected');
 				button.setAttribute('aria-expanded', 'true');
-				pane.focus({preventScroll: true});
+				show(data);
 			}
 			// The message button keeps keyboard access; the rest of the row opens the pane too.
 			button.addEventListener('click', function(event) {
@@ -167,24 +261,58 @@ function initSyslogWorkspace() {
 				open();
 			});
 		});
+
+		/**
+		 * Open the flyout for any record by table and sequence id, for example
+		 * from a shared link, even when it is not on the current page.
+		 */
+		window.syslogShowMessageDetails = function(source, id, logtime) {
+			deselect();
+			active = null;
+			show({source: String(source), id: String(id), received: logtime || '', message: ''});
+		};
+
+		var linked = /^(main|remove|alert):(\d+)$/.exec(reopen || new URLSearchParams(window.location.search).get('details') || '');
+		if (linked) window.syslogShowMessageDetails(linked[1], linked[2]);
+
+		$(window).off('resize.syslogFlyout').on('resize.syslogFlyout', function() { if (!pane.hidden) place(); });
+		// Cacti's AJAX navigation replaces #main but not <body>, so drop the
+		// flyout once the Syslog page is gone. A refreshed Syslog page takes the
+		// flyout over itself and reopens its record.
+		$(document).off('ajaxComplete.syslogFlyout').on('ajaxComplete.syslogFlyout', function() {
+			if (!document.getElementById('syslog_workspace')) {
+				pane.remove();
+				$(document).off('ajaxComplete.syslogFlyout');
+			}
+		});
 		document.getElementById('syslog_details_close').addEventListener('click', close);
 		pane.addEventListener('keydown', function(event) { if (event.key === 'Escape') close(); });
-		document.getElementById('syslog_details_copy').addEventListener('click', async function() {
-			var status = document.getElementById('syslog_copy_status');
+
+		async function copy(text, button) {
 			try {
-				if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(details.message);
+				if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(text);
 				else {
-					var text = document.createElement('textarea');
-					text.value = details.message;
-					pane.append(text);
-					text.select();
+					var area = document.createElement('textarea');
+					area.value = text;
+					pane.append(area);
+					area.select();
 					var copied = document.execCommand('copy');
-					text.remove();
+					area.remove();
 					if (!copied) throw new Error('Copy failed');
 				}
 				status.textContent = status.dataset.success;
 			} catch (error) { status.textContent = status.dataset.error; }
-			this.focus();
+			button.focus();
+		}
+
+		document.getElementById('syslog_details_copy').addEventListener('click', function() {
+			copy(details.message || '', this);
+		});
+		linkButton.addEventListener('click', function() {
+			var url = new URL(window.location.pathname, window.location.origin);
+			url.searchParams.set('tab', details.source === 'alert' ? 'alerts' : 'syslog');
+			url.searchParams.set('details', details.source + ':' + details.id);
+			copy(url.toString(), this);
 		});
 		pane.querySelectorAll('[data-filter-detail]').forEach(function(button) {
 			button.addEventListener('click', function() {
@@ -1054,6 +1182,55 @@ function initSyslogMain(config) {
 var syslogRecommendationCache = new Map();
 
 /**
+ * Append one card per recommendation: identifier, vendor and severity badges,
+ * then the explanation, recommended action and reference. All server data is
+ * inserted as text, never as markup.
+ *
+ * @param {jQuery} $parent The element the cards are appended to.
+ * @param {Array} recommendations The recommendations from the lookup response.
+ * @param {Object} labels The localized section labels from the response.
+ * @param {boolean} clipped Whether long texts are shortened, as in the tooltip.
+ */
+function syslogRecommendationCards($parent, recommendations, labels, clipped) {
+	var limit = 700;
+
+	function clip(text) {
+		text = String(text || '');
+
+		return clipped && text.length > limit ? text.substring(0, limit) + '\u2026' : text;
+	}
+
+	function section($card, label, text, extra) {
+		if (!text) {
+			return;
+		}
+
+		var $section = $('<div class="syslogRecSection ' + (extra || '') + '"></div>').appendTo($card);
+		$('<div class="syslogRecLabel"></div>').text(label).appendTo($section);
+		$('<div class="syslogRecText"></div>').text(clip(text)).appendTo($section);
+	}
+
+	$.each(recommendations, function(i, rec) {
+		var $card = $('<div class="syslogRecCard"></div>').appendTo($parent);
+		var $head = $('<div class="syslogRecHead"></div>').appendTo($card);
+
+		$('<span class="syslogRecId"></span>').text(rec.identifier).appendTo($head);
+
+		if (rec.vendor) {
+			$('<span class="syslogRecBadge"></span>').text(rec.vendor).appendTo($head);
+		}
+
+		if (rec.severity_name) {
+			$('<span class="syslogRecBadge syslogRecSev' + (Number.parseInt(rec.severity, 10) || 0) + '"></span>').text(rec.severity_name).appendTo($head);
+		}
+
+		section($card, labels.explanation || '', rec.explanation);
+		section($card, labels.action || '', rec.recommended_action, 'syslogRecAction');
+		section($card, labels.reference || '', rec.reference);
+	});
+}
+
+/**
  * Build the hover message for a syslog row: the message itself followed by
  * the explanation and recommended action of every recommendation found.
  * All server data is inserted as text, never as markup.
@@ -1065,46 +1242,14 @@ var syslogRecommendationCache = new Map();
 function syslogRecommendationContent(message, result) {
 	var $tip = $('<div class="syslogRecTip"></div>');
 	var labels = (result && result.labels) || {};
-	var limit = 700;
-
-	function clip(text) {
-		text = String(text || '');
-
-		return text.length > limit ? text.substring(0, limit) + '\u2026' : text;
-	}
-
-	function section($parent, label, text, extra, clipped) {
-		if (!text) {
-			return;
-		}
-
-		var $section = $('<div class="syslogRecSection ' + (extra || '') + '"></div>').appendTo($parent);
-		$('<div class="syslogRecLabel"></div>').text(label).appendTo($section);
-		$('<div class="syslogRecText"></div>').text(clipped ? clip(text) : String(text)).appendTo($section);
-	}
 
 	// The syslog message is shown in full; only recommendation text is clipped.
-	section($tip, labels.message || '', message, 'syslogRecMessage', false);
+	var $message = $('<div class="syslogRecSection syslogRecMessage"></div>').appendTo($tip);
+	$('<div class="syslogRecLabel"></div>').text(labels.message || '').appendTo($message);
+	$('<div class="syslogRecText"></div>').text(String(message)).appendTo($message);
 
 	if (result && Array.isArray(result.recommendations)) {
-		$.each(result.recommendations, function(i, rec) {
-			var $card = $('<div class="syslogRecCard"></div>').appendTo($tip);
-			var $head = $('<div class="syslogRecHead"></div>').appendTo($card);
-
-			$('<span class="syslogRecId"></span>').text(rec.identifier).appendTo($head);
-
-			if (rec.vendor) {
-				$('<span class="syslogRecBadge"></span>').text(rec.vendor).appendTo($head);
-			}
-
-			if (rec.severity_name) {
-				$('<span class="syslogRecBadge syslogRecSev' + (Number.parseInt(rec.severity, 10) || 0) + '"></span>').text(rec.severity_name).appendTo($head);
-			}
-
-			section($card, labels.explanation || '', rec.explanation, '', true);
-			section($card, labels.action || '', rec.recommended_action, 'syslogRecAction', true);
-			section($card, labels.reference || '', rec.reference, '', true);
-		});
+		syslogRecommendationCards($tip, result.recommendations, labels, true);
 	}
 
 	return $tip;

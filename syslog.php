@@ -135,6 +135,12 @@ if (get_request_var('action') == 'recommendation') {
 	exit;
 }
 
+if (get_request_var('action') == 'message_details') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_message_details_json((string) get_nfilter_request_var('source'), (string) get_nfilter_request_var('id'), (string) get_nfilter_request_var('logtime'));
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab
@@ -2773,7 +2779,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
-				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime']), $log['seq'], '', 'syslogMessage left');
+				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime'], $log['seq'], 'alert'), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');
 				form_selectable_cell(ucfirst($log['facility']), $log['seq'], '', 'left');
@@ -2802,21 +2808,25 @@ function syslog_messages(string $tab = 'syslog'): void {
 	}
 	print '</div>';
 	?>
-	<aside id='syslog_message_details' hidden aria-labelledby='syslog_details_title' tabindex='-1'>
-		<header class='ui-widget-header'><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><button type='button' class='ui-state-default' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
-		<dl><?php foreach ([
+	<aside id='syslog_message_details' class='syslogFlyout' hidden role='dialog' aria-modal='false' aria-labelledby='syslog_details_title' tabindex='-1'>
+		<header class='syslogFlyoutHead'><i class='fa fa-file-alt' aria-hidden='true'></i><div class='syslogFlyoutTitle'><h3 id='syslog_details_title'><?php print __esc('Message details', 'syslog'); ?></h3><span id='syslog_details_subtitle'></span></div><button type='button' id='syslog_details_close' aria-label='<?php print __esc('Close message details', 'syslog'); ?>'>×</button></header>
+		<section class='syslogFlyoutSection'><h4><?php print __esc('General', 'syslog'); ?></h4><dl><?php foreach ([
 			'received' => __('Date', 'syslog'),
 			'device'   => __('Device', 'syslog'),
 			'program'  => __('Program', 'syslog'),
 			'facility' => __('Facility', 'syslog'),
-			'severity' => __('Priority', 'syslog')
+			'severity' => __('Priority', 'syslog'),
+			'alert'    => __('Alert Rule', 'syslog'),
+			'id'       => __('Sequence', 'syslog')
 		] as $key => $label) {
-			print '<dt>' . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>";
-		} ?></dl>
-		<h4><?php print __esc('Message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>
-		<div class='syslogDetailsActions'><button type='button' id='syslog_details_copy'><?php print __esc('Copy message', 'syslog'); ?></button><span id='syslog_copy_status' role='status' data-success='<?php print __esc('Copied', 'syslog'); ?>' data-error='<?php print __esc('Copy unavailable. Select and copy the message text.', 'syslog'); ?>'></span></div>
+			print "<dt data-detail-row='" . $key . "'>" . html_escape($label) . "</dt><dd data-detail='" . $key . "'></dd>";
+		} ?></dl></section>
+		<section class='syslogFlyoutSection'><h4><?php print __esc('Message', 'syslog'); ?></h4><pre id='syslog_details_raw'></pre>
+		<div class='syslogDetailsActions'><button type='button' id='syslog_details_copy'><?php print __esc('Copy message', 'syslog'); ?></button><button type='button' id='syslog_details_link' hidden><?php print __esc('Copy link', 'syslog'); ?></button><span id='syslog_copy_status' role='status' data-success='<?php print __esc('Copied', 'syslog'); ?>' data-error='<?php print __esc('Copy unavailable. Select and copy the message text.', 'syslog'); ?>'></span></div></section>
+		<section class='syslogFlyoutSection' id='syslog_details_recommendations' aria-live='polite' data-loading='<?php print __esc('Looking up recommendations…', 'syslog'); ?>' data-none='<?php print __esc('No recommendation matches this message.', 'syslog'); ?>' data-error='<?php print __esc('Recommendations could not be loaded.', 'syslog'); ?>'><h4><?php print __esc('Recommendations', 'syslog'); ?></h4><div id='syslog_details_rec_body'></div></section>
+		<section class='syslogFlyoutSection'><h4><?php print __esc('Actions', 'syslog'); ?></h4>
 		<div class='syslogDetailsRules'><a data-rule='alarm' class='syslogRuleButton' hidden><?php print __esc('Create Alarm Rule', 'syslog'); ?></a><a data-rule='device' class='syslogRuleButton' hidden><?php print __esc('Create Device Alert Rule', 'syslog'); ?></a><a data-rule='removal' class='syslogRuleButton' hidden><?php print __esc('Create Removal Rule', 'syslog'); ?></a></div>
-		<div class='syslogDetailsFilters'><button type='button' data-filter-detail='host'><?php print __esc('Filter by device', 'syslog'); ?></button><button type='button' data-filter-detail='program'><?php print __esc('Filter by program', 'syslog'); ?></button></div>
+		<div class='syslogDetailsFilters'><button type='button' data-filter-detail='host'><?php print __esc('Filter by device', 'syslog'); ?></button><button type='button' data-filter-detail='program'><?php print __esc('Filter by program', 'syslog'); ?></button></div></section>
 	</aside></div>
 	<script <?php print plugin_syslog_csp_nonce(); ?>>initSyslogWorkspace();</script>
 	<?php

@@ -592,6 +592,17 @@ hover over a row on the Syslog tab, the plugin looks for recommendations that
 match the message and shows their explanation and recommended action next to
 the message. Rows without a match keep the plain message tooltip.
 
+Clicking a row on the System Logs or Alert Logs tab opens a **Message details**
+flyout on the right. The flyout fetches the record from the server and shows
+its date, device, program, facility, priority and sequence (plus the alert rule
+for alert log entries), the full message, every matching recommendation, and
+actions to create rules or filter by the device or program. Press Escape or the
+close button to dismiss it. **Copy link** copies an address such as
+`syslog.php?tab=syslog&details=main:12345` that reopens the same record, even
+when it is not on the current page. The same lookup is available to other tools
+as `syslog.php?action=message_details&source=main|remove|alert&id=<sequence>`,
+which returns JSON.
+
 ### How recommendations are matched
 
 * Only the `identifier` column is matched. The vendor, component, severity,

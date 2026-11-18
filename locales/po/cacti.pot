@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-18 10:11-0500\n"
+"POT-Creation-Date: 2026-11-18 12:16-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -1187,7 +1187,7 @@ msgstr ""
 msgid "Report Rules"
 msgstr ""
 
-#: includes/settings.php syslog_recommendations.php
+#: includes/settings.php syslog.php syslog_recommendations.php
 msgid "Recommendations"
 msgstr ""
 
@@ -2407,7 +2407,23 @@ msgid "Message details"
 msgstr ""
 
 #: syslog.php
+msgid "General"
+msgstr ""
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr ""
+
+#: syslog.php
+msgid "Sequence"
+msgstr ""
+
+#: syslog.php
 msgid "Copied"
+msgstr ""
+
+#: syslog.php
+msgid "Copy link"
 msgstr ""
 
 #: syslog.php
@@ -2416,6 +2432,22 @@ msgstr ""
 
 #: syslog.php
 msgid "Copy unavailable. Select and copy the message text."
+msgstr ""
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr ""
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr ""
+
+#: syslog.php
+msgid "Recommendations could not be loaded."
+msgstr ""
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
 msgstr ""
 
 #: syslog.php
@@ -2802,10 +2834,6 @@ msgstr ""
 
 #: syslog_alerts.php
 msgid "This information will appear in the body of the Alert just before the Alert details."
-msgstr ""
-
-#: syslog_alerts.php
-msgid "Actions"
 msgstr ""
 
 #: syslog_alerts.php
