@@ -4,23 +4,9 @@
 
 [Version 5.0 release notes and upgrade guidance](docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](docs/COMMITS_5.0.md)
 
-The syslog plugin is a Cacti plugin that has been around for more than a decade.
-It was inspired by the 'aloe' and 'h.aloe' plugins originally developed by the
-Cacti users sidewinder and Harlequin in the early 2000's.  As you will be able
-to see from the ChangeLog, it has undergone several changes throughout the
-years, and remains, even today when you have enterprise offering from both
-Elastic and Splunk, remains a relevant plugin for small to medium sized
-companies.
-
-It provides a simple Syslog event search an Alert generation and notification
-interface that can generate both HTML and SMS messages for operations personnel
-who wish to receive notifications inside of a data or network operations center.
-
-When combined by the Linux SNMPTT package, it can be converted into an SNMP Trap
-and Inform receiver and notification engine as the SNMPTT tool will receive SNMP
-Traps and Informs and convert them into Syslog messages on your log server.
-These syslog messages can then be consumed by the syslog plugin.  So, this tool
-is quite handy.
+Syslog collects and searches log messages inside Cacti, applies alert and removal
+rules, and sends notifications or runs configured commands when rules match.
+It can also consume SNMP traps and informs forwarded as Syslog messages by SNMPTT.
 
 For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
@@ -41,6 +27,24 @@ with an active breach. Recovery updates indexed state and message associations,
 without scanning or updating historical message rows. Existing historical flags
 are not converted into active breaches. See [threshold recovery](docs/THRESHOLD_RECOVERY.md)
 for lifecycle and deployment details.
+
+## Versions and compatibility
+
+This README describes the `develop` source branch.
+
+| Code | Plugin version | Minimum Cacti declared in `INFO` |
+| --- | --- | --- |
+| [Source branch](INFO) | 5.0 | 1.2.23 |
+| [Published v4.2](https://github.com/Cacti/plugin_syslog/releases/tag/v4.2) | 4.2 | 1.2.23 |
+
+Use the published release’s assets and tagged documentation when installing that
+package. Branch code can include later changes, even when its version number
+matches the release. Cacti’s own PHP and database requirements also apply.
+
+Install this plugin in **`<cacti-root>/plugins/syslog`**, using the directory
+name `syslog` rather than `plugin_syslog`.
+
+See [CHANGELOG.md](CHANGELOG.md) for the version history.
 
 ## Core Features
 
