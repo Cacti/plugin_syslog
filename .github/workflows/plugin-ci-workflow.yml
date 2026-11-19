@@ -274,6 +274,7 @@ jobs:
         php tests/regression/threshold_recovery_database_test.php
         php tests/regression/quality_must_fix_database_test.php
         php tests/regression/incoming_preservation_database_test.php
+        php tests/regression/partition_rebuild_database_test.php
         php tests/regression/review_fixes_database_test.php
         php tests/regression/review_fixes_paths_database_test.php
       working-directory: ${{ github.workspace }}/cacti/plugins/syslog

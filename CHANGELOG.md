@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* feature: Add a data-preserving partition rebuild CLI with optional --convert-ms, verified 10,000-row copies, interrupted-copy recovery, and database-size, extra-disk-space and several-hour maintenance warnings; keep the legacy converter with opt-in --preserve-data
 * bug: Trim leading and trailing parentheses and square brackets from incoming program names before reference lookup and rule processing
 * bug: Load grouped message details only on expansion, 50 at a time, preserving the displayed query's date range and filters instead of rendering every occurrence into hidden rows
 * bug: Place Cancel before an active submit-type Save button in Save Search As, support Enter through a separate dialog form and the existing callback, and show a Font Awesome refresh glyph that spins only while results callbacks are running
