@@ -2753,17 +2753,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				// If grouping is enabled and there are multiple occurrences, add hidden detail rows
 				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1 && isset($sm['seq_list'])) {
-					$seq_array = array_map('intval', explode(',', $sm['seq_list']));
-					$group_where = $sql_where . ($sql_where === '' ? 'WHERE ' : ' AND ') .
-						'syslog.seq IN (' . implode(',', array_fill(0, cacti_sizeof($seq_array), '?')) . ')';
-
-					// Get individual messages for this group
-					$detail_messages = syslog_db_fetch_assoc_prepared("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
-						FROM `$syslogdb_default`.`" . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
-						LEFT JOIN `$syslogdb_default`.`syslog_programs`
-						ON syslog.program_id = syslog_programs.program_id
-						$group_where
-						ORDER BY syslog.logtime DESC", $seq_array);
+					$detail_messages = syslog_group_detail_messages($sm, $sql_where, $breach_sql);
 
 					if (cacti_sizeof($detail_messages)) {
 						foreach ($detail_messages as $dm) {

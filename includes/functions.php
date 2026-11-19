@@ -8503,6 +8503,30 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 }
 
 /**
+ * Fetch a group's messages within the active search predicates.
+ *
+ * @param array  $group      The grouped message row.
+ * @param string $sql_where  The compiled message search clause.
+ * @param string $breach_sql The compiled threshold-breach expression.
+ *
+ * @return array|false The matching rows, or false on a database error.
+ */
+function syslog_group_detail_messages(array $group, string $sql_where, string $breach_sql): array|false {
+	global $syslogdb_default;
+
+	$seq_array = array_map('intval', explode(',', $group['seq_list']));
+	$group_where = $sql_where . ($sql_where === '' ? 'WHERE ' : ' AND ') .
+		'syslog.seq IN (' . implode(',', array_fill(0, cacti_sizeof($seq_array), '?')) . ')';
+
+	return syslog_db_fetch_assoc_prepared("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
+		FROM `$syslogdb_default`.`" . (($group['mtype'] === 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
+		LEFT JOIN `$syslogdb_default`.`syslog_programs`
+		ON syslog.program_id = syslog_programs.program_id
+		$group_where
+		ORDER BY syslog.logtime DESC", $seq_array);
+}
+
+/**
  * Render untrusted log text as an accessible details trigger.
  *
  * @param string     $message  The log message text.
