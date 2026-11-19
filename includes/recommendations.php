@@ -45,7 +45,7 @@ const SYSLOG_RECOMMENDATIONS_MAX_BYTES = 64 * 1024 * 1024;
 const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
 
-// The shape of a "word" in a syslog message that the hover lookup compares with
+// The shape of a "word" in a syslog message that the recommendation lookup compares with
 // identifiers: an optional literal leading %, then letters, digits and _ . - /
 // starting and ending with a letter, digit or underscore. The percent sign is
 // retained when matching. Numeric event IDs and short codes qualify. Identifiers
@@ -196,7 +196,7 @@ function syslog_recommendation_normalize(array $input, ?string &$reason = null):
  *
  * @param string $identifier The stored identifier.
  *
- * @return bool True when the hover lookup can find it.
+ * @return bool True when the recommendation lookup can find it.
  */
 function syslog_recommendation_matchable(string $identifier): bool {
 	return strlen($identifier) <= 190 && preg_match('/^' . SYSLOG_RECOMMENDATIONS_IDENTIFIER . '$/D', $identifier) === 1;
@@ -549,6 +549,70 @@ function syslog_recommendations_lookup(string $message, int $limit = 3): array {
 }
 
 /**
+ * Check the displayed messages for recommendations using bounded, shared queries.
+ *
+ * @param array<int|string, string> $messages The messages keyed by their display row.
+ *
+ * @return array<int|string, bool> Whether each message has a matching recommendation.
+ */
+function syslog_recommendations_for_messages(array $messages): array {
+	$available  = array_fill_keys(array_keys($messages), false);
+	$candidates = [];
+
+	foreach ($messages as $key => $message) {
+		foreach (syslog_recommendation_candidates($message) as $candidate) {
+			$candidates[$candidate][$key] = true;
+		}
+	}
+
+	foreach (array_chunk(array_map('strval', array_keys($candidates)), 500) as $batch) {
+		// Return candidate spellings so the flags follow the catalogue's SQL collation.
+		$matches = syslog_db_fetch_assoc_prepared(
+			'SELECT candidates.identifier
+			FROM (SELECT ? AS identifier' . str_repeat(' UNION ALL SELECT ?', cacti_sizeof($batch) - 1) . ') AS candidates
+			WHERE EXISTS (
+				SELECT 1
+				FROM syslog_recommendations AS recommendations
+				WHERE recommendations.identifier = candidates.identifier
+			)',
+			$batch
+		);
+
+		if ($matches === false) {
+			raise_message('syslog_recommendations', __('Recommendations could not be loaded.', 'syslog'), MESSAGE_LEVEL_ERROR);
+
+			return array_fill_keys(array_keys($messages), false);
+		}
+
+		foreach ($matches as $match) {
+			foreach ($candidates[$match['identifier']] as $key => $_) {
+				$available[$key] = true;
+			}
+		}
+	}
+
+	return $available;
+}
+
+/**
+ * Render the static recommendation indicator beside a message.
+ *
+ * @param bool $available Whether a recommendation matches the message.
+ *
+ * @return string The accessible lightbulb icon, or an empty cell's content.
+ */
+function syslog_recommendation_indicator(bool $available): string {
+	if (!$available) {
+		return '';
+	}
+
+	$label = __esc('Recommendation available - click the message for details', 'syslog');
+
+	return '<span class="syslogRecommendationIndicator" role="img" aria-label="' . $label . '" title="' . $label .
+		'"><i class="fa fa-lightbulb" aria-hidden="true"></i></span>';
+}
+
+/**
  * Shape recommendation rows for the browser: severity names resolved and
  * every column a string, so the client inserts them as plain text.
  *
@@ -594,7 +658,7 @@ function syslog_recommendations_labels(): array {
 }
 
 /**
- * Build the JSON response the hover tooltip requests for a message.
+ * Build the JSON response the details flyout requests for a row without a record id.
  *
  * @param string $message The syslog message text.
  *
@@ -609,21 +673,6 @@ function syslog_recommendations_lookup_json(string $message): string {
 		'recommendations' => $matches,
 		'labels'          => syslog_recommendations_labels()
 	], JSON_INVALID_UTF8_SUBSTITUTE);
-}
-
-/**
- * Whether any recommendations exist, so the viewer can skip hover lookups.
- *
- * @return bool True when the table holds at least one recommendation.
- */
-function syslog_recommendations_available(): bool {
-	static $available = null;
-
-	if ($available === null) {
-		$available = (bool) syslog_db_fetch_cell_prepared('SELECT id FROM syslog_recommendations LIMIT 1', [], '', false);
-	}
-
-	return $available;
 }
 
 /**

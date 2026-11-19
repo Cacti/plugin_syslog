@@ -17,6 +17,7 @@ function is_realm_allowed($realm) { return true; }
 function read_config_option($name, $force = false) { return ''; }
 function read_user_setting($name, $default = false, $force = false) { return $default; }
 require dirname(__DIR__, 2) . '/includes/functions.php';
+require dirname(__DIR__, 2) . '/includes/recommendations.php';
 $saved_choices_json = '{}';
 $saved_fields_json = html_escape(json_encode(['host'=>'Host','message'=>'Message','program'=>'Program','logtime'=>'Date','priority'=>'Priority']));
 $saved_tree_json = html_escape(json_encode(['AND',['predicate','host','=','10.0.0.5'],['predicate','logtime','last','86400']]));
@@ -27,11 +28,11 @@ $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
 $start = strpos($source, "<form id='syslog_form'"); $end = strpos($source, '</form>', $start)+7;
 echo '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/main.css"><link rel="stylesheet" href="/jquery-ui.css"><link rel="stylesheet" href="/search.css"><style>body{width:auto;font:13px Arial;margin:8px;color:#23362f;background:#fff}button,input,select{font:inherit;padding:5px;border:1px solid #bbc7bf;border-radius:3px}table{border-collapse:collapse}th{text-align:left;background:#e8eee9;padding:8px}h2{font-size:15px}</style><script src="/jquery.js"></script><script src="/jquery-ui.js"></script><script src="/jquery.timepicker.js"></script><script src="/functions.js"></script></head><body><h2>System Logs &nbsp; | &nbsp; Alert Logs</h2>';
 eval('?>'.substr($source,$start,$end-$start));
-echo '<div id="syslog_workspace"><div class="syslogResultsMain"><table><thead><tr><th>Time</th><th>Device</th><th>Program</th><th>Message</th><th>Facility</th><th>Severity</th></tr></thead><tbody>';
+echo '<div id="syslog_workspace"><div class="syslogResultsMain"><table><thead><tr><th>Time</th><th>Device</th><th>Program</th><th><i class="fa fa-lightbulb syslogRecommendationHeading" role="img" aria-label="Recommendations"></i></th><th>Message</th><th>Facility</th><th>Severity</th></tr></thead><tbody>';
 $priorities = ['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'];
 $message = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
 $long_message = $message . ' ' . str_repeat('width preview ', 4);
-foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i % 8).'"><td>2026-09-13 00:12:42</td><td>10.0.0.5</td><td>kernel</td><td class="syslogMessage">'.syslog_message_button($i === 1 ? $long_message : $message,'10.0.0.5','kernel','kern',$priorities[$i % 8],'2026-09-13 00:12:42', 100 + $i, $i === 17 ? 'removed' : 'main').'</td><td>kern</td><td>'.$priorities[$i % 8].'</td></tr>';
+foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i % 8).'"><td>2026-09-13 00:12:42</td><td>10.0.0.5</td><td>kernel</td><td class="syslogRecommendation">'.syslog_recommendation_indicator($i === 1).'</td><td class="syslogMessage">'.syslog_message_button($i === 1 ? $long_message : $message,'10.0.0.5','kernel','kern',$priorities[$i % 8],'2026-09-13 00:12:42', 100 + $i, $i === 17 ? 'removed' : 'main').'</td><td>kern</td><td>'.$priorities[$i % 8].'</td></tr>';
 echo '</tbody></table></div>';
 $start = strpos($source,"<aside id='syslog_message_details'");$end = strpos($source,'</aside></div>', $start)+strlen('</aside></div>');
 eval('?>'.substr($source,$start,$end-$start));

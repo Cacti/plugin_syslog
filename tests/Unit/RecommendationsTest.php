@@ -8,7 +8,7 @@
 */
 
 /*
- * Syslog recommendations: import/export normalization, hover lookup and the
+ * Syslog recommendations: import/export normalization, message lookup and the
  * one-time seed that the 5.0 upgrade performs.
  */
 
@@ -550,14 +550,116 @@ it('marks a seed applied even when all of its records already exist', function (
 		->and($flag)->toBe([SYSLOG_RECOMMENDATIONS_SEED_FLAG => '1']);
 });
 
-it('marks syslog rows for hover lookups only when recommendations exist', function () {
+it('keeps the escaped full message in the title without enabling hover lookups', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
-	test_override('syslog_db_fetch_cell_prepared', static fn () => '1');
+	$queries = [];
+	test_override('syslog_db_fetch_cell_prepared', function ($sql) use (&$queries) {
+		$queries[] = $sql;
+
+		return '1';
+	});
 
 	ob_start();
-	syslog_row_color('3', 'message');
+	syslog_row_color('3', '<script>alert("message")</script>');
 	$html = ob_get_clean();
 
-	expect($html)->toContain("data-recommendations='1'")->toContain("title='message'");
+	expect($html)->not->toContain('data-recommendations')
+		->toContain("title='&lt;script&gt;alert(&quot;message&quot;)&lt;/script&gt;'")
+		->and($queries)->toBe([]);
+});
+
+it('batch-checks page messages with the same matching rules as the flyout', function (bool $lowercase_matches) {
+	$db = new PDO('sqlite::memory:');
+	$schema = $lowercase_matches
+		? 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE NOCASE, vendor TEXT, component TEXT,
+			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)'
+		: 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE BINARY, vendor TEXT, component TEXT,
+			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)';
+	$db->exec($schema);
+	$db->exec("INSERT INTO syslog_recommendations (identifier) VALUES ('%LINK-3-UPDOWN'), ('%LINK-3-UPDOWN'), ('4625'), ('B')");
+	$queries = [];
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db, &$queries) {
+		$queries[] = $params;
+		// Emulate MySQL's case-insensitive connection collation on bound candidates.
+		$sql = str_replace('SELECT ? AS identifier', 'SELECT ? COLLATE NOCASE AS identifier', $sql);
+		$statement = $db->prepare(str_replace('CHAR_LENGTH(', 'LENGTH(', $sql));
+		$statement->execute($params);
+
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	});
+
+	$messages = [
+		'stored'  => '%link-3-updown: Interface Gi0/1 down',
+		'removed' => '%LINK-3-UPDOWN: Interface Gi0/2 down',
+		'alert'   => 'EventID 4625: Login failed',
+		'short'   => 'B',
+		'plain'   => 'LINK-3-UPDOWN',
+		'suffix'  => '%LINK-3-UPDOWN-EXT',
+		'empty'   => ''
+	];
+	$expected = ['stored' => $lowercase_matches, 'removed' => true, 'alert' => true, 'short' => true, 'plain' => false, 'suffix' => false, 'empty' => false];
+
+	expect(syslog_recommendations_for_messages($messages))->toBe($expected)
+		->and($queries)->toHaveCount(1)
+		->and($queries[0])->toContain('4625')
+		->and(array_keys($queries[0], '%link-3-updown', true))->toHaveCount(1);
+
+	foreach ($messages as $key => $message) {
+		expect(syslog_recommendations_lookup($message) !== [])->toBe($expected[$key]);
+	}
+})->with([
+	'case-insensitive catalogue' => [true],
+	'case-sensitive catalogue'   => [false]
+]);
+
+it('does not query recommendations for an empty page or messages without candidates', function () {
+	test_override('syslog_db_fetch_assoc_prepared', static function () {
+		throw new RuntimeException('Unexpected recommendation query');
+	});
+
+	expect(syslog_recommendations_for_messages([]))->toBe([])
+		->and(syslog_recommendations_for_messages(['', ' - : , ']))->toBe([false, false]);
+});
+
+it('bounds shared lookup batches instead of querying once per row', function () {
+	$queries = [];
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use (&$queries) {
+		$queries[] = $params;
+
+		return array_map(static fn ($identifier) => ['identifier' => $identifier], $params);
+	});
+	$messages = array_map(static fn ($id) => 'EVENT_' . $id, range(1, 501));
+
+	expect(syslog_recommendations_for_messages($messages))->toBe(array_fill(0, 501, true))
+		->and($queries)->toHaveCount(2)
+		->and($queries[0])->toHaveCount(500)
+		->and($queries[1])->toBe(['EVENT_501']);
+});
+
+it('surfaces a failed availability query instead of presenting partial results', function () {
+	$errors = [];
+	$queries = 0;
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use (&$queries) {
+		$queries++;
+
+		return $queries === 1 ? array_map(static fn ($identifier) => ['identifier' => $identifier], $params) : false;
+	});
+	test_override('raise_message', function ($id, $message, $level) use (&$errors) {
+		$errors[] = [$message, $level];
+	});
+
+	$messages = array_map(static fn ($id) => 'EVENT_' . $id, range(1, 1001));
+
+	expect(syslog_recommendations_for_messages($messages))->toBe(array_fill(0, 1001, false))
+		->and($queries)->toBe(2)
+		->and($errors)->toBe([['Recommendations could not be loaded.', MESSAGE_LEVEL_ERROR]]);
+});
+
+it('renders an accessible static lightbulb only for matching messages', function () {
+	$html = syslog_recommendation_indicator(true);
+
+	expect(syslog_recommendation_indicator(false))->toBe('')
+		->and($html)->toContain('fa-lightbulb', 'role="img"', 'aria-label="Recommendation available - click the message for details"')
+		->not->toContain('onclick', 'data-action');
 });

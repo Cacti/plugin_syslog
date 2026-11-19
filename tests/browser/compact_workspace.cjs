@@ -24,6 +24,7 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
   const url = new URL(r.request().url());
   if (url.pathname === '/') return r.fulfill({body: url.searchParams.has('error') ? fixture.replace("id='logical_search_error' role='alert'>", "id='logical_search_error' role='alert'>Invalid search") : fixture, contentType: 'text/html; charset=utf-8'});
   if (url.pathname === '/syslog.php') {
+   if (r.request().method() === 'POST') assert.equal(new URLSearchParams(r.request().postData()).get('__csrf_magic'), 'fixture', 'Fallback requests carry the CSRF token without relying on the global XHR shim');
    dispatched.push(r.request().method() + ' ' + (url.searchParams.get('action') || new URLSearchParams(r.request().postData() || '').get('action')) + ' ' + (url.searchParams.get('source') || '') + ':' + (url.searchParams.get('id') || ''));
    if (url.searchParams.get('action') !== 'message_details') return r.fulfill({body: JSON.stringify({found: false, recommendations: []}), contentType: 'application/json'});
    const id = url.searchParams.get('id');
@@ -94,13 +95,27 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.match(await page.evaluate(()=>posts.at(-1).rfilter),/AND host = "edge-router"$/);
  const originalColor = await page.locator('.syslogRow').first().evaluate(row=>getComputedStyle(row).backgroundColor);
  assert.notEqual(originalColor,'rgb(255, 255, 255)');
+ assert.equal(await page.locator('.syslogRow').first().locator('.syslogRecommendationIndicator').count(), 1, 'Matching messages advertise recommendations before a click');
+ assert.equal(await page.locator('.syslogRow').nth(1).locator('.syslogRecommendation').textContent(), '', 'Unmatched messages leave the indicator column blank');
+ assert.equal(await page.locator('.syslogRecommendationIndicator').first().evaluate(icon => icon.parentElement.nextElementSibling.classList.contains('syslogMessage')), true, 'The indicator immediately precedes the message');
+ const beforeHover = dispatched.length;
  await messageButton.hover();
- const messageTooltip = page.locator('.ui-tooltip:visible .syslogRecMessage .syslogRecText');
+ const messageTooltip = page.locator('.ui-tooltip:visible .syslogMessageTip');
  await messageTooltip.waitFor();
  assert.equal(await messageTooltip.textContent(), longMessage, 'Hover shows the full untrimmed message');
  assert.equal(await page.locator('.ui-tooltip:visible script').count(), 0, 'Hover treats message markup as literal text');
  await page.mouse.move(0, 0);
  await messageTooltip.waitFor({state: 'hidden'});
+ await messageButton.hover();
+ await messageTooltip.waitFor();
+ assert.equal(await messageTooltip.textContent(), longMessage, 'Repeated hovers preserve the full message');
+ await page.mouse.move(0, 0);
+ await messageTooltip.waitFor({state: 'hidden'});
+ await page.locator('.syslogRecommendationIndicator').first().hover();
+ await page.locator('.ui-tooltip:visible').filter({hasText: 'Recommendation available - click the message for details'}).waitFor();
+ assert.equal(dispatched.length, beforeHover, 'Neither message nor lightbulb hovers issue any requests');
+ await page.mouse.move(0, 0);
+ await page.waitForFunction(() => $('.ui-tooltip:visible').length === 0);
  await page.locator('.syslogMessageOpen').first().click();
  assert.equal(await page.locator('#syslog_details_raw').textContent(),longMessage);
  assert.equal(await page.locator('#syslog_message_details script').count(),0);

@@ -2654,18 +2654,29 @@ function syslog_messages(string $tab = 'syslog'): void {
 			$sql_where");
 	}
 
+	$recommendations = syslog_recommendations_for_messages(array_map(
+		static fn (array $row): string => (string) ($row[$tab === 'syslog' ? 'message' : 'logmsg'] ?? ''),
+		$syslog_messages
+	));
+	$recommendation_header = [
+		'display' => '<i class="fa fa-lightbulb syslogRecommendationHeading" role="img" aria-label="' . __esc('Recommendations', 'syslog') . '"></i>',
+		'align'   => 'center',
+		'tip'     => __('Recommendations', 'syslog')
+	];
+
 	if ($tab == 'syslog') {
 		// Check if grouping is enabled for display
 		$grouping_enabled = isset_request_var('grouping') && get_request_var('grouping') == '1';
 
 		$display_text = [
-			'logtime'            => [__('Date', 'syslog'), 'ASC'],
-			'host_id'            => [__('Device', 'syslog'), 'ASC'],
-			'program'            => [__('Program', 'syslog'), 'ASC'],
-			'message'            => [__('Message', 'syslog'), 'ASC'],
-			'facility_id'        => [__('Facility', 'syslog'), 'ASC'],
-			'priority_id'        => [__('Priority', 'syslog'), 'ASC'],
-			'threshold_breached' => ['display' => __('Breach', 'syslog'), 'sort' => 'ASC', 'align' => 'center', 'tip' => __('Threshold breached', 'syslog')]];
+			'logtime'               => [__('Date', 'syslog'), 'ASC'],
+			'host_id'               => [__('Device', 'syslog'), 'ASC'],
+			'program'               => [__('Program', 'syslog'), 'ASC'],
+			'nosort_recommendation' => $recommendation_header,
+			'message'               => [__('Message', 'syslog'), 'ASC'],
+			'facility_id'           => [__('Facility', 'syslog'), 'ASC'],
+			'priority_id'           => [__('Priority', 'syslog'), 'ASC'],
+			'threshold_breached'    => ['display' => __('Breach', 'syslog'), 'sort' => 'ASC', 'align' => 'center', 'tip' => __('Threshold breached', 'syslog')]];
 
 		// Add count column if grouping is enabled
 		if ($grouping_enabled) {
@@ -2716,7 +2727,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		);
 
 		if (cacti_sizeof($syslog_messages)) {
-			foreach ($syslog_messages as $sm) {
+			foreach ($syslog_messages as $row => $sm) {
 				if (is_null($sm[$syslog_incoming_config['textField']])) {
 					$sm[$syslog_incoming_config['textField']] = __('Empty message', 'syslog');
 				}
@@ -2736,6 +2747,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				print "<td class='nowrap left syslogMeta'>" . syslog_value_filter_button($hosts[$sm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 				print "<td class='nowrap left syslogMeta'>" . syslog_value_filter_button($sm['program'], 'program') . '</td>';
+				print "<td class='center syslogRecommendation'>" . syslog_recommendation_indicator($recommendations[$row]) . '</td>';
 				// Group summaries show the latest timestamp; use its matching sequence ID.
 				$rule_id = $grouping_enabled && !empty($sm['seq_list']) ? explode(',', $sm['seq_list'])[0] : $sm[$syslog_incoming_config['id']];
 				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype'], $trim), $sm['seq'], '', 'left syslogMessage');
@@ -2762,6 +2774,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 							print "<td class='nowrap left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
+							print "<td class='center syslogRecommendation'>" . syslog_recommendation_indicator($recommendations[$row]) . '</td>';
 							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype'], $trim) . '</td>';
 							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
 							print "<td class='left'>" . syslog_value_filter_button($priorities[$dm['priority_id']] ?? __('Unknown', 'syslog'), 'priority') . '</td>';
@@ -2798,14 +2811,15 @@ function syslog_messages(string $tab = 'syslog'): void {
 		<?php
 	} else {
 		$display_text = [
-			'logtime'     => ['display' => __('Date', 'syslog'),	   'sort' => 'ASC', 'align' => 'left'],
-			'host'        => ['display' => __('Device', 'syslog'),	 'sort' => 'ASC', 'align' => 'left'],
-			'severity'    => ['display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
-			'name'        => ['display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'],
-			'logmsg'      => ['display' => __('Message', 'syslog'),	'sort' => 'ASC', 'align' => 'left'],
-			'count'       => ['display' => __('Count', 'syslog'),	  'sort' => 'ASC', 'align' => 'right'],
-			'facility_id' => ['display' => __('Facility', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
-			'priority_id' => ['display' => __('Priority', 'syslog'),   'sort' => 'ASC', 'align' => 'left']
+			'logtime'               => ['display' => __('Date', 'syslog'),       'sort' => 'ASC', 'align' => 'left'],
+			'host'                  => ['display' => __('Device', 'syslog'),     'sort' => 'ASC', 'align' => 'left'],
+			'severity'              => ['display' => __('Severity', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
+			'name'                  => ['display' => __('Alert Name', 'syslog'), 'sort' => 'ASC', 'align' => 'left'],
+			'nosort_recommendation' => $recommendation_header,
+			'logmsg'                => ['display' => __('Message', 'syslog'),    'sort' => 'ASC', 'align' => 'left'],
+			'count'                 => ['display' => __('Count', 'syslog'),      'sort' => 'ASC', 'align' => 'right'],
+			'facility_id'           => ['display' => __('Facility', 'syslog'),   'sort' => 'ASC', 'align' => 'left'],
+			'priority_id'           => ['display' => __('Priority', 'syslog'),   'sort' => 'ASC', 'align' => 'left']
 		];
 
 		$nav = html_nav_bar("syslog.php?tab=$tab", MAX_DISPLAY_PAGES, (int) get_request_var('page'), (int) $rows, (int) $total_rows, cacti_sizeof($display_text), __('Alert Log Rows', 'syslog'), 'page', 'main', $page_count);
@@ -2817,7 +2831,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
 
 		if (cacti_sizeof($syslog_messages)) {
-			foreach ($syslog_messages as $log) {
+			foreach ($syslog_messages as $row => $log) {
 				$title   = html_escape($log['logmsg']);
 
 				syslog_log_row_color($log['severity'], $title);
@@ -2826,6 +2840,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
+				print "<td class='center syslogRecommendation'>" . syslog_recommendation_indicator($recommendations[$row]) . '</td>';
 				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime'], $log['seq'], 'alert', $trim), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');

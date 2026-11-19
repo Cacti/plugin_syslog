@@ -4562,8 +4562,7 @@ function syslog_priority_class($priority): string {
  */
 function syslog_row_color($priority, $message): string {
 	$priority_class = syslog_priority_class($priority);
-	$recommend      = function_exists('syslog_recommendations_available') && syslog_recommendations_available() ? " data-recommendations='1'" : '';
-	print "<tr title='" . html_escape($message) . "'" . $recommend . " class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
+	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
 
 	return '';
 }
