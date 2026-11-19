@@ -234,14 +234,20 @@
 	box-sizing: border-box;
 }
 
-.syslogSavedPrompt .syslogSavedNameRow {
-	display: flex;
+.syslogSavedPromptFields {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
 	align-items: center;
-	gap: 8px;
-	margin-bottom: 10px;
+	gap: 10px 12px;
 }
 
-.syslogSavedPrompt .syslogSavedNameRow label {
+.syslogSavedPrompt .syslogSavedNameRow,
+.syslogSavedPrompt .syslogSavedDefaultRow {
+	display: contents;
+}
+
+.syslogSavedPrompt .syslogSavedNameRow label,
+.syslogSavedPrompt .syslogSavedDefaultRow label {
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--search-text);
@@ -257,16 +263,6 @@
 	border-radius: 5px;
 	background: var(--search-card);
 	color: var(--search-text);
-}
-
-/* Aligns the Default checkbox under the name field. */
-.syslogSavedPrompt .syslogSavedDefaultRow {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding-left: 52px;
-	color: var(--search-text);
-	font-size: 12px;
 }
 
 .syslogSearchBuilder .syslogSearchRow {

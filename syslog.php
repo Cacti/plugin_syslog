@@ -2498,13 +2498,15 @@ function syslog_filter(string $sql_where, string $tab): void {
 					</div>
 				</div>
 				<div id='syslog_saved_prompt' class='syslogSavedPrompt' title='<?php print __esc('Save Search As', 'syslog'); ?>' style='display:none'>
-					<div class='syslogSavedNameRow'>
-						<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
-						<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
-					</div>
-					<div class='syslogSavedDefaultRow'>
-						<input type='checkbox' id='syslog_saved_prompt_default'>
-						<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
+					<div class='syslogSavedPromptFields'>
+						<div class='syslogSavedNameRow'>
+							<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
+							<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
+						</div>
+						<div class='syslogSavedDefaultRow filterTable'>
+							<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
+							<input type='checkbox' role='switch' id='syslog_saved_prompt_default'>
+						</div>
 					</div>
 				</div>
 				<table class='filterTable syslogSearchButtons'>
@@ -2751,15 +2753,17 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				// If grouping is enabled and there are multiple occurrences, add hidden detail rows
 				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1 && isset($sm['seq_list'])) {
-					$seq_array = explode(',', $sm['seq_list']);
+					$seq_array = array_map('intval', explode(',', $sm['seq_list']));
+					$group_where = $sql_where . ($sql_where === '' ? 'WHERE ' : ' AND ') .
+						'syslog.seq IN (' . implode(',', array_fill(0, cacti_sizeof($seq_array), '?')) . ')';
 
 					// Get individual messages for this group
-					$detail_messages = syslog_db_fetch_assoc("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
+					$detail_messages = syslog_db_fetch_assoc_prepared("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
 						FROM `$syslogdb_default`.`" . (($sm['mtype'] == 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id = syslog_programs.program_id
-						WHERE syslog.seq IN (" . implode(',', array_map('intval', $seq_array)) . ')
-						ORDER BY syslog.logtime DESC');
+						$group_where
+						ORDER BY syslog.logtime DESC", $seq_array);
 
 					if (cacti_sizeof($detail_messages)) {
 						foreach ($detail_messages as $dm) {

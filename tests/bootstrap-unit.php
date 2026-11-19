@@ -435,6 +435,12 @@ if (!function_exists('__esc')) {
 	}
 }
 
+if (!function_exists('number_format_i18n')) {
+	function number_format_i18n($number, $decimals = 0) {
+		return test_call_override('number_format_i18n', [$number, $decimals], number_format($number, $decimals));
+	}
+}
+
 if (!function_exists('mailer')) {
 	function mailer(...$args) {
 		return test_call_override('mailer', $args, '');

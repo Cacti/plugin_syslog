@@ -220,11 +220,18 @@ it('applies the logical search predicate consistently in the real query builder'
 	// Builder dates are the only time restriction, including ranges outside the old span.
 	$GLOBALS['syslog_search_tree'] = syslog_parse_logical_search('logtime >= "2020-01-01 00:00:00" AND logtime <= "2020-01-02 00:00:00"');
 
-	get_syslog_messages($sql_where, 20, 'syslog');
+	foreach (['-1', '1', '0'] as $removal) {
+		foreach (['0', '1'] as $grouping) {
+			$GLOBALS['request']['removal']  = $removal;
+			$GLOBALS['request']['grouping'] = $grouping;
+			get_syslog_messages($sql_where, 20, 'syslog');
 
-	expect(str_contains($sql_where, "syslog.logtime >= '2020-01-01 00:00:00'"))->toBeTrue('From condition applied');
-	expect(str_contains($sql_where, "syslog.logtime <= '2020-01-02 00:00:00'"))->toBeTrue('To condition applied');
-	expect(str_contains($sql_where, 'BETWEEN'))->toBeFalse('No hidden legacy date restriction');
+			expect($sql_where)->toContain("syslog.logtime >= '2020-01-01 00:00:00'")
+				->toContain("syslog.logtime <= '2020-01-02 00:00:00'")
+				->not->toContain('BETWEEN');
+			expect(substr_count($GLOBALS['captured_sql'], $sql_where))->toBe($removal === '1' ? 2 : 1);
+		}
+	}
 
 	$GLOBALS['syslog_search_tree'] = null;
 

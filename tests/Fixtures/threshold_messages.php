@@ -18,13 +18,15 @@ $syslog_incoming_config = ['id' => 'seq', 'textField' => 'message'];
 $base = ['seq' => 101, 'facility_id' => 1, 'priority_id' => 3, 'program' => 'app', 'host_id' => 1, 'logtime' => '2026-10-15 12:00:00', 'message' => 'Example message', 'mtype' => 'main'];
 $syslog_messages = [$base + ['threshold_breached' => 1], array_replace($base, ['seq' => 102, 'threshold_breached' => null])];
 $grouping_enabled = false;
+$trim = 0;
 print '<!doctype html><html><head><meta charset="utf-8"><style>body{font:14px Arial}table{border-collapse:collapse;width:100%}td,th{padding:8px;border:1px solid #ddd}th{text-align:left}</style></head><body><table id="individual"><thead><tr>';
 foreach ($display_text as $header) { print '<th title="' . html_escape($header['tip'] ?? '') . '">' . html_escape($header['display'] ?? $header[0]) . '</th>'; }
 print '</tr></thead><tbody>';
 eval($rows);
 print '</tbody></table><table id="grouped"><tbody>';
 $grouping_enabled = true;
+$sql_where = '';
 $syslog_messages = [$base + ['threshold_breached' => 1, 'occurrence_count' => 2, 'seq_list' => '101,102']];
-test_override('syslog_db_fetch_assoc', static fn() => [$base + ['threshold_breached' => 1], array_replace($base, ['seq' => 102, 'threshold_breached' => null])]);
+test_override('syslog_db_fetch_assoc_prepared', static fn() => [$base + ['threshold_breached' => 1], array_replace($base, ['seq' => 102, 'threshold_breached' => null])]);
 eval($rows);
 print '</tbody></table></body></html>';
