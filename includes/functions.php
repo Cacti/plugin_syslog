@@ -670,14 +670,22 @@ function syslog_strip_auto_dates(string $search, $date1, $date2): string {
 
 /**
  * Check a Syslog realm by its Cacti-assigned ID, not a filename mapping.
+ *
+ * @param string $display The realm's display name.
+ *
+ * @return bool Whether the current user has permission.
  */
 function syslog_realm_allowed(string $display): bool {
-	$realms = db_fetch_assoc_prepared(
-		'SELECT id FROM plugin_realms WHERE plugin = ? AND display = ?',
-		['syslog', $display]
-	);
+	static $realms = [];
 
-	foreach (is_array($realms) ? $realms : [] as $realm) {
+	if (empty($realms[$display])) {
+		$realms[$display] = db_fetch_assoc_prepared(
+			'SELECT id FROM plugin_realms WHERE plugin = ? AND display = ?',
+			['syslog', $display]
+		);
+	}
+
+	foreach (is_array($realms[$display]) ? $realms[$display] : [] as $realm) {
 		if (is_realm_allowed((int) $realm['id'] + 100)) {
 			return true;
 		}
