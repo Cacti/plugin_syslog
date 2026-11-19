@@ -40,7 +40,7 @@
 
 const SYSLOG_RECOMMENDATIONS_FORMAT    = 'syslog-recommendations';
 const SYSLOG_RECOMMENDATIONS_VERSION   = 1;
-const SYSLOG_RECOMMENDATIONS_SEED_FILE = 'docs/recommendations.sql.gz';
+const SYSLOG_RECOMMENDATIONS_SEED_FILE = 'docs/cisco.json.gz';
 const SYSLOG_RECOMMENDATIONS_MAX_BYTES = 64 * 1024 * 1024;
 const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
@@ -359,17 +359,34 @@ function syslog_recommendation_export_record(array $row): array {
  *
  * @param string            $where  An SQL WHERE clause (with leading WHERE) over syslog_recommendations, or ''.
  * @param array<int, mixed> $params The bind values for $where.
+ * @param bool             $compressed Whether to emit gzip-compressed JSON.
  *
  * @return void
  */
-function syslog_recommendations_export(string $where = '', array $params = []): void {
+function syslog_recommendations_export(string $where = '', array $params = [], bool $compressed = false): void {
 	$flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE |
 		JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT;
 
-	print '{' . "\n";
-	print '    "format": ' . json_encode(SYSLOG_RECOMMENDATIONS_FORMAT) . ",\n";
-	print '    "version": ' . SYSLOG_RECOMMENDATIONS_VERSION . ",\n";
-	print '    "recommendations": [';
+	$context = $compressed ? deflate_init(ZLIB_ENCODING_GZIP) : null;
+
+	if ($context === false) {
+		throw new RuntimeException('Unable to initialize recommendation export compression');
+	}
+
+	$write = static function (string $text, bool $finish = false) use ($context): void {
+		$output = $context === null ? $text : deflate_add($context, $text, $finish ? ZLIB_FINISH : ZLIB_NO_FLUSH);
+
+		if ($output === false) {
+			throw new RuntimeException('Unable to compress recommendation export');
+		}
+
+		print $output;
+	};
+
+	$write('{' . "\n");
+	$write('    "format": ' . json_encode(SYSLOG_RECOMMENDATIONS_FORMAT) . ",\n");
+	$write('    "version": ' . SYSLOG_RECOMMENDATIONS_VERSION . ",\n");
+	$write('    "recommendations": [');
 
 	$last  = 0;
 	$first = true;
@@ -386,16 +403,16 @@ function syslog_recommendations_export(string $where = '', array $params = []): 
 			$last  = (int) $row['id'];
 			$json  = (string) json_encode(syslog_recommendation_export_record($row), $flags);
 			$json  = preg_replace('/^/m', '        ', $json) ?? $json;
-			print ($first ? "\n" : ",\n") . $json;
+			$write(($first ? "\n" : ",\n") . $json);
 			$first = false;
 		}
 	} while (count($rows) === 500);
 
-	print ($first ? '' : "\n    ") . "]\n}\n";
+	$write(($first ? '' : "\n    ") . "]\n}\n", true);
 }
 
 /**
- * Read an import file, refusing empty or oversized ones.
+ * Read plain or gzip-compressed JSON, limiting both stored and expanded sizes.
  *
  * @param string $path The file to read.
  *
@@ -403,9 +420,50 @@ function syslog_recommendations_export(string $where = '', array $params = []): 
  */
 function syslog_recommendations_read_file(string $path) {
 	clearstatcache(true, $path);
-	$size = is_file($path) ? filesize($path) : false;
+	$size = is_file($path) && is_readable($path) ? filesize($path) : false;
 
-	return $size === false || $size <= 0 || $size > SYSLOG_RECOMMENDATIONS_MAX_BYTES ? false : file_get_contents($path);
+	if ($size === false || $size <= 0 || $size > SYSLOG_RECOMMENDATIONS_MAX_BYTES) {
+		return false;
+	}
+
+	$payload = file_get_contents($path, false, null, 0, SYSLOG_RECOMMENDATIONS_MAX_BYTES + 1);
+
+	if ($payload !== false && substr($payload, 0, 2) === "\x1f\x8b") {
+		if (!function_exists('inflate_init')) {
+			return false;
+		}
+
+		$context = inflate_init(ZLIB_ENCODING_GZIP);
+
+		if ($context === false) {
+			return false;
+		}
+
+		$expanded = '';
+		$length   = strlen($payload);
+
+		for ($offset = 0; $offset < $length; $offset += 8192) {
+			$chunk = @inflate_add($context, substr($payload, $offset, 8192), ZLIB_SYNC_FLUSH);
+
+			if ($chunk === false || strlen($expanded) + strlen($chunk) > SYSLOG_RECOMMENDATIONS_MAX_BYTES) {
+				return false;
+			}
+
+			$expanded .= $chunk;
+
+			if (inflate_get_status($context) === ZLIB_STREAM_END) {
+				break;
+			}
+		}
+
+		if (inflate_get_status($context) !== ZLIB_STREAM_END || inflate_get_read_len($context) !== $length) {
+			return false;
+		}
+
+		$payload = $expanded;
+	}
+
+	return $payload === false || $payload === '' || strlen($payload) > SYSLOG_RECOMMENDATIONS_MAX_BYTES ? false : $payload;
 }
 
 /**
@@ -421,7 +479,9 @@ function syslog_recommendations_read_payload() {
 	}
 
 	$file = $_FILES['import_file'] ?? null;
-	$path = is_array($file) && ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && is_uploaded_file((string) ($file['tmp_name'] ?? ''))
+	$path = is_array($file) && ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK
+		&& preg_match('/\.json(?:\.gz)?$/iD', (string) ($file['name'] ?? ''))
+		&& is_uploaded_file((string) ($file['tmp_name'] ?? ''))
 		? (string) $file['tmp_name'] : '';
 
 	return $path === '' ? false : syslog_recommendations_read_file($path);
@@ -575,7 +635,7 @@ function syslog_recommendations_available(): bool {
  *
  * @param string|null $file An alternative seed file, mainly for tests.
  *
- * @return int The number of statements executed, or -1 when the seed was skipped.
+ * @return int The number of records imported, or -1 when the seed was skipped.
  */
 function syslog_recommendations_seed(?string $file = null): int {
 	$custom = $file !== null;
@@ -586,11 +646,12 @@ function syslog_recommendations_seed(?string $file = null): int {
 
 	$file = $file ?? dirname(__DIR__) . '/' . SYSLOG_RECOMMENDATIONS_SEED_FILE;
 
-	// gzopen() reads a plain file just as well as a gzip one, one line at a time.
-	$fh = function_exists('gzopen') && is_readable($file) ? gzopen($file, 'rb') : false;
+	$payload = syslog_recommendations_read_file($file);
+	$parsed  = $payload === false ? false : syslog_recommendations_parse($payload);
+	unset($payload);
 
-	if ($fh === false) {
-		cacti_log('SYSLOG WARNING: Recommendations seed file ' . $file . ' is not readable or the PHP zlib extension is missing', false, 'SYSTEM');
+	if ($parsed === false || $parsed['invalid'] || !$parsed['records']) {
+		cacti_log('SYSLOG WARNING: Recommendations seed file ' . $file . ' is not readable or contains invalid JSON recommendations (gzip files require PHP zlib)', false, 'SYSTEM');
 
 		return -1;
 	}
@@ -599,26 +660,15 @@ function syslog_recommendations_seed(?string $file = null): int {
 		@set_time_limit(0);
 	}
 
-	$executed = 0;
-	$failed   = false;
+	$result = syslog_recommendations_store($parsed['records'], false);
 
-	// One INSERT per line; comments and the CREATE TABLE statement are documentation.
-	while (($line = gzgets($fh)) !== false) {
-		if (!str_starts_with($line, 'INSERT IGNORE INTO `syslog_recommendations`')) {
-			continue;
-		}
-
-		if (syslog_db_execute(rtrim($line))) {
-			$executed++;
-		} else {
-			$failed = true;
-		}
+	if ($result['failed']) {
+		cacti_log('SYSLOG WARNING: Failed to store ' . $result['failed'] . ' recommendation(s) from seed file ' . $file, false, 'SYSTEM');
 	}
-	gzclose($fh);
 
-	if (!$failed && !$custom) {
+	if (!$result['failed'] && !$custom) {
 		set_config_option(SYSLOG_RECOMMENDATIONS_SEED_FLAG, '1');
 	}
 
-	return $executed;
+	return $result['imported'];
 }
