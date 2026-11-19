@@ -581,6 +581,8 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 	$queries = [];
 	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db, &$queries) {
 		$queries[] = $params;
+		// Emulate MySQL's case-insensitive connection collation on bound candidates.
+		$sql = str_replace('SELECT ? AS identifier', 'SELECT ? COLLATE NOCASE AS identifier', $sql);
 		$statement = $db->prepare(str_replace('CHAR_LENGTH(', 'LENGTH(', $sql));
 		$statement->execute($params);
 

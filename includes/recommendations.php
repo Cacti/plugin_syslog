@@ -568,10 +568,13 @@ function syslog_recommendations_for_messages(array $messages): array {
 	foreach (array_chunk(array_map('strval', array_keys($candidates)), 500) as $batch) {
 		// Return candidate spellings so the flags follow the catalogue's SQL collation.
 		$matches = syslog_db_fetch_assoc_prepared(
-			'SELECT DISTINCT candidates.identifier
+			'SELECT candidates.identifier
 			FROM (SELECT ? AS identifier' . str_repeat(' UNION ALL SELECT ?', cacti_sizeof($batch) - 1) . ') AS candidates
-			INNER JOIN syslog_recommendations AS recommendations
-			ON recommendations.identifier = candidates.identifier',
+			WHERE EXISTS (
+				SELECT 1
+				FROM syslog_recommendations AS recommendations
+				WHERE recommendations.identifier = candidates.identifier
+			)',
 			$batch
 		);
 
