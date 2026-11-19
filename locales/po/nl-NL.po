@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-18 13:15-0500\n"
+"POT-Creation-Date: 2026-11-19 13:24+0000\n"
 "PO-Revision-Date: 2025-03-07 14:54-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -3591,6 +3591,10 @@ msgid "Click 'Continue' to Delete the following Recommendation(s)."
 msgstr "Klik op 'Doorgaan' om de volgende Syslog-rapporten te verwijderen."
 
 #: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr ""
+
+#: syslog_recommendations.php
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
 msgstr ""
 
@@ -3621,7 +3625,7 @@ msgid "Import Recommendations from Local File"
 msgstr "Rapportregel importeren uit lokaal bestand"
 
 #: syslog_recommendations.php
-msgid "Select a JSON file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
 msgstr ""
 
 #: syslog_recommendations.php
