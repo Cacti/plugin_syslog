@@ -2,9 +2,12 @@
 // Render the real message-row markup with marked, unmarked, and grouped fixtures.
 require dirname(__DIR__) . '/bootstrap-unit.php';
 syslog_load_plugin_source('includes/functions.php');
+syslog_load_plugin_source('includes/recommendations.php');
 function form_selectable_cell($value, $id, $width = '', $class = '') { print '<td class="' . html_escape($class) . '" style="width:' . html_escape($width) . '">' . $value . '</td>'; }
 function form_end_row() { print '</tr>'; }
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
+$recommendation_header = ['display' => 'Recommendations', 'align' => 'center'];
+$recommendations = [true, false];
 $start = strpos($source, "\t\t\$display_text = [", strpos($source, 'function syslog_messages('));
 $end = strpos($source, "\n\t\t// Add count column", $start);
 eval(substr($source, $start, $end - $start));

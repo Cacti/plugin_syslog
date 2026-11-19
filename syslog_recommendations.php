@@ -123,7 +123,7 @@ function recommendation_where(): array {
 		$params[] = (int) get_request_var('severity');
 	}
 
-	// The same word shape the hover lookup uses, so "No" lists exactly the
+	// The same word shape the message lookup uses, so "No" lists exactly the
 	// identifiers that can never match a message.
 	if ((string) get_request_var('matchable') !== '-1') {
 		$where[]  = 'identifier ' . ((string) get_request_var('matchable') === '1' ? '' : 'NOT ') . 'REGEXP ?';
@@ -513,8 +513,9 @@ function recommendation_edit(): void {
  */
 function recommendation_matching_help(): void {
 	$items = [
-		__('Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the hover message but are never searched.', 'syslog'),
-		__('When you hover over a row on the Syslog tab, the first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>.', 'syslog'),
+		__('A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server.', 'syslog'),
+		__('Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched.', 'syslog'),
+		__('The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>.', 'syslog'),
 		__('An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a "contains", "starts with" or "ends with" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>.', 'syslog'),
 		__('A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word.', 'syslog'),
 		__('All vendors are checked. When several recommendations match, the longest identifiers are shown first, up to three.', 'syslog'),
@@ -573,7 +574,7 @@ function recommendation_list(): void {
 			<option value='<?php print $level; ?>'<?php print (string) get_request_var('severity') === (string) $level ? ' selected' : ''; ?>><?php print html_escape($name); ?></option>
 			<?php } ?>
 		</select></td>
-		<td><label for='matchable' title='<?php print __esc('Whether the identifier has the shape of a message word, so the hover lookup can ever find it', 'syslog'); ?>'><?php print __('Can Match', 'syslog'); ?></label></td>
+		<td><label for='matchable' title='<?php print __esc('Whether the identifier has the shape of a message word, so the message lookup can ever find it', 'syslog'); ?>'><?php print __('Can Match', 'syslog'); ?></label></td>
 		<td><select id='matchable'>
 			<?php foreach (['-1' => __('All', 'syslog'), '1' => __('Yes', 'syslog'), '0' => __('No', 'syslog')] as $value => $label) { ?>
 			<option value='<?php print $value; ?>'<?php print (string) get_request_var('matchable') === (string) $value ? ' selected' : ''; ?>><?php print $label; ?></option>

@@ -248,13 +248,13 @@ function initSyslogWorkspace() {
 		}
 
 		// Rows that name their record are dispatched by id; anything else falls
-		// back to the message-only recommendation lookup the tooltip uses.
+		// back to a message-only recommendation lookup.
 		function load(data) {
 			var token = ++request;
 			note(recSection.dataset.loading);
 			var call = data.source && data.id
 				? $.ajax({url: 'syslog.php', type: 'GET', dataType: 'json', data: {action: 'message_details', source: data.source, id: data.id, logtime: data.received || ''}})
-				: $.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'recommendation', message: data.message || ''}});
+				: $.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'recommendation', message: data.message || '', __csrf_magic: csrfMagicToken}});
 			call.done(function(result) {
 				if (token !== request) return;
 				if (result && result.record) render($.extend({}, result.record, {rules: result.rules || {}}));
@@ -1330,12 +1330,6 @@ function initSyslogMain(config) {
 }
 
 /**
- * Cache of recommendation lookups keyed by the syslog message text, so
- * hovering the same row again does not repeat the request.
- */
-var syslogRecommendationCache = new Map();
-
-/**
  * Append one card per recommendation: identifier, vendor and severity badges,
  * then the explanation, recommended action and reference. All server data is
  * inserted as text, never as markup.
@@ -1385,77 +1379,12 @@ function syslogRecommendationCards($parent, recommendations, labels, clipped) {
 }
 
 /**
- * Build the hover message for a syslog row: the message itself followed by
- * the explanation and recommended action of every recommendation found.
- * All server data is inserted as text, never as markup.
+ * Show the locally available title as text, without requesting the server.
  *
- * @param {string} message The syslog message shown in the row.
- * @param {Object|null} result The decoded recommendation lookup response.
- * @returns {jQuery} The tooltip content.
+ * @returns {jQuery} The full message or indicator tooltip, never parsed as HTML.
  */
-function syslogRecommendationContent(message, result) {
-	var $tip = $('<div class="syslogRecTip"></div>');
-	var labels = (result && result.labels) || {};
-
-	// The syslog message is shown in full; only recommendation text is clipped.
-	var $message = $('<div class="syslogRecSection syslogRecMessage"></div>').appendTo($tip);
-	$('<div class="syslogRecLabel"></div>').text(labels.message || '').appendTo($message);
-	$('<div class="syslogRecText"></div>').text(String(message)).appendTo($message);
-
-	if (result && Array.isArray(result.recommendations)) {
-		syslogRecommendationCards($tip, result.recommendations, labels, true);
-	}
-
-	return $tip;
-}
-
-/**
- * jQuery UI tooltip content callback for syslog rows. It asks the server for
- * a recommendation matching the row's message and shows the decoded JSON
- * response; rows without one keep the plain message tooltip.
- *
- * @param {Function} callback Delivers the content when the lookup completes.
- * @returns {jQuery|undefined} Immediate content, or undefined while the lookup runs.
- */
-function syslogRowTooltip(callback) {
-	var $row = $(this);
-	var message = $row.data('syslogMessage');
-
-	if (message === undefined) {
-		// jQuery UI removes the title while the tooltip is open, so keep our own copy.
-		message = $row.attr('title') || '';
-		$row.data('syslogMessage', message);
-	}
-
-	if (message === '') {
-		return;
-	}
-
-	if (!$row.is('[data-recommendations]')) {
-		return syslogRecommendationContent(message, null);
-	}
-
-	if (syslogRecommendationCache.has(message)) {
-		return syslogRecommendationContent(message, syslogRecommendationCache.get(message));
-	}
-
-	$.ajax({
-		url: 'syslog.php', type: 'POST', dataType: 'json',
-		data: {action: 'recommendation', message: message}
-	}).done(function(result) {
-		if (!result || !result.found) {
-			result = null;
-		}
-
-		if (syslogRecommendationCache.size > 500) {
-			syslogRecommendationCache.clear();
-		}
-
-		syslogRecommendationCache.set(message, result);
-		callback(syslogRecommendationContent(message, result));
-	}).fail(function() {
-		callback(syslogRecommendationContent(message, null));
-	});
+function syslogRowTooltip() {
+	return $('<div class="syslogMessageTip"></div>').text($(this).attr('title') || '');
 }
 
 /**

@@ -1,5 +1,9 @@
 ## ChangeLog
 
+--- develop ---
+
+* bug: Remove recommendation callbacks on message hover, show a theme-aware lightbulb before messages with matching recommendations, and include the CSRF token in the details flyout's fallback POST
+
 --- 5.0 ---
 
 * bug: Exercise the grouped-message detail query directly in regression tests without dynamic code evaluation or interpolated fixture table names, and cover unavailable or failing gzip operations

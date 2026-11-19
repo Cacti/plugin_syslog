@@ -70,7 +70,7 @@ for lifecycle and deployment details.
 
 * Ability to run alert specific commands at Alert and Re-alert times
 
-* Recommendations: hover over a message to see an explanation and a recommended
+* Recommendations: a lightbulb marks messages with an explanation and a recommended
   action from a vendor-neutral knowledge base that you can edit, import, and
   export (see Recommendations below)
 
@@ -587,10 +587,12 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
 
 ## Recommendations
 
-Recommendations explain what a message means and what to do about it. When you
-hover over a row on the Syslog tab, the plugin looks for recommendations that
-match the message and shows their explanation and recommended action next to
-the message. Rows without a match keep the plain message tooltip.
+Recommendations explain what a message means and what to do about it. A lightbulb
+in the narrow column immediately before Message marks matching messages on the
+System Logs and Alert Logs tabs, including grouped messages. Availability is
+checked in batches when the page is rendered, not through hover callbacks.
+Hovering shows the full message already present in the row's title without any
+network requests. Click the message or row to read recommendations in the flyout.
 
 Clicking a row on the System Logs or Alert Logs tab opens a **Message details**
 flyout on the right. The flyout fetches the record from the server and shows
