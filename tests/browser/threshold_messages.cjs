@@ -32,7 +32,7 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/threshold_me
    '/search.css': path.join(root, 'css/search.css'),
    '/functions.js': path.join(root, 'js/functions.js')
   };
-  await page.route('http://fixture/**', async route => {
+  await page.route('https://fixture/**', async route => {
    const url = new URL(route.request().url());
    if (url.pathname === '/') return route.fulfill({body: html, contentType: 'text/html'});
    if (url.pathname === '/table-sizing.js') return route.fulfill({body: storage + sizing, contentType: 'text/javascript'});
@@ -50,7 +50,7 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/threshold_me
    }
    return assets[url.pathname] ? route.fulfill({path: assets[url.pathname], contentType: url.pathname.endsWith('.js') ? 'text/javascript' : 'text/css'}) : route.fulfill({status: 404, body: ''});
   });
-  await page.goto('http://fixture/');
+  await page.goto('https://fixture/');
   await page.waitForTimeout(100);
   const checkFit = async id => {
    const sizes = await page.locator(id).evaluate(table => {

@@ -151,6 +151,42 @@ it('rejects expired groups and invalid offsets before issuing a detail query', f
 		->and(syslog_group_details_page($token, '0', '999999999999999999999999'))->toHaveKey('error');
 });
 
+it('reports detail query failures and anchors that left the active results', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'main';
+	$token = syslog_group_context([[
+		'mtype' => 'main', 'latest_seq' => 1, 'logtime' => '2026-01-02 12:00:00', 'occurrence_count' => 2
+	]], '', 0, [false]);
+	$anchor = ['host_id' => 1, 'program_id' => 7, 'facility_id' => 1, 'priority_id' => 3, 'message' => 'link down'];
+	$failure = __('Group messages could not be loaded.', 'syslog');
+
+	test_override('syslog_db_fetch_row_prepared', static fn() => false);
+	expect(syslog_group_details_page($token, '0'))->toBe(['error' => $failure]);
+
+	test_override('syslog_db_fetch_row_prepared', static fn() => []);
+	expect(syslog_group_details_page($token, '0')['error'])->toContain('unavailable or expired');
+
+	test_override('syslog_db_fetch_row_prepared', static fn() => $anchor);
+	test_override('syslog_db_fetch_assoc_prepared', static fn() => false);
+	expect(syslog_group_details_page($token, '0'))->toBe(['error' => $failure]);
+});
+
+it('renders detail pages as escaped rows using the standard message controls', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	syslog_load_plugin_source('includes/recommendations.php');
+
+	$html = syslog_group_detail_rows([
+		['seq' => 5, 'logtime' => '2026-01-02 12:00:00', 'message' => '<b>link down</b>', 'host' => 'router',
+			'program' => 'kernel', 'facility' => 'user', 'priority' => 'err', 'threshold_breached' => 1],
+		['seq' => 6, 'logtime' => '2026-01-02 12:01:00', 'message' => 'link up']
+	], 'main', 30, true);
+
+	expect(substr_count($html, 'syslogGroupMember'))->toBe(2)
+		->and($html)->toContain('&lt;b&gt;link down&lt;/b&gt;')->not->toContain('<b>link down')
+		->and($html)->toContain('syslogRecommendation')->toContain('syslogMessageOpen')
+		->and($html)->toContain('>' . __('Yes', 'syslog') . '<')->toContain('>' . __('No', 'syslog') . '<');
+});
+
 it('freezes relative group ranges without rewriting literal message filters', function () {
 	syslog_load_plugin_source('includes/functions.php');
 	test_override('db_qstr', static fn($value) => "'" . str_replace("'", "''", $value) . "'");

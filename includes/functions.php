@@ -8608,9 +8608,8 @@ function syslog_group_detail_messages(array $group, string $sql_where, string $b
 	$group_where = $sql_where === '' ? 'WHERE ' : 'WHERE (' . substr($sql_where, 6) . ') AND ';
 	$digest = syslog_message_digest_ready();
 	$group_where .= 'syslog.host_id = ? AND syslog.program_id = ? AND syslog.facility_id = ? AND syslog.priority_id = ? AND ' .
-		($digest ? "IF(syslog.message_digest = '', MD5(syslog.message), syslog.message_digest)" : 'syslog.message') . ' = ?';
-	$params = [$group['host_id'], $group['program_id'], $group['facility_id'], $group['priority_id'],
-		$digest ? md5($group['message']) : $group['message']];
+		($digest ? "IF(syslog.message_digest = '', MD5(syslog.message), syslog.message_digest) = MD5(?)" : 'syslog.message = ?');
+	$params = [$group['host_id'], $group['program_id'], $group['facility_id'], $group['priority_id'], $group['message']];
 
 	return syslog_db_fetch_assoc_prepared("SELECT syslog.seq, syslog.logtime, syslog.message, $breach_sql AS threshold_breached,
 		(SELECT host FROM `$syslogdb_default`.`syslog_hosts` AS sh WHERE sh.host_id = syslog.host_id) AS host,

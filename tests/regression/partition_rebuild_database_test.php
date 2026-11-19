@@ -18,7 +18,7 @@ $pdo = new PDO($dsn, 'root', getenv('SYSLOG_TEST_MYSQL_PASSWORD') ?: '', [
 	PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 	PDO::ATTR_EMULATE_PREPARES => false
 ]);
-$syslogdb_default = 'syslog_rebuild_' . bin2hex(random_bytes(4));
+$syslogdb_default = 'syslog_rebuild_test';
 $options = ['syslog_install_engine' => 'InnoDB', 'syslog_retention' => '2', 'syslog_partition_ahead_days' => '2'];
 $copy_attempts = 0;
 $fail_copy_at = 0;
@@ -111,8 +111,9 @@ function rebuild_table(string $table, bool $convert = true, string $engine = 'In
 }
 
 try {
-	$pdo->exec("CREATE DATABASE `$syslogdb_default`");
-	$pdo->exec("USE `$syslogdb_default`");
+	$pdo->exec('DROP DATABASE IF EXISTS `syslog_rebuild_test`');
+	$pdo->exec('CREATE DATABASE `syslog_rebuild_test`');
+	$pdo->exec('USE `syslog_rebuild_test`');
 	$pdo->exec("SET SESSION time_zone = '+00:00'");
 	$pdo->exec("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_AUTO_VALUE_ON_ZERO'");
 	$pdo->exec("CREATE TABLE syslog (
@@ -210,5 +211,5 @@ try {
 
 	print "$checks partition rebuild database checks passed.\n";
 } finally {
-	$pdo->exec("DROP DATABASE `$syslogdb_default`");
+	$pdo->exec('DROP DATABASE `syslog_rebuild_test`');
 }
