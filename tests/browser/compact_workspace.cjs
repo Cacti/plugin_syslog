@@ -94,6 +94,7 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.deepEqual(await saveSearchButtons.allTextContents(), ['Cancel', 'Save'], 'Save Search As places Cancel before Save');
  assert.equal(await saveSearchButtons.filter({hasText: /^Cancel$/}).getAttribute('type'), 'button', 'Cancel remains a non-submit button');
  assert.equal(await saveSearchButtons.filter({hasText: /^Save$/}).getAttribute('type'), 'submit', 'Save is a submit button');
+ assert.equal(await saveSearchButtons.filter({hasText: /^Save$/}).evaluate(button => button.classList.contains('ui-state-active')), true, 'Save has the active action styling');
  await saveSearchButtons.filter({hasText: /^Save$/}).click();
  assert.deepEqual(await page.evaluate(() => savedPromptResult), {name: 'New search', isDefault: true}, 'Saving preserves the toggle value');
  await page.evaluate(() => { document.querySelector('#saved_search option:checked').dataset.default = '1'; savedSearchPrompt('Existing default', () => {}); });
