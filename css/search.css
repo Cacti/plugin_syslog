@@ -649,7 +649,7 @@
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
 #syslog_workspace th:has(.syslogRecommendationHeading),
-#syslog_workspace td.syslogRecommendation { width: 1%; min-width: 20px; text-align: center; }
+#syslog_workspace tr td.syslogRecommendation { box-sizing: border-box; width: 15px; min-width: 15px; max-width: 15px; padding-left: 0; padding-right: 0; text-align: center; }
 #syslog_workspace .syslogRecommendationIndicator { color: var(--search-accent, currentColor); }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 /* Trim "All Text": the whole message wraps inside its column. */
@@ -962,9 +962,6 @@
 	outline-offset: -1px;
 }
 
-/* Hover text comes from the row title; recommendation cards live in the flyout. */
-.ui-tooltip.syslogRecommendationTip { max-width: 520px; padding: 0; overflow: hidden; }
-.syslogMessageTip { padding: 8px 10px; font-size: 12px; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
 .syslogRecSection + .syslogRecSection { margin-top: 6px; }
 .syslogRecLabel { font-weight: 700; opacity: .75; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
 .syslogRecText { white-space: pre-line; overflow-wrap: anywhere; }

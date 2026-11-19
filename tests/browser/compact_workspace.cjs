@@ -40,6 +40,12 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
  assert.deepEqual(errors,[]);
  const messageButton = page.locator('.syslogMessageOpen').first();
+ const indicatorColumns = page.locator('th:has(.syslogRecommendationHeading), td.syslogRecommendation');
+ async function checkIndicatorWidths() {
+  const widths = await indicatorColumns.evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect().width));
+  assert(widths.length > 1 && widths.every(width => width === 15), 'The lightbulb header and cells stay exactly 15px wide');
+ }
+ await checkIndicatorWidths();
  assert.equal(await messageButton.textContent(), longMessage, 'Preview retains text beyond 100 characters');
  const widePreview = await messageButton.evaluate(button => {
   const range = document.createRange();
@@ -98,22 +104,14 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('.syslogRow').first().locator('.syslogRecommendationIndicator').count(), 1, 'Matching messages advertise recommendations before a click');
  assert.equal(await page.locator('.syslogRow').nth(1).locator('.syslogRecommendation').textContent(), '', 'Unmatched messages leave the indicator column blank');
  assert.equal(await page.locator('.syslogRecommendationIndicator').first().evaluate(icon => icon.parentElement.nextElementSibling.classList.contains('syslogMessage')), true, 'The indicator immediately precedes the message');
+ assert.equal(await page.locator('.syslogRow[title], .syslogRow [title]').count(), 0, 'Message rows and their contents have no native hover titles');
  const beforeHover = dispatched.length;
- await messageButton.hover();
- const messageTooltip = page.locator('.ui-tooltip:visible .syslogMessageTip');
- await messageTooltip.waitFor();
- assert.equal(await messageTooltip.textContent(), longMessage, 'Hover shows the full untrimmed message');
- assert.equal(await page.locator('.ui-tooltip:visible script').count(), 0, 'Hover treats message markup as literal text');
- await page.mouse.move(0, 0);
- await messageTooltip.waitFor({state: 'hidden'});
- await messageButton.hover();
- await messageTooltip.waitFor();
- assert.equal(await messageTooltip.textContent(), longMessage, 'Repeated hovers preserve the full message');
- await page.mouse.move(0, 0);
- await messageTooltip.waitFor({state: 'hidden'});
- await page.locator('.syslogRecommendationIndicator').first().hover();
- await page.locator('.ui-tooltip:visible').filter({hasText: 'Recommendation available - click the message for details'}).waitFor();
- assert.equal(dispatched.length, beforeHover, 'Neither message nor lightbulb hovers issue any requests');
+ for (const target of [messageButton, ...await page.locator('.syslogRow').first().locator('td').all(), page.locator('.syslogRecommendationIndicator').first(), messageButton]) {
+  await target.hover();
+  await page.waitForTimeout(400);
+  assert.equal(await page.locator('.ui-tooltip:visible').count(), 0, 'Hovering messages, metadata, or the lightbulb never opens a tooltip');
+ }
+ assert.equal(dispatched.length, beforeHover, 'Message-row and lightbulb hovers issue no requests');
  await page.mouse.move(0, 0);
  await page.waitForFunction(() => $('.ui-tooltip:visible').length === 0);
  await page.locator('.syslogMessageOpen').first().click();
@@ -173,6 +171,7 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.mouse.move(0, 0);
  await page.waitForFunction(() => $('.ui-tooltip:visible').length === 0);
  await page.setViewportSize({width:390,height:844});if (process.env.TEST_ARTIFACT_DIR) await page.screenshot({path:path.join(process.env.TEST_ARTIFACT_DIR, 'syslog-workspace-mobile.png'),fullPage:true});
+ await checkIndicatorWidths();
  assert.equal(await messageButton.textContent(), longMessage, 'Narrow layouts retain the complete preview text');
  const narrowPreview = await messageButton.evaluate(button => ({width: button.clientWidth, content: button.scrollWidth, ellipsis: getComputedStyle(button).textOverflow}));
  assert(narrowPreview.content > narrowPreview.width, 'Long previews overflow their own button on narrow screens');

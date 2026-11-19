@@ -4551,18 +4551,18 @@ function syslog_priority_class($priority): string {
 }
 
 /**
- * Prints the opening row tag with the priority CSS class and message tooltip
- * for each row of the syslog table as it is displayed. It supports both the
- * legacy as well as the new approach to controlling these colors.
+ * Prints the opening row tag with the priority CSS class for each row of
+ * the syslog table as it is displayed. It supports both the legacy as well
+ * as the new approach to controlling these colors.
  *
  * @param mixed $priority The syslog priority level of the row.
- * @param mixed $message  The syslog message for the row tooltip.
+ * @param mixed $message  The syslog message (unused, kept for compatibility).
  *
  * @return string Always an empty string, kept for legacy row composition.
  */
 function syslog_row_color($priority, $message): string {
 	$priority_class = syslog_priority_class($priority);
-	print "<tr title='" . html_escape($message) . "' class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
+	print "<tr class='tableRow selectable syslogRow syslog-detail-row " . html_escape($priority_class) . "'>";
 
 	return '';
 }

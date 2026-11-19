@@ -284,7 +284,6 @@ function initSyslogWorkspace() {
 			var row = button.closest('tr');
 			row.classList.add('syslogRowOpen');
 			var data = JSON.parse(button.dataset.message);
-			row.title = data.message || '';
 			// Show facility and severity through badges, leaving message backgrounds neutral.
 			[
 				['facility', 'syslogFacility'],
@@ -301,7 +300,6 @@ function initSyslogWorkspace() {
 				});
 			});
 			function open() {
-				if ($(row).tooltip('instance')) $(row).tooltip('close');
 				deselect();
 				active = button;
 				row.classList.add('syslogSelected');
@@ -1379,34 +1377,12 @@ function syslogRecommendationCards($parent, recommendations, labels, clipped) {
 }
 
 /**
- * Show the locally available title as text, without requesting the server.
- *
- * @returns {jQuery} The full message or indicator tooltip, never parsed as HTML.
- */
-function syslogRowTooltip() {
-	return $('<div class="syslogMessageTip"></div>').text($(this).attr('title') || '');
-}
-
-/**
- * Initialize syslog message tooltips and group expand/collapse functionality
+ * Initialize group expand/collapse and tooltips for non-message buttons.
  * Call this after the syslog message table is rendered or updated
  */
 function initSyslogMessagesDisplay() {
 	$(function() {
 		applySyslogTheme(document.getElementById('syslog_workspace'));
-		// Initialize tooltips for syslog rows
-		$('.syslogRow').tooltip({
-			track: true,
-			show: {
-				effect: 'fade',
-				duration: 250,
-				delay: 125
-			},
-			position: { my: 'left+15 center', at: 'right center' },
-			classes: { 'ui-tooltip': 'syslogRecommendationTip' },
-			content: syslogRowTooltip
-		});
-
 		// Initialize tooltips for buttons
 		$('button').not('.syslogRow button').tooltip({
 			closed: true

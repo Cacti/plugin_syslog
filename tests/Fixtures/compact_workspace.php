@@ -32,7 +32,7 @@ echo '<div id="syslog_workspace"><div class="syslogResultsMain"><table><thead><t
 $priorities = ['emerg', 'alert', 'crit', 'err', 'warning', 'notice', 'info', 'debug'];
 $message = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
 $long_message = $message . ' ' . str_repeat('width preview ', 4);
-foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i % 8).'"><td>2026-09-13 00:12:42</td><td>10.0.0.5</td><td>kernel</td><td class="syslogRecommendation">'.syslog_recommendation_indicator($i === 1).'</td><td class="syslogMessage">'.syslog_message_button($i === 1 ? $long_message : $message,'10.0.0.5','kernel','kern',$priorities[$i % 8],'2026-09-13 00:12:42', 100 + $i, $i === 17 ? 'removed' : 'main').'</td><td>kern</td><td>'.$priorities[$i % 8].'</td></tr>';
+foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i % 8).'"><td>2026-09-13 00:12:42</td><td>10.0.0.5</td><td>kernel</td><td class="syslogRecommendation" style="width:15px">'.syslog_recommendation_indicator($i === 1).'</td><td class="syslogMessage">'.syslog_message_button($i === 1 ? $long_message : $message,'10.0.0.5','kernel','kern',$priorities[$i % 8],'2026-09-13 00:12:42', 100 + $i, $i === 17 ? 'removed' : 'main').'</td><td>kern</td><td>'.$priorities[$i % 8].'</td></tr>';
 echo '</tbody></table></div>';
 $start = strpos($source,"<aside id='syslog_message_details'");$end = strpos($source,'</aside></div>', $start)+strlen('</aside></div>');
 eval('?>'.substr($source,$start,$end-$start));

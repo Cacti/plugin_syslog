@@ -2,6 +2,7 @@
 
 --- develop ---
 
+* bug: Remove message-row and lightbulb hover tooltips, keep details in the click-open flyout, and fix the recommendation column at 15 pixels
 * bug: Remove recommendation callbacks on message hover, show a theme-aware lightbulb before messages with matching recommendations, and include the CSRF token in the details flyout's fallback POST
 
 --- 5.0 ---
