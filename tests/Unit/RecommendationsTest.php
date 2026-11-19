@@ -348,9 +348,12 @@ it('ignores message tokens longer than any identifier', function () {
 });
 
 it('limits how many candidate identifiers one message can produce', function () {
-	$message = implode(' ', array_map(static fn ($n) => 'Word' . $n, range(1, 100)));
+	$message = implode(' ', array_map(static fn ($n) => 'Word' . $n, range(1, 121)));
 
-	expect(syslog_recommendation_candidates($message))->toHaveCount(120);
+	$candidates = syslog_recommendation_candidates($message);
+	expect($candidates)->toHaveCount(120)
+		->and($candidates[119])->toBe('Word120')
+		->and($candidates)->not->toContain('Word121');
 });
 
 it('remembers the bundled seed was applied', function () {
