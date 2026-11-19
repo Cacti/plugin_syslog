@@ -6598,7 +6598,7 @@ function syslog_get_alert_sql(&$alert, $max_seq, $processing_boundary = true, $c
 /**
  * syslog_preprocess_incoming_records - Generate a max_seq to allow moving of
  * records to done table and mark incoming records with the max_seq and
- * then if syslog is configured to strip domains, perform that first.
+ * then normalize program names and strip configured domains before processing.
  *
  * @return array{max_seq: int, incoming: int} The maximum sequence id, allowing
  *                                            syslog messages that come in randomly to be differentiated
@@ -6634,12 +6634,68 @@ function syslog_preprocess_incoming_records(): array {
 		// strip domains if we have requested to do so
 		syslog_strip_incoming_domains($max_seq);
 
+		if (!syslog_strip_incoming_programs($max_seq)) {
+			cacti_log('ERROR: Unable to normalize incoming program names; this batch will be retried.', false, 'SYSLOG');
+
+			return ['max_seq' => 0, 'incoming' => 0];
+		}
+
 		api_plugin_hook('plugin_syslog_before_processing');
 
 		return ['max_seq' => (int) $max_seq, 'incoming' => (int) $syslog_incoming];
 	}
 
 	return ['max_seq' => 0, 'incoming' => 0];
+}
+
+/**
+ * Strip boundary parentheses and square brackets before program reference lookup.
+ * Batch distinct names without requiring REGEXP_REPLACE or loading every message.
+ *
+ * @param int $max_seq The incoming batch's maximum sequence ID.
+ *
+ * @return bool Whether every matching program name was normalized.
+ */
+function syslog_strip_incoming_programs(int $max_seq): bool {
+	global $syslogdb_default;
+
+	do {
+		$programs = syslog_db_fetch_assoc_prepared("SELECT DISTINCT program
+			FROM `$syslogdb_default`.`syslog_incoming`
+			WHERE `status` = 1 AND `seq` <= ?
+			AND (HEX(SUBSTR(program, 1, 1)) IN (HEX('('), HEX(')'), HEX('['), HEX(']'))
+				OR HEX(SUBSTR(program, -1, 1)) IN (HEX('('), HEX(')'), HEX('['), HEX(']')))
+			LIMIT 250", [$max_seq]);
+
+		if ($programs === false) {
+			return false;
+		}
+
+		if (!$programs) {
+			return true;
+		}
+
+		$cases = [];
+		$params = [];
+		$names = [];
+
+		foreach ($programs as $program) {
+			$cases[] = 'WHEN ? THEN ?';
+			$params[] = $program['program'];
+			$params[] = trim($program['program'], '()[]');
+			$names[] = $program['program'];
+		}
+
+		if (!syslog_db_execute_prepared("UPDATE `$syslogdb_default`.`syslog_incoming`
+			SET program = CASE program " . implode(' ', $cases) . " ELSE program END
+			WHERE `status` = 1 AND `seq` <= ?
+			AND program IN (" . implode(', ', array_fill(0, count($names), '?')) . ')',
+			array_merge($params, [$max_seq], $names))) {
+			return false;
+		}
+	} while (count($programs) === 250);
+
+	return true;
 }
 
 /**

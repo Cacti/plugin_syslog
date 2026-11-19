@@ -18,6 +18,10 @@ Traps and Informs and convert them into Syslog messages on your log server.
 These syslog messages can then be consumed by the syslog plugin.  So, this tool
 is quite handy.
 
+Incoming program names have leading and trailing parentheses and square brackets
+removed before reference lookup and rule processing. Interior punctuation is
+preserved. This normalization does not rename programs in existing archived logs.
+
 For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
 be quieted using syslog's 'Re-Alert' setting.
