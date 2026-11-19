@@ -1186,7 +1186,17 @@ function savedSearchPrompt(name, accept) {
 	// Saving the default search again keeps it the default unless unticked.
 	var selected = document.getElementById('saved_search').selectedOptions[0];
 	makeDefault.checked = !!(name && selected && selected.dataset.default === '1');
-	$('#syslog_saved_prompt').dialog({
+	$('#syslog_saved_prompt').off('submit.syslogSavedPrompt').on('submit.syslogSavedPrompt', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var value = input.value.trim();
+		if (!value) {
+			input.focus();
+			return;
+		}
+		$(this).dialog('close');
+		accept(value, makeDefault.checked);
+	}).dialog({
 		modal: false,
 		appendTo: 'body',
 		width: 420,
@@ -1198,14 +1208,9 @@ function savedSearchPrompt(name, accept) {
 		},
 		buttons: [
 			{text: text.cancel, click: function() { $(this).dialog('close'); }},
-			{text: text.save, type: 'submit', class: 'ui-state-active', click: function() {
-				var value = input.value.trim();
-				if (!value) {
-					input.focus();
-					return;
-				}
-				$(this).dialog('close');
-				accept(value, makeDefault.checked);
+			{text: text.save, type: 'submit', form: 'syslog_saved_prompt', class: 'ui-state-active', click: function(event) {
+				event.preventDefault();
+				this.requestSubmit();
 			}}
 		]
 	});

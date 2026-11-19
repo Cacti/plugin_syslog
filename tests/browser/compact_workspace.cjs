@@ -7,6 +7,7 @@ const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 const longMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script> ' + 'width preview '.repeat(4);
 const shortMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
 const dispatched = [];
+const savedSearchPosts = [];
 const heldFilters = [];
 let holdFilters = false;
 let filterReceived;
@@ -34,6 +35,11 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
     return;
    }
    dispatched.push(r.request().method() + ' ' + (url.searchParams.get('action') || new URLSearchParams(r.request().postData() || '').get('action')) + ' ' + (url.searchParams.get('source') || '') + ':' + (url.searchParams.get('id') || ''));
+   const data = new URLSearchParams(r.request().postData() || '');
+   if (data.get('action') === 'saved_search_save') {
+    savedSearchPosts.push(Object.fromEntries(data));
+    return r.fulfill({body: JSON.stringify({id: 9}), contentType: 'application/json'});
+   }
    if (url.searchParams.get('action') !== 'message_details') return r.fulfill({body: JSON.stringify({found: false, recommendations: []}), contentType: 'application/json'});
    const id = url.searchParams.get('id');
    const query = 'id=' + id + '&action=newedit&type=0&date=2026-09-13+00%3A12%3A42';
@@ -76,6 +82,10 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('#saved_saveas').isVisible(), true);
  await page.locator('#saved_saveas').click();
  assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), true);
+ assert.equal(await page.locator('#syslog_saved_prompt_name').evaluate(input => input.form.id), 'syslog_saved_prompt', 'The name belongs to the dialog form, not the main search form');
+ await page.locator('#syslog_saved_prompt_name').press('Enter');
+ assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), true, 'An empty name keeps the dialog open');
+ assert.equal(savedSearchPosts.length, 0, 'An empty name does not save');
  const nameLabel = await page.locator('label[for="syslog_saved_prompt_name"]').boundingBox();
  const nameInput = await page.locator('#syslog_saved_prompt_name').boundingBox();
  const defaultLabel = await page.locator('label[for="syslog_saved_prompt_default"]').boundingBox();
@@ -87,6 +97,16 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert(defaultSwitch.width > 30 && defaultSwitch.height > 15, 'Default toggle has a visible switch track');
  await page.locator('label[for="syslog_saved_prompt_default"]').click();
  assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), true, 'Clicking Default toggles the switch');
+ const beforeKeyboardSave = await page.evaluate(() => posts.length);
+ await page.locator('#syslog_saved_prompt_name').fill('  Keyboard search  ');
+ await page.locator('#syslog_saved_prompt_name').press('Enter');
+ await page.waitForFunction(() => posts.at(-1)?.saved === 9);
+ assert.equal(savedSearchPosts.length, 1, 'Enter issues exactly one save callback POST');
+ assert.equal(savedSearchPosts[0].name, 'Keyboard search', 'Keyboard save trims the name');
+ assert.equal(savedSearchPosts[0].default, 'on', 'Keyboard save preserves the Default switch');
+ assert.equal(savedSearchPosts[0].__csrf_magic, 'fixture', 'Keyboard save includes the CSRF token');
+ assert.equal(await page.evaluate(() => posts.length), beforeKeyboardSave + 1, 'Keyboard save applies only the saved search, not the main search submit action');
+ assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), false, 'Keyboard save closes the dialog without navigation');
  await page.evaluate(() => savedSearchPrompt('New search', (name, isDefault) => { window.savedPromptResult = {name, isDefault}; }));
  assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), false, 'A new search is not default unless selected');
  await page.locator('label[for="syslog_saved_prompt_default"]').click();
@@ -97,6 +117,7 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await saveSearchButtons.filter({hasText: /^Save$/}).evaluate(button => button.classList.contains('ui-state-active')), true, 'Save has the active action styling');
  await saveSearchButtons.filter({hasText: /^Save$/}).click();
  assert.deepEqual(await page.evaluate(() => savedPromptResult), {name: 'New search', isDefault: true}, 'Saving preserves the toggle value');
+ assert.equal(savedSearchPosts.length, 1, 'Reopening replaces the submit callback instead of accumulating handlers');
  await page.evaluate(() => { document.querySelector('#saved_search option:checked').dataset.default = '1'; savedSearchPrompt('Existing default', () => {}); });
  assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), true, 'Editing a default keeps the toggle selected');
  await page.keyboard.press('Escape');

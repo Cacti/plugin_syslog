@@ -25,7 +25,7 @@ $saved_searches = [['id'=>7,'name'=>'Router investigation','is_global'=>'','user
 $saved_active = 7; $saved_admin = true; $saved_share = true; $username = 'tester';
 $item_rows = [50=>'50',100=>'100'];$trimvals = [0=>'Fit column',75=>'75 Chars',1024=>'All Text'];$page_refresh_interval = [0=>'Paused',300=>'5 Minutes'];
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
-$start = strpos($source, "<form id='syslog_form'"); $end = strpos($source, '</form>', $start)+7;
+$start = strpos($source, "<form id='syslog_form'"); $end = strpos($source, '</form>', strpos($source, "<form id='syslog_saved_prompt'"))+7;
 echo '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/main.css"><link rel="stylesheet" href="/jquery-ui.css"><link rel="stylesheet" href="/search.css"><style>body{width:auto;font:13px Arial;margin:8px;color:#23362f;background:#fff}button,input,select{font:inherit;padding:5px;border:1px solid #bbc7bf;border-radius:3px}table{border-collapse:collapse}th{text-align:left;background:#e8eee9;padding:8px}h2{font-size:15px}</style><script src="/jquery.js"></script><script src="/jquery-ui.js"></script><script src="/jquery.timepicker.js"></script><script src="/functions.js"></script></head><body><h2>System Logs &nbsp; | &nbsp; Alert Logs</h2>';
 eval('?>'.substr($source,$start,$end-$start));
 echo '<div id="syslog_workspace"><div class="syslogResultsMain"><table><thead><tr><th>Time</th><th>Device</th><th>Program</th><th><i class="fa fa-lightbulb syslogRecommendationHeading" role="img" aria-label="Recommendations"></i></th><th>Message</th><th>Facility</th><th>Severity</th></tr></thead><tbody>';

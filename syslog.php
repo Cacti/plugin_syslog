@@ -2518,18 +2518,6 @@ function syslog_filter(string $sql_where, string $tab): void {
 						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
 					</div>
 				</div>
-				<div id='syslog_saved_prompt' class='syslogSavedPrompt' title='<?php print __esc('Save Search As', 'syslog'); ?>' style='display:none'>
-					<div class='syslogSavedPromptFields'>
-						<div class='syslogSavedNameRow'>
-							<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
-							<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
-						</div>
-						<div class='syslogSavedDefaultRow filterTable'>
-							<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
-							<input type='checkbox' role='switch' id='syslog_saved_prompt_default'>
-						</div>
-					</div>
-				</div>
 				<table class='filterTable syslogSearchButtons'>
 					<tr>
 						<td>
@@ -2549,6 +2537,18 @@ function syslog_filter(string $sql_where, string $tab): void {
 					</tr>
 				</table>
 				<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
+			</form>
+			<form id='syslog_saved_prompt' class='syslogSavedPrompt' title='<?php print __esc('Save Search As', 'syslog'); ?>' style='display:none'>
+				<div class='syslogSavedPromptFields'>
+					<div class='syslogSavedNameRow'>
+						<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
+						<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
+					</div>
+					<div class='syslogSavedDefaultRow filterTable'>
+						<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
+						<input type='checkbox' role='switch' id='syslog_saved_prompt_default'>
+					</div>
+				</div>
 			</form>
 			</td>
 		</tr>
