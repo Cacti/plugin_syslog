@@ -7,6 +7,9 @@ const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 const longMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script> ' + 'width preview '.repeat(4);
 const shortMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
 const dispatched = [];
+const heldFilters = [];
+let holdFilters = false;
+let filterReceived;
 const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_workspace.php')], {encoding: 'utf8'});
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
@@ -25,6 +28,11 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
   if (url.pathname === '/') return r.fulfill({body: url.searchParams.has('error') ? fixture.replace("id='logical_search_error' role='alert'>", "id='logical_search_error' role='alert'>Invalid search") : fixture, contentType: 'text/html; charset=utf-8'});
   if (url.pathname === '/syslog.php') {
    if (r.request().method() === 'POST') assert.equal(new URLSearchParams(r.request().postData()).get('__csrf_magic'), 'fixture', 'Fallback requests carry the CSRF token without relying on the global XHR shim');
+   if (holdFilters && url.searchParams.get('header') === 'false') {
+    heldFilters.push(r);
+    if (filterReceived) { filterReceived(); filterReceived = null; }
+    return;
+   }
    dispatched.push(r.request().method() + ' ' + (url.searchParams.get('action') || new URLSearchParams(r.request().postData() || '').get('action')) + ' ' + (url.searchParams.get('source') || '') + ':' + (url.searchParams.get('id') || ''));
    if (url.searchParams.get('action') !== 'message_details') return r.fulfill({body: JSON.stringify({found: false, recommendations: []}), contentType: 'application/json'});
    const id = url.searchParams.get('id');
@@ -39,6 +47,9 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  });
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
  assert.deepEqual(errors,[]);
+ assert.equal(await page.locator('#refresh_results').getAttribute('aria-label'), 'Refresh Results');
+ assert.equal(await page.locator('#refresh_results .fa.fa-sync-alt').count(), 1, 'Refresh uses the Font Awesome glyph');
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 0, 'Refresh is not spinning while idle');
  const messageButton = page.locator('.syslogMessageOpen').first();
  const indicatorColumns = page.locator('th:has(.syslogRecommendationHeading), td.syslogRecommendation');
  async function checkIndicatorWidths() {
@@ -79,7 +90,9 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.evaluate(() => savedSearchPrompt('New search', (name, isDefault) => { window.savedPromptResult = {name, isDefault}; }));
  assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), false, 'A new search is not default unless selected');
  await page.locator('label[for="syslog_saved_prompt_default"]').click();
- await page.locator('.ui-dialog:has(#syslog_saved_prompt) .ui-dialog-buttonpane button').first().click();
+ const saveSearchButtons = page.locator('.ui-dialog:has(#syslog_saved_prompt) .ui-dialog-buttonpane button');
+ assert.deepEqual(await saveSearchButtons.allTextContents(), ['Cancel', 'Save'], 'Save Search As places Cancel before Save');
+ await saveSearchButtons.filter({hasText: /^Save$/}).click();
  assert.deepEqual(await page.evaluate(() => savedPromptResult), {name: 'New search', isDefault: true}, 'Saving preserves the toggle value');
  await page.evaluate(() => { document.querySelector('#saved_search option:checked').dataset.default = '1'; savedSearchPrompt('Existing default', () => {}); });
  assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), true, 'Editing a default keeps the toggle selected');
@@ -179,6 +192,23 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(narrowPreview.ellipsis, 'ellipsis', 'The browser controls visual truncation');
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,'Page must not overflow horizontally');
  await page.locator('#refresh_results').click();assert.equal(await page.evaluate(()=>Object.hasOwn(posts.at(-1),'rfilter')),false);
+ holdFilters = true;
+ await page.evaluate(() => { window.mockPostSyslog = postSyslog; postSyslog = realPostSyslog; });
+ const refreshReceived = new Promise(resolve => { filterReceived = resolve; });
+ await page.locator('#refresh_results').click();
+ await refreshReceived;
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 1, 'Clicking Refresh spins its glyph while the callback is pending');
+ const searchReceived = new Promise(resolve => { filterReceived = resolve; });
+ await page.evaluate(() => applyFilter());
+ await searchReceived;
+ await heldFilters[0].fulfill({body: '', contentType: 'text/html'});
+ await page.waitForFunction(() => $.active === 1);
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 1, 'The glyph keeps spinning while another filter callback remains pending');
+ await heldFilters[1].fulfill({status: 500, body: 'Fixture filter failure'});
+ await page.waitForFunction(() => $.active === 0);
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 0, 'The glyph stops after the final callback, including failures');
+ await page.evaluate(() => { postSyslog = mockPostSyslog; });
+ holdFilters = false;
  // A saved expanded preference reopens the panel on reload; an active search error forces it open even when collapse is stored.
  await page.setViewportSize({width:1600,height:950});
  await page.evaluate(()=>localStorage.setItem('syslog.search.collapsed','false'));

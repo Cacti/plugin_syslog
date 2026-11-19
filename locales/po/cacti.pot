@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 15:22+0000\n"
+"POT-Creation-Date: 2026-11-19 16:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -493,6 +493,26 @@ msgstr ""
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr ""
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr ""
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr ""
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr ""
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
 msgstr ""
 
 #: includes/functions.php
@@ -1737,11 +1757,11 @@ msgstr ""
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Next"
 msgstr ""
 
@@ -2495,14 +2515,16 @@ msgstr ""
 msgid "Empty message"
 msgstr ""
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
-msgid "No"
+#: syslog.php
+msgid "Toggle group messages"
 msgstr ""
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
-msgid "Yes"
+#: syslog.php
+msgid "Loading group messages..."
+msgstr ""
+
+#: syslog.php
+msgid "No matching messages."
 msgstr ""
 
 #: syslog.php

@@ -2,6 +2,8 @@
 
 --- develop ---
 
+* bug: Load grouped message details only on expansion, 50 at a time, preserving the displayed query's date range and filters instead of rendering every occurrence into hidden rows
+* bug: Place Cancel before Save in Save Search As, and show a Font Awesome refresh glyph that spins only while results callbacks are running
 * bug: Remove message-row and lightbulb hover tooltips, keep details in the click-open flyout, and fix the recommendation column at 20 pixels with a centered header
 * bug: Remove recommendation callbacks on message hover, show a theme-aware lightbulb before messages with matching recommendations, and include the CSRF token in the details flyout's fallback POST
 

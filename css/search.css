@@ -651,6 +651,8 @@
 #syslog_workspace th:has(.syslogRecommendationHeading),
 #syslog_workspace tr td.syslogRecommendation { box-sizing: border-box; width: 20px; min-width: 20px; max-width: 20px; padding-left: 0; padding-right: 0; text-align: center; }
 #syslog_workspace .syslogRecommendationIndicator { color: var(--search-accent, currentColor); }
+#syslog_workspace .syslog-group-toggle { padding: 0; margin-right: 5px; border: 0; background: transparent; color: inherit; cursor: pointer; }
+#syslog_workspace .syslogGroupPage button { margin-left: 8px; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 /* Trim "All Text": the whole message wraps inside its column. */
 .syslogMessageOpen.syslogMessageWrap { white-space: pre-wrap; overflow-wrap: anywhere; text-overflow: clip; }

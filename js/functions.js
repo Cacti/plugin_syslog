@@ -105,6 +105,25 @@ function initSyslogCompactSearch() {
 	}).filter(Boolean);
 	status.textContent = summaries.join(' · ');
 	$('#refresh_results').off('click').on('click', refreshResults);
+	var pending = $(document).data('syslogFilterRequests') || new Set();
+	$(document).data('syslogFilterRequests', pending);
+	function showRefreshActivity() {
+		$('#refresh_results i').toggleClass('fa-spin', pending.size > 0);
+	}
+	$(document).off('ajaxSend.syslogRefresh ajaxComplete.syslogRefresh')
+		.on('ajaxSend.syslogRefresh', function(event, xhr, settings) {
+			var url = new URL(settings.url, window.location.href);
+			var data = new URLSearchParams(typeof settings.data === 'string' ? settings.data : '');
+			var action = url.searchParams.get('action') || data.get('action');
+			if (url.origin === window.location.origin && /\/syslog\.php$/.test(url.pathname) && (!action || action === 'view')) {
+				pending.add(xhr);
+				showRefreshActivity();
+			}
+		}).on('ajaxComplete.syslogRefresh', function(event, xhr) {
+			pending.delete(xhr);
+			showRefreshActivity();
+		});
+	showRefreshActivity();
 	var summary = document.getElementById('syslog_search_summary');
 	summary.textContent = document.getElementById('rfilter').value || builder.dataset.message;
 	// Collapse the filter by default; only a saved 'false' preference keeps it open.
@@ -299,22 +318,17 @@ function initSyslogWorkspace() {
 					}
 				});
 			});
-			function open() {
-				deselect();
-				active = button;
-				row.classList.add('syslogSelected');
-				button.setAttribute('aria-expanded', 'true');
-				show(data);
-			}
-			// The message button keeps keyboard access; the rest of the row opens the pane too.
-			button.addEventListener('click', function(event) {
-				event.stopPropagation();
-				open();
-			});
-			row.addEventListener('click', function(event) {
-				if (event.target.closest('a, button, input, select, textarea, summary, .syslog-group-toggle')) return;
-				open();
-			});
+		});
+		// Delegation also covers group members loaded after the initial render.
+		$(workspace).off('click.syslogMessage').on('click.syslogMessage', 'tr.syslogRow', function(event) {
+			var button = this.querySelector('.syslogMessageOpen');
+			if (!button || event.target.closest('a, button:not(.syslogMessageOpen), input, select, textarea, summary')) return;
+			event.stopPropagation();
+			deselect();
+			active = button;
+			this.classList.add('syslogSelected');
+			button.setAttribute('aria-expanded', 'true');
+			show(JSON.parse(button.dataset.message));
 		});
 
 		/**
@@ -438,8 +452,9 @@ function syslogEnableColumnResize(workspace) {
 	});
 }
 
-function initSyslogValueFilters() {
-	document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+function initSyslogValueFilters(root) {
+	var buttons = Array.from((root || document).querySelectorAll('.syslogValueFilter'));
+	buttons.forEach(function(button) {
 		button.addEventListener('click', function(event) {
 			event.stopPropagation();
 			syslogAddFilterCondition(button.dataset.filterField, button.dataset.filterValue);
@@ -449,7 +464,7 @@ function initSyslogValueFilters() {
 	// The search builder initializes on document ready, so mark after it.
 	$(function() {
 		var builder = document.getElementById('syslog_search_builder');
-		document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+		buttons.forEach(function(button) {
 			var active = builder && syslogFilterInScope(builder.searchRows, button.dataset.filterField, button.dataset.filterValue);
 			button.classList.toggle('syslogValueFilterActive', !!active);
 			button.setAttribute('aria-pressed', active ? 'true' : 'false');
@@ -1182,6 +1197,7 @@ function savedSearchPrompt(name, accept) {
 			applySyslogTheme(this);
 		},
 		buttons: [
+			{text: text.cancel, click: function() { $(this).dialog('close'); }},
 			{text: text.save, click: function() {
 				var value = input.value.trim();
 				if (!value) {
@@ -1190,8 +1206,7 @@ function savedSearchPrompt(name, accept) {
 				}
 				$(this).dialog('close');
 				accept(value, makeDefault.checked);
-			}},
-			{text: text.cancel, click: function() { $(this).dialog('close'); }}
+			}}
 		]
 	});
 }
@@ -1396,19 +1411,60 @@ function initSyslogMessagesDisplay() {
 		$('.syslog-group-toggle').off('click').on('click', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
+			var toggle = this;
+			var page = $(toggle).data('syslogGroupPage');
 
-			var seq = $(this).data('seq');
-			var detailRows = $('.syslog-detail-' + seq);
-			var icon = $(this);
+			if (!page) {
+				var parent = toggle.closest('tr');
+				var control = $('<tr class="syslogGroupPage"></tr>').insertAfter(parent);
+				var cell = $('<td></td>').attr('colspan', parent.cells.length).appendTo(control);
+				page = {
+					control: control, rows: $(), offset: 0, loaded: false, busy: false,
+					status: $('<span role="status"></span>').appendTo(cell),
+					previous: $('<button type="button"></button>').text(toggle.dataset.previous).appendTo(cell),
+					next: $('<button type="button"></button>').text(toggle.dataset.next).appendTo(cell)
+				};
+				$(toggle).data('syslogGroupPage', page);
+				page.previous.on('click', function() { load(page.offset - 50); });
+				page.next.on('click', function() { load(page.offset + 50); });
+			}
 
-			if (detailRows.is(':visible')) {
-				// Collapse
-				detailRows.hide();
-				icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-			} else {
-				// Expand
-				detailRows.show();
-				icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+			var expanded = toggle.getAttribute('aria-expanded') !== 'true';
+			toggle.setAttribute('aria-expanded', String(expanded));
+			$(toggle).find('i').toggleClass('fa-chevron-up', expanded).toggleClass('fa-chevron-down', !expanded);
+			page.control.toggle(expanded);
+			page.rows.toggle(expanded);
+			if (expanded && !page.loaded && !page.busy) load(0);
+
+			function load(offset) {
+				if (page.busy) return;
+				page.busy = true;
+				page.status.text(toggle.dataset.loading);
+				page.previous.prop('disabled', true);
+				page.next.prop('disabled', true);
+				$.getJSON('syslog.php', {action: 'group_details', context: toggle.dataset.context, group: toggle.dataset.group, offset: offset})
+					.done(function(result) {
+						if (!document.documentElement.contains(toggle)) return;
+						if (!result || typeof result.html !== 'string' || typeof result.more !== 'boolean') {
+							page.status.text(result && result.error || toggle.dataset.error);
+							return;
+						}
+						var body = $('<tbody></tbody>').html(result.html);
+						initSyslogValueFilters(body[0]);
+						page.rows.remove();
+						page.rows = body.children('tr').insertAfter(page.control);
+						page.rows.toggle(toggle.getAttribute('aria-expanded') === 'true');
+						page.offset = offset;
+						page.loaded = true;
+						page.more = result.more;
+						page.status.text(page.rows.length ? (offset + 1) + ' - ' + (offset + page.rows.length) : toggle.dataset.empty);
+					}).fail(function() {
+						page.status.text(toggle.dataset.error);
+					}).always(function() {
+						page.busy = false;
+						page.previous.prop('disabled', !page.loaded || page.offset === 0);
+						page.next.prop('disabled', !page.loaded || !page.more);
+					});
 			}
 		});
 	});

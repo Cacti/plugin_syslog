@@ -6,7 +6,7 @@ syslog_load_plugin_source('includes/recommendations.php');
 function form_selectable_cell($value, $id, $width = '', $class = '') { print '<td class="' . html_escape($class) . '" style="width:' . html_escape($width) . '">' . $value . '</td>'; }
 function form_end_row() { print '</tr>'; }
 $source = file_get_contents(dirname(__DIR__, 2) . '/syslog.php');
-$recommendation_header = ['display' => 'Recommendations', 'align' => 'center'];
+$recommendation_header = ['display' => '<i class="fa fa-lightbulb syslogRecommendationHeading" role="img" aria-label="Recommendations"></i>', 'align' => 'center'];
 $recommendations = [true, false];
 $start = strpos($source, "\t\t\$display_text = [", strpos($source, 'function syslog_messages('));
 $end = strpos($source, "\n\t\t// Add count column", $start);
@@ -22,14 +22,25 @@ $base = ['seq' => 101, 'facility_id' => 1, 'priority_id' => 3, 'program' => 'app
 $syslog_messages = [$base + ['threshold_breached' => 1], array_replace($base, ['seq' => 102, 'threshold_breached' => null])];
 $grouping_enabled = false;
 $trim = 0;
-print '<!doctype html><html><head><meta charset="utf-8"><style>body{font:14px Arial}table{border-collapse:collapse;width:100%}td,th{padding:8px;border:1px solid #ddd}th{text-align:left}</style></head><body><table id="individual"><thead><tr>';
-foreach ($display_text as $header) { print '<th title="' . html_escape($header['tip'] ?? '') . '">' . html_escape($header['display'] ?? $header[0]) . '</th>'; }
+print '<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/main.css"><link rel="stylesheet" href="/jquery-ui.css"><link rel="stylesheet" href="/search.css"><style>body{font:14px Arial}table{border-collapse:collapse;width:100%}td,th{padding:8px;border:1px solid #ddd}th{text-align:left}</style><script src="/jquery.js"></script><script src="/jquery-ui.js"></script><script src="/functions.js"></script></head><body><div id="syslog_workspace"><table id="individual"><thead><tr>';
+foreach ($display_text as $key => $header) { print '<th title="' . html_escape($header['tip'] ?? '') . '">' . ($key === 'nosort_recommendation' ? $header['display'] : html_escape($header['display'] ?? $header[0])) . '</th>'; }
 print '</tr></thead><tbody>';
 eval($rows);
 print '</tbody></table><table id="grouped"><tbody>';
 $grouping_enabled = true;
 $sql_where = '';
-$syslog_messages = [$base + ['threshold_breached' => 1, 'occurrence_count' => 2, 'seq_list' => '101,102']];
-test_override('syslog_db_fetch_assoc_prepared', static fn() => [$base + ['threshold_breached' => 1], array_replace($base, ['seq' => 102, 'threshold_breached' => null])]);
+$syslog_messages = [$base + ['threshold_breached' => 1, 'occurrence_count' => 1000000, 'latest_seq' => 102]];
+$group_token = syslog_group_context($syslog_messages, 'WHERE logtime BETWEEN \'2026-10-15 00:00:00\' AND \'2026-10-15 23:59:59\'', 0, [true]);
+test_override('syslog_db_fetch_assoc_prepared', static function () { throw new RuntimeException('Group members must not be queried while rendering summaries'); });
 eval($rows);
-print '</tbody></table></body></html>';
+print '</tbody></table>';
+$details = [];
+foreach (range(201, 252) as $seq) {
+	$details[] = ['seq' => $seq, 'logtime' => $base['logtime'], 'message' => $base['message'], 'host' => 'router', 'program' => 'app', 'facility' => 'user', 'priority' => 'err', 'threshold_breached' => $seq % 2];
+}
+print '<template id="group-page-0">' . syslog_group_detail_rows(array_slice($details, 0, 50), 'main', 0, true) . '</template>';
+print '<template id="group-page-50">' . syslog_group_detail_rows(array_slice($details, 50), 'main', 0, true) . '</template>';
+$start = strpos($source, "<aside id='syslog_message_details'");
+$end = strpos($source, '</aside></div>', $start) + strlen('</aside></div>');
+eval('?>' . substr($source, $start, $end - $start));
+print '<script>var csrfMagicToken="fixture";initSyslogMessagesDisplay();initSyslogWorkspace();initSyslogValueFilters();</script></body></html>';

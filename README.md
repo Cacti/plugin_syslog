@@ -594,6 +594,12 @@ is checked in batches when the page is rendered, not through hover callbacks.
 Message rows and lightbulbs have no hover tooltips or hover-triggered requests.
 Click the message or row to read the full message and recommendations in the flyout.
 
+Grouped Messages initially renders summaries only. Expand a group to load 50
+matching occurrences at a time; Previous and Next replace that detail page.
+Expansion preserves the displayed search filters and date range, including the
+original bounds of relative time presets. It does not load every duplicate into
+hidden rows. Refresh the results if an older grouped view has expired.
+
 Clicking a row on the System Logs or Alert Logs tab opens a **Message details**
 flyout on the right. The flyout fetches the record from the server and shows
 its date, device, program, facility, priority and sequence (plus the alert rule

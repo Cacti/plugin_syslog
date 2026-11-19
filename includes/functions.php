@@ -356,13 +356,16 @@ function syslog_search_time_presets(): array {
  *
  * @param string $operator 'last' or 'during'.
  * @param string $value    A preset value of that operator.
+ * @param int|null $now    Freeze relative ranges at this Unix timestamp.
  *
  * @return string The condition on syslog.logtime.
  *
  * @throws InvalidArgumentException When the preset is unknown.
  */
-function syslog_search_time_sql(string $operator, string $value): string {
+function syslog_search_time_sql(string $operator, string $value, ?int $now = null): string {
 	$presets = syslog_search_time_presets();
+	$clock = $now === null ? 'NOW()' : 'FROM_UNIXTIME(' . $now . ')';
+	$today = $now === null ? 'CURDATE()' : 'DATE(' . $clock . ')';
 
 	if (!isset($presets[$operator][$value])) {
 		throw new InvalidArgumentException('Invalid date preset.');
@@ -375,14 +378,14 @@ function syslog_search_time_sql(string $operator, string $value): string {
 			$interval = (int) $value . ' SECOND';
 		}
 
-		return '(syslog.logtime BETWEEN DATE_SUB(NOW(), INTERVAL ' . $interval . ') AND NOW())';
+		return '(syslog.logtime BETWEEN DATE_SUB(' . $clock . ', INTERVAL ' . $interval . ') AND ' . $clock . ')';
 	}
 
 	// Days counted back from today to the configured first day of the week (0 = Sunday).
 	$first = function_exists('read_user_setting') ? (int) read_user_setting('first_weekdayid', 1) : 1;
-	$week  = 'DATE_SUB(CURDATE(), INTERVAL (WEEKDAY(CURDATE()) + ' . (8 - max(0, min(6, $first))) . ') % 7 DAY)';
-	$month = "CAST(DATE_FORMAT(CURDATE(), '%Y-%m-01') AS DATE)";
-	$year  = 'MAKEDATE(YEAR(CURDATE()), 1)';
+	$week  = 'DATE_SUB(' . $today . ', INTERVAL (WEEKDAY(' . $today . ') + ' . (8 - max(0, min(6, $first))) . ') % 7 DAY)';
+	$month = "CAST(DATE_FORMAT($today, '%Y-%m-01') AS DATE)";
+	$year  = 'MAKEDATE(YEAR(' . $today . '), 1)';
 
 	if ($value === 'day_shift') {
 		$minutes = function (string $setting, string $default): int {
@@ -393,12 +396,12 @@ function syslog_search_time_sql(string $operator, string $value): string {
 		};
 
 		$range = [
-			'CURDATE() + INTERVAL ' . $minutes('day_shift_start', '07:00') . ' MINUTE',
-			'CURDATE() + INTERVAL ' . $minutes('day_shift_end', '18:00') . ' MINUTE'
+			$today . ' + INTERVAL ' . $minutes('day_shift_start', '07:00') . ' MINUTE',
+			$today . ' + INTERVAL ' . $minutes('day_shift_end', '18:00') . ' MINUTE'
 		];
 	} else {
 		[$when, $unit] = explode('_', $value);
-		$start         = ['day' => 'CURDATE()', 'week' => $week, 'month' => $month, 'year' => $year][$unit];
+		$start         = ['day' => $today, 'week' => $week, 'month' => $month, 'year' => $year][$unit];
 		$step          = ' INTERVAL 1 ' . strtoupper($unit);
 		$range         = $when === 'this' ? [$start, $start . ' +' . $step] : [$start . ' -' . $step, $start];
 	}
@@ -555,12 +558,13 @@ function syslog_parse_logical_search(string $input): ?array {
  *
  * @param array<int|string, mixed>|null $tree   The parsed search tree.
  * @param string                        $column The column name ('message' or 'logmsg').
+ * @param int|null                      $now    Freeze relative ranges at this Unix timestamp.
  *
  * @return string The SQL WHERE clause fragment.
  *
  * @throws InvalidArgumentException When the tree or column is invalid.
  */
-function syslog_logical_search_sql(?array $tree, string $column): string {
+function syslog_logical_search_sql(?array $tree, string $column, ?int $now = null): string {
 	if (!in_array($column, ['message', 'logmsg'], true)) {
 		throw new InvalidArgumentException('Invalid message column.');
 	}
@@ -582,7 +586,7 @@ function syslog_logical_search_sql(?array $tree, string $column): string {
 		}
 
 		if ($operator === 'last' || $operator === 'during') {
-			return syslog_search_time_sql($operator, (string) $value);
+			return syslog_search_time_sql($operator, (string) $value, $now);
 		}
 		$target = $field === 'message' ? $column : 'syslog.' . $field;
 
@@ -608,10 +612,10 @@ function syslog_logical_search_sql(?array $tree, string $column): string {
 	}
 
 	if ($tree[0] == 'NOT') {
-		return '(NOT ' . syslog_logical_search_sql($tree[1], $column) . ')';
+		return '(NOT ' . syslog_logical_search_sql($tree[1], $column, $now) . ')';
 	}
 
-	return '(' . syslog_logical_search_sql($tree[1], $column) . ' ' . $tree[0] . ' ' . syslog_logical_search_sql($tree[2], $column) . ')';
+	return '(' . syslog_logical_search_sql($tree[1], $column, $now) . ' ' . $tree[0] . ' ' . syslog_logical_search_sql($tree[2], $column, $now) . ')';
 }
 
 /**
@@ -8502,27 +8506,147 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 }
 
 /**
- * Fetch a group's messages within the active search predicates.
+ * Preserve a bounded set of rendered group filters for subsequent detail requests.
+ *
+ * @param array  $messages       The displayed group summaries.
+ * @param string $sql_where      The compiled search and date-range predicates.
+ * @param int    $trim           The displayed message trim setting.
+ * @param array  $recommendations Recommendation availability keyed by summary row.
+ *
+ * @return string The opaque, session-owned filter context.
+ */
+function syslog_group_context(array $messages, string $sql_where, int $trim, array $recommendations): string {
+	$groups = [];
+
+	foreach ($messages as $key => $message) {
+		if (($message['occurrence_count'] ?? 0) > 1) {
+			$groups[$key] = [
+				'source' => $message['mtype'],
+				'id' => $message['latest_seq'],
+				'logtime' => $message['logtime'],
+				'available' => $recommendations[$key]
+			];
+		}
+	}
+
+	$token = bin2hex(random_bytes(16));
+	$_SESSION['syslog_group_contexts'][$token] = ['where' => $sql_where, 'trim' => $trim, 'groups' => $groups];
+	$_SESSION['syslog_group_contexts'] = array_slice($_SESSION['syslog_group_contexts'], -5, null, true);
+
+	return $token;
+}
+
+/**
+ * Fetch one bounded page of a group's messages within the active search predicates.
  *
  * @param array  $group      The grouped message row.
  * @param string $sql_where  The compiled message search clause.
  * @param string $breach_sql The compiled threshold-breach expression.
+ * @param int    $offset     The zero-based detail-page offset.
  *
  * @return array|false The matching rows, or false on a database error.
  */
-function syslog_group_detail_messages(array $group, string $sql_where, string $breach_sql): array|false {
+function syslog_group_detail_messages(array $group, string $sql_where, string $breach_sql, int $offset = 0): array|false {
 	global $syslogdb_default;
 
-	$seq_array = array_map('intval', explode(',', $group['seq_list']));
-	$group_where = $sql_where . ($sql_where === '' ? 'WHERE ' : ' AND ') .
-		'syslog.seq IN (' . implode(',', array_fill(0, cacti_sizeof($seq_array), '?')) . ')';
+	$group_where = $sql_where === '' ? 'WHERE ' : 'WHERE (' . substr($sql_where, 6) . ') AND ';
+	$digest = syslog_message_digest_ready();
+	$group_where .= 'syslog.host_id = ? AND syslog.program_id = ? AND syslog.facility_id = ? AND syslog.priority_id = ? AND ' .
+		($digest ? "IF(syslog.message_digest = '', MD5(syslog.message), syslog.message_digest)" : 'syslog.message') . ' = ?';
+	$params = [$group['host_id'], $group['program_id'], $group['facility_id'], $group['priority_id'],
+		$digest ? md5($group['message']) : $group['message']];
 
-	return syslog_db_fetch_assoc_prepared("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
+	return syslog_db_fetch_assoc_prepared("SELECT syslog.seq, syslog.logtime, syslog.message, $breach_sql AS threshold_breached,
+		(SELECT host FROM `$syslogdb_default`.`syslog_hosts` AS sh WHERE sh.host_id = syslog.host_id) AS host,
+		syslog_programs.program,
+		(SELECT facility FROM `$syslogdb_default`.`syslog_facilities` AS sf WHERE sf.facility_id = syslog.facility_id) AS facility,
+		(SELECT priority FROM `$syslogdb_default`.`syslog_priorities` AS sp WHERE sp.priority_id = syslog.priority_id) AS priority
 		FROM `$syslogdb_default`.`" . (($group['mtype'] === 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
-		LEFT JOIN `$syslogdb_default`.`syslog_programs`
-		ON syslog.program_id = syslog_programs.program_id
+		LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs ON syslog.program_id = syslog_programs.program_id
 		$group_where
-		ORDER BY syslog.logtime DESC", $seq_array);
+		ORDER BY syslog.logtime DESC, syslog.seq DESC
+		LIMIT 51 OFFSET " . $offset, $params);
+}
+
+/**
+ * Resolve a detail page exclusively from its server-owned filter context.
+ *
+ * @param string $token  The rendered view's context token.
+ * @param string $group  The rendered summary index.
+ * @param string $offset The zero-based page offset.
+ *
+ * @return array The bounded page or an explicit error.
+ */
+function syslog_group_details_page(string $token, string $group, string $offset = '0'): array {
+	global $syslogdb_default;
+
+	$context = $_SESSION['syslog_group_contexts'][$token] ?? null;
+
+	if (!$context || !isset($context['groups'][$group]) || !ctype_digit($offset)
+		|| filter_var($offset, FILTER_VALIDATE_INT, ['options' => ['min_range' => 0, 'max_range' => PHP_INT_MAX - 51]]) === false) {
+		return ['error' => __('Grouped results are unavailable or expired. Refresh the results and try again.', 'syslog')];
+	}
+
+	$anchor = $context['groups'][$group];
+	$table = $anchor['source'] === 'main' ? 'syslog' : 'syslog_removed';
+	$where = $context['where'] === '' ? 'WHERE ' : 'WHERE (' . substr($context['where'], 6) . ') AND ';
+	$record = syslog_db_fetch_row_prepared("SELECT syslog.host_id, syslog.program_id, syslog.facility_id, syslog.priority_id, syslog.message
+		FROM `$syslogdb_default`.`$table` AS syslog
+		$where syslog.seq = ? AND syslog.logtime = ?
+		LIMIT 1", [$anchor['id'], $anchor['logtime']]);
+
+	if ($record === false) {
+		return ['error' => __('Group messages could not be loaded.', 'syslog')];
+	}
+
+	if (!$record) {
+		return ['error' => __('Grouped results are unavailable or expired. Refresh the results and try again.', 'syslog')];
+	}
+
+	$record['mtype'] = $anchor['source'];
+	$messages = syslog_group_detail_messages($record, $context['where'], syslog_message_breach_sql(), (int) $offset);
+
+	if ($messages === false) {
+		return ['error' => __('Group messages could not be loaded.', 'syslog')];
+	}
+
+	return [
+		'rows' => array_slice($messages, 0, 50),
+		'more' => cacti_sizeof($messages) > 50,
+		'source' => $anchor['source'],
+		'available' => $anchor['available'],
+		'trim' => $context['trim']
+	];
+}
+
+/**
+ * Render a bounded page of group members using the normal message controls.
+ *
+ * @param array  $messages  The detail-page records.
+ * @param string $source    The stored or removed table name.
+ * @param int    $trim      The message trim setting.
+ * @param bool   $available Whether the group has a recommendation.
+ *
+ * @return string The escaped detail row HTML.
+ */
+function syslog_group_detail_rows(array $messages, string $source, int $trim, bool $available): string {
+	ob_start();
+
+	foreach ($messages as $message) {
+		print "<tr class='tableRow syslogRow syslogRowOpen syslogGroupMember'>";
+		form_selectable_cell(html_escape($message['logtime']), $message['seq'], '', 'left');
+		print "<td class='nowrap left'>" . syslog_value_filter_button($message['host'] ?? '', 'host') . '</td>';
+		print "<td class='nowrap left'>" . syslog_value_filter_button($message['program'] ?? '', 'program') . '</td>';
+		form_selectable_cell(syslog_recommendation_indicator($available), $message['seq'], '20px', 'center syslogRecommendation');
+		form_selectable_cell(syslog_message_button($message['message'], $message['host'] ?? '', $message['program'] ?? '', $message['facility'] ?? '', $message['priority'] ?? '', $message['logtime'], $message['seq'], $source, $trim), $message['seq'], '', 'left syslogMessage');
+		form_selectable_cell(syslog_metadata_label($message['facility'] ?? '', 'facility'), $message['seq'], '', 'left');
+		print "<td class='nowrap left'>" . syslog_value_filter_button($message['priority'] ?? '', 'priority') . '</td>';
+		form_selectable_cell(!empty($message['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog'), $message['seq'], '1%', 'center');
+		form_selectable_cell('', $message['seq'], '', 'right');
+		print '</tr>';
+	}
+
+	return ob_get_clean();
 }
 
 /**
