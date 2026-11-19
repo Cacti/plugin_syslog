@@ -1,11 +1,5 @@
 # syslog
 
-[All published release notes](docs/RELEASE_HISTORY.md)
-
-[Version 5.0 release notes and upgrade guidance](docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](docs/COMMITS_5.0.md)
-
-[Setup module ownership](docs/setup-modules.md) describes how `setup.php` and the `includes/` modules divide the plugin code.
-
 Syslog collects and searches log messages inside Cacti, applies alert and removal
 rules, and sends notifications or runs configured commands when rules match.
 It can also consume SNMP traps and informs forwarded as Syslog messages by SNMPTT.
@@ -36,7 +30,7 @@ This README describes the `develop` source branch.
 
 | Code | Plugin version | Minimum Cacti declared in `INFO` |
 | --- | --- | --- |
-| [Source branch](INFO) | 5.0 | 1.2.23 |
+| [Source branch](https://github.com/Cacti/plugin_syslog/blob/develop/INFO) | 5.0 | 1.2.23 |
 | [Published v4.2](https://github.com/Cacti/plugin_syslog/releases/tag/v4.2) | 4.2 | 1.2.23 |
 
 Use the published release’s assets and tagged documentation when installing that
@@ -46,7 +40,13 @@ matches the release. Cacti’s own PHP and database requirements also apply.
 Install this plugin in **`<cacti-root>/plugins/syslog`**, using the directory
 name `syslog` rather than `plugin_syslog`.
 
-See [CHANGELOG.md](CHANGELOG.md) for the version history.
+See [CHANGELOG.md](https://github.com/Cacti/plugin_syslog/blob/develop/CHANGELOG.md) for the version history.
+
+[All published release notes](https://github.com/Cacti/plugin_syslog/blob/develop/docs/RELEASE_HISTORY.md)
+
+[Version 5.0 release notes and upgrade guidance](https://github.com/Cacti/plugin_syslog/blob/develop/docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](https://github.com/Cacti/plugin_syslog/blob/develop/docs/COMMITS_5.0.md)
+
+[Setup module ownership](https://github.com/Cacti/plugin_syslog/blob/develop/docs/setup-modules.md) describes how `setup.php` and the `includes/` modules divide the plugin code.
 
 ## Core Features
 
@@ -278,7 +278,7 @@ item yet.
 
 The plugin declares `compat = 1.2.23` in `INFO`, so it needs Cacti 1.2.23 or
 later, and PHP 8.0 or later. Every non-test PHP file passes `php -l` on PHP 8.0
-and 8.1. The [Linux integration workflow](.github/workflows/plugin-ci-workflow.yml)
+and 8.1. The [Linux integration workflow](https://github.com/Cacti/plugin_syslog/blob/develop/.github/workflows/plugin-ci-workflow.yml)
 runs PHP 8.2 through 8.5 against Cacti `1.2.x` on MariaDB 11.8, including
 installation, plugin enablement, polling, and sample Syslog processing. PHP 8.6
 is a non-blocking experimental job. Use the PHP version required by your Cacti

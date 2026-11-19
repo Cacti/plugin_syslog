@@ -3,9 +3,9 @@
 Documentation update (unreleased): Refresh README release/source compatibility,
 installation guidance and source-checked behavior.
 
-[All published release notes](docs/RELEASE_HISTORY.md)
+[All published release notes](https://github.com/Cacti/plugin_syslog/blob/develop/docs/RELEASE_HISTORY.md)
 
-[Version 5.0 release notes and upgrade guidance](docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](docs/COMMITS_5.0.md)
+[Version 5.0 release notes and upgrade guidance](https://github.com/Cacti/plugin_syslog/blob/develop/docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](https://github.com/Cacti/plugin_syslog/blob/develop/docs/COMMITS_5.0.md)
 
 --- 5.0 ---
 
