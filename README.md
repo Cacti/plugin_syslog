@@ -638,14 +638,28 @@ Syslog Administration realm). You can add, edit, and delete records, filter by
 vendor and severity, and import or export them as JSON. A recommendation is
 identified by its vendor and identifier.
 
-The bundled data in `docs/recommendations.sql.gz` is loaded once, the first time
+The bundled Cisco data in `docs/cisco.json.gz` is loaded once, the first time
 the plugin is installed or upgraded to 5.0 (see
 [Important: Upgrading the Plugin](#important-upgrading-the-plugin); the page
 returns Permission Denied until the upgrade has run). It is read with PHP's zlib extension;
 without it the load is skipped and a warning is logged. Records that already exist
 are never overwritten and records you delete are not restored by later upgrades.
-To reload it manually, run `zcat docs/recommendations.sql.gz | mysql <syslog database>`;
-existing records are kept.
+To reload it manually, import `docs/cisco.json.gz` from the Recommendations page
+and choose to keep existing recommendations. This replaces the former
+`docs/recommendations.sql.gz` SQL seed without changing its one-time seed flag.
+The Cisco catalogue retains the CEMDB/php-syslog-ng data and field values.
+
+A curated, manually importable Juniper EX Series catalogue is available in
+`docs/juniper.json.gz`. Its 14 ESWD records are based on Juniper's System Log
+Explorer; most source records provide an explanation but no recommended action.
+This is not a complete Juniper catalogue and is not automatically installed.
+Message templates use bracketed variable names and explanatory wording, not
+regular expressions.
+
+The file picker accepts `.json` and `.json.gz`; pasted JSON is also supported.
+Exports (selected rows or the current filters) download as `.json.gz` by default.
+Gzip import and export require PHP's zlib extension. Both the compressed file
+and its decompressed contents must be no larger than 64 MiB.
 
 The import and export format is a JSON document. Its field names follow the
 vocabulary of existing rule and event catalogues (Sigma's description and level,

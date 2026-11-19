@@ -670,14 +670,22 @@ function syslog_strip_auto_dates(string $search, $date1, $date2): string {
 
 /**
  * Check a Syslog realm by its Cacti-assigned ID, not a filename mapping.
+ *
+ * @param string $display The realm's display name.
+ *
+ * @return bool Whether the current user has permission.
  */
 function syslog_realm_allowed(string $display): bool {
-	$realms = db_fetch_assoc_prepared(
-		'SELECT id FROM plugin_realms WHERE plugin = ? AND display = ?',
-		['syslog', $display]
-	);
+	static $realms = [];
 
-	foreach (is_array($realms) ? $realms : [] as $realm) {
+	if (empty($realms[$display])) {
+		$realms[$display] = db_fetch_assoc_prepared(
+			'SELECT id FROM plugin_realms WHERE plugin = ? AND display = ?',
+			['syslog', $display]
+		);
+	}
+
+	foreach (is_array($realms[$display]) ? $realms[$display] : [] as $realm) {
 		if (is_realm_allowed((int) $realm['id'] + 100)) {
 			return true;
 		}
@@ -8492,6 +8500,30 @@ function alert_replace_variables($alert, $results, $hostname = '') {
 		'<MESSAGE>'  => cacti_escapeshellarg($results['message']),
 		'<SEVERITY>' => cacti_escapeshellarg($severities[$alert['severity']])
 	]);
+}
+
+/**
+ * Fetch a group's messages within the active search predicates.
+ *
+ * @param array  $group      The grouped message row.
+ * @param string $sql_where  The compiled message search clause.
+ * @param string $breach_sql The compiled threshold-breach expression.
+ *
+ * @return array|false The matching rows, or false on a database error.
+ */
+function syslog_group_detail_messages(array $group, string $sql_where, string $breach_sql): array|false {
+	global $syslogdb_default;
+
+	$seq_array = array_map('intval', explode(',', $group['seq_list']));
+	$group_where = $sql_where . ($sql_where === '' ? 'WHERE ' : ' AND ') .
+		'syslog.seq IN (' . implode(',', array_fill(0, cacti_sizeof($seq_array), '?')) . ')';
+
+	return syslog_db_fetch_assoc_prepared("SELECT `syslog`.*, $breach_sql AS threshold_breached, `syslog_programs`.`program`
+		FROM `$syslogdb_default`.`" . (($group['mtype'] === 'main') ? 'syslog' : 'syslog_removed') . "` AS syslog
+		LEFT JOIN `$syslogdb_default`.`syslog_programs`
+		ON syslog.program_id = syslog_programs.program_id
+		$group_where
+		ORDER BY syslog.logtime DESC", $seq_array);
 }
 
 /**

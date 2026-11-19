@@ -35,4 +35,4 @@ foreach(range(1,17) as $i) echo '<tr class="syslogRow '.syslog_priority_class($i
 echo '</tbody></table></div>';
 $start = strpos($source,"<aside id='syslog_message_details'");$end = strpos($source,'</aside></div>', $start)+strlen('</aside></div>');
 eval('?>'.substr($source,$start,$end-$start));
-echo '<script>var csrfMagicToken="fixture"; var Pace={stop(){}}; $(function() { $("select").selectmenu({change:function(event,ui){$(this).val(ui.item.value).change()}}); }); initSyslogMain({pageTab:"syslog"}); initSyslogWorkspace(); window.posts=[];postSyslog=function(data){posts.push(data)};</script></body></html>';
+echo '<script>var csrfMagicToken="fixture"; var Pace={stop(){}}; $(function() { $("select").selectmenu({change:function(event,ui){$(this).val(ui.item.value).change()}}); }); initSyslogMain({pageTab:"syslog"}); initSyslogMessagesDisplay(); initSyslogWorkspace(); window.posts=[];postSyslog=function(data){posts.push(data)};</script></body></html>';

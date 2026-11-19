@@ -282,9 +282,9 @@ function initSyslogWorkspace() {
 
 		workspace.querySelectorAll('.syslogMessageOpen').forEach(function(button) {
 			var row = button.closest('tr');
-			row.removeAttribute('title');
 			row.classList.add('syslogRowOpen');
 			var data = JSON.parse(button.dataset.message);
+			row.title = data.message || '';
 			// Show facility and severity through badges, leaving message backgrounds neutral.
 			[
 				['facility', 'syslogFacility'],
@@ -301,6 +301,7 @@ function initSyslogWorkspace() {
 				});
 			});
 			function open() {
+				if ($(row).tooltip('instance')) $(row).tooltip('close');
 				deselect();
 				active = button;
 				row.classList.add('syslogSelected');
@@ -1478,7 +1479,7 @@ function initSyslogMessagesDisplay() {
 		});
 
 		// Initialize tooltips for buttons
-		$('button').tooltip({
+		$('button').not('.syslogRow button').tooltip({
 			closed: true
 		}).on('focus', function() {
 			$('#filter').tooltip('close');

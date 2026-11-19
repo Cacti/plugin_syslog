@@ -288,7 +288,7 @@ function recommendation_actions(): void {
 }
 
 /**
- * Send recommendations as a JSON download.
+ * Send recommendations as a gzip-compressed JSON download.
  *
  * @param string          $where  The WHERE clause, or ''.
  * @param array<int,mixed> $params The bind values.
@@ -296,9 +296,16 @@ function recommendation_actions(): void {
  * @return void
  */
 function recommendation_send_export(string $where, array $params): void {
-	header('Content-Type: application/json; charset=UTF-8');
-	header('Content-Disposition: attachment; filename=syslog_recommendations_export.json');
-	syslog_recommendations_export($where, $params);
+	if (!function_exists('deflate_init')) {
+		raise_message('syslog_export_error', __('Export requires the PHP zlib extension to create a JSON gzip file.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		header('Location: syslog_recommendations.php');
+
+		return;
+	}
+
+	header('Content-Type: application/gzip');
+	header('Content-Disposition: attachment; filename=syslog_recommendations_export.json.gz');
+	syslog_recommendations_export($where, $params, true);
 }
 
 /**
@@ -403,8 +410,9 @@ function recommendation_import_form(): void {
 	$fields = [
 		'import_file' => [
 			'friendly_name' => __('Import Recommendations from Local File', 'syslog'),
-			'description'   => __('Select a JSON file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference.', 'syslog'),
-			'method'        => 'file'
+			'description'   => __('Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference.', 'syslog'),
+			'method'        => 'file',
+			'accept'        => '.json,.json.gz'
 		],
 		'import_text' => [
 			'method'        => 'textarea',
