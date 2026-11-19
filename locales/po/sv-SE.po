@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 13:24+0000\n"
+"POT-Creation-Date: 2026-11-19 15:22+0000\n"
 "PO-Revision-Date: 2026-11-16 08:18+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
@@ -785,6 +785,16 @@ msgstr ""
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
+msgstr ""
+
+#: includes/recommendations.php syslog.php
+#, fuzzy
+#| msgid "No device alert rules found."
+msgid "Recommendations could not be loaded."
+msgstr "Inga larmregler för enheter hittades."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
 msgstr ""
 
 #: includes/recommendations.php syslog_recommendations.php
@@ -2599,12 +2609,6 @@ msgstr "Lagringstid för Syslog"
 msgid "No recommendation matches this message."
 msgstr "Inga larmregler för enheter hittades."
 
-#: syslog.php
-#, fuzzy
-#| msgid "No device alert rules found."
-msgid "Recommendations could not be loaded."
-msgstr "Inga larmregler för enheter hittades."
-
 #: syslog.php syslog_alerts.php
 msgid "Actions"
 msgstr "Åtgärder"
@@ -3579,11 +3583,15 @@ msgid "Recommendation [new]"
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the hover message but are never searched."
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "When you hover over a row on the Syslog tab, the first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3615,7 +3623,7 @@ msgid "Can Match"
 msgstr "Matchning"
 
 #: syslog_recommendations.php
-msgid "Whether the identifier has the shape of a message word, so the hover lookup can ever find it"
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
 msgstr ""
 
 #: syslog_recommendations.php
