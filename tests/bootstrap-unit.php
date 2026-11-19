@@ -655,6 +655,12 @@ if (!function_exists('form_save_button')) {
 	}
 }
 
+if (!function_exists('form_hidden_box')) {
+	function form_hidden_box($form_name, $form_value, $form_default_value) {
+		return test_call_override('form_hidden_box', [$form_name, $form_value, $form_default_value], null);
+	}
+}
+
 if (!function_exists('draw_edit_form')) {
 	function draw_edit_form($form_array) {
 		return test_call_override('draw_edit_form', [$form_array], null);
