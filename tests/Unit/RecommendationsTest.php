@@ -569,10 +569,14 @@ it('keeps the escaped full message in the title without enabling hover lookups',
 		->and($queries)->toBe([]);
 });
 
-it('batch-checks page messages with the same matching rules as the flyout', function (string $collation, bool $lowercase_matches) {
+it('batch-checks page messages with the same matching rules as the flyout', function (bool $lowercase_matches) {
 	$db = new PDO('sqlite::memory:');
-	$db->exec('CREATE TABLE syslog_recommendations (identifier TEXT COLLATE ' . $collation . ', vendor TEXT, component TEXT,
-		severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)');
+	$schema = $lowercase_matches
+		? 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE NOCASE, vendor TEXT, component TEXT,
+			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)'
+		: 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE BINARY, vendor TEXT, component TEXT,
+			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)';
+	$db->exec($schema);
 	$db->exec("INSERT INTO syslog_recommendations (identifier) VALUES ('%LINK-3-UPDOWN'), ('%LINK-3-UPDOWN'), ('4625'), ('B')");
 	$queries = [];
 	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db, &$queries) {
@@ -603,8 +607,8 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 		expect(syslog_recommendations_lookup($message) !== [])->toBe($expected[$key]);
 	}
 })->with([
-	'case-insensitive catalogue' => ['NOCASE', true],
-	'case-sensitive catalogue'   => ['BINARY', false]
+	'case-insensitive catalogue' => [true],
+	'case-sensitive catalogue'   => [false]
 ]);
 
 it('does not query recommendations for an empty page or messages without candidates', function () {
