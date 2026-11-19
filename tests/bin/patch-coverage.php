@@ -251,7 +251,6 @@ $unmeasured_allowlist = [
 	// CLI bootstrap (includes cli_check.php and runs at the top level) requires
 	// Cacti, so it cannot be loaded into the isolated unit process; like the
 	// other CLI entry points it is intentionally absent from Clover.
-	'cli/updatedb_convert_ms.php',
 	'cli/upgrade_partitioning.php',
 	// Setup modules are loaded by Cacti hook paths rather than directly by the
 	// isolated Pest bootstrap. Their behavior is covered by targeted tests, but

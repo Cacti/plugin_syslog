@@ -56,6 +56,11 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('#refresh_results').getAttribute('aria-label'), 'Refresh Results');
  assert.equal(await page.locator('#refresh_results .fa.fa-sync-alt').count(), 1, 'Refresh uses the Font Awesome glyph');
  assert.equal(await page.locator('#refresh_results .fa-spin').count(), 0, 'Refresh is not spinning while idle');
+ assert.equal(await page.locator('#export').getAttribute('aria-label'), 'Export Records to CSV');
+ assert.equal(await page.locator('#export .fa.fa-file-export[aria-hidden="true"]').count(), 1, 'Export uses an accessible Font Awesome glyph');
+ assert.equal((await page.locator('#export').textContent()).trim(), '', 'Export is glyph-only');
+ await page.locator('#export').click();
+ assert.equal(await page.evaluate(() => posts.at(-1).export), 'true', 'The glyph keeps the existing export callback');
  const messageButton = page.locator('.syslogMessageOpen').first();
  const indicatorColumns = page.locator('th:has(.syslogRecommendationHeading), td.syslogRecommendation');
  async function checkIndicatorWidths() {

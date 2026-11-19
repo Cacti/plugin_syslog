@@ -126,20 +126,6 @@ it('rejects millisecond conversion on MySQL before any rebuild', function () {
 		->and($state->rebuilds)->toBe([]);
 });
 
-it('keeps the legacy converter nondestructive once every pipeline table is converted', function () {
-	$state = partition_rebuild_setup();
-	$state->tables = ['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'];
-	$state->precision = 'ms';
-	$run = partition_rebuild_runner();
-	ob_start();
-	$ok = $run(true, true, false, true);
-	ob_end_clean();
-
-	expect($ok)->toBeTrue()
-		->and($state->rebuilds)->toBe([])
-		->and($state->executions)->toBe([]);
-});
-
 it('leaves the precision setting unchanged and restores the session after a failed copy', function () {
 	$state = partition_rebuild_setup();
 	test_override('syslog_upart_rebuild', static fn() => false);
@@ -174,33 +160,16 @@ it('covers historical days for indefinite retention and refuses excessive partit
 		->and($plan(0, 1, $today - 8190 * 86400, null, $today))->toBeNull();
 });
 
-it('runs both CLI entrypoints with their real argument parsing and compatible legacy defaults', function () {
+it('prints readable CLI help and rejects conflicting preservation arguments', function () {
 	$base = sys_get_temp_dir() . '/syslog-rebuild-cli-' . bin2hex(random_bytes(6));
 	mkdir($base . '/plugins/syslog/cli', 0700, true);
 	mkdir($base . '/plugins/syslog/includes', 0700);
 	mkdir($base . '/include', 0700);
 	$paths = [
-		'include/cli_check.php' => '<?php',
+		'include/cli_check.php' => '<?php define("COPYRIGHT_YEARS", "Copyright (C) 2004-2026 The Cacti Group");',
 		'plugins/syslog/cli/upgrade_partitioning.php' => plugin_test_read_source('cli/upgrade_partitioning.php'),
-		'plugins/syslog/cli/updatedb_convert_ms.php' => plugin_test_read_source('cli/updatedb_convert_ms.php'),
-		'plugins/syslog/setup.php' => <<<'PHP'
-<?php
-$syslogdb_default = 'fixture';
-function syslog_determine_config() { define('SYSLOG_CONFIG', __FILE__); }
-function syslog_connect() { return true; }
-function read_config_option($key) { return ['syslog_install_engine'=>'InnoDB','syslog_retention'=>'30'][$key] ?? ''; }
-function syslog_db_table_exists($table, ...$args) { return in_array($table, ['syslog','syslog_removed','syslog_incoming','syslog_replication_output'], true); }
-function syslog_db_fetch_cell_prepared($sql, ...$args) {
-	if (str_contains($sql, 'GET_LOCK') || str_contains($sql, 'RELEASE_LOCK')) { return 1; }
-	throw new RuntimeException('Unexpected database activity on an already-converted legacy invocation: ' . $sql);
-}
-PHP,
-		'plugins/syslog/includes/schema.php' => <<<'PHP'
-<?php
-function syslog_db_is_mariadb() { return true; }
-function syslog_detect_logtime_precision($table) { return 'ms'; }
-function syslog_partition_ahead_days() { return 3; }
-PHP
+		'plugins/syslog/setup.php' => '<?php function plugin_syslog_version() { return ["version" => "5.0"]; }',
+		'plugins/syslog/includes/schema.php' => '<?php'
 	];
 
 	try {
@@ -209,10 +178,19 @@ PHP
 		}
 
 		foreach ([
-			['upgrade_partitioning.php', ['--help'], 0, '--convert-ms'],
-			['updatedb_convert_ms.php', ['--help'], 0, 'Legacy default DELETES messages'],
-			['updatedb_convert_ms.php', ['--confirm'], 0, 'No tables require rebuilding.'],
-			['updatedb_convert_ms.php', ['--confirm', '--preserve-data'], 0, 'No tables require rebuilding.'],
+			['upgrade_partitioning.php', ['--help'], 0, [
+				'Preserve existing messages (the default)',
+				'future-partition horizon.' . PHP_EOL . PHP_EOL . 'Existing precision',
+				'--convert-ms is selected.' . PHP_EOL . PHP_EOL . 'With preservation',
+				'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)',
+				PHP_EOL . PHP_EOL . 'usage: upgrade_partitioning.php',
+				'values are verified.' . PHP_EOL . PHP_EOL . 'Options:',
+				'several hours.' . PHP_EOL . PHP_EOL . 'On failure',
+				'writers first.' . PHP_EOL . PHP_EOL . 'The current database size'
+			]],
+			['upgrade_partitioning.php', ['--version'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
+			['upgrade_partitioning.php', ['-V'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
+			['upgrade_partitioning.php', ['-v'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
 			['upgrade_partitioning.php', ['--discard-data', '--preserve-data'], 1, 'cannot be combined']
 		] as [$entry, $args, $expected_status, $expected_output]) {
 			$process = proc_open(array_merge([PHP_BINARY, '-d', 'xdebug.mode=off', $base . '/plugins/syslog/cli/' . $entry], $args),
@@ -222,8 +200,10 @@ PHP
 			$output = stream_get_contents($pipes[1]) . stream_get_contents($pipes[2]);
 			fclose($pipes[1]);
 			fclose($pipes[2]);
-			expect(proc_close($process))->toBe($expected_status)
-				->and($output)->toContain($expected_output);
+			expect(proc_close($process))->toBe($expected_status);
+			foreach ((array) $expected_output as $text) {
+				expect($output)->toContain($text);
+			}
 		}
 	} finally {
 		foreach (array_keys($paths) as $path) {

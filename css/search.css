@@ -623,6 +623,8 @@
    resized, and cells clip instead of spilling into their neighbors. */
 #syslog_workspace table.syslogFixedColumns { table-layout: fixed; }
 #syslog_workspace table.syslogFixedColumns td { overflow: hidden; text-overflow: ellipsis; }
+#syslog_workspace table.syslogFixedColumns .sortinfo { overflow: hidden; }
+#syslog_workspace table.syslogFixedColumns .textSubHeaderDark { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Severity row tints: a translucent hue per priority mixed over the live theme
    surface, so the same rules read correctly on both light and dark themes. */
 #syslog_workspace tr.syslogRow { --syslog-sev: transparent; color: var(--search-text); background: color-mix(in srgb, var(--syslog-sev) 16%, var(--search-card)); }

@@ -201,10 +201,6 @@ try {
 		WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME IN ('syslog','syslog_removed')
 		AND REPLACE(PARTITION_EXPRESSION,'`','')='unix_timestamp(logtime)'") > 2, 'Stored and removed tables use epoch partitions');
 	ob_start();
-	rebuild_check(syslog_upart_run(true, true, false, true), 'The legacy command skips an already-converted pipeline');
-	ob_end_clean();
-	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog') === (int) $total, 'A repeated legacy conversion must not delete new history');
-	ob_start();
 	rebuild_check(syslog_upart_rebuild('syslog_removed', false, false, 'InnoDB', 2, 2), 'Explicit discard mode completes');
 	ob_end_clean();
 	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog_removed') === 0, 'Only explicit discard mode empties a rebuilt table');

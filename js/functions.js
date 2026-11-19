@@ -407,41 +407,86 @@ var SYSLOG_MESSAGE_SORT = '.sortinfo[sort-column="message"], .sortinfo[sort-colu
  * switch to the fixed layout, which honors header widths. The message column
  * then absorbs any change.
  *
+ * Cacti's resize callback pins preceding columns, including the message, and
+ * does not bound the combined widths. Keep that column flexible and limit
+ * each drag to the space available inside the results area instead.
+ *
  * Releasing a drag over the header text also fires a click, which Cacti's
  * sortable headers treat as a sort, so that one click is swallowed.
  */
 function syslogEnableColumnResize(workspace) {
+	var fitTables = [];
 	workspace.querySelectorAll('tr.tableHeader').forEach(function(header) {
 		var table = header.closest('table');
 		if (!table || table.classList.contains('syslogFixedColumns')) return;
 		var cells = Array.from(header.children);
-		var widths = cells.map(function(cell) { return Math.ceil(cell.getBoundingClientRect().width); });
+		var message = cells.find(function(cell) { return cell.querySelector(SYSLOG_MESSAGE_SORT); });
+		if (!message) return;
+		var main = table.closest('.syslogResultsMain');
+		var indicator = cells.find(function(cell) { return cell.querySelector('.syslogRecommendationHeading'); });
+		var minimumMessage = 80;
+		var widths = cells.map(function(cell) { return $(cell).outerWidth(); });
+		var chrome = Math.max(0, table.getBoundingClientRect().width - widths.reduce(function(sum, width) { return sum + width; }, 0));
 		cells.forEach(function(cell, index) {
-			var message = cell.querySelector(SYSLOG_MESSAGE_SORT);
-			if (message) cell.style.removeProperty('width');
-			else if (!cell.style.width) cell.style.width = widths[index] + 'px';
+			if (cell === message) cell.style.removeProperty('width');
+			else $(cell).outerWidth(cell === indicator ? 20 : widths[index]);
 		});
 		table.classList.add('syslogFixedColumns');
 
-		var resized = 0;
-		var keep = null;
-		// Cacti's resize hands the width change to the next column, which can
-		// squeeze it to nothing; here the message column absorbs it instead.
-		// The core callback runs after these handlers, so restore on the next frame.
-		$(header).on('resizestart', 'th', function() {
-			resized = Date.now();
-			var next = this.nextElementSibling;
-			keep = next && !next.querySelector(SYSLOG_MESSAGE_SORT) ? {cell: next, width: next.style.width} : null;
-		}).on('resize', 'th', function() {
-			resized = Date.now();
-			if (keep) {
-				var restore = keep;
-				window.requestAnimationFrame(function() { restore.cell.style.width = restore.width; });
+		function fit() {
+			message.style.removeProperty('width');
+			if (indicator) $(indicator).outerWidth(20);
+			var fixed = cells.filter(function(cell) { return cell !== message && cell !== indicator; });
+			var available = Math.max(main.clientWidth, parseFloat(getComputedStyle(table).minWidth) || 0) - chrome;
+			var budget = available - minimumMessage - (indicator ? 20 : 0);
+			var total = fixed.reduce(function(sum, cell) { return sum + $(cell).outerWidth(); }, 0);
+			if (total > budget) {
+				var spare = total - fixed.length * 20;
+				fixed.forEach(function(cell) {
+					$(cell).outerWidth(20 + Math.max(0, $(cell).outerWidth() - 20) * Math.max(0, budget - fixed.length * 20) / spare);
+				});
 			}
-		}).on('resizestop', 'th', function() {
-			// Restore before the core stop callback saves the column widths.
+		}
+		fit();
+		fitTables.push(fit);
+
+		var resized = 0;
+		$(header).on('resizestart', 'th', function(event, ui) {
 			resized = Date.now();
-			if (keep) keep.cell.style.width = keep.width;
+			fit();
+			var active = this;
+			var initial = cells.map(function(cell) { return $(cell).outerWidth(); });
+			var index = cells.indexOf(active);
+			var messageWidth = $(message).outerWidth();
+			var padding = $(active).outerWidth() - $(active).width();
+			var donor = message.nextElementSibling;
+			var donorWidth = donor ? $(donor).outerWidth() : 0;
+			var originalWidth = ui.originalSize.width;
+			// Replace only this log header's core callbacks; retain core width persistence.
+			$(active).resizable('option', {
+				minWidth: (active === message ? minimumMessage : 20) - padding,
+				maxWidth: active === message ? originalWidth + donorWidth - 20 :
+					(active === indicator ? 20 : initial[index] + messageWidth - minimumMessage) - padding,
+				resize: function(event, ui) {
+					resized = Date.now();
+					cells.forEach(function(cell, index) {
+						if (cell !== message) $(cell).outerWidth(initial[index]);
+					});
+					if (active === message) {
+						if (donor) $(donor).outerWidth(donorWidth - (ui.size.width - originalWidth));
+					} else {
+						$(active).width(ui.size.width);
+					}
+					message.style.removeProperty('width');
+					active.style.height = 'auto';
+				},
+				stop: function() {
+					resized = Date.now();
+					fit();
+					saveTableWidths(false);
+					message.style.removeProperty('width');
+				}
+			});
 		});
 		header.addEventListener('click', function(event) {
 			if (Date.now() - resized < 500) {
@@ -450,6 +495,15 @@ function syslogEnableColumnResize(workspace) {
 			}
 		}, true);
 	});
+	$(window).off('resize.syslogColumns').on('resize.syslogColumns', function() {
+		if (!workspace.isConnected) {
+			$(window).off('resize.syslogColumns');
+			return;
+		}
+		fitTables.forEach(function(fit) { fit(); });
+	});
+	// Core may restore persisted widths after the page's inline initialization.
+	window.requestAnimationFrame(function() { fitTables.forEach(function(fit) { fit(); }); });
 }
 
 function initSyslogValueFilters(root) {

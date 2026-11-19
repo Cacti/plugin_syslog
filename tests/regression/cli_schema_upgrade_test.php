@@ -99,10 +99,11 @@ mkdir($fixture . '/include', 0700, true);
 mkdir($fixture . '/plugins/syslog/cli', 0700, true);
 mkdir($fixture . '/plugins/syslog/includes', 0700, true);
 copy($root . '/cli/syslog_schema.php', $fixture . '/plugins/syslog/cli/syslog_schema.php');
-file_put_contents($fixture . '/include/cli_check.php', '<?php $config = ["poller_id" => getenv("SYSLOG_TEST_REMOTE") ? 2 : 1];');
+file_put_contents($fixture . '/include/cli_check.php', '<?php define("COPYRIGHT_YEARS", "Copyright (C) 2004-2026 The Cacti Group"); $config = ["poller_id" => getenv("SYSLOG_TEST_REMOTE") ? 2 : 1];');
 file_put_contents($fixture . '/plugins/syslog/setup.php', <<<'STUB'
 <?php
 function cacti_sizeof($value) { return count($value); }
+function plugin_syslog_version() { return ['version' => '5.0']; }
 function syslog_determine_config() { define('SYSLOG_CONFIG', __FILE__); }
 function syslog_connect() { return true; }
 function read_config_option($name) { return $name === 'syslog_install_days' ? '0' : ''; }
@@ -164,7 +165,14 @@ try {
 	check(run_cli($fixture, [])[0] === 1, 'CLI ran without an explicit action');
 	foreach (['--help', '-h', '-H'] as $flag) {
 		[$status, $output] = run_cli($fixture, [$flag]);
-		check($status === 0 && strpos($output, 'Usage: php syslog_schema.php') !== false, 'CLI help failed: ' . $flag);
+		check($status === 0 && strpos($output, 'usage: syslog_schema.php') !== false, 'CLI help failed: ' . $flag);
+		check(strpos($output, 'Syslog Schema Utility, Version 5.0, Copyright (C)') === 0, 'CLI help is missing the version/copyright banner');
+		check(strpos($output, PHP_EOL . PHP_EOL . 'Options:' . PHP_EOL . '    --audit   - ') !== false, 'CLI help must separate its description and aligned options');
+	}
+	foreach (['--version', '-v', '-V'] as $flag) {
+		[$status, $output] = run_cli($fixture, [$flag]);
+		check($status === 0 && strpos($output, 'Syslog Schema Utility, Version 5.0, Copyright (C)') === 0, 'CLI version failed: ' . $flag);
+		check(strpos($output, 'usage:') === false, 'Version must not print help');
 	}
 	check(run_cli($fixture, ['--truncate'])[0] === 1, 'CLI accepted destructive option');
 	putenv('SYSLOG_TEST_MISSING=syslog_dashboards');

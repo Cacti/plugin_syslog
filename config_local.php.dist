@@ -92,8 +92,8 @@ $syslog_install_options['id']           = 'syslog';
  *   'ms'  - millisecond TIMESTAMP(3), preserves sub-second ordering (MariaDB only, default)
  *   'sec' - second granularity TIMESTAMP
  * Millisecond precision is only supported on MariaDB; a 'ms' request on MySQL is
- * rejected.  On a production system this cannot be changed in place later without
- * destroying the stored messages (see cli/updatedb_convert_ms.php). */
+ * rejected.  To convert an existing MariaDB install while preserving messages,
+ * run cli/upgrade_partitioning.php --convert-ms during a maintenance window. */
 //$syslog_install_options['logtime_precision'] = 'ms';
 
 /**

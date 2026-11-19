@@ -22,11 +22,19 @@ $base = ['seq' => 101, 'facility_id' => 1, 'priority_id' => 3, 'program' => 'app
 $syslog_messages = [$base + ['threshold_breached' => 1], array_replace($base, ['seq' => 102, 'threshold_breached' => null])];
 $grouping_enabled = false;
 $trim = 0;
-print '<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/main.css"><link rel="stylesheet" href="/jquery-ui.css"><link rel="stylesheet" href="/search.css"><style>body{font:14px Arial}table{border-collapse:collapse;width:100%}td,th{padding:8px;border:1px solid #ddd}th{text-align:left}</style><script src="/jquery.js"></script><script src="/jquery-ui.js"></script><script src="/functions.js"></script></head><body><div id="syslog_workspace"><table id="individual"><thead><tr>';
-foreach ($display_text as $key => $header) { print '<th title="' . html_escape($header['tip'] ?? '') . '">' . ($key === 'nosort_recommendation' ? $header['display'] : html_escape($header['display'] ?? $header[0])) . '</th>'; }
+function fixture_log_headers($headers) {
+	foreach ($headers as $key => $header) {
+		$label = $header['display'] ?? $header[0];
+		print '<th title="' . html_escape($header['tip'] ?? '') . '">';
+		print str_starts_with($key, 'nosort') ? $label : '<div class="sortinfo" sort-column="' . html_escape($key) . '"><div class="textSubHeaderDark">' . html_escape($label) . '</div></div>';
+		print '</th>';
+	}
+}
+print '<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/main.css"><link rel="stylesheet" href="/jquery-ui.css"><link rel="stylesheet" href="/search.css"><style>body{font:14px Arial}table{border-collapse:collapse;width:100%}td,th{padding:8px;border:1px solid #ddd}th{text-align:left}</style><script src="/jquery.js"></script><script src="/jquery-ui.js"></script><script src="/table-sizing.js"></script><script src="/functions.js"></script></head><body><div id="syslog_workspace"><div class="syslogResultsMain"><div class="cactiTable"><table id="individual" class="cactiTable"><thead><tr class="tableHeader">';
+fixture_log_headers($display_text);
 print '</tr></thead><tbody>';
 eval($rows);
-print '</tbody></table><table id="grouped"><tbody>';
+print '</tbody></table></div><table id="grouped"><tbody>';
 $grouping_enabled = true;
 $sql_where = '';
 $syslog_messages = [$base + ['threshold_breached' => 1, 'occurrence_count' => 1000000, 'latest_seq' => 102]];
@@ -34,6 +42,27 @@ $group_token = syslog_group_context($syslog_messages, 'WHERE logtime BETWEEN \'2
 test_override('syslog_db_fetch_assoc_prepared', static function () { throw new RuntimeException('Group members must not be queried while rendering summaries'); });
 eval($rows);
 print '</tbody></table>';
+$start = strpos($source, "\t\t\$display_text = [", $end);
+$end = strpos($source, "\n\t\t\$nav =", $start);
+eval(substr($source, $start, $end - $start));
+print '<div class="cactiTable"><table id="alerts" class="cactiTable"><thead><tr class="tableHeader">';
+fixture_log_headers($display_text);
+print '</tr></thead><tbody>';
+$syslog_messages = [[
+	'seq' => 301, 'logtime' => $base['logtime'], 'host' => 'router.example.test',
+	'severity' => 2, 'name' => str_repeat('LongAlertName', 12), 'count' => 12345,
+	'facility' => 'local7', 'priority' => 'warning', 'logmsg' => str_repeat('Alert message with details ', 40)
+]];
+$severities = [2 => 'Critical'];
+$config['url_path'] = '/';
+$start = strpos($source, "\t\tif (cacti_sizeof(\$syslog_messages)) {", $end);
+$end = strpos($source, "\n\t\thtml_end_box(false);", $start);
+$alert_rows = substr($source, $start, $end - $start);
+eval($alert_rows);
+$trim = -1;
+$syslog_messages[0]['seq'] = 302;
+eval($alert_rows);
+print '</tbody></table></div></div>';
 $details = [];
 foreach (range(201, 252) as $seq) {
 	$details[] = ['seq' => $seq, 'logtime' => $base['logtime'], 'message' => $base['message'], 'host' => 'router', 'program' => 'app', 'facility' => 'user', 'priority' => 'err', 'threshold_breached' => $seq % 2];
@@ -43,4 +72,4 @@ print '<template id="group-page-50">' . syslog_group_detail_rows(array_slice($de
 $start = strpos($source, "<aside id='syslog_message_details'");
 $end = strpos($source, '</aside></div>', $start) + strlen('</aside></div>');
 eval('?>' . substr($source, $start, $end - $start));
-print '<script>var csrfMagicToken="fixture";initSyslogMessagesDisplay();initSyslogWorkspace();initSyslogValueFilters();</script></body></html>';
+print '<script>var csrfMagicToken="fixture";$(function(){applyTableSizing();});initSyslogMessagesDisplay();initSyslogWorkspace();initSyslogValueFilters();</script></body></html>';

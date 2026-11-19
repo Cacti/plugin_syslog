@@ -164,16 +164,8 @@ replication identities are preserved, including when sequence numbers repeat
 at different timestamps. Existing second-resolution messages gain `.000`;
 conversion cannot recover fractional timestamps that were never recorded.
 
-The old command remains a compatibility wrapper:
-
-```console
-php plugins/syslog/cli/updatedb_convert_ms.php --preserve-data
-```
-
-**Without `--preserve-data`, the legacy command still deletes messages**, just
-as before; already-converted tables are skipped. Prefer the new command, whose
-default is preservation. The explicit
-`--discard-data` option on the new command also deletes messages in rebuilt
+The default is preservation. The explicit
+`--discard-data` option deletes messages in rebuilt
 tables. Rules and unrelated settings are not changed. The precision setting
 is recorded only after the complete pipeline has converted.
 
@@ -836,9 +828,8 @@ engine, retention and future horizon, preserving messages by default.
 MariaDB. It reports database size and warns about additional disk space and
 potential several-hour duration before confirmation.
 
-`cli/updatedb_convert_ms.php` remains a compatibility wrapper for conversion
-only. Its legacy default deletes stored messages; select `--preserve-data` to
-retain them. Both commands take `--confirm` and `--help`; see
+Both utilities provide Cacti-style `--help` and `--version` output.
+The partition utility also takes `--confirm`; see
 [Millisecond Timestamps](#millisecond-timestamps).
 
 ## Development and Testing

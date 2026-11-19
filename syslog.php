@@ -2525,7 +2525,7 @@ function syslog_filter(string $sql_where, string $tab): void {
 								<button type='submit' id='go'><?php print __esc('Search', 'syslog'); ?></button>
 								<button type='button' id='clear' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'><?php print __esc('Clear', 'syslog'); ?></button>
 								<button type='button' id='refresh_results' aria-label='<?php print __esc('Refresh Results', 'syslog'); ?>' title='<?php print __esc('Refresh Results', 'syslog'); ?>'><i class='fa fa-sync-alt' aria-hidden='true'></i></button>
-								<button type='button' id='export' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'><?php print __esc('Export', 'syslog'); ?></button>
+								<button type='button' id='export' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>' aria-label='<?php print __esc('Export Records to CSV', 'syslog'); ?>'><i class='fa fa-file-export' aria-hidden='true'></i></button>
 								<button type='button' id='save' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'><?php print __esc('Save view defaults', 'syslog'); ?></button>
 							</span>
 						</td>

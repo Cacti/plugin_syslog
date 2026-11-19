@@ -52,6 +52,11 @@ foreach ($parms as $arg) {
 			$convert_ms = true;
 
 			break;
+		case '--version':
+		case '-V':
+		case '-v':
+			syslog_upart_display_version();
+			exit(0);
 		case '--help':
 		case '-H':
 		case '-h':
@@ -80,13 +85,13 @@ if (!syslog_connect()) {
 	exit(1);
 }
 
-exit(syslog_upart_run($confirm, $convert_ms, $preserve_data, defined('SYSLOG_LEGACY_MS_CONVERSION')) ? 0 : 1);
+exit(syslog_upart_run($confirm, $convert_ms, $preserve_data) ? 0 : 1);
 
 /**
  * Rebuild daily partitions using the configured engine, retention and horizon.
  * DDL is not transactional; failed copies retain originals for a safe retry.
  */
-function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true, bool $conversion_only = false): bool {
+function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true): bool {
 	global $syslogdb_default;
 
 	$mariadb = syslog_db_is_mariadb();
@@ -137,7 +142,6 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 			}
 
 			if ($backup_exists || (syslog_db_table_exists($table, false)
-				&& (!$conversion_only || syslog_detect_logtime_precision($table) !== 'ms')
 				&& ($table !== 'syslog_incoming' || ($convert_ms && syslog_detect_logtime_precision($table) !== 'ms')))) {
 				$tables[] = $table;
 			}
@@ -550,31 +554,31 @@ function syslog_upart_partition_sql(int $days, int $ahead, ?int $first, ?int $la
 	return 'PARTITION BY RANGE (UNIX_TIMESTAMP(logtime)) (' . implode(', ', $parts) . ')';
 }
 
+function syslog_upart_display_version(): void {
+	$version = plugin_syslog_version();
+	print 'Syslog Partition Upgrade Utility, Version ' . trim($version['version']) . ', ' . COPYRIGHT_YEARS . PHP_EOL;
+}
+
 function syslog_upart_display_help(): void {
-	$legacy = defined('SYSLOG_LEGACY_MS_CONVERSION');
-	$name = $legacy ? 'updatedb_convert_ms.php' : 'upgrade_partitioning.php';
-	print "Usage: php $name " . ($legacy ? '' : '[--convert-ms] ') . '[--preserve-data|--discard-data] [--confirm]' . PHP_EOL;
+	syslog_upart_display_version();
 
-	if ($legacy) {
-		print 'WARNING: Legacy default DELETES messages. Select --preserve-data to keep them.' . PHP_EOL;
-		print 'Implies --convert-ms; skips already-converted tables. MariaDB only.' . PHP_EOL;
-	} else {
-		print '  --convert-ms     Also convert all message pipeline timestamps to TIMESTAMP(3); MariaDB only.' . PHP_EOL;
-	}
-
-	print '  --preserve-data  Preserve existing messages' . ($legacy ? '' : ' (the default)') . ', copying 10,000 rows at a time.' . PHP_EOL;
-	print '  --discard-data   Delete messages in rebuilt tables; the replication outbox is never discarded.' . PHP_EOL;
-	print '  --confirm        Skip the confirmation prompt, not the size and maintenance warnings.' . PHP_EOL;
-	print '  --help           Display this help.' . PHP_EOL;
-	print PHP_EOL;
+	print PHP_EOL . 'usage: upgrade_partitioning.php [--convert-ms] [--preserve-data | --discard-data] [--confirm]' . PHP_EOL . PHP_EOL;
 	print 'Rebuilds syslog and syslog_removed with UTC daily partitions matching the' . PHP_EOL;
-	print 'configured storage engine, message retention and future-partition horizon.' . PHP_EOL;
-	print 'Existing precision is preserved unless --convert-ms is selected.' . PHP_EOL;
-	print 'With preservation, originals are dropped only after row counts and values are verified.' . PHP_EOL;
-	print 'On failure keep writers stopped and retry with --preserve-data and the' . PHP_EOL;
-	print 'same --convert-ms option, if used; originals remain in *_rebuild tables.' . PHP_EOL;
-	print 'Take a database backup and stop ALL processing and database writers first.' . PHP_EOL;
+	print 'configured storage engine, message retention and future-partition horizon.' . PHP_EOL . PHP_EOL;
+	print 'Existing precision is preserved unless --convert-ms is selected.' . PHP_EOL . PHP_EOL;
+	print 'With preservation, originals are dropped only after row counts and values are verified.' . PHP_EOL . PHP_EOL;
+	print 'Options:' . PHP_EOL;
+	print '    --convert-ms    - Also convert pipeline timestamps to TIMESTAMP(3); MariaDB only.' . PHP_EOL;
+	print '    --preserve-data - Preserve existing messages (the default), copying 10,000 rows at a time.' . PHP_EOL;
+	print '    --discard-data  - Delete messages in rebuilt tables; never discard the outbox.' . PHP_EOL;
+	print '    --confirm       - Skip confirmation, not the size and maintenance warnings.' . PHP_EOL;
+	print '    --version       - Display version information.' . PHP_EOL;
+	print '    --help          - Display this help.' . PHP_EOL . PHP_EOL;
+	print 'Maintenance:' . PHP_EOL;
+	print 'Take a database backup and stop ALL processing and database writers first.' . PHP_EOL . PHP_EOL;
 	print 'The current database size is reported before changes. Have at least that' . PHP_EOL;
 	print 'much ADDITIONAL free disk space on the database server, plus temporary' . PHP_EOL;
-	print 'file and binary-log headroom. Large transfers may take several hours.' . PHP_EOL;
+	print 'file and binary-log headroom. Large transfers may take several hours.' . PHP_EOL . PHP_EOL;
+	print 'On failure keep writers stopped and retry with --preserve-data and the' . PHP_EOL;
+	print 'same --convert-ms option, if used; originals remain in *_rebuild tables.' . PHP_EOL . PHP_EOL;
 }
