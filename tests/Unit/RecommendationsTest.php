@@ -426,6 +426,21 @@ it('exports an empty compressed document that imports successfully', function ()
 	expect($parsed['invalid'])->toBe(0)->and($parsed['records'])->toBe([]);
 });
 
+it('reports unavailable or failing zlib operations without returning a successful document', function ($mode, $disabled, $expected) {
+	$process = new \Symfony\Component\Process\Process([
+		PHP_BINARY, '-d', 'disable_functions=' . $disabled,
+		dirname(__DIR__) . '/Fixtures/recommendations_zlib.php', $mode
+	]);
+	$process->mustRun();
+
+	expect(json_decode($process->getOutput(), true, 512, JSON_THROW_ON_ERROR))->toBe($expected);
+})->with([
+	'export initialization' => ['export-init', 'deflate_init', 'Unable to initialize recommendation export compression'],
+	'export compression' => ['export-write', 'deflate_add', 'Unable to compress recommendation export'],
+	'import initialization' => ['import-init', 'inflate_init', false],
+	'zlib unavailable' => ['import-unavailable', 'inflate_init', false]
+]);
+
 it('offers both plain and compressed JSON in the import file picker', function () {
 	syslog_load_plugin_source('includes/functions.php');
 	$form = syslog_test_extract_function('syslog_recommendations.php', 'recommendation_import_form');

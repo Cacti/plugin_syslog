@@ -2,7 +2,7 @@
 
 --- 5.0 ---
 
-* bug: Exercise the grouped-message detail query directly in regression tests without dynamic code evaluation or interpolated fixture table names
+* bug: Exercise the grouped-message detail query directly in regression tests without dynamic code evaluation or interpolated fixture table names, and cover unavailable or failing gzip operations
 * bug: Cache populated Syslog realm ID lookups per display name for the current request while continuing to check the current user's permissions on each call
 * bug: Align the saved-search Default label beneath Name and use Cacti's toggle switch, restore full-message hover tooltips alongside the details flyout, and retain the active search and date range when fetching grouped message details
 * bug: Re-importing a full Recommendations export rejected the 860 bundled records whose identifiers contain characters such as `|`, `#` or brackets (an over-strict identifier check). Imports now accept any identifier without spaces, write each rejected record to the Cacti log with its position, identifier and reason plus a one-line summary, and warn about identifiers that can never match a message
