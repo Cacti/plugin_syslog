@@ -18,7 +18,7 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/threshold_me
   assert.equal(await rows.nth(0).locator('td').count(), 8);
   assert.equal(await rows.nth(0).locator('td').nth(3).locator('.syslogRecommendationIndicator').count(), 1);
   assert.equal(await rows.nth(1).locator('td').nth(3).textContent(), '');
-  assert.equal(await rows.nth(0).locator('td').nth(3).evaluate(cell => cell.style.width), '15px', 'Individual recommendation cells declare their fixed width');
+  assert.equal(await rows.nth(0).locator('td').nth(3).evaluate(cell => cell.style.width), '20px', 'Individual recommendation cells declare their fixed width');
   const grouped = page.locator('#grouped tr');
   assert.equal(await grouped.count(), 3);
   assert.equal(await grouped.nth(0).locator('td').nth(7).textContent(), 'Yes');
@@ -27,7 +27,7 @@ const html = execFileSync('php', [path.join(__dirname, '../Fixtures/threshold_me
   assert.equal(await grouped.nth(0).locator('td').count(), 9);
   assert.equal(await grouped.nth(1).locator('td').count(), 9);
   assert.equal(await grouped.locator('td:nth-child(4) .syslogRecommendationIndicator').count(), 3, 'Grouped summaries and their identical messages share the indicator');
-  assert.deepEqual(await grouped.locator('td.syslogRecommendation').evaluateAll(cells => cells.map(cell => cell.style.width)), ['15px', '15px', '15px'], 'Grouped summaries and details use the same fixed recommendation width');
+  assert.deepEqual(await grouped.locator('td.syslogRecommendation').evaluateAll(cells => cells.map(cell => cell.style.width)), ['20px', '20px', '20px'], 'Grouped summaries and details use the same fixed recommendation width');
   console.log('Threshold message column passed: Yes/No, grouped summary, and individual details');
  } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exit(1); });

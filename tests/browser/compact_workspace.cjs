@@ -43,7 +43,8 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  const indicatorColumns = page.locator('th:has(.syslogRecommendationHeading), td.syslogRecommendation');
  async function checkIndicatorWidths() {
   const widths = await indicatorColumns.evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect().width));
-  assert(widths.length > 1 && widths.every(width => width === 15), 'The lightbulb header and cells stay exactly 15px wide');
+  assert(widths.length > 1 && widths.every(width => width === 20), 'The lightbulb header and cells stay exactly 20px wide');
+  assert.equal(await page.locator('th:has(.syslogRecommendationHeading)').evaluate(cell => getComputedStyle(cell).textAlign), 'center', 'The lightbulb header is centered');
  }
  await checkIndicatorWidths();
  assert.equal(await messageButton.textContent(), longMessage, 'Preview retains text beyond 100 characters');

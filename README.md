@@ -588,7 +588,7 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
 ## Recommendations
 
 Recommendations explain what a message means and what to do about it. A lightbulb
-in the fixed 15-pixel column immediately before Message marks matching messages
+in the fixed 20-pixel column immediately before Message marks matching messages
 on the System Logs and Alert Logs tabs, including grouped messages. Availability
 is checked in batches when the page is rendered, not through hover callbacks.
 Message rows and lightbulbs have no hover tooltips or hover-triggered requests.
