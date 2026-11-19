@@ -1198,7 +1198,7 @@ function savedSearchPrompt(name, accept) {
 		},
 		buttons: [
 			{text: text.cancel, click: function() { $(this).dialog('close'); }},
-			{text: text.save, click: function() {
+			{text: text.save, type: 'submit', click: function() {
 				var value = input.value.trim();
 				if (!value) {
 					input.focus();

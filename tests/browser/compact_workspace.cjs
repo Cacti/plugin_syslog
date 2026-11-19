@@ -92,6 +92,8 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  await page.locator('label[for="syslog_saved_prompt_default"]').click();
  const saveSearchButtons = page.locator('.ui-dialog:has(#syslog_saved_prompt) .ui-dialog-buttonpane button');
  assert.deepEqual(await saveSearchButtons.allTextContents(), ['Cancel', 'Save'], 'Save Search As places Cancel before Save');
+ assert.equal(await saveSearchButtons.filter({hasText: /^Cancel$/}).getAttribute('type'), 'button', 'Cancel remains a non-submit button');
+ assert.equal(await saveSearchButtons.filter({hasText: /^Save$/}).getAttribute('type'), 'submit', 'Save is a submit button');
  await saveSearchButtons.filter({hasText: /^Save$/}).click();
  assert.deepEqual(await page.evaluate(() => savedPromptResult), {name: 'New search', isDefault: true}, 'Saving preserves the toggle value');
  await page.evaluate(() => { document.querySelector('#saved_search option:checked').dataset.default = '1'; savedSearchPrompt('Existing default', () => {}); });
