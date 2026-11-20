@@ -98,8 +98,11 @@ it('takes the processing lock on a new connection to the Syslog server', functio
 		return $lock_cnn;
 	});
 	test_override('db_fetch_cell_prepared', fn($sql, $params, $col, $log, $cnn) => $sql === 'SELECT GET_LOCK(?, 0)' && $params === [syslog_processing_lock_name()] && $cnn === $lock_cnn ? '1' : '0');
+	test_override('db_fetch_cell', fn($sql, $col, $log, $cnn) => $sql === 'SELECT @@SESSION.wait_timeout' && $cnn === $lock_cnn ? '86400' : '0');
+	$GLOBALS['__test_db_calls'] = [];
 
 	expect(syslog_processing_lock_acquire())->toBeTrue()
+		->and(array_column($GLOBALS['__test_db_calls'], 'sql'))->toContain('SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, 86400)')
 		->and($seen)->toBe([['syslog-db', 'syslog', 'secret', 'syslog', 'mysql', 3307, 2, true, 'key.pem', 'cert.pem', 'ca.pem', '/etc/ssl/certs', false], false, false])
 		->and($GLOBALS['syslog_processing_lock_cnn'])->toBe($lock_cnn)
 		->and($GLOBALS['database_sessions']['syslog-db:3307:syslog'])->toBe($GLOBALS['syslog_cnn'])
@@ -117,12 +120,20 @@ it('reports a lock held elsewhere and a lock connection that cannot be opened', 
 		return new stdClass();
 	});
 	test_override('db_fetch_cell_prepared', fn() => '0');
+	test_override('db_fetch_cell', fn() => '86400');
 
 	// Cacti 1.2 records no CA path, so only its eleven connection arguments are passed.
 	expect(syslog_processing_lock_acquire())->toBeFalse()
 		->and($args)->toHaveCount(11)
 		->and($GLOBALS)->not->toHaveKey('syslog_processing_lock_cnn')
 		->and($GLOBALS['database_sessions'])->toBe([]);
+
+	// A server that keeps a short idle timeout would drop the lock mid-run.
+	test_override('db_fetch_cell', fn() => '600');
+	test_override('db_fetch_cell_prepared', fn() => '1');
+
+	expect(syslog_processing_lock_acquire())->toBeNull()
+		->and($GLOBALS)->not->toHaveKey('syslog_processing_lock_cnn');
 
 	test_override('db_connect_real', fn() => false);
 

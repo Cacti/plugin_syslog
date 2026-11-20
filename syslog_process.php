@@ -239,7 +239,7 @@ if ($processing_lock !== true) {
 	if ($processing_lock === false) {
 		cacti_log('NOTE: Syslog processing skipped while cli/upgrade_partitioning.php rebuilds the message tables.', false, 'SYSLOG');
 	} else {
-		cacti_log('ERROR: Syslog processing skipped; the processing lock connection could not be opened.', false, 'SYSLOG');
+		cacti_log('ERROR: Syslog processing skipped; the processing lock connection could not be opened or kept open.', false, 'SYSLOG');
 	}
 
 	unregister_process('syslog', 'master', $config['poller_id']);

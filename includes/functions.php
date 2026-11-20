@@ -2819,7 +2819,8 @@ function syslog_processing_lock_name(): string {
  * exits.
  *
  * @return bool|null True when held, false when another session holds it, and
- *                   null when the lock connection could not be opened.
+ *                   null when the lock connection could not be opened or its
+ *                   idle timeout could not be raised.
  */
 function syslog_processing_lock_acquire(): ?bool {
 	global $syslog_cnn, $database_sessions, $database_details, $database_persist;
@@ -2873,6 +2874,15 @@ function syslog_processing_lock_acquire(): ?bool {
 	}
 
 	if (!is_object($cnn)) {
+		return null;
+	}
+
+	// The lock connection stays idle while processing runs; the server would
+	// close it, and release the lock, once wait_timeout elapses. Hold it for
+	// at least a day and stop if the server does not accept that.
+	db_execute('SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, 86400)', false, $cnn);
+
+	if ((int) db_fetch_cell('SELECT @@SESSION.wait_timeout', '', false, $cnn) < 86400) {
 		return null;
 	}
 
