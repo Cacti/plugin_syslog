@@ -41,7 +41,7 @@ $(function() { $('select').each(function() { $(this).select2({width: 'auto', min
 		'/syslog_dashboard.js': path.join(root, 'js/syslog_dashboard.js')
 	};
 
-	await page.route('http://fixture/**', route => {
+	await page.route('https://fixture/**', route => {
 		const url = new URL(route.request().url());
 
 		if (url.pathname === '/') {
@@ -65,7 +65,7 @@ $(function() { $('select').each(function() { $(this).select2({width: 'auto', min
 		return routes[url.pathname] ? route.fulfill({path: routes[url.pathname], contentType: 'text/javascript'}) : route.fulfill({status: 404, body: ''});
 	});
 
-	await page.goto('http://fixture/');
+	await page.goto('https://fixture/');
 	await page.waitForTimeout(200);
 	assert.deepEqual(errors, []);
 	assert.equal(await page.locator('#syslog_status_add').evaluate(select => select.classList.contains('select2-hidden-accessible')), true, 'The fixture uses select2 like Cacti');
@@ -90,7 +90,7 @@ $(function() { $('select').each(function() { $(this).select2({width: 'auto', min
 	await page.waitForFunction(() => document.querySelectorAll('#syslog_status_grid .ccCard .ccCardBody').length === 3
 		&& [...document.querySelectorAll('#syslog_status_grid .ccCardBody')].every(body => body.textContent.startsWith('Rendered')), null, {timeout: 5000});
 	assert.deepEqual(posts.find(post => post.action === 'status_refresh'), {action: 'status_refresh', tab: 'status', refresh: '1', __csrf_magic: 'fixture'});
-	assert.deepEqual(posts.filter(post => post.action === 'status_card').map(post => post.card).sort(), ['latest_run', 'storage', 'workers']);
+	assert.deepEqual(posts.filter(post => post.action === 'status_card').map(post => post.card).sort((a, b) => a.localeCompare(b)), ['latest_run', 'storage', 'workers']);
 
 	// Never stops the timer; the manual refresh still uses callbacks.
 	await page.locator('#syslog_status_refresh + .select2 .select2-selection').click();
