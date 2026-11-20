@@ -1,7 +1,12 @@
 ## ChangeLog
 
+[All published release notes](https://github.com/Cacti/plugin_syslog/blob/develop/docs/RELEASE_HISTORY.md)
+
+[Version 5.0 release notes and upgrade guidance](https://github.com/Cacti/plugin_syslog/blob/develop/docs/RELEASE_NOTES_5.0.md) · [Contributors and change history](https://github.com/Cacti/plugin_syslog/blob/develop/docs/COMMITS_5.0.md)
+
 --- develop ---
 
+* docs: Refresh README release/source compatibility, installation guidance and source-checked behavior; add published release notes and 5.0 upgrade guidance
 * bug: Keep log column resizing within the results area on both log tabs, preserve message ellipsis, and use an accessible Font Awesome export button
 * feature: Standardize both schema and partition CLI help with Cacti-style version banners and options, separate maintenance warnings, and replace the unreleased millisecond converter with --convert-ms
 * feature: Add a data-preserving partition rebuild CLI with optional --convert-ms, verified 10,000-row copies, interrupted-copy recovery, and database-size, extra-disk-space and several-hour maintenance warnings

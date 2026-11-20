@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="410" viewBox="0 0 1120 410" role="img" aria-labelledby="title desc">
+<title id="title">Syslog 5.0: repeatable investigation</title>
+<desc id="desc">Workflow illustration for the unreleased 5.0 changes; this is not a product screenshot.</desc>
+<rect width="1120" height="410" rx="16" fill="#f4f7f5"/>
+<g font-family="Arial, sans-serif" fill="#17332b">
+<text x="32" y="42" font-size="26" font-weight="700">Syslog 5.0: repeatable investigation</text>
+<text x="32" y="72" font-size="16">Workflow illustration for the unreleased 5.0 changes; this is not a product screenshot.</text>
+<text x="32" y="110" font-size="16" font-weight="700">Investigate archived messages</text>
+<rect x="32" y="126" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="48" y="159" font-size="18" font-weight="700">1. Filter messages</text>
+<text x="48" y="187" font-size="14">Find a useful investigation</text>
+<path d="M282 168 h12 m-5 -5 l5 5 -5 5" fill="none" stroke="#376951" stroke-width="2"/>
+<rect x="302" y="126" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="318" y="159" font-size="18" font-weight="700">2. Save the search</text>
+<text x="318" y="187" font-size="14">Reuse its conditions</text>
+<path d="M552 168 h12 m-5 -5 l5 5 -5 5" fill="none" stroke="#376951" stroke-width="2"/>
+<rect x="572" y="126" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="588" y="159" font-size="18" font-weight="700">3. Build a dashboard</text>
+<text x="588" y="187" font-size="14">Chart the saved search</text>
+<path d="M822 168 h12 m-5 -5 l5 5 -5 5" fill="none" stroke="#376951" stroke-width="2"/>
+<rect x="842" y="126" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="858" y="159" font-size="18" font-weight="700">4. Share with the team</text>
+<text x="858" y="187" font-size="14">Review sharing permissions</text>
+<text x="32" y="255" font-size="16" font-weight="700">Validate a rule before enabling it</text>
+<rect x="32" y="271" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="48" y="304" font-size="18" font-weight="700">1. Incoming queue</text>
+<text x="48" y="332" font-size="14">Preview uses queued messages</text>
+<path d="M282 313 h12 m-5 -5 l5 5 -5 5" fill="none" stroke="#376951" stroke-width="2"/>
+<rect x="302" y="271" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="318" y="304" font-size="18" font-weight="700">2. Test the rule</text>
+<text x="318" y="332" font-size="14">Read-only matching sample</text>
+<path d="M552 313 h12 m-5 -5 l5 5 -5 5" fill="none" stroke="#376951" stroke-width="2"/>
+<rect x="572" y="271" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="588" y="304" font-size="18" font-weight="700">3. Review the matches</text>
+<text x="588" y="332" font-size="14">Adjust the conditions</text>
+<path d="M822 313 h12 m-5 -5 l5 5 -5 5" fill="none" stroke="#376951" stroke-width="2"/>
+<rect x="842" y="271" width="246" height="83" rx="9" fill="white" stroke="#51816b"/>
+<text x="858" y="304" font-size="18" font-weight="700">4. Save and enable</text>
+<text x="858" y="332" font-size="14">Rule actions run normally</text>
+</g>
+</svg>
