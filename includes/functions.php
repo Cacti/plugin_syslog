@@ -2797,6 +2797,20 @@ function syslog_partition_ahead_days() {
 }
 
 /**
+ * Name of the database lock shared by syslog_process.php and
+ * cli/upgrade_partitioning.php, so a rebuild never runs beside processing.
+ * GET_LOCK waits for nobody and terminates nothing; it is released when its
+ * connection closes, even after a crash.
+ *
+ * @return string A lock name within MySQL's 64-character limit.
+ */
+function syslog_processing_lock_name(): string {
+	global $syslogdb_default;
+
+	return substr(hash('sha256', $syslogdb_default . '.syslog_processing'), 0, 60);
+}
+
+/**
  * Supported partition sizes, in seconds.
  *
  * @return array<string, int> Partition size keyed by level.
@@ -2987,6 +3001,31 @@ function syslog_partition_levels_error(string $requested, $retention_days, $ahea
 	}
 
 	return $error;
+}
+
+/**
+ * Check install or upgrade options against the server partition limit.
+ *
+ * @param array<string, mixed> $options  The install options.
+ * @param int|null             $limit    The server partition limit, or null to query it.
+ * @param string[]|null        $layouts  The existing tables' levels, or null to read them.
+ *
+ * @return string The error, or '' when the options fit.
+ */
+function syslog_partition_install_error(array $options, ?int $limit = null, ?array $layouts = null): string {
+	// A truncate drops and recreates both message tables, so no old layout remains.
+	if (($options['upgrade_type'] ?? '') === 'truncate') {
+		$layouts = [];
+	}
+
+	return syslog_partition_levels_error(
+		// Match syslog_setup_table_new(): a submitted level wins over the saved one.
+		isset($options['partitioning']) ? ($options['partitioning'] === 'hour' ? 'hour' : 'day') : syslog_partition_requested_granularity(),
+		$options['days'] ?? read_config_option('syslog_retention'),
+		read_config_option('syslog_partition_ahead_days'),
+		$limit ?? syslog_partition_server_limit(),
+		$layouts ?? syslog_partition_existing_layouts()
+	);
 }
 
 /**

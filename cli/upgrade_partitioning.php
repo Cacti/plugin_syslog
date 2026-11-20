@@ -108,7 +108,7 @@ exit(syslog_upart_run($confirm, $convert_ms, $preserve_data, $partition) ? 0 : 1
  *                               Settings once confirmed; null uses Settings.
  */
 function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true, ?string $partition = null): bool {
-	global $config, $syslogdb_default;
+	global $syslogdb_default;
 
 	$mariadb = syslog_db_is_mariadb();
 
@@ -147,17 +147,19 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 	}
 
 	// Writers would interleave with copied rows and break verification, so
-	// processing must be disabled and its master slot held for the duration.
+	// processing must be disabled, and the processing lock that
+	// syslog_process.php also takes is held for the duration. Unlike Cacti's
+	// process registry, the lock never takes over or terminates a live run.
 	if ((string) read_config_option('syslog_enabled', true) !== '') {
 		fwrite(STDERR, 'ERROR: Syslog processing is enabled. Uncheck Settings > Syslog > Syslog Enabled, stop remote collectors and any other Syslog database writers, then retry. No changes were made.' . PHP_EOL);
 
 		return false;
 	}
 
-	$poller_id = (int) ($config['poller_id'] ?? 1);
+	$lock = syslog_processing_lock_name();
 
-	if (!register_process_start('syslog', 'master', $poller_id, 7 * 86400)) {
-		fwrite(STDERR, 'ERROR: A Syslog processing run is still active; wait for it to finish, then retry. No changes were made.' . PHP_EOL);
+	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock]) !== 1) {
+		fwrite(STDERR, 'ERROR: A Syslog processing run or another rebuild is still active; wait for it to finish, then retry. No changes were made.' . PHP_EOL);
 
 		return false;
 	}
@@ -165,204 +167,193 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 	try {
 		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead, $granularity, $limit, $partition !== null);
 	} finally {
-		unregister_process('syslog', 'master', $poller_id);
+		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
 	}
 }
 
 /**
- * Rebuild while holding the Syslog master process slot.
+ * Rebuild while holding the Syslog processing lock.
  */
 function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead,
 	string $granularity = 'day', int $limit = 8192, bool $save_level = false): bool {
 	global $syslogdb_default;
 
-	$lock = hash('sha256', $syslogdb_default . '.syslog_upgrade_partitioning');
-
-	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock]) !== 1) {
-		fwrite(STDERR, 'ERROR: Cannot acquire the rebuild lock; another rebuild may be running.' . PHP_EOL);
+	if (syslog_db_table_exists('syslog_incoming_rebuild', false)) {
+		fwrite(STDERR, 'ERROR: syslog_incoming_rebuild was left by an earlier development build. Restore it as described in the README, then retry. No changes were made.' . PHP_EOL);
 
 		return false;
 	}
 
-	try {
-		if (syslog_db_table_exists('syslog_incoming_rebuild', false)) {
-			fwrite(STDERR, 'ERROR: syslog_incoming_rebuild was left by an earlier development build. Restore it as described in the README, then retry. No changes were made.' . PHP_EOL);
+	$tables = [];
+
+	foreach (['syslog', 'syslog_removed'] as $table) {
+		$backup_exists = syslog_db_table_exists($table . '_rebuild', false);
+
+		if ($backup_exists && !$preserve_data) {
+			fwrite(STDERR, "ERROR: {$table}_rebuild exists from an unfinished rebuild. Retry with --preserve-data and the original --convert-ms option, if used. No data was discarded." . PHP_EOL);
 
 			return false;
 		}
 
-		$tables = [];
-
-		foreach (['syslog', 'syslog_removed'] as $table) {
-			$backup_exists = syslog_db_table_exists($table . '_rebuild', false);
-
-			if ($backup_exists && !$preserve_data) {
-				fwrite(STDERR, "ERROR: {$table}_rebuild exists from an unfinished rebuild. Retry with --preserve-data and the original --convert-ms option, if used. No data was discarded." . PHP_EOL);
-
-				return false;
-			}
-
-			if ($backup_exists || syslog_db_table_exists($table, false)) {
-				$tables[] = $table;
-			}
+		if ($backup_exists || syslog_db_table_exists($table, false)) {
+			$tables[] = $table;
 		}
+	}
 
-		// The incoming queue and replication outbox keep their sequence identities
-		// (archival and delivery deduplicate on them), so they are widened in place.
-		$widen = [];
+	// The incoming queue and replication outbox keep their sequence identities
+	// (archival and delivery deduplicate on them), so they are widened in place.
+	$widen = [];
 
-		foreach (['syslog_incoming', 'syslog_replication_output'] as $table) {
-			if ($convert_ms && syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
-				$widen[] = $table;
-			}
+	foreach (['syslog_incoming', 'syslog_replication_output'] as $table) {
+		if ($convert_ms && syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+			$widen[] = $table;
 		}
+	}
 
-		if (!$tables && !$widen) {
-			print 'No tables require rebuilding.' . PHP_EOL;
-
-			return true;
-		}
-
-		// Legacy DATETIME history is wall-clock time in an unknown zone; it is
-		// not converted. Only an explicit discard may replace such tables.
-		$checked = $widen;
-
-		foreach ($tables as $table) {
-			if ($preserve_data) {
-				$checked[] = $table;
-				$checked[] = $table . '_rebuild';
-			}
-		}
-
-		$legacy = syslog_db_fetch_assoc_prepared('SELECT TABLE_NAME FROM information_schema.COLUMNS
-			WHERE TABLE_SCHEMA = ? AND COLUMN_NAME = \'logtime\' AND DATA_TYPE = \'datetime\'
-			AND TABLE_NAME IN (' . implode(', ', array_fill(0, count($checked), '?')) . ')',
-			array_merge([$syslogdb_default], $checked));
-
-		if (!is_array($legacy)) {
-			fwrite(STDERR, 'ERROR: Cannot read the logtime column types; no tables were changed.' . PHP_EOL);
-
-			return false;
-		}
-
-		if ($legacy) {
-			fwrite(STDERR, 'ERROR: Legacy DATETIME logtime columns are not supported: ' . implode(', ', array_column($legacy, 'TABLE_NAME'))
-				. '. Rebuild stored and removed history with --discard-data, or convert it manually as described in the README. No changes were made.' . PHP_EOL);
-
-			return false;
-		}
-
-		$bytes = syslog_db_fetch_cell_prepared('SELECT SUM(DATA_LENGTH + INDEX_LENGTH)
-			FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?', [$syslogdb_default]);
-
-		if (!is_numeric($bytes)) {
-			fwrite(STDERR, 'ERROR: Cannot determine the current database size; no tables were changed.' . PHP_EOL);
-
-			return false;
-		}
-
-		$size = number_format((float) $bytes / 1073741824, 2) . ' GiB (' . number_format((float) $bytes, 0) . ' bytes)';
-		print '================================ WARNING ================================' . PHP_EOL;
-		print "Database $syslogdb_default size (estimated data + indexes): $size" . PHP_EOL;
-		print "Have AT LEAST another $size free on the DATABASE SERVER during transfer." . PHP_EOL;
-		print 'Allow additional headroom for temporary files, indexes and binary logs.' . PHP_EOL;
-		print 'Depending on the size of the Syslog tables and storage speed, this can' . PHP_EOL;
-		print 'take SEVERAL HOURS. Database metadata is an estimate, not a disk-space check.' . PHP_EOL;
-		print 'Rebuilding ' . ($granularity === 'hour' ? 'hourly' : 'daily') . " partitions: engine=$engine, retention=$days days, ahead=$ahead days." . PHP_EOL;
-		print 'Tables: ' . implode(', ', $tables) . ($widen ? '; widened in place: ' . implode(', ', $widen) : '') . PHP_EOL;
-		print $preserve_data
-			? 'Messages are preserved in verified 50,000-row copies and receive new sequence numbers; originals are dropped only after verification.' . PHP_EOL
-			: 'DESTRUCTIVE: stored messages in the listed rebuild tables will be DELETED.' . PHP_EOL;
-		print $convert_ms ? 'Converting the complete message pipeline to TIMESTAMP(3).' . PHP_EOL
-			: 'Existing timestamp precision is preserved.' . PHP_EOL;
-		print 'Take a database backup. Syslog processing is disabled and its process slot' . PHP_EOL;
-		print 'is held, but this utility does NOT pause remote collectors, replication or' . PHP_EOL;
-		print 'external database writers; stop them and buffer new logs upstream.' . PHP_EOL;
-		print 'Keep them stopped until completion or recovery.' . PHP_EOL;
-		print 'Live log tables are temporarily absent or incomplete during rebuilding.' . PHP_EOL;
-		print '========================================================================' . PHP_EOL;
-
-		if (!$confirm) {
-			print 'Type "yes" to proceed, anything else to abort: ';
-
-			if (strtolower(trim((string) fgets(STDIN))) !== 'yes') {
-				print 'Aborted; no tables were changed.' . PHP_EOL;
-
-				return false;
-			}
-		}
-
-		// A retry must rebuild to the same level, so --partition is saved first.
-		if ($save_level) {
-			set_config_option('syslog_partition_granularity', $granularity);
-		}
-
-		$zone = syslog_db_fetch_cell('SELECT @@SESSION.time_zone');
-		$mode = syslog_db_fetch_cell('SELECT @@SESSION.sql_mode');
-		$lock_wait = syslog_db_fetch_cell('SELECT @@SESSION.lock_wait_timeout');
-
-		if (!is_string($zone) || !is_string($mode) || !ctype_digit((string) $lock_wait)) {
-			fwrite(STDERR, 'ERROR: Cannot read the database session settings; no tables were changed.' . PHP_EOL);
-
-			return false;
-		}
-
-		$lock_wait = (int) $lock_wait;
-		$copy_mode = implode(',', array_diff(explode(',', $mode), ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE', '']));
-
-		try {
-			if (!syslog_db_execute("SET SESSION time_zone = '+00:00'")
-				|| !syslog_db_execute_prepared('SET SESSION sql_mode = ?', [$copy_mode])
-				|| !syslog_db_execute('SET SESSION lock_wait_timeout = 30')) {
-				fwrite(STDERR, 'ERROR: Cannot configure the copy session; no tables were changed.' . PHP_EOL);
-
-				return false;
-			}
-
-			foreach ($tables as $table) {
-				if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead, $granularity, $limit)) {
-					return false;
-				}
-			}
-
-			$column = syslog_logtime_sql_type('ms');
-
-			foreach ($widen as $table) {
-				if (!syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN logtime $column")) {
-					fwrite(STDERR, "ERROR: Cannot widen $table; the precision setting was not changed." . PHP_EOL);
-
-					return false;
-				}
-			}
-
-			if ($convert_ms) {
-				foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
-					if (syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
-						fwrite(STDERR, "ERROR: $table did not convert; the precision setting was not changed." . PHP_EOL);
-
-						return false;
-					}
-				}
-
-				set_config_option('syslog_install_logtime_precision', 'ms');
-			}
-		} finally {
-			$restored_zone = syslog_db_execute_prepared('SET SESSION time_zone = ?', [$zone]);
-			$restored_mode = syslog_db_execute_prepared('SET SESSION sql_mode = ?', [$mode]);
-			$restored_wait = syslog_db_execute("SET SESSION lock_wait_timeout = $lock_wait");
-
-			if (!$restored_zone || !$restored_mode || !$restored_wait) {
-				cacti_log('SYSLOG ERROR: Could not restore the rebuild session settings', false, 'SYSLOG');
-			}
-		}
-
-		cacti_log('SYSLOG: Completed cli/upgrade_partitioning.php' . ($convert_ms ? ' with --convert-ms' : ''), false, 'SYSLOG');
-		print 'Rebuild complete. Re-enable Syslog processing.' . ($convert_ms ? ' Syslog now stores millisecond timestamps; configure forwarders accordingly.' : '') . PHP_EOL;
+	if (!$tables && !$widen) {
+		print 'No tables require rebuilding.' . PHP_EOL;
 
 		return true;
-	} finally {
-		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
 	}
+
+	// Legacy DATETIME history is wall-clock time in an unknown zone; it is
+	// not converted. Only an explicit discard may replace such tables.
+	$checked = $widen;
+
+	foreach ($tables as $table) {
+		if ($preserve_data) {
+			$checked[] = $table;
+			$checked[] = $table . '_rebuild';
+		}
+	}
+
+	// A discard with nothing to widen checks no tables; IN () is invalid SQL.
+	$legacy = !$checked ? [] : syslog_db_fetch_assoc_prepared('SELECT TABLE_NAME FROM information_schema.COLUMNS
+		WHERE TABLE_SCHEMA = ? AND COLUMN_NAME = \'logtime\' AND DATA_TYPE = \'datetime\'
+		AND TABLE_NAME IN (' . implode(', ', array_fill(0, count($checked), '?')) . ')',
+		array_merge([$syslogdb_default], $checked));
+
+	if (!is_array($legacy)) {
+		fwrite(STDERR, 'ERROR: Cannot read the logtime column types; no tables were changed.' . PHP_EOL);
+
+		return false;
+	}
+
+	if ($legacy) {
+		fwrite(STDERR, 'ERROR: Legacy DATETIME logtime columns are not supported: ' . implode(', ', array_column($legacy, 'TABLE_NAME'))
+			. '. Rebuild stored and removed history with --discard-data, or convert it manually as described in the README. No changes were made.' . PHP_EOL);
+
+		return false;
+	}
+
+	$bytes = syslog_db_fetch_cell_prepared('SELECT SUM(DATA_LENGTH + INDEX_LENGTH)
+		FROM information_schema.TABLES WHERE TABLE_SCHEMA = ?', [$syslogdb_default]);
+
+	if (!is_numeric($bytes)) {
+		fwrite(STDERR, 'ERROR: Cannot determine the current database size; no tables were changed.' . PHP_EOL);
+
+		return false;
+	}
+
+	$size = number_format((float) $bytes / 1073741824, 2) . ' GiB (' . number_format((float) $bytes, 0) . ' bytes)';
+	print '================================ WARNING ================================' . PHP_EOL;
+	print "Database $syslogdb_default size (estimated data + indexes): $size" . PHP_EOL;
+	print "Have AT LEAST another $size free on the DATABASE SERVER during transfer." . PHP_EOL;
+	print 'Allow additional headroom for temporary files, indexes and binary logs.' . PHP_EOL;
+	print 'Depending on the size of the Syslog tables and storage speed, this can' . PHP_EOL;
+	print 'take SEVERAL HOURS. Database metadata is an estimate, not a disk-space check.' . PHP_EOL;
+	print 'Rebuilding ' . ($granularity === 'hour' ? 'hourly' : 'daily') . " partitions: engine=$engine, retention=$days days, ahead=$ahead days." . PHP_EOL;
+	print 'Tables: ' . implode(', ', $tables) . ($widen ? '; widened in place: ' . implode(', ', $widen) : '') . PHP_EOL;
+	print $preserve_data
+		? 'Messages are preserved in verified 50,000-row copies and receive new sequence numbers; originals are dropped only after verification.' . PHP_EOL
+		: 'DESTRUCTIVE: stored messages in the listed rebuild tables will be DELETED.' . PHP_EOL;
+	print $convert_ms ? 'Converting the complete message pipeline to TIMESTAMP(3).' . PHP_EOL
+		: 'Existing timestamp precision is preserved.' . PHP_EOL;
+	print 'Take a database backup. Syslog processing is disabled and its lock' . PHP_EOL;
+	print 'is held, but this utility does NOT pause remote collectors, replication or' . PHP_EOL;
+	print 'external database writers; stop them and buffer new logs upstream.' . PHP_EOL;
+	print 'Keep them stopped until completion or recovery.' . PHP_EOL;
+	print 'Live log tables are temporarily absent or incomplete during rebuilding.' . PHP_EOL;
+	print '========================================================================' . PHP_EOL;
+
+	if (!$confirm) {
+		print 'Type "yes" to proceed, anything else to abort: ';
+
+		if (strtolower(trim((string) fgets(STDIN))) !== 'yes') {
+			print 'Aborted; no tables were changed.' . PHP_EOL;
+
+			return false;
+		}
+	}
+
+	// A retry must rebuild to the same level, so --partition is saved first.
+	if ($save_level) {
+		set_config_option('syslog_partition_granularity', $granularity);
+	}
+
+	$zone = syslog_db_fetch_cell('SELECT @@SESSION.time_zone');
+	$mode = syslog_db_fetch_cell('SELECT @@SESSION.sql_mode');
+	$lock_wait = syslog_db_fetch_cell('SELECT @@SESSION.lock_wait_timeout');
+
+	if (!is_string($zone) || !is_string($mode) || !ctype_digit((string) $lock_wait)) {
+		fwrite(STDERR, 'ERROR: Cannot read the database session settings; no tables were changed.' . PHP_EOL);
+
+		return false;
+	}
+
+	$lock_wait = (int) $lock_wait;
+	$copy_mode = implode(',', array_diff(explode(',', $mode), ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE', '']));
+
+	try {
+		if (!syslog_db_execute("SET SESSION time_zone = '+00:00'")
+			|| !syslog_db_execute_prepared('SET SESSION sql_mode = ?', [$copy_mode])
+			|| !syslog_db_execute('SET SESSION lock_wait_timeout = 30')) {
+			fwrite(STDERR, 'ERROR: Cannot configure the copy session; no tables were changed.' . PHP_EOL);
+
+			return false;
+		}
+
+		foreach ($tables as $table) {
+			if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead, $granularity, $limit)) {
+				return false;
+			}
+		}
+
+		$column = syslog_logtime_sql_type('ms');
+
+		foreach ($widen as $table) {
+			if (!syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN logtime $column")) {
+				fwrite(STDERR, "ERROR: Cannot widen $table; the precision setting was not changed." . PHP_EOL);
+
+				return false;
+			}
+		}
+
+		if ($convert_ms) {
+			foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
+				if (syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+					fwrite(STDERR, "ERROR: $table did not convert; the precision setting was not changed." . PHP_EOL);
+
+					return false;
+				}
+			}
+
+			set_config_option('syslog_install_logtime_precision', 'ms');
+		}
+	} finally {
+		$restored_zone = syslog_db_execute_prepared('SET SESSION time_zone = ?', [$zone]);
+		$restored_mode = syslog_db_execute_prepared('SET SESSION sql_mode = ?', [$mode]);
+		$restored_wait = syslog_db_execute("SET SESSION lock_wait_timeout = $lock_wait");
+
+		if (!$restored_zone || !$restored_mode || !$restored_wait) {
+			cacti_log('SYSLOG ERROR: Could not restore the rebuild session settings', false, 'SYSLOG');
+		}
+	}
+
+	cacti_log('SYSLOG: Completed cli/upgrade_partitioning.php' . ($convert_ms ? ' with --convert-ms' : ''), false, 'SYSLOG');
+	print 'Rebuild complete. Re-enable Syslog processing.' . ($convert_ms ? ' Syslog now stores millisecond timestamps; configure forwarders accordingly.' : '') . PHP_EOL;
+
+	return true;
 }
 
 /**

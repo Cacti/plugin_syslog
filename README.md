@@ -279,8 +279,10 @@ changes, not routine rotation.
 **Maintenance requirements for both commands:**
 
 * Back up the database and uncheck **Settings > Syslog > Syslog Enabled**. The
-  utility refuses to start while processing is enabled, and holds the Syslog
-  master process slot so no processing run can start during the rebuild. It
+  utility refuses to start while processing is enabled or a processing run is
+  active, and holds a database lock that `syslog_process.php` also takes, so no
+  processing run can start during the rebuild. Neither side ever terminates the
+  other. It
   does **not** stop remote collectors, replication or external database
   writers: stop them and buffer new logs upstream. Keep everything stopped
   until the rebuild or recovery finishes. Live log tables are temporarily absent
@@ -306,11 +308,25 @@ changes, not routine rotation.
   after the last recorded batch and resumes from there. Do not change settings
   or manually delete `_rebuild` or `syslog_rebuild_progress` tables during
   recovery.
-* To abandon a rebuild instead, with writers still stopped:
-  `DROP TABLE syslog; RENAME TABLE syslog_rebuild TO syslog;` (likewise for
-  `syslog_removed`), then `DROP TABLE syslog_rebuild_progress;`. A
-  `syslog_incoming_rebuild` table left by an earlier development build is
-  restored the same way.
+* To abandon a rebuild instead, keep writers stopped and restore **only** the
+  tables whose original still exists. A table that already finished has no
+  `<table>_rebuild` and must be left alone: its original has been dropped, and
+  the live table is the only copy. First list what remains:
+
+  ```sql
+  SHOW TABLES LIKE '%\_rebuild';
+  ```
+
+  For each `<table>_rebuild` listed (`syslog`, `syslog_removed`, or a
+  `syslog_incoming_rebuild` left by an earlier development build), and only
+  then, replace the partial copy with the original:
+
+  ```sql
+  DROP TABLE IF EXISTS syslog;              -- the partial replacement
+  RENAME TABLE syslog_rebuild TO syslog;    -- the untouched original
+  ```
+
+  When no `_rebuild` table remains, `DROP TABLE syslog_rebuild_progress;`.
 
 ### Delivering sub-second timestamps from your log forwarders
 

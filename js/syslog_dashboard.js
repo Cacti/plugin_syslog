@@ -299,6 +299,12 @@ function initSyslogStatus() {
 		var refreshNow = document.getElementById('syslog_status_refresh_now');
 
 		function schedule() {
+			// A late callback from a grid that ajax navigation replaced must not
+			// touch the shared timer the current Status grid now owns.
+			if (!document.body.contains(grid)) {
+				return;
+			}
+
 			clearTimeout(window.syslogStatusRefreshTimer);
 
 			var seconds = interval ? Number.parseInt(interval.value, 10) : 0;

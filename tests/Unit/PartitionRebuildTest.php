@@ -11,8 +11,6 @@ function partition_rebuild_runner(): string {
 		file_put_contents($path, '<?php namespace SyslogRebuildFixture;
 			function syslog_db_is_mariadb(): bool { return \test_call_override("rebuild_mariadb", [], true); }
 			function syslog_upart_rebuild(...$args): bool { return \test_call_override("syslog_upart_rebuild", $args, false); }
-			function register_process_start(...$args): bool { return \test_call_override("register_process_start", $args, true); }
-			function unregister_process(...$args): bool { return \test_call_override("unregister_process", $args, true); }
 			' . $run[0] . "\n" . $locked[0]);
 
 		try {
@@ -41,8 +39,7 @@ function partition_rebuild_setup(): stdClass {
 		'statements' => [],
 		'precision' => 'sec',
 		'enabled' => '',
-		'slot' => true,
-		'slots' => [],
+		'assoc' => [],
 		'legacy' => [],
 		'retention' => '30',
 		'granularity' => ''
@@ -53,17 +50,11 @@ function partition_rebuild_setup(): stdClass {
 		'syslog_partition_ahead_days' => '3', 'syslog_enabled' => $state->enabled,
 		'syslog_partition_granularity' => $state->granularity
 	][$key] ?? '');
-	test_override('register_process_start', static function (...$args) use ($state) {
-		$state->slots[] = array_merge(['start'], $args);
+	test_override('syslog_db_fetch_assoc_prepared', static function ($sql) use ($state) {
+		$state->assoc[] = $sql;
 
-		return $state->slot;
+		return str_contains($sql, "DATA_TYPE = 'datetime'") ? $state->legacy : [];
 	});
-	test_override('unregister_process', static function (...$args) use ($state) {
-		$state->slots[] = array_merge(['end'], $args);
-
-		return true;
-	});
-	test_override('syslog_db_fetch_assoc_prepared', static fn($sql) => str_contains($sql, "DATA_TYPE = 'datetime'") ? $state->legacy : []);
 	test_override('syslog_db_execute', static function ($sql) use ($state) {
 		$state->statements[] = $sql;
 
@@ -124,7 +115,7 @@ it('reports database size, equal extra space and several-hour duration even with
 		->toContain('receive new sequence numbers')
 		->not->toContain('Type "yes"')
 		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192]])
-		->and($state->slots)->toBe([['start', 'syslog', 'master', 1, 604800], ['end', 'syslog', 'master', 1]]);
+		->and($state->queries[0])->toBe(['SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]]);
 	expect($state->settings)->toBe([]);
 	expect(array_column($state->queries, 0))->toContain('SELECT RELEASE_LOCK(?)');
 });
@@ -158,7 +149,7 @@ it('refuses hourly partitioning beyond the server partition limit or with indefi
 		$run = partition_rebuild_runner();
 
 		expect($run(true, false, true, 'hour'))->toBeFalse()
-			->and($state->slots)->toBe([])
+			->and($state->queries)->toBe([])
 			->and($state->settings)->toBe([])
 			->and($state->rebuilds)->toBe([]);
 	}
@@ -170,23 +161,21 @@ it('refuses to rebuild while Syslog processing is enabled', function () {
 	$run = partition_rebuild_runner();
 
 	expect($run(true, false))->toBeFalse()
-		->and($state->slots)->toBe([])
 		->and($state->queries)->toBe([])
 		->and($state->rebuilds)->toBe([]);
 });
 
-it('refuses to rebuild while a processing run holds the master slot', function () {
+it('refuses to rebuild while processing or another rebuild holds the processing lock', function () {
 	$state = partition_rebuild_setup();
-	$state->slot = false;
+	$state->lock = 0;
 	$run = partition_rebuild_runner();
 
 	expect($run(true, false))->toBeFalse()
-		->and($state->slots)->toBe([['start', 'syslog', 'master', 1, 604800]])
-		->and($state->queries)->toBe([])
+		->and($state->queries)->toBe([['SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]]])
 		->and($state->rebuilds)->toBe([]);
 });
 
-it('refuses legacy DATETIME history before any change and releases the slot', function () {
+it('refuses legacy DATETIME history before any change and releases the lock', function () {
 	$state = partition_rebuild_setup();
 	$state->legacy = [['TABLE_NAME' => 'syslog']];
 	$run = partition_rebuild_runner();
@@ -194,7 +183,19 @@ it('refuses legacy DATETIME history before any change and releases the slot', fu
 	expect($run(true, false))->toBeFalse()
 		->and($state->rebuilds)->toBe([])
 		->and($state->statements)->toBe([])
-		->and(end($state->slots))->toBe(['end', 'syslog', 'master', 1]);
+		->and(end($state->queries))->toBe(['SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()]]);
+});
+
+it('discards without a column-type query when no table needs checking', function () {
+	$state = partition_rebuild_setup();
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, false, false);
+	ob_end_clean();
+
+	expect($ok)->toBeTrue()
+		->and(array_filter($state->assoc, static fn($sql) => str_contains($sql, 'information_schema.COLUMNS')))->toBe([])
+		->and($state->rebuilds)->toBe([['syslog', false, false, 'InnoDB', 30, 3, 'day', 8192]]);
 });
 
 it('widens the incoming queue in place so its sequence identities are kept', function () {

@@ -26,9 +26,6 @@ $fail_prefix = '';
 $corrupt_after_copy = '';
 $batch_sizes = [];
 $checks = 0;
-$config = ['poller_id' => 1];
-$slot_free = true;
-$slot_calls = [];
 
 function rebuild_check(bool $ok, string $message): void {
 	$GLOBALS['checks']++;
@@ -41,16 +38,6 @@ function rebuild_check(bool $ok, string $message): void {
 function syslog_connect() { return true; }
 function __($text, ...$args) { array_pop($args); return $args ? vsprintf($text, $args) : $text; }
 function read_config_option($name, $force = false) { return $GLOBALS['options'][$name] ?? ''; }
-function register_process_start($type, $name, $id = 0, $timeout = 300) {
-	$GLOBALS['slot_calls'][] = ['start', $type, $name, $id];
-
-	return $GLOBALS['slot_free'];
-}
-function unregister_process($type, $name, $id = 0, $pid = -1) {
-	$GLOBALS['slot_calls'][] = ['end', $type, $name, $id];
-
-	return true;
-}
 function set_config_option($name, $value) { $GLOBALS['options'][$name] = $value; }
 function cacti_log(...$args) {}
 function syslog_db_execute_prepared($sql, $params = [], ...$args) {
@@ -111,7 +98,8 @@ $helpers = file_get_contents(dirname(__DIR__, 2) . '/includes/functions.php');
 $helper_code = '';
 
 foreach (['syslog_partition_periods', 'syslog_partition_requested_granularity', 'syslog_partition_ahead_days_for',
-	'syslog_partition_server_limit', 'syslog_partition_projected_count', 'syslog_partition_settings_error'] as $helper) {
+	'syslog_partition_server_limit', 'syslog_partition_projected_count', 'syslog_partition_settings_error',
+	'syslog_processing_lock_name'] as $helper) {
 	if (preg_match('/^function ' . $helper . '\(.*?^\}/ms', $helpers, $match) !== 1) {
 		throw new RuntimeException("Cannot find $helper");
 	}
@@ -133,6 +121,10 @@ try {
 	require $fixture;
 } finally {
 	unlink($fixture);
+}
+
+function is_free_processing_lock(): bool {
+	return (int) syslog_db_fetch_cell_prepared('SELECT IS_FREE_LOCK(?)', [syslog_processing_lock_name()]) === 1;
 }
 
 function rebuild_table(string $table, bool $convert = true, string $engine = 'InnoDB'): bool {
@@ -223,13 +215,12 @@ try {
 	rebuild_check(!rebuild_table('syslog_removed', false, 'Aria'), 'Preserving a legacy DATETIME table is refused');
 	rebuild_check(!syslog_db_table_exists('syslog_removed_rebuild'), 'The DATETIME refusal happens before any change');
 	$options['syslog_enabled'] = '';
-	$slot_calls = [];
 	ob_start();
 	rebuild_check(!syslog_upart_run(true, false), 'The command refuses legacy DATETIME history before any change');
 	ob_end_clean();
 	rebuild_check(syslog_db_fetch_cell("SELECT DATA_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE()
 		AND TABLE_NAME='syslog_removed' AND COLUMN_NAME='logtime'") === 'datetime' && !syslog_db_table_exists('syslog_removed_rebuild'), 'A refused command leaves DATETIME tables untouched');
-	rebuild_check($slot_calls === [['start', 'syslog', 'master', 1], ['end', 'syslog', 'master', 1]], 'The processing slot is released after a refusal');
+	rebuild_check(is_free_processing_lock(), 'The processing lock is released after a refusal');
 	ob_start();
 	rebuild_check(syslog_upart_rebuild('syslog_removed', false, false, 'InnoDB', 2, 2), 'Explicit discard mode replaces a legacy DATETIME table');
 	ob_end_clean();
@@ -237,18 +228,19 @@ try {
 		WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='syslog_removed' AND COLUMN_NAME='logtime'") === 'timestamp', 'A discarded DATETIME table is recreated as TIMESTAMP');
 
 	set_config_option('syslog_enabled', 'on');
-	$slot_calls = [];
 	ob_start();
 	rebuild_check(!syslog_upart_run(true, false), 'The command refuses to run while Syslog processing is enabled');
 	ob_end_clean();
-	rebuild_check($slot_calls === [], 'Enabled processing is refused before taking the process slot');
+	rebuild_check(is_free_processing_lock(), 'Enabled processing is refused before taking the processing lock');
 	set_config_option('syslog_enabled', '');
-	$slot_free = false;
+	// A second connection stands in for a running syslog_process.php.
+	$holder = new PDO($dsn, 'root', getenv('SYSLOG_TEST_MYSQL_PASSWORD') ?: '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+	$holder->prepare('SELECT GET_LOCK(?, 0)')->execute([syslog_processing_lock_name()]);
 	ob_start();
-	rebuild_check(!syslog_upart_run(true, false), 'The command refuses to run while a processing run holds the master slot');
+	rebuild_check(!syslog_upart_run(true, false), 'The command refuses to run while a processing run holds the processing lock');
 	ob_end_clean();
 	rebuild_check(!syslog_db_table_exists('syslog_rebuild') && !syslog_db_table_exists('syslog_removed_rebuild'), 'Refusals leave the message tables untouched');
-	$slot_free = true;
+	$holder = null;
 
 	$pdo->exec('CREATE TABLE syslog_incoming (seq BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, logtime TIMESTAMP NOT NULL, status INT, message TEXT) ENGINE=InnoDB');
 	$pdo->exec("INSERT INTO syslog_incoming VALUES(30,UTC_DATE(),1,'queued'),(40,UTC_DATE(),0,'new')");
@@ -262,7 +254,6 @@ try {
 	$stored_epochs = syslog_db_fetch_cell("SELECT SUM(UNIX_TIMESTAMP(logtime)) FROM syslog WHERE logtime > '1970-01-01'");
 	$options['syslog_install_logtime_precision'] = 'sec';
 	$fail_prefix = "ALTER TABLE `$syslogdb_default`.`syslog_replication_output`";
-	$slot_calls = [];
 	ob_start();
 	rebuild_check(!syslog_upart_run(true, true), 'Outbox conversion failure must fail the overall operation');
 	$output = ob_get_clean();
@@ -270,8 +261,7 @@ try {
 		&& str_contains($output, 'SEVERAL HOURS'), 'Size, extra-space and duration warnings are mandatory with --confirm');
 	rebuild_check($options['syslog_install_logtime_precision'] === 'sec', 'Partial conversion must not update the precision setting');
 	rebuild_check(syslog_db_fetch_cell('SELECT @@SESSION.time_zone') === '+05:30', 'The original non-UTC session zone is restored after failure');
-	rebuild_check((int) syslog_db_fetch_cell("SELECT IS_FREE_LOCK('" . hash('sha256', $syslogdb_default . '.syslog_upgrade_partitioning') . "')") === 1, 'The named lock is released after failure');
-	rebuild_check(end($slot_calls) === ['end', 'syslog', 'master', 1], 'The processing slot is released after failure');
+	rebuild_check(is_free_processing_lock(), 'The processing lock is released after failure');
 	$fail_prefix = '';
 	ob_start();
 	rebuild_check(syslog_upart_run(true, true), 'The complete pipeline can finish after the outbox failure is fixed');
@@ -314,6 +304,10 @@ try {
 	ob_end_clean();
 	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog') === (int) $total && syslog_upart_layout_ok('syslog', 'InnoDB', 'day'), 'Every row survives the daily rebuild');
 	rebuild_check(syslog_upart_partition_sql(400, 2, null, null, null, 'hour', 8192) === null, 'Hourly plans above the server partition limit are refused');
+	ob_start();
+	rebuild_check(syslog_upart_run(true, false, false), 'The discard command runs when no table needs a column-type check');
+	ob_end_clean();
+	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog') === 0 && is_free_processing_lock(), 'The discard command empties the rebuilt tables and releases the lock');
 
 	print "$checks partition rebuild database checks passed.\n";
 } finally {

@@ -92,6 +92,20 @@ it('refuses to save Syslog settings that exceed the partition limit', function (
 	}
 });
 
+it('checks install options against the submitted level and only the layouts that survive', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	// The saved setting asks for Hourly; the submitted Daily level wins.
+	test_override('read_config_option', fn($name) => ['syslog_partition_granularity' => 'hour', 'syslog_partition_ahead_days' => '3'][$name] ?? '');
+
+	expect(syslog_partition_install_error(['partitioning' => 'day', 'days' => '365'], 8192, ['day']))->toBe('')
+		->and(syslog_partition_install_error(['days' => '365'], 8192, ['day']))->toContain('8,857 partitions')
+		// An upgrade keeps hourly tables, so Indefinite is refused even with Daily submitted.
+		->and(syslog_partition_install_error(['partitioning' => 'day', 'days' => '0', 'upgrade_type' => 'upgrade'], 8192, ['hour']))->toContain('still use Hourly')
+		// A truncate recreates both tables, so their old Hourly layout no longer matters.
+		->and(syslog_partition_install_error(['partitioning' => 'day', 'days' => '0', 'upgrade_type' => 'truncate'], 8192, ['hour']))->toBe('');
+});
+
 it('reads the partitioning level of each existing message table', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
