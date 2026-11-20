@@ -3,6 +3,7 @@
         ".travis.yml",
         "class.phpmailer.php",
         "class.smtp.php",
+        "cli/updatedb_convert_ms.php",
         "compatibility.php",
         "database.php",
         "docs/recommendations.sql.gz",

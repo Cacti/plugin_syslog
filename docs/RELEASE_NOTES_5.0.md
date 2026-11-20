@@ -54,7 +54,7 @@ An empty queue preview does not search previously archived history.
 | Storage | InnoDB, or Aria on MariaDB; Remote Data Collector options require InnoDB. Existing traditional tables remain usable with a migration notice. |
 | Ordinary upgrade | Preserve the database and local config. Existing timestamp precision stays unchanged. |
 | Legacy table conversion | Review the Upgrade Advisor mode. For a legacy non-partitioned table, **Truncate Syslog Table** discards messages; existing partitioned installs retain their data with each advisor choice. |
-| Optional timestamp conversion | MariaDB only. The CLI millisecond conversion deletes stored messages from three log tables; it is not needed for the new interface features. |
+| Optional timestamp conversion | MariaDB only. `cli/upgrade_partitioning.php --convert-ms` preserves stored messages by default; it is not needed for the new interface features. |
 
 ### Upgrade and verify before deployment
 
@@ -80,13 +80,21 @@ Also review [storage support](../README.md#table-architecture-and-storage-engine
 templates now need absolute executable paths; the `/bin/sh` fallback is removed.
 The Statistics tab and its collection are deprecated.
 
-### Optional millisecond conversion: stored messages are deleted
+### Optional millisecond conversion
 
-`cli/updatedb_convert_ms.php` is MariaDB-only and truncates `syslog`,
-`syslog_incoming` and `syslog_removed`. Rules and settings are preserved and the
-remote-delivery outbox is widened in place. Back up first and read the
+`cli/upgrade_partitioning.php --convert-ms` is MariaDB-only. It rebuilds
+`syslog` and `syslog_removed` into replacement tables, copying stored messages
+in verified batches, and widens `syslog_incoming` and the remote-delivery outbox
+in place. Data is preserved by default; `--discard-data` deletes stored messages
+instead. Legacy `DATETIME` `logtime` tables cannot be preserved automatically.
+Rules and settings are preserved. Back up first and read the
 [conversion instructions](../README.md#converting-an-existing-mariadb-install).
 Normal upgrades never run this conversion automatically.
+
+The earlier `cli/updatedb_convert_ms.php` utility has been replaced and is
+removed on upgrade. It truncated the message tables and could fail on legacy
+`TO_DAYS` partitioned tables with "Constant, random or timezone-dependent
+expressions in (sub)partitioning function are not allowed".
 
 If rollback is needed, restore plugin files and the database from the same
 pre-upgrade backup; do not assume a binary-only downgrade reverses migrations.
