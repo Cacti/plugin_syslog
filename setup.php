@@ -131,6 +131,7 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 
 	require_once(__DIR__ . '/includes/installer.php');
 	require_once(__DIR__ . '/includes/schema.php');
+	require_once(__DIR__ . '/includes/functions.php');
 
 	if (isset($options['cancel'])) {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
@@ -154,6 +155,26 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 
 	$requested_engine      = isset($options['engine']) ? $options['engine'] : 'InnoDB';
 	$compatibility_options = $options;
+
+	if (isset($options['partitioning']) || isset($options['days'])) {
+		$partition_error = syslog_partition_settings_error(
+			isset($options['partitioning']) ? (string) $options['partitioning'] : syslog_partition_requested_granularity(),
+			$options['days'] ?? read_config_option('syslog_retention'),
+			read_config_option('syslog_partition_ahead_days'),
+			syslog_partition_server_limit()
+		);
+
+		if ($partition_error !== '') {
+			raise_message('syslog_error', $partition_error, MESSAGE_LEVEL_ERROR);
+			cacti_log('SYSLOG ERROR: Install rejected: ' . $partition_error, false, 'SYSLOG');
+
+			if (isset($options['install'])) {
+				syslog_install_advisor($syslog_exists, $options);
+			}
+
+			return;
+		}
+	}
 
 	if (isset($options['install'])) {
 		foreach ($remote_options as $option) {

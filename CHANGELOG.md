@@ -6,6 +6,9 @@
 
 --- develop ---
 
+* feature: Add an Hourly or Daily (default) Partitioning Level under the renamed Data Retention and Partitioning settings, the install advisor (replacing the unused Partitions per Day option) and silent install options. A changed level takes effect only when cli/upgrade_partitioning.php (or its new --partition=hourly|daily option) rebuilds the tables; until then maintenance follows the existing layout and Settings and Status show the change as pending. Hourly tables keep at least two days of partitions ahead so dMaxValue reorganizations stay instant
+* feature: Refuse to save Syslog settings, install, or rebuild when retention, pre-create window and partitioning level need more partitions than the database server supports (8192, or 1024 before MariaDB 10.0.4 and MySQL 5.7), or when Hourly is combined with Indefinite retention
+* bug: Bound every log query at the current time so empty future partitions are always pruned, whatever the filter's own date range
 * bug: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging (#472)
 * bug: The partition rebuild CLI now refuses to start while Syslog processing is enabled and holds the master process slot; copies stored and removed messages without seq into a replacement whose AUTO_INCREMENT starts above the original high-water mark; verifies each 10,000-row batch by checksum and checkpoints it for resumable retries; widens the incoming queue in place to keep its sequence identities; and refuses legacy DATETIME history before changing anything
 * docs: Refresh README release/source compatibility, installation guidance and source-checked behavior; add published release notes and 5.0 upgrade guidance

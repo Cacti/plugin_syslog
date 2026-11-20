@@ -2452,7 +2452,7 @@ function syslog_partition_blocked_state(): array {
  * TABLE_ROWS is an engine estimate, so callers must not present it as an exact
  * count. This is read-only and safe to call while maintenance is blocked.
  *
- * @return array<string, array{coverage_start:string,coverage_end:string,partitions:int,dmax_rows:int|float|null,dmax_bytes:int|float|null}>
+ * @return array<string, array{coverage_start:string,coverage_end:string,partitions:int,dmax_rows:int|float|null,dmax_bytes:int|float|null,granularity:string}>
  */
 function syslog_partition_observability(): array {
 	global $syslogdb_default;
@@ -2465,7 +2465,8 @@ function syslog_partition_observability(): array {
 			'coverage_end'   => '',
 			'partitions'     => 0,
 			'dmax_rows'      => null,
-			'dmax_bytes'     => null
+			'dmax_bytes'     => null,
+			'granularity'    => 'day'
 		];
 
 		$rows = syslog_db_fetch_assoc_prepared('SELECT partition_name, table_rows, data_length, index_length
@@ -2483,8 +2484,13 @@ function syslog_partition_observability(): array {
 		foreach ($rows as $row) {
 			$name = (string) ($row['partition_name'] ?? $row['PARTITION_NAME'] ?? '');
 
-			if (preg_match('/^d(\d{8})$/', $name, $matches) === 1) {
-				$dates[] = $matches[1];
+			// Daily labels are YYYYMMDD and hourly labels YYYYMMDDHH.
+			if (preg_match('/^(?:d(\d{8})|h(\d{10}))$/', $name, $matches) === 1) {
+				$dates[] = $matches[1] !== '' ? $matches[1] : $matches[2];
+
+				if ($name[0] === 'h') {
+					$observability[$table]['granularity'] = 'hour';
+				}
 			}
 
 			if ($name !== 'dMaxValue') {
@@ -2603,8 +2609,11 @@ function syslog_partition_manage(): int {
 		}
 	}
 
-	// Bounded recovery: heal missing future partitions a few at a time.
-	$recovery  = syslog_partition_recover('syslog', $base_time, $ahead_days);
+	// Bounded recovery: heal missing future partitions a few at a time. Each
+	// table follows its existing layout until cli/upgrade_partitioning.php
+	// applies a changed partitioning level.
+	$granularity = syslog_partition_layout_granularity('syslog');
+	$recovery    = syslog_partition_recover('syslog', $base_time, syslog_partition_ahead_days_for($granularity, $ahead_days), $granularity);
 
 	if ($recovery['stop_reason'] === '') {
 		$recovery_removed = syslog_partition_remove('syslog');
@@ -2612,7 +2621,8 @@ function syslog_partition_manage(): int {
 		$recovery_removed = 0;
 	}
 
-	$recovery2 = syslog_partition_recover('syslog_removed', $base_time, $ahead_days);
+	$granularity = syslog_partition_layout_granularity('syslog_removed');
+	$recovery2   = syslog_partition_recover('syslog_removed', $base_time, syslog_partition_ahead_days_for($granularity, $ahead_days), $granularity);
 
 	if ($recovery2['stop_reason'] === '') {
 		$recovery2_removed = syslog_partition_remove('syslog_removed');
@@ -2637,7 +2647,7 @@ function syslog_partition_manage(): int {
 		'%s: %s; %s; %s',
 		$failed_table,
 		$recovery_failed['stop_reason'],
-		sprintf(__('remaining partition gap: %d day(s)', 'syslog'), $recovery_failed['missing']),
+		sprintf(__('remaining partition gap: %d partition(s)', 'syslog'), $recovery_failed['missing']),
 		$recovery_failed['retention_deferred'] ? __('retention pruning deferred until the future horizon is restored', 'syslog') : __('no retention deferral', 'syslog')
 	);
 
@@ -2664,16 +2674,17 @@ function syslog_partition_manage(): int {
  * replacement window.  The dMaxValue partition stays in place as the
  * write-path safety net the whole time.
  *
- * @param string $table      The table to maintain.
- * @param int    $base_time  Base timestamp for the maintenance window.
- * @param int    $ahead_days Number of future days to maintain.
+ * @param string $table       The table to maintain.
+ * @param int    $base_time   Base timestamp for the maintenance window.
+ * @param int    $ahead_days  Number of future days to maintain.
+ * @param string $granularity The table's partitioning level, 'hour' or 'day'.
  *
  * @return array{created: int, missing: int, stop_reason: string, retention_deferred: bool, dmax_risk: bool}
  *         Recovery telemetry: partitions created this run, the remaining
  *         gap, why the run stopped, whether retention was deferred, and
  *         whether writes landed in dMaxValue.
  */
-function syslog_partition_recover($table, $base_time, $ahead_days) {
+function syslog_partition_recover($table, $base_time, $ahead_days, $granularity = 'day') {
 	$limit = read_config_option('syslog_partition_recover_limit');
 
 	if (!is_numeric($limit) || (int) $limit < 1) {
@@ -2690,17 +2701,16 @@ function syslog_partition_recover($table, $base_time, $ahead_days) {
 	$missing      = 0;
 	$stop         = '';
 	$dmax_risk    = false;
-	$need_ahead   = 0;
+	$period       = syslog_partition_periods()[$granularity] ?? 86400;
+	$steps        = intdiv((int) $ahead_days * 86400, $period);
 
-	for ($day = 0; $day <= $ahead_days; $day++) {
-		$time = $base_time + ($day * 86400);
-
-		if (syslog_partition_check($table, $time)) {
-			$need_ahead++;
-		}
-	}
-
-	if ($need_ahead === 0) {
+	/*
+	 * syslog_partition_check() compares a period's boundary with the highest
+	 * existing one, so missing periods always form a suffix of the window.
+	 * Checking the horizon first keeps the steady state to one check, and a
+	 * binary search finds the first gap without probing every hourly period.
+	 */
+	if (!syslog_partition_check($table, $base_time + $steps * $period, $granularity)) {
 		return [
 			'created'            => 0,
 			'missing'            => 0,
@@ -2710,12 +2720,23 @@ function syslog_partition_recover($table, $base_time, $ahead_days) {
 		];
 	}
 
-	for ($day = 0; $day <= $ahead_days; $day++) {
-		$time = $base_time + ($day * 86400);
+	$first = 0;
+	$last  = $steps;
 
-		if (!syslog_partition_check($table, $time)) {
-			continue;
+	while ($first < $last) {
+		$middle = intdiv($first + $last, 2);
+
+		if (syslog_partition_check($table, $base_time + $middle * $period, $granularity)) {
+			$last = $middle;
+		} else {
+			$first = $middle + 1;
 		}
+	}
+
+	$need_ahead = $steps - $first + 1;
+
+	for ($step = $first; $step <= $steps; $step++) {
+		$time = $base_time + ($step * $period);
 
 		if ($created >= $limit) {
 			$missing = $need_ahead - $created;
@@ -2726,7 +2747,7 @@ function syslog_partition_recover($table, $base_time, $ahead_days) {
 
 		$missing = $need_ahead - $created;
 
-		if (!syslog_partition_create($table, $time, $create_reason)) {
+		if (!syslog_partition_create($table, $time, $create_reason, $granularity)) {
 			$stop = $create_reason !== '' ? $create_reason : __('partition creation failed', 'syslog');
 			/*
 			 * When the next concrete partition is still missing, every new
@@ -2773,6 +2794,162 @@ function syslog_partition_ahead_days() {
 	}
 
 	return $ahead_days;
+}
+
+/**
+ * Supported partition sizes, in seconds.
+ *
+ * @return array<string, int> Partition size keyed by level.
+ */
+function syslog_partition_periods(): array {
+	return ['hour' => 3600, 'day' => 86400];
+}
+
+/**
+ * The partitioning level chosen in Settings. It is applied to the tables only
+ * by cli/upgrade_partitioning.php; maintenance follows the existing layout.
+ *
+ * @return string 'hour' or 'day'.
+ */
+function syslog_partition_requested_granularity(): string {
+	return read_config_option('syslog_partition_granularity') === 'hour' ? 'hour' : 'day';
+}
+
+/**
+ * The partitioning level a table actually uses, read from its partition names.
+ *
+ * @param string $table The partitioned table.
+ *
+ * @return string 'hour' when the table has hYYYYMMDDHH partitions, otherwise 'day'.
+ */
+function syslog_partition_layout_granularity(string $table): string {
+	global $syslogdb_default;
+
+	$hourly = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM information_schema.PARTITIONS
+		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND PARTITION_NAME LIKE 'h%'",
+		[$syslogdb_default, $table]);
+
+	return is_numeric($hourly) && (int) $hourly > 0 ? 'hour' : 'day';
+}
+
+/**
+ * Name of the UTC partition that holds a time: hYYYYMMDDHH or dYYYYMMDD.
+ *
+ * @param string $granularity 'hour' or 'day'.
+ * @param int    $time        Epoch seconds.
+ *
+ * @return string The partition name.
+ */
+function syslog_partition_name(string $granularity, int $time): string {
+	return $granularity === 'hour' ? 'h' . gmdate('YmdH', $time) : 'd' . gmdate('Ymd', $time);
+}
+
+/**
+ * Days of future partitions to keep for a level. Like MacTrack, hourly tables
+ * keep at least two days ahead so splitting the empty dMaxValue stays instant
+ * even when maintenance runs late.
+ *
+ * @param string   $granularity 'hour' or 'day'.
+ * @param int|null $ahead_days  The pre-create window, or null for the setting.
+ *
+ * @return int Days ahead to pre-create.
+ */
+function syslog_partition_ahead_days_for(string $granularity, ?int $ahead_days = null): int {
+	$ahead_days = $ahead_days ?? syslog_partition_ahead_days();
+
+	return $granularity === 'hour' ? max(2, $ahead_days) : $ahead_days;
+}
+
+/**
+ * Most partitions a table may have on a database server: 8192, or 1024 before
+ * MariaDB 10.0.4 and MySQL 5.7.
+ *
+ * @param string|null $version A VERSION() string, or null to query the Syslog database.
+ *
+ * @return int The partition limit, dMaxValue included.
+ */
+function syslog_partition_server_limit(?string $version = null): int {
+	$version = $version ?? (string) syslog_db_fetch_cell('SELECT VERSION()');
+	$mariadb = stripos($version, 'mariadb') !== false;
+
+	// Some clients report MariaDB as "5.5.5-10.x" for old MySQL replication peers.
+	if (preg_match('/^(?:5\.5\.5-)?(\d+\.\d+(?:\.\d+)?)/', $version, $match) !== 1) {
+		return 1024;
+	}
+
+	return version_compare($match[1], $mariadb ? '10.0.4' : '5.7.0', '>=') ? 8192 : 1024;
+}
+
+/**
+ * Partitions one table needs: the retained days, today, the pre-create window
+ * and dMaxValue.
+ *
+ * @param string $granularity    'hour' or 'day'.
+ * @param int    $retention_days Days of retention; 0 is Indefinite.
+ * @param int    $ahead_days     The pre-create window in days.
+ *
+ * @return int|null The partition count, or null when retention is Indefinite.
+ */
+function syslog_partition_projected_count(string $granularity, int $retention_days, int $ahead_days): ?int {
+	if ($retention_days < 1) {
+		return null;
+	}
+
+	$per_day = intdiv(86400, syslog_partition_periods()[$granularity] ?? 86400);
+
+	return $per_day * ($retention_days + syslog_partition_ahead_days_for($granularity, $ahead_days) + 1) + 1;
+}
+
+/**
+ * Explain why a partitioning level, retention and pre-create window cannot be
+ * used together on a server, or return an empty string when they fit.
+ *
+ * @param string     $granularity    'hour' or 'day'.
+ * @param int|string $retention_days Days of retention; 0 is Indefinite.
+ * @param int|string $ahead_days     The pre-create window in days.
+ * @param int        $limit          The server partition limit.
+ *
+ * @return string The error, or '' when the combination is supported.
+ */
+function syslog_partition_settings_error(string $granularity, $retention_days, $ahead_days, int $limit): string {
+	if (!isset(syslog_partition_periods()[$granularity])) {
+		return __('Unknown partitioning level; choose Hourly or Daily.', 'syslog');
+	}
+
+	if (!is_numeric($retention_days) || (int) $retention_days < 0) {
+		return __('The Syslog retention is invalid.', 'syslog');
+	}
+
+	$ahead_days = is_numeric($ahead_days) && (int) $ahead_days >= 1 && (int) $ahead_days <= 7 ? (int) $ahead_days : 3;
+
+	if ($granularity === 'hour' && (int) $retention_days === 0) {
+		return __('Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning.', 'syslog');
+	}
+
+	$count = syslog_partition_projected_count($granularity, (int) $retention_days, $ahead_days);
+
+	if ($count !== null && $count > $limit) {
+		return __('%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server\'s limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning.',
+			$granularity === 'hour' ? __('Hourly', 'syslog') : __('Daily', 'syslog'),
+			number_format((int) $retention_days), number_format(syslog_partition_ahead_days_for($granularity, $ahead_days)),
+			number_format($count), number_format($limit), 'syslog');
+	}
+
+	return '';
+}
+
+/**
+ * Upper logtime bound added to every message query. Messages cannot be newer
+ * than now, so the empty future partitions are always pruned, whatever the
+ * filter's own range says.
+ *
+ * @param int|null $now The current time, for tests.
+ *
+ * @return string The SQL condition.
+ */
+function syslog_logtime_upper_bound_sql(?int $now = null): string {
+	// Exclusive bound one second ahead keeps fractional seconds of the current second.
+	return 'logtime < FROM_UNIXTIME(' . (($now ?? time()) + 1) . ')';
 }
 
 /**
@@ -3049,7 +3226,7 @@ function syslog_partition_report_state($table) {
 			$valid = false;
 		}
 
-		if (!is_string($name) || preg_match('/^(d\d{8}|dMaxValue)$/', $name) !== 1) {
+		if (!is_string($name) || preg_match('/^(d\d{8}|h\d{10}|dMaxValue)$/', $name) !== 1) {
 			cacti_log("SYSLOG WARNING: Partition metadata for '$table' contains unexpected partition name '$name'", false, 'SYSLOG');
 			$valid = false;
 		}
@@ -3091,13 +3268,14 @@ function syslog_partition_report_state($table) {
 /**
  * Create a new partition for the specified table.
  *
- * @param mixed       $table  The table to rotate.
- * @param int         $time   Assume this time for the partition rotation.
- * @param string|null $reason Receives an overflow deferral reason, otherwise an empty string.
+ * @param mixed       $table       The table to rotate.
+ * @param int         $time        Assume this time for the partition rotation.
+ * @param string|null $reason      Receives an overflow deferral reason, otherwise an empty string.
+ * @param string|null $granularity The table's partitioning level, or null to read it.
  *
  * @return bool true on success, false on lock failure or disallowed table.
  */
-function syslog_partition_create($table, $time = null, &$reason = null) {
+function syslog_partition_create($table, $time = null, &$reason = null, $granularity = null) {
 	global $syslogdb_default;
 
 	$reason = '';
@@ -3156,11 +3334,13 @@ function syslog_partition_create($table, $time = null, &$reason = null) {
 		/*
 		 * Boundary arithmetic is done in PHP against the UTC epoch so the
 		 * result is independent of both the PHP and MySQL session time zones.
-		 * $boundary_epoch is the next UTC midnight strictly after $time; it
-		 * becomes the VALUES LESS THAN literal for UNIX_TIMESTAMP partitions
-		 * and the source for the date string passed to TO_DAYS.
+		 * $boundary_epoch is the next UTC hour or midnight strictly after
+		 * $time; it becomes the VALUES LESS THAN literal for UNIX_TIMESTAMP
+		 * partitions and the source for the date string passed to TO_DAYS.
 		 */
-		$boundary_epoch = (intdiv($time, 86400) + 1) * 86400;
+		$granularity    = $granularity ?? syslog_partition_layout_granularity($table);
+		$period         = syslog_partition_periods()[$granularity] ?? 86400;
+		$boundary_epoch = (intdiv($time, $period) + 1) * $period;
 
 		if ($boundary_epoch <= 0 || $boundary_epoch <= $time) {
 			cacti_log("SYSLOG ERROR: Boundary epoch computation failed for '$table' (time=$time); leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
@@ -3168,10 +3348,10 @@ function syslog_partition_create($table, $time = null, &$reason = null) {
 			return false;
 		}
 
-		$cformat        = 'd' . gmdate('Ymd', $time);
+		$cformat        = syslog_partition_name($granularity, $time);
 		$boundary_date  = gmdate('Y-m-d', $boundary_epoch);
 
-		if (preg_match('/^d\d{8}$/', $cformat) !== 1 || preg_match('/^\d{4}-\d{2}-\d{2}$/', $boundary_date) !== 1) {
+		if (preg_match('/^(d\d{8}|h\d{10})$/', $cformat) !== 1 || preg_match('/^\d{4}-\d{2}-\d{2}$/', $boundary_date) !== 1) {
 			cacti_log("SYSLOG ERROR: Derived partition values failed format validation for '$table'; leaving writes in dMaxValue until maintenance recovers", false, 'SYSLOG');
 
 			return false;
@@ -3270,7 +3450,7 @@ function syslog_partition_create($table, $time = null, &$reason = null) {
 			 * syslog_partition_table_allowed() (two-value allowlist plus
 			 * regex guard). $cformat, $boundary_epoch, and $boundary_date
 			 * derive from integer arithmetic and gmdate(), so they contain
-			 * only digits, hyphens, and the letter 'd'.
+			 * only digits, hyphens, and the letter 'd' or 'h'.
 			 */
 			$create_syntax = syslog_db_fetch_row_prepared("SHOW CREATE TABLE `$syslogdb_default`.`$table`");
 
@@ -3282,7 +3462,7 @@ function syslog_partition_create($table, $time = null, &$reason = null) {
 
 			$create_sql = $create_syntax['Create Table'];
 
-			if (stripos($create_sql, 'TO_DAYS') !== false) {
+			if (stripos($create_sql, 'TO_DAYS') !== false && $granularity === 'day') {
 				$altered = syslog_db_execute_prepared("ALTER TABLE `$syslogdb_default`.`$table` REORGANIZE PARTITION dMaxValue INTO (
 					PARTITION $cformat VALUES LESS THAN (TO_DAYS('$boundary_date')),
 					PARTITION dMaxValue VALUES LESS THAN MAXVALUE)", []);
@@ -3443,12 +3623,13 @@ function syslog_partition_remove($table) {
  *
  * The untyped signature is intentional: security tests assert it exactly.
  *
- * @param string   $table The table to check
- * @param int|null $time  The time to assume for creation verification
+ * @param string      $table       The table to check
+ * @param int|null    $time        The time to assume for creation verification
+ * @param string|null $granularity The table's partitioning level, or null to read it
  *
  * @return bool If it's time to rotate the partition
  */
-function syslog_partition_check($table, $time = null) {
+function syslog_partition_check($table, $time = null, $granularity = null) {
 	global $syslogdb_default;
 
 	if (!syslog_partition_table_allowed($table)) {
@@ -3462,6 +3643,9 @@ function syslog_partition_check($table, $time = null) {
 	if ($time === null) {
 		$time = time() + 3600;
 	}
+
+	$granularity = $granularity ?? syslog_partition_layout_granularity($table);
+	$period      = syslog_partition_periods()[$granularity] ?? 86400;
 
 	/*
 	 * Decide whether a concrete partition still needs to be created for
@@ -3485,7 +3669,7 @@ function syslog_partition_check($table, $time = null) {
 		LIMIT 1',
 		[$syslogdb_default, $table, 'MAXVALUE']);
 
-	$boundary_epoch = (intdiv((int) $time, 86400) + 1) * 86400;
+	$boundary_epoch = (intdiv((int) $time, $period) + 1) * $period;
 
 	if (stripos((string) $partition_expression, 'to_days') !== false) {
 		$target_boundary = syslog_db_fetch_cell_prepared('SELECT TO_DAYS(?)', [gmdate('Y-m-d', $boundary_epoch)]);

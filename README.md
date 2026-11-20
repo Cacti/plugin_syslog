@@ -151,7 +151,10 @@ MySQL installs always use second precision.
   to second precision.  Silent installs can set
   `$syslog_install_options['logtime_precision'] = 'ms';` (or `'sec'`) in
   `config.php` / `config_local.php`; a millisecond request on MySQL is rejected
-  with a log message rather than silently downgraded.
+  with a log message rather than silently downgraded.  The advisor's
+  *Partitioning Level* option is set silently with
+  `$syslog_install_options['partitioning'] = 'day';` (or `'hour'`); see
+  [Partitioning level](#partitioning-level).
 * **Upgrades** – the existing schema is authoritative and is **never** migrated
   automatically, even if the configured precision changes.  This avoids the
   long, blocking table rewrite that an in-place precision change would require.
@@ -182,18 +185,51 @@ is recorded only after the complete pipeline has converted.
 ### Rebuilding partition layouts
 
 ```console
-php plugins/syslog/cli/upgrade_partitioning.php
+php plugins/syslog/cli/upgrade_partitioning.php [--partition=hourly|daily]
 ```
 
 Without `--convert-ms`, this rebuilds `syslog` and `syslog_removed` using the
-configured storage engine (`syslog_install_engine`), message retention
-(`syslog_retention`) and future-partition horizon
-(`syslog_partition_ahead_days`), retaining their existing timestamp precision.
-It preserves existing columns and indexes, adds `logtime` to a legacy
-sequence-only primary key when necessary, and creates UTC daily
-`UNIX_TIMESTAMP(logtime)` partitions with a final `dMaxValue` safety partition.
-It does not offer weekly or monthly partitioning, since Syslog's maintenance
-expects daily partitions.
+**Partitioning Level** (`syslog_partition_granularity`), storage engine
+(`syslog_install_engine`), message retention (`syslog_retention`) and
+future-partition horizon (`syslog_partition_ahead_days`), retaining their
+existing timestamp precision. It preserves existing columns and indexes, adds
+`logtime` to a legacy sequence-only primary key when necessary, and creates UTC
+hourly (`hYYYYMMDDHH`) or daily (`dYYYYMMDD`) `UNIX_TIMESTAMP(logtime)`
+partitions with a final `dMaxValue` safety partition. Any existing RANGE
+layout, hourly or daily, can be rebuilt to either level.
+
+### Partitioning level
+
+Settings > Syslog > **Data Retention and Partitioning** offers a **Partitioning
+Level** of **Daily** (the default) or **Hourly**. Like MacTrack's partition
+size, the level is chosen in Settings, or with `--partition=hourly|daily`,
+which saves it, and applied by `cli/upgrade_partitioning.php`. Unlike MacTrack,
+saving the setting alone changes nothing: poller maintenance keeps creating and
+pruning partitions of the size the tables actually have, until the utility
+rebuilds them. Settings and the Status tab show the change as pending until then.
+There is no Disabled level; partitioned tables are the only supported
+architecture.
+
+Hourly tables keep the configured pre-create window, but never less than two
+days of hourly partitions ahead (MacTrack also keeps two days), so new
+partitions are always split from an empty `dMaxValue` and the reorganization is
+instant even when maintenance runs late. While the horizon exists, maintenance
+checks only its last partition; a gap is found with a binary search and healed
+in bounded steps.
+
+Saving Syslog settings is refused, with an error naming the required and
+permitted partition counts, when a table would need more partitions than the
+database server supports: retention plus today plus the pre-create window,
+times 24 for Hourly, plus `dMaxValue`. The limit is 8192 partitions, or 1024
+on MariaDB before 10.0.4 and MySQL before 5.7. Hourly partitioning also
+requires a finite retention. For example, Hourly with 183 days of retention
+needs 4,489 partitions; with one year it needs 8,857 and is refused. The
+installer and the utility apply the same check.
+
+Every message query has an automatic upper bound of the current time, whatever
+its filter says, so the empty future partitions are always pruned. Messages
+with timestamps in the future, for example from a device with a fast clock,
+are not shown until that time.
 
 Stored and removed messages are copied **without** their `seq` column, in their
 original order, so each replacement numbers them from its own
@@ -226,18 +262,19 @@ Then run this utility to apply the configured layout.
 
 Every existing message is copied, including older-than-retention messages;
 those older rows fit in the earliest RANGE partition. Normal retention pruning
-resumes when processing restarts. Indefinite retention creates daily partitions
-back to the oldest valid timestamp, and future-dated messages extend the planned
-horizon. Plans exceeding the server's 8192-partition limit are rejected rather
-than dropping history. Custom triggers, foreign keys, or unique indexes that
-exclude `logtime` require a manual migration.
+resumes when processing restarts. Indefinite retention (Daily only) creates
+daily partitions back to the oldest valid timestamp, and future-dated messages
+extend the planned horizon. Plans exceeding the server's partition limit are
+rejected rather than dropping history. Custom triggers, foreign keys, or unique
+indexes that exclude `logtime` require a manual migration.
 
 `cli/syslog_schema.php --upgrade` and `--repair` repair and upgrade schema and
 create missing tables; they do **not** rebuild an existing partition layout or
 change its timestamp precision. Ordinary retention/horizon changes normally
-need no rebuild: poller maintenance creates missing daily partitions,
+need no rebuild: poller maintenance creates missing hourly or daily partitions,
 reorganizes `dMaxValue` safely, and removes expired partitions. Use the explicit
-rebuild utility for legacy layouts or engine changes, not routine daily rotation.
+rebuild utility to change the partitioning level, for legacy layouts or engine
+changes, not routine rotation.
 
 **Maintenance requirements for both commands:**
 
@@ -429,7 +466,7 @@ regardless of their event age, including rows missing host or program references
 ### Partition Maintenance
 
 Partition retention uses actual upper boundaries against a UTC calendar cutoff,
-with today counted as one retained day. A seven-day setting retains today plus
+with today counted as one retained day, for hourly and daily partitions alike. A seven-day setting retains today plus
 the previous six UTC dates, independently of partition count or the future
 pre-create window. Fully expired partitions are dropped even after gaps in
 maintenance. A partition spanning the cutoff is kept whole to protect newer
@@ -813,8 +850,9 @@ The settings are under Settings > Syslog. Selected names and defaults:
 | Enable Hostname Resolution (`syslog_resolve_hostname`) | off |
 | Skip DNS Resolution for incoming hosts (`syslog_no_dns`) | off |
 | Syslog Retention (`syslog_retention`) | 30 days |
+| Partitioning Level (`syslog_partition_granularity`) | Daily |
 | Syslog Alert Retention (`syslog_alert_retention`) | 30 days |
-| Partition Pre-create Window (`syslog_partition_ahead_days`) | 3 days |
+| Partition Pre-create Window (`syslog_partition_ahead_days`) | 3 days (Hourly: at least 2) |
 | Collector Staleness Threshold (`syslog_stale_threshold`) | 300 seconds |
 | Collector Backlog Threshold (`syslog_backlog_threshold`) | 10000 rows |
 | Pipeline Health Reminder Interval (`syslog_pipeline_health_repeat`) | 3600 seconds |
@@ -842,8 +880,9 @@ master process for its workers.
 `cli/syslog_schema.php` takes `--audit`, `--repair`, or `--upgrade`, as
 described under Installation.
 
-`cli/upgrade_partitioning.php` rebuilds daily partitions to match the configured
-engine, retention and future horizon, preserving messages by default.
+`cli/upgrade_partitioning.php` rebuilds hourly or daily partitions to match the
+Partitioning Level, engine, retention and future horizon, preserving messages
+by default. `--partition=hourly|daily` saves and applies a level.
 `--convert-ms` also converts the message pipeline to millisecond timestamps on
 MariaDB. It reports database size and warns about additional disk space and
 potential several-hour duration before confirmation.

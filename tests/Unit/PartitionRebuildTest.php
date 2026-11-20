@@ -43,12 +43,15 @@ function partition_rebuild_setup(): stdClass {
 		'enabled' => '',
 		'slot' => true,
 		'slots' => [],
-		'legacy' => []
+		'legacy' => [],
+		'retention' => '30',
+		'granularity' => ''
 	];
 	$GLOBALS['config']['poller_id'] = 1;
 	test_override('read_config_option', static fn($key) => [
-		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => '30',
-		'syslog_partition_ahead_days' => '3', 'syslog_enabled' => $state->enabled
+		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => $state->retention,
+		'syslog_partition_ahead_days' => '3', 'syslog_enabled' => $state->enabled,
+		'syslog_partition_granularity' => $state->granularity
 	][$key] ?? '');
 	test_override('register_process_start', static function (...$args) use ($state) {
 		$state->slots[] = array_merge(['start'], $args);
@@ -78,6 +81,7 @@ function partition_rebuild_setup(): stdClass {
 	});
 	test_override('rebuild_mariadb', static fn() => stripos($state->version, 'mariadb') !== false);
 	test_override('syslog_db_fetch_cell', static fn($sql) => match (true) {
+		str_contains($sql, 'VERSION()') => $state->version,
 		str_contains($sql, 'time_zone') => '+05:30',
 		str_contains($sql, 'lock_wait_timeout') => '86400',
 		default => 'STRICT_TRANS_TABLES,NO_ZERO_DATE'
@@ -119,10 +123,45 @@ it('reports database size, equal extra space and several-hour duration even with
 		->toContain('does NOT pause')->toContain('10,000-row copies')
 		->toContain('receive new sequence numbers')
 		->not->toContain('Type "yes"')
-		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3]])
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192]])
 		->and($state->slots)->toBe([['start', 'syslog', 'master', 1, 604800], ['end', 'syslog', 'master', 1]]);
 	expect($state->settings)->toBe([]);
 	expect(array_column($state->queries, 0))->toContain('SELECT RELEASE_LOCK(?)');
+});
+
+it('saves --partition=hourly once confirmed and rebuilds with at least two days ahead', function () {
+	$state = partition_rebuild_setup();
+	test_override('syslog_upart_rebuild', static function (...$args) use ($state) {
+		$state->rebuilds[] = $args;
+		expect($state->settings)->toBe(['syslog_partition_granularity' => 'hour']);
+
+		return true;
+	});
+	test_override('read_config_option', static fn($key) => [
+		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => '30', 'syslog_partition_ahead_days' => '1'
+	][$key] ?? '');
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, false, true, 'hour');
+	$output = ob_get_clean();
+
+	expect($ok)->toBeTrue()
+		->and($output)->toContain('Rebuilding hourly partitions')
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 2, 'hour', 8192]]);
+});
+
+it('refuses hourly partitioning beyond the server partition limit or with indefinite retention', function () {
+	foreach ([['365', '10.11.6-MariaDB'], ['60', '10.0.3-MariaDB'], ['60', '5.6.51'], ['0', '11.4.2-MariaDB']] as [$retention, $version]) {
+		$state = partition_rebuild_setup();
+		$state->retention = $retention;
+		$state->version = $version;
+		$run = partition_rebuild_runner();
+
+		expect($run(true, false, true, 'hour'))->toBeFalse()
+			->and($state->slots)->toBe([])
+			->and($state->settings)->toBe([])
+			->and($state->rebuilds)->toBe([]);
+	}
 });
 
 it('refuses to rebuild while Syslog processing is enabled', function () {
@@ -254,7 +293,8 @@ it('prints readable CLI help and rejects conflicting preservation arguments', fu
 		foreach ([
 			['upgrade_partitioning.php', ['--help'], 0, [
 				'Preserve existing messages (the default)',
-				'future-partition horizon.' . PHP_EOL . PHP_EOL . 'Existing precision',
+				'utility rebuilds the tables.' . PHP_EOL . PHP_EOL . 'Existing precision',
+				'--partition     - Save and apply this Partitioning Level',
 				'--convert-ms is selected.' . PHP_EOL . PHP_EOL . 'With preservation',
 				'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)',
 				PHP_EOL . PHP_EOL . 'usage: upgrade_partitioning.php',
@@ -266,7 +306,8 @@ it('prints readable CLI help and rejects conflicting preservation arguments', fu
 			['upgrade_partitioning.php', ['--version'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
 			['upgrade_partitioning.php', ['-V'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
 			['upgrade_partitioning.php', ['-v'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
-			['upgrade_partitioning.php', ['--discard-data', '--preserve-data'], 1, 'cannot be combined']
+			['upgrade_partitioning.php', ['--discard-data', '--preserve-data'], 1, 'cannot be combined'],
+			['upgrade_partitioning.php', ['--partition=weekly'], 1, '--partition must be hourly or daily']
 		] as [$entry, $args, $expected_status, $expected_output]) {
 			$process = proc_open(array_merge([PHP_BINARY, '-d', 'xdebug.mode=off', $base . '/plugins/syslog/cli/' . $entry], $args),
 				[0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);

@@ -237,7 +237,8 @@ it('applies the logical search predicate consistently in the real query builder'
 
 	get_syslog_messages($sql_where, 20, 'syslog');
 
-	expect(str_contains($sql_where, 'logtime'))->toBeFalse('Removing date conditions removes time restrictions');
+	// Only the automatic upper bound remains, so future partitions stay pruned.
+	expect(preg_match('/^WHERE logtime < FROM_UNIXTIME\(\d+\)$/', $sql_where))->toBe(1, 'Removing date conditions leaves only the upper bound');
 
 	$GLOBALS['syslog_search_error'] = 'Invalid logical search';
 

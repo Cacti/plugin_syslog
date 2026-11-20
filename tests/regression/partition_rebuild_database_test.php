@@ -39,6 +39,7 @@ function rebuild_check(bool $ok, string $message): void {
 }
 
 function syslog_connect() { return true; }
+function __($text, ...$args) { array_pop($args); return $args ? vsprintf($text, $args) : $text; }
 function read_config_option($name, $force = false) { return $GLOBALS['options'][$name] ?? ''; }
 function register_process_start($type, $name, $id = 0, $timeout = 300) {
 	$GLOBALS['slot_calls'][] = ['start', $type, $name, $id];
@@ -104,6 +105,20 @@ function syslog_db_table_exists($table, ...$args) {
 function syslog_partition_ahead_days() { return (int) read_config_option('syslog_partition_ahead_days'); }
 
 require dirname(__DIR__, 2) . '/includes/schema.php';
+
+// The partitioning-level helpers come from the real functions.php source.
+$helpers = file_get_contents(dirname(__DIR__, 2) . '/includes/functions.php');
+$helper_code = '';
+
+foreach (['syslog_partition_periods', 'syslog_partition_requested_granularity', 'syslog_partition_ahead_days_for',
+	'syslog_partition_server_limit', 'syslog_partition_projected_count', 'syslog_partition_settings_error'] as $helper) {
+	if (preg_match('/^function ' . $helper . '\(.*?^\}/ms', $helpers, $match) !== 1) {
+		throw new RuntimeException("Cannot find $helper");
+	}
+
+	$helper_code .= $match[0] . "\n";
+}
+
 $source = file_get_contents(dirname(__DIR__, 2) . '/cli/upgrade_partitioning.php');
 $offset = strpos($source, "\nfunction syslog_upart_run(");
 
@@ -114,7 +129,7 @@ if ($offset === false) {
 $fixture = tempnam(sys_get_temp_dir(), 'syslog-rebuild-');
 
 try {
-	file_put_contents($fixture, "<?php\n" . substr($source, $offset));
+	file_put_contents($fixture, "<?php\n" . $helper_code . substr($source, $offset));
 	require $fixture;
 } finally {
 	unlink($fixture);
@@ -278,6 +293,24 @@ try {
 	rebuild_check(!syslog_db_table_exists('syslog_removed_rebuild'), 'Explicit discard removes the original after verification');
 	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog_replication_output') === 1, 'Discard mode does not delete the outbox');
 	rebuild_check(max($batch_sizes) <= 10000, 'No stored INSERT SELECT may copy more than 10000 rows');
+
+	ob_start();
+	rebuild_check(syslog_upart_rebuild('syslog', false, true, 'InnoDB', 2, 2, 'hour', 8192), 'A preserving rebuild converts daily partitions to hourly');
+	ob_end_clean();
+	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog') === (int) $total, 'Every row survives the hourly rebuild');
+	rebuild_check(syslog_upart_layout_ok('syslog', 'InnoDB', 'hour') && !syslog_upart_layout_ok('syslog', 'InnoDB', 'day'), 'The replacement has contiguous UTC hourly partitions');
+	$now = (int) syslog_db_fetch_cell('SELECT UNIX_TIMESTAMP()');
+	$future = $pdo->query('SELECT PARTITION_NAME FROM information_schema.PARTITIONS WHERE TABLE_SCHEMA = DATABASE()
+		AND TABLE_NAME = \'syslog\' AND PARTITION_DESCRIPTION <> \'MAXVALUE\' AND CAST(PARTITION_DESCRIPTION AS UNSIGNED) > ' . ($now + 7200))->fetchAll(PDO::FETCH_COLUMN);
+	rebuild_check(count($future) >= 46, 'Hourly partitions exist at least two days ahead');
+	$plan = $pdo->query('EXPLAIN PARTITIONS SELECT COUNT(*) FROM syslog WHERE logtime >= FROM_UNIXTIME(' . ($now - 86400) . ') AND logtime < FROM_UNIXTIME(' . ($now + 1) . ')')->fetch();
+	$scanned = explode(',', (string) $plan['partitions']);
+	rebuild_check($scanned !== [''] && !array_intersect($scanned, array_merge($future, ['dMaxValue'])), 'The automatic upper bound prunes every empty future partition');
+	ob_start();
+	rebuild_check(syslog_upart_rebuild('syslog', false, true, 'InnoDB', 2, 2, 'day', 8192), 'A preserving rebuild converts hourly partitions back to daily');
+	ob_end_clean();
+	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog') === (int) $total && syslog_upart_layout_ok('syslog', 'InnoDB', 'day'), 'Every row survives the daily rebuild');
+	rebuild_check(syslog_upart_partition_sql(400, 2, null, null, null, 'hour', 8192) === null, 'Hourly plans above the server partition limit are refused');
 
 	print "$checks partition rebuild database checks passed.\n";
 } finally {

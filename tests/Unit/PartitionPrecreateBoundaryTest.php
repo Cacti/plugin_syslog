@@ -85,3 +85,22 @@ it('keeps the normal retention window unchanged (30 days plus 3 ahead days)', fu
 
 	expect($dates)->toContain('d' . $oldest);
 });
+
+it('pre-creates hourly partitions from the retained days through at least two days ahead', function () {
+	partition_precreate_extract_function();
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$GLOBALS['__test_partition_precreate_base_time'] = gmmktime(13, 20, 0, 11, 20, 2026);
+
+	$ddl = test_create_partitioned_syslog_table('InnoDB', 2, 1, 'sec', 'hour');
+
+	preg_match_all('/PARTITION (h\d{10}) VALUES LESS THAN \((\d+)\)/', $ddl, $matches);
+
+	// Two retained UTC days start at 2026-11-19 00:00; a 1-day window is raised to 2 days.
+	expect($matches[1][0])->toBe('h2026111900')
+		->and(end($matches[1]))->toBe('h2026112213')
+		->and($matches[1])->toHaveCount(86)
+		->and((int) $matches[2][0])->toBe(gmmktime(1, 0, 0, 11, 19, 2026))
+		->and(partition_precreate_dates($ddl))->toBe([])
+		->and($ddl)->toContain('PARTITION dMaxValue VALUES LESS THAN MAXVALUE');
+});

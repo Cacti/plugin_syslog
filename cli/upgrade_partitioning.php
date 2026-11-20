@@ -33,8 +33,21 @@ array_shift($parms);
 $confirm = false;
 $preserve_data = true;
 $convert_ms = false;
+$partition = null;
 
 foreach ($parms as $arg) {
+	if (strpos($arg, '--partition=') === 0) {
+		$levels = ['hourly' => 'hour', 'hour' => 'hour', 'daily' => 'day', 'day' => 'day'];
+		$partition = $levels[strtolower(substr($arg, 12))] ?? null;
+
+		if ($partition === null) {
+			fwrite(STDERR, 'ERROR: --partition must be hourly or daily.' . PHP_EOL);
+			exit(1);
+		}
+
+		continue;
+	}
+
 	switch ($arg) {
 		case '--confirm':
 			$confirm = true;
@@ -85,13 +98,16 @@ if (!syslog_connect()) {
 	exit(1);
 }
 
-exit(syslog_upart_run($confirm, $convert_ms, $preserve_data) ? 0 : 1);
+exit(syslog_upart_run($confirm, $convert_ms, $preserve_data, $partition) ? 0 : 1);
 
 /**
- * Rebuild daily partitions using the configured engine, retention and horizon.
+ * Rebuild partitions using the configured level, engine, retention and horizon.
  * DDL is not transactional; failed copies retain originals for a safe retry.
+ *
+ * @param string|null $partition 'hour' or 'day' from --partition, saved to
+ *                               Settings once confirmed; null uses Settings.
  */
-function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true): bool {
+function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true, ?string $partition = null): bool {
 	global $config, $syslogdb_default;
 
 	$mariadb = syslog_db_is_mariadb();
@@ -111,11 +127,21 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 	$engine = read_config_option('syslog_install_engine') ?: 'InnoDB';
 	$engines = ['innodb' => 'InnoDB', 'aria' => 'Aria'];
 	$days = read_config_option('syslog_retention');
-	$ahead = syslog_partition_ahead_days();
+	$granularity = $partition ?? syslog_partition_requested_granularity();
+	$ahead = syslog_partition_ahead_days_for($granularity);
+	$limit = syslog_partition_server_limit();
 
 	if (!isset($engines[strtolower($engine)]) || (strtolower($engine) === 'aria' && !$mariadb)
 		|| !ctype_digit((string) $days) || (int) $days > 8184) {
 		fwrite(STDERR, 'ERROR: Unsupported storage engine or retention setting; no changes were made.' . PHP_EOL);
+
+		return false;
+	}
+
+	$level_error = syslog_partition_settings_error($granularity, $days, syslog_partition_ahead_days(), $limit);
+
+	if ($level_error !== '') {
+		fwrite(STDERR, "ERROR: $level_error No changes were made." . PHP_EOL);
 
 		return false;
 	}
@@ -137,7 +163,7 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 	}
 
 	try {
-		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead);
+		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead, $granularity, $limit, $partition !== null);
 	} finally {
 		unregister_process('syslog', 'master', $poller_id);
 	}
@@ -146,7 +172,8 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 /**
  * Rebuild while holding the Syslog master process slot.
  */
-function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead): bool {
+function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead,
+	string $granularity = 'day', int $limit = 8192, bool $save_level = false): bool {
 	global $syslogdb_default;
 
 	$lock = hash('sha256', $syslogdb_default . '.syslog_upgrade_partitioning');
@@ -241,7 +268,7 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 		print 'Allow additional headroom for temporary files, indexes and binary logs.' . PHP_EOL;
 		print 'Depending on the size of the Syslog tables and storage speed, this can' . PHP_EOL;
 		print 'take SEVERAL HOURS. Database metadata is an estimate, not a disk-space check.' . PHP_EOL;
-		print "Rebuilding daily partitions: engine=$engine, retention=$days days, ahead=$ahead days." . PHP_EOL;
+		print 'Rebuilding ' . ($granularity === 'hour' ? 'hourly' : 'daily') . " partitions: engine=$engine, retention=$days days, ahead=$ahead days." . PHP_EOL;
 		print 'Tables: ' . implode(', ', $tables) . ($widen ? '; widened in place: ' . implode(', ', $widen) : '') . PHP_EOL;
 		print $preserve_data
 			? 'Messages are preserved in verified 10,000-row copies and receive new sequence numbers; originals are dropped only after verification.' . PHP_EOL
@@ -263,6 +290,11 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 
 				return false;
 			}
+		}
+
+		// A retry must rebuild to the same level, so --partition is saved first.
+		if ($save_level) {
+			set_config_option('syslog_partition_granularity', $granularity);
 		}
 
 		$zone = syslog_db_fetch_cell('SELECT @@SESSION.time_zone');
@@ -288,7 +320,7 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 			}
 
 			foreach ($tables as $table) {
-				if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead)) {
+				if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead, $granularity, $limit)) {
 					return false;
 				}
 			}
@@ -342,7 +374,8 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
  * against its source range before a checkpoint records it. A retry discards
  * replacement rows above the last checkpoint and resumes after it.
  */
-function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead): bool {
+function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead,
+	string $granularity = 'day', int $limit = 8192): bool {
 	global $syslogdb_default;
 
 	$backup = $table . '_rebuild';
@@ -424,10 +457,10 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 
 	$partition_sql = syslog_upart_partition_sql($days, $ahead,
 		$range['first_time'] === null ? null : (int) $range['first_time'],
-		$range['last_time'] === null ? null : (int) $range['last_time']);
+		$range['last_time'] === null ? null : (int) $range['last_time'], null, $granularity, $limit);
 
 	if ($partition_sql === null) {
-		return $fail('The requested history and future horizon exceed the 8192-partition limit; reduce retention or archive outlying timestamps first');
+		return $fail("The requested history and future horizon exceed the server's $limit-partition limit; reduce retention, choose daily partitioning or archive outlying timestamps first");
 	}
 
 	// information_schema may cache AUTO_INCREMENT, so MAX(seq) is the floor.
@@ -527,7 +560,7 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 		}
 	} elseif (syslog_detect_logtime_precision($table) !== $precision) {
 		return $fail('The partially copied replacement does not match the requested conversion; retry with the original options');
-	} elseif (!syslog_upart_layout_ok($table, $engine)) {
+	} elseif (!syslog_upart_layout_ok($table, $engine, $granularity)) {
 		return $fail('The partially copied replacement has a different engine or partition layout');
 	}
 
@@ -655,9 +688,9 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 
 /**
  * Check that a partially copied replacement still has the requested engine and
- * contiguous UTC daily partitions ending in dMaxValue.
+ * contiguous UTC hourly or daily partitions ending in dMaxValue.
  */
-function syslog_upart_layout_ok(string $table, string $engine): bool {
+function syslog_upart_layout_ok(string $table, string $engine, string $granularity = 'day'): bool {
 	global $syslogdb_default;
 
 	$actual_engine = syslog_db_fetch_cell_prepared('SELECT ENGINE FROM information_schema.TABLES
@@ -665,6 +698,7 @@ function syslog_upart_layout_ok(string $table, string $engine): bool {
 	$parts = syslog_db_fetch_assoc_prepared('SELECT PARTITION_NAME, PARTITION_DESCRIPTION, PARTITION_EXPRESSION
 		FROM information_schema.PARTITIONS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?
 		ORDER BY PARTITION_ORDINAL_POSITION', [$syslogdb_default, $table]);
+	$period = $granularity === 'hour' ? 3600 : 86400;
 	$previous = null;
 
 	if ($actual_engine !== $engine || !is_array($parts) || count($parts) < 2) {
@@ -683,9 +717,11 @@ function syslog_upart_layout_ok(string $table, string $engine): bool {
 			return $part['PARTITION_NAME'] === 'dMaxValue' && $boundary === 'MAXVALUE';
 		}
 
-		if (!ctype_digit($boundary) || (int) $boundary % 86400 !== 0
-			|| $part['PARTITION_NAME'] !== 'd' . gmdate('Ymd', (int) $boundary - 86400)
-			|| ($previous !== null && (int) $boundary !== $previous + 86400)) {
+		$start = (int) $boundary - $period;
+		$name = $granularity === 'hour' ? 'h' . gmdate('YmdH', $start) : 'd' . gmdate('Ymd', $start);
+
+		if (!ctype_digit($boundary) || (int) $boundary % $period !== 0 || $part['PARTITION_NAME'] !== $name
+			|| ($previous !== null && (int) $boundary !== $previous + $period)) {
 			return false;
 		}
 
@@ -696,23 +732,31 @@ function syslog_upart_layout_ok(string $table, string $engine): bool {
 }
 
 /**
- * Plan UTC daily partitions without deleting out-of-retention rows: the first
- * RANGE partition also accepts older timestamps. Indefinite retention starts
- * at the oldest valid timestamp; future data gets concrete daily partitions.
+ * Plan UTC hourly or daily partitions without deleting out-of-retention rows:
+ * the first RANGE partition also accepts older timestamps. Retention counts
+ * today as one UTC day. Indefinite retention starts at the oldest valid
+ * timestamp; future data gets concrete partitions.
+ *
+ * @return string|null The PARTITION BY clause, or null above the partition limit.
  */
-function syslog_upart_partition_sql(int $days, int $ahead, ?int $first, ?int $last, ?int $now = null): ?string {
-	$today = intdiv($now ?? time(), 86400) * 86400;
-	$start = $days > 0 ? $today - ($days - 1) * 86400 : min($today, intdiv($first ?? $today, 86400) * 86400);
-	$end = max($today + $ahead * 86400, intdiv($last ?? $today, 86400) * 86400);
+function syslog_upart_partition_sql(int $days, int $ahead, ?int $first, ?int $last, ?int $now = null,
+	string $granularity = 'day', int $limit = 8192): ?string {
+	$period = $granularity === 'hour' ? 3600 : 86400;
+	$now = $now ?? time();
+	$today = intdiv($now, 86400) * 86400;
+	$current = intdiv($now, $period) * $period;
+	$start = $days > 0 ? $today - ($days - 1) * 86400 : min($current, intdiv($first ?? $now, $period) * $period);
+	$end = max($current + $ahead * 86400, intdiv($last ?? $now, $period) * $period);
 
-	if (($end - $start) / 86400 + 2 > 8192) {
+	if (($end - $start) / $period + 2 > $limit) {
 		return null;
 	}
 
 	$parts = [];
 
-	for ($day = $start; $day <= $end; $day += 86400) {
-		$parts[] = 'PARTITION d' . gmdate('Ymd', $day) . ' VALUES LESS THAN (' . ($day + 86400) . ')';
+	for ($time = $start; $time <= $end; $time += $period) {
+		$name = $granularity === 'hour' ? 'h' . gmdate('YmdH', $time) : 'd' . gmdate('Ymd', $time);
+		$parts[] = "PARTITION $name VALUES LESS THAN (" . ($time + $period) . ')';
 	}
 
 	$parts[] = 'PARTITION dMaxValue VALUES LESS THAN MAXVALUE';
@@ -728,15 +772,18 @@ function syslog_upart_display_version(): void {
 function syslog_upart_display_help(): void {
 	syslog_upart_display_version();
 
-	print PHP_EOL . 'usage: upgrade_partitioning.php [--convert-ms] [--preserve-data | --discard-data] [--confirm]' . PHP_EOL . PHP_EOL;
-	print 'Rebuilds syslog and syslog_removed with UTC daily partitions matching the' . PHP_EOL;
-	print 'configured storage engine, message retention and future-partition horizon.' . PHP_EOL . PHP_EOL;
+	print PHP_EOL . 'usage: upgrade_partitioning.php [--partition=hourly|daily] [--convert-ms] [--preserve-data | --discard-data] [--confirm]' . PHP_EOL . PHP_EOL;
+	print 'Rebuilds syslog and syslog_removed with UTC hourly or daily partitions matching' . PHP_EOL;
+	print 'the Partitioning Level, storage engine, message retention and future-partition' . PHP_EOL;
+	print 'horizon. A Partitioning Level changed in Settings takes effect only when this' . PHP_EOL;
+	print 'utility rebuilds the tables.' . PHP_EOL . PHP_EOL;
 	print 'Existing precision is preserved unless --convert-ms is selected.' . PHP_EOL . PHP_EOL;
 	print 'With preservation, rows are copied in verified batches and receive new sequence' . PHP_EOL;
 	print 'numbers above the original high-water mark; originals are dropped only after' . PHP_EOL;
 	print 'every batch and the row counts are verified.' . PHP_EOL . PHP_EOL;
 	print 'Legacy DATETIME logtime columns are not converted; use --discard-data for them.' . PHP_EOL . PHP_EOL;
 	print 'Options:' . PHP_EOL;
+	print '    --partition     - Save and apply this Partitioning Level instead of the one in Settings.' . PHP_EOL;
 	print '    --convert-ms    - Also convert pipeline timestamps to TIMESTAMP(3); MariaDB only.' . PHP_EOL;
 	print '    --preserve-data - Preserve existing messages (the default), copying 10,000 rows at a time.' . PHP_EOL;
 	print '    --discard-data  - Delete messages in rebuilt tables; never discard the outbox.' . PHP_EOL;
@@ -749,5 +796,5 @@ function syslog_upart_display_help(): void {
 	print 'much ADDITIONAL free disk space on the database server, plus temporary' . PHP_EOL;
 	print 'file and binary-log headroom. Large transfers may take several hours.' . PHP_EOL . PHP_EOL;
 	print 'On failure keep writers stopped and retry with --preserve-data and the' . PHP_EOL;
-	print 'same --convert-ms option, if used; originals remain in *_rebuild tables.' . PHP_EOL . PHP_EOL;
+	print 'same --partition and --convert-ms options, if used; originals remain in *_rebuild tables.' . PHP_EOL . PHP_EOL;
 }

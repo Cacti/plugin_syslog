@@ -170,7 +170,7 @@ function syslog_config_settings(): void {
 			'array'         => $formats
 		],
 		'syslog_retention_header' => [
-			'friendly_name' => __('Data Retention Settings', 'syslog'),
+			'friendly_name' => __('Data Retention and Partitioning', 'syslog'),
 			'method'        => 'spacer',
 			'collapsible'   => 'true'
 		],
@@ -181,9 +181,19 @@ function syslog_config_settings(): void {
 			'default'       => '30',
 			'array'         => $syslog_retentions
 		],
+		'syslog_partition_granularity' => [
+			'friendly_name' => __('Partitioning Level', 'syslog'),
+			'description'   => __('The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server\'s partition limit, or the settings are not saved.', 'syslog'),
+			'method'        => 'drop_array',
+			'default'       => 'day',
+			'array'         => [
+				'day'  => __('Daily', 'syslog'),
+				'hour' => __('Hourly', 'syslog')
+			]
+		],
 		'syslog_partition_ahead_days' => [
 			'friendly_name' => __('Partition Pre-create Window', 'syslog'),
-			'description'   => __('This is the number of future daily partitions to maintain for partitioned Syslog tables.', 'syslog'),
+			'description'   => __('This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days.', 'syslog'),
 			'method'        => 'drop_array',
 			'default'       => '3',
 			'array'         => [
@@ -389,6 +399,79 @@ function syslog_config_settings(): void {
 	} else {
 		$settings['syslog'] = $temp;
 	}
+
+	if (get_nfilter_request_var('tab') === 'syslog' && basename((string) ($_SERVER['SCRIPT_NAME'] ?? '')) === 'settings.php' && syslog_config_safe()) {
+		if (get_nfilter_request_var('action') === 'save') {
+			if (syslog_settings_partition_gate() !== '') {
+				header('Location: settings.php?tab=syslog');
+				exit;
+			}
+		} else {
+			syslog_settings_partition_pending($settings['syslog']);
+		}
+	}
+}
+
+/**
+ * Refuse a Syslog Settings save whose partitioning level, retention and
+ * pre-create window exceed the database server's partition limit. Cacti runs
+ * the config_settings hook before settings.php writes anything, on 1.2 and 1.3.
+ *
+ * @param string|null $version The database VERSION(), or null to query it.
+ *
+ * @return string The reported error, or '' when the save may proceed.
+ */
+function syslog_settings_partition_gate(?string $version = null): string {
+	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+		return '';
+	}
+
+	// syslog_connect() loads the helpers even when the Syslog database is down.
+	if ($version === null) {
+		$version = (string) (syslog_connect() ? syslog_db_fetch_cell('SELECT VERSION()') : db_fetch_cell('SELECT VERSION()'));
+	}
+
+	$error = syslog_partition_settings_error(
+		get_nfilter_request_var('syslog_partition_granularity') === 'hour' ? 'hour' : 'day',
+		get_nfilter_request_var('syslog_retention'),
+		get_nfilter_request_var('syslog_partition_ahead_days'),
+		syslog_partition_server_limit($version)
+	);
+
+	if ($error === '') {
+		return '';
+	}
+
+	foreach (['syslog_retention', 'syslog_partition_granularity', 'syslog_partition_ahead_days'] as $field) {
+		$_SESSION['sess_error_fields'][$field] = $field;
+	}
+
+	raise_message('syslog_partition_limit', $error . ' ' . __('The Syslog settings were not saved.', 'syslog'), MESSAGE_LEVEL_ERROR);
+
+	return $error;
+}
+
+/**
+ * Note on the Partitioning Level setting when the tables still use the other
+ * level, because only cli/upgrade_partitioning.php applies a change.
+ *
+ * @param array<string, array<string, mixed>> $fields The Syslog settings definitions.
+ *
+ * @return void
+ */
+function syslog_settings_partition_pending(array &$fields): void {
+	if (!isset($fields['syslog_partition_granularity']) || !syslog_connect() || !syslog_db_table_exists('syslog', false)) {
+		return;
+	}
+
+	$active = syslog_partition_layout_granularity('syslog');
+
+	if ($active === syslog_partition_requested_granularity()) {
+		return;
+	}
+
+	$fields['syslog_partition_granularity']['description'] .= ' ' . __('Pending: the tables still use %s partitions. Run cli/upgrade_partitioning.php to apply the selected level.',
+		$active === 'hour' ? __('Hourly', 'syslog') : __('Daily', 'syslog'), 'syslog');
 }
 
 /**

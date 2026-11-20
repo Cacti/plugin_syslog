@@ -743,13 +743,13 @@ function syslog_status_format_bytes($bytes): string {
 	return number_format((float) $bytes, $unit === 0 ? 0 : 2) . ' ' . $units[$unit];
 }
 
-/** Format a dYYYYMMDD partition label as an ISO date. */
+/** Format a dYYYYMMDD or hYYYYMMDDHH partition label as an ISO date or hour. */
 function syslog_status_format_partition_date(string $date): string {
-	if (preg_match('/^\d{8}$/', $date) !== 1) {
+	if (preg_match('/^\d{8}(\d{2})?$/', $date, $match) !== 1) {
 		return __('Unavailable', 'syslog');
 	}
 
-	return substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6, 2);
+	return substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6, 2) . (isset($match[1]) ? ' ' . $match[1] . ':00' : '');
 }
 
 /** Return a readable summary of the persisted per-table recovery state. */
@@ -978,6 +978,16 @@ function syslog_status_card_body(string $key): string {
 				print '<tr><th scope="row">' . html_escape($table) . '</th><td>' . html_escape($coverage) . '</td><td>' . html_escape(isset($health['dmax_rows']) && $health['dmax_rows'] !== null ? number_format((float) $health['dmax_rows']) : __('Unavailable', 'syslog')) . '</td><td>' . html_escape(syslog_status_format_bytes($health['dmax_bytes'] ?? null)) . '</td></tr>';
 			}
 			print '</tbody></table>';
+			$levels    = ['hour' => __('Hourly', 'syslog'), 'day' => __('Daily', 'syslog')];
+			$active    = $partition_health['syslog']['granularity'] ?? 'day';
+			$requested = syslog_partition_requested_granularity();
+			print '<p class="syslogStatusNote"><span class="syslogStatusNoteLabel">' . __esc('Partitioning level', 'syslog') . ':</span> ' . html_escape($levels[$active]);
+
+			if ($requested !== $active) {
+				print ' — ' . html_escape(__('%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables.', $levels[$requested], 'syslog'));
+			}
+
+			print '</p>';
 
 			break;
 		case 'maintenance':
@@ -2120,6 +2130,10 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 		}
 
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'syslog.priority_id ' . $priorities;
+	}
+
+	if ($tab == 'syslog') {
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . syslog_logtime_upper_bound_sql();
 	}
 
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);

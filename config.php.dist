@@ -73,8 +73,16 @@ $syslog_replication_main_db_ssl_ca   = $database_ssl_ca;
 //$syslog_install_options['engine']       = 'innodb';
 //$syslog_install_options['db_type']      = 'part';
 //$syslog_install_options['days']         = '30';
+//$syslog_install_options['partitioning'] = 'day';
 //$syslog_install_options['mode']         = 'install';
 //$syslog_install_options['id']           = 'syslog';
+
+/* Partitioning level for the syslog and syslog_removed tables on a NEW install:
+ *   'day'  - one partition per UTC day (default)
+ *   'hour' - one partition per UTC hour; requires a finite retention ('days'),
+ *            and the retention and level must fit the server's partition limit
+ * To change an existing install, change Partitioning Level in Settings and run
+ * cli/upgrade_partitioning.php, or run cli/upgrade_partitioning.php --partition=hourly|daily. */
 
 /* Timestamp precision for the logtime column on a NEW install:
  *   'ms'  - millisecond TIMESTAMP(3), preserves sub-second ordering (MariaDB only, default)
