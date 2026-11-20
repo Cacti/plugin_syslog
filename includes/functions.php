@@ -2939,6 +2939,57 @@ function syslog_partition_settings_error(string $granularity, $retention_days, $
 }
 
 /**
+ * The partitioning levels existing message tables use.
+ *
+ * @param string[] $tables The tables to inspect.
+ *
+ * @return string[] Distinct levels, empty when none of the tables exists.
+ */
+function syslog_partition_existing_layouts(array $tables = ['syslog', 'syslog_removed']): array {
+	$layouts = [];
+
+	foreach ($tables as $table) {
+		if (syslog_db_table_exists($table, false)) {
+			$layouts[] = syslog_partition_layout_granularity($table);
+		}
+	}
+
+	return array_values(array_unique($layouts));
+}
+
+/**
+ * Check retention and the pre-create window against the requested level and
+ * every level the tables still use. Maintenance follows the existing layout
+ * until cli/upgrade_partitioning.php rebuilds it, so both must fit.
+ *
+ * @param string     $requested      The requested level, 'hour' or 'day'.
+ * @param int|string $retention_days Days of retention; 0 is Indefinite.
+ * @param int|string $ahead_days     The pre-create window in days.
+ * @param int        $limit          The server partition limit.
+ * @param string[]   $layouts        The levels the existing tables use.
+ *
+ * @return string The error, or '' when every level fits.
+ */
+function syslog_partition_levels_error(string $requested, $retention_days, $ahead_days, int $limit, array $layouts): string {
+	$error = syslog_partition_settings_error($requested, $retention_days, $ahead_days, $limit);
+
+	foreach (array_diff($layouts, [$requested]) as $layout) {
+		if ($error !== '') {
+			break;
+		}
+
+		$error = syslog_partition_settings_error($layout, $retention_days, $ahead_days, $limit);
+
+		if ($error !== '') {
+			$error = __('The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them.',
+				$layout === 'hour' ? __('Hourly', 'syslog') : __('Daily', 'syslog'), 'syslog') . ' ' . $error;
+		}
+	}
+
+	return $error;
+}
+
+/**
  * Upper logtime bound added to every message query. Messages cannot be newer
  * than now, so the empty future partitions are always pruned, whatever the
  * filter's own range says.

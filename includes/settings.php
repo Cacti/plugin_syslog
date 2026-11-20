@@ -417,25 +417,29 @@ function syslog_config_settings(): void {
  * pre-create window exceed the database server's partition limit. Cacti runs
  * the config_settings hook before settings.php writes anything, on 1.2 and 1.3.
  *
- * @param string|null $version The database VERSION(), or null to query it.
+ * @param string|null   $version The database VERSION(), or null to query it.
+ * @param string[]|null $layouts The levels the tables use, or null to read them.
  *
  * @return string The reported error, or '' when the save may proceed.
  */
-function syslog_settings_partition_gate(?string $version = null): string {
+function syslog_settings_partition_gate(?string $version = null, ?array $layouts = null): string {
 	if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 		return '';
 	}
 
 	// syslog_connect() loads the helpers even when the Syslog database is down.
-	if ($version === null) {
-		$version = (string) (syslog_connect() ? syslog_db_fetch_cell('SELECT VERSION()') : db_fetch_cell('SELECT VERSION()'));
+	if ($version === null || $layouts === null) {
+		$connected = syslog_connect();
+		$version   = $version ?? (string) ($connected ? syslog_db_fetch_cell('SELECT VERSION()') : db_fetch_cell('SELECT VERSION()'));
+		$layouts   = $layouts ?? ($connected ? syslog_partition_existing_layouts() : []);
 	}
 
-	$error = syslog_partition_settings_error(
+	$error = syslog_partition_levels_error(
 		get_nfilter_request_var('syslog_partition_granularity') === 'hour' ? 'hour' : 'day',
 		get_nfilter_request_var('syslog_retention'),
 		get_nfilter_request_var('syslog_partition_ahead_days'),
-		syslog_partition_server_limit($version)
+		syslog_partition_server_limit($version),
+		$layouts
 	);
 
 	if ($error === '') {

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 10:08-0500\n"
+"POT-Creation-Date: 2026-11-20 10:14-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -308,6 +308,11 @@ msgstr ""
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
 msgid "Hourly"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
 msgstr ""
 
 #: includes/functions.php

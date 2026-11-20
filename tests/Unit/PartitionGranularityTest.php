@@ -62,7 +62,7 @@ it('refuses to save Syslog settings that exceed the partition limit', function (
 	try {
 		$GLOBALS['request'] = ['syslog_partition_granularity' => 'hour', 'syslog_retention' => '365', 'syslog_partition_ahead_days' => '3'];
 
-		expect(syslog_settings_partition_gate('10.11.6-MariaDB'))->toContain('8,857 partitions')
+		expect(syslog_settings_partition_gate('10.11.6-MariaDB', ['day']))->toContain('8,857 partitions')
 			->and($messages)->toHaveCount(1)
 			->and($messages[0][0])->toBe('syslog_partition_limit')
 			->and($messages[0][1])->toContain('The Syslog settings were not saved.')
@@ -70,11 +70,16 @@ it('refuses to save Syslog settings that exceed the partition limit', function (
 			->and($_SESSION['sess_error_fields'])->toHaveKeys(['syslog_retention', 'syslog_partition_granularity']);
 
 		$GLOBALS['request']['syslog_retention'] = '60';
-		expect(syslog_settings_partition_gate('10.11.6-MariaDB'))->toBe('')
-			->and(syslog_settings_partition_gate('10.0.3-MariaDB'))->toContain('limit of 1,024');
+		expect(syslog_settings_partition_gate('10.11.6-MariaDB', ['day']))->toBe('')
+			->and(syslog_settings_partition_gate('10.0.3-MariaDB', ['day']))->toContain('limit of 1,024');
+
+		// Hourly tables keep growing hourly until the rebuild, whatever is selected.
+		$GLOBALS['request'] = ['syslog_partition_granularity' => 'day', 'syslog_retention' => '0', 'syslog_partition_ahead_days' => '3'];
+		expect(syslog_settings_partition_gate('10.11.6-MariaDB', ['hour']))->toStartWith('The tables still use Hourly partitions')->toContain('Indefinite')
+			->and(syslog_settings_partition_gate('10.11.6-MariaDB', ['day']))->toBe('');
 
 		$_SERVER['REQUEST_METHOD'] = 'GET';
-		expect(syslog_settings_partition_gate('10.0.3-MariaDB'))->toBe('');
+		expect(syslog_settings_partition_gate('10.0.3-MariaDB', ['hour']))->toBe('');
 	} finally {
 		if ($method === null) {
 			unset($_SERVER['REQUEST_METHOD']);
@@ -85,6 +90,21 @@ it('refuses to save Syslog settings that exceed the partition limit', function (
 		$GLOBALS['request'] = [];
 		$_SESSION['sess_error_fields'] = [];
 	}
+});
+
+it('reads the partitioning level of each existing message table', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	test_override('syslog_db_table_exists', fn($table) => $table !== 'syslog_removed');
+	test_override('syslog_db_fetch_cell_prepared', fn($sql, $params) => str_contains($sql, "LIKE 'h%'") && $params[1] === 'syslog' ? '97' : '0');
+
+	expect(syslog_partition_existing_layouts())->toBe(['hour'])
+		->and(syslog_partition_existing_layouts(['syslog_removed']))->toBe([]);
+
+	test_override('syslog_db_table_exists', fn() => true);
+
+	expect(syslog_partition_existing_layouts())->toBe(['hour', 'day']);
 });
 
 it('recovers hourly partitions in bounded runs and checks only the horizon once it exists', function () {
