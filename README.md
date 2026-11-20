@@ -170,7 +170,7 @@ php plugins/syslog/cli/upgrade_partitioning.php --convert-ms
 
 The `--convert-ms` option is **MariaDB only**. It rebuilds the stored/removed
 message tables to `TIMESTAMP(3)`, preserving data in verified batches of at
-most **10,000 rows**. The incoming queue (`syslog_incoming`) and replication
+most **50,000 rows**. The incoming queue (`syslog_incoming`) and replication
 outbox (`syslog_replication_output`) are widened in place with `ALTER TABLE`,
 so their sequence numbers, which archival and replication use as identities,
 are unchanged and undelivered rows are never discarded. Already-converted

@@ -139,7 +139,8 @@ function rebuild_table(string $table, bool $convert = true, string $engine = 'In
 	ob_start();
 
 	try {
-		return syslog_upart_rebuild($table, $convert, true, $engine, 2, 2);
+		// 10,000-row batches keep the multi-batch resume paths covered on a small table.
+		return syslog_upart_rebuild($table, $convert, true, $engine, 2, 2, 'day', 8192, 10000);
 	} finally {
 		ob_end_clean();
 	}
@@ -292,7 +293,7 @@ try {
 	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog_removed') === 0, 'Only explicit discard mode empties a rebuilt table');
 	rebuild_check(!syslog_db_table_exists('syslog_removed_rebuild'), 'Explicit discard removes the original after verification');
 	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog_replication_output') === 1, 'Discard mode does not delete the outbox');
-	rebuild_check(max($batch_sizes) <= 10000, 'No stored INSERT SELECT may copy more than 10000 rows');
+	rebuild_check(max($batch_sizes) <= 50000, 'No stored INSERT SELECT may copy more than the 50000-row default batch');
 
 	ob_start();
 	rebuild_check(syslog_upart_rebuild('syslog', false, true, 'InnoDB', 2, 2, 'hour', 8192), 'A preserving rebuild converts daily partitions to hourly');

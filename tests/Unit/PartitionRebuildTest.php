@@ -120,7 +120,7 @@ it('reports database size, equal extra space and several-hour duration even with
 		->and($output)->toContain('10.00 GiB (10,737,418,240 bytes)')
 		->toContain('AT LEAST another 10.00 GiB (10,737,418,240 bytes)')
 		->toContain('DATABASE SERVER')->toContain('SEVERAL HOURS')
-		->toContain('does NOT pause')->toContain('10,000-row copies')
+		->toContain('does NOT pause')->toContain('50,000-row copies')
 		->toContain('receive new sequence numbers')
 		->not->toContain('Type "yes"')
 		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192]])
