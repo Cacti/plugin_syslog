@@ -92,7 +92,7 @@ exit(syslog_upart_run($confirm, $convert_ms, $preserve_data) ? 0 : 1);
  * DDL is not transactional; failed copies retain originals for a safe retry.
  */
 function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true): bool {
-	global $syslogdb_default;
+	global $config, $syslogdb_default;
 
 	$mariadb = syslog_db_is_mariadb();
 
@@ -120,7 +120,35 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 		return false;
 	}
 
-	$engine = $engines[strtolower($engine)];
+	// Writers would interleave with copied rows and break verification, so
+	// processing must be disabled and its master slot held for the duration.
+	if ((string) read_config_option('syslog_enabled', true) !== '') {
+		fwrite(STDERR, 'ERROR: Syslog processing is enabled. Uncheck Settings > Syslog > Syslog Enabled, stop remote collectors and any other Syslog database writers, then retry. No changes were made.' . PHP_EOL);
+
+		return false;
+	}
+
+	$poller_id = (int) ($config['poller_id'] ?? 1);
+
+	if (!register_process_start('syslog', 'master', $poller_id, 7 * 86400)) {
+		fwrite(STDERR, 'ERROR: A Syslog processing run is still active; wait for it to finish, then retry. No changes were made.' . PHP_EOL);
+
+		return false;
+	}
+
+	try {
+		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead);
+	} finally {
+		unregister_process('syslog', 'master', $poller_id);
+	}
+}
+
+/**
+ * Rebuild while holding the Syslog master process slot.
+ */
+function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead): bool {
+	global $syslogdb_default;
+
 	$lock = hash('sha256', $syslogdb_default . '.syslog_upgrade_partitioning');
 
 	if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [$lock]) !== 1) {
@@ -130,30 +158,71 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 	}
 
 	try {
+		if (syslog_db_table_exists('syslog_incoming_rebuild', false)) {
+			fwrite(STDERR, 'ERROR: syslog_incoming_rebuild was left by an earlier development build. Restore it as described in the README, then retry. No changes were made.' . PHP_EOL);
+
+			return false;
+		}
+
 		$tables = [];
 
-		foreach (['syslog', 'syslog_removed', 'syslog_incoming'] as $table) {
+		foreach (['syslog', 'syslog_removed'] as $table) {
 			$backup_exists = syslog_db_table_exists($table . '_rebuild', false);
 
-			if ($backup_exists && (!$preserve_data || ($table === 'syslog_incoming' && !$convert_ms))) {
+			if ($backup_exists && !$preserve_data) {
 				fwrite(STDERR, "ERROR: {$table}_rebuild exists from an unfinished rebuild. Retry with --preserve-data and the original --convert-ms option, if used. No data was discarded." . PHP_EOL);
 
 				return false;
 			}
 
-			if ($backup_exists || (syslog_db_table_exists($table, false)
-				&& ($table !== 'syslog_incoming' || ($convert_ms && syslog_detect_logtime_precision($table) !== 'ms')))) {
+			if ($backup_exists || syslog_db_table_exists($table, false)) {
 				$tables[] = $table;
 			}
 		}
 
-		$outbox = $convert_ms && syslog_db_table_exists('syslog_replication_output', false)
-			&& syslog_detect_logtime_precision('syslog_replication_output') !== 'ms';
+		// The incoming queue and replication outbox keep their sequence identities
+		// (archival and delivery deduplicate on them), so they are widened in place.
+		$widen = [];
 
-		if (!$tables && !$outbox) {
+		foreach (['syslog_incoming', 'syslog_replication_output'] as $table) {
+			if ($convert_ms && syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+				$widen[] = $table;
+			}
+		}
+
+		if (!$tables && !$widen) {
 			print 'No tables require rebuilding.' . PHP_EOL;
 
 			return true;
+		}
+
+		// Legacy DATETIME history is wall-clock time in an unknown zone; it is
+		// not converted. Only an explicit discard may replace such tables.
+		$checked = $widen;
+
+		foreach ($tables as $table) {
+			if ($preserve_data) {
+				$checked[] = $table;
+				$checked[] = $table . '_rebuild';
+			}
+		}
+
+		$legacy = syslog_db_fetch_assoc_prepared('SELECT TABLE_NAME FROM information_schema.COLUMNS
+			WHERE TABLE_SCHEMA = ? AND COLUMN_NAME = \'logtime\' AND DATA_TYPE = \'datetime\'
+			AND TABLE_NAME IN (' . implode(', ', array_fill(0, count($checked), '?')) . ')',
+			array_merge([$syslogdb_default], $checked));
+
+		if (!is_array($legacy)) {
+			fwrite(STDERR, 'ERROR: Cannot read the logtime column types; no tables were changed.' . PHP_EOL);
+
+			return false;
+		}
+
+		if ($legacy) {
+			fwrite(STDERR, 'ERROR: Legacy DATETIME logtime columns are not supported: ' . implode(', ', array_column($legacy, 'TABLE_NAME'))
+				. '. Rebuild stored and removed history with --discard-data, or convert it manually as described in the README. No changes were made.' . PHP_EOL);
+
+			return false;
 		}
 
 		$bytes = syslog_db_fetch_cell_prepared('SELECT SUM(DATA_LENGTH + INDEX_LENGTH)
@@ -173,15 +242,16 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 		print 'Depending on the size of the Syslog tables and storage speed, this can' . PHP_EOL;
 		print 'take SEVERAL HOURS. Database metadata is an estimate, not a disk-space check.' . PHP_EOL;
 		print "Rebuilding daily partitions: engine=$engine, retention=$days days, ahead=$ahead days." . PHP_EOL;
-		print 'Tables: ' . implode(', ', $tables) . ($outbox ? '; replication outbox widened in place' : '') . PHP_EOL;
+		print 'Tables: ' . implode(', ', $tables) . ($widen ? '; widened in place: ' . implode(', ', $widen) : '') . PHP_EOL;
 		print $preserve_data
-			? 'Messages are preserved in 10,000-row copies; originals are dropped only after verification.' . PHP_EOL
+			? 'Messages are preserved in verified 10,000-row copies and receive new sequence numbers; originals are dropped only after verification.' . PHP_EOL
 			: 'DESTRUCTIVE: stored messages in the listed rebuild tables will be DELETED.' . PHP_EOL;
 		print $convert_ms ? 'Converting the complete message pipeline to TIMESTAMP(3).' . PHP_EOL
 			: 'Existing timestamp precision is preserved.' . PHP_EOL;
-		print 'Take a database backup. STOP all processing, partition maintenance,' . PHP_EOL;
-		print 'replication and external database writers; buffer new logs upstream.' . PHP_EOL;
-		print 'This utility does NOT pause them. Keep them stopped until completion or recovery.' . PHP_EOL;
+		print 'Take a database backup. Syslog processing is disabled and its process slot' . PHP_EOL;
+		print 'is held, but this utility does NOT pause remote collectors, replication or' . PHP_EOL;
+		print 'external database writers; stop them and buffer new logs upstream.' . PHP_EOL;
+		print 'Keep them stopped until completion or recovery.' . PHP_EOL;
 		print 'Live log tables are temporarily absent or incomplete during rebuilding.' . PHP_EOL;
 		print '========================================================================' . PHP_EOL;
 
@@ -206,10 +276,7 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 		}
 
 		$lock_wait = (int) $lock_wait;
-		$copy_mode = implode(',', array_unique(array_merge(
-			array_diff(explode(',', $mode), ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE', '']),
-			['NO_AUTO_VALUE_ON_ZERO']
-		)));
+		$copy_mode = implode(',', array_diff(explode(',', $mode), ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE', '']));
 
 		try {
 			if (!syslog_db_execute("SET SESSION time_zone = '+00:00'")
@@ -221,17 +288,16 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 			}
 
 			foreach ($tables as $table) {
-				if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, (int) $days, $ahead, $zone)) {
+				if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead)) {
 					return false;
 				}
 			}
 
-			if ($outbox) {
-				$column = syslog_logtime_sql_type('ms');
+			$column = syslog_logtime_sql_type('ms');
 
-				if (!syslog_db_execute_prepared('SET SESSION time_zone = ?', [$zone])
-					|| !syslog_db_execute("ALTER TABLE `$syslogdb_default`.`syslog_replication_output` MODIFY COLUMN logtime $column")) {
-					fwrite(STDERR, 'ERROR: Cannot widen the replication outbox; the precision setting was not changed.' . PHP_EOL);
+			foreach ($widen as $table) {
+				if (!syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN logtime $column")) {
+					fwrite(STDERR, "ERROR: Cannot widen $table; the precision setting was not changed." . PHP_EOL);
 
 					return false;
 				}
@@ -259,7 +325,7 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 		}
 
 		cacti_log('SYSLOG: Completed cli/upgrade_partitioning.php' . ($convert_ms ? ' with --convert-ms' : ''), false, 'SYSLOG');
-		print 'Rebuild complete.' . ($convert_ms ? ' Syslog now stores millisecond timestamps; configure forwarders accordingly.' : '') . PHP_EOL;
+		print 'Rebuild complete. Re-enable Syslog processing.' . ($convert_ms ? ' Syslog now stores millisecond timestamps; configure forwarders accordingly.' : '') . PHP_EOL;
 
 		return true;
 	} finally {
@@ -269,17 +335,23 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 
 /**
  * Rebuild one message table without dropping its original until data agrees.
- * A retained original is authoritative on retry; existing copied rows are
- * checked, not overwritten, so a failed copy never discards either version.
+ *
+ * Rows are copied without seq, in original order, so the replacement numbers
+ * them from its own AUTO_INCREMENT, which starts above the original high-water
+ * mark: a sequence value is never reused. Each 10,000-row batch is checksummed
+ * against its source range before a checkpoint records it. A retry discards
+ * replacement rows above the last checkpoint and resumes after it.
  */
-function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead, ?string $local_zone = null): bool {
+function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead): bool {
 	global $syslogdb_default;
 
 	$backup = $table . '_rebuild';
-	$source = syslog_db_table_exists($backup, false) ? $backup : $table;
+	$resume = syslog_db_table_exists($backup, false);
+	$source = $resume ? $backup : $table;
 	$original = "`$syslogdb_default`.`$source`";
 	$target = "`$syslogdb_default`.`$table`";
 	$saved = "`$syslogdb_default`.`$backup`";
+	$progress = "`$syslogdb_default`.`syslog_rebuild_progress`";
 
 	$fail = static function (string $reason) use ($table, $backup): bool {
 		fwrite(STDERR, "ERROR: $table: $reason. Originals are retained in $table or $backup; keep writers stopped and retry with --preserve-data and the same --convert-ms option, if used. The precision setting was not changed." . PHP_EOL);
@@ -293,8 +365,6 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 	$keys = syslog_db_fetch_assoc_prepared("SELECT COLUMN_NAME FROM information_schema.STATISTICS
 		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND INDEX_NAME = 'PRIMARY'
 		ORDER BY SEQ_IN_INDEX", [$syslogdb_default, $source]);
-	$next = syslog_db_fetch_cell_prepared('SELECT AUTO_INCREMENT
-		FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?', [$syslogdb_default, $source]);
 	$triggers = syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM information_schema.TRIGGERS
 		WHERE TRIGGER_SCHEMA = ? AND EVENT_OBJECT_TABLE IN (?, ?)', [$syslogdb_default, $table, $backup]);
 	$foreign_keys = syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM information_schema.KEY_COLUMN_USAGE
@@ -304,7 +374,7 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 		[$syslogdb_default, $table, $backup, $syslogdb_default, $table, $backup]);
 
 	if (!is_array($columns) || !$columns || !is_array($keys) || !in_array(array_column($keys, 'COLUMN_NAME'), [['seq'], ['seq', 'logtime']], true)
-		|| !ctype_digit((string) $next) || !is_numeric($triggers) || !is_numeric($foreign_keys)) {
+		|| !is_numeric($triggers) || !is_numeric($foreign_keys)) {
 		return $fail('Cannot read the table metadata or the primary key is unsupported');
 	}
 
@@ -313,155 +383,184 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 	}
 
 	$logtime = array_values(array_filter($columns, static fn($column) => $column['COLUMN_NAME'] === 'logtime'));
+	$type = $logtime ? $logtime[0]['DATA_TYPE'] : '';
 
-	if (!$logtime || !in_array($logtime[0]['DATA_TYPE'], ['timestamp', 'datetime'], true)) {
+	if ($type === 'datetime' && $preserve_data) {
+		return $fail('Legacy DATETIME logtime is not supported; rebuild with --discard-data or convert it manually');
+	}
+
+	if (!in_array($type, ['timestamp', 'datetime'], true)) {
 		return $fail('Unsupported original logtime type');
 	}
 
-	// Legacy DATETIME holds wall-clock time; TIMESTAMP must use UTC to avoid
-	// duplicate cursor values during a daylight-saving fall-back hour.
-	$zone = $logtime[0]['DATA_TYPE'] === 'timestamp' ? '+00:00'
-		: ($local_zone ?? syslog_db_fetch_cell('SELECT @@SESSION.time_zone'));
-
-	if (!is_string($zone) || !syslog_db_execute_prepared('SET SESSION time_zone = ?', [$zone])) {
+	// TIMESTAMP is stored in UTC; a UTC session copies it without conversion.
+	if (!syslog_db_execute("SET SESSION time_zone = '+00:00'")) {
 		return $fail('Cannot configure the timestamp copy time zone');
 	}
 
 	$precision = $convert_ms ? 'ms' : syslog_detect_logtime_precision($source);
-	$partitioned = $table !== 'syslog_incoming';
-	$partition_sql = null;
 
 	if (!in_array($precision, ['sec', 'ms'], true)) {
 		return $fail('Cannot determine the original timestamp precision');
 	}
 
-	if ($partitioned) {
-		$unique_keys = syslog_db_fetch_assoc_prepared("SELECT INDEX_NAME,
-			GROUP_CONCAT(COLUMN_NAME ORDER BY SEQ_IN_INDEX) AS columns_list
-			FROM information_schema.STATISTICS
-			WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND NON_UNIQUE = 0 GROUP BY INDEX_NAME",
-			[$syslogdb_default, $source]);
-		$range = syslog_db_fetch_row("SELECT UNIX_TIMESTAMP(MIN(logtime)) AS first_time,
-			UNIX_TIMESTAMP(MAX(logtime)) AS last_time FROM $original WHERE logtime > '1970-01-01 00:00:00'");
+	$unique_keys = syslog_db_fetch_assoc_prepared("SELECT INDEX_NAME,
+		GROUP_CONCAT(COLUMN_NAME ORDER BY SEQ_IN_INDEX) AS columns_list
+		FROM information_schema.STATISTICS
+		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND NON_UNIQUE = 0 GROUP BY INDEX_NAME",
+		[$syslogdb_default, $source]);
+	$range = syslog_db_fetch_row("SELECT UNIX_TIMESTAMP(MIN(logtime)) AS first_time,
+		UNIX_TIMESTAMP(MAX(logtime)) AS last_time FROM $original WHERE logtime > '1970-01-01 00:00:00'");
 
-		if (!is_array($unique_keys) || !is_array($range) || !array_key_exists('first_time', $range) || !array_key_exists('last_time', $range)) {
-			return $fail('Cannot read the unique indexes or timestamp range');
-		}
+	if (!is_array($unique_keys) || !is_array($range) || !array_key_exists('first_time', $range) || !array_key_exists('last_time', $range)) {
+		return $fail('Cannot read the unique indexes or timestamp range');
+	}
 
-		foreach ($unique_keys as $key) {
-			if ($key['INDEX_NAME'] !== 'PRIMARY' && !in_array('logtime', explode(',', $key['columns_list']), true)) {
-				return $fail('A custom unique index excludes logtime; partitioning requires a manual migration');
-			}
-		}
-
-		$partition_sql = syslog_upart_partition_sql($days, $ahead,
-			$range['first_time'] === null ? null : (int) $range['first_time'],
-			$range['last_time'] === null ? null : (int) $range['last_time']);
-
-		if ($partition_sql === null) {
-			return $fail('The requested history and future horizon exceed the 8192-partition limit; reduce retention or archive outlying timestamps first');
+	foreach ($unique_keys as $key) {
+		if ($key['INDEX_NAME'] !== 'PRIMARY' && !in_array('logtime', explode(',', $key['columns_list']), true)) {
+			return $fail('A custom unique index excludes logtime; partitioning requires a manual migration');
 		}
 	}
 
-	if ($source === $table) {
+	$partition_sql = syslog_upart_partition_sql($days, $ahead,
+		$range['first_time'] === null ? null : (int) $range['first_time'],
+		$range['last_time'] === null ? null : (int) $range['last_time']);
+
+	if ($partition_sql === null) {
+		return $fail('The requested history and future horizon exceed the 8192-partition limit; reduce retention or archive outlying timestamps first');
+	}
+
+	// information_schema may cache AUTO_INCREMENT, so MAX(seq) is the floor.
+	$next = syslog_db_fetch_cell_prepared("SELECT GREATEST(CAST(COALESCE(MAX(seq), 0) AS DECIMAL(21,0)) + 1,
+		CAST(COALESCE((SELECT AUTO_INCREMENT FROM information_schema.TABLES
+			WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?), 1) AS DECIMAL(21,0))) FROM $original", [$syslogdb_default, $source]);
+
+	if (!is_numeric($next) || !ctype_digit((string) $next)) {
+		return $fail('Cannot read the sequence high-water mark');
+	}
+
+	if (!$resume) {
+		$rows = $preserve_data ? syslog_db_fetch_cell("SELECT COUNT(*) FROM $original") : 0;
+		$room = is_numeric($rows) ? syslog_db_fetch_cell_prepared('SELECT CAST(? AS DECIMAL(21,0)) + CAST(? AS DECIMAL(21,0)) <= 18446744073709551615',
+			[$next, $rows]) : false;
+
+		if ((string) $room !== '1') {
+			return $fail('Too few sequence values remain above the high-water mark to renumber every row');
+		}
+
 		if (!syslog_db_execute("RENAME TABLE $target TO $saved")) {
 			return $fail('Cannot rename the original table');
 		}
 	}
 
-	if (!syslog_db_table_exists($table, false)
-		&& !syslog_db_execute("CREATE TABLE $target LIKE $saved")) {
-		return $fail('Cannot create the replacement table');
+	$state = $preserve_data && syslog_db_table_exists('syslog_rebuild_progress', false)
+		? syslog_db_fetch_row_prepared("SELECT source_seq, source_logtime, target_seq, copied FROM $progress WHERE table_name = ?", [$table])
+		: [];
+
+	if (!is_array($state)) {
+		return $fail('Cannot read the copy checkpoint');
 	}
 
-	$count = syslog_db_fetch_cell("SELECT COUNT(*) FROM $target");
-	$parts = syslog_db_fetch_assoc_prepared('SELECT PARTITION_NAME, PARTITION_DESCRIPTION, PARTITION_EXPRESSION
-		FROM information_schema.PARTITIONS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?
-		ORDER BY PARTITION_ORDINAL_POSITION', [$syslogdb_default, $table]);
+	// A replacement without a checkpoint was interrupted during setup.
+	if (syslog_db_table_exists($table, false) && !$state) {
+		$count = syslog_db_fetch_cell("SELECT COUNT(*) FROM $target");
 
-	if (!is_numeric($count) || !is_array($parts) || !$parts) {
-		return $fail('Cannot read the replacement row count or partition metadata');
+		if (!is_numeric($count) || (int) $count !== 0) {
+			return $fail('The replacement has rows but no copy checkpoint; inspect it, drop it, and retry');
+		}
+
+		if (!syslog_db_execute("DROP TABLE $target")) {
+			return $fail('Cannot drop the incomplete replacement');
+		}
 	}
 
-	if ((int) $count === 0) {
+	if (!syslog_db_table_exists($table, false)) {
+		if (!syslog_db_execute("CREATE TABLE $target LIKE $saved")) {
+			return $fail('Cannot create the replacement table');
+		}
+
+		$parts = syslog_db_fetch_assoc_prepared('SELECT PARTITION_NAME FROM information_schema.PARTITIONS
+			WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?', [$syslogdb_default, $table]);
+
+		if (!is_array($parts) || !$parts) {
+			return $fail('Cannot read the replacement partition metadata');
+		}
+
 		$column = syslog_logtime_sql_type($precision);
+		$row_format = $engine === 'Aria' ? 'PAGE' : 'DYNAMIC';
 		$steps = [];
 
-		if ($partitioned && $parts[0]['PARTITION_NAME'] !== null) {
+		if ($parts[0]['PARTITION_NAME'] !== null) {
 			$steps[] = "ALTER TABLE $target REMOVE PARTITIONING";
 		}
 
 		$steps[] = "ALTER TABLE $target MODIFY COLUMN logtime $column";
+		$steps[] = "ALTER TABLE $target ENGINE=$engine ROW_FORMAT=$row_format";
 
-		if ($partitioned) {
-			$row_format = $engine === 'Aria' ? 'PAGE' : 'DYNAMIC';
-			$steps[] = "ALTER TABLE $target ENGINE=$engine ROW_FORMAT=$row_format";
-
-			if (array_column($keys, 'COLUMN_NAME') === ['seq']) {
-				$steps[] = "ALTER TABLE $target DROP PRIMARY KEY, ADD PRIMARY KEY (seq, logtime)";
-			}
-
-			$steps[] = "ALTER TABLE $target $partition_sql";
+		if (array_column($keys, 'COLUMN_NAME') === ['seq']) {
+			$steps[] = "ALTER TABLE $target DROP PRIMARY KEY, ADD PRIMARY KEY (seq, logtime)";
 		}
+
+		$steps[] = "ALTER TABLE $target $partition_sql";
+
+		// Before any row arrives, so copied rows never reuse an original seq.
+		$steps[] = "ALTER TABLE $target AUTO_INCREMENT = $next";
 
 		foreach ($steps as $sql) {
 			if (!syslog_db_execute($sql)) {
 				return $fail('Cannot configure the replacement schema (check the Cacti log)');
 			}
 		}
-	} elseif (!$preserve_data || syslog_detect_logtime_precision($table) !== $precision) {
-		return $fail('The nonempty replacement does not match the requested conversion; retry with the original options');
-	} elseif ($partitioned) {
-		$actual_engine = syslog_db_fetch_cell_prepared('SELECT ENGINE FROM information_schema.TABLES
-			WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?', [$syslogdb_default, $table]);
-		$previous = null;
 
-		if ($actual_engine !== $engine || count($parts) < 2) {
-			return $fail('The partially copied replacement has a different engine or partition layout');
-		}
+		if ($preserve_data) {
+			$state = ['source_seq' => null, 'source_logtime' => null, 'target_seq' => '0', 'copied' => '0'];
 
-		foreach ($parts as $index => $part) {
-			$expression = strtolower(str_replace(['`', ' '], '', (string) $part['PARTITION_EXPRESSION']));
-			$boundary = (string) $part['PARTITION_DESCRIPTION'];
-
-			if ($expression !== 'unix_timestamp(logtime)') {
-				return $fail('The partially copied replacement does not use UTC epoch partitioning');
+			if (!syslog_db_execute("CREATE TABLE IF NOT EXISTS $progress (
+					table_name varchar(64) NOT NULL PRIMARY KEY,
+					source_seq bigint unsigned NULL,
+					source_logtime varchar(32) NULL,
+					target_seq bigint unsigned NOT NULL,
+					copied bigint unsigned NOT NULL) ENGINE=InnoDB")
+				|| !syslog_db_execute_prepared("REPLACE INTO $progress VALUES (?, NULL, NULL, 0, 0)", [$table])) {
+				return $fail('Cannot record the copy checkpoint');
 			}
-
-			if ($index === count($parts) - 1) {
-				if ($part['PARTITION_NAME'] !== 'dMaxValue' || $boundary !== 'MAXVALUE') {
-					return $fail('The partially copied replacement has no final dMaxValue partition');
-				}
-			} elseif (!ctype_digit($boundary) || (int) $boundary % 86400 !== 0
-				|| $part['PARTITION_NAME'] !== 'd' . gmdate('Ymd', (int) $boundary - 86400)
-				|| ($previous !== null && (int) $boundary !== $previous + 86400)) {
-				return $fail('The partially copied replacement does not have contiguous UTC daily partitions');
-			}
-
-			$previous = (int) $boundary;
 		}
+	} elseif (syslog_detect_logtime_precision($table) !== $precision) {
+		return $fail('The partially copied replacement does not match the requested conversion; retry with the original options');
+	} elseif (!syslog_upart_layout_ok($table, $engine)) {
+		return $fail('The partially copied replacement has a different engine or partition layout');
 	}
 
 	$names = [];
-	$values = [];
-	$equal = [];
+	$hash = [];
 
 	foreach ($columns as $column) {
-		$name = '`' . str_replace('`', '``', $column['COLUMN_NAME']) . '`';
-		$binary = $column['COLUMN_NAME'] === 'logtime' ? '' : 'BINARY ';
-		$equal[] = "({$binary}copied.$name <=> {$binary}source.$name)";
-
-		if (preg_match('/(?:VIRTUAL|STORED|PERSISTENT) GENERATED/i', $column['EXTRA']) !== 1) {
-			$names[] = $name;
-			$values[] = "source.$name";
+		if ($column['COLUMN_NAME'] === 'seq' || preg_match('/(?:VIRTUAL|STORED|PERSISTENT) GENERATED/i', $column['EXTRA']) === 1) {
+			continue;
 		}
+
+		$name = '`' . str_replace('`', '``', $column['COLUMN_NAME']) . '`';
+		$value = $column['COLUMN_NAME'] === 'logtime' ? "DATE_FORMAT($name, '%Y-%m-%d %H:%i:%s.%f')" : "CAST($name AS BINARY)";
+		$names[] = $name;
+		$hash[] = "IFNULL(CONCAT(OCTET_LENGTH($value), ':', $value), '-')";
 	}
 
-	$join = 'copied.seq = source.seq AND copied.logtime = source.logtime';
+	$names_sql = implode(', ', $names);
+	$digest = 'MD5(CONCAT(' . implode(', ', $hash) . '))';
+	$checksum = 'COUNT(*) AS row_count, SUM(CAST(CONV(LEFT(digest, 15), 16, 10) AS UNSIGNED)) AS digest_sum,
+		BIT_XOR(CAST(CONV(RIGHT(digest, 16), 16, 10) AS UNSIGNED)) AS digest_xor';
 	$composite = count($keys) === 2;
 	$order = $composite ? 'source.seq, source.logtime' : 'source.seq';
-	$cursor = null;
-	$copied = 0;
+	$reverse = $composite ? 'source.seq DESC, source.logtime DESC' : 'source.seq DESC';
+	$cursor = $state && $state['source_seq'] !== null ? ['seq' => $state['source_seq'], 'logtime' => $state['source_logtime']] : null;
+	$high = $state ? (string) $state['target_seq'] : '0';
+	$copied = $state ? (int) $state['copied'] : 0;
+
+	if ($preserve_data && !syslog_db_execute_prepared("DELETE FROM $target WHERE seq > ?", [$high])) {
+		return $fail('Cannot discard unverified rows copied after the last checkpoint');
+	}
+
+	$batches = 0;
 
 	while ($preserve_data) {
 		$where = '1 = 1';
@@ -472,61 +571,128 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 			$params = $composite ? [$cursor['seq'], $cursor['seq'], $cursor['logtime']] : [$cursor['seq']];
 		}
 
-		$rows = syslog_db_fetch_assoc_prepared("SELECT source.seq, source.logtime FROM $saved AS source
-			WHERE $where ORDER BY $order LIMIT 10000", $params);
+		$last = syslog_db_fetch_row_prepared("SELECT source.seq, source.logtime FROM $saved AS source
+			WHERE $where ORDER BY $order LIMIT 1 OFFSET 9999", $params);
+		$final = $last === [];
 
-		if (!is_array($rows)) {
+		if ($final) {
+			$last = syslog_db_fetch_row_prepared("SELECT source.seq, source.logtime FROM $saved AS source
+				WHERE $where ORDER BY $reverse LIMIT 1", $params);
+		}
+
+		if (!is_array($last)) {
 			return $fail('Cannot read the next copy batch');
 		}
 
-		if (!$rows) {
+		if (!$last) {
 			break;
 		}
 
-		$last = $rows[count($rows) - 1];
-		$upper = $composite ? '(source.seq < ? OR (source.seq = ? AND source.logtime <= ?))' : 'source.seq <= ?';
+		$where .= $composite ? ' AND (source.seq < ? OR (source.seq = ? AND source.logtime <= ?))' : ' AND source.seq <= ?';
 		$params = array_merge($params, $composite ? [$last['seq'], $last['seq'], $last['logtime']] : [$last['seq']]);
-		$names_sql = implode(', ', $names);
-		$values_sql = implode(', ', $values);
 
 		if (!syslog_db_execute_prepared("INSERT INTO $target ($names_sql)
-			SELECT $values_sql FROM $saved AS source
-			LEFT JOIN $target AS copied ON $join
-			WHERE $where AND $upper
-				AND copied.seq IS NULL ORDER BY $order", $params)) {
+			SELECT $names_sql FROM $saved AS source WHERE $where ORDER BY $order", $params)) {
 			return $fail('Cannot copy the next batch');
 		}
 
-		$cursor = $last;
-		$copied += count($rows);
-		print "$table: checked $copied source rows" . PHP_EOL;
+		$expected = syslog_db_fetch_row_prepared("SELECT $checksum FROM (SELECT $digest AS digest
+			FROM $saved AS source WHERE $where) AS batch", $params);
+		$actual = syslog_db_fetch_row_prepared("SELECT $checksum, MAX(seq) AS high FROM (SELECT seq, $digest AS digest
+			FROM $target WHERE seq > ?) AS batch", [$high]);
 
-		if (count($rows) < 10000) {
+		if (!is_array($expected) || !is_array($actual) || !isset($expected['row_count'], $actual['row_count'])
+			|| (int) $expected['row_count'] === 0
+			|| (string) $expected['row_count'] !== (string) $actual['row_count']
+			|| (string) $expected['digest_sum'] !== (string) $actual['digest_sum']
+			|| (string) $expected['digest_xor'] !== (string) $actual['digest_xor']) {
+			return $fail('A copied batch does not match its original rows');
+		}
+
+		$high = (string) $actual['high'];
+		$copied += (int) $expected['row_count'];
+		$cursor = $last;
+
+		if (!syslog_db_execute_prepared("REPLACE INTO $progress VALUES (?, ?, ?, ?, ?)",
+			[$table, $cursor['seq'], $cursor['logtime'], $high, $copied])) {
+			return $fail('Cannot record the copy checkpoint');
+		}
+
+		if ($final || ++$batches % 100 === 0) {
+			print "$table: copied and verified $copied rows" . PHP_EOL;
+		}
+
+		if ($final) {
 			break;
 		}
 	}
 
-	$old_count = $preserve_data ? syslog_db_fetch_cell("SELECT COUNT(*) FROM $saved") : 0;
+	$old_count = $preserve_data ? syslog_db_fetch_cell("SELECT COUNT(*) FROM $saved") : '0';
 	$new_count = syslog_db_fetch_cell("SELECT COUNT(*) FROM $target");
-	$equal_sql = implode(' AND ', $equal);
-	$different = $preserve_data ? syslog_db_fetch_cell("SELECT EXISTS (SELECT 1 FROM $saved AS source
-		LEFT JOIN $target AS copied ON $join
-		WHERE copied.seq IS NULL OR NOT ($equal_sql))") : 0;
 
 	if (!is_numeric($old_count) || !is_numeric($new_count) || (string) $old_count !== (string) $new_count
-		|| !is_numeric($different) || (int) $different !== 0
+		|| ($preserve_data && (string) $copied !== (string) $new_count)
 		|| syslog_detect_logtime_precision($table) !== $precision) {
-		return $fail('Copied rows, values or timestamp precision do not match');
+		return $fail('Copied row counts or timestamp precision do not match');
 	}
 
-	if (!syslog_db_execute("ALTER TABLE $target AUTO_INCREMENT = $next")
-		|| !syslog_db_execute("DROP TABLE $saved")) {
-		return $fail('Cannot restore the sequence high-water mark or drop the verified original');
+	if (!syslog_db_execute("DROP TABLE $saved")) {
+		return $fail('Cannot drop the verified original');
+	}
+
+	if ($preserve_data) {
+		syslog_db_execute_prepared("DELETE FROM $progress WHERE table_name = ?", [$table]);
+
+		if ((string) syslog_db_fetch_cell("SELECT COUNT(*) FROM $progress") === '0') {
+			syslog_db_execute("DROP TABLE IF EXISTS $progress");
+		}
 	}
 
 	print "$table: verified $new_count rows; removed $backup" . PHP_EOL;
 
 	return true;
+}
+
+/**
+ * Check that a partially copied replacement still has the requested engine and
+ * contiguous UTC daily partitions ending in dMaxValue.
+ */
+function syslog_upart_layout_ok(string $table, string $engine): bool {
+	global $syslogdb_default;
+
+	$actual_engine = syslog_db_fetch_cell_prepared('SELECT ENGINE FROM information_schema.TABLES
+		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?', [$syslogdb_default, $table]);
+	$parts = syslog_db_fetch_assoc_prepared('SELECT PARTITION_NAME, PARTITION_DESCRIPTION, PARTITION_EXPRESSION
+		FROM information_schema.PARTITIONS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?
+		ORDER BY PARTITION_ORDINAL_POSITION', [$syslogdb_default, $table]);
+	$previous = null;
+
+	if ($actual_engine !== $engine || !is_array($parts) || count($parts) < 2) {
+		return false;
+	}
+
+	foreach ($parts as $index => $part) {
+		$expression = strtolower(str_replace(['`', ' '], '', (string) $part['PARTITION_EXPRESSION']));
+		$boundary = (string) $part['PARTITION_DESCRIPTION'];
+
+		if ($expression !== 'unix_timestamp(logtime)') {
+			return false;
+		}
+
+		if ($index === count($parts) - 1) {
+			return $part['PARTITION_NAME'] === 'dMaxValue' && $boundary === 'MAXVALUE';
+		}
+
+		if (!ctype_digit($boundary) || (int) $boundary % 86400 !== 0
+			|| $part['PARTITION_NAME'] !== 'd' . gmdate('Ymd', (int) $boundary - 86400)
+			|| ($previous !== null && (int) $boundary !== $previous + 86400)) {
+			return false;
+		}
+
+		$previous = (int) $boundary;
+	}
+
+	return false;
 }
 
 /**
@@ -566,7 +732,10 @@ function syslog_upart_display_help(): void {
 	print 'Rebuilds syslog and syslog_removed with UTC daily partitions matching the' . PHP_EOL;
 	print 'configured storage engine, message retention and future-partition horizon.' . PHP_EOL . PHP_EOL;
 	print 'Existing precision is preserved unless --convert-ms is selected.' . PHP_EOL . PHP_EOL;
-	print 'With preservation, originals are dropped only after row counts and values are verified.' . PHP_EOL . PHP_EOL;
+	print 'With preservation, rows are copied in verified batches and receive new sequence' . PHP_EOL;
+	print 'numbers above the original high-water mark; originals are dropped only after' . PHP_EOL;
+	print 'every batch and the row counts are verified.' . PHP_EOL . PHP_EOL;
+	print 'Legacy DATETIME logtime columns are not converted; use --discard-data for them.' . PHP_EOL . PHP_EOL;
 	print 'Options:' . PHP_EOL;
 	print '    --convert-ms    - Also convert pipeline timestamps to TIMESTAMP(3); MariaDB only.' . PHP_EOL;
 	print '    --preserve-data - Preserve existing messages (the default), copying 10,000 rows at a time.' . PHP_EOL;
@@ -575,7 +744,7 @@ function syslog_upart_display_help(): void {
 	print '    --version       - Display version information.' . PHP_EOL;
 	print '    --help          - Display this help.' . PHP_EOL . PHP_EOL;
 	print 'Maintenance:' . PHP_EOL;
-	print 'Take a database backup and stop ALL processing and database writers first.' . PHP_EOL . PHP_EOL;
+	print 'Take a database backup, uncheck Syslog Enabled and stop ALL database writers first.' . PHP_EOL . PHP_EOL;
 	print 'The current database size is reported before changes. Have at least that' . PHP_EOL;
 	print 'much ADDITIONAL free disk space on the database server, plus temporary' . PHP_EOL;
 	print 'file and binary-log headroom. Large transfers may take several hours.' . PHP_EOL . PHP_EOL;

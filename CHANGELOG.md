@@ -6,6 +6,8 @@
 
 --- develop ---
 
+* bug: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging (#472)
+* bug: The partition rebuild CLI now refuses to start while Syslog processing is enabled and holds the master process slot; copies stored and removed messages without seq into a replacement whose AUTO_INCREMENT starts above the original high-water mark; verifies each 10,000-row batch by checksum and checkpoints it for resumable retries; widens the incoming queue in place to keep its sequence identities; and refuses legacy DATETIME history before changing anything
 * docs: Refresh README release/source compatibility, installation guidance and source-checked behavior; add published release notes and 5.0 upgrade guidance
 * bug: Keep log column resizing within the results area on both log tabs, preserve message ellipsis, and use an accessible Font Awesome export button
 * feature: Standardize both schema and partition CLI help with Cacti-style version banners and options, separate maintenance warnings, and replace the unreleased millisecond converter with --convert-ms

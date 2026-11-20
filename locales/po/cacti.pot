@@ -1322,6 +1322,10 @@ msgid "There were %s Device records removed from the Syslog database"
 msgstr ""
 
 #: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr ""
+
+#: includes/utilities.php
 msgid "Syslog Utilities"
 msgstr ""
 

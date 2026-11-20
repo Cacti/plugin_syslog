@@ -66,6 +66,8 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		$root . '/includes/navigation.php' => $sandbox . '/includes/navigation.php',
 		$root . '/includes/installer.php' => $sandbox . '/includes/installer.php',
 		$root . '/includes/utilities.php' => $sandbox . '/includes/utilities.php',
+		$root . '/includes/database.php'  => $sandbox . '/includes/database.php',
+		$root . '/includes/recommendations.php' => $sandbox . '/includes/recommendations.php',
 	];
 
 	foreach ($staged as $src => $dst) {
@@ -74,7 +76,10 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		}
 	}
 
-	file_put_contents($sandbox . '/config.php', "<?php\n");
+	// Store Syslog in the Cacti database so syslog_connect() reuses the
+	// harness's stand-in connection instead of opening a real one.
+	$config_php = "<?php\n\$use_cacti_db = true;\n\$syslogdb_default = 'syslog_fixture';\n";
+	file_put_contents($sandbox . '/config.php', $config_php);
 
 	// The hostile title proves the encoder in place rather than in isolation: a
 	// translation carrying </script> must not close the block it sits in.
@@ -110,17 +115,28 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		function html_header($items, $span = 1) {
 		}
 
-		function syslog_db_execute($sql) {
-			print "DBEXEC\n";
+		// Cacti core: the real includes/database.php delegates to these.
+		function db_execute($sql, $log = true, $connection = false) {
+			print 'DBEXEC:' . preg_replace('/\s+/', ' ', $sql) . "\n";
 
-			return true;
+			return is_object($connection);
 		}
 
-		function syslog_db_affected_rows() {
+		function db_affected_rows($connection = false) {
 			return 1;
 		}
 
-		if ($scenario === 'action_valid_token') {
+		function api_plugin_is_enabled($plugin) {
+			return false;
+		}
+
+		$config = ['poller_id' => 1];
+
+		if ($scenario !== 'action_db_unavailable') {
+			$local_db_cnn_id = new stdClass();
+		}
+
+		if ($scenario === 'action_valid_token' || $scenario === 'action_db_unavailable') {
 			function csrf_check($fatal = true) {
 				return true;
 			}
@@ -195,7 +211,7 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 	foreach (['unrelated', 'unconfigured'] as $scenario) {
 		expect($runHarness($scenario))->toBe("other_plugin_actionREACHED_END\n");
 	}
-	file_put_contents($sandbox . '/config.php', "<?php\n");
+	file_put_contents($sandbox . '/config.php', $config_php);
 
 	// The encoder, on its own.
 	syslog_load_plugin_source('includes/functions.php');
@@ -278,15 +294,30 @@ it('requires POST and a valid CSRF token for the purge-syslog-hosts utility', fu
 		}
 	}
 
-	// The allowed path, driven with a valid token.
+	// The allowed path, driven with a valid token through the real
+	// syslog_connect() and includes/database.php (#472).
 	$allowed = $runHarness('action_valid_token');
 
-	if (substr_count($allowed, 'DBEXEC') !== 2) {
+	if (substr_count($allowed, 'DBEXEC:') !== 2) {
 		throw new RuntimeException("A POST with a valid token must run both deletes:\n$allowed");
+	}
+
+	foreach (['syslog_hosts', 'syslog_host_facilities'] as $table) {
+		if (strpos($allowed, "DBEXEC:DELETE FROM `syslog_fixture`.`$table` WHERE NOT EXISTS") === false) {
+			throw new RuntimeException("The purge must target the configured Syslog database's $table:\n$allowed");
+		}
 	}
 
 	if (strpos($allowed, 'MSG:syslog_info|') === false) {
 		throw new RuntimeException("A completed purge must report the record count:\n$allowed");
+	}
+
+	$unavailable = $runHarness('action_db_unavailable');
+
+	if (strpos($unavailable, 'DBEXEC') !== false || strpos($unavailable, 'Fatal') !== false
+		|| strpos($unavailable, 'LOG:ERROR: syslog purge failed -- unable to connect to the Syslog database') === false
+		|| strpos($unavailable, 'MSG:syslog_connect_error|') === false) {
+		throw new RuntimeException("An unavailable Syslog database must be reported without purging:\n$unavailable");
 	}
 
 	expect(true)->toBeTrue();

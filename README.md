@@ -166,12 +166,12 @@ php plugins/syslog/cli/upgrade_partitioning.php --convert-ms
 ```
 
 The `--convert-ms` option is **MariaDB only**. It rebuilds the stored/removed
-message tables and converts incoming messages to `TIMESTAMP(3)`, preserving
-data in batches of at most **10,000 rows**. Already-converted incoming tables
-are left alone. The replication outbox (`syslog_replication_output`) is widened
-in place; undelivered rows are never discarded. Sequence high-water marks and
-replication identities are preserved, including when sequence numbers repeat
-at different timestamps. Existing second-resolution messages gain `.000`;
+message tables to `TIMESTAMP(3)`, preserving data in verified batches of at
+most **10,000 rows**. The incoming queue (`syslog_incoming`) and replication
+outbox (`syslog_replication_output`) are widened in place with `ALTER TABLE`,
+so their sequence numbers, which archival and replication use as identities,
+are unchanged and undelivered rows are never discarded. Already-converted
+tables are left alone. Existing second-resolution messages gain `.000`;
 conversion cannot recover fractional timestamps that were never recorded.
 
 The default is preservation. The explicit
@@ -195,10 +195,34 @@ sequence-only primary key when necessary, and creates UTC daily
 It does not offer weekly or monthly partitioning, since Syslog's maintenance
 expects daily partitions.
 
-Legacy `DATETIME` columns are converted to `TIMESTAMP` using the connection's
-original session time zone; verify that this matches the zone used to write
-those historical wall-clock values. Existing `TIMESTAMP` rows are copied in UTC
-to preserve distinct events across daylight-saving clock changes.
+Stored and removed messages are copied **without** their `seq` column, in their
+original order, so each replacement numbers them from its own
+`AUTO_INCREMENT`. That counter is set above the original high-water mark before
+the first row is copied, so a sequence value is never reused; links that
+captured an old `seq` find nothing rather than a different message. All other
+columns, including `replication_source_event_id`, are copied unchanged.
+Existing `TIMESTAMP` rows are copied in UTC, preserving distinct events across
+daylight-saving clock changes.
+
+Legacy `DATETIME` `logtime` columns are **not supported**. A `DATETIME` holds
+wall-clock time in an unknown zone; values in a daylight-saving gap do not
+exist as `TIMESTAMP` and values in the repeated hour are ambiguous, so no
+automatic conversion is safe. The utility refuses to preserve such tables
+before changing anything. Either rebuild them with `--discard-data`, or, after
+verifying the zone the values were written in, convert them yourself with
+Syslog processing stopped. First confirm that every value round-trips in
+that zone, then convert and repartition in one statement:
+
+```sql
+SET SESSION time_zone = 'America/New_York';  -- the zone the values were written in
+SELECT COUNT(*) FROM syslog
+  WHERE FROM_UNIXTIME(UNIX_TIMESTAMP(logtime)) <> logtime;  -- must be 0
+ALTER TABLE syslog MODIFY COLUMN logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  PARTITION BY RANGE (UNIX_TIMESTAMP(logtime)) (/* daily partitions */
+  PARTITION dMaxValue VALUES LESS THAN MAXVALUE);
+```
+
+Then run this utility to apply the configured layout.
 
 Every existing message is copied, including older-than-retention messages;
 those older rows fit in the earliest RANGE partition. Normal retention pruning
@@ -217,9 +241,11 @@ rebuild utility for legacy layouts or engine changes, not routine daily rotation
 
 **Maintenance requirements for both commands:**
 
-* Back up the database, stop Syslog processing, partition maintenance,
-  replication and **all external database writers**, and buffer new logs
-  upstream. The utility does not stop these services for you. Keep them stopped
+* Back up the database and uncheck **Settings > Syslog > Syslog Enabled**. The
+  utility refuses to start while processing is enabled, and holds the Syslog
+  master process slot so no processing run can start during the rebuild. It
+  does **not** stop remote collectors, replication or external database
+  writers: stop them and buffer new logs upstream. Keep everything stopped
   until the rebuild or recovery finishes. Live log tables are temporarily absent
   or incomplete; avoid using log views during the rebuild. DDL waits at most
   30 seconds for metadata locks before reporting failure; let active queries
@@ -233,13 +259,21 @@ rebuild utility for legacy layouts or engine changes, not routine daily rotation
   **several hours**. `--confirm` skips the prompt but not these warnings.
 * DDL is **not transactional**. Each original is renamed to `<table>_rebuild`;
   a replacement is created and populated using bounded primary-key ranges.
-  Originals are dropped automatically only after row counts and column values
-  match and sequence high-water marks have been restored.
+  After each batch, the row count and an MD5-based checksum of every copied
+  column are compared with the source range. Only a matching batch is
+  recorded in `syslog_rebuild_progress`. Originals are dropped automatically
+  only after every batch and the total row counts match.
 * A failure leaves originals in the live or `_rebuild` tables. Keep writers
   stopped, fix the reported error, then retry with `--preserve-data` and the
-  same `--convert-ms` option, if used. Existing copied rows are checked rather
-  than overwritten; mismatches stop recovery without dropping the original.
-  Do not change settings or manually delete `_rebuild` tables during recovery.
+  same `--convert-ms` option, if used. A retry deletes replacement rows copied
+  after the last recorded batch and resumes from there. Do not change settings
+  or manually delete `_rebuild` or `syslog_rebuild_progress` tables during
+  recovery.
+* To abandon a rebuild instead, with writers still stopped:
+  `DROP TABLE syslog; RENAME TABLE syslog_rebuild TO syslog;` (likewise for
+  `syslog_removed`), then `DROP TABLE syslog_rebuild_progress;`. A
+  `syslog_incoming_rebuild` table left by an earlier development build is
+  restored the same way.
 
 ### Delivering sub-second timestamps from your log forwarders
 
