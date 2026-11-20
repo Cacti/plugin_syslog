@@ -769,8 +769,16 @@ which returns JSON.
   match the message word as written: `%LINK-3-UPDOWN` matches
   `%LINK-3-UPDOWN`, not `LINK-3-UPDOWN`. A recommendation stored as
   `LINK-3-UPDOWN` matches only that unprefixed message word.
-* All vendors are checked. When several recommendations match, the longest
-  identifiers are shown first, up to three.
+* When the syslog host is a Cacti device whose vendor can be recognised, only
+  that vendor's recommendations and those with an empty vendor are checked.
+  The vendor is read from the device's SNMP system description
+  (`snmp_sysDescr`), or from its device template name when that is empty. The
+  syslog host is matched to a device by description or hostname. This
+  prevents short codes such as HPE AOS-CX event numbers from matching the same
+  number in another vendor's message. The recognised vendors use the names of
+  the bundled catalogues: Arista, Cisco, Dell, HPE, Huawei, Juniper and NVIDIA.
+  Otherwise all vendors are checked. When several recommendations match, the
+  longest identifiers are shown first, up to three.
 * Identifiers containing other characters, such as the `#` slot placeholder or
   the `|` alternatives in some vendor documentation (`%ASA|PIX-3-331001`), are
   stored and exported but can never match. The bundled data has 860 of them;
@@ -804,6 +812,24 @@ Explorer; most source records provide an explanation but no recommended action.
 This is not a complete Juniper catalogue and is not automatically installed.
 Message templates use bracketed variable names and explanatory wording, not
 regular expressions.
+
+Further manually importable catalogues are built from each vendor's public
+message references. None of them is installed automatically, and none is
+complete. Explanations and actions are condensed from the vendor text; where a
+vendor documents no action the field is empty. The `reference` field of each
+record links to its source.
+
+| File | Vendor | Records | Coverage and identifier form |
+|------|--------|---------|------------------------------|
+| `docs/arista.json.gz` | Arista | 1,047 | EOS System Message Guide (EOS 4.15), `%FACILITY-SEV-MNEMONIC` such as `%LINEPROTO-5-UPDOWN`. Later EOS messages are missing. |
+| `docs/dell.json.gz` | Dell | 7,142 | PowerEdge iDRAC/CMC messages that can be sent to remote syslog (6,811, MessageID such as `PSU0003`), SmartFabric OS10 (327, `%IFM_ASTATE_UP`) and four OS9 messages (`%CHMGR-2-MAJOR_TEMP`). |
+| `docs/hpe.json.gz` | HPE | 4,878 | Comware 5 and 7 switches (`%10IFNET/3/PHY_UPDOWN`, the default log-host format), AOS-CX 10.17 and ArubaOS-Switch 16.10 event IDs (`4701`, `00076`), which have explanations but no actions. |
+| `docs/huawei.json.gz` | Huawei | 3,686 | CloudEngine S16700 and 9800/8800/6800 (VRP8) and S1720–S6720 (VRP5) Log References, `%01MODULE/SEV/MNEMONIC` such as `%01IFNET/4/IF_STATE`, as the lookup reads `%%01IFNET/4/IF_STATE(l)`. Devices that send another version number than `01` do not match. AR and NE routers are not included. |
+| `docs/nvidia.json.gz` | NVIDIA | 251 | Cumulus Linux 5.18 switchd messages keyed on the function name they contain, FRRouting `[EC nnnnnnnn]` error codes, and the GPU `Xid`/NVSwitch `SXid` families. |
+
+Numeric identifiers, such as HPE event IDs and FRRouting error codes, can match
+any number in a message. They are only reliable when the sending device is a
+Cacti device whose vendor is recognised (see the matching rules above).
 
 The file picker accepts `.json` and `.json.gz`; pasted JSON is also supported.
 Exports (selected rows or the current filters) download as `.json.gz` by default.

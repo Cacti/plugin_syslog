@@ -137,7 +137,7 @@ if (get_request_var('action') == 'status_refresh') {
 
 if (get_request_var('action') == 'recommendation') {
 	header('Content-Type: application/json; charset=UTF-8');
-	print syslog_recommendations_lookup_json((string) get_nfilter_request_var('message'));
+	print syslog_recommendations_lookup_json((string) get_nfilter_request_var('message'), (string) get_nfilter_request_var('host'));
 	exit;
 }
 
@@ -2737,10 +2737,42 @@ function syslog_messages(string $tab = 'syslog'): void {
 			$sql_where");
 	}
 
-	$recommendations = syslog_recommendations_for_messages(array_map(
-		static fn (array $row): string => (string) ($row[$tab === 'syslog' ? 'message' : 'logmsg'] ?? ''),
-		$syslog_messages
-	));
+	// Only the host names for the rows actually shown; never fetch the
+	// entire syslog_hosts table into memory on every render.
+	$hosts = [];
+
+	if ($tab === 'syslog') {
+		$host_ids = [];
+
+		foreach ($syslog_messages as $sm) {
+			$host_ids[$sm['host_id']] = true;
+		}
+
+		unset($host_ids['']);
+
+		if (cacti_sizeof($host_ids)) {
+			$bind = array_keys($host_ids);
+
+			$hosts = array_rekey(
+				syslog_db_fetch_assoc_prepared("SELECT host_id, host
+					FROM `$syslogdb_default`.`syslog_hosts`
+					WHERE host_id IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ')',
+					$bind),
+				'host_id', 'host'
+			);
+		}
+	}
+
+	$recommendations = syslog_recommendations_for_messages(
+		array_map(
+			static fn (array $row): string => (string) ($row[$tab === 'syslog' ? 'message' : 'logmsg'] ?? ''),
+			$syslog_messages
+		),
+		array_map(
+			static fn (array $row): string => (string) ($tab === 'syslog' ? ($hosts[$row['host_id'] ?? ''] ?? '') : ($row['host'] ?? '')),
+			$syslog_messages
+		)
+	);
 	$recommendation_header = [
 		'display' => '<i class="fa fa-lightbulb syslogRecommendationHeading" role="img" aria-label="' . __esc('Recommendations', 'syslog') . '"></i>',
 		'align'   => 'center',
@@ -2773,30 +2805,6 @@ function syslog_messages(string $tab = 'syslog'): void {
 		html_start_box('', '100%', false, 3, 'center', '');
 
 		html_header_sort($display_text, get_request_var('sort_column'), get_request_var('sort_direction'));
-
-		// Only the host names for the rows actually shown; never fetch the
-		// entire syslog_hosts table into memory on every render.
-		$host_ids = [];
-
-		foreach ($syslog_messages as $sm) {
-			$host_ids[$sm['host_id']] = true;
-		}
-
-		unset($host_ids['']);
-
-		if (cacti_sizeof($host_ids)) {
-			$bind = array_keys($host_ids);
-
-			$hosts = array_rekey(
-				syslog_db_fetch_assoc_prepared("SELECT host_id, host
-					FROM `$syslogdb_default`.`syslog_hosts`
-					WHERE host_id IN (" . implode(', ', array_fill(0, cacti_sizeof($bind), '?')) . ')',
-					$bind),
-				'host_id', 'host'
-			);
-		} else {
-			$hosts = [];
-		}
 
 		$facilities = array_rekey(
 			syslog_db_fetch_assoc("SELECT facility_id, facility

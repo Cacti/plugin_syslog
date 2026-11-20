@@ -6,6 +6,9 @@
 
 --- develop ---
 
+* feature: Add manually importable recommendation catalogues for Arista, Dell, HPE, Huawei and NVIDIA in docs/<vendor>.json.gz, built from each vendor's public message references
+* feature: Recommendations are matched only against the sending device's vendor (and vendor-neutral records) when the syslog host is a Cacti device whose vendor is recognised from its SNMP sysDescr or device template; other hosts still match every vendor
+
 * issue#472: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging
 * issue#473: Syslog Status: choosing a card in Add card now appends it (Cacti's select2 dropdowns report changes through jQuery, which the card controller's native listener missed), and the Refresh interval is saved per user through a callback and refreshes the cards in place instead of reloading the page
 * issue#473: Bound every log query at the current time so empty future partitions are always pruned, whatever the filter's own date range
