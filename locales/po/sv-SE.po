@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 16:30+0000\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
 "PO-Revision-Date: 2026-11-16 08:18+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
@@ -281,8 +281,9 @@ msgid "Partition layout for %s is invalid or incomplete; partition maintenance s
 msgstr "Partitionslayouten för %s är ogiltig eller ofullständig; partitionsunderhållet har stoppats. Kontrollera partitionsmetadata med SHOW CREATE TABLE och bygg vid behov om partitionerna. Skrivningar fortsätter i säkerhetspartitionen dMaxValue."
 
 #: includes/functions.php
-#, php-format
-msgid "remaining partition gap: %d day(s)"
+#, fuzzy, php-format
+#| msgid "remaining partition gap: %d day(s)"
+msgid "remaining partition gap: %d partition(s)"
 msgstr "återstående partitionslucka: %d dag(ar)"
 
 #: includes/functions.php
@@ -304,6 +305,48 @@ msgstr "återställningsgränsen per körning har nåtts"
 #: includes/functions.php
 msgid "partition creation failed"
 msgstr "det gick inte att skapa partition"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy
+#| msgid "Syslog retention"
+msgid "The Syslog retention is invalid."
+msgstr "Lagringstid för Syslog"
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr ""
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Dagligen"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+#, fuzzy
+#| msgid "Hour"
+msgid "Hourly"
+msgstr "Timme"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy
+#| msgid "The preview sample could not be read."
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Förhandsgranskningsexemplet kunde inte läsas."
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
@@ -652,18 +695,15 @@ msgstr "Policy för bevarande"
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "Välj hur många dagars Syslog-värden som ska sparas i databasen."
 
-#: includes/installer.php
-msgid "Partitions per Day"
-msgstr "Partitioner per dag"
+#: includes/installer.php includes/settings.php
+#, fuzzy
+#| msgid "Partition health"
+msgid "Partitioning Level"
+msgstr "Partitionsstatus"
 
 #: includes/installer.php
-msgid "Select the number of partitions per day that you wish to create."
-msgstr "Välj det antal partitioner per dag som du vill skapa."
-
-#: includes/installer.php
-#, php-format
-msgid "%d Per Day"
-msgstr "%d per dygn"
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr ""
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -1009,7 +1049,9 @@ msgid "Choose the custom html wrapper and CSS file to use.  This file contains b
 msgstr "Välj den anpassade HTML-omslutningen och CSS-filen som ska användas. Filen innehåller HTML och CSS som omsluter rapporten. Om den innehåller mer än CSS måste du placera en särskild <REPORT>-tagg i filen. Formattaggen ersätts med rapportens innehåll. Filerna finns i katalogen ”formats”."
 
 #: includes/settings.php
-msgid "Data Retention Settings"
+#, fuzzy
+#| msgid "Data Retention Settings"
+msgid "Data Retention and Partitioning"
 msgstr "Inställningar för lagringstid"
 
 #: includes/settings.php
@@ -1021,12 +1063,16 @@ msgid "This is the number of days to keep events."
 msgstr "Detta är det antal dagar som händelserna ska sparas."
 
 #: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr ""
+
+#: includes/settings.php
 msgid "Partition Pre-create Window"
 msgstr "Fönster för förskapande av partitioner"
 
 #: includes/settings.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
-msgstr "Det här är antalet framtida dagliga partitioner som ska underhållas för partitionerade Syslog-tabeller."
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr ""
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1220,6 +1266,21 @@ msgstr "%d millisekunder"
 msgid "%d second"
 msgstr "%d sekund"
 
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr ""
+
+#: includes/settings.php
+#, fuzzy
+#| msgid "The Syslog pipeline has recovered."
+msgid "The Syslog settings were not saved."
+msgstr "Syslog-pipelinen har återhämtat sig."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr ""
+
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_saved_searches.php
@@ -1234,9 +1295,8 @@ msgstr "Inaktivera"
 msgid "Enable"
 msgstr "Aktivera"
 
-#: includes/settings.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
-#: syslog_saved_searches.php
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
 msgid "Export"
 msgstr "Exportera"
 
@@ -1316,10 +1376,6 @@ msgid "SQL Expression"
 msgstr "SQL-uttryck"
 
 #: includes/settings.php
-msgid "Daily"
-msgstr "Dagligen"
-
-#: includes/settings.php
 msgid "Weekly"
 msgstr "Veckovis"
 
@@ -1352,6 +1408,10 @@ msgstr "Rapportregler"
 #| msgid "Remove condition"
 msgid "Recommendations"
 msgstr "Ta bort villkor"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr ""
 
 #: includes/utilities.php
 #, php-format
@@ -2073,6 +2133,17 @@ msgid "dMaxValue size"
 msgstr "Storlek på dMaxValue"
 
 #: syslog.php
+#, fuzzy
+#| msgid "Partition health"
+msgid "Partitioning level"
+msgstr "Partitionsstatus"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr ""
+
+#: syslog.php
 msgid "Last attempt"
 msgstr "Senaste försöket"
 
@@ -2314,6 +2385,12 @@ msgid "Remove from page"
 msgstr "Ta bort från sidan"
 
 #: syslog.php
+#, fuzzy
+#| msgid "Invalid dashboard interval."
+msgid "Invalid refresh interval."
+msgstr "Ogiltigt intervall för instrumentpanelen."
+
+#: syslog.php
 msgid "Unknown card."
 msgstr "Okänt kort."
 
@@ -2497,14 +2574,6 @@ msgstr "Spara som"
 msgid "Delete the selected saved search?"
 msgstr "Ta bort den valda sparade sökningen?"
 
-#: syslog.php
-msgid "Save Search As"
-msgstr "Spara sökning som"
-
-#: syslog.php
-msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
-
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2536,6 +2605,14 @@ msgstr "Spara standardinställningar"
 #: syslog.php
 msgid "Save view defaults"
 msgstr "Spara visningens standardinställningar"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Spara sökning som"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr ""
 
 #: syslog.php
 msgid "Breach"
@@ -4100,6 +4177,19 @@ msgstr "Rätta frågesyntaxen så att den kan användas med frågebyggaren."
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller Grupp för att skapa frågan. Ändringarna gäller den här delade mallen för alla användare."
+
+#~ msgid "Partitions per Day"
+#~ msgstr "Partitioner per dag"
+
+#~ msgid "Select the number of partitions per day that you wish to create."
+#~ msgstr "Välj det antal partitioner per dag som du vill skapa."
+
+#, php-format
+#~ msgid "%d Per Day"
+#~ msgstr "%d per dygn"
+
+#~ msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+#~ msgstr "Det här är antalet framtida dagliga partitioner som ska underhållas för partitionerade Syslog-tabeller."
 
 #~ msgid "Results limit"
 #~ msgstr "Resultatgräns"
