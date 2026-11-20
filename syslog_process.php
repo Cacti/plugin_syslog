@@ -231,11 +231,19 @@ if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
 }
 
 // cli/upgrade_partitioning.php holds this lock while it rebuilds the message
-// tables; it is held until this process exits and its connection closes.
-if ((int) syslog_db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]) !== 1) {
-	cacti_log('NOTE: Syslog processing skipped while cli/upgrade_partitioning.php rebuilds the message tables.', false, 'SYSLOG');
+// tables. It is taken on a connection of its own and held until this process
+// exits and that connection closes.
+$processing_lock = syslog_processing_lock_acquire();
+
+if ($processing_lock !== true) {
+	if ($processing_lock === false) {
+		cacti_log('NOTE: Syslog processing skipped while cli/upgrade_partitioning.php rebuilds the message tables.', false, 'SYSLOG');
+	} else {
+		cacti_log('ERROR: Syslog processing skipped; the processing lock connection could not be opened.', false, 'SYSLOG');
+	}
+
 	unregister_process('syslog', 'master', $config['poller_id']);
-	exit(0);
+	exit($processing_lock === false ? 0 : 1);
 }
 
 // Only the registered master may migrate history or replace synchronized rules.

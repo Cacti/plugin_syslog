@@ -427,20 +427,24 @@ function syslog_settings_partition_gate(?string $version = null, ?array $layouts
 		return '';
 	}
 
-	// syslog_connect() loads the helpers even when the Syslog database is down.
+	// Validate only against the Syslog server's own version and table layouts.
 	if ($version === null || $layouts === null) {
 		$connected = syslog_connect();
-		$version   = $version ?? (string) ($connected ? syslog_db_fetch_cell('SELECT VERSION()') : db_fetch_cell('SELECT VERSION()'));
-		$layouts   = $layouts ?? ($connected ? syslog_partition_existing_layouts() : []);
+		$version   = $version ?? ($connected ? (string) syslog_db_fetch_cell('SELECT VERSION()') : '');
+		$layouts   = $layouts ?? ($connected ? syslog_partition_existing_layouts() : null);
 	}
 
-	$error = syslog_partition_levels_error(
-		get_nfilter_request_var('syslog_partition_granularity') === 'hour' ? 'hour' : 'day',
-		get_nfilter_request_var('syslog_retention'),
-		get_nfilter_request_var('syslog_partition_ahead_days'),
-		syslog_partition_server_limit($version),
-		$layouts
-	);
+	if ($version === '' || $layouts === null) {
+		$error = __('The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables.', 'syslog');
+	} else {
+		$error = syslog_partition_levels_error(
+			get_nfilter_request_var('syslog_partition_granularity') === 'hour' ? 'hour' : 'day',
+			get_nfilter_request_var('syslog_retention'),
+			get_nfilter_request_var('syslog_partition_ahead_days'),
+			syslog_partition_server_limit($version),
+			$layouts
+		);
+	}
 
 	if ($error === '') {
 		return '';

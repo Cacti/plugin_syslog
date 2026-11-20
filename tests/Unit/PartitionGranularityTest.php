@@ -78,6 +78,11 @@ it('refuses to save Syslog settings that exceed the partition limit', function (
 		expect(syslog_settings_partition_gate('10.11.6-MariaDB', ['hour']))->toStartWith('The tables still use Hourly partitions')->toContain('Indefinite')
 			->and(syslog_settings_partition_gate('10.11.6-MariaDB', ['day']))->toBe('');
 
+		// Without the Syslog server's version the limit cannot be checked.
+		$messages = [];
+		expect(syslog_settings_partition_gate('', ['day']))->toContain('Syslog database is unavailable')
+			->and($messages[0][1])->toContain('The Syslog settings were not saved.');
+
 		$_SERVER['REQUEST_METHOD'] = 'GET';
 		expect(syslog_settings_partition_gate('10.0.3-MariaDB', ['hour']))->toBe('');
 	} finally {
@@ -119,6 +124,14 @@ it('reads the partitioning level of each existing message table', function () {
 	test_override('syslog_db_table_exists', fn() => true);
 
 	expect(syslog_partition_existing_layouts())->toBe(['hour', 'day']);
+
+	// A failed lookup must not pass for Daily tables.
+	test_override('syslog_db_fetch_cell_prepared', fn() => false);
+
+	expect(syslog_partition_layout_granularity('syslog'))->toBe('day')
+		->and(syslog_partition_existing_layouts())->toBeNull()
+		->and(syslog_partition_install_error(['partitioning' => 'day', 'days' => '30'], 8192))->toContain('could not be read')
+		->and(syslog_partition_install_error(['partitioning' => 'day', 'days' => '30', 'upgrade_type' => 'truncate'], 8192))->toBe('');
 });
 
 it('recovers hourly partitions in bounded runs and checks only the horizon once it exists', function () {

@@ -36,6 +36,8 @@ function set_config_option($name, $value, $force = false) {
 	$options_saved[$name] = $value;
 }
 function syslog_install_storage_engine($engine, $options) { return $engine; }
+function syslog_partition_settings_error(...$args) { return ''; }
+function syslog_partition_server_limit(...$args) { return 8192; }
 function syslog_db_fetch_row($sql) { return []; }
 function syslog_db_execute($sql) {
 	global $queries;

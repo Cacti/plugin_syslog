@@ -2811,6 +2811,81 @@ function syslog_processing_lock_name(): string {
 }
 
 /**
+ * Take the processing lock for syslog_process.php on a connection of its own.
+ * MySQL before 5.7.5 holds one named lock per session, so the GET_LOCK calls
+ * partition maintenance and alert delivery make on the Syslog connection
+ * would otherwise release it while processing continues. The new connection
+ * reaches the same server as $syslog_cnn and stays open until the process
+ * exits.
+ *
+ * @return bool|null True when held, false when another session holds it, and
+ *                   null when the lock connection could not be opened.
+ */
+function syslog_processing_lock_acquire(): ?bool {
+	global $syslog_cnn, $database_sessions, $database_details, $database_persist;
+
+	$details = null;
+
+	foreach ((array) $database_details as $entry) {
+		if (is_array($entry) && is_object($syslog_cnn) && ($entry['database_conn'] ?? null) === $syslog_cnn) {
+			$details = $entry;
+
+			break;
+		}
+	}
+
+	if ($details === null) {
+		return null;
+	}
+
+	// db_connect_real() returns a cached session for the same server and
+	// database, and a persistent PDO handle would share this session too.
+	$key     = $details['database_hostname'] . ':' . $details['database_port'] . ':' . $details['database_default'];
+	$cached  = $database_sessions[$key] ?? null;
+	$persist = $database_persist ?? false;
+
+	unset($database_sessions[$key]);
+	$database_persist = false;
+
+	$args = [
+		(string) $details['database_hostname'], (string) $details['database_username'], (string) $details['database_password'],
+		(string) $details['database_default'], (string) ($details['database_type'] ?? 'mysql'), (int) $details['database_port'],
+		(int) ($details['database_retries'] ?? 5), (bool) ($details['database_ssl'] ?? false), (string) ($details['database_ssl_key'] ?? ''),
+		(string) ($details['database_ssl_cert'] ?? ''), (string) ($details['database_ssl_ca'] ?? ''),
+	];
+
+	// Cacti 1.3 also records the CA path and server certificate verification.
+	if (array_key_exists('database_ssl_capath', $details)) {
+		$args[] = (string) $details['database_ssl_capath'];
+		$args[] = (bool) ($details['database_ssl_verify_server_cert'] ?? true);
+	}
+
+	try {
+		$cnn = db_connect_real(...$args);
+	} finally {
+		if ($cached !== null) {
+			$database_sessions[$key] = $cached;
+		} else {
+			unset($database_sessions[$key]);
+		}
+
+		$database_persist = $persist;
+	}
+
+	if (!is_object($cnn)) {
+		return null;
+	}
+
+	if ((int) db_fetch_cell_prepared('SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()], '', false, $cnn) !== 1) {
+		return false;
+	}
+
+	$GLOBALS['syslog_processing_lock_cnn'] = $cnn;
+
+	return true;
+}
+
+/**
  * Supported partition sizes, in seconds.
  *
  * @return array<string, int> Partition size keyed by level.
@@ -2832,16 +2907,21 @@ function syslog_partition_requested_granularity(): string {
 /**
  * The partitioning level a table actually uses, read from its partition names.
  *
- * @param string $table The partitioned table.
+ * @param string $table  The partitioned table.
+ * @param bool   $strict Return '' rather than 'day' when the lookup fails.
  *
  * @return string 'hour' when the table has hYYYYMMDDHH partitions, otherwise 'day'.
  */
-function syslog_partition_layout_granularity(string $table): string {
+function syslog_partition_layout_granularity(string $table, bool $strict = false): string {
 	global $syslogdb_default;
 
 	$hourly = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM information_schema.PARTITIONS
 		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND PARTITION_NAME LIKE 'h%'",
 		[$syslogdb_default, $table]);
+
+	if (!is_numeric($hourly) && $strict) {
+		return '';
+	}
 
 	return is_numeric($hourly) && (int) $hourly > 0 ? 'hour' : 'day';
 }
@@ -2957,14 +3037,21 @@ function syslog_partition_settings_error(string $granularity, $retention_days, $
  *
  * @param string[] $tables The tables to inspect.
  *
- * @return string[] Distinct levels, empty when none of the tables exists.
+ * @return string[]|null Distinct levels, empty when none of the tables exists,
+ *                       or null when a table's level could not be read.
  */
-function syslog_partition_existing_layouts(array $tables = ['syslog', 'syslog_removed']): array {
+function syslog_partition_existing_layouts(array $tables = ['syslog', 'syslog_removed']): ?array {
 	$layouts = [];
 
 	foreach ($tables as $table) {
 		if (syslog_db_table_exists($table, false)) {
-			$layouts[] = syslog_partition_layout_granularity($table);
+			$layout = syslog_partition_layout_granularity($table, true);
+
+			if ($layout === '') {
+				return null;
+			}
+
+			$layouts[] = $layout;
 		}
 	}
 
@@ -3018,13 +3105,19 @@ function syslog_partition_install_error(array $options, ?int $limit = null, ?arr
 		$layouts = [];
 	}
 
+	$layouts = $layouts ?? syslog_partition_existing_layouts();
+
+	if ($layouts === null) {
+		return __('The partitioning level of the existing Syslog tables could not be read.', 'syslog');
+	}
+
 	return syslog_partition_levels_error(
 		// Match syslog_setup_table_new(): a submitted level wins over the saved one.
 		isset($options['partitioning']) ? ($options['partitioning'] === 'hour' ? 'hour' : 'day') : syslog_partition_requested_granularity(),
 		$options['days'] ?? read_config_option('syslog_retention'),
 		read_config_option('syslog_partition_ahead_days'),
 		$limit ?? syslog_partition_server_limit(),
-		$layouts ?? syslog_partition_existing_layouts()
+		$layouts
 	);
 }
 

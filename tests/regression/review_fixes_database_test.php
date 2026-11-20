@@ -185,6 +185,26 @@ try {
 
 	check(array_intersect($tail, $healed) === $tail && preg_grep('/^d\d{8}$/', $healed) === [], 'Maintenance heals the hourly gap and ignores the pending Daily setting');
 	check(syslog_status_get()['partition_maintenance_outcome'] === 'success', 'Hourly maintenance completes');
+
+	// ---- Repair sizes a missing table by the current retention -------------
+	// 365 days of hourly history would exceed 8,192 partitions; repair must use
+	// the 3-day retention now configured, not the install-time 365 days.
+	$options['syslog_install_days']          = '365';
+	$options['syslog_retention']             = '3';
+	$options['syslog_partition_granularity'] = 'hour';
+	$pdo->exec('DROP TABLE syslog');
+	syslog_setup_table_new([], true);
+	$names = $hourly();
+
+	check($names !== [] && count($names) < 24 * 8, 'Repair recreates a missing hourly table from the current retention');
+	check(strcmp($names[0], syslog_partition_name('hour', $now - 4 * 86400)) >= 0, 'Repair keeps no history beyond the current retention');
+
+	// Hourly partitioning cannot keep Indefinite history: repair refuses before any DDL.
+	$options['syslog_retention'] = '0';
+	$pdo->exec('DROP TABLE syslog');
+	syslog_setup_table_new([], true);
+
+	check(!syslog_db_table_exists('syslog', false), 'Repair creates no table whose partition plan is refused');
 } catch (Throwable $error) {
 	$failures[] = $error->getMessage() . ' (' . basename($error->getFile()) . ':' . $error->getLine() . ')';
 } finally {

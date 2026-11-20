@@ -771,6 +771,16 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	// set table construction settings for the remote pollers
 	$granularity = ($options['partitioning'] ?? read_config_option('syslog_partition_granularity')) === 'hour' ? 'hour' : 'day';
 
+	// Repair recreates missing tables under the current settings, so their
+	// history follows the effective retention, not the install-time value.
+	if ($repair) {
+		$retention = read_config_option('syslog_retention');
+
+		if (is_numeric($retention) && (int) $retention >= 0) {
+			$options['days'] = (int) $retention;
+		}
+	}
+
 	if (!$repair) {
 		set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type']) ? '' : $options['upgrade_type'], true);
 		set_config_option('syslog_install_engine',       $engine, true);
@@ -785,8 +795,19 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	}
 
 	// The syslog table is created partitioned; the helper also selects the
-	// matching ROW_FORMAT for the chosen engine.
-	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'), $precision, $granularity);
+	// matching ROW_FORMAT for the chosen engine. Check the plan against the
+	// server's partition limit before creating a missing table.
+	$plan_error = '';
+
+	if (!$syslogexists || $truncate) {
+		$plan_error = syslog_partition_settings_error($granularity, $options['days'], read_config_option('syslog_partition_ahead_days'), syslog_partition_server_limit());
+	}
+
+	if ($plan_error !== '') {
+		cacti_log('SYSLOG ERROR: The syslog table was not created. ' . $plan_error, false, 'SYSLOG');
+	} else {
+		syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'), $precision, $granularity);
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,

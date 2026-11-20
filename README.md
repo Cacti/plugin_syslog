@@ -252,7 +252,7 @@ that zone, then convert and repartition in one statement:
 ```sql
 SET SESSION time_zone = 'America/New_York';  -- the zone the values were written in
 SELECT COUNT(*) FROM syslog
-  WHERE FROM_UNIXTIME(UNIX_TIMESTAMP(logtime)) <> logtime;  -- must be 0
+  WHERE NOT (FROM_UNIXTIME(UNIX_TIMESTAMP(logtime)) <=> logtime);  -- must be 0
 ALTER TABLE syslog MODIFY COLUMN logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
   PARTITION BY RANGE (UNIX_TIMESTAMP(logtime)) (/* daily partitions */
   PARTITION dMaxValue VALUES LESS THAN MAXVALUE);
@@ -282,8 +282,7 @@ changes, not routine rotation.
   utility refuses to start while processing is enabled or a processing run is
   active, and holds a database lock that `syslog_process.php` also takes, so no
   processing run can start during the rebuild. Neither side ever terminates the
-  other. It
-  does **not** stop remote collectors, replication or external database
+  other. It does **not** stop remote collectors, replication or external database
   writers: stop them and buffer new logs upstream. Keep everything stopped
   until the rebuild or recovery finishes. Live log tables are temporarily absent
   or incomplete; avoid using log views during the rebuild. DDL waits at most
