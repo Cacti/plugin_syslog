@@ -19,8 +19,9 @@
 /* Syslog Status adapter for the shared card chrome (js/cards.js). The
  * CactiCards controller owns drag/keyboard reorder, the per-card tools and the
  * debounced layout save; this adapter maps those hooks to syslog.php's status
- * endpoints (status_card / status_layout) and wires syslog's extras: the
- * "Add card" catalogue, an auto-refresh interval and a manual refresh-all. Card
+ * endpoints (status_card / status_layout / status_refresh) and wires syslog's
+ * extras: the "Add card" catalogue, an auto-refresh interval and a manual
+ * refresh-all, all through callbacks without reloading the page. Card
  * markup uses the shared .cc* chrome contract; the card bodies keep syslog's
  * own prefixed content classes (tables, key/value rows, notes). */
 
@@ -64,6 +65,8 @@ function initSyslogStatus() {
 					add.appendChild(option);
 				}
 			});
+
+			$(add).trigger('change.select2');
 		}
 
 		// A per-card-id request generation shared by the per-card refresh (routed
@@ -164,7 +167,9 @@ function initSyslogStatus() {
 		}
 
 		var adapter = {
-			addControl: 'syslog_status_add',
+			// The "Add card" select is bound below with jQuery, not through the
+			// controller's addControl: Cacti wraps selects in select2, which
+			// reports changes with a jQuery trigger that native listeners miss.
 
 			// Keep syslog's content palette (the note accent) in sync with the
 			// live Cacti theme; the shared chrome paints from the --cc-* custom
@@ -219,44 +224,112 @@ function initSyslogStatus() {
 		CactiCards.init(grid, adapter);
 		syncAddOptions();
 
-		// Changing the interval reloads the page so Cacti's page refresh picks up
-		// the new value; it persists in the session for subsequent auto-reloads.
-		var interval = document.getElementById('syslog_status_refresh');
-		if (interval) {
-			$(interval).off('change.syslogstatus').on('change.syslogstatus', function() {
-				window.location = 'syslog.php?tab=status&refresh=' + encodeURIComponent(this.value);
-			});
-		}
+		var add = document.getElementById('syslog_status_add');
+		if (add) {
+			$(add).off('change.syslogstatus').on('change.syslogstatus', function() {
+				var id = $(this).val();
 
-		var refreshNow = document.getElementById('syslog_status_refresh_now');
-		if (refreshNow) {
-			$(refreshNow).off('click.syslogstatus').on('click.syslogstatus', function() {
-				var icon = this.querySelector('.fa, .fas');
-				var cards = Array.prototype.slice.call(grid.querySelectorAll('.ccCard'));
-				var pending = cards.length;
-
-				if (!pending) {
+				if (!id) {
 					return;
 				}
 
-				if (icon) {
-					icon.classList.add('fa-spin');
+				// Reset the visible choice; the select2-only event cannot re-enter here.
+				$(this).val('').trigger('change.select2');
+
+				var request = adapter.onAddCard(id);
+
+				if (!request) {
+					return;
 				}
 
-				cards.forEach(function(card) {
-					var wasExpanded = card.classList.contains('ccCardExpanded');
-					fetchCard(card.dataset.card, wasExpanded).then(function(html) {
-						if (html && card.parentNode && window.CactiCards) {
-							CactiCards.replaceCard(grid, adapter, card, html, wasExpanded);
-						}
-					}).always(function() {
-						pending--;
-						if (pending <= 0 && icon) {
-							icon.classList.remove('fa-spin');
-						}
-					});
+				request.then(function(html) {
+					if (!html || liveCard(id)) {
+						return;
+					}
+
+					var tmp = document.createElement('div');
+					tmp.innerHTML = String(html).trim();
+					var fresh = tmp.querySelector('.ccCard') || tmp.firstElementChild;
+
+					if (!fresh) {
+						return;
+					}
+
+					grid.appendChild(fresh);
+					CactiCards.bindCard(grid, adapter, fresh);
+					adapter.applyTheme(grid);
+					adapter.onLayoutChange(CactiCards.serialize(grid, adapter));
 				});
 			});
 		}
+
+		function refreshAll() {
+			var icon = refreshNow ? refreshNow.querySelector('.fa, .fas') : null;
+			var cards = Array.prototype.slice.call(grid.querySelectorAll('.ccCard'));
+
+			if (!cards.length) {
+				return $.Deferred().resolve().promise();
+			}
+
+			if (icon) {
+				icon.classList.add('fa-spin');
+			}
+
+			return $.when.apply($, cards.map(function(card) {
+				var wasExpanded = card.classList.contains('ccCardExpanded');
+
+				return fetchCard(card.dataset.card, wasExpanded).then(function(html) {
+					if (html && card.parentNode && window.CactiCards) {
+						CactiCards.replaceCard(grid, adapter, card, html, wasExpanded);
+					}
+				}, function() {
+					// A failed card keeps its last content; the others still refresh.
+					return $.Deferred().resolve().promise();
+				});
+			})).always(function() {
+				if (icon) {
+					icon.classList.remove('fa-spin');
+				}
+			});
+		}
+
+		// Auto-refresh replaces the cards in place through callbacks. One timer is
+		// shared across ajax page loads and stops once the grid leaves the page.
+		var interval = document.getElementById('syslog_status_refresh');
+		var refreshNow = document.getElementById('syslog_status_refresh_now');
+
+		function schedule() {
+			clearTimeout(window.syslogStatusRefreshTimer);
+
+			var seconds = interval ? Number.parseInt(interval.value, 10) : 0;
+
+			if (seconds > 0) {
+				window.syslogStatusRefreshTimer = setTimeout(function() {
+					if (document.body.contains(grid)) {
+						refreshAll().always(schedule);
+					}
+				}, seconds * 1000);
+			}
+		}
+
+		if (interval) {
+			$(interval).off('change.syslogstatus').on('change.syslogstatus', function() {
+				$.post('syslog.php', {
+					action: 'status_refresh',
+					tab: 'status',
+					refresh: this.value,
+					__csrf_magic: csrfMagicToken
+				}, null, 'json');
+				schedule();
+			});
+		}
+
+		if (refreshNow) {
+			$(refreshNow).off('click.syslogstatus').on('click.syslogstatus', function() {
+				refreshAll().always(schedule);
+			});
+		}
+
+		schedule();
 	});
 }

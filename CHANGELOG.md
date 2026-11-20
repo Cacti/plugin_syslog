@@ -6,6 +6,7 @@
 
 --- develop ---
 
+* bug: Syslog Status: choosing a card in Add card now appends it (Cacti's select2 dropdowns report changes through jQuery, which the card controller's native listener missed), and the Refresh interval is saved per user through a callback and refreshes the cards in place instead of reloading the page
 * feature: Add an Hourly or Daily (default) Partitioning Level under the renamed Data Retention and Partitioning settings, the install advisor (replacing the unused Partitions per Day option) and silent install options. A changed level takes effect only when cli/upgrade_partitioning.php (or its new --partition=hourly|daily option) rebuilds the tables; until then maintenance follows the existing layout and Settings and Status show the change as pending. Hourly tables keep at least two days of partitions ahead so dMaxValue reorganizations stay instant
 * feature: Refuse to save Syslog settings, install, or rebuild when retention, pre-create window and partitioning level need more partitions than the database server supports (8192, or 1024 before MariaDB 10.0.4 and MySQL 5.7), or when Hourly is combined with Indefinite retention
 * bug: Bound every log query at the current time so empty future partitions are always pruned, whatever the filter's own date range

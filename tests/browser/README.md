@@ -33,3 +33,12 @@ node tests/browser/dashboard_cards.cjs
 
 It uses the actual Dashboard renderer and styles with fixture panels and records
 ordering requests; it does not verify a live database or chart data.
+
+The Status card fixture wraps the toolbar selects in Cacti's select2, as Cacti
+does, and checks that adding a card appends it and saves the layout, and that
+the refresh interval and Refresh button update cards through callbacks without
+reloading the page:
+
+```sh
+CACTI_ROOT=/path/to/cacti node tests/browser/status_cards.cjs
+```
