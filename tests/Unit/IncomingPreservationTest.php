@@ -72,6 +72,95 @@ it('retries crash-stranded rows even when no new messages arrive', function () {
 	expect(syslog_preprocess_incoming_records())->toBe(['max_seq' => 42, 'incoming' => 3]);
 });
 
+it('strips program boundary delimiters only from the active incoming batch', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'main';
+	$db = new PDO('sqlite::memory:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+	$db->exec('CREATE TABLE syslog_incoming (seq INTEGER PRIMARY KEY, status INTEGER, program TEXT)');
+	$insert = $db->prepare('INSERT INTO syslog_incoming VALUES (?, ?, ?)');
+	$programs = [
+		['(o-bridge)', 'o-bridge'],
+		['(sd-pam)', 'sd-pam'],
+		['(systemd)', 'systemd'],
+		['gdm-launch-environment]', 'gdm-launch-environment'],
+		['[sshd]', 'sshd'],
+		['[(systemd)]', 'systemd'],
+		['](leading', 'leading'],
+		['trailing([', 'trailing'],
+		['worker[7](helper)-main', 'worker[7](helper)-main'],
+		['plain-program', 'plain-program'],
+		['([])', ''],
+		[null, null]
+	];
+	foreach ($programs as $index => [$program]) {
+		$insert->execute([$index + 1, 1, $program]);
+	}
+	$insert->execute([100, 0, '(pending)']);
+	$insert->execute([101, 1, '[next-batch]']);
+	$insert->execute([102, 2, '(processed)']);
+	test_override('syslog_db_fetch_assoc_prepared', static function ($sql, $params) use ($db) {
+		$query = $db->prepare($sql);
+		$query->execute($params);
+
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	});
+	test_override('syslog_db_execute_prepared', static function ($sql, $params) use ($db) {
+		$query = $db->prepare($sql);
+
+		return $query->execute($params);
+	});
+
+	expect(syslog_strip_incoming_programs(100))->toBeTrue()
+		->and($db->query('SELECT program FROM syslog_incoming ORDER BY seq')->fetchAll(PDO::FETCH_COLUMN))
+		->toBe([...array_column($programs, 1), '(pending)', '[next-batch]', '(processed)']);
+});
+
+it('bounds program normalization updates and continues beyond the first batch', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'main';
+	$db = new PDO('sqlite::memory:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+	$db->exec('CREATE TABLE syslog_incoming (seq INTEGER PRIMARY KEY, status INTEGER, program TEXT)');
+	$insert = $db->prepare('INSERT INTO syslog_incoming VALUES (?, 1, ?)');
+	foreach (range(1, 251) as $seq) {
+		$insert->execute([$seq, '(worker-' . $seq . ')']);
+	}
+	$updates = [];
+	test_override('syslog_db_fetch_assoc_prepared', static function ($sql, $params) use ($db) {
+		$query = $db->prepare($sql);
+		$query->execute($params);
+
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+	});
+	test_override('syslog_db_execute_prepared', static function ($sql, $params) use ($db, &$updates) {
+		$updates[] = count($params);
+		$query = $db->prepare($sql);
+
+		return $query->execute($params);
+	});
+
+	expect(syslog_strip_incoming_programs(251))->toBeTrue()
+		->and($updates)->toBe([751, 4])
+		->and($db->query('SELECT program FROM syslog_incoming ORDER BY seq')->fetchAll(PDO::FETCH_COLUMN))
+		->toBe(array_map(static fn($seq) => 'worker-' . $seq, range(1, 251)));
+});
+
+it('leaves the incoming batch for retry when program normalization fails', function ($failure) {
+	syslog_load_plugin_source('includes/functions.php');
+	$GLOBALS['syslogdb_default'] = 'syslog';
+	$logs = [];
+	$hooks = [];
+	test_override('syslog_db_fetch_cell', static fn() => 42);
+	test_override('syslog_db_fetch_cell_prepared', static fn() => 3);
+	test_override('syslog_db_fetch_assoc_prepared', static fn() => $failure === 'select' ? false : [['program' => '(systemd)']]);
+	test_override('syslog_db_execute_prepared', static fn($sql) => $failure !== 'update' || !str_contains($sql, 'CASE program'));
+	test_override('cacti_log', static function ($message) use (&$logs) { $logs[] = $message; });
+	test_override('api_plugin_hook', static function ($hook) use (&$hooks) { $hooks[] = $hook; });
+
+	expect(syslog_preprocess_incoming_records())->toBe(['max_seq' => 0, 'incoming' => 0])
+		->and($logs)->toBe(['ERROR: Unable to normalize incoming program names; this batch will be retried.'])
+		->and($hooks)->toBe([]);
+})->with(['select', 'update']);
+
 it('rolls back failed local transfers without reporting archived rows', function ($failure) {
 	syslog_load_plugin_source('includes/functions.php');
 	$GLOBALS['config']['poller_id'] = 1;

@@ -608,7 +608,7 @@ function syslog_recommendation_indicator(bool $available): string {
 
 	$label = __esc('Recommendation available - click the message for details', 'syslog');
 
-	return '<span class="syslogRecommendationIndicator" role="img" aria-label="' . $label . '" title="' . $label .
+	return '<span class="syslogRecommendationIndicator" role="img" aria-label="' . $label .
 		'"><i class="fa fa-lightbulb" aria-hidden="true"></i></span>';
 }
 

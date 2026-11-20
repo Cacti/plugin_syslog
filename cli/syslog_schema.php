@@ -54,6 +54,11 @@ foreach ($parms as $arg) {
 			$upgrade = true;
 
 			break;
+		case '--version':
+		case '-V':
+		case '-v':
+			syslog_schema_display_version();
+			exit(0);
 		case '--help':
 		case '-H':
 		case '-h':
@@ -174,14 +179,28 @@ function syslog_schema_report_audit_results(bool $audit = true): bool {
 }
 
 /**
+ * Display the Syslog schema utility version.
+ */
+function syslog_schema_display_version(): void {
+	$version = plugin_syslog_version();
+	print 'Syslog Schema Utility, Version ' . trim($version['version']) . ', ' . COPYRIGHT_YEARS . PHP_EOL;
+}
+
+/**
  * Display the Syslog schema utility usage and options.
  *
  * @return void
  */
 function syslog_schema_display_help(): void {
-	print 'Usage: php syslog_schema.php --audit|--repair|--upgrade' . PHP_EOL;
-	print '  --audit    Report missing tables without changing the schema.' . PHP_EOL;
-	print '  --repair   Repair missing tables and rerun schema migrations.' . PHP_EOL;
-	print '  --upgrade  Upgrade the schema, including missing-table repair.' . PHP_EOL;
-	print 'Repair and upgrade preserve existing data and preferences.' . PHP_EOL;
+	syslog_schema_display_version();
+
+	print PHP_EOL . 'usage: syslog_schema.php --audit | --repair | --upgrade' . PHP_EOL . PHP_EOL;
+	print 'Cacti utility for auditing and repairing the Syslog database schema.' . PHP_EOL;
+	print 'Repair and upgrade preserve existing data and preferences.' . PHP_EOL . PHP_EOL;
+	print 'Options:' . PHP_EOL;
+	print '    --audit   - Report missing tables without changing the schema.' . PHP_EOL;
+	print '    --repair  - Repair missing tables and rerun schema migrations.' . PHP_EOL;
+	print '    --upgrade - Upgrade the schema, including missing-table repair.' . PHP_EOL;
+	print '    --version - Display version information.' . PHP_EOL;
+	print '    --help    - Display this help.' . PHP_EOL . PHP_EOL;
 }

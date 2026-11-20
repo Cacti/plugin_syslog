@@ -105,6 +105,25 @@ function initSyslogCompactSearch() {
 	}).filter(Boolean);
 	status.textContent = summaries.join(' · ');
 	$('#refresh_results').off('click').on('click', refreshResults);
+	var pending = $(document).data('syslogFilterRequests') || new Set();
+	$(document).data('syslogFilterRequests', pending);
+	function showRefreshActivity() {
+		$('#refresh_results i').toggleClass('fa-spin', pending.size > 0);
+	}
+	$(document).off('ajaxSend.syslogRefresh ajaxComplete.syslogRefresh')
+		.on('ajaxSend.syslogRefresh', function(event, xhr, settings) {
+			var url = new URL(settings.url, window.location.href);
+			var data = new URLSearchParams(typeof settings.data === 'string' ? settings.data : '');
+			var action = url.searchParams.get('action') || data.get('action');
+			if (url.origin === window.location.origin && /\/syslog\.php$/.test(url.pathname) && (!action || action === 'view')) {
+				pending.add(xhr);
+				showRefreshActivity();
+			}
+		}).on('ajaxComplete.syslogRefresh', function(event, xhr) {
+			pending.delete(xhr);
+			showRefreshActivity();
+		});
+	showRefreshActivity();
 	var summary = document.getElementById('syslog_search_summary');
 	summary.textContent = document.getElementById('rfilter').value || builder.dataset.message;
 	// Collapse the filter by default; only a saved 'false' preference keeps it open.
@@ -284,7 +303,6 @@ function initSyslogWorkspace() {
 			var row = button.closest('tr');
 			row.classList.add('syslogRowOpen');
 			var data = JSON.parse(button.dataset.message);
-			row.title = data.message || '';
 			// Show facility and severity through badges, leaving message backgrounds neutral.
 			[
 				['facility', 'syslogFacility'],
@@ -300,23 +318,17 @@ function initSyslogWorkspace() {
 					}
 				});
 			});
-			function open() {
-				if ($(row).tooltip('instance')) $(row).tooltip('close');
-				deselect();
-				active = button;
-				row.classList.add('syslogSelected');
-				button.setAttribute('aria-expanded', 'true');
-				show(data);
-			}
-			// The message button keeps keyboard access; the rest of the row opens the pane too.
-			button.addEventListener('click', function(event) {
-				event.stopPropagation();
-				open();
-			});
-			row.addEventListener('click', function(event) {
-				if (event.target.closest('a, button, input, select, textarea, summary, .syslog-group-toggle')) return;
-				open();
-			});
+		});
+		// Delegation also covers group members loaded after the initial render.
+		$(workspace).off('click.syslogMessage').on('click.syslogMessage', 'tr.syslogRow', function(event) {
+			var button = this.querySelector('.syslogMessageOpen');
+			if (!button || event.target.closest('a, button:not(.syslogMessageOpen), input, select, textarea, summary')) return;
+			event.stopPropagation();
+			deselect();
+			active = button;
+			this.classList.add('syslogSelected');
+			button.setAttribute('aria-expanded', 'true');
+			show(JSON.parse(button.dataset.message));
 		});
 
 		/**
@@ -395,41 +407,86 @@ var SYSLOG_MESSAGE_SORT = '.sortinfo[sort-column="message"], .sortinfo[sort-colu
  * switch to the fixed layout, which honors header widths. The message column
  * then absorbs any change.
  *
+ * Cacti's resize callback pins preceding columns, including the message, and
+ * does not bound the combined widths. Keep that column flexible and limit
+ * each drag to the space available inside the results area instead.
+ *
  * Releasing a drag over the header text also fires a click, which Cacti's
  * sortable headers treat as a sort, so that one click is swallowed.
  */
 function syslogEnableColumnResize(workspace) {
+	var fitTables = [];
 	workspace.querySelectorAll('tr.tableHeader').forEach(function(header) {
 		var table = header.closest('table');
 		if (!table || table.classList.contains('syslogFixedColumns')) return;
 		var cells = Array.from(header.children);
-		var widths = cells.map(function(cell) { return Math.ceil(cell.getBoundingClientRect().width); });
+		var message = cells.find(function(cell) { return cell.querySelector(SYSLOG_MESSAGE_SORT); });
+		if (!message) return;
+		var main = table.closest('.syslogResultsMain');
+		var indicator = cells.find(function(cell) { return cell.querySelector('.syslogRecommendationHeading'); });
+		var minimumMessage = 80;
+		var widths = cells.map(function(cell) { return $(cell).outerWidth(); });
+		var chrome = Math.max(0, table.getBoundingClientRect().width - widths.reduce(function(sum, width) { return sum + width; }, 0));
 		cells.forEach(function(cell, index) {
-			var message = cell.querySelector(SYSLOG_MESSAGE_SORT);
-			if (message) cell.style.removeProperty('width');
-			else if (!cell.style.width) cell.style.width = widths[index] + 'px';
+			if (cell === message) cell.style.removeProperty('width');
+			else $(cell).outerWidth(cell === indicator ? 20 : widths[index]);
 		});
 		table.classList.add('syslogFixedColumns');
 
-		var resized = 0;
-		var keep = null;
-		// Cacti's resize hands the width change to the next column, which can
-		// squeeze it to nothing; here the message column absorbs it instead.
-		// The core callback runs after these handlers, so restore on the next frame.
-		$(header).on('resizestart', 'th', function() {
-			resized = Date.now();
-			var next = this.nextElementSibling;
-			keep = next && !next.querySelector(SYSLOG_MESSAGE_SORT) ? {cell: next, width: next.style.width} : null;
-		}).on('resize', 'th', function() {
-			resized = Date.now();
-			if (keep) {
-				var restore = keep;
-				window.requestAnimationFrame(function() { restore.cell.style.width = restore.width; });
+		function fit() {
+			message.style.removeProperty('width');
+			if (indicator) $(indicator).outerWidth(20);
+			var fixed = cells.filter(function(cell) { return cell !== message && cell !== indicator; });
+			var available = Math.max(main.clientWidth, parseFloat(getComputedStyle(table).minWidth) || 0) - chrome;
+			var budget = available - minimumMessage - (indicator ? 20 : 0);
+			var total = fixed.reduce(function(sum, cell) { return sum + $(cell).outerWidth(); }, 0);
+			if (total > budget) {
+				var spare = total - fixed.length * 20;
+				fixed.forEach(function(cell) {
+					$(cell).outerWidth(20 + Math.max(0, $(cell).outerWidth() - 20) * Math.max(0, budget - fixed.length * 20) / spare);
+				});
 			}
-		}).on('resizestop', 'th', function() {
-			// Restore before the core stop callback saves the column widths.
+		}
+		fit();
+		fitTables.push(fit);
+
+		var resized = 0;
+		$(header).on('resizestart', 'th', function(event, ui) {
 			resized = Date.now();
-			if (keep) keep.cell.style.width = keep.width;
+			fit();
+			var active = this;
+			var initial = cells.map(function(cell) { return $(cell).outerWidth(); });
+			var index = cells.indexOf(active);
+			var messageWidth = $(message).outerWidth();
+			var padding = $(active).outerWidth() - $(active).width();
+			var donor = message.nextElementSibling;
+			var donorWidth = donor ? $(donor).outerWidth() : 0;
+			var originalWidth = ui.originalSize.width;
+			// Replace only this log header's core callbacks; retain core width persistence.
+			$(active).resizable('option', {
+				minWidth: (active === message ? minimumMessage : 20) - padding,
+				maxWidth: active === message ? originalWidth + donorWidth - 20 :
+					(active === indicator ? 20 : initial[index] + messageWidth - minimumMessage) - padding,
+				resize: function(event, ui) {
+					resized = Date.now();
+					cells.forEach(function(cell, index) {
+						if (cell !== message) $(cell).outerWidth(initial[index]);
+					});
+					if (active === message) {
+						if (donor) $(donor).outerWidth(donorWidth - (ui.size.width - originalWidth));
+					} else {
+						$(active).width(ui.size.width);
+					}
+					message.style.removeProperty('width');
+					active.style.height = 'auto';
+				},
+				stop: function() {
+					resized = Date.now();
+					fit();
+					saveTableWidths(false);
+					message.style.removeProperty('width');
+				}
+			});
 		});
 		header.addEventListener('click', function(event) {
 			if (Date.now() - resized < 500) {
@@ -438,10 +495,20 @@ function syslogEnableColumnResize(workspace) {
 			}
 		}, true);
 	});
+	$(window).off('resize.syslogColumns').on('resize.syslogColumns', function() {
+		if (!workspace.isConnected) {
+			$(window).off('resize.syslogColumns');
+			return;
+		}
+		fitTables.forEach(function(fit) { fit(); });
+	});
+	// Core may restore persisted widths after the page's inline initialization.
+	window.requestAnimationFrame(function() { fitTables.forEach(function(fit) { fit(); }); });
 }
 
-function initSyslogValueFilters() {
-	document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+function initSyslogValueFilters(root) {
+	var buttons = Array.from((root || document).querySelectorAll('.syslogValueFilter'));
+	buttons.forEach(function(button) {
 		button.addEventListener('click', function(event) {
 			event.stopPropagation();
 			syslogAddFilterCondition(button.dataset.filterField, button.dataset.filterValue);
@@ -451,7 +518,7 @@ function initSyslogValueFilters() {
 	// The search builder initializes on document ready, so mark after it.
 	$(function() {
 		var builder = document.getElementById('syslog_search_builder');
-		document.querySelectorAll('.syslogValueFilter').forEach(function(button) {
+		buttons.forEach(function(button) {
 			var active = builder && syslogFilterInScope(builder.searchRows, button.dataset.filterField, button.dataset.filterValue);
 			button.classList.toggle('syslogValueFilterActive', !!active);
 			button.setAttribute('aria-pressed', active ? 'true' : 'false');
@@ -1173,7 +1240,17 @@ function savedSearchPrompt(name, accept) {
 	// Saving the default search again keeps it the default unless unticked.
 	var selected = document.getElementById('saved_search').selectedOptions[0];
 	makeDefault.checked = !!(name && selected && selected.dataset.default === '1');
-	$('#syslog_saved_prompt').dialog({
+	$('#syslog_saved_prompt').off('submit.syslogSavedPrompt').on('submit.syslogSavedPrompt', function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		var value = input.value.trim();
+		if (!value) {
+			input.focus();
+			return;
+		}
+		$(this).dialog('close');
+		accept(value, makeDefault.checked);
+	}).dialog({
 		modal: false,
 		appendTo: 'body',
 		width: 420,
@@ -1184,16 +1261,11 @@ function savedSearchPrompt(name, accept) {
 			applySyslogTheme(this);
 		},
 		buttons: [
-			{text: text.save, click: function() {
-				var value = input.value.trim();
-				if (!value) {
-					input.focus();
-					return;
-				}
-				$(this).dialog('close');
-				accept(value, makeDefault.checked);
-			}},
-			{text: text.cancel, click: function() { $(this).dialog('close'); }}
+			{text: text.cancel, click: function() { $(this).dialog('close'); }},
+			{text: text.save, type: 'submit', form: 'syslog_saved_prompt', class: 'ui-state-active', click: function(event) {
+				event.preventDefault();
+				this.requestSubmit();
+			}}
 		]
 	});
 }
@@ -1379,34 +1451,12 @@ function syslogRecommendationCards($parent, recommendations, labels, clipped) {
 }
 
 /**
- * Show the locally available title as text, without requesting the server.
- *
- * @returns {jQuery} The full message or indicator tooltip, never parsed as HTML.
- */
-function syslogRowTooltip() {
-	return $('<div class="syslogMessageTip"></div>').text($(this).attr('title') || '');
-}
-
-/**
- * Initialize syslog message tooltips and group expand/collapse functionality
+ * Initialize group expand/collapse and tooltips for non-message buttons.
  * Call this after the syslog message table is rendered or updated
  */
 function initSyslogMessagesDisplay() {
 	$(function() {
 		applySyslogTheme(document.getElementById('syslog_workspace'));
-		// Initialize tooltips for syslog rows
-		$('.syslogRow').tooltip({
-			track: true,
-			show: {
-				effect: 'fade',
-				duration: 250,
-				delay: 125
-			},
-			position: { my: 'left+15 center', at: 'right center' },
-			classes: { 'ui-tooltip': 'syslogRecommendationTip' },
-			content: syslogRowTooltip
-		});
-
 		// Initialize tooltips for buttons
 		$('button').not('.syslogRow button').tooltip({
 			closed: true
@@ -1420,19 +1470,60 @@ function initSyslogMessagesDisplay() {
 		$('.syslog-group-toggle').off('click').on('click', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
+			var toggle = this;
+			var page = $(toggle).data('syslogGroupPage');
 
-			var seq = $(this).data('seq');
-			var detailRows = $('.syslog-detail-' + seq);
-			var icon = $(this);
+			if (!page) {
+				var parent = toggle.closest('tr');
+				var control = $('<tr class="syslogGroupPage"></tr>').insertAfter(parent);
+				var cell = $('<td></td>').attr('colspan', parent.cells.length).appendTo(control);
+				page = {
+					control: control, rows: $(), offset: 0, loaded: false, busy: false,
+					status: $('<span role="status"></span>').appendTo(cell),
+					previous: $('<button type="button"></button>').text(toggle.dataset.previous).appendTo(cell),
+					next: $('<button type="button"></button>').text(toggle.dataset.next).appendTo(cell)
+				};
+				$(toggle).data('syslogGroupPage', page);
+				page.previous.on('click', function() { load(page.offset - 50); });
+				page.next.on('click', function() { load(page.offset + 50); });
+			}
 
-			if (detailRows.is(':visible')) {
-				// Collapse
-				detailRows.hide();
-				icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-			} else {
-				// Expand
-				detailRows.show();
-				icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+			var expanded = toggle.getAttribute('aria-expanded') !== 'true';
+			toggle.setAttribute('aria-expanded', String(expanded));
+			$(toggle).find('i').toggleClass('fa-chevron-up', expanded).toggleClass('fa-chevron-down', !expanded);
+			page.control.toggle(expanded);
+			page.rows.toggle(expanded);
+			if (expanded && !page.loaded && !page.busy) load(0);
+
+			function load(offset) {
+				if (page.busy) return;
+				page.busy = true;
+				page.status.text(toggle.dataset.loading);
+				page.previous.prop('disabled', true);
+				page.next.prop('disabled', true);
+				$.getJSON('syslog.php', {action: 'group_details', context: toggle.dataset.context, group: toggle.dataset.group, offset: offset})
+					.done(function(result) {
+						if (!document.documentElement.contains(toggle)) return;
+						if (!result || typeof result.html !== 'string' || typeof result.more !== 'boolean') {
+							page.status.text(result && result.error || toggle.dataset.error);
+							return;
+						}
+						var body = $('<tbody></tbody>').html(result.html);
+						initSyslogValueFilters(body[0]);
+						page.rows.remove();
+						page.rows = body.children('tr').insertAfter(page.control);
+						page.rows.toggle(toggle.getAttribute('aria-expanded') === 'true');
+						page.offset = offset;
+						page.loaded = true;
+						page.more = result.more;
+						page.status.text(page.rows.length ? (offset + 1) + ' - ' + (offset + page.rows.length) : toggle.dataset.empty);
+					}).fail(function() {
+						page.status.text(toggle.dataset.error);
+					}).always(function() {
+						page.busy = false;
+						page.previous.prop('disabled', !page.loaded || page.offset === 0);
+						page.next.prop('disabled', !page.loaded || !page.more);
+					});
 			}
 		});
 	});

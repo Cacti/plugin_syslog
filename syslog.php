@@ -141,6 +141,23 @@ if (get_request_var('action') == 'message_details') {
 	exit;
 }
 
+if (get_request_var('action') === 'group_details') {
+	header('Content-Type: application/json; charset=UTF-8');
+	$page = syslog_group_details_page(
+		(string) get_filter_request_var('context', FILTER_VALIDATE_REGEXP, ['options' => ['regexp' => '/^[a-f0-9]{32}$/D']]),
+		(string) get_filter_request_var('group', FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]),
+		isset_request_var('offset') ? (string) get_filter_request_var('offset', FILTER_VALIDATE_INT, ['options' => ['min_range' => 0]]) : '0'
+	);
+
+	if (!isset($page['error'])) {
+		$page['html'] = syslog_group_detail_rows($page['rows'], $page['source'], $page['trim'], $page['available']);
+		unset($page['rows'], $page['source'], $page['trim'], $page['available']);
+	}
+
+	print json_encode($page, JSON_INVALID_UTF8_SUBSTITUTE);
+	exit;
+}
+
 $title = __('Syslog Viewer', 'syslog');
 
 // set the default tab
@@ -2021,7 +2038,8 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 
 	if (get_request_var('search_mode') === 'logical') {
 		$predicate = !empty($GLOBALS['syslog_search_error']) ? '(1 = 0)' :
-			syslog_logical_search_sql($GLOBALS['syslog_search_tree'] ?? null, $tab == 'syslog' ? 'message' : 'logmsg');
+			syslog_logical_search_sql($GLOBALS['syslog_search_tree'] ?? null, $tab == 'syslog' ? 'message' : 'logmsg',
+				$tab === 'syslog' && get_request_var('grouping') == '1' ? time() : null);
 
 		if ($predicate !== '') {
 			$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . $predicate;
@@ -2132,13 +2150,16 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 				? "GROUP BY syslog.host_id, IF(syslog.message_digest = '', MD5(syslog.message), syslog.message_digest), syslog.program_id, syslog.facility_id, syslog.priority_id"
 				: 'GROUP BY syslog.host_id, syslog.message, syslog.program_id, syslog.facility_id, syslog.priority_id';
 
+			// A fixed-width timestamp/sequence pair selects the latest ID without collecting all member IDs.
+			$latest_seq_sql = "CAST(RIGHT(MAX(CONCAT(DATE_FORMAT(syslog.logtime, '%Y%m%d%H%i%s%f'), LPAD(syslog.seq, 20, '0'))), 20) AS UNSIGNED)";
+
 			if (get_request_var('removal') == '-1') {
 				$query_sql = "SELECT syslog.host_id, syslog.message, syslog.program_id,
 					syslog.facility_id, syslog.priority_id, syslog_programs.program,
 					'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
 					MAX($breach_sql) AS threshold_breached,
-					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+					$latest_seq_sql AS latest_seq
 					FROM `$syslogdb_default`.`syslog`
 					LEFT JOIN `$syslogdb_default`.`syslog_programs`
 					ON syslog.program_id=syslog_programs.program_id
@@ -2155,7 +2176,7 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 						'main' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
 						MAX($breach_sql) AS threshold_breached,
-						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+						$latest_seq_sql AS latest_seq
 						FROM `$syslogdb_default`.`syslog` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
@@ -2167,7 +2188,7 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 						'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 						MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
 						MAX($breach_sql) AS threshold_breached,
-						GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+						$latest_seq_sql AS latest_seq
 						FROM `$syslogdb_default`.`syslog_removed` AS syslog
 						LEFT JOIN `$syslogdb_default`.`syslog_programs`
 						ON syslog.program_id=syslog_programs.program_id
@@ -2183,7 +2204,7 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 					'remove' AS mtype, COUNT(*) AS occurrence_count, MIN(syslog.logtime) AS first_logtime,
 					MAX(syslog.logtime) AS logtime, MIN(syslog.seq) AS seq,
 					MAX($breach_sql) AS threshold_breached,
-					GROUP_CONCAT(syslog.seq ORDER BY syslog.logtime DESC SEPARATOR ',') AS seq_list
+					$latest_seq_sql AS latest_seq
 					FROM `$syslogdb_default`.`syslog_removed` AS syslog
 					LEFT JOIN `$syslogdb_default`.`syslog_programs` AS syslog_programs
 					ON syslog.program_id = syslog_programs.program_id
@@ -2497,26 +2518,14 @@ function syslog_filter(string $sql_where, string $tab): void {
 						data-exclude='<?php print __esc('Exclude group', 'syslog'); ?>'>
 					</div>
 				</div>
-				<div id='syslog_saved_prompt' class='syslogSavedPrompt' title='<?php print __esc('Save Search As', 'syslog'); ?>' style='display:none'>
-					<div class='syslogSavedPromptFields'>
-						<div class='syslogSavedNameRow'>
-							<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
-							<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
-						</div>
-						<div class='syslogSavedDefaultRow filterTable'>
-							<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
-							<input type='checkbox' role='switch' id='syslog_saved_prompt_default'>
-						</div>
-					</div>
-				</div>
 				<table class='filterTable syslogSearchButtons'>
 					<tr>
 						<td>
 							<span>
 								<button type='submit' id='go'><?php print __esc('Search', 'syslog'); ?></button>
 								<button type='button' id='clear' title='<?php print __esc('Return filter values to their user defined defaults', 'syslog'); ?>'><?php print __esc('Clear', 'syslog'); ?></button>
-								<button type='button' id='refresh_results' title='<?php print __esc('Refresh Results', 'syslog'); ?>'><?php print __esc('Refresh', 'syslog'); ?></button>
-								<button type='button' id='export' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>'><?php print __esc('Export', 'syslog'); ?></button>
+								<button type='button' id='refresh_results' aria-label='<?php print __esc('Refresh Results', 'syslog'); ?>' title='<?php print __esc('Refresh Results', 'syslog'); ?>'><i class='fa fa-sync-alt' aria-hidden='true'></i></button>
+								<button type='button' id='export' title='<?php print __esc('Export Records to CSV', 'syslog'); ?>' aria-label='<?php print __esc('Export Records to CSV', 'syslog'); ?>'><i class='fa fa-file-export' aria-hidden='true'></i></button>
 								<button type='button' id='save' title='<?php print __esc('Save Default Settings', 'syslog'); ?>'><?php print __esc('Save view defaults', 'syslog'); ?></button>
 							</span>
 						</td>
@@ -2528,6 +2537,18 @@ function syslog_filter(string $sql_where, string $tab): void {
 					</tr>
 				</table>
 				<input type='hidden' id='page' value='<?php print get_filter_request_var('page'); ?>'>
+			</form>
+			<form id='syslog_saved_prompt' class='syslogSavedPrompt' title='<?php print __esc('Save Search As', 'syslog'); ?>' style='display:none'>
+				<div class='syslogSavedPromptFields'>
+					<div class='syslogSavedNameRow'>
+						<label for='syslog_saved_prompt_name'><?php print __('Name', 'syslog'); ?></label>
+						<input type='text' id='syslog_saved_prompt_name' size='40' maxlength='128'>
+					</div>
+					<div class='syslogSavedDefaultRow filterTable'>
+						<label for='syslog_saved_prompt_default' title='<?php print __esc('Apply this search when you open this page and no search is active yet', 'syslog'); ?>'><?php print __('Default', 'syslog'); ?></label>
+						<input type='checkbox' role='switch' id='syslog_saved_prompt_default'>
+					</div>
+				</div>
 			</form>
 			</td>
 		</tr>
@@ -2663,6 +2684,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		'align'   => 'center',
 		'tip'     => __('Recommendations', 'syslog')
 	];
+	$group_token = $grouping_enabled ? syslog_group_context($syslog_messages, $sql_where, $trim, $recommendations) : '';
 
 	if ($tab == 'syslog') {
 		// Check if grouping is enabled for display
@@ -2739,7 +2761,13 @@ function syslog_messages(string $tab = 'syslog'): void {
 				// Display grouped or individual messages
 				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1) {
 					// Grouped message display with expand/collapse
-					$expand_icon = "<i class='fas fa-chevron-down syslog-group-toggle' data-seq='" . html_escape($sm['seq']) . "' style='cursor:pointer; margin-right:5px;'></i>";
+					$expand_icon = "<button type='button' class='syslog-group-toggle' aria-expanded='false' aria-label='" . __esc('Toggle group messages', 'syslog') .
+						"' data-context='" . html_escape($group_token) . "' data-group='" . html_escape($row) .
+						"' data-loading='" . __esc('Loading group messages...', 'syslog') .
+						"' data-error='" . __esc('Group messages could not be loaded.', 'syslog') .
+						"' data-empty='" . __esc('No matching messages.', 'syslog') .
+						"' data-previous='" . __esc('Previous', 'syslog') . "' data-next='" . __esc('Next', 'syslog') .
+						"'><i class='fas fa-chevron-down' aria-hidden='true'></i></button>";
 					form_selectable_cell($expand_icon . $sm['logtime'], $sm['seq'], '', 'left');
 				} else {
 					form_selectable_cell($sm['logtime'], $sm['seq'], '', 'left');
@@ -2747,9 +2775,9 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				print "<td class='nowrap left syslogMeta'>" . syslog_value_filter_button($hosts[$sm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
 				print "<td class='nowrap left syslogMeta'>" . syslog_value_filter_button($sm['program'], 'program') . '</td>';
-				print "<td class='center syslogRecommendation'>" . syslog_recommendation_indicator($recommendations[$row]) . '</td>';
+				form_selectable_cell(syslog_recommendation_indicator($recommendations[$row]), $sm['seq'], '20px', 'center syslogRecommendation');
 				// Group summaries show the latest timestamp; use its matching sequence ID.
-				$rule_id = $grouping_enabled && !empty($sm['seq_list']) ? explode(',', $sm['seq_list'])[0] : $sm[$syslog_incoming_config['id']];
+				$rule_id = $grouping_enabled ? $sm['latest_seq'] : $sm[$syslog_incoming_config['id']];
 				form_selectable_cell(syslog_message_button($sm['message'], $hosts[$sm['host_id']] ?? '', $sm['program'], $facilities[$sm['facility_id']] ?? '', $priorities[$sm['priority_id']] ?? '', $sm['logtime'], $rule_id, $sm['mtype'], $trim), $sm['seq'], '', 'left syslogMessage');
 				form_selectable_cell(syslog_metadata_label(isset($facilities[$sm['facility_id']]) ? $facilities[$sm['facility_id']] : __('Unknown', 'syslog'), 'facility'), $sm['seq'], '', 'left');
 				form_selectable_cell(syslog_value_filter_button($priorities[$sm['priority_id']] ?? __('Unknown', 'syslog'), 'priority'), $sm['seq'], '', 'left');
@@ -2763,32 +2791,6 @@ function syslog_messages(string $tab = 'syslog'): void {
 
 				form_end_row();
 
-				// If grouping is enabled and there are multiple occurrences, add hidden detail rows
-				if ($grouping_enabled && isset($sm['occurrence_count']) && $sm['occurrence_count'] > 1 && isset($sm['seq_list'])) {
-					$detail_messages = syslog_group_detail_messages($sm, $sql_where, $breach_sql);
-
-					if (cacti_sizeof($detail_messages)) {
-						foreach ($detail_messages as $dm) {
-							print "<tr class='tableRow syslogRow syslog-detail-row syslog-detail-" . html_escape($sm['seq']) . "' style='display:none;' data-parent='" . html_escape($sm['seq']) . "'>";
-
-							print "<td class='left' style='padding-left:30px;'>" . html_escape($dm['logtime']) . '</td>';
-							print "<td class='nowrap left'>" . syslog_value_filter_button($hosts[$dm['host_id']] ?? __('Unknown', 'syslog'), 'host') . '</td>';
-							print "<td class='nowrap left'>" . syslog_value_filter_button($dm['program'], 'program') . '</td>';
-							print "<td class='center syslogRecommendation'>" . syslog_recommendation_indicator($recommendations[$row]) . '</td>';
-							print "<td class='left syslogMessage'>" . syslog_message_button($dm['message'], $hosts[$dm['host_id']] ?? '', $dm['program'], $facilities[$dm['facility_id']] ?? '', $priorities[$dm['priority_id']] ?? '', $dm['logtime'], $dm[$syslog_incoming_config['id']], $sm['mtype'], $trim) . '</td>';
-							print "<td class='left'>" . syslog_metadata_label(isset($facilities[$dm['facility_id']]) ? $facilities[$dm['facility_id']] : __('Unknown', 'syslog'), 'facility') . '</td>';
-							print "<td class='left'>" . syslog_value_filter_button($priorities[$dm['priority_id']] ?? __('Unknown', 'syslog'), 'priority') . '</td>';
-
-							print "<td class='center' style='width:1%;'>" . (!empty($dm['threshold_breached']) ? __('Yes', 'syslog') : __('No', 'syslog')) . '</td>';
-
-							if ($grouping_enabled) {
-								print "<td class='right'></td>";
-							}
-
-							print '</tr>';
-						}
-					}
-				}
 			}
 		} else {
 			print "<tr><td class='center' colspan='" . (cacti_sizeof($display_text)) . "'><em>" . __('No Syslog Messages', 'syslog') . '</em></td></tr>';
@@ -2840,7 +2842,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 				print "<td class='nowrap left'>" . syslog_value_filter_button($log['host'], 'host') . '</td>';
 				form_selectable_cell(isset($severities[$log['severity']]) ? $severities[$log['severity']] : __('Unknown', 'syslog'), $log['seq'], '', 'left');
 				form_selectable_cell(filter_value($log['name'] != '' ? $log['name'] : __('Alert Removed', 'syslog'), get_request_var('rfilter'), $config['url_path'] . 'plugins/syslog/syslog.php?id=' . $log['seq'] . '&tab=current'), $log['seq'], '', 'left');
-				print "<td class='center syslogRecommendation'>" . syslog_recommendation_indicator($recommendations[$row]) . '</td>';
+				form_selectable_cell(syslog_recommendation_indicator($recommendations[$row]), $log['seq'], '20px', 'center syslogRecommendation');
 				form_selectable_cell(syslog_message_button($log['logmsg'], $log['host'], $log['program'] ?? '', $log['facility'], $log['priority'], $log['logtime'], $log['seq'], 'alert', $trim), $log['seq'], '', 'syslogMessage left');
 
 				form_selectable_cell($log['count'], $log['seq'], '', 'right');

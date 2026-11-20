@@ -550,7 +550,7 @@ it('marks a seed applied even when all of its records already exist', function (
 		->and($flag)->toBe([SYSLOG_RECOMMENDATIONS_SEED_FLAG => '1']);
 });
 
-it('keeps the escaped full message in the title without enabling hover lookups', function () {
+it('renders message rows without hover titles or recommendation lookups', function () {
 	syslog_load_plugin_source('includes/functions.php');
 
 	$queries = [];
@@ -564,8 +564,8 @@ it('keeps the escaped full message in the title without enabling hover lookups',
 	syslog_row_color('3', '<script>alert("message")</script>');
 	$html = ob_get_clean();
 
-	expect($html)->not->toContain('data-recommendations')
-		->toContain("title='&lt;script&gt;alert(&quot;message&quot;)&lt;/script&gt;'")
+	expect($html)->not->toContain('title=')
+		->not->toContain('data-recommendations')
 		->and($queries)->toBe([]);
 });
 
@@ -661,5 +661,7 @@ it('renders an accessible static lightbulb only for matching messages', function
 
 	expect(syslog_recommendation_indicator(false))->toBe('')
 		->and($html)->toContain('fa-lightbulb', 'role="img"', 'aria-label="Recommendation available - click the message for details"')
-		->not->toContain('onclick', 'data-action');
+		->not->toContain('title=')
+		->not->toContain('onclick')
+		->not->toContain('data-action');
 });

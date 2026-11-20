@@ -529,7 +529,7 @@ function syslog_detect_logtime_precision(string $table): string {
  *
  * The existing syslog table is authoritative so an upgrade never silently
  * migrates the schema, even if the configured precision changed (that switch is
- * a deliberate, data destroying CLI operation).  For a fresh install the
+ * an explicit CLI operation, optionally preserving data). For a fresh install the
  * requested value (or stored setting) is used, defaulting to 'ms', and is
  * clamped to 'sec' on MySQL where fractional partitioning cannot prune.
  *

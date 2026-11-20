@@ -495,6 +495,14 @@ if (!function_exists('form_checkbox_cell')) {
 	}
 }
 
+if (!function_exists('form_selectable_cell')) {
+	function form_selectable_cell($contents, $id, $width = '', $style_or_class = '', $title = '') {
+		if (test_call_override('form_selectable_cell', [$contents, $id, $width, $style_or_class, $title], true)) {
+			print "<td class='$style_or_class'>$contents</td>";
+		}
+	}
+}
+
 if (!function_exists('form_end')) {
 	function form_end($ajax = true) {
 		return test_call_override('form_end', [$ajax], null);
