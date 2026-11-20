@@ -234,14 +234,20 @@
 	box-sizing: border-box;
 }
 
-.syslogSavedPrompt .syslogSavedNameRow {
-	display: flex;
+.syslogSavedPromptFields {
+	display: grid;
+	grid-template-columns: max-content minmax(0, 1fr);
 	align-items: center;
-	gap: 8px;
-	margin-bottom: 10px;
+	gap: 10px 12px;
 }
 
-.syslogSavedPrompt .syslogSavedNameRow label {
+.syslogSavedPrompt .syslogSavedNameRow,
+.syslogSavedPrompt .syslogSavedDefaultRow {
+	display: contents;
+}
+
+.syslogSavedPrompt .syslogSavedNameRow label,
+.syslogSavedPrompt .syslogSavedDefaultRow label {
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--search-text);
@@ -257,16 +263,6 @@
 	border-radius: 5px;
 	background: var(--search-card);
 	color: var(--search-text);
-}
-
-/* Aligns the Default checkbox under the name field. */
-.syslogSavedPrompt .syslogSavedDefaultRow {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	padding-left: 52px;
-	color: var(--search-text);
-	font-size: 12px;
 }
 
 .syslogSearchBuilder .syslogSearchRow {
@@ -627,6 +623,8 @@
    resized, and cells clip instead of spilling into their neighbors. */
 #syslog_workspace table.syslogFixedColumns { table-layout: fixed; }
 #syslog_workspace table.syslogFixedColumns td { overflow: hidden; text-overflow: ellipsis; }
+#syslog_workspace table.syslogFixedColumns .sortinfo { overflow: hidden; }
+#syslog_workspace table.syslogFixedColumns .textSubHeaderDark { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Severity row tints: a translucent hue per priority mixed over the live theme
    surface, so the same rules read correctly on both light and dark themes. */
 #syslog_workspace tr.syslogRow { --syslog-sev: transparent; color: var(--search-text); background: color-mix(in srgb, var(--syslog-sev) 16%, var(--search-card)); }
@@ -652,6 +650,11 @@
 #syslog_workspace tr:has(.syslogMessageOpen) td.syslogMeta { color: color-mix(in srgb, currentColor 72%, transparent); font-size: 12px; }
 #syslog_workspace tr:has(.syslogMessageOpen) td:first-child { font-variant-numeric: tabular-nums; }
 #syslog_workspace td.syslogMessage { width: 100%; max-width: 0; }
+#syslog_workspace th:has(.syslogRecommendationHeading),
+#syslog_workspace tr td.syslogRecommendation { box-sizing: border-box; width: 20px; min-width: 20px; max-width: 20px; padding-left: 0; padding-right: 0; text-align: center; }
+#syslog_workspace .syslogRecommendationIndicator { color: var(--search-accent, currentColor); }
+#syslog_workspace .syslog-group-toggle { padding: 0; margin-right: 5px; border: 0; background: transparent; color: inherit; cursor: pointer; }
+#syslog_workspace .syslogGroupPage button { margin-left: 8px; }
 .syslogMessageOpen { display: block; width: 100%; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; letter-spacing: 0.01em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
 /* Trim "All Text": the whole message wraps inside its column. */
 .syslogMessageOpen.syslogMessageWrap { white-space: pre-wrap; overflow-wrap: anywhere; text-overflow: clip; }
@@ -963,9 +966,6 @@
 	outline-offset: -1px;
 }
 
-/* Hover message for syslog rows: the message plus any matching recommendation. */
-.ui-tooltip.syslogRecommendationTip { max-width: 520px; padding: 0; overflow: hidden; }
-.syslogRecTip { padding: 8px 10px; font-size: 12px; line-height: 1.4; }
 .syslogRecSection + .syslogRecSection { margin-top: 6px; }
 .syslogRecLabel { font-weight: 700; opacity: .75; text-transform: uppercase; font-size: 10px; letter-spacing: .04em; }
 .syslogRecText { white-space: pre-line; overflow-wrap: anywhere; }

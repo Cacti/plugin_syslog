@@ -5,6 +5,7 @@
         "class.smtp.php",
         "compatibility.php",
         "database.php",
+        "docs/recommendations.sql.gz",
         "functions.php",
         "html/",
         "include/",

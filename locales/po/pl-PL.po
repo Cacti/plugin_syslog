@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-18 13:15-0500\n"
+"POT-Creation-Date: 2026-11-19 16:30+0000\n"
 "PO-Revision-Date: 2025-03-07 14:56-0500\n"
 "Last-Translator: kaktus <kaktus_j_p@o2.pl>\n"
 "Language-Team: Polish <http://translate.cacti.net/projects/cacti/syslog/pl/>\n"
@@ -513,6 +513,26 @@ msgid "Report previews search the most recent %d stored messages; the report its
 msgstr ""
 
 #: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr ""
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr ""
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Nie"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Tak"
+
+#: includes/functions.php
 msgid "All Text"
 msgstr "Cały tekst"
 
@@ -580,7 +600,7 @@ msgid "Timestamp Precision"
 msgstr ""
 
 #: includes/installer.php
-msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
 msgstr ""
 
 #: includes/installer.php
@@ -786,6 +806,14 @@ msgstr ""
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
+msgstr ""
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr ""
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
 msgstr ""
 
 #: includes/recommendations.php syslog_recommendations.php
@@ -1786,11 +1814,11 @@ msgstr ""
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Next"
 msgstr ""
 
@@ -2628,15 +2656,19 @@ msgstr "Wiadomości"
 msgid "Empty message"
 msgstr "Wiadomość"
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
-msgid "No"
-msgstr "Nie"
+#: syslog.php
+#, fuzzy
+msgid "Toggle group messages"
+msgstr "Wiadomość"
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr "Tak"
+#: syslog.php
+msgid "Loading group messages..."
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "No matching messages."
+msgstr "Wiadomości"
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2706,10 +2738,6 @@ msgstr "Przechowywanie dziennika systemowego"
 
 #: syslog.php
 msgid "No recommendation matches this message."
-msgstr ""
-
-#: syslog.php
-msgid "Recommendations could not be loaded."
 msgstr ""
 
 #: syslog.php syslog_alerts.php
@@ -3592,6 +3620,10 @@ msgid "Click 'Continue' to Delete the following Recommendation(s)."
 msgstr "Kliknij \"Kontynuuj\", aby usunąć następujące raporty dziennika systemowego."
 
 #: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr ""
+
+#: syslog_recommendations.php
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
 msgstr ""
 
@@ -3622,7 +3654,7 @@ msgid "Import Recommendations from Local File"
 msgstr "Importuj regułę raportu z pliku lokalnego"
 
 #: syslog_recommendations.php
-msgid "Select a JSON file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3723,11 +3755,15 @@ msgid "Recommendation [new]"
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the hover message but are never searched."
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "When you hover over a row on the Syslog tab, the first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr ""
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
 msgstr ""
 
 #: syslog_recommendations.php
@@ -3758,7 +3794,7 @@ msgid "Can Match"
 msgstr "Typ dopasowania"
 
 #: syslog_recommendations.php
-msgid "Whether the identifier has the shape of a message word, so the hover lookup can ever find it"
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
 msgstr ""
 
 #: syslog_recommendations.php

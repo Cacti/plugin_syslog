@@ -435,6 +435,12 @@ if (!function_exists('__esc')) {
 	}
 }
 
+if (!function_exists('number_format_i18n')) {
+	function number_format_i18n($number, $decimals = 0) {
+		return test_call_override('number_format_i18n', [$number, $decimals], number_format($number, $decimals));
+	}
+}
+
 if (!function_exists('mailer')) {
 	function mailer(...$args) {
 		return test_call_override('mailer', $args, '');
@@ -486,6 +492,14 @@ if (!function_exists('html_header_checkbox')) {
 if (!function_exists('form_checkbox_cell')) {
 	function form_checkbox_cell($title, $id, $disabled = false) {
 		return test_call_override('form_checkbox_cell', [$title, $id, $disabled], null);
+	}
+}
+
+if (!function_exists('form_selectable_cell')) {
+	function form_selectable_cell($contents, $id, $width = '', $style_or_class = '', $title = '') {
+		if (test_call_override('form_selectable_cell', [$contents, $id, $width, $style_or_class, $title], true)) {
+			print "<td class='$style_or_class'>$contents</td>";
+		}
 	}
 }
 
@@ -652,6 +666,12 @@ if (!function_exists('form_start')) {
 if (!function_exists('form_save_button')) {
 	function form_save_button($cancel_url, $mode = 'save', $extra_url_args = '', $show_delete = true) {
 		return test_call_override('form_save_button', [$cancel_url, $mode, $extra_url_args, $show_delete], null);
+	}
+}
+
+if (!function_exists('form_hidden_box')) {
+	function form_hidden_box($form_name, $form_value, $form_default_value) {
+		return test_call_override('form_hidden_box', [$form_name, $form_value, $form_default_value], null);
 	}
 }
 

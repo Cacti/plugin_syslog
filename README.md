@@ -4,6 +4,10 @@ Syslog collects and searches log messages inside Cacti, applies alert and remova
 rules, and sends notifications or runs configured commands when rules match.
 It can also consume SNMP traps and informs forwarded as Syslog messages by SNMPTT.
 
+Incoming program names have leading and trailing parentheses and square brackets
+removed before reference lookup and rule processing. Interior punctuation is
+preserved. This normalization does not rename programs in existing archived logs.
+
 For log events that continue to be generated frequently on a device, such as
 smartd's feature to notify every 15 minutes of an impending drive failure, can
 be quieted using syslog's 'Re-Alert' setting.
@@ -80,7 +84,7 @@ See [CHANGELOG.md](https://github.com/Cacti/plugin_syslog/blob/develop/CHANGELOG
 
 * Ability to run alert specific commands at Alert and Re-alert times
 
-* Recommendations: hover over a message to see an explanation and a recommended
+* Recommendations: a lightbulb marks messages with an explanation and a recommended
   action from a vendor-neutral knowledge base that you can edit, import, and
   export (see Recommendations below)
 
@@ -152,25 +156,90 @@ MySQL installs always use second precision.
   automatically, even if the configured precision changes.  This avoids the
   long, blocking table rewrite that an in-place precision change would require.
 * **Existing production systems** – switch precision only with the CLI utility
-  below, during a maintenance window, after accepting that stored messages are
-  destroyed.
+  below, during a maintenance window. The unified utility preserves messages
+  by default.
 
 ### Converting an existing MariaDB install
 
 ```console
-php plugins/syslog/cli/updatedb_convert_ms.php
+php plugins/syslog/cli/upgrade_partitioning.php --convert-ms
 ```
 
-The utility is **MariaDB only** and **destructive**: it truncates the
-`syslog`, `syslog_incoming`, and `syslog_removed` tables (deleting all stored
-messages) and changes their `logtime` column to `TIMESTAMP(3)`. The replication
-outbox (`syslog_replication_output`) is widened in place so any undelivered rows
-are preserved, and the sequence high-water marks of the truncated tables are kept
-so remote replication identities are never reused. Alert, removal, and report
-rules and all settings are preserved. The conversion is all-or-nothing and
-re-runnable: the stored precision is only recorded once every target column is
-`TIMESTAMP(3)`. It prompts for confirmation; pass `--confirm` to skip the prompt
-in automation, and `--help` for usage.  Take a database backup first.
+The `--convert-ms` option is **MariaDB only**. It rebuilds the stored/removed
+message tables and converts incoming messages to `TIMESTAMP(3)`, preserving
+data in batches of at most **10,000 rows**. Already-converted incoming tables
+are left alone. The replication outbox (`syslog_replication_output`) is widened
+in place; undelivered rows are never discarded. Sequence high-water marks and
+replication identities are preserved, including when sequence numbers repeat
+at different timestamps. Existing second-resolution messages gain `.000`;
+conversion cannot recover fractional timestamps that were never recorded.
+
+The default is preservation. The explicit
+`--discard-data` option deletes messages in rebuilt
+tables. Rules and unrelated settings are not changed. The precision setting
+is recorded only after the complete pipeline has converted.
+
+### Rebuilding partition layouts
+
+```console
+php plugins/syslog/cli/upgrade_partitioning.php
+```
+
+Without `--convert-ms`, this rebuilds `syslog` and `syslog_removed` using the
+configured storage engine (`syslog_install_engine`), message retention
+(`syslog_retention`) and future-partition horizon
+(`syslog_partition_ahead_days`), retaining their existing timestamp precision.
+It preserves existing columns and indexes, adds `logtime` to a legacy
+sequence-only primary key when necessary, and creates UTC daily
+`UNIX_TIMESTAMP(logtime)` partitions with a final `dMaxValue` safety partition.
+It does not offer weekly or monthly partitioning, since Syslog's maintenance
+expects daily partitions.
+
+Legacy `DATETIME` columns are converted to `TIMESTAMP` using the connection's
+original session time zone; verify that this matches the zone used to write
+those historical wall-clock values. Existing `TIMESTAMP` rows are copied in UTC
+to preserve distinct events across daylight-saving clock changes.
+
+Every existing message is copied, including older-than-retention messages;
+those older rows fit in the earliest RANGE partition. Normal retention pruning
+resumes when processing restarts. Indefinite retention creates daily partitions
+back to the oldest valid timestamp, and future-dated messages extend the planned
+horizon. Plans exceeding the server's 8192-partition limit are rejected rather
+than dropping history. Custom triggers, foreign keys, or unique indexes that
+exclude `logtime` require a manual migration.
+
+`cli/syslog_schema.php --upgrade` and `--repair` repair and upgrade schema and
+create missing tables; they do **not** rebuild an existing partition layout or
+change its timestamp precision. Ordinary retention/horizon changes normally
+need no rebuild: poller maintenance creates missing daily partitions,
+reorganizes `dMaxValue` safely, and removes expired partitions. Use the explicit
+rebuild utility for legacy layouts or engine changes, not routine daily rotation.
+
+**Maintenance requirements for both commands:**
+
+* Back up the database, stop Syslog processing, partition maintenance,
+  replication and **all external database writers**, and buffer new logs
+  upstream. The utility does not stop these services for you. Keep them stopped
+  until the rebuild or recovery finishes. Live log tables are temporarily absent
+  or incomplete; avoid using log views during the rebuild. DDL waits at most
+  30 seconds for metadata locks before reporting failure; let active queries
+  finish before retrying.
+* Before confirmation, the utility reports the **estimated size of the current
+  Syslog database, including data and indexes**. Have **at least that much
+  additional free disk space on the database server** during transfer, plus
+  headroom for temporary files, indexes and binary logs. Database metadata is
+  an estimate; the utility cannot verify free space on a remote database server.
+* Depending on table size and storage speed, copying and verification can take
+  **several hours**. `--confirm` skips the prompt but not these warnings.
+* DDL is **not transactional**. Each original is renamed to `<table>_rebuild`;
+  a replacement is created and populated using bounded primary-key ranges.
+  Originals are dropped automatically only after row counts and column values
+  match and sequence high-water marks have been restored.
+* A failure leaves originals in the live or `_rebuild` tables. Keep writers
+  stopped, fix the reported error, then retry with `--preserve-data` and the
+  same `--convert-ms` option, if used. Existing copied rows are checked rather
+  than overwritten; mismatches stop recovery without dropping the original.
+  Do not change settings or manually delete `_rebuild` tables during recovery.
 
 ### Delivering sub-second timestamps from your log forwarders
 
@@ -573,10 +642,18 @@ evaluates the rules, and records fired alerts in `syslog_logs`.
 
 ## Recommendations
 
-Recommendations explain what a message means and what to do about it. When you
-hover over a row on the Syslog tab, the plugin looks for recommendations that
-match the message and shows their explanation and recommended action next to
-the message. Rows without a match keep the plain message tooltip.
+Recommendations explain what a message means and what to do about it. A lightbulb
+in the fixed 20-pixel column immediately before Message marks matching messages
+on the System Logs and Alert Logs tabs, including grouped messages. Availability
+is checked in batches when the page is rendered, not through hover callbacks.
+Message rows and lightbulbs have no hover tooltips or hover-triggered requests.
+Click the message or row to read the full message and recommendations in the flyout.
+
+Grouped Messages initially renders summaries only. Expand a group to load 50
+matching occurrences at a time; Previous and Next replace that detail page.
+Expansion preserves the displayed search filters and date range, including the
+original bounds of relative time presets. It does not load every duplicate into
+hidden rows. Refresh the results if an older grouped view has expired.
 
 Clicking a row on the System Logs or Alert Logs tab opens a **Message details**
 flyout on the right. The flyout fetches the record from the server and shows
@@ -624,14 +701,28 @@ Syslog Administration realm). You can add, edit, and delete records, filter by
 vendor and severity, and import or export them as JSON. A recommendation is
 identified by its vendor and identifier.
 
-The bundled data in `docs/recommendations.sql.gz` is loaded once, the first time
+The bundled Cisco data in `docs/cisco.json.gz` is loaded once, the first time
 the plugin is installed or upgraded to 5.0 (see
 [Important: Upgrading the Plugin](#important-upgrading-the-plugin); the page
 returns Permission Denied until the upgrade has run). It is read with PHP's zlib extension;
 without it the load is skipped and a warning is logged. Records that already exist
 are never overwritten and records you delete are not restored by later upgrades.
-To reload it manually, run `zcat docs/recommendations.sql.gz | mysql <syslog database>`;
-existing records are kept.
+To reload it manually, import `docs/cisco.json.gz` from the Recommendations page
+and choose to keep existing recommendations. This replaces the former
+`docs/recommendations.sql.gz` SQL seed without changing its one-time seed flag.
+The Cisco catalogue retains the CEMDB/php-syslog-ng data and field values.
+
+A curated, manually importable Juniper EX Series catalogue is available in
+`docs/juniper.json.gz`. Its 14 ESWD records are based on Juniper's System Log
+Explorer; most source records provide an explanation but no recommended action.
+This is not a complete Juniper catalogue and is not automatically installed.
+Message templates use bracketed variable names and explanatory wording, not
+regular expressions.
+
+The file picker accepts `.json` and `.json.gz`; pasted JSON is also supported.
+Exports (selected rows or the current filters) download as `.json.gz` by default.
+Gzip import and export require PHP's zlib extension. Both the compressed file
+and its decompressed contents must be no larger than 64 MiB.
 
 The import and export format is a JSON document. Its field names follow the
 vocabulary of existing rule and event catalogues (Sigma's description and level,
@@ -717,9 +808,14 @@ master process for its workers.
 `cli/syslog_schema.php` takes `--audit`, `--repair`, or `--upgrade`, as
 described under Installation.
 
-`cli/updatedb_convert_ms.php` converts an existing MariaDB install to
-millisecond (`TIMESTAMP(3)`) timestamps.  It is destructive (it truncates the
-message tables) and takes `--confirm` and `--help`; see
+`cli/upgrade_partitioning.php` rebuilds daily partitions to match the configured
+engine, retention and future horizon, preserving messages by default.
+`--convert-ms` also converts the message pipeline to millisecond timestamps on
+MariaDB. It reports database size and warns about additional disk space and
+potential several-hour duration before confirmation.
+
+Both utilities provide Cacti-style `--help` and `--version` output.
+The partition utility also takes `--confirm`; see
 [Millisecond Timestamps](#millisecond-timestamps).
 
 ## Development and Testing

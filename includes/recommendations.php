@@ -40,12 +40,12 @@
 
 const SYSLOG_RECOMMENDATIONS_FORMAT    = 'syslog-recommendations';
 const SYSLOG_RECOMMENDATIONS_VERSION   = 1;
-const SYSLOG_RECOMMENDATIONS_SEED_FILE = 'docs/recommendations.sql.gz';
+const SYSLOG_RECOMMENDATIONS_SEED_FILE = 'docs/cisco.json.gz';
 const SYSLOG_RECOMMENDATIONS_MAX_BYTES = 64 * 1024 * 1024;
 const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
 
-// The shape of a "word" in a syslog message that the hover lookup compares with
+// The shape of a "word" in a syslog message that the recommendation lookup compares with
 // identifiers: an optional literal leading %, then letters, digits and _ . - /
 // starting and ending with a letter, digit or underscore. The percent sign is
 // retained when matching. Numeric event IDs and short codes qualify. Identifiers
@@ -196,7 +196,7 @@ function syslog_recommendation_normalize(array $input, ?string &$reason = null):
  *
  * @param string $identifier The stored identifier.
  *
- * @return bool True when the hover lookup can find it.
+ * @return bool True when the recommendation lookup can find it.
  */
 function syslog_recommendation_matchable(string $identifier): bool {
 	return strlen($identifier) <= 190 && preg_match('/^' . SYSLOG_RECOMMENDATIONS_IDENTIFIER . '$/D', $identifier) === 1;
@@ -359,17 +359,34 @@ function syslog_recommendation_export_record(array $row): array {
  *
  * @param string            $where  An SQL WHERE clause (with leading WHERE) over syslog_recommendations, or ''.
  * @param array<int, mixed> $params The bind values for $where.
+ * @param bool             $compressed Whether to emit gzip-compressed JSON.
  *
  * @return void
  */
-function syslog_recommendations_export(string $where = '', array $params = []): void {
+function syslog_recommendations_export(string $where = '', array $params = [], bool $compressed = false): void {
 	$flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE |
 		JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PRETTY_PRINT;
 
-	print '{' . "\n";
-	print '    "format": ' . json_encode(SYSLOG_RECOMMENDATIONS_FORMAT) . ",\n";
-	print '    "version": ' . SYSLOG_RECOMMENDATIONS_VERSION . ",\n";
-	print '    "recommendations": [';
+	$context = $compressed ? deflate_init(ZLIB_ENCODING_GZIP) : null;
+
+	if ($context === false) {
+		throw new RuntimeException('Unable to initialize recommendation export compression');
+	}
+
+	$write = static function (string $text, bool $finish = false) use ($context): void {
+		$output = $context === null ? $text : deflate_add($context, $text, $finish ? ZLIB_FINISH : ZLIB_NO_FLUSH);
+
+		if ($output === false) {
+			throw new RuntimeException('Unable to compress recommendation export');
+		}
+
+		print $output;
+	};
+
+	$write('{' . "\n");
+	$write('    "format": ' . json_encode(SYSLOG_RECOMMENDATIONS_FORMAT) . ",\n");
+	$write('    "version": ' . SYSLOG_RECOMMENDATIONS_VERSION . ",\n");
+	$write('    "recommendations": [');
 
 	$last  = 0;
 	$first = true;
@@ -386,16 +403,16 @@ function syslog_recommendations_export(string $where = '', array $params = []): 
 			$last  = (int) $row['id'];
 			$json  = (string) json_encode(syslog_recommendation_export_record($row), $flags);
 			$json  = preg_replace('/^/m', '        ', $json) ?? $json;
-			print ($first ? "\n" : ",\n") . $json;
+			$write(($first ? "\n" : ",\n") . $json);
 			$first = false;
 		}
 	} while (count($rows) === 500);
 
-	print ($first ? '' : "\n    ") . "]\n}\n";
+	$write(($first ? '' : "\n    ") . "]\n}\n", true);
 }
 
 /**
- * Read an import file, refusing empty or oversized ones.
+ * Read plain or gzip-compressed JSON, limiting both stored and expanded sizes.
  *
  * @param string $path The file to read.
  *
@@ -403,9 +420,50 @@ function syslog_recommendations_export(string $where = '', array $params = []): 
  */
 function syslog_recommendations_read_file(string $path) {
 	clearstatcache(true, $path);
-	$size = is_file($path) ? filesize($path) : false;
+	$size = is_file($path) && is_readable($path) ? filesize($path) : false;
 
-	return $size === false || $size <= 0 || $size > SYSLOG_RECOMMENDATIONS_MAX_BYTES ? false : file_get_contents($path);
+	if ($size === false || $size <= 0 || $size > SYSLOG_RECOMMENDATIONS_MAX_BYTES) {
+		return false;
+	}
+
+	$payload = file_get_contents($path, false, null, 0, SYSLOG_RECOMMENDATIONS_MAX_BYTES + 1);
+
+	if ($payload !== false && substr($payload, 0, 2) === "\x1f\x8b") {
+		if (!function_exists('inflate_init')) {
+			return false;
+		}
+
+		$context = inflate_init(ZLIB_ENCODING_GZIP);
+
+		if ($context === false) {
+			return false;
+		}
+
+		$expanded = '';
+		$length   = strlen($payload);
+
+		for ($offset = 0; $offset < $length; $offset += 8192) {
+			$chunk = @inflate_add($context, substr($payload, $offset, 8192), ZLIB_SYNC_FLUSH);
+
+			if ($chunk === false || strlen($expanded) + strlen($chunk) > SYSLOG_RECOMMENDATIONS_MAX_BYTES) {
+				return false;
+			}
+
+			$expanded .= $chunk;
+
+			if (inflate_get_status($context) === ZLIB_STREAM_END) {
+				break;
+			}
+		}
+
+		if (inflate_get_status($context) !== ZLIB_STREAM_END || inflate_get_read_len($context) !== $length) {
+			return false;
+		}
+
+		$payload = $expanded;
+	}
+
+	return $payload === false || $payload === '' || strlen($payload) > SYSLOG_RECOMMENDATIONS_MAX_BYTES ? false : $payload;
 }
 
 /**
@@ -421,7 +479,9 @@ function syslog_recommendations_read_payload() {
 	}
 
 	$file = $_FILES['import_file'] ?? null;
-	$path = is_array($file) && ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK && is_uploaded_file((string) ($file['tmp_name'] ?? ''))
+	$path = is_array($file) && ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK
+		&& preg_match('/\.json(?:\.gz)?$/iD', (string) ($file['name'] ?? ''))
+		&& is_uploaded_file((string) ($file['tmp_name'] ?? ''))
 		? (string) $file['tmp_name'] : '';
 
 	return $path === '' ? false : syslog_recommendations_read_file($path);
@@ -489,6 +549,70 @@ function syslog_recommendations_lookup(string $message, int $limit = 3): array {
 }
 
 /**
+ * Check the displayed messages for recommendations using bounded, shared queries.
+ *
+ * @param array<int|string, string> $messages The messages keyed by their display row.
+ *
+ * @return array<int|string, bool> Whether each message has a matching recommendation.
+ */
+function syslog_recommendations_for_messages(array $messages): array {
+	$available  = array_fill_keys(array_keys($messages), false);
+	$candidates = [];
+
+	foreach ($messages as $key => $message) {
+		foreach (syslog_recommendation_candidates($message) as $candidate) {
+			$candidates[$candidate][$key] = true;
+		}
+	}
+
+	foreach (array_chunk(array_map('strval', array_keys($candidates)), 500) as $batch) {
+		// Return candidate spellings so the flags follow the catalogue's SQL collation.
+		$matches = syslog_db_fetch_assoc_prepared(
+			'SELECT candidates.identifier
+			FROM (SELECT ? AS identifier' . str_repeat(' UNION ALL SELECT ?', cacti_sizeof($batch) - 1) . ') AS candidates
+			WHERE EXISTS (
+				SELECT 1
+				FROM syslog_recommendations AS recommendations
+				WHERE recommendations.identifier = candidates.identifier
+			)',
+			$batch
+		);
+
+		if ($matches === false) {
+			raise_message('syslog_recommendations', __('Recommendations could not be loaded.', 'syslog'), MESSAGE_LEVEL_ERROR);
+
+			return array_fill_keys(array_keys($messages), false);
+		}
+
+		foreach ($matches as $match) {
+			foreach ($candidates[$match['identifier']] as $key => $_) {
+				$available[$key] = true;
+			}
+		}
+	}
+
+	return $available;
+}
+
+/**
+ * Render the static recommendation indicator beside a message.
+ *
+ * @param bool $available Whether a recommendation matches the message.
+ *
+ * @return string The accessible lightbulb icon, or an empty cell's content.
+ */
+function syslog_recommendation_indicator(bool $available): string {
+	if (!$available) {
+		return '';
+	}
+
+	$label = __esc('Recommendation available - click the message for details', 'syslog');
+
+	return '<span class="syslogRecommendationIndicator" role="img" aria-label="' . $label .
+		'"><i class="fa fa-lightbulb" aria-hidden="true"></i></span>';
+}
+
+/**
  * Shape recommendation rows for the browser: severity names resolved and
  * every column a string, so the client inserts them as plain text.
  *
@@ -534,7 +658,7 @@ function syslog_recommendations_labels(): array {
 }
 
 /**
- * Build the JSON response the hover tooltip requests for a message.
+ * Build the JSON response the details flyout requests for a row without a record id.
  *
  * @param string $message The syslog message text.
  *
@@ -552,21 +676,6 @@ function syslog_recommendations_lookup_json(string $message): string {
 }
 
 /**
- * Whether any recommendations exist, so the viewer can skip hover lookups.
- *
- * @return bool True when the table holds at least one recommendation.
- */
-function syslog_recommendations_available(): bool {
-	static $available = null;
-
-	if ($available === null) {
-		$available = (bool) syslog_db_fetch_cell_prepared('SELECT id FROM syslog_recommendations LIMIT 1', [], '', false);
-	}
-
-	return $available;
-}
-
-/**
  * Load the bundled recommendations the first time the plugin is installed or upgraded.
  *
  * The seed file is only ever applied once (INSERT IGNORE, so records a user
@@ -575,7 +684,7 @@ function syslog_recommendations_available(): bool {
  *
  * @param string|null $file An alternative seed file, mainly for tests.
  *
- * @return int The number of statements executed, or -1 when the seed was skipped.
+ * @return int The number of records imported, or -1 when the seed was skipped.
  */
 function syslog_recommendations_seed(?string $file = null): int {
 	$custom = $file !== null;
@@ -586,11 +695,12 @@ function syslog_recommendations_seed(?string $file = null): int {
 
 	$file = $file ?? dirname(__DIR__) . '/' . SYSLOG_RECOMMENDATIONS_SEED_FILE;
 
-	// gzopen() reads a plain file just as well as a gzip one, one line at a time.
-	$fh = function_exists('gzopen') && is_readable($file) ? gzopen($file, 'rb') : false;
+	$payload = syslog_recommendations_read_file($file);
+	$parsed  = $payload === false ? false : syslog_recommendations_parse($payload);
+	unset($payload);
 
-	if ($fh === false) {
-		cacti_log('SYSLOG WARNING: Recommendations seed file ' . $file . ' is not readable or the PHP zlib extension is missing', false, 'SYSTEM');
+	if ($parsed === false || $parsed['invalid'] || !$parsed['records']) {
+		cacti_log('SYSLOG WARNING: Recommendations seed file ' . $file . ' is not readable or contains invalid JSON recommendations (gzip files require PHP zlib)', false, 'SYSTEM');
 
 		return -1;
 	}
@@ -599,26 +709,15 @@ function syslog_recommendations_seed(?string $file = null): int {
 		@set_time_limit(0);
 	}
 
-	$executed = 0;
-	$failed   = false;
+	$result = syslog_recommendations_store($parsed['records'], false);
 
-	// One INSERT per line; comments and the CREATE TABLE statement are documentation.
-	while (($line = gzgets($fh)) !== false) {
-		if (!str_starts_with($line, 'INSERT IGNORE INTO `syslog_recommendations`')) {
-			continue;
-		}
-
-		if (syslog_db_execute(rtrim($line))) {
-			$executed++;
-		} else {
-			$failed = true;
-		}
+	if ($result['failed']) {
+		cacti_log('SYSLOG WARNING: Failed to store ' . $result['failed'] . ' recommendation(s) from seed file ' . $file, false, 'SYSTEM');
 	}
-	gzclose($fh);
 
-	if (!$failed && !$custom) {
+	if (!$result['failed'] && !$custom) {
 		set_config_option(SYSLOG_RECOMMENDATIONS_SEED_FLAG, '1');
 	}
 
-	return $executed;
+	return $result['imported'];
 }

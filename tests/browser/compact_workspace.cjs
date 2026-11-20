@@ -7,6 +7,10 @@ const cacti = process.env.CACTI_ROOT || path.resolve(root, '../cacti');
 const longMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script> ' + 'width preview '.repeat(4);
 const shortMessage = 'nf_conntrack: table full, dropping packet <script>alert("unsafe")</script>';
 const dispatched = [];
+const savedSearchPosts = [];
+const heldFilters = [];
+let holdFilters = false;
+let filterReceived;
 const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_workspace.php')], {encoding: 'utf8'});
 (async()=>{
  const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH,args:['--no-sandbox']});
@@ -24,7 +28,18 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
   const url = new URL(r.request().url());
   if (url.pathname === '/') return r.fulfill({body: url.searchParams.has('error') ? fixture.replace("id='logical_search_error' role='alert'>", "id='logical_search_error' role='alert'>Invalid search") : fixture, contentType: 'text/html; charset=utf-8'});
   if (url.pathname === '/syslog.php') {
+   if (r.request().method() === 'POST') assert.equal(new URLSearchParams(r.request().postData()).get('__csrf_magic'), 'fixture', 'Fallback requests carry the CSRF token without relying on the global XHR shim');
+   if (holdFilters && url.searchParams.get('header') === 'false') {
+    heldFilters.push(r);
+    if (filterReceived) { filterReceived(); filterReceived = null; }
+    return;
+   }
    dispatched.push(r.request().method() + ' ' + (url.searchParams.get('action') || new URLSearchParams(r.request().postData() || '').get('action')) + ' ' + (url.searchParams.get('source') || '') + ':' + (url.searchParams.get('id') || ''));
+   const data = new URLSearchParams(r.request().postData() || '');
+   if (data.get('action') === 'saved_search_save') {
+    savedSearchPosts.push(Object.fromEntries(data));
+    return r.fulfill({body: JSON.stringify({id: 9}), contentType: 'application/json'});
+   }
    if (url.searchParams.get('action') !== 'message_details') return r.fulfill({body: JSON.stringify({found: false, recommendations: []}), contentType: 'application/json'});
    const id = url.searchParams.get('id');
    const query = 'id=' + id + '&action=newedit&type=0&date=2026-09-13+00%3A12%3A42';
@@ -38,7 +53,22 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  });
  await page.goto('http://fixture/'); await page.waitForTimeout(250);
  assert.deepEqual(errors,[]);
+ assert.equal(await page.locator('#refresh_results').getAttribute('aria-label'), 'Refresh Results');
+ assert.equal(await page.locator('#refresh_results .fa.fa-sync-alt').count(), 1, 'Refresh uses the Font Awesome glyph');
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 0, 'Refresh is not spinning while idle');
+ assert.equal(await page.locator('#export').getAttribute('aria-label'), 'Export Records to CSV');
+ assert.equal(await page.locator('#export .fa.fa-file-export[aria-hidden="true"]').count(), 1, 'Export uses an accessible Font Awesome glyph');
+ assert.equal((await page.locator('#export').textContent()).trim(), '', 'Export is glyph-only');
+ await page.locator('#export').click();
+ assert.equal(await page.evaluate(() => posts.at(-1).export), 'true', 'The glyph keeps the existing export callback');
  const messageButton = page.locator('.syslogMessageOpen').first();
+ const indicatorColumns = page.locator('th:has(.syslogRecommendationHeading), td.syslogRecommendation');
+ async function checkIndicatorWidths() {
+  const widths = await indicatorColumns.evaluateAll(cells => cells.map(cell => cell.getBoundingClientRect().width));
+  assert(widths.length > 1 && widths.every(width => width === 20), 'The lightbulb header and cells stay exactly 20px wide');
+  assert.equal(await page.locator('th:has(.syslogRecommendationHeading)').evaluate(cell => getComputedStyle(cell).textAlign), 'center', 'The lightbulb header is centered');
+ }
+ await checkIndicatorWidths();
  assert.equal(await messageButton.textContent(), longMessage, 'Preview retains text beyond 100 characters');
  const widePreview = await messageButton.evaluate(button => {
   const range = document.createRange();
@@ -57,6 +87,44 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('#saved_saveas').isVisible(), true);
  await page.locator('#saved_saveas').click();
  assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), true);
+ assert.equal(await page.locator('#syslog_saved_prompt_name').evaluate(input => input.form.id), 'syslog_saved_prompt', 'The name belongs to the dialog form, not the main search form');
+ await page.locator('#syslog_saved_prompt_name').press('Enter');
+ assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), true, 'An empty name keeps the dialog open');
+ assert.equal(savedSearchPosts.length, 0, 'An empty name does not save');
+ const nameLabel = await page.locator('label[for="syslog_saved_prompt_name"]').boundingBox();
+ const nameInput = await page.locator('#syslog_saved_prompt_name').boundingBox();
+ const defaultLabel = await page.locator('label[for="syslog_saved_prompt_default"]').boundingBox();
+ const defaultSwitch = await page.locator('#syslog_saved_prompt_default').boundingBox();
+ assert.equal(defaultLabel.x, nameLabel.x, 'Default aligns with Name in the label column');
+ assert.equal(defaultSwitch.x, nameInput.x, 'Default switch aligns with the Name textbox');
+ assert(defaultLabel.y > nameLabel.y && defaultSwitch.y > nameInput.y, 'Default occupies the next row');
+ assert.equal(await page.locator('#syslog_saved_prompt_default').evaluate(input => getComputedStyle(input).appearance), 'none', 'Default uses the native Cacti toggle, not a raw checkbox');
+ assert(defaultSwitch.width > 30 && defaultSwitch.height > 15, 'Default toggle has a visible switch track');
+ await page.locator('label[for="syslog_saved_prompt_default"]').click();
+ assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), true, 'Clicking Default toggles the switch');
+ const beforeKeyboardSave = await page.evaluate(() => posts.length);
+ await page.locator('#syslog_saved_prompt_name').fill('  Keyboard search  ');
+ await page.locator('#syslog_saved_prompt_name').press('Enter');
+ await page.waitForFunction(() => posts.at(-1)?.saved === 9);
+ assert.equal(savedSearchPosts.length, 1, 'Enter issues exactly one save callback POST');
+ assert.equal(savedSearchPosts[0].name, 'Keyboard search', 'Keyboard save trims the name');
+ assert.equal(savedSearchPosts[0].default, 'on', 'Keyboard save preserves the Default switch');
+ assert.equal(savedSearchPosts[0].__csrf_magic, 'fixture', 'Keyboard save includes the CSRF token');
+ assert.equal(await page.evaluate(() => posts.length), beforeKeyboardSave + 1, 'Keyboard save applies only the saved search, not the main search submit action');
+ assert.equal(await page.locator('#syslog_saved_prompt').isVisible(), false, 'Keyboard save closes the dialog without navigation');
+ await page.evaluate(() => savedSearchPrompt('New search', (name, isDefault) => { window.savedPromptResult = {name, isDefault}; }));
+ assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), false, 'A new search is not default unless selected');
+ await page.locator('label[for="syslog_saved_prompt_default"]').click();
+ const saveSearchButtons = page.locator('.ui-dialog:has(#syslog_saved_prompt) .ui-dialog-buttonpane button');
+ assert.deepEqual(await saveSearchButtons.allTextContents(), ['Cancel', 'Save'], 'Save Search As places Cancel before Save');
+ assert.equal(await saveSearchButtons.filter({hasText: /^Cancel$/}).getAttribute('type'), 'button', 'Cancel remains a non-submit button');
+ assert.equal(await saveSearchButtons.filter({hasText: /^Save$/}).getAttribute('type'), 'submit', 'Save is a submit button');
+ assert.equal(await saveSearchButtons.filter({hasText: /^Save$/}).evaluate(button => button.classList.contains('ui-state-active')), true, 'Save has the active action styling');
+ await saveSearchButtons.filter({hasText: /^Save$/}).click();
+ assert.deepEqual(await page.evaluate(() => savedPromptResult), {name: 'New search', isDefault: true}, 'Saving preserves the toggle value');
+ assert.equal(savedSearchPosts.length, 1, 'Reopening replaces the submit callback instead of accumulating handlers');
+ await page.evaluate(() => { document.querySelector('#saved_search option:checked').dataset.default = '1'; savedSearchPrompt('Existing default', () => {}); });
+ assert.equal(await page.locator('#syslog_saved_prompt_default').isChecked(), true, 'Editing a default keeps the toggle selected');
  await page.keyboard.press('Escape');
  assert.equal(await page.locator('#saved_saveas').isVisible(), false);
  assert.equal(await page.locator('#syslog_search_builder .syslogSearchRow').count(),2);
@@ -76,6 +144,19 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.match(await page.evaluate(()=>posts.at(-1).rfilter),/AND host = "edge-router"$/);
  const originalColor = await page.locator('.syslogRow').first().evaluate(row=>getComputedStyle(row).backgroundColor);
  assert.notEqual(originalColor,'rgb(255, 255, 255)');
+ assert.equal(await page.locator('.syslogRow').first().locator('.syslogRecommendationIndicator').count(), 1, 'Matching messages advertise recommendations before a click');
+ assert.equal(await page.locator('.syslogRow').nth(1).locator('.syslogRecommendation').textContent(), '', 'Unmatched messages leave the indicator column blank');
+ assert.equal(await page.locator('.syslogRecommendationIndicator').first().evaluate(icon => icon.parentElement.nextElementSibling.classList.contains('syslogMessage')), true, 'The indicator immediately precedes the message');
+ assert.equal(await page.locator('.syslogRow[title], .syslogRow [title]').count(), 0, 'Message rows and their contents have no native hover titles');
+ const beforeHover = dispatched.length;
+ for (const target of [messageButton, ...await page.locator('.syslogRow').first().locator('td').all(), page.locator('.syslogRecommendationIndicator').first(), messageButton]) {
+  await target.hover();
+  await page.waitForTimeout(400);
+  assert.equal(await page.locator('.ui-tooltip:visible').count(), 0, 'Hovering messages, metadata, or the lightbulb never opens a tooltip');
+ }
+ assert.equal(dispatched.length, beforeHover, 'Message-row and lightbulb hovers issue no requests');
+ await page.mouse.move(0, 0);
+ await page.waitForFunction(() => $('.ui-tooltip:visible').length === 0);
  await page.locator('.syslogMessageOpen').first().click();
  assert.equal(await page.locator('#syslog_details_raw').textContent(),longMessage);
  assert.equal(await page.locator('#syslog_message_details script').count(),0);
@@ -130,13 +211,33 @@ const fixture = execFileSync('php', [path.join(root, 'tests/Fixtures/compact_wor
  assert.equal(await page.locator('.syslogQueryActions .syslogResultsLimit').count(),1,'Results limit sits beside the search buttons');
  assert.equal(await page.locator('#syslog_view_options #rows').count(),0,'Results limit no longer hides in view options');
  await page.keyboard.press('Escape');assert.equal(await page.locator('#save').isVisible(),false);
+ await page.mouse.move(0, 0);
+ await page.waitForFunction(() => $('.ui-tooltip:visible').length === 0);
  await page.setViewportSize({width:390,height:844});if (process.env.TEST_ARTIFACT_DIR) await page.screenshot({path:path.join(process.env.TEST_ARTIFACT_DIR, 'syslog-workspace-mobile.png'),fullPage:true});
+ await checkIndicatorWidths();
  assert.equal(await messageButton.textContent(), longMessage, 'Narrow layouts retain the complete preview text');
  const narrowPreview = await messageButton.evaluate(button => ({width: button.clientWidth, content: button.scrollWidth, ellipsis: getComputedStyle(button).textOverflow}));
  assert(narrowPreview.content > narrowPreview.width, 'Long previews overflow their own button on narrow screens');
  assert.equal(narrowPreview.ellipsis, 'ellipsis', 'The browser controls visual truncation');
  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,'Page must not overflow horizontally');
  await page.locator('#refresh_results').click();assert.equal(await page.evaluate(()=>Object.hasOwn(posts.at(-1),'rfilter')),false);
+ holdFilters = true;
+ await page.evaluate(() => { window.mockPostSyslog = postSyslog; postSyslog = realPostSyslog; });
+ const refreshReceived = new Promise(resolve => { filterReceived = resolve; });
+ await page.locator('#refresh_results').click();
+ await refreshReceived;
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 1, 'Clicking Refresh spins its glyph while the callback is pending');
+ const searchReceived = new Promise(resolve => { filterReceived = resolve; });
+ await page.evaluate(() => applyFilter());
+ await searchReceived;
+ await heldFilters[0].fulfill({body: '', contentType: 'text/html'});
+ await page.waitForFunction(() => $.active === 1);
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 1, 'The glyph keeps spinning while another filter callback remains pending');
+ await heldFilters[1].fulfill({status: 500, body: 'Fixture filter failure'});
+ await page.waitForFunction(() => $.active === 0);
+ assert.equal(await page.locator('#refresh_results .fa-spin').count(), 0, 'The glyph stops after the final callback, including failures');
+ await page.evaluate(() => { postSyslog = mockPostSyslog; });
+ holdFilters = false;
  // A saved expanded preference reopens the panel on reload; an active search error forces it open even when collapse is stored.
  await page.setViewportSize({width:1600,height:950});
  await page.evaluate(()=>localStorage.setItem('syslog.search.collapsed','false'));

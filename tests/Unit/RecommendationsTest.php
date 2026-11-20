@@ -8,7 +8,7 @@
 */
 
 /*
- * Syslog recommendations: import/export normalization, hover lookup and the
+ * Syslog recommendations: import/export normalization, message lookup and the
  * one-time seed that the 5.0 upgrade performs.
  */
 
@@ -237,25 +237,27 @@ it('reports no recommendation without touching the database for messages with no
 		->and($queried)->toBeFalse();
 });
 
-it('seeds from single-line INSERT statements only, and only once', function () {
+it('seeds JSON records with prepared inserts without overwriting existing data', function () {
 	$file = tempnam(sys_get_temp_dir(), 'rec');
-	file_put_contents($file, "-- comment\nCREATE TABLE IF NOT EXISTS `syslog_recommendations` (\n  `id` int\n);\n"
-		. "INSERT IGNORE INTO `syslog_recommendations` (vendor) VALUES ('a');\n"
-		. "INSERT IGNORE INTO `syslog_recommendations` (vendor) VALUES ('b');\n"
-		. "DROP TABLE users;\n");
+	$records = [recommendation_sample(), recommendation_sample(['identifier' => 'B'])];
+	file_put_contents($file, json_encode($records));
 
 	$run = [];
-	test_override('syslog_db_execute', function ($sql) use (&$run) {
-		$run[] = $sql;
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$run) {
+		$run[] = [$sql, $params];
 
 		return true;
 	});
+	test_override('syslog_db_affected_rows', static fn () => 1);
 
-	expect(syslog_recommendations_seed($file))->toBe(2)
-		->and($run)->toHaveCount(2)
-		->and(implode('', $run))->not->toContain('DROP');
-
-	unlink($file);
+	try {
+		expect(syslog_recommendations_seed($file))->toBe(2)
+			->and($run)->toHaveCount(2)
+			->and($run[0][0])->toStartWith('INSERT IGNORE INTO syslog_recommendations')
+			->and($run[0][1])->toBe(array_values($records[0]));
+	} finally {
+		unlink($file);
+	}
 
 	$flag = [];
 	test_override('read_config_option', static fn ($name) => $name === SYSLOG_RECOMMENDATIONS_SEED_FLAG ? '1' : '');
@@ -268,17 +270,22 @@ it('seeds from single-line INSERT statements only, and only once', function () {
 
 it('seeds from a gzip compressed file', function () {
 	$file = tempnam(sys_get_temp_dir(), 'rec');
-	file_put_contents($file, gzencode("-- c\nINSERT IGNORE INTO `syslog_recommendations` (vendor) VALUES ('a');\n", 9));
+	file_put_contents($file, gzencode(json_encode([recommendation_sample()]), 9));
 
 	$run = [];
-	test_override('syslog_db_execute', function ($sql) use (&$run) {
-		$run[] = $sql;
+	test_override('syslog_db_execute_prepared', function ($sql, $params) use (&$run) {
+		$run[] = $params;
 
 		return true;
 	});
+	test_override('syslog_db_affected_rows', static fn () => 1);
 
-	expect(syslog_recommendations_seed($file))->toBe(1)->and($run[0])->toEndWith("VALUES ('a');");
-	unlink($file);
+	try {
+		expect(syslog_recommendations_seed($file))->toBe(1)
+			->and($run[0])->toBe(array_values(recommendation_sample()));
+	} finally {
+		unlink($file);
+	}
 });
 
 it('reports an unreadable seed file without marking it applied', function () {
@@ -287,13 +294,13 @@ it('reports an unreadable seed file without marking it applied', function () {
 		$logged[] = $message;
 	});
 
-	expect(syslog_recommendations_seed(sys_get_temp_dir() . '/no-such-seed.sql.gz'))->toBe(-1)
+	expect(syslog_recommendations_seed(sys_get_temp_dir() . '/no-such-seed.json.gz'))->toBe(-1)
 		->and($logged[0])->toContain('not readable');
 });
 
-it('does not remember a bundled seed that had failing statements', function () {
+it('does not remember a bundled seed that had failing inserts', function () {
 	$flag = [];
-	test_override('syslog_db_execute', static fn () => false);
+	test_override('syslog_db_execute_prepared', static fn () => false);
 	test_override('set_config_option', function ($name) use (&$flag) {
 		$flag[] = $name;
 	});
@@ -358,7 +365,8 @@ it('limits how many candidate identifiers one message can produce', function () 
 
 it('remembers the bundled seed was applied', function () {
 	$flag = [];
-	test_override('syslog_db_execute', static fn () => true);
+	test_override('syslog_db_execute_prepared', static fn () => true);
+	test_override('syslog_db_affected_rows', static fn () => 1);
 	test_override('set_config_option', function ($name, $value) use (&$flag) {
 		$flag[$name] = $value;
 	});
@@ -367,30 +375,296 @@ it('remembers the bundled seed was applied', function () {
 		->and($flag)->toBe([SYSLOG_RECOMMENDATIONS_SEED_FLAG => '1']);
 });
 
-it('ships a gzip seed file whose statements all target the normalized table', function () {
-	$handle = gzopen(dirname(__DIR__, 2) . '/' . SYSLOG_RECOMMENDATIONS_SEED_FILE, 'rb');
-	$prefix = 'INSERT IGNORE INTO `syslog_recommendations` (vendor, identifier, component, severity, message, explanation, recommended_action) VALUES (';
-	$rows   = 0;
+it('ships compressed catalogues that import without losing records or fields', function (string $file, string $vendor, int $count) {
+	$payload = syslog_recommendations_read_file(dirname(__DIR__, 2) . '/docs/' . $file);
+	$decoded = json_decode($payload, true);
+	$digest  = hash('sha256', json_encode($decoded['recommendations']));
+	unset($decoded);
+	$parsed  = syslog_recommendations_parse($payload);
 
-	while (($line = gzgets($handle)) !== false) {
-		if (stripos($line, 'INSERT') === 0) {
-			expect(str_starts_with($line, $prefix))->toBeTrue();
-			$rows++;
-		}
-	}
-	gzclose($handle);
+	expect($parsed['invalid'])->toBe(0)
+		->and($parsed['records'])->toHaveCount($count)
+		->and(hash('sha256', json_encode($parsed['records'])))->toBe($digest)
+		->and(array_unique(array_column($parsed['records'], 'vendor')))->toBe([$vendor]);
+})->with([
+	'Cisco'   => ['cisco.json.gz', 'Cisco', 27318],
+	'Juniper' => ['juniper.json.gz', 'Juniper', 14]
+]);
 
-	expect($rows)->toBeGreaterThan(100);
-});
+it('streams compressed exports across database pages without changing the filters or records', function () {
+	$first = array_map(static fn ($id) => array_merge(recommendation_sample(['identifier' => 'CODE_' . $id]), ['id' => $id]), range(1, 500));
+	$last  = array_merge(recommendation_sample(['identifier' => 'LAST']), ['id' => 501]);
+	$calls = [];
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($first, $last, &$calls) {
+		$calls[] = [$sql, $params];
 
-it('marks syslog rows for hover lookups only when recommendations exist', function () {
-	syslog_load_plugin_source('includes/functions.php');
-
-	test_override('syslog_db_fetch_cell_prepared', static fn () => '1');
+		return end($params) === 0 ? $first : [$last];
+	});
 
 	ob_start();
-	syslog_row_color('3', 'message');
+	syslog_recommendations_export('WHERE vendor = ?', ['Cisco'], true);
+	$gzip = ob_get_clean();
+	$file = tempnam(sys_get_temp_dir(), 'rec');
+	file_put_contents($file, $gzip);
+
+	try {
+		$parsed = syslog_recommendations_parse(syslog_recommendations_read_file($file));
+		expect(substr($gzip, 0, 2))->toBe("\x1f\x8b")
+			->and($parsed['invalid'])->toBe(0)
+			->and($parsed['records'])->toHaveCount(501)
+			->and($parsed['records'][500])->toBe(recommendation_sample(['identifier' => 'LAST']))
+			->and($calls[0][0])->toContain('WHERE vendor = ? AND id > ?')
+			->and($calls[0][1])->toBe(['Cisco', 0])
+			->and($calls[1][1])->toBe(['Cisco', 500]);
+	} finally {
+		unlink($file);
+	}
+});
+
+it('exports an empty compressed document that imports successfully', function () {
+	ob_start();
+	syslog_recommendations_export('', [], true);
+	$parsed = syslog_recommendations_parse(gzdecode(ob_get_clean()));
+
+	expect($parsed['invalid'])->toBe(0)->and($parsed['records'])->toBe([]);
+});
+
+it('reports unavailable or failing zlib operations without returning a successful document', function ($mode, $disabled, $expected) {
+	$process = new \Symfony\Component\Process\Process([
+		PHP_BINARY, '-d', 'disable_functions=' . $disabled,
+		dirname(__DIR__) . '/Fixtures/recommendations_zlib.php', $mode
+	]);
+	$process->mustRun();
+
+	expect(json_decode($process->getOutput(), true, 512, JSON_THROW_ON_ERROR))->toBe($expected);
+})->with([
+	'export initialization' => ['export-init', 'deflate_init', 'Unable to initialize recommendation export compression'],
+	'export compression' => ['export-write', 'deflate_add', 'Unable to compress recommendation export'],
+	'import initialization' => ['import-init', 'inflate_init', false],
+	'zlib unavailable' => ['import-unavailable', 'inflate_init', false]
+]);
+
+it('offers both plain and compressed JSON in the import file picker', function () {
+	syslog_load_plugin_source('includes/functions.php');
+	$form = syslog_test_extract_function('syslog_recommendations.php', 'recommendation_import_form');
+	$fields = [];
+	test_override('draw_edit_form', function ($definition) use (&$fields) {
+		$fields = $definition['fields'];
+	});
+
+	ob_start();
+	$form();
+	ob_end_clean();
+
+	expect($fields['import_file']['accept'])->toBe('.json,.json.gz')
+		->and($fields['import_file']['description'])->toContain('.json.gz')
+		->and($fields['import_text']['method'])->toBe('textarea');
+});
+
+it('rejects damaged gzip imports instead of accepting a partial document', function (string $damage) {
+	$payload = gzencode(json_encode([recommendation_sample()]));
+
+	if ($damage === 'checksum') {
+		$payload[strlen($payload) - 8] = chr(ord($payload[strlen($payload) - 8]) ^ 1);
+	} elseif ($damage === 'truncated') {
+		$payload = substr($payload, 0, -1);
+	} else {
+		$payload .= 'trailing data';
+	}
+
+	$file = tempnam(sys_get_temp_dir(), 'rec');
+	file_put_contents($file, $payload);
+	set_error_handler(static fn () => true, E_WARNING);
+
+	try {
+		expect(syslog_recommendations_read_file($file))->toBeFalse();
+	} finally {
+		restore_error_handler();
+		unlink($file);
+	}
+})->with(['checksum', 'truncated', 'trailing']);
+
+it('enforces the expanded import limit and accepts content exactly at that limit', function () {
+	$memory_limit = ini_set('memory_limit', '256M');
+	$file = tempnam(sys_get_temp_dir(), 'rec');
+	$write = static function (int $bytes) use ($file): void {
+		$handle = gzopen($file, 'wb');
+
+		while ($bytes > 0) {
+			$length = min($bytes, 8192);
+			gzwrite($handle, str_repeat(' ', $length));
+			$bytes -= $length;
+		}
+
+		gzclose($handle);
+	};
+	$write(SYSLOG_RECOMMENDATIONS_MAX_BYTES);
+
+	try {
+		$expanded = syslog_recommendations_read_file($file);
+		expect(strlen($expanded))->toBe(SYSLOG_RECOMMENDATIONS_MAX_BYTES);
+		unset($expanded);
+		$write(SYSLOG_RECOMMENDATIONS_MAX_BYTES + 1);
+		expect(syslog_recommendations_read_file($file))->toBeFalse();
+	} finally {
+		unlink($file);
+		unset($expanded);
+		ini_set('memory_limit', $memory_limit);
+	}
+});
+
+it('rejects oversized stored files before reading their contents', function () {
+	$file = tempnam(sys_get_temp_dir(), 'rec');
+	$handle = fopen($file, 'wb');
+	ftruncate($handle, SYSLOG_RECOMMENDATIONS_MAX_BYTES + 1);
+	fclose($handle);
+
+	try {
+		expect(syslog_recommendations_read_file($file))->toBeFalse();
+	} finally {
+		unlink($file);
+	}
+});
+
+it('does not seed a malformed catalogue or mark it applied', function () {
+	$file = tempnam(sys_get_temp_dir(), 'rec');
+	file_put_contents($file, json_encode([recommendation_sample(), ['explanation' => 'no identifier']]));
+	$inserts = [];
+	test_override('syslog_db_execute_prepared', function ($sql) use (&$inserts) {
+		$inserts[] = $sql;
+	});
+
+	try {
+		expect(syslog_recommendations_seed($file))->toBe(-1)->and($inserts)->toBe([]);
+	} finally {
+		unlink($file);
+	}
+});
+
+it('marks a seed applied even when all of its records already exist', function () {
+	$flag = [];
+	test_override('syslog_db_execute_prepared', static fn () => true);
+	test_override('syslog_db_affected_rows', static fn () => 0);
+	test_override('set_config_option', function ($name, $value) use (&$flag) {
+		$flag[$name] = $value;
+	});
+
+	expect(syslog_recommendations_seed())->toBe(0)
+		->and($flag)->toBe([SYSLOG_RECOMMENDATIONS_SEED_FLAG => '1']);
+});
+
+it('renders message rows without hover titles or recommendation lookups', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$queries = [];
+	test_override('syslog_db_fetch_cell_prepared', function ($sql) use (&$queries) {
+		$queries[] = $sql;
+
+		return '1';
+	});
+
+	ob_start();
+	syslog_row_color('3', '<script>alert("message")</script>');
 	$html = ob_get_clean();
 
-	expect($html)->toContain("data-recommendations='1'")->toContain("title='message'");
+	expect($html)->not->toContain('title=')
+		->not->toContain('data-recommendations')
+		->and($queries)->toBe([]);
+});
+
+it('batch-checks page messages with the same matching rules as the flyout', function (bool $lowercase_matches) {
+	$db = new PDO('sqlite::memory:');
+	$schema = $lowercase_matches
+		? 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE NOCASE, vendor TEXT, component TEXT,
+			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)'
+		: 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE BINARY, vendor TEXT, component TEXT,
+			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)';
+	$db->exec($schema);
+	$db->exec("INSERT INTO syslog_recommendations (identifier) VALUES ('%LINK-3-UPDOWN'), ('%LINK-3-UPDOWN'), ('4625'), ('B')");
+	$queries = [];
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db, &$queries) {
+		$queries[] = $params;
+		// Emulate MySQL's case-insensitive connection collation on bound candidates.
+		$sql = str_replace('SELECT ? AS identifier', 'SELECT ? COLLATE NOCASE AS identifier', $sql);
+		$statement = $db->prepare(str_replace('CHAR_LENGTH(', 'LENGTH(', $sql));
+		$statement->execute($params);
+
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	});
+
+	$messages = [
+		'stored'  => '%link-3-updown: Interface Gi0/1 down',
+		'removed' => '%LINK-3-UPDOWN: Interface Gi0/2 down',
+		'alert'   => 'EventID 4625: Login failed',
+		'short'   => 'B',
+		'plain'   => 'LINK-3-UPDOWN',
+		'suffix'  => '%LINK-3-UPDOWN-EXT',
+		'empty'   => ''
+	];
+	$expected = ['stored' => $lowercase_matches, 'removed' => true, 'alert' => true, 'short' => true, 'plain' => false, 'suffix' => false, 'empty' => false];
+
+	expect(syslog_recommendations_for_messages($messages))->toBe($expected)
+		->and($queries)->toHaveCount(1)
+		->and($queries[0])->toContain('4625')
+		->and(array_keys($queries[0], '%link-3-updown', true))->toHaveCount(1);
+
+	foreach ($messages as $key => $message) {
+		expect(syslog_recommendations_lookup($message) !== [])->toBe($expected[$key]);
+	}
+})->with([
+	'case-insensitive catalogue' => [true],
+	'case-sensitive catalogue'   => [false]
+]);
+
+it('does not query recommendations for an empty page or messages without candidates', function () {
+	test_override('syslog_db_fetch_assoc_prepared', static function () {
+		throw new RuntimeException('Unexpected recommendation query');
+	});
+
+	expect(syslog_recommendations_for_messages([]))->toBe([])
+		->and(syslog_recommendations_for_messages(['', ' - : , ']))->toBe([false, false]);
+});
+
+it('bounds shared lookup batches instead of querying once per row', function () {
+	$queries = [];
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use (&$queries) {
+		$queries[] = $params;
+
+		return array_map(static fn ($identifier) => ['identifier' => $identifier], $params);
+	});
+	$messages = array_map(static fn ($id) => 'EVENT_' . $id, range(1, 501));
+
+	expect(syslog_recommendations_for_messages($messages))->toBe(array_fill(0, 501, true))
+		->and($queries)->toHaveCount(2)
+		->and($queries[0])->toHaveCount(500)
+		->and($queries[1])->toBe(['EVENT_501']);
+});
+
+it('surfaces a failed availability query instead of presenting partial results', function () {
+	$errors = [];
+	$queries = 0;
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use (&$queries) {
+		$queries++;
+
+		return $queries === 1 ? array_map(static fn ($identifier) => ['identifier' => $identifier], $params) : false;
+	});
+	test_override('raise_message', function ($id, $message, $level) use (&$errors) {
+		$errors[] = [$message, $level];
+	});
+
+	$messages = array_map(static fn ($id) => 'EVENT_' . $id, range(1, 1001));
+
+	expect(syslog_recommendations_for_messages($messages))->toBe(array_fill(0, 1001, false))
+		->and($queries)->toBe(2)
+		->and($errors)->toBe([['Recommendations could not be loaded.', MESSAGE_LEVEL_ERROR]]);
+});
+
+it('renders an accessible static lightbulb only for matching messages', function () {
+	$html = syslog_recommendation_indicator(true);
+
+	expect(syslog_recommendation_indicator(false))->toBe('')
+		->and($html)->toContain('fa-lightbulb', 'role="img"', 'aria-label="Recommendation available - click the message for details"')
+		->not->toContain('title=')
+		->not->toContain('onclick')
+		->not->toContain('data-action');
 });
