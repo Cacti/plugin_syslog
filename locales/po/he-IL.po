@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 16:30+0000\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
 "PO-Revision-Date: 2025-03-07 14:47-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -275,7 +275,7 @@ msgstr ""
 
 #: includes/functions.php
 #, php-format
-msgid "remaining partition gap: %d day(s)"
+msgid "remaining partition gap: %d partition(s)"
 msgstr ""
 
 #: includes/functions.php
@@ -298,6 +298,44 @@ msgstr ""
 #, fuzzy
 msgid "partition creation failed"
 msgstr "טבלה מחולקת למחיצות"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr ""
+
+#: includes/functions.php
+#, fuzzy
+msgid "The Syslog retention is invalid."
+msgstr "שימור סיסלוג"
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr ""
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "יומי"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+#, fuzzy
+msgid "Hourly"
+msgstr "‫%d שעה"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr ""
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr ""
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
@@ -646,18 +684,14 @@ msgstr "מדיניות שמירה"
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr "בחר כמה ימים של ערכי Syslog ברצונך לשמור במסד הנתונים."
 
-#: includes/installer.php
-msgid "Partitions per Day"
+#: includes/installer.php includes/settings.php
+#, fuzzy
+msgid "Partitioning Level"
 msgstr "מחיצות ליום"
 
 #: includes/installer.php
-msgid "Select the number of partitions per day that you wish to create."
-msgstr "בחר את מספר המחיצות ליום שברצונך ליצור."
-
-#: includes/installer.php
-#, php-format
-msgid "%d Per Day"
-msgstr "%d ליום"
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr ""
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -1001,7 +1035,9 @@ msgid "Choose the custom html wrapper and CSS file to use.  This file contains b
 msgstr "בחר בעטיפת HTML ובקובץ CSS מותאמים אישית לשימוש.  קובץ זה מכיל הן HTML והן CSS כדי להקיף את הדוח.  אם הוא מכיל יותר מסתם CSS, עליך למקם תג מיוחד <REPORT> בתוך הקובץ.  תג תבנית זה יוחלף בתוכן הדוח.  קבצים אלה ממוקמים בספריית 'פורמטים'.</REPORT>"
 
 #: includes/settings.php
-msgid "Data Retention Settings"
+#, fuzzy
+#| msgid "Data Retention Settings"
+msgid "Data Retention and Partitioning"
 msgstr "הגדרות שמירת נתונים"
 
 #: includes/settings.php
@@ -1013,11 +1049,15 @@ msgid "This is the number of days to keep events."
 msgstr "זהו מספר הימים לשמירת אירועים."
 
 #: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr ""
+
+#: includes/settings.php
 msgid "Partition Pre-create Window"
 msgstr ""
 
 #: includes/settings.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
 msgstr ""
 
 #: includes/settings.php syslog_alerts.php
@@ -1217,6 +1257,19 @@ msgstr ""
 msgid "%d second"
 msgstr ""
 
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr ""
+
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_saved_searches.php
@@ -1231,9 +1284,8 @@ msgstr "כיבוי"
 msgid "Enable"
 msgstr "אפשר"
 
-#: includes/settings.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
-#: syslog_saved_searches.php
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
 msgid "Export"
 msgstr "ייצא"
 
@@ -1313,10 +1365,6 @@ msgid "SQL Expression"
 msgstr "ביטוי SQL"
 
 #: includes/settings.php
-msgid "Daily"
-msgstr "יומי"
-
-#: includes/settings.php
 msgid "Weekly"
 msgstr "שבועי"
 
@@ -1349,6 +1397,10 @@ msgstr "כללי דוח"
 #, fuzzy
 msgid "Recommendations"
 msgstr "רשומות שהוסרו"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr ""
 
 #: includes/utilities.php
 #, php-format
@@ -2127,6 +2179,16 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+msgid "Partitioning level"
+msgstr "מחיצות ליום"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr ""
+
+#: syslog.php
+#, fuzzy
 msgid "Last attempt"
 msgstr "נשלח לאחרונה"
 
@@ -2396,6 +2458,12 @@ msgstr ""
 
 #: syslog.php
 #, fuzzy
+#| msgid "Refresh Interval"
+msgid "Invalid refresh interval."
+msgstr "מרווח רענון"
+
+#: syslog.php
+#, fuzzy
 #| msgid "Unknown"
 msgid "Unknown card."
 msgstr "לא ידוע"
@@ -2593,15 +2661,6 @@ msgstr "שמור"
 msgid "Delete the selected saved search?"
 msgstr ""
 
-#: syslog.php
-#, fuzzy
-msgid "Save Search As"
-msgstr "חיפוש"
-
-#: syslog.php
-msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
-
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2635,6 +2694,15 @@ msgstr "שמירת הגדרות ברירת מחדל"
 #, fuzzy
 msgid "Save view defaults"
 msgstr "שמירת הגדרות ברירת מחדל"
+
+#: syslog.php
+#, fuzzy
+msgid "Save Search As"
+msgstr "חיפוש"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr ""
 
 #: syslog.php
 msgid "Breach"
@@ -4243,6 +4311,16 @@ msgstr ""
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr ""
+
+#~ msgid "Partitions per Day"
+#~ msgstr "מחיצות ליום"
+
+#~ msgid "Select the number of partitions per day that you wish to create."
+#~ msgstr "בחר את מספר המחיצות ליום שברצונך ליצור."
+
+#, php-format
+#~ msgid "%d Per Day"
+#~ msgstr "%d ליום"
 
 #~ msgid "Define how you would like this string matched."
 #~ msgstr "הגדר כיצד ברצונך להתאים מחרוזת זו."
