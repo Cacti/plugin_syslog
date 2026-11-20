@@ -1130,7 +1130,24 @@ function syslog_ensure_table_structures(): bool {
 
 	foreach ($tables as $table) {
 		if (!syslog_db_table_exists($table, false)) {
-			syslog_setup_table_new([], true);
+			// A partition rebuild renames the message tables while it holds the
+			// processing lock; never recreate a table underneath it.
+			$borrowed = empty($GLOBALS['syslog_processing_lock_cnn']);
+
+			if ($borrowed && syslog_processing_lock_acquire() !== true) {
+				cacti_log("NOTE: Missing Syslog table '$table' was not repaired while a processing run or partition rebuild holds the processing lock.", false, 'SYSLOG');
+
+				return false;
+			}
+
+			try {
+				syslog_setup_table_new([], true);
+			} finally {
+				if ($borrowed) {
+					syslog_processing_lock_release();
+				}
+			}
+
 			$rebuilt = true;
 
 			break;

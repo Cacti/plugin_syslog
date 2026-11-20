@@ -90,6 +90,8 @@ function syslog_db_table_exists($table, ...$args) {
 		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?', [$GLOBALS['syslogdb_default'], $table]);
 }
 function syslog_partition_ahead_days() { return (int) read_config_option('syslog_partition_ahead_days'); }
+// No Cacti process table here, so no transfer workers are registered.
+function db_fetch_assoc($sql, ...$args) { return []; }
 
 require dirname(__DIR__, 2) . '/includes/schema.php';
 

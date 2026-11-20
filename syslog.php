@@ -986,11 +986,20 @@ function syslog_status_card_body(string $key): string {
 			}
 			print '</tbody></table>';
 			$levels    = ['hour' => __('Hourly', 'syslog'), 'day' => __('Daily', 'syslog')];
-			$active    = $partition_health['syslog']['granularity'] ?? 'day';
 			$requested = syslog_partition_requested_granularity();
-			print '<p class="syslogStatusNote"><span class="syslogStatusNoteLabel">' . __esc('Partitioning level', 'syslog') . ':</span> ' . html_escape($levels[$active]);
+			$actives   = [];
 
-			if ($requested !== $active) {
+			foreach (['syslog', 'syslog_removed'] as $table) {
+				$actives[$table] = ($partition_health[$table]['granularity'] ?? 'day') === 'hour' ? 'hour' : 'day';
+			}
+
+			// After a partly failed rebuild the two tables can differ; show both.
+			$label = count(array_unique($actives)) === 1 ? $levels[$actives['syslog']]
+				: implode(', ', array_map(fn($table) => $table . ': ' . $levels[$actives[$table]], array_keys($actives)));
+
+			print '<p class="syslogStatusNote"><span class="syslogStatusNoteLabel">' . __esc('Partitioning level', 'syslog') . ':</span> ' . html_escape($label);
+
+			if (array_diff($actives, [$requested])) {
 				print ' — ' . html_escape(__('%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables.', $levels[$requested], 'syslog'));
 			}
 

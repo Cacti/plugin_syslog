@@ -2891,8 +2891,37 @@ function syslog_processing_lock_acquire(): ?bool {
 	}
 
 	$GLOBALS['syslog_processing_lock_cnn'] = $cnn;
+	$GLOBALS['syslog_processing_lock_id']  = (int) db_fetch_cell('SELECT CONNECTION_ID()', '', false, $cnn);
 
 	return true;
+}
+
+/**
+ * Release a processing lock taken with syslog_processing_lock_acquire().
+ *
+ * @return void
+ */
+function syslog_processing_lock_release(): void {
+	$cnn = $GLOBALS['syslog_processing_lock_cnn'] ?? null;
+
+	if (is_object($cnn)) {
+		db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()], '', false, $cnn);
+	}
+
+	unset($GLOBALS['syslog_processing_lock_cnn'], $GLOBALS['syslog_processing_lock_id']);
+}
+
+/**
+ * Whether the processing lock is still held by the given session. Transfer
+ * workers check the master's session so they never write once the master has
+ * gone and a partition rebuild may hold the lock.
+ *
+ * @param int $owner The CONNECTION_ID() of the session expected to hold it.
+ *
+ * @return bool
+ */
+function syslog_processing_lock_held_by(int $owner): bool {
+	return $owner > 0 && (int) syslog_db_fetch_cell_prepared('SELECT IS_USED_LOCK(?)', [syslog_processing_lock_name()], '', false) === $owner;
 }
 
 /**

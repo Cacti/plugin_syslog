@@ -64,7 +64,7 @@ beforeEach(function () {
 
 	$this->saved = [];
 
-	foreach (['syslog_cnn', 'syslogdb_default', 'database_sessions', 'database_details', 'database_persist', 'syslog_processing_lock_cnn'] as $name) {
+	foreach (['syslog_cnn', 'syslogdb_default', 'database_sessions', 'database_details', 'database_persist', 'syslog_processing_lock_cnn', 'syslog_processing_lock_id'] as $name) {
 		$this->saved[$name] = $GLOBALS[$name] ?? null;
 	}
 
@@ -98,15 +98,41 @@ it('takes the processing lock on a new connection to the Syslog server', functio
 		return $lock_cnn;
 	});
 	test_override('db_fetch_cell_prepared', fn($sql, $params, $col, $log, $cnn) => $sql === 'SELECT GET_LOCK(?, 0)' && $params === [syslog_processing_lock_name()] && $cnn === $lock_cnn ? '1' : '0');
-	test_override('db_fetch_cell', fn($sql, $col, $log, $cnn) => $sql === 'SELECT @@SESSION.wait_timeout' && $cnn === $lock_cnn ? '86400' : '0');
+	test_override('db_fetch_cell', fn($sql, $col, $log, $cnn) => $cnn !== $lock_cnn ? '0' : ['SELECT @@SESSION.wait_timeout' => '86400', 'SELECT CONNECTION_ID()' => '42'][$sql] ?? '0');
 	$GLOBALS['__test_db_calls'] = [];
 
 	expect(syslog_processing_lock_acquire())->toBeTrue()
 		->and(array_column($GLOBALS['__test_db_calls'], 'sql'))->toContain('SET SESSION wait_timeout = GREATEST(@@SESSION.wait_timeout, 86400)')
 		->and($seen)->toBe([['syslog-db', 'syslog', 'secret', 'syslog', 'mysql', 3307, 2, true, 'key.pem', 'cert.pem', 'ca.pem', '/etc/ssl/certs', false], false, false])
 		->and($GLOBALS['syslog_processing_lock_cnn'])->toBe($lock_cnn)
+		->and($GLOBALS['syslog_processing_lock_id'])->toBe(42)
 		->and($GLOBALS['database_sessions']['syslog-db:3307:syslog'])->toBe($GLOBALS['syslog_cnn'])
 		->and($GLOBALS['database_persist'])->toBeTrue();
+
+	$released = [];
+	test_override('db_fetch_cell_prepared', function ($sql, $params, $col, $log, $cnn) use (&$released) {
+		$released[] = [$sql, $cnn];
+
+		return '1';
+	});
+	syslog_processing_lock_release();
+
+	expect($released)->toBe([['SELECT RELEASE_LOCK(?)', $lock_cnn]])
+		->and($GLOBALS)->not->toHaveKey('syslog_processing_lock_cnn')
+		->and($GLOBALS)->not->toHaveKey('syslog_processing_lock_id');
+});
+
+it('lets a worker write only while its master session holds the lock', function () {
+	test_override('syslog_db_fetch_cell_prepared', fn($sql, $params) => $sql === 'SELECT IS_USED_LOCK(?)' && $params === [syslog_processing_lock_name()] ? '42' : null);
+
+	expect(syslog_processing_lock_held_by(42))->toBeTrue()
+		->and(syslog_processing_lock_held_by(43))->toBeFalse()
+		->and(syslog_processing_lock_held_by(0))->toBeFalse();
+
+	// A released lock reports NULL.
+	test_override('syslog_db_fetch_cell_prepared', fn() => null);
+
+	expect(syslog_processing_lock_held_by(42))->toBeFalse();
 });
 
 it('reports a lock held elsewhere and a lock connection that cannot be opened', function () {

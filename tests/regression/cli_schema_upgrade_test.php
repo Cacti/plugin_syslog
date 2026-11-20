@@ -21,7 +21,7 @@ $settings = ['syslog' => ['syslog_rows' => ['default' => 750]]];
 $syslogdb_default = 'syslog';
 function syslog_connect() { return true; }
 function cacti_sizeof($value) { return count($value); }
-function read_config_option($name) { return ''; }
+function read_config_option($name) { return $name === 'syslog_retention' ? '0' : ''; }
 // The precision helpers live above syslog_setup_table_new() in schema.php and
 // are not part of the evaluated slice, so stub them. Repair runs assert plain
 // second-precision table construction.
@@ -64,6 +64,12 @@ function syslog_ensure_message_digest_columns() {}
 function syslog_db_add_column($table, $column, $log = true) { return true; }
 function syslog_db_fetch_cell_prepared($sql, $params = [], $col_name = '', $log = true) { return '50'; }
 function syslog_status_set($name, $value) { return true; }
+// Repair of a missing table runs under the processing lock.
+$lock_calls = [];
+$lock_free  = true;
+function syslog_processing_lock_acquire() { $GLOBALS['lock_calls'][] = 'acquire'; return $GLOBALS['lock_free']; }
+function syslog_processing_lock_release() { $GLOBALS['lock_calls'][] = 'release'; }
+function cacti_log(...$args) {}
 function db_update_table($table, $definition, $create, $upgrade, $connection) { return true; }
 // syslog_setup_table_new() routes table creation through this wrapper; forward
 // to the stubbed db_update_table() so the real builder runs without a database.
@@ -85,6 +91,14 @@ foreach ($queries as $sql) {
 }
 check(!isset($options_saved['syslog_rows']), 'Repair reset an existing preference');
 check(substr_count(implode("\n", $queries), 'INSERT INTO') === 2, 'Lookup tables must only be seeded when missing');
+
+// The stubbed builder never records `syslog` as created, so it stays missing.
+$lock_free = false;
+check(!syslog_ensure_table_structures() && $lock_calls === ['acquire'], 'Repair must not recreate a missing table while another session holds the processing lock');
+$lock_free  = true;
+$lock_calls = [];
+syslog_ensure_table_structures();
+check($lock_calls === ['acquire', 'release'], 'Repair of a missing table must run under the processing lock');
 $config['poller_id'] = 2;
 $all_tables_exist = true;
 check(syslog_ensure_table_structures(), 'Remote schema repair failed');

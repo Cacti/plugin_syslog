@@ -519,8 +519,11 @@ function syslog_connect(): bool {
 	}
 
 	// Repair missing tables before any main or enabled remote collector queries.
+	// syslog_process.php and cli/upgrade_partitioning.php defer this until
+	// they hold the processing lock.
 	if ($connected && ((int) $config['poller_id'] <= 1 || read_config_option('syslog_remote_enabled') === 'on')
-		&& !$schema_inprocess && !$schema_ready && !defined('IN_PLUGIN_INSTALL') && api_plugin_is_enabled('syslog')) {
+		&& !$schema_inprocess && !$schema_ready && !defined('IN_PLUGIN_INSTALL') && !defined('SYSLOG_DEFER_SCHEMA_REPAIR')
+		&& api_plugin_is_enabled('syslog')) {
 		$schema_inprocess = true;
 
 		try {

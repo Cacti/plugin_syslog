@@ -889,8 +889,9 @@ php plugins/syslog/syslog_process.php [--debug] [--force-report]
 
 `--debug` prints verbose output and `--force-report` sends the email reports
 now. `--help` and `--version` print usage and the plugin version. The options
-`--child`, `--run-id`, `--phase`, `--seq-start`, and `--seq-end` are used by the
-master process for its workers.
+`--child`, `--run-id`, `--phase`, `--seq-start`, `--seq-end`, and `--lock-owner`
+are used by the master process for its workers. A worker exits without writing
+unless the master's session still holds the processing lock.
 
 `cli/syslog_schema.php` takes `--audit`, `--repair`, or `--upgrade`, as
 described under Installation.

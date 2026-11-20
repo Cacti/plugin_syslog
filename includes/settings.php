@@ -468,18 +468,20 @@ function syslog_settings_partition_gate(?string $version = null, ?array $layouts
  * @return void
  */
 function syslog_settings_partition_pending(array &$fields): void {
-	if (!isset($fields['syslog_partition_granularity']) || !syslog_connect() || !syslog_db_table_exists('syslog', false)) {
+	if (!isset($fields['syslog_partition_granularity']) || !syslog_connect()) {
 		return;
 	}
 
-	$active = syslog_partition_layout_granularity('syslog');
+	// Either table may still use the other level, e.g. after a rebuild that
+	// finished syslog but failed on syslog_removed.
+	$stale = array_diff((array) syslog_partition_existing_layouts(), [syslog_partition_requested_granularity()]);
 
-	if ($active === syslog_partition_requested_granularity()) {
+	if (!$stale) {
 		return;
 	}
 
-	$fields['syslog_partition_granularity']['description'] .= ' ' . __('Pending: the tables still use %s partitions. Run cli/upgrade_partitioning.php to apply the selected level.',
-		$active === 'hour' ? __('Hourly', 'syslog') : __('Daily', 'syslog'), 'syslog');
+	$fields['syslog_partition_granularity']['description'] .= ' ' . __('Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level.',
+		reset($stale) === 'hour' ? __('Hourly', 'syslog') : __('Daily', 'syslog'), 'syslog');
 }
 
 /**

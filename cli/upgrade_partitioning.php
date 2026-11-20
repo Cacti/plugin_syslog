@@ -93,6 +93,10 @@ if (!defined('SYSLOG_CONFIG')) {
 	exit(1);
 }
 
+// Never repair the schema here: an interrupted rebuild leaves the message
+// tables renamed, and repair would recreate them empty.
+define('SYSLOG_DEFER_SCHEMA_REPAIR', true);
+
 if (!syslog_connect()) {
 	fwrite(STDERR, 'ERROR: Unable to connect to the Syslog database.' . PHP_EOL);
 	exit(1);
@@ -165,10 +169,41 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 	}
 
 	try {
+		// Workers launched before the lock was taken may still be writing;
+		// later ones see the lock is no longer their master's and exit.
+		$workers = syslog_upart_live_workers();
+
+		if ($workers > 0) {
+			fwrite(STDERR, "ERROR: $workers Syslog transfer worker(s) are still running; wait for them to finish, then retry. No changes were made." . PHP_EOL);
+
+			return false;
+		}
+
 		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead, $granularity, $limit, $partition !== null);
 	} finally {
 		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
 	}
+}
+
+/**
+ * Transfer workers registered in Cacti's process table whose process is
+ * still alive. Rows left by a crashed worker are ignored.
+ *
+ * @return int The number of live workers.
+ */
+function syslog_upart_live_workers(): int {
+	$live = 0;
+
+	foreach ((array) db_fetch_assoc("SELECT pid FROM processes WHERE tasktype = 'syslog' AND taskname = 'child'", false) as $row) {
+		$pid = (int) ($row['pid'] ?? 0);
+
+		// EPERM (1) means the process exists under another user.
+		if ($pid > 0 && (!function_exists('posix_kill') || posix_kill($pid, 0) || posix_get_last_error() === 1)) {
+			$live++;
+		}
+	}
+
+	return $live;
 }
 
 /**

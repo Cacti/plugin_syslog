@@ -7,11 +7,14 @@ function partition_rebuild_runner(): string {
 		$source = plugin_test_read_source('cli/upgrade_partitioning.php');
 		preg_match('/^function syslog_upart_run\(.*?^\}/ms', $source, $run);
 		preg_match('/^function syslog_upart_run_locked\(.*?^\}/ms', $source, $locked);
+		preg_match('/^function syslog_upart_live_workers\(.*?^\}/ms', $source, $workers);
 		$path = tempnam(sys_get_temp_dir(), 'syslog-rebuild-unit-');
 		file_put_contents($path, '<?php namespace SyslogRebuildFixture;
 			function syslog_db_is_mariadb(): bool { return \test_call_override("rebuild_mariadb", [], true); }
 			function syslog_upart_rebuild(...$args): bool { return \test_call_override("syslog_upart_rebuild", $args, false); }
-			' . $run[0] . "\n" . $locked[0]);
+			function posix_kill($pid, $signal) { return \test_call_override("posix_kill", [$pid, $signal], false); }
+			function posix_get_last_error() { return \test_call_override("posix_get_last_error", [], 3); }
+			' . $run[0] . "\n" . $locked[0] . "\n" . $workers[0]);
 
 		try {
 			require $path;
@@ -173,6 +176,38 @@ it('refuses to rebuild while processing or another rebuild holds the processing 
 	expect($run(true, false))->toBeFalse()
 		->and($state->queries)->toBe([['SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]]])
 		->and($state->rebuilds)->toBe([]);
+});
+
+it('refuses to rebuild while transfer workers launched before the lock are still alive', function () {
+	$state = partition_rebuild_setup();
+	$run   = partition_rebuild_runner();
+	$errno = 3;
+
+	test_override('db_fetch_assoc', static fn($sql) => str_contains($sql, "FROM processes WHERE tasktype = 'syslog' AND taskname = 'child'")
+		? [['pid' => '101'], ['pid' => '102'], ['pid' => '103']] : []);
+	// 101 is alive, 102 is a stale row left by a crashed worker, 103 runs as another user.
+	test_override('posix_kill', static function ($pid) use (&$errno) {
+		$errno = $pid === 103 ? 1 : 3;
+
+		return $pid === 101;
+	});
+	test_override('posix_get_last_error', static function () use (&$errno) {
+		return $errno;
+	});
+
+	expect($run(true, false))->toBeFalse()
+		->and($state->rebuilds)->toBe([])
+		->and($state->statements)->toBe([])
+		->and(end($state->queries))->toBe(['SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()]]);
+
+	// Only stale rows remain: the rebuild proceeds.
+	test_override('posix_kill', static fn() => false);
+	$errno = 3;
+	ob_start();
+	$ok = $run(true, false);
+	ob_end_clean();
+
+	expect($ok)->toBeTrue();
 });
 
 it('refuses legacy DATETIME history before any change and releases the lock', function () {
