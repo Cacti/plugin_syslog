@@ -235,13 +235,13 @@ try {
 	rebuild_check(syslog_detect_logtime_precision('syslog_removed') === 'sec' && syslog_db_fetch_cell("SELECT DATA_TYPE FROM information_schema.COLUMNS
 		WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='syslog_removed' AND COLUMN_NAME='logtime'") === 'timestamp', 'A discarded DATETIME table is recreated as TIMESTAMP');
 
-	$options['syslog_enabled'] = 'on';
+	set_config_option('syslog_enabled', 'on');
 	$slot_calls = [];
 	ob_start();
 	rebuild_check(!syslog_upart_run(true, false), 'The command refuses to run while Syslog processing is enabled');
 	ob_end_clean();
 	rebuild_check($slot_calls === [], 'Enabled processing is refused before taking the process slot');
-	$options['syslog_enabled'] = '';
+	set_config_option('syslog_enabled', '');
 	$slot_free = false;
 	ob_start();
 	rebuild_check(!syslog_upart_run(true, false), 'The command refuses to run while a processing run holds the master slot');
@@ -300,11 +300,13 @@ try {
 	rebuild_check((int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog') === (int) $total, 'Every row survives the hourly rebuild');
 	rebuild_check(syslog_upart_layout_ok('syslog', 'InnoDB', 'hour') && !syslog_upart_layout_ok('syslog', 'InnoDB', 'day'), 'The replacement has contiguous UTC hourly partitions');
 	$now = (int) syslog_db_fetch_cell('SELECT UNIX_TIMESTAMP()');
-	$future = $pdo->query('SELECT PARTITION_NAME FROM information_schema.PARTITIONS WHERE TABLE_SCHEMA = DATABASE()
-		AND TABLE_NAME = \'syslog\' AND PARTITION_DESCRIPTION <> \'MAXVALUE\' AND CAST(PARTITION_DESCRIPTION AS UNSIGNED) > ' . ($now + 7200))->fetchAll(PDO::FETCH_COLUMN);
+	$future = syslog_db_fetch_assoc_prepared('SELECT PARTITION_NAME FROM information_schema.PARTITIONS WHERE TABLE_SCHEMA = DATABASE()
+		AND TABLE_NAME = \'syslog\' AND PARTITION_DESCRIPTION <> \'MAXVALUE\' AND CAST(PARTITION_DESCRIPTION AS UNSIGNED) > ?', [$now + 7200]);
+	$future = array_column($future, 'PARTITION_NAME');
 	rebuild_check(count($future) >= 46, 'Hourly partitions exist at least two days ahead');
-	$plan = $pdo->query('EXPLAIN PARTITIONS SELECT COUNT(*) FROM syslog WHERE logtime >= FROM_UNIXTIME(' . ($now - 86400) . ') AND logtime < FROM_UNIXTIME(' . ($now + 1) . ')')->fetch();
-	$scanned = explode(',', (string) $plan['partitions']);
+	$plan = syslog_db_fetch_assoc_prepared('EXPLAIN PARTITIONS SELECT COUNT(*) FROM syslog WHERE logtime >= FROM_UNIXTIME(?) AND logtime < FROM_UNIXTIME(?)',
+		[$now - 86400, $now + 1]);
+	$scanned = explode(',', (string) ($plan[0]['partitions'] ?? ''));
 	rebuild_check($scanned !== [''] && !array_intersect($scanned, array_merge($future, ['dMaxValue'])), 'The automatic upper bound prunes every empty future partition');
 	ob_start();
 	rebuild_check(syslog_upart_rebuild('syslog', false, true, 'InnoDB', 2, 2, 'day', 8192), 'A preserving rebuild converts hourly partitions back to daily');
