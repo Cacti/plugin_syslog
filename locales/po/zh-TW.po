@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 15:22+0000\n"
+"POT-Creation-Date: 2026-11-19 16:30+0000\n"
 "PO-Revision-Date: 2026-10-06 20:43+0000\n"
 "Last-Translator: YU HAO HUANG <mix@b51.tw>\n"
 "Language-Team: Chinese (Traditional Han script) <https://translate.cacti.net/projects/cacti/syslog/zh_Hant/>\n"
@@ -525,6 +525,28 @@ msgid "Report previews search the most recent %d stored messages; the report its
 msgstr ""
 
 #: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr ""
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr ""
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+#, fuzzy
+msgid "No"
+msgstr "否"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+#, fuzzy
+msgid "Yes"
+msgstr "是"
+
+#: includes/functions.php
 msgid "All Text"
 msgstr "所有文字"
 
@@ -596,7 +618,7 @@ msgid "Timestamp Precision"
 msgstr ""
 
 #: includes/installer.php
-msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
 msgstr ""
 
 #: includes/installer.php
@@ -1885,11 +1907,11 @@ msgstr ""
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Next"
 msgstr ""
 
@@ -2730,17 +2752,19 @@ msgstr "訊息"
 msgid "Empty message"
 msgstr "訊息"
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog.php
 #, fuzzy
-msgid "No"
-msgstr "否"
+msgid "Toggle group messages"
+msgstr "訊息"
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog.php
+msgid "Loading group messages..."
+msgstr ""
+
+#: syslog.php
 #, fuzzy
-msgid "Yes"
-msgstr "是"
+msgid "No matching messages."
+msgstr "訊息"
 
 #: syslog.php
 #, fuzzy
