@@ -5,12 +5,16 @@ function partition_rebuild_runner(): string {
 
 	if (!function_exists($name)) {
 		$source = plugin_test_read_source('cli/upgrade_partitioning.php');
-		preg_match('/^function syslog_upart_run\(.*?^\}/ms', $source, $match);
+		preg_match('/^function syslog_upart_run\(.*?^\}/ms', $source, $run);
+		preg_match('/^function syslog_upart_run_locked\(.*?^\}/ms', $source, $locked);
+		preg_match('/^function syslog_upart_live_workers\(.*?^\}/ms', $source, $workers);
 		$path = tempnam(sys_get_temp_dir(), 'syslog-rebuild-unit-');
 		file_put_contents($path, '<?php namespace SyslogRebuildFixture;
 			function syslog_db_is_mariadb(): bool { return \test_call_override("rebuild_mariadb", [], true); }
 			function syslog_upart_rebuild(...$args): bool { return \test_call_override("syslog_upart_rebuild", $args, false); }
-			' . $match[0]);
+			function posix_kill($pid, $signal) { return \test_call_override("posix_kill", [$pid, $signal], false); }
+			function posix_get_last_error() { return \test_call_override("posix_get_last_error", [], 3); }
+			' . $run[0] . "\n" . $locked[0] . "\n" . $workers[0]);
 
 		try {
 			require $path;
@@ -35,12 +39,30 @@ function partition_rebuild_setup(): stdClass {
 		'rebuilds' => [],
 		'settings' => [],
 		'executions' => [],
-		'precision' => 'sec'
+		'statements' => [],
+		'precision' => 'sec',
+		'enabled' => '',
+		'assoc' => [],
+		'legacy' => [],
+		'retention' => '30',
+		'granularity' => ''
 	];
+	$GLOBALS['config']['poller_id'] = 1;
 	test_override('read_config_option', static fn($key) => [
-		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => '30',
-		'syslog_partition_ahead_days' => '3'
+		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => $state->retention,
+		'syslog_partition_ahead_days' => '3', 'syslog_enabled' => $state->enabled,
+		'syslog_partition_granularity' => $state->granularity
 	][$key] ?? '');
+	test_override('syslog_db_fetch_assoc_prepared', static function ($sql) use ($state) {
+		$state->assoc[] = $sql;
+
+		return str_contains($sql, "DATA_TYPE = 'datetime'") ? $state->legacy : [];
+	});
+	test_override('syslog_db_execute', static function ($sql) use ($state) {
+		$state->statements[] = $sql;
+
+		return true;
+	});
 	test_override('syslog_db_table_exists', static fn($table) => in_array($table, $state->tables, true));
 	test_override('syslog_db_fetch_row', static fn() => ['Value' => $state->version]);
 	test_override('set_config_option', static function ($key, $value) use ($state) {
@@ -53,6 +75,7 @@ function partition_rebuild_setup(): stdClass {
 	});
 	test_override('rebuild_mariadb', static fn() => stripos($state->version, 'mariadb') !== false);
 	test_override('syslog_db_fetch_cell', static fn($sql) => match (true) {
+		str_contains($sql, 'VERSION()') => $state->version,
 		str_contains($sql, 'time_zone') => '+05:30',
 		str_contains($sql, 'lock_wait_timeout') => '86400',
 		default => 'STRICT_TRANS_TABLES,NO_ZERO_DATE'
@@ -91,11 +114,137 @@ it('reports database size, equal extra space and several-hour duration even with
 		->and($output)->toContain('10.00 GiB (10,737,418,240 bytes)')
 		->toContain('AT LEAST another 10.00 GiB (10,737,418,240 bytes)')
 		->toContain('DATABASE SERVER')->toContain('SEVERAL HOURS')
-		->toContain('does NOT pause them')->toContain('10,000-row copies')
+		->toContain('does NOT pause')->toContain('50,000-row copies')
+		->toContain('receive new sequence numbers')
 		->not->toContain('Type "yes"')
-		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, '+05:30']]);
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192]])
+		->and($state->queries[0])->toBe(['SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]]);
 	expect($state->settings)->toBe([]);
 	expect(array_column($state->queries, 0))->toContain('SELECT RELEASE_LOCK(?)');
+});
+
+it('saves --partition=hourly once confirmed and rebuilds with at least two days ahead', function () {
+	$state = partition_rebuild_setup();
+	test_override('syslog_upart_rebuild', static function (...$args) use ($state) {
+		$state->rebuilds[] = $args;
+		expect($state->settings)->toBe(['syslog_partition_granularity' => 'hour']);
+
+		return true;
+	});
+	test_override('read_config_option', static fn($key) => [
+		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => '30', 'syslog_partition_ahead_days' => '1'
+	][$key] ?? '');
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, false, true, 'hour');
+	$output = ob_get_clean();
+
+	expect($ok)->toBeTrue()
+		->and($output)->toContain('Rebuilding hourly partitions')
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 2, 'hour', 8192]]);
+});
+
+it('refuses hourly partitioning beyond the server partition limit or with indefinite retention', function () {
+	foreach ([['365', '10.11.6-MariaDB'], ['60', '10.0.3-MariaDB'], ['60', '5.6.51'], ['0', '11.4.2-MariaDB']] as [$retention, $version]) {
+		$state = partition_rebuild_setup();
+		$state->retention = $retention;
+		$state->version = $version;
+		$run = partition_rebuild_runner();
+
+		expect($run(true, false, true, 'hour'))->toBeFalse()
+			->and($state->queries)->toBe([])
+			->and($state->settings)->toBe([])
+			->and($state->rebuilds)->toBe([]);
+	}
+});
+
+it('refuses to rebuild while Syslog processing is enabled', function () {
+	$state = partition_rebuild_setup();
+	$state->enabled = 'on';
+	$run = partition_rebuild_runner();
+
+	expect($run(true, false))->toBeFalse()
+		->and($state->queries)->toBe([])
+		->and($state->rebuilds)->toBe([]);
+});
+
+it('refuses to rebuild while processing or another rebuild holds the processing lock', function () {
+	$state = partition_rebuild_setup();
+	$state->lock = 0;
+	$run = partition_rebuild_runner();
+
+	expect($run(true, false))->toBeFalse()
+		->and($state->queries)->toBe([['SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]]])
+		->and($state->rebuilds)->toBe([]);
+});
+
+it('refuses to rebuild while transfer workers launched before the lock are still alive', function () {
+	$state = partition_rebuild_setup();
+	$run   = partition_rebuild_runner();
+	$errno = 3;
+
+	test_override('db_fetch_assoc', static fn($sql) => str_contains($sql, "FROM processes WHERE tasktype = 'syslog' AND taskname = 'child'")
+		? [['pid' => '101'], ['pid' => '102'], ['pid' => '103']] : []);
+	// 101 is alive, 102 is a stale row left by a crashed worker, 103 runs as another user.
+	test_override('posix_kill', static function ($pid) use (&$errno) {
+		$errno = $pid === 103 ? 1 : 3;
+
+		return $pid === 101;
+	});
+	test_override('posix_get_last_error', static function () use (&$errno) {
+		return $errno;
+	});
+
+	expect($run(true, false))->toBeFalse()
+		->and($state->rebuilds)->toBe([])
+		->and($state->statements)->toBe([])
+		->and(end($state->queries))->toBe(['SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()]]);
+
+	// Only stale rows remain: the rebuild proceeds.
+	test_override('posix_kill', static fn() => false);
+	$errno = 3;
+	ob_start();
+	$ok = $run(true, false);
+	ob_end_clean();
+
+	expect($ok)->toBeTrue();
+});
+
+it('refuses legacy DATETIME history before any change and releases the lock', function () {
+	$state = partition_rebuild_setup();
+	$state->legacy = [['TABLE_NAME' => 'syslog']];
+	$run = partition_rebuild_runner();
+
+	expect($run(true, false))->toBeFalse()
+		->and($state->rebuilds)->toBe([])
+		->and($state->statements)->toBe([])
+		->and(end($state->queries))->toBe(['SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()]]);
+});
+
+it('discards without a column-type query when no table needs checking', function () {
+	$state = partition_rebuild_setup();
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, false, false);
+	ob_end_clean();
+
+	expect($ok)->toBeTrue()
+		->and(array_filter($state->assoc, static fn($sql) => str_contains($sql, 'information_schema.COLUMNS')))->toBe([])
+		->and($state->rebuilds)->toBe([['syslog', false, false, 'InnoDB', 30, 3, 'day', 8192]]);
+});
+
+it('widens the incoming queue in place so its sequence identities are kept', function () {
+	$state = partition_rebuild_setup();
+	$state->tables[] = 'syslog_incoming';
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, true);
+	ob_end_clean();
+
+	expect($ok)->toBeTrue()
+		->and(array_column($state->rebuilds, 0))->toBe(['syslog'])
+		->and($state->statements)->toContain("ALTER TABLE `fixture`.`syslog_incoming` MODIFY COLUMN logtime timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'")
+		->and($state->settings)->toBe(['syslog_install_logtime_precision' => 'ms']);
 });
 
 it('refuses to rebuild when the database size is unreadable', function () {
@@ -180,18 +329,21 @@ it('prints readable CLI help and rejects conflicting preservation arguments', fu
 		foreach ([
 			['upgrade_partitioning.php', ['--help'], 0, [
 				'Preserve existing messages (the default)',
-				'future-partition horizon.' . PHP_EOL . PHP_EOL . 'Existing precision',
+				'utility rebuilds the tables.' . PHP_EOL . PHP_EOL . 'Existing precision',
+				'--partition     - Save and apply this Partitioning Level',
 				'--convert-ms is selected.' . PHP_EOL . PHP_EOL . 'With preservation',
 				'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)',
 				PHP_EOL . PHP_EOL . 'usage: upgrade_partitioning.php',
-				'values are verified.' . PHP_EOL . PHP_EOL . 'Options:',
+				'row counts are verified.' . PHP_EOL . PHP_EOL . 'Legacy DATETIME',
+				'--discard-data for them.' . PHP_EOL . PHP_EOL . 'Options:',
 				'several hours.' . PHP_EOL . PHP_EOL . 'On failure',
 				'writers first.' . PHP_EOL . PHP_EOL . 'The current database size'
 			]],
 			['upgrade_partitioning.php', ['--version'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
 			['upgrade_partitioning.php', ['-V'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
 			['upgrade_partitioning.php', ['-v'], 0, 'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)'],
-			['upgrade_partitioning.php', ['--discard-data', '--preserve-data'], 1, 'cannot be combined']
+			['upgrade_partitioning.php', ['--discard-data', '--preserve-data'], 1, 'cannot be combined'],
+			['upgrade_partitioning.php', ['--partition=weekly'], 1, '--partition must be hourly or daily']
 		] as [$entry, $args, $expected_status, $expected_output]) {
 			$process = proc_open(array_merge([PHP_BINARY, '-d', 'xdebug.mode=off', $base . '/plugins/syslog/cli/' . $entry], $args),
 				[0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);

@@ -35,8 +35,11 @@ if (!api_plugin_is_enabled('syslog')) {
 	exit(0);
 }
 
+// Schema repair waits until this process holds the processing lock.
+define('SYSLOG_DEFER_SCHEMA_REPAIR', true);
+
 if (!syslog_connect()) {
-	cacti_log('ERROR: Syslog database or schema is unavailable; skipping processing.', false, 'SYSLOG');
+	cacti_log('ERROR: Syslog database is unavailable; skipping processing.', false, 'SYSLOG');
 
 	exit(1);
 }
@@ -59,15 +62,16 @@ global $debug, $syslog_facilities, $syslog_levels;
  */
 global $config;
 
-global $child, $run_id, $phase, $seq_start, $seq_end;
+global $child, $run_id, $phase, $seq_start, $seq_end, $lock_owner;
 
-$debug     = false;
-$forcer    = false;
-$child     = 0;
-$run_id    = '';
-$phase     = '';
-$seq_start = 0;
-$seq_end   = 0;
+$debug      = false;
+$forcer     = false;
+$child      = 0;
+$run_id     = '';
+$phase      = '';
+$seq_start  = 0;
+$seq_end    = 0;
+$lock_owner = 0;
 
 // process calling arguments
 $parms = $_SERVER['argv'];
@@ -141,6 +145,16 @@ if (cacti_sizeof($parms)) {
 				}
 
 				$seq_end = (int) $value;
+
+				break;
+			case '--lock-owner':
+				if (preg_match('/^[1-9][0-9]*$/', $value) !== 1) {
+					print "ERROR: Lock owner must be a positive integer.\n\n";
+					display_help();
+					exit(1);
+				}
+
+				$lock_owner = (int) $value;
 
 				break;
 			case '--version':
@@ -228,6 +242,30 @@ if ($config['poller_id'] > 1) {
  */
 if (!register_process_start('syslog', 'master', $config['poller_id'], 1200)) {
 	exit(0);
+}
+
+// cli/upgrade_partitioning.php holds this lock while it rebuilds the message
+// tables. It is taken on a connection of its own and held until this process
+// exits and that connection closes.
+$processing_lock = syslog_processing_lock_acquire();
+
+if ($processing_lock !== true) {
+	if ($processing_lock === false) {
+		cacti_log('NOTE: Syslog processing skipped while cli/upgrade_partitioning.php rebuilds the message tables.', false, 'SYSLOG');
+	} else {
+		cacti_log('ERROR: Syslog processing skipped; the processing lock connection could not be opened or kept open.', false, 'SYSLOG');
+	}
+
+	unregister_process('syslog', 'master', $config['poller_id']);
+	exit($processing_lock === false ? 0 : 1);
+}
+
+require_once(__DIR__ . '/includes/schema.php');
+
+if (!syslog_ensure_table_structures()) {
+	cacti_log('ERROR: Syslog schema is unavailable; skipping processing.', false, 'SYSLOG');
+	unregister_process('syslog', 'master', $config['poller_id']);
+	exit(1);
 }
 
 // Only the registered master may migrate history or replace synchronized rules.
@@ -543,7 +581,7 @@ function sig_handler($signo) {
  * @return (void) This function always exits.
  */
 function syslog_worker_main($debug = false) {
-	global $child, $run_id, $phase, $seq_start, $seq_end;
+	global $child, $run_id, $phase, $seq_start, $seq_end, $lock_owner;
 
 	// The command line is the only source of these values, revalidate
 	if (!syslog_validate_worker_args($child, $run_id, $phase, $seq_start, $seq_end)) {
@@ -560,6 +598,19 @@ function syslog_worker_main($debug = false) {
 		 * for that warning too.
 		 */
 		cacti_log("WARNING: Syslog child $child could not register, another worker with that number is still registered", false, 'SYSLOG');
+
+		exit(1);
+	}
+
+	/*
+	 * Write only while the master that launched this worker still holds the
+	 * processing lock. Registration comes first, so a partition rebuild that
+	 * takes the lock afterwards sees this worker and refuses to start.
+	 */
+	if (!syslog_processing_lock_held_by((int) $lock_owner)) {
+		cacti_log("WARNING: Syslog child $child exited; the processing run that launched it no longer holds the processing lock", false, 'SYSLOG');
+
+		unregister_process('syslog', 'child', $child);
 
 		exit(1);
 	}
@@ -687,6 +738,7 @@ function syslog_launch_workers($phase, $slices, $run_id, $debug = false) {
 			' --phase=' . $phase .
 			' --seq-start=' . $slice['start'] .
 			' --seq-end=' . $slice['end'] .
+			' --lock-owner=' . (int) ($GLOBALS['syslog_processing_lock_id'] ?? 0) .
 			($debug ? ' --debug' : '');
 
 		exec_background($php_binary, $extra_args);
@@ -755,7 +807,7 @@ function display_help() {
 
 	print 'The main Syslog poller process script for Cacti Syslogging.' . PHP_EOL . PHP_EOL;
 	print 'usage: syslog_process.php [--debug] [--force-report]' . PHP_EOL . PHP_EOL;
-	print '       syslog_process.php --child=N --run-id=<32hex> --phase=references|transfer --seq-start=N --seq-end=N' . PHP_EOL . PHP_EOL;
+	print '       syslog_process.php --child=N --run-id=<32hex> --phase=references|transfer --seq-start=N --seq-end=N --lock-owner=N' . PHP_EOL . PHP_EOL;
 	print 'options:' . PHP_EOL;
 	print '    --force-report   Send email reports now.' . PHP_EOL;
 	print '    --debug          Provide more verbose debug output.' . PHP_EOL . PHP_EOL;
@@ -764,5 +816,6 @@ function display_help() {
 	print '    --run-id         The 32 character hexadecimal run identifier.' . PHP_EOL;
 	print '    --phase          The phase to process, references or transfer.' . PHP_EOL;
 	print '    --seq-start      The first seq of the slice to process.' . PHP_EOL;
-	print '    --seq-end        The last seq of the slice to process.' . PHP_EOL . PHP_EOL;
+	print '    --seq-end        The last seq of the slice to process.' . PHP_EOL;
+	print '    --lock-owner     The database session holding the master\'s processing lock.' . PHP_EOL . PHP_EOL;
 }

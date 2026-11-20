@@ -64,3 +64,22 @@ it('reports null dmax metrics when information_schema returns no statistics', fu
 	expect($result['syslog']['dmax_rows'])->toBeNull()
 		->and($result['syslog']['dmax_bytes'])->toBeNull();
 });
+
+it('reports hourly coverage and the partitioning level from hourly partition names', function () {
+	syslog_load_plugin_source('includes/functions.php');
+
+	$GLOBALS['syslogdb_default'] = 'status_test';
+
+	test_override('syslog_db_fetch_assoc_prepared', fn() => [
+		['PARTITION_NAME' => 'h2026092022'],
+		['PARTITION_NAME' => 'h2026092023'],
+		['PARTITION_NAME' => 'dMaxValue', 'TABLE_ROWS' => '0', 'DATA_LENGTH' => '0', 'INDEX_LENGTH' => '0'],
+	]);
+
+	$result = syslog_partition_observability();
+
+	expect($result['syslog']['coverage_start'])->toBe('2026092022')
+		->and($result['syslog']['coverage_end'])->toBe('2026092023')
+		->and($result['syslog']['partitions'])->toBe(2)
+		->and($result['syslog']['granularity'])->toBe('hour');
+});

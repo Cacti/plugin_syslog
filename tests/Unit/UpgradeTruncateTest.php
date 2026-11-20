@@ -30,6 +30,8 @@ it('keeps rule tables when the truncate upgrade type is chosen', function () {
 		function syslog_install_storage_engine($engine, $options = []) { return "InnoDB"; }
 		function syslog_dashboard_seed_default() {}
 		function syslog_validate_storage_engine($engine) { return "InnoDB"; }
+		function syslog_partition_settings_error(...$args) { return ""; }
+		function syslog_partition_server_limit(...$args) { return 8192; }
 		function read_config_option($name) { return ""; }
 		function set_config_option($name, $value, $force = false) {}
 		function db_update_table(...$args) { return true; }

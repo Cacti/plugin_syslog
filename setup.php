@@ -131,6 +131,7 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 
 	require_once(__DIR__ . '/includes/installer.php');
 	require_once(__DIR__ . '/includes/schema.php');
+	require_once(__DIR__ . '/includes/functions.php');
 
 	if (isset($options['cancel'])) {
 		header('Location:' . $config['url_path'] . 'plugins.php?mode=uninstall&id=syslog&uninstall&uninstall_method=all');
@@ -154,6 +155,21 @@ function syslog_execute_update(int $syslog_exists, array $options): void {
 
 	$requested_engine      = isset($options['engine']) ? $options['engine'] : 'InnoDB';
 	$compatibility_options = $options;
+
+	if (isset($options['partitioning']) || isset($options['days'])) {
+		$partition_error = syslog_partition_install_error($options);
+
+		if ($partition_error !== '') {
+			raise_message('syslog_error', $partition_error, MESSAGE_LEVEL_ERROR);
+			cacti_log('SYSLOG ERROR: Install rejected: ' . $partition_error, false, 'SYSLOG');
+
+			if (isset($options['install'])) {
+				syslog_install_advisor($syslog_exists, $options);
+			}
+
+			return;
+		}
+	}
 
 	if (isset($options['install'])) {
 		foreach ($remote_options as $option) {
@@ -503,8 +519,11 @@ function syslog_connect(): bool {
 	}
 
 	// Repair missing tables before any main or enabled remote collector queries.
+	// syslog_process.php and cli/upgrade_partitioning.php defer this until
+	// they hold the processing lock.
 	if ($connected && ((int) $config['poller_id'] <= 1 || read_config_option('syslog_remote_enabled') === 'on')
-		&& !$schema_inprocess && !$schema_ready && !defined('IN_PLUGIN_INSTALL') && api_plugin_is_enabled('syslog')) {
+		&& !$schema_inprocess && !$schema_ready && !defined('IN_PLUGIN_INSTALL') && !defined('SYSLOG_DEFER_SCHEMA_REPAIR')
+		&& api_plugin_is_enabled('syslog')) {
 		$schema_inprocess = true;
 
 		try {

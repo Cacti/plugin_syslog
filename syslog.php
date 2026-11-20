@@ -129,6 +129,12 @@ if (get_request_var('action') == 'status_layout') {
 	exit;
 }
 
+if (get_request_var('action') == 'status_refresh') {
+	header('Content-Type: application/json; charset=UTF-8');
+	print syslog_status_refresh_save();
+	exit;
+}
+
 if (get_request_var('action') == 'recommendation') {
 	header('Content-Type: application/json; charset=UTF-8');
 	print syslog_recommendations_lookup_json((string) get_nfilter_request_var('message'));
@@ -186,7 +192,8 @@ if (get_request_var('action') == 'save') {
 // validate the syslog post/get/request information
 syslog_request_validation($current_tab);
 
-if (isset_request_var('refresh')) {
+// The Status tab refreshes its cards through callbacks, not Cacti's page reload.
+if (isset_request_var('refresh') && $current_tab !== 'status') {
 	$refresh['seconds'] = get_request_var('refresh');
 	$refresh['page']	   = $config['url_path'] . 'plugins/syslog/syslog.php?header=false&tab=' . $current_tab;
 	$refresh['logout']  = 'false';
@@ -743,13 +750,13 @@ function syslog_status_format_bytes($bytes): string {
 	return number_format((float) $bytes, $unit === 0 ? 0 : 2) . ' ' . $units[$unit];
 }
 
-/** Format a dYYYYMMDD partition label as an ISO date. */
+/** Format a dYYYYMMDD or hYYYYMMDDHH partition label as an ISO date or hour. */
 function syslog_status_format_partition_date(string $date): string {
-	if (preg_match('/^\d{8}$/', $date) !== 1) {
+	if (preg_match('/^\d{8}(\d{2})?$/', $date, $match) !== 1) {
 		return __('Unavailable', 'syslog');
 	}
 
-	return substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6, 2);
+	return substr($date, 0, 4) . '-' . substr($date, 4, 2) . '-' . substr($date, 6, 2) . (isset($match[1]) ? ' ' . $match[1] . ':00' : '');
 }
 
 /** Return a readable summary of the persisted per-table recovery state. */
@@ -978,6 +985,25 @@ function syslog_status_card_body(string $key): string {
 				print '<tr><th scope="row">' . html_escape($table) . '</th><td>' . html_escape($coverage) . '</td><td>' . html_escape(isset($health['dmax_rows']) && $health['dmax_rows'] !== null ? number_format((float) $health['dmax_rows']) : __('Unavailable', 'syslog')) . '</td><td>' . html_escape(syslog_status_format_bytes($health['dmax_bytes'] ?? null)) . '</td></tr>';
 			}
 			print '</tbody></table>';
+			$levels    = ['hour' => __('Hourly', 'syslog'), 'day' => __('Daily', 'syslog')];
+			$requested = syslog_partition_requested_granularity();
+			$actives   = [];
+
+			foreach (['syslog', 'syslog_removed'] as $table) {
+				$actives[$table] = ($partition_health[$table]['granularity'] ?? 'day') === 'hour' ? 'hour' : 'day';
+			}
+
+			// After a partly failed rebuild the two tables can differ; show both.
+			$label = count(array_unique($actives)) === 1 ? $levels[$actives['syslog']]
+				: implode(', ', array_map(fn($table) => $table . ': ' . $levels[$actives[$table]], array_keys($actives)));
+
+			print '<p class="syslogStatusNote"><span class="syslogStatusNoteLabel">' . __esc('Partitioning level', 'syslog') . ':</span> ' . html_escape($label);
+
+			if (array_diff($actives, [$requested])) {
+				print ' — ' . html_escape(__('%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables.', $levels[$requested], 'syslog'));
+			}
+
+			print '</p>';
 
 			break;
 		case 'maintenance':
@@ -1248,6 +1274,38 @@ function syslog_status_layout_save(): string {
 }
 
 /**
+ * The Status tab's auto-refresh interval in seconds for the current user.
+ *
+ * @return int The saved interval, or the log viewer's refresh default.
+ */
+function syslog_status_refresh_interval(): int {
+	return (int) read_user_setting('syslog_status_refresh', read_user_setting('syslog_refresh', read_config_option('syslog_refresh')));
+}
+
+/**
+ * Persist the posted Status auto-refresh interval for the current user.
+ *
+ * @return string A JSON status document.
+ */
+function syslog_status_refresh_save(): string {
+	global $page_refresh_interval;
+
+	if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !function_exists('csrf_check') || !csrf_check(false)) {
+		return (string) json_encode(['error' => __('Invalid request. Please try again.', 'syslog')]);
+	}
+
+	$seconds = (string) get_nfilter_request_var('refresh');
+
+	if (!ctype_digit($seconds) || !isset($page_refresh_interval[(int) $seconds])) {
+		return (string) json_encode(['error' => __('Invalid refresh interval.', 'syslog')]);
+	}
+
+	set_user_setting('syslog_status_refresh', (int) $seconds);
+
+	return (string) json_encode(['ok' => true]);
+}
+
+/**
  * AJAX: render a single Status card, used when adding one from the catalogue or
  * refreshing one in place.
  *
@@ -1303,8 +1361,8 @@ function syslog_status(): void {
 	print '</select>';
 
 	// Auto-refresh interval picker plus a manual refresh, mirroring the log view's
-	// header refresh.  The interval persists through the page's auto-reload.
-	$current_refresh = get_request_var('refresh');
+	// header refresh.  Both refresh the cards through callbacks.
+	$current_refresh = syslog_status_refresh_interval();
 	print '<div class="ccRefresh">';
 	print '<label class="ccToolbarLabel" for="syslog_status_refresh">' . __esc('Refresh', 'syslog') . '</label>';
 	print '<select id="syslog_status_refresh" class="ccRefreshInterval">';
@@ -2120,6 +2178,10 @@ function get_syslog_messages(string &$sql_where, $rows, string $tab): array {
 		}
 
 		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . 'syslog.priority_id ' . $priorities;
+	}
+
+	if ($tab == 'syslog') {
+		$sql_where .= ($sql_where == '' ? 'WHERE ' : ' AND ') . syslog_logtime_upper_bound_sql();
 	}
 
 	$sql_where = api_plugin_hook_function('syslog_sqlwhere', $sql_where);

@@ -151,7 +151,10 @@ MySQL installs always use second precision.
   to second precision.  Silent installs can set
   `$syslog_install_options['logtime_precision'] = 'ms';` (or `'sec'`) in
   `config.php` / `config_local.php`; a millisecond request on MySQL is rejected
-  with a log message rather than silently downgraded.
+  with a log message rather than silently downgraded.  The advisor's
+  *Partitioning Level* option is set silently with
+  `$syslog_install_options['partitioning'] = 'day';` (or `'hour'`); see
+  [Partitioning level](#partitioning-level).
 * **Upgrades** – the existing schema is authoritative and is **never** migrated
   automatically, even if the configured precision changes.  This avoids the
   long, blocking table rewrite that an in-place precision change would require.
@@ -166,12 +169,12 @@ php plugins/syslog/cli/upgrade_partitioning.php --convert-ms
 ```
 
 The `--convert-ms` option is **MariaDB only**. It rebuilds the stored/removed
-message tables and converts incoming messages to `TIMESTAMP(3)`, preserving
-data in batches of at most **10,000 rows**. Already-converted incoming tables
-are left alone. The replication outbox (`syslog_replication_output`) is widened
-in place; undelivered rows are never discarded. Sequence high-water marks and
-replication identities are preserved, including when sequence numbers repeat
-at different timestamps. Existing second-resolution messages gain `.000`;
+message tables to `TIMESTAMP(3)`, preserving data in verified batches of at
+most **50,000 rows**. The incoming queue (`syslog_incoming`) and replication
+outbox (`syslog_replication_output`) are widened in place with `ALTER TABLE`,
+so their sequence numbers, which archival and replication use as identities,
+are unchanged and undelivered rows are never discarded. Already-converted
+tables are left alone. Existing second-resolution messages gain `.000`;
 conversion cannot recover fractional timestamps that were never recorded.
 
 The default is preservation. The explicit
@@ -182,44 +185,105 @@ is recorded only after the complete pipeline has converted.
 ### Rebuilding partition layouts
 
 ```console
-php plugins/syslog/cli/upgrade_partitioning.php
+php plugins/syslog/cli/upgrade_partitioning.php [--partition=hourly|daily]
 ```
 
 Without `--convert-ms`, this rebuilds `syslog` and `syslog_removed` using the
-configured storage engine (`syslog_install_engine`), message retention
-(`syslog_retention`) and future-partition horizon
-(`syslog_partition_ahead_days`), retaining their existing timestamp precision.
-It preserves existing columns and indexes, adds `logtime` to a legacy
-sequence-only primary key when necessary, and creates UTC daily
-`UNIX_TIMESTAMP(logtime)` partitions with a final `dMaxValue` safety partition.
-It does not offer weekly or monthly partitioning, since Syslog's maintenance
-expects daily partitions.
+**Partitioning Level** (`syslog_partition_granularity`), storage engine
+(`syslog_install_engine`), message retention (`syslog_retention`) and
+future-partition horizon (`syslog_partition_ahead_days`), retaining their
+existing timestamp precision. It preserves existing columns and indexes, adds
+`logtime` to a legacy sequence-only primary key when necessary, and creates UTC
+hourly (`hYYYYMMDDHH`) or daily (`dYYYYMMDD`) `UNIX_TIMESTAMP(logtime)`
+partitions with a final `dMaxValue` safety partition. Any existing RANGE
+layout, hourly or daily, can be rebuilt to either level.
 
-Legacy `DATETIME` columns are converted to `TIMESTAMP` using the connection's
-original session time zone; verify that this matches the zone used to write
-those historical wall-clock values. Existing `TIMESTAMP` rows are copied in UTC
-to preserve distinct events across daylight-saving clock changes.
+### Partitioning level
+
+Settings > Syslog > **Data Retention and Partitioning** offers a **Partitioning
+Level** of **Daily** (the default) or **Hourly**. Like MacTrack's partition
+size, the level is chosen in Settings, or with `--partition=hourly|daily`,
+which saves it, and applied by `cli/upgrade_partitioning.php`. Unlike MacTrack,
+saving the setting alone changes nothing: poller maintenance keeps creating and
+pruning partitions of the size the tables actually have, until the utility
+rebuilds them. Settings and the Status tab show the change as pending until then.
+There is no Disabled level; partitioned tables are the only supported
+architecture.
+
+Hourly tables keep the configured pre-create window, but never less than two
+days of hourly partitions ahead (MacTrack also keeps two days), so new
+partitions are always split from an empty `dMaxValue` and the reorganization is
+instant even when maintenance runs late. While the horizon exists, maintenance
+checks only its last partition; a gap is found with a binary search and healed
+in bounded steps.
+
+Saving Syslog settings is refused, with an error naming the required and
+permitted partition counts, when a table would need more partitions than the
+database server supports: retention plus today plus the pre-create window,
+times 24 for Hourly, plus `dMaxValue`. The limit is 8192 partitions, or 1024
+on MariaDB before 10.0.4 and MySQL before 5.7. Hourly partitioning also
+requires a finite retention. For example, Hourly with 183 days of retention
+needs 4,489 partitions; with one year it needs 8,857 and is refused. The
+installer and the utility apply the same check.
+
+Every message query has an automatic upper bound of the current time, whatever
+its filter says, so the empty future partitions are always pruned. Messages
+with timestamps in the future, for example from a device with a fast clock,
+are not shown until that time.
+
+Stored and removed messages are copied **without** their `seq` column, in their
+original order, so each replacement numbers them from its own
+`AUTO_INCREMENT`. That counter is set above the original high-water mark before
+the first row is copied, so a sequence value is never reused; links that
+captured an old `seq` find nothing rather than a different message. All other
+columns, including `replication_source_event_id`, are copied unchanged.
+Existing `TIMESTAMP` rows are copied in UTC, preserving distinct events across
+daylight-saving clock changes.
+
+Legacy `DATETIME` `logtime` columns are **not supported**. A `DATETIME` holds
+wall-clock time in an unknown zone; values in a daylight-saving gap do not
+exist as `TIMESTAMP` and values in the repeated hour are ambiguous, so no
+automatic conversion is safe. The utility refuses to preserve such tables
+before changing anything. Either rebuild them with `--discard-data`, or, after
+verifying the zone the values were written in, convert them yourself with
+Syslog processing stopped. First confirm that every value round-trips in
+that zone, then convert and repartition in one statement:
+
+```sql
+SET SESSION time_zone = 'America/New_York';  -- the zone the values were written in
+SELECT COUNT(*) FROM syslog
+  WHERE NOT (FROM_UNIXTIME(UNIX_TIMESTAMP(logtime)) <=> logtime);  -- must be 0
+ALTER TABLE syslog MODIFY COLUMN logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  PARTITION BY RANGE (UNIX_TIMESTAMP(logtime)) (/* daily partitions */
+  PARTITION dMaxValue VALUES LESS THAN MAXVALUE);
+```
+
+Then run this utility to apply the configured layout.
 
 Every existing message is copied, including older-than-retention messages;
 those older rows fit in the earliest RANGE partition. Normal retention pruning
-resumes when processing restarts. Indefinite retention creates daily partitions
-back to the oldest valid timestamp, and future-dated messages extend the planned
-horizon. Plans exceeding the server's 8192-partition limit are rejected rather
-than dropping history. Custom triggers, foreign keys, or unique indexes that
-exclude `logtime` require a manual migration.
+resumes when processing restarts. Indefinite retention (Daily only) creates
+daily partitions back to the oldest valid timestamp, and future-dated messages
+extend the planned horizon. Plans exceeding the server's partition limit are
+rejected rather than dropping history. Custom triggers, foreign keys, or unique
+indexes that exclude `logtime` require a manual migration.
 
 `cli/syslog_schema.php --upgrade` and `--repair` repair and upgrade schema and
 create missing tables; they do **not** rebuild an existing partition layout or
 change its timestamp precision. Ordinary retention/horizon changes normally
-need no rebuild: poller maintenance creates missing daily partitions,
+need no rebuild: poller maintenance creates missing hourly or daily partitions,
 reorganizes `dMaxValue` safely, and removes expired partitions. Use the explicit
-rebuild utility for legacy layouts or engine changes, not routine daily rotation.
+rebuild utility to change the partitioning level, for legacy layouts or engine
+changes, not routine rotation.
 
 **Maintenance requirements for both commands:**
 
-* Back up the database, stop Syslog processing, partition maintenance,
-  replication and **all external database writers**, and buffer new logs
-  upstream. The utility does not stop these services for you. Keep them stopped
+* Back up the database and uncheck **Settings > Syslog > Syslog Enabled**. The
+  utility refuses to start while processing is enabled or a processing run is
+  active, and holds a database lock that `syslog_process.php` also takes, so no
+  processing run can start during the rebuild. Neither side ever terminates the
+  other. It does **not** stop remote collectors, replication or external database
+  writers: stop them and buffer new logs upstream. Keep everything stopped
   until the rebuild or recovery finishes. Live log tables are temporarily absent
   or incomplete; avoid using log views during the rebuild. DDL waits at most
   30 seconds for metadata locks before reporting failure; let active queries
@@ -233,13 +297,35 @@ rebuild utility for legacy layouts or engine changes, not routine daily rotation
   **several hours**. `--confirm` skips the prompt but not these warnings.
 * DDL is **not transactional**. Each original is renamed to `<table>_rebuild`;
   a replacement is created and populated using bounded primary-key ranges.
-  Originals are dropped automatically only after row counts and column values
-  match and sequence high-water marks have been restored.
+  After each batch, the row count and an MD5-based checksum of every copied
+  column are compared with the source range. Only a matching batch is
+  recorded in `syslog_rebuild_progress`. Originals are dropped automatically
+  only after every batch and the total row counts match.
 * A failure leaves originals in the live or `_rebuild` tables. Keep writers
   stopped, fix the reported error, then retry with `--preserve-data` and the
-  same `--convert-ms` option, if used. Existing copied rows are checked rather
-  than overwritten; mismatches stop recovery without dropping the original.
-  Do not change settings or manually delete `_rebuild` tables during recovery.
+  same `--convert-ms` option, if used. A retry deletes replacement rows copied
+  after the last recorded batch and resumes from there. Do not change settings
+  or manually delete `_rebuild` or `syslog_rebuild_progress` tables during
+  recovery.
+* To abandon a rebuild instead, keep writers stopped and restore **only** the
+  tables whose original still exists. A table that already finished has no
+  `<table>_rebuild` and must be left alone: its original has been dropped, and
+  the live table is the only copy. First list what remains:
+
+  ```sql
+  SHOW TABLES LIKE '%\_rebuild';
+  ```
+
+  For each `<table>_rebuild` listed (`syslog`, `syslog_removed`, or a
+  `syslog_incoming_rebuild` left by an earlier development build), and only
+  then, replace the partial copy with the original:
+
+  ```sql
+  DROP TABLE IF EXISTS syslog;              -- the partial replacement
+  RENAME TABLE syslog_rebuild TO syslog;    -- the untouched original
+  ```
+
+  When no `_rebuild` table remains, `DROP TABLE syslog_rebuild_progress;`.
 
 ### Delivering sub-second timestamps from your log forwarders
 
@@ -395,7 +481,7 @@ regardless of their event age, including rows missing host or program references
 ### Partition Maintenance
 
 Partition retention uses actual upper boundaries against a UTC calendar cutoff,
-with today counted as one retained day. A seven-day setting retains today plus
+with today counted as one retained day, for hourly and daily partitions alike. A seven-day setting retains today plus
 the previous six UTC dates, independently of partition count or the future
 pre-create window. Fully expired partitions are dropped even after gaps in
 maintenance. A partition spanning the cutoff is kept whole to protect newer
@@ -779,8 +865,9 @@ The settings are under Settings > Syslog. Selected names and defaults:
 | Enable Hostname Resolution (`syslog_resolve_hostname`) | off |
 | Skip DNS Resolution for incoming hosts (`syslog_no_dns`) | off |
 | Syslog Retention (`syslog_retention`) | 30 days |
+| Partitioning Level (`syslog_partition_granularity`) | Daily |
 | Syslog Alert Retention (`syslog_alert_retention`) | 30 days |
-| Partition Pre-create Window (`syslog_partition_ahead_days`) | 3 days |
+| Partition Pre-create Window (`syslog_partition_ahead_days`) | 3 days (Hourly: at least 2) |
 | Collector Staleness Threshold (`syslog_stale_threshold`) | 300 seconds |
 | Collector Backlog Threshold (`syslog_backlog_threshold`) | 10000 rows |
 | Pipeline Health Reminder Interval (`syslog_pipeline_health_repeat`) | 3600 seconds |
@@ -802,14 +889,16 @@ php plugins/syslog/syslog_process.php [--debug] [--force-report]
 
 `--debug` prints verbose output and `--force-report` sends the email reports
 now. `--help` and `--version` print usage and the plugin version. The options
-`--child`, `--run-id`, `--phase`, `--seq-start`, and `--seq-end` are used by the
-master process for its workers.
+`--child`, `--run-id`, `--phase`, `--seq-start`, `--seq-end`, and `--lock-owner`
+are used by the master process for its workers. A worker exits without writing
+unless the master's session still holds the processing lock.
 
 `cli/syslog_schema.php` takes `--audit`, `--repair`, or `--upgrade`, as
 described under Installation.
 
-`cli/upgrade_partitioning.php` rebuilds daily partitions to match the configured
-engine, retention and future horizon, preserving messages by default.
+`cli/upgrade_partitioning.php` rebuilds hourly or daily partitions to match the
+Partitioning Level, engine, retention and future horizon, preserving messages
+by default. `--partition=hourly|daily` saves and applies a level.
 `--convert-ms` also converts the message pipeline to millisecond timestamps on
 MariaDB. It reports database size and warns about additional disk space and
 potential several-hour duration before confirmation.

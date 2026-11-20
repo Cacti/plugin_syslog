@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cacti \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 16:30+0000\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Cacti Developers <developers@cacti.net>>\n"
 "Language-Team: Cacti Developers <developers@cacti.net>\n"
@@ -260,7 +260,7 @@ msgstr ""
 
 #: includes/functions.php
 #, php-format
-msgid "remaining partition gap: %d day(s)"
+msgid "remaining partition gap: %d partition(s)"
 msgstr ""
 
 #: includes/functions.php
@@ -281,6 +281,42 @@ msgstr ""
 
 #: includes/functions.php
 msgid "partition creation failed"
+msgstr ""
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr ""
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr ""
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr ""
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr ""
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr ""
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr ""
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
 msgstr ""
 
 #: includes/functions.php
@@ -625,17 +661,12 @@ msgstr ""
 msgid "Choose how many days of Syslog values you wish to maintain in the database."
 msgstr ""
 
-#: includes/installer.php
-msgid "Partitions per Day"
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
 msgstr ""
 
 #: includes/installer.php
-msgid "Select the number of partitions per day that you wish to create."
-msgstr ""
-
-#: includes/installer.php
-#, php-format
-msgid "%d Per Day"
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
 msgstr ""
 
 #: includes/installer.php
@@ -974,7 +1005,7 @@ msgid "Choose the custom html wrapper and CSS file to use.  This file contains b
 msgstr ""
 
 #: includes/settings.php
-msgid "Data Retention Settings"
+msgid "Data Retention and Partitioning"
 msgstr ""
 
 #: includes/settings.php
@@ -986,11 +1017,15 @@ msgid "This is the number of days to keep events."
 msgstr ""
 
 #: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr ""
+
+#: includes/settings.php
 msgid "Partition Pre-create Window"
 msgstr ""
 
 #: includes/settings.php
-msgid "This is the number of future daily partitions to maintain for partitioned Syslog tables."
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
 msgstr ""
 
 #: includes/settings.php syslog_alerts.php
@@ -1185,6 +1220,19 @@ msgstr ""
 msgid "%d second"
 msgstr ""
 
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr ""
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr ""
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr ""
+
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_saved_searches.php
@@ -1199,9 +1247,8 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: includes/settings.php syslog.php syslog_dashboards.php
-#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
-#: syslog_saved_searches.php
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
 msgid "Export"
 msgstr ""
 
@@ -1281,10 +1328,6 @@ msgid "SQL Expression"
 msgstr ""
 
 #: includes/settings.php
-msgid "Daily"
-msgstr ""
-
-#: includes/settings.php
 msgid "Weekly"
 msgstr ""
 
@@ -1314,6 +1357,10 @@ msgstr ""
 
 #: includes/settings.php syslog.php syslog_recommendations.php
 msgid "Recommendations"
+msgstr ""
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
 msgstr ""
 
 #: includes/utilities.php
@@ -2036,6 +2083,15 @@ msgid "dMaxValue size"
 msgstr ""
 
 #: syslog.php
+msgid "Partitioning level"
+msgstr ""
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr ""
+
+#: syslog.php
 msgid "Last attempt"
 msgstr ""
 
@@ -2277,6 +2333,10 @@ msgid "Remove from page"
 msgstr ""
 
 #: syslog.php
+msgid "Invalid refresh interval."
+msgstr ""
+
+#: syslog.php
 msgid "Unknown card."
 msgstr ""
 
@@ -2459,14 +2519,6 @@ msgstr ""
 msgid "Delete the selected saved search?"
 msgstr ""
 
-#: syslog.php
-msgid "Save Search As"
-msgstr ""
-
-#: syslog.php
-msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
-
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2497,6 +2549,14 @@ msgstr ""
 
 #: syslog.php
 msgid "Save view defaults"
+msgstr ""
+
+#: syslog.php
+msgid "Save Search As"
+msgstr ""
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
 msgstr ""
 
 #: syslog.php

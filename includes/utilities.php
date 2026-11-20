@@ -49,27 +49,33 @@ function syslog_utilities_action($action) {
 			exit;
 		}
 
+		// Cacti loads only this hook file, so open the Syslog database (and its
+		// syslog_db_* helpers) before purging.
+		if (!syslog_connect()) {
+			cacti_log('ERROR: syslog purge failed -- unable to connect to the Syslog database', false, 'SYSLOG');
+			raise_message('syslog_connect_error', __('Unable to connect to the Syslog database. No Device records were removed.', 'syslog'), MESSAGE_LEVEL_ERROR);
+			header('Location: utilities.php?header=false');
+			exit;
+		}
+
+		global $syslogdb_default;
+
 		$records = 0;
 
-		syslog_db_execute('DELETE FROM syslog_hosts
-			WHERE host_id NOT IN (
-				SELECT DISTINCT host_id
-				FROM syslog
-				UNION
-				SELECT DISTINCT host_id
-				FROM syslog_removed
-			)');
-		$records += syslog_db_affected_rows();
-
-		syslog_db_execute('DELETE FROM syslog_host_facilities
-			WHERE host_id NOT IN (
-				SELECT DISTINCT host_id
-				FROM syslog
-				UNION
-				SELECT DISTINCT host_id
-				FROM syslog_removed
-			)');
-		$records += syslog_db_affected_rows();
+		// NOT EXISTS probes the host_id indexes and, unlike NOT IN, is not
+		// defeated by a NULL host_id in the message tables.
+		foreach (['syslog_hosts', 'syslog_host_facilities'] as $table) {
+			syslog_db_execute("DELETE FROM `$syslogdb_default`.`$table`
+				WHERE NOT EXISTS (
+					SELECT 1 FROM `$syslogdb_default`.`syslog` AS s
+					WHERE s.host_id = `$table`.host_id
+				)
+				AND NOT EXISTS (
+					SELECT 1 FROM `$syslogdb_default`.`syslog_removed` AS r
+					WHERE r.host_id = `$table`.host_id
+				)");
+			$records += syslog_db_affected_rows();
+		}
 
 		raise_message('syslog_info', __('There were %s Device records removed from the Syslog database', $records, 'syslog'), MESSAGE_LEVEL_INFO);
 

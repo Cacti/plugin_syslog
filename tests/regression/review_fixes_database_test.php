@@ -157,6 +157,54 @@ try {
 	$result = syslog_process_alerts($max);
 
 	check($result['syslog_alarms'] === 1, 'A host-level rule that uses an asterisk must fire');
+
+	// ---- Hourly partitioning: install, then poller maintenance ---------------
+	$options['syslog_partition_ahead_days']   = '1';
+	$options['syslog_partition_recover_limit'] = '31';
+	$pdo->exec('DROP TABLE syslog_removed');
+	syslog_setup_table_new(['upgrade_type' => 'truncate', 'engine' => 'InnoDB', 'days' => 2, 'db_type' => 'part', 'partitioning' => 'hour'], false);
+
+	$hourly = static fn() => $pdo->query("SELECT PARTITION_NAME FROM information_schema.PARTITIONS
+		WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'syslog' ORDER BY PARTITION_ORDINAL_POSITION")->fetchAll(PDO::FETCH_COLUMN);
+	$names = $hourly();
+	$now   = (int) $pdo->query('SELECT UNIX_TIMESTAMP()')->fetchColumn();
+
+	check($options['syslog_partition_granularity'] === 'hour', 'An hourly install records the partitioning level');
+	check(end($names) === 'dMaxValue' && preg_grep('/^h\d{10}$/', $names) === array_slice($names, 0, -1), 'An hourly install creates only hourly partitions before dMaxValue');
+	check(in_array(syslog_partition_name('hour', $now + 2 * 86400), $names, true), 'An hourly install keeps at least two days ahead, even with a 1-day window');
+	check(syslog_partition_report_state('syslog') && syslog_partition_report_state('syslog_removed'), 'Hourly layouts pass the partition state check');
+	check(syslog_partition_layout_granularity('syslog_removed') === 'hour', 'syslog_removed follows the hourly layout');
+
+	// Merge the last six future hours back into dMaxValue, then let maintenance
+	// heal the gap while Settings already asks for Daily: the layout must win.
+	$tail = array_slice($names, -7, 6);
+	$pdo->exec('ALTER TABLE syslog REORGANIZE PARTITION ' . implode(', ', $tail) . ', dMaxValue INTO (PARTITION dMaxValue VALUES LESS THAN MAXVALUE)');
+	$options['syslog_partition_granularity'] = 'day';
+	syslog_partition_manage();
+	$healed = $hourly();
+
+	check(array_intersect($tail, $healed) === $tail && preg_grep('/^d\d{8}$/', $healed) === [], 'Maintenance heals the hourly gap and ignores the pending Daily setting');
+	check(syslog_status_get()['partition_maintenance_outcome'] === 'success', 'Hourly maintenance completes');
+
+	// ---- Repair sizes a missing table by the current retention -------------
+	// 365 days of hourly history would exceed 8,192 partitions; repair must use
+	// the 3-day retention now configured, not the install-time 365 days.
+	$options['syslog_install_days']          = '365';
+	$options['syslog_retention']             = '3';
+	$options['syslog_partition_granularity'] = 'hour';
+	$pdo->exec('DROP TABLE syslog');
+	syslog_setup_table_new([], true);
+	$names = $hourly();
+
+	check($names !== [] && count($names) < 24 * 8, 'Repair recreates a missing hourly table from the current retention');
+	check(strcmp($names[0], syslog_partition_name('hour', $now - 4 * 86400)) >= 0, 'Repair keeps no history beyond the current retention');
+
+	// Hourly partitioning cannot keep Indefinite history: repair refuses before any DDL.
+	$options['syslog_retention'] = '0';
+	$pdo->exec('DROP TABLE syslog');
+	syslog_setup_table_new([], true);
+
+	check(!syslog_db_table_exists('syslog', false), 'Repair creates no table whose partition plan is refused');
 } catch (Throwable $error) {
 	$failures[] = $error->getMessage() . ' (' . basename($error->getFile()) . ':' . $error->getLine() . ')';
 } finally {

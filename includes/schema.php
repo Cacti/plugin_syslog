@@ -571,10 +571,11 @@ function syslog_resolve_logtime_precision(string $requested = ''): string {
  *                                     ahead of today, or false when unconfigured.
  * @param string           $precision  The logtime precision, 'ms' for TIMESTAMP(3)
  *                                     or 'sec' for TIMESTAMP (the default).
+ * @param string           $granularity The partitioning level, 'hour' or 'day' (the default).
  *
  * @return void
  */
-function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3, $precision = 'sec') {
+function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, $ahead_days = 3, $precision = 'sec', $granularity = 'day') {
 	global $config, $syslogdb_default, $syslog_levels;
 
 	syslog_connect();
@@ -641,26 +642,29 @@ function syslog_create_partitioned_syslog_table($engine = 'InnoDB', $days = 30, 
 	/*
 	 * Partition boundaries are integer epochs computed in PHP and injected
 	 * as numeric literals. This keeps both MySQL and PHP session time zones
-	 * out of the equation: the boundary is always the next UTC midnight
-	 * after the labeled day.
+	 * out of the equation: each boundary is the next UTC hour or midnight
+	 * after the labeled period.
 	 *
-	 * $days counts today as one of the retained days, so the historical
-	 * loop bound is $days - 1 (today plus $days - 1 prior days = $days
-	 * total). This matches the UTC calendar cutoff in syslog_partition_remove(),
-	 * so the initial oldest partition still contains retained events.
+	 * $days counts today as one of the retained days, so history starts at
+	 * UTC midnight $days - 1 days ago (today plus $days - 1 prior days =
+	 * $days total). This matches the UTC calendar cutoff in
+	 * syslog_partition_remove(), so the initial oldest partition still
+	 * contains retained events.
 	 *
 	 * $days = 0 is a valid "Indefinite" retention setting (never pruned by
-	 * syslog_partition_remove(), which only prunes when $days > 0), but
-	 * $days - 1 would then be -1 and skip creating today's concrete
-	 * partition entirely. Clamp the starting bound to 0 so today is always
-	 * created regardless of retention.
+	 * syslog_partition_remove(), which only prunes when $days > 0); history
+	 * then starts today, so today's concrete partitions always exist.
+	 * Hourly tables keep at least two days ahead, like maintenance does.
 	 */
-	for ($i = max($days - 1, 0); $i >= (0 - $ahead_days); $i--) {
-		$day_epoch      = $now - ($i * 86400);
-		$boundary_epoch = (intdiv($day_epoch, 86400) + 1) * 86400;
-		$format         = gmdate('Ymd', $day_epoch);
+	$period  = $granularity === 'hour' ? 3600 : 86400;
+	$ahead   = $granularity === 'hour' ? max(2, $ahead_days) : $ahead_days;
+	$today   = intdiv($now, 86400) * 86400;
+	$current = intdiv($now, $period) * $period;
 
-		$parts .= ($parts !== '' ? ",\n" : '(') . ' PARTITION d' . $format . ' VALUES LESS THAN (' . $boundary_epoch . ')';
+	for ($start = $today - max($days - 1, 0) * 86400; $start <= $current + $ahead * 86400; $start += $period) {
+		$name = $granularity === 'hour' ? 'h' . gmdate('YmdH', $start) : 'd' . gmdate('Ymd', $start);
+
+		$parts .= ($parts !== '' ? ",\n" : '(') . ' PARTITION ' . $name . ' VALUES LESS THAN (' . ($start + $period) . ')';
 	}
 
 	$parts .= ",\nPARTITION dMaxValue VALUES LESS THAN MAXVALUE);";
@@ -765,12 +769,25 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	$logtime_col = syslog_logtime_sql_type($precision);
 
 	// set table construction settings for the remote pollers
+	$granularity = ($options['partitioning'] ?? read_config_option('syslog_partition_granularity')) === 'hour' ? 'hour' : 'day';
+
+	// Repair recreates missing tables under the current settings, so their
+	// history follows the effective retention, not the install-time value.
+	if ($repair) {
+		$retention = read_config_option('syslog_retention');
+
+		if (is_numeric($retention) && (int) $retention >= 0) {
+			$options['days'] = (int) $retention;
+		}
+	}
+
 	if (!$repair) {
 		set_config_option('syslog_install_upgrade_type', empty($options['upgrade_type']) ? '' : $options['upgrade_type'], true);
 		set_config_option('syslog_install_engine',       $engine, true);
 		set_config_option('syslog_install_db_type',      empty($options['db_type']) ? '' : $options['db_type'], true);
 		set_config_option('syslog_install_days',         empty($options['days']) ? '' : $options['days'], true);
 		set_config_option('syslog_install_logtime_precision', $precision, true);
+		set_config_option('syslog_partition_granularity', $granularity, true);
 	}
 
 	if ($truncate) {
@@ -778,8 +795,19 @@ function syslog_setup_table_new(array $options, bool $repair = false): void {
 	}
 
 	// The syslog table is created partitioned; the helper also selects the
-	// matching ROW_FORMAT for the chosen engine.
-	syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'), $precision);
+	// matching ROW_FORMAT for the chosen engine. Check the plan against the
+	// server's partition limit before creating a missing table.
+	$plan_error = '';
+
+	if (!$syslogexists || $truncate) {
+		$plan_error = syslog_partition_settings_error($granularity, $options['days'], read_config_option('syslog_partition_ahead_days'), syslog_partition_server_limit());
+	}
+
+	if ($plan_error !== '') {
+		cacti_log('SYSLOG ERROR: The syslog table was not created. ' . $plan_error, false, 'SYSLOG');
+	} else {
+		syslog_create_partitioned_syslog_table($engine, $options['days'], read_config_option('syslog_partition_ahead_days'), $precision, $granularity);
+	}
 
 	syslog_db_execute("CREATE TABLE IF NOT EXISTS `$syslogdb_default`.`syslog_alert` (
 		`id` int(10) NOT NULL auto_increment,
@@ -1102,7 +1130,24 @@ function syslog_ensure_table_structures(): bool {
 
 	foreach ($tables as $table) {
 		if (!syslog_db_table_exists($table, false)) {
-			syslog_setup_table_new([], true);
+			// A partition rebuild renames the message tables while it holds the
+			// processing lock; never recreate a table underneath it.
+			$borrowed = empty($GLOBALS['syslog_processing_lock_cnn']);
+
+			if ($borrowed && syslog_processing_lock_acquire() !== true) {
+				cacti_log("NOTE: Missing Syslog table '$table' was not repaired while a processing run or partition rebuild holds the processing lock.", false, 'SYSLOG');
+
+				return false;
+			}
+
+			try {
+				syslog_setup_table_new([], true);
+			} finally {
+				if ($borrowed) {
+					syslog_processing_lock_release();
+				}
+			}
+
 			$rebuilt = true;
 
 			break;

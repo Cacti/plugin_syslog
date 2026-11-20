@@ -34,6 +34,11 @@ function partition_reorg_guard_setup($expression, $max_boundary, $to_days_value,
 			return $to_days_value;
 		}
 
+		// No hYYYYMMDDHH partitions: the table uses the daily layout.
+		if (str_contains($sql, "LIKE 'h%'")) {
+			return 0;
+		}
+
 		return 1;
 	});
 

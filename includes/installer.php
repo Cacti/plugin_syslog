@@ -120,17 +120,14 @@ function syslog_install_advisor(int $syslog_exists, array $submitted_options = [
 		]
 	];
 
-	$fields_syslog_update['dayparts'] = [
+	$fields_syslog_update['partitioning'] = [
 		'method'        => 'drop_array',
-		'friendly_name' => __('Partitions per Day', 'syslog'),
-		'description'   => __('Select the number of partitions per day that you wish to create.', 'syslog'),
-		'value'         => '1',
+		'friendly_name' => __('Partitioning Level', 'syslog'),
+		'description'   => __('The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server\'s partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php.', 'syslog'),
+		'value'         => isset($submitted_options['partitioning']) ? $submitted_options['partitioning'] : 'day',
 		'array'         => [
-			'1'  => __('%d Per Day', 1, 'syslog'),
-			'2'  => __('%d Per Day', 2, 'syslog'),
-			'4'  => __('%d Per Day', 4, 'syslog'),
-			'6'  => __('%d Per Day', 6, 'syslog'),
-			'12' => __('%d Per Day', 12, 'syslog')
+			'day'  => __('Daily', 'syslog'),
+			'hour' => __('Hourly', 'syslog')
 		]
 	];
 
