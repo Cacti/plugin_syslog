@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-19 15:22+0000\n"
+"POT-Creation-Date: 2026-11-19 16:30+0000\n"
 "PO-Revision-Date: 2022-03-26 11:40-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -520,6 +520,26 @@ msgid "Report previews search the most recent %d stored messages; the report its
 msgstr ""
 
 #: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr ""
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr ""
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Không"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Có"
+
+#: includes/functions.php
 #, fuzzy
 msgid "All Text"
 msgstr "Tất cả văn bản"
@@ -592,7 +612,7 @@ msgid "Timestamp Precision"
 msgstr ""
 
 #: includes/installer.php
-msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
 msgstr ""
 
 #: includes/installer.php
@@ -1862,11 +1882,11 @@ msgstr ""
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
 msgstr ""
 
-#: lib/syslog_thresholds.php
+#: lib/syslog_thresholds.php syslog.php
 msgid "Next"
 msgstr ""
 
@@ -2712,15 +2732,19 @@ msgstr "Tin nhắn"
 msgid "Empty message"
 msgstr "Tin nhắn"
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
-msgid "No"
-msgstr "Không"
+#: syslog.php
+#, fuzzy
+msgid "Toggle group messages"
+msgstr "Tin nhắn"
 
-#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
-#: syslog_recommendations.php syslog_removal.php syslog_reports.php
-msgid "Yes"
-msgstr "Có"
+#: syslog.php
+msgid "Loading group messages..."
+msgstr ""
+
+#: syslog.php
+#, fuzzy
+msgid "No matching messages."
+msgstr "Tin nhắn"
 
 #: syslog.php
 #, fuzzy
