@@ -31,6 +31,18 @@ if (file_exists($syslog_query_builder)) {
 }
 
 /*
+ * Load core's process helpers before the shims below. The function_exists()
+ * guards only defer to core when lib/poller.php is already loaded; otherwise
+ * a later include_once of lib/poller.php (e.g. from syslog_check_upgrade())
+ * fatals with "Cannot redeclare cacti_process_still_running()".
+ */
+global $config;
+
+if (!function_exists('cacti_process_still_running') && isset($config['base_path']) && file_exists($config['base_path'] . '/lib/poller.php')) {
+	include_once($config['base_path'] . '/lib/poller.php');
+}
+
+/*
  * Compatibility shims for Cacti process helpers.
  *
  * cacti_process_still_running() and cacti_process_kill() were added to Cacti
