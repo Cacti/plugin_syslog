@@ -77,6 +77,7 @@ function syslog_db_fetch_row_prepared($sql, $params = [], ...$args) {
 
 	return $rows[0] ?? [];
 }
+function syslog_db_fetch_assoc($sql, ...$args) { return syslog_db_fetch_assoc_prepared($sql); }
 function syslog_db_fetch_row($sql) { return syslog_db_fetch_row_prepared($sql); }
 function syslog_db_fetch_cell_prepared($sql, $params = [], ...$args) {
 	$query = $GLOBALS['pdo']->prepare($sql);
@@ -326,7 +327,7 @@ try {
 		('2025-11-02 01:30:00','repeated hour'),('2024-12-31 23:00:00','winter'),('0000-00-00 00:00:00','zero')");
 	$pdo->exec('CREATE TABLE syslog_removed LIKE syslog');
 	$pdo->exec("INSERT INTO syslog_removed (logtime,message) VALUES ('2025-07-04 09:15:00','removed')");
-	$pdo->exec('CREATE TABLE syslog_incoming (seq BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, logtime DATETIME NOT NULL, status INT, message TEXT) ENGINE=InnoDB');
+	$pdo->exec('CREATE TABLE syslog_incoming (seq BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, logtime DATETIME(3) NOT NULL, status INT, message TEXT) ENGINE=InnoDB');
 	$pdo->exec("INSERT INTO syslog_incoming VALUES (70,'2025-08-01 18:45:00',0,'queued')");
 	$legacy_total = (int) syslog_db_fetch_cell('SELECT COUNT(*) FROM syslog');
 	$new_york = new DateTimeZone('America/New_York');
@@ -354,6 +355,32 @@ try {
 	ob_end_clean();
 	rebuild_check($untouched(), 'A gap refusal leaves every DATETIME table untouched');
 	$pdo->exec("DELETE FROM syslog WHERE message='new york gap'");
+
+	// Stale database tzdata: Mexico City abolished DST in 2022, but this server
+	// is given a 2025 summer DST period PHP does not have. No PHP transition
+	// falls in the stored range, so only per-day probes can catch it.
+	$mexico = (int) syslog_db_fetch_cell("SELECT Time_zone_id FROM mysql.time_zone_name WHERE Name='America/Mexico_City'");
+	$types = $pdo->query("SELECT Transition_type_id, Offset FROM mysql.time_zone_transition_type WHERE Time_zone_id=$mexico AND Offset IN (-21600,-18000)")
+		->fetchAll(PDO::FETCH_KEY_PAIR);
+	$types = array_flip($types);
+	rebuild_check(isset($types[-21600], $types[-18000]), 'Mexico City has standard and daylight transition types');
+	$stale_transitions = [(new DateTime('2025-04-06 08:00:00 UTC'))->getTimestamp() => $types[-18000], (new DateTime('2025-10-26 07:00:00 UTC'))->getTimestamp() => $types[-21600]];
+
+	try {
+		foreach ($stale_transitions as $at => $type) {
+			$pdo->prepare('INSERT INTO mysql.time_zone_transition VALUES (?, ?, ?)')->execute([$mexico, $at, $type]);
+		}
+
+		rebuild_check(syslog_db_fetch_cell("SELECT CONVERT_TZ('2025-07-01 17:00:00','+00:00','America/Mexico_City')") === '2025-07-01 12:00:00', 'The server applies the stale summer DST');
+		ob_start();
+		rebuild_check(!syslog_upart_run(true, true, true, null, 'America/Mexico_City'), 'A transition only the database has is refused');
+		ob_end_clean();
+		rebuild_check($untouched() && is_free_processing_lock(), 'A stale-tzdata refusal leaves every DATETIME table untouched');
+	} finally {
+		foreach (array_keys($stale_transitions) as $at) {
+			$pdo->prepare('DELETE FROM mysql.time_zone_transition WHERE Time_zone_id = ? AND Transition_time = ?')->execute([$mexico, $at]);
+		}
+	}
 
 	// Interrupt the copy, then prove a retry must reuse the original zone.
 	$copy_attempts = 0;

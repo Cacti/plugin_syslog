@@ -251,44 +251,73 @@ function syslog_upart_source_zone_error(string $zone, array $tables): string {
 	$now = time();
 	$low = $now;
 	$high = $now;
+	$days = [];
 
 	foreach ($tables as $table) {
-		$range = syslog_db_fetch_row("SELECT MIN(logtime) AS first_time, MAX(logtime) AS last_time
+		$rows = syslog_db_fetch_assoc("SELECT DISTINCT DATE(logtime) AS day
 			FROM `$syslogdb_default`.`$table` WHERE logtime > '1970-01-01 00:00:00'");
 
-		if (!is_array($range) || !array_key_exists('first_time', $range)) {
+		if (!is_array($rows)) {
 			return "Cannot read the logtime range of $table.";
 		}
 
-		if ($range['first_time'] !== null) {
-			$low = min($low, (new DateTime((string) $range['first_time'], $tz))->getTimestamp() - 86400);
-			$high = max($high, (new DateTime((string) $range['last_time'], $tz))->getTimestamp() + 86400);
+		foreach ($rows as $row) {
+			$days[(string) $row['day']] = true;
+		}
+	}
+
+	// PHP's transitions alone would miss a transition only the database has
+	// (stale tzdata), so every stored day is probed at both ends, and days on
+	// which PHP's offset changes every 15 minutes.
+	$probes = [$now];
+
+	foreach (array_keys($days) as $day) {
+		$start = (new DateTime("$day 00:00:00", $tz))->getTimestamp();
+		$end = (new DateTime("$day 23:59:59", $tz))->getTimestamp();
+		$low = min($low, $start - 86400);
+		$high = max($high, $end + 86400);
+		$probes[] = $start;
+		$probes[] = $end;
+
+		if ($tz->getOffset(new DateTime('@' . $start)) !== $tz->getOffset(new DateTime('@' . $end))) {
+			for ($probe = $start; $probe < $end; $probe += 900) {
+				$probes[] = $probe;
+			}
 		}
 	}
 
 	// CONVERT_TZ leaves values outside the TIMESTAMP range unconverted.
-	$low = max(1, $low);
-	$high = min(2147483647, $high);
-	$transitions = $tz->getTransitions($low, $high) ?: [];
-	$probes = [$now];
+	$transitions = $tz->getTransitions(max(1, $low), min(2147483647, $high)) ?: [];
 
 	foreach ($transitions as $transition) {
 		$probes[] = $transition['ts'] - 1;
 		$probes[] = $transition['ts'];
 	}
 
-	foreach (array_unique($probes) as $probe) {
-		if ($probe < 1 || $probe > 2147483647) {
-			continue;
+	$probes = array_values(array_filter(array_unique($probes), static fn($probe) => $probe >= 1 && $probe <= 2147483647));
+
+	foreach (array_chunk($probes, 500) as $chunk) {
+		$expected = [];
+
+		foreach ($chunk as $probe) {
+			$expected[gmdate('Y-m-d H:i:s', $probe)] = (new DateTime('@' . $probe))->setTimezone($tz)->format('Y-m-d H:i:s');
 		}
 
-		$utc = gmdate('Y-m-d H:i:s', $probe);
-		$expected = (new DateTime('@' . $probe))->setTimezone($tz)->format('Y-m-d H:i:s');
-		$actual = syslog_db_fetch_cell_prepared("SELECT CONVERT_TZ(?, '+00:00', ?)", [$utc, $zone]);
+		$actual = syslog_db_fetch_assoc_prepared("SELECT CAST(probe.utc AS CHAR) AS utc, CAST(CONVERT_TZ(probe.utc, '+00:00', ?) AS CHAR) AS wall
+			FROM (" . implode(' UNION ALL ', array_fill(0, count($expected), 'SELECT CAST(? AS DATETIME) AS utc')) . ') AS probe',
+			array_merge([$zone], array_keys($expected)));
 
-		if ((string) $actual !== $expected) {
-			return "PHP and the Syslog database disagree on $zone at $utc UTC (PHP $expected, database " . var_export($actual, true)
-				. '). Update the database time zone tables or PHP time zone data so they match, then retry.';
+		if (!is_array($actual) || count($actual) !== count($expected)) {
+			return "Cannot compare $zone between PHP and the Syslog database.";
+		}
+
+		foreach ($actual as $row) {
+			$utc = (string) $row['utc'];
+
+			if (!isset($expected[$utc]) || (string) $row['wall'] !== $expected[$utc]) {
+				return "PHP and the Syslog database disagree on $zone at $utc UTC (PHP " . ($expected[$utc] ?? '?') . ', database ' . var_export($row['wall'], true)
+					. '). Update the database time zone tables or PHP time zone data so they match, then retry.';
+			}
 		}
 	}
 
@@ -357,8 +386,10 @@ function syslog_upart_source_zone_error(string $zone, array $tables): string {
 		print "NOTE: $ambiguous rows fall in repeated daylight-saving hours; each converts to one of its two possible instants." . PHP_EOL;
 	}
 
-	if (!in_array($zone, $cacti_zones, true)) {
-		print 'WARNING: Cacti uses time zone ' . implode(' and ', $cacti_zones) . ", not $zone. Confirm the legacy values were written in $zone." . PHP_EOL;
+	$mismatched = array_values(array_diff($cacti_zones, [$zone]));
+
+	if ($mismatched) {
+		print 'WARNING: Cacti also uses time zone ' . implode(' and ', $mismatched) . ", not $zone. Confirm the legacy values were written in $zone." . PHP_EOL;
 	}
 
 	return '';
@@ -395,10 +426,11 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 
 	// The incoming queue and replication outbox keep their sequence identities
 	// (archival and delivery deduplicate on them), so they are widened in place.
+	// A DATETIME(3) column is already millisecond but still zone-less.
 	$widen = [];
 
 	foreach (['syslog_incoming', 'syslog_replication_output'] as $table) {
-		if ($convert_ms && syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+		if ($convert_ms && syslog_db_table_exists($table, false) && syslog_upart_logtime_type($table) !== 'timestamp(3)') {
 			$widen[] = $table;
 		}
 	}
@@ -567,7 +599,7 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 
 		if ($convert_ms) {
 			foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
-				if (syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+				if (syslog_db_table_exists($table, false) && syslog_upart_logtime_type($table) !== 'timestamp(3)') {
 					fwrite(STDERR, "ERROR: $table did not convert; the precision setting was not changed." . PHP_EOL);
 
 					return false;
@@ -598,6 +630,16 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 }
 
 /**
+ * Return the lowercase logtime column type of a table, such as timestamp(3).
+ */
+function syslog_upart_logtime_type(string $table): string {
+	global $syslogdb_default;
+
+	return strtolower((string) syslog_db_fetch_cell_prepared('SELECT COLUMN_TYPE FROM information_schema.COLUMNS
+		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = \'logtime\'', [$syslogdb_default, $table]));
+}
+
+/**
  * Widen an incoming queue or outbox logtime column in place, so the sequence
  * identities that archival and replication rely on are kept. A legacy
  * DATETIME column is converted in its source zone, and its wall-clock values
@@ -616,7 +658,7 @@ function syslog_upart_widen(string $table, string $column, ?string $source_zone)
 		return syslog_db_execute("ALTER TABLE $target MODIFY COLUMN logtime $column");
 	}
 
-	$digest = "SELECT COUNT(*) AS row_count, SUM(CRC32(DATE_FORMAT(logtime, '%Y-%m-%d %H:%i:%s'))) AS digest FROM $target";
+	$digest = "SELECT COUNT(*) AS row_count, SUM(CRC32(DATE_FORMAT(logtime, '%Y-%m-%d %H:%i:%s.%f'))) AS digest FROM $target";
 
 	if (!syslog_db_execute_prepared('SET SESSION time_zone = ?', [$source_zone])) {
 		return false;

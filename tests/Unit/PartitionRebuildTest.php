@@ -9,6 +9,7 @@ function partition_rebuild_runner(): string {
 		preg_match('/^function syslog_upart_run_locked\(.*?^\}/ms', $source, $locked);
 		preg_match('/^function syslog_upart_live_workers\(.*?^\}/ms', $source, $workers);
 		preg_match('/^function syslog_upart_widen\(.*?^\}/ms', $source, $widen);
+		preg_match('/^function syslog_upart_logtime_type\(.*?^\}/ms', $source, $type);
 		$path = tempnam(sys_get_temp_dir(), 'syslog-rebuild-unit-');
 		file_put_contents($path, '<?php namespace SyslogRebuildFixture;
 			function syslog_db_is_mariadb(): bool { return \test_call_override("rebuild_mariadb", [], true); }
@@ -16,7 +17,7 @@ function partition_rebuild_runner(): string {
 			function syslog_upart_source_zone_error(...$args): string { return \test_call_override("syslog_upart_source_zone_error", $args, ""); }
 			function posix_kill($pid, $signal) { return \test_call_override("posix_kill", [$pid, $signal], false); }
 			function posix_get_last_error() { return \test_call_override("posix_get_last_error", [], 3); }
-			' . $run[0] . "\n" . $locked[0] . "\n" . $workers[0] . "\n" . $widen[0]);
+			' . $run[0] . "\n" . $locked[0] . "\n" . $workers[0] . "\n" . $widen[0] . "\n" . $type[0]);
 
 		try {
 			require $path;
@@ -48,7 +49,8 @@ function partition_rebuild_setup(): stdClass {
 		'legacy' => [],
 		'retention' => '30',
 		'granularity' => '',
-		'stored_zone' => ''
+		'stored_zone' => '',
+		'column_type' => null
 	];
 	$GLOBALS['config']['poller_id'] = 1;
 	test_override('read_config_option', static fn($key) => [
@@ -92,7 +94,7 @@ function partition_rebuild_setup(): stdClass {
 		}
 
 		if (str_contains($sql, 'COLUMN_TYPE')) {
-			return $state->precision === 'ms' ? 'timestamp(3)' : 'timestamp';
+			return $state->column_type ?? ($state->precision === 'ms' ? 'timestamp(3)' : 'timestamp');
 		}
 
 		return $state->bytes;
@@ -295,6 +297,42 @@ it('converts a legacy DATETIME incoming queue in place in the source zone', func
 		->and($state->rebuilds)->toBe([])
 		->and($state->executions)->toContain(['SET SESSION time_zone = ?', ['America/New_York']])
 		->and($state->statements)->toContain("ALTER TABLE `fixture`.`syslog_incoming` MODIFY COLUMN logtime timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'");
+});
+
+it('converts a millisecond DATETIME(3) incoming queue to TIMESTAMP(3) instead of skipping it', function () {
+	$state = partition_rebuild_setup();
+	$state->tables = ['syslog_incoming'];
+	$state->legacy = [['TABLE_NAME' => 'syslog_incoming']];
+	$state->column_type = 'datetime(3)';
+	test_override('syslog_db_fetch_row', static fn($sql) => str_contains($sql, 'CRC32')
+		? ['row_count' => '1', 'digest' => '7'] : ['Value' => $state->version]);
+	test_override('syslog_db_execute', static function ($sql) use ($state) {
+		$state->statements[] = $sql;
+		$state->column_type = str_starts_with($sql, 'ALTER TABLE') ? 'timestamp(3)' : $state->column_type;
+
+		return true;
+	});
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, true, true, null, 'America/New_York');
+	ob_end_clean();
+
+	expect($ok)->toBeTrue()
+		->and($state->statements)->toContain("ALTER TABLE `fixture`.`syslog_incoming` MODIFY COLUMN logtime timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'");
+
+	// Without the conversion the final type check refuses to record success.
+	$state = partition_rebuild_setup();
+	$state->tables = ['syslog_incoming'];
+	$state->legacy = [['TABLE_NAME' => 'syslog_incoming']];
+	$state->column_type = 'datetime(3)';
+	test_override('syslog_db_fetch_row', static fn($sql) => str_contains($sql, 'CRC32')
+		? ['row_count' => '1', 'digest' => '7'] : ['Value' => $state->version]);
+	ob_start();
+	$ok = $run(true, true, true, null, 'America/New_York');
+	ob_end_clean();
+
+	expect($ok)->toBeFalse()
+		->and($state->settings)->toBe(['syslog_upart_source_time_zone' => 'America/New_York']);
 });
 
 it('discards without a column-type query when no table needs checking', function () {

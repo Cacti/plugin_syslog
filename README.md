@@ -259,8 +259,9 @@ Before anything changes, `--source-time-zone` must pass these checks:
   Cacti installer already requires (`mariadb-tzinfo-to-sql /usr/share/zoneinfo |
   mariadb mysql`).
 * PHP and the database agree on its UTC offset at every daylight-saving
-  transition spanning the stored history and now, so neither side's zone data
-  is stale.
+  transition spanning the stored history and now, and at both ends of every
+  day that has stored messages, so a transition missing from either side's
+  zone data (stale tzdata) is caught.
 * Every `DATETIME` value exists in that zone. A value in a daylight-saving gap,
   such as 02:30 on a spring-forward day, or outside the `TIMESTAMP` range means
   the zone is probably wrong, and the command stops.
