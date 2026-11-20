@@ -6,6 +6,7 @@
 
 --- develop ---
 
+* feature: Preserve legacy DATETIME logtime history (including TO_DAYS partitioned tables) in cli/upgrade_partitioning.php with --source-time-zone=<zone>. Before any change the zone must be known to PHP/Cacti and the Syslog database, both must agree on its offsets across the stored history, and every value must exist in it. Stored and removed messages are then renamed and copied in verified batches in that zone, and a retry must reuse the same zone
 * issue#472: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging
 * issue#473: Syslog Status: choosing a card in Add card now appends it (Cacti's select2 dropdowns report changes through jQuery, which the card controller's native listener missed), and the Refresh interval is saved per user through a callback and refreshes the cards in place instead of reloading the page
 * issue#473: Bound every log query at the current time so empty future partitions are always pruned, whatever the filter's own date range
