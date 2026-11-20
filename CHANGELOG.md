@@ -6,61 +6,59 @@
 
 --- develop ---
 
-* bug: Syslog Status: choosing a card in Add card now appends it (Cacti's select2 dropdowns report changes through jQuery, which the card controller's native listener missed), and the Refresh interval is saved per user through a callback and refreshes the cards in place instead of reloading the page
-* feature: Add an Hourly or Daily (default) Partitioning Level under the renamed Data Retention and Partitioning settings, the install advisor (replacing the unused Partitions per Day option) and silent install options. A changed level takes effect only when cli/upgrade_partitioning.php (or its new --partition=hourly|daily option) rebuilds the tables; until then maintenance follows the existing layout and Settings and Status show the change as pending. Hourly tables keep at least two days of partitions ahead so dMaxValue reorganizations stay instant
-* feature: Refuse to save Syslog settings, install, or rebuild when retention, pre-create window and partitioning level need more partitions than the database server supports (8192, or 1024 before MariaDB 10.0.4 and MySQL 5.7), or when Hourly is combined with Indefinite retention
-* bug: Bound every log query at the current time so empty future partitions are always pruned, whatever the filter's own date range
-* bug: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging (#472)
-* bug: The partition rebuild CLI now refuses to start while Syslog processing is enabled and holds the master process slot; copies stored and removed messages without seq into a replacement whose AUTO_INCREMENT starts above the original high-water mark; verifies each 50,000-row batch by checksum and checkpoints it for resumable retries; widens the incoming queue in place to keep its sequence identities; and refuses legacy DATETIME history before changing anything
-* docs: Refresh README release/source compatibility, installation guidance and source-checked behavior; add published release notes and 5.0 upgrade guidance
-* bug: Keep log column resizing within the results area on both log tabs, preserve message ellipsis, and use an accessible Font Awesome export button
+* issue#472: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging
+* issue#473: Syslog Status: choosing a card in Add card now appends it (Cacti's select2 dropdowns report changes through jQuery, which the card controller's native listener missed), and the Refresh interval is saved per user through a callback and refreshes the cards in place instead of reloading the page
+* issue#473: Bound every log query at the current time so empty future partitions are always pruned, whatever the filter's own date range
+* issue#473: The partition rebuild CLI now refuses to start while Syslog processing is enabled and holds a database lock that syslog_process.php also takes (on a connection of its own, so nested locks cannot release it); copies stored and removed messages without seq into a replacement whose AUTO_INCREMENT starts above the original high-water mark; verifies each 50,000-row batch by checksum and checkpoints it for resumable retries; widens the incoming queue in place to keep its sequence identities; and refuses legacy DATETIME history before changing anything
+* issue: Keep log column resizing within the results area on both log tabs, preserve message ellipsis, and use an accessible Font Awesome export button
+* issue: Load grouped message details only on expansion, 50 at a time, preserving the displayed query's date range and filters instead of rendering every occurrence into hidden rows
+* issue: Place Cancel before an active submit-type Save button in Save Search As, support Enter through a separate dialog form and the existing callback, and show a Font Awesome refresh glyph that spins only while results callbacks are running
+* issue: Remove message-row and lightbulb hover tooltips, keep details in the click-open flyout, and fix the recommendation column at 20 pixels with a centered header
+* issue: Remove recommendation callbacks on message hover, show a theme-aware lightbulb before messages with matching recommendations, and include the CSRF token in the details flyout's fallback POST
+* issue: Trim leading and trailing parentheses and square brackets from incoming program names before reference lookup and rule processing
+* feature#473: Add an Hourly or Daily (default) Partitioning Level under the renamed Data Retention and Partitioning settings, the install advisor (replacing the unused Partitions per Day option) and silent install options. A changed level takes effect only when cli/upgrade_partitioning.php (or its new --partition=hourly|daily option) rebuilds the tables; until then maintenance follows the existing layout and Settings and Status show the change as pending. Hourly tables keep at least two days of partitions ahead so dMaxValue reorganizations stay instant
+* feature#473: Refuse to save Syslog settings, install, or rebuild when retention, pre-create window and partitioning level need more partitions than the database server supports (8192, or 1024 before MariaDB 10.0.4 and MySQL 5.7), or when Hourly is combined with Indefinite retention
+* feature: Add a data-preserving partition rebuild CLI with optional --convert-ms, verified 50,000-row batch copies, interrupted-copy recovery, and database-size, extra-disk-space and several-hour maintenance warnings
 * feature: Standardize both schema and partition CLI help with Cacti-style version banners and options, separate maintenance warnings, and replace the unreleased millisecond converter with --convert-ms
-* feature: Add a data-preserving partition rebuild CLI with optional --convert-ms, verified 10,000-row copies, interrupted-copy recovery, and database-size, extra-disk-space and several-hour maintenance warnings
-* bug: Trim leading and trailing parentheses and square brackets from incoming program names before reference lookup and rule processing
-* bug: Load grouped message details only on expansion, 50 at a time, preserving the displayed query's date range and filters instead of rendering every occurrence into hidden rows
-* bug: Place Cancel before an active submit-type Save button in Save Search As, support Enter through a separate dialog form and the existing callback, and show a Font Awesome refresh glyph that spins only while results callbacks are running
-* bug: Remove message-row and lightbulb hover tooltips, keep details in the click-open flyout, and fix the recommendation column at 20 pixels with a centered header
-* bug: Remove recommendation callbacks on message hover, show a theme-aware lightbulb before messages with matching recommendations, and include the CSRF token in the details flyout's fallback POST
 
 --- 5.0 ---
 
-* bug: Exercise the grouped-message detail query directly in regression tests without dynamic code evaluation or interpolated fixture table names, and cover unavailable or failing gzip operations
-* bug: Cache populated Syslog realm ID lookups per display name for the current request while continuing to check the current user's permissions on each call
-* bug: Align the saved-search Default label beneath Name and use Cacti's toggle switch, restore full-message hover tooltips alongside the details flyout, and retain the active search and date range when fetching grouped message details
-* bug: Re-importing a full Recommendations export rejected the 860 bundled records whose identifiers contain characters such as `|`, `#` or brackets (an over-strict identifier check). Imports now accept any identifier without spaces, write each rejected record to the Cacti log with its position, identifier and reason plus a one-line summary, and warn about identifiers that can never match a message
-* bug: Keep a leading `%` as a literal part of a Cisco recommendation identifier; it must match the message word as written instead of being silently added or removed
-* feature: The Recommendations Import button, filters and import submission now run as callbacks instead of full page loads, like the other Syslog Settings pages; the list explains how recommendations are matched
-* bug: The Alert and Removal rule filter panel no longer shows the Dark theme's tiled jQuery UI background in Dark and Deepness, and Deepness gets its own Syslog surface colors instead of Dark's (Deepness reuses Dark's jQuery UI styles, which the Syslog views sample)
+* issue: Align the saved-search Default label beneath Name and use Cacti's toggle switch, restore full-message hover tooltips alongside the details flyout, and retain the active search and date range when fetching grouped message details
+* issue: Cache populated Syslog realm ID lookups per display name for the current request while continuing to check the current user's permissions on each call
+* issue: Creating an Alert or Removal rule with the SQL Expression match type failed in the browser with "An invalid form control is not focusable" because the hidden Filter Builder's required fields still took part in form validation; the hidden builder is now disabled
+* issue: Exercise the grouped-message detail query directly in regression tests without dynamic code evaluation or interpolated fixture table names, and cover unavailable or failing gzip operations
+* issue: Keep a leading `%` as a literal part of a Cisco recommendation identifier; it must match the message word as written instead of being silently added or removed
+* issue: Re-importing a full Recommendations export rejected the 860 bundled records whose identifiers contain characters such as `|`, `#` or brackets (an over-strict identifier check). Imports now accept any identifier without spaces, write each rejected record to the Cacti log with its position, identifier and reason plus a one-line summary, and warn about identifiers that can never match a message
+* issue: SQL Expression report emails showed an empty Host column and logged PHP "Undefined array key" warnings; the report query now resolves host and program names
+* issue: The Alert and Removal rule filter panel no longer shows the Dark theme's tiled jQuery UI background in Dark and Deepness, and Deepness gets its own Syslog surface colors instead of Dark's (Deepness reuses Dark's jQuery UI styles, which the Syslog views sample)
+* issue: The rule Test preview dialogs on the Alert, Removal and Report Rules pages are no longer modal, so the rule can be edited while the preview stays open
+* issue: Theme fixes: in Midwinter the rule Filter Builder text and buttons inherited the theme's mid-grey text at about 3.5:1 contrast and now use Midwinter's own palette (including its light color mode); in Paper Plane, whose buttons are light text on a dark fill, the Syslog search builder's add buttons were white on white and now fall back to the body text color; the rule Filter Builder no longer overflows the form column on the rule edit pages
 * feature: Report Rules gain the Filter Builder (previously listed but never shown) and a Test button that previews matches against the most recent stored messages; Filter Builder reports are compiled to bound SQL and processed like the other match types
-* bug: Creating an Alert or Removal rule with the SQL Expression match type failed in the browser with "An invalid form control is not focusable" because the hidden Filter Builder's required fields still took part in form validation; the hidden builder is now disabled
-* bug: The rule Test preview dialogs on the Alert, Removal and Report Rules pages are no longer modal, so the rule can be edited while the preview stays open
+* feature: The Recommendations Import button, filters and import submission now run as callbacks instead of full page loads, like the other Syslog Settings pages; the list explains how recommendations are matched
 * feature: The Report Rules Message Match String is a resizable text area, taller for SQL Expressions
-* bug: SQL Expression report emails showed an empty Host column and logged PHP "Undefined array key" warnings; the report query now resolves host and program names
-* bug: Theme fixes: in Midwinter the rule Filter Builder text and buttons inherited the theme's mid-grey text at about 3.5:1 contrast and now use Midwinter's own palette (including its light color mode); in Paper Plane, whose buttons are light text on a dark fill, the Syslog search builder's add buttons were white on white and now fall back to the body text color; the rule Filter Builder no longer overflows the form column on the rule edit pages
 
-* docs: State plainly in the README that replacing the plugin files does not upgrade the plugin. Upgrades never start automatically during ordinary page or poller requests; start one with `cli/syslog_schema.php --upgrade` (recommended, runs outside the web server) or by disabling and enabling the plugin to open the Upgrade Advisor (runs inside that web request). Until then Plugin Management shows the old version and new pages return Permission Denied; the version shown there, not `--audit`, confirms that an upgrade completed
 
-* feature: Add Recommendations (issue #46). A vendor-neutral `syslog_recommendations` table maps a message identifier (a Cisco `%FACILITY-SEV-MNEMONIC`, a Juniper `RPD_OSPF_NBRDOWN`, and so on) to an explanation and a recommended action. Hovering over a row in the Syslog tab now asks the server for a matching recommendation and shows its explanation and recommended action in the tooltip. Console > Syslog Settings > Recommendations (Syslog Administration realm) adds, edits and deletes records and imports and exports them as JSON, using field names drawn from Sigma and the Elastic Common Schema so catalogues from other suppliers can be converted. docs/cisco.json.gz, converted from the Cisco Error Message Database (CEMDB) shipped with php-syslog-ng, is loaded once on install or upgrade without overwriting existing records
+* feature#46: Add Recommendations. A vendor-neutral `syslog_recommendations` table maps a message identifier (a Cisco `%FACILITY-SEV-MNEMONIC`, a Juniper `RPD_OSPF_NBRDOWN`, and so on) to an explanation and a recommended action. Hovering over a row in the Syslog tab now asks the server for a matching recommendation and shows its explanation and recommended action in the tooltip. Console > Syslog Settings > Recommendations (Syslog Administration realm) adds, edits and deletes records and imports and exports them as JSON, using field names drawn from Sigma and the Elastic Common Schema so catalogues from other suppliers can be converted. docs/cisco.json.gz, converted from the Cisco Error Message Database (CEMDB) shipped with php-syslog-ng, is loaded once on install or upgrade without overwriting existing records
 
 * feature: Add an optional Juniper EX Series recommendation catalogue in docs/juniper.json.gz, convert the Cisco seed to docs/cisco.json.gz, accept .json and .json.gz recommendation imports, and export gzip-compressed JSON by default while retaining one-time Cisco seeding
 
 * issue#458: Initialize and validate the active tab before saving view defaults, avoiding a TypeError that disables Syslog and stops processing
 * issue#459: Explain that SQL Expression rule previews search only queued incoming messages, so an empty preview is not mistaken for an alert-processing failure
 * issue#459: Legacy "Facility is" removal and alert rules compared the facility name (for example `local7`) with the numeric `facility_id` column of the incoming table, which MySQL evaluates as facility 0 (kern). Removal rules therefore discarded or transferred kern messages instead of their own facility, and facility alerts never fired. The name is now resolved through the facility reference table, as the rule preview, rule editor and stored-table removal already did. `syslog_process.php --debug` now names each removal rule that matched and how many messages it took, and notes host-level alerts skipped for having no matches, so a removal rule that takes messages before an alert sees them is visible
-* bug: Filter Builder conditions such as `Host != router01` or `Program != sshd` on Report Rules and retroactive removal against stored messages selected only the excluded host or program, because mapping names to ids dropped the negation
-* bug: Testing a Filter Builder report after visiting the Alert or Removal Rules page could send the previous page's conditions; Test now uses the builder that belongs to the form being tested
-* feature: Clicking a System Logs or Alert Logs row opens a Message details flyout on the right, in the style of the active theme. It requests the record from the server (`syslog.php?action=message_details`, which returns JSON for stored, removed and alert log records) and shows its details, the full message, the matching recommendations and the rule and filter actions. The flyout survives the page's auto refresh, and Copy link produces a `details=` address that reopens the record
-* bug: The System Logs and Alert Logs tables always showed a horizontal scroll bar: the column-resize handle of the last header cell sits 5px outside the table and overflowed the results area. In Midwinter the results area also collapsed to zero width beside the theme's floated tab bar, pushing the whole table off the page
+* issue#461: Fit message previews to the available column width instead of cutting them to 100 characters
+* issue: Clicking a host or program on the log view, or Filter by device or program in the message details, reloaded the whole page, and clicking the same host again added a duplicate condition. Filters now apply as a callback into the page, values already limiting the search are marked and are not added twice, and the search, clear and refresh actions also reload as callbacks (exports still download through a hidden frame)
+* issue: Dragging a column edge on the log view did nothing and then sorted the column. The message column claimed all spare width under the automatic table layout, which ignored the dragged widths, and releasing the drag over the header text counted as a sort click. The log tables now use the fixed layout so resized widths hold, the message column absorbs the change instead of the neighbouring column, and the click that ends a resize no longer sorts
+* issue: Filter Builder conditions such as `Host != router01` or `Program != sshd` on Report Rules and retroactive removal against stored messages selected only the excluded host or program, because mapping names to ids dropped the negation
+* issue: Opening one of the log view's menus (Manage, View options) or dropdowns left any others open, so several could be open at once; opening one now closes the rest, and clicking elsewhere on the page closes them all
+* issue: Testing a Filter Builder report after visiting the Alert or Removal Rules page could send the previous page's conditions; Test now uses the builder that belongs to the form being tested
+* issue: The grouped Count column now shows thousands separators for the current language
+* issue: The log view's action and menu controls (Search, Clear, Refresh, Export, Save and the Manage menu) are now real `<button>` elements of equal height; Search uses the active theme's primary button colors instead of a fixed green, and Results limit is renamed Rows and sits on the action row to save vertical space
+* issue: The System Logs and Alert Logs tables always showed a horizontal scroll bar: the column-resize handle of the last header cell sits 5px outside the table and overflowed the results area. In Midwinter the results area also collapsed to zero width beside the theme's floated tab bar, pushing the whole table off the page
 * feature: Add a Skip Total Row Count general setting for large installations. When it is on, the System Logs and Alert Logs tabs no longer count every matching record; the page reads one record beyond the page and offers Previous and Next until the last page
-* bug: Clicking a host or program on the log view, or Filter by device or program in the message details, reloaded the whole page, and clicking the same host again added a duplicate condition. Filters now apply as a callback into the page, values already limiting the search are marked and are not added twice, and the search, clear and refresh actions also reload as callbacks (exports still download through a hidden frame)
-* bug: Dragging a column edge on the log view did nothing and then sorted the column. The message column claimed all spare width under the automatic table layout, which ignored the dragged widths, and releasing the drag over the header text counted as a sort click. The log tables now use the fixed layout so resized widths hold, the message column absorbs the change instead of the neighbouring column, and the click that ends a resize no longer sorts
-* bug: The grouped Count column now shows thousands separators for the current language
-* bug: Opening one of the log view's menus (Manage, View options) or dropdowns left any others open, so several could be open at once; opening one now closes the rest, and clicking elsewhere on the page closes them all
-* feature: Saved searches can be marked Default in the Save prompt, which is no longer modal. The default search of each tab is applied the first time the tab is opened in a session with no filter set; saving another default replaces it and deleting it clears it
-* bug: The log view's action and menu controls (Search, Clear, Refresh, Export, Save and the Manage menu) are now real `<button>` elements of equal height; Search uses the active theme's primary button colors instead of a fixed green, and Results limit is renamed Rows and sits on the action row to save vertical space
+* feature: Clicking a System Logs or Alert Logs row opens a Message details flyout on the right, in the style of the active theme. It requests the record from the server (`syslog.php?action=message_details`, which returns JSON for stored, removed and alert log records) and shows its details, the full message, the matching recommendations and the rule and filter actions. The flyout survives the page's auto refresh, and Copy link produces a `details=` address that reopens the record
 * feature: Date conditions follow Cacti's timespan selector: In the last gains 30 minutes to 2 years presets, and the new In the range operator selects Day Shift, This Day/Week/Month/Year or Previous Day/Week/Month/Year, honoring the user's First Weekday and the Day Shift settings
 * feature: Restore the Trim selector beside Refresh: Fit Column, All Text (wrapped) or 30 to 300 characters, saved with Save Settings
-* issue#461: Fit message previews to the available column width instead of cutting them to 100 characters
+* feature: Saved searches can be marked Default in the Save prompt, which is no longer modal. The default search of each tab is applied the first time the tab is opened in a session with no filter set; saving another default replaces it and deleting it clears it
 
 * issue#456: Avoid PHP 8.6 deprecation warnings during schema checks by using object IDs for the connection cache key
 
@@ -70,17 +68,6 @@
 
 * issue#440: Avoid repeating successful schema operations and seed the default dashboard after schema setup, preventing duplicate table creation during installation and upgrade
 
-* feature: Add an install-time timestamp precision choice for the logtime column (issue #325). New MariaDB installs default to millisecond TIMESTAMP(3), which preserves sub-second ordering and still RANGE partition-prunes; MySQL installs are fixed to second precision because MySQL cannot prune a fractional partitioned column, and an explicit millisecond request on MySQL is rejected. Upgrades never migrate the schema automatically; switch an existing MariaDB install with cli/upgrade_partitioning.php --convert-ms during a maintenance window. README documents forwarder configuration (rsyslog, Cisco, Juniper, Arista, syslog-ng) for delivering sub-second timestamps
-* feature: Add a manifest.json that drives upgrade-time "housecleaning": when genuinely upgrading from an older version, syslog_prune_files() (run from the shared syslog_check_upgrade() path so every version-aware entry point - the plugin upgrade hook, the re-enable path and cli/syslog_schema.php - cleans up) removes files and directories that older layouts shipped but that have since moved or been deleted (for example the old top-level database.php/functions.php now living under includes/), so a stale module can no longer redeclare a function and fatal the plugin on load after an upgrade. User-data paths (config.php, config_local.php) and VCS metadata (including .git/.md descendants nested under a tombstoned directory) are never touched, tombstones reached through a symlinked parent or that resolve outside the plugin are refused, a fresh install or same-version repair leaves the dev-only tests/ tree intact, and a CI check (tests/bin/validate-manifest.php) keeps the manifest's expected-file list from drifting
-* bug: Stop partition recovery from wedging with MySQL error 1493 ('VALUES LESS THAN value must be strictly increasing') when an existing partition boundary already covers the day being created. Both syslog_partition_check() and syslog_partition_create() decided a daily partition was missing purely by name, so a table carried over from an older TO_DAYS schema, or left inconsistent by an interrupted 4.2-to-4.11 upgrade, would repeatedly emit a REORGANIZE of dMaxValue that MySQL rejected, leaving writes parked in the dMaxValue safety partition. Both now compare the target boundary against the highest existing concrete boundary, so already-covered days no longer count as missing, no longer consume the bounded per-run recovery budget, and are treated as a successful no-op, while genuine gaps are still created (issue #434)
-* bug: Stop preloading every distinct program into the query-builder choice list; on a busy collector the unbounded SELECT over syslog_programs built a very large choice array that could exhaust the PHP memory limit and fatal (HTTP 503) when opening the Alert, Removal and Dashboard editors, while the Report editor (which does not use the filter builder) kept working. The program and program_id fields already resolve through the bounded AJAX suggestion endpoint, so only the small facility and priority enumerations are preloaded now
-* bug: Backport the PHP 8.0 syntax that prevented the Syslog pages from parsing under a PHP 7.4 web server (match() expressions, union type declarations such as string|false and int|string, and mixed type declarations) across includes/functions.php, syslog.php, syslog_reports.php and syslog_removal.php; includes/functions.php loads on every page, so on PHP 7.4 the file failed to compile and the page returned a blank 503 while the CLI poller on a newer PHP kept working. The documented parameter/return types are retained in the PHPDoc blocks, restoring the declared 1.2.23 compatibility floor
-* bug: Create dashboard, status, saved-search and share tables with a string primary key on Cacti older than 1.2.32, whose db_table_create() fataled on an array primary key, so the 4.2 to 4.11 upgrade completes on the 1.2.23+ compatibility floor
-* bug: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist; the fallbacks validate the PID range and confirm command identity through procfs like the native helpers
-* test: Extract the procfs cmdline parser into syslog_compat_script_from_cmdline() and let syslog_compat_pid_identity_matches() accept an injectable reader, so the process-helper fallbacks reach full changed-line coverage of their PID-range, identity-match and signal paths
-* feature: Converge the Syslog Status cards and the user chart Dashboards on the shared Cacti dashboarding Card API (js/cards.js + css/cards.css), so both render with the standardized .cc* card chrome (drag/keyboard reorder, show more/less, maximize, refresh, remove) and the bundle stays byte-identical across plugins for promotion into Cacti core; the Status-tab controller moves out of js/functions.js into a thin js/syslog_dashboard.js adapter over the shared controller, and the chart panels adopt the same chrome while keeping their continuous drag-resize
-* dev: Load the bundled css/cards.css and js/cards.js only on cores that do not ship them globally, gated with file_exists so newer cores use the core copy
-* dev: Run the CI poller with the shared runner group so RRD files and structured directories pass permission verification
 * security: Add the Cacti request nonce to plugin script tags so pages comply with the Content-Security-Policy nonce migration
 * security: Defuse spreadsheet formulas in CSV output while retaining `fputcsv()` quoting
 * security: Escape HTML and JavaScript output contexts and restrict callback dispatch to bare identifiers
@@ -104,14 +91,17 @@
 * issue#317: Expire partitions by their actual UTC upper boundaries instead of partition count, preserving cutoff-spanning partitions and supporting legacy TO_DAYS layouts.
 * issue#317: Make incoming transfers transactional, lock overlapping slices, and skip existing source identities on retry to prevent duplicate local archival.
 * issue#317: Preserve unarchived incoming messages regardless of age, retry crash-stranded rows, and require a matching history or durable outbox identity before removing incoming data.
+* issue#317: Compute syslog and reference-table retention cutoffs in UTC with gmdate() so they agree with the integer UTC epoch partition boundaries and cannot drift with the server timezone or DST transitions
+* issue#434: Stop partition recovery from wedging with MySQL error 1493 ('VALUES LESS THAN value must be strictly increasing') when an existing partition boundary already covers the day being created. Both syslog_partition_check() and syslog_partition_create() decided a daily partition was missing purely by name, so a table carried over from an older TO_DAYS schema, or left inconsistent by an interrupted 4.2-to-4.11 upgrade, would repeatedly emit a REORGANIZE of dMaxValue that MySQL rejected, leaving writes parked in the dMaxValue safety partition. Both now compare the target boundary against the highest existing concrete boundary, so already-covered days no longer count as missing, no longer consume the bounded per-run recovery budget, and are treated as a successful no-op, while genuine gaps are still created
 * issue: Apply the Max Report Records setting to threshold alert messages
 * issue: Archive host and program removal rules without an ambiguous column error
 * issue: Automatically repair collector-local schema before remote Syslog queries and processing after reinstall; keep failed message queries from disabling the plugin with a return-type error
+* issue: Backport the PHP 8.0 syntax that prevented the Syslog pages from parsing under a PHP 7.4 web server (match() expressions, union type declarations such as string|false and int|string, and mixed type declarations) across includes/functions.php, syslog.php, syslog_reports.php and syslog_removal.php; includes/functions.php loads on every page, so on PHP 7.4 the file failed to compile and the page returned a blank 503 while the CLI poller on a newer PHP kept working. The documented parameter/return types are retained in the PHPDoc blocks, restoring the declared 1.2.23 compatibility floor
 * issue: Bound digest backfill to the registered master and a fixed migration range, retaining the last durable cursor when a batch or progress write fails
 * issue: Check sender names with A and AAAA records, accept IPv4 and IPv6 addresses without a lookup and store IPv6 addresses in one canonical form
-* issue: Compute syslog and reference-table retention cutoffs in UTC with gmdate() so they agree with the integer UTC epoch partition boundaries and cannot drift with the server timezone or DST transitions (issue#317)
 * issue: Correct validation error when creating an Alert Rule
 * issue: Count equal retained and removed log totals correctly and remove all plugin-owned tables during uninstall-all
+* issue: Create dashboard, status, saved-search and share tables with a string primary key on Cacti older than 1.2.32, whose db_table_create() fataled on an array primary key, so the 4.2 to 4.11 upgrade completes on the 1.2.23+ compatibility floor
 * issue: Don't use MyISAM for non-analytical tables
 * issue: Drop the syslog_saved_searches table during a full uninstall; it was previously left behind
 * issue: Evaluate the remaining alert rules when one rule fails to compile instead of silencing all of them
@@ -130,6 +120,7 @@
 * issue: Make the System Logs view theme-aware across the Cacti theme fleet by moving the dark-surface row, label, details, and search-panel palette out of the shared css/search.css and into each dark theme's css/<theme>.css (dark, deepness, midwinter, sunrise), so themes beyond dark and midwinter no longer render light row tints under the theme's light text; correct paper-plane to the light palette to match its light data tables and add css/<theme>.css for the remaining packaged themes (cacti, carrot, hollyberry, raspberry)
 * issue: Making changes to support Cacti 1.3
 * issue: Pass a boolean (not the integer 1) to api_plugin_register_hook()'s $enable argument so the hook registration stays type-correct under Cacti 1.3's strict bool type-hint (the int only coerces while the file lacks declare(strict_types=1))
+* issue: Polyfill cacti_process_still_running() and cacti_process_kill() so the poller does not fatal on Cacti releases older than 1.2.32, where those core helpers do not yet exist; the fallbacks validate the PID range and confirm command identity through procfs like the native helpers
 * issue: Reject imported alert rules whose match type produces no query
 * issue: Remove all plugin-owned tables from remote collectors through Cacti's native API when uninstalling all Syslog data
 * issue: Repair missing tables automatically on the main collector as well as remotes, and skip processing when schema repair fails
@@ -141,6 +132,7 @@
 * issue: Route rule imports to the configured Syslog database and publish complete remote rule snapshots with source-aware schema transfer and failure-safe replacement
 * issue: Show the Syslog Status card refresh glyph again by using Font Awesome's fa-sync-alt (the bundled Font Awesome 6 no longer renders the Font Awesome 4 fa-refresh alias)
 * issue: Stop hostname lookups after a time budget per processing run so senders cannot stall the poller
+* issue: Stop preloading every distinct program into the query-builder choice list; on a busy collector the unbounded SELECT over syslog_programs built a very large choice array that could exhaust the PHP memory limit and fatal (HTTP 503) when opening the Alert, Removal and Dashboard editors, while the Report editor (which does not use the filter builder) kept working. The program and program_id fields already resolve through the bounded AJAX suggestion endpoint, so only the small facility and priority enumerations are preloaded now
 * issue: Suppress automatic schema repair during plugin lifecycle operations and while Syslog is disabled or uninstalled; stop stale processor launches before they can recreate removed tables
 * issue: The install advisor for Syslog was broken in current Cacti releases
 * issue: Treat an empty incoming queue as drained rather than missing data, and evaluate stale queued messages even when new messages continue arriving
@@ -148,9 +140,11 @@
 * issue: Validate imported alert rules like edited ones and ignore row ids in import files
 * issue: Validate imported saved search templates like edited ones
 * issue: Widen rule owner columns to the 50 character Cacti username limit through the standard schema upgrade helper
+* feature#325: Add an install-time timestamp precision choice for the logtime column. New MariaDB installs default to millisecond TIMESTAMP(3), which preserves sub-second ordering and still RANGE partition-prunes; MySQL installs are fixed to second precision because MySQL cannot prune a fractional partitioned column, and an explicit millisecond request on MySQL is rejected. Upgrades never migrate the schema automatically; switch an existing MariaDB install with cli/upgrade_partitioning.php --convert-ms during a maintenance window. README documents forwarder configuration (rsyslog, Cisco, Juniper, Arista, syslog-ng) for delivering sub-second timestamps
 * feature: Add a 'Test rule' action to the Alert and Removal rule editors: a read-only preview compiled through the existing QueryBuilder and parameterized SQL paths returns the matching count plus a bounded sample of escaped messages, without saving, enabling, deleting, alerting, emailing, executing commands, or altering any data; the action respects realms and CSRF protection
 * feature: Add a Dashboard tab with per-user dashboards of chart panels: timeseries (line/area/bar) and breakdown (donut by host, program, facility, or priority) panels chart System Logs and Alert Logs through the same logical search DSL as the log viewer; panels can start from a saved search and every write re-verifies dashboard ownership
 * feature: Add a fail-safe for partition maintenance: when the partition metadata for the syslog or syslog_removed table is invalid or incomplete, or a required partition cannot be created, all partition creation and retention pruning stops, the dMaxValue safety partition is never dropped, and the blocked condition with its remediation step is logged and shown on the Syslog Status page
+* feature: Add a manifest.json that drives upgrade-time "housecleaning": when genuinely upgrading from an older version, syslog_prune_files() (run from the shared syslog_check_upgrade() path so every version-aware entry point - the plugin upgrade hook, the re-enable path and cli/syslog_schema.php - cleans up) removes files and directories that older layouts shipped but that have since moved or been deleted (for example the old top-level database.php/functions.php now living under includes/), so a stale module can no longer redeclare a function and fatal the plugin on load after an upgrade. User-data paths (config.php, config_local.php) and VCS metadata (including .git/.md descendants nested under a tombstoned directory) are never touched, tombstones reached through a symlinked parent or that resolve outside the plugin are refused, a fresh install or same-version repair leaves the dev-only tests/ tree intact, and a CI check (tests/bin/validate-manifest.php) keeps the manifest's expected-file list from drifting
 * feature: Add a right-edge resize strip so panel width can be dragged directly (ew-resize) instead of only the small corner grip
 * feature: Add a Syslog-owned durable replication outbox for configured Remote Data Collectors; processed events are delivered idempotently to the Main Collector for centralized viewing, retained through outages, and retried during recovery, while intentionally discarded records remain unreplicated
 * feature: Add an All Users / All Groups option to the Shared With Users and Shared With Groups selects of the admin Dashboards and Saved Search Templates pages: a single stored "all" grant makes the item visible to every signed-in user, instead of selecting each account one by one
@@ -176,6 +170,7 @@
 * feature: Allow users to share saved searches with each other, gated by a new 'Syslog Saved Searches Share' realm; admins get a Console search admin page to manage all saved searches, and the delete button for global searches is hidden from unauthorized users (new realms added to upgrade)
 * feature: Bring the visual Filter Builder to Removal Rules with the same styling as Alert Rules; legacy string, host, program, and facility match types plus SQL Expression remain unchanged
 * feature: Collapse the System Logs filter panel by default and recoup vertical space with tighter result-row padding and message line-height; a saved expanded preference or an active search error still opens the panel
+* feature: Converge the Syslog Status cards and the user chart Dashboards on the shared Cacti dashboarding Card API (js/cards.js + css/cards.css), so both render with the standardized .cc* card chrome (drag/keyboard reorder, show more/less, maximize, refresh, remove) and the bundle stays byte-identical across plugins for promotion into Cacti core; the Status-tab controller moves out of js/functions.js into a thin js/syslog_dashboard.js adapter over the shared controller, and the chart panels adopt the same chrome while keeping their continuous drag-resize
 * feature: Deprecate the Statistics tab and remove statistics data collection and database setup
 * feature: Deprecate traditional (non-partitioned) tables: new installs always create partitioned tables and only offer InnoDB and Aria storage engines; existing traditional installs keep working with a notice advising migration
 * feature: Enhanced hostname validation to resolve against Cacti host table when DNS lookup fails, replacing hostname with Cacti host description
@@ -219,9 +214,6 @@
 
 --- 4.0 ---
 
-* issue: Removal of partition issues incorrect message
-* issue: Make the syslog processing routine more readable
-* issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
 * issue#65: MySQL failures due to large amount of syslog data
 * issue#108: Add Body Text to Alert email
 * issue#135: Syslog plugin will break remote collectors if DB is not present
@@ -229,13 +221,16 @@
 * issue#151: Syslog 3.1 has a hardcoded path for sh which causes issues running other scripts
 * issue#160: PHP 8 Support
 * issue#166: Allow Syslog to pass hostname for the threshold type reporting
+* issue: Fix oversight in database connection handling around default values identified in PHP 8.1.2 testing
+* issue: Make the syslog processing routine more readable
+* issue: Removal of partition issues incorrect message
 * feature#181: For Regex Message Processing Rules test the regex at save time and inform user if it's syntactically correct
 * feature: Support a local Syslog config file when Syslog is designed to work independently from the main Cacti server.
-* feature: Support the replication of the main Cacti Syslog rules to Remote Data Collectors
-* feature: Support process interlocking using the Cacti process registration functions
 * feature: Support both system and host level re-alert cycles and command execution
-* feature: Support using the Thold notification lists if Thold is installed on the system
+* feature: Support process interlocking using the Cacti process registration functions
+* feature: Support the replication of the main Cacti Syslog rules to Remote Data Collectors
 * feature: Support using Cacti Format CSS files to construct Alert and Report messages.
+* feature: Support using the Thold notification lists if Thold is installed on the system
 
 --- 3.2 ---
 
@@ -255,7 +250,7 @@
 
 * issue#122: Apply Cacti#3191 for XSS exposure (CVE-2020-7106)
 * issue#124: Feature request: Syslog Search for message NOT containing something
-* issue#128：The syslog alert email is not sent if the Reporting Method is set to threshold.
+* issue#128: The syslog alert email is not sent if the Reporting Method is set to threshold.
 * issue#132: Cacti log shows syslog error when setting the "Re-Alert Cycle" in Alert Rules settings
 * issue#133: Saving Settings on the Syslog Tab are not retained in latest Cacti
 * feature#134: Syslog Search to include Program column - Reports
@@ -264,8 +259,8 @@
 --- 2.9 ---
 
 * issue#120: SQL syntax error for syslog when click browser back button
-* issue: Syslog stats not reporting properly
 * issue: Internationalization issues on console
+* issue: Syslog stats not reporting properly
 
 --- 2.8 ---
 
@@ -287,14 +282,14 @@
 
 --- 2.5 ---
 
-* issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps instead of legacy date/time
-* issue#102: Syslog statistics filter problem - select program
-* issue#101: Alert rule SQL Expression not working as expected
-* issue#100: Fix odd/even classes generation in report
-* issue#99: Re-Alert Cycle (Alert Rules) is wrong in case of 1 minute poller interval
-* issue#96: Syslog filtering does not work with some international characters
-* issue#88: Provide text color to indicate device status in Cacti
 * issue#87: Program data is not sync with syslog_incoming under PHP 7.2
+* issue#88: Provide text color to indicate device status in Cacti
+* issue#96: Syslog filtering does not work with some international characters
+* issue#99: Re-Alert Cycle (Alert Rules) is wrong in case of 1 minute poller interval
+* issue#100: Fix odd/even classes generation in report
+* issue#101: Alert rule SQL Expression not working as expected
+* issue#102: Syslog statistics filter problem - select program
+* issue#103: Allow syslog to use rsyslog new tizezone sensitive timestamps instead of legacy date/time
 
 --- 2.4 ---
 
@@ -309,7 +304,6 @@
 
 --- 2.2 ---
 
-* feature: Allow for reprocess message per rule
 * issue#66: Filter for All Programs can not work well
 * issue#67: SQL error after choose device
 * issue#69: Cirtical and Alert filter can not work well
@@ -328,12 +322,13 @@
 * issue#84: All Programs not show anything using Classic theme
 * issue#86: No color for emergency item
 * issue#89: plugins/syslog/syslog_reports.php:89: Undefined variable '$id'
+* feature: Allow for reprocess message per rule
 
 
 --- 2.1 ---
 
-* issue#18: Issues with syslog statistics display
 * issue#17: Compatibility with remote database
+* issue#18: Issues with syslog statistics display
 * issue#19: Removal rules issues
 * issue#20: Issues viewing removed records
 * issue#23: Threshold rule alert format issues
@@ -341,9 +336,9 @@
 * issue#32: Export of Syslog records not functional
 * issue#38: Enhance the documentation to discuss config.php.dist and doco site
 * issue#40: Adds hostname column to emailed reports
+* issue: Cleanup formatting of Threshold messaging and viewing
 * issue: SQL for matching Cacti host incorrect
 * issue: Syslog Reports were not functional
-* issue: Cleanup formatting of Threshold messaging and viewing
 
 --- 2.0 ---
 
@@ -351,19 +346,19 @@
 
 --- 1.30 ---
 
-* feature: Allow Statistics to be disabled
-* feature: Allow Processing of Removal Rules on Main Syslog Table
-* feature: Cleanup UI irregularities
-* feature: Allow purging of old host entries
 * issue: Remove syslog 'message' from Log message to prvent deadlock on cacti log syslog processing
+* feature: Allow Processing of Removal Rules on Main Syslog Table
+* feature: Allow purging of old host entries
+* feature: Allow Statistics to be disabled
+* feature: Cleanup UI irregularities
 
 --- 1.22 ---
 
-* issue: Upgrade script does not properly handle all conditions
-* issue: Strip domain does not always work as expected
-* issue: Resizing a page on IE6 caused a loop on the syslog page
 * issue: Correct issue where 'warning' is used instead of 'warn' on log insert
 * issue: Issue with Plugin Realm naming
+* issue: Resizing a page on IE6 caused a loop on the syslog page
+* issue: Strip domain does not always work as expected
+* issue: Upgrade script does not properly handle all conditions
 
 --- 1.21 ---
 
@@ -374,63 +369,63 @@
 
 --- 1.20 ---
 
+* issue: Message column was date column
+* issue: sort fields interfering with one another between syslog and alarm tabs
+* feature: Limit re-alert cycles to the max log retention
+* feature: Make the default timespan 30 minutes for performance reasons
 * feature: Provide host based statistics tab
 * feature: Support generic help desk integration.  Requires customer script
 * feature: Support re-alert cycles for all alert type
-* feature: Limit re-alert cycles to the max log retention
-* feature: Make the default timespan 30 minutes for performance reasons
-* issue: sort fields interfering with one another between syslog and alarm tabs
-* issue: Message column was date column
 
 --- 1.10 ---
 
-* feature: Allow Syslog to Strip Domains Suffix's.
-* feature: Make compatible with earlier versions of Cacti.
-* feature: Allow Plugins to extend filtering
-* issue: Minor issue with wrong db function being called.
+* issue: Can not add disabled alarm/removal/report rule
+* issue: Emergency Logs were not being highlighted correctly
 * issue: Legend had Critical and Alert reversed.
+* issue: Minor issue with wrong db function being called.
+* issue: Partitioning was writing always to the dMaxValue partition
 * issue: Syslog filter can cause SQL errors
 * issue: Wrong page redirect links.
-* issue: Partitioning was writing always to the dMaxValue partition
-* issue: Emergency Logs were not being highlighted correctly
-* issue: Can not add disabled alarm/removal/report rule
+* feature: Allow Plugins to extend filtering
+* feature: Allow Syslog to Strip Domains Suffix's.
+* feature: Make compatible with earlier versions of Cacti.
 
 --- 1.07 ---
 
-* issue: Rearchitect to improve support multiple databases
+* issue: Don't process a removal rule if it's not enabled.
 * issue: Don't process a report if it's not enabled.
 * issue: Don't process an alert if it's not enabled.
-* issue: Don't process a removal rule if it's not enabled.
+* issue: Rearchitect to improve support multiple databases
 
 --- 1.06 ---
 
-* issue#0001854: Error found in Cacti Log
-* issue#0001871: Priority dropdown labels in syslog.php for "All Priorities" set to incorrect priority id
-* issue#0001872: Priorities drop drown to show specific value
-* issue: Only show one facility in the dropdown
+* issue#1854: Error found in Cacti Log
+* issue#1871: Priority dropdown labels in syslog.php for "All Priorities" set to incorrect priority id
+* issue#1872: Priorities drop drown to show specific value
 * issue: Hex Errors Upon Install
+* issue: Only show one facility in the dropdown
 
 --- 1.05 ---
 
-* issue: Remove poorly defined security settings
 * issue: Don't show actions if you don't have permissions
 * issue: Fix page refresh dropdown bug
+* issue: Remove poorly defined security settings
 * feature: Re-add refresh settings to syslog
 
 --- 1.04 ---
 
-* issue#0001824: Syslog icon is not shown in graph view
-* issue: Link on Alarm Log does not properly redirect to 'current' tab
-* issue: Unselecting all hosts results in SQL error
+* issue#1824: Syslog icon is not shown in graph view
 * issue: Exporting to CSV not working properly
-* compat: Remove deprecated split() command
+* issue: Link on Alarm Log does not properly redirect to 'current' tab
+* issue: Remove deprecated split() command
+* issue: Unselecting all hosts results in SQL error
 
 --- 1.03 ---
 
-* feature: Add alarm host and counts to sms messages
-* issue: Fix issue with individual syslog html messages
 * issue: Fix creating alarms and removals from the syslog tab
+* issue: Fix issue with individual syslog html messages
 * issue: Fix syslog removal UI with respect to rule type's
+* feature: Add alarm host and counts to sms messages
 
 --- 1.02 ---
 
@@ -438,35 +433,35 @@
 
 --- 1.01 ---
 
+* issue#1785: revision 1086 can not save reports when using separate syslog mysql database
+* issue#1788: missing closing quote in syslog_alerts.php
 * feature: Add alert commands by popular demand
-* issue#0001788: missing closing quote in syslog_alerts.php
-* issue#0001785: revision 1086 can not save reports when using separate syslog mysql database
 
 --- 1.0 ---
 
-* feature: Support SMS e-mail messages
-* feature: Support MySQL partitioning for MySQL 5.1 and above for performance reasons
-* feature: Normalize the syslog table for performance reasons
-* feature: Allow editing of Alerts, Removal Rules and Reports
-* feature: Priorities are now >= behavior from syslog interface
-* feature: Move Altering and Removal menu's to the Console
-* feature: Allow specification of foreground/background colors from UI
-* feature: Add Walter Zorn's tooltip to syslog messages (www.walterzorn.com)
-* feature: Allow the syslog page to be sorted
-* feature: Add Removal Rules to simply move log messages to a lower priority table
-* feature: Use more Javascript on the Syslog page
+* feature: Add Alert Severity to Alarms
 * feature: Add HTML e-Mail capability with CSS
-* feature: Display Alert Log history from the UI
-* feature: Allow Removal Rules to be filtered from the UI
+* feature: Add Removal Rules to simply move log messages to a lower priority table
 * feature: Add Reporting capability
 * feature: Add Threshold Alarms
-* feature: Add Alert Severity to Alarms
+* feature: Add Walter Zorn's tooltip to syslog messages (www.walterzorn.com)
+* feature: Allow editing of Alerts, Removal Rules and Reports
+* feature: Allow Removal Rules to be filtered from the UI
+* feature: Allow specification of foreground/background colors from UI
+* feature: Allow the syslog page to be sorted
+* feature: Display Alert Log history from the UI
+* feature: Move Altering and Removal menu's to the Console
+* feature: Normalize the syslog table for performance reasons
+* feature: Priorities are now >= behavior from syslog interface
+* feature: Support MySQL partitioning for MySQL 5.1 and above for performance reasons
+* feature: Support SMS e-mail messages
 * feature: Turn images to buttons
+* feature: Use more Javascript on the Syslog page
 
 --- 0.5.2 ---
 
-* issue: Fixes to make syslog work properly when using the Superlinks plugin
 * issue: Fix a few image errors
+* issue: Fixes to make syslog work properly when using the Superlinks plugin
 
 --- 0.5.1 ---
 
@@ -474,49 +469,49 @@
 
 --- 0.5 ---
 
-* feature: Modified Message retrieval function to better make use of indexes, which greatly speeds it up
-* feature: When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
-* feature: Alert email now uses the Alert Name in the subject
-* feature: Add ability to create Reports
-* feature: Allow access for the guest account
-* feature: Change name to syslog, from haloe
-* feature: Use mailer options from the Settings Plugin
-* feature: Add option for From Email address and From Display Name
-* feature: Use new "api_user_realm_auth" from Plugin Architecture
-* issue#0000046 - Event text colors (black) when setup a event color in black
-* issue#0000047 - Change the Priority and Levels to be in Ascending order
+* issue#46: Event text colors (black) when setup a event color in black
+* issue#47: Change the Priority and Levels to be in Ascending order
+* issue: Fix Cacti 0.8.7 compatibility
+* issue: Fix for improper display of html entities in the syslog message (thanks dagonet)
+* issue: Fix pagination of Alerts and Removal Rules
 * issue: Fixes for errors when using removal rules
+* issue: Lots of code / html cleanup for faster pages loads (use a little CSS also)
 * issue: Minor fix for error that would sometimes cause Syslog to not be processed
 * issue: Update SQL to include indexes
-* issue: Fix pagination of Alerts and Removal Rules
-* issue: Lots of code / html cleanup for faster pages loads (use a little CSS also)
-* issue: Fix for improper display of html entities in the syslog message (thanks dagonet)
-* issue: Fix Cacti 0.8.7 compatibility
+* feature: Add ability to create Reports
+* feature: Add option for From Email address and From Display Name
+* feature: Alert email now uses the Alert Name in the subject
+* feature: Allow access for the guest account
+* feature: Change name to syslog, from haloe
+* feature: Modified Message retrieval function to better make use of indexes, which greatly speeds it up
+* feature: Use mailer options from the Settings Plugin
+* feature: Use new "api_user_realm_auth" from Plugin Architecture
+* feature: When adding a removal rule, only that rule will execute immediately, instead of rerunning all rules
 
 --- 0.4 ---
 
-* issue#0000034 - Fix for shadow.gif file error in httpd logs.
-* issue#0000036 - Syslog plugin causes duplicates if multiple log processors are running at once
-* issue#0000037 - Option for max time to save syslog events
+* issue#34: Fix for shadow.gif file error in httpd logs.
+* issue#36: Syslog plugin causes duplicates if multiple log processors are running at once
+* issue#37: Option for max time to save syslog events
 * issue: Removed some debugging code
 
 --- 0.3 ---
 
-* feature: Move Processing code to its own file
-* feature: Add Debugging to the Processing Code (/debug)
-* issue: Fixed an issue with "message" being hard coded
 * issue: Fixed a typo in the removal code
+* issue: Fixed an issue with "message" being hard coded
+* feature: Add Debugging to the Processing Code (/debug)
+* feature: Move Processing code to its own file
 
 --- 0.2 ---
 
-* issue#0000010 Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
-* issue#0000013 - Fix issues with database names with uncommon characters by enclosing in back-ticks
+* issue#10: Remove use of CURRENT_TIMESTAMP so that Mysql 3.x works again
+* issue#13: Fix issues with database names with uncommon characters by enclosing in back-ticks
 * issue: Fixed a minor error that caused the graphs page to not refresh
 * issue: Modified SQL query in syslog processor to speed things up greatly
 
 --- 0.1 ---
 
-* Initial release
+* feature: Initial release
 
 -----------------------------------------------
 Copyright (c) 2004-2026 - The Cacti Group, Inc.
