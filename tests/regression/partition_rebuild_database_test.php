@@ -360,8 +360,9 @@ try {
 	// is given a 2025 summer DST period PHP does not have. No PHP transition
 	// falls in the stored range, so only per-day probes can catch it.
 	$mexico = (int) syslog_db_fetch_cell("SELECT Time_zone_id FROM mysql.time_zone_name WHERE Name='America/Mexico_City'");
-	$types = array_column(syslog_db_fetch_assoc_prepared('SELECT Transition_type_id, Offset FROM mysql.time_zone_transition_type
-		WHERE Time_zone_id = ? AND Offset IN (-21600, -18000)', [$mexico]), 'Transition_type_id', 'Offset');
+	// OFFSET is reserved in MariaDB 10.6+, so the column must be quoted.
+	$types = array_column(syslog_db_fetch_assoc_prepared('SELECT Transition_type_id, `Offset` FROM mysql.time_zone_transition_type
+		WHERE Time_zone_id = ? AND `Offset` IN (-21600, -18000)', [$mexico]), 'Transition_type_id', 'Offset');
 	rebuild_check(isset($types[-21600], $types[-18000]), 'Mexico City has standard and daylight transition types');
 	$stale_transitions = [(new DateTime('2025-04-06 08:00:00 UTC'))->getTimestamp() => $types[-18000], (new DateTime('2025-10-26 07:00:00 UTC'))->getTimestamp() => $types[-21600]];
 
