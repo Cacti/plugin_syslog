@@ -8,13 +8,16 @@ function partition_rebuild_runner(): string {
 		preg_match('/^function syslog_upart_run\(.*?^\}/ms', $source, $run);
 		preg_match('/^function syslog_upart_run_locked\(.*?^\}/ms', $source, $locked);
 		preg_match('/^function syslog_upart_live_workers\(.*?^\}/ms', $source, $workers);
+		preg_match('/^function syslog_upart_widen\(.*?^\}/ms', $source, $widen);
+		preg_match('/^function syslog_upart_logtime_type\(.*?^\}/ms', $source, $type);
 		$path = tempnam(sys_get_temp_dir(), 'syslog-rebuild-unit-');
 		file_put_contents($path, '<?php namespace SyslogRebuildFixture;
 			function syslog_db_is_mariadb(): bool { return \test_call_override("rebuild_mariadb", [], true); }
 			function syslog_upart_rebuild(...$args): bool { return \test_call_override("syslog_upart_rebuild", $args, false); }
+			function syslog_upart_source_zone_error(...$args): string { return \test_call_override("syslog_upart_source_zone_error", $args, ""); }
 			function posix_kill($pid, $signal) { return \test_call_override("posix_kill", [$pid, $signal], false); }
 			function posix_get_last_error() { return \test_call_override("posix_get_last_error", [], 3); }
-			' . $run[0] . "\n" . $locked[0] . "\n" . $workers[0]);
+			' . $run[0] . "\n" . $locked[0] . "\n" . $workers[0] . "\n" . $widen[0] . "\n" . $type[0]);
 
 		try {
 			require $path;
@@ -45,13 +48,16 @@ function partition_rebuild_setup(): stdClass {
 		'assoc' => [],
 		'legacy' => [],
 		'retention' => '30',
-		'granularity' => ''
+		'granularity' => '',
+		'stored_zone' => '',
+		'column_type' => null
 	];
 	$GLOBALS['config']['poller_id'] = 1;
 	test_override('read_config_option', static fn($key) => [
 		'syslog_install_engine' => 'InnoDB', 'syslog_retention' => $state->retention,
 		'syslog_partition_ahead_days' => '3', 'syslog_enabled' => $state->enabled,
-		'syslog_partition_granularity' => $state->granularity
+		'syslog_partition_granularity' => $state->granularity,
+		'syslog_upart_source_time_zone' => $state->stored_zone
 	][$key] ?? '');
 	test_override('syslog_db_fetch_assoc_prepared', static function ($sql) use ($state) {
 		$state->assoc[] = $sql;
@@ -88,7 +94,7 @@ function partition_rebuild_setup(): stdClass {
 		}
 
 		if (str_contains($sql, 'COLUMN_TYPE')) {
-			return $state->precision === 'ms' ? 'timestamp(3)' : 'timestamp';
+			return $state->column_type ?? ($state->precision === 'ms' ? 'timestamp(3)' : 'timestamp');
 		}
 
 		return $state->bytes;
@@ -117,7 +123,7 @@ it('reports database size, equal extra space and several-hour duration even with
 		->toContain('does NOT pause')->toContain('50,000-row copies')
 		->toContain('receive new sequence numbers')
 		->not->toContain('Type "yes"')
-		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192]])
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192, 50000, null]])
 		->and($state->queries[0])->toBe(['SELECT GET_LOCK(?, 0)', [syslog_processing_lock_name()]]);
 	expect($state->settings)->toBe([]);
 	expect(array_column($state->queries, 0))->toContain('SELECT RELEASE_LOCK(?)');
@@ -141,7 +147,7 @@ it('saves --partition=hourly once confirmed and rebuilds with at least two days 
 
 	expect($ok)->toBeTrue()
 		->and($output)->toContain('Rebuilding hourly partitions')
-		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 2, 'hour', 8192]]);
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 2, 'hour', 8192, 50000, null]]);
 });
 
 it('refuses hourly partitioning beyond the server partition limit or with indefinite retention', function () {
@@ -221,6 +227,114 @@ it('refuses legacy DATETIME history before any change and releases the lock', fu
 		->and(end($state->queries))->toBe(['SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()]]);
 });
 
+it('refuses a source time zone that fails validation before any change', function () {
+	$state = partition_rebuild_setup();
+	$state->legacy = [['TABLE_NAME' => 'syslog']];
+	test_override('syslog_upart_source_zone_error', static fn($zone, $tables) => "zone $zone rejected for " . implode(',', $tables));
+	$run = partition_rebuild_runner();
+
+	expect($run(true, false, true, null, 'Mars/Olympus'))->toBeFalse()
+		->and($state->rebuilds)->toBe([])
+		->and($state->statements)->toBe([])
+		->and($state->settings)->toBe([])
+		->and(end($state->queries))->toBe(['SELECT RELEASE_LOCK(?)', [syslog_processing_lock_name()]]);
+});
+
+it('copies legacy DATETIME history in the validated source zone and clears the retry zone afterwards', function () {
+	$state = partition_rebuild_setup();
+	$state->legacy = [['TABLE_NAME' => 'syslog']];
+	$checked = [];
+	test_override('syslog_upart_source_zone_error', static function ($zone, $tables) use (&$checked) {
+		$checked[] = [$zone, $tables];
+
+		return '';
+	});
+	test_override('set_config_option', static function ($key, $value) use ($state) {
+		$state->settings[] = [$key, $value];
+	});
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, false, true, null, 'America/New_York');
+	$output = ob_get_clean();
+
+	expect($ok)->toBeTrue()
+		->and($checked)->toBe([['America/New_York', ['syslog']]])
+		->and($output)->toContain('read as America/New_York wall-clock time')
+		->and($state->rebuilds)->toBe([['syslog', false, true, 'InnoDB', 30, 3, 'day', 8192, 50000, 'America/New_York']])
+		->and($state->settings)->toBe([['syslog_upart_source_time_zone', 'America/New_York'], ['syslog_upart_source_time_zone', '']]);
+});
+
+it('refuses to resume an interrupted DATETIME copy in a different source zone', function () {
+	$state = partition_rebuild_setup();
+	$state->tables[] = 'syslog_rebuild';
+	$state->legacy = [['TABLE_NAME' => 'syslog_rebuild']];
+	$state->stored_zone = 'Europe/Berlin';
+	$run = partition_rebuild_runner();
+
+	expect($run(true, false, true, null, 'America/New_York'))->toBeFalse()
+		->and($state->rebuilds)->toBe([])
+		->and($state->settings)->toBe([]);
+});
+
+it('converts a legacy DATETIME incoming queue in place in the source zone', function () {
+	$state = partition_rebuild_setup();
+	$state->tables = ['syslog_incoming'];
+	$state->legacy = [['TABLE_NAME' => 'syslog_incoming']];
+	test_override('syslog_db_fetch_row', static fn($sql) => str_contains($sql, 'CRC32')
+		? ['row_count' => '2', 'digest' => '99'] : ['Value' => $state->version]);
+	test_override('syslog_db_execute', static function ($sql) use ($state) {
+		$state->statements[] = $sql;
+		$state->precision = str_starts_with($sql, 'ALTER TABLE') ? 'ms' : $state->precision;
+
+		return true;
+	});
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, true, true, null, 'America/New_York');
+	ob_end_clean();
+
+	expect($ok)->toBeTrue()
+		->and($state->rebuilds)->toBe([])
+		->and($state->executions)->toContain(['SET SESSION time_zone = ?', ['America/New_York']])
+		->and($state->statements)->toContain("ALTER TABLE `fixture`.`syslog_incoming` MODIFY COLUMN logtime timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'");
+});
+
+it('converts a millisecond DATETIME(3) incoming queue to TIMESTAMP(3) instead of skipping it', function () {
+	$state = partition_rebuild_setup();
+	$state->tables = ['syslog_incoming'];
+	$state->legacy = [['TABLE_NAME' => 'syslog_incoming']];
+	$state->column_type = 'datetime(3)';
+	test_override('syslog_db_fetch_row', static fn($sql) => str_contains($sql, 'CRC32')
+		? ['row_count' => '1', 'digest' => '7'] : ['Value' => $state->version]);
+	test_override('syslog_db_execute', static function ($sql) use ($state) {
+		$state->statements[] = $sql;
+		$state->column_type = str_starts_with($sql, 'ALTER TABLE') ? 'timestamp(3)' : $state->column_type;
+
+		return true;
+	});
+	$run = partition_rebuild_runner();
+	ob_start();
+	$ok = $run(true, true, true, null, 'America/New_York');
+	ob_end_clean();
+
+	expect($ok)->toBeTrue()
+		->and($state->statements)->toContain("ALTER TABLE `fixture`.`syslog_incoming` MODIFY COLUMN logtime timestamp(3) NOT NULL DEFAULT '0000-00-00 00:00:00.000'");
+
+	// Without the conversion the final type check refuses to record success.
+	$state = partition_rebuild_setup();
+	$state->tables = ['syslog_incoming'];
+	$state->legacy = [['TABLE_NAME' => 'syslog_incoming']];
+	$state->column_type = 'datetime(3)';
+	test_override('syslog_db_fetch_row', static fn($sql) => str_contains($sql, 'CRC32')
+		? ['row_count' => '1', 'digest' => '7'] : ['Value' => $state->version]);
+	ob_start();
+	$ok = $run(true, true, true, null, 'America/New_York');
+	ob_end_clean();
+
+	expect($ok)->toBeFalse()
+		->and($state->settings)->toBe(['syslog_upart_source_time_zone' => 'America/New_York']);
+});
+
 it('discards without a column-type query when no table needs checking', function () {
 	$state = partition_rebuild_setup();
 	$run = partition_rebuild_runner();
@@ -230,7 +344,7 @@ it('discards without a column-type query when no table needs checking', function
 
 	expect($ok)->toBeTrue()
 		->and(array_filter($state->assoc, static fn($sql) => str_contains($sql, 'information_schema.COLUMNS')))->toBe([])
-		->and($state->rebuilds)->toBe([['syslog', false, false, 'InnoDB', 30, 3, 'day', 8192]]);
+		->and($state->rebuilds)->toBe([['syslog', false, false, 'InnoDB', 30, 3, 'day', 8192, 50000, null]]);
 });
 
 it('widens the incoming queue in place so its sequence identities are kept', function () {
@@ -335,7 +449,8 @@ it('prints readable CLI help and rejects conflicting preservation arguments', fu
 				'Syslog Partition Upgrade Utility, Version 5.0, Copyright (C)',
 				PHP_EOL . PHP_EOL . 'usage: upgrade_partitioning.php',
 				'row counts are verified.' . PHP_EOL . PHP_EOL . 'Legacy DATETIME',
-				'--discard-data for them.' . PHP_EOL . PHP_EOL . 'Options:',
+				'otherwise use --discard-data.' . PHP_EOL . PHP_EOL . 'Options:',
+				'--source-time-zone - IANA zone',
 				'several hours.' . PHP_EOL . PHP_EOL . 'On failure',
 				'writers first.' . PHP_EOL . PHP_EOL . 'The current database size'
 			]],
