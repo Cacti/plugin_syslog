@@ -776,7 +776,8 @@ which returns JSON.
   syslog host is matched to a device by description or hostname. This
   prevents short codes such as HPE AOS-CX event numbers from matching the same
   number in another vendor's message. The recognised vendors use the names of
-  the bundled catalogues: Arista, Cisco, Dell, HPE, Huawei, Juniper and NVIDIA.
+  the bundled catalogues: Arista, Cisco, Dell, Fortinet, HPE, Huawei, Juniper,
+  MikroTik, Nokia, NVIDIA and Palo Alto Networks.
   Otherwise all vendors are checked. When several recommendations match, the
   longest identifiers are shown first, up to three.
 * Identifiers containing other characters, such as the `#` slot placeholder or
@@ -823,11 +824,15 @@ record links to its source.
 |------|--------|---------|------------------------------|
 | `docs/arista.json.gz` | Arista | 1,047 | EOS System Message Guide (EOS 4.15), `%FACILITY-SEV-MNEMONIC` such as `%LINEPROTO-5-UPDOWN`. Later EOS messages are missing. |
 | `docs/dell.json.gz` | Dell | 7,142 | PowerEdge iDRAC/CMC messages that can be sent to remote syslog (6,811, MessageID such as `PSU0003`), SmartFabric OS10 (327, `%IFM_ASTATE_UP`) and four OS9 messages (`%CHMGR-2-MAJOR_TEMP`). |
-| `docs/hpe.json.gz` | HPE | 4,878 | Comware 5 and 7 switches (`%10IFNET/3/PHY_UPDOWN`, the default log-host format), AOS-CX 10.17 and ArubaOS-Switch 16.10 event IDs (`4701`, `00076`), which have explanations but no actions. |
+| `docs/hpe.json.gz` | HPE | 4,883 | Comware 5 and 7 switches (`%10IFNET/3/PHY_UPDOWN`, the default log-host format), AOS-CX 10.17 and ArubaOS-Switch 16.10 event IDs (`4701`, `00076`), which have explanations but no actions. 694 AOS-CX and ArubaOS-Switch events are omitted because HPE's guides give no description for them. |
 | `docs/huawei.json.gz` | Huawei | 3,686 | CloudEngine S16700 and 9800/8800/6800 (VRP8) and S1720–S6720 (VRP5) Log References, `%01MODULE/SEV/MNEMONIC` such as `%01IFNET/4/IF_STATE`, as the lookup reads `%%01IFNET/4/IF_STATE(l)`. Devices that send another version number than `01` do not match. AR and NE routers are not included. |
 | `docs/nvidia.json.gz` | NVIDIA | 251 | Cumulus Linux 5.18 switchd messages keyed on the function name they contain, FRRouting `[EC nnnnnnnn]` error codes, and the GPU `Xid`/NVSwitch `SXid` families. |
+| `docs/nokia.json.gz` | Nokia | 2,016 | SR OS Log Events Guide 25.10, `APP-SEVERITY-EventName-EventID` such as `SYSTEM-WARNING-tmnxStateChange-2009`, using each event's default severity. An event whose severity was changed on the router does not match. 7210 SAS and SR Linux are not included. |
+| `docs/fortinet.json.gz` | Fortinet | 1,462 | FortiOS 7.6.8 Log Message Reference, every traffic, event and UTM log ID as the 10-digit `logid` sent on the wire (`logid="0100032001"`). The full ID is built from the documented type, subtype and message ID. Fortinet documents no recommended actions. |
+| `docs/paloalto.json.gz` | Palo Alto Networks | 398 | PAN-OS System log event IDs from the Syslog Severity Reference, such as `tunnel-status-down`. Generic event IDs (`general`, `auth`) are excluded. Few records have a recommended action. |
+| `docs/mikrotik.json.gz` | MikroTik | 6 | RouterOS has no message IDs; only six documented messages carry a distinctive word (`hashtype`, `enctype`, `auto-initialization`, `hw-limit`, `class-limit`, `deassigned`). |
 
-Numeric identifiers, such as HPE event IDs and FRRouting error codes, can match
+Numeric identifiers, such as HPE event IDs, Fortinet log IDs and FRRouting error codes, can match
 any number in a message. They are only reliable when the sending device is a
 Cacti device whose vendor is recognised (see the matching rules above).
 

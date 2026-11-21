@@ -387,13 +387,17 @@ it('ships compressed catalogues that import without losing records or fields', f
 		->and(hash('sha256', json_encode($parsed['records'])))->toBe($digest)
 		->and(array_unique(array_column($parsed['records'], 'vendor')))->toBe([$vendor]);
 })->with([
-	'Cisco'   => ['cisco.json.gz', 'Cisco', 27318],
-	'Juniper' => ['juniper.json.gz', 'Juniper', 14],
-	'Arista'  => ['arista.json.gz', 'Arista', 1047],
-	'Dell'    => ['dell.json.gz', 'Dell', 7142],
-	'HPE'     => ['hpe.json.gz', 'HPE', 4878],
-	'Huawei'  => ['huawei.json.gz', 'Huawei', 3686],
-	'NVIDIA'  => ['nvidia.json.gz', 'NVIDIA', 251]
+	'Cisco'              => ['cisco.json.gz', 'Cisco', 27318],
+	'Juniper'            => ['juniper.json.gz', 'Juniper', 14],
+	'Arista'             => ['arista.json.gz', 'Arista', 1047],
+	'Dell'               => ['dell.json.gz', 'Dell', 7142],
+	'HPE'                => ['hpe.json.gz', 'HPE', 4883],
+	'Huawei'             => ['huawei.json.gz', 'Huawei', 3686],
+	'NVIDIA'             => ['nvidia.json.gz', 'NVIDIA', 251],
+	'Nokia'              => ['nokia.json.gz', 'Nokia', 2016],
+	'Fortinet'           => ['fortinet.json.gz', 'Fortinet', 1462],
+	'Palo Alto Networks' => ['paloalto.json.gz', 'Palo Alto Networks', 398],
+	'MikroTik'           => ['mikrotik.json.gz', 'MikroTik', 6]
 ]);
 
 it('streams compressed exports across database pages without changing the filters or records', function () {
@@ -632,6 +636,10 @@ it('names the catalogue vendor from a device sysDescr or its template', function
 	'Dell OS10'        => ['Dell EMC Networking OS10 Enterprise. System Description: OS10 Enterprise.', '', 'Dell'],
 	'Cisco'            => ['Cisco IOS Software [Cupertino], Catalyst L3 Switch Software', '', 'Cisco'],
 	'Juniper'          => ['Juniper Networks, Inc. ex4300-48p Ethernet Switch, kernel JUNOS 21.4R3', '', 'Juniper'],
+	'Nokia SR OS'      => ['TiMOS-C-23.10.R1 cpm/hops64 Nokia 7750 SR Copyright (c) 2000-2023 Nokia.', '', 'Nokia'],
+	'FortiGate'        => ['FortiGate-60F v7.4.3,build2573,240201 (GA.F)', '', 'Fortinet'],
+	'Palo Alto'        => ['Palo Alto Networks PA-3200 series firewall', '', 'Palo Alto Networks'],
+	'MikroTik'         => ['RouterOS RB4011iGS+', '', 'MikroTik'],
 	'template only'    => ['', 'Arista Switch', 'Arista'],
 	'unknown'          => ['Linux web01 6.1.0 x86_64', 'Generic SNMP Device', '']
 ]);

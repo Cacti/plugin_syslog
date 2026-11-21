@@ -535,13 +535,17 @@ function syslog_recommendation_vendor_from_device(string $sys_descr, string $tem
 	// Network OS before hardware brand: a Dell switch running Cumulus Linux logs
 	// NVIDIA messages, so NVIDIA is tested first.
 	$patterns = [
-		'NVIDIA'  => '/\b(?:nvidia|mellanox|cumulus|onyx|mlnx-os)\b/i',
-		'Arista'  => '/\barista\b/i',
-		'Juniper' => '/\b(?:juniper|junos)\b/i',
-		'Huawei'  => '/\b(?:huawei|vrp)\b/i',
-		'Dell'    => '/\b(?:dell|force10|ftos|powerconnect|powerswitch|idrac|poweredge|os10)\b/i',
-		'HPE'     => '/\b(?:hpe|hp|hewlett[- ]packard|comware|procurve|aruba|aos-cx|arubaos)\b/i',
-		'Cisco'   => '/\b(?:cisco|nx-os|ios-xe|ios-xr)\b/i'
+		'NVIDIA'             => '/\b(?:nvidia|mellanox|cumulus|onyx|mlnx-os)\b/i',
+		'Arista'             => '/\barista\b/i',
+		'Juniper'            => '/\b(?:juniper|junos)\b/i',
+		'Huawei'             => '/\b(?:huawei|vrp)\b/i',
+		'Nokia'              => '/\b(?:nokia|timos|alcatel-lucent|sr linux)\b/i',
+		'Fortinet'           => '/\b(?:fortinet|fortigate|fortios)\b/i',
+		'Palo Alto Networks' => '/\b(?:palo alto|pan-os)\b/i',
+		'MikroTik'           => '/\b(?:mikrotik|routeros)\b/i',
+		'Dell'               => '/\b(?:dell|force10|ftos|powerconnect|powerswitch|idrac|poweredge|os10)\b/i',
+		'HPE'                => '/\b(?:hpe|hp|hewlett[- ]packard|comware|procurve|aruba|aos-cx|arubaos)\b/i',
+		'Cisco'              => '/\b(?:cisco|nx-os|ios-xe|ios-xr)\b/i'
 	];
 
 	foreach ([$sys_descr, $template] as $text) {

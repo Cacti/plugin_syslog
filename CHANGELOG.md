@@ -6,7 +6,7 @@
 
 --- develop ---
 
-* feature: Add manually importable recommendation catalogues for Arista, Dell, HPE, Huawei and NVIDIA in docs/<vendor>.json.gz, built from each vendor's public message references
+* feature: Add manually importable recommendation catalogues for Arista, Dell, Fortinet, HPE, Huawei, MikroTik, Nokia, NVIDIA and Palo Alto Networks in docs/<vendor>.json.gz, built from each vendor's public message references
 * feature: Recommendations are matched only against the sending device's vendor (and vendor-neutral records) when the syslog host is a Cacti device whose vendor is recognised from its SNMP sysDescr or device template; other hosts still match every vendor
 
 * issue#472: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging
