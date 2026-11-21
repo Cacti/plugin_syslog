@@ -240,25 +240,45 @@ columns, including `replication_source_event_id`, are copied unchanged.
 Existing `TIMESTAMP` rows are copied in UTC, preserving distinct events across
 daylight-saving clock changes.
 
-Legacy `DATETIME` `logtime` columns are **not supported**. A `DATETIME` holds
-wall-clock time in an unknown zone; values in a daylight-saving gap do not
-exist as `TIMESTAMP` and values in the repeated hour are ambiguous, so no
-automatic conversion is safe. The utility refuses to preserve such tables
-before changing anything. Either rebuild them with `--discard-data`, or, after
-verifying the zone the values were written in, convert them yourself with
-Syslog processing stopped. First confirm that every value round-trips in
-that zone, then convert and repartition in one statement:
+Legacy `DATETIME` `logtime` columns, typical of installs created before
+`TIMESTAMP` partitioning and often partitioned by `TO_DAYS(logtime)`, hold
+wall-clock time with no zone. They cannot be widened in place: `TO_DAYS()` on a
+`TIMESTAMP` column is rejected with "Constant, random or timezone-dependent
+expressions in (sub)partitioning function are not allowed". The utility refuses
+to preserve them unless you name the zone the values were written in, usually
+the zone of the host that wrote them (rsyslog or the Cacti server):
 
-```sql
-SET SESSION time_zone = 'America/New_York';  -- the zone the values were written in
-SELECT COUNT(*) FROM syslog
-  WHERE NOT (FROM_UNIXTIME(UNIX_TIMESTAMP(logtime)) <=> logtime);  -- must be 0
-ALTER TABLE syslog MODIFY COLUMN logtime timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-  PARTITION BY RANGE (UNIX_TIMESTAMP(logtime)) (/* daily partitions */
-  PARTITION dMaxValue VALUES LESS THAN MAXVALUE);
+```console
+php plugins/syslog/cli/upgrade_partitioning.php --convert-ms --source-time-zone=America/New_York
 ```
 
-Then run this utility to apply the configured layout.
+Before anything changes, `--source-time-zone` must pass these checks:
+
+* The zone is an IANA name known to PHP, and therefore to Cacti.
+* The Syslog database server has it loaded in its time zone tables, which the
+  Cacti installer already requires (`mariadb-tzinfo-to-sql /usr/share/zoneinfo |
+  mariadb mysql`).
+* PHP and the database agree on its UTC offset at every daylight-saving
+  transition spanning the stored history and now, and at both ends of every
+  day that has stored messages, so a transition missing from either side's
+  zone data (stale tzdata) is caught.
+* Every `DATETIME` value exists in that zone. A value in a daylight-saving gap,
+  such as 02:30 on a spring-forward day, or outside the `TIMESTAMP` range means
+  the zone is probably wrong, and the command stops.
+
+The utility also prints Cacti's own zone, warns when it differs, and reports how
+many rows fall in a repeated fall-back hour. Those values are ambiguous in the
+source; MariaDB uses the first (daylight-time) occurrence.
+
+`syslog` and `syslog_removed` are then renamed and copied like any other
+rebuild: the replacement is created with `TIMESTAMP` and `UNIX_TIMESTAMP`
+partitions, and rows are copied with the session in the source zone. Each batch
+checksum compares the same wall-clock text on both sides. The incoming queue
+is converted in place, in the source zone, to keep its sequence identities, and
+is verified unchanged afterwards. The zone is recorded until the rebuild
+finishes, and a retry with a different `--source-time-zone` is refused.
+Without the option, use `--discard-data` to replace legacy stored and removed
+history.
 
 Every existing message is copied, including older-than-retention messages;
 those older rows fit in the earliest RANGE partition. Normal retention pruning
@@ -303,7 +323,7 @@ changes, not routine rotation.
   only after every batch and the total row counts match.
 * A failure leaves originals in the live or `_rebuild` tables. Keep writers
   stopped, fix the reported error, then retry with `--preserve-data` and the
-  same `--convert-ms` option, if used. A retry deletes replacement rows copied
+  same `--convert-ms` and `--source-time-zone` options, if used. A retry deletes replacement rows copied
   after the last recorded batch and resumes from there. Do not change settings
   or manually delete `_rebuild` or `syslog_rebuild_progress` tables during
   recovery.
@@ -931,7 +951,8 @@ described under Installation.
 Partitioning Level, engine, retention and future horizon, preserving messages
 by default. `--partition=hourly|daily` saves and applies a level.
 `--convert-ms` also converts the message pipeline to millisecond timestamps on
-MariaDB. It reports database size and warns about additional disk space and
+MariaDB. `--source-time-zone=<zone>` preserves legacy `DATETIME` history by
+naming the zone it was written in. It reports database size and warns about additional disk space and
 potential several-hour duration before confirmation.
 
 Both utilities provide Cacti-style `--help` and `--version` output.
