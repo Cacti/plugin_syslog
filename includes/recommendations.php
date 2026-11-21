@@ -521,27 +521,129 @@ function syslog_recommendation_candidates(string $message): array {
 }
 
 /**
+ * Name the catalogue vendor of a Cacti device from its SNMP sysDescr, falling
+ * back to its device template name.
+ *
+ * The names match the vendor field of the bundled catalogues in docs/.
+ *
+ * @param string $sys_descr The device's snmp_sysDescr.
+ * @param string $template  The device template name.
+ *
+ * @return string The vendor, or '' when it cannot be determined.
+ */
+function syslog_recommendation_vendor_from_device(string $sys_descr, string $template = ''): string {
+	// Network OS before hardware brand: a Dell switch running Cumulus Linux logs
+	// NVIDIA messages, so NVIDIA is tested first.
+	$patterns = [
+		'NVIDIA'  => '/\b(?:nvidia|mellanox|cumulus|onyx|mlnx-os)\b/i',
+		'Arista'  => '/\barista\b/i',
+		'Juniper' => '/\b(?:juniper|junos)\b/i',
+		'Huawei'  => '/\b(?:huawei|vrp)\b/i',
+		'Dell'    => '/\b(?:dell|force10|ftos|powerconnect|powerswitch|idrac|poweredge|os10)\b/i',
+		'HPE'     => '/\b(?:hpe|hp|hewlett[- ]packard|comware|procurve|aruba|aos-cx|arubaos)\b/i',
+		'Cisco'   => '/\b(?:cisco|nx-os|ios-xe|ios-xr)\b/i'
+	];
+
+	foreach ([$sys_descr, $template] as $text) {
+		if (trim($text) === '') {
+			continue;
+		}
+
+		foreach ($patterns as $vendor => $pattern) {
+			if (preg_match($pattern, $text)) {
+				return $vendor;
+			}
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Resolve the catalogue vendor of syslog hosts through their Cacti devices.
+ *
+ * A syslog host matches a device by description (the name the collector
+ * rewrites known hosts to) or by hostname. Results are cached for the request.
+ *
+ * @param list<string> $hosts The syslog host names.
+ *
+ * @return array<string, string> The vendor of each host, '' when unknown.
+ */
+function syslog_recommendation_host_vendors(array $hosts): array {
+	static $cache = [];
+
+	$hosts = array_values(array_unique(array_filter(array_map('strval', $hosts), static fn ($host) => $host !== '')));
+	$todo  = array_values(array_filter($hosts, static fn ($host) => !array_key_exists($host, $cache)));
+
+	foreach (array_chunk($todo, 500) as $batch) {
+		$found = array_fill_keys($batch, '');
+		$marks = implode(',', array_fill(0, count($batch), '?'));
+
+		foreach (['description', 'hostname'] as $column) {
+			$rows = db_fetch_assoc_prepared("SELECT h.$column AS name, h.snmp_sysDescr, ht.name AS template
+				FROM host AS h
+				LEFT JOIN host_template AS ht ON ht.id = h.host_template_id
+				WHERE h.$column IN ($marks)
+				ORDER BY h.id",
+				$batch, false);
+
+			foreach (is_array($rows) ? $rows : [] as $row) {
+				$name = (string) $row['name'];
+
+				if (isset($found[$name]) && $found[$name] === '') {
+					$found[$name] = syslog_recommendation_vendor_from_device((string) ($row['snmp_sysDescr'] ?? ''), (string) ($row['template'] ?? ''));
+				}
+			}
+		}
+
+		$cache = array_merge($cache, $found);
+	}
+
+	$out = [];
+
+	foreach ($hosts as $host) {
+		$out[$host] = $cache[$host] ?? '';
+	}
+
+	return $out;
+}
+
+/**
  * Find the recommendations that apply to a syslog message.
+ *
+ * When the sending device's vendor is known, only that vendor's records and
+ * vendor-neutral records (an empty vendor) are considered, so a code such as
+ * an HPE event number does not match the same number from another vendor.
  *
  * @param string $message The syslog message text.
  * @param int    $limit   The maximum number of recommendations to return.
+ * @param string $host    The syslog host that sent the message, if known.
  *
  * @return list<array<string, mixed>> The matching rows, longest identifier first.
  */
-function syslog_recommendations_lookup(string $message, int $limit = 3): array {
+function syslog_recommendations_lookup(string $message, int $limit = 3, string $host = ''): array {
 	$candidates = syslog_recommendation_candidates($message);
 
 	if (!$candidates) {
 		return [];
 	}
 
+	$vendor = $host === '' ? '' : (syslog_recommendation_host_vendors([$host])[$host] ?? '');
+	$params = $candidates;
+	$scope  = '';
+
+	if ($vendor !== '') {
+		$scope    = " AND vendor IN (?, '')";
+		$params[] = $vendor;
+	}
+
 	$rows = syslog_db_fetch_assoc_prepared(
 		'SELECT vendor, identifier, component, severity, message, explanation, recommended_action, reference
 		FROM syslog_recommendations
-		WHERE identifier IN (' . implode(',', array_fill(0, count($candidates), '?')) . ')
+		WHERE identifier IN (' . implode(',', array_fill(0, count($candidates), '?')) . ')' . $scope . '
 		ORDER BY CHAR_LENGTH(identifier) DESC, vendor
 		LIMIT ' . max(1, $limit),
-		$candidates,
+		$params,
 		false
 	);
 
@@ -551,42 +653,54 @@ function syslog_recommendations_lookup(string $message, int $limit = 3): array {
 /**
  * Check the displayed messages for recommendations using bounded, shared queries.
  *
+ * Messages from a host whose vendor is known are only matched against that
+ * vendor's records and vendor-neutral records, as in syslog_recommendations_lookup().
+ *
  * @param array<int|string, string> $messages The messages keyed by their display row.
+ * @param array<int|string, string> $hosts    The syslog host of each message, keyed like $messages.
  *
  * @return array<int|string, bool> Whether each message has a matching recommendation.
  */
-function syslog_recommendations_for_messages(array $messages): array {
+function syslog_recommendations_for_messages(array $messages, array $hosts = []): array {
 	$available  = array_fill_keys(array_keys($messages), false);
+	$vendors    = $hosts ? syslog_recommendation_host_vendors(array_values($hosts)) : [];
 	$candidates = [];
 
 	foreach ($messages as $key => $message) {
+		$vendor = $vendors[(string) ($hosts[$key] ?? '')] ?? '';
+
 		foreach (syslog_recommendation_candidates($message) as $candidate) {
-			$candidates[$candidate][$key] = true;
+			$candidates[$vendor][$candidate][$key] = true;
 		}
 	}
 
-	foreach (array_chunk(array_map('strval', array_keys($candidates)), 500) as $batch) {
-		// Return candidate spellings so the flags follow the catalogue's SQL collation.
-		$matches = syslog_db_fetch_assoc_prepared(
-			'SELECT candidates.identifier
-			FROM (SELECT ? AS identifier' . str_repeat(' UNION ALL SELECT ?', cacti_sizeof($batch) - 1) . ') AS candidates
-			WHERE EXISTS (
-				SELECT 1
-				FROM syslog_recommendations AS recommendations
-				WHERE recommendations.identifier = candidates.identifier
-			)',
-			$batch
-		);
+	foreach ($candidates as $vendor => $vendor_candidates) {
+		$vendor = (string) $vendor;
 
-		if ($matches === false) {
-			raise_message('syslog_recommendations', __('Recommendations could not be loaded.', 'syslog'), MESSAGE_LEVEL_ERROR);
+		foreach (array_chunk(array_map('strval', array_keys($vendor_candidates)), 500) as $batch) {
+			// Return candidate spellings so the flags follow the catalogue's SQL collation.
+			$matches = syslog_db_fetch_assoc_prepared(
+				'SELECT candidates.identifier
+				FROM (SELECT ? AS identifier' . str_repeat(' UNION ALL SELECT ?', cacti_sizeof($batch) - 1) . ') AS candidates
+				WHERE EXISTS (
+					SELECT 1
+					FROM syslog_recommendations AS recommendations
+					WHERE recommendations.identifier = candidates.identifier' .
+					($vendor === '' ? '' : " AND recommendations.vendor IN (?, '')") . '
+				)',
+				$vendor === '' ? $batch : array_merge($batch, [$vendor])
+			);
 
-			return array_fill_keys(array_keys($messages), false);
-		}
+			if ($matches === false) {
+				raise_message('syslog_recommendations', __('Recommendations could not be loaded.', 'syslog'), MESSAGE_LEVEL_ERROR);
 
-		foreach ($matches as $match) {
-			foreach ($candidates[$match['identifier']] as $key => $_) {
-				$available[$key] = true;
+				return array_fill_keys(array_keys($messages), false);
+			}
+
+			foreach ($matches as $match) {
+				foreach ($vendor_candidates[$match['identifier']] ?? [] as $key => $_) {
+					$available[$key] = true;
+				}
 			}
 		}
 	}
@@ -661,12 +775,13 @@ function syslog_recommendations_labels(): array {
  * Build the JSON response the details flyout requests for a row without a record id.
  *
  * @param string $message The syslog message text.
+ * @param string $host    The syslog host that sent the message, if known.
  *
  * @return string The JSON document. It always carries the localized labels so
  *                the browser needs no translation catalogue of its own.
  */
-function syslog_recommendations_lookup_json(string $message): string {
-	$matches = syslog_recommendations_format(syslog_recommendations_lookup($message));
+function syslog_recommendations_lookup_json(string $message, string $host = ''): string {
+	$matches = syslog_recommendations_format(syslog_recommendations_lookup($message, 3, $host));
 
 	return (string) json_encode([
 		'found'           => $matches !== [],

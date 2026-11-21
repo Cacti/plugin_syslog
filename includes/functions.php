@@ -9264,7 +9264,7 @@ function syslog_message_details(string $source, $id, string $logtime = ''): arra
 	$recommendations = [];
 
 	if (function_exists('syslog_recommendations_lookup')) {
-		$recommendations = syslog_recommendations_format(syslog_recommendations_lookup($record['message']));
+		$recommendations = syslog_recommendations_format(syslog_recommendations_lookup($record['message'], 3, $record['device']));
 	}
 
 	return [

@@ -273,7 +273,7 @@ function initSyslogWorkspace() {
 			note(recSection.dataset.loading);
 			var call = data.source && data.id
 				? $.ajax({url: 'syslog.php', type: 'GET', dataType: 'json', data: {action: 'message_details', source: data.source, id: data.id, logtime: data.received || ''}})
-				: $.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'recommendation', message: data.message || '', __csrf_magic: csrfMagicToken}});
+				: $.ajax({url: 'syslog.php', type: 'POST', dataType: 'json', data: {action: 'recommendation', message: data.message || '', host: data.device || '', __csrf_magic: csrfMagicToken}});
 			call.done(function(result) {
 				if (token !== request) return;
 				if (result && result.record) render($.extend({}, result.record, {rules: result.rules || {}}));
