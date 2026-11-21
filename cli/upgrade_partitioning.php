@@ -34,8 +34,20 @@ $confirm = false;
 $preserve_data = true;
 $convert_ms = false;
 $partition = null;
+$source_zone = null;
 
 foreach ($parms as $arg) {
+	if (strpos($arg, '--source-time-zone=') === 0) {
+		$source_zone = substr($arg, 19);
+
+		if ($source_zone === '') {
+			fwrite(STDERR, 'ERROR: --source-time-zone needs a time zone name such as America/New_York.' . PHP_EOL);
+			exit(1);
+		}
+
+		continue;
+	}
+
 	if (strpos($arg, '--partition=') === 0) {
 		$levels = ['hourly' => 'hour', 'hour' => 'hour', 'daily' => 'day', 'day' => 'day'];
 		$partition = $levels[strtolower(substr($arg, 12))] ?? null;
@@ -102,16 +114,19 @@ if (!syslog_connect()) {
 	exit(1);
 }
 
-exit(syslog_upart_run($confirm, $convert_ms, $preserve_data, $partition) ? 0 : 1);
+exit(syslog_upart_run($confirm, $convert_ms, $preserve_data, $partition, $source_zone) ? 0 : 1);
 
 /**
  * Rebuild partitions using the configured level, engine, retention and horizon.
  * DDL is not transactional; failed copies retain originals for a safe retry.
  *
- * @param string|null $partition 'hour' or 'day' from --partition, saved to
- *                               Settings once confirmed; null uses Settings.
+ * @param string|null $partition   'hour' or 'day' from --partition, saved to
+ *                                 Settings once confirmed; null uses Settings.
+ * @param string|null $source_zone The zone legacy DATETIME logtime values were
+ *                                 written in (--source-time-zone); null refuses them.
  */
-function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true, ?string $partition = null): bool {
+function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data = true, ?string $partition = null,
+	?string $source_zone = null): bool {
 	global $syslogdb_default;
 
 	$mariadb = syslog_db_is_mariadb();
@@ -179,7 +194,7 @@ function syslog_upart_run(bool $confirm, bool $convert_ms, bool $preserve_data =
 			return false;
 		}
 
-		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead, $granularity, $limit, $partition !== null);
+		return syslog_upart_run_locked($confirm, $convert_ms, $preserve_data, $engines[strtolower($engine)], (int) $days, $ahead, $granularity, $limit, $partition !== null, $source_zone);
 	} finally {
 		syslog_db_fetch_cell_prepared('SELECT RELEASE_LOCK(?)', [$lock]);
 	}
@@ -207,10 +222,184 @@ function syslog_upart_live_workers(): int {
 }
 
 /**
+ * Validate --source-time-zone before anything changes. The zone must be an
+ * IANA name known to PHP (and so to Cacti) and loaded in the Syslog database
+ * server's time zone tables. PHP and the database must agree on its UTC offset
+ * at every transition spanning the stored history, so neither side's zone data
+ * is stale. Every legacy DATETIME value must exist in the zone (not fall in a
+ * daylight-saving gap) and fit the TIMESTAMP range.
+ *
+ * @param string   $zone   The zone the legacy DATETIME values were written in.
+ * @param string[] $tables Tables whose logtime column is DATETIME.
+ *
+ * @return string An error message, or '' when the zone may be used.
+ */
+function syslog_upart_source_zone_error(string $zone, array $tables): string {
+	global $syslogdb_default, $config;
+
+	if (!in_array($zone, DateTimeZone::listIdentifiers(DateTimeZone::ALL_WITH_BC), true)) {
+		return "--source-time-zone=$zone is not a time zone known to PHP and Cacti; use an IANA name such as America/New_York.";
+	}
+
+	$known = syslog_db_fetch_cell_prepared("SELECT CONVERT_TZ('2000-01-01 00:00:00', '+00:00', ?) IS NOT NULL", [$zone]);
+
+	if ((string) $known !== '1') {
+		return "The Syslog database server does not know time zone $zone. Load its time zone tables, as the Cacti installer requires (for example: mariadb-tzinfo-to-sql /usr/share/zoneinfo | mariadb mysql), then retry.";
+	}
+
+	$tz = new DateTimeZone($zone);
+	$now = time();
+	$low = $now;
+	$high = $now;
+	$days = [];
+
+	foreach ($tables as $table) {
+		$rows = syslog_db_fetch_assoc("SELECT DISTINCT DATE(logtime) AS day
+			FROM `$syslogdb_default`.`$table` WHERE logtime > '1970-01-01 00:00:00'");
+
+		if (!is_array($rows)) {
+			return "Cannot read the logtime range of $table.";
+		}
+
+		foreach ($rows as $row) {
+			$days[(string) $row['day']] = true;
+		}
+	}
+
+	// PHP's transitions alone would miss a transition only the database has
+	// (stale tzdata), so every stored day is probed at both ends, and days on
+	// which PHP's offset changes every 15 minutes.
+	$probes = [$now];
+
+	foreach (array_keys($days) as $day) {
+		$start = (new DateTime("$day 00:00:00", $tz))->getTimestamp();
+		$end = (new DateTime("$day 23:59:59", $tz))->getTimestamp();
+		$low = min($low, $start - 86400);
+		$high = max($high, $end + 86400);
+		$probes[] = $start;
+		$probes[] = $end;
+
+		if ($tz->getOffset(new DateTime('@' . $start)) !== $tz->getOffset(new DateTime('@' . $end))) {
+			for ($probe = $start; $probe < $end; $probe += 900) {
+				$probes[] = $probe;
+			}
+		}
+	}
+
+	// CONVERT_TZ leaves values outside the TIMESTAMP range unconverted.
+	$transitions = $tz->getTransitions(max(1, $low), min(2147483647, $high)) ?: [];
+
+	foreach ($transitions as $transition) {
+		$probes[] = $transition['ts'] - 1;
+		$probes[] = $transition['ts'];
+	}
+
+	$probes = array_values(array_filter(array_unique($probes), static fn($probe) => $probe >= 1 && $probe <= 2147483647));
+
+	foreach (array_chunk($probes, 500) as $chunk) {
+		$expected = [];
+
+		foreach ($chunk as $probe) {
+			$expected[gmdate('Y-m-d H:i:s', $probe)] = (new DateTime('@' . $probe))->setTimezone($tz)->format('Y-m-d H:i:s');
+		}
+
+		$actual = syslog_db_fetch_assoc_prepared("SELECT CAST(probe.utc AS CHAR) AS utc, CAST(CONVERT_TZ(probe.utc, '+00:00', ?) AS CHAR) AS wall
+			FROM (" . implode(' UNION ALL ', array_fill(0, count($expected), 'SELECT CAST(? AS DATETIME) AS utc')) . ') AS probe',
+			array_merge([$zone], array_keys($expected)));
+
+		if (!is_array($actual) || count($actual) !== count($expected)) {
+			return "Cannot compare $zone between PHP and the Syslog database.";
+		}
+
+		foreach ($actual as $row) {
+			$utc = (string) $row['utc'];
+
+			if (!isset($expected[$utc]) || (string) $row['wall'] !== $expected[$utc]) {
+				return "PHP and the Syslog database disagree on $zone at $utc UTC (PHP " . ($expected[$utc] ?? '?') . ', database ' . var_export($row['wall'], true)
+					. '). Update the database time zone tables or PHP time zone data so they match, then retry.';
+			}
+		}
+	}
+
+	$previous = syslog_db_fetch_cell('SELECT @@SESSION.time_zone');
+
+	if (!is_string($previous) || !syslog_db_execute_prepared('SET SESSION time_zone = ?', [$zone])) {
+		return "Cannot set the session time zone to $zone.";
+	}
+
+	$ambiguous = 0;
+
+	try {
+		foreach ($tables as $table) {
+			// Values in a daylight-saving gap or outside the TIMESTAMP range do not round-trip.
+			$invalid = syslog_db_fetch_row("SELECT COUNT(*) AS invalid_rows, MIN(logtime) AS sample
+				FROM `$syslogdb_default`.`$table` WHERE logtime <> '0000-00-00 00:00:00'
+				AND NOT (FROM_UNIXTIME(UNIX_TIMESTAMP(logtime)) <=> logtime)");
+
+			if (!is_array($invalid) || !isset($invalid['invalid_rows'])) {
+				return "Cannot check the logtime values of $table.";
+			}
+
+			if ((int) $invalid['invalid_rows'] > 0) {
+				return "$table has {$invalid['invalid_rows']} logtime values, such as {$invalid['sample']}, that do not exist in $zone "
+					. "(a daylight-saving gap) or fall outside the TIMESTAMP range. $zone is probably not the zone they were written in; otherwise correct or delete those rows, then retry.";
+			}
+
+			// When clocks fall back, the repeated wall-clock hour is ambiguous.
+			foreach ($transitions as $index => $transition) {
+				$offset = $index > 0 ? $transitions[$index - 1]['offset'] : $transition['offset'];
+
+				if ($transition['offset'] >= $offset) {
+					continue;
+				}
+
+				$start = (new DateTime('@' . $transition['ts']))->setTimezone($tz);
+				$end = (clone $start)->modify('+' . ($offset - $transition['offset']) . ' seconds');
+				$count = syslog_db_fetch_cell_prepared("SELECT COUNT(*) FROM `$syslogdb_default`.`$table`
+					WHERE logtime >= ? AND logtime < ?", [$start->format('Y-m-d H:i:s'), $end->format('Y-m-d H:i:s')]);
+
+				if (!is_numeric($count)) {
+					return "Cannot check the logtime values of $table.";
+				}
+
+				$ambiguous += (int) $count;
+			}
+		}
+	} finally {
+		if (!syslog_db_execute_prepared('SET SESSION time_zone = ?', [$previous])) {
+			cacti_log('SYSLOG ERROR: Could not restore the session time zone after checking --source-time-zone', false, 'SYSLOG');
+		}
+	}
+
+	$cacti_zones = [date_default_timezone_get()];
+
+	if (db_column_exists('poller', 'timezone')) {
+		$cacti_zones[] = (string) db_fetch_cell_prepared('SELECT timezone FROM poller WHERE id = ?', [$config['poller_id'] ?? 1]);
+	}
+
+	$cacti_zones = array_values(array_unique(array_filter($cacti_zones, static fn($name) => $name !== '')));
+
+	print "Source time zone $zone: known to PHP and the Syslog database, which agree on its offsets; every DATETIME value in "
+		. implode(', ', $tables) . ' exists in it.' . PHP_EOL;
+
+	if ($ambiguous > 0) {
+		print "NOTE: $ambiguous rows fall in repeated daylight-saving hours; each converts to one of its two possible instants." . PHP_EOL;
+	}
+
+	$mismatched = array_values(array_diff($cacti_zones, [$zone]));
+
+	if ($mismatched) {
+		print 'WARNING: Cacti also uses time zone ' . implode(' and ', $mismatched) . ", not $zone. Confirm the legacy values were written in $zone." . PHP_EOL;
+	}
+
+	return '';
+}
+
+/**
  * Rebuild while holding the Syslog processing lock.
  */
 function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead,
-	string $granularity = 'day', int $limit = 8192, bool $save_level = false): bool {
+	string $granularity = 'day', int $limit = 8192, bool $save_level = false, ?string $source_zone = null): bool {
 	global $syslogdb_default;
 
 	if (syslog_db_table_exists('syslog_incoming_rebuild', false)) {
@@ -237,10 +426,11 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 
 	// The incoming queue and replication outbox keep their sequence identities
 	// (archival and delivery deduplicate on them), so they are widened in place.
+	// A DATETIME(3) column is already millisecond but still zone-less.
 	$widen = [];
 
 	foreach (['syslog_incoming', 'syslog_replication_output'] as $table) {
-		if ($convert_ms && syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+		if ($convert_ms && syslog_db_table_exists($table, false) && syslog_upart_logtime_type($table) !== 'timestamp(3)') {
 			$widen[] = $table;
 		}
 	}
@@ -251,8 +441,8 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 		return true;
 	}
 
-	// Legacy DATETIME history is wall-clock time in an unknown zone; it is
-	// not converted. Only an explicit discard may replace such tables.
+	// Legacy DATETIME history is wall-clock time; it is preserved only when
+	// --source-time-zone names the zone it was written in.
 	$checked = $widen;
 
 	foreach ($tables as $table) {
@@ -274,11 +464,39 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 		return false;
 	}
 
-	if ($legacy) {
-		fwrite(STDERR, 'ERROR: Legacy DATETIME logtime columns are not supported: ' . implode(', ', array_column($legacy, 'TABLE_NAME'))
-			. '. Rebuild stored and removed history with --discard-data, or convert it manually as described in the README. No changes were made.' . PHP_EOL);
+	$legacy = array_column($legacy, 'TABLE_NAME');
+
+	if ($legacy && $source_zone === null) {
+		fwrite(STDERR, 'ERROR: Legacy DATETIME logtime columns found: ' . implode(', ', $legacy)
+			. '. Preserve them with --source-time-zone=<zone>, naming the zone their values were written in, or rebuild stored and removed history with --discard-data. No changes were made.' . PHP_EOL);
 
 		return false;
+	}
+
+	if (!$legacy && $source_zone !== null) {
+		print 'No legacy DATETIME logtime columns were found; --source-time-zone is ignored.' . PHP_EOL;
+		$source_zone = null;
+	}
+
+	// A resumed copy must read the retained DATETIME original in the same zone.
+	$zone_setting = 'syslog_upart_source_time_zone';
+	$resumed = array_values(array_filter($legacy, static fn($table) => substr($table, -8) === '_rebuild'));
+	$previous_zone = $resumed ? (string) read_config_option($zone_setting, true) : '';
+
+	if ($previous_zone !== '' && $previous_zone !== $source_zone) {
+		fwrite(STDERR, 'ERROR: ' . implode(', ', $resumed) . " was being copied from time zone $previous_zone. Retry with --source-time-zone=$previous_zone. No changes were made." . PHP_EOL);
+
+		return false;
+	}
+
+	if ($legacy) {
+		$zone_error = syslog_upart_source_zone_error($source_zone, $legacy);
+
+		if ($zone_error !== '') {
+			fwrite(STDERR, "ERROR: $zone_error No changes were made." . PHP_EOL);
+
+			return false;
+		}
 	}
 
 	$bytes = syslog_db_fetch_cell_prepared('SELECT SUM(DATA_LENGTH + INDEX_LENGTH)
@@ -304,6 +522,11 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 		: 'DESTRUCTIVE: stored messages in the listed rebuild tables will be DELETED.' . PHP_EOL;
 	print $convert_ms ? 'Converting the complete message pipeline to TIMESTAMP(3).' . PHP_EOL
 		: 'Existing timestamp precision is preserved.' . PHP_EOL;
+
+	if ($source_zone !== null) {
+		print 'Legacy DATETIME values in ' . implode(', ', $legacy) . " are read as $source_zone wall-clock time." . PHP_EOL;
+	}
+
 	print 'Take a database backup. Syslog processing is disabled and its lock' . PHP_EOL;
 	print 'is held, but this utility does NOT pause remote collectors, replication or' . PHP_EOL;
 	print 'external database writers; stop them and buffer new logs upstream.' . PHP_EOL;
@@ -324,6 +547,10 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 	// A retry must rebuild to the same level, so --partition is saved first.
 	if ($save_level) {
 		set_config_option('syslog_partition_granularity', $granularity);
+	}
+
+	if ($source_zone !== null) {
+		set_config_option($zone_setting, $source_zone);
 	}
 
 	$zone = syslog_db_fetch_cell('SELECT @@SESSION.time_zone');
@@ -349,15 +576,21 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 		}
 
 		foreach ($tables as $table) {
-			if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead, $granularity, $limit)) {
+			if (!syslog_upart_rebuild($table, $convert_ms, $preserve_data, $engine, $days, $ahead, $granularity, $limit, 50000, $source_zone)) {
 				return false;
 			}
 		}
 
 		$column = syslog_logtime_sql_type('ms');
 
+		if ($source_zone !== null && !syslog_db_execute_prepared('SET SESSION time_zone = ?', ['+00:00'])) {
+			fwrite(STDERR, 'ERROR: Cannot reset the copy session time zone; the precision setting was not changed.' . PHP_EOL);
+
+			return false;
+		}
+
 		foreach ($widen as $table) {
-			if (!syslog_db_execute("ALTER TABLE `$syslogdb_default`.`$table` MODIFY COLUMN logtime $column")) {
+			if (!syslog_upart_widen($table, $column, in_array($table, $legacy, true) ? $source_zone : null)) {
 				fwrite(STDERR, "ERROR: Cannot widen $table; the precision setting was not changed." . PHP_EOL);
 
 				return false;
@@ -366,7 +599,7 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 
 		if ($convert_ms) {
 			foreach (['syslog', 'syslog_removed', 'syslog_incoming', 'syslog_replication_output'] as $table) {
-				if (syslog_db_table_exists($table, false) && syslog_detect_logtime_precision($table) !== 'ms') {
+				if (syslog_db_table_exists($table, false) && syslog_upart_logtime_type($table) !== 'timestamp(3)') {
 					fwrite(STDERR, "ERROR: $table did not convert; the precision setting was not changed." . PHP_EOL);
 
 					return false;
@@ -385,10 +618,67 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
 		}
 	}
 
-	cacti_log('SYSLOG: Completed cli/upgrade_partitioning.php' . ($convert_ms ? ' with --convert-ms' : ''), false, 'SYSLOG');
+	if ($source_zone !== null) {
+		set_config_option($zone_setting, '');
+	}
+
+	cacti_log('SYSLOG: Completed cli/upgrade_partitioning.php' . ($convert_ms ? ' with --convert-ms' : '')
+		. ($source_zone !== null ? " from DATETIME in $source_zone" : ''), false, 'SYSLOG');
 	print 'Rebuild complete. Re-enable Syslog processing.' . ($convert_ms ? ' Syslog now stores millisecond timestamps; configure forwarders accordingly.' : '') . PHP_EOL;
 
 	return true;
+}
+
+/**
+ * Return the lowercase logtime column type of a table, such as timestamp(3).
+ */
+function syslog_upart_logtime_type(string $table): string {
+	global $syslogdb_default;
+
+	return strtolower((string) syslog_db_fetch_cell_prepared('SELECT COLUMN_TYPE FROM information_schema.COLUMNS
+		WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ? AND COLUMN_NAME = \'logtime\'', [$syslogdb_default, $table]));
+}
+
+/**
+ * Widen an incoming queue or outbox logtime column in place, so the sequence
+ * identities that archival and replication rely on are kept. A legacy
+ * DATETIME column is converted in its source zone, and its wall-clock values
+ * are verified unchanged when read back in that zone.
+ *
+ * @param string      $table       The table to widen.
+ * @param string      $column      The new logtime column definition.
+ * @param string|null $source_zone The zone of a legacy DATETIME column, or null.
+ */
+function syslog_upart_widen(string $table, string $column, ?string $source_zone): bool {
+	global $syslogdb_default;
+
+	$target = "`$syslogdb_default`.`$table`";
+
+	if ($source_zone === null) {
+		return syslog_db_execute("ALTER TABLE $target MODIFY COLUMN logtime $column");
+	}
+
+	$digest = "SELECT COUNT(*) AS row_count, SUM(CRC32(DATE_FORMAT(logtime, '%Y-%m-%d %H:%i:%s.%f'))) AS digest FROM $target";
+
+	if (!syslog_db_execute_prepared('SET SESSION time_zone = ?', [$source_zone])) {
+		return false;
+	}
+
+	try {
+		$before = syslog_db_fetch_row($digest);
+
+		if (!is_array($before) || !isset($before['row_count'])
+			|| !syslog_db_execute("ALTER TABLE $target MODIFY COLUMN logtime $column")) {
+			return false;
+		}
+
+		$after = syslog_db_fetch_row($digest);
+
+		return is_array($after) && (string) ($after['row_count'] ?? '') === (string) $before['row_count']
+			&& (string) ($after['digest'] ?? '') === (string) $before['digest'];
+	} finally {
+		syslog_db_execute("SET SESSION time_zone = '+00:00'");
+	}
 }
 
 /**
@@ -401,9 +691,14 @@ function syslog_upart_run_locked(bool $confirm, bool $convert_ms, bool $preserve
  * retry discards replacement rows above the last checkpoint and resumes after it.
  * At 10M rows on a 2 GiB buffer pool, batches of 10,000 to 65,536 rows ran
  * within measurement noise of each other; 50,000 was fastest.
+ *
+ * A legacy DATETIME original is copied with the session in $source_zone, so its
+ * wall-clock values become the matching UTC instants, and each batch checksum
+ * compares the same wall-clock text on both sides. TIMESTAMP originals are
+ * copied in UTC, which keeps daylight-saving repeated hours distinct.
  */
 function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_data, string $engine, int $days, int $ahead,
-	string $granularity = 'day', int $limit = 8192, int $batch = 50000): bool {
+	string $granularity = 'day', int $limit = 8192, int $batch = 50000, ?string $source_zone = null): bool {
 	global $syslogdb_default;
 
 	$batch = max(1, $batch);
@@ -417,7 +712,7 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 	$progress = "`$syslogdb_default`.`syslog_rebuild_progress`";
 
 	$fail = static function (string $reason) use ($table, $backup): bool {
-		fwrite(STDERR, "ERROR: $table: $reason. Originals are retained in $table or $backup; keep writers stopped and retry with --preserve-data and the same --convert-ms option, if used. The precision setting was not changed." . PHP_EOL);
+		fwrite(STDERR, "ERROR: $table: $reason. Originals are retained in $table or $backup; keep writers stopped and retry with --preserve-data and the same --convert-ms and --source-time-zone options, if used. The precision setting was not changed." . PHP_EOL);
 
 		return false;
 	};
@@ -448,8 +743,8 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 	$logtime = array_values(array_filter($columns, static fn($column) => $column['COLUMN_NAME'] === 'logtime'));
 	$type = $logtime ? $logtime[0]['DATA_TYPE'] : '';
 
-	if ($type === 'datetime' && $preserve_data) {
-		return $fail('Legacy DATETIME logtime is not supported; rebuild with --discard-data or convert it manually');
+	if ($type === 'datetime' && $preserve_data && $source_zone === null) {
+		return $fail('Legacy DATETIME logtime needs --source-time-zone to be preserved; otherwise rebuild with --discard-data');
 	}
 
 	if (!in_array($type, ['timestamp', 'datetime'], true)) {
@@ -457,7 +752,9 @@ function syslog_upart_rebuild(string $table, bool $convert_ms, bool $preserve_da
 	}
 
 	// TIMESTAMP is stored in UTC; a UTC session copies it without conversion.
-	if (!syslog_db_execute("SET SESSION time_zone = '+00:00'")) {
+	$copy_zone = $type === 'datetime' && $source_zone !== null ? $source_zone : '+00:00';
+
+	if (!syslog_db_execute_prepared('SET SESSION time_zone = ?', [$copy_zone])) {
 		return $fail('Cannot configure the timestamp copy time zone');
 	}
 
@@ -802,7 +1099,8 @@ function syslog_upart_display_version(): void {
 function syslog_upart_display_help(): void {
 	syslog_upart_display_version();
 
-	print PHP_EOL . 'usage: upgrade_partitioning.php [--partition=hourly|daily] [--convert-ms] [--preserve-data | --discard-data] [--confirm]' . PHP_EOL . PHP_EOL;
+	print PHP_EOL . 'usage: upgrade_partitioning.php [--partition=hourly|daily] [--convert-ms] [--preserve-data | --discard-data]' . PHP_EOL;
+	print '    [--source-time-zone=<zone>] [--confirm]' . PHP_EOL . PHP_EOL;
 	print 'Rebuilds syslog and syslog_removed with UTC hourly or daily partitions matching' . PHP_EOL;
 	print 'the Partitioning Level, storage engine, message retention and future-partition' . PHP_EOL;
 	print 'horizon. A Partitioning Level changed in Settings takes effect only when this' . PHP_EOL;
@@ -811,12 +1109,15 @@ function syslog_upart_display_help(): void {
 	print 'With preservation, rows are copied in verified batches and receive new sequence' . PHP_EOL;
 	print 'numbers above the original high-water mark; originals are dropped only after' . PHP_EOL;
 	print 'every batch and the row counts are verified.' . PHP_EOL . PHP_EOL;
-	print 'Legacy DATETIME logtime columns are not converted; use --discard-data for them.' . PHP_EOL . PHP_EOL;
+	print 'Legacy DATETIME logtime columns are preserved only with --source-time-zone,' . PHP_EOL;
+	print 'naming the zone their values were written in; otherwise use --discard-data.' . PHP_EOL . PHP_EOL;
 	print 'Options:' . PHP_EOL;
 	print '    --partition     - Save and apply this Partitioning Level instead of the one in Settings.' . PHP_EOL;
 	print '    --convert-ms    - Also convert pipeline timestamps to TIMESTAMP(3); MariaDB only.' . PHP_EOL;
 	print '    --preserve-data - Preserve existing messages (the default), copying 50,000 rows at a time.' . PHP_EOL;
 	print '    --discard-data  - Delete messages in rebuilt tables; never discard the outbox.' . PHP_EOL;
+	print '    --source-time-zone - IANA zone (for example America/New_York) of legacy DATETIME values.' . PHP_EOL;
+	print '                      It must be known to PHP and the database, which must agree on its offsets.' . PHP_EOL;
 	print '    --confirm       - Skip confirmation, not the size and maintenance warnings.' . PHP_EOL;
 	print '    --version       - Display version information.' . PHP_EOL;
 	print '    --help          - Display this help.' . PHP_EOL . PHP_EOL;
@@ -826,5 +1127,5 @@ function syslog_upart_display_help(): void {
 	print 'much ADDITIONAL free disk space on the database server, plus temporary' . PHP_EOL;
 	print 'file and binary-log headroom. Large transfers may take several hours.' . PHP_EOL . PHP_EOL;
 	print 'On failure keep writers stopped and retry with --preserve-data and the' . PHP_EOL;
-	print 'same --partition and --convert-ms options, if used; originals remain in *_rebuild tables.' . PHP_EOL . PHP_EOL;
+	print 'same --partition, --convert-ms and --source-time-zone options, if used; originals remain in *_rebuild tables.' . PHP_EOL . PHP_EOL;
 }
