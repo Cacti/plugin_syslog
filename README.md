@@ -850,7 +850,7 @@ record links to its source.
 | `docs/nokia.json.gz` | Nokia | 2,016 | SR OS Log Events Guide 25.10, `APP-SEVERITY-EventName-EventID` such as `SYSTEM-WARNING-tmnxStateChange-2009`, using each event's default severity. An event whose severity was changed on the router does not match. 7210 SAS and SR Linux are not included. |
 | `docs/fortinet.json.gz` | Fortinet | 1,462 | FortiOS 7.6.8 Log Message Reference, every traffic, event and UTM log ID as the 10-digit `logid` sent on the wire (`logid="0100032001"`). The full ID is built from the documented type, subtype and message ID. Fortinet documents no recommended actions. |
 | `docs/paloalto.json.gz` | Palo Alto Networks | 398 | PAN-OS System log event IDs from the Syslog Severity Reference, such as `tunnel-status-down`. Generic event IDs (`general`, `auth`) are excluded. Few records have a recommended action. |
-| `docs/mikrotik.json.gz` | MikroTik | 6 | RouterOS has no message IDs; only six documented messages carry a distinctive word (`hashtype`, `enctype`, `auto-initialization`, `hw-limit`, `class-limit`, `deassigned`). |
+| `docs/mikrotik.json.gz` | MikroTik | 11 | RouterOS has no message IDs and MikroTik publishes no message catalogue; only documented messages that carry a distinctive word are included (for example `hashtype`, `auto-initialization`, `hw-limit`, `bpdu-guard`, `CTSYNC`, `deassigned`). |
 
 Numeric identifiers, such as HPE event IDs, Fortinet log IDs and FRRouting error codes, can match
 any number in a message. They are only reliable when the sending device is a

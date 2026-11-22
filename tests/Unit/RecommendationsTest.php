@@ -397,7 +397,7 @@ it('ships compressed catalogues that import without losing records or fields', f
 	'Nokia'              => ['nokia.json.gz', 'Nokia', 2016],
 	'Fortinet'           => ['fortinet.json.gz', 'Fortinet', 1462],
 	'Palo Alto Networks' => ['paloalto.json.gz', 'Palo Alto Networks', 398],
-	'MikroTik'           => ['mikrotik.json.gz', 'MikroTik', 6]
+	'MikroTik'           => ['mikrotik.json.gz', 'MikroTik', 11]
 ]);
 
 it('streams compressed exports across database pages without changing the filters or records', function () {
