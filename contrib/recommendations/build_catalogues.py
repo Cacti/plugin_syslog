@@ -12,22 +12,30 @@
 # | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           |
 # | GNU General Public License for more details.                            |
 # +-------------------------------------------------------------------------+
-"""Build docs/<vendor>.json.gz recommendation catalogues from extracted JSON.
+"""Build a docs/<vendor>.json.gz recommendation catalogue from extracted JSON.
 
-Each input is a syslog-recommendations JSON document extracted from the
+The input is a syslog-recommendations JSON document extracted from the
 vendor's public message reference (see docs/RECOMMENDATION_SOURCES.md). The
 build drops records the importer would reject (neither an explanation nor a
 recommended action), case-insensitive duplicate identifiers (first kept) and
-the generic identifiers listed in EXCLUDE, then writes reproducible gzip.
+the generic identifiers listed in EXCLUDE, then writes reproducible gzip to
+the plugin's docs/ directory.
 
-Usage: build_catalogues.py SOURCE_DIR DOCS_DIR VENDOR [VENDOR ...]
-       (reads SOURCE_DIR/<vendor>.json, writes DOCS_DIR/<vendor>.json.gz)
+Usage: build_catalogues.py VENDOR < extracted/<vendor>.json
+       VENDOR is one of: arista dell fortinet hpe huawei mikrotik nokia nvidia paloalto
 """
 
 import gzip
+import io
 import json
 import os
 import sys
+
+# Output names are taken from this table, never from the command line.
+VENDORS = {name: name for name in
+           ('arista', 'dell', 'fortinet', 'hpe', 'huawei', 'mikrotik', 'nokia', 'nvidia', 'paloalto')}
+
+DOCS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'docs')
 
 FIELDS = ['vendor', 'identifier', 'component', 'severity', 'message',
           'explanation', 'recommended_action', 'reference']
@@ -49,9 +57,8 @@ EXCLUDE = {
 }
 
 
-def build(source_dir, docs_dir, vendor):
-    with open(os.path.join(source_dir, vendor + '.json'), encoding='utf-8') as fh:
-        records = json.load(fh)['recommendations']
+def build(vendor, source):
+    records = json.load(source)['recommendations']
 
     seen, out, empty, excluded, duplicate = set(), [], 0, 0, 0
 
@@ -76,7 +83,7 @@ def build(source_dir, docs_dir, vendor):
     text = json.dumps({'format': 'syslog-recommendations', 'version': 1, 'recommendations': out},
                       indent=2, ensure_ascii=False) + '\n'
 
-    with open(os.path.join(docs_dir, vendor + '.json.gz'), 'wb') as fh:
+    with open(os.path.join(DOCS_DIR, vendor + '.json.gz'), 'wb') as fh:
         # A fixed mtime and no file name keep rebuilt files byte-identical.
         with gzip.GzipFile(filename='', mode='wb', fileobj=fh, compresslevel=9, mtime=0) as gz:
             gz.write(text.encode('utf-8'))
@@ -85,12 +92,13 @@ def build(source_dir, docs_dir, vendor):
 
 
 def main(argv):
-    if len(argv) < 4:
+    vendor = VENDORS.get(argv[1]) if len(argv) == 2 else None
+
+    if vendor is None:
         sys.stderr.write(__doc__)
         return 2
 
-    for vendor in argv[3:]:
-        build(argv[1], argv[2], vendor)
+    build(vendor, io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8'))
 
     return 0
 

@@ -226,6 +226,7 @@ $unmeasured_allowlist = [
 	// Directory index redirects run at the top level and send HTTP headers.
 	'cli/index.php',
 	'contrib/index.php',
+	'contrib/recommendations/index.php',
 	'includes/index.php',
 	'lib/index.php',
 	// Web and CLI entry points: each chdir()s and includes auth.php (or runs

@@ -16,8 +16,9 @@ Catalogues that are not covered by this build:
 
 ## Build
 
-The final step is `contrib/recommendations/build_catalogues.py`. It is
-run with one or more vendor names. For each vendor it:
+The final step is `contrib/recommendations/build_catalogues.py`. It is run once per vendor, with the
+extracted JSON on standard input (`build_catalogues.py hpe < hpe.json`), and writes `docs/<vendor>.json.gz`.
+For each vendor it:
 
 1. Reads the extracted `<vendor>.json` (envelope `{"format":"syslog-recommendations","version":1,"recommendations":[...]}`).
 2. Drops records that have neither an `explanation` nor a `recommended_action` (both empty after trimming),

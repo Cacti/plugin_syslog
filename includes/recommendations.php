@@ -585,10 +585,6 @@ function syslog_recommendation_vendor_from_device(string $sys_descr, string $tem
 function syslog_recommendation_vendor_has_records(string $vendor): bool {
 	static $cache = [];
 
-	if ($vendor === '') {
-		return false;
-	}
-
 	if (!array_key_exists($vendor, $cache)) {
 		$cache[$vendor] = (bool) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM (SELECT 1 FROM syslog_recommendations WHERE vendor = ? LIMIT 1) AS present', [$vendor]);
 	}
