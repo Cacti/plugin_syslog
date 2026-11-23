@@ -45,6 +45,9 @@ const SYSLOG_RECOMMENDATIONS_MAX_BYTES = 64 * 1024 * 1024;
 const SYSLOG_RECOMMENDATIONS_MAX_TEXT  = 20000;
 const SYSLOG_RECOMMENDATIONS_SEED_FLAG = 'syslog_recommendations_seeded';
 
+// Lookup scope meaning "records of every vendor"; a NUL byte cannot occur in a vendor name.
+const SYSLOG_RECOMMENDATIONS_ANY_VENDOR = "\0*";
+
 // The shape of a "word" in a syslog message that the recommendation lookup compares with
 // identifiers: an optional literal leading %, then letters, digits and _ . - /
 // starting and ending with a letter, digit or underscore. The percent sign is
@@ -521,8 +524,8 @@ function syslog_recommendation_candidates(string $message): array {
 }
 
 /**
- * Name the catalogue vendor of a Cacti device from its SNMP sysDescr, falling
- * back to its device template name.
+ * Name the catalogue vendor of a Cacti device from its SNMP sysDescr or, when
+ * that names no recognised vendor, its device template name.
  *
  * The names match the vendor field of the bundled catalogues in docs/.
  *
@@ -533,20 +536,26 @@ function syslog_recommendation_candidates(string $message): array {
  */
 function syslog_recommendation_vendor_from_device(string $sys_descr, string $template = ''): string {
 	// Network OS before hardware brand: a Dell switch running Cumulus Linux logs
-	// NVIDIA messages, so NVIDIA is tested first.
+	// NVIDIA messages, so NVIDIA is tested first. Patterns avoid bare words that
+	// occur in host names (hp-dl380) or other vendors' products (Alcatel-Lucent
+	// Enterprise switches are not Nokia SR OS).
 	$patterns = [
 		'NVIDIA'             => '/\b(?:nvidia|mellanox|cumulus|onyx|mlnx-os)\b/i',
 		'Arista'             => '/\barista\b/i',
 		'Juniper'            => '/\b(?:juniper|junos)\b/i',
 		'Huawei'             => '/\b(?:huawei|vrp)\b/i',
-		'Nokia'              => '/\b(?:nokia|timos|alcatel-lucent|sr linux)\b/i',
+		'Nokia'              => '/\b(?:nokia|timos|sr linux)\b/i',
 		'Fortinet'           => '/\b(?:fortinet|fortigate|fortios)\b/i',
 		'Palo Alto Networks' => '/\b(?:palo alto|pan-os)\b/i',
 		'MikroTik'           => '/\b(?:mikrotik|routeros)\b/i',
 		'Dell'               => '/\b(?:dell|force10|ftos|powerconnect|powerswitch|idrac|poweredge|os10)\b/i',
-		'HPE'                => '/\b(?:hpe|hp|hewlett[- ]packard|comware|procurve|aruba|aos-cx|arubaos)\b/i',
+		'HPE'                => '/\b(?:hpe|hewlett[- ]packard|comware|procurve|aruba|aos-cx|arubaos)\b|\bhp (?:j\d{4}|\d{4})/i',
 		'Cisco'              => '/\b(?:cisco|nx-os|ios-xe|ios-xr)\b/i'
 	];
+
+	// A Net-SNMP agent reports "Linux <hostname> <kernel> ...": the host name says
+	// nothing about the vendor, so it is not searched.
+	$sys_descr = (string) preg_replace('/^((?:Linux|FreeBSD|NetBSD|OpenBSD|SunOS|Darwin)\s+)\S+/i', '$1', $sys_descr);
 
 	foreach ([$sys_descr, $template] as $text) {
 		if (trim($text) === '') {
@@ -561,6 +570,41 @@ function syslog_recommendation_vendor_from_device(string $sys_descr, string $tem
 	}
 
 	return '';
+}
+
+/**
+ * Whether the recommendations table holds records for a vendor.
+ *
+ * Scoping a lookup to a vendor without records would hide every other
+ * vendor's matches, so callers only scope when this is true. Cached per request.
+ *
+ * @param string $vendor The catalogue vendor name.
+ *
+ * @return bool True when at least one record carries the vendor.
+ */
+function syslog_recommendation_vendor_has_records(string $vendor): bool {
+	static $cache = [];
+
+	if ($vendor === '') {
+		return false;
+	}
+
+	if (!array_key_exists($vendor, $cache)) {
+		$cache[$vendor] = (bool) syslog_db_fetch_cell_prepared('SELECT COUNT(*) FROM (SELECT 1 FROM syslog_recommendations WHERE vendor = ? LIMIT 1) AS present', [$vendor]);
+	}
+
+	return $cache[$vendor];
+}
+
+/**
+ * Whether an identifier is a bare number, such as an HPE event ID or Fortinet log ID.
+ *
+ * @param string $identifier The candidate or stored identifier.
+ *
+ * @return bool True when it consists only of digits.
+ */
+function syslog_recommendation_is_numeric(string $identifier): bool {
+	return $identifier !== '' && ctype_digit($identifier);
 }
 
 /**
@@ -640,11 +684,64 @@ function syslog_recommendation_host_vendors(array $hosts): array {
 }
 
 /**
+ * Name the vendor a sender's lookups are scoped to.
+ *
+ * @param string $vendor The vendor resolved for the sending host, or ''.
+ *
+ * @return string The vendor when the table holds records for it, otherwise ''.
+ */
+function syslog_recommendation_scoped_vendor(string $vendor): string {
+	return $vendor !== '' && syslog_recommendation_vendor_has_records($vendor) ? $vendor : '';
+}
+
+/**
+ * Choose the records a candidate identifier may match.
+ *
+ * A sender with a scoped vendor matches that vendor's and vendor-neutral
+ * records. Otherwise a word matches every vendor, but a bare number only
+ * matches vendor-neutral records: vendor event numbers such as HPE's 4701 would
+ * otherwise match any port, PID or count in an unrelated message.
+ *
+ * @param string $vendor    The scoped vendor of the sender, or ''.
+ * @param string $candidate The candidate identifier.
+ *
+ * @return string The vendor, '' for vendor-neutral records only, or
+ *                SYSLOG_RECOMMENDATIONS_ANY_VENDOR for every vendor.
+ */
+function syslog_recommendation_scope(string $vendor, string $candidate): string {
+	if ($vendor !== '') {
+		return $vendor;
+	}
+
+	return syslog_recommendation_is_numeric($candidate) ? '' : SYSLOG_RECOMMENDATIONS_ANY_VENDOR;
+}
+
+/**
+ * Build the SQL condition restricting matches to a scope.
+ *
+ * @param string $scope  A value returned by syslog_recommendation_scope().
+ * @param string $column The vendor column, optionally qualified.
+ *
+ * @return array{0: string, 1: list<string>} The condition (with a leading AND, or '') and its parameters.
+ */
+function syslog_recommendation_scope_sql(string $scope, string $column): array {
+	if ($scope === SYSLOG_RECOMMENDATIONS_ANY_VENDOR) {
+		return ['', []];
+	}
+
+	if ($scope === '') {
+		return [" AND $column = ''", []];
+	}
+
+	return [" AND $column IN (?, '')", [$scope]];
+}
+
+/**
  * Find the recommendations that apply to a syslog message.
  *
- * When the sending device's vendor is known, only that vendor's records and
- * vendor-neutral records (an empty vendor) are considered, so a code such as
- * an HPE event number does not match the same number from another vendor.
+ * Candidates are matched under syslog_recommendation_scope(): when the sending
+ * device's vendor is recognised and has records, only that vendor's records and
+ * vendor-neutral records (an empty vendor) are considered.
  *
  * @param string $message The syslog message text.
  * @param int    $limit   The maximum number of recommendations to return.
@@ -659,19 +756,27 @@ function syslog_recommendations_lookup(string $message, int $limit = 3, string $
 		return [];
 	}
 
-	$vendor = $host === '' ? '' : (syslog_recommendation_host_vendors([$host])[$host] ?? '');
-	$params = $candidates;
-	$scope  = '';
+	$vendor = $host === '' ? '' : syslog_recommendation_scoped_vendor(syslog_recommendation_host_vendors([$host])[$host] ?? '');
+	$groups = [];
 
-	if ($vendor !== '') {
-		$scope    = " AND vendor IN (?, '')";
-		$params[] = $vendor;
+	foreach ($candidates as $candidate) {
+		$groups[syslog_recommendation_scope($vendor, $candidate)][] = $candidate;
+	}
+
+	$where  = [];
+	$params = [];
+
+	foreach ($groups as $scope => $identifiers) {
+		[$condition, $extra] = syslog_recommendation_scope_sql((string) $scope, 'vendor');
+
+		$where[] = '(identifier IN (' . implode(',', array_fill(0, count($identifiers), '?')) . ')' . $condition . ')';
+		$params  = array_merge($params, $identifiers, $extra);
 	}
 
 	$rows = syslog_db_fetch_assoc_prepared(
 		'SELECT vendor, identifier, component, severity, message, explanation, recommended_action, reference
 		FROM syslog_recommendations
-		WHERE identifier IN (' . implode(',', array_fill(0, count($candidates), '?')) . ')' . $scope . '
+		WHERE ' . implode(' OR ', $where) . '
 		ORDER BY CHAR_LENGTH(identifier) DESC, vendor
 		LIMIT ' . max(1, $limit),
 		$params,
@@ -684,8 +789,7 @@ function syslog_recommendations_lookup(string $message, int $limit = 3, string $
 /**
  * Check the displayed messages for recommendations using bounded, shared queries.
  *
- * Messages from a host whose vendor is known are only matched against that
- * vendor's records and vendor-neutral records, as in syslog_recommendations_lookup().
+ * Candidates are matched under the same scopes as syslog_recommendations_lookup().
  *
  * @param array<int|string, string> $messages The messages keyed by their display row.
  * @param array<int|string, string> $hosts    The syslog host of each message, keyed like $messages.
@@ -698,17 +802,17 @@ function syslog_recommendations_for_messages(array $messages, array $hosts = [])
 	$candidates = [];
 
 	foreach ($messages as $key => $message) {
-		$vendor = $vendors[(string) ($hosts[$key] ?? '')] ?? '';
+		$vendor = syslog_recommendation_scoped_vendor($vendors[(string) ($hosts[$key] ?? '')] ?? '');
 
 		foreach (syslog_recommendation_candidates($message) as $candidate) {
-			$candidates[$vendor][$candidate][$key] = true;
+			$candidates[syslog_recommendation_scope($vendor, $candidate)][$candidate][$key] = true;
 		}
 	}
 
-	foreach ($candidates as $vendor => $vendor_candidates) {
-		$vendor = (string) $vendor;
+	foreach ($candidates as $scope => $scope_candidates) {
+		[$condition, $extra] = syslog_recommendation_scope_sql((string) $scope, 'recommendations.vendor');
 
-		foreach (array_chunk(array_map('strval', array_keys($vendor_candidates)), 500) as $batch) {
+		foreach (array_chunk(array_map('strval', array_keys($scope_candidates)), 500) as $batch) {
 			// Return candidate spellings so the flags follow the catalogue's SQL collation.
 			$matches = syslog_db_fetch_assoc_prepared(
 				'SELECT candidates.identifier
@@ -716,10 +820,9 @@ function syslog_recommendations_for_messages(array $messages, array $hosts = [])
 				WHERE EXISTS (
 					SELECT 1
 					FROM syslog_recommendations AS recommendations
-					WHERE recommendations.identifier = candidates.identifier' .
-					($vendor === '' ? '' : " AND recommendations.vendor IN (?, '')") . '
+					WHERE recommendations.identifier = candidates.identifier' . $condition . '
 				)',
-				$vendor === '' ? $batch : array_merge($batch, [$vendor])
+				array_merge($batch, $extra)
 			);
 
 			if ($matches === false) {
@@ -729,7 +832,7 @@ function syslog_recommendations_for_messages(array $messages, array $hosts = [])
 			}
 
 			foreach ($matches as $match) {
-				foreach ($vendor_candidates[$match['identifier']] ?? [] as $key => $_) {
+				foreach ($scope_candidates[$match['identifier']] ?? [] as $key => $_) {
 					$available[$key] = true;
 				}
 			}
@@ -737,6 +840,27 @@ function syslog_recommendations_for_messages(array $messages, array $hosts = [])
 	}
 
 	return $available;
+}
+
+/**
+ * Flag the displayed log rows that have a recommendation.
+ *
+ * Stored messages carry a syslog_hosts id, resolved through $hosts; alert log
+ * rows carry the host name and message text (logmsg) directly.
+ *
+ * @param array<int|string, array<string, mixed>> $rows  The displayed rows.
+ * @param string                                  $tab   'syslog' for stored messages, otherwise the alert log.
+ * @param array<int|string, string>               $hosts Host names keyed by syslog_hosts id, for the syslog tab.
+ *
+ * @return array<int|string, bool> Whether each row has a matching recommendation.
+ */
+function syslog_recommendations_for_rows(array $rows, string $tab, array $hosts = []): array {
+	$stored = $tab === 'syslog';
+
+	return syslog_recommendations_for_messages(
+		array_map(static fn (array $row): string => (string) ($row[$stored ? 'message' : 'logmsg'] ?? ''), $rows),
+		array_map(static fn (array $row): string => (string) ($stored ? ($hosts[$row['host_id'] ?? ''] ?? '') : ($row['host'] ?? '')), $rows)
+	);
 }
 
 /**

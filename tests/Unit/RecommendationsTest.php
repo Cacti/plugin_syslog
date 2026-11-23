@@ -396,7 +396,7 @@ it('ships compressed catalogues that import without losing records or fields', f
 	'NVIDIA'             => ['nvidia.json.gz', 'NVIDIA', 251],
 	'Nokia'              => ['nokia.json.gz', 'Nokia', 2016],
 	'Fortinet'           => ['fortinet.json.gz', 'Fortinet', 1462],
-	'Palo Alto Networks' => ['paloalto.json.gz', 'Palo Alto Networks', 398],
+	'Palo Alto Networks' => ['paloalto.json.gz', 'Palo Alto Networks', 364],
 	'MikroTik'           => ['mikrotik.json.gz', 'MikroTik', 11]
 ]);
 
@@ -589,7 +589,7 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 		: 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE BINARY, vendor TEXT, component TEXT,
 			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)';
 	$db->exec($schema);
-	$db->exec("INSERT INTO syslog_recommendations (identifier) VALUES ('%LINK-3-UPDOWN'), ('%LINK-3-UPDOWN'), ('4625'), ('B')");
+	$db->exec("INSERT INTO syslog_recommendations (identifier, vendor) VALUES ('%LINK-3-UPDOWN', ''), ('%LINK-3-UPDOWN', ''), ('4625', ''), ('B', '')");
 	$queries = [];
 	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db, &$queries) {
 		$queries[] = $params;
@@ -612,9 +612,11 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 	];
 	$expected = ['stored' => $lowercase_matches, 'removed' => true, 'alert' => true, 'short' => true, 'plain' => false, 'suffix' => false, 'empty' => false];
 
+	// Words share one query; the bare number is checked against vendor-neutral records only.
 	expect(syslog_recommendations_for_messages($messages))->toBe($expected)
-		->and($queries)->toHaveCount(1)
-		->and($queries[0])->toContain('4625')
+		->and($queries)->toHaveCount(2)
+		->and($queries[0])->not->toContain('4625')
+		->and($queries[1])->toBe(['4625'])
 		->and(array_keys($queries[0], '%link-3-updown', true))->toHaveCount(1);
 
 	foreach ($messages as $key => $message) {
@@ -641,6 +643,11 @@ it('names the catalogue vendor from a device sysDescr or its template', function
 	'Palo Alto'        => ['Palo Alto Networks PA-3200 series firewall', '', 'Palo Alto Networks'],
 	'MikroTik'         => ['RouterOS RB4011iGS+', '', 'MikroTik'],
 	'template only'    => ['', 'Arista Switch', 'Arista'],
+	'template fallback' => ['Hardware: Intel64 Family 6 - Software: Windows Version 6.3', 'Palo Alto Firewall', 'Palo Alto Networks'],
+	'ProCurve model'   => ['HP J9772A 2530-48G-PoEP Switch, revision YA.16.10.0009', '', 'HPE'],
+	'Net-SNMP host'    => ['Linux cisco-syslog01 5.15.0-91-generic #101-Ubuntu SMP x86_64', '', ''],
+	'HP server name'   => ['Linux hp-dl380-01 6.1.0 #1 SMP x86_64', '', ''],
+	'Alcatel-Lucent'   => ['Alcatel-Lucent Enterprise OS6860E-48 8.7.354.R01 GA', '', ''],
 	'unknown'          => ['Linux web01 6.1.0 x86_64', 'Generic SNMP Device', '']
 ]);
 
@@ -656,8 +663,14 @@ it('scopes recommendations to the vendor of the sending Cacti device', function 
 
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	});
+	test_override('syslog_db_fetch_cell_prepared', function ($sql, $params) use ($db) {
+		$statement = $db->prepare($sql);
+		$statement->execute($params);
+
+		return $statement->fetchColumn();
+	});
 	$devices = [
-		'description' => ['vendor-scope-hpe' => [1, 'HPE Comware Platform Software']],
+		'description' => ['vendor-scope-hpe' => [1, 'HPE Comware Platform Software'], 'vendor-scope-arista' => [3, 'Arista Networks EOS']],
 		'hostname'    => ['vendor-scope-cisco.example.com' => [2, 'Cisco IOS Software']]
 	];
 	test_override('db_fetch_assoc_prepared', function ($sql, $params) use ($devices) {
@@ -678,22 +691,27 @@ it('scopes recommendations to the vendor of the sending Cacti device', function 
 		'cisco'    => 'Port 4701 changed state',
 		'generic'  => 'GENERIC_CODE raised',
 		'unknown'  => 'Port 4701 changed state',
-		'cisco_id' => '%LINK-3-UPDOWN: Interface Gi0/1, changed state to down'
+		'unk_word' => '%LINK-3-UPDOWN: Interface Gi0/1, changed state to down',
+		'cisco_id' => '%LINK-3-UPDOWN: Interface Gi0/1, changed state to down',
+		'arista'   => '%LINK-3-UPDOWN: Interface Ethernet1, changed state to down'
 	];
 	$hosts = [
 		'hpe'      => 'vendor-scope-hpe',
 		'cisco'    => 'vendor-scope-cisco.example.com',
 		'generic'  => 'vendor-scope-cisco.example.com',
 		'unknown'  => 'vendor-scope-not-in-cacti',
-		'cisco_id' => 'vendor-scope-hpe'
+		'unk_word' => 'vendor-scope-not-in-cacti',
+		'cisco_id' => 'vendor-scope-hpe',
+		'arista'   => 'vendor-scope-arista'
 	];
+	// A recognised vendor without records (Arista here) is not scoped, so it keeps
+	// matching other vendors' words; unknown senders never match vendor numbers.
+	$expected = ['hpe' => true, 'cisco' => false, 'generic' => true, 'unknown' => false, 'unk_word' => true, 'cisco_id' => false, 'arista' => true];
 
-	expect(syslog_recommendations_for_messages($messages, $hosts))
-		->toBe(['hpe' => true, 'cisco' => false, 'generic' => true, 'unknown' => true, 'cisco_id' => false]);
+	expect(syslog_recommendations_for_messages($messages, $hosts))->toBe($expected);
 
 	foreach ($messages as $key => $message) {
-		expect(syslog_recommendations_lookup($message, 3, $hosts[$key]) !== [])
-			->toBe(in_array($key, ['hpe', 'generic', 'unknown'], true));
+		expect(syslog_recommendations_lookup($message, 3, $hosts[$key]) !== [])->toBe($expected[$key]);
 	}
 
 	expect(array_column(syslog_recommendations_lookup('Port 4701 changed state', 3, 'vendor-scope-hpe'), 'vendor'))->toBe(['HPE']);
@@ -723,6 +741,28 @@ it('resolves host vendors across case, numeric names and ambiguous device matche
 	expect(syslog_recommendation_host_vendors(['case-edge-sw01', '4242', 'shared-name', 'same-vendor', 'partly-known', '7']))
 		->toBe(['case-edge-sw01' => 'Arista', '4242' => 'Huawei', 'shared-name' => '', 'same-vendor' => 'Juniper', 'partly-known' => '', '7' => ''])
 		->and(syslog_recommendation_host_vendors(['4242', '7']))->toBe(['4242' => 'Huawei', '7' => '']);
+});
+
+it('passes each displayed row host to the recommendation check on both log tabs', function () {
+	$seen = [];
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) use (&$seen) {
+		$seen = array_merge($seen, $params);
+
+		return [];
+	});
+	test_override('syslog_db_fetch_assoc_prepared', static fn ($sql, $params) => array_map(static fn ($id) => ['identifier' => $id], $params));
+
+	$stored = [
+		'a' => ['host_id' => 5, 'message' => 'STORED_CODE one'],
+		'b' => ['host_id' => 9, 'message' => 'plain text']
+	];
+	$alerts = [
+		'c' => ['host' => 'row-host-alert', 'logmsg' => 'ALERT_CODE two', 'message' => 'not this column']
+	];
+
+	expect(syslog_recommendations_for_rows($stored, 'syslog', [5 => 'row-host-stored']))->toBe(['a' => true, 'b' => true])
+		->and(syslog_recommendations_for_rows($alerts, 'alerts'))->toBe(['c' => true])
+		->and($seen)->toContain('row-host-stored')->toContain('row-host-alert')->not->toContain('not this column');
 });
 
 it('does not query recommendations for an empty page or messages without candidates', function () {

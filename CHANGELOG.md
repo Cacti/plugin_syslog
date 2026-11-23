@@ -7,7 +7,7 @@
 --- develop ---
 
 * feature: Add manually importable recommendation catalogues for Arista, Dell, Fortinet, HPE, Huawei, MikroTik, Nokia, NVIDIA and Palo Alto Networks in docs/<vendor>.json.gz, built from each vendor's public message references
-* feature: Recommendations are matched only against the sending device's vendor (and vendor-neutral records) when the syslog host is a Cacti device whose vendor is recognised from its SNMP sysDescr or device template; other hosts still match every vendor
+* feature: Recommendations are matched only against the sending device's vendor (and vendor-neutral records) when the syslog host is a Cacti device whose vendor is recognised from its SNMP sysDescr or device template and has records; other hosts match every vendor, except that all-digit identifiers then match only vendor-neutral records
 
 * feature: Preserve legacy DATETIME logtime history (including TO_DAYS partitioned tables) in cli/upgrade_partitioning.php with --source-time-zone=<zone>. Before any change the zone must be known to PHP/Cacti and the Syslog database, both must agree on its offsets across the stored history, and every value must exist in it. Stored and removed messages are then renamed and copied in verified batches in that zone, and a retry must reuse the same zone
 * issue#472: Purge Syslog Devices (Utilities) crashed with "Call to undefined function syslog_db_execute()" because the hook never connected to the Syslog database; it now connects first, reports connection failures, qualifies the Syslog database, and uses NOT EXISTS so a NULL host_id no longer prevents purging

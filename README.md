@@ -789,17 +789,27 @@ which returns JSON.
   match the message word as written: `%LINK-3-UPDOWN` matches
   `%LINK-3-UPDOWN`, not `LINK-3-UPDOWN`. A recommendation stored as
   `LINK-3-UPDOWN` matches only that unprefixed message word.
-* When the syslog host is a Cacti device whose vendor can be recognised, only
-  that vendor's recommendations and those with an empty vendor are checked.
+* The checked vendors depend on the device that sent the message:
+  * When the syslog host is a Cacti device whose vendor is recognised, and the
+    table holds recommendations for that vendor, only that vendor's
+    recommendations and those with an empty vendor are checked.
+  * Otherwise every vendor is checked, except that an identifier made only of
+    digits (such as an HPE AOS-CX event number or a Fortinet log ID) matches
+    only recommendations with an empty vendor. A number in an unrelated
+    message, such as a port or process ID, would otherwise match it. To match
+    a numeric code from any sender, store it without a vendor.
+
   The vendor is read from the device's SNMP system description
-  (`snmp_sysDescr`), or from its device template name when that is empty. The
-  syslog host is matched to a device by description or hostname. This
-  prevents short codes such as HPE AOS-CX event numbers from matching the same
-  number in another vendor's message. The recognised vendors use the names of
-  the bundled catalogues: Arista, Cisco, Dell, Fortinet, HPE, Huawei, Juniper,
-  MikroTik, Nokia, NVIDIA and Palo Alto Networks.
-  Otherwise all vendors are checked. When several recommendations match, the
-  longest identifiers are shown first, up to three.
+  (`snmp_sysDescr`), or from its device template name when the description
+  names no recognised vendor. The host name in a Net-SNMP description
+  (`Linux <hostname> ...`) is ignored. The syslog host is matched to a device by
+  description or hostname, ignoring case; when several devices match and they
+  name different vendors, or any of them is unrecognised, the host is treated
+  as unrecognised. The recognised vendors use the names of the bundled
+  catalogues: Arista, Cisco, Dell, Fortinet, HPE, Huawei, Juniper, MikroTik,
+  Nokia, NVIDIA and Palo Alto Networks.
+* When several recommendations match, the longest identifiers are shown first,
+  up to three.
 * Identifiers containing other characters, such as the `#` slot placeholder or
   the `|` alternatives in some vendor documentation (`%ASA|PIX-3-331001`), are
   stored and exported but can never match. The bundled data has 860 of them;
@@ -838,7 +848,9 @@ Further manually importable catalogues are built from each vendor's public
 message references. None of them is installed automatically, and none is
 complete. Explanations and actions are condensed from the vendor text; where a
 vendor documents no action the field is empty. The `reference` field of each
-record links to its source.
+record links to its source. [RECOMMENDATION_SOURCES.md](docs/RECOMMENDATION_SOURCES.md)
+lists the source documents, versions and retrieval dates of each file, and
+`contrib/recommendations/build_catalogues.py` is the final build step.
 
 | File | Vendor | Records | Coverage and identifier form |
 |------|--------|---------|------------------------------|
@@ -849,12 +861,12 @@ record links to its source.
 | `docs/nvidia.json.gz` | NVIDIA | 251 | Cumulus Linux 5.18 switchd messages keyed on the function name they contain, FRRouting `[EC nnnnnnnn]` error codes, and the GPU `Xid`/NVSwitch `SXid` families. |
 | `docs/nokia.json.gz` | Nokia | 2,016 | SR OS Log Events Guide 25.10, `APP-SEVERITY-EventName-EventID` such as `SYSTEM-WARNING-tmnxStateChange-2009`, using each event's default severity. An event whose severity was changed on the router does not match. 7210 SAS and SR Linux are not included. |
 | `docs/fortinet.json.gz` | Fortinet | 1,462 | FortiOS 7.6.8 Log Message Reference, every traffic, event and UTM log ID as the 10-digit `logid` sent on the wire (`logid="0100032001"`). The full ID is built from the documented type, subtype and message ID. Fortinet documents no recommended actions. |
-| `docs/paloalto.json.gz` | Palo Alto Networks | 398 | PAN-OS System log event IDs from the Syslog Severity Reference, such as `tunnel-status-down`. Generic event IDs (`general`, `auth`) are excluded. Few records have a recommended action. |
+| `docs/paloalto.json.gz` | Palo Alto Networks | 364 | PAN-OS System log event IDs from the Syslog Severity Reference, such as `tunnel-status-down`. Generic event IDs (`general`, `auth`) and event IDs that are ordinary networking phrases other vendors also log (`link-down`, `admin-down`, `auth-fail`, `lacp-up`) are excluded. Few records have a recommended action. |
 | `docs/mikrotik.json.gz` | MikroTik | 11 | RouterOS has no message IDs and MikroTik publishes no message catalogue; only documented messages that carry a distinctive word are included (for example `hashtype`, `auto-initialization`, `hw-limit`, `bpdu-guard`, `CTSYNC`, `deassigned`). |
 
-Numeric identifiers, such as HPE event IDs, Fortinet log IDs and FRRouting error codes, can match
-any number in a message. They are only reliable when the sending device is a
-Cacti device whose vendor is recognised (see the matching rules above).
+Numeric identifiers, such as HPE event IDs, Fortinet log IDs and FRRouting
+error codes, only match messages from a Cacti device whose vendor is recognised
+(see the matching rules above).
 
 The file picker accepts `.json` and `.json.gz`; pasted JSON is also supported.
 Exports (selected rows or the current filters) download as `.json.gz` by default.

@@ -2763,16 +2763,7 @@ function syslog_messages(string $tab = 'syslog'): void {
 		}
 	}
 
-	$recommendations = syslog_recommendations_for_messages(
-		array_map(
-			static fn (array $row): string => (string) ($row[$tab === 'syslog' ? 'message' : 'logmsg'] ?? ''),
-			$syslog_messages
-		),
-		array_map(
-			static fn (array $row): string => (string) ($tab === 'syslog' ? ($hosts[$row['host_id'] ?? ''] ?? '') : ($row['host'] ?? '')),
-			$syslog_messages
-		)
-	);
+	$recommendations = syslog_recommendations_for_rows($syslog_messages, $tab, $hosts);
 	$recommendation_header = [
 		'display' => '<i class="fa fa-lightbulb syslogRecommendationHeading" role="img" aria-label="' . __esc('Recommendations', 'syslog') . '"></i>',
 		'align'   => 'center',
