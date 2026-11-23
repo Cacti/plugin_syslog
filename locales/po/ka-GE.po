@@ -3794,7 +3794,7 @@ msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message
 msgstr ""
 
 #: syslog_recommendations.php
-msgid "All vendors are checked. When several recommendations match, the longest identifiers are shown first, up to three."
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
 msgstr ""
 
 #: syslog_recommendations.php
