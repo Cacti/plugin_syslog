@@ -567,7 +567,9 @@ function syslog_recommendation_vendor_from_device(string $sys_descr, string $tem
  * Resolve the catalogue vendor of syslog hosts through their Cacti devices.
  *
  * A syslog host matches a device by description (the name the collector
- * rewrites known hosts to) or by hostname. Results are cached for the request.
+ * rewrites known hosts to) or by hostname. A vendor is only returned when
+ * every matching device names the same recognised vendor; ambiguous or
+ * unrecognised matches leave the host unscoped. Results are cached for the request.
  *
  * @param list<string> $hosts The syslog host names.
  *
@@ -576,15 +578,28 @@ function syslog_recommendation_vendor_from_device(string $sys_descr, string $tem
 function syslog_recommendation_host_vendors(array $hosts): array {
 	static $cache = [];
 
+	// Fold case and trailing spaces the way the default case-insensitive,
+	// PAD SPACE collations compare, so database matches map back to the sender.
+	$fold = static function (string $name): string {
+		$name = rtrim($name, ' ');
+
+		return function_exists('mb_strtolower') ? mb_strtolower($name, 'UTF-8') : strtolower($name);
+	};
+
 	$hosts = array_values(array_unique(array_filter(array_map('strval', $hosts), static fn ($host) => $host !== '')));
 	$todo  = array_values(array_filter($hosts, static fn ($host) => !array_key_exists($host, $cache)));
 
 	foreach (array_chunk($todo, 500) as $batch) {
-		$found = array_fill_keys($batch, '');
-		$marks = implode(',', array_fill(0, count($batch), '?'));
+		$requested = [];
+		$vendors   = [];
+		$marks     = implode(',', array_fill(0, count($batch), '?'));
+
+		foreach ($batch as $host) {
+			$requested[$fold($host)][] = $host;
+		}
 
 		foreach (['description', 'hostname'] as $column) {
-			$rows = db_fetch_assoc_prepared("SELECT h.$column AS name, h.snmp_sysDescr, ht.name AS template
+			$rows = db_fetch_assoc_prepared("SELECT h.id, h.$column AS name, h.snmp_sysDescr, ht.name AS template
 				FROM host AS h
 				LEFT JOIN host_template AS ht ON ht.id = h.host_template_id
 				WHERE h.$column IN ($marks)
@@ -592,15 +607,27 @@ function syslog_recommendation_host_vendors(array $hosts): array {
 				$batch, false);
 
 			foreach (is_array($rows) ? $rows : [] as $row) {
-				$name = (string) $row['name'];
+				$key = $fold((string) $row['name']);
 
-				if (isset($found[$name]) && $found[$name] === '') {
-					$found[$name] = syslog_recommendation_vendor_from_device((string) ($row['snmp_sysDescr'] ?? ''), (string) ($row['template'] ?? ''));
+				if (isset($requested[$key])) {
+					// Keyed by device so a device matched by both columns counts once.
+					$vendors[$key][(int) $row['id']] = syslog_recommendation_vendor_from_device(
+						(string) ($row['snmp_sysDescr'] ?? ''),
+						(string) ($row['template'] ?? '')
+					);
 				}
 			}
 		}
 
-		$cache = array_merge($cache, $found);
+		foreach ($requested as $key => $names) {
+			$distinct = array_values(array_unique($vendors[$key] ?? ['']));
+			$vendor   = count($distinct) === 1 ? (string) $distinct[0] : '';
+
+			// Assign one by one: array_merge() would renumber numeric host names.
+			foreach ($names as $name) {
+				$cache[$name] = $vendor;
+			}
+		}
 	}
 
 	$out = [];

@@ -657,8 +657,8 @@ it('scopes recommendations to the vendor of the sending Cacti device', function 
 		return $statement->fetchAll(PDO::FETCH_ASSOC);
 	});
 	$devices = [
-		'description' => ['vendor-scope-hpe' => 'HPE Comware Platform Software'],
-		'hostname'    => ['vendor-scope-cisco.example.com' => 'Cisco IOS Software']
+		'description' => ['vendor-scope-hpe' => [1, 'HPE Comware Platform Software']],
+		'hostname'    => ['vendor-scope-cisco.example.com' => [2, 'Cisco IOS Software']]
 	];
 	test_override('db_fetch_assoc_prepared', function ($sql, $params) use ($devices) {
 		$column = str_contains($sql, 'WHERE h.description') ? 'description' : 'hostname';
@@ -666,7 +666,7 @@ it('scopes recommendations to the vendor of the sending Cacti device', function 
 
 		foreach ($params as $name) {
 			if (isset($devices[$column][$name])) {
-				$rows[] = ['name' => $name, 'snmp_sysDescr' => $devices[$column][$name], 'template' => ''];
+				$rows[] = ['id' => $devices[$column][$name][0], 'name' => $name, 'snmp_sysDescr' => $devices[$column][$name][1], 'template' => ''];
 			}
 		}
 
@@ -697,6 +697,32 @@ it('scopes recommendations to the vendor of the sending Cacti device', function 
 	}
 
 	expect(array_column(syslog_recommendations_lookup('Port 4701 changed state', 3, 'vendor-scope-hpe'), 'vendor'))->toBe(['HPE']);
+});
+
+it('resolves host vendors across case, numeric names and ambiguous device matches', function () {
+	// Rows as a case-insensitive Cacti database returns them for the requested names.
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$rows = str_contains($sql, 'WHERE h.description')
+			? [
+				['id' => 11, 'name' => 'Case-Edge-SW01', 'snmp_sysDescr' => 'Arista Networks EOS', 'template' => ''],
+				['id' => 12, 'name' => '4242', 'snmp_sysDescr' => 'Huawei Versatile Routing Platform', 'template' => ''],
+				['id' => 13, 'name' => 'shared-name', 'snmp_sysDescr' => 'Cisco IOS Software', 'template' => ''],
+				['id' => 15, 'name' => 'same-vendor', 'snmp_sysDescr' => 'Juniper Networks JUNOS', 'template' => ''],
+				['id' => 17, 'name' => 'partly-known', 'snmp_sysDescr' => 'Nokia 7750 SR', 'template' => '']
+			]
+			: [
+				['id' => 14, 'name' => 'SHARED-NAME', 'snmp_sysDescr' => 'HPE Comware Platform Software', 'template' => ''],
+				['id' => 15, 'name' => 'same-vendor', 'snmp_sysDescr' => 'Juniper Networks JUNOS', 'template' => ''],
+				['id' => 16, 'name' => 'same-vendor', 'snmp_sysDescr' => 'Juniper Networks JUNOS', 'template' => ''],
+				['id' => 18, 'name' => 'partly-known', 'snmp_sysDescr' => 'Linux server', 'template' => '']
+			];
+
+		return array_values(array_filter($rows, static fn ($row) => in_array(strtolower($row['name']), array_map('strtolower', $params), true)));
+	});
+
+	expect(syslog_recommendation_host_vendors(['case-edge-sw01', '4242', 'shared-name', 'same-vendor', 'partly-known', '7']))
+		->toBe(['case-edge-sw01' => 'Arista', '4242' => 'Huawei', 'shared-name' => '', 'same-vendor' => 'Juniper', 'partly-known' => '', '7' => ''])
+		->and(syslog_recommendation_host_vendors(['4242', '7']))->toBe(['4242' => 'Huawei', '7' => '']);
 });
 
 it('does not query recommendations for an empty page or messages without candidates', function () {
