@@ -387,8 +387,17 @@ it('ships compressed catalogues that import without losing records or fields', f
 		->and(hash('sha256', json_encode($parsed['records'])))->toBe($digest)
 		->and(array_unique(array_column($parsed['records'], 'vendor')))->toBe([$vendor]);
 })->with([
-	'Cisco'   => ['cisco.json.gz', 'Cisco', 27318],
-	'Juniper' => ['juniper.json.gz', 'Juniper', 14]
+	'Cisco'              => ['cisco.json.gz', 'Cisco', 27318],
+	'Juniper'            => ['juniper.json.gz', 'Juniper', 14],
+	'Arista'             => ['arista.json.gz', 'Arista', 1047],
+	'Dell'               => ['dell.json.gz', 'Dell', 7142],
+	'HPE'                => ['hpe.json.gz', 'HPE', 4883],
+	'Huawei'             => ['huawei.json.gz', 'Huawei', 3686],
+	'NVIDIA'             => ['nvidia.json.gz', 'NVIDIA', 251],
+	'Nokia'              => ['nokia.json.gz', 'Nokia', 2016],
+	'Fortinet'           => ['fortinet.json.gz', 'Fortinet', 1462],
+	'Palo Alto Networks' => ['paloalto.json.gz', 'Palo Alto Networks', 364],
+	'MikroTik'           => ['mikrotik.json.gz', 'MikroTik', 11]
 ]);
 
 it('streams compressed exports across database pages without changing the filters or records', function () {
@@ -580,7 +589,7 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 		: 'CREATE TABLE syslog_recommendations (identifier TEXT COLLATE BINARY, vendor TEXT, component TEXT,
 			severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)';
 	$db->exec($schema);
-	$db->exec("INSERT INTO syslog_recommendations (identifier) VALUES ('%LINK-3-UPDOWN'), ('%LINK-3-UPDOWN'), ('4625'), ('B')");
+	$db->exec("INSERT INTO syslog_recommendations (identifier, vendor) VALUES ('%LINK-3-UPDOWN', ''), ('%LINK-3-UPDOWN', ''), ('4625', ''), ('B', '')");
 	$queries = [];
 	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db, &$queries) {
 		$queries[] = $params;
@@ -603,9 +612,11 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 	];
 	$expected = ['stored' => $lowercase_matches, 'removed' => true, 'alert' => true, 'short' => true, 'plain' => false, 'suffix' => false, 'empty' => false];
 
+	// Words share one query; the bare number is checked against vendor-neutral records only.
 	expect(syslog_recommendations_for_messages($messages))->toBe($expected)
-		->and($queries)->toHaveCount(1)
-		->and($queries[0])->toContain('4625')
+		->and($queries)->toHaveCount(2)
+		->and($queries[0])->not->toContain('4625')
+		->and($queries[1])->toBe(['4625'])
 		->and(array_keys($queries[0], '%link-3-updown', true))->toHaveCount(1);
 
 	foreach ($messages as $key => $message) {
@@ -615,6 +626,144 @@ it('batch-checks page messages with the same matching rules as the flyout', func
 	'case-insensitive catalogue' => [true],
 	'case-sensitive catalogue'   => [false]
 ]);
+
+it('names the catalogue vendor from a device sysDescr or its template', function (string $descr, string $template, string $vendor) {
+	expect(syslog_recommendation_vendor_from_device($descr, $template))->toBe($vendor);
+})->with([
+	'Arista'           => ['Arista Networks EOS version 4.30.1F running on an Arista Networks DCS-7050SX3-48YC8', '', 'Arista'],
+	'HPE Comware'      => ['HPE Comware Platform Software, Software Version 7.1.070', '', 'HPE'],
+	'Aruba AOS-CX'     => ['Aruba JL659A 6300M 48SR5 CL6 PoE 4SFP56 Swch FL.10.13.1000', '', 'HPE'],
+	'Huawei VRP'       => ['S5735-L48T4S-A1 Huawei Versatile Routing Platform Software VRP (R) software', '', 'Huawei'],
+	'Cumulus on Dell'  => ['Cumulus Linux version 5.9.1 running on Dell EMC S5248F-ON', '', 'NVIDIA'],
+	'Dell OS10'        => ['Dell EMC Networking OS10 Enterprise. System Description: OS10 Enterprise.', '', 'Dell'],
+	'Cisco'            => ['Cisco IOS Software [Cupertino], Catalyst L3 Switch Software', '', 'Cisco'],
+	'Juniper'          => ['Juniper Networks, Inc. ex4300-48p Ethernet Switch, kernel JUNOS 21.4R3', '', 'Juniper'],
+	'Nokia SR OS'      => ['TiMOS-C-23.10.R1 cpm/hops64 Nokia 7750 SR Copyright (c) 2000-2023 Nokia.', '', 'Nokia'],
+	'FortiGate'        => ['FortiGate-60F v7.4.3,build2573,240201 (GA.F)', '', 'Fortinet'],
+	'Palo Alto'        => ['Palo Alto Networks PA-3200 series firewall', '', 'Palo Alto Networks'],
+	'MikroTik'         => ['RouterOS RB4011iGS+', '', 'MikroTik'],
+	'template only'    => ['', 'Arista Switch', 'Arista'],
+	'template fallback' => ['Hardware: Intel64 Family 6 - Software: Windows Version 6.3', 'Palo Alto Firewall', 'Palo Alto Networks'],
+	'ProCurve model'   => ['HP J9772A 2530-48G-PoEP Switch, revision YA.16.10.0009', '', 'HPE'],
+	'Net-SNMP host'    => ['Linux cisco-syslog01 5.15.0-91-generic #101-Ubuntu SMP x86_64', '', ''],
+	'HP server name'   => ['Linux hp-dl380-01 6.1.0 #1 SMP x86_64', '', ''],
+	'Alcatel-Lucent'   => ['Alcatel-Lucent Enterprise OS6860E-48 8.7.354.R01 GA', '', ''],
+	'unknown'          => ['Linux web01 6.1.0 x86_64', 'Generic SNMP Device', '']
+]);
+
+it('scopes recommendations to the vendor of the sending Cacti device', function () {
+	$db = new PDO('sqlite::memory:');
+	$db->exec('CREATE TABLE syslog_recommendations (identifier TEXT, vendor TEXT, component TEXT,
+		severity INTEGER, message TEXT, explanation TEXT, recommended_action TEXT, reference TEXT)');
+	$db->exec("INSERT INTO syslog_recommendations (identifier, vendor, explanation) VALUES
+		('4701', 'HPE', 'An HPE event.'), ('%LINK-3-UPDOWN', 'Cisco', 'A link changed state.'), ('GENERIC_CODE', '', 'Any vendor.')");
+	test_override('syslog_db_fetch_assoc_prepared', function ($sql, $params) use ($db) {
+		$statement = $db->prepare(str_replace('CHAR_LENGTH(', 'LENGTH(', $sql));
+		$statement->execute($params);
+
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	});
+	test_override('syslog_db_fetch_cell_prepared', function ($sql, $params) use ($db) {
+		$statement = $db->prepare($sql);
+		$statement->execute($params);
+
+		return $statement->fetchColumn();
+	});
+	$devices = [
+		'description' => ['vendor-scope-hpe' => [1, 'HPE Comware Platform Software'], 'vendor-scope-arista' => [3, 'Arista Networks EOS']],
+		'hostname'    => ['vendor-scope-cisco.example.com' => [2, 'Cisco IOS Software']]
+	];
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) use ($devices) {
+		$column = str_contains($sql, 'WHERE h.description') ? 'description' : 'hostname';
+		$rows   = [];
+
+		foreach ($params as $name) {
+			if (isset($devices[$column][$name])) {
+				$rows[] = ['id' => $devices[$column][$name][0], 'name' => $name, 'snmp_sysDescr' => $devices[$column][$name][1], 'template' => ''];
+			}
+		}
+
+		return $rows;
+	});
+
+	$messages = [
+		'hpe'      => 'Event|4701|LOG_INFO|AMM|1/1|Port 1/1/1 is up',
+		'cisco'    => 'Port 4701 changed state',
+		'generic'  => 'GENERIC_CODE raised',
+		'unknown'  => 'Port 4701 changed state',
+		'unk_word' => '%LINK-3-UPDOWN: Interface Gi0/1, changed state to down',
+		'cisco_id' => '%LINK-3-UPDOWN: Interface Gi0/1, changed state to down',
+		'arista'   => '%LINK-3-UPDOWN: Interface Ethernet1, changed state to down'
+	];
+	$hosts = [
+		'hpe'      => 'vendor-scope-hpe',
+		'cisco'    => 'vendor-scope-cisco.example.com',
+		'generic'  => 'vendor-scope-cisco.example.com',
+		'unknown'  => 'vendor-scope-not-in-cacti',
+		'unk_word' => 'vendor-scope-not-in-cacti',
+		'cisco_id' => 'vendor-scope-hpe',
+		'arista'   => 'vendor-scope-arista'
+	];
+	// A recognised vendor without records (Arista here) is not scoped, so it keeps
+	// matching other vendors' words; unknown senders never match vendor numbers.
+	$expected = ['hpe' => true, 'cisco' => false, 'generic' => true, 'unknown' => false, 'unk_word' => true, 'cisco_id' => false, 'arista' => true];
+
+	expect(syslog_recommendations_for_messages($messages, $hosts))->toBe($expected);
+
+	foreach ($messages as $key => $message) {
+		expect(syslog_recommendations_lookup($message, 3, $hosts[$key]) !== [])->toBe($expected[$key]);
+	}
+
+	expect(array_column(syslog_recommendations_lookup('Port 4701 changed state', 3, 'vendor-scope-hpe'), 'vendor'))->toBe(['HPE']);
+});
+
+it('resolves host vendors across case, numeric names and ambiguous device matches', function () {
+	// Rows as a case-insensitive Cacti database returns them for the requested names.
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) {
+		$rows = str_contains($sql, 'WHERE h.description')
+			? [
+				['id' => 11, 'name' => 'Case-Edge-SW01', 'snmp_sysDescr' => 'Arista Networks EOS', 'template' => ''],
+				['id' => 12, 'name' => '4242', 'snmp_sysDescr' => 'Huawei Versatile Routing Platform', 'template' => ''],
+				['id' => 13, 'name' => 'shared-name', 'snmp_sysDescr' => 'Cisco IOS Software', 'template' => ''],
+				['id' => 15, 'name' => 'same-vendor', 'snmp_sysDescr' => 'Juniper Networks JUNOS', 'template' => ''],
+				['id' => 17, 'name' => 'partly-known', 'snmp_sysDescr' => 'Nokia 7750 SR', 'template' => '']
+			]
+			: [
+				['id' => 14, 'name' => 'SHARED-NAME', 'snmp_sysDescr' => 'HPE Comware Platform Software', 'template' => ''],
+				['id' => 15, 'name' => 'same-vendor', 'snmp_sysDescr' => 'Juniper Networks JUNOS', 'template' => ''],
+				['id' => 16, 'name' => 'same-vendor', 'snmp_sysDescr' => 'Juniper Networks JUNOS', 'template' => ''],
+				['id' => 18, 'name' => 'partly-known', 'snmp_sysDescr' => 'Linux server', 'template' => '']
+			];
+
+		return array_values(array_filter($rows, static fn ($row) => in_array(strtolower($row['name']), array_map('strtolower', $params), true)));
+	});
+
+	expect(syslog_recommendation_host_vendors(['case-edge-sw01', '4242', 'shared-name', 'same-vendor', 'partly-known', '7']))
+		->toBe(['case-edge-sw01' => 'Arista', '4242' => 'Huawei', 'shared-name' => '', 'same-vendor' => 'Juniper', 'partly-known' => '', '7' => ''])
+		->and(syslog_recommendation_host_vendors(['4242', '7']))->toBe(['4242' => 'Huawei', '7' => '']);
+});
+
+it('passes each displayed row host to the recommendation check on both log tabs', function () {
+	$seen = [];
+	test_override('db_fetch_assoc_prepared', function ($sql, $params) use (&$seen) {
+		$seen = array_merge($seen, $params);
+
+		return [];
+	});
+	test_override('syslog_db_fetch_assoc_prepared', static fn ($sql, $params) => array_map(static fn ($id) => ['identifier' => $id], $params));
+
+	$stored = [
+		'a' => ['host_id' => 5, 'message' => 'STORED_CODE one'],
+		'b' => ['host_id' => 9, 'message' => 'plain text']
+	];
+	$alerts = [
+		'c' => ['host' => 'row-host-alert', 'logmsg' => 'ALERT_CODE two', 'message' => 'not this column']
+	];
+
+	expect(syslog_recommendations_for_rows($stored, 'syslog', [5 => 'row-host-stored']))->toBe(['a' => true, 'b' => true])
+		->and(syslog_recommendations_for_rows($alerts, 'alerts'))->toBe(['c' => true])
+		->and($seen)->toContain('row-host-stored')->toContain('row-host-alert')->not->toContain('not this column');
+});
 
 it('does not query recommendations for an empty page or messages without candidates', function () {
 	test_override('syslog_db_fetch_assoc_prepared', static function () {
