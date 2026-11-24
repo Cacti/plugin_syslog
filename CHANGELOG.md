@@ -6,6 +6,7 @@
 
 --- develop ---
 
+* issue#480: Split the syslog upgrade notice in `includes/installer.php` into separate balanced `<p>` translation strings and regenerate `locales/po/cacti.pot`
 * feature: Add manually importable recommendation catalogues for Arista, Dell, Fortinet, HPE, Huawei, MikroTik, Nokia, NVIDIA and Palo Alto Networks in docs/<vendor>.json.gz, built from each vendor's public message references
 * feature: Recommendations are matched only against the sending device's vendor (and vendor-neutral records) when the syslog host is a Cacti device whose vendor is recognised from its SNMP sysDescr or device template and has records; other hosts match every vendor, except that all-digit identifiers then match only vendor-neutral records
 
