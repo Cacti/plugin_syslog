@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Xhosa\n"
+"Language: xh-ZA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d imizuzu"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d iyure"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "iiyure ezi-%d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "usuku olu-%d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "iintsuku ezi-%d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d iveki"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d iiveki"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d inyanga"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d iinyanga"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d unyaka"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d iminyaka"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Itshifu yaseMini"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Olu Suku"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Le Veki"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Le Nyanga"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Lo Nyaka"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Usuku Oludlulileyo"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Iveki Edlulileyo"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Inyanga Edlulileyo"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Unyaka Odlulileyo"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Ukukhuphela i-Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Yabelana nabasebenzisi…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Yabelana namaqela…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Ingxakeko"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Kubucayi"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Isaziso"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Imposiso"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Isilumkiso"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Isaziso"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Ulwazi"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Lungisa iimpazamo"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Eyonika ulwazi"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Ukugcina akuphumelelanga.  Abaqokeleli beDatha abakude kwiMowudi yoNgqamaniso abavumelekanga ukugcina iMithetho.  Gcina kwiSeva ePhambili ye-Cacti endaweni yoko."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Nceda usebenzise uMxhasi we-imeyile we-HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Umthwalo wokungenisa umbhalo ugqitha ubungakanani obuphezulu"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Ayikwazi ukufunda ifayile yokungenisa elayishiweyo. Jonga ifayile kunye nomda wobungakanani bokulayisha."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Khetha ifayile yokungenisa okanye uncamathisele iziqulatho zayo phambi kokungenisa."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Iiteyibhile ze-Syslog azahlulwanga.  Iiteyibhile zesiqhelo (ezingahlulwanga) azisakhuthazwa, kwaye iiteyibhile ezahluliweyo ziyafuneka kufakelo olutsha.  Idatha yakho iya kuqhubeka iqokelelwa, kodwa kufuneka ufuduse itheyibhile ye-syslog uyise kwisakhiwo esahluliweyo."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Ilindele umsebenzi wokusetyenzwa ogqityiweyo."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Ukucubungula kugqitywa phakathi kolibaziseko oluvumelekileyo."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Akukho kuqhutywa kwenkqubo kugqityiweyo ngaphezu kwemizuzwana engama-%d."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Imiyalezo engenayo ikwimida eqwalaselweyo."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Iimetrikhi zomgca ongenayo azifumaneki."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Umthwalo osalindileyo ongenayo wemiyalezo ubuncinane eyi-%s ugqitha umda we-%s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Ixesha lomyalezo ongenayo omdala kakhulu alifumaneki."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Imiyalezo engasetyenzwanga midala kunemizuzwana eyi-%d."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Ungqamaniso aluvulwanga kulo mqokeleli."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Ungqamaniso lungaphakathi kolibaziseko oluvumelekileyo."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Iimetriki zelayini yongqamaniso azifumaneki."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Ixesha lerekhodi lokungqamanisa elidala kakhulu alifumaneki."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Ungqamaniso aluphumelelanga okanye iirekhodi ezikwilayini zigqithise ulibaziseko oluvumelekileyo."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Ulondolozo lwephathishini aluvalwanga."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Ulondolozo lwephathishini luvaliwe: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Impilo yomjelo we-Syslog - umqokeleli %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "I-pipeline ye-Syslog ibuyele esiqhelweni."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Uyilo lwephathishini lwe-%s alusebenzi okanye aluphelelanga; ulondolozo lwephathishini lumisiwe. Qinisekisa imethadatha yephathishini nge-SHOW CREATE TABLE kwaye, ukuba kuyimfuneko, wakhe kwakhona iiphathishini; ukubhala kuyaqhubeka kwiphathishini yokhuseleko ye-dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "isithuba secandelo esiseleyo: icandelo/amacandelo ali-%d"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "akukho kulibaziseka kokugcinwa"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "ukuncitshiswa kokugcinwa kulibazisiwe de kubuyiselwe umda wexesha elizayo"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "iirekhodi ezintsha ziyaqokelelana kwicandelo lokhuseleko le-dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "umda wokubuyisela ngokusebenza ngakunye ufikelelwe"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "ukwenziwa kwecandelo akuphumelelanga"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Inqanaba lokwahlula elingaziwayo; khetha NgeYure okanye NgeMini."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Ixesha lokugcina le-Syslog alisebenzi."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Ukwahlula ngeeyure akunakusetyenziswa kunye nogcino olungenasiphelo, nto leyo eya kufuna inani elingenasiphelo lamacandelo. Khetha ixesha logcino okanye ukwahlula ngemihla."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Ulwahlulo lwe-%s oluneentsuku ezi-%s zokugcinwa kunye nefestile yokudala kwangaphambili yeentsuku ezi-%s lufuna izahlulo ezi-%s ngetheyibhile nganye, nto leyo edlula umda wale seva yedathabheyisi wezahlulo ezi-%s. Nciphisa ixesha lokugcinwa, ufinyeze ifestile yokudala kwangaphambili, okanye ukhethe ulwahlulo lwemihla ngemihla."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Imihla ngemihla"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Ngeyure"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Iitafile zisasebenzisa izahlulo ze-%s de i-cli/upgrade_partitioning.php izakhe kwakhona."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Inqanaba lokwahlulahlula kweetafile ze-Syslog ezikhoyo alifundekanga."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Ukubuyisela ulwahlulo ngokuzenzekelayo kuhlehlisiwe: ubungakanani be-dMaxValue abufumaneki; ungenelelo lomqhubi luyafuneka."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Ukubuyisela ulwahlulo ngokuzenzekelayo kuhlehlisiwe: i-dMaxValue inemigca eqikelelwa kwi-%s kunye nee-byte ezi-%s; imida yimigca eyi-100000 kunye nee-byte eziyi-134217728. Ungenelelo lomqhubi luyafuneka."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Uhlobo lomgaqo olungaziwayo."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Ulwabiwo lwemimandla engenayo oluqwalaselweyo alusebenzi."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "I-facility yalo mgaqo ayikho kwitheyibhile yereferensi okwangoku."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Uhlobo lokungqamana komgaqo olungaziwayo."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Umgaqo awuhlanganiselwanga kumbuzo."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Umbuzo wemboniselo yangaphambili awukwazanga ukuvavanywa."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Isihluzi sokujonga kwangaphambili kwembali asikwazanga ukuqulunqwa."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Umbuzo wokujonga kwangaphambili kwembali awukwazanga ukuvavanywa."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Isampuli yemboniselo yangaphambili ayikwazanga kufundwa."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Ujongo lwangaphambili lweNtetho ye-SQL lujonga imiyalezo engenayo esemgceni kuphela. Imiyalezo esele iqhutywe ayikhangelwa. Uvavanyo aluthumeli zialam."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Imvume yaliwe."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Isicelo asisebenzi. Nceda uzame kwakhona."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Umgaqo awunasivakalisi songqamaniso sokuvavanya."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Ibinzana lokuthelekisa lide kakhulu ukuba livavanywe."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Akwaziwa"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Isilumkiso soMda we-Syslog se-Cacti '%s' seHosti '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Isilumkiso soMda we-Syslog se-Cacti '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Igama leSaziso"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Ubukhali"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Umda"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Inani"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Umtya wokuTshatisa"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Isilumkiso se-Syslog se-Cacti '%s' seHosti '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Isilumkiso se-Syslog se-Cacti '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Igama Lomamkeli"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Umhla"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Inqanaba"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Umyalezo"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "ISILUMKISO: Isilumkiso soMda we-Syslog sikhutshiwe kwiHosti '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "ISILUMKISO: Isilumkiso soMda we-Syslog sikhutshiwe"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Igama:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Ubunzima:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Umda:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Inani:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Umtya woMyalezo:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Igama lehosti:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Umhla:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Inqanaba:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Umyalezo:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Ihosti:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Ubunzima:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "I-alamu yeSiganeko - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Inani:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Ihosti"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Ingxelo yeSiganeko - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Imiboniso yangaphambili yengxelo ikhangela imiyalezo egciniweyo yakutshanje eyi-%d; ingxelo ngokwayo igubungela lonke ixesha layo. Uvavanyo aluthumeli i-imeyile."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Iziphumo eziqokelelweyo azifumaneki okanye ziphelelwe lixesha. Hlaziya iziphumo uze uzame kwakhona."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Imiyalezo yeqela ayikwazanga ukulayishwa."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Hayi"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Ewe"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Wonke Umbhalo"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Lungelelanisa iKholam"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d iimpawu"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Umcebisi woHlaziya i-Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Phucula i-Syslog ukusuka ku-%s ukuya ku-%s? Imiyalezo nemithetho esele ikhona iya kugcinwa. Utshintsho lwe-schema lunokuthatha ixesha."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Loluphi uhlobo lokuhlaziya/lokufakela ofuna ukulusebenzisa"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Xa uneetapile ezinkulu kakhulu, ukwenza i-Truncate kuya kukhawuleza kakhulu. Hayi, xa uneetheyibhile ezinkulu kakhulu, ukwenza i-Truncate kuya kukhawuleza kakhulu. Ukuba unexhala ngedatha yogcino, unokukhetha i-Inline, eya kumisa isikhangeli sakho ngexesha lolu phuculo, okanye imvelaphi, eya kudala inkqubo yemvelaphi ukuzisa idatha yakho endala ye-Syslog kwitheyibhile ye-backup ukuya kwifomathi entsha ye-Syslog. Kwakhona le nkqubo inokuthatha iiyure ezininzi. I-Truncate ilahla i-Syslog egciniweyo kunye nemiyalezo esusiweyo kuphela; imigaqo yesilumkiso, yokususa kunye neyengxelo ihlala igcinwa."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Susa okuqukethwe kwiTheyibhile ye-Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Uhlaziyo lwangaphakathi"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Uhlaziyo olungasemva"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Injini yoGcino lweDathabheyisi"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Injini yokugcina yeetafile zokuhlalutya. Kuphela ziinjini zokugcina ze-InnoDB kunye, kwi-MariaDB, i-Aria ezixhaswayo. Naluphi na ukhetho lwe-Remote Data Collector lufuna i-InnoDB; iindibaniselwano ezingahambelaniyo azinakuthunyelwa."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Ugcino lwe-InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Ugcino lwe-Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Ukuchaneka kweTimestamp"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Ukuchaneka kwe-millisecond kugcina izitampu zexesha ze-syslog ezingaphantsi komzuzwana kwikholamu ye-TIMESTAMP(3) kwaye kufumaneka kuphela kwi-MariaDB. Ukuchaneka komzuzwana kusebenzisa ikholamu eqhelekileyo ye-TIMESTAMP. Kwinkqubo esebenzayo, sebenzisa cli/upgrade_partitioning.php --convert-ms ngexesha lolondolozo ukuguqula imiyalezo ekhoyo ngaphandle kokuyilahla."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "I-Millisecond - TIMESTAMP(3) (MariaDB kuphela)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Umzuzwana - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Ukulungiswa kweMiyalezo eKude"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Vula ukuCubungula iMyalezo yoMqokeleli weDatha oKude"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Ukuba abaQokeleli beDatha abaKude bakho baneziseko zabo zedatha ze-Syslog kwaye becubungula imiyalezo yabo ngokuzimeleyo, khetha le bhokisi yokukhangela. Ngokukhetha le Bhokisi yokukhangela, abaQokeleli beDatha abaKude bakho baya kufuna ukugcina eyabo ifayile engu-'config_local.php' ukuze bazise i-Syslog ukuba isebenzise isiseko sedatha esizimeleyo sokubonisa nokucubungula imiyalezo. Nceda usebenzise ifayile yetempleyiti engu-'config_local.php.dist' kule njongo. ISILUMKISO: Iitheyibhile ze-Syslog ziya kudalwa ngokuzenzekelayo ngokukhawuleza xa olu khetho luvulwa."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Ungqamaniso lweMigaqo yoMqokeleli weDatha oKude"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Ukuba abaQokeleli beDatha abaKude bakho baneziseko zabo zedatha ze-Syslog kwaye becubungula imiyalezo yabo ngokuzimeleyo, khetha le bhokisi yokukhangela ukuba unqwenela ukuba imigaqo yee-Alert, yoKususa kunye neyeNgxelo yeziseko zedatha eziPhambili ze-Cacti ithunyelwe kwiSixokelelwano se-Cacti esiKude."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Gcina iiRekhodi kuMqokeleli oKude"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Gcina imiyalezo eqhutyweyo kwitheyibhile ye-syslog yomqokeleli okude emva kokuba ihanjisiwe kuMqokeleli oPhambili. Xa icinyiwe, iirekhodi zigcinwa ekuhlaleni kuphela ngelixa uMqokeleli oPhambili engafumaneki kwaye zisuswe emva kokuqinisekiswa kokuhanjiswa kwakhona."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Umgaqo-nkqubo wokuGcina"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Khetha ukuba zingaphi iintsuku zamaxabiso e-Syslog ofuna ukuzigcina kwisiseko sedatha."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Inqanaba lokuPhathishina"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Ubungakanani bohlulo ngalunye lweetafile ze-syslog ne-syslog_removed. Imihla ngemihla iyacetyiswa. Iyure nganye ifuna ixesha lokugcinwa elinomda, kwaye ixesha lokugcinwa kunye nenqanaba lokwahlulahlula zizonke kufuneka zingene kumda wohlulo lweseva yedatha. Ukutshintsha inqanaba kamva, litshintshe kwiiSetingi uze uqhube i-cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Nyusa uguqulelo"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Faka"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Umcebisi we-Syslog %s"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "ISILUMKISO: Ukuphuculwa kwe-Syslog kuthatha ixesha elininzi!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Ukuphuculwa kwetheyibhile ye-syslog engu-'main' kunokuba yinkqubo ethatha ixesha elide kakhulu. Ngenxa yoko, kuyacetyiswa ukuba unciphise ubungakanani betheyibhile yakho ye-syslog phambi kokuphucula, okanye ukhethe ukhetho lwangasemva."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Ukuba ukhetha ukhetho lwangasemva, itheyibhile yakho endala ye-syslog iya kuthyiwa ngokutsha, kwaye itheyibhile entsha ye-syslog iya kudalwa. Emva koko, inkqubo yokuphucula iya kuqaliswa ngasemva. Kwakhona, le nkqubo yangasemva inokuthatha ixesha elide ukugqitywa. Nangona kunjalo, idatha yakho iya kugcinwa."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Nokuba yintoni oyikhethayo, yonke imigaqo ekhoyo yokususa neyesilumkiso iya kugcinwa ngexesha lenkqubo yokuphucula."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Cofa u-<b>'Hlaziya'</b> ukuze uqhubele phambili nohlaziyo, okanye u-<b>'Rhoxisa'</b> ukuze ubuyele kwimenyu yeePlagini."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Unokuseta kwakhona injini yokugcina yedathabheyisi yeetheyibhile zohlalutyo i-syslog kunye ne-syslog_remove. Kuxhaswa kuphela injini yokugcina ye-InnoDB kwaye, kwi-MariaDB, injini yokugcina ye-Aria. Ukuba usebenzisa i-MariaDB, sicebisa iNjini yokuGcina ye-Aria xa kungekho zikhetho zoMqokeleli weDatha okude ezivuliweyo; iikhetho zomqokeleli zifuna i-InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Uneendlela ezininzi onokukhetha kuzo xa ufaka i-Syslog. Eyokuqala buKwakhiwa beSiseko seDatha. Iitheyibhile ezahlulahlulweyo kuphela kwezakhiwo ezixhaswayo kuba zithintela ubukhulu beeteyibhile ekubeni bube bukhulu kakhulu ngaloo ndlela zicothise imibuzo. Iitheyibhile zemveli ezingahlulahlulwanga ziphelelwe lixesha kwaye azisanikwa kufakelo olutsha."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Unokukhetha kwakhona ukuchaneka kwexesha lesitampu. Ukuchaneka kwe-millisecond (TIMESTAMP(3)) kugcina ulandelelwano lwangaphantsi komzuzwana lwemiyalezo engenayo kwaye kufumaneka kuphela kwi-MariaDB; ukufakelwa kwe-MySQL kusebenzisa ukuchaneka komzuzwana. Oku akunakutshintshwa endaweni kamva ngaphandle kokutshabalalisa imiyalezo egciniweyo."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Ugcino lwe-Aria alufumaneki ngelixa naluphi na ukhetho loMqokeleli weDatha oKude luvuliwe. I-InnoDB ikhethiwe."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Unokukhetha kwakhona ubude bexesha lokugcina. Nceda ukhumbule ukuba ukuba uneehosti ezininzi ezilogayo kwi-Syslog, le theyibhile inokuba nkulu kakhulu."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Iisetingi ze-Syslog %s"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Yeyiphi indlela yokukhupha ofuna ukuyisebenzisa?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Xa ukhupha i-Syslog, ungasusa yonke into, okanye amacandelo kuphela, ukuba nje uceba ukuyifakela kwakhona kwixa elizayo."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Susa Konke (Iirekhodi, Iitheyibhile, Iisetingi)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Idatha ye-Syslog Kuphela"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Izikhethwa zokuKhupha i-Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Khipha"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Rhoxisa"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Ukususa kwe-Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Hlela)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Izenzo)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Izilumkiso ze-Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Iingxelo ze-Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Iitempleyiti zoPhando eziGciniweyo"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Iideshibhodi"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Iingcebiso ze-Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Ngenisa)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Bonisa i-Syslog kuLuhlu"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "isichongi asinalutho"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "isichongi side ngaphezu kweempawu ezili-190"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "isichongi siqulethe izithuba okanye ukuqhawuka kwemigca"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "ayinankcazelo okanye inyathelo elicetyiswayo"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "ayisiyo i-JSON object"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Izindululo azikwazanga ukulayishwa."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Isindululo siyafumaneka - cofa umyalezo ukuze ufumane iinkcukacha"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Ingcaciso"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Isenzo esiCetyiswayo"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Isalathiso"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "UMvulo"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "ULwesibini"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "ULwesithathu"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "ULwesihlanu"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "UMgqibelo"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "ICawe"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "ULwesine"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "NgoMvulo ukuya ngoLwesihlanu"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "UMgqibelo kunye neCawe"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Yonke imihla"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Icinyiwe"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Akukho"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Useto Ngokubanzi"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "I-Syslog Ivuliwe"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Ukuba le bhokisi yokukhangela ikhethiwe, iirekhodi ziya kugqithiselwa ukusuka kwitheyibhile ye-Syslog Incoming ukuya kwitheyibhile ephambili ye-syslog kwaye ii-Alert neNgxelo ziya kuvulwa. Nceda ukhumbule ukuba ukuba isixokelelwano sicinyiwe, amangenelo elogu aya kuqhubeka eqokelelana kwitheyibhile ye-Syslog Incoming njengoko oku kuchazwa yinkqubo ye-rsyslog okanye ye-syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Dlulisela ii-alam kuMphathi wee-Alam"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Vumela imithetho emiselwe kwi-Alarm Manager ukuba idlulisele ii-alamu. I-imeyile ye-Syslog ihlala iyindlela yokugqibela; izenzo zemiyalelo zisebenza kuphela kwimithetho ye-Syslog Alarming."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Susa iiDomeyin"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Uluhlu olwahlulwe ngeekoma lweedomeyini ofuna ukuzisusa kwigama lehosti le-syslog, Imizekelo ingaba ngu-'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Ixesha loHlaziyo"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Eli lixesha ngemizuzwana phambi kokuba iphepha lihlaziywe."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Tsiba ukubalwa kwemiqolo iyonke"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Ukuba le bhokisi yokukhangela ikhethiwe, iithebhu ze-System Logs kunye ne-Alert Logs azibali irekhodi nganye ehambelanayo, nto leyo enokudla izibonelelo ezininzi kufakelo olukhulu. Iphepha libonisa amakhonkco athi Ngaphambili kunye nathi Landelayo endaweni yexabiso lilonke noluhlu lwamaphepha, kwaye u-Landelayo uyanikwa ngelixa iirekhodi ezininzi zisekhona."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Ubuninzi beeRekhodi zeNgxelo"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Kwizilumkiso ezisekelwe kuMda, leliphina inani eliphezulu ofuna ukulibonisa kwingxelo.  Oku kusetyenziselwa ukunciphisa ubungakanani belogi ye-html kunye ne-I-imeyile."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d Iirekhodi"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Ubuninzi beeNkqubo zokuPhatha i-Syslog"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Xa isetwe ngaphezu kwe-1, ukuqhutywa kwemiyalezo engenayo kusasazwa kwiinkqubo zabasebenzi ezihambelanayo. Umsebenzi ngamnye uphatha uluhlu olwahlukeneyo lwemiyalezo engenayo, okukhawulezisa ukusonjululwa kwegama lehosti kunye nokudluliselwa kwemiyalezo phantsi komthwalo onzima. Isetingi ye-1 iqhuba yonke imiyalezo kwinkqubo enye. Iinkqubo zabasebenzi azixhaswa kwi-Windows okanye xa izandiso ze-PHP pcntl ne-POSIX zingafumaneki, apho ukuqhutywa kubuyela kwinkqubo enye."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d Inkqubo Esebenzayo"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d Iinkqubo Ezisebenzayo"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Umyalelo wokuVula amaTikiti"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Lo myalelo uza kwenziwa ukuvula Amatikiti eDesika yoNcedo. Umyalelo uza kufuneka ukuba uhlalutye iipharamitha ezininzi zegalelo ngolu hlobo lulandelayo: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. I-hostlist iza kuba luluhlu olwahlulwe ngekoma lweehosti ezichatshazelwe sisilumkiso."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Iinketho zokuFumanisa iHosti"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Vula ukuSombululwa kweGama leHosti"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Ukuba le bhokisi yokukhangela ikhethiwe, onke amagama eehosti asonjululwa ngokukhangela kwe-DNS kuqala (ukuba kuvuliwe), kusetyenziswa iirekhodi ze-A kunye ne-AAAA. Iidilesi ze-IPv4 kunye ne-IPv6 azidingi kukhangelwa, kwaye iidilesi ze-IPv6 zigcinwa zicinezelwe ngoonobumba abancinci. Ukuba ukukhangela kwe-DNS kuyasilela, isixokelelwano siya kuzama ukusombulula igama lehosti ngokuchasene netheyibhile yeehosti ye-Cacti kwaye siyitshintshe ngenkcazo yehosti ye-Cacti. Ukuba kokubini ukukhangela kwe-DNS kunye ne-Cacti kuyasilela, iirekhodi zinikwa isimaphambili esithi 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Tsiba ukusonjululwa kwe-DNS kwiihosti ezingenayo"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Ukuba le bhokisi yokukhangela ikhethiwe, isixokelelwano asiyi kuzama ukusombulula iihosti ngokukhangela kwe-DNS. Oku kuluncedo kwiindawo apho ukusombululwa kwe-DNS kungenakwenzeka okanye kungafuneki."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Iisetingi zeSaziso ze-HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Vula i-imeyile eSekwe kwi-HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Ukuba le bhokisi yokukhangela ikhethiwe, zonke ii-imeyile ziya kuthunyelwa ngefomathi ye-HTML. Kungenjalo, ii-imeyile ziya kuthunyelwa ngombhalo nje."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Ifayile yeFomathi eza kuSetyenziswa"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Khetha ifayile yokusonga ye-html elungiselelweyo kunye ne-CSS oza kuyisebenzisa.  Le fayile iqulethe zombini i-html ne-CSS zokusonga ingxelo yakho.  Ukuba iqulethe okungaphezulu kwe-CSS nje, kufuneka ubeke ithegi ekhethekileyo <REPORT> ngaphakathi kwefayile.  Le thegi yefomathi iya kuthatyathelwa indawo ngumxholo wengxelo.  Ezi fayile zikwifolda ethi 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Ugcino lweDatha kunye noKwahlula"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Ukugcinwa kwe-Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Eli linani leentsuku zokugcina iziganeko."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Ubungakanani bohlulo ngalunye lweetafile ze-syslog ne-syslog_removed. Utshintsho lugcinwa apha kodwa lusebenza kuphela xa i-cli/upgrade_partitioning.php yakha kwakhona zombini ezi tafile; kude kube ngoko, ukugcinwa kohlulo kugcina ubungakanani obukhoyo. Ukwahlulahlula ngeyure kufuna ixesha lokugcinwa elinomda. Ixesha lokugcinwa, ifestile yokudala kwangaphambili kunye nenqanaba lokwahlulahlula zizonke kufuneka zingene kumda wohlulo lweseva yedatha, okanye iisetingi azigcinwa."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Ifestile yokuDala iiPhathishini Kwangaphambili"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Eli linani leentsuku zeepartition zexesha elizayo ekufuneka zigcinwe kwiitafile ze-Syslog ezahluliweyo, ukuze iipartition ezintsha zisoloko zahlulwa kwipartition ye-dMaxValue engenanto. Ukwahlulahlula ngeyure kusoloko kugcina ubuncinane iintsuku ezi-2."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "Usuku olu-%d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "Iintsuku ezi-%d"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Umda wokuBuyisela iPhathishini"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Xa izahlulo zingekho (umzekelo emva kokuphumla kolondolozo), ubuninzi bezi zahlulo zingekho ngetheyibhile nganye zenziwa kusetyenziso ngalunye lwe-Poller. Isikhewu esishiyekileyo siyaphila kwiindlela ezilandelayo; ukuthenwa kokugcina kuhlala kuhlehlisiwe de umda wesahlulo sexesha elizayo ubuyiselwe ngokupheleleyo. Isebenza kwiitheyibhile ze-Syslog ezahluliweyo kuphela."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "Iphathishini eyi-%d ngokusebenza ngakunye"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "Iiphathishini ezi-%d ngokusebenza ngakunye"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Umda wokuPhelelwa koMqokeleli"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Izivuso zempilo yomjelo wokusebenza zilumkisa xa imiyalezo engekaqhutywa, ukugqitywa kokuqhubekeka, okanye ungqamaniso olusemgceni lugqitha oku kulibaziseka. Ulibaziseko olusebenzayo ubuncinane lungamaxesha amathathu e-Poller kunye nemizuzwana engama-300. Seta ku-0 ukusebenzisa imizuzwana engama-300."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Okungagqibekanga (imizuzwana eyi-300)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d imizuzwana"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Umda woMsebenzi oSaleleyo woMqokeleli"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Iphepha loBume be-Syslog libonisa isilumkiso xa imiyalezo engaphezu kweli nani ihleli ingalungiswanga kwitheyibhile ye-Syslog Incoming.  Seta ku-0 ukusebenzisa ukungagqibeki kwemiyalezo eyi-10000."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Okungagqibekanga (imiyalezo eyi-10000)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "Imiyalezo eyi-%d"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Izivuso Zempilo Yomjelo Wokusebenza"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Uluhlu Lwezaziso Zempilo Yomjelo Wokusebenza"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Khetha uluhlu lwezaziso lwe-Thold olukhoyo ukwenzela izilumkiso zempilo yombhobho (pipeline). Abamkeli boluhlu abavuliweyo badityaniswa needilesi ze-imeyile ezingezantsi, kugcinwa abamkeli be-BCC. Izintlu zifuna itheyibhile yoluhlu lwezaziso lwe-Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Abamkeli be-I-imeyile Bempilo Yomjelo Wokusebenza"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Abamkeli be-imeyile abahlulwe ngokhoma bokusilela kunye nokuchacha kwe-pipeline. Shiya kungenanto kwaye ungakhethi luhlu lwezaziso ukuze ucime i-imeyile; impilo ihlala ibonakala kwithebhu yoBume kwaye utshintsho lwemeko luyarekhodwa. Iitshekhi zifuna I-Poller ye-Cacti ukuba isebenze."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Ixesha Lesikhumbuzo Sempilo Yomjelo Wokusebenza"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Phinda izaziso zeengxaki zombhobho eziqhubekayo emva kwesi sithuba. Imizamo ye-imeyile engaphumelelanga izanywa kwakhona kanye kuphela kwimizuzu emihlanu."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Ukugcinwa kweZilumkiso ze-Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Eli linani leentsuku zokugcina iilogi zezaziso."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Uthintelo lweSaziso noLondolozo"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Iintsuku zeFestile yoLondolozo"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Iintsuku apho zonke izaziso zezilumkiso zithuliswayo ngexesha lolondolozo eliqwalaselweyo."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Ukuqala kweFestile yoLondolozo"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Ixesha lokuqala lendawo lefestile yolondolozo jikelele."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Ukuphela kweFestile yoLondolozo"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Ixesha lokuphela lendawo lefestile yolondolozo jikelele. Ixesha lokuphela langaphambili liqhubela kusuku olulandelayo."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Ulondolozo LweXesha Elinye Luyaqala"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Umhla nexesha lendawo elikhethwayo lokuqalisa ifestile yolondolozo jikelele yexesha elinye."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Ulondolozo LweXesha Elinye Luyaphela"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Umhla nexesha lendawo elikhethwayo lokuphelisa ifestile yolondolozo jikelele yexesha elinye. Ifomathi: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Ixesha lokuphola lesilumkiso elingagqibekanga"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Cinezela nasiphi na isaziso esiphindwayo somgaqo omnye kunye nommandla wokunika ingxelo kule mizuzu mingaka. Amaxabiso omgaqo ngamnye ayayigqithisa le setingi. Seta ku-0 ukucima."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Ukucinezela okuphindaphindiweyo okungagqibekanga"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Cinezela isaziso esineseti enye yomyalezo ofanisiweyo kule mizuzu mingaka. Amaxabiso omgaqo ngamnye ayayigqithisa le setingi. Seta ku-0 ukucima."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Ukubuyiselwa kwe-Syslog eKude"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Ubuninzi beeRekhodi zokuBuyisela ngokuSebenza ngakunye"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Elona nani liphezulu leziganeko ze-Syslog ezikude ezigciniweyo ezithunyelwa kuMqokeleli oyiNtloko ngumsebenzi omnye wokubuyisela. Ushintshiselwano ngalunye lwesiseko sedatha esiphakathi luhlala lulinganiselwe kwiirekhodi ezili-100. Yonyusa kancinci kancinci ngelixa ujonga umthwalo woMqokeleli oyiNtloko kunye nokulinda kokutshixa."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Ikhefu lokuBuyisela Phakathi kweeBhetshi"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Misa okwethutyana phakathi kwentengiselwano nganye yothumelo lweerekhodi ezili-100 yoMqokeleli oPhambili. Ukuma ixesha elide kwehlisa uxinzelelo kuMqokeleli oPhambili; ukuma ixesha elifutshane kukhawulezisa ukusombulula umsebenzi oshiyekileyo."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Akukho kunqumama"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d iimilisekhondi"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d umzuzwana"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Isiseko sedatha se-Syslog asifumaneki, ngoko ke iisetingi zokwahlula azinakujongwa kumda waso wokwahlula kunye neeteyibhile."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Iisetingi ze-Syslog azigcinwanga."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Kusalindile: itheyibhile yemiyalezo isasebenzisa izahlulo ze-%s. Qhuba cli/upgrade_partitioning.php ukusebenzisa inqanaba elikhethiweyo."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Cima"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Khubaza"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Yenza isebenze"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Thumela ngaphandle"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Okungenasiphelo"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "Iveki eyi-%d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "Iiveki ezi-%d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "Inyanga eyi-%d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "Iinyanga ezi-%d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "Unyaka oyi-%d"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Nakanye"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d Umzuzu"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d Imizuzu"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Iqala nge"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Iqulethe"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Iphelisa ngo"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Igama lehosti ngu"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Iprogram yi"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Isibonelelo yi"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Umakhi weSihluzi"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Intetho ye-SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Ngeveki"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Ukungenisa/Ukukhupha"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Imigaqo yeSaziso"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Iisetingi ze-Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Imigaqo yeSilumkiso seSixhobo"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Imigaqo yoKususa"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Imithetho yeNgxelo"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Izindululo"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Ayikwazi ukuqhagamshela kwidathabheyisi ye-Syslog. Akukho zirekhodi zeSixhobo zisusiweyo."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Kubekho iirekhodi zeZixhobo ezi-%s ezisusiweyo kwidathabheyisi ye-Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Izixhobo zoncedo ze-Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Coca Izixhobo ze-Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Uqinisekile ukuba ufuna ukucoca izixhobo ze-Syslog eziphelelwe lixesha?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Qinisekisa ukuCoca"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Qhubeka"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Olu khetho lwemenyu lubonelela ngendlela yokususa Izixhobo ezingasaxeli kwiserver ye-syslog ye-Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Umthombo wepaneli yedeshibhodi ongasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Uhlobo lwepaneli yedeshibhodi olungasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Uhlobo lwetshathi yedeshibhodi olungasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Indawo yokwahlula yedeshibhodi engasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Ixesha eliphakathi ledeshibhodi elingasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Ixesha ledeshibhodi elingasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Uhlobo lwerekhodi yedeshibhodi olungasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Inani eliphezulu ledeshibhodi elingasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Ububanzi bepaneli yedeshibhodi obungasebenziyo."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Ubude bepaneli yedeshibhodi obungasebenziyo."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Ukukhangela kwengqiqo okungasebenziyo: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Ezinye"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Kufuneka ipaneli yedeshibhodi esebenzayo."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Iphaneli yedeshibhodi ayifunyenwanga."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Kufuneka igama elinoonobumba abafikelela kwi-128."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Kufuneka ideshibhodi esebenzayo."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Ideshibhodi ayifunyenwanga."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Ayikwazi ukugcina utshintsho lwedashbhodi."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Ungabelana ngeedeshibhodi zakho kuphela."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "ikopi"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Ideshibhodi ayikwazanga ukukotshwa."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Kufuneka indawo yepaneli esebenzayo."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Isihloko esinoonobumba abafikelela kwi-128 siyafuneka."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Tsala ukuze ulungelelanise ikhadi kwakhona"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Hlaziya iPhaneli"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Imiyalezo iYonke"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Ithala leetshati alifumaneki kolu fako lwe-Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Hlela iPhaneli"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Iphaneli eNtsha"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Gcina"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Sebenzisa"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Cima le phaneli yedhashibhodi?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Cima le dhashibhodi kunye neephaneli zayo zonke?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Nika igama ideshibhodi yakho"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Yenza yaBucala"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Yabelana nabo bonke"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Gcina njengekopi yam"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Iideshibhodi ze-Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Ideshibhodi"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Uluhlu lweXesha"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "IYure eDlulileyo"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Iiyure ezi-%d eziDlulileyo"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Usuku oluDlulileyo"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Iveki eDlulileyo"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Iiveki ezi-%d eziDlulileyo"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Inyanga eDlulileyo"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Iinyanga ezi-%d eziDlulileyo"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Hlaziya"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Iidashbhodi zam"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Iideshibhodi Jikelele"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Kwabelwenwe Nam"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Entsha"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Thiya ngokutsha"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Yongeza iPhaneli"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Yenza ideshibhodi yakho yokuqala ukubonisa iindlela ze-syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Yongeza iphaneli ukuze uqalise ukwenza iigrafu.  Iiphaneli zinokusebenzisa uphando lwakho olugciniweyo."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Iphaneli yeDeshibhodi"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Isihloko"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Umthombo weLogi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Iilogi zeNkqubo"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Iilogi zeSaziso"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Uhlobo lwePhaneli"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Uthotho lweXesha"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Ulwahlulo"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Itshati"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Umgca"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Indawo"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Ibha"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Isithuba"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Ngokuzenzekelayo"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Umzuzu"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "Imizuzu eli-10"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Iyure"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Usuku"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Umhlaba"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Iprogram"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Isibonelelo"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Ukubaluleka"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Inani eliPhezulu"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Uhlobo lweRekhodi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Zonke iiRekhodi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Iirekhodi eziPhambili"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Iirekhodi eziSusiweyo"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Qala kuKhangelo oluGciniweyo"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Faka umbhalo womyalezo…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Susa umqathango"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Iqela lokutshatisa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Shiya ngaphandle iqela"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Igama leDeshibhodi"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Igama"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Imida Eyaphuliweyo"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Yaphulwe Ukususela"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Umqokeleli"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Isixhobo"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Umyalezo wokugqibela ohambelanayo"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Ibuyisela Emva kwe"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Umgaqo"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Zonke izixhobo ezihambelanayo"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Akukho mida yophulweyo okwangoku."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Ukubuyisela akufuni miyalezo ehambelanayo de kube lixesha elibonisiweyo. Umyalezo ohambelanayo ngamnye uqalisa kwakhona ixesha lokuthula."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Ngaphambili"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Okulandelayo"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Nceda uqambe ngokutsha nokuba ziifayile zakho ze-config.php.dist okanye ze-config_local.php.dist kulawulo lwe-syslog, kwaye utshintshe iseto lwedathabheyisi yakho phambi kokuba ufake."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Izitampu zexesha ze-millisecond (TIMESTAMP(3)) zixhaswa kuphela kwi-MariaDB. Le seva yi-MySQL, ngoko ke faka ngezitampu zexesha ezichanekileyo ngokwemizuzwana endaweni yoko."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Ugcino lwe-Aria alunakusetyenziswa xa naluphi na ukhetho loMqokeleli weDatha oKude luvuliwe. Khetha i-InnoDB okanye ucime zonke iinketho zoMqokeleli weDatha oKude."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Iihosti ezi-10 eziPhezulu"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Imiyalezo ye-Syslog - Kwiyure Edlulileyo"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Imiyalezo ngokobunzulu"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Iinkqubo ezi-10 eziPhezulu"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Umsebenzi weSaziso"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Isijongi se-Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Ubume be-Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Isilumkiso esiKhethiweyo"
+
+#: syslog.php
+msgid "seconds"
+msgstr "imizuzwana"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Ayifumaneki"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "imiyalezo engacutshungulwanga inobudala obuyi-%s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "umqulu ongenayo wemiyalezo eyi-%s"
+
+#: syslog.php
+msgid "day"
+msgstr "usuku"
+
+#: syslog.php
+msgid "days"
+msgstr "iintsuku"
+
+#: syslog.php
+msgid "hour"
+msgstr "iyure"
+
+#: syslog.php
+msgid "hours"
+msgstr "iiyure"
+
+#: syslog.php
+msgid "minute"
+msgstr "umzuzu"
+
+#: syslog.php
+msgid "minutes"
+msgstr "imizuzu"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Imiqolo kwi-syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Ubungakanani betheyibhile ye-Syslog (idatha + izalathisi)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Ukugcinwa kwe-Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Ugcino lwesaziso"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Akukho msebenzi wokubuyisela orekhodiweyo okwangoku."
+
+#: syslog.php
+msgid "created"
+msgstr "idaliwe"
+
+#: syslog.php
+msgid "remaining"
+msgstr "eziseleyo"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "ukugcinwa kulibazisiwe"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Uqhutywo lwamva nje lwenkqubo"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Ungqamaniso olusasaziweyo"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Iirisithi zomqokeleli okude"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Ugcino nokulondolozwa"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Impilo yephathishini"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Umsebenzi wolondolozo lwephathishini"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Umsebenzi wamva nje wolondolozo lwecandelo"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Impilo yomjelo wokusebenza"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Abasebenzi abahambelanayo"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Iinkqubo zabasebenzi"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Amanqanaba okucubungula"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Umsebenzi womgaqo"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Iirekhodi ezicutshungulweyo"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Ixesha lokusebenza lokuhlola nge-Poller"
+
+#: syslog.php
+msgid "Started"
+msgstr "Kuqalisiwe"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Igqityiwe"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Ubuncinci bexesha lokusebenza"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Ixesha lokusebenza eliphakathi"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Elona xesha liphezulu lokusebenza"
+
+#: syslog.php
+msgid "State"
+msgstr "Iphondo"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Iirekhodi zokubuyisela ezisemgceni"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Okulindileyo okudala kakhulu"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Ungqamaniso lokugqibela oluyimpumelelo"
+
+#: syslog.php
+msgid "Active"
+msgstr "Iyasebenza"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Ayisebenzi"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Umsebenzi wokubuyisela"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Impazamo yokugqibela yongqamaniso"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Inani leBhetshi yokugqibela"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Irekhodi yokugqibela efunyenweyo"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "I-Poller eKude"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "I-Poller ekude engaziwayo"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Akukho zirekhodi zomqokeleli okude ezifunyenweyo okwangoku."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Ulondolozo lwephathishini luvaliwe"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Ulondolozo lwephathishini lumisiwe; ukubhala kuyaqhubeka kwiphathishini yokhuseleko ye-dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Ubungakanani bemihla"
+
+#: syslog.php
+msgid "Table"
+msgstr "Itheyibhile"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "imiqolo ye-dMaxValue (eqikelelwayo)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "ubungakanani be-dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Inqanaba lokuphathishina"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "%s ikhethiwe kwiisetingi kwaye iya kuqala ukusebenza emva kokuba i-cli/upgrade_partitioning.php yakhe iitheyibhile kwakhona."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Umzamo wokugqibela"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Ulondolozo lokugqibela oluyimpumelelo"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Kugqityiwe"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Kuhlehlisiwe"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Isiphumo samva nje"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Inkqubela yokubuyisela"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Iinkcukacha"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Isiphumo"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Ukubuyiselwa Kwimeko"
+
+#: syslog.php
+msgid "When"
+msgstr "Nini"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Akukho msebenzi wolondolozo lwesahlulelo orekhodiweyo okwangoku. Umsebenzi uvela emva kokuqhutywa okulandelayo kwe-Poller."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d zidaliwe, %d ziseleyo, %d zisusiwe"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Akukho nyathelo lifunekayo."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Umthwalo osalindileyo ongenayo"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Kuyacutshungulwa"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Ulondolozo lwephathishini"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Ungqamaniso"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Kufuneka ingqalelo"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Isempilweni"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Ukucubungula kucinyiwe"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Ilindele ukusetyenzwa"
+
+#: syslog.php
+msgid "Health"
+msgstr "Impilo"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Ilungile"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Ithunyelwe"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Kusilele; ukuzama kwakhona kulindile"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Kusalindile; uhlolo olulandelayo lwe-Poller"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Uvavanyo lokugqibela lwempilo"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Izaziso ze-imeyile"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Ayikakhangelwa okwangoku"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Isaziso sokugqibela esithunyelweyo"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Ilogu yokugqibela efunyenweyo"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Owona myalezo umdala ongekasetyenzwa"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Iirekhodi ezicutshungulweyo kuqhutywa lwamva nje"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Iinkqubo zabasebenzi ezisebenzayo"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Iinkqubo zabasebenzi eziqwalaselweyo"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Iihosti zisonjululwe"
+
+#: syslog.php
+msgid "Process"
+msgstr "Inkqubo"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Iirekhodi eziphethweyo"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Ixesha lokuqhuba"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Akukho manani enkqubo nganye arekhodiweyo okwangoku.  Amanani abasebenzi avela emva koqhutywo lokuqala oluhambelanayo."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Ubude Bexesha"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Isigaba"
+
+#: syslog.php
+msgid "Records"
+msgstr "Iirekhodi"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Uhlaziyo lwezalathiso"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Imigaqo yokususa"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Uvavanyo lwesaziso"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Ugqithiso olungenayo"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Ukulungiswa kwengxelo"
+
+#: syslog.php
+msgid "slowest"
+msgstr "ecotha kakhulu"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Akukho maxesha esigaba arekhodiweyo okwangoku.  Amaxesha esigaba avela emva kokuqhutywa okulandelayo kwe-Poller."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Uqhutywo lokugqibela"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Imigaqo esetyenziweyo"
+
+#: syslog.php
+msgid "Total"
+msgstr "Iyonke"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Imigaqo yesaziso"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Cima imithetho"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Iqalisiwe kuqhutywo lokugqibela"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Bonisa okungakumbi"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Bonisa kancinci"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Vula kwibhokisi yencoko"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Susa kwiphepha"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Ixesha lokuhlaziya elingasebenziyo."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Ikhadi elingaziwayo."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Yongeza ikhadi"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Yongeza ikhadi lobume…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Imboniselo yeZilumkiso ze-Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Kufuneka uphendlo olugciniweyo olusebenzayo."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Uphando olugciniweyo alufunyenwanga."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Ungabelana ngokukhangela kwakho okugciniweyo kuphela."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Imiyalezo engasetyenzwanga: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Faka igama lokukhangela"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Khetha Isixhobo/Izixhobo"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Izixhobo eziKhethiweyo"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Zonke iZixhobo ziKhethiwe"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Isihluzi soMyalezo we-Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Khangela imiyalezo"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Songa izihluzi"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Hlela izihluzi"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Uphando oluGciniweyo"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Uphendlo lwam"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Uphendlo Jikelele"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Okungagqibekanga)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Lawula"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Lawula ukhangelo olugciniweyo"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Gcina uphando"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Hlela"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Gcina kubo bonke"
+
+#: syslog.php
+msgid "contains"
+msgstr "iqulathe"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "ayiqulathanga"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Imiqolo"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Bonisa Imiqolo"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Okungagqibekanga"
+
+#: syslog.php
+msgid "View options"
+msgstr "Jonga iinketho"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Nqumla"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Ukunciphisa uMyalezo"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Ukuphathwa koKususa"
+
+#: syslog.php
+msgid "Display"
+msgstr "Umboniso"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Qokelela imiYalezo ePhindaphindiweyo"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Imiyalezo eYodwa"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Imiyalezo eQokelelweyo"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Khetha indawo, umsebenzisi wobalo (operator), kunye nexabiso. U-AND uthatha indawo yokuqala kuno-OR; u-NOT uyawukhuphela ngaphandle umqathango. U-LIKE usebenzisa u-% kulo naliphi na inani loonobumba kunye no-_ kunobumba omnye. Imihla isebenzisa u-YYYY-MM-DD HH:MM:SS. Ii-ID zisebenzisa amanani apheleleyo angengomabi. Ngokungagqibekanga, usuku lokugqibela lweelogi luyaboniswa ngaphandle kokuba uluhlu lwemihla luhlengahlengisiwe."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Uncedo lophando"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Ukhangelo oluTsha oluGciniweyo"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Hlela uPhendlo oluGciniweyo"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Gcina njenge"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Cima uphendlo olugciniweyo olukhethiweyo?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Khangela"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Sula"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Buyisela amaxabiso esihluzi kwimimiselo echazwe ngumsebenzisi"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Hlaziya Iziphumo"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Thumela ngaphandle Iirekhodi kwi-CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Gcina Iisetingi eziMiselweyo"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Gcina iisetingi ezingagqibekanga zembonakalo"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Gcina uPhando njenge"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Sebenzisa olu khangelo xa uvula eli phepha kwaye akukho khangelo lusebenzayo okwangoku"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Ulwaphulo"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Umda waphuliwe"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Imiyalezo"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Umyalezo ongenanto"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Guqula imiyalezo yeqela"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Ilayisha imiyalezo yeqela..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Akukho miyalezo ihambelanayo."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Akukho Miyalezo ye-Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Imigca yeLogi yeSaziso"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Isaziso siSuswe"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Akukho miyalezo yeLogi yeSilumkiso"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Vala iinkcukacha zomyalezo"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Iinkcukacha zomyalezo"
+
+#: syslog.php
+msgid "General"
+msgstr "Jikelele"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Umgaqo weSaziso"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Ulandelelwano"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Kukotshiwe"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Kopa ikhonkco"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Kopa umyalezo"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Ukukopa akufumaneki. Khetha uze ukope umbhalo womyalezo."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Kukhangelwa iingcebiso…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Akukho ngcebiso ihambelana nalo myalezo."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Izenzo"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Yenza uMthetho we-Alam"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Yenza uMthetho weSilumkiso seSixhobo"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Yenza uMthetho wokuSusa"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Hluza ngesixhobo"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Hluza ngeprogram"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Zonke iiNkqubo"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime lo Mgaqo (le Migaqo) weSilumkiso se-Syslog ulandelayo."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Cima iMithetho yeZilumkiso ze-Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime lo Mgaqo (le Migaqo) weSilumkiso se-Syslog ulandelayo."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Cima uMgaqo(imiGaqo) yeSaziso se-Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uVule lo Mgaqo (le Migaqo) weSilumkiso se-Syslog ulandelayo."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Vula uMgaqo/imiGaqo ye-Alert ye-Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uthumele ngaphandle iMigaqo yeZilumkiso ze-Syslog elandelayo."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Thumela ngaphandle Umthetho(Imi) weAlamu ye-Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Khetha i-Syslog Alarming okanye uMphathi weZilumkiso."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Faka inani elipheleleyo lemizuzu, iiyure, okanye iintsuku zefestile yomda."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Faka inani elipheleleyo elingaphezulu kweqanda lemizuzu, iiyure, okanye iintsuku zokubuyiselwa komda."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Isintaksi ye-SQL efakiweyo ayisebenzi.  Nceda ulungise i-SQL yakho.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "I-SQL esele ilungisiwe ngu:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Isihluzi asisebenzi: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "I-SQL esetyenziweyo ibingasebenzi. Nceda ulungise i-SQL yakho"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Ayicwangciswanga"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "Umzuzu o-1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d Iyure"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d Iiyure"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "Inyanga e-1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Ukuhlelwa kweSaziso [hlela: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Ukuhlelwa kweSaziso [okutsha]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "UMgaqo oMtsha weSilumkiso"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Akusebenzi"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Iyunithi yexesha"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Iintsuku"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Iiyure"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Imizuzu"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Nceda chaza esi Sivuso."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Indawo yoKuya ye-Alamu"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Khetha i-Syslog Alarming okanye i-Alarm Manager. I-Alarm Manager ikwafuna ukudlulisela phambili kuvulwe kwiisetingi ze-Syslog. I-imeyile igcinwa njengendlela yokubuyela emva; izenzo zomyalelo azisebenzi kwimithetho ye-Alarm Manager."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Umphathi wee-Alamu"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Ii-Alam ze-Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Lithini iNqanaba loBunzima besi Saziso?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Inqanaba lokuXela"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Ukurekhoda imiJikelo yokuPhinda ukuLumkisa, ingaba iSilumkiso sifanele silandelwe kwinqanaba leNkqubo okanye leSixhobo."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "ISixokelelwano"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Indlela yokuXela"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Chaza indlela yokulumkisa ngemiyalezo ye-syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Eyodwa"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Kwindlela ye-'Umda', iSilumkiso siyavuselelwa xa inani eliboniweyo lifikelela kweli xabiso."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Ifestile yoMda"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Bala okutshatayo kwimijikelo yomqokeleli kule festile ejikelezayo, usebenzisa ixesha lokucubungula komqokeleli. Faka u-0 ukuze ubale kuphela umjikelo wangoku."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Buyisela Emva kweXesha lokuThula"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Ixesha elingenamyalezo ohambelanayo phambi kokusula ukwaphulwa, ukuseta kwakhona inani, kunye nokuvuselela lo mgaqo. Wonke umyalezo ohambelanayo uqalisa kwakhona esi sibali-xesha."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Uhlobo lokuTshatisa"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Khetha uMakhi weSihluzi (Filter Builder) ukufumana ingqiqo ye-alam ekhuselekileyo enemiqathango emininzi. I-SQL Expression igcinelwe imithetho emidala."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Umtya wokuTshatisa uMyalezo"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Yakha iimeko zesihluzi okanye ufake intetho ye-SQL ukuze ihambelane nemiyalezo ye-syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Ivuliwe"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Ngaba esi silumkiso sivuliwe?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Umjikelo wokuLumkisa kwakhona"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Ungaphindi uthumele esi silumkiso kwakhona kwihosti enye, de kudlule eli xesha. Kwiialamu ezisekelwe kumda, oku kusebenza kuzo zonke iihosti."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Ixesha Lokuphola Kwesaziso"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Imizuzu yokucinezela zonke izaziso ezilandelayo ezisuka kulo mgaqo nakuloo ndawo yengxelo."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "Usuku olu-1"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "Iyure e-1"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "Umzuzu o-1"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "Imizuzu eli-15"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "Imizuzu engama-30"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "Iiyure ezi-4"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "Imizuzu emi-5"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Sebenzisa isetingi jikelele"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Uthintelo lweZiphindaphindi"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Imizuzu yokucinezela iseti efanayo yemiyalezo etshatisiweyo."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Ifestile yoLondolozo"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Khetha ukuba lo mgaqo usebenzisa ixesha lolondolozo jikelele okanye elayo ixesha."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Ungawuthulisi lo mgaqo"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Sebenzisa ixesha jikelele"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Sebenzisa ixesha lomthetho"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Iintsuku zoLondolozo loMgaqo"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Iintsuku zexesha lalo mgaqo, xa kukhethwe uSebenzisa ixesha lomgaqo."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Ukuqala koLondolozo loMgaqo"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Ixesha lokuqala lendawo leli xesha lomgaqo."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Ukuphela koLondolozo loMgaqo"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Ixesha lokuphela lendawo leli xesha lomgaqo."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Ulondolozo Lwemithetho LweXesha Elinye Luyaqala"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Umhla nexesha lendawo elikhethwayo lokuqalisa ukuthulisa lo mthetho. Ifomathi: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Ulondolozo Lwemithetho LweXesha Elinye Luyaphela"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Umhla nexesha lendawo elikhethwayo lokuyekisa ukuthulisa lo mthetho. Ifomathi: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Amanqaku"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Indawo yamanqaku kwisilumkiso"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Iinketho ze-imeyile"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Uluhlu lweZaziso"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Sebenzisa iziqulatho zolu Luhlu lweZaziso ukumisela ukuba ngubani ekufuneka aziswe kwaye njani."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Ii-imeyile eziza kwaziswa"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Nceda faka uluhlu lweedilesi ze-I-imeyile ezahlulwe ngekoma ukuze wazise.  Ukuba unqwenela ukuthumela I-imeyile kumamkeli ngefomathi ye-SMS, nceda qalisa idilesi ye-I-imeyile yaloo mamkeli ngo-<b>'sms@'</b>.  Umzekelo, ukuba idilesi ye-SMS yomamkeli ngu-<b>'2485551212@mycarrier.net'</b>, uya kuyifaka njengo-<b>'sms@2485551212@mycarrier.net'</b> kwaye iya kuqulunqwa njengomyalezo we-SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Umbhalo woMzimba we-imeyile"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Olu lwazi luza kuvela kumzimba weSilumkiso kanye phambi kweenkcukacha zeSilumkiso."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Vula Itikiti"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Ngaba kufuneka kuvulwe iTikiti ye-Help Desk yale Alethi.  QAPHELA: Iskripthi somyalelo weTikiti siya kuzaliswa ngezinto eziguquguqukayo zendawo ezininzi ze-'ALERT_' ukwenzela ukulungelwa."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Umyalelo wesaziso"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Xa Isilumkiso sisenziwa, sebenzisa lo myalelo ulandelayo. Ezi zinto zitshintshayo zilandelayo ziyafumaneka <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Nceda uqaphele ukuba u-<b>'&lt;HOSTNAME&gt;'</b> ufumaneka kuphela kwimida nganye. La maxabiso okutshintsha anokubonakala kumgca womyalelo, okanye aqokelelwe kwindawo engqongileyo yesikripthi. Xa zisetyenziswa kwindawo engqongileyo, ezo zinto zitshintshayo ziya kuba nesimaphambili esingu-'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Umyalelo wokubuyisela"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Umyalelo okhethwayo wokuqhutywa xa lo mda ubuyela kwisimo esiqhelekileyo emva kwexesha lokuzola. Usebenzisa iinguquguquki zokutshintsha ezifanayo nomyalelo weSilumkiso. SYSLOG_EVENT icacile; SYSLOG_BREACH_ID iyahambelana nomyalelo wokwaphulwa. Imiyalelo engaphumelelanga iyazanywa kwakhona. Shiya ingenanto ukuze icinywe."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Umgaqo wovavanyo"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Imboniselo yoVavanyo loMgaqo"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Ixabiso"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Faka ixabiso"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Tshatisa"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Shiya ngaphandle"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Faka inani elipheleleyo elingekho ngaphantsi kweqanda"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Iimeko zesihluzi se-Alamu"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Konke"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Hamba"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Ngenisa"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Izihluzi zeZilumkiso ze-Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Indlela"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Ubalo lweMida"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Umtya woPhando"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Iidilesi ze-imeyile"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Iguqulwe Ekugqibeleni"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Ngomsebenzisi"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Izaziso"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Ezininzi"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Akukho Zilumkiso ze-Syslog Zichaziweyo"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Thatha Ngaphakathi uMgaqo we-Alert ukusuka kwiFayile yeNgingqi"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Ukuba ifayile ye-XML equlethe idatha yenkcazo yoMgaqo we-Alert ikumatshini wakho wengingqi, yikhethe apha."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Thatha Ngaphakathi uMgaqo we-Alert ukusuka kuMbhalo"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Ukuba unefayile ye-XML equlethe idatha yenkcazo yoMgaqo we-Alert njengombhalo, unokuyincamathisela kule bhokisi ukuze uyithathe ngaphakathi."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Thatha Ngaphakathi uMgaqo we-Alert"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Ungeniso lwaliwe: ifayile ayinanto, ayisebenzi, okanye iqulethe olunye uhlobo lwento ye-Syslog."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Ungeniso lwaliwe: indawo ekuya kuyo i-alam ayisebenzi."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Ingenisiwe"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "QAPHELA: Isilumkiso '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Ihlaziyiwe"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "IMPAZAMO: Isilumkiso '%s' %s Asiphumelelanga!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Uhlaziyo"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Khetha umnini osebenzayo."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Ayikwazi ukugcina idashbhodi. Nceda uzame kwakhona."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Faka igama lebhodi yolawulo eliphakathi ko-1 kunye no-128 oonobumba."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Umnikazi"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Kwabelwenwe ngako"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Iiphaneli"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "umsebenzisi ocinyiweyo"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Akukho zideshibhodi okwangoku. Abasebenzisi bazidala kwithebhu yeDeshibhodi ye-Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Cofa u-'Qhubeka' ukuze uCime ezi Dashibhodi (iDashibhodi) zilandelayo kunye nazo zonke iiPhaneli zazo."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Cima ii-Dashboard"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uthumele ngaphandle ezi Deshibhodi zilandelayo."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Thumela ngaphandle Ii-Dashboard"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "QAPHELA: Kungeniswe ezi-%d kwaye kuhlaziywe iidashbhodi ezi-%d."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "IMPAZAMO: Ideshibhodi/Iideshibhodi eziyi-%d aziphumelelanga ukungeniswa."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Thatha Ngaphakathi i-Dashboard ukusuka kwiFayile yeNgingqi"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Ukuba ifayile ye-JSON equlethe idatha yenkcazo ye-Dashboard ikumatshini wakho wengingqi, yikhethe apha."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Thatha Ngaphakathi i-Dashboard ukusuka kuMbhalo"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Ukuba unefayile ye-JSON equlethe idatha yenkcazo ye-Dashboard njengombhalo, unokuyincamathisela kule bhokisi ukuze uyithathe ngaphakathi."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Thatha Ngaphakathi i-Dashboard"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Bonke Abasebenzisi"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Onke amaQela"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Hlela iDeshibhodi"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Igama eliboniswa kukhetho lweeDashibhodi lwethebhu yeDashibhodi ye-Syslog."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "I-akhawunti engumnini wale dashboard kwaye ekwaziyo ukulawula iiphaneli zayo."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Kwabelwenwe naBasebenzisi"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Abasebenzisi abanokujonga le deshibhodi ngaphezu komnini wayo kunye nakuphi na ukwabelana jikelele. Bonke Abasebenzisi babelana ngayo nawo wonke umntu."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Amaqela anokujonga le bhodi yolawulo ukongeza kumnikazi wayo kunye nakuphi na ukwabelana ngokubanzi. Onke amaQela abelana ngayo nomntu wonke."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Kwabelwenwe naMaqela"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Ukuthiya kwakhona kusebenza kuye wonke umbukeli wale deshibhodi. Iiphaneli zilawulwa ngabanikazi bazo kwithebhu ye-Syslog Dashboard."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Khetha umhla nexesha elizayo lokuphela kokunqumama."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Igama lesixhobo liyafuneka."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Cofa u-Qhubeka ukuze u-%s iMigaqo yeZilumkiso zeSixhobo elandelayo."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Ungadlulisi nayiphi na iprayorithi"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s nangaphezulu okungxamisekileyo"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Umgaqo weSilumkiso seSixhobo"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Khangela izixhobo ze-Syslog zangoku njengoko uchwetheza, okanye faka nayiphi na idilesi ye-IP okanye igama lehosti."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Ukuphathwa kweSaziso"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Ungamisi okwethutyana"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Misa okwethutyana zonke izilumkiso ezingakhululwanga kude kube ngumhla othile, okanye ngokungenamda."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Misa okwethutyana ngokungenamda"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Misa okwethutyana kude kube"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Umhla nexesha lendawo, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Ukuphumla kuPhela"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Vumela Okuphambili Rhoqo"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Ezi zinto eziphambili zidlula kweli xesha lokunqumama kwesi sixhobo namaxesha okugcinwa. Okubaluleke kakhulu nokungxamisekileyo lukhetho oluqhelekileyo lwesixhobo se-platinum."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Vumela Ngexesha loLondolozo"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Vumela zonke izinto eziphambili ezivela kwesi sixhobo ngexesha lefestile yolondolozo lwezilumkiso. Uhlobo olukhethekileyo oluphambili olungentla lusasebenza xa oku kungu-Hayi."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Umgaqo weSilumkiso seSixhobo [hlela]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Umgaqo weSilumkiso seSixhobo [omtsha]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Izihluzi zoMgaqo weSilumkiso seSixhobo"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Imigaqo"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Ukuphatha"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Ulondolozo"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Dlulisa"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Akukho mithetho yezilumkiso zesixhobo ifunyenweyo."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Ayinqumamiswanga"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Imisiwe okwethutyana ngokungenamda"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Imisiwe okwethutyana kude kube ngu-%s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "nokungxamisekileyo ngakumbi"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Vumela konke"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Sebenzisa isinxaxhi sokubaluleka"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Isindululo asigcinwanga ngenxa yokuba %s. Faka isazisi esingenazikhewu kunye nengcaciso okanye inyathelo elindululwayo ubuncinane."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Ingcebiso yalo mthengisi kunye nesi sazisi sele ikhona."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "QAPHELA: Isazisi %s siqulethe oonobumba abangaphandle koonobumba, amanani, _ . - / kunye ne-%% yokukhokela enganyanzelekanga, ngoko ke asinakuze sitshatise umyalezo we-syslog. Buyisela izibambi-ndawo ezifana no-# okanye ezinye izikhetho ezifana no-A|B ngekhowudi echanekileyo."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uthumele ngaphandle ezi Zindululo zilandelayo."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime esi Sindululo (ezi Zindululo) zilandelayo."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Ukuthumela ngaphandle kufuna isandiso se-PHP zlib ukuze kudalwe ifayile ye-JSON gzip."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Ungeniso lwaliwe: ifayile ayinanto, inkulu kakhulu, okanye asiloxwebhu lwe-JSON leengcebiso elisebenzayo."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "QAPHELA: Kongezwe ezi-%d, kuhlaziywe ezi-%d kwaye kwashiywa iingcebiso ezikhoyo ezi-%d zingatshintshwanga."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "IMPAZAMO: Ingcebiso/Iingcebiso eziyi-%d zaliwe (umzekelo %s). Nganye idweliswe nesizathu sayo kwilogi ye-Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "IMPAZAMO: Ingcebiso/Iingcebiso eziyi-%d azikwazanga ukugcinwa. Nganye idweliswe kwilogi ye-Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "QAPHELA: Iingcebiso ezi-%d ezingenisiweyo zinezazisi eziqulethe oonobumba abafana no-| okanye u-# abangaze bavele kwigama lomyalezo, ngoko ke azinakutshatisa de zihlelwe. Seta i-Can Match ku-Hayi ukuze uzidwelise."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Ngenisa Iingcebiso ukusuka kwiFayile yaLapha"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Khetha ifayile ye-.json okanye ye-.json.gz kumatshini wakho wasekuhlaleni. Sebenzisa umsebenzi wokuThumela ngaphandle ukubona ifomathi elindelekileyo: uluhlu lweerekhodi ezine-vendor, identifier, component, severity, message, explanation, recommended_action kunye ne-reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Ngenisa Iingcebiso ukusuka kuMbhalo"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Kungenjalo, ncamathisela uxwebhu lwe-JSON kule bhokisi."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Iingcebiso eziKhoyo"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Ingcebiso iyafana nale ikhoyo xa umthengisi wayo nesazisi sayo zihambelana."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Gcina isindululo esikhoyo"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Yitshintshe ngaleyo ingenisiweyo"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Ngenisa Iingcebiso"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Iyangenisa, nceda linda..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Ayichazwanga"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Isindululo"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Umboneleli wesixhobo okanye isoftware ebhala lo myalezo, umzekelo i-Cisco okanye i-Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Umthengisi"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Isichongi"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Ikhowudi yomyalezo ekufuneka ikhangelwe, umzekelo %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN okanye 4625. Kufuneka ilingane negama elipheleleyo lomyalezo we-Syslog (oonobumba, amanani kunye no-_ . - /); u-% okhokelayo ngokoqobo kwaye kufuneka ahambelane njengoko ebhaliwe. Ukuhambelana akukhathali ubukhulu boonobumba. Jonga Indlela eziHambelana ngayo iiNgcebiso kwiphepha loluhlu."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Icandelo"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "I-facility, imodyuli okanye inkqubo engaphantsi evelisa umyalezo."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Ubunzima obubhalwe ngumthengisi walo myalezo."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Ifomathi yomyalezo njengoko ibhaliwe, kubandakanywa nezibambi-ndawo zeziguquki zayo."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Oko kuthethwa ngumyalezo."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Into emayenziwe ngumqhubi ngayo."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Amakhonkco aya kuxwebhu lomthengisi, elinye ngomgca."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Isindululo [hlela]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Isindululo [esitsha]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Isibane esiphambi komyalezo siphawula iingcebiso ezingqinelanayo kwiithebhu ze-System Logs kunye ne-Alert Logs. Cofa kumyalezo ukuze uzifunde kwipaneli yeenkcukacha. Ukuhambisa imouse ngaphezulu akuzange kucele iseva."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Kukho umqolo we-<b>Isichongi</b> kuphela osetyenziselwa ukungqamanisa. Umthengisi, icandelo, ubuzaza, umyalezo kunye nengcaciso ziboniswa kwiphaneli yeenkcukacha kodwa azikhangelwa nakanye."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Oonobumba bokuqala abayi-2,048 bomyalezo bohlulwa babe ngamagama. Igama luhlahlo loonobumba, amanani kunye neempawu _ . - / ezinokuqala ngo-%. Lonke olunye uphawu, olunjengesithuba, ikholoni, ikoma okanye isibiyeli, luphelisa igama. Kwi-<code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> amagama ngu-<code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> kunye no-<code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Isichongi siyahambelana xa <b>silingana ncam negama elinye elipheleleyo</b>, singahoyi oonobumba abakhulu okanye abancinci. Ayilokhangelo lwe-\"iqulethe\", \"iqala nge-\" okanye \"iphela nge-\", kwaye akukho zi-wildcard: i-<code>LINK-3-UPDOWN</code> ayihambelani negama elithi <code>LINK-3-UPDOWN-EXT</code>, kwaye i-<code>UPDOWN</code> ayihambelani ne-<code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "U-<b>%</b> ophambili ngowokoqobo, ayingomsebenzi we-wildcard, kwaye kufuneka ungqinelane negama lomyalezo njengoko libhaliwe. Isazisi esithi <code>%LINK-3-UPDOWN</code> singqinelana negama lomyalezo elithi <code>%LINK-3-UPDOWN</code>, hayi elithi <code>LINK-3-UPDOWN</code>; isazisi esingenasiqalo singqinelana negama elingenasiqalo kuphela."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Xa ihosti ye-Syslog isisixhobo se-Cacti umthengisi waso uqatshelwe kwinkcazo yaso yenkqubo ye-SNMP okanye kwitempleyiti yesixhobo, kwaye kukho iingcebiso zaloo mthengisi, kuhlolwa iingcebiso zaloo mthengisi kunye nezo zingenamthengisi kuphela. Kungenjalo bonke abathengisi bayahlolwa, kodwa isichongi esenziwe ngamanani kuphela sihambelana neengcebiso ezingenamthengisi kuphela. Xa iingcebiso ezininzi zihambelana, ezona zichongi zide ziboniswa kuqala, ukuya kuthi ga kwezintathu."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Izichongi eziqulethe ezinye iimpawu, ezinjengombambi-ndawo wesilothi oyi-<code>#</code> okanye ezinye iinketho eziyi-<code>|</code> kumaxwebhu athile omthengisi (umzekelo <code>%ASA|PIX-3-331001</code>), ziyagcinwa kwaye zithunyelwe ngaphandle kodwa azinakuze zingqinelane. Cwangcisa u-<b>Ingangqinelana</b> abe ngu-Hayi ukuze uzidwelise, kwaye uzihlele zibe yikhowudi echanekileyo, umzekelo <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Indlela eziDityaniswa ngayo iiNgcebiso"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Inokungqinelana"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Nokuba isichongi sinemilo yegama lomyalezo, ukuze ukukhangelwa komyalezo kukwazi ukusifumana"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Thumela ngaphandle zonke iingcebiso ezihambelana nezihluzi"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Akukho zingcebiso zifunyenweyo."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Lungisa kwakhona"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime lo Mgaqo (le Migaqo) wokuSusa we-Syslog ulandelayo."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Cima iMithetho yoKususwa kwe-Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime lo Mgaqo (le Migaqo) wokuSusa we-Syslog ulandelayo."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Cima uMgaqo(imiGaqo) wokuSuswa kwe-Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uVule lo Mgaqo (le Migaqo) wokuSusa we-Syslog ulandelayo."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Vula uMgaqo/imiGaqo yoKususwa kwe-Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uphinde uqhube iMigaqo yokuSusa ye-Syslog elandelayo."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Lungisa Ngasemva iMithetho yokuSusa ye-Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uthumele ngaphandle iMigaqo yokuSusa ye-Syslog elandelayo."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Thumela ngaphandle Umthetho(Imi) wokuSusa we-Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Umgaqo '%s' ukhokelele ekususweni/ekudluliselweni kwemiyalezo eyi-%s/%s"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Hlela uMgaqo woKususa [hlela: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Hlela uMgaqo woKususa [okutsha]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "IRekhodi eNtsha yoSuso"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "UMgaqo oMtsha woSuso"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Iinkcukacha zoMgaqo woKususa"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Igama loMgaqo woKususa"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Nceda chaza lo Mgaqo Wokususwa."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Ivuliwe?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Ngaba lo mgaqo wokususa uvuliwe?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Uhlobo loKufanisa uMtya"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Chaza indlela othanda ngayo ukuba lo mtya uthelekiswe. Ukuba usebenzisa uhlobo lwe-SQL Expression ungasebenzisa nayiphi na i-SQL expression esebenzayo ukwenza i-alamu. Iinkalo ezikhoyo ziquka 'message', 'facility', 'priority', kunye no-'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Umtya wokuTshatisa uMyalezo we-Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Faka icandelo elihambelanayo lomyalezo we-syslog, iziko okanye igama lehosti, okanye igatya le-SQL where ukuba usebenzisa uHlobo loKufanisa kweMbonakaliso ye-SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Indlela yokuSusa"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Ucimo"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Udluliselo"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Amanqaku oMgaqo woKususa"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Indawo yamanqaku kumgaqo wokususwa"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Imiqathango yesihluzi sokususa"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Izihluzi zeMigaqo yokuSusa ye-Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Igama loKususa"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Ukudlulisela"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Akukho Migaqo yokuSusa ye-Syslog Ichaziweyo"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Ngenisa uMgaqo wokuSusa ukusuka kwiFayile yaLapha"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Ukuba ifayile ye-XML equlethe idatha yenkcazo yoMgaqo wokuSusa ikumatshini wakho wengingqi, yikhethe apha."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Ngenisa uMgaqo wokuSusa ukusuka kuMbhalo"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ukuba unefayile ye-XML equlethe idatha yenkcazo yoMgaqo wokuSusa njengombhalo, unokuyincamathisela kule bhokisi ukuze uyithathe ngaphakathi."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Ngenisa uMgaqo wokuSusa"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "QAPHELA: Umgaqo wokuSusa '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "IMPAZAMO: UMgaqo woKususwa '%s' %s Awuphumelelanga!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime le Ngxelo (ezi Ngxelo) ze-Syslog zilandelayo."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Cima iiNgxelo ze-Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime le Ngxelo (ezi Ngxelo) ze-Syslog zilandelayo."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Cima iNgxelo(iiNgxelo) ze-Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uVule le Ngxelo (ezi Ngxelo) ze-Syslog zilandelayo."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Vula iNgxelo/iiNgxelo ze-Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uthumele ngaphandle iMigaqo yeNgxelo ye-Syslog elandelayo."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Thumela ngaphandle Umthetho(Imi) weNgxelo ye-Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Kufuneka ukhethe ubuncinane iNgxelo ye-Syslog enye."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Buyela"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Hlela iNgxelo [hlela: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Hlela iNgxelo [okutsha]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "IRekhodi eNtsha yeNgxelo"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Nceda chaza le Ngxelo."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Ngaba le ngxelo ivuliwe?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Chaza indlela othanda ngayo ukuba lo mtya uthelekiswe. Umakhi weSihluzi udibanisa iimeko kumyalezo, ihosti, inkqubo, i-facility kunye nokubaluleka."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Ukuphindaphindeka"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Le Ngxelo imele ithunyelwe kangaphi kuluhlu losasazo?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Ixesha lokuThumela"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Ngaliphi ixesha losuku apho le ngxelo ifanele ukuthunyelwa?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Ifomathi yeNgxelo"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Yakha iimeko zesihluzi, okanye ufake umbhalo okanye intetho ye-SQL ukuze ihambelane nemiyalezo ye-syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Ulwazi oluya kuqukwa kwisiqu seNgxelo."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Uluhlu olwahlulwe ngokhoma lweedilesi ze-imeyile zokuthumela ingxelo kuzo."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Indawo yamanqaku kwingxelo"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Umboniso waPhambi koVavanyo lweNgxelo"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Iimeko zesihluzi sengxelo"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Izihluzi zeengxelo ze-Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Igama leNgxelo"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Ithunyelwe ekugqibeleni"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Iingxelo"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Akukho Zingxelo ze-Syslog Zichaziweyo"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Ngenisa uMgaqo weNgxelo ukusuka kwiFayile yaLapha"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Ukuba ifayile ye-XML equlethe idatha yenkcazo yoMgaqo weNgxelo ikumatshini wakho wengingqi, yikhethe apha."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Ngenisa uMgaqo weNgxelo ukusuka kuMbhalo"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ukuba unefayile ye-XML equlethe idatha yenkcazo yoMgaqo weNgxelo njengombhalo, unokuyincamathisela kule bhokisi ukuze uyithathe ngaphakathi."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Ngenisa iDatha yeNgxelo"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "QAPHELA: Umgaqo weNgxelo '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "IMPAZAMO: UMgaqo weNgxelo '%s' %s Awuphumelelanga!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Ayikwazi ukugcina itempleyiti. Nceda uzame kwakhona."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Faka igama letempleyiti eliphakathi ko-1 kunye no-128 oonobumba."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Iitempleyiti"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Umbuzo"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Akukho zitempleyiti zokukhangela ekwabelwana ngazo. Gcina ukukhangela kwabo bonke abasebenzisi ukusuka ku-Syslog ukuze udale enye."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uthumele ngaphandle ezi Itempleyiti zoPhendlo eziGciniweyo zilandelayo."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Cofa u-'Qhubeka' ukuze uCime le Itempleyiti (ezi Itempleyiti) yoKhangelo Olugciniweyo zilandelayo."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Cima iiTempleyiti zoKhangelo eziGciniweyo"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Thumela ngaphandle Itempleyiti(ii) zoKhangelo eziGciniweyo"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "QAPHELA: Kungeniswe ezi-%d kwaye kuhlaziywe iitempleyiti zoPhendlo oluGciniweyo ezi-%d."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "IMPAZAMO: Itempleyiti/Iitempleyiti yoKhangelo Olugciniweyo eziyi-%d aziphumelelanga ukungeniswa."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Ngenisa Itempleyiti yoKhangelo eGciniweyo ukusuka kwiFayile yaLapha"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Ukuba ifayile ye-JSON equlethe idatha yenkcazo yeTempleyiti yoKhangelo oLugciniweyo ikumatshini wakho wengingqi, yikhethe apha."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Ngenisa Itempleyiti yoKhangelo eGciniweyo ukusuka kuMbhalo"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Ukuba unefayile ye-JSON equlethe idatha yenkcazo yeTempleyiti yoKhangelo oLugciniweyo njengombhalo, unokuyincamathisela kule bhokisi ukuze uyithathe ngaphakathi."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Ngenisa Itempleyiti yoKhangelo eGciniweyo"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Hlela iTempleyiti yoPhendlo oluGciniweyo"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Igama eliboniswa kubo bonke abasebenzisi kuKhangelo oluGciniweyo."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "I-akhawunti engumnini wale templeyiti kwaye ekwaziyo ukuyilawula kuKhangelo oluGciniweyo."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Abasebenzisi abanokusebenzisa le templeyiti ngaphezu komnini wayo. Bonke Abasebenzisi babelana ngayo nawo wonke umntu."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Amaqela anokusebenzisa le templeyiti ukongeza kumnikazi wayo. Onke amaQela abelana ngayo nomntu wonke."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Umbuzo woPhando"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Lungisa isintaksi ye-query ukuze usebenzise umakhi we-query."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Khetha indawo, umsebenzisi wobalo, kunye nexabiso. Sebenzisa u-AND, OR, NOT, okanye u-Group ukwakha umbuzo. Iinguqu zisebenza kule templeyiti ekwabelwana ngayo kubo bonke abasebenzisi."
+

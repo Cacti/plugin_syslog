@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Igbo\n"
+"Language: ig-NG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "nkeji %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "awa %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "awa %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "ụbọchị %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "ụbọchị %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "izu %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "izu %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "ọnwa %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "ọnwa %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "afọ %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "afọ %d"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Oge Ọrụ Ehihie"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Ụbọchị Nke A"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Izu Nke A"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Ọnwa Nke A"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Afọ Nke A"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Ụbọchị Gara Aga"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Izu Gara Aga"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Ọnwa Gara Aga"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Afọ Gara Aga"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Mbudata Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Kekọrịta na ndị ọrụ…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Kekọrịta na otu…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Ihe mberede"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Dị oke mkpa"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Ịma ọkwa"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Njehie"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Ịdọ aka ná ntị"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Ọkwa"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Ozi"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Chọpụta Njehie"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Nke ozi"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Nchekwa Kụrụ Afọ n'Ala.  A naghị ekwe ka Ndị Na-anakọta Data Dị Anya nọ na Ọnọdụ Mmekọrịta Chekwaa Iwu.  Chekwaa site na Sava Cacti Isi kama."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Biko jiri ngwa Ozi-e HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Ibu mbubata ederede karịrị oke kachasị"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Enweghị ike ịgụ faịlụ mbubata e bulitere. Lelee faịlụ ahụ na oke nha mbulite."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Họrọ faịlụ mbubata ma ọ bụ mado ihe dị n'ime ya tupu ị bubata."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Tebụl Syslog enweghị nkewa.  Tebụl ochie (ndị enweghị nkewa) akwụsịla ịdị ire, a chọkwara tebụl nwere nkewa maka nrụnye ọhụrụ.  A ga-anọgide na-anakọta data gị, mana i kwesịrị ịkwaga tebụl syslog gaa n'usoro nwere nkewa."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Na-eche ọrụ nhazi zuru ezu."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Nhazi na-emecha n'ime oge igbu oge ekwere."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Ọ dịghị ọsọ nhazi mezuru ihe karịrị sekọnd %d."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Ozi ndị na-abata dị n'ime oke ndị ahaziri."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Ntụle ahịrị na-abata adịghị."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Nkwakọba na-abata nke opekata mpe ozi %s karịrị oke nke %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Akara oge ozi na-abata nke kacha ochie adịghị."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Ozi a na-ahazibeghị karịrị sekọnd %d."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "E gbanyeghị mmekọrịta na collector a."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Mmekọrịta dị n'ime igbu oge e kwere."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Ntụle ahịrị mmekọrịta adịghị."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Akara oge ndekọ mmekọrịta nke kacha ochie adịghị."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Mmekọrịta adaawo ma ọ bụ ndekọ ndị dị n'ahịrị karịrị igbu oge e kwere."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "E gbochighị nlekọta nkewa."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "E gbochiri nlekọta nkewa: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Ahụike usoro nnyefe Syslog - collector %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Ọkpọkọ Syslog agbakeela."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Nhazi nkewa maka %s ezughị ezu ma ọ bụ adịghị mma; akwụsịla nlekọta nkewa. Jiri SHOW CREATE TABLE nyochaa metadata nkewa ma, ọ bụrụ na ọ dị mkpa, wughachi nkewa ndị ahụ; ide ihe na-aga n'ihu na nkewa nchekwa dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "oghere nkebi fọdụrụ: nkebi %d"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "enweghị nkwụsịtụ njide"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "e yigharịrị mkpụcha njide ruo mgbe e weghachiri oke ọdịnihu"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "ndekọ ọhụrụ na-agbakọta na nkebi nchekwa dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "erutela oke mgbake maka ọsọ nke ọ bụla"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "mmepụta nkebi dara"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Ọkwa nkewa amaghị; họrọ Kwa Elekere ma ọ bụ Kwa Ụbọchị."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Nchekwa oge Syslog ezighị ezi."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Enweghị ike iji nkewa kwa awa na njigide na-enweghị njedebe, nke ga-achọ ọnụ ọgụgụ nkewa na-enweghị oke. Họrọ oge njigide ma ọ bụ nkewa kwa ụbọchị."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Nkewa %s nwere ụbọchị %s nke njigide na oge mmepụta tupu oge eruo nke ụbọchị %s chọrọ nkewa %s maka tebụl ọ bụla, nke karịrị oke nkewa %s nke sava nchekwa data a. Belata oge njigide, mee ka oge mmepụta tupu oge eruo dị mkpụmkpụ, ma ọ bụ họrọ nkewa Kwa Ụbọchị."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Kwa Ụbọchị"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Kwa Awa"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Tebụl ndị ahụ ka na-eji nkewa %s ruo mgbe cli/upgrade_partitioning.php rụgharịrị ha."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Enweghị ike ịgụ ọkwa nkewa nke tebụl Syslog dị adị."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "E yigharịrị mgbake nkewa na-akpaghị aka: nha dMaxValue adịghị; achọrọ itinye aka nke onye ọrụ."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "E yigharịrị mgbake nkewa na-akpaghị aka: dMaxValue nwere ihe dị ka ahịrị %s na baiti %s; oke bụ ahịrị 100000 na baiti 134217728. Achọrọ itinye aka nke onye ọrụ."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Ụdị iwu amaghị."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Nkwekọrịta ogige mbata a haziri ezighị ezi."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Ngwa nke iwu a adịbeghị na tebụl ntụaka."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Ụdị ndakọrịta iwu amaghị."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Iwu ahụ achịkọtaghị ka ọ bụrụ ajụjụ."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Enweghị ike ịtụle ajụjụ nlele mbụ ahụ."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Enweghị ike ịchịkọta Nzacha nlele mbụ nke akụkọ ihe mere eme."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Enweghị ike inyocha ajụjụ nlele mbụ nke akụkọ ihe mere eme."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Enweghị ike ịgụ ihe atụ nlele mbụ ahụ."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Nlele okwu SQL na-elele naanị ozi na-abata nọ n'ahịrị. Anaghị achọ ozi ndị a rụcharala. Nnwale anaghị ezipụ mkpu."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Ajụrụ ikike."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Arịrịọ na-ezighị ezi. Biko nwaa ọzọ."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Iwu ahụ enweghị okwu ndakọrịta iji nwalee."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Okwu ndakọrịta ahụ dị oke ogologo iji nwalee."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Amaghị"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Ọkwa Ọnụ ụzọ Syslog Cacti '%s' maka Onye nnabata '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Ọkwa Ọnụ ụzọ Syslog Cacti '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Aha Ịma ọkwa"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Ịdị Njọ"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Ọnụ ụzọ"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Ọnụọgụ"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Eriri Ndakọrịta"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Ọkwa Syslog Cacti '%s' maka Onye nnabata '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Ọkwa Syslog Cacti '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Aha Host"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Ụbọchị"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Ọkwa"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Ozi"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "ỊDỌ AKA NÁ NTỊ: Akpalitela Ọkwa Ọnụ ụzọ Syslog maka Onye nnabata '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "ỊDỌ AKA NÁ NTỊ: Akpalitela Ọkwa Ọnụ ụzọ Syslog"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Aha:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Ogo ịdị njọ:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Ọnụ ụzọ:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Ọnụọgụ:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Eriri Ozi:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Aha onye nnabata:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Ụbọchị:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Ọkwa:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Ozi:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Onye nnabata:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Ogo:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Mkpu Ihe Omume - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Ọnụọgụ:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Onye nnabata"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Akụkọ Ihe Omume - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Nlele akụkọ na-achọ ozi %d echekwara nso nso a; akụkọ ahụ n'onwe ya na-ekpuchi oge ya niile. Nnwale anaghị ezipụ ozi-e."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Nsonaazụ ndị e kpokọtara adịghị ma ọ bụ agwụla oge ha. Mee ka nsonaazụ dị ọhụrụ ma nwaa ọzọ."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Enweghị ike ibugo ozi otu."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Mba"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Ee"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Ederede Nile"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Kwado Kọlụm"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "Mkpụrụedemede %d"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Onye Ndụmọdụ Nkwalite Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Kwalite Syslog site na %s gaa na %s? A ga-echekwa ozi na iwu ndị dị adị. Mgbanwe schema nwere ike iwe oge."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Kedu ụdị nkwalite/nwụnye ị chọrọ iji"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Mgbe ị nwere tebụl buru ibu nke ukwuu, ime Truncate ga-adị ngwa karị. Ọ bụrụ na ị na-echegbu onwe gị maka data echekwara, ị nwere ike họrọ ma ọ bụ Inline, nke ga-akwụsị ihe nchọgharị gị ruo oge nkwalite a, ma ọ bụ background, nke ga-emepụta usoro ndabere iji weta data syslog ochie gị site na tebụl ndabere gaa n'ụdị syslog ọhụrụ. Ọzọkwa, usoro a nwere ike iwe ọtụtụ awa. Truncate na-atụfu naanị syslog echekwara na ozi ndị e wepụrụ; a na-edobe iwu ọkwa, mwepụ na mkpesa mgbe niile."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Kpochapụ Tebụl Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Nkwalite N'ime Usoro"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Nkwalite N'azụ"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Injini Nchekwa nke Nchekwa Data"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Injin nchekwa maka tebụl nyocha. Naanị injin nchekwa InnoDB na, na MariaDB, Aria ka a na-akwado. Nhọrọ Onye Nchịkọta Data Dị Anya ọ bụla chọrọ InnoDB; enweghị ike izipu njikọta na-adabaghị."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Nchekwa InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Nchekwa Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Nkenke Akara Oge"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Izi ezi nke milisekọnd na-echekwa akara oge syslog nke na-erughị otu sekọnd n'ime kọlụm TIMESTAMP(3) ma dị naanị na MariaDB.  Izi ezi nke sekọnd na-eji kọlụm TIMESTAMP nkịtị.  N'usoro ọrụ na-agba ọsọ, jiri cli/upgrade_partitioning.php --convert-ms n'oge nrụzi iji gbanwee ozi ndị dị adị n'atụfughị ha."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Milisekọnd - TIMESTAMP(3) (Naanị MariaDB)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Sekọnd - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Nhazi Ozi Dị N'ebe Dị Anya"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Gbanye Nhazi Ozi Nchịkọta Data Dị N'ebe Dị Anya"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Ọ bụrụ na Ndị Na-anakọta Data Dị N'ime Ebe Dị Anya gị nwere nchekwa data Syslog nke ha ma na-ahazi ozi ha n'onwe ha, kaa igbe nlele a akara.  Site n'ịka Igbe Nlele a akara, Ndị Na-anakọta Data Dị N'ime Ebe Dị Anya gị ga-adị mkpa idobe faịlụ 'config_local.php' nke ha iji gwa Syslog ka ọ jiri nchekwa data nwere onwe ya maka ngosi na nhazi ozi.  Biko jiri faịlụ nlereanya 'config_local.php.dist' maka ebumnuche a.  ỊDỌ AKA NÁ NTỊ: A ga-eke tebụl Syslog na akpaghị aka ozugbo agbanyere nhọrọ a."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Mmekọrịta Iwu Nchịkọta Data Dị N'ebe Dị Anya"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Ọ bụrụ na Ndị Na-anakọta Data Dị N'ime Ebe Dị Anya gị nwere nchekwa data Syslog nke ha ma na-ahazi ozi ha n'onwe ha, kaa igbe nlele a akara ma ọ bụrụ na ịchọrọ ka e zipụ iwu Mkpu, Mwepụ na Akụkọ nke nchekwa data Cacti Isi na Sistemụ Cacti Dị N'ime Ebe Dị Anya."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Chekwaa Ndekọ na Onye Nchịkọta Dị Anya"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Debe ozi ndị ahaziri na tebụl syslog nke onye nnakọta dịpụrụ adịpụ mgbe ebufechara ha na Onye Nnakọta Isi. Mgbe gbanyụrụ, a na-edebe ndekọ na mpaghara naanị mgbe Onye Nnakọta Isi na-adịghị ma wepụ ha mgbe e kwenyesịrị nnyefe mgbake."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Iwu Nchekwa"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Họrọ ụbọchị ole nke uru Syslog ịchọrọ idobe na nchekwa data."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Ọkwa Nkewa"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Ogo nkewa nke ọ bụla nke tebụl syslog na syslog_removed. A na-atụ aro Kwa ụbọchị. Kwa awa chọrọ njigide nwere oke, ma njigide na ọkwa nkewa ọnụ ga-adabarịrị n'oke nkewa nke sava nchekwa data. Iji gbanwee ọkwa ahụ ma emechaa, gbanwee ya na Ntọala ma gbaa cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Kwalite"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Wụnye"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Onye Ndụmọdụ Syslog %s"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "ỊDỌ AKA NÁ NTỊ: Nkwalite Syslog Na-ewe Oge!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Nkwalite nke tebụl syslog 'main' nwere ike ịbụ usoro na-ewe nnukwu oge. N'ihi ya, a na-atụ aro ka i belata oke tebụl syslog gị tupu ịkwalite ya, ma ọ bụ họrọ nhọrọ nke ndabere."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Ọ bụrụ na ịhọrọ nhọrọ ndabere, a ga-agbanwe aha tebụl syslog ochie gị, ma kee tebụl syslog ọhụrụ.  Mgbe ahụ, a ga-ebido usoro nkwalite na ndabere.  Ọzọ, usoro ndabere a nwere ike iwe ntakịrị oge tupu ya agwụ.  Otú ọ dị, a ga-echekwa data gị."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "N'agbanyeghị nhọrọ gị, a ga-edebe iwu mwepụ na ọkwa niile dị adị n'oge usoro nkwalite."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Pịa <b>'Kwalite'</b> iji gaa n'ihu na nkwalite ahụ, ma ọ bụ <b>'Kagbuo'</b> iji laghachi na menu Nkwụnye."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Ị nwekwara ike ịtọ injin nchekwa data maka tebụl nyocha syslog na syslog_remove. Naanị injin nchekwa InnoDB na, na MariaDB, injin nchekwa Aria ka a na-akwado. Ọ bụrụ na ị na-eji MariaDB, anyị na-atụ aro Injin Nchekwa Aria mgbe enweghị nhọrọ Onye Nchịkọta Data Dị Anya gbanyere; nhọrọ onye nchịkọta chọrọ InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Ị nwere ọtụtụ nhọrọ ị ga-ahọrọ mgbe ị na-etinye Syslog. Nke mbụ bụ Nhazi Nchekwa Data. Tebụl e kewara ekewa bụ naanị nhazi a na-akwado ebe ha na-egbochi oke tebụl ịkarị ókè ma si otú a na-ebelata ọsọ ajụjụ. Tebụl ọdịnala na-abụghị nke e kewara ekewa akwụsịla ọrụ ma anaghịzi enye ha maka ntinye ọhụrụ."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Ị nwekwara ike họrọ izi ezi nke akara oge. Izi ezi nke millisekọnd (TIMESTAMP(3)) na-echekwa usoro n'okpuru sekọnd nke ozi na-abata ma dị naanị na MariaDB; nrụnye MySQL na-eji izi ezi nke sekọnd. Enweghị ike ịgbanwe nke a n'ebe ahụ ma emechaa n'ebibighị ozi echekwara."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Nchekwa Aria adịghị mgbe nhọrọ Nchịkọta Data Dị N'ime Ebe Dị Anya ọ bụla gbanyere. Ahọrọla InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Ị nwekwara ike họrọ ogologo oge njide. Biko buru n'uche na ọ bụrụ na ị nwere ọtụtụ ndị nnabata na-edekọ na syslog, tebụl a nwere ike ibu ibu nke ukwuu."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Ntọala Syslog %s"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Kedu usoro mwepụ ị chọrọ iji?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Mgbe ị na-ewepụ syslog, ị nwere ike iwepụ ihe niile, ma ọ bụ naanị akụkụ ụfọdụ, ma ọ bụrụ na ị na-eme atụmatụ ịwụnye ya ọzọ n'ọdịnihu."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Wepụ Ihe Niile (Ndekọ, Tebụl, Ntọala)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Naanị Data Syslog"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Mmasị Nwepụ Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Wepụ"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Kagbuo"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Mwepụ Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Dezie)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Omume)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Ọkwa Mkpu Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Akụkọ Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Nlereanya Gasị Ọchụchọ E Chekwara"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Bọọdụ Nchịkwa"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Ndụmọdụ Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Bubata)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Gosi Syslog n'Oke"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "ihe njirimara ahụ tọgbọrọ chakoo"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "ihe njirimara ahụ dị ogologo karịa mkpụrụedemede 190"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "ihe njirimara ahụ nwere oghere ma ọ bụ nkwụsị ahịrị"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "o nweghị nkọwa ma ọ bụ omume a tụrụ aro"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "ọ bụghị ihe JSON"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Enweghị ike ibudata ndụmọdụ."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Ndụmọdụ dị - pịa ozi ahụ maka nkọwa"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Nkọwa"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Omume Atụrụ Aro"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Ntụaka"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Mọnde"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Tiuzdee"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Wenezdee"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Fraịdee"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Satọdee"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Sọnde"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Tọọzdee"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Mọnde ruo Fraịdee"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Satọdee na Sọnde"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Kwa ụbọchị"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Gbanyụrụ"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Ọ Dịghị Nke Ọ Bụla"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Ntọala Izugbe"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Gbanyere Syslog"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Ọ bụrụ na edobere igbe nlele a, a ga-ebufe ndekọ site na tebụl Syslog Incoming gaa na tebụl syslog bụ isi ma gbanye Mkpu na Akụkọ.  Biko buru n'uche na ọ bụrụ na agbanyụrụ sistemụ, ndenye ndekọ ga-anọgide na-agbakọta na tebụl Syslog Incoming n'ihi na usoro rsyslog ma ọ bụ syslog-ng kọwapụtara nke a."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Ziga mkpu na Onye Njikwa Mkpu"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Kwe ka iwu ndị e debere na Njikwa Mkpu bufee mkpu. Ozi-e Syslog ka bụ nhọrọ ndabere; omume iwu na-arụ ọrụ naanị maka iwu Mkpu Syslog."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Wepụ Domini Gasị"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Ndepụta ngalaba nke rịkọm kewara nke ị chọrọ iwepụ na aha onye nnabata Syslog, ọmụmaatụ ga-abụ 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Oge Mmelite"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Nke a bụ oge n'ime sekọnd tupu peeji ahụ emegharịa."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Wụfee Ngụkọta Ahịrị Niile"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Ọ bụrụ na edobere igbe nlele a, taabụ Ndekọ Sistemụ na Ndekọ Mkpu anaghị agụ ndekọ ọ bụla dakọtara, nke nwere ike ịdị oke ọnụ na nrụnye buru ibu. Ibe ahụ na-egosi njikọ Nke Gara Aga na Nke Na-abịa kama ngụkọta na ndepụta ibe, a na-enyekwa Nke Na-abịa mgbe ndekọ ndị ọzọ ka dị."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Ndekọ Akụkọ Kacha Elu"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Maka Mkpu ndị dabere na Ọnụ ụzọ, gịnị bụ ọnụọgụ kachasị ị chọrọ igosi na mkpesa ahụ.  A na-eji nke a egbochi oke nha nke ndekọ html na Ozi-e."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d Ndekọ"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Usoro Nhazi Syslog Kacha Elu"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Mgbe edobere ya karịa 1, a na-ekesa nhazi ozi na-abata n'ofe usoro ndị ọrụ yiri ibe ha. Onye ọrụ ọ bụla na-ahụ maka oke ozi dị iche iche na-abata, na-eme ka mkpebi aha onye nnabata na nbufe ozi dị ngwa n'okpuru ibu dị arọ. Ntọala nke 1 na-ahazi ozi niile n'otu usoro. A naghị akwado usoro ndị ọrụ na Windows ma ọ bụ mgbe mgbakwunye PHP pcntl na POSIX adịghị, n'ọnọdụ ahụ nhazi na-alaghachi n'otu usoro."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d Usoro Ọrụ"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d Usoro Ọrụ"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Iwu maka Imepe Tiketi"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "A ga-eme iwu a maka imeghe Tiketi Ebe Enyemaka. A ga-achọ ka iwu ahụ tụọ ọtụtụ paramita ntinye dị ka ndị a: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Ndepụta hostlist ga-abụ ndepụta ndị nnabata nke mkpọpu okwu (comma) kewara nke ọkwa ahụ metụtara."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Nhọrọ Nchọpụta Onye nnabata"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Gbanye Mkpebi Aha Onye Nnabata"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Ọ bụrụ na edobere igbe nlele a, a ga-ebu ụzọ chọta aha ndị nnabata niile site na nchọta DNS (Ọ bụrụ na agbanyere ya), na-eji ndekọ A na AAAA. Adreesị IPv4 na IPv6 anaghị achọ nchọta, a na-echekwa adreesị IPv6 n'ụdị mkpụrụedemede nta a kpakọrọ akpakọ. Ọ bụrụ na nchọta DNS ada, sistemụ ahụ ga-anwa idozi aha onye nnabata megide tebụl onye nnabata Cacti ma jiri nkọwa onye nnabata Cacti dochie ya. Ọ bụrụ na nchọta DNS na Cacti daa, a na-ekenye ndekọ ahụ okwu mbido 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Wụfee Mkpebi DNS maka ndị nnabata na-abata"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Ọ bụrụ na edobere igbe nlele a, sistemụ ahụ agaghị anwa ichọta ndị nnabata site na nchọta DNS.  Nke a bara uru maka gburugburu ebe nchọta DNS na-agaghị ekwe omume ma ọ bụ na achọghị ya."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Ntọala Ọkwa HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Gbanye Ozi-e Dabere na HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Ọ bụrụ na edobere igbe nlele a, a ga-ezipụ Ozi-e niile n'ụdị HTML.  Ma ọ bụghị ya, a ga-ezipụ Ozi-e n'ederede nkịtị."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Faịlụ Nhazi A Ga-eji"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Họrọ faịlụ mkpuchi html ahaziri na CSS a ga-eji. Faịlụ a nwere ma html ma CSS iji kechie akụkọ gị. Ọ bụrụ na o nwere ihe karịrị naanị CSS, ị kwesịrị itinye mkpado <REPORT> pụrụ iche n'ime faịlụ ahụ. A ga-eji ọdịnaya akụkọ dochie mkpado nhazi a. Faịlụ ndị a dị na ndekọ 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Nchekwa Data na Nkewa"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Nchekwa Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Nke a bụ ọnụọgụgụ ụbọchị a ga-edobe ihe omume."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Ogo nkewa nke ọ bụla nke tebụl syslog na syslog_removed. A na-echekwa mgbanwe ebe a mana ọ na-amalite ịrụ ọrụ naanị mgbe cli/upgrade_partitioning.php rụgharịrị tebụl abụọ ahụ; ruo mgbe ahụ, nlekọta nkewa na-edobe ogo dị ugbu a. Nkewa kwa awa chọrọ njigide nwere oke. Njigide, windo tupu e kee ya na ọkwa nkewa ọnụ ga-adabarịrị n'oke nkewa nke sava nchekwa data, maọbụ na a gaghị echekwa ntọala ndị ahụ."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Oge Mbụ Maka Imepụta Nkewa"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Nke a bụ ọnụọgụgụ ụbọchị nke nkewa ọdịnihu a ga-edobe maka tebụl Syslog e kewara ekewa, ka e wee na-ekewa nkewa ọhụrụ mgbe niile site na nkewa dMaxValue tọgbọrọ chakoo. Nkewa kwa elekere na-edobe ma ọ dịkarịa ala ụbọchị 2 mgbe niile."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "Ụbọchị %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "Ụbọchị %d"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Ókè Nweghachi Nkewa"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Mgbe nkebi (partitions) na-efu (dịka ọmụmaatụ mgbe oge nkwụsị ndozi gasịrị), a na-emepụta oke nkebi ndị na-efu nke ruru ego a kwa tebụl na ọsọ poller ọ bụla. Oghere fọdụrụnụ na-agwọ n'ọsọ ndị na-esonụ; a na-eyigharị mbelata njide ruo mgbe e weghachiri oke nkebi ọdịnihu kpamkpam. Ọ metụtara naanị tebụl Syslog e kewara ekewa."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "Nkewa %d kwa ọsọ"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "Nkewa %d kwa ọsọ"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Ọnụ ụzọ Ịdị Ochie Onye Nchịkọta"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Mkpu ahụike pipeline na-adọ aka ná ntị mgbe ozi ndị a na-ahazibeghị, mmecha nhazi, ma ọ bụ mmekọrịta nọ n'ahịrị gafere igbu oge a. Igbu oge dị irè bụ opekata mpe oge poller atọ na sekọnd 300. Tọọ ka ọ bụrụ 0 iji jiri sekọnd 300."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Nke ndabara (sekọnd 300)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "sekọnd %d"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Ọnụ ụzọ Nkwakọba Onye Nchịkọta"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Peeji Ọnọdụ Syslog na-egosi ịdọ aka ná ntị mgbe karịa ọnụọgụ ozi ndị a nọrọ n'enweghị nhazi na tebụl Syslog Incoming.  Tọọ ka ọ bụrụ 0 iji jiri ndabara nke ozi 10000."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Nke ndabara (ozi 10000)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "Ozi %d"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Mkpu Ahụike Pipeline"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Ndepụta Ọkwa Ahụike Pipeline"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Họrọ ndepụta ọkwa Thold dị adị maka mkpu ahụike pipeline. A na-ejikọta ndị nnata nke ndepụta gbanyere na adreesị Ozi-e dị n'okpuru, na-echekwa ndị nnata BCC. Ndepụta chọrọ tebụl ndepụta-ọkwa Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Ndị Nnata Ozi-e Ahụike Pipeline"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Ndị nnata ozi-e e ji kọma kewaa maka ọdịda na mgbake pipeline. Hapụ oghere ma ahọrọla ndepụta ozi ọkwa ọ bụla iji gbanyụọ ozi-e; ahụike na-anọgide na-ahụ anya na taabụ Ọnọdụ ma a na-edekọ mgbanwe ọnọdụ. Nyocha chọrọ ka Poller Cacti gbaa ọsọ."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Oge Ncheta Ahụike Pipeline"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Kwugharịa ọkwa maka nsogbu pipeline na-aga n'ihu mgbe oge etiti a gachara. A na-anwalegharị mgbalị ozi-e dara ada ọ naghị akarị otu ugboro kwa nkeji ise."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Nchekwa Ọkwa Mkpu Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Nke a bụ ọnụọgụgụ ụbọchị a ga-edobe ndekọ ọkwa."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Nkwụsị Ịma ọkwa na Nlekọta"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Ụbọchị Oge Nlekọta"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Ụbọchị mgbe a na-akwụsị ọkwa njikere niile n'oge nlekọta ahaziri."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Oge Nlekọta Na-amalite"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Oge mmalite mpaghara maka oge nlekọta zuru ụwa ọnụ."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Oge Nlekọta Na-agwụ"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Oge ngwụcha mpaghara maka oge nlekọta zuru ụwa ọnụ. Oge ngwụcha dị tupu oge mmalite na-aga n'ihu n'ụbọchị na-esote."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Ndozi Otu Ugboro Na-amalite"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Ụbọchị na oge mpaghara nhọrọ iji malite oge ndozi zuru ụwa ọnụ nke otu ugboro."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Ndozi Otu Ugboro Na-akwụsị"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Ụbọchị na oge mpaghara nhọrọ iji kwụsị oge ndozi zuru ụwa ọnụ nke otu ugboro. Usoro: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Oge Nchere Ọkwa Njikere Nke Ndabara"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Gbochie ọkwa nkwughachi ọ bụla maka otu iwu ahụ na oke mkpesa maka nkeji ole a. Ọnụọgụ nke iwu ọ bụla na-anọchi ntọala a. Tọọ ka ọ bụrụ 0 iji gbanyụọ."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Mgbochi Nkwugharị Nke Ndabara"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Gbochie ọkwa nwere otu ozi dabara adaba maka nkeji ole a. Ọnụọgụ nke iwu ọ bụla na-anọchi ntọala a. Tọọ ka ọ bụrụ 0 iji gbanyụọ."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Mgbake Syslog Dị N'ebe Dị Anya"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Ndekọ Mgbake Kacha Elu N'otu Mmezu"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Ọnụọgụgụ kacha elu nke ihe omume Syslog dịpụrụ adịpụ e debere nke otu mmezu ọrụ mgbake na-ezigara Isi Onye Nchịkọta. Azụmahịa nchekwa data etiti ọ bụla ka nwere oke na ndekọ 100. Bawanye ya nke nta nke nta mgbe ị na-elele ibu Isi Onye Nchịkọta na nchere mkpọchi."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Nkwụsịtụ Ngbake N'etiti Otu"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Nkwụsịtụ n'etiti azụmahịa nnyefe Main Collector nke ndekọ 100 ọ bụla. Nkwụsịtụ dị ogologo na-ebelata nrụgide Main Collector; nkwụsịtụ dị mkpụmkpụ na-eme ka nkwakọba ọrụ gaa ngwa ngwa."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Enweghị nkwụsịtụ"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "milisekọnd %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "sekọnd %d"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Ebe nchekwa data Syslog adịghị, ya mere enweghị ike ịlele ntọala nkewa megide oke nkewa ya na tebụl ya."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "E chekwaghị ntọala Syslog."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Na-eche: tebụl ozi ka na-eji nkewa %s. Gbaa cli/upgrade_partitioning.php iji tinye ọkwa ahọpụtara."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Hichapụ"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Gbanyụọ"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Gbanye"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Bupụ"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Enweghị njedebe"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "Izu %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "Izu %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "Ọnwa %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "Ọnwa %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "Afọ %d"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Ọ dịtụbeghị"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "Nkeji %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "Nkeji %d"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Malite na"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Nwere"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Na-ejedebe na"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Aha Onye nnabata bụ"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Mmemme bụ"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Ngalaba bụ"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Ngwa Mmepụta Nzacha"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Okwu SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Kwa Izu"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Nbubata/Mbupụ"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Iwu Ịma ọkwa Gasị"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Ntọala Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Iwu Gasị Mkpọku Ngwaọrụ"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Iwu Mwepụ Gasị"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Iwu Akụkọ"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Ndụmọdụ gasị"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Enweghị ike jikọọ na nchekwa data Syslog. Enweghị ndekọ Ngwaọrụ e wepụrụ."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "E wepụrụ ndekọ Ngwaọrụ %s na nchekwa data Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Ngwa Nnyemaka Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Kpochapụ Ngwaọrụ Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Ị ji n'aka na ị chọrọ ikpochapụ ngwaọrụ Syslog ochie?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Kwenye Ikpochapụ"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Gaa n'ihu"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Nhọrọ menu a na-enye ụzọ isi wepụ Ngwaọrụ ndị na-adịghịzi akọ akụkọ n'ime sava syslog nke Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Isi iyi ogwe dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Ụdị ogwe dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Ụdị chaatị dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Oghere nkewa dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Oge nkwụsịtụ dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Ogologo oge dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Ụdị ndekọ dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Ọnụọgụgụ kachasị elu nke dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Obosara ogwe dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Ogo ogwe dashbọọdụ na-ezighị ezi."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Ọchụchọ ezi uche na-ezighị ezi: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Ndị Ọzọ"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Ogwe dashboard ziri ezi dị mkpa."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Ahụghị ogwe Bọọdụ njikwa."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Aha ruru mkpụrụedemede 128 dị mkpa."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Dashboard ziri ezi dị mkpa."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Ahụghị Bọọdụ njikwa."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Enweghị ike ịchekwa mgbanwe dashboard."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Ị nwere ike ịkekọrịta naanị dashboard nke gị."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "detuo"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Enweghị ike idetuo Bọọdụ njikwa."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Ọnọdụ ogwe ziri ezi dị mkpa."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Isiokwu ruru mkpụrụedemede 128 dị mkpa."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Dọrọ ka ị hazigharịa kaadị"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Mee Ka Ogwe Dị Ọhụrụ"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Mkpokọta ozi"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Ọba akwụkwọ chaatị adịghị na nrụnye Cacti a."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Dezie Ogwe"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Ogwe Ọhụrụ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Chekwaa"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Tinye"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Hichapụ ogwe dashboard a?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Hichapụ dashboard a na ogwe ya niile?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Nye bọọdụ njikwa gị aha"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Mee Ka Ọ Bụrụ Nke Onwe"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Kekọrịta na mmadụ niile"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Chekwaa dị ka mbipụta m"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Ogwe njikwa Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Bọọdụ njikwa"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Oke Oge"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Elekere Gara Aga"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Elekere %d Gara Aga"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Ụbọchị Gara Aga"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Izu Gara Aga"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Izu %d Gara Aga"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Ọnwa Gara Aga"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Ọnwa %d Gara Aga"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Megharịa"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Bọọdụ Nchịkwa M"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Dashbọọdụ Zuru Ụwa Ọnụ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Kekọrịtara M"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Ọhụrụ"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Gbanwee aha"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Tinye Ogwe"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Mepụta dashboard mbụ gị iji hụ usoro Syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Tinye ogwe iji malite ime eserese.  Ogwe nwere ike iji nchọta gị echekwara."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Ogwe Bọọdụ njikwa"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Isiokwu"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Isi Iyi Ndekọ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Ndekọ Sistemụ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Ndekọ Ịma ọkwa"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Ụdị Ogwe"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Usoro Oge"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Nkewa"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Chaatị"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Ahịrị"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Mpaghara"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Ogwe"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Oge etiti"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Akpaaka"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Nkeji"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "Nkeji 10"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Awa"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Ụbọchị"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Mpaghara"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Mmemme"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Ngalaba"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Ọkwa mkpa"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Ọnụọgụgụ kacha elu"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Ụdị Ndekọ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Ndekọ Niile"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Ndekọ Isi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Ndekọ E Wepụrụ"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Malite site na Nchọta Echekwara"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Tinye ederede ozi…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Wepụ ọnọdụ"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Otu ndakọrịta"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Wepụ otu"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Aha Bọọdụ njikwa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Aha"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Ọnụ ụzọ Emebiri"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Emebiri Kemgbe"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Ngwa Nchịkọta"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Ngwaọrụ"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Ozi Dabara Adaba Ikpeazụ"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Na-agbake Mgbe"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Iwu"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Ngwaọrụ nile dabara adaba"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Ọ dịghị ọnụ ụzọ emebiri ugbu a."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Ngbake chọrọ ka enweghị ozi dakọtara ruo oge egosiri. Ozi dakọtara ọ bụla na-amaliteghachi oge nwayọọ."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Nke gara aga"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Ọzọ"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Biko gbanwee aha faịlụ config.php.dist ma ọ bụ config_local.php.dist gị n'ime ndekọ syslog, ma gbanwee ntọala nchekwa data gị tupu ịwụnye."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "A na-akwado akara oge milisekọnd (TIMESTAMP(3)) naanị na MariaDB. Sava a bụ MySQL, yabụ wụnye ya na akara oge izi ezi nke sekọnd kama."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Enweghị ike iji nchekwa Aria mgbe nhọrọ Nchịkọta Data Dị N'ime Ebe Dị Anya ọ bụla gbanyere. Họrọ InnoDB ma ọ bụ gbanyụọ nhọrọ Nchịkọta Data Dị N'ime Ebe Dị Anya niile."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Ndị nnabata 10 kacha elu"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Ozi Syslog - Elekere Gara Aga"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Ozi site n'Ịdị Njọ"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Mmemme 10 kacha elu"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Ọrụ Ịma ọkwa"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Ngwa Nlele Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Ọnọdụ Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Mkpu A Họọrọ"
+
+#: syslog.php
+msgid "seconds"
+msgstr "sekọnd"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Adịghị"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "ozi ndị a na-ahazibeghị adịla %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "nkwakọba ozi %s na-abata"
+
+#: syslog.php
+msgid "day"
+msgstr "ụbọchị"
+
+#: syslog.php
+msgid "days"
+msgstr "ụbọchị"
+
+#: syslog.php
+msgid "hour"
+msgstr "awa"
+
+#: syslog.php
+msgid "hours"
+msgstr "awa"
+
+#: syslog.php
+msgid "minute"
+msgstr "nkeji"
+
+#: syslog.php
+msgid "minutes"
+msgstr "nkeji"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Ahịrị dị na syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Ogo tebụl Syslog (data + ndekọ)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Nchekwa Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Nchekwa ịma ọkwa"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Edekọbeghị ọrụ mgbake ugbu a."
+
+#: syslog.php
+msgid "created"
+msgstr "emepụtara"
+
+#: syslog.php
+msgid "remaining"
+msgstr "fọdụrụ"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "e yigharịrị njide"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Ọrụ nhazi kacha ọhụrụ"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Mmekọrịta ekesara"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Nnata onye nchịkọta dị n'ebe dị anya"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Nchekwa na njigide"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Ahụike nkewa"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Ọrụ nlekọta nkewa"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Ọrụ ndozi nkebi na-adịbeghị anya"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Ahụike pipeline"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Ndị ọrụ na-arụkọ n'otu oge"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Usoro ndị ọrụ"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Ọkwa nhazi"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Ọrụ iwu"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Ndekọ ndị ahaziri"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Oge ọrụ nnyocha"
+
+#: syslog.php
+msgid "Started"
+msgstr "Malitere"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Emechara"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Oge ọrụ kachasị nta"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Nkezi oge ọrụ"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Oge ọrụ kacha elu"
+
+#: syslog.php
+msgid "State"
+msgstr "Steeti"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Ndekọ Nweghachi Dị n'Ahịrị"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Nke kasị ochie na-echere"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Mmekọrịta ikpeazụ gara nke ọma"
+
+#: syslog.php
+msgid "Active"
+msgstr "Na-arụ Ọrụ"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Anaghị arụ ọrụ"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Onye ọrụ ngbake"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Njehie mmekọrịta ikpeazụ"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Ọnụọgụgụ Nchịkọta Ikpeazụ"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Ndekọ Ikpeazụ Anatara"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Poller Dị N'ebe Dị Anya"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Poller dịpụrụ adịpụ amaghị"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Anatabeghị ndekọ onye nchịkọta dịpụrụ adịpụ ugbu a."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "E gbochiri nlekọta nkewa"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Akwụsịla nlekọta nkewa; ide ihe na-aga n'ihu na nkewa nchekwa dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Oge ụbọchị kpuchiri"
+
+#: syslog.php
+msgid "Table"
+msgstr "Tebụl"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "ahịrị dMaxValue (atụmatụ)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "nha dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Ọkwa nkewa"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "A họọrọ %s na Ntọala ma ọ ga-amalite ịrụ ọrụ mgbe cli/upgrade_partitioning.php wughachisịrị tebụl ndị ahụ."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Mgbalị ikpeazụ"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Nlekọta ikpeazụ gara nke ọma"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Emechara"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Ebugharịrị"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Nsonaazụ kacha ọhụrụ"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Ọganihu ngbake"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Nkọwa"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Nsonaazụ"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Mgbake"
+
+#: syslog.php
+msgid "When"
+msgstr "Mgbe"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Edekọbeghị ọrụ mmezi nkewa ugbu a. Ọrụ na-apụta mgbe poller gbasịrị ọsọ na-esote."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d e mepụtara, %d fọdụrụ, %d e kpochapụrụ"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Ọ dịghị ihe achọrọ ime."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Nkwakọba na-abata"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Na-ahazi"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Nlekọta nkewa"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Mmekọrịta"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Achọrọ nlebara anya"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Ahụike Dị Mma"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Nhazi gbanyụrụ"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Na-eche nhazi"
+
+#: syslog.php
+msgid "Health"
+msgstr "Ahụike"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Dị njikere"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Ezigara"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Ọ dara; a na-eche nnwale ọzọ"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Na-eche; nlele poller na-esote"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Nnyocha ahụike ikpeazụ"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Ọkwa ozi-e gasị"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Enyochabeghị ya"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Ọkwa ikpeazụ e zipụrụ"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Ndekọ ikpeazụ a natara"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Ozi a na-ahazibeghị nke kasị ochie"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Ndekọ ndị ahaziri n'ọrụ kacha ọhụrụ"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Usoro ndị ọrụ na-agba ọsọ"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Usoro ndị ọrụ a haziri ahazi"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Ndị nnabata a chọpụtara"
+
+#: syslog.php
+msgid "Process"
+msgstr "Usoro ọrụ"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Ndekọ ndị ejirila"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Oge ịgba ọsọ"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Edekọbeghị ọnụọgụgụ nke usoro ọ bụla ugbu a.  Ọnụọgụgụ onye ọrụ na-apụta mgbe ọsọ nhata mbụ gasịrị."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Ogologo Oge"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Agba"
+
+#: syslog.php
+msgid "Records"
+msgstr "Ndekọ"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Mmelite ntụaka"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Iwu mwepụ gasị"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Nyocha ịma ọkwa"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Mbufe na-abata"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Nhazi akụkọ"
+
+#: syslog.php
+msgid "slowest"
+msgstr "kachasị nwayọọ"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Edekọbeghị oge nke nzọụkwụ ugbu a.  Oge nke nzọụkwụ na-apụta mgbe poller gbasịrị ọsọ na-esote."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Ọrụ ikpeazụ"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Iwu a haziri"
+
+#: syslog.php
+msgid "Total"
+msgstr "Ngụkọta"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Iwu ịma ọkwa"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Hichapụ iwu gasị"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Gbara na ngba ikpeazụ"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Gosi karịa"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Gosi nke nta"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Mepee na mkparịta ụka"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Wepụ na ibe"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Oge mmegharị ọhụrụ na-ezighị ezi."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Kaadị amaghị."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Tinye kaadị"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Tinye kaadị ọnọdụ…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Nlele Ọkwa Mkpu Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Ọchụchọ echekwara ziri ezi dị mkpa."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Ahụghị ọchụchọ e chekwara."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Ị nwere ike ịkekọrịta naanị nchọta echekwara nke gị."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Ozi A Na-ahazibeghị: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Tinye okwu ọchụchọ"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Họrọ Ngwaọrụ"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Ngwaọrụ Ndị A Họọrọ"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "A Họọrọ Ngwaọrụ Niile"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Nzacha Ozi Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Chọọ ozi"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Kpọchie nzacha"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Dezie nzacha"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Ọchụchọ Ndị E Chekwara"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Ọchụchọ M"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Ọchụchọ Zuru Ụwa Ọnụ"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Nke ndabara)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Jikwaa"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Jikwaa nchọgharị echekwara"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Chekwaa ọchụchọ"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Dezie"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Chekwaa maka mmadụ niile"
+
+#: syslog.php
+msgid "contains"
+msgstr "nwere"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "enweghị"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Ahịrị"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Gosi Ahịrị"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Nke Ndabere"
+
+#: syslog.php
+msgid "View options"
+msgstr "Nhọrọ nlele"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Kwụchaa"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Mbepụ Ozi"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Njikwa Mwepụ"
+
+#: syslog.php
+msgid "Display"
+msgstr "Ngosipụta"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Kpokọta Ozi Ndị Yiri Onwe Ha"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Ozi Nke Otu"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Ozi Ndị E Kpokọtara"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Họrọ ubi, ihe nrụ ọrụ, na uru. AND na-ebute ụzọ karịa OR; NOT na-ewepụ ọnọdụ. LIKE na-eji % maka ọnụọgụ mkpụrụedemede ọ bụla na _ maka otu mkpụrụedemede. Ụbọchị na-eji YYYY-MM-DD HH:MM:SS. ID na-eji ọnụọgụ zuru ezu na-abụghị nke na-adịghị mma. Site na ndabara, a na-egosi ụbọchị ikpeazụ nke ndekọ ma ọ bụrụ na agbanweghị oke ụbọchị."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Enyemaka ọchụchọ"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Ọchụchọ E Chekwara Ọhụrụ"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Dezie Ọchụchọ E Chekwara"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Chekwaa Dịka"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Hichapụ ọchụchọ echekwara ahọpụtara?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Chọọ"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Kpochapụ"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Weghachi uru nzacha na ndabara nke onye ọrụ kọwapụtara"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Mee Ka Nsonaazụ Dị Ọhụrụ"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Bupụ Ndekọ gaa na CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Chekwaa Ntọala Ndabara"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Chekwaa ndabara nlele"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Chekwaa Ọchụchọ Dị Ka"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Tinye nchọta a mgbe i meghere ibe a ma ọ nwebeghị nchọta na-arụ ọrụ"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Mmebi"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "E mebiri Ọnụ ụzọ"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Ozi Gasị"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Ozi efu"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Gbanwee ozi otu"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Na-ebudata ozi otu..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Ọ dịghị ozi dabara adaba."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Enweghị Ozi Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Ahịrị Ndekọ Ịma ọkwa"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "E Wepụrụ Ịma ọkwa"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Enweghị Ozi Ndekọ Mkpu"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Mechie nkọwa ozi"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Nkọwa ozi"
+
+#: syslog.php
+msgid "General"
+msgstr "Izugbe"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Iwu Ịma ọkwa"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Usoro"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Edepụtaghachiri"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Depụtaghachi njikọ"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Depụtaghachi ozi"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Ndepụtaghachi adịghị. Họrọ ma depụtaghachi ederede ozi ahụ."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Na-achọ ntụziaka…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Ọ dịghị ndụmọdụ dabara n'ozi a."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Omume"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Mepụta Iwu Oti Mkpu"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Mepụta Iwu Ịdọ Aka Ná Ntị Ngwaọrụ"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Mepụta Iwu Mwepụ"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Zacha site na ngwaọrụ"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Zacha site na mmemme"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Mmemme Niile"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Hichapụ Iwu Ịdọ aka ná ntị Syslog ndị na-esonụ."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Hichapụ Iwu Ọkwa Njikere Syslog (gasị)"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Gbanyụọ Iwu Ịdọ aka ná ntị Syslog ndị na-esonụ."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Gbanyụọ Iwu Mkpọkụ Syslog(gasị)"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Gbanye Iwu Ịdọ aka ná ntị Syslog ndị na-esonụ."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Gbanye Iwu Mkpọku Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji bupụ Iwu Mkpu Syslog ndị na-esonụ."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Bupụ Iwu Mkpu Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Họrọ Mkpu Syslog ma ọ bụ Onye Njikwa Mkpu."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Tinye ọnụọgụgụ zuru ezu nke nkeji, awa, ma ọ bụ ụbọchị maka windo ọnụ ụzọ."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Tinye ọnụọgụgụ zuru ezu dị mma nke nkeji, awa, ma ọ bụ ụbọchị maka mgbake ọnụ ụzọ."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Usoro SQL e tinyere ezighị ezi.  Biko dozie SQL gị.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "SQL ahụ a haziri tupu oge eruo bụ:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Nzacha adịghị irè: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "SQL e meziri adịghị irè. Biko mezie SQL gị"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Atọghị"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "Nkeji 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "Elekere %d"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "Elekere %d"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "Ọnwa 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Dezie Ịma ọkwa [dezie: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Dezie Ịma ọkwa [ọhụrụ]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Iwu Mkpu Ọhụrụ"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Ọ dịghị"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Ngalaba oge"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Ụbọchị Gasị"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Awa gasị"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Nkeji Gasị"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Biko kọwaa Mkpu a."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Ebe Oti Na-aga"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Họrọ Ịma Mkpu Syslog ma ọ bụ Onye Njikwa Mkpu. Onye Njikwa Mkpu chọkwara ka e gbanye nnyefe na ntọala Syslog. A na-edobe Ozi-e dị ka nkwado; omume iwu anaghị agba maka iwu Onye Njikwa Mkpu."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Onye njikwa Oti"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Ịkụ mkpu Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Kedu Ọkwa Ịdị Njọ nke Mkpọku a?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Ọkwa Akụkọ"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Maka idekọ Okirikiri Mkpu Ọzọ, a ga-eso Mkpu na ọkwa Sistemụ maọbụ Ngwaọrụ."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Sistemụ"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Ụzọ Nkwupụta Akụkọ"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Kọwaa otu esi enye Ọkwa njikere na ozi syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Nke otu"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Maka usoro 'Ọnụ ụzọ', a na-akpalite Mkpu mgbe ọnụọgụ ahụrụ ruru uru a."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Mpio Ọnụ ụzọ"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Gụọ ndakọrịta n'ofe okirikiri onye nchịkọta n'ime windo a na-agbagharị agbagharị, na-eji oge nhazi onye nchịkọta. Tinye 0 iji gụọ naanị okirikiri dị ugbu a."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Gbakere Mgbe Oge Nwayọọ Gasịrị"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Oge na-enweghị ozi dakọtara tupu ehichapụ mmebi ahụ, tọgharịa ọnụọgụgụ, ma kwadebe iwu a ọzọ. Ozi ọ bụla dakọtara na-amaliteghachi oge a."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Ụdị Ndakọrịta"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Họrọ Onye Nrụ Nzacha maka usoro mkpu ọtụtụ ọnọdụ dị nchebe. A na-edobe Okwu SQL maka iwu ochie."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Eriri Ndakọrịta Ozi"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Wuo ọnọdụ nzacha ma ọ bụ tinye okwu SQL iji kwekọọ na ozi syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Gbanyere"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Ọkwa a ọ gbanyere?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Okirikiri Mkpọsa Ọzọ"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Ezigakwala ọkwa a ọzọ maka otu onye nnabata ahụ, ruo mgbe oge a gafere. Maka mkpu dabere na ọnụ ụzọ, nke a metụtara ndị nnabata niile."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Oge Nju oyi nke Ọkwa"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Nkeji iji kwụsị ọkwa ọ bụla na-esote site n'iwu a na oke mkpesa."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "Ụbọchị 1"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "Awa 1"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "Nkeji 1"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "Nkeji 15"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "Nkeji 30"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "Awa 4"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "Nkeji 5"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Jiri ntọala zuru ụwa ọnụ"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Mgbochi Oyiri"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Nkeji iji kwụsị otu mkpokọta ozi dakọtara."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Oge Nlekọta"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Họrọ ma iwu a ọ̀ na-eji oge mmezi zuru ụwa ọnụ ma ọ bụ oge nke ya."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Emekwala ka iwu a dajụọ"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Jiri oge zuru ụwa ọnụ"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Jiri oge iwu"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Ụbọchị Nlekọta Iwu"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Ụbọchị maka oge iwu a, mgbe ahọpụtara Jiri oge iwu."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Nlekọta Iwu Na-amalite"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Oge mmalite mpaghara maka oge iwu a."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Nlekọta Iwu Na-agwụ"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Oge ngwụcha mpaghara maka oge iwu a."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Ndozi Iwu Otu Ugboro Na-amalite"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Ụbọchị na oge mpaghara nhọrọ iji malite imechi ọnụ iwu a. Usoro: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Ndozi Iwu Otu Ugboro Na-akwụsị"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Ụbọchị na oge mpaghara nhọrọ iji kwụsị imechi ọnụ iwu a. Usoro: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Ndetu"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Oghere maka Ndetu banyere Ọkwa"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Nhọrọ Ozi-e"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Ndepụta Ọkwa"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Jiri ọdịnaya nke Ndepụta Ọkwa a iji kpebie onye a ga-agwa na otu esi agwa ya."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Ozi-e a ga-ezigara ọkwa"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Biko tinye ndepụta adreesị Ozi-e nke rịkọm kewara iji gwa ha.  Ọ bụrụ na ị chọrọ izipu Ozi-e nye onye nnata n'ụdị SMS, biko tinye <b>'sms@'</b> n'ihu adreesị Ozi-e onye nnata ahụ.  Dịka ọmụmaatụ, ọ bụrụ na adreesị SMS onye nnata ahụ bụ <b>'2485551212@mycarrier.net'</b>, ị ga-etinye ya dị ka <b>'sms@2485551212@mycarrier.net'</b> ma a ga-ahazi ya dị ka ozi SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Ederede Ahụ Ozi-e"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Ozi a ga-apụta n'ime ahụ Ọkwa ahụ ozugbo tupu nkọwa Ọkwa ahụ."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Mepee Tiketi"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Ekwesịrị imeghe Tiketi Enyemaka maka Ọkwa a.  RỊBA AMA: A ga-ejupụta edemede iwu Tiketi na ọtụtụ mgbanwe gburugburu 'ALERT_' maka ịdị mfe."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Ntuziaka ịma ọkwa"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Mgbe e kpalitere Ọkwa Mkpesa, mee iwu na-esonụ. Mgbanwe nnọchi ndị a dị: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Biko rịba ama na <b>'&lt;HOSTNAME&gt;'</b> dị naanị na ọnụ ụzọ nke otu onye. Uru nnọchi ndị a nwere ike ịpụta na ahịrị iwu, ma ọ bụ chịkọta ha site na gburugburu edemede ahụ. Mgbe e jiri ha site na gburugburu, a ga-etinye 'ALERT_' n'ihu mgbanwe ndị ahụ."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Iwu ngbake"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Iwu nhọrọ a ga-agba mgbe ọnụ ụzọ a gbakere mgbe oge jụụ ya gasịrị. Na-eji otu mgbanwe nnọchi dịka iwu Mkpu. SYSLOG_EVENT doro anya; SYSLOG_BREACH_ID dakọtara na iwu mmebi. A na-anwalegharị iwu ndị dara ada. Hapụ ya n'efu iji gbanyụọ."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Nwalee iwu"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Nlele Nnwale Iwu"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Uru"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Tinye uru"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Ndakọrịta"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Wepụ"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Tinye ọnụọgụgụ zuru ezu na-abụghị nke na-adịghị mma"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Ọnọdụ nzacha Oti"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Niile"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Gaa"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Bubata"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Nzacha Ọkwa Mkpu Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Ụzọ"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Ọnụọgụgụ Ọnụ ụzọ"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Eriri Ọchụchọ"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Adreesị Ozi-e"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Mgbanwe Ikpeazụ"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Site na Onye ọrụ"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Ịma ọkwa Gasị"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Ọtụtụ"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Enweghị Ịdọ aka ná ntị Syslog A Kọwara"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Bubata Iwu Mkpu site na Faịlụ Mpaghara"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Ọ bụrụ na faịlụ XML nwere data nkọwa Iwu Mkpu dị na igwe mpaghara gị, họrọ ya ebe a."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Bubata Iwu Mkpu site na Ederede"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Ọ bụrụ na ị nwere faịlụ XML nwere data nkọwa Iwu Mkpu dị ka ederede, ị nwere ike mado ya n'ime igbe a iji bubata ya."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Bubata Iwu Mkpu"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Ajụrụ mbubata: faịlụ ahụ tọgbọrọ chakoo, ezighị ezi, ma ọ bụ nwee ụdị ihe Syslog dị iche."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Ajụrụ mbubata: ebe mgbama na-ezighị ezi."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Ebubatara"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "RỊBA AMA: Ọkwa '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Emelitere"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "NJỌ: Ọkwa '%s' %s Kụrụ Afọ N'ala!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Mmelite"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Họrọ onye nwe ziri ezi."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Enweghị ike ịchekwa dashboard ahụ. Biko nwaa ọzọ."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Tinye aha dashboard dị n'etiti mkpụrụedemede 1 na 128."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Onye nwe ya"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Kekọrịtara"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Ogwe"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "onye ọrụ ehichapụrụ"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Ọ dịghị dashboard dị ugbu a. Ndị ọrụ na-emepụta ha site na taabụ Dashboard nke Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Pịa 'Gaa n'ihu' iji Hichapụ Dashbọọdụ ndị na-esonụ na Ogwe ha niile."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Hichapụ Ogwe Nchịkwa (gasị)"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Pịa 'Gaa n'ihu' iji bupụ Dashboard ndị na-esonụ."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Bupụ Dashboard"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "RỊBA AMA: Ebubatara %d ma melite Bọọdụ Nchịkwa %d."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "NJỌ: Mbubata Dashboard %d kụrụ afọ n'ala."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Bubata Dashboard site na Faịlụ Mpaghara"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Ọ bụrụ na faịlụ JSON nwere data nkọwa Dashboard dị na igwe mpaghara gị, họrọ ya ebe a."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Bubata Dashboard site na Ederede"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Ọ bụrụ na ị nwere faịlụ JSON nwere data nkọwa Dashboard dị ka ederede, ị nwere ike mado ya n'ime igbe a iji bubata ya."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Bubata Dashboard"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Ndị Ọrụ Nile"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Otu Niile"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Dezie Dashboard"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Aha egosiri na nhọrọ Dashbọọdụ nke taabụ Syslog Dashboard."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Akaụntụ nwe bọọdụ njikwa a ma nwee ike ijikwa panel ya."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Kekọrịtara na Ndị Ọrụ"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Ndị ọrụ nwere ike ile dashboard a tinyere onye nwe ya na nkesa ọ bụla zuru ụwa ọnụ. Ndị Ọrụ Niile na-ekerịta ya na onye ọ bụla."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Otu ndị nwere ike ilele bọọdụ njikwa a tinyere onye nwe ya na nkesa zuru ụwa ọnụ ọ bụla. Otu Niile na-ekere ya onye ọ bụla."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Kekọrịtara na Otu Gasị"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Mgbanwe aha na-emetụta onye ọ bụla na-ekiri dashboard a. Ndị nwe ogwe na-ejikwa ogwe ha site na taabụ Syslog Dashboard."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Họrọ ụbọchị na oge njedebe nkwụsịtụ n'ọdịnihu."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Aha ngwaọrụ dị mkpa."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Pịa Gaa n'ihu iji %s Iwu Mkpu Ngwaọrụ ndị na-esonụ."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Ebufela mkpa ọ bụla"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s na nke dị ngwa karị"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Iwu Mkpọku Ngwaọrụ"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Chọọ ngwaọrụ Syslog dị ugbu a ka ị na-ede, ma ọ bụ tinye adreesị IP ọ bụla ma ọ bụ aha onye nnabata."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Njikwa Ịma ọkwa"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Ekwụsịtụla"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Kwụsịtụ ọkwa niile na-enweghị nnwere onwe ruo otu ụbọchị, ma ọ bụ ruo mgbe ebighị ebi."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Kwụsịtụ ruo mgbe ebighị ebi"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Kwụsịtụ ruo"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Ụbọchị na oge mpaghara, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Nkwụsịtụ Na-akwụsị"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Kwe ka Mkpa Mgbe Nile"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Mkpa ndị a na-agafe oge nkwụsịtụ na oge mmezi nke ngwaọrụ a. Nke dị oke mkpa na nke ka ngwa ngwa bụ nhọrọ ngwaọrụ platinum a na-ahụkarị."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Kwe ka ọ rụọ ọrụ n'oge ndozi"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Kwe ka mkpa nile sitere na ngwaọrụ a n'oge oge ndozi nchedo. Mwepu mkpa dị n'elu ka na-emetụta mgbe nke a bụ Mba."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Iwu Mkpọku Ngwaọrụ [dezie]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Iwu Mkpọku Ngwaọrụ [ọhụrụ]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Nzacha Iwu Mkpọku Ngwaọrụ"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Iwu"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Njikwa"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Nlekọta"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Nnyefe Kpọmkwem"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Achọtaghị iwu ịdọ aka ná ntị ngwaọrụ ọ bụla."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Akwụsịghị ya nwa oge"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Kwụsịtụrụ ruo mgbe ebighị ebi"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Kwụsịtụrụ ruo %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "na nke dị ngwa karị"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Kwe ka ihe nile"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Jiri mwepụ mkpa"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Echekwasịghị ntụziaka ahụ n'ihi na %s. Tinye njirimara na-enweghị oghere yana ma ọ dịkarịa ala nkọwa maọbụ omume a tụrụ aro."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Ndụmọdụ maka onye na-ere ahịa a na ihe njirimara a adịlarị."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "RỊBA AMA: Njirimara %s nwere mkpụrụedemede ndị ọzọ na-abụghị mkpụrụakwụkwọ, ọnụọgụgụ, _ . - / na %% nhọrọ dị n'isi, yabụ ọ gaghị adakọta na ozi syslog mgbe ọ bụla. Jiri koodu kpọmkwem dochie ihe njide ọnọdụ dị ka # ma ọ bụ nhọrọ ndị ọzọ dị ka A|B."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Pịa 'Gaa n'ihu' iji bupụ Ndụmọdụ ndị na-esonụ."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Hichapụ Ndụmọdụ ndị na-esonụ."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Mbupụ chọrọ mgbakwunye PHP zlib iji mepụta faịlụ JSON gzip."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Ajụrụ mbubata: faịlụ ahụ tọgbọrọ chakoo, buru ibu karịa, ma ọ bụ abụghị akwụkwọ JSON ndụmọdụ ziri ezi."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "RỊBA AMA: Etinyere %d, melitere %d ma hapụ Ndụmọdụ %d dị adị n'agbanweghị ha."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "NJỌ: Ajụrụ Aro %d (dị ka %s). E depụtara nke ọ bụla na ihe kpatara ya na ndekọ Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "NJỌ: Enweghị ike ịchekwa Aro %d. E depụtara nke ọ bụla na ndekọ Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "RỊBA AMA: Ndụmọdụ %d e bubatara nwere njirimara ndị nwere mkpụrụedemede dị ka | ma ọ bụ # ndị na-apụtaghị mgbe ọ bụla n'okwu ozi, yabụ ha enweghị ike ịdakọta ruo mgbe e deziri ha. Tọọ Nwere Ike Ịdakọta ka ọ bụrụ Mba iji depụta ha."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Bubata Ndụmọdụ site na Faịlụ Mpaghara"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Họrọ faịlụ .json ma ọ bụ .json.gz n'igwe mpaghara gị. Jiri ọrụ Mbupụ iji hụ usoro a tụrụ anya ya: ndepụta ndekọ nwere vendor, identifier, component, severity, message, explanation, recommended_action na reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Bubata Ndụmọdụ site na Ederede"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Ma ọ bụ, mapado akwụkwọ JSON n'ime igbe a."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Ndụmọdụ Ndị Dị Adị"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Ndụmọdụ bụ otu ihe ahụ dị adị mgbe onye na-ere ahịa ya na ihe njirimara ya dabara."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Debe aro dị ugbu a"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Jiri nke e bubatara dochie ya"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Bubata Ndụmọdụ"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Na-ebubata, biko chere..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Akọwapụtaghị"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Ndụmọdụ"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Onye na-eweta ngwaọrụ maọbụ sọftụwia na-edekọ ozi a, dịka ọmụmaatụ Cisco maọbụ Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Onye nrụpụta"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Ihe Njirimara"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Koodu ozi ị ga-achọ, dị ka %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN ma ọ bụ 4625. Ọ ga-aharịrị na okwu zuru ezu nke ozi Syslog (mkpụrụedemede, ọnụọgụgụ na _ . - /); % na-eduga bụ nke nkịtị ma ga-adakọrịrị dị ka e dere ya. Ndakọrịta ahụ anaghị achọpụta mkpụrụedemede ukwu ma ọ bụ obere. Hụ Otu E Si Adakọrịta Ndụmọdụ na ibe ndepụta ahụ."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Akụkụ"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Ngwa, modul ma ọ bụ obere usoro nke na-ebuli ozi ahụ."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Ịdị njọ nke onye nrụpụta dekọrọ maka ozi a."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Ụdị ozi dị ka e dekọrọ, gụnyere ihe ngosi mgbanwe ya."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Ihe ozi ahụ pụtara."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Ihe onye ọrụ kwesịrị ime maka ya."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Njikọ na akwụkwọ ntuziaka onye na-ere ahịa, otu n'otu ahịrị."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Ndụmọdụ [dezie]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Ndụmọdụ [ọhụrụ]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Bọlbụ ọkụ tupu ozi na-akara ndụmọdụ ndị dabara na taabụ Ndekọ Sistemụ na Ndekọ Mkpu. Pịa ozi ahụ ka ị gụọ ha na windo nkọwa. Ịfegharị òké anaghị arịọ sava."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Naanị kọlụm <b>Identifier</b> ka a na-eji maka ndakọrịta. A na-egosi onye na-ere ahịa, akụrụngwa, ịdị njọ, ozi na nkọwa na mpụta nkọwa mana a naghị achọ ha."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "A na-ekewa mkpụrụedemede 2,048 mbụ nke ozi ahụ n'ime okwu. Okwu bụ usoro mkpụrụedemede, ọnụọgụgụ na akara _ . - / nke nwere ike iji % bido. Akara ọ bụla ọzọ, dị ka ohere, kọlọn, rịkọm ma ọ bụ nkwado, na-emecha okwu. Na <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> okwu ndị ahụ bụ <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> na <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Njirimara na-adakọ mgbe ọ <b>ha nhata kpọmkwem na otu okwu zuru oke</b>, n'eleghị anya n'ụdị mkpụrụedemede ukwu ma ọ bụ nta. Ọ bụghị nchọta \"nwere\", \"malite na\" ma ọ bụ \"mechie na\", ọ nweghịkwa wildcard: <code>LINK-3-UPDOWN</code> adabaghị na okwu ahụ <code>LINK-3-UPDOWN-EXT</code>, ma <code>UPDOWN</code> adabaghị na <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "<b>%</b> nke dị n'ihu bụ nke nkịtị, ọ bụghị wildcard, ma ga-adabarịrị na okwu ozi dị ka e dere ya. Ihe njirimara <code>%LINK-3-UPDOWN</code> dabara na okwu ozi <code>%LINK-3-UPDOWN</code>, ọ bụghị <code>LINK-3-UPDOWN</code>; ihe njirimara na-enweghị mbido dabara naanị na okwu na-enweghị mbido."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Mgbe onye nnabata syslog bụ ngwaọrụ Cacti nke a matara onye na-ere ya site na nkọwa usoro SNMP ya ma ọ bụ nlereanya ngwaọrụ ya, ma ndụmọdụ dị maka onye na-ere ahụ, naanị ndụmọdụ onye na-ere ahụ na ndị na-enweghị onye na-ere ka a na-enyocha. Ma ọ bụghị ya, a na-enyocha ndị na-ere niile, mana njirimara e ji naanị mkpụrụedemede ọnụọgụgụ mee na-adakọ naanị ndụmọdụ na-enweghị onye na-ere. Mgbe ọtụtụ ndụmọdụ dakọtara, a na-egosi njirimara ndị kachasị ogologo na mbụ, ruo atọ."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Ihe njirimara nwere mkpụrụedemede ndị ọzọ, dịka ebe njide oghere <code>#</code> ma ọ bụ nhọrọ ndị ọzọ <code>|</code> na akwụkwọ ụfọdụ ndị na-ere (dịka ọmụmaatụ <code>%ASA|PIX-3-331001</code>), ka a na-echekwa ma na-ebupụ mana ha enweghị ike ikwekọ ma ọlị. Tọọ <b>Nwere Ike Ikwekọ</b> ka ọ bụrụ Mba iji depụta ha, ma dezie ha ka ha bụrụ kpọmkwem koodu ahụ, dịka ọmụmaatụ <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Otu e si ekwekọta Ndụmọdụ"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Nwere Ike Dakọọ"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Ma njirimara ahụ nwere ọdịdị nke okwu ozi, ka nchọta ozi nwee ike ịchọta ya"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Bupụ ndụmọdụ ọ bụla dabara na nzacha ndị ahụ"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Achọtaghị ndụmọdụ ọ bụla."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Hazigharịa"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Hichapụ Iwu Mwepụ Syslog ndị na-esonụ."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Hichapụ Iwu Mwepụ Syslog (gasị)"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Gbanyụọ Iwu Mwepụ Syslog ndị na-esonụ."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Gbanyụọ Iwu Mwepụ Syslog(gasị)"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Gbanye Iwu Mwepụ Syslog ndị na-esonụ."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Gbanye Iwu Nwepụ Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji hazigharịa Iwu Mwepụ Syslog ndị na-esonụ."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Hazie Iwu Mwepụ Syslog n'Azụ"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji bupụ Iwu Mwepụ Syslog ndị na-esonụ."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Bupụ Iwu Mwepụ Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Iwu '%s' rụpụtara na %s/%s ozi ewepụrụ/nyefere"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Dezie Iwu Mwepụ [dezie: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Dezie Iwu Mwepụ [ọhụrụ]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Ndekọ Mwepụ Ọhụrụ"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Iwu Mwepụ Ọhụrụ"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Nkọwa Iwu Mwepụ"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Aha Iwu Mwepụ"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Biko kọwaa Iwu Mwepụ a."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Gbanyere?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Iwu Mwepụ a ọ gbanyere?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Ụdị Nkwekọrịta Eriri"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Kọwaa otu ị ga-achọ ka e jiri eriri a tụnyere.  Ọ bụrụ na ị na-eji ụdị Okwu SQL, ị nwere ike iji okwu SQL ọ bụla dị irè iji mepụta mkpọku.  Ogige ndị dịnụ gụnyere 'message', 'facility', 'priority', na 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Eriri Nkwekọrịta Ozi Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Tinye akụkụ kwekọrọ nke ozi Syslog, ngwaọrụ ma ọ bụ aha onye nnabata, ma ọ bụ nkebiokwu SQL where ma ọ bụrụ na ị na-eji Ụdị Nkwekọrịta Okwu SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Ụzọ Mwepụ"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Nhichapụ"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Mbufe"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Ndetu Iwu Mwepụ"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Oghere maka Ndetu banyere Iwu Mwepụ"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Ọnọdụ nzacha mwepụ"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Nzacha Iwu Mwepụ Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Aha Mwepụ"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Mbufe"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Enweghị Iwu Mwepụ Syslog A Kọwara"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Bubata Iwu Mwepụ site na Faịlụ Mpaghara"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Ọ bụrụ na faịlụ XML nwere data nkọwa Iwu Mwepụ dị na igwe mpaghara gị, họrọ ya ebe a."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Bubata Iwu Mwepụ site na Ederede"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ọ bụrụ na ị nwere faịlụ XML nwere data nkọwa Iwu Mwepụ dị ka ederede, ị nwere ike mado ya n'ime igbe a iji bubata ya."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Bubata Iwu Mwepụ"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "RỊBA AMA: Iwu Mwepụ '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "NJỌ: Iwu Nwepụ '%s' %s Dara!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Hichapụ Mkpesa Syslog ndị na-esonụ."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Hichapụ Akụkọ Syslog (gasị)"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Gbanyụọ Mkpesa Syslog ndị na-esonụ."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Gbanyụọ Mkpesa Syslog(gasị)"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Gbanye Mkpesa Syslog ndị na-esonụ."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Gbanye Mkpesa Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Pịa 'Gaa n'ihu' iji bupụ Iwu Mkpesa Syslog ndị na-esonụ."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Bupụ Iwu Akụkọ Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Ị ga-ahọrọ opekata mpe otu Mkpesa Syslog."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Laghachi"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Dezie Mkpesa [dezie: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Dezie Mkpesa [ọhụrụ]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Ndekọ Akụkọ Ọhụrụ"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Biko kọwaa Akụkọ a."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Akụkọ a ọ gbanyere?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Kọwaa otu ị ga-achọ ka e jiri eriri a tụnyere. Onye Nrụpụta Nzacha na-ejikọta ọnọdụ na ozi, onye nnabata, mmemme, ngalaba na mkpa."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Ugboro"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Ugboro ole ka a ga-eziga Mkpesa a na ndepụta nkesa?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Oge Nzipu"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Kedu oge n'ụbọchị ka a ga-ezipụ akụkọ a?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Ụdị Mkpesa"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Wuo ọnọdụ nzacha, ma ọ bụ tinye ederede ma ọ bụ okwu SQL iji kwekọọ na ozi syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Ozi ga-adị n'ime ahụ nke Mkpesa ahụ."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Ndepụta adreesị Ozi-e nke e ji kọma kewaa iji zigara mkpesa ahụ."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Oghere maka Ndetu banyere Akụkọ"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Nlele Nnwale Akụkọ"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Ọnọdụ nzacha akụkọ"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Nzacha Akụkọ Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Aha Akụkọ"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Ezipụrụ Ikpeazụ"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Mkpesa"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Enweghị Akụkọ Syslog A Kọwara"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Bubata Iwu Akụkọ site na Faịlụ Mpaghara"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Ọ bụrụ na faịlụ XML nwere data nkọwa Iwu Akụkọ dị na igwe mpaghara gị, họrọ ya ebe a."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Bubata Iwu Akụkọ site na Ederede"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Ọ bụrụ na ị nwere faịlụ XML nwere data nkọwa Iwu Akụkọ dị ka ederede, ị nwere ike mado ya n'ime igbe a iji bubata ya."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Bubata Data Akụkọ"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "RỊBA AMA: Iwu Mkpesa '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "NJỌ: Iwu Mkpesa '%s' %s Dara!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Enweghị ike ịchekwa nlereanya ahụ. Biko nwaa ọzọ."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Tinye aha nlereanya dị n'etiti mkpụrụedemede 1 na 128."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Nlereanya Gasị"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Ajụjụ"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Enweghị nlereanya gasị ọchụchọ ekekọrịtara. Chekwaa ọchụchọ maka ndị ọrụ niile site na Syslog iji mepụta otu."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Pịa 'Gaa n'ihu' iji bupụ Nlereanya Ọchụchọ E Chekwara ndị na-esonụ."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Pịa 'Gaa n'ihu' iji Hichapụ Nlereanya Ọchụchọ E Chekwara ndị na-esonụ."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Hichapụ Nlereanya Ọchụchọ E Chekwara (gasị)"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Bupụ Nlereanya Ọchụchọ E Chekwara"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "RỊBA AMA: Ebubatara %d ma melite Nlereanya Ọchụchọ E Chekwara %d."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "NJỌ: Mbubata Nlereanya Ọchụchọ E Chekwara %d kụrụ afọ n'ala."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Bubata Nlereanya Ọchụchọ Echekwara site na Faịlụ Mpaghara"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Ọ bụrụ na faịlụ JSON nwere data nkọwa Nlereanya Ọchụchọ E Chekwara dị na igwe mpaghara gị, họrọ ya ebe a."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Bubata Nlereanya Ọchụchọ Echekwara site na Ederede"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Ọ bụrụ na ị nwere faịlụ JSON nwere data nkọwa Nlereanya Ọchụchọ E Chekwara dị ka ederede, ị nwere ike mado ya n'ime igbe a iji bubata ya."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Bubata Nlereanya Ọchụchọ Echekwara"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Dezie Nlereanya Ọchụchọ E Chekwara"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Aha egosiri ndị ọrụ niile na Nchọta Echekwara."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Akaụntụ nwe nlereanya a ma nwee ike ijikwa ya na Nchọpụta E Chekwara."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Ndị ọrụ nwere ike iji nlereanya a tinyere onye nwe ya. Ndị Ọrụ Niile na-ekerịta ya na onye ọ bụla."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Otu ndị nwere ike iji nlereanya a tinyere onye nwe ya. Otu Niile na-ekere ya onye ọ bụla."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Ajụjụ Ọchụchọ"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Dozie usoro nhazi ajụjụ iji jiri onye nrụpụta ajụjụ."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Họrọ ubi, ihe nrụ ọrụ, na uru. Jiri AND, OR, NOT, ma ọ bụ Group wuo ajụjụ ahụ. Mgbanwe na-emetụta nlereanya ekesara a maka ndị ọrụ niile."
+

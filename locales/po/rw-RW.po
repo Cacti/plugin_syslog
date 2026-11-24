@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Kinyarwanda\n"
+"Language: rw-RW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "iminota %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "isaha %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "amasaha %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "umunsi %d"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "iminsi %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "icyumweru %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "ibyumweru %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "ukwezi %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "amezi %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "umwaka %d"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "imyaka %d"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Icyiciro cy'Amanywa"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Uyu munsi"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Iki cyumweru"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Uku kwezi"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Uyu mwaka"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Umunsi ushize"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Icyumweru gishize"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Ukwezi gushize"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Umwaka ushize"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Iyimura rya Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Sangiza abakoresha…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Sangiza amatsinda…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Ibyihutirwa"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Bikomeye cyane"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Integuza"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Ikosa"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Iburira"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Itangazo"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Amakuru"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Kemura amakosa"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Bimenyesha"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Kubika byanze. Ibyegeranya amakuru bya kure biri mu buryo bwo guhuza ntibyemerewe kubika amategeko. Ahubwo bika uturutse kuri Seriveri nkuru ya Cacti."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Nyamuneka koresha porogaramu y'Imeyili ya HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Umubare w'ibikubiye mu iyinjiza ry'inyandiko urenze ingano ntarengwa"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Ntibishoboka gusoma dosiye yoherejwe yo kwinjiza. Suzuma dosiye n'urugero ntarengwa rw'ingano yo kohereza."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Hitamo dosiye yo kwinjiza cyangwa womekeho ibiyirimo mbere yo kwinjiza."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Imbonerahamwe za Syslog ntizigabanyijemo ibice. Imbonerahamwe za kera (zitagabanyijemo ibice) zashaje, kandi imbonerahamwe zigabanyijemo ibice zirasabwa ku ishyirwaho rishya. Amakuru yawe azakomeza gukusanywa, ariko ugomba kwimura imbonerahamwe ya syslog ikajya mu buryo bugabanyijemo ibice."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Bitegereje ko igikorwa cyo gutunganya kirangira."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Itunganya ririmo kurangira mu gihe cyemewe."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Nta gikorwa cyo gutunganya kirarangira mu gihe kirenze amasegonda %d."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Ubutumwa bwinjira buri mu mipaka yagenwe."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Ibipimo by'umurongo w'ubutumwa bwinjira ntibiboneka."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Ibirarane byinjira by'ubutumwa nibura %s birenze umupaka wa %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Igihe cy'ubutumwa bwinjiye bwa kera kurusha ubundi ntibibonetse."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Ubutumwa butarakorwaho burengeje amasegonda %d."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Ihuza ry'amakuru ntiryafunguwe kuri iki gikusanyamakuru."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Ihuza ry'amakuru riri mu gihe cyemewe."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Ibipimo by'umurongo w'ihuza ry'amakuru ntibiboneka."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Igihe cy'inyandiko y'ihuzamakuru ya kera kurusha izindi ntibibonetse."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Ihuza ry'amakuru ryananiwe cyangwa ibyanditswe biri ku murongo birenze igihe cyemewe."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Kubungabunga ibice ntikwazitiwe."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Kubungabunga ibice kwazitiwe: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Ubuzima bw'umuyoboro wa Syslog - igikusanyamakuru %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Umuyoboro wa Syslog wongeye gukora neza."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Imiterere y'ibice bya %s ntiyemewe cyangwa ntiyuzuye; kubungabunga ibice byahagaze. Genzura amakuru nyirizina y'ibice ukoresheje SHOW CREATE TABLE kandi, nibiba ngombwa, wongere wubake ibice; kwandika bikomeza mu gice cy'umutekano cya dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "icyuho cy'igice gisigaye: ibice %d"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "nta kwimura igihe cyo kubika"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "gukuraho ibibitswe byimuriwe imbere kugeza igihe cy'ahazaza kigarutse"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "inyandiko nshya ziri kwiyongera mu gice cy'umutekano cya dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "umupaka wo kugarura kuri buri nshuro wagezweho"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "gushyiraho igice byanze"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Urwego rw'igabanyamabika rutazwi; hitamo Buri saha cyangwa Buri munsi."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Igihe cyo kubika amakuru ya Syslog ntabwo cyemewe."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Igabanya rya buri saha ntirishobora gukoreshwa hamwe n'Ububiko butagira iherezo, ibyo byasaba umubare utagira umupaka w'ibice. Hitamo igihe cyo kubika cyangwa igabanya rya buri munsi."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Igabanyamice rya %s rifite iminsi %s yo kubika n'iminsi %s yo guteganya kurema mbere rikeneye ibice %s kuri buri mbonerahamwe, bikaba birenga umubare ntarengwa wa seriveri y'ububiko bw'amakuru w'ibice %s. Gabanya iminsi yo kubika, uhine igihe cyo kurema mbere, cyangwa uhitemo igabanyamice rya Buri munsi."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Buri munsi"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Buri saha"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Imbonerahamwe ziracyakoresha ibice bya %s kugeza igihe cli/upgrade_partitioning.php izongera kuzubaka."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Urwego rw'igabanywa ry'imbonerahamwe za Syslog zisanzwe ntirwashoboye gusomwa."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Igikorwa cyo kugarura igice mu buryo bwikora cyasubitswe: ingano ya dMaxValue ntiboneka; ubufasha bw'ukoresha burakenewe."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Igikorwa cyo kugarura igice mu buryo bwikora cyasubitswe: dMaxValue ifite imirongo ikabakaba %s na bayiti %s; imipaka ni imirongo 100000 na bayiti 134217728. Ubufasha bw'ukoresha burakenewe."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Ubwoko bw'itegeko butazwi."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Ihuza ry'ibice byinjira ryagenwe ntabwo ryemewe."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Urwego rw'ubutumwa (facility) rw'iri tegeko ntirurashyirwa mu mbonerahamwe y'ifatizo."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Ubwoko bw'ihuza ry'itegeko butazwi."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Itegeko ntiryashoboye guhinduka ikibazo cyo gushakisha."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Ikibazo cy'igerageza ry'igaragazambere nticyashoboye gusuzumwa."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Akayunguruzo k'incamake y'amateka ntikashoboye gukusanywa ngo gategurwe."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Ikibazo cyo gushakisha incamake y'amateka ntikishoboye gusuzumwa."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Urugero rw'igaragazambere ntirwashoboye gusomwa."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Isuzumambere ry'imvugo ya SQL rigenzura gusa ubutumwa bwinjira buri ku murongo. Ubutumwa bwatunganyijwe mbere ntibushakishwa. Igerageza ntiryohereza impuruza."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Uruhushya rwanzwe."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Icyifuzo kitari cyo. Nyamuneka ongera ugerageze."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Itegeko ntirifite imvugo ihuza yo kugerageza."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Imvugo yo guhuza ni ndende cyane kugira ngo isuzumwe."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Ntibizwi"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Impuruza y'Urwego ntarengwa ya Cacti Syslog '%s' kuri Mwakirizi '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Impuruza y'Urwego ntarengwa ya Cacti Syslog '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Izina ry'Integuza"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Uburemere"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Urwego ntarengwa"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Umubare"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Umurongo wo guhuza"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Impuruza ya Cacti Syslog '%s' kuri Mwakirizi '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Impuruza ya Cacti Syslog '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Izina ku muyoboro"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Itariki"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Urwego"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Ubutumwa"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "IBURIRA: Impuruza y'urwego ntarengwa rwa Syslog yatanzwe kuri mwakirizi '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "IBURIRA: Impuruza y'urwego ntarengwa rwa Syslog yatanzwe"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Izina:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Uburemere:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Urwego ntarengwa:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Umubare:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Umurongo w'ubutumwa:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Izina rya mwakirizi:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Itariki:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Urwego:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Ubutumwa:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Mwakirizi:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Uburemere:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Integuza y'igikorwa - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Umubare:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Mwakirizi"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Raporo y'igikorwa - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Ibanziriza rya raporo rishakisha mu butumwa %d bubitswe bwa vuba; raporo nyirizina yo ireba igihe cyose cyagenwe. Isuzuma ntiryohereza imeyili."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Ibisubizo byahurijwe hamwe ntibiboneka cyangwa byararengeje igihe. Ongera uvugurure ibisubizo maze ugerageze nanone."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Ubutumwa bw'itsinda ntibwashoboye gutangwa."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Oya"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Yego"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Umwandiko wose"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Kwirwa mu nkingi"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "Inyuguti %d"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Umujyanama wo kuvugurura Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Kuvugurura Syslog kuva kuri %s ujya kuri %s? Ubutumwa n'amategeko bihari bizagumaho. Impinduka mu miterere y'ububiko bishobora gufata umwanya."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Ni ubuhe bwoko bwo kuzamura/gushyiraho wifuza gukoresha"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Iyo ufite imbonerahamwe nini cyane, gukora Truncate byihuta cyane. Niba uhangayikishijwe n'amakuru yabitswe, ushobora guhitamo Inline, bizahagarika mucukumbuzi yawe mu gihe cy'iri vugurura, cyangwa background, bizakora igikorwa cyo mu nyuma kizana amakuru yawe ashaje ya syslog kuva mu mbonerahamwe y'ububiko kikayashyira mu buryo bushya bwa syslog. Nanone iki gikorwa gishobora kumara amasaha menshi. Truncate ijugunya gusa ubutumwa bwa syslog bubitswe n'ubwakuwemo; amategeko y'impuruza, ayo gukuraho n'aya raporo agumaho buri gihe."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Gusiba ibiri mu Mbonerahamwe ya Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Ivugurura ryo mu murongo"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Ivugurura rikorwa mu nyuma"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Moteri y'ububiko bw'amakuru"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Moteri y'ububiko y'imbonerahamwe z'isesengura.  Gusa InnoDB na, kuri MariaDB, moteri z'ububiko za Aria ni zo zemewe.  Uburyo bwose bw'Ikusanyamakuru rya Kure busaba InnoDB; ibihujwe bitajyanye ntibishobora koherezwa."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Ububiko bwa InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Ububiko bwa Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Ubuziranenge bw'Igihe Cyanditswe"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Ubushishozi bwa milisegonda bubika ibihe bya syslog biri munsi y'isogonda mu nkingi ya TIMESTAMP(3) kandi buboneka kuri MariaDB gusa.  Ubushishozi bw'isogonda bukoresha inkingi isanzwe ya TIMESTAMP.  Kuri sisitemu ikora mu kazi, koresha cli/upgrade_partitioning.php --convert-ms mu gihe cyo gusana kugira ngo uhindure ubutumwa buhari utabujugunye."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Milisegonda - TIMESTAMP(3) (MariaDB gusa)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Isegonda - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Itunganywa ry'Ubutumwa bwo Kure"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Fungura Itunganywa ry'Ubutumwa bw'Ikusanyamakuru rya Kure"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Niba Abakusanya Amakuru ba Kure bawe bafite ububiko bwabo bw'amakuru bwa Syslog kandi bakatunganya ubutumwa bwabo mu buryo bwigenga, shyira akamenyetso muri aka gasanduku. Mu gushyira akamenyetso muri aka Gasanduku, Abakusanya Amakuru ba Kure bawe bazakenera kugira dosiye yabo bwite ya 'config_local.php' kugira ngo bamenyeshe Syslog gukoresha ububiko bw'amakuru bwigenga mu kwerekana no gutunganya ubutumwa. Nyamuneka koresha dosiye y'inyandikorugero 'config_local.php.dist' kuri iki gikorwa. IBURIRA: Imbonerahamwe za Syslog zizahangwa mu buryo bwikora ako kanya ubu buryo bufunguwe."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Guhuza Amategeko y'Ikusanyamakuru ryo Kure"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Niba Abakusanya Amakuru ba Kure bawe bafite ububiko bwabo bw'amakuru bwa Syslog kandi bakatunganya ubutumwa bwabo mu buryo bwigenga, shyira akamenyetso muri aka gasanduku niba wifuza ko amategeko y'Impuruza, ayo Gukuraho n'aya Raporo by'ububiko bw'amakuru bukuru bwa Cacti byoherezwa kuri Sisitemu ya Cacti ya Kure."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Bika ibyabitswe ku ikusanyamakuru rya kure"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Bika ubutumwa bwatunganyijwe mu mbonerahamwe ya syslog y'ikusanyamakuru rya kure nyuma y'uko bugejejwe ku Ikusanyamakuru Rikuru. Iyo byahagaritswe, inyandiko zibikwa imbere gusa mu gihe Ikusanyamakuru Rikuru ritaboneka kandi zisibwa nyuma y'uko iyoherezwa ryemejwe."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Politiki yo kubika"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Hitamo umubare w'iminsi y'amakuru ya Syslog wifuza kubika mu bubiko bw'amakuru."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Urwego rwo kugabanya mu bice"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Ingano ya buri gice cy'imbonerahamwe za syslog na syslog_removed.  Buri munsi ni byo byifuzwa.  Buri saha bisaba igihe ntarengwa cyo kubika, kandi igihe cyo kubika n'urwego rw'igabanyabice hamwe bigomba kujyana n'umubare ntarengwa w'ibice wa seriveri y'ububiko bw'amakuru.  Kugira ngo uhindure urwego nyuma, ruhindure mu Magenamiterere maze ukoreshe cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Zamura verisiyo"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Injiza"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Umujyanama wa Syslog %s"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "IBURIRA: Kuvugurura Syslog bitwara igihe kirekire!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Kuvugurura imbonerahamwe ya syslog ya 'main' bishobora gutwara igihe kirekire cyane. Ku bw'ibyo, birasabwa ko wagabanya ingano y'imbonerahamwe yawe ya syslog mbere yo kuvugurura, cyangwa ugahitamo uburyo bwo kubikorera mu nyuma."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Niba uhisemo uburyo bwo gukorera inyuma, imbonerahamwe yawe ya kera ya syslog izahindurirwa izina, kandi hazahangwa imbonerahamwe nshya ya syslog. Hanyuma, igikorwa cyo kuvugurura kizatangizwa gikorera inyuma. Nanone, iki gikorwa gikorera inyuma gishobora gutwara igihe kirekire kugira ngo kirangire. Icyakora, amakuru yawe azabungabungwa."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Uko waba wahisemo kose, amategeko yose asanzwe yo gukuraho n'ay'impuguro azagumaho mu gihe cyo kuvugurura."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Kanda <b>'Kuzamura'</b> kugira ngo ukomeze kuzamura verisiyo, cyangwa <b>'Hagarika'</b> kugira ngo usubire ku rutonde rw'Imigereka."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Ushobora kandi gushyiraho moteri y'ububiko bw'amakuru ku mbonerahamwe z'isesengura syslog na syslog_remove. Moteri y'ububiko ya InnoDB gusa, na moteri y'ububiko ya Aria kuri MariaDB, ni zo zishyigikiwe. Niba ukoresha MariaDB, tugira inama yo gukoresha Moteri y'Ububiko ya Aria igihe nta mahitamo ya Remote Data Collector afunguwe; amahitamo y'ikusanyamakuru asaba InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Ufite amahitamo menshi ushobora gutoranyamo igihe ushyiramo Syslog.  Irya mbere ni Imiterere y'Ububikoshingiro.  Imbonerahamwe zigabanyijemo ibice ni yo miterere yonyine ishyigikiwe kuko irinda ko ubunini bw'imbonerahamwe buba bunini cyane bukadindiza ishakisha.  Imbonerahamwe zisanzwe zitagabanyijemo ibice zarashaje kandi ntizigitangwa ku ishyirwamo rishya."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Ushobora kandi guhitamo ubuziranenge bw'igihe. Ubuziranenge bw'igice cy'isegonda (TIMESTAMP(3)) bubika urutonde rwo munsi y'isegonda rw'ubutumwa bwinjira kandi buboneka gusa kuri MariaDB; iyinjizwa rya MySQL rikoresha ubuziranenge bw'isegonda. Ibi ntibishobora guhindurwa nyuma aho biri hadasenywe ubutumwa bubitswe."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Ububiko bwa Aria ntibuboneka igihe hari ihitamo iryo ari ryo ryose ry'Ikusanyamakuru rya kure ryafunguwe. InnoDB yahiswemo."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Ushobora kandi guhitamo igihe cyo kubika. Nyamuneka wibuke ko niba ufite Abakirizi benshi bandika muri syslog, iyi mbonerahamwe ishobora kuba nini cyane."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Amagenamiterere ya Syslog %s"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Ni ubuhe buryo bwo gukuraho porogaramu ushaka gukoresha?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Iyo ukuraho syslog, ushobora gukuraho byose, cyangwa ugakuraho ibice bimwe gusa, mu gihe uteganya kongera kuyishyiramo mu gihe kizaza."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Kuraho Byose (Ibikorwa, Imbonerahamwe, Amagenamiterere)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Amakuru ya Syslog gusa"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Ibyifuzo byo gukuramo Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Kuramo"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Hagarika"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Ibisibwa bya Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Hindura)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Ibikorwa)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Intabaza za Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Raporo za Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Inyandikorugero z'Ishakisha Zabitswe"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Imbonerahamwe z'igenzura"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Inama za Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Kuzana)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Erekana Syslog mu cyiciro cyatoranyijwe"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "ikirango kirimo ubusa"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "ikirango kirengeje inyuguti 190"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "ikirango kirimo imyanya cyangwa aho imirongo icikira"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "ntabwo ifite ubusobanuro cyangwa igikorwa gisabwa"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "ntabwo ari ikintu cya JSON"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Inama ntizashoboye gupakururwa."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Inama iraboneka - kanda ku butumwa kugira ngo ubone ibisobanuro birambuye"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Ibisobanuro"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Igikorwa gisabwa"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Icyifashishwa"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Ku wa Mbere"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Ku wa Kabiri"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Ku wa Gatatu"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Ku wa Gatanu"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Ku wa Gatandatu"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Ku Cyumweru"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Ku wa Kane"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Kuva ku wa Mbere kugeza ku wa Gatanu"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Kuwa Gatandatu no ku Cyumweru"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Buri munsi"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Byahagaritswe"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Nta na kimwe"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Igenamiterere rusange"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog yafunguwe"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Niba aka gasanduku kashyizweho akamenyetso, inyandiko zizimurwa zivuye mu mbonerahamwe ya Syslog Incoming zijya mu mbonerahamwe nyamukuru ya syslog kandi Impuruza na Raporo bizafungurwa. Nyamuneka uzirikane ko niba sisitemu yahagaritswe, ibyanditswe mu nyandiko z'ibikorwa bizakomeza kwiyongera mu mbonerahamwe ya Syslog Incoming kuko ibi bigenwa na porogaramu ya rsyslog cyangwa syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Ohereza impuruza ku Mugenzuzi w'Impuruza"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Emera amategeko yashyizwe kuri Alarm Manager yohereze imiburo imbere. Imeyili ya Syslog ikomeza kuba uburyo bw'ubutabazi; ibikorwa by'amabwiriza bikora gusa ku mategeko ya Syslog Alarming."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Kuraho amadomene"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Urutonde rutandukanyijwe n'akitso rw'indangarubuga wifuza gukura ku izina rya mwakirizi ya syslog, Ingero zaba 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Intera yo kuvugurura"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Iki ni igihe mu masegonda mbere y'uko urupapuro ruvugururwa."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Simbuka ibarura rusange ry'imirongo"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Niba aka gasanduku kashyizweho akamenyetso, ududirishya twa System Logs na Alert Logs ntitubara buri nyandiko ihura, ibi bishobora gutwara ubushobozi bwinshi ku mashyirwamo manini. Urupapuro rwerekana amahuza ya Ibanza n'Ikurikira aho kwerekana igiteranyo n'urutonde rw'amapaji, kandi Ikurikira ritangwa mu gihe hari izindi nyandiko zisigaye."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Inyandiko za raporo ntarengwa"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Ku mpuruza zishingiye ku Rwego ntarengwa, ni uwuhe mubare ntarengwa wifuza kwerekana muri raporo. Ibi bikoreshwa mu kugabanya ubunini bw'inyandiko ya html na Imeyili."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "Ibyanditswe %d"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Ibikorwa ntarengwa bitunganya Syslog"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Iyo bishyizwe hejuru ya 1, itunganywa ry'ubutumwa bwinjira rigabanywa mu bikorwa by'abakozi bikora icyarimwe. Buri mukozi yita ku gice cyihariye cy'ubutumwa bwinjira, bigatuma gushaka amazina y'abakirizi no kwimura ubutumwa byihuta mu gihe hari umutwaro mwinshi. Igenamiterere rya 1 ritunganya ubutumwa bwose mu gikorwa kimwe. Ibikorwa by'abakozi ntibishoboka kuri Windows cyangwa iyo imigereka ya PHP pcntl na POSIX itaboneka, icyo gihe itunganywa risubira ku gikorwa kimwe."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "Igikorwa gitunganya %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "Ibikorwa bitunganya %d"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Itegeko ryo gufungura amatike"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Iri tegeko rizashyirwa mu bikorwa mu gufungura amatike ya Help Desk. Iri tegeko rizasabwa gusesengura ibipimo byinshi byinjizwa nk'uku: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Urutonde rwa hostlist ruzaba ari urutonde rw'abakirizi bagezweho n'intabaza rutandukanyijwe n'akitso."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Amahitamo yo gushakisha Mwakirizi"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Fungura Gusesengura Izina rya Mwakirizi"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Niba aka gasanduku kashyizweho akamenyetso, amazina ya Mwakirizi yose abanza gushakirwa binyuze muri DNS (Niba byafunguwe), hakoreshejwe inyandiko za A na AAAA. Aderesi za IPv4 na IPv6 ntizikenera gushakirwa, kandi aderesi za IPv6 zibikwa mu buryo buhinnye bw'inyuguti ntoya. Niba ishakisha rya DNS ritsinzwe, sisitemu izagerageza gushakira izina rya Mwakirizi mu mbonerahamwe ya Mwakirizi ya Cacti maze irisimbuze ibisobanuro bya Mwakirizi bya Cacti. Niba ishakisha rya DNS n'irya Cacti byombi bitsinzwe, inyandiko zihabwa intangiriro 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Simbuka isesengura rya DNS ku bakirizi binjira"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Niba aka gasanduku kashyizweho akamenyetso, sisitemu ntizagerageza gushakira Ba Mwakirizi binyuze mu ishakisha rya DNS. Ibi ni ingenzi mu mikorere aho gushakira kuri DNS bidashoboka cyangwa bidakenewe."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Amagenamiterere y'imenyesha rya HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Fungura Imeyili Ishingiye kuri HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Niba aka gasanduku kashyizweho akamenyetso, Imeyili zose zizoherezwa mu buryo bwa HTML. Bitabaye ibyo, Imeyili zizoherezwa mu nyandiko isanzwe."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Idosiye y'imiterere yo gukoresha"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Hitamo idosiye yihariye ya html n'iya CSS yo gukoresha.  Iyi dosiye irimo byombi, html na CSS, byo gukikiza raporo yawe.  Niba irimo ibirenze CSS gusa, ugomba gushyira akamenyetso kihariye <REPORT> imbere muri iyo dosiye.  Aka kamenyetso k'imiterere kazasimburwa n'ibikubiye muri raporo.  Izi dosiye ziherereye mu bubiko bwa 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Kubika amakuru no kugabanya ibice"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Igihe cyo kubika Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Uyu ni umubare w'iminsi yo kubika ibyabaye."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Ingano ya buri gice cy'imbonerahamwe za syslog na syslog_removed. Impinduka ibikwa hano ariko itangira gukora gusa igihe cli/upgrade_partitioning.php yongeye kubaka imbonerahamwe zombi; kugeza icyo gihe, ubusigasire bw'ibice bukomeza gukoresha ingano isanzwe. Igabanyabice rya buri saha risaba igihe ntarengwa cyo kubika. Igihe cyo kubika, igihe cyo kurema mbere n'urwego rw'igabanyabice hamwe bigomba kujyana n'umubare ntarengwa w'ibice wa seriveri y'ububiko bw'amakuru, bitabaye ibyo amagenamiterere ntabikwa."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Igihe cyo kurema ibice mbere y'igihe"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Uyu ni umubare w'iminsi y'ibice by'igihe kizaza bigomba kubungabungwa ku mbonerahamwe za Syslog zigabanyijwemo ibice, kugira ngo ibice bishya bihoraho bitandukanywa n'igice cya dMaxValue kirimo ubusa.  Igabanya rya buri saha rihora ribika nibura iminsi 2."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "Umunsi %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "Iminsi %d"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Urwego ntarengwa rwo kugarura ibice"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Iyo ibice by'imbonerahamwe (partitions) bibura (urugero nyuma y'ihagarara ry'imirimo yo gusana), umubare ntarengwa w'ibice bibura ku mbonerahamwe bikorwa muri buri nshuro y'Ikusanyamakuru ungana gutya. Icyuho gisigaye gikemuka mu nshuro zikurikiraho; gusiba ibibitswe bikomeza gutegereza kugeza igihe ibice bizaza bisubijweho mu buryo bwuzuye. Bireba imbonerahamwe za Syslog zigabanyijwemo ibice gusa."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "Igice %d kuri buri gikorwa"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "Ibice %d kuri buri gikorwa"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Urwego ntarengwa rw'ubusaze bw'ikusanya"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Integuza z'ubuzima bw'umuyoboro w'amakuru zitanga iburira igihe ubutumwa butarakorwa, irangira ry'itunganya, cyangwa ihuza ritegereje birenze ubu bukererwe. Ubukererwe nyakuri ni byibura intera eshatu z'Ikusanyamakuru n'amasegonda 300. Shyira kuri 0 kugira ngo ukoreshe amasegonda 300."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Mburabuzi (amasegonda 300)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "amasegonda %d"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Urwego ntarengwa rw'ibirarane by'ikusanya"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Paji y'Imiterere ya Syslog yerekana iburira igihe ubutumwa burenze uyu mubare bubitse butaratunganywa mu mbonerahamwe ya Syslog Incoming. Shiraho 0 kugira ngo ukoreshe igipimo gisanzwe cy'ubutumwa 10000."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Mburabuzi (ubutumwa 10000)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "Ubutumwa %d"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Integuza z'ubuzima bw'umuyoboro w'amakuru"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Urutonde rw'imenyesha ry'ubuzima bw'umuyoboro w'amakuru"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Hitamo urutonde rw'imenyekanisha rwa Thold rusanzweho ku mpuruza z'ubuzima bw'umuyoboro. Abakira ku rutonde rwafunguwe bahuzwa na aderesi z'imeyili ziri hasi aha, hagumishwaho abakira ba BCC. Intonde zisaba imbonerahamwe y'urutonde rw'imenyekanisha rwa Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Abakira Imeyili z'ubuzima bw'umuyoboro w'amakuru"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Abahabwa imeyili batandukanyijwe n'akitso igihe umuyoboro ugize ikibazo cyangwa ugarutse ku murongo. Reka hari ubusa kandi ntuhitemo urutonde rw'amamenyesha kugira ngo uhagarike imeyili; ubuzima bukomeza kugaragara ku gice cy'Imiterere kandi impinduka z'imiterere zirandikwa. Igenzura risaba ko ikusanyamakuru rya Cacti rikora."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Intera y'ibukiranya ry'ubuzima bw'umuyoboro w'amakuru"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Subiramo amamenyesha ku bibazo bikomeje by'umuyoboro nyuma y'iki gihe. Ibigeragezo by'imeyili byananiranye byongerwa gusubirwamo bitarenze rimwe mu minota itanu."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Igihe cyo kubika intabaza za Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Uyu ni umubare w'iminsi yo kubika inyandikamateka z'amamenyesha."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Guhagarika by'agateganyo Integuza no Kubungabunga"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Iminsi y'Igihe cyo Kubungabunga"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Iminsi imenyesha ryose ry'impuruza riba ryahagaritswe mu gihe cyagenwe cy'imirimo yo kubungabunga."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Igihe cyo Kubungabunga Gitangira"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Igihe cyo gutangiriraho cy'aho uherereye ku gihe rusange cyo kubungabunga."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Igihe cyo Kubungabunga Kirangira"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Igihe cyo kurangiriraho cy'aho uherereye ku gihe rusange cyo kubungabunga. Igihe cyo kurangiriraho kiri mbere gikomeza ku munsi ukurikiyeho."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Imirimo y'isana y'inshuro imwe iratangira"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Itariki n'isaha by'aho utuye bitari ngombwa byo gutangira igihe rusange cy'imirimo y'isana y'inshuro imwe."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Imirimo y'isana y'inshuro imwe irarangira"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Itariki n'isaha by'aho utuye bitari ngombwa byo kurangiza igihe rusange cy'imirimo y'isana y'inshuro imwe. Imiterere: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Igihe mburabuzi cyo gutegereza hagati y'impuruza"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Hagarika imenyesha iryo ari ryo ryose risubiramo ku itegeko rimwe n'aho raporo igera muri iyi minota. Agaciro ka buri tegeko gasimbura iri genamiterere. Shyiraho 0 kugira ngo bihagarikwe."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Gukumira mburabuzi ububiri bw'ubutumwa"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Hagarika imenyesha rifite ubutumwa bumwe bwahuye muri iyi minota. Agaciro ka buri tegeko gasimbura iri genamiterere. Shyiraho 0 kugira ngo bihagarikwe."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Isubiramo rya Syslog yo Kure"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Inyandiko zo kugarura amakuru ntarengwa kuri buri gikorwa"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Umubare ntarengwa w'ibikorwa bya Syslog ya kure byabitswe byoherezwa ku Gikusanyamakuru Gikuru n'igikorwa kimwe cyo kugarura amakuru. Buri gikorwa cyo mu bubiko bw'amakuru bukuru gikomeza kugira umupaka w'inyandiko 100. Ongera buhoro buhoro ureba umutwaro w'Igikusanyamakuru Gikuru n'igihe cyo gutegereza ifungwa."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Akaruhuko ko kugarura hagati y'amatsinda"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Akaruhuko hagati ya buri gikorwa cyo kohereza amakuru 100 ku Ikusanyamakuru Rikuru. Akaruhuko karekare kagabanya umuvuduko kuri Ikusanyamakuru Rikuru; akaruhuko gato kihutisha kurangiza ibikirarane."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Nta guhagarara"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "milisegonda %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "isegonda %d"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Ububiko bw'amakuru bwa Syslog ntibuboneka, bityo amagenamiterere yo kugabanya ibice ntashobora kugenzurwa ugereranyije n'imipaka n'imbonerahamwe byayo."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Amagenamiterere ya Syslog ntiyabitswe."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Bitegereje: imbonerahamwe y'ubutumwa iracyakoresha ibice %s. Koresha cli/upgrade_partitioning.php kugira ngo ushyireho urwego rwahiswemo."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Siba"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Hagarika"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Koresha"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Sohora"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Bitagira iherezo"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "Icyumweru %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "Ibyumweru %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "Ukwezi %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "Amezi %d"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "Umwaka %d"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Nta na rimwe"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "Umunota %d"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "Iminota %d"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Itangizwa na"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Birimo"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Birangira na"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Izina rya Mwakirizi ni"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Porogaramu ni"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Ikigo ni"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Ubwubatsi bw'akayunguruzo"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Imvugo ya SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Buri cyumweru"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Kwinjiza/Gusohora"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Amategeko y'Integuza"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Amagenamiterere ya Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Amategeko y'intabaza y'Igikoresho"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Amategeko yo Gukuraho"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Amategeko ya raporo"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Inama"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Ntibishoboka kwihuza n'ububiko bw'amakuru bwa Syslog. Nta makuru y'Igikoresho yasibwe."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Inyandiko z'Igikoresho %s zakuwe mu bubiko bw'amakuru bwa Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Imfashabikorwa za Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Siba burundu Ibikoresho bya Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Urifuza koko gusiba burundu ibikoresho bya Syslog byashaje?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Emeza Isiba burundu"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Komeza"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Iri hitamo ryo ku rutonde ritanga uburyo bwo gukuraho Ibikoresho bitakitangira amakuru muri seriveri ya Syslog ya Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Inkomoko itari yo y'igice cy'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Ubwoko butari bwo bw'igice cy'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Ubwoko butari bwo bw'igishushanyo cy'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Umwanya utari wo w'isesengura ry'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Intera itari yo y'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Igihe kitari cyo cy'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Ubwoko butari bwo bw'inyandiko y'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Umubare w'ibya mbere utari wo w'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Ubugari butari bwo bw'igice cy'imbonerahamwe."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Uburebure butari bwo bw'igice cy'imbonerahamwe."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Ishakisha rishingiye ku bimenyetso ritari ryo: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Ibindi"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Agace k'ikibaho cy'imikorere kemewe karakenewe."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Agace k'ikibaho cy'ibikorwa ntikabonetse."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Izina ritarengeje inyuguti 128 rirakenewe."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Ikibaho cy'imikorere cyemewe kirakenewe."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Ikibaho cy'ibikorwa nticyabonetse."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Ntibishoboka kubika impinduka z'ikibaho cy'imiyoborere."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Ushobora gusangiza gusa imbonerahamwe zawe bwite."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "kopi"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Ikibaho cy'ibikorwa nticyashoboye gukopororwa."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Umwanya w'agace wemewe urakenewe."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Umutwe utarengeje inyuguti 128 urakenewe."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Kurura kugira ngo uhindure urutonde rw'ikarita"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Vugurura Agace"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Ubutumwa bwose"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Isomero ry'ibishushanyo mbonera ntiriboneka kuri iyi Cacti yashyizweho."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Hindura Akadirishya"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Igice Gishya"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Bika"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Shyira mu bikorwa"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Siba iki gice cy'imbonerahamwe?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Siba iyi mbonerahamwe n'ibice byayo byose?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Ha izina imbonerahamwe yawe"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Gira Umwihariko"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Sangiza bose"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Bika nka kopi yanjye"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Imbonerahamwe za Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Ikibaho cy'ibikorwa"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Intera y'Igihe"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Isaha Ishize"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Amasaha %d Ashize"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Umunsi Ushize"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Icyumweru Gishize"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Ibyumweru %d Bishize"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Ukwezi Gushize"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Amezi %d Ashize"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Vugurura"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Imbonerahamwe zanjye"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Imbonerahamwe rusange"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Byasangijwe nanjye"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Gishya"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Hindura izina"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Ongeraho Ikibaho"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Hanga ikibaho cyawe cya mbere kugira ngo ugaragaze imigendekere ya syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Ongeraho ikibaho kugira ngo utangire gushushanya.  Ibibaho bishobora gukoresha ishakisha ryawe ryabitswe."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Agace k'ikibaho cy'ibikorwa"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Umutwe"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Inkomoko y'ikayi y'ibikorwa"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Inyandiko z'ibikorwa bya sisitemu"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Inyandiko z'Integuza"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Ubwoko bw'igisate"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Urukurikirane rw'Igihe"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Isesengura mu bice"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Igishushanyo mbonera"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Umurongo"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Ubuso"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Akabari"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Intera y'igihe"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Mu buryo bwikora"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Umunota"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "Iminota 10"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Isaha"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Umunsi"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Umwanya"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Porogaramu"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Ikigo"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Icyihutirwa"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Umubare w'ibya mbere"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Ubwoko bw'inyandiko"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Inyandiko Zose"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Inyandiko z'Ibanze"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Inyandiko Zakuweho"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Tangirira ku ishakisha ryabitswe"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Andika inyandiko y'ubutumwa…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Kuraho ikigenderwaho"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Itsinda rihuza"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Kudashyiramo itsinda"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Izina ry'ikibaho cy'ibikorwa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Izina"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Inzego ntarengwa zarenze"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Byarenze guhera"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Ikusanyamakuru"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Igikoresho"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Ubutumwa bwa nyuma buhura"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Bigaruka nyuma ya"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Itegeko"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Ibikoresho byose bihura"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Nta rwego ntarengwa rurengejwe kuri ubu."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Kugarura bisaba ko nta butumwa buhuye buboneka kugeza ku gihe cyagaragajwe. Buri buhuye busubizaho igihe cyo gutuza."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Ibanjirije"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Ibikurikira"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Nyamuneka hindura izina ry'imwe muri dosiye zawe config.php.dist cyangwa config_local.php.dist mu bubiko bwa syslog, kandi uhindure igenamiterere ry'ububiko bw'amakuru mbere yo gushyiramo porogaramu."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Igihe cyo ku rwego rwa milisegonda (TIMESTAMP(3)) gishyigikiwe kuri MariaDB gusa. Iyi seriveri ni MySQL, bityo shyiramo ikoresheje igihe cyo ku rwego rw'isogonda."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Ububiko bwa Aria ntibushobora gukoreshwa igihe hari ihitamo iryo ari ryo ryose ry'Ikusanyamakuru rya kure ryafunguwe. Hitamo InnoDB cyangwa uhagarike amahitamo yose y'Ikusanyamakuru rya kure."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Abakirizi 10 ba mbere"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Ubutumwa bwa Syslog - Isaha ishize"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Ubutumwa ukurikije ubukana"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Porogaramu 10 za mbere"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Ibikorwa by'Integuza"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Igaragaza rya Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Imiterere ya Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Impuruza Yahiswemo"
+
+#: syslog.php
+msgid "seconds"
+msgstr "amasegonda"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Ntibiboneka"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "ubutumwa butaratunganywa bumaze %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "ibirarane by'ubutumwa %s bwinjira"
+
+#: syslog.php
+msgid "day"
+msgstr "umunsi"
+
+#: syslog.php
+msgid "days"
+msgstr "iminsi"
+
+#: syslog.php
+msgid "hour"
+msgstr "isaha"
+
+#: syslog.php
+msgid "hours"
+msgstr "amasaha"
+
+#: syslog.php
+msgid "minute"
+msgstr "umunota"
+
+#: syslog.php
+msgid "minutes"
+msgstr "iminota"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Imirongo iri muri syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Ingano y'imbonerahamwe ya Syslog (amakuru + ibirango)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Igihe cyo kubika Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Igihe cyo kubika integuza"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Nta gikorwa cyo gusubiza mu buryo kirandikwa."
+
+#: syslog.php
+msgid "created"
+msgstr "byakozwe"
+
+#: syslog.php
+msgid "remaining"
+msgstr "bisigaye"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "igihe cyo kubika cyimuriwe imbere"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Ikora ry'itunganya riheruka"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Ihuza ritatanyijwe"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Inyemezakwakira z'ikusanyamakuru ryo kure"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Ububiko n'igihe cyo kubigumana"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Ubuzima bw'ibice"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Igikorwa cyo kubungabunga ibice"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Igikorwa giheruka cyo kubungabunga ibice"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Ubuzima bw'umuyoboro w'amakuru"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Abakozi bakora icyarimwe"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Ibikorwa by'abakozi"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Ibyiciro by'itunganya"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Ibikorwa by'itegeko"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Inyandiko zakozwe"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Igihe cyo gukusanya amakuru"
+
+#: syslog.php
+msgid "Started"
+msgstr "Byatangiye"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Byarangiye"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Igihe gito cyo gukora"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Igihe cy'impuzandengo cyo gukora"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Igihe ntarengwa cyo gukora"
+
+#: syslog.php
+msgid "State"
+msgstr "Intara cyangwa Leta"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Inyandiko zo kugarura ziri ku murongo"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Igitegereje gishaje kurusha ibindi"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Ihuzwa rya nyuma ryagenze neza"
+
+#: syslog.php
+msgid "Active"
+msgstr "Irakora"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Ntibikora"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Umukozi wo kugarura"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Ikosa rya nyuma ry'ihuzwa"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Umubare w'itsinda rya nyuma"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Inyandiko ya nyuma yakiriwe"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Ikusanyamakuru ryo Kure"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Ikusanyamakuru rya kure ritazwi"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Nta nyandiko z'ikusanyamakuru rya kure zirakirwa."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Kubungabunga ibice kwazitiwe"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Kubungabunga ibice kwahagaritswe; kwandika bikomeza mu gice cy'umutekano cya dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Igihe cy'amatariki"
+
+#: syslog.php
+msgid "Table"
+msgstr "Imbonerahamwe"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "imirongo ya dMaxValue (igereranywa)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "ingano ya dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Urwego rwo kugabanya mu bice"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "%s cyatoranyijwe mu Magenamiterere kandi kizatangira gukora nyuma y'uko cli/upgrade_partitioning.php yubaka bundi bushya imbonerahamwe."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Igerageza rya nyuma"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Ibungabunga rya nyuma ryagenze neza"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Byarangiye"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Byimuriwe ikindi gihe"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Ibyavuyemo biheruka"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Aho kugarura bigeze"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Ibisobanuro birambuye"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Icyavuyemo"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Gusubira ku murongo"
+
+#: syslog.php
+msgid "When"
+msgstr "Ryari"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Nta gikorwa cyo gusana ibice by'ububiko kirandikwa. Ibikorwa bigaragara nyuma y'ikora rikurikira ry'ikusanyamakuru."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d byahanzwe, %d bisigaye, %d byahanaguwe"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Nta gikorwa gisabwa."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Ibirarane byinjira"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Birimo gutunganywa"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Kubungabunga ibice"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Ihuza ry'amakuru"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Bisaba kwitabwaho"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Bimeze neza"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Itunganya ryahagaritswe"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Bitegereje gutunganywa"
+
+#: syslog.php
+msgid "Health"
+msgstr "Ubuzima"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Biriteguye"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Byoherejwe"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Byanze; birategereje kongera kugeragezwa"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Bitegereje; igenzura rikurikira ry'Ikusanyamakuru"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Igenzura ry'ubuzima rya nyuma"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Amamenyesha ya Imeyili"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Ntabwo birasuzumwa"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Imenyekanisha rya nyuma ryoherejwe"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Inyandiko y'ibikorwa yakiriwe bwa nyuma"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Ubutumwa budatunganyijwe bushaje kurusha ubundi"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Inyandiko zakozwe mu ikora riheruka"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Ibikorwa by'abakozi birimo gukora"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Ibikorwa by'abakozi byagenwe"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Ba Mwakirizi basobanuwe"
+
+#: syslog.php
+msgid "Process"
+msgstr "Igikorwa"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Inyandiko zatunganyijwe"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Igihe cyo gukora"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Nta mibare ya buri gikorwa irandikwa. Imibare y'ibikora igaragara nyuma y'ikora rya mbere rikorwa icyarimwe."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Igihe byamaze"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Icyiciro"
+
+#: syslog.php
+msgid "Records"
+msgstr "Inyandiko"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Ivugurura ry'ibyifashishwa"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Amategeko yo gukuraho"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Isuzuma ry'integuza"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Ihererekanya ryinjira"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Itunganywa rya raporo"
+
+#: syslog.php
+msgid "slowest"
+msgstr "bitinda cyane"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Nta bihe by'ibyiciro birandikwa. Ibihe by'ibyiciro bigaragara nyuma y'ikora rikurikira ry'ikusanyamakuru."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Ikora rya nyuma"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Amategeko yatunganyijwe"
+
+#: syslog.php
+msgid "Total"
+msgstr "Igiteranyo"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Amategeko y'integuza"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Siba amategeko"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Byatanzwe ku nshuro iheruka"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Erekana byinshi"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Erekana bike"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Fungurira mu kadirishya k'ikiganiro"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Kura ku rupapuro"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Intera yo kuvugurura itari yo."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Ikarita itazwi."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Ongeraho ikarita"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Ongeraho ikarita y'imiterere…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Igaragazwa ry'intabaza za Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Ishakisha ryabitswe ryemewe rirakenewe."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Ishakisha ryabitswe ntiryabonetse."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Ushobora gusangiza gusa ibyo washakishije wabikije byawe bwite."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Ubutumwa Butaratunganywa: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Andika ijambo ushakisha"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Hitamo Igikoresho (Ibikoresho)"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Ibikoresho Byahiswemo"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Ibikoresho Byose Byatoranyijwe"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Akayunguruzo k'ubutumwa bwa Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Shakisha ubutumwa"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Hina utuyunguruzo"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Hindura utuyunguruzo"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Amashakisha Yabitswe"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Ishakisha ryanjye"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Amashakisha rusange"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Mburabuzi)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Gucunga"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Gucunga ishakisha ryabitswe"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Bika ishakisha"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Hindura"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Bika kuri bose"
+
+#: syslog.php
+msgid "contains"
+msgstr "birimo"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "ntibirimo"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Imirongo"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Imirongo igaragara"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Mburabuzi"
+
+#: syslog.php
+msgid "View options"
+msgstr "Amahitamo yo kureba"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Gukata"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Ikatwa ry'ubutumwa"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Imicungire yo Gukuraho"
+
+#: syslog.php
+msgid "Display"
+msgstr "Erekana"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Huriza hamwe ubutumwa bwisubiramo"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Ubutumwa Bwihariye"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Ubutumwa bwahurijwe hamwe"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Hitamo umwanya, ikimenyetso gikora, n'agaciro. AND iza mbere ya OR; NOT ikuraho icyifuzo. LIKE ikoresha % ku mubare uwo ari wo wose w'inyuguti na _ ku nyuguti imwe. Amatariki akoresha YYYY-MM-DD HH:MM:SS. Indangamuntu zikoresha imibare yuzuye itari munsi ya zeru. Ubusanzwe, umunsi wa nyuma w'inyandiko z'ibyakozwe uragaragara keretse igihe cy'amatariki gihinduwe."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Ubufasha bw'ishakisha"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Ishakisha Rishya Ryabitswe"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Hindura Ishakisha Ryabitswe"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Bika nka"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Siba ishakisha ryabitswe ryatoranyijwe?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Shakisha"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Siba"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Subiza uduciro tw'akayunguruzo ku migenere y'ibanze yagenwe n'ukoresha"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Vugurura Ibisubizo"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Kohereza hanze ibyabitswe muri CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Bika Amagenamiterere y'Ibanze"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Bika imigaragarire y'ibanze"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Bika Ishakisha Nka"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Koresha iri shakisha igihe ufunguye uru rupapuro kandi nta shakisha riri gukora"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Kurenga urwego"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Urwego ntarengwa rwarenze"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Ubutumwa"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Ubutumwa burimo ubusa"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Hindura ubutumwa bw'itsinda"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Birimo gupakira ubutumwa bw'itsinda..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Nta butumwa buhuye."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Nta butumwa bwa Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Imirongo y'Inyandiko z'Integuza"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Integuza Yavanyweho"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Nta Butumwa bw'Inyandiko z'Impuruza"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Funga amakuru arambuye y'ubutumwa"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Ibisobanuro by'ubutumwa"
+
+#: syslog.php
+msgid "General"
+msgstr "Rusange"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Itegeko ry'Integuza"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Ikurikirana"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Byakoporowe"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Koporora ihuza"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Koporora ubutumwa"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Gukoporora ntibishoboka. Hitamo hanyuma ukoporore inyandiko y'ubutumwa."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Gushakisha inama…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Nta nama ihuye n'ubu butumwa."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Ibikorwa"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Kora Itegeko ry'Impuruza"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Kora Itegeko ry'Iburira ry'Igikoresho"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Kora Itegeko ryo Gukuraho"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Yungurura hakurikijwe igikoresho"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Yungurura hakurikijwe porogaramu"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Porogaramu Zose"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo usibe Amategeko y'Impuruza ya Syslog akurikira."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Siba Amategeko y'impuruza ya Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo uhagarike Amategeko y'Impuruza ya Syslog akurikira."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Hagarika Itegeko/Amategeko y'Impuruza ya Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo ufungure Amategeko y'Impuruza ya Syslog akurikira."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Fungura Amategeko y'Impuruza ya Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo wohereze hanze Itegeko/Amategeko y'intabaza ya Syslog akurikira."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Kohereza hanze amategeko y'integuza za Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Hitamo Gutanga Impuruza kwa Syslog cyangwa Umuyobozi w'Impuruza."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Andika umubare wuzuye w'iminota, amasaha, cyangwa iminsi y'igihe cy'urwego ntarengwa."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Andika umubare wuzuye urenga zeru w'iminota, amasaha, cyangwa iminsi yo kugarura urwego ntarengwa."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Imiterere ya SQL yinjijwe ntabwo yemewe. Nyamuneka kosora SQL yawe.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "SQL yabanje gutunganywa ni:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Akayunguruzo ntikemewe: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "SQL yatunganyijwe ntiyemewe.  Nyamuneka kosora SQL yawe"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Ntibyashyizweho"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "Umunota 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "Isaha %d"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "Amasaha %d"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "Ukwezi 1"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Hindura Integuza [hindura: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Hindura Integuza [nshya]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Itegeko Rishya ry'Impuruza"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Ntibihari"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Igipimo cy'igihe"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Iminsi"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Amasaha"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Iminota"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Nyamuneka sobanura iyi Nteguza."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Aho impuruza yoherezwa"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Hitamo Gutanga Intabaza kwa Syslog cyangwa Umuyobozi w'Intabaza. Umuyobozi w'Intabaza anasaba ko kohereza imbere biba byafunguwe mu magenamiterere ya Syslog. Imeyili igumishwaho nk'uburyo bw'ingoboka; ibikorwa by'amabwiriza ntibikora ku mategeko y'Umuyobozi w'Intabaza."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Umuyobozi w'Impuruza"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Impuruza za Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Urwego rw'ubukana bw'iyi mpuruza ni uruhe?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Urwego rwa raporo"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Mu kwandika Inshuro z'Impuruza zisubiramo, ese Impuruza igomba gukurikiranwa ku rwego rwa Sisitemu cyangwa urw'Igikoresho."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Sisitemu"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Uburyo bwo gutanga raporo"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Genura uburyo bwo gutanga impuruza ku butumwa bwa syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Ku giti cye"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Ku buryo bwa 'Urwego ntarengwa', Impuruza itangwa iyo umubare ubonetse ugeze kuri iyi ngano."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Idirishya ry'Urwego ntarengwa"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Bara ibihuye mu byiciro by'ikusanya muri iki gihe gikomeza, ukoresheje igihe cyo gutunganya cy'ikusanya. Injiza 0 kugira ngo ubare icyiciro cy'ubu gusa."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Kugarura nyuma y'igihe cyo gutuza"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Igihe nta butumwa buhuye mbere yo gusiba ikosa ryo kurenga, gusubiza ku ntangiriro umubare, no kongera gutegura iri tegeko. Buri butumwa buhuye busubiza iri saha ku ntangiriro."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Ubwoko bwo guhuza"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Hitamo Umubatsi w'Akayunguruzo ku bw'imitekerereze itekanye y'intabaza ishingiye ku bisabwa byinshi. Imvugo ya SQL yagumishijweho ku mategeko ya kera."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Umurongo w'inyuguti uhuza ubutumwa"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Shiraho ibisabwa by'akayunguruzo cyangwa wandike imvugo ya SQL ihura n'ubutumwa bwa Syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Byafunguwe"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Iyi mpuruza yafunguwe?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Uruziga rwo kongera gutabaza"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Ntukongere kohereza iyi mpuruza kuri Mwakirizi umwe, kugeza igihe iki gihe gishize. Ku mpuruza zishingiye ku Rwego ntarengwa, ibi bireba ba Mwakirizi bose."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Igihe cyo gutegereza hagati y'imenyesha"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Iminota yo guhagarika buri menyesha rikurikira riturutse kuri iri tegeko n'ingano y'itangwa rya raporo."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "Umunsi 1"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "Isaha 1"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "Umunota 1"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "Iminota 15"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "Iminota 30"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "Amasaha 4"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "Iminota 5"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Koresha igenamiterere rusange"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Guhagarika ibyasubiyemo"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Iminota yo guhagarika itsinda rimwe ry'ubutumwa buhuye."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Igihe cyo Kubungabunga"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Hitamo niba iri tegeko rikoresha igihe rusange cyo gusana cyangwa igihe cyaryo bwite."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Ntucecekeshe iri tegeko"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Koresha igihe rusange"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Koresha igihe cy'itegeko"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Iminsi yo kubungabunga itegeko"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Iminsi y'igihe cy'iri tegeko, igihe Koresha igihe cy'itegeko byahiswemo."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Itangira ryo kubungabunga itegeko"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Igihe cyo gutangiriraho cy'aho uherereye ku gihe cy'iri tegeko."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Iherezo ryo kubungabunga itegeko"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Igihe cyo kurangiriraho cy'aho uherereye ku gihe cy'iri tegeko."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Imirimo y'isana y'itegeko ry'inshuro imwe iratangira"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Itariki n'isaha by'aho utuye bitari ngombwa byo gutangira gucecekesha iri tegeko. Imiterere: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Imirimo y'isana y'itegeko ry'inshuro imwe irarangira"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Itariki n'isaha by'aho utuye bitari ngombwa byo guhagarika gucecekesha iri tegeko. Imiterere: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Ibisobanuro"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Umwanya w'inyandiko ku Impuruza"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Amahitamo y'Imeyili"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Urutonde rw'abamenyeshwa"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Koresha ibikubiye muri uru rutonde rw'imenyesha kugira ngo ugenere ugomba kumenyeshwa n'uburyo bwo kumumenyesha."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Ameyili yo Kumenyesha"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Nyamuneka andika urutonde rw'aderesi za Imeyili zitandukanyijwe n'ikitso zo kumenyesha. Niba wifuza kohereza Imeyili ku mwakira mu buryo bwa SMS, nyamuneka banza ushyireho <b>'sms@'</b> imbere ya aderesi ya Imeyili y'uwo mwakira. Urugero, niba aderesi ya SMS y'umwakira ari <b>'2485551212@mycarrier.net'</b>, wayishyiramo nka <b>'sms@2485551212@mycarrier.net'</b> kandi izakorwa nk'ubutumwa bwa SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Umwandiko w'Umubiri w'Imeyili"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Aya makuru azagaragara mu gice nyamukuru cy'Intabaza mbere gato y'ibisobanuro birambuye by'Intabaza."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Fungura itike"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Ese itike ya Help Desk igomba gufungurirwa iyi mpuruza.  ICYITONDERWA: Inyandiko y'itegeko ry'itike izashyirwamo ibihinduka by'ibidukikije bya 'ALERT_' byinshi kugira ngo byorohereze."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Komande y'integuza"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Iyo impuruza itanzwe, koresha iri tegeko rikurikira. Ibipimo byo gusimbura bikurikira biraboneka: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Menya ko <b>'&lt;HOSTNAME&gt;'</b> iboneka gusa ku nzego ntarengwa ku giti cyazo. Ibi bipimo byo gusimbura bishobora gukoreshwa ku murongo w'amabwiriza cyangwa bigakurwa mu bidukikije bya porogaramu. Iyo bikoreshejwe bivuye mu bidukikije, ibyo bipimo bibanzirizwa na 'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Ibwiriza ryo kugarura"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Itegeko ritari ngombwa ryo gukoresha iyo uru rwego ntarengwa rukize nyuma y'igihe cyarwo cyo gutuza. Rikoresha ibihinduka bisimbura bimwe n'iby'itegeko ry'Impuruza. SYSLOG_EVENT iba isobanutse; SYSLOG_BREACH_ID ihura n'itegeko ry'irenga ry'urwego. Amategeko yananiranye yongera kugeragezwa. Siga harimo ubusa kugira ngo bihagarikwe."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Gerageza itegeko"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Igaragaza ry'igerageza ry'itegeko"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Agaciro"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Andika agaciro"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Guhuza"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Kudashyiramo"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Andika umubare wuzuye utari munsi ya zeru"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Ibisabwa by'Akayunguruzo k'impuruza"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Byose"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Komeza"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Injiza"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Utuyunguruzo tw'intabaza za Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Uburyo"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Umubare w'Inzego ntarengwa"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Ijambo rishakishwa"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Aderesi z'Imeyili"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Byahinduwe ubushize"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Ukurikije Ukoresha"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Integuza"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Byinshi"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Nta menyesha rya Syslog ryashyizweho"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Kwinjiza Itegeko ry'Impuruza bivuye kuri Dosiye y'Imbere"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Niba dosiye ya XML irimo amakuru asobanura Itegeko ry'Impuruza iri ku mashini yawe y'imbere, yihitemo hano."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Kwinjiza Itegeko ry'Impuruza bivuye ku Nyandiko"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Niba ufite dosiye ya XML irimo amakuru asobanura Itegeko ry'Impuruza nk'inyandiko, ushobora kuyomeka muri aka gasanduku kugira ngo uyinjize."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Kwinjiza Itegeko ry'Impuruza"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Kwinjiza byanzwe: dosiye irimo ubusa, ntiyemewe, cyangwa irimo ubundi bwoko bw'ikintu cya Syslog."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Kwinjiza byanzwe: icyerekezo cy'impuruza ntikemewe."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "winjijwe"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "ICYITONDERWA: Impuruza '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "wavuguruwe"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "IKOSA: Impuruza '%s' %s byananiranye!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Kuvugurura"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Hitamo nyiracyo wemewe."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Ntibishoboka kubika ikibaho cy'imiyoborere. Ongera ugerageze."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Andika izina ry'imbonerahamwe ngenzuzi riri hagati y'inyuguti 1 na 128."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Nyirayo"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Byasangijwe"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Utubaho"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "ukoresha wasibwe"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Nta mbonerahamwe zirahari kugeza ubu. Abakoresha bazirema banyuze mu gice cy'Imbonerahamwe cya Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Kanda 'Komeza' kugira ngo usibe Imbonerahamwe zikurikira n'uduce twazo twose."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Siba Imbonerahamwe"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Kanda 'Komeza' kugira ngo wohereze hanze Imbonerahamwe ikurikira/zikurikira."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Kohereza hanze Imbonerahamwe"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "ICYITONDERWA: Hinjijwe imbonerahamwe %d kandi havugururwa %d."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "IKOSA: Kwinjiza imbonerahamwe (Dashboard) %d byananiranye."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Kwinjiza Ikibaho cy'imiyoborere bivuye kuri Dosiye y'Imbere"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Niba dosiye ya JSON irimo amakuru asobanura Ikibaho cy'imiyoborere iri ku mashini yawe y'imbere, yihitemo hano."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Kwinjiza Ikibaho cy'imiyoborere bivuye ku Nyandiko"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Niba ufite dosiye ya JSON irimo amakuru asobanura Ikibaho cy'imiyoborere nk'inyandiko, ushobora kuyomeka muri aka gasanduku kugira ngo uyinjize."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Kwinjiza Ikibaho cy'imiyoborere"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Abakoresha bose"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Amatsinda Yose"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Hindura Imbonerahamwe"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Izina rigaragara mu mahitamo y'Imbonerahamwe z'Amakuru mu gice cya Syslog Dashboard."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Konti itunze iyi dashibodi kandi ishobora kugenzura za panel zayo."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Byasangijwe n'abakoresha"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Abakoresha bashobora kureba iyi mbonerahamwe uretse nyirayo n'isangira rusange iryo ari ryo ryose. Abakoresha Bose bayisangiza buri wese."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Amatsinda ashobora kureba iyi mbonerahamwe hiyongereyeho nyirayo n'isangira rusange. Amatsinda yose ayisangiza buri wese."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Byasangijwe n'amatsinda"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Guhindura izina bireba buri wese ureba iki kibaho. Uduce tuyoborwa na ba nyiratwo kuva mu gice cy'Ikibaho cya Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Hitamo itariki n'isaha yo mu gihe kizaza yo kurangiza ihagarikwa ry'agateganyo."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Izina ry'igikoresho rirakenewe."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Kanda Komeza kugira ngo %s Itegeko/Amategeko y'intabaza y'Igikoresho akurikira."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Ntutange urwego rw'ihutirwa na rumwe"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s n'izihutirwa kurushaho"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Itegeko ry'intabaza y'Igikoresho"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Shakisha ibikoresho bya Syslog biriho uko wandika, cyangwa ushyiremo aderesi ya IP cyangwa izina rya mwakirizi iryo ari ryo ryose."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Imicungire y'Integuza"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Ntuhagarike by'agateganyo"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Hagarika by'agateganyo amaburira yose atari mu yasonerwe kugeza ku itariki runaka, cyangwa igihe kitazwi."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Hagarika by'agateganyo igihe kitazwi"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Hagarika by'agateganyo kugeza"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Itariki n'isaha by'aho uherereye, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Igihe cyo guhagarika kirangira"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Emera ubwihutirwa buri gihe"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Izi nzego z'ibanze zirenga igihe cyo guhagarika by'agateganyo no gusana iki gikoresho. Ibikomeye cyane n'ibyihutirwa kurushaho ni amahitamo asanzwe ku bikoresho byo ku rwego rwo hejuru."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Emera mu gihe cy'isana"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Emera ibyihutirwa byose biva kuri iki gikoresho mu gihe cy'isana ry'iburira. Irengayobora ry'ibyihutirwa riri haruguru rikomeza gukurikizwa iyo ibi ari Oya."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Itegeko ry'intabaza y'Igikoresho [hindura]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Itegeko ry'intabaza y'Igikoresho [rishya]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Utuyunguruzo tw'itegeko ry'intabaza y'Igikoresho"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Amategeko"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Imitunganyirize"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Isana"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Kunyura bitahinduwe"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Nta mabwiriza yo kuburira y'igikoresho yabonetse."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Ntibyahagaritswe by'agateganyo"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Byahagaritswe by'agateganyo igihe kitazwi"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Byahagaritswe by'agateganyo kugeza %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "n'ibyihutirwa kurushaho"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Emera byose"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Koresha irengayobora ry'uburemere"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Inama ntiyabitswe kubera ko %s. Injizamo ikirango kidafite imyanya kandi nibura ubusobanuro cyangwa igikorwa gisabwa."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Inama y'uyu mucuruzi n'iki kirango isanzwe ihari."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "ICYITONDERWA: Ikirango %s kirimo ibimenyetso bitari inyuguti, imibare, _ . - / na %% ya mbere ishobora kubaho, bityo ntigishobora guhura n'ubutumwa bwa syslog. Simbuza imyanya nka # cyangwa amahitamo nka A|B kode nyayo."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Kanda 'Komeza' kugira ngo wohereze hanze Inama ikurikira/zikurikira."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Kanda 'Komeza' kugira ngo usibe Inama zikurikira."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Kohereza bisaba umugereka wa PHP zlib kugira ngo hakorwe dosiye ya JSON gzip."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Kwinjiza byanzwe: dosiye irimo ubusa, ni nini cyane, cyangwa si inyandiko ya JSON yemewe y'inama."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "ICYITONDERWA: Hongeweho %d, havugururwe %d kandi hasigara %d mu nama zisanzwe zihari zidahinduwe."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "IKOSA: Inama %d zanzwe (urugero %s). Buri yose yanditswe hamwe n'impamvu yayo muri log ya Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "IKOSA: Inama %d ntizashoboye kubikwa. Buri yose yanditswe muri log ya Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "ICYITONDERWA: Inama %d zinjijwe zifite ibirango birimo ibimenyetso nka | cyangwa # bitigera biboneka mu ijambo ry'ubutumwa, bityo ntibishobora guhura kugeza bihinduwe. Shyira Bishobora guhura kuri Oya kugira ngo ubirebe ku rutonde."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Injiza Inama uvuye muri Dosiye yo kuri Mudasobwa"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Hitamo dosiye ya .json cyangwa .json.gz ku mashini yawe bwite. Koresha igikorwa cyo Kohereza hanze kugira ngo urebe imiterere itegerejwe: urutonde rw'inyandiko zirimo vendor, identifier, component, severity, message, explanation, recommended_action na reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Injiza Inama uvuye mu Nyandiko"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Ubundi buryo, comeka inyandiko ya JSON muri iri sanduku."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Inama zisanzwe zihari"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Inama ihwana n'isanzwe ihari iyo umucuruzi wayo n'ikirango byayo bihuye."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Gumana inama isanzwe"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Simbuza icyinjijwe"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Injiza Inama"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Birimo kwinjizwa, nyamuneka tegereza..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Ntibyagaragajwe"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Inama"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Uwatanze igikoresho cyangwa porogaramu yandika ubu butumwa, urugero nka Cisco cyangwa Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Umucuruzi"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Ikiranga"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Kode y'ubutumwa yo gushaka, urugero %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN cyangwa 4625. Igomba guhura n'ijambo ryose ry'ubutumwa bwa syslog (inyuguti, imibare na _ . - /); % ibanza ni iy'ukuri kandi igomba guhura uko yanditswe. Guhuza ntibita ku nyuguti nkuru cyangwa nto. Reba Uko Ibyifuzo Bihuzwa ku rupapuro rw'urutonde."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Igice"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Urwego rw'ubutumwa (facility), igice cyangwa igice cyungirije cya sisitemu gisohora ubutumwa."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Uburemere uwatanze serivisi agaragaza kuri ubu butumwa."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Imiterere y'ubutumwa uko yanditswe mu nyandiko zisobanura, harimo n'ibimenyetso bisimbura ibihindagurika."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Icyo ubutumwa busobanura."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Icyo umukoresha agomba kubikoraho."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Amahuza agana ku nyandiko z'uwakoze igikoresho, rimwe kuri buri murongo."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Inama [hindura]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Inama [nshya]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Itara ribanza imbere y'ubutumwa rigaragaza inama zihura ku bice bya System Logs na Alert Logs. Kanda ku butumwa kugira ngo ubisome mu dirishya ry'ibisobanuro birambuye. Kuyoboraho imbeba ntibisaba seriveri."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Inkingi ya <b>Indangamwirondoro</b> gusa ni yo ikoreshwa mu guhuza. Utanga igikoresho, igice, ubukana, ubutumwa n'ibisobanuro bigaragara mu kadirishya k'ibisobanuro birambuye ariko ntibishakishwa na rimwe."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Inyuguti 2.048 za mbere z'ubutumwa zikatwamo amagambo. Ijambo ni urukurikirane rw'inyuguti, imibare n'ibimenyetso _ . - / rushobora gutangirwa na %. Ikindi kimenyetso icyo ari cyo cyose, nk'umwanya, utudomo tubiri, akitso cyangwa uruzitiro, kirangiza ijambo. Muri <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> amagambo ni <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> na <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Ikimenyetso kirahura iyo <b>kingana neza n'ijambo rimwe ryuzuye</b>, utitaye ku nyuguti nkuru cyangwa nto. Si ishakisha rya \"birimo\", \"bitangirira kuri\" cyangwa \"birangirira kuri\", kandi nta bimenyetso bisimbura bihari: <code>LINK-3-UPDOWN</code> ntihura n'ijambo <code>LINK-3-UPDOWN-EXT</code>, na <code>UPDOWN</code> ntihura na <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "<b>%</b> ibanza ni inyuguti nyayo, si ikimenyetso gisimbura byose, kandi igomba guhura n'ijambo ry'ubutumwa nk'uko ryanditse. Ikirango <code>%LINK-3-UPDOWN</code> gihura n'ijambo ry'ubutumwa <code>%LINK-3-UPDOWN</code>, ntabwo ari <code>LINK-3-UPDOWN</code>; ikirango kidafite imbanziriza gihura gusa n'ijambo ridafite imbanziriza."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Iyo Mwakirizi ya Syslog ari Igikoresho cya Cacti gifite uwagikoze umenyekana bivuye ku bisobanuro bya sisitemu ya SNMP cyangwa ku Nyandikorugero y'Igikoresho, kandi hakaba hari inama z'uwo wagikoze, hasuzumwa gusa inama z'uwo wagikoze n'izidafite uwagikoze. Bitabaye ibyo, abagikoze bose barasuzumwa, ariko ikirango kigizwe n'imibare gusa gihura gusa n'inama zidafite uwagikoze. Iyo inama nyinshi zihuye, ibirango birebire kurusha ibindi bigaragara mbere, kugeza kuri bitatu."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Ibiranga birimo izindi nyuguti cyangwa ibimenyetso, nk'umwanya wa <code>#</code> cyangwa amahitamo ya <code>|</code> mu nyandiko z'abakora ibikoresho bimwe na bimwe (urugero <code>%ASA|PIX-3-331001</code>), birabikwa kandi bikoherezwa hanze ariko ntibishobora na rimwe guhura. Shyira <b>Gishobora Guhura</b> kuri Oya kugira ngo ubitondeke, kandi ubihindure mu rukurikirane rwa nyarwo, urugero <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Uko Ibyifuzo Bihuza"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Bishobora guhura"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Niba ikirango gifite imiterere y'ijambo ry'ubutumwa, kugira ngo ishakisha ry'ubutumwa rishobore kuribona"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Kohereza buri nama ihura n'utuyunguruzo"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Nta nama zabonetse."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Ongera utunganye"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo usibe Amategeko yo Gukuraho ya Syslog akurikira."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Siba Amategeko yo gusiba ya Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo uhagarike Amategeko yo Gukuraho ya Syslog akurikira."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Hagarika Itegeko/Amategeko yo Gukuraho Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo ufungure Amategeko yo Gukuraho ya Syslog akurikira."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Fungura Amategeko yo Gusiba ya Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo wongere utunganye Itegeko/Amategeko yo gukuraho ya Syslog akurikira."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Tunganya mu buryo busubira inyuma Itegeko (Amategeko) ryo kuvanaho Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo wohereze hanze Itegeko/Amategeko yo gukuraho ya Syslog akurikira."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Kohereza hanze amategeko yo gusiba ya Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Itegeko '%s' ryatumye ubutumwa %s/%s busibwa/bwimurwa"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Hindura Itegeko ryo Gukuraho [hindura: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Hindura Itegeko ryo Gukuraho [rishya]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Inyandiko Nshya yo Gusiba"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Itegeko Rishya ryo Gusiba"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Ibisobanuro by'Itegeko ryo Gukuraho"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Izina ry'Itegeko ryo Gukuraho"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Nyamuneka sobanura iri Tegeko ryo Gusiba."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Byafunguwe?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Iri tegeko ryo gusiba ryafunguwe?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Ubwoko bwo guhuza inyandiko"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Genura uko wifuza ko iri jambo rihuzwa.  Niba ukoresha ubwoko bw'imvugo ya SQL ushobora gukoresha imvugo iyo ari yo yose yemewe ya SQL kugira ngo ubyaze impuruza.  Imirima iboneka irimo 'message', 'facility', 'priority', na 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Interuro ihura n'ubutumwa bwa Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Andika igice gihura cy'ubutumwa bwa Syslog, urwego cyangwa izina rya mwakirizi, cyangwa igice cya SQL where niba ukoresha ubwoko bw'ihura bw'imvugo ya SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Uburyo bwo kuvanaho"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Gusiba"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Iyohereza"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Inyandiko z'Itegeko ryo Gukuraho"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Umwanya w'inyandiko ku itegeko ryo Gusiba"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Ibisabwa by'akayunguruzo ko gukuraho"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Utuyunguruzo tw'amategeko yo gusiba Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Izina ryo Gukuraho"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Kohereza"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Nta mategeko yo gukuraho ya Syslog yashyizweho"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Injiza Itegeko ryo Gukuraho uvuye muri Dosiye yo kuri Mudasobwa"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Niba dosiye ya XML irimo amakuru asobanura Itegeko ryo Gukuraho iri ku mashini yawe y'imbere, yihitemo hano."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Injiza Itegeko ryo Gukuraho uvuye mu Nyandiko"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Niba ufite dosiye ya XML irimo amakuru asobanura Itegeko ryo Gukuraho nk'inyandiko, ushobora kuyomeka muri aka gasanduku kugira ngo uyinjize."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Injiza Itegeko ryo Gukuraho"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "ICYITONDERWA: Itegeko ryo kuvanaho '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "IKOSA: Itegeko ryo Gusiba '%s' %s Byanze!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Kanda 'Komeza' kugira ngo usibe Raporo za Syslog zikurikira."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Siba Raporo za Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Kanda 'Komeza' kugira ngo uhagarike Raporo za Syslog zikurikira."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Hagarika Raporo za Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Kanda 'Komeza' kugira ngo ufungure Raporo za Syslog zikurikira."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Fungura Raporo za Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Kanda 'Komeza' kugira ngo wohereze hanze Itegeko/Amategeko ya raporo ya Syslog akurikira."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Kohereza hanze amategeko ya raporo za Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Ugomba guhitamo nibura Raporo ya Syslog imwe."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Subira inyuma"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Hindura Raporo [hindura: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Hindura Raporo [nshya]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Inyandiko Nshya ya Raporo"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Nyamuneka sobanura iyi Raporo."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Iyi raporo yafunguwe?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Genura uko wifuza ko iri jambo rihuzwa. Umwubatsi w'akayunguruzo uhuza ibisabwa kuri message, host, program, facility na priority."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Inshuro"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Ni kangahe iyi Raporo igomba koherezwa ku rutonde rw'abohererezwa?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Igihe cyo Kohereza"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Ni ku kihe gihe cy'umunsi iyi raporo igomba koherezwa?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Imiterere ya Raporo"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Shiraho ibisabwa by'akayunguruzo, cyangwa wandike umwandiko cyangwa imvugo ya SQL ihura n'ubutumwa bwa Syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Amakuru azaba ari mu gice nyamukuru cya Raporo."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Urutonde rw'aderesi za Imeyili zitandukanyijwe n'akitso zo koherezaho raporo."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Umwanya w'inyandiko kuri Raporo"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Isuzuma ry'ibanziriza raporo"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Ibisabwa by'akayunguruzo ka raporo"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Utuyunguruzo twa raporo za Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Izina rya Raporo"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Igihe cya nyuma byoherejwe"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Raporo"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Nta raporo za Syslog zashyizweho"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Injiza Itegeko rya Raporo uvuye muri Dosiye yo kuri Mudasobwa"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Niba dosiye ya XML irimo amakuru asobanura Itegeko rya Raporo iri ku mashini yawe y'imbere, yihitemo hano."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Injiza Itegeko rya Raporo uvuye mu Nyandiko"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Niba ufite dosiye ya XML irimo amakuru asobanura Itegeko rya Raporo nk'inyandiko, ushobora kuyomeka muri aka gasanduku kugira ngo uyinjize."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Injiza Amakuru ya Raporo"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "ICYITONDERWA: Itegeko rya raporo '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "IKOSA: Itegeko rya Raporo '%s' %s Byanze!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Ntibishoboka kubika inyandikorugero. Ongera ugerageze."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Andika izina ry'inyandikorugero riri hagati y'inyuguti 1 na 128."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Inyandikorugero"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Ububazo bw'Amakuru"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Nta nyandikorugero z'ishakisha zisangiwe. Bika ishakisha ku bakoresha bose uhereye kuri Syslog kugira ngo uhange imwe."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Kanda 'Komeza' kugira ngo wohereze hanze Inyandikorugero y'ishakisha yabitswe ikurikira/zikurikira."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Kanda 'Komeza' kugira ngo usibe Inyandikorugero z'Ishakisha Ryabitswe zikurikira."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Siba Inyandikorugero z'ishakisha ryabitswe"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Kohereza hanze Inyandikorugero z'ishakisha zabitswe"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "ICYITONDERWA: Hinjijwe Inyandikorugero z'ishakisha ryabitswe %d kandi havugururwa %d."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "IKOSA: Kwinjiza Inyandikorugero z'ishakisha zabitswe %d byananiranye."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Injiza Inyandikorugero y'Ishakisha Ryabitswe uvuye muri Dosiye yo kuri Mudasobwa"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Niba dosiye ya JSON irimo amakuru asobanura Inyandikorugero y'Ishakisha Ryabitswe iri ku mashini yawe y'imbere, yihitemo hano."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Injiza Inyandikorugero y'Ishakisha Ryabitswe uvuye mu Nyandiko"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Niba ufite dosiye ya JSON irimo amakuru asobanura Inyandikorugero y'Ishakisha Ryabitswe nk'inyandiko, ushobora kuyomeka muri aka gasanduku kugira ngo uyinjize."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Injiza Inyandikorugero y'Ishakisha Ryabitswe"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Hindura Inyandikorugero y'Ishakisha Ryabitswe"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Izina rigaragarira abakoresha bose mu Ishakisha Ryabitswe."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Konti itunze iyi nyandikorugero kandi ishobora kuyigenzura mu Bishakishijwe Byabitswe."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Abakoresha bashobora gukoresha iyi nyandikorugero uretse nyirayo. Abakoresha Bose bayisangiza buri wese."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Amatsinda ashobora gukoresha iyi nyandikorugero hiyongereyeho nyirayo. Amatsinda yose ayisangiza buri wese."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Imvugo y'Ishakisha"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Kosora imiterere y'isaba kugira ngo ukoreshe icyubaka isaba."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Hitamo umwanya, ikimenyetso gikora, n'agaciro. Koresha AND, OR, NOT, cyangwa Itsinda mu kubaka ikibazo. Impinduka zikoreshwa kuri iyi nyandikorugero isangiwe ku bakoresha bose."
+

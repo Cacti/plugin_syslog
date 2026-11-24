@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Somali\n"
+"Language: so-SO\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d daqiiqo"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d saac"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d saacadood"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d maalin"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d maalmood"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d toddobaad"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d toddobaadyo"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d bil"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d bilood"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d sano"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d sannadood"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Kaltanka Maalinta"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Maalintan"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Toddobaadkan"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Bishan"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Sannadkan"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Maalintii Hore"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Toddobaadkii Hore"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Bishii Hore"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Sannadkii Hore"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Soo dejinta Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "La wadaag isticmaalayaasha…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "La wadaag kooxaha…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Xaalad degdeg ah"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Halis ah"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Feejignaan"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Cilad"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Digniin"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Ogeysiis"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Macluumaad"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Khalad-saar"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Macluumaad ah"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Keydintu way fashilantay.  Ururiyeyaasha Xogta Fog ee ku jira Habka Isku-xidhka looma oggola inay Keydiyaan Xeerarka.  Taa beddelkeeda ka keydi Adeegaha Weyn ee Cacti."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Fadlan isticmaal Barnaamijka Iimaylka ee HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Xogta soo dejinta qoraalka waxay dhaaftay cabbirka ugu badan"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Lama akhrin karo faylka soo dejinta ee la soo geliyay. Hubi faylka iyo xadka cabbirka soo gelinta."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Dooro faylka soo-dejinta ama ku dheji waxa ku jira ka hor intaadan soo dejin."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Shaxda Syslog lama qaybin. Shaxda dhaqameed (aan la qaybin) waa la joojiyay, waxaana loo baahan yahay shax qaybsan rakibaadaha cusub. Xogtaadu way sii socon doontaa in la ururiyo, laakiin waa inaad u guurtaa shaxda syslog qaab-dhismeed qaybsan."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Waxaa la sugayaa socodsiin hawleed oo dhammaystiran."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Habayntu waxay ku dhammaanaysaa muddada dib u dhaca ee la oggol yahay gudaheeda."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Wax orod habayn ah ma dhammaystirmin in ka badan %d ilbiriqsi."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Fariimaha soo galaya waxay ku jiraan xadka la habeeyay."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Cabiraadaha safka soo galaya lama heli karo."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Culayska fariimaha soo galaya oo gaaraya ugu yaraan %s wuxuu dhaafay xadka %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Waqtiga fariinta soo galaysa ee ugu da'da weyn lama heli karo."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Fariimaha aan la habayn waxay ka weyn yihiin %d ilbiriqsi."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Isku-duwidda lagama hawlgelin ururiyahan."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Isku-duwidda waxay ku jirtaa xadka dib-u-dhaca la oggol yahay."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Halbeegyada safka isku-duwidda lama heli karo."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Waqtiga diiwaanka iswaafajinta ee ugu da'da weyn lama heli karo."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Isku-duwidda way fashilantay ama diiwaannada safka ku jira waxay dhaafeen dib-u-dhaca la oggol yahay."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Dayactirka qaybinta lama xannibin."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Dayactirka qaybinta waa la xannibay: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Caafimaadka dhuunta Syslog - ururiyaha %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Dhuunta Syslog way soo kabsatay."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Qaabka qaybinta ee %s waa mid aan sax ahayn ama aan dhammaystirnayn; dayactirka qaybinta waa la joojiyay. Ku hubi xogta hoose ee qaybinta adigoo adeegsanaya SHOW CREATE TABLE oo, haddii loo baahdo, dib u dhis qaybaha; qoristu waxay ku sii socotaa qaybta badbaadada ee dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "farqiga qaybta haray: %d qayb(ood)"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "dib-u-dhigis hayn ma jirto"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "nadiifinta haynta dib ayaa loo dhigay ilaa laga soo celiyo aragtida mustaqbalka"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "diiwaanno cusub ayaa ku ururaya qaybta badbaadada ee dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "xadka soo kabashada ee orodkiiba waa la gaaray"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "abuurista qaybta waa ku guuldarraysatay"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Heerka qaybinta aan la aqoon; dooro Saacadle ama Maalinle."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Haynta Syslog ma aha mid sax ah."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Qaybinta saacad kasta lama isticmaali karo haynta aan xadidnayn, taas oo u baahan doonta tiro qaybo ah oo aan xad lahayn. Dooro muddo hayn ah ama qaybinta maalinlaha ah."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Qaybinta %s oo leh %s maalmood oo hayn ah iyo daaqad abuuris-hore oo %s maalmood ah waxay u baahan tahay %s qaybood miiskiiba, taas oo dhaaftay xadka server-ka xogta ee ah %s qaybood. Yaree haynta, soo gaabi daaqadda abuuris-hore, ama dooro qaybinta Maalinlaha ah."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Maalinle"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Saacad kasta"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Miisasku weli waxay isticmaalaan qaybaha %s ilaa cli/upgrade_partitioning.php uu dib u dhiso."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Heerka qaybinta miisaska Syslog ee jira lama akhriyi karin."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Soo celinta qeybta ee tooska ah waa la dib dhigay: cabbirka dMaxValue lama heli karo; faragelinta hawlwadeenka ayaa loo baahan yahay."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Soo celinta qeybta ee tooska ah waa la dib dhigay: dMaxValue waxaa lagu qiyaasay %s saf iyo %s bayt; xaddiyadu waa 100000 saf iyo 134217728 bayt. Faragelinta hawlwadeenka ayaa loo baahan yahay."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Nooca xeerka aan la aqoon."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Khariidaynta goobta soo galaysa ee la habeeyay ma aha mid sax ah."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Qaybta adeegga ee xeerkan weli kuma jirto shaxda tixraaca."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Nooca iswaafajinta xeerka aan la aqoon."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Xeerku isuma beddelin weydiin."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Weydiinta horudhaca ah lama qiimeyn karin."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Shaandheeyaha horudhaca taariikhiga ah waa la isku dubbaridi waayay."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Weydiinta horudhaca taariikhiga ah waa la qiimeyn waayay."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Muunadda horudhaca ah lama akhriyi karin."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Hordhaca weedha SQL wuxuu hubiyaa oo keliya farriimaha soo gelaya ee safka ku jira. Farriimaha horay loo farsameeyay lama raadiyo. Tijaabintu ma dirto qaylo-dhaan."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Ogolaanshaha waa la diiday."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Codsi aan sax ahayn. Fadlan mar kale isku day."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Xeerku ma laha hadal-muujin u dhiganta oo la tijaabiyo."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Hadalka iswaafajinta aad buu u dheer yahay si loo tijaabiyo."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Aan la aqoon"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Digniinta Xadka Syslog ee Cacti '%s' ee Martigeliyaha '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Digniinta Xadka Syslog ee Cacti '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Magaca Feejignaanta"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Darnaanta"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Xadka"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Tiro"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Xarigga Waafaqidda"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Digniinta Syslog ee Cacti '%s' ee Martigeliyaha '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Digniinta Syslog ee Cacti '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Magaca Martigeliyaha"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Taariikhda"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Heerka"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Fariin"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "DIGNIIN: Digniin Xadka Syslog ah ayaa loo kiciyay Martigeliyaha '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "DIGNIIN: Digniin Xadka Syslog ah ayaa la kiciyay"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Magaca:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Darnaanta:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Xadka:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Tiro:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Xarigga Farriinta:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Magaca martigeliyaha:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Taariikhda:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Heerka:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Farriinta:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Martigeliye:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Dar:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Qaylo-dhaanta Dhacdada - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Tirada:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Martigeliye"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Warbixinta Dhacdada - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Hordhacyada warbixintu waxay baaraan %d fariimood ee ugu dambeeyay ee kaydsan; warbixintu lafteedu waxay daboolaysaa dhammaan muddadeeda. Tijaabintu ma dirto iimayl."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Natiijooyinka la kooxeeyay lama heli karo ama way dhaceen. Cusboonaysii natiijooyinka oo mar kale isku day."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Farriimaha kooxda lama soo rari karin."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Maya"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Haa"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Dhammaan Qoraalka"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Ku habbee Tiirka"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d Xaraf"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "La-taliyaha Casriyeynta Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Ma u cusbooneysiisaa Syslog laga bilaabo %s ilaa %s? Farriimaha iyo xeerarka jira waa la ilaalin doonaa. Isbeddellada qaab-dhismeedka xogtu waxay qaadan karaan waqti."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Noocee ah cusbooneysiin/rakibid ayaad rabtaa inaad isticmaasho"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Marka aad haysato miisas aad u waaweyn, samaynta Truncate way ka dhakhso badnaan doontaa. Haddii aad ka welwelsan tahay xogta kaydka ah, waxaad dooran kartaa midkood Inline, taas oo barafoobin doonta biraawsarkaaga muddada cusboonaysiintan, ama gadaal (background), taas oo abuuri doonta hab gadaal ah si ay u keento xogtaada syslog ee duugga ah miiska kaydka una beddesho qaabka cusub ee syslog. Mar labaad habkani wuxuu qaadan karaa dhowr saacadood. Truncate wuxuu tuuraa oo keliya syslog-ga la keydiyay iyo farriimaha la saaray; xeerarka digniinta, saarista iyo warbixinta had iyo jeer waa la hayaa."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Faaruqi Jadwalka Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Casriyayn Toos ah"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Cusboonaysiinta Gadaasha"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Mishiinka Kaydinta ee Kaydka Xogta"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Mashiinka kaydinta ee miisaska falanqaynta.  Kaliya InnoDB iyo, MariaDB dhexdeeda, mashiinnada kaydinta Aria ayaa la taageeraa.  Doorasho kasta oo Xog-uruuriye Fog ah waxay u baahan tahay InnoDB; isku-dhafyada aan is-waafaqsanayn lama gudbin karo."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Kaydinta InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Kaydinta Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Saxnaanta Calaamad-waqtiga"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Saxnaanta millisekondhigu waxay kaydisaa waqti-calaamadaha syslog ee ka yar ilbiriqsiga gudaha tiirka TIMESTAMP(3), waxayna diyaar u tahay oo keliya MariaDB. Saxnaanta ilbiriqsigu waxay isticmaashaa tiirka TIMESTAMP ee caadiga ah. Nidaam shaqaynaya dushiisa, isticmaal cli/upgrade_partitioning.php --convert-ms inta lagu jiro waqtiga dayactirka si aad u beddesho farriimaha jira adigoon tuurin."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Millisekondhi - TIMESTAMP(3) (MariaDB keliya)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Ilbiriqsi - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Habaynta Farriimaha Fog"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Hawlgeli Habaynta Farriimaha Ururiyaha Xogta Fog"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Haddii Ururiyayaasha Xogta Fog ay leeyihiin xog-kaydiyayaal Syslog oo u gaar ah oo ay si madax-bannaan u habeeyaan farriimahooda, calaamadee sanduuqan. Adigoo calaamadaynaya Sanduuqan, Ururiyayaasha Xogta Fog waxay u baahan doonaan inay ilaashadaan faylkooda u gaarka ah ee 'config_local.php' si ay ugu sheegaan Syslog inuu adeegsado xog-kaydiye madax-bannaan oo loogu talagalay muujinta iyo habaynta farriimaha. Fadlan u isticmaal faylka Qaab-dhismeedka 'config_local.php.dist' ujeeddadan. DIGNIIN: Shaxda Syslog si toos ah ayaa loo abuuri doonaa isla marka ikhtiyaarkan La hawlgeliyo."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Isku-dubbaridka Xeerarka Xog-uruuriyaha Fog"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Haddii Ururiyayaasha Xogta Fog ay leeyihiin xog-kaydiyayaal Syslog oo u gaar ah oo ay si madax-bannaan u habeeyaan farriimahooda, calaamadee sanduuqan haddii aad rabto in xeerarka Qaylo-dhaanta, Ka-saaridda iyo Warbixinta ee xog-kaydiyaha weyn ee Cacti loo diro Nidaamka Fog ee Cacti."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Ku kaydi Diiwaannada Xog-uruuriyaha Fog"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Ku hay fariimaha la habeeyay shaxda syslog ee uruuriyaha fog ka dib marka loo geeyo Uruuriyaha Guud. Marka la joojiyo, diiwaannada waxaa lagu hayaa gudaha oo keliya inta Uruuriyaha Guud aan la heli karin waana la saaraa ka dib marka la xaqiijiyo gaarsiinta soo kabashada."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Siyaasadda Kaydinta"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Dooro inta maalmood ee qiimaha Syslog aad rabto in aad ku hayso xog-kaydka."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Heerka Qaybinta"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Cabbirka qayb kasta oo ka mid ah miisaska syslog iyo syslog_removed.  Maalinle ayaa lagula talinayaa.  Saacadle wuxuu u baahan yahay hayn xaddidan, haynta iyo heerka qaybinta oo wada jirana waa inay ku habboonaadaan xadka qaybinta ee server-ka kaydka xogta.  Si aad hadhow u beddesho heerka, ka beddel Dejinta oo socodsii cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Cusboonaysii"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Rakib"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "La-taliyaha %s ee Syslog"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "DIGNIIN: Cusboonaysiinta Syslog waxay qaadataa waqti badan!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Cusboonaysiinta shaxda 'main' ee Syslog waxay noqon kartaa hanaan qaata waqti aad u dheer. Sidaa darteed, waxaa lagugula talinayaa inaad yarayso cabbirka shaxdaada Syslog ka hor intaadan cusboonaysiin, ama aad doorato ikhtiyaarka gadaal ka shaqaynta (background)."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Haddii aad doorato ikhtiyaarka gadaal (background), shaxdaada hore ee Syslog magaceeda waa la beddeli doonaa, waxaana la abuuri doonaa shax cusub oo Syslog ah. Kadib, habka cusboonaysiinta ayaa laga bilaabi doonaa gadaal. Mar kale, habkan gadaal ka socda wuxuu qaadan karaa waqti badan inuu dhammaado. Si kastaba ha ahaatee, xogtaada waa la ilaalin doonaa."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Iyadoon loo eegin doorashadaada, dhammaan xeerarka ka-saarista iyo digniinta ee jira waa la ilaalin doonaa inta lagu jiro habka cusbooneysiinta."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Riix <b>'Cusboonaysii'</b> si aad u sii waddo casriyeynta, ama <b>'Jooji'</b> si aad ugu laabato liiska Kordhinnada."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Waxaad sidoo kale dejin kartaa matoorka kaydinta kaydka xogta ee miisaska falanqaynta syslog iyo syslog_remove. Kaliya matoorka kaydinta InnoDB iyo, MariaDB, matoorka kaydinta Aria ayaa la taageeraa. Haddii aad isticmaalayso MariaDB, waxaan kugula talinaynaa Matoorka Kaydinta Aria marka aan la hawlgelin dookhyada Ururiyaha Xogta Fog; dookhyada ururiyuhu waxay u baahan yihiin InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Waxaad leedahay dhowr ikhtiyaar oo aad kala dooran karto marka aad rakibayso Syslog.  Midda koowaad waa Qaab-dhismeedka Xog-kaydka.  Shaxaha la qaybiyay waa qaab-dhismeedka keliya ee la taageero maadaama ay ka hortagaan in cabbirka shaxuhu uu xad-dhaaf noqdo taas oo gaabinaysa weydiimaha.  Shaxaha dhaqameed ee aan la qaybin waa kuwo laga guuray oo aan hadda loo bixin rakibaadaha cusub."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Waxaad sidoo kale dooran kartaa saxnaanta waqti-calaamadeynta. Saxnaanta milliseken (TIMESTAMP(3)) waxay ilaalisaa kala horraynta ka yar ilbiriqsiga ee farriimaha soo gelaya waxaana laga heli karaa oo keliya MariaDB; rakibaadaha MySQL waxay isticmaalaan saxnaanta ilbiriqsiga. Tan lagama beddeli karo isla goobta dambe iyadoo aan la burburin farriimaha la keydiyay."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Kaydinta Aria lama heli karo iyadoo ikhtiyaar kasta oo Ururiyaha Xogta Fog uu la hawlgeliyay yahay. InnoDB ayaa la doortay."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Waxaad sidoo kale dooran kartaa muddada haynta. Fadlan maskaxda ku hay in haddii aad leedahay dhowr martigeliye oo ku diiwaangelinaya syslog, miiskani wuxuu noqon karaa mid aad u weyn."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Dejinta %s ee Syslog"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Hab noocee ah oo ka-saaris ah ayaad rabtaa inaad isticmaasho?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Marka aad ka saarayso syslog, waxaad tirtiri kartaa wax walba, ama qaybaha keliya, haddii ay dhacdo inaad qorshaynayso inaad dib u rakibto mustaqbalka."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Ka saar Wax Walba (Diiwaannada, Shaxaha, Dejinta)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Xogta Syslog Kaliya"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Doorbidyada Ka-saarista Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Ka saar"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Jooji"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Ka-saarista Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Wax ka beddel)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Hawlaha)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Digniinaha Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Warbixinnada Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Qaab-dhismeedyada Raadinta ee La Keydiyay"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Looxyada Xogta"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Talooyinka Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Soo deji)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Muuji Syslog-ga ku jira Qiyaasta"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "aqoonsigu waa madhan yahay"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "aqoonsigu wuu ka dheer yahay 190 xaraf"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "aqoonsigu wuxuu ka kooban yahay meelo bannaan ama jabin sadarro"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "ma laha sharaxaad ama tallaabo lagu taliyay midna"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "ma aha shay JSON ah"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Talo-bixinnada lama soo rari karin."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Talo-bixin waa la heli karaa - guji farriinta si aad u hesho faahfaahin"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Sharaxaad"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Tallaabada La Soo Jeediyay"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Tixraac"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Isniin"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Talaado"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Arbaco"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Jimco"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Sabti"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Axad"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Khamiis"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Isniinta ilaa Jimcaha"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Sabti iyo Axad"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Maalin kasta"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "La joojiyay"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Midna"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Dejinta Guud"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog La hawlgeliyay"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Haddii sanduuqan la calaamadeeyo, diiwaannada waxaa laga wareejin doonaa shaxda Syslog-ga Soo Galaya loona wareejin doonaa shaxda weyn ee Syslog, Qaylo-dhaannada iyo Warbixinnadana waa La hawlgeliyay. Fadlan maskaxda ku hay in haddii nidaamku yahay mid La joojiyay, qoraallada diiwaanka (log) ay weli ku ururi doonaan shaxda Syslog-ga Soo Galaya maadaama tan ay qeexayso habka rsyslog ama syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "U gudbi digniinnada Maamulaha Digniinnada"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "U oggolow xeerarka loo dejiyay Maareeyaha Alaarmiga inay gudbiyaan alaarmiyada. Iimaylka Syslog wuxuu ahaanayaa kaydka dambe; ficillada amarku waxay u shaqeeyaan oo keliya xeerarka Digniinta Syslog."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Ka saar Magacyada Domain-ka"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Liis goobaha (domains) ah oo koomo lagu kala saaray oo aad rabto inaad ka saarto magaca martigeliyaha syslog, Tusaalooyinku waxay noqon karaan 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Muddada Cusboonaysiinta"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Kani waa wakhtiga ilbiriqsiyada ah ka hor inta uusan boggu dib isu cusboonaysiin."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Ka bood tirinta guud ee safafka"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Haddii sanduuqan la calaamadeeyo, qaybaha Diiwaannada Nidaamka iyo Diiwaannada Qaylo-dhaanta ma tiriyaan diiwaan kasta oo u dhigma, taas oo aad qaali ugu noqon karta rakibaadaha waaweyn. Boggu wuxuu muujinayaa xiriiriyayaasha Hore iyo Xiga halkii uu ka muujin lahaa wadarta iyo liiska bogagga, waxaana la bixiyaa Xiga inta ay diiwaanno kale harsan yihiin."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Diiwaannada Warbixinta ee Ugu Badan"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Digniinnada ku saleysan Xadka, waa maxay tirada ugu badan ee aad rabto in lagu muujiyo warbixinta.  Tani waxaa loo adeegsadaa in lagu xaddido cabbirka diiwaanka html iyo Iimayl-ka."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d Diiwaanno"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Hababka Ugu Badan ee Ka-shaqaynta Syslog"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Marka laga dhigo wax ka badan 1, habaynta farriimaha soo gelaya waxaa loo qaybiyaa habab shaqaale oo is barbar socda. Shaqaale kastaa wuxuu maamulaa tiro kala go'an oo farriimaha soo gelaya ah, taasoo dedejinaysa xallinta magaca martigeliyaha iyo wareejinta farriimaha xilliyada culayska culus. Dejinta 1 waxay ku habaysaa dhammaan farriimaha hal hab. Hababka shaqaalaha laguma taageero Windows ama marka kordhinta PHP pcntl iyo POSIX aan la heli karin, markaas oo habayntu dib ugu noqoto hal hab."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d Hawl Shaqaale"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d Hawlo Shaqaale"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Amarka Furitaanka Tigidhada"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Amarkan waxaa loo fulin doonaa furitaanka Tigidhada Xafiiska Caawinta. Amarka waxaa looga baahan doonaa inuu falanqeeyo halbeegyo gelin oo badan sida soo socota: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Liiska martigeliyeyaashu wuxuu noqon doonaa liis hakad lagu kala saaray oo martigeliyeyaal ah oo digniintu saamaysay."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Ikhtiyaarrada Helidda Martigeliyaha"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Hawlgeli Xallinta Magaca Martigeliyaha"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Haddii sanduuqan la calaamadeeyo, dhammaan magacyada martigeliyayaasha waxaa marka hore lagu xallinayaa raadinta DNS (Haddii la hawlgeliyay), iyadoo la adeegsanayo diiwaannada A iyo AAAA. Cinwaannada IPv4 iyo IPv6 uma baahna raadin, cinwaannada IPv6-na waxaa lagu kaydiyaa qaab yar oo la isku soo koobay. Haddii raadinta DNS ay fashilanto, nidaamku wuxuu isku dayi doonaa inuu magaca martigeliyaha ka xalliyo shaxda Martigeliye ee Cacti oo uu ku beddelo sharraxaadda Martigeliye ee Cacti. Haddii labada raadin ee DNS iyo Cacti ay fashilmaan, diiwaannada waxaa la siiyaa horgalaha 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Ka bood xallinta DNS ee martigeliyeyaasha soo gelaya"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Haddii sanduuqan la calaamadeeyo, nidaamku isku dayi maayo inuu martigeliyayaasha ku xalliyo raadinta DNS. Tani waxay faa'iido u leedahay deegaannada aanay suurtogal ka ahayn ama aan laga rabin xallinta DNS."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Dejinta Ogeysiiska HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Hawlgeli Iimaylka ku salaysan HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Haddii sanduuqan la calaamadeeyo, dhammaan Iimayllada waxaa lagu diri doonaa qaab HTML ah. Haddii kale, Iimayllada waxaa lagu diri doonaa qoraal cad."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Faylka Qaabaynta ee la Adeegsanayo"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Dooro faylka duubaha html-ka gaarka ah iyo CSS ee la adeegsanayo. Faylkani wuxuu ka kooban yahay html iyo CSS si uu u duubo warbixintaada. Haddii uu ka kooban yahay wax ka badan CSS oo keliya, waxaad u baahan tahay inaad faylka dhexdiisa geliso summad gaar ah oo <REPORT> ah. Summaddan qaabaynta waxaa lagu beddeli doonaa waxa ku jira warbixinta. Faylashani waxay ku yaallaan galka 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Haynta Xogta iyo Qaybinta"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Haynta Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Tani waa tirada maalmaha lagu haynayo dhacdooyinka."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Cabbirka qayb kasta oo ka mid ah miisaska syslog iyo syslog_removed. Isbeddelka halkan ayaa lagu keydiyaa laakiin wuxuu dhaqan galaa oo keliya marka cli/upgrade_partitioning.php uu dib u dhiso labada miis; ilaa markaas, dayactirka qaybintu wuxuu ilaaliyaa cabbirka jira. Qaybinta saacadle ah waxay u baahan tahay hayn xaddidan. Haynta, daaqadda horay-u-abuurista iyo heerka qaybinta oo wada jira waa inay ku habboonaadaan xadka qaybinta ee server-ka kaydka xogta, haddii kale dejinta lama keydin doono."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Daaqadda Hore-u-abuurista Qaybinta"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Tani waa tirada maalmaha qaybaha mustaqbalka ee loo haynayo miisaska Syslog ee la qaybiyay, si qaybaha cusub mar walba looga kala gooyo qaybta dMaxValue ee madhan. Qaybinta saacadle ah waxay mar walba haysaa ugu yaraan 2 maalmood."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d Maalin"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d Maalmood"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Xadka Soo-kabashada Qaybinta"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Marka qaybo ay maqan yihiin (tusaale ahaan ka dib hakad dayactir), ugu badnaan tiradan qaybaha maqan miiskiiba waxaa la abuuraa orod kasta oo Xog-uruuriye. Farqiga haray wuxuu ku bogsadaa orodyada xiga; jarista haynta waxay ahaanaysaa mid dib loo dhigo ilaa jihooyinka qaybaha mustaqbalka si buuxda loo soo celiyo. Waxay khusaysaa oo keliya miisaska Syslog ee la qaybiyay."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d Qayb hawlgalkiiba"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d Qaybood hawlgalkiiba"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Xadka Gabowga Xogta ee Ururiyaha"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Qaylo-dhaanta caafimaadka dhuunta xogta waxay ka digtaa marka farriimaha aan la farsamaynin, dhammaystirka farsamaynta, ama isku-dubaridka safka ku jira ay ka bataan daahitaankan. Daahitaanka dhabta ah waa ugu yaraan saddex xilli oo Xog-uruuriye ah iyo 300 ilbiriqsi. U deji 0 si aad u isticmaasho 300 ilbiriqsi."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "U-dhignaanta caadiga ah (300 ilbiriqsi)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d ilbiriqsi"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Xadka Ururinta Dib-u-dhacday ee Ururiyaha"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Bogga Xaaladda Syslog wuxuu muujiyaa digniin marka wax ka badan tiradan fariimo ah ay iyagoon la farsamayn ku jiraan shaxda Soo-galootiga Syslog. U deji 0 si aad u isticmaasho qiimaha caadiga ah ee 10000 fariimo."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "U-dhignaanta caadiga ah (10000 farriimood)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d Farriimood"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Qaylo-dhaanta Caafimaadka Dhuunta Xogta"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Liiska Ogeysiiska Caafimaadka Dhuunta Xogta"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Dooro liiska ogeysiiska Thold ee jira si loogu helo digniinaha caafimaadka dhuunta xogta. Qaatayaasha liiska La hawlgeliyay waxaa lagu daraa cinwaannada iimaylka ee hoose, iyadoo la ilaalinayo qaatayaasha BCC. Liisasku waxay u baahan yihiin shaxda liiska-ogeysiiska ee Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Qaatayaasha Iimaylka Caafimaadka Dhuunta Xogta"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Qaataha iimaylka ee kooma lagu kala soocay ee fashilka iyo soo kabashada dhuunta xogta. Bannaanka u daa oo ha dooran wax liis ogeysiis ah si aad u joojiso iimaylka; caafimaadku wuxuu ku sii muuqanayaa tabka Xaaladda isbeddellada xaaladdana waa la diiwaangelinayaa. Hubintu waxay u baahan tahay in xog-uruuriyaha Cacti uu shaqeeyo."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Muddada Xusuusinta Caafimaadka Dhuunta Xogta"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Ku celi ogeysiisyada dhibaatooyinka dhuumaha xogta ee socda muddadan ka dib. Isku dayga iimaylka ee fashilmay dib looma dayo wax ka badan hal mar shantii daqiiqoba."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Haynta Digniinaha Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Tani waa tirada maalmaha lagu haynayo diiwaannada qaylo-dhaanta."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Xakamaynta Feejignaanta iyo Dayactirka"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Maalmaha Daaqadda Dayactirka"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Maalmaha dhammaan ogeysiisyada digniinta la aamusiyo inta lagu jiro muddada dayactirka ee la habeeyay."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Bilowga Daaqadda Dayactirka"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Waqtiga bilowga maxalliga ah ee daaqadda dayactirka guud."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Dhammaadka Daaqadda Dayactirka"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Waqtiga dhammaadka maxalliga ah ee daaqadda dayactirka guud. Waqti dhammaad oo ka horreeya wuxuu u gudbaa maalinta xigta."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Dayactirka Hal-mar ah wuxuu Bilaabanayaa"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Taariikhda iyo waqtiga maxalliga ah ee ikhtiyaariga ah si loo bilaabo daaqadda dayactirka guud ee hal-mar ah."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Dayactirka Hal-mar ah wuxuu Dhammaanayaa"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Taariikhda iyo waqtiga maxalliga ah ee ikhtiyaariga ah si loo dhammeeyo daaqadda dayactirka guud ee hal-mar ah. Qaabka: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Muddada Nasashada Digniinta ee Caadiga ah"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Jooji ogeysiis kasta oo soo noqnoqda oo isku xeer iyo baaxad warbixin ah intan oo daqiiqo. Qiimayaasha xeer kasta ayaa ka sarreeya dejintan. U deji 0 si aad u joojiso."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Xakamaynta Nuqullada ee Caadiga ah"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Jooji ogeysiis leh fariin isku mid ah oo la waafajiyay intan oo daqiiqo. Qiimayaasha xeer kasta ayaa ka sarreeya dejintan. U deji 0 si aad u joojiso."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Soo-celinta Syslog Fog"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Diiwaannada Soo-kabashada ee Ugu Badan Fulintii Kasta"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Tirada ugu badan ee dhacdooyinka Syslog ee fog ee la hayo ee loo diro Ururiyaha Guud hal fulin oo shaqaalaha soo-kabashada ah. Hawlgal kasta oo keydka xogta dhexe ah wuxuu ku kooban yahay 100 diiwaan. Si tartiib tartiib ah u kordhi adigoo eegaya culayska Ururiyaha Guud iyo sugitaanka xiritaanka."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Hakadka Soo-kabashada ee U Dhexeeya Kooxaha"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Haki inta u dhaxaysa mid kasta oo ka mid ah 100-diiwaan ee wax-is-dhaafsiga gaarsiinta Ururiyaha Weyn. Hakad dheer wuxuu yareeyaa cadaadiska Ururiyaha Weyn; hakad gaaban wuxuu dedejiyaa dhammaystirka hawlaha ururay."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Hakin la'aan"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d miliseken"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d ilbiriqsi"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Xog-ururinta Syslog lama heli karo, sidaas darteed dejinta qaybinta laguma hubin karo xadka qaybinteeda iyo shaxdeeda."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Dejinta Syslog lama keydin."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Sugaya: shaxda farriinta ayaa weli isticmaasha qaybaha %s. Ku socodsii cli/upgrade_partitioning.php si aad u dabaqdo heerka la doortay."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Tirtir"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Hawl-jooji"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Hawl-geli"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Dhoofi"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Aan xad lahayn"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d Toddobaad"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d Toddobaad"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d Bil"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d Bilood"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d Sano"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Marna"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d Daqiiqo"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d Daqiiqo"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Ku bilaabma"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Waxaa ku jira"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Ku dhammaada"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Magaca martigeliyuhu waa"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Barnaamijku waa"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Xaruntu waa"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Dhise Shaandheeye"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Weedha SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Toddobaadle"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Soo-dejinta/Dhoofinta"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Xeerarka Feejignaanta"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Dejinta Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Xeerarka Digniinta Qalabka"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Xeerarka Ka-saarista"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Xeerarka Warbixinta"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Talo-bixinno"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Lama xiriiri karo kaydka xogta Syslog. Wax diiwaan ah oo Qalab ah lama saarin."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Waxaa laga saaray %s diiwaanada Qalabka kaydka xogta Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Qalabka Adeegga Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Baabi'i Aaladaha Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Ma hubtaa inaad doonayso inaad nadiifiso aaladaha Syslog ee duugoobay?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Xaqiiji Nadiifinta"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Sii wad"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Doorashadan liisku waxay bixisaa hab looga saaro Aaladaha aan hadda u soo dirin warbixin server-ka Syslog ee Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Isha baanalka guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Nooca baanalka guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Nooca jaantuska guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Goobta kala-soocidda guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Muddo-xilliyeedka guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Muddada waqtiga guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Nooca diiwaanka guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Tirada ugu sarraysa ee guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Ballaca baanalka guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Dhererka baanalka guddiga xogta oo aan sax ahayn."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Raadin macquul ah oo aan sax ahayn: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Kale"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Guddiga dashboard-ka ee saxda ah ayaa loo baahan yahay."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Qaybta guddiga xogta lama helin."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Magac ka kooban ilaa 128 xaraf ayaa loo baahan yahay."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Dashboard sax ah ayaa loo baahan yahay."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Guddiga Xogta lama helin."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Suurtogal ma aha in la keydiyo isbeddellada muraayadda xogta (dashboard)."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Waxaad wadaagi kartaa oo keliya sabuuradahaaga kuu gaarka ah."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "nuqul"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Guddiga Xogta lama koobiyeyn karin."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Booska guddiga ee saxda ah ayaa loo baahan yahay."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Cinwaan ka kooban ilaa 128 xaraf ayaa loo baahan yahay."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Jiid si aad u habayso kaarka"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Cusbooneysii Guddiga"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Wadarta fariimaha"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Maktabadda jaantuska lagama heli karo rakibiddan Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Wax ka beddel Gudiga"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Guddi Cusub"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Keydi"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Dhaqan geli"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Ma tirtirtaa qaybtan sabuuradda xogta?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Ma tirtirtaa sabuuraddan xogta iyo dhammaan qaybaheeda?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Magac u bixi sabuuraddaada"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Ka dhig Gaar"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "La wadaag dhammaan"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "U keydi sidii nuqulkayga"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Sabuuradaha Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Guddiga Xogta"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Baaxadda Waqtiga"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Saacaddii Ugu Dambeysay"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "%d Saacadood ee Ugu Dambeeyay"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Maalintii Ugu Dambeysay"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Toddobaadkii Ugu Dambeeyay"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "%d Toddobaad ee Ugu Dambeeyay"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Bishii Ugu Dambeysay"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "%d Bilood ee Ugu Dambeeyay"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Cusboonaysii"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Sabuuradaha Xogtayda"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Looxyada Xogta Guud"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Lala Wadaagay Aniga"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Cusub"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Dib u magacow"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Ku dar Guddi"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Abuur sabuuraddaada ugu horreysa si aad u muujiso isbeddellada syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Ku dar guddi si aad u bilowdo jaantus-samaynta. Guddiyadu waxay isticmaali karaan raadintaada la keydiyay."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Qaybta Guddiga Xogta"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Cinwaanka"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Isha Diiwaanka"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Diiwaannada Nidaamka"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Diiwaannada Feejignaanta"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Nooca Guddiga"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Taxanaha Waqtiga"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Qaybinta"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Jaantus"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Xariiq"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Aag"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Tiir"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Muddo"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Otomaatig"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Daqiiqad"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 Daqiiqo"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Saacad"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Maalin"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Goob"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Barnaamijka"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Xarunta"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Muhiimadda"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Tirada Ugu Sarreysa"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Nooca Diiwaanka"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Dhammaan Diiwaannada"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Diiwaannada Ugu Muhiimsan"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Diiwaannada la Saaray"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Ka bilow Raadinta la Keydiyay"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Geli qoraalka fariinta…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Ka saar shuruudda"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Kooxda waafaqidda"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Ka reeb kooxda"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Magaca Guddiga Xogta"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Magac"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Xadadka La jebiyay"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "La jebiyay Tan iyo"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Uruuriye"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Qalab"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Fariintii Ugu Dambaysay ee U Dhiganta"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Waxay Ka Soo Kabataa Ka Dib"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Xeer"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Dhammaan aaladaha iswaafaqaya"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Ma jiraan xadka hadda la jebiyay."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Soo-kabashadu waxay u baahan tahay inaanay jirin wax farriimo ah oo iswaafaqaya ilaa waqtiga muuqda. Iswaafaq kasta wuxuu dib u bilaabaa muddada degganaanshaha."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Kii hore"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Xiga"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Fadlan magaca ka beddel faylashaada config.php.dist ama config_local.php.dist ee ku jira galka syslog, oo beddel dejinta xog-kaydkaaga ka hor intaadan rakibin."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Waqti-calaamadaha millisekondhiga (TIMESTAMP(3)) waxaa lagu taageeraa oo keliya MariaDB. Adeeggani waa MySQL, sidaas darteed ku rakib waqti-calaamadaha saxnaanta ilbiriqsiga."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Kaydinta Aria lama isticmaali karo marka ikhtiyaar kasta oo Ururiyaha Xogta Fog uu la hawlgeliyay yahay. Dooro InnoDB ama jooji dhammaan ikhtiyaarrada Ururiyaha Xogta Fog."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "10-ka Martigeliye ee Ugu Sarreeya"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Farriimaha Syslog - Saacaddii La Soo Dhaafay"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Farriimaha sida Darnaanta"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "10-ka Barnaamij ee Ugu Sarreeya"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Dhaqdhaqaaqa Feejignaanta"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Daawadaha Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Xaaladda Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Digniinta la Doortay"
+
+#: syslog.php
+msgid "seconds"
+msgstr "ilbiriqsiyo"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Aan la Heli Karin"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "farriimaha aan la habaynin waxay jiraan %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "fariimaha dib u dhacay ee soo galaya oo ah %s"
+
+#: syslog.php
+msgid "day"
+msgstr "maalin"
+
+#: syslog.php
+msgid "days"
+msgstr "maalmood"
+
+#: syslog.php
+msgid "hour"
+msgstr "saacad"
+
+#: syslog.php
+msgid "hours"
+msgstr "saacadood"
+
+#: syslog.php
+msgid "minute"
+msgstr "daqiiqo"
+
+#: syslog.php
+msgid "minutes"
+msgstr "daqiiqado"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Safafka ku jira syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Cabbirka shaxda Syslog (xogta + tusmooyinka)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Haynta Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Haynta feejignaanta"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Weli lama diiwaangelin wax hawl soo-kabasho ah."
+
+#: syslog.php
+msgid "created"
+msgstr "la abuuray"
+
+#: syslog.php
+msgid "remaining"
+msgstr "haraaga"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "haynta dib ayaa loo dhigay"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Hawlgalkii farsamaynta ee u dambeeyay"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Isku-dubbaridka qaybsan"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Rasiidhada xog-uruuriyaha fog"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Kaydinta iyo haynta"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Caafimaadka qaybinta"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Hawlaha dayactirka qaybinta"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Dhaqdhaqaaqa dayactirka qaybta ee ugu dambeeyay"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Caafimaadka dhuunta xogta"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Shaqaalaha isbarbar-socda"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Hababka shaqaalaha"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Marxaladaha habaynta"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Dhaqdhaqaaqa xeerka"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Diiwaannada la farsameeyay"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Waqtiga socodsiinta xog-uruurinta"
+
+#: syslog.php
+msgid "Started"
+msgstr "La bilaabay"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Dhammaaday"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Waqtiga socodsiinta ugu yar"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Celceliska waqtiga shaqada"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Waqtiga shaqo ee ugu badan"
+
+#: syslog.php
+msgid "State"
+msgstr "Gobolka"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Diiwaannada Soo-kabashada ee Safka ku jira"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Kan ugu da'da weyn ee sugaya"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Is-waafajintii u dambeysay ee guuleysatay"
+
+#: syslog.php
+msgid "Active"
+msgstr "Firfircoon"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Aan firfircoonayn"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Shaqaalaha soo-kabashada"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Ciladdii is-waafajinta ee u dambeysay"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Tirada Dufcaddii Ugu Dambaysay"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Diiwaankii Ugu Dambeeyay ee La Helay"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Xog-uruuriyaha Fog"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Xog-uruuriye fog oo aan la aqoon"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Weli lama helin wax diiwaan ah oo ka yimid uruuriyaha fog."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Dayactirka qaybinta waa la xannibay"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Dayactirka qaybinta waa la joojiyay; qoristu waxay ku sii socotaa qaybta badbaadada ee dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Muddada taariikhda"
+
+#: syslog.php
+msgid "Table"
+msgstr "Jadwal"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "safafka dMaxValue (qiyaas ahaan)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "cabbirka dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Heerka qaybinta"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "%s waxaa laga doortay Dejinta waxayna dhaqan galaysaa ka dib marka cli/upgrade_partitioning.php dib u dhiso miisaska."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Isku daygii u dambeeyay"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Dayactirkii u dambeeyay ee guuleystay"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Dhammaaday"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Dib loo dhigay"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Natiijadii u dambeysay"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Horumarka soo-kabashada"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Faahfaahin"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Natiijo"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Soo kabasho"
+
+#: syslog.php
+msgid "When"
+msgstr "Goorma"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Weli lama diiwaangelin wax hawl dayactir qayb ah. Hawshu waxay soo muuqan doontaa ka dib orodka xiga ee xog-uruuriyaha."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d la abuuray, %d haray, %d la jaray"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Wax tallaabo ah looma baahna."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Culayska soo galaya ee ururay"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Habaynaya"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Dayactirka qaybinta"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Isku-duwidda"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Fiiro gaar ah ayaa loo baahan yahay"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Caafimaad qaba"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Habaynta waa la joojiyay"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Sugaya habayn"
+
+#: syslog.php
+msgid "Health"
+msgstr "Caafimaadka"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Diyaar"
+
+#: syslog.php
+msgid "Sent"
+msgstr "La diray"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Fashilmay; isku dayga dib u celinta ayaa sugaya"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Sugaya; hubinta xigta ee Xog-uruuriyaha"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Hubintii caafimaadka ee u dambeysay"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Ogeysiisyada iimaylka"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Weli lama hubin"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Ogeysiiskii u dambeeyay ee la diray"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Diiwaankii u dambeeyay ee la helay"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Farriinta ugu da'da weyn ee aan weli la habayn"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Diiwaannada lagu farsameeyay orodkii ugu dambeeyay"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Hababka shaqaalaha ee shaqaynaya"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Hababka shaqaalaha ee la qaabeeyay"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Martigeliyayaasha la xalliyay"
+
+#: syslog.php
+msgid "Process"
+msgstr "Habka"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Diiwaannada la maamulay"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Wakhtiga shaqada"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Weli lama diiwaangelin tirakoobka geeddi-socod kasta.  Tirakoobka shaqaaluhu wuxuu soo muuqan doonaa ka dib orodka barbar-socodka ee ugu horreeya."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Muddada"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Weji"
+
+#: syslog.php
+msgid "Records"
+msgstr "Diiwaanno"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Cusboonaysiinta tixraaca"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Xeerarka ka-saarista"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Qiimaynta feejignaanta"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Wareejinta soo galaysa"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Habaynta warbixinta"
+
+#: syslog.php
+msgid "slowest"
+msgstr "ugu gaabiska badan"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Weli lama diiwaangelin waqtiyada marxaladaha.  Waqtiyada marxaladuhu waxay soo muuqan doonaan ka dib orodka xiga ee xog-uruuriyaha."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Socodkii u dambeeyay"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Xeerarka la habeeyay"
+
+#: syslog.php
+msgid "Total"
+msgstr "Wadarta"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Xeerarka feejignaanta"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Tirtir xeerarka"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "La kiciyay hawlgalkii u dambeeyay"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Muuji wax badan"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Muuji wax yar"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Ku fur daaqad wada-hadal"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Ka saar bogga"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Muddo-xilliyeedka dib-u-cusboonaysiinta oo aan sax ahayn."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Kaar aan la aqoon."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Ku dar kaar"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Ku dar kaarka xaaladda…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Muuqaalka Digniinta Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Raadin la keydiyay oo sax ah ayaa loo baahan yahay."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Raadinta la keydiyay lama helin."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Waxaad wadaagi kartaa oo keliya raadintaada la keydiyay."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Farriimaha Aan La Farsamayn: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Geli erey la raadiyo"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Dooro Qalab(yada)"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Aaladaha La Xulay"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Dhammaan Aaladaha La Doortay"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Shaandheeyaha Farriinta Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Raadi fariimaha"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Laab shaandheeyayaasha"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Wax ka beddel shaandheeyayaasha"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Raadinta La Keydiyay"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Raadintayda"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Raadinta Guud"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Caadi)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Maamul"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Maamul raadinta la keydiyay"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Keydi raadinta"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Wax ka beddel"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "U keydi dhammaan"
+
+#: syslog.php
+msgid "contains"
+msgstr "waxaa ku jira"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "kuma jiro"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Safafka"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Muuji Safafka"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Asal ah"
+
+#: syslog.php
+msgid "View options"
+msgstr "Eeg ikhtiyaarrada"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Jarid"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Jaridda Farriinta"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Maaraynta Ka-saarista"
+
+#: syslog.php
+msgid "Display"
+msgstr "Muuqaal"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Kooxee Farriimaha Nuqulka ah"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Fariimo Keli-keli ah"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Farriimaha La Kooxeeyay"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Dooro meel, hawlwadeen, iyo qiime. AND ayaa ka horreysa OR; NOT waxay ka saartaa xaalad. LIKE waxay adeegsataa % tiro kasta oo xarfo ah iyo _ hal xaraf. Taariikhaha waxaa loo isticmaalaa YYYY-MM-DD HH:MM:SS. Aqoonsiyadu waxay adeegsadaan tirooyin dhan oo aan taban ahayn. Sida caadiga ah, maalinta u dambeysa ee diiwaannada ayaa la muujiyaa haddii aan la hagaajin xadka taariikhda."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Caawimada raadinta"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Raadinta La Keydiyay ee Cusub"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Wax ka beddel Raadinta La Keydiyay"
+
+#: syslog.php
+msgid "Save As"
+msgstr "U kaydi Sida"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Ma tirtirtaa raadinta la keydiyay ee la xushay?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Raadi"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Nadiifi"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Ku celi qiimayaasha shaandheeyaha kuwii caadiga ahaa ee isticmaaluhu dejiyay"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Cusbooneysii Natiijooyinka"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "U Dhoofi Diiwaannada CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Keydi Dejinta Caadiga ah"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Keydi dejinta caadiga ah ee muuqaalka"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "U Keydi Raadinta Sida"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Dabbaq raadintan marka aad furto boggan oo aanay weli jirin raadin firfircoon"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Jebin"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Xadka waa la dhaafay"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Farriimaha"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Farriin madhan"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Beddel farriimaha kooxda"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Waa la soo dejinayaa fariimaha kooxda..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Ma jiraan farriimo u dhigma."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Ma Jiraan Farriimaha Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Sadarada Diiwaanka Feejignaanta"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Feejignaanta waa la saaray"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Ma Jiraan Fariimaha Diiwaanka Digniinta"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Xir faahfaahinta fariinta"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Faahfaahinta farriinta"
+
+#: syslog.php
+msgid "General"
+msgstr "Guud"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Xeerka Feejignaanta"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Taxane"
+
+#: syslog.php
+msgid "Copied"
+msgstr "La koobiyeeyay"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Koobiyeey xidhiidhka"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Koobiyeey fariinta"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Koobiyeynta lama heli karo. Dooro oo koobiyeey qoraalka fariinta."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Raadinaya talooyinka…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Ma jirto talo u dhiganta farriintan."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Ficillada"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Abuur Xeerka Qaylo-dhaanta"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Abuur Xeerka Digniinta Qalabka"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Abuur Xeerka Ka-saarista"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Ku shaandhee qalab ahaan"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Ku shaandhee barnaamij ahaan"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Dhammaan Barnaamijyada"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Guji 'Sii wad' si aad u Tirtirto Xeerka/Xeerarka Digniinta Syslog ee soo socda."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Tirtir Xeerarka Digniinta Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Guji 'Sii wad' si aad u Joojiso Xeerka/Xeerarka Digniinta Syslog ee soo socda."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Jooji Xeerka(yada) Ogeysiiska Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Guji 'Sii wad' si aad u Hawlgeliso Xeerka/Xeerarka Digniinta Syslog ee soo socda."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Hawlgeli Xeerka/Xeerarka Digniinta Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Guji 'Sii wad' si aad u dhoofiso Xeer(arka) Digniinta Syslog ee soo socda."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Dhoofi Xeer(arka) Qaylo-dhaanta Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Dooro Digniinta Syslog ama Maamulaha Digniinta."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Geli tiro dhan oo daqiiqado, saacado, ama maalmo ah ee daaqadda xadka."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Geli tiro dhan oo togan oo daqiiqado, saacado, ama maalmo ah oo loogu talagalay soo-kabashada xadka."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Naxwaha SQL-ka la geliyay ma aha mid sax ah. Fadlan sax SQL-kaaga.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "SQL-ka horay loo habeeyay waa:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Shaandheeyuhu waa mid aan sax ahayn: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "SQL-ka la habeeyay ma ahayn mid sax ah.  Fadlan sax SQL-kaaga"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Lama Dejin"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 Daqiiqo"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d Saac"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d Saacadood"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 Bil"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Wax ka beddelka Feejignaanta [wax ka beddel: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Wax ka beddelka Feejignaanta [cusub]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Xeer Digniin Cusub"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Ma khuseyso"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Halbeegga waqtiga"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Maalmo"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Saacado"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Daqiiqado"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Fadlan sharrax Qaylo-dhaantan."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Meesha Loo Dirayo Qaylo-dhaanta"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Dooro Digniinta Syslog ama Maamulaha Digniinta. Maamulaha Digniinta wuxuu sidoo kale u baahan yahay in gudbinta la hawlgeliyo Dejinta Syslog. Iimaylka waxaa loo hayaa kayd ahaan; hawlaha amarku uma shaqeeyaan xeerarka Maamulaha Digniinta."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Maareeyaha Qaylo-dhaanta"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Digniin-siinta Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Waa maxay Heerka Darnaanta Ogeysiiskan?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Heerka Warbixinta"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Diiwaangelinta Wareegyada Digniinta Dib-u-dirista, Digniinta ma in lala socdaa heerka Nidaamka mise heerka Qalabka."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Nidaamka"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Habka Warbixinta"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Qeex sida loogu digo farriimaha Syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Keli-keli"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Habka 'Xadka', Digniin ayaa la kiciyaa marka tirada la arko ay gaarto qiimahan."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Daaqadda Xadka"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Tiri waxyaabaha iswaafaqa ee wareegyada xog-uruuriyaha dhexdiisa daaqaddan wareegaysa, adigoo isticmaalaya waqtiga habaynta xog-uruuriyaha. Geli 0 si aad u tiriso kaliya wareegga hadda jira."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Ka Soo Kabo Xilliga Degganaanshaha Ka Dib"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Waqtiga aanay jirin farriimo u dhigma ka hor inta aan la nadiifin jabinta, dib loo dejin tirada, oo aan dib loo hawlgelin xeerkan. Farriin kasta oo u dhiganta waxay dib u bilowdaa saacaddan."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Nooca Waafaqidda"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Dooro Dhisaha Shaandheeyaha si aad u hesho macquul digniin oo xaalado badan leh oo badbaado ah. Hadalka SQL waxaa loo hayaa xeerarka hore."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Xarigga Waafaqidda Farriinta"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Dhis shuruudaha shaandheeyaha ama geli tibaax SQL ah si aad ula jaanqaaddo fariimaha syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "La hawlgeliyay"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Ogeysiiskan ma la hawlgeliyay?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Wareegga Digniin-celinta"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Ha u dirin digniintan mar kale isla martigeliyahan, ilaa muddadan waqti ahi dhaafto. Digniinaha ku salaysan xadka, tani waxay khusaysaa dhammaan martigeliyayaasha."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Wakhtiga Nasashada Ogeysiiska"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Daqiiqadaha la cabudhinayo ogeysiis kasta oo xiga ee ka yimaada xeerkan iyo baaxadda warbixinta."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "1 maalin"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "1 saac"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "1 daqiiqo"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 daqiiqo"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 daqiiqo"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 saacadood"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 daqiiqo"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Isticmaal dejinta guud"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Xakamaynta Nuqullada"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Daqiiqadaha la cabudhinayo isla kooxda farriimaha ee la waafajiyay."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Daaqadda Dayactirka"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Dooro haddii xeerkani uu isticmaalo muddada dayactirka guud ama muddadiisa gaarka ah."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Ha aamusin xeerkan"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Isticmaal muddada waqtiga guud"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Isticmaal muddada waqtiga xeerka"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Maalmaha Dayactirka Xeerka"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Maalmaha muddada xukunkan, marka la doorto Isticmaal muddada xukunka."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Bilowga Dayactirka Xeerka"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Waqtiga bilowga maxalliga ah ee muddada xukunkan."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Dhammaadka Dayactirka Xeerka"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Waqtiga dhammaadka maxalliga ah ee muddada xukunkan."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Dayactirka Xeerka Hal-mar ah wuxuu Bilaabanayaa"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Taariikhda iyo waqtiga maxalliga ah ee ikhtiyaariga ah si loo bilaabo aamusinta xeerkan. Qaabka: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Dayactirka Xeerka Hal-mar ah wuxuu Dhammaanayaa"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Taariikhda iyo waqtiga maxalliga ah ee ikhtiyaariga ah si loo joojiyo aamusinta xeerkan. Qaabka: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Qoraallo"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Meel loogu talagalay Qoraallada ku saabsan Feejignaanta"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Ikhtiyaarrada Iimaylka"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Liiska Ogeysiiska"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Isticmaal waxyaabaha ku jira Liiskan Ogeysiiska si aad u go'aamiso cidda la ogeysiinayo iyo sida."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Iimayllada la Ogeysiinayo"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Fadlan geli liis ciwaannada Iimaylka ah oo koomo lagu kala soocay si loo ogeysiiyo.  Haddii aad rabto inaad Iimayl ugu dirto qof qaab SMS ah, fadlan ku billow ciwaanka Iimaylka ee qofkaas <b>'sms@'</b>.  Tusaale ahaan, haddii ciwaanka SMS-ka ee qaatahu yahay <b>'2485551212@mycarrier.net'</b>, waxaad u gelinaysaa sidatan <b>'sms@2485551212@mycarrier.net'</b> waxaana loo qaabayn doonaa sidii farriin SMS ah."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Qoraalka Nuxurka Iimaylka"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Macluumaadkani wuxuu ka soo muuqan doonaa qaybta dhexe ee Digniinta isla ka hor faahfaahinta Digniinta."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Fur Tigidh"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Ma in Tigidhka Caawinta loo furo Digniintan.  FG: Qoraalka amarka Tigidhka waxaa lagu buuxin doonaa dhowr doorsoome deegaan oo 'ALERT_' ah si loogu fududeeyo."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Amarka feejignaanta"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Marka Digniin la kiciyo, socodsii amarkan soo socda. Doorsoomayaasha beddelka ee soo socda ayaa la heli karaa <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Fadlan ogow in <b>'&lt;HOSTNAME&gt;'</b> uu ku jiro oo keliya xadadka gaarka ah. Qiimayaashan beddelka ahi waxay ka soo muuqan karaan khadka taliska, ama waxaa laga soo ururin karaa deegaanka qoraalka. Marka laga isticmaalo deegaanka, doorsoomayaashaas waxaa laga hormarin doonaa 'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Amarka soo-kabashada"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Amar ikhtiyaari ah oo la socodsiinayo marka xadkani soo kabto kaddib xilligiisa degganaanshaha. Wuxuu adeegsadaa isla doorsoomayaasha beddelka ee amarka Digniinta. SYSLOG_EVENT wuu cad yahay; SYSLOG_BREACH_ID wuxuu la mid yahay amarka jebinta. Amarrada fashilma dib ayaa loo isku dayaa. Bannaanka u daa si aad u joojiso."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Tijaabi xeerka"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Hordhaca Tijaabada Xeerka"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Qiime"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Geli qiime"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Waafaq"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Ka reeb"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Geli tiro dhan oo aan tabanayn"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Shuruudaha shaandhaynta qaylo-dhaanta"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Dhammaan"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Soco"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Soo dhoofi"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Shaandheeyayaasha Digniinta Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Habka"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Tirada Xadka"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Erayga Raadinta"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Ciwaannada Iimaylka"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Wax ka beddelkii Ugu Dambeeyay"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Marka loo eego Isticmaalaha"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Feejignaannada"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Dhawr"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Ma Jiraan Digniino Syslog oo La Qeexay"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Ka soo deji Xeerka Qaylo-dhaanta Fayl Maxalli ah"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Haddii faylka XML ee ay ku jirto xogta qeexidda Xeerka Qaylo-dhaanta uu ku yaallo mishiinkaaga maxalliga ah, halkan ka dooro."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Ka soo deji Xeerka Qaylo-dhaanta Qoraal"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Haddii aad hayso faylka XML ee ay ku jirto xogta qeexidda Xeerka Qaylo-dhaanta oo qoraal ah, waxaad ku dhejin kartaa sanduuqan si aad u soo dejiso."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Soo deji Xeerka Qaylo-dhaanta"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Soo-dejinta waa la diiday: faylku waa madhan yahay, ma saxna, ama wuxuu ka kooban yahay nooc kale oo shayga Syslog ah."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Soo-dejinta waa la diiday: meesha qaylo-dhaanta loo dirayo ma saxna."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "La soo dejiyay"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "FIIRO GAAR AH: Digniinta '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "La cusboonaysiiyay"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "CILAD: Digniinta '%s' %s Way Guuldarreysatay!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Cusboonaysiin"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Dooro mulkiile sax ah."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Suurtogal ma aha in la keydiyo muraayadda xogta (dashboard). Fadlan isku day mar kale."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Geli magaca guddiga xogta oo u dhexeeya 1 ilaa 128 xaraf."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Milkiilaha"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "La wadaagay"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Guddiyada"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "isticmaale la tirtiray"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Weli ma jiraan sabuurado xogeed. Isticmaalayaashu waxay ka abuuraan qaybta Dashboard ee Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Guji 'Sii wad' si aad u Tirtirto Dashboard-ka/Dashboard-yada soo socda iyo dhammaan Guddiga/Guddiyadooda."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Tirtir Dashboard-yada"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Guji 'Sii wad' si aad u dhoofiso Sabuurad(aha) xogta ee soo socda."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Dhoofi Guddiga(yada) Hawsha"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "FIIRO GAAR AH: Waxaa la soo dejiyay %d waxaana la cusboonaysiiyay %d Sabuurad(o) Xog."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "CILAD: %d Dashboard(yo) ayaa ku guuldarreystay in la soo geliyo."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Ka soo deji Guddi-maamulka Fayl Maxalli ah"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Haddii faylka JSON ee ay ku jirto xogta qeexidda Guddi-maamulka (Dashboard) uu ku yaallo mishiinkaaga maxalliga ah, halkan ka dooro."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Ka soo deji Guddi-maamulka Qoraal"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Haddii aad hayso faylka JSON ee ay ku jirto xogta qeexidda Guddi-maamulka (Dashboard) oo qoraal ah, waxaad ku dhejin kartaa sanduuqan si aad u soo dejiso."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Soo deji Guddi-maamulka"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Dhammaan Isticmaalayaasha"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Dhammaan Kooxaha"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Wax ka beddel Sabuuradda"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Magaca lagu muujiyay xulashada Dashboards ee tab-ka Syslog Dashboard."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Akoonka leh looxan (dashboard) ee maamuli kara guddiyadiisa."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Lala Wadaagay Isticmaalayaasha"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Isticmaalayaasha arki kara guddi-hawleedkan marka lagu daro milkiilihiisa iyo wadaag kasta oo guud. Dhammaan Isticmaalayaashu waxay la wadaagaan qof kasta."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Kooxaha arki kara sabboorkan marka lagu daro milkiilihiisa iyo wadaag kasta oo guud. Dhammaan Kooxaha waxay la wadaagayaan qof walba."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Lala Wadaagay Kooxaha"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Dib-u-magacaabistu waxay khuseysaa qof kasta oo eega sabuuraddan. Guddiyada waxaa maamula milkiilayaashooda iyagoo ka maamulaya tabka Sabuuradda Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Dooro taariikh iyo waqti mustaqbal ah oo hakintu dhammaanayso."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Magac qalab ayaa loo baahan yahay."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Guji Sii wad si aad u %s Xeer(arka) Digniinta Qalabka ee soo socda."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Ha gudbin wax mudnaan ah"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s iyo kuwa ka degdegsan"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Xeerka Digniinta Qalabka"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Raadi aaladaha Syslog ee hadda jira markaad qoreyso, ama geli cinwaan IP kasta ama magac martigeliye."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Maaraynta Feejignaanta"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Ha hakin"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Haki dhammaan digniinaha aan laga dhaafin ilaa taariikh cayiman, ama si aan xad lahayn."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Haki si aan xad lahayn"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Haki ilaa"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Taariikhda iyo waqtiga maxalliga ah, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Hakadku Wuu Dhammaanayaa"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Had iyo jeer Oggolow Mudnaanta"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Mudnaanahan waxay ka gudbaan hakinta qalabkan iyo daaqadaha dayactirka. Aad u muhiim ah iyo wax ka degdeg badan waa doorashada caadiga ah ee qalabka heerka sare (platinum-device)."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Oggolow Inta lagu jiro Dayactirka"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "U oggolow dhammaan mudnaanaha ka imanaya qalabkan inta lagu jiro daaqadda dayactirka digniinta. Ka reebista mudnaanta ee sare weli way shaqaynaysaa marka tan ay tahay Maya."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Xeerka Digniinta Qalabka [wax ka beddel]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Xeerka Digniinta Qalabka [cusub]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Shaandheeyeyaasha Xeerka Digniinta Qalabka"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Xeerarka"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Maaraynta"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Dayactir"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Gudbi"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Wax xeerar digniin qalab ah lama helin."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Lama hakin"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "La hakiyay si aan xad lahayn"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "La hakiyay ilaa %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "iyo kuwo ka degdeg badan"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Oggolow dhammaan"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Isticmaal ka-reebista mudnaanta"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Talada lama keydin sababtoo ah %s. Geli aqoonsi aan lahayn meelo bannaan iyo ugu yaraan sharaxaad ama tallaabo lagula taliyay."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Talo ku saabsan iibiyahan iyo aqoonsigan horey ayay u jirtay."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "FIIRO GAAR AH: Aqoonsiga %s wuxuu ka kooban yahay xarfo ka baxsan xarfaha, lambarada, _ . - / iyo %% hore oo ikhtiyaari ah, sidaas darteed waligii lama waafajin karo farriinta syslog. Ku beddel meel-buuxiyeyaasha sida # ama doorashooyinka sida A|B koodhka saxda ah."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Guji 'Sii wad' si aad u dhoofiso Talo-bixin(ada) soo socda."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Guji 'Sii wad' si aad u Tirtirto Talada/Talooyinka soo socda."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Dhoofintu waxay u baahan tahay kordhinta PHP zlib si loo abuuro fayl JSON gzip ah."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Soo-dejinta waa la diiday: faylku waa madhan yahay, aad buu u weyn yahay, ama ma aha dukumiinti JSON talooyin ah oo ansax ah."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "FIIRO GAAR AH: Waxaa lagu daray %d, waxaa la cusboonaysiiyay %d, waxaana sidoodii loo daayay %d Talo(oyin) oo jiray."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "CILAD: %d Talo(oyin) waa la diiday (tusaale ahaan %s). Mid walba sababteeda ayaa ku qoran diiwaanka Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "CILAD: %d Talo(oyin) lama keydin karin. Mid walba waxay ku qoran tahay diiwaanka Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "FIIRO GAAR AH: %d Talo(oyin) la soo dejiyay waxay leeyihiin aqoonsiyo ay ku jiraan xarfo sida | ama # oo aan waligood ka soo muuqan erayga farriinta, sidaas darteed lama waafajin karo ilaa wax laga beddelo. Deji 'Waa la waafajin karaa' oo u dhig 'Maya' si aad u taxdo."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Ka soo deji Talooyinka Faylka Gudaha"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Ka dooro fayl .json ama .json.gz ah kombiyuutarkaaga maxalliga ah. Isticmaal hawl-qabadka Dhoofinta si aad u aragto qaabka la filayo: liis diiwaanno ah oo leh vendor, identifier, component, severity, message, explanation, recommended_action iyo reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Ka soo deji Talooyinka Qoraalka"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Sidoo kale, ku dheji dukumeentiga JSON sanduuqan."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Talooyinka Hadda Jira"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Talo waxay la mid tahay mid hore u jirtay marka iibiyaha iyo aqoonsigeedu isku mid yihiin."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Sii hay talada hadda jirta"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Ku beddel midka la soo dhoofiyay"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Soo deji Talooyinka"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Waa la soo dejinayaa, fadlan sug..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Lama cayimin"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Talo-bixin"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Alaab-qeybiyaha qalabka ama barnaamijka diiwaangeliya fariintan, tusaale ahaan Cisco ama Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Iibiyaha"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Aqoonsi"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Koodhka fariinta ee la raadinayo, tusaale ahaan %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN ama 4625. Waa inuu la mid noqdaa erey buuxa oo ka mid ah fariinta syslog (xarfaha, lambarada iyo _ . - /); % hore waa mid dhab ah waana inuu u dhigmaa sida loo qoray. Iswaafajintu ma tixgeliso xarfaha waaweyn iyo kuwa yaryar. Eeg Sida Talooyinka Loo Iswaafajiyo bogga liiska."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Qayb"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Qaybta adeegga, moojulka ama nidaam-hoosaadka soo saara fariinta."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Darajada darnaanta ee iibiyuhu u diiwaangeliyo fariintan."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Qaabka fariinta sida loo diiwaangeliyay, oo ay ku jiraan meel-buuxiyeyaasha doorsoomayaasheeda."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Waxa ay fariintu ka dhigan tahay."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Waxa uu hawlwadeenku ka samaynayo arrintaas."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Xiriiriyeyaasha dukumeentiga iibiyaha, hal xariiqba mid."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Talo-bixin [wax ka beddel]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Talo-bixin [cusub]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Nalka yar ee ka horreeya farriinta wuxuu calaamadeeyaa talooyinka u dhigma ee ku jira tabaha Diiwaanka Nidaamka iyo Diiwaanka Digniinaha. Guji farriinta si aad ugu akhrido daaqadda faahfaahinta. Dul-maridda weligeed codsi uma dirto server-ka."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Kaliya tiirka <b>Aqoonsiga</b> ayaa loo adeegsadaa iswaafajinta. Soo-saaraha, qaybta, darnaanta, farriinta iyo sharraxaadda waxaa lagu muujiyaa daaqadda faahfaahinta laakiin waligood lama baaro."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "2,048-da xaraf ee ugu horreysa fariinta waxaa loo qaybiyaa ereyo. Ereygu waa taxane xarfaha, lambarada iyo astaamaha _ . - / ah oo laga yaabo inuu ku bilowdo %. Xaraf kasta oo kale, sida meel bannaan, laba-dhibcood, hakad ama qaanso, wuxuu soo afjaraa ereyga. Gudaha <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> ereyadu waa <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> iyo <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Aqoonsigu wuu iswaafaqaa marka uu <b>si sax ah ula mid yahay hal eray oo dhammaystiran</b>, iyadoo aan loo eegin xarfaha waaweyn iyo kuwa yaryar. Ma aha raadin \"wuxuu ka kooban yahay\", \"wuxuu ku bilaabmaa\" ama \"wuxuu ku dhammaadaa\", mana jiraan wax calaamado duuban (wildcards) ah: <code>LINK-3-UPDOWN</code> lama mid aha erayga <code>LINK-3-UPDOWN-EXT</code>, sidoo kale <code>UPDOWN</code> lama mid aha <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Horgalaha <b>%</b> waa mid dhab ah, ma aha astaan beddel ah, waana inuu u dhigmaa erayga farriinta sidii loo qoray. Aqoonsiga <code>%LINK-3-UPDOWN</code> wuxuu u dhigmaa erayga farriinta <code>%LINK-3-UPDOWN</code>, ee ma aha <code>LINK-3-UPDOWN</code>; aqoonsi aan lahayn horgalaha wuxuu u dhigmaa oo keliya erayga aan horgalaha lahayn."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Marka martigeliyaha syslog uu yahay Qalab Cacti ah oo iibiyihiisa laga aqoonsado sharraxaadda nidaamka SNMP ama qaab-dhismeedka qalabka, talooyinna ay u jiraan iibiyahaas, kaliya talooyinka iibiyahaas iyo kuwa aan lahayn iibiye ayaa la hubiyaa. Haddii kale dhammaan iibiyeyaasha waa la hubiyaa, laakiin aqoonsi ka kooban tirooyin keliya wuxuu u dhigmaa oo keliya talooyinka aan lahayn iibiye. Marka dhowr talo ay is waafaqaan, aqoonsiyada ugu dhaadheer ayaa marka hore la muujiyaa, ilaa saddex."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Aqoonsiyada ka kooban xarfo kale, sida meel-buuxiyaha booska <code>#</code> ama kala-doorashooyinka <code>|</code> ee ku jira qoraallada iibiyaasha qaarkood (tusaale ahaan <code>%ASA|PIX-3-331001</code>), waa la hayaa waana la dhoofiyaa laakiin marna ma is-waafaqi karaan. U deji <b>Wuu Is-waafaqi Karaa</b> Maya si aad u liis gareyso, oo wax uga beddesho koodka saxda ah, tusaale ahaan <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Sida Talooyinka Loo Waafajiyo"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Waa la waafajin karaa"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Haddii aqoonsigu leeyahay qaabka erayga farriinta, si raadinta farriintu ay waligeed u heli karto"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Dhoofi talo kasta oo waafaqsan shaandheeyayaasha"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Wax talooyin ah lama helin."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Dib u habeey"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Guji 'Sii wad' si aad u Tirtirto Xeerka/Xeerarka Ka-saarista Syslog ee soo socda."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Tirtir Xeerarka Ka-saarista Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Guji 'Sii wad' si aad u Joojiso Xeerka/Xeerarka Ka-saarista Syslog ee soo socda."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Jooji Xeerka(yada) Ka-saarista Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Guji 'Sii wad' si aad u Hawlgeliso Xeerka/Xeerarka Ka-saarista Syslog ee soo socda."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Hawlgeli Xeerka/Xeerarka Ka-saarista Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Guji 'Sii wad' si aad mar kale u farsamayso Xeer(arka) Ka-saarista Syslog ee soo socda."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Dib-u-eegid ku samee Xeerka(yada) Ka-saarista Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Guji 'Sii wad' si aad u dhoofiso Xeer(arka) Ka-saarista Syslog ee soo socda."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Dhoofi Xeer(arka) Ka-saarista Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Xeerka '%s' wuxuu keenay in %s/%s farriimo la saaray/la wareejiyay"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Wax ka beddel Xeerka Ka-saarista [wax ka beddel: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Wax ka beddel Xeerka Ka-saarista [cusub]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Diiwaanka Ka-saarista Cusub"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Xeerka Ka-saarista Cusub"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Faahfaahinta Xeerka Ka-saarista"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Magaca Xeerka Ka-saarista"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Fadlan sharrax Xeerkan Ka-saarista."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "La hawlgeliyay?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Xeerkan Ka-saarista ma la hawlgeliyay?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Nooca Iswaafajinta Xarafka"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Qeex sida aad rabto in xadhigan la isku waafajiyo. Haddii aad isticmaalayso nooca SQL Expression waxaad adeegsan kartaa wax kasta oo SQL expression sax ah si aad u dhaliso digniinta. Meelaha la heli karo waxaa ka mid ah 'message', 'facility', 'priority', iyo 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Qoraalka Isku-beegidda Farriinta Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Geli qaybta iswaafaqaysa ee fariinta Syslog, xarumaha adeegga ama magaca martigeliyaha, ama qodobka SQL where haddii la adeegsanayo Nooca Iswaafajinta Muujinta SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Habka Ka-saarista"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Tirtirid"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Wareejinta"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Qoraallada Xeerka Ka-saarista"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Meel loogu talagalay Qoraallada ku saabsan Xeerka ka saarista"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Shuruudaha shaandheeyaha ka-saarista"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Shaandheeyayaasha Xeerka Ka-saarista Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Magaca Ka-saarista"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Wareejin"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Ma Jiraan Xeerarka Ka-saarista Syslog ee La Qeexay"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Ka soo deji Xeerka Ka-saarista Faylka Gudaha"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Haddii faylka XML ee ay ku jirto xogta qeexidda Xeerka Ka-saaridda uu ku yaallo mishiinkaaga maxalliga ah, halkan ka dooro."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Ka soo deji Xeerka Ka-saarista Qoraalka"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Haddii aad hayso faylka XML ee ay ku jirto xogta qeexidda Xeerka Ka-saaridda oo qoraal ah, waxaad ku dhejin kartaa sanduuqan si aad u soo dejiso."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Soo deji Xeerka Ka-saarista"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "FIIRO GAAR AH: Xeerka Ka-saarista '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "QALAD: Xeerka Ka-saarista '%s' %s wuu fashilmay!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Guji 'Sii wad' si aad u Tirtirto Warbixinta/Warbixinnada Syslog ee soo socda."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Tirtir Warbixinnada Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Guji 'Sii wad' si aad u Joojiso Warbixinta/Warbixinnada Syslog ee soo socda."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Jooji Warbixinta(ada) Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Guji 'Sii wad' si aad u Hawlgeliso Warbixinta/Warbixinnada Syslog ee soo socda."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Hawlgeli Warbixinta/Warbixinnada Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Guji 'Sii wad' si aad u dhoofiso Xeer(arka) Warbixinta Syslog ee soo socda."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Dhoofi Xeer(arka) Warbixinta Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Waa inaad doorataa ugu yaraan hal Warbixin Syslog."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Ku noqo"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Wax ka beddel Warbixinta [wax ka beddel: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Wax ka beddel Warbixinta [cusub]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Diiwaanka Warbixinta Cusub"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Fadlan sharrax Warbixintan."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Warbixintan ma la hawlgeliyay?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Qeex sida aad rabto in xadhigan la isku waafajiyo. Dhisaha Shaandheeyaha wuxuu isku daraa shuruudaha ku saabsan farriinta, martigeliyaha, barnaamijka, qaybta, iyo mudnaanta."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Soo-noqnoqoshada"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Intee jeer ayaa Warbixintan loo diri doonaa liiska qaybinta?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Waqtiga Dirista"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Waqtigee maalintii ayay tahay in warbixintan la diro?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Qaabka Warbixinta"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Dhis shuruudaha shaandheeyaha, ama geli qoraalka ama tibaaxda SQL si aad ula jaanqaaddo fariimaha syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Macluumaadka ku jiri doona gudaha Warbixinta."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Liis cinwaannada Iimaylka ah oo kooma lagu kala soocay oo warbixinta loo dirayo."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Meel loogu talagalay Qoraallada ku saabsan Warbixinta"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Hordhaca Tijaabada Warbixinta"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Shuruudaha shaandhaynta warbixinta"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Shaandheeyayaasha Warbixinta Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Magaca Warbixinta"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Markii Ugu Dambaysay ee La Diray"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Warbixinnada"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Ma Jiraan Warbixinnada Syslog ee La Qeexay"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Ka soo deji Xeerka Warbixinta Faylka Gudaha"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Haddii faylka XML ee ay ku jirto xogta qeexidda Xeerka Warbixinta uu ku yaallo mishiinkaaga maxalliga ah, halkan ka dooro."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Ka soo deji Xeerka Warbixinta Qoraalka"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Haddii aad hayso faylka XML ee ay ku jirto xogta qeexidda Xeerka Warbixinta oo qoraal ah, waxaad ku dhejin kartaa sanduuqan si aad u soo dejiso."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Soo deji Xogta Warbixinta"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "FIIRO GAAR AH: Xeerka Warbixinta '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "QALAD: Xeerka Warbixinta '%s' %s wuu fashilmay!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Suurtogal ma aha in la keydiyo qaab-dhismeedka. Fadlan isku day mar kale."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Geli magaca qaab-dhismeedka oo u dhexeeya 1 ilaa 128 xaraf."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Qaab-dhismeedyada"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Weydiin"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Ma jiraan qaab-dhismeedyada raadinta ee la wadaago. Keydi raadin loogu talagalay dhammaan isticmaalayaasha oo ka timaadda Syslog si aad u abuurto mid."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Guji 'Sii wad' si aad u dhoofiso Qaab-dhismeed(yada) Raadinta La Keydiyay ee soo socda."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Guji 'Sii wad' si aad u Tirtirto Qaab-dhismeedka/Qaab-dhismeedyada Raadinta La Keydiyay ee soo socda."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Tirtir Qaab-dhismeed(yada) Raadinta la Keydiyay"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Dhoofi Qaab-dhismeed(yada) Raadinta La Kaydiyay"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "FIIRO GAAR AH: Waxaa la soo dejiyay %d waxaana la cusboonaysiiyay %d Qaab-dhismeed(yo) Raadin La Keydiyay."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "CILAD: %d Qaab-dhismeed(yo) Raadin La Keydiyay ayaa ku guuldarreystay in la soo geliyo."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Ka soo deji Qaab-dhismeedka Raadinta La Keydiyay Faylka Gudaha"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Haddii faylka JSON ee ay ku jirto xogta qeexidda Qaab-dhismeedka Raadinta La Keydiyay uu ku yaallo mishiinkaaga maxalliga ah, halkan ka dooro."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Ka soo deji Qaab-dhismeedka Raadinta La Keydiyay Qoraalka"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Haddii aad hayso faylka JSON ee ay ku jirto xogta qeexidda Qaab-dhismeedka Raadinta La Keydiyay oo qoraal ah, waxaad ku dhejin kartaa sanduuqan si aad u soo dejiso."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Soo deji Qaab-dhismeedka Raadinta La Keydiyay"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Wax ka beddel Qaab-dhismeedka Raadinta La Keydiyay"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Magaca loo muujiyo dhammaan isticmaalayaasha gudaha Baaritaannada La Kaydiyay."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Akoonka leh qaab-dhismeedkan ee ku maamuli kara Baaritaannada La Keydiyay."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Isticmaalayaasha isticmaali kara qaab-dhismeedkan marka lagu daro milkiilihiisa. Dhammaan Isticmaalayaashu waxay la wadaagaan qof kasta."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Kooxaha isticmaali kara qaab-dhismeedkan marka lagu daro milkiilihiisa. Dhammaan Kooxaha waxay la wadaagayaan qof walba."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Waydiinta Raadinta"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Sax naxwaha weydiinta si aad u isticmaasho dhisaha weydiinta."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Dooro meel, hawlwadeen, iyo qiime. Isticmaal AND, OR, NOT, ama Group si aad u dhisto weydiinta. Isbeddelladu waxay khuseeyaan qaab-dhismeedkan la wadaago ee dhammaan isticmaalayaasha."
+

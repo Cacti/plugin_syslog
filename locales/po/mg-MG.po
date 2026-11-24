@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Malagasy\n"
+"Language: mg-MG\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d minitra"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d ora"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d ora"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d andro"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d andro"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d herinandro"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d herinandro"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d volana"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d volana"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d taona"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d taona"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Fotoam-piasana antoandro"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Ity andro ity"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Ity herinandro ity"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Ity volana ity"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Ity taona ity"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Andro teo aloha"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Herinandro teo aloha"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Volana teo aloha"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Taona teo aloha"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Fampidinana Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Zarao amin'ny mpampiasa…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Zarao amin'ny vondrona…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Vonjy taitra"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Henjana"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Fampandrenesana"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Hadisoana"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Fampitandremana"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Fampahafantarana"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Fampahalalana"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Manala olana"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Mampahafantatra"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Tsy nahomby ny fitehirizana.  Tsy mahazo mitahiry Fitsipika ny Mpanangona Angona Lavitra ao amin'ny Fomba Fampifanarahana.  Tehirizo avy amin'ny Mpizara Cacti Fototra."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Azafady, mampiasà mpanjifa Mailaka HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Mihoatra ny habe farany ambony ny angona lahatsoratra hampidirina"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Tsy afaka mamaky ny rakitra nampidirina nakarina. Jereo ny rakitra sy ny fetran'ny haben'ny fampiakarana."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Misafidiana rakitra hampidirina na apetaho ny votoatiny alohan'ny hampidirana azy."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Tsy voazarazara ny tabilao Syslog. Ny tabilao mahazatra (tsy voazarazara) dia efa lany andro, ary ny tabilao voazarazara no takiana ho an'ny fametrahana vaovao. Hitohy hatrany ny fanangonana ny angonao, saingy tokony hafindranao amin'ny rafitra voazarazara ny tabilao syslog."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Miandry ny fahavitan'ny fanodinana."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Ny fanodinana dia vita ao anatin'ny fe-potoana azo ekena."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Tsy nisy fihazakazahana fikirakirana vita nandritra ny mihoatra ny %d segondra."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Ao anatin'ny fetra voarindra ny hafatra miditra."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Tsy misy ny fandrefesana ny filaharana miditra."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Ny lahatra miditra miandry farafahakeliny hafatra %s dia mihoatra ny fetra %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Tsy azo ny marik'ora tranainy indrindra amin'ny hafatra miditra."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Ny hafatra tsy mbola voakarakara dia mihoatra ny %d segondra."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Tsy mavitrika eo amin'ity mpanangona ity ny fampifanarahana."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Ao anatin'ny fe-potoana nahazoana alalana ny fampifanarahana."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Tsy misy ny refy momba ny laharan'ny fampifanarahana miandry."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Tsy azo ny marik'ora tranainy indrindra amin'ny firaketana fampifanarahana."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Tsy nahomby ny fampifanarahana na mihoatra ny fe-potoana nahazoana alalana ny firaketana miandry."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Tsy voasakana ny fikojakojana ny fizarana."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Voasakana ny fikojakojana ny fizarana: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Fahasalaman'ny fantsona Syslog - mpanangona %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Tafarina ny fantsom-pikorianan'ny Syslog."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Tsy manan-kery na tsy feno ny fandrafetana fizarana ho an'ny %s; nijanona ny fikojakojana ny fizarana. Hamarino ny metadata-n'ny fizarana amin'ny alalan'ny SHOW CREATE TABLE ary, raha ilaina, amboary indray ny fizarana; mitohy ao amin'ny fizarana fiarovana dMaxValue ny fanoratana."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "elanelan'ny fizarana sisa tavela: fizarana %d"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "tsy misy fanemorana ny fitazonana"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "nahemotra ny fanesorana fitazonana mandra-pamerina ny faravodilanitra ho avy"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "mitombo ao amin'ny fizarana fiarovana dMaxValue ireo firaketana vaovao"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "tratran'ny fetran'ny famerenana isaky ny fandehanana"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "tsy nahomby ny famoronana fizarana"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Ambaratonga fizarazarana tsy fantatra; safidio ny Isan'ora na Isan'andro."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Tsy manan-kery ny fe-potoana fitahirizana Syslog."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Tsy azo ampiasaina miaraka amin'ny fitahirizana tsy misy fetra ny fizarana isan'ora, satria mitaky fizarana tsy misy fetra izany. Mifidiana fe-potoana fitahirizana na fizarana isan'andro."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Ny fizarazarana %s miaraka amin'ny fitazonana %s andro sy vanim-potoana famoronana mialoha %s andro dia mila fizarazaran-tabilao %s isaky ny tabilao, izay mihoatra ny fetra %s amin'ity mpizara tahiry ity. Ahenao ny faharetan'ny fitazonana, hafohezo ny vanim-potoana famoronana mialoha, na misafidiana fizarazarana Isan'andro."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Isan'andro"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Isan'ora"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Mbola mampiasa fizarana %s ireo tabilao mandra-panamboaran'ny cli/upgrade_partitioning.php azy ireo indray."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Tsy voavaky ny haavon'ny fizarazarana ho an'ireo tabilao Syslog efa misy."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Nahemotra ny famerenana ny fizarana mandeha ho azy: tsy hita ny haben'ny dMaxValue; ilaina ny fandraisan'andraikitry ny mpandraharaha."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Nahemotra ny famerenana ny fizarana mandeha ho azy: ny dMaxValue dia tombanana ho manana andalana %s sy oktety %s; ny fetra dia andalana 100000 sy oktety 134217728. Ilaina ny fandraisan'andraikitry ny mpandraharaha."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Karazana fitsipika tsy fantatra."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Tsy manan-kery ny fampifandraisana saha miditra voarindra."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Mbola tsy ao amin'ny tabilao fanondroana ny facility an'ity fitsipika ity."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Karazana fifanarahan-dalàna tsy fantatra."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Tsy niova ho fangatahana ny fitsipika."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Tsy voamarina ny fangatahana fijerena mialoha."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Tsy azo natambatra ny sivana fijerena mialoha ny tantara."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Tsy azo novinavinaina ny fangatahana fijerena mialoha ny tantara."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Tsy voavaky ny santionany fijerena mialoha."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Ny fijerena mialoha ny fanehoana SQL dia tsy manamarina afa-tsy ny hafatra miditra miandry laharana. Tsy karohina ny hafatra efa nokarakaraina. Ny fanandramana dia tsy mandefa fanairana."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Tsy nahazo alalana."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Fangatahana tsy manan-kery. Andramo indray azafady."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Tsy manana teny fampifanandrifiana hotsapaina ny fitsipika."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Lava loatra ny fomba fiteny mifanitsy ka tsy azo tsapaina."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Tsy fantatra"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Fanairana Fetra Syslog Cacti '%s' ho an'ny Mpampiantrano '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Fanairana Fetra Syslog Cacti '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Anaran'ny fampandrenesana"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Hamafiny"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Fetra"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Isa"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Andian-tsoratra mifanaraka"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Fanairana Syslog Cacti '%s' ho an'ny Mpampiantrano '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Fanairana Syslog Cacti '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Anaran'ny mpampiantrano"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Daty"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Ambaratonga"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Hafatra"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "FAMPITANDREMANA: Nisy fampandrenesana Fetra Syslog nipoitra ho an'ny Mpampiantrano '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "FAMPITANDREMANA: Nisy fampandrenesana Fetra Syslog nipoitra"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Anarana:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Hamasinana:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Fetra:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Isa:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Andian-tsoratra hafatra:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Anaran'ny mpampiantrano:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Daty:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Ambaratonga:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Hafatra:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Mpampiantrano:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Ham.:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Fanairana hetsika - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Isa:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Mpampiantrano"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Tatitra hetsika - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Ny topi-mason'ny tatitra dia mikaroka ireo hafatra %d voatahiry farany indrindra; ny tatitra kosa dia mandrakotra ny fe-potoana manontolo. Tsy mandefa mailaka ny fitsapana."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Tsy misy na efa lany daty ny valiny natambatra. Havaozy ny valiny ary andramo indray."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Tsy azo nampidirina ny hafatry ny vondrona."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Tsia"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Eny"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Lahatsoratra rehetra"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Ampifanarahana ny tsanganana"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "Tarehintsoratra %d"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Mpanolotsaina fanavaozana Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Havaozina ho ambony kokoa ve ny Syslog manomboka amin'ny %s ho %s? Hotehirizina ny hafatra sy ny fitsipika efa misy. Mety haharitra ny fanovana ny rafitra."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Inona ny karazana fanavaozana/fametrahana irinao hampiasaina"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Rehefa manana tabilao tena lehibe ianao, dia haingana kokoa ny manao Truncate. Raha manahy momba ny angona tahiry ianao, dia afaka misafidy na Inline, izay hampijanona ny navigateur-nao mandritra ity fanavaozana ity, na background, izay hamorona fizotra ambadika mba hitondrana ny angona syslog taloha avy amin'ny tabilao tahiry ho amin'ny endrika syslog vaovao. Indray mandeha dia mety haharitra ora maromaro ity fizotra ity. Ny Truncate dia manary ny hafatra syslog voatahiry sy nesorina ihany; voatahiry foana ny fitsipika fanairana, fanesorana ary tatitra."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Fafao ny latabatra Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Fanavaozana an-toerana"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Fanavaozana any ambadika"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Motera fitehirizana angon-drakitra"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Ny milina fitahirizana ho an'ny tabilao famakafakana. Ny milina fitahirizana InnoDB sy, amin'ny MariaDB, ny Aria ihany no tohanana. Izay safidy Mpanangona Angon-drakitra Lavitra dia mitaky InnoDB; tsy azo alefa ny fitambarana tsy mifanaraka."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Fitahirizana InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Fitehirizana Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Fahamarinan'ny mariky ny fotoana"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Ny fahamarinana milisegondra dia mitahiry ny mari-potoana syslog latsaky ny iray segondra ao anaty tsanganana TIMESTAMP(3) ary amin'ny MariaDB ihany no misy azy.  Ny fahamarinana segondra dia mampiasa tsanganana TIMESTAMP mahazatra.  Amin'ny rafitra famokarana, ampiasao ny cli/upgrade_partitioning.php --convert-ms mandritra ny fotoana fikojakojana mba hanovana ireo hafatra efa misy nefa tsy manary azy ireo."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Milisegondra - TIMESTAMP(3) (MariaDB ihany)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Segondra - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Fikarakarana hafatra lavitra"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Alefaso ny fikirakirana hafatra avy amin'ny mpanangona angona lavitra"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Raha manana tahiry angona Syslog azy manokana ny Mpanangona Angona Lavitra ary mikirakira ny hafany samirery, dia mariho ity boaty fanamarinana ity. Amin'ny fanamarihana ity boaty fanamarinana ity, dia mila mitazona ny rakitra 'config_local.php' azy manokana ny Mpanangona Angona Lavitra mba hampahafantarana ny Syslog hampiasa tahiry angona mahaleo tena amin'ny fampisehoana sy fikirakirana hafatra. Azafady ampiasao ny rakitra modely 'config_local.php.dist' ho amin'izany. FAMPITANDREMANA: Hoforonina ho azy ny tabilao Syslog raha vao mavitrika ity safidy ity."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Fampifanarahana ny fitsipiky ny mpanangona angona lavitra"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Raha manana tahiry angona Syslog azy manokana ny Mpanangona Angona Lavitra ary mikirakira ny hafany samirery, dia mariho ity boaty fanamarinana ity raha tianao halefa any amin'ny Rafitra Cacti Lavitra ny fitsipika Fanairana, Fanesorana ary Tatitra avy amin'ny tahiry angona Cacti Fototra."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Tehirizo ao amin'ny mpanangona lavitra ny rakitra"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Tehirizo ao amin'ny tabilao syslog an'ny mpanangona lavitra ireo hafatra voakarakara rehefa avy nalefa tany amin'ny Mpanangona Foibe. Rehefa tsy mavitrika izany dia voatahiry eo an-toerana ihany ny firaketana raha mbola tsy hita ny Mpanangona Foibe ary esorina rehefa voamarina fa tafaverina sy voaray."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Politikan'ny fitahirizana"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Safidio ny isan'ny andro tianao hitahirizana ny sanda Syslog ao amin'ny tahirin-kevitra."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Ambaratongan'ny fizarana"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Ny haben'ny fizarana tsirairay amin'ny tabilao syslog sy syslog_removed. Ny Isan'andro no soso-kevitra. Ny Isan'ora dia mitaky fe-potoana fitahirizana voafetra, ary ny fitahirizana sy ny haavon'ny fizarazarana miaraka dia tsy maintsy antonona ny fetran'ny fizarazarana ao amin'ny mpizara angon-drakitra. Raha hanova ny haavo any aoriana, ovao ao amin'ny Fandrindrana ary alefaso ny cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Havaozy"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Hametraka"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Mpanolotsaina Syslog %s"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "FAMPITANDREMANA: Mandany fotoana be ny fanavaozana ny Syslog!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Ny fanavaozana ny tabilao 'main' an'ny syslog dia mety ho dingana mandany fotoana be. Noho izany, amporisihina ianao mba hampihena ny haben'ny tabilao syslog alohan'ny hanavaozana, na hisafidy ny safidy any ambadika."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Raha misafidy ny safidy any ambadika ianao, dia hovana anarana ny tabilao syslog taloha, ary hoforonina ny tabilao syslog vaovao. Avy eo, halefa any ambadika ny dingana fanavaozana. Indray mandeha, mety haharitra elaela ny fahavitan'io dingana any ambadika io. Na izany aza, dia ho voatahiry ny angonao."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Na inona na inona safidinao, dia ho tazonina mandritra ny dingana fanavaozana avokoa ny fitsipika fanalana sy fampandrenesana efa misy."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Tsindrio ny <b>'Havaozy'</b> hanohizana ny fanavaozana, na <b>'Foano'</b> hiverenana any amin'ny menio Plugins."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Azonao atao koa ny mametraka ny motera fitahirizan'ny tahiry angona ho an'ny tabilao famakafakana syslog sy syslog_remove. Ny motera fitahirizana InnoDB ihany, ary ao amin'ny MariaDB ny motera fitahirizana Aria, no tohana. Raha mampiasa MariaDB, dia manoro hevitra ny Motera Fitahirizana Aria izahay rehefa tsy misy safidy Mpanangona Angona Lavitra mavitrika; ny safidy mpanangona dia mitaky InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Manana safidy maromaro azo isafidianana ianao rehefa mametraka ny Syslog.  Ny voalohany dia ny Rafitry ny Tahirin-kevitra.  Ny tabilao voazarazara ihany no rafitra tohana satria misoroka ny haben'ny tabilao tsy ho lasa lehibe loatra ka mampiadana ny fangatahana.  Ny tabilao mahazatra tsy voazarazara dia efa lany andro ary tsy atolotra intsony ho an'ny fametrahana vaovao."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Azonao atao koa ny misafidy ny fahamarinan'ny marik'ora. Ny fahamarinan'ny milisegondra (TIMESTAMP(3)) dia mitahiry ny filaharan'ny hafatra miditra latsaky ny iray segondra ary amin'ny MariaDB ihany no misy azy; ny fametrahana MySQL dia mampiasa ny fahamarinan'ny segondra. Tsy azo ovaina eo no ho eo aty aoriana izany raha tsy manimba ireo hafatra voatahiry."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Tsy misy ny fitehirizana Aria raha mbola misy safidy Mpanangona angona lavitra mavitrika. Voasafidy ny InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Azonao atao koa ny misafidy ny faharetan'ny fitahirizana. Tadidio azafady fa raha manana Mpampiantrano maromaro manoratra any amin'ny syslog ianao, dia mety ho lasa tena lehibe ity tabilao ity."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Fandrindrana Syslog %s"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Inona ny fomba fanesorana tianao hampiasaina?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Rehefa manala ny syslog, dia azonao atao ny manala ny zava-drehetra, na singa sasany ihany, raha toa ka mikasa ny hametraka azy indray ianao amin'ny hoavy."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Esory daholo ny zavatra rehetra (Tatitra, Tabilao, Fandrindrana)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Angona Syslog ihany"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Safidy amin'ny fanalana ny Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Esory"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Foano"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Fanalana Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Fanovana)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Hetsika)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Fanairana Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Tatitra Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Modely Fikarohana Voatahiry"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Tabilao fanaraha-maso"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Tolo-kevitra Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Fampidirana)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Asehoy ny Syslog ao anatin'ny elanelana"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "foana ny famantarana"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "mihoatra ny tarehin-tsoratra 190 ny famantarana"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "misy elanelana na fahatapahan'andalana ny famantarana"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "tsy misy fanazavana na hetsika soso-kevitra izy"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "tsy zavatra JSON izy io"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Tsy azo nampidirina ny tolo-kevitra."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Misy tolo-kevitra - tsindrio ny hafatra raha hijery ny antsipiriany"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Fanazavana"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Hetsika soso-kevitra"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Tsiahy"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Alatsinainy"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Talata"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Alarobia"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "Zoma"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Asabotsy"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Alahady"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Alakamisy"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "Alatsinainy hatramin'ny Zoma"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Asabotsy sy Alahady"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Isan'andro"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Tsy mavitrika"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Tsy misy"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Fikirana ankapobeny"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog Mavitrika"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Raha voamarika ity boaty fanamarinana ity, dia hafindra avy ao amin'ny tabilao Syslog Incoming mankany amin'ny tabilao syslog fototra ny firaketana ary havelona ny Fanairana sy Tatitra. Tadidio fa na tsy mavitrika aza ny rafitra dia mbola hiangona ao amin'ny tabilao Syslog Incoming ihany ny firaketana log satria voafaritry ny dingana rsyslog na syslog-ng izany."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Alefaso any amin'ny Mpitantana Fanairana ny fanairana"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Avelao ny fitsipika napetraka amin'ny Mpitantana Fanairana handefa fanairana. Ny mailaka Syslog no mijanona ho vahaolana faharoa; ny asa baiko dia mandeha ho an'ny fitsipika Fanairana Syslog ihany."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Esory ny sehatra"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Lisitry ny sehatra (domains) sarahin'ny faingo izay tianao hesorina amin'ny anaran'ny mpampiantrano Syslog, ohatra ny 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Elanelam-potoana fanavaozana"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Ity no fotoana amin'ny segondra alohan'ny hanavaozana ny pejy."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Dingano ny fanisana ny fitambaran'ny andalana"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Raha voamarika ity boaty fanamarinana ity, dia tsy manisa ny firaketana mifanaraka rehetra ny tabilao System Logs sy Alert Logs, izay mety mandany hery be amin'ny fametrahana lehibe. Mampiseho rohy Teo aloha sy Manaraka ny pejy fa tsy totaly sy lisitry ny pejy, ary atolotra ny Manaraka raha mbola misy firaketana tavela."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Firaketana tatitra farany ambony"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Ho an'ny Fampandrenesana mifototra amin'ny Fetra, inona no isa farany ambony tianao haseho ao amin'ny tatitra.  Izany dia ampiasaina hamerana ny haben'ny diarin'ny html sy ny Mailaka."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d Firaketana"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Fizotra fikarakarana Syslog farany ambony"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Rehefa apetraka mihoatra ny 1, dia aparitaka amin'ny fizotry ny mpiasa mifanindry ny fikarakarana ny hafatra miditra. Ny mpiasa tsirairay dia mikarakara sokajy hafatra miditra samy hafa, izay manafaingana ny famahana ny anaran'ny mpampiantrano sy ny famindrana hafatra rehefa mavesatra ny entana. Ny sanda 1 dia mikarakara ny hafatra rehetra ao amin'ny fizotra tokana. Tsy tohana amin'ny Windows na rehefa tsy misy ny fanitarana PHP pcntl sy POSIX ny fizotry ny mpiasa, ka raha izany dia miverina amin'ny fizotra tokana ny fikarakarana."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d Fizotra mpanatanteraka"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d Fizotra mpanatanteraka"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Baiko fanokafana tapakila"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Hotanterahina ity baiko ity mba hanokafana Tapakila Help Desk. Ilaina ny baiko hamakafaka masontsibina fampidirana maromaro toy izao manaraka izao: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Ny hostlist dia ho lisitry ny mpampiantrano sarahina faingo izay voakasiky ny fampitandremana."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Safidy amin'ny fitadiavana Mpampiantrano"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Alefaso ny famahana anaran'ny mpampiantrano"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Raha voamarika ity boaty fanamarinana ity, dia vahana amin'ny alalan'ny fikarohana DNS aloha ny anaran'ny mpampiantrano rehetra (raha mavitrika), amin'ny fampiasana firaketana A sy AAAA. Tsy mila fikarohana ny adiresy IPv4 sy IPv6, ary tahirizina amin'ny endrika zana-tsoratra voafintina ny adiresy IPv6. Raha tsy mahomby ny fikarohana DNS, dia hanandrana hamaha ny anaran'ny mpampiantrano ao amin'ny tabilao Mpampiantrano Cacti ny rafitra ary hanolo azy amin'ny famaritana ny Mpampiantrano Cacti. Raha tsy mahomby avokoa ny fikarohana DNS sy Cacti, dia omena tovana aloha 'unresolved-Original_hostname' ny firaketana."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Dingano ny famahana DNS ho an'ny mpampiantrano miditra"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Raha voamarika ity boaty fanamarinana ity, dia tsy hanandrana hamaha Mpampiantrano amin'ny alalan'ny fikarohana DNS ny rafitra. Ilaina izany amin'ny tontolo tsy ahafahana na tsy iriana ny famahana DNS."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Fandrindrana ny fampandrenesana HTML"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Alefaso ny mailaka mifototra amin'ny HTML"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Raha voamarika ity boaty fanamarinana ity, dia halefa amin'ny endrika HTML ny Mailaka rehetra. Raha tsy izany, dia halefa amin'ny lahatsoratra tsotra ny Mailaka."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Rakitra endrika hampiasaina"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Safidio ny rakitra fonony html namboarina sy CSS hampiasaina. Ity rakitra ity dia misy html sy CSS hamonosana ny tatitrao. Raha mihoatra noho ny CSS tsotra no ao anatiny dia mila mametraka marika manokana <REPORT> ao anatin'ny rakitra ianao. Io marika endrika io dia hosoloina ny votoatin'ny tatitra. Ireo rakitra ireo dia ao amin'ny lahatahiry 'formats'."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Fitahirizana sy fizarana angona"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Fitehirizana Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Ity no isan'ny andro itahirizana ny zava-mitranga."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Ny haben'ny fizarana tsirairay amin'ny tabilao syslog sy syslog_removed. Voatahiry eto ny fanovana saingy tsy manan-kery raha tsy rehefa manamboatra indray ireo tabilao roa ireo ny cli/upgrade_partitioning.php; mandra-pahatongan'izany, mitazona ny habe efa misy ny fikojakojana ny fizarana. Ny fizarazarana isan'ora dia mitaky fe-potoana fitahirizana voafetra. Ny fitahirizana, ny varavarankely famoronana mialoha ary ny haavon'ny fizarazarana miaraka dia tsy maintsy antonona ny fetran'ny fizarazarana ao amin'ny mpizara angon-drakitra, raha tsy izany dia tsy voatahiry ny fandrindrana."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Elanelam-potoana famoronana mialoha ny fizarana"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Ity no isan'ny andron'ny fizarana ho avy tazonina ho an'ny tabilao Syslog voazarazara, mba hisaraka foana avy amin'ny fizarana dMaxValue tsy misy na inona na inona ny fizarana vaovao. Ny fizarana isan'ora dia mitazona fara fahakeliny 2 andro foana."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d Andro"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d Andro"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Fetra famerenana ny fizarana"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Rehefa misy fizarana banga (ohatra aorian'ny fijanonana noho ny fikojakojana), dia io isa farafahabetsany io ihany no hamoronana fizarana banga isaky ny tabilao amin'ny fihodinana Poller tsirairay. Ny elanelana sisa tavela dia hositranina amin'ny fihodinana manaraka; nahemotra ny fanapahana fitahirizana mandra-pamerina tanteraka ny faravodilanitry ny fizarana ho avy. Mihatra amin'ny tabilao Syslog voazarazara ihany."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d Fizarana isaky ny fanatanterahana"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d Fizarana isaky ny fanatanterahana"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Fetra fahanteran'ny mpanangona"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Mampitandrina ny fampandrenesana ny fahasalaman'ny pipeline rehefa mihoatra io fahatarana io ny hafatra tsy mbola voakarakara, ny fahavitan'ny fikarakarana, na ny fampifanarahana miandry. Ny fahatarana tena izy dia farafahakeliny elanelam-potoana Poller telo sy 300 segondra. Apetraho ho 0 raha hampiasa 300 segondra."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Mahazatra (300 segondra)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d segondra"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Fetra fiandrasan'ny mpanangona"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "Ny pejy Sata Syslog dia mampiseho Fampitandremana rehefa mihoatra io isa io ny hafatra mbola tsy voakarakara ao amin'ny tabilao Syslog Miditra. Apetraho ho 0 raha hampiasa ny sanda voafaritra mialoha izay hafatra 10000."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Mahazatra (hafatra 10000)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d Hafatra"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Fampandrenesana ny fahasalaman'ny pipeline"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Lisitry ny fampahafantarana ny fahasalaman'ny pipeline"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Misafidiana lisitra fampandrenesana Thold efa misy ho an'ny fanairana momba ny fahasalaman'ny fantsona fikirakirana. Ny mpandray ao amin'ny lisitra Mavitrika dia atambatra amin'ireo adiresy mailaka eto ambany, sady mitazona ireo mpandray BCC. Ny lisitra dia mitaky ny latabatry ny lisitra fampandrenesana Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Mpandray Mailaka momba ny fahasalaman'ny pipeline"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Mpandray mailaka sarahin'ny faingo ho an'ny tsy fahombiazana sy ny fanarenana ny fantsona. Avelao ho banga ary aza misafidy lisitra fampandrenesana raha hanajanona ny mailaka; mijanona ho hita eo amin'ny tabilao Sata ny fahasalamana ary voarakitra an-tsoratra ny fiovan'ny toe-javatra. Mila mandeha ny Poller Cacti mba hanaovana ny fanamarinana."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Elanelam-potoana fampahatsiahivana ny fahasalaman'ny pipeline"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Avereno ny fampandrenesana momba ny olana mitohy amin'ny fantsona fikarakarana rehefa dila io elanelam-potoana io. Tsy averina indray mandeha isaky ny dimy minitra mahery ny fikasana handefa mailaka tsy nahomby."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Fitehirizana ny fanairana Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Ity no isan'ny andro itahirizana ny rakitra fampandrenesana."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Fanakanana fampandrenesana sy fikojakojana"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Andron'ny fotoam-pikojakojana"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Andro hanginana ny fampandrenesana fanairana rehetra mandritra ny fe-potoana fikojakojana voarindra."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Fanombohan'ny fotoam-pikojakojana"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Ora fanombohana an-toerana ho an'ny fotoam-pikojakojana ankapobeny."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Faran'ny fotoam-pikojakojana"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Ora famaranana an-toerana ho an'ny fotoam-pikojakojana ankapobeny. Mitohy amin'ny ampitso ny ora famaranana aloha kokoa."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Fanombohan'ny fikojakojana indray mandeha"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Daty sy ora eo an-toerana safidy hanombohana ny varavarankelin'ny fikojakojana ankapobeny indray mandeha."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Fiafaran'ny fikojakojana indray mandeha"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Daty sy ora eo an-toerana safidy hamaranana ny varavarankelin'ny fikojakojana ankapobeny indray mandeha. Endrika: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Fotoana fampanginana fanairana mahazatra"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Ajanony mandritra ity isa minitra ity ny fampandrenesana miverimberina ho an'ny fitsipika sy faritra tatitra mitovy. Ny sanda isaky ny fitsipika dia manafoana ity Fandrindrana ity. Apetraho ho 0 mba ho tsy mavitrika."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Fanafoanana dika mitovy mahazatra"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Ajanony mandritra ity isa minitra ity ny fampandrenesana mitovy andiana hafatra mifanaraka. Ny sanda isaky ny fitsipika dia manafoana ity Fandrindrana ity. Apetraho ho 0 mba ho tsy mavitrika."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Famerenana Syslog lavitra"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Firaketana fanarenana farany ambony isaky ny fanatanterahana"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Isan'ny hetsika Syslog lavitra voatahiry farany ambony alefa any amin'ny Mpanangona Fototra amin'ny fanatanterahana iray ataon'ny mpiasa mpanarina. Ny fifanakalozana tsirairay ao amin'ny tahirin-kevitra foibe dia mijanona voafetra ho firaketana 100. Ampitomboy tsikelikely sady manara-maso ny enta-mavesatra sy ny fiandrasana hidy ao amin'ny Mpanangona Fototra."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Fiatoana fanarenana eo anelanelan'ny andiany"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Fiatoana eo anelanelan'ny fifanakalozana fanaterana rakitra 100 an'ny Main Collector tsirairay. Ny fiatoana lava kokoa dia mampihena ny tsindry amin'ny Main Collector; ny fiatoana fohy kokoa dia manafaingana ny fanefana ny asa miandry."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Tsy misy fiatoana"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d milisegondra"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d segondra"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "Tsy azo ampiasaina ny angon-drakitra Syslog, ka tsy azo hamarinina amin'ny fetran'ny fizarazarana sy ny tabilaony ny fandrindrana fizarazarana."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Tsy voatahiry ny fandrindrana Syslog."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Miandry: mbola mampiasa fizarazarana %s ny tabilaon'ny hafatra iray. Alefaso ny cli/upgrade_partitioning.php mba hampiharana ny ambaratonga voafidy."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Fafao"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Ajanony"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Alefa"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Aondrana"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Tsy voafetra"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d Herinandro"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d Herinandro"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d Volana"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d Volana"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d taona"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Tsy mihitsy"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d minitra"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d minitra"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Manomboka amin'ny"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Ahitana"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Mifarana amin'ny"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Ny anaran'ny mpampiantrano dia"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Ny rindranasa dia"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Ny sampana dia"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Mpanamboatra Sivana"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "Fanehoana SQL"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Isan-kerinandro"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Fanafarana/Fanondranana"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Ireo fitsipiky ny fampandrenesana"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Fandrindrana Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Fitsipika fampandrenesana fitaovana"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Fitsipika fanalana"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Fitsipiky ny tatitra"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Tolo-kevitra"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Tsy afaka mifandray amin'ny angona Syslog. Tsy nisy firaketana Fitaovana voafafa."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "Nisy firaketana Fitaovana %s nesorina tao amin'ny tahirin-kevitra Syslog"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Fitaovana fanampiny Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Fafao tanteraka ireo Fitaovana Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Azonao antoka ve fa tianao hofafana ireo fitaovana Syslog lany andro?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Hamafiso ny fanadiovana tanteraka"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Tohizo"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Ity safidy ao amin'ny lisitra ity dia manome fomba hanesorana ireo Fitaovana tsy mitatitra intsony any amin'ny mpizara syslog an'ny Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Loharanon'ny tontonan'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Karazana tontonan'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Karazana kisarin'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Saha fanapariahana tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Elanelam-potoanan'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Elanelan'ny fotoana amin'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Karazana firaketana tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Isan'ny ambony indrindra amin'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Sakan'ny tontonan'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Haavon'ny tontonan'ny tabilao tsy manan-kery."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Fikarohana lojika tsy manan-kery: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Hafa"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Ilaina ny tontonana solaitrabe (dashboard panel) manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Tsy hita ny faritry ny takelaka fanaraha-maso."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Ilaina ny anarana misy tarehintsoratra hatramin'ny 128."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Ilaina ny solaitrabe (dashboard) manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Tsy hita ny takelaka fanaraha-maso."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Tsy afaka mitahiry ny fanovan'ny tabilao fampahalalana."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Ny tabilao fanaraha-masonao manokana ihany no azonao zaraina."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "kopia"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Tsy azo nadika ny takelaka fanaraha-maso."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Ilaina ny toerana misy tontonana manan-kery."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Ilaina ny lohateny misy tarehintsoratra hatramin'ny 128."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Tariho hanovana ny filaharan'ny karatra"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Havaozy ny takelaka"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Fitambaran'ny hafatra"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Tsy misy ny tahirim-pikirakirana tabilao sary amin'ity fametrahana Cacti ity."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Ovao ny tontonana"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Takelaka vaovao"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Tehirizo"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Ampiharo"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Fafao ity takelaky ny tabilao ity?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Fafao ity tabilao ity sy ny takelaka rehetra ao aminy?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Omeo anarana ny tabilao fanaraha-masonao"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Ataovy manokana"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Zarao amin'ny rehetra"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Tehirizo ho dika mitovy ho ahy"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Takelaka fanaraha-maso Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Takelaka fanaraha-maso"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Elanelam-potoana"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Ora farany"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Ora %d farany"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Andro farany"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Herinandro farany"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Herinandro %d farany"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Volana farany"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Volana %d farany"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Havaozy"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Ny tabilao fanaraha-masoko"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Tabilao fanaraha-maso ankapobeny"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Nozaraina tamiko"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Vaovao"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Ovao anarana"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Manampy tontonana"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Mamorona ny tabilao voalohany hanehoana ny fironan'ny syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Manampia tontonana hanombohana ny fanaovana kisary.  Afaka mampiasa ny fikarohana voatahirinao ny tontonana."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Faritry ny takelaka fanaraha-maso"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Lohateny"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Loharanon'ny firaketana"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Diarin'ny rafitra"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Laogin'ny fampandrenesana"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Karazan-takelaka"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Andiam-potoana"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Fizarazarana"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Tabilao sary"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Tsipika"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Velarana"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Bara"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Elanelana"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Mandeha ho azy"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Minitra"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 Minitra"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Ora"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "Andro"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Saha"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Rindranasa"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Sampana"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Laharam-pahamehana"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Isa ambony indrindra"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Karazana firaketana"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Firaketana rehetra"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Firaketana fototra"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Firaketana nesorina"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Atombohy avy amin'ny fikarohana voatahiry"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Ampidiro ny lahatsoratry ny hafatra…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Esory ny fepetra"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Vondrona mifanaraka"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Esory ny vondrona"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Anaran'ny takelaka fanaraha-maso"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Anarana"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Fetra nihoatra"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Nihoatra hatramin'ny"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Mpanangona"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Fitaovana"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Hafatra mifanaraka farany"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Miverina amin'ny laoniny aorian'ny"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Fitsipika"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Fitaovana mifanaraka rehetra"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Tsy misy fetra voadika amin'izao fotoana izao."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Ny fanarenana dia mitaky tsy hisy hafatra mifanaraka mandra-pahatongan'ny ora aseho. Ny fifanarahana tsirairay dia mamerina manomboka ny fotoana mangina."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Teo aloha"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Manaraka"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Azafady, ovay anarana ny iray amin'ireo rakitra config.php.dist na config_local.php.dist ao amin'ny lahatahiry syslog, ary ovay ny fandrindrana ny angon-drakitrao alohan'ny hametrahana azy."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Ny mari-potoana milisegondra (TIMESTAMP(3)) dia tohanana amin'ny MariaDB ihany. MySQL ity lohamilina ity, koa mametraha mari-potoana manana fahamarinan-tsegondra kosa."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Tsy azo ampiasaina ny fitehirizana Aria rehefa misy safidy Mpanangona angona lavitra mavitrika. Safidio ny InnoDB na ataovy tsy mavitrika avokoa ireo safidy Mpanangona angona lavitra."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Mpampiantrano 10 ambony indrindra"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Hafatra Syslog - Adiny iray lasa"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Hafatra araka ny hamafiny"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Rindranasa 10 ambony indrindra"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Asan'ny fampandrenesana"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Mpijery Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Sata Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Fanairana voafidy"
+
+#: syslog.php
+msgid "seconds"
+msgstr "segondra"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Tsy misy"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "efa %s izay ny hafatra tsy voakarakara"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "andian-kafatra %s miditra mbola miandry"
+
+#: syslog.php
+msgid "day"
+msgstr "andro"
+
+#: syslog.php
+msgid "days"
+msgstr "andro"
+
+#: syslog.php
+msgid "hour"
+msgstr "ora"
+
+#: syslog.php
+msgid "hours"
+msgstr "ora"
+
+#: syslog.php
+msgid "minute"
+msgstr "minitra"
+
+#: syslog.php
+msgid "minutes"
+msgstr "minitra"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Andalana ao amin'ny syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Haben'ny tabilao Syslog (angona + tondro)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Fitehirizana Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Fitazonana ny fampandrenesana"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Tsy mbola misy hetsika fanarenana voarakitra."
+
+#: syslog.php
+msgid "created"
+msgstr "voaforona"
+
+#: syslog.php
+msgid "remaining"
+msgstr "sisa tavela"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "nahemotra ny fitazonana"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Fampandehanana fanodinana farany"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Fampifanarahana voazara"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Fanamarinana fandraisan'ny mpanangona lavitra"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Fitahirizana sy fihazonana"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Fahasalaman'ny fizarana"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Asa fikojakojana ny fizarana"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Asa fikojakojana fizarana vao haingana"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Fahasalaman'ny pipeline"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Mpiasa mifanindran-dalana"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Fizotry ny mpiasa"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Dingam-panodinana"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Hetsika amin'ny fitsipika"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Firaketana voahodina"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Faharetan'ny fanaovana Poller"
+
+#: syslog.php
+msgid "Started"
+msgstr "Natomboka"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Vita"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Fotoam-pandehanana farafahakeliny"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Fotoam-pandehanana antonony"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Faharetan'ny fiasana farany ambony"
+
+#: syslog.php
+msgid "State"
+msgstr "Faritany"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Firaketana fanarenana miandry ao anaty filaharana"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Miandry tranainy indrindra"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Fampifanarahana nahomby farany"
+
+#: syslog.php
+msgid "Active"
+msgstr "Mavitrika"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Tsy miasa"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Mpiasa fanarenana"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Hadisoana tamin'ny fampifanarahana farany"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Isan'ny andiany farany"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Firaketana voaray farany"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Poller lavitra"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Poller lavitra tsy fantatra"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Tsy mbola nisy firaketana avy amin'ny mpanangona lavitra voaray."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Voasakana ny fikojakojana ny fizarana"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Nijanona ny fikojakojana ny fizarana; mitohy ao amin'ny fizarana fiarovana dMaxValue ny fanoratana."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Daty voarakotra"
+
+#: syslog.php
+msgid "Table"
+msgstr "Tabilao"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "andalana dMaxValue (tombanana)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "haben'ny dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Ambaratongan'ny fizarana"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "%s no voafidy ao amin'ny Fandrindrana ary manomboka manan-kery rehefa avy manamboatra indray ireo tabilao ny cli/upgrade_partitioning.php."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Andrana farany"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Fikojakojana nahomby farany"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Vita"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Nahemotra"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Vokatra farany"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Fivoaran'ny fanarenana"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Antsipiriany"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Vokatra"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Fanarenana"
+
+#: syslog.php
+msgid "When"
+msgstr "Rahoviana"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Tsy mbola misy hetsika fikojakojana fizarazaran-kapila voarakitra. Hiseho ny hetsika aorian'ny fiasan'ny Poller manaraka."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d voaforona, %d sisa tavela, %d nesorina"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Tsy misy hetsika ilaina."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Lahatra miditra miandry"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Fanodinana"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Fikojakojana ny fizarana"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Fampifanarahana"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Mitaky fitandremana"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Salama"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Fanodinana tsy mavitrika"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Miandry fanodinana"
+
+#: syslog.php
+msgid "Health"
+msgstr "Fahasalamana"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Vonona"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Voalefa"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Tsy nahomby; miandry fanandramana indray"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Miandry; fanamarinana Poller manaraka"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Fanamarinana fahasalamana farany"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Fampandrenesana amin'ny mailaka"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Mbola tsy nohamarinina"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Fampandrenesana nalefa farany"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Firaketana voaray farany"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Hafatra tsy mbola voakarakara tranainy indrindra"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Firaketana voahodina tamin'ny fandehanana farany"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Fizotry ny mpiasa mandeha"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Fomba fiasa mpiasa voarindra"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Mpampiantrano voavaha"
+
+#: syslog.php
+msgid "Process"
+msgstr "Dingana"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Firaketana nokarakaraina"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Fotoana fampandehanana"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Tsy mbola misy antontan'isa isaky ny fizotra voarakitra. Hiseho ny antontan'isan'ny mpiasa aorian'ny fandehanana mirazotra voalohany."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Faharetana"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Dingana"
+
+#: syslog.php
+msgid "Records"
+msgstr "Firaketana"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Fanavaozana tsiahy"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Fitsipika fanalana"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Fanombanana ny fampandrenesana"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Famindrana miditra"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Fikarakarana ny tatitra"
+
+#: syslog.php
+msgid "slowest"
+msgstr "miadana indrindra"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Tsy mbola misy fe-potoanan'ny dingana voarakitra. Hiseho ny fe-potoanan'ny dingana aorian'ny fiasan'ny Poller manaraka."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Fampandehanana farany"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Fitsipika voakarakara"
+
+#: syslog.php
+msgid "Total"
+msgstr "Fitambarany"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Fitsipika fampandrenesana"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Fafao ny fitsipika"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Nipoitra tamin'ny fandehanana farany"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Asehoy bebe kokoa"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Asehoy kely kokoa"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Sokafy ao anaty boaty fifampiresahana"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Esory ao amin'ny pejy"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Elanelam-potoana fanavaozana tsy manan-kery."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Karatra tsy fantatra."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Manampy karatra"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Manampy karatra sata…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Fijery fanairana Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Ilaina ny fikarohana voatahiry manan-kery."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Tsy hita ny fikarohana voatahiry."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Ny fikarohana voatahirinao manokana ihany no azonao zaraina."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Hafatra tsy voakarakara: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Ampidiro ny teny karohina"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Safidio ny Fitaovana"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Fitaovana voafidy"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Fitaovana rehetra voafidy"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Sivana hafatra Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Karohy ny hafatra"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Aforitra ny sivana"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Ovao ny sivana"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Fikarohana Voatahiry"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Ny fikarohako"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Fikarohana ankapobeny"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (Fototra)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Mitantana"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Mitantana ny fikarohana voatahiry"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Tehirizo ny fikarohana"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Ovao"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Tehirizo ho an'ny rehetra"
+
+#: syslog.php
+msgid "contains"
+msgstr "mirakitra"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "tsy mirakitra"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Andalana"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Andalana aseho"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "Voafaritra mialoha"
+
+#: syslog.php
+msgid "View options"
+msgstr "Safidy fijerena"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Manapaka sisiny"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Fanapahana hafatra"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Fitantanana ny fanalana"
+
+#: syslog.php
+msgid "Display"
+msgstr "Fampisehoana"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Atambatra ny hafatra mitovy"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Hafatra Tsirairay"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Hafatra natambatra"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Safidio ny saha, ny mpampiasa kajy, ary ny sanda. Ny AND dia manana laharam-pahamehana noho ny OR; ny NOT dia manilika fepetra iray. Ny LIKE dia mampiasa % ho an'ny litera na marika na firy na firy ary _ ho an'ny litera na marika iray. Ny daty dia mampiasa YYYY-MM-DD HH:MM:SS. Ny ID dia mampiasa isa feno tsy miiba. Amin'ny fomba mahazatra, ny diarin'ny andro farany no aseho raha tsy ovaina ny elanelan-daty."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Fanampiana amin'ny fikarohana"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Fikarohana voatahiry vaovao"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Ovao ny fikarohana voatahiry"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Tehirizo ho"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Fafao ny fikarohana voatahiry voafantina?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Fikarohana"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Fafao"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Avereno amin'ny sanda fototra nofaritan'ny mpampiasa ny sandan'ny sivana"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Havaozy ny valiny"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Aondrana ho CSV ny rakitra"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Tehirizo ny Fandrindrana Mahazatra"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Tehirizo ny fijery mahazatra"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Tehirizo ny Fikarohana ho"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Ampiharo ity fikarohana ity rehefa manokatra ity pejy ity ianao ka mbola tsy misy fikarohana mandeha"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Fihoarana"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Nihoatra ny Fetra"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Hafatra"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Hafatra banga"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Ovay ny fampisehoana ny hafatry ny vondrona"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Mampiditra ireo hafatry ny vondrona..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Tsy misy hafatra mifanaraka."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Tsy misy hafatra Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Andalan'ny laogin'ny fampandrenesana"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Fampandrenesana voafafa"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Tsy misy hafatra diarin'ny fampandrenesana"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Akatony ny antsipirian'ny hafatra"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Antsipirian'ny hafatra"
+
+#: syslog.php
+msgid "General"
+msgstr "Ankapobeny"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Fitsipiky ny fampandrenesana"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Filaharana"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Nadika"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Adikao ny rohy"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Adikao ny hafatra"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Tsy azo ampiasaina ny fandikana. Fidio ary adikao ny lahatsoratry ny hafatra."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Mitady tolo-kevitra…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Tsy misy tolo-kevitra mifanaraka amin'ity hafatra ity."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Hetsika"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Mamorona fitsipika fanairana"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Mamorona fitsipika fampandrenesana fitaovana"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Mamorona fitsipika fanesorana"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Sivana araka ny fitaovana"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Sivana araka ny programa"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Programa rehetra"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hamafana ireto Fitsipika fampitandremana Syslog manaraka ireto."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Fafao ny/ireo Fitsipika fanairana Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanaovana ho Tsy mavitrika ireto Fitsipika fampitandremana Syslog manaraka ireto."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Ataovy tsy mavitrika ny fitsipika fanairana Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hampavitrika ireto Fitsipika fampitandremana Syslog manaraka ireto."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Alefaso ny fitsipika fanairana Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanondrana ireto Fitsipika fanairana Syslog manaraka ireto."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Aondrana ny fitsipika fanairana Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Safidio ny Fanairana Syslog na ny Mpitantana Fanairana."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Ampidiro isa feno amin'ny minitra, ora, na andro ho an'ny varavarankelin'ny fetra."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Ampidiro isa feno miabo amin'ny minitra, ora, na andro ho an'ny fiverenan'ny fetra amin'ny laoniny."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Tsy manan-kery ny fandrafetana SQL nampidirina. Ahitsio ny SQL-nao azafady.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "Ity ny SQL efa voakarakara mialoha:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Tsy manan-kery ny sivana: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "Tsy manan-kery ny SQL nokarakaraina. Ahitsio azafady ny SQL-nao"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Tsy voafaritra"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 Minitra"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d ora"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d ora"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 Volana"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Fanovana fampandrenesana [ovao: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Fanovana fampandrenesana [vaovao]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Fitsipika fampandrenesana vaovao"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "Tsy misy"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Venty fotoana"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Andro"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Ora"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Minitra"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Farito ity fampandrenesana ity azafady."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Toerana alehan'ny fanairana"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Safidio ny Fanairana Syslog na ny Mpitantana Fanairana. Ny Mpitantana Fanairana dia mitaky ihany koa ny fampandehanana ny fandefasana ao amin'ny fandrindrana Syslog. Ny Mailaka dia tazonina ho vahaolana faharoa; tsy mandeha amin'ny fitsipiky ny Mpitantana Fanairana ny hetsika baiko."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Mpitantana fanairana"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Fampandrenesana Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Inona ny haavon'ny hamafin'ity fanairana ity?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Haavon'ny tatitra"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Ho an'ny firaketana ny Tsingerina Fampandrenesana Indray, tokony harahina eo amin'ny sehatry ny Rafitra sa ny Fitaovana ny Fampandrenesana."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Rafitra"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Fomba fanaovana tatitra"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Farito ny fomba hanaovana Fanairana amin'ny hafatra Syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Tsirairay"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Ho an'ny fomba 'Fetra', dia misy Fampandrenesana alefa rehefa mahatratra io sanda io ny isa hita."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Varavarankelin'ny Fetra"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Isao ireo mifanaraka mandritra ny tsingerin'ny mpanangona ao anatin'ity varavarankely mikisaka ity, amin'ny fampiasana ny fotoana fanodinana an'ny mpanangona. Ampidiro 0 raha ny tsingerina ankehitriny ihany no isaina."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Miverina amin'ny laoniny aorian'ny fotoana mangina"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Fotoana tsy misy hafatra mifanaraka alohan'ny hamafana ny fihoarana, hamerenana ny fanisana amin'ny zero, ary hamerenana hiasa indray ity fitsipika ity. Ny hafatra mifanaraka tsirairay dia mamerina manomboka ity fameram-potoana ity."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Karazana fifanarahana"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Safidio ny Mpanamboatra Sivana ho an'ny lojika fanairana maro fepetra azo antoka. Ny fanehoana SQL dia tazonina ho an'ny fitsipika taloha."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Andian-tsoratra mifanaraka amin'ny hafatra"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Mamoròna fepetra sivana na ampidiro fehezanteny SQL hifanaraka amin'ny hafatra syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Mavitrika"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Mavitrika ve ity Fampandrenesana ity?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Tsingerin'ny fampandrenesana miverina"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Aza alefa indray ity fampitandremana ity ho an'io Mpampiantrano io ihany mandra-pahatapitry ny fotoana voafaritra. Ho an'ny fanairana mifototra amin'ny Fetra, mihatra amin'ny Mpampiantrano rehetra izany."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Elanelam-potoana eo amin'ny fampandrenesana"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Minitra hampiatoana ny fampahafantarana manaraka rehetra avy amin'ity fitsipika ity sy ny sehatry ny tatitra."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "1 andro"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "1 ora"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "1 minitra"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 minitra"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 minitra"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 ora"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 minitra"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Ampiasao ny fandrindrana ankapobeny"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Fanafoanana ny dika mitovy"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Minitra hampiatoana ilay vondron-kafatra mitovy nifanojo."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Fotoam-pikojakojana"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Safidio raha mampiasa ny fe-potoam-pikojakojana ankapobeny ity fitsipika ity na ny fe-potoany manokana."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Aza atao mangina ity fitsipika ity"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Ampiasao ny fe-potoana ankapobeny"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Ampiasao ny fe-potoanan'ny fitsipika"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Andro fikojakojana ny fitsipika"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Andro ho an'ity vanim-potoanan'ny fitsipika ity, rehefa voafidy ny Ampiasao ny vanim-potoanan'ny fitsipika."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Fiandohan'ny fikojakojana ny fitsipika"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Ora fanombohana an-toerana ho an'ny fe-potoanan'ity fitsipika ity."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Fiafaran'ny fikojakojana ny fitsipika"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Ora famaranana an-toerana ho an'ny fe-potoanan'ity fitsipika ity."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Fanombohan'ny fikojakojana fitsipika indray mandeha"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Daty sy ora eo an-toerana safidy hanombohana mampangina ity fitsipika ity. Endrika: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Fiafaran'ny fikojakojana fitsipika indray mandeha"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Daty sy ora eo an-toerana safidy hampitsaharana ny fampanginana ity fitsipika ity. Endrika: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Fanamarihana"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Toerana ho an'ny fanamarihana momba ny fampandrenesana"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Safidin'ny mailaka"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Lisitry ny Fampandrenesana"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Ampiasao ny votoatin'ity Lisitry ny fampandrenesana ity hamaritana hoe iza no tokony hampandrenesina sy ny fomba fanaovana izany."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Mailaka hampandrenesina"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Ampidiro ny lisitry ny adiresy Mailaka sarahina amin'ny faingo hampahafantarina azafady.  Raha te handefa Mailaka amin'ny endrika SMS ho an'ny mpandray iray ianao, dia asio <b>'sms@'</b> eo alohan'ny adiresy Mailaka an'io mpandray io.  Ohatra, raha <b>'2485551212@mycarrier.net'</b> ny adiresy SMS an'ny mpandray, dia ampidiro ho <b>'sms@2485551212@mycarrier.net'</b> izany ary havoaka amin'ny endrika hafatra SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Lahatsoratry ny vatan'ny mailaka"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Hiseho ao amin'ny votoatin'ny Fampitandremana mialoha ny antsipirian'ny Fampitandremana ity fampahalalana ity."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Sokafy ny tapakila"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Tokony hisy tapakila fanampiana hosokafana ho an'ity fampandrenesana ity ve.  FANAMARIHANA: Hofenoina karazana variable tontolo iainana 'ALERT_' ny soratra baiko tapakila mba hanamorana ny asa."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Baiko fampandrenesana"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Rehefa misy Fanairana miseho, dia alefaso ity baiko manaraka ity. Misy ireto ova-ova fanoloana manaraka ireto: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Mariho fa ny <b>'&lt;HOSTNAME&gt;'</b> dia tsy misy afa-tsy amin'ny Fetra tsirairay ihany. Ireo sanda fanoloana ireo dia azo apetraka amin'ny tsipika baiko na alaina avy amin'ny tontolo iainan'ny script. Rehefa ampiasaina avy amin'ny tontolo iainana izy ireo dia asiana tovana aloha 'ALERT_' ireo ova-ova ireo."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Baiko fanarenana"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Baiko safidy alefa rehefa miverina amin'ny laoniny ity fetra ity aorian'ny fotoana mangina. Mampiasa ny solontena mitovy amin'ny baiko Fampitandremana. Ny SYSLOG_EVENT dia clear; ny SYSLOG_BREACH_ID dia mifanandrify amin'ny baiko fandikana. Averina andramana ny baiko tsy nahomby. Avelao ho banga raha hatao tsy mavitrika."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Andramo ny fitsipika"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Topi-maso ny fitsapana fitsipika"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Sanda"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Ampidiro sanda iray"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Mifanaraka"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Tsy ampidirina"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Ampidiro isa feno tsy miiba"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Fepetra sivana fanairana"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Rehetra"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Alefa"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Manafatra"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Sivana fanairana Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Fomba"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Isan'ny Fetra"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Teny Fikarohana"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Adiresy mailaka"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Fanovana farany"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "Araka ny Mpampiasa"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Fampandrenesana"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "Maromaro"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Tsy misy fanairana Syslog voafaritra"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Hanafatra Fitsipika Fanairana avy amin'ny Rakitra eo an-toerana"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Raha ao amin'ny solosainao eo an-toerana no misy ny rakitra XML mirakitra ny angona famaritana ny Fitsipika Fanairana, dia fidio eto izany."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Hanafatra Fitsipika Fanairana avy amin'ny Lahatsoratra"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Raha manana ny rakitra XML mirakitra ny angona famaritana ny Fitsipika Fanairana amin'ny endrika lahatsoratra ianao, dia azonao apetaka ato amin'ity boaty ity izany mba hanafarana azy."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Hanafatra Fitsipika Fanairana"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Fanafarana nolavina: foana ny rakitra, tsy manankery, na misy karazana zavatra Syslog hafa."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Fanafarana nolavina: tsy manankery ny toerana alehan'ny fanairana."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Nafarana"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "FANAMARIHANA: Ny fampitandremana '%s' dia %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Nohavaozina"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "HADISOANA: Tsy nahomby ny fanairana '%s' %s!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Fanavaozana"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Misafidiana tompony manan-kery."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Tsy afaka mitahiry ny tabilao fampahalalana. Andramo indray azafady."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Ampidiro anaran'ny tabilao fanaraha-maso eo anelanelan'ny 1 sy 128 litera sy marika."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Tompony"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Nozaraina"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Takelaka"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "mpampiasa voafafa"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Tsy mbola misy tabilao famintinana. Mamorona azy ireo ao amin'ny kiheba Tabilao famintinana an'ny Syslog ny mpampiasa."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Tsindrio ny 'Tohizo' mba hamafana ireto Solaitrabe manaraka ireto sy ny Tontonany rehetra."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Fafao ny/ireo Tabilao"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanondrana ireto Tabilao fanaraha-maso manaraka ireto."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Aondrana ny tabilao fanaraha-maso"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "FANAMARIHANA: Nafarana %d ary nohavaozina %d ny Tabilao fanaraha-maso."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "HADISOANA: Tsy nahomby ny fanafarana solaitrabe %d."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Hanafatra Tabilao fanaraha-maso avy amin'ny Rakitra eo an-toerana"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Raha ao amin'ny solosainao eo an-toerana no misy ny rakitra JSON mirakitra ny angona famaritana ny Tabilao fanaraha-maso, dia fidio eto izany."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Hanafatra Tabilao fanaraha-maso avy amin'ny Lahatsoratra"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Raha manana ny rakitra JSON mirakitra ny angona famaritana ny Tabilao fanaraha-maso amin'ny endrika lahatsoratra ianao, dia azonao apetaka ato amin'ity boaty ity izany mba hanafarana azy."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Hanafatra Tabilao fanaraha-maso"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Mpampiasa rehetra"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Vondrona rehetra"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Ovao ny tabilao fanaraha-maso"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Ny anarana aseho ao amin'ny safidy Tabilao famintinana amin'ny tabilao Syslog Dashboard."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Ny kaonty tompon'ity tabilao fanaraha-maso ity ary afaka mitantana ny tontonany."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Nozaraina tamin'ny mpampiasa"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Mpampiasa afaka mijery ity tabilao ity ankoatra ny tompony sy izay fizarana ankapobeny. Ny Mpampiasa rehetra dia mizara izany amin'ny rehetra."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Vondrona afaka mijery ity solaitrabe ity ankoatra ny tompony sy izay fizarana ankapobeny. Ny Vondrona rehetra dia mizara azy amin'ny olona rehetra."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Nozaraina tamin'ny vondrona"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Mihatra amin'ny mpijery rehetra ity takelaka fanaraha-maso ity ny fanovana anarana. Ny tompony no mitantana ny takelaka avy ao amin'ny tabilao Takelaka fanaraha-maso Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Safidio ny daty sy ora hifaranan'ny fiatoana amin'ny hoavy."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Ilaina ny anaran'ny fitaovana."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Tsindrio ny Tohizo mba hanaovana %s amin'ireto Fitsipika fanairana Fitaovana manaraka ireto."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Aza mandefa laharam-pahamehana"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s sy maika kokoa"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Fitsipika fampandrenesana fitaovana"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Karohy ny fitaovana Syslog ankehitriny eo am-panoratana, na ampidiro izay adiresy IP na anaran'ny mpampiantrano."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Fikarakarana ny fampandrenesana"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Aza atsahatra"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Ajanony mandra-pahatongan'ny daty iray, na mandritra ny fotoana tsy voafetra, ireo fanairana rehetra tsy manan-jo manokana."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Ajanony tsy misy fetra"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Ajanony hatramin'ny"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Daty sy ora an-toerana, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Fiafaran'ny fiatoana"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Ekeo foana ny laharam-pahamehana"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Ireo laharam-pahamehana ireo dia mandalo amin'ny fiatoana sy ny fotoana fikojakojana an'ity fitaovana ity. Ny 'Critical' sy ny maika kokoa no safidy mahazatra ho an'ny fitaovana platinum."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Avelao mandritra ny fikojakojana"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Ekeo ny laharam-pahamehana rehetra avy amin'ity fitaovana ity mandritra ny fotoam-pikojakojana fampitandremana. Mbola mihatra ihany ny fanavahana laharam-pahamehana etsy ambony raha Tsia izany."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Fitsipika fampandrenesana fitaovana [ovao]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Fitsipika fampandrenesana fitaovana [vaovao]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Sivan'ny fitsipika fampandrenesana fitaovana"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Fitsipika"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Fikirakirana"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Fikojakojana"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Fandalovana mivantana"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Tsy nisy fitsipika fanairana ho an'ny fitaovana hita."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Tsy miato"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Miato tsy misy fetra"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Miato hatramin'ny %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "sy maika kokoa"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Ekeo daholo"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Ampiasao ny fanavahana laharam-pahamehana"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Tsy voatahiry ny tolo-kevitra satria %s. Ampidiro ny famantarana tsy misy elanelana ary farafaharatsiny fanazavana na hetsika atolotra."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Efa misy ny soso-kevitra ho an'ity mpamokatra sy famantarana ity."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "FANAMARIHANA: Ny famantarana %s dia ahitana marika ankoatra ny litera, isa, _ . - / ary ny %% eo aloha azo isafidianana, ka tsy afaka mifanandrify mihitsy amin'ny hafatra syslog. Soloy kaody marina ireo toerana vonjimaika toy ny # na safidy toy ny A|B."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanondrana ireto Soso-kevitra manaraka ireto."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hamafana ireto Tolo-kevitra manaraka ireto."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Mitaky ny fanitarana PHP zlib ny fanondranana mba hamoronana rakitra JSON gzip."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Fanafarana nolavina: foana ny rakitra, lehibe loatra, na tsy antontan-taratasy JSON soso-kevitra manankery."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "FANAMARIHANA: Nampiana %d, nohavaozina %d ary navela tsy niova ny Soso-kevitra efa misy %d."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "HADISOANA: Nolavina ny tolo-kevitra %d (ohatra %s). Voatanisa miaraka amin'ny antony ao amin'ny diarin'i Cacti ny tsirairay."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "HADISOANA: Tsy voatahiry ny tolo-kevitra %d. Voatanisa ao amin'ny diarin'i Cacti ny tsirairay."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "FANAMARIHANA: %d amin'ireo Soso-kevitra nafarana no manana famantarana misy marika toy ny | na # izay tsy miseho mihitsy ao anaty teny hafatra, ka tsy afaka mifanandrify raha tsy ovaina. Apetraho ho Tsia ny Afaka mifanandrify mba hitanisana azy ireo."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Manafatra Soso-kevitra avy amin'ny Rakitra Eto An-toerana"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Safidio ny rakitra .json na .json.gz ao amin'ny solosainao. Ampiasao ny fiasa Fanondranana hijerena ny endrika andrasana: lisitry ny firaketana misy vendor, identifier, component, severity, message, explanation, recommended_action ary reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Manafatra Soso-kevitra avy amin'ny Lahatsoratra"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Na koa, apetaho ao anatin'ity boaty ity ny tahirin-kevitra JSON."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Tolo-kevitra efa misy"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Mitovy amin'ny iray efa misy ny soso-kevitra iray rehefa mifanaraka ny mpamokatra sy ny famantarana azy."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Tazony ny tolo-kevitra efa misy"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Soloy amin'ilay nafarana izy io"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Manafatra Soso-kevitra"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Manafatra, azafady miandrasa..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Tsy voafaritra"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Tolo-kevitra"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Ny mpamatsy ny fitaovana na rindrankajy izay mirakitra ity hafatra ity, ohatra ny Cisco na Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Mpamatsy"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Famantarana"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Ny kaody hafatra hotadiavina, ohatra %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN na 4625. Tsy maintsy mitovy amin'ny teny iray manontolo ao amin'ny hafatra syslog izany (litera, isa ary _ . - /); ny % eo aloha dia ara-bakiteny ary tsy maintsy mifanaraka araka ny nanoratana azy. Tsy manavaka sorabaventy sy soramandry ny fifanitsiana. Jereo ny Fomba Fampifanitsiana ny Tolo-kevitra ao amin'ny pejy lisitra."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Singa"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Ny facility, maodely na zana-drafitra izay mandefa ny hafatra."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Ny hamafin'ny hadisoana voarakitry ny mpamatsy ho an'ity hafatra ity."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Ny endriky ny hafatra araka ny voarakitra, anisan'izany ny toerana fenoina ho an'ny miovaova."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Ny dikan'ny hafatra."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Ny tokony hataon'ny mpandraharaha momba izany."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Rohy mankany amin'ny torolalan'ny mpamatsy, iray isaky ny andalana."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Tolo-kevitra [ovao]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Tolo-kevitra [vaovao]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Ny takamoa kely eo alohan'ny hafatra dia manamarika ireo soso-kevitra mifanaraka eo amin'ny vakitenin'ny Tatitry ny rafitra sy Tatitry ny fanairana. Tsindrio ny hafatra hamakiana azy ireo ao amin'ny takelaka antsipiriany. Ny fanatonana amin'ny totozy dia tsy mangataka amin'ny lohamilina velively."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Ny tsanganana <b>Famantarana</b> ihany no ampiasaina amin'ny fampifanandrifiana. Aseho ao amin'ny takelaka antsipiriany ny mpamatsy, singa, hamafiny, hafatra ary fanazavana fa tsy karohina mihitsy."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Zarina ho teny ny tarehintsoratra 2 048 voalohany amin'ny hafatra. Ny teny dia fitohizan'ny litera, isa ary ireo tarehintsoratra _ . - / izay mety manomboka amin'ny %. Ny tarehintsoratra hafa rehetra, toy ny elanelana, teboka roa, faingo na fonon-teny, dia mamarana ny teny. Ao amin'ny <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> ireo teny dia <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> ary <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Mifanaraka ny mpamantatra rehefa <b>mitovy tanteraka amin'ny teny iray manontolo</b>, ka tsy miraharaha ny litera lehibe na kely. Tsy fikarohana \"misy\", \"manomboka amin'ny\" na \"miafara amin'ny\" izany, ary tsy misy marika solontena: ny <code>LINK-3-UPDOWN</code> dia tsy mifanaraka amin'ny teny hoe <code>LINK-3-UPDOWN-EXT</code>, ary ny <code>UPDOWN</code> dia tsy mifanaraka amin'ny <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Ny <b>%</b> eo aloha dia tena izy, fa tsy marika solon-teny, ary tsy maintsy mifanaraka amin'ny teny ao amin'ny hafatra araka ny nanoratana azy. Ny famantarana <code>%LINK-3-UPDOWN</code> dia mifanaraka amin'ny teny ao amin'ny hafatra <code>%LINK-3-UPDOWN</code>, fa tsy <code>LINK-3-UPDOWN</code>; ny famantarana tsy misy tovona dia mifanaraka amin'ilay teny tsy misy tovona ihany."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Rehefa Fitaovana Cacti ny Mpampiantrano syslog izay fantatra ny mpamokatra azy avy amin'ny famaritana rafitra SNMP na ny Modely Fitaovana, ary misy soso-kevitra ho an'izany mpamokatra izany, dia ny soso-kevitra ho an'io mpamokatra io sy ireo tsy misy mpamokatra ihany no hamarinina. Raha tsy izany dia hamarinina avokoa ny mpamokatra rehetra, saingy ny famantarana vita amin'ny isa ihany dia mifanaraka amin'ny soso-kevitra tsy misy mpamokatra fotsiny. Rehefa misy soso-kevitra maromaro mifanaraka, dia ny famantarana lava indrindra no aseho voalohany, hatramin'ny telo."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Tazomina sy aondrana ireo famantarana izay misy litera na marika hafa, toy ny toerana fametrahana <code>#</code> na ny safidy <code>|</code> ao amin'ny antontan-taratasin'ny mpivarotra sasany (ohatra <code>%ASA|PIX-3-331001</code>), saingy tsy afaka mifanaraka mihitsy. Ataovy Tsia ny <b>Afaka mifanaraka</b> mba hitanisana azy ireo, ary ovao ho ny kaody marina izy ireo, ohatra <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Ny fomba fampifanarahana ny soso-kevitra"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Afaka mifanaraka"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Na manana endrika teny hafatra ny famantarana, mba hahafahan'ny fikarohana hafatra mahita azy"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Hanondrana ny tolo-kevitra rehetra mifanaraka amin'ny sivana"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Tsy nisy tolo-kevitra hita."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Karakarao indray"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hamafana ireto Fitsipika famafana Syslog manaraka ireto."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Fafao ny/ireo Fitsipika fanesorana Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanaovana ho Tsy mavitrika ireto Fitsipika famafana Syslog manaraka ireto."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Ataovy tsy mavitrika ny fitsipika fanesorana Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hampavitrika ireto Fitsipika famafana Syslog manaraka ireto."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Alefaso ny fitsipika fanesorana Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hikarakara indray ireto Fitsipika fanesorana Syslog manaraka ireto."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Ampiharo miverina ny fitsipika fanalana Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanondrana ireto Fitsipika fanesorana Syslog manaraka ireto."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Aondrana ny fitsipika fanesorana Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Ny fitsipika '%s' dia nahatonga hafatra %s/%s nesorina/nafindra"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Fanovana fitsipika fanalana [ovaina: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Fanovana fitsipika fanalana [vaovao]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Firaketana fanesorana vaovao"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Fitsipika fanesorana vaovao"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Antsipirian'ny fitsipika fanalana"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Anaran'ny fitsipika fanalana"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Farito ity fitsipika fanesorana ity azafady."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Mavitrika?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Mavitrika ve ity Fitsipika fanesorana ity?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Karazana fampitahana lahatsoratra"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Farito ny fomba tianao hampifanarahana ity teny ity.  Raha mampiasa ny karazana Fitambaran-teny SQL ianao dia afaka mampiasa izay fitambaran-teny SQL manankery rehetra hamokarana ny fanairana.  Ny saha misy dia ahitana ny 'message', 'facility', 'priority', ary 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Lahatsoratra mifanaraka amin'ny hafatra Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Ampidiro ny singa mifanandrify amin'ny hafatra Syslog, ny fitaovana na ny anaran'ny mpampiantrano, na ny fehezanteny WHERE SQL raha mampiasa ny Karazana Fifanandrifiana Fomba Fiteny SQL."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Fomba fanesorana"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Famafana"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Famindrana"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Fanamarihana momba ny fitsipika fanalana"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Toerana ho an'ny fanamarihana momba ny fitsipika fanesorana"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Fepetra sivana fanalana"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Sivana fitsipika fanalana Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Anaran'ny fanalana"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Famindrana"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Tsy misy fitsipika fanesorana Syslog voafaritra"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Manafatra Fitsipika Fanesorana avy amin'ny Rakitra Eto An-toerana"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Raha ao amin'ny solosainao eo an-toerana no misy ny rakitra XML mirakitra ny angona famaritana ny Fitsipika Fanesorana, dia fidio eto izany."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Manafatra Fitsipika Fanesorana avy amin'ny Lahatsoratra"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Raha manana ny rakitra XML mirakitra ny angona famaritana ny Fitsipika Fanesorana amin'ny endrika lahatsoratra ianao, dia azonao apetaka ato amin'ity boaty ity izany mba hanafarana azy."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Manafatra Fitsipika Fanesorana"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "FANAMARIHANA: Ny fitsipika fanesorana '%s' dia %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "HADISOANA: Tsy nahomby ny Fitsipika fanesorana '%s' %s!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hamafana ireto Tatitra Syslog manaraka ireto."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Fafao ny/ireo Tatitra Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanaovana ho Tsy mavitrika ireto Tatitra Syslog manaraka ireto."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Ataovy tsy mavitrika ny tatitra Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hampavitrika ireto Tatitra Syslog manaraka ireto."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Alefaso ny tatitra Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanondrana ireto Fitsipika tatitra Syslog manaraka ireto."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Aondrana ny fitsipika tatitra Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Tsy maintsy misafidy Tatitra Syslog iray farafahakeliny ianao."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Miverina"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Fanovana tatitra [ovaina: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Fanovana tatitra [vaovao]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Firaketana tatitra vaovao"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Farito ity tatitra ity azafady."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Mavitrika ve ity Tatitra ity?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Farito ny fomba tianao hampifanarahana ity teny ity. Ny Mpanamboatra Sivana dia manambatra fepetra momba ny hafatra, Mpampiantrano, programa, facility ary laharam-pahamehana."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Fahatetesana"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Impiry no tokony handefasana ity Tatitra ity amin'ny lisitry ny fizarana?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Ora fandefasana"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "Amin'ny firy amin'ny andro no tokony handefasana ity tatitra ity?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Endriky ny tatitra"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Mamoròna fepetra sivana, na ampidiro ny lahatsoratra na fehezanteny SQL hifanaraka amin'ny hafatra syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Ny fampahalalana izay ho ao amin'ny vatan'ny Tatitra."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Lisitry ny adiresy Mailaka sarahin'ny faingo handefasana ny tatitra."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Toerana ho an'ny fanamarihana momba ny tatitra"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Topi-maso fitsapana ny tatitra"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Fepetra fanivanana ny tatitra"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Sivana tatitra Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Anaran'ny Tatitra"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Nalefa farany"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Tatitra"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Tsy misy tatitra Syslog voafaritra"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Manafatra Fitsipika Tatitra avy amin'ny Rakitra Eto An-toerana"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Raha ao amin'ny solosainao eo an-toerana no misy ny rakitra XML mirakitra ny angona famaritana ny Fitsipika Tatitra, dia fidio eto izany."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Manafatra Fitsipika Tatitra avy amin'ny Lahatsoratra"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Raha manana ny rakitra XML mirakitra ny angona famaritana ny Fitsipika Tatitra amin'ny endrika lahatsoratra ianao, dia azonao apetaka ato amin'ity boaty ity izany mba hanafarana azy."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Manafatra Angona Tatitra"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "FANAMARIHANA: Ny fitsipika tatitra '%s' dia %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "HADISOANA: Tsy nahomby ny Fitsipika tatitra '%s' %s!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Tsy afaka mitahiry ny Modely. Andramo indray azafady."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Ampidiro anaran'ny modely eo anelanelan'ny 1 sy 128 litera sy marika."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Modely"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Fangatahana"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Tsy misy modely fikarohana iombonana. Tehirizo ny fikarohana ho an'ny mpampiasa rehetra avy ao amin'ny Syslog mba hamoronana iray."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hanondrana ireto Modely fikarohana voatahiry manaraka ireto."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Tsindrio ny 'Tohizo' mba hamafana ireto Modely fikarohana voatahiry manaraka ireto."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Fafao ny/ireo Modely fikarohana voatahiry"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Aondrana ny Modelin'ny fikarohana voatahiry"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "FANAMARIHANA: Nafarana %d ary nohavaozina %d ny Modely fikarohana voatahiry."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "HADISOANA: Tsy nahomby ny fanafarana Modelin'ny fikarohana voatahiry %d."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Manafatra Modely Fikarohana Voatahiry avy amin'ny Rakitra Eto An-toerana"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Raha ao amin'ny solosainao eo an-toerana no misy ny rakitra JSON mirakitra ny angona famaritana ny Modely Fikarohana Voatahiry, dia fidio eto izany."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Manafatra Modely Fikarohana Voatahiry avy amin'ny Lahatsoratra"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Raha manana ny rakitra JSON mirakitra ny angona famaritana ny Modely Fikarohana Voatahiry amin'ny endrika lahatsoratra ianao, dia azonao apetaka ato amin'ity boaty ity izany mba hanafarana azy."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Manafatra Modely Fikarohana Voatahiry"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Ovao ny Modely fikarohana voatahiry"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Ny anarana aseho ho an'ny mpampiasa rehetra ao amin'ny Fikarohana Voatahiry."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Ny kaonty tompon'ity Modely ity ary afaka mitantana azy ao amin'ny Fikarohana Voatahiry."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Mpampiasa afaka mampiasa ity modely ity ankoatra ny tompony. Ny Mpampiasa rehetra dia mizara izany amin'ny rehetra."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Vondrona afaka mampiasa ity Modely ity ankoatra ny tompony. Ny Vondrona rehetra dia mizara azy amin'ny olona rehetra."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Fangatahana Fikarohana"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Ahitsio ny rafi-panoratana fangatahana raha hampiasa ny mpanamboatra fangatahana."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Safidio ny saha, ny mpampiasa kajy, ary ny sanda. Ampiasao ny AND, OR, NOT, na Vondrona mba hananganana ny fangatahana. Ny fanovana dia mihatra amin'ity modely nozaraina ity ho an'ny mpampiasa rehetra."
+

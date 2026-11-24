@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-24 19:00+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Amharic\n"
+"Language: am-ET\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d ደቂቃዎች"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d ሰዓት"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d ሰዓታት"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d ቀን"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d ቀናት"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d ሳምንት"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d ሳምንታት"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d ወር"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d ወራት"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d ዓመት"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d ዓመታት"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "የቀን ፈረቃ"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "ይህ ቀን"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "ይህ ሳምንት"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "ይህ ወር"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "ይህ ዓመት"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "ያለፈው ቀን"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "ያለፈው ሳምንት"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "ያለፈው ወር"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "ያለፈው ዓመት"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "የSyslog ማውረድ"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "ለተጠቃሚዎች አጋራ…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "ለቡድኖች አጋራ…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "ድንገተኛ አደጋ"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "ወሳኝ"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "ማንቂያ"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "ስህተት"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "ማስጠንቀቂያ"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "ማሳሰቢያ"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "መረጃ"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "ማረም"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "መረጃዊ"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "ማስቀመጥ አልተሳካም። በማመሳሰል ሁነታ ላይ ያሉ የርቀት ውሂብ ሰብሳቢዎች ደንቦችን እንዲያስቀምጡ አይፈቀድላቸውም። በምትኩ ከዋናው Cacti አገልጋይ ያስቀምጡ።"
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "እባክዎ የHTML ኢሜይል ደንበኛ ይጠቀሙ"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "የጽሑፍ ማስመጫ ውሂብ መጠን ከከፍተኛው መጠን አልፏል"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "የተሰቀለውን የማስመጫ ፋይል ማንበብ አልተቻለም። ፋይሉን እና የመስቀያ መጠን ገደቡን ያረጋግጡ።"
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "ከማስመጣትዎ በፊት የማስመጫ ፋይል ይምረጡ ወይም ይዘቱን ይለጥፉ።"
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "የSyslog ሠንጠረዦች አልተከፋፈሉም (partitioned አይደሉም)። ባህላዊ (ያልተከፋፈሉ) ሠንጠረዦች ከአገልግሎት ውጭ እየሆኑ ሲሆን፣ ለአዲስ ጭነቶች የተከፋፈሉ ሠንጠረዦች ያስፈልጋሉ። ውሂብዎ መሰብሰቡን ይቀጥላል፣ ነገር ግን የsyslog ሠንጠረዡን ወደ ተከፋፈለ አርክቴክቸር ማዛወር አለብዎት።"
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "የተጠናቀቀ የማስኬድ ሂደት በመጠበቅ ላይ።"
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "ማካሄዱ በተፈቀደው መዘግየት ውስጥ እየተጠናቀቀ ነው።"
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "ከ%d ሰከንዶች በላይ ምንም የሂደት አሂድ አልተጠናቀቀም።"
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "ገቢ መልዕክቶች በተዋቀሩት ገደቦች ውስጥ ናቸው።"
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "የገቢ ወረፋ መለኪያዎች አይገኙም።"
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "ቢያንስ የ %s መልዕክቶች ገቢ ክምችት ከ %s ገደብ በላይ ሆኗል።"
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "በጣም የቆየው የገቢ መልእክት የጊዜ ማኅተም አይገኝም።"
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "ያልተሰሩ መልዕክቶች ከ%d ሰከንዶች በላይ የቆዩ ናቸው።"
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "በዚህ ሰብሳቢ ላይ ማመሳሰል አልነቃም።"
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "ማመሳሰል በተፈቀደው መዘግየት ውስጥ ነው።"
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "የማመሳሰል ወረፋ መለኪያዎች አይገኙም።"
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "በጣም የቆየው የማመሳሰያ መዝገብ የጊዜ ማኅተም አይገኝም።"
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "ማመሳሰል አልተሳካም ወይም በወረፋ ላይ ያሉ መዝገቦች ከተፈቀደው መዘግየት በልጠዋል።"
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "የክፍልፋይ ጥገና አልታገደም።"
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "የክፍልፋይ ጥገና ታግዷል: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "የSyslog ሂደት መስመር ጤና - ሰብሳቢ %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "የSyslog የሂደት መስመር (pipeline) አገግሟል።"
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "ለ %s ያለው የክፍልፋይ አቀማመጥ ልክ ያልሆነ ወይም ያልተሟላ ነው፤ የክፍልፋይ ጥገና ቆሟል። የክፍልፋዩን ሜታዳታ በ SHOW CREATE TABLE ያረጋግጡ እና አስፈላጊ ከሆነ ክፍልፋዮቹን እንደገና ይገንቡ፤ ጽሑፎች ወደ dMaxValue የደህንነት ክፍልፋይ መግባታቸውን ይቀጥላሉ።"
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "የቀረው የክፍልፍል ክፍተት፡ %d ክፍልፍል(ሎች)"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "የማቆያ ማዘግየት የለም"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "የወደፊቱ አድማስ እስኪመለስ ድረስ የማቆያ መከርከም ዘግይቷል"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "አዲስ መዝገቦች በdMaxValue የደህንነት ክፍልፍል ውስጥ እየተከማቹ ነው"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "በአንድ ሩጫ የማገገሚያ ገደብ ላይ ተደርሷል"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "የክፍልፍል መፍጠር አልተሳካም"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "ያልታወቀ የክፍልፍል ደረጃ፤ በየሰዓቱ ወይም በየቀኑ የሚለውን ይምረጡ።"
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "የSyslog የማቆያ ጊዜ ልክ አይደለም።"
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "በሰዓት ክፍፍል ካልተወሰነ የማቆያ ጊዜ ጋር ጥቅም ላይ ሊውል አይችልም፤ ይህ ያልተገደበ የክፍፍሎች ብዛት ያስፈልገዋል። የማቆያ ጊዜ ወይም በየቀኑ ክፍፍል ይምረጡ።"
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "%s ክፍልፋይ ከ %s ቀናት ማቆያ እና ከ %s ቀን ቅድመ-ፍጠር መስኮት ጋር በአንድ ሰንጠረዥ %s ክፍልፋዮችን ይፈልጋል፣ ይህም የዚህን የውሂብ ጎታ አገልጋይ የ %s ክፍልፋዮች ገደብ ያልፋል። ማቆያውን ይቀንሱ፣ የቅድመ-ፍጠር መስኮቱን ያሳጥሩ፣ ወይም ዕለታዊ ክፍልፋይን ይምረጡ።"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "ዕለታዊ"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "በየሰዓቱ"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "cli/upgrade_partitioning.php እንደገና እስኪገነባቸው ድረስ ሰንጠረዦቹ አሁንም %s ክፍልፍሎችን ይጠቀማሉ።"
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "የነባር Syslog ሰንጠረዦች የክፍፍል ደረጃ ሊነበብ አልቻለም።"
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "ራስ-ሰር የክፍልፋይ መልሶ ማግኛ ተላልፏል፦ የdMaxValue መጠን አይገኝም፤ የኦፕሬተር ጣልቃ ገብነት ያስፈልጋል።"
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "ራስ-ሰር የክፍልፋይ መልሶ ማግኛ ተላልፏል፦ dMaxValue በግምት %s ረድፎች እና %s ባይቶች አሉት፤ ገደቦቹ 100000 ረድፎች እና 134217728 ባይቶች ናቸው። የኦፕሬተር ጣልቃ ገብነት ያስፈልጋል።"
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "ያልታወቀ የደንብ ዓይነት።"
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "የተዋቀረው የገቢ መስክ ጥምረት (mapping) ልክ አይደለም።"
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "የዚህ ደንብ ፋሲሊቲ ገና በማጣቀሻ ሠንጠረዡ ውስጥ የለም።"
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "ያልታወቀ የደንብ ማዛመጃ ዓይነት።"
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "ደንቡ ወደ መጠይቅ አልተቀናበረም።"
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "የቅድመ-ዕይታ መጠይቁ ሊገመገም አልቻለም።"
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "የታሪካዊ ቅድመ-ዕይታ ማጣሪያው መቀነባበር አልቻለም።"
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "የታሪካዊ ቅድመ-ዕይታ መጠይቁ መገምገም አልቻለም።"
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "የቅድመ-ዕይታ ናሙናው ሊነበብ አልቻለም።"
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "የSQL አገላለጽ ቅድመ-እይታዎች በወረፋ ላይ ያሉ ገቢ መልእክቶችን ብቻ ይፈትሻሉ። ቀደም ሲል የተከናወኑ መልእክቶች አይፈለጉም። መሞከር ማንቂያዎችን አይልክም።"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "ፈቃድ ተከልክሏል።"
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "ልክ ያልሆነ ጥያቄ። እባክዎ እንደገና ይሞክሩ።"
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "ደንቡ የሚሞከር የተዛማጅ አገላለጽ የለውም።"
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "የማዛመጃ መግለጫው ለመሞከር በጣም ረጅም ነው።"
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "ያልታወቀ"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "የ Cacti Syslog ገደብ ማንቂያ '%s' ለአስተናጋጅ '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "የ Cacti Syslog ገደብ ማንቂያ '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "የማንቂያ ስም"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "አሳሳቢነት"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "ገደብ"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "ቆጠራ"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "የማዛመጃ ሕብረቁምፊ"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "የ Cacti Syslog ማንቂያ '%s' ለአስተናጋጅ '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "የ Cacti Syslog ማንቂያ '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "የአስተናጋጅ ስም"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "ቀን"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "ደረጃ"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "መልዕክት"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "ማስጠንቀቂያ፦ ለአስተናጋጅ '%s' የSyslog ገደብ ማንቂያ ተቀስቅሷል"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "ማስጠንቀቂያ፦ የSyslog ገደብ ማንቂያ ተቀስቅሷል"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "ስም:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "ክብደት:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "ገደብ:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "ብዛት:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "የመልዕክት ሕብረቁምፊ:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "የአስተናጋጅ ስም:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "ቀን፦"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "ደረጃ:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "መልዕክት:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr "፣ አስተናጋጅ፦"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr "፣ URL፦"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "ክብደት:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "የክስተት ማንቂያ - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr "፣ ብዛት፦"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "አስተናጋጅ"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "የክስተት ሪፖርት - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "የሪፖርት ቅድመ-ዕይታዎች በጣም የቅርብ %d የተከማቹ መልዕክቶችን ይፈልጋሉ፤ ሪፖርቱ ራሱ ግን ሙሉ የጊዜ መስኮቱን ይሸፍናል። ሙከራ ኢሜይል አይልክም።"
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "በቡድን የተደራጁ ውጤቶች አይገኙም ወይም ጊዜያቸው አልፎባቸዋል። ውጤቶቹን ያድሱና እንደገና ይሞክሩ።"
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "የቡድን መልዕክቶችን መጫን አልተቻለም።"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "አይ"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "አዎ"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "ሁሉም ጽሑፍ"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "አምድ አስተካክል"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d ቁምፊዎች"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "የSyslog ማሻሻያ አማካሪ"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Syslogን ከ %s ወደ %s ይላቅ? ነባር መልእክቶች እና ደንቦች ይጠበቃሉ። የመዋቅር (Schema) ለውጦች ጊዜ ሊወስዱ ይችላሉ።"
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "ምን ዓይነት የማሻሻያ/የመጫኛ ዓይነት መጠቀም ይፈልጋሉ"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "በጣም ትላልቅ ሠንጠረዦች ሲኖሩዎት፣ Truncate ማከናወን በጣም ፈጣን ይሆናል። ስለ ማህደር ውሂብ የሚያሳስብዎት ከሆነ፣ ለዚህ ማሻሻያ ጊዜ አሳሽዎን የሚያቆመውን በመስመር ላይ (Inline) ወይም የድሮውን የSyslog ውሂብዎን ከመጠባበቂያ ሠንጠረዥ ወደ አዲሱ የSyslog ቅርጸት ለማምጣት የጀርባ ሂደት የሚፈጥረውን ከበስተጀርባ (background) መምረጥ ይችላሉ። እንደገና ይህ ሂደት ብዙ ሰዓታት ሊወስድ ይችላል። Truncate የተቀመጡትን Syslog እና የተወገዱ መልዕክቶችን ብቻ ያስወግዳል፤ የማንቂያ፣ የማስወገጃ እና የሪፖርት ደንቦች ሁልጊዜ ይጠበቃሉ።"
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "የSyslog ሰንጠረዥን አጽዳ"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "በቦታው ላይ ማሻሻያ"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "የጀርባ ማሻሻያ"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "የውሂብ ጎታ ማከማቻ ሞተር"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "ለትንታኔ ሰንጠረዦች የማከማቻ ሞተር።  InnoDB እና በMariaDB ላይ Aria የማከማቻ ሞተሮች ብቻ ይደገፋሉ።  ማንኛውም የርቀት ውሂብ ሰብሳቢ (Remote Data Collector) አማራጭ InnoDBን ይፈልጋል፤ የማይጣጣሙ ጥምረቶች ሊቀርቡ አይችሉም።"
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "የInnoDB ማከማቻ"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "የAria ማከማቻ"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "የጊዜ ማህተም ትክክለኛነት"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "የሚሊሰከንድ ትክክለኛነት ከሰከንድ በታች የሆኑ የsyslog የጊዜ ማህተሞችን በTIMESTAMP(3) ዓምድ ውስጥ ያከማቻል፣ እና የሚገኘው በMariaDB ላይ ብቻ ነው። የሰከንድ ትክክለኛነት መደበኛውን የTIMESTAMP ዓምድ ይጠቀማል። በምርት ሥርዓት ላይ፣ ነባር መልዕክቶችን ሳያስወግዱ ለመቀየር በጥገና ጊዜ ውስጥ cli/upgrade_partitioning.php --convert-ms ይጠቀሙ።"
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "ሚሊሰከንድ - TIMESTAMP(3) (MariaDB ብቻ)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "ሰከንድ - TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "የርቀት መልዕክት ሂደት"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "የርቀት ውሂብ ሰብሳቢ መልዕክት ማቀናበርን አንቃ"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "የእርስዎ የርቀት ውሂብ ሰብሳቢዎች የራሳቸው Syslog የውሂብ ጎታዎች ካሏቸው እና መልዕክቶቻቸውን በራሳቸው የሚያስኬዱ ከሆነ፣ ይህን አመልካች ሳጥን ይምረጡ። ይህን አመልካች ሳጥን በመምረጥ፣ Syslog ለመልዕክት ማሳያ እና ሂደት ገለልተኛ የውሂብ ጎታ እንዲጠቀም ለማሳወቅ የእርስዎ የርቀት ውሂብ ሰብሳቢዎች የራሳቸውን 'config_local.php' ፋይል መያዝ ያስፈልጋቸዋል። ለዚህ ዓላማ እባክዎ የአብነት ፋይሉን 'config_local.php.dist' ይጠቀሙ። ማስጠንቀቂያ: ይህ አማራጭ እንደነቃ የSyslog ሰንጠረዦች በራስ-ሰር ይፈጠራሉ።"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "የርቀት ውሂብ ሰብሳቢ ደንቦች ማመሳሰል"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "የእርስዎ የርቀት ውሂብ ሰብሳቢዎች የራሳቸው Syslog የውሂብ ጎታዎች ካሏቸው እና መልዕክቶቻቸውን በራሳቸው የሚያስኬዱ ከሆነ፣ የዋናው Cacti የውሂብ ጎታ ማንቂያዎች፣ የማስወገጃ እና የሪፖርት ደንቦች ወደ የርቀት Cacti ስርዓት እንዲላኩ ከፈለጉ ይህን አመልካች ሳጥን ይምረጡ።"
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "መዝገቦችን በርቀት ሰብሳቢ ላይ አከማች"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "የተሰሩ መልዕክቶች ወደ ዋናው ሰብሳቢ ከደረሱ በኋላ በርቀት ሰብሳቢው Syslog ሰንጠረዥ ውስጥ ያቆዩዋቸው። ተሰናክሏል ሲሆን፣ መዝገቦች በአካባቢው የሚቆዩት ዋናው ሰብሳቢ የማይገኝ ሲሆን ብቻ ሲሆን የመልሶ ማግኛ ማድረስ ከተረጋገጠ በኋላ ይወገዳሉ።"
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "የማቆያ ፖሊሲ"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "በውሂብ ጎታው ውስጥ ስንት ቀናት የSyslog እሴቶችን ማቆየት እንደሚፈልጉ ይምረጡ።"
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "የክፍልፋይ ደረጃ"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "የsyslog እና syslog_removed ሰንጠረዦች የእያንዳንዱ ክፍልፍል መጠን።  በየቀኑ (Daily) ይመከራል።  በየሰዓቱ (Hourly) ውስን የማቆያ ጊዜን ይፈልጋል፣ እና የማቆያ ጊዜውና የክፍፍል ደረጃው በአንድነት ከውሂብ ጎታ አገልጋዩ የክፍልፍል ገደብ ጋር መመጣጠን አለባቸው።  ደረጃውን በኋላ ለመቀየር፣ በቅንብሮች ውስጥ ይቀይሩት እና cli/upgrade_partitioning.php ያስኪዱ።"
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "አሻሽል"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "ጫን"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "የSyslog %s አማካሪ"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "ማስጠንቀቂያ፦ የSyslog ማሻሻያ ብዙ ጊዜ ይወስዳል!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "የ'main' syslog ሠንጠረዥን ማላቅ በጣም ብዙ ጊዜ የሚወስድ ሂደት ሊሆን ይችላል። ስለሆነም ከማላቅዎ በፊት የsyslog ሠንጠረዥዎን መጠን እንዲቀንሱ ወይም የጀርባ አማራጩን እንዲመርጡ ይመከራል።"
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "የዳራ አማራጩን ከመረጡ፣ የቀድሞው syslog ሰንጠረዥዎ እንደገና ይሰየማል፣ እና አዲስ syslog ሰንጠረዥ ይፈጠራል። ከዚያም፣ የማሻሻያ ሂደት በዳራ ውስጥ ይጀመራል። በድጋሚ፣ ይህ የዳራ ሂደት ለመጠናቀቅ በቂ ጊዜ ሊወስድ ይችላል። ሆኖም ግን፣ ውሂብዎ ይጠበቃል።"
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "ምርጫዎ ምንም ይሁን ምን፣ በማሻሻያ ሂደቱ ወቅት ሁሉም ነባር የማስወገጃ እና የማንቂያ ደንቦች ይጠበቃሉ።"
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "ማሻሻያውን ለመቀጠል <b>'አሻሽል'</b> የሚለውን ይጫኑ፣ ወይም ወደ ተሰኪዎች ምናሌ ለመመለስ <b>'ይቅር'</b> የሚለውን ይጫኑ።"
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "እንዲሁም ለsyslog እና syslog_remove የትንታኔ ሠንጠረዦች የውሂብ ጎታ ማከማቻ ሞተርን ማዋቀር ይችላሉ። የሚደገፉት የInnoDB ማከማቻ ሞተር እና በMariaDB ላይ ደግሞ የAria ማከማቻ ሞተር ብቻ ናቸው። MariaDB ን የሚጠቀሙ ከሆነ ምንም የርቀት ውሂብ ሰብሳቢ አማራጮች ካልነቁ የAria ማከማቻ ሞተርን እንመክራለን፤ የሰብሳቢ አማራጮች InnoDB ን ይፈልጋሉ።"
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Syslog ን ሲጭኑ የሚመርጧቸው በርካታ አማራጮች አሉ። የመጀመሪያው የዳታቤዝ አርክቴክቸር ነው። የተከፋፈሉ ሰንጠረዦች (Partitioned tables) የሰንጠረዦቹ መጠን ከመጠን በላይ እንዳያድግ እና መጠይቆችን እንዳያዘገይ ስለሚከላከሉ ብቸኛው የሚደገፍ አርክቴክቸር ናቸው። ልማዳዊ ያልተከፋፈሉ ሰንጠረዦች ጊዜ ያለፈባቸው ሲሆኑ ለአዲስ ጭነቶች ከእንግዲህ አይቀርቡም።"
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "እንዲሁም የጊዜ ማህተም ትክክለኛነትን መምረጥ ይችላሉ። የሚሊሰከንድ ትክክለኛነት (TIMESTAMP(3)) የገቢ መልዕክቶችን ከሰከንድ በታች ቅደም ተከተል ይጠብቃል እና የሚገኘው በMariaDB ላይ ብቻ ነው፤ የMySQL ጭነቶች የሰከንድ ትክክለኛነትን ይጠቀማሉ። የተቀመጡ መልዕክቶችን ሳያጠፉ ይህንን በኋላ ባለበት መቀየር አይቻልም።"
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "ማንኛውም የርቀት ውሂብ ሰብሳቢ አማራጭ ነቅቶ እያለ የAria ማከማቻ አይገኝም። InnoDB ተመርጧል።"
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "እንዲሁም የማቆያ ጊዜውን መምረጥ ይችላሉ። እባክዎ ወደ Syslog የሚመዘግቡ ብዙ አስተናጋጆች ካሉዎት ይህ ሠንጠረዥ በጣም ትልቅ ሊሆን እንደሚችል ያስታውሱ።"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "የSyslog %s ቅንብሮች"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "ምን ዓይነት የማራገፊያ ዘዴ መጠቀም ይፈልጋሉ?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Syslog ን ሲያራግፉ፣ ወደፊት እንደገና ለመጫን ካሰቡ ሁሉንም ነገር ወይም አካላትን ብቻ ማስወገድ ይችላሉ።"
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "ሁሉንም ነገር አስወግድ (ምዝግብ ማስታወሻዎች፣ ሰንጠረዦች፣ ቅንብሮች)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "የSyslog ውሂብ ብቻ"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "የSyslog ማራገፊያ ምርጫዎች"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "አራግፍ"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "ይቅር"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "የSyslog ማስወገጃዎች"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(አርትዕ)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(ተግባራት)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "የSyslog ማንቂያዎች"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "የSyslog ሪፖርቶች"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "የተቀመጡ የፍለጋ አብነቶች"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "ዳሽቦርዶች"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "የSyslog ምክሮች"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(አስመጣ)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Syslogን በክልል ውስጥ አሳይ"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "መለያው ባዶ ነው"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "መለያው ከ190 ቁምፊዎች ይበልጣል"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "መለያው ክፍተቶችን ወይም የመስመር መስበሪያዎችን ይዟል"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "ማብራሪያም ሆነ የሚመከር እርምጃ የለውም"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "የJSON ነገር አይደለም"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "ምክረ ሃሳቦችን መጫን አልተቻለም።"
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "ምክረ ሃሳብ አለ - ለዝርዝሮች መልዕክቱን ጠቅ ያድርጉ"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "ማብራሪያ"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "የሚመከር እርምጃ"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "ማጣቀሻ"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "ሰኞ"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "ማክሰኞ"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "ረቡዕ"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "ዓርብ"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "ቅዳሜ"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "እሑድ"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "ሐሙስ"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "ከሰኞ እስከ አርብ"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "ቅዳሜ እና እሁድ"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "በየቀኑ"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "ተሰናክሏል"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "ምንም"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "አጠቃላይ ቅንብሮች"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog ነቅቷል"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "ይህ አመልካች ሳጥን ከተመረጠ፣ መዝገቦች ከSyslog ገቢ ሰንጠረዥ ወደ ዋናው syslog ሰንጠረዥ ይተላለፋሉ እና ማንቂያዎች እና ሪፖርቶች ይነቃሉ። እባክዎን ስርዓቱ ከተሰናከለ የምዝግብ ማስታወሻ ግቤቶች አሁንም በSyslog ገቢ ሰንጠረዥ ውስጥ መከማቸታቸውን እንደሚቀጥሉ ያስታውሱ፣ ምክንያቱም ይህ በrsyslog ወይም syslog-ng ሂደት የተገለጸ ነው።"
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "ማንቂያዎችን ወደ ማንቂያ አስተዳዳሪ አስተላልፍ"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "ለAlarm Manager የተዘጋጁ ደንቦች ማንቂያዎችን እንዲያስተላልፉ ፍቀድ። የSyslog ኢሜይል እንደ ተጠባባቂ ይቀራል፤ የትዕዛዝ እርምጃዎች የሚሄዱት ለSyslog ማንቂያ ደንቦች ብቻ ነው።"
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "ጎራዎችን አስወግድ"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "ከSyslog አስተናጋጅ ስም ማስወገድ የሚፈልጓቸው በነጠላ ሰረዝ የተለዩ የጎራዎች ዝርዝር፣ ለምሳሌ 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "የማደስ ክፍተት"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "ይህ ገጹ ከመታደሱ በፊት ያለው ጊዜ በሰከንዶች ነው።"
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "ጠቅላላ የረድፍ ቆጠራን ዝለል"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "ይህ አመልካች ሳጥን ከተመረጠ፣ የስርዓት ምዝግብ ማስታወሻዎች እና የማንቂያ ምዝግብ ማስታወሻዎች ትሮች እያንዳንዱን ተዛማጅ መዝገብ አይቆጥሩም፣ ይህም በትላልቅ ጭነቶች ላይ በጣም ውድ ሊሆን ይችላል። ገጹ ከጠቅላላ እና ከገጽ ዝርዝር ይልቅ የቀዳሚ እና ቀጣይ አገናኞችን ያሳያል፣ እና ተጨማሪ መዝገቦች ሲቀሩ ቀጣይ ይቀርባል።"
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "ከፍተኛ የሪፖርት መዝገቦች"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "በገደብ ላይ ለተመሰረቱ ማንቂያዎች፣ በሪፖርቱ ውስጥ ማሳየት የሚፈልጉት ከፍተኛው ቁጥር ስንት ነው። ይህ የHTML ምዝግብ ማስታወሻን እና የኢሜይል መጠንን ለመገደብ ጥቅም ላይ ይውላል።"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d መዝገቦች"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "ከፍተኛ የSyslog ማቀነባበሪያ ሂደቶች"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "ከ1 በላይ ሲዋቀር፣ የገቢ መልዕክት ሂደት በትይዩ የሰራተኛ ሂደቶች ላይ ይሰራጫል። እያንዳንዱ ሰራተኛ የተለያየ የገቢ መልዕክቶችን ክልል ያስተናግዳል፣ ይህም በከፍተኛ ጭነት ወቅት የአስተናጋጅ ስም መፍታትን እና የመልዕክት ዝውውርን ያፋጥናል። 1 ማድረግ ሁሉንም መልዕክቶች በአንድ ሂደት ውስጥ ያስኬዳል። የሰራተኛ ሂደቶች በWindows ላይ ወይም የPHP pcntl እና POSIX ቅጥያዎች በማይገኙበት ጊዜ አይደገፉም፤ በዚህ ሁኔታ ሂደቱ ወደ አንድ ሂደት ይመለሳል።"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d የሥራ ሂደት"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d የሥራ ሂደቶች"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "ቲኬቶችን ለመክፈት ትእዛዝ"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "ይህ ትዕዛዝ የእገዛ ዴስክ ትኬቶችን ለመክፈት ይፈጸማል። ትዕዛዙ በርካታ የግቤት መለኪያዎችን እንደሚከተለው መተንተን ይኖርበታል፦ <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>። የhostlist በማንቂያው የተጎዱ አስተናጋጆች በነጠላ ሰረዝ የተለየ ዝርዝር ይሆናል።"
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "የአስተናጋጅ ግኝት አማራጮች"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "የአስተናጋጅ ስም መፍታትን አንቃ"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "ይህ አመልካች ሳጥን ከተመረጠ፣ ሁሉም የአስተናጋጅ ስሞች መጀመሪያ በDNS ፍለጋ (ከነቃ)፣ A እና AAAA መዝገቦችን በመጠቀም ይፈታሉ። የIPv4 እና የIPv6 አድራሻዎች ፍለጋ አያስፈልጋቸውም፣ እና የIPv6 አድራሻዎች በተጨመቀ ትንሽ ፊደል መልክ ይቀመጣሉ። የDNS ፍለጋው ካልተሳካ፣ ስርዓቱ የአስተናጋጅ ስሙን ከCacti አስተናጋጅ ሰንጠረዥ ጋር ለመፍታት ይሞክራል እና በCacti አስተናጋጅ መግለጫ ይተካዋል። የDNS እና የCacti ፍለጋዎች ሁለቱም ካልተሳኩ፣ መዝገቦች 'unresolved-Original_hostname' የሚል ቅድመ-ቅጥያ ይሰጣቸዋል።"
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "ለሚመጡ አስተናጋጆች የDNS መፍቻን ዝለል"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "ይህ አመልካች ሳጥን ከተመረጠ፣ ስርዓቱ አስተናጋጆችን በDNS ፍለጋዎች ለመፍታት አይሞክርም። ይህ የDNS መፍታት የማይቻልባቸው ወይም የማይፈለግባቸው አካባቢዎች ጠቃሚ ነው።"
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "የHTML ማሳወቂያ ቅንብሮች"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "በHTML የተመሰረተ ኢሜይልን አንቃ"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "ይህ አመልካች ሳጥን ከተመረጠ፣ ሁሉም ኢሜይሎች በHTML ቅርጸት ይላካሉ። አለበለዚያ፣ ኢሜይሎች በግልጽ ጽሑፍ ይላካሉ።"
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "የሚጠቀሙበት የቅርጸት ፋይል"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "የሚጠቀሙበትን ብጁ የhtml መጠቅለያ እና CSS ፋይል ይምረጡ። ይህ ፋይል በሪፖርትዎ ዙሪያ የሚጠቀለሉ html እና CSS ሁለቱንም ይዟል። ከCSS በላይ ከያዘ፣ በፋይሉ ውስጥ ልዩ የሆነ <REPORT> መለያ ማስቀመጥ አለብዎት። ይህ የቅርጸት መለያ በሪፖርቱ ይዘት ይተካል። እነዚህ ፋይሎች በ'formats' ማውጫ ውስጥ ይገኛሉ."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "የውሂብ ማቆያ እና ክፍፍል"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "የSyslog ማቆያ"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "ክስተቶችን ለማቆየት የቀናት ብዛት ይህ ነው።"
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "የsyslog እና syslog_removed ሰንጠረዦች የእያንዳንዱ ክፍልፍል መጠን። ለውጡ እዚህ ይቀመጣል ነገር ግን ተግባራዊ የሚሆነው cli/upgrade_partitioning.php ሁለቱንም ሰንጠረዦች እንደገና ሲገነባ ብቻ ነው፤ እስከዚያ ድረስ የክፍልፍል ጥገናው ነባሩን መጠን ይጠብቃል። በየሰዓቱ (Hourly) መከፋፈል ውስን የማቆያ ጊዜን ይፈልጋል። የማቆያ ጊዜው፣ የቅድመ-መፍጠሪያ መስኮቱ እና የክፍፍል ደረጃው በአንድነት ከውሂብ ጎታ አገልጋዩ የክፍልፍል ገደብ ጋር መመጣጠን አለባቸው፣ አለበለዚያ ቅንብሮቹ አይቀመጡም።"
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "ክፍልፋይ ቀድሞ የመፍጠሪያ መስኮት"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "አዳዲስ ክፍልፋዮች ሁልጊዜ ከባዶ dMaxValue ክፍልፋይ እንዲከፈሉ ለተከፋፈሉ የSyslog ሠንጠረዦች የሚጠበቁ የወደፊት ክፍልፋዮች የቀናት ብዛት ይህ ነው። በሰዓት መከፋፈል ሁልጊዜ ቢያንስ 2 ቀናትን ያቆያል።"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d ቀን"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d ቀናት"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "የክፍልፋይ መልሶ ማግኛ ገደብ"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "ክፍልፋዮች (partitions) ሲጎድሉ (ለምሳሌ ከጥገና መቋረጥ በኋላ)፣ በእያንዳንዱ የፖለር አሂድ ላይ በአንድ ሠንጠረዥ ቢበዛ ይህን ያህል የጎደሉ ክፍልፋዮች ይፈጠራሉ። የቀረው ክፍተት በቀጣዮቹ አሂዶች ውስጥ ይሞላል፤ የወደፊቱ የክፍልፋይ አድማስ ሙሉ በሙሉ እስኪመለስ ድረስ የማቆያ ጊዜ ቅነሳ ዘግይቶ ይቆያል። የሚተገበረው በተከፋፈሉ የSyslog ሠንጠረዦች ላይ ብቻ ነው።"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "በአንድ ሩጫ %d ክፍልፋይ"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "በአንድ ሩጫ %d ክፍልፋዮች"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "የሰብሳቢ የጊዜ ማለፍ ገደብ"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "ያልተሰሩ መልእክቶች፣ የሂደት ማጠናቀቅ ወይም በወረፋ ላይ ያለ ማመሳሰል ከዚህ መዘግየት ሲያልፉ የPipeline ጤና ማንቂያዎች ያስጠነቅቃሉ። ውጤታማው መዘግየት ቢያንስ ሦስት የፖለር ክፍተቶች እና 300 ሰከንዶች ነው። 300 ሰከንዶችን ለመጠቀም ወደ 0 ያቀናብሩ።"
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "ነባሪ (300 ሰከንዶች)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d ሰከንዶች"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "የሰብሳቢ የውዝፍ ገደብ"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "በSyslog Incoming ሠንጠረዥ ውስጥ ከዚህ ቁጥር በላይ መልዕክቶች ሳይሰሩ ሲቀመጡ የSyslog ሁኔታ ገጽ ማስጠንቀቂያ ያሳያል። ነባሪውን 10000 መልዕክቶች ለመጠቀም 0 ያድርጉ።"
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "ነባሪ (10000 መልእክቶች)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d መልዕክቶች"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "የPipeline ጤና ማንቂያዎች"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "የPipeline ጤና ማሳወቂያ ዝርዝር"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "ለፓይፕላይን ጤና ማንቂያዎች ነባር የThold ማሳወቂያ ዝርዝር ይምረጡ። የነቁ የዝርዝር ተቀባዮች የBCC ተቀባዮችን በመጠበቅ ከታች ካሉት የኢሜይል አድራሻዎች ጋር ይጣመራሉ። ዝርዝሮች የThold ማሳወቂያ-ዝርዝር ሰንጠረዥ ይፈልጋሉ።"
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "የPipeline ጤና ኢሜይል ተቀባዮች"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "ለፓይፕላይን ውድቀቶች እና ማገገም በነጠላ ሰረዝ የተለዩ የኢሜይል ተቀባዮች። ኢሜይልን ለማሰናከል ባዶ ይተዉ እና ምንም የማሳወቂያ ዝርዝር አይምረጡ፤ ጤናማነት በሁኔታ ትር ላይ መታየቱን ይቀጥላል እና የሁኔታ ለውጦች ይመዘገባሉ። ፍተሻዎች የCacti ፖለር መስራቱን ይፈልጋሉ።"
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "የPipeline ጤና ማስታወሻ ክፍተት"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "ለቀጣይ የፓይፕላይን ችግሮች ማሳወቂያዎችን ከዚህ ክፍተት በኋላ ድገም። ያልተሳኩ የኢሜይል ሙከራዎች በየአምስት ደቂቃው ከአንድ ጊዜ በላይ አይሞከሩም።"
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "የSyslog ማንቂያ ማቆያ"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "የማንቂያ ምዝግብ ማስታወሻዎችን ለማቆየት የቀናት ብዛት ይህ ነው።"
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "የማንቂያ ማገድ እና ጥገና"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "የጥገና መስኮት ቀናት"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "በተዋቀረው የጥገና የጊዜ ገደብ ውስጥ ሁሉም የማንቂያ ማሳወቂያዎች ድምጻቸው የሚዘጋባቸው ቀናት።"
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "የጥገና መስኮት የሚጀምርበት ጊዜ"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "ለአጠቃላይ የጥገና መስኮት አካባቢያዊ የመጀመሪያ ሰዓት።"
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "የጥገና መስኮት የሚያበቃበት ጊዜ"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "ለአጠቃላይ የጥገና መስኮት አካባቢያዊ የመጨረሻ ሰዓት። ቀደም ያለ የመጨረሻ ሰዓት ወደ ቀጣዩ ቀን ይቀጥላል።"
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "የአንድ ጊዜ ጥገና ይጀምራል"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "የአንድ ጊዜ ዓለም አቀፋዊ የጥገና መስኮትን ለመጀመር አማራጭ አካባቢያዊ ቀን እና ሰዓት።"
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "የአንድ ጊዜ ጥገና ያበቃል"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "የአንድ ጊዜ ዓለም አቀፋዊ የጥገና መስኮትን ለማጠናቀቅ አማራጭ አካባቢያዊ ቀን እና ሰዓት። ቅርጸት፦ YYYY-MM-DD HH:MM።"
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "ነባሪ የማንቂያ ማቀዝቀዣ ጊዜ"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "ለተመሳሳይ ደንብ እና የሪፖርት ማቅረቢያ ወሰን ማንኛውንም ተደጋጋሚ ማሳወቂያ ለዚህ ያህል ደቂቃዎች አፍን። በየደንቡ ያሉ እሴቶች ይህንን ቅንብር ይሽራሉ። ለማሰናከል ወደ 0 ያቀናብሩ።"
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "ነባሪ የተደጋጋሚነት ማገጃ"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "ተመሳሳይ የተዛመደ የመልእክት ስብስብ ያለው ማሳወቂያን ለዚህ ያህል ደቂቃዎች አፍን። በየደንቡ ያሉ እሴቶች ይህንን ቅንብር ይሽራሉ። ለማሰናከል ወደ 0 ያቀናብሩ።"
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "የርቀት Syslog መልሶ ማግኛ"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "በአንድ አፈጻጸም ከፍተኛ የመልሶ ማግኛ መዝገቦች"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "በአንድ የመልሶ ማግኛ ሰራተኛ አፈጻጸም ወደ ዋናው ሰብሳቢ የሚላኩ ከፍተኛ የርቀት Syslog ክስተቶች ብዛት። እያንዳንዱ ማዕከላዊ የውሂብ ጎታ ግብይት በ100 መዝገቦች የተገደበ ሆኖ ይቆያል። የዋናው ሰብሳቢን ጫና እና የመቆለፍ ጥበቃዎችን እየተመለከቱ ቀስ በቀስ ይጨምሩ።"
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "በቡድኖች መካከል የማገገሚያ እረፍት"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "በእያንዳንዱ ባለ 100-መዝገብ የዋና ሰብሳቢ (Main Collector) የማድረስ ግብይት መካከል ያለ እረፍት። ረዘም ያለ እረፍት የዋና ሰብሳቢውን ጫና ይቀንሳል፤ አጭር እረፍት ደግሞ የተከማቸ ስራን በፍጥነት ያጠናቅቃል።"
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "ማቆም የለም"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d ሚሊሰከንዶች"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d ሰከንድ"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "የSyslog ዳታቤዝ ስለማይገኝ የመከፋፈል (partitioning) ቅንብሮች ከመከፋፈል ገደቡ እና ከሠንጠረዦቹ ጋር ሊረጋገጡ አልቻሉም።"
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "የSyslog ቅንብሮች አልተቀመጡም።"
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "በመጠባበቅ ላይ: የመልእክት ሰንጠረዥ አሁንም %s ክፍልፋዮችን ይጠቀማል። የተመረጠውን ደረጃ ተግባራዊ ለማድረግ cli/upgrade_partitioning.php ን ያሂዱ።"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "ሰርዝ"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "አሰናክል"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "አንቃ"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "ወደ ውጭ ላክ"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "ያልተወሰነ"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d ሳምንት"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d ሳምንታት"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d ወር"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d ወራት"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d ዓመት"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "ፈጽሞ"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d ደቂቃ"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d ደቂቃዎች"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "በዚህ ይጀምራል"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "ይዟል"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "የሚያበቃበት"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "የአስተናጋጅ ስም"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "ፕሮግራሙ"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "ፋሲሊቲው"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "የማጣሪያ ገንቢ"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "የSQL አገላለጽ"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "ሳምንታዊ"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "ማስገባት/ማውጣት"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "የማንቂያ ደንቦች"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "የSyslog ቅንብሮች"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "የመሣሪያ ማንቂያ ደንቦች"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "የማስወገጃ ደንቦች"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "የሪፖርት ደንቦች"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "ምክረ ሃሳቦች"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "ከSyslog የውሂብ ጎታ ጋር መገናኘት አልተቻለም። ምንም የመሣሪያ መዝገቦች አልተወገዱም።"
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "%s የመሣሪያ መዝገቦች ከSyslog የውሂብ ጎታ ተወግደዋል"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "የSyslog መገልገያዎች"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "የSyslog መሳሪያዎችን አጥፋ"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "ጊዜው ያለፈባቸውን የSyslog መሳሪያዎች ማጽዳት እንደሚፈልጉ እርግጠኛ ነዎት?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "ማጽዳትን አረጋግጥ"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "ቀጥል"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "ይህ የምናሌ ምርጫ ወደ Cacti syslog አገልጋይ ሪፖርት ማድረግ ያቆሙ መሳሪያዎችን ለማስወገድ መንገድ ይሰጣል።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ፓነል ምንጭ።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ፓነል ዓይነት።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ገበታ ዓይነት።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ክፍፍል መስክ።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ክፍተት።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "ልክ ያልሆነ የዳሽቦርድ የጊዜ ክልል።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "ልክ ያልሆነ የዳሽቦርድ መዝገብ ዓይነት።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ከፍተኛ ቆጠራ።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ፓነል ስፋት።"
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "ልክ ያልሆነ የዳሽቦርድ ፓነል ቁመት።"
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "ልክ ያልሆነ አመክንዮአዊ ፍለጋ፦ %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "ሌላ"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "ትክክለኛ የዳሽቦርድ ፓነል ያስፈልጋል።"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "የዳሽቦርድ ፓነል አልተገኘም።"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "እስከ 128 ቁምፊዎች ያለው ስም ያስፈልጋል።"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "ትክክለኛ ዳሽቦርድ ያስፈልጋል።"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "ዳሽቦርድ አልተገኘም።"
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "የዳሽቦርድ ለውጦችን ማስቀመጥ አልተቻለም።"
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "የራስዎን ዳሽቦርዶች ብቻ ማጋራት ይችላሉ።"
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "ቅጂ"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "ዳሽቦርዱ ሊቀዳ አልቻለም።"
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "ትክክለኛ የፓነል ቦታ ያስፈልጋል።"
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "እስከ 128 ቁምፊዎች ያለው ርዕስ ያስፈልጋል።"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "ካርዱን እንደገና ለመደርደር ይጎትቱ"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "ፓነሉን አድስ"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "ጠቅላላ መልዕክቶች"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "በዚህ የCacti ጭነት ላይ የቻርት ቤተ-መጽሐፍት አይገኝም።"
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "ፓነል አርትዕ"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "አዲስ ፓነል"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "አስቀምጥ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "ተግብር"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "ይህ የዳሽቦርድ ፓነል ይሰረዝ?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "ይህ ዳሽቦርድ እና ሁሉም ፓነሎቹ ይሰረዙ?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "ዳሽቦርድዎን ይሰይሙ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "የግል አድርግ"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "ለሁሉም አጋራ"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "እንደ የእኔ ቅጂ አስቀምጥ"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "የSyslog ዳሽቦርዶች"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "ዳሽቦርድ"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "የጊዜ ክልል"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "ያለፈው ሰዓት"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "ያለፉት %d ሰዓታት"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "ያለፈው ቀን"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "ያለፈው ሳምንት"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "ያለፉት %d ሳምንታት"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "ያለፈው ወር"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "ያለፉት %d ወራት"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "አድስ"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "የእኔ ዳሽቦርዶች"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "ሁሉን አቀፍ ዳሽቦርዶች"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "ለእኔ የተጋራ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "አዲስ"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "እንደገና ሰይም"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "ፓነል አክል"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "የSyslog አዝማሚያዎችን ለማየት የመጀመሪያውን ዳሽቦርድዎን ይፍጠሩ።"
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "ግራፍ መሥራት ለመጀመር ፓነል አክል። ፓነሎች የተቀመጡ ፍለጋዎችዎን መጠቀም ይችላሉ።"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "የዳሽቦርድ ፓነል"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "ርዕስ"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "የምዝግብ ማስታወሻ ምንጭ"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "የስርዓት ምዝግብ ማስታወሻዎች"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "የማንቂያ መዝገቦች"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "የፓነል ዓይነት"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "የጊዜ ተከታታይ"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "ዝርዝር ትንተና"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "ቻርት"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "መስመር"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "ቦታ"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "አሞሌ"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "የጊዜ ክፍተት"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "ራስ-ሰር"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "ደቂቃ"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 ደቂቃዎች"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "ሰዓት"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "ቀን"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "መስክ"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "ፕሮግራም"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "ፋሲሊቲ"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "ቅድሚያ"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "ከፍተኛ ብዛት"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "የመዝገብ ዓይነት"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "ሁሉም መዝገቦች"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "ዋና መዝገቦች"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "የተወገዱ መዝገቦች"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "ከተቀመጠ ፍለጋ ጀምር"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "የመልዕክት ጽሑፍ ያስገቡ…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "ሁኔታን አስወግድ"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "የማዛመጃ ቡድን"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "ቡድን አግልል"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "የዳሽቦርድ ስም"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "ስም"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "የተጣሱ ገደቦች"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "ከተጣሰበት ጊዜ ጀምሮ"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "ሰብሳቢ"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "መሣሪያ"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "የመጨረሻ የሚዛመድ መልዕክት"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "ከዚህ በኋላ ያገግማል"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "ደንብ"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "ሁሉም ተዛማጅ መሳሪያዎች"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "በአሁኑ ጊዜ የተጣሱ ገደቦች የሉም።"
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "ማገገም እስከሚታየው ሰዓት ድረስ ምንም ተዛማጅ መልዕክቶች አለመኖርን ይጠይቃል። እያንዳንዱ መዛመድ የጸጥታ ጊዜውን ዳግም ያስጀምራል።"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "ቀዳሚ"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "ቀጣይ"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "እባክዎ ከመጫንዎ በፊት በsyslog ማውጫ ውስጥ ያሉትን የconfig.php.dist ወይም config_local.php.dist ፋይሎችዎን አንዱን እንደገና ይሰይሙ እና የውሂብ ጎታዎን ማዋቀር ይቀይሩ።"
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "ሚሊሰከንድ (TIMESTAMP(3)) የጊዜ ማህተሞች በMariaDB ላይ ብቻ ይደገፋሉ። ይህ አገልጋይ MySQL ስለሆነ፣ በምትኩ በሰከንድ ትክክለኛነት ባላቸው የጊዜ ማህተሞች ይጫኑ።"
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "ማንኛውም የርቀት ውሂብ ሰብሳቢ አማራጭ ሲነቃ የAria ማከማቻ መጠቀም አይቻልም። InnoDBን ይምረጡ ወይም ሁሉንም የርቀት ውሂብ ሰብሳቢ አማራጮች ያሰናክሉ።"
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "ከፍተኛ 10 አስተናጋጆች"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "የSyslog መልዕክቶች - ያለፈው ሰዓት"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "መልዕክቶች በክብደት ደረጃ"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "ከፍተኛ 10 ፕሮግራሞች"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "የማንቂያ እንቅስቃሴ"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "የSyslog መመልከቻ"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "የSyslog ሁኔታ"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "የተመረጠ ማንቂያ"
+
+#: syslog.php
+msgid "seconds"
+msgstr "ሰከንዶች"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "አይገኝም"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "ያልተሰሩ መልእክቶች %s ቆይተዋል"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "የ%s መልዕክቶች ገቢ ክምችት"
+
+#: syslog.php
+msgid "day"
+msgstr "ቀን"
+
+#: syslog.php
+msgid "days"
+msgstr "ቀናት"
+
+#: syslog.php
+msgid "hour"
+msgstr "ሰዓት"
+
+#: syslog.php
+msgid "hours"
+msgstr "ሰዓታት"
+
+#: syslog.php
+msgid "minute"
+msgstr "ደቂቃ"
+
+#: syslog.php
+msgid "minutes"
+msgstr "ደቂቃዎች"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "በsyslog_incoming ውስጥ ያሉ ረድፎች"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "የSyslog ሰንጠረዥ መጠን (ውሂብ + መረጃ ጠቋሚዎች)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "የSyslog ማቆያ"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "የማንቂያ ማቆያ"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "እስካሁን ምንም የመልሶ ማግኛ እንቅስቃሴ አልተመዘገበም።"
+
+#: syslog.php
+msgid "created"
+msgstr "ተፈጥሯል"
+
+#: syslog.php
+msgid "remaining"
+msgstr "የቀረ"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "ማቆየት ዘግይቷል"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "የቅርብ ጊዜ የማቀናበር ማስኬድ"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "የተሰራጨ ማመሳሰል"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "የርቀት ሰብሳቢ ደረሰኞች"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "ማከማቻ እና ማቆያ"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "የክፍልፋይ ጤና"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "የክፍልፋይ ጥገና እንቅስቃሴ"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "የቅርብ ጊዜ የክፍልፍል ጥገና እንቅስቃሴ"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "የPipeline ጤና"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "ትይዩ ሰራተኞች"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "የሰራተኛ ሂደቶች"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "የማካሄድ ደረጃዎች"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "የደንብ እንቅስቃሴ"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "የተሰሩ መዝገቦች"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "የፖሊንግ የአፈጻጸም ጊዜ"
+
+#: syslog.php
+msgid "Started"
+msgstr "ተጀምሯል"
+
+#: syslog.php
+msgid "Finished"
+msgstr "ተጠናቋል"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "ዝቅተኛ የሩጫ ጊዜ"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "አማካይ የአሂድ ጊዜ"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "ከፍተኛ የሩጫ ጊዜ"
+
+#: syslog.php
+msgid "State"
+msgstr "ግዛት"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "ወረፋ የገቡ የማገገሚያ መዝገቦች"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "በጣም ጥንታዊው በመጠባበቅ ላይ ያለ"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "የመጨረሻ የተሳካ ማመሳሰል"
+
+#: syslog.php
+msgid "Active"
+msgstr "ንቁ"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "ንቁ ያልሆነ"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "የማገገሚያ ሰራተኛ"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "የመጨረሻ የማመሳሰል ስህተት"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "የመጨረሻ ባች ብዛት"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "መጨረሻ የተቀበለው መዝገብ"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "የርቀት ፖለር"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "ያልታወቀ የርቀት ፖለር"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "እስካሁን ምንም የርቀት ሰብሳቢ መዝገቦች አልደረሱም።"
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "የክፍልፋይ ጥገና ታግዷል"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "የክፍልፋይ ጥገና ቆሟል፤ ጽሑፎች ወደ dMaxValue የደህንነት ክፍልፋይ መግባታቸውን ይቀጥላሉ።"
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "የቀን ሽፋን"
+
+#: syslog.php
+msgid "Table"
+msgstr "ሠንጠረዥ"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "የdMaxValue ረድፎች (የተገመተ)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "የdMaxValue መጠን"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "የክፍልፋይ ደረጃ"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "%s በቅንብሮች ውስጥ ተመርጧል እና cli/upgrade_partitioning.php ሰንጠረዦቹን ዳግም ከገነባ በኋላ ተግባራዊ ይሆናል።"
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "የመጨረሻ ሙከራ"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "የመጨረሻ የተሳካ ጥገና"
+
+#: syslog.php
+msgid "Complete"
+msgstr "ተጠናቋል"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "የተላለፈ"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "የቅርብ ጊዜ ውጤት"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "የማገገሚያ ሂደት"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "ዝርዝሮች"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "ውጤት"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "ማገገሚያ"
+
+#: syslog.php
+msgid "When"
+msgstr "መቼ"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "እስካሁን ምንም የክፍልፍል ጥገና እንቅስቃሴ አልተመዘገበም። እንቅስቃሴው ከሚቀጥለው የፖለር አሂድ በኋላ ይታያል።"
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d ተፈጥሯል፣ %d ቀርቷል፣ %d ተቆርጧል"
+
+#: syslog.php
+msgid "No action required."
+msgstr "ምንም እርምጃ አያስፈልግም።"
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "ገቢ ክምችት"
+
+#: syslog.php
+msgid "Processing"
+msgstr "በማካሄድ ላይ"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "የክፍልፋይ ጥገና"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "ማመሳሰል"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "ትኩረት ያስፈልጋል"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "ጤናማ"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "ማካሄድ ተሰናክሏል"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "ሂደትን በመጠበቅ ላይ"
+
+#: syslog.php
+msgid "Health"
+msgstr "ጤና"
+
+#: syslog.php
+msgid "Ready"
+msgstr "ዝግጁ"
+
+#: syslog.php
+msgid "Sent"
+msgstr "ተልኳል"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "አልተሳካም፤ ዳግም መሞከር በመጠባበቅ ላይ"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "በመጠባበቅ ላይ፤ ቀጣዩ የፖለር ፍተሻ"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "የመጨረሻ የጤና ፍተሻ"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "የኢሜይል ማሳወቂያዎች"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "ገና አልተፈተሸም"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "የመጨረሻ የተላከ ማሳወቂያ"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "የመጨረሻ የተቀበለው ምዝግብ"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "በጣም ጥንታዊው ያልተሰራ መልዕክት"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "በቅርብ ጊዜው አሂድ የተሰሩ መዝገቦች"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "እየሰሩ ያሉ የሰራተኛ ሂደቶች"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "የተዋቀሩ የሰራተኛ ሂደቶች"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "የተፈቱ አስተናጋጆች"
+
+#: syslog.php
+msgid "Process"
+msgstr "ሂደት"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "የተስተናገዱ መዝገቦች"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "የማስኬጃ ጊዜ"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "እስካሁን ምንም በየሂደቱ ስታቲስቲክስ አልተመዘገበም። የሰራተኛ ስታቲስቲክስ ከመጀመሪያው ትይዩ አሂድ በኋላ ይታያል።"
+
+#: syslog.php
+msgid "Duration"
+msgstr "የቆይታ ጊዜ"
+
+#: syslog.php
+msgid "Phase"
+msgstr "ደረጃ"
+
+#: syslog.php
+msgid "Records"
+msgstr "መዝገቦች"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "የማጣቀሻ ዝመናዎች"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "የማስወገጃ ደንቦች"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "የማንቂያ ግምገማ"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "ገቢ ዝውውር"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "የሪፖርት ሂደት"
+
+#: syslog.php
+msgid "slowest"
+msgstr "በጣም ቀርፋፋ"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "እስካሁን ምንም የምዕራፍ ጊዜያት አልተመዘገቡም። የምዕራፍ ጊዜያት ከሚቀጥለው የፖለር አሂድ በኋላ ይታያሉ።"
+
+#: syslog.php
+msgid "Last run"
+msgstr "የመጨረሻ ማስኬድ"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "የተሰሩ ደንቦች"
+
+#: syslog.php
+msgid "Total"
+msgstr "ጠቅላላ"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "የማንቂያ ደንቦች"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "ደንቦችን ሰርዝ"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "ባለፈው ሩጫ ተቀስቅሷል"
+
+#: syslog.php
+msgid "Show more"
+msgstr "ተጨማሪ አሳይ"
+
+#: syslog.php
+msgid "Show less"
+msgstr "ያነሰ አሳይ"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "በንግግር ሳጥን ውስጥ ክፈት"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "ከገጽ አስወግድ"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "ልክ ያልሆነ የማደስ ክፍተት።"
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "ያልታወቀ ካርድ።"
+
+#: syslog.php
+msgid "Add card"
+msgstr "ካርድ አክል"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "የሁኔታ ካርድ አክል…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "የSyslog ማንቂያ እይታ"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "ትክክለኛ የተቀመጠ ፍለጋ ያስፈልጋል።"
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "የተቀመጠው ፍለጋ አልተገኘም።"
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "የራስዎን የተቀመጡ ፍለጋዎች ብቻ ማጋራት ይችላሉ።"
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ ያልተሰሩ መልዕክቶች፦ %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "የፍለጋ ቃል ያስገቡ"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "መሣሪያ(ዎች) ምረጥ"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "የተመረጡ መሳሪያዎች"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "ሁሉም መሳሪያዎች ተመርጠዋል"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "የSyslog መልዕክት ማጣሪያ %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "መልዕክቶችን ፈልግ"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "ማጣሪያዎችን ሰብስብ"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "ማጣሪያዎችን አርትዕ"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "የተቀመጡ ፍለጋዎች"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "የእኔ ፍለጋዎች"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "ሁሉን አቀፍ ፍለጋዎች"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (ነባሪ)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "አስተዳድር"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "የተቀመጡ ፍለጋዎችን ያስተዳድሩ"
+
+#: syslog.php
+msgid "Save search"
+msgstr "ፍለጋን አስቀምጥ"
+
+#: syslog.php
+msgid "Edit"
+msgstr "አርትዕ"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "ለሁሉም አስቀምጥ"
+
+#: syslog.php
+msgid "contains"
+msgstr "ይዟል"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "አልያዘም"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "ረድፎች"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "ረድፎችን አሳይ"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "ነባሪ"
+
+#: syslog.php
+msgid "View options"
+msgstr "የእይታ አማራጮች"
+
+#: syslog.php
+msgid "Trim"
+msgstr "ከርክም"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "የመልዕክት መቁረጥ"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "የማስወገድ አያያዝ"
+
+#: syslog.php
+msgid "Display"
+msgstr "ማሳያ"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "ተደጋጋሚ መልዕክቶችን በቡድን ሰብስብ"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "የተናጠል መልዕክቶች"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "በቡድን የተደራጁ መልዕክቶች"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "መስክ፣ ኦፕሬተር እና እሴት ይምረጡ። AND ከOR ቅድሚያ አለው፤ NOT አንድን ሁኔታ ያስወግዳል። LIKE ለማንኛውም የቁምፊ ብዛት % እና ለአንድ ቁምፊ _ ይጠቀማል። ቀናት YYYY-MM-DD HH:MM:SS ይጠቀማሉ። መታወቂያዎች አሉታዊ ያልሆኑ ኢንቲጀሮችን ይጠቀማሉ። በነባሪነት፣ የቀን ክልሉ ካልተስተካከለ በስተቀር የመጨረሻው ቀን መዝገቦች ይታያሉ።"
+
+#: syslog.php
+msgid "Search help"
+msgstr "የፍለጋ እገዛ"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "አዲስ የተቀመጠ ፍለጋ"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "የተቀመጠ ፍለጋ አርትዕ"
+
+#: syslog.php
+msgid "Save As"
+msgstr "በሌላ ስም አስቀምጥ"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "የተመረጠውን የተቀመጠ ፍለጋ ይሰረዝ?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "ፈልግ"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "አጽዳ"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "የማጣሪያ እሴቶችን በተጠቃሚ ወደተገለጹ ነባሪዎቻቸው መልስ"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "ውጤቶችን አድስ"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "መዝገቦችን ወደ CSV ላክ"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "ነባሪ ቅንብሮችን አስቀምጥ"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "የእይታ ነባሪዎችን አስቀምጥ"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "ፍለጋን እንደ... አስቀምጥ"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "ይህን ገጽ ሲከፍቱ እና ገና ምንም ፍለጋ ንቁ ካልሆነ ይህን ፍለጋ ይተግብሩ"
+
+#: syslog.php
+msgid "Breach"
+msgstr "ጥሰት"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "ገደብ ተጥሷል"
+
+#: syslog.php
+msgid "Messages"
+msgstr "መልዕክቶች"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "ባዶ መልዕክት"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "የቡድን መልዕክቶችን ቀያይር"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "የቡድን መልዕክቶች በመጫን ላይ..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "ምንም የሚዛመዱ መልዕክቶች የሉም።"
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "ምንም የSyslog መልዕክቶች የሉም"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "የማንቂያ መዝገብ ረድፎች"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "ማንቂያ ተወግዷል"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "ምንም የማንቂያ ምዝግብ መልዕክቶች የሉም"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "የመልእክት ዝርዝሮችን ዝጋ"
+
+#: syslog.php
+msgid "Message details"
+msgstr "የመልዕክት ዝርዝሮች"
+
+#: syslog.php
+msgid "General"
+msgstr "አጠቃላይ"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "የማንቂያ ደንብ"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "ቅደም ተከተል"
+
+#: syslog.php
+msgid "Copied"
+msgstr "ተቀድቷል"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "አገናኝ ቅዳ"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "መልዕክት ቅዳ"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "መቅዳት አይቻልም። የመልዕክቱን ጽሑፍ ይምረጡና ይቅዱ።"
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "ምክሮችን በመፈለግ ላይ…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "ከዚህ መልዕክት ጋር የሚዛመድ ምንም ምክር የለም።"
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "ድርጊቶች"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "የማንቂያ ደንብ ፍጠር"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "የመሣሪያ ማንቂያ ደንብ ፍጠር"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "የማስወገጃ ደንብ ፍጠር"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "በመሣሪያ አጣራ"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "በፕሮግራም አጣራ"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "ሁሉም ፕሮግራሞች"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማንቂያ ደንብ(ቦች) ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "የSyslog ማንቂያ ደንብ(ቦችን) ሰርዝ"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማንቂያ ደንብ(ቦች) ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "የSyslog ማንቂያ ደንብ(ቦች)ን አሰናክል"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማንቂያ ደንብ(ቦች) ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "የSyslog ማንቂያ ደንብ(ቦች)ን አንቃ"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማንቂያ ደንብ(ቦች) ወደ ውጭ ለመላክ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "የSyslog ማንቂያ ደንብ(ቦችን) ላክ"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "የSyslog ማንቂያ ወይም የማንቂያ አስተዳዳሪን ይምረጡ።"
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "ለገደብ መስኮቱ ሙሉ የደቂቃዎች፣ የሰዓታት ወይም የቀናት ቁጥር ያስገቡ።"
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "ለገደብ ማገገሚያ አዎንታዊ ሙሉ የደቂቃዎች፣ የሰዓታት ወይም የቀናት ቁጥር ያስገቡ።"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "የገባው የSQL አገባብ ልክ አይደለም። እባክዎ የእርስዎን SQL ያስተካክሉ።<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "ቅድመ-ሂደት የተደረገለት SQL ይህ ነው፦<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "ማጣሪያው ልክ ያልሆነ ነው፦ %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "የተሰራው SQL ልክ ያልሆነ ነው።  እባክዎ SQLዎን ያስተካክሉ"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "አልተዘጋጀም"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 ደቂቃ"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d ሰዓት"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d ሰዓታት"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 ወር"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "የማንቂያ አርትዖት [አርትዕ: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "የማንቂያ አርትዖት [አዲስ]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "አዲስ የማንቂያ ደንብ"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "አይመለከትም"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "የጊዜ አሃድ"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "ቀናት"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "ሰዓታት"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "ደቂቃዎች"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "እባክዎ ይህን ማንቂያ ይግለጹ።"
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "የማንቂያ መድረሻ"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "የSyslog ማንቂያን ወይም የማንቂያ አስተዳዳሪን ይምረጡ። የማንቂያ አስተዳዳሪ በSyslog ቅንብሮች ውስጥ ማስተላለፍ እንዲነቃም ይፈልጋል። ኢሜይል እንደ ተለዋጭ ተጠብቋል፤ ለማንቂያ አስተዳዳሪ ደንቦች የትዕዛዝ እርምጃዎች አይሰሩም።"
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "የማንቂያ አስተዳዳሪ"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "የSyslog ማንቂያ"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "የዚህ ማንቂያ የክብደት ደረጃ ምንድን ነው?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "የሪፖርት ደረጃ"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "የድጋሚ ማንቂያ ዑደቶችን ለመመዝገብ፣ ማንቂያው በስርዓት ወይም በመሣሪያ ደረጃ መከታተል አለበት።"
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "ሥርዓት"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "የሪፖርት ዘዴ"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "በSyslog መልእክቶች ላይ እንዴት ማንቂያ እንደሚሰጥ ይግለጹ።"
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "የተናጠል"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "ለ'ገደብ' ዘዴ፣ የታየው ቁጥር ይህን እሴት ሲደርስ ማንቂያ ይቀሰቀሳል።"
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "የገደብ መስኮት"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "የሰብሳቢ ሂደት ጊዜን በመጠቀም በዚህ ተንከባላይ መስኮት ውስጥ በሰብሳቢ ዑደቶች ላይ የሚዛመዱትን ይቁጠሩ። የአሁኑን ዑደት ብቻ ለመቁጠር 0 ያስገቡ።"
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "ከጸጥታ ጊዜ በኋላ አገግም"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "ጥሰቱን ከማጽዳት፣ ቆጠራውን ዳግም ከማስጀመር እና ይህን ደንብ ዳግም ከማስታጠቅ በፊት ምንም ተዛማጅ መልዕክቶች የሌሉበት ጊዜ። እያንዳንዱ ተዛማጅ መልዕክት ይህን ሰዓት ቆጣሪ እንደገና ያስጀምረዋል።"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "የማዛመድ ዓይነት"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "ደህንነቱ ለተጠበቀ ባለብዙ-ሁኔታ ማንቂያ አመክንዮ የማጣሪያ ገንቢን ይምረጡ። SQL መግለጫ ለቆዩ ደንቦች ተጠብቆ ቆይቷል።"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "የመልዕክት ማዛመጃ ሕብረቁምፊ"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "የማጣሪያ ሁኔታዎችን ይገንቡ ወይም ከ syslog መልዕክቶች ጋር የሚዛመድ የ SQL መግለጫ ያስገቡ።"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "ነቅቷል"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "ይህ ማንቂያ ነቅቷል?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "ዳግም-ማንቂያ ዑደት"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "ይህ የጊዜ መጠን እስኪያልፍ ድረስ ይህን ማንቂያ ለተመሳሳይ አስተናጋጅ በድጋሚ አትላክ። በገደብ ላይ ለተመሰረቱ ማንቂያዎች፣ ይህ ለሁሉም አስተናጋጆች ተፈጻሚ ይሆናል።"
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "የማሳወቂያ ማቀዝቀዣ ጊዜ"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "ከዚህ ደንብ እና የሪፖርት አቀራረብ ወሰን የሚመጣን እያንዳንዱን ተከታይ ማሳወቂያ ለማፈን የሚፈጀው ደቂቃ።"
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "1 ቀን"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "1 ሰዓት"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "1 ደቂቃ"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 ደቂቃዎች"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 ደቂቃዎች"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 ሰዓታት"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 ደቂቃዎች"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "ዓለም አቀፍ ቅንብር ይጠቀሙ"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "የድግግሞሽ መገደብ"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "ተመሳሳይ የተዛመደ የመልዕክት ስብስብን ለማፈን የሚፈጀው ደቂቃ።"
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "የጥገና መስኮት"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "ይህ ደንብ ዓለም አቀፋዊ የጥገና የጊዜ ገደብን ወይም የራሱን የጊዜ ገደብ እንደሚጠቀም ይምረጡ።"
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "ይህን ደንብ ድምፀ-ከል አታድርግ"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "ዓለም አቀፍ የጊዜ ገደብ ይጠቀሙ"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "የደንብ የጊዜ ገደብ ይጠቀሙ"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "የደንብ ጥገና ቀናት"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "የደንብ የጊዜ ገደብ ተጠቀም ሲመረጥ ለዚህ ደንብ የጊዜ ገደብ የሚሆኑ ቀናት።"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "የደንብ ጥገና ይጀምራል"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "ለዚህ ደንብ የጊዜ ገደብ አካባቢያዊ የመጀመሪያ ሰዓት።"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "የደንብ ጥገና ያበቃል"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "ለዚህ ደንብ የጊዜ ገደብ አካባቢያዊ የመጨረሻ ሰዓት።"
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "የአንድ ጊዜ የደንብ ጥገና ይጀምራል"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "ይህን ደንብ ድምጸ-ከል ማድረግ ለመጀመር አማራጭ አካባቢያዊ ቀን እና ሰዓት። ቅርጸት፦ YYYY-MM-DD HH:MM።"
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "የአንድ ጊዜ የደንብ ጥገና ያበቃል"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "ይህን ደንብ ድምጸ-ከል ማድረግ ለማቆም አማራጭ አካባቢያዊ ቀን እና ሰዓት። ቅርጸት፦ YYYY-MM-DD HH:MM።"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "ማስታወሻዎች"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "ስለ ማንቂያው ማስታወሻዎች የሚጻፍበት ቦታ"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "የኢሜይል አማራጮች"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "የማሳወቂያ ዝርዝር"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "ማን እና እንዴት ማሳወቂያ ሊደርሰው እንደሚገባ ለመወሰን የዚህን የማሳወቂያ ዝርዝር ይዘት ይጠቀሙ።"
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "የሚሳወቁ ኢሜይሎች"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "እባክዎ ማሳወቅ የሚፈልጓቸውን የኢሜይል አድራሻዎች በኮማ የተለየ ዝርዝር ያስገቡ። ለተቀባይ በSMS ቅርጸት ኢሜይል መላክ ከፈለጉ፣ እባክዎ የዚያን ተቀባይ የኢሜይል አድራሻ በ<b>'sms@'</b> ያስቀድሙ። ለምሳሌ፣ የተቀባዩ የSMS አድራሻ <b>'2485551212@mycarrier.net'</b> ከሆነ፣ እንደ <b>'sms@2485551212@mycarrier.net'</b> ያስገቡትና እንደ SMS መልእክት ይቀረጻል።"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "የኢሜይል አካል ጽሑፍ"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "ይህ መረጃ ከማንቂያው ዝርዝሮች በፊት በማንቂያው አካል ውስጥ ይታያል።"
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "ቲኬት ክፈት"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "ለዚህ ማንቂያ የእገዛ ማዕከል ቲኬት መከፈት አለበት? ማስታወሻ፦ ለምቾት ሲባል የቲኬት ትእዛዝ ስክሪፕቱ በበርካታ 'ALERT_' የአካባቢ ተለዋዋጮች ይሞላል።"
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "የማንቂያ ትዕዛዝ"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "ማንቂያ ሲቀሰቀስ የሚከተለውን ትዕዛዝ ያሂዱ። የሚከተሉት መተኪያ ተለዋዋጮች ይገኛሉ፦ <b>'&lt;HOSTNAME&gt;'</b>፣ <b>'&lt;ALERTID&gt;'</b>፣ <b>'&lt;MESSAGE&gt;'</b>፣ <b>'&lt;FACILITY&gt;'</b>፣ <b>'&lt;PRIORITY&gt;'</b>፣ <b>'&lt;SEVERITY&gt;'</b>። እባክዎ <b>'&lt;HOSTNAME&gt;'</b> የሚገኘው በግለሰብ ገደቦች ላይ ብቻ መሆኑን ልብ ይበሉ። እነዚህ መተኪያ እሴቶች በትዕዛዝ መስመሩ ላይ ሊታዩ ወይም ከስክሪፕቱ አካባቢ ሊሰበሰቡ ይችላሉ። ከአካባቢው ጥቅም ላይ ሲውሉ እነዚያ ተለዋዋጮች በ'ALERT_' ቅድመ-ቅጥያ ይጀምራሉ።"
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "የማገገሚያ ትዕዛዝ"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "ይህ ገደብ ከጸጥታ ጊዜው በኋላ ሲያገግም የሚሄድ አማራጭ ትዕዛዝ። እንደ ማንቂያ ትዕዛዝ ተመሳሳይ የመተኪያ ተለዋዋጮችን ይጠቀማል። SYSLOG_EVENT ግልጽ ነው፤ SYSLOG_BREACH_ID ከጥሰት ትዕዛዙ ጋር ይዛመዳል። ያልተሳኩ ትዕዛዞች እንደገና ይሞከራሉ። ለማሰናከል ባዶ ይተዉት።"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "ደንብን ሞክር"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "የደንብ ሙከራ ቅድመ-ዕይታ"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "እሴት"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "እሴት ያስገቡ"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "ማዛመድ"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "አግልል"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "አሉታዊ ያልሆነ ሙሉ ቁጥር ያስገቡ"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "የማንቂያ ማጣሪያ ሁኔታዎች"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "ሁሉም"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "ሂድ"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "አስመጣ"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "የSyslog ማንቂያ ማጣሪያዎች"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "ዘዴ"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "የገደብ ብዛት"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "የፍለጋ ሕብረቁምፊ"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "የኢሜይል አድራሻዎች"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "መጨረሻ የተሻሻለው"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "በተጠቃሚ"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "ማንቂያዎች"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "በርካታ"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "ምንም የSyslog ማንቂያዎች አልተገለጹም"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "የማንቂያ ደንብ ከአካባቢያዊ ፋይል አስመጣ"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "የማንቂያ ደንብ ፍቺ ውሂብን የያዘው የXML ፋይል በአካባቢያዊ ማሽንዎ ላይ የሚገኝ ከሆነ፣ እዚህ ይምረጡት።"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "የማንቂያ ደንብ ከጽሑፍ አስመጣ"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "የማንቂያ ደንብ ፍቺ ውሂብን የያዘው የXML ፋይል እንደ ጽሑፍ ካለዎት፣ ለማስመጣት ወደዚህ ሳጥን መለጠፍ ይችላሉ።"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "የማንቂያ ደንብ አስመጣ"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "ማስመጣት ውድቅ ተደርጓል፦ ፋይሉ ባዶ ነው፣ ልክ ያልሆነ ነው፣ ወይም የተለየ የSyslog ነገር ዓይነት ይዟል።"
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "ማስመጣት ውድቅ ተደርጓል፦ ልክ ያልሆነ የማንቂያ መድረሻ።"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "ገብቷል"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "ማስታወሻ: ማንቂያ '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "ተዘምኗል"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "ስህተት፦ ማንቂያ '%s' %s አልተሳካም!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "ማዘመን"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "ትክክለኛ ባለቤት ይምረጡ።"
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "ዳሽቦርዱን ማስቀመጥ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "ከ1 እስከ 128 ቁምፊዎች መካከል የዳሽቦርድ ስም ያስገቡ።"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "ባለቤት"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "የተጋራ"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "ፓነሎች"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "የተሰረዘ ተጠቃሚ"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "እስካሁን ምንም ዳሽቦርዶች የሉም። ተጠቃሚዎች ከSyslog ዳሽቦርድ ትር ላይ ይፈጥሯቸዋል።"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "የሚከተሉትን ዳሽቦርድ(ዶች) እና ሁሉንም ፓነሎቻቸውን ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "ዳሽቦርድ(ዎችን) ሰርዝ"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "የሚከተሉትን ዳሽቦርድ(ዶች) ወደ ውጭ ለመላክ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "ዳሽቦርድ(ዶችን) ላክ"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "ማስታወሻ: %d ዳሽቦርድ(ዶች) ገብተዋል እና %d ተዘምነዋል።"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "ስህተት፦ %d ዳሽቦርድ(ዶች) ማስመጣት አልተሳካም።"
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "ዳሽቦርድ ከአካባቢያዊ ፋይል አስመጣ"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "የዳሽቦርድ ፍቺ ውሂብን የያዘው የJSON ፋይል በአካባቢያዊ ማሽንዎ ላይ የሚገኝ ከሆነ፣ እዚህ ይምረጡት።"
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "ዳሽቦርድ ከጽሑፍ አስመጣ"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "የዳሽቦርድ ፍቺ ውሂብን የያዘው የJSON ፋይል እንደ ጽሑፍ ካለዎት፣ ለማስመጣት ወደዚህ ሳጥን መለጠፍ ይችላሉ።"
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "ዳሽቦርድ አስመጣ"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "ሁሉም ተጠቃሚዎች"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "ሁሉም ቡድኖች"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "ዳሽቦርድ አርትዕ"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "በ Syslog ዳሽቦርድ ትር ውስጥ ባለው የዳሽቦርዶች መምረጫ ውስጥ የሚታየው ስም።"
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "የዚህ ዳሽቦርድ ባለቤት የሆነውና ፓነሎቹን ማስተዳደር የሚችለው መለያ።"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "ለተጠቃሚዎች የተጋራ"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "ከባለቤቱ እና ከማንኛውም ዓለም አቀፍ ማጋራት በተጨማሪ ይህን ዳሽቦርድ ማየት የሚችሉ ተጠቃሚዎች። ሁሉም ተጠቃሚዎች ለሁሉም ያጋራዋል።"
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "ከባለቤቱ እና ከማንኛውም ዓለም አቀፍ ማጋራት በተጨማሪ ይህን ዳሽቦርድ ማየት የሚችሉ ቡድኖች። «ሁሉም ቡድኖች» ለሁሉም ሰው ያጋራዋል።"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "ለቡድኖች የተጋራ"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "ዳግም መሰየም በዚህ ዳሽቦርድ እያንዳንዱ ተመልካች ላይ ተፈጻሚ ይሆናል። ፓነሎች በባለቤቶቻቸው ከSyslog ዳሽቦርድ ትር ይተዳደራሉ።"
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "ወደፊት የሚሆን የማቆሚያ መጨረሻ ቀን እና ሰዓት ይምረጡ።"
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "የመሣሪያ ስም ያስፈልጋል።"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "የሚከተሉትን የመሣሪያ ማንቂያ ደንብ(ቦች) %s ለማድረግ ቀጥል የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "ምንም ቅድሚያ አታስተላልፍ"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s እና የበለጠ አጣዳፊ"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "የመሣሪያ ማንቂያ ደንብ"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "በሚተይቡበት ጊዜ የአሁኑን የSyslog መሳሪያዎችን ይፈልጉ ወይም ማንኛውንም የIP አድራሻ ወይም የአስተናጋጅ ስም ያስገቡ።"
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "የማንቂያ አያያዝ"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "ለአፍታ አታቁም"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "ከነጻነት ውጭ የሆኑ ሁሉንም ማንቂያዎች እስከ አንድ ቀን ወይም ላልተወሰነ ጊዜ ለአፍታ ያቁሙ።"
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "ላልተወሰነ ጊዜ ለአፍታ አቁም"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "ለአፍታ አቁም እስከ"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "አካባቢያዊ ቀን እና ሰዓት፣ YYYY-MM-DD HH:MM።"
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "ማቆም የሚያበቃበት ጊዜ"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "ሁልጊዜ ቅድሚያን ፍቀድ"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "እነዚህ ቅድሚያ የሚሰጣቸው ነገሮች በዚህ መሣሪያ የማቆሚያ እና የጥገና መስኮቶች ውስጥ ያልፋሉ። ወሳኝ እና የበለጠ አጣዳፊ የተለመደ የፕላቲነም-መሣሪያ ምርጫ ነው።"
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "በጥገና ወቅት ፍቀድ"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "በማንቂያ የጥገና ጊዜ ውስጥ ከዚህ መሣሪያ የሚመጡ ሁሉንም ቅድሚያዎች ፍቀድ። ይህ አይ ሲሆን ከላይ ያለው የቅድሚያ ልዩ ሁኔታ አሁንም ተግባራዊ ይሆናል።"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "የመሣሪያ ማንቂያ ደንብ [አርትዕ]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "የመሣሪያ ማንቂያ ደንብ [አዲስ]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "የመሣሪያ ማንቂያ ደንብ ማጣሪያዎች"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "ደንቦች"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "አያያዝ"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "ጥገና"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "ቀጥታ ማለፊያ"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "ምንም የመሣሪያ ማንቂያ ደንቦች አልተገኙም።"
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "ባለበት ያልቆመ"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "ላልተወሰነ ጊዜ ቆሟል"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "እስከ %s ቆሟል"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "እና ይበልጥ አስቸኳይ"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "ሁሉንም ፍቀድ"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "የቅድሚያ ልዩ ሁኔታ ይጠቀሙ"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "ምክሩ በ%s ምክንያት አልተቀመጠም። ክፍተት የሌለው መለያ እና ቢያንስ አንድ ማብራሪያ ወይም የሚመከር እርምጃ ያስገቡ።"
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "ለዚህ አቅራቢ እና መለያ ምክር አስቀድሞ አለ።"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "ማስታወሻ: መለያው %s ከፊደሎች፣ አኃዞች፣ _ . - / እና ከአማራጭ መሪ %% በስተቀር ሌሎች ቁምፊዎችን ስለያዘ፣ ከsyslog መልዕክት ጋር በጭራሽ ሊዛመድ አይችልም። እንደ # ያሉ ቦታ ያዦችን ወይም እንደ A|B ያሉ አማራጮችን በትክክለኛው ኮድ ይተኩ።"
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "የሚከተሉትን ምክር(ሮች) ወደ ውጭ ለመላክ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "የሚከተሉትን ምክር(ሮች) ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "ወደ ውጭ ለመላክ የJSON gzip ፋይል ለመፍጠር የPHP zlib ቅጥያ ያስፈልጋል።"
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "ማስመጣት ውድቅ ተደርጓል፦ ፋይሉ ባዶ ነው፣ በጣም ትልቅ ነው፣ ወይም ልክ የሆነ የምክሮች JSON ሰነድ አይደለም።"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "ማስታወሻ: %d ታክለዋል፣ %d ተዘምነዋል እና %d ነባር ምክሮች ሳይለወጡ ቀርተዋል።"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "ስህተት፦ %d ምክረ ሃሳብ(ቦች) ውድቅ ተደርገዋል (ለምሳሌ %s)። እያንዳንዱ ከምክንያቱ ጋር በCacti መዝገብ ውስጥ ተዘርዝሯል።"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "ስህተት፦ %d ምክረ ሃሳብ(ቦች) ማስቀመጥ አልተቻለም። እያንዳንዱ በCacti መዝገብ ውስጥ ተዘርዝሯል።"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "ማስታወሻ: %d የገቡ ምክሮች በመልዕክት ቃል ውስጥ በጭራሽ የማይታዩ እንደ | ወይም # ያሉ ቁምፊዎችን የያዙ መለያዎች አሏቸው፣ ስለዚህ እስኪስተካከሉ ድረስ መዛመድ አይችሉም። እነሱን ለመዘርዘር 'መዛመድ ይችላል' የሚለውን ወደ 'አይ' ያቀናብሩ።"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "ምክሮችን ከአካባቢያዊ ፋይል አስመጣ"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "በአካባቢያዊ ማሽንዎ ላይ የ.json ወይም .json.gz ፋይል ይምረጡ። የሚጠበቀውን ቅርጸት ለማየት የላክ ተግባርን ይጠቀሙ፦ vendor፣ identifier፣ component፣ severity፣ message፣ explanation፣ recommended_action እና reference ያላቸው የመዝገቦች ዝርዝር።"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "ምክሮችን ከጽሑፍ አስመጣ"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "በአማራጭ፣ የJSON ሰነዱን በዚህ ሳጥን ውስጥ ይለጥፉ።"
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "ነባር ምክሮች"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "አንድ ምክር አቅራቢው እና መለያው ሲዛመዱ ካለው ጋር አንድ ነው።"
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "ያለውን ምክር አቆይ"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "በገባው ይተኩት"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "ምክሮችን አስመጣ"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "በማስመጣት ላይ፣ እባክዎ ይጠብቁ..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "ያልተገለጸ"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "ምክረ ሃሳብ"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "ይህን መልእክት የሚመዘግበው የመሣሪያው ወይም የሶፍትዌሩ አቅራቢ፣ ለምሳሌ Cisco ወይም Juniper።"
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "አቅራቢ"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "መለያ"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "የሚፈለገው የመልእክት ኮድ፣ ለምሳሌ %LINK-3-UPDOWN፣ RPD_OSPF_NBRDOWN ወይም 4625። ከ Syslog መልእክት ሙሉ ቃል ጋር (ፊደላት፣ አሃዞች እና _ . - /) እኩል መሆን አለበት፤ መጀመሪያ ላይ ያለ % ቃል በቃል ሲሆን እንደተጻፈው መዛመድ አለበት። ማዛመዱ ለአቢይ እና ንዑስ ፊደላት ልዩነት ግድ የለውም። በዝርዝሩ ገጽ ላይ «ምክሮች እንዴት እንደሚዛመዱ» የሚለውን ይመልከቱ።"
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "አካል"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "መልእክቱን የሚያመነጨው ፋሲሊቲ፣ ሞጁል ወይም ንዑስ ሥርዓት።"
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "አቅራቢው ለዚህ መልእክት የመዘገበው የክብደት ደረጃ።"
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "በሰነድ ላይ እንደተገለጸው የመልእክቱ ቅርጸት፣ የተለዋዋጭ ቦታ ያዢዎቹን ጨምሮ።"
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "መልዕክቱ ምን ማለት እንደሆነ።"
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "አንድ ኦፕሬተር ስለዚህ ጉዳይ ምን ማድረግ እንዳለበት።"
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "ወደ አቅራቢው ሰነዶች የሚወስዱ አገናኞች፣ በአንድ መስመር አንድ።"
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "ምክረ ሃሳብ [አርትዕ]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "ምክረ ሃሳብ [አዲስ]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "ከመልዕክቱ በፊት ያለው አምፖል በስርዓት ምዝግብ ማስታወሻዎች እና በማንቂያ ምዝግብ ማስታወሻዎች ትሮች ላይ የሚዛመዱ ምክሮችን ያመለክታል። በዝርዝሮች መስኮት ውስጥ ለማንበብ መልዕክቱን ጠቅ ያድርጉ። ጠቋሚውን ማንሳፈፍ በፍጹም አገልጋዩን አይጠይቅም።"
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "ለማዛመድ <b>መለያ</b> የሚለው ዓምድ ብቻ ጥቅም ላይ ይውላል። አቅራቢው፣ ክፍሉ፣ ክብደቱ፣ መልዕክቱ እና ማብራሪያው በዝርዝር መስኮቱ ውስጥ ይታያሉ ነገር ግን በፍጹም አይፈለጉም።"
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "የመልእክቱ የመጀመሪያዎቹ 2,048 ቁምፊዎች ወደ ቃላት ይከፋፈላሉ። ቃል ማለት በ % ሊጀምር የሚችል የፊደላት፣ የአሃዞች እና የ _ . - / ቁምፊዎች ተከታታይ ነው። እንደ ክፍተት፣ ሁለት ነጥብ፣ ነጠላ ሰረዝ ወይም ቅንፍ ያለ ሌላ ማንኛውም ቁምፊ ቃልን ያጠናቅቃል። በ <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> ውስጥ ቃላቱ <code>%LINK-3-UPDOWN</code>፣ <code>Interface</code>፣ <code>Gi0/1</code>፣ <code>changed</code>፣ <code>state</code>፣ <code>to</code> እና <code>down</code> ናቸው።"
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "አንድ መለያ የሚዛመደው የፊደል መጠንን ችላ በማለት <b>ከአንድ ሙሉ ቃል ጋር በትክክል እኩል</b> ሲሆን ነው። ይህ የ\"ያካትታል\"፣ \"በ... ይጀምራል\" ወይም \"በ... ያበቃል\" ፍለጋ አይደለም፣ እንዲሁም ምንም የዋይልድካርድ ምልክቶች የሉም፦ <code>LINK-3-UPDOWN</code> ከ<code>LINK-3-UPDOWN-EXT</code> ቃል ጋር አይዛመድም፣ እና <code>UPDOWN</code> ከ<code>%LINK-3-UPDOWN</code> ጋር አይዛመድም።"
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "መሪው <b>%</b> ቀጥተኛ ቁምፊ እንጂ የዱርካርድ ምልክት አይደለም፣ እና እንደተጻፈው ከመልዕክቱ ቃል ጋር መዛመድ አለበት። <code>%LINK-3-UPDOWN</code> የሚለው መለያ ከ<code>%LINK-3-UPDOWN</code> የመልዕክት ቃል ጋር ይዛመዳል እንጂ ከ<code>LINK-3-UPDOWN</code> ጋር አይዛመድም፤ ቅድመ ቅጥያ የሌለው መለያ ቅድመ ቅጥያ ከሌለው ቃል ጋር ብቻ ይዛመዳል።"
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "የSyslog አስተናጋጅ አቅራቢው ከSNMP የስርዓት መግለጫው ወይም ከመሣሪያ አብነቱ የሚታወቅ የCacti መሣሪያ ሲሆን እና ለዚያ አቅራቢ ምክሮች ሲኖሩ፣ የዚያ አቅራቢ ምክሮች እና አቅራቢ የሌላቸው ብቻ ይፈተሻሉ። ያለበለዚያ ሁሉም አቅራቢዎች ይፈተሻሉ፣ ነገር ግን በአሃዞች ብቻ የተሰራ መለያ አቅራቢ ከሌላቸው ምክሮች ጋር ብቻ ይዛመዳል። ብዙ ምክሮች ሲዛመዱ፣ ረዣዥሞቹ መለያዎች በመጀመሪያ ይታያሉ፣ እስከ ሶስት ድረስ።"
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "በአንዳንድ የአቅራቢ ሰነዶች ውስጥ እንዳለው የ<code>#</code> ቦታ መያዣ ወይም የ<code>|</code> አማራጮች (ለምሳሌ <code>%ASA|PIX-3-331001</code>) ያሉ ሌሎች ቁምፊዎችን የያዙ መለያዎች ተጠብቀው ይላካሉ፤ ነገር ግን ፈጽሞ ሊዛመዱ አይችሉም። እነሱን ለመዘርዘር <b>ሊዛመድ ይችላል</b>ን ወደ «አይ» ያዋቅሩ እና ወደ ትክክለኛው ኮድ ያርትዑዋቸው፤ ለምሳሌ <code>%ASA-3-331001</code>።"
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "ምክሮች እንዴት እንደሚዛመዱ"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "ሊዛመድ ይችላል"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "መለያው የመልዕክት ቃል ቅርጽ ያለው መሆኑን እና የመልዕክት ፍለጋው መቼም ቢሆን ሊያገኘው መቻሉን"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "ከማጣሪያዎቹ ጋር የሚዛመዱ ሁሉንም ምክሮች ወደ ውጭ ላክ"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "ምንም ምክሮች አልተገኙም።"
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "እንደገና አስኬድ"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማስወገጃ ደንብ(ቦች) ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "የSyslog ማስወገጃ ደንብ(ቦችን) ሰርዝ"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማስወገጃ ደንብ(ቦች) ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "የSyslog ማስወገጃ ደንብ(ቦች)ን አሰናክል"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማስወገጃ ደንብ(ቦች) ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "የSyslog ማስወገጃ ደንብ(ቦች)ን አንቃ"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማስወገጃ ደንብ(ቦች) እንደገና ለማስኬድ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "የSyslog ማስወገጃ ደንብ(ቦችን) ወደ ኋላ ተመልሶ አስኬድ"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "የሚከተሉትን የSyslog ማስወገጃ ደንብ(ቦች) ወደ ውጭ ለመላክ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "የSyslog ማስወገጃ ደንብ(ቦችን) ላክ"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "ደንብ '%s' %s/%s መልዕክቶች እንዲወገዱ/እንዲተላለፉ አድርጓል"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "የማስወገጃ ደንብ አርትዕ [አርትዕ: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "የማስወገጃ ደንብ አርትዕ [አዲስ]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "አዲስ የማስወገጃ መዝገብ"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "አዲስ የማስወገጃ ደንብ"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "የማስወገጃ ደንብ ዝርዝሮች"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "የማስወገጃ ደንብ ስም"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "እባክዎ ይህን የማስወገጃ ደንብ ይግለጹ።"
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "ነቅቷል?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "ይህ የማስወገጃ ደንብ ነቅቷል?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "የሕብረቁምፊ ማዛመጃ ዓይነት"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "ይህ ሕብረቁምፊ እንዴት እንዲዛመድ እንደሚፈልጉ ይግለጹ። የSQL Expression ዓይነትን የሚጠቀሙ ከሆነ ማንቂያውን ለመፍጠር ማንኛውንም ትክክለኛ የSQL አገላለጽ መጠቀም ይችላሉ። የሚገኙ መስኮች 'message'፣ 'facility'፣ 'priority' እና 'host'ን ያካትታሉ።"
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "የSyslog መልዕክት ማዛመጃ ሕብረቁምፊ"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "የSyslog መልዕክቱን ተዛማጅ ክፍል፣ ተቋሙን (facility) ወይም የአስተናጋጅ ስምን፣ ወይም የSQL Expression Match Type የሚጠቀሙ ከሆነ የSQL where ሐረግን ያስገቡ።"
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "የማስወገጃ ዘዴ"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "መሰረዝ"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "ማስተላለፍ"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "የማስወገጃ ደንብ ማስታወሻዎች"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "ስለ ማስወገጃ ደንቡ ማስታወሻዎች የሚጻፍበት ቦታ"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "የማስወገጃ ማጣሪያ ሁኔታዎች"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "የSyslog ማስወገጃ ደንብ ማጣሪያዎች"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "የማስወገጃ ስም"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "ዝውውር"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "ምንም የSyslog ማስወገጃ ደንቦች አልተገለጹም"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "የማስወገጃ ደንብ ከአካባቢያዊ ፋይል አስመጣ"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "የማስወገጃ ደንብ ፍቺ ውሂብን የያዘው የXML ፋይል በአካባቢያዊ ማሽንዎ ላይ የሚገኝ ከሆነ፣ እዚህ ይምረጡት።"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "የማስወገጃ ደንብ ከጽሑፍ አስመጣ"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "የማስወገጃ ደንብ ፍቺ ውሂብን የያዘው የXML ፋይል እንደ ጽሑፍ ካለዎት፣ ለማስመጣት ወደዚህ ሳጥን መለጠፍ ይችላሉ።"
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "የማስወገጃ ደንብ አስመጣ"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "ማስታወሻ: የማስወገጃ ደንብ '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "ስህተት፦ የማስወገጃ ደንብ '%s' %s አልተሳካም!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "የሚከተሉትን የSyslog ሪፖርት(ቶች) ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "የSyslog ሪፖርት(ቶችን) ሰርዝ"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "የሚከተሉትን የSyslog ሪፖርት(ቶች) ለማሰናከል 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "የSyslog ሪፖርት(ቶች)ን አሰናክል"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "የሚከተሉትን የSyslog ሪፖርት(ቶች) ለማንቃት 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "የSyslog ሪፖርት(ቶች)ን አንቃ"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "የሚከተሉትን የSyslog ሪፖርት ደንብ(ቦች) ወደ ውጭ ለመላክ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "የSyslog ሪፖርት ደንብ(ቦችን) ላክ"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "ቢያንስ አንድ የSyslog ሪፖርት መምረጥ አለብዎት።"
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "ተመለስ"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "ሪፖርት አርትዕ [አርትዕ: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "ሪፖርት አርትዕ [አዲስ]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "አዲስ የሪፖርት መዝገብ"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "እባክዎ ይህን ሪፖርት ይግለጹ።"
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "ይህ ሪፖርት ነቅቷል?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "ይህ ሕብረቁምፊ እንዴት እንዲዛመድ እንደሚፈልጉ ይግለጹ። የማጣሪያ ገንቢ (Filter Builder) በmessage፣ host፣ program፣ facility እና priority ላይ ያሉ ሁኔታዎችን ያጣምራል።"
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "ድግግሞሽ"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "ይህ ሪፖርት ወደ ስርጭት ዝርዝሩ ምን ያህል ጊዜ መላክ አለበት?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "የመላኪያ ሰዓት"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "ይህ ሪፖርት በቀኑ ውስጥ በስንት ሰዓት መላክ አለበት?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "የሪፖርት ቅርጸት"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "የማጣሪያ ሁኔታዎችን ይገንቡ፣ ወይም ከ syslog መልዕክቶች ጋር የሚዛመድ ጽሑፍ ወይም የ SQL መግለጫ ያስገቡ።"
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "በሪፖርቱ ዋና አካል ውስጥ የሚካተተው መረጃ።"
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "ሪፖርቱ የሚላክላቸው በነጠላ ሰረዝ የተለዩ የኢሜይል አድራሻዎች ዝርዝር።"
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "ስለ ሪፖርቱ ማስታወሻዎች የሚጻፍበት ቦታ"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "የሪፖርት ሙከራ ቅድመ-ዕይታ"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "የሪፖርት ማጣሪያ ሁኔታዎች"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "የSyslog ሪፖርት ማጣሪያዎች"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "የሪፖርት ስም"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "መጨረሻ የተላከበት"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "ሪፖርቶች"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "ምንም የSyslog ሪፖርቶች አልተገለጹም"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "የሪፖርት ደንብ ከአካባቢያዊ ፋይል አስመጣ"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "የሪፖርት ደንብ ፍቺ ውሂብን የያዘው የXML ፋይል በአካባቢያዊ ማሽንዎ ላይ የሚገኝ ከሆነ፣ እዚህ ይምረጡት።"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "የሪፖርት ደንብ ከጽሑፍ አስመጣ"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "የሪፖርት ደንብ ፍቺ ውሂብን የያዘው የXML ፋይል እንደ ጽሑፍ ካለዎት፣ ለማስመጣት ወደዚህ ሳጥን መለጠፍ ይችላሉ።"
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "የሪፖርት ውሂብ አስመጣ"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "ማስታወሻ: የሪፖርት ደንብ '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "ስህተት፦ የሪፖርት ደንብ '%s' %s አልተሳካም!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "አብነቱን ማስቀመጥ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "ከ1 እስከ 128 ቁምፊዎች መካከል የአብነት ስም ያስገቡ።"
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "አብነቶች"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "መጠይቅ"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "ምንም የተጋሩ የፍለጋ አብነቶች የሉም። አንዱን ለመፍጠር ከSyslog ለሁሉም ተጠቃሚዎች ፍለጋ ያስቀምጡ።"
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "የሚከተሉትን የተቀመጡ የፍለጋ አብነት(ቶች) ወደ ውጭ ለመላክ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "የሚከተሉትን የተቀመጡ የፍለጋ አብነት(ቶች) ለመሰረዝ 'ቀጥል' የሚለውን ጠቅ ያድርጉ።"
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "የተቀመጡ የፍለጋ አብነት(ቶችን) ሰርዝ"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "የተቀመጠ የፍለጋ አብነት(ቶች) ላክ"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "ማስታወሻ: %d የተቀመጠ የፍለጋ አብነት(ቶች) ገብተዋል እና %d ተዘምነዋል።"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "ስህተት፦ %d የተቀመጠ የፍለጋ አብነት(ቶች) ማስመጣት አልተሳካም።"
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "የተቀመጠ የፍለጋ አብነት ከአካባቢያዊ ፋይል አስመጣ"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "የተቀመጠ የፍለጋ አብነት ፍቺ ውሂብን የያዘው የJSON ፋይል በአካባቢያዊ ማሽንዎ ላይ የሚገኝ ከሆነ፣ እዚህ ይምረጡት።"
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "የተቀመጠ የፍለጋ አብነት ከጽሑፍ አስመጣ"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "የተቀመጠ የፍለጋ አብነት ፍቺ ውሂብን የያዘው የJSON ፋይል እንደ ጽሑፍ ካለዎት፣ ለማስመጣት ወደዚህ ሳጥን መለጠፍ ይችላሉ።"
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "የተቀመጠ የፍለጋ አብነት አስመጣ"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "የተቀመጠ የፍለጋ አብነት አርትዕ"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "በተቀመጡ ፍለጋዎች ውስጥ ለሁሉም ተጠቃሚዎች የሚታየው ስም።"
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "የዚህ አብነት ባለቤት የሆነውና በተቀመጡ ፍለጋዎች (Saved Searches) ውስጥ ማስተዳደር የሚችለው መለያ።"
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "ከባለቤቱ በተጨማሪ ይህን አብነት መጠቀም የሚችሉ ተጠቃሚዎች። ሁሉም ተጠቃሚዎች ለሁሉም ያጋራዋል።"
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "ከባለቤቱ በተጨማሪ ይህን አብነት መጠቀም የሚችሉ ቡድኖች። «ሁሉም ቡድኖች» ለሁሉም ሰው ያጋራዋል።"
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "የፍለጋ መጠይቅ"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "የመጠይቅ ገንቢውን ለመጠቀም የመጠይቅ አገባቡን ያስተካክሉ።"
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "መስክ፣ ኦፕሬተር እና እሴት ይምረጡ። መጠይቁን ለመገንባት AND፣ OR፣ NOT ወይም Group ይጠቀሙ። ለውጦች ለሁሉም ተጠቃሚዎች በዚህ የተጋራ አብነት ላይ ተግባራዊ ይሆናሉ።"
+
