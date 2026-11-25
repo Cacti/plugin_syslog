@@ -4,135 +4,110 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2025-03-07 14:42-0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: el_GR\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Greek <https://translate.cacti.net/projects/cacti/syslog/el/>\nLanguage: el-GR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Minutes"
+#, php-format
 msgid "%d minutes"
 msgstr "%d λεπτά"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hour"
-msgstr "%d ώρες"
+msgstr "%d ώρα"
 
 #: includes/functions.php includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hours"
 msgstr "%d ώρες"
 
 #: includes/functions.php
 #, php-format
 msgid "%d day"
-msgstr ""
+msgstr "%d ημέρα"
 
 #: includes/functions.php includes/settings.php
 #, php-format
 msgid "%d days"
-msgstr ""
+msgstr "%d ημέρες"
 
 #: includes/functions.php
 #, php-format
 msgid "%d week"
-msgstr ""
+msgstr "%d εβδομάδα"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Weeks"
+#, php-format
 msgid "%d weeks"
-msgstr "%d Εβδομάδες"
+msgstr "%d εβδομάδες"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Month"
+#, php-format
 msgid "%d month"
-msgstr "% d Μήνα"
+msgstr "%d μήνας"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Months"
+#, php-format
 msgid "%d months"
-msgstr "% d Μήνας"
+msgstr "%d μήνες"
 
 #: includes/functions.php
 #, php-format
 msgid "%d year"
-msgstr ""
+msgstr "%d έτος"
 
 #: includes/functions.php
 #, php-format
 msgid "%d years"
-msgstr ""
+msgstr "%d έτη"
 
 #: includes/functions.php
 msgid "Day Shift"
-msgstr ""
+msgstr "Ημερήσια βάρδια"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr ""
+msgstr "Αυτήν την Ημέρα"
 
 #: includes/functions.php
-#, fuzzy
 msgid "This Week"
-msgstr "Τελευταία αποστολή"
+msgstr "Αυτή την Εβδομάδα"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "1 Month"
 msgid "This Month"
-msgstr "1 Μήνας"
+msgstr "Αυτόν το Μήνα"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "%d Year"
 msgid "This Year"
-msgstr "% d Έτος"
+msgstr "Αυτή την Χρονιά"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Partitions per Day"
 msgid "Previous Day"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "Προηγούμενη ημέρα"
 
 #: includes/functions.php
 msgid "Previous Week"
-msgstr ""
+msgstr "Προηγούμενη εβδομάδα"
 
 #: includes/functions.php
 msgid "Previous Month"
-msgstr ""
+msgstr "Προηγούμενος Μήνας"
 
 #: includes/functions.php
 msgid "Previous Year"
-msgstr ""
+msgstr "Προηγούμενος Χρόνος"
 
 #: includes/functions.php
-#, fuzzy
 msgid "Syslog download"
-msgstr "Syslog ενεργοποιημένη"
+msgstr "Λήψη Syslog"
 
 #: includes/functions.php
 msgid "Share with users…"
-msgstr ""
+msgstr "Κοινοποίηση σε χρήστες…"
 
 #: includes/functions.php
 msgid "Share with groups…"
-msgstr ""
+msgstr "Κοινοποίηση σε ομάδες…"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Emergency"
@@ -172,7 +147,7 @@ msgstr "Ενημερωτικό"
 
 #: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr "Η αποθήκευση απέτυχε.  Οι απομακρυσμένες Συλλογές δεδομένων σε λειτουργία συγχρονισμού δεν επιτρέπεται να αποθηκεύουν κανόνες.  Αποθηκεύστε από τον κύριο διακομιστή κάκτων αντ 'αυτού."
+msgstr "Η αποθήκευση απέτυχε. Οι απομακρυσμένοι συλλέκτες δεδομένων σε λειτουργία συγχρονισμού δεν επιτρέπεται να αποθηκεύουν κανόνες. Αποθηκεύστε από τον κύριο διακομιστή Cacti αντ' αυτού."
 
 #: includes/functions.php
 msgid "Please use an HTML Email Client"
@@ -180,142 +155,139 @@ msgstr "Χρησιμοποιήστε ένα πρόγραμμα-πελάτη ηλ
 
 #: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
-msgstr ""
+msgstr "Το ωφέλιμο φορτίο εισαγωγής κειμένου υπερβαίνει το μέγιστο μέγεθος"
 
 #: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
-msgstr ""
+msgstr "Αδυναμία ανάγνωσης του μεταφορτωμένου αρχείου εισαγωγής. Ελέγξτε το αρχείο και το όριο μεγέθους μεταφόρτωσης."
 
 #: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
-msgstr ""
+msgstr "Επιλέξτε ένα αρχείο εισαγωγής ή επικολλήστε τα περιεχόμενά του πριν από την εισαγωγή."
 
 #: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
-msgstr ""
+msgstr "Οι πίνακες του Syslog δεν είναι διαμερισματοποιημένοι. Οι παραδοσιακοί (μη διαμερισματοποιημένοι) πίνακες είναι παρωχημένοι και για νέες εγκαταστάσεις απαιτούνται διαμερισματοποιημένοι πίνακες. Η συλλογή των δεδομένων σας θα συνεχιστεί, αλλά θα πρέπει να μεταφέρετε τον πίνακα syslog σε διαμερισματοποιημένη αρχιτεκτονική."
 
 #: includes/functions.php
 msgid "Waiting for a completed processing run."
-msgstr ""
+msgstr "Αναμονή για ολοκληρωμένη εκτέλεση επεξεργασίας."
 
 #: includes/functions.php
 msgid "Processing is completing within the allowed delay."
-msgstr ""
+msgstr "Η επεξεργασία ολοκληρώνεται εντός της επιτρεπόμενης καθυστέρησης."
 
 #: includes/functions.php
 #, php-format
 msgid "No processing run has completed for more than %d seconds."
-msgstr ""
+msgstr "Δεν έχει ολοκληρωθεί καμία εκτέλεση επεξεργασίας για περισσότερα από %d δευτερόλεπτα."
 
 #: includes/functions.php
 msgid "Incoming messages are within the configured limits."
-msgstr ""
+msgstr "Τα εισερχόμενα μηνύματα βρίσκονται εντός των ρυθμισμένων ορίων."
 
 #: includes/functions.php
 msgid "Incoming queue metrics are unavailable."
-msgstr ""
+msgstr "Οι μετρήσεις εισερχόμενης ουράς δεν είναι διαθέσιμες."
 
 #: includes/functions.php
 #, php-format
 msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
-msgstr ""
+msgstr "Εισερχόμενη εκκρεμότητα τουλάχιστον %s μηνυμάτων υπερβαίνει το όριο των %s."
 
 #: includes/functions.php
 msgid "The oldest incoming message timestamp is unavailable."
-msgstr ""
+msgstr "Η παλαιότερη χρονοσφραγίδα εισερχόμενου μηνύματος δεν είναι διαθέσιμη."
 
 #: includes/functions.php
 #, php-format
 msgid "Unprocessed messages are older than %d seconds."
-msgstr ""
+msgstr "Τα ανεπεξέργαστα μηνύματα είναι παλαιότερα από %d δευτερόλεπτα."
 
 #: includes/functions.php
 msgid "Synchronization is not enabled on this collector."
-msgstr ""
+msgstr "Ο συγχρονισμός δεν είναι ενεργοποιημένος σε αυτόν τον συλλέκτη."
 
 #: includes/functions.php
 msgid "Synchronization is within the allowed delay."
-msgstr ""
+msgstr "Ο συγχρονισμός βρίσκεται εντός της επιτρεπόμενης καθυστέρησης."
 
 #: includes/functions.php
 msgid "Synchronization queue metrics are unavailable."
-msgstr ""
+msgstr "Οι μετρήσεις της ουράς συγχρονισμού δεν είναι διαθέσιμες."
 
 #: includes/functions.php
 msgid "The oldest synchronization record timestamp is unavailable."
-msgstr ""
+msgstr "Η παλαιότερη χρονοσφραγίδα εγγραφής συγχρονισμού δεν είναι διαθέσιμη."
 
 #: includes/functions.php
 msgid "Synchronization has failed or queued records exceed the allowed delay."
-msgstr ""
+msgstr "Ο συγχρονισμός απέτυχε ή οι εγγραφές στην ουρά υπερβαίνουν την επιτρεπόμενη καθυστέρηση."
 
 #: includes/functions.php
-#, fuzzy
 msgid "Partition maintenance is not blocked."
-msgstr "Χωρισμένος πίνακας"
+msgstr "Η συντήρηση διαμερισμάτων δεν είναι αποκλεισμένη."
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "Partition maintenance is blocked: %s"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Η συντήρηση διαμερισμάτων έχει αποκλειστεί: %s"
 
 #: includes/functions.php
 #, php-format
 msgid "Syslog pipeline health - collector %d"
-msgstr ""
+msgstr "Υγεία διοχέτευσης Syslog - συλλέκτης %d"
 
 #: includes/functions.php
 msgid "The Syslog pipeline has recovered."
-msgstr ""
+msgstr "Η ροή επεξεργασίας του Syslog αποκαταστάθηκε."
 
 #: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "Η διάταξη διαμερισμάτων για το %s είναι μη έγκυρη ή ελλιπής· η συντήρηση διαμερισμάτων διακόπηκε. Επαληθεύστε τα μεταδεδομένα διαμερισμάτων με SHOW CREATE TABLE και, εάν απαιτείται, ανακατασκευάστε τα διαμερίσματα· οι εγγραφές συνεχίζονται στο διαμέρισμα ασφαλείας dMaxValue."
 
 #: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d partition(s)"
-msgstr ""
+msgstr "υπολειπόμενο κενό διαμερισμάτων: %d διαμέρισμα(-τα)"
 
 #: includes/functions.php
 msgid "no retention deferral"
-msgstr ""
+msgstr "καμία αναβολή διατήρησης"
 
 #: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
-msgstr ""
+msgstr "η εκκαθάριση διατήρησης αναβλήθηκε έως ότου αποκατασταθεί ο μελλοντικός ορίζοντας"
 
 #: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
-msgstr ""
+msgstr "νέες εγγραφές συσσωρεύονται στο διαμέρισμα ασφαλείας dMaxValue"
 
 #: includes/functions.php
 msgid "per run recovery limit reached"
-msgstr ""
+msgstr "επιτεύχθηκε το όριο ανάκτησης ανά εκτέλεση"
 
 #: includes/functions.php
-#, fuzzy
 msgid "partition creation failed"
-msgstr "Χωρισμένος πίνακας"
+msgstr "αποτυχία δημιουργίας διαμερίσματος"
 
 #: includes/functions.php
 msgid "Unknown partitioning level; choose Hourly or Daily."
-msgstr ""
+msgstr "Άγνωστο επίπεδο διαμερισματοποίησης· επιλέξτε Ωριαίο ή Ημερήσιο."
 
 #: includes/functions.php
-#, fuzzy
 msgid "The Syslog retention is invalid."
-msgstr "Διατήρηση Syslog"
+msgstr "Η περίοδος διατήρησης Syslog δεν είναι έγκυρη."
 
 #: includes/functions.php
 msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
-msgstr ""
+msgstr "Η ωριαία κατάτμηση δεν μπορεί να χρησιμοποιηθεί με αόριστη διατήρηση, καθώς θα απαιτούσε απεριόριστο αριθμό κατατμήσεων. Επιλέξτε περίοδο διατήρησης ή ημερήσια κατάτμηση."
 
 #: includes/functions.php
 #, php-format
 msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
-msgstr ""
+msgstr "Το διαμέρισμα %s με %s ημέρες διατήρησης και παράθυρο προδημιουργίας %s ημερών απαιτεί %s διαμερίσματα ανά πίνακα, γεγονός που υπερβαίνει το όριο των %s διαμερισμάτων αυτού του διακομιστή βάσης δεδομένων. Μειώστε τη διατήρηση, συντομεύστε το παράθυρο προδημιουργίας ή επιλέξτε Ημερήσιο διαμέρισμα."
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
@@ -324,85 +296,84 @@ msgstr "Καθημερινά"
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
-#, fuzzy
 msgid "Hourly"
-msgstr "%d ώρα"
+msgstr "Ωριαία"
 
 #: includes/functions.php
 #, php-format
 msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
-msgstr ""
+msgstr "Οι πίνακες εξακολουθούν να χρησιμοποιούν διαμερίσματα %s έως ότου τους αναδομήσει το cli/upgrade_partitioning.php."
 
 #: includes/functions.php
 msgid "The partitioning level of the existing Syslog tables could not be read."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η ανάγνωση του επιπέδου διαμερισματοποίησης των υπαρχόντων πινάκων Syslog."
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
+msgstr "Η αυτόματη ανάκτηση διαμερισμάτων αναβλήθηκε: το μέγεθος του dMaxValue δεν είναι διαθέσιμο· απαιτείται παρέμβαση διαχειριστή."
 
 #: includes/functions.php
 #, php-format
 msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
-msgstr ""
+msgstr "Η αυτόματη ανάκτηση διαμερισμάτων αναβλήθηκε: το dMaxValue έχει εκτιμώμενες %s γραμμές και %s bytes· τα όρια είναι 100000 γραμμές και 134217728 bytes. Απαιτείται παρέμβαση διαχειριστή."
 
 #: includes/functions.php
 msgid "Unknown rule type."
-msgstr ""
+msgstr "Άγνωστος τύπος κανόνα."
 
 #: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
-msgstr ""
+msgstr "Η ρυθμισμένη αντιστοίχιση εισερχόμενων πεδίων δεν είναι έγκυρη."
 
 #: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
-msgstr ""
+msgstr "Η κατηγορία (facility) αυτού του κανόνα δεν βρίσκεται ακόμη στον πίνακα αναφοράς."
 
 #: includes/functions.php
 msgid "Unknown rule match type."
-msgstr ""
+msgstr "Άγνωστος τύπος αντιστοίχισης κανόνα."
 
 #: includes/functions.php
 msgid "The rule did not compile to a query."
-msgstr ""
+msgstr "Ο κανόνας δεν μεταγλωττίστηκε σε ερώτημα."
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η αξιολόγηση του ερωτήματος προεπισκόπησης."
 
 #: includes/functions.php
 msgid "The historical preview filter could not be compiled."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η μεταγλώττιση του φίλτρου ιστορικής προεπισκόπησης."
 
 #: includes/functions.php
 msgid "The historical preview query could not be evaluated."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η αξιολόγηση του ερωτήματος ιστορικής προεπισκόπησης."
 
 #: includes/functions.php
 msgid "The preview sample could not be read."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η ανάγνωση του δείγματος προεπισκόπησης."
 
 #: includes/functions.php
 msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
-msgstr ""
+msgstr "Οι προεπισκοπήσεις εκφράσεων SQL ελέγχουν μόνο τα εισερχόμενα μηνύματα στην ουρά. Τα ήδη επεξεργασμένα μηνύματα δεν αναζητούνται. Η δοκιμή δεν αποστέλλει συναγερμούς."
 
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Permission denied."
-msgstr ""
+msgstr "Δεν επιτρέπεται η πρόσβαση."
 
 #: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
-msgstr ""
+msgstr "Μη έγκυρο αίτημα. Παρακαλώ προσπαθήστε ξανά."
 
 #: includes/functions.php
 msgid "The rule has no match expression to test."
-msgstr ""
+msgstr "Ο κανόνας δεν διαθέτει έκφραση αντιστοίχισης για έλεγχο."
 
 #: includes/functions.php
 msgid "The match expression is too long to test."
-msgstr ""
+msgstr "Η έκφραση αντιστοίχισης είναι πολύ μεγάλη για να ελεγχθεί."
 
 #: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
 #: syslog.php
@@ -448,7 +419,7 @@ msgstr "Cacti Syslog Alert '%s' for Host '%s'"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Κάκτος Syslog Alert '%s'"
+msgstr "Ειδοποίηση Cacti Syslog '%s'"
 
 #: includes/functions.php
 msgid "Hostname"
@@ -483,11 +454,11 @@ msgstr "Όνομα:"
 
 #: includes/functions.php
 msgid "Severity:"
-msgstr "Σοβαρότητα"
+msgstr "Σοβαρότητα:"
 
 #: includes/functions.php
 msgid "Threshold:"
-msgstr "Όριο"
+msgstr "Όριο:"
 
 #: includes/functions.php
 msgid "Count:"
@@ -507,7 +478,7 @@ msgstr "Ημερομηνία:"
 
 #: includes/functions.php
 msgid "Level:"
-msgstr "Συνδρομή"
+msgstr "Επίπεδο:"
 
 #: includes/functions.php
 msgid "Message:"
@@ -515,7 +486,7 @@ msgstr "Μήνυμα:"
 
 #: includes/functions.php
 msgid ", Host:"
-msgstr "Συντονίζει"
+msgstr ", Κεντρικός υπολογιστής:"
 
 #: includes/functions.php
 msgid ", URL:"
@@ -532,7 +503,7 @@ msgstr "Ειδοποίηση συμβάντος - %s"
 
 #: includes/functions.php
 msgid ", Count:"
-msgstr "Μέτρηση"
+msgstr "Μέτρηση:"
 
 #: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
 #: syslog_removal.php syslog_reports.php
@@ -547,15 +518,15 @@ msgstr "Αναφορά συμβάντος - %s"
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
-msgstr ""
+msgstr "Οι προεπισκοπήσεις αναφορών αναζητούν στα πιο πρόσφατα %d αποθηκευμένα μηνύματα· η ίδια η αναφορά καλύπτει ολόκληρο το χρονικό της παράθυρο. Η δοκιμή δεν αποστέλλει email."
 
 #: includes/functions.php
 msgid "Grouped results are unavailable or expired. Refresh the results and try again."
-msgstr ""
+msgstr "Τα ομαδοποιημένα αποτελέσματα δεν είναι διαθέσιμα ή έχουν λήξει. Ανανεώστε τα αποτελέσματα και δοκιμάστε ξανά."
 
 #: includes/functions.php syslog.php
 msgid "Group messages could not be loaded."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η φόρτωση των μηνυμάτων της ομάδας."
 
 #: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -575,33 +546,29 @@ msgstr "Όλο το κείμενο"
 
 #: includes/functions.php
 msgid "Fit Column"
-msgstr ""
+msgstr "Προσαρμογή στήλης"
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Chars"
-msgstr "%d Χαρακτήρες"
+msgstr "%d χαρακτήρες"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "Syslog %s Advisor"
 msgid "Syslog Upgrade Advisor"
-msgstr "Syslog %s Σύμβουλος"
+msgstr "Σύμβουλος αναβάθμισης Syslog"
 
 #: includes/installer.php
 #, php-format
 msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
-msgstr ""
+msgstr "Αναβάθμιση του Syslog από %s σε %s; Τα υπάρχοντα μηνύματα και κανόνες θα διατηρηθούν. Οι αλλαγές σχήματος ενδέχεται να διαρκέσουν αρκετά."
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
 msgstr "Τι τύπο αναβάθμισης/εγκατάστασης θέλετε να χρησιμοποιήσετε"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
-msgstr "Όταν έχετε πολύ μεγάλα τραπέζια, η εκτέλεση ενός Trimuncate θα είναι πολύ πιο γρήγορη.  Εάν ανησυχείτε για τα δεδομένα αρχειοθέτησης, μπορείτε να επιλέξετε είτε Inline, το οποίο θα παγώσει το πρόγραμμα περιήγησής σας για την περίοδο αυτής της αναβάθμισης, είτε φόντο, το οποίο θα δημιουργήσει μια διαδικασία παρασκηνίου για να φέρει τα παλιά δεδομένα syslog από έναν πίνακα αντιγράφων ασφαλείας στη νέα μορφή syslog.  Και πάλι, αυτή η διαδικασία μπορεί να διαρκέσει αρκετές ώρες."
+msgstr "Όταν έχετε πολύ μεγάλους πίνακες, η εκτέλεση εκκαθάρισης (Truncate) θα είναι πολύ πιο γρήγορη. Εάν σας ενδιαφέρουν τα αρχειοθετημένα δεδομένα, μπορείτε να επιλέξετε είτε Inline, το οποίο θα παγώσει το πρόγραμμα περιήγησής σας για τη διάρκεια αυτής της αναβάθμισης, είτε εκτέλεση στο παρασκήνιο, η οποία θα δημιουργήσει μια διεργασία παρασκηνίου για να μεταφέρει τα παλιά δεδομένα syslog από έναν πίνακα αντιγράφων ασφαλείας στη νέα μορφή syslog. Αυτή η διαδικασία μπορεί επίσης να διαρκέσει αρκετές ώρες. Το Truncate απορρίπτει μόνο τα αποθηκευμένα μηνύματα syslog και τα αφαιρεθέντα μηνύματα· οι κανόνες ειδοποίησης, αφαίρεσης και αναφοράς διατηρούνται πάντα."
 
 #: includes/installer.php
 msgid "Truncate Syslog Table"
@@ -621,32 +588,31 @@ msgstr "Μηχανή αποθήκευσης βάσεων δεδομένων"
 
 #: includes/installer.php
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
+msgstr "Η μηχανή αποθήκευσης για τους αναλυτικούς πίνακες. Υποστηρίζονται μόνο οι μηχανές αποθήκευσης InnoDB και, σε MariaDB, Aria. Οποιαδήποτε επιλογή απομακρυσμένου συλλέκτη δεδομένων (Remote Data Collector) απαιτεί InnoDB· ασύμβατοι συνδυασμοί δεν μπορούν να υποβληθούν."
 
 #: includes/installer.php
 msgid "InnoDB Storage"
 msgstr "Αποθήκευση InnoDB"
 
 #: includes/installer.php
-#, fuzzy
 msgid "Aria Storage"
-msgstr "Αποθήκευση MyISAM"
+msgstr "Αποθήκευση Aria"
 
 #: includes/installer.php
 msgid "Timestamp Precision"
-msgstr ""
+msgstr "Ακρίβεια χρονοσφραγίδας"
 
 #: includes/installer.php
 msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
-msgstr ""
+msgstr "Η ακρίβεια χιλιοστού δευτερολέπτου αποθηκεύει τις χρονοσφραγίδες syslog υπο-δευτερολέπτου σε στήλη TIMESTAMP(3) και είναι διαθέσιμη μόνο στο MariaDB. Η ακρίβεια δευτερολέπτου χρησιμοποιεί μια τυπική στήλη TIMESTAMP. Σε περιβάλλον παραγωγής, χρησιμοποιήστε το cli/upgrade_partitioning.php --convert-ms κατά τη διάρκεια ενός παραθύρου συντήρησης για να μετατρέψετε τα υπάρχοντα μηνύματα χωρίς να τα απορρίψετε."
 
 #: includes/installer.php
 msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
-msgstr ""
+msgstr "Χιλιοστό δευτερολέπτου - TIMESTAMP(3) (μόνο MariaDB)"
 
 #: includes/installer.php
 msgid "Second - TIMESTAMP"
-msgstr ""
+msgstr "Δευτερόλεπτο - TIMESTAMP"
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
@@ -666,15 +632,15 @@ msgstr "Απομακρυσμένος συγχρονισμός κανόνων Σ�
 
 #: includes/installer.php includes/settings.php
 msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
-msgstr "Εάν οι Απομακρυσμένοι Συλλέκτες Δεδομένων σας έχουν τις δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται μέσω μηνυμάτων ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου εάν θέλετε οι κανόνες Ειδοποιήσεις, Αφαίρεση και Αναφορά των κύριων βάσεων δεδομένων Κάκτων να αποστέλλονται στο Σύστημα Απομακρυσμένων Κάκτων."
+msgstr "Εάν οι απομακρυσμένοι συλλέκτες δεδομένων σας διαθέτουν δικές τους βάσεις δεδομένων Syslog και επεξεργάζονται τα μηνύματά τους ανεξάρτητα, επιλέξτε αυτό το πλαίσιο ελέγχου εάν θέλετε οι κανόνες ειδοποιήσεων, αφαίρεσης και αναφορών της κύριας βάσης δεδομένων Cacti να αποστέλλονται στο απομακρυσμένο σύστημα Cacti."
 
 #: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
-msgstr ""
+msgstr "Αποθήκευση εγγραφών στον απομακρυσμένο συλλέκτη"
 
 #: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
+msgstr "Διατήρηση επεξεργασμένων μηνυμάτων στον πίνακα Syslog του απομακρυσμένου συλλέκτη μετά την παράδοσή τους στον κύριο συλλέκτη. Όταν είναι απενεργοποιημένο, οι εγγραφές διατηρούνται τοπικά μόνο όσο ο κύριος συλλέκτης δεν είναι διαθέσιμος και αφαιρούνται μετά την επιβεβαιωμένη παράδοση ανάκτησης."
 
 #: includes/installer.php
 msgid "Retention Policy"
@@ -685,13 +651,12 @@ msgid "Choose how many days of Syslog values you wish to maintain in the databas
 msgstr "Επιλέξτε πόσες ημέρες τιμών Syslog θέλετε να διατηρήσετε στη βάση δεδομένων."
 
 #: includes/installer.php includes/settings.php
-#, fuzzy
 msgid "Partitioning Level"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "Επίπεδο διαμερισματοποίησης"
 
 #: includes/installer.php
 msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
-msgstr ""
+msgstr "Το μέγεθος κάθε διαμερίσματος των πινάκων syslog και syslog_removed. Συνιστάται η ημερήσια ρύθμιση. Η ωριαία απαιτεί πεπερασμένη περίοδο διατήρησης και η περίοδος διατήρησης μαζί με το επίπεδο διαμερισματοποίησης πρέπει να χωρούν στο όριο διαμερισμάτων του διακομιστή βάσης δεδομένων. Για να αλλάξετε το επίπεδο αργότερα, τροποποιήστε το στις «Ρυθμίσεις» και εκτελέστε το cli/upgrade_partitioning.php."
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -711,30 +676,40 @@ msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "ΠΡΟΕΙΔΟΠΟΙΗΣΗ: Η αναβάθμιση του Syslog είναι χρονοβόρα!!"
 
 #: includes/installer.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Η αναβάθμιση του 'κύριου' πίνακα syslog μπορεί να είναι μια πολύ χρονοβόρα διαδικασία.  Ως εκ τούτου, συνιστάται είτε να μειώσετε το μέγεθος του πίνακα syslog πριν από την αναβάθμιση είτε να επιλέξετε την επιλογή φόντου</p> <p>Εάν ενεργοποιήσετε την επιλογή φόντου, ο πίνακας syslog παλαιού τύπου θα μετονομαστεί και θα δημιουργηθεί ένας νέος πίνακας syslog.  Στη συνέχεια, θα ξεκινήσει μια διαδικασία αναβάθμισης στο παρασκήνιο.  Και πάλι, αυτή η διαδικασία παρασκηνίου μπορεί να έχει αρκετό χρόνο για να ολοκληρωθεί.  Ωστόσο, τα δεδομένα σας θα διατηρηθούν</p> <p>Ανεξάρτητα από την επιλογή σας, όλοι οι υπάρχοντες κανόνες κατάργησης και ειδοποίησης θα διατηρηθούν κατά τη διαδικασία αναβάθμισης.</p> <p><b>Πατήστε 'Αναβάθμιση'</b> για να προχωρήσετε στην αναβάθμιση ή <b>'Ακύρωση'</b> για να επιστρέψετε στο μενού Πρόσθετα."
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Η αναβάθμιση του «κύριου» πίνακα syslog μπορεί να είναι μια ιδιαίτερα χρονοβόρα διαδικασία. Ως εκ τούτου, συνιστάται είτε να μειώσετε το μέγεθος του πίνακα syslog πριν από την αναβάθμιση είτε να επιλέξετε την εκτέλεση στο παρασκήνιο."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Εάν επιλέξετε την επιλογή παρασκηνίου, ο παλαιού τύπου πίνακας Syslog θα μετονομαστεί και θα δημιουργηθεί ένας νέος πίνακας Syslog. Στη συνέχεια, θα εκκινηθεί μια διεργασία αναβάθμισης στο παρασκήνιο. Και πάλι, αυτή η διεργασία παρασκηνίου μπορεί να χρειαστεί αρκετό χρόνο για να ολοκληρωθεί. Ωστόσο, τα δεδομένα σας θα διατηρηθούν."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Ανεξάρτητα από την επιλογή σας, όλοι οι υπάρχοντες κανόνες αφαίρεσης και ειδοποίησης θα διατηρηθούν κατά τη διαδικασία αναβάθμισης."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Πατήστε <b>'Αναβάθμιση'</b> για να προχωρήσετε στην αναβάθμιση ή <b>'Ακύρωση'</b> για να επιστρέψετε στο μενού Πρόσθετα."
 
 #: includes/installer.php
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
+msgstr "Μπορείτε επίσης να ορίσετε τη μηχανή αποθήκευσης βάσης δεδομένων για τους αναλυτικούς πίνακες syslog και syslog_remove. Υποστηρίζονται μόνο η μηχανή αποθήκευσης InnoDB και, σε MariaDB, η μηχανή αποθήκευσης Aria. Εάν χρησιμοποιείτε MariaDB, συνιστούμε τη μηχανή αποθήκευσης Aria όταν δεν είναι ενεργοποιημένες επιλογές απομακρυσμένου συλλέκτη δεδομένων (Remote Data Collector)· οι επιλογές συλλέκτη απαιτούν InnoDB."
 
 #: includes/installer.php
-#, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "Έχετε πολλές επιλογές για να διαλέξετε κατά την εγκατάσταση του Syslog.  Το πρώτο είναι η αρχιτεκτονική βάσεων δεδομένων.  Θα πρέπει να επιλέξετε να χρησιμοποιήσετε τη διαμέριση πινάκων για να αποτρέψετε το μέγεθος των πινάκων από το να γίνει υπερβολικό, επιβραδύνοντας έτσι τα ερωτήματα."
+msgstr "Έχετε πολλές επιλογές κατά την εγκατάσταση του Syslog. Η πρώτη είναι η αρχιτεκτονική βάσης δεδομένων. Οι διαμερισμένοι πίνακες είναι η μόνη υποστηριζόμενη αρχιτεκτονική, καθώς αποτρέπουν το υπερβολικό μέγεθος των πινάκων που επιβραδύνει τα ερωτήματα. Οι παραδοσιακοί μη διαμερισμένοι πίνακες έχουν καταργηθεί και δεν προσφέρονται πλέον για νέες εγκαταστάσεις."
 
 #: includes/installer.php
 msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
-msgstr ""
+msgstr "Μπορείτε επίσης να επιλέξετε την ακρίβεια χρονοσφραγίδας. Η ακρίβεια χιλιοστού του δευτερολέπτου (TIMESTAMP(3)) διατηρεί τη σειρά υπο-δευτερολέπτου των εισερχόμενων μηνυμάτων και είναι διαθέσιμη μόνο σε MariaDB· οι εγκαταστάσεις MySQL χρησιμοποιούν ακρίβεια δευτερολέπτου. Αυτό δεν μπορεί να αλλάξει επιτόπου αργότερα χωρίς καταστροφή των αποθηκευμένων μηνυμάτων."
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
+msgstr "Η μηχανή αποθήκευσης Aria δεν είναι διαθέσιμη όσο είναι ενεργοποιημένη οποιαδήποτε επιλογή απομακρυσμένου συλλέκτη δεδομένων (Remote Data Collector). Επιλέχθηκε InnoDB."
 
 #: includes/installer.php
-#, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "Μπορείτε επίσης να επιλέξετε τη διάρκεια διατήρησης.  Λάβετε υπόψη ότι εάν έχετε πολλούς κεντρικούς υπολογιστές που συνδέονται στο syslog, αυτός ο πίνακας μπορεί να γίνει αρκετά μεγάλος.  Έτσι, εάν δεν χρησιμοποιείτε διαμέριση, ίσως θελήσετε να διατηρήσετε το μέγεθος μικρότερο."
+msgstr "Μπορείτε επίσης να επιλέξετε τη διάρκεια διατήρησης. Λάβετε υπόψη ότι εάν έχετε πολλούς κεντρικούς υπολογιστές που καταγράφουν στο syslog, αυτός ο πίνακας μπορεί να γίνει αρκετά μεγάλος."
 
 #: includes/installer.php
 #, php-format
@@ -786,7 +761,7 @@ msgstr "(Eπεξεργασία)"
 
 #: includes/navigation.php
 msgid "(Actions)"
-msgstr "Ενέργειες"
+msgstr "(ενέργειες)"
 
 #: includes/navigation.php
 msgid "Syslog Alerts"
@@ -798,24 +773,20 @@ msgstr "Αναφορές Syslog"
 
 #: includes/navigation.php includes/settings.php syslog_saved_searches.php
 msgid "Saved Search Templates"
-msgstr ""
+msgstr "Αποθηκευμένα πρότυπα αναζήτησης"
 
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr ""
+msgstr "Πίνακες εργαλείων"
 
 #: includes/navigation.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Syslog Recommendations"
-msgstr "Διατήρηση Syslog"
+msgstr "Προτάσεις Syslog"
 
 #: includes/navigation.php
-#, fuzzy
-#| msgid "Import"
 msgid "(Import)"
-msgstr "Εισαγωγή"
+msgstr "(Εισαγωγή)"
 
 #: includes/navigation.php
 msgid "Display Syslog in Range"
@@ -823,83 +794,83 @@ msgstr "Εμφάνιση Syslog εντός εμβέλειας"
 
 #: includes/recommendations.php
 msgid "the identifier is empty"
-msgstr ""
+msgstr "το αναγνωριστικό είναι κενό"
 
 #: includes/recommendations.php
 msgid "the identifier is longer than 190 characters"
-msgstr ""
+msgstr "το αναγνωριστικό έχει μήκος μεγαλύτερο από 190 χαρακτήρες"
 
 #: includes/recommendations.php
 msgid "the identifier contains spaces or line breaks"
-msgstr ""
+msgstr "το αναγνωριστικό περιέχει κενά ή αλλαγές γραμμής"
 
 #: includes/recommendations.php
 msgid "it has neither an explanation nor a recommended action"
-msgstr ""
+msgstr "δεν διαθέτει ούτε επεξήγηση ούτε προτεινόμενη ενέργεια"
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
-msgstr ""
+msgstr "δεν είναι αντικείμενο JSON"
 
 #: includes/recommendations.php syslog.php
 msgid "Recommendations could not be loaded."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η φόρτωση των προτάσεων."
 
 #: includes/recommendations.php
 msgid "Recommendation available - click the message for details"
-msgstr ""
+msgstr "Διαθέσιμη πρόταση - κάντε κλικ στο μήνυμα για λεπτομέρειες"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Explanation"
-msgstr ""
+msgstr "Επεξήγηση"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Recommended Action"
-msgstr ""
+msgstr "Προτεινόμενη ενέργεια"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Reference"
-msgstr ""
+msgstr "Αναφορά"
 
 #: includes/settings.php
 msgid "Monday"
-msgstr ""
+msgstr "Δευτέρα"
 
 #: includes/settings.php
 msgid "Tuesday"
-msgstr ""
+msgstr "Τρίτη"
 
 #: includes/settings.php
 msgid "Wednesday"
-msgstr ""
+msgstr "Τετάρτη"
 
 #: includes/settings.php
 msgid "Friday"
-msgstr ""
+msgstr "Παρασκευή"
 
 #: includes/settings.php
 msgid "Saturday"
-msgstr ""
+msgstr "Σάββατο"
 
 #: includes/settings.php
 msgid "Sunday"
-msgstr ""
+msgstr "Κυριακή"
 
 #: includes/settings.php
 msgid "Thursday"
-msgstr ""
+msgstr "Πέμπτη"
 
 #: includes/settings.php
 msgid "Monday through Friday"
-msgstr ""
+msgstr "Δευτέρα έως Παρασκευή"
 
 #: includes/settings.php
 msgid "Saturday and Sunday"
-msgstr ""
+msgstr "Σάββατο και Κυριακή"
 
 #: includes/settings.php
 msgid "Every day"
-msgstr ""
+msgstr "Κάθε μέρα"
 
 #: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php
@@ -925,11 +896,11 @@ msgstr "Εάν οριστεί αυτό το πλαίσιο ελέγχου, οι 
 
 #: includes/settings.php
 msgid "Forward alarms to Alarm Manager"
-msgstr ""
+msgstr "Προώθηση συναγερμών στη Διαχείριση συναγερμών"
 
 #: includes/settings.php
 msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
-msgstr ""
+msgstr "Να επιτρέπεται στους κανόνες που έχουν οριστεί στη Διαχείριση συναγερμών να προωθούν συναγερμούς. Το email του Syslog παραμένει η εφεδρική επιλογή· οι ενέργειες εντολών εκτελούνται μόνο για κανόνες ειδοποίησης Syslog."
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -949,11 +920,11 @@ msgstr "Αυτός είναι ο χρόνος σε δευτερόλεπτα πρ
 
 #: includes/settings.php
 msgid "Skip Total Row Count"
-msgstr ""
+msgstr "Παράλειψη συνολικού πλήθους γραμμών"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
-msgstr ""
+msgstr "Εάν επιλεγεί αυτό το πλαίσιο ελέγχου, οι καρτέλες «Αρχεία καταγραφής συστήματος» και «Αρχεία καταγραφής συναγερμών» δεν μετρούν κάθε εγγραφή που ταιριάζει, κάτι που μπορεί να είναι πολύ δαπανηρό σε μεγάλες εγκαταστάσεις. Η σελίδα εμφανίζει συνδέσμους «Προηγούμενη» και «Επόμενη» αντί για σύνολο και λίστα σελίδων, και η «Επόμενη» προσφέρεται όσο απομένουν περισσότερες εγγραφές."
 
 #: includes/settings.php
 msgid "Max Report Records"
@@ -966,25 +937,25 @@ msgstr "Για ειδοποιήσεις βάσει κατωφλίου, ποιο�
 #: includes/settings.php
 #, php-format
 msgid "%d Records"
-msgstr "%d Εγγραφές"
+msgstr "%d εγγραφές"
 
 #: includes/settings.php
 msgid "Maximum Syslog Processing Processes"
-msgstr ""
+msgstr "Μέγιστος αριθμός διεργασιών επεξεργασίας Syslog"
 
 #: includes/settings.php
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
+msgstr "Όταν οριστεί μεγαλύτερο από 1, η επεξεργασία εισερχόμενων μηνυμάτων κατανέμεται σε παράλληλες διεργασίες εργασίας (worker). Κάθε διεργασία χειρίζεται ένα ξένο μεταξύ τους εύρος εισερχόμενων μηνυμάτων, επιταχύνοντας την επίλυση ονομάτων κεντρικών υπολογιστών και τη μεταφορά μηνυμάτων υπό μεγάλο φόρτο. Η τιμή 1 επεξεργάζεται όλα τα μηνύματα σε μία μόνο διεργασία. Οι διεργασίες εργασίας δεν υποστηρίζονται στα Windows ή όταν οι επεκτάσεις PHP pcntl και POSIX δεν είναι διαθέσιμες, οπότε η επεξεργασία επιστρέφει σε μία μόνο διεργασία."
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Process"
-msgstr ""
+msgstr "%d διεργασία Worker"
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Processes"
-msgstr ""
+msgstr "%d διεργασίες Worker"
 
 #: includes/settings.php
 msgid "Command for Opening Tickets"
@@ -996,23 +967,23 @@ msgstr "Αυτή η εντολή θα εκτελεστεί για το άνοι�
 
 #: includes/settings.php
 msgid "Host Discovery Options"
-msgstr ""
+msgstr "Επιλογές εντοπισμού κεντρικών υπολογιστών"
 
 #: includes/settings.php
 msgid "Enable Hostname Resolution"
-msgstr ""
+msgstr "Ενεργοποίηση επίλυσης ονομάτων κεντρικών υπολογιστών"
 
 #: includes/settings.php
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
+msgstr "Εάν επιλεγεί αυτό το πλαίσιο ελέγχου, όλα τα ονόματα κεντρικών υπολογιστών επιλύονται πρώτα μέσω αναζήτησης DNS (εάν είναι ενεργοποιημένη), χρησιμοποιώντας εγγραφές A και AAAA. Οι διευθύνσεις IPv4 και IPv6 δεν χρειάζονται αναζήτηση και οι διευθύνσεις IPv6 αποθηκεύονται σε συμπιεσμένη μορφή πεζών χαρακτήρων. Εάν αποτύχει η αναζήτηση DNS, το σύστημα θα επιχειρήσει να επιλύσει το όνομα κεντρικού υπολογιστή στον πίνακα κεντρικών υπολογιστών του Cacti και να το αντικαταστήσει με την περιγραφή κεντρικού υπολογιστή του Cacti. Εάν αποτύχουν τόσο η αναζήτηση DNS όσο και του Cacti, στις εγγραφές ανατίθεται το πρόθεμα «unresolved-Original_hostname»."
 
 #: includes/settings.php
 msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
+msgstr "Παράλειψη επίλυσης DNS για εισερχόμενους κεντρικούς υπολογιστές"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
+msgstr "Εάν επιλεγεί αυτό το πλαίσιο ελέγχου, το σύστημα δεν θα επιχειρεί να επιλύσει κεντρικούς υπολογιστές μέσω αναζητήσεων DNS. Αυτό είναι χρήσιμο για περιβάλλοντα όπου η επίλυση DNS δεν είναι δυνατή ή επιθυμητή."
 
 #: includes/settings.php
 msgid "HTML Notification Settings"
@@ -1032,13 +1003,11 @@ msgstr "Μορφοποίηση αρχείου για χρήση"
 
 #: includes/settings.php
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Επιλέξτε το προσαρμοσμένο πρόγραμμα περιτυλίγματος html και το αρχείο CSS που θα χρησιμοποιήσετε.  Αυτό το αρχείο περιέχει html και CSS για να τυλίξετε γύρω από την αναφορά σας.  Εάν περιέχει περισσότερα από απλά CSS, πρέπει να τοποθετήσετε μια ειδική <REPORT> ετικέτα μέσα στο αρχείο.  Αυτή η ετικέτα μορφής θα αντικατασταθεί από το περιεχόμενο της αναφοράς.  Αυτά τα αρχεία βρίσκονται στον κατάλογο «μορφές».</REPORT>"
+msgstr "Επιλέξτε το προσαρμοσμένο περιτύλιγμα html και το αρχείο CSS που θα χρησιμοποιήσετε.  Αυτό το αρχείο περιέχει html και CSS για να ολοκληρώσετε την αναφορά σας.  Εάν περιέχει περισσότερα από απλά CSS, πρέπει να τοποθετήσετε μια ειδική <REPORT> ετικέτα μέσα στο αρχείο.  Αυτή η ετικέτα μορφής θα αντικατασταθεί από το περιεχόμενο της αναφοράς.  Αυτά τα αρχεία βρίσκονται στον κατάλογο \"μορφές\"."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Data Retention Settings"
 msgid "Data Retention and Partitioning"
-msgstr "Ρυθμίσεις διατήρησης δεδομένων"
+msgstr "Διατήρηση δεδομένων και διαμερισματοποίηση"
 
 #: includes/settings.php
 msgid "Syslog Retention"
@@ -1050,15 +1019,15 @@ msgstr "Αυτός είναι ο αριθμός των ημερών για τη 
 
 #: includes/settings.php
 msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
-msgstr ""
+msgstr "Το μέγεθος κάθε διαμερίσματος των πινάκων syslog και syslog_removed. Μια αλλαγή αποθηκεύεται εδώ, αλλά τίθεται σε ισχύ μόνο όταν το cli/upgrade_partitioning.php αναδομήσει και τους δύο πίνακες· έως τότε, η συντήρηση διαμερισμάτων διατηρεί το υπάρχον μέγεθος. Η ωριαία διαμερισματοποίηση απαιτεί πεπερασμένη περίοδο διατήρησης. Η περίοδος διατήρησης, το παράθυρο προ-δημιουργίας και το επίπεδο διαμερισματοποίησης πρέπει μαζί να χωρούν στο όριο διαμερισμάτων του διακομιστή βάσης δεδομένων, διαφορετικά οι ρυθμίσεις δεν αποθηκεύονται."
 
 #: includes/settings.php
 msgid "Partition Pre-create Window"
-msgstr ""
+msgstr "Παράθυρο προδημιουργίας διαμερισμάτων"
 
 #: includes/settings.php
 msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
-msgstr ""
+msgstr "Αυτός είναι ο αριθμός ημερών μελλοντικών διαμερισμάτων που διατηρούνται για τους διαμερισματοποιημένους πίνακες Syslog, ώστε τα νέα διαμερίσματα να διαχωρίζονται πάντα από ένα κενό διαμέρισμα dMaxValue. Η ωριαία διαμερισματοποίηση διατηρεί πάντα τουλάχιστον 2 ημέρες."
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1071,87 +1040,84 @@ msgid "%d Days"
 msgstr "%d Ημέρες"
 
 #: includes/settings.php
-#, fuzzy
 msgid "Partition Recovery Limit"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "Όριο ανάκτησης διαμερισμάτων"
 
 #: includes/settings.php
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
+msgstr "Όταν λείπουν διαμερίσματα (για παράδειγμα μετά από διακοπή συντήρησης), δημιουργούνται το πολύ τόσα διαμερίσματα που λείπουν ανά πίνακα σε κάθε εκτέλεση του Poller. Το υπόλοιπο κενό αποκαθίσταται στις επόμενες εκτελέσεις· η εκκαθάριση βάσει διατήρησης παραμένει σε αναστολή έως ότου αποκατασταθεί πλήρως ο μελλοντικός ορίζοντας διαμερισμάτων. Ισχύει μόνο για διαμερισματοποιημένους πίνακες Syslog."
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partition per run"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "%d διαμέρισμα ανά εκτέλεση"
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partitions per run"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "%d διαμερίσματα ανά εκτέλεση"
 
 #: includes/settings.php
 msgid "Collector Staleness Threshold"
-msgstr ""
+msgstr "Όριο παλαιότητας συλλέκτη"
 
 #: includes/settings.php
 msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
-msgstr ""
+msgstr "Οι ειδοποιήσεις εύρυθμης λειτουργίας αγωγού προειδοποιούν όταν τα μη επεξεργασμένα μηνύματα, η ολοκλήρωση επεξεργασίας ή ο συγχρονισμός σε ουρά υπερβαίνουν αυτή την καθυστέρηση. Η πραγματική καθυστέρηση είναι τουλάχιστον τρία διαστήματα Poller και 300 δευτερόλεπτα. Ορίστε σε 0 για χρήση 300 δευτερολέπτων."
 
 #: includes/settings.php
 msgid "Default (300 seconds)"
-msgstr ""
+msgstr "Προεπιλογή (300 δευτερόλεπτα)"
 
 #: includes/settings.php
 #, php-format
 msgid "%d seconds"
-msgstr ""
+msgstr "%d δευτερόλεπτα"
 
 #: includes/settings.php
 msgid "Collector Backlog Threshold"
-msgstr ""
+msgstr "Όριο εκκρεμοτήτων συλλέκτη"
 
 #: includes/settings.php
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
+msgstr "Η σελίδα Κατάστασης Syslog εμφανίζει προειδοποίηση όταν περισσότερα από τόσα μηνύματα παραμένουν ανεπεξέργαστα στον πίνακα εισερχομένων Syslog. Ορίστε σε 0 για χρήση της προεπιλογής των 10000 μηνυμάτων."
 
 #: includes/settings.php
 msgid "Default (10000 messages)"
-msgstr ""
+msgstr "Προεπιλογή (10000 μηνύματα)"
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Messages"
-msgstr "Μηνύματα"
+msgstr "%d μηνύματα"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
-msgstr ""
+msgstr "Ειδοποιήσεις εύρυθμης λειτουργίας αγωγού"
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Pipeline Health Notification List"
-msgstr "Λίστα ειδοποιήσεων"
+msgstr "Λίστα ειδοποιήσεων εύρυθμης λειτουργίας pipeline"
 
 #: includes/settings.php
 msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
-msgstr ""
+msgstr "Επιλέξτε μια υπάρχουσα λίστα ειδοποιήσεων Thold για ειδοποιήσεις κατάστασης της ροής επεξεργασίας (pipeline). Οι ενεργοποιημένοι παραλήπτες της λίστας συνδυάζονται με τις παρακάτω διευθύνσεις email, διατηρώντας τους παραλήπτες BCC. Οι λίστες απαιτούν τον πίνακα λιστών ειδοποιήσεων Thold."
 
 #: includes/settings.php
 msgid "Pipeline Health Email Recipients"
-msgstr ""
+msgstr "Παραλήπτες email εύρυθμης λειτουργίας αγωγού"
 
 #: includes/settings.php
 msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
-msgstr ""
+msgstr "Παραλήπτες email διαχωρισμένοι με κόμμα για αστοχίες και αποκατάσταση της ροής επεξεργασίας. Αφήστε το κενό και μην επιλέξετε λίστα ειδοποιήσεων για να απενεργοποιήσετε το email· η κατάσταση υγείας παραμένει ορατή στην καρτέλα Κατάστασης και οι αλλαγές κατάστασης καταγράφονται. Οι έλεγχοι απαιτούν την εκτέλεση του Cacti Poller."
 
 #: includes/settings.php
 msgid "Pipeline Health Reminder Interval"
-msgstr ""
+msgstr "Διάστημα υπενθύμισης εύρυθμης λειτουργίας αγωγού"
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
+msgstr "Επανάληψη ειδοποιήσεων για συνεχιζόμενα προβλήματα της ροής επεξεργασίας (pipeline) μετά από αυτό το διάστημα. Οι αποτυχημένες προσπάθειες αποστολής email επαναλαμβάνονται το πολύ μία φορά κάθε πέντε λεπτά."
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -1163,112 +1129,110 @@ msgstr "Αυτός είναι ο αριθμός των ημερών για τη 
 
 #: includes/settings.php
 msgid "Alert Suppression and Maintenance"
-msgstr ""
+msgstr "Καταστολή ειδοποιήσεων και συντήρηση"
 
 #: includes/settings.php
 msgid "Maintenance Window Days"
-msgstr ""
+msgstr "Ημέρες παραθύρου συντήρησης"
 
 #: includes/settings.php
 msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
+msgstr "Ημέρες κατά τις οποίες όλες οι ειδοποιήσεις συναγερμού τίθενται σε σίγαση κατά το ρυθμισμένο χρονικό πλαίσιο συντήρησης."
 
 #: includes/settings.php
 msgid "Maintenance Window Starts"
-msgstr ""
+msgstr "Έναρξη παραθύρου συντήρησης"
 
 #: includes/settings.php
 msgid "Local start time for the global maintenance window."
-msgstr ""
+msgstr "Τοπική ώρα έναρξης για το καθολικό παράθυρο συντήρησης."
 
 #: includes/settings.php
 msgid "Maintenance Window Ends"
-msgstr ""
+msgstr "Λήξη παραθύρου συντήρησης"
 
 #: includes/settings.php
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
+msgstr "Τοπική ώρα λήξης για το καθολικό παράθυρο συντήρησης. Μια προγενέστερη ώρα λήξης συνεχίζει στην επόμενη ημέρα."
 
 #: includes/settings.php
 msgid "One-time Maintenance Starts"
-msgstr ""
+msgstr "Έναρξη εφάπαξ συντήρησης"
 
 #: includes/settings.php
 msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
+msgstr "Προαιρετική τοπική ημερομηνία και ώρα έναρξης ενός εφάπαξ καθολικού παραθύρου συντήρησης."
 
 #: includes/settings.php
 msgid "One-time Maintenance Ends"
-msgstr ""
+msgstr "Λήξη εφάπαξ συντήρησης"
 
 #: includes/settings.php
 msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Προαιρετική τοπική ημερομηνία και ώρα λήξης ενός εφάπαξ καθολικού παραθύρου συντήρησης. Μορφή: YYYY-MM-DD HH:MM."
 
 #: includes/settings.php
 msgid "Default Alert Cooldown"
-msgstr ""
+msgstr "Προεπιλεγμένος χρόνος αναμονής ειδοποίησης (Cooldown)"
 
 #: includes/settings.php
 msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "Καταστολή οποιασδήποτε επαναλαμβανόμενης ειδοποίησης για τον ίδιο κανόνα και εύρος αναφοράς για τόσα λεπτά. Οι τιμές ανά κανόνα παρακάμπτουν αυτή τη ρύθμιση. Ορίστε σε 0 για απενεργοποίηση."
 
 #: includes/settings.php
 msgid "Default Duplicate Suppression"
-msgstr ""
+msgstr "Προεπιλεγμένη καταστολή διπλοτύπων"
 
 #: includes/settings.php
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "Καταστολή ειδοποίησης με το ίδιο σύνολο αντιστοιχισμένων μηνυμάτων για τόσα λεπτά. Οι τιμές ανά κανόνα παρακάμπτουν αυτή τη ρύθμιση. Ορίστε σε 0 για απενεργοποίηση."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
 msgid "Remote Syslog Recovery"
-msgstr "Διαγραφή αναφορών Syslog"
+msgstr "Απομακρυσμένη ανάκτηση Syslog"
 
 #: includes/settings.php
 msgid "Maximum Recovery Records Per Execution"
-msgstr ""
+msgstr "Μέγιστος αριθμός εγγραφών ανάκτησης ανά εκτέλεση"
 
 #: includes/settings.php
 msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
+msgstr "Μέγιστος αριθμός διατηρημένων απομακρυσμένων συμβάντων Syslog που αποστέλλονται στον κύριο συλλέκτη από μία εκτέλεση διεργασίας ανάκτησης. Κάθε συναλλαγή της κεντρικής βάσης δεδομένων παραμένει περιορισμένη στις 100 εγγραφές. Αυξήστε σταδιακά παρακολουθώντας το φορτίο του κύριου συλλέκτη και τις αναμονές κλειδώματος."
 
 #: includes/settings.php
 msgid "Recovery Pause Between Batches"
-msgstr ""
+msgstr "Παύση ανάκαμψης μεταξύ δεσμών"
 
 #: includes/settings.php
 msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
+msgstr "Παύση μεταξύ κάθε συναλλαγής παράδοσης 100 εγγραφών στον Κύριο Συλλέκτη. Μεγαλύτερη παύση μειώνει το φόρτο στον Κύριο Συλλέκτη· μικρότερη παύση επιταχύνει τη σύγκλιση της ουράς εκκρεμοτήτων."
 
 #: includes/settings.php
 msgid "No pause"
-msgstr ""
+msgstr "Χωρίς παύση"
 
 #: includes/settings.php
 #, php-format
 msgid "%d milliseconds"
-msgstr ""
+msgstr "%d χιλιοστά του δευτερολέπτου"
 
 #: includes/settings.php
 #, php-format
 msgid "%d second"
-msgstr ""
+msgstr "%d δευτερόλεπτο"
 
 #: includes/settings.php
 msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
-msgstr ""
+msgstr "Η βάση δεδομένων Syslog δεν είναι διαθέσιμη, επομένως δεν είναι δυνατός ο έλεγχος των ρυθμίσεων διαμερισματοποίησης σε σχέση με το όριο διαμερισμάτων και τους πίνακές της."
 
 #: includes/settings.php
 msgid "The Syslog settings were not saved."
-msgstr ""
+msgstr "Οι ρυθμίσεις του Syslog δεν αποθηκεύτηκαν."
 
 #: includes/settings.php
 #, php-format
 msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
-msgstr ""
+msgstr "Σε εκκρεμότητα: ένας πίνακας μηνυμάτων χρησιμοποιεί ακόμα %s διαμερίσματα. Εκτελέστε το cli/upgrade_partitioning.php για να εφαρμόσετε το επιλεγμένο επίπεδο."
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
@@ -1291,7 +1255,7 @@ msgstr "Εξαγωγή"
 
 #: includes/settings.php
 msgid "Indefinite"
-msgstr "Αόριστος"
+msgstr "Αόριστο"
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1306,17 +1270,17 @@ msgstr "%d Εβδομάδες"
 #: includes/settings.php
 #, php-format
 msgid "%d Month"
-msgstr "% d Μήνα"
+msgstr "%d Μήνας"
 
 #: includes/settings.php
 #, php-format
 msgid "%d Months"
-msgstr "% d Μήνας"
+msgstr "%d Μήνες"
 
 #: includes/settings.php
 #, php-format
 msgid "%d Year"
-msgstr "% d Έτος"
+msgstr "%d Έτος"
 
 #: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
 msgid "Never"
@@ -1325,7 +1289,7 @@ msgstr "Ποτέ"
 #: includes/settings.php
 #, php-format
 msgid "%d Minute"
-msgstr "%d λεπτό"
+msgstr "%d Λεπτό"
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1342,11 +1306,11 @@ msgstr "Περιέχει"
 
 #: includes/settings.php
 msgid "Ends with"
-msgstr "Τελειώνει με"
+msgstr "τελειώνει σε"
 
 #: includes/settings.php
 msgid "Hostname is"
-msgstr "Όνομα κεντρικού υπολογιστή:"
+msgstr "Όνομα κεντρικού υπολογιστή"
 
 #: includes/settings.php
 msgid "Program is"
@@ -1358,7 +1322,7 @@ msgstr "Εγκατάσταση"
 
 #: includes/settings.php syslog_alerts.php
 msgid "Filter Builder"
-msgstr ""
+msgstr "Δημιουργός φίλτρων"
 
 #: includes/settings.php syslog_alerts.php
 msgid "SQL Expression"
@@ -1381,9 +1345,8 @@ msgid "Syslog Settings"
 msgstr "Ρυθμίσεις Syslog"
 
 #: includes/settings.php syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rules"
-msgstr "Κανόνες ειδοποίησης"
+msgstr "Κανόνες ειδοποίησης συσκευής"
 
 #: includes/settings.php
 msgid "Removal Rules"
@@ -1394,13 +1357,12 @@ msgid "Report Rules"
 msgstr "Κανόνες αναφοράς"
 
 #: includes/settings.php syslog.php syslog_recommendations.php
-#, fuzzy
 msgid "Recommendations"
-msgstr "Καταργημένες εγγραφές"
+msgstr "Συστάσεις"
 
 #: includes/utilities.php
 msgid "Unable to connect to the Syslog database. No Device records were removed."
-msgstr ""
+msgstr "Αδυναμία σύνδεσης στη βάση δεδομένων Syslog. Δεν αφαιρέθηκαν εγγραφές συσκευών."
 
 #: includes/utilities.php
 #, php-format
@@ -1417,11 +1379,11 @@ msgstr "Εκκαθάριση συσκευών syslog"
 
 #: includes/utilities.php
 msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
+msgstr "Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε τις ανενεργές συσκευές Syslog;"
 
 #: includes/utilities.php
 msgid "Confirm Purge"
-msgstr ""
+msgstr "Επιβεβαίωση οριστικής διαγραφής"
 
 #: includes/utilities.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -1435,123 +1397,120 @@ msgstr "Αυτή η επιλογή μενού παρέχει ένα μέσο γ�
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
-msgstr ""
+msgstr "Μη έγκυρη προέλευση πλαισίου πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel type."
-msgstr ""
+msgstr "Μη έγκυρος τύπος πλαισίου πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard chart type."
-msgstr ""
+msgstr "Μη έγκυρος τύπος γραφήματος πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard breakdown field."
-msgstr ""
+msgstr "Μη έγκυρο πεδίο ανάλυσης πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard interval."
-msgstr ""
+msgstr "Μη έγκυρο διάστημα πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard timespan."
-msgstr ""
+msgstr "Μη έγκυρο χρονικό διάστημα πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard record type."
-msgstr ""
+msgstr "Μη έγκυρος τύπος εγγραφής πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard top count."
-msgstr ""
+msgstr "Μη έγκυρος αριθμός κορυφαίων στοιχείων πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel width."
-msgstr ""
+msgstr "Μη έγκυρο πλάτος πλαισίου πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel height."
-msgstr ""
+msgstr "Μη έγκυρο ύψος πλαισίου πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php syslog.php
 #, php-format
 msgid "Invalid logical search: %s"
-msgstr ""
+msgstr "Μη έγκυρη λογική αναζήτηση: %s"
 
 #: lib/syslog_dashboard.php
 msgid "Other"
-msgstr ""
+msgstr "Άλλο"
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard panel is required."
-msgstr ""
+msgstr "Απαιτείται έγκυρο πλαίσιο πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard panel not found."
-msgstr ""
+msgstr "Το πλαίσιο του πίνακα ελέγχου δεν βρέθηκε."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "A name of up to 128 characters is required."
-msgstr ""
+msgstr "Απαιτείται όνομα έως 128 χαρακτήρων."
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard is required."
-msgstr ""
+msgstr "Απαιτείται έγκυρος πίνακας ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard not found."
-msgstr ""
+msgstr "Ο πίνακας ελέγχου δεν βρέθηκε."
 
 #: lib/syslog_dashboard.php syslog_dashboards.php
 msgid "Unable to save dashboard changes."
-msgstr ""
+msgstr "Αδυναμία αποθήκευσης των αλλαγών του πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "You may only share your own dashboards."
-msgstr ""
+msgstr "Μπορείτε να κοινοποιείτε μόνο τους δικούς σας πίνακες ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "copy"
-msgstr ""
+msgstr "αντίγραφο"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard could not be copied."
-msgstr ""
+msgstr "Δεν ήταν δυνατή η αντιγραφή του πίνακα ελέγχου."
 
 #: lib/syslog_dashboard.php
 msgid "A valid panel position is required."
-msgstr ""
+msgstr "Απαιτείται έγκυρη θέση πλαισίου."
 
 #: lib/syslog_dashboard.php
 msgid "A title of up to 128 characters is required."
-msgstr ""
+msgstr "Απαιτείται τίτλος έως 128 χαρακτήρων."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Drag to reorder card"
-msgstr ""
+msgstr "Σύρετε για αναδιάταξη της κάρτας"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Refresh Panel"
-msgstr "Μεσοδιάστημα ανανέωσης"
+msgstr "Ανανέωση πίνακα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Total messages"
-msgstr "Μήνυμα"
+msgstr "Συνολικά μηνύματα"
 
 #: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
-msgstr ""
+msgstr "Η βιβλιοθήκη γραφημάτων δεν είναι διαθέσιμη σε αυτήν την εγκατάσταση του Cacti."
 
 #: lib/syslog_dashboard.php
 msgid "Edit Panel"
-msgstr ""
+msgstr "Επεξεργασία πίνακα"
 
 #: lib/syslog_dashboard.php
 msgid "New Panel"
-msgstr ""
+msgstr "Νέο πλαίσιο"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Save"
@@ -1559,78 +1518,74 @@ msgstr "Αποθήκευση"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
-msgstr ""
+msgstr "Εφαρμογή"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
-msgstr ""
+msgstr "Διαγραφή αυτού του πλαισίου πίνακα ελέγχου;"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard and all of its panels?"
-msgstr ""
+msgstr "Διαγραφή αυτού του πίνακα ελέγχου και όλων των πλαισίων του;"
 
 #: lib/syslog_dashboard.php
 msgid "Name your dashboard"
-msgstr ""
+msgstr "Ονομάστε τον πίνακα εργαλείων σας"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Make Private"
-msgstr ""
+msgstr "Ορισμός ως ιδιωτικό"
 
 #: lib/syslog_dashboard.php
 msgid "Share with all"
-msgstr ""
+msgstr "Κοινοποίηση σε όλους"
 
 #: lib/syslog_dashboard.php
 msgid "Save as my copy"
-msgstr ""
+msgstr "Αποθήκευση ως δικό μου αντίγραφο"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Syslog Dashboards"
-msgstr "Syslog ενεργοποιημένη"
+msgstr "Πίνακες ελέγχου Syslog"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Dashboard"
-msgstr ""
+msgstr "Πίνακας ελέγχου"
 
 #: lib/syslog_dashboard.php
 msgid "Time Range"
 msgstr "Εύρος Ώρας"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Hour"
-msgstr "%d ώρα"
+msgstr "Τελευταία ώρα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Hours"
-msgstr "%d ώρες"
+msgstr "Τελευταίες %d ώρες"
 
 #: lib/syslog_dashboard.php
 msgid "Last Day"
-msgstr ""
+msgstr "Τελευταία ημέρα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Week"
-msgstr "Τελευταία αποστολή"
+msgstr "Τελευταία Εβδομάδα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Weeks"
-msgstr "%d Εβδομάδες"
+msgstr "Τελευταίες %d εβδομάδες"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Month"
-msgstr "Τελευταία αποστολή"
+msgstr "Τον Τελευταίο Μήνα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Months"
-msgstr "% d Μήνας"
+msgstr "Τελευταίοι %d μήνες"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
@@ -1638,47 +1593,47 @@ msgstr "Ανανέωση"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
-msgstr ""
+msgstr "Οι πίνακες εργαλείων μου"
 
 #: lib/syslog_dashboard.php
 msgid "Global Dashboards"
-msgstr ""
+msgstr "Καθολικοί πίνακες εργαλείων"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Shared With Me"
-msgstr ""
+msgstr "Κοινοποιημένο σε εμένα"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "New"
-msgstr ""
+msgstr "Νέο"
 
 #: lib/syslog_dashboard.php
 msgid "Rename"
-msgstr ""
+msgstr "Μετονομασία"
 
 #: lib/syslog_dashboard.php
 msgid "Add Panel"
-msgstr ""
+msgstr "Προσθήκη πλαισίου"
 
 #: lib/syslog_dashboard.php
 msgid "Create your first dashboard to visualize syslog trends."
-msgstr ""
+msgstr "Δημιουργήστε τον πρώτο σας πίνακα ελέγχου (dashboard) για να οπτικοποιήσετε τις τάσεις Syslog."
 
 #: lib/syslog_dashboard.php
 msgid "Add a panel to start charting.  Panels can use your saved searches."
-msgstr ""
+msgstr "Προσθέστε ένα πλαίσιο για να ξεκινήσετε τη δημιουργία γραφημάτων.  Τα πλαίσια μπορούν να χρησιμοποιούν τις αποθηκευμένες αναζητήσεις σας."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Panel"
-msgstr ""
+msgstr "Πλαίσιο πίνακα ελέγχου"
 
 #: lib/syslog_dashboard.php
 msgid "Title"
-msgstr ""
+msgstr "Τίτλος"
 
 #: lib/syslog_dashboard.php
 msgid "Log Source"
-msgstr ""
+msgstr "Πηγή καταγραφής"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "System Logs"
@@ -1689,67 +1644,60 @@ msgid "Alert Logs"
 msgstr "Αρχεία καταγραφής ειδοποιήσεων"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Panel Type"
-msgstr "Τύπος αγώνα"
+msgstr "Τύπος πίνακα"
 
 #: lib/syslog_dashboard.php
 msgid "Time Series"
-msgstr ""
+msgstr "Χρονοσειρά"
 
 #: lib/syslog_dashboard.php
 msgid "Breakdown"
-msgstr ""
+msgstr "Ανάλυση"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Chart"
-msgstr "%d Χαρακτήρες"
+msgstr "Διάγραμμα"
 
 #: lib/syslog_dashboard.php
 msgid "Line"
-msgstr ""
+msgstr "Γραμμή"
 
 #: lib/syslog_dashboard.php
 msgid "Area"
-msgstr ""
+msgstr "Περιοχή"
 
 #: lib/syslog_dashboard.php
 msgid "Bar"
-msgstr ""
+msgstr "Ραβδόγραμμα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Interval"
-msgstr "Μεσοδιάστημα ανανέωσης"
+msgstr "Διάστημα"
 
 #: lib/syslog_dashboard.php
 msgid "Auto"
-msgstr ""
+msgstr "Αυτόματα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Minute"
-msgstr "1 λεπτό"
+msgstr "Λεπτό"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "10 Minutes"
-msgstr "1 λεπτό"
+msgstr "10 λεπτά"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Hour"
-msgstr "%d ώρα"
+msgstr "Ώρα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Day"
-msgstr "Καθημερινά"
+msgstr "Ημέρα"
 
 #: lib/syslog_dashboard.php
 msgid "Field"
-msgstr ""
+msgstr "Πεδίο"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php
@@ -1767,9 +1715,8 @@ msgid "Priority"
 msgstr "Προτεραιότητα"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Top Count"
-msgstr "Μέτρηση"
+msgstr "Πλήθος κορυφαίων"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Record Type"
@@ -1789,30 +1736,28 @@ msgstr "Καταργημένες εγγραφές"
 
 #: lib/syslog_dashboard.php
 msgid "Start from Saved Search"
-msgstr ""
+msgstr "Εκκίνηση από αποθηκευμένη αναζήτηση"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Enter message text…"
-msgstr ""
+msgstr "Εισαγάγετε κείμενο μηνύματος…"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Remove condition"
-msgstr "Καταργημένες εγγραφές"
+msgstr "Κατάργηση συνθήκης"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
-#, fuzzy
 msgid "Match group"
-msgstr "Τύπος αγώνα"
+msgstr "Ομάδα αντιστοίχισης"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Exclude group"
-msgstr ""
+msgstr "Εξαίρεση ομάδας"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Name"
-msgstr ""
+msgstr "Όνομα πίνακα ελέγχου"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_reports.php syslog_saved_searches.php
@@ -1820,18 +1765,16 @@ msgid "Name"
 msgstr "Όνομα"
 
 #: lib/syslog_thresholds.php syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Breached Thresholds"
-msgstr "Όριο"
+msgstr "Παραβιασμένα όρια"
 
 #: lib/syslog_thresholds.php
 msgid "Breached Since"
-msgstr ""
+msgstr "Σε παραβίαση από"
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
-msgstr ""
+msgstr "Συλλέκτης"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -1840,38 +1783,35 @@ msgstr "Συσκευή"
 
 #: lib/syslog_thresholds.php
 msgid "Last Matching Message"
-msgstr ""
+msgstr "Τελευταίο αντίστοιχο μήνυμα"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
 msgid "Recovers After"
-msgstr "Επανεπεξεργασία"
+msgstr "Ανάκτηση μετά από"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Rules"
 msgid "Rule"
-msgstr "Κανόνες"
+msgstr "Κανόνας"
 
 #: lib/syslog_thresholds.php
 msgid "All matching devices"
-msgstr ""
+msgstr "Όλες οι συσκευές που ταιριάζουν"
 
 #: lib/syslog_thresholds.php
 msgid "No thresholds are currently breached."
-msgstr ""
+msgstr "Δεν παραβιάζονται όρια αυτήν τη στιγμή."
 
 #: lib/syslog_thresholds.php
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
-msgstr ""
+msgstr "Η ανάκαμψη απαιτεί να μην υπάρχουν αντίστοιχα μηνύματα μέχρι την εμφανιζόμενη ώρα. Κάθε αντιστοίχιση επανεκκινεί την περίοδο ηρεμίας."
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
-msgstr ""
+msgstr "Προηγούμενο"
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Next"
-msgstr ""
+msgstr "Επόμενο"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -1879,46 +1819,39 @@ msgstr "Μετονομάστε τα αρχεία config.php.dist ή config_local
 
 #: setup.php
 msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
-msgstr ""
+msgstr "Οι χρονοσφραγίδες χιλιοστών του δευτερολέπτου (TIMESTAMP(3)) υποστηρίζονται μόνο σε MariaDB. Αυτός ο διακομιστής είναι MySQL, οπότε εγκαταστήστε με χρονοσφραγίδες ακρίβειας δευτερολέπτου."
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
-msgstr ""
+msgstr "Η μηχανή αποθήκευσης Aria δεν μπορεί να χρησιμοποιηθεί όταν είναι ενεργοποιημένη οποιαδήποτε επιλογή απομακρυσμένου συλλέκτη δεδομένων (Remote Data Collector). Επιλέξτε InnoDB ή απενεργοποιήστε όλες τις επιλογές απομακρυσμένου συλλέκτη δεδομένων."
 
 #: setup.php
 msgid "Top 10 Hosts"
-msgstr ""
+msgstr "Κορυφαίοι 10 κεντρικοί υπολογιστές"
 
 #: setup.php
-#, fuzzy
-#| msgid "Syslog Message Match String"
 msgid "Syslog Messages - Past Hour"
-msgstr "Συμβολοσειρά αντιστοίχισης μηνύματος Syslog"
+msgstr "Μηνύματα Syslog - Τελευταία ώρα"
 
 #: setup.php
-#, fuzzy
-#| msgid "Message String:"
 msgid "Messages by Severity"
-msgstr "Συμβολοσειρά μηνύματος:"
+msgstr "Μηνύματα ανά σοβαρότητα"
 
 #: setup.php
-#, fuzzy
-#| msgid "All Programs"
 msgid "Top 10 Programs"
-msgstr "Όλα τα προγράμματα"
+msgstr "Κορυφαία 10 προγράμματα"
 
 #: setup.php
 msgid "Alert Activity"
-msgstr ""
+msgstr "Δραστηριότητα ειδοποιήσεων"
 
 #: syslog.php
 msgid "Syslog Viewer"
 msgstr "Πρόγραμμα προβολής Syslog"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog Status"
-msgstr "Ρυθμίσεις Syslog"
+msgstr "Κατάσταση Syslog"
 
 #: syslog.php
 msgid "Selected Alert"
@@ -1926,292 +1859,262 @@ msgstr "Επιλεγμένη ειδοποίηση"
 
 #: syslog.php
 msgid "seconds"
-msgstr ""
+msgstr "δευτερόλεπτα"
 
 #: syslog.php
 msgid "Unavailable"
-msgstr ""
+msgstr "Μη Διαθέσιμο"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "[ Unprocessed Messages: %s ]"
+#, php-format
 msgid "unprocessed messages are %s old"
-msgstr "[ Μη επεξεργασμένα μηνύματα: %s ]"
+msgstr "τα μη επεξεργασμένα μηνύματα έχουν ηλικία %s"
 
 #: syslog.php
 #, php-format
 msgid "incoming backlog of %s messages"
-msgstr ""
+msgstr "εκκρεμότητα εισερχόμενων %s μηνυμάτων"
 
 #: syslog.php
-#, fuzzy
 msgid "day"
-msgstr "Καθημερινά"
+msgstr "ημέρα"
 
 #: syslog.php
 msgid "days"
-msgstr ""
+msgstr "ημέρες"
 
 #: syslog.php
 msgid "hour"
-msgstr ""
+msgstr "ώρα"
 
 #: syslog.php
-#, fuzzy
 msgid "hours"
-msgstr "%d ώρες"
+msgstr "ώρες"
 
 #: syslog.php
-#, fuzzy
 msgid "minute"
-msgstr "1 λεπτό"
+msgstr "λεπτό"
 
 #: syslog.php
-#, fuzzy
 msgid "minutes"
-msgstr "1 λεπτό"
+msgstr "λεπτά"
 
 #: syslog.php
 msgid "Rows in syslog_incoming"
-msgstr ""
+msgstr "Γραμμές στον πίνακα syslog_incoming"
 
 #: syslog.php
 msgid "Syslog table size (data + indexes)"
-msgstr ""
+msgstr "Μέγεθος πίνακα Syslog (δεδομένα + ευρετήρια)"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog retention"
 msgstr "Διατήρηση Syslog"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert retention"
-msgstr "Διατήρηση ειδοποίησης Syslog"
+msgstr "Διατήρηση ειδοποιήσεων"
 
 #: syslog.php
 msgid "No recovery activity recorded yet."
-msgstr ""
+msgstr "Δεν έχει καταγραφεί ακόμη δραστηριότητα αποκατάστασης."
 
 #: syslog.php
 msgid "created"
-msgstr ""
+msgstr "δημιουργήθηκε"
 
 #: syslog.php
-#, fuzzy
 msgid "remaining"
-msgstr "Προσοχή"
+msgstr "απομένουν"
 
 #: syslog.php
 msgid "retention deferred"
-msgstr ""
+msgstr "η διατήρηση αναβλήθηκε"
 
 #: syslog.php
 msgid "Latest processing run"
-msgstr ""
+msgstr "Τελευταία εκτέλεση επεξεργασίας"
 
 #: syslog.php
 msgid "Distributed synchronization"
-msgstr ""
+msgstr "Κατανεμημένος συγχρονισμός"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Remote Data Collector Rules Sync"
 msgid "Remote collector receipts"
-msgstr "Απομακρυσμένος συγχρονισμός κανόνων Συλλογής δεδομένων"
+msgstr "Παραλαβές απομακρυσμένου συλλέκτη"
 
 #: syslog.php
-#, fuzzy
 msgid "Storage and retention"
-msgstr "Διατήρηση Syslog"
+msgstr "Αποθήκευση και διατήρηση"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition health"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "Κατάσταση διαμερισμάτων"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance activity"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Δραστηριότητα συντήρησης διαμερισμάτων"
 
 #: syslog.php
-#, fuzzy
 msgid "Recent partition maintenance activity"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Πρόσφατη δραστηριότητα συντήρησης κατατμήσεων"
 
 #: syslog.php
-#, fuzzy
 msgid "Pipeline health"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "Εύρυθμη λειτουργία pipeline"
 
 #: syslog.php
 msgid "Parallel workers"
-msgstr ""
+msgstr "Παράλληλες διεργασίες εργασίας"
 
 #: syslog.php
-#, fuzzy
 msgid "Worker processes"
-msgstr "Επανεπεξεργασία"
+msgstr "Διεργασίες worker"
 
 #: syslog.php
 msgid "Processing phases"
-msgstr ""
+msgstr "Φάσεις επεξεργασίας"
 
 #: syslog.php
 msgid "Rule activity"
-msgstr ""
+msgstr "Δραστηριότητα κανόνα"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed"
-msgstr "Επανεπεξεργασία"
+msgstr "Εγγραφές που επεξεργάστηκαν"
 
 #: syslog.php
 msgid "Polling runtime"
-msgstr ""
+msgstr "Χρόνος εκτέλεσης συλλογής"
 
 #: syslog.php
 msgid "Started"
-msgstr ""
+msgstr "Ξεκίνησε"
 
 #: syslog.php
 msgid "Finished"
-msgstr ""
+msgstr "Ολοκληρώθηκε"
 
 #: syslog.php
 msgid "Minimum runtime"
-msgstr ""
+msgstr "Ελάχιστος χρόνος εκτέλεσης"
 
 #: syslog.php
 msgid "Average runtime"
-msgstr ""
+msgstr "Μέσος χρόνος εκτέλεσης"
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
+msgstr "Μέγιστος χρόνος εκτέλεσης"
 
 #: syslog.php
 msgid "State"
-msgstr ""
+msgstr "Νομός"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Removed Records"
 msgid "Queued Recovery Records"
-msgstr "Καταργημένες εγγραφές"
+msgstr "Εγγραφές ανάκτησης σε ουρά"
 
 #: syslog.php
 msgid "Oldest pending"
-msgstr ""
+msgstr "Παλαιότερο σε εκκρεμότητα"
 
 #: syslog.php
 msgid "Last successful synchronization"
-msgstr ""
+msgstr "Τελευταίος επιτυχής συγχρονισμός"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Actions"
 msgid "Active"
-msgstr "Ενέργειες"
+msgstr "Ενεργό"
 
 #: syslog.php
 msgid "Inactive"
-msgstr ""
+msgstr "Ανενεργό"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery worker"
-msgstr "Επανεπεξεργασία"
+msgstr "Διεργασία ανάκτησης"
 
 #: syslog.php
 msgid "Last synchronization error"
-msgstr ""
+msgstr "Τελευταίο σφάλμα συγχρονισμού"
 
 #: syslog.php
-#, fuzzy
 msgid "Last Batch Count"
-msgstr "Τελευταία αποστολή"
+msgstr "Πλήθος τελευταίας δέσμης"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Modified"
 msgid "Last Record Received"
-msgstr "Τελευταία τροποποίηση"
+msgstr "Τελευταία εγγραφή που ελήφθη"
 
 #: syslog.php
 msgid "Remote Poller"
-msgstr ""
+msgstr "Απομακρυσμένος Poller"
 
 #: syslog.php
 msgid "Unknown remote poller"
-msgstr ""
+msgstr "Άγνωστος απομακρυσμένος Poller"
 
 #: syslog.php
 msgid "No remote collector records have been received yet."
-msgstr ""
+msgstr "Δεν έχουν ληφθεί ακόμη εγγραφές απομακρυσμένου συλλέκτη."
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Η συντήρηση διαμερισμάτων είναι αποκλεισμένη"
 
 #: syslog.php
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "Η συντήρηση διαμερισμάτων έχει διακοπεί· οι εγγραφές συνεχίζονται στο διαμέρισμα ασφαλείας dMaxValue."
 
 #: syslog.php
 msgid "Date coverage"
-msgstr ""
+msgstr "Χρονική κάλυψη"
 
 #: syslog.php
-#, fuzzy
 msgid "Table"
-msgstr "Ενεργοποίηση"
+msgstr "Πίνακας"
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
-msgstr ""
+msgstr "dMaxValue γραμμές (εκτιμώμενες)"
 
 #: syslog.php
 msgid "dMaxValue size"
-msgstr ""
+msgstr "Μέγεθος dMaxValue"
 
 #: syslog.php
-#, fuzzy
 msgid "Partitioning level"
-msgstr "Χωρίσματα ανά ημέρα"
+msgstr "Επίπεδο διαμερισματοποίησης"
 
 #: syslog.php
 #, php-format
 msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
-msgstr ""
+msgstr "Το %s είναι επιλεγμένο στις Ρυθμίσεις και τίθεται σε ισχύ αφού το cli/upgrade_partitioning.php ανακατασκευάσει τους πίνακες."
 
 #: syslog.php
-#, fuzzy
 msgid "Last attempt"
-msgstr "Τελευταία αποστολή"
+msgstr "Τελευταία προσπάθεια"
 
 #: syslog.php
 msgid "Last successful maintenance"
-msgstr ""
+msgstr "Τελευταία επιτυχής συντήρηση"
 
 #: syslog.php
 msgid "Complete"
-msgstr ""
+msgstr "Ολοκληρώθηκε"
 
 #: syslog.php
 msgid "Deferred"
-msgstr ""
+msgstr "Αναβληθέν"
 
 #: syslog.php
 msgid "Latest outcome"
-msgstr ""
+msgstr "Τελευταίο αποτέλεσμα"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery progress"
-msgstr "Επανεπεξεργασία"
+msgstr "Πρόοδος ανάκτησης"
 
 #: syslog.php syslog_alerts.php syslog_reports.php
 msgid "Details"
@@ -2219,262 +2122,232 @@ msgstr "Λεπτομέρειες"
 
 #: syslog.php
 msgid "Outcome"
-msgstr ""
+msgstr "Αποτέλεσμα"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery"
-msgstr "%d Εγγραφές"
+msgstr "Ανάκτηση"
 
 #: syslog.php
 msgid "When"
-msgstr ""
+msgstr "Πότε"
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
-msgstr ""
+msgstr "Δεν έχει καταγραφεί ακόμη δραστηριότητα συντήρησης κατατμήσεων. Η δραστηριότητα εμφανίζεται μετά την επόμενη εκτέλεση του Poller."
 
 #: syslog.php
 #, php-format
 msgid "%d created, %d remaining, %d pruned"
-msgstr ""
+msgstr "%d δημιουργήθηκαν, %d απομένουν, %d εκκαθαρίστηκαν"
 
 #: syslog.php
 msgid "No action required."
-msgstr ""
+msgstr "Δεν απαιτείται ενέργεια."
 
 #: syslog.php
 msgid "Incoming backlog"
-msgstr ""
+msgstr "Εισερχόμενη εκκρεμότητα"
 
 #: syslog.php
-#, fuzzy
 msgid "Processing"
-msgstr "Επανεπεξεργασία"
+msgstr "Σε επεξεργασία"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Συντήρηση διαμερισμάτων"
 
 #: syslog.php
 msgid "Synchronization"
-msgstr ""
+msgstr "Συγχρονισμός"
 
 #: syslog.php
 msgid "Attention required"
-msgstr ""
+msgstr "Απαιτείται προσοχή"
 
 #: syslog.php
 msgid "Healthy"
-msgstr ""
+msgstr "Υγιές"
 
 #: syslog.php
 msgid "Processing disabled"
-msgstr ""
+msgstr "Η επεξεργασία είναι απενεργοποιημένη"
 
 #: syslog.php
-#, fuzzy
 msgid "Waiting for processing"
-msgstr "Επανεπεξεργασία"
+msgstr "Αναμονή για επεξεργασία"
 
 #: syslog.php
 msgid "Health"
-msgstr ""
+msgstr "Υγεία"
 
 #: syslog.php
 msgid "Ready"
-msgstr ""
+msgstr "Έτοιμο"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Sent"
 msgid "Sent"
-msgstr "Τελευταία αποστολή"
+msgstr "Εστάλη"
 
 #: syslog.php
 msgid "Failed; retry pending"
-msgstr ""
+msgstr "Απέτυχε· εκκρεμεί επανάληψη"
 
 #: syslog.php
 msgid "Pending; next poller check"
-msgstr ""
+msgstr "Σε εκκρεμότητα· επόμενος έλεγχος Poller"
 
 #: syslog.php
-#, fuzzy
 msgid "Last health check"
-msgstr "Τελευταία αποστολή"
+msgstr "Τελευταίος έλεγχος καλής λειτουργίας"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Email Options"
 msgid "Email notifications"
-msgstr "Επιλογές email"
+msgstr "Ειδοποιήσεις μέσω email"
 
 #: syslog.php
 msgid "Not checked yet"
-msgstr ""
+msgstr "Δεν έχει ελεγχθεί ακόμη"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Last notification sent"
-msgstr "Λίστα ειδοποιήσεων"
+msgstr "Τελευταία ειδοποίηση που στάλθηκε"
 
 #: syslog.php
 msgid "Last received log"
-msgstr ""
+msgstr "Τελευταίο ληφθέν αρχείο καταγραφής"
 
 #: syslog.php
-#, fuzzy
 msgid "Oldest unprocessed message"
-msgstr "[ Μη επεξεργασμένα μηνύματα: %s ]"
+msgstr "Παλαιότερο μη επεξεργασμένο μήνυμα"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed in latest run"
-msgstr "Επανεπεξεργασία"
+msgstr "Εγγραφές που επεξεργάστηκαν στην τελευταία εκτέλεση"
 
 #: syslog.php
 msgid "Worker processes running"
-msgstr ""
+msgstr "Εκτελούμενες διεργασίες εργασίας (worker)"
 
 #: syslog.php
 msgid "Configured worker processes"
-msgstr ""
+msgstr "Ρυθμισμένες διεργασίες worker"
 
 #: syslog.php
 msgid "Hosts resolved"
-msgstr ""
+msgstr "Επιλυμένοι κεντρικοί υπολογιστές"
 
 #: syslog.php
-#, fuzzy
 msgid "Process"
-msgstr "Επανεπεξεργασία"
+msgstr "Επεξεργασία"
 
 #: syslog.php
-#, fuzzy
 msgid "Records handled"
-msgstr "Μητρώα"
+msgstr "Εγγραφές που διεκπεραιώθηκαν"
 
 #: syslog.php
 msgid "Runtime"
-msgstr ""
+msgstr "Χρόνος εκτέλεσης"
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
-msgstr ""
+msgstr "Δεν έχουν καταγραφεί ακόμη στατιστικά ανά διεργασία. Τα στατιστικά των διεργασιών εργασίας (worker) εμφανίζονται μετά την πρώτη παράλληλη εκτέλεση."
 
 #: syslog.php
-#, fuzzy
 msgid "Duration"
-msgstr "Διαγραφή"
+msgstr "Διάρκεια"
 
 #: syslog.php
 msgid "Phase"
-msgstr ""
+msgstr "Φάση"
 
 #: syslog.php
-#, fuzzy
 msgid "Records"
-msgstr "%d Εγγραφές"
+msgstr "Μητρώα"
 
 #: syslog.php
 msgid "Reference updates"
-msgstr ""
+msgstr "Ενημερώσεις αναφοράς"
 
 #: syslog.php
-#, fuzzy
 msgid "Removal rules"
 msgstr "Κανόνες κατάργησης"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert evaluation"
-msgstr "Διατήρηση ειδοποίησης Syslog"
+msgstr "Αξιολόγηση ειδοποίησης"
 
 #: syslog.php
 msgid "Incoming transfer"
-msgstr ""
+msgstr "Εισερχόμενη μεταφορά"
 
 #: syslog.php
-#, fuzzy
 msgid "Report processing"
-msgstr "Επανεπεξεργασία"
+msgstr "Επεξεργασία αναφορών"
 
 #: syslog.php
 msgid "slowest"
-msgstr ""
+msgstr "πιο αργό"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
+msgstr "Δεν έχουν καταγραφεί ακόμη χρόνοι φάσεων. Οι χρόνοι φάσεων εμφανίζονται μετά την επόμενη εκτέλεση του Poller."
 
 #: syslog.php
-#, fuzzy
 msgid "Last run"
-msgstr "Τελευταία αποστολή"
+msgstr "Τελευταία εκτέλεση"
 
 #: syslog.php
-#, fuzzy
 msgid "Rules processed"
-msgstr "Επανεπεξεργασία"
+msgstr "Επεξεργασμένοι κανόνες"
 
 #: syslog.php
 msgid "Total"
-msgstr ""
+msgstr "Σύνολο"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert rules"
 msgstr "Κανόνες ειδοποίησης"
 
 #: syslog.php
-#, fuzzy
 msgid "Delete rules"
-msgstr "Κανόνες ειδοποίησης"
+msgstr "Διαγραφή κανόνων"
 
 #: syslog.php
 msgid "Fired last run"
-msgstr ""
+msgstr "Ενεργοποιήθηκε στην τελευταία εκτέλεση"
 
 #: syslog.php
 msgid "Show more"
-msgstr ""
+msgstr "Εμφάνιση περισσότερων"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Show All Devices"
 msgid "Show less"
-msgstr "Εμφάνιση όλων των συσκευών"
+msgstr "Εμφάνιση λιγότερων"
 
 #: syslog.php
 msgid "Open in a dialog"
-msgstr ""
+msgstr "Άνοιγμα σε παράθυρο διαλόγου"
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
+msgstr "Αφαίρεση από τη σελίδα"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Invalid refresh interval."
-msgstr "Μεσοδιάστημα ανανέωσης"
+msgstr "Μη έγκυρο διάστημα ανανέωσης."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown card."
-msgstr "Άγνωστο"
+msgstr "Άγνωστη κάρτα."
 
 #: syslog.php
 msgid "Add card"
-msgstr ""
+msgstr "Προσθήκη κάρτας"
 
 #: syslog.php
 msgid "Add a status card…"
-msgstr ""
+msgstr "Προσθήκη κάρτας κατάστασης…"
 
 #: syslog.php
 msgid "Syslog Alert View"
@@ -2482,15 +2355,15 @@ msgstr "Προβολή ειδοποίησης Syslog"
 
 #: syslog.php
 msgid "A valid saved search is required."
-msgstr ""
+msgstr "Απαιτείται έγκυρη αποθηκευμένη αναζήτηση."
 
 #: syslog.php
 msgid "Saved search not found."
-msgstr ""
+msgstr "Η αποθηκευμένη αναζήτηση δεν βρέθηκε."
 
 #: syslog.php
 msgid "You may only share your own saved searches."
-msgstr ""
+msgstr "Μπορείτε να κοινοποιείτε μόνο τις δικές σας αποθηκευμένες αναζητήσεις."
 
 #: syslog.php
 #, php-format
@@ -2519,69 +2392,61 @@ msgid "Syslog Message Filter %s"
 msgstr "Φίλτρο μηνυμάτων Syslog %s"
 
 #: syslog.php
-#, fuzzy
 msgid "Search messages"
-msgstr "Μηνύματα"
+msgstr "Αναζήτηση μηνυμάτων"
 
 #: syslog.php
 msgid "Collapse filters"
-msgstr ""
+msgstr "Σύμπτυξη φίλτρων"
 
 #: syslog.php
 msgid "Edit filters"
-msgstr ""
+msgstr "Επεξεργασία φίλτρων"
 
 #: syslog.php
-#, fuzzy
 msgid "Saved Searches"
-msgstr "Αναζήτηση"
+msgstr "Αποθηκευμένες αναζητήσεις"
 
 #: syslog.php
-#, fuzzy
 msgid "My Searches"
-msgstr "Αναζήτηση"
+msgstr "Οι αναζητήσεις μου"
 
 #: syslog.php
 msgid "Global Searches"
-msgstr ""
+msgstr "Καθολικές αναζητήσεις"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "Default"
+#, php-format
 msgid "%s (Default)"
-msgstr "Προεπιλογή"
+msgstr "%s (Προεπιλογή)"
 
 #: syslog.php
 msgid "Manage"
-msgstr ""
+msgstr "Διαχείριση"
 
 #: syslog.php
-#, fuzzy
 msgid "Manage saved searches"
-msgstr "Εισαγάγετε έναν όρο αναζήτησης"
+msgstr "Διαχείριση αποθηκευμένων αναζητήσεων"
 
 #: syslog.php
-#, fuzzy
 msgid "Save search"
-msgstr "Αναζήτηση"
+msgstr "Αποθήκευση αναζήτησης"
 
 #: syslog.php
-#, fuzzy
 msgid "Edit"
-msgstr "(Eπεξεργασία)"
+msgstr "Επεξεργασία"
 
 #: syslog.php
 msgid "Save for all"
-msgstr ""
+msgstr "Αποθήκευση για όλους"
 
 #: syslog.php
-#, fuzzy
 msgid "contains"
-msgstr "Περιέχει"
+msgstr "περιέχει"
 
 #: syslog.php
 msgid "does not contain"
-msgstr ""
+msgstr "δεν περιέχει"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2599,13 +2464,12 @@ msgid "Default"
 msgstr "Προεπιλογή"
 
 #: syslog.php
-#, fuzzy
 msgid "View options"
-msgstr "Επιλογές email"
+msgstr "Επιλογές προβολής"
 
 #: syslog.php
 msgid "Trim"
-msgstr "Κινητήρας"
+msgstr "Περικοπή"
 
 #: syslog.php
 msgid "Message Trim"
@@ -2616,50 +2480,45 @@ msgid "Removal Handling"
 msgstr "Χειρισμός αφαίρεσης"
 
 #: syslog.php
-#, fuzzy
 msgid "Display"
-msgstr "Προβολή Σειρών"
+msgstr "Εμφάνιση"
 
 #: syslog.php
 msgid "Group Duplicate Messages"
-msgstr ""
+msgstr "Ομαδοποίηση διπλότυπων μηνυμάτων"
 
 #: syslog.php
-#, fuzzy
 msgid "Individual Messages"
-msgstr "Ιδιώτες"
+msgstr "Μεμονωμένα μηνύματα"
 
 #: syslog.php
-#, fuzzy
 msgid "Grouped Messages"
-msgstr "Μηνύματα"
+msgstr "Ομαδοποιημένα μηνύματα"
 
 #: syslog.php
 #, php-format
 msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
-msgstr ""
+msgstr "Επιλέξτε πεδίο, τελεστή και τιμή. Το AND υπερισχύει του OR· το NOT εξαιρεί μια συνθήκη. Το LIKE χρησιμοποιεί % για οποιονδήποτε αριθμό χαρακτήρων και _ για έναν χαρακτήρα. Οι ημερομηνίες χρησιμοποιούν μορφή YYYY-MM-DD HH:MM:SS. Τα αναγνωριστικά (IDs) χρησιμοποιούν μη αρνητικούς ακέραιους. Από προεπιλογή, εμφανίζεται η τελευταία ημέρα καταγραφών εκτός εάν προσαρμοστεί το εύρος ημερομηνιών."
 
 #: syslog.php
-#, fuzzy
 msgid "Search help"
-msgstr "Αναζήτηση"
+msgstr "Βοήθεια αναζήτησης"
 
 #: syslog.php
 msgid "New Saved Search"
-msgstr ""
+msgstr "Νέα αποθηκευμένη αναζήτηση"
 
 #: syslog.php
 msgid "Edit Saved Search"
-msgstr ""
+msgstr "Επεξεργασία αποθηκευμένης αναζήτησης"
 
 #: syslog.php
-#, fuzzy
 msgid "Save As"
-msgstr "Αποθήκευση"
+msgstr "Αποθήκευση ως"
 
 #: syslog.php
 msgid "Delete the selected saved search?"
-msgstr ""
+msgstr "Διαγραφή της επιλεγμένης αποθηκευμένης αναζήτησης;"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
@@ -2678,9 +2537,8 @@ msgid "Return filter values to their user defined defaults"
 msgstr "Επιστροφή τιμών φίλτρου στις προεπιλογές που ορίζονται από το χρήστη"
 
 #: syslog.php
-#, fuzzy
 msgid "Refresh Results"
-msgstr "Μεσοδιάστημα ανανέωσης"
+msgstr "Ανανέωση αποτελεσμάτων"
 
 #: syslog.php
 msgid "Export Records to CSV"
@@ -2691,51 +2549,44 @@ msgid "Save Default Settings"
 msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
 
 #: syslog.php
-#, fuzzy
 msgid "Save view defaults"
-msgstr "Αποθήκευση προεπιλεγμένων ρυθμίσεων"
+msgstr "Αποθήκευση προεπιλογών προβολής"
 
 #: syslog.php
-#, fuzzy
 msgid "Save Search As"
-msgstr "Αναζήτηση"
+msgstr "Αποθήκευση αναζήτησης ως"
 
 #: syslog.php
 msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
+msgstr "Εφαρμογή αυτής της αναζήτησης όταν ανοίγετε αυτήν τη σελίδα και δεν υπάρχει ακόμη ενεργή αναζήτηση"
 
 #: syslog.php
 msgid "Breach"
-msgstr ""
+msgstr "Παραβίαση"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Threshold breached"
-msgstr "Όριο"
+msgstr "Το Όριο παραβιάστηκε"
 
 #: syslog.php
 msgid "Messages"
 msgstr "Μηνύματα"
 
 #: syslog.php
-#, fuzzy
 msgid "Empty message"
-msgstr "Μήνυμα"
+msgstr "Κενό μήνυμα"
 
 #: syslog.php
-#, fuzzy
 msgid "Toggle group messages"
-msgstr "Μήνυμα"
+msgstr "Εναλλαγή ομαδοποίησης μηνυμάτων"
 
 #: syslog.php
 msgid "Loading group messages..."
-msgstr ""
+msgstr "Φόρτωση μηνυμάτων ομάδας..."
 
 #: syslog.php
-#, fuzzy
 msgid "No matching messages."
-msgstr "Μηνύματα"
+msgstr "Δεν βρέθηκαν αντίστοιχα μηνύματα."
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2755,84 +2606,71 @@ msgstr "Δεν υπάρχουν μηνύματα καταγραφής ειδοπ
 
 #: syslog.php
 msgid "Close message details"
-msgstr ""
+msgstr "Κλείσιμο λεπτομερειών μηνύματος"
 
 #: syslog.php
-#, fuzzy
 msgid "Message details"
-msgstr "Μηνύματα"
+msgstr "Λεπτομέρειες μηνύματος"
 
 #: syslog.php
-#, fuzzy
-#| msgid "General Settings"
 msgid "General"
-msgstr "Γενικές Ρυθμίσεις"
+msgstr "Γενικά"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Alert Rules"
 msgid "Alert Rule"
-msgstr "Κανόνες ειδοποίησης"
+msgstr "Κανόνας ειδοποίησης"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Frequency"
 msgid "Sequence"
-msgstr "Συχνότητα"
+msgstr "Αλληλουχία"
 
 #: syslog.php
 msgid "Copied"
-msgstr ""
+msgstr "Αντιγράφηκε"
 
 #: syslog.php
 msgid "Copy link"
-msgstr ""
+msgstr "Αντιγραφή συνδέσμου"
 
 #: syslog.php
-#, fuzzy
 msgid "Copy message"
-msgstr "Μήνυμα"
+msgstr "Αντιγραφή μηνύματος"
 
 #: syslog.php
 msgid "Copy unavailable. Select and copy the message text."
-msgstr ""
+msgstr "Η αντιγραφή δεν είναι διαθέσιμη. Επιλέξτε και αντιγράψτε το κείμενο του μηνύματος."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Looking up recommendations…"
-msgstr "Διατήρηση Syslog"
+msgstr "Αναζήτηση προτάσεων…"
 
 #: syslog.php
 msgid "No recommendation matches this message."
-msgstr ""
+msgstr "Καμία σύσταση δεν αντιστοιχεί σε αυτό το μήνυμα."
 
 #: syslog.php syslog_alerts.php
 msgid "Actions"
 msgstr "Ενέργειες"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Alarm Rule"
-msgstr "Κανόνας ειδοποίησης εισαγωγής"
+msgstr "Δημιουργία κανόνα συναγερμού"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Device Alert Rule"
-msgstr "Κανόνας ειδοποίησης εισαγωγής"
+msgstr "Δημιουργία κανόνα ειδοποίησης συσκευής"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Removal Rule"
-msgstr "Νέος κανόνας κατάργησης"
+msgstr "Δημιουργία κανόνα αφαίρεσης"
 
 #: syslog.php
 msgid "Filter by device"
-msgstr ""
+msgstr "Φιλτράρισμα κατά συσκευή"
 
 #: syslog.php
 msgid "Filter by program"
-msgstr ""
+msgstr "Φιλτράρισμα κατά πρόγραμμα"
 
 #: syslog.php
 msgid "All Programs"
@@ -2872,15 +2710,15 @@ msgstr "Εξαγωγή κανόνων ειδοποίησης Syslog"
 
 #: syslog_alerts.php
 msgid "Select Syslog Alarming or Alarm Manager."
-msgstr ""
+msgstr "Επιλέξτε Syslog Alarming ή Alarm Manager."
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
-msgstr ""
+msgstr "Εισαγάγετε έναν ακέραιο αριθμό λεπτών, ωρών ή ημερών για το παράθυρο ορίου."
 
 #: syslog_alerts.php
 msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
-msgstr ""
+msgstr "Εισαγάγετε έναν θετικό ακέραιο αριθμό λεπτών, ωρών ή ημερών για την επαναφορά ορίου."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
@@ -2894,7 +2732,7 @@ msgstr "Η προ-επεξεργασμένη SQL είναι:<br><br> %s"
 #: syslog_alerts.php syslog_removal.php
 #, php-format
 msgid "The filter is invalid: %s"
-msgstr ""
+msgstr "Το φίλτρο δεν είναι έγκυρο: %s"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The processed SQL was invalid.  Please correct your SQL"
@@ -2940,47 +2778,38 @@ msgid "N/A"
 msgstr "Μη Διαθέσιμο"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Time Range"
 msgid "Time unit"
-msgstr "Εύρος Ώρας"
+msgstr "Μονάδα χρόνου"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "%d Days"
 msgid "Days"
-msgstr "%d Ημέρες"
+msgstr "Ημέρες"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Hours"
-msgstr "%d ώρα"
+msgstr "Ώρες"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Minutes"
-msgstr "1 λεπτό"
+msgstr "Λεπτά"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "Περιγράψτε αυτήν την ειδοποίηση."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alarm Destination"
-msgstr "Διατήρηση ειδοποίησης Syslog"
+msgstr "Προορισμός συναγερμού"
 
 #: syslog_alerts.php
 msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
-msgstr ""
+msgstr "Επιλέξτε «Ειδοποιήσεις Syslog» ή «Διαχείριση συναγερμών». Η «Διαχείριση συναγερμών» απαιτεί επίσης ενεργοποιημένη προώθηση στις ρυθμίσεις Syslog. Το email διατηρείται ως εφεδρική επιλογή· οι ενέργειες εντολών δεν εκτελούνται για κανόνες της Διαχείρισης συναγερμών."
 
 #: syslog_alerts.php
 msgid "Alarm Manager"
-msgstr ""
+msgstr "Διαχείριση συναγερμών"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Syslog Alerts"
 msgid "Syslog Alarming"
 msgstr "Ειδοποιήσεις Syslog"
 
@@ -3013,28 +2842,24 @@ msgid "Individual"
 msgstr "Ιδιώτες"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
-msgstr "Για τη μέθοδο «Κατώφλι», εάν ο αριθμός που εμφανίζεται υπερβαίνει αυτήν την τιμή, ενεργοποιείται μια ειδοποίηση."
+msgstr "Για τη μέθοδο «Όριο», ενεργοποιείται μια ειδοποίηση όταν ο αριθμός εμφανίσεων φτάσει αυτήν την τιμή."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Threshold Logs"
 msgid "Threshold Window"
-msgstr "Αρχεία καταγραφής κατωφλίου"
+msgstr "Παράθυρο Ορίου"
 
 #: syslog_alerts.php
 msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
-msgstr ""
+msgstr "Καταμέτρηση αντιστοιχιών σε κύκλους του συλλέκτη εντός αυτού του κυλιόμενου παραθύρου, με βάση τον χρόνο επεξεργασίας του συλλέκτη. Εισαγάγετε 0 για να μετράται μόνο ο τρέχων κύκλος."
 
 #: syslog_alerts.php
 msgid "Recover After Quiet Period"
-msgstr ""
+msgstr "Ανάκαμψη μετά από περίοδο ηρεμίας"
 
 #: syslog_alerts.php
 msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
-msgstr ""
+msgstr "Χρόνος χωρίς μηνύματα που να αντιστοιχούν πριν από την εκκαθάριση της παραβίασης, τον μηδενισμό του μετρητή και την επανόπλιση αυτού του κανόνα. Κάθε μήνυμα που αντιστοιχεί επανεκκινεί αυτό το χρονόμετρο."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -3042,7 +2867,7 @@ msgstr "Τύπος αγώνα"
 
 #: syslog_alerts.php
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
-msgstr ""
+msgstr "Επιλέξτε «Δόμηση φίλτρου» (Filter Builder) για ασφαλή λογική συναγερμών πολλαπλών συνθηκών. Η επιλογή «Έκφραση SQL» διατηρείται για παλαιότερους κανόνες."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Message Match String"
@@ -3050,7 +2875,7 @@ msgstr "Συμβολοσειρά αντιστοίχισης μηνύματος"
 
 #: syslog_alerts.php
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
-msgstr ""
+msgstr "Δημιουργήστε συνθήκες φίλτρου ή εισαγάγετε μια έκφραση SQL για αντιστοίχιση μηνυμάτων syslog."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_removal.php
 #: syslog_reports.php
@@ -3070,120 +2895,112 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Μην στείλετε ξανά αυτήν την ειδοποίηση για τον ίδιο κεντρικό υπολογιστή, μέχρι να παρέλθει αυτό το χρονικό διάστημα. Για συναγερμούς βάσει κατωφλίου, αυτό ισχύει για όλους τους κεντρικούς υπολογιστές."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Notification Cooldown"
-msgstr "Λίστα ειδοποιήσεων"
+msgstr "Χρόνος αναμονής ειδοποιήσεων"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
-msgstr ""
+msgstr "Λεπτά απόκρυψης κάθε επόμενης ειδοποίησης από αυτόν τον κανόνα και το εύρος αναφοράς."
 
 #: syslog_alerts.php
 msgid "1 day"
-msgstr ""
+msgstr "1 ημέρα"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 hour"
-msgstr "%d ώρες"
+msgstr "1 ώρα"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 minute"
 msgstr "1 λεπτό"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "15 minutes"
-msgstr "1 λεπτό"
+msgstr "15 λεπτά"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "30 minutes"
-msgstr "1 λεπτό"
+msgstr "30 λεπτά"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "4 hours"
-msgstr "%d ώρες"
+msgstr "4 ώρες"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "5 minutes"
-msgstr "1 λεπτό"
+msgstr "5 λεπτά"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Use global setting"
-msgstr "Ρυθμίσεις %s Syslog"
+msgstr "Χρήση καθολικής ρύθμισης"
 
 #: syslog_alerts.php
 msgid "Duplicate Suppression"
-msgstr ""
+msgstr "Καταστολή διπλοτύπων"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress the same matched message set."
-msgstr ""
+msgstr "Λεπτά απόκρυψης του ίδιου συνόλου αντιστοιχισμένων μηνυμάτων."
 
 #: syslog_alerts.php
 msgid "Maintenance Window"
-msgstr ""
+msgstr "Παράθυρο συντήρησης"
 
 #: syslog_alerts.php
 msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
-msgstr ""
+msgstr "Επιλέξτε αν αυτός ο κανόνας χρησιμοποιεί το καθολικό χρονικό πλαίσιο συντήρησης ή το δικό του χρονικό πλαίσιο."
 
 #: syslog_alerts.php
 msgid "Do not mute this rule"
-msgstr ""
+msgstr "Να μη γίνει σίγαση αυτού του κανόνα"
 
 #: syslog_alerts.php
 msgid "Use global timeframe"
-msgstr ""
+msgstr "Χρήση καθολικού χρονικού πλαισίου"
 
 #: syslog_alerts.php
 msgid "Use rule timeframe"
-msgstr ""
+msgstr "Χρήση χρονικού πλαισίου κανόνα"
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Days"
-msgstr ""
+msgstr "Ημέρες συντήρησης κανόνα"
 
 #: syslog_alerts.php
 msgid "Days for this rule timeframe, when Use rule timeframe is selected."
-msgstr ""
+msgstr "Ημέρες για το χρονικό πλαίσιο αυτού του κανόνα, όταν είναι επιλεγμένο το «Χρήση χρονικού πλαισίου κανόνα»."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Starts"
-msgstr ""
+msgstr "Έναρξη συντήρησης κανόνα"
 
 #: syslog_alerts.php
 msgid "Local start time for this rule timeframe."
-msgstr ""
+msgstr "Τοπική ώρα έναρξης για αυτό το χρονικό πλαίσιο κανόνα."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Ends"
-msgstr ""
+msgstr "Λήξη συντήρησης κανόνα"
 
 #: syslog_alerts.php
 msgid "Local end time for this rule timeframe."
-msgstr ""
+msgstr "Τοπική ώρα λήξης για αυτό το χρονικό πλαίσιο κανόνα."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Starts"
-msgstr ""
+msgstr "Έναρξη εφάπαξ συντήρησης κανόνα"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Προαιρετική τοπική ημερομηνία και ώρα έναρξης σίγασης αυτού του κανόνα. Μορφή: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Ends"
-msgstr ""
+msgstr "Λήξη εφάπαξ συντήρησης κανόνα"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Προαιρετική τοπική ημερομηνία και ώρα διακοπής σίγασης αυτού του κανόνα. Μορφή: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_reports.php
 msgid "Notes"
@@ -3230,58 +3047,52 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr "Σε περίπτωση ανοίγματος εισιτηρίου Help Desk για αυτήν την ειδοποίηση.  ΣΗΜΕΙΩΣΗ: Η δέσμη ενεργειών εντολών Ticket θα συμπληρωθεί με πολλές μεταβλητές περιβάλλοντος 'ALERT_' για λόγους ευκολίας."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alert command"
-msgstr "Χειρισμός αφαίρεσης"
+msgstr "Εντολή ειδοποίησης"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Όταν ενεργοποιείται μια ειδοποίηση, εκτελέστε την ακόλουθη εντολή.  Οι ακόλουθες μεταβλητές αντικατάστασης είναι διαθέσιμες <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Λάβετε υπόψη ότι <b>το \"&lt;HOSTNAME&gt;\"</b> είναι διαθέσιμο μόνο σε μεμονωμένα όρια.  Αυτές οι τιμές αντικατάστασης μπορούν να εμφανιστούν στη γραμμή εντολών ή να συγκεντρωθούν από το περιβάλλον της δέσμης ενεργειών.  Όταν χρησιμοποιούνται από το περιβάλλον, αυτές οι μεταβλητές θα έχουν πρόθεμα «ALERT_»."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Recovery command"
-msgstr "%d Εγγραφές"
+msgstr "Εντολή επαναφοράς"
 
 #: syslog_alerts.php
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
-msgstr ""
+msgstr "Προαιρετική εντολή προς εκτέλεση όταν αυτό το όριο ανακάμψει μετά την περίοδο ηρεμίας του. Χρησιμοποιεί τις ίδιες μεταβλητές αντικατάστασης με την εντολή ειδοποίησης. Το SYSLOG_EVENT είναι clear· το SYSLOG_BREACH_ID αντιστοιχεί στην εντολή παραβίασης. Οι αποτυχημένες εντολές επαναλαμβάνονται. Αφήστε κενό για απενεργοποίηση."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Test rule"
-msgstr "Κανόνες ειδοποίησης"
+msgstr "Δοκιμή κανόνα"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Rule Test Preview"
-msgstr ""
+msgstr "Προεπισκόπηση δοκιμής κανόνα"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Value"
-msgstr ""
+msgstr "Αξία"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Enter a value"
-msgstr "Εισαγάγετε έναν όρο αναζήτησης"
+msgstr "Εισαγάγετε μια τιμή"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Match"
-msgstr "Τύπος αγώνα"
+msgstr "Αντιστοίχιση"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
-msgstr ""
+msgstr "Εξαίρεση"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Enter a nonnegative integer"
-msgstr "Εισαγάγετε έναν όρο αναζήτησης"
+msgstr "Εισαγάγετε έναν μη αρνητικό ακέραιο"
 
 #: syslog_alerts.php
 msgid "Alarm filter conditions"
-msgstr ""
+msgstr "Συνθήκες φίλτρου συναγερμών"
 
 #: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_reports.php
@@ -3317,7 +3128,7 @@ msgstr "Αναζήτηση συμβολοσειράς"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Email Addresses"
-msgstr "Διευθύνσεις ηλεκτρονικού ταχυδρομείου"
+msgstr "Διευθύνσεις email"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Last Modified"
@@ -3362,11 +3173,11 @@ msgstr "Κανόνας ειδοποίησης εισαγωγής"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
-msgstr ""
+msgstr "Η εισαγωγή απορρίφθηκε: το αρχείο είναι κενό, μη έγκυρο ή περιέχει διαφορετικό τύπο αντικειμένου Syslog."
 
 #: syslog_alerts.php
 msgid "Import rejected: invalid alarm destination."
-msgstr ""
+msgstr "Η εισαγωγή απορρίφθηκε: μη έγκυρος προορισμός συναγερμού."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
@@ -3393,484 +3204,450 @@ msgstr "Ενημέρωση"
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Select a valid owner."
-msgstr ""
+msgstr "Επιλέξτε έγκυρο κάτοχο."
 
 #: syslog_dashboards.php
 msgid "Unable to save the dashboard. Please try again."
-msgstr ""
+msgstr "Αδυναμία αποθήκευσης του πίνακα ελέγχου. Παρακαλούμε δοκιμάστε ξανά."
 
 #: syslog_dashboards.php
 msgid "Enter a dashboard name between 1 and 128 characters."
-msgstr ""
+msgstr "Εισαγάγετε ένα όνομα πίνακα εργαλείων από 1 έως 128 χαρακτήρες."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
-msgstr ""
+msgstr "Ιδιοκτήτης"
 
 #: syslog_dashboards.php
 msgid "Shared"
-msgstr ""
+msgstr "Κοινοποιημένο"
 
 #: syslog_dashboards.php
 msgid "Panels"
-msgstr ""
+msgstr "Πάνελ"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "deleted user"
-msgstr "Επιλεγμένη ειδοποίηση"
+msgstr "διαγραμμένος χρήστης"
 
 #: syslog_dashboards.php
 msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
-msgstr ""
+msgstr "Δεν υπάρχουν ακόμη πίνακες εργαλείων. Οι χρήστες τους δημιουργούν από την καρτέλα «Πίνακας εργαλείων» του Syslog."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+msgstr "Κάντε κλικ στο 'Συνέχεια' για να διαγράψετε τους ακόλουθους πίνακες ελέγχου και όλα τα πλαίσιά τους."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Delete Dashboard(s)"
-msgstr "Διαγραφή αναφορών Syslog"
+msgstr "Διαγραφή πίνακα(-ων) ελέγχου"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Dashboard(s)."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να εξαγάγετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+msgstr "Κάντε κλικ στο 'Συνέχεια' για να εξαγάγετε τους ακόλουθους πίνακες ελέγχου."
 
 #: syslog_dashboards.php
 msgid "Export Dashboard(s)"
-msgstr ""
+msgstr "Εξαγωγή πίνακα(-ων) εργαλείων"
 
 #: syslog_dashboards.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Dashboard(s)."
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Εισήχθησαν %d και ενημερώθηκαν %d Πίνακας(-ες) εργαλείων."
 
 #: syslog_dashboards.php
 #, php-format
 msgid "ERROR: %d Dashboard(s) failed to import."
-msgstr ""
+msgstr "ΣΦΑΛΜΑ: Απέτυχε η εισαγωγή %d πίνακα(-ων) εργαλείων."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Import Dashboard from Local File"
-msgstr "Εισαγωγή κανόνα αναφοράς από τοπικό αρχείο"
+msgstr "Εισαγωγή πίνακα ελέγχου από τοπικό αρχείο"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
-msgstr "Εάν το αρχείο XML που περιέχει τα δεδομένα ορισμού κανόνα αναφοράς βρίσκεται στον τοπικό υπολογιστή σας, επιλέξτε το εδώ."
+msgstr "Εάν το αρχείο JSON που περιέχει τα δεδομένα ορισμού του πίνακα ελέγχου βρίσκεται στον τοπικό υπολογιστή σας, επιλέξτε το εδώ."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Import Dashboard from Text"
-msgstr "Εισαγωγή κανόνα αναφοράς από κείμενο"
+msgstr "Εισαγωγή πίνακα ελέγχου από κείμενο"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
-msgstr "Εάν έχετε το αρχείο XML που περιέχει τα δεδομένα ορισμού του κανόνα αναφοράς ως κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για να το εισαγάγετε."
+msgstr "Εάν έχετε το αρχείο JSON που περιέχει τα δεδομένα ορισμού του πίνακα ελέγχου ως κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για να το εισαγάγετε."
 
 #: syslog_dashboards.php
 msgid "Import Dashboard"
-msgstr ""
+msgstr "Εισαγωγή πίνακα εργαλείων"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Users"
-msgstr "Όλες οι εγγραφές"
+msgstr "Όλοι οι χρήστες"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Groups"
-msgstr "Όλα τα προγράμματα"
+msgstr "Όλες οι ομάδες"
 
 #: syslog_dashboards.php
 msgid "Edit Dashboard"
-msgstr ""
+msgstr "Επεξεργασία πίνακα εργαλείων"
 
 #: syslog_dashboards.php
 msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
-msgstr ""
+msgstr "Το όνομα που εμφανίζεται στην επιλογή «Πίνακες ελέγχου» της καρτέλας «Πίνακας ελέγχου Syslog»."
 
 #: syslog_dashboards.php
 msgid "The account that owns this dashboard and can manage its panels."
-msgstr ""
+msgstr "Ο λογαριασμός στον οποίο ανήκει αυτός ο πίνακας ελέγχου (dashboard) και ο οποίος μπορεί να διαχειρίζεται τα πλαίσιά του."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Users"
-msgstr ""
+msgstr "Κοινοποιημένο σε χρήστες"
 
 #: syslog_dashboards.php
 msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
-msgstr ""
+msgstr "Χρήστες που μπορούν να προβάλλουν αυτόν τον πίνακα ελέγχου επιπλέον του κατόχου του και οποιασδήποτε καθολικής κοινοποίησης. Η επιλογή «Όλοι οι χρήστες» το κοινοποιεί σε όλους."
 
 #: syslog_dashboards.php
 msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
-msgstr ""
+msgstr "Ομάδες που μπορούν να προβάλουν αυτόν τον πίνακα εργαλείων επιπλέον του κατόχου του και οποιασδήποτε καθολικής κοινοποίησης. Η επιλογή «Όλες οι ομάδες» τον κοινοποιεί σε όλους."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Groups"
-msgstr ""
+msgstr "Κοινοποιημένο σε ομάδες"
 
 #: syslog_dashboards.php
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
-msgstr ""
+msgstr "Η μετονομασία ισχύει για κάθε θεατή αυτού του πίνακα εργαλείων. Τα πάνελ διαχειρίζονται από τους κατόχους τους από την καρτέλα Syslog Dashboard."
 
 #: syslog_device_rules.php
 msgid "Choose a future pause end date and time."
-msgstr ""
+msgstr "Επιλέξτε μια μελλοντική ημερομηνία και ώρα λήξης της παύσης."
 
 #: syslog_device_rules.php
 msgid "A device name is required."
-msgstr ""
+msgstr "Απαιτείται όνομα συσκευής."
 
 #: syslog_device_rules.php
-#, fuzzy, php-format
+#, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να απενεργοποιήσετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+msgstr "Κάντε κλικ στο «Συνέχεια» για να εκτελέσετε «%s» στους ακόλουθους κανόνες ειδοποίησης συσκευής."
 
 #: syslog_device_rules.php
 msgid "Do not pass any priority"
-msgstr ""
+msgstr "Να μην περάσει καμία προτεραιότητα"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "%s and more urgent"
-msgstr ""
+msgstr "%s και πιο επείγοντα"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule"
-msgstr "Νέος κανόνας ειδοποίησης"
+msgstr "Κανόνας ειδοποίησης συσκευής"
 
 #: syslog_device_rules.php
 msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
-msgstr ""
+msgstr "Αναζήτηση τρεχουσών συσκευών Syslog καθώς πληκτρολογείτε ή εισαγάγετε οποιαδήποτε διεύθυνση IP ή όνομα κεντρικού υπολογιστή (hostname)."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Alert Handling"
-msgstr "Χειρισμός αφαίρεσης"
+msgstr "Χειρισμός ειδοποιήσεων"
 
 #: syslog_device_rules.php
 msgid "Do not pause"
-msgstr ""
+msgstr "Χωρίς παύση"
 
 #: syslog_device_rules.php
 msgid "Pause all non-exempt alerts until a date, or indefinitely."
-msgstr ""
+msgstr "Παύση όλων των μη εξαιρούμενων ειδοποιήσεων έως μια ημερομηνία ή επ' αόριστον."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Pause indefinitely"
-msgstr "Αόριστος"
+msgstr "Παύση επ' αόριστον"
 
 #: syslog_device_rules.php
 msgid "Pause until"
-msgstr ""
+msgstr "Παύση έως"
 
 #: syslog_device_rules.php
 msgid "Local date and time, YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Τοπική ημερομηνία και ώρα, YYYY-MM-DD HH:MM."
 
 #: syslog_device_rules.php
 msgid "Pause Ends"
-msgstr ""
+msgstr "Λήξη παύσης"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Always Allow Priority"
-msgstr "Όλες οι προτεραιότητες"
+msgstr "Να επιτρέπεται πάντα η προτεραιότητα"
 
 #: syslog_device_rules.php
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
-msgstr ""
+msgstr "Αυτές οι προτεραιότητες διέρχονται από τις παύσεις συσκευής και τα παράθυρα συντήρησης. Η επιλογή «Κρίσιμη» (Critical) και πιο επείγουσες είναι μια τυπική επιλογή για συσκευές επιπέδου platinum."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Allow During Maintenance"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Να επιτρέπεται κατά τη συντήρηση"
 
 #: syslog_device_rules.php
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
-msgstr ""
+msgstr "Να επιτρέπονται όλες οι προτεραιότητες από αυτήν τη συσκευή κατά τη διάρκεια ενός παραθύρου συντήρησης ειδοποιήσεων. Η παραπάνω εξαίρεση προτεραιότητας εξακολουθεί να ισχύει όταν αυτό είναι Όχι."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [edit]"
-msgstr "Νέος κανόνας ειδοποίησης"
+msgstr "Κανόνας ειδοποίησης συσκευής [επεξεργασία]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [new]"
-msgstr "Νέος κανόνας ειδοποίησης"
+msgstr "Κανόνας ειδοποίησης συσκευής [νέος]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule Filters"
-msgstr "Φίλτρα ειδοποίησης Syslog"
+msgstr "Φίλτρα κανόνα ειδοποίησης συσκευής"
 
 #: syslog_device_rules.php syslog_removal.php
 msgid "Rules"
-msgstr "Κανόνες"
+msgstr "Κανόνας"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Handling"
-msgstr "Χειρισμός αφαίρεσης"
+msgstr "Χειρισμός"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Maintenance"
-msgstr "Χωρισμένος πίνακας"
+msgstr "Συντήρηση"
 
 #: syslog_device_rules.php
 msgid "Pass Through"
-msgstr ""
+msgstr "Διέλευση"
 
 #: syslog_device_rules.php
 msgid "No device alert rules found."
-msgstr ""
+msgstr "Δεν βρέθηκαν κανόνες ειδοποιήσεων συσκευής."
 
 #: syslog_device_rules.php
 msgid "Not paused"
-msgstr ""
+msgstr "Δεν είναι σε παύση"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Paused indefinitely"
-msgstr "Αόριστος"
+msgstr "Σε παύση επ' αόριστον"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "Paused until %s"
-msgstr ""
+msgstr "Σε παύση έως %s"
 
 #: syslog_device_rules.php
 msgid "and more urgent"
-msgstr ""
+msgstr "και πιο επείγον"
 
 #: syslog_device_rules.php
 msgid "Allow all"
-msgstr ""
+msgstr "Να επιτρέπονται όλα"
 
 #: syslog_device_rules.php
 msgid "Use priority exception"
-msgstr ""
+msgstr "Χρήση εξαίρεσης προτεραιότητας"
 
 #: syslog_recommendations.php
 #, php-format
 msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
-msgstr ""
+msgstr "Η σύσταση δεν αποθηκεύτηκε επειδή %s. Εισαγάγετε ένα αναγνωριστικό χωρίς κενά και τουλάχιστον μία επεξήγηση ή μία συνιστώμενη ενέργεια."
 
 #: syslog_recommendations.php
 msgid "A recommendation for this vendor and identifier already exists."
-msgstr ""
+msgstr "Υπάρχει ήδη μια σύσταση για αυτόν τον κατασκευαστή και αναγνωριστικό."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Το αναγνωριστικό %s περιέχει χαρακτήρες εκτός από γράμματα, ψηφία, _ . - / και ένα προαιρετικό κυριολεκτικό αρχικό %%, επομένως δεν μπορεί ποτέ να αντιστοιχιστεί με μήνυμα syslog. Αντικαταστήστε σύμβολα κράτησης θέσης όπως # ή εναλλακτικές όπως A|B με τον ακριβή κωδικό."
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Recommendation(s)."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να εξαγάγετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+msgstr "Κάντε κλικ στο 'Συνέχεια' για να εξαγάγετε τις ακόλουθες προτάσεις."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Click 'Continue' to Delete the following Syslog Report(s)."
 msgid "Click 'Continue' to Delete the following Recommendation(s)."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε τις ακόλουθες αναφορές Syslog."
+msgstr "Κάντε κλικ στο 'Συνέχεια' για να διαγράψετε τις ακόλουθες προτάσεις."
 
 #: syslog_recommendations.php
 msgid "Export requires the PHP zlib extension to create a JSON gzip file."
-msgstr ""
+msgstr "Η εξαγωγή απαιτεί την επέκταση PHP zlib για τη δημιουργία αρχείου JSON gzip."
 
 #: syslog_recommendations.php
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
-msgstr ""
+msgstr "Η εισαγωγή απορρίφθηκε: το αρχείο είναι κενό, πολύ μεγάλο ή δεν είναι έγκυρο έγγραφο JSON συστάσεων."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Προστέθηκαν %d, ενημερώθηκαν %d και παρέμειναν αμετάβλητες %d υπάρχουσες Συστάσεις."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
-msgstr ""
+msgstr "ΣΦΑΛΜΑ: Απορρίφθηκαν %d σύσταση(-εις) (για παράδειγμα %s). Καθεμία αναφέρεται με τον λόγο απόρριψης στο αρχείο καταγραφής του Cacti."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
-msgstr ""
+msgstr "ΣΦΑΛΜΑ: Δεν ήταν δυνατή η αποθήκευση %d σύστασης(-εων). Καθεμία αναφέρεται στο αρχείο καταγραφής του Cacti."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: %d εισηγμένη(-ες) Σύσταση(-εις) διαθέτουν αναγνωριστικά που περιέχουν χαρακτήρες όπως | ή #, οι οποίοι δεν εμφανίζονται ποτέ σε λέξη μηνύματος, επομένως δεν μπορούν να αντιστοιχιστούν έως ότου τροποποιηθούν. Ορίστε το «Μπορεί να αντιστοιχιστεί» σε «Όχι» για να τις προβάλετε."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Local File"
 msgid "Import Recommendations from Local File"
-msgstr "Εισαγωγή κανόνα αναφοράς από τοπικό αρχείο"
+msgstr "Εισαγωγή προτάσεων από τοπικό αρχείο"
 
 #: syslog_recommendations.php
 msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
-msgstr ""
+msgstr "Επιλέξτε ένα αρχείο .json ή .json.gz στον τοπικό σας υπολογιστή. Χρησιμοποιήστε τη λειτουργία Εξαγωγή για να δείτε την αναμενόμενη μορφή: μια λίστα εγγραφών με vendor, identifier, component, severity, message, explanation, recommended_action και reference."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "Import Recommendations from Text"
-msgstr "Εισαγωγή κανόνα αναφοράς από κείμενο"
+msgstr "Εισαγωγή προτάσεων από κείμενο"
 
 #: syslog_recommendations.php
 msgid "Alternatively, paste the JSON document into this box."
-msgstr ""
+msgstr "Εναλλακτικά, επικολλήστε το έγγραφο JSON σε αυτό το πλαίσιο."
 
 #: syslog_recommendations.php
 msgid "Existing Recommendations"
-msgstr ""
+msgstr "Υπάρχουσες συστάσεις"
 
 #: syslog_recommendations.php
 msgid "A recommendation is the same as an existing one when its vendor and identifier match."
-msgstr ""
+msgstr "Μια σύσταση θεωρείται ίδια με μια υπάρχουσα όταν ταιριάζουν ο κατασκευαστής και το αναγνωριστικό της."
 
 #: syslog_recommendations.php
 msgid "Keep the existing recommendation"
-msgstr ""
+msgstr "Διατήρηση της υπάρχουσας σύστασης"
 
 #: syslog_recommendations.php
 msgid "Replace it with the imported one"
-msgstr ""
+msgstr "Αντικατάσταση με το εισαγόμενο"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Data"
 msgid "Import Recommendations"
-msgstr "Εισαγωγή δεδομένων αναφοράς"
+msgstr "Εισαγωγή προτάσεων"
 
 #: syslog_recommendations.php
 msgid "Importing, please wait..."
-msgstr ""
+msgstr "Εισαγωγή σε εξέλιξη, παρακαλώ περιμένετε..."
 
 #: syslog_recommendations.php
 msgid "Not specified"
-msgstr ""
+msgstr "Δεν καθορίστηκε"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Recommendation"
-msgstr "Καταργημένες εγγραφές"
+msgstr "Σύσταση"
 
 #: syslog_recommendations.php
 msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
-msgstr ""
+msgstr "Ο προμηθευτής της συσκευής ή του λογισμικού που καταγράφει αυτό το μήνυμα, για παράδειγμα Cisco ή Juniper."
 
 #: syslog_recommendations.php
 msgid "Vendor"
-msgstr ""
+msgstr "Κατασκευαστής"
 
 #: syslog_recommendations.php
 msgid "Identifier"
-msgstr ""
+msgstr "Αναγνωριστικό"
 
 #: syslog_recommendations.php
 msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
-msgstr ""
+msgstr "Ο κωδικός μηνύματος προς αναζήτηση, για παράδειγμα %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN ή 4625. Πρέπει να αντιστοιχεί σε ολόκληρη λέξη του μηνύματος syslog (γράμματα, ψηφία και _ . - /)· ένα αρχικό % είναι κυριολεκτικό και πρέπει να ταιριάζει όπως έχει γραφτεί. Η αντιστοίχιση δεν κάνει διάκριση πεζών-κεφαλαίων. Δείτε την ενότητα «Πώς αντιστοιχίζονται οι συστάσεις» στη σελίδα λίστας."
 
 #: syslog_recommendations.php
 msgid "Component"
-msgstr ""
+msgstr "Στοιχείο"
 
 #: syslog_recommendations.php
 msgid "The facility, module or subsystem that raises the message."
-msgstr ""
+msgstr "Η κατηγορία (facility), η μονάδα ή το υποσύστημα που παράγει το μήνυμα."
 
 #: syslog_recommendations.php
 msgid "The severity the vendor documents for this message."
-msgstr ""
+msgstr "Η σοβαρότητα που τεκμηριώνει ο κατασκευαστής για αυτό το μήνυμα."
 
 #: syslog_recommendations.php
 msgid "The message format as documented, including its variable placeholders."
-msgstr ""
+msgstr "Η μορφή του μηνύματος όπως τεκμηριώνεται, συμπεριλαμβανομένων των δεσμευτικών θέσης μεταβλητών."
 
 #: syslog_recommendations.php
 msgid "What the message means."
-msgstr ""
+msgstr "Τι σημαίνει το μήνυμα."
 
 #: syslog_recommendations.php
 msgid "What an operator should do about it."
-msgstr ""
+msgstr "Τι πρέπει να κάνει ένας χειριστής σχετικά με αυτό."
 
 #: syslog_recommendations.php
 msgid "Links to the vendor documentation, one per line."
-msgstr ""
+msgstr "Σύνδεσμοι προς την τεκμηρίωση του κατασκευαστή, ένας ανά γραμμή."
 
 #: syslog_recommendations.php
 msgid "Recommendation [edit]"
-msgstr ""
+msgstr "Πρόταση [επεξεργασία]"
 
 #: syslog_recommendations.php
 msgid "Recommendation [new]"
-msgstr ""
+msgstr "Πρόταση [νέα]"
 
 #: syslog_recommendations.php
 msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
-msgstr ""
+msgstr "Ένας λαμπτήρας πριν από το μήνυμα επισημαίνει αντίστοιχες συστάσεις στις καρτέλες «Αρχεία καταγραφής συστήματος» και «Αρχεία καταγραφής ειδοποιήσεων». Κάντε κλικ στο μήνυμα για να τις διαβάσετε στο αναδυόμενο πλαίσιο λεπτομερειών. Η αιώρηση του δείκτη δεν στέλνει ποτέ αίτημα στον διακομιστή."
 
 #: syslog_recommendations.php
 msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
-msgstr ""
+msgstr "Μόνο η στήλη <b>Αναγνωριστικό</b> χρησιμοποιείται για αντιστοίχιση. Ο κατασκευαστής, το στοιχείο, η σοβαρότητα, το μήνυμα και η επεξήγηση εμφανίζονται στο αναδυόμενο πλαίσιο λεπτομερειών, αλλά δεν αναζητούνται ποτέ."
 
 #: syslog_recommendations.php
 msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
-msgstr ""
+msgstr "Οι πρώτοι 2.048 χαρακτήρες του μηνύματος χωρίζονται σε λέξεις. Ως λέξη ορίζεται μια ακολουθία γραμμάτων, ψηφίων και των χαρακτήρων _ . - / που μπορεί να ξεκινά με %. Κάθε άλλος χαρακτήρας, όπως κενό, άνω-κάτω τελεία, κόμμα ή αγκύλη, τερματίζει τη λέξη. Στο <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> οι λέξεις είναι <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> και <code>down</code>."
 
 #: syslog_recommendations.php
 msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
-msgstr ""
+msgstr "Ένα αναγνωριστικό ταιριάζει όταν είναι <b>ακριβώς ίσο με μία ολόκληρη λέξη</b>, χωρίς διάκριση πεζών-κεφαλαίων. Δεν είναι αναζήτηση «περιέχει», «ξεκινά με» ή «τελειώνει με» και δεν υπάρχουν χαρακτήρες μπαλαντέρ: το <code>LINK-3-UPDOWN</code> δεν ταιριάζει με τη λέξη <code>LINK-3-UPDOWN-EXT</code> και το <code>UPDOWN</code> δεν ταιριάζει με το <code>%LINK-3-UPDOWN</code>."
 
 #: syslog_recommendations.php
 msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
-msgstr ""
+msgstr "Ένα αρχικό <b>%</b> είναι κυριολεκτικό, όχι χαρακτήρας μπαλαντέρ, και πρέπει να ταιριάζει με τη λέξη του μηνύματος όπως είναι γραμμένη. Ένα αναγνωριστικό <code>%LINK-3-UPDOWN</code> ταιριάζει με τη λέξη μηνύματος <code>%LINK-3-UPDOWN</code>, όχι με το <code>LINK-3-UPDOWN</code>· ένα αναγνωριστικό χωρίς το πρόθεμα ταιριάζει μόνο με τη λέξη χωρίς πρόθεμα."
 
 #: syslog_recommendations.php
 msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
-msgstr ""
+msgstr "Όταν ο κεντρικός υπολογιστής syslog είναι συσκευή Cacti της οποίας ο κατασκευαστής αναγνωρίζεται από την περιγραφή συστήματος SNMP ή το πρότυπο συσκευής και υπάρχουν προτάσεις για αυτόν τον κατασκευαστή, ελέγχονται μόνο οι προτάσεις αυτού του κατασκευαστή και εκείνες χωρίς κατασκευαστή. Διαφορετικά, ελέγχονται όλοι οι κατασκευαστές, αλλά ένα αναγνωριστικό που αποτελείται μόνο από ψηφία αντιστοιχεί μόνο σε προτάσεις χωρίς κατασκευαστή. Όταν ταιριάζουν πολλές προτάσεις, εμφανίζονται πρώτα τα μεγαλύτερα αναγνωριστικά, έως τρία."
 
 #: syslog_recommendations.php
 msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
-msgstr ""
+msgstr "Τα αναγνωριστικά που περιέχουν άλλους χαρακτήρες, όπως το σύμβολο υποδοχής <code>#</code> ή τις εναλλακτικές με <code>|</code> στην τεκμηρίωση ορισμένων κατασκευαστών (για παράδειγμα <code>%ASA|PIX-3-331001</code>), διατηρούνται και εξάγονται, αλλά δεν μπορούν ποτέ να αντιστοιχιστούν. Ορίστε το <b>Μπορεί να αντιστοιχιστεί</b> σε Όχι για να τα εμφανίσετε στη λίστα και επεξεργαστείτε τα στον ακριβή κωδικό, για παράδειγμα <code>%ASA-3-331001</code>."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "How Recommendations Are Matched"
-msgstr "Εισαγωγή κανόνα αναφοράς από κείμενο"
+msgstr "Τρόπος αντιστοίχισης προτάσεων"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Can Match"
-msgstr "Τύπος αγώνα"
+msgstr "Μπορεί να ταιριάζει"
 
 #: syslog_recommendations.php
 msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
-msgstr ""
+msgstr "Εάν το αναγνωριστικό έχει τη μορφή λέξης μηνύματος, ώστε η αναζήτηση μηνύματος να μπορεί ποτέ να το βρει"
 
 #: syslog_recommendations.php
 msgid "Export every recommendation that matches the filters"
-msgstr ""
+msgstr "Εξαγωγή κάθε σύστασης που ταιριάζει στα φίλτρα"
 
 #: syslog_recommendations.php
 msgid "No recommendations found."
-msgstr ""
+msgstr "Δεν βρέθηκαν συστάσεις."
 
 #: syslog_removal.php
 msgid "Reprocess"
@@ -3995,9 +3772,8 @@ msgid "Space for Notes on the Removal rule"
 msgstr "Χώρος για σημειώσεις σχετικά με τον κανόνα κατάργησης"
 
 #: syslog_removal.php
-#, fuzzy
 msgid "Removal filter conditions"
-msgstr "Σημειώσεις κανόνων κατάργησης"
+msgstr "Συνθήκες φίλτρου κατάργησης"
 
 #: syslog_removal.php
 msgid "Syslog Removal Rule Filters"
@@ -4108,7 +3884,7 @@ msgstr "Είναι ενεργοποιημένη αυτή η αναφορά;"
 
 #: syslog_reports.php
 msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
-msgstr ""
+msgstr "Ορίστε πώς θέλετε να γίνεται η αντιστοίχιση αυτής της συμβολοσειράς. Το Εργαλείο δόμησης φίλτρων συνδυάζει συνθήκες για το μήνυμα, τον κεντρικό υπολογιστή, το πρόγραμμα, το facility και την προτεραιότητα."
 
 #: syslog_reports.php
 msgid "Frequency"
@@ -4132,7 +3908,7 @@ msgstr "Μορφή αναφοράς"
 
 #: syslog_reports.php
 msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
-msgstr ""
+msgstr "Δημιουργήστε συνθήκες φίλτρου ή εισαγάγετε το κείμενο ή την έκφραση SQL για αντιστοίχιση μηνυμάτων syslog."
 
 #: syslog_reports.php
 msgid "The information that will be contained in the body of the Report."
@@ -4147,15 +3923,12 @@ msgid "Space for Notes on the Report"
 msgstr "Χώρος για σημειώσεις σχετικά με την έκθεση"
 
 #: syslog_reports.php
-#, fuzzy
-#| msgid "Report Edit [new]"
 msgid "Report Test Preview"
-msgstr "Επεξεργασία αναφοράς [νέο]"
+msgstr "Δοκιμαστική προεπισκόπηση αναφοράς"
 
 #: syslog_reports.php
-#, fuzzy
 msgid "Report filter conditions"
-msgstr "Σημειώσεις κανόνων κατάργησης"
+msgstr "Συνθήκες φίλτρου αναφοράς"
 
 #: syslog_reports.php
 msgid "Syslog Report Filters"
@@ -4209,108 +3982,104 @@ msgstr "ΣΦΑΛΜΑ: Αναφορά κανόνα '%s' %s απέτυχε!"
 
 #: syslog_saved_searches.php
 msgid "Unable to save the template. Please try again."
-msgstr ""
+msgstr "Αδυναμία αποθήκευσης του προτύπου. Παρακαλούμε δοκιμάστε ξανά."
 
 #: syslog_saved_searches.php
 msgid "Enter a template name between 1 and 128 characters."
-msgstr ""
+msgstr "Εισαγάγετε ένα όνομα προτύπου από 1 έως 128 χαρακτήρες."
 
 #: syslog_saved_searches.php
 msgid "Templates"
-msgstr ""
+msgstr "Πρότυπα"
 
 #: syslog_saved_searches.php
 msgid "Query"
-msgstr ""
+msgstr "Ερώτημα"
 
 #: syslog_saved_searches.php
 msgid "No shared search templates. Save a search for all users from Syslog to create one."
-msgstr ""
+msgstr "Δεν υπάρχουν κοινόχρηστα πρότυπα αναζήτησης. Αποθηκεύστε μια αναζήτηση για όλους τους χρήστες από το Syslog για να δημιουργήσετε ένα."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Saved Search Template(s)."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να εξαγάγετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+msgstr "Κάντε κλικ στο 'Συνέχεια' για να εξαγάγετε τα ακόλουθα αποθηκευμένα πρότυπα αναζήτησης."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
-msgstr "Κάντε κλικ στο «Συνέχεια» για να διαγράψετε τους ακόλουθους κανόνες ειδοποίησης Syslog."
+msgstr "Κάντε κλικ στο 'Συνέχεια' για να διαγράψετε τα ακόλουθα αποθηκευμένα πρότυπα αναζήτησης."
 
 #: syslog_saved_searches.php
 msgid "Delete Saved Search Template(s)"
-msgstr ""
+msgstr "Διαγραφή αποθηκευμένων προτύπων αναζήτησης"
 
 #: syslog_saved_searches.php
 msgid "Export Saved Search Template(s)"
-msgstr ""
+msgstr "Εξαγωγή προτύπου(-ων) αποθηκευμένης αναζήτησης"
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
-msgstr ""
+msgstr "ΣΗΜΕΙΩΣΗ: Εισήχθησαν %d και ενημερώθηκαν %d Αποθηκευμένο(-α) Πρότυπο(-α) αναζήτησης."
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "ERROR: %d Saved Search Template(s) failed to import."
-msgstr ""
+msgstr "ΣΦΑΛΜΑ: Απέτυχε η εισαγωγή %d προτύπου(-ων) αποθηκευμένης αναζήτησης."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Import Saved Search Template from Local File"
-msgstr "Εισαγωγή κανόνα ειδοποίησης από τοπικό αρχείο"
+msgstr "Εισαγωγή αποθηκευμένου προτύπου αναζήτησης από τοπικό αρχείο"
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
-msgstr "Εάν το αρχείο XML που περιέχει τα δεδομένα ορισμού του κανόνα ειδοποίησης βρίσκεται στον τοπικό υπολογιστή σας, επιλέξτε το εδώ."
+msgstr "Εάν το αρχείο JSON που περιέχει τα δεδομένα ορισμού του αποθηκευμένου προτύπου αναζήτησης βρίσκεται στον τοπικό υπολογιστή σας, επιλέξτε το εδώ."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Import Saved Search Template from Text"
-msgstr "Εισαγωγή κανόνα ειδοποίησης από κείμενο"
+msgstr "Εισαγωγή προτύπου αποθηκευμένης αναζήτησης από κείμενο"
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
-msgstr "Εάν έχετε το αρχείο XML που περιέχει τα δεδομένα ορισμού του κανόνα αναφοράς ως κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για να το εισαγάγετε."
+msgstr "Εάν έχετε το αρχείο JSON που περιέχει τα δεδομένα ορισμού του αποθηκευμένου προτύπου αναζήτησης ως κείμενο, μπορείτε να το επικολλήσετε σε αυτό το πλαίσιο για να το εισαγάγετε."
 
 #: syslog_saved_searches.php
 msgid "Import Saved Search Template"
-msgstr ""
+msgstr "Εισαγωγή αποθηκευμένου προτύπου αναζήτησης"
 
 #: syslog_saved_searches.php
 msgid "Edit Saved Search Template"
-msgstr ""
+msgstr "Επεξεργασία προτύπου αποθηκευμένης αναζήτησης"
 
 #: syslog_saved_searches.php
 msgid "The name shown to all users in Saved Searches."
-msgstr ""
+msgstr "Το όνομα που εμφανίζεται σε όλους τους χρήστες στις Αποθηκευμένες αναζητήσεις."
 
 #: syslog_saved_searches.php
 msgid "The account that owns this template and can manage it in Saved Searches."
-msgstr ""
+msgstr "Ο λογαριασμός στον οποίο ανήκει αυτό το πρότυπο και ο οποίος μπορεί να το διαχειρίζεται στις Αποθηκευμένες αναζητήσεις."
 
 #: syslog_saved_searches.php
 msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
-msgstr ""
+msgstr "Χρήστες που μπορούν να χρησιμοποιήσουν αυτό το πρότυπο επιπλέον του κατόχου του. Η επιλογή «Όλοι οι χρήστες» το κοινοποιεί σε όλους."
 
 #: syslog_saved_searches.php
 msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
-msgstr ""
+msgstr "Ομάδες που μπορούν να χρησιμοποιήσουν αυτό το πρότυπο επιπλέον του κατόχου του. Η επιλογή «Όλες οι ομάδες» το κοινοποιεί σε όλους."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Search Query"
-msgstr "Αναζήτηση"
+msgstr "Ερώτημα αναζήτησης"
 
 #: syslog_saved_searches.php
 msgid "Correct the query syntax to use the query builder."
-msgstr ""
+msgstr "Διορθώστε τη σύνταξη του ερωτήματος για να χρησιμοποιήσετε το εργαλείο δόμησης ερωτημάτων."
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
+msgstr "Επιλέξτε πεδίο, τελεστή και τιμή. Χρησιμοποιήστε AND, OR, NOT ή Ομάδα (Group) για να δημιουργήσετε το ερώτημα. Οι αλλαγές εφαρμόζονται σε αυτό το κοινόχρηστο πρότυπο για όλους τους χρήστες."
+
+#~ msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+#~ msgstr "Η αναβάθμιση του 'κύριου' πίνακα syslog μπορεί να είναι μια πολύ χρονοβόρα διαδικασία.  Ως εκ τούτου, συνιστάται είτε να μειώσετε το μέγεθος του πίνακα syslog πριν από την αναβάθμιση είτε να επιλέξετε την επιλογή φόντου</p> <p>Εάν ενεργοποιήσετε την επιλογή φόντου, ο πίνακας syslog παλαιού τύπου θα μετονομαστεί και θα δημιουργηθεί ένας νέος πίνακας syslog.  Στη συνέχεια, θα ξεκινήσει μια διαδικασία αναβάθμισης στο παρασκήνιο.  Και πάλι, αυτή η διαδικασία παρασκηνίου μπορεί να έχει αρκετό χρόνο για να ολοκληρωθεί.  Ωστόσο, τα δεδομένα σας θα διατηρηθούν</p> <p>Ανεξάρτητα από την επιλογή σας, όλοι οι υπάρχοντες κανόνες κατάργησης και ειδοποίησης θα διατηρηθούν κατά τη διαδικασία αναβάθμισης.</p> <p><b>Πατήστε 'Αναβάθμιση'</b> για να προχωρήσετε στην αναβάθμιση ή <b>'Ακύρωση'</b> για να επιστρέψετε στο μενού Πρόσθετα."
 
 #~ msgid "Partitions per Day"
 #~ msgstr "Χωρίσματα ανά ημέρα"
