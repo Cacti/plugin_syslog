@@ -4,135 +4,110 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2025-03-07 14:54-0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: nl_NL\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Dutch <https://translate.cacti.net/projects/cacti/syslog/nl/>\nLanguage: nl-NL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Minutes"
+#, php-format
 msgid "%d minutes"
-msgstr "%d Minuten"
+msgstr "%d minuten"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hour"
-msgstr "%d Uren"
+msgstr "%d uur"
 
 #: includes/functions.php includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hours"
 msgstr "%d Uren"
 
 #: includes/functions.php
 #, php-format
 msgid "%d day"
-msgstr ""
+msgstr "%d dag"
 
 #: includes/functions.php includes/settings.php
 #, php-format
 msgid "%d days"
-msgstr ""
+msgstr "%d dagen"
 
 #: includes/functions.php
 #, php-format
 msgid "%d week"
-msgstr ""
+msgstr "%d week"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Weeks"
+#, php-format
 msgid "%d weeks"
-msgstr "%d Weken"
+msgstr "%d weken"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Month"
+#, php-format
 msgid "%d month"
-msgstr "%d Maand"
+msgstr "%d maand"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Months"
+#, php-format
 msgid "%d months"
-msgstr "%d Maanden"
+msgstr "%d maanden"
 
 #: includes/functions.php
 #, php-format
 msgid "%d year"
-msgstr ""
+msgstr "%d jaar"
 
 #: includes/functions.php
 #, php-format
 msgid "%d years"
-msgstr ""
+msgstr "%d jaar"
 
 #: includes/functions.php
 msgid "Day Shift"
-msgstr ""
+msgstr "Werkdag"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr ""
+msgstr "Vandaag"
 
 #: includes/functions.php
-#, fuzzy
 msgid "This Week"
-msgstr "Voor het laatst verzonden"
+msgstr "Deze week"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "1 Month"
 msgid "This Month"
-msgstr "1 Maand"
+msgstr "Deze maand"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "%d Year"
 msgid "This Year"
-msgstr "%d Jaar"
+msgstr "Dit jaar"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Partitions per Day"
 msgid "Previous Day"
-msgstr "Partities per dag"
+msgstr "Vorige dag"
 
 #: includes/functions.php
 msgid "Previous Week"
-msgstr ""
+msgstr "Vorige week"
 
 #: includes/functions.php
 msgid "Previous Month"
-msgstr ""
+msgstr "Vorige maand"
 
 #: includes/functions.php
 msgid "Previous Year"
-msgstr ""
+msgstr "Vorig jaar"
 
 #: includes/functions.php
-#, fuzzy
 msgid "Syslog download"
-msgstr "Syslog ingeschakeld"
+msgstr "Syslog-download"
 
 #: includes/functions.php
 msgid "Share with users…"
-msgstr ""
+msgstr "Delen met gebruikers…"
 
 #: includes/functions.php
 msgid "Share with groups…"
-msgstr ""
+msgstr "Delen met groepen…"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Emergency"
@@ -172,7 +147,7 @@ msgstr "Informatief"
 
 #: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
-msgstr "Opslaan mislukt.  Externe gegevensverzamelaars in de synchronisatiemodus mogen geen regels opslaan.  Sla in plaats daarvan op vanaf de hoofdcactusserver."
+msgstr "Opslaan mislukt.  Externe gegevensverzamelaars in synchronisatiemodus mogen geen regels opslaan.  Sla in plaats daarvan op vanaf de Cacti-hoofdserver."
 
 #: includes/functions.php
 msgid "Please use an HTML Email Client"
@@ -180,142 +155,139 @@ msgstr "Gebruik een HTML-e-mailclient"
 
 #: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
-msgstr ""
+msgstr "De payload van de tekstimport overschrijdt de maximale grootte"
 
 #: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
-msgstr ""
+msgstr "Kan het geüploade importbestand niet lezen. Controleer het bestand en de limiet voor uploadgrootte."
 
 #: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
-msgstr ""
+msgstr "Selecteer een importbestand of plak de inhoud ervan voordat u importeert."
 
 #: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
-msgstr ""
+msgstr "De Syslog-tabellen zijn niet gepartitioneerd. Traditionele (niet-gepartitioneerde) tabellen zijn verouderd en gepartitioneerde tabellen zijn vereist voor nieuwe installaties. Uw gegevens worden nog steeds verzameld, maar u moet de syslog-tabel migreren naar een gepartitioneerde architectuur."
 
 #: includes/functions.php
 msgid "Waiting for a completed processing run."
-msgstr ""
+msgstr "Wachten op een voltooide verwerkingsrun."
 
 #: includes/functions.php
 msgid "Processing is completing within the allowed delay."
-msgstr ""
+msgstr "De verwerking wordt binnen de toegestane vertraging voltooid."
 
 #: includes/functions.php
 #, php-format
 msgid "No processing run has completed for more than %d seconds."
-msgstr ""
+msgstr "Er is al meer dan %d seconden geen verwerkingsrun voltooid."
 
 #: includes/functions.php
 msgid "Incoming messages are within the configured limits."
-msgstr ""
+msgstr "Inkomende berichten vallen binnen de geconfigureerde limieten."
 
 #: includes/functions.php
 msgid "Incoming queue metrics are unavailable."
-msgstr ""
+msgstr "Metrieken van de inkomende wachtrij zijn niet beschikbaar."
 
 #: includes/functions.php
 #, php-format
 msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
-msgstr ""
+msgstr "De inkomende achterstand van ten minste %s berichten overschrijdt de limiet van %s."
 
 #: includes/functions.php
 msgid "The oldest incoming message timestamp is unavailable."
-msgstr ""
+msgstr "Het tijdstempel van het oudste inkomende bericht is niet beschikbaar."
 
 #: includes/functions.php
 #, php-format
 msgid "Unprocessed messages are older than %d seconds."
-msgstr ""
+msgstr "Onverwerkte berichten zijn ouder dan %d seconden."
 
 #: includes/functions.php
 msgid "Synchronization is not enabled on this collector."
-msgstr ""
+msgstr "Synchronisatie is niet ingeschakeld op deze collector."
 
 #: includes/functions.php
 msgid "Synchronization is within the allowed delay."
-msgstr ""
+msgstr "Synchronisatie valt binnen de toegestane vertraging."
 
 #: includes/functions.php
 msgid "Synchronization queue metrics are unavailable."
-msgstr ""
+msgstr "Statistieken van de synchronisatiewachtrij zijn niet beschikbaar."
 
 #: includes/functions.php
 msgid "The oldest synchronization record timestamp is unavailable."
-msgstr ""
+msgstr "Het tijdstempel van het oudste synchronisatierecord is niet beschikbaar."
 
 #: includes/functions.php
 msgid "Synchronization has failed or queued records exceed the allowed delay."
-msgstr ""
+msgstr "Synchronisatie is mislukt of records in de wachtrij overschrijden de toegestane vertraging."
 
 #: includes/functions.php
-#, fuzzy
 msgid "Partition maintenance is not blocked."
-msgstr "Gepartitioneerde tafel"
+msgstr "Partitieonderhoud is niet geblokkeerd."
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "Partition maintenance is blocked: %s"
-msgstr "Gepartitioneerde tafel"
+msgstr "Partitieonderhoud is geblokkeerd: %s"
 
 #: includes/functions.php
 #, php-format
 msgid "Syslog pipeline health - collector %d"
-msgstr ""
+msgstr "Status van Syslog-pijplijn - collector %d"
 
 #: includes/functions.php
 msgid "The Syslog pipeline has recovered."
-msgstr ""
+msgstr "De Syslog-pijplijn is hersteld."
 
 #: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "Partitie-indeling voor %s is ongeldig of onvolledig; partitieonderhoud gestopt. Controleer de partitiemetadata met SHOW CREATE TABLE en bouw indien nodig de partities opnieuw op; schrijfbewerkingen gaan door naar de dMaxValue-veiligheidspartitie."
 
 #: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d partition(s)"
-msgstr ""
+msgstr "resterend partitiegat: %d partitie(s)"
 
 #: includes/functions.php
 msgid "no retention deferral"
-msgstr ""
+msgstr "geen uitstel van bewaartermijn"
 
 #: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
-msgstr ""
+msgstr "opschonen van bewaartermijn uitgesteld totdat de toekomstige horizon is hersteld"
 
 #: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
-msgstr ""
+msgstr "nieuwe records hopen zich op in de dMaxValue-veiligheidspartitie"
 
 #: includes/functions.php
 msgid "per run recovery limit reached"
-msgstr ""
+msgstr "herstellimiet per run bereikt"
 
 #: includes/functions.php
-#, fuzzy
 msgid "partition creation failed"
-msgstr "Gepartitioneerde tafel"
+msgstr "aanmaken van partitie mislukt"
 
 #: includes/functions.php
 msgid "Unknown partitioning level; choose Hourly or Daily."
-msgstr ""
+msgstr "Onbekend partitioneringsniveau; kies Per uur of Dagelijks."
 
 #: includes/functions.php
-#, fuzzy
 msgid "The Syslog retention is invalid."
-msgstr "Syslog-retentie"
+msgstr "De Syslog-retentie is ongeldig."
 
 #: includes/functions.php
 msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
-msgstr ""
+msgstr "Uurlijkse partitionering kan niet worden gebruikt met onbeperkte bewaartermijn, omdat dit een onbegrensd aantal partities zou vereisen. Kies een bewaartermijn of dagelijkse partitionering."
 
 #: includes/functions.php
 #, php-format
 msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
-msgstr ""
+msgstr "%s-partitionering met %s dagen bewaartermijn en een vooraf aangemaakte periode van %s dagen vereist %s partities per tabel, wat de limiet van %s partities van deze databaseserver overschrijdt. Verklein de bewaartermijn, verkort de vooraf aangemaakte periode of kies Dagelijkse partitionering."
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
@@ -324,85 +296,84 @@ msgstr "Dagelijks"
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
-#, fuzzy
 msgid "Hourly"
-msgstr "%d Uur"
+msgstr "Elk uur"
 
 #: includes/functions.php
 #, php-format
 msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
-msgstr ""
+msgstr "De tabellen gebruiken nog steeds %s-partities totdat cli/upgrade_partitioning.php ze opnieuw opbouwt."
 
 #: includes/functions.php
 msgid "The partitioning level of the existing Syslog tables could not be read."
-msgstr ""
+msgstr "Het partitioneringsniveau van de bestaande Syslog-tabellen kon niet worden gelezen."
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
+msgstr "Automatisch partitieherstel uitgesteld: grootte van dMaxValue is niet beschikbaar; ingrijpen van de beheerder vereist."
 
 #: includes/functions.php
 #, php-format
 msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
-msgstr ""
+msgstr "Automatisch partitieherstel uitgesteld: dMaxValue heeft naar schatting %s rijen en %s bytes; de limieten zijn 100000 rijen en 134217728 bytes. Ingrijpen van de beheerder vereist."
 
 #: includes/functions.php
 msgid "Unknown rule type."
-msgstr ""
+msgstr "Onbekend regeltype."
 
 #: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
-msgstr ""
+msgstr "De geconfigureerde toewijzing van inkomende velden is ongeldig."
 
 #: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
-msgstr ""
+msgstr "De faciliteit van deze regel staat nog niet in de referentietabel."
 
 #: includes/functions.php
 msgid "Unknown rule match type."
-msgstr ""
+msgstr "Onbekend type regelovereenkomst."
 
 #: includes/functions.php
 msgid "The rule did not compile to a query."
-msgstr ""
+msgstr "De regel is niet gecompileerd naar een query."
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
-msgstr ""
+msgstr "De voorbeeldquery kon niet worden geëvalueerd."
 
 #: includes/functions.php
 msgid "The historical preview filter could not be compiled."
-msgstr ""
+msgstr "Het filter voor het historische voorbeeld kon niet worden gecompileerd."
 
 #: includes/functions.php
 msgid "The historical preview query could not be evaluated."
-msgstr ""
+msgstr "De query voor het historische voorbeeld kon niet worden geëvalueerd."
 
 #: includes/functions.php
 msgid "The preview sample could not be read."
-msgstr ""
+msgstr "Het voorbeeldmonster kon niet worden gelezen."
 
 #: includes/functions.php
 msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
-msgstr ""
+msgstr "Voorbeelden van SQL-expressies controleren alleen inkomende berichten in de wachtrij. Reeds verwerkte berichten worden niet doorzocht. Testen verstuurt geen alarmen."
 
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Permission denied."
-msgstr ""
+msgstr "Toegang geweigerd."
 
 #: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
-msgstr ""
+msgstr "Ongeldig verzoek. Probeer het opnieuw."
 
 #: includes/functions.php
 msgid "The rule has no match expression to test."
-msgstr ""
+msgstr "De regel heeft geen overeenkomstexpressie om te testen."
 
 #: includes/functions.php
 msgid "The match expression is too long to test."
-msgstr ""
+msgstr "De overeenkomstexpressie is te lang om te testen."
 
 #: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
 #: syslog.php
@@ -448,7 +419,7 @@ msgstr "Cacti Syslog Alert '%s' voor Host '%s'"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Cactussen Syslog Alert '%s'"
+msgstr "Cacti Syslog-alert '%s'"
 
 #: includes/functions.php
 msgid "Hostname"
@@ -487,7 +458,7 @@ msgstr "Ernst:"
 
 #: includes/functions.php
 msgid "Threshold:"
-msgstr "Drempel"
+msgstr "Drempel:"
 
 #: includes/functions.php
 msgid "Count:"
@@ -547,15 +518,15 @@ msgstr "Verslag van evenementen - %s"
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
-msgstr ""
+msgstr "Rapportvoorbeelden doorzoeken de %d meest recente opgeslagen berichten; het rapport zelf beslaat het volledige tijdvenster. Testen verzendt geen e-mail."
 
 #: includes/functions.php
 msgid "Grouped results are unavailable or expired. Refresh the results and try again."
-msgstr ""
+msgstr "Gegroepeerde resultaten zijn niet beschikbaar of verlopen. Vernieuw de resultaten en probeer het opnieuw."
 
 #: includes/functions.php syslog.php
 msgid "Group messages could not be loaded."
-msgstr ""
+msgstr "Groepsberichten konden niet worden geladen."
 
 #: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -575,33 +546,29 @@ msgstr "Alle tekst"
 
 #: includes/functions.php
 msgid "Fit Column"
-msgstr ""
+msgstr "Kolom passend maken"
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Chars"
-msgstr "%d Chars"
+msgstr "%d tekens"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "Syslog %s Advisor"
 msgid "Syslog Upgrade Advisor"
-msgstr "Syslog %s Adviseur"
+msgstr "Syslog Upgrade-adviseur"
 
 #: includes/installer.php
 #, php-format
 msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
-msgstr ""
+msgstr "Syslog upgraden van %s naar %s? Bestaande berichten en regels blijven behouden. Schemawijzigingen kunnen tijd kosten."
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
 msgstr "Welk type upgrade/installatie wilt u gebruiken?"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
-msgstr "Als je hele grote tafels hebt, zal het uitvoeren van een Truncate veel sneller gaan.  Als u zich zorgen maakt over archiefgegevens, kunt u kiezen voor Inline, waardoor uw browser wordt bevroren voor de periode van deze upgrade, of achtergrond, waarmee een achtergrondproces wordt gemaakt om uw oude syslog-gegevens van een back-uptabel naar het nieuwe syslog-formaat te brengen.  Nogmaals, dit proces kan enkele uren duren."
+msgstr "Wanneer u zeer grote tabellen heeft, is het uitvoeren van een Truncate veel sneller. Als u zich zorgen maakt over archiefgegevens, kunt u kiezen voor Inline, waarbij uw browser tijdens deze upgrade wordt bevroren, of Achtergrond, waarbij een achtergrondproces wordt aangemaakt om uw oude Syslog-gegevens vanuit een back-uptabel naar het nieuwe Syslog-formaat over te zetten. Dit proces kan enkele uren duren. Een Truncate verwijdert alleen de opgeslagen syslog- en verwijderde berichten; waarschuwings-, verwijderings- en rapportregels blijven altijd behouden."
 
 #: includes/installer.php
 msgid "Truncate Syslog Table"
@@ -621,32 +588,31 @@ msgstr "Database Opslag Engine"
 
 #: includes/installer.php
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
+msgstr "De opslag-engine voor de analytische tabellen. Alleen InnoDB en, op MariaDB, Aria opslag-engines worden ondersteund. Elke optie voor een externe gegevensverzamelaar vereist InnoDB; incompatibele combinaties kunnen niet worden verzonden."
 
 #: includes/installer.php
 msgid "InnoDB Storage"
 msgstr "InnoDB-opslag"
 
 #: includes/installer.php
-#, fuzzy
 msgid "Aria Storage"
-msgstr "MyISAM-opslag"
+msgstr "Aria-opslag"
 
 #: includes/installer.php
 msgid "Timestamp Precision"
-msgstr ""
+msgstr "Nauwkeurigheid van tijdstempel"
 
 #: includes/installer.php
 msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
-msgstr ""
+msgstr "Millisecondeprecisie slaat syslog-tijdstempels onder de seconde op in een TIMESTAMP(3)-kolom en is alleen beschikbaar op MariaDB. Secondenprecisie gebruikt een standaard TIMESTAMP-kolom. Gebruik op een productiesysteem cli/upgrade_partitioning.php --convert-ms tijdens een onderhoudsvenster om bestaande berichten te converteren zonder ze te verwijderen."
 
 #: includes/installer.php
 msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
-msgstr ""
+msgstr "Milliseconde - TIMESTAMP(3) (alleen MariaDB)"
 
 #: includes/installer.php
 msgid "Second - TIMESTAMP"
-msgstr ""
+msgstr "Seconde - TIMESTAMP"
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
@@ -670,11 +636,11 @@ msgstr "Als uw Remote Data Collectors hun eigen Syslog-databases hebben en drie 
 
 #: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
-msgstr ""
+msgstr "Records opslaan op externe collector"
 
 #: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
+msgstr "Bewaar verwerkte berichten in de syslog-tabel van de externe collector nadat ze aan de hoofdcollector zijn afgeleverd. Indien uitgeschakeld worden records alleen lokaal bewaard zolang de hoofdcollector niet beschikbaar is en worden ze verwijderd na bevestigde herstelaflevering."
 
 #: includes/installer.php
 msgid "Retention Policy"
@@ -685,13 +651,12 @@ msgid "Choose how many days of Syslog values you wish to maintain in the databas
 msgstr "Kies hoeveel dagen aan Syslog-waarden u in de database wilt behouden."
 
 #: includes/installer.php includes/settings.php
-#, fuzzy
 msgid "Partitioning Level"
-msgstr "Partities per dag"
+msgstr "Partitioneringsniveau"
 
 #: includes/installer.php
 msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
-msgstr ""
+msgstr "De grootte van elke partitie van de tabellen syslog en syslog_removed. Dagelijks wordt aanbevolen. Per uur vereist een eindige bewaartermijn, en de bewaartermijn en het partitioneringsniveau samen moeten binnen de partitielimiet van de databaseserver passen. Om het niveau later te wijzigen, past u het aan in Instellingen en voert u cli/upgrade_partitioning.php uit."
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -711,30 +676,40 @@ msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "WAARSCHUWING: Syslog Upgrade is tijdrovend!!"
 
 #: includes/installer.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Het upgraden van de 'hoofd' syslog-tabel kan een zeer tijdrovend proces zijn.  Daarom is het aan te raden om de grootte van uw syslog-tabel te verkleinen voordat u een upgrade uitvoert, of om de achtergrondoptie te kiezen</p> <p>Als u de achtergrondoptie kiest, wordt de naam van uw verouderde syslog-tabel gewijzigd en wordt er een nieuwe syslog-tabel gemaakt.  Vervolgens wordt op de achtergrond een upgradeproces gestart.  Nogmaals, dit achtergrondproces kan behoorlijk wat tijd in beslag nemen.  Uw gegevens blijven echter wel bewaard</p> <p>Ongeacht uw keuze blijven alle bestaande verwijderings- en waarschuwingsregels behouden tijdens het upgradeproces.</p> <p>Druk op <b>'Upgrade'</b> om door te gaan met de upgrade, of op <b>'Annuleren'</b> om terug te keren naar het menu Plug-ins."
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Het upgraden van de 'main'-syslogtabel kan een zeer tijdrovend proces zijn. Daarom wordt aanbevolen om voorafgaand aan de upgrade de grootte van uw syslog-tabel te verkleinen of te kiezen voor de achtergrondoptie."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Als u kiest voor de achtergrondoptie, wordt uw verouderde syslog-tabel hernoemd en wordt er een nieuwe syslog-tabel aangemaakt. Vervolgens wordt er op de achtergrond een upgradeproces gestart. Ook dit achtergrondproces kan geruime tijd in beslag nemen. Uw gegevens blijven echter behouden."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Ongeacht uw keuze blijven alle bestaande verwijderings- en meldingsregels behouden tijdens het upgradeproces."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Klik op <b>'Upgraden'</b> om door te gaan met de upgrade, of op <b>'Annuleren'</b> om terug te keren naar het menu Plugins."
 
 #: includes/installer.php
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
+msgstr "U kunt ook de database-opslagengine instellen voor de analysetabellen syslog en syslog_remove. Alleen de InnoDB-opslagengine en, op MariaDB, de Aria-opslagengine worden ondersteund. Als u MariaDB gebruikt, raden we de Aria-opslagengine aan wanneer er geen opties voor externe gegevensverzameling zijn ingeschakeld; verzamelopties vereisen InnoDB."
 
 #: includes/installer.php
-#, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "Je hebt verschillende opties om uit te kiezen bij het installeren van Syslog.  De eerste is de database-architectuur.  U moet ervoor kiezen om tabelpartitionering te gebruiken om te voorkomen dat de grootte van de tabellen buitensporig wordt, waardoor query's worden vertraagd."
+msgstr "U heeft verschillende opties om uit te kiezen bij het installeren van Syslog. De eerste is de databasearchitectuur. Gepartitioneerde tabellen zijn de enige ondersteunde architectuur, omdat ze voorkomen dat tabellen buitensporig groot worden en query's vertragen. Traditionele niet-gepartitioneerde tabellen zijn verouderd en worden niet langer aangeboden voor nieuwe installaties."
 
 #: includes/installer.php
 msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
-msgstr ""
+msgstr "U kunt ook de nauwkeurigheid van tijdstempels kiezen. Millisecondenauwkeurigheid (TIMESTAMP(3)) behoudt de volgorde binnen de seconde van inkomende berichten en is alleen beschikbaar op MariaDB; MySQL-installaties gebruiken secondenauwkeurigheid. Dit kan later niet ter plaatse worden gewijzigd zonder de opgeslagen berichten te vernietigen."
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
+msgstr "Aria-opslag is niet beschikbaar zolang een Remote Data Collector-optie is ingeschakeld. InnoDB is geselecteerd."
 
 #: includes/installer.php
-#, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "U kunt ook de bewaarduur selecteren.  Houd er rekening mee dat als u meerdere hosts heeft die inloggen op syslog, deze tabel behoorlijk groot kan worden.  Dus als u geen partitionering gebruikt, wilt u misschien het formaat kleiner houden."
+msgstr "U kunt ook de bewaarduur selecteren. Houd er rekening mee dat als u meerdere hosts heeft die naar Syslog loggen, deze tabel behoorlijk groot kan worden."
 
 #: includes/installer.php
 #, php-format
@@ -786,7 +761,7 @@ msgstr "(Wijzig)"
 
 #: includes/navigation.php
 msgid "(Actions)"
-msgstr "Acties"
+msgstr "(acties)"
 
 #: includes/navigation.php
 msgid "Syslog Alerts"
@@ -798,24 +773,20 @@ msgstr "Syslog-rapporten"
 
 #: includes/navigation.php includes/settings.php syslog_saved_searches.php
 msgid "Saved Search Templates"
-msgstr ""
+msgstr "Opgeslagen zoeksjablonen"
 
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr ""
+msgstr "Dashboards"
 
 #: includes/navigation.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Syslog Recommendations"
-msgstr "Syslog-retentie"
+msgstr "Syslog-aanbevelingen"
 
 #: includes/navigation.php
-#, fuzzy
-#| msgid "Import"
 msgid "(Import)"
-msgstr "Importeren"
+msgstr "(Importeren)"
 
 #: includes/navigation.php
 msgid "Display Syslog in Range"
@@ -823,83 +794,83 @@ msgstr "Syslog binnen bereik weergeven"
 
 #: includes/recommendations.php
 msgid "the identifier is empty"
-msgstr ""
+msgstr "de identificatie is leeg"
 
 #: includes/recommendations.php
 msgid "the identifier is longer than 190 characters"
-msgstr ""
+msgstr "de identificatie is langer dan 190 tekens"
 
 #: includes/recommendations.php
 msgid "the identifier contains spaces or line breaks"
-msgstr ""
+msgstr "de identificatie bevat spaties of regeleinden"
 
 #: includes/recommendations.php
 msgid "it has neither an explanation nor a recommended action"
-msgstr ""
+msgstr "het heeft noch een uitleg noch een aanbevolen actie"
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
-msgstr ""
+msgstr "het is geen JSON-object"
 
 #: includes/recommendations.php syslog.php
 msgid "Recommendations could not be loaded."
-msgstr ""
+msgstr "Aanbevelingen konden niet worden geladen."
 
 #: includes/recommendations.php
 msgid "Recommendation available - click the message for details"
-msgstr ""
+msgstr "Aanbeveling beschikbaar - klik op het bericht voor details"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Explanation"
-msgstr ""
+msgstr "Uitleg"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Recommended Action"
-msgstr ""
+msgstr "Aanbevolen actie"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Reference"
-msgstr ""
+msgstr "Referentie"
 
 #: includes/settings.php
 msgid "Monday"
-msgstr ""
+msgstr "Maandag"
 
 #: includes/settings.php
 msgid "Tuesday"
-msgstr ""
+msgstr "Dinsdag"
 
 #: includes/settings.php
 msgid "Wednesday"
-msgstr ""
+msgstr "Woensdag"
 
 #: includes/settings.php
 msgid "Friday"
-msgstr ""
+msgstr "Vrijdag"
 
 #: includes/settings.php
 msgid "Saturday"
-msgstr ""
+msgstr "Zaterdag"
 
 #: includes/settings.php
 msgid "Sunday"
-msgstr ""
+msgstr "Zondag"
 
 #: includes/settings.php
 msgid "Thursday"
-msgstr ""
+msgstr "Donderdag"
 
 #: includes/settings.php
 msgid "Monday through Friday"
-msgstr ""
+msgstr "Maandag tot en met vrijdag"
 
 #: includes/settings.php
 msgid "Saturday and Sunday"
-msgstr ""
+msgstr "Zaterdag en zondag"
 
 #: includes/settings.php
 msgid "Every day"
-msgstr ""
+msgstr "Elke dag"
 
 #: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php
@@ -925,11 +896,11 @@ msgstr "Als dit selectievakje is ingeschakeld, worden records overgebracht van d
 
 #: includes/settings.php
 msgid "Forward alarms to Alarm Manager"
-msgstr ""
+msgstr "Alarmen doorsturen naar Alarmbeheer"
 
 #: includes/settings.php
 msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
-msgstr ""
+msgstr "Sta toe dat regels ingesteld op Alarmbeheer alarmen doorsturen. Syslog-e-mail blijft de terugvaloptie; opdrachtacties worden alleen uitgevoerd voor Syslog-alarmeringsregels."
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -949,11 +920,11 @@ msgstr "Dit is de tijd in seconden voordat de pagina wordt vernieuwd."
 
 #: includes/settings.php
 msgid "Skip Total Row Count"
-msgstr ""
+msgstr "Totaal aantal rijen tellen overslaan"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
-msgstr ""
+msgstr "Als dit selectievakje is ingeschakeld, tellen de tabbladen Systeemlogboeken en Meldingslogboeken niet elk overeenkomend record, wat bij grote installaties erg zwaar kan zijn. De pagina toont koppelingen voor Vorige en Volgende in plaats van een totaal en paginalijst, en Volgende wordt aangeboden zolang er nog meer records overblijven."
 
 #: includes/settings.php
 msgid "Max Report Records"
@@ -970,21 +941,21 @@ msgstr "%d Records"
 
 #: includes/settings.php
 msgid "Maximum Syslog Processing Processes"
-msgstr ""
+msgstr "Maximumaantal Syslog-verwerkingsprocessen"
 
 #: includes/settings.php
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
+msgstr "Wanneer ingesteld boven 1, wordt de verwerking van inkomende berichten verdeeld over parallelle werkprocessen. Elk werkproces verwerkt een afzonderlijk bereik van inkomende berichten, wat hostnaamomzetting en berichtoverdracht bij hoge belasting versnelt. Bij een instelling van 1 worden alle berichten in één proces verwerkt. Werkprocessen worden niet ondersteund op Windows of wanneer de PHP-extensies pcntl en POSIX niet beschikbaar zijn; in dat geval valt de verwerking terug op één proces."
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Process"
-msgstr ""
+msgstr "%d worker-proces"
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Processes"
-msgstr ""
+msgstr "%d worker-processen"
 
 #: includes/settings.php
 msgid "Command for Opening Tickets"
@@ -996,23 +967,23 @@ msgstr "Deze opdracht wordt uitgevoerd voor het openen van helpdesktickets.  De 
 
 #: includes/settings.php
 msgid "Host Discovery Options"
-msgstr ""
+msgstr "Opties voor hostdetectie"
 
 #: includes/settings.php
 msgid "Enable Hostname Resolution"
-msgstr ""
+msgstr "Hostnaamomzetting inschakelen"
 
 #: includes/settings.php
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
+msgstr "Als dit selectievakje is ingeschakeld, worden alle hostnamen eerst omgezet via een DNS-opzoeking (indien ingeschakeld) met behulp van A- en AAAA-records. Voor IPv4- en IPv6-adressen is geen opzoeking nodig en IPv6-adressen worden opgeslagen in gecomprimeerde kleine letters. Als de DNS-opzoeking mislukt, probeert het systeem de hostnaam op te zoeken in de Cacti-hosttabel en te vervangen door de Cacti-hostbeschrijving. Als zowel DNS- als Cacti-opzoekingen mislukken, krijgen records het voorvoegsel 'unresolved-Original_hostname'."
 
 #: includes/settings.php
 msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
+msgstr "DNS-omzetting voor inkomende hosts overslaan"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
+msgstr "Als dit selectievakje is ingeschakeld, probeert het systeem hosts niet om te zetten via DNS-opzoekingen. Dit is handig voor omgevingen waar DNS-omzetting niet mogelijk of niet gewenst is."
 
 #: includes/settings.php
 msgid "HTML Notification Settings"
@@ -1028,17 +999,15 @@ msgstr "Als dit selectievakje is ingeschakeld, worden alle e-mails in HTML-forma
 
 #: includes/settings.php
 msgid "Format File to Use"
-msgstr "Bestand opmaken om te gebruiken"
+msgstr "Bestand formatteren om te gebruiken"
 
 #: includes/settings.php
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Kies de aangepaste html-wrapper en het CSS-bestand dat u wilt gebruiken.  Dit bestand bevat zowel html als CSS om rond uw rapport te wikkelen.  Als het meer dan alleen CSS bevat, moet u een speciale <REPORT> tag in het bestand plaatsen.  Deze formaattag wordt vervangen door de inhoud van het rapport.  Deze bestanden bevinden zich in de map 'formaten'.</REPORT>"
+msgstr "Kies de aangepaste html wrapper en CSS-bestand om te gebruiken.  Dit bestand bevat zowel html als CSS om uw rapport in te pakken.  Als het meer bevat dan alleen CSS, moet je een speciale <REPORT> tag in het bestand plaatsen.  Deze format tag wordt vervangen door de inhoud van het rapport.  Deze bestanden bevinden zich in de map 'formaten'."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Data Retention Settings"
 msgid "Data Retention and Partitioning"
-msgstr "Instellingen voor gegevensbewaring"
+msgstr "Gegevensbewaring en partitionering"
 
 #: includes/settings.php
 msgid "Syslog Retention"
@@ -1050,15 +1019,15 @@ msgstr "Dit is het aantal dagen om evenementen te houden."
 
 #: includes/settings.php
 msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
-msgstr ""
+msgstr "De grootte van elke partitie van de tabellen syslog en syslog_removed. Een wijziging wordt hier opgeslagen, maar wordt pas van kracht wanneer cli/upgrade_partitioning.php beide tabellen opnieuw opbouwt; tot die tijd behoudt het partitieonderhoud de bestaande grootte. Partitionering per uur vereist een eindige bewaartermijn. De bewaartermijn, het vooraanmaakvenster en het partitioneringsniveau samen moeten binnen de partitielimiet van de databaseserver passen, anders worden de instellingen niet opgeslagen."
 
 #: includes/settings.php
 msgid "Partition Pre-create Window"
-msgstr ""
+msgstr "Venster voor vooraf aanmaken van partities"
 
 #: includes/settings.php
 msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
-msgstr ""
+msgstr "Dit is het aantal dagen aan toekomstige partities dat moet worden aangehouden voor gepartitioneerde Syslog-tabellen, zodat nieuwe partities altijd worden gesplitst vanuit een lege dMaxValue-partitie. Partitionering per uur houdt altijd ten minste 2 dagen aan."
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1071,87 +1040,84 @@ msgid "%d Days"
 msgstr "%d Dagen"
 
 #: includes/settings.php
-#, fuzzy
 msgid "Partition Recovery Limit"
-msgstr "Partities per dag"
+msgstr "Limiet voor partitieherstel"
 
 #: includes/settings.php
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
+msgstr "Wanneer partities ontbreken (bijvoorbeeld na onderhoudsstilstand), worden er bij elke poller-run maximaal zoveel ontbrekende partities per tabel aangemaakt. Het resterende gat wordt in volgende runs hersteld; het opschonen volgens bewaartermijn blijft uitgesteld totdat de toekomstige partitiehorizon volledig is hersteld. Alleen van toepassing op gepartitioneerde Syslog-tabellen."
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partition per run"
-msgstr "Partities per dag"
+msgstr "%d partitie per uitvoering"
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partitions per run"
-msgstr "Partities per dag"
+msgstr "%d partities per uitvoering"
 
 #: includes/settings.php
 msgid "Collector Staleness Threshold"
-msgstr ""
+msgstr "Drempelwaarde voor verouderde collector"
 
 #: includes/settings.php
 msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
-msgstr ""
+msgstr "Meldingen over pipeline-status waarschuwen wanneer onverwerkte berichten, de voltooiing van de verwerking of wachtende synchronisatie deze vertraging overschrijden. De effectieve vertraging is ten minste drie Poller-intervallen en 300 seconden. Stel in op 0 om 300 seconden te gebruiken."
 
 #: includes/settings.php
 msgid "Default (300 seconds)"
-msgstr ""
+msgstr "Standaard (300 seconden)"
 
 #: includes/settings.php
 #, php-format
 msgid "%d seconds"
-msgstr ""
+msgstr "%d seconden"
 
 #: includes/settings.php
 msgid "Collector Backlog Threshold"
-msgstr ""
+msgstr "Drempelwaarde voor collector-achterstand"
 
 #: includes/settings.php
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
+msgstr "De pagina Syslog-status toont een waarschuwing wanneer meer dan dit aantal berichten onverwerkt in de inkomende Syslog-tabel staat. Stel in op 0 om de standaardwaarde van 10000 berichten te gebruiken."
 
 #: includes/settings.php
 msgid "Default (10000 messages)"
-msgstr ""
+msgstr "Standaard (10000 berichten)"
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Messages"
-msgstr "Berichten"
+msgstr "%d berichten"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
-msgstr ""
+msgstr "Pipeline-statusmeldingen"
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Pipeline Health Notification List"
-msgstr "Notificatielijst"
+msgstr "Meldingslijst voor pipelinegezondheid"
 
 #: includes/settings.php
 msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
-msgstr ""
+msgstr "Selecteer een bestaande Thold-meldingslijst voor waarschuwingen over de pipeline-status. Ingeschakelde ontvangers uit de lijst worden gecombineerd met de onderstaande e-mailadressen, met behoud van BCC-ontvangers. Lijsten vereisen de Thold-tabel voor meldingslijsten."
 
 #: includes/settings.php
 msgid "Pipeline Health Email Recipients"
-msgstr ""
+msgstr "E-mailontvangers voor pipeline-status"
 
 #: includes/settings.php
 msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
-msgstr ""
+msgstr "Kommagescheiden e-mailontvangers voor fouten en herstel van de pijplijn. Laat leeg en selecteer geen meldingslijst om e-mail uit te schakelen; de status blijft zichtbaar op het tabblad Status en statuswijzigingen worden gelogd. Controles vereisen dat de Cacti-poller actief is."
 
 #: includes/settings.php
 msgid "Pipeline Health Reminder Interval"
-msgstr ""
+msgstr "Herinneringsinterval voor pipeline-status"
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
+msgstr "Herhaal meldingen voor aanhoudende pipeline-problemen na dit interval. Mislukte e-mailpogingen worden maximaal eenmaal per vijf minuten opnieuw geprobeerd."
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -1163,112 +1129,110 @@ msgstr "Dit is het aantal dagen om waarschuwingslogboeken bij te houden."
 
 #: includes/settings.php
 msgid "Alert Suppression and Maintenance"
-msgstr ""
+msgstr "Waarschuwingsonderdrukking en onderhoud"
 
 #: includes/settings.php
 msgid "Maintenance Window Days"
-msgstr ""
+msgstr "Dagen van onderhoudsvenster"
 
 #: includes/settings.php
 msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
+msgstr "Dagen waarop alle waarschuwingsmeldingen tijdens het geconfigureerde onderhoudstijdvak worden gedempt."
 
 #: includes/settings.php
 msgid "Maintenance Window Starts"
-msgstr ""
+msgstr "Begin van onderhoudsvenster"
 
 #: includes/settings.php
 msgid "Local start time for the global maintenance window."
-msgstr ""
+msgstr "Lokale starttijd voor het algemene onderhoudsvenster."
 
 #: includes/settings.php
 msgid "Maintenance Window Ends"
-msgstr ""
+msgstr "Einde van onderhoudsvenster"
 
 #: includes/settings.php
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
+msgstr "Lokale eindtijd voor het algemene onderhoudsvenster. Een eerdere eindtijd loopt door naar de volgende dag."
 
 #: includes/settings.php
 msgid "One-time Maintenance Starts"
-msgstr ""
+msgstr "Eenmalig onderhoud begint"
 
 #: includes/settings.php
 msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
+msgstr "Optionele lokale datum en tijd om een eenmalig globaal onderhoudsvenster te starten."
 
 #: includes/settings.php
 msgid "One-time Maintenance Ends"
-msgstr ""
+msgstr "Eenmalig onderhoud eindigt"
 
 #: includes/settings.php
 msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Optionele lokale datum en tijd om een eenmalig globaal onderhoudsvenster te beëindigen. Formaat: YYYY-MM-DD HH:MM."
 
 #: includes/settings.php
 msgid "Default Alert Cooldown"
-msgstr ""
+msgstr "Standaard afkoelperiode voor waarschuwingen"
 
 #: includes/settings.php
 msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "Elke herhaalde melding voor dezelfde regel en hetzelfde rapportagebereik gedurende dit aantal minuten onderdrukken. Waarden per regel overschrijven deze instelling. Stel in op 0 om uit te schakelen."
 
 #: includes/settings.php
 msgid "Default Duplicate Suppression"
-msgstr ""
+msgstr "Standaard onderdrukking van duplicaten"
 
 #: includes/settings.php
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "Een melding met dezelfde overeenkomende berichtenset gedurende dit aantal minuten onderdrukken. Waarden per regel overschrijven deze instelling. Stel in op 0 om uit te schakelen."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
 msgid "Remote Syslog Recovery"
-msgstr "Syslog-rapport(en) verwijderen"
+msgstr "Extern Syslog-herstel"
 
 #: includes/settings.php
 msgid "Maximum Recovery Records Per Execution"
-msgstr ""
+msgstr "Maximumaantal herstelrecords per uitvoering"
 
 #: includes/settings.php
 msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
+msgstr "Maximumaantal bewaarde externe Syslog-gebeurtenissen dat in één uitvoering van een herstelworker naar de hoofdcollector wordt verzonden. Elke centrale databasetransactie blijft beperkt tot 100 records. Verhoog dit geleidelijk terwijl u de belasting en vergrendelingswachttijden van de hoofdcollector in de gaten houdt."
 
 #: includes/settings.php
 msgid "Recovery Pause Between Batches"
-msgstr ""
+msgstr "Herstelpauze tussen batches"
 
 #: includes/settings.php
 msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
+msgstr "Pauze tussen elke aflevertransactie van 100 records naar de hoofdcollector. Een langere pauze verlaagt de belasting van de hoofdcollector; een kortere pauze versnelt de verwerking van achterstanden."
 
 #: includes/settings.php
 msgid "No pause"
-msgstr ""
+msgstr "Geen pauze"
 
 #: includes/settings.php
 #, php-format
 msgid "%d milliseconds"
-msgstr ""
+msgstr "%d milliseconden"
 
 #: includes/settings.php
 #, php-format
 msgid "%d second"
-msgstr ""
+msgstr "%d seconde"
 
 #: includes/settings.php
 msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
-msgstr ""
+msgstr "De Syslog-database is niet beschikbaar, waardoor de partitioneringsinstellingen niet kunnen worden gecontroleerd aan de hand van de partitielimiet en tabellen."
 
 #: includes/settings.php
 msgid "The Syslog settings were not saved."
-msgstr ""
+msgstr "De Syslog-instellingen zijn niet opgeslagen."
 
 #: includes/settings.php
 #, php-format
 msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
-msgstr ""
+msgstr "In behandeling: een berichtentabel gebruikt nog steeds %s partities. Voer cli/upgrade_partitioning.php uit om het geselecteerde niveau toe te passen."
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
@@ -1346,7 +1310,7 @@ msgstr "Eindigt op"
 
 #: includes/settings.php
 msgid "Hostname is"
-msgstr "Hostname:"
+msgstr "Hostname"
 
 #: includes/settings.php
 msgid "Program is"
@@ -1358,7 +1322,7 @@ msgstr "Faciliteit"
 
 #: includes/settings.php syslog_alerts.php
 msgid "Filter Builder"
-msgstr ""
+msgstr "Filterbouwer"
 
 #: includes/settings.php syslog_alerts.php
 msgid "SQL Expression"
@@ -1374,33 +1338,31 @@ msgstr "Importeren/exporteren"
 
 #: includes/settings.php
 msgid "Alert Rules"
-msgstr "Regels voor waarschuwingen"
+msgstr "Waarschuwingsregels"
 
 #: includes/settings.php
 msgid "Syslog Settings"
 msgstr "Syslog-instellingen"
 
 #: includes/settings.php syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rules"
-msgstr "Regels voor waarschuwingen"
+msgstr "Apparaatwaarschuwingsregels"
 
 #: includes/settings.php
 msgid "Removal Rules"
-msgstr "Regels voor verwijdering"
+msgstr "Verwijderingsregels"
 
 #: includes/settings.php
 msgid "Report Rules"
 msgstr "Regels voor rapporten"
 
 #: includes/settings.php syslog.php syslog_recommendations.php
-#, fuzzy
 msgid "Recommendations"
-msgstr "Verwijderde records"
+msgstr "Aanbevelingen"
 
 #: includes/utilities.php
 msgid "Unable to connect to the Syslog database. No Device records were removed."
-msgstr ""
+msgstr "Kan geen verbinding maken met de Syslog-database. Er zijn geen apparaatrecords verwijderd."
 
 #: includes/utilities.php
 #, php-format
@@ -1417,11 +1379,11 @@ msgstr "Syslog-apparaten opschonen"
 
 #: includes/utilities.php
 msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
+msgstr "Weet u zeker dat u verouderde Syslog-apparaten wilt opschonen?"
 
 #: includes/utilities.php
 msgid "Confirm Purge"
-msgstr ""
+msgstr "Opschonen bevestigen"
 
 #: includes/utilities.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -1435,123 +1397,120 @@ msgstr "Deze menukeuze biedt een manier om apparaten te verwijderen die niet lan
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
-msgstr ""
+msgstr "Ongeldige bron voor dashboardpaneel."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel type."
-msgstr ""
+msgstr "Ongeldig type voor dashboardpaneel."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard chart type."
-msgstr ""
+msgstr "Ongeldig grafiektype voor dashboard."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard breakdown field."
-msgstr ""
+msgstr "Ongeldig uitsplitsingsveld voor dashboard."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard interval."
-msgstr ""
+msgstr "Ongeldig dashboardinterval."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard timespan."
-msgstr ""
+msgstr "Ongeldige tijdspanne voor dashboard."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard record type."
-msgstr ""
+msgstr "Ongeldig recordtype voor dashboard."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard top count."
-msgstr ""
+msgstr "Ongeldig topaantal voor dashboard."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel width."
-msgstr ""
+msgstr "Ongeldige breedte voor dashboardpaneel."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel height."
-msgstr ""
+msgstr "Ongeldige hoogte voor dashboardpaneel."
 
 #: lib/syslog_dashboard.php syslog.php
 #, php-format
 msgid "Invalid logical search: %s"
-msgstr ""
+msgstr "Ongeldige logische zoekopdracht: %s"
 
 #: lib/syslog_dashboard.php
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard panel is required."
-msgstr ""
+msgstr "Een geldig dashboardpaneel is vereist."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard panel not found."
-msgstr ""
+msgstr "Dashboardpaneel niet gevonden."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "A name of up to 128 characters is required."
-msgstr ""
+msgstr "Een naam van maximaal 128 tekens is vereist."
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard is required."
-msgstr ""
+msgstr "Een geldig dashboard is vereist."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard not found."
-msgstr ""
+msgstr "Dashboard niet gevonden."
 
 #: lib/syslog_dashboard.php syslog_dashboards.php
 msgid "Unable to save dashboard changes."
-msgstr ""
+msgstr "Kan wijzigingen in het dashboard niet opslaan."
 
 #: lib/syslog_dashboard.php
 msgid "You may only share your own dashboards."
-msgstr ""
+msgstr "U mag alleen uw eigen dashboards delen."
 
 #: lib/syslog_dashboard.php
 msgid "copy"
-msgstr ""
+msgstr "kopie"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard could not be copied."
-msgstr ""
+msgstr "Dashboard kon niet worden gekopieerd."
 
 #: lib/syslog_dashboard.php
 msgid "A valid panel position is required."
-msgstr ""
+msgstr "Een geldige paneelpositie is vereist."
 
 #: lib/syslog_dashboard.php
 msgid "A title of up to 128 characters is required."
-msgstr ""
+msgstr "Een titel van maximaal 128 tekens is vereist."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Drag to reorder card"
-msgstr ""
+msgstr "Slepen om kaart te herordenen"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Refresh Panel"
-msgstr "Vernieuwingsinterval"
+msgstr "Paneel vernieuwen"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Total messages"
-msgstr "Bericht"
+msgstr "Totaal aantal berichten"
 
 #: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
-msgstr ""
+msgstr "Grafiekbibliotheek is niet beschikbaar op deze Cacti-installatie."
 
 #: lib/syslog_dashboard.php
 msgid "Edit Panel"
-msgstr ""
+msgstr "Paneel bewerken"
 
 #: lib/syslog_dashboard.php
 msgid "New Panel"
-msgstr ""
+msgstr "Nieuw paneel"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Save"
@@ -1559,78 +1518,74 @@ msgstr "Opslaan"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
-msgstr ""
+msgstr "Toepassen"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
-msgstr ""
+msgstr "Dit dashboardpaneel verwijderen?"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard and all of its panels?"
-msgstr ""
+msgstr "Dit dashboard en alle bijbehorende panelen verwijderen?"
 
 #: lib/syslog_dashboard.php
 msgid "Name your dashboard"
-msgstr ""
+msgstr "Geef uw dashboard een naam"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Make Private"
-msgstr ""
+msgstr "Privé maken"
 
 #: lib/syslog_dashboard.php
 msgid "Share with all"
-msgstr ""
+msgstr "Delen met iedereen"
 
 #: lib/syslog_dashboard.php
 msgid "Save as my copy"
-msgstr ""
+msgstr "Opslaan als mijn kopie"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Syslog Dashboards"
-msgstr "Syslog ingeschakeld"
+msgstr "Syslog-dashboards"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: lib/syslog_dashboard.php
 msgid "Time Range"
 msgstr "Tijdreeks"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Hour"
-msgstr "%d Uur"
+msgstr "Afgelopen uur"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Hours"
-msgstr "%d Uren"
+msgstr "Afgelopen %d uren"
 
 #: lib/syslog_dashboard.php
 msgid "Last Day"
-msgstr ""
+msgstr "Afgelopen dag"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Week"
-msgstr "Voor het laatst verzonden"
+msgstr "Afgelopen week"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Weeks"
-msgstr "%d Weken"
+msgstr "Afgelopen %d weken"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Month"
-msgstr "Voor het laatst verzonden"
+msgstr "Afgelopen maand"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Months"
-msgstr "%d Maanden"
+msgstr "Afgelopen %d maanden"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
@@ -1638,47 +1593,47 @@ msgstr "Vernieuwen"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
-msgstr ""
+msgstr "Mijn dashboards"
 
 #: lib/syslog_dashboard.php
 msgid "Global Dashboards"
-msgstr ""
+msgstr "Globale dashboards"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Shared With Me"
-msgstr ""
+msgstr "Gedeeld met mij"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "New"
-msgstr ""
+msgstr "Nieuw"
 
 #: lib/syslog_dashboard.php
 msgid "Rename"
-msgstr ""
+msgstr "Hernoem"
 
 #: lib/syslog_dashboard.php
 msgid "Add Panel"
-msgstr ""
+msgstr "Paneel toevoegen"
 
 #: lib/syslog_dashboard.php
 msgid "Create your first dashboard to visualize syslog trends."
-msgstr ""
+msgstr "Maak uw eerste dashboard aan om syslog-trends te visualiseren."
 
 #: lib/syslog_dashboard.php
 msgid "Add a panel to start charting.  Panels can use your saved searches."
-msgstr ""
+msgstr "Voeg een paneel toe om grafieken te maken. Panelen kunnen uw opgeslagen zoekopdrachten gebruiken."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Panel"
-msgstr ""
+msgstr "Dashboardpaneel"
 
 #: lib/syslog_dashboard.php
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: lib/syslog_dashboard.php
 msgid "Log Source"
-msgstr ""
+msgstr "Logbron"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "System Logs"
@@ -1689,67 +1644,60 @@ msgid "Alert Logs"
 msgstr "Logboeken van waarschuwingen"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Panel Type"
-msgstr "Wedstrijd Type"
+msgstr "Paneeltype"
 
 #: lib/syslog_dashboard.php
 msgid "Time Series"
-msgstr ""
+msgstr "Tijdreeks"
 
 #: lib/syslog_dashboard.php
 msgid "Breakdown"
-msgstr ""
+msgstr "Uitsplitsing"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Chart"
-msgstr "%d Chars"
+msgstr "Diagram"
 
 #: lib/syslog_dashboard.php
 msgid "Line"
-msgstr ""
+msgstr "Lijn"
 
 #: lib/syslog_dashboard.php
 msgid "Area"
-msgstr ""
+msgstr "Vlak"
 
 #: lib/syslog_dashboard.php
 msgid "Bar"
-msgstr ""
+msgstr "Staaf"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Interval"
-msgstr "Vernieuwingsinterval"
+msgstr "Interval"
 
 #: lib/syslog_dashboard.php
 msgid "Auto"
-msgstr ""
+msgstr "Automatisch"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Minute"
-msgstr "1 Minuut"
+msgstr "Minuut"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "10 Minutes"
-msgstr "1 Minuut"
+msgstr "10 minuten"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Hour"
-msgstr "%d Uur"
+msgstr "Uur"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Day"
-msgstr "Dagelijks"
+msgstr "Dag"
 
 #: lib/syslog_dashboard.php
 msgid "Field"
-msgstr ""
+msgstr "Veld"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php
@@ -1767,9 +1715,8 @@ msgid "Priority"
 msgstr "Prioriteit"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Top Count"
-msgstr "Aantal"
+msgstr "Topaantal"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Record Type"
@@ -1789,30 +1736,28 @@ msgstr "Verwijderde records"
 
 #: lib/syslog_dashboard.php
 msgid "Start from Saved Search"
-msgstr ""
+msgstr "Beginnen vanaf opgeslagen zoekopdracht"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Enter message text…"
-msgstr ""
+msgstr "Voer berichttekst in…"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Remove condition"
-msgstr "Verwijderde records"
+msgstr "Voorwaarde verwijderen"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
-#, fuzzy
 msgid "Match group"
-msgstr "Wedstrijd Type"
+msgstr "Overeenkomstgroep"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Exclude group"
-msgstr ""
+msgstr "Groep uitsluiten"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Name"
-msgstr ""
+msgstr "Dashboardnaam"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_reports.php syslog_saved_searches.php
@@ -1820,18 +1765,16 @@ msgid "Name"
 msgstr "Naam"
 
 #: lib/syslog_thresholds.php syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Breached Thresholds"
-msgstr "Drempel"
+msgstr "Overschreden drempelwaarden"
 
 #: lib/syslog_thresholds.php
 msgid "Breached Since"
-msgstr ""
+msgstr "Overschreden sinds"
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
-msgstr ""
+msgstr "Data verzamelaars"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -1840,38 +1783,35 @@ msgstr "Apparaat"
 
 #: lib/syslog_thresholds.php
 msgid "Last Matching Message"
-msgstr ""
+msgstr "Laatste overeenkomende bericht"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
 msgid "Recovers After"
-msgstr "Opnieuw verwerken"
+msgstr "Herstelt na"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Rules"
 msgid "Rule"
-msgstr "Regels"
+msgstr "Regel"
 
 #: lib/syslog_thresholds.php
 msgid "All matching devices"
-msgstr ""
+msgstr "Alle overeenkomende apparaten"
 
 #: lib/syslog_thresholds.php
 msgid "No thresholds are currently breached."
-msgstr ""
+msgstr "Er zijn momenteel geen drempelwaarden overschreden."
 
 #: lib/syslog_thresholds.php
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
-msgstr ""
+msgstr "Voor herstel mogen er tot de weergegeven tijd geen overeenkomende berichten zijn. Elke overeenkomst start de stille periode opnieuw."
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
-msgstr ""
+msgstr "Vorige"
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Next"
-msgstr ""
+msgstr "Volgende"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -1879,46 +1819,39 @@ msgstr "Hernoem de config.php.dist- of config_local.php.dist-bestanden in de sys
 
 #: setup.php
 msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
-msgstr ""
+msgstr "Tijdstempels op millisecondenniveau (TIMESTAMP(3)) worden alleen ondersteund op MariaDB. Deze server draait MySQL, dus installeer in plaats daarvan met tijdstempels op secondenniveau."
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
-msgstr ""
+msgstr "Aria-opslag kan niet worden gebruikt wanneer een Remote Data Collector-optie is ingeschakeld. Selecteer InnoDB of schakel alle Remote Data Collector-opties uit."
 
 #: setup.php
 msgid "Top 10 Hosts"
-msgstr ""
+msgstr "Top 10 hosts"
 
 #: setup.php
-#, fuzzy
-#| msgid "Syslog Message Match String"
 msgid "Syslog Messages - Past Hour"
-msgstr "Syslog Bericht Match String"
+msgstr "Syslog-berichten - Afgelopen uur"
 
 #: setup.php
-#, fuzzy
-#| msgid "Message String:"
 msgid "Messages by Severity"
-msgstr "Bericht String:"
+msgstr "Berichten op ernst"
 
 #: setup.php
-#, fuzzy
-#| msgid "All Programs"
 msgid "Top 10 Programs"
-msgstr "Alle programma&#39;s"
+msgstr "Top 10 programma's"
 
 #: setup.php
 msgid "Alert Activity"
-msgstr ""
+msgstr "Waarschuwingsactiviteit"
 
 #: syslog.php
 msgid "Syslog Viewer"
 msgstr "Syslog-viewer"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog Status"
-msgstr "Syslog-instellingen"
+msgstr "Syslog-status"
 
 #: syslog.php
 msgid "Selected Alert"
@@ -1926,292 +1859,262 @@ msgstr "Geselecteerde waarschuwing"
 
 #: syslog.php
 msgid "seconds"
-msgstr ""
+msgstr "seconden"
 
 #: syslog.php
 msgid "Unavailable"
-msgstr ""
+msgstr "Niet beschikbaar"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "[ Unprocessed Messages: %s ]"
+#, php-format
 msgid "unprocessed messages are %s old"
-msgstr "[ Onverwerkte berichten: %s ]"
+msgstr "onverwerkte berichten zijn %s oud"
 
 #: syslog.php
 #, php-format
 msgid "incoming backlog of %s messages"
-msgstr ""
+msgstr "inkomende achterstand van %s berichten"
 
 #: syslog.php
-#, fuzzy
 msgid "day"
-msgstr "Dagelijks"
+msgstr "dag"
 
 #: syslog.php
 msgid "days"
-msgstr ""
+msgstr "dagen"
 
 #: syslog.php
 msgid "hour"
-msgstr ""
+msgstr "uur"
 
 #: syslog.php
-#, fuzzy
 msgid "hours"
-msgstr "%d Uren"
+msgstr "uren"
 
 #: syslog.php
-#, fuzzy
 msgid "minute"
-msgstr "1 Minuut"
+msgstr "minuut"
 
 #: syslog.php
-#, fuzzy
 msgid "minutes"
-msgstr "1 Minuut"
+msgstr "minuten"
 
 #: syslog.php
 msgid "Rows in syslog_incoming"
-msgstr ""
+msgstr "Rijen in syslog_incoming"
 
 #: syslog.php
 msgid "Syslog table size (data + indexes)"
-msgstr ""
+msgstr "Grootte van Syslog-tabel (gegevens + indexen)"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog retention"
 msgstr "Syslog-retentie"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert retention"
-msgstr "Behoud van syslog-waarschuwingen"
+msgstr "Bewaartermijn waarschuwingen"
 
 #: syslog.php
 msgid "No recovery activity recorded yet."
-msgstr ""
+msgstr "Nog geen herstelactiviteit vastgelegd."
 
 #: syslog.php
 msgid "created"
-msgstr ""
+msgstr "aangemaakt"
 
 #: syslog.php
-#, fuzzy
 msgid "remaining"
-msgstr "Waarschuwing"
+msgstr "resterend"
 
 #: syslog.php
 msgid "retention deferred"
-msgstr ""
+msgstr "bewaartermijn uitgesteld"
 
 #: syslog.php
 msgid "Latest processing run"
-msgstr ""
+msgstr "Laatste verwerkingsuitvoering"
 
 #: syslog.php
 msgid "Distributed synchronization"
-msgstr ""
+msgstr "Gedistribueerde synchronisatie"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Remote Data Collector Rules Sync"
 msgid "Remote collector receipts"
-msgstr "Synchronisatie van regels voor externe gegevensverzamelaars"
+msgstr "Ontvangstbewijzen externe collector"
 
 #: syslog.php
-#, fuzzy
 msgid "Storage and retention"
-msgstr "Syslog-retentie"
+msgstr "Opslag en retentie"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition health"
-msgstr "Partities per dag"
+msgstr "Partitiegezondheid"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance activity"
-msgstr "Gepartitioneerde tafel"
+msgstr "Partitieonderhoudsactiviteit"
 
 #: syslog.php
-#, fuzzy
 msgid "Recent partition maintenance activity"
-msgstr "Gepartitioneerde tafel"
+msgstr "Recente partitieonderhoudsactiviteit"
 
 #: syslog.php
-#, fuzzy
 msgid "Pipeline health"
-msgstr "Partities per dag"
+msgstr "Pipelinegezondheid"
 
 #: syslog.php
 msgid "Parallel workers"
-msgstr ""
+msgstr "Parallelle workers"
 
 #: syslog.php
-#, fuzzy
 msgid "Worker processes"
-msgstr "Opnieuw verwerken"
+msgstr "Worker-processen"
 
 #: syslog.php
 msgid "Processing phases"
-msgstr ""
+msgstr "Verwerkingsfasen"
 
 #: syslog.php
 msgid "Rule activity"
-msgstr ""
+msgstr "Regelactiviteit"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed"
-msgstr "Opnieuw verwerken"
+msgstr "Verwerkte records"
 
 #: syslog.php
 msgid "Polling runtime"
-msgstr ""
+msgstr "Polling-looptijd"
 
 #: syslog.php
 msgid "Started"
-msgstr ""
+msgstr "Gestart"
 
 #: syslog.php
 msgid "Finished"
-msgstr ""
+msgstr "Voltooid"
 
 #: syslog.php
 msgid "Minimum runtime"
-msgstr ""
+msgstr "Minimale looptijd"
 
 #: syslog.php
 msgid "Average runtime"
-msgstr ""
+msgstr "Gemiddelde uitvoeringstijd"
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
+msgstr "Maximale looptijd"
 
 #: syslog.php
 msgid "State"
-msgstr ""
+msgstr "Staat"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Removed Records"
 msgid "Queued Recovery Records"
-msgstr "Verwijderde records"
+msgstr "Herstelrecords in wachtrij"
 
 #: syslog.php
 msgid "Oldest pending"
-msgstr ""
+msgstr "Oudste in wachtrij"
 
 #: syslog.php
 msgid "Last successful synchronization"
-msgstr ""
+msgstr "Laatste geslaagde synchronisatie"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Actions"
 msgid "Active"
-msgstr "Acties"
+msgstr "Actief"
 
 #: syslog.php
 msgid "Inactive"
-msgstr ""
+msgstr "Inactief"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery worker"
-msgstr "Opnieuw verwerken"
+msgstr "Herstelworker"
 
 #: syslog.php
 msgid "Last synchronization error"
-msgstr ""
+msgstr "Laatste synchronisatiefout"
 
 #: syslog.php
-#, fuzzy
 msgid "Last Batch Count"
-msgstr "Voor het laatst verzonden"
+msgstr "Laatste batchaantal"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Modified"
 msgid "Last Record Received"
-msgstr "Laatste keer bewerkt"
+msgstr "Laatste ontvangen record"
 
 #: syslog.php
 msgid "Remote Poller"
-msgstr ""
+msgstr "Externe Poller"
 
 #: syslog.php
 msgid "Unknown remote poller"
-msgstr ""
+msgstr "Onbekende externe poller"
 
 #: syslog.php
 msgid "No remote collector records have been received yet."
-msgstr ""
+msgstr "Er zijn nog geen records van externe collectors ontvangen."
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
-msgstr "Gepartitioneerde tafel"
+msgstr "Partitieonderhoud geblokkeerd"
 
 #: syslog.php
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "Partitieonderhoud is gestopt; schrijfbewerkingen gaan door naar de dMaxValue-veiligheidspartitie."
 
 #: syslog.php
 msgid "Date coverage"
-msgstr ""
+msgstr "Datumbereik"
 
 #: syslog.php
-#, fuzzy
 msgid "Table"
-msgstr "Inschakelen"
+msgstr "Tabel"
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
-msgstr ""
+msgstr "dMaxValue-rijen (geschat)"
 
 #: syslog.php
 msgid "dMaxValue size"
-msgstr ""
+msgstr "dMaxValue-grootte"
 
 #: syslog.php
-#, fuzzy
 msgid "Partitioning level"
-msgstr "Partities per dag"
+msgstr "Partitioneringsniveau"
 
 #: syslog.php
 #, php-format
 msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
-msgstr ""
+msgstr "%s is geselecteerd in Instellingen en wordt van kracht nadat cli/upgrade_partitioning.php de tabellen opnieuw heeft opgebouwd."
 
 #: syslog.php
-#, fuzzy
 msgid "Last attempt"
-msgstr "Voor het laatst verzonden"
+msgstr "Laatste poging"
 
 #: syslog.php
 msgid "Last successful maintenance"
-msgstr ""
+msgstr "Laatste geslaagd onderhoud"
 
 #: syslog.php
 msgid "Complete"
-msgstr ""
+msgstr "Voltooid"
 
 #: syslog.php
 msgid "Deferred"
-msgstr ""
+msgstr "Uitgesteld"
 
 #: syslog.php
 msgid "Latest outcome"
-msgstr ""
+msgstr "Laatste resultaat"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery progress"
-msgstr "Opnieuw verwerken"
+msgstr "Herstelvoortgang"
 
 #: syslog.php syslog_alerts.php syslog_reports.php
 msgid "Details"
@@ -2219,262 +2122,232 @@ msgstr "Details"
 
 #: syslog.php
 msgid "Outcome"
-msgstr ""
+msgstr "Resultaat"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery"
-msgstr "%d Records"
+msgstr "Herstellende"
 
 #: syslog.php
 msgid "When"
-msgstr ""
+msgstr "Wanneer"
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
-msgstr ""
+msgstr "Nog geen partitie-onderhoudsactiviteit geregistreerd. Activiteit verschijnt na de volgende poller-run."
 
 #: syslog.php
 #, php-format
 msgid "%d created, %d remaining, %d pruned"
-msgstr ""
+msgstr "%d aangemaakt, %d resterend, %d opgeschoond"
 
 #: syslog.php
 msgid "No action required."
-msgstr ""
+msgstr "Geen actie vereist."
 
 #: syslog.php
 msgid "Incoming backlog"
-msgstr ""
+msgstr "Inkomende achterstand"
 
 #: syslog.php
-#, fuzzy
 msgid "Processing"
-msgstr "Opnieuw verwerken"
+msgstr "Bezig met verwerken"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance"
-msgstr "Gepartitioneerde tafel"
+msgstr "Partitieonderhoud"
 
 #: syslog.php
 msgid "Synchronization"
-msgstr ""
+msgstr "Synchronisatie"
 
 #: syslog.php
 msgid "Attention required"
-msgstr ""
+msgstr "Aandacht vereist"
 
 #: syslog.php
 msgid "Healthy"
-msgstr ""
+msgstr "Gezond"
 
 #: syslog.php
 msgid "Processing disabled"
-msgstr ""
+msgstr "Verwerking uitgeschakeld"
 
 #: syslog.php
-#, fuzzy
 msgid "Waiting for processing"
-msgstr "Opnieuw verwerken"
+msgstr "Wachten op verwerking"
 
 #: syslog.php
 msgid "Health"
-msgstr ""
+msgstr "Gezondheid"
 
 #: syslog.php
 msgid "Ready"
-msgstr ""
+msgstr "Gereed"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Sent"
 msgid "Sent"
-msgstr "Voor het laatst verzonden"
+msgstr "Verzonden"
 
 #: syslog.php
 msgid "Failed; retry pending"
-msgstr ""
+msgstr "Mislukt; nieuwe poging in behandeling"
 
 #: syslog.php
 msgid "Pending; next poller check"
-msgstr ""
+msgstr "In behandeling; volgende Poller-controle"
 
 #: syslog.php
-#, fuzzy
 msgid "Last health check"
-msgstr "Voor het laatst verzonden"
+msgstr "Laatste gezondheidscontrole"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Email Options"
 msgid "Email notifications"
-msgstr "E-mailopties"
+msgstr "E-mailmeldingen"
 
 #: syslog.php
 msgid "Not checked yet"
-msgstr ""
+msgstr "Nog niet gecontroleerd"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Last notification sent"
-msgstr "Notificatielijst"
+msgstr "Laatst verzonden melding"
 
 #: syslog.php
 msgid "Last received log"
-msgstr ""
+msgstr "Laatst ontvangen log"
 
 #: syslog.php
-#, fuzzy
 msgid "Oldest unprocessed message"
-msgstr "[ Onverwerkte berichten: %s ]"
+msgstr "Oudste onverwerkte bericht"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed in latest run"
-msgstr "Opnieuw verwerken"
+msgstr "Records verwerkt in laatste run"
 
 #: syslog.php
 msgid "Worker processes running"
-msgstr ""
+msgstr "Actieve werkprocessen"
 
 #: syslog.php
 msgid "Configured worker processes"
-msgstr ""
+msgstr "Geconfigureerde worker-processen"
 
 #: syslog.php
 msgid "Hosts resolved"
-msgstr ""
+msgstr "Omgezette hosts"
 
 #: syslog.php
-#, fuzzy
 msgid "Process"
-msgstr "Opnieuw verwerken"
+msgstr "Verwerken"
 
 #: syslog.php
-#, fuzzy
 msgid "Records handled"
-msgstr "Rijen"
+msgstr "Afgehandelde records"
 
 #: syslog.php
 msgid "Runtime"
-msgstr ""
+msgstr "Looptijd"
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
-msgstr ""
+msgstr "Nog geen statistieken per proces geregistreerd. Worker-statistieken verschijnen na de eerste parallelle run."
 
 #: syslog.php
-#, fuzzy
 msgid "Duration"
-msgstr "Verwijdering"
+msgstr "Duur"
 
 #: syslog.php
 msgid "Phase"
-msgstr ""
+msgstr "Fase"
 
 #: syslog.php
-#, fuzzy
 msgid "Records"
-msgstr "%d Records"
+msgstr "Rijen"
 
 #: syslog.php
 msgid "Reference updates"
-msgstr ""
+msgstr "Referentie-updates"
 
 #: syslog.php
-#, fuzzy
 msgid "Removal rules"
-msgstr "Regels voor verwijdering"
+msgstr "Verwijderingsregels"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert evaluation"
-msgstr "Behoud van syslog-waarschuwingen"
+msgstr "Waarschuwingsevaluatie"
 
 #: syslog.php
 msgid "Incoming transfer"
-msgstr ""
+msgstr "Inkomende overdracht"
 
 #: syslog.php
-#, fuzzy
 msgid "Report processing"
-msgstr "Opnieuw verwerken"
+msgstr "Rapportverwerking"
 
 #: syslog.php
 msgid "slowest"
-msgstr ""
+msgstr "traagste"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
+msgstr "Nog geen fasetijden geregistreerd. Fasetijden verschijnen na de volgende poller-run."
 
 #: syslog.php
-#, fuzzy
 msgid "Last run"
-msgstr "Voor het laatst verzonden"
+msgstr "Laatste uitvoering"
 
 #: syslog.php
-#, fuzzy
 msgid "Rules processed"
-msgstr "Opnieuw verwerken"
+msgstr "Verwerkte regels"
 
 #: syslog.php
 msgid "Total"
-msgstr ""
+msgstr "Totaal"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert rules"
-msgstr "Regels voor waarschuwingen"
+msgstr "Waarschuwingsregels"
 
 #: syslog.php
-#, fuzzy
 msgid "Delete rules"
-msgstr "Regels voor waarschuwingen"
+msgstr "Regels verwijderen"
 
 #: syslog.php
 msgid "Fired last run"
-msgstr ""
+msgstr "Geactiveerd bij laatste uitvoering"
 
 #: syslog.php
 msgid "Show more"
-msgstr ""
+msgstr "Meer weergeven"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Show All Devices"
 msgid "Show less"
-msgstr "Toon alle apparaten"
+msgstr "Minder weergeven"
 
 #: syslog.php
 msgid "Open in a dialog"
-msgstr ""
+msgstr "Openen in een dialoogvenster"
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
+msgstr "Van pagina verwijderen"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Invalid refresh interval."
-msgstr "Vernieuwingsinterval"
+msgstr "Ongeldig vernieuwingsinterval."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown card."
-msgstr "Onbekend"
+msgstr "Onbekende kaart."
 
 #: syslog.php
 msgid "Add card"
-msgstr ""
+msgstr "Kaart toevoegen"
 
 #: syslog.php
 msgid "Add a status card…"
-msgstr ""
+msgstr "Statuskaart toevoegen…"
 
 #: syslog.php
 msgid "Syslog Alert View"
@@ -2482,15 +2355,15 @@ msgstr "Syslog Alert Weergave"
 
 #: syslog.php
 msgid "A valid saved search is required."
-msgstr ""
+msgstr "Een geldige opgeslagen zoekopdracht is vereist."
 
 #: syslog.php
 msgid "Saved search not found."
-msgstr ""
+msgstr "Opgeslagen zoekopdracht niet gevonden."
 
 #: syslog.php
 msgid "You may only share your own saved searches."
-msgstr ""
+msgstr "U mag alleen uw eigen opgeslagen zoekopdrachten delen."
 
 #: syslog.php
 #, php-format
@@ -2519,69 +2392,61 @@ msgid "Syslog Message Filter %s"
 msgstr "Syslog Bericht Filter %s"
 
 #: syslog.php
-#, fuzzy
 msgid "Search messages"
-msgstr "Berichten"
+msgstr "Berichten zoeken"
 
 #: syslog.php
 msgid "Collapse filters"
-msgstr ""
+msgstr "Filters samenvouwen"
 
 #: syslog.php
 msgid "Edit filters"
-msgstr ""
+msgstr "Filters bewerken"
 
 #: syslog.php
-#, fuzzy
 msgid "Saved Searches"
-msgstr "Zoeken"
+msgstr "Opgeslagen zoekopdrachten"
 
 #: syslog.php
-#, fuzzy
 msgid "My Searches"
-msgstr "Zoeken"
+msgstr "Mijn zoekopdrachten"
 
 #: syslog.php
 msgid "Global Searches"
-msgstr ""
+msgstr "Globale zoekopdrachten"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "Default"
+#, php-format
 msgid "%s (Default)"
-msgstr "Standaard"
+msgstr "%s (Standaard)"
 
 #: syslog.php
 msgid "Manage"
-msgstr ""
+msgstr "Beheren"
 
 #: syslog.php
-#, fuzzy
 msgid "Manage saved searches"
-msgstr "Voer een zoekterm in"
+msgstr "Opgeslagen zoekopdrachten beheren"
 
 #: syslog.php
-#, fuzzy
 msgid "Save search"
-msgstr "Zoeken"
+msgstr "Zoekopdracht opslaan"
 
 #: syslog.php
-#, fuzzy
 msgid "Edit"
-msgstr "(Wijzig)"
+msgstr "Wijzig"
 
 #: syslog.php
 msgid "Save for all"
-msgstr ""
+msgstr "Opslaan voor iedereen"
 
 #: syslog.php
-#, fuzzy
 msgid "contains"
-msgstr "Bevat"
+msgstr "bevat"
 
 #: syslog.php
 msgid "does not contain"
-msgstr ""
+msgstr "bevat niet"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2599,9 +2464,8 @@ msgid "Default"
 msgstr "Standaard"
 
 #: syslog.php
-#, fuzzy
 msgid "View options"
-msgstr "E-mailopties"
+msgstr "Weergaveopties"
 
 #: syslog.php
 msgid "Trim"
@@ -2616,50 +2480,45 @@ msgid "Removal Handling"
 msgstr "Afhandeling van verwijdering"
 
 #: syslog.php
-#, fuzzy
 msgid "Display"
-msgstr "Rijen weergeven"
+msgstr "Scherm"
 
 #: syslog.php
 msgid "Group Duplicate Messages"
-msgstr ""
+msgstr "Dubbele berichten groeperen"
 
 #: syslog.php
-#, fuzzy
 msgid "Individual Messages"
-msgstr "Individu"
+msgstr "Individuele berichten"
 
 #: syslog.php
-#, fuzzy
 msgid "Grouped Messages"
-msgstr "Berichten"
+msgstr "Gegroepeerde berichten"
 
 #: syslog.php
 #, php-format
 msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
-msgstr ""
+msgstr "Kies een veld, operator en waarde. AND heeft voorrang op OR; NOT sluit een voorwaarde uit. LIKE gebruikt % voor een willekeurig aantal tekens en _ voor één teken. Datums gebruiken YYYY-MM-DD HH:MM:SS. ID's gebruiken niet-negatieve gehele getallen. Standaard wordt de laatste dag aan logboeken weergegeven, tenzij het datumbereik wordt aangepast."
 
 #: syslog.php
-#, fuzzy
 msgid "Search help"
-msgstr "Zoeken"
+msgstr "Zoekhulp"
 
 #: syslog.php
 msgid "New Saved Search"
-msgstr ""
+msgstr "Nieuwe opgeslagen zoekopdracht"
 
 #: syslog.php
 msgid "Edit Saved Search"
-msgstr ""
+msgstr "Opgeslagen zoekopdracht bewerken"
 
 #: syslog.php
-#, fuzzy
 msgid "Save As"
-msgstr "Opslaan"
+msgstr "Opslaan als"
 
 #: syslog.php
 msgid "Delete the selected saved search?"
-msgstr ""
+msgstr "Geselecteerde opgeslagen zoekopdracht verwijderen?"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
@@ -2671,16 +2530,15 @@ msgstr "Zoeken"
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Clear"
-msgstr "Herstel"
+msgstr "Wissen"
 
 #: syslog.php
 msgid "Return filter values to their user defined defaults"
 msgstr "Retourneer filterwaarden naar de door de gebruiker gedefinieerde standaardwaarden"
 
 #: syslog.php
-#, fuzzy
 msgid "Refresh Results"
-msgstr "Vernieuwingsinterval"
+msgstr "Resultaten vernieuwen"
 
 #: syslog.php
 msgid "Export Records to CSV"
@@ -2691,51 +2549,44 @@ msgid "Save Default Settings"
 msgstr "Standaardinstellingen opslaan"
 
 #: syslog.php
-#, fuzzy
 msgid "Save view defaults"
-msgstr "Standaardinstellingen opslaan"
+msgstr "Standaardweergave opslaan"
 
 #: syslog.php
-#, fuzzy
 msgid "Save Search As"
-msgstr "Zoeken"
+msgstr "Zoekopdracht opslaan als"
 
 #: syslog.php
 msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
+msgstr "Deze zoekopdracht toepassen wanneer u deze pagina opent en er nog geen zoekopdracht actief is"
 
 #: syslog.php
 msgid "Breach"
-msgstr ""
+msgstr "Overschrijding"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Threshold breached"
-msgstr "Drempel"
+msgstr "Drempelwaarde overschreden"
 
 #: syslog.php
 msgid "Messages"
 msgstr "Berichten"
 
 #: syslog.php
-#, fuzzy
 msgid "Empty message"
-msgstr "Bericht"
+msgstr "Leeg bericht"
 
 #: syslog.php
-#, fuzzy
 msgid "Toggle group messages"
-msgstr "Bericht"
+msgstr "Groepsberichten in-/uitschakelen"
 
 #: syslog.php
 msgid "Loading group messages..."
-msgstr ""
+msgstr "Groepsberichten laden..."
 
 #: syslog.php
-#, fuzzy
 msgid "No matching messages."
-msgstr "Berichten"
+msgstr "Geen overeenkomende berichten."
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2755,84 +2606,71 @@ msgstr "Geen waarschuwingslogboeken"
 
 #: syslog.php
 msgid "Close message details"
-msgstr ""
+msgstr "Berichtdetails sluiten"
 
 #: syslog.php
-#, fuzzy
 msgid "Message details"
-msgstr "Berichten"
+msgstr "Berichtdetails"
 
 #: syslog.php
-#, fuzzy
-#| msgid "General Settings"
 msgid "General"
-msgstr "Algemene instellingen"
+msgstr "Generiek"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Alert Rules"
 msgid "Alert Rule"
-msgstr "Regels voor waarschuwingen"
+msgstr "Waarschuwingsregel"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Frequency"
 msgid "Sequence"
-msgstr "Frequentie"
+msgstr "Volgorde"
 
 #: syslog.php
 msgid "Copied"
-msgstr ""
+msgstr "Gekopieerd"
 
 #: syslog.php
 msgid "Copy link"
-msgstr ""
+msgstr "Link kopiëren"
 
 #: syslog.php
-#, fuzzy
 msgid "Copy message"
-msgstr "Bericht"
+msgstr "Bericht kopiëren"
 
 #: syslog.php
 msgid "Copy unavailable. Select and copy the message text."
-msgstr ""
+msgstr "Kopiëren niet beschikbaar. Selecteer en kopieer de berichttekst."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Looking up recommendations…"
-msgstr "Syslog-retentie"
+msgstr "Aanbevelingen opzoeken…"
 
 #: syslog.php
 msgid "No recommendation matches this message."
-msgstr ""
+msgstr "Er komt geen aanbeveling overeen met dit bericht."
 
 #: syslog.php syslog_alerts.php
 msgid "Actions"
 msgstr "Acties"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Alarm Rule"
-msgstr "Waarschuwingsregel importeren"
+msgstr "Alarmregel aanmaken"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Device Alert Rule"
-msgstr "Waarschuwingsregel importeren"
+msgstr "Apparaatwaarschuwingsregel aanmaken"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Removal Rule"
-msgstr "Nieuwe verwijderingsregel"
+msgstr "Verwijderingsregel aanmaken"
 
 #: syslog.php
 msgid "Filter by device"
-msgstr ""
+msgstr "Filteren op apparaat"
 
 #: syslog.php
 msgid "Filter by program"
-msgstr ""
+msgstr "Filteren op programma"
 
 #: syslog.php
 msgid "All Programs"
@@ -2872,15 +2710,15 @@ msgstr "Syslog-waarschuwingsregel(s) exporteren"
 
 #: syslog_alerts.php
 msgid "Select Syslog Alarming or Alarm Manager."
-msgstr ""
+msgstr "Selecteer Syslog-alarmering of Alarmbeheer."
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
-msgstr ""
+msgstr "Voer een geheel aantal minuten, uren of dagen in voor het drempelwaardevenster."
 
 #: syslog_alerts.php
 msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
-msgstr ""
+msgstr "Voer een positief geheel aantal minuten, uren of dagen in voor herstel van de drempelwaarde."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
@@ -2894,7 +2732,7 @@ msgstr "De voorbewerkte SQL is:<br><br> %s"
 #: syslog_alerts.php syslog_removal.php
 #, php-format
 msgid "The filter is invalid: %s"
-msgstr ""
+msgstr "Het filter is ongeldig: %s"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The processed SQL was invalid.  Please correct your SQL"
@@ -2940,49 +2778,40 @@ msgid "N/A"
 msgstr "N/B"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Time Range"
 msgid "Time unit"
-msgstr "Tijdreeks"
+msgstr "Tijdseenheid"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "%d Days"
 msgid "Days"
-msgstr "%d Dagen"
+msgstr "Dagen"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Hours"
-msgstr "%d Uur"
+msgstr "Uren"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Minutes"
-msgstr "1 Minuut"
+msgstr "Minuten"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "Beschrijf deze waarschuwing."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alarm Destination"
-msgstr "Behoud van syslog-waarschuwingen"
+msgstr "Alarmbestemming"
 
 #: syslog_alerts.php
 msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
-msgstr ""
+msgstr "Kies Syslog-alarmering of Alarm Manager. Voor Alarm Manager moet doorsturen ook zijn ingeschakeld in de Syslog-instellingen. E-mail blijft behouden als terugvaloptie; opdrachtacties worden niet uitgevoerd voor Alarm Manager-regels."
 
 #: syslog_alerts.php
 msgid "Alarm Manager"
-msgstr ""
+msgstr "Alarmbeheer"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Syslog Alerts"
 msgid "Syslog Alarming"
-msgstr "Syslog-waarschuwingen"
+msgstr "Syslog-alarmering"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -3013,28 +2842,24 @@ msgid "Individual"
 msgstr "Individu"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
-msgstr "Voor de 'Drempel'-methode wordt een waarschuwing geactiveerd als het aantal geziene waarden boven deze waarde ligt."
+msgstr "Voor de methode 'Drempelwaarde' wordt een melding geactiveerd wanneer het waargenomen aantal deze waarde bereikt."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Threshold Logs"
 msgid "Threshold Window"
-msgstr "Logboeken op drempelwaarde"
+msgstr "Drempelwaardevenster"
 
 #: syslog_alerts.php
 msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
-msgstr ""
+msgstr "Tel overeenkomsten over collector-cycli binnen dit voortschrijdende venster, op basis van de verwerkingstijd van de collector. Voer 0 in om alleen de huidige cyclus te tellen."
 
 #: syslog_alerts.php
 msgid "Recover After Quiet Period"
-msgstr ""
+msgstr "Herstellen na stille periode"
 
 #: syslog_alerts.php
 msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
-msgstr ""
+msgstr "Tijd zonder overeenkomende berichten voordat de overschrijding wordt gewist, de teller wordt gereset en deze regel opnieuw wordt ingeschakeld. Elk overeenkomend bericht start deze timer opnieuw."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -3042,7 +2867,7 @@ msgstr "Wedstrijd Type"
 
 #: syslog_alerts.php
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
-msgstr ""
+msgstr "Kies Filterbouwer voor veilige alarmlogica met meerdere voorwaarden. SQL-expressie blijft behouden voor oudere regels."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Message Match String"
@@ -3050,7 +2875,7 @@ msgstr "Bericht Match String"
 
 #: syslog_alerts.php
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
-msgstr ""
+msgstr "Stel filtervoorwaarden samen of voer een SQL-expressie in om syslog-berichten te matchen."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_removal.php
 #: syslog_reports.php
@@ -3070,120 +2895,112 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Stuur deze waarschuwing niet opnieuw voor dezelfde host, totdat deze hoeveelheid tijd is verstreken. Voor op drempels gebaseerde alarmen geldt dit voor alle hosts."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Notification Cooldown"
-msgstr "Notificatielijst"
+msgstr "Wachttijd tussen meldingen"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
-msgstr ""
+msgstr "Aantal minuten om elke volgende melding van deze regel en rapportagebereik te onderdrukken."
 
 #: syslog_alerts.php
 msgid "1 day"
-msgstr ""
+msgstr "1 dag"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 hour"
-msgstr "%d Uren"
+msgstr "1 uur"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 minute"
-msgstr "1 Minuut"
+msgstr "1 minuut"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "15 minutes"
-msgstr "1 Minuut"
+msgstr "15 minuten"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "30 minutes"
-msgstr "1 Minuut"
+msgstr "30 minuten"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "4 hours"
-msgstr "%d Uren"
+msgstr "4 uur"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "5 minutes"
-msgstr "1 Minuut"
+msgstr "5 minuten"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Use global setting"
-msgstr "Instellingen voor Syslog %s"
+msgstr "Globale instelling gebruiken"
 
 #: syslog_alerts.php
 msgid "Duplicate Suppression"
-msgstr ""
+msgstr "Onderdrukking van duplicaten"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress the same matched message set."
-msgstr ""
+msgstr "Aantal minuten om dezelfde overeenkomende berichtenset te onderdrukken."
 
 #: syslog_alerts.php
 msgid "Maintenance Window"
-msgstr ""
+msgstr "Onderhoudsvenster"
 
 #: syslog_alerts.php
 msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
-msgstr ""
+msgstr "Kies of deze regel het algemene onderhoudstijdvenster of een eigen tijdvenster gebruikt."
 
 #: syslog_alerts.php
 msgid "Do not mute this rule"
-msgstr ""
+msgstr "Deze regel niet dempen"
 
 #: syslog_alerts.php
 msgid "Use global timeframe"
-msgstr ""
+msgstr "Globaal tijdsbestek gebruiken"
 
 #: syslog_alerts.php
 msgid "Use rule timeframe"
-msgstr ""
+msgstr "Tijdsbestek van regel gebruiken"
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Days"
-msgstr ""
+msgstr "Onderhoudsdagen voor regel"
 
 #: syslog_alerts.php
 msgid "Days for this rule timeframe, when Use rule timeframe is selected."
-msgstr ""
+msgstr "Dagen voor dit regeltijdvenster, wanneer Regeltijdvenster gebruiken is geselecteerd."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Starts"
-msgstr ""
+msgstr "Begin regelonderhoud"
 
 #: syslog_alerts.php
 msgid "Local start time for this rule timeframe."
-msgstr ""
+msgstr "Lokale starttijd voor het tijdsbestek van deze regel."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Ends"
-msgstr ""
+msgstr "Einde regelonderhoud"
 
 #: syslog_alerts.php
 msgid "Local end time for this rule timeframe."
-msgstr ""
+msgstr "Lokale eindtijd voor het tijdsbestek van deze regel."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Starts"
-msgstr ""
+msgstr "Eenmalig regelonderhoud begint"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Optionele lokale datum en tijd om het dempen van deze regel te starten. Formaat: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Ends"
-msgstr ""
+msgstr "Eenmalig regelonderhoud eindigt"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Optionele lokale datum en tijd om het dempen van deze regel te stoppen. Formaat: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_reports.php
 msgid "Notes"
@@ -3199,7 +3016,7 @@ msgstr "E-mailopties"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Notification List"
-msgstr "Notificatielijst"
+msgstr "Meldingslijst"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
@@ -3230,58 +3047,52 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr "Moet er een helpdeskticket worden geopend voor deze waarschuwing.  OPMERKING: Het script voor de opdracht Ticket wordt voor het gemak gevuld met verschillende 'ALERT_'-omgevingsvariabelen."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alert command"
-msgstr "Afhandeling van verwijdering"
+msgstr "Waarschuwingsopdracht"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Wanneer een waarschuwing wordt geactiveerd, voert u de volgende opdracht uit.  De volgende vervangende variabelen zijn beschikbaar <b>: '&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Houd er rekening mee dat <b>'&lt;HOSTNAME&gt;'</b> alleen beschikbaar is voor individuele drempelwaarden.  Deze vervangende waarden kunnen worden weergegeven op de opdrachtregel of worden verzameld uit de omgeving van het script.  Wanneer deze variabelen worden gebruikt vanuit de omgeving, worden ze voorafgegaan door 'ALERT_'."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Recovery command"
-msgstr "%d Records"
+msgstr "Herstelopdracht"
 
 #: syslog_alerts.php
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
-msgstr ""
+msgstr "Optionele opdracht om uit te voeren wanneer deze drempelwaarde herstelt na de rustperiode. Gebruikt dezelfde vervangingsvariabelen als de waarschuwingsopdracht. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID komt overeen met de overschrijdingsopdracht. Mislukte opdrachten worden opnieuw geprobeerd. Laat leeg om uit te schakelen."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Test rule"
-msgstr "Regels voor waarschuwingen"
+msgstr "Regel testen"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Rule Test Preview"
-msgstr ""
+msgstr "Voorbeeld van regeltest"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Value"
-msgstr ""
+msgstr "Waarde"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Enter a value"
-msgstr "Voer een zoekterm in"
+msgstr "Voer een waarde in"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Match"
-msgstr "Wedstrijd Type"
+msgstr "Overeenkomst"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
-msgstr ""
+msgstr "Uitsluiten"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Enter a nonnegative integer"
-msgstr "Voer een zoekterm in"
+msgstr "Voer een niet-negatief geheel getal in"
 
 #: syslog_alerts.php
 msgid "Alarm filter conditions"
-msgstr ""
+msgstr "Alarmfiltervoorwaarden"
 
 #: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_reports.php
@@ -3362,11 +3173,11 @@ msgstr "Waarschuwingsregel importeren"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
-msgstr ""
+msgstr "Import geweigerd: het bestand is leeg, ongeldig of bevat een ander type Syslog-object."
 
 #: syslog_alerts.php
 msgid "Import rejected: invalid alarm destination."
-msgstr ""
+msgstr "Import geweigerd: ongeldige alarmbestemming."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
@@ -3380,7 +3191,7 @@ msgstr "LET OP: Alert '%s' %s!"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
 msgid "Updated"
-msgstr "Bijgewerkt"
+msgstr "Bijwerken"
 
 #: syslog_alerts.php
 #, php-format
@@ -3393,484 +3204,450 @@ msgstr "Bijwerken"
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Select a valid owner."
-msgstr ""
+msgstr "Selecteer een geldige eigenaar."
 
 #: syslog_dashboards.php
 msgid "Unable to save the dashboard. Please try again."
-msgstr ""
+msgstr "Kan het dashboard niet opslaan. Probeer het opnieuw."
 
 #: syslog_dashboards.php
 msgid "Enter a dashboard name between 1 and 128 characters."
-msgstr ""
+msgstr "Voer een dashboardnaam in tussen 1 en 128 tekens."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
-msgstr ""
+msgstr "Eigenaar"
 
 #: syslog_dashboards.php
 msgid "Shared"
-msgstr ""
+msgstr "Gedeeld"
 
 #: syslog_dashboards.php
 msgid "Panels"
-msgstr ""
+msgstr "Panelen"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "deleted user"
-msgstr "Geselecteerde waarschuwing"
+msgstr "verwijderde gebruiker"
 
 #: syslog_dashboards.php
 msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
-msgstr ""
+msgstr "Nog geen dashboards. Gebruikers maken ze aan via het tabblad Dashboard van Syslog."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
-msgstr "Klik op 'Doorgaan' om de volgende Syslog-waarschuwingsregel(s) te verwijderen."
+msgstr "Klik op 'Doorgaan' om de volgende dashboards en al hun panelen te verwijderen."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Delete Dashboard(s)"
-msgstr "Syslog-rapport(en) verwijderen"
+msgstr "Dashboard(s) verwijderen"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Dashboard(s)."
-msgstr "Klik op 'Doorgaan' om de volgende syslog-waarschuwingsregel(s) te exporteren."
+msgstr "Klik op 'Doorgaan' om de volgende dashboard(s) te exporteren."
 
 #: syslog_dashboards.php
 msgid "Export Dashboard(s)"
-msgstr ""
+msgstr "Dashboard(s) exporteren"
 
 #: syslog_dashboards.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Dashboard(s)."
-msgstr ""
+msgstr "OPMERKING: %d dashboard(s) geïmporteerd en %d bijgewerkt."
 
 #: syslog_dashboards.php
 #, php-format
 msgid "ERROR: %d Dashboard(s) failed to import."
-msgstr ""
+msgstr "FOUT: Het importeren van %d dashboard(s) is mislukt."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Import Dashboard from Local File"
-msgstr "Rapportregel importeren uit lokaal bestand"
+msgstr "Dashboard importeren uit lokaal bestand"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
-msgstr "Als het XML-bestand met de definitiegegevens van de rapportregel zich op uw lokale computer bevindt, selecteert u het hier."
+msgstr "Als het JSON-bestand met de definitiegegevens van het dashboard zich op uw lokale computer bevindt, selecteert u het hier."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Import Dashboard from Text"
-msgstr "Rapportregel importeren uit tekst"
+msgstr "Dashboard importeren uit tekst"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
-msgstr "Als u het XML-bestand met de definitiegegevens van de rapportregel als tekst hebt, kunt u dit in dit vak plakken om het te importeren."
+msgstr "Als u het JSON-bestand met de definitiegegevens van het dashboard als tekst heeft, kunt u het in dit vak plakken om het te importeren."
 
 #: syslog_dashboards.php
 msgid "Import Dashboard"
-msgstr ""
+msgstr "Dashboard importeren"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Users"
-msgstr "Alle records"
+msgstr "Alle gebruikers"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Groups"
-msgstr "Alle programma&#39;s"
+msgstr "Alle groepen"
 
 #: syslog_dashboards.php
 msgid "Edit Dashboard"
-msgstr ""
+msgstr "Dashboard bewerken"
 
 #: syslog_dashboards.php
 msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
-msgstr ""
+msgstr "De naam die wordt weergegeven in de keuzelijst Dashboards op het tabblad Syslog-dashboard."
 
 #: syslog_dashboards.php
 msgid "The account that owns this dashboard and can manage its panels."
-msgstr ""
+msgstr "Het account dat eigenaar is van dit dashboard en de panelen ervan kan beheren."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Users"
-msgstr ""
+msgstr "Gedeeld met gebruikers"
 
 #: syslog_dashboards.php
 msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
-msgstr ""
+msgstr "Gebruikers die dit dashboard mogen bekijken naast de eigenaar en eventuele globale deling. 'Alle gebruikers' deelt het met iedereen."
 
 #: syslog_dashboards.php
 msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
-msgstr ""
+msgstr "Groepen die dit dashboard mogen bekijken naast de eigenaar en eventuele globale deling. 'Alle groepen' deelt het met iedereen."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Groups"
-msgstr ""
+msgstr "Gedeeld met groepen"
 
 #: syslog_dashboards.php
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
-msgstr ""
+msgstr "Hernoemen geldt voor elke kijker van dit dashboard. Panelen worden door hun eigenaren beheerd via het tabblad Syslog Dashboard."
 
 #: syslog_device_rules.php
 msgid "Choose a future pause end date and time."
-msgstr ""
+msgstr "Kies een einddatum en -tijd voor de pauze in de toekomst."
 
 #: syslog_device_rules.php
 msgid "A device name is required."
-msgstr ""
+msgstr "Een apparaatnaam is vereist."
 
 #: syslog_device_rules.php
-#, fuzzy, php-format
+#, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
-msgstr "Klik op 'Doorgaan' om de volgende Syslog-waarschuwingsregel(s) uit te schakelen."
+msgstr "Klik op Doorgaan om de volgende apparaatwaarschuwingsregel(s) te %s."
 
 #: syslog_device_rules.php
 msgid "Do not pass any priority"
-msgstr ""
+msgstr "Geen prioriteit doorgeven"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "%s and more urgent"
-msgstr ""
+msgstr "%s en urgenter"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule"
-msgstr "Nieuwe waarschuwingsregel"
+msgstr "Apparaatwaarschuwingsregel"
 
 #: syslog_device_rules.php
 msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
-msgstr ""
+msgstr "Doorzoek huidige Syslog-apparaten terwijl u typt, of voer een IP-adres of hostnaam in."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Alert Handling"
-msgstr "Afhandeling van verwijdering"
+msgstr "Afhandeling van waarschuwingen"
 
 #: syslog_device_rules.php
 msgid "Do not pause"
-msgstr ""
+msgstr "Niet pauzeren"
 
 #: syslog_device_rules.php
 msgid "Pause all non-exempt alerts until a date, or indefinitely."
-msgstr ""
+msgstr "Pauzeer alle niet-uitgezonderde meldingen tot een bepaalde datum of voor onbepaalde tijd."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Pause indefinitely"
-msgstr "Onbepaald"
+msgstr "Voor onbepaalde tijd pauzeren"
 
 #: syslog_device_rules.php
 msgid "Pause until"
-msgstr ""
+msgstr "Pauzeren tot"
 
 #: syslog_device_rules.php
 msgid "Local date and time, YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Lokale datum en tijd, JJJJ-MM-DD UU:MM."
 
 #: syslog_device_rules.php
 msgid "Pause Ends"
-msgstr ""
+msgstr "Pauze eindigt"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Always Allow Priority"
-msgstr "Alle prioriteiten"
+msgstr "Prioriteit altijd toestaan"
 
 #: syslog_device_rules.php
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
-msgstr ""
+msgstr "Deze prioriteiten gaan door deze apparaatpauze en onderhoudsvensters heen. Kritiek en urgenter is een gebruikelijke keuze voor platinum-apparaten."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Allow During Maintenance"
-msgstr "Gepartitioneerde tafel"
+msgstr "Toestaan tijdens onderhoud"
 
 #: syslog_device_rules.php
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
-msgstr ""
+msgstr "Sta alle prioriteiten van dit apparaat toe tijdens een waarschuwingsonderhoudsvenster. De bovenstaande prioriteitsuitzondering blijft van toepassing als dit op Nee staat."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [edit]"
-msgstr "Nieuwe waarschuwingsregel"
+msgstr "Apparaatwaarschuwingsregel [bewerken]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [new]"
-msgstr "Nieuwe waarschuwingsregel"
+msgstr "Apparaatwaarschuwingsregel [nieuw]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule Filters"
-msgstr "Syslog Alert Filters"
+msgstr "Filters voor apparaatwaarschuwingsregels"
 
 #: syslog_device_rules.php syslog_removal.php
 msgid "Rules"
 msgstr "Regels"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Handling"
-msgstr "Afhandeling van verwijdering"
+msgstr "Afhandeling"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Maintenance"
-msgstr "Gepartitioneerde tafel"
+msgstr "Onderhoud"
 
 #: syslog_device_rules.php
 msgid "Pass Through"
-msgstr ""
+msgstr "Doorgeven"
 
 #: syslog_device_rules.php
 msgid "No device alert rules found."
-msgstr ""
+msgstr "Geen apparaatmeldingsregels gevonden."
 
 #: syslog_device_rules.php
 msgid "Not paused"
-msgstr ""
+msgstr "Niet gepauzeerd"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Paused indefinitely"
-msgstr "Onbepaald"
+msgstr "Voor onbepaalde tijd gepauzeerd"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "Paused until %s"
-msgstr ""
+msgstr "Gepauzeerd tot %s"
 
 #: syslog_device_rules.php
 msgid "and more urgent"
-msgstr ""
+msgstr "en urgenter"
 
 #: syslog_device_rules.php
 msgid "Allow all"
-msgstr ""
+msgstr "Alles toestaan"
 
 #: syslog_device_rules.php
 msgid "Use priority exception"
-msgstr ""
+msgstr "Prioriteitsuitzondering gebruiken"
 
 #: syslog_recommendations.php
 #, php-format
 msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
-msgstr ""
+msgstr "De aanbeveling is niet opgeslagen omdat %s. Voer een identificatie zonder spaties in en ten minste een uitleg of een aanbevolen actie."
 
 #: syslog_recommendations.php
 msgid "A recommendation for this vendor and identifier already exists."
-msgstr ""
+msgstr "Er bestaat al een aanbeveling voor deze leverancier en identifier."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
-msgstr ""
+msgstr "OPMERKING: De id %s bevat andere tekens dan letters, cijfers, _ . - / en een optionele letterlijke voorloop-%%, zodat deze nooit overeen kan komen met een syslog-bericht. Vervang tijdelijke aanduidingen zoals # of alternatieven zoals A|B door de exacte code."
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Recommendation(s)."
-msgstr "Klik op 'Doorgaan' om de volgende syslog-waarschuwingsregel(s) te exporteren."
+msgstr "Klik op 'Doorgaan' om de volgende aanbeveling(en) te exporteren."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Click 'Continue' to Delete the following Syslog Report(s)."
 msgid "Click 'Continue' to Delete the following Recommendation(s)."
-msgstr "Klik op 'Doorgaan' om de volgende Syslog-rapporten te verwijderen."
+msgstr "Klik op 'Doorgaan' om de volgende aanbeveling(en) te verwijderen."
 
 #: syslog_recommendations.php
 msgid "Export requires the PHP zlib extension to create a JSON gzip file."
-msgstr ""
+msgstr "Voor exporteren is de PHP zlib-extensie vereist om een JSON-gzip-bestand te maken."
 
 #: syslog_recommendations.php
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
-msgstr ""
+msgstr "Import geweigerd: het bestand is leeg, te groot of geen geldig JSON-document met aanbevelingen."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
-msgstr ""
+msgstr "OPMERKING: %d toegevoegd, %d bijgewerkt en %d bestaande aanbeveling(en) ongewijzigd gelaten."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
-msgstr ""
+msgstr "FOUT: %d aanbeveling(en) zijn geweigerd (bijvoorbeeld %s). Elke aanbeveling staat met de reden vermeld in het Cacti-logboek."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
-msgstr ""
+msgstr "FOUT: %d aanbeveling(en) konden niet worden opgeslagen. Elke aanbeveling staat vermeld in het Cacti-logboek."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
-msgstr ""
+msgstr "OPMERKING: %d geïmporteerde aanbeveling(en) hebben id's met tekens zoals | of # die nooit in een berichtwoord voorkomen, zodat ze niet kunnen overeenkomen totdat ze zijn bewerkt. Stel Kan overeenkomen in op Nee om ze weer te geven."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Local File"
 msgid "Import Recommendations from Local File"
-msgstr "Rapportregel importeren uit lokaal bestand"
+msgstr "Aanbevelingen importeren uit lokaal bestand"
 
 #: syslog_recommendations.php
 msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
-msgstr ""
+msgstr "Selecteer een .json- of .json.gz-bestand op uw lokale computer. Gebruik de functie Exporteren om de verwachte indeling te bekijken: een lijst met records met vendor, identifier, component, severity, message, explanation, recommended_action en reference."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "Import Recommendations from Text"
-msgstr "Rapportregel importeren uit tekst"
+msgstr "Aanbevelingen importeren uit tekst"
 
 #: syslog_recommendations.php
 msgid "Alternatively, paste the JSON document into this box."
-msgstr ""
+msgstr "Plak anders het JSON-document in dit vak."
 
 #: syslog_recommendations.php
 msgid "Existing Recommendations"
-msgstr ""
+msgstr "Bestaande aanbevelingen"
 
 #: syslog_recommendations.php
 msgid "A recommendation is the same as an existing one when its vendor and identifier match."
-msgstr ""
+msgstr "Een aanbeveling is gelijk aan een bestaande wanneer de leverancier en identifier overeenkomen."
 
 #: syslog_recommendations.php
 msgid "Keep the existing recommendation"
-msgstr ""
+msgstr "De bestaande aanbeveling behouden"
 
 #: syslog_recommendations.php
 msgid "Replace it with the imported one"
-msgstr ""
+msgstr "Vervangen door de geïmporteerde"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Data"
 msgid "Import Recommendations"
-msgstr "Rapportgegevens importeren"
+msgstr "Aanbevelingen importeren"
 
 #: syslog_recommendations.php
 msgid "Importing, please wait..."
-msgstr ""
+msgstr "Bezig met importeren, een ogenblik geduld..."
 
 #: syslog_recommendations.php
 msgid "Not specified"
-msgstr ""
+msgstr "Niet opgegeven"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Recommendation"
-msgstr "Verwijderde records"
+msgstr "Aanbeveling"
 
 #: syslog_recommendations.php
 msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
-msgstr ""
+msgstr "De leverancier van het apparaat of de software die dit bericht logt, bijvoorbeeld Cisco of Juniper."
 
 #: syslog_recommendations.php
 msgid "Vendor"
-msgstr ""
+msgstr "Leverancier"
 
 #: syslog_recommendations.php
 msgid "Identifier"
-msgstr ""
+msgstr "Identifier"
 
 #: syslog_recommendations.php
 msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
-msgstr ""
+msgstr "De berichtcode waarnaar gezocht moet worden, bijvoorbeeld %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN of 4625. Deze moet overeenkomen met een volledig woord van het syslog-bericht (letters, cijfers en _ . - /); een voorloop-% is letterlijk en moet precies zo overeenkomen. De overeenkomst is niet hoofdlettergevoelig. Zie Hoe aanbevelingen worden vergeleken op de lijstpagina."
 
 #: syslog_recommendations.php
 msgid "Component"
-msgstr ""
+msgstr "Component"
 
 #: syslog_recommendations.php
 msgid "The facility, module or subsystem that raises the message."
-msgstr ""
+msgstr "De faciliteit, module of het subsysteem dat het bericht genereert."
 
 #: syslog_recommendations.php
 msgid "The severity the vendor documents for this message."
-msgstr ""
+msgstr "De ernst die de leverancier voor dit bericht documenteert."
 
 #: syslog_recommendations.php
 msgid "The message format as documented, including its variable placeholders."
-msgstr ""
+msgstr "De gedocumenteerde berichtindeling, inclusief de variabele plaatshouders."
 
 #: syslog_recommendations.php
 msgid "What the message means."
-msgstr ""
+msgstr "Wat het bericht betekent."
 
 #: syslog_recommendations.php
 msgid "What an operator should do about it."
-msgstr ""
+msgstr "Wat een beheerder eraan moet doen."
 
 #: syslog_recommendations.php
 msgid "Links to the vendor documentation, one per line."
-msgstr ""
+msgstr "Koppelingen naar de leveranciersdocumentatie, één per regel."
 
 #: syslog_recommendations.php
 msgid "Recommendation [edit]"
-msgstr ""
+msgstr "Aanbeveling [bewerken]"
 
 #: syslog_recommendations.php
 msgid "Recommendation [new]"
-msgstr ""
+msgstr "Aanbeveling [nieuw]"
 
 #: syslog_recommendations.php
 msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
-msgstr ""
+msgstr "Een gloeilampje vóór het bericht markeert overeenkomende aanbevelingen op de tabbladen Systeemlogboeken en Waarschuwingslogboeken. Klik op het bericht om ze in het detailpaneel te lezen. Aanwijzen doet nooit een verzoek naar de server."
 
 #: syslog_recommendations.php
 msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
-msgstr ""
+msgstr "Alleen de kolom <b>Identifier</b> wordt gebruikt voor overeenkomsten. De leverancier, component, ernst, het bericht en de toelichting worden weergegeven in het detailpaneel, maar worden nooit doorzocht."
 
 #: syslog_recommendations.php
 msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
-msgstr ""
+msgstr "De eerste 2.048 tekens van het bericht worden opgesplitst in woorden. Een woord is een reeks letters, cijfers en de tekens _ . - / die mag beginnen met %. Elk ander teken, zoals een spatie, dubbele punt, komma of haakje, beëindigt een woord. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> zijn de woorden <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> en <code>down</code>."
 
 #: syslog_recommendations.php
 msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
-msgstr ""
+msgstr "Een identifier komt overeen wanneer deze <b>exact gelijk is aan één heel woord</b>, ongeacht hoofdletters/kleine letters. Het is geen zoekopdracht met \"bevat\", \"begint met\" of \"eindigt met\", en er zijn geen jokertekens: <code>LINK-3-UPDOWN</code> komt niet overeen met het woord <code>LINK-3-UPDOWN-EXT</code>, en <code>UPDOWN</code> komt niet overeen met <code>%LINK-3-UPDOWN</code>."
 
 #: syslog_recommendations.php
 msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
-msgstr ""
+msgstr "Een voorloopteken <b>%</b> is letterlijk, geen jokerteken, en moet overeenkomen met het berichtwoord zoals geschreven. Een identifier <code>%LINK-3-UPDOWN</code> komt overeen met het berichtwoord <code>%LINK-3-UPDOWN</code>, niet met <code>LINK-3-UPDOWN</code>; een identifier zonder het voorvoegsel komt alleen overeen met het woord zonder voorvoegsel."
 
 #: syslog_recommendations.php
 msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
-msgstr ""
+msgstr "Wanneer de Syslog-host een Cacti-apparaat is waarvan de leverancier wordt herkend aan de SNMP-systeembeschrijving of het apparaatsjabloon, en er aanbevelingen voor die leverancier bestaan, worden alleen de aanbevelingen van die leverancier en die zonder leverancier gecontroleerd. Anders worden alle leveranciers gecontroleerd, maar een identificatie die alleen uit cijfers bestaat komt alleen overeen met aanbevelingen zonder leverancier. Wanneer meerdere aanbevelingen overeenkomen, worden de langste identificaties eerst getoond, tot maximaal drie."
 
 #: syslog_recommendations.php
 msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
-msgstr ""
+msgstr "Identifiers die andere tekens bevatten, zoals de tijdelijke aanduiding <code>#</code> voor een slot of de alternatieven met <code>|</code> in sommige leveranciersdocumentatie (bijvoorbeeld <code>%ASA|PIX-3-331001</code>), worden bewaard en geëxporteerd maar kunnen nooit overeenkomen. Stel <b>Kan overeenkomen</b> in op Nee om ze weer te geven en bewerk ze naar de exacte code, bijvoorbeeld <code>%ASA-3-331001</code>."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "How Recommendations Are Matched"
-msgstr "Rapportregel importeren uit tekst"
+msgstr "Hoe aanbevelingen worden gekoppeld"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Can Match"
-msgstr "Wedstrijd Type"
+msgstr "Kan overeenkomen"
 
 #: syslog_recommendations.php
 msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
-msgstr ""
+msgstr "Of de identificatie de vorm van een berichtwoord heeft, zodat de berichtopzoeking deze ooit kan vinden"
 
 #: syslog_recommendations.php
 msgid "Export every recommendation that matches the filters"
-msgstr ""
+msgstr "Elke aanbeveling exporteren die aan de filters voldoet"
 
 #: syslog_recommendations.php
 msgid "No recommendations found."
-msgstr ""
+msgstr "Geen aanbevelingen gevonden."
 
 #: syslog_removal.php
 msgid "Reprocess"
@@ -3995,9 +3772,8 @@ msgid "Space for Notes on the Removal rule"
 msgstr "Ruimte voor opmerkingen over de verwijderingsregel"
 
 #: syslog_removal.php
-#, fuzzy
 msgid "Removal filter conditions"
-msgstr "Opmerkingen over verwijderingsregels"
+msgstr "Filtervoorwaarden voor verwijdering"
 
 #: syslog_removal.php
 msgid "Syslog Removal Rule Filters"
@@ -4108,7 +3884,7 @@ msgstr "Is dit rapport ingeschakeld?"
 
 #: syslog_reports.php
 msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
-msgstr ""
+msgstr "Geef aan hoe u deze tekenreeks wilt laten overeenkomen. Filter Builder combineert voorwaarden op bericht, host, programma, faciliteit en prioriteit."
 
 #: syslog_reports.php
 msgid "Frequency"
@@ -4132,7 +3908,7 @@ msgstr "Formaat van het rapport"
 
 #: syslog_reports.php
 msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
-msgstr ""
+msgstr "Stel filtervoorwaarden samen of voer de tekst of SQL-expressie in om syslog-berichten te matchen."
 
 #: syslog_reports.php
 msgid "The information that will be contained in the body of the Report."
@@ -4147,15 +3923,12 @@ msgid "Space for Notes on the Report"
 msgstr "Ruimte voor notities bij het rapport"
 
 #: syslog_reports.php
-#, fuzzy
-#| msgid "Report Edit [new]"
 msgid "Report Test Preview"
-msgstr "Rapport bewerken [nieuw]"
+msgstr "Testvoorbeeld van rapport"
 
 #: syslog_reports.php
-#, fuzzy
 msgid "Report filter conditions"
-msgstr "Opmerkingen over verwijderingsregels"
+msgstr "Filtervoorwaarden voor rapport"
 
 #: syslog_reports.php
 msgid "Syslog Report Filters"
@@ -4167,7 +3940,7 @@ msgstr "Rapportagenaam"
 
 #: syslog_reports.php
 msgid "Last Sent"
-msgstr "Voor het laatst verzonden"
+msgstr "Laatst verzonden"
 
 #: syslog_reports.php
 msgid "Reports"
@@ -4209,108 +3982,104 @@ msgstr "FOUT: Rapporteer regel '%s' %s mislukt!"
 
 #: syslog_saved_searches.php
 msgid "Unable to save the template. Please try again."
-msgstr ""
+msgstr "Kan het sjabloon niet opslaan. Probeer het opnieuw."
 
 #: syslog_saved_searches.php
 msgid "Enter a template name between 1 and 128 characters."
-msgstr ""
+msgstr "Voer een sjabloonnaam in tussen 1 en 128 tekens."
 
 #: syslog_saved_searches.php
 msgid "Templates"
-msgstr ""
+msgstr "Sjablonen"
 
 #: syslog_saved_searches.php
 msgid "Query"
-msgstr ""
+msgstr "Query"
 
 #: syslog_saved_searches.php
 msgid "No shared search templates. Save a search for all users from Syslog to create one."
-msgstr ""
+msgstr "Geen gedeelde zoeksjablonen. Sla een zoekopdracht voor alle gebruikers op vanuit Syslog om er een aan te maken."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Saved Search Template(s)."
-msgstr "Klik op 'Doorgaan' om de volgende syslog-waarschuwingsregel(s) te exporteren."
+msgstr "Klik op 'Doorgaan' om de volgende opgeslagen zoeksjablo(o)n(en) te exporteren."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
-msgstr "Klik op 'Doorgaan' om de volgende Syslog-waarschuwingsregel(s) te verwijderen."
+msgstr "Klik op 'Doorgaan' om de volgende opgeslagen zoeksjablonen te verwijderen."
 
 #: syslog_saved_searches.php
 msgid "Delete Saved Search Template(s)"
-msgstr ""
+msgstr "Opgeslagen zoekopdrachtsjabloon/-sjablonen verwijderen"
 
 #: syslog_saved_searches.php
 msgid "Export Saved Search Template(s)"
-msgstr ""
+msgstr "Opgeslagen zoeksjabloon/-sjablonen exporteren"
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
-msgstr ""
+msgstr "OPMERKING: %d opgeslagen zoeksjabloon/-sjablonen geïmporteerd en %d bijgewerkt."
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "ERROR: %d Saved Search Template(s) failed to import."
-msgstr ""
+msgstr "FOUT: Het importeren van %d opgeslagen zoekopdrachtsjabloon/-sjablonen is mislukt."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Import Saved Search Template from Local File"
-msgstr "Waarschuwingsregel importeren uit lokaal bestand"
+msgstr "Opgeslagen zoeksjabloon importeren uit lokaal bestand"
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
-msgstr "Als het XML-bestand met de definitiegegevens van de waarschuwingsregel zich op uw lokale computer bevindt, selecteert u het hier."
+msgstr "Als het JSON-bestand met de definitiegegevens van de opgeslagen zoeksjabloon zich op uw lokale computer bevindt, selecteert u het hier."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Import Saved Search Template from Text"
-msgstr "Waarschuwingsregel importeren uit tekst"
+msgstr "Opgeslagen zoeksjabloon importeren uit tekst"
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
-msgstr "Als u het XML-bestand met de definitiegegevens van de rapportregel als tekst hebt, kunt u dit in dit vak plakken om het te importeren."
+msgstr "Als u het JSON-bestand met de definitiegegevens van de opgeslagen zoeksjabloon als tekst heeft, kunt u het in dit vak plakken om het te importeren."
 
 #: syslog_saved_searches.php
 msgid "Import Saved Search Template"
-msgstr ""
+msgstr "Opgeslagen zoeksjabloon importeren"
 
 #: syslog_saved_searches.php
 msgid "Edit Saved Search Template"
-msgstr ""
+msgstr "Opgeslagen zoekopdrachtsjabloon bewerken"
 
 #: syslog_saved_searches.php
 msgid "The name shown to all users in Saved Searches."
-msgstr ""
+msgstr "De naam die aan alle gebruikers wordt getoond in Opgeslagen zoekopdrachten."
 
 #: syslog_saved_searches.php
 msgid "The account that owns this template and can manage it in Saved Searches."
-msgstr ""
+msgstr "Het account dat eigenaar is van dit sjabloon en het kan beheren in Opgeslagen zoekopdrachten."
 
 #: syslog_saved_searches.php
 msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
-msgstr ""
+msgstr "Gebruikers die dit sjabloon mogen gebruiken naast de eigenaar. 'Alle gebruikers' deelt het met iedereen."
 
 #: syslog_saved_searches.php
 msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
-msgstr ""
+msgstr "Groepen die dit sjabloon mogen gebruiken naast de eigenaar. 'Alle groepen' deelt het met iedereen."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Search Query"
-msgstr "Zoeken"
+msgstr "Zoekopdracht"
 
 #: syslog_saved_searches.php
 msgid "Correct the query syntax to use the query builder."
-msgstr ""
+msgstr "Corrigeer de querysyntaxis om de querybouwer te gebruiken."
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
+msgstr "Kies een veld, operator en waarde. Gebruik AND, OR, NOT of Groep om de query op te bouwen. Wijzigingen gelden voor deze gedeelde sjabloon voor alle gebruikers."
+
+#~ msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+#~ msgstr "Het upgraden van de 'hoofd' syslog-tabel kan een zeer tijdrovend proces zijn.  Daarom is het aan te raden om de grootte van uw syslog-tabel te verkleinen voordat u een upgrade uitvoert, of om de achtergrondoptie te kiezen</p> <p>Als u de achtergrondoptie kiest, wordt de naam van uw verouderde syslog-tabel gewijzigd en wordt er een nieuwe syslog-tabel gemaakt.  Vervolgens wordt op de achtergrond een upgradeproces gestart.  Nogmaals, dit achtergrondproces kan behoorlijk wat tijd in beslag nemen.  Uw gegevens blijven echter wel bewaard</p> <p>Ongeacht uw keuze blijven alle bestaande verwijderings- en waarschuwingsregels behouden tijdens het upgradeproces.</p> <p>Druk op <b>'Upgrade'</b> om door te gaan met de upgrade, of op <b>'Annuleren'</b> om terug te keren naar het menu Plug-ins."
 
 #~ msgid "Partitions per Day"
 #~ msgstr "Partities per dag"
