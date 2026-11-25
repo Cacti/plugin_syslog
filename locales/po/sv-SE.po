@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2026-11-16 08:18+0000\n"
-"Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\n"
-"Language: sv-SE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Swedish <https://translate.cacti.net/projects/cacti/syslog/sv/>\nLanguage: sv-SE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -24,10 +12,9 @@ msgid "%d minutes"
 msgstr "%d minuter"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d hours"
+#, php-format
 msgid "%d hour"
-msgstr "%d timmar"
+msgstr "%d timme"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -35,10 +22,9 @@ msgid "%d hours"
 msgstr "%d timmar"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d days"
+#, php-format
 msgid "%d day"
-msgstr "%d dagar"
+msgstr "%d dag"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -48,87 +34,68 @@ msgstr "%d dagar"
 #: includes/functions.php
 #, php-format
 msgid "%d week"
-msgstr ""
+msgstr "%d vecka"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Weeks"
+#, php-format
 msgid "%d weeks"
 msgstr "%d veckor"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Month"
+#, php-format
 msgid "%d month"
 msgstr "%d månad"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Months"
+#, php-format
 msgid "%d months"
 msgstr "%d månader"
 
 #: includes/functions.php
 #, php-format
 msgid "%d year"
-msgstr ""
+msgstr "%d år"
 
 #: includes/functions.php
 #, php-format
 msgid "%d years"
-msgstr ""
-
-#: includes/functions.php
-msgid "Day Shift"
-msgstr ""
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "Last Day"
-msgid "This Day"
-msgstr "Senaste dygnet"
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "Last Week"
-msgid "This Week"
-msgstr "Senaste veckan"
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "1 Month"
-msgid "This Month"
-msgstr "1 månad"
-
-#: includes/functions.php
-#, fuzzy
-#| msgid "%d Year"
-msgid "This Year"
 msgstr "%d år"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
+msgid "Day Shift"
+msgstr "Dagskift"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "Den här dagen"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Denna vecka"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Denna månad"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "I år"
+
+#: includes/functions.php
 msgid "Previous Day"
-msgstr "Föregående"
+msgstr "Föregående dag"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
 msgid "Previous Week"
-msgstr "Föregående"
+msgstr "Föregående vecka"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
 msgid "Previous Month"
-msgstr "Föregående"
+msgstr "Föregående månad"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Previous"
 msgid "Previous Year"
-msgstr "Föregående"
+msgstr "Föregående år"
 
 #: includes/functions.php
 msgid "Syslog download"
@@ -281,10 +248,9 @@ msgid "Partition layout for %s is invalid or incomplete; partition maintenance s
 msgstr "Partitionslayouten för %s är ogiltig eller ofullständig; partitionsunderhållet har stoppats. Kontrollera partitionsmetadata med SHOW CREATE TABLE och bygg vid behov om partitionerna. Skrivningar fortsätter i säkerhetspartitionen dMaxValue."
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "remaining partition gap: %d day(s)"
+#, php-format
 msgid "remaining partition gap: %d partition(s)"
-msgstr "återstående partitionslucka: %d dag(ar)"
+msgstr "återstående partitionslucka: %d partition(er)"
 
 #: includes/functions.php
 msgid "no retention deferral"
@@ -308,22 +274,20 @@ msgstr "det gick inte att skapa partition"
 
 #: includes/functions.php
 msgid "Unknown partitioning level; choose Hourly or Daily."
-msgstr ""
+msgstr "Okänd partitioneringsnivå; välj Timvis eller Daglig."
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Syslog retention"
 msgid "The Syslog retention is invalid."
-msgstr "Lagringstid för Syslog"
+msgstr "Lagringstiden för Syslog är ogiltig."
 
 #: includes/functions.php
 msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
-msgstr ""
+msgstr "Timvis partitionering kan inte användas med obegränsad lagringstid, eftersom det skulle kräva ett obegränsat antal partitioner. Välj en lagringsperiod eller daglig partitionering."
 
 #: includes/functions.php
 #, php-format
 msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
-msgstr ""
+msgstr "%s-partitionering med %s dagars lagringstid och ett fönster för förskapande på %s dagar kräver %s partitioner per tabell, vilket överskrider databasserverns gräns på %s partitioner. Minska lagringstiden, förkorta fönstret för förskapande eller välj daglig partitionering."
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
@@ -332,21 +296,17 @@ msgstr "Dagligen"
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
-#, fuzzy
-#| msgid "Hour"
 msgid "Hourly"
-msgstr "Timme"
+msgstr "Timvis"
 
 #: includes/functions.php
 #, php-format
 msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
-msgstr ""
+msgstr "Tabellerna använder fortfarande partitioner med %s tills cli/upgrade_partitioning.php bygger om dem."
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "The preview sample could not be read."
 msgid "The partitioning level of the existing Syslog tables could not be read."
-msgstr "Förhandsgranskningsexemplet kunde inte läsas."
+msgstr "Partitioneringsnivån för de befintliga Syslog-tabellerna kunde inte läsas."
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
@@ -395,7 +355,7 @@ msgstr "Förhandsgranskningsexemplet kunde inte läsas."
 
 #: includes/functions.php
 msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
-msgstr ""
+msgstr "Förhandsvisningar av SQL-uttryck kontrollerar endast köade inkommande meddelanden. Redan bearbetade meddelanden genomsöks inte. Testning skickar inga larm."
 
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
@@ -558,17 +518,15 @@ msgstr "Händelserapport - %s"
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
-msgstr ""
+msgstr "Rapportförhandsvisningar söker bland de %d senaste lagrade meddelandena; själva rapporten täcker hela sitt tidsfönster. Testning skickar ingen e-post."
 
 #: includes/functions.php
 msgid "Grouped results are unavailable or expired. Refresh the results and try again."
-msgstr ""
+msgstr "Grupperade resultat är inte tillgängliga eller har löpt ut. Uppdatera resultaten och försök igen."
 
 #: includes/functions.php syslog.php
-#, fuzzy
-#| msgid "No device alert rules found."
 msgid "Group messages could not be loaded."
-msgstr "Inga larmregler för enheter hittades."
+msgstr "Gruppmeddelanden kunde inte läsas in."
 
 #: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -588,13 +546,12 @@ msgstr "All text"
 
 #: includes/functions.php
 msgid "Fit Column"
-msgstr ""
+msgstr "Anpassa kolumn"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "Chart"
+#, php-format
 msgid "%d Chars"
-msgstr "Diagram"
+msgstr "%d tecken"
 
 #: includes/installer.php
 msgid "Syslog Upgrade Advisor"
@@ -646,10 +603,8 @@ msgid "Timestamp Precision"
 msgstr "Tidsstämpelprecision"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system this can only be changed later by running the cli/updatedb_convert_ms.php conversion utility, which truncates the stored messages."
 msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
-msgstr "Millisekundprecision lagrar syslog-tidsstämplar med bråkdelar av sekunder i en TIMESTAMP(3)-kolumn och är endast tillgänglig i MariaDB. Sekundprecision använder en vanlig TIMESTAMP-kolumn. I ett produktionssystem kan detta senare endast ändras genom att köra konverteringsverktyget cli/updatedb_convert_ms.php, som trunkerar de lagrade meddelandena."
+msgstr "Millisekundprecision lagrar syslog-tidsstämplar med bråkdelar av sekunder i en TIMESTAMP(3)-kolumn och är endast tillgänglig i MariaDB. Sekundprecision använder en vanlig TIMESTAMP-kolumn. I ett produktionssystem, använd cli/upgrade_partitioning.php --convert-ms under ett underhållsfönster för att konvertera befintliga meddelanden utan att kassera dem."
 
 #: includes/installer.php
 msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
@@ -696,14 +651,12 @@ msgid "Choose how many days of Syslog values you wish to maintain in the databas
 msgstr "Välj hur många dagars Syslog-värden som ska sparas i databasen."
 
 #: includes/installer.php includes/settings.php
-#, fuzzy
-#| msgid "Partition health"
 msgid "Partitioning Level"
-msgstr "Partitionsstatus"
+msgstr "Partitioneringsnivå"
 
 #: includes/installer.php
 msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
-msgstr ""
+msgstr "Storleken på varje partition för tabellerna syslog och syslog_removed. Daglig rekommenderas. Timvis kräver en begränsad lagringstid, och lagringstiden tillsammans med partitioneringsnivån måste rymmas inom databasserverns partitionsgräns. För att ändra nivån senare, ändra den under Inställningar och kör cli/upgrade_partitioning.php."
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -723,8 +676,20 @@ msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "VARNING: Syslog-uppgradering är tidskrävande!!!"
 
 #: includes/installer.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Uppgraderingen av den huvudsakliga syslog-tabellen kan ta mycket lång tid. Därför rekommenderas att du antingen minskar tabellens storlek före uppgraderingen eller väljer bakgrundsalternativet.</p> <p>Om du väljer bakgrundsalternativet byter den gamla syslog-tabellen namn och en ny skapas. Därefter startas uppgraderingen i bakgrunden. Även den kan ta lång tid, men dina data bevaras.</p> <p>Alla befintliga borttagnings- och larmregler bevaras under uppgraderingen, oavsett vilket alternativ du väljer.</p> <p>Tryck på <b>'Uppgradera'</b> för att fortsätta eller <b>'Avbryt'</b> för att återgå till menyn för insticksmoduler."
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Uppgraderingen av huvudtabellen för syslog ('main') kan vara en mycket tidskrävande process. Därför rekommenderas att du antingen minskar storleken på din syslog-tabell före uppgraderingen eller väljer bakgrundsalternativet."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Om du väljer bakgrundsalternativet byts namnet på din gamla syslog-tabell och en ny syslog-tabell skapas. Därefter startas en uppgraderingsprocess i bakgrunden. Denna bakgrundsprocess kan återigen ta ganska lång tid att slutföra. Dina data kommer dock att bevaras."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Oavsett ditt val kommer alla befintliga borttagnings- och varningsregler att behållas under uppgraderingsprocessen."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Tryck på <b>'Uppgradera'</b> för att fortsätta med uppgraderingen, eller <b>'Avbryt'</b> för att återgå till menyn Insticksmoduler."
 
 #: includes/installer.php
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
@@ -816,16 +781,12 @@ msgid "Dashboards"
 msgstr "Instrumentpaneler"
 
 #: includes/navigation.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Syslog Recommendations"
-msgstr "Lagringstid för Syslog"
+msgstr "Syslog-rekommendationer"
 
 #: includes/navigation.php
-#, fuzzy
-#| msgid "Import"
 msgid "(Import)"
-msgstr "Importera"
+msgstr "(Importera)"
 
 #: includes/navigation.php
 msgid "Display Syslog in Range"
@@ -833,47 +794,43 @@ msgstr "Visa Syslog i intervall"
 
 #: includes/recommendations.php
 msgid "the identifier is empty"
-msgstr ""
+msgstr "identifieraren är tom"
 
 #: includes/recommendations.php
 msgid "the identifier is longer than 190 characters"
-msgstr ""
+msgstr "identifieraren är längre än 190 tecken"
 
 #: includes/recommendations.php
 msgid "the identifier contains spaces or line breaks"
-msgstr ""
+msgstr "identifieraren innehåller mellanslag eller radbrytningar"
 
 #: includes/recommendations.php
 msgid "it has neither an explanation nor a recommended action"
-msgstr ""
+msgstr "den varken har någon förklaring eller någon rekommenderad åtgärd"
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
-msgstr ""
+msgstr "det inte är ett JSON-objekt"
 
 #: includes/recommendations.php syslog.php
-#, fuzzy
-#| msgid "No device alert rules found."
 msgid "Recommendations could not be loaded."
-msgstr "Inga larmregler för enheter hittades."
+msgstr "Rekommendationer kunde inte läsas in."
 
 #: includes/recommendations.php
 msgid "Recommendation available - click the message for details"
-msgstr ""
+msgstr "Rekommendation tillgänglig - klicka på meddelandet för detaljer"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Explanation"
-msgstr ""
+msgstr "Förklaring"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Recommended Action"
-msgstr ""
+msgstr "Rekommenderad åtgärd"
 
 #: includes/recommendations.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Reference updates"
 msgid "Reference"
-msgstr "Referensuppdateringar"
+msgstr "Referens"
 
 #: includes/settings.php
 msgid "Monday"
@@ -963,11 +920,11 @@ msgstr "Tiden i sekunder mellan siduppdateringar."
 
 #: includes/settings.php
 msgid "Skip Total Row Count"
-msgstr ""
+msgstr "Hoppa över totalt radantal"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
-msgstr ""
+msgstr "Om den här kryssrutan är markerad räknar flikarna Systemloggar och Varningsloggar inte varje matchande post, vilket kan vara mycket resurskrävande på stora installationer. Sidan visar länkarna Föregående och Nästa istället för ett totalantal och en sidlista, och Nästa visas så länge fler poster återstår."
 
 #: includes/settings.php
 msgid "Max Report Records"
@@ -1049,10 +1006,8 @@ msgid "Choose the custom html wrapper and CSS file to use.  This file contains b
 msgstr "Välj den anpassade HTML-omslutningen och CSS-filen som ska användas. Filen innehåller HTML och CSS som omsluter rapporten. Om den innehåller mer än CSS måste du placera en särskild <REPORT>-tagg i filen. Formattaggen ersätts med rapportens innehåll. Filerna finns i katalogen ”formats”."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Data Retention Settings"
 msgid "Data Retention and Partitioning"
-msgstr "Inställningar för lagringstid"
+msgstr "Datalagring och partitionering"
 
 #: includes/settings.php
 msgid "Syslog Retention"
@@ -1064,7 +1019,7 @@ msgstr "Detta är det antal dagar som händelserna ska sparas."
 
 #: includes/settings.php
 msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
-msgstr ""
+msgstr "Storleken på varje partition för tabellerna syslog och syslog_removed. En ändring sparas här men träder i kraft först när cli/upgrade_partitioning.php bygger om båda tabellerna; fram till dess behåller partitionsunderhållet den befintliga storleken. Timvis partitionering kräver en begränsad lagringstid. Lagringstiden, fönstret för förhandsskapande och partitioneringsnivån måste tillsammans rymmas inom databasserverns partitionsgräns, annars sparas inte inställningarna."
 
 #: includes/settings.php
 msgid "Partition Pre-create Window"
@@ -1072,7 +1027,7 @@ msgstr "Fönster för förskapande av partitioner"
 
 #: includes/settings.php
 msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
-msgstr ""
+msgstr "Detta är antalet dagar av framtida partitioner som ska underhållas för partitionerade Syslog-tabeller, så att nya partitioner alltid delas från en tom dMaxValue-partition. Timvis partitionering behåller alltid minst 2 dagar."
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1268,18 +1223,16 @@ msgstr "%d sekund"
 
 #: includes/settings.php
 msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
-msgstr ""
+msgstr "Syslog-databasen är otillgänglig, så partitioneringsinställningarna kan inte kontrolleras mot dess partitionsgräns och tabeller."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "The Syslog pipeline has recovered."
 msgid "The Syslog settings were not saved."
-msgstr "Syslog-pipelinen har återhämtat sig."
+msgstr "Syslog-inställningarna sparades inte."
 
 #: includes/settings.php
 #, php-format
 msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
-msgstr ""
+msgstr "Väntande: en meddelandetabell använder fortfarande %s-partitioner. Kör cli/upgrade_partitioning.php för att tillämpa den valda nivån."
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
@@ -1404,14 +1357,12 @@ msgid "Report Rules"
 msgstr "Rapportregler"
 
 #: includes/settings.php syslog.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Remove condition"
 msgid "Recommendations"
-msgstr "Ta bort villkor"
+msgstr "Rekommendationer"
 
 #: includes/utilities.php
 msgid "Unable to connect to the Syslog database. No Device records were removed."
-msgstr ""
+msgstr "Kunde inte ansluta till Syslog-databasen. Inga enhetsposter togs bort."
 
 #: includes/utilities.php
 #, php-format
@@ -2133,15 +2084,13 @@ msgid "dMaxValue size"
 msgstr "Storlek på dMaxValue"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Partition health"
 msgid "Partitioning level"
-msgstr "Partitionsstatus"
+msgstr "Partitioneringsnivå"
 
 #: syslog.php
 #, php-format
 msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
-msgstr ""
+msgstr "%s är valt i Inställningar och träder i kraft efter att cli/upgrade_partitioning.php har byggt om tabellerna."
 
 #: syslog.php
 msgid "Last attempt"
@@ -2385,10 +2334,8 @@ msgid "Remove from page"
 msgstr "Ta bort från sidan"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Invalid dashboard interval."
 msgid "Invalid refresh interval."
-msgstr "Ogiltigt intervall för instrumentpanelen."
+msgstr "Ogiltigt uppdateringsintervall."
 
 #: syslog.php
 msgid "Unknown card."
@@ -2469,10 +2416,9 @@ msgid "Global Searches"
 msgstr "Globala sökningar"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "Default"
+#, php-format
 msgid "%s (Default)"
-msgstr "Standard"
+msgstr "%s (Standard)"
 
 #: syslog.php
 msgid "Manage"
@@ -2612,7 +2558,7 @@ msgstr "Spara sökning som"
 
 #: syslog.php
 msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
+msgstr "Använd denna sökning när du öppnar sidan och ingen sökning är aktiv ännu"
 
 #: syslog.php
 msgid "Breach"
@@ -2631,20 +2577,16 @@ msgid "Empty message"
 msgstr "Tomt meddelande"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Total messages"
 msgid "Toggle group messages"
-msgstr "Totalt antal meddelanden"
+msgstr "Växla gruppering av meddelanden"
 
 #: syslog.php
 msgid "Loading group messages..."
-msgstr ""
+msgstr "Läser in gruppmeddelanden..."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Matching Message"
 msgid "No matching messages."
-msgstr "Senaste matchande meddelande"
+msgstr "Inga matchande meddelanden."
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2671,22 +2613,16 @@ msgid "Message details"
 msgstr "Meddelandeinformation"
 
 #: syslog.php
-#, fuzzy
-#| msgid "General Settings"
 msgid "General"
-msgstr "Allmänna inställningar"
+msgstr "Allmänt"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Alert Rules"
 msgid "Alert Rule"
-msgstr "Larmregler"
+msgstr "Larmregel"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Frequency"
 msgid "Sequence"
-msgstr "Frekvens"
+msgstr "Sekvens"
 
 #: syslog.php
 msgid "Copied"
@@ -2694,7 +2630,7 @@ msgstr "Kopierad"
 
 #: syslog.php
 msgid "Copy link"
-msgstr ""
+msgstr "Kopiera länk"
 
 #: syslog.php
 msgid "Copy message"
@@ -2705,16 +2641,12 @@ msgid "Copy unavailable. Select and copy the message text."
 msgstr "Kopiering är inte tillgänglig. Markera och kopiera meddelandetexten."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Looking up recommendations…"
-msgstr "Lagringstid för Syslog"
+msgstr "Söker efter rekommendationer…"
 
 #: syslog.php
-#, fuzzy
-#| msgid "No device alert rules found."
 msgid "No recommendation matches this message."
-msgstr "Inga larmregler för enheter hittades."
+msgstr "Ingen rekommendation matchar detta meddelande."
 
 #: syslog.php syslog_alerts.php
 msgid "Actions"
@@ -3522,226 +3454,200 @@ msgstr "Använd prioritetsundantag"
 #: syslog_recommendations.php
 #, php-format
 msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
-msgstr ""
+msgstr "Rekommendationen sparades inte eftersom %s. Ange en identifierare utan mellanslag och minst en förklaring eller en rekommenderad åtgärd."
 
 #: syslog_recommendations.php
 msgid "A recommendation for this vendor and identifier already exists."
-msgstr ""
+msgstr "Det finns redan en rekommendation för denna tillverkare och identifierare."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
-msgstr ""
+msgstr "OBS: Identifieraren %s innehåller andra tecken än bokstäver, siffror, _ . - / och ett valfritt inledande %%, så den kan aldrig matcha ett syslog-meddelande. Ersätt platshållare som # eller alternativ som A|B med den exakta koden."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Click 'Continue' to Export the following Dashboard(s)."
 msgid "Click 'Continue' to Export the following Recommendation(s)."
-msgstr "Klicka på ”Fortsätt” för att exportera följande instrumentpanel(er)."
+msgstr "Klicka på 'Fortsätt' för att exportera följande rekommendation(er)."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Click 'Continue' to Delete the following Syslog Report(s)."
 msgid "Click 'Continue' to Delete the following Recommendation(s)."
-msgstr "Klicka på \"Fortsätt\" för att ta bort följande Syslog-rapport(er)."
+msgstr "Klicka på 'Fortsätt' för att ta bort följande rekommendation(er)."
 
 #: syslog_recommendations.php
 msgid "Export requires the PHP zlib extension to create a JSON gzip file."
-msgstr ""
+msgstr "Export kräver PHP-tillägget zlib för att skapa en komprimerad JSON-fil (gzip)."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
-msgstr "Importen nekades: filen är tom, ogiltig eller innehåller en annan typ av Syslog-objekt."
+msgstr "Importen avvisades: filen är tom, för stor eller inget giltigt JSON-dokument för rekommendationer."
 
 #: syslog_recommendations.php
-#, fuzzy, php-format
-#| msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+#, php-format
 msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
-msgstr "OBS: %d mall(ar) för sparade sökningar importerades och %d uppdaterades."
+msgstr "OBS: Lade till %d, uppdaterade %d och lämnade %d befintlig(a) rekommendation(er) oförändrade."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
-msgstr ""
+msgstr "FEL: %d rekommendation(er) avvisades (till exempel %s). Var och en anges med orsak i Cacti-loggen."
 
 #: syslog_recommendations.php
-#, fuzzy, php-format
-#| msgid "ERROR: %d Dashboard(s) failed to import."
+#, php-format
 msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
-msgstr "FEL: Det gick inte att importera %d instrumentpanel(er)."
+msgstr "FEL: %d rekommendation(er) kunde inte lagras. Varje post listas i Cacti-loggen."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
-msgstr ""
+msgstr "OBS: %d importerade rekommendation(er) har identifierare som innehåller tecken som | eller # vilka aldrig förekommer i ett meddelandeord, så de kan inte matcha förrän de redigeras. Ställ in Kan matcha på Nej för att lista dem."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Local File"
 msgid "Import Recommendations from Local File"
-msgstr "Importera rapportregel från lokal fil"
+msgstr "Importera rekommendationer från lokal fil"
 
 #: syslog_recommendations.php
 msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
-msgstr ""
+msgstr "Välj en .json- eller .json.gz-fil på din lokala dator. Använd exportfunktionen för att se förväntat format: en lista med poster innehållande vendor, identifier, component, severity, message, explanation, recommended_action och reference."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "Import Recommendations from Text"
-msgstr "Importera rapportregel från text"
+msgstr "Importera rekommendationer från text"
 
 #: syslog_recommendations.php
 msgid "Alternatively, paste the JSON document into this box."
-msgstr ""
+msgstr "Alternativt kan du klistra in JSON-dokumentet i denna ruta."
 
 #: syslog_recommendations.php
 msgid "Existing Recommendations"
-msgstr ""
+msgstr "Befintliga rekommendationer"
 
 #: syslog_recommendations.php
 msgid "A recommendation is the same as an existing one when its vendor and identifier match."
-msgstr ""
+msgstr "En rekommendation anses vara samma som en befintlig när tillverkare och identifierare matchar."
 
 #: syslog_recommendations.php
 msgid "Keep the existing recommendation"
-msgstr ""
+msgstr "Behåll den befintliga rekommendationen"
 
 #: syslog_recommendations.php
 msgid "Replace it with the imported one"
-msgstr ""
+msgstr "Ersätt den med den importerade"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Data"
 msgid "Import Recommendations"
-msgstr "Importera rapportdata"
+msgstr "Importera rekommendationer"
 
 #: syslog_recommendations.php
 msgid "Importing, please wait..."
-msgstr ""
+msgstr "Importerar, vänta..."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Not paused"
 msgid "Not specified"
-msgstr "Inte pausad"
+msgstr "Ej angivet"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Remove condition"
 msgid "Recommendation"
-msgstr "Ta bort villkor"
+msgstr "Rekommendation"
 
 #: syslog_recommendations.php
 msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
-msgstr ""
+msgstr "Leverantören av den enhet eller programvara som loggar detta meddelande, till exempel Cisco eller Juniper."
 
 #: syslog_recommendations.php
 msgid "Vendor"
-msgstr ""
+msgstr "Leverantör"
 
 #: syslog_recommendations.php
 msgid "Identifier"
-msgstr ""
+msgstr "Identifierare"
 
 #: syslog_recommendations.php
 msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
-msgstr ""
+msgstr "Meddelandekoden som ska sökas efter, till exempel %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN eller 4625. Den måste motsvara ett helt ord i syslog-meddelandet (bokstäver, siffror och _ . - /); ett inledande % tolkas bokstavligt och måste matcha exakt som det är skrivet. Matchningen är inte skiftlägeskänslig. Se Hur rekommendationer matchas på listsidan."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Complete"
 msgid "Component"
-msgstr "Slutförd"
+msgstr "Komponent"
 
 #: syslog_recommendations.php
 msgid "The facility, module or subsystem that raises the message."
-msgstr ""
+msgstr "Den facilitet, modul eller det delsystem som genererar meddelandet."
 
 #: syslog_recommendations.php
 msgid "The severity the vendor documents for this message."
-msgstr ""
+msgstr "Den allvarlighetsgrad som leverantören dokumenterar för detta meddelande."
 
 #: syslog_recommendations.php
 msgid "The message format as documented, including its variable placeholders."
-msgstr ""
+msgstr "Meddelandeformatet enligt dokumentationen, inklusive dess variabelplatshållare."
 
 #: syslog_recommendations.php
 msgid "What the message means."
-msgstr ""
+msgstr "Vad meddelandet betyder."
 
 #: syslog_recommendations.php
 msgid "What an operator should do about it."
-msgstr ""
+msgstr "Vad en operatör bör göra åt det."
 
 #: syslog_recommendations.php
 msgid "Links to the vendor documentation, one per line."
-msgstr ""
+msgstr "Länkar till leverantörsdokumentationen, en per rad."
 
 #: syslog_recommendations.php
 msgid "Recommendation [edit]"
-msgstr ""
+msgstr "Rekommendation [redigera]"
 
 #: syslog_recommendations.php
 msgid "Recommendation [new]"
-msgstr ""
+msgstr "Rekommendation [ny]"
 
 #: syslog_recommendations.php
 msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
-msgstr ""
+msgstr "En glödlampa före meddelandet markerar matchande rekommendationer på flikarna Systemloggar och Larmloggar. Klicka på meddelandet för att läsa dem i detaljpanelen. Hovring skickar aldrig någon begäran till servern."
 
 #: syslog_recommendations.php
 msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
-msgstr ""
+msgstr "Endast kolumnen <b>Identifierare</b> används för matchning. Leverantör, komponent, allvarlighetsgrad, meddelande och förklaring visas i informationspanelen men genomsöks aldrig."
 
 #: syslog_recommendations.php
 msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
-msgstr ""
+msgstr "De första 2 048 tecknen i meddelandet delas upp i ord. Ett ord är en följd av bokstäver, siffror och tecknen _ . - / som kan börja med %. Alla andra tecken, såsom mellanslag, kolon, komma eller hakparentes, avslutar ett ord. I <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> är orden <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> och <code>down</code>."
 
 #: syslog_recommendations.php
 msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
-msgstr ""
+msgstr "En identifierare matchar när den är <b>exakt lika med ett helt ord</b>, utan hänsyn till skiftläge. Det är inte en \"innehåller\", \"börjar med\" eller \"slutar med\"-sökning, och inga jokertecken används: <code>LINK-3-UPDOWN</code> matchar inte ordet <code>LINK-3-UPDOWN-EXT</code>, och <code>UPDOWN</code> matchar inte <code>%LINK-3-UPDOWN</code>."
 
 #: syslog_recommendations.php
 msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
-msgstr ""
+msgstr "Ett inledande <b>%</b> tolkas bokstavligt, inte som ett jokertecken, och måste matcha meddelandeordet exakt som det är skrivet. Identifieraren <code>%LINK-3-UPDOWN</code> matchar meddelandeordet <code>%LINK-3-UPDOWN</code>, inte <code>LINK-3-UPDOWN</code>; en identifierare utan prefixet matchar endast ordet utan prefix."
 
 #: syslog_recommendations.php
 msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
-msgstr ""
+msgstr "När syslog-värden är en Cacti-enhet vars leverantör känns igen från dess SNMP-systembeskrivning eller enhetsmall, och det finns rekommendationer för den leverantören, kontrolleras endast den leverantörens rekommendationer samt rekommendationer utan leverantör. Annars kontrolleras alla leverantörer, men en identifierare som enbart består av siffror matchar endast rekommendationer utan leverantör. När flera rekommendationer matchar visas de längsta identifierarna först, upp till tre stycken."
 
 #: syslog_recommendations.php
 msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
-msgstr ""
+msgstr "Identifierare som innehåller andra tecken, såsom platshållaren <code>#</code> eller alternativen <code>|</code> i viss leverantörsdokumentation (till exempel <code>%ASA|PIX-3-331001</code>), behålls och exporteras men kan aldrig matcha. Ställ in <b>Kan matcha</b> på Nej för att lista dem och redigera dem till den exakta koden, till exempel <code>%ASA-3-331001</code>."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "How Recommendations Are Matched"
-msgstr "Importera rapportregel från text"
+msgstr "Hur rekommendationer matchas"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Match"
 msgid "Can Match"
-msgstr "Matchning"
+msgstr "Kan matcha"
 
 #: syslog_recommendations.php
 msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
-msgstr ""
+msgstr "Om identifieraren har formen av ett meddelandeord, så att meddelandesökningen någonsin kan hitta den"
 
 #: syslog_recommendations.php
 msgid "Export every recommendation that matches the filters"
-msgstr ""
+msgstr "Exportera varje rekommendation som matchar filtren"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "No device alert rules found."
 msgid "No recommendations found."
-msgstr "Inga larmregler för enheter hittades."
+msgstr "Inga rekommendationer hittades."
 
 #: syslog_removal.php
 msgid "Reprocess"
@@ -3978,7 +3884,7 @@ msgstr "Är den här rapporten aktiverad?"
 
 #: syslog_reports.php
 msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
-msgstr ""
+msgstr "Ange hur du vill att denna sträng ska matchas. Filterbyggaren kombinerar villkor för meddelande, värd, program, facility och prioritet."
 
 #: syslog_reports.php
 msgid "Frequency"
@@ -4001,10 +3907,8 @@ msgid "Report Format"
 msgstr "Rapportformat"
 
 #: syslog_reports.php
-#, fuzzy
-#| msgid "Build filter conditions or enter an SQL expression to match syslog messages."
 msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
-msgstr "Skapa filtervillkor eller ange ett SQL-uttryck för att matcha Syslog-meddelanden."
+msgstr "Bygg filtervillkor, eller ange texten eller SQL-uttrycket som ska matcha syslog-meddelanden."
 
 #: syslog_reports.php
 msgid "The information that will be contained in the body of the Report."
@@ -4019,16 +3923,12 @@ msgid "Space for Notes on the Report"
 msgstr "Utrymme för anteckningar i rapporten"
 
 #: syslog_reports.php
-#, fuzzy
-#| msgid "Rule Test Preview"
 msgid "Report Test Preview"
-msgstr "Förhandsgranskning av regeltest"
+msgstr "Förhandsgranskning av rapporttest"
 
 #: syslog_reports.php
-#, fuzzy
-#| msgid "Removal filter conditions"
 msgid "Report filter conditions"
-msgstr "Filtervillkor för borttagning"
+msgstr "Filtervillkor för rapport"
 
 #: syslog_reports.php
 msgid "Syslog Report Filters"
@@ -4177,6 +4077,9 @@ msgstr "Rätta frågesyntaxen så att den kan användas med frågebyggaren."
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
 msgstr "Välj ett fält, en operator och ett värde. Använd AND, OR, NOT eller Grupp för att skapa frågan. Ändringarna gäller den här delade mallen för alla användare."
+
+#~ msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+#~ msgstr "Uppgraderingen av den huvudsakliga syslog-tabellen kan ta mycket lång tid. Därför rekommenderas att du antingen minskar tabellens storlek före uppgraderingen eller väljer bakgrundsalternativet.</p> <p>Om du väljer bakgrundsalternativet byter den gamla syslog-tabellen namn och en ny skapas. Därefter startas uppgraderingen i bakgrunden. Även den kan ta lång tid, men dina data bevaras.</p> <p>Alla befintliga borttagnings- och larmregler bevaras under uppgraderingen, oavsett vilket alternativ du väljer.</p> <p>Tryck på <b>'Uppgradera'</b> för att fortsätta eller <b>'Avbryt'</b> för att återgå till menyn för insticksmoduler."
 
 #~ msgid "Partitions per Day"
 #~ msgstr "Partitioner per dag"
