@@ -1,0 +1,4091 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Cacti Group
+# This file is distributed under the same license as the Cacti package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cacti\n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-25 06:55+0000\n"
+"Last-Translator: Thomas Vincent <thomasvincent@gmail.com>\n"
+"Language-Team: Ukrainian\n"
+"Language: uk-UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d minutes"
+msgstr "%d хвилин"
+
+#: includes/functions.php
+#, php-format
+msgid "%d hour"
+msgstr "%d година"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d hours"
+msgstr "%d Годин"
+
+#: includes/functions.php
+#, php-format
+msgid "%d day"
+msgstr "%d день"
+
+#: includes/functions.php includes/settings.php
+#, php-format
+msgid "%d days"
+msgstr "%d днів"
+
+#: includes/functions.php
+#, php-format
+msgid "%d week"
+msgstr "%d тиждень"
+
+#: includes/functions.php
+#, php-format
+msgid "%d weeks"
+msgstr "%d тижнів"
+
+#: includes/functions.php
+#, php-format
+msgid "%d month"
+msgstr "%d місяць"
+
+#: includes/functions.php
+#, php-format
+msgid "%d months"
+msgstr "%d місяців"
+
+#: includes/functions.php
+#, php-format
+msgid "%d year"
+msgstr "%d рік"
+
+#: includes/functions.php
+#, php-format
+msgid "%d years"
+msgstr "%d років"
+
+#: includes/functions.php
+msgid "Day Shift"
+msgstr "Денна зміна"
+
+#: includes/functions.php
+msgid "This Day"
+msgstr "У цей день"
+
+#: includes/functions.php
+msgid "This Week"
+msgstr "Цей тиждень"
+
+#: includes/functions.php
+msgid "This Month"
+msgstr "Цей місяць"
+
+#: includes/functions.php
+msgid "This Year"
+msgstr "Цього року"
+
+#: includes/functions.php
+msgid "Previous Day"
+msgstr "Попередній день"
+
+#: includes/functions.php
+msgid "Previous Week"
+msgstr "Попередній тиждень"
+
+#: includes/functions.php
+msgid "Previous Month"
+msgstr "Попередній місяць"
+
+#: includes/functions.php
+msgid "Previous Year"
+msgstr "Попередньому році"
+
+#: includes/functions.php
+msgid "Syslog download"
+msgstr "Завантаження Syslog"
+
+#: includes/functions.php
+msgid "Share with users…"
+msgstr "Надати спільний доступ користувачам…"
+
+#: includes/functions.php
+msgid "Share with groups…"
+msgstr "Надати спільний доступ групам…"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Emergency"
+msgstr "Надзвичайна ситуація"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Critical"
+msgstr "Критичний"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Alert"
+msgstr "Сповіщення"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Error"
+msgstr "Помилка"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Warning"
+msgstr "Застереження"
+
+#: includes/functions.php includes/recommendations.php includes/settings.php
+msgid "Notice"
+msgstr "Зауваження"
+
+#: includes/functions.php
+msgid "Info"
+msgstr "Інформація"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Debug"
+msgstr "Налагодження"
+
+#: includes/functions.php includes/recommendations.php
+msgid "Informational"
+msgstr "Інформаційне"
+
+#: includes/functions.php
+msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
+msgstr "Помилка збереження. Віддаленим збирачам даних у режимі синхронізації заборонено зберігати правила. Виконайте збереження з головного сервера Cacti."
+
+#: includes/functions.php
+msgid "Please use an HTML Email Client"
+msgstr "Будь ласка, використовуйте поштовий клієнт із підтримкою HTML"
+
+#: includes/functions.php
+msgid "Text import payload exceeds the maximum size"
+msgstr "Розмір даних для імпорту тексту перевищує максимально допустимий"
+
+#: includes/functions.php
+msgid "Unable to read the uploaded import file. Check the file and upload size limit."
+msgstr "Не вдалося прочитати завантажений файл імпорту. Перевірте файл та обмеження розміру завантаження."
+
+#: includes/functions.php
+msgid "Select an import file or paste its contents before importing."
+msgstr "Перед імпортуванням виберіть файл для імпорту або вставте його вміст."
+
+#: includes/functions.php
+msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
+msgstr "Таблиці Syslog не партиційовані. Звичайні (непартиційовані) таблиці застаріли, а для нових установок обов'язкові партиційовані таблиці. Збирання даних триватиме, але вам варто перенести таблицю Syslog на партиційовану архітектуру."
+
+#: includes/functions.php
+msgid "Waiting for a completed processing run."
+msgstr "Очікування завершення циклу обробки."
+
+#: includes/functions.php
+msgid "Processing is completing within the allowed delay."
+msgstr "Обробка завершується в межах допустимої затримки."
+
+#: includes/functions.php
+#, php-format
+msgid "No processing run has completed for more than %d seconds."
+msgstr "Жоден цикл обробки не завершувався вже понад %d секунд."
+
+#: includes/functions.php
+msgid "Incoming messages are within the configured limits."
+msgstr "Кількість вхідних повідомлень перебуває в межах налаштованих лімітів."
+
+#: includes/functions.php
+msgid "Incoming queue metrics are unavailable."
+msgstr "Метрики вхідної черги недоступні."
+
+#: includes/functions.php
+#, php-format
+msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
+msgstr "Черга вхідних повідомлень щонайменше з %s записів перевищує ліміт у %s."
+
+#: includes/functions.php
+msgid "The oldest incoming message timestamp is unavailable."
+msgstr "Позначка часу найдавнішого вхідного повідомлення недоступна."
+
+#: includes/functions.php
+#, php-format
+msgid "Unprocessed messages are older than %d seconds."
+msgstr "Необроблені повідомлення старші за %d секунд."
+
+#: includes/functions.php
+msgid "Synchronization is not enabled on this collector."
+msgstr "Синхронізацію не ввімкнено на цьому колекторі."
+
+#: includes/functions.php
+msgid "Synchronization is within the allowed delay."
+msgstr "Синхронізація відбувається в межах допустимої затримки."
+
+#: includes/functions.php
+msgid "Synchronization queue metrics are unavailable."
+msgstr "Метрики черги синхронізації недоступні."
+
+#: includes/functions.php
+msgid "The oldest synchronization record timestamp is unavailable."
+msgstr "Позначка часу найдавнішого запису синхронізації недоступна."
+
+#: includes/functions.php
+msgid "Synchronization has failed or queued records exceed the allowed delay."
+msgstr "Помилка синхронізації або кількість записів у черзі перевищує допустиму затримку."
+
+#: includes/functions.php
+msgid "Partition maintenance is not blocked."
+msgstr "Обслуговування розділів не заблоковано."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition maintenance is blocked: %s"
+msgstr "Обслуговування розділів заблоковано: %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Syslog pipeline health - collector %d"
+msgstr "Стан конвеєра Syslog — колектор %d"
+
+#: includes/functions.php
+msgid "The Syslog pipeline has recovered."
+msgstr "Конвеєр обробки Syslog відновлено."
+
+#: includes/functions.php
+#, php-format
+msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
+msgstr "Структура розділів для %s є недійсною або неповною; обслуговування розділів зупинено. Перевірте метадані розділів за допомогою SHOW CREATE TABLE і, за потреби, перебудуйте розділи; запис триває до резервного розділу dMaxValue."
+
+#: includes/functions.php
+#, php-format
+msgid "remaining partition gap: %d partition(s)"
+msgstr "залишковий розрив розділів: %d розділ(ів)"
+
+#: includes/functions.php
+msgid "no retention deferral"
+msgstr "без відкладення очищення за терміном зберігання"
+
+#: includes/functions.php
+msgid "retention pruning deferred until the future horizon is restored"
+msgstr "очищення за терміном зберігання відкладено до відновлення майбутнього горизонту"
+
+#: includes/functions.php
+msgid "new records are accumulating in the dMaxValue safety partition"
+msgstr "нові записи накопичуються в резервному розділі dMaxValue"
+
+#: includes/functions.php
+msgid "per run recovery limit reached"
+msgstr "досягнуто ліміту відновлення за один запуск"
+
+#: includes/functions.php
+msgid "partition creation failed"
+msgstr "не вдалося створити розділ"
+
+#: includes/functions.php
+msgid "Unknown partitioning level; choose Hourly or Daily."
+msgstr "Невідомий рівень партиціювання; виберіть «Погодинно» або «Щодня»."
+
+#: includes/functions.php
+msgid "The Syslog retention is invalid."
+msgstr "Термін зберігання Syslog некоректний."
+
+#: includes/functions.php
+msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
+msgstr "Погодинне секціонування не можна використовувати з безстроковим зберіганням, оскільки це вимагатиме необмеженої кількості секцій. Виберіть період зберігання або щоденне секціонування."
+
+#: includes/functions.php
+#, php-format
+msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
+msgstr "Секціонування %s зі зберіганням %s дн. і попереднім створенням на %s дн. потребує %s секцій на таблицю, що перевищує обмеження цього сервера бази даних у %s секцій. Зменште термін зберігання, скоротіть вікно попереднього створення або виберіть щоденне секціонування."
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Daily"
+msgstr "Щодня"
+
+#: includes/functions.php includes/installer.php includes/settings.php
+#: syslog.php
+msgid "Hourly"
+msgstr "Щогодини"
+
+#: includes/functions.php
+#, php-format
+msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
+msgstr "Таблиці все ще використовують секції %s, доки cli/upgrade_partitioning.php не перебудує їх."
+
+#: includes/functions.php
+msgid "The partitioning level of the existing Syslog tables could not be read."
+msgstr "Не вдалося зчитати рівень секціонування наявних таблиць Syslog."
+
+#: includes/functions.php
+msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
+msgstr "Автоматичне відновлення розділу відкладено: розмір dMaxValue недоступний; потрібне втручання оператора."
+
+#: includes/functions.php
+#, php-format
+msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
+msgstr "Автоматичне відновлення розділу відкладено: dMaxValue містить орієнтовно %s рядків та %s байт; обмеження становлять 100000 рядків та 134217728 байт. Потрібне втручання оператора."
+
+#: includes/functions.php
+msgid "Unknown rule type."
+msgstr "Невідомий тип правила."
+
+#: includes/functions.php
+msgid "The configured incoming field mapping is invalid."
+msgstr "Налаштоване зіставлення вхідних полів є недійсним."
+
+#: includes/functions.php
+msgid "The facility of this rule is not in the reference table yet."
+msgstr "Категорія (facility) цього правила ще відсутня в довідковій таблиці."
+
+#: includes/functions.php
+msgid "Unknown rule match type."
+msgstr "Невідомий тип відповідності правила."
+
+#: includes/functions.php
+msgid "The rule did not compile to a query."
+msgstr "Правило не вдалося скомпілювати в запит."
+
+#: includes/functions.php
+msgid "The preview query could not be evaluated."
+msgstr "Не вдалося виконати запит попереднього перегляду."
+
+#: includes/functions.php
+msgid "The historical preview filter could not be compiled."
+msgstr "Не вдалося скомпілювати фільтр попереднього перегляду історії."
+
+#: includes/functions.php
+msgid "The historical preview query could not be evaluated."
+msgstr "Не вдалося виконати запит попереднього перегляду історії."
+
+#: includes/functions.php
+msgid "The preview sample could not be read."
+msgstr "Не вдалося прочитати зразок для попереднього перегляду."
+
+#: includes/functions.php
+msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
+msgstr "Попередній перегляд SQL-виразу перевіряє лише вхідні повідомлення в черзі. Вже оброблені повідомлення не шукаються. Тестування не надсилає сповіщень."
+
+#: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Permission denied."
+msgstr "Доступ заборонено."
+
+#: includes/functions.php includes/utilities.php syslog.php
+msgid "Invalid request. Please try again."
+msgstr "Неприпустимий запит. Спробуйте ще раз."
+
+#: includes/functions.php
+msgid "The rule has no match expression to test."
+msgstr "Правило не містить виразу відповідності для перевірки."
+
+#: includes/functions.php
+msgid "The match expression is too long to test."
+msgstr "Вираз відповідності занадто довгий для перевірки."
+
+#: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
+#: syslog.php
+msgid "Unknown"
+msgstr "Невідомо"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Порогове сповіщення Cacti Syslog '%s' для вузла '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Threshold Alert '%s'"
+msgstr "Порогове сповіщення Cacti Syslog '%s'"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+msgid "Alert Name"
+msgstr "Назва сповіщення"
+
+#: includes/functions.php syslog.php syslog_alerts.php
+#: syslog_recommendations.php
+msgid "Severity"
+msgstr "Суворість"
+
+#: includes/functions.php syslog_alerts.php
+msgid "Threshold"
+msgstr "Граничне значення"
+
+#: includes/functions.php syslog.php
+msgid "Count"
+msgstr "Кількість"
+
+#: includes/functions.php
+msgid "Match String"
+msgstr "Рядок збігу"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Сповіщення Cacti Syslog '%s' для вузла '%s'"
+
+#: includes/functions.php
+#, php-format
+msgid "Cacti Syslog Alert '%s'"
+msgstr "Сповіщення Cacti Syslog '%s'"
+
+#: includes/functions.php
+msgid "Hostname"
+msgstr "Ім'я хоста"
+
+#: includes/functions.php syslog.php
+msgid "Date"
+msgstr "Дата"
+
+#: includes/functions.php
+msgid "Level"
+msgstr "Рівень"
+
+#: includes/functions.php includes/recommendations.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Message"
+msgstr "Повідомлення"
+
+#: includes/functions.php
+#, php-format
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
+msgstr "ПОПЕРЕДЖЕННЯ: Спрацювало порогове сповіщення Syslog для вузла '%s'"
+
+#: includes/functions.php
+msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
+msgstr "ПОПЕРЕДЖЕННЯ: Спрацювало порогове сповіщення Syslog"
+
+#: includes/functions.php
+msgid "Name:"
+msgstr "Назва:"
+
+#: includes/functions.php
+msgid "Severity:"
+msgstr "Важливість:"
+
+#: includes/functions.php
+msgid "Threshold:"
+msgstr "Поріг:"
+
+#: includes/functions.php
+msgid "Count:"
+msgstr "Кількість:"
+
+#: includes/functions.php
+msgid "Message String:"
+msgstr "Рядок повідомлення:"
+
+#: includes/functions.php
+msgid "Hostname:"
+msgstr "Ім'я хосту:"
+
+#: includes/functions.php
+msgid "Date:"
+msgstr "Дата:"
+
+#: includes/functions.php
+msgid "Level:"
+msgstr "Рівень:"
+
+#: includes/functions.php
+msgid "Message:"
+msgstr "Повідомлення:"
+
+#: includes/functions.php
+msgid ", Host:"
+msgstr ", Хост:"
+
+#: includes/functions.php
+msgid ", URL:"
+msgstr ", URL:"
+
+#: includes/functions.php
+msgid "Sev:"
+msgstr "Важл.:"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Alert - %s"
+msgstr "Сповіщення про подію - %s"
+
+#: includes/functions.php
+msgid ", Count:"
+msgstr ", Кількість:"
+
+#: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
+#: syslog_removal.php syslog_reports.php
+msgid "Host"
+msgstr "Хост"
+
+#: includes/functions.php
+#, php-format
+msgid "Event Report - %s"
+msgstr "Звіт про подію - %s"
+
+#: includes/functions.php
+#, php-format
+msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
+msgstr "Попередній перегляд звіту здійснює пошук серед останніх %d збережених повідомлень; сам звіт охоплює весь свій часовий інтервал. Під час тестування електронна пошта не надсилається."
+
+#: includes/functions.php
+msgid "Grouped results are unavailable or expired. Refresh the results and try again."
+msgstr "Згруповані результати недоступні або застаріли. Оновіть результати та спробуйте ще раз."
+
+#: includes/functions.php syslog.php
+msgid "Group messages could not be loaded."
+msgstr "Не вдалося завантажити повідомлення групи."
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "No"
+msgstr "Ні"
+
+#: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php
+msgid "Yes"
+msgstr "Так"
+
+#: includes/functions.php
+msgid "All Text"
+msgstr "Увесь текст"
+
+#: includes/functions.php
+msgid "Fit Column"
+msgstr "Підігнати ширину стовпця"
+
+#: includes/functions.php
+#, php-format
+msgid "%d Chars"
+msgstr "%d символів"
+
+#: includes/installer.php
+msgid "Syslog Upgrade Advisor"
+msgstr "Помічник оновлення Syslog"
+
+#: includes/installer.php
+#, php-format
+msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
+msgstr "Оновити Syslog з %s до %s? Існуючі повідомлення та правила буде збережено. Зміни схеми можуть зайняти певний час."
+
+#: includes/installer.php
+msgid "What upgrade/install type do you wish to use"
+msgstr "Який тип оновлення/встановлення ви бажаєте використати"
+
+#: includes/installer.php
+msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
+msgstr "Якщо у вас дуже великі таблиці, виконання очищення (Truncate) буде набагато швидшим. Якщо вам важливі архівні дані, ви можете вибрати або вбудований режим (Inline), який заблокує ваш браузер на час цього оновлення, або фоновий режим, який створить фоновий процес для перенесення ваших старих даних Syslog із резервної таблиці до нового формату Syslog. Зауважте, що цей процес може тривати кілька годин. Truncate видаляє лише збережені повідомлення Syslog та видалені повідомлення; правила сповіщень, видалення та звітів завжди зберігаються."
+
+#: includes/installer.php
+msgid "Truncate Syslog Table"
+msgstr "Очистити таблицю Syslog"
+
+#: includes/installer.php
+msgid "Inline Upgrade"
+msgstr "Оновлення на місці"
+
+#: includes/installer.php
+msgid "Background Upgrade"
+msgstr "Фонове оновлення"
+
+#: includes/installer.php
+msgid "Database Storage Engine"
+msgstr "Механізм зберігання бази даних"
+
+#: includes/installer.php
+msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
+msgstr "Рушій зберігання для аналітичних таблиць. Підтримуються лише рушії InnoDB та, на MariaDB, Aria. Будь-який параметр віддаленого збирача даних вимагає InnoDB; несумісні комбінації не можуть бути надіслані."
+
+#: includes/installer.php
+msgid "InnoDB Storage"
+msgstr "Сховище InnoDB"
+
+#: includes/installer.php
+msgid "Aria Storage"
+msgstr "Сховище Aria"
+
+#: includes/installer.php
+msgid "Timestamp Precision"
+msgstr "Точність мітки часу"
+
+#: includes/installer.php
+msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
+msgstr "Мілісекундна точність зберігає субсекундні мітки часу syslog у стовпці TIMESTAMP(3) і доступна лише в MariaDB. Секундна точність використовує стандартний стовпець TIMESTAMP. У робочій системі використовуйте cli/upgrade_partitioning.php --convert-ms під час технологічного вікна, щоб перетворити наявні повідомлення без їх видалення."
+
+#: includes/installer.php
+msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
+msgstr "Мілісекунди - TIMESTAMP(3) (лише MariaDB)"
+
+#: includes/installer.php
+msgid "Second - TIMESTAMP"
+msgstr "Секунда — TIMESTAMP"
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Message Processing"
+msgstr "Віддалена обробка повідомлень"
+
+#: includes/installer.php includes/settings.php
+msgid "Enable Remote Data Collector Message Processing"
+msgstr "Увімкнути обробку повідомлень віддалених збирачів даних"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process their messages independently, check this checkbox.  By checking this Checkbox, your Remote Data Collectors will need to maintain their own 'config_local.php' file in order to inform Syslog to use an independent database for message display and processing.  Please use the template file 'config_local.php.dist' for this purpose.  WARNING: Syslog tables will be automatically created as soon as this option is enabled."
+msgstr "Якщо ваші віддалені збирачі даних мають власні бази даних Syslog і обробляють свої повідомлення незалежно, установіть цей прапорець. У такому разі віддалені збирачі даних повинні мати власний файл 'config_local.php', щоб вказати Syslog використовувати незалежну базу даних для відображення та обробки повідомлень. Для цього скористайтеся шаблонним файлом 'config_local.php.dist'. ПОПЕРЕДЖЕННЯ: таблиці Syslog будуть створені автоматично одразу після ввімкнення цього параметра."
+
+#: includes/installer.php includes/settings.php
+msgid "Remote Data Collector Rules Sync"
+msgstr "Синхронізація правил віддаленого збирача даних"
+
+#: includes/installer.php includes/settings.php
+msgid "If your Remote Data Collectors have their own Syslog databases and process thrie messages independently, check this checkbox if you wish the Main Cacti databases Alerts, Removal and Report rules to be sent to the Remote Cacti System."
+msgstr "Якщо ваші віддалені збирачі даних мають власні бази даних Syslog і обробляють свої повідомлення незалежно, установіть цей прапорець, якщо бажаєте надсилати правила сповіщень, видалення та звітів із головної бази даних Cacti до віддаленої системи Cacti."
+
+#: includes/installer.php includes/settings.php
+msgid "Store Records on Remote Collector"
+msgstr "Зберігати записи на віддаленому колекторі"
+
+#: includes/installer.php includes/settings.php
+msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
+msgstr "Зберігати оброблені повідомлення в таблиці Syslog віддаленого колектора після їх доставки до основного колектора. Якщо вимкнено, записи зберігаються локально лише поки основний колектор недоступний і видаляються після підтвердженої доставки під час відновлення."
+
+#: includes/installer.php
+msgid "Retention Policy"
+msgstr "Політика зберігання"
+
+#: includes/installer.php
+msgid "Choose how many days of Syslog values you wish to maintain in the database."
+msgstr "Виберіть, скільки днів записів Syslog потрібно зберігати в базі даних."
+
+#: includes/installer.php includes/settings.php
+msgid "Partitioning Level"
+msgstr "Рівень розбиття на розділи"
+
+#: includes/installer.php
+msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
+msgstr "Розмір кожної секції таблиць syslog та syslog_removed. Рекомендовано щоденне секціонування. Погодинне секціонування вимагає обмеженого терміну зберігання, а термін зберігання разом із рівнем секціонування мають вкладатися в ліміт секцій сервера бази даних. Щоб змінити рівень пізніше, змініть його в «Налаштуваннях» і запустіть cli/upgrade_partitioning.php."
+
+#: includes/installer.php
+msgid "Upgrade"
+msgstr "Оновити"
+
+#: includes/installer.php
+msgid "Install"
+msgstr "Встановити"
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Advisor"
+msgstr "Помічник %s Syslog"
+
+#: includes/installer.php
+msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
+msgstr "ПОПЕРЕДЖЕННЯ: Оновлення Syslog займає багато часу!!!"
+
+#: includes/installer.php
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Оновлення головної таблиці Syslog може бути дуже тривалим процесом. Тому рекомендується або зменшити розмір таблиці Syslog перед оновленням, або вибрати фоновий режим."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Якщо вибрати фоновий режим, застарілу таблицю syslog буде перейменовано, і буде створено нову таблицю syslog. Потім у фоновому режимі буде запущено процес оновлення. Знову ж таки, виконання цього фонового процесу може зайняти чимало часу. Проте ваші дані буде збережено."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Незалежно від вашого вибору, усі наявні правила видалення та сповіщення буде збережено під час оновлення."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Натисніть <b>'Оновити'</b>, щоб розпочати оновлення, або <b>'Скасувати'</b>, щоб повернутися до меню плагінів."
+
+#: includes/installer.php
+msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
+msgstr "Ви також можете вказати рушій зберігання бази даних для аналітичних таблиць syslog і syslog_remove. Підтримуються лише рушій зберігання InnoDB та, в MariaDB, рушій зберігання Aria. У разі використання MariaDB ми рекомендуємо рушій зберігання Aria, якщо не увімкнено параметри віддаленого збирача даних; параметри збирача вимагають InnoDB."
+
+#: includes/installer.php
+msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
+msgstr "Під час встановлення Syslog доступно кілька варіантів на вибір. Першим є архітектура бази даних. Партиціоновані таблиці є єдиною підтримуваною архітектурою, оскільки вони запобігають надмірному зростанню розміру таблиць, що уповільнює запити. Традиційні непартиціоновані таблиці є застарілими та більше не пропонуються для нових установок."
+
+#: includes/installer.php
+msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
+msgstr "Ви також можете вибрати точність мітки часу. Мілісекундна точність (TIMESTAMP(3)) зберігає порядок вхідних повідомлень з точністю до мілісекунд і доступна лише в MariaDB; в інсталяціях MySQL використовується секундна точність. Це не можна змінити пізніше на місці без знищення збережених повідомлень."
+
+#: includes/installer.php
+msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
+msgstr "Сховище Aria недоступне, доки увімкнено будь-який параметр віддаленого збирача даних. Вибрано InnoDB."
+
+#: includes/installer.php
+msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
+msgstr "Ви також можете вибрати термін зберігання. Будь ласка, майте на увазі, що якщо у вас є кілька хостів, які надсилають журнали до Syslog, ця таблиця може стати досить великою."
+
+#: includes/installer.php
+#, php-format
+msgid "Syslog %s Settings"
+msgstr "Налаштування %s Syslog"
+
+#: includes/installer.php
+msgid "What uninstall method do you want to use?"
+msgstr "Який метод видалення ви хочете використати?"
+
+#: includes/installer.php
+msgid "When uninstalling syslog, you can remove everything, or only components, just in case you plan on re-installing in the future."
+msgstr "Під час видалення Syslog ви можете видалити все або лише компоненти, якщо плануєте повторне встановлення в майбутньому."
+
+#: includes/installer.php
+msgid "Remove Everything (Logs, Tables, Settings)"
+msgstr "Видалити все (журнали, таблиці, налаштування)"
+
+#: includes/installer.php
+msgid "Syslog Data Only"
+msgstr "Лише дані Syslog"
+
+#: includes/installer.php
+msgid "Syslog Uninstall Preferences"
+msgstr "Параметри видалення Syslog"
+
+#: includes/installer.php
+msgid "Uninstall"
+msgstr "Видалити"
+
+#: includes/installer.php includes/utilities.php lib/syslog_dashboard.php
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Cancel"
+msgstr "Скасувати"
+
+#: includes/navigation.php includes/settings.php
+msgid "Syslog"
+msgstr "Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Removals"
+msgstr "Видалення Syslog"
+
+#: includes/navigation.php
+msgid "(Edit)"
+msgstr "(Редагувати)"
+
+#: includes/navigation.php
+msgid "(Actions)"
+msgstr "(Дії)"
+
+#: includes/navigation.php
+msgid "Syslog Alerts"
+msgstr "Попередження Syslog"
+
+#: includes/navigation.php
+msgid "Syslog Reports"
+msgstr "Звіти Syslog"
+
+#: includes/navigation.php includes/settings.php syslog_saved_searches.php
+msgid "Saved Search Templates"
+msgstr "Збережені шаблони пошуку"
+
+#: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
+#: syslog_dashboards.php
+msgid "Dashboards"
+msgstr "Інформаційні панелі"
+
+#: includes/navigation.php syslog_recommendations.php
+msgid "Syslog Recommendations"
+msgstr "Рекомендації Syslog"
+
+#: includes/navigation.php
+msgid "(Import)"
+msgstr "(Імпорт)"
+
+#: includes/navigation.php
+msgid "Display Syslog in Range"
+msgstr "Відображати Syslog у діапазоні"
+
+#: includes/recommendations.php
+msgid "the identifier is empty"
+msgstr "ідентифікатор порожній"
+
+#: includes/recommendations.php
+msgid "the identifier is longer than 190 characters"
+msgstr "ідентифікатор довший за 190 символів"
+
+#: includes/recommendations.php
+msgid "the identifier contains spaces or line breaks"
+msgstr "ідентифікатор містить пробіли або розриви рядків"
+
+#: includes/recommendations.php
+msgid "it has neither an explanation nor a recommended action"
+msgstr "не містить ані пояснення, ані рекомендованої дії"
+
+#: includes/recommendations.php
+msgid "it is not a JSON object"
+msgstr "не є об'єктом JSON"
+
+#: includes/recommendations.php syslog.php
+msgid "Recommendations could not be loaded."
+msgstr "Не вдалося завантажити рекомендації."
+
+#: includes/recommendations.php
+msgid "Recommendation available - click the message for details"
+msgstr "Доступна рекомендація — натисніть на повідомлення, щоб переглянути деталі"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Explanation"
+msgstr "Пояснення"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Recommended Action"
+msgstr "Рекомендована дія"
+
+#: includes/recommendations.php syslog_recommendations.php
+msgid "Reference"
+msgstr "Посилання"
+
+#: includes/settings.php
+msgid "Monday"
+msgstr "Понеділок"
+
+#: includes/settings.php
+msgid "Tuesday"
+msgstr "Вівторок"
+
+#: includes/settings.php
+msgid "Wednesday"
+msgstr "Середа"
+
+#: includes/settings.php
+msgid "Friday"
+msgstr "П'ятниця"
+
+#: includes/settings.php
+msgid "Saturday"
+msgstr "Субота"
+
+#: includes/settings.php
+msgid "Sunday"
+msgstr "Неділя"
+
+#: includes/settings.php
+msgid "Thursday"
+msgstr "Четвер"
+
+#: includes/settings.php
+msgid "Monday through Friday"
+msgstr "З понеділка по п'ятницю"
+
+#: includes/settings.php
+msgid "Saturday and Sunday"
+msgstr "Субота та неділя"
+
+#: includes/settings.php
+msgid "Every day"
+msgstr "Кожен день"
+
+#: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
+#: syslog_removal.php syslog_reports.php
+msgid "Disabled"
+msgstr "Вимкнен"
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
+msgid "None"
+msgstr "Немає"
+
+#: includes/settings.php
+msgid "General Settings"
+msgstr "Загальні налаштування"
+
+#: includes/settings.php
+msgid "Syslog Enabled"
+msgstr "Syslog увімкнено"
+
+#: includes/settings.php
+msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
+msgstr "Якщо цей прапорець встановлено, записи передаватимуться з вхідної таблиці Syslog до основної таблиці syslog, а також буде ввімкнено тривоги та звіти. Зверніть увагу, що якщо систему вимкнено, записи журналу все одно накопичуватимуться у вхідній таблиці Syslog, оскільки це визначається процесом rsyslog або syslog-ng."
+
+#: includes/settings.php
+msgid "Forward alarms to Alarm Manager"
+msgstr "Пересилати тривоги до менеджера тривог"
+
+#: includes/settings.php
+msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
+msgstr "Дозволити правилам, призначеним для Менеджера тривог, пересилати тривоги. Електронна пошта Syslog залишається резервним варіантом; командні дії виконуються лише для правил тривог Syslog."
+
+#: includes/settings.php
+msgid "Strip Domains"
+msgstr "Видаляти домени"
+
+#: includes/settings.php
+msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
+msgstr "Список доменів через кому, які потрібно видалити з імені вузла Syslog. Приклади: 'mydomain.com, otherdomain.com'"
+
+#: includes/settings.php
+msgid "Refresh Interval"
+msgstr "Інтервал оновлення"
+
+#: includes/settings.php
+msgid "This is the time in seconds before the page refreshes."
+msgstr "Це час у секундах до оновлення сторінки."
+
+#: includes/settings.php
+msgid "Skip Total Row Count"
+msgstr "Пропускати підрахунок загальної кількості рядків"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
+msgstr "Якщо цей прапорець встановлено, вкладки «Системні журнали» та «Журнали тривог» не підраховують кожен відповідний запис, що може бути дуже витратним у великих інсталяціях. На сторінці відображаються посилання «Попередня» та «Наступна» замість загальної кількості й списку сторінок, причому «Наступна» пропонується, доки залишаються записи."
+
+#: includes/settings.php
+msgid "Max Report Records"
+msgstr "Макс. записів у звіті"
+
+#: includes/settings.php
+msgid "For Threshold based Alerts, what is the maximum number that you wish to show in the report.  This is used to limit the size of the html log and Email."
+msgstr "Для сповіщень на основі порогів — яка максимальна кількість має відображатися у звіті. Це використовується для обмеження розміру HTML-журналу та електронного листа."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Records"
+msgstr "%d записів"
+
+#: includes/settings.php
+msgid "Maximum Syslog Processing Processes"
+msgstr "Максимум процесів обробки Syslog"
+
+#: includes/settings.php
+msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
+msgstr "Якщо встановлено значення більше 1, обробка вхідних повідомлень розподіляється між паралельними робочими процесами. Кожен робочий процес обробляє окремий діапазон вхідних повідомлень, прискорюючи визначення імен хостів і передачу повідомлень за високого навантаження. Значення 1 обробляє всі повідомлення в одному процесі. Робочі процеси не підтримуються у Windows або коли розширення PHP pcntl та POSIX недоступні; у такому разі обробка повертається до одного процесу."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Process"
+msgstr "%d робочий процес"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Worker Processes"
+msgstr "%d робочих процесів"
+
+#: includes/settings.php
+msgid "Command for Opening Tickets"
+msgstr "Команда для відкриття заявок"
+
+#: includes/settings.php
+msgid "This command will be executed for opening Help Desk Tickets.  The command will be required to parse multiple input parameters as follows: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>.  The hostlist will be a comma delimited list of hosts impacted by the alert."
+msgstr "Ця команда виконуватиметься для відкриття заявок у службі підтримки (Help Desk). Команда повинна обробляти такі вхідні параметри: <b>--alert-name</b>, <b>--severity</b>, <b>--hostlist</b>, <b>--message</b>. Параметр hostlist міститиме перелік вузлів, яких торкнулося сповіщення, розділений комами."
+
+#: includes/settings.php
+msgid "Host Discovery Options"
+msgstr "Параметри виявлення хостів"
+
+#: includes/settings.php
+msgid "Enable Hostname Resolution"
+msgstr "Увімкнути визначення імен хостів"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
+msgstr "Якщо цей прапорець встановлено, усі імена хостів спочатку визначаються через DNS-запит (якщо ввімкнено) за записами A та AAAA. Адреси IPv4 та IPv6 не потребують пошуку, а адреси IPv6 зберігаються у стислій формі в нижньому регістрі. Якщо DNS-запит не вдається, система спробує знайти ім'я хоста в таблиці хостів Cacti та замінити його описом хоста Cacti. Якщо і DNS, і пошук у Cacti не вдаються, записам призначається префікс 'unresolved-Original_hostname'."
+
+#: includes/settings.php
+msgid "Skip DNS Resolution for incoming hosts"
+msgstr "Пропускати розв'язання DNS для вхідних хостів"
+
+#: includes/settings.php
+msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
+msgstr "Якщо цей прапорець встановлено, система не намагатиметься визначати хости через DNS-запити. Це корисно для середовищ, де розпізнавання DNS неможливе або небажане."
+
+#: includes/settings.php
+msgid "HTML Notification Settings"
+msgstr "Налаштування HTML-сповіщень"
+
+#: includes/settings.php
+msgid "Enable HTML Based Email"
+msgstr "Увімкнути HTML-формат електронних листів"
+
+#: includes/settings.php
+msgid "If this checkbox is set, all Emails will be sent in HTML format.  Otherwise, Emails will be sent in plain text."
+msgstr "Якщо цей прапорець встановлено, усі електронні листи надсилатимуться у форматі HTML. Інакше листи надсилатимуться у форматі звичайного тексту."
+
+#: includes/settings.php
+msgid "Format File to Use"
+msgstr "Відформатуйте файл для використання"
+
+#: includes/settings.php
+msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
+msgstr "Виберіть спеціальну оболонку html і файл CSS для використання. Цей файл містить як html, так і CSS, щоб охопити ваш звіт. Якщо він містить більше, ніж просто CSS, вам потрібно розмістити спеціальний<REPORT> тег всередині файлу. Цей тег формату буде замінено вмістом звіту. Ці файли знаходяться в каталозі «формати»."
+
+#: includes/settings.php
+msgid "Data Retention and Partitioning"
+msgstr "Зберігання даних і партиціонування"
+
+#: includes/settings.php
+msgid "Syslog Retention"
+msgstr "Термін зберігання Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep events."
+msgstr "Це кількість днів, протягом яких зберігаються події."
+
+#: includes/settings.php
+msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
+msgstr "Розмір кожної секції таблиць syslog та syslog_removed. Зміна зберігається тут, але набуває чинності лише тоді, коли cli/upgrade_partitioning.php перебудує обидві таблиці; до того часу обслуговування секцій зберігає поточний розмір. Погодинне секціонування вимагає обмеженого терміну зберігання. Термін зберігання, вікно попереднього створення та рівень секціонування разом мають вкладатися в ліміт секцій сервера бази даних, інакше налаштування не буде збережено."
+
+#: includes/settings.php
+msgid "Partition Pre-create Window"
+msgstr "Вікно завчасного створення розділів"
+
+#: includes/settings.php
+msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
+msgstr "Це кількість днів майбутніх партицій, які підтримуються для партиціонованих таблиць Syslog, щоб нові партиції завжди відокремлювалися від порожньої партиції dMaxValue. Погодинне партиціонування завжди зберігає щонайменше 2 дні."
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Day"
+msgstr "%d день"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Days"
+msgstr "%d днів"
+
+#: includes/settings.php
+msgid "Partition Recovery Limit"
+msgstr "Ліміт відновлення розділів"
+
+#: includes/settings.php
+msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
+msgstr "Якщо розділи відсутні (наприклад, після простою на технічне обслуговування), за кожен запуск опитувача створюється не більше вказаної кількості відсутніх розділів на таблицю. Решта прогалини заповнюється під час наступних запусків; видалення застарілих даних відкладається, доки горизонт майбутніх розділів не буде повністю відновлено. Застосовується лише до секціонованих таблиць Syslog."
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partition per run"
+msgstr "%d розділ за запуск"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Partitions per run"
+msgstr "%d розділів за запуск"
+
+#: includes/settings.php
+msgid "Collector Staleness Threshold"
+msgstr "Поріг застарівання колектора"
+
+#: includes/settings.php
+msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
+msgstr "Сповіщення про стан конвеєра обробки попереджають, коли затримка необроблених повідомлень, завершення обробки або синхронізації в черзі перевищує це значення. Фактична затримка становить щонайменше три інтервали опитувача та 300 секунд. Установіть 0, щоб використовувати 300 секунд."
+
+#: includes/settings.php
+msgid "Default (300 seconds)"
+msgstr "Типово (300 секунд)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d seconds"
+msgstr "%d секунд"
+
+#: includes/settings.php
+msgid "Collector Backlog Threshold"
+msgstr "Поріг черги колектора"
+
+#: includes/settings.php
+msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
+msgstr "На сторінці стану Syslog відображається попередження, якщо у вхідній таблиці Syslog накопичується понад зазначену кількість необроблених повідомлень. Встановіть 0 для типового значення 10000 повідомлень."
+
+#: includes/settings.php
+msgid "Default (10000 messages)"
+msgstr "Типово (10000 повідомлень)"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Messages"
+msgstr "%d повідомлень"
+
+#: includes/settings.php
+msgid "Pipeline Health Alerts"
+msgstr "Сповіщення про стан конвеєра обробки"
+
+#: includes/settings.php
+msgid "Pipeline Health Notification List"
+msgstr "Список сповіщень про стан конвеєра обробки"
+
+#: includes/settings.php
+msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
+msgstr "Виберіть наявний список сповіщень Thold для попереджень про стан конвеєра обробки. Увімкнені одержувачі зі списку об'єднуються з наведеними нижче адресами електронної пошти зі збереженням одержувачів прихованої копії (BCC). Для списків потрібна таблиця списків сповіщень Thold."
+
+#: includes/settings.php
+msgid "Pipeline Health Email Recipients"
+msgstr "Отримувачі електронної пошти про стан конвеєра обробки"
+
+#: includes/settings.php
+msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
+msgstr "Список отримувачів електронної пошти через кому для сповіщень про збої та відновлення конвеєра. Залиште порожнім і не вибирайте список сповіщень, щоб вимкнути електронну пошту; стан працездатності залишатиметься видимим на вкладці «Стан», а зміни стану реєструватимуться в журналі. Для перевірок потрібен запуск опитувача Cacti."
+
+#: includes/settings.php
+msgid "Pipeline Health Reminder Interval"
+msgstr "Інтервал нагадувань про стан конвеєра обробки"
+
+#: includes/settings.php
+msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
+msgstr "Повторювати сповіщення про поточні проблеми конвеєра після цього інтервалу. Невдалі спроби надсилання електронної пошти повторюються не частіше одного разу на п'ять хвилин."
+
+#: includes/settings.php
+msgid "Syslog Alert Retention"
+msgstr "Термін зберігання попереджень Syslog"
+
+#: includes/settings.php
+msgid "This is the number of days to keep alert logs."
+msgstr "Це кількість днів, протягом яких зберігаються журнали сповіщень."
+
+#: includes/settings.php
+msgid "Alert Suppression and Maintenance"
+msgstr "Приглушення сповіщень та обслуговування"
+
+#: includes/settings.php
+msgid "Maintenance Window Days"
+msgstr "Дні вікна обслуговування"
+
+#: includes/settings.php
+msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
+msgstr "Дні, коли всі сповіщення про тривоги вимкнено протягом налаштованого періоду обслуговування."
+
+#: includes/settings.php
+msgid "Maintenance Window Starts"
+msgstr "Початок вікна обслуговування"
+
+#: includes/settings.php
+msgid "Local start time for the global maintenance window."
+msgstr "Локальний час початку глобального вікна обслуговування."
+
+#: includes/settings.php
+msgid "Maintenance Window Ends"
+msgstr "Кінець вікна обслуговування"
+
+#: includes/settings.php
+msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
+msgstr "Локальний час завершення глобального вікна обслуговування. Раніший час завершення переноситься на наступний день."
+
+#: includes/settings.php
+msgid "One-time Maintenance Starts"
+msgstr "Початок одноразового обслуговування"
+
+#: includes/settings.php
+msgid "Optional local date and time to start a one-time global maintenance window."
+msgstr "Необов'язкова локальна дата та час початку одноразового глобального вікна обслуговування."
+
+#: includes/settings.php
+msgid "One-time Maintenance Ends"
+msgstr "Кінець одноразового обслуговування"
+
+#: includes/settings.php
+msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
+msgstr "Необов'язкова локальна дата та час завершення одноразового глобального вікна обслуговування. Формат: YYYY-MM-DD HH:MM."
+
+#: includes/settings.php
+msgid "Default Alert Cooldown"
+msgstr "Типовий період очікування сповіщень"
+
+#: includes/settings.php
+msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Пригнічувати будь-яке повторне сповіщення для того самого правила й області звітування протягом вказаної кількості хвилин. Значення для окремого правила перевизначають цей параметр. Встановіть 0, щоб вимкнути."
+
+#: includes/settings.php
+msgid "Default Duplicate Suppression"
+msgstr "Типове приглушення дублікатів"
+
+#: includes/settings.php
+msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
+msgstr "Пригнічувати сповіщення з тим самим набором збігів повідомлень протягом вказаної кількості хвилин. Значення для окремого правила перевизначають цей параметр. Встановіть 0, щоб вимкнути."
+
+#: includes/settings.php
+msgid "Remote Syslog Recovery"
+msgstr "Відновлення віддаленого Syslog"
+
+#: includes/settings.php
+msgid "Maximum Recovery Records Per Execution"
+msgstr "Максимум записів відновлення за один запуск"
+
+#: includes/settings.php
+msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
+msgstr "Максимальна кількість збережених віддалених подій Syslog, що надсилаються головному збирачеві (Main Collector) за одне виконання обробника відновлення. Кожна транзакція центральної бази даних обмежена 100 записами. Збільшуйте поступово, спостерігаючи за навантаженням на головний збирач і очікуванням блокувань."
+
+#: includes/settings.php
+msgid "Recovery Pause Between Batches"
+msgstr "Пауза відновлення між пакетами"
+
+#: includes/settings.php
+msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
+msgstr "Пауза між кожною транзакцією доставки по 100 записів до головного колектора. Довша пауза знижує навантаження на головний колектор; коротша пауза прискорює обробку черги."
+
+#: includes/settings.php
+msgid "No pause"
+msgstr "Без паузи"
+
+#: includes/settings.php
+#, php-format
+msgid "%d milliseconds"
+msgstr "%d мілісекунд"
+
+#: includes/settings.php
+#, php-format
+msgid "%d second"
+msgstr "%d секунда"
+
+#: includes/settings.php
+msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
+msgstr "База даних Syslog недоступна, тому параметри партиціювання неможливо перевірити на відповідність ліміту партицій і таблицям."
+
+#: includes/settings.php
+msgid "The Syslog settings were not saved."
+msgstr "Налаштування Syslog не збережено."
+
+#: includes/settings.php
+#, php-format
+msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
+msgstr "Очікування: таблиця повідомлень досі використовує розділи (%s). Запустіть cli/upgrade_partitioning.php, щоб застосувати вибраний рівень."
+
+#: includes/settings.php lib/syslog_dashboard.php syslog.php
+#: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_saved_searches.php
+msgid "Delete"
+msgstr "Видалити"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Disable"
+msgstr "Вимкнути"
+
+#: includes/settings.php syslog_device_rules.php syslog_removal.php
+msgid "Enable"
+msgstr "Увімкнути"
+
+#: includes/settings.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_saved_searches.php
+msgid "Export"
+msgstr "Експорт"
+
+#: includes/settings.php
+msgid "Indefinite"
+msgstr "Безстроково"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Week"
+msgstr "%d тиждень"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Weeks"
+msgstr "%d тижнів"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Month"
+msgstr "%d Місяць"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Months"
+msgstr "%d Місяців"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Year"
+msgstr "%d Рік"
+
+#: includes/settings.php syslog.php syslog_dashboards.php syslog_reports.php
+msgid "Never"
+msgstr "Ніколи"
+
+#: includes/settings.php
+#, php-format
+msgid "%d Minute"
+msgstr "%d Хвилина"
+
+#: includes/settings.php syslog_alerts.php
+#, php-format
+msgid "%d Minutes"
+msgstr "%d хвилин"
+
+#: includes/settings.php
+msgid "Begins with"
+msgstr "Починається з"
+
+#: includes/settings.php
+msgid "Contains"
+msgstr "Містить"
+
+#: includes/settings.php
+msgid "Ends with"
+msgstr "Закінчується на"
+
+#: includes/settings.php
+msgid "Hostname is"
+msgstr "Ім'я хоста є"
+
+#: includes/settings.php
+msgid "Program is"
+msgstr "Програма є"
+
+#: includes/settings.php
+msgid "Facility is"
+msgstr "Категорія (Facility) є"
+
+#: includes/settings.php syslog_alerts.php
+msgid "Filter Builder"
+msgstr "Конструктор фільтрів"
+
+#: includes/settings.php syslog_alerts.php
+msgid "SQL Expression"
+msgstr "SQL-вираз"
+
+#: includes/settings.php
+msgid "Weekly"
+msgstr "Щотижня"
+
+#: includes/settings.php
+msgid "Import/Export"
+msgstr "Імпорт / експорт"
+
+#: includes/settings.php
+msgid "Alert Rules"
+msgstr "Правила сповіщень"
+
+#: includes/settings.php
+msgid "Syslog Settings"
+msgstr "Налаштування Syslog"
+
+#: includes/settings.php syslog_device_rules.php
+msgid "Device Alert Rules"
+msgstr "Правила сповіщення пристрою"
+
+#: includes/settings.php
+msgid "Removal Rules"
+msgstr "Правила видалення"
+
+#: includes/settings.php
+msgid "Report Rules"
+msgstr "Правила звітів"
+
+#: includes/settings.php syslog.php syslog_recommendations.php
+msgid "Recommendations"
+msgstr "Рекомендації"
+
+#: includes/utilities.php
+msgid "Unable to connect to the Syslog database. No Device records were removed."
+msgstr "Не вдалося підключитися до бази даних Syslog. Жодного запису пристрою не було видалено."
+
+#: includes/utilities.php
+#, php-format
+msgid "There were %s Device records removed from the Syslog database"
+msgstr "З бази даних Syslog видалено записів пристроїв: %s"
+
+#: includes/utilities.php
+msgid "Syslog Utilities"
+msgstr "Утиліти Syslog"
+
+#: includes/utilities.php
+msgid "Purge Syslog Devices"
+msgstr "Очистити пристрої Syslog"
+
+#: includes/utilities.php
+msgid "Are you sure you want to purge stale Syslog devices?"
+msgstr "Ви впевнені, що хочете очистити застарілі пристрої Syslog?"
+
+#: includes/utilities.php
+msgid "Confirm Purge"
+msgstr "Підтвердити очищення"
+
+#: includes/utilities.php syslog_alerts.php syslog_dashboards.php
+#: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Continue"
+msgstr "Продовжити"
+
+#: includes/utilities.php
+msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
+msgstr "Цей пункт меню надає можливість видаляти пристрої, які більше не надсилають дані на сервер Syslog у Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel source."
+msgstr "Неприпустиме джерело панелі дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel type."
+msgstr "Неприпустимий тип панелі дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard chart type."
+msgstr "Неприпустимий тип діаграми дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard breakdown field."
+msgstr "Неприпустиме поле розбивки дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard interval."
+msgstr "Неприпустимий інтервал дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard timespan."
+msgstr "Неприпустимий часовий проміжок дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard record type."
+msgstr "Неприпустимий тип запису дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard top count."
+msgstr "Неприпустима кількість верхніх записів дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel width."
+msgstr "Неприпустима ширина панелі дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Invalid dashboard panel height."
+msgstr "Неприпустима висота панелі дашборду."
+
+#: lib/syslog_dashboard.php syslog.php
+#, php-format
+msgid "Invalid logical search: %s"
+msgstr "Неприпустимий логічний пошуковий запит: %s"
+
+#: lib/syslog_dashboard.php
+msgid "Other"
+msgstr "Інше"
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard panel is required."
+msgstr "Потрібно вказати дійсну панель дашборду."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard panel not found."
+msgstr "Секцію інформаційної панелі не знайдено."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "A name of up to 128 characters is required."
+msgstr "Потрібно вказати назву завдовжки до 128 символів."
+
+#: lib/syslog_dashboard.php
+msgid "A valid dashboard is required."
+msgstr "Потрібно вказати дійсний дашборд."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard not found."
+msgstr "Інформаційну панель не знайдено."
+
+#: lib/syslog_dashboard.php syslog_dashboards.php
+msgid "Unable to save dashboard changes."
+msgstr "Не вдалося зберегти зміни інформаційної панелі."
+
+#: lib/syslog_dashboard.php
+msgid "You may only share your own dashboards."
+msgstr "Ви можете ділитися лише власними інформаційними панелями."
+
+#: lib/syslog_dashboard.php
+msgid "copy"
+msgstr "копія"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard could not be copied."
+msgstr "Не вдалося скопіювати інформаційну панель."
+
+#: lib/syslog_dashboard.php
+msgid "A valid panel position is required."
+msgstr "Потрібно вказати дійсну позицію панелі."
+
+#: lib/syslog_dashboard.php
+msgid "A title of up to 128 characters is required."
+msgstr "Потрібно вказати заголовок завдовжки до 128 символів."
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Drag to reorder card"
+msgstr "Перетягніть для зміни порядку картки"
+
+#: lib/syslog_dashboard.php
+msgid "Refresh Panel"
+msgstr "Оновити панель"
+
+#: lib/syslog_dashboard.php
+msgid "Total messages"
+msgstr "Усього повідомлень"
+
+#: lib/syslog_dashboard.php
+msgid "Chart library unavailable on this Cacti installation."
+msgstr "Бібліотека діаграм недоступна в цій інсталяції Cacti."
+
+#: lib/syslog_dashboard.php
+msgid "Edit Panel"
+msgstr "Редагувати панель"
+
+#: lib/syslog_dashboard.php
+msgid "New Panel"
+msgstr "Нова панель"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Save"
+msgstr "Зберегти"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Apply"
+msgstr "Застосувати"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard panel?"
+msgstr "Видалити цю панель дашборду?"
+
+#: lib/syslog_dashboard.php
+msgid "Delete this dashboard and all of its panels?"
+msgstr "Видалити цей дашборд і всі його панелі?"
+
+#: lib/syslog_dashboard.php
+msgid "Name your dashboard"
+msgstr "Назвіть ваш дашборд"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Make Private"
+msgstr "Зробити приватним"
+
+#: lib/syslog_dashboard.php
+msgid "Share with all"
+msgstr "Надати спільний доступ усім"
+
+#: lib/syslog_dashboard.php
+msgid "Save as my copy"
+msgstr "Зберегти як мою копію"
+
+#: lib/syslog_dashboard.php
+msgid "Syslog Dashboards"
+msgstr "Панелі моніторингу Syslog"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Dashboard"
+msgstr "Інформаційна панель"
+
+#: lib/syslog_dashboard.php
+msgid "Time Range"
+msgstr "Діапазон часу"
+
+#: lib/syslog_dashboard.php
+msgid "Last Hour"
+msgstr "Остання година"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Hours"
+msgstr "Останні %d год"
+
+#: lib/syslog_dashboard.php
+msgid "Last Day"
+msgstr "Останній день"
+
+#: lib/syslog_dashboard.php
+msgid "Last Week"
+msgstr "Минулого тижня"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Weeks"
+msgstr "Останні %d тижнів"
+
+#: lib/syslog_dashboard.php
+msgid "Last Month"
+msgstr "Останній місяць"
+
+#: lib/syslog_dashboard.php
+#, php-format
+msgid "Last %d Months"
+msgstr "Останні %d місяців"
+
+#: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
+msgid "Refresh"
+msgstr "Оновити"
+
+#: lib/syslog_dashboard.php
+msgid "My Dashboards"
+msgstr "Мої дашборди"
+
+#: lib/syslog_dashboard.php
+msgid "Global Dashboards"
+msgstr "Глобальні панелі"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Shared With Me"
+msgstr "Надано мені"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "New"
+msgstr "Новий"
+
+#: lib/syslog_dashboard.php
+msgid "Rename"
+msgstr "Перейменувати"
+
+#: lib/syslog_dashboard.php
+msgid "Add Panel"
+msgstr "Додати панель"
+
+#: lib/syslog_dashboard.php
+msgid "Create your first dashboard to visualize syslog trends."
+msgstr "Створіть свою першу інформаційну панель для візуалізації трендів syslog."
+
+#: lib/syslog_dashboard.php
+msgid "Add a panel to start charting.  Panels can use your saved searches."
+msgstr "Додайте панель, щоб почати побудову графіків. Панелі можуть використовувати ваші збережені пошуки."
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Panel"
+msgstr "Секція інформаційної панелі"
+
+#: lib/syslog_dashboard.php
+msgid "Title"
+msgstr "Назва"
+
+#: lib/syslog_dashboard.php
+msgid "Log Source"
+msgstr "Джерело журналу"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "System Logs"
+msgstr "Системні журнали"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Alert Logs"
+msgstr "Журнали сповіщень"
+
+#: lib/syslog_dashboard.php
+msgid "Panel Type"
+msgstr "Тип панелі"
+
+#: lib/syslog_dashboard.php
+msgid "Time Series"
+msgstr "Часовий ряд"
+
+#: lib/syslog_dashboard.php
+msgid "Breakdown"
+msgstr "Деталізація"
+
+#: lib/syslog_dashboard.php
+msgid "Chart"
+msgstr "Діаграма"
+
+#: lib/syslog_dashboard.php
+msgid "Line"
+msgstr "Рядок"
+
+#: lib/syslog_dashboard.php
+msgid "Area"
+msgstr "Область"
+
+#: lib/syslog_dashboard.php
+msgid "Bar"
+msgstr "Стовпчикова"
+
+#: lib/syslog_dashboard.php
+msgid "Interval"
+msgstr "Інтервал"
+
+#: lib/syslog_dashboard.php
+msgid "Auto"
+msgstr "Авто"
+
+#: lib/syslog_dashboard.php
+msgid "Minute"
+msgstr "Хвилина"
+
+#: lib/syslog_dashboard.php
+msgid "10 Minutes"
+msgstr "10 хвилин"
+
+#: lib/syslog_dashboard.php
+msgid "Hour"
+msgstr "Година"
+
+#: lib/syslog_dashboard.php
+msgid "Day"
+msgstr "День"
+
+#: lib/syslog_dashboard.php
+msgid "Field"
+msgstr "Поле"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Program"
+msgstr "Програма"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Facility"
+msgstr "Категорія (Facility)"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php
+msgid "Priority"
+msgstr "Пріоритет"
+
+#: lib/syslog_dashboard.php
+msgid "Top Count"
+msgstr "Кількість у топі"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Record Type"
+msgstr "Тип запису"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "All Records"
+msgstr "Усі записи"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Main Records"
+msgstr "Основні записи"
+
+#: lib/syslog_dashboard.php syslog.php
+msgid "Removed Records"
+msgstr "Видалені записи"
+
+#: lib/syslog_dashboard.php
+msgid "Start from Saved Search"
+msgstr "Почати зі збереженого пошуку"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Enter message text…"
+msgstr "Введіть текст повідомлення…"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Remove condition"
+msgstr "Видалити умову"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Match group"
+msgstr "Група збігу"
+
+#: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
+msgid "Exclude group"
+msgstr "Виключити групу"
+
+#: lib/syslog_dashboard.php
+msgid "Dashboard Name"
+msgstr "Назва інформаційної панелі"
+
+#: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
+#: syslog_reports.php syslog_saved_searches.php
+msgid "Name"
+msgstr "Ім'я"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Breached Thresholds"
+msgstr "Порушені пороги"
+
+#: lib/syslog_thresholds.php
+msgid "Breached Since"
+msgstr "Порушено з"
+
+#: lib/syslog_thresholds.php
+msgid "Collector"
+msgstr "Збирач"
+
+#: lib/syslog_thresholds.php syslog.php syslog_alerts.php
+#: syslog_device_rules.php
+msgid "Device"
+msgstr "Пристрій"
+
+#: lib/syslog_thresholds.php
+msgid "Last Matching Message"
+msgstr "Останнє відповідне повідомлення"
+
+#: lib/syslog_thresholds.php
+msgid "Recovers After"
+msgstr "Відновлюється через"
+
+#: lib/syslog_thresholds.php
+msgid "Rule"
+msgstr "Правило"
+
+#: lib/syslog_thresholds.php
+msgid "All matching devices"
+msgstr "Усі відповідні пристрої"
+
+#: lib/syslog_thresholds.php
+msgid "No thresholds are currently breached."
+msgstr "Наразі жоден поріг не порушено."
+
+#: lib/syslog_thresholds.php
+msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
+msgstr "Для відновлення не повинно бути збігів повідомлень до вказаного часу. Кожен збіг перезапускає період затишшя."
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Previous"
+msgstr "Попередній"
+
+#: lib/syslog_thresholds.php syslog.php
+msgid "Next"
+msgstr "Далі"
+
+#: setup.php
+msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
+msgstr "Будь ласка, перейменуйте файл config.php.dist або config_local.php.dist у каталозі Syslog та налаштуйте базу даних перед встановленням."
+
+#: setup.php
+msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
+msgstr "Мітки часу з точністю до мілісекунд (TIMESTAMP(3)) підтримуються лише в MariaDB. Цей сервер використовує MySQL, тому встановлюйте з мітками часу з точністю до секунд."
+
+#: setup.php
+msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
+msgstr "Сховище Aria не можна використовувати, коли увімкнено будь-який параметр віддаленого збирача даних (Remote Data Collector). Виберіть InnoDB або вимкніть усі параметри віддаленого збирача даних."
+
+#: setup.php
+msgid "Top 10 Hosts"
+msgstr "Топ-10 вузлів"
+
+#: setup.php
+msgid "Syslog Messages - Past Hour"
+msgstr "Повідомлення Syslog — за останню годину"
+
+#: setup.php
+msgid "Messages by Severity"
+msgstr "Повідомлення за рівнем важливості"
+
+#: setup.php
+msgid "Top 10 Programs"
+msgstr "Топ-10 програм"
+
+#: setup.php
+msgid "Alert Activity"
+msgstr "Активність сповіщень"
+
+#: syslog.php
+msgid "Syslog Viewer"
+msgstr "Переглядач Syslog"
+
+#: syslog.php
+msgid "Syslog Status"
+msgstr "Стан Syslog"
+
+#: syslog.php
+msgid "Selected Alert"
+msgstr "Вибране сповіщення"
+
+#: syslog.php
+msgid "seconds"
+msgstr "секунд"
+
+#: syslog.php
+msgid "Unavailable"
+msgstr "Немає місця"
+
+#: syslog.php
+#, php-format
+msgid "unprocessed messages are %s old"
+msgstr "необроблені повідомлення мають давність %s"
+
+#: syslog.php
+#, php-format
+msgid "incoming backlog of %s messages"
+msgstr "вхідна черга з %s повідомлень"
+
+#: syslog.php
+msgid "day"
+msgstr "день"
+
+#: syslog.php
+msgid "days"
+msgstr "днів"
+
+#: syslog.php
+msgid "hour"
+msgstr "година"
+
+#: syslog.php
+msgid "hours"
+msgstr "годин"
+
+#: syslog.php
+msgid "minute"
+msgstr "хвилина"
+
+#: syslog.php
+msgid "minutes"
+msgstr "хвилин"
+
+#: syslog.php
+msgid "Rows in syslog_incoming"
+msgstr "Рядки в syslog_incoming"
+
+#: syslog.php
+msgid "Syslog table size (data + indexes)"
+msgstr "Розмір таблиці Syslog (дані + індекси)"
+
+#: syslog.php
+msgid "Syslog retention"
+msgstr "Термін зберігання Syslog"
+
+#: syslog.php
+msgid "Alert retention"
+msgstr "Зберігання сповіщень"
+
+#: syslog.php
+msgid "No recovery activity recorded yet."
+msgstr "Активність з відновлення ще не зафіксована."
+
+#: syslog.php
+msgid "created"
+msgstr "створено"
+
+#: syslog.php
+msgid "remaining"
+msgstr "залишилося"
+
+#: syslog.php
+msgid "retention deferred"
+msgstr "очищення за терміном зберігання відкладено"
+
+#: syslog.php
+msgid "Latest processing run"
+msgstr "Останній запуск обробки"
+
+#: syslog.php
+msgid "Distributed synchronization"
+msgstr "Розподілена синхронізація"
+
+#: syslog.php
+msgid "Remote collector receipts"
+msgstr "Підтвердження віддаленого збирача"
+
+#: syslog.php
+msgid "Storage and retention"
+msgstr "Зберігання та термін зберігання"
+
+#: syslog.php
+msgid "Partition health"
+msgstr "Стан розділів"
+
+#: syslog.php
+msgid "Partition maintenance activity"
+msgstr "Активність обслуговування розділів"
+
+#: syslog.php
+msgid "Recent partition maintenance activity"
+msgstr "Остання активність обслуговування розділів"
+
+#: syslog.php
+msgid "Pipeline health"
+msgstr "Стан конвеєра обробки"
+
+#: syslog.php
+msgid "Parallel workers"
+msgstr "Паралельні обробники"
+
+#: syslog.php
+msgid "Worker processes"
+msgstr "Робочі процеси"
+
+#: syslog.php
+msgid "Processing phases"
+msgstr "Етапи обробки"
+
+#: syslog.php
+msgid "Rule activity"
+msgstr "Активність правила"
+
+#: syslog.php
+msgid "Records processed"
+msgstr "Опрацьовано записів"
+
+#: syslog.php
+msgid "Polling runtime"
+msgstr "Час виконання опитування"
+
+#: syslog.php
+msgid "Started"
+msgstr "Розпочався"
+
+#: syslog.php
+msgid "Finished"
+msgstr "Завершено"
+
+#: syslog.php
+msgid "Minimum runtime"
+msgstr "Мінімальний час виконання"
+
+#: syslog.php
+msgid "Average runtime"
+msgstr "Середній час виконання"
+
+#: syslog.php
+msgid "Maximum runtime"
+msgstr "Максимальний час виконання"
+
+#: syslog.php
+msgid "State"
+msgstr "Область"
+
+#: syslog.php
+msgid "Queued Recovery Records"
+msgstr "Записи відновлення в черзі"
+
+#: syslog.php
+msgid "Oldest pending"
+msgstr "Найстаріше в очікуванні"
+
+#: syslog.php
+msgid "Last successful synchronization"
+msgstr "Остання успішна синхронізація"
+
+#: syslog.php
+msgid "Active"
+msgstr "Активний"
+
+#: syslog.php
+msgid "Inactive"
+msgstr "Неактивний"
+
+#: syslog.php
+msgid "Recovery worker"
+msgstr "Обробник відновлення"
+
+#: syslog.php
+msgid "Last synchronization error"
+msgstr "Остання помилка синхронізації"
+
+#: syslog.php
+msgid "Last Batch Count"
+msgstr "Кількість в останньому пакеті"
+
+#: syslog.php
+msgid "Last Record Received"
+msgstr "Останній отриманий запис"
+
+#: syslog.php
+msgid "Remote Poller"
+msgstr "Віддалений опитувач"
+
+#: syslog.php
+msgid "Unknown remote poller"
+msgstr "Невідомий віддалений опитувач"
+
+#: syslog.php
+msgid "No remote collector records have been received yet."
+msgstr "Записи від віддалених колекторів ще не надходили."
+
+#: syslog.php
+msgid "Partition maintenance blocked"
+msgstr "Обслуговування розділів заблоковано"
+
+#: syslog.php
+msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
+msgstr "Обслуговування розділів зупинено; запис триває до резервного розділу dMaxValue."
+
+#: syslog.php
+msgid "Date coverage"
+msgstr "Охоплення за датами"
+
+#: syslog.php
+msgid "Table"
+msgstr "Таблиця"
+
+#: syslog.php
+msgid "dMaxValue rows (estimated)"
+msgstr "dMaxValue рядків (приблизно)"
+
+#: syslog.php
+msgid "dMaxValue size"
+msgstr "розмір dMaxValue"
+
+#: syslog.php
+msgid "Partitioning level"
+msgstr "Рівень розбиття на розділи"
+
+#: syslog.php
+#, php-format
+msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
+msgstr "«%s» вибрано в налаштуваннях; зміни набудуть чинності після перебудови таблиць скриптом cli/upgrade_partitioning.php."
+
+#: syslog.php
+msgid "Last attempt"
+msgstr "Остання спроба"
+
+#: syslog.php
+msgid "Last successful maintenance"
+msgstr "Останнє успішне обслуговування"
+
+#: syslog.php
+msgid "Complete"
+msgstr "Підтвердити"
+
+#: syslog.php
+msgid "Deferred"
+msgstr "Відкладено"
+
+#: syslog.php
+msgid "Latest outcome"
+msgstr "Останній результат"
+
+#: syslog.php
+msgid "Recovery progress"
+msgstr "Перебіг відновлення"
+
+#: syslog.php syslog_alerts.php syslog_reports.php
+msgid "Details"
+msgstr "Подробиці"
+
+#: syslog.php
+msgid "Outcome"
+msgstr "Результат"
+
+#: syslog.php
+msgid "Recovery"
+msgstr "Відновлення"
+
+#: syslog.php
+msgid "When"
+msgstr "Коли"
+
+#: syslog.php
+msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
+msgstr "Активність з обслуговування розділів ще не зафіксована. Дані з'являться після наступного запуску опитувача."
+
+#: syslog.php
+#, php-format
+msgid "%d created, %d remaining, %d pruned"
+msgstr "%d створено, %d залишилося, %d видалено"
+
+#: syslog.php
+msgid "No action required."
+msgstr "Дій не потрібно."
+
+#: syslog.php
+msgid "Incoming backlog"
+msgstr "Черга вхідних повідомлень"
+
+#: syslog.php
+msgid "Processing"
+msgstr "Обробка"
+
+#: syslog.php
+msgid "Partition maintenance"
+msgstr "Обслуговування розділів"
+
+#: syslog.php
+msgid "Synchronization"
+msgstr "Синхронізація"
+
+#: syslog.php
+msgid "Attention required"
+msgstr "Потрібна увага"
+
+#: syslog.php
+msgid "Healthy"
+msgstr "Справний"
+
+#: syslog.php
+msgid "Processing disabled"
+msgstr "Обробку вимкнено"
+
+#: syslog.php
+msgid "Waiting for processing"
+msgstr "Очікування обробки"
+
+#: syslog.php
+msgid "Health"
+msgstr "Стан справності"
+
+#: syslog.php
+msgid "Ready"
+msgstr "Готово"
+
+#: syslog.php
+msgid "Sent"
+msgstr "Надіслано"
+
+#: syslog.php
+msgid "Failed; retry pending"
+msgstr "Помилка; очікується повторна спроба"
+
+#: syslog.php
+msgid "Pending; next poller check"
+msgstr "Очікує; наступна перевірка опитувача"
+
+#: syslog.php
+msgid "Last health check"
+msgstr "Остання перевірка стану"
+
+#: syslog.php
+msgid "Email notifications"
+msgstr "Сповіщення електронною поштою"
+
+#: syslog.php
+msgid "Not checked yet"
+msgstr "Ще не перевірено"
+
+#: syslog.php
+msgid "Last notification sent"
+msgstr "Останнє надіслане сповіщення"
+
+#: syslog.php
+msgid "Last received log"
+msgstr "Останній отриманий журнал"
+
+#: syslog.php
+msgid "Oldest unprocessed message"
+msgstr "Найстаріше необроблене повідомлення"
+
+#: syslog.php
+msgid "Records processed in latest run"
+msgstr "Записів оброблено під час останнього запуску"
+
+#: syslog.php
+msgid "Worker processes running"
+msgstr "Запущені робочі процеси"
+
+#: syslog.php
+msgid "Configured worker processes"
+msgstr "Налаштовані робочі процеси"
+
+#: syslog.php
+msgid "Hosts resolved"
+msgstr "Імена хостів розв'язано"
+
+#: syslog.php
+msgid "Process"
+msgstr "Процес"
+
+#: syslog.php
+msgid "Records handled"
+msgstr "Оброблено записів"
+
+#: syslog.php
+msgid "Runtime"
+msgstr "Час виконання"
+
+#: syslog.php
+msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
+msgstr "Статистика за процесами ще не зафіксована. Статистика робочих процесів з'явиться після першого паралельного запуску."
+
+#: syslog.php
+msgid "Duration"
+msgstr "Тривалість"
+
+#: syslog.php
+msgid "Phase"
+msgstr "Етап"
+
+#: syslog.php
+msgid "Records"
+msgstr "Записи"
+
+#: syslog.php
+msgid "Reference updates"
+msgstr "Оновлення посилань"
+
+#: syslog.php
+msgid "Removal rules"
+msgstr "Правила видалення"
+
+#: syslog.php
+msgid "Alert evaluation"
+msgstr "Оцінювання сповіщення"
+
+#: syslog.php
+msgid "Incoming transfer"
+msgstr "Вхідна передача"
+
+#: syslog.php
+msgid "Report processing"
+msgstr "Обробка звіту"
+
+#: syslog.php
+msgid "slowest"
+msgstr "найповільніший"
+
+#: syslog.php
+msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
+msgstr "Часові показники етапів ще не зафіксовані. Дані з'являться після наступного запуску опитувача."
+
+#: syslog.php
+msgid "Last run"
+msgstr "Останній запуск"
+
+#: syslog.php
+msgid "Rules processed"
+msgstr "Оброблено правил"
+
+#: syslog.php
+msgid "Total"
+msgstr "Всього"
+
+#: syslog.php
+msgid "Alert rules"
+msgstr "Правила сповіщень"
+
+#: syslog.php
+msgid "Delete rules"
+msgstr "Видалити правила"
+
+#: syslog.php
+msgid "Fired last run"
+msgstr "Спрацював під час останнього запуску"
+
+#: syslog.php
+msgid "Show more"
+msgstr "Показати більше"
+
+#: syslog.php
+msgid "Show less"
+msgstr "Показати менше"
+
+#: syslog.php
+msgid "Open in a dialog"
+msgstr "Відкрити в діалоговому вікні"
+
+#: syslog.php
+msgid "Remove from page"
+msgstr "Видалити зі сторінки"
+
+#: syslog.php
+msgid "Invalid refresh interval."
+msgstr "Неприпустимий інтервал оновлення."
+
+#: syslog.php
+msgid "Unknown card."
+msgstr "Невідома картка."
+
+#: syslog.php
+msgid "Add card"
+msgstr "Додати картку"
+
+#: syslog.php
+msgid "Add a status card…"
+msgstr "Додати картку стану…"
+
+#: syslog.php
+msgid "Syslog Alert View"
+msgstr "Перегляд попереджень Syslog"
+
+#: syslog.php
+msgid "A valid saved search is required."
+msgstr "Потрібно вказати дійсний збережений пошук."
+
+#: syslog.php
+msgid "Saved search not found."
+msgstr "Збережений пошук не знайдено."
+
+#: syslog.php
+msgid "You may only share your own saved searches."
+msgstr "Ви можете ділитися лише власними збереженими пошуками."
+
+#: syslog.php
+#, php-format
+msgid "[ Unprocessed Messages: %s ]"
+msgstr "[ Необроблених повідомлень: %s ]"
+
+#: syslog.php syslog_device_rules.php
+msgid "Enter a search term"
+msgstr "Введіть пошуковий термін"
+
+#: syslog.php
+msgid "Select Device(s)"
+msgstr "Виберіть пристрій (пристрої)"
+
+#: syslog.php
+msgid "Devices Selected"
+msgstr "Вибрано пристроїв"
+
+#: syslog.php
+msgid "All Devices Selected"
+msgstr "Вибрано всі пристрої"
+
+#: syslog.php
+#, php-format
+msgid "Syslog Message Filter %s"
+msgstr "Фільтр повідомлень Syslog %s"
+
+#: syslog.php
+msgid "Search messages"
+msgstr "Пошук повідомлень"
+
+#: syslog.php
+msgid "Collapse filters"
+msgstr "Згорнути фільтри"
+
+#: syslog.php
+msgid "Edit filters"
+msgstr "Редагувати фільтри"
+
+#: syslog.php
+msgid "Saved Searches"
+msgstr "Збережені пошукові запити"
+
+#: syslog.php
+msgid "My Searches"
+msgstr "Мої пошукові запити"
+
+#: syslog.php
+msgid "Global Searches"
+msgstr "Глобальні пошукові запити"
+
+#: syslog.php
+#, php-format
+msgid "%s (Default)"
+msgstr "%s (за замовчуванням)"
+
+#: syslog.php
+msgid "Manage"
+msgstr "Керування"
+
+#: syslog.php
+msgid "Manage saved searches"
+msgstr "Керування збереженими пошуками"
+
+#: syslog.php
+msgid "Save search"
+msgstr "Зберегти пошук"
+
+#: syslog.php
+msgid "Edit"
+msgstr "Редагування"
+
+#: syslog.php
+msgid "Save for all"
+msgstr "Зберегти для всіх"
+
+#: syslog.php
+msgid "contains"
+msgstr "містить"
+
+#: syslog.php
+msgid "does not contain"
+msgstr "не містить"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Rows"
+msgstr "Рядки"
+
+#: syslog.php
+msgid "Display Rows"
+msgstr "Кількість рядків"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Default"
+msgstr "За замовчуванням"
+
+#: syslog.php
+msgid "View options"
+msgstr "Параметри перегляду"
+
+#: syslog.php
+msgid "Trim"
+msgstr "Обрізати"
+
+#: syslog.php
+msgid "Message Trim"
+msgstr "Обрізання повідомлень"
+
+#: syslog.php
+msgid "Removal Handling"
+msgstr "Обробка видалення"
+
+#: syslog.php
+msgid "Display"
+msgstr "Показувати"
+
+#: syslog.php
+msgid "Group Duplicate Messages"
+msgstr "Групувати дубльовані повідомлення"
+
+#: syslog.php
+msgid "Individual Messages"
+msgstr "Окремі повідомлення"
+
+#: syslog.php
+msgid "Grouped Messages"
+msgstr "Згруповані повідомлення"
+
+#: syslog.php
+#, no-php-format
+msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
+msgstr "Виберіть поле, оператор і значення. AND має вищий пріоритет за OR; NOT виключає умову. LIKE використовує % для будь-якої кількості символів і _ для одного символу. Дати мають формат РРРР-ММ-ДД ГГ:ХХ:СС. ID — невід'ємні цілі числа. Типово відображаються журнали за останню добу, якщо діапазон дат не змінено."
+
+#: syslog.php
+msgid "Search help"
+msgstr "Довідка щодо пошуку"
+
+#: syslog.php
+msgid "New Saved Search"
+msgstr "Новий збережений пошук"
+
+#: syslog.php
+msgid "Edit Saved Search"
+msgstr "Редагувати збережений пошук"
+
+#: syslog.php
+msgid "Save As"
+msgstr "Зберегти як"
+
+#: syslog.php
+msgid "Delete the selected saved search?"
+msgstr "Видалити вибраний збережений пошук?"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Search"
+msgstr "Пошук"
+
+#: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Clear"
+msgstr "Очистити"
+
+#: syslog.php
+msgid "Return filter values to their user defined defaults"
+msgstr "Повернути значення фільтра до заданих користувачем значень за замовчуванням"
+
+#: syslog.php
+msgid "Refresh Results"
+msgstr "Оновити результати"
+
+#: syslog.php
+msgid "Export Records to CSV"
+msgstr "Експортувати записи у CSV"
+
+#: syslog.php
+msgid "Save Default Settings"
+msgstr "Зберегти типові налаштування"
+
+#: syslog.php
+msgid "Save view defaults"
+msgstr "Зберегти типові параметри перегляду"
+
+#: syslog.php
+msgid "Save Search As"
+msgstr "Зберегти пошук як"
+
+#: syslog.php
+msgid "Apply this search when you open this page and no search is active yet"
+msgstr "Застосовувати цей пошук під час відкриття сторінки, якщо жоден пошук ще не активний"
+
+#: syslog.php
+msgid "Breach"
+msgstr "Порушення"
+
+#: syslog.php
+msgid "Threshold breached"
+msgstr "Поріг порушено"
+
+#: syslog.php
+msgid "Messages"
+msgstr "Повідомлення"
+
+#: syslog.php
+msgid "Empty message"
+msgstr "Порожнє повідомлення"
+
+#: syslog.php
+msgid "Toggle group messages"
+msgstr "Перемкнути групування повідомлень"
+
+#: syslog.php
+msgid "Loading group messages..."
+msgstr "Завантаження повідомлень групи..."
+
+#: syslog.php
+msgid "No matching messages."
+msgstr "Відповідних повідомлень немає."
+
+#: syslog.php
+msgid "No Syslog Messages"
+msgstr "Немає повідомлень Syslog"
+
+#: syslog.php
+msgid "Alert Log Rows"
+msgstr "Рядки журналу сповіщень"
+
+#: syslog.php
+msgid "Alert Removed"
+msgstr "Сповіщення видалено"
+
+#: syslog.php
+msgid "No Alert Log Messages"
+msgstr "Немає повідомлень журналу сповіщень"
+
+#: syslog.php
+msgid "Close message details"
+msgstr "Закрити деталі повідомлення"
+
+#: syslog.php
+msgid "Message details"
+msgstr "Деталі повідомлення"
+
+#: syslog.php
+msgid "General"
+msgstr "Загальні"
+
+#: syslog.php
+msgid "Alert Rule"
+msgstr "Правило сповіщення"
+
+#: syslog.php
+msgid "Sequence"
+msgstr "Послідовність"
+
+#: syslog.php
+msgid "Copied"
+msgstr "Скопійовано"
+
+#: syslog.php
+msgid "Copy link"
+msgstr "Копіювати посилання"
+
+#: syslog.php
+msgid "Copy message"
+msgstr "Копіювати повідомлення"
+
+#: syslog.php
+msgid "Copy unavailable. Select and copy the message text."
+msgstr "Копіювання недоступне. Виділіть та скопіюйте текст повідомлення."
+
+#: syslog.php
+msgid "Looking up recommendations…"
+msgstr "Пошук рекомендацій…"
+
+#: syslog.php
+msgid "No recommendation matches this message."
+msgstr "Жодна рекомендація не відповідає цьому повідомленню."
+
+#: syslog.php syslog_alerts.php
+msgid "Actions"
+msgstr "Дії"
+
+#: syslog.php
+msgid "Create Alarm Rule"
+msgstr "Створити правило тривоги"
+
+#: syslog.php
+msgid "Create Device Alert Rule"
+msgstr "Створити правило сповіщення пристрою"
+
+#: syslog.php
+msgid "Create Removal Rule"
+msgstr "Створити правило видалення"
+
+#: syslog.php
+msgid "Filter by device"
+msgstr "Фільтрувати за пристроєм"
+
+#: syslog.php
+msgid "Filter by program"
+msgstr "Фільтрувати за програмою"
+
+#: syslog.php
+msgid "All Programs"
+msgstr "Усі програми"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб видалити наведені нижче правила сповіщень Syslog."
+
+#: syslog_alerts.php
+msgid "Delete Syslog Alert Rule(s)"
+msgstr "Видалити правило(а) сповіщень Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Disable the following Syslog Alert Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб вимкнути наведені нижче правила сповіщень Syslog."
+
+#: syslog_alerts.php
+msgid "Disable Syslog Alert Rule(s)"
+msgstr "Вимкнути правило(-а) сповіщення Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Enable the following Syslog Alert Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб увімкнути наведені нижче правила сповіщень Syslog."
+
+#: syslog_alerts.php
+msgid "Enable Syslog Alert Rule(s)"
+msgstr "Увімкнути правила сповіщень Syslog"
+
+#: syslog_alerts.php
+msgid "Click 'Continue' to Export the following Syslog Alert Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб експортувати наведені нижче правила сповіщень Syslog."
+
+#: syslog_alerts.php
+msgid "Export Syslog Alert Rule(s)"
+msgstr "Експортувати правила сповіщень Syslog"
+
+#: syslog_alerts.php
+msgid "Select Syslog Alarming or Alarm Manager."
+msgstr "Виберіть сповіщення Syslog або менеджер тривог."
+
+#: syslog_alerts.php
+msgid "Enter a whole number of minutes, hours, or days for the threshold window."
+msgstr "Введіть ціле число хвилин, годин або днів для часового вікна порогу."
+
+#: syslog_alerts.php
+msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
+msgstr "Введіть додатне ціле число хвилин, годин або днів для відновлення порогу."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
+msgstr "Введений синтаксис SQL некоректний. Будь ласка, виправте SQL-запит.<br>"
+
+#: syslog_alerts.php syslog_reports.php
+#, php-format
+msgid "The Pre-processed SQL is:<br><br> %s"
+msgstr "Попередньо оброблений SQL-запит:<br><br> %s"
+
+#: syslog_alerts.php syslog_removal.php
+#, php-format
+msgid "The filter is invalid: %s"
+msgstr "Фільтр недійсний: %s"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "The processed SQL was invalid.  Please correct your SQL"
+msgstr "Оброблений SQL-запит був некоректним. Будь ласка, виправте ваш SQL"
+
+#: syslog_alerts.php
+msgid "Not Set"
+msgstr "Не встановлено"
+
+#: syslog_alerts.php
+msgid "1 Minute"
+msgstr "1 хвилина"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hour"
+msgstr "%d година"
+
+#: syslog_alerts.php
+#, php-format
+msgid "%d Hours"
+msgstr "%d Годин"
+
+#: syslog_alerts.php
+msgid "1 Month"
+msgstr "1 місяць"
+
+#: syslog_alerts.php
+#, php-format
+msgid "Alert Edit [edit: %s]"
+msgstr "Редагування сповіщення [редагування: %s]"
+
+#: syslog_alerts.php
+msgid "Alert Edit [new]"
+msgstr "Редагування сповіщення [нове]"
+
+#: syslog_alerts.php
+msgid "New Alert Rule"
+msgstr "Нове правило сповіщення"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "N/A"
+msgstr "(відсутній)"
+
+#: syslog_alerts.php
+msgid "Time unit"
+msgstr "Одиниця часу"
+
+#: syslog_alerts.php
+msgid "Days"
+msgstr "Дні"
+
+#: syslog_alerts.php
+msgid "Hours"
+msgstr "Години"
+
+#: syslog_alerts.php
+msgid "Minutes"
+msgstr "Хвилини"
+
+#: syslog_alerts.php
+msgid "Please describe this Alert."
+msgstr "Будь ласка, опишіть це сповіщення."
+
+#: syslog_alerts.php
+msgid "Alarm Destination"
+msgstr "Призначення тривоги"
+
+#: syslog_alerts.php
+msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
+msgstr "Виберіть сповіщення Syslog або Менеджер тривог (Alarm Manager). Менеджер тривог також вимагає ввімкненої переадресації в налаштуваннях Syslog. Електронна пошта зберігається як резервний канал; команди для правил Менеджера тривог не виконуються."
+
+#: syslog_alerts.php
+msgid "Alarm Manager"
+msgstr "Менеджер тривог"
+
+#: syslog_alerts.php
+msgid "Syslog Alarming"
+msgstr "Тривожні сповіщення Syslog"
+
+#: syslog_alerts.php
+msgid "What is the Severity Level of this Alert?"
+msgstr "Який рівень серйозності цього сповіщення?"
+
+#: syslog_alerts.php
+msgid "Reporting Level"
+msgstr "Рівень звітування"
+
+#: syslog_alerts.php
+msgid "For recording Re-Alert Cycles, should the Alert be tracked at the System or Device level."
+msgstr "Для запису циклів повторного сповіщення — чи слід відстежувати сповіщення на рівні системи чи на рівні пристрою."
+
+#: syslog_alerts.php
+msgid "System"
+msgstr "Система"
+
+#: syslog_alerts.php
+msgid "Reporting Method"
+msgstr "Метод звітування"
+
+#: syslog_alerts.php
+msgid "Define how to Alert on the syslog messages."
+msgstr "Визначте спосіб сповіщення про повідомлення Syslog."
+
+#: syslog_alerts.php
+msgid "Individual"
+msgstr "Окремий"
+
+#: syslog_alerts.php
+msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
+msgstr "Для методу «Поріг» сповіщення спрацьовує, коли кількість виявлених подій досягає цього значення."
+
+#: syslog_alerts.php
+msgid "Threshold Window"
+msgstr "Вікно порогу"
+
+#: syslog_alerts.php
+msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
+msgstr "Підраховувати збіги за циклами колектора в межах цього ковзного вікна за часом обробки колектора. Введіть 0, щоб враховувати лише поточний цикл."
+
+#: syslog_alerts.php
+msgid "Recover After Quiet Period"
+msgstr "Відновлення після періоду затишшя"
+
+#: syslog_alerts.php
+msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
+msgstr "Час без відповідних повідомлень до зняття порушення, скидання лічильника та повторного взведення цього правила. Кожне відповідне повідомлення перезапускає цей таймер."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match Type"
+msgstr "Тип збігу"
+
+#: syslog_alerts.php
+msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
+msgstr "Виберіть Конструктор фільтрів (Filter Builder) для безпечної багатоумовної логіки тривог. SQL-вираз збережено для застарілих правил."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Message Match String"
+msgstr "Рядок збігу повідомлення"
+
+#: syslog_alerts.php
+msgid "Build filter conditions or enter an SQL expression to match syslog messages."
+msgstr "Створіть умови фільтра або введіть вираз SQL для відповідності повідомленням Syslog."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_removal.php
+#: syslog_reports.php
+msgid "Enabled"
+msgstr "Увімкнено"
+
+#: syslog_alerts.php
+msgid "Is this Alert Enabled?"
+msgstr "Чи увімкнено це сповіщення?"
+
+#: syslog_alerts.php
+msgid "Re-Alert Cycle"
+msgstr "Цикл повторного сповіщення"
+
+#: syslog_alerts.php
+msgid "Do not resend this alert again for the same host, until this amount of time has elapsed. For threshold based alarms, this applies to all hosts."
+msgstr "Не надсилати це сповіщення повторно для того самого вузла, доки не мине вказаний час. Для сповіщень на основі порогів це стосується всіх вузлів."
+
+#: syslog_alerts.php
+msgid "Notification Cooldown"
+msgstr "Пауза між сповіщеннями"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
+msgstr "Кількість хвилин для приглушення кожного наступного сповіщення від цього правила та області звітування."
+
+#: syslog_alerts.php
+msgid "1 day"
+msgstr "1 день"
+
+#: syslog_alerts.php
+msgid "1 hour"
+msgstr "1 година"
+
+#: syslog_alerts.php
+msgid "1 minute"
+msgstr "1 хвилина"
+
+#: syslog_alerts.php
+msgid "15 minutes"
+msgstr "15 хвилин"
+
+#: syslog_alerts.php
+msgid "30 minutes"
+msgstr "30 хвилин"
+
+#: syslog_alerts.php
+msgid "4 hours"
+msgstr "4 години"
+
+#: syslog_alerts.php
+msgid "5 minutes"
+msgstr "5 хвилин"
+
+#: syslog_alerts.php
+msgid "Use global setting"
+msgstr "Використовувати глобальне налаштування"
+
+#: syslog_alerts.php
+msgid "Duplicate Suppression"
+msgstr "Придушення дублікатів"
+
+#: syslog_alerts.php
+msgid "Minutes to suppress the same matched message set."
+msgstr "Кількість хвилин для приглушення того самого набору збіглих повідомлень."
+
+#: syslog_alerts.php
+msgid "Maintenance Window"
+msgstr "Вікно обслуговування"
+
+#: syslog_alerts.php
+msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
+msgstr "Виберіть, чи це правило використовує глобальний часовий інтервал обслуговування, чи власний часовий інтервал."
+
+#: syslog_alerts.php
+msgid "Do not mute this rule"
+msgstr "Не приглушувати це правило"
+
+#: syslog_alerts.php
+msgid "Use global timeframe"
+msgstr "Використовувати глобальний часовий діапазон"
+
+#: syslog_alerts.php
+msgid "Use rule timeframe"
+msgstr "Використовувати часовий діапазон правила"
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Days"
+msgstr "Дні обслуговування правила"
+
+#: syslog_alerts.php
+msgid "Days for this rule timeframe, when Use rule timeframe is selected."
+msgstr "Дні для часового діапазону цього правила, коли вибрано «Використовувати часовий діапазон правила»."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Starts"
+msgstr "Початок обслуговування правила"
+
+#: syslog_alerts.php
+msgid "Local start time for this rule timeframe."
+msgstr "Локальний час початку часового інтервалу цього правила."
+
+#: syslog_alerts.php
+msgid "Rule Maintenance Ends"
+msgstr "Завершення обслуговування правила"
+
+#: syslog_alerts.php
+msgid "Local end time for this rule timeframe."
+msgstr "Локальний час завершення часового інтервалу цього правила."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Starts"
+msgstr "Початок одноразового обслуговування правила"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Необов'язкова локальна дата та час початку вимкнення сповіщень для цього правила. Формат: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php
+msgid "One-time Rule Maintenance Ends"
+msgstr "Кінець одноразового обслуговування правила"
+
+#: syslog_alerts.php
+msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
+msgstr "Необов'язкова локальна дата та час припинення вимкнення сповіщень для цього правила. Формат: YYYY-MM-DD HH:MM."
+
+#: syslog_alerts.php syslog_device_rules.php syslog_reports.php
+msgid "Notes"
+msgstr "Нотатки"
+
+#: syslog_alerts.php
+msgid "Space for Notes on the Alert"
+msgstr "Місце для приміток щодо сповіщення"
+
+#: syslog_alerts.php
+msgid "Email Options"
+msgstr "Параметри електронної пошти"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Notification List"
+msgstr "Список сповіщень"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Use the contents of this Notification List to dictate who should be notified and how."
+msgstr "Використовувати вміст цього списку сповіщень, щоб визначити, кого і як слід сповіщати."
+
+#: syslog_alerts.php
+msgid "Emails to Notify"
+msgstr "Адреси ел. пошти для сповіщення"
+
+#: syslog_alerts.php
+msgid "Please enter a comma delimited list of Email addresses to inform.  If you wish to send out Email to a recipient in SMS format, please prefix that recipient's Email address with <b>'sms@'</b>.  For example, if the recipients SMS address is <b>'2485551212@mycarrier.net'</b>, you would enter it as <b>'sms@2485551212@mycarrier.net'</b> and it will be formatted as an SMS message."
+msgstr "Будь ласка, введіть розділений комами список адрес електронної пошти для інформування. Якщо ви хочете надіслати лист отримувачу у форматі SMS, додайте перед його адресою префікс <b>'sms@'</b>. Наприклад, якщо SMS-адреса отримувача — <b>'2485551212@mycarrier.net'</b>, введіть її як <b>'sms@2485551212@mycarrier.net'</b>, і повідомлення буде відформатовано як SMS."
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Body Text"
+msgstr "Текст електронного листа"
+
+#: syslog_alerts.php
+msgid "This information will appear in the body of the Alert just before the Alert details."
+msgstr "Ця інформація відображатиметься в тілі сповіщення безпосередньо перед його деталями."
+
+#: syslog_alerts.php
+msgid "Open Ticket"
+msgstr "Відкрити заявку"
+
+#: syslog_alerts.php
+msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket command script will be populated with several 'ALERT_' environment variables for convenience."
+msgstr "Чи створювати заявку служби підтримки для цього сповіщення. ПРИМІТКА: для зручності в скрипт команди заявки буде передано кілька змінних середовища «ALERT_»."
+
+#: syslog_alerts.php
+msgid "Alert command"
+msgstr "Команда сповіщення"
+
+#: syslog_alerts.php
+msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
+msgstr "Коли спрацьовує сповіщення, виконати таку команду. Доступні такі змінні підстановки: <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>. Зверніть увагу, що <b>'&lt;HOSTNAME&gt;'</b> доступна лише для окремих порогів. Ці значення підстановки можуть передаватися в командному рядку або зчитуватися із середовища скрипту. При використанні з середовища ці змінні матимуть префікс 'ALERT_'."
+
+#: syslog_alerts.php
+msgid "Recovery command"
+msgstr "Команда відновлення"
+
+#: syslog_alerts.php
+msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
+msgstr "Необов'язкова команда, яка запускається після відновлення цього порогу після періоду тиші. Використовує ті самі змінні підстановки, що й команда тривоги. SYSLOG_EVENT має значення clear; SYSLOG_BREACH_ID відповідає команді порушення. Невдалі команди повторюються. Залиште порожнім, щоб вимкнути."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Test rule"
+msgstr "Перевірити правило"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Rule Test Preview"
+msgstr "Попередній перегляд перевірки правила"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Value"
+msgstr "Значення"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a value"
+msgstr "Введіть значення"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Match"
+msgstr "Збіг"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Exclude"
+msgstr "Виключити"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Enter a nonnegative integer"
+msgstr "Введіть невід'ємне ціле число"
+
+#: syslog_alerts.php
+msgid "Alarm filter conditions"
+msgstr "Умови фільтрації тривоги"
+
+#: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php
+msgid "All"
+msgstr "Всі"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
+#: syslog_recommendations.php syslog_removal.php syslog_reports.php
+#: syslog_saved_searches.php
+msgid "Go"
+msgstr "Перейти"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
+#: syslog_removal.php syslog_reports.php syslog_saved_searches.php
+msgid "Import"
+msgstr "Імпорт"
+
+#: syslog_alerts.php
+msgid "Syslog Alert Filters"
+msgstr "Фільтри попереджень Syslog"
+
+#: syslog_alerts.php syslog_removal.php
+msgid "Method"
+msgstr "Метод"
+
+#: syslog_alerts.php
+msgid "Threshold Count"
+msgstr "Кількість порогів"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Search String"
+msgstr "Рядок пошуку"
+
+#: syslog_alerts.php syslog_reports.php
+msgid "Email Addresses"
+msgstr "Адреси електронної пошти"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Last Modified"
+msgstr "Востаннє змінено"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "By User"
+msgstr "За користувачем"
+
+#: syslog_alerts.php
+msgid "Alerts"
+msgstr "Сповіщення"
+
+#: syslog_alerts.php
+msgid "Multiple"
+msgstr "множинний"
+
+#: syslog_alerts.php
+msgid "No Syslog Alerts Defined"
+msgstr "Сповіщення Syslog не визначено"
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Local File"
+msgstr "Імпортувати правило сповіщення з локального файлу"
+
+#: syslog_alerts.php
+msgid "If the XML file containing the Alert Rule definition data is located on your local machine, select it here."
+msgstr "Якщо файл XML із даними визначення правила тривоги знаходиться на вашому локальному комп'ютері, виберіть його тут."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule from Text"
+msgstr "Імпортувати правило сповіщення з тексту"
+
+#: syslog_alerts.php
+msgid "If you have the XML file containing the Alert Ruledefinition data as text, you can paste it into this box to import it."
+msgstr "Якщо у вас є файл XML, що містить дані визначення правила сповіщення у вигляді тексту, ви можете вставити їх у це поле для імпорту."
+
+#: syslog_alerts.php
+msgid "Import Alert Rule"
+msgstr "Імпортувати правило сповіщення"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_saved_searches.php
+msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
+msgstr "Імпорт відхилено: файл порожній, пошкоджений або містить інший тип об'єкта Syslog."
+
+#: syslog_alerts.php
+msgid "Import rejected: invalid alarm destination."
+msgstr "Імпорт відхилено: неприпустиме призначення сповіщення."
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Imported"
+msgstr "Імпортується"
+
+#: syslog_alerts.php
+#, php-format
+msgid "NOTE: Alert '%s' %s!"
+msgstr "ПРИМІТКА: Сповіщення '%s' %s!"
+
+#: syslog_alerts.php syslog_dashboards.php syslog_removal.php
+#: syslog_reports.php
+msgid "Updated"
+msgstr "Оновлено"
+
+#: syslog_alerts.php
+#, php-format
+msgid "ERROR: Alert '%s' %s Failed!"
+msgstr "ПОМИЛКА: сповіщення '%s' — збій (%s)!"
+
+#: syslog_alerts.php syslog_removal.php syslog_reports.php
+msgid "Update"
+msgstr "Оновити"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Select a valid owner."
+msgstr "Виберіть дійсного власника."
+
+#: syslog_dashboards.php
+msgid "Unable to save the dashboard. Please try again."
+msgstr "Не вдалося зберегти інформаційну панель. Будь ласка, спробуйте ще раз."
+
+#: syslog_dashboards.php
+msgid "Enter a dashboard name between 1 and 128 characters."
+msgstr "Введіть назву інформаційної панелі довжиною від 1 до 128 символів."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Owner"
+msgstr "Власник"
+
+#: syslog_dashboards.php
+msgid "Shared"
+msgstr "Спільний доступ"
+
+#: syslog_dashboards.php
+msgid "Panels"
+msgstr "Панелі"
+
+#: syslog_dashboards.php
+msgid "deleted user"
+msgstr "видалений користувач"
+
+#: syslog_dashboards.php
+msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
+msgstr "Ще немає інформаційних панелей. Користувачі створюють їх на вкладці панелі керування Syslog."
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
+msgstr "Натисніть 'Продовжити', щоб видалити наведені нижче дашборди та всі їхні панелі."
+
+#: syslog_dashboards.php
+msgid "Delete Dashboard(s)"
+msgstr "Видалити дашборд(и)"
+
+#: syslog_dashboards.php
+msgid "Click 'Continue' to Export the following Dashboard(s)."
+msgstr "Натисніть 'Продовжити', щоб експортувати наведені нижче дашборди."
+
+#: syslog_dashboards.php
+msgid "Export Dashboard(s)"
+msgstr "Експортувати панелі моніторингу"
+
+#: syslog_dashboards.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Dashboard(s)."
+msgstr "ПРИМІТКА: Імпортовано %d та оновлено %d дашбордів."
+
+#: syslog_dashboards.php
+#, php-format
+msgid "ERROR: %d Dashboard(s) failed to import."
+msgstr "ПОМИЛКА: не вдалося імпортувати панелі керування (%d)."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Local File"
+msgstr "Імпортувати панель моніторингу з локального файлу"
+
+#: syslog_dashboards.php
+msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
+msgstr "Якщо файл JSON із даними визначення інформаційної панелі знаходиться на вашому локальному комп'ютері, виберіть його тут."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard from Text"
+msgstr "Імпортувати панель моніторингу з тексту"
+
+#: syslog_dashboards.php
+msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
+msgstr "Якщо у вас є файл JSON, що містить дані визначення панелі моніторингу у вигляді тексту, ви можете вставити їх у це поле для імпорту."
+
+#: syslog_dashboards.php
+msgid "Import Dashboard"
+msgstr "Імпортувати панель моніторингу"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Users"
+msgstr "Усі користувачі"
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "All Groups"
+msgstr "Усі групи"
+
+#: syslog_dashboards.php
+msgid "Edit Dashboard"
+msgstr "Редагувати панель керування"
+
+#: syslog_dashboards.php
+msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
+msgstr "Назва, що відображається у виборі інформаційних панелей на вкладці інформаційної панелі Syslog."
+
+#: syslog_dashboards.php
+msgid "The account that owns this dashboard and can manage its panels."
+msgstr "Обліковий запис, якому належить ця інформаційна панель і який може керувати її панелями."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Users"
+msgstr "Спільний доступ із користувачами"
+
+#: syslog_dashboards.php
+msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
+msgstr "Користувачі, які можуть переглядати цю панель окрім її власника та глобального спільного доступу. Варіант «Усі користувачі» надає доступ усім."
+
+#: syslog_dashboards.php
+msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
+msgstr "Групи, які можуть переглядати цю панель на додачу до її власника та будь-якого глобального спільного доступу. «Усі групи» надає доступ усім."
+
+#: syslog_dashboards.php syslog_saved_searches.php
+msgid "Shared With Groups"
+msgstr "Спільний доступ із групами"
+
+#: syslog_dashboards.php
+msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
+msgstr "Перейменування застосовується до всіх користувачів, які переглядають цей дашборд. Панелями керують їхні власники на вкладці дашборда Syslog."
+
+#: syslog_device_rules.php
+msgid "Choose a future pause end date and time."
+msgstr "Виберіть майбутню дату й час завершення паузи."
+
+#: syslog_device_rules.php
+msgid "A device name is required."
+msgstr "Потрібно вказати назву пристрою."
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Click Continue to %s the following Device Alert Rule(s)."
+msgstr "Натисніть «Продовжити», щоб %s такі правила сповіщення пристрою."
+
+#: syslog_device_rules.php
+msgid "Do not pass any priority"
+msgstr "Не передавати пріоритет"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "%s and more urgent"
+msgstr "%s і критичніші"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule"
+msgstr "Правило сповіщення пристрою"
+
+#: syslog_device_rules.php
+msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
+msgstr "Шукайте поточні пристрої Syslog під час введення або введіть будь-яку IP-адресу чи ім'я хоста."
+
+#: syslog_device_rules.php
+msgid "Alert Handling"
+msgstr "Обробка сповіщень"
+
+#: syslog_device_rules.php
+msgid "Do not pause"
+msgstr "Не призупиняти"
+
+#: syslog_device_rules.php
+msgid "Pause all non-exempt alerts until a date, or indefinitely."
+msgstr "Призупинити всі невиключені сповіщення до певної дати або безстроково."
+
+#: syslog_device_rules.php
+msgid "Pause indefinitely"
+msgstr "Призупинити безстроково"
+
+#: syslog_device_rules.php
+msgid "Pause until"
+msgstr "Призупинити до"
+
+#: syslog_device_rules.php
+msgid "Local date and time, YYYY-MM-DD HH:MM."
+msgstr "Локальні дата та час, YYYY-MM-DD HH:MM."
+
+#: syslog_device_rules.php
+msgid "Pause Ends"
+msgstr "Завершення паузи"
+
+#: syslog_device_rules.php
+msgid "Always Allow Priority"
+msgstr "Завжди дозволяти пріоритет"
+
+#: syslog_device_rules.php
+msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
+msgstr "Ці пріоритети проходять крізь призупинення цього пристрою та вікна обслуговування. Рівень «Критичний» (Critical) і вище — типовий вибір для найважливіших пристроїв."
+
+#: syslog_device_rules.php
+msgid "Allow During Maintenance"
+msgstr "Дозволити під час обслуговування"
+
+#: syslog_device_rules.php
+msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
+msgstr "Дозволити всі пріоритети з цього пристрою під час вікна обслуговування сповіщень. Виняток пріоритетів вище все одно застосовується, якщо встановлено «Ні»."
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [edit]"
+msgstr "Правило сповіщення пристрою [редагування]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule [new]"
+msgstr "Правило сповіщення пристрою [нове]"
+
+#: syslog_device_rules.php
+msgid "Device Alert Rule Filters"
+msgstr "Фільтри правила сповіщення пристрою"
+
+#: syslog_device_rules.php syslog_removal.php
+msgid "Rules"
+msgstr "Правила"
+
+#: syslog_device_rules.php
+msgid "Handling"
+msgstr "Обробка"
+
+#: syslog_device_rules.php
+msgid "Maintenance"
+msgstr "Обслуговування"
+
+#: syslog_device_rules.php
+msgid "Pass Through"
+msgstr "Наскрізне передавання"
+
+#: syslog_device_rules.php
+msgid "No device alert rules found."
+msgstr "Правил сповіщень для пристроїв не знайдено."
+
+#: syslog_device_rules.php
+msgid "Not paused"
+msgstr "Не призупинено"
+
+#: syslog_device_rules.php
+msgid "Paused indefinitely"
+msgstr "Призупинено безстроково"
+
+#: syslog_device_rules.php
+#, php-format
+msgid "Paused until %s"
+msgstr "Призупинено до %s"
+
+#: syslog_device_rules.php
+msgid "and more urgent"
+msgstr "і терміновіші"
+
+#: syslog_device_rules.php
+msgid "Allow all"
+msgstr "Дозволити все"
+
+#: syslog_device_rules.php
+msgid "Use priority exception"
+msgstr "Використовувати виняток пріоритету"
+
+#: syslog_recommendations.php
+#, php-format
+msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
+msgstr "Рекомендацію не збережено, оскільки %s. Введіть ідентифікатор без пробілів і принаймні пояснення або рекомендовану дію."
+
+#: syslog_recommendations.php
+msgid "A recommendation for this vendor and identifier already exists."
+msgstr "Рекомендація для цього постачальника та ідентифікатора вже існує."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
+msgstr "ПРИМІТКА: Ідентифікатор %s містить символи, відмінні від літер, цифр, _ . - / та необов'язкового початкового літералу %%, тому він ніколи не зможе збігтися з повідомленням syslog. Замініть заповнювачі на кшталт # або альтернативи на кшталт A|B точним кодом."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Export the following Recommendation(s)."
+msgstr "Натисніть 'Продовжити', щоб експортувати наведені нижче рекомендації."
+
+#: syslog_recommendations.php
+msgid "Click 'Continue' to Delete the following Recommendation(s)."
+msgstr "Натисніть 'Продовжити', щоб видалити наведені нижче рекомендації."
+
+#: syslog_recommendations.php
+msgid "Export requires the PHP zlib extension to create a JSON gzip file."
+msgstr "Для експорту та створення стисненого файлу JSON gzip потрібне розширення PHP zlib."
+
+#: syslog_recommendations.php
+msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
+msgstr "Імпорт відхилено: файл порожній, занадто великий або не є коректним документом JSON із рекомендаціями."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
+msgstr "ПРИМІТКА: Додано %d, оновлено %d і залишено без змін %d наявних рекомендацій."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
+msgstr "ПОМИЛКА: відхилено рекомендації (%d) (наприклад, %s). Кожну з них із зазначенням причини наведено в журналі Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
+msgstr "ПОМИЛКА: не вдалося зберегти рекомендації (%d). Кожну з них зазначено в журналі Cacti."
+
+#: syslog_recommendations.php
+#, php-format
+msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
+msgstr "ПРИМІТКА: %d імпортованих рекомендацій мають ідентифікатори, що містять символи на кшталт | або #, які ніколи не трапляються у словах повідомлення, тому вони не зможуть збігтися до редагування. Встановіть «Може збігатися» у «Ні», щоб переглянути їх список."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Local File"
+msgstr "Імпортувати рекомендації з локального файлу"
+
+#: syslog_recommendations.php
+msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
+msgstr "Виберіть файл .json або .json.gz на локальному комп'ютері. Скористайтеся функцією експорту, щоб переглянути очікуваний формат: список записів із полями vendor, identifier, component, severity, message, explanation, recommended_action та reference."
+
+#: syslog_recommendations.php
+msgid "Import Recommendations from Text"
+msgstr "Імпортувати рекомендації з тексту"
+
+#: syslog_recommendations.php
+msgid "Alternatively, paste the JSON document into this box."
+msgstr "Або вставте документ JSON у це поле."
+
+#: syslog_recommendations.php
+msgid "Existing Recommendations"
+msgstr "Наявні рекомендації"
+
+#: syslog_recommendations.php
+msgid "A recommendation is the same as an existing one when its vendor and identifier match."
+msgstr "Рекомендація вважається такою самою, як наявна, якщо збігаються її постачальник та ідентифікатор."
+
+#: syslog_recommendations.php
+msgid "Keep the existing recommendation"
+msgstr "Залишити наявну рекомендацію"
+
+#: syslog_recommendations.php
+msgid "Replace it with the imported one"
+msgstr "Замінити імпортованим"
+
+#: syslog_recommendations.php
+msgid "Import Recommendations"
+msgstr "Імпортувати рекомендації"
+
+#: syslog_recommendations.php
+msgid "Importing, please wait..."
+msgstr "Імпортування, будь ласка, зачекайте..."
+
+#: syslog_recommendations.php
+msgid "Not specified"
+msgstr "Не вказано"
+
+#: syslog_recommendations.php
+msgid "Recommendation"
+msgstr "Рекомендація"
+
+#: syslog_recommendations.php
+msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
+msgstr "Постачальник пристрою або програмного забезпечення, що реєструє це повідомлення, наприклад Cisco або Juniper."
+
+#: syslog_recommendations.php
+msgid "Vendor"
+msgstr "Виробник"
+
+#: syslog_recommendations.php
+msgid "Identifier"
+msgstr "Ідентифікатор"
+
+#: syslog_recommendations.php
+msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
+msgstr "Код повідомлення для пошуку, наприклад %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN або 4625. Він має збігатися з цілим словом у повідомленні Syslog (літери, цифри та _ . - /); початковий символ % є буквальним і має збігатися точно так, як написано. Пошук нечутливий до регістру. Див. розділ «Як зіставляються рекомендації» на сторінці списку."
+
+#: syslog_recommendations.php
+msgid "Component"
+msgstr "Компонент"
+
+#: syslog_recommendations.php
+msgid "The facility, module or subsystem that raises the message."
+msgstr "Категорія (facility), модуль або підсистема, що генерує повідомлення."
+
+#: syslog_recommendations.php
+msgid "The severity the vendor documents for this message."
+msgstr "Рівень важливості, задокументований виробником для цього повідомлення."
+
+#: syslog_recommendations.php
+msgid "The message format as documented, including its variable placeholders."
+msgstr "Формат повідомлення згідно з документацією, включно з заповнювачами змінних."
+
+#: syslog_recommendations.php
+msgid "What the message means."
+msgstr "Що означає повідомлення."
+
+#: syslog_recommendations.php
+msgid "What an operator should do about it."
+msgstr "Що оператор має з цим робити."
+
+#: syslog_recommendations.php
+msgid "Links to the vendor documentation, one per line."
+msgstr "Посилання на документацію постачальника, по одному на рядок."
+
+#: syslog_recommendations.php
+msgid "Recommendation [edit]"
+msgstr "Рекомендація [редагування]"
+
+#: syslog_recommendations.php
+msgid "Recommendation [new]"
+msgstr "Рекомендація [створення]"
+
+#: syslog_recommendations.php
+msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
+msgstr "Значок лампочки перед повідомленням позначає відповідні рекомендації на вкладках «Системні журнали» та «Журнали сповіщень». Натисніть повідомлення, щоб прочитати їх у висувній панелі деталей. Наведення курсора ніколи не надсилає запитів до сервера."
+
+#: syslog_recommendations.php
+msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
+msgstr "Для зіставлення використовується лише стовпець <b>Ідентифікатор</b>. Виробник, компонент, серйозність, повідомлення та пояснення відображаються у виринаючій панелі подробиць, але пошук за ними не виконується."
+
+#: syslog_recommendations.php
+msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
+msgstr "Перші 2048 символів повідомлення розбиваються на слова. Словом вважається послідовність літер, цифр і символів _ . - /, яка може починатися з %. Будь-який інший символ, наприклад пробіл, двокрапка, кома чи дужка, завершує слово. У прикладі <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> словами є <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> та <code>down</code>."
+
+#: syslog_recommendations.php
+msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
+msgstr "Ідентифікатор збігається, коли він <b>точно дорівнює одному цілому слову</b> без урахування регістру. Це не пошук за критеріями «містить», «починається з» або «закінчується на», і символи підстановки не використовуються: <code>LINK-3-UPDOWN</code> не збігається зі словом <code>LINK-3-UPDOWN-EXT</code>, а <code>UPDOWN</code> не збігається з <code>%LINK-3-UPDOWN</code>."
+
+#: syslog_recommendations.php
+msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
+msgstr "Початковий символ <b>%</b> є літералом, а не шаблоном підстановки, і має точно збігатися зі словом у повідомленні. Ідентифікатор <code>%LINK-3-UPDOWN</code> відповідає слову повідомлення <code>%LINK-3-UPDOWN</code>, а не <code>LINK-3-UPDOWN</code>; ідентифікатор без префікса відповідає лише слову без префікса."
+
+#: syslog_recommendations.php
+msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
+msgstr "Якщо хост Syslog є пристроєм Cacti, виробника якого розпізнано за його системним описом SNMP або шаблоном пристрою, і для цього виробника існують рекомендації, перевіряються лише рекомендації цього виробника та рекомендації без вказаного виробника. Інакше перевіряються всі виробники, але ідентифікатор, що складається лише з цифр, збігається тільки з рекомендаціями без виробника. Якщо збігаються кілька рекомендацій, спочатку відображаються найдовші ідентифікатори, але не більше трьох."
+
+#: syslog_recommendations.php
+msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
+msgstr "Ідентифікатори, що містять інші символи, як-от заповнювач слота <code>#</code> або альтернативи <code>|</code> у документації деяких виробників (наприклад, <code>%ASA|PIX-3-331001</code>), зберігаються та експортуються, але ніколи не спрацюють. Установіть <b>Можливий збіг</b> (Can Match) у «Ні», щоб переглянути їх, і відредагуйте до точного коду, наприклад <code>%ASA-3-331001</code>."
+
+#: syslog_recommendations.php
+msgid "How Recommendations Are Matched"
+msgstr "Як зіставляються рекомендації"
+
+#: syslog_recommendations.php
+msgid "Can Match"
+msgstr "Можливий збіг"
+
+#: syslog_recommendations.php
+msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
+msgstr "Чи має ідентифікатор форму слова повідомлення, щоб пошук за повідомленнями міг його знайти"
+
+#: syslog_recommendations.php
+msgid "Export every recommendation that matches the filters"
+msgstr "Експортувати кожну рекомендацію, що відповідає фільтрам"
+
+#: syslog_recommendations.php
+msgid "No recommendations found."
+msgstr "Рекомендацій не знайдено."
+
+#: syslog_removal.php
+msgid "Reprocess"
+msgstr "Обробити повторно"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Delete the following Syslog Removal Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб видалити наведені нижче правила видалення Syslog."
+
+#: syslog_removal.php
+msgid "Delete Syslog Removal Rule(s)"
+msgstr "Видалити правило(а) видалення Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Disable the following Syslog Removal Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб вимкнути наведені нижче правила видалення Syslog."
+
+#: syslog_removal.php
+msgid "Disable Syslog Removal Rule(s)"
+msgstr "Вимкнути правило(-а) видалення Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Enable the following Syslog Removal Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб увімкнути наведені нижче правила видалення Syslog."
+
+#: syslog_removal.php
+msgid "Enable Syslog Removal Rule(s)"
+msgstr "Увімкнути правила видалення Syslog"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Re-process the following Syslog Removal Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб повторно обробити наведені нижче правила видалення Syslog."
+
+#: syslog_removal.php
+msgid "Retroactively Process Syslog Removal Rule(s)"
+msgstr "Застосувати правила видалення Syslog ретроактивно"
+
+#: syslog_removal.php
+msgid "Click 'Continue' to Export the following Syslog Removal Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб експортувати наведені нижче правила видалення Syslog."
+
+#: syslog_removal.php
+msgid "Export Syslog Removal Rule(s)"
+msgstr "Експортувати правила видалення Syslog"
+
+#: syslog_removal.php
+#, php-format
+msgid "Rule '%s' resulted in %s/%s messages removed/transferred"
+msgstr "Правило '%s' призвело до видалення/перенесення %s/%s повідомлень"
+
+#: syslog_removal.php
+#, php-format
+msgid "Removal Rule Edit [edit: %s]"
+msgstr "Редагування правила видалення [редагування: %s]"
+
+#: syslog_removal.php
+msgid "Removal Rule Edit [new]"
+msgstr "Редагування правила видалення [нове]"
+
+#: syslog_removal.php
+msgid "New Removal Record"
+msgstr "Новий запис видалення"
+
+#: syslog_removal.php
+msgid "New Removal Rule"
+msgstr "Нове правило видалення"
+
+#: syslog_removal.php
+msgid "Removal Rule Details"
+msgstr "Деталі правила видалення"
+
+#: syslog_removal.php
+msgid "Removal Rule Name"
+msgstr "Назва правила видалення"
+
+#: syslog_removal.php
+msgid "Please describe this Removal Rule."
+msgstr "Будь ласка, опишіть це правило видалення."
+
+#: syslog_removal.php syslog_reports.php
+msgid "Enabled?"
+msgstr "Увімкнено?"
+
+#: syslog_removal.php
+msgid "Is this Removal Rule Enabled?"
+msgstr "Чи увімкнено це правило видалення?"
+
+#: syslog_removal.php syslog_reports.php
+msgid "String Match Type"
+msgstr "Тип збігу рядка"
+
+#: syslog_removal.php
+msgid "Define how you would like this string matched.  If using the SQL Expression type you may use any valid SQL expression to generate the alarm.  Available fields include 'message', 'facility', 'priority', and 'host'."
+msgstr "Визначте спосіб зіставлення цього рядка. Якщо використовується тип «SQL-вираз», ви можете застосувати будь-який коректний SQL-вираз для генерації тривоги. Доступні поля включають 'message', 'facility', 'priority' та 'host'."
+
+#: syslog_removal.php
+msgid "Syslog Message Match String"
+msgstr "Рядок збігу повідомлення Syslog"
+
+#: syslog_removal.php
+msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
+msgstr "Введіть відповідний компонент повідомлення syslog, категорію (facility) або ім'я хоста, чи умову SQL WHERE у разі використання типу збігу «SQL-вираз»."
+
+#: syslog_removal.php
+msgid "Method of Removal"
+msgstr "Спосіб видалення"
+
+#: syslog_removal.php
+msgid "Deletion"
+msgstr "Видалення"
+
+#: syslog_removal.php
+msgid "Transferal"
+msgstr "Перенесення"
+
+#: syslog_removal.php
+msgid "Removal Rule Notes"
+msgstr "Примітки до правила видалення"
+
+#: syslog_removal.php
+msgid "Space for Notes on the Removal rule"
+msgstr "Місце для приміток щодо правила видалення"
+
+#: syslog_removal.php
+msgid "Removal filter conditions"
+msgstr "Умови фільтра видалення"
+
+#: syslog_removal.php
+msgid "Syslog Removal Rule Filters"
+msgstr "Фільтри правил видалення Syslog"
+
+#: syslog_removal.php
+msgid "Removal Name"
+msgstr "Назва видалення"
+
+#: syslog_removal.php
+msgid "Transfer"
+msgstr "Передавання"
+
+#: syslog_removal.php
+msgid "No Syslog Removal Rules Defined"
+msgstr "Правила видалення Syslog не визначено"
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Local File"
+msgstr "Імпортувати правило видалення з локального файлу"
+
+#: syslog_removal.php
+msgid "If the XML file containing the Removal Rule definition data is located on your local machine, select it here."
+msgstr "Якщо файл XML із даними визначення правила видалення знаходиться на вашому локальному комп'ютері, виберіть його тут."
+
+#: syslog_removal.php
+msgid "Import Removal Rule from Text"
+msgstr "Імпортувати правило видалення з тексту"
+
+#: syslog_removal.php
+msgid "If you have the XML file containing the Removal Rule definition data as text, you can paste it into this box to import it."
+msgstr "Якщо у вас є файл XML, що містить дані визначення правила видалення у вигляді тексту, ви можете вставити їх у це поле для імпорту."
+
+#: syslog_removal.php
+msgid "Import Removal Rule"
+msgstr "Імпортувати правило видалення"
+
+#: syslog_removal.php
+#, php-format
+msgid "NOTE: Removal Rule '%s' %s!"
+msgstr "ПРИМІТКА: Правило видалення '%s' %s!"
+
+#: syslog_removal.php
+#, php-format
+msgid "ERROR: Removal Rule '%s' %s Failed!"
+msgstr "ПОМИЛКА: правило видалення '%s' — збій (%s)!"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Delete the following Syslog Report(s)."
+msgstr "Натисніть 'Продовжити', щоб видалити наведені нижче звіти Syslog."
+
+#: syslog_reports.php
+msgid "Delete Syslog Report(s)"
+msgstr "Видалити звіт(и) Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Disable the following Syslog Report(s)."
+msgstr "Натисніть 'Продовжити', щоб вимкнути наведені нижче звіти Syslog."
+
+#: syslog_reports.php
+msgid "Disable Syslog Report(s)"
+msgstr "Вимкнути звіт(и) Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Enable the following Syslog Report(s)."
+msgstr "Натисніть 'Продовжити', щоб увімкнути наведені нижче звіти Syslog."
+
+#: syslog_reports.php
+msgid "Enable Syslog Report(s)"
+msgstr "Увімкнути звіти Syslog"
+
+#: syslog_reports.php
+msgid "Click 'Continue' to Export the following Syslog Report Rule(s)."
+msgstr "Натисніть 'Продовжити', щоб експортувати наведені нижче правила звітів Syslog."
+
+#: syslog_reports.php
+msgid "Export Syslog Report Rule(s)"
+msgstr "Експортувати правила звітів Syslog"
+
+#: syslog_reports.php
+msgid "You must select at least one Syslog Report."
+msgstr "Необхідно вибрати принаймні один звіт Syslog."
+
+#: syslog_reports.php
+msgid "Return"
+msgstr "Повернутися"
+
+#: syslog_reports.php
+#, php-format
+msgid "Report Edit [edit: %s]"
+msgstr "Редагування звіту [зміна: %s]"
+
+#: syslog_reports.php
+msgid "Report Edit [new]"
+msgstr "Редагування звіту [новий]"
+
+#: syslog_reports.php
+msgid "New Report Record"
+msgstr "Новий запис звіту"
+
+#: syslog_reports.php
+msgid "Please describe this Report."
+msgstr "Будь ласка, опишіть цей звіт."
+
+#: syslog_reports.php
+msgid "Is this Report Enabled?"
+msgstr "Чи увімкнено цей звіт?"
+
+#: syslog_reports.php
+msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
+msgstr "Визначте спосіб зіставлення цього рядка. Конструктор фільтрів поєднує умови для полів message, host, program, facility та priority."
+
+#: syslog_reports.php
+msgid "Frequency"
+msgstr "Частота"
+
+#: syslog_reports.php
+msgid "How often should this Report be sent to the distribution list?"
+msgstr "Як часто потрібно надсилати цей звіт за списком розсилки?"
+
+#: syslog_reports.php
+msgid "Send Time"
+msgstr "Час надсилання"
+
+#: syslog_reports.php
+msgid "What time of day should this report be sent?"
+msgstr "О котрій годині слід надсилати цей звіт?"
+
+#: syslog_reports.php
+msgid "Report Format"
+msgstr "Формат звіту"
+
+#: syslog_reports.php
+msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
+msgstr "Створіть умови фільтра або введіть текст чи вираз SQL для відповідності повідомленням Syslog."
+
+#: syslog_reports.php
+msgid "The information that will be contained in the body of the Report."
+msgstr "Інформація, яка міститиметься в основній частині звіту."
+
+#: syslog_reports.php
+msgid "Comma delimited list of Email addresses to send the report to."
+msgstr "Список адрес електронної пошти через кому, на які надсилатиметься звіт."
+
+#: syslog_reports.php
+msgid "Space for Notes on the Report"
+msgstr "Місце для приміток щодо звіту"
+
+#: syslog_reports.php
+msgid "Report Test Preview"
+msgstr "Тестовий попередній перегляд звіту"
+
+#: syslog_reports.php
+msgid "Report filter conditions"
+msgstr "Умови фільтрації звіту"
+
+#: syslog_reports.php
+msgid "Syslog Report Filters"
+msgstr "Фільтри звітів Syslog"
+
+#: syslog_reports.php
+msgid "Report Name"
+msgstr "Назва звіту"
+
+#: syslog_reports.php
+msgid "Last Sent"
+msgstr "Останнє надсилання"
+
+#: syslog_reports.php
+msgid "Reports"
+msgstr "Звіти"
+
+#: syslog_reports.php
+msgid "No Syslog Reports Defined"
+msgstr "Звіти Syslog не визначено"
+
+#: syslog_reports.php
+msgid "Import Report Rule from Local File"
+msgstr "Імпортувати правило звіту з локального файлу"
+
+#: syslog_reports.php
+msgid "If the XML file containing the Report Rule definition data is located on your local machine, select it here."
+msgstr "Якщо файл XML із даними визначення правила звіту знаходиться на вашому локальному комп'ютері, виберіть його тут."
+
+#: syslog_reports.php
+msgid "Import Report Rule from Text"
+msgstr "Імпортувати правило звіту з тексту"
+
+#: syslog_reports.php
+msgid "If you have the XML file containing the Report Rule definition data as text, you can paste it into this box to import it."
+msgstr "Якщо у вас є файл XML, що містить дані визначення правила звіту у вигляді тексту, ви можете вставити їх у це поле для імпорту."
+
+#: syslog_reports.php
+msgid "Import Report Data"
+msgstr "Імпортувати дані звіту"
+
+#: syslog_reports.php
+#, php-format
+msgid "NOTE: Report Rule '%s' %s!"
+msgstr "ПРИМІТКА: Правило звіту '%s' %s!"
+
+#: syslog_reports.php
+#, php-format
+msgid "ERROR: Report Rule '%s' %s Failed!"
+msgstr "ПОМИЛКА: правило звіту '%s' — збій (%s)!"
+
+#: syslog_saved_searches.php
+msgid "Unable to save the template. Please try again."
+msgstr "Не вдалося зберегти шаблон. Будь ласка, спробуйте ще раз."
+
+#: syslog_saved_searches.php
+msgid "Enter a template name between 1 and 128 characters."
+msgstr "Введіть назву шаблону довжиною від 1 до 128 символів."
+
+#: syslog_saved_searches.php
+msgid "Templates"
+msgstr "Шаблон"
+
+#: syslog_saved_searches.php
+msgid "Query"
+msgstr "Запит"
+
+#: syslog_saved_searches.php
+msgid "No shared search templates. Save a search for all users from Syslog to create one."
+msgstr "Немає спільних шаблонів пошуку. Збережіть пошук для всіх користувачів у Syslog, щоб створити шаблон."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Export the following Saved Search Template(s)."
+msgstr "Натисніть 'Продовжити', щоб експортувати наведені нижче збережені шаблони пошуку."
+
+#: syslog_saved_searches.php
+msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
+msgstr "Натисніть 'Продовжити', щоб видалити наведені нижче збережені шаблони пошуку."
+
+#: syslog_saved_searches.php
+msgid "Delete Saved Search Template(s)"
+msgstr "Видалити збережений(і) шаблон(и) пошуку"
+
+#: syslog_saved_searches.php
+msgid "Export Saved Search Template(s)"
+msgstr "Експортувати збережені шаблони пошуку"
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
+msgstr "ПРИМІТКА: Імпортовано %d та оновлено %d збережених шаблонів пошуку."
+
+#: syslog_saved_searches.php
+#, php-format
+msgid "ERROR: %d Saved Search Template(s) failed to import."
+msgstr "ПОМИЛКА: не вдалося імпортувати шаблони збереженого пошуку (%d)."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Local File"
+msgstr "Імпортувати збережений шаблон пошуку з локального файлу"
+
+#: syslog_saved_searches.php
+msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
+msgstr "Якщо файл JSON із даними визначення шаблону збереженого пошуку знаходиться на вашому локальному комп'ютері, виберіть його тут."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template from Text"
+msgstr "Імпортувати збережений шаблон пошуку з тексту"
+
+#: syslog_saved_searches.php
+msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
+msgstr "Якщо у вас є файл JSON, що містить дані визначення збереженого шаблону пошуку у вигляді тексту, ви можете вставити їх у це поле для імпорту."
+
+#: syslog_saved_searches.php
+msgid "Import Saved Search Template"
+msgstr "Імпортувати збережений шаблон пошуку"
+
+#: syslog_saved_searches.php
+msgid "Edit Saved Search Template"
+msgstr "Редагувати шаблон збереженого пошуку"
+
+#: syslog_saved_searches.php
+msgid "The name shown to all users in Saved Searches."
+msgstr "Назва, що відображається всім користувачам у «Збережених пошуках»."
+
+#: syslog_saved_searches.php
+msgid "The account that owns this template and can manage it in Saved Searches."
+msgstr "Обліковий запис, якому належить цей шаблон і який може керувати ним у «Збережених пошуках»."
+
+#: syslog_saved_searches.php
+msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
+msgstr "Користувачі, які можуть використовувати цей шаблон окрім його власника. Варіант «Усі користувачі» надає доступ усім."
+
+#: syslog_saved_searches.php
+msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
+msgstr "Групи, які можуть використовувати цей шаблон на додачу до його власника. «Усі групи» надає доступ усім."
+
+#: syslog_saved_searches.php
+msgid "Search Query"
+msgstr "Пошуковий запит"
+
+#: syslog_saved_searches.php
+msgid "Correct the query syntax to use the query builder."
+msgstr "Виправте синтаксис запиту, щоб використовувати конструктор запитів."
+
+#: syslog_saved_searches.php
+msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
+msgstr "Виберіть поле, оператор і значення. Використовуйте AND, OR, NOT або Групу для побудови запиту. Зміни застосовуються до цього спільного шаблону для всіх користувачів."
+
