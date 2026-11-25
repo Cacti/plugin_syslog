@@ -4,135 +4,110 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2025-03-07 14:40-0500\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: de_DE\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: German <https://translate.cacti.net/projects/cacti/syslog/de/>\nLanguage: de-DE\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Minutes"
+#, php-format
 msgid "%d minutes"
 msgstr "%d Minuten"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hour"
-msgstr "%d Stunden"
+msgstr "%d Stunde"
 
 #: includes/functions.php includes/settings.php
-#, fuzzy, php-format
-#| msgid "%d Hours"
+#, php-format
 msgid "%d hours"
 msgstr "%d Stunden"
 
 #: includes/functions.php
 #, php-format
 msgid "%d day"
-msgstr ""
+msgstr "%d Tag"
 
 #: includes/functions.php includes/settings.php
 #, php-format
 msgid "%d days"
-msgstr ""
+msgstr "%d Tage"
 
 #: includes/functions.php
 #, php-format
 msgid "%d week"
-msgstr ""
+msgstr "%d Woche"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Weeks"
+#, php-format
 msgid "%d weeks"
 msgstr "%d Wochen"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Month"
+#, php-format
 msgid "%d month"
 msgstr "%d Monat"
 
 #: includes/functions.php
-#, fuzzy, php-format
-#| msgid "%d Months"
+#, php-format
 msgid "%d months"
 msgstr "%d Monate"
 
 #: includes/functions.php
 #, php-format
 msgid "%d year"
-msgstr ""
+msgstr "%d Jahr"
 
 #: includes/functions.php
 #, php-format
 msgid "%d years"
-msgstr ""
+msgstr "%d Jahre"
 
 #: includes/functions.php
 msgid "Day Shift"
-msgstr ""
+msgstr "Tag Verschiebung"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr ""
+msgstr "Dieser Tag"
 
 #: includes/functions.php
-#, fuzzy
 msgid "This Week"
-msgstr "Zuletzt verschickt"
+msgstr "Diese Woche"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "1 Month"
 msgid "This Month"
-msgstr "1 Monat"
+msgstr "Dieser Monat"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "%d Year"
 msgid "This Year"
-msgstr "%d Jahr"
+msgstr "Dieses Jahr"
 
 #: includes/functions.php
-#, fuzzy
-#| msgid "Partitions per Day"
 msgid "Previous Day"
-msgstr "Partitionen pro Tag"
+msgstr "Vorheriger Tag"
 
 #: includes/functions.php
 msgid "Previous Week"
-msgstr ""
+msgstr "Vorherige Woche"
 
 #: includes/functions.php
 msgid "Previous Month"
-msgstr ""
+msgstr "Vorheriger Monat"
 
 #: includes/functions.php
 msgid "Previous Year"
-msgstr ""
+msgstr "Vorheriges Jahr"
 
 #: includes/functions.php
-#, fuzzy
 msgid "Syslog download"
-msgstr "Syslog aktiviert"
+msgstr "Syslog-Download"
 
 #: includes/functions.php
 msgid "Share with users…"
-msgstr ""
+msgstr "Für Benutzer freigeben…"
 
 #: includes/functions.php
 msgid "Share with groups…"
-msgstr ""
+msgstr "Für Gruppen freigeben…"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Emergency"
@@ -180,142 +155,139 @@ msgstr "Bitte verwenden Sie einen HTML-E-Mail-Client"
 
 #: includes/functions.php
 msgid "Text import payload exceeds the maximum size"
-msgstr ""
+msgstr "Die Nutzlast des Textimports überschreitet die maximale Größe"
 
 #: includes/functions.php
 msgid "Unable to read the uploaded import file. Check the file and upload size limit."
-msgstr ""
+msgstr "Die hochgeladene Importdatei konnte nicht gelesen werden. Überprüfen Sie die Datei und das Größenlimit für Uploads."
 
 #: includes/functions.php
 msgid "Select an import file or paste its contents before importing."
-msgstr ""
+msgstr "Wählen Sie eine Importdatei aus oder fügen Sie deren Inhalt vor dem Import ein."
 
 #: includes/functions.php
 msgid "The Syslog tables are not partitioned.  Traditional (non-partitioned) tables are deprecated, and partitioned tables are required for new installs.  Your data will continue to be collected, but you should migrate the syslog table to a partitioned architecture."
-msgstr ""
+msgstr "Die Syslog-Tabellen sind nicht partitioniert. Herkömmliche (nicht partitionierte) Tabellen sind veraltet, und für Neuinstallationen sind partitionierte Tabellen erforderlich. Ihre Daten werden weiterhin erfasst, Sie sollten die Syslog-Tabelle jedoch auf eine partitionierte Architektur migrieren."
 
 #: includes/functions.php
 msgid "Waiting for a completed processing run."
-msgstr ""
+msgstr "Warten auf einen abgeschlossenen Verarbeitungslauf."
 
 #: includes/functions.php
 msgid "Processing is completing within the allowed delay."
-msgstr ""
+msgstr "Die Verarbeitung wird innerhalb der zulässigen Verzögerung abgeschlossen."
 
 #: includes/functions.php
 #, php-format
 msgid "No processing run has completed for more than %d seconds."
-msgstr ""
+msgstr "Seit mehr als %d Sekunden wurde kein Verarbeitungslauf abgeschlossen."
 
 #: includes/functions.php
 msgid "Incoming messages are within the configured limits."
-msgstr ""
+msgstr "Eingehende Meldungen liegen innerhalb der konfigurierten Grenzwerte."
 
 #: includes/functions.php
 msgid "Incoming queue metrics are unavailable."
-msgstr ""
+msgstr "Metriken zur eingehenden Warteschlange sind nicht verfügbar."
 
 #: includes/functions.php
 #, php-format
 msgid "Incoming backlog of at least %s messages exceeds the limit of %s."
-msgstr ""
+msgstr "Eingehender Rückstau von mindestens %s Meldungen überschreitet das Limit von %s."
 
 #: includes/functions.php
 msgid "The oldest incoming message timestamp is unavailable."
-msgstr ""
+msgstr "Der Zeitstempel der ältesten eingehenden Nachricht ist nicht verfügbar."
 
 #: includes/functions.php
 #, php-format
 msgid "Unprocessed messages are older than %d seconds."
-msgstr ""
+msgstr "Unverarbeitete Meldungen sind älter als %d Sekunden."
 
 #: includes/functions.php
 msgid "Synchronization is not enabled on this collector."
-msgstr ""
+msgstr "Die Synchronisierung ist auf diesem Collector nicht aktiviert."
 
 #: includes/functions.php
 msgid "Synchronization is within the allowed delay."
-msgstr ""
+msgstr "Die Synchronisierung liegt innerhalb der zulässigen Verzögerung."
 
 #: includes/functions.php
 msgid "Synchronization queue metrics are unavailable."
-msgstr ""
+msgstr "Metriken der Synchronisierungswarteschlange sind nicht verfügbar."
 
 #: includes/functions.php
 msgid "The oldest synchronization record timestamp is unavailable."
-msgstr ""
+msgstr "Der Zeitstempel des ältesten Synchronisierungseintrags ist nicht verfügbar."
 
 #: includes/functions.php
 msgid "Synchronization has failed or queued records exceed the allowed delay."
-msgstr ""
+msgstr "Die Synchronisierung ist fehlgeschlagen oder die in der Warteschlange befindlichen Einträge überschreiten die zulässige Verzögerung."
 
 #: includes/functions.php
-#, fuzzy
 msgid "Partition maintenance is not blocked."
-msgstr "Partitionierte Tabelle"
+msgstr "Die Partitionswartung ist nicht blockiert."
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "Partition maintenance is blocked: %s"
-msgstr "Partitionierte Tabelle"
+msgstr "Partitionswartung ist blockiert: %s"
 
 #: includes/functions.php
 #, php-format
 msgid "Syslog pipeline health - collector %d"
-msgstr ""
+msgstr "Zustand der Syslog-Pipeline - Collector %d"
 
 #: includes/functions.php
 msgid "The Syslog pipeline has recovered."
-msgstr ""
+msgstr "Die Syslog-Pipeline wurde wiederhergestellt."
 
 #: includes/functions.php
 #, php-format
 msgid "Partition layout for %s is invalid or incomplete; partition maintenance stopped. Verify the partition metadata with SHOW CREATE TABLE and, if required, rebuild the partitions; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "Partitionslayout für %s ist ungültig oder unvollständig; Partitionswartung gestoppt. Überprüfen Sie die Partitionsmetadaten mit SHOW CREATE TABLE und erstellen Sie die Partitionen bei Bedarf neu; Schreibvorgänge laufen weiterhin in die Sicherheitspartition dMaxValue."
 
 #: includes/functions.php
 #, php-format
 msgid "remaining partition gap: %d partition(s)"
-msgstr ""
+msgstr "verbleibende Partitionslücke: %d Partition(en)"
 
 #: includes/functions.php
 msgid "no retention deferral"
-msgstr ""
+msgstr "kein Aufschub der Aufbewahrung"
 
 #: includes/functions.php
 msgid "retention pruning deferred until the future horizon is restored"
-msgstr ""
+msgstr "Aufbewahrungsbereinigung aufgeschoben, bis der zukünftige Horizont wiederhergestellt ist"
 
 #: includes/functions.php
 msgid "new records are accumulating in the dMaxValue safety partition"
-msgstr ""
+msgstr "neue Datensätze sammeln sich in der dMaxValue-Sicherheitspartition an"
 
 #: includes/functions.php
 msgid "per run recovery limit reached"
-msgstr ""
+msgstr "Wiederherstellungslimit pro Lauf erreicht"
 
 #: includes/functions.php
-#, fuzzy
 msgid "partition creation failed"
-msgstr "Partitionierte Tabelle"
+msgstr "Partitionserstellung fehlgeschlagen"
 
 #: includes/functions.php
 msgid "Unknown partitioning level; choose Hourly or Daily."
-msgstr ""
+msgstr "Unbekannte Partitionierungsstufe; wählen Sie Stündlich oder Täglich."
 
 #: includes/functions.php
-#, fuzzy
 msgid "The Syslog retention is invalid."
-msgstr "Syslog-Aufbewahrung"
+msgstr "Die Syslog-Aufbewahrungsdauer ist ungültig."
 
 #: includes/functions.php
 msgid "Hourly partitioning cannot be used with Indefinite retention, which would need an unbounded number of partitions. Choose a retention period or Daily partitioning."
-msgstr ""
+msgstr "Stündliche Partitionierung kann nicht mit unbegrenzter Aufbewahrung verwendet werden, da hierfür eine unbegrenzte Anzahl an Partitionen erforderlich wäre. Wählen Sie eine Aufbewahrungsdauer oder eine tägliche Partitionierung."
 
 #: includes/functions.php
 #, php-format
 msgid "%s partitioning with %s days of retention and a %s day pre-create window needs %s partitions per table, which exceeds this database server's limit of %s partitions. Reduce the retention, shorten the pre-create window, or choose Daily partitioning."
-msgstr ""
+msgstr "Die Partitionierung „%s“ mit %s Tagen Aufbewahrungsdauer und einem Vorab-Erstellungsfenster von %s Tagen benötigt %s Partitionen pro Tabelle und überschreitet damit das Limit dieses Datenbankservers von %s Partitionen. Verringern Sie die Aufbewahrungsdauer, verkürzen Sie das Vorab-Erstellungsfenster oder wählen Sie die tägliche Partitionierung."
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
@@ -324,85 +296,84 @@ msgstr "Täglich"
 
 #: includes/functions.php includes/installer.php includes/settings.php
 #: syslog.php
-#, fuzzy
 msgid "Hourly"
-msgstr "%d Stunde"
+msgstr "Stündlich"
 
 #: includes/functions.php
 #, php-format
 msgid "The tables still use %s partitions until cli/upgrade_partitioning.php rebuilds them."
-msgstr ""
+msgstr "Die Tabellen verwenden weiterhin %s Partitionen, bis cli/upgrade_partitioning.php sie neu erstellt."
 
 #: includes/functions.php
 msgid "The partitioning level of the existing Syslog tables could not be read."
-msgstr ""
+msgstr "Die Partitionierungsstufe der vorhandenen Syslog-Tabellen konnte nicht gelesen werden."
 
 #: includes/functions.php
 msgid "Automatic partition recovery deferred: dMaxValue size is unavailable; operator intervention required."
-msgstr ""
+msgstr "Automatische Partitionswiederherstellung zurückgestellt: Größe von dMaxValue ist nicht verfügbar; Eingreifen des Operators erforderlich."
 
 #: includes/functions.php
 #, php-format
 msgid "Automatic partition recovery deferred: dMaxValue has an estimated %s rows and %s bytes; limits are 100000 rows and 134217728 bytes. Operator intervention required."
-msgstr ""
+msgstr "Automatische Partitionswiederherstellung zurückgestellt: dMaxValue hat geschätzt %s Zeilen und %s Bytes; Grenzwerte sind 100000 Zeilen und 134217728 Bytes. Eingreifen des Operators erforderlich."
 
 #: includes/functions.php
 msgid "Unknown rule type."
-msgstr ""
+msgstr "Unbekannter Regeltyp."
 
 #: includes/functions.php
 msgid "The configured incoming field mapping is invalid."
-msgstr ""
+msgstr "Die konfigurierte Zuordnung der eingehenden Felder ist ungültig."
 
 #: includes/functions.php
 msgid "The facility of this rule is not in the reference table yet."
-msgstr ""
+msgstr "Die Facility dieser Regel ist noch nicht in der Referenztabelle vorhanden."
 
 #: includes/functions.php
 msgid "Unknown rule match type."
-msgstr ""
+msgstr "Unbekannter Regel-Übereinstimmungstyp."
 
 #: includes/functions.php
 msgid "The rule did not compile to a query."
-msgstr ""
+msgstr "Die Regel konnte nicht zu einer Abfrage kompiliert werden."
 
 #: includes/functions.php
 msgid "The preview query could not be evaluated."
-msgstr ""
+msgstr "Die Vorschauabfrage konnte nicht ausgewertet werden."
 
 #: includes/functions.php
 msgid "The historical preview filter could not be compiled."
-msgstr ""
+msgstr "Der historische Vorschaufilter konnte nicht kompiliert werden."
 
 #: includes/functions.php
 msgid "The historical preview query could not be evaluated."
-msgstr ""
+msgstr "Die historische Vorschauabfrage konnte nicht ausgewertet werden."
 
 #: includes/functions.php
 msgid "The preview sample could not be read."
-msgstr ""
+msgstr "Das Vorschaubeispiel konnte nicht gelesen werden."
 
 #: includes/functions.php
 msgid "SQL Expression previews check only queued incoming messages. Already processed messages are not searched. Testing does not send alarms."
-msgstr ""
+msgstr "Vorschauen für SQL-Ausdrücke prüfen nur eingehende Nachrichten in der Warteschlange. Bereits verarbeitete Nachrichten werden nicht durchsucht. Beim Testen werden keine Alarme gesendet."
 
 #: includes/functions.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_dashboards.php syslog_recommendations.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Permission denied."
-msgstr ""
+msgstr "Zugriff verweigert."
 
 #: includes/functions.php includes/utilities.php syslog.php
 msgid "Invalid request. Please try again."
-msgstr ""
+msgstr "Ungültige Anfrage. Bitte versuchen Sie es erneut."
 
 #: includes/functions.php
 msgid "The rule has no match expression to test."
-msgstr ""
+msgstr "Die Regel hat keinen Übereinstimmungsausdruck zum Testen."
 
 #: includes/functions.php
 msgid "The match expression is too long to test."
-msgstr ""
+msgstr "Der Suchausdruck ist zu lang zum Testen."
 
 #: includes/functions.php lib/syslog_dashboard.php lib/syslog_thresholds.php
 #: syslog.php
@@ -466,12 +437,12 @@ msgstr "Level"
 #: syslog.php syslog_alerts.php syslog_recommendations.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Message"
-msgstr "Nachricht:"
+msgstr "Nachricht"
 
 #: includes/functions.php
 #, php-format
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered for Host '%s'"
-msgstr "WARNUNG: Für Host '%s' wurde eine Syslog-Schwellenwertwarnung ausgelöst."
+msgstr "WARNUNG: Für Host '%s' wurde eine Syslog-Schwellenwertwarnung ausgelöst"
 
 #: includes/functions.php
 msgid "WARNING: A Syslog Threshold Alert has Been Triggered"
@@ -547,15 +518,15 @@ msgstr "Ereignisbericht - %s"
 #: includes/functions.php
 #, php-format
 msgid "Report previews search the most recent %d stored messages; the report itself covers its whole time window. Testing does not send email."
-msgstr ""
+msgstr "Berichtsvorschauen durchsuchen die letzten %d gespeicherten Nachrichten; der Bericht selbst deckt sein gesamtes Zeitfenster ab. Beim Testen wird keine E-Mail gesendet."
 
 #: includes/functions.php
 msgid "Grouped results are unavailable or expired. Refresh the results and try again."
-msgstr ""
+msgstr "Gruppierte Ergebnisse sind nicht verfügbar oder abgelaufen. Aktualisieren Sie die Ergebnisse und versuchen Sie es erneut."
 
 #: includes/functions.php syslog.php
 msgid "Group messages could not be loaded."
-msgstr ""
+msgstr "Gruppierte Nachrichten konnten nicht geladen werden."
 
 #: includes/functions.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -575,33 +546,29 @@ msgstr "Gesamter Texte"
 
 #: includes/functions.php
 msgid "Fit Column"
-msgstr ""
+msgstr "Spalte anpassen"
 
 #: includes/functions.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Chars"
-msgstr "%d Chars"
+msgstr "%d Zeichen"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "Syslog %s Advisor"
 msgid "Syslog Upgrade Advisor"
-msgstr "Syslog %s Ratgeber"
+msgstr "Syslog-Upgrade-Ratgeber"
 
 #: includes/installer.php
 #, php-format
 msgid "Upgrade Syslog from %s to %s? Existing messages and rules will be preserved. Schema changes may take time."
-msgstr ""
+msgstr "Syslog von %s auf %s aktualisieren? Vorhandene Meldungen und Regeln bleiben erhalten. Schemaänderungen können einige Zeit in Anspruch nehmen."
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
 msgstr "Welchen Upgrade-/Installationstyp möchten Sie verwenden?"
 
 #: includes/installer.php
-#, fuzzy
-#| msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours."
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
-msgstr "Wenn Sie über sehr große Tabellen verfügen, ist das Kürzen viel schneller.  Wenn Sie sich Sorgen um Archivdaten machen, können Sie entweder Inline wählen, wodurch Ihr Browser für den Zeitraum dieses Upgrades eingefroren wird, oder Hintergrund, der einen Hintergrundprozess erstellt, um Ihre alten Syslog-Daten aus einer Sicherungstabelle in das neue Syslog-Format zu übertragen.  Auch dieser Vorgang kann mehrere Stunden dauern."
+msgstr "Wenn Sie sehr große Tabellen haben, ist das Leeren (Truncate) viel schneller.  Wenn Sie Archivdaten behalten möchten, können Sie entweder Inline wählen, wodurch Ihr Browser für die Dauer dieses Upgrades einfriert, oder Hintergrund, wodurch ein Hintergrundprozess erstellt wird, um Ihre alten Syslog-Daten aus einer Sicherungstabelle in das neue Syslog-Format zu überführen.  Auch dieser Vorgang kann mehrere Stunden dauern.  Ein Truncate verwirft nur die gespeicherten Syslog- und entfernten Nachrichten; Alarm-, Entfernungs- und Berichtsregeln bleiben stets erhalten."
 
 #: includes/installer.php
 msgid "Truncate Syslog Table"
@@ -621,32 +588,31 @@ msgstr "Datenbank-Speicher-Engine"
 
 #: includes/installer.php
 msgid "The storage engine for the analytical tables.  Only InnoDB and, on MariaDB, Aria storage engines are supported.  Any Remote Data Collector option requires InnoDB; incompatible combinations cannot be submitted."
-msgstr ""
+msgstr "Die Speicher-Engine für die analytischen Tabellen. Es werden nur die Speicher-Engines InnoDB und unter MariaDB Aria unterstützt. Jede Option für einen Remote-Datensammler erfordert InnoDB; inkompatible Kombinationen können nicht übermittelt werden."
 
 #: includes/installer.php
 msgid "InnoDB Storage"
 msgstr "InnoDB-Speicher"
 
 #: includes/installer.php
-#, fuzzy
 msgid "Aria Storage"
-msgstr "MyISAM-Speicher"
+msgstr "Aria-Speicher"
 
 #: includes/installer.php
 msgid "Timestamp Precision"
-msgstr ""
+msgstr "Zeitstempel-Genauigkeit"
 
 #: includes/installer.php
 msgid "Millisecond precision stores sub-second syslog timestamps in a TIMESTAMP(3) column and is only available on MariaDB.  Second precision uses a standard TIMESTAMP column.  On a production system, use cli/upgrade_partitioning.php --convert-ms during a maintenance window to convert existing messages without discarding them."
-msgstr ""
+msgstr "Die Millisekundengenauigkeit speichert Syslog-Zeitstempel mit Sekundenbruchteilen in einer TIMESTAMP(3)-Spalte und ist nur unter MariaDB verfügbar. Die Sekundengenauigkeit verwendet eine Standard-TIMESTAMP-Spalte. Verwenden Sie auf einem Produktivsystem cli/upgrade_partitioning.php --convert-ms während eines Wartungsfensters, um vorhandene Meldungen zu konvertieren, ohne sie zu verwerfen."
 
 #: includes/installer.php
 msgid "Millisecond - TIMESTAMP(3) (MariaDB only)"
-msgstr ""
+msgstr "Millisekunde - TIMESTAMP(3) (nur MariaDB)"
 
 #: includes/installer.php
 msgid "Second - TIMESTAMP"
-msgstr ""
+msgstr "Sekunde – TIMESTAMP"
 
 #: includes/installer.php includes/settings.php
 msgid "Remote Message Processing"
@@ -670,11 +636,11 @@ msgstr "Wenn Ihre Remote-Datensammler über ihre eigenen Syslog-Datenbanken verf
 
 #: includes/installer.php includes/settings.php
 msgid "Store Records on Remote Collector"
-msgstr ""
+msgstr "Einträge auf entferntem Collector speichern"
 
 #: includes/installer.php includes/settings.php
 msgid "Keep processed messages in the remote collector syslog table after they have been delivered to the Main Collector. When disabled, records are retained locally only while the Main Collector is unavailable and are removed after confirmed recovery delivery."
-msgstr ""
+msgstr "Verarbeitete Meldungen in der Syslog-Tabelle des Remote-Collectors behalten, nachdem sie an den Main-Collector zugestellt wurden. Wenn deaktiviert, werden Datensätze lokal nur aufbewahrt, solange der Main-Collector nicht erreichbar ist, und nach bestätigter Wiederherstellungszustellung entfernt."
 
 #: includes/installer.php
 msgid "Retention Policy"
@@ -685,13 +651,12 @@ msgid "Choose how many days of Syslog values you wish to maintain in the databas
 msgstr "Wählen Sie aus, wie viele Tage Syslog-Werte in der Datenbank gespeichert werden sollen."
 
 #: includes/installer.php includes/settings.php
-#, fuzzy
 msgid "Partitioning Level"
-msgstr "Partitionen pro Tag"
+msgstr "Partitionierungsebene"
 
 #: includes/installer.php
 msgid "The size of each partition of the syslog and syslog_removed tables.  Daily is recommended.  Hourly requires a finite retention, and the retention and partitioning level together must fit the database server's partition limit.  To change the level later, change it in Settings and run cli/upgrade_partitioning.php."
-msgstr ""
+msgstr "Die Größe jeder Partition der Tabellen syslog und syslog_removed. Täglich wird empfohlen. Stündlich erfordert eine begrenzte Aufbewahrungsdauer, und Aufbewahrungsdauer sowie Partitionierungsstufe zusammen müssen in das Partitionslimit des Datenbankservers passen. Um die Stufe später zu ändern, passen Sie sie in den Einstellungen an und führen Sie cli/upgrade_partitioning.php aus."
 
 #: includes/installer.php
 msgid "Upgrade"
@@ -711,30 +676,40 @@ msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
 msgstr "WARNUNG: Das Syslog-Upgrade ist zeitaufwändig!!"
 
 #: includes/installer.php
-msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
-msgstr "Das Upgrade der 'main' Syslog-Tabelle kann ein sehr zeitaufwändiger Prozess sein.  Daher wird empfohlen, dass Sie vor dem Upgrade entweder die Größe Ihrer Syslog-Tabelle reduzieren oder die Option Hintergrund auswählen</p> <p>Wenn Sie die Option \"Hintergrund\" auswählen, wird die Legacy-Syslog-Tabelle umbenannt und eine neue Syslog-Tabelle erstellt.  Anschließend wird im Hintergrund ein Upgrade-Vorgang gestartet.  Auch hier kann dieser Hintergrundprozess einige Zeit in Anspruch nehmen.  Ihre Daten bleiben jedoch erhalten</p> <p>Unabhängig von Ihrer Wahl werden alle vorhandenen Entfernungs- und Warnungsregeln während des Upgrade-Prozesses beibehalten.</p> <p>Drücken Sie <b>auf \"Upgrade\",</b> um mit dem Upgrade fortzufahren, oder <b>auf \"Abbrechen\",</b> um zum Plugins-Menü zurückzukehren."
+msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option."
+msgstr "Das Upgrade der Syslog-Haupttabelle („main“) kann ein sehr zeitaufwändiger Prozess sein. Daher wird empfohlen, entweder die Größe Ihrer Syslog-Tabelle vor dem Upgrade zu reduzieren oder die Hintergrundoption zu wählen."
+
+#: includes/installer.php
+msgid "If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can take quite a bit of time to complete.  However, your data will be preserved."
+msgstr "Wenn Sie die Hintergrundoption wählen, wird Ihre bisherige Syslog-Tabelle umbenannt und eine neue Syslog-Tabelle erstellt. Anschließend wird ein Upgrade-Prozess im Hintergrund gestartet. Auch dieser Hintergrundprozess kann einige Zeit in Anspruch nehmen. Ihre Daten bleiben jedoch erhalten."
+
+#: includes/installer.php
+msgid "Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process."
+msgstr "Unabhängig von Ihrer Auswahl bleiben alle bestehenden Entfernungs- und Alarmregeln während des Upgrade-Vorgangs erhalten."
+
+#: includes/installer.php
+msgid "Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+msgstr "Klicken Sie auf <b>'Upgrade'</b>, um mit dem Upgrade fortzufahren, oder auf <b>'Cancel'</b>, um zum Plugin-Menü zurückzukehren."
 
 #: includes/installer.php
 msgid "You can also set the database storage engine for the analytical tables syslog and syslog_remove.  Only the InnoDB storage engine and, on MariaDB, the Aria storage engine are supported.  If using MariaDB, we recommend the Aria Storage Engine when no Remote Data Collector options are enabled; collector options require InnoDB."
-msgstr ""
+msgstr "Sie können auch die Datenbank-Speicher-Engine für die Analysetabellen syslog und syslog_remove festlegen. Es werden nur die InnoDB-Speicher-Engine und unter MariaDB die Aria-Speicher-Engine unterstützt. Bei Verwendung von MariaDB empfehlen wir die Aria-Speicher-Engine, wenn keine Optionen für entfernte Datensammler (Remote Data Collector) aktiviert sind; Sammleroptionen erfordern InnoDB."
 
 #: includes/installer.php
-#, fuzzy
 msgid "You have several options to choose from when installing Syslog.  The first is the Database Architecture.  Partitioned tables are the only supported architecture as they prevent the size of the tables from becoming excessive thus slowing queries.  Traditional non-partitioned tables are deprecated and are no longer offered for new installs."
-msgstr "Bei der Installation von Syslog stehen mehrere Optionen zur Auswahl.  Die erste ist die Datenbankarchitektur.  Sie sollten sich für die Verwendung der Tabellenpartitionierung entscheiden, um zu verhindern, dass die Größe der Tabellen übermäßig groß wird, wodurch Abfragen verlangsamt werden."
+msgstr "Bei der Installation von Syslog stehen Ihnen mehrere Optionen zur Auswahl.  Die erste ist die Datenbankarchitektur.  Partitionierte Tabellen sind die einzige unterstützte Architektur, da sie verhindern, dass die Tabellen übermäßig groß werden und Abfragen verlangsamen.  Herkömmliche nicht-partitionierte Tabellen sind veraltet und werden für Neuinstallationen nicht mehr angeboten."
 
 #: includes/installer.php
 msgid "You can also choose the timestamp precision.  Millisecond precision (TIMESTAMP(3)) preserves sub-second ordering of incoming messages and is only available on MariaDB; MySQL installs use second precision.  This cannot be changed in place later without destroying the stored messages."
-msgstr ""
+msgstr "Sie können auch die Zeitstempelgenauigkeit wählen. Millisekundengenauigkeit (TIMESTAMP(3)) behält die Reihenfolge eingehender Meldungen im Subsekundenbereich bei und ist nur unter MariaDB verfügbar; MySQL-Installationen verwenden Sekundengenauigkeit. Dies kann später nicht im laufenden Betrieb geändert werden, ohne die gespeicherten Meldungen zu zerstören."
 
 #: includes/installer.php
 msgid "Aria storage is unavailable while any Remote Data Collector option is enabled. InnoDB has been selected."
-msgstr ""
+msgstr "Die Aria-Speicher-Engine ist nicht verfügbar, solange eine Option für Remote-Datensammler aktiviert ist. InnoDB wurde ausgewählt."
 
 #: includes/installer.php
-#, fuzzy
 msgid "You can also select the retention duration.  Please keep in mind that if you have several hosts logging to syslog, this table can become quite large."
-msgstr "Sie können auch die Aufbewahrungsdauer auswählen.  Bitte beachten Sie, dass diese Tabelle ziemlich groß werden kann, wenn Sie mehrere Hosts haben, die sich bei syslog anmelden.  Wenn Sie also keine Partitionierung verwenden, sollten Sie die Größe kleiner halten."
+msgstr "Sie können auch die Aufbewahrungsdauer auswählen.  Bitte beachten Sie, dass diese Tabelle ziemlich groß werden kann, wenn mehrere Hosts in Syslog protokollieren."
 
 #: includes/installer.php
 #, php-format
@@ -782,11 +757,11 @@ msgstr "Syslog-Entfernungen"
 
 #: includes/navigation.php
 msgid "(Edit)"
-msgstr "(Bearbeiten)"
+msgstr "(Verändern)"
 
 #: includes/navigation.php
 msgid "(Actions)"
-msgstr "Aktionen"
+msgstr "(Aktionen)"
 
 #: includes/navigation.php
 msgid "Syslog Alerts"
@@ -798,24 +773,20 @@ msgstr "Syslog-Berichte"
 
 #: includes/navigation.php includes/settings.php syslog_saved_searches.php
 msgid "Saved Search Templates"
-msgstr ""
+msgstr "Gespeicherte Suchvorlagen"
 
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr ""
+msgstr "Dashboards"
 
 #: includes/navigation.php syslog_recommendations.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Syslog Recommendations"
-msgstr "Syslog-Aufbewahrung"
+msgstr "Syslog-Empfehlungen"
 
 #: includes/navigation.php
-#, fuzzy
-#| msgid "Import"
 msgid "(Import)"
-msgstr "Daten importieren"
+msgstr "(Importieren)"
 
 #: includes/navigation.php
 msgid "Display Syslog in Range"
@@ -823,83 +794,83 @@ msgstr "Syslog im Bereich anzeigen"
 
 #: includes/recommendations.php
 msgid "the identifier is empty"
-msgstr ""
+msgstr "der Bezeichner ist leer"
 
 #: includes/recommendations.php
 msgid "the identifier is longer than 190 characters"
-msgstr ""
+msgstr "der Bezeichner ist länger als 190 Zeichen"
 
 #: includes/recommendations.php
 msgid "the identifier contains spaces or line breaks"
-msgstr ""
+msgstr "der Bezeichner enthält Leerzeichen oder Zeilenumbrüche"
 
 #: includes/recommendations.php
 msgid "it has neither an explanation nor a recommended action"
-msgstr ""
+msgstr "es enthält weder eine Erklärung noch eine empfohlene Maßnahme"
 
 #: includes/recommendations.php
 msgid "it is not a JSON object"
-msgstr ""
+msgstr "es ist kein JSON-Objekt"
 
 #: includes/recommendations.php syslog.php
 msgid "Recommendations could not be loaded."
-msgstr ""
+msgstr "Empfehlungen konnten nicht geladen werden."
 
 #: includes/recommendations.php
 msgid "Recommendation available - click the message for details"
-msgstr ""
+msgstr "Empfehlung verfügbar – klicken Sie auf die Meldung für Details"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Explanation"
-msgstr ""
+msgstr "Erklärung"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Recommended Action"
-msgstr ""
+msgstr "Empfohlene Aktion"
 
 #: includes/recommendations.php syslog_recommendations.php
 msgid "Reference"
-msgstr ""
+msgstr "Referenz"
 
 #: includes/settings.php
 msgid "Monday"
-msgstr ""
+msgstr "Montag"
 
 #: includes/settings.php
 msgid "Tuesday"
-msgstr ""
+msgstr "Dienstag"
 
 #: includes/settings.php
 msgid "Wednesday"
-msgstr ""
+msgstr "Mittwoch"
 
 #: includes/settings.php
 msgid "Friday"
-msgstr ""
+msgstr "Freitag"
 
 #: includes/settings.php
 msgid "Saturday"
-msgstr ""
+msgstr "Samstag"
 
 #: includes/settings.php
 msgid "Sunday"
-msgstr ""
+msgstr "Sonntag"
 
 #: includes/settings.php
 msgid "Thursday"
-msgstr ""
+msgstr "Donnerstag"
 
 #: includes/settings.php
 msgid "Monday through Friday"
-msgstr ""
+msgstr "Montag bis Freitag"
 
 #: includes/settings.php
 msgid "Saturday and Sunday"
-msgstr ""
+msgstr "Samstag und Sonntag"
 
 #: includes/settings.php
 msgid "Every day"
-msgstr ""
+msgstr "Täglich"
 
 #: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php
@@ -925,11 +896,11 @@ msgstr "Wenn dieses Kontrollkästchen aktiviert ist, werden Datensätze aus der 
 
 #: includes/settings.php
 msgid "Forward alarms to Alarm Manager"
-msgstr ""
+msgstr "Alarme an den Alarm-Manager weiterleiten"
 
 #: includes/settings.php
 msgid "Allow rules set to Alarm Manager to forward alarms. Syslog email remains the fallback; command actions run only for Syslog Alarming rules."
-msgstr ""
+msgstr "Regeln, die auf Alarm Manager eingestellt sind, das Weiterleiten von Alarmen erlauben. Syslog-E-Mail bleibt der Fallback; Befehlsaktionen werden nur für Regeln der Syslog-Alarmierung ausgeführt."
 
 #: includes/settings.php
 msgid "Strip Domains"
@@ -937,7 +908,7 @@ msgstr "Domains entfernen"
 
 #: includes/settings.php
 msgid "A comma delimited list of domains that you wish to remove from the syslog hostname, Examples would be 'mydomain.com, otherdomain.com'"
-msgstr "Eine durch Kommas getrennte Liste von Domänen, die Sie aus dem Syslog-Hostnamen entfernen möchten. Beispiele wären \"mydomain.com, otherdomain.com\"."
+msgstr "Eine durch Kommas getrennte Liste von Domänen, die Sie aus dem Syslog-Hostnamen entfernen möchten. Beispiele wären \"mydomain.com, otherdomain.com\""
 
 #: includes/settings.php
 msgid "Refresh Interval"
@@ -949,11 +920,11 @@ msgstr "Dies ist die Zeit in Sekunden, bevor die Seite aktualisiert wird."
 
 #: includes/settings.php
 msgid "Skip Total Row Count"
-msgstr ""
+msgstr "Gesamtzeilenanzahl überspringen"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the System Logs and Alert Logs tabs do not count every matching record, which can be very expensive on large installations. The page shows Previous and Next links instead of a total and page list, and Next is offered while more records remain."
-msgstr ""
+msgstr "Wenn dieses Kontrollkästchen aktiviert ist, zählen die Tabs „Systemprotokolle“ und „Alarmprotokolle“ nicht jeden passenden Datensatz, was bei großen Installationen sehr aufwendig sein kann. Die Seite zeigt Links für „Zurück“ und „Weiter“ anstelle einer Gesamtzahl und Seitenliste, wobei „Weiter“ angeboten wird, solange weitere Datensätze vorhanden sind."
 
 #: includes/settings.php
 msgid "Max Report Records"
@@ -970,21 +941,21 @@ msgstr "%d Datensätze"
 
 #: includes/settings.php
 msgid "Maximum Syslog Processing Processes"
-msgstr ""
+msgstr "Maximale Anzahl an Syslog-Verarbeitungsprozessen"
 
 #: includes/settings.php
 msgid "When set above 1, incoming message processing is spread across parallel worker processes.  Each worker handles a disjoint range of incoming messages, speeding up hostname resolution and message transfer under heavy loads.  A setting of 1 processes all messages in a single process.  Worker processes are not supported on Windows or when the PHP pcntl and POSIX extensions are unavailable, in which case processing falls back to a single process."
-msgstr ""
+msgstr "Bei einem Wert über 1 wird die Verarbeitung eingehender Meldungen auf parallele Worker-Prozesse verteilt. Jeder Worker verarbeitet einen disjunkten Bereich eingehender Meldungen, was bei hoher Last die Hostnamen-Auflösung und Meldungsübertragung beschleunigt. Bei einem Wert von 1 werden alle Meldungen in einem einzelnen Prozess verarbeitet. Worker-Prozesse werden unter Windows oder wenn die PHP-Erweiterungen pcntl und POSIX nicht verfügbar sind nicht unterstützt; in diesem Fall erfolgt die Verarbeitung wieder in einem einzelnen Prozess."
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Process"
-msgstr ""
+msgstr "%d Worker-Prozess"
 
 #: includes/settings.php
 #, php-format
 msgid "%d Worker Processes"
-msgstr ""
+msgstr "%d Worker-Prozesse"
 
 #: includes/settings.php
 msgid "Command for Opening Tickets"
@@ -996,23 +967,23 @@ msgstr "Dieser Befehl wird zum Öffnen von Helpdesk-Tickets ausgeführt.  Der Be
 
 #: includes/settings.php
 msgid "Host Discovery Options"
-msgstr ""
+msgstr "Optionen für Host-Erkennung"
 
 #: includes/settings.php
 msgid "Enable Hostname Resolution"
-msgstr ""
+msgstr "Hostnamen-Auflösung aktivieren"
 
 #: includes/settings.php
 msgid "If this checkbox is set, all hostnames are resolved via DNS lookup first (If enabled), using A and AAAA records. IPv4 and IPv6 addresses need no lookup, and IPv6 addresses are stored in compressed lower case form. If the DNS lookup fails, the system will attempt to resolve the hostname against the Cacti host table and replace it with the Cacti host description. If both DNS and Cacti lookups fail, records are assigned a prefix 'unresolved-Original_hostname'."
-msgstr ""
+msgstr "Wenn dieses Kontrollkästchen aktiviert ist, werden alle Hostnamen zuerst per DNS-Abfrage (sofern aktiviert) über A- und AAAA-Einträge aufgelöst. IPv4- und IPv6-Adressen erfordern keine Abfrage, und IPv6-Adressen werden in komprimierter Kleinschreibung gespeichert. Schlägt die DNS-Abfrage fehl, versucht das System, den Hostnamen über die Cacti-Host-Tabelle aufzulösen und durch die Cacti-Hostbeschreibung zu ersetzen. Schlagen sowohl die DNS- als auch die Cacti-Abfrage fehl, erhalten Datensätze das Präfix ‚unresolved-Original_hostname‘."
 
 #: includes/settings.php
 msgid "Skip DNS Resolution for incoming hosts"
-msgstr ""
+msgstr "DNS-Auflösung für eingehende Hosts überspringen"
 
 #: includes/settings.php
 msgid "If this checkbox is set, the system will not attempt to resolve hosts via DNS lookups.  This is useful for environments where DNS resolution is not possible or not desired."
-msgstr ""
+msgstr "Wenn dieses Kontrollkästchen aktiviert ist, versucht das System nicht, Hosts per DNS-Abfrage aufzulösen. Dies ist nützlich in Umgebungen, in denen eine DNS-Auflösung nicht möglich oder nicht erwünscht ist."
 
 #: includes/settings.php
 msgid "HTML Notification Settings"
@@ -1028,17 +999,15 @@ msgstr "Wenn dieses Kontrollkästchen aktiviert ist, werden alle E-Mails im HTML
 
 #: includes/settings.php
 msgid "Format File to Use"
-msgstr "Zu verwendende Datei formatieren"
+msgstr "Zu verwendendes Dateiformat"
 
 #: includes/settings.php
 msgid "Choose the custom html wrapper and CSS file to use.  This file contains both html and CSS to wrap around your report.  If it contains more than simply CSS, you need to place a special <REPORT> tag inside of the file.  This format tag will be replaced by the report content.  These files are located in the 'formats' directory."
-msgstr "Wählen Sie den benutzerdefinierten HTML-Wrapper und die CSS-Datei aus, die verwendet werden sollen.  Diese Datei enthält sowohl HTML als auch CSS, um Ihren Bericht zu umschließen.  Wenn es mehr als nur CSS enthält, müssen Sie ein spezielles <REPORT> Tag in die Datei einfügen.  Dieses Format-Tag wird durch den Inhalt des Berichts ersetzt.  Diese Dateien befinden sich im Verzeichnis 'formats'.</REPORT>"
+msgstr "Wählen Sie den benutzerdefinierten HTML-Wrapper und die CSS-Datei aus. Diese Datei enthält sowohl HTML als auch CSS für den Bericht. Wenn sie mehr als nur CSS enthält, müssen Sie eine spezielle<REPORT> Tag innerhalb der Datei. Dieser Format-Tag wird durch den Berichtsinhalt ersetzt. Diese Dateien befinden sich im Verzeichnis „Formate“."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Data Retention Settings"
 msgid "Data Retention and Partitioning"
-msgstr "Einstellungen für die Datenaufbewahrung"
+msgstr "Datenaufbewahrung und Partitionierung"
 
 #: includes/settings.php
 msgid "Syslog Retention"
@@ -1050,15 +1019,15 @@ msgstr "Dies ist die Anzahl der Tage, die Ereignisse aufbewahrt werden sollen."
 
 #: includes/settings.php
 msgid "The size of each partition of the syslog and syslog_removed tables. A change is saved here but takes effect only when cli/upgrade_partitioning.php rebuilds both tables; until then, partition maintenance keeps the existing size. Hourly partitioning requires a finite retention. The retention, pre-create window and partitioning level together must fit the database server's partition limit, or the settings are not saved."
-msgstr ""
+msgstr "Die Größe jeder Partition der Tabellen syslog und syslog_removed. Eine Änderung wird hier gespeichert, wird jedoch erst wirksam, wenn cli/upgrade_partitioning.php beide Tabellen neu erstellt; bis dahin behält die Partitionswartung die bestehende Größe bei. Stündliche Partitionierung erfordert eine begrenzte Aufbewahrungsdauer. Aufbewahrungsdauer, Voraberstellungsfenster und Partitionierungsstufe zusammen müssen in das Partitionslimit des Datenbankservers passen, sonst werden die Einstellungen nicht gespeichert."
 
 #: includes/settings.php
 msgid "Partition Pre-create Window"
-msgstr ""
+msgstr "Vorlaufzeit für Partitionserstellung"
 
 #: includes/settings.php
 msgid "This is the number of days of future partitions to maintain for partitioned Syslog tables, so that new partitions are always split from an empty dMaxValue partition.  Hourly partitioning always keeps at least 2 days."
-msgstr ""
+msgstr "Dies ist die Anzahl der Tage zukünftiger Partitionen, die für partitionierte Syslog-Tabellen vorgehalten werden, sodass neue Partitionen stets von einer leeren dMaxValue-Partition abgespalten werden. Bei stündlicher Partitionierung werden immer mindestens 2 Tage vorgehalten."
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1071,87 +1040,84 @@ msgid "%d Days"
 msgstr "%d Tage"
 
 #: includes/settings.php
-#, fuzzy
 msgid "Partition Recovery Limit"
-msgstr "Partitionen pro Tag"
+msgstr "Limit für Partitionswiederherstellung"
 
 #: includes/settings.php
 msgid "When partitions are missing (for example after maintenance downtime), at most this many missing partitions per table are created on each poller run.  The remaining gap heals over subsequent runs; retention pruning stays deferred until the future partition horizon is fully restored.  Applies to partitioned Syslog tables only."
-msgstr ""
+msgstr "Wenn Partitionen fehlen (z. B. nach einer wartungsbedingten Ausfallzeit), werden bei jedem Poller-Lauf höchstens so viele fehlende Partitionen pro Tabelle erstellt. Die verbleibende Lücke wird in den nachfolgenden Läufen geschlossen; die Aufbewahrungsbereinigung bleibt aufgeschoben, bis der zukünftige Partitionshorizont vollständig wiederhergestellt ist. Gilt nur für partitionierte Syslog-Tabellen."
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partition per run"
-msgstr "Partitionen pro Tag"
+msgstr "%d Partition pro Durchlauf"
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Partitions per run"
-msgstr "Partitionen pro Tag"
+msgstr "%d Partitionen pro Durchlauf"
 
 #: includes/settings.php
 msgid "Collector Staleness Threshold"
-msgstr ""
+msgstr "Schwellenwert für Collector-Veralterung"
 
 #: includes/settings.php
 msgid "Pipeline health alerts warn when unprocessed messages, processing completion, or queued synchronization exceed this delay. The effective delay is at least three poller intervals and 300 seconds. Set to 0 to use 300 seconds."
-msgstr ""
+msgstr "Warnungen zum Pipeline-Zustand werden ausgelöst, wenn unverarbeitete Nachrichten, der Verarbeitungsabschluss oder die wartende Synchronisierung diese Verzögerung überschreiten. Die effektive Verzögerung beträgt mindestens drei Poller-Intervalle und 300 Sekunden. Auf 0 setzen, um 300 Sekunden zu verwenden."
 
 #: includes/settings.php
 msgid "Default (300 seconds)"
-msgstr ""
+msgstr "Standard (300 Sekunden)"
 
 #: includes/settings.php
 #, php-format
 msgid "%d seconds"
-msgstr ""
+msgstr "%d Sekunden"
 
 #: includes/settings.php
 msgid "Collector Backlog Threshold"
-msgstr ""
+msgstr "Schwellenwert für Collector-Rückstau"
 
 #: includes/settings.php
 msgid "The Syslog Status page shows a warning when more than this many messages sit unprocessed in the Syslog Incoming table.  Set to 0 to use the default of 10000 messages."
-msgstr ""
+msgstr "Die Seite 'Syslog-Status' zeigt eine Warnung an, wenn mehr als diese Anzahl an Nachrichten unverarbeitet in der Tabelle 'Syslog Incoming' verbleiben. Auf 0 setzen, um den Standardwert von 10000 Nachrichten zu verwenden."
 
 #: includes/settings.php
 msgid "Default (10000 messages)"
-msgstr ""
+msgstr "Standard (10000 Nachrichten)"
 
 #: includes/settings.php
-#, fuzzy, php-format
+#, php-format
 msgid "%d Messages"
-msgstr "Nachrichten"
+msgstr "%d Nachrichten"
 
 #: includes/settings.php
 msgid "Pipeline Health Alerts"
-msgstr ""
+msgstr "Warnungen zum Pipeline-Zustand"
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Pipeline Health Notification List"
-msgstr "Benachrichtigungsliste"
+msgstr "Benachrichtigungsliste für Pipeline-Zustand"
 
 #: includes/settings.php
 msgid "Select an existing Thold notification list for pipeline health alerts. Enabled list recipients are combined with the email addresses below, preserving BCC recipients. Lists require the Thold notification-list table."
-msgstr ""
+msgstr "Wählen Sie eine vorhandene Thold-Benachrichtigungsliste für Pipeline-Zustandsalarme aus. Aktivierte Listenempfänger werden mit den unten stehenden E-Mail-Adressen kombiniert, wobei BCC-Empfänger erhalten bleiben. Listen erfordern die Thold-Tabelle für Benachrichtigungslisten."
 
 #: includes/settings.php
 msgid "Pipeline Health Email Recipients"
-msgstr ""
+msgstr "E-Mail-Empfänger für den Pipeline-Zustand"
 
 #: includes/settings.php
 msgid "Comma-separated email recipients for pipeline failures and recovery. Leave blank and select no notification list to disable email; health remains visible on the Status tab and state changes are logged. Checks require the Cacti poller to run."
-msgstr ""
+msgstr "Kommagetrennte E-Mail-Empfänger für Pipeline-Ausfälle und -Wiederherstellungen. Leer lassen und keine Benachrichtigungsliste auswählen, um E-Mails zu deaktivieren; der Zustand bleibt auf der Registerkarte „Status“ sichtbar und Statusänderungen werden protokolliert. Für Prüfungen muss der Cacti-Poller laufen."
 
 #: includes/settings.php
 msgid "Pipeline Health Reminder Interval"
-msgstr ""
+msgstr "Erinnerungsintervall für Pipeline-Zustand"
 
 #: includes/settings.php
 msgid "Repeat notifications for ongoing pipeline problems after this interval. Failed email attempts are retried no more than once every five minutes."
-msgstr ""
+msgstr "Benachrichtigungen für anhaltende Pipeline-Probleme nach diesem Intervall wiederholen. Fehlgeschlagene E-Mail-Versuche werden höchstens alle fünf Minuten wiederholt."
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
@@ -1163,112 +1129,110 @@ msgstr "Dies ist die Anzahl der Tage, die Warnprotokolle aufbewahrt werden solle
 
 #: includes/settings.php
 msgid "Alert Suppression and Maintenance"
-msgstr ""
+msgstr "Alarmunterdrückung und Wartung"
 
 #: includes/settings.php
 msgid "Maintenance Window Days"
-msgstr ""
+msgstr "Tage des Wartungsfensters"
 
 #: includes/settings.php
 msgid "Days when all alert notifications are muted during the configured maintenance timeframe."
-msgstr ""
+msgstr "Tage, an denen alle Alarmbenachrichtigungen während des konfigurierten Wartungszeitraums stummgeschaltet sind."
 
 #: includes/settings.php
 msgid "Maintenance Window Starts"
-msgstr ""
+msgstr "Beginn des Wartungsfensters"
 
 #: includes/settings.php
 msgid "Local start time for the global maintenance window."
-msgstr ""
+msgstr "Lokale Startzeit für das globale Wartungsfenster."
 
 #: includes/settings.php
 msgid "Maintenance Window Ends"
-msgstr ""
+msgstr "Ende des Wartungsfensters"
 
 #: includes/settings.php
 msgid "Local end time for the global maintenance window. An earlier end time continues into the next day."
-msgstr ""
+msgstr "Lokale Endzeit für das globale Wartungsfenster. Eine frühere Endzeit läuft bis in den nächsten Tag weiter."
 
 #: includes/settings.php
 msgid "One-time Maintenance Starts"
-msgstr ""
+msgstr "Beginn der einmaligen Wartung"
 
 #: includes/settings.php
 msgid "Optional local date and time to start a one-time global maintenance window."
-msgstr ""
+msgstr "Optionales lokales Datum und Uhrzeit für den Beginn eines einmaligen globalen Wartungsfensters."
 
 #: includes/settings.php
 msgid "One-time Maintenance Ends"
-msgstr ""
+msgstr "Ende der einmaligen Wartung"
 
 #: includes/settings.php
 msgid "Optional local date and time to end a one-time global maintenance window. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Optionales lokales Datum und Uhrzeit für das Ende eines einmaligen globalen Wartungsfensters. Format: YYYY-MM-DD HH:MM."
 
 #: includes/settings.php
 msgid "Default Alert Cooldown"
-msgstr ""
+msgstr "Standard-Abklingzeit für Alarme"
 
 #: includes/settings.php
 msgid "Suppress any repeat notification for the same rule and reporting scope for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "Wiederholte Benachrichtigungen für dieselbe Regel und denselben Berichtsbereich für diese Anzahl von Minuten unterdrücken. Werte pro Regel überschreiben diese Einstellung. Auf 0 setzen, um zu deaktivieren."
 
 #: includes/settings.php
 msgid "Default Duplicate Suppression"
-msgstr ""
+msgstr "Standard-Duplikatunterdrückung"
 
 #: includes/settings.php
 msgid "Suppress a notification with the same matched message set for this many minutes. Per-rule values override this setting. Set to 0 to disable."
-msgstr ""
+msgstr "Benachrichtigung mit demselben übereinstimmenden Nachrichtensatz für diese Anzahl von Minuten unterdrücken. Werte pro Regel überschreiben diese Einstellung. Auf 0 setzen, um zu deaktivieren."
 
 #: includes/settings.php
-#, fuzzy
-#| msgid "Delete Syslog Report(s)"
 msgid "Remote Syslog Recovery"
-msgstr "Löschen von Syslog-Berichten"
+msgstr "Remote-Syslog-Wiederherstellung"
 
 #: includes/settings.php
 msgid "Maximum Recovery Records Per Execution"
-msgstr ""
+msgstr "Maximale Wiederherstellungsdatensätze pro Ausführung"
 
 #: includes/settings.php
 msgid "Maximum number of retained remote Syslog events sent to the Main Collector by one recovery worker execution. Each central database transaction remains capped at 100 records. Increase gradually while observing Main Collector load and lock waits."
-msgstr ""
+msgstr "Maximale Anzahl gespeicherter Remote-Syslog-Ereignisse, die bei einer Ausführung eines Wiederherstellungs-Workers an den Haupt-Collector gesendet werden. Jede zentrale Datenbanktransaktion bleibt auf 100 Datensätze begrenzt. Erhöhen Sie diesen Wert schrittweise und beobachten Sie dabei die Auslastung des Haupt-Collectors und Sperrwartezeiten."
 
 #: includes/settings.php
 msgid "Recovery Pause Between Batches"
-msgstr ""
+msgstr "Wiederherstellungspause zwischen Batches"
 
 #: includes/settings.php
 msgid "Pause between each 100-record Main Collector delivery transaction. A longer pause lowers Main Collector pressure; a shorter pause speeds backlog convergence."
-msgstr ""
+msgstr "Pause zwischen jeder 100-Datensatz-Übertragungstransaktion an den Main Collector. Eine längere Pause verringert die Last auf dem Main Collector; eine kürzere Pause beschleunigt den Abbau des Rückstands."
 
 #: includes/settings.php
 msgid "No pause"
-msgstr ""
+msgstr "Keine Pause"
 
 #: includes/settings.php
 #, php-format
 msgid "%d milliseconds"
-msgstr ""
+msgstr "%d Millisekunden"
 
 #: includes/settings.php
 #, php-format
 msgid "%d second"
-msgstr ""
+msgstr "%d Sekunde"
 
 #: includes/settings.php
 msgid "The Syslog database is unavailable, so the partitioning settings cannot be checked against its partition limit and tables."
-msgstr ""
+msgstr "Die Syslog-Datenbank ist nicht verfügbar, daher können die Partitionierungseinstellungen nicht gegen ihr Partitionslimit und ihre Tabellen geprüft werden."
 
 #: includes/settings.php
 msgid "The Syslog settings were not saved."
-msgstr ""
+msgstr "Die Syslog-Einstellungen wurden nicht gespeichert."
 
 #: includes/settings.php
 #, php-format
 msgid "Pending: a message table still uses %s partitions. Run cli/upgrade_partitioning.php to apply the selected level."
-msgstr ""
+msgstr "Ausstehend: Eine Nachrichtentabelle verwendet noch %s Partitionen. Führen Sie cli/upgrade_partitioning.php aus, um die ausgewählte Stufe anzuwenden."
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php
 #: syslog_dashboards.php syslog_device_rules.php syslog_recommendations.php
@@ -1346,7 +1310,7 @@ msgstr "Endet mit"
 
 #: includes/settings.php
 msgid "Hostname is"
-msgstr "Gerätename:"
+msgstr "Gerätename"
 
 #: includes/settings.php
 msgid "Program is"
@@ -1358,7 +1322,7 @@ msgstr "Ausstattung"
 
 #: includes/settings.php syslog_alerts.php
 msgid "Filter Builder"
-msgstr ""
+msgstr "Filter-Builder"
 
 #: includes/settings.php syslog_alerts.php
 msgid "SQL Expression"
@@ -1374,38 +1338,36 @@ msgstr "Import/Export"
 
 #: includes/settings.php
 msgid "Alert Rules"
-msgstr "Regeln für Warnungen"
+msgstr "Alarmregeln"
 
 #: includes/settings.php
 msgid "Syslog Settings"
 msgstr "Syslog-Einstellungen"
 
 #: includes/settings.php syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rules"
-msgstr "Regeln für Warnungen"
+msgstr "Geräte-Warnungsregeln"
 
 #: includes/settings.php
 msgid "Removal Rules"
-msgstr "Regeln für die Entfernung"
+msgstr "Entfernungsregeln"
 
 #: includes/settings.php
 msgid "Report Rules"
 msgstr "Regeln für Berichte"
 
 #: includes/settings.php syslog.php syslog_recommendations.php
-#, fuzzy
 msgid "Recommendations"
-msgstr "Entfernte Datensätze"
+msgstr "Empfehlungen"
 
 #: includes/utilities.php
 msgid "Unable to connect to the Syslog database. No Device records were removed."
-msgstr ""
+msgstr "Verbindung zur Syslog-Datenbank konnte nicht hergestellt werden. Es wurden keine Gerätedatensätze entfernt."
 
 #: includes/utilities.php
 #, php-format
 msgid "There were %s Device records removed from the Syslog database"
-msgstr "Es wurden %s Gerätedatensätze aus der Syslog-Datenbank entfernt."
+msgstr "Es wurden %s Gerätedatensätze aus der Syslog-Datenbank entfernt"
 
 #: includes/utilities.php
 msgid "Syslog Utilities"
@@ -1417,11 +1379,11 @@ msgstr "Löschen von Syslog-Geräten"
 
 #: includes/utilities.php
 msgid "Are you sure you want to purge stale Syslog devices?"
-msgstr ""
+msgstr "Möchten Sie veraltete Syslog-Geräte wirklich bereinigen?"
 
 #: includes/utilities.php
 msgid "Confirm Purge"
-msgstr ""
+msgstr "Bereinigung bestätigen"
 
 #: includes/utilities.php syslog_alerts.php syslog_dashboards.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
@@ -1435,123 +1397,120 @@ msgstr "Diese Menüauswahl bietet die Möglichkeit, Geräte zu entfernen, die ke
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel source."
-msgstr ""
+msgstr "Ungültige Dashboard-Panelquelle."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel type."
-msgstr ""
+msgstr "Ungültiger Dashboard-Paneltyp."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard chart type."
-msgstr ""
+msgstr "Ungültiger Dashboard-Diagrammtyp."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard breakdown field."
-msgstr ""
+msgstr "Ungültiges Dashboard-Aufschlüsselungsfeld."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard interval."
-msgstr ""
+msgstr "Ungültiges Dashboard-Intervall."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard timespan."
-msgstr ""
+msgstr "Ungültige Dashboard-Zeitspanne."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard record type."
-msgstr ""
+msgstr "Ungültiger Dashboard-Datensatztyp."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard top count."
-msgstr ""
+msgstr "Ungültige Dashboard-Top-Anzahl."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel width."
-msgstr ""
+msgstr "Ungültige Dashboard-Panelbreite."
 
 #: lib/syslog_dashboard.php
 msgid "Invalid dashboard panel height."
-msgstr ""
+msgstr "Ungültige Dashboard-Panelhöhe."
 
 #: lib/syslog_dashboard.php syslog.php
 #, php-format
 msgid "Invalid logical search: %s"
-msgstr ""
+msgstr "Ungültige logische Suche: %s"
 
 #: lib/syslog_dashboard.php
 msgid "Other"
-msgstr ""
+msgstr "Sonstige"
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard panel is required."
-msgstr ""
+msgstr "Ein gültiges Dashboard-Panel ist erforderlich."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard panel not found."
-msgstr ""
+msgstr "Dashboard-Panel nicht gefunden."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "A name of up to 128 characters is required."
-msgstr ""
+msgstr "Ein Name mit bis zu 128 Zeichen ist erforderlich."
 
 #: lib/syslog_dashboard.php
 msgid "A valid dashboard is required."
-msgstr ""
+msgstr "Ein gültiges Dashboard ist erforderlich."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard not found."
-msgstr ""
+msgstr "Dashboard nicht gefunden."
 
 #: lib/syslog_dashboard.php syslog_dashboards.php
 msgid "Unable to save dashboard changes."
-msgstr ""
+msgstr "Dashboard-Änderungen konnten nicht gespeichert werden."
 
 #: lib/syslog_dashboard.php
 msgid "You may only share your own dashboards."
-msgstr ""
+msgstr "Sie dürfen nur Ihre eigenen Dashboards freigeben."
 
 #: lib/syslog_dashboard.php
 msgid "copy"
-msgstr ""
+msgstr "Kopie"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard could not be copied."
-msgstr ""
+msgstr "Dashboard konnte nicht kopiert werden."
 
 #: lib/syslog_dashboard.php
 msgid "A valid panel position is required."
-msgstr ""
+msgstr "Eine gültige Panel-Position ist erforderlich."
 
 #: lib/syslog_dashboard.php
 msgid "A title of up to 128 characters is required."
-msgstr ""
+msgstr "Ein Titel mit bis zu 128 Zeichen ist erforderlich."
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Drag to reorder card"
-msgstr ""
+msgstr "Ziehen zum Neuanordnen der Karte"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Refresh Panel"
-msgstr "Zeit zwischen Aktualisierungen"
+msgstr "Panel aktualisieren"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Total messages"
-msgstr "Nachricht:"
+msgstr "Nachrichten gesamt"
 
 #: lib/syslog_dashboard.php
 msgid "Chart library unavailable on this Cacti installation."
-msgstr ""
+msgstr "Diagrammbibliothek ist auf dieser Cacti-Installation nicht verfügbar."
 
 #: lib/syslog_dashboard.php
 msgid "Edit Panel"
-msgstr ""
+msgstr "Panel bearbeiten"
 
 #: lib/syslog_dashboard.php
 msgid "New Panel"
-msgstr ""
+msgstr "Neues Panel"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Save"
@@ -1559,78 +1518,74 @@ msgstr "Speichern"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard panel?"
-msgstr ""
+msgstr "Dieses Dashboard-Panel löschen?"
 
 #: lib/syslog_dashboard.php
 msgid "Delete this dashboard and all of its panels?"
-msgstr ""
+msgstr "Dieses Dashboard und alle zugehörigen Panels löschen?"
 
 #: lib/syslog_dashboard.php
 msgid "Name your dashboard"
-msgstr ""
+msgstr "Benennen Sie Ihr Dashboard"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Make Private"
-msgstr ""
+msgstr "Als privat markieren"
 
 #: lib/syslog_dashboard.php
 msgid "Share with all"
-msgstr ""
+msgstr "Für alle freigeben"
 
 #: lib/syslog_dashboard.php
 msgid "Save as my copy"
-msgstr ""
+msgstr "Als eigene Kopie speichern"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Syslog Dashboards"
-msgstr "Syslog aktiviert"
+msgstr "Syslog-Dashboards"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: lib/syslog_dashboard.php
 msgid "Time Range"
 msgstr "Zeitraum"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Hour"
-msgstr "%d Stunde"
+msgstr "Letzte Stunde"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Hours"
-msgstr "%d Stunden"
+msgstr "Letzte %d Stunden"
 
 #: lib/syslog_dashboard.php
 msgid "Last Day"
-msgstr ""
+msgstr "Letzter Tag"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Week"
-msgstr "Zuletzt verschickt"
+msgstr "Letzte Woche"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Weeks"
-msgstr "%d Wochen"
+msgstr "Letzte %d Wochen"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Last Month"
-msgstr "Zuletzt verschickt"
+msgstr "Letzter Monat"
 
 #: lib/syslog_dashboard.php
-#, fuzzy, php-format
+#, php-format
 msgid "Last %d Months"
-msgstr "%d Monate"
+msgstr "Letzte %d Monate"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
@@ -1638,47 +1593,47 @@ msgstr "Aktualisieren"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
-msgstr ""
+msgstr "Meine Dashboards"
 
 #: lib/syslog_dashboard.php
 msgid "Global Dashboards"
-msgstr ""
+msgstr "Globale Dashboards"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Shared With Me"
-msgstr ""
+msgstr "Für mich freigegeben"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "New"
-msgstr ""
+msgstr "Neu"
 
 #: lib/syslog_dashboard.php
 msgid "Rename"
-msgstr ""
+msgstr "Umbenennen"
 
 #: lib/syslog_dashboard.php
 msgid "Add Panel"
-msgstr ""
+msgstr "Panel hinzufügen"
 
 #: lib/syslog_dashboard.php
 msgid "Create your first dashboard to visualize syslog trends."
-msgstr ""
+msgstr "Erstellen Sie Ihr erstes Dashboard, um Syslog-Trends zu visualisieren."
 
 #: lib/syslog_dashboard.php
 msgid "Add a panel to start charting.  Panels can use your saved searches."
-msgstr ""
+msgstr "Fügen Sie ein Panel hinzu, um mit der Diagrammerstellung zu beginnen. Panels können Ihre gespeicherten Suchen verwenden."
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Panel"
-msgstr ""
+msgstr "Dashboard-Panel"
 
 #: lib/syslog_dashboard.php
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: lib/syslog_dashboard.php
 msgid "Log Source"
-msgstr ""
+msgstr "Protokollquelle"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "System Logs"
@@ -1689,67 +1644,60 @@ msgid "Alert Logs"
 msgstr "Warnung Logs"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Panel Type"
-msgstr "Spielart"
+msgstr "Panel-Typ"
 
 #: lib/syslog_dashboard.php
 msgid "Time Series"
-msgstr ""
+msgstr "Zeitreihe"
 
 #: lib/syslog_dashboard.php
 msgid "Breakdown"
-msgstr ""
+msgstr "Aufschlüsselung"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Chart"
-msgstr "%d Chars"
+msgstr "Diagramm"
 
 #: lib/syslog_dashboard.php
 msgid "Line"
-msgstr ""
+msgstr "Zeile"
 
 #: lib/syslog_dashboard.php
 msgid "Area"
-msgstr ""
+msgstr "Fläche"
 
 #: lib/syslog_dashboard.php
 msgid "Bar"
-msgstr ""
+msgstr "Balken"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Interval"
-msgstr "Zeit zwischen Aktualisierungen"
+msgstr "Intervall"
 
 #: lib/syslog_dashboard.php
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Minute"
-msgstr "1 Minute"
+msgstr "Minute"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "10 Minutes"
-msgstr "1 Minute"
+msgstr "10 Minuten"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Hour"
-msgstr "%d Stunde"
+msgstr "Stunde"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Day"
-msgstr "Täglich"
+msgstr "Tag"
 
 #: lib/syslog_dashboard.php
 msgid "Field"
-msgstr ""
+msgstr "Feld"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php
@@ -1767,9 +1715,8 @@ msgid "Priority"
 msgstr "Priorität"
 
 #: lib/syslog_dashboard.php
-#, fuzzy
 msgid "Top Count"
-msgstr "Anzahl"
+msgstr "Top-Anzahl"
 
 #: lib/syslog_dashboard.php syslog.php
 msgid "Record Type"
@@ -1789,30 +1736,28 @@ msgstr "Entfernte Datensätze"
 
 #: lib/syslog_dashboard.php
 msgid "Start from Saved Search"
-msgstr ""
+msgstr "Mit gespeicherter Suche beginnen"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Enter message text…"
-msgstr ""
+msgstr "Nachrichtentext eingeben…"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
-#, fuzzy
 msgid "Remove condition"
-msgstr "Entfernte Datensätze"
+msgstr "Bedingung entfernen"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
-#, fuzzy
 msgid "Match group"
-msgstr "Spielart"
+msgstr "Übereinstimmungsgruppe"
 
 #: lib/syslog_dashboard.php syslog.php syslog_saved_searches.php
 msgid "Exclude group"
-msgstr ""
+msgstr "Gruppe ausschließen"
 
 #: lib/syslog_dashboard.php
 msgid "Dashboard Name"
-msgstr ""
+msgstr "Dashboard-Name"
 
 #: lib/syslog_dashboard.php syslog.php syslog_alerts.php syslog_dashboards.php
 #: syslog_reports.php syslog_saved_searches.php
@@ -1820,18 +1765,16 @@ msgid "Name"
 msgstr "Name"
 
 #: lib/syslog_thresholds.php syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Breached Thresholds"
-msgstr "Schwellwert"
+msgstr "Überschrittene Schwellenwerte"
 
 #: lib/syslog_thresholds.php
 msgid "Breached Since"
-msgstr ""
+msgstr "Überschritten seit"
 
 #: lib/syslog_thresholds.php
 msgid "Collector"
-msgstr ""
+msgstr "Collector"
 
 #: lib/syslog_thresholds.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php
@@ -1840,38 +1783,35 @@ msgstr "Zielsysteme"
 
 #: lib/syslog_thresholds.php
 msgid "Last Matching Message"
-msgstr ""
+msgstr "Letzte übereinstimmende Meldung"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
 msgid "Recovers After"
-msgstr "Verarbeiten"
+msgstr "Wiederherstellung nach"
 
 #: lib/syslog_thresholds.php
-#, fuzzy
-#| msgid "Rules"
 msgid "Rule"
-msgstr "Regeln"
+msgstr "Regel"
 
 #: lib/syslog_thresholds.php
 msgid "All matching devices"
-msgstr ""
+msgstr "Alle passenden Geräte"
 
 #: lib/syslog_thresholds.php
 msgid "No thresholds are currently breached."
-msgstr ""
+msgstr "Derzeit sind keine Schwellenwerte überschritten."
 
 #: lib/syslog_thresholds.php
 msgid "Recovery requires no matching messages until the displayed time. Every match restarts the quiet period."
-msgstr ""
+msgstr "Die Wiederherstellung erfordert, dass bis zum angezeigten Zeitpunkt keine passenden Nachrichten eingehen. Jeder Treffer startet die Ruhephase neu."
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Previous"
-msgstr ""
+msgstr "Voriges"
 
 #: lib/syslog_thresholds.php syslog.php
 msgid "Next"
-msgstr ""
+msgstr "Weiter"
 
 #: setup.php
 msgid "Please rename either your config.php.dist or config_local.php.dist files in the syslog directory, and change setup your database before installing."
@@ -1879,46 +1819,39 @@ msgstr "Benennen Sie entweder Ihre config.php.dist- oder config_local.php.vert-D
 
 #: setup.php
 msgid "Millisecond (TIMESTAMP(3)) timestamps are only supported on MariaDB. This server is MySQL, so install with second precision timestamps instead."
-msgstr ""
+msgstr "Millisekunden-Zeitstempel (TIMESTAMP(3)) werden nur von MariaDB unterstützt. Dieser Server verwendet MySQL; installieren Sie daher stattdessen mit Sekundengenauigkeit."
 
 #: setup.php
 msgid "Aria storage cannot be used when any Remote Data Collector option is enabled. Select InnoDB or disable all Remote Data Collector options."
-msgstr ""
+msgstr "Die Aria-Speicher-Engine kann nicht verwendet werden, wenn eine Option für Remote-Datensammler aktiviert ist. Wählen Sie InnoDB oder deaktivieren Sie alle Optionen für Remote-Datensammler."
 
 #: setup.php
 msgid "Top 10 Hosts"
-msgstr ""
+msgstr "Top 10 Hosts"
 
 #: setup.php
-#, fuzzy
-#| msgid "Syslog Message Match String"
 msgid "Syslog Messages - Past Hour"
-msgstr "Übereinstimmungszeichenfolge für Syslog-Meldung"
+msgstr "Syslog-Meldungen - Letzte Stunde"
 
 #: setup.php
-#, fuzzy
-#| msgid "Message String:"
 msgid "Messages by Severity"
-msgstr "Meldungszeichenfolge:"
+msgstr "Nachrichten nach Schweregrad"
 
 #: setup.php
-#, fuzzy
-#| msgid "All Programs"
 msgid "Top 10 Programs"
-msgstr "Alle Programme"
+msgstr "Top 10 Programme"
 
 #: setup.php
 msgid "Alert Activity"
-msgstr ""
+msgstr "Alarmaktivität"
 
 #: syslog.php
 msgid "Syslog Viewer"
 msgstr "Syslog-Betrachter"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog Status"
-msgstr "Syslog-Einstellungen"
+msgstr "Syslog-Status"
 
 #: syslog.php
 msgid "Selected Alert"
@@ -1926,292 +1859,262 @@ msgstr "Ausgewählte Warnung"
 
 #: syslog.php
 msgid "seconds"
-msgstr ""
+msgstr "Sekunden"
 
 #: syslog.php
 msgid "Unavailable"
-msgstr ""
+msgstr "Nicht verfügbar"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "[ Unprocessed Messages: %s ]"
+#, php-format
 msgid "unprocessed messages are %s old"
-msgstr "[ Unverarbeitete Nachrichten: %s ]"
+msgstr "unverarbeitete Nachrichten sind %s alt"
 
 #: syslog.php
 #, php-format
 msgid "incoming backlog of %s messages"
-msgstr ""
+msgstr "Rückstand von %s eingehenden Meldungen"
 
 #: syslog.php
-#, fuzzy
 msgid "day"
-msgstr "Täglich"
+msgstr "Tag"
 
 #: syslog.php
 msgid "days"
-msgstr ""
+msgstr "Tage"
 
 #: syslog.php
 msgid "hour"
-msgstr ""
+msgstr "Stunde"
 
 #: syslog.php
-#, fuzzy
 msgid "hours"
-msgstr "%d Stunden"
+msgstr "Stunden"
 
 #: syslog.php
-#, fuzzy
 msgid "minute"
-msgstr "1 Minute"
+msgstr "Minute"
 
 #: syslog.php
-#, fuzzy
 msgid "minutes"
-msgstr "1 Minute"
+msgstr "Minuten"
 
 #: syslog.php
 msgid "Rows in syslog_incoming"
-msgstr ""
+msgstr "Zeilen in syslog_incoming"
 
 #: syslog.php
 msgid "Syslog table size (data + indexes)"
-msgstr ""
+msgstr "Größe der Syslog-Tabelle (Daten + Indizes)"
 
 #: syslog.php
-#, fuzzy
 msgid "Syslog retention"
 msgstr "Syslog-Aufbewahrung"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert retention"
-msgstr "Aufbewahrung von Syslog-Warnungen"
+msgstr "Alarmaufbewahrung"
 
 #: syslog.php
 msgid "No recovery activity recorded yet."
-msgstr ""
+msgstr "Noch keine Wiederherstellungsaktivität aufgezeichnet."
 
 #: syslog.php
 msgid "created"
-msgstr ""
+msgstr "erstellt"
 
 #: syslog.php
-#, fuzzy
 msgid "remaining"
-msgstr "Warnung"
+msgstr "verbleibend"
 
 #: syslog.php
 msgid "retention deferred"
-msgstr ""
+msgstr "Aufbewahrung aufgeschoben"
 
 #: syslog.php
 msgid "Latest processing run"
-msgstr ""
+msgstr "Letzter Verarbeitungsdurchlauf"
 
 #: syslog.php
 msgid "Distributed synchronization"
-msgstr ""
+msgstr "Verteilte Synchronisierung"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Remote Data Collector Rules Sync"
 msgid "Remote collector receipts"
-msgstr "Synchronisierung von Remote-Datensammlerregeln"
+msgstr "Empfangsbestätigungen von Remote-Sammlern"
 
 #: syslog.php
-#, fuzzy
 msgid "Storage and retention"
-msgstr "Syslog-Aufbewahrung"
+msgstr "Speicherung und Aufbewahrung"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition health"
-msgstr "Partitionen pro Tag"
+msgstr "Partitionszustand"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance activity"
-msgstr "Partitionierte Tabelle"
+msgstr "Aktivität der Partitionswartung"
 
 #: syslog.php
-#, fuzzy
 msgid "Recent partition maintenance activity"
-msgstr "Partitionierte Tabelle"
+msgstr "Aktuelle Aktivitäten der Partitionswartung"
 
 #: syslog.php
-#, fuzzy
 msgid "Pipeline health"
-msgstr "Partitionen pro Tag"
+msgstr "Pipeline-Zustand"
 
 #: syslog.php
 msgid "Parallel workers"
-msgstr ""
+msgstr "Parallele Worker"
 
 #: syslog.php
-#, fuzzy
 msgid "Worker processes"
-msgstr "Verarbeiten"
+msgstr "Worker-Prozesse"
 
 #: syslog.php
 msgid "Processing phases"
-msgstr ""
+msgstr "Verarbeitungsphasen"
 
 #: syslog.php
 msgid "Rule activity"
-msgstr ""
+msgstr "Regelaktivität"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed"
-msgstr "Verarbeiten"
+msgstr "Verarbeitete Datensätze"
 
 #: syslog.php
 msgid "Polling runtime"
-msgstr ""
+msgstr "Polling-Laufzeit"
 
 #: syslog.php
 msgid "Started"
-msgstr ""
+msgstr "Gestartet"
 
 #: syslog.php
 msgid "Finished"
-msgstr ""
+msgstr "Abgeschlossen"
 
 #: syslog.php
 msgid "Minimum runtime"
-msgstr ""
+msgstr "Minimale Laufzeit"
 
 #: syslog.php
 msgid "Average runtime"
-msgstr ""
+msgstr "Durchschnittliche Laufzeit"
 
 #: syslog.php
 msgid "Maximum runtime"
-msgstr ""
+msgstr "Maximale Laufzeit"
 
 #: syslog.php
 msgid "State"
-msgstr ""
+msgstr "Bundesland"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Removed Records"
 msgid "Queued Recovery Records"
-msgstr "Entfernte Datensätze"
+msgstr "Eingereihte Wiederherstellungsdatensätze"
 
 #: syslog.php
 msgid "Oldest pending"
-msgstr ""
+msgstr "Ältester ausstehender Eintrag"
 
 #: syslog.php
 msgid "Last successful synchronization"
-msgstr ""
+msgstr "Letzte erfolgreiche Synchronisierung"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Actions"
 msgid "Active"
-msgstr "Aktionen"
+msgstr "Aktiv"
 
 #: syslog.php
 msgid "Inactive"
-msgstr ""
+msgstr "Inaktiv"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery worker"
-msgstr "Verarbeiten"
+msgstr "Wiederherstellungs-Worker"
 
 #: syslog.php
 msgid "Last synchronization error"
-msgstr ""
+msgstr "Letzter Synchronisierungsfehler"
 
 #: syslog.php
-#, fuzzy
 msgid "Last Batch Count"
-msgstr "Zuletzt verschickt"
+msgstr "Anzahl im letzten Durchlauf"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Modified"
 msgid "Last Record Received"
-msgstr "Zuletzt geändert"
+msgstr "Letzter empfangener Datensatz"
 
 #: syslog.php
 msgid "Remote Poller"
-msgstr ""
+msgstr "Remote-Poller"
 
 #: syslog.php
 msgid "Unknown remote poller"
-msgstr ""
+msgstr "Unbekannter Remote-Poller"
 
 #: syslog.php
 msgid "No remote collector records have been received yet."
-msgstr ""
+msgstr "Es wurden noch keine Datensätze von Remote-Collectoren empfangen."
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance blocked"
-msgstr "Partitionierte Tabelle"
+msgstr "Partitionswartung blockiert"
 
 #: syslog.php
 msgid "Partition maintenance is stopped; writes continue into the dMaxValue safety partition."
-msgstr ""
+msgstr "Partitionswartung ist gestoppt; Schreibvorgänge laufen weiterhin in die Sicherheitspartition dMaxValue."
 
 #: syslog.php
 msgid "Date coverage"
-msgstr ""
+msgstr "Datumsabdeckung"
 
 #: syslog.php
-#, fuzzy
 msgid "Table"
-msgstr "Aktivieren"
+msgstr "Tabelle"
 
 #: syslog.php
 msgid "dMaxValue rows (estimated)"
-msgstr ""
+msgstr "dMaxValue-Zeilen (geschätzt)"
 
 #: syslog.php
 msgid "dMaxValue size"
-msgstr ""
+msgstr "dMaxValue-Größe"
 
 #: syslog.php
-#, fuzzy
 msgid "Partitioning level"
-msgstr "Partitionen pro Tag"
+msgstr "Partitionierungsebene"
 
 #: syslog.php
 #, php-format
 msgid "%s is selected in Settings and takes effect after cli/upgrade_partitioning.php rebuilds the tables."
-msgstr ""
+msgstr "%s ist in den Einstellungen ausgewählt und wird wirksam, nachdem cli/upgrade_partitioning.php die Tabellen neu erstellt hat."
 
 #: syslog.php
-#, fuzzy
 msgid "Last attempt"
-msgstr "Zuletzt verschickt"
+msgstr "Letzter Versuch"
 
 #: syslog.php
 msgid "Last successful maintenance"
-msgstr ""
+msgstr "Letzte erfolgreiche Wartung"
 
 #: syslog.php
 msgid "Complete"
-msgstr ""
+msgstr "Abgeschlossen"
 
 #: syslog.php
 msgid "Deferred"
-msgstr ""
+msgstr "Zurückgestellt"
 
 #: syslog.php
 msgid "Latest outcome"
-msgstr ""
+msgstr "Letztes Ergebnis"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery progress"
-msgstr "Verarbeiten"
+msgstr "Wiederherstellungsfortschritt"
 
 #: syslog.php syslog_alerts.php syslog_reports.php
 msgid "Details"
@@ -2219,262 +2122,232 @@ msgstr "Details"
 
 #: syslog.php
 msgid "Outcome"
-msgstr ""
+msgstr "Ergebnis"
 
 #: syslog.php
-#, fuzzy
 msgid "Recovery"
-msgstr "%d Datensätze"
+msgstr "Wiederherstellung"
 
 #: syslog.php
 msgid "When"
-msgstr ""
+msgstr "Wann"
 
 #: syslog.php
 msgid "No partition maintenance activity recorded yet. Activity appears after the next poller run."
-msgstr ""
+msgstr "Noch keine Partitionswartungsaktivität aufgezeichnet. Die Aktivität erscheint nach dem nächsten Poller-Lauf."
 
 #: syslog.php
 #, php-format
 msgid "%d created, %d remaining, %d pruned"
-msgstr ""
+msgstr "%d erstellt, %d verbleibend, %d bereinigt"
 
 #: syslog.php
 msgid "No action required."
-msgstr ""
+msgstr "Keine Aktion erforderlich."
 
 #: syslog.php
 msgid "Incoming backlog"
-msgstr ""
+msgstr "Eingehender Rückstau"
 
 #: syslog.php
-#, fuzzy
 msgid "Processing"
-msgstr "Verarbeiten"
+msgstr "Verarbeitung"
 
 #: syslog.php
-#, fuzzy
 msgid "Partition maintenance"
-msgstr "Partitionierte Tabelle"
+msgstr "Partitionswartung"
 
 #: syslog.php
 msgid "Synchronization"
-msgstr ""
+msgstr "Synchronisierung"
 
 #: syslog.php
 msgid "Attention required"
-msgstr ""
+msgstr "Aufmerksamkeit erforderlich"
 
 #: syslog.php
 msgid "Healthy"
-msgstr ""
+msgstr "Fehlerfrei"
 
 #: syslog.php
 msgid "Processing disabled"
-msgstr ""
+msgstr "Verarbeitung deaktiviert"
 
 #: syslog.php
-#, fuzzy
 msgid "Waiting for processing"
-msgstr "Verarbeiten"
+msgstr "Warten auf Verarbeitung"
 
 #: syslog.php
 msgid "Health"
-msgstr ""
+msgstr "Systemzustand"
 
 #: syslog.php
 msgid "Ready"
-msgstr ""
+msgstr "Bereit"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Last Sent"
 msgid "Sent"
-msgstr "Zuletzt verschickt"
+msgstr "Gesendet"
 
 #: syslog.php
 msgid "Failed; retry pending"
-msgstr ""
+msgstr "Fehlgeschlagen; Wiederholung ausstehend"
 
 #: syslog.php
 msgid "Pending; next poller check"
-msgstr ""
+msgstr "Ausstehend; nächste Poller-Prüfung"
 
 #: syslog.php
-#, fuzzy
 msgid "Last health check"
-msgstr "Zuletzt verschickt"
+msgstr "Letzte Zustandsprüfung"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Email Options"
 msgid "Email notifications"
-msgstr "E-Mails Einstellungen"
+msgstr "E-Mail-Benachrichtigungen"
 
 #: syslog.php
 msgid "Not checked yet"
-msgstr ""
+msgstr "Noch nicht geprüft"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Notification List"
 msgid "Last notification sent"
-msgstr "Benachrichtigungsliste"
+msgstr "Letzte Benachrichtigung gesendet"
 
 #: syslog.php
 msgid "Last received log"
-msgstr ""
+msgstr "Zuletzt empfangenes Protokoll"
 
 #: syslog.php
-#, fuzzy
 msgid "Oldest unprocessed message"
-msgstr "[ Unverarbeitete Nachrichten: %s ]"
+msgstr "Älteste unverarbeitete Nachricht"
 
 #: syslog.php
-#, fuzzy
 msgid "Records processed in latest run"
-msgstr "Verarbeiten"
+msgstr "Im letzten Durchlauf verarbeitete Datensätze"
 
 #: syslog.php
 msgid "Worker processes running"
-msgstr ""
+msgstr "Laufende Worker-Prozesse"
 
 #: syslog.php
 msgid "Configured worker processes"
-msgstr ""
+msgstr "Konfigurierte Worker-Prozesse"
 
 #: syslog.php
 msgid "Hosts resolved"
-msgstr ""
+msgstr "Aufgelöste Hosts"
 
 #: syslog.php
-#, fuzzy
 msgid "Process"
-msgstr "Verarbeiten"
+msgstr "Prozess"
 
 #: syslog.php
-#, fuzzy
 msgid "Records handled"
-msgstr "Datensätze"
+msgstr "Bearbeitete Datensätze"
 
 #: syslog.php
 msgid "Runtime"
-msgstr ""
+msgstr "Laufzeit"
 
 #: syslog.php
 msgid "No per process statistics recorded yet.  Worker statistics appear after the first parallel run."
-msgstr ""
+msgstr "Noch keine Statistiken pro Prozess aufgezeichnet. Worker-Statistiken erscheinen nach dem ersten parallelen Lauf."
 
 #: syslog.php
-#, fuzzy
 msgid "Duration"
-msgstr "Löschen"
+msgstr "Dauer"
 
 #: syslog.php
 msgid "Phase"
-msgstr ""
+msgstr "Phase"
 
 #: syslog.php
-#, fuzzy
 msgid "Records"
-msgstr "%d Datensätze"
+msgstr "Datensätze"
 
 #: syslog.php
 msgid "Reference updates"
-msgstr ""
+msgstr "Referenzaktualisierungen"
 
 #: syslog.php
-#, fuzzy
 msgid "Removal rules"
-msgstr "Regeln für die Entfernung"
+msgstr "Entfernungsregeln"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert evaluation"
-msgstr "Aufbewahrung von Syslog-Warnungen"
+msgstr "Alarmauswertung"
 
 #: syslog.php
 msgid "Incoming transfer"
-msgstr ""
+msgstr "Eingehende Übertragung"
 
 #: syslog.php
-#, fuzzy
 msgid "Report processing"
-msgstr "Verarbeiten"
+msgstr "Berichtsverarbeitung"
 
 #: syslog.php
 msgid "slowest"
-msgstr ""
+msgstr "am langsamsten"
 
 #: syslog.php
 msgid "No phase timings recorded yet.  Phase timings appear after the next poller run."
-msgstr ""
+msgstr "Noch keine Phasenlaufzeiten aufgezeichnet. Phasenlaufzeiten erscheinen nach dem nächsten Poller-Lauf."
 
 #: syslog.php
-#, fuzzy
 msgid "Last run"
-msgstr "Zuletzt verschickt"
+msgstr "Letzter Lauf"
 
 #: syslog.php
-#, fuzzy
 msgid "Rules processed"
-msgstr "Verarbeiten"
+msgstr "Verarbeitete Regeln"
 
 #: syslog.php
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 #: syslog.php
-#, fuzzy
 msgid "Alert rules"
-msgstr "Regeln für Warnungen"
+msgstr "Alarmregeln"
 
 #: syslog.php
-#, fuzzy
 msgid "Delete rules"
-msgstr "Regeln für Warnungen"
+msgstr "Regeln löschen"
 
 #: syslog.php
 msgid "Fired last run"
-msgstr ""
+msgstr "Beim letzten Lauf ausgelöst"
 
 #: syslog.php
 msgid "Show more"
-msgstr ""
+msgstr "Mehr anzeigen"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Show All Devices"
 msgid "Show less"
-msgstr "Alle Geräte anzeigen"
+msgstr "Weniger anzeigen"
 
 #: syslog.php
 msgid "Open in a dialog"
-msgstr ""
+msgstr "In einem Dialog öffnen"
 
 #: syslog.php
 msgid "Remove from page"
-msgstr ""
+msgstr "Von Seite entfernen"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Refresh Interval"
 msgid "Invalid refresh interval."
-msgstr "Zeit zwischen Aktualisierungen"
+msgstr "Ungültiges Aktualisierungsintervall."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Unknown"
 msgid "Unknown card."
-msgstr "Unbekannt"
+msgstr "Unbekannte Karte."
 
 #: syslog.php
 msgid "Add card"
-msgstr ""
+msgstr "Karte hinzufügen"
 
 #: syslog.php
 msgid "Add a status card…"
-msgstr ""
+msgstr "Statuskarte hinzufügen…"
 
 #: syslog.php
 msgid "Syslog Alert View"
@@ -2482,15 +2355,15 @@ msgstr "Ansicht \"Syslog-Warnung\""
 
 #: syslog.php
 msgid "A valid saved search is required."
-msgstr ""
+msgstr "Eine gültige gespeicherte Suche ist erforderlich."
 
 #: syslog.php
 msgid "Saved search not found."
-msgstr ""
+msgstr "Gespeicherte Suche nicht gefunden."
 
 #: syslog.php
 msgid "You may only share your own saved searches."
-msgstr ""
+msgstr "Sie dürfen nur Ihre eigenen gespeicherten Suchen freigeben."
 
 #: syslog.php
 #, php-format
@@ -2519,69 +2392,61 @@ msgid "Syslog Message Filter %s"
 msgstr "Syslog-Meldungsfilter %s"
 
 #: syslog.php
-#, fuzzy
 msgid "Search messages"
-msgstr "Nachrichten"
+msgstr "Nachrichten durchsuchen"
 
 #: syslog.php
 msgid "Collapse filters"
-msgstr ""
+msgstr "Filter einklappen"
 
 #: syslog.php
 msgid "Edit filters"
-msgstr ""
+msgstr "Filter bearbeiten"
 
 #: syslog.php
-#, fuzzy
 msgid "Saved Searches"
-msgstr "Suche"
+msgstr "Gespeicherte Suchen"
 
 #: syslog.php
-#, fuzzy
 msgid "My Searches"
-msgstr "Suche"
+msgstr "Meine Suchen"
 
 #: syslog.php
 msgid "Global Searches"
-msgstr ""
+msgstr "Globale Suchen"
 
 #: syslog.php
-#, fuzzy, php-format
-#| msgid "Default"
+#, php-format
 msgid "%s (Default)"
-msgstr "Voreinstellung"
+msgstr "%s (Standard)"
 
 #: syslog.php
 msgid "Manage"
-msgstr ""
+msgstr "Verwalten"
 
 #: syslog.php
-#, fuzzy
 msgid "Manage saved searches"
-msgstr "Geben Sie einen Suchbegriff ein"
+msgstr "Gespeicherte Suchen verwalten"
 
 #: syslog.php
-#, fuzzy
 msgid "Save search"
-msgstr "Suche"
+msgstr "Suche speichern"
 
 #: syslog.php
-#, fuzzy
 msgid "Edit"
-msgstr "(Bearbeiten)"
+msgstr "Bearbeiten"
 
 #: syslog.php
 msgid "Save for all"
-msgstr ""
+msgstr "Für alle speichern"
 
 #: syslog.php
-#, fuzzy
 msgid "contains"
-msgstr "Enthält"
+msgstr "enthält"
 
 #: syslog.php
 msgid "does not contain"
-msgstr ""
+msgstr "enthält nicht"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_reports.php
 #: syslog_saved_searches.php
@@ -2599,13 +2464,12 @@ msgid "Default"
 msgstr "Voreinstellung"
 
 #: syslog.php
-#, fuzzy
 msgid "View options"
-msgstr "E-Mails Einstellungen"
+msgstr "Anzeigeoptionen"
 
 #: syslog.php
 msgid "Trim"
-msgstr "Menüleiste"
+msgstr "Kürzen"
 
 #: syslog.php
 msgid "Message Trim"
@@ -2613,53 +2477,48 @@ msgstr "Nachricht kürzen"
 
 #: syslog.php
 msgid "Removal Handling"
-msgstr "Handhabung des Umzugs"
+msgstr "Entfernungsbehandlung"
 
 #: syslog.php
-#, fuzzy
 msgid "Display"
-msgstr "Zeilen anzeigen"
+msgstr "Anzeige"
 
 #: syslog.php
 msgid "Group Duplicate Messages"
-msgstr ""
+msgstr "Doppelte Nachrichten gruppieren"
 
 #: syslog.php
-#, fuzzy
 msgid "Individual Messages"
-msgstr "Individuell"
+msgstr "Einzelne Meldungen"
 
 #: syslog.php
-#, fuzzy
 msgid "Grouped Messages"
-msgstr "Nachrichten"
+msgstr "Gruppierte Nachrichten"
 
 #: syslog.php
 #, php-format
 msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
-msgstr ""
+msgstr "Wählen Sie ein Feld, einen Operator und einen Wert. AND hat Vorrang vor OR; NOT schließt eine Bedingung aus. LIKE verwendet % für eine beliebige Anzahl von Zeichen und _ für ein einzelnes Zeichen. Datumsangaben verwenden JJJJ-MM-TT HH:MM:SS. IDs verwenden nicht-negative ganze Zahlen. Standardmäßig wird der letzte Tag der Protokolle angezeigt, sofern der Datumsbereich nicht angepasst wird."
 
 #: syslog.php
-#, fuzzy
 msgid "Search help"
-msgstr "Suche"
+msgstr "Suchhilfe"
 
 #: syslog.php
 msgid "New Saved Search"
-msgstr ""
+msgstr "Neue gespeicherte Suche"
 
 #: syslog.php
 msgid "Edit Saved Search"
-msgstr ""
+msgstr "Gespeicherte Suche bearbeiten"
 
 #: syslog.php
-#, fuzzy
 msgid "Save As"
-msgstr "Speichern"
+msgstr "Speichern unter"
 
 #: syslog.php
 msgid "Delete the selected saved search?"
-msgstr ""
+msgstr "Ausgewählte gespeicherte Suche löschen?"
 
 #: syslog.php syslog_alerts.php syslog_dashboards.php syslog_device_rules.php
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
@@ -2678,9 +2537,8 @@ msgid "Return filter values to their user defined defaults"
 msgstr "Zurückgeben von Filterwerten auf ihre benutzerdefinierten Standardwerte"
 
 #: syslog.php
-#, fuzzy
 msgid "Refresh Results"
-msgstr "Zeit zwischen Aktualisierungen"
+msgstr "Ergebnisse aktualisieren"
 
 #: syslog.php
 msgid "Export Records to CSV"
@@ -2691,51 +2549,44 @@ msgid "Save Default Settings"
 msgstr "Standardeinstellungen speichern"
 
 #: syslog.php
-#, fuzzy
 msgid "Save view defaults"
-msgstr "Standardeinstellungen speichern"
+msgstr "Ansichtsstandards speichern"
 
 #: syslog.php
-#, fuzzy
 msgid "Save Search As"
-msgstr "Suche"
+msgstr "Suche speichern unter"
 
 #: syslog.php
 msgid "Apply this search when you open this page and no search is active yet"
-msgstr ""
+msgstr "Diese Suche anwenden, wenn Sie diese Seite öffnen und noch keine Suche aktiv ist"
 
 #: syslog.php
 msgid "Breach"
-msgstr ""
+msgstr "Überschreitung"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Threshold"
 msgid "Threshold breached"
-msgstr "Schwellwert"
+msgstr "Schwellenwert überschritten"
 
 #: syslog.php
 msgid "Messages"
 msgstr "Nachrichten"
 
 #: syslog.php
-#, fuzzy
 msgid "Empty message"
-msgstr "Nachricht:"
+msgstr "Leere Nachricht"
 
 #: syslog.php
-#, fuzzy
 msgid "Toggle group messages"
-msgstr "Nachricht:"
+msgstr "Gruppenmeldungen umschalten"
 
 #: syslog.php
 msgid "Loading group messages..."
-msgstr ""
+msgstr "Gruppenmeldungen werden geladen..."
 
 #: syslog.php
-#, fuzzy
 msgid "No matching messages."
-msgstr "Nachrichten"
+msgstr "Keine passenden Meldungen."
 
 #: syslog.php
 msgid "No Syslog Messages"
@@ -2755,84 +2606,71 @@ msgstr "Keine Warnmeldungen"
 
 #: syslog.php
 msgid "Close message details"
-msgstr ""
+msgstr "Nachrichtendetails schließen"
 
 #: syslog.php
-#, fuzzy
 msgid "Message details"
-msgstr "Nachrichten"
+msgstr "Nachrichtendetails"
 
 #: syslog.php
-#, fuzzy
-#| msgid "General Settings"
 msgid "General"
-msgstr "Basis Einstellungen"
+msgstr "Allgemein"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Alert Rules"
 msgid "Alert Rule"
-msgstr "Regeln für Warnungen"
+msgstr "Alarmregel"
 
 #: syslog.php
-#, fuzzy
-#| msgid "Frequency"
 msgid "Sequence"
-msgstr "Häufigkeit"
+msgstr "Sequenz"
 
 #: syslog.php
 msgid "Copied"
-msgstr ""
+msgstr "Kopiert"
 
 #: syslog.php
 msgid "Copy link"
-msgstr ""
+msgstr "Link kopieren"
 
 #: syslog.php
-#, fuzzy
 msgid "Copy message"
-msgstr "Nachricht:"
+msgstr "Nachricht kopieren"
 
 #: syslog.php
 msgid "Copy unavailable. Select and copy the message text."
-msgstr ""
+msgstr "Kopieren nicht verfügbar. Markieren und kopieren Sie den Nachrichtentext."
 
 #: syslog.php
-#, fuzzy
-#| msgid "Syslog Retention"
 msgid "Looking up recommendations…"
-msgstr "Syslog-Aufbewahrung"
+msgstr "Empfehlungen werden gesucht…"
 
 #: syslog.php
 msgid "No recommendation matches this message."
-msgstr ""
+msgstr "Keine Empfehlung stimmt mit dieser Meldung überein."
 
 #: syslog.php syslog_alerts.php
 msgid "Actions"
 msgstr "Aktionen"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Alarm Rule"
-msgstr "Warnungsregel importieren"
+msgstr "Alarmregel erstellen"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Device Alert Rule"
-msgstr "Warnungsregel importieren"
+msgstr "Geräte-Warnregel erstellen"
 
 #: syslog.php
-#, fuzzy
 msgid "Create Removal Rule"
-msgstr "Neue Entfernungsregel"
+msgstr "Entfernungsregel erstellen"
 
 #: syslog.php
 msgid "Filter by device"
-msgstr ""
+msgstr "Nach Gerät filtern"
 
 #: syslog.php
 msgid "Filter by program"
-msgstr ""
+msgstr "Nach Programm filtern"
 
 #: syslog.php
 msgid "All Programs"
@@ -2872,15 +2710,15 @@ msgstr "Syslog-Warnungsregel(n) exportieren"
 
 #: syslog_alerts.php
 msgid "Select Syslog Alarming or Alarm Manager."
-msgstr ""
+msgstr "Syslog-Alarmierung oder Alarm-Manager auswählen."
 
 #: syslog_alerts.php
 msgid "Enter a whole number of minutes, hours, or days for the threshold window."
-msgstr ""
+msgstr "Geben Sie eine ganze Zahl an Minuten, Stunden oder Tagen für das Schwellenwert-Zeitfenster ein."
 
 #: syslog_alerts.php
 msgid "Enter a positive whole number of minutes, hours, or days for threshold recovery."
-msgstr ""
+msgstr "Geben Sie eine positive ganze Zahl an Minuten, Stunden oder Tagen für die Schwellenwert-Wiederherstellung ein."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The SQL Syntax Entered is invalid.  Please correct your SQL.<br>"
@@ -2894,7 +2732,7 @@ msgstr "Die vorverarbeitete SQL lautet:<br><br> %s"
 #: syslog_alerts.php syslog_removal.php
 #, php-format
 msgid "The filter is invalid: %s"
-msgstr ""
+msgstr "Der Filter ist ungültig: %s"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "The processed SQL was invalid.  Please correct your SQL"
@@ -2940,49 +2778,40 @@ msgid "N/A"
 msgstr "Nicht verfügbar"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Time Range"
 msgid "Time unit"
-msgstr "Zeitraum"
+msgstr "Zeiteinheit"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "%d Days"
 msgid "Days"
-msgstr "%d Tage"
+msgstr "Tage"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Hours"
-msgstr "%d Stunde"
+msgstr "Stunden"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Minutes"
-msgstr "1 Minute"
+msgstr "Minuten"
 
 #: syslog_alerts.php
 msgid "Please describe this Alert."
 msgstr "Bitte beschreiben Sie diese Warnung."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alarm Destination"
-msgstr "Aufbewahrung von Syslog-Warnungen"
+msgstr "Alarmziel"
 
 #: syslog_alerts.php
 msgid "Choose Syslog Alarming or Alarm Manager. Alarm Manager also requires forwarding enabled in Syslog settings. Email is retained as fallback; command actions do not run for Alarm Manager rules."
-msgstr ""
+msgstr "Wählen Sie Syslog-Alarmierung oder Alarm Manager. Alarm Manager erfordert außerdem, dass die Weiterleitung in den Syslog-Einstellungen aktiviert ist. E-Mail bleibt als Fallback erhalten; Befehlsaktionen werden für Alarm-Manager-Regeln nicht ausgeführt."
 
 #: syslog_alerts.php
 msgid "Alarm Manager"
-msgstr ""
+msgstr "Alarm-Manager"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Syslog Alerts"
 msgid "Syslog Alarming"
-msgstr "Syslog-Warnungen"
+msgstr "Syslog-Alarmierung"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -3013,28 +2842,24 @@ msgid "Individual"
 msgstr "Individuell"
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "For the 'Threshold' method, If the number seen is above this value an Alert will be triggered."
 msgid "For the 'Threshold' method, an Alert is triggered when the number seen reaches this value."
-msgstr "Für die 'Threshold'-Methode wird ein Alarm ausgelöst, wenn die angezeigte Zahl über diesem Wert liegt."
+msgstr "Bei der Methode 'Schwellenwert' wird eine Benachrichtigung ausgelöst, wenn die erfasste Anzahl diesen Wert erreicht."
 
 #: syslog_alerts.php
-#, fuzzy
-#| msgid "Threshold Logs"
 msgid "Threshold Window"
-msgstr "Schwellenwert-Protokolle"
+msgstr "Schwellenwert-Zeitfenster"
 
 #: syslog_alerts.php
 msgid "Count matches across collector cycles within this rolling window, using collector processing time. Enter 0 to count only the current cycle."
-msgstr ""
+msgstr "Zählt Treffer über Collector-Zyklen hinweg innerhalb dieses rollierenden Zeitfensters basierend auf der Collector-Verarbeitungszeit. Geben Sie 0 ein, um nur den aktuellen Zyklus zu zählen."
 
 #: syslog_alerts.php
 msgid "Recover After Quiet Period"
-msgstr ""
+msgstr "Wiederherstellung nach Ruhephase"
 
 #: syslog_alerts.php
 msgid "Time with no matching messages before clearing the breach, resetting the count, and rearming this rule. Every matching message restarts this timer."
-msgstr ""
+msgstr "Zeitspanne ohne übereinstimmende Meldungen, bevor die Überschreitung aufgehoben, der Zähler zurückgesetzt und diese Regel wieder scharfgeschaltet wird. Jede übereinstimmende Meldung startet diesen Timer neu."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Match Type"
@@ -3042,7 +2867,7 @@ msgstr "Spielart"
 
 #: syslog_alerts.php
 msgid "Choose Filter Builder for safe multi-condition alarm logic. SQL Expression is retained for legacy rules."
-msgstr ""
+msgstr "Wählen Sie den Filter-Builder für sichere Alarmlogik mit mehreren Bedingungen. SQL-Ausdruck wird für ältere Regeln beibehalten."
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Message Match String"
@@ -3050,7 +2875,7 @@ msgstr "Zeichenfolge für Nachrichtenübereinstimmung"
 
 #: syslog_alerts.php
 msgid "Build filter conditions or enter an SQL expression to match syslog messages."
-msgstr ""
+msgstr "Filterbedingungen erstellen oder einen SQL-Ausdruck eingeben, um Syslog-Nachrichten abzugleichen."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_removal.php
 #: syslog_reports.php
@@ -3070,120 +2895,112 @@ msgid "Do not resend this alert again for the same host, until this amount of ti
 msgstr "Senden Sie diese Warnung für denselben Host erst dann erneut, wenn diese Zeitspanne abgelaufen ist. Bei schwellenwertbasierten Alarmen gilt dies für alle Hosts."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Notification Cooldown"
-msgstr "Benachrichtigungsliste"
+msgstr "Abklingzeit für Benachrichtigungen"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress every subsequent notification from this rule and reporting scope."
-msgstr ""
+msgstr "Minuten, für die jede nachfolgende Benachrichtigung dieser Regel und dieses Berichtsbereichs unterdrückt wird."
 
 #: syslog_alerts.php
 msgid "1 day"
-msgstr ""
+msgstr "1 Tag"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 hour"
-msgstr "%d Stunden"
+msgstr "1 Stunde"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "1 minute"
 msgstr "1 Minute"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "15 minutes"
-msgstr "1 Minute"
+msgstr "15 Minuten"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "30 minutes"
-msgstr "1 Minute"
+msgstr "30 Minuten"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "4 hours"
-msgstr "%d Stunden"
+msgstr "4 Stunden"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "5 minutes"
-msgstr "1 Minute"
+msgstr "5 Minuten"
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Use global setting"
-msgstr "Syslog-%s-Einstellungen"
+msgstr "Globale Einstellung verwenden"
 
 #: syslog_alerts.php
 msgid "Duplicate Suppression"
-msgstr ""
+msgstr "Duplikatunterdrückung"
 
 #: syslog_alerts.php
 msgid "Minutes to suppress the same matched message set."
-msgstr ""
+msgstr "Minuten, für die dieselbe übereinstimmende Meldungsgruppe unterdrückt wird."
 
 #: syslog_alerts.php
 msgid "Maintenance Window"
-msgstr ""
+msgstr "Wartungsfenster"
 
 #: syslog_alerts.php
 msgid "Choose whether this rule uses the global maintenance timeframe or its own timeframe."
-msgstr ""
+msgstr "Wählen Sie aus, ob diese Regel den globalen Wartungszeitraum oder einen eigenen Zeitraum verwendet."
 
 #: syslog_alerts.php
 msgid "Do not mute this rule"
-msgstr ""
+msgstr "Diese Regel nicht stummschalten"
 
 #: syslog_alerts.php
 msgid "Use global timeframe"
-msgstr ""
+msgstr "Globalen Zeitrahmen verwenden"
 
 #: syslog_alerts.php
 msgid "Use rule timeframe"
-msgstr ""
+msgstr "Regel-Zeitrahmen verwenden"
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Days"
-msgstr ""
+msgstr "Regel-Wartungstage"
 
 #: syslog_alerts.php
 msgid "Days for this rule timeframe, when Use rule timeframe is selected."
-msgstr ""
+msgstr "Tage für den Zeitrahmen dieser Regel, wenn 'Regelzeitrahmen verwenden' ausgewählt ist."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Starts"
-msgstr ""
+msgstr "Beginn der Regel-Wartung"
 
 #: syslog_alerts.php
 msgid "Local start time for this rule timeframe."
-msgstr ""
+msgstr "Lokale Startzeit für den Zeitraum dieser Regel."
 
 #: syslog_alerts.php
 msgid "Rule Maintenance Ends"
-msgstr ""
+msgstr "Ende der Regel-Wartung"
 
 #: syslog_alerts.php
 msgid "Local end time for this rule timeframe."
-msgstr ""
+msgstr "Lokale Endzeit für den Zeitraum dieser Regel."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Starts"
-msgstr ""
+msgstr "Beginn der einmaligen Regelwartung"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to begin muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Optionales lokales Datum und Uhrzeit für den Beginn der Stummschaltung dieser Regel. Format: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php
 msgid "One-time Rule Maintenance Ends"
-msgstr ""
+msgstr "Ende der einmaligen Regelwartung"
 
 #: syslog_alerts.php
 msgid "Optional local date and time to stop muting this rule. Format: YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Optionales lokales Datum und Uhrzeit für das Ende der Stummschaltung dieser Regel. Format: YYYY-MM-DD HH:MM."
 
 #: syslog_alerts.php syslog_device_rules.php syslog_reports.php
 msgid "Notes"
@@ -3230,58 +3047,52 @@ msgid "Should a Help Desk Ticket be opened for this Alert.  NOTE: The Ticket com
 msgstr "Sollte ein Helpdesk-Ticket für diese Benachrichtigung geöffnet werden?  HINWEIS: Das Ticket-Befehlsskript wird der Einfachheit halber mit mehreren 'ALERT_'-Umgebungsvariablen gefüllt."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Alert command"
-msgstr "Handhabung des Umzugs"
+msgstr "Alarmbefehl"
 
 #: syslog_alerts.php
 msgid "When an Alert is triggered, run the following command.  The following replacement variables are available <b>'&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Please note that <b>'&lt;HOSTNAME&gt;'</b> is only available on individual thresholds.  These replacement values can appear on the command line, or be gathered from the environment of the script.  When used from the environment, those variables will be prefixed with 'ALERT_'."
 msgstr "Wenn eine Warnung ausgelöst wird, führen Sie den folgenden Befehl aus.  Die folgenden Ersetzungsvariablen stehen zur Verfügung <b>: '&lt;HOSTNAME&gt;'</b>, <b>'&lt;ALERTID&gt;'</b>, <b>'&lt;MESSAGE&gt;'</b>, <b>'&lt;FACILITY&gt;'</b>, <b>'&lt;PRIORITY&gt;'</b>, <b>'&lt;SEVERITY&gt;'</b>.  Bitte beachten Sie, dass <b>\"&lt;HOSTNAME&gt;\"</b> nur für einzelne Schwellenwerte verfügbar ist.  Diese Ersetzungswerte können in der Befehlszeile angezeigt oder aus der Umgebung des Skripts abgerufen werden.  Wenn diese Variablen aus der Umgebung verwendet werden, wird ihnen das Präfix 'ALERT_' vorangestellt."
 
 #: syslog_alerts.php
-#, fuzzy
 msgid "Recovery command"
-msgstr "%d Datensätze"
+msgstr "Wiederherstellungsbefehl"
 
 #: syslog_alerts.php
 msgid "Optional command to run when this threshold recovers after its quiet period. Uses the same replacement variables as Alert command. SYSLOG_EVENT is clear; SYSLOG_BREACH_ID matches the breach command. Failed commands are retried. Leave blank to disable."
-msgstr ""
+msgstr "Optionaler Befehl, der ausgeführt wird, wenn sich dieser Schwellenwert nach seiner Ruhezeit erholt. Verwendet dieselben Ersetzungsvariablen wie der Alarmbefehl. SYSLOG_EVENT ist „clear“; SYSLOG_BREACH_ID entspricht dem Überschreitungsbefehl. Fehlgeschlagene Befehle werden erneut versucht. Zum Deaktivieren leer lassen."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Test rule"
-msgstr "Regeln für Warnungen"
+msgstr "Regel testen"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Rule Test Preview"
-msgstr ""
+msgstr "Regeltest-Vorschau"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Value"
-msgstr ""
+msgstr "Wert"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Enter a value"
-msgstr "Geben Sie einen Suchbegriff ein"
+msgstr "Geben Sie einen Wert ein"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Match"
-msgstr "Spielart"
+msgstr "Übereinstimmung"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
-msgstr ""
+msgstr "Ausschließen"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
-#, fuzzy
 msgid "Enter a nonnegative integer"
-msgstr "Geben Sie einen Suchbegriff ein"
+msgstr "Geben Sie eine nicht-negative Ganzzahl ein"
 
 #: syslog_alerts.php
 msgid "Alarm filter conditions"
-msgstr ""
+msgstr "Alarm-Filterbedingungen"
 
 #: syslog_alerts.php syslog_device_rules.php syslog_recommendations.php
 #: syslog_removal.php syslog_reports.php
@@ -3292,7 +3103,7 @@ msgstr "Alle"
 #: syslog_recommendations.php syslog_removal.php syslog_reports.php
 #: syslog_saved_searches.php
 msgid "Go"
-msgstr "Anwenden"
+msgstr "Los"
 
 #: syslog_alerts.php syslog_dashboards.php syslog_recommendations.php
 #: syslog_removal.php syslog_reports.php syslog_saved_searches.php
@@ -3362,11 +3173,11 @@ msgstr "Warnungsregel importieren"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_saved_searches.php
 msgid "Import rejected: the file is empty, invalid, or contains a different type of Syslog object."
-msgstr ""
+msgstr "Import abgelehnt: Die Datei ist leer, ungültig oder enthält einen anderen Syslog-Objekttyp."
 
 #: syslog_alerts.php
 msgid "Import rejected: invalid alarm destination."
-msgstr ""
+msgstr "Import abgelehnt: ungültiges Alarmziel."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
@@ -3393,484 +3204,450 @@ msgstr "Aktualisieren"
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Select a valid owner."
-msgstr ""
+msgstr "Wählen Sie einen gültigen Eigentümer aus."
 
 #: syslog_dashboards.php
 msgid "Unable to save the dashboard. Please try again."
-msgstr ""
+msgstr "Das Dashboard konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
 
 #: syslog_dashboards.php
 msgid "Enter a dashboard name between 1 and 128 characters."
-msgstr ""
+msgstr "Geben Sie einen Dashboard-Namen mit 1 bis 128 Zeichen ein."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Owner"
-msgstr ""
+msgstr "Inhaber"
 
 #: syslog_dashboards.php
 msgid "Shared"
-msgstr ""
+msgstr "Freigegeben"
 
 #: syslog_dashboards.php
 msgid "Panels"
-msgstr ""
+msgstr "Panels"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "deleted user"
-msgstr "Ausgewählte Warnung"
+msgstr "gelöschter Benutzer"
 
 #: syslog_dashboards.php
 msgid "No dashboards yet. Users create them from the Dashboard tab of Syslog."
-msgstr ""
+msgstr "Noch keine Dashboards vorhanden. Benutzer erstellen sie auf dem Tab „Dashboard“ in Syslog."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Click 'Continue' to Delete the following Dashboard(s) and all of their Panels."
-msgstr "Klicken Sie auf \"Weiter\", um die folgende(n) Syslog-Warnregel(n) zu löschen."
+msgstr "Klicken Sie auf 'Weiter', um die folgenden Dashboards und alle ihre Panels zu löschen."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Delete Dashboard(s)"
-msgstr "Löschen von Syslog-Berichten"
+msgstr "Dashboard(s) löschen"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Dashboard(s)."
-msgstr "Klicken Sie auf \"Weiter\", um die folgende(n) Syslog-Warnregel(n) zu exportieren."
+msgstr "Klicken Sie auf 'Weiter', um das/die folgende(n) Dashboard(s) zu exportieren."
 
 #: syslog_dashboards.php
 msgid "Export Dashboard(s)"
-msgstr ""
+msgstr "Dashboard(s) exportieren"
 
 #: syslog_dashboards.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Dashboard(s)."
-msgstr ""
+msgstr "HINWEIS: %d Dashboard(s) importiert und %d aktualisiert."
 
 #: syslog_dashboards.php
 #, php-format
 msgid "ERROR: %d Dashboard(s) failed to import."
-msgstr ""
+msgstr "FEHLER: %d Dashboard(s) konnten nicht importiert werden."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Import Dashboard from Local File"
-msgstr "Berichtsregel aus lokaler Datei importieren"
+msgstr "Dashboard aus lokaler Datei importieren"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "If the JSON file containing the Dashboard definition data is located on your local machine, select it here."
-msgstr "Wenn sich die XML-Datei mit den Definitionsdaten der Berichtsregel auf Ihrem lokalen Computer befindet, wählen Sie sie hier aus."
+msgstr "Wenn sich die JSON-Datei mit den Definitionsdaten des Dashboards auf Ihrem lokalen Computer befindet, wählen Sie sie hier aus."
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "Import Dashboard from Text"
-msgstr "Berichtsregel aus Text importieren"
+msgstr "Dashboard aus Text importieren"
 
 #: syslog_dashboards.php
-#, fuzzy
 msgid "If you have the JSON file containing the Dashboard definition data as text, you can paste it into this box to import it."
-msgstr "Wenn Sie über die XML-Datei verfügen, die die Definitionsdaten der Berichtsregel als Text enthält, können Sie sie in dieses Feld einfügen, um sie zu importieren."
+msgstr "Wenn Sie die JSON-Datei mit den Definitionsdaten des Dashboards als Text vorliegen haben, können Sie sie zum Importieren in dieses Feld einfügen."
 
 #: syslog_dashboards.php
 msgid "Import Dashboard"
-msgstr ""
+msgstr "Dashboard importieren"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Users"
-msgstr "Alle Datensätze"
+msgstr "Alle Benutzer"
 
 #: syslog_dashboards.php syslog_saved_searches.php
-#, fuzzy
 msgid "All Groups"
-msgstr "Alle Programme"
+msgstr "Alle Gruppen"
 
 #: syslog_dashboards.php
 msgid "Edit Dashboard"
-msgstr ""
+msgstr "Dashboard bearbeiten"
 
 #: syslog_dashboards.php
 msgid "The name shown in the Dashboards select of the Syslog Dashboard tab."
-msgstr ""
+msgstr "Der Name, der in der Dashboard-Auswahl auf dem Tab 'Syslog-Dashboard' angezeigt wird."
 
 #: syslog_dashboards.php
 msgid "The account that owns this dashboard and can manage its panels."
-msgstr ""
+msgstr "Das Konto, dem dieses Dashboard gehört und das dessen Panels verwalten kann."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Users"
-msgstr ""
+msgstr "Für Benutzer freigegeben"
 
 #: syslog_dashboards.php
 msgid "Users who can view this dashboard in addition to its owner and any global sharing. All Users shares it with everyone."
-msgstr ""
+msgstr "Benutzer, die dieses Dashboard zusätzlich zu seinem Eigentümer und etwaigen globalen Freigaben anzeigen können. „Alle Benutzer“ gibt es für jeden frei."
 
 #: syslog_dashboards.php
 msgid "Groups who can view this dashboard in addition to its owner and any global sharing. All Groups shares it with everyone."
-msgstr ""
+msgstr "Gruppen, die dieses Dashboard zusätzlich zu seinem Eigentümer und einer globalen Freigabe anzeigen können. „Alle Gruppen“ gibt es für alle frei."
 
 #: syslog_dashboards.php syslog_saved_searches.php
 msgid "Shared With Groups"
-msgstr ""
+msgstr "Für Gruppen freigegeben"
 
 #: syslog_dashboards.php
 msgid "Renaming applies to every viewer of this dashboard. Panels are managed by their owners from the Syslog Dashboard tab."
-msgstr ""
+msgstr "Die Umbenennung gilt für jeden Betrachter dieses Dashboards. Panels werden von ihren Eigentümern über den Tab Syslog-Dashboard verwaltet."
 
 #: syslog_device_rules.php
 msgid "Choose a future pause end date and time."
-msgstr ""
+msgstr "Wählen Sie ein Enddatum und eine Endzeit für die Pause in der Zukunft."
 
 #: syslog_device_rules.php
 msgid "A device name is required."
-msgstr ""
+msgstr "Ein Gerätename ist erforderlich."
 
 #: syslog_device_rules.php
-#, fuzzy, php-format
+#, php-format
 msgid "Click Continue to %s the following Device Alert Rule(s)."
-msgstr "Klicken Sie auf \"Weiter\", um die folgende(n) Syslog-Warnregel(n) zu deaktivieren."
+msgstr "Klicken Sie auf „Weiter“, um die folgenden Geräte-Alarmregeln zu %s."
 
 #: syslog_device_rules.php
 msgid "Do not pass any priority"
-msgstr ""
+msgstr "Keine Priorität übergeben"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "%s and more urgent"
-msgstr ""
+msgstr "%s und dringender"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule"
-msgstr "Neue Warnungsregel"
+msgstr "Geräte-Warnungsregel"
 
 #: syslog_device_rules.php
 msgid "Search current Syslog devices as you type, or enter any IP address or hostname."
-msgstr ""
+msgstr "Aktuelle Syslog-Geräte während der Eingabe suchen oder eine beliebige IP-Adresse bzw. einen Hostnamen eingeben."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Alert Handling"
-msgstr "Handhabung des Umzugs"
+msgstr "Alarmbehandlung"
 
 #: syslog_device_rules.php
 msgid "Do not pause"
-msgstr ""
+msgstr "Nicht pausieren"
 
 #: syslog_device_rules.php
 msgid "Pause all non-exempt alerts until a date, or indefinitely."
-msgstr ""
+msgstr "Alle nicht ausgenommenen Alarme bis zu einem bestimmten Datum oder auf unbestimmte Zeit pausieren."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Pause indefinitely"
-msgstr "Unbegrenzt"
+msgstr "Unbefristet pausieren"
 
 #: syslog_device_rules.php
 msgid "Pause until"
-msgstr ""
+msgstr "Pausieren bis"
 
 #: syslog_device_rules.php
 msgid "Local date and time, YYYY-MM-DD HH:MM."
-msgstr ""
+msgstr "Lokales Datum und lokale Uhrzeit, YYYY-MM-DD HH:MM."
 
 #: syslog_device_rules.php
 msgid "Pause Ends"
-msgstr ""
+msgstr "Pause endet"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Always Allow Priority"
-msgstr "Alle Prioritäten"
+msgstr "Priorität immer zulassen"
 
 #: syslog_device_rules.php
 msgid "These priorities pass through this device pause and maintenance windows. Critical and more urgent is a typical platinum-device choice."
-msgstr ""
+msgstr "Diese Prioritäten passieren diese Gerätepause und Wartungsfenster. „Kritisch“ und dringender ist eine typische Wahl für Platinum-Geräte."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Allow During Maintenance"
-msgstr "Partitionierte Tabelle"
+msgstr "Während Wartung zulassen"
 
 #: syslog_device_rules.php
 msgid "Allow all priorities from this device during an alert maintenance window. The priority exception above still applies when this is No."
-msgstr ""
+msgstr "Alle Prioritäten dieses Geräts während eines Alarm-Wartungsfensters zulassen. Die obige Prioritätsausnahme gilt weiterhin, wenn diese Option auf „Nein“ steht."
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [edit]"
-msgstr "Neue Warnungsregel"
+msgstr "Geräte-Warnungsregel [bearbeiten]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule [new]"
-msgstr "Neue Warnungsregel"
+msgstr "Geräte-Warnungsregel [neu]"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Device Alert Rule Filters"
-msgstr "Filter für Syslog-Warnungen"
+msgstr "Filter für Geräte-Warnungsregeln"
 
 #: syslog_device_rules.php syslog_removal.php
 msgid "Rules"
 msgstr "Regeln"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Handling"
-msgstr "Handhabung des Umzugs"
+msgstr "Behandlung"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Maintenance"
-msgstr "Partitionierte Tabelle"
+msgstr "Wartung"
 
 #: syslog_device_rules.php
 msgid "Pass Through"
-msgstr ""
+msgstr "Durchleiten"
 
 #: syslog_device_rules.php
 msgid "No device alert rules found."
-msgstr ""
+msgstr "Keine Geräte-Alarmregeln gefunden."
 
 #: syslog_device_rules.php
 msgid "Not paused"
-msgstr ""
+msgstr "Nicht pausiert"
 
 #: syslog_device_rules.php
-#, fuzzy
 msgid "Paused indefinitely"
-msgstr "Unbegrenzt"
+msgstr "Unbefristet pausiert"
 
 #: syslog_device_rules.php
 #, php-format
 msgid "Paused until %s"
-msgstr ""
+msgstr "Pausiert bis %s"
 
 #: syslog_device_rules.php
 msgid "and more urgent"
-msgstr ""
+msgstr "und dringender"
 
 #: syslog_device_rules.php
 msgid "Allow all"
-msgstr ""
+msgstr "Alle zulassen"
 
 #: syslog_device_rules.php
 msgid "Use priority exception"
-msgstr ""
+msgstr "Prioritätsausnahme verwenden"
 
 #: syslog_recommendations.php
 #, php-format
 msgid "The recommendation was not saved because %s. Enter an identifier without spaces and at least an explanation or a recommended action."
-msgstr ""
+msgstr "Die Empfehlung wurde nicht gespeichert, weil %s. Geben Sie einen Bezeichner ohne Leerzeichen und mindestens eine Erklärung oder eine empfohlene Maßnahme ein."
 
 #: syslog_recommendations.php
 msgid "A recommendation for this vendor and identifier already exists."
-msgstr ""
+msgstr "Eine Empfehlung für diesen Hersteller und diese Kennung existiert bereits."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: The identifier %s contains characters other than letters, digits, _ . - / and an optional literal leading %%, so it can never match a syslog message. Replace placeholders such as # or alternatives such as A|B with the exact code."
-msgstr ""
+msgstr "HINWEIS: Der Bezeichner %s enthält andere Zeichen als Buchstaben, Ziffern, _ . - / und ein optionales führendes %%, sodass er niemals mit einer Syslog-Meldung übereinstimmen kann. Ersetzen Sie Platzhalter wie # oder Alternativen wie A|B durch den genauen Code."
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Recommendation(s)."
-msgstr "Klicken Sie auf \"Weiter\", um die folgende(n) Syslog-Warnregel(n) zu exportieren."
+msgstr "Klicken Sie auf 'Weiter', um die folgende(n) Empfehlung(en) zu exportieren."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Click 'Continue' to Delete the following Syslog Report(s)."
 msgid "Click 'Continue' to Delete the following Recommendation(s)."
-msgstr "Klicken Sie auf \"Weiter\", um die folgenden Syslog-Berichte zu löschen."
+msgstr "Klicken Sie auf 'Weiter', um die folgende(n) Empfehlung(en) zu löschen."
 
 #: syslog_recommendations.php
 msgid "Export requires the PHP zlib extension to create a JSON gzip file."
-msgstr ""
+msgstr "Für den Export ist die PHP-Erweiterung zlib erforderlich, um eine JSON-gzip-Datei zu erstellen."
 
 #: syslog_recommendations.php
 msgid "Import rejected: the file is empty, too large, or not a valid recommendations JSON document."
-msgstr ""
+msgstr "Import abgelehnt: Die Datei ist leer, zu groß oder kein gültiges JSON-Dokument für Empfehlungen."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: Added %d, updated %d and left %d existing Recommendation(s) unchanged."
-msgstr ""
+msgstr "HINWEIS: %d Empfehlung(en) hinzugefügt, %d aktualisiert und %d bestehende unverändert gelassen."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) were rejected (for example %s). Each one is listed with its reason in the Cacti log."
-msgstr ""
+msgstr "FEHLER: %d Empfehlung(en) wurden abgelehnt (zum Beispiel %s). Jede ist mit ihrem Grund im Cacti-Protokoll aufgeführt."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "ERROR: %d Recommendation(s) could not be stored. Each one is listed in the Cacti log."
-msgstr ""
+msgstr "FEHLER: %d Empfehlung(en) konnten nicht gespeichert werden. Jede ist im Cacti-Protokoll aufgeführt."
 
 #: syslog_recommendations.php
 #, php-format
 msgid "NOTE: %d imported Recommendation(s) have identifiers containing characters such as | or # that never appear in a message word, so they cannot match until edited. Set Can Match to No to list them."
-msgstr ""
+msgstr "HINWEIS: %d importierte Empfehlung(en) enthalten Bezeichner mit Zeichen wie | oder #, die in keinem Meldungswort vorkommen und daher erst nach einer Bearbeitung übereinstimmen können. Setzen Sie „Kann übereinstimmen“ auf „Nein“, um sie aufzulisten."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Local File"
 msgid "Import Recommendations from Local File"
-msgstr "Berichtsregel aus lokaler Datei importieren"
+msgstr "Empfehlungen aus lokaler Datei importieren"
 
 #: syslog_recommendations.php
 msgid "Select a .json or .json.gz file on your local machine. Use the Export function to see the expected format: a list of records with vendor, identifier, component, severity, message, explanation, recommended_action and reference."
-msgstr ""
+msgstr "Wählen Sie eine .json- oder .json.gz-Datei auf Ihrem lokalen Rechner aus. Nutzen Sie die Exportfunktion, um das erwartete Format anzuzeigen: eine Liste von Datensätzen mit vendor, identifier, component, severity, message, explanation, recommended_action und reference."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "Import Recommendations from Text"
-msgstr "Berichtsregel aus Text importieren"
+msgstr "Empfehlungen aus Text importieren"
 
 #: syslog_recommendations.php
 msgid "Alternatively, paste the JSON document into this box."
-msgstr ""
+msgstr "Alternativ das JSON-Dokument in dieses Feld einfügen."
 
 #: syslog_recommendations.php
 msgid "Existing Recommendations"
-msgstr ""
+msgstr "Vorhandene Empfehlungen"
 
 #: syslog_recommendations.php
 msgid "A recommendation is the same as an existing one when its vendor and identifier match."
-msgstr ""
+msgstr "Eine Empfehlung gilt als identisch mit einer vorhandenen, wenn Hersteller und Kennung übereinstimmen."
 
 #: syslog_recommendations.php
 msgid "Keep the existing recommendation"
-msgstr ""
+msgstr "Bestehende Empfehlung beibehalten"
 
 #: syslog_recommendations.php
 msgid "Replace it with the imported one"
-msgstr ""
+msgstr "Durch die importierte Version ersetzen"
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Data"
 msgid "Import Recommendations"
-msgstr "Importieren von Berichtsdaten"
+msgstr "Empfehlungen importieren"
 
 #: syslog_recommendations.php
 msgid "Importing, please wait..."
-msgstr ""
+msgstr "Import wird durchgeführt, bitte warten..."
 
 #: syslog_recommendations.php
 msgid "Not specified"
-msgstr ""
+msgstr "Nicht angegeben"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Recommendation"
-msgstr "Entfernte Datensätze"
+msgstr "Empfehlung"
 
 #: syslog_recommendations.php
 msgid "The supplier of the device or software that logs this message, for example Cisco or Juniper."
-msgstr ""
+msgstr "Der Hersteller des Geräts oder der Software, die diese Meldung protokolliert, zum Beispiel Cisco oder Juniper."
 
 #: syslog_recommendations.php
 msgid "Vendor"
-msgstr ""
+msgstr "Hersteller"
 
 #: syslog_recommendations.php
 msgid "Identifier"
-msgstr ""
+msgstr "Bezeichner"
 
 #: syslog_recommendations.php
 msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
-msgstr ""
+msgstr "Der zu suchende Nachrichtencode, zum Beispiel %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN oder 4625. Er muss einem ganzen Wort der Syslog-Nachricht entsprechen (Buchstaben, Ziffern und _ . - /); ein führendes % ist wörtlich zu nehmen und muss genau wie angegeben übereinstimmen. Bei der Übereinstimmung wird nicht zwischen Groß- und Kleinschreibung unterschieden. Siehe 'Wie Empfehlungen abgeglichen werden' auf der Listenseite."
 
 #: syslog_recommendations.php
 msgid "Component"
-msgstr ""
+msgstr "Komponente"
 
 #: syslog_recommendations.php
 msgid "The facility, module or subsystem that raises the message."
-msgstr ""
+msgstr "Die Facility, das Modul oder das Subsystem, das die Nachricht auslöst."
 
 #: syslog_recommendations.php
 msgid "The severity the vendor documents for this message."
-msgstr ""
+msgstr "Der vom Hersteller für diese Meldung dokumentierte Schweregrad."
 
 #: syslog_recommendations.php
 msgid "The message format as documented, including its variable placeholders."
-msgstr ""
+msgstr "Das dokumentierte Nachrichtenformat einschließlich der variablen Platzhalter."
 
 #: syslog_recommendations.php
 msgid "What the message means."
-msgstr ""
+msgstr "Was die Meldung bedeutet."
 
 #: syslog_recommendations.php
 msgid "What an operator should do about it."
-msgstr ""
+msgstr "Was ein Administrator dagegen unternehmen sollte."
 
 #: syslog_recommendations.php
 msgid "Links to the vendor documentation, one per line."
-msgstr ""
+msgstr "Links zur Herstellerdokumentation, einer pro Zeile."
 
 #: syslog_recommendations.php
 msgid "Recommendation [edit]"
-msgstr ""
+msgstr "Empfehlung [bearbeiten]"
 
 #: syslog_recommendations.php
 msgid "Recommendation [new]"
-msgstr ""
+msgstr "Empfehlung [neu]"
 
 #: syslog_recommendations.php
 msgid "A lightbulb before the message marks matching recommendations on the System Logs and Alert Logs tabs. Click the message to read them in the details flyout. Hovering never requests the server."
-msgstr ""
+msgstr "Eine Glühbirne vor der Meldung kennzeichnet passende Empfehlungen auf den Registerkarten „Systemprotokolle“ und „Alarmprotokolle“. Klicken Sie auf die Meldung, um sie im Detail-Flyout zu lesen. Das Überfahren mit der Maus löst keine Serveranfrage aus."
 
 #: syslog_recommendations.php
 msgid "Only the <b>Identifier</b> column is used for matching. The vendor, component, severity, message and explanation are shown in the details flyout but are never searched."
-msgstr ""
+msgstr "Für den Abgleich wird nur die Spalte <b>Bezeichner</b> verwendet. Hersteller, Komponente, Schweregrad, Meldung und Erklärung werden im Detail-Flyout angezeigt, aber niemals durchsucht."
 
 #: syslog_recommendations.php
 msgid "The first 2,048 characters of the message are split into words. A word is a run of letters, digits and the characters _ . - / that may start with %. Every other character, such as a space, colon, comma or bracket, ends a word. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> the words are <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> and <code>down</code>."
-msgstr ""
+msgstr "Die ersten 2.048 Zeichen der Nachricht werden in Wörter zerlegt. Ein Wort ist eine Folge aus Buchstaben, Ziffern und den Zeichen _ . - /, die mit % beginnen kann. Jedes andere Zeichen, wie Leerzeichen, Doppelpunkt, Komma oder Klammer, beendet ein Wort. In <code>%LINK-3-UPDOWN: Interface Gi0/1, changed state to down</code> sind die Wörter <code>%LINK-3-UPDOWN</code>, <code>Interface</code>, <code>Gi0/1</code>, <code>changed</code>, <code>state</code>, <code>to</code> und <code>down</code>."
 
 #: syslog_recommendations.php
 msgid "An identifier matches when it is <b>exactly equal to one whole word</b>, ignoring case. It is not a \"contains\", \"starts with\" or \"ends with\" search, and there are no wildcards: <code>LINK-3-UPDOWN</code> does not match the word <code>LINK-3-UPDOWN-EXT</code>, and <code>UPDOWN</code> does not match <code>%LINK-3-UPDOWN</code>."
-msgstr ""
+msgstr "Ein Bezeichner stimmt überein, wenn er unter Ignorierung der Groß-/Kleinschreibung <b>genau einem ganzen Wort entspricht</b>. Es handelt sich nicht um eine „Enthält“-, „Beginnt mit“- oder „Endet mit“-Suche, und es gibt keine Platzhalter: <code>LINK-3-UPDOWN</code> stimmt nicht mit dem Wort <code>LINK-3-UPDOWN-EXT</code> überein, und <code>UPDOWN</code> stimmt nicht mit <code>%LINK-3-UPDOWN</code> überein."
 
 #: syslog_recommendations.php
 msgid "A leading <b>%</b> is literal, not a wildcard, and must match the message word as written. An identifier <code>%LINK-3-UPDOWN</code> matches the message word <code>%LINK-3-UPDOWN</code>, not <code>LINK-3-UPDOWN</code>; an identifier without the prefix matches only the unprefixed word."
-msgstr ""
+msgstr "Ein vorangestelltes <b>%</b> ist wörtlich zu verstehen, kein Platzhalter, und muss genau wie geschrieben im Meldungswort vorkommen. Eine Kennung <code>%LINK-3-UPDOWN</code> passt auf das Meldungswort <code>%LINK-3-UPDOWN</code>, nicht auf <code>LINK-3-UPDOWN</code>; eine Kennung ohne dieses Präfix passt nur auf das Wort ohne Präfix."
 
 #: syslog_recommendations.php
 msgid "When the syslog host is a Cacti device whose vendor is recognised from its SNMP system description or device template, and recommendations exist for that vendor, only that vendor's recommendations and those without a vendor are checked. Otherwise all vendors are checked, but an identifier made only of digits matches only recommendations without a vendor. When several recommendations match, the longest identifiers are shown first, up to three."
-msgstr ""
+msgstr "Wenn der Syslog-Host ein Cacti-Gerät ist, dessen Hersteller anhand der SNMP-Systembeschreibung oder Gerätevorlage erkannt wird, und Empfehlungen für diesen Hersteller existieren, werden nur die Empfehlungen dieses Herstellers sowie Empfehlungen ohne Herstellerangabe geprüft. Andernfalls werden alle Hersteller geprüft, wobei ein Bezeichner, der nur aus Ziffern besteht, nur auf Empfehlungen ohne Herstellerangabe zutrifft. Wenn mehrere Empfehlungen zutreffen, werden bis zu drei mit den längsten Bezeichnern zuerst angezeigt."
 
 #: syslog_recommendations.php
 msgid "Identifiers that contain other characters, such as the <code>#</code> slot placeholder or the <code>|</code> alternatives in some vendor documentation (for example <code>%ASA|PIX-3-331001</code>), are kept and exported but can never match. Set <b>Can Match</b> to No to list them, and edit them into the exact code, for example <code>%ASA-3-331001</code>."
-msgstr ""
+msgstr "Bezeichner, die andere Zeichen enthalten, wie den Slot-Platzhalter <code>#</code> oder die <code>|</code>-Alternativen in manchen Herstellerdokumentationen (zum Beispiel <code>%ASA|PIX-3-331001</code>), werden beibehalten und exportiert, können aber niemals übereinstimmen. Setzen Sie <b>Kann übereinstimmen</b> auf Nein, um sie aufzulisten, und bearbeiten Sie sie zum exakten Code, zum Beispiel <code>%ASA-3-331001</code>."
 
 #: syslog_recommendations.php
-#, fuzzy
-#| msgid "Import Report Rule from Text"
 msgid "How Recommendations Are Matched"
-msgstr "Berichtsregel aus Text importieren"
+msgstr "Wie Empfehlungen abgeglichen werden"
 
 #: syslog_recommendations.php
-#, fuzzy
 msgid "Can Match"
-msgstr "Spielart"
+msgstr "Kann übereinstimmen"
 
 #: syslog_recommendations.php
 msgid "Whether the identifier has the shape of a message word, so the message lookup can ever find it"
-msgstr ""
+msgstr "Ob der Bezeichner die Form eines Meldungsworts hat, sodass die Meldungssuche ihn überhaupt finden kann"
 
 #: syslog_recommendations.php
 msgid "Export every recommendation that matches the filters"
-msgstr ""
+msgstr "Jede Empfehlung exportieren, die den Filtern entspricht"
 
 #: syslog_recommendations.php
 msgid "No recommendations found."
-msgstr ""
+msgstr "Keine Empfehlungen gefunden."
 
 #: syslog_removal.php
 msgid "Reprocess"
@@ -3995,9 +3772,8 @@ msgid "Space for Notes on the Removal rule"
 msgstr "Platz für Hinweise zur Entfernungsregel"
 
 #: syslog_removal.php
-#, fuzzy
 msgid "Removal filter conditions"
-msgstr "Hinweise zur Entfernungsregel"
+msgstr "Filterbedingungen für Entfernungsregeln"
 
 #: syslog_removal.php
 msgid "Syslog Removal Rule Filters"
@@ -4108,7 +3884,7 @@ msgstr "Ist dieser Bericht aktiviert?"
 
 #: syslog_reports.php
 msgid "Define how you would like this string matched. Filter Builder combines conditions on the message, host, program, facility and priority."
-msgstr ""
+msgstr "Legen Sie fest, wie diese Zeichenkette abgeglichen werden soll. Der Filter-Builder kombiniert Bedingungen für Nachricht, Host, Programm, Facility und Priorität."
 
 #: syslog_reports.php
 msgid "Frequency"
@@ -4132,7 +3908,7 @@ msgstr "Berichtsformat"
 
 #: syslog_reports.php
 msgid "Build filter conditions, or enter the text or SQL expression to match syslog messages."
-msgstr ""
+msgstr "Filterbedingungen erstellen oder den Text bzw. SQL-Ausdruck eingeben, um Syslog-Nachrichten abzugleichen."
 
 #: syslog_reports.php
 msgid "The information that will be contained in the body of the Report."
@@ -4147,15 +3923,12 @@ msgid "Space for Notes on the Report"
 msgstr "Platz für Notizen zum Bericht"
 
 #: syslog_reports.php
-#, fuzzy
-#| msgid "Report Edit [new]"
 msgid "Report Test Preview"
-msgstr "Bericht Bearbeiten [neu]"
+msgstr "Berichtstest-Vorschau"
 
 #: syslog_reports.php
-#, fuzzy
 msgid "Report filter conditions"
-msgstr "Hinweise zur Entfernungsregel"
+msgstr "Berichtsfilterbedingungen"
 
 #: syslog_reports.php
 msgid "Syslog Report Filters"
@@ -4167,7 +3940,7 @@ msgstr "Name des Berichts"
 
 #: syslog_reports.php
 msgid "Last Sent"
-msgstr "Zuletzt verschickt"
+msgstr "Zuletzt gesendet"
 
 #: syslog_reports.php
 msgid "Reports"
@@ -4209,108 +3982,104 @@ msgstr "FEHLER: Die Berichtsregel '%s' %s fehlgeschlagen!"
 
 #: syslog_saved_searches.php
 msgid "Unable to save the template. Please try again."
-msgstr ""
+msgstr "Die Vorlage konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
 
 #: syslog_saved_searches.php
 msgid "Enter a template name between 1 and 128 characters."
-msgstr ""
+msgstr "Geben Sie einen Vorlagennamen mit 1 bis 128 Zeichen ein."
 
 #: syslog_saved_searches.php
 msgid "Templates"
-msgstr ""
+msgstr "Schablonen"
 
 #: syslog_saved_searches.php
 msgid "Query"
-msgstr ""
+msgstr "Abfrage"
 
 #: syslog_saved_searches.php
 msgid "No shared search templates. Save a search for all users from Syslog to create one."
-msgstr ""
+msgstr "Keine freigegebenen Suchvorlagen. Speichern Sie eine Suche in Syslog für alle Benutzer, um eine Vorlage zu erstellen."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Click 'Continue' to Export the following Saved Search Template(s)."
-msgstr "Klicken Sie auf \"Weiter\", um die folgende(n) Syslog-Warnregel(n) zu exportieren."
+msgstr "Klicken Sie auf 'Weiter', um die folgende(n) gespeicherte(n) Suchvorlage(n) zu exportieren."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Click 'Continue' to Delete the following Saved Search Template(s)."
-msgstr "Klicken Sie auf \"Weiter\", um die folgende(n) Syslog-Warnregel(n) zu löschen."
+msgstr "Klicken Sie auf 'Weiter', um die folgende(n) gespeicherte(n) Suchvorlage(n) zu löschen."
 
 #: syslog_saved_searches.php
 msgid "Delete Saved Search Template(s)"
-msgstr ""
+msgstr "Vorlage(n) für gespeicherte Suchen löschen"
 
 #: syslog_saved_searches.php
 msgid "Export Saved Search Template(s)"
-msgstr ""
+msgstr "Gespeicherte Suchvorlage(n) exportieren"
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "NOTE: Imported %d and updated %d Saved Search Template(s)."
-msgstr ""
+msgstr "HINWEIS: %d Vorlage(n) für gespeicherte Suchen importiert und %d aktualisiert."
 
 #: syslog_saved_searches.php
 #, php-format
 msgid "ERROR: %d Saved Search Template(s) failed to import."
-msgstr ""
+msgstr "FEHLER: %d Vorlage(n) für gespeicherte Suchen konnten nicht importiert werden."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Import Saved Search Template from Local File"
-msgstr "Alarmregel aus lokaler Datei importieren"
+msgstr "Gespeicherte Suchvorlage aus lokaler Datei importieren"
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "If the JSON file containing the Saved Search Template definition data is located on your local machine, select it here."
-msgstr "Wenn sich die XML-Datei mit den Definitionsdaten der Warnregel auf Ihrem lokalen Computer befindet, wählen Sie sie hier aus."
+msgstr "Wenn sich die JSON-Datei mit den Definitionsdaten der gespeicherten Suchvorlage auf Ihrem lokalen Computer befindet, wählen Sie sie hier aus."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Import Saved Search Template from Text"
-msgstr "Importieren einer Warnungsregel aus Text"
+msgstr "Gespeicherte Suchvorlage aus Text importieren"
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "If you have the JSON file containing the Saved Search Template definition data as text, you can paste it into this box to import it."
-msgstr "Wenn Sie über die XML-Datei verfügen, die die Definitionsdaten der Berichtsregel als Text enthält, können Sie sie in dieses Feld einfügen, um sie zu importieren."
+msgstr "Wenn Sie die JSON-Datei mit den Definitionsdaten der gespeicherten Suchvorlage als Text vorliegen haben, können Sie sie zum Importieren in dieses Feld einfügen."
 
 #: syslog_saved_searches.php
 msgid "Import Saved Search Template"
-msgstr ""
+msgstr "Vorlage für gespeicherte Suche importieren"
 
 #: syslog_saved_searches.php
 msgid "Edit Saved Search Template"
-msgstr ""
+msgstr "Vorlage für gespeicherte Suche bearbeiten"
 
 #: syslog_saved_searches.php
 msgid "The name shown to all users in Saved Searches."
-msgstr ""
+msgstr "Der Name, der allen Benutzern unter 'Gespeicherte Suchen' angezeigt wird."
 
 #: syslog_saved_searches.php
 msgid "The account that owns this template and can manage it in Saved Searches."
-msgstr ""
+msgstr "Das Konto, dem diese Vorlage gehört und das sie unter 'Gespeicherte Suchen' verwalten kann."
 
 #: syslog_saved_searches.php
 msgid "Users who can use this template in addition to its owner. All Users shares it with everyone."
-msgstr ""
+msgstr "Benutzer, die diese Vorlage zusätzlich zu ihrem Eigentümer verwenden können. „Alle Benutzer“ gibt sie für jeden frei."
 
 #: syslog_saved_searches.php
 msgid "Groups who can use this template in addition to its owner. All Groups shares it with everyone."
-msgstr ""
+msgstr "Gruppen, die diese Vorlage zusätzlich zu ihrem Eigentümer verwenden können. „Alle Gruppen“ gibt sie für alle frei."
 
 #: syslog_saved_searches.php
-#, fuzzy
 msgid "Search Query"
-msgstr "Suche"
+msgstr "Suchabfrage"
 
 #: syslog_saved_searches.php
 msgid "Correct the query syntax to use the query builder."
-msgstr ""
+msgstr "Korrigieren Sie die Abfragesyntax, um den Abfrage-Builder zu verwenden."
 
 #: syslog_saved_searches.php
 msgid "Choose a field, operator, and value. Use AND, OR, NOT, or Group to build the query. Changes apply to this shared template for all users."
-msgstr ""
+msgstr "Wählen Sie ein Feld, einen Operator und einen Wert. Verwenden Sie AND, OR, NOT oder Gruppe, um die Abfrage zu erstellen. Änderungen gelten für diese gemeinsam genutzte Vorlage für alle Benutzer."
+
+#~ msgid "The upgrade of the 'main' syslog table can be a very time consuming process.  As such, it is recommended that you either reduce the size of your syslog table prior to upgrading, or choose the background option</p> <p>If you choose the background option, your legacy syslog table will be renamed, and a new syslog table will be created.  Then, an upgrade process will be launched in the background.  Again, this background process can quite a bit of time to complete.  However, your data will be preserved</p> <p>Regardless of your choice, all existing removal and alert rules will be maintained during the upgrade process.</p> <p>Press <b>'Upgrade'</b> to proceed with the upgrade, or <b>'Cancel'</b> to return to the Plugins menu."
+#~ msgstr "Das Upgrade der 'main' Syslog-Tabelle kann ein sehr zeitaufwändiger Prozess sein.  Daher wird empfohlen, dass Sie vor dem Upgrade entweder die Größe Ihrer Syslog-Tabelle reduzieren oder die Option Hintergrund auswählen</p> <p>Wenn Sie die Option \"Hintergrund\" auswählen, wird die Legacy-Syslog-Tabelle umbenannt und eine neue Syslog-Tabelle erstellt.  Anschließend wird im Hintergrund ein Upgrade-Vorgang gestartet.  Auch hier kann dieser Hintergrundprozess einige Zeit in Anspruch nehmen.  Ihre Daten bleiben jedoch erhalten</p> <p>Unabhängig von Ihrer Wahl werden alle vorhandenen Entfernungs- und Warnungsregeln während des Upgrade-Prozesses beibehalten.</p> <p>Drücken Sie <b>auf \"Upgrade\",</b> um mit dem Upgrade fortzufahren, oder <b>auf \"Abbrechen\",</b> um zum Plugins-Menü zurückzukehren."
 
 #~ msgid "Partitions per Day"
 #~ msgstr "Partitionen pro Tag"
