@@ -462,7 +462,7 @@ msgstr "警告:syslogしきい値アラートがトリガーされました"
 
 #: includes/functions.php
 msgid "Name:"
-msgstr "名前："
+msgstr "名前:"
 
 #: includes/functions.php
 msgid "Severity:"
@@ -474,7 +474,7 @@ msgstr "しきい値:"
 
 #: includes/functions.php
 msgid "Count:"
-msgstr "カウント数："
+msgstr "カウント数:"
 
 #: includes/functions.php
 msgid "Message String:"
@@ -482,7 +482,7 @@ msgstr "メッセージ文字列:"
 
 #: includes/functions.php
 msgid "Hostname:"
-msgstr "ホスト："
+msgstr "ホスト:"
 
 #: includes/functions.php
 msgid "Date:"
@@ -498,7 +498,7 @@ msgstr "メッセージ:"
 
 #: includes/functions.php
 msgid ", Host:"
-msgstr "ホスト："
+msgstr "ホスト:"
 
 #: includes/functions.php
 msgid ", URL:"
@@ -515,7 +515,7 @@ msgstr "イベントアラート - %s"
 
 #: includes/functions.php
 msgid ", Count:"
-msgstr "カウント数："
+msgstr "カウント数:"
 
 #: includes/functions.php lib/syslog_dashboard.php syslog_alerts.php
 #: syslog_removal.php syslog_reports.php

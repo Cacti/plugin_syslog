@@ -3136,7 +3136,7 @@ msgstr "마지막으로 수정된"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "By User"
-msgstr "회원:"
+msgstr "회원"
 
 #: syslog_alerts.php
 msgid "Alerts"
