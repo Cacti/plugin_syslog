@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Japanese <https://translate.cacti.net/projects/cacti/syslog/ja/>\nLanguage: ja-JP\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Japanese <https://translate.cacti.net/projects/cacti/syslog/ja/>\nLanguage: ja-JP\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -669,7 +669,7 @@ msgstr "インストール"
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr "Syslog %s Advisor"
+msgstr "Syslog %s アドバイザー"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
@@ -3196,7 +3196,7 @@ msgstr "更新しました"
 #: syslog_alerts.php
 #, php-format
 msgid "ERROR: Alert '%s' %s Failed!"
-msgstr "エラー: アラート '%s' %s失敗しました。"
+msgstr "エラー: アラート '%s' の %s に失敗しました！"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Update"
@@ -3978,7 +3978,7 @@ msgstr "注:レポートルール「%s」%s!"
 #: syslog_reports.php
 #, php-format
 msgid "ERROR: Report Rule '%s' %s Failed!"
-msgstr "エラー: レポート ルール '%s' %s失敗しました。"
+msgstr "エラー: レポート ルール '%s' の %s に失敗しました！"
 
 #: syslog_saved_searches.php
 msgid "Unable to save the template. Please try again."
