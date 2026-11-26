@@ -4,19 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr ""
-"Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: developers@cacti.net\n"
-"POT-Creation-Date: 2026-11-20 14:13-0500\n"
-"PO-Revision-Date: 2026-11-26 05:53+0000\n"
-"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
-"Language-Team: Spanish <https://translate.cacti.net/projects/cacti/syslog/es/>\n"
-"Language: es-ES\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 10:50+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Spanish <https://translate.cacti.net/projects/cacti/syslog/es/>\nLanguage: es-ES\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -576,7 +564,7 @@ msgstr "¿Actualizar Syslog de %s a %s? Se conservarán los mensajes y las regla
 
 #: includes/installer.php
 msgid "What upgrade/install type do you wish to use"
-msgstr "¿Qué tipo de actualización/instalación desea utilizar?"
+msgstr "Tipo de actualización/instalación deseado"
 
 #: includes/installer.php
 msgid "When you have very large tables, performing a Truncate will be much quicker.  If you are concerned about archive data, you can choose either Inline, which will freeze your browser for the period of this upgrade, or background, which will create a background process to bring your old syslog data from a backup table to the new syslog format.  Again this process can take several hours.  A Truncate discards the stored syslog and removed messages only; alert, removal and report rules are always kept."
@@ -681,7 +669,7 @@ msgstr "Instalar"
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr "Asesor de %s de Syslog"
+msgstr "Asesor de %s en Syslog"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
@@ -726,7 +714,7 @@ msgstr "También puede seleccionar la duración de retención. Tenga en cuenta q
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Settings"
-msgstr "Configuración de %s de Syslog"
+msgstr "Configuración de %s en Syslog"
 
 #: includes/installer.php
 msgid "What uninstall method do you want to use?"
