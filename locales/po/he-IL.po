@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Hebrew (Israel) <https://translate.cacti.net/projects/cacti/syslog/he_IL/>\nLanguage: he-IL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && n % 10 == 0) ? 2 : 3));\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Hebrew (Israel) <https://translate.cacti.net/projects/cacti/syslog/he_IL/>\nLanguage: he-IL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && n % 10 == 0) ? 2 : 3));\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -67,7 +67,7 @@ msgstr "משמרת יום"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr "סוף היום"
+msgstr "יום זה"
 
 #: includes/functions.php
 msgid "This Week"
@@ -419,7 +419,7 @@ msgstr "Cacti Syslog Alert '%s' עבור '%s' מארח"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s'"
-msgstr "Cacti Syslog Alert '%s'"
+msgstr "התראת Cacti Syslog '%s'"
 
 #: includes/functions.php
 msgid "Hostname"
@@ -669,7 +669,7 @@ msgstr "התקן"
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr "Syslog %s Advisor"
+msgstr "יועץ Syslog %s"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
@@ -875,7 +875,7 @@ msgstr "כל יום"
 #: includes/settings.php syslog.php syslog_alerts.php syslog_device_rules.php
 #: syslog_removal.php syslog_reports.php
 msgid "Disabled"
-msgstr "לא זמין"
+msgstr "מושבת"
 
 #: includes/settings.php lib/syslog_dashboard.php syslog.php syslog_alerts.php
 #: syslog_device_rules.php syslog_recommendations.php syslog_reports.php
@@ -1121,7 +1121,7 @@ msgstr "חזור על התראות עבור בעיות מתמשכות בצינו
 
 #: includes/settings.php
 msgid "Syslog Alert Retention"
-msgstr "Syslog Alert Retention"
+msgstr "שמירת התראות Syslog"
 
 #: includes/settings.php
 msgid "This is the number of days to keep alert logs."
@@ -1567,7 +1567,7 @@ msgstr "%d שעות אחרונות"
 
 #: lib/syslog_dashboard.php
 msgid "Last Day"
-msgstr "סוף היום"
+msgstr "יום אחרון"
 
 #: lib/syslog_dashboard.php
 msgid "Last Week"
@@ -1847,7 +1847,7 @@ msgstr "פעילות התראות"
 
 #: syslog.php
 msgid "Syslog Viewer"
-msgstr "Syslog Viewer"
+msgstr "מציג Syslog"
 
 #: syslog.php
 msgid "Syslog Status"
@@ -2775,7 +2775,7 @@ msgstr "כלל התראה חדש"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
-msgstr "לא זמין"
+msgstr "לא רלוונטי"
 
 #: syslog_alerts.php
 msgid "Time unit"
@@ -2811,7 +2811,7 @@ msgstr "מנהל אזעקות"
 
 #: syslog_alerts.php
 msgid "Syslog Alarming"
-msgstr "התראות Syslog"
+msgstr "אזעקות Syslog"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -3745,7 +3745,7 @@ msgstr "הגדר כיצד ברצונך להתאים מחרוזת זו.  אם א�
 
 #: syslog_removal.php
 msgid "Syslog Message Match String"
-msgstr "Syslog Message Match String"
+msgstr "מחרוזת התאמה להודעת Syslog"
 
 #: syslog_removal.php
 msgid "Enter the matching component of the syslog message, the facility or host name, or the SQL where clause if using the SQL Expression Match Type."
