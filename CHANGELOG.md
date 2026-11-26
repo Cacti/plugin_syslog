@@ -6,6 +6,7 @@
 
 --- develop ---
 
+* issue#484: Mark the syslog search help string in `syslog.php` as `no-php-format` and update `locales/po/cacti.pot` so the literal `%` in `LIKE` syntax is not flagged as a PHP format specifier
 * issue#480: Split the syslog upgrade notice in `includes/installer.php` into separate balanced `<p>` translation strings, regenerate `locales/po/cacti.pot`, and remove orphan `locales/LC_MESSAGES/ka.mo`
 * feature: Add manually importable recommendation catalogues for Arista, Dell, Fortinet, HPE, Huawei, MikroTik, Nokia, NVIDIA and Palo Alto Networks in docs/<vendor>.json.gz, built from each vendor's public message references
 * feature: Recommendations are matched only against the sending device's vendor (and vendor-neutral records) when the syslog host is a Cacti device whose vendor is recognised from its SNMP sysDescr or device template and has records; other hosts match every vendor, except that all-digit identifiers then match only vendor-neutral records
