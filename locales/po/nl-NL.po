@@ -4,7 +4,19 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Dutch <https://translate.cacti.net/projects/cacti/syslog/nl/>\nLanguage: nl-NL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: developers@cacti.net\n"
+"POT-Creation-Date: 2026-11-20 14:13-0500\n"
+"PO-Revision-Date: 2026-11-26 05:53+0000\n"
+"Last-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\n"
+"Language-Team: Dutch <https://translate.cacti.net/projects/cacti/syslog/nl/>\n"
+"Language: nl-NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -2496,7 +2508,7 @@ msgid "Grouped Messages"
 msgstr "Gegroepeerde berichten"
 
 #: syslog.php
-#, php-format
+#, no-php-format
 msgid "Choose a field, operator, and value. AND takes precedence over OR; NOT excludes a condition. LIKE uses % for any number of characters and _ for one character. Dates use YYYY-MM-DD HH:MM:SS. IDs use nonnegative integers. By default, the last day of logs is shown unless the date range is adjusted."
 msgstr "Kies een veld, operator en waarde. AND heeft voorrang op OR; NOT sluit een voorwaarde uit. LIKE gebruikt % voor een willekeurig aantal tekens en _ voor één teken. Datums gebruiken YYYY-MM-DD HH:MM:SS. ID's gebruiken niet-negatieve gehele getallen. Standaard wordt de laatste dag aan logboeken weergegeven, tenzij het datumbereik wordt aangepast."
 
