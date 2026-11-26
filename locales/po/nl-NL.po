@@ -2674,7 +2674,7 @@ msgstr "Filteren op programma"
 
 #: syslog.php
 msgid "All Programs"
-msgstr "Alle programma&#39;s"
+msgstr "Alle programma's"
 
 #: syslog_alerts.php
 msgid "Click 'Continue' to Delete the following Syslog Alert Rule(s)."
