@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Spanish <https://translate.cacti.net/projects/cacti/syslog/es/>\nLanguage: es-ES\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Spanish <https://translate.cacti.net/projects/cacti/syslog/es/>\nLanguage: es-ES\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -143,7 +143,7 @@ msgstr "Depuraración"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Informational"
-msgstr "Información"
+msgstr "Informativo"
 
 #: includes/functions.php
 msgid "Save Failed.  Remote Data Collectors in Sync Mode are not allowed to Save Rules.  Save from the Main Cacti Server instead."
@@ -660,7 +660,7 @@ msgstr "El tamaño de cada partición de las tablas syslog y syslog_removed. Se 
 
 #: includes/installer.php
 msgid "Upgrade"
-msgstr "Actualizar"
+msgstr "Actualizar versión"
 
 #: includes/installer.php
 msgid "Install"
@@ -1589,7 +1589,7 @@ msgstr "Ultimos %d meses"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "Actualizar"
+msgstr "Refrescar"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -2811,7 +2811,7 @@ msgstr "Gestor de alarmas"
 
 #: syslog_alerts.php
 msgid "Syslog Alarming"
-msgstr "Alertas de Syslog"
+msgstr "Alarmas de Syslog"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
@@ -3181,7 +3181,7 @@ msgstr "Importación rechazada: destino de alarma no válido."
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Imported"
-msgstr "Importar"
+msgstr "Importado"
 
 #: syslog_alerts.php
 #, php-format
@@ -3191,7 +3191,7 @@ msgstr "NOTA: ¡Alerta '%s' %s!"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
 msgid "Updated"
-msgstr "Actualizar"
+msgstr "Actualizado"
 
 #: syslog_alerts.php
 #, php-format
