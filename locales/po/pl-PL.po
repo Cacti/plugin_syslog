@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Polish <https://translate.cacti.net/projects/cacti/syslog/pl/>\nLanguage: pl-PL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Polish <https://translate.cacti.net/projects/cacti/syslog/pl/>\nLanguage: pl-PL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -67,7 +67,7 @@ msgstr "Zmiana dzienna"
 
 #: includes/functions.php
 msgid "This Day"
-msgstr "Ostatni dzień"
+msgstr "Ten dzień"
 
 #: includes/functions.php
 msgid "This Week"
@@ -888,7 +888,7 @@ msgstr "Ustawienia główne"
 
 #: includes/settings.php
 msgid "Syslog Enabled"
-msgstr "Dziennik systemowy włączony"
+msgstr "Syslog włączony"
 
 #: includes/settings.php
 msgid "If this checkbox is set, records will be transferred from the Syslog Incoming table to the main syslog table and Alerts and Reports will be enabled.  Please keep in mind that if the system is disabled log entries will still accumulate into the Syslog Incoming table as this is defined by the rsyslog or syslog-ng process."
@@ -3016,7 +3016,7 @@ msgstr "Opcje e-mail"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Notification List"
-msgstr "Powiadomienia"
+msgstr "Lista powiadomień"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "Use the contents of this Notification List to dictate who should be notified and how."
@@ -3140,7 +3140,7 @@ msgstr "Według użytkownika"
 
 #: syslog_alerts.php
 msgid "Alerts"
-msgstr "Powiadomienia"
+msgstr "Alerty"
 
 #: syslog_alerts.php
 msgid "Multiple"
