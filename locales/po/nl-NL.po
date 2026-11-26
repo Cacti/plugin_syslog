@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Dutch <https://translate.cacti.net/projects/cacti/syslog/nl/>\nLanguage: nl-NL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Dutch <https://translate.cacti.net/projects/cacti/syslog/nl/>\nLanguage: nl-NL\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -499,7 +499,7 @@ msgstr "Sev:"
 #: includes/functions.php
 #, php-format
 msgid "Event Alert - %s"
-msgstr "Event Alert - %s"
+msgstr "Gebeurteniswaarschuwing - %s"
 
 #: includes/functions.php
 msgid ", Count:"
@@ -576,7 +576,7 @@ msgstr "Syslog-tabel afkappen"
 
 #: includes/installer.php
 msgid "Inline Upgrade"
-msgstr "Inline Upgrade"
+msgstr "Inline-upgrade"
 
 #: includes/installer.php
 msgid "Background Upgrade"
@@ -660,7 +660,7 @@ msgstr "De grootte van elke partitie van de tabellen syslog en syslog_removed. D
 
 #: includes/installer.php
 msgid "Upgrade"
-msgstr "Upgrade"
+msgstr "Bijwerken"
 
 #: includes/installer.php
 msgid "Install"
@@ -937,7 +937,7 @@ msgstr "Wat is voor waarschuwingen op basis van drempelwaarden het maximale aant
 #: includes/settings.php
 #, php-format
 msgid "%d Records"
-msgstr "%d Records"
+msgstr "%d records"
 
 #: includes/settings.php
 msgid "Maximum Syslog Processing Processes"
@@ -1260,7 +1260,7 @@ msgstr "Onbepaald"
 #: includes/settings.php syslog_alerts.php
 #, php-format
 msgid "%d Week"
-msgstr "%d Week"
+msgstr "%d week"
 
 #: includes/settings.php syslog_alerts.php
 #, php-format
@@ -1389,7 +1389,7 @@ msgstr "Opschonen bevestigen"
 #: syslog_device_rules.php syslog_recommendations.php syslog_removal.php
 #: syslog_reports.php syslog_saved_searches.php
 msgid "Continue"
-msgstr "Volgende"
+msgstr "Doorgaan"
 
 #: includes/utilities.php
 msgid "This menu pick provides a means to remove Devices that are no longer reporting into Cacti's syslog server."
@@ -1554,7 +1554,7 @@ msgstr "Dashboard"
 
 #: lib/syslog_dashboard.php
 msgid "Time Range"
-msgstr "Tijdreeks"
+msgstr "Tijdsbereik"
 
 #: lib/syslog_dashboard.php
 msgid "Last Hour"
@@ -2469,7 +2469,7 @@ msgstr "Weergaveopties"
 
 #: syslog.php
 msgid "Trim"
-msgstr "Trim"
+msgstr "Inkorten"
 
 #: syslog.php
 msgid "Message Trim"
@@ -3112,7 +3112,7 @@ msgstr "Importeren"
 
 #: syslog_alerts.php
 msgid "Syslog Alert Filters"
-msgstr "Syslog Alert Filters"
+msgstr "Syslog-waarschuwingsfilters"
 
 #: syslog_alerts.php syslog_removal.php
 msgid "Method"
@@ -3191,7 +3191,7 @@ msgstr "LET OP: Alert '%s' %s!"
 #: syslog_alerts.php syslog_dashboards.php syslog_removal.php
 #: syslog_reports.php
 msgid "Updated"
-msgstr "Bijwerken"
+msgstr "Bijgewerkt"
 
 #: syslog_alerts.php
 #, php-format
@@ -3559,7 +3559,7 @@ msgstr "Leverancier"
 
 #: syslog_recommendations.php
 msgid "Identifier"
-msgstr "Identifier"
+msgstr "Identificatie"
 
 #: syslog_recommendations.php
 msgid "The message code to look for, for example %LINK-3-UPDOWN, RPD_OSPF_NBRDOWN or 4625. It must equal a whole word of the syslog message (letters, digits and _ . - /); a leading % is literal and must match as written. The match is not case sensitive. See How Recommendations Are Matched on the list page."
