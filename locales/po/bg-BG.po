@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Bulgarian <https://translate.cacti.net/projects/cacti/syslog/bg/>\nLanguage: bg-BG\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Bulgarian <https://translate.cacti.net/projects/cacti/syslog/bg/>\nLanguage: bg-BG\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -388,7 +388,7 @@ msgstr "Cacti Syslog Threshold Alert '%s' за хост '%s'"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s'"
-msgstr "Cacti Syslog Threshold Alert '%s'"
+msgstr "Тревога за праг в Cacti Syslog '%s'"
 
 #: includes/functions.php syslog.php syslog_alerts.php
 msgid "Alert Name"
@@ -1589,7 +1589,7 @@ msgstr "Последните %d месеца"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "Обновяване"
+msgstr "Опресняване"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -1863,7 +1863,7 @@ msgstr "секунди"
 
 #: syslog.php
 msgid "Unavailable"
-msgstr "Изтекла"
+msgstr "Недостъпно"
 
 #: syslog.php
 #, php-format
@@ -2775,7 +2775,7 @@ msgstr "Ново правило за предупреждение"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
-msgstr "Няма"
+msgstr "Неприложимо"
 
 #: syslog_alerts.php
 msgid "Time unit"
