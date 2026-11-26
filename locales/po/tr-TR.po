@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Turkish <https://translate.cacti.net/projects/cacti/syslog/tr/>\nLanguage: tr-TR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Turkish <https://translate.cacti.net/projects/cacti/syslog/tr/>\nLanguage: tr-TR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -119,7 +119,7 @@ msgstr "Kritik"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Alert"
-msgstr "Uyarı"
+msgstr "Alarm"
 
 #: includes/functions.php includes/recommendations.php
 msgid "Error"
@@ -131,7 +131,7 @@ msgstr "Uyarı"
 
 #: includes/functions.php includes/recommendations.php includes/settings.php
 msgid "Notice"
-msgstr "Uyarı"
+msgstr "Bildirim"
 
 #: includes/functions.php
 msgid "Info"
@@ -987,7 +987,7 @@ msgstr "Bu onay kutusu işaretlenirse, sistem ana bilgisayarları DNS aramaları
 
 #: includes/settings.php
 msgid "HTML Notification Settings"
-msgstr "Bildirim Listesi"
+msgstr "HTML Bildirim Ayarları"
 
 #: includes/settings.php
 msgid "Enable HTML Based Email"
@@ -1298,7 +1298,7 @@ msgstr "%d Dakika"
 
 #: includes/settings.php
 msgid "Begins with"
-msgstr "İle Başlayan"
+msgstr "İle Başlar"
 
 #: includes/settings.php
 msgid "Contains"
@@ -1314,7 +1314,7 @@ msgstr "Makine adı"
 
 #: includes/settings.php
 msgid "Program is"
-msgstr "Program"
+msgstr "Program şudur"
 
 #: includes/settings.php
 msgid "Facility is"
@@ -2126,7 +2126,7 @@ msgstr "Sonuç"
 
 #: syslog.php
 msgid "Recovery"
-msgstr "Recovery"
+msgstr "Kurtarma"
 
 #: syslog.php
 msgid "When"
@@ -2351,7 +2351,7 @@ msgstr "Durum kartı ekle…"
 
 #: syslog.php
 msgid "Syslog Alert View"
-msgstr "Syslog Alert View"
+msgstr "Syslog Uyarı Görünümü"
 
 #: syslog.php
 msgid "A valid saved search is required."
@@ -2758,7 +2758,7 @@ msgstr "%d Saat"
 
 #: syslog_alerts.php
 msgid "1 Month"
-msgstr "1 Month"
+msgstr "1 Ay"
 
 #: syslog_alerts.php
 #, php-format
@@ -2775,7 +2775,7 @@ msgstr "Yeni Uyarı Kuralı"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
-msgstr "Yok"
+msgstr "Geçerli Değil"
 
 #: syslog_alerts.php
 msgid "Time unit"
