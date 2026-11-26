@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Greek <https://translate.cacti.net/projects/cacti/syslog/el/>\nLanguage: el-GR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Greek <https://translate.cacti.net/projects/cacti/syslog/el/>\nLanguage: el-GR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -383,7 +383,7 @@ msgstr "Άγνωστο"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Threshold Alert '%s' for Host '%s'"
-msgstr "Cacti Syslog Threshold Alert '%s' for Host '%s'"
+msgstr "Ειδοποίηση ορίου Cacti Syslog '%s' για τον κεντρικό υπολογιστή '%s'"
 
 #: includes/functions.php
 #, php-format
@@ -414,7 +414,7 @@ msgstr "Αντιστοίχιση συμβολοσειράς"
 #: includes/functions.php
 #, php-format
 msgid "Cacti Syslog Alert '%s' for Host '%s'"
-msgstr "Cacti Syslog Alert '%s' for Host '%s'"
+msgstr "Ειδοποίηση Cacti Syslog '%s' για τον κεντρικό υπολογιστή '%s'"
 
 #: includes/functions.php
 #, php-format
@@ -2239,7 +2239,7 @@ msgstr "Επιλυμένοι κεντρικοί υπολογιστές"
 
 #: syslog.php
 msgid "Process"
-msgstr "Επεξεργασία"
+msgstr "Διεργασία"
 
 #: syslog.php
 msgid "Records handled"
@@ -2775,7 +2775,7 @@ msgstr "Νέος κανόνας ειδοποίησης"
 
 #: syslog_alerts.php syslog_reports.php
 msgid "N/A"
-msgstr "Μη Διαθέσιμο"
+msgstr "Μη Εφαρμόσιμο"
 
 #: syslog_alerts.php
 msgid "Time unit"
@@ -2811,7 +2811,7 @@ msgstr "Διαχείριση συναγερμών"
 
 #: syslog_alerts.php
 msgid "Syslog Alarming"
-msgstr "Ειδοποιήσεις Syslog"
+msgstr "Συναγερμός Syslog"
 
 #: syslog_alerts.php
 msgid "What is the Severity Level of this Alert?"
