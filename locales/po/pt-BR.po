@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
-msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-25 10:18+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Portuguese (Brazil) <https://translate.cacti.net/projects/cacti/syslog/pt_BR/>\nLanguage: pt-BR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n > 1;\nX-Generator: Weblate 5.11.4\n"
+msgstr "Project-Id-Version: \nReport-Msgid-Bugs-To: developers@cacti.net\nPOT-Creation-Date: 2026-11-20 14:13-0500\nPO-Revision-Date: 2026-11-26 05:53+0000\nLast-Translator: Thomas Vincent <balder.infuser.6n@icloud.com>\nLanguage-Team: Portuguese (Brazil) <https://translate.cacti.net/projects/cacti/syslog/pt_BR/>\nLanguage: pt-BR\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n > 1;\nX-Generator: Weblate 5.11.4\n"
 
 #: includes/functions.php includes/settings.php
 #, php-format
@@ -401,7 +401,7 @@ msgstr "Criticidade"
 
 #: includes/functions.php syslog_alerts.php
 msgid "Threshold"
-msgstr "Threshold"
+msgstr "Limiar"
 
 #: includes/functions.php syslog.php
 msgid "Count"
@@ -458,7 +458,7 @@ msgstr "Gravidade:"
 
 #: includes/functions.php
 msgid "Threshold:"
-msgstr "Threshold:"
+msgstr "Limiar:"
 
 #: includes/functions.php
 msgid "Count:"
@@ -660,7 +660,7 @@ msgstr "O tamanho de cada partição das tabelas syslog e syslog_removed. Diári
 
 #: includes/installer.php
 msgid "Upgrade"
-msgstr "Atualizar"
+msgstr "Atualizar versão"
 
 #: includes/installer.php
 msgid "Install"
@@ -669,7 +669,7 @@ msgstr "Instalar"
 #: includes/installer.php
 #, php-format
 msgid "Syslog %s Advisor"
-msgstr "Syslog %s Advisor"
+msgstr "Consultor de Syslog %s"
 
 #: includes/installer.php
 msgid "WARNING: Syslog Upgrade is Time Consuming!!!"
@@ -778,7 +778,7 @@ msgstr "Modelos de pesquisa salvos"
 #: includes/navigation.php includes/settings.php lib/syslog_dashboard.php
 #: syslog_dashboards.php
 msgid "Dashboards"
-msgstr "Painéis"
+msgstr "Painéis de controle"
 
 #: includes/navigation.php syslog_recommendations.php
 msgid "Syslog Recommendations"
@@ -1589,7 +1589,7 @@ msgstr "Últimos %d Meses"
 
 #: lib/syslog_dashboard.php lib/syslog_thresholds.php syslog.php
 msgid "Refresh"
-msgstr "Atualizar"
+msgstr "Recarregar"
 
 #: lib/syslog_dashboard.php
 msgid "My Dashboards"
@@ -3084,7 +3084,7 @@ msgstr "Correspondência"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Exclude"
-msgstr "Excluir"
+msgstr "Omitir"
 
 #: syslog_alerts.php syslog_removal.php syslog_reports.php
 msgid "Enter a nonnegative integer"
